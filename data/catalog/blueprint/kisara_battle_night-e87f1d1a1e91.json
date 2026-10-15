@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_battle_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 506,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kisara_battle_night",
     "title": "木更 · 都市恶魔战斗",
@@ -15,7 +15,7 @@
     "action": "恶魔化形态在都市上空战斗",
     "timeOfDay": "夜晚",
     "lighting": "霓虹与火光",
-    "camera": "dynamic action shot",
+    "camera": "full-body shot, low angle",
     "mood": "炽烈危险",
     "sceneTags": [
       "city",
@@ -29,18 +29,15 @@
       "demon_wings",
       "cursed_sword"
     ],
-    "promptProse": "Kisara fights between the city towers in her demonic form, her cursed blade and wings lit by neon and fire.",
+    "promptProse": "With her cursed blade drawn back for a strike and wings spread between the towers, she looks down toward Shu beyond the frame, neon and fire outlining her silhouette.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "black dress",
-      "red bow",
       "demon wings",
       "sword",
       "city",
       "skyscraper",
       "night",
-      "action"
+      "full body",
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

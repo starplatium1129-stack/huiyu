@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_floor22_cabin_cooking_breakfast",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1363,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asuna_floor22_cabin_cooking_breakfast",
     "title": "结城明日奈 · 22层木屋的暖心早餐·「快趁热吃吧，特制的三明治烤好了哦！」",
@@ -32,15 +32,14 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "She carries toasted sandwiches toward her companion beside the dining table. Morning window light catches the bread and the tea steam.",
+    "promptProse": "She stops beside the dining table and offers the wooden tray of toasted sandwiches toward the viewer with both hands, watching their reaction with a light smile. Morning window light catches the bread and steam from the tea already on the table.",
     "promptTokens": [
       "cabin",
-      "cream sweater",
-      "pink apron",
       "breakfast tray",
       "sandwich",
       "smile",
-      "morning"
+      "morning",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

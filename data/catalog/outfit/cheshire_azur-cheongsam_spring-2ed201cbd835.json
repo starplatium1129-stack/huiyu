@@ -1,28 +1,24 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/cheongsam_spring",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 593,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "cheongsam_spring",
       "name": "冰雪仙子旗袍",
-      "prose": "a lavish Lunar New Year ceremonial qipao dress: icy pale cyan and white silk with intricate golden cloud embroidery, alluring high hip slit, sheer lace chest cutout, fluffy white fur trim around shoulders, sheer white silk stockings, and satin high heels",
+      "prose": "an icy cyan-and-white silk qipao with gold cloud embroidery, a high side slit, lace chest inset, white fur at the shoulders, sheer white stockings and satin heels",
       "tokens": [
-        "cheongsam",
-        "china_dress",
-        "sleeveless_dress",
-        "high_slit",
-        "cleavage",
-        "fur_trim",
-        "tights",
-        "white_tights",
-        "high_heels",
-        "gold_embroidery",
-        "lunar_new_year"
+        "china dress",
+        "light blue dress",
+        "high slit",
+        "fur trim",
+        "white pantyhose",
+        "high heels",
+        "gold embroidery"
       ],
       "default": false,
       "isDefault": false

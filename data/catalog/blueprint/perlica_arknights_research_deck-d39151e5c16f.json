@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_research_deck",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 714,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "扶着栏杆仰望巨型天体",
-    "camera": "cowboy shot, leaning on ship railing",
+    "camera": "wide shot",
     "category": "塔罗斯科幻",
     "characterId": "perlica_arknights",
     "description": "【佩丽卡 · 研究舰甲板】先遣研究舰顶层甲板上，夜风吹拂着佩丽卡干练利落的制服风衣。她双手扶着合金栏杆，仰望着天幕中缓缓旋转的巨大异星天体与璀璨星环，眼底泛起少有的柔和——「在这浩瀚孤独的星海深处……能与您并肩站在同一个指挥甲板上，是我执行过的最荣幸的使命。」",
@@ -19,7 +19,6 @@
     "outfitId": "research_deck_uniform",
     "promptProse": "Perlica grips the alloy rail with both hands and looks up at the immense planet and its luminous rings.",
     "promptTokens": [
-      "trench coat",
       "railing",
       "looking up",
       "wind",

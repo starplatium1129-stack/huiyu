@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
@@ -12,11 +12,10 @@
       "name": "鸢一折纸·海滨泳装",
       "prose": "a navy-and-white athletic swimsuit with a light windbreaker tied at the waist and waterproof sandals",
       "tokens": [
-        "athletic_swimsuit",
-        "navy_swimsuit",
-        "white_trim",
-        "windbreaker_tied_waist",
-        "waterproof_sandals"
+        "navy swimsuit",
+        "white trim",
+        "jacket around waist",
+        "sandals"
       ],
       "default": false,
       "isDefault": false

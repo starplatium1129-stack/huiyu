@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc179",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "With the dress hanging from her shoulders, she straddles the viewer and leans down to bite their collarbone in the television light.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -30,16 +30,12 @@
       "mole_under_eye",
       "dress_unzipped",
       "dress_hanging_off_shoulders",
-      "bare_upper_body",
       "straddling_waist",
-      "riding",
       "biting_collarbone",
       "sweat",
       "wine_glass",
       "disheveled_bed",
-      "bare_legs",
-      "full_body",
-      "barefoot"
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

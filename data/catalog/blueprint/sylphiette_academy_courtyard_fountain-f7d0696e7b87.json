@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_academy_courtyard_fountain",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 471,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在喷泉边沿短暂小憩，墨镜挂在衣领",
     "adult": false,
-    "camera": "medium_portrait",
+    "camera": "medium shot",
     "category": "日常羁绊",
     "characterId": "sylphiette",
     "coverageTags": [
@@ -25,9 +25,6 @@
     "outfitId": "silent_fitz_uniform_no_sunglasses",
     "promptProse": "Sylphiette rests on the fountain rim with her eyes uncovered, sunlight reflected over her sleeve.",
     "promptTokens": [
-      "Sylphiette",
-      "white uniform",
-      "cape",
       "sunglasses at collar",
       "fountain",
       "medium shot"

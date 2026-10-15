@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_meadow_book",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 598,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在草地上，手捧家信与设计手记",
     "camera": "medium wide shot",
@@ -17,14 +17,10 @@
     "mood": "宁静美好",
     "negativeTokens": [],
     "outfitId": "cozy_afternoon_knit_casual",
-    "promptProse": "She holds a family letter beside her hairstyle sketchbook and turns with a hopeful smile in the breezy meadow.",
+    "promptProse": "With the family letter and hairstyle sketches held against her lap, she catches the viewer's hem with her free hand and turns toward them; bright meadow light warms her pink hair as the grass bends in the breeze.",
     "promptTokens": [
       "1girl",
       "solo",
-      "cat ears",
-      "pink sweater",
-      "beret",
-      "pleated skirt",
       "sitting",
       "crossed legs",
       "letter",

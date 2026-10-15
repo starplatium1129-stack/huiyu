@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_10",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1410,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "散着头发靠栏杆喝黑咖啡，望向宅邸灯光放松下来。",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "category": "日常生活",
     "characterId": "hayasaka_ai",
     "coverageTags": [
@@ -23,15 +23,13 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_night",
-    "promptProse": "After work, Hayasaka rests at the narrow balcony rail with black coffee, the mansion's lit windows beyond her.",
+    "promptProse": "She leans one forearm on the narrow balcony rail and raises her coffee with the other hand, looking tiredly toward the mansion's lit windows.",
     "promptTokens": [
-      "hair down",
-      "cardigan",
-      "trousers",
       "coffee",
       "leaning",
       "balcony",
-      "night"
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_desk_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在红木办公桌沿，单手挑起下颌眼神深邃",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "intimate low angle",
+    "camera": "cowboy shot, low angle",
     "category": "成人",
     "characterId": "kaltsit_arknights",
     "coverageTags": [

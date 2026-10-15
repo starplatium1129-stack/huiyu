@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/sfw_mint_rooftop_windbreaker",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1136,
   "createdAt": "2026-10-06T12:58:20.813784400+00:00",
-  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
@@ -14,17 +14,13 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "a mint-green zip-front windbreaker with navy cuffs over an opaque white crew-neck T-shirt, charcoal straight-leg cargo trousers and white skate sneakers",
+      "prose": "a mint-green windbreaker with navy cuffs over a white crew-neck T-shirt, charcoal cargo trousers and white skate sneakers",
       "tokens": [
-        "mint_green_jacket",
-        "windbreaker",
-        "zipper",
-        "navy_cuffs",
-        "white_t-shirt",
-        "crew_neck",
-        "charcoal_pants",
-        "cargo_pants",
-        "white_sneakers"
+        "mint windbreaker",
+        "navy cuffs",
+        "white t-shirt",
+        "charcoal cargo pants",
+        "white sneakers"
       ]
     }
   }

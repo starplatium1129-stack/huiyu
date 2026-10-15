@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Nene in white stands on the left holding the viewer's right hand; Natsume in black holds the left hand on the opposite side, beneath three glowing curves and a rotating halo.",
+    "animaCaption": "Nene in white stands at the viewer's left and Natsume in black at the right, each clasping the nearer hand extended into the foreground; three glowing heart-rate curves arch above them, and the rotating halo lights their faces and joined hands.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全景",
     "category": "Active_Sync_Scenes",

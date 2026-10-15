@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_street_delivery",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 617,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手持巨型斩首机械镰刀警戒站立",
     "camera": "dynamic full-body shot, low angle",
@@ -19,16 +19,14 @@
     "outfitId": "standard",
     "promptProse": "La Pluma stands alert with the mechanical scythe at her shoulder, cyan and magenta lights reflected along the wet alley.",
     "promptTokens": [
-      "crop top",
-      "shorts",
-      "jacket",
       "scythe",
       "standing",
       "alley",
       "wet pavement",
       "neon lights",
       "midnight",
-      "full body"
+      "full body",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

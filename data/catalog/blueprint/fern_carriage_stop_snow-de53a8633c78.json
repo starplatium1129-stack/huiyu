@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_carriage_stop_snow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fern_carriage_stop_snow",
     "title": "菲伦 · 驿站雪中",
@@ -34,13 +34,10 @@
       "warm_lantern",
       "medium_shot"
     ],
-    "promptProse": "Under the carriage stop's eaves, she patiently offers a level earthenware soup pot with both hands.",
+    "promptProse": "Under the carriage stop's eaves, she offers the soup pot level in both hands toward the viewer; lantern light catches the rising steam against the cold, snow-filled daylight.",
     "promptTokens": [
       "1girl",
       "solo",
-      "beige coat",
-      "scarf",
-      "gloves",
       "holding pot",
       "soup",
       "steam",

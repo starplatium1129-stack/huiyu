@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hoshino_ai/rehearsal_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 526,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hoshino_ai",
     "outfit": {
@@ -12,12 +12,11 @@
       "id": "rehearsal_casual",
       "isDefault": false,
       "name": "彩排室练习便装",
-      "prose": "a comfortable casual t-shirt and pleated skirt with sneakers for dance rehearsal, with her rabbit hair ornament",
+      "prose": "a casual T-shirt and pleated skirt with sneakers for dance rehearsal",
       "tokens": [
-        "casual_tshirt",
-        "pleated_skirt",
-        "sneakers",
-        "rabbit_hair_ornament"
+        "t-shirt",
+        "pleated skirt",
+        "sneakers"
       ]
     }
   }

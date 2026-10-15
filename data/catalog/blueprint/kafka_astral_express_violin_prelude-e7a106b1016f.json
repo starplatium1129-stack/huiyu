@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_astral_express_violin_prelude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1031,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kafka_astral_express_violin_prelude",
     "title": "卡芙卡 · 空间站虚空小提琴",
@@ -29,11 +29,9 @@
       "sunglasses_on_head",
       "composed_smile"
     ],
-    "promptProse": "Kafka mimes playing an invisible violin in Herta Station's holographic corridor while the invasion alarm sounds.",
+    "promptProse": "She raises her left forearm beneath an invisible violin and draws an imaginary bow with her right, eyes lowered; blue holograms and the ring lights trace her poised hands and coat.",
     "promptTokens": [
       "Kafka",
-      "coat",
-      "gloves",
       "violin pose",
       "space station",
       "hologram",

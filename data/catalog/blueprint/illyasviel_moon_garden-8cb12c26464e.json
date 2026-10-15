@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_moon_garden",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "illyasviel_moon_garden",
     "title": "伊莉雅丝菲尔 · 月夜庭院",
@@ -15,7 +15,7 @@
     "action": "在雪地踩出脚印后转身张开双臂，厚斗篷闭合保暖，笑着等待同行者",
     "timeOfDay": "夜晚",
     "lighting": "清冷月光",
-    "camera": "full-body shot, outstretched arms and trail of footprints visible",
+    "camera": "full-body shot",
     "mood": "天真与幽暗",
     "sceneTags": [
       "snowy_castle_garden",
@@ -29,11 +29,10 @@
       "moonlight",
       "full_body"
     ],
-    "promptProse": "Illyasviel turns at the end of her footprint trail and opens her arms to the following companion, her wool cloak closed against the cold.",
+    "promptProse": "At the end of her footprint trail, she turns and opens her arms toward the viewer following through the snow, her cloak closed against the moonlit cold.",
     "promptTokens": [
-      "purple cloak",
       "winter boots",
-      "arms out",
+      "outstretched arms",
       "footprints",
       "snow",
       "garden",

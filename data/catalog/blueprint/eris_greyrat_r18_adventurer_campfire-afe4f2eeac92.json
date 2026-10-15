@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_adventurer_campfire",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 481,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "帐篷晨光前裹薄毯立姿回眸",
+    "action": "跪在铺盖旁，双手拉动皮甲肩带。",
     "adult": true,
     "animaStyleHint": "r18_sensual_cg",
     "camera": "full-length shot, full body view, bright morning forest sunlight",
@@ -15,7 +15,7 @@
     "coverageTags": [
       "intimate"
     ],
-    "description": "【艾莉丝 · 林间营地帐篷晨光解甲】森林营地的敞开帐篷边，清晨明朗的阳光穿透树梢洒入，艾莉丝卸下厚重皮甲仅裹单薄毛毯立于草地毯边，修长健美的全身线条、平坦紧实的小腹、优美锁骨与饱满胸型在晨光中散发着野性魅力。",
+    "description": "森林营地的敞开帐篷边，成年艾莉丝跪在解开扣带的皮甲与铺盖旁，双手拉动卡住的肩带；朝阳穿过树梢落在营具上。",
     "id": "eris_greyrat_r18_adventurer_campfire",
     "kreaStyleHint": "",
     "lighting": "旷野壮丽金色朝阳与天光",
@@ -25,7 +25,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "dead_end_adventurer",
-    "promptProse": "She pulls a stubborn shoulder strap with both hands while kneeling beside her unbuckled armor and camp gear.",
+    "promptProse": "Kneeling beside the bedroll, she pulls the stubborn shoulder strap with both hands. Morning sun through the trees catches the unbuckled armor and camp gear.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -34,7 +34,6 @@
       "open clothes",
       "topless",
       "kneeling",
-      "crossed legs",
       "tent",
       "bedroll",
       "morning light",

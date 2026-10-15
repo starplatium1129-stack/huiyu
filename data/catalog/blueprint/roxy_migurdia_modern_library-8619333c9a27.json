@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_modern_library",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 457,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双前臂托住厚课本，双手撑住底书两侧，书堆低于眼睛，向阅读桌小步走去。",
     "animaStyleHint": "soft_daily_illustration",
@@ -24,14 +24,9 @@
       "sweater"
     ],
     "outfitId": "sfw_library_tailored_vest",
-    "promptProse": "Roxy carries textbooks on both forearms toward a reading table, her eyes clear above the stack as light enters from the right.",
+    "promptProse": "Roxy supports the textbook stack on both forearms with her hands beneath its bottom corners, her eyes visible above it as she approaches the reading table. High-window light from the right catches her braids and the layered book edges.",
     "promptTokens": [
       "Roxy Migurdia",
-      "blue hair",
-      "twin braids",
-      "vest",
-      "blouse",
-      "trousers",
       "books",
       "library",
       "medium shot"

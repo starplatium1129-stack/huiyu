@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_subway_platform_waiting_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 939,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手背在身后微微倾身回眸甜笑，列车驶过的风吹动发丝与毛衣领口",
     "camera": "medium shot, eye-level, clear station portrait",
@@ -20,16 +20,14 @@
     "mood": "甜美心动",
     "negativeTokens": [],
     "outfitId": "casual_sweater",
-    "promptProse": "She leans toward the arriving teacher from inside the platform safety line. A passing train moves her hair beneath the cool station lights.",
+    "promptProse": "With both hands behind her back, she leans into a welcoming smile toward the teacher arriving outside the frame. She stays behind the platform safety line as the passing train lifts her hair beneath cool station lights.",
     "promptTokens": [
       "subway station",
       "platform",
-      "ivory sweater",
-      "denim skirt",
-      "black tights",
       "hands behind back",
       "smile",
-      "night"
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

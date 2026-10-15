@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc086",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She holds the umbrella in one hand and the viewer's hand in the other beneath the clearing sky.",
+    "animaCaption": "Holding the transparent umbrella in one hand, she tightens her other hand around the viewer's just before stepping into a puddle; clearing sunlight brightens the rainbow above the wet crossing.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "全身远景",
     "category": "日常",

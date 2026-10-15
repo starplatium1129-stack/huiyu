@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_beach_day",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 489,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "aisha_greyrat_beach_day",
     "title": "爱夏·潮线之外",
@@ -25,17 +25,12 @@
       "summer"
     ],
     "description": "爱夏穿着深绿连身泳装、亚麻罩衫与平底凉鞋，站在潮线之外的干沙上。一手扶住草帽帽檐，另一手拢住罩衫侧摆，目光追随右侧刚退去的浪花。横幅给海面留出空间，海风将发带和衣摆带向同一侧；明亮沙地反光照亮面部，浅色礁石压住远景。",
-    "promptProse": "Adult Aisha holds her hat brim and gathers the cover-up hem while watching the retreating wave. Sunlight reflects from wet sand toward the pale rocks.",
+    "promptProse": "Adult Aisha stands on dry sand beyond the tide line, one hand holding her hat brim and the other gathering her windblown cover-up. She watches the retreating wave to her right as reflected light softens her face; pale rocks anchor the far shore.",
     "promptTokens": [
-      "adult",
       "beach",
-      "one-piece swimsuit",
       "green swimsuit",
-      "cover-up",
-      "straw hat",
-      "sandals",
       "ocean",
-      "full body"
+      "wide shot"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",

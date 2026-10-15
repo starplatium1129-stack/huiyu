@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_balcony_wine_night_city",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 370,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "haruno_balcony_wine_night_city",
     "title": "雪之下阳乃 · 深夜高层公寓阳台的红酒杯·「雪乃被你改变了呢……真让人不爽，又有点嫉妒」",
@@ -30,9 +30,8 @@
       "mature_female",
       "melancholy"
     ],
-    "promptProse": "Haruno turns her wine glass against the penthouse balcony rail, looking wistfully over Chiba's coastal lights.",
+    "promptProse": "Haruno holds the wine glass just above the balcony rail, looking wistfully over Chiba's coastal lights. Cool moonlight outlines her hair while the city glows through the wine.",
     "promptTokens": [
-      "evening gown",
       "wine glass",
       "leaning",
       "balcony",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_dorm_tea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 549,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "托腮看着蛋糕两眼放光",
-    "camera": "medium close-up",
+    "camera": "medium shot",
     "category": "泰拉日常",
     "characterId": "eyjafjalla_arknights",
     "coverageTags": [
@@ -22,10 +22,6 @@
     "outfitId": "cozy_sheep_fleece_loungewear",
     "promptProse": "She cups her cheeks in delight at the strawberry cake, with two cups of tea steaming beside the plate.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "sheep pajamas",
-      "hood",
       "hands on cheeks",
       "smile",
       "cake",
@@ -34,7 +30,7 @@
       "table",
       "dormitory",
       "afternoon",
-      "close-up"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

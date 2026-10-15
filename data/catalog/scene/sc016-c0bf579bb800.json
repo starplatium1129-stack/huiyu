@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc016",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She shows a tilted star photograph on her phone, then reaches to take it back in embarrassment; firelight warms her face.",
+    "animaCaption": "Beside the campfire, she reaches toward the phone in the viewer's foreground hand, its screen showing her tilted star photograph; firelight reveals her embarrassed blush.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "篝火旁半身中景",
     "category": "旅行",

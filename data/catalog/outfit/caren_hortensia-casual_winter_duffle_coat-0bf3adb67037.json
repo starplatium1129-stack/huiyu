@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/casual_winter_duffle_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "casual_winter_duffle_coat",
       "name": "冬日红大衣毛线帽私服",
-      "prose": "a cute and warm winter outfit: a bright red wool duffle coat with horn toggle buttons, a white knit beanie over her silver bangs, black tights, and brown boots",
+      "prose": "a red wool duffle coat with horn toggles, a white knitted beanie, black tights and brown boots",
       "tokens": [
-        "coat",
-        "duffle_coat",
-        "red_coat",
-        "beanie",
-        "winter_clothes",
-        "tights",
-        "boots"
+        "red coat",
+        "duffle coat",
+        "white beanie",
+        "black tights",
+        "brown boots"
       ],
       "isDefault": true,
       "default": true

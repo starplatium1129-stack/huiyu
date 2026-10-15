@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_laterano_church",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 556,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在轮椅上双手合十，在圣光中垂眸祈祷",
     "camera": "medium shot, symmetrical",
@@ -20,13 +20,10 @@
     "mood": "圣洁安宁",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Lemuen bows her head with hands joined in prayer beneath the cathedral's stained-glass light.",
+    "promptProse": "Lemuen bows her head with hands joined in prayer in her wheelchair. Light through the cathedral glass falls across her hands and the blanket on her lap.",
     "promptTokens": [
       "1girl",
       "solo",
-      "coat",
-      "lap blanket",
-      "wheelchair",
       "praying",
       "cathedral",
       "stained glass"

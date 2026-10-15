@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc293",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 288,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc293",
     "title": "仓库清点时的越界",
@@ -25,14 +25,12 @@
       "pleated_skirt",
       "sheer_black_tights",
       "grabbing_collar",
-      "holding_pen",
       "cardboard_boxes",
       "warehouse",
       "fluorescent_light",
       "cold_light",
       "evening",
-      "cowboy_shot",
-      "depth_of_field"
+      "close_up"
     ],
     "mature": false,
     "rating": "R15",

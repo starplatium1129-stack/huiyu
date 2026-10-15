@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 980,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "撑试衣台塌腰回眸双手反剪扯拉链，紧身包臀裙卡死勒肉，贝雷帽微歪娇恼",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate horizontal medium shot",
+    "camera": "cowboy shot, eye level",
     "category": "更衣事故",
     "characterId": "arima_kana",
     "coverageTags": [
@@ -39,8 +39,7 @@
       "black stockings",
       "lace panties",
       "looking back",
-      "tears",
-      "wide shot"
+      "tears"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

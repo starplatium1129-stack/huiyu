@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_night_market_crepe_date",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jeanne_night_market_crepe_date",
     "title": "圣女贞德 · 夜市可丽饼的约会·「原来甜食……是这么幸福的东西啊」",
@@ -15,7 +15,7 @@
     "action": "双手捧可丽饼小口品尝，眼睛惊喜睁大，嘴角沾着奶油浑然不觉",
     "timeOfDay": "夜晚",
     "lighting": "暖红灯笼串光与摊位蒸汽暖光笼罩侧脸",
-    "camera": "medium close-up, holding crepe, lantern bokeh, delighted expression",
+    "camera": "close-up",
     "mood": "幸福满溢、反差萌",
     "sceneTags": [
       "night_market",
@@ -29,12 +29,8 @@
       "red_lantern_light",
       "medium_closeup"
     ],
-    "promptProse": "Jeanne pauses after tasting a strawberry crepe, unaware of the cream at her mouth. Warm market lanterns light her surprised eyes.",
+    "promptProse": "Still holding the crepe in both hands, she widens her eyes after the first bite, unaware of the cream at her mouth beneath the warm market lanterns.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "shawl",
-      "braid",
       "crepe",
       "strawberry",
       "cream on face",

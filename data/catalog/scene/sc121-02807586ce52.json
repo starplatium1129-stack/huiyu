@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc121",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "On the beach-house veranda, she raises both hands to cover her chest as the wet dress clings to her, outlined by dawn light.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -31,13 +31,11 @@
       "pink_sundress",
       "wet_clothes",
       "see_through_clothing",
-      "bare_legs",
-      "smooth_thighs",
       "beach_house",
-      "full_body",
       "barefoot",
       "wet_sheen",
-      "dawn"
+      "dawn",
+      "close_up"
     ],
     "time": "拂晓",
     "timeOfDay": "dawn",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_lunar_spring_garden_qipao_stroll",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cheshire_lunar_spring_garden_qipao_stroll",
     "title": "柴郡 · 冰雪仙子新春旗袍漫步",
@@ -32,13 +32,9 @@
       "fake_hair_ornament",
       "smile"
     ],
-    "promptProse": "She turns lightly on one foot in the snowy garden. Warm lanterns and cool snowlight meet across the qipao beneath the red eaves.",
+    "promptProse": "Holding the fur muff near her waist, she turns lightly on one foot in the snowy garden. Warm lanterns and cool snowlight meet across the qipao beneath the red eaves.",
     "promptTokens": [
       "garden",
-      "cyan qipao",
-      "gold embroidery",
-      "white fur trim",
-      "white stockings",
       "twirling",
       "snow",
       "lantern",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_subway_evening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 334,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuzuriha_inori_subway_evening",
     "title": "楪祈 · 地铁通勤",
@@ -15,7 +15,7 @@
     "action": "一手握住吊环，另一手扶包带，靠近穿制服的同行者，望向隧道灯光",
     "timeOfDay": "傍晚",
     "lighting": "暮色与车厢灯光",
-    "camera": "medium two-shot, supporting gestures and two clothed figures visible",
+    "camera": "medium shot, two figures and supporting hands visible",
     "mood": "安静疏离",
     "sceneTags": [
       "subway_car",
@@ -30,17 +30,16 @@
       "medium_two_shot",
       "shu_ouma"
     ],
-    "promptProse": "Inori holds the overhead strap with one hand and her bag strap with the other, balancing beside Shu as tunnel lights streak past the window.",
+    "promptProse": "Inori holds the overhead strap with one hand and her bag strap with the other, balancing close beside Shu. Tunnel lights streak across the dark window behind their reflections.",
     "promptTokens": [
       "1girl",
       "1boy",
       "shu ouma",
-      "school uniform",
       "holding strap",
       "bag",
       "subway",
       "evening",
-      "two-shot"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +49,9 @@
     ],
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "characterTokens": [
+      "shu ouma"
+    ]
   }
 }

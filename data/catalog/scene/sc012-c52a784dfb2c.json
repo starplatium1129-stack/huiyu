@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc012",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Beside the open train door, she offers the pass case to the viewer while holding her scarf against the draft.",
+    "animaCaption": "Beside the open train door, she extends the pass case toward the viewer while keeping her scarf against the draft; cold morning light outlines her windblown hair.",
     "auditRevision": "audit-v25-2026-08-26-batch3",
     "camera": "月台票套与面部半身中景",
     "category": "日常",

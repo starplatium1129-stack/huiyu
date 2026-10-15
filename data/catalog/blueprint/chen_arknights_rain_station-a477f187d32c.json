@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_rain_station",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 541,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "撑伞立于站台边缘",
     "camera": "medium shot",
@@ -17,15 +17,13 @@
     "mood": "清冷坚毅",
     "negativeTokens": [],
     "outfitId": "lgd_detective_undercover",
-    "promptProse": "She steps toward the opening train doors and angles her umbrella toward the arriving passenger. Platform light reflects across the wet paving.",
+    "promptProse": "She steps toward the opening train doors and tilts her clear umbrella over the arriving viewer outside the frame. Dim platform light catches rain on the canopy and reflects across the wet paving.",
     "promptTokens": [
       "train station",
-      "charcoal trench coat",
-      "black turtleneck",
-      "pants",
-      "black umbrella",
+      "transparent umbrella",
       "rain",
-      "night"
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_rooftop_sunset",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tohsaka_rin_r18_rooftop_sunset",
     "title": "远坂凛 · 天台夕照",
@@ -15,7 +15,7 @@
     "action": "成年魔术师独自倚靠研究院天台铁网，一膝踩设备箱，一手抓网一手解开勾住衬衫的线头",
     "timeOfDay": "黄昏",
     "lighting": "warm golden sunset, backlit",
-    "camera": "intimate medium shot, backlit",
+    "camera": "cowboy shot, knee and service box visible",
     "mood": "落日心跳",
     "sceneTags": [
       "rooftop",

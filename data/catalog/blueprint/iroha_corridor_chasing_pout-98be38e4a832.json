@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_corridor_chasing_pout",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 363,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "iroha_corridor_chasing_pout",
     "title": "一色彩羽 · 走廊小跑追赶的娇嗔鼓腮·「八幡前辈！走太快了啦，等等我！」",
@@ -16,7 +16,7 @@
     "action": "小跑追赶手抱文件喘息，鼓腮娇嗔仰视，百褶裙轻扬",
     "timeOfDay": "放学后夕阳",
     "lighting": "走廊一整排落地窗透入的橘红色斜阳",
-    "camera": "medium shot, holding documents, running, pouting, hallway sunset",
+    "camera": "full body, eye level",
     "mood": "活力学妹、娇蛮撒娇",
     "sceneTags": [
       "hallway",
@@ -29,7 +29,7 @@
       "sunset",
       "golden_hour"
     ],
-    "promptProse": "Iroha hurries along the sunlit corridor with council papers against her navy blazer, stopping to give the viewer a playful pout.",
+    "promptProse": "Iroha takes the last hurried step toward the viewer with the council papers held firmly in both arms, cheeks puffed in a playful pout. Orange sunset stripes the corridor floor beneath her.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -39,7 +39,7 @@
       "pout",
       "school hallway",
       "sunset",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [
       "extra people"

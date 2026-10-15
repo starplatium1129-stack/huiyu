@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_student_council_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 774,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端着白瓷红茶杯坐在皮质沙发上，低头专注审阅文件",
     "camera": "medium shot, seated on a leather sofa reviewing documents with a teacup",
@@ -23,7 +23,6 @@
     "promptProse": "She pauses over the meeting papers for a sip of tea. Light through the blinds stripes the table in front of the leather sofa.",
     "promptTokens": [
       "student council room",
-      "school uniform",
       "sofa",
       "documents",
       "teacup",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/summer_pool_patrol",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 492,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
@@ -14,10 +14,9 @@
       "name": "泳池巡查·深蓝分体泳装",
       "prose": "a dark navy two-piece swimsuit with white ruffled trim, a light white sun-protection cardigan and sandals",
       "tokens": [
-        "two-piece_swimsuit",
-        "navy_swimsuit",
-        "frills",
-        "light_cover_up",
+        "navy bikini",
+        "white frills",
+        "white cardigan",
         "sandals"
       ]
     }

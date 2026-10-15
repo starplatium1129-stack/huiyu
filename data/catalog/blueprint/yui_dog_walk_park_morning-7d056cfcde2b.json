@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_dog_walk_park_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 350,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yui_dog_walk_park_morning",
     "characterId": "yuigahama_yui",
@@ -20,13 +20,12 @@
       "cheerful_smile",
       "summer"
     ],
-    "promptProse": "Yui laughs as she walks Sable along the park path, keeping the leash in hand.",
+    "promptProse": "Yui waves to the approaching viewer with her free hand while holding Sable’s leash in the other. Dappled morning light moves across her smile and the dog trotting along the path.",
     "promptTokens": [
-      "pastel hoodie",
-      "denim shorts",
       "dog",
       "leash",
       "walking",
+      "waving",
       "laughing",
       "park",
       "morning"

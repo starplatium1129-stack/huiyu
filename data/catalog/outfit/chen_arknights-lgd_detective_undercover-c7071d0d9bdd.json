@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/lgd_detective_undercover",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 304,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "lgd_detective_undercover",
       "isDefault": false,
       "name": "近卫局便衣潜伏风衣",
-      "prose": "a classic hard-boiled detective undercover outfit: a dark charcoal trench coat over a black turtleneck and slim trousers, with polished black oxford leather shoes",
+      "prose": "a charcoal trench coat over a black turtleneck and slim trousers, with polished black oxford shoes",
       "tokens": [
-        "trench_coat",
-        "turtleneck",
-        "black_clothes",
-        "detective",
-        "undercover"
+        "charcoal trench coat",
+        "black turtleneck",
+        "pants",
+        "oxford shoes"
       ]
     }
   }

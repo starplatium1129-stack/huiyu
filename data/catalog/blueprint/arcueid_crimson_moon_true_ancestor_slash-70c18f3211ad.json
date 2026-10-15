@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_crimson_moon_true_ancestor_slash",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1318,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "悬空迎风挥出金色月牙爪风，赤瞳闪烁神性杀意，金发翻飞嘴角微扬",
     "camera": "cowboy shot, low angle, majestic combat view",
@@ -23,13 +23,12 @@
     "outfitId": "archetype_earth_regal_gown",
     "promptProse": "She hovers above the skyline with golden blades of magic flaring from her fingertips. Red moonlight and the magic illuminate opposite folds of the gown.",
     "promptTokens": [
-      "white gown",
-      "tiara",
       "floating",
       "claws",
       "magic",
       "red moon",
       "cityscape",
+      "cowboy shot",
       "from below"
     ],
     "recommendedSize": "1152x1536",

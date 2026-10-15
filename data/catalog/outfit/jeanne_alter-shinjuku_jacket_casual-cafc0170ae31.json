@@ -1,20 +1,19 @@
 {
   "kind": "outfit",
   "id": "jeanne_alter/shinjuku_jacket_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "jeanne_alter",
     "outfit": {
       "id": "shinjuku_jacket_casual",
       "name": "新宿皮夹克便服",
       "tokens": [
-        "leather_jacket",
-        "black_tank_top",
-        "black_pants",
-        "leather_pants",
+        "leather jacket",
+        "black tank top",
+        "leather pants",
         "choker",
         "boots"
       ],

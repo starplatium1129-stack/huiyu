@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc206",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 201,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "She lies back on the leather bench with her skirt at her waist, raising one hand over her flushed face beneath the lamp.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -31,12 +31,12 @@
       "office_blouse",
       "pencil_skirt",
       "skirt_slipped_down",
-      "cracked_stockings",
+      "torn_stockings",
       "leather_bench",
       "changing_room",
       "hand_over_face",
       "night",
-      "full_body"
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

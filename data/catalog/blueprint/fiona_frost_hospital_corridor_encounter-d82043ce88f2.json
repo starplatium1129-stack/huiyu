@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_hospital_corridor_encounter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 815,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fiona_frost_hospital_corridor_encounter",
     "characterId": "fiona_frost",
@@ -16,7 +16,7 @@
     "action": "抱紧病历文件夹与黄昏擦肩而过，目不斜视",
     "timeOfDay": "早晨",
     "lighting": "高窗透射的明亮晨光与白色走廊漫射",
-    "camera": "three-quarter medium shot",
+    "camera": "medium shot, three-quarter view",
     "mood": "冷静压抑",
     "sceneTags": [
       "hospital_corridor",
@@ -28,12 +28,9 @@
       "sunbeam",
       "clean_aesthetic"
     ],
-    "promptProse": "She holds medical files against her chest while a white-coated figure passes in the opposite direction.",
+    "promptProse": "She walks on the left with medical files held to her chest, her gaze fixed ahead as the white-coated figure passes on her right through the bands of morning light.",
     "promptTokens": [
       "2people",
-      "sweater",
-      "striped vest",
-      "office skirt",
       "documents",
       "walking",
       "hospital",

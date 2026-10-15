@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/sfw_bridal_lace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 800,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "sfw_bridal_lace",
       "name": "蕾丝长袖花嫁",
-      "prose": "an opaque ivory bridal dress with long lace-overlay sleeves, a floor-length skirt, a simple white veil and low ivory pumps, with her short brown bob",
+      "prose": "an ivory floor-length bridal dress with long lace sleeves, a simple veil and low ivory pumps, her hair in a short bob",
       "tokens": [
-        "ivory_wedding_dress",
-        "long_sleeves",
-        "lace_overlay",
-        "long_skirt",
-        "bridal_veil",
-        "short_hair",
-        "bob_cut"
+        "ivory wedding dress",
+        "lace sleeves",
+        "veil",
+        "ivory pumps",
+        "bob cut"
       ],
       "isDefault": false,
       "isNsfw": false

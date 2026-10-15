@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_veranda_rain_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 708,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shu_arknights_veranda_rain_tea",
     "characterId": "shu_arknights",
@@ -33,16 +33,13 @@
       "upper_body"
     ],
     "promptTokens": [
-      "Shu",
-      "blouse",
-      "skirt",
       "tea",
       "blanket",
       "veranda",
       "rain",
       "medium shot"
     ],
-    "promptProse": "Shu slides tea toward the viewer while holding a wind-lifted blanket, rain beyond the dry lantern-lit veranda.",
+    "promptProse": "She slides a cup of tea toward the offscreen viewer with one hand and pins the wind-lifted blanket with the other, warm veranda lamplight meeting the cool rain beyond the railing.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

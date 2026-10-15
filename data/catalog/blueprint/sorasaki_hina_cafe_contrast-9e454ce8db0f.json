@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_cafe_contrast",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 848,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "小口品尝草莓芭菲，并用勺子把最甜的草莓递给你；头顶的小翅膀开心拍打",
     "adult": false,
@@ -27,11 +27,9 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "casual_black",
-    "promptProse": "Hina selects a strawberry to share with the teacher across the cafe table, her small wings lifting beneath the warm lights.",
+    "promptProse": "Hina holds a spoon with the selected strawberry toward the teacher across the cafe table. Warm light catches the fruit and her lifted small wings.",
     "promptTokens": [
       "Hina",
-      "black dress",
-      "red ribbon",
       "wings",
       "strawberry parfait",
       "cafe",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1628,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_06",
     "title": "久远寺有珠 · 茶杯旁的第一声雨",
@@ -30,10 +30,8 @@
       "morning",
       "medium_shot"
     ],
-    "promptProse": "Alice catches a drop from the teapot with her spoon and looks up to listen to the first rain.",
+    "promptProse": "Alice holds a spoon beneath the teapot spout to catch the last drop, looking toward the window at the first rain. Cool window light meets the warm table lamp on the spoon and her hands.",
     "promptTokens": [
-      "wool dress",
-      "shawl",
       "teaspoon",
       "teapot",
       "breakfast",

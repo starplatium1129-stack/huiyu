@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1462,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "遮阳伞下抱高高刨冰，浪花打湿沙滩巾后护住樱花糖浆大笑",
     "adult": false,
@@ -25,10 +25,8 @@
     "mood": "食欲与恋爱感一起满格的假日",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Mitsuri laughs while protecting her tall shaved ice from a wave that has soaked the beach towel.",
+    "promptProse": "Mitsuri laughs and lifts the tall shaved ice with both hands to protect it from the wave crossing her towel. Parasol shade covers her seat against the sparkling surf.",
     "promptTokens": [
-      "floral swimsuit",
-      "sarong",
       "shaved ice",
       "parasol",
       "beach",

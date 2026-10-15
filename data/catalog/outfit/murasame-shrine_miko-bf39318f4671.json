@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "murasame/shrine_miko",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
@@ -17,13 +17,10 @@
         "miko",
         "white_kimono",
         "wide_sleeves",
-        "hakama",
         "red_hakama",
         "tabi",
         "geta",
-        "shrine",
-        "bells",
-        "traditional_japanese"
+        "bells"
       ]
     }
   }

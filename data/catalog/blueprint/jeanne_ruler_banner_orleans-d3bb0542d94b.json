@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_ruler_banner_orleans",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 231,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jeanne_ruler_banner_orleans",
     "title": "圣女贞德 · 奥尔良山岗的圣旗展开·「吾名贞德，此地由吾守护」",
@@ -15,7 +15,7 @@
     "action": "双手高举圣旗吾主在此，旗离地迎风展开，白披风与金辫齐扬",
     "timeOfDay": "战云白昼",
     "lighting": "圣旗迸发的白金圣辉与铅灰战云形成明暗对撞",
-    "camera": "low angle full shot, banner raised skyward, wind and light burst, epic saint framing",
+    "camera": "full-body shot, low angle",
     "mood": "神圣凛然、战旗不倒",
     "sceneTags": [
       "orleans_ridge",
@@ -31,12 +31,6 @@
     ],
     "promptProse": "Jeanne raises Luminosite Eternelle with both hands on the ridge above Orleans. White-gold light separates the streaming banner from the storm clouds.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "armor",
-      "white cape",
-      "braid",
-      "flag",
       "Luminosite Eternelle",
       "wind",
       "full body",

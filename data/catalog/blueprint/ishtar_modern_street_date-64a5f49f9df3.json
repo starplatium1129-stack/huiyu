@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_modern_street_date",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 254,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_modern_street_date",
     "title": "伊什塔尔 · 现代街头的女神考察·「人类的甜甜圈……是供品吗」",
@@ -15,7 +15,7 @@
     "action": "举甜甜圈眼睛发亮，牛仔外套短上衣，边走边咬",
     "timeOfDay": "午后",
     "lighting": "明亮的街市午后阳光",
-    "camera": "medium shot, street walking, donut in hand, cheerful mood",
+    "camera": "medium shot",
     "mood": "女神好奇心、人间日常",
     "sceneTags": [
       "modern_street",
@@ -31,10 +31,6 @@
     ],
     "promptProse": "Ishtar offers the viewer a half-eaten donut while walking past the shops, gesturing excitedly with her free hand.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "denim jacket",
-      "shorts",
       "donut",
       "smile",
       "street",

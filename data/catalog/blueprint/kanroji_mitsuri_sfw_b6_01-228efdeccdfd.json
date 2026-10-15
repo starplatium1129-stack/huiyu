@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1458,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "午后缘侧，蜜璃抱着盛满樱饼的盘子，举起一块准备品尝，绿瞳里全是期待",
     "adult": false,
@@ -27,11 +27,9 @@
       "alternate hairstyle"
     ],
     "outfitId": "sfw_daily",
-    "promptProse": "Mitsuri holds a plate of sakura mochi on the veranda, raising one piece with an eager smile.",
+    "promptProse": "Mitsuri supports the plate in one hand and raises one sakura mochi with the other, smiling eagerly. Soft daylight reaches the tea beside her and the cherry leaves beyond the veranda.",
     "promptTokens": [
       "kanroji_mitsuri",
-      "pink kimono",
-      "green obi",
       "sakura mochi",
       "plate",
       "veranda",

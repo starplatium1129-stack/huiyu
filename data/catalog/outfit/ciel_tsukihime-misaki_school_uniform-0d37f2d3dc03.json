@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "ciel_tsukihime/misaki_school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 723,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ciel_tsukihime",
     "outfit": {
       "id": "misaki_school_uniform",
       "name": "三咲高中校服学姐装",
-      "prose": "her Misaki High School uniform: a navy blazer with gold buttons, crisp white collared shirt, red necktie, pleated grey skirt, rimless glasses, and black stockings",
+      "prose": "her navy Misaki blazer with gold buttons, white shirt, red necktie, gray pleated skirt, rimless glasses and black stockings",
       "tokens": [
-        "school_uniform",
-        "blazer",
-        "white_shirt",
-        "necktie",
-        "pleated_skirt",
+        "navy blazer",
+        "white shirt",
+        "red necktie",
+        "gray skirt",
         "glasses",
-        "black_stockings"
+        "black stockings"
       ]
     }
   }

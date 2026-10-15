@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1615,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_03",
     "title": "春日野穹 · 石阶上安稳的一小步",
@@ -29,10 +29,8 @@
       "tree_shade",
       "medium_shot"
     ],
-    "promptProse": "Sora fastens her shoe buckle on the shrine steps, then brushes a fallen leaf from her skirt.",
+    "promptProse": "Sora bends over her shoe buckle on the shaded shrine steps, one hand holding her skirt clear of the clasp. A fallen leaf rests on her hem, and her rabbit plush leans against the bag beside her.",
     "promptTokens": [
-      "pinafore dress",
-      "blouse",
       "shoe buckle",
       "rabbit plush",
       "sitting",

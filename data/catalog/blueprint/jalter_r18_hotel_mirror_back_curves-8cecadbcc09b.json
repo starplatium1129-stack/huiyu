@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_hotel_mirror_back_curves",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 174,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jalter_r18_hotel_mirror_back_curves",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 暗黑圣堂的告解镜前",
-    "description": "【贞德[Alter] · 暗黑圣堂的告解镜前】暗黑大圣堂的告解室里，唯一的烛火在昏镜前摇曳。贞德[Alter]立在镜前，像是审判罪人一般审视着自己的倒影，指尖拂过镜面留下雾痕。她冷笑一声，声音却比平时轻了许多——「……告解？呵。本王的罪孽，从来不需要向谁低头。」",
+    "description": "暗黑圣堂告解室的雾镜前，成年黑贞一手扶镜框，另一只戴手套的手指划过水雾；不透明的镜面只映烛光，没有第二张面孔。",
     "outfitId": "nsfw_nude",
     "sceneTags": [
       "mirror",
@@ -42,7 +42,7 @@
     "nsfwProse": "",
     "category": "私密写真",
     "location": "暗黑大圣堂告解室镜前",
-    "action": "立于昏镜前审视自己的倒影",
+    "action": "一手扶镜框，一根戴手套的手指在雾镜上划线。",
     "timeOfDay": "深夜",
     "lighting": "single flickering candle, deep violet shadows, dim mirror reflections",
     "camera": "medium shot",

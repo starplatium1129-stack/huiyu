@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_wine_tavern",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 649,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "倚栏独坐举盏温酒轻啜",
-    "camera": "medium shot, slightly low angle",
+    "camera": "medium shot, slightly high angle",
     "category": "泰拉古风",
     "characterId": "ling_arknights",
     "coverageTags": [
@@ -22,9 +22,8 @@
       "daylight"
     ],
     "outfitId": "standard",
-    "promptProse": "Ling rests against the upstairs tavern railing and sips warm wine, with market visitors visible below.",
+    "promptProse": "She sips wine beside the upstairs railing, warm lantern light on her hand while the market visitors pass along the street below.",
     "promptTokens": [
-      "teal qipao",
       "wine cup",
       "railing",
       "tavern",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_02",
     "title": "夜刀神十香 · 第一次的章鱼烧",
@@ -30,10 +30,8 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Tohka blows on a steaming takoyaki bite above its tray under the festival lanterns.",
+    "promptProse": "Holding the tray in one hand and a bamboo pick in the other, she blows on the hot takoyaki bite beneath the festival lanterns.",
     "promptTokens": [
-      "yatogami_tohka",
-      "violet yukata",
       "takoyaki",
       "bamboo pick",
       "festival",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_wasteland_road",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 647,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "背负双剑，逆风独行",
     "adult": false,
@@ -27,12 +27,10 @@
     "promptTokens": [
       "wasteland",
       "ancient road",
-      "green travel coat",
-      "cargo pants",
-      "twin swords",
       "walking",
       "wind",
-      "sunset"
+      "sunset",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

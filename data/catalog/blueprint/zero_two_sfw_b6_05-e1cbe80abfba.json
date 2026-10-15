@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1577,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "zero_two_sfw_b6_05",
     "title": "02 · 海风里的彩色糖果",
     "category": "海滨度假",
     "characterId": "zero_two",
     "outfitId": "sfw_beach",
-    "description": "【海边旧码头·正午】02穿着红白泳装盘腿坐在旧码头边，手里抓着一串彩色糖果；她用脚尖踢起水花，粉发被风吹得乱七八糟，转头朝镜头做出得意鬼脸，像把整个夏天都占为己有。",
+    "description": "正午的旧码头边，02穿红白泳装和宽松白罩衫坐着，双腿垂向水面。一手拿着彩色糖果，另一手撑住木板，脚尖轻踢起水花；海风吹乱粉发，她回头朝镜头露出得意的鬼脸。",
     "location": "sunny abandoned pier",
     "action": "旧码头边踢水花吃彩色糖果，迎风乱发后对镜头做得意鬼脸",
     "timeOfDay": "日间",
     "lighting": "crisp noon light with turquoise reflections",
-    "camera": "medium shot, horizontal framing",
+    "camera": "full body, seated figure and feet at water visible",
     "mood": "把夏日当成私人舞台的活力少女",
     "sceneTags": [
       "swimsuit",
@@ -30,16 +30,14 @@
       "playful_face",
       "noon"
     ],
-    "promptProse": "Zero Two kicks the water from the old pier while holding her string of colorful sweets, turning proudly toward the viewer.",
+    "promptProse": "Zero Two sits on the old pier with one hand braced on the boards and the other holding her colorful sweets, her bare feet kicking a small splash below. She turns toward the viewer with a proud grin in the crisp turquoise noon light.",
     "promptTokens": [
-      "red and white swimsuit",
-      "white overshirt",
-      "striped socks",
       "candy",
       "sitting",
       "pier",
       "splashing",
-      "noon"
+      "noon",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

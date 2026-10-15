@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_ninja_rooftop_vigilance_kunai",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1130,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单膝半跪在屋脊边缘，单手反握苦无，黑色短发与发束随风飘扬，猫嘴自信微笑",
     "camera": "dynamic low angle, cowboy shot, dramatic moonlit perspective",
@@ -20,11 +20,8 @@
     "mood": "帅气敏捷",
     "negativeTokens": [],
     "outfitId": "ninja_suit",
-    "promptProse": "Mako kneels on one knee at the roof edge with a reverse-gripped kunai in her left hand, watching the grounds.",
+    "promptProse": "Mako kneels on one knee at the roof edge, holding the kunai in a reverse grip in her left hand as she watches the courtyard below. Moonlight draws a pale line along the tiles and blade.",
     "promptTokens": [
-      "ninja clothes",
-      "skirt",
-      "shorts",
       "kunai",
       "kneeling",
       "rooftop",

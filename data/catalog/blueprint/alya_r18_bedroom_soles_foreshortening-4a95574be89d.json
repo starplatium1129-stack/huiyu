@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_bedroom_soles_foreshortening",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 783,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "半坐床头用俄语低语，指尖绕着银色发梢",
     "adult": true,
     "adultArtistHint": "@rella",
     "animaStyleHint": "lying_on_bed, bent_knees, barefoot, 5_toes, detailed_toes, detailed_soles, silver_hair, blushing",
-    "camera": "intimate close-up shot",
+    "camera": "full-body shot, first-person view from above",
     "category": "成人",
     "characterId": "alisa_mikhailovna_kujou",
     "coverageTags": [

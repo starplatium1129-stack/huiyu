@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "ciel_nsfw_church_mat_supine_devotion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1340,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "全裸仰卧软榻上，双腿曲膝大开，单手与视角十指紧扣，眼眸水润迷乱娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "upper body to knees, vertical framing, high angle POV",
+    "camera": "cowboy shot, from above",
     "category": "私密温存",
     "characterId": "ciel_tsukihime",
     "coverageTags": [

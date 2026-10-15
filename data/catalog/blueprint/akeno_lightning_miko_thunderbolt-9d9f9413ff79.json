@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_lightning_miko_thunderbolt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1285,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "akeno_lightning_miko_thunderbolt",
     "title": "姬岛朱乃 · 降魔雷光神圣制裁",
@@ -30,7 +30,6 @@
     ],
     "promptProse": "She guides blue lightning with one raised hand above the shrine roof. The flash illuminates her spread wings and sleeve against the storm clouds.",
     "promptTokens": [
-      "miko",
       "black wings",
       "lightning",
       "floating",

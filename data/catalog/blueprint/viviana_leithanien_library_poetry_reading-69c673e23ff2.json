@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "viviana_leithanien_library_poetry_reading",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 683,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐在复古花窗飘窗软垫上，膝上摊开羊皮纸诗集，轻抚书页，转头温柔微笑",
-    "camera": "medium shot, eye level, poetic solitude",
+    "camera": "medium shot, eye level",
     "category": "书斋雅集",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -20,11 +20,8 @@
     "mood": "诗意静谧",
     "negativeTokens": [],
     "outfitId": "lethe_poet_gown",
-    "promptProse": "Viviana touches the open poetry page and turns smiling, brass lamplight meeting moonlight along her antlers.",
+    "promptProse": "The open poetry book rests on her lap as she touches its page and smiles toward the offscreen companion, brass lamplight meeting moonlight from the stained-glass window.",
     "promptTokens": [
-      "Viviana",
-      "blue gown",
-      "lace sleeves",
       "poetry book",
       "window seat",
       "library",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ellen_school_train_station_sunset_wait",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1058,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单肩背包靠在栏杆边听歌，列车进站风卷起发丝与百褶裙，尾尖微摆",
-    "camera": "medium shot, side angle, cinematic wide view",
+    "camera": "medium shot, from the side",
     "category": "校园黄昏",
     "characterId": "ellen_joe",
     "coverageTags": [
@@ -20,12 +20,8 @@
     "mood": "落日怀旧",
     "negativeTokens": [],
     "outfitId": "school_uniform",
-    "promptProse": "She leans at the platform railing as train wind lifts her hair and skirt, her tail steadying her stance.",
+    "promptProse": "She rests at the platform railing listening through her earphones, bag slung over one shoulder. Wind from the arriving train lifts her hair and skirt while gold-red sunset meets the cool station lamps.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "shark tail",
-      "sailor uniform",
       "headphones",
       "shoulder bag",
       "railing",

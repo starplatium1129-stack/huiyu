@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_granary_seed_sorting",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 707,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shu_arknights_granary_seed_sorting",
     "characterId": "shu_arknights",
@@ -30,15 +30,12 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "Shu",
-      "white jacket",
-      "patterned trousers",
       "peach",
       "shopping bag",
       "market",
       "cowboy shot"
     ],
-    "promptProse": "Shu offers a selected peach beneath the market canopy, her other hand holding a cloth bag in soft morning light.",
+    "promptProse": "Beneath the market canopy, she offers the peach toward the offscreen viewer with one hand and holds the cloth bag in the other, soft morning light on her calm smile.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

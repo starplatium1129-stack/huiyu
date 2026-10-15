@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_sweets_shop_after_school",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 355,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yui_sweets_shop_after_school",
     "title": "由比滨结衣 · 放学后的甜品店",
@@ -32,10 +32,6 @@
     ],
     "promptProse": "Yui takes a happy bite from the strawberry-and-cream crepe at the cafe after school.",
     "promptTokens": [
-      "school uniform",
-      "pink cardigan",
-      "red ribbon",
-      "hair bun",
       "strawberry crepe",
       "eating",
       "cafe",

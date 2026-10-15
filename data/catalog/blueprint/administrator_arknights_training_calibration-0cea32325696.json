@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_training_calibration",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 751,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "administrator_arknights_training_calibration",
     "characterId": "administrator_arknights",
@@ -34,14 +34,12 @@
     "promptTokens": [
       "living room",
       "sofa",
-      "cardigan",
-      "skirt",
       "cushion",
       "game controller",
       "night",
       "medium shot"
     ],
-    "promptProse": "She puts the controller on the coffee table, hugs a cushion and shifts over to make room beside her. Warm lamplight mixes with subdued screen light.",
+    "promptProse": "The controller rests on the coffee table as she hugs a cushion and shifts over, turning toward the viewer to offer the seat beside her. Warm lamplight mixes with the subdued screen light.",
     "negativeTokens": [
       "readable screen text"
     ],

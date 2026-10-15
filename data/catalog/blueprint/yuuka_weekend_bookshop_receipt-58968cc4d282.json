@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_weekend_bookshop_receipt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "casual_date",
@@ -18,12 +18,8 @@
     "action": "站在书店门外，一手抱住两本书，另一手查看收据",
     "promptProse": "Yuuka holds two new books against one arm and checks their receipt, smiling when the total matches.",
     "promptTokens": [
-      "beige trench coat",
-      "cream turtleneck",
-      "navy plaid skirt",
       "books",
       "receipt",
-      "shoulder bag",
       "bookstore",
       "afternoon"
     ],

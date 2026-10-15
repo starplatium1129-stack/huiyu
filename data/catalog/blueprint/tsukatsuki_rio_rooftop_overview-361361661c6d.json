@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_rooftop_overview",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 878,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "俯瞰城市",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "wide shot, low angle",
+    "camera": "wide shot, rear three-quarter view, rooftop edge and city below visible",
     "category": "研讨会日常",
     "characterId": "tsukatsuki_rio",
     "coverageTags": [
@@ -29,12 +29,10 @@
     "promptProse": "Rio surveys the city from the tower roof, wind lifting her belted coat above the distant lights.",
     "promptTokens": [
       "Rio",
-      "winter coat",
       "hands in pockets",
       "rooftop",
       "city",
       "dusk",
-      "low angle",
       "wide shot"
     ],
     "recommendedSize": "1152x1536",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_moonlit_wild_hunt",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 670,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手持苍蓝电弧双刃凌空跃起斩击，白狼尾狂甩，狂气大笑露出尖牙",
-    "camera": "wide shot, low angle, explosive dynamic action",
+    "camera": "wide shot, low angle",
     "category": "战场决胜",
     "characterId": "lappland_arknights",
     "coverageTags": [
@@ -22,7 +22,6 @@
     "outfitId": "standard_mercenary",
     "promptProse": "Lappland leaps through the colosseum ruins with both blades arcing blue lightning beneath the blood moon.",
     "promptTokens": [
-      "coat",
       "dual wielding",
       "swords",
       "blue lightning",

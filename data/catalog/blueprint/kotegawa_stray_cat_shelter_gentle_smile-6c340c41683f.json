@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_stray_cat_shelter_gentle_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1253,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "蹲在纸箱前单手轻抚小花猫下巴，百褶裙微拢，眼神极尽温柔，嘴角漾起浅笑",
-    "camera": "medium close-up, seated eye-level, intimate gentle depth of field",
+    "camera": "medium shot, eye-level with the crouching subject",
     "category": "日常纯善",
     "characterId": "kotegawa_yui",
     "coverageTags": [
@@ -20,15 +20,14 @@
     "mood": "纯真温柔",
     "negativeTokens": [],
     "outfitId": "casual_sweater",
-    "promptProse": "Yui crouches beside the cardboard shelter and gently scratches the stray kitten beneath its chin.",
+    "promptProse": "Yui crouches beside the cardboard shelter and scratches the kitten gently beneath its chin with one fingertip. Sunlight through the wooden fence falls across her hand and the rain-darkened paving.",
     "promptTokens": [
       "Yui Kotegawa",
-      "cardigan",
-      "pleated skirt",
       "crouching",
       "kitten",
       "cardboard box",
-      "wet alley"
+      "wet alley",
+      "sunbeam"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

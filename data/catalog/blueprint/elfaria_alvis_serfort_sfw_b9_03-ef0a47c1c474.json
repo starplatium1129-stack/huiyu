@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1687,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_03",
     "title": "艾尔菲利亚 · 高塔里的绒线手套",
@@ -28,12 +28,10 @@
       "snowlight",
       "medium_shot"
     ],
-    "promptProse": "She tries on one newly knitted glove and flexes her fingers, keeping its pair on her lap.",
+    "promptProse": "She flexes the fingers of one newly knitted glove while its unworn pair rests on her lap. Reflected snowlight reaches her quiet face beside the tower window.",
     "promptTokens": [
       "1girl",
       "solo",
-      "blue dress",
-      "white capelet",
       "gloves",
       "sitting",
       "window",

@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "ikaros/maid_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 661,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ikaros",
     "outfit": {
       "id": "maid_uniform",
       "name": "空美町家庭侍奉女仆装",
-      "prose": "domestic service maid attire: a tailored black short-sleeved maid dress, crisp white ruffled bib apron tied neatly behind her back, white frilled maid headband perched between her pink twin tails, white frilled thigh-high stockings, and black mary jane shoes",
+      "prose": "a short-sleeved black maid dress, white ruffled bib apron, frilled maid headband, white thigh-high stockings and black Mary Janes",
       "tokens": [
         "maid",
-        "maid_dress",
-        "maid_apron",
-        "maid_headdress",
-        "black_dress",
+        "black dress",
+        "white apron",
+        "maid headdress",
         "frills",
-        "thighhighs",
-        "white_thighhighs",
-        "mary_janes",
-        "robot_ears"
+        "white thighhighs",
+        "mary janes"
       ],
       "default": false,
       "isDefault": false

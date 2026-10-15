@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kaguya_fireworks_furisode_okawaii",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1394,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "穿深红振袖回眸浅笑，红瞳倒映金色烟花，广袖随风轻扬",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium close-up, looking back over shoulder, firework bokeh, iconic smile",
+    "camera": "close-up, eye level",
     "category": "夏夜花火",
     "characterId": "shinomiya_kaguya",
     "coverageTags": [
@@ -25,11 +25,9 @@
     "mood": "傲娇破防、心动名场面",
     "negativeTokens": [],
     "outfitId": "festive_furisode_kimono",
-    "promptProse": "Kaguya looks back toward her companion on the river steps, her red sleeves moving in the breeze beneath the fireworks.",
+    "promptProse": "Kaguya looks back toward her companion on the river steps, her wide sleeves moving in the breeze. Gold fireworks catch in her red eyes and scatter across the river behind them.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "red furisode",
-      "maple leaf print",
       "looking back",
       "smile",
       "fireworks",

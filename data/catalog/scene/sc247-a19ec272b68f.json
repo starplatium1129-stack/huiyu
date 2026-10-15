@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc247",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 242,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Natsume leans at the quiet cafe counter with her collar in place. The wine glass rests on the marble in front of her.",
+    "animaCaption": "Leaning against the marble counter with her collar slightly loosened, she looks up toward the viewer; the hanging lamp lights her flushed face and the half-filled wine glass.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "近景平视特写",
     "category": "恋爱",
@@ -37,8 +37,7 @@
       "tipsy",
       "flushed",
       "night",
-      "full_body",
-      "depth_of_field"
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

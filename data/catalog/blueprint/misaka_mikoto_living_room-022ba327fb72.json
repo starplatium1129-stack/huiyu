@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_living_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 397,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "盘腿坐在客厅地毯上，双手操作游戏手柄",
     "camera": "medium shot",
@@ -20,12 +20,10 @@
     "mood": "放松畅快",
     "negativeTokens": [],
     "outfitId": "casual",
-    "promptProse": "Mikoto sits cross-legged on the rug, concentrating on the game controller beneath the screen glow.",
+    "promptProse": "Mikoto sits cross-legged on the rug with both hands on the controller, concentrating on the screen just beyond the frame. Its cool glow lights her face against the warm table lamp.",
     "promptTokens": [
       "1girl",
       "solo",
-      "shirt",
-      "jeans",
       "cross-legged",
       "game controller",
       "rug",

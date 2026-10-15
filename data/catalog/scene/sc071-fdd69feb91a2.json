@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc071",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She offers the thermos cup while pointing the unlit flashlight toward the expected meteor path, her face warmed by the camp lantern.",
+    "animaCaption": "She offers the thermos cup toward the viewer while using the unlit flashlight to indicate the meteor's direction; the camp lantern warms her face beneath the Milky Way.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "星空营地全身远景",
     "category": "旅行",

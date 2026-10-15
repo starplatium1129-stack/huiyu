@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_06",
     "title": "夜刀神十香 · 樱花树下的命名纪念",
@@ -31,10 +31,6 @@
     ],
     "promptProse": "Tohka touches her hair ribbon and quietly mouths her name beneath falling cherry petals.",
     "promptTokens": [
-      "yatogami_tohka",
-      "school uniform",
-      "half ponytail",
-      "ribbon",
       "cherry blossoms",
       "medium shot"
     ],

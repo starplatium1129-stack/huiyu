@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_snowy_shrine_shiromuku_vow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1291,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "akeno_snowy_shrine_shiromuku_vow",
     "title": "姬岛朱乃 · 白雪神社的纯白无垢",
@@ -29,10 +29,8 @@
       "shy_smile",
       "blush"
     ],
-    "promptProse": "She bows with folded hands in the snowy shrine courtyard. Reflected winter light reveals the folds of her white wedding kimono.",
+    "promptProse": "She bows toward the viewer with her hands folded in the snowy shrine courtyard. Reflected winter light reveals the folds of her white wedding kimono.",
     "promptTokens": [
-      "shiromuku",
-      "tsunokakushi",
       "bowing",
       "smile",
       "shrine",

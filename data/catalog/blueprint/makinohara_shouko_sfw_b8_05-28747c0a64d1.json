@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_05",
     "title": "牧之原翔子 · 海堤长椅的柠檬汽水",
@@ -30,12 +30,10 @@
       "gentle_gaze",
       "afternoon_light"
     ],
-    "promptProse": "Shouko offers a lemon soda from the seawall bench, her hair blown aside by the sea breeze.",
+    "promptProse": "Shouko extends the lemon soda toward the viewer from the seawall bench, her hair blown to one side. Bright water behind her reflects through the bottle.",
     "promptTokens": [
       "1girl",
       "solo",
-      "blue swimsuit",
-      "white shirt",
       "tote bag",
       "lemon soda",
       "bench",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1717,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_02",
     "title": "玛露希尔 · 营地里的香草面包",
@@ -29,10 +29,8 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Marcille breaks the herb bread, smells it and holds the soft interior toward the light.",
+    "promptProse": "Seated on a wooden crate, Marcille holds the broken herb bread just below her nose and inspects its soft interior. Reflected midday light reaches the bread and her raised eyebrows beneath the camp shade.",
     "promptTokens": [
-      "moss cape",
-      "rust tunic",
       "bread",
       "wooden crate",
       "camp",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1667,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_04",
     "title": "八奈见杏菜 · 食堂花束里的花嫁定食",
@@ -16,7 +16,7 @@
     "action": "长桌边先核对庆典菜单再举起花束中的苹果糖，笑得像等到不会落空的约会",
     "timeOfDay": "黄昏",
     "lighting": "warm afternoon light over blue-white decorations",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot, vertical framing, bouquet and table visible",
     "mood": "把失恋体质暂时换成花嫁满足感",
     "sceneTags": [
       "wedding_dress",
@@ -29,12 +29,10 @@
       "relieved_smile",
       "afternoon_light"
     ],
-    "promptProse": "Yanami checks the ceremony menu and lifts the candy apple hidden in her bouquet toward the viewer.",
+    "promptProse": "Yanami lifts the candy apple toward the viewer with a bright smile, her bouquet resting in the crook of her other arm. The checked ceremony menu lies on the long table among the blue-and-white afternoon decorations.",
     "promptTokens": [
-      "Anna Yanami",
-      "bridal dress",
-      "veil",
       "candy apple",
+      "bouquet",
       "menu",
       "school hall",
       "cowboy shot"

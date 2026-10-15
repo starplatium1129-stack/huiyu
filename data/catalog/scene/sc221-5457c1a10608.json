@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc221",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc221",
     "title": "密闭地下书库的重力平衡",
@@ -28,18 +28,17 @@
       "fallen_onto_lap",
       "straddling",
       "clinging",
-      "shamed",
       "library",
       "underground",
       "broken_ladder",
       "green_light",
       "night",
-      "medium_shot"
+      "cowboy_shot"
     ],
     "mature": false,
     "location": "图书馆深层地下书库地面",
     "weather": "微热密闭",
-    "camera": "近景主观平视特写",
+    "camera": "书架间主观七分身中景",
     "lighting": "应急指示灯与书架间微弱绿色荧光",
     "usage": [
       "绝对独占",

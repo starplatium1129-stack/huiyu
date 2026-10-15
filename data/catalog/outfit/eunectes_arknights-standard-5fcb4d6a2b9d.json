@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eunectes_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 335,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "eunectes_arknights",
     "outfit": {
@@ -12,17 +12,14 @@
       "id": "standard",
       "isDefault": true,
       "name": "机械师工装",
-      "prose": "her dark green halter crop top with a grey-green sleeveless tactical vest, leather hotpants, a single thigh-high sock with a leg harness and heavy work boots",
+      "prose": "a dark-green halter crop top under a grey-green tactical vest, leather hotpants, one thighhigh with a leg harness, and work boots",
       "tokens": [
-        "halter_top",
-        "crop_top",
+        "green halterneck",
         "vest",
         "hotpants",
-        "thighhighs",
-        "harness",
-        "boots",
-        "green_clothes",
-        "black_clothes"
+        "single thighhigh",
+        "leg harness",
+        "work boots"
       ]
     }
   }

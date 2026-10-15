@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "名流茶会，她穿着连衣裙执杯的姿势无可挑剔，与长辈应对得体",
     "adult": false,
@@ -23,11 +23,8 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_formal",
-    "promptProse": "Yuki holds her cup with formal poise at the tea gathering, briefly turning aside to relax with the seated elders behind her.",
+    "promptProse": "Holding her teacup neatly at the gathering, she turns aside with a small relieved exhale; seated elders remain behind her in soft window light.",
     "promptTokens": [
-      "Yuki",
-      "violet dress",
-      "sash",
       "teacup",
       "tea gathering",
       "medium shot"

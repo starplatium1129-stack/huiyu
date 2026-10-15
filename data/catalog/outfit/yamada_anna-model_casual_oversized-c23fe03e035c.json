@@ -1,24 +1,20 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/model_casual_oversized",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 833,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "model_casual_oversized",
       "name": "杂志模特街拍大号卫衣短裤",
-      "prose": "an oversized charcoal hoodie with full sleeves, mid-thigh denim shorts and chunky sneakers, with her long black hair in a high ponytail",
+      "prose": "an oversized charcoal hoodie, mid-thigh denim shorts and chunky sneakers, with hair in a high ponytail",
       "tokens": [
-        "oversized_hoodie",
-        "black_hoodie",
-        "denim_shorts",
-        "bare_legs",
+        "oversized hoodie",
+        "denim shorts",
         "sneakers",
-        "tall_female",
-        "casual_wear",
         "ponytail"
       ]
     }

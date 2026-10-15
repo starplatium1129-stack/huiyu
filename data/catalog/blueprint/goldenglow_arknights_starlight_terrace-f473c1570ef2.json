@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_starlight_terrace",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 601,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手合十，仰望星空",
     "camera": "medium shot",
@@ -24,10 +24,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "cat ears",
-      "pastel dress",
-      "frills",
-      "ribbon",
       "clasped hands",
       "looking up",
       "stars",

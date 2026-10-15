@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_morning_bedroom_dakimakura_cuddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1297,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "albedo_morning_bedroom_dakimakura_cuddle",
     "title": "雅儿贝德 · 大坟墓晨间的等身抱枕赖床",
@@ -15,7 +15,7 @@
     "action": "侧卧在床上紧紧抱着等身抱枕蹭脸，被发现后满脸通红慌忙抬头捂嘴",
     "timeOfDay": "清晨",
     "lighting": "透过哥特雕花窗洒在床榻上的金色晨光",
-    "camera": "cowboy shot, high angle, adorable bed view",
+    "camera": "cowboy shot, from above",
     "mood": "极品反差萌",
     "sceneTags": [
       "bedroom",
@@ -33,10 +33,8 @@
     "promptProse": "She hugs the handmade Ainz body pillow on the bed, her wings resting over the sheets. Gothic window tracery casts patterned light across them.",
     "promptTokens": [
       "bedroom",
-      "black nightgown",
       "hugging pillow",
       "dakimakura",
-      "black wings",
       "morning",
       "from above"
     ],

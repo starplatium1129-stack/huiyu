@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_astronomy_deck",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "仰头望着漫天星斗",
-    "camera": "medium wide shot",
+    "camera": "wide shot",
     "category": "泰拉日常",
     "characterId": "eyjafjalla_arknights",
     "compositionIntent": "group",
@@ -21,14 +21,10 @@
     "mood": "浪漫憧憬",
     "negativeTokens": [],
     "outfitId": "picnic",
-    "promptProse": "She leans beside her companion and finds their hand while they watch the stars from the deck.",
+    "promptProse": "She leans beside her companion at the dimly lit deck railing, their hands joined between them as both look up at the stars.",
     "promptTokens": [
       "2people",
-      "green dress",
-      "shawl",
-      "beret",
       "holding hands",
-      "picnic basket",
       "observation deck",
       "starry sky",
       "wide shot"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_rooftop_soda_night_sky",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1046,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sparkle_rooftop_soda_night_sky",
     "title": "花火 · 梦境天台的汽水与私语",
@@ -15,7 +15,7 @@
     "action": "并肩坐在天台边缘晃腿，手中握着玻璃汽水瓶，侧过头温柔安静地凝视视角",
     "timeOfDay": "深夜微风",
     "lighting": "脚下整座繁华大都会的金色夜景地平线",
-    "camera": "cowboy shot, slightly high angle, tranquil rooftop view",
+    "camera": "wide shot, slightly high angle, seated pair and rooftop edge visible",
     "mood": "难得宁静",
     "sceneTags": [
       "rooftop",
@@ -29,16 +29,14 @@
       "soft_expression",
       "twintails"
     ],
-    "promptProse": "Sparkle sits quietly beside her companion with soda and a fox-tail cushion, the city glow reaching the rooftop edge.",
+    "promptProse": "Sparkle sits beside her companion on the rooftop edge, a half-finished soda bottle in one hand and a fox-tail cushion beside her. She turns toward them with a quiet smile while the city lights below trace the edge of her silk nightgown.",
     "promptTokens": [
-      "Sparkle",
-      "red nightgown",
       "soda",
       "cushion",
       "companion",
       "rooftop",
       "night",
-      "cowboy shot"
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

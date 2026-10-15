@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_02",
     "title": "牧之原翔子 · 梓川家玄关与猫",
@@ -30,12 +30,11 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Shouko offers a finger for the orange cat to sniff, crouching on the entrance mat with her schoolbag by the door.",
+    "promptProse": "Shouko offers a finger for the orange cat to sniff, crouching on the entrance mat with her schoolbag by the door. Low sunlight through the doorway lights her smiling profile and the cat’s whiskers.",
     "promptTokens": [
       "1girl",
       "solo",
       "makinohara_shouko",
-      "sailor uniform",
       "crouching",
       "orange cat",
       "schoolbag",

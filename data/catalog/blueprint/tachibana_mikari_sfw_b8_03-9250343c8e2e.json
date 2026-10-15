@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1677,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_03",
     "title": "橘美花莉 · 社团教室的摄影指导",
@@ -39,10 +39,9 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Mikari demonstrates a pose to Okumura before the clubroom blackboard, sunset catching her raised wrist.",
+    "promptProse": "Mikari faces Okumura before the clubroom blackboard with one hand on her hip and the other touching her hair, demonstrating a model’s pose. Sunset lights her raised wrist and the side of her face.",
     "promptTokens": [
       "Mikari Tachibana",
-      "school uniform",
       "posing",
       "hair touch",
       "clubroom",

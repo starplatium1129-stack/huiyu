@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1697,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_03",
     "title": "艾尔菲利亚 · 礼装被冰晶冻住拉链的更衣事故 ·「威尔快来……冰之精灵恶作剧把拉链冻结了」",
@@ -15,7 +15,7 @@
     "action": "撑冰雕梳妆台塌腰回眸双手反剪扯拉链，礼服冰冻勒肉溢乳，咬唇娇怯求暖",
     "timeOfDay": "dawn",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate horizontal medium shot",
+    "camera": "cowboy shot, eye level",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",
@@ -40,8 +40,7 @@
       "vanity",
       "looking back",
       "blush",
-      "ice",
-      "wide shot"
+      "ice"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

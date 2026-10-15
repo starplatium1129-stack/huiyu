@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_passionate_cowgirl_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸肩，俯身轻喘，眼神水润情动",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, vertical framing, low angle POV",
+    "camera": "cowboy shot, low angle, pov",
     "category": "主控骑乘",
     "characterId": "ryougi_shiki",
     "coverageTags": [
@@ -26,14 +26,16 @@
     "mood": "热情相融",
     "negativeTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Shiki rides astride her companion on the bed, leaning toward them with flushed cheeks.",
+    "promptProse": "Shiki straddles the offscreen viewer on the bed, both hands resting on their shoulders as she leans forward with flushed cheeks.",
     "promptTokens": [
-      "Ryougi Shiki",
       "bed",
-      "straddling",
       "looking at viewer",
       "blush",
-      "low angle"
+      "nude",
+      "cowgirl position",
+      "cowboy shot",
+      "low angle",
+      "pov"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -50,10 +52,8 @@
     ],
     "timeOfDay": "深夜",
     "title": "两仪式 · 卸下防备的深情主动骑乘",
-    "nsfwTokens": [
-      "nude",
-      "cowgirl position"
-    ],
-    "nsfwProse": ""
+    "nsfwTokens": [],
+    "nsfwProse": "",
+    "compositionIntent": "single"
   }
 }

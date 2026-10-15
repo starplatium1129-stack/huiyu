@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_gym_locker_room_flat_chest_pout",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1271,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "左手压住长凳上备用制服的袖口，右手把软尺拉到肩缝，低头鼓腮检查袖长。",
     "camera": "medium shot, eye level, closed sports outfit and measuring hands on the bench visible",
@@ -20,9 +20,8 @@
     "mood": "尺码偏大后的气鼓鼓喜剧",
     "negativeTokens": [],
     "outfitId": "sfw_gym_track_set",
-    "promptProse": "Nana holds a spare sailor blouse's cuff flat on the bench and measures toward its shoulder seam, puffing her cheeks at the long sleeve.",
+    "promptProse": "Nana pins the spare blouse cuff to the bench with her left hand and stretches the tape to its shoulder seam with her right. The ceiling light falls on the white sleeve and measuring marks as she puffs her cheeks at the result.",
     "promptTokens": [
-      "navy tracksuit",
       "measuring tape",
       "shirt",
       "bench",

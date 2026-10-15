@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_post_office",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "睡眼惺忪地单手摇晃调酒雪克壶",
+    "action": "将调好的粉色鸡尾酒沿吧台推向观众，雪克壶放在另一只手旁，困倦地轻轻打哈欠。",
     "camera": "medium shot, slightly low angle",
     "category": "泰拉都市",
     "characterId": "quillpen_arknights",
@@ -20,10 +20,8 @@
     "mood": "慵懒微醺",
     "negativeTokens": [],
     "outfitId": "classic_bartender_apron",
-    "promptProse": "La Pluma shakes the cocktail one-handed, then slides the pink drink toward the viewer with a sleepy yawn.",
+    "promptProse": "La Pluma slides the finished pink cocktail toward the viewer, her other hand resting beside the shaker. Colored neon reflects along the glass rim as she hides a small sleepy yawn.",
     "promptTokens": [
-      "bartender",
-      "apron",
       "cocktail shaker",
       "pink cocktail",
       "sleepy",

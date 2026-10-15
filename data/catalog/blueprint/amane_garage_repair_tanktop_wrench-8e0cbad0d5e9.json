@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "amane_garage_repair_tanktop_wrench",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1179,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "amane_garage_repair_tanktop_wrench",
     "title": "周防天音 · 铁工车库的机油与汗水",
     "category": "机能硬核",
     "characterId": "suou_amane",
-    "outfitId": "biker_jacket",
+    "outfitId": "garage_repair_tanktop",
     "coverageTags": [
       "mechanic"
     ],
@@ -19,7 +19,7 @@
     "action": "单膝跪地手持扳手调试机车引擎，紧身背心勾勒丰满胸脯，额头带汗，眼神专注",
     "timeOfDay": "下午",
     "lighting": "高照度暖白工作射灯与金属扳手、发动机的高光反光",
-    "camera": "cowboy shot, medium close-up, dynamic low angle, sweaty texture",
+    "camera": "cowboy shot, from below",
     "mood": "性感专注",
     "sceneTags": [
       "garage",
@@ -32,15 +32,13 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "She turns a carburetor bolt with a wrench beside the motorcycle. Work lights catch the engine fins against the darker toolboxes.",
+    "promptProse": "With her leather jacket set aside, she kneels beside the motorcycle and seats the wrench on a carburetor bolt. Warm work lights catch the engine fins and the oil mark at her nose against the darker toolboxes.",
     "promptTokens": [
       "garage",
       "motorcycle",
-      "leather jacket",
-      "red tank top",
-      "denim shorts",
       "kneeling",
       "wrench",
+      "cowboy shot",
       "from below"
     ],
     "negativeTokens": [],

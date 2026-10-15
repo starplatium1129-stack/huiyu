@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_school_poolside_sukumizu_sit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1255,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱膝坐在泳池边双腿浸水，紧身死库水勾勒出丰满身段，侧脸微红眼神纯情",
-    "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
+    "camera": "full body, seated side three-quarter view",
     "category": "夏日校园",
     "characterId": "kotegawa_yui",
     "coverageTags": [
@@ -20,15 +20,14 @@
     "mood": "纯真清凉",
     "negativeTokens": [],
     "outfitId": "school_swimsuit",
-    "promptProse": "Yui sits at the pool edge with her knees drawn close and her lower legs in the water, turning shyly toward the approaching Rito.",
+    "promptProse": "Yui sits on the pool edge with her knees drawn close and lower legs in the water, turning toward Rito as he approaches along the tiles. Reflected sunlight moves across her shoulders.",
     "promptTokens": [
       "Yui Kotegawa",
-      "school swimsuit",
-      "name tag",
       "hugging knees",
       "sitting",
       "feet in water",
-      "poolside"
+      "poolside",
+      "water reflections"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

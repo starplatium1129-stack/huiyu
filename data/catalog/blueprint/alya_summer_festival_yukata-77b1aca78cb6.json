@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "alya_summer_festival_yukata",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 778,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手持红彤彤的苹果糖递向镜头，回眸浅笑",
-    "camera": "medium shot, dynamic angle, vibrant festival background",
+    "camera": "medium shot",
     "category": "和风奇幻",
     "characterId": "alisa_mikhailovna_kujou",
     "description": "【艾莉 · 夏日祭典·和风浴衣与苹果糖】绚丽的夏日祭典灯笼长廊下，第一次换上和风淡蓝浴衣的艾莉将手里的红色苹果糖递到你面前，银发盘在脑后露出修长雪白的颈线——「这个叫苹果糖的东西比想象中甜得多呢。……要尝一口吗？只有一口哦。」",
@@ -17,16 +17,14 @@
     "mood": "节日欢快与温柔娇俏",
     "negativeTokens": [],
     "outfitId": "summer_yukata",
-    "promptProse": "She offers the candied apple beneath a corridor of festival lanterns. Their warm light glints on the sugar coating.",
+    "promptProse": "Looking back with a small smile, she offers the candied apple toward the viewer beneath the corridor of festival lanterns. Their amber light glints on the sugar coating.",
     "promptTokens": [
       "festival",
-      "blue yukata",
-      "floral print",
-      "hair bun",
       "candy apple",
       "offering",
       "lantern",
-      "night"
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

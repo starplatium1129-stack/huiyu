@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_summer_beach_surf_patrol",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1056,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "踩在清澈浅水海浪中，手扶墨镜回眸，鲨鱼尾在海水中激起晶莹水花",
     "camera": "full body, 3/4 dynamic perspective",
@@ -20,14 +20,8 @@
     "mood": "清凉明媚",
     "negativeTokens": [],
     "outfitId": "shark_swimsuit",
-    "promptProse": "She pushes up her visor while her tail sweeps rings of foam through the sunlit shallows.",
+    "promptProse": "Standing ankle-deep in the clear water, she pushes up her red visor and looks back as her tail sweeps rings of foam behind her. Sunlight flickers over the small waves.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "shark tail",
-      "swimsuit",
-      "cropped hoodie",
-      "red visor",
       "standing",
       "beach",
       "shallow water",

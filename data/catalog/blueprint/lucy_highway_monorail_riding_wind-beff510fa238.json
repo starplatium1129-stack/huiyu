@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_highway_monorail_riding_wind",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1101,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手抓车厢扶手探出身躯迎风狂驰，霓虹光芒倒退飞掠，发丝狂乱飞扬",
     "camera": "side view, dynamic angle, high speed motion blur background",
@@ -22,11 +22,8 @@
       "cigarette"
     ],
     "outfitId": "monorail_transit_no_cigarette",
-    "promptProse": "Lucy holds the carriage rail and leans into the wind as city neon rushes past the monorail.",
+    "promptProse": "Lucy grips the carriage rail with one hand and leans into the wind, her feet planted on the exterior walkway. Passing neon signs streak behind her and cast changing colors over her face.",
     "promptTokens": [
-      "tank top",
-      "cargo pants",
-      "sneakers",
       "handrail",
       "leaning out",
       "monorail",

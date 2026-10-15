@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
     "title": "大凤 · 诊疗台护士服半解跨坐主动骑乘",
@@ -19,7 +19,7 @@
     "action": "独自跨坐诊疗软凳，一手抓椅背、一手腿间自抚",
     "timeOfDay": "黄昏",
     "lighting": "拉帘缝隙投射下的暖橙色斜阳打在起伏的雪肤与黑长双马尾上",
-    "camera": "cowboy shot, straddling pov looking upward into bouncing cleavage and loving eyes",
+    "camera": "cowboy shot, low angle, examination stool visible",
     "mood": "极乐沉沦",
     "sceneTags": [
       "cowgirl_position",

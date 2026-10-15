@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_tea_throne",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 888,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐主席位端红茶",
     "adult": false,
@@ -26,10 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "tea_party_dress",
-    "promptProse": "Mika sits upright in the tea-party chair with her cup of black tea, wings framing the symmetrical view.",
+    "promptProse": "Mika holds her black tea before the velvet chair and smiles toward the viewer, her wings framing the symmetrical seat. Colored window light and the nearby candles glint on the cup and her gold trim.",
     "promptTokens": [
-      "white gold dress",
-      "shawl",
       "wings",
       "teacup",
       "velvet chair",

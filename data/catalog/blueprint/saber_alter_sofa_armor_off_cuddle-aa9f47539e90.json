@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_sofa_armor_off_cuddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_sofa_armor_off_cuddle",
     "title": "黑呆 · 卸甲依偎的沉静温存",
@@ -15,7 +15,7 @@
     "action": "卸下铠甲身着抹胸黑裙靠在视角胸膛上闭目小憩，双手自然搭在腹前",
     "timeOfDay": "深夜",
     "lighting": "壁挂式暖光夜灯散发的静谧微黄色",
-    "camera": "three-quarter side medium shot, two clothed seated figures and supporting sofa visible",
+    "camera": "medium shot, three-quarter side view",
     "mood": "卸下防备",
     "sceneTags": [
       "living_room",
@@ -29,14 +29,10 @@
       "warm_wall_lamp",
       "side_view"
     ],
-    "promptProse": "She rests her head on her clothed companion's chest on the sofa, armor stacked against the wall in warm lamplight.",
+    "promptProse": "Seated beside her clothed companion, she rests her head on their chest with eyes closed and hands folded over her abdomen; the discarded armor stands against the wall in warm lamplight.",
     "promptTokens": [
-      "Saber Alter",
-      "black dress",
-      "loose hair",
       "cuddling",
       "sofa",
-      "armor",
       "lamplight",
       "medium shot"
     ],

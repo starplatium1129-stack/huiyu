@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_grail_war",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "illyasviel_grail_war",
     "title": "伊莉雅丝菲尔 · 圣杯战争",
@@ -15,7 +15,7 @@
     "action": "端坐在Berserker肩头向前发令",
     "timeOfDay": "夜晚",
     "lighting": "战火与月色",
-    "camera": "wide low-angle two-character shot, full Berserker figure and Illya seated on his shoulder",
+    "camera": "wide shot, low angle",
     "mood": "压迫反转",
     "sceneTags": [
       "night",
@@ -28,7 +28,7 @@
       "two_characters",
       "low_angle"
     ],
-    "promptProse": "Illyasviel extends a commanding hand from Berserker's shoulder while he stands on the broken paving, both complete figures visible.",
+    "promptProse": "Illyasviel points forward from the towering Berserker's shoulder as he stands on the broken paving, both complete figures visible against the firelit ruins.",
     "promptTokens": [
       "1girl",
       "1boy",

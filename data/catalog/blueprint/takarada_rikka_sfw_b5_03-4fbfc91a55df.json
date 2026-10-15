@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1535,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_03",
     "title": "宝多六花 · 天台午餐的耳机分享",
@@ -16,7 +16,7 @@
     "action": "把一侧耳塞递向画外，自己戴着另一侧看远处屋顶。",
     "timeOfDay": "日间",
     "lighting": "soft daylight",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "takarada_rikka",
@@ -36,10 +36,8 @@
       "sunlight",
       "medium_shot"
     ],
-    "promptProse": "Rikka offers her companion one earpiece while quietly watching the view from the rooftop.",
+    "promptProse": "With one earbud in her own ear, she offers the other toward the offscreen companion while watching the distant rooftops, the shared bread beside her in soft daylight.",
     "promptTokens": [
-      "takarada_rikka",
-      "school uniform",
       "earphones",
       "bread",
       "rooftop",
@@ -54,6 +52,6 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

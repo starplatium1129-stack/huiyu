@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_deviluke_palace_princess_throne",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1232,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐悬浮王座单手托腮，露肩战服勾勒出完美曲线，长粉发铺展于台阶，神态优雅尊贵",
     "camera": "full body, 3/4 low angle majestic perspective, grand palace scale",
@@ -20,10 +20,9 @@
     "mood": "高贵威严",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Lala rests her cheek in one hand on the floating throne, framed by palace crystals and star charts.",
+    "promptProse": "Lala rests her cheek in one hand on the floating golden throne, her tail curled beside its armrest. Colored light from the crystal dome glimmers across the throne beneath the suspended star charts.",
     "promptTokens": [
       "Lala",
-      "royal dress",
       "sitting",
       "hand on own cheek",
       "throne",

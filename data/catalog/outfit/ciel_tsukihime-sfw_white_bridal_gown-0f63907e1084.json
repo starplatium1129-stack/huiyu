@@ -1,25 +1,22 @@
 {
   "kind": "outfit",
   "id": "ciel_tsukihime/sfw_white_bridal_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 727,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ciel_tsukihime",
     "outfit": {
       "id": "sfw_white_bridal_gown",
       "name": "纯白誓约婚纱",
-      "prose": "an opaque floor-length white bridal gown with a fitted off-shoulder neckline, floral lace layered over solid fabric, a flowing white veil and simple white formal shoes",
+      "prose": "an opaque white off-shoulder bridal gown with lace over solid lining, floor-length skirt, white veil and formal shoes",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "long_dress",
-        "off_shoulder",
-        "lace_trim",
-        "opaque_fabric",
-        "bridal_veil",
-        "white_shoes"
+        "white wedding dress",
+        "off shoulder",
+        "lace trim",
+        "white veil",
+        "white shoes"
       ],
       "default": false,
       "isDefault": false

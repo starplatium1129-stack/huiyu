@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_rooftop_moon_gaze_night_city",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1097,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "倚靠栏杆仰望夜空巨大月球，指间夹着泛紫光的电子烟，渐变短发随风飘散",
     "camera": "wide cinematic low angle, grand city and moon backdrop",
@@ -20,11 +20,8 @@
     "mood": "孤独清冷",
     "negativeTokens": [],
     "outfitId": "netrunner_suit",
-    "promptProse": "Lucy watches the moon from the rooftop railing with a violet-lit electronic cigarette between her fingers.",
+    "promptProse": "Lucy watches the moon from the rooftop railing with a violet-lit electronic cigarette between her fingers. Pale moonlight catches her windblown hair above the cyan and magenta glow of the city.",
     "promptTokens": [
-      "jacket",
-      "white bodysuit",
-      "shorts",
       "electronic cigarette",
       "railing",
       "rooftop",

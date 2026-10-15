@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_05",
     "title": "双叶理央 · 海滨观测站的防水实验",
@@ -30,13 +30,10 @@
       "brightened_gaze",
       "noon"
     ],
-    "promptProse": "She records water temperature on a tablet in a waterproof pouch, then angles it toward the viewer as a crab emerges between the rocks.",
+    "promptProse": "Crouching beside the tide pool, she angles the waterproof tablet toward the viewer with both hands as a small crab appears between the rocks. Clear noon light flashes in the shallow water.",
     "promptTokens": [
       "1girl",
       "solo",
-      "blue one-piece swimsuit",
-      "white jacket",
-      "safety glasses",
       "crouching",
       "tablet",
       "crab",

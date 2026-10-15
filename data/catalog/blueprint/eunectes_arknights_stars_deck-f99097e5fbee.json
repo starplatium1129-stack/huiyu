@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_stars_deck",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 591,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "躺在图纸上翘着腿看星星",
-    "camera": "overhead shot",
+    "camera": "wide shot, side view",
     "category": "泰拉日常",
     "characterId": "eunectes_arknights",
     "coverageTags": [
@@ -20,19 +20,16 @@
     "mood": "惬意浪漫",
     "negativeTokens": [],
     "outfitId": "gala_night_evening_dress",
-    "promptProse": "She lies on an unfolded mecha blueprint with her legs supported by the railing, gazing up at the Milky Way.",
+    "promptProse": "She lies on the unfolded mecha blueprint with her legs supported by the low railing, watching the Milky Way above the dark deck.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "evening gown",
-      "necklace",
       "reclining",
       "legs up",
       "blueprint",
       "railing",
       "ship deck",
       "milky way",
-      "from above"
+      "wide shot",
+      "from side"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

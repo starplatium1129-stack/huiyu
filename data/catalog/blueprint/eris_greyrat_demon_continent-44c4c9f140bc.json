@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_demon_continent",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 475,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "持剑警戒前行",
     "camera": "cowboy shot, hand on sword hilt looking across red wasteland",
@@ -18,14 +18,10 @@
     "mood": "野性锐利",
     "negativeTokens": [],
     "outfitId": "dead_end_adventurer",
-    "promptProse": "She advances through the Demon Continent with her hand on the sheathed sword, alert to the barren red terrain.",
+    "promptProse": "She advances across the barren red terrain, one hand resting on the sheathed sword at her hip. Harsh sun catches her windblown jacket above the dust.",
     "promptTokens": [
       "1girl",
       "solo",
-      "jacket",
-      "pants",
-      "boots",
-      "sword",
       "hand on hilt",
       "walking",
       "wasteland",

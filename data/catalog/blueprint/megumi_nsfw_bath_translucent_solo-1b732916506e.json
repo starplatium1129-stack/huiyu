@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_bath_translucent_solo",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_nsfw_bath_translucent_solo",
     "title": "加藤惠 · 浴后薄纱毛巾的水光独奏 ·「在浴室里……脑子里却全是你的事」",
@@ -15,7 +15,7 @@
     "action": "斜坐浴池边微湿浴巾半遮，单手探入腿间自抚，水珠顺锁骨滑落",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
-    "camera": "vertical POV",
+    "camera": "medium shot, first-person view",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "nsfw",

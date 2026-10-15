@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_tundra_stalking_white",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 698,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "typhon_arknights_tundra_stalking_white",
     "characterId": "typhon_arknights",
@@ -33,15 +33,12 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "Typhon",
-      "green sweater",
-      "pantyhose",
       "cafe",
       "chair",
       "drinks",
       "cowboy shot"
     ],
-    "promptProse": "Typhon pulls the opposite chair out for the viewer, two steaming drinks waiting beside the cafe window.",
+    "promptProse": "Typhon draws the empty chair beside the small cafe table outward for the arriving viewer, looking up with a welcoming smile. Two hot drinks send thin steam into the soft window light.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_library_ladder_books",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1483,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "chitanda_library_ladder_books",
     "title": "千反田爱瑠 · 书架上层的意外发现",
@@ -30,15 +30,14 @@
       "aisle_lighting",
       "medium_shot"
     ],
-    "promptProse": "She steadies herself on the shelf and takes down an old book, noticing a dried leaf between its pages under the aisle light.",
+    "promptProse": "Standing on the low step stool, she steadies herself with one hand on the shelf and draws an old book free with the other. Her eyes brighten at the dried leaf protruding between its pages under the soft aisle light.",
     "promptTokens": [
       "library",
-      "green cardigan",
-      "charcoal skirt",
       "step stool",
       "reaching",
       "old book",
-      "leaf"
+      "leaf",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

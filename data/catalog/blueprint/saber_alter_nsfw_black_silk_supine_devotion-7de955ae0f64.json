@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_black_silk_supine_devotion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 227,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_nsfw_black_silk_supine_devotion",
     "title": "黑呆 · 黑色丝绸大床的傲慢仰卧交付",
@@ -15,7 +15,7 @@
     "action": "独自仰卧黑绸床褥，暗色礼裙与胸甲解至腰侧，一手按胸、一手探向腿间，紫黑魔力沿床单扩散",
     "timeOfDay": "深夜",
     "lighting": "床头昏暗柔和的暖黄烛光照亮瓷白肌肤",
-    "camera": "upper body to knees, vertical framing, high angle POV",
+    "camera": "full body, high angle",
     "mood": "傲慢交付",
     "sceneTags": [
       "bedroom",
@@ -29,7 +29,7 @@
       "heavy_blush",
       "parted_lips"
     ],
-    "promptProse": "Adult Saber Alter lies on the bed with her gown and breastplate gathered at her waist, touching her chest and between her thighs as dark mana spreads through the sheets.",
+    "promptProse": "The age-twenty-plus Saber Alter lies alone with her gown and breastplate gathered at her waist, touching her chest and between her thighs as dark mana spreads through the sheets.",
     "promptTokens": [
       "black gown",
       "open armor",

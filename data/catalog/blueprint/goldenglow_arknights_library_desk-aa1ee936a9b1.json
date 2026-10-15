@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_library_desk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 596,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "站在理发台前细心擦拭整理剪刀与梳子",
     "camera": "medium shot",
@@ -21,14 +21,10 @@
     "mood": "专注温婉",
     "negativeTokens": [],
     "outfitId": "salon_dreamer_work_apron",
-    "promptProse": "She wipes and arranges her styling tools before looking up to welcome the next customer.",
+    "promptProse": "Holding a comb in its soft cleaning cloth, she looks up toward the viewer entering the salon; warm sunlight catches the arranged scissors and her welcoming smile.",
     "promptTokens": [
       "1girl",
       "solo",
-      "cat ears",
-      "twintails",
-      "striped shirt",
-      "apron",
       "scissors",
       "comb",
       "hair salon",

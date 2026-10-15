@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1690,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_06",
     "title": "艾尔菲利亚 · 旧物盒里的回忆",
@@ -30,12 +30,10 @@
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "She lifts a worn hairclip from a wooden keepsake box and studies it quietly.",
+    "promptProse": "Kneeling beside the open wooden keepsake box, she lifts a worn hairclip and studies it quietly. Lamplight reaches its dulled metal and the old objects inside the box.",
     "promptTokens": [
       "1girl",
       "solo",
-      "blue sweater",
-      "long skirt",
       "kneeling",
       "box",
       "hairclip",

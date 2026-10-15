@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_city_cafe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "frieren_city_cafe",
     "title": "芙莉莲 · 现代咖啡馆",
@@ -32,12 +32,10 @@
       "filtered_daylight",
       "medium_shot"
     ],
-    "promptProse": "She studies the tiny foam cat on her latte, resting one cheek in her palm while the cup remains on its saucer.",
+    "promptProse": "She rests her right cheek in her palm while her left hand lies beside the saucer, studying the tiny foam cat. Filtered light from the front right catches the latte and her eyes; beyond the terrace rail, bicycles line the brighter street.",
     "promptTokens": [
       "1girl",
       "solo",
-      "green cardigan",
-      "sweater",
       "hand on cheek",
       "latte art",
       "coffee",

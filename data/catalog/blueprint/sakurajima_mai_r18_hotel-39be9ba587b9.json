@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_hotel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_r18_hotel",
     "title": "樱岛麻衣 · 酒店私密·兔女郎的半解时刻",
@@ -15,7 +15,7 @@
     "action": "坐在柔软的大床边缘，兔女郎连体衣拉链微解，黑丝包裹的双腿自然交叠，眼神娇羞迷离",
     "timeOfDay": "深夜",
     "lighting": "床头暖色壁灯与窗外月光交织，柔和漫反射勾勒曼妙身材",
-    "camera": "three quarter shot, soft rim light, sensual bedroom atmosphere",
+    "camera": "cowboy shot, three-quarter view",
     "mood": "妩媚诱人",
     "sceneTags": [
       "hotel_bedroom",
@@ -32,6 +32,7 @@
       "bed",
       "hotel",
       "city lights",
+      "breast slip",
       "cowboy shot"
     ],
     "negativeTokens": [],
@@ -39,9 +40,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "soft lighting, bedroom, sensual, blushing",
-    "nsfwTokens": [
-      "breast slip"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "bunny_girl",

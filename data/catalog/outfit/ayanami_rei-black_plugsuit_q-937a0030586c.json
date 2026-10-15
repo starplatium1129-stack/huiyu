@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayanami_rei/black_plugsuit_q",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 559,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ayanami_rei",
     "outfit": {
@@ -12,15 +12,11 @@
       "id": "black_plugsuit_q",
       "isDefault": false,
       "name": "黑丽战斗服（Mark.09）",
-      "prose": "wearing the sleek matte jet-black Mark.09 pilot plugsuit with dark charcoal paneling, vivid neon-orange accents, and interface headset clips",
+      "prose": "her matte black Mark.09 plugsuit with charcoal panels, bright orange accents and neural interface clips",
       "styleHint": "dramatic post-apocalyptic cinematic lighting with red earth glow",
       "tokens": [
-        "black_plugsuit",
-        "plugsuit",
-        "bodysuit",
-        "latex_suit",
-        "interface_headset",
-        "skin_tight",
+        "black plugsuit",
+        "interface headset",
         "gloves"
       ]
     }

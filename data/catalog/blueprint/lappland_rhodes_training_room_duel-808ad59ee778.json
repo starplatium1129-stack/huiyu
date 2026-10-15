@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lappland_rhodes_training_room_duel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 671,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "穿宽松白T恤蜷缩在沙发上求摸头顺毛，白狼耳舒适微耷，双眼微眯神态满足放松",
-    "camera": "medium shot, seated eye-level, intimate domestic charm",
+    "camera": "medium shot, seated eye level, first-person view",
     "category": "居家女友",
     "characterId": "lappland_arknights",
     "coverageTags": [
@@ -19,12 +19,9 @@
     "location": "干员休息室阳光沙发转角",
     "mood": "治愈甜宠",
     "negativeTokens": [],
-    "outfitId": "standard_mercenary",
-    "promptProse": "Lappland curls on the lounge sofa, relaxing as the Doctor strokes the base of her wolf ears.",
+    "outfitId": "sfw_lounge_white_tee",
+    "promptProse": "She curls on the sofa with her eyes half closed while the offscreen viewer's hand strokes the base of one wolf ear in the striped window light.",
     "promptTokens": [
-      "coat",
-      "white tank top",
-      "shorts",
       "curled up",
       "sofa",
       "headpat",
@@ -44,6 +41,6 @@
     ],
     "timeOfDay": "午后",
     "title": "拉普兰德 · 罗德岛休息室被顺毛的居家日常",
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

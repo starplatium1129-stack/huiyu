@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_summer_ocean_splash_sunshine",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1089,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cheshire_summer_ocean_splash_sunshine",
     "title": "柴郡 · 盛夏蔚蓝浪花的猫耳嬉水",
@@ -35,9 +35,6 @@
     "promptProse": "She splashes seawater toward the viewer with both hands. Sunlight catches the spray above the sand and nearby rocks.",
     "promptTokens": [
       "beach",
-      "pink and ivory swimsuit",
-      "floral pareo",
-      "straw hat",
       "splashing",
       "grin",
       "summer"

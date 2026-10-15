@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "raphtalia/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 886,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "raphtalia",
     "outfit": {
@@ -12,11 +12,10 @@
       "name": "拉芙塔莉雅·圣洁花嫁",
       "prose": "an ivory wedding dress with a short veil, chestnut ribbon details and practical lace-up boots",
       "tokens": [
-        "wedding_dress",
-        "bridal_veil",
-        "ivory_dress",
-        "ribbon_details",
-        "lace_up_boots"
+        "ivory wedding dress",
+        "short veil",
+        "brown ribbon",
+        "lace-up boots"
       ],
       "default": false,
       "isDefault": false

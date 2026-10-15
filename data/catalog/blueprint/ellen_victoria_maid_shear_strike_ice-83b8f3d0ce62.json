@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_victoria_maid_shear_strike_ice",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1053,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手持巨型冰刃剪刀贴地突进，巨大鲨鱼尾巴甩动激起冰屑气旋，神情冷峻酷飒",
     "camera": "dynamic low angle, sweeping wide shot",
@@ -20,12 +20,8 @@
     "mood": "冷酷英勇",
     "negativeTokens": [],
     "outfitId": "maid_uniform",
-    "promptProse": "She drags the oversized shear blades across the frozen floor while her tail sweeps snow through the Hollow ruins.",
+    "promptProse": "She skims across the frozen floor, dragging the heavy shear blades through the ice as her tail sweeps snow behind her. Cold crystal light and the last sunset cut across the Hollow ruins.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "shark tail",
-      "maid",
       "giant scissors",
       "sliding",
       "ice",

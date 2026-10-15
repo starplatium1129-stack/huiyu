@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_river_swim",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 588,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "站在浅水中，水花四溅",
-    "camera": "medium shot",
+    "camera": "full-body shot",
     "category": "泰拉自然",
     "characterId": "eunectes_arknights",
     "description": "【森蚺 · 河湾】萨贡雨林清凉见底的天然河湾浅滩上，森蚺赤脚站在齐膝深的溪水中，强壮有力的粗长鳄尾在水面猛地一摆拍击出漫天晶莹的水花。她转过头冲岸边的你爽朗大笑——「雨林里的河水最解暑了！博士别站在岸上干看着，快跳下来和我一起游泳抓鱼！」",
@@ -19,21 +19,14 @@
       "barefoot"
     ],
     "outfitId": "standard",
-    "promptProse": "Standing knee-deep in the river with her boots submerged, she waves toward the bank as her tail sends a curtain of spray sideways.",
+    "promptProse": "Standing knee-deep with her boots submerged, she laughs and waves toward the viewer on the bank as her tail sends spray across the bright water.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "reptile tail",
-      "green halterneck",
-      "tactical vest",
-      "shorts",
-      "boots",
       "waving",
       "laughing",
       "river",
       "splashing",
       "afternoon",
-      "medium shot"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

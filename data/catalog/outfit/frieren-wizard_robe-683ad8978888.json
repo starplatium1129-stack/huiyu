@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "frieren/wizard_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
@@ -12,11 +12,10 @@
       "name": "魔导师袍",
       "prose": "her plain white robe with a deep hood and simple adventurer belt",
       "tokens": [
-        "robe",
-        "white_robe",
+        "white robe",
         "hood",
         "belt",
-        "long_sleeves",
+        "long sleeves",
         "staff"
       ],
       "default": true,

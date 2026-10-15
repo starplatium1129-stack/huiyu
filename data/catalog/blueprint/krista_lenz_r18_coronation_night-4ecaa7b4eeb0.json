@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_coronation_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "王宫阳光长廊微扶王冠展露露背白裙",
     "adult": true,
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "intimate medium shot, palace corridor sunbeams",
+    "camera": "medium shot",
     "category": "成人",
     "characterId": "krista_lenz",
     "coverageTags": [],

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_talos_wasteland",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "按住耳侧通讯发饰遥望风沙",
-    "camera": "medium wide shot",
+    "camera": "wide shot",
     "category": "塔罗斯科幻",
     "characterId": "perlica_arknights",
     "description": "【佩丽卡 · 塔罗斯荒原】狂风席卷着黄色沙尘的塔罗斯II异星荒原断崖边缘，佩丽卡按住被强风吹乱的浅色短发，目光坚定地注视着远处拔地而起的巨型工业基建枢纽——「这颗星球的环境虽然极其恶劣，但只要终末地的开拓者们还在前进，我们就一定能在这片荒原上建立起崭新的家园。」",
@@ -19,9 +19,6 @@
     "outfitId": "wasteland_explorer",
     "promptProse": "Perlica holds back her windblown hair at the cliff edge, watching the distant infrastructure hub through amber dust.",
     "promptTokens": [
-      "khaki coat",
-      "cargo pants",
-      "backpack",
       "holding hair",
       "cliff",
       "wasteland",

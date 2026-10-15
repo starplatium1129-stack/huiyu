@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 839,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "黄色雨衣与牛仔背带裤",
-      "prose": "a yellow hooded rain jacket over a striped long-sleeved T-shirt, full-length denim overalls and rubber rain boots, with her long black hair in a high ponytail",
+      "prose": "a yellow hooded rain jacket over a striped long-sleeved shirt, full-length denim overalls and rubber boots, with hair in a high ponytail",
       "tokens": [
-        "yellow_raincoat",
-        "striped_shirt",
-        "long_sleeves",
+        "yellow raincoat",
+        "striped shirt",
         "overalls",
-        "rain_boots",
+        "rain boots",
         "ponytail"
       ],
       "isDefault": false,

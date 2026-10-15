@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_rainy_bedroom_missionary",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "furina_r18_rainy_bedroom_missionary",
     "title": "芙宁娜 · 暴雨夜的水律失控",
@@ -15,7 +15,7 @@
     "action": "独自仰卧白床单屈膝抬腿，湿透礼服缠腰，一手压胸一手腿间自抚，水元素环绕身体失控",
     "timeOfDay": "深夜",
     "lighting": "窗外微弱闪电蓝光与床头暖灯微光",
-    "camera": "high angle, top-down view, vertical foreshortening, pov",
+    "camera": "full-body shot, first-person view, from above",
     "mood": "深情极致",
     "sceneTags": [
       "bedroom",

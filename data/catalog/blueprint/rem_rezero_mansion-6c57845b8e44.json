@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_mansion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 432,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rem_rezero_mansion",
     "title": "雷姆 · 宅邸女仆日常",
@@ -26,9 +26,8 @@
       "fantasy",
       "interior"
     ],
-    "promptProse": "Rem carries the level tea tray through Roswaal's corridor toward the courtyard, smiling gently.",
+    "promptProse": "Rem carries the tea tray level in both hands toward the courtyard, glancing up to greet the approaching viewer. Daylight from the arched windows makes alternating bright and shaded bands along the corridor.",
     "promptTokens": [
-      "maid",
       "tea service",
       "tray",
       "walking",

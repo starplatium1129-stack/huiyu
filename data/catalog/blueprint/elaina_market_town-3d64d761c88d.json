@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_market_town",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 382,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_market_town",
     "title": "伊雷娜 · 异国小镇市集",
@@ -30,13 +30,12 @@
     "promptProse": "She tastes a fresh pastry while surveying the stalls. Daylight and awning shade alternate across the shoppers behind her.",
     "promptTokens": [
       "market",
-      "black witch dress",
-      "star brooch",
       "pastry",
       "eating",
       "shoppers",
       "awnings",
-      "daytime"
+      "daytime",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

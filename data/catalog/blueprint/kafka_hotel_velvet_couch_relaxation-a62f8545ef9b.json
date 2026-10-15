@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_hotel_velvet_couch_relaxation",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1034,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kafka_hotel_velvet_couch_relaxation",
     "title": "卡芙卡 · 匹诺康尼丝绒小憩",
@@ -29,12 +29,11 @@
       "seductive_smile",
       "city_skyline"
     ],
-    "promptProse": "Kafka reclines on the green velvet sofa, swirling her champagne with crossed legs and a faint smile.",
+    "promptProse": "Reclining on the green velvet sofa with her legs crossed, she swirls the champagne and smiles toward the viewer; warm chandelier light catches the glass against the window's distant neon.",
     "promptTokens": [
       "reclining",
       "velvet sofa",
       "crossed legs",
-      "evening gown",
       "champagne",
       "gramophone",
       "hotel room",

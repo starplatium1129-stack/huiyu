@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1614,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_02",
     "title": "春日野穹 · 缘侧的麦茶与零食",
@@ -31,11 +31,9 @@
       "shade",
       "horizontal_composition"
     ],
-    "promptProse": "Sora watches videos with her laptop on her knees, snacks and barley tea spread before her on the veranda.",
+    "promptProse": "Sora watches the laptop balanced on her crossed legs, with snacks and barley tea within reach on the shaded veranda. The electric fan stirs her long hair beside the sunlit garden.",
     "promptTokens": [
       "kasugano_sora",
-      "sweater",
-      "trousers",
       "cross-legged",
       "laptop",
       "snacks",

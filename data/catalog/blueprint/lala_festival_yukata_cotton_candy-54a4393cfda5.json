@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_festival_yukata_cotton_candy",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "一手拿巨型棉花糖、另一手牵同伴沿祭典街前行，爱心尾巴欢快摇摆",
     "camera": "medium shot, eye-level, joyful festive atmosphere",
@@ -13,18 +13,17 @@
     "coverageTags": [
       "festival"
     ],
-    "description": "【菈菈 · 夏夜祭典的云朵棉花糖】挂满红色纸灯笼的彩南神社夏日祭典长街上，晚风吹拂着祭典彩旗。菈菈双手捧着一朵比她脑袋还大的纯白蓬松棉花糖，正开心地伸出粉嫩舌尖轻舔甜味。她拉着梨斗的手穿梭在热闹的人流中，身后的黑色爱心恶魔尾巴兴奋地摇成螺旋桨，及踝粉发在灯火阑珊中流光溢彩，笑容纯真得宛如整个夏夜最灿烂的星火。",
+    "description": "【菈菈 · 夏夜祭典的云朵棉花糖】红灯笼下的祭典长街上，菈菈左手牵着并肩的梨斗，右手举着巨大的棉花糖。暖橙灯火映着她的笑脸，爱心尾巴在身后欢快摇摆。",
     "id": "lala_festival_yukata_cotton_candy",
     "lighting": "漫天红灯笼洒下的浓郁暖橙火光与摊位彩灯的缤纷倒影",
     "location": "彩南町夏日祭典红灯笼小吃长街",
     "mood": "纯真欢愉",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Lala walks beside Rito through the festival, holding his hand and a giant cotton candy as her heart-tipped tail sways.",
+    "promptProse": "Lala holds Rito’s hand with her left hand and carries the giant cotton candy in her right as they walk side by side. Red lanterns warm their faces above the busy festival stalls.",
     "promptTokens": [
       "Lala",
       "Rito Yuuki",
-      "school uniform",
       "holding hands",
       "cotton candy",
       "festival",

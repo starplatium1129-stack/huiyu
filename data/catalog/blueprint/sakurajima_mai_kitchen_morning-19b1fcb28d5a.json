@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_kitchen_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_kitchen_morning",
     "title": "樱岛麻衣 · 晨间厨房",
@@ -15,7 +15,7 @@
     "action": "一手扶平底锅柄，另一手持锅铲，听见脚步后微微回头笑",
     "timeOfDay": "清晨",
     "lighting": "柔和晨光",
-    "camera": "medium shot, preparing breakfast at kitchen counter",
+    "camera": "medium shot",
     "mood": "温柔治愈",
     "sceneTags": [
       "morning_kitchen",
@@ -29,12 +29,8 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Mai turns toward the kitchen doorway while holding the pan and spatula, morning light crossing the prepared dishes.",
+    "promptProse": "One hand holds the pan handle while the other pauses with the spatula above the frying egg; she smiles toward the doorway as morning light crosses the dishes.",
     "promptTokens": [
-      "Mai",
-      "apron",
-      "sweater",
-      "tied hair",
       "frying pan",
       "spatula",
       "kitchen",

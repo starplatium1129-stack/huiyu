@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "murasame_sacred_kagura_sword_dance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1122,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手持神刀丛雨丸旋转舞动，巫女宽袖与绯红袴裤翻飞，刀刃拖出神圣白芒",
-    "camera": "full body, dynamic mid-action angle, wide composition",
+    "camera": "full body, low three-quarter angle, sword arc and turning feet visible",
     "category": "祭祀剑舞",
     "characterId": "murasame",
     "coverageTags": [
@@ -20,13 +20,10 @@
     "mood": "神圣庄严",
     "negativeTokens": [],
     "outfitId": "shrine_miko",
-    "promptProse": "Murasame turns through the dance with both hands on Murasamemaru, the sword tracing an arc above the candlelit stage.",
+    "promptProse": "Murasame turns with both hands on Murasamemaru, its blade tracing a white arc above the shrine stage. Candlelight warms her flowing sleeves and red hakama beneath the cool sword glow.",
     "promptTokens": [
-      "miko",
-      "red hakama",
       "katana",
       "dancing",
-      "bells",
       "kagura",
       "shrine",
       "night",

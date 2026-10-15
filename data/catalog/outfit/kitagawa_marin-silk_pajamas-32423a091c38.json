@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/silk_pajamas",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
@@ -15,16 +15,11 @@
       "prose": "wearing loose silk pajamas with a button-up top and matching pajama pants, smooth lustrous silk in a soft pastel tone",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "pajamas",
         "silk_pajamas",
-        "silk",
         "button_up",
         "long_sleeves",
         "pajama_pants",
-        "loose_fit",
-        "nightwear",
-        "loungewear",
-        "soft_fabric"
+        "loose_fit"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_rain_delivery",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 619,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "趴在窗边木桌上托腮打盹",
     "camera": "medium close-up shot",
@@ -22,9 +22,8 @@
       "direct sunlight"
     ],
     "outfitId": "sleepy_oversized_loungewear",
-    "promptProse": "La Pluma nods off with both palms cradling her cheeks at the round table beside the rainy window.",
+    "promptProse": "La Pluma dozes with both palms supporting her cheeks beside the rain-streaked window. A blanket newly laid across her shoulders catches the warm indoor lamplight against the cool grey afternoon outside.",
     "promptTokens": [
-      "pink hoodie",
       "blanket",
       "hands on own cheeks",
       "sleepy",

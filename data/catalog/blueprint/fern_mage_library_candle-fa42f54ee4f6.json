@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_mage_library_candle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fern_mage_library_candle",
     "title": "菲伦 · 早期修行的烛光抄写",
@@ -33,12 +33,10 @@
       "candlelight",
       "medium_shot"
     ],
-    "promptProse": "She pauses copying a rune diagram to nod thanks for the tea, keeping the source book open with her other hand.",
+    "promptProse": "She pauses with the quill above her rune diagram and nods toward the companion setting down tea, her other hand holding the source book open; candlelight warms her profile beside the staff leaning against the wall.",
     "promptTokens": [
       "1girl",
       "solo",
-      "black coat",
-      "white dress",
       "quill",
       "book",
       "tea",

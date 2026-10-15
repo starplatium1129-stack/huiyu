@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_arcade",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 512,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kisara_engage_kiss_arcade",
     "title": "木更 · 游戏厅",
@@ -25,12 +25,8 @@
       "afternoon",
       "indoor"
     ],
-    "promptProse": "Kisara concentrates on the rhythm game, hands poised over its buttons and a competitive smile lit by the screen.",
+    "promptProse": "She presses the rhythm-game buttons with both hands, eyes fixed on the glowing note lanes and a competitive smile on her face.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "jacket",
-      "jeans",
       "rhythm game",
       "arcade",
       "screen light",

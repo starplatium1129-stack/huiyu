@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_autumn_park",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "artoria_autumn_park",
     "title": "阿尔托莉雅 · 银杏长椅边的热茶",
@@ -32,18 +32,16 @@
       "leaf_shadows",
       "medium_shot"
     ],
-    "promptProse": "She cups warm tea beneath her face on the bench, a snack bag beside her. Low sun catches the steam as the stone path curves behind.",
+    "promptProse": "Seated with her knees together, she cups the warm tea in both hands beneath her face and smiles at its rising steam. Low sunlight from behind her left shoulder catches the scarf as the stone path curves behind the bench.",
     "promptTokens": [
       "park",
       "ginkgo",
       "bench",
       "sitting",
-      "duffle coat",
-      "scarf",
-      "plaid skirt",
       "tea",
       "fallen leaves",
-      "golden hour"
+      "golden hour",
+      "medium shot"
     ],
     "negativeTokens": [
       "readable cup marking"

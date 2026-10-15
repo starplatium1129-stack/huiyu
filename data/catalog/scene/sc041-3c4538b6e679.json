@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc041",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She leans toward the viewer beneath their shared umbrella, holding its handle in one hand and joining the viewer's hand with the other.",
+    "animaCaption": "She leans toward the viewer beneath their shared umbrella, holding its handle in one hand and clasping the viewer's hand with the other; streetlight reflected from the wet pavement brightens her smile.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "伞下交握双手半身近景",
     "category": "恋爱/After_Story",
@@ -41,7 +41,7 @@
       "night",
       "streetlamp",
       "rain_reflections",
-      "medium_shot"
+      "close_up"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc223",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "After the cream dispenser mishap, she sits astride the viewer's thigh and wipes their cheek with a towel, cream still splattered on her shirt and bra.",
     "auditRevision": "skill-refine-sc223-2026-09-05",
-    "camera": "七分身料理台平视特写",
+    "camera": "料理台旁平视七分身中景",
     "category": "日常",
     "char": "natsume",
     "character": [
@@ -31,14 +31,13 @@
       "wet_white_shirt",
       "whipped_cream",
       "black_lace_bra",
-      "cream_splatter",
       "work_pants",
       "straddling",
       "kitchen_counter",
       "wiping_face",
       "towel",
       "red_ears",
-      "full_body"
+      "cowboy_shot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

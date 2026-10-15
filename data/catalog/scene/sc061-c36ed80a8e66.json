@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc061",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc061",
     "title": "浴室门口的失衡",
@@ -50,7 +50,7 @@
     "negative": "open towel, nudity",
     "storyJa": "【夏目・浴室の出入り口のバランスが崩れている】ある冬の夜、夏目はバスタオルを巻いてバスルームから出てきました。水蒸気で濡れた足元の床タイルが滑り、彼女はあなたの腕の中に落ちてしまいました。彼女がしっかり立っているのを確認すると、すぐにタオルの端を押さえた。彼女の顔全体は耳まで赤くなりましたが、それでもあなたが最初に彼女を殴ったかどうかを確認しました。――「私は平気。さっきは足元が滑っただけ……先に向こうを向いて。服を着たら、次はあなたの腕を手当てするから。」",
     "rating": "R15",
-    "animaCaption": "She slips at the threshold into the viewer's supporting arms, keeping the towel securely held around her body.",
+    "animaCaption": "At the damp bathroom threshold, the viewer's visible forearms steady her waist and upper arm as she regains her footing; she holds the towel closed, cheeks bright in the warm light diffused by steam.",
     "auditRevision": "skill-refine-sc061-2026-09-05"
   }
 }

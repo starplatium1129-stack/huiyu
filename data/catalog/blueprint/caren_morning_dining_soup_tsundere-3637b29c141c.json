@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_morning_dining_soup_tsundere",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 210,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "caren_morning_dining_soup_tsundere",
     "title": "卡莲 · 晨间餐桌的毒舌与暖汤",
@@ -29,12 +29,9 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "She offers the steaming soup bowl with both hands beneath it. Window light falls across the bowl and her raised chin.",
+    "promptProse": "She offers the steaming bowl toward the viewer, both hands supporting its base above the dining table. Light from the arched window falls across the soup and her raised chin.",
     "promptTokens": [
       "dining room",
-      "red duffle coat",
-      "white beanie",
-      "black tights",
       "soup",
       "offering",
       "morning"

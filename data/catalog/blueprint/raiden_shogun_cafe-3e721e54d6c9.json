@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_cafe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raiden_shogun_cafe",
     "title": "雷电将军 · 午后咖啡馆",
@@ -33,11 +33,8 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Ei steadies the mug with one hand and guides the glass straw to her lips with the other, tasting the leaf-topped matcha latte.",
+    "promptProse": "Ei steadies the mug with her left hand and brings the glass straw to her lips with her right. Afternoon light from the left window falls over her cheek, knit cuff and the latte’s leaf-shaped foam.",
     "promptTokens": [
-      "cardigan",
-      "blouse",
-      "pleated skirt",
       "matcha latte",
       "glass straw",
       "cup",

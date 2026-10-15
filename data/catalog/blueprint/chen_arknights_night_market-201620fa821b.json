@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_night_market",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 537,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在龙门夜市摊位前品尝香辣鱼丸串",
     "camera": "medium shot",
@@ -20,13 +20,11 @@
     "promptProse": "She tastes a fishball skewer at the stall while shoppers pass behind. Lanterns warm her face against the cooler neon reflections.",
     "promptTokens": [
       "night market",
-      "floral shirt",
-      "T-shirt",
-      "jeans",
       "fishball skewer",
       "eating",
       "shoppers",
-      "red lantern"
+      "red lantern",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

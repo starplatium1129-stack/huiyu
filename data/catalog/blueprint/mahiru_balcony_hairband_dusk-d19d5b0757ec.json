@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_balcony_hairband_dusk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1472,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "mahiru_balcony_hairband_dusk",
     "title": "椎名真昼 · 阳台晚风与发绳整理·「隔壁的阳台……原来距离这么近呢」",
@@ -28,11 +28,9 @@
       "amber_eyes",
       "city_lights"
     ],
-    "promptProse": "Mahiru reties her wind-tossed hair at the railing, smiling toward Amane holding coffee on the neighboring balcony.",
+    "promptProse": "Mahiru raises both hands to retie her wind-tossed hair, smiling toward Amane with his coffee on the neighboring balcony. Warm doorway light meets the violet dusk along the railing.",
     "promptTokens": [
       "shiina_mahiru",
-      "cream sweater",
-      "blue trousers",
       "tying hair",
       "balcony",
       "dusk"

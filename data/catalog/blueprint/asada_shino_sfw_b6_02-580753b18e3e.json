@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1374,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_02",
     "title": "朝田诗乃 · 眼镜店的调整",
@@ -33,7 +33,6 @@
     "promptProse": "She examines her glasses' newly tightened hinge at the counter, holding them away from her face. Shop light catches the frame and small tool.",
     "promptTokens": [
       "optical shop",
-      "gray cardigan",
       "holding glasses",
       "screwdriver",
       "cleaning cloth",

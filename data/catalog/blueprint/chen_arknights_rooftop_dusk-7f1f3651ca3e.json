@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_rooftop_dusk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 538,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "凭栏远眺城市灯火",
     "camera": "cowboy shot, front three-quarter view",
@@ -17,15 +17,12 @@
     "mood": "心事重重",
     "negativeTokens": [],
     "outfitId": "wanderer",
-    "promptProse": "She rests at the railing overlooking Lungmen as wind moves her cape. Orange dusk outlines her above the emerging city lights.",
+    "promptProse": "She rests against the railing overlooking Lungmen, her tired gaze following the emerging city lights. Orange dusk edges the cape lifted by the evening wind.",
     "promptTokens": [
       "rooftop",
-      "traveler robe",
-      "gray cape",
-      "jade pendant",
-      "Chi Xiao",
       "railing",
-      "dusk"
+      "dusk",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

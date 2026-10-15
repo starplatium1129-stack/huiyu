@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_signing_event_author_line",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1426,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "utaha_signing_event_author_line",
     "title": "霞之丘诗羽 · 签售会的作家真身·「要签名？先把感想写满一页」",
@@ -29,8 +29,6 @@
     "promptProse": "Utaha twirls her pen and recognizes a reader across the signing table, the waiting line behind them.",
     "promptTokens": [
       "kasumigaoka_utaha",
-      "black dress",
-      "low bun",
       "fountain pen",
       "book signing",
       "bookstore",

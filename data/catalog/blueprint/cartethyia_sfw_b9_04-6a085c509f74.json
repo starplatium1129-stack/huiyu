@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1648,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_04",
     "title": "卡提希娅 · 埃格拉归途的蓝色花嫁",
@@ -16,7 +16,7 @@
     "action": "礼拜堂门口握花冠深呼吸，近乡情怯转成终于回家的笑",
     "timeOfDay": "黄昏",
     "lighting": "clear morning light through stained glass",
-    "camera": "medium full shot, vertical framing",
+    "camera": "full-body shot",
     "mood": "归乡骑士的花嫁誓约",
     "sceneTags": [
       "wedding_dress",
@@ -29,14 +29,12 @@
       "relieved_smile",
       "morning_light"
     ],
-    "promptProse": "She holds the flower crown and smiles toward the viewer at the old chapel entrance. Morning stained-glass light reaches the gown.",
+    "promptProse": "At the old chapel entrance she holds the flower crown in both hands, her hesitant expression easing into a smile toward the viewer. Morning light through the stained glass falls across the gown.",
     "promptTokens": [
       "chapel",
-      "blue wedding dress",
-      "cream mantle",
       "flower crown",
-      "halo",
-      "morning"
+      "morning",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/monorail_transit_no_cigarette",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 608,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
@@ -14,14 +14,11 @@
       "name": "磁悬浮车厢扶手便装",
       "prose": "casual Night City street techwear: an oversized cropped charcoal sleeveless mesh tank top, low-rise baggy dark techwear cargo joggers with neon straps and utility buckles, and high-top sneakers, with no cigarette",
       "tokens": [
-        "casual",
         "tank_top",
         "crop_top",
         "sleeveless",
         "cargo_pants",
-        "pants",
         "sneakers",
-        "streetwear",
         "cyberpunk"
       ]
     }

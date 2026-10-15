@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_theater_curtain_curtsy_wink",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1048,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sparkle_theater_curtain_curtsy_wink",
     "title": "花火 · 帷幕之后的绝妙谢幕",
@@ -15,7 +15,7 @@
     "action": "从深红帷幕间侧身探出，单手提裙行礼，另一手竖起食指抵在唇边眨眼微笑",
     "timeOfDay": "剧场散场",
     "lighting": "舞台聚光灯与帷幕天鹅绒的暗红深影",
-    "camera": "cowboy shot, eye level, theatrical curtsy view",
+    "camera": "full body, eye level, curtsy and curtain opening visible",
     "mood": "神秘魅惑",
     "sceneTags": [
       "stage",
@@ -28,16 +28,13 @@
       "mini_kimono",
       "seductive_smile"
     ],
-    "promptProse": "Sparkle gives a curtsy and a hush gesture through the closing theater curtain under the stage lights.",
+    "promptProse": "Sparkle dips into a curtsy in the gap between the closing curtains, one hand lifting her skirt and the other raising a finger to her lips. She winks toward the viewer as the last stage light catches the gold curtain fringe.",
     "promptTokens": [
-      "Sparkle",
-      "kimono dress",
-      "fox mask",
       "curtsy",
       "wink",
       "finger to mouth",
       "curtain",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

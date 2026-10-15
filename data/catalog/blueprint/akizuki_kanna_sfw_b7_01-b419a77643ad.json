@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1152,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "用木搅棒轻搅虹吸壶上层咖啡，另一手扶稳杯子。",
     "adult": false,
@@ -23,12 +23,9 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_cafe",
-    "promptProse": "She stirs the siphon's upper glass chamber with a wooden stick while steadying a cup. Morning light outlines the connecting tube and lower flask.",
+    "promptProse": "She stirs the siphon's upper glass chamber with a wooden stick in one hand while the other steadies a cup on the counter. Her gaze follows the swirling coffee; morning light outlines the connecting tube and lower flask.",
     "promptTokens": [
       "cafe",
-      "blouse",
-      "waistcoat",
-      "apron",
       "siphon coffee",
       "stirring",
       "cup",

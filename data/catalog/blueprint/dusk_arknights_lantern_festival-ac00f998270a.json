@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_lantern_festival",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 571,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "身着黑金旗袍执一盏纸灯，在融融暖光中回眸浅笑",
     "camera": "medium shot",
@@ -20,7 +20,6 @@
     "promptProse": "She carries the small rabbit lantern along the bridge and looks back. Its warmth meets the repeated lights reflected on the river.",
     "promptTokens": [
       "bridge",
-      "black and gold qipao",
       "rabbit lantern",
       "looking back",
       "smile",

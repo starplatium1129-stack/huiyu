@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 286,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_04",
     "title": "克洛伊 · 爱因兹贝伦的偷跑花嫁",
@@ -29,11 +29,9 @@
       "mischievous_grin",
       "afternoon_light"
     ],
-    "promptProse": "She lifts the veil and shows the candy hidden in her bouquet. Snowlight reflects through the corridor panes onto the wrappers.",
+    "promptProse": "She lifts the veil with one hand and angles the bouquet in the other to show the hidden candy to the viewer. Snowlight through the corridor panes catches the wrappers.",
     "promptTokens": [
       "glass corridor",
-      "white and pink wedding dress",
-      "short veil",
       "bouquet",
       "candy",
       "grin"

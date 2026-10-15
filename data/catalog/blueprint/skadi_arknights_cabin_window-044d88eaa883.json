@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_cabin_window",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 611,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "站在窗前，指尖抵着玻璃",
-    "camera": "medium close-up",
+    "camera": "medium close-up, three-quarter view, fingertips on the porthole and turned face visible",
     "category": "泰拉日常",
     "characterId": "skadi_arknights",
     "coverageTags": [
@@ -25,12 +25,9 @@
     "promptProse": "Skadi rests her fingertips on the closed misted porthole and turns toward the viewer, moonlight skimming her cheek.",
     "promptTokens": [
       "Skadi",
-      "velvet dress",
-      "chiffon",
       "porthole",
       "fogged glass",
-      "moonlight",
-      "close-up"
+      "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

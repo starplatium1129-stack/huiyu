@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "makima/work_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "work_suit",
       "name": "公务套装",
-      "prose": "her office suit with a white blouse, black tie and black skirt",
+      "prose": "a white office blouse with a black tie and black skirt",
       "tokens": [
-        "suit",
-        "white_shirt",
-        "black_tie",
-        "black_skirt",
-        "blazer"
+        "white blouse",
+        "black necktie",
+        "black skirt"
       ],
       "default": true,
       "isDefault": true

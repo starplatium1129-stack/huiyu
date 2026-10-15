@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_shinjuku_night_street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 170,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jalter_shinjuku_night_street",
     "characterId": "jeanne_alter",
@@ -28,9 +28,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "leather jacket",
-      "pleated skirt",
-      "tights",
       "leaning",
       "wall",
       "street",

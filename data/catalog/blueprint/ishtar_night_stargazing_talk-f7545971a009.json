@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_night_stargazing_talk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_night_stargazing_talk",
     "title": "伊什塔尔 · 星空下的真心话·「金星……是我最喜欢的一颗」",
@@ -15,7 +15,7 @@
     "action": "并肩躺看星空指金星，红瞳柔软低语",
     "timeOfDay": "日落后的暮色",
     "lighting": "西方地平线残留的暮光与神殿暖灯",
-    "camera": "wide two-shot, two clothed figures reclining and Venus low in western twilight",
+    "camera": "wide two-shot, side view",
     "mood": "女神真心、星空秘密",
     "sceneTags": [
       "temple_rooftop",
@@ -28,7 +28,7 @@
       "golden_tiara",
       "wide_two_shot"
     ],
-    "promptProse": "Ishtar reclines beside her clothed companion on the temple roof and points toward Venus above the western horizon.",
+    "promptProse": "Ishtar reclines on the left beside her clothed companion on the temple roof, pointing toward Venus low over the western twilight while the companion follows her gesture.",
     "promptTokens": [
       "2people",
       "reclining",

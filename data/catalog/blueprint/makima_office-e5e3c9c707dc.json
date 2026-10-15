@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_office",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 413,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makima_office",
     "title": "玛奇玛 · 公安办公室",
@@ -15,7 +15,7 @@
     "action": "坐在办公桌后，手边放着文件",
     "timeOfDay": "白天",
     "lighting": "窗边冷光",
-    "camera": "cowboy shot, leaning forward over mahogany desk with laced fingers",
+    "camera": "medium shot",
     "mood": "冷静掌控",
     "sceneTags": [
       "office",
@@ -26,11 +26,8 @@
       "indoor",
       "professional"
     ],
-    "promptProse": "Makima sits behind her office desk with her fingers laced and documents beside her.",
+    "promptProse": "She sits behind the mahogany desk with interlaced fingers beneath her chin, watching the viewer over the documents in the cool window light.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "black coat",
       "interlocked fingers",
       "documents",
       "desk",

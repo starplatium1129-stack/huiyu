@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1603,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_01",
     "title": "吹雪 · 吹雪组总部沙发皮草大衣主控跨坐 ·「加入吹雪组的最高阶待遇……今晚只破例赋予你」",
@@ -30,7 +30,7 @@
       "green_dress",
       "open_clothes"
     ],
-    "promptProse": "She straddles the viewer on the headquarters sofa, her dress lowered to the waist beneath the draped fur coat.",
+    "promptProse": "She straddles the viewer on the headquarters sofa, both hands on their shoulders and the dress lowered to her waist beneath the fur coat; firelight catches her pearls and green hair.",
     "promptTokens": [
       "1girl",
       "fur coat",

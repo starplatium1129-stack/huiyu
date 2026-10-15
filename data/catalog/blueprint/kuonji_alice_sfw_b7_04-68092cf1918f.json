@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1626,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_04",
     "title": "久远寺有珠 · 洋馆月桂的黑色花嫁",
@@ -29,10 +29,8 @@
       "rare_invitation",
       "twilight"
     ],
-    "promptProse": "Alice receives the bluebird on her hand beneath the laurel tree, offering the viewer a reserved glance through her rune veil.",
+    "promptProse": "Alice lets the bluebird perch on her raised finger, her bouquet resting on her lap beneath the laurel tree. Silver runes glimmer along her veil as she looks toward the viewer through the violet dusk.",
     "promptTokens": [
-      "black wedding dress",
-      "veil",
       "bluebird",
       "sitting",
       "laurel",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_r18_aurora_cabin_spread_knees",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 705,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "typhon_arknights_r18_aurora_cabin_spread_knees",
     "characterId": "typhon_arknights",
@@ -16,7 +16,7 @@
     "mood": "动情依恋",
     "lighting": "天窗极光绿芒与室内暖融炉火",
     "timeOfDay": "夜晚",
-    "camera": "overhead high angle, lying on back, spread thighs, bent knees",
+    "camera": "high angle, raised knees and skylight visible",
     "outfitId": "nsfw_nude",
     "recommendedSize": "1152x1536",
     "sceneTags": [

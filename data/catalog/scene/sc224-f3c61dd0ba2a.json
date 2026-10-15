@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc224",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She holds the dress hem against the rooftop wind, feathered wings spread behind her and her shoes visible against the roof.",
+    "animaCaption": "She catches the dress hem in both hands and turns toward the viewer at the rooftop door, feathered wings spread behind her; sunset rims the feathers and her windblown hair above her visible shoes.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "全身远景，人物居中",
     "category": "校园",

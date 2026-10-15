@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 303,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_03",
     "title": "美杜莎 Rider · 锁链缠绕紧身皮衣拉链卡死的受力事故 ·「锁链缠死在拉链上了……Master，请不要用奇怪的眼神看我」",
@@ -12,7 +12,7 @@
     "characterId": "medusa_rider",
     "description": "【卫宫邸藏书室·深夜】保养武器时不慎将无铭短剑的锁链卷进了高叉紧身皮衣的拉链滑轨里。美杜莎双手撑在低矮的书架上，身体被迫塌腰翘起，过紧的皮衣把丰满的大腿与圆润的蜜桃臀勒出深深的肉痕，前胸皮衣绷裂露出深沟与乳晕。她侧脸回头，眼罩微松露出羞怯的单眼——「Master……请用令咒下令让我保持冷静……身体被勒得太紧……好难受……」",
     "location": "卫宫邸藏书室·深夜",
-    "action": "撑书架塌腰回眸双手扯锁链，高叉皮衣卡死勒肉露半乳，单眸微露咬唇娇喘",
+    "action": "俯身靠着低矮书架，短剑锁链卡住衣服拉链，回头时松动眼罩露出一只眼睛",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate horizontal medium shot",

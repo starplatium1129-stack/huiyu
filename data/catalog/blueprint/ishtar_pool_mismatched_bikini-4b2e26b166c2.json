@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_pool_mismatched_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 256,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_pool_mismatched_bikini",
     "title": "伊什塔尔 · 泳池女王的不对称裁定·「两边不对称……才显女神品味」",
@@ -15,7 +15,7 @@
     "action": "出水后坐稳在池畔躺椅，一手搭扶手、另一手摊掌邀请评审，湿发贴脸",
     "timeOfDay": "正午",
     "lighting": "正午烈阳与池水金光",
-    "camera": "medium shot, seated diagonally in a poolside chair, eye level",
+    "camera": "medium shot, eye level",
     "mood": "女神显摆、可爱要强",
     "sceneTags": [
       "pool",
@@ -27,12 +27,8 @@
       "summer",
       "day"
     ],
-    "promptProse": "Ishtar sits sideways in a pool chair, one hand on its arm and the other palm raised toward the viewer. Her black-and-gold bikini and red sarong catch the reflected pool light.",
+    "promptProse": "Seated diagonally in the pool chair, she rests one hand on its arm and raises the other palm toward the viewer, wet hair catching the reflected sunlight.",
     "promptTokens": [
-      "Ishtar",
-      "tiara",
-      "mismatched bikini",
-      "sarong",
       "sitting",
       "deck chair",
       "wet hair",

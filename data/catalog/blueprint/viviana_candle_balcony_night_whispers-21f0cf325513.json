@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "viviana_candle_balcony_night_whispers",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 686,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "身着丝绸睡裙赤足倚靠在露台栏杆上，手扶胸口仰望星空，烛火摇曳",
-    "camera": "cowboy shot, slightly low angle",
+    "camera": "full body, slightly low angle",
     "category": "闺阁日常",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -20,16 +20,13 @@
     "mood": "凄美浪漫",
     "negativeTokens": [],
     "outfitId": "candle_silk_slip",
-    "promptProse": "Viviana watches the stars against the marble rail, candles warming her dress beneath moonlit antlers.",
+    "promptProse": "One hand rests at her chest as she leans against the marble railing and watches the stars, glass-shaded candles warming the silk beneath the cool moonlight.",
     "promptTokens": [
-      "Viviana",
-      "silk slip",
-      "barefoot",
       "hand on chest",
       "terrace",
       "candlelight",
       "moonlight",
-      "cowboy shot"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

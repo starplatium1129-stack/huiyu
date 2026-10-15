@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_sky_wings_watermelon_hug",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1208,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "悬浮于云海天际展开巨大白羽翼，双手紧抱大西瓜，神情呆萌纯真，长双马尾飘扬",
     "camera": "full body, dynamic mid-air upward angle, wide cloudscape scale",
@@ -20,7 +20,7 @@
     "mood": "空灵纯真",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "Ikaros cradles a round watermelon in both arms high above Sorami, her wings spread beside the towering clouds.",
+    "promptProse": "Ikaros cradles a round watermelon in both arms high above Sorami, her wings spread beside towering clouds. Clear sunlight shines through the feather edges above the blue distance.",
     "promptTokens": [
       "flying",
       "spread wings",

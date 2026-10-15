@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_ferris_wheel_fireworks",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 428,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "reze_ferris_wheel_fireworks",
     "title": "蕾塞 · 摩天轮烟花",
@@ -29,11 +29,8 @@
       "colorful_lights",
       "summer"
     ],
-    "promptProse": "Reze watches the fireworks through the enclosed cabin window at the Ferris wheel's highest point, colored light moving across her face.",
+    "promptProse": "Reze watches fireworks through the enclosed cabin window at the ferris wheel’s highest point, her oversized jacket draped over her shoulders. Their changing colors cross her face.",
     "promptTokens": [
-      "bomber jacket",
-      "crop top",
-      "shorts",
       "looking up",
       "ferris wheel",
       "cabin",

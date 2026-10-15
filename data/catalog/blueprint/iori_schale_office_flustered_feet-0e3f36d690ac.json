@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_schale_office_flustered_feet",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 929,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在木椅上双手抱胸别过头，一只黑丝小腿向前伸出，满脸通红羞愤娇嗔",
     "camera": "medium shot, slightly high angle",
@@ -20,14 +20,17 @@
     "mood": "羞愤傲娇",
     "negativeTokens": [],
     "outfitId": "disciplinary_uniform",
-    "promptProse": "Iori sits in the office chair, looking back with an embarrassed glare as afternoon sunlight crosses the desk.",
+    "promptProse": "Seated with arms folded, she extends her stockinged lower leg into the viewer's supporting hands for inspection and turns her flushed face aside; soft window light falls across her ankle and the chair.",
     "promptTokens": [
       "sitting",
       "office chair",
+      "crossed arms",
+      "leg up",
       "blush",
-      "glaring",
+      "looking away",
       "office",
-      "afternoon"
+      "afternoon",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

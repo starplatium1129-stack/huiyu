@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/sfw_studio_rest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 841,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "sfw_studio_rest",
       "name": "摄影休息室散发便服",
-      "prose": "an oversized charcoal hoodie, mid-thigh denim shorts and comfortable sneakers, with her long black hair worn loose",
+      "prose": "an oversized charcoal hoodie, mid-thigh denim shorts and comfortable sneakers, with hair worn loose",
       "tokens": [
-        "oversized_hoodie",
-        "denim_shorts",
+        "oversized hoodie",
+        "denim shorts",
         "sneakers",
-        "hair_down",
-        "long_hair"
+        "hair down"
       ],
       "default": false,
       "isDefault": false

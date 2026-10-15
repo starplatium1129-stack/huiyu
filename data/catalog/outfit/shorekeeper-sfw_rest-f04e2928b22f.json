@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_rest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 940,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
@@ -12,9 +12,9 @@
       "name": "灯塔休憩针织装",
       "prose": "a soft white cardigan over a blue blouse and long cream skirt",
       "tokens": [
-        "white_cardigan",
-        "blue_blouse",
-        "long_skirt"
+        "white cardigan",
+        "blue blouse",
+        "long skirt"
       ],
       "default": false,
       "isDefault": false

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_gala_banquet_balcony_wine_infiltrate",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1200,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuria_gala_banquet_balcony_wine_infiltrate",
     "title": "春寺由梨亚 · 海滨露台餐厅的晚装烛光与浪漫小酌",
@@ -19,7 +19,7 @@
     "action": "摘掉眼镜身穿露背深蓝长裙倚靠栏杆，手执红酒杯回眸浅笑，深蓝眸子满是浪漫爱意",
     "timeOfDay": "夜晚",
     "lighting": "露台烛台金光与海面月色波光交织的奢华浪漫光韵",
-    "camera": "cowboy shot, rear 3/4 view, open back curvature focus, bare face and gentle smile",
+    "camera": "cowboy shot, three-quarter rear view",
     "mood": "浪漫温存",
     "sceneTags": [
       "balcony",
@@ -32,9 +32,8 @@
       "glasses_removed",
       "bare_face"
     ],
-    "promptProse": "Yuria turns toward Yuuji beside the ocean terrace rail, her glass of red wine held at her side.",
+    "promptProse": "With her wine glass at her side, she looks back toward the offscreen Yuuji beside the marble rail, candlelight meeting the moonlit sea.",
     "promptTokens": [
-      "backless navy dress",
       "red wine",
       "wine glass",
       "blush",
@@ -42,7 +41,7 @@
       "ocean",
       "terrace",
       "candlelight",
-      "from behind"
+      "cowboy shot"
     ],
     "negativeTokens": [
       "glasses worn"

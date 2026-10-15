@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ikaros_snowy_park_chick_warming",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1214,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手捧着小黄鸡哈气取暖，巨大白羽翼向前环抱护风，长发落雪，神态极度温柔",
-    "camera": "medium close-up, eye-level, intimate protective atmosphere",
+    "camera": "close-up, eye level",
     "category": "雪野纯善",
     "characterId": "ikaros",
     "coverageTags": [
@@ -20,7 +20,7 @@
     "mood": "纯真圣洁",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "Ikaros warms a shivering chick with her breath, curving her wings around her cupped hands to block the wind.",
+    "promptProse": "Ikaros breathes gently over the shivering chick in her cupped hands, curving her wings around it against the wind. Cold snowlight touches her bowed face and the soft feather edges.",
     "promptTokens": [
       "cupped hands",
       "chick",

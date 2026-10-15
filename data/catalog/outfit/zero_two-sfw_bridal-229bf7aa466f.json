@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "zero_two/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 893,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "zero_two",
     "outfit": {
@@ -12,11 +12,10 @@
       "name": "02·圣洁花嫁",
       "prose": "a white bridal dress with red ribbon accents, a short veil and subtle red-horn embroidery",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "red_ribbon",
-        "short_veil",
-        "horn_embroidery"
+        "white wedding dress",
+        "red ribbons",
+        "short veil",
+        "horn embroidery"
       ],
       "default": false,
       "isDefault": false

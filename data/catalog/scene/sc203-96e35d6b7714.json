@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc203",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 198,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc203",
     "title": "夏夜花火的滑落余温",
@@ -22,26 +22,26 @@
     "tags": [
       "hair_ribbon",
       "yukata",
-      "bare_legs",
       "white_tabi",
       "tatami",
-      "full_body",
-      "depth_of_field"
+      "holding_collar",
+      "sleeve_over_face",
+      "close_up"
     ],
     "mature": false,
     "location": "旅馆传统榻榻米",
     "weather": "夏夜晴朗",
-    "camera": "平视俯瞰近景",
+    "camera": "榻榻米前平视近景",
     "lighting": "日式灯笼朦胧暖光",
     "usage": [
       "新手推荐",
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, pink floral yukata, sitting, holding collar, white tabi, tatami, ryokan, lantern light, close up",
-    "negative": "open yukata, shoes",
+    "negative": "exposed breasts, shoes",
     "storyJa": "【寧々・大人のアフターストーリー・・・花火のあとの浴衣の余韻】夏祭りが終わり、古風な旅館もようやく静かになった。畳の上では寧々の浴衣の帯が緩み、幅広のスカートが肩まで滑り落ち、夜風で少し赤くなった肩と首が露わになっていた。慌てて袖を掴んで顔を覆ったが、頭のアホ毛はすでに恥ずかしそうにハート型に丸まっていた。花火の最後のくぐもった音が遠くから聞こえ、彼女は静かに文句を言い、あなたに近づきました。――「もう、道中ずっとふざけるから……笑ってないで、早く寧々の服を整えるのを手伝ってください。」",
     "rating": "R15",
-    "animaCaption": "She sits holding her yukata collar neatly closed and smiles shyly toward the viewer, white tabi visible beside the hem.",
+    "animaCaption": "Seated on the tatami, she raises one sleeve to hide her blush while gathering the loosened yukata collar with the other hand; the paper lantern warms her shoulder and the pink floral fabric.",
     "auditRevision": "careful-batch05-2026-08-27"
   }
 }

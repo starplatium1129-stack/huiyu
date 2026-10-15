@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_bridal_vow_pastry_chapel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1508,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "waguri_bridal_vow_pastry_chapel",
     "title": "和栗薰子 · 白花礼堂里的轻声道谢",
@@ -16,7 +16,7 @@
     "action": "双手捧着花束，低头看小白花时露出温柔笑容。",
     "timeOfDay": "afternoon",
     "lighting": "soft reflected chapel window light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "甜蜜梦圆、一生相守",
     "sceneTags": [
       "chapel",
@@ -31,11 +31,8 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Waguri notices a tiny white bloom in her bouquet and smiles down beneath the chapel window light.",
+    "promptProse": "Holding the strawberry-decorated bouquet in both hands, she smiles down at a tiny white bloom beneath the chapel window light.",
     "promptTokens": [
-      "Kaoruko Waguri",
-      "white wedding dress",
-      "floral veil",
       "strawberry bouquet",
       "chapel",
       "medium shot"

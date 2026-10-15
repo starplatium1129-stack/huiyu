@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_harbor_dawn",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 606,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "倚着集装箱，遥望海面",
-    "camera": "medium wide shot",
+    "camera": "medium full shot, side view, rusted container and foggy harbor visible",
     "category": "泰拉都市",
     "characterId": "skadi_arknights",
     "description": "【斯卡蒂 · 港口晨雾】伊比利亚冷雾弥漫的破旧港口旁，身着黑色深海猎人风衣的斯卡蒂单手倚在生锈的集装箱边，孤身远眺汹涌翻滚的深海。海风吹拂着她银白色的及膝长发，深红色的眼眸平静却藏着无尽的孤寂——「海浪的声音很吵，那些怪物的低语从未停止……博士，离我远一点，我的身边只有危险。」",
@@ -20,13 +20,10 @@
     "promptProse": "Skadi braces a hand against a rusted container and watches the sea through harbor fog in the first dawn light.",
     "promptTokens": [
       "Skadi",
-      "trench coat",
-      "bodysuit",
       "shipping container",
       "harbor",
       "fog",
-      "dawn",
-      "wide shot"
+      "dawn"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,25 +1,22 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/festive_furisode_kimono",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 766,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "festive_furisode_kimono",
       "name": "红叶烟花振袖和服",
-      "prose": "a luxurious silk furisode kimono in deep crimson with golden maple-leaf patterns, wide flowing sleeves, an ornate obi sash tied at her back, and her black folded ponytail adorned with a red ribbon",
+      "prose": "a crimson silk furisode with golden maple-leaf patterns, wide sleeves and an ornate obi tied at the back",
       "tokens": [
         "furisode",
-        "kimono",
-        "red_kimono",
-        "maple_leaf_pattern",
-        "wide_sleeves",
-        "obi",
-        "japanese_clothes",
-        "hair_ribbon"
+        "red kimono",
+        "maple leaf print",
+        "wide sleeves",
+        "obi"
       ]
     }
   }

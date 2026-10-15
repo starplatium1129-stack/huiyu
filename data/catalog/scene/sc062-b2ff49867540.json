@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc062",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Before the alarm sounds, she gently draws the viewer's wrist against her cheek with both hands.",
+    "animaCaption": "Still half asleep after the first alarm, she cups the viewer's wrist in both hands and presses it to her cheek; soft morning light falls across the pillow and her closed eyes.",
     "auditRevision": "careful-batch02-2026-08-27",
     "camera": "枕边面部与交握手腕近景",
     "category": "恋爱/After_Story",

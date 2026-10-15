@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_feather_shop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 621,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "举着冰镇鸡尾酒杯小口品尝新配方",
+    "action": "端着装有碎冰的果味鸡尾酒，将吸管轻轻转向观众，邀请对方品尝。",
     "camera": "medium close-up shot",
     "category": "泰拉都市",
     "characterId": "quillpen_arknights",
@@ -19,18 +19,16 @@
       "empty glass"
     ],
     "outfitId": "classic_bartender_apron",
-    "promptProse": "La Pluma samples her new fruit cocktail through a straw, holding the iced glass beside her satisfied smile.",
+    "promptProse": "La Pluma holds the iced cocktail toward the viewer and turns its straw within reach, smiling at the invitation. Warm bar light glints through the amber fruit drink and the clear ice beside her fingers.",
     "promptTokens": [
-      "bartender",
-      "apron",
-      "ribbon tie",
       "cocktail",
       "drinking straw",
       "ice",
       "lemon",
       "smile",
       "bar",
-      "dusk"
+      "dusk",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

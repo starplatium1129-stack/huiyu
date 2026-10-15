@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/casual_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 508,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
@@ -14,16 +14,12 @@
       "name": "周末约会风衣",
       "prose": "a stylish autumn casual outfit: a beige trench coat over a cream ribbed knit turtleneck sweater, navy tartan pleated skirt, dark sheer pantyhose, ankle boots, and a small black leather shoulder bag",
       "tokens": [
-        "casual",
         "trench_coat",
         "turtleneck",
-        "sweater",
         "plaid_skirt",
-        "pantyhose",
         "tights",
         "ankle_boots",
-        "shoulder_bag",
-        "autumn_clothes"
+        "shoulder_bag"
       ]
     }
   }

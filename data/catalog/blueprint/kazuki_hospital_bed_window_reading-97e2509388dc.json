@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_hospital_bed_window_reading",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1165,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kazuki_hospital_bed_window_reading",
     "title": "风见一姬 · 白昼病房的书卷沉思",
@@ -31,9 +31,8 @@
       "white_hair",
       "red_eyes"
     ],
-    "promptProse": "Kazuki reads with one knee drawn up on the hospital bed, her cheek resting in one hand beside the morning window.",
+    "promptProse": "The open book rests against her raised knee as Kazuki props her cheek in one hand and turns a page with the other. Morning light through the moving curtain reflects softly from the white bedding.",
     "promptTokens": [
-      "white shirt",
       "sitting",
       "bent knee",
       "hand on own cheek",

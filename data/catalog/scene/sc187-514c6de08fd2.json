@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc187",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 184,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "Seated at the bed's edge, she pulls the viewer into a kiss as sea breeze lifts her hair and dawn backlight passes through the dress.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -30,17 +30,12 @@
       "mole_under_eye",
       "sundress",
       "transparent_dress",
-      "vacuum",
-      "bare_legs",
-      "smooth_thighs",
       "beach_house",
       "sitting_on_bed",
       "dawn",
       "kissing",
       "pulling_neck",
-      "deep_kiss",
-      "full_body",
-      "barefoot"
+      "close_up"
     ],
     "time": "拂晓",
     "timeOfDay": "dawn",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_snowy_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_snowy_window",
     "title": "伊莉雅丝菲尔 · 雪夜窗边",
@@ -15,7 +15,7 @@
     "action": "裹着毯子坐在窗台",
     "timeOfDay": "夜晚",
     "lighting": "cold moonlight and warm firelight",
-    "camera": "intimate medium close-up",
+    "camera": "medium shot",
     "mood": "雪夜温柔",
     "sceneTags": [
       "castle_bedroom",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_karate",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
@@ -12,10 +12,9 @@
       "name": "空手道训练道服",
       "prose": "a properly wrapped white karate gi, white martial-arts trousers and black belt",
       "tokens": [
-        "karate_gi",
-        "white_dougi",
-        "white_pants",
-        "black_belt"
+        "white karate gi",
+        "white pants",
+        "black belt"
       ],
       "default": true,
       "isDefault": true

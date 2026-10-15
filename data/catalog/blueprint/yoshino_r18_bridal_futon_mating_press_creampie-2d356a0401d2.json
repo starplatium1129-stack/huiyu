@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_bridal_futon_mating_press_creampie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1153,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "侧卧大红织金锦被半裹半透绯红薄纱若隐若现，银白发铺散，双手托胸与下身自抚，含泪深情誓约",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "intimate wide shot, reclining side perspective across crimson golden silk blankets",
+    "camera": "wide shot, side view",
     "category": "深层欢愉",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -28,17 +28,15 @@
     "promptProse": "Yoshino cups her chest while touching herself beneath the sheer robe, reclining on red-and-gold bridal bedding with silver twintails across the pillows.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "red robe",
       "see-through",
       "on side",
-      "twintails",
       "masturbation",
       "tears",
       "red sheets",
       "futon",
-      "candlelight"
+      "candlelight",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

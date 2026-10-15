@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_highrise_window_doggystyle_thrust",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1108,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在窗前深潜服侧拉链拉开半露香肩大胸，脊柱接口泛光，单手探入紧身衣深抚，紫眸含泪娇喘",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "medium shot, seated window perspective, focus on flushed face, glowing spine cyberware, and unzipped suit",
+    "camera": "medium shot, rear three-quarter view, seated figure with face turned in profile",
     "category": "深层欢愉",
     "characterId": "lucy_cyberpunk",
     "coverageTags": [
@@ -25,7 +25,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "netrunner_suit",
-    "promptProse": "Lucy reclines before the Night City window with her netrunner suit unzipped at the side, touching herself beneath the open hem.",
+    "promptProse": "Lucy sits on the window cushion with one bent leg along the sill and her white netrunner suit unzipped at the side. One hand braces against the rain-streaked glass while the other touches her beneath the open suit, her spinal interfaces glowing against the city neon.",
     "promptTokens": [
       "1girl",
       "solo",

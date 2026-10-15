@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_slope_white_beret",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1436,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_slope_white_beret",
     "title": "加藤惠 · 坡道上的白色贝雷帽·「那个……你刚才是在叫我吗」",
@@ -16,7 +16,7 @@
     "action": "单手轻按白色贝雷帽回眸浅笑，白裙随风轻扬，手提纸袋",
     "timeOfDay": "春日下午",
     "lighting": "柔和金色的春日午后逆光与树影斑驳",
-    "camera": "medium shot, looking back over shoulder, cherry blossom bokeh",
+    "camera": "medium shot, three-quarter rear view",
     "mood": "命运邂逅、清新纯美",
     "sceneTags": [
       "slope",
@@ -30,9 +30,6 @@
     ],
     "promptProse": "Megumi steadies her white beret and smiles back along the cherry-blossom slope, a paper bag in her other hand.",
     "promptTokens": [
-      "katou_megumi",
-      "white dress",
-      "beret",
       "paper bag",
       "looking back",
       "cherry blossoms",

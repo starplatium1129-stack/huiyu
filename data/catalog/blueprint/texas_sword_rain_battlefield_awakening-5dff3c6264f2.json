@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "texas_sword_rain_battlefield_awakening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 660,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手持剑凌空挥斩，周身金色源石剑阵万剑齐发从天而降",
-    "camera": "cowboy shot, dynamic low angle, epic action",
+    "camera": "wide shot, low angle, descending blades and distant enemy formation visible",
     "category": "战场决胜",
     "characterId": "texas_arknights",
     "coverageTags": [
@@ -20,14 +20,13 @@
     "mood": "霸气凌厉",
     "negativeTokens": [],
     "outfitId": "penguin_logistics",
-    "promptProse": "Texas draws her sword as golden energy blades descend around the enemy formation beneath the red sunset.",
+    "promptProse": "Texas brings her sword down in a two-handed stroke as golden energy blades descend around the distant enemy formation. Their light cuts through the scorched battlefield beneath the red sunset.",
     "promptTokens": [
-      "Texas",
-      "windbreaker",
       "sword",
       "energy blades",
       "battlefield",
       "sunset",
+      "wide shot",
       "low angle"
     ],
     "recommendedSize": "1152x1536",

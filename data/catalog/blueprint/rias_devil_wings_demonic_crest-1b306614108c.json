@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_devil_wings_demonic_crest",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1274,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rias_devil_wings_demonic_crest",
     "title": "莉雅丝 · 纯血恶魔破灭之翼",
@@ -15,7 +15,7 @@
     "action": "展开漆黑恶魔双翼悬浮于夜空，掌心凝聚深红吉蒙里魔力阵，眼眸冷冽威严凝视前方",
     "timeOfDay": "深夜红月",
     "lighting": "猩红月光与掌心魔力光晕交织",
-    "camera": "cowboy shot, low angle, dynamic framing",
+    "camera": "full-body shot, low angle",
     "mood": "威严霸气",
     "sceneTags": [
       "night_sky",
@@ -27,10 +27,8 @@
       "energy_aura",
       "flowing_crimson_hair"
     ],
-    "promptProse": "Rias gathers the Gremory crest in her palm above the old school roof, wings spread as she turns toward the threat.",
+    "promptProse": "She hovers above the old school roof with wings spread, the crimson Gremory crest gathering over her upturned palm beneath the red moon.",
     "promptTokens": [
-      "red dress",
-      "bat wings",
       "spread wings",
       "floating",
       "magic circle",

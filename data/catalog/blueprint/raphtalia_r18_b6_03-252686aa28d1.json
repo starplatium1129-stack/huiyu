@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_r18_b6_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1575,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raphtalia_r18_b6_03",
     "title": "拉芙塔莉雅 · 武器店试衣皮甲搭扣卡死的受力事故 ·「尚文大人……搭扣被尾巴毛卡住了，动不了啦」",
@@ -12,10 +12,10 @@
     "characterId": "raphtalia",
     "description": "【武器店试衣隔间·午后】试穿新定制的精钢轻甲时，后背侧搭扣不慎把尾巴根部的绒毛紧紧卷了进去。拉芙塔莉雅双手撑在试衣桌上，身体前倾塌腰，过紧的护胸把饱满的胸部挤压得几乎爆开，战裙掀起露出浑圆的翘臀与被扯痛的尾巴根部。她回头眼泛泪光——「呜呜……好痛！尚文大人不要乱动尾巴……先把搭扣解开啦！」",
     "location": "武器店试衣隔间·午后",
-    "action": "撑试衣桌塌腰回眸双手护胸，皮甲卡死勒肉溢乳，尾巴卡扣含泪娇呼",
+    "action": "双手撑住试衣桌，身后护甲搭扣卡住尾毛牵扯衣裙，回头求助",
     "timeOfDay": "afternoon",
     "lighting": "warm_firelight",
-    "camera": "intimate horizontal medium shot",
+    "camera": "medium shot, three-quarter rear view",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",
@@ -36,7 +36,6 @@
       "stuck clothes",
       "cleavage",
       "skirt lift",
-      "raccoon tail",
       "bent over",
       "looking back",
       "forge"

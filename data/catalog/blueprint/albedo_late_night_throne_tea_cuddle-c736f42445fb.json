@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_late_night_throne_tea_cuddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1300,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "albedo_late_night_throne_tea_cuddle",
     "title": "雅儿贝德 · 王座深夜的伴茶温存",
@@ -15,7 +15,7 @@
     "action": "跪坐在王座扶手旁，头枕在视角腿侧，黑色羽翼半合拢护卫身旁，眼神依恋深情",
     "timeOfDay": "深夜",
     "lighting": "宏伟吊灯与烛台交织的静谧暖黄色",
-    "camera": "cowboy shot, medium angle, intimate cozy throne view",
+    "camera": "cowboy shot, eye level",
     "mood": "生死相依",
     "sceneTags": [
       "throne_room",
@@ -29,10 +29,8 @@
       "holding_teacup",
       "loving_smile"
     ],
-    "promptProse": "Kneeling beside the throne, she rests her cheek beside her companion's knee after he catches her wrist. Her wings partly shelter them in candlelight.",
+    "promptProse": "Kneeling beside the throne, she steadies the offered teacup as her companion lightly catches her wrist. Her cheek rests against his knee, and her wings partly shelter them in candlelight.",
     "promptTokens": [
-      "white dress",
-      "black wings",
       "throne",
       "kneeling",
       "tea",

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc160",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 157,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She stands at the closed kitchen's counter wearing only the apron, looking back over her shoulder with a startled blush.",
+    "animaCaption": "With the knife resting on the cutting board beside the fruit, she turns back toward the viewer from the kitchen counter; the warm light outlines the apron ties against her back.",
     "auditRevision": "careful-batch02-2026-08-27",
-    "camera": "近景特写",
+    "camera": "厨房后侧全身景",
     "category": "亲密/After_Story",
     "char": "nene",
     "character": [

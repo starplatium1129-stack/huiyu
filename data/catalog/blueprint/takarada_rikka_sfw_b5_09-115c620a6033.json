@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_09",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1538,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_09",
     "title": "宝多六花 · 体育仓库后的喘息",
@@ -16,7 +16,7 @@
     "action": "练习后在阴影里喝水，一手扶腰，疲惫却没有离开。",
     "timeOfDay": "日间",
     "lighting": "daylight",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "takarada_rikka",
@@ -34,11 +34,8 @@
       "daylight",
       "waist_up"
     ],
-    "promptProse": "Rikka drinks after relay practice in the storehouse doorway, daylight catching the bottle above shaded equipment.",
+    "promptProse": "After relay practice, she drinks with one hand holding the bottle and the other at her waist, standing in the storehouse doorway where daylight meets the shaded equipment.",
     "promptTokens": [
-      "takarada_rikka",
-      "sports shirt",
-      "track pants",
       "water bottle",
       "storehouse",
       "medium shot"

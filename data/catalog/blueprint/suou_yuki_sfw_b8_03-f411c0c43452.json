@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 786,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "她的房间，松垮卫衣、盘腿坐地毯，左手薯片右手漫画，头发乱翘",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "horizontal medium shot",
+    "camera": "cowboy shot",
     "category": "日常生活",
     "characterId": "suou_yuki",
     "coverageTags": [
@@ -23,16 +23,13 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_casual",
-    "promptProse": "Yuki laughs over manga on the carpet, then straightens at footsteps outside the lamplit bedroom.",
+    "promptProse": "Sitting cross-legged on the bedroom carpet, she laughs at the manga in her right hand while holding a chip in her left, warm lamplight falling across the pages.",
     "promptTokens": [
-      "Yuki",
-      "grey hoodie",
-      "trousers",
       "crossed legs",
       "manga",
       "chips",
       "bedroom",
-      "medium shot"
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",

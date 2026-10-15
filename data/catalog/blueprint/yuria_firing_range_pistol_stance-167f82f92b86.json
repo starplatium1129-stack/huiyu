@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_firing_range_pistol_stance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1203,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuria_firing_range_pistol_stance",
     "title": "春寺由梨亚 · 初冬街角的红羊毛围巾与热可可分享",
@@ -19,7 +19,7 @@
     "action": "摘掉眼镜穿米色大衣与红围巾，双手递出热可可纸杯呵出白气，温柔宠溺注视",
     "timeOfDay": "下午",
     "lighting": "初冬午后金黄暖阳与橱窗暖色装饰彩灯交织的节日浪漫氛围",
-    "camera": "medium shot, eye-level winter date perspective, focus on red scarf, steaming cup, and smiling bare face",
+    "camera": "medium shot, eye level",
     "mood": "温暖浪漫",
     "sceneTags": [
       "city_street",
@@ -35,23 +35,21 @@
       "bare_face",
       "gentle_smile"
     ],
-    "promptProse": "On the shopping walk with Yuuji, Yuria offers the steaming cocoa with both hands, her face uncovered above the scarf.",
+    "promptProse": "She offers the steaming cocoa toward the offscreen Yuuji in both hands, a small breath cloud above her scarf as warm shop-window lights brighten the winter street.",
     "promptTokens": [
-      "beige coat",
-      "red scarf",
-      "leather boots",
       "hot chocolate",
       "paper cup",
       "offering",
       "winter street",
-      "afternoon"
+      "afternoon",
+      "medium shot"
     ],
     "negativeTokens": [
       "glasses worn",
       "firearm"
     ],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "group",
+    "compositionIntent": "single",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

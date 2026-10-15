@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_rain_ruins_solitude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 676,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "独自坐在雨夜古堡断壁顶端，双刀插在身侧，仰天狂笑，任由暴雨冲刷",
-    "camera": "cowboy shot, dramatic low angle",
+    "camera": "cowboy shot, low angle",
     "category": "孤狼叙事",
     "characterId": "lappland_arknights",
     "coverageTags": [
@@ -22,8 +22,6 @@
     "outfitId": "nomad_wasteland",
     "promptProse": "Lappland sits atop the ruined wall with both swords planted beside her, laughing into the storm.",
     "promptTokens": [
-      "grey poncho",
-      "leather pants",
       "swords",
       "sitting",
       "laughing",

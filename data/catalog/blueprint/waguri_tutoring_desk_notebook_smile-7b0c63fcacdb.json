@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_tutoring_desk_notebook_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1504,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "waguri_tutoring_desk_notebook_smile",
     "title": "和栗薰子 · 图书馆里认真核对的一行",
@@ -16,7 +16,7 @@
     "action": "用铅笔核对笔记，把漏掉的符号记在便签上再抬眼。",
     "timeOfDay": "afternoon",
     "lighting": "warm library desk light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "跨越校际的秘密恋爱、纯情美好",
     "sceneTags": [
       "library",
@@ -30,10 +30,8 @@
       "desk_light",
       "medium_shot"
     ],
-    "promptProse": "Waguri copies a missing symbol to a sticky note and looks up smiling across the lamplit library table.",
+    "promptProse": "Her pencil pauses over the corrected sticky note as she looks up at the viewer across the lamplit table, the open notebook steady beneath her free hand.",
     "promptTokens": [
-      "Kaoruko Waguri",
-      "school uniform",
       "pencil",
       "notebook",
       "sticky note",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_garden_bench",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 561,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "停驻在花丛树荫下的轮椅上，膝盖覆着薄毯翻看诗集",
     "camera": "medium shot",
@@ -19,12 +19,10 @@
       "readable poetry"
     ],
     "outfitId": "rehab_cozy_knitwear",
-    "promptProse": "Lemuen reads poetry in her wheelchair under the garden shade, a light blanket across her knees.",
+    "promptProse": "Lemuen holds the poetry book open on her blanket-covered lap beneath the garden trees. Morning light sifts through the leaves onto the page as she glances up toward the viewer.",
     "promptTokens": [
       "1girl",
       "solo",
-      "cardigan",
-      "trousers",
       "wheelchair",
       "lap blanket",
       "poetry book",

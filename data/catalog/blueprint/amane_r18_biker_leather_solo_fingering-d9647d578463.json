@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_biker_leather_solo_fingering",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1189,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "amane_r18_biker_leather_solo_fingering",
     "title": "周防天音 · 车库独处机车旁私密自抚情愫",
@@ -14,12 +14,12 @@
     "coverageTags": [
       "solo_nsfw"
     ],
-    "description": "【周防天音 · 车库独处机车旁私密自抚情愫】深夜静悄悄的私人车库内，天音背靠在自己心爱的重型机车旁。黑色热裤被褪到大腿中部，红色皮夹克拉链敞开。她单手托住自己沉甸甸的丰盈巨乳，另一只涂着红指甲的手指顺着平坦紧致的小腹探入湿热花径深处。指尖在花褶间缓慢摩挲，两颊绯红如火，嘴里溢出动情的呢喃——「哈啊……雄二……一想到你的手掌……身体就变得好热好空虚……」",
+    "description": "深夜私人车库里，成年天音靠着停放的机车，一只靴子踩在维修支架上；连体皮衣拉链松开，工作灯映在镀铬部件上。",
     "location": "私人车库重型机车旁倚坐",
-    "action": "靠在机车旁解裤开腿自抚，单手托胸，另一手深入湿热私处自我探索，面颊潮红微喘",
+    "action": "一手扶车把，另一手伸入松开的连体衣下，一脚踩维修架。",
     "timeOfDay": "深夜",
     "lighting": "车库昏黄工作灯与机车镀铬配件反射的温暖金属光泽",
-    "camera": "medium shot, seated intimacy, focus on blushing face and lifted jacket",
+    "camera": "full body, eye level",
     "mood": "极乐沉沦",
     "sceneTags": [
       "masturbation",
@@ -30,7 +30,7 @@
       "heavy_blush",
       "teary_eyes"
     ],
-    "promptProse": "Adult Amane leans against the parked motorcycle with one boot on a service stand, holding the handlebar while her other hand reaches beneath the loosened suit.",
+    "promptProse": "Adult Amane leans against the parked motorcycle with one boot on a service stand, holding the handlebar while her other hand reaches beneath the loosened suit. The garage work lamp reflects on the chrome.",
     "promptTokens": [
       "adult",
       "garage",
@@ -39,8 +39,7 @@
       "unzipped",
       "topless",
       "raised leg",
-      "masturbation",
-      "neon lights"
+      "masturbation"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

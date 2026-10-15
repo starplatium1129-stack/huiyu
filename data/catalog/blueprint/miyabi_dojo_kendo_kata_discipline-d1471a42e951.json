@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_dojo_kendo_kata_discipline",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1066,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手持木刀摆出中段持剑姿态，赤足站立，眼神如刀锋般锐利清澈",
     "camera": "full body, front view, disciplined martial composition",
@@ -20,12 +20,8 @@
     "mood": "刚毅专注",
     "negativeTokens": [],
     "outfitId": "dojo_training",
-    "promptProse": "Miyabi holds the wooden sword in a steady middle guard with both hands, barefoot on the dojo floor.",
+    "promptProse": "Miyabi stands barefoot in middle guard, right hand near the wooden sword’s guard and left hand at the pommel. Morning light from the high windows lies in clean bands across the polished dojo floor.",
     "promptTokens": [
-      "keikogi",
-      "hakama",
-      "handwraps",
-      "barefoot",
       "bokken",
       "sword stance",
       "dojo",

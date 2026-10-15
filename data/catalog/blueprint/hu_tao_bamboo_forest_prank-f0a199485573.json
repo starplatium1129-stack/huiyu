@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_bamboo_forest_prank",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hu_tao_bamboo_forest_prank",
     "title": "胡桃 · 翠竹幽径捉迷藏",
@@ -30,16 +30,14 @@
       "morning_light",
       "eye_level"
     ],
-    "promptProse": "Hu Tao peeks from behind a bamboo stalk with one finger to her lips, her other hand against the stalk beside the stone path.",
+    "promptProse": "Peeking around a thick bamboo stalk, she puts one finger to her lips and braces her other hand against the trunk; leaf-filtered morning light dapples her mischievous face and the stone path.",
     "promptTokens": [
-      "sweater",
-      "red skirt",
-      "knee socks",
       "peeking",
       "shushing",
       "smile",
       "bamboo forest",
-      "morning"
+      "morning",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

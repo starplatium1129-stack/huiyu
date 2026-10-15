@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_casino_evening_gala",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 182,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jalter_casino_evening_gala",
     "title": "贞德[Alter] · 晚宴酒杯",
@@ -31,12 +31,10 @@
       "warm_wall_lamps",
       "medium_shot"
     ],
-    "promptProse": "Jeanne Alter turns from the terrace railing and offers the viewer a glass of red wine. Warm wall lamps catch her silver hair and golden eyes.",
+    "promptProse": "Jeanne Alter offers the wine glass toward the viewer with one hand while the other rests on the terrace rail. Wall lamps warm her silver hair against the chandelier glow through the open doors.",
     "promptTokens": [
       "1girl",
       "solo",
-      "black dress",
-      "gloves",
       "wine glass",
       "railing",
       "casino",

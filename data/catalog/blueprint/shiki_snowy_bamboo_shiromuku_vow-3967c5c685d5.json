@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shiki_snowy_bamboo_shiromuku_vow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1346,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "穿白无垢和角隐站在雪庭木廊前，双手交叠腹前微微行礼，再抬眼浅笑。",
-    "camera": "medium full shot, eye level, formal bridal portrait",
+    "camera": "cowboy shot, eye level",
     "category": "纯白誓约",
     "characterId": "ryougi_shiki",
     "coverageTags": [
@@ -22,12 +22,8 @@
     "mood": "神圣誓约",
     "negativeTokens": [],
     "outfitId": "sfw_white_shiromuku",
-    "promptProse": "Shiki folds her hands and bows toward her companion on the veranda, snow-reflected light catching the white wedding silk.",
+    "promptProse": "With her hands overlapped at her abdomen, she inclines her head toward the offscreen companion on the veranda, snow-reflected light catching the woven wedding silk.",
     "promptTokens": [
-      "Ryougi Shiki",
-      "shiromuku",
-      "tsunokakushi",
-      "tabi",
       "bowing",
       "snow",
       "courtyard",

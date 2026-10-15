@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_skyline_roof",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 628,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单膝蹲在天台边缘，手搭凉棚远眺龙门都市",
-    "camera": "medium wide shot",
+    "camera": "wide shot, eye level",
     "category": "泰拉都市",
     "characterId": "exusiai_arknights",
     "description": "【能天使 · 天台速递】狂风呼啸的龙门摩天大楼天台边缘，能天使单膝蹲在护栏顶端，单手搭成凉棚极目远眺下方穿梭如织的车流，身后的八支高阶铳械与金色光翼在夕阳下熠熠生辉——「目标坐标已锁定！准备好来一场突破重力极限的屋顶空中大漂移了吗？抓紧我的腰，我们出发！」",
@@ -17,7 +17,7 @@
     "mood": "自由洒脱",
     "negativeTokens": [],
     "outfitId": "city_rider",
-    "promptProse": "Balanced on one knee atop the guardrail, she shades her eyes to inspect traffic below, eight guns arranged beside her golden light wings.",
+    "promptProse": "Balanced on one knee atop the guardrail, she shades her eyes to inspect the traffic below. Orange dusk catches the eight guns arranged beside her golden light wings above the skyline.",
     "promptTokens": [
       "1girl",
       "solo",

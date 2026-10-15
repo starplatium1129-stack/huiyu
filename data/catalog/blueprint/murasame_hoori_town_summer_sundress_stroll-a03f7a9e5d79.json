@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_hoori_town_summer_sundress_stroll",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1121,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手压草帽回眸张望，吊带裙摆随风摇曳，脸上带着探索小镇的好奇神采",
     "camera": "cowboy shot, slight low angle, vibrant street depth",
@@ -20,11 +20,8 @@
     "mood": "明媚活泼",
     "negativeTokens": [],
     "outfitId": "modern_dress",
-    "promptProse": "Murasame keeps one hand on her ribboned straw hat while walking past the old inns and food stalls.",
+    "promptProse": "Murasame holds her ribboned straw hat with one hand and turns to inspect a food stall beside the old inns. Sunlight through the willows dapples her pale dress and the stone path.",
     "promptTokens": [
-      "sundress",
-      "straw hat",
-      "sandals",
       "walking",
       "willow",
       "hot spring town",

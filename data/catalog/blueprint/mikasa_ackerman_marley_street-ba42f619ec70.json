@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_marley_street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 982,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "街巷中穿行",
     "camera": "cowboy shot, walking through a Liberio city street in Marley military uniform",
@@ -18,12 +18,8 @@
     "mood": "肃穆警觉",
     "negativeTokens": [],
     "outfitId": "marley_uniform",
-    "promptProse": "Mikasa moves through the Liberio streets in her black military gear, watching the road ahead.",
+    "promptProse": "Mikasa walks beneath the Liberio eaves, watching the road ahead. The red scarf stands out against her black uniform and the flat grey daylight.",
     "promptTokens": [
-      "black military uniform",
-      "armor",
-      "straps",
-      "red scarf",
       "walking",
       "street",
       "overcast"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_forest_cabin_hearth_warmth",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1168,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kazuki_forest_cabin_hearth_warmth",
     "title": "风见一姬 · 避难木屋的炉火温存",
@@ -19,7 +19,7 @@
     "action": "抱膝蜷坐在火炉旁毛毯上，火光映照侧脸，眼神温柔而坚定",
     "timeOfDay": "深夜",
     "lighting": "壁炉木柴燃烧的炽热橙红暖光与小屋外漆黑风雨的强烈冷暖反差",
-    "camera": "medium close-up, eye-level warmth, intimate cozy contrast",
+    "camera": "medium shot, eye level",
     "mood": "坚毅温暖",
     "sceneTags": [
       "cabin",
@@ -31,16 +31,15 @@
       "white_dress",
       "red_eyes"
     ],
-    "promptProse": "Kazuki sits curled on a blanket beside the forest shelter fireplace, watching the flames through the stormy night.",
+    "promptProse": "Kazuki sits curled on the blanket with her knees held close, watching the shelter fireplace. Orange firelight warms her profile against the dark rain beyond the cabin.",
     "promptTokens": [
-      "white dress",
       "hugging knees",
       "blanket",
       "fireplace",
       "cabin",
       "storm",
       "night",
-      "close-up"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152"

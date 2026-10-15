@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
     "title": "黑呆 · 冬木残垣的卑王铁槌",
@@ -15,7 +15,7 @@
     "action": "立于宽阔断柱顶端，双手高举黑红魔剑，在斩落前俯视战场",
     "timeOfDay": "血月深夜",
     "lighting": "誓约胜利之剑极恶魔力奔涌的血红强光与黑泥阴影",
-    "camera": "full-body low-angle shot, both hands and raised sword visible",
+    "camera": "full body, low angle",
     "mood": "暴君神威",
     "sceneTags": [
       "fuyuki_ruins",
@@ -31,9 +31,6 @@
     ],
     "promptProse": "Saber Alter raises Excalibur Morgan in both hands atop a broken pillar, its red light falling across her gauntlets.",
     "promptTokens": [
-      "Saber Alter",
-      "black armor",
-      "sword",
       "raised arms",
       "ruins",
       "full body",

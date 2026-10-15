@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_rhodes_tea_salon_conversation",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 685,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐在复古木椅前，优雅执白瓷茶壶为对面斟茶，眉眼含笑温和",
     "camera": "medium shot, eye level",
@@ -20,11 +20,8 @@
     "mood": "端庄温婉",
     "negativeTokens": [],
     "outfitId": "autumn_stroll_casual",
-    "promptProse": "Viviana pours Darjeeling with both hands supporting the teapot, soft window light crossing the cup and saucer.",
+    "promptProse": "With one hand on the teapot handle and the other supporting its body, she pours Darjeeling into the cup across the table, soft window light crossing the saucer.",
     "promptTokens": [
-      "Viviana",
-      "coat",
-      "turtleneck",
       "teapot",
       "cup",
       "tea room",

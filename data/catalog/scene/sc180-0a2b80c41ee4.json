@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc180",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "She clings to her partner beneath the blanket, only her flushed face and hands at the blanket edge visible.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -28,11 +28,10 @@
     "storyJa": "【寧々・大人のアフターストーリー · ·朝の完全真空と究極の優しさ】怠惰な休日の朝、暖かい壊れた光がカーテンを通って飛び散りました。あなたは暖かいベッドから目覚めると、寧々がベッドで裸で、翡翠のように白い繊細な体がタコのように体を包み込んでいるのを見つけてショックを受けました。あなたが目覚めたおかげで、彼女はキルトの下に身を寄せて、かなり赤い顔だけを見せました、そして、彼女の極度の心の安らぎと恥ずかしがり屋のせいで、頭の上のアホ毛はおとなしく完璧なハート型の螺旋を描きました。彼女は布団の角をしっかりと握り締め、輝く瞳は潤いの層で覆われ、声は柔らかくコケティッシュだった。――「おはようございます……もう、布団の中でいたずらしないでください。起きる前に、もう一度だけ抱きしめて。」",
     "tags": [
       "hair_ribbon",
-      "completely_naked",
-      "bare_shoulders",
+      "nude",
       "embracing_under_blanket",
       "warm_bed",
-      "full_body"
+      "close_up"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

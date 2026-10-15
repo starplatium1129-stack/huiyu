@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/sfw_morning_pink_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1144,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
@@ -14,15 +14,13 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "an opaque oversized white cotton shirt with rolled cuffs and a pale-pink cotton apron, comfortable house slippers, blonde hair loosely clipped up and an uncovered face",
+      "prose": "an oversized white cotton shirt with rolled cuffs, pale-pink apron and house slippers, with hair loosely clipped up and no glasses",
       "tokens": [
-        "white_shirt",
-        "cotton_shirt",
-        "rolled_sleeves",
-        "pink_apron",
-        "apron",
+        "oversized white shirt",
+        "sleeves rolled up",
+        "pink apron",
         "slippers",
-        "hair_up"
+        "hair up"
       ]
     }
   }

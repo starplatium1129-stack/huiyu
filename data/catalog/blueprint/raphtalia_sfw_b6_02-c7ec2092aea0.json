@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1564,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_02",
     "title": "拉芙塔莉雅 · 市集里的围巾试色",
@@ -16,7 +16,7 @@
     "action": "把围巾比在肩上，摸摸织边是否柔软。",
     "timeOfDay": "afternoon",
     "lighting": "diffuse awning daylight",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "market_stall",
@@ -29,10 +29,8 @@
       "awning",
       "medium_shot"
     ],
-    "promptProse": "Raphtalia holds the ochre scarf against her tunic, then feels its edge beside an ear to judge the weave.",
+    "promptProse": "She holds the ochre scarf against one shoulder and rubs its edge between the fingertips of her free hand beside her ear beneath the stall awning.",
     "promptTokens": [
-      "teal tunic",
-      "waistcoat",
       "scarf",
       "fabric",
       "market stall"

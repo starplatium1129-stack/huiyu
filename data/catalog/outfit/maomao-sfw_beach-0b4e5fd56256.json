@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 986,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
@@ -12,9 +12,9 @@
       "name": "猫猫·海滨泳装",
       "prose": "a deep-green swimsuit with a short cream cape and herb pouch",
       "tokens": [
-        "deep_green_swimsuit",
-        "cream_cape",
-        "herb_pouch"
+        "green swimsuit",
+        "cream cape",
+        "herb pouch"
       ],
       "default": false,
       "isDefault": false

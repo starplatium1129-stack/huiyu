@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_shopping_weekend_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1439,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_shopping_weekend_dress",
     "title": "加藤惠 · 周末服装店的认真挑选·「这两件衣服……伦也君觉得哪一件更好看呢」",
@@ -16,7 +16,7 @@
     "action": "身前比划连衣裙认真低头比对，马尾微晃，眼神专注沉吟",
     "timeOfDay": "周末午后",
     "lighting": "精品店暖色射灯与镜面柔和反光",
-    "camera": "medium shot, holding clothes, shopping date, natural expression",
+    "camera": "medium shot",
     "mood": "日常约会、认真生活",
     "sceneTags": [
       "shopping",
@@ -28,13 +28,10 @@
       "serious",
       "cute"
     ],
-    "promptProse": "Megumi holds a dress against herself and studies the fit, her ponytail shifting as she looks down.",
+    "promptProse": "She holds up a summer dress on each hanger, comparing them against her outfit with her gaze lowered to the fabrics.",
     "promptTokens": [
-      "katou_megumi",
-      "ponytail",
-      "pink sweater",
-      "cream skirt",
-      "holding dress",
+      "holding clothes",
+      "dress",
       "boutique"
     ],
     "negativeTokens": [],

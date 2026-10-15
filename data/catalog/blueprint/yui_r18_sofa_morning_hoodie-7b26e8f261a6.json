@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_sofa_morning_hoodie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 353,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yui_r18_sofa_morning_hoodie",
     "characterId": "yuigahama_yui",
@@ -20,7 +20,7 @@
       "frying_pan",
       "dog_ears"
     ],
-    "promptProse": "The age-twenty-plus Yui balances a plate of uneven eggs on the cushion and wipes a smear of butter from her inner thigh after the failed breakfast.",
+    "promptProse": "The age-twenty-plus Yui steadies the breakfast plate with one hand and wipes butter from her inner thigh with the other, curled into the sunlit sofa with her hoodie open.",
     "promptTokens": [
       "adult",
       "open hoodie",
@@ -42,7 +42,7 @@
     "location": "由比滨家晨光厨房",
     "action": "蜷坐晨光沙发，连帽衫敞开，一手端早餐盘、一手擦去大腿内侧融化黄油",
     "timeOfDay": "清晨",
-    "lighting": "bright golden morning kitchen light, warm counter reflections, soft steam from pan",
+    "lighting": "warm morning window light across the sofa cushions",
     "camera": "medium shot",
     "mood": "笨拙温馨",
     "recommendedSize": "1152x1536",

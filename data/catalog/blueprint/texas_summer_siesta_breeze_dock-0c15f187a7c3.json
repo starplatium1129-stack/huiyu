@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "texas_summer_siesta_breeze_dock",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 664,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在木质栈桥边缘双腿悬空，推起墨镜凝望碧蓝大海，微风拂动狼尾",
-    "camera": "cowboy shot, golden sunshine",
+    "camera": "full body, seated figure and feet above water visible",
     "category": "海滨假日",
     "characterId": "texas_arknights",
     "coverageTags": [
@@ -20,14 +20,11 @@
     "mood": "惬意悠闲",
     "negativeTokens": [],
     "outfitId": "summer_sunbreeze",
-    "promptProse": "Texas pushes up her sunglasses from the dock, feet hanging above the sunlit harbor water.",
+    "promptProse": "Texas pushes her sunglasses up with one hand from her seat on the wooden dock, her feet hanging above the blue water. Sea wind stirs her loose white shirt and wolf tail in the bright harbor sunlight.",
     "promptTokens": [
-      "Texas",
-      "one-piece swimsuit",
-      "white shirt",
-      "sunglasses",
       "pier",
-      "cowboy shot"
+      "sea",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

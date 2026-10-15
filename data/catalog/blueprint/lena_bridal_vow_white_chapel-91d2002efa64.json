@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "lena_bridal_vow_white_chapel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1356,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "手捧白花立于光柱中，仰头望向新娘入场的方向，泪光与浅笑交织",
+    "action": "双手捧白花站在彩窗光柱中，抬头向走近的伴侣露出含泪浅笑",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
     "camera": "wide shot, environmental portrait, stained glass light rays, sacred bridal atmosphere",
@@ -26,11 +26,9 @@
     "mood": "神圣圣洁、泪光心动",
     "negativeTokens": [],
     "outfitId": "white_bridal_gown",
-    "promptProse": "Lena holds her white bouquet in the chapel, lifting a tearful smile toward her approaching companion.",
+    "promptProse": "Lena holds the white bouquet in both hands beneath the chapel’s stained-glass light. She lifts a tearful smile toward her companion approaching down the aisle.",
     "promptTokens": [
       "vladilena_millize",
-      "wedding dress",
-      "veil",
       "bouquet",
       "chapel",
       "noon",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1643,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_05",
     "title": "守岸人 · 灯塔下的潮汐泳装",
@@ -30,15 +30,13 @@
       "sea_breeze",
       "evening_light"
     ],
-    "promptProse": "She turns a luminous shell in her palm on the bay rocks, its glow lighting her fingers above the evening water.",
+    "promptProse": "Shorekeeper turns the luminous shell in her open palm from her seat on the bay rock, then holds her gaze toward the viewer. Its soft glow shines between her fingers above the evening water.",
     "promptTokens": [
-      "Shorekeeper",
-      "swimsuit",
-      "shawl",
-      "bracelet",
       "shell",
       "sitting",
       "rock",
+      "bay",
+      "evening",
       "medium shot"
     ],
     "negativeTokens": [],

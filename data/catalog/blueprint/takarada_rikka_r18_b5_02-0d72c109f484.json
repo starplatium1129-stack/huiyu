@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1554,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_02",
     "title": "宝多六花 · 暴雨阳台湿身白衬衫的潮湿独奏 ·「空气好闷……身上黏糊糊的真讨厌」",
@@ -15,7 +15,7 @@
     "action": "靠阳台门湿透白衬衫透肉，手探裙底抚弄肉腿，咬指尖烦躁娇喘",
     "timeOfDay": "afternoon",
     "lighting": "liquid_reflection_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot",
     "mood": "湿身水光与私密自持",
     "sceneTags": [
       "wet",
@@ -30,11 +30,9 @@
       "wet_skin",
       "water_droplets"
     ],
-    "promptProse": "Rikka leans against the balcony's sliding door, biting one fingertip while touching herself beneath the wet skirt. Rain runs from her short bob onto her soaked shirt.",
+    "promptProse": "Adult Rikka leans against the balcony's sliding door, biting one fingertip while touching herself beneath the wet skirt; rain runs from her hair onto her soaked shirt.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "white shirt",
       "wet clothes",
       "see-through",
@@ -44,7 +42,8 @@
       "finger biting",
       "masturbation",
       "balcony",
-      "rain"
+      "rain",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

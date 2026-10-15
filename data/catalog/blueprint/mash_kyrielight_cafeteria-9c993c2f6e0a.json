@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_cafeteria",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "negativeTokens": [
       "jacket worn"
@@ -18,7 +18,7 @@
     "action": "坐好后将灰外套搭在椅背，一手扶餐盘，另一手把肉排与蔬菜分开摆好",
     "timeOfDay": "白天",
     "lighting": "食堂日光",
-    "camera": "medium shot, sitting at dining table",
+    "camera": "medium shot",
     "mood": "日常温馨",
     "sceneTags": [
       "chaldea_cafeteria",
@@ -34,13 +34,8 @@
       "midday_light",
       "medium_shot"
     ],
-    "promptProse": "Mash holds her lunch tray steady while separating vegetables from the cutlet; her grey jacket rests on the chair back.",
+    "promptProse": "One hand steadies the tray while the other guides a fork between the vegetables and cutlet; her grey jacket hangs on the chair behind her.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "black dress",
-      "red necktie",
-      "glasses",
       "lunch tray",
       "fork",
       "cafeteria"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_greenhouse_facility",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 717,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "蹲在苗圃边查看新芽",
     "camera": "medium shot",
@@ -17,10 +17,8 @@
     "mood": "温柔耐心",
     "negativeTokens": [],
     "outfitId": "greenhouse_facility_uniform",
-    "promptProse": "Perlica examines the nursery's first green sprout, turning to share a rare gentle smile beside the growing bed.",
+    "promptProse": "Crouched beside the growing bed, she turns from the first green sprout to share a small smile with the offscreen Administrator in the warm grow-light.",
     "promptTokens": [
-      "work jacket",
-      "trousers",
       "crouching",
       "sprout",
       "greenhouse",

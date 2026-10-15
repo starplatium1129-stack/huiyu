@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 73,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_07",
     "title": "双叶理央 · 夜行列车上的星图",
@@ -30,13 +30,10 @@
       "detailed_train_interior",
       "medium_shot"
     ],
-    "promptProse": "She keeps one fingertip on the unfolded star chart while checking a bright star through the train window.",
+    "promptProse": "She keeps one fingertip on the unfolded chart while checking the bright star above the bay through the train window. The overhead reading lamp warms her eyes and the thermos standing securely on the small table.",
     "promptTokens": [
       "1girl",
       "solo",
-      "padded jacket",
-      "scarf",
-      "glasses",
       "star chart",
       "thermos",
       "train interior",

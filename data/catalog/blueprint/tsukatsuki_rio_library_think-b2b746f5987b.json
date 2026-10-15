@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_library_think",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 881,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "靠书架沉思",
     "adult": false,
@@ -29,9 +29,6 @@
     "promptProse": "Rio examines an old record chip beside the metal archive shelves under recessed ceiling lights.",
     "promptTokens": [
       "Rio",
-      "turtleneck",
-      "skirt",
-      "watch",
       "data chip",
       "archive",
       "medium shot"

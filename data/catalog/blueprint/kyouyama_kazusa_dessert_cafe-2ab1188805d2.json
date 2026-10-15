@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_dessert_cafe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 858,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "举叉子试吃蛋糕",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "close-up, shallow depth of field",
+    "camera": "medium two-shot, eye level",
     "category": "甜点日常",
     "characterId": "kyouyama_kazusa",
     "compositionIntent": "group",
@@ -27,14 +27,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "After tasting the strawberry cake, Kazusa offers a careful forkful toward the teacher across the dessert-shop table.",
+    "promptProse": "Kazusa sits on the left and extends a forkful of cake toward the teacher seated on the right, their faces and the shared table visible in the warm cafe light.",
     "promptTokens": [
-      "school uniform",
-      "hood",
+      "2people",
       "fork",
       "strawberry cake",
       "dessert shop",
-      "close-up"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1593,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_05",
     "title": "吹雪 · 海滨俱乐部的冰镇提案",
@@ -30,13 +30,10 @@
       "composed_smile",
       "afternoon_light"
     ],
-    "promptProse": "She pins a windblown planning sheet to the table before looking up with a composed smile.",
+    "promptProse": "She pins the windblown proposal against the table beside the chilled drink and looks up toward the viewer; afternoon light filtered through the canopy softens her composed smile.",
     "promptTokens": [
       "1girl",
       "solo",
-      "green one-piece swimsuit",
-      "white coat",
-      "sunhat",
       "sitting",
       "papers",
       "drink",

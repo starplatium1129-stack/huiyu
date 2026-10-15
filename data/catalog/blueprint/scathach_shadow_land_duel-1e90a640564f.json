@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_shadow_land_duel",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 242,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "scathach_shadow_land_duel",
     "title": "斯卡哈 · 影之国雾海的弑神双枪·「想从我这里学艺，先接下这一击」",
@@ -29,11 +29,8 @@
       "full_body",
       "low_angle"
     ],
-    "promptProse": "Scathach lowers her stance above the misty rift with a crimson spear in each hand, both complete weapons visible.",
+    "promptProse": "Scathach lowers her stance on the black rock above the rift, one complete crimson spear extended in each hand. Their red glow cuts across the violet mist and catches the silver edge of her shoulder guards.",
     "promptTokens": [
-      "Scathach",
-      "purple bodysuit",
-      "pauldrons",
       "dual wielding",
       "spear",
       "rock",

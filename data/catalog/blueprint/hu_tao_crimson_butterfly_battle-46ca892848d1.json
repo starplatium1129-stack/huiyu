@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_crimson_butterfly_battle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hu_tao_crimson_butterfly_battle",
     "title": "胡桃 · 蝶引来生烈焰长枪",
@@ -30,7 +30,7 @@
       "low_angle",
       "full_body"
     ],
-    "promptProse": "Hu Tao sweeps the complete Staff of Homa diagonally across the frame from a low crouch, flame butterflies circling the shaft.",
+    "promptProse": "From a low crouch, she sweeps the full Staff of Homa diagonally across the frame with both hands; its red flame and circling fire butterflies light her face and coat against the ruined battlefield.",
     "promptTokens": [
       "polearm",
       "holding weapon",

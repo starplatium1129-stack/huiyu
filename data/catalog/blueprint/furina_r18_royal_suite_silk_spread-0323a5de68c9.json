@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_royal_suite_silk_spread",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "furina_r18_royal_suite_silk_spread",
     "title": "芙宁娜 · 贵宾套房的丝绸初绽",
@@ -15,7 +15,7 @@
     "action": "全裸斜倚在深蓝真丝床褥上，双腿屈膝大张，手指探入湿润私处自慰，面泛浓郁高潮潮红",
     "timeOfDay": "夜晚",
     "lighting": "壁炉暖红微光与床头台灯昏暗侧光",
-    "camera": "high angle, top-down view, vertical foreshortening, pov",
+    "camera": "full-body shot, first-person view, from above",
     "mood": "羞耻诱惑",
     "sceneTags": [
       "bedroom",
@@ -33,10 +33,7 @@
     ],
     "promptProse": "She lies across the blue silk bedding and touches herself in the warm fireplace glow.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "adult",
-      "heterochromia",
       "nude",
       "on back",
       "on bed",

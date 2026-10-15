@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_black_thighhighs",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 389,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_r18_black_thighhighs",
     "title": "伊雷娜 · 黑丝的旅夜",
@@ -15,7 +15,7 @@
     "action": "黑丝长腿交叠坐在床边",
     "timeOfDay": "夜晚",
     "lighting": "warm magic lantern light",
-    "camera": "intimate medium shot, thigh and foot focus",
+    "camera": "full-body shot, first-person view",
     "mood": "俏皮自恋",
     "sceneTags": [
       "inn_room",
@@ -28,10 +28,7 @@
     ],
     "promptProse": "She rolls down one stocking with both hands, pointing her bare foot toward the viewer beneath the hat brim.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "adult",
-      "witch hat",
       "black thighhighs",
       "nude",
       "sitting",
@@ -41,7 +38,8 @@
       "bare foot",
       "blush",
       "inn",
-      "cowboy shot"
+      "full body",
+      "witch hat"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

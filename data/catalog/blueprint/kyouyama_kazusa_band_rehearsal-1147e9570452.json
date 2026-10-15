@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_band_rehearsal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 857,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "背贝斯练习",
     "adult": false,
@@ -26,10 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "live_stage",
-    "promptProse": "Kazusa practices her bass line beside the amplifier in the rehearsal room.",
+    "promptProse": "She frets the bass neck with one hand and plucks the strings with the other, concentrating beside the blue-lit amplifier.",
     "promptTokens": [
-      "black stage outfit",
-      "silver jewelry",
       "bass guitar",
       "amplifier",
       "rehearsal room",

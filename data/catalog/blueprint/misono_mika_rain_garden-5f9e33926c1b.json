@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_rain_garden",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 892,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "撑着蕾丝洋伞漫步白蔷薇园，微笑回望",
     "adult": false,
@@ -26,10 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "Mika offers her free hand while turning beneath the lace umbrella in the rainy rose garden.",
+    "promptProse": "Mika holds the lace umbrella in her right hand and turns to offer her left hand to the viewer behind her. Light through a break in the clouds catches the raindrops on her wings and the white roses.",
     "promptTokens": [
-      "school dress",
-      "fur capelet",
       "lace umbrella",
       "hand offered",
       "white roses",

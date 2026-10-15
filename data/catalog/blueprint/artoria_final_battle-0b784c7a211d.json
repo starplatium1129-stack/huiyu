@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_final_battle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "artoria_final_battle",
     "title": "阿尔托莉雅 · 最终决战",
@@ -29,14 +29,13 @@
     ],
     "promptProse": "She raises Excalibur in both hands as its golden beam cuts through storm clouds. The light reaches the ruined ground and her armor.",
     "promptTokens": [
-      "blue armored dress",
-      "white gloves",
       "Excalibur",
       "holding sword",
       "raised arms",
       "battlefield",
       "magic",
-      "wind"
+      "wind",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

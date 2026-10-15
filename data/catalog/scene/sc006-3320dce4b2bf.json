@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc006",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She offers a closed gift box in both mittened hands, smiling shyly beneath the Christmas lights.",
+    "animaCaption": "She extends the closed gift box toward the viewer in both mittened hands, her shy face warmed by the Christmas lights against the pale reflected light of the snow.",
     "auditRevision": "careful-batch14-2026-08-27",
     "camera": "半身中景",
     "category": "祭典・节日",

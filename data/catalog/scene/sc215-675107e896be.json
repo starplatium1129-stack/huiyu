@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc215",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 210,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She holds the magic-history book against her chest and looks up to invite the viewer to study before closing time.",
+    "animaCaption": "She hugs the magic-history book against her chest and looks up toward the viewer between the shelves; cool moonlight edges her silver hair while the desk lamp warms her hands.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "平视中景，书架形成纵深",
     "category": "校园",
@@ -31,12 +31,11 @@
       "school_uniform",
       "sheer_white_thighhigh_stockings",
       "library",
-      "full_body",
-      "loafers",
+      "medium_shot",
       "moonlight",
       "hugging_book",
       "evening",
-      "depth_of_field"
+      "desk_lamp"
     ],
     "time": "闭馆前",
     "timeOfDay": "evening",

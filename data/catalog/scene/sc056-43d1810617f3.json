@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc056",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She steps out of the shallows and looks back, both feet visible among the small waves.",
+    "animaCaption": "She turns back toward the viewer while stepping out of the shallows, one hand catching the windblown cover-up hem; bright sea reflections light her shy face and the small waves around her visible feet.",
     "camera": "全身回眸远景",
     "category": "旅行",
     "char": "nene",

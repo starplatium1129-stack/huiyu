@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/shrine_maiden",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 625,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
@@ -12,19 +12,14 @@
       "id": "shrine_maiden",
       "isDefault": true,
       "name": "神职正统巫女服",
-      "prose": "traditional sacred Hoori shrine maiden ceremonial vestments: immaculate white kimono blouse with billowing open sleeves, flowing vermilion-red pleated hakama skirt, sheer black pantyhose stockings, delicate pastel pink cherry blossom hairpins, and lacquered wooden geta sandals",
+      "prose": "a white wide-sleeved kimono blouse, vermilion pleated hakama skirt, sheer black tights and lacquered geta",
       "tokens": [
         "miko",
-        "japanese_clothes",
-        "white_kimono",
-        "wide_sleeves",
-        "hakama",
-        "red_hakama",
-        "pantyhose",
-        "black_pantyhose",
-        "hair_flower",
-        "geta",
-        "traditional_japanese"
+        "white kimono",
+        "wide sleeves",
+        "red hakama",
+        "black pantyhose",
+        "geta"
       ]
     }
   }

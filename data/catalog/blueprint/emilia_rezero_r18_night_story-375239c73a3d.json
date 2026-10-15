@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_night_story",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 452,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "emilia_rezero_r18_night_story",
     "title": "爱蜜莉雅 · 睡前童话",
@@ -15,7 +15,7 @@
     "action": "深夜趴在松软大枕头上看童话书，双足轻晃",
     "timeOfDay": "深夜",
     "lighting": "warm candlelight and soft glow",
-    "camera": "side view, medium shot, horizontal framing",
+    "camera": "full body, side view",
     "mood": "纯真温存",
     "sceneTags": [
       "royal_bedroom",

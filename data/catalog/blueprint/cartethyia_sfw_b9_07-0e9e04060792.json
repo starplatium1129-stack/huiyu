@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1663,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_07",
     "title": "卡提希娅 · 溪边擦剑的短暂休息",
@@ -29,15 +29,14 @@
       "relaxed",
       "afternoon_light"
     ],
-    "promptProse": "She wipes the sword across her lap, then lifts the polished blade toward the viewer. Afternoon light and water reflections reach the rock.",
+    "promptProse": "Seated on the stream rock, she raises the freshly polished sword for the viewer to see while the cleaning cloth rests on her lap. Afternoon light glints along the steel above the moving water.",
     "promptTokens": [
       "stream",
-      "white blouse",
-      "blue skirt",
       "sword",
       "cloth",
       "sitting",
-      "afternoon"
+      "afternoon",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1740,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_04",
     "title": "不知火舞 · 道场红绸的花嫁扇舞",
@@ -16,7 +16,7 @@
     "action": "道场中央以扇舞扬起红绸，收扇面对镜头，端庄与武者自信并存",
     "timeOfDay": "黄昏",
     "lighting": "red-gold evening light across wooden boards",
-    "camera": "medium full shot, vertical framing",
+    "camera": "full body",
     "mood": "大和抚子与武者的花嫁扇舞",
     "sceneTags": [
       "wedding_kimono",
@@ -29,16 +29,12 @@
       "confident_smile",
       "sunset"
     ],
-    "promptProse": "Mai turns and closes her fan, her long red sash following the movement across the evening-lit dojo.",
+    "promptProse": "At the end of her turn, she holds the closed fan in one hand and her bouquet in the other, smiling toward the viewer as the red sash settles over the evening-lit boards.",
     "promptTokens": [
-      "Mai Shiranui",
-      "bridal kimono",
-      "veil",
-      "red sash",
       "fan",
       "bouquet",
       "dojo",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

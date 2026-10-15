@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_bridal_vow_gold_chapel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 258,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_bridal_vow_gold_chapel",
     "title": "伊什塔尔 · 金色花嫁的圣约·「女神下嫁，空前绝后」",
@@ -15,7 +15,7 @@
     "action": "金线白纱行进花冠在首，红瞳得意又恍惚",
     "timeOfDay": "婚礼日",
     "lighting": "圣殿金柱折射的辉煌光",
-    "camera": "wide shot, processional portrait, gold-lined chapel, bride walk, epic mood",
+    "camera": "wide shot",
     "mood": "史诗级下嫁、得意幸福",
     "sceneTags": [
       "imagined_temple_wedding",
@@ -29,13 +29,8 @@
       "warm_reflected_light",
       "full_body"
     ],
-    "promptProse": "Ishtar gathers her gold-embroidered white gown and offers her free hand while walking between the temple columns.",
+    "promptProse": "She gathers one side of the gown with one hand and offers the other to the viewer as she walks between the gold-lit temple columns.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "wedding dress",
-      "veil",
-      "flower crown",
       "reaching towards viewer",
       "temple",
       "pillar",

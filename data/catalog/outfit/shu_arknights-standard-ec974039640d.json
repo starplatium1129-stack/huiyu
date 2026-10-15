@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/standard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 402,
   "createdAt": null,
-  "updatedAt": "2026-10-04T15:24:42.960074100+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
@@ -13,20 +13,17 @@
       "default": true,
       "isDefault": true,
       "tokens": [
-        "off_shoulder",
-        "open_jacket",
-        "white_jacket",
-        "long_sleeves",
-        "gold_trim",
-        "tube_top",
-        "white_belt",
-        "white_pants",
-        "black_boots",
-        "tassel_earrings",
-        "bead_bracelet",
+        "white jacket",
+        "off shoulder",
+        "tube top",
+        "white pants",
+        "gold trim",
+        "black boots",
+        "tassel earrings",
+        "bead bracelet",
         "necklace"
       ],
-      "prose": "her original white long jacket with cobalt-blue lining, gold cord fastenings and an off-shoulder fit over a gray-and-white strapless top, a white belt, wide white trousers with ocher illustrated hem panels, black ankle boots, long tassel earrings, a necklace of geometric bronze blocks and pale bead bracelets",
+      "prose": "a white off-shoulder jacket with cobalt lining and gold cord fastenings over a grey-and-white strapless top, white trousers with ocher patterned hems, black ankle boots, tassel earrings, a bronze-block necklace and pale bead bracelets",
       "category": "官方衣装"
     }
   }

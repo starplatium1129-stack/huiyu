@@ -12,6 +12,8 @@ import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
 import { authoredAnimaCaption } from './promptCaption.ts'
 import { orderedAnimaTags } from './animaPromptOrder.ts'
+import { cameraTokensFromText, resolveCameraTags } from './promptCamera.ts'
+import { SHOT } from '../config/promptConstants.ts'
 import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, animaLightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
 
 export interface PromptCompilerInput {
@@ -20,6 +22,7 @@ export interface PromptCompilerInput {
   artists?: string[]; artistProse?: string
   exactTokens?: string[]
   emotion?: string[]; camera?: string[]; lighting?: string[]; palette?: string[]; composition?: string[]
+  authoredLighting?: string
   manual?: string[]; negative?: string; rating?: string; visualDescription?: string
   style?: string[]; medium?: string; subjectProse?: string; outfitProse?: string; sceneProse?: string
   scene?: PromptSceneContext | null
@@ -173,11 +176,6 @@ const WEATHER_PHRASES: ReadonlyArray<readonly [RegExp, string]> = [
   [/风/, 'in a light breeze'],
 ]
 
-const SHOT_FIELD_PHRASE = {
-  pov: 'a first-person point of view', detail: 'a detail close-up', close: 'a close-up',
-  medium: 'a medium shot', wide: 'a full-body wide shot', high: 'a high angle',
-  low: 'a low angle', side: 'a side view', turn: 'looking back over her shoulder', over: 'a selfie',
-} as const
 const LIGHT_FIELD_PHRASE = {
   golden: 'golden-hour light', window: 'window light', back: 'backlighting',
   moon: 'moonlight', lantern: 'warm light', overcast: 'diffused overcast light',
@@ -193,10 +191,10 @@ function sceneFieldPhrases(scene: PromptSceneContext | null): string[] {
   return phrases
 }
 
-function sceneCameraPhrases(scene: PromptSceneContext | null): string[] {
+function sceneCameraTokens(scene: PromptSceneContext | null): string[] {
   if (!scene) return []
   const shot = sceneShot(scene)
-  return [shot ? SHOT_FIELD_PHRASE[shot] : '', /三分之四/.test(String(scene.camera || '')) ? 'a three-quarter view' : ''].filter(Boolean)
+  return [SHOT.find(option => option.id === shot)?.prompt || '', /三分之四/.test(String(scene.camera || '')) ? 'three-quarter view' : ''].filter(Boolean)
 }
 
 function sceneLightingPhrases(scene: PromptSceneContext | null): string[] {
@@ -226,9 +224,9 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const mood: string[] = [...plan.emotion.map(moodPhrase).filter(Boolean)]
   const environment: string[] = []
   const manualBackground: string[] = []
-  const camera: string[] = [...plan.camera.map(cameraPhrase).filter(Boolean), ...sceneCameraPhrases(plan.scene)]
+  const camera: string[] = []
   const lighting: string[] = [...plan.lighting.map(lightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
-  for (const token of [...plan.sceneVisualFragments, ...plan.manual]) {
+  for (const token of resolveCameraTags([...plan.camera, ...sceneCameraTokens(plan.scene), ...plan.sceneVisualFragments, ...plan.manual], plan.manual, plan.camera)) {
     const key = normalizeProseKey(token)
     if (!key || KREA_META_KEYS.has(key) || KREA_IDENTITY_KEYS.has(key) || exactKeys.has(key)) continue
     if (KREA_ACTION_RE.test(key) || KREA_BODY_DETAIL_RE.test(key)) { action.push(actionPhrase(token)); continue }
@@ -371,14 +369,14 @@ export function sanitizeVisualArtifacts(text: string): string {
 }
 
 function buildStudioAnimaCaption(plan: PromptPlan): string {
-  const explicit = sanitizeVisualArtifacts(proseClause(String(plan.scene?.animaCaption || '')))
+  const explicit = sanitizeVisualArtifacts(clean(String(plan.scene?.animaCaption || '')))
   if (explicit) return sentence(sanitizeVisualArtifacts(authoredAnimaCaption(plan, explicit)))
 
   const identityKeys = new Set(plan.identity.map(normalizeProseKey))
   const exactKeys = new Set(plan.exactControls.map(normalizeProseKey))
   const actions: string[] = []
   const environment: string[] = []
-  const camera: string[] = [...plan.camera.map(cameraPhrase).filter(Boolean), ...sceneCameraPhrases(plan.scene)]
+  const camera: string[] = [...plan.camera, ...sceneCameraTokens(plan.scene)].map(cameraPhrase).filter(Boolean)
   const lighting: string[] = [...plan.lighting.map(animaLightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
   for (const token of [...plan.sceneVisualFragments, ...plan.manual]) {
     const key = normalizeProseKey(token)
@@ -416,7 +414,7 @@ function buildAnimaVisualDirection(plan: PromptPlan): string {
   if (!structured) return sentence(plan.visualDescription)
   if (plan.scene) return buildStudioAnimaCaption(plan)
   if (plan.sceneProse) {
-    return sentence(sanitizeVisualArtifacts(authoredAnimaCaption(plan, proseClause(plan.sceneProse))))
+    return sentence(sanitizeVisualArtifacts(authoredAnimaCaption(plan, clean(plan.sceneProse))))
   }
   return buildStudioAnimaCaption(plan)
 }
@@ -429,7 +427,8 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
     artists: [...new Set(input.artists || [])],
     preserveTokens: [...new Set(input.exactTokens || [])],
     sceneVisualFragments: split(input.scenePrompt), emotion: [...(input.emotion || [])],
-    camera: [...(input.camera || [])], lighting: [...(input.lighting || [])], palette: [...(input.palette || [])],
+    camera: [...(input.camera || []), ...cameraTokensFromText(input.scene?.camera)], lighting: [...(input.lighting || [])], palette: [...(input.palette || [])],
+    authoredLighting: input.authoredLighting,
     composition: [...(input.composition || [])], manual: [...(input.manual || [])],
     negative: split(input.negative), visualDescription: plainEnglish(input.visualDescription),
     style: [...new Set(input.style || [])],
@@ -492,7 +491,7 @@ export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile
   const tags = allTags(plan)
   if (capabilities.promptFormat === 'anima-tags') {
     const formatted = formatPromptForEngine(
-      orderedAnimaTags(plan, tags, profile?.strip_quality_tokens === true),
+      orderedAnimaTags(plan, resolveCameraTags(tags, plan.manual, plan.camera), profile?.strip_quality_tokens === true),
       'anima',
       plan.preserveTokens.concat(profile?.exact_tokens || []),
       profile?.exact_prefixes || [],

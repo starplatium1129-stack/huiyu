@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_village",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 455,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在村落草原间回望",
     "camera": "cowboy shot, standing in the village grassland",
@@ -20,8 +20,6 @@
     "promptProse": "Roxy looks back along the grassy path through Migurd village, sunlight catching her wind-lifted cape beside the yurts.",
     "promptTokens": [
       "Roxy Migurdia",
-      "cape",
-      "boots",
       "grassland",
       "village",
       "looking back",

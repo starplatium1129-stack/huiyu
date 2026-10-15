@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/sfw_care_cardigan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 822,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "sfw_care_cardigan",
       "name": "薄荷色照料家居装",
-      "prose": "a mint-green buttoned cardigan over an opaque ivory round-neck blouse, loose grey full-length lounge trousers and soft slippers",
+      "prose": "a buttoned mint cardigan over an opaque ivory blouse, with loose grey lounge trousers and soft slippers",
       "tokens": [
-        "mint_cardigan",
-        "buttoned_cardigan",
-        "ivory_blouse",
-        "pajama_pants",
+        "mint cardigan",
+        "buttons",
+        "ivory blouse",
+        "grey pants",
         "slippers"
       ],
       "isDefault": false,

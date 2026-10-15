@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_cloud_peak",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 653,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "立于山巅仰望银河伸臂虚握流星",
-    "camera": "wide shot, standing on a mountain peak with one arm outstretched",
+    "camera": "wide shot",
     "category": "泰拉自然",
     "characterId": "ling_arknights",
     "description": "【令 · 云海山巅观星】绝顶之上，云海在脚下翻涌成浪，银河横贯天际。令立于山巅青石之上，极长的蓝发在夜风中如瀑飘散，龙角映着星辉，墨青旗袍的下摆轻轻翻飞。她抬手虚握一颗流星的余光，声音飘渺如吟——「朝菌不知晦朔，蟪蛄不知春秋。而我看过太多春秋，仍觉得人间有趣。」",
@@ -19,10 +19,9 @@
       "city skyline"
     ],
     "outfitId": "standard",
-    "promptProse": "Ling reaches toward a passing meteor from the mountain peak above the cloud sea.",
+    "promptProse": "Standing on the summit stone above the cloud sea, she extends one hand toward the passing meteor, her hair streaming beneath the Milky Way.",
     "promptTokens": [
-      "teal robe",
-      "arm out",
+      "outstretched arm",
       "mountain",
       "clouds",
       "milky way",

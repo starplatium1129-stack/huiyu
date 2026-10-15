@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_sweets_shop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 869,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "冷脸吃草莓圣代",
     "adult": false,
@@ -26,12 +26,9 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "casual_maid",
-    "promptProse": "She offers a spoonful of strawberry-chocolate sundae across the table. Warm cafe light catches the spoon and layered dessert.",
+    "promptProse": "She extends a spoonful of strawberry-chocolate sundae toward the viewer across the table. Warm cafe light catches the spoon just above the layered dessert.",
     "promptTokens": [
       "cafe",
-      "black dress",
-      "jacket",
-      "headset",
       "sundae",
       "spoon",
       "offering",

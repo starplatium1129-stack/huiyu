@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/sfw_riverbank_sundress_barefoot",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1135,
   "createdAt": "2026-10-06T12:58:20.813784400+00:00",
-  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
@@ -14,13 +14,9 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "a light floral cotton sundress with a softly gathered waist and a wide-brimmed straw hat, barefoot",
+      "prose": "a light floral cotton sundress with a gathered waist, worn barefoot",
       "tokens": [
-        "floral_dress",
-        "sundress",
-        "cotton_dress",
-        "gathered_waist",
-        "straw_hat",
+        "floral sundress",
         "barefoot"
       ]
     }

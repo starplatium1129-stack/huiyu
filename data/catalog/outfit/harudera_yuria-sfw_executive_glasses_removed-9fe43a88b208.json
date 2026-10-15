@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/sfw_executive_glasses_removed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1146,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
@@ -14,15 +14,13 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "场景衣装状态",
-      "prose": "a charcoal business suit jacket over a white collared shirt, matching pencil skirt, black tights and heeled shoes, her face uncovered",
+      "prose": "a charcoal suit jacket over a white collared shirt, matching pencil skirt, black tights and heels, worn without glasses",
       "tokens": [
-        "business_suit",
-        "charcoal_jacket",
-        "white_shirt",
-        "collared_shirt",
-        "pencil_skirt",
-        "black_tights",
-        "high_heels"
+        "charcoal suit jacket",
+        "white shirt",
+        "pencil skirt",
+        "black pantyhose",
+        "high heels"
       ]
     }
   }

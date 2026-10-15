@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_opera_epiclese_trial",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "furina_opera_epiclese_trial",
     "title": "芙宁娜 · 欧庇克莱的独舞审判",
@@ -15,7 +15,7 @@
     "action": "戏剧性端坐于华贵天鹅绒审判椅上，单手优雅扶帽微俯身倾听",
     "timeOfDay": "下午",
     "lighting": "金色水晶吊灯顶光与蔚蓝水幕泛光",
-    "camera": "cowboy shot, dynamic low angle",
+    "camera": "cowboy shot, low angle",
     "mood": "戏剧高雅",
     "sceneTags": [
       "opera_house",
@@ -31,10 +31,6 @@
     ],
     "promptProse": "She tips her hat while leaning forward on the judgement throne to listen, framed by the blue water curtain.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blue formal clothes",
-      "top hat",
       "sitting",
       "throne",
       "leaning forward",

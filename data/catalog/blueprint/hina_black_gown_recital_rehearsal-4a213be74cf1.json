@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hina_black_gown_recital_rehearsal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 945,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfitId": "evening_dress",
@@ -16,12 +16,8 @@
     "mood": "认真平静",
     "description": "【日奈 · 黑礼服的钢琴排练】演出前的音乐厅还没有观众，日奈穿着带褶边的黑色晚礼服和长手套，珍珠项链在琴灯下泛着柔光。她端坐在钢琴前，双手落在琴键上，反复练习同一小段旋律——「这里再来一次。正式演出之前，想把每个音都弹稳。」",
     "action": "端坐钢琴凳上，双手弹奏琴键，视线专注于琴谱",
-    "promptProse": "Hina repeats a short phrase at the grand piano before the recital, both hands on the keys with the score and empty seating visible.",
+    "promptProse": "Hina repeats the short phrase with both hands on the keys and her gaze on the score. The piano lamp glows on her pearls while soft stage light falls toward the empty seats.",
     "promptTokens": [
-      "black dress",
-      "evening gown",
-      "gloves",
-      "pearl necklace",
       "piano",
       "sheet music",
       "music hall",

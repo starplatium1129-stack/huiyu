@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/apartment_streetwear_barefoot",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 607,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
@@ -14,14 +14,11 @@
       "name": "安全屋赤足街头便装",
       "prose": "Night City street techwear: an oversized cropped charcoal sleeveless mesh tank, low-rise dark cargo joggers with neon straps and utility buckles, barefoot",
       "tokens": [
-        "casual",
         "tank_top",
         "crop_top",
         "sleeveless",
         "cargo_pants",
-        "pants",
         "barefoot",
-        "streetwear",
         "cyberpunk"
       ]
     }

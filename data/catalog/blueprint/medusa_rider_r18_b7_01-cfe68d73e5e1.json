@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_01",
     "title": "美杜莎 Rider · 鲜血神殿王座黑色乳胶紧身衣主控跨坐 ·「Master……被魔物吞噬的觉悟，准备好了吗」",
@@ -15,7 +15,7 @@
     "action": "跨坐石座乳胶衣深V大开，摘眼罩露魔眼，极长紫发垂落主动起伏",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot, first-person view from the seated companion",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,10 +30,9 @@
       "highleg_bodysuit",
       "deep_v"
     ],
-    "promptProse": "Medusa moves astride the lap-facing stone throne view with her bodysuit unzipped and blindfold removed, revealing her glowing mystic eyes.",
+    "promptProse": "From the seated companion’s viewpoint, Medusa straddles their lap on the stone throne with her bodysuit unzipped and blindfold removed. Torchlight catches her uncovered mystic eyes.",
     "promptTokens": [
       "1girl",
-      "solo",
       "open latex bodysuit",
       "bare breasts",
       "blindfold removed",
@@ -56,6 +55,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "compositionIntent": "single"
   }
 }

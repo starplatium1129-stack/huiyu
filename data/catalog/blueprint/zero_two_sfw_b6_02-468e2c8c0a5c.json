@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1574,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "zero_two_sfw_b6_02",
     "title": "02 · 温室里偷到的一口甜",
@@ -29,10 +29,8 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Zero Two lifts the bread to check that the small drop of honey is not dripping, smiling triumphantly on the low stool.",
+    "promptProse": "Zero Two sits on the low greenhouse stool and raises the honeyed bread to check for drips, her free hand cupped underneath. Leaf-filtered sunlight rests on her pink hair and triumphant smile.",
     "promptTokens": [
-      "white shirt",
-      "olive overalls",
       "honey",
       "bread",
       "stool",

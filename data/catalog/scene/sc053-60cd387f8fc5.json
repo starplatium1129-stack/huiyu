@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc053",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She rests against the viewer's shoulder while the dryer runs, with washing machines receding behind the bench.",
+    "animaCaption": "Seated beside the viewer on the laundromat bench, she rests her head on their shoulder and watches the turning dryer; pale winter window light crosses their adjoining sleeves.",
     "auditRevision": "audit-v25-2026-08-26-batch3",
     "camera": "长椅双人中景",
     "category": "恋爱",
@@ -31,12 +31,13 @@
       "t_shirt",
       "denim_shorts",
       "sheer_black_tights",
-      "smooth_thighs",
       "laundromat",
-      "leaning",
-      "full_body",
+      "leaning_on_shoulder",
+      "sitting",
+      "bench",
+      "medium_shot",
       "sneakers",
-      "depth_of_field"
+      "window_light"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

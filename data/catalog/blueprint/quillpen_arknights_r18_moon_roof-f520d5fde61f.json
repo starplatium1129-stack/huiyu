@@ -1,23 +1,23 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_moon_roof",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 625,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "全裸倚着落地窗，睡眼迷蒙地回眸注视海景",
+    "action": "跪在屋顶挎包旁，一手留住风中掀动的信纸。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
     "camera": "intimate medium shot",
     "category": "成人",
     "characterId": "quillpen_arknights",
-    "description": "【羽毛笔 · 海景窗夜】多索雷斯高层酒店巨大的全景落地窗前，俯瞰着下方璀璨的海景灯火。全裸倚靠在玻璃窗旁的拉菲艾拉睡眼迷蒙地回眸注视着你，修长白皙的双腿微微交叠——「外面的灯光好漂亮……但拉菲艾拉最喜欢的，还是博士温暖的怀抱。」",
+    "description": "月光下的屋顶上，拉菲艾拉穿着敞开的衬衫与裙装，跪在挎包旁伸手留住被风吹动的信纸。远处城市霓虹沿发梢留下微弱的彩色轮廓。",
     "id": "quillpen_arknights_r18_moon_roof",
     "kreaStyleHint": "",
     "lighting": "cool blue moonlight, city neon rim glow, soft starry sky",
-    "location": "多索雷斯海景套房",
+    "location": "多索雷斯屋顶，随身挎包旁",
     "mood": "澄澈私密",
     "negativeTokens": [],
     "nsfwProse": "",
@@ -48,6 +48,6 @@
       "curtains"
     ],
     "timeOfDay": "深夜",
-    "title": "羽毛笔 · 海景窗夜"
+    "title": "羽毛笔 · 屋顶月夜"
   }
 }

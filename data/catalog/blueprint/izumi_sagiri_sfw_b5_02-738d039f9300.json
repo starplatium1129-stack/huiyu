@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1524,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_02",
     "title": "和泉纱雾 · 直播开场前的招呼练习",
@@ -31,9 +31,8 @@
       "desk_light",
       "medium_shot"
     ],
-    "promptProse": "Sagiri practices a greeting for the desk camera, then laughs shyly. A bear plush sits beside her keyboard.",
+    "promptProse": "She holds one hand raised toward the desk camera and laughs at her own earnest greeting; the desk lamp lights her face and the bear plush beside the keyboard.",
     "promptTokens": [
-      "hoodie",
       "waving",
       "camera",
       "stuffed bear",

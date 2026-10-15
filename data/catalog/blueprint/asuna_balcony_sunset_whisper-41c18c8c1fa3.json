@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_balcony_sunset_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1368,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asuna_balcony_sunset_whisper",
     "title": "结城明日奈 · 骑士团露台的解剑深吻·「不论在哪个世界，我的心只属于你」",
@@ -15,7 +15,7 @@
     "action": "解下配剑放在身侧，双手环住你的脖颈踮起脚尖，闭眼倾身与你拥吻，晚霞染金战袍与发丝",
     "timeOfDay": "黄昏晚霞",
     "lighting": "瑰丽磅礴的金色夕阳与漫天绯红晚霞，逆光勾勒金红边缘光",
-    "camera": "medium close-up, sunset backlight silhouette, wind-blown romantic kiss, epic floating castle backdrop",
+    "camera": "medium shot, eye level",
     "mood": "旷世之恋、执子之手",
     "sceneTags": [
       "balcony",
@@ -27,15 +27,13 @@
       "holding_neck",
       "wind_blown"
     ],
-    "promptProse": "She wraps her arms around her companion's neck for a kiss. Lambent Light and its belt rest against the stone balustrade in sunset light.",
+    "promptProse": "She rises onto her toes and closes her eyes for a kiss, both arms around her companion's neck. Lambent Light and its belt rest against the stone balustrade; sunset edges their windblown hair.",
     "promptTokens": [
       "couple",
       "castle terrace",
-      "Knights of the Blood uniform",
       "kiss",
-      "tiptoes",
       "sunset",
-      "close-up"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

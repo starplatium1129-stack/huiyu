@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_bridal_vow_chapel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1442,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_bridal_vow_chapel",
     "title": "加藤惠 · 礼堂里系好的花束缎带",
@@ -16,7 +16,7 @@
     "action": "系紧花束缎带后抬眼，露出克制而认真的笑。",
     "timeOfDay": "afternoon",
     "lighting": "soft reflected stained-glass light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "终成眷属、神圣感动",
     "sceneTags": [
       "chapel",
@@ -29,10 +29,8 @@
       "soft_window_light",
       "medium_shot"
     ],
-    "promptProse": "Megumi tightens the bouquet ribbon and looks up with a small, sincere smile.",
+    "promptProse": "With the bouquet resting against her waist, she draws its ribbon ends snug and lifts a small, sincere smile toward the viewer in the colored window light.",
     "promptTokens": [
-      "wedding dress",
-      "veil",
       "bouquet",
       "ribbon",
       "chapel window"

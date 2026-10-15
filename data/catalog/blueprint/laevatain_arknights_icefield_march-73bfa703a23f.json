@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_icefield_march",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 722,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "扛着熔光大剑稳步前行",
     "camera": "full body",
@@ -17,10 +17,8 @@
     "mood": "炽烈与寒冰",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Laevatain advances across the icefield with her glowing greatsword carried on her shoulder.",
+    "promptProse": "Laevatain carries her greatsword on one shoulder and glances back at the viewer while striding across the ice. Its molten glow warms the edge of her hair against the pale frozen landscape.",
     "promptTokens": [
-      "black dress",
-      "boots",
       "greatsword",
       "walking",
       "snow",

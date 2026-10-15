@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_throne_hall",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 189,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "negativeTokens": [],
     "id": "morgan_le_fay_fate_throne_hall",
@@ -30,14 +30,10 @@
       "cold_daylight",
       "medium_shot"
     ],
-    "promptProse": "Morgan sits upright with both hands on the throne armrests, quietly surveying the hall.",
+    "promptProse": "Morgan sits upright with both hands on the throne armrests, quietly surveying the hall. Cold daylight catches her crown and the silver hair falling over the dark throne.",
     "promptTokens": [
       "1girl",
       "solo",
-      "royal gown",
-      "high collar",
-      "wing sleeves",
-      "crown",
       "throne",
       "palace"
     ],

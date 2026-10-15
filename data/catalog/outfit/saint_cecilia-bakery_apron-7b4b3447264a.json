@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/bakery_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 481,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
@@ -12,13 +12,10 @@
       "id": "bakery_apron",
       "isDefault": false,
       "name": "面包房烘焙围裙",
-      "prose": "wearing a pastel yellow home dress under a simple white baking apron, with her mint-green hair tied in its usual low braid",
+      "prose": "a pale-yellow dress under a plain white baking apron",
       "tokens": [
-        "yellow_dress",
-        "apron",
-        "baking",
-        "flour",
-        "low_braid"
+        "yellow dress",
+        "white apron"
       ]
     }
   }

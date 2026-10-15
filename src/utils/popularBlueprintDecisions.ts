@@ -15,7 +15,7 @@ const CAMERA_TO_SHOT: Record<string, string> = {
   'cowboy shot': 'medium', cowboy_shot: 'medium', cowboy: 'medium',
   'wide shot': 'wide', wide_shot: 'wide', full_body: 'wide', wide: 'wide',
   pov: 'pov', 'high angle': 'high', from_above: 'high', 'low angle': 'low',
-  from_below: 'low', 'side view': 'side', looking_back: 'turn',
+  from_below: 'low', 'side view': 'side', looking_back: 'turn', 'looking back': 'turn',
 }
 
 /** 蓝图 camera 字段漏网短语补映射。 */
@@ -39,7 +39,7 @@ const BLUEPRINT_ANGLE_RE: ReadonlyArray<readonly [RegExp, string]> = [
 ]
 
 function blueprintAngleShot(cameraText: string): string | null {
-  const text = String(cameraText || '').toLowerCase()
+  const text = String(cameraText || '').toLowerCase().replace(/[_-]+/g, ' ')
   if (!text) return null
   return BLUEPRINT_ANGLE_RE.find(([pattern]) => pattern.test(text))?.[1] ?? null
 }
@@ -48,8 +48,9 @@ function matchFirst(text: string, table: Record<string, string>): string | null 
   const lower = text.toLowerCase()
   const keys = Object.keys(table).sort((a, b) => b.length - a.length)
   for (const key of keys) {
-    // Underscores delimit camera tags, while letters in "closed" must not match "close".
-    if (new RegExp(`(?:^|[^a-z0-9])${key}(?=$|[^a-z0-9])`).test(lower)) return table[key]
+    // Compare normalized camera tags while preventing "closed" from matching "close".
+    const normalized = key.replace(/[_-]+/g, ' ')
+    if (new RegExp(`(?:^|[^a-z0-9])${normalized}(?=$|[^a-z0-9])`).test(lower)) return table[key]
   }
   return null
 }
@@ -57,7 +58,7 @@ function matchFirst(text: string, table: Record<string, string>): string | null 
 export function inferBlueprintDecisions(blueprint: SceneBlueprint | null): PopularBlueprintDecision {
   if (!blueprint) return { shot: null, lighting: null, composition: null, colorMood: null, size: '832x1216' }
   const angleShot = blueprintAngleShot(blueprint.camera)
-  const cameraText = String(blueprint.camera || '').toLowerCase()
+  const cameraText = String(blueprint.camera || '').toLowerCase().replace(/[_-]+/g, ' ')
   const shot = angleShot ?? matchFirst(cameraText, CAMERA_TO_SHOT)
     ?? EXTRA_CAMERA_TO_SHOT.find(([pattern]) => pattern.test(cameraText))?.[1]
     ?? null

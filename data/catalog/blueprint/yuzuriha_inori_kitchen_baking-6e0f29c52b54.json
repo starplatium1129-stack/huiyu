@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_kitchen_baking",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 333,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuzuriha_inori_kitchen_baking",
     "title": "楪祈 · 厨房烘焙",
@@ -29,10 +29,8 @@
       "warm_kitchen_light",
       "medium_shot"
     ],
-    "promptProse": "Inori steadies the tray on its heatproof board with one hand and offers a cooled vanilla cookie with the other, watching hopefully.",
+    "promptProse": "Inori steadies the cooled tray on its heatproof board with one hand and offers a vanilla cookie toward the viewer with the other. Warm kitchen light catches the golden edges as she watches hopefully for a reaction.",
     "promptTokens": [
-      "long sleeve dress",
-      "white apron",
       "cookie tray",
       "cookie",
       "offering",

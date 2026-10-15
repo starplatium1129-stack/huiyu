@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1644,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_06",
     "title": "守岸人 · 与贝壳的对话",
@@ -15,7 +15,7 @@
     "location": "潮退后的贝壳浅滩",
     "action": "浅滩上，她蹲下身捡起一枚贝壳举到耳边，认真地听",
     "timeOfDay": "日间",
-    "lighting": "slight_smile, afternoon_light",
+    "lighting": "afternoon light",
     "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
@@ -31,15 +31,12 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "She listens to a shell at the water's edge, then returns it to the wet sand in afternoon light.",
+    "promptProse": "Shorekeeper crouches at the edge of the shallows with a shell held to one ear, her free hand resting on her knee. Afternoon light passes through the small ripples beside her skirt as she listens with a faint smile.",
     "promptTokens": [
-      "the_shorekeeper_(wuthering_waves)",
-      "cardigan",
-      "blouse",
-      "skirt",
       "shell",
       "crouching",
       "shallows",
+      "afternoon",
       "medium shot"
     ],
     "negativeTokens": [],

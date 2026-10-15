@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_records",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 939,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
@@ -12,10 +12,10 @@
       "name": "观测站端庄工作装",
       "prose": "a pale blue high-collared jacket, long white skirt and flat shoes",
       "tokens": [
-        "blue_jacket",
-        "high_collar",
-        "long_white_skirt",
-        "flat_shoes"
+        "blue jacket",
+        "high collar",
+        "white long skirt",
+        "flat shoes"
       ],
       "default": false,
       "isDefault": false

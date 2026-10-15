@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_bikini_fitting_malfunction",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1504,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yamada_nsfw_bikini_fitting_malfunction",
     "title": "山田杏奈 · 摄影棚更衣室的超紧比基尼勒肉事故 ·「系带要断了……市川别光看着，快帮我系住！」",
@@ -12,10 +12,10 @@
     "characterId": "yamada_anna",
     "description": "【杂志拍摄摄影棚更衣室·午后】拍摄泳装特辑时，服装师准备的比基尼尺寸偏小。山田撑在更衣台镜子前，超小的布料根本遮挡不住她过于丰满的胸部，两团软肉直接溢出大半，后背系带几乎崩断。她慌忙回头，眼角泪花闪烁——「呜……胸口好勒……系带快解开了……市川！不许笑我肉多……快帮我重新绑一下！」",
     "location": "杂志拍摄摄影棚更衣室·午后",
-    "action": "撑更衣台塌腰回眸双手护胸溢乳，微型比基尼系带断裂勒肉，娇羞跺脚咬唇",
+    "action": "一手扶更衣台，一手护住过小比基尼前部，回头向画外求助重新系带",
     "timeOfDay": "afternoon",
     "lighting": "柔和暖光与唯美阴影交错",
-    "camera": "horizontal POV, wide shot",
+    "camera": "cowboy shot, three-quarter rear view",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "nsfw",
@@ -24,12 +24,10 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Yamada leans against the studio vanity in an undersized string bikini, its cups failing to cover her chest as she looks back for fitting help.",
+    "promptProse": "Adult Yamada steadies herself against the studio vanity with one hand and holds the ill-fitting bikini front with the other, looking back toward the offscreen viewer for fitting help.",
     "nsfwProse": "",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "micro bikini",
       "string bikini",
       "tight clothes",
@@ -38,7 +36,8 @@
       "looking back",
       "blush",
       "vanity mirror",
-      "dressing room"
+      "dressing room",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

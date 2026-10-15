@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc085",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She strokes the sleeping cat on her lap while glancing toward the viewer in embarrassment.",
+    "animaCaption": "She strokes the sleeping calico cat curled on her lap and glances at the viewer beside the empty seat; winter window light softens the cat's fur and her embarrassed expression.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -31,10 +31,11 @@
       "grey_sweater",
       "sheer_black_tights",
       "cat_cafe",
-      "full_body",
-      "ankle_boots",
+      "medium_shot",
       "cat",
-      "depth_of_field"
+      "petting",
+      "sitting",
+      "window_light"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

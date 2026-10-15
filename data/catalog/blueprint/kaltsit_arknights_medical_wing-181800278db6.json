@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_medical_wing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 526,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "翻阅病历，目光沉静",
     "camera": "medium shot, eye level",
@@ -22,13 +22,8 @@
       "readable patient records"
     ],
     "outfitId": "standard",
-    "promptProse": "Kal'tsit quietly reviews a medical chart on her tablet in the Rhodes Island medical wing.",
+    "promptProse": "Holding the tablet in both hands, she pauses in the bright medical corridor to review the chart, her gaze calm and lowered.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "lab coat",
-      "black dress",
-      "emerald earrings",
       "tablet",
       "hospital",
       "medium shot"

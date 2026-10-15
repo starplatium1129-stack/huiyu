@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_cinema",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 412,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makima_cinema",
     "title": "玛奇玛 · 电影院约会",
@@ -15,7 +15,7 @@
     "action": "并肩而坐，荧幕光映在脸上",
     "timeOfDay": "夜晚",
     "lighting": "荧幕冷光",
-    "camera": "close-up",
+    "camera": "close-up two-shot",
     "mood": "暧昧掌控",
     "sceneTags": [
       "cinema",
@@ -26,14 +26,10 @@
       "intimate",
       "city"
     ],
-    "promptProse": "Makima turns toward Denji in the next cinema seat with an unreadable gentle smile, their faces lit by the screen.",
+    "promptProse": "Makima sits on the left and turns a gentle, unreadable smile toward Denji in the adjacent seat on the right, both faces lit by the screen.",
     "promptTokens": [
       "2people",
-      "Makima",
       "Denji",
-      "white blouse",
-      "necktie",
-      "black skirt",
       "cinema",
       "screen light",
       "close-up"

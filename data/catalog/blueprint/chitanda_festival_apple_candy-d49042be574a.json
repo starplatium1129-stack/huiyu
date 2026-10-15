@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_festival_apple_candy",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1484,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "chitanda_festival_apple_candy",
     "title": "千反田爱瑠 · 夏夜祭典苹果糖的娇憨浅笑·「折木同学，这个苹果糖分你咬一口」",
@@ -30,16 +30,15 @@
       "blush",
       "romantic"
     ],
-    "promptProse": "She offers the apple to Oreki while carrying the goldfish bag through the lantern-lined lane. Warm reflections cross the sugar and water.",
+    "promptProse": "She holds the goldfish bag at her side with one hand and offers the candied apple to Oreki's mouth with the other. Lantern reflections shine across the sugar and bag water between them.",
     "promptTokens": [
       "couple",
       "festival",
-      "wisteria furisode",
-      "gold obi",
       "goldfish bag",
       "candy apple",
       "offering",
-      "lantern"
+      "lantern",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

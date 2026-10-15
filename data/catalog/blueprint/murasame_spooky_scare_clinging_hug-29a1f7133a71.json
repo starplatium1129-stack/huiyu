@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "murasame_spooky_scare_clinging_hug",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1125,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "吓得扑抱进对方怀中，双手紧抓胸口衣襟，眼含泪花脸埋肩膀，呆毛剧颤",
-    "camera": "medium close-up, first-person pov, emotional proximity",
+    "camera": "medium close-up, three-quarter side view, both people and the grip on Masaomi’s shirt visible",
     "category": "萌趣反差",
     "characterId": "murasame",
     "compositionIntent": "group",
@@ -21,7 +21,7 @@
     "mood": "反差娇羞",
     "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Startled by moving tree shadows, Murasame clings to Masaomi's shirt and hides her face against his shoulder.",
+    "promptProse": "Startled by moving tree shadows, Murasame grips Masaomi’s shirt with both hands and hides her face against his shoulder. A stone lantern lights their near side against the dark violet path.",
     "promptTokens": [
       "2people",
       "arichi masaomi",

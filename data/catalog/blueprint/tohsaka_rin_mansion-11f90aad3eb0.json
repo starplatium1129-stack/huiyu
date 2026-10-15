@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_mansion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tohsaka_rin_mansion",
     "title": "远坂凛 · 远坂工坊·红宝石魔术充能",
@@ -30,11 +30,8 @@
       "candlelight",
       "medium_shot"
     ],
-    "promptProse": "Rin folds her arms before the magic circle, its floating ruby lighting books beside the candlelit workbench.",
+    "promptProse": "Rin stands with her arms folded before the magic circle, chin raised toward the viewer. The ruby floats independently above the circle, washing the open books and her red sweater in a deeper crimson glow.",
     "promptTokens": [
-      "Rin",
-      "red turtleneck",
-      "black skirt",
       "crossed arms",
       "floating ruby",
       "magic circle",

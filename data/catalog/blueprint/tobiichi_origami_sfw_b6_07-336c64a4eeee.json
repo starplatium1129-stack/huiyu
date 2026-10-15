@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_07",
     "title": "鸢一折纸 · 长发形态的晨间整理",
@@ -16,7 +16,7 @@
     "action": "窗边镜前整理及腰长发，转身时白发在日出里展开，眼神带一点新鲜感",
     "timeOfDay": "日间",
     "lighting": "pale sunrise reflected in the mirror",
-    "camera": "medium shot, vertical framing",
+    "camera": "medium shot, over-the-shoulder view",
     "mood": "严谨少女与新发型的温柔适应",
     "sceneTags": [
       "morning_room",
@@ -32,10 +32,6 @@
     ],
     "promptProse": "Origami secures her newly grown hair and inspects its shape in the sunrise-lit mirror.",
     "promptTokens": [
-      "Origami Tobiichi",
-      "blouse",
-      "long skirt",
-      "long white hair",
       "mirror",
       "sunrise",
       "medium shot"

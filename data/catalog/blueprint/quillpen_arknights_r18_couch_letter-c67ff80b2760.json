@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_couch_letter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 624,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "全裸侧卧在真皮沙发上，慵懒舒展身体",
+    "action": "斜倚沙发阅读来信，一手持纸，另一手留在裙边。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【羽毛笔 · 包厢微醺】酒吧私密包厢柔软的真皮大沙发上，全裸侧卧的拉菲艾拉慵懒地舒展着娇小匀称的曼妙身躯，雪白的双乳与圆润的翘臀毫无遮掩地展露在外。她咬着手指小声呢喃——「博士一直在看我的身体呢……只要是博士的话，想摸哪里都可以哦……」",
+    "description": "私密包厢的沙发上，拉菲艾拉穿着敞开的外套与裙装，斜倚着读一封私人来信。昏暗的琥珀色落地灯照亮信纸边缘。",
     "id": "quillpen_arknights_r18_couch_letter",
     "kreaStyleHint": "",
     "lighting": "dim amber floor lamp, subtle neon leakage, luxurious cozy shadows",

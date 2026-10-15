@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_rain_shelter_hot_cocoa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1507,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "waguri_rain_shelter_hot_cocoa",
     "title": "和栗薰子 · 雨檐下慢慢变暖的双手",
@@ -16,7 +16,7 @@
     "action": "双手捧住热可可，看着伞尖滴落的雨水渐渐放松。",
     "timeOfDay": "evening",
     "lighting": "soft reflected shop light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "屋檐避雨、小确幸",
     "sceneTags": [
       "shop_awning",
@@ -32,10 +32,8 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "Waguri warms her hands around cocoa under the shop eaves, watching rain drip from the closed umbrella.",
+    "promptProse": "She cups the hot cocoa in both hands under the shop eaves, watching rain drip from the folded umbrella propped beside her schoolbag.",
     "promptTokens": [
-      "Kaoruko Waguri",
-      "school uniform",
       "cocoa",
       "closed umbrella",
       "rain",

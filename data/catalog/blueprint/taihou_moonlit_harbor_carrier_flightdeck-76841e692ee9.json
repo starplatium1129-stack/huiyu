@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_moonlit_harbor_carrier_flightdeck",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1081,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "taihou_moonlit_harbor_carrier_flightdeck",
     "title": "大凤 · 极夜港口的烈焰航母出击",
@@ -19,7 +19,7 @@
     "action": "站在装甲甲板上扬起振袖号令战机起飞，周身红莲烈焰升腾，霸气凛然",
     "timeOfDay": "深夜",
     "lighting": "夜空冰冷月色与甲板升腾的滚滚红莲烈焰对冲",
-    "camera": "wide epic shot, low angle, massive warship scale",
+    "camera": "wide shot, low angle, flight deck scale visible",
     "mood": "狂霸毁灭",
     "sceneTags": [
       "aircraft_carrier",
@@ -31,10 +31,8 @@
       "twintails",
       "ocean"
     ],
-    "promptProse": "Taihou faces the sea as fiery aircraft launch behind her, red lotus flames lighting the flight deck.",
+    "promptProse": "Taihou raises one wide sleeve to signal the launch from the armored flight deck. Fiery aircraft climb behind her as red flames stream along the deck beneath the cold moonlit sea horizon.",
     "promptTokens": [
-      "Taihou",
-      "red and black kimono",
       "aircraft carrier",
       "fire",
       "aircraft",

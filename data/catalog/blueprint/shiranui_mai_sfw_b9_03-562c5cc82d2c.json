@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1739,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_03",
     "title": "不知火舞 · 发簪的传承",
@@ -16,7 +16,7 @@
     "action": "她的房间，她对着镜子把祖母的发簪别进发间，动作郑重",
     "timeOfDay": "清晨",
     "lighting": "morning_light",
-    "camera": "medium shot",
+    "camera": "medium shot, over-the-shoulder view",
     "mood": "自然日常",
     "sceneTags": [
       "dressing_table",
@@ -29,11 +29,8 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Mai checks her grandmother's hairpin in the mirror as morning light catches the ornament above its open case.",
+    "promptProse": "She steadies her grandmother's hairpin with one hand while checking it in the mirror, morning light catching the ornament above its open wooden case.",
     "promptTokens": [
-      "shiranui_mai",
-      "shirt",
-      "trousers",
       "hairpin",
       "mirror",
       "wooden box",

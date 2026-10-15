@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 956,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "sfw_bridal",
       "name": "八奈见杏菜·圣洁花嫁",
-      "prose": "a blue-and-white bridal dress with a short veil, ribbon sash and an apple-candy bouquet charm",
+      "prose": "a blue-and-white wedding dress with a short veil and ribbon sash",
       "tokens": [
-        "wedding_dress",
-        "blue_white_dress",
-        "short_veil",
-        "ribbon_sash",
-        "apple_candy_charm"
+        "blue and white wedding dress",
+        "short veil",
+        "ribbon sash"
       ],
       "default": false,
       "isDefault": false

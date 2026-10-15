@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc288",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 283,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "Nene sits by the inn's open window, her obi loosening as she closes her eyes at the viewer's touch on her cheek. Water still beads along her exposed collarbone.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -29,10 +29,9 @@
     "tags": [
       "hair_ribbon",
       "yukata",
-      "bare_legs",
       "white_tabi",
       "inn",
-      "full_body",
+      "close_up",
       "tatami",
       "moonlight",
       "open_collar"

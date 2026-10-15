@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1748,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_01",
     "title": "丰川祥子 · 观众席上的乐团起点",
@@ -33,7 +33,6 @@
     "promptProse": "Sakiko listens from the first-row side seat with both hands on her program, a spotlight reaching her inspired smile.",
     "promptTokens": [
       "Sakiko Togawa",
-      "school blazer",
       "program",
       "sitting",
       "auditorium",

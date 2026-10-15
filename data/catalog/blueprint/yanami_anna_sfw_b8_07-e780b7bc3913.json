@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1674,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_07",
     "title": "八奈见杏菜 · 厨房里的失败煎蛋",
@@ -30,12 +30,10 @@
       "morning_light",
       "afternoon_light"
     ],
-    "promptProse": "Yanami studies the broken yolk, then serves the egg with renewed confidence in the morning kitchen.",
+    "promptProse": "Yanami presents the plated egg toward the viewer with renewed confidence, its broken yolk visible on the plate. Fresh morning light falls over her cream apron and the pan left on the stove.",
     "promptTokens": [
-      "Anna Yanami",
-      "yellow shirt",
-      "apron",
       "fried egg",
+      "plate",
       "kitchen",
       "morning",
       "medium shot"

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kaguya_christmas_gift_snowdate",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "围白围巾递出礼物盒，雪光里红瞳亮晶晶，傲娇嘴硬",
     "adult": false,
     "animaStyleHint": "anime_slice_of_life",
-    "camera": "medium close-up, gift giving, snowfall bokeh, festive warmth",
+    "camera": "close-up, eye level",
     "category": "街头约会",
     "characterId": "shinomiya_kaguya",
     "coverageTags": [
@@ -25,11 +25,9 @@
     "mood": "傲娇告白、雪夜心动",
     "negativeTokens": [],
     "outfitId": "winter_shuchiin_uniform",
-    "promptProse": "Kaguya offers a gift in snowy Ginza, her red eyes bright above the white scarf despite her reserved expression.",
+    "promptProse": "Kaguya offers the gift toward the viewer with both hands, her reserved expression softened above the white scarf. Gold decorations and blue snowlight meet on the falling flakes.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "coat",
-      "white scarf",
       "gift box",
       "snow",
       "christmas lights",

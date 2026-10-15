@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1540,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_02",
     "title": "新条茜 · 房间里的怪兽制作台",
@@ -30,11 +30,9 @@
       "task_light",
       "medium_shot"
     ],
-    "promptProse": "Akane sands a monster model's back fin beneath the work lamp, tools and a parts tray beside the cutting mat.",
+    "promptProse": "Akane steadies the monster figure with one hand and sands its back fin with the other. Her work lamp lights the fine clay dust above the cutting mat and parts tray.",
     "promptTokens": [
       "shinjou_akane",
-      "lavender sweatshirt",
-      "glasses",
       "monster figure",
       "sanding",
       "workbench",

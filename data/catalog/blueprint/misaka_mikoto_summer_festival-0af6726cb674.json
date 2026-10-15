@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_summer_festival",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 396,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "蹲在捞金鱼摊前",
     "camera": "medium shot",
@@ -20,13 +20,10 @@
     "mood": "元气雀跃",
     "negativeTokens": [],
     "outfitId": "summer_yukata",
-    "promptProse": "Mikoto crouches by the goldfish pool with her paper net ready beneath the festival lanterns.",
+    "promptProse": "Mikoto crouches over the pool with a fresh paper net poised above the red goldfish. Torn nets lie beside the rim under the warm festival lanterns.",
     "promptTokens": [
       "1girl",
       "solo",
-      "blue yukata",
-      "white obi",
-      "geta",
       "crouching",
       "paper net",
       "goldfish",

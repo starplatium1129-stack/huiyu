@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/casual_winter_trenchcoat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 212,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
@@ -12,15 +12,13 @@
       "name": "名媛双排扣长风衣与黑丝",
       "prose": "her signature elegant winter outfit: a belted beige double-breasted trench coat worn open over a form-fitting black turtleneck sweater and pencil skirt, glossy black pantyhose, and pointed leather high heels",
       "tokens": [
-        "trench_coat",
-        "beige_coat",
-        "open_coat",
-        "black_sweater",
-        "turtleneck",
-        "pencil_skirt",
-        "black_pantyhose",
-        "high_heels",
-        "mature_female"
+        "trench coat",
+        "beige coat",
+        "open coat",
+        "black turtleneck",
+        "pencil skirt",
+        "black pantyhose",
+        "high heels"
       ],
       "default": true,
       "isDefault": true

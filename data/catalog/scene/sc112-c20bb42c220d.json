@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc112",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She braces both hands on the chair rail beside the seated viewer's shoulders and leans in to speak, then glances aside.",
+    "animaCaption": "From the seated viewer's eye level, her hands brace the chair back on either side of their shoulders as she leans close; dim light from the rain-streaked window outlines her dark hair.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "座椅上主观仰看的面部与扶椅双手近景",
     "category": "恋爱/同人",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_sainan_corridor_shameless_scold",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1252,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手抱胸端立微倾身躯，红色臂章醒目，面红耳赤含羞娇叱，黑长直发丝飞扬",
     "camera": "medium shot, eye-level, classic tsundere confrontation framing",
@@ -20,15 +20,13 @@
     "mood": "正经娇羞",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Yui folds her arms and scolds Rito as he gets up after stumbling beside her in the school hallway.",
+    "promptProse": "Yui stands with folded arms beside Rito as he gets up from the corridor floor, scolding him with flushed cheeks. Daylight from the tall windows catches the edge of her red armband.",
     "promptTokens": [
       "Yui Kotegawa",
-      "school uniform",
-      "red armband",
-      "white hairband",
       "crossed arms",
       "blush",
-      "school hallway"
+      "school hallway",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_witch_robes",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 196,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -18,7 +18,7 @@
     "action": "木屋晴窗前解开魔女长袍立姿半遮回眸",
     "timeOfDay": "白天",
     "lighting": "树冠透射的金绿阳光与斑驳光柱",
-    "camera": "medium shot, standing by timber window of sunlit forest cabin",
+    "camera": "medium shot, seated three-quarter view, window bench and both hands on thigh sash visible",
     "mood": "纯真羞涩",
     "sceneTags": [
       "cabin",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_backstage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 321,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hatsune_miku_r18_backstage",
     "title": "初音未来 · 演唱会后台",
@@ -25,7 +25,7 @@
       "warm_bulbs",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Miku sits sideways at the vanity after the concert, one hand on her unzipped stage top and the other steadying her on the stool.",
+    "promptProse": "Sitting sideways at the vanity after the concert, she keeps one hand on her unzipped stage top and catches the viewer's collar with the other; the mirror bulbs warm her flushed face.",
     "promptTokens": [
       "adult",
       "unzipped shirt",

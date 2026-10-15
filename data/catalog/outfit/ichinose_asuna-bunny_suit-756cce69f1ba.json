@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ichinose_asuna/bunny_suit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 518,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ichinose_asuna",
     "outfit": {
@@ -12,23 +12,15 @@
       "id": "bunny_suit",
       "isDefault": true,
       "name": "极奢幻梦兔女郎装",
-      "prose": "an iconic glossy black high-leg bunny suit hugging her statuesque curves, sweetheart plunge neckline with exposed deep cleavage, white tuxedo collar with a black bowtie, French cuffs with gold cufflinks, towering black bunny ears on a headband, sheer sheer black tights, and patent high stiletto heels",
+      "prose": "a glossy black bunny suit with a white collar and black bowtie, cuffs, tall rabbit-ear headband, sheer black tights and patent heels",
       "tokens": [
-        "playboy_bunny",
-        "bunny_suit",
-        "black_leotard",
-        "fake_bunny_ears",
-        "bunny_ears",
-        "collar",
+        "bunny suit",
+        "black leotard",
+        "fake rabbit ears",
         "bowtie",
         "cuffs",
-        "cleavage",
-        "deep_cleavage",
-        "bare_shoulders",
-        "pantyhose",
-        "black_pantyhose",
-        "high_heels",
-        "stiletto_heels"
+        "black pantyhose",
+        "high heels"
       ]
     }
   }

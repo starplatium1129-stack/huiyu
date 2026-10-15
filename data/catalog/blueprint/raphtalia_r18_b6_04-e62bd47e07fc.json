@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_r18_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1576,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raphtalia_r18_b6_04",
     "title": "拉芙塔莉雅 · 旅馆草席床褥上的忠诚自持独奏 ·「哪怕全天下都视您为恶魔……我也永远是您的奴隶」",
@@ -15,7 +15,7 @@
     "action": "仰卧草席全裸自抚，胸口奴隶纹发烫微光，抱尾巴弓身娇喘绝顶",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
-    "camera": "intimate vertical medium shot",
+    "camera": "full-body shot, from above",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
       "self_control",
@@ -33,7 +33,6 @@
     "promptProse": "Adult Raphtalia hugs her tail to her chest while fingering herself on the inn mattress, her crest glowing beneath the shuttered moonlight.",
     "promptTokens": [
       "nude",
-      "raccoon tail",
       "glowing tattoo",
       "on back",
       "spread legs",

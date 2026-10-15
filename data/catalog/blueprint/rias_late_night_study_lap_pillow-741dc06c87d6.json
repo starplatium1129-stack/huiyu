@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_late_night_study_lap_pillow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1278,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rias_late_night_study_lap_pillow",
     "title": "莉雅丝 · 深夜书房的温软膝枕",
@@ -15,7 +15,7 @@
     "action": "跪坐在地毯上轻拍自己修长丰满的大腿提供膝枕，眼神极尽温柔与包容",
     "timeOfDay": "深夜",
     "lighting": "壁炉柴火跳跃的暖橙微光与复古台灯",
-    "camera": "cowboy shot, medium angle, cozy perspective",
+    "camera": "cowboy shot, eye level",
     "mood": "深情包容",
     "sceneTags": [
       "study",
@@ -29,11 +29,8 @@
       "loving_gaze",
       "warm_glow"
     ],
-    "promptProse": "Rias pats her lap beside the study fireplace, inviting her companion to rest as firelight warms her face.",
+    "promptProse": "Kneeling on the rug beside the study fireplace, she pats her lap with one hand and looks warmly toward the offscreen viewer, offering a place to rest.",
     "promptTokens": [
-      "Rias Gremory",
-      "nightgown",
-      "stockings",
       "kneeling",
       "fireplace",
       "cowboy shot"

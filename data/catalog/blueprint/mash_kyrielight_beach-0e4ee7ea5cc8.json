@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 201,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "negativeTokens": [
       "cropped feet"
@@ -18,7 +18,7 @@
     "action": "穿白色连体挂颈泳装，在浅浪中小心迈步，回头清爽微笑",
     "timeOfDay": "白天",
     "lighting": "海滩阳光",
-    "camera": "full-body side view, walking feet and shallow wave edge visible",
+    "camera": "full-body shot, side view",
     "mood": "清爽明媚",
     "sceneTags": [
       "shallow_surf",
@@ -34,9 +34,6 @@
     ],
     "promptProse": "Mash steps carefully through the shallow surf and smiles back, the light hem of her white swimsuit moving above the wavelets.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "white one-piece swimsuit",
       "barefoot",
       "walking",
       "shallow water",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_rainy_phone_booth_glance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 423,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "reze_rainy_phone_booth_glance",
     "characterId": "reze_chainsaw",
@@ -20,12 +20,8 @@
       "close_quarters",
       "intense_gaze"
     ],
-    "promptProse": "Reze looks back through wet bangs inside the cramped phone booth, the receiver beside her face and neon blurred by rain.",
+    "promptProse": "Reze turns toward the viewer sharing the cramped phone booth, wet bangs close to her cheeks and the receiver hanging beside her. Rain-blurred street light softens her reflection in the glass.",
     "promptTokens": [
-      "white sleeveless shirt",
-      "black necktie",
-      "shorts",
-      "choker",
       "wet hair",
       "looking back",
       "telephone booth",

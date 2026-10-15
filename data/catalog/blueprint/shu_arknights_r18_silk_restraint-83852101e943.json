@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_silk_restraint",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shu_arknights_r18_silk_restraint",
     "characterId": "shu_arknights",
@@ -16,7 +16,7 @@
     "mood": "温柔顺从而大胆",
     "lighting": "窗外银蓝月光与床边暖灯交映",
     "timeOfDay": "夜晚",
-    "camera": "three-quarter rear view, kneeling, vertical full body",
+    "camera": "full body, three-quarter rear view",
     "outfitId": "standard",
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -29,13 +29,15 @@
       "looking_back"
     ],
     "promptTokens": [
-      "Shu",
       "silk ribbon",
       "kneeling",
       "arms up",
       "looking back",
       "bed",
       "moonlight",
+      "nude",
+      "spread legs",
+      "bondage",
       "full body"
     ],
     "promptProse": "Shu kneels with her wrists loosely tied to the headboard by silk ribbons in a consensual pose, looking back under mixed lantern and moonlight.",
@@ -47,11 +49,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
-    "nsfwTokens": [
-      "nude",
-      "spread legs",
-      "bondage"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

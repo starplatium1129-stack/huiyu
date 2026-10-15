@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lala_yuuki_kitchen_breakfast_hug",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1231,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "飞扑跳跃紧紧搂住对方脖颈拥抱，胸前丰满紧贴，爱心尾巴缠绕，笑容灿烂如阳",
-    "camera": "medium close-up, first-person pov, emotional dynamic embrace",
+    "camera": "medium shot, first-person view from Rito",
     "category": "日常热恋",
     "characterId": "lala_satalin_deviluke",
     "coverageTags": [
@@ -20,7 +20,7 @@
     "mood": "甜美热烈",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Lala springs forward to hug Rito around the neck in the breakfast kitchen, smiling brightly.",
+    "promptProse": "From Rito’s viewpoint, Lala has thrown both arms around his neck in a bright morning hug. The breakfast table and white dishes catch the kitchen-window light behind her.",
     "promptTokens": [
       "Lala",
       "Rito Yuuki",

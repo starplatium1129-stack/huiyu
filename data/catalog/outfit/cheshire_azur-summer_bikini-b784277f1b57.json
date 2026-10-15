@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 594,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "summer_bikini",
       "name": "夏日花漾猫耳泳装",
-      "prose": "a playful pastel pink and ivory frilled halterneck bikini with delicate satin ribbons, straw sunhat with ear cutouts, sheer floral wrap pareo around hips, flower anklet, and bare feet standing in sun-dappled shallow ocean waves",
+      "prose": "a pastel pink-and-ivory frilled halterneck bikini with satin ribbons, a floral pareo, a straw hat with openings for her cat-ear headband and a flower anklet",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "pink_bikini",
+        "pink bikini",
         "halterneck",
         "frills",
         "ribbon",
-        "pareo",
-        "sun_hat",
-        "wet_skin",
-        "beachwear",
+        "floral pareo",
+        "straw hat",
         "barefoot"
       ],
       "default": false,

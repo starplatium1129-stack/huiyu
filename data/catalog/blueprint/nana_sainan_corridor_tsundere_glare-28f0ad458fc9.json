@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_sainan_corridor_tsundere_glare",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1263,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手叉腰前倾身躯，露出可爱小虎牙傲娇瞪视，粉发双马尾与爱心尾巴晃荡",
     "camera": "cowboy shot, eye-level, classic tsundere confrontation framing",
@@ -20,16 +20,16 @@
     "mood": "傲娇好胜",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Nana blocks Rito's path in the school corridor with both hands on her hips, her tail swinging behind her pout.",
+    "promptProse": "Nana plants both hands on her hips and blocks Rito at the corridor corner, one small fang showing as she pouts. Morning light rims her pink twintails and stretches across the wooden floor between them.",
     "promptTokens": [
       "2people",
       "yuuki rito",
-      "school uniform",
       "hands on hips",
       "glaring",
       "fang",
       "hallway",
-      "morning"
+      "morning",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

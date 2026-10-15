@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_street_festival",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 320,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hatsune_miku_street_festival",
     "title": "初音未来 · 街头庆典",
@@ -30,16 +30,15 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "Miku raises her leek-shaped lollipop and turns back with a cheerful wink as she walks toward the distant taiko stage.",
+    "promptProse": "Walking toward the distant taiko stage, she turns back with the leek-shaped lollipop in one hand and reaches her other hand toward the viewer; lantern light warms her green yukata.",
     "promptTokens": [
-      "green yukata",
-      "geta",
       "lollipop",
       "looking back",
       "wink",
       "lantern",
       "festival",
-      "night"
+      "night",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

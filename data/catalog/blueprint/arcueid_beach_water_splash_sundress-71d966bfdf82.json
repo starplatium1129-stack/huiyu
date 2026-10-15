@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "arcueid_beach_water_splash_sundress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1323,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "赤足踩在海水中双手微提裙摆，回眸向视角招手呼唤，笑容灿烂如阳",
-    "camera": "cowboy shot, eye level, dynamic summer beach view",
+    "camera": "full-body shot, eye level",
     "category": "海滨漫步",
     "characterId": "arcueid_brunestud",
     "coverageTags": [
@@ -22,15 +22,13 @@
     "mood": "开朗元气",
     "negativeTokens": [],
     "outfitId": "casual_summer_sundress",
-    "promptProse": "She steps into the shallows and opens her hands toward her companion as a wave reaches her ankles. Sunlight flashes through the spray.",
+    "promptProse": "She turns back laughing and opens her hands toward the viewer on shore, outside the frame. A small wave reaches her bare ankles as sunlight flashes through the spray.",
     "promptTokens": [
       "beach",
-      "white sundress",
-      "barefoot",
       "splashing",
       "laughing",
       "looking back",
-      "cowboy shot"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

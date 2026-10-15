@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1676,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_02",
     "title": "橘美花莉 · 放学天台的独占视线",
@@ -36,7 +36,6 @@
     "promptProse": "Mikari presses a cold tea can to Okumura's cheek and complains with puffed cheeks beside the sunset-lit fence.",
     "promptTokens": [
       "Mikari Tachibana",
-      "cardigan",
       "tea can",
       "Okumura",
       "rooftop",

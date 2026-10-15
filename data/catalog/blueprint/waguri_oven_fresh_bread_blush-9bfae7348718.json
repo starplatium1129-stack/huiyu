@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_oven_fresh_bread_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1503,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "waguri_oven_fresh_bread_blush",
     "title": "和栗薰子 · 烘焙体验课的第一盘饼干",
@@ -16,7 +16,7 @@
     "action": "戴隔热手套放下饼干盘，检查初次成果后开心微笑。",
     "timeOfDay": "morning",
     "lighting": "bright soft window light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "贤惠能干、温馨甜美",
     "sceneTags": [
       "baking",
@@ -30,12 +30,8 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Waguri sets the hot tray on the table and smiles at her uneven first batch beneath bright classroom windows.",
+    "promptProse": "Both oven-mitted hands support the hot tray as she lowers it onto the wooden table, smiling at her uneven first batch in the window light.",
     "promptTokens": [
-      "Kaoruko Waguri",
-      "checked shirt",
-      "mint apron",
-      "oven mitts",
       "cookie tray",
       "baking class",
       "medium shot"

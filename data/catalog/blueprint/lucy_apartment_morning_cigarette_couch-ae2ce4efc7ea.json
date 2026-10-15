@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_apartment_morning_cigarette_couch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1098,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "赤足抱膝蜷坐在旧皮沙发上抽烟，神情清冷疏离，烟圈在晨光中升腾",
     "camera": "medium shot, eye-level, intimate atmospheric realism",
@@ -20,11 +20,8 @@
     "mood": "疏离静谧",
     "negativeTokens": [],
     "outfitId": "apartment_streetwear_barefoot",
-    "promptProse": "Lucy smokes with her knees drawn close on the old leather sofa, watching the smoke rise in the morning light.",
+    "promptProse": "Lucy draws her knees close with one arm and holds her cigarette in the other hand on the old leather sofa. Cool bands of light through the blinds cross her feet and the rising smoke.",
     "promptTokens": [
-      "mesh tank top",
-      "cargo pants",
-      "barefoot",
       "hugging knees",
       "cigarette",
       "sofa",

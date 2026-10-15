@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/sfw_white_shiromuku",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
@@ -12,14 +12,12 @@
       "id": "sfw_white_shiromuku",
       "isDefault": false,
       "name": "白无垢与角隐",
-      "prose": "a formal opaque white shiromuku bridal kimono with a white obi, woven silk motifs, a white tsunokakushi head covering and white tabi socks",
+      "prose": "a white shiromuku with woven silk motifs, white obi, tsunokakushi head covering and white tabi",
       "tokens": [
         "shiromuku",
-        "white_bridal_kimono",
-        "white_obi",
+        "white obi",
         "tsunokakushi",
-        "white_tabi",
-        "opaque_fabric"
+        "white tabi"
       ]
     }
   }

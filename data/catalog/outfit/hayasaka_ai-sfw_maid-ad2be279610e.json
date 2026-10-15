@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_maid",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 772,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
@@ -12,15 +12,14 @@
       "id": "sfw_maid",
       "isDefault": true,
       "name": "四宫宅长发女仆装",
-      "prose": "a long-sleeved black maid dress with a white apron, modest collar, maid headband and pale blonde side ponytail tied with a scrunchie",
+      "prose": "a long-sleeved black maid dress with a white apron and maid headband, her side ponytail tied with a scrunchie",
       "tokens": [
         "maid",
-        "black_dress",
-        "long_sleeves",
-        "white_apron",
-        "maid_headdress",
-        "side_ponytail",
-        "hair_scrunchie"
+        "black dress",
+        "white apron",
+        "maid headdress",
+        "side ponytail",
+        "hair scrunchie"
       ]
     }
   }

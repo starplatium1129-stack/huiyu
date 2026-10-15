@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1738,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_02",
     "title": "不知火舞 · 灶前的大和抚子",
@@ -33,9 +33,6 @@
     ],
     "promptProse": "Mai adds the last vegetables to a lunch box beside the steaming soup pot in warm kitchen light.",
     "promptTokens": [
-      "shiranui_mai",
-      "shirt",
-      "red apron",
       "bento",
       "soup",
       "kitchen",

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc050",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "As the credits finish, she interlaces fingers with the viewer on their shared armrest and turns her face away in embarrassment.",
+    "animaCaption": "Her fingers interlace with the viewer's on their shared armrest while she keeps her face turned toward the film; blue-silver screen light reveals her blush above the faint red aisle lights.",
     "auditRevision": "skill-refine-sc050-2026-09-05",
     "camera": "影院座椅侧身七分身平视",
     "category": "恋爱",

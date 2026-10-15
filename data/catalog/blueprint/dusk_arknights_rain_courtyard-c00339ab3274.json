@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_rain_courtyard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 570,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "倚着廊柱，看雨打芭蕉",
     "camera": "medium shot",
@@ -24,8 +24,6 @@
     "promptTokens": [
       "veranda",
       "vermilion pillar",
-      "black and teal qipao",
-      "wide sleeves",
       "cheek in hand",
       "banana leaves",
       "rain"

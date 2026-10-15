@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "cecilia_riverbank_evening_walk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 843,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "提着草帽散步，晚风拂过裙摆",
     "adult": false,
-    "camera": "medium_shot",
+    "camera": "full-body shot",
     "category": "日常羁绊",
     "characterId": "saint_cecilia",
     "compositionIntent": "group",
@@ -22,15 +22,13 @@
     "mood": "gentle",
     "negativeTokens": [],
     "outfitId": "sfw_riverbank_sundress_barefoot",
-    "promptProse": "She carries her hat and reaches for Lawrence's hand while walking through the grass. Sunset reflects across the river behind them.",
+    "promptProse": "Walking barefoot through the grass beside Lawrence, she carries her hat in one hand and reaches for his hand with the other. Sunset reflects from the river behind them and catches her windblown hem.",
     "promptTokens": [
       "couple",
       "riverbank",
-      "floral sundress",
-      "straw hat",
-      "barefoot",
       "holding hands",
-      "sunset"
+      "sunset",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

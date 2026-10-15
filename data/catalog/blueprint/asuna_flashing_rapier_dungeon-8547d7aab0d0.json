@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_flashing_rapier_dungeon",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1362,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asuna_flashing_rapier_dungeon",
     "title": "结城明日奈 · 闪光的细剑连击·「攻略就交给我吧，绝对不会输的！」",
@@ -15,7 +15,7 @@
     "action": "弓步突刺疾驰，手持细剑闪烁之光迸发出撕裂空气的金色剑技光轨，红白战袍飘扬，琥珀眼眸锐利自信",
     "timeOfDay": "迷宫暗夜",
     "lighting": "细剑剑技爆发出璀璨耀眼的白金流光与迷宫水晶的幽紫环境光",
-    "camera": "dynamic wide shot, high-speed sword action, particle light trails, dramatic motion blur",
+    "camera": "wide shot",
     "mood": "英姿飒爽、锐不可当",
     "sceneTags": [
       "dungeon",
@@ -27,15 +27,15 @@
       "action",
       "confident"
     ],
-    "promptProse": "She steps into a rapid five-strike sequence through the stone passage. Golden sword light meets violet crystal glow along the walls.",
+    "promptProse": "She lunges along the stone passage with Lambent Light extended, golden sword trails tracing her five-strike technique. Violet crystal glow fills the walls behind the bright arcs.",
     "promptTokens": [
       "dungeon",
-      "Knights of the Blood uniform",
       "Lambent Light",
       "rapier",
       "lunging",
       "crystal",
-      "magic"
+      "magic",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

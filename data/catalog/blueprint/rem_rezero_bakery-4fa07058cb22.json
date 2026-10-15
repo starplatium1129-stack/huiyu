@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_bakery",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 437,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rem_rezero_bakery",
     "title": "雷姆 · 烘焙坊",
@@ -31,11 +31,8 @@
       "basket_shadows",
       "medium_shot"
     ],
-    "promptProse": "Rem lifts a baguette with the tongs in her right hand, the paper-lined basket hanging from her left forearm beneath it.",
+    "promptProse": "Rem lifts a baguette in her right-hand tongs above the paper-lined basket on her left forearm. Morning light from the right catches the golden crust and the fine shadows of the basket weave.",
     "promptTokens": [
-      "cardigan",
-      "blouse",
-      "pleated skirt",
       "bread tongs",
       "baguette",
       "basket",

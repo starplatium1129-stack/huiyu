@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_poolside_black_bikini_splashing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1290,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "akeno_poolside_black_bikini_splashing",
     "title": "姬岛朱乃 · 阳光池畔的水光嬉戏",
@@ -15,7 +15,7 @@
     "action": "坐在池畔双脚踢水，单手轻捧池水撩向前方，歪头露出魅惑灿烂的笑容",
     "timeOfDay": "夏日午后",
     "lighting": "水面反射出的金蓝相间波纹光晕",
-    "camera": "cowboy shot, dynamic water splash perspective",
+    "camera": "full body, eye level",
     "mood": "开朗调戏",
     "sceneTags": [
       "swimming_pool",
@@ -28,16 +28,15 @@
       "splashing_water",
       "seductive_smile"
     ],
-    "promptProse": "She sits on the pool edge, kicking her feet and scooping water toward her companion. Sunlight catches the droplets over the wet tiles.",
+    "promptProse": "Seated on the pool edge, she kicks her feet in the water and scoops a splash toward the viewer with one hand. Sunlight catches the droplets above the wet tiles.",
     "promptTokens": [
       "pool",
-      "black bikini",
       "sitting",
       "kicking",
       "splashing",
       "smile",
       "daytime",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

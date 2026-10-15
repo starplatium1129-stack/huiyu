@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "izumi_sagiri/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 862,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "izumi_sagiri",
     "outfit": {
@@ -14,7 +14,6 @@
       "tokens": [
         "mint_hoodie",
         "fleece",
-        "long_pants",
         "pajama_pants",
         "socks"
       ],

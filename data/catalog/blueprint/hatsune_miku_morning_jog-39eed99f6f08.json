@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_morning_jog",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 324,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hatsune_miku_morning_jog",
     "title": "初音未来 · 晨跑",
@@ -29,16 +29,14 @@
       "morning_light",
       "full_body"
     ],
-    "promptProse": "Miku slows her jog along the seaside promenade to glance back, keeping her arms in rhythm as the sea haze clears.",
+    "promptProse": "She slows her jog on the seaside promenade and glances back toward the viewer, keeping her arms in their running rhythm; soft morning light reaches her face as the sea haze clears.",
     "promptTokens": [
-      "track jacket",
-      "running shorts",
-      "sneakers",
       "jogging",
       "looking back",
       "smile",
       "coast",
-      "morning"
+      "morning",
+      "medium shot"
     ],
     "negativeTokens": [
       "river"

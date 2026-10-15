@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_convenience_store_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_convenience_store_night",
     "title": "加藤惠 · 赶工后的便利店热饮",
@@ -16,7 +16,7 @@
     "action": "双手捧着热饮坐在长椅上，侧头露出疲惫的浅笑。",
     "timeOfDay": "night",
     "lighting": "soft storefront light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "平凡生活感、温暖抚慰",
     "sceneTags": [
       "sitting_on_bench",
@@ -31,10 +31,8 @@
       "streetlight",
       "medium_shot"
     ],
-    "promptProse": "Megumi holds her warm drink in both hands on the bench, turning with a tired smile.",
+    "promptProse": "She holds the warm drink in both hands and turns a tired smile toward the streetlights, the unopened rice-ball bag beside her on the bench.",
     "promptTokens": [
-      "hoodie",
-      "jeans",
       "hot drink",
       "sitting",
       "bench",

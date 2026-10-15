@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_home_pajama",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 500,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱着玩偶趴在床上",
     "camera": "medium shot",
@@ -20,11 +20,10 @@
     "mood": "放松可爱",
     "negativeTokens": [],
     "outfitId": "silk_pajamas",
-    "promptProse": "Marin lies on her bed hugging a plush toy while watching anime on her phone.",
+    "promptProse": "Marin lies among the pillows with a plush toy tucked under one arm, holding her phone before her with the other hand. Warm bedside light glints on the loose silk sleeves as she laughs at the anime.",
     "promptTokens": [
       "1girl",
       "solo",
-      "pajamas",
       "plush toy",
       "smartphone",
       "on stomach",

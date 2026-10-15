@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_convenience_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 323,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hatsune_miku_convenience_night",
     "title": "初音未来 · 深夜便利店",
@@ -30,16 +30,14 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Miku holds the freezer handle and looks questioningly at the viewer, choosing between mint-chocolate ice cream and a melon ice pop.",
+    "promptProse": "Holding the freezer handle in one hand and resting a finger of the other near her lower lip, Miku looks back toward the viewer for advice; cold white shop light shines across the two ice-cream choices.",
     "promptTokens": [
-      "hoodie",
-      "skirt",
-      "pantyhose",
       "finger to mouth",
       "freezer",
       "ice cream",
       "convenience store",
-      "night"
+      "night",
+      "medium shot"
     ],
     "negativeTokens": [
       "brand name"

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_marble_bath_candle_creampie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 691,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "斜靠大理石池边白衬衫湿透贴肉大胸毕露，单腿浮水，单手在水下深层自抚，金鹿角滴水娇喘",
     "adult": true,
     "adultArtistHint": "@reDrop",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "intimate wide shot, side angle looking across steamy rippling pool with rose petals",
+    "camera": "wide shot, side view",
     "category": "深层欢愉",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -24,21 +24,20 @@
     "mood": "极乐沉沦",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "masturbation",
-      "see-through",
-      "hand between legs"
-    ],
+    "nsfwTokens": [],
     "outfitId": "nsfw_nude",
     "promptProse": "Viviana touches herself beneath the water from the submerged steps, one leg raised beneath her translucent wet shirt.",
     "promptTokens": [
-      "Viviana",
       "white shirt",
       "wet clothes",
       "rose petals",
       "marble bath",
       "steam",
-      "candlelight"
+      "candlelight",
+      "masturbation",
+      "see-through",
+      "hand between legs",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_unit02_standby",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1020,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手叉腰昂首挺胸，傲气十足指向上方",
     "camera": "cowboy shot, dynamic low angle",
@@ -20,13 +20,13 @@
     "mood": "骄傲霸气",
     "negativeTokens": [],
     "outfitId": "plugsuit_red",
-    "promptProse": "She rides the rising lift before Unit-02 with her chin raised. Red searchlights reach the lift structure and towering armor.",
+    "promptProse": "She stands on the rising lift before Unit-02, one hand on her hip and the other pointing upward, her chin held high. Red searchlights cut across the lift structure and towering armor behind her.",
     "promptTokens": [
       "hangar",
       "elevator",
-      "red plugsuit",
       "hand on hip",
       "Unit-02",
+      "cowboy shot",
       "from below"
     ],
     "recommendedSize": "1152x1536",

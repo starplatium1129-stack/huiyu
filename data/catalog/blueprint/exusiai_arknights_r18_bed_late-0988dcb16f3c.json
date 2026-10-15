@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_bed_late",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 634,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "趴在大床上玩手机游戏，修长小腿翘起晃动",
+    "action": "仰卧屈膝，一手掩嘴笑，另一手留在腿间。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -16,10 +16,10 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【能天使 · 深夜卧室】深夜大床上，只穿着单薄内裤的能天使趴在松软的枕头堆里玩手机游戏，修长匀称的雪白大腿高高翘起在半空中欢快地晃动。感觉到你上床的动静，她翻过身一把将你拽倒——「嘿嘿，抓住你了！今晚通宵联机……还是做点比游戏更刺激的心跳挑战呢？」",
+    "description": "深夜卧室里，成年能天使仰卧屈膝，一手掩住笑着的嘴，另一手留在腿间；松开的短裤与掀起的夹克散在床上，红色窗外霓虹照着床铺。",
     "id": "exusiai_arknights_r18_bed_late",
     "kreaStyleHint": "",
-    "lighting": "phone glow and dim lamp",
+    "lighting": "red neon from the window and a dim bedside lamp",
     "location": "龙门近卫局宿舍",
     "mood": "轻松日常",
     "negativeTokens": [],

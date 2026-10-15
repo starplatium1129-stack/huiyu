@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_armpit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_armpit",
     "title": "时崎狂三 · 月夜的慵懒",
@@ -15,7 +15,7 @@
     "action": "跪坐床褥将双腕交叠举过头顶，以黑丝带松束手腕并侧弯腰身，薄纱胸衣滑至乳下",
     "timeOfDay": "夜晚",
     "lighting": "cold moonlight and candle glow",
-    "camera": "intimate medium close-up, low angle",
+    "camera": "full body, low angle",
     "mood": "危险魅惑",
     "sceneTags": [
       "gothic_bedroom",
@@ -28,23 +28,21 @@
     ],
     "promptProse": "The age-twenty-plus Kurumi crosses her wrists beneath a loose ribbon and bends sideways on the bed, her bodice slipped below her breasts.",
     "promptTokens": [
-      "adult Kurumi",
       "bodice",
       "ribbon",
       "kneeling",
       "arms up",
       "bed",
       "moonlight",
-      "cowboy shot"
+      "topless",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "nsfwTokens": [
-      "topless"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
     "outfitId": "casual",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_lakeside_nap_lap_pillow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asuna_lakeside_nap_lap_pillow",
     "title": "结城明日奈 · 湖畔微风下的草地膝枕·「真是的……像小猫一样睡得这么香呢」",
@@ -33,16 +33,14 @@
       "dappled_sunlight",
       "afternoon"
     ],
-    "promptProse": "Viewed from her lap, she brushes her companion's hair aside while resting her other hand at her cheek. Willow-filtered daylight reaches her face.",
+    "promptProse": "From the viewer's resting place on her lap, she smiles downward and brushes their hair away with one hand, the other supporting her cheek. The viewer remains outside the frame; willow leaves filter moving patches of daylight across her face.",
     "promptTokens": [
-      "couple",
       "lakeside",
-      "cream sweater",
-      "navy skirt",
       "lap pillow",
       "willow",
       "pov",
-      "from below"
+      "from below",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +54,6 @@
       "lap_pillow",
       "healing"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

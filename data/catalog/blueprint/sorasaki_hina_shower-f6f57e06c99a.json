@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_shower",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "晨浴后擦干白发，光环上水珠滑落",
+    "action": "坐在长椅上，一手用布擦角，另一手留在毛巾下。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【空崎日奈 · 风纪委员长的晨浴】晨光透过浴室高窗洒进来，日奈擦着半干的银色长发，发梢还滴着水珠。紫色的光环上挂着几颗晶莹的水滴，随着她抬手擦发的动作轻轻晃动。她对着镜子整理了一下制服领口，声音恢复了平时的温和——「……今天也要认真工作才行。啊，那边的咖啡店新品，巡逻结束后去尝尝吧。」",
+    "description": "晨浴后的私人淋浴间旁，成年日奈裹着湿毛巾坐在长椅上，一手用小布擦拭角，另一手留在毛巾下；高窗晨光照着水雾。",
     "id": "sorasaki_hina_shower",
     "kreaStyleHint": "",
     "lighting": "soft morning light through high window, gentle steam haze, clean bright glow",

@@ -141,12 +141,8 @@ pub(super) fn data(kind: &str, id: &str, value: &Value) -> Result<()> {
             }
             if value.get("compositionIntent").is_some_and(|v| {
                 !["single", "group", "triptych"].contains(&v.as_str().unwrap_or(""))
-            }) || (value["adult"] == true
-                && value
-                    .get("compositionIntent")
-                    .is_some_and(|v| v != "single"))
-            {
-                return Err(ApiError::invalid("蓝图构图与分级不一致"));
+            }) {
+                return Err(ApiError::invalid("蓝图构图类型无效"));
             }
             for key in ["category", "description", "recommendedSize"] {
                 if !has(key) {

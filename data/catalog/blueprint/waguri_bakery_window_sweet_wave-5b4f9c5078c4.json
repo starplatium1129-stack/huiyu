@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_bakery_window_sweet_wave",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "waguri_bakery_window_sweet_wave",
     "title": "和栗薰子 · 烘焙课后的窗口招手",
@@ -16,7 +16,7 @@
     "action": "举起体验课做好的饼干袋，朝窗外轻轻挥手。",
     "timeOfDay": "afternoon",
     "lighting": "soft frontal daylight",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "天使降临、极致治愈",
     "sceneTags": [
       "baking_classroom",
@@ -30,12 +30,8 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Waguri raises her homemade cookie bag and waves from the baking classroom window after the workshop.",
+    "promptProse": "She raises her homemade cookie bag in one hand and waves to the viewer outside with the other, smiling from the baking classroom window.",
     "promptTokens": [
-      "Kaoruko Waguri",
-      "yellow sweater",
-      "apron",
-      "bandana",
       "cookies",
       "window",
       "medium shot"

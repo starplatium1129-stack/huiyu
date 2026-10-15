@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_amusement_park_crepe_date",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1320,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "一手牵着视角手腕，一手举着可丽饼，嘴角沾着奶油回头露出纯真灿烂的笑容",
     "camera": "cowboy shot, eye level, joyful street date",
@@ -22,13 +22,11 @@
     "mood": "纯真欢快",
     "negativeTokens": [],
     "outfitId": "official_white_sweater_purple_skirt",
-    "promptProse": "She draws her companion forward by the wrist while holding a crepe, cream at her lips. The Ferris wheel casts shadows across their path.",
+    "promptProse": "She draws her companion forward by the wrist with one hand, holding the crepe clear in the other, and looks back with cream at the corner of her smile. Bright afternoon light falls across the path beneath the Ferris wheel.",
     "promptTokens": [
       "couple",
       "amusement park",
       "ferris wheel",
-      "white turtleneck",
-      "purple skirt",
       "crepe",
       "smile",
       "cowboy shot"

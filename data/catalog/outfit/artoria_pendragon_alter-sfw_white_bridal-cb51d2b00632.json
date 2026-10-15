@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/sfw_white_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 124,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "sfw_white_bridal",
       "name": "纯白哥特花嫁",
-      "prose": "an opaque white gothic bridal gown with a strapless neckline, a floor-length lace veil and white dress shoes, with platinum-blonde hair secured in a braided bun",
+      "prose": "a white gothic strapless wedding gown, floor-length lace veil, white shoes and a braided bun",
       "tokens": [
-        "white_wedding_dress",
-        "lace_veil",
-        "white_shoes",
-        "hair_bun"
+        "white wedding dress",
+        "lace veil",
+        "white shoes",
+        "hair bun"
       ],
       "isDefault": false,
       "default": false,

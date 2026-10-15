@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 637,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -14,11 +14,10 @@
       "name": "藏蓝工作连体服",
       "prose": "a navy long-sleeved utility jumpsuit with rolled cuffs, a pale grey waist apron and flat closed work shoes",
       "tokens": [
-        "navy_jumpsuit",
-        "long_sleeves",
-        "rolled_sleeves",
-        "waist_apron",
-        "work_shoes"
+        "navy jumpsuit",
+        "rolled sleeves",
+        "waist apron",
+        "work shoes"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yor_forger/beige_trench_boots",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 464,
   "createdAt": null,
-  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yor_forger",
     "outfit": {
@@ -14,11 +14,9 @@
         "yor_forger_beige_trench_boots",
         "trench_coat",
         "beige_coat",
-        "long_coat",
         "belted_coat",
         "knee_boots",
-        "leather_boots",
-        "boots"
+        "leather"
       ],
       "prose": "wearing a beige belted trench coat over a neat outfit paired with knee-high leather boots",
       "styleHint": "soft cinematic lighting",

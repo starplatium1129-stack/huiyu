@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "violet_bougainvillea_field_parasol",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
     "adult": false,
     "animaStyleHint": "anime_cinematic_scenic",
-    "camera": "medium shot, wide scenic perspective, flower petals fluttering, romantic summer stroll",
+    "camera": "wide shot, walking pair and flower-covered path visible",
     "category": "唯美浪漫",
     "characterId": "violet_evergarden",
     "coverageTags": [
@@ -25,15 +25,12 @@
     "mood": "清纯唯美、少女情怀",
     "negativeTokens": [],
     "outfitId": "casual_white_summer_dress",
-    "promptProse": "Violet carries the parasol in one mechanical hand and holds her companion's fingers with the other along the sunlit garden path.",
+    "promptProse": "Violet carries the lace parasol in one hand and lightly holds her companion's fingers with the other. She glances toward them beneath her straw hat as sunlit bougainvillea cascades over the white garden wall.",
     "promptTokens": [
-      "Violet Evergarden",
-      "white dress",
-      "straw hat",
       "lace parasol",
       "holding hands",
       "bougainvillea",
-      "medium shot"
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

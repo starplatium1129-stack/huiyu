@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_01",
     "title": "双叶理央 · 实验室的烧杯咖啡",
@@ -30,14 +30,12 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "She studies the surface of coffee in a beaker-shaped mug at the separate break table, with experimental equipment in the distant work area.",
+    "promptProse": "She studies the coffee in the beaker-shaped mug beside her closed notes. Sunset reaches her rolled cuffs and eyes behind the glasses, with experimental equipment kept in the distant work area.",
     "promptTokens": [
       "1girl",
       "solo",
-      "lab coat",
       "rolled sleeves",
       "ponytail",
-      "glasses",
       "coffee mug",
       "notebook",
       "break room",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/travel_cloak",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
@@ -12,13 +12,13 @@
       "name": "外出旅行装",
       "isDefault": false,
       "default": false,
-      "prose": "a practical forest-green travel cloak over a fully covered cream shirt, fitted trousers, leather boots and a cross-body satchel",
+      "prose": "a forest-green travel cloak over a cream shirt and trousers, with leather boots and a cross-body satchel",
       "tokens": [
-        "travel_cloak",
-        "cream_shirt",
-        "trousers",
-        "leather_boots",
-        "crossbody_satchel"
+        "green cloak",
+        "cream shirt",
+        "pants",
+        "boots",
+        "satchel"
       ]
     }
   }

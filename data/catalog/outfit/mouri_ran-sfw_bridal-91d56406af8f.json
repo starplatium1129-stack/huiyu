@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 914,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
@@ -12,11 +12,10 @@
       "name": "毛利兰·圣洁花嫁",
       "prose": "a white bridal gown with a pale blue sash, short veil, cherry blossom embroidery and flat shoes",
       "tokens": [
-        "wedding_dress",
-        "white_gown",
-        "blue_sash",
-        "short_veil",
-        "cherry_embroidery"
+        "white wedding dress",
+        "blue sash",
+        "short veil",
+        "cherry embroidery"
       ],
       "default": false,
       "isDefault": false

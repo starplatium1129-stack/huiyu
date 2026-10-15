@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_rehearsal_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 949,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "镜前反复彩排",
-    "camera": "medium shot, practicing dance before rehearsal mirror",
+    "camera": "full-body shot, three-quarter rear view",
     "category": "音乐日常",
     "characterId": "hoshino_ai",
     "coverageTags": [
@@ -20,16 +20,14 @@
     "mood": "专注自律",
     "negativeTokens": [],
     "outfitId": "rehearsal_casual",
-    "promptProse": "Ai repeats the dance step in front of the full-length mirror, adjusting her posture and smile together.",
+    "promptProse": "She holds the dance step before the full-length mirror, checking the position of her feet and her practiced smile in the reflection.",
     "promptTokens": [
-      "t-shirt",
-      "pleated skirt",
-      "sneakers",
       "dancing",
       "mirror",
       "reflection",
       "rehearsal",
-      "window light"
+      "window light",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

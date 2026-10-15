@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_nude_antlers_mating_press",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 690,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "侧卧软榻身穿半透香槟金丝睡裙若隐若现，金鹿角散落枕席，单手托胸另一手深层自抚娇喘",
     "adult": true,
     "adultArtistHint": "@mizuryu kei",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "intimate wide shot, reclining perspective across velvet chaise lounge and bookshelves",
+    "camera": "wide shot, three-quarter view",
     "category": "深层欢愉",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -24,20 +24,19 @@
     "mood": "极乐沉沦",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "masturbation",
-      "see-through",
-      "hand under clothes"
-    ],
+    "nsfwTokens": [],
     "outfitId": "candle_silk_slip",
     "promptProse": "Viviana cups one breast and touches herself beneath the sheer slip on a blue velvet chaise, candles lighting her antlers.",
     "promptTokens": [
-      "Viviana",
       "champagne slip",
       "on side",
       "chaise longue",
       "library",
-      "candles"
+      "candles",
+      "masturbation",
+      "see-through",
+      "hand under clothes",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

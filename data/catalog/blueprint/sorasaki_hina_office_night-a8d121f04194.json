@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_office_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 845,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "深夜独自整理文件",
     "adult": false,
@@ -29,10 +29,6 @@
     "promptProse": "Hina looks up with relief from the midnight paperwork as the teacher arrives, the desk lamp lighting her tired face.",
     "promptTokens": [
       "Hina",
-      "military coat",
-      "shirt",
-      "vest",
-      "red armband",
       "documents",
       "office",
       "medium shot"

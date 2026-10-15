@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1537,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_07",
     "title": "宝多六花 · 夏祭的捞水球",
@@ -16,7 +16,7 @@
     "action": "收起浴衣袖子蹲在水池边，钩起条纹水球后举起展示。",
     "timeOfDay": "夜晚",
     "lighting": "warm festival lantern light reflected in the water-balloon basin",
-    "camera": "medium shot, environmental portrait",
+    "camera": "cowboy shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "crouching",
@@ -30,15 +30,12 @@
       "night",
       "three-quarter_view"
     ],
-    "promptProse": "Rikka lifts her caught striped balloon toward her companion beside the lantern-lit basin.",
+    "promptProse": "Crouching beside the basin, she holds up the caught striped balloon toward her offscreen companion, lantern reflections wavering on the water below.",
     "promptTokens": [
-      "Rikka Takarada",
-      "floral yukata",
-      "obi",
       "crouching",
       "water balloon",
       "festival",
-      "medium shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_christmas_snowdate",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ereshkigal_christmas_snowdate",
     "title": "埃列什基伽勒 · 冥界圣诞的初雪·「这份温暖……是给我的吗」",
@@ -29,14 +29,8 @@
       "blue_snow_light",
       "medium_shot"
     ],
-    "promptProse": "She holds out her palm in wonder at the underworld's first snowfall.",
+    "promptProse": "She keeps her palm open beneath the underworld's first snowfall, staring at the melting flakes in disbelief. Cool blue snowlight catches her face above the warm red scarf.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "sweater dress",
-      "red scarf",
-      "beret",
-      "winter clothes",
       "open hand",
       "snow",
       "smile",

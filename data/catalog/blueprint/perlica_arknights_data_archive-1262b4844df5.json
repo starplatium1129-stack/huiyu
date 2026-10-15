@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_data_archive",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 716,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "站在数据架前检索终端",
-    "camera": "medium close-up",
+    "camera": "medium shot",
     "category": "塔罗斯科幻",
     "characterId": "perlica_arknights",
     "description": "【佩丽卡 · 数据档案室】高耸如森林的数据核心存储室内，佩丽卡站在高亮的光电检索终端前，熟练地调用并备份着开拓初期遗留的旧文明数据。她侧过头看向你——「过往的拓荒先驱用生命铺就了前路。把这些数据完整传承下去，正是我们身为管理层的责任。」",
@@ -17,10 +17,8 @@
     "mood": "专注求知",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Perlica turns from the archive terminal toward the Administrator while backing up old civilization records.",
+    "promptProse": "Her hand remains on the archive terminal as she turns toward the offscreen Administrator, screen light falling across her attentive face.",
     "promptTokens": [
-      "white jacket",
-      "gloves",
       "terminal",
       "data storage",
       "looking back",

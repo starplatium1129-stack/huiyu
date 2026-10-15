@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_sakurai_backyard_watermelon_garden",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1209,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "收拢羽翼蹲在菜畦边伸手指轻抚西瓜，白裙微拢，神情专注温柔，呆毛轻摆",
     "camera": "medium shot, crouching at eye level beside the garden bed",
@@ -20,7 +20,7 @@
     "mood": "恬静治愈",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "Ikaros gently touches a young watermelon with one finger, folding her wings close among the backyard vines.",
+    "promptProse": "Crouching beside the vine, Ikaros gently touches the young watermelon with one fingertip and keeps her wings folded close. Dappled light falls across the leaves and warm soil beside the wooden fence.",
     "promptTokens": [
       "crouching",
       "watermelon",

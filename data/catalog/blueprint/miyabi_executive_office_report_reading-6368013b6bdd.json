@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "miyabi_executive_office_report_reading",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1068,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在皮椅上翻阅机密卷宗签字，神态专注端庄，黑丝长腿交叠",
-    "camera": "cowboy shot, medium close-up, commanding presence",
+    "camera": "cowboy shot, three-quarter view",
     "category": "职场威严",
     "characterId": "hoshimi_miyabi",
     "coverageTags": [
@@ -20,9 +20,8 @@
     "mood": "清冷威严",
     "negativeTokens": [],
     "outfitId": "section6_uniform",
-    "promptProse": "Miyabi reviews the case files from her high-backed chair and signs a page with her fountain pen.",
+    "promptProse": "Miyabi steadies the report with her left hand and signs it with the fountain pen in her right, seated with crossed legs at the desk. Sunset from the tall windows meets the cool glow of the office displays.",
     "promptTokens": [
-      "Section 6 uniform",
       "sitting",
       "crossed legs",
       "files",

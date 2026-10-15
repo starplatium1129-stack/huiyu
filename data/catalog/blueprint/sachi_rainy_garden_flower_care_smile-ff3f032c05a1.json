@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_rainy_garden_flower_care_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1191,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sachi_rainy_garden_flower_care_smile",
     "title": "小岭幸 · 润物细雨的花圃静候",
@@ -19,7 +19,7 @@
     "action": "双手握浇水壶在花丛中回眸微笑，细雨沾湿发丝与围裙，眼神纯真澄澈",
     "timeOfDay": "上午",
     "lighting": "雨天均匀柔和的冷白天光与花瓣水珠上的晶莹反光",
-    "camera": "cowboy shot, medium framing, beautiful floral depth of field",
+    "camera": "cowboy shot, eye level, approaching companion and umbrella visible",
     "mood": "纯真清澈",
     "sceneTags": [
       "garden",
@@ -31,9 +31,9 @@
       "pink_hair",
       "peaceful"
     ],
-    "promptProse": "Sachi holds a green watering can and smiles toward Yuuji approaching with an umbrella among rain-wet hydrangeas.",
+    "promptProse": "Sachi holds the green watering can in both hands and turns toward Yuuji approaching beneath an umbrella. Fine rain beads on her white apron and the hydrangea petals between them.",
     "promptTokens": [
-      "maid",
+      "kazami_yuuji",
       "watering can",
       "hydrangea",
       "rain",
@@ -43,6 +43,9 @@
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "characterTokens": [
+      "kazami_yuuji"
+    ]
   }
 }

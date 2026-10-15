@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_street_date_shared_crepe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1276,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rias_street_date_shared_crepe",
     "title": "莉雅丝 · 商业街午后的甜蜜可丽饼",
@@ -15,7 +15,7 @@
     "action": "坐在长椅上微倾身子，双手捧着草莓可丽饼向视角前方喂食，脸颊泛着淡淡红晕",
     "timeOfDay": "午后晴天",
     "lighting": "明亮通透的自然阳光与落樱微影",
-    "camera": "medium shot, slightly high angle, close perspective",
+    "camera": "medium shot, slightly high angle",
     "mood": "心动纯情",
     "sceneTags": [
       "street",
@@ -28,10 +28,8 @@
       "shy_smile",
       "blush"
     ],
-    "promptProse": "Rias offers the strawberry on her crepe across an outdoor cafe table under sunlit cherry branches.",
+    "promptProse": "She holds the crepe in both hands and offers its top strawberry toward the offscreen viewer across the cafe table, sunlight filtering through cherry branches.",
     "promptTokens": [
-      "Rias Gremory",
-      "school uniform",
       "crepe",
       "strawberry",
       "cafe",

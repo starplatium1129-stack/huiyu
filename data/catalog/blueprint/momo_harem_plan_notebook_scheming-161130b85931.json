@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "momo_harem_plan_notebook_scheming",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1241,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "交叠双腿端坐长椅翻阅秘密笔记本，钢笔抵唇微笑，爱心尾巴晃动，眼神充满小恶魔狡黠",
-    "camera": "cowboy shot, seated eye-level, intimate charming focus",
+    "camera": "cowboy shot, seated eye level",
     "category": "小恶魔策士",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -20,10 +20,8 @@
     "mood": "腹黑娇媚",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Momo studies her secret notebook on the ivy-framed bench, resting her pen against her lips with a knowing smile.",
+    "promptProse": "One hand keeps the notebook open on her lap while the other rests the capped pen against her lips, a knowing smile warmed by the sunset through the ivy.",
     "promptTokens": [
-      "Momo",
-      "school uniform",
       "crossed legs",
       "notebook",
       "pen",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_shopping_street",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tohsaka_rin_shopping_street",
     "title": "远坂凛 · 逛街战利品",
@@ -15,7 +15,7 @@
     "action": "双手各拎纸购物袋快步走，回头扬下巴露出得意浅笑。",
     "timeOfDay": "傍晚",
     "lighting": "sunset from the back left with warm shop-window light from the right",
-    "camera": "medium shot, eye level, landscape view including swinging bags and receding storefronts",
+    "camera": "cowboy shot, eye level, landscape view with bags and storefronts visible",
     "mood": "满足得意",
     "sceneTags": [
       "shopping_street",
@@ -32,17 +32,13 @@
       "shop_window_light",
       "medium_shot"
     ],
-    "promptProse": "Rin looks back proudly with shopping bags in both hands, sunset and shop light crossing the evening pavement.",
+    "promptProse": "Rin looks back proudly while carrying a paper shopping bag in each hand along the evening street. Sunset from behind outlines the bag folds, while the shop window beside her warms her cheek and cardigan buttons.",
     "promptTokens": [
-      "Rin",
-      "cardigan",
-      "blouse",
-      "plaid skirt",
       "shopping bags",
       "walking",
       "looking back",
       "street",
-      "medium shot"
+      "cowboy shot"
     ],
     "negativeTokens": [
       "brand lettering"

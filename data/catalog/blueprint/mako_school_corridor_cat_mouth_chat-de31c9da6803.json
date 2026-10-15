@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mako_school_corridor_cat_mouth_chat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1132,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "倚靠窗台探身说笑，水手服领口随动作微倾，猫嘴笑意满满，呆毛灵动",
-    "camera": "medium close-up, cowboy framing, eye-level playful interaction",
+    "camera": "cowboy shot, eye-level",
     "category": "校园趣事",
     "characterId": "hitachi_mako",
     "coverageTags": [
@@ -20,11 +20,8 @@
     "mood": "轻松诙谐",
     "negativeTokens": [],
     "outfitId": "school_uniform",
-    "promptProse": "Mako leans beside the corridor window with her hands in her pockets, chatting with a lively smile.",
+    "promptProse": "Mako leans forward beside the corridor window with both hands in her skirt pockets, teasing Masaomi just outside the frame. The white curtain lifts behind her in the bright afternoon breeze.",
     "promptTokens": [
-      "sailor shirt",
-      "green ribbon",
-      "navy skirt",
       "hands in pockets",
       "school hallway",
       "afternoon"

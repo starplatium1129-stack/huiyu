@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_summer_beach_bikini_spade_tail",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1233,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "踩在清凉海水中向镜头开朗招手，鹅黄比基尼勾勒极品身段，爱心尾巴撩拨水花",
     "camera": "full body, 3/4 dynamic angle, vibrant beach depth",
@@ -20,11 +20,9 @@
     "mood": "开朗热情",
     "negativeTokens": [],
     "outfitId": "summer_bikini",
-    "promptProse": "Lala waves cheerfully from the shallows in her yellow bikini while her tail flicks up a little water.",
+    "promptProse": "Lala waves toward the viewer with one hand from the clear shallows. Her tail tip flicks a small spray above the incoming foam, bright droplets catching the noon sun.",
     "promptTokens": [
       "Lala",
-      "yellow bikini",
-      "frills",
       "waving",
       "shallow water",
       "beach",

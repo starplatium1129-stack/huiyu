@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_01",
     "title": "夜刀神十香 · 神威灵装紫水晶座主控跨坐 ·「士道……十香的身体……为什么会变得这么想要你呢」",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间灵装半褪露巨乳，紫黑长发如瀑飘扬，紫眸纯洁狂热主动下沉",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot, low angle, pov",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -32,7 +32,6 @@
     "promptProse": "Tohka moves astride the viewer's lap on the violet crystal throne, her armor lowered to her hips and long hair floating around them.",
     "promptTokens": [
       "adult",
-      "1girl",
       "pov",
       "astral dress",
       "open armor",
@@ -42,6 +41,7 @@
       "floating hair",
       "crystal throne",
       "magic",
+      "cowboy shot",
       "from below"
     ],
     "negativeTokens": [],
@@ -57,6 +57,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "compositionIntent": "single"
   }
 }

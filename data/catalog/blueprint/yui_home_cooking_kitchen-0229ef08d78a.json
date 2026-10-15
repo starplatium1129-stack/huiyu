@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_home_cooking_kitchen",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 356,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yui_home_cooking_kitchen",
     "title": "由比滨结衣 · 结衣家的厨房",
@@ -29,9 +29,8 @@
       "concentration",
       "cooking_apron"
     ],
-    "promptProse": "Yui presents her uneven homemade cookies with both hands, proud of the batch despite the flour scattered across the counter.",
+    "promptProse": "Yui holds the tray of uneven homemade cookies out toward the viewer with both hands, smiling with shy anticipation. Morning light falls over the cookies and the flour left on the kitchen counter.",
     "promptTokens": [
-      "pink apron",
       "tray",
       "cookies",
       "flour",

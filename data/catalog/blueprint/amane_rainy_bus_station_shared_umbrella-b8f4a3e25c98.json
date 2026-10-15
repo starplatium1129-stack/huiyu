@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_rainy_bus_station_shared_umbrella",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1180,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "amane_rainy_bus_station_shared_umbrella",
     "title": "周防天音 · 雨夜站台的红伞依偎",
@@ -34,7 +34,6 @@
     "promptProse": "She leans against Yuuji and tips the umbrella toward him despite her damp shoulder. Streetlamp reflections ripple across the road beside the shelter.",
     "promptTokens": [
       "couple",
-      "school uniform",
       "red umbrella",
       "bus stop",
       "rain",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1650,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_06",
     "title": "卡提希娅 · 铁匠铺的保养",
@@ -31,14 +31,13 @@
       "leaning_on_counter",
       "distant_forge"
     ],
-    "promptProse": "She watches the smith maintain her sword from beside the counter. Forge light catches her hands and the tools beyond.",
+    "promptProse": "Leaning at the counter, she watches the smith working on her sword beyond it, her eyes bright with interest. Forge light catches the blade and tools through the brief sparks.",
     "promptTokens": [
       "blacksmith shop",
-      "blue jacket",
-      "tunic",
       "sword",
       "counter",
-      "sparks"
+      "sparks",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

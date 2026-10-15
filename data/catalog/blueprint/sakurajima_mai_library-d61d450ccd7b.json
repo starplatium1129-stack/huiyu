@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_library",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 42,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_library",
     "title": "成年樱岛麻衣 · 闭馆书库兔装事故",
@@ -15,7 +15,7 @@
     "action": "独自在书架移动梯旁侧身站立，兔女郎服拉链卡死滑至乳下，一手持书、一手拨开高叉蕾丝自抚",
     "timeOfDay": "傍晚闭馆后",
     "lighting": "百叶窗余晖与书架暖灯形成斑驳光栅",
-    "camera": "cinematic low angle medium shot, bookshelf vanishing perspective",
+    "camera": "full body, low angle",
     "mood": "成熟演员卸下镜头后的危险挑衅",
     "sceneTags": [
       "closed_library",
@@ -34,6 +34,10 @@
       "book",
       "bunny suit",
       "pantyhose",
+      "topless",
+      "masturbation",
+      "panties aside",
+      "full body",
       "low angle"
     ],
     "negativeTokens": [],
@@ -45,11 +49,7 @@
     ],
     "adult": true,
     "sampleRating": "R18",
-    "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "panties aside"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir"

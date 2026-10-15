@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_01",
     "title": "不知火舞 · 不知火道场红白高叉忍服主控跨坐 ·「安迪……不知火流女忍者的秘传奥义，今晚全部传授给你♪」",
@@ -14,8 +14,8 @@
     "location": "不知火流忍术道场·深夜",
     "action": "跨坐腰间红白忍服大敞巨乳全弹，折扇轻摇，棕马尾甩动豪爽主动颠簸",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
-    "camera": "intimate vertical medium shot",
+    "lighting": "warm amber light across the dojo tatami",
+    "camera": "cowboy shot, low angle, pov",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -29,15 +29,16 @@
       "red_outfit",
       "open_clothes"
     ],
-    "promptProse": "Mai rides astride her companion on the dojo tatami, her red tunic untied as she holds a fan beside their head in amber light.",
+    "promptProse": "Mai straddles the offscreen viewer on the dojo tatami, her red tunic untied as she holds a fan beside their head in amber light.",
     "promptTokens": [
-      "Mai Shiranui",
       "red ninja outfit",
-      "ponytail",
       "fan",
-      "straddling",
       "dojo",
-      "low angle"
+      "cowgirl position",
+      "topless",
+      "cowboy shot",
+      "low angle",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,16 +46,14 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R18",
-    "nsfwTokens": [
-      "cowgirl position",
-      "topless"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "compositionIntent": "single"
   }
 }

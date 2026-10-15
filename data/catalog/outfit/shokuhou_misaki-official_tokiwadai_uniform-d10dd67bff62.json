@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/official_tokiwadai_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 227,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
@@ -12,21 +12,16 @@
       "id": "official_tokiwadai_uniform",
       "isDefault": true,
       "name": "常盘台女王蜂制服",
-      "prose": "her Tokiwadai Middle School uniform: a beige sweater vest over a crisp white short-sleeved shirt, a grey pleated skirt, white under-elbow gloves printed with spider webs, white thighhighs with the same spider web print, and her handbag holding a row of television remote controls",
+      "prose": "a beige sweater vest over a white short-sleeved shirt and grey pleated skirt, white spider-web-print gloves and thighhighs, with a handbag containing remote controls",
       "tokens": [
-        "tokiwadai_school_uniform",
-        "school_uniform",
-        "sweater_vest",
-        "beige_vest",
-        "white_shirt",
-        "pleated_skirt",
-        "grey_skirt",
-        "white_gloves",
-        "spider_web_print",
-        "under-elbow_gloves",
-        "white_thighhighs",
-        "handbag",
-        "remote_control"
+        "tokiwadai school uniform",
+        "beige sweater vest",
+        "white shirt",
+        "grey pleated skirt",
+        "white gloves",
+        "white thighhighs",
+        "spider web print",
+        "handbag"
       ]
     }
   }

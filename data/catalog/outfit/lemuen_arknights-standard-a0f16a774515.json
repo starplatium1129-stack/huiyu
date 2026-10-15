@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lemuen_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 316,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "lemuen_arknights",
     "outfit": {
@@ -15,7 +15,6 @@
       "prose": "her slate dark tailored long overcoat with a white collared shirt, a black necktie, dark trousers and a warm lap blanket, seated in her high-tech wheelchair",
       "tokens": [
         "overcoat",
-        "coat",
         "white_shirt",
         "necktie",
         "trousers",

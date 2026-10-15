@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_park_bench",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "frieren_park_bench",
     "title": "芙莉莲 · 公园长椅",
@@ -29,11 +29,10 @@
       "dappled_afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "She loosely holds the staff across her lap while dozing on the wooden bench.",
+    "promptProse": "She loosely holds the staff across her lap while dozing on the wooden bench. Moving leaf shadows break the afternoon sunlight over her hair and resting hands.",
     "promptTokens": [
       "1girl",
       "solo",
-      "dress",
       "dozing",
       "staff",
       "bench",

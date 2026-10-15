@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "烟粉针织休息装",
-      "prose": "a muted rose cardigan over an opaque ivory blouse, a charcoal calf-length pleated skirt and closed low shoes",
+      "prose": "a muted rose cardigan over an ivory blouse, a charcoal calf-length pleated skirt and closed flat shoes",
       "tokens": [
-        "rose_cardigan",
-        "ivory_blouse",
-        "long_pleated_skirt",
-        "flat_shoes"
+        "rose cardigan",
+        "ivory blouse",
+        "charcoal skirt",
+        "pleated skirt",
+        "flat shoes"
       ],
       "isDefault": false,
       "isNsfw": false

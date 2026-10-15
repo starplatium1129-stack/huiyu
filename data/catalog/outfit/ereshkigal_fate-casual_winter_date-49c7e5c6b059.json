@@ -1,27 +1,22 @@
 {
   "kind": "outfit",
   "id": "ereshkigal_fate/casual_winter_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ereshkigal_fate",
     "outfit": {
       "id": "casual_winter_date",
       "name": "冥界圣诞冬装约会",
-      "prose": "her beloved winter-date outfit: a white knit sweater dress with a red scarf, a wool beret over her blonde twin-tails, dark tights, and knee boots — the outfit she treasures from her Christmas in the underworld",
+      "prose": "a white knit sweater dress with a red scarf, wool beret, dark tights and knee boots",
       "tokens": [
-        "sweater_dress",
-        "white_sweater",
-        "red_scarf",
+        "white sweater dress",
+        "red scarf",
         "beret",
-        "wool_hat",
-        "pantyhose",
-        "dark_pantyhose",
-        "knee_boots",
-        "winter_clothes",
-        "casual_wear"
+        "dark tights",
+        "knee boots"
       ]
     }
   }

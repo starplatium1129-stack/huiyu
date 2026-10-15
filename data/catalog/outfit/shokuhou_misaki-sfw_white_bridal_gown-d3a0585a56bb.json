@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/sfw_white_bridal_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 233,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
@@ -12,13 +12,10 @@
       "id": "sfw_white_bridal_gown",
       "isDefault": false,
       "name": "纯白誓约婚纱",
-      "prose": "a pure white wedding gown with a long bridal veil and opaque fabric",
+      "prose": "a floor-length white wedding gown with a long bridal veil",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "long_dress",
-        "bridal_veil",
-        "opaque_fabric"
+        "white wedding dress",
+        "veil"
       ]
     }
   }

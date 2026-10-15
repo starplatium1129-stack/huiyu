@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc189",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 186,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "Steel restraints hold her to the chair with her legs apart and vest torn open as she looks toward the viewer beneath the overhead light.",
     "auditRevision": "careful-batch08-2026-08-27",
-    "camera": "近景特写",
+    "camera": "审讯椅前主观七分身中景",
     "category": "亲密",
     "char": "natsume",
     "character": [
@@ -36,10 +36,8 @@
       "bound",
       "steel_locks",
       "teary_eyes",
-      "shameful",
-      "heavy_panting",
-      "full_body",
-      "heels"
+      "cowboy_shot",
+      "overhead_light"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

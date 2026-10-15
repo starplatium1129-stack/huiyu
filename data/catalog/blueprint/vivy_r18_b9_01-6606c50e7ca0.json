@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1705,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "vivy_r18_b9_01",
     "title": "Vivy · 歌姬主题公园钢琴台礼服主控跨坐 ·「伴奏者先生……请听这具机械身体为你唱出的心跳」",
@@ -14,7 +14,7 @@
     "location": "尼亚兰德主题乐园大剧院·闭馆深夜",
     "action": "跨坐钢琴台礼服半解露雪乳，水蓝长发流光垂落，冷艳AI染红主动起伏",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "theater spotlights on the piano with dim stage fill",
     "camera": "intimate vertical medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [

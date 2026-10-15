@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_library_study",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 548,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱着厚书坐在窗边",
     "camera": "medium shot",
@@ -20,14 +20,8 @@
     "mood": "恬静好学",
     "negativeTokens": [],
     "outfitId": "leithanien_volcanology_lab_coat",
-    "promptProse": "She reads a large volcanology volume supported against her lap beside the library window.",
+    "promptProse": "She supports the heavy volcanology volume on her lap with both hands; window light falls across the open pages.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "lab coat",
-      "sweater",
-      "glasses",
-      "hearing aid",
       "sitting",
       "reading",
       "book",

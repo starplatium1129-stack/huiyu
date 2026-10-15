@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1594,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_06",
     "title": "吹雪 · 书房的人事档案",
@@ -31,14 +31,11 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "She marks a star beside a promising team member in the personnel assessments.",
+    "promptProse": "She steadies a personnel assessment with one hand and marks a star beside a name with the other; the desk lamp lights her hands while the city map hangs behind her.",
     "promptTokens": [
       "fubuki_(one-punch_man)",
       "1girl",
       "solo",
-      "green cardigan",
-      "cream blouse",
-      "pearl earrings",
       "writing",
       "paperwork",
       "map",

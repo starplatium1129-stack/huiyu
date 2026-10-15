@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_rainy_bus_stop_accidental_fall",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1262,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "滑坐在长椅旁，双掌撑湿地面，制服保持整齐，看向画面外的同行者。",
     "camera": "medium shot, eye-level side three-quarter view, bracing hands and bench legs visible",
@@ -20,11 +20,10 @@
     "mood": "雨夜意外后的恼羞与松口气",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Yui has slipped beside the shelter bench and braces both palms on the wet pavement, her uniform neat as she looks toward her off-frame companion.",
+    "promptProse": "Yui braces both palms on the wet pavement after slipping beside the bench, looking toward her off-frame companion with her uniform neat. The shelter lamp from above left warms her face and hands against the cool rain beyond the roof.",
     "promptTokens": [
       "1girl",
       "solo",
-      "school uniform",
       "sitting",
       "hands on ground",
       "bus stop",

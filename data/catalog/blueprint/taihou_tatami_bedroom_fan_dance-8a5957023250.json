@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_tatami_bedroom_fan_dance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1080,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "taihou_tatami_bedroom_fan_dance",
     "title": "大凤 · 和风寝殿的红扇雅舞",
@@ -19,7 +19,7 @@
     "action": "手执双扇翩跹旋转起舞，振袖与及膝长发飞扬，赤足踩在榻榻米上",
     "timeOfDay": "夜晚",
     "lighting": "宫灯烛台在金箔屏风上映照出流光溢彩的金红光晕",
-    "camera": "full body, dynamic mid-dance angle, wide composition",
+    "camera": "full body, dancing figure and feet visible",
     "mood": "华美曼妙",
     "sceneTags": [
       "tatami",
@@ -31,13 +31,10 @@
       "twintails",
       "graceful"
     ],
-    "promptProse": "Taihou opens both fans in a turn before the phoenix screen, palace lamps lighting the gold brocade.",
+    "promptProse": "Taihou turns on the tatami with one open red-and-gold fan in each hand, her wide sleeves following the curve of the dance. Palace lamplight shimmers over the phoenix screen behind her bare feet.",
     "promptTokens": [
-      "Taihou",
-      "kimono",
       "dual fans",
       "dancing",
-      "barefoot",
       "tatami",
       "phoenix screen",
       "full body"

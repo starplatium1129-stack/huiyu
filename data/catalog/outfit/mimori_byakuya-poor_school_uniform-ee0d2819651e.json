@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/poor_school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 471,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
@@ -12,14 +12,13 @@
       "id": "poor_school_uniform",
       "isDefault": false,
       "name": "简朴公立高校水手服",
-      "prose": "wearing a faded navy blue classic sailor uniform with white scarf and slightly worn schoolbag",
+      "prose": "a faded navy sailor uniform with a white scarf and black socks",
       "styleHint": "melancholic retro afternoon light",
       "tokens": [
-        "school_uniform",
-        "sailor_uniform",
-        "navy_sailor_collar",
-        "pleated_skirt",
-        "black_socks"
+        "navy sailor uniform",
+        "white scarf",
+        "pleated skirt",
+        "black socks"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_10",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1558,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_10",
     "title": "堀京子 · 发廊前的犹豫",
@@ -30,18 +30,14 @@
       "soft_light",
       "medium_shot"
     ],
-    "promptProse": "Hori studies a short-hair poster in the salon window, lifting her long hair to judge where it would be cut.",
+    "promptProse": "Facing the salon's short-hair poster, she gathers her own long hair at the imagined cutting line and studies it in the window reflection; soft shop light falls along the hair in her hand.",
     "promptTokens": [
-      "school uniform",
-      "long hair",
       "holding hair",
       "poster",
       "shop window",
       "medium shot"
     ],
-    "negativeTokens": [
-      "short hair"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",

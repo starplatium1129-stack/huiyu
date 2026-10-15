@@ -1,15 +1,15 @@
 {
   "kind": "scene",
   "id": "sc059",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc059",
     "title": "白衬衫与两颗空扣",
     "category": "恋爱/After_Story",
-    "story": "【夏目 · 白衬衫与两颗空扣】打烊后的咖啡馆，夏目换上店里主题活动要用的兔女郎装束，站在吧台后擦着杯子。袖口还留着从前那件白衬衫的两颗空扣没来得及缝，被你盯着看后，她先是不自在地扯了扯领结，随后故意端起杯子挡住半张脸——「这身是店长硬塞的……再看下去的话，你的咖啡就只给黑咖啡。」",
+    "story": "【夏目 · 白衬衫与两颗空扣】秋日清晨，夏目暂时把你的白衬衫当作睡衣，站在厨房里等咖啡煮好，领口的两颗纽扣还松着。察觉你的视线，她先拉了拉衣领，又故意端起杯子遮住半张脸——「只是行李里的睡衣还没干，借穿一下而已。再看下去，今天的咖啡就只给黑咖啡。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -23,12 +23,11 @@
       "mole_under_eye",
       "oversized_shirt",
       "shorts",
-      "bare_legs",
-      "smooth_thighs",
       "kitchen",
-      "full_body",
-      "barefoot",
-      "depth_of_field"
+      "holding_mug",
+      "adjusting_collar",
+      "window_light",
+      "medium_shot"
     ],
     "mature": false,
     "location": "同居公寓厨房",
@@ -43,6 +42,6 @@
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",
     "auditRevision": "careful-batch03-2026-08-27",
-    "animaCaption": "She pauses with the mug in one hand and straightens her shirt collar with the other, smiling at the viewer."
+    "animaCaption": "She raises the mug to hide her blushing lower face while straightening the oversized shirt collar with her free hand; autumn window light falls across the mug handle and kitchen counter."
   }
 }

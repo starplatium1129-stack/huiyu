@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/casual_shopping_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "casual_shopping_date",
       "name": "商业街甜美私服约会装",
-      "prose": "a cute and stylish date outfit: an oversized soft pastel pink mohair sweater hanging off one shoulder, a brown plaid wool miniskirt, thigh-high black socks, and a small leather shoulder bag",
+      "prose": "an oversized pastel-pink mohair sweater falling from one shoulder, a brown plaid miniskirt, black thigh-high socks and a small leather shoulder bag",
       "tokens": [
-        "casual_wear",
-        "oversized_sweater",
-        "pink_sweater",
-        "off_shoulder",
-        "miniskirt",
-        "plaid_skirt",
-        "thighhighs",
-        "black_thighhighs",
-        "shoulder_bag"
+        "pink sweater",
+        "oversized clothes",
+        "off shoulder",
+        "plaid skirt",
+        "black thighhighs",
+        "shoulder bag"
       ]
     }
   }

@@ -1,28 +1,25 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/official_goddess_attire",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 142,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
       "id": "official_goddess_attire",
       "name": "天之女主人神装",
-      "prose": "her goddess attire: a black fitted top with white detached sleeves worn on one arm, a golden neck ring, large hoop earrings and a golden tiara, a black miniskirt with uneven legwear — one sheer white thighhigh on one leg and a golden anklet",
+      "prose": "a fitted black top and miniskirt, one white detached sleeve and a single sheer white thighhigh, with a gold neck ring, hoop earrings, tiara and anklet",
       "tokens": [
-        "black_top",
-        "white_detached_sleeve",
-        "single_detached_sleeve",
-        "neck_ring",
-        "hoop_earrings",
+        "black top",
+        "single detached sleeve",
+        "neck ring",
+        "hoop earrings",
         "tiara",
-        "black_skirt",
-        "uneven_legwear",
-        "single_thighhigh",
-        "anklet",
-        "bare_shoulders"
+        "black miniskirt",
+        "single thighhigh",
+        "anklet"
       ],
       "default": true,
       "isDefault": true

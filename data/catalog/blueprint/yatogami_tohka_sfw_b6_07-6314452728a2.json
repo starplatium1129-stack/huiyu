@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_07",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_07",
     "title": "夜刀神十香 · 暖桌蜜柑的分享",
@@ -16,7 +16,7 @@
     "action": "暖桌前剥蜜柑把最甜一瓣递向镜头，眼神全是分享食物的期待",
     "timeOfDay": "傍晚或夜间",
     "lighting": "warm room light above the table and cool snowy window light",
-    "camera": "medium shot, vertical framing",
+    "camera": "medium shot",
     "mood": "把普通晚餐变成精灵的分享仪式",
     "sceneTags": [
       "kotatsu",
@@ -31,12 +31,8 @@
       "lamplight",
       "night_light"
     ],
-    "promptProse": "Tohka offers a carefully peeled mandarin segment with both hands from the warm kotatsu beside the snowy window.",
+    "promptProse": "From the kotatsu, she offers the peeled mandarin segment toward the offscreen viewer with one hand cupped beneath the other, warm room light meeting the cool snowy window.",
     "promptTokens": [
-      "Tohka Yatogami",
-      "sweater",
-      "trousers",
-      "socks",
       "kotatsu",
       "mandarin",
       "snowy window",

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc001",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She holds the lecture sheets against one arm and adjusts her pink ribbon with the other hand, turning toward the viewer with a shy smile.",
+    "animaCaption": "She cradles the lecture sheets in her left arm and adjusts her pink ribbon with her right hand, looking toward the approaching viewer; sunset through the classroom window warms her silver hair.",
     "camera": "半身中景",
     "category": "校园",
     "char": "nene",

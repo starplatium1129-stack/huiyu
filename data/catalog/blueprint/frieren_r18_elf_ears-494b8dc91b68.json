@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_elf_ears",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "frieren_r18_elf_ears",
     "title": "芙莉莲 · 耳尖的触碰",
@@ -15,7 +15,7 @@
     "action": "侧卧床褥用白羽轻扫自己的精灵尖耳，法袍敞开，另一手随魔力颤动探向腿间",
     "timeOfDay": "夜晚",
     "lighting": "warm fireplace glow and soft candlelight",
-    "camera": "intimate close-up on her face and ear",
+    "camera": "cowboy shot, eye level",
     "mood": "空灵慵懒",
     "sceneTags": [
       "inn_room",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_fox_garden",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 636,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "提着裙角，九尾轻摆",
     "camera": "medium shot",
@@ -19,11 +19,8 @@
       "winter snow"
     ],
     "outfitId": "white_garden_dress",
-    "promptProse": "Suzuran lifts her hem clear of the plants and turns smiling between the morning-lit greenhouse beds.",
+    "promptProse": "Suzuran gathers her dress clear of the flower beds and turns toward the viewer with a smile. Morning light passes through the greenhouse mist and glints on the dew beside her gently swaying tails.",
     "promptTokens": [
-      "Suzuran",
-      "white dress",
-      "nine tails",
       "walking",
       "flowers",
       "greenhouse",

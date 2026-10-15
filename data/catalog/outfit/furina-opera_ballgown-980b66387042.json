@@ -1,25 +1,21 @@
 {
   "kind": "outfit",
   "id": "furina/opera_ballgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "opera_ballgown",
       "name": "歌剧院晚礼服",
-      "prose": "an exquisite royal Fontaine opera house evening ballgown featuring cascading layered azure and sapphire chiffon, lace trim, a structured corset bodice, and delicate silk opera gloves",
+      "prose": "an azure-and-sapphire layered ballgown with a lace-trimmed corset bodice and silk opera gloves",
       "tokens": [
-        "ballgown",
-        "blue_dress",
-        "layered_dress",
+        "blue ballgown",
+        "layered dress",
         "corset",
-        "lace_trim",
-        "opera_gloves",
-        "jewelry",
-        "elegant"
+        "opera gloves"
       ],
       "default": false,
       "isDefault": false

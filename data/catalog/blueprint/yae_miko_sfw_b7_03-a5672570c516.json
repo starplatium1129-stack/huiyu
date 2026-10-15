@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_03",
     "title": "八重神子 · 廊下的油豆腐茶歇",
@@ -29,11 +29,8 @@
       "satisfied_smile",
       "medium_shot"
     ],
-    "promptProse": "Yae Miko cools a piece of fried tofu with a breath beside the veranda table in reflected garden light.",
+    "promptProse": "Yae Miko holds a piece of fried tofu in her chopsticks just above the plate and cools it with a small breath. Reflected garden light reaches her relaxed ears and the pleased curve of her eyes beside the veranda table.",
     "promptTokens": [
-      "Yae Miko",
-      "purple kimono",
-      "obi",
       "seiza",
       "fried tofu",
       "chopsticks",

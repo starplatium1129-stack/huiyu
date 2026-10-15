@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_dog_park",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 416,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makima_dog_park",
     "title": "玛奇玛 · 遛狗",
@@ -15,7 +15,7 @@
     "action": "蹲在两只狗之间，右手轻抚秋田犬头，左手握两条松弛牵绳末端，哈士奇站在左侧。",
     "timeOfDay": "午后",
     "lighting": "dappled afternoon light from the upper left; grass bounce keeps faces readable",
-    "camera": "medium wide shot, eye level, crouching figure and both dogs fully within frame",
+    "camera": "full-body shot, eye level",
     "mood": "从容温柔",
     "sceneTags": [
       "park_lawn",
@@ -32,7 +32,7 @@
       "grounded_shadows",
       "medium_wide_shot"
     ],
-    "promptProse": "Makima pets the Akita with her right hand while holding both slack leashes in her left; the husky stands beside her.",
+    "promptProse": "Crouched between the dogs, she pets the Akita on her right with her right hand and holds both slack leashes in her left; the husky stands on her left in the dappled light.",
     "promptTokens": [
       "1girl",
       "solo",

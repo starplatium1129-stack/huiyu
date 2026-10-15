@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1605,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_03",
     "title": "毛利兰 · 年末抽奖的意外惊喜",
@@ -29,9 +29,8 @@
       "winter",
       "medium_shot"
     ],
-    "promptProse": "Ran stops the lottery wheel and spots the golden prize ball, laughing in surprised embarrassment.",
+    "promptProse": "Ran pauses with one hand on the lottery crank, the golden prize ball resting in the tray below. Her startled smile brightens in the warm stall lights, framed by her winter scarf.",
     "promptTokens": [
-      "red duffle coat",
       "lottery wheel",
       "gold ball",
       "surprised",

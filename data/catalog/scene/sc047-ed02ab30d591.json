@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc047",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She reaches for the curtain as the viewer embraces her from behind, turning back with a shy smile.",
+    "animaCaption": "She draws the curtain with one hand as the viewer's arms encircle her from behind, turning her face toward their shoulder; afternoon backlight traces her hair and the folds of the curtain.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "背后拥抱半身剪影",
     "category": "恋爱/After_Story",

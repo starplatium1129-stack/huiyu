@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_morning_balcony_tea",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 466,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端着热气腾腾的红茶，害羞地露出幸福微笑",
     "adult": false,
-    "camera": "medium_portrait",
+    "camera": "medium shot",
     "category": "日常羁绊",
     "characterId": "sylphiette",
     "coverageTags": [
@@ -21,13 +21,8 @@
     "mood": "tender",
     "negativeTokens": [],
     "outfitId": "casual_day_dress",
-    "promptProse": "Sylphiette serves red tea on the balcony with the mountain view beyond the sunlit railing.",
+    "promptProse": "She holds the steaming teacup in both hands with a shy smile toward the offscreen companion, mountains beyond the sunlit balcony railing.",
     "promptTokens": [
-      "Sylphiette",
-      "white hair",
-      "elf ears",
-      "cardigan",
-      "dress",
       "tea",
       "balcony",
       "medium shot"

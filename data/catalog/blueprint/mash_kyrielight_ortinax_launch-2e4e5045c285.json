@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_ortinax_launch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 203,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "negativeTokens": [
       "readable telemetry"
@@ -18,7 +18,7 @@
     "action": "站在机库出击平台上握紧双拳，深吸一口气后准备前进",
     "timeOfDay": "白天",
     "lighting": "机库冷光",
-    "camera": "full-body frontal shot, closed fists and launch platform visible",
+    "camera": "full-body shot, front view",
     "mood": "凛然备战",
     "sceneTags": [
       "chaldea_hangar",
@@ -34,10 +34,6 @@
     ],
     "promptProse": "Mash clenches her fists on the launch platform and takes a steadying breath before advancing.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ortinax armor",
-      "boots",
       "clenched fists",
       "launch platform",
       "hangar",

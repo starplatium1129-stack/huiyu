@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_rainy_day_coffee_shelter",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 914,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手捧着热咖啡杯端坐在木椅上，微缩肩膀，羞怯抬眸注视对面",
     "camera": "medium close-up, eye level",
@@ -20,10 +20,8 @@
     "mood": "羞怯甜蜜",
     "negativeTokens": [],
     "outfitId": "rainy_cafe_sweater",
-    "promptProse": "Yuuka cups the latte in both hands and glances toward the teacher across the table, her beige coat hanging on the chair back.",
+    "promptProse": "Yuuka cups the latte in both hands and glances toward the viewer across the table, her beige coat hanging on the chair back. Cool rainy-window light meets the warm pendant glow on her face and the cup.",
     "promptTokens": [
-      "cream turtleneck",
-      "navy plaid skirt",
       "latte",
       "shy glance",
       "cafe",

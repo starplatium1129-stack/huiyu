@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_02",
     "title": "鸢一折纸 · 整备台上的检查记录",
@@ -16,7 +16,7 @@
     "action": "按稳检测仪外壳，检查连接线插口。",
     "timeOfDay": "day",
     "lighting": "broad even overhead work lights",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "maintenance_room",
@@ -30,11 +30,8 @@
       "bright_overhead_lighting",
       "medium_shot"
     ],
-    "promptProse": "Origami braces the inactive unit on a rubber mat and inspects its connector beneath the work lights.",
+    "promptProse": "She holds the inactive unit against the rubber mat with one hand and inspects its cable connector with the other beneath even overhead work lights.",
     "promptTokens": [
-      "Origami",
-      "grey jacket",
-      "gloves",
       "diagnostic unit",
       "cable",
       "workbench",

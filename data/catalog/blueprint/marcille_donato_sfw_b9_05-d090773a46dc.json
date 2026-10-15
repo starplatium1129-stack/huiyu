@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1720,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_05",
     "title": "玛露希尔 · 海湾野餐的安全料理",
@@ -30,11 +30,8 @@
       "sea_breeze",
       "afternoon_light"
     ],
-    "promptProse": "Marcille warms the picnic meal with a small spell, removes a suspicious ingredient and offers the finished dish.",
+    "promptProse": "Marcille offers the finished mushroom dish toward the viewer while a small warming spell glows beneath the plate. Afternoon sun lights the picnic cloth and the rocks beside the bay.",
     "promptTokens": [
-      "blue swimsuit",
-      "travel robe",
-      "sun hat",
       "mushroom dish",
       "magic",
       "seaside picnic"

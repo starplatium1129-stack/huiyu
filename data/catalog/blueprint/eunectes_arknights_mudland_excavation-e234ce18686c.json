@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_mudland_excavation",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 587,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "扛着勘探镐，用毛巾擦汗",
-    "camera": "medium wide shot",
+    "camera": "full-body shot",
     "category": "泰拉自然",
     "characterId": "eunectes_arknights",
     "description": "【森蚺 · 荒地勘探】烈日炎炎的萨贡雨林矿石勘探现场，森蚺单手扛着沉重的合金勘探镐，脖子上挂着毛巾擦拭着大颗滑落的汗水。她古铜色健美的肌肤在阳光下泛着健康的光泽——「地底下埋藏着最优质的高强度合金矿石！只要把它们挖出来，我们就能建造更大更强的机甲了！」",
@@ -17,20 +17,14 @@
     "mood": "爽朗热辣",
     "negativeTokens": [],
     "outfitId": "rainforest_safari_explorer",
-    "promptProse": "She carries the pickaxe over one shoulder and wipes her brow with a towel at the muddy mineral site.",
+    "promptProse": "She supports a pickaxe over one shoulder with one hand and wipes her brow with the other at the sunlit mineral site.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "utility shirt",
-      "sports bra",
-      "cargo pants",
-      "climbing harness",
       "pickaxe",
       "towel",
       "sweat",
       "jungle",
       "excavation",
-      "wide shot"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

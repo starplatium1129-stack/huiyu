@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_festival_yukata_bench_lean",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1496,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yamada_festival_yukata_bench_lean",
     "title": "山田杏奈 · 夏日祭典木屐磨脚的长椅依靠·「木屐带子磨得脚好痛……市川，能让我靠一会儿吗」",
@@ -16,7 +16,7 @@
     "action": "脱木屐揉脚踝，歪头依靠在身侧肩膀，烟花夜空下低语",
     "timeOfDay": "夏夜烟花盛开时",
     "lighting": "夜空烟花多重绚烂彩光与古树下纸灯笼",
-    "camera": "medium shot, sitting on stone bench, yukata, fireworks, leaning on shoulder",
+    "camera": "full body, eye level",
     "mood": "夏夜唯美、心跳依靠",
     "sceneTags": [
       "festival",
@@ -30,15 +30,13 @@
       "romantic",
       "one_sandal_removed"
     ],
-    "promptProse": "Yamada rests against Ichikawa's shoulder after removing a sandal that rubbed her heel, lanterns warming their faces.",
+    "promptProse": "Seated beside Ichikawa, she rests her head on his shoulder, one hand holding the candy apple and the other rubbing her ankle; the removed sandal lies below as lanterns and fireworks light their faces.",
     "promptTokens": [
-      "yamada_anna",
       "Ichikawa",
-      "goldfish yukata",
       "candy apple",
-      "geta",
       "bench",
-      "medium shot"
+      "fireworks",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

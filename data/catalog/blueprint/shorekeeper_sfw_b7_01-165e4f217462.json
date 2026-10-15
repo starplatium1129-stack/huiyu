@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1639,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_01",
     "title": "守岸人 · 黑海岸的潮起",
@@ -16,7 +16,7 @@
     "action": "黎明的黑海岸，她赤足站在浅滩上，头纱与蓝色长发被海风托起",
     "timeOfDay": "清晨",
     "lighting": "dawn_light",
-    "camera": "medium shot",
+    "camera": "full body, shoreline and bare feet visible",
     "mood": "自然日常",
     "sceneTags": [
       "shoreline",
@@ -31,16 +31,14 @@
       "profile",
       "medium_shot"
     ],
-    "promptProse": "The Shorekeeper holds a glowing butterfly above her palm in the shallows as dawn catches the lifted veil.",
+    "promptProse": "Shorekeeper holds a glowing butterfly above her open palm in the dawn shallows, her other hand lifting the veil clear of her face. A small wave washes around her bare feet as pale sunrise catches the blue embroidery.",
     "promptTokens": [
-      "the_shorekeeper_(wuthering_waves)",
-      "white dress",
-      "veil",
       "barefoot",
       "butterfly",
-      "shore",
+      "palm",
+      "shoreline",
       "dawn",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

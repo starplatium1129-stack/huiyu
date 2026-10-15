@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_stage_rocker",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 648,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "俯身扫弦，主音吉他狂飙",
     "adult": false,
-    "camera": "low angle, dramatic stage flare",
+    "camera": "cowboy shot, low angle",
     "category": "泰拉演出",
     "characterId": "chen_arknights",
     "coverageTags": [
@@ -23,14 +23,12 @@
       "acoustic guitar"
     ],
     "outfitId": "ambience_synesthesia_rocker",
-    "promptProse": "She leans over the guitar and sweeps its strings at the stage edge. Colored lights cut through the haze behind her.",
+    "promptProse": "At the stage edge, she leans over the red electric guitar, one hand sweeping the strings while the other holds the neck. Spotlights and laser beams cut through the dry-ice haze behind her.",
     "promptTokens": [
       "concert",
       "red electric guitar",
-      "leather jacket",
-      "denim shorts",
-      "fishnet thighhighs",
-      "boots",
+      "playing guitar",
+      "cowboy shot",
       "from below"
     ],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_cafe_crossroad_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 422,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "reze_cafe_crossroad_smile",
     "characterId": "reze_chainsaw",
@@ -21,11 +21,8 @@
       "blush",
       "daylight"
     ],
-    "promptProse": "Reze rests her chin on one hand across the counter and gives the viewer a mischievous smile.",
+    "promptProse": "Reze props her chin on one hand at the counter and gives the entering viewer a mischievous smile. Window light catches her purple hair and the grain of the wooden bar.",
     "promptTokens": [
-      "apron",
-      "rolled sleeves",
-      "jeans",
       "chin rest",
       "smile",
       "espresso machine",

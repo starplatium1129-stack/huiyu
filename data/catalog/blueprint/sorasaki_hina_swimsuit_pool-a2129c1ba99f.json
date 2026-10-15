@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_swimsuit_pool",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 900,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "披薄外套巡视泳池",
     "adult": false,
@@ -29,8 +29,6 @@
     "promptProse": "Hina notices the approaching teacher during poolside patrol, sunlight and water reflections catching her hair and cardigan.",
     "promptTokens": [
       "Hina",
-      "navy swimsuit",
-      "white cardigan",
       "pool",
       "standing",
       "medium shot"

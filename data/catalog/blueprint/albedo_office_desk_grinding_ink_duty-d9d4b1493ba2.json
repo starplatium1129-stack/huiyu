@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_office_desk_grinding_ink_duty",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "albedo_office_desk_grinding_ink_duty",
     "title": "雅儿贝德 · 办公桌旁的墨水与公文批改",
@@ -31,8 +31,6 @@
     ],
     "promptProse": "She holds an inked quill beside the desk while her companion reviews the documents. Window light reaches her face and writing hand.",
     "promptTokens": [
-      "white dress",
-      "black wings",
       "quill",
       "parchment",
       "desk",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "asuna_casino_bunny_vip_beaming_smile",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 938,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手端银质鸡尾酒托盘侧身展露完美曲线，灿烂招手甜笑，头顶兔耳发箍与金发流转",
-    "camera": "full body, 3/4 dynamic perspective, leg and waist focus",
+    "camera": "full-body shot, three-quarter view",
     "category": "破圈名流",
     "characterId": "ichinose_asuna",
     "coverageTags": [
@@ -20,16 +20,16 @@
     "mood": "璀璨开朗",
     "negativeTokens": [],
     "outfitId": "bunny_suit",
-    "promptProse": "She welcomes the viewer beside the roulette tables beneath crystal chandeliers, her long golden hair catching their light.",
+    "promptProse": "She balances the cocktail tray in one hand and waves the viewer toward the roulette tables with the other. Her bright smile and long golden hair catch the crystal chandeliers above the casino floor.",
     "promptTokens": [
       "casino",
       "cruise ship",
-      "black bunny costume",
-      "fake rabbit ears",
-      "black pantyhose",
-      "high heels",
+      "tray",
+      "cocktail",
+      "waving",
       "smile",
-      "chandelier"
+      "chandelier",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

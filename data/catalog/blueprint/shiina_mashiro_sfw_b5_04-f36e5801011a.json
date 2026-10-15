@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1515,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_04",
     "title": "椎名真白 · 便利店甜点柜前",
@@ -32,7 +32,6 @@
     "promptProse": "Mashiro touches the glass with one fingertip while staring at the baumkuchen under the display lights.",
     "promptTokens": [
       "Mashiro Shiina",
-      "school uniform",
       "dessert",
       "display case",
       "convenience store",

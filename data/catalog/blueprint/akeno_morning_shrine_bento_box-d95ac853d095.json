@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_morning_shrine_bento_box",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1286,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "akeno_morning_shrine_bento_box",
     "title": "姬岛朱乃 · 神社晨间的特制便当",
@@ -28,9 +28,8 @@
       "gentle_smile",
       "blush"
     ],
-    "promptProse": "She offers the wrapped two-tier bento with both hands on the shrine veranda. Pine-branch shadows cross the sunlit floorboards.",
+    "promptProse": "Leaning toward the viewer, she offers the wrapped two-tier bento with both hands. Pine-branch shadows cross the sunlit floorboards of the shrine veranda.",
     "promptTokens": [
-      "miko",
       "bento",
       "offering",
       "leaning forward",

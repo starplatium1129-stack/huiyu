@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_penguin_office",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 626,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "把脚翘在桌上，比了个耶",
-    "camera": "medium shot",
+    "camera": "full body, eye level",
     "category": "泰拉都市",
     "characterId": "exusiai_arknights",
     "description": "【能天使 · 企鹅物流】龙门企鹅物流杂乱却充满活力的安全屋里，能天使大咧咧地把双腿翘在办公桌上，手里拿着吃了一半的苹果派，冲着镜头比出一个大大的剪刀手，头顶金色的萨科塔光环闪闪发亮——「哟！老板！今天企鹅物流的特快派送任务又提前搞定啦！待会儿要不要一起去吃特大号苹果派庆祝一下？」",
@@ -17,19 +17,16 @@
     "mood": "元气乐天",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "She lounges with her legs on the cluttered delivery desk, holding a half-eaten apple pie and flashing a peace sign.",
+    "promptProse": "Lounging with her legs on the delivery desk, she holds the half-eaten pie in one hand and flashes a peace sign with the other. Bright office light falls across the surrounding parcels and paperwork.",
     "promptTokens": [
       "1girl",
       "solo",
       "halo",
-      "white jacket",
-      "black shirt",
-      "shorts",
       "legs up",
       "pie",
       "peace sign",
       "office",
-      "medium shot"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

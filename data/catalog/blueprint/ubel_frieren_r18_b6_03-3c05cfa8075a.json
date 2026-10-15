@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_03",
     "title": "尤贝尔 · 斩击魔法割裂黑色斗篷的走光事故 ·「手滑把衣服切开了呢……怎么，想趁机偷袭我吗？」",
@@ -12,10 +12,10 @@
     "characterId": "ubel_frieren",
     "description": "【废弃要塞更衣室·午后】测试「什么都能切开的魔法」时不慎将自己的黑色紧身斗篷正面整条切开。尤贝尔双手握着法杖撑在残破的石桌上，斗篷彻底从胸前裂开滑落，饱满高耸的雪乳与毫无防护的下腹部完全暴露在废墟阳光下。她偏头戏谑冷笑——「哎呀呀……防御彻底归零了哦？眼镜仔……要不要试试看能不能杀死我？」",
     "location": "废弃要塞更衣室·午后",
-    "action": "撑石桌塌腰回眸黑斗篷整条裂开露巨乳与下体，手握法杖狂气冷笑挑衅",
+    "action": "一手撑残垣栏杆俯身，另一手握法杖，裂开的裙缝垂落，回头望向身后",
     "timeOfDay": "afternoon",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate horizontal medium shot",
+    "camera": "cowboy shot, three-quarter rear view",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",
@@ -30,16 +30,17 @@
       "open_clothes",
       "bare_breasts"
     ],
-    "promptProse": "Ubel leans over the balustrade with her staff in one hand, the cut seam of her dress exposing her torso and hips.",
+    "promptProse": "Ubel braces one hand on the balustrade and holds her staff in the other, looking back as sunlight falls through the cut seam of her dress.",
     "promptTokens": [
-      "Ubel",
       "torn dress",
       "staff",
       "bent over",
       "looking back",
       "ruins",
       "sunlight",
-      "wide shot"
+      "topless",
+      "bottomless",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,10 +48,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R18",
-    "nsfwTokens": [
-      "topless",
-      "bottomless"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

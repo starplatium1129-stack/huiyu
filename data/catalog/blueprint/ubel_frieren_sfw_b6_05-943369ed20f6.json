@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_05",
     "title": "尤贝尔 · 海边捡到的有趣贝壳",
@@ -16,7 +16,7 @@
     "action": "潮线旁挑选古怪贝壳，海浪漫过脚踝后举起“有趣”的收藏",
     "timeOfDay": "日间",
     "lighting": "soft afternoon sun through sea mist",
-    "camera": "medium shot, horizontal framing",
+    "camera": "full body",
     "mood": "把假日当作观察实验的魔法使",
     "sceneTags": [
       "swimsuit",
@@ -32,14 +32,10 @@
     ],
     "promptProse": "Ubel lifts an unusual shell from the sorting tray as the tide reaches her ankles on the black-sand shore.",
     "promptTokens": [
-      "Ubel",
-      "swimsuit",
-      "beach skirt",
-      "shell jewelry",
       "crouching",
       "shells",
       "black sand",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

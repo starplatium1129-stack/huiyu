@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_basketball_court_towel_water",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1495,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yamada_basketball_court_towel_water",
     "title": "山田杏奈 · 篮球场边拧开的水瓶",
@@ -16,7 +16,7 @@
     "action": "拧开水瓶握住瓶盖，用鞋尖轻停滚来的篮球。",
     "timeOfDay": "afternoon",
     "lighting": "clear afternoon open shade",
-    "camera": "medium shot, environmental portrait",
+    "camera": "full body",
     "mood": "青春荷尔蒙、阳光运动",
     "sceneTags": [
       "basketball_court",
@@ -30,15 +30,12 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Yamada unscrews her water bottle and stops a rolling basketball with her shoe after practice.",
+    "promptProse": "Seated on the courtside bench, she holds the opened bottle in one hand and its cap in the other while stopping the rolling basketball with her shoe in clear afternoon shade.",
     "promptTokens": [
-      "Anna Yamada",
-      "tracksuit",
-      "towel",
       "water bottle",
       "basketball",
       "bench",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

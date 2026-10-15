@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "fern_frieren/winter_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "fern_frieren",
     "outfit": {
@@ -13,9 +13,7 @@
       "prose": "a warm beige winter overcoat, a thick knitted muffler, gloves and boots, with purple hair tied half up",
       "tokens": [
         "winter_coat",
-        "overcoat",
         "scarf",
-        "muffler",
         "gloves",
         "boots",
         "half_updo"

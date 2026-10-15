@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_eva09_ruins",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1013,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "立于钢铁残骸之上，神情清冷孤傲",
     "camera": "wide shot, dramatic low angle",
@@ -23,7 +23,6 @@
     "promptProse": "She stands on the rusted framework looking over the red crystalline terrain. Sunset glances along the metal and dark suit.",
     "promptTokens": [
       "wasteland",
-      "black plugsuit",
       "steel framework",
       "crystal",
       "sunset",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_millennium_rooftop_tactical_command",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 918,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "迎风伫立在金属露台边缘，一手扶耳侧战术耳机，一手滑动全息光屏",
     "camera": "wide shot, low angle, epic vista",
@@ -20,9 +20,9 @@
     "mood": "决断飒爽",
     "negativeTokens": [],
     "outfitId": "millennium_uniform",
-    "promptProse": "Yuuka rapidly adjusts resource allocations on the floating tactical display above Millennium, her jacket and twin tails pulling in the wind.",
+    "promptProse": "Yuuka presses one hand to her tactical earpiece and swipes the floating resource display with the other, her jacket lifting in the wind. Cool dawn light meets the blue hologram across her hands and face.",
     "promptTokens": [
-      "school uniform",
+      "headset",
       "hologram",
       "swiping",
       "determined",
@@ -30,7 +30,7 @@
       "tower terrace",
       "cityscape",
       "dawn",
-      "low angle",
+      "from below",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",

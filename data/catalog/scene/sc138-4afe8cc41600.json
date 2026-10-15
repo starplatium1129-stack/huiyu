@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc138",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "The viewer embraces her waist from behind as she stands before the mirror, the slipping towel below her shoulders and their embrace reflected together.",
+    "animaCaption": "In the close mirror view, the viewer's arms circle her waist from behind as she turns her flushed face toward their shoulder; paper-lantern light softens the steam and the towel below her shoulders.",
     "auditRevision": "careful-batch10-2026-08-27",
     "camera": "镜面反射特写",
     "category": "恋爱/同人",
@@ -35,10 +35,8 @@
       "mirror",
       "onsen",
       "embrace_from_behind",
-      "bare_legs",
-      "full_body",
-      "barefoot",
-      "paper_lantern"
+      "paper_lantern",
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

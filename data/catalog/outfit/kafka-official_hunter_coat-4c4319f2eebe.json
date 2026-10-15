@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kafka/official_hunter_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 570,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
@@ -15,12 +15,8 @@
         "coat",
         "jacket_draped_over_shoulders",
         "white_shirt",
-        "collar",
         "shorts",
-        "patterned_tights",
         "spider_web_tights",
-        "thighhighs",
-        "gloves",
         "leather_gloves",
         "high_heels",
         "boots",

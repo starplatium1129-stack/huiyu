@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yuzuriha_inori/red_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 191,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yuzuriha_inori",
     "outfit": {
@@ -12,10 +12,9 @@
       "name": "红裙",
       "prose": "a striking red dress with a layered skirt and long sleeves",
       "tokens": [
-        "red_dress",
-        "dress",
-        "long_sleeves",
-        "layered_skirt"
+        "red dress",
+        "long sleeves",
+        "layered skirt"
       ],
       "isDefault": false,
       "default": false

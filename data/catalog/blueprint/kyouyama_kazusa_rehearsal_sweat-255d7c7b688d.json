@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_rehearsal_sweat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 866,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "排练后靠在低音音箱旁喘气，衬衫领口缎带扯开",
     "adult": true,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "live_stage",
-    "promptProse": "Adult Kazusa cools her neck with a drink after rehearsal, leaning on the amplifier while tracing a bead of sweat along her inner thigh.",
+    "promptProse": "Adult Kazusa leans on the amplifier with one knee raised, pressing the cool drink bottle to her neck with one hand while the other traces a bead of sweat along her inner thigh.",
     "promptTokens": [
       "1girl",
       "solo",

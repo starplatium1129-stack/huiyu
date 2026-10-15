@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_summer_beach_white_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 235,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jeanne_summer_beach_white_bikini",
     "title": "圣女贞德 · 夏海的白色圣光·「防晒霜……那、那就拜托你了吧，只准涂在背后！」",
@@ -15,7 +15,7 @@
     "action": "稳坐礁石，一手遮阳看向同行者，另一手递出防晒霜瓶",
     "timeOfDay": "正午",
     "lighting": "炽白正午阳光与海面镜面反光，肌肤泛着水光",
-    "camera": "medium shot, sitting on rock, sparkling sea backdrop, playful summer mood",
+    "camera": "medium shot",
     "mood": "清凉明媚、圣女反差",
     "sceneTags": [
       "normandy_coast",
@@ -29,13 +29,8 @@
       "midday_sunlight",
       "medium_shot"
     ],
-    "promptProse": "Jeanne shades her eyes and offers a closed sunscreen bottle from her seat on a broad shore rock, smiling above the sparkling sea.",
+    "promptProse": "Seated on the broad shore rock, she shades her eyes with one hand and extends the closed sunscreen bottle toward the viewer with the other.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "white bikini",
-      "blue ribbon",
-      "sarong",
       "sitting",
       "rock",
       "sunscreen",

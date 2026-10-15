@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc239",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "One overall strap hangs loose as the viewer wipes a spot of white paint near Natsume's shirt collar.",
+    "animaCaption": "With one overall strap hanging loose, she freezes as the viewer's hand wipes white paint from her collarbone; afternoon window light catches her reddening ear and the paint mark.",
     "auditRevision": "fix-no-burn-ears-sc239-2026-09-05",
     "camera": "近景水平正面特写",
     "category": "日常",
@@ -30,15 +30,13 @@
       "mole_under_eye",
       "denim_overalls",
       "straps_slipped_off_shoulder",
-      "off_shoulder_top",
-      "bare_shoulders",
+      "sleeveless_white_shirt",
       "collarbone",
       "white_paint",
       "art_studio",
       "frozen_pose",
       "blush",
-      "full_body",
-      "depth_of_field"
+      "close_up"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

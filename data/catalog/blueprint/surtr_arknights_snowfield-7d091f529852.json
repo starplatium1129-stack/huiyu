@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_snowfield",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 517,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "拄剑而立，风雪掠过发梢",
     "camera": "wide shot, low angle",
@@ -20,13 +20,9 @@
     "promptProse": "Surtr plants burning Laevateinn in the snow, its heat melting a ring beneath the fading golden sky.",
     "promptTokens": [
       "Surtr",
-      "jacket",
-      "crop top",
-      "shorts",
-      "boots",
       "flaming sword",
       "snow",
-      "low angle",
+      "from below",
       "wide shot"
     ],
     "recommendedSize": "1152x1536",

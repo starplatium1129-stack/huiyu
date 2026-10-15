@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_rooftop_sing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 860,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在天台长椅边缘轻轻哼唱旋律",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, backlight",
+    "camera": "medium shot",
     "category": "乐队日常",
     "characterId": "kyouyama_kazusa",
     "coverageTags": [
@@ -26,9 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "Kazusa sits at the edge of the rooftop bench, quietly humming a melody into the sunset.",
+    "promptProse": "At the edge of the rooftop bench, she turns a small smile toward the arriving viewer while humming, the low sun outlining her hair.",
     "promptTokens": [
-      "school uniform",
       "sitting",
       "bench",
       "humming",

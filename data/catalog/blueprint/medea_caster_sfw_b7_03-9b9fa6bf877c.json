@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 291,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_03",
     "title": "美狄亚 · 连帽长袍的街市采购",
@@ -30,13 +30,11 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Medea carries her groceries through the market with her hood drawn low, ignoring the curious glances.",
+    "promptProse": "Medea carries the wicker grocery basket through the morning market with her hood drawn low. Sunlight touches the basket rim while her face remains shaded.",
     "promptTokens": [
       "1girl",
       "solo",
       "medea_(caster)_(fate)",
-      "hooded robe",
-      "boots",
       "wicker basket",
       "market"
     ],

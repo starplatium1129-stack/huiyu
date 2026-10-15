@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_parfait_happy_eating",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1494,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yamada_parfait_happy_eating",
     "title": "山田杏奈 · 甜品店特盛巨无霸芭菲的幸福笑颜·「市川……这一大口草莓，给你吃！」",
@@ -16,7 +16,7 @@
     "action": "坐在餐厅卡座上，用长勺递来草莓奶油，嘴角带着奶油痕迹开心微笑。",
     "timeOfDay": "afternoon",
     "lighting": "bright restaurant interior lights",
-    "camera": "medium shot, eye level, action and face visible",
+    "camera": "medium shot, eye level",
     "mood": "吃货幸福、甜蜜喂食",
     "sceneTags": [
       "family_restaurant",
@@ -34,10 +34,8 @@
       "bright_interior_light",
       "medium_shot"
     ],
-    "promptProse": "Yamada offers a spoonful of strawberry and cream toward her companion from the restaurant booth.",
+    "promptProse": "From the booth, she offers a long spoon of strawberry and cream toward the offscreen viewer, smiling with a trace of cream at her mouth under the bright restaurant lights.",
     "promptTokens": [
-      "Anna Yamada",
-      "hoodie",
       "parfait",
       "spoon",
       "restaurant",

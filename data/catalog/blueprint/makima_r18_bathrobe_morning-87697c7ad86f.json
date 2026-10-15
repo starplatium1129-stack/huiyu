@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_bathrobe_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makima_r18_bathrobe_morning",
     "title": "玛奇玛 · 晨袍沙发",
@@ -15,7 +15,7 @@
     "action": "坐在沙发上松开浴袍",
     "timeOfDay": "清晨",
     "lighting": "bright morning light",
-    "camera": "cowboy shot, loosely tied silk bathrobe sitting on edge of bed",
+    "camera": "cowboy shot",
     "mood": "慵懒从容",
     "sceneTags": [
       "living_room",
@@ -25,7 +25,7 @@
       "balcony",
       "intimate"
     ],
-    "promptProse": "Adult Makima balances coffee on one knee while tightening the robe belt around her other thigh, her silk robe open across her chest.",
+    "promptProse": "Adult Makima steadies her coffee on one crossed knee with one hand and draws the robe belt around her other thigh, her silk robe open in the morning light.",
     "promptTokens": [
       "1girl",
       "solo",

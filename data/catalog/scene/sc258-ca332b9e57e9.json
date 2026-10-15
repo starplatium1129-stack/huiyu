@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc258",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Carrying props down the shrine steps, Nene trips over her hakama hem and is steadied by the viewer among falling maple leaves.",
+    "animaCaption": "With the props held against her chest, she stumbles over her hakama hem as the viewer steps up from the lower stair to support her waist; sunset through the red maples dapples her flushed face.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "中景正面仰视拉近特写",
+    "camera": "石阶下方略仰视半身中景",
     "category": "祭典・节日",
     "char": "nene",
     "character": [

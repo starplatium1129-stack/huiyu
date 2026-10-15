@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_summer_beach_sunset_stride",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 917,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在白色海滩折叠椅上，单手扶着太阳伞遮阳帽，脸颊泛红娇羞侧望",
     "camera": "cowboy shot, golden hour",
@@ -20,11 +20,8 @@
     "mood": "浪漫心动",
     "negativeTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Yuuka rests beneath the parasol while the breeze moves her hair and beach wrap against the orange-pink sea.",
+    "promptProse": "Yuuka sits beneath the parasol with one hand holding her visor against the breeze, looking shyly toward the viewer. Sunset lights the edge of her hair and the white wrap against the orange-pink sea.",
     "promptTokens": [
-      "navy swimsuit",
-      "white pareo",
-      "sun visor",
       "sitting",
       "beach chair",
       "parasol",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 792,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "家政教室，她系着素雅围裙把刚出炉的饼干装进口袋，准备慰问学生会的后辈",
     "adult": false,
@@ -23,13 +23,11 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_home",
-    "promptProse": "Maria packages fresh cookies and ties the ribbon for her student-council juniors.",
+    "promptProse": "Maria ties a ribbon around the filled cookie bag with both hands at the classroom counter. The freshly baked cookies beside her catch the warm kitchen light.",
     "promptTokens": [
-      "blouse",
-      "skirt",
-      "pink apron",
       "cookies",
       "ribbon",
+      "gift bag",
       "classroom kitchen"
     ],
     "recommendedSize": "1152x1536",

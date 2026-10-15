@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_volcano_ruins",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 518,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手将炽热的莱瓦汀巨剑抗在肩头，身后熔岩火巨人拔地而起，暗红长发与炽热火星在狂风中疯狂飞扬",
-    "camera": "dramatic low angle, giant flaming sword, floating fire embers, volumetric smoke",
+    "camera": "wide shot, low angle, Surtr in the foreground with the fire giant rising behind",
     "category": "泰拉自然",
     "characterId": "surtr_arknights",
     "coverageTags": [
@@ -20,15 +20,13 @@
     "mood": "狂暴霸气与史诗",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Surtr rests Laevateinn on her shoulder as a flaming giant rises behind the altar, lava lighting the smoke.",
+    "promptProse": "Surtr supports Laevateinn on one shoulder and extends her free hand toward the viewer beside the lava fissure. A fire giant rises behind her, its light filling the drifting smoke.",
     "promptTokens": [
       "Surtr",
-      "jacket",
-      "shorts",
       "sword over shoulder",
       "fire giant",
       "volcanic ruins",
-      "low angle"
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

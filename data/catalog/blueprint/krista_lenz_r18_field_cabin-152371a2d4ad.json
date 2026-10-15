@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_field_cabin",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "晴空木窗前解开衬衫微风吹拂",
     "adult": true,
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "close-up, bright daylight, curtains blowing",
+    "camera": "cowboy shot",
     "category": "成人",
     "characterId": "krista_lenz",
     "coverageTags": [],

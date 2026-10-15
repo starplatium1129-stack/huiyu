@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_deep_dive_tub_cyberspace_interface",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1099,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "半卧在冰水深潜舱中，神经光纤插入脊髓插槽，双眼泛着数据流金光",
     "camera": "top-down overhead angle, intimate technological depth",
@@ -20,9 +20,8 @@
     "mood": "神秘科技",
     "negativeTokens": [],
     "outfitId": "netrunner_suit",
-    "promptProse": "Lucy reclines in the ice-filled dive tub with neural cables connected along her spine and reflected data glowing in her eyes.",
+    "promptProse": "Lucy reclines in the ice-filled dive tub with neural cables connected along her spine. Blue light from beneath the water outlines the ice while reflected data shines in her eyes.",
     "promptTokens": [
-      "netrunner suit",
       "reclining",
       "ice bath",
       "neural cables",

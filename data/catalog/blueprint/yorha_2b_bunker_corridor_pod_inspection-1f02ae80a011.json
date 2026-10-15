@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_bunker_corridor_pod_inspection",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1109,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yorha_2b_bunker_corridor_pod_inspection",
     "title": "2B · 残破大教堂的纯白誓约花嫁",
@@ -19,7 +19,7 @@
     "action": "身穿纯白露肩婚纱头戴半透头纱，解下眼罩蓝眸流光，双手捧月之泪捧花温柔浅笑",
     "timeOfDay": "下午",
     "lighting": "破碎彩色花窗倾泻入圣殿的灿烂丁达尔光束与白色花瓣飘飞的唯美神圣光辉",
-    "camera": "medium full shot, bridal altar perspective, focus on sapphire blue eyes, veil, and white dress",
+    "camera": "cowboy shot, ruined altar and bouquet visible",
     "mood": "圣洁唯美",
     "sceneTags": [
       "church",
@@ -34,14 +34,9 @@
       "blue_eyes",
       "gentle_smile"
     ],
-    "promptProse": "2B holds Lunar Tears in both hands near the ruined altar, golden light falling through broken stained glass.",
+    "promptProse": "2B holds the white Lunar Tears in both hands near the ruined altar, her uncovered blue eyes turned toward the viewer with a quiet smile. Golden light through the broken stained glass catches the edge of her veil.",
     "promptTokens": [
-      "2B",
-      "white wedding dress",
-      "veil",
-      "gloves",
       "bouquet",
-      "uncovered eyes",
       "cathedral",
       "cowboy shot"
     ],

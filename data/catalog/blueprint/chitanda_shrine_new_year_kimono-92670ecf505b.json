@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_shrine_new_year_kimono",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1482,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "chitanda_shrine_new_year_kimono",
     "title": "千反田爱瑠 · 神社初诣振袖和服的端庄回眸·「新年快乐，折木同学」",
@@ -16,7 +16,7 @@
     "action": "身着振袖和服双手叠腹回眸微躬，花簪微晃，紫眸含笑祝福",
     "timeOfDay": "冬日清晨",
     "lighting": "初雪石阶反光与神社晨曦相映",
-    "camera": "medium full shot, furisode kimono, torii gate, snow falling",
+    "camera": "full-body shot",
     "mood": "端庄典雅、豪农千金",
     "sceneTags": [
       "shrine",
@@ -35,12 +35,10 @@
     "promptTokens": [
       "shrine",
       "torii",
-      "wisteria furisode",
-      "gold obi",
-      "floral kanzashi",
       "folded hands",
       "snow",
-      "morning"
+      "morning",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

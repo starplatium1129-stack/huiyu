@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_narukami_shrine",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raiden_shogun_narukami_shrine",
     "title": "雷电将军 · 鸣神神社的落樱",
@@ -32,9 +32,8 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Ei examines the petal on her palm beneath the Sacred Sakura, then looks back toward the viewer.",
+    "promptProse": "Ei keeps the fallen petal on her open palm as she turns toward the viewer beside her, the other hand relaxed at her waist. Soft sunset lights the petal and the red torii beyond the shrine steps.",
     "promptTokens": [
-      "kimono",
       "open palm",
       "cherry blossom petals",
       "looking back",

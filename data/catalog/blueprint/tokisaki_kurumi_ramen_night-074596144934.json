@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_ramen_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tokisaki_kurumi_ramen_night",
     "title": "时崎狂三 · 深夜拉面",
@@ -31,10 +31,8 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Kurumi holds the ramen bowl in both hands and winks toward the viewer, unused chopsticks on their holder.",
+    "promptProse": "She cups the hot ramen bowl in both hands and winks toward the offscreen viewer through warm-lit steam, unused chopsticks resting on their holder.",
     "promptTokens": [
-      "Kurumi",
-      "black cardigan",
       "ramen",
       "bowl",
       "wink",

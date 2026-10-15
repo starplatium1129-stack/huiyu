@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_sunset_grain_selection",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 710,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shu_arknights_sunset_grain_selection",
     "characterId": "shu_arknights",
@@ -29,15 +29,12 @@
       "full_body"
     ],
     "promptTokens": [
-      "Shu",
-      "white jacket",
-      "patterned trousers",
       "shopping bag",
       "doorway",
       "sunset",
       "full body"
     ],
-    "promptProse": "Shu holds the door and smiles toward her companion with vegetables at her side, tail clear of the threshold in evening light.",
+    "promptProse": "One hand holds the door while the other carries the vegetable bag; she smiles toward the offscreen companion, her tail clear of the threshold between sunset and warm entryway light.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

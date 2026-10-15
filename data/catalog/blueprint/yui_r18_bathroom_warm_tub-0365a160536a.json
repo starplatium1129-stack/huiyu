@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_bathroom_warm_tub",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 357,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yui_r18_bathroom_warm_tub",
     "title": "由比滨结衣 · 结衣家浴缸的泡泡歌谣",
@@ -17,7 +17,7 @@
     "action": "独自斜倚浴缸屈膝露出泡沫，一手托胸、一手在大腿上堆泡泡小狗并哼歌",
     "timeOfDay": "夜晚",
     "lighting": "warm bathroom lamp glow, glistening water reflections, soft steam haze",
-    "camera": "medium close-up shot",
+    "camera": "medium shot, eye level, raised knee and both hands visible",
     "mood": "松弛微醺",
     "sceneTags": [
       "bathroom",

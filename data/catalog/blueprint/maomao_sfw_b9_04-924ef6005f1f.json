@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1708,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "maomao_sfw_b9_04",
     "title": "猫猫 · 后宫药房的草木花嫁",
@@ -16,7 +16,7 @@
     "action": "温室里逐朵确认捧花无毒，最后抬眼向镜头露出坦率好奇",
     "timeOfDay": "黄昏",
     "lighting": "warm filtered light through leaves and glass",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot",
     "mood": "药师也会认真准备一场花嫁",
     "sceneTags": [
       "wedding_dress",
@@ -29,10 +29,8 @@
       "curious_smile",
       "botanical_light"
     ],
-    "promptProse": "Maomao checks each flower in her herbal bouquet, then looks up with frank curiosity in the greenhouse.",
+    "promptProse": "She holds the herbal bouquet near her face and looks up curiously toward the viewer, filtered greenhouse light falling across the leaves.",
     "promptTokens": [
-      "green bridal robe",
-      "cream veil",
       "herb bouquet",
       "greenhouse"
     ],

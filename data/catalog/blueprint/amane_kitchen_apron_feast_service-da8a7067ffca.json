@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_kitchen_apron_feast_service",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1176,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "amane_kitchen_apron_feast_service",
     "title": "周防天音 · 美浜厨房的爱心大餐",
@@ -19,7 +19,7 @@
     "action": "系着粉色围裙俯身吹凉汤勺喂食，敞开领口露出丰满双峰，眼神极尽温柔宠溺",
     "timeOfDay": "傍晚",
     "lighting": "厨房暖橙色吊灯与锅中升腾的热气弥漫出的温馨光泽",
-    "camera": "medium close-up, first-person pov, eye-level intimacy",
+    "camera": "upper body, eye level, pov",
     "mood": "温馨宠溺",
     "sceneTags": [
       "kitchen",
@@ -31,11 +31,9 @@
       "hair_rings",
       "gentle_smile"
     ],
-    "promptProse": "She cools a spoonful of curry for Yuuji across the kitchen counter. Pendant light catches the spoon and steam from the pot behind her.",
+    "promptProse": "Leaning across the counter toward Yuuji just outside the frame, she cools the spoonful before offering it to him. Pendant light catches the spoon and steam rising from the pot behind her.",
     "promptTokens": [
       "kitchen",
-      "sweater dress",
-      "pink apron",
       "curry",
       "spoon",
       "blowing",

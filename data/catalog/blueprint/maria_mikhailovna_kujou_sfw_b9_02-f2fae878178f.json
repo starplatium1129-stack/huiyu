@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 791,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "把落花夹进笔记本，轻合书页后看向花枝。",
+    "action": "坐在藤椅上，双手轻合夹着落花的笔记本，抬眼看向花枝",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
     "camera": "medium shot, environmental portrait",
@@ -23,10 +23,8 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_refined_daily",
-    "promptProse": "Maria places a fallen flower in her notebook, closes it gently and looks back toward the branch.",
+    "promptProse": "Seated in the wicker chair, Maria holds the notebook nearly closed with a fallen blossom between its pages. She looks back toward the flowering branch under the light filtered through the greenhouse roof.",
     "promptTokens": [
-      "sage dress",
-      "cardigan",
       "wicker chair",
       "notebook",
       "flower",

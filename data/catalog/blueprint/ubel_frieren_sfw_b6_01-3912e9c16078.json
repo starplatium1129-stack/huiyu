@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_01",
     "title": "尤贝尔 · 考试会场的缠人精",
@@ -31,11 +31,8 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Ubel leans forward and raises a questioning hand beside her registration paper in diffuse daylight.",
+    "promptProse": "Beside the registration paper, she leans close toward the offscreen companion and raises a questioning hand, her half-lidded gaze intent in diffuse daylight.",
     "promptTokens": [
-      "ubel_(sousou_no_frieren)",
-      "black dress",
-      "side ponytail",
       "bench",
       "hand gesture",
       "waiting room",

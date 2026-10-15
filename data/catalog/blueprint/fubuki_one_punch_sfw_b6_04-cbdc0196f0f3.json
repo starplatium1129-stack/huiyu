@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1592,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_04",
     "title": "吹雪 · 暴雪组的白色誓约",
@@ -28,13 +28,10 @@
       "restrained_blush",
       "sunset"
     ],
-    "promptProse": "She adjusts her pearls with one hand while accepting a bouquet with the other, her formal smile turning shy.",
+    "promptProse": "She adjusts her pearls with one hand and accepts the bouquet from the viewer with the other; green-gold light through the greenhouse roof softens her shy smile among the white roses.",
     "promptTokens": [
       "1girl",
       "solo",
-      "wedding dress",
-      "veil",
-      "pearl necklace",
       "bouquet",
       "white roses",
       "greenhouse",

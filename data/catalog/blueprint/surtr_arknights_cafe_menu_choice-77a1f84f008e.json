@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_cafe_menu_choice",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 692,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfitId": "ice_cream_cafe_casual",
@@ -19,9 +19,6 @@
     "promptProse": "Surtr points to vanilla at the ice-cream counter while holding her bag strap in afternoon window light.",
     "promptTokens": [
       "Surtr",
-      "hoodie",
-      "pleated skirt",
-      "shoulder bag",
       "ice cream",
       "dessert shop",
       "medium shot"

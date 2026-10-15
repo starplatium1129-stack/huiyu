@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_white_thighhighs",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 167,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_white_thighhighs",
     "title": "伊莉雅丝菲尔 · 白丝与暖炉",
@@ -15,7 +15,7 @@
     "action": "白丝长腿伸向暖炉",
     "timeOfDay": "冬夜",
     "lighting": "warm fireplace glow",
-    "camera": "intimate medium shot, foot focus",
+    "camera": "full-body shot, low angle",
     "mood": "纯真温存",
     "sceneTags": [
       "castle_bedroom",

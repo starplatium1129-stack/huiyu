@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "zero_two/sfw_seaside",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 891,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "zero_two",
     "outfit": {
@@ -12,10 +12,8 @@
       "name": "海边轻便衬衫长裙",
       "prose": "a white long-sleeved shirt and an opaque red ankle-length skirt",
       "tokens": [
-        "white_shirt",
-        "long_sleeves",
-        "red_skirt",
-        "long_skirt"
+        "white long-sleeved shirt",
+        "red ankle-length skirt"
       ],
       "default": false,
       "isDefault": false

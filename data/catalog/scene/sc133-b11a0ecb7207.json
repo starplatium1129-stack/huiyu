@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc133",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She sits on the wooden counter wearing only the apron, bare feet dangling beneath the cafe's warm night light.",
+    "animaCaption": "She sits on the marble counter wearing only the apron, her bare feet dangling; the kitchen's warm light falls across her flushed face and the counter edge.",
     "auditRevision": "careful-batch02-2026-08-27",
-    "camera": "主观正面近景特写",
+    "camera": "吧台前平视全身景",
     "category": "恋爱/同人/After_Story",
     "char": "nene",
     "character": [

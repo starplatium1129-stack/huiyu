@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_training_range",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 560,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐于战术展开的轮椅上，手抚长管重型狙击铳，目光沉着锐利",
-    "camera": "low angle, dynamic",
+    "camera": "medium shot, low angle, mounted rifle and wheelchair supports visible",
     "category": "泰拉日常",
     "characterId": "lemuen_arknights",
     "coverageTags": [
@@ -22,12 +22,10 @@
       "readable ballistic values"
     ],
     "outfitId": "standard",
-    "promptProse": "Lemuen rests a hand on the long sniper rifle mounted beside her tactical wheelchair, studying the firing range calmly.",
+    "promptProse": "Lemuen rests her hand on the bolt of the long sniper rifle mounted beside her tactical wheelchair. Harsh daylight draws a bright edge along the barrel as she studies the range.",
     "promptTokens": [
       "1girl",
       "solo",
-      "coat",
-      "wheelchair",
       "sniper rifle",
       "ballistic display",
       "firing range",

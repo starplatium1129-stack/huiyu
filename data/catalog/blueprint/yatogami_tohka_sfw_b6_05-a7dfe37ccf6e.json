@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 88,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_05",
     "title": "夜刀神十香 · 海边的黄豆粉冰饮",
@@ -13,10 +13,10 @@
     "outfitId": "sfw_beach",
     "description": "【海滨度假木栈桥·正午】十香穿着紫色系泳装，双手抱住比脸还大的黄豆粉冰饮，坐在栈桥边让脚尖拍打海水；一阵海风吹来，她的蝴蝶结和长发同时飞起，兴奋地朝远处的浪花挥手。",
     "location": "sunlit wooden pier at a quiet resort beach",
-    "action": "栈桥边抱巨大冰饮拍水，海风吹起长发与蝴蝶结，朝浪花兴奋挥手",
+    "action": "坐在栈桥边，双手抱住巨大冰饮，双脚轻拍海水，长发与蝴蝶结随海风扬起",
     "timeOfDay": "日间",
     "lighting": "bright noon light and blue water reflections",
-    "camera": "medium shot, horizontal framing",
+    "camera": "full body",
     "mood": "发现人类假日的新鲜快乐",
     "sceneTags": [
       "swimsuit",
@@ -32,13 +32,9 @@
     ],
     "promptProse": "Tohka holds her oversized soybean drink in both hands while her feet stir the sunlit shallows.",
     "promptTokens": [
-      "Tohka Yatogami",
-      "swimsuit",
-      "cover-up skirt",
-      "large ribbon",
       "iced drink",
       "pier",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

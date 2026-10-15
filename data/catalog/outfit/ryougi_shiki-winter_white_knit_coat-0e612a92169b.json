@@ -1,24 +1,21 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/winter_white_knit_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 731,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "id": "winter_white_knit_coat",
       "name": "冬日私服白毛衣长风衣",
-      "prose": "a warm and stylish winter ensemble: a fitted cream knit turtleneck sweater, a dark charcoal woolen coat, knee-high leather boots, and a red plaid scarf around her neck",
+      "prose": "a cream knit turtleneck under a charcoal wool coat, red plaid scarf and knee-high leather boots",
       "tokens": [
-        "winter_coat",
-        "coat",
-        "turtleneck_sweater",
-        "scarf",
-        "plaid_scarf",
-        "boots",
-        "casual_winter"
+        "charcoal coat",
+        "cream turtleneck",
+        "red plaid scarf",
+        "knee boots"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_02",
     "title": "鸢一折纸 · 淋浴间白乳胶战衣水光湿身透肉 ·「被士道注视过的战衣……必须保持最高灵敏度」",
@@ -15,7 +15,7 @@
     "action": "淋浴下紧身纳米衣透肉，面无表情手探腿间极速自抚，蓝眸理性崩塌微喘",
     "timeOfDay": "night",
     "lighting": "liquid_reflection_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot",
     "mood": "湿身水光与私密自持",
     "sceneTags": [
       "wet",
@@ -33,8 +33,6 @@
     "promptProse": "Origami stands under the AST shower and touches herself beneath the soaked pilot suit, maintaining her composed stare as water runs over her silver bangs.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "white bodysuit",
       "wet clothes",
       "see-through",
@@ -42,7 +40,8 @@
       "expressionless",
       "masturbation",
       "shower",
-      "frosted glass"
+      "frosted glass",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

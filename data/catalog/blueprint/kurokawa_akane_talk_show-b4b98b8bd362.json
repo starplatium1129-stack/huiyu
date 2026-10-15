@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_talk_show",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 962,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "沙发上接受访谈",
     "camera": "cowboy shot, sitting on studio sofa",
@@ -18,10 +18,8 @@
     "mood": "从容得体",
     "negativeTokens": [],
     "outfitId": "pinafore_dress",
-    "promptProse": "Akane sits on the studio sofa for the late-night interview, facing the talk-show camera.",
+    "promptProse": "Akane sits upright on the talk-show sofa, looking toward the camera with its red recording light on. The soft studio lights leave a calm highlight along her cheek.",
     "promptTokens": [
-      "blue pinafore",
-      "white blouse",
       "sitting",
       "sofa",
       "television studio",

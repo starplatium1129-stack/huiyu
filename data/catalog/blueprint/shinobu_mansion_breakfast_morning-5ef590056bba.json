@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_mansion_breakfast_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1450,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "和服跪坐盛汤合十，微笑督促吃饭",
     "adult": false,
@@ -25,10 +25,8 @@
     "mood": "姐姐感满溢、治愈日常",
     "negativeTokens": [],
     "outfitId": "home_lavender_kimono",
-    "promptProse": "After serving miso soup, Shinobu kneels at the low table and brings her hands together in morning shoji light.",
+    "promptProse": "Shinobu sits neatly at the low table with her palms together, the served miso soup in front of her. Morning light filters through the shoji and the thin steam rising between the breakfast bowls.",
     "promptTokens": [
-      "kochou_shinobu",
-      "kimono",
       "seiza",
       "hands together",
       "breakfast",

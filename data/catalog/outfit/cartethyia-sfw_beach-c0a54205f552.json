@@ -1,21 +1,19 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 950,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "sfw_beach",
       "name": "卡提希娅·海滨泳装",
-      "prose": "a pale blue long-skirt swimsuit with a cream cardigan, gold braid",
+      "prose": "a pale-blue swim dress with a cream cardigan",
       "tokens": [
-        "long_skirt_swimsuit",
-        "pale_blue_swimsuit",
-        "cream_cardigan",
-        "gold_braid"
+        "pale blue swim dress",
+        "cream cardigan"
       ],
       "default": false,
       "isDefault": false

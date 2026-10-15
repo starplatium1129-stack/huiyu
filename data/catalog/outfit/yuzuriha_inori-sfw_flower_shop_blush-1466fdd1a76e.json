@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yuzuriha_inori/sfw_flower_shop_blush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1123,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yuzuriha_inori",
     "outfit": {
@@ -12,12 +12,10 @@
       "name": "花店雾粉开衫裙装",
       "prose": "a blush-pink button cardigan over an ivory collared cotton blouse, a slate-grey midi skirt and burgundy strap loafers",
       "tokens": [
-        "blush_pink_cardigan",
-        "button_cardigan",
-        "ivory_collared_blouse",
-        "long_sleeves",
-        "slate_grey_midi_skirt",
-        "burgundy_strap_loafers"
+        "blush pink cardigan",
+        "ivory blouse",
+        "slate grey midi skirt",
+        "burgundy strap loafers"
       ],
       "default": false,
       "isDefault": false

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc069",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She tilts the shared umbrella toward the viewer while keeping their arms linked on the walk home.",
+    "animaCaption": "She holds the umbrella tilted toward the viewer with one hand and links her free arm through theirs; streetlight glints on the rain at her damp outer shoulder.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "伞下第一人称近景",
     "category": "恋爱",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_chaldea_corridor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 199,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "negativeTokens": [
       "tablet",
@@ -19,7 +19,7 @@
     "action": "双臂抱稳纸质观测文件快步走来，戴着眼镜向同行者微笑",
     "timeOfDay": "白天",
     "lighting": "走廊灯光",
-    "camera": "medium-full shot, walking figure and paper reports visible",
+    "camera": "full-body shot",
     "mood": "认真元气",
     "sceneTags": [
       "chaldea_corridor",
@@ -36,12 +36,6 @@
     ],
     "promptProse": "Mash walks briskly toward the viewer with observation reports held in both arms, smiling through her glasses.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "black dress",
-      "grey jacket",
-      "red necktie",
-      "glasses",
       "papers",
       "walking",
       "corridor"

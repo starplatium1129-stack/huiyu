@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1461,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "樱树下抱紧捧花兴奋靠近，粉绿长辫与头纱落在腰间，眼神闪亮",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot, eye level",
     "category": "圣洁花嫁",
     "characterId": "kanroji_mitsuri",
     "coverageTags": [
@@ -25,11 +25,8 @@
     "mood": "热烈而温柔的恋柱誓约",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Mitsuri approaches eagerly beneath the cherry tree with her bouquet held close, her veil and braids falling to her waist.",
+    "promptProse": "Mitsuri approaches the viewer beneath the cherry tree, both hands holding the bouquet close. Rosy spring light catches her veil and the green ends of her braids through the drifting petals.",
     "promptTokens": [
-      "wedding dress",
-      "green sash",
-      "veil",
       "bouquet",
       "cherry tree",
       "cowboy shot"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/standard_mercenary",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 387,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
@@ -12,22 +12,16 @@
       "id": "standard_mercenary",
       "isDefault": true,
       "name": "罗德岛作战服",
-      "prose": "Lappland's signature battle attire: a dark slate-grey duster trench coat with tattered ragged hem and high collar worn open over a white tank top, black leather utility harness with thigh straps, black shorts, leather combat boots, dual sword sheaths on her back, and black fingerless gloves",
+      "prose": "an open grey trench coat with a ragged hem over a white tank top and black shorts, a thigh-strapped harness, combat boots, fingerless gloves and paired sword sheaths",
       "tokens": [
-        "coat",
-        "trench_coat",
-        "duster_coat",
-        "tattered_hem",
-        "tank_top",
-        "white_shirt",
-        "shorts",
-        "black_shorts",
+        "grey trench coat",
+        "white tank top",
+        "black shorts",
         "harness",
-        "thigh_holster",
-        "straps",
-        "combat_boots",
-        "fingerless_gloves",
-        "dual_swords"
+        "thigh straps",
+        "combat boots",
+        "fingerless gloves",
+        "dual swords"
       ]
     }
   }

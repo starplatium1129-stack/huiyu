@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_castle_bath",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "artoria_r18_castle_bath",
     "title": "阿尔托莉雅 · 城堡浴殿",
@@ -15,7 +15,7 @@
     "action": "泡在石砌浴池中",
     "timeOfDay": "夜晚",
     "lighting": "warm torchlight and rising steam",
-    "camera": "side view, medium shot, horizontal framing",
+    "camera": "cowboy shot, from the side",
     "mood": "卸甲后的柔和",
     "sceneTags": [
       "castle_bath",

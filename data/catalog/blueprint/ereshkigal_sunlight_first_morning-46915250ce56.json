@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_sunlight_first_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 266,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ereshkigal_sunlight_first_morning",
     "title": "埃列什基伽勒 · 初次朝阳的誓约·「原来阳光……这么烫啊」",
@@ -15,7 +15,7 @@
     "action": "在想象中的首次地面日出时伸手迎光，刚滑落的长兵器躺在脚边岩石上",
     "timeOfDay": "黎明",
     "lighting": "金色朝阳铺满全身的强光",
-    "camera": "full-body wide shot, reaching hand and fallen polearm in foreground",
+    "camera": "wide shot",
     "mood": "初次朝阳、纯真感动",
     "sceneTags": [
       "imagined_first_sunrise",
@@ -29,18 +29,12 @@
       "sunrise_light",
       "full_body"
     ],
-    "promptProse": "Awed by her first surface sunrise, she reaches toward the light while her polearm lies beside her boots.",
+    "promptProse": "Awed by her first sunrise above ground, she reaches toward the golden light spilling over the mountains. Her forgotten polearm lies on the rock beside her boots.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "sweater dress",
-      "red scarf",
-      "beret",
       "reaching",
       "polearm",
       "mountain",
       "sunrise",
-      "full body",
       "wide shot"
     ],
     "negativeTokens": [],

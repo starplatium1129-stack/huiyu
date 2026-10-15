@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1555,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_03",
     "title": "宝多六花 · 电器店柜台百褶裙被抽屉夹住的受力事故 ·「痛！……裙子被卡在抽屉里了，裕太快来拉我一下」",
@@ -12,10 +12,10 @@
     "characterId": "takarada_rikka",
     "description": "【Junk Shop柜台下·放学后】低头找古董线缆时，制服短裙被生锈的铁抽屉死死咬住。六花双手撑在木柜台上，身体前倾塌腰，裙摆被拉扯得高高扬起，那双令人疯狂的极品肉感美腿与浅灰纯棉胖次完全暴露无遗。她侧脸回头，满脸涨红——「快点啦！抽屉滑轨锈死了……要是被店里进来的客人看到……我就不用做人了！」",
     "location": "Junk Shop柜台下·放学后",
-    "action": "撑柜台塌腰回眸双手反剪扯裙摆，肉腿紧绷被抽屉卡死，羞恼咬唇满脸通红",
+    "action": "一手撑柜台，另一手试着拉开被抽屉滑轨卡住的裙摆，回头向画外求助",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate horizontal medium shot",
+    "camera": "cowboy shot, three-quarter rear view",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",
@@ -30,11 +30,9 @@
       "skirt_lift",
       "stuck_clothes"
     ],
-    "promptProse": "Rikka's skirt catches in the drawer runner as she bends over the shop counter, lifting above her cotton underwear. She looks back and asks the viewer to free it.",
+    "promptProse": "Adult Rikka braces one hand on the shop counter and tugs her skirt free of the drawer runner with the other, looking back toward the offscreen viewer for help.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "pleated skirt",
       "skirt lift",
       "cotton panties",
@@ -44,7 +42,8 @@
       "blush",
       "counter",
       "drawer",
-      "junk shop"
+      "junk shop",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

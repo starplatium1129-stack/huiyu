@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_sofa_pillow_evening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1471,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "mahiru_sofa_pillow_evening",
     "title": "椎名真昼 · 抱枕旁的读书便签",
@@ -31,13 +31,12 @@
       "evening",
       "medium_shot"
     ],
-    "promptProse": "Mahiru turns a misplaced leaf-shaped bookmark the right way around and smiles beside the bear cushion.",
+    "promptProse": "With the bear cushion in her lap, Mahiru holds her book open in one hand and turns the leaf-shaped bookmark with the other. She smiles at the mistake beneath the warm floor lamp.",
     "promptTokens": [
-      "cream sweater",
-      "blue trousers",
       "cross-legged",
       "bear cushion",
       "bookmark",
+      "book",
       "sofa"
     ],
     "negativeTokens": [],

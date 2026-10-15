@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc209",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc209",
     "title": "拂晓床单上的心形呆毛",
@@ -22,12 +22,10 @@
     "tags": [
       "hair_ribbon",
       "wrapped_in_sheet",
-      "bare_shoulders",
       "sitting_up",
       "dawn",
       "master_bedroom",
-      "full_body",
-      "depth_of_field"
+      "close_up"
     ],
     "rating": "R15",
     "mature": false,
@@ -39,10 +37,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, wrapped in blanket, sitting up, messy twintails, blush, dawn, bedroom, close up",
-    "negative": "uncovered body, see-through blanket",
+    "prompt": "1girl, ayachi_nene, wrapped in white sheet, sitting up, messy twintails, blush, dawn, bedroom, close up",
+    "negative": "uncovered body, see-through sheet",
     "storyJa": "【大人のAfter Story・寧々・夜明け前の二度寝】空はまだ完全には明るくならず、寝室にはカーテンの隙間から淡い青い光だけが漏れていた。寧々は白いシーツにくるまりながら起き上がる。寝癖のついたツインテールと跳ねたアホ毛が、いつもより無防備に見えた。あなたが起きていると気づくと、慌ててシーツを引き上げながらも、そっとこちらを見ている。やがて隣の場所を半分だけ空けて、小さく言った。――「あと五分だけ寝よう……寧々の髪を笑ったり、先に逃げたりしたらだめだからね。」",
-    "animaCaption": "She gathers the opaque coverlet near her mouth and peeks over its edge, only her face and hands visible.",
+    "animaCaption": "She draws the opaque white sheet up near her mouth and peeks toward the viewer, with only her face and hands visible in the pale blue dawn light.",
     "auditRevision": "careful-batch09-2026-08-27"
   }
 }

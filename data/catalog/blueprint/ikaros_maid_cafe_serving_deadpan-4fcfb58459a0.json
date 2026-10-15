@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ikaros_maid_cafe_serving_deadpan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1211,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手端着茶壶与西瓜的银质托盘立正端立，白羽翼收拢在后，神态严肃呆萌",
-    "camera": "cowboy shot, medium framing, eye-level charming service",
+    "camera": "cowboy shot, eye level",
     "category": "日常反差",
     "characterId": "ikaros",
     "coverageTags": [
@@ -20,9 +20,8 @@
     "mood": "呆萌反差",
     "negativeTokens": [],
     "outfitId": "maid_uniform",
-    "promptProse": "Ikaros presents the tea and two watermelon slices with both hands, keeping her folded wings clear of the table's cups.",
+    "promptProse": "Ikaros presents the silver tray toward the viewer with both hands, keeping her folded wings clear of the table's cups. Stained-glass light catches the teapot and two watermelon slices.",
     "promptTokens": [
-      "maid",
       "tray",
       "teapot",
       "watermelon",

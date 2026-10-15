@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc214",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 209,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc214",
     "title": "极寒冷藏库的绝对热交换",
@@ -22,23 +22,20 @@
     "tags": [
       "mole_under_eye",
       "unbuttoned_shirt",
-      "torn_buttons",
       "lingerie_visible",
-      "sitting_on_lap",
       "straddling",
       "cheek_pressed_to_neck",
       "frozen_hands",
-      "body_heat",
       "cold_storage",
       "white_breath",
       "emergency_light",
       "freezing",
-      "medium_shot"
+      "cowboy_shot"
     ],
     "mature": false,
     "location": "Café Stella 地下冷藏库冷硬地面",
     "weather": "极寒密闭",
-    "camera": "近景主观平视",
+    "camera": "冷库座位主观七分身中景",
     "lighting": "应急指示灯微弱冷绿光",
     "usage": [
       "绝对独占",

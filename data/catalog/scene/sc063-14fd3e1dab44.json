@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc063",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc063",
     "title": "男友视角下的赖床许可",
@@ -23,13 +23,12 @@
       "mole_under_eye",
       "oversized_tshirt",
       "pajamas",
-      "bare_legs",
-      "smooth_thighs",
       "bedroom",
-      "full_body",
-      "barefoot",
+      "blanket",
+      "lying_on_person",
+      "pov",
       "morning_light",
-      "depth_of_field"
+      "close_up"
     ],
     "mature": false,
     "location": "同居公寓卧室",
@@ -45,7 +44,7 @@
     "negative": "see-through clothes",
     "storyJa": "【夏目・彼氏から見たベッドの許可】秋の早朝、夏目があなたの胸に横たわり、今日の旅程を確認します。彼女は明らかに起きていますが、起き上がることを拒否します。あなたが彼女にコケティッシュな態度をとっているのかと尋ねると、彼女は金色の目を上げました。目の横がゆっくりと赤くなったが、それでも顎を元の位置に戻した。――「この枕が合格か確かめていただけ。結論は、ぎりぎり合格……だから今日は、あと五分だけ抱いていてもいい。」",
     "rating": "R15",
-    "animaCaption": "She lifts her sleepy face toward the viewer from beneath the comforter, resting against them.",
+    "animaCaption": "From the viewer's reclining viewpoint, she rests her chin on their chest and looks up with a faint blush; warm morning light catches her eyes above the comforter.",
     "auditRevision": "careful-batch01-2026-08-27"
   }
 }

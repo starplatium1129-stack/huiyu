@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lappland_dorm_sofa_manic_tease",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 675,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "横躺倒挂在天鹅绒沙发上，长发垂地，单手抛接小刀，神情玩味危险",
-    "camera": "medium shot, dynamic tilted angle",
+    "camera": "medium shot, dutch angle",
     "category": "基地日常",
     "characterId": "lappland_arknights",
     "coverageTags": [
@@ -20,9 +20,8 @@
     "mood": "戏谑危险",
     "negativeTokens": [],
     "outfitId": "casual_leather",
-    "promptProse": "Lappland hangs upside down across the sofa, casually tossing and catching a small dagger.",
+    "promptProse": "With her head hanging over the sofa arm and hair falling toward the floor, she watches the viewer upside down; the small dagger turns just above her open palm.",
     "promptTokens": [
-      "leather clothes",
       "upside-down",
       "sofa",
       "dagger",

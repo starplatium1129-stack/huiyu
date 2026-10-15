@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_maanna_sky_ride",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_maanna_sky_ride",
     "title": "伊什塔尔 · 天舟玛安娜的巡空·「看好了，这就是女神的领空」",
@@ -15,7 +15,7 @@
     "action": "立于天舟船首叉腰俯瞰，金饰灼灼黑发飞扬",
     "timeOfDay": "白昼",
     "lighting": "高空烈阳与云海反光的强对比",
-    "camera": "wide dynamic shot, boat prow, cloud sea, goddess framing",
+    "camera": "wide shot",
     "mood": "女神威光、意气飞扬",
     "sceneTags": [
       "maanna",
@@ -29,15 +29,11 @@
       "high_sunlight",
       "wide_shot"
     ],
-    "promptProse": "Ishtar stands at Maanna's prow, steadying herself with one hand as she surveys the mountains below the clouds. Sunlight catches her gold tiara.",
+    "promptProse": "At Maanna's prow she keeps one hand on her hip and steadies herself with the other, glancing back toward the viewer above the sunlit cloud sea.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ishtar",
       "Maanna",
       "standing",
       "hand on hip",
-      "tiara",
       "clouds",
       "mountain",
       "wide shot"

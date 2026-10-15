@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/white_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 247,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "white_dress",
       "name": "白色连衣裙",
-      "prose": "her signature white and lilac dress with a soft ribbon",
+      "prose": "her white long-sleeved dress with lilac trim and a soft ribbon",
       "tokens": [
-        "white_dress",
-        "lilac",
+        "white dress",
+        "purple trim",
         "ribbon",
-        "dress",
-        "long_sleeves"
+        "long sleeves"
       ],
       "default": true,
       "isDefault": true

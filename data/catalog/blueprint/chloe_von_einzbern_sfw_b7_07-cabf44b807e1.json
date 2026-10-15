@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 317,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_07",
     "title": "克洛伊 · 夏日祭的草莓面具",
@@ -30,11 +30,9 @@
       "evening",
       "afternoon_light"
     ],
-    "promptProse": "She lifts her fox mask to reveal a wink after winning strawberry candy. Lanterns light her beside the stall's hanging masks.",
+    "promptProse": "Holding the strawberry candy in one hand, she lifts the fox mask with the other and winks at the viewer. Lantern glow reaches her face beside the stall's hanging masks.",
     "promptTokens": [
       "festival",
-      "pink floral yukata",
-      "cream obi",
       "fox mask",
       "candy",
       "wink",

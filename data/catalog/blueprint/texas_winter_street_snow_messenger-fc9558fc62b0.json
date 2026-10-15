@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_winter_street_snow_messenger",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 663,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "漫步在积雪街道旁驻足，单手端热咖啡，微吐白雾，目光温柔看向镜头",
     "camera": "medium shot, slightly low angle",
@@ -20,12 +20,8 @@
     "mood": "冬日宁静",
     "negativeTokens": [],
     "outfitId": "willpower_winter",
-    "promptProse": "Texas pauses at the brick corner with her bag and steaming coffee, streetlight warming falling snow.",
+    "promptProse": "Texas pauses beside the red-brick corner with her messenger bag in one hand and steaming coffee in the other. She looks toward the viewer as falling snow drifts through the amber streetlight.",
     "promptTokens": [
-      "Texas",
-      "green parka",
-      "scarf",
-      "messenger bag",
       "coffee",
       "snow",
       "street",

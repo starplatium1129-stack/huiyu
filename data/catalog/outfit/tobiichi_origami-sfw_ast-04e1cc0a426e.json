@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_ast",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_ast",
       "name": "AST装备整备服",
-      "prose": "a closed grey technical jacket, reinforced trousers and work gloves, with short white hair",
+      "prose": "a closed grey technical jacket, reinforced trousers and work gloves, with short hair",
       "tokens": [
-        "grey_jacket",
-        "tactical_pants",
+        "grey jacket",
+        "tactical pants",
         "gloves",
-        "short_hair"
+        "short hair"
       ],
       "default": false,
       "isDefault": false

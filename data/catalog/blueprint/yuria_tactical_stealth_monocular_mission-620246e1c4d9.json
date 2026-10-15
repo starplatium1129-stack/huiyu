@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_tactical_stealth_monocular_mission",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1199,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuria_tactical_stealth_monocular_mission",
     "title": "春寺由梨亚 · 私寓清晨的围裙煎蛋与早安轻唤",
@@ -19,7 +19,7 @@
     "action": "摘下眼镜系着粉色围裙手持锅铲煎蛋，大号白衬衫挽发，回头温柔微笑注视",
     "timeOfDay": "早晨",
     "lighting": "清晨温润阳光穿透白纱帘的明亮晨光与咖啡热气光晕",
-    "camera": "medium shot, standing kitchen perspective, focus on bare face, pink apron, and gentle smile",
+    "camera": "medium shot",
     "mood": "温馨宠溺",
     "sceneTags": [
       "kitchen",
@@ -34,17 +34,14 @@
       "bare_face",
       "gentle_smile"
     ],
-    "promptProse": "Yuria turns from the stove with the wooden spatula and a gentle smile, coffee standing beside the breakfast pan.",
+    "promptProse": "She pauses with the wooden spatula above the breakfast pan and smiles toward the doorway, morning light filtering through the sheer curtains beside the freshly brewed coffee.",
     "promptTokens": [
-      "white shirt",
-      "pink apron",
-      "slippers",
-      "hair up",
       "spatula",
       "bacon",
       "eggs",
       "kitchen",
-      "morning"
+      "morning",
+      "medium shot"
     ],
     "negativeTokens": [
       "glasses worn",

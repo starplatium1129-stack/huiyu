@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 225,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
@@ -12,12 +12,10 @@
       "id": "casual",
       "isDefault": false,
       "name": "便服",
-      "prose": "a casual outfit with a shirt and jeans",
+      "prose": "a casual shirt with jeans",
       "tokens": [
-        "casual_clothes",
         "shirt",
-        "jeans",
-        "jacket"
+        "jeans"
       ]
     }
   }

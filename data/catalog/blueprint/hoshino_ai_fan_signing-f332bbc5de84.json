@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_fan_signing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 953,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "与粉丝握手交谈",
-    "camera": "medium two-shot, handshake across a fan meeting table",
+    "camera": "medium two-shot, eye level",
     "category": "音乐日常",
     "characterId": "hoshino_ai",
     "compositionIntent": "group",
@@ -19,7 +19,7 @@
     "mood": "温柔亲和",
     "negativeTokens": [],
     "outfitId": "stage_two_tone",
-    "promptProse": "Ai gently clasps the fan's hand across the table and meets their gaze, keeping both faces visible.",
+    "promptProse": "Ai sits on the left of the table, gently clasping the fan's outstretched hand from the right; they meet each other's gaze with both faces visible.",
     "promptTokens": [
       "2people",
       "handshake",

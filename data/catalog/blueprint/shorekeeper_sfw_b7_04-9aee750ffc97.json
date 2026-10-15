@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1642,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_04",
     "title": "守岸人 · 黑海岸潮汐的白色花嫁",
@@ -16,7 +16,7 @@
     "action": "灯塔花园双手护住海滨花束，感受到被等待后紫瞳显出温柔",
     "timeOfDay": "黄昏",
     "lighting": "lavender dusk with a warm lighthouse rim",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot, bouquet and lighthouse garden visible",
     "mood": "学会珍惜等待的花嫁",
     "sceneTags": [
       "wedding_dress",
@@ -31,12 +31,9 @@
     ],
     "promptProse": "She protects her coastal bouquet with both hands in the lighthouse garden, warm light outlining her veil against the lavender sky.",
     "promptTokens": [
-      "Shorekeeper",
-      "white wedding dress",
-      "blue embroidery",
-      "veil",
       "bouquet",
       "lighthouse",
+      "garden",
       "dusk",
       "cowboy shot"
     ],

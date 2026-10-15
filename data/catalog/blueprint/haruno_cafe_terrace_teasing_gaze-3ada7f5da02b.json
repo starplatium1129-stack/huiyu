@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_cafe_terrace_teasing_gaze",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 369,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "haruno_cafe_terrace_teasing_gaze",
     "title": "雪之下阳乃 · 露天咖啡馆的墨镜戏谑注视·「比企谷君，又在用那种腐烂的眼神看世界了呢」",
@@ -30,11 +30,8 @@
       "mature_female",
       "iconic"
     ],
-    "promptProse": "Haruno lowers her sunglasses with one finger from the wicker chair, giving the viewer a knowing glance beneath the parasol.",
+    "promptProse": "From the wicker chair, Haruno lowers her sunglasses with one finger and meets the viewer's gaze. Sunlight at the parasol edge cuts across her open coat while her crossed legs rest in shade.",
     "promptTokens": [
-      "trench coat",
-      "turtleneck",
-      "pencil skirt",
       "sunglasses",
       "crossed legs",
       "smirk",

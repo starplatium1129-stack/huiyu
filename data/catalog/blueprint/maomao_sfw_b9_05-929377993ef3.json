@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1709,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "maomao_sfw_b9_05",
     "title": "猫猫 · 海滨药草茶的苦味研究",
@@ -16,7 +16,7 @@
     "action": "海港摊位试喝冷泡药草茶，调好苦味后把成品推向镜头",
     "timeOfDay": "日间",
     "lighting": "clear afternoon light on glass and green leaves",
-    "camera": "medium shot, horizontal framing",
+    "camera": "medium shot",
     "mood": "把假日也做成一场药理研究",
     "sceneTags": [
       "swimsuit",
@@ -30,10 +30,8 @@
       "small_satisfaction",
       "afternoon_light"
     ],
-    "promptProse": "Maomao adjusts the bitter herbal tea at the harbor stall and pushes the finished drink toward the viewer.",
+    "promptProse": "She slides the finished herbal tea toward the viewer across the harbor stall counter, a fresh citrus slice at the glass rim and a serious, satisfied look on her face.",
     "promptTokens": [
-      "green swimsuit",
-      "cream cape",
       "herbal tea",
       "harbor",
       "stall"

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_electric_battle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 393,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "指尖弹出硬币，电光贯穿夜空",
-    "camera": "dynamic action shot",
+    "camera": "full body, from below",
     "category": "学园都市",
     "characterId": "misaka_mikoto",
     "coverageTags": [
@@ -20,11 +20,10 @@
     "mood": "热血激昂",
     "negativeTokens": [],
     "outfitId": "tokiwadai_uniform",
-    "promptProse": "Mikoto flicks a coin from her fingers as the blue-white railgun beam cuts across the ruined overpass.",
+    "promptProse": "The coin has just left Mikoto’s extended fingers at the head of the railgun beam. Blue-white electrical arcs illuminate her stance and the damaged overpass against the night.",
     "promptTokens": [
       "1girl",
       "solo",
-      "school uniform",
       "coin",
       "railgun",
       "lightning",

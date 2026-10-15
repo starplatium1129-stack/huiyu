@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_morning_dining_double_burger_cheeks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 221,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_morning_dining_double_burger_cheeks",
     "title": "黑呆 · 晨间餐桌的双层汉堡鼓腮帮",
@@ -15,7 +15,7 @@
     "action": "穿宽松卫衣坐在餐桌前，双手捧汉堡，刚咬一口后停住并看向端来的薯条",
     "timeOfDay": "清晨",
     "lighting": "柔和温暖的室内晨曦洒在白皙脸颊上",
-    "camera": "cowboy shot, eye level, hilarious and cute gap moe",
+    "camera": "cowboy shot, eye level",
     "mood": "极品反差萌",
     "sceneTags": [
       "breakfast_table",
@@ -29,11 +29,8 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "She pauses mid-bite with the burger in both hands, watching fries arrive at the morning-lit table.",
+    "promptProse": "With the burger held in both hands, she pauses mid-bite at the morning-lit table as the offscreen viewer slides a plate of fries toward her.",
     "promptTokens": [
-      "Saber Alter",
-      "sweatshirt",
-      "trousers",
       "cheeseburger",
       "puffed cheeks",
       "fries",

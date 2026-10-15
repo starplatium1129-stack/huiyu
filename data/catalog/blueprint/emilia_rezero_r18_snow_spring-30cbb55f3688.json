@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_snow_spring",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 449,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "emilia_rezero_r18_snow_spring",
     "title": "爱蜜莉雅 · 雪中温泉",
@@ -15,7 +15,7 @@
     "action": "泡在露天温泉中",
     "timeOfDay": "白天",
     "lighting": "soft steam and pale winter light",
-    "camera": "intimate medium shot, waterline view",
+    "camera": "cowboy shot, waterline view",
     "mood": "圣洁羞赧",
     "sceneTags": [
       "open-air_hot_spring",

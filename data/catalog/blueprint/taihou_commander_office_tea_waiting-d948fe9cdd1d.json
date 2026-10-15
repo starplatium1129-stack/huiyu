@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_commander_office_tea_waiting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1076,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "taihou_commander_office_tea_waiting",
     "title": "大凤 · 官邸深夜的温情侍奉",
@@ -16,10 +16,10 @@
     ],
     "description": "【大凤 · 官邸深夜的温情侍奉】反锁的指挥官办公室内，窗外月色宁谧。大凤身穿一袭紧致勾勒曼妙漏斗身材的深绯绒面露背晚礼服，将一杯精心泡制的养生红茶轻柔端到书桌旁。她身姿前倾俯首，硕大双峰在深低领口下剧烈起伏，手指温柔拂过指挥官的脸颊，眼神带着近乎病态的温柔——「指挥官大人辛苦了……今晚就由大凤来全权接管您的身心吧……」",
     "location": "指挥官办公室宽大红木书桌旁",
-    "action": "双手端茶杯俯身递茶，丰盈巨乳在领口呼之欲出，深情凝视指挥官",
+    "action": "茶杯已放在书桌上，单手轻触指挥官的脸颊，俯身注视对方。",
     "timeOfDay": "深夜",
     "lighting": "台灯暖金光源与窗外皎洁银白月光的明暗交织",
-    "camera": "medium close-up, cowboy shot, looking up at cleavage and face",
+    "camera": "medium shot, low angle, face and desk visible",
     "mood": "痴缠温存",
     "sceneTags": [
       "office",
@@ -31,19 +31,16 @@
       "twintails",
       "gentle_smile"
     ],
-    "promptProse": "Taihou brings tea to the Commander's desk and touches their cheek, warm lamplight meeting moonlight at her shoulder.",
+    "promptProse": "Taihou leans beside the Commander's desk and touches the viewer's cheek with one gloved hand, the tea already resting on its saucer. Warm lamplight meets a narrow edge of moonlight along her shoulder.",
     "promptTokens": [
-      "Taihou",
-      "red gown",
-      "opera gloves",
       "tea",
       "cheek touch",
       "office",
-      "low angle",
-      "close-up"
+      "medium shot",
+      "low angle"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

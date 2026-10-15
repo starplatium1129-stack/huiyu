@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_gehenna_sniper_rooftop_vanguard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 923,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单膝跪在黑石护栏边架狙瞄准，恶魔尾巴卷曲蓄力，眼神凌厉专注",
     "camera": "wide shot, low angle, dramatic perspective",
@@ -20,10 +20,8 @@
     "mood": "冷冽英勇",
     "negativeTokens": [],
     "outfitId": "disciplinary_uniform",
-    "promptProse": "Iori steadies her rifle on the clocktower balustrade and looks through the scope, gothic spires rising behind her.",
+    "promptProse": "Kneeling behind the black-stone balustrade, she supports the rifle on it and sights through the scope; a cold shaft of sunset catches the barrel and her windblown twin-tails.",
     "promptTokens": [
-      "uniform",
-      "red armband",
       "sniper rifle",
       "aiming",
       "kneeling",

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_workshop_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 742,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "工坊工作台上推墨镜晃尾坏笑",
     "adult": true,
     "adultArtistHint": "@tsunako",
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "close-up, sunny skylight daylight",
+    "camera": "cowboy shot",
     "category": "成人",
     "characterId": "yvonne_arknights",
     "coverageTags": [
@@ -33,10 +33,10 @@
       "sitting",
       "workbench",
       "grin",
-      "dragon tail",
       "workshop",
       "skylight",
-      "sunlight"
+      "sunlight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

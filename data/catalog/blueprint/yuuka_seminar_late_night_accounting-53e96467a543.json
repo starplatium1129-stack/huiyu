@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_seminar_late_night_accounting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 912,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐在现代办公桌前微俯身核对账目，单手持计算器，微蹙眉头看向镜头",
     "camera": "cowboy shot, slightly high angle",
@@ -20,9 +20,8 @@
     "mood": "专注认真",
     "negativeTokens": [],
     "outfitId": "millennium_uniform",
-    "promptProse": "Yuuka rapidly enters figures amid the budget sheets, neon buildings visible beyond her office window.",
+    "promptProse": "Yuuka enters figures on the desk calculator with one hand and holds an invoice flat with the other, glancing sternly at the viewer. Her lamp lights the budget sheets against the neon buildings outside.",
     "promptTokens": [
-      "school uniform",
       "calculator",
       "invoices",
       "desk",

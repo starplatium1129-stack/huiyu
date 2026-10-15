@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_shinjuku_motorcycle_cool_date",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 222,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_shinjuku_motorcycle_cool_date",
     "title": "黑呆 · 新宿街头的机车酷感倚待",
@@ -15,7 +15,7 @@
     "action": "一手扶停稳机车的车把，另一手托头盔在腰侧，一脚靠脚踏板等待同行者",
     "timeOfDay": "深夜",
     "lighting": "新宿繁华街头五彩缤纷的霓虹灯影与机车站灯",
-    "camera": "cowboy shot, eye level, ultra-cool motorcycle date view",
+    "camera": "full body, eye level",
     "mood": "帅气御姐",
     "sceneTags": [
       "shinjuku_street",
@@ -29,17 +29,12 @@
       "neon_light",
       "medium_shot"
     ],
-    "promptProse": "She waits beside the parked motorcycle with one hand on the handlebar and a helmet at her hip under Shinjuku neon.",
+    "promptProse": "She waits beside the parked motorcycle, one hand on its handlebar, the other holding her helmet at her hip and one foot resting on the footpeg beneath Shinjuku neon.",
     "promptTokens": [
-      "Saber Alter",
-      "biker jacket",
-      "crop top",
-      "denim shorts",
-      "pantyhose",
       "helmet",
       "motorcycle",
       "neon lights",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

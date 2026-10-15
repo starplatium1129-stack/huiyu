@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lappland_biker_midnight_highway_drift",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 674,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "斜靠在黑色重型改装机车旁，手指转动车钥匙，皮衣敞开露出小蛮腰，狂野挑衅",
-    "camera": "cowboy shot, dynamic low angle",
+    "camera": "cowboy shot, low angle",
     "category": "街头日常",
     "characterId": "lappland_arknights",
     "coverageTags": [
@@ -22,9 +22,6 @@
     "outfitId": "casual_leather",
     "promptProse": "Lappland leans beside her heavy motorcycle and spins its keys around one finger with a challenging grin.",
     "promptTokens": [
-      "leather jacket",
-      "denim shorts",
-      "fishnet stockings",
       "motorcycle",
       "keys",
       "highway",

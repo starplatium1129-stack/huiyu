@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_shrine_offering_sunrise",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 255,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_shrine_offering_sunrise",
     "title": "伊什塔尔 · 神殿供品的清晨·「今天的供品，本女神勉强收下了」",
@@ -15,7 +15,7 @@
     "action": "盘腿坐座台前收供品，闻香眼亮，端架子清嗓",
     "timeOfDay": "清晨",
     "lighting": "廊柱间的金色晨光",
-    "camera": "medium shot, seated goddess, offering table, morning glow",
+    "camera": "medium shot",
     "mood": "女神口嫌体正直、晨间甜",
     "sceneTags": [
       "rebuilt_temple",
@@ -31,11 +31,8 @@
     ],
     "promptProse": "Ishtar sits before the steaming breakfast tray on the temple dais, trying to keep a formal expression while watching the food.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "cross-legged",
+      "crossed legs",
       "hands on knees",
-      "tiara",
       "breakfast",
       "temple",
       "sunrise",

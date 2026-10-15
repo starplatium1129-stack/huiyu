@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_sui_courtyard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 650,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "半卧竹榻把玩酒葫芦听雨",
-    "camera": "intimate medium shot",
+    "camera": "medium shot",
     "category": "泰拉古风",
     "characterId": "ling_arknights",
     "coverageTags": [
@@ -22,10 +22,8 @@
       "clear sunny weather"
     ],
     "outfitId": "drunkard_loungewear",
-    "promptProse": "Ling reclines on the bamboo daybed, turning the wine gourd in her hand while listening to the rain.",
+    "promptProse": "She reclines on the bamboo daybed with the jade gourd turned in one hand and her wine cup in the other, listening to rain beyond the eaves.",
     "promptTokens": [
-      "grey robe",
-      "jade gourd",
       "wine cup",
       "reclining",
       "bamboo daybed",

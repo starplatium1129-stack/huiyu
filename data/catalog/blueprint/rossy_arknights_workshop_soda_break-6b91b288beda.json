@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_workshop_soda_break",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 757,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rossy_arknights_workshop_soda_break",
     "characterId": "rossy_arknights",
@@ -31,15 +31,12 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "red hoodie",
-      "pleated skirt",
-      "pantyhose",
       "sitting",
       "soda",
       "park bench",
       "cowboy shot"
     ],
-    "promptProse": "Rossy offers an open soda from the park bench, leaving the seat beside her clear in dappled sunlight.",
+    "promptProse": "Rossy extends the newly opened soda toward the viewer from one end of the park bench, her own drink beside her. Dappled sunlight crosses her sleeve and the empty place she has left for them.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kyouyama_kazusa/swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 496,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kyouyama_kazusa",
     "outfit": {
@@ -12,14 +12,11 @@
       "id": "swimsuit",
       "isDefault": false,
       "name": "夏日泳装",
-      "prose": "a black bikini with a cat-ear swim hood and a small red ribbon, cute and playful",
+      "prose": "a black bikini with a cat-ear swim hood and small red ribbon",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "black_bikini",
-        "cat_ears",
+        "black bikini",
         "hood",
-        "red_ribbon"
+        "red ribbon"
       ]
     }
   }

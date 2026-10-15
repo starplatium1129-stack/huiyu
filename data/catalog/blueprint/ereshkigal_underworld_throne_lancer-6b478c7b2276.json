@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_underworld_throne_lancer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 264,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ereshkigal_underworld_throne_lancer",
     "title": "埃列什基伽勒 · 冥界王座的孤独女王·「这里……就是我的全部国土」",
@@ -15,7 +15,7 @@
     "action": "端坐王座，一手轻扶立在身侧的枪型宝具发热神殿，另一手放扶手上",
     "timeOfDay": "冥界永夜",
     "lighting": "幽蓝灵魂之火与金色王冠的冷冽对比",
-    "camera": "throne room wide shot, seated goddess, soul fire glow, lonely majesty",
+    "camera": "wide shot",
     "mood": "孤独女王、幽美威严",
     "sceneTags": [
       "underworld_throne",
@@ -29,13 +29,8 @@
       "soul_fire_light",
       "wide_shot"
     ],
-    "promptProse": "She sits upright with one hand steadying Meslamtaea on the floor and the other resting on the throne arm.",
+    "promptProse": "She sits upright amid floating blue soul-fire, one hand steadying Meslamtaea on the floor and the other resting on the throne arm.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "black dress",
-      "blue ribbon",
-      "tiara",
       "sitting",
       "throne",
       "spear",

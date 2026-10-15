@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_r18_b5_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1565,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hori_kyouko_r18_b5_03",
     "title": "堀京子 · 试衣镜前耳钉勾住吊带裙的拉扯事故 ·「痛痛痛……耳钉挂在蕾丝上了……宫村快救我」",
@@ -30,7 +30,7 @@
       "earrings",
       "pierced_ears"
     ],
-    "promptProse": "Adult Hori leans sideways against the vanity after an earring catches in her dress strap and pulls it open. She looks back for help unhooking it.",
+    "promptProse": "She braces one hand on the vanity and holds the caught dress strap near her earring with the other, turning toward the viewer for help; warm room light reveals the snag and her embarrassed face.",
     "promptTokens": [
       "adult",
       "bedroom",
@@ -43,7 +43,7 @@
       "leaning",
       "looking back",
       "blush",
-      "wide shot"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

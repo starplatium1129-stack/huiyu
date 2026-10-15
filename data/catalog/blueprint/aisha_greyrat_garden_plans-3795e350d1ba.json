@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_garden_plans",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 486,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "aisha_greyrat_garden_plans",
     "title": "爱夏·花宴之前",
@@ -25,12 +25,9 @@
       "fantasy"
     ],
     "description": "爱夏站在庭院石径的一侧，左臂托住布置板，右手用铅笔在图上标出花宴长桌的位置。酒红与象牙白的长袖礼服垂至脚踝。横幅中人物位于左侧，右侧石径通向尚未摆满的长桌和花圃；晨光同时照亮图板边缘与桌面，呈现布置尚在进行的一刻。",
-    "promptProse": "Adult Aisha supports the planning board on her left forearm and marks the banquet table's position with her right hand. The garden path leads toward the manor in morning light.",
+    "promptProse": "Adult Aisha stands on the left of the garden path, supporting the planning board on her left forearm and marking a table position with her right hand. Morning light catches the board and the partly arranged banquet tables farther along the path.",
     "promptTokens": [
-      "adult",
       "garden",
-      "gown",
-      "long sleeves",
       "clipboard",
       "pencil",
       "table",

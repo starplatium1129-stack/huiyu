@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_adjusting_necktie_caught_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1310,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手整理领带动作停滞，手腕被轻握，微微别开脸颊泛起淡淡红晕",
     "camera": "cowboy shot, intimate eye level, subtle blush focus",
@@ -26,7 +26,6 @@
     "promptProse": "She pauses while adjusting her companion's tie as he gently catches her wrists. Light through the blinds stripes their sleeves.",
     "promptTokens": [
       "couple",
-      "Black Knights uniform",
       "adjusting necktie",
       "held wrists",
       "blush",

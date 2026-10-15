@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_bunny_change",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 878,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "脱兔女郎装回望",
+    "action": "脚跟撑在凳上，双手伸到背后解开卡住的拉链。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, mirror/back view",
+    "camera": "full body, rear three-quarter view",
     "category": "成人私密",
     "characterId": "asuma_toki",
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【飞鸟马时 · 兔女郎更衣室】潜入任务结束后的狭小更衣室里，时正褪下紧绷的兔女郎连体衣，白色丝袜堪堪勾在修长的大腿膝弯处。她扶着更衣镜转过身，神色镇定却耳根微红——「这套服装的透气性低于标准值，身体变得很热……主人，可以请您帮时把背后的拉链完全拉开吗？」",
+    "description": "潜入任务后的更衣室里，成年时把一只脚跟放在凳上，双手伸向背后处理卡住的兔女郎装拉链，镜前灯照着她微红的耳根。",
     "id": "asuma_toki_bunny_change",
     "kreaStyleHint": "",
     "lighting": "更衣室暖灯",

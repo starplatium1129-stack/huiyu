@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1647,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_03",
     "title": "卡提希娅 · 雨廊下的躲雨与烤面包",
@@ -31,16 +31,15 @@
       "bakery_light",
       "medium_shot"
     ],
-    "promptProse": "She accepts fresh bread from the bakery owner beneath the eaves. Warm doorway light falls across the bag and wet threshold.",
+    "promptProse": "Sheltering beneath the bakery eaves, she receives the warm paper bag from the owner standing in the doorway. Their hands meet at its folded edge while shop light falls across the wet threshold.",
     "promptTokens": [
       "bakery",
-      "blue dress",
-      "cream cardigan",
       "halo",
       "bread",
       "paper bag",
       "rain",
-      "shelter"
+      "shelter",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc077",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Kneeling in seiza, she presents the tea bowl level in both hands below her lowered gaze.",
+    "animaCaption": "Kneeling opposite the viewer on the tatami, she offers the tea bowl level in both hands, eyes lowered; soft light through the shoji settles across her hands and the bowl's rim.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "日常",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yoshino_school_classroom_window_gaze",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1144,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端庄端坐课桌前侧头望向窗外远山，黑丝长腿并拢斜放，单手轻抚领口领带",
-    "camera": "cowboy shot, medium framing, gentle depth of field",
+    "camera": "cowboy shot, eye level",
     "category": "校园清纯",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -22,13 +22,11 @@
     "outfitId": "school_uniform",
     "promptProse": "Yoshino touches her ribbon as she gazes toward the mountain shrine beyond the classroom window.",
     "promptTokens": [
-      "school uniform",
-      "red ribbon",
-      "black pantyhose",
       "window seat",
       "looking outside",
       "classroom",
-      "noon"
+      "noon",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_snowy_mountain_ridge_solitary_stride",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1170,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kazuki_snowy_mountain_ridge_solitary_stride",
     "title": "风见一姬 · 朔风飞雪中的傲雪回眸",
@@ -33,7 +33,6 @@
     ],
     "promptProse": "Kazuki pauses on the snowy ridge and looks back, holding her ground as the blizzard whips her hair and white dress.",
     "promptTokens": [
-      "white dress",
       "looking back",
       "snow",
       "mountain",

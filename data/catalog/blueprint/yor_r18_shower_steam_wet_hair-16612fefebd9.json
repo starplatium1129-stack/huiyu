@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_shower_steam_wet_hair",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yor_r18_shower_steam_wet_hair",
     "characterId": "yor_forger",
@@ -27,8 +27,7 @@
       "steam",
       "foot up",
       "holding hair",
-      "looking back",
-      "cowboy shot"
+      "looking back"
     ],
     "negativeTokens": [],
     "adult": true,

@@ -1,25 +1,21 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/casual_winter_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "casual_winter_coat",
       "name": "冬日散步白色羽绒大衣",
-      "prose": "a warm winter date outfit: an ivory hooded duffle coat with toggles, a fluffy red-and-white plaid wool scarf wrapped around her neck, black stockings, and ankle boots",
+      "prose": "an ivory hooded duffle coat with toggles, a red-and-white plaid wool scarf, black tights and ankle boots",
       "tokens": [
-        "duffle_coat",
-        "white_coat",
-        "winter_coat",
-        "plaid_scarf",
-        "scarf",
-        "black_pantyhose",
-        "boots",
-        "casual_wear"
+        "ivory duffle coat",
+        "plaid scarf",
+        "black pantyhose",
+        "ankle boots"
       ]
     }
   }

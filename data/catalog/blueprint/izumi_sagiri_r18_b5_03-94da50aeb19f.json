@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_r18_b5_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1535,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "izumi_sagiri_r18_b5_03",
     "title": "和泉纱雾 · 埃罗芒阿面具卡壳的更衣受力事故 ·「面具系带打死结了！……哥哥不要从后面偷看啊！」",
@@ -15,7 +15,7 @@
     "action": "撑数位板塌腰回眸双手扯面具带，睡裙掀至腰际露雪臀，羞哭踢腿挣扎",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate horizontal medium shot",
+    "camera": "medium shot, horizontal framing",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",
@@ -44,7 +44,7 @@
       "bent over",
       "looking back",
       "tears",
-      "wide shot"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

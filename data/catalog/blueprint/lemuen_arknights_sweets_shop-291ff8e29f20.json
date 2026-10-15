@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_sweets_shop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 559,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在靠窗桌边的轮椅上，捧着精致圣代笑意盈盈",
     "camera": "medium close-up",
@@ -17,12 +17,10 @@
     "mood": "甜美放松",
     "negativeTokens": [],
     "outfitId": "baking_apron_loungewear",
-    "promptProse": "Lemuen cradles her strawberry sundae at the dessert-shop window, smiling from her wheelchair.",
+    "promptProse": "Lemuen supports the strawberry sundae with one hand and offers a spoonful toward the viewer with the other. Warm shop light glints on the glass beside her wheelchair.",
     "promptTokens": [
       "1girl",
       "solo",
-      "turtleneck",
-      "apron",
       "wheelchair",
       "sundae",
       "strawberry",

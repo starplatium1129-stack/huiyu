@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1408,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双脚站稳反复练习广播体操，双臂平伸而神情认真。",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium shot, environmental portrait",
+    "camera": "full-body shot",
     "category": "日常生活",
     "characterId": "hayasaka_ai",
     "coverageTags": [
@@ -23,15 +23,14 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_sports",
-    "promptProse": "Hayasaka follows the radio-exercise routine with solemn concentration, raising her arms in the empty courtyard.",
+    "promptProse": "Feet planted in the empty courtyard, she holds both arms level to the sides with solemn concentration in the sunrise.",
     "promptTokens": [
-      "blue shirt",
-      "track pants",
       "exercising",
-      "arms up",
+      "outstretched arms",
       "sweat",
       "courtyard",
-      "sunrise"
+      "sunrise",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

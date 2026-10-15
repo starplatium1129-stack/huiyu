@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/sub_zero_frostfield_parka",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 409,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,13 +12,13 @@
       "id": "sub_zero_frostfield_parka",
       "isDefault": false,
       "name": "极地破风巡航",
-      "prose": "a heavy insulated arctic parka in glacier white and grey-blue panels with a fluffy white fur-lined hood, worn over a thermal turtleneck and insulated trousers, winter combat gear",
+      "prose": "a white and grey-blue insulated parka with a fur-lined hood, worn over a thermal turtleneck and warm trousers with gloves",
       "tokens": [
-        "parka",
-        "winter_coat",
-        "fur_trim",
-        "insulated",
-        "turtleneck"
+        "white parka",
+        "fur-trimmed hood",
+        "turtleneck",
+        "pants",
+        "gloves"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hitachi_mako/summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 623,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hitachi_mako",
     "outfit": {
@@ -12,17 +12,14 @@
       "id": "summer_bikini",
       "isDefault": false,
       "name": "清溪夏日运动比基尼",
-      "prose": "a sporty forest-green and black halterneck two-piece bikini accentuating her athletic waist and generous bust, sheer mesh cropped cover-up hoodie, black choker, and bare feet wading through a sunlit mountain stream",
+      "prose": "a forest-green halterneck bikini with black trim, a cropped mesh cover-up hoodie and black choker",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "two-piece_swimsuit",
+        "green bikini",
+        "black trim",
         "halterneck",
-        "cleavage",
+        "mesh hoodie",
         "choker",
-        "wet_skin",
-        "barefoot",
-        "beachwear"
+        "barefoot"
       ]
     }
   }

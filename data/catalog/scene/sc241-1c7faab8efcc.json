@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc241",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Natsume holds the basket with a bento, the last pudding and hot canned coffee, nodding to the off-frame clerk's offer to heat the meal.",
+    "animaCaption": "At the counter, she holds the basket containing the bento, last pudding and hot canned coffee, nodding toward the off-frame clerk; the store's warm light reveals her flushed ears above a tired expression.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "近景平视特写",
+    "camera": "便利店柜台前平视半身中景",
     "category": "日常",
     "char": "natsume",
     "character": [

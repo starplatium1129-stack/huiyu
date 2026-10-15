@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_cliff_survival_genius_command",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1164,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kazuki_cliff_survival_genius_command",
     "title": "风见一姬 · 泷园断崖的天才决断",
@@ -19,7 +19,7 @@
     "action": "单手按住山崖岩石迎风侧立，雪白长发狂乱翻飞，红瞳冷静如冰，神情从容超凡",
     "timeOfDay": "傍晚",
     "lighting": "阴云裂缝处透射下的微弱冷白夕照与岩壁潮湿冷冽高光",
-    "camera": "dynamic low angle, full body wide shot, sweeping cliff scale",
+    "camera": "full body, from below",
     "mood": "凄绝孤高",
     "sceneTags": [
       "cliff",
@@ -31,9 +31,8 @@
       "very_long_hair",
       "red_eyes"
     ],
-    "promptProse": "Kazuki braces one hand against the cliff and calmly surveys a survival route down the ravine, the bus wreck behind her as wind lifts her sundress.",
+    "promptProse": "Kazuki braces one hand on the rock and surveys a route down the ravine, the damaged bus behind her. A break in the clouds catches the wet cliff face as wind lifts her white dress.",
     "promptTokens": [
-      "white dress",
       "hand on rock",
       "wind",
       "cliff",

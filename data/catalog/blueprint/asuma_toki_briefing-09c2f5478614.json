@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_briefing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 866,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "站在全息投影前听简报",
     "adult": false,
@@ -26,11 +26,9 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "candc_maid",
-    "promptProse": "She salutes before the mission projection with control equipment behind. Cool holographic light reaches her headset and armor seams.",
+    "promptProse": "She salutes the viewer before the mission projection, control equipment receding behind her. Cool holographic light reaches her headset and the armor seams.",
     "promptTokens": [
       "base interior",
-      "combat maid",
-      "headset",
       "salute",
       "hologram",
       "medium shot"

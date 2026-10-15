@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_einzbern_castle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 158,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "illyasviel_einzbern_castle",
     "title": "伊莉雅丝菲尔 · 爱因兹贝伦城堡",
@@ -30,10 +30,8 @@
       "candlelight",
       "medium_shot"
     ],
-    "promptProse": "Illyasviel turns curiously toward the visitor beside the castle window, hands clasped behind her securely closed coat.",
+    "promptProse": "Hands clasped behind her closed coat, she turns from the stained-glass window toward the offscreen visitor; moonlight and candlelight meet along her profile.",
     "promptTokens": [
-      "purple coat",
-      "fur trim",
       "hands behind back",
       "stained glass",
       "castle",

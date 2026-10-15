@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc007",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Beneath one umbrella, she holds its handle by her shoulder and takes the partner's hand entering the frame.",
+    "animaCaption": "Under their shared umbrella, she lays her hand over the viewer's hand around the handle near her shoulder; rain beyond the canopy softens the daylight around her relieved smile.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "伞下双人近景",
     "category": "恋爱",
@@ -39,8 +39,7 @@
       "umbrella",
       "shy",
       "moved",
-      "depth_of_field",
-      "medium_shot",
+      "close_up",
       "partner_hand_visible"
     ],
     "time": "午后",

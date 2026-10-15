@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "lappland_arknights/sfw_siesta_black_bikini",
+  "revision": 1,
+  "sortOrder": 1161,
+  "createdAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "data": {
+    "characterId": "lappland_arknights",
+    "outfit": {
+      "id": "sfw_siesta_black_bikini",
+      "name": "汐斯塔黑色细带比基尼",
+      "tokens": [
+        "black bikini",
+        "string bikini"
+      ],
+      "prose": "a black string bikini",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

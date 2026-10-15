@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_sickbed_forehead_touch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1474,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "mahiru_sickbed_forehead_touch",
     "title": "椎名真昼 · 床头换好的温热毛巾",
@@ -13,7 +13,7 @@
     "outfitId": "sfw_care_cardigan",
     "description": "真昼穿薄荷绿开衫和灰色家居长裤，坐在床边把折好的温热毛巾放到床头托盘。她用指背试了试温度，确认合适后向画面外轻轻点头；亚麻金长发束到肩后，关切的神情安静而踏实。",
     "location": "卧室床头",
-    "action": "用指背试过毛巾温度，放上托盘后轻轻点头。",
+    "action": "坐在床边，用指背轻贴托盘上的温热毛巾，向画外的人轻轻点头",
     "timeOfDay": "evening",
     "lighting": "soft bedside lighting",
     "camera": "medium shot, environmental portrait",
@@ -28,10 +28,8 @@
       "soft_bedside_light",
       "medium_shot"
     ],
-    "promptProse": "Mahiru checks the towel with the back of her fingers, then places it on the bedside tray with a small nod.",
+    "promptProse": "Mahiru rests the backs of her fingers against the folded towel on the bedside tray, nodding gently toward the person outside the frame. Soft bedside light falls across the towel and her hand.",
     "promptTokens": [
-      "mint cardigan",
-      "trousers",
       "warm towel",
       "tray",
       "bedside"

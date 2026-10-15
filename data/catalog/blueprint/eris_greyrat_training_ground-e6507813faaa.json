@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_training_ground",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 477,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "反复挥剑训练",
     "camera": "cowboy shot, practicing sword drills on the training ground",
@@ -18,13 +18,10 @@
     "mood": "坚毅专注",
     "negativeTokens": [],
     "outfitId": "sword_king",
-    "promptProse": "She repeats a deliberate sword arc across the marked practice ground.",
+    "promptProse": "With both hands on the hilt, she follows through a deliberate sword arc between the training posts. Sunset rims her red hair and lights the sweat at her jaw.",
     "promptTokens": [
       "1girl",
       "solo",
-      "crop top",
-      "pants",
-      "headband",
       "sword",
       "training",
       "sweat",

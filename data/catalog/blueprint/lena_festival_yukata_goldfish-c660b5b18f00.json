@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "lena_festival_yukata_goldfish",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1355,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "蹲在金鱼摊前屏息用纸网捞起金鱼，成功后回头向你高举展示，笑容灿烂",
+    "action": "蹲在金鱼摊边，举起托着红金鱼的纸网，回头向画外同伴微笑",
     "adult": false,
     "animaStyleHint": "anime_slice_of_life",
     "camera": "medium close-up, warm lantern glow, festival bokeh, joyful energy",
@@ -25,13 +25,12 @@
     "mood": "反差萌爆击、心动夜祭",
     "negativeTokens": [],
     "outfitId": "festival_navy_yukata",
-    "promptProse": "Lena holds her breath over the goldfish net, then turns to show the successful catch with a bright smile.",
+    "promptProse": "Still crouching beside the stall, Lena turns toward the viewer with a red goldfish resting in the raised paper net. Lantern light warms her smile while distant fireworks glimmer beyond the booths.",
     "promptTokens": [
       "vladilena_millize",
-      "navy yukata",
-      "hair up",
       "goldfish scooping",
-      "festival"
+      "festival",
+      "smile"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

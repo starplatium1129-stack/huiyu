@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc010",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She looks back while walking through the retreating surf, carrying her sandals in one hand and holding her cardigan closed with the other.",
+    "animaCaption": "She stops at the receding waterline and looks back toward the viewer, sandals hanging from one hand while the other gathers her cardigan; the low sun stretches their shadows across the wet sand.",
     "camera": "全身远景",
     "category": "旅行",
     "char": "nene",

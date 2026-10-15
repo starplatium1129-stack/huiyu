@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc057",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She shifts along the shaded bench to leave a place beside her, holding the warm drink with a grateful smile.",
+    "animaCaption": "Seated beneath the parasol, she holds the warm drink in one hand and draws a corner of her shoulder towel over the viewer's knee beside her; reflected sea light softens the shade around her damp hair.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "遮阳伞下半身中景",
     "category": "旅行",

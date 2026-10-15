@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "raphtalia/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 887,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "raphtalia",
     "outfit": {
       "id": "sfw_beach",
       "name": "拉芙塔莉雅·海滨泳装",
-      "prose": "a modest red-brown one-piece swimsuit with a cream beach shirt, woven belt and light sandals",
+      "prose": "a red-brown one-piece swimsuit with a cream beach shirt, woven belt and light sandals",
       "tokens": [
-        "one_piece_swimsuit",
-        "red_brown_swimsuit",
-        "beach_shirt",
-        "woven_belt",
+        "red-brown one-piece swimsuit",
+        "cream beach shirt",
+        "woven belt",
         "sandals"
       ],
       "default": false,

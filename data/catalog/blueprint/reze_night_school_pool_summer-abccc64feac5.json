@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_night_school_pool_summer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 424,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "reze_night_school_pool_summer",
     "characterId": "reze_chainsaw",
@@ -20,10 +20,8 @@
       "wet_hair",
       "holding_hand"
     ],
-    "promptProse": "Reze steps out of the deserted pool and shakes water from her hair with a light laugh.",
+    "promptProse": "Reze wipes the water from her face with one hand as she steps out of the deserted pool, laughing toward the viewer. Moonlight shines on the droplets along her hair and shoulders.",
     "promptTokens": [
-      "navy swimsuit",
-      "choker",
       "wet hair",
       "poolside",
       "laughing",

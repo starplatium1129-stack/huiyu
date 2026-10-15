@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_cathedral_bridal_vow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1280,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rias_cathedral_bridal_vow",
     "title": "莉雅丝 · 逆光圣殿的真红誓约",
@@ -15,7 +15,7 @@
     "action": "双手捧着鲜花捧花站在彩窗光芒下，眼眶湿润带着幸福浅笑仰视视角",
     "timeOfDay": "正午圣光",
     "lighting": "彩绘玻璃透下的绚丽丁达尔神圣光柱",
-    "camera": "cowboy shot, slightly low angle, grand perspective",
+    "camera": "cowboy shot, slightly low angle",
     "mood": "圣洁深情",
     "sceneTags": [
       "cathedral",
@@ -31,9 +31,6 @@
     ],
     "promptProse": "Rias holds white roses and red camellias against her bridal gown, making her vow before the altar with tear-bright eyes.",
     "promptTokens": [
-      "white wedding dress",
-      "mermaid dress",
-      "veil",
       "bouquet",
       "tears",
       "cathedral",

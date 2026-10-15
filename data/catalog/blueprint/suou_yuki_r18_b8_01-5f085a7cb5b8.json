@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_r18_b8_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 800,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "跪坐在备用品室软垫上制服裙高撩微露大腿，双手捧脸坏笑，身体前倾主动颠簸诱惑",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot, low angle",
     "category": "主控骑乘",
     "characterId": "suou_yuki",
     "coverageTags": [
@@ -30,8 +30,6 @@
     "promptProse": "Yuki kneels forward on the cushions in the locked adult council storage room, cupping her flushed cheeks with her blazer open and skirt lifted over black tights.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "open blazer",
       "topless",
       "skirt lift",
@@ -41,6 +39,7 @@
       "cushion",
       "smirk",
       "storage room",
+      "cowboy shot",
       "from below"
     ],
     "recommendedSize": "1152x1536",

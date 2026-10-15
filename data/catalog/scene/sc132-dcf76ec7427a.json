@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc132",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 130,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "The loosened bikini hangs at her waist as she sits on the pool edge, covering her bare chest with both hands and turning her head away.",
+    "animaCaption": "Seated on the indoor pool edge, she covers her chest and turns her face away, the loosened bikini at her waist; moonlight through the tall windows joins the reflected water light across her wet shoulders.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "主观水平视线特写",
     "category": "日常/同人",
@@ -30,14 +30,11 @@
       "mole_under_eye",
       "black_bikini",
       "untied_bikini",
-      "strings_undone",
       "hands_covering_chest",
       "bare_breasts",
-      "bare_legs",
       "indoor_pool",
-      "full_body",
-      "barefoot",
-      "moonlight"
+      "moonlight",
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

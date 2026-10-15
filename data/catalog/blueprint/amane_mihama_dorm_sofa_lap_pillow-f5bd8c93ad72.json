@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_mihama_dorm_sofa_lap_pillow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1177,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "amane_mihama_dorm_sofa_lap_pillow",
     "title": "周防天音 · 宿舍沙发的膝枕温香",
@@ -31,13 +31,10 @@
       "hair_rings",
       "inviting"
     ],
-    "promptProse": "She pats her lap with both hands in an invitation toward Yuuji. Afternoon sunlight reaches the sofa beside the moving curtain.",
+    "promptProse": "She sits with her knees together and pats her lap with both hands, inviting Yuuji just beyond the frame to rest there. Afternoon sunlight reaches the leather sofa beside the moving curtain.",
     "promptTokens": [
       "dormitory",
       "sofa",
-      "school uniform",
-      "white skirt",
-      "thighhighs",
       "sitting",
       "patting lap",
       "afternoon"

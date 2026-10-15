@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_pool_blue_frills",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 267,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ereshkigal_pool_blue_frills",
     "title": "埃列什基伽勒 · 泳池边的蓝色休暇·「冥界没有泳池……这是我偷偷造的」",
@@ -15,7 +15,7 @@
     "action": "池边浸腿坐水光里，褶边比基尼红瞳认真",
     "timeOfDay": "冥界幽暗的休憩时刻",
     "lighting": "池水幽光与照明球的柔光",
-    "camera": "medium shot, sitting poolside, feet in water, secret-share mood",
+    "camera": "full-body shot",
     "mood": "分享秘密、幽界清凉",
     "sceneTags": [
       "underworld_pool",
@@ -29,18 +29,13 @@
       "dark_cavern",
       "medium_shot"
     ],
-    "promptProse": "She sits with her lower legs in the hidden pool and both hands on the rim, lit by floating orbs.",
+    "promptProse": "She sits at the hidden pool with both hands on the rim and her lower legs immersed, looking earnestly toward the viewer. Floating orbs soften the light above the blue-lit water.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blue swimsuit",
-      "frills",
-      "sarong",
       "sitting",
       "poolside",
       "cavern",
       "glowing",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

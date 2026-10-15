@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_clubroom_flustered_weak_point",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "akeno_clubroom_flustered_weak_point",
     "title": "姬岛朱乃 · 触碰软肋的破防娇羞",
@@ -15,7 +15,7 @@
     "action": "后背微倚书架，被触碰到敏感耳垂整张脸通红，双手抓着对方衣襟眼神羞乱",
     "timeOfDay": "黄昏",
     "lighting": "书架阴影与窗口透入的金色斜阳",
-    "camera": "medium close-up, eye level, flustered expression",
+    "camera": "upper body, eye level",
     "mood": "反差羞耻",
     "sceneTags": [
       "bookshelves",
@@ -29,10 +29,9 @@
       "shy",
       "flustered"
     ],
-    "promptProse": "Her companion embraces her waist from behind and brushes her ear while she catches his collar. Evening window light falls across their clothed upper bodies.",
+    "promptProse": "Her companion stands close behind her with one arm around her waist, brushing her ear with his free hand. She turns her flushed face aside and catches his collar near her shoulder; evening light reaches them beside the bookshelves.",
     "promptTokens": [
       "couple",
-      "school uniform",
       "blush",
       "looking away",
       "hug from behind",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/rhodes_kitchen_apron",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 404,
   "createdAt": null,
-  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
@@ -13,17 +13,13 @@
       "default": false,
       "isDefault": false,
       "tokens": [
-        "green_dress",
-        "dress",
-        "sleeves_rolled_up",
-        "long_dress",
-        "yellow_apron",
-        "apron",
-        "pocket",
-        "bead_bracelet",
+        "green dress",
+        "sleeves rolled up",
+        "yellow apron",
+        "bead bracelet",
         "slippers"
       ],
-      "prose": "an opaque sage-green cotton shirt dress with tidy rolled sleeves and a calf-length hem, a wheat-yellow linen apron with broad crossed back straps and a deep pocket, a small ivory bead bracelet and closed cream house shoes",
+      "prose": "a calf-length sage cotton shirt dress with rolled sleeves, wheat-yellow cross-back apron, ivory bead bracelet and cream house shoes",
       "category": "日常衣装（创作）"
     }
   }

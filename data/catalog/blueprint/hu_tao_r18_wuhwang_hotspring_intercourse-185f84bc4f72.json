@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
     "title": "胡桃 · 秘境温泉落月幽欢",
@@ -15,7 +15,7 @@
     "action": "独自斜倚秘泉岩台，湿符纹薄纱敞开，一手托鬼火莲灯、一手在水下自抚，一腿屈起抵住石沿",
     "timeOfDay": "夜晚",
     "lighting": "夜空清冽月光与温泉水面波光倒影",
-    "camera": "cowboy shot, medium close-up, vertical framing",
+    "camera": "cowboy shot, vertical framing",
     "mood": "野性欢愉",
     "sceneTags": [
       "hot_springs",
@@ -31,7 +31,7 @@
       "riding",
       "heavy_blush"
     ],
-    "promptProse": "The age-twenty-plus Hu Tao balances a ghost-flame lotus in one palm while her other hand moves underwater, resting against the warm rock shelf.",
+    "promptProse": "Resting against the warm rock shelf with one knee bent, she balances the ghost-flame lotus in one palm while her other hand moves underwater; its blue light reaches her eyes beneath the moonlit mist.",
     "promptTokens": [
       "adult",
       "wet veil",

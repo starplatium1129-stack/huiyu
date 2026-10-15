@@ -1,29 +1,21 @@
 {
   "kind": "outfit",
   "id": "ikaros/angeloid_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 659,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ikaros",
     "outfit": {
       "id": "angeloid_dress",
       "name": "人造天使战略白裙装",
-      "prose": "canonical angeloid attire: a pure white sleeveless dress with soft translucent layered ruffles, delicate red ribbon bow at the collar, thick metal choker collar with a dangling snapped steel chain, mechanical ear ornaments, and magnificent broad white feathered wings",
+      "prose": "her sleeveless white angeloid dress with translucent layered ruffles and a red collar ribbon, worn beneath her metal collar and broken chain",
       "tokens": [
-        "white_dress",
-        "sleeveless_dress",
+        "white dress",
+        "sleeveless dress",
         "frills",
-        "ribbon",
-        "red_ribbon",
-        "collar",
-        "metal_collar",
-        "chain",
-        "robot_ears",
-        "angel_wings",
-        "white_wings",
-        "bare_shoulders"
+        "red ribbon"
       ],
       "default": true,
       "isDefault": true

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_oversized_tee_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yamada_nsfw_oversized_tee_straddle",
     "title": "山田杏奈 · 模特大身段的大号T恤跨坐 ·「市川……今天不许看别处」",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间长腿包裹，大号T恤颠簸溢出雪乳，泪痣泛红动情低头吻",
     "timeOfDay": "深夜",
     "lighting": "柔和暖光与唯美阴影交错",
-    "camera": "vertical POV",
+    "camera": "cowboy shot, pov",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "nsfw",
@@ -28,17 +28,15 @@
     "nsfwProse": "",
     "promptTokens": [
       "adult",
-      "1girl",
       "pov",
-      "oversized t-shirt",
-      "black shirt",
+      "oversized black t-shirt",
       "bottomless",
       "cowgirl position",
       "on lap",
       "ponytail",
-      "mole under eye",
       "bedroom",
-      "afternoon"
+      "afternoon",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +49,7 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "compositionIntent": "single"
   }
 }

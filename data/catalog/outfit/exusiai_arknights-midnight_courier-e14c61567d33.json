@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/midnight_courier",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
@@ -14,11 +14,11 @@
       "name": "午夜邮差（夜行装）",
       "prose": "a black hooded techwear coat with fluorescent yellow reflective stripes, a waterproof messenger bag and dark tactical boots",
       "tokens": [
-        "hoodie",
-        "black_clothes",
-        "reflective",
-        "messenger_bag",
-        "tactical"
+        "black coat",
+        "hood",
+        "reflective trim",
+        "messenger bag",
+        "boots"
       ]
     }
   }

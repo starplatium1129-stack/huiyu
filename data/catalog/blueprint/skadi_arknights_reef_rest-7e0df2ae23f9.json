@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_reef_rest",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 609,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "盘腿坐在礁石上，剑横在膝上",
     "camera": "medium shot",
@@ -22,9 +22,7 @@
     "promptProse": "Skadi rests her sword across her lap on the reef as the afternoon tide washes over her ankles.",
     "promptTokens": [
       "Skadi",
-      "bodysuit",
-      "barefoot",
-      "crossed legs",
+      "cross-legged",
       "greatsword",
       "reef",
       "sea",

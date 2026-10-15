@@ -1,19 +1,19 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sfw_white_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sfw_white_bridal",
       "name": "彩窗下纯白花嫁",
-      "prose": "an opaque floor-length white wedding gown with a long veil and train, with golden hair in a long braid beneath the veil",
+      "prose": "a floor-length white bridal gown with a long veil and train, her hair in a long braid",
       "tokens": [
-        "white_wedding_dress",
-        "long_veil",
+        "white wedding dress",
+        "veil",
         "train",
         "braid"
       ],

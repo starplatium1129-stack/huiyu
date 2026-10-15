@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_beach_bikini_hating_ecchi_blush",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1226,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手护在比基尼胸前，金发化作巨拳微颤，满面通红娇羞咬牙怒斥，水花四溅",
     "camera": "medium shot, eye-level, extreme blush and tsundere focus",
@@ -20,12 +20,15 @@
     "mood": "反差娇羞",
     "negativeTokens": [],
     "outfitId": "bikini_swimsuit",
-    "promptProse": "Yami stands ankle-deep in the tropical surf with folded arms, her long hair trailing in the foam.",
+    "promptProse": "Yami blushes and folds both arms over her chest as Rito lies where he has slipped in the shallow surf before her. A lock of her golden hair forms a raised fist behind her, bright sun catching the splashing water.",
     "promptTokens": [
       "Yami",
-      "black bikini",
+      "Rito",
       "crossed arms",
-      "blonde hair",
+      "blush",
+      "prehensile hair",
+      "giant fist",
+      "fallen boy",
       "surf",
       "sunlight"
     ],
@@ -42,6 +45,10 @@
       "very_long_hair"
     ],
     "timeOfDay": "正午",
-    "title": "金色暗影 · 碧海金沙的讨厌色情娇羞"
+    "title": "金色暗影 · 碧海金沙的讨厌色情娇羞",
+    "compositionIntent": "group",
+    "characterTokens": [
+      "Rito"
+    ]
   }
 }

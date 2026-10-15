@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_dorm_window",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 516,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱着膝盖坐在窗台上望向远方",
     "camera": "medium shot, eye level",
@@ -23,8 +23,6 @@
     "promptProse": "Surtr watches the wasteland from the broad windowsill, dusk catching her red hair above her gathered knees.",
     "promptTokens": [
       "Surtr",
-      "black nightgown",
-      "robe",
       "hugging knees",
       "windowsill",
       "wasteland",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_canteen_big",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 589,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "大口吃着大碗烤肉饭，腮帮鼓鼓",
-    "camera": "medium close-up",
+    "camera": "medium shot",
     "category": "泰拉日常",
     "characterId": "eunectes_arknights",
     "coverageTags": [
@@ -20,19 +20,15 @@
     "mood": "豪爽治愈",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "She takes a large bite from one of three rice bowls, her tail moving happily while other diners sit farther back.",
+    "promptProse": "Her cheeks puff around a mouthful of rice; three large bowls fill the table before her while other diners sit farther back.",
     "promptTokens": [
       "multiple people",
-      "snake tail",
-      "green halterneck",
-      "tactical vest",
-      "shorts",
       "eating",
       "chopsticks",
       "rice",
       "meat",
       "cafeteria",
-      "close-up"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

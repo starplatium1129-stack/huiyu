@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/kessoku_band_live_tshirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "kessoku_band_live_tshirt",
       "name": "结束乐队Live演出T恤",
       "tokens": [
-        "black_t-shirt",
-        "t-shirt",
-        "print_t-shirt",
-        "black_skirt",
-        "pleated_skirt",
-        "wristband"
+        "black t-shirt",
+        "print shirt",
+        "black pleated skirt",
+        "red wristband"
       ],
-      "prose": "wearing a black Kessoku Band graphic-print T-shirt tucked into a dark pleated skirt, with a red wristband",
+      "prose": "a black Kessoku Band graphic T-shirt tucked into a dark pleated skirt, with a red wristband",
       "styleHint": "dynamic anime concert stage lighting with vibrant volumetric rays",
       "isDefault": false,
       "default": false

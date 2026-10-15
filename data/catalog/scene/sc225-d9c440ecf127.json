@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc225",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Natsume pauses on the shrine steps, keeping the broom in one hand as she accepts the warm tea offered from behind.",
+    "animaCaption": "On the shrine steps, she holds the bamboo broom in one hand and receives the warm tea from the viewer beside her with the other; filtered morning light reaches her cheek through the mist.",
     "auditRevision": "careful-batch07-2026-08-27",
     "camera": "神社石阶侧面中景",
     "category": "祭典・节日",
@@ -37,8 +37,7 @@
       "morning_mist",
       "white_tabi",
       "red_ears",
-      "full_body",
-      "depth_of_field"
+      "medium_shot"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

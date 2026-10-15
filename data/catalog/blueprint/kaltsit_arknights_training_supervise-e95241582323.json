@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_training_supervise",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 530,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双臂环抱立于场边",
     "camera": "medium shot, slight low angle",
@@ -20,14 +20,13 @@
     "mood": "肃然专业",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Kal'tsit stands with her arms folded at the edge of the training arena, watching the operators practice.",
+    "promptProse": "She stands with folded arms in the foreground, watching the operators practice beyond the training room's reinforced glass.",
     "promptTokens": [
-      "Kal'tsit",
       "trainees",
-      "lab coat",
       "crossed arms",
       "training ground",
-      "from below"
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

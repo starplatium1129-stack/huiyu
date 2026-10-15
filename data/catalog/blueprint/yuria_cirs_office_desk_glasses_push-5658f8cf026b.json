@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_cirs_office_desk_glasses_push",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1197,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuria_cirs_office_desk_glasses_push",
     "title": "春寺由梨亚 · 办公室门反锁后的长官专属查勤",
@@ -19,7 +19,7 @@
     "action": "反锁办公室后坐皮椅轻推红框眼镜，白衬衫微敞喂巧克力，嘴角坏笑眼神宠溺",
     "timeOfDay": "夜晚",
     "lighting": "百叶窗透入的冷蓝城市天光与书桌暖金台灯形成的强烈专业氛围",
-    "camera": "cowboy shot, medium close-up, commanding executive eye-level focus",
+    "camera": "medium shot, eye level, pov",
     "mood": "知性宠溺",
     "sceneTags": [
       "office",
@@ -31,20 +31,19 @@
       "mole_under_eye",
       "blinds"
     ],
-    "promptProse": "Yuria turns her chair toward Yuuji, adjusting her glasses with one hand and offering him dark chocolate with the other.",
+    "promptProse": "She turns her chair toward the offscreen Yuuji, adjusting her glasses with one hand and offering dark chocolate with the other, warm desk light meeting cool blue light through the blinds.",
     "promptTokens": [
-      "business suit",
-      "white shirt",
-      "red glasses",
       "adjusting glasses",
       "chocolate",
       "office chair",
       "desk lamp",
-      "office"
+      "office",
+      "medium shot",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "group",
+    "compositionIntent": "single",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

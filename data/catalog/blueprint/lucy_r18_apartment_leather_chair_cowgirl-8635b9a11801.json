@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_apartment_leather_chair_cowgirl",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "独自跨坐皮椅，一手抓椅背、一手腿间自抚",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "straddling pov, medium close-up looking upward into flushed face and heaving bust",
+    "camera": "medium shot, low three-quarter angle, chair back and both hands visible",
     "category": "深层欢愉",
     "characterId": "lucy_cyberpunk",
     "coverageTags": [

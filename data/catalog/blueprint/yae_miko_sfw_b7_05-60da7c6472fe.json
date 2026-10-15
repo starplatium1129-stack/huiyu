@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_05",
     "title": "八重神子 · 海滨祭典的油豆腐冰饮",
@@ -14,8 +14,8 @@
     "description": "【稻妻海滨祭典·盛夏】八重神子穿着粉白泳装外搭轻薄祭典罩衫，坐在海边高台上摇着折扇，手边放着油豆腐风味冰饮；她看着远处烟火，狐耳随海风微动，转回镜头时笑得像早已猜到所有人的心思。",
     "location": "Inazuma coastal festival terrace",
     "action": "海滨高台摇扇看烟火，狐耳随海风微动，回眸像早已看穿心思",
-    "timeOfDay": "日间",
-    "lighting": "deep summer dusk, lanterns and fireworks",
+    "timeOfDay": "夜晚",
+    "lighting": "festival lanterns and fireworks above the dark sea",
     "camera": "medium shot, horizontal framing",
     "mood": "宫司把度假也写成一场戏",
     "sceneTags": [
@@ -30,11 +30,8 @@
       "knowing_smile",
       "summer"
     ],
-    "promptProse": "Yae Miko turns back with a fan and chilled drink, fireworks reflected in the glass above the dark sea.",
+    "promptProse": "Yae Miko looks back toward the viewer with her folding fan open in one hand, the chilled drink resting beside her on the seaside platform. Fireworks glimmer in the glass above the dark summer sea.",
     "promptTokens": [
-      "Yae Miko",
-      "swimsuit",
-      "festival robe",
       "folding fan",
       "drink",
       "fireworks",

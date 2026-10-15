@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yami_r18_sofa_cowgirl_hair_intakes_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1232,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抹胸拉下跨坐骑乘，双手抵胸借力上下起伏，金发散落娇喘连连，红眸含羞凝视",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "straddling pov, medium close-up, looking up at blushing face, heaving chest and flowing golden hair",
+    "camera": "medium shot, low three-quarter angle, solo figure astride the sofa arm",
     "category": "深层欢愉",
     "characterId": "golden_darkness",
     "coverageTags": [
@@ -18,7 +18,7 @@
     "description": "【金色暗影 · 沙发跨坐骑乘与金发凌乱起伏】深夜客厅真皮沙发上，小暗身上的黑色抹胸哥特战裙从胸前拉下，露出娇小玲珑的白嫩胸脯与可爱粉晕。她双颊滚烫地主动跨坐在恋人腰腹上，双手按在对方结实胸膛借力，挺动纤细柔韧的柳腰上下轻柔起伏。及踝的流金长发如瀑布般在身后翻飞，红宝石般的双眸含羞带媚，口嫌体正直地发出甜美娇喘——「不准露出得意的表情……我只是……想要自己决定深浅而已……哈啊……！」",
     "id": "yami_r18_sofa_cowgirl_hair_intakes_straddle",
     "kreaStyleHint": "r18_sensual_bedroom",
-    "lighting": "客厅低照度暖黄落地灯照耀在起伏的雪白娇躯与金发光晕上",
+    "lighting": "dim warm floor-lamp light across the sofa and golden hair",
     "location": "客厅真皮大沙发中央骑乘姿态",
     "mood": "极乐沉沦",
     "negativeTokens": [],
@@ -38,7 +38,7 @@
       "prehensile hair",
       "masturbation",
       "sofa",
-      "sunset"
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

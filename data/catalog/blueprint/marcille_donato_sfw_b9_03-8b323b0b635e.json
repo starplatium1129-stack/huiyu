@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1718,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_03",
     "title": "玛露希尔 · 睡前的编发准备",
@@ -31,13 +31,11 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Marcille uses a small mirror to braid a new hairstyle beside her camp sleeping bag.",
+    "promptProse": "Marcille braids her hair with both hands while watching the small mirror propped beside her sleeping bag. Lamplight catches the strands between her fingers.",
     "promptTokens": [
       "marcille_donato",
-      "knit top",
-      "brown trousers",
       "braiding hair",
-      "hand mirror",
+      "mirror",
       "sleeping bag",
       "camp"
     ],

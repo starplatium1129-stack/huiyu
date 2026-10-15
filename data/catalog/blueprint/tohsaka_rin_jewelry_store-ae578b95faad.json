@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_jewelry_store",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tohsaka_rin_jewelry_store",
     "title": "远坂凛 · 珠宝店",
@@ -31,9 +31,6 @@
     ],
     "promptProse": "Rin studies the uncut ruby with both palms on the counter, the display lamp lighting its rough facets.",
     "promptTokens": [
-      "Rin",
-      "red turtleneck",
-      "black skirt",
       "ruby",
       "jewelry shop",
       "medium shot"

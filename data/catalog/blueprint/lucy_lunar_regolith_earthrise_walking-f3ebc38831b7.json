@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lucy_lunar_regolith_earthrise_walking",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1100,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手抱着宇航头盔立于月球灰白岩原，仰望漆黑星空中巨大的蔚蓝地球",
-    "camera": "sweeping wide landscape, full body, sublime cosmic scale",
+    "camera": "wide shot, lunar landscape with the entire standing figure visible",
     "category": "月面追寻",
     "characterId": "lucy_cyberpunk",
     "coverageTags": [
@@ -20,13 +20,11 @@
     "mood": "空灵唯美",
     "negativeTokens": [],
     "outfitId": "moon_spacesuit",
-    "promptProse": "Lucy stands on the lunar plain with her helmet under one arm, gazing up at the blue Earth.",
+    "promptProse": "Lucy stands on the grey lunar plain with her helmet under one arm, gazing up at the blue Earth. Direct sunlight makes a sharp shadow beside her boots, while the Earth is reflected in her eyes.",
     "promptTokens": [
-      "spacesuit",
       "helmet under arm",
       "moon surface",
       "earthrise",
-      "full body",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",

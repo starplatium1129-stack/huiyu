@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc066",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She pauses for the photograph with one hand on the cover-up hem, turning her face back toward the viewer with the sea beside her.",
+    "animaCaption": "She pauses with one hand holding down the cover-up hem and turns back toward the viewer's camera, the sea visible beside her; sunset outlines her damp hair in gold.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "海岸回眸全身远景",
     "category": "旅行",
@@ -39,7 +39,6 @@
       "holding_coverup_hem",
       "standing_on_sand",
       "looking_back",
-      "relaxed_arm",
       "gentle_blush",
       "wet_hair",
       "sea_breeze",

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc073",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She keeps one cold milk bottle and offers the second to the viewer, seated beside the inn's snowy garden.",
+    "animaCaption": "Seated on the inn's veranda, she holds one milk bottle and places the other into the viewer's waiting palm; the lantern warms her flushed face against the snowy garden's cool evening light.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "旅行",

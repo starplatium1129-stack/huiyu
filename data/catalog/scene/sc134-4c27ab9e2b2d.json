@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc134",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc134",
     "title": "黎明拂晓的真空支配",
@@ -37,7 +37,7 @@
     "mature": true,
     "location": "双人床榻被窝",
     "weather": "温暖初晴",
-    "camera": "平视近景特写",
+    "camera": "床边平视半身中景",
     "lighting": "朝阳柔和侧光逆光",
     "usage": [
       "壁纸级",

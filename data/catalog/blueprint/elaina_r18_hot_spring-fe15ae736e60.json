@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_hot_spring",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 387,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_r18_hot_spring",
     "title": "伊雷娜 · 露天温泉",
@@ -27,8 +27,6 @@
     ],
     "promptProse": "Reclining at the stone edge, she gathers her hair over one shoulder while her other hand rests beneath the water between her thighs.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "adult",
       "white camisole",
       "wet clothes",

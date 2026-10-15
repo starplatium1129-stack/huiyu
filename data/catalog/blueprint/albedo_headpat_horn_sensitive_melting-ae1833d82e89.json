@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_headpat_horn_sensitive_melting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1299,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "albedo_headpat_horn_sensitive_melting",
     "title": "雅儿贝德 · 抚角摸头的融化娇羞",
@@ -15,7 +15,7 @@
     "action": "被摸头触碰敏感角部，双手护胸身体微蜷发软，脸红如醉、眼神水润迷离娇喘",
     "timeOfDay": "黄昏",
     "lighting": "回廊墙壁上水晶壁灯的浪漫暖调光晕",
-    "camera": "medium close-up, slightly high angle, melting reaction",
+    "camera": "close-up, from above",
     "mood": "极致融化",
     "sceneTags": [
       "corridor",
@@ -32,9 +32,6 @@
     ],
     "promptProse": "Her companion strokes her hair and brushes one horn as she clasps her hands in surprise. Warm wall sconces light her face.",
     "promptTokens": [
-      "white dress",
-      "horns",
-      "black wings",
       "headpat",
       "blush",
       "corridor",

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc087",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "At the bed's edge, she hugs the pillow against her pajama top and greets the viewer sleepily.",
+    "animaCaption": "Sitting at the edge of the bed, she rubs one sleepy eye and gestures toward the coffee machine for the viewer arriving with her papers; morning window light catches her tousled hair.",
     "auditRevision": "careful-batch11-2026-08-27",
     "camera": "半身中景",
     "category": "日常",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, shiki_natsume, grey pajamas, sitting on bed, holding pillow, messy hair, sleepy smile, dawn, medium shot",
+    "prompt": "1girl, shiki_natsume, grey pajamas, sitting on bed, rubbing eyes, messy hair, bedroom, coffee maker, morning light, medium shot",
     "rating": "R15",
     "season": "春",
     "story": "【夏目 · 宿舍清晨的第一句话】春日清晨，夏目穿着宽松睡衣坐在宿舍床边，黑色长发还有些凌乱。你送来借走的资料，她揉着眼睛确认时间，随后把门再打开一点让你进来——「这么早来的人也有责任。咖啡机在那边……等我清醒以后再谈正事。」",
@@ -29,12 +29,11 @@
     "tags": [
       "mole_under_eye",
       "grey_pajamas",
-      "bare_legs",
       "dorm_room",
-      "full_body",
-      "barefoot",
-      "dawn",
-      "depth_of_field"
+      "sitting_on_bed",
+      "rubbing_eyes",
+      "morning_light",
+      "medium_shot"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

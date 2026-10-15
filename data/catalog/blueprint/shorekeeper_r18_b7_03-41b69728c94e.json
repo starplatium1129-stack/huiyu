@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1661,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_03",
     "title": "守岸人 · 概念投影礼服流光锁链卡壳事故 ·「逻辑指令错误……流光纠缠无法解除，请协助我」",
@@ -15,7 +15,7 @@
     "action": "撑全息台塌腰回眸数据链勒肉溢乳，裙摆卡死露雪臀，空灵眸子染上红晕娇喘",
     "timeOfDay": "morning",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate horizontal medium shot",
+    "camera": "wide shot, horizontal composition, holographic console visible",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",

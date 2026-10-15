@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc013",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She offers a single cherry petal to the viewer while keeping her gaze slightly averted.",
+    "animaCaption": "She holds an open palm with a single cherry petal toward the viewer, avoiding their gaze; soft spring light falls across her hand and flushed profile.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "手部与侧脸近景",
     "category": "恋爱",

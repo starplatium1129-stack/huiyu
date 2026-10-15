@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ellen_bedroom_gaming_carpet_slouch",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1059,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "趴在地毯上翘起小腿打掌机，鲨鱼尾巴垫在身后，专注微咬唇",
-    "camera": "overhead high angle shot, intimate framing",
+    "camera": "full-body shot, from above",
     "category": "居家私享",
     "characterId": "ellen_joe",
     "coverageTags": [
@@ -20,19 +20,14 @@
     "mood": "松弛治愈",
     "negativeTokens": [],
     "outfitId": "streetwear_hoodie",
-    "promptProse": "She plays with both hands while lying on the carpet, her knees bent and shark tail resting beside her.",
+    "promptProse": "She lies on the carpet playing with both hands, her lower legs lifted behind her and her shark tail stretched beside her. The cool television glow meets the warm bedside lamp as she concentrates on the game.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "shark tail",
-      "hoodie",
-      "denim shorts",
-      "striped socks",
       "on stomach",
       "handheld game console",
       "carpet",
       "bedroom",
       "night",
+      "full body",
       "from above"
     ],
     "recommendedSize": "1536x1152",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1706,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "maomao_sfw_b9_02",
     "title": "猫猫 · 晒架上的最后一缕日光",
@@ -16,7 +16,7 @@
     "action": "发现竹筛边的瓢虫后停手，耐心等它爬开。",
     "timeOfDay": "evening",
     "lighting": "soft reflected late-afternoon light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "courtyard",
@@ -29,10 +29,8 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Maomao pauses over the bamboo sieve and patiently waits for a ladybird to crawl away.",
+    "promptProse": "She holds the empty bamboo sieve still with both hands, watching the ladybird at its rim in the soft late-afternoon light.",
     "promptTokens": [
-      "indigo jacket",
-      "linen apron",
       "bamboo sieve",
       "ladybug",
       "courtyard"

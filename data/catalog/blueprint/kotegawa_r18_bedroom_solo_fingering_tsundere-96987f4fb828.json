@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_r18_bedroom_solo_fingering_tsundere",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1266,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "撩起水手百褶裙开腿抚弄，一手掩面，另一手深入私处轻柔抚摸，咬唇含泪娇喘",
+    "action": "跪坐床单，一手握袖章在胸前，另一手留在裙下。",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
     "camera": "medium shot, seated intimacy, focus on blushing face and modest skirt lift",
@@ -15,7 +15,7 @@
     "coverageTags": [
       "solo_nsfw"
     ],
-    "description": "【古手川唯 · 闺房暗夜的不知羞耻私密自抚】深夜反锁的古手川家闺房大床上，唯身穿彩南水手制服，百褶裙被轻轻撩高堆在腹部。她一只手捂住发烫通红的面颊，另一只玉手轻柔探入被情愫浸湿的花径深处。白皙细指在花褶间羞涩地缓缓打转，带出轻微的水声，咬着嘴唇眼角带泪低声自语——「哈啊……不知羞耻……明明是风纪委员……脑子里却全都是那张傻笑的脸……身体好奇怪……」",
+    "description": "成年唯跪在卧室凌乱的床单上，衬衣松开、裙摆收起；一手把风纪袖章贴在胸前，另一手留在裙下，床头暖灯照着泛红的脸。",
     "id": "kotegawa_r18_bedroom_solo_fingering_tsundere",
     "kreaStyleHint": "r18_sensual_bedroom",
     "lighting": "床头暖橙小夜灯照射在泛红脸颊与雪白大腿上的温馨光晕",
@@ -29,7 +29,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Yui",
+      "adult",
       "open blouse",
       "bare breasts",
       "skirt lift",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_garden_walk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 991,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "花丛间散步闻花",
-    "camera": "cowboy shot, pausing to smell a white rose in the royal garden",
+    "camera": "cowboy shot",
     "category": "温馨日常",
     "characterId": "krista_lenz",
     "coverageTags": [
@@ -20,11 +20,8 @@
     "mood": "平和恬淡",
     "negativeTokens": [],
     "outfitId": "queen_garden_casual",
-    "promptProse": "Historia walks through the palace garden and lifts a white rose to smell it.",
+    "promptProse": "She pauses among the palace flowers and bends to smell a white rose, gently supporting the stem with her fingertips.",
     "promptTokens": [
-      "coat",
-      "white shirt",
-      "trousers",
       "white rose",
       "garden",
       "afternoon"

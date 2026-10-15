@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_lantern_rite_fireworks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hu_tao_lantern_rite_fireworks",
     "title": "胡桃 · 海灯盛典回眸",
@@ -31,18 +31,16 @@
       "night",
       "low_angle"
     ],
-    "promptProse": "Hu Tao turns joyfully on the Lantern Rite terrace, her sleeve lifting beneath the ascending lanterns and fireworks.",
+    "promptProse": "She turns toward the viewer on the Lantern Rite terrace, lifting one wide sleeve; golden lantern light warms her smile while fireworks rim her hair in changing colors.",
     "promptTokens": [
-      "hanfu",
-      "red clothes",
       "butterfly print",
-      "hairpin",
       "looking back",
       "smile",
       "terrace",
       "lantern",
       "fireworks",
       "night",
+      "medium shot",
       "from below"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_rain_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 434,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rem_rezero_rain_night",
     "title": "雷姆 · 雨夜告白",
@@ -15,7 +15,7 @@
     "action": "在钟楼下回望，雨声如诉",
     "timeOfDay": "夜晚",
     "lighting": "暖灯与冷雨",
-    "camera": "close-up",
+    "camera": "medium shot, eye level, joined hands in the lower foreground",
     "mood": "深情脆弱",
     "sceneTags": [
       "rain",
@@ -25,16 +25,16 @@
       "outdoors",
       "warm_light"
     ],
-    "promptProse": "Rem turns back to address the viewer beneath the clock tower, warm streetlight catching the tears on her face.",
+    "promptProse": "Rem clasps the viewer's hand beneath the clock tower and looks back through the rain with a trembling smile. Warm streetlight catches her tears against the cool rain beyond her shoulders.",
     "promptTokens": [
-      "casual clothes",
+      "holding hands",
       "looking back",
       "tears",
       "rain",
       "clock tower",
       "streetlight",
       "night",
-      "close-up"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

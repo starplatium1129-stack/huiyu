@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "ubel_frieren/sfw_travel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ubel_frieren",
     "outfit": {
       "id": "sfw_travel",
       "name": "黑裙旅行装",
-      "prose": "a modest knee-length black dress with a fitted belt, opaque tights and practical boots",
+      "prose": "a knee-length black dress with a fitted belt, opaque tights and practical boots",
       "tokens": [
-        "black_dress",
-        "knee_length_dress",
+        "black dress",
         "belt",
-        "opaque_tights",
+        "black pantyhose",
         "boots"
       ],
       "default": true,

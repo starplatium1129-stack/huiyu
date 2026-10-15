@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_lakeside_white_bikini_shading",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1301,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "albedo_lakeside_white_bikini_shading",
     "title": "雅儿贝德 · 湖畔水光的黑翼遮阳",
@@ -15,7 +15,7 @@
     "action": "身穿纯白比基尼坐在岩石上，单侧黑翼前倾为视角遮阳，侧头露出调皮魅惑笑容",
     "timeOfDay": "正午晴日",
     "lighting": "湖面反射的波光粼粼与羽翼下的清凉暗影",
-    "camera": "cowboy shot, diagonal angle, summer water view",
+    "camera": "full body, eye level",
     "mood": "唯美惬意",
     "sceneTags": [
       "lake",
@@ -30,15 +30,13 @@
       "wet_legs",
       "seductive_smile"
     ],
-    "promptProse": "She lifts one wing to shade her companion while her toes touch the lake. Reflected water light moves across the rocks beneath the feathers.",
+    "promptProse": "Seated on the white rock, she arches one wing over the companion beside her while her toes touch the lake. Reflected water light moves across the rock beneath the shaded feathers.",
     "promptTokens": [
-      "white bikini",
-      "black wings",
       "lake",
       "rock",
       "sitting",
       "smile",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

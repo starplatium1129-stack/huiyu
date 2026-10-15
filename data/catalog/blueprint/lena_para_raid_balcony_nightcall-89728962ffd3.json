@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_para_raid_balcony_nightcall",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1357,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "披军装外套倚栏夜谈，指尖轻抵泛光耳机，侧头露出深夜限定柔笑",
     "adult": false,
@@ -25,11 +25,11 @@
     "mood": "私密静谧、深情羁绊",
     "negativeTokens": [],
     "outfitId": "official_republic_military_uniform",
-    "promptProse": "Lena touches her glowing Para-RAID beside the balcony railing, smiling softly during the night call.",
+    "promptProse": "Lena rests one forearm on the balcony rail and touches the glowing Para-RAID with her other hand during the call. Night wind lifts the jacket draped over her shoulders beneath the quiet stars.",
     "promptTokens": [
       "vladilena_millize",
-      "military uniform",
       "Para-RAID",
+      "jacket on shoulders",
       "leaning",
       "railing",
       "balcony",

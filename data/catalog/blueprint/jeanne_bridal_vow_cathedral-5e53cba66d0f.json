@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_bridal_vow_cathedral",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 237,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jeanne_bridal_vow_cathedral",
     "title": "圣女贞德 · 大教堂的纯白花嫁·「这份幸福……真的可以由我收下吗？」",
@@ -15,7 +15,7 @@
     "action": "捧白玫瑰花束立于玫瑰窗光瀑中，闻声抬头，泪光与圣洁微笑交织",
     "timeOfDay": "正午",
     "lighting": "玫瑰彩窗滤出的七彩光瀑笼罩婚纱与面庞",
-    "camera": "wide shot, environmental portrait, rose window light cascade, sacred bridal grandeur",
+    "camera": "wide shot",
     "mood": "神圣感动、泪光倾城",
     "sceneTags": [
       "cathedral_rose_window",
@@ -29,13 +29,8 @@
       "stained_glass_light",
       "full_body"
     ],
-    "promptProse": "Jeanne holds her bridal bouquet beneath the rose window, lifting tearful eyes toward approaching footsteps. Colored light crosses her gown and the stone aisle.",
+    "promptProse": "Holding white roses and lilies of the valley in both hands, she lifts her tearful gaze toward the approaching viewer; rose-window light crosses her gown and the stone aisle.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "wedding dress",
-      "veil",
-      "braid",
       "bouquet",
       "stained glass",
       "cathedral",

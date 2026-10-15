@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_new_year_scroll_selection",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 693,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfitId": "dying_dust",
@@ -19,8 +19,6 @@
     "promptProse": "She steadies the scroll's lower edge while loosely holding a pipe in her other hand. Paper-lamp light reveals the painting grain.",
     "promptTokens": [
       "gallery",
-      "black and gold qipao",
-      "capelet",
       "hanging scroll",
       "pipe",
       "paper lamp",

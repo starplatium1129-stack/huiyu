@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1556,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_04",
     "title": "宝多六花 · 散落耳机线床褥深处的私密自持 ·「听着你的语音消息……身体就擅自……」",
@@ -15,7 +15,7 @@
     "action": "仰卧床单耳机塞耳大腿分开自抚，肉腿蜷曲轻晃，闭目失神娇哼",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot, high angle",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
       "self_control",
@@ -33,8 +33,6 @@
     "promptProse": "Rikka listens to the viewer's recorded voice through white earphones while touching herself on the rumpled bed, her T-shirt gathered beneath her arms.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "shirt lift",
       "topless",
       "panties aside",
@@ -44,7 +42,8 @@
       "earphones",
       "masturbation",
       "bed",
-      "night"
+      "night",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

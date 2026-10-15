@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/supervisor_lounge_knitwear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 408,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,13 +12,10 @@
       "id": "supervisor_lounge_knitwear",
       "isDefault": false,
       "name": "中枢静谧时光",
-      "prose": "a cozy oversized chunky cream-white knit sweater with a relaxed neckline showing the collarbone, high-waist lounge trousers, soft indoor loungewear",
+      "prose": "an oversized cream knit sweater with a relaxed neckline and high-waisted lounge trousers",
       "tokens": [
-        "oversized_knit",
-        "sweater",
-        "loungewear",
-        "cream",
-        "high_waist"
+        "cream sweater",
+        "high-waist pants"
       ]
     }
   }

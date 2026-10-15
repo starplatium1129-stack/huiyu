@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_student_council_teasing_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 358,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "iroha_student_council_teasing_smile",
     "title": "一色彩羽 · 学生会室小恶魔托腮的虚假拒绝·「前辈，这算是告白吗？对不起，我们是不可能的♪」",
@@ -30,7 +30,7 @@
       "teasing",
       "iconic"
     ],
-    "promptProse": "Iroha leans back in the council chair, chin in one hand while the other makes a playful dismissive gesture across the desk.",
+    "promptProse": "Iroha rests her chin in one hand while the other makes a playful dismissive gesture toward the viewer across the desk. Orange sunset touches the council papers and her collar.",
     "promptTokens": [
       "1girl",
       "solo",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1553,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_01",
     "title": "宝多六花 · 旧电器店二楼长开衫主控跨坐 ·「裕太……今天怎么这么粘人啊」",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间长开衫半敞露肉腿，双臂环颈慵懒起伏，耳钉微闪吐气如兰",
     "timeOfDay": "afternoon",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot, pov",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -29,10 +29,9 @@
       "thick_thighs",
       "plump_thighs"
     ],
-    "promptProse": "Rikka rocks astride the viewer's lap in the upstairs shop room, wearing only an open beige cardigan as her short hair brushes their cheek.",
+    "promptProse": "Adult Rikka sits astride the offscreen viewer's lap in the upstairs shop room, wearing only an open beige cardigan, her arms around their neck as her hair brushes their cheek.",
     "promptTokens": [
       "adult",
-      "1girl",
       "pov",
       "open cardigan",
       "topless",
@@ -41,7 +40,8 @@
       "cowgirl position",
       "on lap",
       "junk shop",
-      "afternoon"
+      "afternoon",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -56,6 +56,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_emiya_dining",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 138,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "artoria_emiya_dining",
     "title": "阿尔托莉雅 · 卫宫家餐桌",
@@ -27,12 +27,9 @@
       "morning_sunlight",
       "peaceful"
     ],
-    "promptProse": "She sits eagerly before a steaming rice bowl at the Emiya dining table. Morning light and the pendant lamp meet above the bowl.",
+    "promptProse": "She sits at the Emiya dining table and lifts her rice bowl toward the viewer, looking eager for another serving beside the steaming dishes. Morning light mingles with the warm pendant lamp.",
     "promptTokens": [
       "dining room",
-      "cardigan",
-      "collared shirt",
-      "skirt",
       "rice bowl",
       "sitting",
       "morning",

@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_shower_gold",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "半卸外骨骼，冲洗金发上的灰尘",
+    "action": "一脚放在石凳上，一手抬起湿发，另一手沿身前水流冲洗。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot",
+    "camera": "full body, eye level",
     "category": "成人私密",
     "characterId": "asuma_toki",
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【飞鸟马时 · 任务归来的装甲清洗】任务归来的 C&C 据点清洗间里，时把外骨骼装甲半卸下来挂在支架上，只穿着贴身的作战内衬站在高压水雾下，冲洗着金发上的灰尘。耳机挂在挂钩上，还飘着未挂断的任务频道杂音。她眯起蓝眼睛，语气轻快——「……作战完成。Zero Four，进入清洗程序。」",
+    "description": "任务后的清洗间里，成年时在水流中冲洗，一脚放在石凳上，一手抬起湿发。冷色灯光映在水雾与金属表面。",
     "id": "asuma_toki_shower_gold",
     "kreaStyleHint": "",
     "lighting": "cool industrial washroom light, spray mist, metallic reflections",

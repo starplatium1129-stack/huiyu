@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_city_hall_desk_work",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 810,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yor_city_hall_desk_work",
     "title": "约尔·福杰 · 午后归档的小小成就",
@@ -36,9 +36,6 @@
     "promptProse": "Yor aligns the final sheet in a folder and smiles at the archive desk in diffuse afternoon light.",
     "promptTokens": [
       "Yor",
-      "olive uniform",
-      "white shirt",
-      "pencil skirt",
       "folders",
       "office",
       "medium shot"

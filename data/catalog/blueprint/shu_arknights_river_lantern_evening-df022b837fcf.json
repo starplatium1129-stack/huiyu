@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_river_lantern_evening",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 711,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shu_arknights_river_lantern_evening",
     "characterId": "shu_arknights",
@@ -32,15 +32,11 @@
       "upper_body"
     ],
     "promptTokens": [
-      "Shu",
-      "cardigan",
-      "blouse",
-      "blue skirt",
       "cake",
       "cafe",
       "medium shot"
     ],
-    "promptProse": "Shu sets down her dessert fork and listens across the sunlit cafe table, two drinks beside the shared cake.",
+    "promptProse": "Her dessert fork rests beside the shared cake as she folds her hands at the table edge, listening to the offscreen viewer with an amused smile in soft window light.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

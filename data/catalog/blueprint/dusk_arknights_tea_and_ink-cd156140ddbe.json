@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_tea_and_ink",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 569,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "跪坐茶席前，研墨的手微顿",
     "camera": "medium close-up",
@@ -20,10 +20,9 @@
     "mood": "闲适清寂",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "She pauses while grinding ink beside the tea table. Courtyard light reaches the inkstone and the steaming cup opposite her.",
+    "promptProse": "She pauses the ink stick over its stone and slides the steaming tea toward the viewer with her free hand. Soft courtyard light reaches the cup beside the red clay stove.",
     "promptTokens": [
       "veranda",
-      "black and teal qipao",
       "kneeling",
       "bamboo mat",
       "inkstone",

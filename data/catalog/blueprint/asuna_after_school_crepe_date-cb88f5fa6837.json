@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_after_school_crepe_date",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1365,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asuna_after_school_crepe_date",
     "title": "结城明日奈 · 涩谷街角的可丽饼喂食·「啊——先说好，草莓最甜的部分是我的哦！」",
@@ -15,7 +15,7 @@
     "action": "双手捧着草莓奶油可丽饼递向你喂食，微踮脚尖，身穿高中制服百褶裙，眼眸含笑俏皮娇嗔",
     "timeOfDay": "傍晚放学",
     "lighting": "繁华都市街头暖橙色夕阳光辉与两旁商店温暖橱窗暖光",
-    "camera": "medium close-up, girlfriend date angle, vibrant city bokeh, lively youth atmosphere",
+    "camera": "close-up, eye level",
     "mood": "青春活力、心动甜蜜",
     "sceneTags": [
       "city_street",
@@ -27,10 +27,9 @@
       "blushing",
       "sweet_smile"
     ],
-    "promptProse": "She holds the crepe in both hands and offers it toward her companion. Sunset warms her hair beside the shop windows.",
+    "promptProse": "She holds the strawberry crepe in both hands and brings it toward the viewer's mouth, smiling playfully. Warm sunset catches her hair beside the glowing shop windows.",
     "promptTokens": [
       "street",
-      "school uniform",
       "strawberry crepe",
       "offering",
       "blush",

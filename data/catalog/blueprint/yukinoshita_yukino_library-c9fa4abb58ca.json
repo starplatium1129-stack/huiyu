@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_library",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 340,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yukinoshita_yukino_library",
     "title": "雪之下雪乃 · 图书馆午后",
@@ -15,7 +15,7 @@
     "action": "倚在窗边木桌旁，将小说合拢一半，抬眼看同行者",
     "timeOfDay": "午后",
     "lighting": "高窗斜光",
-    "camera": "close-up",
+    "camera": "medium shot, face and half-closed novel visible",
     "mood": "宁静自持",
     "sceneTags": [
       "public_library",
@@ -29,16 +29,14 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino half closes her novel with one hand and rests the other on the table edge, lifting a composed questioning gaze.",
+    "promptProse": "Yukino holds her novel half closed in one hand and rests the other on the table edge, raising a questioning gaze toward the viewer. High-window sunlight catches the book spine and the dust drifting between the shelves.",
     "promptTokens": [
-      "school uniform",
-      "red ribbons",
       "novel",
       "hand on table",
       "looking at viewer",
       "library",
       "afternoon",
-      "close-up"
+      "medium shot"
     ],
     "negativeTokens": [
       "text"

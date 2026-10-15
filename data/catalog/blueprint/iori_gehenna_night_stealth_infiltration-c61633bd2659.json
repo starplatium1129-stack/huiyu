@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_gehenna_night_stealth_infiltration",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 928,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在钢架阴影中单膝蹲伏潜伏，单手扶夜视镜，恶魔双翼微微贴背收拢",
     "camera": "cowboy shot, high angle, stealth atmosphere",
@@ -20,16 +20,15 @@
     "mood": "冷峻肃杀",
     "negativeTokens": [],
     "outfitId": "tactical_night_ops",
-    "promptProse": "Iori touches her night-vision monocle while crouched on a high beam, folded wings clear of the pipes and sweeping lights below.",
+    "promptProse": "Crouched on the high steel beam, she touches the monocle with one hand and steadies herself with the other; moonlight outlines her folded wings above the red searchlights sweeping the pipes.",
     "promptTokens": [
-      "black bodysuit",
-      "utility pouch",
       "night vision",
       "kneeling",
       "steel beam",
       "searchlight",
       "industrial area",
       "midnight",
+      "cowboy shot",
       "from above"
     ],
     "recommendedSize": "1152x1536",

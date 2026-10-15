@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_morning_braid_domestic",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jeanne_morning_braid_domestic",
     "title": "圣女贞德 · 晨间梳辫的居家温存·「发辫……就交给你来编好不好？」",
@@ -15,7 +15,7 @@
     "action": "披散金发坐在椅上递出木梳，红着耳朵低头等待你为她编辫",
     "timeOfDay": "清晨",
     "lighting": "柔白晨光漫过发丝，蜜金色流光",
-    "camera": "three-quarter rear medium shot, loose hair and over-shoulder comb offer visible",
+    "camera": "medium shot, three-quarter rear view",
     "mood": "娇羞软糯、日常心动",
     "sceneTags": [
       "village_house_window",
@@ -29,13 +29,8 @@
       "morning_light",
       "three_quarter_rear_view"
     ],
-    "promptProse": "Jeanne offers a wooden comb over her shoulder, her loose golden hair falling past the chair beside the window.",
+    "promptProse": "She offers the wooden comb over her shoulder toward the offscreen viewer, lowering her gaze as the morning light passes through her loose hair.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "white blouse",
-      "blue skirt",
-      "loose hair",
       "comb",
       "window",
       "morning",

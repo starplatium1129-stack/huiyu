@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_04",
     "title": "尤贝尔 · 迷宫毛毯上的狂气共鸣宣泄 ·「只要彻底理解了你……就能得到你的全部」",
@@ -12,10 +12,10 @@
     "characterId": "ubel_frieren",
     "description": "【迷宫帐篷内·深夜】同调了兰托的心智之后。尤贝尔赤裸着仰躺在粗糙的羊毛毯上，绿色马尾散落在沙石间。手指在泛滥的爱液中疯狂抽插，身体因为共鸣到的庞大情感而剧烈抽搐，碧眸失焦流出狂喜的泪水——「原来你的心里……一直藏着这种软弱的感情啊……哈啊……好想要……好想把这颗心完全切碎吞下去……」",
     "location": "迷宫帐篷内·深夜",
-    "action": "仰卧毛毯全裸自抚抽送，双手抓毯身体剧烈抽搐，碧眸失焦狂喜娇喘",
+    "action": "仰卧地牢石地上的旅行毯，一手自抚，另一手抓住毯边，背部拱起",
     "timeOfDay": "night",
     "lighting": "liquid_reflection_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "full body, high angle",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
       "self_control",
@@ -32,12 +32,15 @@
     ],
     "promptProse": "Ubel fingers herself on a blanket across the dungeon floor, her back arched beneath the chamber's glow.",
     "promptTokens": [
-      "Ubel",
       "on back",
       "travel blanket",
       "ruins",
       "crying",
-      "arched back"
+      "arched back",
+      "nude",
+      "masturbation",
+      "spread legs",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,11 +48,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R18",
-    "nsfwTokens": [
-      "nude",
-      "masturbation",
-      "spread legs"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

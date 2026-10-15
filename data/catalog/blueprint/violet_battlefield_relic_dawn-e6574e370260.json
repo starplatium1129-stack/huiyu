@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_battlefield_relic_dawn",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1383,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在晨曦微光中单膝微屈，银色机械手指轻托祖母绿胸针贴在胸前，金发在风中飞扬，湛蓝眼眸清澈凝视",
     "adult": false,
@@ -25,15 +25,12 @@
     "mood": "庄严肃穆、圣洁空灵",
     "negativeTokens": [],
     "outfitId": "official_auto_memories_doll_attire",
-    "promptProse": "Violet cups her brooch with silver hands among broken marble columns as sunrise catches its facets.",
+    "promptProse": "Violet kneels among the broken marble columns, her silver fingers cupped beneath the emerald brooch at her collar. Pale dawn passes through the mist and catches the green facets as she looks up.",
     "promptTokens": [
-      "Violet Evergarden",
-      "blue jacket",
-      "emerald brooch",
-      "mechanical hands",
       "kneeling",
       "ruins",
       "dawn",
+      "medium shot",
       "low angle"
     ],
     "recommendedSize": "1152x1536",

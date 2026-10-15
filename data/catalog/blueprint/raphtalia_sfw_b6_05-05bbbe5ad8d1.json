@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1567,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_05",
     "title": "拉芙塔莉雅 · 海风里的尾巴防线",
@@ -16,7 +16,7 @@
     "action": "海滩椅上整理尾巴并抬手遮阳，海浪溅到鞋边时耳尾一起欢快晃动",
     "timeOfDay": "日间",
     "lighting": "clear summer sun with sea-sparkle reflections",
-    "camera": "medium shot, horizontal framing",
+    "camera": "medium shot",
     "mood": "冒险间隙的活力假日",
     "sceneTags": [
       "swimsuit",
@@ -30,10 +30,8 @@
       "sun_hat",
       "laughing"
     ],
-    "promptProse": "Raphtalia dries her tail with a cloth, then shades her eyes from the sun as the sea breeze lifts her ears.",
+    "promptProse": "Seated in the beach chair, she holds the drying cloth around her tail on her lap with one hand and shades her eyes with the other, ears lifted by the sea breeze.",
     "promptTokens": [
-      "one-piece swimsuit",
-      "beach shirt",
       "sitting",
       "towel",
       "drying tail",

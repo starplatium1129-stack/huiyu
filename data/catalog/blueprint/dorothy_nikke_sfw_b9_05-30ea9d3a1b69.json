@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1731,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_05",
     "title": "桃乐丝 · 乐土海湾的玫瑰冰茶",
@@ -30,11 +30,9 @@
       "sea_breeze",
       "afternoon_light"
     ],
-    "promptProse": "She trims a wind-bent bloom and slides it toward the viewer beside the iced tea. Sea light catches the glass and shears.",
+    "promptProse": "With the small shears set down, she slides the freshly trimmed rose toward the viewer beside the iced tea. Sea light catches the glass while soft rose shadows fall across the terrace table.",
     "promptTokens": [
       "seaside terrace",
-      "pink and white swimsuit",
-      "wrap",
       "rose iced tea",
       "flower",
       "shears",

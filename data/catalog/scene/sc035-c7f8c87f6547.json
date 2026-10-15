@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc035",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 33,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She puts the second dessert flavor into the basket on her forearm with a thoughtful smile.",
+    "animaCaption": "With one dessert cup already in the basket on her forearm, she lowers the other flavor beside it and glances toward the viewer; the display light softly illuminates the two cups.",
     "auditRevision": "careful-batch05-2026-08-27",
     "camera": "甜品柜前半身中景",
     "category": "日常",

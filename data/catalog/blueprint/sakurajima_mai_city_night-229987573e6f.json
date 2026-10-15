@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_city_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_city_night",
     "title": "樱岛麻衣 · 湘南街角·大衣与私服漫步",
@@ -15,7 +15,7 @@
     "action": "站在钟楼前，一手轻压贝雷帽檐，另一手伸向同行者",
     "timeOfDay": "夜晚",
     "lighting": "街边复古路灯暖光与商店橱窗霓虹交相辉映，散景光斑梦幻",
-    "camera": "medium full shot, shallow depth of field, city bokeh lights",
+    "camera": "cowboy shot, shallow depth of field",
     "mood": "浪漫私密",
     "sceneTags": [
       "clock_tower_square",
@@ -30,12 +30,8 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Mai offers a hand beneath the clock tower while holding her beret in place under warm street lamps.",
+    "promptProse": "Beneath the clock tower, she holds her beret brim with one hand and offers the other toward the offscreen viewer, warm street lamps catching her backward smile.",
     "promptTokens": [
-      "Mai",
-      "trench coat",
-      "scarf",
-      "beret",
       "reaching out",
       "clock tower",
       "night",

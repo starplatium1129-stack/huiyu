@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/sfw_yellow_sundress_barefoot",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1139,
   "createdAt": "2026-10-06T13:54:56.677548700+00:00",
-  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
@@ -14,13 +14,9 @@
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "a canary-yellow sleeveless summer sundress with thin shoulder straps and her red neural-interface hair clips, barefoot",
+      "prose": "a canary-yellow sundress with thin straps, worn barefoot",
       "tokens": [
-        "sundress",
-        "yellow_dress",
-        "sleeveless_dress",
-        "shoulder_straps",
-        "red_hair_clips",
+        "yellow sundress",
         "barefoot"
       ]
     }

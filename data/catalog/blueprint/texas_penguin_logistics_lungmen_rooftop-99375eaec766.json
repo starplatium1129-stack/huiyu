@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "texas_penguin_logistics_lungmen_rooftop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 659,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "在暴雨与霓虹反光中单膝点地伫立，嘴里叼着巧克力棒，身后光剑悬浮",
+    "action": "雨中伫立天台，一手扶刀柄，嘴叼巧克力棒，两柄光剑悬浮身后。",
     "camera": "wide shot, low angle, cinematic noir",
     "category": "城市夜巡",
     "characterId": "texas_arknights",
@@ -20,10 +20,8 @@
     "mood": "冷峻沉着",
     "negativeTokens": [],
     "outfitId": "penguin_logistics",
-    "promptProse": "Texas holds her sword hilt on the rainy rooftop, two energy blades shining against Lungmen neon.",
+    "promptProse": "Texas stands against the rooftop rain with one hand on her sword hilt and a chocolate stick between her lips. Two energy blades glow behind her, cutting golden lines through the reflected Lungmen neon.",
     "promptTokens": [
-      "Texas",
-      "windbreaker",
       "chocolate stick",
       "energy sword",
       "rooftop",

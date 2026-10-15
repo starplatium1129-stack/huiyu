@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_02",
     "title": "尤贝尔 · 黑暗料理的现场",
@@ -33,10 +33,6 @@
     ],
     "promptProse": "Ubel drops an unusual vegetable into the stew as green steam rises beneath the warm kitchen lights.",
     "promptTokens": [
-      "ubel_(sousou_no_frieren)",
-      "shirt",
-      "trousers",
-      "apron",
       "stew",
       "kitchen",
       "medium shot"

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "cecilia_living_room_lazy_scone",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 836,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "身着宽松居家便服慵懒地趴在布艺沙发抱枕上，两条小腿在空中俏皮晃动，眼巴巴望着刚出炉的司康饼",
     "adult": false,
-    "camera": "low couch level shot, playful relaxed posture, warm domestic atmosphere",
+    "camera": "medium shot, at sofa level",
     "category": "日常羁绊",
     "characterId": "saint_cecilia",
     "coverageTags": [
@@ -24,12 +24,12 @@
     "promptProse": "She curls among the cushions while watching the kitchen for the scones. Warm daylight reaches the sofa beside the open doorway.",
     "promptTokens": [
       "living room",
-      "yellow dress",
       "sofa",
       "cushions",
       "curled up",
       "waiting",
-      "afternoon"
+      "afternoon",
+      "medium shot"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",

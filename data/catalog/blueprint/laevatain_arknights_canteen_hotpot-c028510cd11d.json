@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_canteen_hotpot",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 727,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "两眼放光地盯着九宫格辣锅里翻滚的红油与辣椒，熟练地捞起一块爽脆毛肚塞入口中，辣得直哈气却大呼痛快",
     "camera": "medium shot",
@@ -20,11 +20,8 @@
     "mood": "好胜可爱",
     "negativeTokens": [],
     "outfitId": "street_cafe_sweet",
-    "promptProse": "Laevatain lifts tripe from the spicy hotpot with her chopsticks, grinning through the heat.",
+    "promptProse": "Laevatain holds a hotpot morsel in her chopsticks toward the viewer across the table, grinning through the spicy heat. Cafeteria light shines on the red broth beneath the rising steam.",
     "promptTokens": [
-      "halter top",
-      "jacket",
-      "skirt",
       "chopsticks",
       "spicy food",
       "hot pot",

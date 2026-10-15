@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuma_toki/swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 500,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "asuma_toki",
     "outfit": {
@@ -12,13 +12,11 @@
       "id": "swimsuit",
       "isDefault": false,
       "name": "夏日泳装",
-      "prose": "a white and blue bikini with a small tactical waist belt and a headset, secret agent summer look",
+      "prose": "a white bikini with blue accents, a compact tactical waist belt and a waterproof headset",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "white_bikini",
-        "blue_bikini",
-        "tactical_belt",
+        "white bikini",
+        "blue trim",
+        "belt",
         "headset"
       ]
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1649,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_05",
     "title": "卡提希娅 · 溪湾里的流浪骑士假日",
@@ -16,7 +16,7 @@
     "action": "溪海交界石头上脱靴试水，把花冠放膝上享受没有旅路的一天",
     "timeOfDay": "日间",
     "lighting": "clear afternoon light on river and surf",
-    "camera": "medium shot, horizontal framing",
+    "camera": "full-body shot",
     "mood": "终于停下脚步的骑士假日",
     "sceneTags": [
       "swimsuit",
@@ -31,16 +31,15 @@
       "afternoon_light",
       "barefoot"
     ],
-    "promptProse": "She sits where the stream meets the sea with bare toes in the water and the flower crown on her knees. Sunlight follows the current.",
+    "promptProse": "She sits on a rock where the stream meets the sea, her removed boots beside her and bare toes touching the water. The flower crown rests on her knees as she smiles toward the viewer, sunlight following the current.",
     "promptTokens": [
       "coast",
       "stream",
-      "blue swimsuit",
-      "cardigan",
       "flower crown",
       "sitting",
-      "bare feet",
-      "afternoon"
+      "barefoot",
+      "afternoon",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

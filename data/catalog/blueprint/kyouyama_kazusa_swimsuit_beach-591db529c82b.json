@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_swimsuit_beach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "拿冰淇淋站在海边",
     "adult": false,
@@ -28,8 +28,6 @@
     "outfitId": "swimsuit",
     "promptProse": "Kazusa stands by the sea enjoying mint-chocolate ice cream beneath her cat-ear swim hood.",
     "promptTokens": [
-      "black swimsuit",
-      "hood",
       "mint chocolate ice cream",
       "beach",
       "summer"

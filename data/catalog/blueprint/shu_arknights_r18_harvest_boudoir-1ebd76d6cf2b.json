@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_harvest_boudoir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shu_arknights_r18_harvest_boudoir",
     "characterId": "shu_arknights",
@@ -29,13 +29,15 @@
       "blush"
     ],
     "promptTokens": [
-      "Shu",
       "lingerie",
       "nightgown",
       "on side",
       "looking back",
       "bed",
       "lamplight",
+      "topless",
+      "panties aside",
+      "see-through",
       "medium shot"
     ],
     "promptProse": "Shu lowers her sheer nightgown and draws her panties aside while reclining on the silk bed, looking back beneath the amber lamp.",
@@ -47,11 +49,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "nsfwTokens": [
-      "topless",
-      "panties aside",
-      "see-through"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

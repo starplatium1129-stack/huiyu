@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_dorm_shower",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "浴室浴缸泡沫中撩水眨眼",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate medium shot, sunny bath steam",
+    "camera": "cowboy shot",
     "category": "成人",
     "characterId": "yvonne_arknights",
     "coverageTags": [],
@@ -32,9 +32,9 @@
       "raised knee",
       "bubble bath",
       "female masturbation",
-      "dragon tail",
       "wink",
-      "sunlight"
+      "sunlight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

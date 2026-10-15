@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_swimsuit_pool",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 903,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "披薄纱外套站在池边",
     "adult": false,
@@ -29,11 +29,8 @@
     "promptProse": "Rio studies the clear pool water, summer reflections flickering across her cover-up.",
     "promptTokens": [
       "Rio",
-      "black swimsuit",
-      "red trim",
-      "cover-up",
       "pool",
-      "low angle",
+      "from below",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

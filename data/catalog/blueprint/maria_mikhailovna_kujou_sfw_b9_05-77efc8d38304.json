@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 794,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "海滨温泉木台上披肩捧热可可，向镜头举杯分享冬日温暖",
     "adult": false,
@@ -25,10 +25,8 @@
     "mood": "学姐式的温柔海滨假日",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Maria raises her hot cocoa toward the viewer from the seaside deck, wrapped in a cream shawl under falling snow.",
+    "promptProse": "Maria raises the cocoa cup in both hands toward the viewer from the seaside deck. Its steam catches the lantern light while snow falls through the blue dusk behind her.",
     "promptTokens": [
-      "brown swimsuit",
-      "cream shawl",
       "cocoa",
       "deck",
       "hot spring",

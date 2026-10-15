@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_viewport",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 725,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "倚着舷窗，回眸凝视",
+    "action": "跪坐观景舷窗的软垫窗台，一手贴玻璃，另一手在腿间",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",

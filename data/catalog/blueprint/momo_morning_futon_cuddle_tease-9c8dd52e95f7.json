@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "momo_morning_futon_cuddle_tease",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1246,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "侧卧被窝内手撑香腮贴近对方，半透薄纱睡裙露出深邃乳沟，爱心尾巴暗中缠腿调情",
-    "camera": "close-up, intimate side view inside bedding, seductive eye contact",
+    "camera": "close-up two-shot, side view",
     "category": "日常晨起",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -22,11 +22,9 @@
       "nude"
     ],
     "outfitId": "harem_negligee",
-    "promptProse": "Adult Momo props her chin on one palm beside her partner’s pillow, cuddling beneath the sheets with her tail curled under the blanket.",
+    "promptProse": "Adult Momo lies on the left beside her partner's pillow, chin resting in one palm as she looks toward him on the right; her tail curls around his leg beneath the blanket.",
     "promptTokens": [
-      "lavender negligee",
-      "see-through",
-      "demon tail",
+      "2people",
       "under covers",
       "chin in hand",
       "bed",
@@ -46,6 +44,7 @@
     "timeOfDay": "清晨",
     "title": "梦梦 · 清晨被窝里的甜蜜偷袭",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "compositionIntent": "group"
   }
 }

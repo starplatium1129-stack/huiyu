@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_convenience",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 510,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kisara_engage_kiss_convenience",
     "title": "木更 · 便利店日常",
@@ -15,7 +15,7 @@
     "action": "提着购物篮在便利店挑选能量饮料",
     "timeOfDay": "夜晚",
     "lighting": "明亮灯光",
-    "camera": "medium shot, picking snacks from illuminated store shelves",
+    "camera": "medium shot",
     "mood": "活泼日常",
     "sceneTags": [
       "convenience_store",
@@ -24,12 +24,8 @@
       "night",
       "indoor"
     ],
-    "promptProse": "Kisara compares energy drinks in the late-night convenience-store aisle with her shopping basket in hand.",
+    "promptProse": "She carries the shopping basket on one forearm and raises an energy drink with her free hand, comparing it with the cans on the lit shelf.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "jacket",
-      "jeans",
       "shopping basket",
       "energy drink",
       "convenience store",

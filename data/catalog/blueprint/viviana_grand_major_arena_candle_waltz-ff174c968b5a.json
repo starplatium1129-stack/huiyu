@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "viviana_grand_major_arena_candle_waltz",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 681,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在金色聚光灯下轻盈旋身挥动细剑，金鹿巨角泛光，影蛾与烛火漫天飞舞",
-    "camera": "wide shot, low angle, majestic poise",
+    "camera": "wide shot, low angle",
     "category": "竞技舞台",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -20,13 +20,9 @@
     "mood": "高洁神圣",
     "negativeTokens": [],
     "outfitId": "candle_knight_armor",
-    "promptProse": "Viviana turns in the arena as candle sparks become shadow moths beneath golden spotlights.",
+    "promptProse": "She turns alone at the arena center with her rapier extended, candle sparks becoming shadow moths beneath the golden spotlights and distant spectator stands.",
     "promptTokens": [
-      "Viviana",
-      "black armor",
-      "gold trim",
       "rapier",
-      "antlers",
       "moths",
       "arena",
       "low angle",

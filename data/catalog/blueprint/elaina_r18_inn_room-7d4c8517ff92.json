@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_inn_room",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 383,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_r18_inn_room",
     "title": "伊雷娜 · 灰之魔女的旅夜",
@@ -25,10 +25,8 @@
       "night",
       "intimate"
     ],
-    "promptProse": "She traces a route in the journal balanced on her raised knee; her robe and witch hat lie on the travel trunk.",
+    "promptProse": "She traces a route in the journal balanced on her raised knee; her robe and witch hat lie on the travel trunk. Lantern warmth meets cool moonlight across the page.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "adult",
       "open shirt",
       "topless",

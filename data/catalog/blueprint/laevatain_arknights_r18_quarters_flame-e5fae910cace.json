@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_quarters_flame",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 732,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "只穿轻薄抹胸坐在床沿，指尖跃动微弱熔岩火光，脸颊泛红，恶魔长尾轻卷足踝，眼神迷离娇羞",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "sitting_on_bed, barefoot, 5_toes, detailed_toes, demon_horns, demon_tail, off_shoulder, soft lighting",
-    "camera": "low angle foot and tail focus, intimate bedroom composition, soft depth of field",
+    "camera": "medium shot, low angle, seated figure and flame-bearing hand visible",
     "category": "成人",
     "characterId": "laevatain_arknights",
     "coverageTags": [

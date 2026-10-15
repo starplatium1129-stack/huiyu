@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_hotpot_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 539,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "举筷捞起热汤里的菜",
     "camera": "medium shot",
@@ -20,16 +20,14 @@
     "mood": "难得的放松",
     "negativeTokens": [],
     "outfitId": "street_gourmet_casual",
-    "promptProse": "She lifts tripe from the broth toward the dipping dish with chopsticks. Warm restaurant light glows through the steam.",
+    "promptProse": "She lifts tripe from the broth with her chopsticks and lowers it toward the viewer's dipping dish across the table. Warm restaurant light shines through the steam as she smiles.",
     "promptTokens": [
       "restaurant",
-      "floral shirt",
-      "white T-shirt",
-      "jeans",
       "hotpot",
       "chopsticks",
       "tripe",
-      "smile"
+      "smile",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

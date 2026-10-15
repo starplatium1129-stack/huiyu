@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_magical_combat_alley",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 825,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "魔法少女变身，星尘光阵展开",
     "adult": false,
@@ -22,13 +22,10 @@
     "mood": "intense",
     "negativeTokens": [],
     "outfitId": "magical_girl_dress",
-    "promptProse": "She raises her wand protectively before the person behind her. Transformation light opens across the wet alley and reflects in the puddles.",
+    "promptProse": "She raises her wand and stands between the approaching danger and the person sheltering directly behind her. Transformation light opens across the wet alley and reflects in the puddles.",
     "promptTokens": [
       "alley",
-      "magical girl",
-      "pink dress",
       "star wand",
-      "fairy wings",
       "magic circle",
       "rain puddles",
       "wide shot"

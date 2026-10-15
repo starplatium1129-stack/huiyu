@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "lala_lab_workshop_wrench_tinkering",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1235,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "半跪在装置前手持激光扳手维修组装，鼻尖带汗，眼神专注聪明，尾巴在身后稳定重心",
-    "camera": "cowboy shot, medium framing, sci-fi workshop depth",
+    "camera": "cowboy shot, eye-level",
     "category": "天才机修",
     "characterId": "lala_satalin_deviluke",
     "coverageTags": [
@@ -20,7 +20,7 @@
     "mood": "专注聪明",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Lala kneels to repair the teleportation device with her laser wrench, tail balancing her beside the holographic plans.",
+    "promptProse": "Lala steadies the device’s core tube with one hand and adjusts it with the laser wrench in the other. Blue holographic plans float beside the focused work light while her tail balances her half-kneeling pose.",
     "promptTokens": [
       "Lala",
       "kneeling",

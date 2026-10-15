@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_flower_shop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 332,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuzuriha_inori_flower_shop",
     "title": "楪祈 · 街角花店",
@@ -31,11 +31,8 @@
       "storefront_daylight",
       "medium_shot"
     ],
-    "promptProse": "Inori steadies the wrapped lilies with her left hand and rests her right on the counter, leaning toward a petal before turning with a quiet smile.",
+    "promptProse": "Inori steadies the wrapped lilies with her left hand and rests her right on the counter, her face close to the petals in a quiet smile. Light from the glass entrance shines through the thin white flowers above their green leaves.",
     "promptTokens": [
-      "pink cardigan",
-      "ivory blouse",
-      "gray skirt",
       "lilies",
       "bouquet",
       "smelling flowers",

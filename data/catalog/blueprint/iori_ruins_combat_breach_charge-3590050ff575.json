@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "iori_ruins_combat_breach_charge",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在硝烟与碎石中贴地滑铲突进，手持卡宾狙击枪射击，恶魔翅膀展开",
-    "camera": "cowboy shot, dynamic Dutch angle",
+    "camera": "full-body shot, Dutch angle",
     "category": "学园战斗",
     "characterId": "shiromi_iori",
     "coverageTags": [
@@ -20,14 +20,15 @@
     "mood": "激情决断",
     "negativeTokens": [],
     "outfitId": "disciplinary_uniform",
-    "promptProse": "Iori slides through a ruined corridor with her rifle ready. Muzzle flash lights her face beneath the broken wall openings.",
+    "promptProse": "She slides feet-first through the ruined corridor with both hands on the firing rifle, her wings spread clear of the broken walls; muzzle flash lights her face through the dawn-lit smoke.",
     "promptTokens": [
       "rifle",
       "muzzle flash",
+      "sliding",
       "rubble",
       "hallway",
       "dawn",
-      "cowboy shot",
+      "full body",
       "dutch angle"
     ],
     "recommendedSize": "1152x1536",

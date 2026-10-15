@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc147",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She rests her chin on both hands over the pillow and listens attentively to the viewer.",
+    "animaCaption": "Lying on her stomach, she rests her chin in both hands on the pillow and meets the gaze of the viewer lying beside her; the bedside lamp warms her face while rain streaks the dark window.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "近景特写",
     "category": "日常",

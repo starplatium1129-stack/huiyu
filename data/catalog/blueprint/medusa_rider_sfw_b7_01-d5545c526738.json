@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 277,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_01",
     "title": "美杜莎 Rider · 书店文库本的站立阅读",
@@ -30,14 +30,11 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "Medusa quietly reads a paperback between the bookstore shelves, her long hair falling around the book.",
+    "promptProse": "Medusa holds the paperback open in both hands between the quiet shelves. The shop light reaches the pages through the curtain of her long hair.",
     "promptTokens": [
       "1girl",
       "solo",
       "medusa_(fate)",
-      "knit top",
-      "long skirt",
-      "glasses",
       "paperback",
       "bookstore"
     ],

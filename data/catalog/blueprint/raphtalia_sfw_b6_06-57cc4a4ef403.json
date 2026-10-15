@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1568,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_06",
     "title": "拉芙塔莉雅 · 冬夜壁炉前的信",
@@ -31,11 +31,9 @@
       "firelight",
       "medium_shot"
     ],
-    "promptProse": "Raphtalia finishes the letter beside the hearth, folds it without signing and tucks it close with her ears lowered.",
+    "promptProse": "Beside the inn hearth, she folds the finished letter carefully in both hands, ears lowered as firelight warms the paper.",
     "promptTokens": [
-      "burgundy sweater",
-      "shawl",
-      "writing",
+      "folding paper",
       "letter",
       "fireplace",
       "inn"

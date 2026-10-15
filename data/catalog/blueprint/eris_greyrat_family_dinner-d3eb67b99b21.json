@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_family_dinner",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 479,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐于晚宴席间",
     "camera": "full body",
@@ -20,12 +20,10 @@
     "mood": "拘束又跃动",
     "negativeTokens": [],
     "outfitId": "noble_child",
-    "promptProse": "She sits upright at the formal Greyrat banquet, maintaining etiquette despite her bored expression.",
+    "promptProse": "She sits upright at the Greyrat banquet with her hands composed in her lap, but her gaze has wandered to the window. Candlelight glints in the crystal along the formal table.",
     "promptTokens": [
       "1girl",
       "solo",
-      "frilled dress",
-      "headband",
       "sitting",
       "bored",
       "dinner",

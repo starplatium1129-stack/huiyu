@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_01",
     "title": "美狄亚 · 柳洞寺厨房的手作料理",
@@ -31,14 +31,11 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Medea cooks in the temple kitchen with her long sleeves tied back and an apron over her closed robe.",
+    "promptProse": "Medea lifts the cooking spoon to taste the dish, her long sleeves secured clear of the pot. Morning light reaches her concentrated profile in the temple kitchen.",
     "promptTokens": [
       "1girl",
       "solo",
       "medea_(caster)_(fate)",
-      "navy robe",
-      "tied sleeves",
-      "apron",
       "cooking spoon",
       "temple kitchen"
     ],

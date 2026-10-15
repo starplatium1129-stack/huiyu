@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1696,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "vivy_sfw_b9_02",
     "title": "Vivy · 休演日的调音练习",
@@ -28,12 +28,10 @@
       "concentrating",
       "medium_shot"
     ],
-    "promptProse": "Vivy presses one key and listens to its fading tone before matching the pitch beside the window.",
+    "promptProse": "Vivy keeps a fingertip on one keyboard key and tilts her head to listen to its fading tone, the note beside the music stand. Soft frontal window light falls over her attentive face and hands.",
     "promptTokens": [
       "Vivy",
-      "blue shirt",
-      "white trousers",
-      "piano",
+      "electronic keyboard",
       "practice room",
       "medium shot"
     ],

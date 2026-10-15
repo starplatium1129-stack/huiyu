@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_hot_spring_translucent_solo",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1299,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "akeno_nsfw_hot_spring_translucent_solo",
     "title": "姬岛朱乃 · 露天温泉的湿身紫纱低语",
@@ -30,7 +30,7 @@
       "hand_between_legs",
       "sensual_solo"
     ],
-    "promptProse": "She reclines against the rocks with one hand beneath the water between her thighs. Steam rises around her wet negligee beneath the bamboo.",
+    "promptProse": "She reclines against the rocks with one hand beneath the water between her thighs. Moonlight and the bamboo lamps catch the steam around her wet negligee.",
     "promptTokens": [
       "hot spring",
       "steam",

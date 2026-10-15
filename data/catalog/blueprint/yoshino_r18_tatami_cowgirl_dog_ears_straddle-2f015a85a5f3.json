@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_tatami_cowgirl_dog_ears_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1154,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "长出白色犬耳跨坐骑乘，主动上下轻柔起伏，双手抵胸，双乳微晃，犬耳扑闪娇羞凝视",
+    "action": "独自跨坐叠好的被褥软垫，口咬衣袖，一手自抚，犬耳与尾巴避开屈起的腿",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "straddling pov, looking up at bouncing cleavage and trembling dog ears",
+    "camera": "cowboy shot, eye level",
     "category": "深层欢愉",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -28,8 +28,6 @@
     "promptProse": "Adult Yoshino straddles the folded futon cushion, holding one sleeve between her teeth while touching herself; her dog ears and tail remain clear of her folded legs.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "dog ears",
       "tail",
       "open robe",
@@ -39,7 +37,8 @@
       "masturbation",
       "futon",
       "cushion",
-      "paper lantern"
+      "paper lantern",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

@@ -1,24 +1,20 @@
 {
   "kind": "outfit",
   "id": "ikaros/school_swimsuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 662,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ikaros",
     "outfit": {
       "id": "school_swimsuit",
       "name": "空美中学生死库水泳装",
-      "prose": "a navy-blue one-piece competition swimsuit with a white name patch, broad white feathered wings folded behind",
+      "prose": "a navy one-piece athletic swimsuit with a white name patch, leaving her wings free",
       "tokens": [
-        "swimsuit",
-        "school_swimsuit",
-        "one-piece_swimsuit",
-        "navy_blue_swimsuit",
-        "wet_skin",
-        "angel_wings",
-        "white_wings"
+        "school swimsuit",
+        "navy swimsuit",
+        "name tag"
       ],
       "default": false,
       "isDefault": false

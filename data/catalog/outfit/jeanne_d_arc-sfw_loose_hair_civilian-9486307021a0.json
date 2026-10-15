@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sfw_loose_hair_civilian",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sfw_loose_hair_civilian",
       "name": "晨间散发室内便服",
-      "prose": "a soft white blouse and long blue skirt, with waist-length golden hair worn completely loose",
+      "prose": "a white blouse and long blue skirt, her hair worn loose",
       "tokens": [
-        "white_blouse",
-        "long_blue_skirt",
-        "loose_hair"
+        "white blouse",
+        "long blue skirt",
+        "hair down"
       ],
       "isDefault": false,
       "default": false,

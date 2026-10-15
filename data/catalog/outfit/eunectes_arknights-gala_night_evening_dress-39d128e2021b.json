@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eunectes_arknights/gala_night_evening_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 338,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "eunectes_arknights",
     "outfit": {
@@ -12,14 +12,11 @@
       "id": "gala_night_evening_dress",
       "isDefault": false,
       "name": "盛宴夜影 / 庆典之夜",
-      "prose": "a luxury high-slit evening gown in deep emerald green and satin black panels, asymmetrical one-shoulder neckline with an ornate metal clasp and pendant chain",
+      "prose": "an emerald-and-black satin evening gown with a high slit, an asymmetric shoulder clasp and pendant chain",
       "tokens": [
-        "evening_gown",
-        "high_slit",
-        "one_shoulder",
-        "emerald_green",
-        "satin",
-        "formal"
+        "evening gown",
+        "one shoulder",
+        "high slit"
       ]
     }
   }

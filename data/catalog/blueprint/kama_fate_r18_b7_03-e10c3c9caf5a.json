@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_r18_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 315,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kama_fate_r18_b7_03",
     "title": "迦摩 · 大奥金饰薄纱缠绕腰肢的受力事故 ·「这破金饰！……Master快帮我解开，不准趁机摸那里！」",
@@ -29,7 +29,7 @@
       "chain",
       "entangled"
     ],
-    "promptProse": "Adult Kama leans against the gilded screen as tangled jewelry pulls her veil aside. She looks back with a flushed, indignant expression.",
+    "promptProse": "Bracing both hands against the gilded screen, she twists to look back toward the viewer as the tangled waist chain draws her veil aside; warm light catches the snagged jewelry and her flushed face.",
     "promptTokens": [
       "1girl",
       "solo",

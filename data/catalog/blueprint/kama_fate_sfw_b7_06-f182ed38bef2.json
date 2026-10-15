@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_sfw_b7_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 300,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kama_fate_sfw_b7_06",
     "title": "迦摩 · 新年神社的签运",
@@ -35,8 +35,6 @@
       "1girl",
       "solo",
       "kama_(fate)",
-      "winter coat",
-      "scarf",
       "omikuji",
       "shrine",
       "sunlight",

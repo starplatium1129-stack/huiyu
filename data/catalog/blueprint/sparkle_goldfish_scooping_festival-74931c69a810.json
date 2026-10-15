@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_goldfish_scooping_festival",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1047,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sparkle_goldfish_scooping_festival",
     "title": "花火 · 和风游园的金鱼池笑靥",
@@ -15,7 +15,7 @@
     "action": "蹲在水池边一手举着装有金鱼的小水袋，仰头露出元气灿烂的恶作剧笑容",
     "timeOfDay": "夏夜祭典",
     "lighting": "红色纸灯笼暖光与水池波光倒影",
-    "camera": "cowboy shot, high angle, cute crouching view",
+    "camera": "full body, high angle, crouching figure and basin visible",
     "mood": "元气灵动",
     "sceneTags": [
       "festival",
@@ -28,14 +28,13 @@
       "radiant_smile",
       "twintails"
     ],
-    "promptProse": "Sparkle raises her caught goldfish in a water bag, holding the torn net above the lantern-lit basin.",
+    "promptProse": "Sparkle crouches beside the basin and raises a bag containing one red goldfish toward the viewer, her torn paper net lowered in her other hand. Warm lantern reflections tremble across the water beneath her delighted grin.",
     "promptTokens": [
-      "Sparkle",
-      "goldfish yukata",
       "crouching",
       "paper net",
       "fish bag",
       "festival",
+      "full body",
       "high angle"
     ],
     "negativeTokens": [],

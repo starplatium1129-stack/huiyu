@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_dorm_pc",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "电竞椅里打游戏",
     "camera": "medium shot",
@@ -20,17 +20,12 @@
     "mood": "慵懒沉迷",
     "negativeTokens": [],
     "outfitId": "sfw_coral_game_cardigan",
-    "promptProse": "Yvonne curls into the gaming chair, absorbed in the match as screen light catches the fingers working the controls.",
+    "promptProse": "Curled into the gaming chair, she works the keyboard with one hand and the mouse with the other, blue-pink screen light across her intent face and painted fingertips.",
     "promptTokens": [
-      "cream cardigan",
-      "coral trim",
-      "navy shirt",
-      "gray skirt",
-      "black pantyhose",
-      "painted nails",
       "gaming chair",
       "computer",
-      "midnight"
+      "midnight",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

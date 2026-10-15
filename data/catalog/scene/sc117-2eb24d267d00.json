@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc117",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She leans toward the viewer from her knees on the bed, gripping the sheets with both hands.",
+    "animaCaption": "She kneels on the bed and leans toward the viewer, gripping the sheet on either side of her knees; a warm bedside light catches the dark pink satin and her flushed face.",
     "auditRevision": "careful-batch14-2026-08-27",
     "camera": "主观正面特写",
     "category": "恋爱/After_Story",

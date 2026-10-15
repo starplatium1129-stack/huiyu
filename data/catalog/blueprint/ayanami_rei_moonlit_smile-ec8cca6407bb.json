@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_moonlit_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1010,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "立于月光之下回眸展现罕见的温柔微笑",
     "camera": "medium shot, low angle",
@@ -23,7 +23,6 @@
     "promptProse": "She smiles toward the watching boy among Tokyo-3's broken walls. Moonlight outlines her dusty suit above the rubble.",
     "promptTokens": [
       "ruins",
-      "white plugsuit",
       "smile",
       "boy",
       "full moon",

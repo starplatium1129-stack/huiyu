@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_christmas_underworld_visit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 257,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_christmas_underworld_visit",
     "title": "伊什塔尔 · 冥界圣诞的来访·「姐姐的东西，本女神先看看」",
@@ -15,7 +15,7 @@
     "action": "礼物袋放在脚边，双手递出包装好的礼盒，红瞳别向一边",
     "timeOfDay": "圣诞夜",
     "lighting": "冥界幽蓝雪光与礼物缎带的暖金",
-    "camera": "medium shot, snowfield gift, blue-gold contrast, tsundere mood",
+    "camera": "full-body shot",
     "mood": "姐妹情谊、傲娇送礼",
     "sceneTags": [
       "underworld_snowfield",
@@ -29,18 +29,13 @@
       "blue_snow_light",
       "medium_shot"
     ],
-    "promptProse": "Ishtar offers a Christmas gift with both gloved hands, looking aside bashfully. A sack of presents rests beside her on the blue snow.",
+    "promptProse": "She offers the wrapped gift toward the viewer with both hands, looking bashfully aside; the sack of presents rests at her feet on the blue-lit snow.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "winter coat",
-      "red scarf",
-      "gloves",
       "gift box",
       "looking away",
       "snow",
       "christmas",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [
       "readable gift labels"

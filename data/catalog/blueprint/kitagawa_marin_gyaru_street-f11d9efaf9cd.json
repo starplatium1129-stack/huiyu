@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_gyaru_street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 501,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "举着手机逛街聊天",
     "camera": "medium shot",
@@ -21,11 +21,9 @@
     "mood": "活泼张扬",
     "negativeTokens": [],
     "outfitId": "gal_casual",
-    "promptProse": "Marin walks arm-in-arm with her companion through Shibuya, chatting while holding her phone.",
+    "promptProse": "Marin links one arm through her companion’s and holds her phone in her free hand as they walk past the shops. Daylight catches the pink ends of her hair as she turns to chat.",
     "promptTokens": [
       "2people",
-      "cropped top",
-      "skirt",
       "linked arms",
       "smartphone",
       "street",

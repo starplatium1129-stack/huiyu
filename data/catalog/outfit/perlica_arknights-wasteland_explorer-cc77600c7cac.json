@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/wasteland_explorer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 407,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "wasteland_explorer",
       "isDefault": false,
       "name": "荒野探索装",
-      "prose": "a khaki hooded explorer coat with cargo pants, a heavy backpack and hiking boots",
+      "prose": "a khaki hooded explorer coat with cargo trousers, a heavy backpack and hiking boots",
       "tokens": [
-        "hoodie",
-        "khaki",
-        "cargo_pants",
+        "khaki hooded coat",
+        "cargo pants",
         "backpack",
-        "hiking_boots"
+        "hiking boots"
       ]
     }
   }

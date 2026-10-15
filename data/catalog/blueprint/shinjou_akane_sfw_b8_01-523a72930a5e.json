@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1539,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_01",
     "title": "新条茜 · 教室中心的完美微笑",
@@ -30,11 +30,9 @@
       "noon_light",
       "medium_shot"
     ],
-    "promptProse": "Akane smiles at an off-frame classmate while restlessly turning an eraser beside her notebook in noon window light.",
+    "promptProse": "Akane rests her cheek in one hand and smiles at an off-frame classmate, turning an eraser with the other beside her closed notebook. Noon window light exposes the restless small gesture beneath her composed expression.",
     "promptTokens": [
       "shinjou_akane",
-      "blue cardigan",
-      "blouse",
       "eraser",
       "cheek rest",
       "classroom",

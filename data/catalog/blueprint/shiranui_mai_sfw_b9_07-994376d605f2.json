@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_07",
     "title": "不知火舞 · 夏祭折扇与苹果糖",
@@ -16,7 +16,7 @@
     "action": "苹果糖摊前用折扇解开黏住的手指，再把亮晶晶的糖果递向镜头",
     "timeOfDay": "傍晚或夜间",
     "lighting": "warm lantern light under the night sky",
-    "camera": "medium shot, horizontal framing",
+    "camera": "medium shot",
     "mood": "不知火流继承人的轻快祭典",
     "sceneTags": [
       "summer_festival",
@@ -30,10 +30,8 @@
       "night",
       "night_light"
     ],
-    "promptProse": "Mai shields a sticky fingertip with her fan and offers the candy apple, festival visitors passing beneath the lanterns nearby.",
+    "promptProse": "She offers the candy apple toward the offscreen viewer with one hand, her fan shielding the sticky fingers of the other while visitors pass beneath the lanterns.",
     "promptTokens": [
-      "Mai Shiranui",
-      "floral yukata",
       "candy apple",
       "folding fan",
       "festival",

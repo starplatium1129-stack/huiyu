@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1752,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_05",
     "title": "丰川祥子 · 海边闭园后的蓝色灯串",
@@ -32,8 +32,6 @@
     "promptProse": "Sakiko untangles the final light on the empty stage, its warm bulb illuminating her hands against blue dusk.",
     "promptTokens": [
       "Sakiko Togawa",
-      "swimsuit",
-      "black shirt",
       "string lights",
       "seaside stage",
       "dusk",

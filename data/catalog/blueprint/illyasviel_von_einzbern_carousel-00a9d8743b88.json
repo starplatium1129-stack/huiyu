@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_carousel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 164,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_carousel",
     "title": "伊莉雅丝菲尔 · 旋转木马",
@@ -30,12 +30,9 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Illyasviel holds the carousel's brass pole firmly with one hand and waves toward the viewer with the other.",
+    "promptProse": "Seated on the gilded white carousel horse, she grips its brass pole with one hand and waves to the viewer below with the other.",
     "promptTokens": [
-      "cardigan",
-      "knee-length dress",
       "carousel",
-      "horse",
       "holding pole",
       "waving",
       "day"

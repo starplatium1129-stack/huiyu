@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc067",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She compares three outfits on hangers in one hand while checking her hairclip with the other, considering her reflection.",
+    "animaCaption": "Standing outside the dressing room with the rejected outfits hanging beside her, she adjusts her hairclip and looks toward the viewer for their response; window light falls across the chosen cardigan and blouse.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "恋爱",

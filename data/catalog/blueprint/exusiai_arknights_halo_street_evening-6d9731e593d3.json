@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_halo_street_evening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 631,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "靠着灯柱，百无聊赖地踢石子",
-    "camera": "medium shot",
+    "camera": "full body, eye level",
     "category": "泰拉都市",
     "characterId": "exusiai_arknights",
     "description": "【能天使 · 华灯初上】夜幕降临的龙门街头路灯下，能天使背靠着冰凉的金属灯柱，百无聊赖地用鞋尖踢着路边的小石子，头顶的光环随着微风忽明忽暗。看到迎面走来的你，她两眼瞬间亮起——「太慢啦老板！我都在这里等了你整整十五分钟了，待会儿必须罚你请我吃两份苹果派！」",
@@ -17,19 +17,17 @@
     "mood": "松弛等待",
     "negativeTokens": [],
     "outfitId": "midnight_courier",
-    "promptProse": "Waiting at the lamppost, she nudges a roadside stone with her boot before looking up with a welcoming smile.",
+    "promptProse": "One boot nudges a roadside stone as she leans against the lamppost and looks up at the approaching viewer. Neon reflections and lantern glow pick out the reflective stripes of her coat.",
     "promptTokens": [
       "1girl",
       "solo",
       "halo",
-      "tactical clothes",
-      "messenger bag",
       "leaning",
       "lamppost",
       "neon lights",
       "street",
       "evening",
-      "medium shot"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

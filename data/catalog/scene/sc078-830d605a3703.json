@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc078",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She turns from the oblique mirror and offers the hand warmer in both hands, keeping her white tabi visible.",
+    "animaCaption": "She turns from the angled mirror and offers the hand warmer toward the viewer in both hands; soft winter window light falls across her kimono and the white tabi visible on the wooden floor.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "镜前足袋可见的全身远景",
     "category": "祭典・节日",

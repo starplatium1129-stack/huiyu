@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_halo_street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 557,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "操控轮椅穿行街角，膝上放着装满点心的纸袋",
     "camera": "medium tracking shot",
@@ -17,14 +17,10 @@
     "mood": "轻盈明亮",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Lemuen guides her wheelchair through the street with a bag of apple-cinnamon pastries on her lap.",
+    "promptProse": "Lemuen guides the wheelchair with one hand on its joystick, steadying the pastry bag on her lap with the other. She smiles toward the viewer beside her as sunlight crosses the stone-paved street.",
     "promptTokens": [
       "1girl",
       "solo",
-      "coat",
-      "shirt",
-      "tie",
-      "wheelchair",
       "joystick",
       "pastry bag",
       "street"

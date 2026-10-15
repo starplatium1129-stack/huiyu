@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_quarters_terminal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 722,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "坐在床沿，解开制服的领扣",
+    "action": "反坐终端前椅子，一手扶椅背，另一手在松开的裤腰下",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_fontaine_waterfront_promenade",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "furina_fontaine_waterfront_promenade",
     "title": "芙宁娜 · 海滨漫步与甜点时光",
@@ -15,7 +15,7 @@
     "action": "坐在白色铸铁桌旁，一手托腮，另一手用银叉品尝草莓千层蛋糕。",
     "timeOfDay": "morning",
     "lighting": "clear morning sunlight and sea reflections",
-    "camera": "medium shot, eye level, hands and dessert in frame",
+    "camera": "medium shot, eye level",
     "mood": "欢快甜美",
     "sceneTags": [
       "waterfront_cafe",
@@ -36,10 +36,6 @@
     ],
     "promptProse": "She savors a forkful of cake while resting her cheek in her free hand beneath the parasol.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blue cardigan",
-      "black beret",
       "cake",
       "strawberry",
       "fork",

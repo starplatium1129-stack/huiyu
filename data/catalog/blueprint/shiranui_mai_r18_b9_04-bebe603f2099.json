@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1750,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_04",
     "title": "不知火舞 · 婚纱愿望床褥深处的火热豪情自持 ·「不知火流的当家女将……只想做你最温顺的新娘」",
@@ -15,7 +15,7 @@
     "action": "仰卧红缎榻榻米抱新娘头纱全裸自抚抽送，健美长腿大开，豪情与娇媚交织绝顶",
     "timeOfDay": "night",
     "lighting": "silver_moonlight",
-    "camera": "intimate vertical medium shot",
+    "camera": "full body, high angle",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
       "self_control",
@@ -32,12 +32,15 @@
     ],
     "promptProse": "Mai holds a bridal veil across her chest while fingering herself on the scarlet futon under shoji-filtered moonlight.",
     "promptTokens": [
-      "Mai Shiranui",
       "bridal veil",
       "on back",
       "futon",
       "tatami",
-      "moonlight"
+      "moonlight",
+      "nude",
+      "masturbation",
+      "spread legs",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,11 +48,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R18",
-    "nsfwTokens": [
-      "nude",
-      "masturbation",
-      "spread legs"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

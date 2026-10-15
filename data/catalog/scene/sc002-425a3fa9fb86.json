@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc002",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She waves from beneath the cherry trees while hiding a folded letter behind her other hip.",
+    "animaCaption": "She waves toward the approaching viewer with one hand, hiding the folded letter behind her opposite hip; soft morning light filters through the cherry blossoms onto her face.",
     "camera": "半身中景",
     "category": "校园",
     "char": "nene",

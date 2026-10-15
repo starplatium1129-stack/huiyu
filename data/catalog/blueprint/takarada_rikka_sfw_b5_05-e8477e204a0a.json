@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1536,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_05",
     "title": "宝多六花 · 哥哥住处的漫画借阅",
@@ -16,7 +16,7 @@
     "action": "盘腿翻看借来的漫画，将一侧头发别到耳后。",
     "timeOfDay": "日间",
     "lighting": "daylight",
-    "camera": "horizontal medium shot, environmental portrait",
+    "camera": "cowboy shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "sitting",
@@ -31,15 +31,12 @@
       "low_angle",
       "medium_shot"
     ],
-    "promptProse": "Rikka reads borrowed manga before the apartment bookshelf, answering off-frame remarks without looking up.",
+    "promptProse": "Sitting cross-legged before the apartment bookshelf, she holds the borrowed manga in one hand and tucks her hair behind an ear with the other, the coffee can beside her in daylight.",
     "promptTokens": [
-      "Rikka Takarada",
-      "hoodie",
-      "trousers",
       "crossed legs",
       "manga",
       "coffee can",
-      "medium shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

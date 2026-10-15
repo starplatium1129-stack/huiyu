@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "misono_mika/tea_party_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 483,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "misono_mika",
     "outfit": {
@@ -16,14 +16,11 @@
       "tokens": [
         "ballgown",
         "white_dress",
-        "sleeveless_dress",
-        "golden_trim",
+        "sleeveless",
         "gold_embroidery",
         "white_gloves",
         "white_tights",
-        "high_heels",
-        "elegant",
-        "regal"
+        "high_heels"
       ]
     }
   }

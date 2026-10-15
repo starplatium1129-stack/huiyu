@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_liyue_harbor_rooftop_sunset",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 23,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hu_tao_liyue_harbor_rooftop_sunset",
     "title": "胡桃 · 飞檐屋顶夕阳赋诗",
@@ -30,7 +30,7 @@
       "high_angle",
       "full_body"
     ],
-    "promptProse": "Hu Tao sits on the broad tiled ridge with her elbows on her knees, making up a verse as the first harbor lanterns appear below.",
+    "promptProse": "Cross-legged on the broad tiled ridge, she props her cheeks in both hands with elbows on her knees; the red-gold sunset warms her face above the harbor's first lights.",
     "promptTokens": [
       "cross-legged",
       "hands on own cheeks",

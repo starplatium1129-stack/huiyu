@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_christmas_backstage_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "iroha_christmas_backstage_blush",
     "title": "一色彩羽 · 圣诞晚会后台的微醺红晕·「前辈……今晚可不可以只当我的圣诞老人呢」",
@@ -29,7 +29,7 @@
       "sincere_smile",
       "romantic"
     ],
-    "promptProse": "Iroha offers a wrapped gift from the auditorium wings. Colored lights warm her shy smile and red capelet over the navy blazer.",
+    "promptProse": "Holding the wrapped gift with both hands, Iroha offers it toward the viewer from the auditorium wings. Colored backstage lights warm her shy smile against the cold blue night outside.",
     "promptTokens": [
       "1girl",
       "solo",

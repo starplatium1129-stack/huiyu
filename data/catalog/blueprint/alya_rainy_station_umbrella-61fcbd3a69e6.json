@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_rainy_station_umbrella",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 775,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手持透明雨伞微微向身侧倾斜，清亮蓝眸凝视镜头",
     "camera": "medium two-shot, clear umbrella tilted toward a companion on a rainy train platform",
@@ -21,10 +21,9 @@
     "mood": "浪漫心动与微湿温润",
     "negativeTokens": [],
     "outfitId": "seirei_uniform",
-    "promptProse": "She tilts the umbrella toward her companion, leaving her own shoulder near its edge. Raindrops catch the cool light above the wet platform.",
+    "promptProse": "She stands shoulder to shoulder with her companion and tilts the clear umbrella farther over them, leaving her own shoulder near its edge. Cool light catches raindrops on the canopy and their reflections on the wet platform.",
     "promptTokens": [
       "couple",
-      "school uniform",
       "transparent umbrella",
       "train station",
       "platform",

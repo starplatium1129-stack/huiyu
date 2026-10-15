@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 283,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_01",
     "title": "克洛伊 · 爱因兹贝伦家的早餐战争",
@@ -30,12 +30,9 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "She takes egg from Illya's plate and leaves bacon on the spare dish, keeping Illya outside the frame. Morning light reaches the table.",
+    "promptProse": "She lifts the fried egg from Illya's plate with her chopsticks; the bacon she has shared lies on Illya's side of the table. Illya remains outside the frame as morning light crosses the dishes.",
     "promptTokens": [
       "kitchen",
-      "peach shirt",
-      "brown pants",
-      "blue apron",
       "chopsticks",
       "fried egg",
       "bacon",

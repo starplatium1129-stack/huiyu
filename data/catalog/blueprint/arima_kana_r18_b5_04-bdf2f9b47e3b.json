@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 981,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "侧卧床单睡衣半褪手探腿间自抚，抓紧床单抽泣高潮，泪水浸湿被褥",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate vertical medium shot",
+    "camera": "medium shot, eye level",
     "category": "私密自持",
     "characterId": "arima_kana",
     "coverageTags": [
@@ -36,8 +36,7 @@
       "lying",
       "on side",
       "masturbation",
-      "crying",
-      "wide shot"
+      "crying"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

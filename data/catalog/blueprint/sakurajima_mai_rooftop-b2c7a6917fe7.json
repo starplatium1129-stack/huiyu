@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_rooftop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_rooftop",
     "title": "樱岛麻衣 · 学校天台·海风与回眸",
@@ -15,7 +15,7 @@
     "action": "放学后单手扶铁丝网，转头望向同行者，直发随晚风轻扬",
     "timeOfDay": "黄昏",
     "lighting": "夕阳将海平面与天际染成橘红色，柔和逆光勾勒出发丝金边",
-    "camera": "cowboy shot, leaning against chainlink fence",
+    "camera": "cowboy shot",
     "mood": "青春感伤与温柔",
     "sceneTags": [
       "school_rooftop",
@@ -31,9 +31,6 @@
     ],
     "promptProse": "Mai rests one hand on the rooftop fence and turns toward the viewer, sunset outlining her hair above the distant coast.",
     "promptTokens": [
-      "Mai",
-      "school uniform",
-      "rabbit hair ornament",
       "rooftop",
       "fence",
       "sunset",

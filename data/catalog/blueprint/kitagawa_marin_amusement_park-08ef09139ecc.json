@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_amusement_park",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 497,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "将棉花糖纸托放在身旁野餐桌上，腾出双手朝画面外的同行者比心。",
     "camera": "medium shot, eye level, both heart-gesture hands and resting candy tray visible",
@@ -20,7 +20,7 @@
     "mood": "欢乐活力",
     "negativeTokens": [],
     "outfitId": "sfw_park_mint_denim",
-    "promptProse": "Marin sets her cotton candy on the picnic table and makes a heart with both hands toward her companion outside the frame.",
+    "promptProse": "Marin makes a heart with both hands toward her companion outside the frame, her cotton-candy tray resting on the picnic table beside her. Sunlight from the upper left lights her smile and pink hair tips beneath the ferris wheel.",
     "promptTokens": [
       "1girl",
       "solo",

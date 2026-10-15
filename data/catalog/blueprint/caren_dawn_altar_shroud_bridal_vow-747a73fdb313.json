@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_dawn_altar_shroud_bridal_vow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "caren_dawn_altar_shroud_bridal_vow",
     "title": "卡莲 · 破晓圣坛的圣骸之誓",
@@ -30,9 +30,8 @@
       "dawn_light",
       "full_body"
     ],
-    "promptProse": "She takes a careful step toward the altar with lilies in both hands. Dawn light from the dome catches the golden shroud train.",
+    "promptProse": "Holding the lilies with both hands, she takes a careful step toward the viewer at the altar. Dawn light through the broken dome catches the golden shroud train behind her.",
     "promptTokens": [
-      "wedding dress",
       "gold veil",
       "lilies",
       "altar",

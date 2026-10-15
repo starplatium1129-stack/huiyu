@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shinobu_poolside_petite_summer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1452,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "池边晃脚仰头瞪你，递防晒霜，紫瞳鼓脸",
     "adult": false,
     "animaStyleHint": "anime_slice_of_life",
-    "camera": "medium shot, sitting poolside, feet in water, pouty mood",
+    "camera": "full body, seated figure and feet in water visible",
     "category": "海滨度假",
     "characterId": "kochou_shinobu",
     "coverageTags": [
@@ -25,15 +25,14 @@
     "mood": "毒舌鼓脸、小巧可爱",
     "negativeTokens": [],
     "outfitId": "summer_swimsuit",
-    "promptProse": "Shinobu stirs the pool with her toes and tilts her head toward her companion, reflected ripples lighting her hands.",
+    "promptProse": "Shinobu offers the sunscreen bottle toward the viewer with a slight pout, her feet stirring the pool from her seat at its edge. Reflected sunlight ripples over her outstretched hand and the violet sarong gathered beside her.",
     "promptTokens": [
-      "kochou_shinobu",
-      "butterfly bikini",
-      "sarong",
       "sitting",
       "poolside",
       "feet in water",
-      "medium shot"
+      "sunscreen",
+      "offering",
+      "full body"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",

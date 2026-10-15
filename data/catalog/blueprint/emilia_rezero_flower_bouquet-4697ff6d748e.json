@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_flower_bouquet",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 447,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "emilia_rezero_flower_bouquet",
     "title": "爱蜜莉雅 · 超市花束",
@@ -25,7 +25,7 @@
       "day",
       "indoor"
     ],
-    "promptProse": "She brings the fresh lilies close to smell them at the market flower stall.",
+    "promptProse": "Cradling the fresh lilies with both hands, she brings the petals close to her cheek at the market stall. Bright shop light catches her silver hair above the white flowers.",
     "promptTokens": [
       "1girl",
       "solo",

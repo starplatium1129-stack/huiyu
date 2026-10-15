@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_ruined_sanctuary_doggystyle_thrust",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yorha_2b_r18_ruined_sanctuary_doggystyle_thrust",
     "title": "2B · 废墟微光·晨曦断壁与过膝高跟长靴",
@@ -46,7 +46,7 @@
       "detailed_background",
       "intimate"
     ],
-    "promptProse": "2B stands among Lunar Tears on the crumbled ledge, one hand resting on the grounded katana as dawn reaches the ruins.",
+    "promptProse": "2B sits on the crumbled ledge with one knee bent and one hand resting on the grounded katana as dawn reaches the Lunar Tears among the ruins.",
     "promptTokens": [
       "nude",
       "black blindfold",

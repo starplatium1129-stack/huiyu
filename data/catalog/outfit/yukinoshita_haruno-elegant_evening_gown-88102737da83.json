@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/elegant_evening_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 213,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "elegant_evening_gown",
       "name": "深夜社交开衩黑丝绒礼服",
-      "prose": "a glamorous backless black velvet evening gown with a plunging neckline hugging her hourglass curves, a high thigh slit revealing her long black-stockinged leg, diamond drop earrings, and red lipstick",
+      "prose": "a black velvet evening gown with a low neckline, open back and high side slit, black stockings, diamond drop earrings and red lipstick",
       "tokens": [
-        "evening_dress",
-        "black_dress",
-        "velvet_dress",
-        "backless",
-        "plunging_neckline",
-        "high_slit",
-        "black_stockings",
-        "jewelry",
-        "lipstick",
-        "mature_female"
+        "black dress",
+        "velvet",
+        "backless dress",
+        "high slit",
+        "black stockings",
+        "diamond earrings",
+        "red lipstick"
       ]
     }
   }

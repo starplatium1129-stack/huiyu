@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_bunny_cafe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 874,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端托盘站立",
     "adult": false,
@@ -26,12 +26,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "bunny_suit",
-    "promptProse": "She supports opposite edges of a silver tray at waist height as she walks past a velvet banquette. Chandelier light catches the glasses.",
+    "promptProse": "She approaches the viewer beside a velvet banquette, both hands supporting opposite edges of the silver tray at waist height. Chandelier reflections catch in the champagne glasses.",
     "promptTokens": [
       "cruise ship",
       "lounge",
-      "white bunny costume",
-      "white stockings",
       "tray",
       "champagne glass",
       "chandelier"

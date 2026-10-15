@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/sfw_lunar_tear_bridal_white",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1142,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
@@ -16,13 +16,13 @@
       "category": "日常衣装（创作）",
       "prose": "a white off-shoulder lace bridal gown with a flowing train, a light sheer veil, white gloves and closed white shoes",
       "tokens": [
-        "white_wedding_dress",
-        "off_shoulder_dress",
-        "lace_trim",
-        "bridal_train",
-        "veil",
-        "white_gloves",
-        "white_shoes"
+        "white wedding dress",
+        "off shoulder",
+        "lace trim",
+        "train",
+        "sheer veil",
+        "white gloves",
+        "white shoes"
       ]
     }
   }

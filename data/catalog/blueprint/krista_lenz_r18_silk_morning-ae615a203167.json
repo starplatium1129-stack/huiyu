@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_silk_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "金黄草垛旁抱膝微褪白裙娇羞微笑",
     "adult": true,
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "medium shot, rustic wooden barn, golden sunbeams across soft hay",
+    "camera": "medium shot, side view",
     "category": "成人",
     "characterId": "krista_lenz",
     "coverageTags": [

@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc191",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 188,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "At the rooftop railing she straddles the viewer's thigh, leaning toward them with the bodysuit unzipped to her navel under neon light.",
     "auditRevision": "careful-batch12-2026-08-27",
-    "camera": "近景特写",
+    "camera": "天台护栏旁主观七分身中景",
     "category": "亲密",
     "char": "natsume",
     "character": [
@@ -32,13 +32,11 @@
       "zipper_to_navel",
       "cleavage",
       "straddling_thigh",
-      "legs_crossed",
       "rooftop",
       "railing",
       "neon_city",
       "cyberpunk",
-      "full_body",
-      "heels",
+      "cowboy_shot",
       "night"
     ],
     "time": "深夜",

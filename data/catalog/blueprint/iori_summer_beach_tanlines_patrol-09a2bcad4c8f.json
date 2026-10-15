@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_summer_beach_tanlines_patrol",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 926,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "站在海浪浅水区单手叉腰，另一手扛着特制水枪，微抬下巴傲娇侧视",
     "camera": "cowboy shot, low angle",
@@ -20,7 +20,7 @@
     "mood": "热烈傲娇",
     "negativeTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Iori patrols the beach with a water gun and her sunglasses pushed up. Her black-and-white swimsuit and white sarong stand against the blue sea.",
+    "promptProse": "Standing in the shallow surf, she rests one hand on her hip and carries the water gun over the opposite shoulder, sunglasses pushed up; bright sea reflections reach her face above the black-and-white bikini.",
     "promptTokens": [
       "water gun",
       "hand on hip",

@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 915,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_beach",
       "name": "毛利兰·海滨泳装",
-      "prose": "a blue-and-white sporty swimsuit with a light visor, ankle bands and a beach volleyball",
+      "prose": "a blue-and-white sporty swimsuit, a light visor and ankle bands",
       "tokens": [
-        "sporty_swimsuit",
-        "blue_white_swimsuit",
+        "blue and white swimsuit",
         "visor",
-        "ankle_bands",
-        "beach_volleyball"
+        "ankle bands"
       ],
       "default": false,
       "isDefault": false

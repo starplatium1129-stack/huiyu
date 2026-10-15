@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 627,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
@@ -12,16 +12,14 @@
       "id": "school_uniform",
       "isDefault": false,
       "name": "穗织学园水手制服",
-      "prose": "Hoori Academy student uniform: neat white sailor blouse with dark navy blue sailor collar, crimson ribbon tie at the chest, pleated dark navy miniskirt, sheer black tights, and polished black school loafers",
+      "prose": "a white sailor blouse with navy collar and crimson ribbon tie, navy pleated skirt, sheer black tights and black loafers",
       "tokens": [
-        "school_uniform",
-        "sailor_suit",
-        "white_shirt",
-        "sailor_collar",
-        "ribbon",
-        "pleated_skirt",
-        "pantyhose",
-        "black_pantyhose",
+        "school uniform",
+        "white sailor shirt",
+        "navy sailor collar",
+        "red ribbon tie",
+        "navy pleated skirt",
+        "black pantyhose",
         "loafers"
       ]
     }

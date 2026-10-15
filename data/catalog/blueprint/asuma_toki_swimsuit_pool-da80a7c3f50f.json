@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_swimsuit_pool",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 902,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "戴耳麦端果汁站立",
     "adult": false,
@@ -29,9 +29,6 @@
     "promptProse": "She surveys the pool while holding coconut juice. Sunlight and reflected water light reach her swimwear and belt.",
     "promptTokens": [
       "pool",
-      "white and blue swimsuit",
-      "waist belt",
-      "headset",
       "sunglasses",
       "coconut drink"
     ],

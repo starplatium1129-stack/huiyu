@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_school_library_reading",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 186,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakura_school_library_reading",
     "title": "间桐樱 · 图书室窗边",
@@ -32,11 +32,9 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Sakura holds the gardening album open and raises a finger to her lips beside the afternoon-lit library window.",
+    "promptProse": "Sakura holds the gardening album open with her left hand and brings her right index finger to her lips for the viewer across the table. Afternoon light catches her purple hair and the illustrated page.",
     "promptTokens": [
       "Sakura",
-      "blazer",
-      "red bow",
       "book",
       "finger to mouth",
       "library",

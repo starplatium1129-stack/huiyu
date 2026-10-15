@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "murasame_festival_goldfish_scooping_joy",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1123,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "蹲在水池前手握纸网小心捞金鱼，浴衣下摆微收，呆毛竖直，神情极度专注",
-    "camera": "medium close-up, low angle looking across water, intimate depth",
+    "camera": "medium close-up, water-level angle, face and paper scoop visible",
     "category": "夏夜祭典",
     "characterId": "murasame",
     "coverageTags": [
@@ -20,16 +20,14 @@
     "mood": "童真趣意",
     "negativeTokens": [],
     "outfitId": "festival_red_yukata_no_fan",
-    "promptProse": "Murasame studies a red goldfish intently over the basin, holding her partly torn paper scoop just above the water.",
+    "promptProse": "Murasame holds the partly torn paper scoop just above the basin, watching one red goldfish without moving. Warm red lantern light reflects from the water onto her concentrated face.",
     "promptTokens": [
-      "red yukata",
       "crouching",
       "goldfish scooping",
       "paper scoop",
       "lantern",
       "festival",
-      "night",
-      "close-up"
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shinobu_insect_breathing_butterfly_dance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1447,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "足尖点梁翻转腾挪，蝶翼羽织展开，毒针寒光，落地眨眼",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "dynamic action shot, mid-air twist, haori spread, venom flash",
+    "camera": "full body, low angle, airborne figure and sword visible",
     "category": "战斗高光",
     "characterId": "kochou_shinobu",
     "coverageTags": [
@@ -25,15 +25,13 @@
     "mood": "轻盈致命、微笑杀伐",
     "negativeTokens": [],
     "outfitId": "official_demon_slayer_uniform",
-    "promptProse": "Shinobu pushes off a broken beam and turns into an Insect Breathing strike, her haori spreading against the dusk-lit ruins.",
+    "promptProse": "Shinobu twists in mid-air just beyond the broken beam, her narrow blade leading the strike and her haori spread behind her. Orange-violet dusk shines through the ruined walls along the butterfly pattern.",
     "promptTokens": [
-      "kochou_shinobu",
-      "uniform",
-      "butterfly haori",
       "sword",
       "jumping",
       "ruins",
-      "dusk"
+      "dusk",
+      "full body"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",

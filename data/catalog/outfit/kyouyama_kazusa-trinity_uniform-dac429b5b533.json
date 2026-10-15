@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kyouyama_kazusa/trinity_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 493,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kyouyama_kazusa",
     "outfit": {
@@ -12,19 +12,17 @@
       "id": "trinity_uniform",
       "isDefault": true,
       "name": "崔尼蒂校服",
-      "prose": "Trinity Comprehensive Academy school uniform with a white shirt, dark blazer, ribbon, plaid skirt, black tights and loafers, plus a hood with cat-ear shapes and a small collar",
+      "prose": "a white shirt and dark blazer with a ribbon, plaid skirt, black tights and loafers, with a small collar and cat-ear-shaped hood",
       "tokens": [
-        "school_uniform",
-        "white_shirt",
-        "dark_blue_blazer",
+        "school uniform",
+        "white shirt",
+        "dark blue blazer",
         "ribbon",
-        "plaid_skirt",
-        "black_tights",
+        "plaid skirt",
+        "black tights",
         "loafers",
         "hood",
-        "cat_ears",
-        "collar",
-        "trinity"
+        "collar"
       ]
     }
   }

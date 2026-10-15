@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_01",
     "title": "夜刀神十香 · 面包店的黄豆粉面包",
@@ -13,7 +13,7 @@
     "outfitId": "sfw_school",
     "description": "面包店玻璃柜前，她整个人贴上去盯着新出炉的黄豆粉面包，眼睛亮得像发现宝物；买到之后当场咬下一大口，幸福到头顶的蝴蝶结都在晃。",
     "location": "面包店玻璃柜前",
-    "action": "面包店玻璃柜前，她整个人贴上去盯着新出炉的黄豆粉面包，眼睛亮得像发现宝物",
+    "action": "双手拿着纸袋里的黄豆粉面包，在面包店展示柜旁满足地咬下第一口",
     "timeOfDay": "日间",
     "lighting": "delighted, shop_light",
     "camera": "medium shot",
@@ -32,9 +32,6 @@
     ],
     "promptProse": "Tohka takes a delighted first bite from her bread's paper sleeve beside the warmly lit bakery display.",
     "promptTokens": [
-      "yatogami_tohka",
-      "school uniform",
-      "hair ribbon",
       "kinako bread",
       "bakery",
       "medium shot"

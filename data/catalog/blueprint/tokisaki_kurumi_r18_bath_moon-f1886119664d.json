@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_bath_moon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_bath_moon",
     "title": "时崎狂三 · 血月浴池",
@@ -15,7 +15,7 @@
     "action": "泡在石砌浴池中",
     "timeOfDay": "夜晚",
     "lighting": "cold moonlight and floating candles",
-    "camera": "intimate medium shot, waterline view",
+    "camera": "cowboy shot, eye level",
     "mood": "幽艳危险",
     "sceneTags": [
       "bathroom",
@@ -27,12 +27,14 @@
     ],
     "promptProse": "The age-twenty-plus Kurumi touches herself beneath the rose-petal bathwater, one knee raised under the blood moon.",
     "promptTokens": [
-      "adult Kurumi",
       "black lace",
       "wet clothes",
       "rose petals",
       "bath",
       "moonlight",
+      "see-through",
+      "masturbation",
+      "hand between legs",
       "cowboy shot"
     ],
     "negativeTokens": [],
@@ -40,11 +42,7 @@
     "adult": true,
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
-    "nsfwTokens": [
-      "see-through",
-      "masturbation",
-      "hand between legs"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
     "outfitId": "casual",

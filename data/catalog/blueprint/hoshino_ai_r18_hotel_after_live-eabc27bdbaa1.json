@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_r18_hotel_after_live",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 958,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "明亮化妆镜前转椅上解开偶像礼服回眸微笑",
     "adult": true,
     "adultArtistHint": "@tiv",
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "medium shot, sitting gracefully on swivel chair before large illuminated vanity mirror, warm backstage room depth",
+    "camera": "medium shot, three-quarter view",
     "category": "成人",
     "characterId": "hoshino_ai",
     "coverageTags": [

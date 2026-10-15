@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc218",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 213,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc218",
     "title": "温泉旅馆的绝对热量对流",
@@ -39,7 +39,7 @@
     "mature": true,
     "location": "温泉旅馆私密汤池边",
     "weather": "水汽氤氲",
-    "camera": "近景平视特写",
+    "camera": "池边主观半身中景",
     "lighting": "清冷月光与波光粼粼的水面折射弱光",
     "usage": [
       "绝对独占",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_border_camp",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 651,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "披银甲玄袍立于帐前望月",
-    "camera": "dynamic full-body shot, low angle",
+    "camera": "full-body shot, low angle",
     "category": "泰拉古风",
     "characterId": "ling_arknights",
     "description": "【令 · 边关军帐】万里边关的深夜军帐外，更夫的梆子声遥遥传来。令身披银甲玄袍立在帐门前，翠玉配饰在月光下泛着温润的光，兽纹白襟被夜风吹动。她望着远处苍茫的群山，轻声自语——「千载长路不过须臾，万般虚实无非一梦。」",
@@ -19,12 +19,8 @@
       "daylight"
     ],
     "outfitId": "fangqiu_juan",
-    "promptProse": "Ling stands before the camp tent in silver armor and a dark robe, watching the midnight moon.",
+    "promptProse": "She stands at the open tent flap and watches the midnight moon, silver light on her armor contrasting with the distant campfire.",
     "promptTokens": [
-      "silver armor",
-      "dark robe",
-      "jade",
-      "wide sleeves",
       "tent",
       "military camp",
       "moonlight",

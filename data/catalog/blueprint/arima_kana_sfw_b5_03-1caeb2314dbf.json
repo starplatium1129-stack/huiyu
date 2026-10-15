@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 970,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手指抵着下巴默读剧本，帽子放在荧光笔与便签旁。",
     "adult": false,
@@ -26,9 +26,6 @@
     "promptProse": "She silently rehearses from an annotated script before the table read, with empty chairs behind her and soft overhead light on the pages.",
     "promptTokens": [
       "meeting room",
-      "cardigan",
-      "blouse",
-      "skirt",
       "script",
       "hand on chin",
       "reading",

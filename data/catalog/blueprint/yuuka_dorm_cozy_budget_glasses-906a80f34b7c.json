@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_dorm_cozy_budget_glasses",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 916,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "戴着红框眼镜蜷坐在布艺沙发上，抱着抱枕与手账本，神情放松慵懒",
     "camera": "medium shot, slightly low angle",
@@ -20,12 +20,10 @@
     "mood": "温馨治愈",
     "negativeTokens": [],
     "outfitId": "budget_cozy_no_mug",
-    "promptProse": "Yuuka curls into the sofa with the finished budget ledger on her knees; her cocoa stays on the side table.",
+    "promptProse": "Yuuka curls into the sofa with a pillow against her chest and the finished budget ledger on her knees, her cocoa on the side table. Lamplight warms the red frames of her glasses.",
     "promptTokens": [
-      "blue sweater",
-      "shorts",
-      "red glasses",
       "ledger",
+      "pillow",
       "curled up",
       "sofa",
       "cocoa",

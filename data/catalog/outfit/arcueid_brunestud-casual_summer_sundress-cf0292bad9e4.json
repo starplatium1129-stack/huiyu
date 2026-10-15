@@ -1,25 +1,21 @@
 {
   "kind": "outfit",
   "id": "arcueid_brunestud/casual_summer_sundress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 718,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "arcueid_brunestud",
     "outfit": {
       "id": "casual_summer_sundress",
       "name": "夏日无袖露肩白吊带裙",
-      "prose": "a light and breezy pure white summer sundress with thin spaghetti straps, open back, floating hem fluttering around her bare knees, and bare feet",
+      "prose": "a white sundress with thin straps, an open back and a floating knee-length hem, worn barefoot",
       "tokens": [
-        "sundress",
-        "white_dress",
-        "spaghetti_straps",
-        "bare_shoulders",
+        "white sundress",
+        "spaghetti straps",
         "backless",
-        "bare_legs",
-        "barefoot",
-        "summer_dress"
+        "barefoot"
       ]
     }
   }

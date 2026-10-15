@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1578,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "zero_two_sfw_b6_06",
     "title": "02 · 樱树下的约定",
@@ -31,10 +31,8 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Zero Two extends a little finger toward her companion beneath the flowering tree, petals settling on her horns and headband.",
+    "promptProse": "Zero Two extends her little finger toward the viewer beneath the flowering cherry tree, her green eyes steady and serious. Afternoon light falls through the branches as a few petals settle on her horns and headband.",
     "promptTokens": [
-      "white long sleeve shirt",
-      "red long skirt",
       "pinky promise",
       "serious",
       "cherry blossoms",

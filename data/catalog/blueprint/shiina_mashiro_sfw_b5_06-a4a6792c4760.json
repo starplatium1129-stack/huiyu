@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1517,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_06",
     "title": "椎名真白 · 雨中撑伞的猫步",
@@ -16,7 +16,7 @@
     "action": "压低雨伞，沿白线一步接一步地轻巧前行。",
     "timeOfDay": "日间",
     "lighting": "overcast_light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "full body, eye level, shoes following the white road line visible",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "umbrella",
@@ -30,15 +30,14 @@
       "street",
       "medium_full_shot"
     ],
-    "promptProse": "Mashiro follows the white road line beneath a low umbrella, shoes splashing through the afternoon drizzle.",
+    "promptProse": "Mashiro follows the white road line one careful step at a time, the low umbrella hiding the upper half of her face. Pale overcast light reflects from the puddles around her shoes.",
     "promptTokens": [
       "Mashiro Shiina",
-      "school uniform",
       "umbrella",
       "walking",
       "rain",
       "street",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

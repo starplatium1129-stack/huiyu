@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_seminar_desk_after_hours",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 923,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "独自横卧办公室宽桌，一手抓桌沿、一手在黑丝腿间自抚，职业装敞开",
     "adult": true,
     "adultArtistHint": "@mizuryu kei",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "high angle, top-down view, vertical foreshortening, pov",
+    "camera": "medium shot, directly overhead, vertical framing with the desk and folded legs visible",
     "category": "办公室私密",
     "characterId": "hayase_yuuka",
     "coverageTags": [

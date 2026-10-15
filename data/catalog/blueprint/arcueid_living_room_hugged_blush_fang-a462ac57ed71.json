@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "arcueid_living_room_hugged_blush_fang",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1321,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "背靠在怀中双手反握住环抱的手臂，脸红透耳根，咬唇露出小尖牙害羞别头",
-    "camera": "medium close-up, eye level, flustered tender embrace",
+    "camera": "medium shot, eye level",
     "category": "反差娇羞",
     "characterId": "arcueid_brunestud",
     "compositionIntent": "group",
@@ -23,16 +23,14 @@
     "mood": "反差心动",
     "negativeTokens": [],
     "outfitId": "official_white_sweater_purple_skirt",
-    "promptProse": "Her companion embraces her from behind as she holds his arms. Sunset warms their overlapping sleeves beside the sofa.",
+    "promptProse": "Her companion embraces her from behind, his chin resting against her hair as she clasps both of his arms. She turns her flushed face aside, a small fang at her bitten lip; sunset warms their overlapping sleeves beside the sofa.",
     "promptTokens": [
       "couple",
       "living room",
-      "white turtleneck",
-      "purple skirt",
       "hug from behind",
       "blush",
       "fang",
-      "close-up"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

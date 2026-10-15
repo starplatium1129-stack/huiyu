@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1676,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_03",
     "title": "八奈见杏菜 · 文艺社零食桌百褶裙纽扣崩飞事故 ·「呜哇！裙子纽扣真的崩掉了！温水快帮我挡住！」",
@@ -12,9 +12,9 @@
     "characterId": "yanami_anna",
     "description": "【文艺部部室·放学后】吃完零食试图弯腰捡掉在地上的薯片时，成年礼服百褶裙的腰扣啪的一声直接崩飞。杏菜双手撑在活动室长桌上，裙子瞬间向下滑脱到大腿处，饱满丰腴的白皙蜜桃臀与勒肉的小草莓胖次一览无余。她慌张回头，手里还捏着那片薯片——「呜……都怪温水买的蛋糕太好吃了啦！不许看！再看把你的便当全吃光！」",
     "location": "文艺部部室·放学后",
-    "action": "撑长桌塌腰回眸双手捡零食裙扣崩裂，短裙滑脱露丰臀，嘴叼薯片羞急跺脚",
+    "action": "俯身伸手捡掉落的薯片，腰扣崩开后侧头回看，嘴里还叼着另一片薯片。",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "warm sunset through the clubroom windows",
     "camera": "intimate horizontal medium shot",
     "mood": "意外失控与羞赧",
     "sceneTags": [

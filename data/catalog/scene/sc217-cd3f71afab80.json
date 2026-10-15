@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc217",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 212,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She sits astride the wooden offering box and presses close to the viewer as lightning flashes through the shrine warehouse window.",
+    "animaCaption": "Seated astride the wooden offering box, she presses close to the viewer beside her; a flash through the warehouse window catches her wet yukata and the piled festival offerings.",
     "auditRevision": "careful-batch13-2026-08-27",
     "camera": "近景水平正面特写",
     "category": "祭典・节日",
@@ -32,11 +32,10 @@
       "wet_clothes",
       "exposed_cleavage",
       "old_warehouse",
-      "full_body",
       "white_tabi",
       "storm",
       "straddling",
-      "heart_spiral_ahoge"
+      "close_up"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

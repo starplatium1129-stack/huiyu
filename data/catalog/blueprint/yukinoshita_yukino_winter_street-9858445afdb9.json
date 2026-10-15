@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_winter_street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 339,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yukinoshita_yukino_winter_street",
     "title": "雪之下雪乃 · 冬季街头",
@@ -29,12 +29,8 @@
       "streetlamp_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino pulls her scarf over her mouth and nose, turning a concerned glance toward her unseen companion while keeping her other hand in her pocket.",
+    "promptProse": "Yukino lifts her plaid scarf over her mouth and nose, her other hand tucked into her coat pocket. She turns a concerned glance toward the viewer as small snowflakes gather in the warm streetlight.",
     "promptTokens": [
-      "navy duffle coat",
-      "plaid scarf",
-      "black pantyhose",
-      "boots",
       "hand in pocket",
       "snow",
       "streetlights"

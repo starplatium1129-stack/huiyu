@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "cc_code_geass/lawn_sweater_no_plush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 716,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "cc_code_geass",
     "outfit": {
@@ -12,12 +12,11 @@
       "id": "lawn_sweater_no_plush",
       "isDefault": false,
       "name": "草坪慵懒毛衣·无玩偶",
-      "prose": "a relaxed oversized off-white knit sweater with comfortable denim shorts and bare feet, with no plush toy",
+      "prose": "an oversized off-white knitted sweater, denim shorts and bare feet",
       "tokens": [
-        "oversized_sweater",
-        "knit_sweater",
-        "denim_shorts",
-        "bare_legs",
+        "white sweater",
+        "oversized clothes",
+        "denim shorts",
         "barefoot"
       ]
     }

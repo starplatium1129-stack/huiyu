@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_evening_sofa_knitting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yor_evening_sofa_knitting",
     "title": "约尔·福杰 · 终于织平整的一段围巾",
@@ -36,8 +36,6 @@
     "promptProse": "Yor holds the scarf's corners over her lap and checks the stitches beneath the reading lamp.",
     "promptTokens": [
       "Yor",
-      "red sweater",
-      "pantyhose",
       "scarf",
       "sofa",
       "knitting basket",

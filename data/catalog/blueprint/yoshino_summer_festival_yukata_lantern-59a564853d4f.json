@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yoshino_summer_festival_yukata_lantern",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1145,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手执折扇倚靠石栏杆侧身回眸，夜空烟花璀璨，浴衣下摆微扬，眼神温柔深情",
-    "camera": "cowboy shot, low angle looking up, dramatic festival sky view",
+    "camera": "cowboy shot, low angle",
     "category": "夏夜华彩",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -22,14 +22,12 @@
     "outfitId": "summer_yukata",
     "promptProse": "Yoshino looks back from the lantern-lined steps, her lace fan lowered as purple and red fireworks open over Hoori.",
     "promptTokens": [
-      "navy yukata",
-      "wisteria print",
-      "purple obi",
       "folding fan",
       "looking back",
       "shrine stairs",
       "fireworks",
-      "night"
+      "night",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

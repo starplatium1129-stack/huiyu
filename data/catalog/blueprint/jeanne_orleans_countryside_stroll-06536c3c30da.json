@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_orleans_countryside_stroll",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 233,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jeanne_orleans_countryside_stroll",
     "title": "圣女贞德 · 奥尔良乡野的草帽散步·「今天不是圣女，只是贞德小姐」",
@@ -15,7 +15,7 @@
     "action": "一臂提稳装着雏菊的藤篮，另一手拂过麦穗，沿小径微笑行走",
     "timeOfDay": "午后",
     "lighting": "温暖通透的夏日午后阳光，麦浪反光柔和",
-    "camera": "medium full shot, walking with basket, pastoral golden fields, gentle smile",
+    "camera": "full-body shot",
     "mood": "田园治愈、笑容烂漫",
     "sceneTags": [
       "orleans_wheat_lane",
@@ -29,18 +29,13 @@
       "afternoon_light",
       "medium_full_shot"
     ],
-    "promptProse": "Jeanne carries a basket of daisies along the wheat-field path, brushing grain tips with her free hand.",
+    "promptProse": "She carries the basket of daisies on one arm and brushes the grain tips with her free hand as she walks along the sunlit wheat-field path.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blouse",
-      "blue skirt",
-      "straw hat",
       "basket",
       "daisies",
       "wheat field",
       "afternoon",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_sunny_beach_volleyball_splash",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 937,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在球网前高高腾空跃起做扣杀动作，比基尼勾勒极致身段，笑容灿烂明朗",
     "camera": "full body, dynamic mid-air upward angle",
@@ -20,15 +20,12 @@
     "mood": "健康健美",
     "negativeTokens": [],
     "outfitId": "summer_bikini",
-    "promptProse": "She jumps for a spike beside the net, with the ball above her hand and the sea beyond. Sunlight catches her airborne hair and the shadow on the sand.",
+    "promptProse": "She rises beside the net with one arm drawn back for a spike and the ball just above her open hand. Clear sunlight catches her airborne hair; her shadow falls on the sand with the sea beyond.",
     "promptTokens": [
       "beach",
       "volleyball",
-      "white and yellow swimsuit",
-      "hibiscus",
       "jumping",
       "raised arm",
-      "barefoot",
       "full body"
     ],
     "recommendedSize": "1152x1536",

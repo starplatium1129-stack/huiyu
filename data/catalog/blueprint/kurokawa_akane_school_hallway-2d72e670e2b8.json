@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_school_hallway",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 959,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱课本走过走廊",
     "camera": "medium shot, walking through the school hallway with textbooks",
@@ -20,15 +20,12 @@
     "mood": "清冷沉静",
     "negativeTokens": [],
     "outfitId": "school_uniform",
-    "promptProse": "Akane carries her textbooks along the afternoon school corridor.",
+    "promptProse": "Akane carries the textbooks against her chest with both arms as she walks through the corridor. Afternoon window light lays bright bands across the floor ahead of her.",
     "promptTokens": [
-      "white shirt",
-      "black vest",
-      "necktie",
-      "grey skirt",
       "books",
       "walking",
-      "school hallway"
+      "school hallway",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

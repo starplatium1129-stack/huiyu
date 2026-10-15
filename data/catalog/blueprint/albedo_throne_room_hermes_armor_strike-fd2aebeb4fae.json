@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_throne_room_hermes_armor_strike",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1296,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "albedo_throne_room_hermes_armor_strike",
     "title": "雅儿贝德 · 赫尔墨斯三层黑铠之威",
@@ -15,7 +15,7 @@
     "action": "身着黑色全身重铠双手持战斧顿地，漆黑羽翼展开，金色竖瞳冰冷俯瞰前方",
     "timeOfDay": "王座幽光",
     "lighting": "宏伟水晶吊灯幽绿光辉与战甲紫色魔力流光",
-    "camera": "cowboy shot, low angle, majestic armor perspective",
+    "camera": "full body, from below",
     "mood": "绝对威严",
     "sceneTags": [
       "throne_room",
@@ -28,14 +28,12 @@
       "curved_horns",
       "intense_gaze"
     ],
-    "promptProse": "She plants her Bardiche into the marble before the raised throne, cracks spreading from the impact. Green chandelier light reflects across her armor.",
+    "promptProse": "With both hands on the shaft, she plants her Bardiche into the marble before the raised throne, cracks spreading beneath the blade. Green chandelier light catches the armor beside its purple seams.",
     "promptTokens": [
-      "black armor",
-      "horns",
-      "black wings",
       "polearm",
       "cracked floor",
       "throne room",
+      "full body",
       "from below"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc290",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc290",
     "title": "私拍·真丝晨袍的延长线",
@@ -23,9 +23,7 @@
       "camera",
       "photo_studio",
       "bed_edge",
-      "bare_legs",
-      "full_body",
-      "depth_of_field"
+      "close_up"
     ],
     "mature": false,
     "location": "深夜的摄影工作室",
@@ -37,13 +35,13 @@
       "R15"
     ],
     "prompt": "1girl, ayachi_nene, white robe, silk, camera, sitting, bed, photo studio, warm lighting, close-up",
-    "negative": "open robe",
+    "negative": "nudity",
     "rating": "R15",
     "character": [
       "nene"
     ],
     "storyJa": "【寧々・大人のAfter Story・私的撮影・シルクガウンの延長線】同人サークルのプライベート撮影が深夜に終了し、スタジオは静けさを取り戻していた。大部分の機材はすでに箱詰めされていたが、隅のキーライトだけがまだ点いたままで、暖かな光が備え付けのベッドの端を照らしていた。寧々は最後の撮影で着ていたシルクのガウンだけを身にまとい、ベッドの端に座ってカメラのプレビュー画像を眺めていた。銀色の長い髪が肩に流れ、ガウンの紐は緩く結ばれており、うつむいた拍子に襟元が片方の肩から滑り落ち、白く丸みを帯びた肩と鎖骨の曲線がかすかにのぞいていた。彼女はあなたの視線に気づいて顔を上げ、耳の裏がすでに赤くなっていたが、衣襟を引き上げようとはしなかった——「さっきの何枚か……ライティングがちょっと合ってなかったから、もう一度……」言葉は最後まで続かなかった。あなたが近づいてきたからだ。彼女は後退せず、むしろ軽く下唇を噛み、紫の瞳が暖かな光の中で微かに揺れ、ガウンの紐があなたの指先に触れた瞬間に音もなく解けていった——「これが撮影の延長線なら……ディレクターの指示には、すべて従います。」",
-    "animaCaption": "Nene reviews the camera previews at the prop bed's edge, holding the camera in both hands with her robe securely closed.",
+    "animaCaption": "Seated at the prop bed's edge, she looks up toward the viewer from the camera held in her lap, the silk robe loose at one shoulder; the remaining studio lamp casts warm light across her face and the robe folds.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_bed_supine_devotion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 410,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "仰卧床褥双腿轻微分开自抚，金发如瀑铺散，星眸迷离泛光失神喘息",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "vertical POV, supine, touching own body, star-shaped pupils, warm soft lighting",
+    "camera": "full-body shot, first-person view, from above",
     "category": "成人私密",
     "characterId": "shokuhou_misaki",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1636,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_04",
     "title": "长离 · 今州红绸的花嫁授课",
@@ -29,11 +29,9 @@
       "patient_smile",
       "morning_light"
     ],
-    "promptProse": "She extends a hand to demonstrate a ceremonial step with the flower fan at her side. Morning light crosses the red railing and embroidered gown.",
+    "promptProse": "She extends one hand toward the viewer to demonstrate a ceremonial step, holding the flower fan at her side with the other. Morning light crosses the red railing and phoenix embroidery as petals fall.",
     "promptTokens": [
       "mountain corridor",
-      "white and red wedding gown",
-      "veil",
       "floral fan",
       "petals",
       "morning"

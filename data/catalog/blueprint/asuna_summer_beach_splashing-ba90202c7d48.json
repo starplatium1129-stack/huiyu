@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_summer_beach_splashing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1366,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asuna_summer_beach_splashing",
     "title": "结城明日奈 · 碧海晴空的细带比基尼戏水·「抓不到我吧？再发呆就要被泼水啦！」",
@@ -27,10 +27,9 @@
       "laughing",
       "summer"
     ],
-    "promptProse": "She backs through the shallows and scoops water toward her companion with both hands. Sunlight catches the spray above the foam.",
+    "promptProse": "She backs through the shallows and scoops water toward the viewer outside the frame with both hands, laughing. Sunlight catches the spray above the foam.",
     "promptTokens": [
       "beach",
-      "red bikini",
       "splashing",
       "laughing",
       "ocean",

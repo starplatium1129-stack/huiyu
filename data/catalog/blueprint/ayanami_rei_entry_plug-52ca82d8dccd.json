@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_entry_plug",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1009,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐于驾驶舱操纵台前，神情安详宁静",
     "camera": "medium shot, eye level",
@@ -23,7 +23,6 @@
     "promptProse": "She rests both hands on the controls inside Unit-00's liquid-filled cockpit. Orange LCL refraction meets cool interface light.",
     "promptTokens": [
       "cockpit",
-      "white plugsuit",
       "LCL",
       "control sticks",
       "sitting",

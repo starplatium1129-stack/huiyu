@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_morning_hair_down_bedroom",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1396,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱枕坐在床中央，散发披肩红瞳惺忪，傲娇别脸又偷瞄",
     "adult": false,
@@ -25,11 +25,9 @@
     "mood": "冰融反差、娇软日常",
     "negativeTokens": [],
     "outfitId": "casual_summer_dress",
-    "promptProse": "Kaguya sits in the middle of the bed hugging a pillow, looking away sleepily before glancing back beneath her loose hair.",
+    "promptProse": "Kaguya hugs the pillow in the middle of the bed, her face turned aside but her sleepy eyes stealing a glance at the viewer. Lace-filtered morning light touches her loose black hair.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "white dress",
-      "ribbon",
       "loose hair",
       "hugging pillow",
       "sitting",
@@ -53,15 +51,12 @@
     "identityProseOverride": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with loose black hair, parted bangs, sidelocks, red eyes and gently downturned eye corners",
     "identityTokensOverride": [
       "shinomiya_kaguya",
-      "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+      "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~",
       "1girl",
       "solo",
-      "black_hair",
-      "hair_down",
-      "parted_bangs",
-      "sidelocks",
-      "red_eyes",
-      "tareme"
+      "black hair",
+      "hair down",
+      "red eyes"
     ]
   }
 }

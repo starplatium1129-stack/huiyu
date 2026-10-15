@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_church_stained_glass_praying",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 835,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手合十闭目祈祷，金发在圣光下熠熠生辉，修女服黑白分明，神圣纯洁得令人屏息",
     "adult": false,
@@ -22,15 +22,14 @@
     "mood": "庄严圣洁",
     "negativeTokens": [],
     "outfitId": "saint_nun_habit",
-    "promptProse": "She kneels with hands joined before the altar. Colored light from the rose window crosses her habit and the stone floor.",
+    "promptProse": "She kneels with joined hands and closed eyes before the altar. Colored light from the rose window crosses her white habit and the stone floor.",
     "promptTokens": [
       "cathedral",
-      "white nun habit",
-      "veil",
       "prayer",
       "kneeling",
       "stained glass",
-      "afternoon"
+      "afternoon",
+      "cowboy shot"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",

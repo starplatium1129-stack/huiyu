@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_court",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 443,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "emilia_rezero_court",
     "title": "爱蜜莉雅 · 王选宫廷",
@@ -27,13 +27,10 @@
       "fantasy",
       "dignified"
     ],
-    "promptProse": "She addresses the Royal Selection assembly beyond the frame with composed determination.",
+    "promptProse": "Standing beneath the throne, she addresses the Royal Selection assembly beyond the frame. High-window light crosses her composed face and the columned hall while small spirits glow beside her.",
     "promptTokens": [
       "1girl",
       "solo",
-      "white dress",
-      "purple trim",
-      "ribbon",
       "standing",
       "palace",
       "columns",

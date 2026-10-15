@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_wing_rest",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 630,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "仰靠在长椅上享受午后阳光，嘴角带着惬意微笑",
     "camera": "medium shot",
@@ -25,10 +25,6 @@
       "1girl",
       "solo",
       "halo",
-      "white jacket",
-      "black shirt",
-      "shorts",
-      "thighhighs",
       "reclining",
       "hands behind head",
       "bench",

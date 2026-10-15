@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_graveyard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "frieren_graveyard",
     "title": "芙莉莲 · 墓地回忆",
@@ -29,11 +29,10 @@
       "remembrance",
       "medium_shot"
     ],
-    "promptProse": "She rests her fingertips on Himmel's memorial while holding her cloak edge with her other hand.",
+    "promptProse": "She rests her fingertips on Himmel's memorial while her other hand holds her cloak edge. Soft morning light reaches the weathered stone through mist above the white wildflowers.",
     "promptTokens": [
       "1girl",
       "solo",
-      "cloak",
       "gravestone",
       "wildflowers",
       "cemetery",

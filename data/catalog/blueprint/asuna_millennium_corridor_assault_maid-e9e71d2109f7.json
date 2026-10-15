@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "asuna_millennium_corridor_assault_maid",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 936,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手持突击机枪突进射击，女仆裙摆与金发在风中飞扬，神态轻松自信",
-    "camera": "dynamic low angle, rushing forward perspective",
+    "camera": "full-body shot, low angle",
     "category": "战斗特勤",
     "characterId": "ichinose_asuna",
     "coverageTags": [
@@ -23,11 +23,10 @@
     "promptProse": "She advances with her weapon held level, apron and golden hair trailing behind. Blue floor lights meet flashing red alarms along the alloy walls.",
     "promptTokens": [
       "corridor",
-      "combat maid",
-      "white apron",
       "machine gun",
       "running",
       "alarm light",
+      "full body",
       "from below"
     ],
     "recommendedSize": "1536x1152",

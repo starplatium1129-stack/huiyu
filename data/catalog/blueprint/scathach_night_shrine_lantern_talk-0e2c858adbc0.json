@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_night_shrine_lantern_talk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 247,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "scathach_night_shrine_lantern_talk",
     "title": "斯卡哈 · 灯笼夜祠的师匠嘱托·「把刀擦亮，明天……我要把一切都托付给你」",
@@ -29,13 +29,9 @@
       "moonlight",
       "wide_two_shot"
     ],
-    "promptProse": "They sit side by side on the shrine steps with her coat over the companion's knees, lanterns below and moonlight at their shoulders.",
+    "promptProse": "Scathach and her companion sit shoulder to shoulder on the shrine steps, her removed coat spread across their knees. Lanterns descend toward the town lights below while cool moonlight rests along their shoulders.",
     "promptTokens": [
-      "Scathach",
       "companion",
-      "shirt",
-      "vest",
-      "coat",
       "shrine",
       "sitting",
       "lantern",

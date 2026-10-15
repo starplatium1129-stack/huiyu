@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_clubroom_computer_deadpan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1437,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_clubroom_computer_deadpan",
     "title": "加藤惠 · 社团电脑前的无声吐槽·「伦也君……这个剧情是不是太奇怪了」",
@@ -16,7 +16,7 @@
     "action": "单手托腮握鼠标测试游戏，眯眼露出一丝平静吐槽",
     "timeOfDay": "黄昏放学后",
     "lighting": "屏幕荧光与窗外橙黄晚霞交错",
-    "camera": "medium shot, seated at desk, hand on cheek, monitor glow",
+    "camera": "medium shot",
     "mood": "慢半拍吐槽、自然陪伴",
     "sceneTags": [
       "clubroom",
@@ -30,9 +30,6 @@
     ],
     "promptProse": "Megumi rests her cheek in one hand while trying the game with the mouse, giving the screen a dry, unimpressed look.",
     "promptTokens": [
-      "katou_megumi",
-      "red cardigan",
-      "sailor dress",
       "computer mouse",
       "hand on own cheek",
       "clubroom"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_rooftop_laundry",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 511,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kisara_engage_kiss_rooftop_laundry",
     "title": "木更 · 屋顶晾衣",
@@ -15,7 +15,7 @@
     "action": "踮脚用左手托床单上缘靠近晾绳，右手夹上一枚衣夹，笑着回头。",
     "timeOfDay": "午后",
     "lighting": "back-right daylight transmitted through sheets; moving fabric shadows on rooftop tiles",
-    "camera": "medium shot, eye level, raised hands, peg contact and laundry line visible",
+    "camera": "full-body shot, eye level",
     "mood": "清爽日常",
     "sceneTags": [
       "rooftop_laundry",
@@ -34,8 +34,6 @@
     ],
     "promptProse": "Kisara supports the sheet with her left hand and fastens a peg with her right, smiling back from the rooftop clothesline.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "tiptoes",
       "laundry",
       "clothespin",
@@ -44,7 +42,7 @@
       "rooftop",
       "sea",
       "daylight",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

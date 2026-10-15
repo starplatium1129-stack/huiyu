@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1664,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_01",
     "title": "八奈见杏菜 · 食堂大份定食的满足感",
@@ -31,11 +31,8 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Yanami brings her hands together before the oversized meal, delighted as classmates watch from neighboring canteen tables.",
+    "promptProse": "Yanami brings her palms together before the towering lunch tray, her eyes bright with anticipation. Midday light fills the canteen while classmates glance over from the neighboring tables.",
     "promptTokens": [
-      "yanami_anna",
-      "school uniform",
-      "blue bow",
       "large meal",
       "hands together",
       "canteen",

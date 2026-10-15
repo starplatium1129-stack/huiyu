@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_chase",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 149,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tohsaka_rin_chase",
     "title": "远坂凛 · 都市追逐",
@@ -29,11 +29,8 @@
       "moonlight",
       "full_body"
     ],
-    "promptProse": "Rin leaps between rooftops with three rubies between her fingers, her other arm balancing toward the moonlit landing.",
+    "promptProse": "Rin clears the gap between the rooftops with three rubies held between the fingers of one hand, her other arm extended for balance. Cold moonlight outlines the landing ledge beneath the red gleam of the gems.",
     "promptTokens": [
-      "Rin",
-      "combat outfit",
-      "magic circuits",
       "red gems",
       "jumping",
       "rooftop",

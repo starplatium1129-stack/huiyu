@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_two_tone",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 951,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "镜头前比偶像手势",
-    "camera": "medium shot, wink and peace sign",
+    "camera": "medium shot",
     "category": "舞台演出",
     "characterId": "hoshino_ai",
     "coverageTags": [],
@@ -20,8 +20,6 @@
     "outfitId": "stage_two_tone",
     "promptProse": "Ai faces the music-program camera with a wink and peace sign, framed by the studio's scenic panels.",
     "promptTokens": [
-      "idol clothes",
-      "hair ornament",
       "wink",
       "v",
       "looking at viewer",

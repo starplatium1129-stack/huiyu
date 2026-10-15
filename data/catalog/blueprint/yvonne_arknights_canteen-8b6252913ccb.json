@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_canteen",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 736,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端餐盘找座位",
-    "camera": "medium shot",
+    "camera": "cowboy shot",
     "category": "末世科幻",
     "characterId": "yvonne_arknights",
     "coverageTags": [],
@@ -18,17 +18,15 @@
     "mood": "轻快活跃",
     "negativeTokens": [],
     "outfitId": "canteen_casual",
-    "promptProse": "Yvonne steps out of the lunch crowd carrying her tray, her tail swinging as she passes the neighboring tables.",
+    "promptProse": "She carries the tray steadily in both hands between the canteen tables, phone tucked in her pocket and tail swinging clear of the lunch crowd in noon light.",
     "promptTokens": [
-      "cropped jacket",
-      "trousers",
-      "sneakers",
       "meal tray",
       "phone in pocket",
       "walking",
       "canteen",
       "crowd",
-      "noon"
+      "noon",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

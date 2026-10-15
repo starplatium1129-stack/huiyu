@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_winter_trenchcoat_snow_walk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 372,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "haruno_winter_trenchcoat_snow_walk",
     "title": "雪之下阳乃 · 冬日长风衣手插口袋的雪街漫步·「手冷吗？……我才不会像高中生那样借手给你呢♪」",
@@ -16,7 +16,7 @@
     "action": "双手插风衣口袋漫步雪街，回眸呼出白雾，高跟长靴踩雪",
     "timeOfDay": "冬夜初雪",
     "lighting": "冬日节日彩灯与雪地洁白反光交织",
-    "camera": "medium full shot, trench coat, hands in pockets, snow falling, street lights",
+    "camera": "full body, eye level",
     "mood": "冬日浪漫、捉摸不透的温柔",
     "sceneTags": [
       "winter",
@@ -30,11 +30,8 @@
       "breath",
       "city_street"
     ],
-    "promptProse": "Haruno walks along the snowy avenue with her coat fastened, turning back with a playful smile as her boot tracks trail behind.",
+    "promptProse": "Hands in her coat pockets, Haruno turns back with a playful smile as her boot tracks trail along the snowy avenue. Festive lights warm the falling snow above the cool reflected light at her feet.",
     "promptTokens": [
-      "camel coat",
-      "black pantyhose",
-      "knee boots",
       "hands in pockets",
       "looking back",
       "smile",

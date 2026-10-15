@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_04",
     "title": "夜刀神十香 · 紫晶穹顶下的花嫁",
@@ -16,7 +16,7 @@
     "action": "浮空花瓣间捧花闻香后迈向誓约，紫瞳里满是坦率期待",
     "timeOfDay": "黄昏",
     "lighting": "violet sunset filtered through crystal panels",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot",
     "mood": "纯真而热烈的誓约期待",
     "sceneTags": [
       "wedding_dress",
@@ -29,12 +29,8 @@
       "bright_smile",
       "twilight"
     ],
-    "promptProse": "Tohka smells her bouquet and steps toward the viewer beneath the violet-lit crystal dome.",
+    "promptProse": "She holds the bouquet near her nose with both hands, smiling toward the offscreen viewer beneath the violet-lit crystal dome and floating petals.",
     "promptTokens": [
-      "Tohka Yatogami",
-      "wedding dress",
-      "violet ribbon",
-      "veil",
       "bouquet",
       "crystal dome",
       "sunset",

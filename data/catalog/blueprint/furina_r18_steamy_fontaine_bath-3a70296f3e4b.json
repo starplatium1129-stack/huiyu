@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_steamy_fontaine_bath",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "furina_r18_steamy_fontaine_bath",
     "title": "芙宁娜 · 大理石玫瑰温汤半透白丝绸小衣与水波迷离自抚",
@@ -15,7 +15,7 @@
     "action": "斜靠大理石池边白丝绸小衣湿透贴身露酥胸，单腿浮水，单手在水下深层自抚，双色异瞳含泪娇喘",
     "timeOfDay": "深夜",
     "lighting": "温泉池边雕花烛台洒在蒸腾水汽与水面波光上的梦幻蓝金浪漫光晕",
-    "camera": "intimate wide shot, reclining perspective across steamy Fontaine bath and rose petals",
+    "camera": "wide shot, side view",
     "mood": "极乐沉沦",
     "sceneTags": [
       "hot_springs",
@@ -31,12 +31,9 @@
       "masturbation",
       "water_droplets"
     ],
-    "promptProse": "She reclines against submerged marble steps, lifting one leg through the ripples while her other hand moves beneath the water.",
+    "promptProse": "She reclines against the submerged marble steps, supporting herself with one hand while the other moves beneath the water; one leg rises through the candlelit ripples.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "adult",
-      "heterochromia",
       "white camisole",
       "wet clothes",
       "see-through",

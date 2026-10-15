@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/greenhouse_facility_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 413,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
@@ -12,14 +12,12 @@
       "id": "greenhouse_facility_uniform",
       "isDefault": false,
       "name": "生态舱设施作业服",
-      "prose": "a light white-and-charcoal facility work uniform with a cropped jacket, utility belt, practical trousers and flat work boots",
+      "prose": "a white-and-charcoal cropped work jacket with a utility belt, practical trousers and flat work boots",
       "tokens": [
-        "white_jacket",
-        "cropped_jacket",
-        "utility_belt",
-        "workwear",
+        "cropped white jacket",
+        "utility belt",
         "trousers",
-        "boots"
+        "work boots"
       ]
     }
   }

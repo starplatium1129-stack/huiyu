@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_izakaya_cheers_smirk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 374,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "haruno_izakaya_cheers_smirk",
     "title": "雪之下阳乃 · 第一杯还没碰完的笑话",
@@ -29,10 +29,8 @@
       "warm_counter_light",
       "medium_shot"
     ],
-    "promptProse": "Haruno raises her half-filled beer and laughs at her own joke, her free hand resting on the coaster beside supper.",
+    "promptProse": "Haruno raises her half-filled beer toward the viewer and laughs at her own joke, her free hand resting on the coaster. Warm counter light shines through the amber beer beside supper.",
     "promptTokens": [
-      "green turtleneck",
-      "black skirt",
       "beer mug",
       "laughing",
       "counter",

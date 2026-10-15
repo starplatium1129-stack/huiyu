@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_03",
     "title": "尤贝尔 · 旅店里的皮带修补",
@@ -16,7 +16,7 @@
     "action": "把包带压在桌上穿回黄铜扣，拉紧检查后微笑。",
     "timeOfDay": "afternoon",
     "lighting": "soft window sunlight",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
       "inn",
@@ -29,11 +29,8 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Ubel threads a loose bag strap through its buckle and checks it with a tug beside the sunny inn window.",
+    "promptProse": "She presses the bag strap against the table with one hand and threads it through the brass buckle with the other, a small smile in the inn's window light.",
     "promptTokens": [
-      "Ubel",
-      "burgundy shirt",
-      "waistcoat",
       "bag strap",
       "buckle",
       "inn",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1607,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_05",
     "title": "毛利兰 · 海浪里的沙滩排球",
@@ -13,10 +13,10 @@
     "outfitId": "sfw_beach",
     "description": "【湘南海岸·盛夏】小兰穿着蓝白运动泳装在沙滩上屈膝接球，身后的遮阳伞和海水被阳光照得发亮；她把球稳稳托起后朝镜头挥手，长发和笑容一起被海风带起。",
     "location": "Shonan beach volleyball court",
-    "action": "沙滩屈膝接球后朝镜头挥手，长发和笑容一起迎着海风扬起",
+    "action": "屈膝用并拢的双臂稳稳托起排球，海风扬起长发。",
     "timeOfDay": "日间",
     "lighting": "bright summer sun with clean ocean reflections",
-    "camera": "medium shot, horizontal framing",
+    "camera": "full body, eye level, horizontal framing",
     "mood": "运动少女的灿烂假日",
     "sceneTags": [
       "swimsuit",
@@ -29,16 +29,13 @@
       "waving",
       "summer_sunlight"
     ],
-    "promptProse": "Ran guides the volleyball upward from a ready stance, then waves toward the viewer with the sea behind her.",
+    "promptProse": "Ran bends her knees beneath the rising volleyball, her joined forearms still extended from the pass. Sea wind lifts her hair while bright water sparkles beyond the beach umbrellas.",
     "promptTokens": [
-      "blue swimsuit",
-      "visor",
       "beach volleyball",
       "bent knees",
-      "waving",
       "beach",
       "summer",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_06",
     "title": "牧之原翔子 · 毕业季的樱花坡道",
@@ -29,12 +29,11 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Shouko leans slightly forward with her hands behind her back amid the cherry petals on the spring hillside.",
+    "promptProse": "Shouko leans slightly toward the viewer with her hands behind her back and a quiet, hopeful smile. Afternoon light catches the cherry petals blowing across her shoulders on the spring slope.",
     "promptTokens": [
       "1girl",
       "solo",
       "makinohara_shouko",
-      "sailor uniform",
       "hands behind back",
       "leaning forward",
       "cherry blossoms",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1699,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "vivy_sfw_b9_05",
     "title": "Vivy · 海边录下第一首潮声",
@@ -30,13 +30,9 @@
       "sea_breeze",
       "afternoon_light"
     ],
-    "promptProse": "Vivy records the tide from the stage steps, then offers an earpiece after listening to the playback.",
+    "promptProse": "Vivy holds the recorder playing back the tide in one hand and offers its earpiece to the viewer with the other. Afternoon light glints on the water beyond the stage steps.",
     "promptTokens": [
       "Vivy",
-      "swimsuit",
-      "jacket",
-      "recorder",
-      "earphones",
       "seaside stage",
       "medium shot"
     ],

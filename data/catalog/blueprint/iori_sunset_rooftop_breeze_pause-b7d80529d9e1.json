@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_sunset_rooftop_breeze_pause",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 929,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "背靠着铁丝网栏杆怀抱狙击枪，微仰头享受晚风吹拂，眼神柔和",
     "camera": "cowboy shot, medium angle",
@@ -20,7 +20,7 @@
     "mood": "宁静唯美",
     "negativeTokens": [],
     "outfitId": "disciplinary_uniform",
-    "promptProse": "Iori rests against the rooftop fence with her rifle close, watching the sunset as the breeze lifts her hair.",
+    "promptProse": "Leaning against the rooftop fence, she cradles the rifle across her chest and looks toward the horizon; orange-violet sunset rims her windblown hair and tail.",
     "promptTokens": [
       "leaning",
       "fence",

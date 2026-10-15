@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mako_autumn_woods_kunai_training",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1135,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "踩在岩石上舒展腰身投掷苦无，身体前倾发力，枫叶随劲风环绕飞舞",
-    "camera": "full body, dynamic action wide shot, low perspective",
+    "camera": "full body, from below",
     "category": "武道特训",
     "characterId": "hitachi_mako",
     "coverageTags": [
@@ -20,9 +20,8 @@
     "mood": "飒爽果敢",
     "negativeTokens": [],
     "outfitId": "ninja_suit",
-    "promptProse": "Mako plants a foot on the mossy rock and throws her kunai with her right hand through the falling maple leaves.",
+    "promptProse": "Mako plants one foot on the mossy rock, her right arm extended just after releasing the kunai. The blade crosses the falling maple leaves beneath the gold-red canopy light.",
     "promptTokens": [
-      "ninja clothes",
       "kunai",
       "throwing",
       "rock",

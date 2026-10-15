@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "misaki_garden_walk_queens_stroll",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 403,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "挽臂走过蔷薇拱门，花瓣落肩，星瞳眯起得意",
     "adult": false,
     "animaStyleHint": "anime_slice_of_life",
-    "camera": "medium two-shot, flower arch walk, petal drift, cheerful mood",
+    "camera": "medium two-shot",
     "category": "花园散步",
     "characterId": "shokuhou_misaki",
     "compositionIntent": "group",
@@ -26,13 +26,9 @@
     "mood": "女王检阅、占有欲甜",
     "negativeTokens": [],
     "outfitId": "casual_white_summer_dress",
-    "promptProse": "Misaki walks arm-in-arm with her companion beneath the rose arches, smiling as petals fall onto her shoulder.",
+    "promptProse": "Misaki walks on the left with her arm linked through her companion's on the right, smiling as a petal settles on her shoulder beneath the rose arch.",
     "promptTokens": [
       "2people",
-      "shokuhou_misaki",
-      "white dress",
-      "straw hat",
-      "gloves",
       "linked arms",
       "rose arch",
       "garden"

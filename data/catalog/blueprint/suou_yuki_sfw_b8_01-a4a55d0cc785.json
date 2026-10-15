@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 784,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "放学后学生会室，她跪坐在长桌上给文化祭宣传海报描边，制服袖口用发圈挽起",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium shot",
+    "camera": "cowboy shot",
     "category": "日常生活",
     "characterId": "suou_yuki",
     "coverageTags": [
@@ -24,16 +24,14 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_school",
-    "promptProse": "Yuki pauses while outlining a festival poster across the long table, afternoon light crossing her rolled-back cuffs.",
+    "promptProse": "Kneeling on the long table, she steadies the festival poster with one hand and pauses her drawing hand at its outline, afternoon light crossing her rolled-back cuffs.",
     "promptTokens": [
-      "Yuki",
-      "school uniform",
       "kneeling",
       "table",
       "poster",
       "drawing",
       "student council room",
-      "medium shot"
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

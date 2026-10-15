@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc177",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 174,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "She is held against the concrete wall with both arms behind her and legs together, her bodysuit opened to the abdomen in the flashlight beam.",
     "auditRevision": "careful-batch10-2026-08-27",
@@ -32,12 +32,9 @@
       "torn_bodysuit",
       "pinned_against_wall",
       "arms_held_behind",
-      "pinned_arms",
       "cold_wall",
       "safehouse",
-      "bare_legs",
-      "full_body",
-      "combat_boots"
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

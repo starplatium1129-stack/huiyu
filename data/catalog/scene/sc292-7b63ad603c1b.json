@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc292",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 287,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "The viewer straightens Nene's cardigan collar as she looks up from the camera preview, the opaque white shirt still covering her underneath.",
+    "animaCaption": "She looks up from the camera in her lap as the viewer straightens her cardigan at the shoulder, the opaque white top still covering her beneath it; the warm fill light catches her eyes.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "沙发上方的近景俯视",
     "category": "日常/同人",
@@ -30,13 +30,10 @@
       "hair_ribbon",
       "cardigan",
       "inner_top",
-      "bare_legs",
       "sofa",
-      "full_body",
-      "barefoot",
+      "close_up",
       "camera",
-      "heavy_blush",
-      "depth_of_field"
+      "heavy_blush"
     ],
     "time": "傍晚",
     "timeOfDay": "evening",

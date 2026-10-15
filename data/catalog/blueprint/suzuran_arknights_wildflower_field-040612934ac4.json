@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_wildflower_field",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 639,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "蹲在铃兰花丛中轻嗅",
-    "camera": "medium wide shot",
+    "camera": "wide shot, crouching figure and flower valley visible",
     "category": "泰拉自然",
     "characterId": "suzuran_arknights",
     "coverageTags": [
@@ -22,12 +22,8 @@
       "indoor room"
     ],
     "outfitId": "wasteland_bloom",
-    "promptProse": "Suzuran smells a lily-of-the-valley bloom and offers a stem among the sunlit valley flowers.",
+    "promptProse": "Suzuran crouches among the lily-of-the-valley flowers and holds one stem toward the viewer. Her nine tails spread over the sunlit grass behind her, clear of the small white blossoms.",
     "promptTokens": [
-      "Suzuran",
-      "explorer outfit",
-      "backpack",
-      "nine tails",
       "lily of the valley",
       "crouching",
       "wide shot"

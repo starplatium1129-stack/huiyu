@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_knight_armor_desk_ravish",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 689,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "轻铠解扣衬衫半敞露大胸，白丝长手套托胸另一手在长裙下深层自抚，金鹿角流光娇喘",
     "adult": true,
     "adultArtistHint": "@asakura shou",
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "medium shot, seated eye-level focus on glowing antlers, unbuttoned silk shirt, and blushing noble face",
+    "camera": "cowboy shot, eye level",
     "category": "深层欢愉",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -24,22 +24,20 @@
     "mood": "极乐沉沦",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [
+    "nsfwTokens": [],
+    "outfitId": "candle_knight_armor",
+    "promptProse": "Seated on the bench, she cups her breast with one hand and touches herself beneath her skirt with the other, her removed breastplate resting on the chair back in warm wall light.",
+    "promptTokens": [
+      "white shirt",
+      "gloves",
+      "bench",
+      "lounge",
+      "candlelight",
       "open shirt",
       "cleavage",
       "masturbation",
-      "hand under clothes"
-    ],
-    "outfitId": "candle_knight_armor",
-    "promptProse": "Viviana cups her breast and touches herself beneath her skirt on the bench, her breastplate beside the open silk shirt.",
-    "promptTokens": [
-      "Viviana",
-      "white shirt",
-      "gloves",
-      "armor removed",
-      "bench",
-      "lounge",
-      "candlelight"
+      "hand under clothes",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

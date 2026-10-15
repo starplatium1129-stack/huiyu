@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_concert",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 318,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hatsune_miku_concert",
     "title": "初音未来 · 演唱会舞台",
@@ -29,7 +29,7 @@
       "green_glowsticks",
       "full_body"
     ],
-    "promptProse": "Miku jumps from the stage with the microphone at her mouth, opening her free arm toward the distant green glowsticks.",
+    "promptProse": "Miku springs upward with both feet clear of the stage, the microphone held at her mouth and her free arm open toward the audience; stage spotlights rim her flowing twin-tails above the distant green glowsticks.",
     "promptTokens": [
       "singing",
       "microphone",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "asada_shino_r18_b6_03",
     "title": "朝田诗乃 · 战术紧身衣背后散热阀卡壳事故 ·「散热阀锁死了……身体好热，快帮我拉开背后的拉链！」",
@@ -15,7 +15,7 @@
     "action": "撑弹药箱塌腰回眸双手反剪扯战术拉链，紧身皮衣勒臀溢乳，猫耳下耷娇喘求助",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate horizontal medium shot",
+    "camera": "cowboy shot, eye level",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",
@@ -40,8 +40,7 @@
       "bent over",
       "looking back",
       "cat ears",
-      "cat tail",
-      "wide shot"
+      "cat tail"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

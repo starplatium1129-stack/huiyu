@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_ruined_city_highway_blade_stance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1108,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yorha_2b_ruined_city_highway_blade_stance",
     "title": "2B · 废墟倾塌高架的白之契约持刃",
@@ -19,7 +19,7 @@
     "action": "手按虚空悬浮长刀独立断桥，海风吹卷羽毛裙摆与银白短发，英姿冷峻肃杀",
     "timeOfDay": "下午",
     "lighting": "废墟大楼林立间穿透的冷冽日光与长刀白刃冷白寒芒",
-    "camera": "dynamic low angle, full body wide shot, sweeping post-apocalyptic scale",
+    "camera": "full body, low angle, broken highway and ruined city visible",
     "mood": "孤高决绝",
     "sceneTags": [
       "ruins",
@@ -32,11 +32,8 @@
       "blindfold",
       "wind"
     ],
-    "promptProse": "2B holds her position at the highway's broken edge while Virtuous Contract floats beside her above the moss-covered city.",
+    "promptProse": "2B stands at the broken highway edge with Virtuous Contract floating independently beside her. Cold daylight catches the white blade while the wind lifts her skirt above the moss-covered city.",
     "promptTokens": [
-      "black dress",
-      "blindfold",
-      "thigh boots",
       "katana",
       "standing",
       "wind",

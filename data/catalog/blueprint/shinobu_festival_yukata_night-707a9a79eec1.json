@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_festival_yukata_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1451,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "浴衣并肩牵手走过摊位，烟花亮起时侧头微笑",
     "adult": false,
@@ -26,15 +26,14 @@
     "mood": "并肩温暖、人海心动",
     "negativeTokens": [],
     "outfitId": "festive_purple_yukata",
-    "promptProse": "Shinobu reaches for her companion's hand through the festival crowd as fireworks flash above the warm lanterns.",
+    "promptProse": "Shinobu takes her companion's hand at the crowded festival crossing and turns toward them with a small smile. A cool flash of fireworks touches her cheek above the warm glow of the lanterns.",
     "promptTokens": [
-      "kochou_shinobu",
-      "yukata",
-      "butterfly hair ornament",
+      "companion",
       "holding hands",
       "festival",
       "lantern",
-      "fireworks"
+      "fireworks",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

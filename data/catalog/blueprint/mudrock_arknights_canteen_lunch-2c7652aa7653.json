@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_canteen_lunch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 580,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端着餐盘，银发扎起",
     "camera": "medium shot",
@@ -20,12 +20,9 @@
     "mood": "日常安宁",
     "negativeTokens": [],
     "outfitId": "clay_artisan_apron",
-    "promptProse": "Mudrock carries her full lunch tray between the tables, searching for a seat among the other diners.",
+    "promptProse": "She holds the full tray level with both hands and looks toward the viewer's invitation between the occupied canteen tables.",
     "promptTokens": [
       "ponytail",
-      "white shirt",
-      "rolled sleeves",
-      "apron",
       "food tray",
       "potatoes",
       "sausage",

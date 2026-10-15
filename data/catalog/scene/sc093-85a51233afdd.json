@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc093",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She looks ahead beneath the shared umbrella while keeping her arm linked with the viewer's.",
+    "animaCaption": "Under the umbrella held by the viewer, she links her arm through theirs and keeps her face turned ahead; streetlight reflected from the puddles reveals the blush at her ear.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "伞下双人半身中景",
     "category": "恋爱",

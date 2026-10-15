@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_train_window_earphones",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1440,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_train_window_earphones",
     "title": "加藤惠 · 傍晚通勤电车靠窗的晚霞·「耳机里……在放着我们游戏的主题曲哦」",
@@ -16,7 +16,7 @@
     "action": "靠窗侧坐，戴耳机从手机抬眼凝望窗外晚霞",
     "timeOfDay": "黄昏傍晚",
     "lighting": "夕阳透过车窗切出的大块金橙与薄紫光芒",
-    "camera": "medium shot, train window seat, earphones, sunset glow",
+    "camera": "medium shot",
     "mood": "宁静温柔、思绪漫步",
     "sceneTags": [
       "train_interior",
@@ -28,11 +28,8 @@
       "calm",
       "looking_out_window"
     ],
-    "promptProse": "Megumi lifts her eyes from her phone to watch the sunset through the train window.",
+    "promptProse": "Her phone rests loosely in her hands as she turns toward the violet-orange sunset beyond the train window, white earphone wires falling over her collar.",
     "promptTokens": [
-      "katou_megumi",
-      "cardigan",
-      "school uniform",
       "earphones",
       "phone",
       "train window",

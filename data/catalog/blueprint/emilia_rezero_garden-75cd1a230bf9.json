@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_garden",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 444,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "emilia_rezero_garden",
     "title": "爱蜜莉雅 · 宅邸花园",
@@ -27,12 +27,9 @@
       "fantasy",
       "outdoors"
     ],
-    "promptProse": "She laughs as the small spirit Puck hovers close to her hands among the garden flowers.",
+    "promptProse": "Seated by the stone table, she laughs toward the arriving viewer as Puck hovers above her open hands. Warm garden sunlight falls across the roses and waiting tea.",
     "promptTokens": [
       "1girl",
-      "white dress",
-      "purple trim",
-      "ribbon",
       "sitting",
       "spirit",
       "garden",

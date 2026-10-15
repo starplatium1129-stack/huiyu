@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_sfw_b7_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 299,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kama_fate_sfw_b7_05",
     "title": "迦摩 · 银河海滩的冰镇果汁",
@@ -30,13 +30,11 @@
       "soft_expression",
       "noon"
     ],
-    "promptProse": "Adult Kama frowns at her overly sweet drink, then smiles despite herself when a dolphin leaps beyond her beach chair.",
+    "promptProse": "Kama reclines with her rejected juice beside the beach chair, smiling at a dolphin leaping beyond the shore. Bright noon light scatters ruby reflections across the water.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Kama",
-      "swimsuit",
-      "sarong",
       "juice",
       "deck chair",
       "beach",

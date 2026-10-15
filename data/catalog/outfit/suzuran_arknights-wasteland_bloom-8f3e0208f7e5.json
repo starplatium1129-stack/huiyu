@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/wasteland_bloom",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 371,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
@@ -12,13 +12,13 @@
       "id": "wasteland_bloom",
       "isDefault": false,
       "name": "弃土花开（废土探索）",
-      "prose": "a moss green and khaki explorer coat with a bucket hat, a heavy backpack and hiking boots, her nine tails poking out from behind",
+      "prose": "a moss-green explorer coat with khaki trim, a bucket hat, a backpack and hiking boots",
       "tokens": [
-        "explorer",
-        "khaki",
-        "green_clothes",
+        "green explorer coat",
+        "khaki trim",
+        "bucket hat",
         "backpack",
-        "hiking_boots"
+        "hiking boots"
       ]
     }
   }

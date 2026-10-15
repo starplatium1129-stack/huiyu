@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_corridor_instrument",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 859,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱贝斯盒匆匆赶路",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, tracking feel",
+    "camera": "medium shot",
     "category": "乐队日常",
     "characterId": "kyouyama_kazusa",
     "coverageTags": [
@@ -26,10 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "Kazusa hurries through the corridor carrying her bass case close.",
+    "promptProse": "She hurries through the sunlit corridor with the bass case against her side, one hand gripping its shoulder strap as she notices the viewer ahead.",
     "promptTokens": [
-      "school uniform",
-      "hood",
       "bass case",
       "hurrying",
       "school hallway"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_rooftop_moon_transform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 832,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "变身光效环绕，星尘升起",
     "adult": false,
@@ -21,12 +21,10 @@
     "promptProse": "She turns toward the viewer as rings of stardust rise around her feet. The wand and dress glow against the moonlit skyline.",
     "promptTokens": [
       "rooftop",
-      "magical girl",
-      "pink and white dress",
-      "fairy wings",
       "star wand",
       "magic circle",
-      "full moon"
+      "full moon",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

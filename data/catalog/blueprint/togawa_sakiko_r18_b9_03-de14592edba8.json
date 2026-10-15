@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_r18_b9_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1760,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "togawa_sakiko_r18_b9_03",
     "title": "丰川祥子 · 打工更衣室白衬衫黑丝刮破的狼狈事故 ·「不许看！……就算我沦落到打工，也不是你能随意嘲笑的！」",
@@ -14,7 +14,7 @@
     "location": "客服中心狭窄员工更衣室·深夜换班",
     "action": "撑更衣柜塌腰回眸双手扯黑丝破洞，制服短裙掀起露白臀，泪眼咬唇抗拒屈辱",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "dim overhead locker-room light",
     "camera": "intimate horizontal medium shot",
     "mood": "意外失控与羞赧",
     "sceneTags": [

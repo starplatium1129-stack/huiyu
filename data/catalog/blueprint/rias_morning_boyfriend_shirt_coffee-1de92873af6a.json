@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_morning_boyfriend_shirt_coffee",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1275,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rias_morning_boyfriend_shirt_coffee",
     "title": "莉雅丝 · 晨光微熹的大号衬衫",
@@ -15,7 +15,7 @@
     "action": "身着宽大白衬衫赤足立于灶台旁，双手捧着热咖啡杯侧首回眸温柔微笑",
     "timeOfDay": "清晨",
     "lighting": "柔和晨曦丁达尔光线透过薄纱",
-    "camera": "cowboy shot, eye level, environmental portrait",
+    "camera": "full-body shot, eye level",
     "mood": "温馨甜美",
     "sceneTags": [
       "kitchen",
@@ -29,14 +29,10 @@
     ],
     "promptProse": "She turns toward her companion with a coffee mug in both hands; morning light crosses the kitchen counter.",
     "promptTokens": [
-      "Rias Gremory",
-      "white shirt",
-      "off shoulder",
-      "barefoot",
       "holding cup",
       "coffee",
       "kitchen",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_sauce_wipe_flustered_reaction",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 223,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_sauce_wipe_flustered_reaction",
     "title": "黑呆 · 擦拭唇角酱汁的瞳孔地震",
@@ -15,7 +15,7 @@
     "action": "同行者伸手擦去唇角番茄酱，黑呆停住动作，双手揪住桌布，惊讶地睁大眼睛",
     "timeOfDay": "午后",
     "lighting": "窗外明媚阳光斜照在瞬间通红的白皙脸庞上",
-    "camera": "medium close-up, eye level, intense flustered gap moe",
+    "camera": "medium shot, eye level, pov",
     "mood": "反差暴击",
     "sceneTags": [
       "fast_food_booth",
@@ -28,15 +28,14 @@
       "window_light",
       "medium_closeup"
     ],
-    "promptProse": "A companion's sleeved hand wipes ketchup from her mouth while her own hands bunch the sunlit tablecloth.",
+    "promptProse": "Only the offscreen viewer's sleeved hand enters to wipe ketchup from her lips; she stares wide-eyed, both hands bunching the sunlit tablecloth.",
     "promptTokens": [
-      "Saber Alter",
-      "biker jacket",
       "ketchup",
       "hands on table",
       "blush",
       "cafe",
-      "close-up"
+      "medium shot",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +45,6 @@
       "flustered",
       "tsundere"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

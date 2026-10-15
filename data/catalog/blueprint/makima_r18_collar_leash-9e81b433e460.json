@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_collar_leash",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 421,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makima_r18_collar_leash",
     "title": "玛奇玛 · 支配者的游戏·项圈与温柔低语",
@@ -12,10 +12,10 @@
     "characterId": "makima",
     "description": "【玛奇玛 · 项圈与牵引】幽暗的卧房厚地毯上，颈间戴着皮质铆钉项圈的玛奇玛端正地跪坐在你面前，饱满的身段在微弱烛光下散发着极致的肉感与支配的反差。她将牵引绳递到你手里，唇角泛起玩味的弧度——「今晚……就把主导权暂时交到你的手里。可千万不要让我失望哦。」",
     "location": "高级公寓极简风客厅地毯",
-    "action": "跪坐在厚地毯上，颈间皮制铆钉项圈与牵引绳递到你面前，唇角挂着玩味的笑意",
+    "action": "跪在地毯上，双手各持牵引绳一端，将绳带绕过胸前与抬起的一侧大腿",
     "timeOfDay": "深夜",
     "lighting": "dim candlelight",
-    "camera": "slightly low angle, leash leading line, seductive dominant expression",
+    "camera": "cowboy shot, slightly low angle",
     "mood": "极致掌控与支配",
     "sceneTags": [
       "bedroom",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_night_sky_balcony_yuuji_thought",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1169,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kazuki_night_sky_balcony_yuuji_thought",
     "title": "风见一姬 · 繁星穹顶下的月下凝思",
@@ -31,9 +31,8 @@
       "white_dress",
       "wind"
     ],
-    "promptProse": "Kazuki tucks a strand behind her ear while leaning on the mountain balcony railing and watching the stars.",
+    "promptProse": "Kazuki tucks a strand behind her ear and leans against the glass balcony rail, watching the stars. Moonlight picks out the edge of her white dress above the dark mountain slope.",
     "promptTokens": [
-      "white dress",
       "tucking hair",
       "leaning",
       "railing",

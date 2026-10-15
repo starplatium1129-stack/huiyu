@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1613,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_01",
     "title": "春日野穹 · 夏日乡道的白裙",
@@ -33,7 +33,6 @@
     "promptProse": "Sora walks along the country road with her rabbit plush held behind her back, rice fields bright in the summer sun.",
     "promptTokens": [
       "kasugano_sora",
-      "white dress",
       "rabbit plush",
       "hands behind back",
       "road",

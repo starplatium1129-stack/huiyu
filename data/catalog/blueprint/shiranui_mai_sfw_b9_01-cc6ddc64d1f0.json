@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1737,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_01",
     "title": "不知火舞 · 道场晨训的扇舞",
@@ -16,7 +16,7 @@
     "action": "清晨道场，不知火舞穿着系好的红色训练上衣与白色长裤，完成一遍受控扇舞后利落合扇",
     "timeOfDay": "清晨",
     "lighting": "morning_light",
-    "camera": "medium shot",
+    "camera": "full body",
     "mood": "自然日常",
     "sceneTags": [
       "dojo",
@@ -32,12 +32,9 @@
     ],
     "promptProse": "Mai closes her fan and settles into a balanced stance after practice in the morning-lit dojo.",
     "promptTokens": [
-      "shiranui_mai",
-      "red jacket",
-      "white trousers",
       "folding fan",
       "dojo",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [
       "opponent",

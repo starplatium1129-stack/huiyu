@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_03",
     "title": "八奈见杏菜 · 家庭餐厅薯条作战会议",
@@ -30,10 +30,9 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Yanami stops mid-bite at her friend's news, then notices the cooled fries beneath the warm booth lights.",
+    "promptProse": "Yanami freezes with a fry halfway to her mouth, eyes widening at her friend's news across the restaurant table. The warm booth lamps shine on the shared platter and the untouched drink beside it.",
     "promptTokens": [
-      "yanami_anna",
-      "school uniform",
+      "friend",
       "fries",
       "drink",
       "restaurant",

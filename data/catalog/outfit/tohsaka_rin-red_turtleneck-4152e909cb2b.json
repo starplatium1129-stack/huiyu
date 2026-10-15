@@ -1,21 +1,19 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/red_turtleneck",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "red_turtleneck",
       "name": "红高领",
-      "prose": "her casual red turtleneck with a black skirt",
+      "prose": "a red turtleneck and black skirt",
       "tokens": [
-        "turtleneck",
-        "red_clothes",
-        "black_skirt",
-        "jacket"
+        "red turtleneck",
+        "black skirt"
       ],
       "isDefault": false,
       "default": false

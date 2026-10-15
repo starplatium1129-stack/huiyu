@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_bookstore",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_bookstore",
     "title": "樱岛麻衣 · 街角书店",
@@ -15,7 +15,7 @@
     "action": "倚着书架，双手托住打开的文集，让书页遮住唇边，望向画面外的同行者。",
     "timeOfDay": "午后",
     "lighting": "warm pendant light from the upper right on page edges and corduroy; dimmer shelf recesses",
-    "camera": "medium shot, eye level, open book and bookshop aisle visible",
+    "camera": "medium shot, eye level",
     "mood": "沉静知性",
     "sceneTags": [
       "corner_bookstore",
@@ -30,13 +30,8 @@
       "warm_pendant_light",
       "medium_shot"
     ],
-    "promptProse": "Mai hides a smile behind her open book, eyes visible above it beside shelves warmed by the upper-right pendant light.",
+    "promptProse": "Beside the shelves, she holds the open book in both hands to hide her smile, looking over its pages toward her offscreen companion; the upper-right pendant light warms the page edges.",
     "promptTokens": [
-      "Mai",
-      "rabbit hair ornament",
-      "jacket",
-      "turtleneck",
-      "trousers",
       "book",
       "bookstore",
       "medium shot"

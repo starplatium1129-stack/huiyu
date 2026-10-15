@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/sfw_christmas_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
       "id": "sfw_christmas_winter",
       "name": "冥界送礼冬装",
-      "prose": "a warm white winter coat over a knit top and long trousers, a red scarf, gloves and boots, with a star-shaped hairpin",
+      "prose": "a white winter coat over a knit top and long trousers, with a red scarf, gloves, boots and star hairpin",
       "tokens": [
-        "white_winter_coat",
-        "knit_top",
-        "long_pants",
-        "red_scarf",
+        "white coat",
+        "sweater",
+        "pants",
+        "red scarf",
         "gloves",
         "boots",
-        "star_hairpin"
+        "star hair ornament"
       ],
       "isDefault": false,
       "default": false,

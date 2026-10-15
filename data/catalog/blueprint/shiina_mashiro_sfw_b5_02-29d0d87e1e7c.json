@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_02",
     "title": "椎名真白 · 年轮蛋糕的仪式感",
@@ -33,8 +33,6 @@
     "promptProse": "Mashiro watches the carefully centered cake with her hands on her knees, afternoon light crossing the low table.",
     "promptTokens": [
       "Mashiro Shiina",
-      "sweater",
-      "trousers",
       "baumkuchen",
       "plate",
       "low table",

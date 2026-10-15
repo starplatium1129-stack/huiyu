@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_05",
     "title": "鸢一折纸 · AST 休假海滩的测风",
@@ -16,7 +16,7 @@
     "action": "浮标旁记录风速被海鸥抢纸，追入浅水后举起找回的记录本",
     "timeOfDay": "日间",
     "lighting": "hard blue daylight softened by sea haze",
-    "camera": "medium shot, horizontal framing",
+    "camera": "full body",
     "mood": "严谨少女的意外休假",
     "sceneTags": [
       "swimsuit",
@@ -30,15 +30,12 @@
       "deadpan",
       "summer"
     ],
-    "promptProse": "Origami raises her recovered notebook beside an orange buoy after retrieving its page from a gull.",
+    "promptProse": "Standing in the shallows beside the orange buoy, she raises the recovered notebook with a composed expression, sea haze softening the bright blue daylight.",
     "promptTokens": [
-      "Origami Tobiichi",
-      "swimsuit",
-      "waist-tied jacket",
       "notebook",
       "buoy",
       "shallows",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

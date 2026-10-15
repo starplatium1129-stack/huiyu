@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "viviana_knight_chapel_candle_prayer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 687,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单膝跪在圣坛红毯前双手合十闭目祈祷，细剑横放膝前，千盏烛火环绕",
-    "camera": "wide shot, low angle, sacred grandeur",
+    "camera": "wide shot, low angle",
     "category": "圣堂祈愿",
     "characterId": "viviana_arknights",
     "coverageTags": [
@@ -22,9 +22,6 @@
     "outfitId": "candle_knight_armor",
     "promptProse": "Viviana joins her hands before the altar with her rapier laid horizontally ahead, candles and stained-glass morning light above the red carpet.",
     "promptTokens": [
-      "Viviana",
-      "armor",
-      "antlers",
       "kneeling",
       "praying",
       "rapier",

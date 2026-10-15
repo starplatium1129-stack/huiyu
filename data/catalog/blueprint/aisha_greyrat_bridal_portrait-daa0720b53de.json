@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_bridal_portrait",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 488,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "aisha_greyrat_bridal_portrait",
     "title": "爱夏·花廊下的回眸",
@@ -14,7 +14,7 @@
     "timeOfDay": "傍晚",
     "lighting": "柔和的金色夕光",
     "mood": "优雅而清醒",
-    "camera": "medium shot",
+    "camera": "cowboy shot",
     "category": "唯美",
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -25,12 +25,8 @@
       "adult_portrait"
     ],
     "description": "花廊下，爱夏身体朝向石径，转头望向镜头，一只手轻扶被微风带起的头纱边缘，另一只手自然垂在腰侧。象牙白蕾丝长袖与象牙白腰带呼应白色发带。镜头取至大腿上部，白花只沿画面两侧形成边框，夕阳透过头纱，脸部保留柔和反光。",
-    "promptProse": "Adult Aisha looks back beneath the flowering arbor while catching the lifted veil. Low sunlight passes through the veil.",
+    "promptProse": "Adult Aisha looks back beneath the flowering arbor, catching the lifted veil with one hand while the other rests at her waist. Low sunlight shines through the veil and softly reflects onto her face.",
     "promptTokens": [
-      "adult",
-      "wedding dress",
-      "veil",
-      "lace sleeves",
       "flowers",
       "looking back",
       "sunset",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_morning_ledgers",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 484,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "aisha_greyrat_morning_ledgers",
     "title": "爱夏·晨光中的账目核对",
@@ -25,17 +25,13 @@
       "fantasy"
     ],
     "description": "晨光从书桌左侧照入。爱夏坐在桌后，左手压住摊开的账册，右手的羽毛笔停在刚圈出的数字上，眉梢微挑。深褐连衣裙与白色围裙保持整齐；前景的收据束与后方的分类书架交代宅邸事务，焦点落在脸、笔尖和账页之间。",
-    "promptProse": "Adult Aisha holds the ledger flat with her left hand and touches a disputed entry with her quill. Morning window light crosses the open page.",
+    "promptProse": "Adult Aisha holds the ledger flat with her left hand, her right-hand quill paused over the circled entry as one eyebrow lifts. Morning light from the left crosses the page and the nearby receipt bundle.",
     "promptTokens": [
-      "adult",
-      "maid",
-      "brown dress",
-      "white apron",
       "ledger",
       "quill",
       "desk",
       "morning",
-      "upper body"
+      "medium shot"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",

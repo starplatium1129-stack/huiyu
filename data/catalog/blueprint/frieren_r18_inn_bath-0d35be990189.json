@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_inn_bath",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "frieren_r18_inn_bath",
     "title": "芙莉莲 · 旅店浴后·千年的精灵与炉火",
@@ -15,7 +15,7 @@
     "action": "刚沐浴完披着半敞的白色法袍坐在床沿，湿润白发披散，精灵尖耳泛着淡粉微红",
     "timeOfDay": "夜晚",
     "lighting": "壁炉熊熊柴火映出温暖橙红光影，营造出极为私密的暖意",
-    "camera": "medium full shot, fireplace warm glow, intimate wooden inn interior",
+    "camera": "cowboy shot, eye level",
     "mood": "私密温存",
     "sceneTags": [
       "wooden_inn",
@@ -27,7 +27,7 @@
       "barefoot",
       "5_toes"
     ],
-    "promptProse": "After bathing, she props one heel on the mattress and dries her inner thigh with a folded towel.",
+    "promptProse": "After bathing, she props one heel on the mattress and dries her inner thigh with a folded towel. Fireplace light warms the open white robe and the wooden bed frame.",
     "promptTokens": [
       "1girl",
       "solo",

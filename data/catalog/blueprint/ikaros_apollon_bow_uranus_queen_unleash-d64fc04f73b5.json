@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_apollon_bow_uranus_queen_unleash",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1210,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在空中完全拉满金色阿波罗光之巨弓，深红光子翼喷薄能量，眼神冷静凌厉如霜",
     "camera": "dynamic low angle, sweeping wide shot, epic warhead impact",
@@ -20,10 +20,8 @@
     "mood": "毁灭霸气",
     "negativeTokens": [],
     "outfitId": "apollon_battle",
-    "promptProse": "Ikaros draws the golden Apollon bow toward an unseen target, the arrow lighting her face as crimson wings spread through the smoke.",
+    "promptProse": "Ikaros holds the golden Apollon bow in her left hand and draws its string with her right toward the unseen target. Her transformed crimson photon wings spread through smoke as the arrow lights her face.",
     "promptTokens": [
-      "armor",
-      "energy wings",
       "bow",
       "aiming",
       "flying",
@@ -47,6 +45,19 @@
     "timeOfDay": "夜晚",
     "title": "伊卡洛斯 · 空之女王阿波罗天诛之箭",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "identityTokensOverride": [
+      "ikaros",
+      "1girl",
+      "solo",
+      "pink_hair",
+      "twintails",
+      "green_eyes",
+      "metal_collar",
+      "chain",
+      "crimson photon wings",
+      "robot_ears",
+      "sora_no_otoshimono"
+    ]
   }
 }

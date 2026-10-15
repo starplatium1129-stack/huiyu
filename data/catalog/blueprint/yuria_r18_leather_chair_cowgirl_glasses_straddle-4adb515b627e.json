@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1210,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuria_r18_leather_chair_cowgirl_glasses_straddle",
     "title": "春寺由梨亚 · 办公转椅西装半褪与摘镜单人深层自抚",
@@ -19,7 +19,7 @@
     "action": "摘掉眼镜斜坐在真皮转椅上，西装短裙推至腰间，单腿跨在扶手上手指自抚，双乳摇曳嬌喘",
     "timeOfDay": "深夜",
     "lighting": "办公桌台灯柔和金光照耀在起伏的雪肤与高背真皮转椅上的流光",
-    "camera": "cowboy shot, slightly low angle looking up at flushed mature bare face, lifted skirt, and deep cleavage",
+    "camera": "cowboy shot, slightly low angle",
     "mood": "极乐沉沦",
     "sceneTags": [
       "office",
@@ -34,7 +34,7 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "Yuria rests one leg across the armrest and touches herself with her other hand, her red glasses set aside on the chair.",
+    "promptProse": "She rests one leg across the chair armrest, one hand at her breast and the other beneath her lifted skirt, her folded red glasses beside her in the desk lamp's warm light.",
     "promptTokens": [
       "open blouse",
       "lifted skirt",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ichinose_asuna/summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 520,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ichinose_asuna",
     "outfit": {
@@ -12,17 +12,12 @@
       "id": "summer_bikini",
       "isDefault": false,
       "name": "金阳沙滩系带比基尼",
-      "prose": "a brilliant white and sunny yellow string halterneck bikini highlighting her tall sun-kissed silhouette, golden belly chain, hibiscus flower pinned in her long blonde hair, and bare feet walking along the warm surf",
+      "prose": "a white-and-yellow halterneck bikini with a gold belly chain and hibiscus in her hair, worn barefoot",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "white_bikini",
+        "white and yellow bikini",
         "halterneck",
-        "belly_chain",
-        "flower",
-        "hair_flower",
-        "wet_skin",
-        "beachwear",
+        "belly chain",
+        "hibiscus hair ornament",
         "barefoot"
       ]
     }

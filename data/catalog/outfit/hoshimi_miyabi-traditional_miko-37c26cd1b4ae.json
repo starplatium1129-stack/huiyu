@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/traditional_miko",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 588,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
@@ -12,20 +12,15 @@
       "id": "traditional_miko",
       "isDefault": false,
       "name": "重樱御守仪典巫女服",
-      "prose": "traditional sacred Shinto miko priestess ceremonial robes: crisp snow-white kimono top with wide vermilion borders, deep crimson pleated hakama pants, braided shimenawa belt with golden paper charms, white tabi socks, and wooden geta sandals",
+      "prose": "a white kimono top with vermilion borders and wide sleeves, crimson pleated hakama, a braided shimenawa belt with gold paper charms, white tabi and wooden geta",
       "tokens": [
         "miko",
-        "kimono",
-        "white_kimono",
-        "wide_sleeves",
-        "hakama",
-        "hakama_pants",
-        "red_hakama",
+        "white kimono",
+        "wide sleeves",
+        "red hakama",
         "shimenawa",
         "tabi",
-        "geta",
-        "traditional_clothes",
-        "shrine"
+        "geta"
       ]
     }
   }

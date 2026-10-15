@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "asuma_toki/candc_maid",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 497,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "asuma_toki",
     "outfit": {
@@ -12,16 +12,14 @@
       "id": "candc_maid",
       "isDefault": true,
       "name": "C&C女仆特工装",
-      "prose": "Millennium C&C high-cut maid combat suit with a headset, thigh-high boots, small armor accents and a short skirt, cool maid agent look",
+      "prose": "her Millennium C&C combat maid uniform with a short skirt, headset, thigh-high boots and compact armor pieces",
       "tokens": [
         "maid",
-        "combat_suit",
-        "high_cut",
+        "combat suit",
         "headset",
-        "thighhigh_boots",
+        "thigh boots",
         "armor",
-        "short_skirt",
-        "millennium"
+        "short skirt"
       ]
     }
   }

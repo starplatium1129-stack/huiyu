@@ -247,7 +247,7 @@ export function removeIndoorSkyPhrases(environment: string[]): void {
 
 const ENVIRONMENT_REWRITES: Readonly<Record<string, string>> = Object.freeze({
   classroom: 'inside a classroom', classroom_window: 'beside a classroom window',
-  movie_theater: 'inside a dark movie theater', cafe: 'inside a cafe', cafe_interior: 'inside a cafe',
+  movie_theater: 'inside a dark movie theater', cafe: 'at a cafe', cafe_interior: 'inside a cafe',
   bedroom: 'inside a bedroom', living_room: 'inside a living room', kitchen: 'inside a kitchen',
   bathroom: 'inside a bathroom', library: 'inside a library', shrine: 'at a shrine',
   backstage: 'indoors backstage', supermarket: 'inside a supermarket', aquarium: 'inside an aquarium',

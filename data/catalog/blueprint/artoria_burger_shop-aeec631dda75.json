@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_burger_shop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "artoria_burger_shop",
     "title": "阿尔托莉雅 · 双手捧稳的双层汉堡",
@@ -31,12 +31,9 @@
       "sitting_at_table",
       "window_light"
     ],
-    "promptProse": "She leans forward to bite the burger held in both hands. Daylight from the window reaches the tray and cup on her table.",
+    "promptProse": "Seated at the table, she supports the burger on both sides and leans forward for a careful bite, her eyes fixed on the food. Soft window light reaches her pleased expression and the plain tray beside the drink.",
     "promptTokens": [
       "restaurant",
-      "cardigan",
-      "collared shirt",
-      "skirt",
       "cheeseburger",
       "eating",
       "drink",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_swimsuit_sunset",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 904,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "刚从海里上岸回望",
     "adult": false,
@@ -26,12 +26,11 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Mika sits on the sand after swimming and leans against the teacher beside her, a towel around her shoulders in the sunset.",
+    "promptProse": "Mika sits on the sand with the teacher to her right, resting her head on their shoulder beneath her towel. Golden sunset outlines their shoulders against the pink-violet sea.",
     "promptTokens": [
       "2people",
       "Mika",
       "teacher",
-      "pink white swimsuit",
       "towel",
       "wet hair",
       "leaning on shoulder",

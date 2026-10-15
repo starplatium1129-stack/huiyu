@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_director_studio_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "furina_director_studio_night",
     "title": "芙宁娜 · 深夜剧本案头创作",
@@ -15,7 +15,7 @@
     "action": "坐在剧本桌前，一手压手稿，另一手将羽毛笔杆末端抵在唇边思考，笔尖远离嘴唇。",
     "timeOfDay": "night",
     "lighting": "warm light from a green-shaded desk lamp",
-    "camera": "medium shot, slightly high angle, manuscript and face visible",
+    "camera": "medium shot, slightly high angle",
     "mood": "专注宁静",
     "sceneTags": [
       "theatre_studio",
@@ -35,10 +35,6 @@
     ],
     "promptProse": "She presses revised script pages flat while touching the blunt quill end to her lips, its inked nib pointing toward the inkwell.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blue cardigan",
-      "beret",
       "quill",
       "manuscript",
       "inkwell",

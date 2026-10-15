@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_frozen_ruins",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tokisaki_kurumi_frozen_ruins",
     "title": "时崎狂三 · 时间停止的废墟",
@@ -31,8 +31,6 @@
     ],
     "promptProse": "Kurumi walks through suspended debris under her parasol, a golden clock lighting the nearest stone fragment.",
     "promptTokens": [
-      "Kurumi",
-      "gothic dress",
       "lace parasol",
       "floating rubble",
       "ruins",

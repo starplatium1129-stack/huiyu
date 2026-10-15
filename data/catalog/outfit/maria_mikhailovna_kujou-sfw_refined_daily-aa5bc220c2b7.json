@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "maria_mikhailovna_kujou/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 458,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "maria_mikhailovna_kujou",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "鼠尾草绿温室裙装",
-      "prose": "a sage-green ankle-length cotton dress with long sleeves, a cream cropped cardigan and simple brown flats",
+      "prose": "a long-sleeved sage-green ankle-length cotton dress, a cropped cream cardigan and brown flats",
       "tokens": [
-        "green_dress",
-        "long_sleeves",
-        "long_dress",
-        "cream_cardigan",
-        "flat_shoes"
+        "sage green dress",
+        "long sleeves",
+        "cream cardigan",
+        "brown flats"
       ],
       "isDefault": false,
       "isNsfw": false

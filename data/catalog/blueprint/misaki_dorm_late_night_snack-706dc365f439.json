@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "misaki_dorm_late_night_snack",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 405,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "系好长睡袍盘坐地毯，一手递出甜点叉，另一手扶矮桌边，含笑邀请分享蛋糕。",
     "adult": false,
     "animaStyleHint": "anime_slice_of_life",
-    "camera": "medium shot, eye level, seated environmental portrait",
+    "camera": "medium shot, eye level",
     "category": "专属羁绊",
     "characterId": "shokuhou_misaki",
     "coverageTags": [
@@ -29,12 +29,7 @@
     "outfitId": "sfw_silk_dorm_robe",
     "promptProse": "Misaki offers a dessert fork while steadying herself on the low table, inviting the viewer to share the cake.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blue robe",
-      "tied sash",
-      "pajamas",
-      "cross-legged",
+      "crossed legs",
       "dessert fork",
       "strawberry cake",
       "low table"

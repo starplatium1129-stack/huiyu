@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_summer_beach_bikini_spade_splash",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1266,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单脚踢起浪花水花嬉闹，珊瑚粉比基尼衬托紧致身材，小虎牙绽放灿烂笑容",
     "camera": "full body, 3/4 dynamic action angle, splashing water foreground",
@@ -20,9 +20,8 @@
     "mood": "元气活力",
     "negativeTokens": [],
     "outfitId": "summer_bikini",
-    "promptProse": "Nana kicks spray toward the viewer, keeping her other foot planted in the clear shallows while her tail splashes behind her.",
+    "promptProse": "Nana kicks a fan of water toward the viewer while her other foot stays planted in the clear shallows. Sunlight catches the scattered drops, and her tail leaves a small ripple behind her.",
     "promptTokens": [
-      "sports bikini",
       "laughing",
       "kicking",
       "splash",

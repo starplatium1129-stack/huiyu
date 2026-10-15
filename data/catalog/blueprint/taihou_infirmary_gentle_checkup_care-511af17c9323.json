@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_infirmary_gentle_checkup_care",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1078,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "taihou_infirmary_gentle_checkup_care",
     "title": "大凤 · 私密保健室的贴身诊疗",
@@ -19,7 +19,7 @@
     "action": "手持听诊器探身贴近，护士裙领口大敞，巨乳贴近指挥官手臂，眼神迷离",
     "timeOfDay": "下午",
     "lighting": "白布帘过滤出的柔和苍白冷光与肌肤粉红暖色",
-    "camera": "medium close-up, pov angle, extreme physical proximity",
+    "camera": "medium shot, pov, face and stethoscope hand visible",
     "mood": "暧昧撩人",
     "sceneTags": [
       "infirmary",
@@ -31,18 +31,15 @@
       "whispering",
       "twintails"
     ],
-    "promptProse": "Taihou places the stethoscope against the Commander's chest, pale curtain-filtered light falling across her face.",
+    "promptProse": "Taihou holds the stethoscope against the viewer's chest, leaning close to listen with her free hand resting on the examination bed. Pale light filtered through the curtain falls across her attentive face.",
     "promptTokens": [
-      "Taihou",
-      "nurse",
-      "stethoscope",
       "examination bed",
       "infirmary",
       "pov",
-      "close-up"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

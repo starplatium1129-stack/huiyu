@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc280",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Natsume presents a pastry in a folded kraft-paper pouch with both hands. Wooden cup racks line the wall behind the counter.",
+    "animaCaption": "Natsume offers the pastry toward the viewer in a folded kraft-paper pouch held between both hands; soft cafe light warms her smile in front of the wooden cup racks.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_desk_offering_rear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 262,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_nsfw_desk_offering_rear",
     "title": "伊什塔尔 · 供品桌上的参拜·「供品检查……由内到外哦♪」",
@@ -15,7 +15,7 @@
     "action": "撑供品桌塌腰翘臀更衣整理受力，金链内衣勒出肉感，红瞳含泪回眸微嗔",
     "timeOfDay": "黄昏",
     "lighting": "黄昏橙光斜洒供品与肌肤",
-    "camera": "horizontal POV, leaning over offering table, arched spine, waist chain, looking back, dusk scene",
+    "camera": "wide shot, first-person view, from behind",
     "mood": "女神傲娇、供品参拜",
     "sceneTags": [
       "nsfw",
@@ -28,7 +28,7 @@
       "exposed_pussy",
       "biting_lip"
     ],
-    "promptProse": "Adult Ishtar pushes the offerings aside and braces herself on the table, looking back with her skirt gathered above the gold chains at her hips.",
+    "promptProse": "Adult Ishtar braces herself on the offering table beside the displaced fruit, looking back toward the viewer with her skirt gathered above the gold chains at her hips.",
     "nsfwProse": "",
     "promptTokens": [
       "adult",

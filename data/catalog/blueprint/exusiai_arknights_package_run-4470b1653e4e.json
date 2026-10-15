@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_package_run",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 629,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱着包裹全力奔跑，衣摆飞扬",
-    "camera": "dynamic low angle",
+    "camera": "full body, from below",
     "category": "泰拉都市",
     "characterId": "exusiai_arknights",
     "coverageTags": [
@@ -20,18 +20,16 @@
     "mood": "风风火火",
     "negativeTokens": [],
     "outfitId": "red_delivery_windbreaker",
-    "promptProse": "She races through the crowded Lungmen lane, holding the sealed parcel firmly in both arms.",
+    "promptProse": "She races between the pedestrians and lane obstacles with the sealed parcel held firmly in both arms. Bright daylight catches her flying red windbreaker above the shaded Lungmen street.",
     "promptTokens": [
       "1girl",
       "crowd",
       "halo",
-      "red jacket",
-      "cargo pants",
-      "sneakers",
       "running",
       "parcel",
       "street",
       "day",
+      "full body",
       "from below"
     ],
     "recommendedSize": "1152x1536",

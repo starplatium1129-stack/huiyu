@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_dreamscape_carnival_masks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1042,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sparkle_dreamscape_carnival_masks",
     "title": "花火 · 匹诺康尼梦境的千面狂欢",
@@ -29,16 +29,14 @@
       "smirk",
       "playful"
     ],
-    "promptProse": "Sparkle lifts her mask above the clock plaza while translucent doubles and dream goldfish gather behind her in neon light.",
+    "promptProse": "Sparkle holds her fox mask beside her forehead, smiling down over the neon clock plaza. Translucent copies and red dream goldfish drift behind her through the falling carnival confetti.",
     "promptTokens": [
-      "Sparkle",
-      "kimono dress",
-      "fox mask",
       "illusion doubles",
       "goldfish",
       "floating",
       "confetti",
       "night",
+      "cowboy shot",
       "low angle"
     ],
     "negativeTokens": [],

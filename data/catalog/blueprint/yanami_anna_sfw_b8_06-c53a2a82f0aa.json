@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1669,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_06",
     "title": "八奈见杏菜 · 夏日祭的苹果糖与金鱼",
@@ -15,7 +15,7 @@
     "location": "夏祭捞水球摊旁",
     "action": "浴衣祭典，她双手分别拿着苹果糖与捞金鱼袋，站在捞水球的摊位前陷入幸福的两难",
     "timeOfDay": "傍晚或夜间",
-    "lighting": "delighted, lantern",
+    "lighting": "warm lantern light and fireworks",
     "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
@@ -31,11 +31,8 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Yanami pauses at the balloon stall with both hands full of treats and looks up at the fireworks.",
+    "promptProse": "Yanami looks up from the balloon stall with a candy apple in one hand and a goldfish bag in the other. Fireworks brighten her face above the warm lanterns, catching a small trace of sugar beside her smile.",
     "promptTokens": [
-      "yanami_anna",
-      "floral yukata",
-      "yellow obi",
       "candy apple",
       "goldfish bag",
       "festival",

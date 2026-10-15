@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1468,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱粉色灯笼写下分享美食的愿望，将绘马举向镜头",
     "adult": false,
@@ -23,10 +23,8 @@
     "mood": "恋柱把幸福愿望写给所有人",
     "negativeTokens": [],
     "outfitId": "sfw_festival",
-    "promptProse": "Mitsuri holds a pink lantern and lifts her newly written ema toward the viewer at the shrine festival.",
+    "promptProse": "Mitsuri holds the pink lantern in one hand and raises the finished ema toward the viewer with the other. Its warm light reaches the wooden plaque beneath the evening sky.",
     "promptTokens": [
-      "floral yukata",
-      "pink obi",
       "lantern",
       "ema",
       "shrine",

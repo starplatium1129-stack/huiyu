@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1534,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_02",
     "title": "宝多六花 · 电车里的唱片纸袋",
@@ -16,7 +16,7 @@
     "action": "扶正纸袋里滑出的唱片封套，安心靠回座位。",
     "timeOfDay": "afternoon",
     "lighting": "soft passing daylight",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "train_interior",
@@ -30,9 +30,6 @@
     ],
     "promptProse": "Rikka catches a slipping record sleeve from the bag on her knees as passing daylight crosses the train window.",
     "promptTokens": [
-      "Rikka Takarada",
-      "denim jacket",
-      "trousers",
       "record sleeve",
       "train",
       "medium shot"

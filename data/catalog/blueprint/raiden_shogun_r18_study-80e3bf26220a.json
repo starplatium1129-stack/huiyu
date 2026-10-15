@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_study",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raiden_shogun_r18_study",
     "title": "雷电将军 · 书斋墨夜",
@@ -15,7 +15,7 @@
     "action": "独自侧倚书斋软垫，里衣滑至腰际，一手撑身、一手探入衣摆自抚，紫电沿长辫与古卷游走",
     "timeOfDay": "夜晚",
     "lighting": "warm paper lantern light and soft shadows",
-    "camera": "intimate medium close-up, side view",
+    "camera": "medium shot, side view, floor cushions and both hands visible",
     "mood": "慵懒书卷气",
     "sceneTags": [
       "writing_study",

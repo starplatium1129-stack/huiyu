@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_lunar_tear_field_blindfold_touch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1114,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yorha_2b_lunar_tear_field_blindfold_touch",
     "title": "2B · 月之泪花海的微风轻拂",
@@ -19,7 +19,7 @@
     "action": "单膝跪在纯白花海中，纤手轻抚眼罩边缘，发丝与花瓣在微风中轻舞",
     "timeOfDay": "上午",
     "lighting": "天顶裂缝投射下的神圣纯白圣光柱与花瓣发光微尘",
-    "camera": "medium close-up, 3/4 front view, ethereal cinematic glow",
+    "camera": "medium shot, three-quarter front view, kneeling figure and flowers visible",
     "mood": "神圣凄美",
     "sceneTags": [
       "flower_field",
@@ -31,15 +31,12 @@
       "god_rays",
       "peaceful"
     ],
-    "promptProse": "2B lifts her right fingertips to the blindfold among white flowers, ceiling-fissure light reflected over her glove.",
+    "promptProse": "2B kneels among the white Lunar Tears and touches the edge of her blindfold with her right fingertips. Light from the ceiling fissure reaches her glove and the blossoms moving beside her black skirt.",
     "promptTokens": [
-      "2B",
-      "YoRHa dress",
-      "blindfold",
       "kneeling",
       "Lunar Tears",
       "cave",
-      "close-up"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

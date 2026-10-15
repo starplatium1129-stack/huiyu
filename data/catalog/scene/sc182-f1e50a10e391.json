@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc182",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 179,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "She lies prone on the honeymoon bed, pressing the translucent veil against her cheek while looking toward the viewer.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -35,7 +35,7 @@
       "lying_prone",
       "rose_petals",
       "honeymoon_suite",
-      "full_body"
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

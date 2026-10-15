@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rooftop_wind",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 846,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "迎风站立警戒远方",
     "adult": false,
@@ -29,12 +29,11 @@
     "promptProse": "Hina holds her cap against the rooftop wind while the teacher places a blanket around her shoulders.",
     "promptTokens": [
       "Hina",
-      "military coat",
       "cap",
       "blanket",
       "rooftop",
       "night",
-      "low angle",
+      "from below",
       "wide shot"
     ],
     "recommendedSize": "1152x1536",

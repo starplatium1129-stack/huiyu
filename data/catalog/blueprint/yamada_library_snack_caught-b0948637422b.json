@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_library_snack_caught",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yamada_library_snack_caught",
     "title": "山田杏奈 · 图书馆书架死角偷吃薯片的受惊回眸·「市川……嘘！不许告诉图书委员！」",
@@ -16,7 +16,7 @@
     "action": "蹲在书架间，一手藏薯片袋，另一手竖指示意安静，嘴里还含着零食。",
     "timeOfDay": "noon",
     "lighting": "soft library window light",
-    "camera": "medium shot, eye level, action and face visible",
+    "camera": "cowboy shot, eye level",
     "mood": "吃货反差萌、可爱爆棚",
     "sceneTags": [
       "library",
@@ -32,15 +32,13 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Yamada hides her snack bag as her companion enters the aisle and raises a finger to her lips, her cheeks still full.",
+    "promptProse": "Crouching beside the shelves, she hides the snack bag behind her with one hand and raises the other index finger to her lips, looking toward her companion at the aisle entrance in soft window light.",
     "promptTokens": [
-      "Anna Yamada",
-      "cardigan",
-      "school uniform",
       "chips",
       "finger to mouth",
+      "puffed cheeks",
       "library",
-      "medium shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

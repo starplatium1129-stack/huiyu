@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "violet_morning_cafe_letter_writing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1384,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在白色铁艺椅上，身前摆放着复古打字机，双手端正托起写好的信纸递向你，面带温柔微笑",
     "adult": false,
     "animaStyleHint": "anime_slice_of_life",
-    "camera": "eye level medium close-up, girlfriend POV, antique stationery aesthetic, sunlit warmth",
+    "camera": "medium shot, eye level, letter and typewriter visible",
     "category": "现代日常",
     "characterId": "violet_evergarden",
     "coverageTags": [
@@ -25,16 +25,12 @@
     "mood": "宁静优雅、甜润治愈",
     "negativeTokens": [],
     "outfitId": "doll_cafe_no_parasol",
-    "promptProse": "Violet offers the finished letter with both mechanical hands across the morning cafe table.",
+    "promptProse": "Violet offers the finished letter toward the viewer with both silver hands across the cafe table, her typewriter resting behind the page. Clear morning light filters through the leaves onto the white lace tablecloth and her small smile.",
     "promptTokens": [
-      "Violet Evergarden",
-      "blue jacket",
-      "emerald brooch",
-      "mechanical hands",
       "typewriter",
       "letter",
       "cafe",
-      "close-up"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

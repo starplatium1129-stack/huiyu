@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_mining_drill_proud",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 756,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rossy_arknights_mining_drill_proud",
     "characterId": "rossy_arknights",
@@ -32,15 +32,12 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "red cloak",
-      "white dress",
-      "wolf ears",
       "bread",
       "paper bag",
       "bakery",
       "cowboy shot"
     ],
-    "promptProse": "Rossy offers a round loaf outside the bakery, warm shop light meeting daylight at the doorway.",
+    "promptProse": "Rossy cradles the warm paper bag against one arm and offers a small round loaf to the viewer with her other hand. At the bakery doorway, soft shop light meets daylight along her red hood.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

@@ -1,24 +1,20 @@
 {
   "kind": "outfit",
   "id": "akeno_himejima/casual_yukata_summer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 700,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "akeno_himejima",
     "outfit": {
       "id": "casual_yukata_summer",
       "name": "夏日紫阳花祭典浴衣",
-      "prose": "a delicate dark violet summer yukata adorned with hydrangeas and morning glories, tied with a soft lilac obi sash, exposing her graceful nape and collarbone",
+      "prose": "a dark violet yukata patterned with hydrangeas and morning glories, tied with a lilac obi",
       "tokens": [
-        "yukata",
-        "purple_yukata",
-        "floral_pattern",
-        "obi",
-        "exposed_nape",
-        "cleavage",
-        "japanese_festival"
+        "purple yukata",
+        "floral print",
+        "obi"
       ]
     }
   }

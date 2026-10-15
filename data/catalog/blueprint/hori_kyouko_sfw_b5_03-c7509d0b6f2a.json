@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1555,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_03",
     "title": "堀京子 · 厨房尝味的侧脸",
@@ -33,15 +33,14 @@
       "sunset",
       "three-quarter_view"
     ],
-    "promptProse": "Hori tastes the stew and frowns thoughtfully, reaching with her free hand to adjust the stove's heat.",
+    "promptProse": "Holding the tasting spoon near her mouth, she frowns thoughtfully and reaches with her free hand to turn the stove control; orange evening light warms the steam above the pot.",
     "promptTokens": [
-      "blue apron",
-      "t-shirt",
       "cooking",
       "spoon",
       "stew",
       "kitchen",
-      "sunset"
+      "sunset",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/winter_outfit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
@@ -13,12 +13,8 @@
       "tokens": [
         "matou_sakura_winter_outfit",
         "winter_coat",
-        "coat",
-        "winter_clothes",
-        "warm_clothes",
         "long_sleeves",
         "skirt",
-        "umbrella",
         "pink_umbrella"
       ],
       "prose": "wearing a warm winter outfit with a long coat over a soft skirt, layered and warm for cold rainy days",

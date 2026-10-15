@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 293,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_05",
     "title": "美狄亚 · 魔术师的海滨玻璃瓶",
@@ -30,13 +30,10 @@
       "quiet_smile",
       "afternoon_light"
     ],
-    "promptProse": "Medea places shells and sea glass in a small bottle beside the tide pool, a faint magic circle reflecting the bay.",
+    "promptProse": "Medea steadies the small bottle in one hand and lowers a piece of sea glass into it with the other. A faint magic circle glimmers inside the seawater beside the sunlit tide pool.",
     "promptTokens": [
       "1girl",
       "solo",
-      "wrap swimsuit",
-      "hooded cover-up",
-      "shell bracelet",
       "bottle",
       "shells",
       "sea glass",

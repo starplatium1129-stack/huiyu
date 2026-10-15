@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_forest_magic_practice",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 470,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手合拢凝聚柔和的治愈水流，晨光穿过树梢",
     "adult": false,
-    "camera": "cowboy shot, conjuring water sphere beside forest brook",
+    "camera": "cowboy shot",
     "category": "奇幻",
     "characterId": "sylphiette",
     "description": "【希露菲 · 森林魔法练习】阳光穿透树冠洒在清幽的森林空地上，希露菲神情专注地合拢双手，无需咏唱便在指尖汇聚出一道柔和治愈的纯净水流。她转过身开心地向你展示——「看！无咏唱的治愈魔术我也越来越熟练了！以后只要有我在，就绝对不会让你受到任何伤害。」",
@@ -20,8 +20,6 @@
     "outfitId": "default_mage_robe",
     "promptProse": "Sylphiette gathers healing water between her palms beside the misty brook in filtered morning sun.",
     "promptTokens": [
-      "Sylphiette",
-      "green cloak",
       "cupped hands",
       "water magic",
       "forest",

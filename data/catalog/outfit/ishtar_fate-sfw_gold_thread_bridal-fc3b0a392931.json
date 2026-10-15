@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/sfw_gold_thread_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
       "id": "sfw_gold_thread_bridal",
       "name": "金线白纱花冠礼装",
-      "prose": "an opaque floor-length white wedding gown embroidered with gold thread, a long veil and a flower crown",
+      "prose": "a floor-length white wedding gown embroidered with gold thread, a long veil and flower crown",
       "tokens": [
-        "white_wedding_gown",
-        "gold_embroidery",
+        "white wedding dress",
+        "gold embroidery",
         "veil",
-        "flower_crown"
+        "flower crown"
       ],
       "isDefault": false,
       "default": false,

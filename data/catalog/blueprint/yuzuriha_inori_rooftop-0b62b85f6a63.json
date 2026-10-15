@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_rooftop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuzuriha_inori_rooftop",
     "title": "楪祈 · 屋顶对话",
@@ -15,7 +15,7 @@
     "action": "坐在临海天台沿上，双手捧温红茶罐，侧头望向同行者",
     "timeOfDay": "黄昏",
     "lighting": "橙灰暮色",
-    "camera": "medium shot",
+    "camera": "full body, seated figure and dangling legs visible",
     "mood": "安静脆弱",
     "sceneTags": [
       "seafront_rooftop",
@@ -29,16 +29,15 @@
       "twilight_light",
       "medium_shot"
     ],
-    "promptProse": "Inori cradles the warm tea can in both hands on the broad parapet, turning attentively toward her unseen companion.",
+    "promptProse": "Inori cradles the warm tea can in both hands on the broad parapet, turning attentively toward the viewer beside her. The sea below fades into orange-grey dusk as the breeze lifts the ends of her pink hair.",
     "promptTokens": [
-      "school uniform",
-      "red hair clips",
       "tea can",
       "sitting",
       "dangling legs",
       "rooftop",
       "sea",
-      "evening"
+      "evening",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

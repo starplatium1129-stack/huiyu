@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_hospital_solitude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1012,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "赤足坐在白色病床边，双手静静捧着眼镜",
     "camera": "medium shot, eye level",
@@ -20,13 +20,9 @@
     "mood": "脆弱孤寂",
     "negativeTokens": [],
     "outfitId": "hospital_bed_gown",
-    "promptProse": "She sits on the bed edge holding the damaged glasses. Morning light reaches her fingers beside the moving curtain.",
+    "promptProse": "Seated on the bed edge, she cradles the damaged glasses in both hands. Cool morning light reaches her fingers beside the moving white curtain.",
     "promptTokens": [
       "hospital",
-      "patient gown",
-      "bandages",
-      "eyepatch",
-      "barefoot",
       "broken glasses",
       "sitting",
       "morning"

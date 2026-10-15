@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_apartment_balcony_sunset",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 430,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "reze_apartment_balcony_sunset",
     "title": "蕾塞 · 公寓阳台黄昏",
@@ -29,11 +29,8 @@
       "choker",
       "warm_tones"
     ],
-    "promptProse": "Reze watches dusk settle over Tokyo from the balcony rail, laundry moving gently beside her.",
+    "promptProse": "Reze rests her crossed forearms on the balcony rail, watching the first city lights below. Sunset warms her profile and the white laundry moving beside her.",
     "promptTokens": [
-      "bomber jacket",
-      "crop top",
-      "shorts",
       "leaning",
       "railing",
       "laundry",

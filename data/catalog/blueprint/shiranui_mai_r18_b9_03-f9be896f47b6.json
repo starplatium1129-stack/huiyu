@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1749,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_03",
     "title": "不知火舞 · 忍装背部注连绳结卡死崩裂的更衣事故 ·「呀！后背的粗绳死结解不开了……快来帮舞姐姐一把！」",
@@ -12,10 +12,10 @@
     "characterId": "shiranui_mai",
     "description": "【道场更衣间·傍晚】剧烈训练后忍服后背特粗的注连绳系带被汗水浸湿卡死。不知火舞双手撑在木质更衣台上，身体前倾塌腰，红白忍服被绳索勒得紧绷，极度高耸丰满的胸脯完全从前胸溢出大半，超高叉下摆被高高吊起，露出令人窒息的饱满蜜桃臀与深红丁字裤细带。她回头大汗淋漓咬牙娇斥——「安迪！别光顾着擦汗……快把剪刀拿过来帮我把绳子剪断啦！」",
     "location": "道场更衣间·傍晚",
-    "action": "撑更衣台塌腰回眸双手扯后背注连绳，高叉忍服勒肉溢乳露雪臀，香汗淋漓娇嗔",
+    "action": "双手撑更衣台俯身，背部打结的系绳拉紧忍服，回头向画外同行者求助",
     "timeOfDay": "afternoon",
-    "lighting": "liquid_reflection_lighting",
-    "camera": "intimate horizontal medium shot",
+    "lighting": "soft dusk light in the dojo dressing room",
+    "camera": "cowboy shot, three-quarter rear view",
     "mood": "意外失控与羞赧",
     "sceneTags": [
       "dressing_malfunction",
@@ -30,16 +30,17 @@
       "rope",
       "tied_up"
     ],
-    "promptProse": "Mai leans over the bench as knotted costume ropes pull her tunic tight, exposing her thong and breasts while she looks back for help in dusk light.",
+    "promptProse": "Mai braces both hands on the dressing bench while knotted costume ropes pull her tunic tight; she looks back toward the offscreen companion for help in dusk light.",
     "promptTokens": [
-      "Mai Shiranui",
       "red ninja outfit",
       "rope",
       "bent over",
       "bench",
       "looking back",
       "dressing room",
-      "wide shot"
+      "breast slip",
+      "thong",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,10 +48,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R18",
-    "nsfwTokens": [
-      "breast slip",
-      "thong"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

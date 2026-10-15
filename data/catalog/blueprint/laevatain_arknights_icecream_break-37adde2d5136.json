@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_icecream_break",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 724,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "穿着舒适的舱内机能便服，大口享用双球甜筒冰淇淋，赤红眼眸微微弯起，黑角与恶魔尾巴惬意晃动",
     "camera": "medium shot",
@@ -20,11 +20,8 @@
     "mood": "可爱反差萌",
     "negativeTokens": [],
     "outfitId": "street_cafe_sweet",
-    "promptProse": "Laevatain enjoys an ice-cream cone beside the vending machine, her tail swaying contentedly.",
+    "promptProse": "Laevatain raises her ice-cream cone toward the viewer beside the vending machine, her tail swaying contentedly. The bright canteen light catches the melting edges of the scoops.",
     "promptTokens": [
-      "halter top",
-      "jacket",
-      "skirt",
       "ice cream",
       "vending machine",
       "rest area"

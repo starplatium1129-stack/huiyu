@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc051",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She embraces the viewer from behind and rests her chin on their shoulder, with dinner waiting on the counter.",
+    "animaCaption": "Seen over the viewer's shoulder, she wraps her arms around their torso from behind and rests her chin on their shoulder; the kitchen light warms her cheek and the finished dinner on the counter.",
     "auditRevision": "careful-batch06-2026-08-27",
     "camera": "肩侧回望的背后拥抱半身近景",
     "category": "恋爱/After_Story",

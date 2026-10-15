@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1616,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_04",
     "title": "春日野穹 · 乡间白屋的雪色花嫁",
@@ -30,10 +30,8 @@
       "petals",
       "afternoon_light"
     ],
-    "promptProse": "Sora places the rabbit plush beside her bouquet on the old-house veranda and quietly lifts her eyes.",
+    "promptProse": "Sora rests her hand on the rabbit plush beside her bouquet, looking up toward the familiar viewer from the old-house veranda. Spring light filters through drifting petals onto the white folds of her dress.",
     "promptTokens": [
-      "wedding dress",
-      "veil",
       "rabbit plush",
       "bouquet",
       "veranda",

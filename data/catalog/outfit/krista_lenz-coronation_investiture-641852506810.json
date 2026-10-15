@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/coronation_investiture",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 547,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
@@ -12,13 +12,12 @@
       "id": "coronation_investiture",
       "isDefault": false,
       "name": "加冕礼·受冠瞬间",
-      "prose": "her white coronation gown with an off-shoulder neckline, ceremonial cloak and gold jewelry, before the crown is placed",
+      "prose": "a white off-shoulder coronation gown with a ceremonial cloak and gold jewelry, her head awaiting the crown",
       "tokens": [
-        "white_dress",
-        "off_shoulder_dress",
+        "white gown",
+        "off shoulder",
         "cloak",
-        "jewelry",
-        "formal"
+        "jewelry"
       ]
     }
   }

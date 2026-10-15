@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_08",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1527,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_08",
     "title": "和泉纱雾 · 取材海滩的防晒武装",
@@ -34,10 +34,6 @@
     ],
     "promptProse": "Sagiri sketches the sea under a broad sunhat, concentrating on the page while the surf glitters beyond her shoulder.",
     "promptTokens": [
-      "jacket",
-      "pants",
-      "sun hat",
-      "sunglasses",
       "sketchbook",
       "beach",
       "medium shot"

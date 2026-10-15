@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_halo_festival_track_victory",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 913,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "微弯腰单手扶膝微喘，另一手拿白色运动毛巾擦汗，脸颊泛红娇羞微笑",
     "camera": "medium shot, dynamic low angle",
@@ -20,17 +20,13 @@
     "mood": "活力心动",
     "negativeTokens": [],
     "outfitId": "gym_tracksuit",
-    "promptProse": "Just beyond the finish line, Yuuka wipes her flushed cheek with the towel while the stopwatch hangs at her chest.",
+    "promptProse": "Just beyond the finish line, Yuuka braces one hand on her knee and wipes her flushed cheek with the towel in the other. Sunlight catches the stopwatch at her chest against the watching crowd.",
     "promptTokens": [
-      "navy track jacket",
-      "white sports shirt",
-      "gym shorts",
       "towel",
-      "stopwatch",
       "catching breath",
       "running track",
       "crowd",
-      "low angle"
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

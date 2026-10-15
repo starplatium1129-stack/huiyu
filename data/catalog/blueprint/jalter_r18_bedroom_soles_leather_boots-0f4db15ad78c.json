@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_bedroom_soles_leather_boots",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 173,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jalter_r18_bedroom_soles_leather_boots",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 新宿雨夜的傲娇卸甲",
-    "description": "【贞德[Alter] · 新宿雨夜的傲娇卸甲】新宿暴雨的深夜，高层公寓的落地窗外霓虹洇成一片光海。贞德[Alter]半敞着皮夹克倚在窗边，被雨淋湿的铂金短发贴着面颊，银色的水珠顺着锁骨滑落。她别过头不看你，耳根却红得发烫——「……看什么看！这雨是、是它自己要淋湿我的！」",
+    "description": "成年黑贞坐在公寓床沿，皮夹克松开，一只靴子放在床垫上，双手解开靴侧拉链；雨夜霓虹沿银发与衣缘映出蓝紫光。",
     "outfitId": "nsfw_nude",
     "sceneTags": [
       "window",
@@ -32,7 +32,7 @@
       "unzipping",
       "rain",
       "neon lights",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -42,10 +42,10 @@
     "nsfwProse": "",
     "category": "私密写真",
     "location": "新宿高层公寓落地窗前",
-    "action": "皮夹克半敞倚窗，湿发别过脸去",
+    "action": "坐床沿，一只靴子放在床上，双手解开靴侧拉链。",
     "timeOfDay": "深夜",
     "lighting": "rainy neon city glow, blue and magenta street reflections, dim warm apartment light",
-    "camera": "medium shot, slightly low angle",
+    "camera": "full body, slightly low angle",
     "mood": "傲娇冷冽",
     "recommendedSize": "1536x1152",
     "kreaStyleHint": "",

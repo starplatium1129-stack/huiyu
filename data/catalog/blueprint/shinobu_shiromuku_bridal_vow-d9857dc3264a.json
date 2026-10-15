@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_shiromuku_bridal_vow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1453,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "白无垢十指相扣立神前，紫瞳认真含泪微笑",
     "adult": false,
@@ -26,11 +26,9 @@
     "mood": "向死而生、以毒化药",
     "negativeTokens": [],
     "outfitId": "sfw_white_shiromuku",
-    "promptProse": "Shinobu clasps her companion's hand before the shrine altar in gentle morning light.",
+    "promptProse": "Shinobu clasps her companion's hand before the shrine altar and lifts her eyes beneath the white bridal hood. Quiet morning light rests on their joined hands and the folds of her wedding kimono.",
     "promptTokens": [
-      "kochou_shinobu",
-      "shiromuku",
-      "tsunokakushi",
+      "companion",
       "holding hands",
       "shrine",
       "wide shot"

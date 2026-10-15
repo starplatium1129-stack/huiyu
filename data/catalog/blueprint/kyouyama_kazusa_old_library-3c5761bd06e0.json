@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_old_library",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱书差点绊倒扶住书架",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, slightly low angle",
+    "camera": "full-body shot, slightly low angle",
     "category": "甜点日常",
     "characterId": "kyouyama_kazusa",
     "coverageTags": [
@@ -26,14 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "Kazusa stumbles with a stack of recipe books and catches herself against the shelf.",
+    "promptProse": "She traps the recipe books against her chest with one arm and catches the shelf with her free palm, one foot unsteadily lifted beneath the skylight.",
     "promptTokens": [
-      "school uniform",
-      "hood",
       "recipe books",
       "stumbling",
       "bookshelf",
-      "library"
+      "library",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

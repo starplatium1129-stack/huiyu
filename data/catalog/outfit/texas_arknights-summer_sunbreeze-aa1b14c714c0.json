@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/summer_sunbreeze",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 385,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
@@ -14,15 +14,11 @@
       "name": "阳光微风夏日泳装",
       "prose": "a stylish and sleek black one-piece swimsuit with asymmetric cutouts along the waist, translucent white linen beach shirt worn open, dark sunglasses, and sandals, wolf tail swishing in the seaside breeze",
       "tokens": [
-        "swimsuit",
-        "one-piece_swimsuit",
-        "black_swimsuit",
+        "black one-piece swimsuit",
         "cutouts",
-        "open_shirt",
-        "white_shirt",
+        "open white shirt",
         "sunglasses",
-        "sandals",
-        "beachwear"
+        "sandals"
       ]
     }
   }

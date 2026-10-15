@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_royal_chamber",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "artoria_r18_royal_chamber",
     "title": "阿尔托莉雅 · 卡美洛沙龙·贵妃榻与誓约蓝宝石",
@@ -15,7 +15,7 @@
     "action": "斜倚在墨绿色天鹅绒贵妃榻上，单手支头从容注视，身躯赤裸唯戴深蓝宝石水滴项链，壁炉火光勾勒身体起伏",
     "timeOfDay": "夜晚",
     "lighting": "warm flickering fireplace glow, rich chiaroscuro, soft golden rim lighting",
-    "camera": "medium shot, wide view, reclining on chaise longue, horizontal framing",
+    "camera": "medium shot, from the side",
     "mood": "古典圣洁、从容信赖、卸下重担的释然与深情",
     "recommendedSize": "1536x1152",
     "adult": true,

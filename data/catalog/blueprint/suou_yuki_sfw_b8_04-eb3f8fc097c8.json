@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "礼堂花卡旁以淑女姿态整理缎带，确认无人后向镜头淘气眨眼",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot",
     "category": "圣洁花嫁",
     "characterId": "suou_yuki",
     "coverageTags": [
@@ -27,10 +27,6 @@
     "outfitId": "sfw_bridal",
     "promptProse": "Yuki arranges flower cards beside the publicity board and winks toward the camera in afternoon light.",
     "promptTokens": [
-      "Yuki",
-      "white wedding dress",
-      "violet sash",
-      "veil",
       "wink",
       "flower cards",
       "cowboy shot"

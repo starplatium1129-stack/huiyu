@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hitachi_mako/shrine_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 621,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hitachi_mako",
     "outfit": {
@@ -12,17 +12,14 @@
       "id": "shrine_casual",
       "isDefault": false,
       "name": "朝武官邸家政围裙装",
-      "prose": "comfortable household attendant wear: a frilled white apron worn over a comfortable green and cream long-sleeved pullover sweater, pleated dark brown skirt, loose slouch socks, house slippers, and hair tied casually back while doing chores",
+      "prose": "a white frilled apron over a green-and-cream long-sleeved sweater, a dark brown pleated skirt, loose socks and house slippers",
       "tokens": [
-        "apron",
-        "maid_apron",
-        "sweater",
-        "skirt",
-        "loose_socks",
-        "slippers",
-        "casual",
-        "housewife",
-        "domestic"
+        "white apron",
+        "frills",
+        "green sweater",
+        "brown pleated skirt",
+        "loose socks",
+        "slippers"
       ]
     }
   }

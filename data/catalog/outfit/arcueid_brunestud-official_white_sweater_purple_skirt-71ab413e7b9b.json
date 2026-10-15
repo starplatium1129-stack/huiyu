@@ -1,23 +1,21 @@
 {
   "kind": "outfit",
   "id": "arcueid_brunestud/official_white_sweater_purple_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 717,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "arcueid_brunestud",
     "outfit": {
       "id": "official_white_sweater_purple_skirt",
       "name": "经典白色高领毛衣长紫裙",
-      "prose": "her iconic casual attire: a snug off-white high-neck knit sweater hugging her slender torso, an ankle-length deep royal purple flowing skirt, brown leather ankle boots, and gold cross pendant",
+      "prose": "an off-white turtleneck sweater, ankle-length purple skirt, brown ankle boots and gold cross pendant",
       "tokens": [
+        "white sweater",
         "turtleneck",
-        "white_sweater",
-        "knit_sweater",
-        "long_skirt",
-        "purple_skirt",
-        "cross_necklace",
+        "purple skirt",
+        "cross necklace",
         "boots"
       ],
       "default": true,

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc216",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Reclining on the narrow sofa after the air conditioner fails, she reaches both forearms toward the viewer's shoulders; a folded fan and empty mug rest nearby.",
+    "animaCaption": "Reclining on the narrow sofa, she reaches both forearms toward the viewer's shoulders for support; the reading lamp on the left warms her flushed ear and the cushion beside the folded fan and empty mug.",
     "auditRevision": "careful-batch13-2026-08-27",
     "camera": "medium close-up, sofa-level POV, face and forearms visible",
     "category": "日常",

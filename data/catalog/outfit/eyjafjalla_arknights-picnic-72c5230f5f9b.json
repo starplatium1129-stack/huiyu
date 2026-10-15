@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/picnic",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 311,
   "createdAt": null,
-  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
@@ -12,13 +12,11 @@
       "id": "picnic",
       "isDefault": false,
       "name": "远行前的野餐",
-      "prose": "a retro dark green and cream country dress with a wool shawl and a beret",
+      "prose": "a dark-green and cream country dress with a wool shawl and beret",
       "tokens": [
-        "dress",
-        "green_clothes",
-        "cream_clothes",
-        "beret",
-        "picnic"
+        "green dress",
+        "shawl",
+        "beret"
       ]
     }
   }

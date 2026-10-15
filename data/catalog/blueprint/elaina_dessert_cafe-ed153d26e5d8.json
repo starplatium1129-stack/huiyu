@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_dessert_cafe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 384,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_dessert_cafe",
     "title": "伊雷娜 · 现代甜品店",
@@ -28,11 +28,11 @@
     "promptProse": "She pours syrup over the pancake stack beside the cafe window. Warm light catches the golden stream and plate.",
     "promptTokens": [
       "cafe",
-      "casual dress",
       "pancakes",
       "maple syrup",
       "pouring",
-      "smile"
+      "smile",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

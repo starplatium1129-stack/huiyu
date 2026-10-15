@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_amusement_park_fireworks_view",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yorha_2b_amusement_park_fireworks_view",
     "title": "2B · 废弃游乐园城堡的机械烟火",
@@ -31,13 +31,8 @@
       "blindfold",
       "wind"
     ],
-    "promptProse": "2B watches mechanical fireworks from the castle platform with one hand on the ivy-covered rail.",
+    "promptProse": "2B rests one hand on the ivy-covered railing and tilts her face toward the mechanical fireworks above the ruined castle. Their changing colors pass over the pale lace and her white hair against the dark towers.",
     "promptTokens": [
-      "2B",
-      "lace bodysuit",
-      "stockings",
-      "blindfold",
-      "bandaged arm",
       "fireworks",
       "amusement park",
       "medium shot"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_throne_supine_devotion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "scathach_nsfw_throne_supine_devotion",
     "title": "斯卡哈 · 影之国石殿·幽蓝魔火与足踝系带红宝石",
@@ -15,7 +15,7 @@
     "action": "赤裸斜倚玄武岩石榻，单腿微屈，足系暗红宝石脚链，双红枪倚于石阶，赤瞳居高临下审视",
     "timeOfDay": "深夜",
     "lighting": "mystical blue magical flames from stone braziers, soft cold ambient light, sharp rim light, deep chiaroscuro",
-    "camera": "medium shot, wide view, horizontal framing, reclining on stone couch",
+    "camera": "wide shot, eye level, stone couch and left anklet visible",
     "mood": "武神威严、孤高从容、神圣神秘与压迫感性张力",
     "recommendedSize": "1536x1152",
     "adult": true,

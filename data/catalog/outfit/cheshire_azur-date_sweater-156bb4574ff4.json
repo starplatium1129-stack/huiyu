@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "cheshire_azur/date_sweater",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 595,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "cheshire_azur",
     "outfit": {
       "id": "date_sweater",
       "name": "温柔约会露背毛衣",
-      "prose": "a cozy autumn date outfit: an oversized ivory cable-knit virgin killer sweater with an open back revealing smooth skin, black pleated skater skirt, sheer black pantyhose, brown ankle boots, and a cute cat-face handbag",
+      "prose": "an ivory cable-knit sweater with an open back, black pleated skirt, sheer black tights, brown ankle boots and a cat-face handbag",
       "tokens": [
-        "casual",
-        "sweater",
-        "knit_sweater",
-        "virgin_killer_sweater",
-        "open_back",
-        "skirt",
-        "pantyhose",
-        "black_pantyhose",
-        "boots",
-        "autumn_clothes"
+        "virgin killer sweater",
+        "white sweater",
+        "black skirt",
+        "pleated skirt",
+        "black pantyhose",
+        "brown boots",
+        "cat bag"
       ],
       "default": false,
       "isDefault": false

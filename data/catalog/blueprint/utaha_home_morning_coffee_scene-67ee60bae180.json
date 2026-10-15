@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_home_morning_coffee_scene",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1432,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "utaha_home_morning_coffee_scene",
     "title": "霞之丘诗羽 · 居家的咖啡与睡袍·「学姐模式，今天关机」",
@@ -30,7 +30,6 @@
     "promptProse": "Utaha beckons her companion closer with coffee in one hand and an open magazine across her lap in curtain-filtered light.",
     "promptTokens": [
       "Utaha Kasumigaoka",
-      "silk robe",
       "coffee",
       "magazine",
       "sofa",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_04",
     "title": "夜刀神十香 · 精灵灵力逆流的床褥真情自持 ·「十香的世界……只要有士道一个人就足够了」",
@@ -15,7 +15,7 @@
     "action": "仰卧被褥全裸自抚，灵力微光环绕身躯，长发铺散紫眸含泪绝顶高潮",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "full body, high angle",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
       "self_control",
@@ -33,8 +33,6 @@
     "promptProse": "Tohka touches herself on the futon as violet spirit particles gather around her, her long hair spread across the tatami.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "nude",
       "on back",
       "spread legs",
@@ -43,7 +41,8 @@
       "magic",
       "futon",
       "tatami",
-      "night"
+      "night",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

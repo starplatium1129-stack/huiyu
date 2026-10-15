@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_shrine_veranda_tea_break",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1065,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端庄跪坐在缘侧捧茶碗啜饮，微风吹拂巫女大袖与狐耳，眼神沉静平和",
     "camera": "medium shot, eye level, serene composition",
@@ -20,13 +20,11 @@
     "mood": "静谧清幽",
     "negativeTokens": [],
     "outfitId": "traditional_miko",
-    "promptProse": "Miyabi kneels on the shrine veranda and sips matcha from a bowl held in both hands.",
+    "promptProse": "Miyabi kneels on the shrine veranda, lifting the matcha bowl to her lips with both hands. Morning light filtered through the garden trees falls across the red wood beside a few windblown ginkgo leaves.",
     "promptTokens": [
-      "miko clothes",
-      "red hakama",
       "kneeling",
       "matcha",
-      "teacup",
+      "bowl",
       "veranda",
       "autumn"
     ],

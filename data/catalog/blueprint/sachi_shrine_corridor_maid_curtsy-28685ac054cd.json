@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_shrine_corridor_maid_curtsy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1186,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sachi_shrine_corridor_maid_curtsy",
     "title": "小岭幸 · 晨光回廊的恭敬屈膝礼",
@@ -31,11 +31,9 @@
       "pink_hair",
       "polite_smile"
     ],
-    "promptProse": "Sachi holds her skirt and steps one foot back for a curtsy in the sunlit academy corridor.",
+    "promptProse": "Sachi holds the two sides of her skirt and lowers into a curtsy, her right foot drawn slightly behind the left. Clear morning light reflects from the polished corridor floor beneath her neatly tied apron.",
     "promptTokens": [
-      "maid",
       "curtsy",
-      "pink hair",
       "wooden floor",
       "corridor",
       "full body"

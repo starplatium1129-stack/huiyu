@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ling_arknights/drunkard_loungewear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 380,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ling_arknights",
     "outfit": {
@@ -12,16 +12,12 @@
       "id": "drunkard_loungewear",
       "isDefault": false,
       "name": "醉里丹青（慵懒家居）",
-      "prose": "an oversized loose ink-grey hanfu-style loungewear robe with a wine gourd hanging from the sash, messy long hair loose, cozy sleepy poet loungewear",
+      "prose": "a loose ink-grey hanfu robe and sash with a jade wine gourd, her hair worn loose",
       "tokens": [
-        "loungewear",
-        "loose_clothes",
-        "hanfu",
+        "grey robe",
         "sash",
-        "gourd",
-        "messy_hair",
-        "sleepy",
-        "chinese_clothes"
+        "jade gourd",
+        "hair down"
       ]
     }
   }

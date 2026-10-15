@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_rain_window",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 599,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "趴在窗台上看雨滴滑落",
     "camera": "medium close-up",
@@ -20,20 +20,16 @@
     "mood": "安静悠远",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "She leans on the broad sill with her chin in both hands, watching the rain while her tail sways.",
+    "promptProse": "She rests her chin in both hands on the broad salon windowsill, following a raindrop down the glass; soft grey daylight falls across her face as her tail sways.",
     "promptTokens": [
       "1girl",
       "solo",
-      "cat ears",
       "cat tail",
-      "white shirt",
-      "yellow ascot",
-      "pinafore",
       "chin in hands",
       "window",
       "rain",
       "hair salon",
-      "close-up"
+      "close up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

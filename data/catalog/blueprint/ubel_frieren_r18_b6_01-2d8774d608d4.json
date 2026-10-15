@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_01",
     "title": "尤贝尔 · 露营篝火旁黑色大开衩裙主控跨坐 ·「眼镜仔……让我看看你的内心到底被什么填满了」",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间深V黑袍大开露半乳，绿色马尾轻扬，碧眸微眯狂气微笑主动沉腰",
     "timeOfDay": "night",
     "lighting": "warm_firelight",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot, low angle, pov",
     "mood": "主动亲密与失神",
     "sceneTags": [
       "cowgirl",
@@ -30,15 +30,16 @@
       "cleavage",
       "open_clothes"
     ],
-    "promptProse": "Ubel rides astride her companion with her dress open beside the campfire, hands at their collarbones and a crooked smile.",
+    "promptProse": "Ubel straddles her offscreen companion beside the campfire, her dress open and both hands resting at their collarbones as she gives a crooked smile.",
     "promptTokens": [
-      "Ubel",
       "black dress",
-      "green side ponytail",
-      "straddling",
       "campfire",
       "forest",
-      "low angle"
+      "cowgirl position",
+      "topless",
+      "cowboy shot",
+      "low angle",
+      "pov"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,16 +47,14 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R18",
-    "nsfwTokens": [
-      "cowgirl position",
-      "topless"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "compositionIntent": "single"
   }
 }

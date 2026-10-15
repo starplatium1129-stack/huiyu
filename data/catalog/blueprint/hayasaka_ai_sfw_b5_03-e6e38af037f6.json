@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1407,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "扣下工作手机，挖起第一勺布丁，放松肩膀。",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "category": "日常生活",
     "characterId": "hayasaka_ai",
     "coverageTags": [
@@ -23,16 +23,14 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_casual",
-    "promptProse": "Hayasaka opens her pudding on the storefront bench, relaxing over the first spoonful with her work phone face-down beside the bag.",
+    "promptProse": "She cradles the open pudding cup in one hand and lifts the first spoonful with the other beneath the storefront light; her work phone lies face-down beside the bag.",
     "promptTokens": [
-      "jacket",
-      "t-shirt",
-      "jeans",
       "pudding",
       "spoon",
       "bench",
       "convenience store",
-      "night"
+      "night",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

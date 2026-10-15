@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 789,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在玄关凳上系齐半扎发缎带，俏皮歪头检查。",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "category": "日常生活",
     "characterId": "suou_yuki",
     "coverageTags": [
@@ -23,12 +23,8 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_refined_daily",
-    "promptProse": "Yuki adjusts the ribbon in her half-up hair on the entryway bench, tilting her head toward the daylight.",
+    "promptProse": "Seated on the entryway bench, she levels the ribbon ends with both hands behind her head, turning her face into the soft doorway light.",
     "promptTokens": [
-      "Yuki",
-      "sweater vest",
-      "blouse",
-      "long skirt",
       "hair ribbon",
       "bench",
       "medium shot"

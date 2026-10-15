@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1155,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "咖啡馆开店前把咖啡豆与小白花放入捧花，闻到点心香后放松微笑",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium full shot, vertical framing",
+    "camera": "full-body shot",
     "category": "圣洁花嫁",
     "characterId": "akizuki_kanna",
     "coverageTags": [
@@ -25,11 +25,10 @@
     "mood": "把长年手艺写进花嫁日常",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "She adds coffee beans and white flowers to her bridal bouquet beside the terrace. Morning light falls across the dress and pastry window.",
+    "promptProse": "Beside the cafe terrace, she tucks coffee beans and small white flowers into her bouquet with a relaxed smile. Morning light falls across the bridal dress and pastry window.",
     "promptTokens": [
       "cafe",
       "terrace",
-      "wedding dress",
       "bouquet",
       "white flower",
       "coffee beans",

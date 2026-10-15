@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc237",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc237",
     "title": "水光波纹间的死水熔断",
@@ -21,10 +21,8 @@
     "timeOfDay": "late_night",
     "tags": [
       "mole_under_eye",
-      "bikini",
+      "blue_swimsuit",
       "wet_clothes",
-      "soaked",
-      "no_underwear",
       "sitting_on_lap",
       "straddling",
       "slipping",
@@ -49,7 +47,7 @@
     "negative": "",
     "storyJa": "【夏目】【ナツメ・夜のプールサイド】深夜、静まり返った屋内プール。月明かりに濡れた紺のスク水姿のナツメは、プールサイドで足を滑らせ、デッキチェアのあなたの上へと倒れ込んでしまう。肌と肌が触れ合い、水滴が滴る中、目尻の泣きぼくろを揺らしながら耳を赤くして必死に平静を装う――「……勘違いしないで。足が滑っただけよ。……動かないで、少し息を整えるから。……バカ、どこ見てるの」",
     "rating": "R18",
-    "animaCaption": "After slipping on the wet marble, Natsume lands astride the viewer's lap on the poolside lounger. She grips their shoulders and tries to look calm.",
+    "animaCaption": "On the poolside lounger, she steadies herself on the viewer's lap with both hands on their shoulders after slipping; moonlit water reflections move over her wet hair and embarrassed face.",
     "auditRevision": "fix-no-burn-ears-sc237-2026-09-05"
   }
 }

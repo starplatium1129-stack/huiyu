@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_rooftop_binocular_surveillance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fiona_frost_rooftop_binocular_surveillance",
     "characterId": "fiona_frost",
@@ -28,12 +28,8 @@
       "surveillance",
       "snowflakes"
     ],
-    "promptProse": "She watches the distant, warmly lit Forger apartment through binoculars held steadily in both hands.",
+    "promptProse": "She steadies the binoculars at her eyes with both hands in the clock-tower shadow, watching the distant warm windows through the snow.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "blue coat",
-      "gloves",
       "binoculars",
       "rooftop",
       "clock tower",

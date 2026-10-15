@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_student_council_afternoon",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1395,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端坐批阅文件偷看你，耳根泛红低头掩饰，钢笔游走纸面",
     "adult": false,
@@ -25,10 +25,9 @@
     "mood": "棋逢对手、暗中心动",
     "negativeTokens": [],
     "outfitId": "official_shuchiin_uniform",
-    "promptProse": "Kaguya reviews council papers with a fountain pen, briefly glancing at the viewer before lowering her flushed face.",
+    "promptProse": "Her fountain pen pauses above the council papers as she glances toward the viewer with flushed ears. Low golden sunlight crosses the long table and the tea left cooling beside her.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "school uniform",
       "paperwork",
       "pen",
       "sitting",

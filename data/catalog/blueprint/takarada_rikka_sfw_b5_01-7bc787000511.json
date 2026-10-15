@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1533,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_01",
     "title": "宝多六花 · 绚 JUNK SHOP 的柜台",
@@ -16,7 +16,7 @@
     "action": "右手持铅笔写作业，左手压住练习本，耳机挂在颈间。",
     "timeOfDay": "午后",
     "lighting": "sunset",
-    "camera": "horizontal medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
       "takarada_rikka",
@@ -38,11 +38,8 @@
       "horizontal_composition",
       "waist_up"
     ],
-    "promptProse": "Rikka writes with her right hand and steadies the page with her left among the shop's old radios.",
+    "promptProse": "She writes with her right hand and steadies the page with her left, headphones around her neck; sunset through the shelves catches dust above the old radios.",
     "promptTokens": [
-      "takarada_rikka",
-      "shirt",
-      "cardigan",
       "headphones",
       "homework",
       "shop counter",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_03",
     "title": "双叶理央 · 雨夜的一碗热汤",
@@ -30,12 +30,10 @@
       "relieved",
       "medium_shot"
     ],
-    "promptProse": "She pushes up her misted glasses before stirring the soup, her folded umbrella resting below the counter.",
+    "promptProse": "Her glasses settled, she stirs the hot soup with one hand as her brow relaxes. Soft shop light catches the steam against the rain-marked window; the folded umbrella rests below the counter.",
     "promptTokens": [
       "1girl",
       "solo",
-      "red jacket",
-      "glasses",
       "soup",
       "spoon",
       "umbrella",

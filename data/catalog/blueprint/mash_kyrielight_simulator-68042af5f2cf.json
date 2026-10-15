@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_simulator",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 200,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "negativeTokens": [
       "injured bodies"
@@ -18,7 +18,7 @@
     "action": "单膝稳住低位防御姿势，将大盾挡在训练队友身前",
     "timeOfDay": "白天",
     "lighting": "模拟全息光",
-    "camera": "full-body low-angle shot, shield bearer and protected teammate visible",
+    "camera": "full-body shot, low angle",
     "mood": "坚毅可靠",
     "sceneTags": [
       "training_simulator",
@@ -32,10 +32,9 @@
       "holographic_light",
       "full_body"
     ],
-    "promptProse": "Mash braces in a low kneeling defense with her shield between the training teammate and the incoming energy arcs.",
+    "promptProse": "Mash kneels in the foreground with the shield braced toward the incoming blue energy arcs; the protected training teammate remains visible behind her right shoulder.",
     "promptTokens": [
       "2people",
-      "armored dress",
       "cross-shaped shield",
       "kneeling",
       "defending",

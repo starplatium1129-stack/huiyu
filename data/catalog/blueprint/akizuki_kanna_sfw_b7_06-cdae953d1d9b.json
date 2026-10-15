@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1157,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "清晨的咖啡馆，她推开木门让第一缕阳光照进来，深吸一口气开始擦拭吧台",
     "adult": false,
@@ -26,14 +26,11 @@
     "promptProse": "She wipes the cafe counter with the door open to the morning sun. Arranged chairs and a fresh vase stand behind her.",
     "promptTokens": [
       "cafe",
-      "blouse",
-      "waistcoat",
-      "long skirt",
-      "apron",
       "cleaning",
       "counter",
       "open door",
-      "morning"
+      "morning",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

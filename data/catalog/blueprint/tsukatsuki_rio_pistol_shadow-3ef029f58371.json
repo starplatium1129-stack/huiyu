@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_pistol_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 882,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "独自握枪凝视窗外",
     "adult": false,
@@ -29,7 +29,6 @@
     "promptProse": "Rio holds the pistol close at the window and reacts to the teacher's approach against the red sunset.",
     "promptTokens": [
       "Rio",
-      "turtleneck",
       "pistol",
       "window",
       "sunset",

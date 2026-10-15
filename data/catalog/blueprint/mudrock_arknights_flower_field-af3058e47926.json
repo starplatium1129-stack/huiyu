@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_flower_field",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 579,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "弯腰捡起一朵野花",
     "camera": "medium shot",
@@ -17,9 +17,8 @@
     "mood": "反差温柔",
     "negativeTokens": [],
     "outfitId": "white_plain_dress",
-    "promptProse": "Mudrock bends to lift a daisy into her palm, then offers it with a shy smile on the grassy slope.",
+    "promptProse": "Still slightly bent on the grassy slope, she extends the freshly picked daisy in her open palm toward the viewer with a shy smile.",
     "promptTokens": [
-      "white dress",
       "daisy",
       "offering flower",
       "shy smile",

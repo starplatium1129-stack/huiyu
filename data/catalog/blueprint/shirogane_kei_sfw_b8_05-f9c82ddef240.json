@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1415,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "海滨贩卖机前比较冷饮性价比，坐到海堤边贴脸降温并偷偷得意",
     "adult": false,
@@ -28,8 +28,6 @@
     "promptProse": "Kei presses her chosen cold drink to her cheek on the seawall in warm afternoon sun.",
     "promptTokens": [
       "Kei Shirogane",
-      "swimsuit",
-      "windbreaker",
       "drink can",
       "seawall",
       "medium shot"

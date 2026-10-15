@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1646,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_02",
     "title": "卡提希娅 · 街角风车的修补",
@@ -29,15 +29,13 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "She straightens the paper pinwheel and lifts it into the breeze beside the railing, smiling when its blades begin to turn.",
+    "promptProse": "Seated by the stone railing, she holds the repaired pinwheel into the breeze and brightens as its paper blades start turning. Diffuse daylight softens her face against the town corner.",
     "promptTokens": [
       "town",
-      "brown cape",
-      "tunic",
-      "pants",
       "pinwheel",
       "sitting",
-      "stone railing"
+      "stone railing",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

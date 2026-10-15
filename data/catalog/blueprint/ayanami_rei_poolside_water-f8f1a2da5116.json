@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_poolside_water",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1014,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在泳池边双腿浸入水中，晶莹水珠挂在皮肤",
-    "camera": "cowboy shot, eye level",
+    "camera": "full body, eye level",
     "category": "现代日常",
     "characterId": "ayanami_rei",
     "coverageTags": [
@@ -23,11 +23,11 @@
     "promptProse": "She stirs small ripples with her feet while seated at the pool edge. Skylight and reflected water patterns reach her resting hands.",
     "promptTokens": [
       "indoor pool",
-      "white one-piece swimsuit",
       "sitting",
       "poolside",
       "feet in water",
-      "afternoon"
+      "afternoon",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_bridal_vow_white_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1497,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yamada_bridal_vow_white_dress",
     "title": "山田杏奈 · 白裙时装秀的谢幕",
@@ -16,7 +16,7 @@
     "action": "在白裙时装秀T台尽头站稳，双手捧白玫瑰，听见加油声后微笑谢幕。",
     "timeOfDay": "evening",
     "lighting": "white runway spotlights",
-    "camera": "medium shot, eye level, action and face visible",
+    "camera": "full body, eye level",
     "mood": "超模高光、唯你一人",
     "sceneTags": [
       "fashion_show",
@@ -32,15 +32,12 @@
       "stage_spotlight",
       "medium_full_shot"
     ],
-    "promptProse": "Yamada holds roses at the runway tip and turns her closing smile toward a familiar voice in the audience.",
+    "promptProse": "At the runway tip, she holds the roses in both hands and smiles toward a familiar face in the audience, the long train spread behind her under white spotlights.",
     "promptTokens": [
-      "Anna Yamada",
-      "white wedding dress",
-      "veil",
       "roses",
       "runway",
       "spotlight",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/sainan_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 685,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
@@ -14,16 +14,12 @@
       "name": "彩南高校标准水手制服",
       "prose": "Sainan High School uniform: short-sleeved white sailor blouse with teal sailor collar, front ribbon tie, teal pleated miniskirt, loose white socks, loafers, and her black spade-heart devil tail flicking with tsundere energy",
       "tokens": [
-        "sainan_high_school_uniform",
-        "school_uniform",
-        "sailor_suit",
-        "white_shirt",
-        "sailor_collar",
-        "pleated_skirt",
-        "miniskirt",
-        "loose_socks",
-        "loafers",
-        "demon_tail"
+        "school uniform",
+        "white sailor shirt",
+        "teal sailor collar",
+        "teal pleated skirt",
+        "loose socks",
+        "loafers"
       ]
     }
   }

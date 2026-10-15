@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "hu_tao/casual_liyue_street",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
@@ -12,13 +12,11 @@
       "name": "璃月便服",
       "prose": "a casual modern-traditional Liyue street outfit featuring an oversized cozy dark knit sweater, red pleated miniskirt, knee-high black socks, and dark ankle boots",
       "tokens": [
-        "casual_clothes",
-        "sweater",
         "oversized_sweater",
+        "red_skirt",
         "pleated_skirt",
-        "miniskirt",
         "kneehighs",
-        "boots"
+        "ankle_boots"
       ],
       "default": false,
       "isDefault": false

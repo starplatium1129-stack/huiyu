@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_suitcase_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 390,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_r18_suitcase_morning",
     "title": "伊雷娜 · 晨光与旅行箱",
@@ -15,7 +15,7 @@
     "action": "坐在敞开的旅行箱旁",
     "timeOfDay": "清晨",
     "lighting": "soft morning light through the window",
-    "camera": "intimate medium shot, side view",
+    "camera": "medium shot, from the side",
     "mood": "慵懒自在",
     "sceneTags": [
       "inn_room",
@@ -27,8 +27,6 @@
     ],
     "promptProse": "Beside the open suitcase, she holds the lid back and retrieves black lace caught beneath her knee.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "adult",
       "open shirt",
       "topless",
@@ -38,7 +36,7 @@
       "blush",
       "inn",
       "morning light",
-      "dutch angle"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

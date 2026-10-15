@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_marble_throne_bridal_vow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 226,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_marble_throne_bridal_vow",
     "title": "黑呆 · 纯白圣座的暴君新娘誓约",
@@ -15,7 +15,7 @@
     "action": "身着露肩纯白哥特婚纱手捧红黑玫瑰，眼神霸道而热泪盈眶，宣布主权契约",
     "timeOfDay": "正午圣光",
     "lighting": "高耸穹顶投射下来的耀眼纯净白色天光",
-    "camera": "full-body shot, white gown and long veil before marble throne",
+    "camera": "full body",
     "mood": "霸道神圣",
     "sceneTags": [
       "marble_throne",
@@ -28,11 +28,8 @@
       "daylight",
       "full_body"
     ],
-    "promptProse": "Saber Alter holds crimson roses before a marble throne; high-window daylight falls over her veil and trailing gown.",
+    "promptProse": "She holds crimson roses before the marble throne, meeting the viewer with a proud, tearful smile as high-window daylight catches the long veil.",
     "promptTokens": [
-      "Saber Alter",
-      "white wedding dress",
-      "bridal veil",
       "bouquet",
       "red rose",
       "throne",

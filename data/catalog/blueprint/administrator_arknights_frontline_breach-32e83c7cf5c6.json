@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_frontline_breach",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 752,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "administrator_arknights_frontline_breach",
     "characterId": "administrator_arknights",
@@ -29,15 +29,12 @@
     ],
     "promptTokens": [
       "doorway",
-      "jacket",
-      "turtleneck",
-      "black pantyhose",
       "blindfold",
       "shopping bag",
       "evening",
       "cowboy shot"
     ],
-    "promptProse": "She holds the home door open and reaches for the viewer's shopping bag, stepping aside at the threshold. Warm entry light meets the cooler corridor light.",
+    "promptProse": "Keeping one hand on the doorframe, she reaches for the shopping bag in the viewer's hand and steps aside. Warm entry light meets the cool dusk in the corridor.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

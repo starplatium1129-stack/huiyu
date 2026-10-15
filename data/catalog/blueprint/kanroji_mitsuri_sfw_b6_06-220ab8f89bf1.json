@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1463,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "冬夜屋内，她捧着热茶与草莓大福，脸颊被热气熏得微红",
     "adult": false,
@@ -23,11 +23,9 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_home",
-    "promptProse": "Mitsuri coughs in surprise at a familiar name while holding her tea beside the strawberry daifuku, then blushes as she tries to explain.",
+    "promptProse": "Startled by the familiar name, Mitsuri holds her teacup steady and blushes, her free hand lifted toward her mouth. Lamplight catches the steam beside the strawberry daifuku.",
     "promptTokens": [
       "kanroji_mitsuri",
-      "blouse",
-      "pink apron",
       "teacup",
       "strawberry daifuku",
       "indoors",

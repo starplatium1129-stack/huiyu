@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "cheshire_kitchen_baking_cat_cookies",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1090,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "cheshire_kitchen_baking_cat_cookies",
     "title": "柴郡 · 甜蜜厨房里的猫咪烘焙",
     "category": "料理甜蜜",
     "characterId": "cheshire_azur",
-    "outfitId": "royal_maid",
+    "outfitId": "kitchen_baking_mitts",
     "coverageTags": [
       "cooking"
     ],
@@ -19,7 +19,7 @@
     "action": "双手戴防烫手套捧刚出炉的饼干烤盘，鼻尖沾着白面粉，骄傲求表扬",
     "timeOfDay": "傍晚",
     "lighting": "烤箱内部暖橙火光与厨房吊灯的温馨暖黄色调",
-    "camera": "medium close-up, front view, eye-level warmth",
+    "camera": "upper body, eye level",
     "mood": "温馨甜美",
     "sceneTags": [
       "kitchen",
@@ -32,11 +32,9 @@
       "fake_hair_ornament",
       "proud"
     ],
-    "promptProse": "She presents the tray of heart-marked cookies with pride. Warm kitchen light and the oven glow catch the tray between her hands.",
+    "promptProse": "She presents the tray toward the viewer, both oven-mitted hands holding its edges level. Kitchen lamplight and the oven glow catch the heart-marked cookies beneath her proud smile.",
     "promptTokens": [
       "kitchen",
-      "maid",
-      "white gloves",
       "baking tray",
       "cookies",
       "flour on face",

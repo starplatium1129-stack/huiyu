@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_classroom_argument",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1022,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手抱胸身体微前倾，眉头轻挑傲娇俯视",
     "camera": "cowboy shot, low angle",
@@ -20,14 +20,13 @@
     "mood": "盛气凌人",
     "negativeTokens": [],
     "outfitId": "tokyo3_school_uniform",
-    "promptProse": "She looks down toward her companion and their notebook from beside the classroom desk. Daylight casts window-frame shadows across the aisle.",
+    "promptProse": "Standing beside the desk with her arms crossed, she leans toward her seated companion and looks down at the open notebook between them, one eyebrow raised. Daylight lays window-frame shadows across the aisle.",
     "promptTokens": [
       "classroom",
-      "school uniform",
-      "red bow",
       "crossed arms",
       "raised eyebrow",
       "companion",
+      "cowboy shot",
       "from below"
     ],
     "recommendedSize": "1152x1536",

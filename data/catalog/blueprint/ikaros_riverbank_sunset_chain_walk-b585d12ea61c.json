@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_riverbank_sunset_chain_walk",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1213,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "落后半步跟随行走，手轻按胸前红领结，项圈铁链被牵引，白翼染上夕阳暖金",
     "camera": "medium two-shot, companion holding the broken chain as they walk along the sunset riverbank",
@@ -21,7 +21,7 @@
     "mood": "温馨依恋",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "Ikaros walks half a step behind Tomoki, touching her dress bow while the broken collar chain ends in his hand.",
+    "promptProse": "Ikaros walks half a step behind Tomoki, touching her dress bow while he holds the loose end of her collar chain without tension. Sunset rims the white feathers and the reeds along the riverbank.",
     "promptTokens": [
       "2people",
       "sakurai tomoki",

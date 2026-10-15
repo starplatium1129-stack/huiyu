@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_hot_spring_peek_clumsy_log_switch",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1140,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "从冒烟的替身木桩后慌乱探身，手握苦无遮掩胸口，面红耳赤窘迫大喊",
     "camera": "medium shot, eye-level comedic framing, dense steam depth",
@@ -20,9 +20,8 @@
     "mood": "反差娇羞",
     "negativeTokens": [],
     "outfitId": "ninja_suit",
-    "promptProse": "Mako peeks out in embarrassment from behind a smoking substitution log beside the misty hot spring.",
+    "promptProse": "Mako peers around the smoking substitution log with a kunai held low in her left hand and her right hand against her chest. Warm lantern light catches her embarrassed face through the bath steam.",
     "promptTokens": [
-      "ninja clothes",
       "kunai",
       "log",
       "smoke",

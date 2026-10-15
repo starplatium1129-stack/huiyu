@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_base_after_mission",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 877,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "靠桌装甲散落",
+    "action": "坐在装甲旁检查模块，空出的手按着大腿上的淤伤。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【飞鸟马时 · 任务后据点装甲散落】任务圆满结束的秘密据点里，外骨骼装甲部件散落在一旁，时只穿着贴身的战术紧身衣倚在长桌边，金发略显凌乱，蓝瞳中泛着战斗后的余温与放松——「任务完成率 100%。但是时的体力已降至 5%……需要主人的摸头与拥抱来进行充能补给，请求执行。」",
+    "description": "任务后的据点里，成年时坐在散落装甲旁检查损坏的模块；战斗服破损，蓝色应急灯照着工作台。",
     "id": "asuma_toki_base_after_mission",
     "kreaStyleHint": "",
     "lighting": "昏暗据点灯",

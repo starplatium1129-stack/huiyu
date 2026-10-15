@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc036",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She fans the viewer while nudging the glass of iced barley tea closer with her free hand.",
+    "animaCaption": "Seated on the shaded veranda, she directs the paper fan toward the viewer and nudges the iced barley tea closer with her free hand; dappled sunlight trembles across the glass.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "缘侧纸扇与麦茶半身中景",
     "category": "旅行",

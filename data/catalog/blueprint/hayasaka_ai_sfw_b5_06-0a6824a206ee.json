@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1409,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "看着镜中剪短的头发，膝上的手指慢慢松开。",
     "adult": false,
     "animaStyleHint": "anime_portrait_sharp",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "category": "日常生活",
     "characterId": "hayasaka_ai",
     "coverageTags": [
@@ -25,9 +25,6 @@
     "outfitId": "sfw_short",
     "promptProse": "Hayasaka watches the last longer strands fall in the salon mirror, relaxing her hands on her knees as the new bob frames her relieved face.",
     "promptTokens": [
-      "short hair",
-      "bob cut",
-      "light blue jacket",
       "haircut",
       "mirror",
       "salon",

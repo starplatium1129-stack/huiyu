@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_garden_walk_flower_field",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 268,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ereshkigal_garden_walk_flower_field",
     "title": "埃列什基伽勒 · 冥界花田的散步·「在冥界种花……是我的任性」",
@@ -15,7 +15,7 @@
     "action": "一手提稳黑裙裙摆，另一手回身招呼同行者，沿白花间小径行走",
     "timeOfDay": "花时",
     "lighting": "花田上空的柔光与幽暗国土的对比",
-    "camera": "medium shot, flower field walk, beckoning, tender mood",
+    "camera": "full-body shot",
     "mood": "温柔任性、花开告白",
     "sceneTags": [
       "underworld_flower_path",
@@ -29,19 +29,14 @@
       "soft_magic_light",
       "medium_shot"
     ],
-    "promptProse": "She lifts her hem clear of the white flowers and turns to beckon along the narrow underworld path.",
+    "promptProse": "She lifts her hem clear of the white flowers with one hand and turns to beckon the viewer along the narrow path with the other. Gentle light over the blossoms separates them from the dark underworld beyond.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "black dress",
-      "blue ribbon",
-      "tiara",
       "walking",
       "holding skirt",
       "looking back",
       "beckoning",
       "flower field",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

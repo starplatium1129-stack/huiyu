@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_supermarket",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_supermarket",
     "title": "樱岛麻衣 · 超市采购",
@@ -31,11 +31,6 @@
     ],
     "promptProse": "Mai compares a sealed ingredient tray in each hand beside her parked cart under the grocery lights.",
     "promptTokens": [
-      "Mai",
-      "glasses",
-      "beanie",
-      "cardigan",
-      "long skirt",
       "shopping cart",
       "supermarket",
       "medium shot"

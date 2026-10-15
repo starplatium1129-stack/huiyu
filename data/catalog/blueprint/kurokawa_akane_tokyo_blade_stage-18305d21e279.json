@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_tokyo_blade_stage",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 958,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "拔刀出鞘立于布景光中",
     "camera": "cowboy shot, drawing katana",
@@ -20,9 +20,8 @@
     "mood": "演技爆发",
     "negativeTokens": [],
     "outfitId": "sayahime_stage",
-    "promptProse": "Akane draws her katana in Sayahime costume beneath the Tokyo Blade stage lights.",
+    "promptProse": "Akane draws the katana with her right hand while her left steadies its sheath. A white spotlight catches the emerging blade against the blood-red stage backdrop.",
     "promptTokens": [
-      "Sayahime costume",
       "katana",
       "unsheathing",
       "star-shaped pupils",

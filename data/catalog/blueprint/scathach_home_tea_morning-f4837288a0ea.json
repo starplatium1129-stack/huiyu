@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_home_tea_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "scathach_home_tea_morning",
     "title": "斯卡哈 · 晨间茶室的师匠私语·「休息也是修行的一部分，坐下」",
@@ -29,11 +29,8 @@
       "morning_screen_light",
       "medium_shot"
     ],
-    "promptProse": "Scathach sets the whisk aside and slides a prepared matcha bowl toward the viewer in soft morning light.",
+    "promptProse": "Scathach slides the matcha bowl toward the viewer with both hands, the whisk already resting beside the tray. Morning light diffused by the shoji catches the thin curl of steam between them.",
     "promptTokens": [
-      "Scathach",
-      "white shirt",
-      "trousers",
       "seiza",
       "matcha",
       "tatami",

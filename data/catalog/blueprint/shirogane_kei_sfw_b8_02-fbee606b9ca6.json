@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_02",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1412,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "家中矮桌，她盘腿坐着核对家计簿，计算器、超市传单和笔袋一字排开",
     "adult": false,
@@ -26,9 +26,7 @@
     "promptProse": "Kei checks the household budget at the low table, an unexpected surplus drawing a smile in afternoon light.",
     "promptTokens": [
       "shirogane_kei",
-      "pullover",
-      "trousers",
-      "crossed legs",
+      "cross-legged",
       "ledger",
       "calculator",
       "medium shot"

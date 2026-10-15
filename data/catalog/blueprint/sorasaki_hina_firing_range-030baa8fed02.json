@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_firing_range",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 847,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手持枪专注瞄准",
     "adult": false,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "low angle, close-up on upper body",
+    "camera": "upper body, from below",
     "category": "风纪训练",
     "characterId": "sorasaki_hina",
     "coverageTags": [
@@ -26,16 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "combat_gear",
-    "promptProse": "Hina steadies the machine gun along the firing lane, then lowers it toward rest and turns to the teacher.",
+    "promptProse": "After the final shot, Hina keeps both hands on the machine gun, its barrel lowered safely along the firing lane, and turns toward the teacher. Overhead light catches the sweat at her temple.",
     "promptTokens": [
       "Hina",
-      "tactical jacket",
-      "harness",
-      "gloves",
       "machine gun",
       "firing range",
-      "low angle",
-      "close-up"
+      "from below",
+      "upper body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

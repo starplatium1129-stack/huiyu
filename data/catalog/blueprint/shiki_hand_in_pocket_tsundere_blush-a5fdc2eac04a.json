@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shiki_hand_in_pocket_tsundere_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1343,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "手被拉入对方大衣口袋握紧，侧过脸红透耳根，咬唇假装看别处任由牵手",
-    "camera": "medium close-up, eye level, deeply embarrassed tsundere view",
+    "camera": "cowboy shot, eye level",
     "category": "反差娇羞",
     "characterId": "ryougi_shiki",
     "compositionIntent": "group",
@@ -25,15 +25,13 @@
       "knife"
     ],
     "outfitId": "kimono_red_jacket_no_knife",
-    "promptProse": "Her companion draws her hand into his coat pocket at the snowy crossing as she blushes and looks aside.",
+    "promptProse": "Standing beside her at the snowy crossing, her companion holds her hand inside his coat pocket; she turns her flushed face toward the roadside trees under warm shop-window light.",
     "promptTokens": [
-      "Ryougi Shiki",
-      "white kimono",
-      "red jacket",
       "holding hands",
+      "blush",
       "winter",
       "street",
-      "close-up"
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

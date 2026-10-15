@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_r18_plugsuit_unpeeled",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1021,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "独自斜倚检查台，驾驶服褪至腰际，一手按住绷带、一手探入腰间",
     "adult": true,
     "adultArtistHint": "@kousaki rui",
     "animaStyleHint": "r18_sensual_art",
-    "camera": "high angle, top-down view, vertical foreshortening, pov",
+    "camera": "cowboy shot, from above",
     "category": "私密情欲",
     "characterId": "ayanami_rei",
     "coverageTags": [
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "plugsuit_white",
-    "promptProse": "Adult Rei reclines with one leg bent over the table edge, holding a bandage to her chest while the other hand reaches beneath her suit.",
+    "promptProse": "Adult Rei reclines with one leg bent over the examination table edge, holding a bandage to her chest while the other hand reaches beneath her suit. A cool medical lamp catches the bandage beside the faint monitor glow.",
     "promptTokens": [
       "adult",
       "medical room",

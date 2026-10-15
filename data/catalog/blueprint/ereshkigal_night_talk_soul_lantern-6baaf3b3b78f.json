@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_night_talk_soul_lantern",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 269,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ereshkigal_night_talk_soul_lantern",
     "title": "埃列什基伽勒 · 魂灯夜话·「谢谢你……愿意来冥界看我」",
@@ -28,12 +28,9 @@
       "blue_lantern_light",
       "wide_two_shot"
     ],
-    "promptProse": "She hugs her knees while talking beside a companion in a travel coat; both watch soul lanterns drift down the river.",
+    "promptProse": "Seated beside a companion in a travel coat, she hugs her knees and quietly thanks them. Blue soul lanterns drift along the river below the two figures, reflected light catching her damp eyes.",
     "promptTokens": [
       "2people",
-      "black dress",
-      "tiara",
-      "coat",
       "sitting",
       "knees up",
       "talking",

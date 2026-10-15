@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_chapel_morning_prayer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jeanne_chapel_morning_prayer",
     "title": "圣女贞德 · 晨光小教堂的祈祷·「今日也请，赐予他们安宁」",
@@ -15,7 +15,7 @@
     "action": "跪于祭坛前双手合十祈祷，白裙金辫垂落，晨光光柱笼罩周身",
     "timeOfDay": "清晨",
     "lighting": "高窗斜射的丁达尔晨光光柱，尘埃微粒浮游其间",
-    "camera": "medium shot, kneel profile, god rays through window, serene sacred mood",
+    "camera": "medium shot, side view",
     "mood": "圣洁静谧、温柔慈悲",
     "sceneTags": [
       "village_chapel",
@@ -31,10 +31,6 @@
     ],
     "promptProse": "Jeanne kneels before the chapel altar with her bare hands joined against her forehead. Morning light falls across her fingers and white dress.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "white dress",
-      "braid",
       "kneeling",
       "praying",
       "altar",

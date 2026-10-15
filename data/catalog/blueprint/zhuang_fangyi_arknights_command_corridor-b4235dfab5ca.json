@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_command_corridor",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_command_corridor",
     "characterId": "zhuang_fangyi_arknights",
@@ -32,9 +32,6 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "chinese clothes",
-      "green trousers",
-      "black boots",
       "books",
       "leaf bookmark",
       "offering",

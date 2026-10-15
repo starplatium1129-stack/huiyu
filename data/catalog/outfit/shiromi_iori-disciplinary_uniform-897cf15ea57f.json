@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiromi_iori/disciplinary_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 513,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "shiromi_iori",
     "outfit": {
@@ -19,17 +19,12 @@
         "crop_top",
         "sleeveless",
         "red_armband",
-        "armband",
         "pleated_skirt",
         "black_skirt",
-        "miniskirt",
-        "garter_straps",
         "garter_belt",
-        "thighhighs",
         "black_thighhighs",
         "fingerless_gloves",
         "combat_boots",
-        "sniper_rifle",
         "gehenna"
       ]
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_canteen_routine",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "端着餐盘，认真挑选菜色",
     "camera": "medium shot",
@@ -20,10 +20,8 @@
     "mood": "日常安稳",
     "negativeTokens": [],
     "outfitId": "supervisor_lounge_knitwear",
-    "promptProse": "Perlica checks the portions on her tray before looking toward the Administrator at the canteen serving window.",
+    "promptProse": "Both hands support her tray at the serving window as she looks from the measured portions toward the offscreen Administrator.",
     "promptTokens": [
-      "cream sweater",
-      "trousers",
       "food tray",
       "standing",
       "cafeteria",

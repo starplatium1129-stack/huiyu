@@ -1,27 +1,22 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/pink_tracksuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 550,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "pink_tracksuit",
       "name": "经典粉色运动服常服",
       "tokens": [
-        "pink_tracksuit",
-        "tracksuit",
-        "track_jacket",
-        "jacket",
-        "long_sleeves",
-        "pleated_skirt",
-        "black_skirt",
-        "black_socks",
+        "pink track jacket",
+        "black pleated skirt",
+        "black kneehighs",
         "sneakers"
       ],
-      "prose": "wearing her iconic oversized bright-pink zip-up tracksuit jacket over a dark pleated school skirt, black knee-high socks and casual sneakers",
+      "prose": "her oversized pink zip-up track jacket over a dark pleated skirt, with black knee socks and sneakers",
       "styleHint": "soft daily anime illustration with gentle warm lighting",
       "isDefault": true,
       "default": true

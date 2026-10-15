@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_kitchen_apron_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1470,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "mahiru_kitchen_apron_morning",
     "title": "椎名真昼 · 邻家厨房围裙微烫的早餐·「周总是起这么晚……再不吃煎蛋要凉了」",
@@ -29,11 +29,9 @@
       "blonde_hair",
       "gentle_smile"
     ],
-    "promptProse": "Mahiru turns with tamagoyaki and miso soup, watching sleepy Amane rub his eyes.",
+    "promptProse": "Mahiru turns toward sleepy Amane with both hands supporting a tray of tamagoyaki and miso soup. Window light catches the rising steam above the breakfast dishes.",
     "promptTokens": [
       "shiina_mahiru",
-      "pink apron",
-      "beige sweater",
       "breakfast tray",
       "kitchen",
       "morning"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_mask_taken_off_flustered_tsundere",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sparkle_mask_taken_off_flustered_tsundere",
     "title": "花火 · 被摘面具的破防羞恼",
@@ -15,7 +15,7 @@
     "action": "面具被摘下，双手慌忙向上抓取抢夺，满脸通红、耳根红透，咬唇羞恼跺脚",
     "timeOfDay": "演出幕后",
     "lighting": "后台微弱聚光灯照在绯红的面庞上",
-    "camera": "medium close-up, eye level, flustered tsundere view",
+    "camera": "medium shot, eye level, both reaching hands visible",
     "mood": "反差破防",
     "sceneTags": [
       "theater",
@@ -29,15 +29,13 @@
       "flustered",
       "tsundere_pout"
     ],
-    "promptProse": "Sparkle reaches with both hands for the mask held by the viewer, a backstage spotlight catching her flustered face.",
+    "promptProse": "Sparkle reaches with both hands for the fox mask in the viewer's hand at the edge of the frame. A narrow backstage spotlight catches her flushed cheeks and bitten lip against the dark curtain.",
     "promptTokens": [
-      "Sparkle",
-      "kimono dress",
       "fox mask",
       "reaching",
       "blush",
       "backstage",
-      "close-up"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +45,6 @@
       "flustered",
       "tsundere"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

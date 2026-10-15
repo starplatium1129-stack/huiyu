@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 281,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_05",
     "title": "美杜莎 Rider · 海边长椅的无声读书会",
@@ -30,13 +30,10 @@
       "soft_gaze",
       "evening_light"
     ],
-    "promptProse": "Medusa offers a sea-salt lemon drink while keeping her book on her knee, long hair stirred by the evening breeze.",
+    "promptProse": "Medusa presses the open book on her knee with her left hand and offers the lemon drink to the viewer with her right. Low evening light glints on the glass while the sea wind lifts her hair along the bench.",
     "promptTokens": [
       "1girl",
       "solo",
-      "swimsuit",
-      "cover-up",
-      "glasses",
       "book",
       "lemon drink",
       "seawall bench"

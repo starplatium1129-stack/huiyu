@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_forest_staff_casting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fern_forest_staff_casting",
     "characterId": "fern_frieren",
@@ -24,13 +24,10 @@
       "morning_light",
       "full_body"
     ],
-    "promptProse": "She plants her boots firmly and holds the complete staff with both hands as a compact white mana sphere forms at its tip.",
+    "promptProse": "With her boots planted on the forest path, she holds the staff in both hands as a compact white sphere forms at its tip; its light reaches her focused face through the morning mist.",
     "promptTokens": [
       "1girl",
       "solo",
-      "black coat",
-      "white dress",
-      "boots",
       "holding staff",
       "magic",
       "forest path",

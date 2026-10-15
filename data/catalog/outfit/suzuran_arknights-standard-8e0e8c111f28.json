@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/standard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 370,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
@@ -14,12 +14,11 @@
       "name": "白狐和服",
       "prose": "her white haori jacket with dark green trim and a knotted cord over a dark pleated skirt, white over-knee socks and brown lace-up boots",
       "tokens": [
-        "haori",
-        "kimono",
-        "white_clothes",
-        "pleated_skirt",
-        "over_knee_socks",
-        "boots"
+        "white haori",
+        "dark green trim",
+        "dark pleated skirt",
+        "over-knee socks",
+        "brown boots"
       ]
     }
   }

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_wooden_desk_bent_over_prone",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1352,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "双手撑在木案上俯身弓腰翘臀，和服半褪单手探入内裤自抚花瓣，回头咬唇含泪娇吟",
+    "action": "一手撑木案俯身，另一手探入和服下摆自抚，回头望向身后",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, horizontal framing, Dutch angle POV, solo sensual framing",
+    "camera": "cowboy shot, three-quarter rear view",
     "category": "私密承载",
     "characterId": "ryougi_shiki",
     "coverageTags": [
@@ -26,15 +26,17 @@
     "mood": "咬牙沉沦、唯美自抚",
     "negativeTokens": [],
     "outfitId": "official_kimono_leather_jacket",
-    "promptProse": "Shiki leans over the wooden desk and touches herself beneath her raised kimono, glancing back through striped moonlight.",
+    "promptProse": "Shiki braces one hand on the wooden desk and touches herself beneath her raised kimono with the other, glancing back through striped moonlight.",
     "promptTokens": [
-      "Ryougi Shiki",
       "white kimono",
       "bent over",
       "desk",
       "looking back",
       "moonlight",
-      "wide shot"
+      "masturbation",
+      "panties aside",
+      "hand under clothes",
+      "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -56,11 +58,7 @@
     ],
     "timeOfDay": "深夜月影",
     "title": "两仪式 · 木案前和服半褪的更衣自抚·「别看……笨蛋，身体会变奇怪的」",
-    "nsfwTokens": [
-      "masturbation",
-      "panties aside",
-      "hand under clothes"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

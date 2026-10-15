@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_02",
     "title": "夜刀神十香 · 浴室洗净黄豆粉奶油的水光湿身 ·「胸口蹭上奶油了……士道来帮我舔干净好不好」",
@@ -15,7 +15,7 @@
     "action": "斜坐浴池水流冲刷巨乳奶油，单手探入腿心自抚，舔唇懵懂娇喘",
     "timeOfDay": "night",
     "lighting": "liquid_reflection_lighting",
-    "camera": "intimate vertical medium shot",
+    "camera": "cowboy shot",
     "mood": "湿身水光与私密自持",
     "sceneTags": [
       "wet",
@@ -33,14 +33,13 @@
     "promptProse": "Tohka rinses snack cream and soy powder from her chest in the Itsuka bath while her other hand moves beneath the water between her thighs.",
     "promptTokens": [
       "adult",
-      "1girl",
-      "solo",
       "nude",
       "sitting",
       "cream on body",
       "masturbation",
       "bathtub",
-      "steam"
+      "steam",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

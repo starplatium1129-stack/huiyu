@@ -1,20 +1,19 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_festival",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 865,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_festival",
       "name": "夏祭靛蓝浴衣",
-      "prose": "an indigo floral yukata secured with a cream obi and wooden sandals",
+      "prose": "an indigo floral yukata with a cream obi and wooden sandals",
       "tokens": [
-        "yukata",
-        "blue_yukata",
-        "floral_print",
+        "blue yukata",
+        "floral print",
         "obi",
         "geta"
       ],

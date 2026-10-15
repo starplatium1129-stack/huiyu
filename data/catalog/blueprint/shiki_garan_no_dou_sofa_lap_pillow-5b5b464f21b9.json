@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shiki_garan_no_dou_sofa_lap_pillow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1344,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "穿白和服侧卧沙发，头枕视角膝上闭眼休息，双手自然放松。",
-    "camera": "medium shot, slightly high angle, resting face and supporting lap",
+    "camera": "medium shot, high angle, pov",
     "category": "温柔陪伴",
     "characterId": "ryougi_shiki",
     "coverageTags": [
@@ -22,14 +22,13 @@
     "mood": "安宁依恋",
     "negativeTokens": [],
     "outfitId": "sfw_white_kimono_without_jacket",
-    "promptProse": "Shiki rests her head on her companion's lap on the vintage sofa, blind-filtered sunlight crossing her cheek.",
+    "promptProse": "She lies on her side with her head resting on the offscreen viewer's visible lap, one hand at her waist and the other beside her face, blind-filtered sunlight crossing her closed eyes.",
     "promptTokens": [
-      "Ryougi Shiki",
-      "white kimono",
       "lap pillow",
       "sofa",
       "afternoon",
-      "medium shot"
+      "medium shot",
+      "pov"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +47,6 @@
     ],
     "timeOfDay": "afternoon",
     "title": "两仪式 · 伽蓝之堂的膝枕休憩",
-    "compositionIntent": "group"
+    "compositionIntent": "single"
   }
 }

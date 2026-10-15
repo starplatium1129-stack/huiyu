@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc027",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She listens with the phone held to her ear, her face softly lit by the bedside lamp.",
+    "animaCaption": "Lying against her pillow, she holds the phone to her ear with a small relieved smile; the bedside lamp casts a quiet pool of light across her face.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "枕边面部近景",
     "category": "恋爱",
@@ -29,13 +29,11 @@
     "tags": [
       "hair_ribbon",
       "pink_pajamas",
-      "bare_legs",
-      "smooth_thighs",
       "bedroom",
-      "full_body",
-      "barefoot",
+      "pillow",
       "phone",
-      "depth_of_field"
+      "bedside_lamp",
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

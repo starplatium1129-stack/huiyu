@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/casual_modern_date",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
       "id": "casual_modern_date",
       "name": "女神的现代私服",
-      "prose": "a fitted white crop tee under a denim jacket, high-waisted shorts, golden hoop earrings, sneakers and a star-shaped hairpin",
+      "prose": "a white crop tee beneath a denim jacket, high-waisted denim shorts, sneakers, gold hoop earrings and a star hairpin",
       "tokens": [
-        "casual_wear",
-        "crop_top",
-        "white_shirt",
-        "denim_jacket",
-        "shorts",
-        "denim_shorts",
+        "white crop top",
+        "denim jacket",
+        "denim shorts",
         "sneakers",
-        "hairpin",
-        "hoop_earrings"
+        "star hair ornament",
+        "hoop earrings"
       ]
     }
   }

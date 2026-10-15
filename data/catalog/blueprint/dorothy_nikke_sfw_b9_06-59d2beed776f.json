@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1732,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_06",
     "title": "桃乐丝 · 旧照片的指尖",
@@ -30,12 +30,10 @@
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "She studies an old photograph with a fingertip hovering above it, then returns it to the drawer. Lamplight reaches the worn paper.",
+    "promptProse": "Seated at the bed edge, she studies the old photograph held in one hand, the other fingertip hovering above its surface. Lamplight warms the worn paper beside the open drawer.",
     "promptTokens": [
       "dorothy_(nikke)",
       "bedroom",
-      "rose cardigan",
-      "navy pants",
       "photograph",
       "open drawer",
       "sitting",

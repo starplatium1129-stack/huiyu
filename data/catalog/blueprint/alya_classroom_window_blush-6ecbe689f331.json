@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_classroom_window_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 773,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "托腮望向窗外夕阳，银发如瀑，蓝眸微转用俄语低声呢喃着害羞的爱意，微风吹拂窗帘",
     "camera": "medium shot, seated at the window desk with one hand on her cheek",
@@ -24,7 +24,6 @@
     "promptProse": "She rests her cheek in one hand at the window desk, glancing toward the viewer. Sunset light stretches across the empty classroom.",
     "promptTokens": [
       "classroom",
-      "school uniform",
       "sitting",
       "cheek in hand",
       "blush",

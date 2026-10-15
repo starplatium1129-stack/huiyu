@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_dominant_cowgirl_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "rias_nsfw_dominant_cowgirl_straddle",
     "title": "莉雅丝 · 反客为主的红发女皇骑乘",
@@ -15,7 +15,7 @@
     "action": "全裸跨坐在视角腰间，居高临下主导骑乘，双手按在胸口，长发翻飞胸脯起伏",
     "timeOfDay": "深夜",
     "lighting": "柔和氛围壁灯勾勒身段轮廓",
-    "camera": "cowboy shot, vertical framing, low angle POV",
+    "camera": "cowboy shot, first-person view, low angle",
     "mood": "女王占有",
     "sceneTags": [
       "bedroom",
@@ -29,7 +29,7 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "Adult Rias rides astride her companion on the silk bed, both hands pressed against their chest as she looks down.",
+    "promptProse": "Adult Rias straddles the offscreen viewer on the silk bed, both palms resting against their chest as she looks down.",
     "promptTokens": [
       "nude",
       "cowgirl position",
@@ -51,6 +51,7 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "compositionIntent": "single"
   }
 }

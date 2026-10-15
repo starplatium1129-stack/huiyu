@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_rooftop_garden",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 386,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_rooftop_garden",
     "title": "伊雷娜 · 屋顶花园",
@@ -27,11 +27,8 @@
       "skyline",
       "outdoors"
     ],
-    "promptProse": "Her broom hovers above the rooftop flowers as she pauses and smiles toward the viewer.",
+    "promptProse": "Seated on her broom just above the rooftop flowers, she pauses to look back with a confident little smile. Clear morning light opens across the garden and city skyline.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "dress",
       "sitting",
       "broom",
       "rooftop",

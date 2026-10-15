@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 292,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_04",
     "title": "美狄亚 · 柳洞寺后院的蓝色誓约",
@@ -28,12 +28,10 @@
       "protective_smile",
       "morning_light"
     ],
-    "promptProse": "Medea inspects the blue flower wreath she has made and gently offers it beneath the temple plum trees.",
+    "promptProse": "Medea offers the blue flower wreath toward the viewer beneath the white plum blossoms. Clear morning light catches its petals and the silver thread of her bridal gown.",
     "promptTokens": [
       "1girl",
       "solo",
-      "navy wedding dress",
-      "veil",
       "side braid",
       "blue wreath",
       "plum tree"

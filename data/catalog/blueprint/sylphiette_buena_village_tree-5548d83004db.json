@@ -1,32 +1,29 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_buena_village_tree",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 464,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手捧着晶莹水球，绿发在阳光与微风中扬起",
     "adult": false,
-    "camera": "medium_shot",
+    "camera": "medium shot",
     "category": "日常羁绊",
     "characterId": "sylphiette",
     "coverageTags": [
       "iconic",
       "daily"
     ],
-    "description": "【希露菲 · 布耶纳村大树·童年微风与魔法水球】布耶纳村绿草如茵的小丘上，巨大的古树在微风中沙沙作响。年幼的希露菲双手合十捧起一颗晶莹剔透的水球，翠绿短发与尖尖的精灵耳在阳光下欢快摇曳，向你露出毫无杂质的纯真笑容——「鲁迪你看！按照你教我的方法，我真的不用念咒语就能凝聚出水球了！」",
+    "description": "【希露菲 · 布耶纳村大树与魔法水球】布耶纳村绿草如茵的小丘上，巨大的古树在微风中沙沙作响。成年创作版本的希露菲双手捧起晶莹的水球，翠绿短发与尖尖的精灵耳迎着阳光和微风。她向你露出开心的笑容——「鲁迪你看！按照你教我的方法，我真的不用念咒语就能凝聚出水球了！」",
     "id": "sylphiette_buena_village_tree",
     "lighting": "dappled_sunlight",
     "location": "布耶纳村口巨大古树下",
     "mood": "gentle",
     "negativeTokens": [],
     "outfitId": "default_mage_robe",
-    "promptProse": "Sylphiette cups a floating water sphere beneath the village oak, dappled light passing through it onto her hands.",
+    "promptProse": "Adult Sylphiette cups a floating water sphere beneath the village oak, dappled light passing through it onto her hands.",
     "promptTokens": [
-      "young Sylphiette",
-      "green hair",
-      "green cloak",
       "water magic",
       "oak tree",
       "medium shot"
@@ -43,20 +40,17 @@
       "floating_water_ball"
     ],
     "timeOfDay": "day",
-    "title": "希露菲叶特 · 布耶纳村大树·童年微风与魔法水球",
+    "title": "希露菲叶特 · 布耶纳村大树与魔法水球",
     "identityTokensOverride": [
       "sylphiette",
-      "sylphie",
       "1girl",
       "solo",
-      "child",
-      "green_hair",
-      "short_hair",
-      "red_eyes",
-      "elf_ears",
-      "pointed_ears",
-      "mushoku_tensei"
+      "short hair",
+      "green hair",
+      "red eyes",
+      "elf ears",
+      "mushoku tensei"
     ],
-    "identityProseOverride": "Sylphiette from Mushoku Tensei in her childhood form, with short green hair, red eyes and pointed elf ears."
+    "identityProseOverride": "Adult Sylphiette from Mushoku Tensei, with short green hair, red eyes and pointed elf ears."
   }
 }

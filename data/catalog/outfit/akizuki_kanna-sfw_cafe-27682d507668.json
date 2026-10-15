@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_cafe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 631,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
@@ -14,11 +14,10 @@
       "name": "星光咖啡馆端庄工作服",
       "prose": "a crisp white long-sleeved blouse, dark waistcoat, ankle-length skirt and cafe apron",
       "tokens": [
-        "white_blouse",
-        "long_sleeves",
+        "white blouse",
         "waistcoat",
-        "long_skirt",
-        "cafe_apron"
+        "long skirt",
+        "apron"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1635,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_03",
     "title": "长离 · 茶馆里听到的妙着",
@@ -29,10 +29,9 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "She touches the chess piece with her closed fan, then opens it to hide a laugh. Lantern light reaches the table beside a carved screen.",
+    "promptProse": "She raises her fan to hide a laugh after tapping the chess piece, which rests beside her untouched tea. Lantern light reaches the tabletop and carved screen.",
     "promptTokens": [
       "teahouse",
-      "teal robe",
       "folding fan",
       "chess piece",
       "laughing",

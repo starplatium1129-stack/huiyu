@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/gothic_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 609,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
@@ -12,20 +12,14 @@
       "name": "尤尔哈决战哥特战裙",
       "prose": "YoRHa black gothic dress with white floral chest embroidery, a sheer mesh inset, feather-trimmed puff sleeves, open-back cutout and side-slit flared skirt over a white leotard, black thigh-high leather boots and black headband",
       "tokens": [
-        "gothic_lolita",
-        "black_dress",
-        "short_dress",
-        "embroidery",
-        "cleavage",
-        "puff_sleeves",
-        "feathers",
-        "open_back",
-        "leotard_under_clothes",
-        "thighhighs",
-        "boots",
-        "leather_boots",
-        "headband",
-        "yorha"
+        "black dress",
+        "white floral embroidery",
+        "puff sleeves",
+        "feather trim",
+        "open back",
+        "white leotard",
+        "black thighhigh boots",
+        "black headband"
       ],
       "default": true,
       "isDefault": true

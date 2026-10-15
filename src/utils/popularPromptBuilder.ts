@@ -11,6 +11,7 @@ import {
 import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
 import { compositionNegative, compositionTokens } from './blueprintComposition.ts'
+import { cameraTokensFromText } from './promptCamera.ts'
 import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
 import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 
@@ -214,6 +215,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const identityProse = blueprint?.identityProseOverride || character.identityProse
   const ratingLevel = (adult || manualR18) ? 'R18' : 'ALL'
   const shotToken = SHOT.find(item => item.id === options.shot)?.prompt || ''
+  const cameraTokens = [...(shotToken ? [shotToken] : []), ...cameraTokensFromText(blueprint?.camera)]
   const lightingToken = LIGHTING.find(item => item.id === options.lighting)?.prompt || ''
   const lightingTokens = lightingToken ? [lightingToken] : []
   const compositionToken = COMPOSITION.find(item => item.id === options.composition)?.prompt || ''
@@ -278,8 +280,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       sceneProse,
       scenePrompt: compositionTokens([...sceneTokensFiltered, ...nsfwTokens], blueprint).join(', '),
       emotion: emotionTokens,
-      camera: shotToken ? [shotToken] : [],
+      camera: cameraTokens,
       lighting: lightingTokens,
+      authoredLighting: blueprint?.lighting,
       palette: options.palette,
       composition: compositionToken ? [compositionToken] : [],
       manual,
@@ -326,8 +329,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     exactTokens: compositionTokens(exactIdentity, blueprint),
     scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
     emotion: emotionTokens,
-    camera: shotToken ? [shotToken] : [],
+    camera: cameraTokens,
     lighting: lightingTokens,
+    authoredLighting: blueprint?.lighting,
     palette: options.palette,
     composition: compositionToken ? [compositionToken] : [],
     manual,

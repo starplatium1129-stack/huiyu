@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/casual_denim",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 687,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
@@ -14,13 +14,9 @@
       "name": "假日休闲无袖背心短裤",
       "prose": "a dark-red sleeveless casual top, denim cutoff shorts and sneakers",
       "tokens": [
-        "casual",
-        "crop_top",
-        "tank_top",
-        "denim_shorts",
-        "short_shorts",
-        "sneakers",
-        "demon_tail"
+        "dark red sleeveless shirt",
+        "denim shorts",
+        "sneakers"
       ]
     }
   }

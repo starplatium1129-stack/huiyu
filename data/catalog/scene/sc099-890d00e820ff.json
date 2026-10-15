@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc099",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She presses the emergency-call button and listens for a reply, then notices the viewer standing close beside her.",
+    "animaCaption": "She keeps a finger on the emergency-call button while the viewer's forearm braces against the wall beside her; the elevator's overhead emergency light reveals her startled glance at their close distance.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "主观狭窄空间近景",
     "category": "日常",
@@ -31,11 +31,9 @@
       "business_blazer",
       "slacks",
       "elevator",
-      "heels",
-      "depth_of_field",
       "emergency_light",
       "pressing_call_button",
-      "medium_shot",
+      "close_up",
       "close_proximity"
     ],
     "time": "夜晚",

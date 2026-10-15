@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc291",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 286,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Nene sits sideways on the sofa, sharing the art book resting on its armrest with the viewer. Two tea cups stand by the rainy window.",
+    "animaCaption": "Sitting sideways on the sofa with her legs across the viewer's lap, she tilts the art book toward them and pauses to meet their gaze; grey window light rests on her bare shoulder above the loose sweater collar.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "沙发近景侧视",
     "category": "日常",
@@ -30,13 +30,11 @@
       "hair_ribbon",
       "oversized_grey_sweater",
       "short_pants",
-      "bare_legs",
       "sofa",
-      "full_body",
+      "close_up",
       "art_book",
       "legs_on_lap",
-      "rain",
-      "depth_of_field"
+      "rain"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

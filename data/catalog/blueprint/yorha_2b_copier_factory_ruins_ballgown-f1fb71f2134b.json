@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_copier_factory_ruins_ballgown",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1113,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yorha_2b_copier_factory_ruins_ballgown",
     "title": "2B · 沉沦大理石殿堂的露背回眸",
@@ -31,13 +31,8 @@
       "blindfold",
       "gazing_back"
     ],
-    "promptProse": "2B adjusts a glove while turning on the marble steps, violet-blue light from the cracked vault meeting candlelight below.",
+    "promptProse": "2B pauses on the marble steps to adjust one long glove, looking back over her shoulder. Violet-blue light from the cracked vault traces her gown above the warmer candlelight below.",
     "promptTokens": [
-      "2B",
-      "black gown",
-      "opera gloves",
-      "choker",
-      "blindfold",
       "looking back",
       "marble hall",
       "cowboy shot"

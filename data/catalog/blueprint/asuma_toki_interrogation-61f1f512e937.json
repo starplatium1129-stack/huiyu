@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_interrogation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "被绑在椅子上衣襟扯开",
+    "action": "交腿坐在椅上，一手按录音机开关，另一手留在大腿处的破损衣料下。",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【飞鸟马时 · 秘密审讯室的伪装】封闭的审讯室内，时坐在铁椅上配合进行反审讯演练，战斗服被微扯开露出雪白的锁骨与大腿。她抬起冷澈的蓝瞳盯住你，唇角泛起一丝不易察觉的狡黠——「审讯官先生，无论您用什么手段，我都不会招供的……除非，您愿意答应我一个私下约会的请求。」",
+    "description": "反审讯演练后的汇报室里，成年时衣装破损，坐在顶部冷灯照着的椅子上；双腕没有束缚，一手搭在录音机开关旁。",
     "id": "asuma_toki_interrogation",
     "kreaStyleHint": "",
     "lighting": "顶部冷光灯",

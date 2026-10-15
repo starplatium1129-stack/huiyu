@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
     "title": "黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持",
@@ -12,10 +12,10 @@
     "characterId": "artoria_pendragon_alter",
     "description": "【黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持】破败阴森的黑色王座圣殿内，阿尔托莉雅·Alter单手拄着暗红光芒缭绕的誓约胜利之剑。身上的漆黑哥特板甲搭扣完全解开，沉重的黑铁胸甲半滑脱下坠，露出一对饱满白皙、极具力量线条与肉感的丰满雪乳，挺立嫣红的乳尖在黑甲的反衬下散发着冷艳的光泽。锁骨处的黑化血丝暗纹因体内魔力奔涌而散发微弱的赤红暗芒，引发全身潮红发热。黑呆单膝跪地，一只手按在冰凉的黑曜石地砖上，另一只手探入战裙下摆贴着平坦紧致的下腹深入腿心自抚，暗金色的眼眸泛起狂乱的水汽与屈辱的动情，咬牙冷酷低语——「唔……身体的魔力炉心……竟然发热到了这种地步……休想看到本王这副狼狈沉沦的姿态……！」",
     "location": "黑曜石王座之间冰凉坚硬的大理石地砖上",
-    "action": "黑重甲半卸露出丰盈雪乳，暗红魔纹泛光，单手拄地另一手深入裙底自抚，暗金眸含泪咬牙冷哼",
+    "action": "单膝跪地，胸甲解开，一手拄剑支撑，另一手探入裙下自抚，暗红魔纹泛光",
     "timeOfDay": "深夜月影",
     "lighting": "幽暗大厅顶穹破洞投下的冷银月光与黑圣剑暗红流光",
-    "camera": "cowboy shot, diagonal dynamic composition, heavy gothic metal contrast",
+    "camera": "cowboy shot, three-quarter view",
     "mood": "暴君动情",
     "sceneTags": [
       "throne_room",

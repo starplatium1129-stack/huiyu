@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_bedroom_soles_tights_peel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 179,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakura_r18_bedroom_soles_tights_peel",
     "characterId": "matou_sakura",
@@ -27,8 +27,7 @@
       "pantyhose",
       "sitting",
       "bed",
-      "moonlight",
-      "cowboy shot"
+      "moonlight"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -44,7 +43,7 @@
     "action": "成年樱坐在床沿，开衫敞开，双手将一侧黑丝从大腿卷至脚踝，另一腿保持完整薄纱",
     "timeOfDay": "月夜",
     "lighting": "cold silver moonlight, soft violet shadows, gentle window glow",
-    "camera": "intimate medium shot",
+    "camera": "medium shot, low three-quarter view, bent legs and both hands on the tights visible",
     "mood": "温柔幽深",
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",

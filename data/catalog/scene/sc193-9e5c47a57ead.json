@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc193",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 190,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She stands at the sea-view railing and looks back, holding the thin nightgown as the breeze presses it against her silhouette.",
+    "animaCaption": "At the sea-view railing, she turns back and catches the viewer's shirt hem with one hand; moonlight outlines her windblown hair and the thin white nightgown.",
     "auditRevision": "careful-batch01-2026-08-27",
-    "camera": "近景特写",
+    "camera": "阳台回眸七分身中景",
     "category": "恋爱",
     "char": "natsume",
     "character": [
@@ -30,11 +30,10 @@
       "mole_under_eye",
       "silk_nightgown",
       "translucent",
-      "bare_legs",
-      "smooth_thighs",
       "balcony",
-      "full_body",
-      "barefoot",
+      "holding_viewer_clothes",
+      "looking_back",
+      "cowboy_shot",
       "moonlight"
     ],
     "time": "深夜",

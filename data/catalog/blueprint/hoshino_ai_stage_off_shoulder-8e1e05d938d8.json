@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_off_shoulder",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 950,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "追光下抛飞吻",
-    "camera": "cowboy shot, dynamic idol pose with mic",
+    "camera": "cowboy shot",
     "category": "舞台演出",
     "characterId": "hoshino_ai",
     "coverageTags": [],
@@ -18,16 +18,13 @@
     "mood": "灵动撩人",
     "negativeTokens": [],
     "outfitId": "stage_off_shoulder",
-    "promptProse": "Ai touches her fingers to her lips to send a kiss while holding the microphone in her other hand.",
+    "promptProse": "She touches one hand to her lips to send a kiss toward the viewer, keeping the microphone in her other hand beneath the follow spot.",
     "promptTokens": [
-      "off shoulder dress",
-      "pink dress",
-      "blue necktie",
-      "white thighhighs",
       "microphone",
       "blowing kiss",
       "stage",
-      "spotlight"
+      "spotlight",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

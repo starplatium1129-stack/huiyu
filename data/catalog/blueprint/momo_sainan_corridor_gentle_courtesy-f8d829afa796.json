@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "momo_sainan_corridor_gentle_courtesy",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1244,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "双手交叠腹前优雅漫步颔首行礼，制服与百褶裙端庄得体，笑容温婉无瑕",
-    "camera": "medium shot, eye-level, refined ladylike perspective",
+    "camera": "medium shot, eye level",
     "category": "校园优雅",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -20,11 +20,8 @@
     "mood": "温婉大方",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Momo walks through the corridor with her hands folded before her and nods politely toward the approaching teacher and classmates.",
+    "promptProse": "She pauses with hands folded at her waist and inclines her head toward the teacher and classmates approaching along the sunlit corridor.",
     "promptTokens": [
-      "Momo",
-      "school uniform",
-      "kneehighs",
       "hands together",
       "school hallway"
     ],

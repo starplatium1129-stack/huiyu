@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc210",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 205,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sc210",
     "title": "月下露天风吕的黑发水痕",
@@ -32,14 +32,13 @@
       "night",
       "moonlight",
       "water_reflections",
-      "medium_shot",
-      "depth_of_field"
+      "close_up"
     ],
     "rating": "R15",
     "mature": false,
     "location": "山间旅馆私人露天风吕",
     "weather": "秋夜微凉",
-    "camera": "侧面中近景",
+    "camera": "温泉水面侧脸近景",
     "lighting": "月光、灯笼与水面反射光",
     "usage": [
       "旅行氛围",

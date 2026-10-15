@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_03",
     "title": "夜刀神十香 · 雨后水洼的小跳跃",
@@ -16,7 +16,7 @@
     "action": "跳过水洼稳稳落地，回头开心看着涟漪。",
     "timeOfDay": "afternoon",
     "lighting": "soft after-rain daylight",
-    "camera": "full body, eye level, nearby environmental portrait",
+    "camera": "full body, eye level",
     "mood": "自然日常",
     "sceneTags": [
       "puddle",
@@ -32,10 +32,6 @@
     ],
     "promptProse": "Tohka lands beyond the puddle with both boots grounded and turns to admire the spreading ripples.",
     "promptTokens": [
-      "Tohka",
-      "orange raincoat",
-      "overalls",
-      "rain boots",
       "puddle",
       "full body"
     ],

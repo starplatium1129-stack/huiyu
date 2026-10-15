@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_stage",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuzuriha_inori_stage",
     "title": "楪祈 · 歌姬舞台",
@@ -28,10 +28,8 @@
       "gradient_hair",
       "medium_shot"
     ],
-    "promptProse": "Inori sings with relaxed hands before her, sparse luminous particles rising around the temporary stage and broken arches.",
+    "promptProse": "Inori sings with closed eyes and relaxed hands before her on the temporary stage. Golden spotlights cross the red glow along her layered skirt as sparse luminous particles rise toward the broken arches.",
     "promptTokens": [
-      "red long sleeve gown",
-      "layered skirt",
       "closed eyes",
       "singing",
       "stage",

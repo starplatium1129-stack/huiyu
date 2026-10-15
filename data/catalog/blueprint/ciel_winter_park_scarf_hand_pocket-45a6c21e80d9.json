@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_winter_park_scarf_hand_pocket",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1334,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "围着红围巾，将一只手伸进视角大衣口袋取暖，呼着热气侧首微笑",
     "camera": "cowboy shot, eye level, winter romantic walk",
@@ -22,15 +22,13 @@
     "mood": "冬日纯爱",
     "negativeTokens": [],
     "outfitId": "sfw_winter_trench_red_scarf",
-    "promptProse": "She slips her cold hand into her companion's pocket and interlaces their fingers while walking past the snowy bench.",
+    "promptProse": "Walking beside her companion, she slips her cold hand into his coat pocket and interlaces their fingers, turning a relieved smile toward him. Her breath clouds the cool air as the park lamps begin to glow beside the snowy bench.",
     "promptTokens": [
       "couple",
       "snowy park",
-      "beige trench coat",
-      "red scarf",
-      "jeans",
       "glasses",
-      "holding hands"
+      "holding hands",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

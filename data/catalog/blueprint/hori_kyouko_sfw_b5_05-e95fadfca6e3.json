@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1556,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_05",
     "title": "堀京子 · 把晴天夹上晾衣绳",
@@ -29,15 +29,14 @@
       "morning",
       "medium_shot"
     ],
-    "promptProse": "Hori braces the basket against her overalls while pinning the last towel, flattening its wind-lifted corner with a smile.",
+    "promptProse": "Bracing the laundry basket against her hip, she holds the wind-lifted towel corner with one hand and clips it to the line with the other; morning light brightens the cloth and her smile.",
     "promptTokens": [
-      "striped shirt",
-      "overalls",
       "laundry basket",
       "towel",
       "clothespin",
       "balcony",
-      "morning"
+      "morning",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

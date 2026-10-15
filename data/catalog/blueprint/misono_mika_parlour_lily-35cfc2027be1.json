@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_parlour_lily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 890,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在茶具旁整理白蔷薇，回望微笑",
     "adult": false,
@@ -26,10 +26,8 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "tea_party_dress",
-    "promptProse": "Mika props her chin in both hands and smiles at the teacher's paperwork beyond her teacup and white rose.",
+    "promptProse": "Mika props her chin in both hands, smiling at the viewer across the tea table and its paperwork. Cool side-window light touches her cheeks and the white rose beside her cup.",
     "promptTokens": [
-      "white gold dress",
-      "shawl",
       "chin in hands",
       "teacup",
       "white rose",

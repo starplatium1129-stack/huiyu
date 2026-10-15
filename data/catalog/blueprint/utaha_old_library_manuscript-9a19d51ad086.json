@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_old_library_manuscript",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1427,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "utaha_old_library_manuscript",
     "title": "霞之丘诗羽 · 旧书馆的稿纸晨光·「灵感这种东西，是偷懒者的借口」",
@@ -27,11 +27,10 @@
       "focused",
       "daily"
     ],
-    "promptProse": "Utaha touches the pen to her lips over the manuscript at the long library table in morning light.",
+    "promptProse": "Utaha rests the pen end against her lips over the manuscript, her white blouse sleeves rolled up and navy blazer draped over the chair back. Morning light from the high window crosses the scattered pages.",
     "promptTokens": [
       "kasumigaoka_utaha",
-      "school uniform",
-      "white headband",
+      "rolled sleeves",
       "manuscript",
       "pen",
       "library",

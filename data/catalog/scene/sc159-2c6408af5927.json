@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc159",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "animaCaption": "Resting on the bench with her legs crossed, she wraps her hands around the viewer's neck and leans into the kiss, her wet shirt clinging in the steam.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -30,16 +30,12 @@
       "mole_under_eye",
       "wet_shirt",
       "translucent",
-      "soaked_shirt",
-      "bare_legs",
       "bench",
       "bathroom",
       "steam",
       "arms_around_neck",
-      "deep_kiss",
       "kissing",
-      "full_body",
-      "barefoot"
+      "close_up"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

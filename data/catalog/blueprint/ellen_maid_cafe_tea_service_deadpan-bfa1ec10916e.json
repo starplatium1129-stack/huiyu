@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ellen_maid_cafe_tea_service_deadpan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1057,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手端托盘奉茶，面无表情俯视客人，女仆围裙与鲨鱼尾相得益彰",
-    "camera": "close-up, slight low angle from the guest's perspective",
+    "camera": "medium shot, slightly low angle from the guest's seat",
     "category": "工作日常",
     "characterId": "ellen_joe",
     "coverageTags": [
@@ -22,18 +22,14 @@
       "weapon"
     ],
     "outfitId": "maid_service_uniform",
-    "promptProse": "She approaches with Earl Grey on a silver tray, maintaining a professionally deadpan expression.",
+    "promptProse": "She approaches the seated viewer with Earl Grey balanced on a silver tray in one hand, her gaze professionally deadpan. Chandelier light catches the steam against the warm cafe interior.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "maid",
-      "apron",
       "tray",
       "teacup",
       "steam",
       "expressionless",
       "cafe",
-      "close-up",
+      "medium shot",
       "from below"
     ],
     "recommendedSize": "1152x1536",

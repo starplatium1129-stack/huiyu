@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_night_magic",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 381,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_night_magic",
     "title": "伊雷娜 · 夜间魔法星夜",
@@ -27,13 +27,8 @@
       "fantasy",
       "outdoors"
     ],
-    "promptProse": "She gathers glowing constellation orbs beside her wand; firelight warms the grass beneath the stars.",
+    "promptProse": "She gathers small constellation orbs beside her raised wand and watches them with a pleased smile. Campfire light warms the grassy hill below the blue starry sky.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "witch",
-      "witch dress",
-      "brooch",
       "holding wand",
       "magic",
       "stars",

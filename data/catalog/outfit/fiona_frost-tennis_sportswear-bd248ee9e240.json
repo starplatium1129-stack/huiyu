@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "fiona_frost/tennis_sportswear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 467,
   "createdAt": null,
-  "updatedAt": "2026-10-06T12:58:20.813784400+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "fiona_frost",
     "outfit": {
       "id": "tennis_sportswear",
       "name": "地下网球赛潜入运动装",
       "tokens": [
-        "sleeveless_shirt",
-        "tennis_uniform",
-        "pleated_skirt",
-        "wristbands",
-        "athletic"
+        "tennis uniform",
+        "sleeveless shirt",
+        "pleated skirt",
+        "wristbands"
       ],
-      "prose": "wearing a white sleeveless tennis top with a pleated skirt and wristbands",
+      "prose": "a white sleeveless tennis top, pleated skirt and wristbands",
       "styleHint": "dynamic high-speed tennis court drama",
       "isDefault": false,
       "default": false

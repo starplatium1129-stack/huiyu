@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_04",
     "title": "鸢一折纸 · 白色花园的精确誓约",
@@ -16,7 +16,7 @@
     "action": "玫瑰拱门下调整头纱并别上白玫瑰，转向镜头时露出罕见柔软微笑",
     "timeOfDay": "黄昏",
     "lighting": "cool morning light with silver dew highlights",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot",
     "mood": "克制表情里的温柔誓约",
     "sceneTags": [
       "wedding_dress",
@@ -31,10 +31,6 @@
     ],
     "promptProse": "Origami pins the last rose to her gown and gives a small smile beneath the morning garden arch.",
     "promptTokens": [
-      "Origami Tobiichi",
-      "wedding dress",
-      "short veil",
-      "white rose",
       "flower arch",
       "cowboy shot"
     ],

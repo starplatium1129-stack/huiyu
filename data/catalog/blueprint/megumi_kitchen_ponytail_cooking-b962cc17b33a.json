@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_kitchen_ponytail_cooking",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1441,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "megumi_kitchen_ponytail_cooking",
     "title": "加藤惠 · 厨房里的第一次翻面",
@@ -16,7 +16,7 @@
     "action": "试抬煎蛋边缘后小心翻面，确认成功时浅笑。",
     "timeOfDay": "morning",
     "lighting": "clear kitchen window light",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "新婚女友感、温馨烟火气",
     "sceneTags": [
       "kitchen",
@@ -30,13 +30,11 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Megumi checks the edge of the egg before carefully flipping it, smiling when it lands successfully.",
+    "promptProse": "One hand steadies the pan handle while the other slides the spatula beneath the fried egg, her focused expression softening into a small smile.",
     "promptTokens": [
-      "blouse",
-      "apron",
-      "trousers",
       "frying pan",
       "fried egg",
+      "spatula",
       "kitchen"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_academy_classroom_cleaning_duster",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1187,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sachi_academy_classroom_cleaning_duster",
     "title": "小岭幸 · 放学后的一尘不染大扫除",
@@ -19,7 +19,7 @@
     "action": "踮脚举起羽毛掸仔细打扫黑板顶框，女仆围裙勾勒出曼妙腰身，神态认真虔诚",
     "timeOfDay": "日落",
     "lighting": "教室窗外透入的浓郁金色夕阳与黑板微尘光带",
-    "camera": "cowboy shot, medium framing, side 3/4 diligent view",
+    "camera": "full body, three-quarter view, raised duster and feet visible",
     "mood": "认真治愈",
     "sceneTags": [
       "classroom",
@@ -31,15 +31,14 @@
       "diligence",
       "sunset"
     ],
-    "promptProse": "Sachi reaches up to dust the blackboard frame as sunset falls across rows of classroom desks.",
+    "promptProse": "Sachi rises onto her toes to sweep the top of the blackboard frame with her feather duster. Low sunset light catches a fine line of dust above the orderly classroom desks.",
     "promptTokens": [
-      "maid",
       "feather duster",
       "tiptoes",
       "classroom",
       "blackboard",
       "sunset",
-      "cowboy shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_old_bookstore",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "tokisaki_kurumi_old_bookstore",
     "title": "时崎狂三 · 旧书店午后",
@@ -15,7 +15,7 @@
     "action": "倚着窗台，左手托住旧画册书脊，右手掀起单页一角，低头专注阅读。",
     "timeOfDay": "午后",
     "lighting": "slanting afternoon light through red and amber stained glass; colored patches on cuffs and pages",
-    "camera": "medium shot, eye level, supported album, window sill and shelf aisle visible",
+    "camera": "medium shot, eye level",
     "mood": "沉静好奇",
     "sceneTags": [
       "used_bookstore",
@@ -31,11 +31,8 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Kurumi supports the album's spine and turns one page beside colored afternoon light on the bookstore sill.",
+    "promptProse": "Her left hand supports the album's spine as her right lifts one page, red and amber afternoon light crossing the ivory cuff and yellowed paper beside the bookstore sill.",
     "promptTokens": [
-      "Kurumi",
-      "black blouse",
-      "pleated skirt",
       "art book",
       "stained glass",
       "bookstore",

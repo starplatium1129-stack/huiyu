@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_luofu_divination_balcony",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1033,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "kafka_luofu_divination_balcony",
     "title": "卡芙卡 · 仙舟月下凭栏远眺",
@@ -30,15 +30,15 @@
       "nebula",
       "looking_back"
     ],
-    "promptProse": "Kafka leans against the Luofu terrace railing with a wine glass, turning to look across the luminous stars.",
+    "promptProse": "Resting one forearm on the carved white railing, she holds the wine glass in her other hand and watches the passing skiffs; the holographic star chart overhead casts violet light across her profile.",
     "promptTokens": [
-      "backless dress",
       "wine glass",
       "leaning",
       "railing",
       "terrace",
       "moonlight",
       "starry sky",
+      "hologram",
       "cowboy shot"
     ],
     "negativeTokens": [],

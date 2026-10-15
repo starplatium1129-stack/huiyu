@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 449,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_bridal",
       "name": "周防有希·圣洁花嫁",
-      "prose": "a white bridal dress with a violet sash, black ribbon veil and a neat half-up hairstyle",
+      "prose": "a white bridal dress with a violet sash and black ribbon veil",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "violet_sash",
-        "black_ribbon_veil",
-        "half_up_hair"
+        "white wedding dress",
+        "violet sash",
+        "black ribbon veil"
       ],
       "default": false,
       "isDefault": false

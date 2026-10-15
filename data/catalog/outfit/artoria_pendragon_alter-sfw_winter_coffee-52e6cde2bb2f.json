@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/sfw_winter_coffee",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "sfw_winter_coffee",
       "name": "雪中厚风衣装",
-      "prose": "a thick black winter overcoat with a dark scarf, gloves, trousers and winter boots, with platinum-blonde hair secured in a braided bun",
+      "prose": "a thick black winter overcoat, dark scarf, gloves, trousers and winter boots, with hair in a braided bun",
       "tokens": [
-        "black_winter_coat",
+        "black winter coat",
         "scarf",
         "gloves",
         "pants",
-        "winter_boots",
-        "hair_bun"
+        "winter boots",
+        "hair bun"
       ],
       "isDefault": false,
       "default": false,

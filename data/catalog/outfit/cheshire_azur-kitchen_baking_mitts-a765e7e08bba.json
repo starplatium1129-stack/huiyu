@@ -1,0 +1,29 @@
+{
+  "kind": "outfit",
+  "id": "cheshire_azur/kitchen_baking_mitts",
+  "revision": 1,
+  "sortOrder": 1157,
+  "createdAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "data": {
+    "characterId": "cheshire_azur",
+    "outfit": {
+      "id": "kitchen_baking_mitts",
+      "name": "皇家女仆烘焙装与防烫手套",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false,
+      "prose": "her navy-and-white Royal Navy maid dress with a ruffled apron, gold anchor pendant, oven mitts, white thigh-high stockings and black Mary Janes",
+      "tokens": [
+        "maid",
+        "navy dress",
+        "white apron",
+        "frills",
+        "anchor",
+        "oven mitts",
+        "white thighhighs",
+        "mary janes"
+      ]
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_cabin_rope",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 612,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "坐在床沿，解开发绳",
     "adult": true,
@@ -30,7 +30,7 @@
       "hand between legs"
     ],
     "outfitId": "cozy_orca_loungewear",
-    "promptProse": "Skadi loops a loose cord around her own wrist and raised knee while touching herself on the bunk, her sword sheathed at the far wall.",
+    "promptProse": "Skadi sits on the bunk with a loose cord looped around her wrist and raised knee, holding its end with one hand while touching herself with the other. Her sword stays sheathed at the far wall.",
     "promptTokens": [
       "Skadi",
       "thigh straps",
@@ -38,8 +38,7 @@
       "sitting",
       "bunk",
       "cabin",
-      "night",
-      "cowboy shot"
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

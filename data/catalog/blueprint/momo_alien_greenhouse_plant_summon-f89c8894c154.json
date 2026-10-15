@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "momo_alien_greenhouse_plant_summon",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1243,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "单手抬起操控发光外星藤蔓环绕身姿，王女礼服勾勒曲线，爱心尾巴自如摇摆，神态优雅神秘",
-    "camera": "cowboy shot, medium framing, lush exotic botanical depth",
+    "camera": "cowboy shot",
     "category": "奇幻操偶",
     "characterId": "momo_velia_deviluke",
     "coverageTags": [
@@ -20,10 +20,8 @@
     "mood": "神秘优雅",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Momo raises a gloved hand to direct the glowing alien vines around her in the greenhouse.",
+    "promptProse": "She holds the D-Dial in one hand and raises the other gloved hand, guiding the blue-purple vines around her wrist and waist beneath the greenhouse glass.",
     "promptTokens": [
-      "Momo",
-      "royal dress",
       "white gloves",
       "D-Dial",
       "raised hand",

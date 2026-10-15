@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_grayrat_kitchen_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 472,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "穿着宽松睡衣哼着歌准备早餐",
     "adult": false,
-    "camera": "medium shot, turning bacon and fried eggs in a frying pan at the country stove",
+    "camera": "medium shot",
     "category": "温馨日常",
     "characterId": "sylphiette",
     "coverageTags": [
@@ -21,10 +21,9 @@
     "mood": "cozy",
     "negativeTokens": [],
     "outfitId": "oversized_nightshirt",
-    "promptProse": "Sylphiette turns breakfast at the country stove and smiles toward the doorway in morning light.",
+    "promptProse": "At the country stove, she holds the pan handle in one hand and turns the bacon and egg with the other, smiling toward the doorway in morning light.",
     "promptTokens": [
-      "adult Sylphiette",
-      "nightshirt",
+      "adult",
       "bacon",
       "fried egg",
       "cooking",

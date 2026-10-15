@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_pinafore_evening",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 971,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "丝绒更衣帘前侧身回眸整理挂脖礼服优雅微笑",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "medium full shot, standing beside velvet curtain, turning back over shoulder",
+    "camera": "cowboy shot, rear three-quarter view",
     "category": "成人",
     "characterId": "kurokawa_akane",
     "coverageTags": [
@@ -25,15 +25,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "pinafore_dress",
-    "promptProse": "Adult Akane twists toward the vanity with both hands working the jammed side zipper, which has pulled her gown below her chest.",
+    "promptProse": "Adult Akane twists toward the vanity with both hands at her side, working the jammed zipper that has pulled her gown below her chest.",
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Akane",
+      "adult",
       "backless dress",
       "stuck zipper",
       "bare breasts",
-      "hands behind back",
       "looking back",
       "fitting room"
     ],

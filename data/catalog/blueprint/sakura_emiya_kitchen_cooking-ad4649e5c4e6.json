@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_kitchen_cooking",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 175,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakura_emiya_kitchen_cooking",
     "characterId": "matou_sakura",
@@ -27,9 +27,6 @@
     "promptProse": "Sakura turns toward the doorway after placing the ladle on its holder, morning light reaching the steaming breakfast dishes.",
     "promptTokens": [
       "Sakura",
-      "purple hair",
-      "sweater",
-      "apron",
       "miso soup",
       "kitchen",
       "medium shot"

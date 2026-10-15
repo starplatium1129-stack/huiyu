@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_fireworks_festival_glance",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 349,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yui_fireworks_festival_glance",
     "characterId": "yuigahama_yui",
@@ -20,14 +20,11 @@
       "looking_back",
       "night_sky"
     ],
-    "promptProse": "Yui turns back on the riverside steps with her fan held close, the fireworks catching her shy expression.",
+    "promptProse": "Yui holds her fan against her chest with her left hand and keeps her right hand clasped with the viewer’s as she looks back on the riverside steps. Fireworks catch the shy smile beneath her hairpin.",
     "promptTokens": [
-      "pink floral yukata",
-      "red obi",
-      "hairpin",
-      "paper fan",
       "looking back",
       "shy smile",
+      "holding hands",
       "riverbank",
       "fireworks",
       "night"

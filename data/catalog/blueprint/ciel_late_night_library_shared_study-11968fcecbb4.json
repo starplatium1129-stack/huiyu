@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ciel_late_night_library_shared_study",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1333,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "并肩坐于书桌旁，一手微触对方指尖，一手轻托下巴微红着脸温柔对视",
-    "camera": "cowboy shot, eye level, tranquil intellectual romance",
+    "camera": "medium shot, eye level",
     "category": "温柔陪伴",
     "characterId": "ciel_tsukihime",
     "coverageTags": [
@@ -22,16 +22,15 @@
     "mood": "知性温存",
     "negativeTokens": [],
     "outfitId": "casual_knit_sweater_jeans",
-    "promptProse": "Their fingertips meet while reaching for the same dictionary. The green-shaded lamp lights their hands against the dark shelves.",
+    "promptProse": "Seated side by side, they reach for the same dictionary and their fingertips meet above its cover. She turns toward her companion with a faint blush as the green-shaded lamp lights their hands against the dark shelves.",
     "promptTokens": [
       "couple",
       "library",
-      "cream turtleneck",
-      "jeans",
       "glasses",
       "dictionary",
       "touching fingers",
-      "desk lamp"
+      "desk lamp",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

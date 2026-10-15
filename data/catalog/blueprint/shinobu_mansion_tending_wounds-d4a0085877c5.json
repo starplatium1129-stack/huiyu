@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_mansion_tending_wounds",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "跪坐替你换药缠绷带，指尖轻柔紫瞳认真，微笑叮嘱",
     "adult": false,
@@ -26,10 +26,9 @@
     "mood": "温柔叮嘱、暗藏心疼",
     "negativeTokens": [],
     "outfitId": "official_demon_slayer_uniform",
-    "promptProse": "Shinobu changes the dressing on her seated companion's arm, the medicine tray between them in warm lantern light.",
+    "promptProse": "Shinobu supports her seated companion's forearm with one hand and winds the bandage with the other. Lantern light rests on her focused eyes and the medicine tray between their cushions.",
     "promptTokens": [
-      "kochou_shinobu",
-      "butterfly haori",
+      "companion",
       "bandages",
       "kneeling",
       "treatment room",

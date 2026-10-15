@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bed_hands",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "action": "侧卧在大床上紧握双手贴在胸口",
+    "action": "侧卧床上脱下最后一只手套，手指贴着大腿内侧，石盾靠在墙边",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "intimate close shot",
+    "camera": "medium shot, side view",
     "category": "成人",
     "characterId": "mudrock_arknights",
     "coverageTags": [
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "rhodes_oversized_hoodie",
-    "promptProse": "Mudrock lies on her side and removes the final glove before brushing her inner thigh, a stone shield resting against the wall.",
+    "promptProse": "Lying on her side, she draws off the last glove with her bare hand while the ungloved fingers rest against her inner thigh; the stone shield stands against the wall.",
     "promptTokens": [
       "adult",
       "nude",

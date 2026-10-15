@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_06",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_06",
     "title": "尤贝尔 · 冬夜的缝补失败",
@@ -32,12 +32,8 @@
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "Ubel pauses over crooked sleeve stitches and a tangled knot beneath the inn lamp.",
+    "promptProse": "Holding the skirt hem in one hand and the threaded needle in the other, she studies the crooked stitches and oversized knot beneath the inn lamp.",
     "promptTokens": [
-      "ubel_(sousou_no_frieren)",
-      "cardigan",
-      "blouse",
-      "skirt",
       "needle",
       "thread",
       "inn",

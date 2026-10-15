@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_cloud_flying",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 380,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "elaina_cloud_flying",
     "title": "伊雷娜 · 云端飞行",
@@ -27,10 +27,8 @@
       "travel",
       "fantasy"
     ],
-    "promptProse": "She rides the broom above layered clouds with her skirt moving in the wind. Sunlight and reflected cloud light reach the broom.",
+    "promptProse": "She sits astride the flying broom above the layered clouds, looking back with a confident smile. Wind streams her hair and skirt behind her as clear sunlight meets the soft light reflected from the clouds.",
     "promptTokens": [
-      "black witch dress",
-      "star brooch",
       "broom",
       "flying",
       "cloud sea",

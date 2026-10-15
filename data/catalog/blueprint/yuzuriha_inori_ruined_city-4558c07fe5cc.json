@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_ruined_city",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 329,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "yuzuriha_inori_ruined_city",
     "title": "楪祈 · 末世废都",
@@ -30,14 +30,11 @@
       "wide_shot",
       "shu_ouma"
     ],
-    "promptProse": "Inori catches Shu Ouma's jacket hem and turns toward him, the two sharing a determined look along the clear path through the rubble.",
+    "promptProse": "Inori catches Shu Ouma's jacket hem and turns toward him, the two sharing a determined look on the clear path through the rubble. Grey daylight glints along the crystals growing over the broken walls.",
     "promptTokens": [
       "1girl",
       "1boy",
       "shu ouma",
-      "white sleeveless shirt",
-      "black shorts",
-      "red ribbon",
       "holding clothes",
       "crystals",
       "ruined street",

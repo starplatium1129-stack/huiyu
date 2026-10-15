@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_r18_desk_pov_surrender",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 827,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fiona_frost_r18_desk_pov_surrender",
     "characterId": "fiona_frost",
@@ -16,7 +16,7 @@
     "action": "第一人称视角全裸仰卧在深色长桌上，修长双腿大开成M姿态顺从展露私处",
     "timeOfDay": "深夜",
     "lighting": "绿罩银行家台灯投射的浓郁暖金光束",
-    "camera": "first-person view overhead shot",
+    "camera": "full-body shot, first-person view, from above",
     "mood": "完全顺从与爱意奉献",
     "sceneTags": [
       "adult_only",
@@ -34,11 +34,8 @@
     ],
     "promptProse": "She lies across the mahogany office desk, looking up at the viewer with parted legs while dossiers frame her shoulders.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "nude",
       "on back",
-      "spread legs",
       "m legs",
       "looking up",
       "blush",
@@ -46,7 +43,8 @@
       "documents",
       "desk lamp",
       "pov",
-      "from above"
+      "from above",
+      "full body"
     ],
     "nsfwProse": "",
     "nsfwTokens": [],

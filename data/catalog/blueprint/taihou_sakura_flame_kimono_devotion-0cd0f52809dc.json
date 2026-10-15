@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_sakura_flame_kimono_devotion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "taihou_sakura_flame_kimono_devotion",
     "title": "大凤 · 重樱绯焰华服的深情相迎",
@@ -31,10 +31,8 @@
       "cherry_blossoms",
       "obsessive_smile"
     ],
-    "promptProse": "Taihou greets the Commander with a red-and-gold fan beneath the temple corridor's falling blossoms.",
+    "promptProse": "Taihou holds the red-and-gold fan before her smiling lips beneath the temple corridor, her gaze following the viewer. Sunset filters through the cherry canopy in warm patches along her flowing sleeves.",
     "promptTokens": [
-      "Taihou",
-      "kimono",
       "folding fan",
       "cherry blossoms",
       "temple",

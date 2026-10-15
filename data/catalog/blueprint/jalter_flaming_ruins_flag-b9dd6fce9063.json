@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_flaming_ruins_flag",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 169,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "jalter_flaming_ruins_flag",
     "characterId": "jeanne_alter",
@@ -23,13 +23,10 @@
       "firelight",
       "full_body"
     ],
-    "promptProse": "Jeanne Alter steadies her planted dragon banner and holds her sword low in the opposite hand, smiling fiercely above the burning rubble.",
+    "promptProse": "Jeanne Alter steadies the planted dragon banner with one hand and holds her sword low in the other. Firelight rises across the black armor and her fierce smile above the broken masonry.",
     "promptTokens": [
       "1girl",
       "solo",
-      "armor",
-      "purple cape",
-      "flag",
       "sword",
       "ruins",
       "fire",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yoshino_spring_sakura_tree_prayer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1146,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "在樱花树下双手合十微闭双眼祈祷，樱花如雨落下，巫女衣袖微扬，神圣纯洁",
-    "camera": "medium close-up, eye-level serene portrait, petal bokeh depth",
+    "camera": "medium shot, eye level",
     "category": "春樱祈福",
     "characterId": "tomotake_yoshino",
     "coverageTags": [
@@ -22,14 +22,14 @@
     "outfitId": "shrine_maiden",
     "promptProse": "Yoshino prays beneath the cherry tree as a petal catches on her hair ribbon and the breeze lifts her sleeves.",
     "promptTokens": [
-      "miko",
       "praying",
       "hands together",
       "closed eyes",
       "cherry blossoms",
       "petals",
       "wind",
-      "morning"
+      "morning",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

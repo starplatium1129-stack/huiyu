@@ -1,24 +1,20 @@
 {
   "kind": "outfit",
   "id": "ereshkigal_fate/official_lancer_attire",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 149,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "ereshkigal_fate",
     "outfit": {
       "id": "official_lancer_attire",
       "name": "冥界女王黑衣神装",
-      "prose": "a flowing black goddess dress with pale blue ribbons and a golden tiara over long blonde twintails",
+      "prose": "a flowing black goddess dress with pale-blue ribbons and a gold tiara",
       "tokens": [
-        "black_dress",
-        "blue_ribbon",
-        "tiara",
-        "blonde_hair",
-        "very_long_hair",
-        "red_eyes",
-        "twintails"
+        "black dress",
+        "blue ribbon",
+        "gold tiara"
       ],
       "default": true,
       "isDefault": true

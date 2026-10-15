@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1576,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "zero_two_sfw_b6_04",
     "title": "02 · 红角与白誓约",
@@ -13,10 +13,10 @@
     "outfitId": "sfw_bridal",
     "description": "【废墟温室礼堂·黄昏】02穿着带红色缎带的白色婚纱站在破碎玻璃穹顶下，细小的红角从头纱边缘露出；她把捧花举过肩，绿色眼睛带着顽皮挑衅，下一秒又因为被夸漂亮而露出柔软的笑。",
     "location": "abandoned greenhouse chapel",
-    "action": "破碎穹顶下抛起捧花挑衅回眸，被夸漂亮后笑意变软",
+    "action": "把捧花举到肩后，站在破碎穹顶下回望，顽皮笑意中流露柔软。",
     "timeOfDay": "黄昏",
     "lighting": "orange sunset through fractured glass",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot, vertical framing, bouquet and broken glass dome visible",
     "mood": "顽皮与真心同时露出的花嫁",
     "sceneTags": [
       "wedding_dress",
@@ -30,14 +30,12 @@
       "soft_smile",
       "sunset"
     ],
-    "promptProse": "Zero Two holds the bouquet over one shoulder beneath the shattered dome, her challenging grin softening into a smile.",
+    "promptProse": "Zero Two holds the bouquet over one shoulder beneath the shattered greenhouse dome, looking back with a playful, softened smile. Orange sunset passes through the broken glass and outlines her veil beside the red horns.",
     "promptTokens": [
-      "white wedding dress",
-      "red ribbons",
-      "short veil",
       "bouquet",
       "ruined greenhouse",
-      "sunset"
+      "sunset",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

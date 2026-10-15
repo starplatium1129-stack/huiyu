@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1605,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_03",
     "title": "吹雪 · 晚宴修身绿礼服后背拉链崩坏的更衣事故 ·「衣服被撑破了……不准告诉组员，快帮我遮住！」",
@@ -30,7 +30,7 @@
       "torn_clothes",
       "open_back"
     ],
-    "promptProse": "Her gown's rear zipper has burst; she leans over the vanity and looks back with an embarrassed, commanding scowl.",
+    "promptProse": "With the gown's rear zipper split open, she braces both hands on the vanity and looks back toward the viewer; the warm dressing-room light catches the exposed back and her embarrassed scowl.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -43,7 +43,7 @@
       "blush",
       "vanity",
       "dressing room",
-      "wide shot"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

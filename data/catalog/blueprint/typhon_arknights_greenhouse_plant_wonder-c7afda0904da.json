@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_greenhouse_plant_wonder",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 701,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "typhon_arknights_greenhouse_plant_wonder",
     "characterId": "typhon_arknights",
@@ -32,16 +32,12 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "Typhon",
-      "jacket",
-      "blouse",
-      "skirt",
       "atlas",
       "pointing",
       "bookstore",
       "cowboy shot"
     ],
-    "promptProse": "Typhon tilts an open atlas toward her companion and points to a lakeside cabin photograph in window light.",
+    "promptProse": "Typhon supports the open travel book in one arm and points to the lakeside cabin photograph with her free hand. She tilts the page toward the viewer with a questioning smile in the soft bookstore window light.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

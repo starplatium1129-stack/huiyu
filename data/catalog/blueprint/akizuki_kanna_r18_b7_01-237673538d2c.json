@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_r18_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1162,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "跨坐吧台死神女仆装半敞，黑羽翼微展红瞳傲娇挑逗，小腰主动起伏",
     "adult": true,
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate vertical medium shot",
+    "camera": "medium shot, first-person view from below",
     "category": "主控骑乘",
     "characterId": "akizuki_kanna",
     "coverageTags": [
@@ -27,7 +27,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_boudoir",
-    "promptProse": "She straddles the viewer's lap on the closed cafe counter, her opened uniform and wings lit by the pendant lamps.",
+    "promptProse": "She straddles the viewer on the closed cafe counter, both hands braced against the viewer's chest. The pendant lamps light her opened uniform and the wings spread behind her.",
     "promptTokens": [
       "cafe",
       "counter",

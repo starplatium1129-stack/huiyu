@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_traveling_mountain_camp",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 243,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "scathach_traveling_mountain_camp",
     "title": "斯卡哈 · 山道旅装的篝火休憩·「在现代世界旅行……比想象中有趣」",
@@ -30,13 +30,8 @@
       "dusk_firelight",
       "medium_shot"
     ],
-    "promptProse": "Scathach shifts kindling with a twig while seated on a log, firelight warming her hands above the blue evening valley.",
+    "promptProse": "Scathach nudges the kindling with a twig from her seat on the log, her other hand resting on her knee. Orange firelight warms her fingers against the blue evening valley beyond the camp.",
     "promptTokens": [
-      "Scathach",
-      "shirt",
-      "vest",
-      "coat",
-      "wide-brimmed hat",
       "campfire",
       "log",
       "dusk",

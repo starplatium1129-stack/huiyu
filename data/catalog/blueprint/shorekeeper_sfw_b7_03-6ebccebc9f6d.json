@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1641,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_03",
     "title": "守岸人 · 平台上的第一杯热茶",
@@ -29,11 +29,8 @@
       "morning",
       "medium_shot"
     ],
-    "promptProse": "She holds a warm cup in both hands and watches a glowing butterfly on the seaside railing.",
+    "promptProse": "Shorekeeper warms both hands around a cup on the seaside platform, watching a butterfly settle on the railing. Thin steam rises through the morning light between her face and the calm water.",
     "promptTokens": [
-      "Shorekeeper",
-      "blue sweater",
-      "white dress",
       "cup",
       "butterfly",
       "railing",

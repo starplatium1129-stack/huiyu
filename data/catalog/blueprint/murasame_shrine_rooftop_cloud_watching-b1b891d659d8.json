@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_shrine_rooftop_cloud_watching",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1124,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "侧卧在青黑屋脊瓦片上望天，手伸向云朵，草绿长发披散在瓦片间，赤足微翘",
     "camera": "wide cinematic shot, side-lying on curved roof tiles with one hand reaching toward the clouds",
@@ -22,7 +22,6 @@
     "outfitId": "spirit_kimono",
     "promptProse": "Murasame rests one hand behind her head on the shrine roof and reaches the other toward passing clouds, two spirit flames beside her.",
     "promptTokens": [
-      "kimono",
       "barefoot",
       "on side",
       "reaching",

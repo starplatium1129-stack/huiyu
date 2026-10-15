@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc029",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 27,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "She records the rising waveform in her notebook, then rests a hand over her heart beside the monitor.",
+    "animaCaption": "Beside the monitor's rising waveform, she holds her open notebook in one hand and presses the other over her heart; the blue-white laboratory light leaves her delighted blush visible.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "监测屏旁半身中景",
     "category": "Active_Sync_Scenes",

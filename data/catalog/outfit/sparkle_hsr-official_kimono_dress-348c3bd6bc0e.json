@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/official_kimono_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 575,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "official_kimono_dress",
       "name": "红黑和风短裙洛丽塔",
-      "prose": "her signature theatrical outfit: an ornate crimson and black Japanese-style mini kimono dress with gold floral trims, wide fluttering sleeves, dark obi with a goldfish tasselled sash, black thigh-high stockings, and an artistic kitsune fox mask tilted on her head",
+      "prose": "a red-and-black mini kimono dress with gold floral trim, wide sleeves, a dark obi, a goldfish-tasselled sash, black thigh-high stockings and a fox mask",
       "tokens": [
-        "japanese_clothes",
-        "mini_kimono",
-        "kimono_dress",
-        "black_dress",
-        "red_accents",
-        "wide_sleeves",
+        "red and black kimono dress",
+        "gold trim",
+        "wide sleeves",
         "obi",
-        "thighhighs",
-        "black_thighhighs",
-        "kitsune_mask"
+        "black thighhighs",
+        "kitsune mask"
       ],
       "default": true,
       "isDefault": true

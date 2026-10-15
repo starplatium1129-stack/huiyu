@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 280,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_04",
     "title": "美杜莎 Rider · 暮色图书馆的紫色花嫁",
@@ -13,10 +13,10 @@
     "outfitId": "sfw_bridal",
     "description": "【冬木旧图书馆·暮色】美杜莎穿着深紫婚纱坐在高窗旁，极长紫发顺着椅背落下，捧花里夹着一本合上的旧书；她轻轻抚过书脊，摘下眼镜直视镜头，安静表情里有罕见的信任。",
     "location": "quiet old library in Fuyuki",
-    "action": "高窗旁抚过捧花中的旧书并摘下眼镜，紫纱下安静直视镜头",
+    "action": "坐在高窗旁，左手轻抚膝上捧花中的旧书，右手拿着摘下的眼镜，安静直视画面外",
     "timeOfDay": "黄昏",
     "lighting": "violet twilight crossing tall shelves",
-    "camera": "medium full shot, vertical framing",
+    "camera": "cowboy shot, eye-level",
     "mood": "沉默骑手的信任花嫁",
     "sceneTags": [
       "wedding_dress",
@@ -29,12 +29,10 @@
       "trusting_gaze",
       "twilight"
     ],
-    "promptProse": "Medusa brushes the old book nestled in her bouquet and removes her glasses, meeting the viewer's gaze beneath the violet veil.",
+    "promptProse": "Medusa rests her left hand on the old book nestled in the bouquet on her lap and holds her removed glasses in her right. She meets the viewer’s gaze as violet twilight crosses the library window.",
     "promptTokens": [
       "1girl",
       "solo",
-      "violet wedding dress",
-      "veil",
       "bouquet",
       "old book",
       "glasses removed",

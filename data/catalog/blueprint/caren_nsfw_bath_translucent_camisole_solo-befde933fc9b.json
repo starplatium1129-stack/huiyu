@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_bath_translucent_camisole_solo",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "caren_nsfw_bath_translucent_camisole_solo",
     "title": "卡莲 · 迷雾浴池的湿身黑丝自抚低吟",
@@ -29,7 +29,7 @@
       "hand_between_legs",
       "sensual_solo"
     ],
-    "promptProse": "She reclines against the tub rim with one hand beneath the water between her thighs and her head tilted back.",
+    "promptProse": "She reclines against the tub rim with one hand beneath the water between her thighs and her head tilted back. Candlelight breaks into gold reflections across the steaming water.",
     "promptTokens": [
       "adult",
       "bathroom",

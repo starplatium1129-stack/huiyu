@@ -1,17 +1,17 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_bedroom_soles_nun_veil",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 843,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "披着月光立于彩绘玻璃前轻声祈祷",
     "adult": true,
     "adultArtistHint": "@rella",
     "adultEligibility": "adult",
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "medium shot",
+    "camera": "full-body shot, first-person view",
     "category": "私密写真",
     "characterId": "saint_cecilia",
     "coverageTags": [

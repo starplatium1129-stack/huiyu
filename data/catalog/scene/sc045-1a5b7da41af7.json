@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc045",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
-    "animaCaption": "Through a narrow door opening, only her flustered face and outstretched hand are visible; the securely wrapped towel stays behind the door.",
+    "animaCaption": "Her flushed face peeks through the narrow bathroom door gap as she accepts the clothes from the viewer, lightly catching their fingertips; warm light and steam spill through the opening while her towel stays concealed behind the door.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "门缝与伸手细节特写",
     "category": "恋爱/After_Story",
@@ -29,13 +29,12 @@
     "tags": [
       "hair_ribbon",
       "bath_towel",
-      "bare_legs",
-      "smooth_thighs",
       "bathroom",
-      "full_body",
-      "barefoot",
       "steam",
-      "depth_of_field"
+      "door_gap",
+      "receiving_clothes",
+      "touching_fingers",
+      "close_up"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

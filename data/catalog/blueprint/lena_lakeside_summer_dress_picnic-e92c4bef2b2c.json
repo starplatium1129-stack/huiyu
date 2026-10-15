@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "lena_lakeside_summer_dress_picnic",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "抱膝坐在野餐布上远眺湖面，裙摆长发随风轻扬，被偷看后红着脸嗔怒",
     "adult": false,
     "animaStyleHint": "anime_slice_of_life",
-    "camera": "medium full shot, eye level, lakeside sparkle, gentle breeze motion",
+    "camera": "cowboy shot, eye-level",
     "category": "夏日日常",
     "characterId": "vladilena_milize",
     "coverageTags": [
@@ -25,11 +25,9 @@
     "mood": "松弛惬意、娇羞反差",
     "negativeTokens": [],
     "outfitId": "casual_summer_dress",
-    "promptProse": "Lena sits beside her companion on the lakeside picnic blanket with her knees hugged, turning toward them with a shy blush.",
+    "promptProse": "Lena sits beside her companion with her knees hugged on the picnic blanket. She turns toward their glance with a shy blush, reflected lake light moving over her cheek.",
     "promptTokens": [
       "vladilena_millize",
-      "floral sundress",
-      "cardigan",
       "hugging knees",
       "picnic blanket",
       "lake"

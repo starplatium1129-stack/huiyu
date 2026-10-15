@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_modern_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 261,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "ishtar_nsfw_modern_straddle",
     "title": "伊什塔尔 · 现代房间的女神骑乘·「和女神共度一夜，是要写进神话的」",
@@ -15,7 +15,7 @@
     "action": "跨坐腰间金链轻响，王冠搁床头，红瞳恍惚温柔",
     "timeOfDay": "深夜",
     "lighting": "都市夜灯透过窗帘的暖光",
-    "camera": "cowgirl straddle POV, vertical framing, city night glow",
+    "camera": "cowboy shot, first-person view, low angle",
     "mood": "女神宠爱、终于温柔",
     "sceneTags": [
       "nsfw",
@@ -53,6 +53,7 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "nsfwTokens": []
+    "nsfwTokens": [],
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nana_asta_deviluke/casual_denim_no_pet",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 690,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "nana_asta_deviluke",
     "outfit": {
@@ -12,15 +12,11 @@
       "id": "casual_denim_no_pet",
       "isDefault": false,
       "name": "假日休闲无宠物背心短裤",
-      "prose": "sporty casual streetwear: a fitted dark-red sleeveless crop top, distressed denim cutoff shorts, sneakers and her black spade-heart tail, with both hands free for another object",
+      "prose": "a dark-red sleeveless crop top, denim shorts and sneakers",
       "tokens": [
-        "casual",
-        "crop_top",
-        "tank_top",
-        "denim_shorts",
-        "short_shorts",
-        "sneakers",
-        "demon_tail"
+        "dark red sleeveless crop top",
+        "denim shorts",
+        "sneakers"
       ]
     }
   }

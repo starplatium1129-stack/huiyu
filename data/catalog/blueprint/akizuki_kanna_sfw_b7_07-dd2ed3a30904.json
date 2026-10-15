@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_07",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1162,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "点心店门口检查怀旧糖果后递给镜头，外套和侧马尾迎风轻动",
     "adult": false,
@@ -23,12 +23,9 @@
     "mood": "把童年味道带进今天的外出",
     "negativeTokens": [],
     "outfitId": "sfw_errand",
-    "promptProse": "She offers a familiar candy toward the viewer while holding the shopping bag against her. Afternoon street light meets the shop's warm doorway glow.",
+    "promptProse": "She offers a nostalgic candy toward the viewer with one hand, holding the paper bag against her with the other. Afternoon street light meets the shop's warm doorway glow.",
     "promptTokens": [
       "sweet shop",
-      "blouse",
-      "red skirt",
-      "jacket",
       "paper bag",
       "candy",
       "offering",

@@ -14,7 +14,7 @@ export interface PromptSceneContext {
   rating?: string
   recommendedSize?: string
   usage?: string[]
-  /** Optional one-sentence Anima caption for spatial or prop relationships. */
+  /** Authored Anima caption for the visible moment, atmosphere and spatial/prop relationships. */
   animaCaption?: string
 }
 
@@ -28,6 +28,8 @@ export interface PromptPlan {
   artists: string[]
   preserveTokens: string[]
   sceneVisualFragments: string[]; emotion: string[]; camera: string[]; lighting: string[]; palette: string[]
+  /** Source lighting metadata distinguishes unchanged defaults from a director override. */
+  authoredLighting?: string
   composition: string[]; manual: string[]; negative: string[]; visualDescription: string
   /** Krea 风格配方前置短语（lead），渲染时放最前。 */
   style: string[]

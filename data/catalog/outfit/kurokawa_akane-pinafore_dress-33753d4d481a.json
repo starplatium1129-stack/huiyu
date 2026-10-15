@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kurokawa_akane/pinafore_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 528,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "kurokawa_akane",
     "outfit": {
@@ -12,13 +12,11 @@
       "id": "pinafore_dress",
       "isDefault": false,
       "name": "蓝围裙连衣裙",
-      "prose": "a casual blue pinafore dress over a white blouse, with black high heels",
+      "prose": "a blue pinafore dress over a white blouse, with black high heels",
       "tokens": [
-        "pinafore_dress",
-        "blue_dress",
-        "white_blouse",
-        "black_footwear",
-        "high_heels"
+        "blue pinafore dress",
+        "white blouse",
+        "black high heels"
       ]
     }
   }

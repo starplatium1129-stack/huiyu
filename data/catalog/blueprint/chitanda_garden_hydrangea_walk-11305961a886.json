@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_garden_hydrangea_walk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1485,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "chitanda_garden_hydrangea_walk",
     "title": "千反田爱瑠 · 豪农深宅紫阳花径的雨后漫步·「你看，这一片是我亲手种下的呢」",
@@ -16,7 +16,7 @@
     "action": "一手微提淡紫裙摆停在花径，另一手接住花瓣滑落的雨滴，回眸浅笑。",
     "timeOfDay": "雨后初晴",
     "lighting": "雨洗碧空的明净天光与花瓣雨露折射",
-    "camera": "medium full shot, hydrangeas, traditional garden, looking back",
+    "camera": "full-body shot",
     "mood": "名门风范、土地的自豪",
     "sceneTags": [
       "garden",
@@ -32,15 +32,14 @@
       "open_palm",
       "catching_raindrop"
     ],
-    "promptProse": "She holds the dress hem clear of the wet garden path and catches a falling droplet with her free hand. Daylight reaches the veranda beyond.",
+    "promptProse": "She lifts her hem clear of the wet path with one hand and catches a droplet falling from the hydrangeas with the other. Looking back with a quiet smile, she pauses among the rain-bright petals.",
     "promptTokens": [
       "garden",
-      "lavender dress",
-      "white cardigan",
       "hydrangea",
       "wet flowers",
       "looking back",
-      "after rain"
+      "after rain",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

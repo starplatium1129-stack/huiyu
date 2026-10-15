@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_fashion_fitting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "action": "试衣间镜前半褪上衣回眸坏笑",
     "adult": true,
     "animaStyleHint": "r18_sensual_cg",
-    "camera": "close-up, fitting room mirror reflection",
+    "camera": "cowboy shot, side view",
     "category": "成人",
     "characterId": "yvonne_arknights",
     "coverageTags": [],
@@ -33,10 +33,10 @@
       "skirt",
       "hand behind back",
       "hand on thigh",
-      "dragon tail",
       "sunglasses on head",
       "fitting room",
-      "vanity lights"
+      "vanity lights",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

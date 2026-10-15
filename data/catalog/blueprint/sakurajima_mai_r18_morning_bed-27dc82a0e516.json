@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_morning_bed",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_r18_morning_bed",
     "title": "樱岛麻衣 · 清晨被窝",
@@ -12,10 +12,10 @@
     "characterId": "sakurajima_mai",
     "description": "【成年 After Story · 樱岛麻衣 · 清晨被窝】二十岁以上成年后的麻衣独自在晨光镀金的大床上醒来。宽大白衬衫只扣住下摆，她抱膝坐在枕堆间，把一只手从衣摆下探向腿间，另一手揉着惺忪眼角；凌乱黑发铺在肩头，呼吸让敞开的前襟轻轻起伏。她带着刚睡醒的红晕呢喃——「再给我五分钟……这段晨戏，谁也不许来打扰。」",
     "location": "峰之原市公寓卧室",
-    "action": "裹着被子半梦半醒",
+    "action": "在晨光枕堆间屈膝坐着，一手揉惺忪眼角，另一手探入敞开的白衬衫下自抚",
     "timeOfDay": "清晨",
     "lighting": "pale morning light through sheer curtains",
-    "camera": "intimate medium close-up, high angle",
+    "camera": "medium shot, high angle",
     "mood": "慵懒亲昵",
     "sceneTags": [
       "bedroom",
@@ -32,6 +32,9 @@
       "knees up",
       "sleepy",
       "morning light",
+      "topless",
+      "masturbation",
+      "hand between legs",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -39,11 +42,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "nsfwTokens": [
-      "topless",
-      "masturbation",
-      "hand between legs"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "silk_sleepwear",

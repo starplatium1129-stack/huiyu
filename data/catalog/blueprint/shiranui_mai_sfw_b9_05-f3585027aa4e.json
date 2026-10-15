@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1741,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_05",
     "title": "不知火舞 · 海滨道场的扇子与浪花",
@@ -16,7 +16,7 @@
     "action": "海滨木台边练扇接住浪花水珠，转向镜头摆出胜利姿势",
     "timeOfDay": "日间",
     "lighting": "bright noon sun on red fabric and spray",
-    "camera": "medium shot, horizontal framing",
+    "camera": "full body",
     "mood": "把晨训变成热烈海滨假日",
     "sceneTags": [
       "swimsuit",
@@ -30,15 +30,12 @@
       "ocean",
       "noon"
     ],
-    "promptProse": "Mai flicks sea spray with her fan from the dojo deck and turns with a playful victory pose in the noon sun.",
+    "promptProse": "Seated at the edge of the dojo deck, she catches sea spray on the fan in one hand and raises a victory sign with the other, droplets shining in the noon sun.",
     "promptTokens": [
-      "Mai Shiranui",
-      "swimsuit",
-      "white shirt",
       "barefoot",
       "folding fan",
       "seaside",
-      "medium shot"
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

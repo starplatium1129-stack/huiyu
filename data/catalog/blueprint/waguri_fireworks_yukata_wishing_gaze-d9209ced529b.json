@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_fireworks_yukata_wishing_gaze",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1506,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "waguri_fireworks_yukata_wishing_gaze",
     "title": "和栗薰子 · 烟花下收好的金鱼袋",
@@ -16,7 +16,7 @@
     "action": "双手托稳金鱼袋，听见烟花升空后惊喜抬头。",
     "timeOfDay": "night",
     "lighting": "warm lantern fill and distant fireworks",
-    "camera": "medium shot, environmental portrait",
+    "camera": "medium shot",
     "mood": "盛夏誓言、深情不移",
     "sceneTags": [
       "summer_festival",
@@ -33,9 +33,6 @@
     ],
     "promptProse": "Waguri holds her goldfish bag with both hands and looks up as fireworks rise beyond the festival rail.",
     "promptTokens": [
-      "Kaoruko Waguri",
-      "blue yukata",
-      "yellow obi",
       "goldfish bag",
       "fireworks",
       "riverbank",

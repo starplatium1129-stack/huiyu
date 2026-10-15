@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_private_chamber_log",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 754,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "administrator_arknights_private_chamber_log",
     "characterId": "administrator_arknights",
@@ -35,15 +35,13 @@
       "indoors",
       "sofa",
       "sitting",
-      "crossed legs",
-      "pajamas",
       "cushion",
       "rain",
       "window",
       "night",
       "medium shot"
     ],
-    "promptProse": "She hugs a cushion and listens with her face uncovered, leaving a seat beside her. Two hot drinks sit on the coffee table; lamplight warms the sofa against the rain-dark window.",
+    "promptProse": "Sitting cross-legged, she hugs a cushion and listens to the viewer with her face uncovered, leaving a seat beside her. Lamplight warms the two drinks against the rain-dark window.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

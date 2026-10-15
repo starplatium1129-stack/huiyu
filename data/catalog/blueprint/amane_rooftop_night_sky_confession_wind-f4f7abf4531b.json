@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_rooftop_night_sky_confession_wind",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1181,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "amane_rooftop_night_sky_confession_wind",
     "title": "周防天音 · 学园天台的夜风倾诉",
@@ -19,7 +19,7 @@
     "action": "背靠铁丝网双手背在身后，夜风掀动裙摆与发环，眼神脆弱深情",
     "timeOfDay": "深夜",
     "lighting": "下方城市远景微弱灯火与清冷夜空繁星在发丝上投射的轮廓光",
-    "camera": "cowboy shot, medium close-up, dramatic windblown depth",
+    "camera": "cowboy shot, eye level",
     "mood": "动情凄美",
     "sceneTags": [
       "rooftop",
@@ -36,8 +36,6 @@
     "promptTokens": [
       "school rooftop",
       "chain-link fence",
-      "school uniform",
-      "white skirt",
       "hands behind back",
       "tears",
       "wind",

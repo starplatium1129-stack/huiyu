@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_chamber",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "raiden_shogun_r18_chamber",
     "title": "雷电将军 · 天守深闺的紫纱微颤",
@@ -15,7 +15,7 @@
     "action": "仰卧于锦榻软枕，紫薄纱睡袍前襟敞开，双乳与开档小穴完全展露，单手自抚娇喘",
     "timeOfDay": "夜晚",
     "lighting": "warm candlelight and soft purple ambient rim glow",
-    "camera": "intimate medium shot, upper body focus",
+    "camera": "medium shot, three-quarter view, reclining pose and active hand visible",
     "mood": "高贵羞赧与冷艳私密",
     "sceneTags": [
       "tatami",

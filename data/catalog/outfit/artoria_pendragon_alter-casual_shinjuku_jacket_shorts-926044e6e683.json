@@ -1,27 +1,23 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/casual_shinjuku_jacket_shorts",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 120,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "casual_shinjuku_jacket_shorts",
       "name": "新宿机车皮夹克热裤",
-      "prose": "a black leather biker jacket over a white cropped top, black denim shorts, black tights and a studded choker, with platinum-blonde hair secured in a braided bun",
+      "prose": "a black leather biker jacket over a white cropped top, black denim shorts, black tights and a studded choker, with hair in a braided bun",
       "tokens": [
-        "leather_jacket",
-        "crop_top",
-        "midriff",
-        "short_shorts",
-        "denim_shorts",
-        "pantyhose",
-        "black_pantyhose",
+        "black leather jacket",
+        "white crop top",
+        "black denim shorts",
+        "black pantyhose",
         "choker",
-        "streetwear",
-        "hair_bun"
+        "hair bun"
       ]
     }
   }

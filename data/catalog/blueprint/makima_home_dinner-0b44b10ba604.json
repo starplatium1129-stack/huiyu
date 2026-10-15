@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_home_dinner",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 418,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "makima_home_dinner",
     "title": "玛奇玛 · 居家晚餐",
@@ -25,11 +25,8 @@
       "apartment",
       "indoor"
     ],
-    "promptProse": "Makima rests her chin in one hand and pours red wine for the place opposite her at dinner.",
+    "promptProse": "With her chin resting on one hand, she tilts the wine bottle in the other toward the viewer's glass on the near side of the dinner table.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "casual clothes",
       "hand on own chin",
       "pouring wine",
       "dining table",

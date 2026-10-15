@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_pantyhose",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakurajima_mai_r18_pantyhose",
     "title": "樱岛麻衣 · 黑丝微褪·足尖的大透视",
@@ -15,7 +15,7 @@
     "action": "斜靠在柔软抱枕上，纤细手指轻轻褪下薄透黑丝至脚踝，足尖微微蜷缩，透出诱人的冷白肤色",
     "timeOfDay": "午后",
     "lighting": "柔和午后窗光与暖色室内光，照亮精致足弓与足趾细腻反光",
-    "camera": "medium shot, low three-quarter angle, foreground foreshortening, bent knees, hands and face visible",
+    "camera": "full body, low three-quarter angle",
     "mood": "私密性感",
     "sceneTags": [
       "living_room",
@@ -27,24 +27,23 @@
       "soles",
       "afternoon"
     ],
-    "promptProse": "The age-twenty-plus Mai rolls pantyhose down one thigh with both hands while reclining against the headboard, her blouse open in afternoon light.",
+    "promptProse": "The age-twenty-plus Mai reclines against the headboard, using both hands to roll one side of her pantyhose toward the ankle while the other leg remains covered, her blouse open in afternoon light.",
     "promptTokens": [
       "blouse",
       "pantyhose",
       "reclining",
       "bed",
       "afternoon",
-      "medium shot"
+      "topless",
+      "open clothes",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "barefoot, 5_toes, detailed_toes, pantyhose_pull, soft lighting",
-    "nsfwTokens": [
-      "topless",
-      "open clothes"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "bunny_girl",

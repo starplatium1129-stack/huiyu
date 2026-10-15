@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_wangsheng_parlor_daybreak",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 22,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "hu_tao_wangsheng_parlor_daybreak",
     "title": "胡桃 · 往生堂晨曦清理",
@@ -30,7 +30,7 @@
       "gentle_smile",
       "eye_level"
     ],
-    "promptProse": "Hu Tao lifts a plum branch beneath her nose, her other hand resting on her lap beside the table of ledgers and ritual books.",
+    "promptProse": "Seated on the stone stool, she lifts the red plum branch beneath her nose while her free hand rests on her lap; morning sunlight warms her face beside the neatly arranged ledgers and ritual books.",
     "promptTokens": [
       "sitting",
       "stone bench",

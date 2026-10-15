@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_rainy_station_waiting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
   "data": {
     "id": "sakura_rainy_station_waiting",
     "characterId": "matou_sakura",
@@ -23,11 +23,9 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Sakura looks up in relief beneath her umbrella outside the station, rain rippling the puddles by her shoes.",
+    "promptProse": "Sakura looks up toward the viewer leaving the station, smiling with relief beneath her pink umbrella. Grey daylight reflects from the puddles below her rain-darkened coat hem.",
     "promptTokens": [
       "Sakura",
-      "winter coat",
-      "pink umbrella",
       "rain",
       "station",
       "medium shot"
