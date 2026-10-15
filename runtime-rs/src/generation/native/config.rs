@@ -114,8 +114,7 @@ impl Settings {
 /// that snapshot, never reread a configuration saved pending application restart.
 pub(crate) fn load(config: &Config) -> Result<Settings> {
     let saved = read_optional(&config.runtime_root.join("config.json"))?;
-    let mut value = serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?;
-    if let Some(inference) = saved.get("inference") {
+    let mut value = if let Some(inference) = saved.get("inference") {
         let settings: Settings =
             serde_json::from_value(inference.clone()).map_err(|_| config_error())?;
         // Managed setup records its workspace independently of user-selected
@@ -128,11 +127,15 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
                     .is_none_or(|(saved, current)| saved != current)
         });
         if moved {
+            let mut value = serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?;
             value["engine"] = json!(settings.engine);
+            value
         } else {
-            value = serde_json::to_value(settings)?;
+            serde_json::to_value(settings)?
         }
-    }
+    } else {
+        serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?
+    };
     let mut overrides = Vec::new();
     for (key, env) in [
         ("engine", "HUIYU_IMAGE_ENGINE"),
