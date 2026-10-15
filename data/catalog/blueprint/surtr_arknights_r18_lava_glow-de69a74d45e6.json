@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_lava_glow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 525,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
   "data": {
-    "action": "身着石墨拼接连体衣倚靠光滑黑石壁，熔岩火光勾勒曼妙身段",
+    "action": "赤身倚靠光滑黑石壁，熔岩火光勾勒曼妙身段",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【史尔特尔 · 熔光之下】地热密室内暗红色的熔岩矿脉散发着微弱的暖光，身着石墨拼接连体衣倚靠在光滑黑石壁上的史尔特尔曲线毕露，火光的阴影在曼妙身躯上流转。她眼神迷离地轻咬下唇——「看着我……今夜在此处燃烧的，可不仅仅是魔剑的火焰哦。」",
+    "description": "【史尔特尔 · 熔光之下】地热密室内暗红色的熔岩矿脉散发着微弱的暖光，赤身倚靠在光滑黑石壁上的史尔特尔曲线毕露，火光的阴影在曼妙身躯上流转。她眼神迷离地轻咬下唇——「看着我……今夜在此处燃烧的，可不仅仅是魔剑的火焰哦。」",
     "id": "surtr_arknights_r18_lava_glow",
     "kreaStyleHint": "",
     "lighting": "deep red lava glow",
@@ -25,22 +25,19 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [
-      "topless",
       "masturbation",
       "hand between legs"
     ],
-    "outfitId": "lava_bodysuit",
-    "promptProse": "Surtr grips the cooling rail and touches herself before the lava-filled window, her black bodysuit peeled to her waist.",
+    "outfitId": "nsfw_nude",
+    "promptProse": "Surtr grips the cooling rail and touches herself before the lava-filled window.",
     "promptTokens": [
       "Surtr",
-      "black bodysuit",
+      "nude",
       "kneeling",
       "railing",
       "observation window",
       "lava",
-      "medium shot",
-      "charcoal side panels",
-      "red seam piping"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

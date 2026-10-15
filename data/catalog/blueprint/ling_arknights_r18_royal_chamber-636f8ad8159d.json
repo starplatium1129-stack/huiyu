@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_royal_chamber",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 655,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
   "data": {
-    "action": "坐在软榻上敞开袍子，一手举酒盏，另一手在衣下，烟气绕过榻柱",
+    "action": "坐在软榻上，一手举酒盏，烟气绕过榻柱。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "daily"
     ],
-    "description": "【令 · 寝殿春宵】岁府寝殿内红烛高照，锦帐半垂。披着墨灰袍的令斜倚在堆叠的锦被之间，蓝发如月光般铺满枕席，龙角在烛光下泛着温润的光。她慵懒地朝你招手，声音带着微醺的笑意——「春宵苦短，博士还在等什么呢？过来，与我对饮这最后一杯。」",
+    "description": "【令 · 寝殿春宵】岁府寝殿内红烛高照，锦帐半垂。全裸的令斜倚在堆叠的锦被之间，蓝发如月光般铺满枕席，龙角在烛光下泛着温润的光。她慵懒地朝你招手，声音带着微醺的笑意——「春宵苦短，博士还在等什么呢？过来，与我对饮这最后一杯。」",
     "id": "ling_arknights_r18_royal_chamber",
     "kreaStyleHint": "",
     "lighting": "warm candlelight, flickering red candle glow, soft silk shadows",
@@ -25,21 +25,17 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "drunkard_loungewear",
-    "promptProse": "Adult Ling sits on the daybed with her robe open, raising a wine cup while her other hand reaches beneath the silk and dragon smoke curls around the posts.",
+    "outfitId": "nsfw_nude",
+    "promptProse": "Adult Ling sits on the daybed, raising a wine cup as dragon smoke curls around the posts.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Ling",
-      "open robe",
-      "bare breasts",
+      "nude",
       "sitting",
       "wine cup",
-      "hand under clothes",
       "daybed",
-      "dragon smoke",
-      "gray robe",
-      "ink blue sash"
+      "dragon smoke"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

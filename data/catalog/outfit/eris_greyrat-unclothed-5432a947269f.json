@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/unclothed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1461,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
       "id": "unclothed",
-      "name": "无衣休息状态",
+      "name": "裸体",
       "tokens": [
         "nude"
       ],

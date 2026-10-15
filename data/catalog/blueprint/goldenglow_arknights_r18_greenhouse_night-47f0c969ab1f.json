@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_greenhouse_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 605,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
   "data": {
     "action": "坐在温室花丛间，指尖捻着花瓣",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "深夜温室花房里，苏茜的薄荷色轻纱裙被藤蔓勾住，她低头解开衣摆，粉色腰带垂在裙侧，微弱静电托起周围花粉。",
+    "description": "【澄闪 · 花房夜香】深夜万籁俱寂的温室花房深处，赤身坐在厚厚花草间的苏茜指尖轻捻着一片芳香的粉色花瓣，眼波流转满含春意。她柔柔地靠进你的怀里——「夜晚的花香比白天更浓郁呢……博士，今晚就在这片花海里，一直陪着苏茜好不好？」",
     "id": "goldenglow_arknights_r18_greenhouse_night",
     "kreaStyleHint": "",
     "lighting": "moonlight through glass",
@@ -25,24 +25,21 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "greenhouse_sheer_dress",
-    "promptProse": "Her dress catches on a vine; she frees it with one hand while pressing the other between her thighs as static lifts the pollen.",
+    "outfitId": "nsfw_nude",
+    "promptProse": "She sits among the greenhouse flowers and holds a pink petal with one hand while her other rests between her thighs, faint static lifting the pollen.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult",
       "cat ears",
-      "mint sheer dress",
-      "open clothes",
-      "topless",
-      "kneeling",
-      "stockings",
+      "nude",
+      "sitting",
+      "petal",
       "hand between legs",
       "greenhouse",
       "flowers",
       "electricity",
-      "night",
-      "pink waist ribbon"
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

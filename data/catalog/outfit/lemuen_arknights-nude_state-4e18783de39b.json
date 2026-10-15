@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/nude_state",
+  "revision": 1,
+  "sortOrder": 1487,
+  "createdAt": "2026-10-15T15:17:12.504494600+00:00",
+  "updatedAt": "2026-10-15T15:17:12.504494600+00:00",
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "id": "nude_state",
+      "name": "裸体",
+      "tokens": [
+        "nude"
+      ],
+      "prose": "No clothing.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}
