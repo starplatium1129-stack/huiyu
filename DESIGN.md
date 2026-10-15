@@ -145,9 +145,12 @@ artwork, not website UI.
 
 Design engineering and motion follow the project adaptation of
 [Emil Kowalski's skills](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202).
+Selected resizing, artwork-viewer and container-layout principles also draw
+from the independent [open-claude-ui analysis](https://github.com/Caho1/open-claude-ui),
+with source revisions and adoption limits recorded in the UI skill.
 The adopted rules live here; [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)
-provides conditional Vue implementation guidance and retains the source version
-and MIT license. These principles guide future UI work alongside HUIYU's brand,
+provides conditional Vue implementation guidance and source attribution.
+These principles guide future UI work alongside HUIYU's brand,
 desktop scope and AGENTS.md constraints. Review upstream changes before adopting
 them; a newer upstream version does not silently replace this standard.
 
@@ -267,6 +270,15 @@ uses `900px` for its rail and `540px` for its dialog cards. These are local
 layout decisions, not additional global device categories. Prefer the shared
 scale unless actual content needs another threshold, document the reason near
 the owning rule, and verify both sides of each changed threshold in both themes.
+
+Resizable rails, drawers and split views use their own available inline width
+to decide wrapping and disclosure. Keep current values and primary actions
+visible; secondary controls may move into an accessible disclosure. Chinese
+labels must retain readable lines as the container narrows.
+
+Resizing distinguishes a deliberate drag from a press with minor movement.
+Escape during an active resize restores the widths and collapsed state from
+before that gesture, without closing the containing surface or cancelling work.
 
 The director workspace follows an image-first hierarchy:
 
@@ -548,6 +560,11 @@ step and a quiet character cue. During generation it shows progress without
 covering the composition. After generation the artwork receives maximum useful
 space; save, regenerate, vary, voice, and review actions sit near it without
 forming a second competing dashboard.
+
+Artwork-viewer zoom and pan limits follow the actual image and viewport sizes,
+keeping the work recoverable when the viewer resizes. Thumbnail-to-viewer
+transitions are optional enhancements: a missing origin, unavailable API or
+interrupted transition must leave viewing, closing and focus restoration usable.
 
 ### Status and errors
 

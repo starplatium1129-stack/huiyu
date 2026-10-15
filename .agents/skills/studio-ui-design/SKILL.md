@@ -9,10 +9,10 @@ description: 依据 Emil Kowalski 的设计工程原则与绘遇 DESIGN.md，创
 
 ## 使用入口
 
-- 控件、表单、弹层、拖拽或状态反馈：读 [交互落地](references/interaction.md)。
+- 控件、表单、弹层、拖拽、图片查看或状态反馈：读 [交互落地](references/interaction.md)。
 - 新增或修改动画、页面切换、列表交接：读 [动效决策](references/motion.md)。
 - 卡顿、拖拽变慢、繁忙主线程或合成层问题：读 [动效性能](references/performance.md)；涉及时长与曲线时再读动效决策。
-- 仅调整静态布局、字号或表面层级时，使用 DESIGN.md 的现有品牌、字体、几何与令牌，不加载全部参考。
+- 仅调整静态布局、字号或表面层级时，使用 DESIGN.md 的现有品牌、字体、几何与令牌；窄栏按实际容器宽度选择布局，不加载全部参考。
 
 ## 落地顺序
 
@@ -29,12 +29,15 @@ description: 依据 Emil Kowalski 的设计工程原则与绘遇 DESIGN.md，创
 - [AnimatedSelection](../../../src/components/visual/AnimatedSelection.vue)：分段选择的连续弹簧，不另写竞争实现。
 - [动效偏好](../../../src/utils/motionPreference.ts)：prefersReducedMotion、listenMotionChanges 与 scrollBehavior。
 - [滚动显现](../../../src/composables/useScrollReveal.ts)与 [图库交接](../../../src/composables/gallery/useGalleryListMotion.ts)：有相关需求才读，保留现有图片与页面生命周期。
+- 分栏与图片查看分别沿用 [useDirectorLayout](../../../src/composables/prompt/useDirectorLayout.ts) 和 [ZoomableImageViewer](../../../src/components/visual/ZoomableImageViewer.vue)；聊天输入与阅读复用 [chatInput](../../../src/utils/chatInput.ts) 和 [useConversationReading](../../../src/composables/chat/useConversationReading.ts)。
 
 ## 来源与采用边界
 
 融合自 [emilkowalski/skills](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202)，采用基线为 `2d228630ba1446365f614a108cb8252f1feda202`（2026-10-14 接入），保留 [MIT 许可证](LICENSE)。
 
 本入口与参考提炼 emil-design-eng、animate、review-animations、animation-performance、apple-design、find-animation-opportunities 和 pick-ui-library 的适用原则；采用后的规范维护在 DESIGN.md，参考只补充 Vue 实施细节。后续上游更新需审查实际差异后融入，不自动改变项目标准。
+
+补充交互参考为 [Caho1/open-claude-ui](https://github.com/Caho1/open-claude-ui/tree/2834bc158a4849f21c97cbb2e0b10525f6e646f1) 的独立逆向分析，参考基线为 `2834bc158a4849f21c97cbb2e0b10525f6e646f1`（2026-10-15，[上游 MIT 许可证](https://github.com/Caho1/open-claude-ui/blob/2834bc158a4849f21c97cbb2e0b10525f6e646f1/LICENSE)）。仅吸收分栏手势、图片查看及容器布局的适用原则。引入具体实现或参数前须核对同一版本的文档与源码，再按绘遇场景验证；文档声明不作为运行或性能证据。日常任务使用本地规范，无需反复加载上游手册。
 
 适配取舍：
 
