@@ -67,6 +67,7 @@ pub(super) async fn prepare(
             "DeepSeek 思考工具模式需要跨轮完整思考上下文；请关闭思考，或关闭房间工具和联网检索",
         ));
     }
+    let session_id = std::mem::take(&mut input.session_id);
     let body = request_body::encode(payload(input, &api), cancel).await?;
     let response = client
         .send(
@@ -74,6 +75,7 @@ pub(super) async fn prepare(
             Request {
                 body: Some(body),
                 key: &api.key,
+                session_id: Some(&session_id),
                 public_only,
                 idle: Duration::from_secs(120),
                 total: Duration::from_secs(600),
@@ -81,7 +83,16 @@ pub(super) async fn prepare(
             },
         )
         .await?;
-    let response = transport::success(response, 64 * 1024, "自定义 API 返回").await?;
+    let response = transport::success(response, 64 * 1024, "自定义 API 返回")
+        .await
+        .map_err(|mut error| {
+            if error.status.as_u16() == 403 && api.vendor == "opencode"
+                && api.pathname.contains("/go/") && api.model == "deepseek-v4.1-flash-free"
+            {
+                error.message.push_str(" DeepSeek V4.1 Flash Free 当前列在普通 API 通道；请将服务改为 OpenCode Zen，保留 deepseek-v4.1-flash-free 模型，并填写该通道的密钥。");
+            }
+            error
+        })?;
     let sse = response
         .headers()
         .get("content-type")
@@ -154,6 +165,7 @@ pub(super) async fn inspect(client: &Transport, api: &Api) -> Result<Value> {
             Request {
                 body: None,
                 key: &api.key,
+                session_id: None,
                 public_only: false,
                 idle: Duration::from_secs(15),
                 total: Duration::from_secs(15),
@@ -208,15 +220,19 @@ struct Tool {
 }
 #[derive(Default)]
 pub(super) struct Decoder {
+    vendor: String,
     calls: std::collections::BTreeMap<usize, Tool>,
     reasoning: String,
     pub terminal: bool,
     pub malformed: bool,
 }
 impl Decoder {
+    pub fn new(vendor: String) -> Self {
+        Self { vendor, ..Self::default() }
+    }
     pub fn decode(&mut self, event: &Value) -> Result<Vec<Value>> {
-        if event.get("error").is_some_and(|error| !error.is_null()) {
-            return Err(Error::stream("INVALID_SSE", "自定义 API 返回了流错误"));
+        if let Some(error) = response_error(event, &self.vendor) {
+            return Err(error);
         }
         let Some(choice) = event["choices"].as_array().and_then(|v| v.first()) else {
             return Ok(Vec::new());
@@ -322,4 +338,17 @@ impl Decoder {
         events.push(json!({"type":"done"}));
         Ok(events)
     }
+}
+
+// Some compatible providers return HTTP 200 with a failed choice and partial text.
+// Check before consuming content or declaring completion, including non-streaming calls.
+pub(super) fn response_error(value: &Value, vendor: &str) -> Option<Error> {
+    let choice = &value["choices"][0];
+    let error = value.get("error").filter(|error| !error.is_null())
+        .or_else(|| choice.get("error").filter(|error| !error.is_null()));
+    if error.is_none() && choice["finish_reason"] != "error" { return None; }
+    let error = error.unwrap_or(&Value::Null);
+    let status = error["code"].as_u64().filter(|code| (400..600).contains(code))
+        .map(|code| code as u16).unwrap_or(503);
+    Some(transport::upstream_error(status, vendor, error, "API 回复中断"))
 }

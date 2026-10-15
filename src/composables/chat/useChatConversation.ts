@@ -100,6 +100,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   const streamingMid = ref('')
   const replyAnnouncement = ref('')
   let activeRequest: AbortController | null = null
+  const sessions = new Map<string, { revision: number; id: string }>()
   const draft = createChatDraftPersistence((character, value) => options.storage.setDraft(character, value))
   const releaseMaintenance = registerMaintenanceParticipant(() => { if (options.busy.value) throw new Error('CHAT_BUSY') })
 
@@ -127,6 +128,13 @@ export function useChatConversation(options: ChatConversationOptions) {
   // 返回的 messages 是存储层的活引用：catch 分支据此移除失败占位。
   function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string, sendOptions: CompanionChatSendOptions = {}) {
     const characterId = options.activeChar.value
+    // Reuse the window's character session across turns and tool rounds; clearing starts a new one.
+    const revision = options.storage.state.historiesRevisions[characterId] ?? 0
+    let session = sessions.get(characterId)
+    if (!session || session.revision !== revision) {
+      session = { revision, id: createMessageId() }
+      sessions.set(characterId, session)
+    }
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
     messages.push({
@@ -155,7 +163,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     streamingMid.value = assistant.mid
     options.scrollBottom()
     options.setBusy(true)
-    return { characterId, text, imageUrl, messages, assistant }
+    return { characterId, sessionId: session.id, text, imageUrl, messages, assistant }
   }
 
   // ── Pipeline 步骤②：单回合流式情绪跟踪器 ────────────────────────────
@@ -278,6 +286,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   // ── Pipeline 步骤⑥：一轮回合的 /api/chat 请求体组装 ──────────────────
   function buildChatRequestBody(args: {
     characterId: string
+    sessionId: string
     text: string
     imageUrl: string | undefined
     hostMode: boolean
@@ -287,7 +296,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     messages: TurnMessages
     connection: TurnConnection
   }): string {
-    const { characterId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages, connection } = args
+    const { characterId, sessionId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages, connection } = args
     const userApi = {
       baseUrl: connection.baseUrl,
       model: connection.apiModel,
@@ -299,6 +308,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       : messages.slice(0, -1).map(message => ({ role: message.role, content: message.content }))
     return JSON.stringify({
       character: characterId,
+      sessionId,
       provider: connection.provider,
       model: hostMode ? '' : connection.currentModel,
       api: !hostMode && connection.provider === 'api' ? userApi : undefined,
@@ -392,6 +402,7 @@ export function useChatConversation(options: ChatConversationOptions) {
           headers: { 'Content-Type': 'application/json' },
           body: buildChatRequestBody({
             characterId: turn.characterId,
+            sessionId: turn.sessionId,
             text,
             imageUrl,
             hostMode,

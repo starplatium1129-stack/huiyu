@@ -1,7 +1,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { chatApi } from '@/api/chatApi'
 import { ApiClientError } from '@/api/client'
-import { CHAT_API_PRESETS, chatApiAddressError, chatApiPreset, type ApiVendor } from '@/config/chatApi'
+import { CHAT_API_PRESETS, chatApiAddressError, chatApiEndpoint, chatApiPreset, type ApiVendor } from '@/config/chatApi'
 import { createChatApiDrafts } from '@/utils/chatApiDrafts'
 
 export interface ChatApiEditorProps {
@@ -20,8 +20,6 @@ interface EditorEmit {
   (event: 'update:apiKey', value: string): void
   (event: 'clear-key'): void
 }
-
-const endpoint = (value: string) => value.trim().replace(/\/+$/, '')
 
 export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
   const preset = computed(() => chatApiPreset(props.vendor))
@@ -54,7 +52,7 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
   onBeforeUnmount(invalidate)
   watch(() => props.vendor, () => {
     connectionOpen.value = props.vendor === 'custom' || Boolean(addressError.value)
-      || endpoint(props.baseUrl) !== endpoint(preset.value.baseUrl)
+      || chatApiEndpoint(props.baseUrl) !== chatApiEndpoint(preset.value.baseUrl)
   }, { immediate: true, flush: 'post' })
   watch(addressError, error => { if (error) connectionOpen.value = true })
 
@@ -121,9 +119,10 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
     if (error.code === 'UPSTREAM_UNAVAILABLE' || error.kind === 'network') return preset.value.local
       ? '无法连接本机服务，请先启动服务，并检查端口。' : '无法连接服务，请检查地址、网络或代理。'
     if (error.status === 401) return props.apiKey.trim() ? '密钥无效，请重新填写。' : '服务需要访问密钥，填写后再获取模型。'
-    if (error.status === 403) return '没有 API 访问权限，请检查账号设置。'
-    if (error.status === 402) return 'API 额度不足，请检查服务商账户。'
     if (error.status === 404 || error.status === 405) return '此地址未提供模型列表，可直接填写模型名，或修改连接地址。'
+    if (error.code?.startsWith('UPSTREAM_') || error.code?.startsWith('OPENCODE_')) return error.message
+    if (error.status === 403) return '服务拒绝访问，请核对模型权限、地域和服务商的使用限制。'
+    if (error.status === 402) return 'API 额度不足，请检查服务商账户。'
     if (error.status === 429) return '请求过于频繁或额度受限，请稍后重试。'
     if (error.code === 'INVALID_MODEL_LIST' || error.kind === 'invalid-response') return '这个地址没有返回模型列表，请确认填写的是 API 地址。'
     if (error.status === 400) return '配置格式无效，请检查连接地址，密钥请填在专用输入框。'

@@ -18,7 +18,7 @@ pub(super) async fn run(client: &Transport, body: &Value, cancel: &CancellationT
     let mut target = Url::parse("https://html.duckduckgo.com/html/").unwrap();
     target.query_pairs_mut().append_pair("q", query);
     let response = client.send(target, Request {
-        body: None, key: "", public_only: false,
+        body: None, key: "", session_id: None, public_only: false,
         idle: Duration::from_secs(20), total: Duration::from_secs(25), accept: "text/html",
     }).await.map_err(|_| unavailable("无法连接检索服务，请检查网络或代理后重试。"))?;
     let response = transport::success(response, LIMIT, "检索服务返回").await

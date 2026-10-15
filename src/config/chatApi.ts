@@ -79,12 +79,25 @@ export const CHAT_API_PRESETS: ChatApiPreset[] = [
 export function chatApiPreset(vendor: ApiVendor): ChatApiPreset {
   return CHAT_API_PRESETS.find(preset => preset.value === vendor) ?? CHAT_API_PRESETS[CHAT_API_PRESETS.length - 1]!
 }
+export function chatApiEndpoint(baseUrl: string): string {
+  try {
+    const url = new URL(baseUrl.trim())
+    if (url.username || url.password || url.search || url.hash) return ''
+    const path = url.pathname.replace(/\/+$/, '').replace(/\/chat\/completions$/, '')
+    return `${url.origin}${path}`
+  } catch { return '' }
+}
 export function chatApiVendorFor(baseUrl: string): ApiVendor {
-  const endpoint = baseUrl.trim().replace(/\/+$/, '')
+  const endpoint = chatApiEndpoint(baseUrl)
   const preset = CHAT_API_PRESETS.find(preset => preset.baseUrl && preset.baseUrl === endpoint)
   if (preset) return preset.value
-  // DeepSeek documents both forms; don't classify look-alike or arbitrary proxy hosts.
-  return endpoint === `${DEEPSEEK_BASE_URL}/v1` ? 'deepseek' : 'custom'
+  if (endpoint === `${DEEPSEEK_BASE_URL}/v1`) return 'deepseek'
+  if (endpoint === 'https://api.moonshot.ai/v1') return 'kimi'
+  if (endpoint === 'https://opencode.ai/inference/v1') return 'opencode'
+  if (endpoint === 'https://opencode.ai/inference/go/v1') return 'opencode-go'
+  // Only official regional/workspace hosts; never infer a provider from a proxy's model ID.
+  if (/^https:\/\/(?:dashscope-intl\.aliyuncs\.com|dashscope-us\.aliyuncs\.com|cn-hongkong\.dashscope\.aliyuncs\.com|[a-z0-9-]+\.maas\.aliyuncs\.com)\/compatible-mode\/v1$/.test(endpoint)) return 'qwen'
+  return 'custom'
 }
 export function chatApiAddressError(baseUrl: string): string {
   if (!baseUrl.trim()) return '请填写 API 地址。'

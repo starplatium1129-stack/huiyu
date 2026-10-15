@@ -118,6 +118,7 @@ impl Events {
                         let value: Value = serde_json::from_str(&self.json).map_err(|_| {
                             Error::stream("INVALID_JSON", "自定义 API 返回了无法识别的响应")
                         })?;
+                        let decoded = self.decoder.decode(&value)?;
                         if value["choices"]
                             .as_array()
                             .and_then(|v| v.first())
@@ -126,7 +127,7 @@ impl Events {
                         {
                             return Err(Error::stream("INVALID_JSON", "非流式响应缺少消息"));
                         }
-                        self.pending.extend(self.decoder.decode(&value)?);
+                        self.pending.extend(decoded);
                         self.finish()?;
                     }
                 }
@@ -145,6 +146,7 @@ impl Events {
 
 fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
     let wait = prepared.wait_ms;
+    let vendor = super::validation::vendor(prepared.response.url());
     Events {
         lines: Lines::new(
             prepared.response.bytes_stream().boxed(),
@@ -155,7 +157,7 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
             }),
         ),
         protocol: prepared.protocol,
-        decoder: Decoder::default(),
+        decoder: Decoder::new(vendor),
         pending: VecDeque::from([json!({"type":"meta","model":prepared.model,"queueWaitMs":wait})]),
         json: String::new(),
         finished: false,

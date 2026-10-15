@@ -47,6 +47,7 @@ impl ChatService {
             }
             let input = validation::Input {
                 model: String::new(),
+                session_id: uuid::Uuid::new_v4().to_string(),
                 api: None,
                 tools: false,
                 web_search: false,
@@ -79,8 +80,10 @@ pub(super) async fn complete_api(
     let target = url::Url::parse(&api.base_url)
         .and_then(|base| base.join(&api.pathname))
         .map_err(|_| Error::invalid("站主 API 地址无效"))?;
+    let session_id = uuid::Uuid::new_v4().to_string();
     let input = validation::Input {
         model: api.model.clone(),
+        session_id: session_id.clone(),
         api: None,
         tools: false,
         web_search: false,
@@ -96,6 +99,7 @@ pub(super) async fn complete_api(
             transport::Request {
                 body: Some(body),
                 key: &api.key,
+                session_id: Some(&session_id),
                 public_only: false,
                 idle: Duration::from_secs(120),
                 total: Duration::from_secs(120),
@@ -106,6 +110,9 @@ pub(super) async fn complete_api(
     let response = transport::success(response, 64 * 1024, "AI 上游返回").await?;
     let value: Value = serde_json::from_slice(&transport::bounded(response, 1024 * 1024).await?)
         .map_err(|_| Error::stream("INVALID_UPSTREAM_JSON", "AI 上游返回了无法解析的响应"))?;
+    if let Some(error) = compatible::response_error(&value, &api.vendor) {
+        return Err(error);
+    }
     value["choices"][0]["message"]["content"]
         .as_str()
         .filter(|s| !s.trim().is_empty())

@@ -19,6 +19,7 @@ pub(super) enum ApiSource {
 }
 pub(super) struct Input {
     pub model: String,
+    pub session_id: String,
     pub api: Option<ApiSource>,
     pub tools: bool,
     pub web_search: bool,
@@ -40,12 +41,19 @@ pub(super) fn vendor(target: &Url) -> String {
     match host {
         "api.deepseek.com" => "deepseek",
         "api.openai.com" => "openai",
+        "openrouter.ai" if target.path().starts_with("/api/v1/") => "openrouter",
+        "api.siliconflow.cn" => "siliconflow",
         "generativelanguage.googleapis.com" if target.path().starts_with("/v1beta/openai/") => {
             "gemini"
         }
         "api.moonshot.cn" | "api.moonshot.ai" => "kimi",
-        "dashscope.aliyuncs.com" | "dashscope-intl.aliyuncs.com" => "qwen",
-        "opencode.ai" if target.path().starts_with("/zen/") => "opencode",
+        "dashscope.aliyuncs.com" | "dashscope-intl.aliyuncs.com"
+        | "dashscope-us.aliyuncs.com" | "cn-hongkong.dashscope.aliyuncs.com" => "qwen",
+        "opencode.ai"
+            if target.path().starts_with("/zen/") || target.path().starts_with("/inference/") =>
+        {
+            "opencode"
+        }
         _ if host.ends_with(".maas.aliyuncs.com")
             && target.path().starts_with("/compatible-mode/") =>
         {
@@ -196,6 +204,17 @@ fn multimodal(parts: &[Value]) -> Result<Value> {
 }
 
 pub(super) fn chat(body: &Value, local: Option<&str>) -> Result<Input> {
+    let session_id = match body.get("sessionId") {
+        None => uuid::Uuid::new_v4().to_string(),
+        Some(Value::String(id))
+            if !id.is_empty()
+                && id.len() <= 128
+                && id.bytes().all(|byte| byte.is_ascii_alphanumeric() || b"_-".contains(&byte)) =>
+        {
+            id.clone()
+        }
+        _ => return Err(Error::invalid("聊天会话 ID 格式无效")),
+    };
     let character = string(&body["character"]);
     let character = if character.is_empty() {
         "nene"
@@ -265,6 +284,7 @@ pub(super) fn chat(body: &Value, local: Option<&str>) -> Result<Input> {
     }
     Ok(Input {
         model: string(&body["model"]),
+        session_id,
         api,
         tools: body["companionTools"] == true,
         web_search: body["webSearch"] == true,

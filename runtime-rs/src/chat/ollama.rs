@@ -42,6 +42,7 @@ impl Ollama {
                 Request {
                     body: None,
                     key: "",
+                    session_id: None,
                     public_only: false,
                     idle: Duration::from_secs(3),
                     total: Duration::from_secs(3),
@@ -145,6 +146,7 @@ impl Ollama {
                     Request {
                         body: Some(unload),
                         key: "",
+                        session_id: None,
                         public_only: false,
                         idle: Duration::from_secs(8),
                         total: Duration::from_secs(8),
@@ -167,6 +169,7 @@ impl Ollama {
                 Request {
                     body: Some(body),
                     key: "",
+                    session_id: None,
                     public_only: false,
                     idle: Duration::from_secs(180),
                     total: Duration::from_secs(600),
