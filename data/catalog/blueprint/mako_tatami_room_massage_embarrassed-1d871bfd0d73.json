@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_tatami_room_massage_embarrassed",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1134,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "action": "跪坐为对方揉肩，手腕被握住瞬间满脸通红，别过头猫嘴羞耻慌乱",
     "camera": "medium close-up, intimate side angle, intense blush focus",
@@ -45,6 +45,9 @@
     ],
     "timeOfDay": "傍晚",
     "title": "常陆茉子 · 榻榻米上的推拿羞红",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "characterTokens": [
+      "Masaomi"
+    ]
   }
 }

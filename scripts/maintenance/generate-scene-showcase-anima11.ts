@@ -27,7 +27,7 @@ const path: typeof import('path') = require('path');
 
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
-const { CHAR_PROMPT }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
+const { CHAR_PROMPT, STUDIO_PROMPT_SUBJECTS }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
@@ -131,6 +131,7 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
   const artistTag = promptPolicy.tokenize(originalPrompt(scene)).find(tag => tag.startsWith('@')) || null;
   const prompt = renderPromptPlan(createPromptPlan({
     profile, scenePrompt, scene, identity: CHAR_PROMPT[characterId],
+    ...STUDIO_PROMPT_SUBJECTS[characterId],
     controls: promptPolicy.characterControlTokens(scene, characterId, ANIMA_LORA_BY_CHARACTER),
     exactTokens: profile.exact_tokens,
     rating: promptPolicy.profileRatingTag(profile, scene),

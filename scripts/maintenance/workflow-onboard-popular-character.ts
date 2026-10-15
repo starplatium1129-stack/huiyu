@@ -157,11 +157,11 @@ async function runPipeline(charId: any, opts: any = {}) {
         blueprint: bp,
         engine: 'anima',
         profile,
+        artistTags: ['@rella'],
       });
       if (!plan) throw new Error(`场景 ${bp.id} 未通过生成资格校验`);
 
-      let prompt = plan.prompt;
-      if (!prompt.includes('@rella')) prompt = `@rella, ${prompt}`;
+      const prompt = plan.prompt;
 
       const tempPng = path.join(tempDir, `pc_${charId}_${bp.id}.png`);
       const imgBuf = await renderImage({

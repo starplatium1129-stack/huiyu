@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tohsaka_rin",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "tohsaka_rin",
     "profile": {
@@ -140,6 +140,15 @@
         "takeuchi_takashi",
         "rella",
         "morikura_en"
+      ],
+      "characterTokens": [
+        "tohsaka rin",
+        "tohsaka_rin",
+        "Rin",
+        "adult Rin"
+      ],
+      "copyrightTokens": [
+        "fate/stay_night"
       ]
     }
   }

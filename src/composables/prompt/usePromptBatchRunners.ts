@@ -20,8 +20,9 @@ import {
   type SceneBlueprint,
   type PopularCharacter,
 } from '../../utils/popularContent.ts'
-import { COLOR_MOODS } from '../../config/promptConstants.ts'
-import { formatPromptForProfile, mutualGroupWithCategory, normalizeKey, tokenize } from '../../utils/promptPolicy.ts'
+import { COLOR_MOODS, STUDIO_PROMPT_SUBJECTS } from '../../config/promptConstants.ts'
+import { mutualGroupWithCategory, normalizeKey, tokenize } from '../../utils/promptPolicy.ts'
+import { createPromptPlan, renderPromptPlan } from '../../utils/promptCompiler.ts'
 import {
   ANIMA_CHARACTER_BY_CHARACTER,
   type useAnimaSession,
@@ -138,8 +139,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         })
       }
       if (pop.identityTokens) {
-        [...pop.identityTokens, ...pop.exactTokens, ...pop.aliases].forEach(tok => {
-              text = text.split(',').filter(part => normalizeKey(part) !== normalizeKey(tok)).join(',')
+        [...pop.identityTokens, ...pop.exactTokens, ...(pop.copyrightTokens || []), ...(pop.characterTokens || []), ...pop.aliases].forEach(tok => {
+              text = text.split(',').filter(part => normalizeKey(part.replace(/\\([()])/g, '$1')) !== normalizeKey(tok)).join(',')
         })
       }
     })
@@ -149,8 +150,15 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     text = text.replace(/\b(1girl|2girls|solo)\b/gi, '')
     text = text.replace(/\b(?:She wears|wearing|dressed in|outfit)\b[^,.;]*/gi, '')
 
+    const newline = animaState.value.family === 'anima' ? text.indexOf('\n') : -1
+    const caption = newline < 0 ? '' : text.slice(newline + 1)
+    if (newline >= 0) text = text.slice(0, newline)
+
     // 4. 互斥服装族与通用衣物 Tag 清洗（彻底剥离旧服装，避免串入新角色）
-    const studioKeys = new Set(Object.values(CHAR_PROMPT).flatMap(anchor => anchor.split(',').map(normalizeKey)))
+    const studioKeys = new Set([
+      ...Object.values(CHAR_PROMPT).flatMap(tokenize),
+      ...Object.values(STUDIO_PROMPT_SUBJECTS).flatMap(subject => subject.copyrightTokens),
+    ].map(normalizeKey))
     const parts = text.split(',').map(p => p.trim()).filter(part => part && !studioKeys.has(normalizeKey(part)))
     const cleanParts = parts.filter(part => {
       if (identityDomainOf(part) || mutualGroupWithCategory(part)?.category === 'outfit') return false
@@ -162,7 +170,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       return true
     })
 
-    return cleanParts.join(', ')
+    return animaState.value.family === 'anima' ? `${cleanParts.join(', ')}\n${caption}` : cleanParts.join(', ')
   }
 
   function resolveTargetCharacter(target: BatchTargetItem) {
@@ -199,7 +207,9 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   /** 组装最终出图 prompt：根据目标是场景还是多角色自适应。 */
   function buildTargetPrompt(input: BatchDrawRunnerInput): string {
     const target = input.scene
-    const baseText = String(target.prose || '').trim()
+    const rawText = String(target.prose || '')
+    // Captured Anima prompts retain even an empty tag/caption line as the section boundary.
+    const baseText = target.kind === 'character' && animaState.value.family === 'anima' ? rawText : rawText.trim()
 
     const charInfo = resolveTargetCharacter(target)
     if (charInfo?.kind === 'popular') {
@@ -208,7 +218,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       const outfit = (blueprint?.outfitId ? findOutfit(pop, blueprint.outfitId) : null) || defaultOutfit(pop)
       if (!outfit) throw new Error('目标角色没有可用服装')
       const source = pb.subject.kind === 'popular' ? findPopularCharacter(getPopularList(), pb.subject.characterId) : null
-      const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.exactTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(',')].map(normalizeKey))
+      const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.exactTokens || []), ...(source?.copyrightTokens || []), ...(source?.characterTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(','), ...(STUDIO_PROMPT_SUBJECTS[pb.char]?.copyrightTokens || [])].map(normalizeKey))
       const engine = animaState.value.family === 'krea2' ? 'krea2' : 'anima'
       const decisions = blueprint ? inferBlueprintDecisions(blueprint) : null
       const currentSubject = pb.subject
@@ -221,15 +231,18 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       const composition = pb.selections.composition === inherited?.composition ? null : pb.selections.composition
       const colorMood = pb.colorMood === inherited?.colorMood ? null : pb.colorMood
       const mood = COLOR_MOODS.find(option => option.id === (colorMood ?? decisions?.colorMood))
+      const inheritedNewline = target.kind === 'character' && engine === 'anima' ? baseText.indexOf('\n') : -1
+      const inheritedTags = inheritedNewline < 0 ? [] : tokenize(baseText.slice(0, inheritedNewline))
       const planResult = buildPopularPromptPlan({
         character: pop, outfit, blueprint, engine, profile: modelProfile.value,
-        manual: [...pb.manualTags].filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag))),
+        manual: [...pb.manualTags, ...inheritedTags].filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag))),
         emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
         shot: shot ?? decisions?.shot,
         lighting: lighting ?? decisions?.lighting,
         composition: composition ?? decisions?.composition,
         palette: mood ? tokenize(mood.prompt) : [],
-        visualDescription: target.kind === 'character' ? baseText : pb.visualDescription,
+        visualDescription: target.kind === 'character'
+          ? (inheritedNewline < 0 ? baseText : baseText.slice(inheritedNewline + 1).replace(/\s+/g, ' ')) : pb.visualDescription,
         outfitOverride: detectOutfitOverrideFromContext(),
         matureTokens: new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
@@ -244,14 +257,18 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       plans.set(target.id, { style: target.kind === 'character'
         ? { ...pb.selections, emotion: [...pb.selections.emotion], colorMood: pb.colorMood }
         : { emotion: [], shot: null, lighting: null, composition: null, colorMood: null } })
-      const prompt = [CHAR_PROMPT[charInfo.charKey], detectOutfitOverrideFromContext()?.join(', '), baseText].filter(Boolean).join(', ')
       const profile = modelProfile.value
-      if (animaState.value.family !== 'anima' || profile?.strip_quality_tokens === true) return prompt
-      // Compare normalized tokens without rewriting inherited captions or explicit weights.
-      const existingKeys = new Set(prompt.split(/\r?\n/).flatMap(tokenize).map(normalizeKey))
-      const quality = tokenize(profile?.quality_prefix || '')
-        .filter(token => !existingKeys.has(normalizeKey(token))).join(', ')
-      return [formatPromptForProfile(quality, profile, 'anima'), prompt].filter(Boolean).join(', ')
+      const controls = detectOutfitOverrideFromContext() || []
+      if (animaState.value.family !== 'anima') return [CHAR_PROMPT[charInfo.charKey], controls.join(', '), baseText].filter(Boolean).join(', ')
+      const newline = baseText.indexOf('\n')
+      const plan = createPromptPlan({
+        profile, identity: CHAR_PROMPT[charInfo.charKey], ...STUDIO_PROMPT_SUBJECTS[charInfo.charKey], controls,
+        artists: artistTagsForEngine(pb.artistStyleIds, 'anima'),
+        scenePrompt: target.kind === 'scene' ? '' : newline < 0 ? baseText : baseText.slice(0, newline),
+        sceneProse: target.kind === 'scene' ? baseText : newline < 0 ? '' : baseText.slice(newline + 1),
+        exactTokens: profile?.exact_tokens,
+      })
+      return renderPromptPlan(plan, 'anima', profile).prompt
     }
     if (target.kind === 'character') throw new Error('目标角色已不可用')
     throw new Error('场景蓝图缺少有效的角色绑定')

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "matou_sakura",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "matou_sakura",
     "profile": {
@@ -146,7 +146,14 @@
         "era": "当代",
         "formNotes": "紫色长发；紫色瞳；红色缎带发饰；身材丰满；穗群原学园制服；黑化形态红纹礼服",
         "research": "2026-08-18 调研"
-      }
+      },
+      "characterTokens": [
+        "matou_sakura",
+        "Sakura"
+      ],
+      "copyrightTokens": [
+        "fate/stay night"
+      ]
     }
   }
 }

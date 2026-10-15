@@ -103,12 +103,16 @@ def result_payload(labels, splits, probabilities, threshold, meta):
         offset += count
     general = [(tag, float(score)) for tag, score in groups.get('general', []) if score > threshold][:100]
     characters = [tag for tag, score in groups.get('character', []) if score > 0.27][:100]
+    # Keep the pinned PixAI v1.0 thresholds and categories across the protocol.
+    copyrights = [tag for tag, score in groups.get('copyright', []) if score > 0.24][:100]
+    styles = [tag for tag, score in groups.get('style', []) if score > 0.15][:100]
     ratings = {RATING_NAMES[tag]: float(score) for tag, score in groups.get('rating', []) if tag in RATING_NAMES}
     if set(ratings) != set(RATING_NAMES.values()):
         raise PixaiError('PIXAI_INFERENCE_FAILED', 'PixAI 分级结果缺失')
     return {'ok': True, 'engine': ENGINE, 'model': MODEL,
             'tags': [tag for tag, _ in general], 'scores': dict(general),
-            'characterTags': characters, 'rating': ratings, 'meta': meta}
+            'characterTags': characters, 'copyrightTags': copyrights, 'styleTags': styles,
+            'rating': ratings, 'meta': meta}
 
 
 def check_cuda(torch):

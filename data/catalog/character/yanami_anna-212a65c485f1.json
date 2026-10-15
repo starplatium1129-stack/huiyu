@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yanami_anna",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "yanami_anna",
     "profile": {
@@ -112,6 +112,13 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "yanami_anna",
+        "Anna Yanami"
+      ],
+      "copyrightTokens": [
+        "make_heroine_ga_oo_sugiru!"
       ]
     }
   }

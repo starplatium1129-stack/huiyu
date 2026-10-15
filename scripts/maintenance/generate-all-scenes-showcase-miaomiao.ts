@@ -33,7 +33,12 @@ function collectAllSceneTasks(opts: any, input: any) {
   const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
   const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
   const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
+  const { showcaseSubjectGuards }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
+  const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
+  const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
+  const { CHAR_PROMPT, STUDIO_PROMPT_SUBJECTS }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
   const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
+  const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
   const tasks: any[] = [];
   const popularRaw = input.data['data/popular-characters.json'];
   const characters = popularContent.parsePopularCharacters(popularRaw);
@@ -53,7 +58,7 @@ function collectAllSceneTasks(opts: any, input: any) {
 
       const outfit = (bp.outfitId && popularContent.findOutfit(character, bp.outfitId)) || popularContent.defaultOutfit(character);
       const decisions = blueprintDecisions.inferBlueprintDecisions(bp);
-      const adult = Boolean(bp.adult);
+      const guards = showcaseSubjectGuards(bp);
 
       const plan = popularPrompt.buildPopularPromptPlan({
         character,
@@ -65,22 +70,10 @@ function collectAllSceneTasks(opts: any, input: any) {
         lighting: decisions.lighting,
         composition: decisions.composition,
         artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
+        manual: promptPolicy.tokenize(guards.prompt),
       });
 
       if (!plan) continue;
-
-      const cloneGuard = '(no clone:1.4), (no duplicate:1.4), (no twin:1.3), no duplicated character, no second copy, single subject only';
-      const soloGuard = adult
-        ? `(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), no other person, no bystanders, ${cloneGuard}`
-        : `(single girl only:1.4), (one person only:1.4), no second person, ${cloneGuard}`;
-
-      const fullPrompt = plan.prompt.includes('\n')
-        ? plan.prompt.replace('\n', `, ${soloGuard}\n`)
-        : `${plan.prompt}, ${soloGuard}`;
-
-      const bpNeg = Array.isArray(bp.negativeTokens) ? bp.negativeTokens.join(', ') : String(bp.negativeTokens || '');
-      const cloneNegative = 'duplicate, clone, copy, doppelganger, twin, multiple girls, extra girl';
-      const fullNegative = [plan.negative, bpNeg, cloneNegative].filter(Boolean).join(', ');
 
       tasks.push({
         id: bp.id,
@@ -91,12 +84,12 @@ function collectAllSceneTasks(opts: any, input: any) {
         characterId: character.id,
         rating: bp.adult || (bp as any).rating === 'R18' ? 'R18' : ((bp as any).rating === 'R15' ? 'R15' : 'All'),
         type: 'popular',
-        prompt: fullPrompt,
-        negative: fullNegative,
+        prompt: plan.prompt,
+        negative: plan.negative,
         width,
         height,
         outfitId: outfit?.id,
-        adult,
+        adult: Boolean(bp.adult),
         seed: Math.floor(Math.random() * 1000000000) + 100000000
       });
     }
@@ -113,11 +106,29 @@ function collectAllSceneTasks(opts: any, input: any) {
       const width = isHorizontal ? 1216 : 832;
       const height = isHorizontal ? 832 : 1216;
 
-      let prompt = sc.prompt || sc.title;
-      if (!/@rella\b/i.test(prompt)) {
-        prompt = `@rella, ${prompt}`;
-      }
-      const negative = sc.negative || 'worst quality, low quality, bad anatomy, blurry, watermark, duplicate, 2girls';
+      const characterId = sc.char === 'both' ? 'triad' : sc.char;
+      const loraIds = characterId === 'nene' ? ['L_NENE_V21_ANIMA']
+        : characterId === 'natsume' ? ['L_NAT_V21_ANIMA'] : [];
+      const contracts = loraData.filter(item => loraIds.includes(item.id)).map(item => item.prompt_contract);
+      const sceneProfile = {
+        ...profile,
+        exact_tokens: [...new Set([...(profile.exact_tokens || []), ...contracts.flatMap(contract => contract?.exact_tokens || [])])],
+        exact_prefixes: [...new Set([...(profile.exact_prefixes || []), ...contracts.flatMap(contract => contract?.exact_prefixes || [])])],
+      };
+      const scenePrompt = promptPolicy.sceneTemplateText(sc, { char: characterId, engine: 'anima', profile: sceneProfile });
+      const prompt = renderPromptPlan(createPromptPlan({
+        profile: sceneProfile,
+        identity: CHAR_PROMPT[characterId],
+        ...STUDIO_PROMPT_SUBJECTS[characterId],
+        controls: promptPolicy.characterControlTokens(sc, characterId, {
+          nene: 'L_NENE_V21_ANIMA', natsume: 'L_NAT_V21_ANIMA',
+        }),
+        scenePrompt,
+        scene: sc,
+        artists: artistTagsForEngine([ARTIST_TAG], 'anima'),
+        rating: promptPolicy.profileRatingTag(sceneProfile, sc),
+      }), 'anima', sceneProfile).prompt;
+      const negative = promptPolicy.assembleNegative(sceneProfile, sc, 'anima', { character: characterId });
 
       tasks.push({
         id: sc.id,

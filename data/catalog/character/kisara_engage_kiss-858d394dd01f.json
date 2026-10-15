@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kisara_engage_kiss",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "kisara_engage_kiss",
     "profile": {
@@ -143,7 +143,13 @@
         "formNotes": "粉发红眼；恶魔形态=红角+白发+白色战衣；勿与天童木更混淆",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "a-1 pictures, tsunako, official anime screencap"
+      "animeStudio": "a-1 pictures, tsunako, official anime screencap",
+      "characterTokens": [
+        "kisara (engage kiss)"
+      ],
+      "copyrightTokens": [
+        "engage_kiss"
+      ]
     }
   }
 }

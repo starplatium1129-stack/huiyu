@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yor_forger",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "yor_forger",
     "profile": {
@@ -148,7 +148,16 @@
         "era": "当代",
         "formNotes": "黑色长发低发髻；红瞳；金色玫瑰耳环；荆棘公主（Thorn Princess）黑色露肩高叉礼服名场面；居家红色露肩毛衣；市政厅绿色职业装",
         "research": "2026-08-18 调研"
-      }
+      },
+      "characterTokens": [
+        "yor_briar",
+        "Yor",
+        "Yor Forger",
+        "thorn_princess"
+      ],
+      "copyrightTokens": [
+        "spy x family"
+      ]
     }
   }
 }

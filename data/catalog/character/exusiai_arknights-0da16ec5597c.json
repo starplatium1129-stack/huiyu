@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "exusiai_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "exusiai_arknights",
     "profile": {
@@ -136,7 +136,13 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "exusiai (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ]
     }
   }
 }

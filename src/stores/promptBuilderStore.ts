@@ -19,6 +19,7 @@ import { useToast } from '@/composables/useToast'
 const toast = useToast()
 
 import {
+  cloneReferenceInput,
   isSDParamKey,
   type PromptPreset,
   type DraftOutfitOverride,
@@ -80,15 +81,19 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (!referenceInput.value) return
     const key = normalizeKey(tagDictionary.value.canonicalize(input))
     const tags = referenceInput.value.tags.filter(tag => normalizeKey(tag) !== key)
-    referenceInput.value = tags.length ? { tags } : null
+    referenceInput.value = cloneReferenceInput(referenceInput.value, tags)
   }
-  function addManualTag(input: string) { releaseReferenceTag(input); return addTag(input) }
+  function addManualTag(input: string) {
+    const outcome = addTag(input)
+    if (outcome !== 'duplicate') releaseReferenceTag(input)
+    return outcome
+  }
   function toggleManualTag(input: string) { releaseReferenceTag(input); toggleTag(input) }
   watch(manualTags, () => {
     if (!referenceInput.value) return
     const current = new Set([...manualTags.value].map(normalizeKey))
     const tags = referenceInput.value.tags.filter(tag => current.has(normalizeKey(tag)))
-    if (tags.length !== referenceInput.value.tags.length) referenceInput.value = tags.length ? { tags } : null
+    if (tags.length !== referenceInput.value.tags.length) referenceInput.value = cloneReferenceInput(referenceInput.value, tags)
   }, { deep: true, flush: 'sync' })
   const characters = computed(() => parsePromptCharacters(sceneStore.characters))
   const popularCharacters = computed(() => sceneStore.popularCharacters)
@@ -306,7 +311,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
       colorMood: colorMood.value,
       manualTags: [...manualTags.value],
       randomVariation: randomVariation.value ? JSON.parse(JSON.stringify(randomVariation.value)) as DraftRandomVariation : null,
-      referenceInput: referenceInput.value ? { tags: [...referenceInput.value.tags] } : null,
+      referenceInput: cloneReferenceInput(referenceInput.value),
       artistStyleIds: [...artistStyleIds.value],
     }
   }
@@ -320,7 +325,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     selections.composition = snapshot.composition ?? null
     colorMood.value = snapshot.colorMood ?? null
     manualTags.value = new Set(snapshot.manualTags ?? [])
-    referenceInput.value = snapshot.referenceInput ? { tags: [...snapshot.referenceInput.tags] } : null
+    referenceInput.value = cloneReferenceInput(snapshot.referenceInput)
     artistStyleIds.value = normalizeArtistStyleIds(snapshot.artistStyleIds)
   }
 

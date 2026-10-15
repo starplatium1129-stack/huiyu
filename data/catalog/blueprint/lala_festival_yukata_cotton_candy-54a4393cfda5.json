@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_festival_yukata_cotton_candy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "action": "一手拿巨型棉花糖、另一手牵同伴沿祭典街前行，爱心尾巴欢快摇摆",
     "camera": "medium shot, eye-level, joyful festive atmosphere",
@@ -43,6 +43,9 @@
     ],
     "timeOfDay": "夜晚",
     "title": "菈菈 · 夏夜祭典的云朵棉花糖",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "characterTokens": [
+      "Rito Yuuki"
+    ]
   }
 }

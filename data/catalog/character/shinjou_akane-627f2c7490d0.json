@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinjou_akane",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 149,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "shinjou_akane",
     "profile": {
@@ -111,6 +111,13 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "shinjou_akane",
+        "Akane Shinjo"
+      ],
+      "copyrightTokens": [
+        "gridman_universe"
       ]
     }
   }

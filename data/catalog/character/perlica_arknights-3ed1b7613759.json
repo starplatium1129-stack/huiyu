@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "perlica_arknights",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-10-06T15:58:42.515126900+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "perlica_arknights",
     "profile": {
@@ -143,7 +143,13 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "perlica (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights_endfield"
+      ]
     }
   }
 }

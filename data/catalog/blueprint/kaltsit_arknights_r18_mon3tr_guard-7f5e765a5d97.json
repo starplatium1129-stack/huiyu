@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_mon3tr_guard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 535,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "action": "侧卧床沿，指尖轻点床单",
     "adult": true,
@@ -47,6 +47,9 @@
       "quiet"
     ],
     "timeOfDay": "深夜",
-    "title": "凯尔希 · 守卫身侧"
+    "title": "凯尔希 · 守卫身侧",
+    "characterTokens": [
+      "Mon3tr"
+    ]
   }
 }

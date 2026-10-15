@@ -1,3 +1,5 @@
+import { normalizeKey } from './promptPrimitives.ts'
+
 export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
 
 export interface SDParams {
@@ -35,6 +37,18 @@ export interface DraftOutfitOverride {
 /** Only tags actually introduced by reverse inference; user-owned duplicates are excluded. */
 export interface DraftReferenceInput {
   tags: string[]
+  /** Model categories retained for ordering, including names absent from the local catalogue. */
+  characterTokens?: string[]
+  copyrightTokens?: string[]
+}
+
+/** Clone the reference layer and retire classification for removed source tags. */
+export function cloneReferenceInput(input: DraftReferenceInput | null | undefined, tags = input?.tags ?? []): DraftReferenceInput | null {
+  if (!input || !tags.length) return null
+  const keys = new Set(tags.map(normalizeKey))
+  const characterTokens = input.characterTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
+  const copyrightTokens = input.copyrightTokens?.filter(tag => keys.has(normalizeKey(tag))) ?? []
+  return { tags: [...tags], ...(characterTokens.length ? { characterTokens } : {}), ...(copyrightTokens.length ? { copyrightTokens } : {}) }
 }
 
 /** Runtime-only scene variation; never writes the source scene/catalog. */

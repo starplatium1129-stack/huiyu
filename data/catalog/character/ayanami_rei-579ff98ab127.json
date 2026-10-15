@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ayanami_rei",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "ayanami_rei",
     "profile": {
@@ -151,7 +151,13 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "ayanami_rei"
+      ],
+      "copyrightTokens": [
+        "neon_genesis_evangelion"
+      ]
     }
   }
 }

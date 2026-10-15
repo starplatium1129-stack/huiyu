@@ -25,6 +25,7 @@ const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = 
 const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
 const { showcaseSubjectGuards, compositionNegative }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
 const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
+const { tokenize }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -94,6 +95,7 @@ function buildCandidate(character: any, blueprint: any, profile: any, attempt: a
     || popularContent.defaultOutfit(character);
   const decisions = blueprintDecisions.inferBlueprintDecisions(blueprint);
   const adult = Boolean(blueprint.adult);
+  const guards = showcaseSubjectGuards(blueprint);
   const result = popularPrompt.buildPopularPromptPlan({
     character,
     outfit,
@@ -105,14 +107,10 @@ function buildCandidate(character: any, blueprint: any, profile: any, attempt: a
     composition: decisions.composition,
     // artistTags 需传入 Anima 引擎格式（前导 @），renderPromptPlan 不做转换。
     artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
+    manual: tokenize(guards.prompt),
   });
   if (!result) throw new Error(`popular prompt build failed for ${character.id} / ${blueprint.id}`);
-  // 构图只补必要正向关系，不自动堆叠分身/人数负面。
-  const guards = showcaseSubjectGuards(blueprint);
-  const soloGuard = guards.prompt;
-  const prompt = result.prompt.includes('\n')
-    ? result.prompt.replace('\n', `, ${soloGuard}\n`)
-    : `${result.prompt}, ${soloGuard}`;
+  const prompt = result.prompt;
   const [width, height] = nearestAnimaSize(blueprint).split('x').map(Number);
   const negative = compositionNegative(result.negative, blueprint);
   return {

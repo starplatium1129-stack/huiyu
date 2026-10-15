@@ -20,6 +20,10 @@ export interface PromptSceneContext {
 
 export interface PromptPlan {
   quality: string[]; rating: string[]; identity: string[]; exactControls: string[]
+  /** Name/alias classification only; appearance and outfit tokens stay in ordinary tags. */
+  characterTokens: string[]
+  /** Separate work tags, emitted after character names for Anima. */
+  copyrightTokens: string[]
   /** 模型原生画师标签：WAI 原始 Danbooru tag / Anima @artist。 */
   artists: string[]
   preserveTokens: string[]

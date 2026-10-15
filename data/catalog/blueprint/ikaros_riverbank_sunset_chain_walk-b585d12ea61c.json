@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_riverbank_sunset_chain_walk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1213,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "action": "落后半步跟随行走，手轻按胸前红领结，项圈铁链被牵引，白翼染上夕阳暖金",
     "camera": "medium two-shot, companion holding the broken chain as they walk along the sunset riverbank",
@@ -46,6 +46,9 @@
     "timeOfDay": "日落",
     "title": "伊卡洛斯 · 金红河堤的锁链相伴",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "characterTokens": [
+      "sakurai tomoki"
+    ]
   }
 }

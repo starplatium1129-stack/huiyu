@@ -1,5 +1,7 @@
 import { mutualGroupWithCategory, normalizeKey, tokenize } from '@/utils/promptPolicy'
-import { LIGHTING, SHOT } from '@/config/promptConstants'
+import { LIGHTING, SHOT, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
+import { animaArtistTag } from '@/config/artistStyles'
+import { cloneReferenceInput } from '@/utils/promptBuilderPersistence'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
@@ -12,26 +14,38 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.flash('反推暂不可用，请稍后重试')
     return
   }
-  const payload = result as { mode?: string; caption?: string; captionDerived?: string; tags?: unknown; characterTags?: unknown; warning?: string }
-  const rawTags = Array.isArray(payload.tags) ? payload.tags.filter((tag): tag is string => typeof tag === 'string') : []
-  const characterTags = Array.isArray(payload.characterTags) ? payload.characterTags.filter((tag): tag is string => typeof tag === 'string') : []
+  const payload = result as { mode?: string; caption?: string; captionDerived?: string; tags?: unknown; characterTags?: unknown; copyrightTags?: unknown; styleTags?: unknown; rating?: Record<string, unknown>; warning?: string }
+  const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && Boolean(tag.trim())).map(tag => tag.trim()) : []
+  const rawTags = strings(payload.tags), characterTags = strings(payload.characterTags)
+  const copyrightTags = strings(payload.copyrightTags)
+  const artistTags = payload.mode === 'tag' ? strings(payload.styleTags).map(animaArtistTag) : []
   const { isCensorTag, characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
   if (!current()) return
   if (pb.isUnbound) {
-    const source = [...new Set([...rawTags, ...characterTags].map(tag => tag.trim()).filter(Boolean))]
+    // Older runtimes lack copyright predictions. Only use an explicit catalogue mapping as fallback.
+    const characterKeys = new Set(characterTags.map(normalizeKey))
+    const works = copyrightTags.length ? copyrightTags : [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
+      .filter(subject => subject.characterTokens?.some(tag => characterKeys.has(normalizeKey(tag))))
+      .flatMap(subject => subject.copyrightTokens ?? [])
+    const rating = ['general', 'sensitive', 'questionable', 'explicit']
+      .map(key => [key, payload.rating?.[key]] as const)
+      .filter((item): item is readonly [string, number] => typeof item[1] === 'number' && Number.isFinite(item[1]) && item[1] > 0 && item[1] <= 1)
+      .sort((a, b) => b[1] - a[1])[0]?.[0]
+    const source = [...new Set([...rawTags, ...characterTags, ...works, ...artistTags])]
     const tags = source.filter(tag => !isCensorTag(tag))
     const caption = payload.mode === 'caption' && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
     if (!tags.length && !caption) { pb.flash('未找到可采用的反推内容，请调整阈值后重试'); return }
+    if (payload.mode === 'tag' && rating) tags.unshift(rating === 'general' ? 'safe' : rating)
     // A new source picture owns the whole visual input; retire earlier scene and style choices.
     pb.clearScene({ keepStory: true })
     pb.setArtistStyleIds([])
     pb.sdParams.negativeCustom = ''
     pb.manualTags = new Set(tags)
-    pb.referenceInput = tags.length ? { tags: [...tags] } : null
+    pb.referenceInput = cloneReferenceInput({ tags, characterTokens: characterTags, copyrightTokens: works })
     pb.visualDescription = caption
     pb.concise = false
-    const filtered = source.length - tags.length
-    pb.flash(`已采用 ${tags.length} 个原图词条，保留人物、服装、人数与背景${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}`)
+    const filtered = source.filter(isCensorTag).length
+    pb.flash(`已采用 ${tags.length} 个原图词条，人物、作品、画师与服装已按提示词分段归位${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}`)
     if (payload.warning) setTimeout(() => { if (current()) pb.flash(payload.warning!) }, 2600)
     return
   }
@@ -43,7 +57,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   })
   // A free caption can mix identity with clothes and scenery. Only structured
   // tags enter the transferable layer; never overwrite the user's own prose.
-  if (!reference.tags.length) {
+  if (!reference.tags.length && !artistTags.length) {
     pb.flash('未找到可安全套用的非身份词条；人物特征与无法拆分的描述未写入，请核对后手动补充衣服、姿势或背景')
     return
   }
@@ -61,6 +75,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     : { kind: 'studio', charPrompt: pb.charPrompt })
   const priorReference = new Set((pb.referenceInput?.tags ?? []).map(normalizeKey))
   const userTags = new Set([...pb.manualTags].filter(tag => !priorReference.has(normalizeKey(tag))))
+  const referenceArtists = pb.artistStyleIds.length || [...userTags].some(tag => normalizeKey(tag).startsWith('@')) ? [] : artistTags
   // The new picture replaces the previous reference layer, never unrelated
   // explicit user edits. The target's identity is supplied only by its own data.
   const identityOnly = standaloneIdentityTokens(context.identityTokens)
@@ -93,7 +108,8 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     return !rejected.has(key) && (isGarmentToken(key) || mutualGroupWithCategory(key)?.category === 'outfit')
   }).map(normalizeKey) : []
   for (const tag of accepted) if (!referenceOutfit.includes(tag)) next.add(tag)
-  if (!accepted.size && !referenceOutfit.length) {
+  for (const tag of referenceArtists) next.add(tag)
+  if (!accepted.size && !referenceOutfit.length && !referenceArtists.length) {
     pb.flash('参考词条与现有设置重复或冲突，已保留当前手动设置')
     return
   }
@@ -122,8 +138,9 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const sourceTags = [...pb.manualTags].filter(tag => !userKeys.has(normalizeKey(tag)))
   pb.referenceInput = sourceTags.length ? { tags: sourceTags } : null
   const note = characterConflictNote(characterTags, context.identityTokens, context.aliases)
-  const parts = [`已采用 ${accepted.size + referenceOutfit.filter(tag => !accepted.has(tag)).length} 个参考词条，可连续切换角色；人物身份跟随目标角色`]
+  const parts = [`已采用 ${new Set([...accepted, ...referenceOutfit, ...referenceArtists]).size} 个参考词条，可连续切换角色；人物身份跟随目标角色`]
   if (referenceOutfit.length) parts.push('参考服装已独立保留')
+  if (referenceArtists.length) parts.push('反推画师已放入画师段')
   if (reference.excludedIdentity.length) parts.push(`已排除参考人物特征 ${reference.excludedIdentity.length} 项`)
   if (reference.uncertain.length) parts.push(`另有 ${reference.uncertain.length} 项描述无法可靠区分，未自动套用`)
   if (payload.mode === 'caption') parts.push('已采用结构化标签，原始散文未覆盖手写画面描述')

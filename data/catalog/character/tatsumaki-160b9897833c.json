@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tatsumaki",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "tatsumaki",
     "profile": {
@@ -112,6 +112,12 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "tatsumaki"
+      ],
+      "copyrightTokens": [
+        "one-punch_man"
       ]
     }
   }

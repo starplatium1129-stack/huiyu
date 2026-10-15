@@ -88,7 +88,7 @@ function collectTasks(opts: any, input: any) {
       lighting: d.lighting,
       composition: d.composition,
       style: resolveStyleRecipe(KREA_STYLE_RECIPES, 'anima', bp, null),
-      artist: 'rella',
+      artistTags: ['@rella'],
     } as any);
   }
   const tasks: any[] = [];
@@ -104,8 +104,7 @@ function collectTasks(opts: any, input: any) {
       } else if (have.has(entryId)) continue;
       const [w, h] = String(bp.recommendedSize || '832x1216').split('x').map(Number);
       const plan: any = buildPlan(character, bp);
-      let prompt = plan.prompt;
-      if (!prompt.includes('@rella')) prompt = `@rella, ${prompt}`;
+      const prompt = plan.prompt;
       const baseSeed = seedFor(entryId, 1);
       tasks.push({
         key: `popular:${character.id}:${bp.id}`,

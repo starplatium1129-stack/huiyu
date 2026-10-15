@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "albedo_overlord",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "albedo_overlord",
     "profile": {
@@ -128,6 +128,12 @@
         "cropped",
         "watermark",
         "fire, flames, burning ears"
+      ],
+      "characterTokens": [
+        "albedo_(overlord)"
+      ],
+      "copyrightTokens": [
+        "overlord"
       ]
     }
   }

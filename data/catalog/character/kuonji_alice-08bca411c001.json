@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuonji_alice",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "kuonji_alice",
     "profile": {
@@ -112,6 +112,12 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "kuonji_alice"
+      ],
+      "copyrightTokens": [
+        "mahou_tsukai_no_yoru"
       ]
     }
   }

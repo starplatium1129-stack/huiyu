@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuigahama_yui",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "yuigahama_yui",
     "profile": {
@@ -147,7 +147,13 @@
         "era": "当代",
         "formNotes": "橙粉发色团子头（side bun）；琥珀瞳；官方身材丰满；侍奉部成员；开朗天然、善察人意",
         "research": "2026-08-18 调研"
-      }
+      },
+      "characterTokens": [
+        "yuigahama_yui"
+      ],
+      "copyrightTokens": [
+        "oregairu"
+      ]
     }
   }
 }

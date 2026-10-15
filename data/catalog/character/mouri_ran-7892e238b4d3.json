@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mouri_ran",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "mouri_ran",
     "profile": {
@@ -112,6 +112,12 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "mouri_ran"
+      ],
+      "copyrightTokens": [
+        "meitantei_conan"
       ]
     }
   }

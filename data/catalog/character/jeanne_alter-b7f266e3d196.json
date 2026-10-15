@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_alter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "jeanne_alter",
     "profile": {
@@ -145,7 +145,13 @@
         "era": "当代+英灵",
         "formNotes": "银白短发；金色瞳；复仇者职阶；黑色战铠+龙之魔女披风+军旗；新宿篇皮夹克便服；水着黑色系带比基尼+武士刀；黑色高开叉晚礼服",
         "research": "2026-08-18 调研"
-      }
+      },
+      "characterTokens": [
+        "jeanne d'arc alter (fate)"
+      ],
+      "copyrightTokens": [
+        "fate/grand_order"
+      ]
     }
   }
 }

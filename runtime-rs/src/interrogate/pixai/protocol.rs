@@ -73,6 +73,8 @@ struct Response {
     tags: Option<Vec<String>>,
     scores: Option<BTreeMap<String, f64>>,
     character_tags: Option<Vec<String>>,
+    copyright_tags: Option<Vec<String>>,
+    style_tags: Option<Vec<String>>,
     rating: Option<BTreeMap<String, f64>>,
     meta: Option<Map<String, Value>>,
     code: Option<String>,
@@ -93,10 +95,14 @@ pub(super) fn response(value: Value, id: &str) -> Result<Value> {
     let tags = value.tags.ok_or_else(invalid)?;
     let scores = value.scores.ok_or_else(invalid)?;
     let characters = value.character_tags.ok_or_else(invalid)?;
+    let copyrights = value.copyright_tags.ok_or_else(invalid)?;
+    let styles = value.style_tags.ok_or_else(invalid)?;
     let rating = value.rating.ok_or_else(invalid)?;
     let meta = value.meta.ok_or_else(invalid)?;
     if !valid_tags(&tags)
         || !valid_tags(&characters)
+        || !valid_tags(&copyrights)
+        || !valid_tags(&styles)
         || scores.len() != tags.len()
         || !tags.iter().all(|t| scores.contains_key(t))
         || !scores
@@ -114,6 +120,7 @@ pub(super) fn response(value: Value, id: &str) -> Result<Value> {
     Ok(json!({
         "ok":true, "engine":"pixai", "model":MODEL,
         "tags":tags, "scores":scores, "characterTags":characters,
+        "copyrightTags":copyrights, "styleTags":styles,
         "rating":rating, "meta":meta
     }))
 }

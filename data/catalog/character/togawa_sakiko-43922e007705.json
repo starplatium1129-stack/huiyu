@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togawa_sakiko",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "togawa_sakiko",
     "profile": {
@@ -113,6 +113,13 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "togawa_sakiko",
+        "Sakiko Togawa"
+      ],
+      "copyrightTokens": [
+        "bang_dream!"
       ]
     }
   }

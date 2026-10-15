@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_mikan_kitchen_cooking_assist",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1225,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "action": "双手握菜刀在砧板前极其认真精准切胡萝卜丝，神态专注如临大敌，脸颊微红",
     "camera": "medium close-up, eye-level, hands and cutting board visible",
@@ -47,6 +47,9 @@
       "two_girls"
     ],
     "timeOfDay": "傍晚",
-    "title": "小暗 · 结城家厨房的切菜修行"
+    "title": "小暗 · 结城家厨房的切菜修行",
+    "characterTokens": [
+      "Mikan Yuuki"
+    ]
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medusa_rider",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "medusa_rider",
     "profile": {
@@ -111,6 +111,12 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "medusa_(fate)"
+      ],
+      "copyrightTokens": [
+        "fate/stay_night"
       ]
     }
   }

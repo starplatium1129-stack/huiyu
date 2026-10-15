@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fern_frieren",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "fern_frieren",
     "profile": {
@@ -150,7 +150,13 @@
         "era": "中世纪风",
         "formNotes": "紫色长发低侧马尾；紫瞳；身材丰满；第一阶魔法使白袍；性格冷静、毒舌、爱睡懒觉",
         "research": "2026-08-18 调研"
-      }
+      },
+      "characterTokens": [
+        "fern (sousou no frieren)"
+      ],
+      "copyrightTokens": [
+        "sousou_no_frieren"
+      ]
     }
   }
 }

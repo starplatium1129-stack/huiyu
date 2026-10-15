@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuzuriha_inori",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "yuzuriha_inori",
     "profile": {
@@ -142,7 +142,13 @@
         "formNotes": "下双马尾+红发夹；歌姬红装/白裙/虚空剑；主剧情 2039",
         "research": "2026-08-14 调研"
       },
-      "animeStudio": "production i.g, redjuice, official anime screencap"
+      "animeStudio": "production i.g, redjuice, official anime screencap",
+      "characterTokens": [
+        "yuzuriha_inori"
+      ],
+      "copyrightTokens": [
+        "guilty crown"
+      ]
     }
   }
 }

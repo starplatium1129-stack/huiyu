@@ -6,7 +6,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
 /**
  * Generate a fresh, isolated candidate for every current preset scene.
  *
- * Single-character scenes use the audited sc300-style short prompt contract.
+ * Single-character scenes use the production Anima prompt compiler.
  * The six dual-character scenes reuse the production WAI dual-LoRA path because
  * the Anima route intentionally supports only one character LoRA. Nothing is
  * written into SceneShowcase.
@@ -24,7 +24,6 @@ const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = 
 const generationConstants: any = (require('../lib/generation/sd-catalog.js') as typeof import('../lib/generation/sd-catalog.js'));
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
 const animaGenerationContract: typeof import('../lib/generation/anima-generation-contract.js') = require('../lib/generation/anima-generation-contract.js');
-const { buildShortPrompt }: typeof import('./short-prompt-builder.js') = require('./short-prompt-builder.js');
 
 type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -142,16 +141,26 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
   if (!loraId) throw new Error(`scene ${scene.id} has unsupported Anima character ${characterId}`);
   const profile: any = animaProfileFor(loraId);
   const directives = inferredDirectives(scene);
-  const built = buildShortPrompt(scene, characterId);
-  if (!built.health.ok) {
-    throw new Error(`scene ${scene.id} short prompt failed: ${built.health.errors.join('; ')}`);
-  }
+  const scenePrompt = promptPolicy.sceneTemplateText(scene, {
+    char: characterId, shot: directives.shot, engine: 'anima', profile,
+  });
+  const prompt = promptCompiler.renderPromptPlan(promptCompiler.createPromptPlan({
+    profile,
+    identity: promptConstants.CHAR_PROMPT[characterId],
+    ...promptConstants.STUDIO_PROMPT_SUBJECTS[characterId],
+    controls: promptPolicy.characterControlTokens(scene, characterId, ANIMA_LORA_BY_CHARACTER),
+    exactTokens: profile.exact_tokens,
+    scenePrompt,
+    scene,
+    artists: ['@muririn', '@kobuichi'],
+    camera: directives.cameraPrompt ? [directives.cameraPrompt] : [],
+    lighting: directives.lightingPrompt ? [directives.lightingPrompt] : [],
+    composition: directives.compositionPrompt ? [directives.compositionPrompt] : [],
+    rating: promptPolicy.profileRatingTag(profile, scene),
+  }), 'anima', profile).prompt;
   const directorCaption = typeof scene.animaCaption === 'string'
     ? scene.animaCaption.trim()
     : '';
-  const prompt = directorCaption
-    ? `${built.prompt}\n${directorCaption}`
-    : built.prompt;
   const generationCharacter = animaGenerationContract.requiredCharacterForLora(loraId);
   if (!generationCharacter) throw new Error(`scene ${scene.id} has unsupported Anima LoRA ${loraId}`);
   let negative = promptPolicy.assembleNegative(profile, scene, 'anima', {
@@ -184,7 +193,6 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
     scheduler: animaConstants.MODELS[ANIMA_MODEL_ID].scheduler,
     seed: stableSeed(scene.id, seedAttempt), prompt, negative,
     seedAttempt,
-    promptHealth: built.health,
     animaCaption: directorCaption,
     sourcePrompt: scene.prompt || '', sourceNegative: scene.negative || '',
     inferred: directives,
@@ -287,7 +295,6 @@ function applyBaselineContract(candidate: any, baseline: any) {
     seed: baseline.seed,
     seedAttempt: baseline.attempt,
     prompt,
-    promptHealth: candidate.promptHealth,
     animaCaption: candidate.animaCaption,
     generationCharacter: baselineGenerationCharacter,
     negative: baseline.negative,

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "takarada_rikka",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 120,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "takarada_rikka",
     "profile": {
@@ -110,6 +110,13 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "takarada_rikka",
+        "Rikka Takarada"
+      ],
+      "copyrightTokens": [
+        "ssss.gridman"
       ]
     }
   }

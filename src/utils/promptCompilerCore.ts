@@ -11,10 +11,12 @@ import {
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
 import { authoredAnimaCaption } from './promptCaption.ts'
+import { orderedAnimaTags } from './animaPromptOrder.ts'
 import { proseToken, normalizeProseKey, actionPhrase, outfitPhrase, moodPhrase, compactMood, cameraPhrase, lightPhrase, animaLightPhrase, environmentPhrase, isEnvironmentKey, removeIndoorSkyPhrases } from './promptPhraseTables.ts'
 
 export interface PromptCompilerInput {
   profile?: ModelProfile | null; identity?: string; controls?: string[]; scenePrompt?: string
+  characterTokens?: string[]; copyrightTokens?: string[]
   artists?: string[]; artistProse?: string
   exactTokens?: string[]
   emotion?: string[]; camera?: string[]; lighting?: string[]; palette?: string[]; composition?: string[]
@@ -423,6 +425,7 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
   return {
     quality: split(input.profile?.quality_prefix), rating: input.rating ? [input.rating] : [],
     identity: split(input.identity), exactControls: [...new Set(input.controls || [])],
+    characterTokens: [...new Set(input.characterTokens || [])], copyrightTokens: [...new Set(input.copyrightTokens || [])],
     artists: [...new Set(input.artists || [])],
     preserveTokens: [...new Set(input.exactTokens || [])],
     sceneVisualFragments: split(input.scenePrompt), emotion: [...(input.emotion || [])],
@@ -486,14 +489,10 @@ export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile
     }
     return { prompt: buildStructuredKreaDescription(proseSafe), negative: '' }
   }
-  let tags = allTags(plan)
+  const tags = allTags(plan)
   if (capabilities.promptFormat === 'anima-tags') {
-    // Anima Aesthetic：正层全部去掉质量词与 score 词。
-    if (profile?.strip_quality_tokens === true) {
-      tags = tags.filter(token => !QUALITY_OR_SCORE_RE.test(String(token || '').trim()))
-    }
     const formatted = formatPromptForEngine(
-      tags.join(', '),
+      orderedAnimaTags(plan, tags, profile?.strip_quality_tokens === true),
       'anima',
       plan.preserveTokens.concat(profile?.exact_tokens || []),
       profile?.exact_prefixes || [],

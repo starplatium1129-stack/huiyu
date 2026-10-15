@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mahiru",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "shiina_mahiru",
     "profile": {
@@ -128,6 +128,13 @@
         "cropped",
         "watermark",
         "fire, flames, burning ears"
+      ],
+      "characterTokens": [
+        "shiina_mahiru",
+        "Mahiru Shiina"
+      ],
+      "copyrightTokens": [
+        "otonari no tenshi-sama ni itsunomanika dame ningen ni sareteita ken"
       ]
     }
   }

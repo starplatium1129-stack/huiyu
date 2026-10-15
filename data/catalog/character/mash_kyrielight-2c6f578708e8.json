@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mash_kyrielight",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "mash_kyrielight",
     "profile": {
@@ -145,6 +145,13 @@
         "takeuchi_takashi",
         "lack",
         "rella"
+      ],
+      "characterTokens": [
+        "mash_kyrielight",
+        "adult Mash"
+      ],
+      "copyrightTokens": [
+        "fgo"
       ]
     }
   }

@@ -1,14 +1,16 @@
 import { computed, type Ref } from 'vue'
 import type { PromptAssemblyState } from './usePromptAssembly'
-import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstants'
+import type { PopularPromptAssemblyState } from './usePopularPromptAssembly'
+import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
-import { analyzeParts, checkArtDirection, mergeTokenText, type PromptEngine } from '@/utils/promptPolicy'
+import { analyzeParts, checkArtDirection, mergeTokenText, normalizeKey, tokenize, type PromptEngine } from '@/utils/promptPolicy'
 import { escapeKnownLiteralTags } from '@/utils/promptLiteralTags'
+import { createPromptPlan, renderPromptPlan } from '@/utils/promptCompiler'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import type { ModelProfile } from '@/utils/promptPolicy'
 
 /** Free subjects use model quality defaults without adding character, rating or scene defaults. */
-export function useUnboundPromptAssembly(pb: PromptAssemblyState, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>) {
+export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularPromptAssemblyState, 'popularCharacters'>, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>) {
   const positivePrompt = computed(() => {
     const family = engine.value
     const artists = pb.directorMode === 'pro' ? pb.artistStyleIds : []
@@ -29,7 +31,21 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState, engine: Readon
       if (!tags && !description && !styleTags.length) return ''
       // User tokens come first so explicit weights survive deduplication.
       tags = mergeTokenText(tags, ...styleTags, profile.value?.quality_prefix || '')
-      if (family === 'anima') tags = escapeKnownLiteralTags(tags, [...pb.manualTags])
+      if (family === 'anima') {
+        const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
+        const tagKeys = new Set(tokenize(tags).map(tag => normalizeKey(tag.replace(/\\([()])/g, '$1'))))
+        const plan = createPromptPlan({
+          profile: profile.value, scenePrompt: tags, sceneProse: description, artists: styleTags,
+          characterTokens: [...subjects.flatMap(subject => subject.characterTokens || []), ...(pb.referenceInput?.characterTokens ?? [])],
+          // Free subjects only order explicitly entered works; never add catalogue defaults.
+          copyrightTokens: [...subjects.flatMap(subject => subject.copyrightTokens || []), ...(pb.referenceInput?.copyrightTokens ?? [])]
+            .filter(tag => tagKeys.has(normalizeKey(tag.replace(/\\([()])/g, '$1')))),
+        })
+        const qualityKeys = new Set(plan.quality.map(normalizeKey))
+        plan.quality = tokenize(tags).filter(tag => qualityKeys.has(normalizeKey(tag)))
+        const [tagLine, ...caption] = renderPromptPlan(plan, 'anima', profile.value).prompt.split('\n')
+        return [escapeKnownLiteralTags(tagLine, [...pb.manualTags]), ...caption].join('\n')
+      }
     }
     return [tags, description, family === 'krea2' ? artistStyleProse(artists, family) : ''].filter(Boolean).join('\n')
   })

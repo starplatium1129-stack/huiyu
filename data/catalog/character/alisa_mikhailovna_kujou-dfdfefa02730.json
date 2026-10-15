@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alisa_mikhailovna_kujou",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "alisa_mikhailovna_kujou",
     "profile": {
@@ -139,7 +139,13 @@
         "era": "当代",
         "formNotes": "银发蓝瞳混血美少女，半双马尾系蓝色发带；表面高冷孤高，私下傲娇羞涩",
         "research": "2026-08-18 调研"
-      }
+      },
+      "characterTokens": [
+        "alisa_mikhailovna_kujou"
+      ],
+      "copyrightTokens": [
+        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san"
+      ]
     }
   }
 }

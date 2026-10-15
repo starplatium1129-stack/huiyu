@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayasaka_ai",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "hayasaka_ai",
     "profile": {
@@ -109,7 +109,13 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "hayasaka_ai"
+      ],
+      "copyrightTokens": [
+        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~"
+      ]
     }
   }
 }

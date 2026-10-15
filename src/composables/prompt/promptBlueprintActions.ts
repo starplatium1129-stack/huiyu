@@ -7,7 +7,7 @@ import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '@/config/prom
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
-import { isSDParamKey, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { cloneReferenceInput, isSDParamKey, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit, type SceneBlueprint } from '@/utils/popularContent'
 import type { DrawEngine } from '@/storage/settingsRepository'
 
@@ -145,7 +145,7 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   }
   pb.setColorMood(selection(draft.colorMood, COLOR_MOOD_IDS))
   pb.manualTags = new Set(stringList(draft.manualTags))
-  pb.referenceInput = draft.referenceInput ? { tags: [...draft.referenceInput.tags] } : null
+  pb.referenceInput = cloneReferenceInput(draft.referenceInput)
   pb.setArtistStyleIds(draft.artistStyleIds || [])
   if (draft.projectId !== undefined) pb.projectId = draft.projectId
 
@@ -253,7 +253,7 @@ function parseOutfitOverride(value: unknown): DraftOutfitOverride | null {
 function parseReferenceInput(value: unknown): DraftReferenceInput | null {
   if (!draftRecord(value)) return null
   const tags = [...new Set(draftStrings(value.tags).map(tag => tag.trim()).filter(Boolean))]
-  return tags.length ? { tags } : null
+  return cloneReferenceInput({ tags, characterTokens: draftStrings(value.characterTokens), copyrightTokens: draftStrings(value.copyrightTokens) })
 }
 
 function parseRandomVariation(value: unknown): DraftRandomVariation | null {
@@ -391,7 +391,7 @@ export function restorePromptDraft(state: PromptDraftState, raw: string): boolea
 
   function applySharedDraft(d: PromptBuilderDraft) {
     if (d.manualTags) manualTags.value = new Set(d.manualTags)
-    referenceInput.value = d.referenceInput ? { tags: [...d.referenceInput.tags] } : null
+    referenceInput.value = cloneReferenceInput(d.referenceInput)
     artistStyleIds.value = normalizeArtistStyleIds(d.artistStyleIds)
     if (d.directorMode) directorMode.value = d.directorMode
     if (d.sdParams) Object.assign(sdParams, d.sdParams)

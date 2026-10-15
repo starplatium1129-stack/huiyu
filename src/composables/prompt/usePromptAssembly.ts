@@ -29,7 +29,7 @@ import {
   type PromptEngine,
   type PromptPart,
 } from '@/utils/promptPolicy'
-import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION } from '@/config/promptConstants'
+import { COLOR_MOODS, LIGHTING, SHOT, COMPOSITION, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 import { createPromptPlan, plainEnglish, renderPromptPlan } from '@/utils/promptCompiler'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
@@ -38,7 +38,7 @@ import { studioDualSubject } from '@/utils/studioDualSubject'
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
   | 'colorMood' | 'concise' | 'directorMode' | 'emotionPrompt' | 'loraMeta' | 'manualTags' | 'modelProfiles' | 'randomVariation'
-  | 'sdModelName' | 'sdParams' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject'>
+  | 'sdModelName' | 'sdParams' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject' | 'referenceInput'>
 
 function studioSubjectProse(character: string): string {
   if (character === 'nene') {
@@ -315,6 +315,7 @@ export function usePromptAssembly(
   const structuredPlan = computed(() => createPromptPlan({
     profile: modelProfile.value,
     identity: pb.charPrompt,
+    ...STUDIO_PROMPT_SUBJECTS[pb.char],
     controls: characterControlTokens(effectiveScene.value, pb.char, controlLoraIds.value),
     artists: artistTags.value,
     artistProse: artistProse.value,

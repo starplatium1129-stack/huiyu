@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kama_fate",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "kama_fate",
     "profile": {
@@ -117,6 +117,13 @@
         "horns",
         "2girls",
         "1boy"
+      ],
+      "characterTokens": [
+        "kama_(fate)",
+        "adult Kama"
+      ],
+      "copyrightTokens": [
+        "fate/grand_order"
       ]
     }
   }

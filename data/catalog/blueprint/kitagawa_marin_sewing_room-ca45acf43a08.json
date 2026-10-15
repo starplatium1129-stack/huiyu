@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_sewing_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 494,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "action": "身着高中辣妹制服（解开两颗扣子），双手微张配合量身，脸颊泛红，眼神中满是期待与娇羞",
     "camera": "medium shot, arms slightly spread for a fitting with a measuring tape",
@@ -42,6 +42,9 @@
     ],
     "timeOfDay": "午后",
     "title": "喜多川海梦 · 制衣工坊·量体裁衣的绯红",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "characterTokens": [
+      "Gojo"
+    ]
   }
 }

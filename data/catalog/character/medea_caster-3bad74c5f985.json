@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medea_caster",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "medea_caster",
     "profile": {
@@ -112,6 +112,12 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "medea_(caster)_(fate)"
+      ],
+      "copyrightTokens": [
+        "fate/stay night"
       ]
     }
   }

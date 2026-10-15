@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "artoria_pendragon",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "artoria_pendragon",
     "profile": {
@@ -146,6 +146,13 @@
         "takeuchi_takashi",
         "rella",
         "so-bin"
+      ],
+      "characterTokens": [
+        "artoria pendragon (fate)",
+        "artoria_pendragon (fate)"
+      ],
+      "copyrightTokens": [
+        "fate/stay_night"
       ]
     }
   }

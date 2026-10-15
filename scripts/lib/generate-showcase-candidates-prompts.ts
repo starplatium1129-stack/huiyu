@@ -7,6 +7,7 @@ const popularContent: typeof import('../../src/utils/popularContent.ts') = requi
 const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
 const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
 const { artistStyleProse, artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
+const { STUDIO_PROMPT_SUBJECTS }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
 const genConst: any = (require('./generation/sd-catalog.js') as typeof import('./generation/sd-catalog.js'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
 const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
@@ -142,15 +143,14 @@ function buildStudioPrompt({ engine, characterId, composition, loraId, override 
   const plan = createPromptPlan({
     profile,
     identity: charPrompt,
+    ...STUDIO_PROMPT_SUBJECTS[characterId],
     controls,
     camera,
+    manual: override?.promptAppend || [],
     rating: profileRatingTag(profile, scene),
   });
   const rendered = renderPromptPlan(plan, 'anima', profile);
-  let prompt = rendered.prompt;
-  if (override && override.promptAppend) {
-    prompt = `${prompt}, ${formatPromptForEngine(override.promptAppend.join(', '), 'anima', profile.exact_tokens, profile.exact_prefixes)}`;
-  }
+  const prompt = rendered.prompt;
   let negative = assembleNegative(profile, scene, 'anima', { shot: closeup ? 'close' : 'wide' });
   negative = appendNegative(negative, override && override.negativeAppend, 'anima', profile);
   return { prompt, negative };
@@ -174,12 +174,10 @@ function buildPopularPrompt(
     shot: decisions.shot,
     lighting: decisions.lighting,
     composition: decisions.composition,
+    manual: override?.promptAppend || [],
   });
   if (!result) throw new Error(`popular prompt build failed for ${character.id}`);
-  let prompt = result.prompt;
-  if (override && override.promptAppend) {
-    prompt = `${prompt}, ${formatPromptForEngine(override.promptAppend.join(', '), 'anima', profile && profile.exact_tokens, profile && profile.exact_prefixes)}`;
-  }
+  const prompt = result.prompt;
   let negative = result.negative;
   negative = appendNegative(negative, override && override.negativeAppend, 'anima', profile);
   return { prompt, negative, outfit, decisions };

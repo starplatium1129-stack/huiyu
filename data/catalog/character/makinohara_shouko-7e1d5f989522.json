@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makinohara_shouko",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "makinohara_shouko",
     "profile": {
@@ -112,6 +112,13 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "makinohara_shouko",
+        "adult Shouko"
+      ],
+      "copyrightTokens": [
+        "seishun_buta_yarou"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tokisaki_kurumi",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "tokisaki_kurumi",
     "profile": {
@@ -143,6 +143,14 @@
         "tsunako",
         "rella",
         "swav"
+      ],
+      "characterTokens": [
+        "tokisaki_kurumi",
+        "Kurumi",
+        "adult Kurumi"
+      ],
+      "copyrightTokens": [
+        "date a live"
       ]
     }
   }

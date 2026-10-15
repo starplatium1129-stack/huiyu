@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_festival_yukata_bench_lean",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1496,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "yamada_festival_yukata_bench_lean",
     "title": "山田杏奈 · 夏日祭典木屐磨脚的长椅依靠·「木屐带子磨得脚好痛……市川，能让我靠一会儿吗」",
@@ -50,6 +50,9 @@
       "daily",
       "date"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "characterTokens": [
+      "Ichikawa"
+    ]
   }
 }

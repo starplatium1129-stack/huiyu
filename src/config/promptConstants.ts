@@ -9,6 +9,13 @@ export const CHAR_PROMPT: Record<string, string> = {
   triad: '2girls',
 }
 
+/** Anima section metadata. Names classify existing tokens; works have their own output section. */
+export const STUDIO_PROMPT_SUBJECTS: Record<string, { characterTokens: string[]; copyrightTokens: string[] }> = {
+  nene: { characterTokens: ['ayachi_nene'], copyrightTokens: ['sanoba_witch'] },
+  natsume: { characterTokens: ['shiki_natsume'], copyrightTokens: ['cafe_stella_to_shinigami_no_chou'] },
+  triad: { characterTokens: ['ayachi_nene', 'shiki_natsume'], copyrightTokens: ['sanoba_witch', 'cafe_stella_to_shinigami_no_chou'] },
+}
+
 export interface ChoiceDef { id: string; iconName: ArchiveIconName; name: string; en: string; prompt?: string }
 export interface ColorMoodDef { id: string; iconName: ArchiveIconName; name: string; en: string; colors: string[]; desc: string; prompt: string }
 /** 带单色矢量图标的选项（ArchiveIcon 名），替代彩色 Emoji 的 UI 展示 */

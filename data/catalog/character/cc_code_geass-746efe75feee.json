@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cc_code_geass",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "cc_code_geass",
     "profile": {
@@ -143,7 +143,14 @@
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "c.c._(code_geass)",
+        "c.c."
+      ],
+      "copyrightTokens": [
+        "code_geass"
+      ]
     }
   }
 }

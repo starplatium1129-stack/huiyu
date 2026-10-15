@@ -9,6 +9,9 @@ export interface InterrogateResult {
   caption: string
   captionDerived?: 'pixai-tags'
   characterTags: string[]
+  copyrightTags: string[]
+  /** PixAI artist-style predictions, kept separate from general visual tags. */
+  styleTags: string[]
   rating: Record<'general' | 'sensitive' | 'questionable' | 'explicit', number>
   warning?: string
 }
@@ -37,12 +40,15 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
   const scores = record(data?.scores)
   const rating = record(data?.rating)
   const characterTags = data?.characterTags
+  // Older installed runtimes omit these categories; keep their original result usable.
+  const copyrightTags = data?.copyrightTags === undefined ? [] : data.copyrightTags
+  const styleTags = data?.styleTags === undefined ? [] : data.styleTags
   if (!data || data.engine !== 'pixai' || data.model !== 'pixai-tagger-v1.0'
     || data.mode !== mode || !probability(data.threshold)
-    || !tags(data.tags, 100) || !tags(characterTags)
+    || !tags(data.tags, 100) || !tags(characterTags, 100) || !tags(copyrightTags, 100) || !tags(styleTags, 100)
     || typeof data.caption !== 'string' || !scores || !rating
     || Object.values(scores).some(score => !probability(score))
-    || data.tags.some(tag => !probability(scores[tag]) || characterTags.includes(tag))
+    || data.tags.some(tag => !probability(scores[tag]) || characterTags.includes(tag) || copyrightTags.includes(tag) || styleTags.includes(tag))
     || !probability(rating.general) || !probability(rating.sensitive)
     || !probability(rating.questionable) || !probability(rating.explicit)
     || (data.captionDerived !== undefined && data.captionDerived !== 'pixai-tags')
@@ -53,6 +59,7 @@ export function decodeInterrogateResult(value: unknown, mode: InterrogateMode): 
     engine: 'pixai', model: 'pixai-tagger-v1.0', mode, threshold: data.threshold,
     tags: [...data.tags], scores: { ...scores } as Record<string, number>,
     characterTags: [...characterTags], caption: data.caption,
+    copyrightTags: [...copyrightTags], styleTags: [...styleTags],
     rating: { general: rating.general, sensitive: rating.sensitive,
       questionable: rating.questionable, explicit: rating.explicit },
     ...(data.captionDerived === 'pixai-tags' ? { captionDerived: 'pixai-tags' as const } : {}),

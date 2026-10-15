@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ryougi_shiki",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "ryougi_shiki",
     "profile": {
@@ -147,7 +147,13 @@
         "anima-aesthetic-v1.1",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "ryougi_shiki"
+      ],
+      "copyrightTokens": [
+        "kara no kyoukai"
+      ]
     }
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -123,7 +123,15 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "typhon_(arknights)",
+        "typhon (arknights)",
+        "Typhon"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ]
     },
     "creationEvidence": {
       "source": "git-first-added",

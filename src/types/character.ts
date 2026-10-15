@@ -16,6 +16,10 @@ export interface PopularCharacter {
   aliases: string[]
   identityProse: string
   identityTokens: string[]
+  /** Explicit name/alias classification; does not inject additional names. */
+  characterTokens?: string[]
+  /** Model work tags, independent of the display-only franchise group. */
+  copyrightTokens?: string[]
   exactTokens: string[]
   exactPrefixes: string[]
   recommendedEngine: string

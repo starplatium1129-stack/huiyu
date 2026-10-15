@@ -1,7 +1,7 @@
 import { sceneStyleBaseline } from '@/utils/randomVariationContext'
 import { profileLocalStorage as localStorage, profileRuntimeActive } from '../../platform/web/profileStorage.ts'
 import { onScopeDispose, ref, watch, type Ref, type ComputedRef } from 'vue'
-import type { DraftOutfitOverride, DraftReferenceInput, DraftRandomVariation, PromptBuilderDraft, SDParams } from '@/utils/promptBuilderPersistence'
+import { cloneReferenceInput, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { tempResultOwner, sameTempResultOwner } from '@/utils/tempResult'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
@@ -95,7 +95,7 @@ export function usePromptDraft(state: PromptDraftState) {
       outfitOverride: subject.value.kind === 'popular' && outfitOverride.value
         ? { tokens: [...outfitOverride.value.tokens], replaced: outfitOverride.value.replaced }
         : null,
-      referenceInput: referenceInput.value ? { tags: [...referenceInput.value.tags] } : null,
+      referenceInput: cloneReferenceInput(referenceInput.value),
       artistStyleIds: [...artistStyleIds.value],
       sceneBaseStory: sceneBaseStory.value,
       directorMode: directorMode.value,

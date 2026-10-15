@@ -9,6 +9,8 @@ export interface SceneBlueprint {
   /** Explicit SFW timeline appearance; does not change the character ID. */
   identityTokensOverride?: string[]
   identityProseOverride?: string
+  /** Names of additional people already present in this scene's tags; classification only. */
+  characterTokens?: string[]
   id: string
   title: string
   category: string

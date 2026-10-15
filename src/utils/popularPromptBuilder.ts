@@ -319,6 +319,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const plan = createPromptPlan({
     profile,
     identity: compositionTokens(identityTokens, blueprint).join(', '),
+    characterTokens: [...(character.characterTokens || []), ...(blueprint?.characterTokens || []), ...exactIdentity],
+    copyrightTokens: character.copyrightTokens,
     controls: compositionTokens(exactControls, blueprint),
     artists: effectiveArtists,
     exactTokens: compositionTokens(exactIdentity, blueprint),

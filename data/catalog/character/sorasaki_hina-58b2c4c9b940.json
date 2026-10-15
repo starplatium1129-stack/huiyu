@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sorasaki_hina",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "sorasaki_hina",
     "profile": {
@@ -174,7 +174,14 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "hina (blue archive)",
+        "Hina"
+      ],
+      "copyrightTokens": [
+        "blue archive"
+      ]
     }
   }
 }

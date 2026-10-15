@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kitagawa_marin",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "kitagawa_marin",
     "profile": {
@@ -143,7 +143,15 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "kitagawa_marin",
+        "Marin",
+        "adult Marin"
+      ],
+      "copyrightTokens": [
+        "sono_bisque_doll_wa_koi_wo_suru"
+      ]
     }
   }
 }

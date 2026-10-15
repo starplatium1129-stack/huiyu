@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fiona_frost",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 161,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "fiona_frost",
     "profile": {
@@ -129,7 +129,13 @@
         "era": "冷战东欧架空",
         "formNotes": "白色齐尾短发（漫画为薰衣草紫），右侧长刘海遮住右半脸，深灰瞳（漫画紫），浅色睫毛；面无表情扑克脸与狂热暗恋的反差；深蓝双排扣大衣＋紫色高领毛衣、医院事务员制服、地下网球赛运动装",
         "research": "2026-09 调研"
-      }
+      },
+      "characterTokens": [
+        "fiona_frost"
+      ],
+      "copyrightTokens": [
+        "spy_x_family"
+      ]
     }
   }
 }

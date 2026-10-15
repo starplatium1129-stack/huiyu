@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_festival_yukata_apple_candy",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1269,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "action": "单手举着红亮苹果糖递向对方喂食，脸颊微红露出小虎牙，爱心尾巴欢快甩动",
     "camera": "medium close-up, cowboy framing, charming festival eye-level",
@@ -46,6 +46,9 @@
     "title": "娜娜 · 夏夜祭典的红彤苹果糖",
     "compositionIntent": "group",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "characterTokens": [
+      "yuuki rito"
+    ]
   }
 }

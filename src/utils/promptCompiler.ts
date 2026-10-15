@@ -28,6 +28,6 @@ export function renderPromptPlan(plan: PromptPlan, family: PromptFamily, profile
   const caption = newline < 0 ? '' : rendered.prompt.slice(newline)
   return {
     ...rendered,
-    prompt: escapeKnownLiteralTags(tags, [...plan.identity, ...exact]) + caption,
+    prompt: escapeKnownLiteralTags(tags, [...plan.identity, ...plan.characterTokens, ...plan.copyrightTokens, ...exact]) + caption,
   }
 }

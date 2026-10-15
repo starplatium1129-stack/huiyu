@@ -34,6 +34,8 @@ fn one_character(value: &Value) -> std::result::Result<Option<Value>, String> {
         &mut output,
         &[
             "identityTokens",
+            "characterTokens",
+            "copyrightTokens",
             "exactTokens",
             "exactPrefixes",
             "aliases",
@@ -148,7 +150,7 @@ fn one_blueprint(value: &Value) -> std::result::Result<Option<Value>, String> {
     copy_strings(
         value,
         &mut output,
-        &["sceneTags", "promptTokens", "coverageTags"],
+        &["sceneTags", "promptTokens", "coverageTags", "characterTokens"],
     );
     if list(&output["promptTokens"]).is_empty() {
         return Err("popular data: promptTokens must be a non-empty string array".into());

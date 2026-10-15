@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suou_yuki",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "suou_yuki",
     "profile": {
@@ -111,6 +111,13 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "suou_yuki",
+        "Yuki"
+      ],
+      "copyrightTokens": [
+        "tokidoki bosotto roshia-go de dereru tonari no alya-san"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "changli_wuthering",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 142,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T09:41:32.865814+00:00",
   "data": {
     "id": "changli_wuthering",
     "profile": {
@@ -113,6 +113,12 @@
         "nude",
         "underwear",
         "see-through"
+      ],
+      "characterTokens": [
+        "changli_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
       ]
     }
   }

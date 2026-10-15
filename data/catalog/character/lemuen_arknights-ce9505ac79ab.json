@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lemuen_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
   "data": {
     "id": "lemuen_arknights",
     "profile": {
@@ -135,7 +135,14 @@
         "anima-miaomiao-v1.2",
         "krea2-turbo-fp8"
       ],
-      "recommendedEngine": "anima-miaomiao-v1.6"
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "lemuen (arknights)",
+        "adult Lemuen"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ]
     }
   }
 }
