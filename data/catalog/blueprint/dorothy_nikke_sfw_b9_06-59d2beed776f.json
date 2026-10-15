@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1732,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_06",
     "title": "桃乐丝 · 旧照片的指尖",
@@ -30,16 +30,16 @@
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "Dorothy sits at her bedroom's drawer unit holding an old photograph above her knees, one fingertip hovering without touching its surface. Her pale-rose cardigan and navy trousers stay ordinary as her practiced smile fades briefly, then returns when she puts the picture away. The medium portrait keeps drawer and bed edge together. Lamplight warms pink hair and worn paper, with deep drawer shadows holding the private keepsakes beyond view.",
+    "promptProse": "She studies an old photograph with a fingertip hovering above it, then returns it to the drawer. Lamplight reaches the worn paper.",
     "promptTokens": [
       "dorothy_(nikke)",
-      "Dorothy",
+      "bedroom",
       "rose cardigan",
-      "navy trousers",
-      "old photograph",
+      "navy pants",
+      "photograph",
       "open drawer",
-      "lamplight",
-      "medium shot"
+      "sitting",
+      "lamplight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

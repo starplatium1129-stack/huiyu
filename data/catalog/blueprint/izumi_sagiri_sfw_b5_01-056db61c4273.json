@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1523,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_01",
     "title": "和泉纱雾 · 被炉绘图舱",
@@ -30,14 +30,14 @@
       "blue_eyes",
       "horizontal_composition"
     ],
-    "promptProse": "Sagiri Izumi sits tucked deeply into the kotatsu, only her head and stylus hand emerging beneath the blanket. A drawing tablet and monitor stand on the tabletop, her headset catching loose silver hair. The horizontal medium view includes her pink hoodie at the neck and the darkened room beyond the work area. Screen light illuminates her focused eyes, pen tip and blanket rim, leaving the surrounding furniture mostly in darkness.",
+    "promptProse": "Sagiri sits tucked into the kotatsu with her stylus hand above the blanket, concentrating on the drawing tablet in the monitor glow.",
     "promptTokens": [
-      "Sagiri Izumi",
-      "pink hoodie",
-      "drawing headset",
-      "stylus",
       "kotatsu",
-      "monitor light",
+      "stylus",
+      "drawing tablet",
+      "headset",
+      "computer",
+      "screen light",
       "medium shot"
     ],
     "negativeTokens": [],

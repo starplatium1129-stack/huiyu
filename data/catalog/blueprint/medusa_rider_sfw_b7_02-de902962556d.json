@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 278,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_02",
     "title": "美杜莎 Rider · 单车篮里的鲜面包",
@@ -30,20 +30,17 @@
       "morning",
       "medium_shot"
     ],
-    "promptProse": "Medusa ties a cloth strap around the bakery bag in her parked bicycle's front basket, testing the knot before lifting calm violet eyes toward the empty street. Her beige coat covers a black turtleneck and dark trousers; long purple hair is gathered forward clear of the wheels. The medium view includes basket and handlebars along the street perspective. Soft morning light catches the weave and knot, with gentle bag shadows inside the basket.",
+    "promptProse": "Medusa secures the bread bag in the bicycle basket with a cloth strap and checks its knot before looking up.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medusa",
-      "beige lightweight coat",
-      "black turtleneck",
-      "dark trousers",
+      "coat",
+      "turtleneck",
+      "trousers",
       "glasses",
       "bread bag",
       "bicycle basket",
-      "cloth strap",
-      "morning",
-      "medium shot"
+      "strap"
     ],
     "negativeTokens": [
       "hair in bicycle wheels"

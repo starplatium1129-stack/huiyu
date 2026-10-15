@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "violet_evergarden",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "violet_evergarden",
     "profile": {
@@ -100,14 +100,11 @@
       "identityProse": "Violet Evergarden from Violet Evergarden, an ethereal and pristine former soldier turned Auto Memories Doll, with mid-back braided golden-blonde hair tied with red ribbons, luminous azure-blue eyes, articulated silver prosthetic mechanical hands, and a doll-like porcelain face brimming with tender emotion",
       "identityTokens": [
         "violet_evergarden",
-        "blonde_hair",
+        "blonde hair",
         "braid",
-        "hair_ribbon",
-        "blue_eyes",
-        "mechanical_hands",
-        "prosthetic_hands",
-        "doll-like_face",
-        "slender_figure"
+        "hair ribbon",
+        "blue eyes",
+        "mechanical hands"
       ],
       "negativeTokens": [
         "worst quality",

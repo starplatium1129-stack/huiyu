@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1647,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_03",
     "title": "卡提希娅 · 雨廊下的躲雨与烤面包",
@@ -31,14 +31,16 @@
       "bakery_light",
       "medium_shot"
     ],
-    "promptProse": "Cartethyia shelters under the town bakery's eaves, accepting fresh bread from the owner and nibbling it from the warm paper bag. Her pale-blue ankle-length dress and cream cardigan remain simple beneath the halo and blonde braid. The medium view includes the doorway and rain beyond the shelter. Bakery light warms her pleased face and bag creases, with amber reflections on the wet threshold and cooler street surfaces farther away.",
+    "promptProse": "She accepts fresh bread from the bakery owner beneath the eaves. Warm doorway light falls across the bag and wet threshold.",
     "promptTokens": [
-      "Cartethyia",
-      "pale-blue long dress",
+      "bakery",
+      "blue dress",
       "cream cardigan",
-      "warm bread",
-      "bakery rain shelter",
-      "medium shot"
+      "halo",
+      "bread",
+      "paper bag",
+      "rain",
+      "shelter"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

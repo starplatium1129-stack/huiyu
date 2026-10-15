@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_clocktower",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 893,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "站在钟楼俯瞰学院",
     "adult": false,
@@ -26,16 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "casual_pink",
-    "promptProse": "Mika leans against the old clocktower's carved stone balustrade, looking over the academy before turning back with a bright smile. Her pastel-pink sundress and loosely draped ivory cardigan move with her long pink hair. The low wide view includes tower mechanisms behind and the campus below. Sunset edges the cardigan and stone carvings, with mechanical shadows crossing the interior floor farther from the opening.",
+    "promptProse": "Mika looks back from the clocktower balustrade with the academy spread beneath the sunset.",
     "promptTokens": [
-      "sunset",
-      "clocktower",
-      "stone balustrade",
-      "pink sundress",
-      "ivory cardigan",
+      "pink dress",
+      "cardigan",
       "looking back",
-      "wide shot",
-      "low angle"
+      "clocktower",
+      "stone railing",
+      "sunset"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 787,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "礼堂花卡旁以淑女姿态整理缎带，确认无人后向镜头淘气眨眼",
     "adult": false,
@@ -25,16 +25,15 @@
     "mood": "淑女端庄与宅系淘气的花嫁切换",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Yuki sits beside a publicity board in a white bridal dress with violet sash and black ribbon veil, her black half-up hair secured neatly. After arranging flower cards on the table, she gives the camera a playful wink. The vertical medium-full view shows the dress falling beside her chair and violet decorations behind. Soft afternoon light catches the veil edge and cards, leaving delicate folds shaded beneath the sash.",
+    "promptProse": "Yuki arranges flower cards beside the publicity board and winks toward the camera in afternoon light.",
     "promptTokens": [
-      "afternoon",
-      "student council hall",
-      "white bridal dress",
+      "Yuki",
+      "white wedding dress",
       "violet sash",
-      "black ribbon veil",
+      "veil",
+      "wink",
       "flower cards",
-      "winking",
-      "medium full shot"
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

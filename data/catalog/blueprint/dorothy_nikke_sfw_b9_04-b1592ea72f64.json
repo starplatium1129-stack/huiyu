@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_sfw_b9_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1730,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "dorothy_nikke_sfw_b9_04",
     "title": "桃乐丝 · 伊甸园的白色迎宾花嫁",
@@ -29,16 +29,15 @@
       "anticipation",
       "golden_light"
     ],
-    "promptProse": "Dorothy gives a graceful curtsy beneath Eden's rose arch, hands folded over her white-and-pink bridal gown while long pink hair and folded white wings rest behind the veil. Her measured violet-eyed smile opens slightly with personal anticipation. The vertical medium-full view follows the white corridor beyond the arch. Golden sunset through rose-colored glass rims feathers and veil folds, illuminating pearls while rose shadows stretch across the nearby stone floor.",
+    "promptProse": "She curtsies beneath the rose arch with her wings folded behind the veil. Sunset through colored glass reaches the gown and corridor.",
     "promptTokens": [
-      "Dorothy",
-      "white-pink bridal gown",
-      "pearl details",
-      "folded white wings",
-      "curtsy",
       "rose arch",
-      "dusk",
-      "medium full shot"
+      "white and pink wedding gown",
+      "veil",
+      "pearls",
+      "folded white wings",
+      "curtsey",
+      "dusk"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

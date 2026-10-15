@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_camp_rest",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 748,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_camp_rest",
     "characterId": "zhuang_fangyi_arknights",
@@ -32,18 +32,22 @@
       "upper_body"
     ],
     "promptTokens": [
-      "evening",
-      "home kitchen",
       "ivory shirt",
-      "pea green apron",
+      "green apron",
       "soup",
+      "bowl",
+      "placemat",
+      "chopsticks",
       "dinner table",
-      "medium shot"
+      "kitchen",
+      "evening"
     ],
-    "promptProse": "Turning from the kitchen counter, Zhuang Fangyi places a bowl of hot soup on the placemat nearest the viewer, smiling in her ivory shirt and pea-green apron. A second dinner and neatly paired chopsticks wait farther along the table. The eye-level medium view connects counter and dining surface. A warm pendant above the table lights her rolled cuffs and soup steam, casting soft bowl shadows onto the mat.",
+    "promptProse": "Zhuang Fangyi places the hot soup on the placemat nearest the viewer with a smile, a second dinner waiting farther along the table.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

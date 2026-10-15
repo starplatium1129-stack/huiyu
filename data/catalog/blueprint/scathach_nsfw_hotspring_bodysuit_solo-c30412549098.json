@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_hotspring_bodysuit_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "scathach_nsfw_hotspring_bodysuit_solo",
     "title": "斯卡哈 · 温泉湿身紧身衣独奏·「不死者也会热……这是你不知道的影之国秘密」",
@@ -27,43 +27,17 @@
       "masturbation",
       "steam"
     ],
-    "promptProse": "Reclining against the rock rim of a violet-misted open-air hot spring in the Land of Shadows, Scathach wears her purple bodysuit soaked to translucent sheerness with a torn seam curling at her chest, the wet fabric clinging to every saturated curve. Her long purple hair drifts across the steaming water as one hand glides beneath the surface between her thighs, fingertips stroking her most sensitive core while her crimson eyes fall half-lidded, murmuring that even immortality wearies on nights like this. Ambient steam and lantern glow in a sensual solo composition, cinematic lighting, mist, detailed onsen background.",
+    "promptProse": "Scathach reclines against the hot spring's rock rim and touches herself beneath the water, her wet bodysuit translucent in lantern light.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs",
-      "underwater",
-      "wet_clothes",
-      "see-through",
-      "wet_cloth",
-      "torn_clothes",
-      "bodysuit",
-      "purple_bodysuit",
-      "nipples_visible_through_clothes",
+      "Scathach",
+      "purple bodysuit",
+      "wet clothes",
       "onsen",
-      "hot_spring",
       "steam",
-      "water_droplets",
-      "purple_hair",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "lantern"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -74,6 +48,11 @@
       "nsfw",
       "solo",
       "special_nsfw"
+    ],
+    "nsfwTokens": [
+      "see-through",
+      "masturbation",
+      "hand between legs"
     ]
   }
 }

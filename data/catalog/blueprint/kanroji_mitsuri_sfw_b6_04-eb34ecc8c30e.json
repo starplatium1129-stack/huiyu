@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1461,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "樱树下抱紧捧花兴奋靠近，粉绿长辫与头纱落在腰间，眼神闪亮",
     "adult": false,
@@ -25,14 +25,14 @@
     "mood": "热烈而温柔的恋柱誓约",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Mitsuri Kanroji stands beneath the Butterfly Mansion's blooming cherry tree, hugging her bouquet against a pink-and-white wedding dress with green sash and petal embroidery. Green-tipped pink braids fall beside the waist; her delighted blush and small eye-side moles remain visible. The vertical medium-full view includes the long veil and courtyard path. Rosy spring sun filtered through petals lights her face and flower tops, with blossom shadows scattered across the skirt.",
+    "promptProse": "Mitsuri approaches eagerly beneath the cherry tree with her bouquet held close, her veil and braids falling to her waist.",
     "promptTokens": [
-      "Mitsuri Kanroji",
-      "pink-white wedding dress",
+      "wedding dress",
       "green sash",
+      "veil",
       "bouquet",
-      "cherry courtyard",
-      "medium full shot"
+      "cherry tree",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

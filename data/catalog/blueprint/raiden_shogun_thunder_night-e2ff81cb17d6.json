@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_thunder_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "raiden_shogun_thunder_night",
     "title": "雷电将军 · 离岛海滨的清凉微风",
@@ -34,17 +34,16 @@
       "parasol_shade",
       "full_body"
     ],
-    "promptProse": "Raiden Ei pauses barefoot where shallow foam crosses Ritou's white sand, steadying the parasol handle with both hands. Her purple swimsuit and wind-drawn braid remain fully visible at eye level as she looks back with a hesitant smile. The parasol shades her face while afternoon sun illuminates her shoulders and leaves its broad shadow behind her feet; bright clouds rise beyond the blue water.",
+    "promptProse": "Ei pauses where the foam meets the sand, holding the parasol in both hands and turning back with a hesitant smile.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ritou",
-      "white sand beach",
-      "shallow waves",
       "purple swimsuit",
-      "parasol",
       "barefoot",
+      "parasol",
       "looking back",
+      "shy smile",
+      "shallow water",
+      "beach",
+      "afternoon",
       "full body"
     ],
     "negativeTokens": [
@@ -53,6 +52,8 @@
     "recommendedSize": "1152x1536",
     "outfitId": "inazuma_bikini",
     "adult": false,
-    "sampleRating": "SFW"
+    "sampleRating": "SFW",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

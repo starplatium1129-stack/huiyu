@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_01",
     "title": "尤贝尔 · 考试会场的缠人精",
@@ -31,19 +31,15 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Ubel leans forward on the examination waiting bench, tilting her head and lifting one hand in an eager questioning gesture. Half-lidded purple eyes show friendly curiosity beneath a green side ponytail. Her belted black travel dress stays beside the registration paper and an empty length of bench in the medium view. Diffuse daylight reaches her face and the paper, leaving gentle shade beneath the bench and her bent forearm.",
+    "promptProse": "Ubel leans forward and raises a questioning hand beside her registration paper in diffuse daylight.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ubel",
-      "black travel dress",
+      "ubel_(sousou_no_frieren)",
+      "black dress",
       "side ponytail",
-      "wooden bench",
-      "registration paper",
-      "questioning hand gesture",
-      "exam waiting area",
-      "medium shot",
-      "ubel_(sousou_no_frieren)"
+      "bench",
+      "hand gesture",
+      "waiting room",
+      "medium shot"
     ],
     "negativeTokens": [
       "extra people"

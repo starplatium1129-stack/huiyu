@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_cafe_terrace_teasing_gaze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 369,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_cafe_terrace_teasing_gaze",
     "title": "雪之下阳乃 · 露天咖啡馆的墨镜戏谑注视·「比企谷君，又在用那种腐烂的眼神看世界了呢」",
@@ -30,20 +30,17 @@
       "mature_female",
       "iconic"
     ],
-    "promptProse": "Haruno Yukinoshita rests in the terrace's wicker chair with legs crossed, lowering her sunglasses with one finger to give a knowing amused glance. Her open beige trench coat, black turtleneck and pencil skirt retain the elegant winter outfit. The medium view includes the cafe tables and street beyond the parasol. Afternoon sun along its edge brightens the coat and glasses, while woven-chair shadows pattern the shaded seating area.",
+    "promptProse": "Haruno lowers her sunglasses with one finger from the wicker chair, giving the viewer a knowing glance beneath the parasol.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Haruno Yukinoshita",
-      "beige trench coat",
-      "black turtleneck",
+      "trench coat",
+      "turtleneck",
       "pencil skirt",
+      "sunglasses",
       "crossed legs",
-      "lowered sunglasses",
-      "cafe terrace",
-      "afternoon",
-      "medium shot",
-      "yukinoshita_haruno"
+      "smirk",
+      "cafe",
+      "terrace",
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -54,6 +51,8 @@
     "coverageTags": [
       "iconic",
       "mature"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

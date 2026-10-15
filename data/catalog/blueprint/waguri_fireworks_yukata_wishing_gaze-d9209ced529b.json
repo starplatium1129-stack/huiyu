@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_fireworks_yukata_wishing_gaze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1506,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "waguri_fireworks_yukata_wishing_gaze",
     "title": "和栗薰子 · 烟花下收好的金鱼袋",
@@ -31,13 +31,14 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "At the festival riverbank, Kaoruko Waguri holds her goldfish bag carefully in both hands, lifting her head when the first fireworks rise. Blue morning glories decorate her sky-blue yukata above a yellow obi, small floral clips securing her blackish-purple hair. The medium portrait keeps river railing and lantern stalls behind. Warm lantern fill illuminates the bag and smile, while distant fireworks make a brief bright reflection in her blue eyes and the water.",
+    "promptProse": "Waguri holds her goldfish bag with both hands and looks up as fireworks rise beyond the festival rail.",
     "promptTokens": [
       "Kaoruko Waguri",
-      "blue morning-glory yukata",
+      "blue yukata",
       "yellow obi",
       "goldfish bag",
-      "riverside festival",
+      "fireworks",
+      "riverbank",
       "medium shot"
     ],
     "negativeTokens": [],

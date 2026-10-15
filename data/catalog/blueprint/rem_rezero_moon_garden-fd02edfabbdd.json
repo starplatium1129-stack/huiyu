@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_moon_garden",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 433,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rem_rezero_moon_garden",
     "title": "雷姆 · 月光庭院",
@@ -26,20 +26,19 @@
       "mansion",
       "fantasy"
     ],
-    "promptProse": "Among the mansion garden's blooming roses, Rem adjusts the flowers with a silver watering can nearby and looks back softly toward the viewer. Her elegant formal evening dress retains the special outing beneath blue hair and attentive eyes. The medium view places rose stems around her and the garden path behind. Cool moonlight illuminates dew and the can's curved metal, leaving overlapping leaf shadows around the blossoms and darker foliage farther away.",
+    "promptProse": "Rem adjusts the roses with the silver watering can beside her, then looks back softly toward the viewer.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Rem",
-      "formal evening dress",
-      "silver watering can",
+      "evening dress",
       "roses",
-      "mansion garden",
-      "moonlight",
-      "medium shot"
+      "watering can",
+      "looking back",
+      "garden",
+      "moonlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "formal_dress"
+    "outfitId": "formal_dress",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

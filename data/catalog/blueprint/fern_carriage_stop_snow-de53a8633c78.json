@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_carriage_stop_snow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fern_carriage_stop_snow",
     "title": "菲伦 · 驿站雪中",
@@ -34,19 +34,20 @@
       "warm_lantern",
       "medium_shot"
     ],
-    "promptProse": "Under the carriage stop's wooden eaves, Fern offers a level earthenware soup pot with both gloved hands, steam rising near her muffler. Her beige winter coat is closed and half-up purple hair rests at the collar as she waits patiently. The medium portrait places falling snow outside the shelter. Cool overcast light defines the outer coat, while a station lantern warms the pot rim and fingers, with eave shadow above.",
+    "promptProse": "Under the carriage stop's eaves, she patiently offers a level earthenware soup pot with both hands.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Fern",
-      "beige winter coat",
-      "muffler",
+      "beige coat",
+      "scarf",
       "gloves",
-      "earthenware soup pot",
-      "snowbound carriage stop",
-      "overcast",
-      "station lantern",
-      "medium portrait"
+      "holding pot",
+      "soup",
+      "steam",
+      "shelter",
+      "snow",
+      "lantern",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

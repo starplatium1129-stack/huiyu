@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_mage_library_candle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 123,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fern_mage_library_candle",
     "title": "菲伦 · 早期修行的烛光抄写",
@@ -33,23 +33,21 @@
       "candlelight",
       "medium_shot"
     ],
-    "promptProse": "Fern pauses her quill above a copied rune diagram and nods thanks toward newly placed tea, her other hand holding the source book open. Black coat and high-collared white dress retain the chosen travelling clothes beneath half-up purple hair. The medium portrait includes a staff against the wall and shelves receding behind the study chair. Candlelight illuminates her calm eyes and paper, casting the quill's fine shadow beside the cup.",
+    "promptProse": "She pauses copying a rune diagram to nod thanks for the tea, keeping the source book open with her other hand.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Fern",
       "black coat",
-      "white high collar dress",
+      "white dress",
       "quill",
-      "rune diagram",
+      "book",
       "tea",
-      "staff against wall",
-      "candle",
-      "medium portrait"
+      "rune",
+      "library",
+      "candlelight",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "readable spell instructions"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536"
   }
 }

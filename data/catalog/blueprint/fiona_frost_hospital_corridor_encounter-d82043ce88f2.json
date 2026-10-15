@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_hospital_corridor_encounter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 815,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fiona_frost_hospital_corridor_encounter",
     "characterId": "fiona_frost",
@@ -28,14 +28,17 @@
       "sunbeam",
       "clean_aesthetic"
     ],
-    "promptProse": "Fiona walks briskly along the white-tiled hospital corridor, holding thick medical files against her navy sweater and gray striped vest. Her composed face remains forward as a white-coated figure passes in the opposite direction. The three-quarter medium view includes receding high windows and doors. Morning sunlight reaches the polished floor in long patches, reflecting soft brightness onto the file edges and her dark office skirt.",
+    "promptProse": "She holds medical files against her chest while a white-coated figure passes in the opposite direction.",
     "promptTokens": [
-      "morning",
-      "hospital corridor",
-      "navy sweater",
-      "gray striped vest",
+      "2people",
+      "sweater",
+      "striped vest",
       "office skirt",
-      "medical files",
+      "documents",
+      "walking",
+      "hospital",
+      "corridor",
+      "morning",
       "medium shot"
     ],
     "negativeTokens": [],

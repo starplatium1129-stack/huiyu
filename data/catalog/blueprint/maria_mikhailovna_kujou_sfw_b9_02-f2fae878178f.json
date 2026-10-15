@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 791,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "把落花夹进笔记本，轻合书页后看向花枝。",
     "adult": false,
@@ -23,16 +23,14 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_refined_daily",
-    "promptProse": "Maria sits on a wicker chair in the greenhouse, pressing a small fallen flower between her notebook pages. Her sage-green long dress and cream cropped cardigan remain in medium view as she closes the book and looks up to check the blossoms still on their branch. Leaves overlap the glass panels behind. Filtered daylight catches the flower and her sleeves, casting fine wicker shadows beneath the seat.",
+    "promptProse": "Maria places a fallen flower in her notebook, closes it gently and looks back toward the branch.",
     "promptTokens": [
-      "daytime",
-      "greenhouse",
-      "sage long dress",
-      "cream cardigan",
+      "sage dress",
+      "cardigan",
       "wicker chair",
       "notebook",
-      "fallen flower",
-      "medium shot"
+      "flower",
+      "greenhouse"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

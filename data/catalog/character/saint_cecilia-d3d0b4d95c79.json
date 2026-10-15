@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saint_cecilia",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "saint_cecilia",
     "profile": {
@@ -129,13 +129,12 @@
       "identityProse": "Saint Cecilia, a gentle and innocent saintess with soft mint-green hair tied in a braided low bun, large emerald green eyes, and a voluptuous figure.",
       "identityTokens": [
         "cecilia (pastor lawrence)",
-        "shiro_seijo_to_kuro_bokushi",
+        "shiro seijo to kuro bokushi",
         "1girl",
         "solo",
-        "mint_green_hair",
-        "braided_bun",
-        "emerald_eyes",
-        "large_breasts"
+        "mint green hair",
+        "braided bun",
+        "emerald eyes"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_swimsuit_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 899,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "戴遮阳帽站在海边回眸",
     "adult": false,
@@ -26,16 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Mika skips along the Trinity beach surf in her white-and-pink frilled swimsuit and pastel pareo, lifting her wings with the sea breeze. Her sun visor shades her smiling face in a backlit medium view. White foam curls around her feet before the water extends toward the horizon. Strong summer sunlight outlines her pink hair and wing feathers, while pale sand reflects soft brightness onto the shaded swimsuit fabric.",
+    "promptProse": "Mika turns toward the viewer from the shallow waves, her sun visor shading her smile.",
     "promptTokens": [
-      "summer daytime",
-      "beach",
-      "pink white frilled swimsuit",
-      "pareo",
+      "pink white swimsuit",
+      "sarong",
       "sun visor",
       "wings",
       "splashing",
-      "medium shot"
+      "beach"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

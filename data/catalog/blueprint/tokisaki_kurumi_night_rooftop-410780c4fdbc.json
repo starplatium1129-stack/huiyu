@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_night_rooftop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tokisaki_kurumi_night_rooftop",
     "title": "时崎狂三 · 黑夜天台",
@@ -31,18 +31,15 @@
       "head_tilt",
       "full_body"
     ],
-    "promptProse": "At the midnight rooftop edge, Kurumi lowers a long antique musket and a short flintlock pistol in theatrical reversed grips, one weapon in each hand. Violet energy curls near their muzzles as she tilts her head with a questioning smile. The wide full-body view keeps both weapons against distant illuminated windows. Cool moonlight defines her sailor collar and skirt folds, while city reflections mark the roof's edge.",
+    "promptProse": "Kurumi lowers a weapon in each reversed grip at the rooftop edge, violet energy curling around their muzzles.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Kurumi",
       "sailor uniform",
-      "pleated skirt",
-      "antique musket",
+      "musket",
       "flintlock pistol",
-      "reversed grip",
-      "rooftop edge",
-      "midnight",
+      "dual wielding",
+      "rooftop",
+      "night",
       "full body"
     ],
     "negativeTokens": [

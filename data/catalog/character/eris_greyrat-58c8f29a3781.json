@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eris_greyrat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 52,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "eris_greyrat",
     "profile": {
@@ -132,10 +132,8 @@
         "long_hair",
         "curly_hair",
         "red_eyes",
-        "ahoge",
         "thick_eyebrows",
         "headband",
-        "athletic",
         "mushoku_tensei"
       ],
       "negativeTokens": [

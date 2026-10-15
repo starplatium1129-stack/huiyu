@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_07",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_07",
     "title": "牧之原翔子 · 厨房里系好的围裙",
@@ -29,19 +29,17 @@
       "morning_light",
       "afternoon_light"
     ],
-    "promptProse": "Shouko Makinohara finishes her side braid and arranges fruit into a little flower inside a lunch box, pressing a blessing note beneath its lid before looking up calmly. Her cream blouse and long blue skirt sit beneath a plain cotton apron. The vertical medium view follows the clean kitchen counter behind her. Morning light from the side brightens the cut fruit and lid, casting a soft hand shadow over the note.",
+    "promptProse": "Shouko arranges fruit into a flower for the lunch box and tucks a small note beneath the lid.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Shouko Makinohara",
-      "cream blouse",
-      "long blue skirt",
-      "cotton apron",
+      "blouse",
+      "blue skirt",
+      "apron",
       "side braid",
       "lunch box",
-      "fruit flower",
-      "morning kitchen",
-      "medium shot"
+      "fruit",
+      "kitchen"
     ],
     "negativeTokens": [
       "readable note"

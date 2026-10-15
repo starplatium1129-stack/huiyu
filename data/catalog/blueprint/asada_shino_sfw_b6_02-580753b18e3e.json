@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1374,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_02",
     "title": "朝田诗乃 · 眼镜店的调整",
@@ -30,14 +30,13 @@
       "store_light",
       "medium_shot"
     ],
-    "promptProse": "At the optical shop's adjustment counter, Shino Asada inspects the newly tightened hinge of her black-rimmed glasses, holding them away from her unobstructed brown eyes. A small screwdriver and cleaning cloth rest beside her grey-cardigan sleeve. The medium portrait includes the adjustment surface and eyeglass display behind. Shop light brightens the frame edge and tool shaft, with a small crisp shadow beneath the glasses and softer reflections on the counter.",
+    "promptProse": "She examines her glasses' newly tightened hinge at the counter, holding them away from her face. Shop light catches the frame and small tool.",
     "promptTokens": [
-      "asada_shino",
-      "Shino Asada",
-      "grey cardigan",
-      "black glasses in hand",
       "optical shop",
-      "small screwdriver",
+      "gray cardigan",
+      "holding glasses",
+      "screwdriver",
+      "cleaning cloth",
       "medium shot"
     ],
     "negativeTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_tundra_stalking_white",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 698,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "typhon_arknights_tundra_stalking_white",
     "characterId": "typhon_arknights",
@@ -33,16 +33,15 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "daytime",
+      "Typhon",
+      "green sweater",
+      "pantyhose",
       "cafe",
-      "window",
-      "two drinks",
-      "green cable knit",
-      "black tights",
-      "pulling chair",
+      "chair",
+      "drinks",
       "cowboy shot"
     ],
-    "promptProse": "Typhon sits beside the cafe window in her forest-green cable-knit casual outfit and black tights. She pulls the opposite chair outward for the arriving viewer and raises her eyes in greeting. The eye-level cowboy view includes her seated posture, the partly drawn-out chair and two steaming drinks on the table. Her scarf hangs from the chair back. The tabletop narrows toward the window, and the sill continues behind her to the next seating bay. Soft daylight catches raised knit stitches and the two cup rims. The moving chair casts a diagonal shadow over the floor, while a gentler shadow under her forearm keeps the table contact clear.",
+    "promptProse": "Typhon pulls the opposite chair out for the viewer, two steaming drinks waiting beside the cafe window.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

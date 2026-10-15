@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_sauce_wipe_flustered_reaction",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 223,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "saber_alter_sauce_wipe_flustered_reaction",
     "title": "黑呆 · 擦拭唇角酱汁的瞳孔地震",
@@ -28,18 +28,15 @@
       "window_light",
       "medium_closeup"
     ],
-    "promptProse": "In the fast-food booth, Saber Alter freezes as a separate sleeved companion's hand gently wipes ketchup from her mouth corner. Her own two hands bunch the tablecloth, surprised golden eyes widening above her tidy biker jacket and braided blonde bun. The eye-level medium close-up includes the reaching hand from one side and table surface below. Slanting window sun illuminates her embarrassed cheeks and fingertip contact, casting sleeve shadows across the cloth.",
+    "promptProse": "A companion's sleeved hand wipes ketchup from her mouth while her own hands bunch the sunlit tablecloth.",
     "promptTokens": [
-      "2people",
       "Saber Alter",
       "biker jacket",
-      "braided blonde bun",
-      "companion hand",
-      "ketchup spot",
-      "hands on tablecloth",
-      "fast food booth",
-      "window light",
-      "medium close-up"
+      "ketchup",
+      "hands on table",
+      "blush",
+      "cafe",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

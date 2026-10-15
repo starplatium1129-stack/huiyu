@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinomiya_kaguya",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shinomiya_kaguya",
     "profile": {
@@ -101,16 +101,12 @@
       "identityProse": "Shinomiya Kaguya from Kaguya-sama: Love Is War, the elegant vice president of Shuchiin Academy, a wealthy refined beauty with short black hair styled in a folded ponytail with parted bangs and sidelocks, and tareme red eyes that soften when she is in love",
       "identityTokens": [
         "shinomiya_kaguya",
-        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
+        "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~",
         "1girl",
         "solo",
-        "black_hair",
-        "short_hair",
-        "folded_ponytail",
-        "parted_bangs",
-        "sidelocks",
-        "red_eyes",
-        "tareme"
+        "black hair",
+        "folded ponytail",
+        "red eyes"
       ],
       "negativeTokens": [
         "worst quality",

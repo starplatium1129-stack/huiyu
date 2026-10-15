@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_shrine_kagura_dance_bells",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1141,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手执金铃神乐杖轻盈旋身起舞，巫女宽袖与银白双马尾飘飞，神态端庄肃穆",
     "camera": "full body, dynamic mid-dance angle, wide composition",
@@ -20,15 +20,17 @@
     "mood": "神圣高洁",
     "negativeTokens": [],
     "outfitId": "shrine_maiden",
-    "promptProse": "Yoshino turns gracefully on the cypress kagura stage, holding a golden bell staff in both hands in her white miko robes, vermilion hakama and black tights. Silver twin tails and cherry-blossom hairpins rise with the full-body wide movement. Iron fire cages surround the platform. Their gold-red light warms her open sleeves and bell surfaces, while cool moonlight traces her hair against the shadowed shrine hall behind.",
+    "promptProse": "Yoshino holds the golden bell staff in both hands during the dance, the iron fire cages illuminating the shrine stage.",
     "promptTokens": [
-      "night",
-      "kagura stage",
-      "white miko top",
+      "miko",
       "red hakama",
-      "black tights",
-      "golden bells",
+      "black pantyhose",
+      "kagura",
+      "bells",
       "dancing",
+      "wooden stage",
+      "firelight",
+      "moonlight",
       "full body"
     ],
     "recommendedSize": "1536x1152",
@@ -44,6 +46,8 @@
       "bonfire"
     ],
     "timeOfDay": "夜晚",
-    "title": "朝武芳乃 · 神乐殿前的金铃奉纳舞"
+    "title": "朝武芳乃 · 神乐殿前的金铃奉纳舞",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

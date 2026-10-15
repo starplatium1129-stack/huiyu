@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_live_stage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 948,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "舞台上高唱登场",
     "camera": "cowboy shot, dynamic idol pose under arena spotlights",
@@ -20,15 +20,17 @@
     "mood": "偶像闪耀",
     "negativeTokens": [],
     "outfitId": "main_look",
-    "promptProse": "Ai Hoshino springs onto the highest part of the arena stage in her pink frilled idol dress, heart brooch and rabbit hair ornament lifting with the movement. Her star-shaped eyes face the sea of audience lights beyond the cowboy-shot foreground. Arena spotlights catch the glove frills and skirt layers from above, while the fans' glowing light sticks form a distant colorful field beneath the darker seating tiers.",
+    "promptProse": "Ai springs onto the arena's highest platform, facing the sea of audience lights as her frilled dress follows the motion.",
     "promptTokens": [
-      "night",
-      "arena stage",
-      "pink idol dress",
-      "heart brooch",
-      "rabbit hair ornament",
+      "idol",
+      "pink dress",
       "microphone",
-      "cowboy shot"
+      "jumping",
+      "stage",
+      "audience",
+      "glowstick",
+      "spotlight",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +44,8 @@
     ],
     "timeOfDay": "夜晚",
     "title": "星野爱 · B 小町演唱会",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

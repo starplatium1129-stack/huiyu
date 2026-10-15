@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_07",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1715,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "maomao_sfw_b9_07",
     "title": "猫猫 · 夜市药草茶的闻香",
@@ -31,15 +31,14 @@
       "evening",
       "night_light"
     ],
-    "promptProse": "At the evening herbal-tea stall, Maomao lifts a tiny cup to smell it, then uses one fingertip to move a floating leaf aside before tasting. Her pale-rose blouse and dark-green long skirt remain tidy beside a small cloth bag. The horizontal medium portrait includes neighboring counters beyond her approving blue-eyed glance. Red lantern light warms the cup and sleeve edges, with deeper shade beneath the stall roof and small highlights across the tea.",
+    "promptProse": "Maomao smells the tea and moves aside an aromatic leaf before tasting it with a satisfied look.",
     "promptTokens": [
-      "Maomao",
       "rose blouse",
-      "green long skirt",
-      "herbal tea tasting",
-      "evening market",
-      "lanterns",
-      "medium shot"
+      "green skirt",
+      "tea",
+      "herb leaf",
+      "market",
+      "lantern"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "goldenglow_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "goldenglow_arknights",
     "profile": {
@@ -114,7 +114,6 @@
         "1girl",
         "solo",
         "pink_hair",
-        "long_hair",
         "twintails",
         "blue_eyes",
         "cat_ears",

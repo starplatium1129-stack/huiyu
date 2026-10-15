@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_summer_beach_bikini_volleyball",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "amane_summer_beach_bikini_volleyball",
     "title": "周防天音 · 耀阳金滩的细带艳红惊艳",
@@ -31,15 +31,15 @@
       "hair_rings",
       "large_breasts"
     ],
-    "promptProse": "Amane stands beside the tropical beach-volleyball court, holding the ball in one hand and turning back with a confident smile. Her red string swimsuit, loosely tied white sarong and sunglasses in her burgundy hair retain the summer outfit. The full-body three-quarter view follows sand toward white foam and blue sea. Clear noon sun lights the ball and moving hair rings, while water reflections shimmer along the nearby wet sand.",
+    "promptProse": "She holds the ball beside the volleyball court and looks back toward the viewer. Noon sunlight reaches the sand and sea beyond her.",
     "promptTokens": [
-      "noon",
-      "tropical beach",
-      "volleyball",
-      "red string swimsuit",
+      "beach",
+      "red bikini",
       "white sarong",
-      "hair rings",
+      "volleyball",
+      "sunglasses",
       "looking back",
+      "smile",
       "full body"
     ],
     "negativeTokens": [],

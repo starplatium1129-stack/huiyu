@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1689,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_05",
     "title": "艾尔菲利亚 · 冰海浮台的夏日魔法",
@@ -30,14 +30,17 @@
       "crystal_light",
       "afternoon"
     ],
-    "promptProse": "Elfaria Alvis Serfort sits on the floating wooden platform in an ice-blue swimsuit and white shoulder wrap, holding chilled fruit juice in one hand while an ice bird rests on her other fingertip. Small frost flowers form beside her feet in the seawater. The horizontal medium view includes the platform ropes and bright spray behind. Afternoon sunlight passes through the bird and crystal hair clasp, casting cool glints onto her delighted blue-eyed face.",
+    "promptProse": "Seated on the floating platform, she holds a drink while a tiny ice bird perches on her other fingertip.",
     "promptTokens": [
-      "Elfaria Alvis Serfort",
-      "ice-blue swimsuit",
-      "white wrap",
-      "ice bird",
-      "fruit drink",
-      "floating platform",
+      "1girl",
+      "solo",
+      "blue swimsuit",
+      "white shawl",
+      "sitting",
+      "juice",
+      "ice magic",
+      "bird",
+      "ocean",
       "afternoon",
       "medium shot"
     ],

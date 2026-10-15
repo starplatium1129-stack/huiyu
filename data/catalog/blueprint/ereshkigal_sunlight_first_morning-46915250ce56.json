@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_sunlight_first_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 266,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ereshkigal_sunlight_first_morning",
     "title": "埃列什基伽勒 · 初次朝阳的誓约·「原来阳光……这么烫啊」",
@@ -29,19 +29,19 @@
       "sunrise_light",
       "full_body"
     ],
-    "promptProse": "At an imagined first surface sunrise, Ereshkigal opens one hand toward the light over the mountain ridge, awed red eyes overlooking the polearm fallen beside her boots. Her white sweater dress, scarf and beret remain beneath blonde twintails. The horizontal full-body view keeps weapon and rock ledge in the foreground. Golden dawn illuminates her fingers, hair and rock crest, while cooler shadow persists beneath the weapon and across the mountain's opposite slope.",
+    "promptProse": "Awed by her first surface sunrise, she reaches toward the light while her polearm lies beside her boots.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Ereshkigal",
-      "white sweater dress",
+      "sweater dress",
       "red scarf",
       "beret",
-      "reaching hand",
-      "fallen polearm",
-      "mountain ridge",
+      "reaching",
+      "polearm",
+      "mountain",
       "sunrise",
-      "full body wide shot"
+      "full body",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_wine_tavern",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 649,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "倚栏独坐举盏温酒轻啜",
     "camera": "medium shot, slightly low angle",
@@ -22,16 +22,14 @@
       "daylight"
     ],
     "outfitId": "standard",
-    "promptProse": "Upstairs in the Lungmen tavern, Ling rests against the railing and slowly brings warm wine to her lips, her long blue hair draped over an ink-teal qipao. From the slightly low medium angle, retain the carved beams above and the market visitors glimpsed below. A railing post overlaps the nearer end of the tabletop; the upper gallery extends behind her toward the window, while street stalls appear between the balusters. Lantern light warms her cheek, cup and polished wood, with a small reflection beneath the cup. Cooler moonlight from the window catches her horns and the far railing edge, leaving the underside of the gallery subdued.",
+    "promptProse": "Ling rests against the upstairs tavern railing and sips warm wine, with market visitors visible below.",
     "promptTokens": [
-      "night",
-      "Lungmen tavern",
-      "blue hair",
       "teal qipao",
       "wine cup",
       "railing",
-      "lanterns",
-      "medium shot"
+      "tavern",
+      "lantern",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

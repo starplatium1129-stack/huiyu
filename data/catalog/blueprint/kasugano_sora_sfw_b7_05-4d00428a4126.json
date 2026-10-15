@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1617,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_05",
     "title": "春日野穹 · 海湾遮阳伞下的白色耳机",
@@ -29,15 +29,15 @@
       "soft_gaze",
       "sunset"
     ],
-    "promptProse": "Sora Kasugano curls in a beach chair at the small town's bay mouth, offering one white earpiece toward the viewer while the other wire lies through her long hair. A light cardigan covers the black-and-white swimsuit, half-finished soda beside her feet. The horizontal medium view includes the still bay behind. Lavender sunset softens her grey-eyed expression and sleeve folds, with cool water reflections along the chair frame and can.",
+    "promptProse": "Sora curls into the beach chair listening to music, offering the spare earbud as the sunset softens her expression.",
     "promptTokens": [
-      "Sora Kasugano",
-      "black-white swimsuit",
-      "light cardigan",
-      "white earphones",
+      "swimsuit",
+      "cardigan",
+      "earphones",
       "soda",
-      "beach chair",
-      "dusk",
+      "deck chair",
+      "beach",
+      "sunset",
       "medium shot"
     ],
     "negativeTokens": [],

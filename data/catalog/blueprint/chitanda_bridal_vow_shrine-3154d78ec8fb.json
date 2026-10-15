@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_bridal_vow_shrine",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1486,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chitanda_bridal_vow_shrine",
     "title": "千反田爱瑠 · 白无垢与庭前落叶",
@@ -28,14 +28,14 @@
       "courtyard_light",
       "medium_shot"
     ],
-    "promptProse": "In the shrine's courtyard-facing preparation room, Eru Chitanda gently holds her layered shiromuku sleeves, then bends to pick a small leaf from the hem. Her white bridal ornament stays neat as she smiles shyly at the brief distraction. The medium portrait includes the brocade obi and floor beside the doorway. Soft courtyard daylight reveals woven white motifs and the leaf's outline, with gentle overlapping sleeve shadows preserving the kimono layers.",
+    "promptProse": "She gathers her layered sleeves and picks a leaf from the bridal hem beside the open doorway. Courtyard light reveals the white brocade.",
     "promptTokens": [
-      "Eru Chitanda",
+      "shrine",
       "shiromuku",
-      "white bridal ornament",
-      "leaf in hand",
-      "shrine preparation room",
-      "medium shot"
+      "bridal hair ornament",
+      "leaf",
+      "bending down",
+      "smile"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

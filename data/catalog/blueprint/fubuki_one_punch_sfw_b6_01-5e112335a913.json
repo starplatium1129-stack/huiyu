@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1589,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_01",
     "title": "吹雪 · 吹雪组的晨会",
@@ -30,15 +30,17 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Fubuki sits at the head of the Blizzard Group's long table, tapping one fingertip against the wood while listening to squad reports. Her forest-green midi dress, white collared coat and pearls remain poised as she assigns the next tasks. The medium view includes reporting members along the table and chairs receding behind. Morning window light reveals her composed face and pearl surfaces, with table-edge shadows separating each seated position.",
+    "promptProse": "At the head of the Blizzard Group table, she taps one fingertip while listening to squad reports and assigning tasks.",
     "promptTokens": [
       "fubuki_(one-punch_man)",
-      "Fubuki",
-      "forest-green dress",
+      "multiple people",
+      "green dress",
       "white coat",
       "pearl necklace",
-      "team reports",
-      "headquarters",
+      "sitting",
+      "meeting",
+      "table",
+      "office",
       "morning",
       "medium shot"
     ],

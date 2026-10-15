@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_ortinax_launch",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 203,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [
       "readable telemetry"
@@ -32,17 +32,16 @@
       "cool_hangar_light",
       "full_body"
     ],
-    "promptProse": "Mash stands on the hangar launch platform with both fists closed at her sides, breathing steadily before advancing toward the catapult ramp. Black Ortinax armor and planted armored boots remain complete in the frontal full-body view. Gantries rise beside the ramp and telemetry screens recede behind. Cool hangar lamps illuminate her focused face and armor planes, while thin blue joint lights mark the darker gaps and platform shadows.",
+    "promptProse": "Mash clenches her fists on the launch platform and takes a steadying breath before advancing.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Mash",
-      "black Ortinax armor",
-      "armored boots",
-      "closed fists",
+      "Ortinax armor",
+      "boots",
+      "clenched fists",
       "launch platform",
       "hangar",
-      "blue status lights",
+      "blue lights",
       "full body"
     ],
     "recommendedSize": "1152x1536",

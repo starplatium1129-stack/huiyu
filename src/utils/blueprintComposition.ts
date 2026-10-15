@@ -1,5 +1,3 @@
-import { mergeTokenText } from './promptPolicy.ts'
-
 import type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
 export type { BlueprintCompositionIntent } from '../types/sceneBlueprint'
 type CompositionSource = { adult?: boolean; compositionIntent?: BlueprintCompositionIntent; allowRepeatedSubject?: boolean }
@@ -33,23 +31,10 @@ export function compositionNegative(text: string, source?: CompositionSource | n
   return text.split(',').filter(t => !(intent !== 'single' && personSuppression.has(key(t))) && !(intent === 'triptych' && panelSuppression.has(key(t))) && !(repeats && repeatSuppression.has(key(t)))).join(',')
 }
 
-const defaultSuppression = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body, multiple girls, second person, two people, duplicate, duplicated person, extra person, extra limbs, 1boy, 2boys, crowd, bystanders'
-
-export function blueprintNegative(negative: string, source?: CompositionSource | null): string {
-  return compositionNegative(mergeTokenText(negative, defaultSuppression), source)
-}
-
 export function showcaseSubjectGuards(source?: CompositionSource | null): { prompt: string; negative: string } {
   const intent = compositionIntent(source)
-  if (!source?.adult && source?.allowRepeatedSubject) return { prompt: 'preserve the requested reflection or illusory echo with consistent character identity', negative: 'inconsistent reflected identity, mismatched illusion design' }
-  const cloneNegative = 'duplicate, clone, copy, doppelganger, twin, two of her, second instance of her, duplicated subject, multiple girls, extra girl, same character twice'
-  if (intent === 'triptych') return { prompt: 'exactly three sequential panels, same character once in each panel, consistent character design', negative: 'extra panels, inconsistent character design' }
-  if (intent === 'group') return { prompt: 'distinct companions, one instance of each character, no cloned characters', negative: compositionNegative(cloneNegative, source) }
-  const cloneGuard = '(no clone:1.4), (no duplicate:1.4), (no twin:1.3), no duplicated character, no second copy, no doppelganger, no double body, no mirror copy, single subject only'
-  return {
-    prompt: source?.adult
-      ? `(solo:1.5), (1girl:1.4), (single girl only:1.6), (one person only:1.6), (no second person:1.3), no other person, no bystanders, no background people, ${cloneGuard}`
-      : `(single girl only:1.4), (one person only:1.4), no second person, no other person, ${cloneGuard}`,
-    negative: cloneNegative,
-  }
+  if (!source?.adult && source?.allowRepeatedSubject) return { prompt: 'preserve the requested reflection or illusory echo', negative: '' }
+  if (intent === 'triptych') return { prompt: 'three sequential panels, same character in each panel', negative: '' }
+  if (intent === 'group') return { prompt: 'distinct companions', negative: '' }
+  return { prompt: '1girl, solo', negative: '' }
 }

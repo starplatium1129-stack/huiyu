@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_spell_notes",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 485,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "aisha_greyrat_spell_notes",
     "title": "爱夏·页边的术式修订",
@@ -25,20 +25,17 @@
       "fantasy"
     ],
     "description": "爱夏侧坐在藏书室长桌旁，左手食指按着参考书中的术式图，右手在旁边的笔记页上补画一条连线。她微微前倾，视线落在笔尖；高领衬衫和绿色马甲清晰可辨。斜射午后日光横过两本打开的书，墨水瓶放在远离袖口的桌角，背景仅保留拱窗和书脊。",
-    "promptProse": "At the library table, adult Aisha places her left index finger below a reference diagram while her right hand adds a connecting stroke to the neighboring notebook. Cream high-neck blouse, forest-green vest and charcoal skirt retain her scholar outfit. The three-quarter medium view includes both contact points and an inkpot beneath the tall window arch. Diagonal afternoon light crosses the pages and intent eyes, with book-edge shadows separating the two volumes.",
+    "promptProse": "Adult Aisha points below a diagram in the reference book with her left hand and adds a connecting stroke to her notebook with the right. Afternoon light crosses both pages.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "adult Aisha",
-      "cream high neck blouse",
+      "adult",
+      "library",
+      "blouse",
       "green vest",
-      "charcoal skirt",
-      "reference tome",
+      "skirt",
+      "book",
       "notebook",
-      "feather pen",
-      "library table",
-      "afternoon",
-      "three quarter view"
+      "quill",
+      "three-quarter view"
     ],
     "adult": false,
     "characterId": "aisha_greyrat",

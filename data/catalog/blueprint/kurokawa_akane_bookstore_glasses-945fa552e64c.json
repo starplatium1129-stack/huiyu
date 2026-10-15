@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_bookstore_glasses",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 963,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "戴眼镜翻阅剧本研究",
     "camera": "medium shot, leaning against bookshelf",
@@ -18,15 +18,14 @@
     "mood": "沉静书卷气",
     "negativeTokens": [],
     "outfitId": "daily_glasses",
-    "promptProse": "Akane leans beside a shelf in the old bookstore, studying an acting-research manual through fine-framed glasses in her relaxed everyday clothes. The medium view places the open pages near her hands and overlapping rows of books behind her shoulder. Warm store light catches the glasses' thin rims and page texture, with deeper shelf interiors remaining dark and a soft hand shadow at the book's spine.",
+    "promptProse": "Akane studies a research book through her thin glasses between the old bookstore shelves.",
     "promptTokens": [
-      "daytime",
-      "old bookstore",
-      "casual outfit",
-      "thin glasses",
-      "research book",
+      "casual clothes",
+      "glasses",
+      "book",
+      "reading",
       "bookshelf",
-      "medium shot"
+      "bookstore"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

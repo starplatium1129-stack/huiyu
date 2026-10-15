@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_sweets_shop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 869,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "冷脸吃草莓圣代",
     "adult": false,
@@ -26,16 +26,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "casual_maid",
-    "promptProse": "Toki sits upright at the cafe table in a simple black casual dress and light jacket, studying an oversized strawberry-chocolate sundae before offering a spoonful toward the viewer. Loose blonde hair and her small headset frame her steady expression. The close-up includes the dessert glass beside her hand and a shaded seat behind. Warm cafe light catches the strawberry and spoon bowl, leaving soft shadows between the sundae layers.",
+    "promptProse": "She offers a spoonful of strawberry-chocolate sundae across the table. Warm cafe light catches the spoon and layered dessert.",
     "promptTokens": [
-      "daytime",
       "cafe",
-      "black casual dress",
-      "light jacket",
+      "black dress",
+      "jacket",
       "headset",
-      "strawberry chocolate sundae",
+      "sundae",
       "spoon",
-      "close up"
+      "offering",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

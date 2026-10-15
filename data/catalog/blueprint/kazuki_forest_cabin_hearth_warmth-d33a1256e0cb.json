@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_forest_cabin_hearth_warmth",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1168,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kazuki_forest_cabin_hearth_warmth",
     "title": "风见一姬 · 避难木屋的炉火温存",
@@ -31,15 +31,16 @@
       "white_dress",
       "red_eyes"
     ],
-    "promptProse": "Kazuki curls on a pile of thick blankets inside the rough log shelter, wearing her white sundress and hugging her knees as she watches the fireplace and lightly touches her hair tips. The eye-level medium close-up includes rough timber and the dark rain-marked opening behind. Orange-red firelight warms her pale dress and silver hair, with deep outside storm darkness contrasting against layered blanket shadows beneath her hands.",
+    "promptProse": "Kazuki sits curled on a blanket beside the forest shelter fireplace, watching the flames through the stormy night.",
     "promptTokens": [
-      "stormy night",
-      "forest shelter",
-      "white sundress",
-      "blankets",
+      "white dress",
+      "hugging knees",
+      "blanket",
       "fireplace",
-      "knees hugged",
-      "medium close up"
+      "cabin",
+      "storm",
+      "night",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_07",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 73,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_07",
     "title": "双叶理央 · 夜行列车上的星图",
@@ -30,23 +30,22 @@
       "detailed_train_interior",
       "medium_shot"
     ],
-    "promptProse": "Rio Futaba sits beside the train compartment's small table, one fingertip on an unfolded star chart while she checks a bright star above the bay through the broad window. A thermos stands beside the paper. Her dark padded jacket and wool scarf fill the horizontal medium view against continuous upholstery. The overhead reading light warms her glasses, brown eyes and chart; the window holds cooler bay darkness beyond her shoulder.",
+    "promptProse": "She keeps one fingertip on the unfolded star chart while checking a bright star through the train window.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Rio Futaba",
-      "dark padded jacket",
-      "wool scarf",
+      "padded jacket",
+      "scarf",
+      "glasses",
       "star chart",
       "thermos",
-      "train compartment",
+      "train interior",
+      "window",
       "bay",
-      "reading light",
+      "night",
       "medium shot"
     ],
-    "negativeTokens": [
-      "split panels"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": false,
     "sampleRating": "SFW",

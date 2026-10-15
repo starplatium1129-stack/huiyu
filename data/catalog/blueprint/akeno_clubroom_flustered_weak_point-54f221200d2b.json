@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_clubroom_flustered_weak_point",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "akeno_clubroom_flustered_weak_point",
     "title": "姬岛朱乃 · 触碰软肋的破防娇羞",
@@ -29,15 +29,15 @@
       "shy",
       "flustered"
     ],
-    "promptProse": "Near the clubroom shelves, Akeno Himejima blushes as her companion gently embraces her waist from behind and brushes her ear and neck. Her hands catch his collar, and her violet eyes turn aside in surprise. Keep their clothed upper bodies close, with her white blouse, black vest and magenta tie clear. Evening window light touches her ear and ponytail, while the book spines remain shaded immediately behind them.",
+    "promptProse": "Her companion embraces her waist from behind and brushes her ear while she catches his collar. Evening window light falls across their clothed upper bodies.",
     "promptTokens": [
-      "Akeno Himejima",
-      "Kuoh uniform",
-      "blushing",
-      "ear touch",
-      "clothed couple",
-      "bookshelves",
-      "medium close-up"
+      "couple",
+      "school uniform",
+      "blush",
+      "looking away",
+      "hug from behind",
+      "bookshelf",
+      "upper body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

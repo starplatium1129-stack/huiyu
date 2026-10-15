@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_street_taiyaki_bench_eating",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1219,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在长凳上双手捧鲷鱼烧小口品尝，双腿并拢，金发如瀑垂落，眼神满足而矜持",
     "camera": "medium shot, seated eye-level, intimate charming framing",
@@ -20,14 +20,13 @@
     "mood": "反差萌动",
     "negativeTokens": [],
     "outfitId": "gothic_dress",
-    "promptProse": "Golden Darkness, Yami, sits on the shopping street's red-brown wooden bench and nibbles a warm red-bean taiyaki held in both hands. Her black gothic dress contrasts with ankle-length blonde hair draped behind the seat. At eye-level medium distance, awnings, shopfronts and passing shoppers recede along the street. Filtered afternoon sun picks out pastry ridges and hair strands, with broken tree shadows across the bench.",
+    "promptProse": "Yami eats warm taiyaki with both hands on the bench, shoppers passing behind her in the afternoon shade.",
     "promptTokens": [
-      "Golden Darkness",
       "Yami",
+      "black dress",
       "taiyaki",
-      "wooden bench",
-      "black gothic dress",
-      "very long blonde hair",
+      "sitting",
+      "bench",
       "shopping street",
       "medium shot"
     ],

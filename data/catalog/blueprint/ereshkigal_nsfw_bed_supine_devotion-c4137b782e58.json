@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_bed_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 271,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "ereshkigal_nsfw_bed_supine_devotion",
     "title": "埃列什基伽勒 · 冥府床褥的奉献夜·「灵魂也要……一起重叠」",
@@ -28,46 +28,21 @@
       "glowing",
       "tears"
     ],
-    "promptProse": "The quiet land of the dead knows profound warmth for the very first time. Lying back upon a grand bed draped in gossamer pale-blue gauze, Ereshkigal lets her magnificent golden hair spill out like liquid moonlight across the pillows. Her delicate chest rises and falls with trembling, sacred breaths, pink nipples taut beneath the ghostly soul-glow as her slender fingers drift between her parted pale thighs. Tears of long-buried longing glisten in her crimson eyes, whispering through parted lips that this warmth is far heavier and more precious than the entire underworld. Sensual vertical composition, cinematic lighting, ethereal blue glow, detailed underworld background.",
+    "promptProse": "She lies among pale-blue bed curtains, touching herself with her hair spread over the pillows in the soul glow.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "lying_on_back",
-      "on_bed",
-      "bed_sheet",
-      "hair_down",
-      "spread_legs",
-      "arched_back",
-      "hand_between_legs",
-      "touching_own_body",
-      "bare_breasts",
-      "pink_nipples",
-      "petite",
-      "exposed_pussy",
-      "pussy",
-      "pussy_juice",
-      "sweat",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "blonde_hair",
-      "very_long_hair",
-      "spread_hair",
-      "glowing",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "adult",
+      "topless",
+      "on back",
+      "on bed",
+      "spread legs",
+      "hair down",
+      "hand between legs",
+      "blush",
+      "tears",
+      "blue light"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -78,6 +53,7 @@
       "h_cg",
       "sensual_solo",
       "special_nsfw"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

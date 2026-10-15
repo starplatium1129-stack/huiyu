@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_ship_corridor",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 726,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手抱胸倚靠在合金舱壁旁，尾巴轻摆，挑眉看向迎面走来的人",
     "camera": "medium shot",
@@ -17,15 +17,15 @@
     "mood": "闲散警戒",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Laevatain leans against an alloy wall in the ship corridor with both arms crossed, lifting an eyebrow toward the approaching Administrator. Her black combat dress, white collar and loose one-shoulder jacket remain in medium view. The passage narrows behind her through successive door frames. Cool corridor lights catch her fiery hair and metal pendant, while the wall casts a soft shaded band beneath her folded arms.",
+    "promptProse": "Laevatain leans against the corridor wall with folded arms and an arched eyebrow toward the approaching viewer.",
     "promptTokens": [
-      "night",
-      "ship corridor",
-      "black layered dress",
-      "loose jacket",
-      "long gloves",
-      "arms crossed",
-      "medium shot"
+      "black dress",
+      "jacket",
+      "gloves",
+      "crossed arms",
+      "leaning",
+      "spacecraft interior",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

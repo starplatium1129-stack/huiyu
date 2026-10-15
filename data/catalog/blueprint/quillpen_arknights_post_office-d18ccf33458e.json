@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_post_office",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "睡眼惺忪地单手摇晃调酒雪克壶",
     "camera": "medium shot, slightly low angle",
@@ -18,22 +18,18 @@
     "lighting": "warm ambient bar glow, colorful neon bokeh, soft spotlight",
     "location": "多索雷斯酒吧吧台",
     "mood": "慵懒微醺",
-    "negativeTokens": [
-      "daylight"
-    ],
+    "negativeTokens": [],
     "outfitId": "classic_bartender_apron",
-    "promptProse": "Sleepy-eyed La Pluma works behind the Dossoles bar at night, shaking a steel cocktail shaker one-handed before sliding a pink gradient cocktail toward the viewer. Her white shirt, ribbon tie and apron sit behind the near counter edge. A slight low angle reveals layered bottles behind her; warm bar light and a soft spotlight illuminate her yawn while neon colors reflect along the shaker.",
+    "promptProse": "La Pluma shakes the cocktail one-handed, then slides the pink drink toward the viewer with a sleepy yawn.",
     "promptTokens": [
-      "night",
-      "bar counter",
-      "white shirt",
+      "bartender",
       "apron",
-      "ribbon tie",
       "cocktail shaker",
       "pink cocktail",
       "sleepy",
-      "medium shot",
-      "low angle"
+      "bar",
+      "neon lights",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +42,8 @@
       "bartender"
     ],
     "timeOfDay": "夜晚",
-    "title": "羽毛笔 · 多索雷斯调酒"
+    "title": "羽毛笔 · 多索雷斯调酒",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

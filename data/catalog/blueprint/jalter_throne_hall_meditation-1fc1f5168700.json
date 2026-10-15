@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_throne_hall_meditation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jalter_throne_hall_meditation",
     "title": "贞德[Alter] · 王座厅沉思",
@@ -31,17 +31,17 @@
       "torchlight",
       "medium_shot"
     ],
-    "promptProse": "Jeanne Alter sits on the iron throne's broad armrest with a boot supported on its step, steadying a sheathed sword across armored knees while her other fingers tap the pommel. Her golden eyes lift at the viewer's approach. In the medium view, the dragon banner remains in a floor holder by the far wall. Warm torchlight outlines her silver hair, black armor and throne edges, with the empty hall receding into darkness.",
+    "promptProse": "Jeanne Alter sits on the throne armrest with a sheathed sword across her knees. Her banner remains in its floor stand as she looks up at the viewer.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne Alter",
-      "black gothic armor",
-      "purple cape",
-      "iron throne armrest",
+      "armor",
+      "cape",
+      "sitting",
+      "throne",
       "sheathed sword",
-      "banner in holder",
-      "torchlit hall",
+      "flag",
+      "torch",
       "medium shot"
     ],
     "negativeTokens": [

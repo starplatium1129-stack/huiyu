@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_cryo_awakening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 753,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "administrator_arknights_cryo_awakening",
     "characterId": "administrator_arknights",
@@ -31,15 +31,15 @@
       "upper_body"
     ],
     "promptTokens": [
-      "morning",
-      "home dining table",
-      "pale gray pajamas",
-      "gold piping",
-      "uncovered face",
+      "indoors",
+      "pajamas",
       "milk",
+      "table",
+      "morning",
+      "smile",
       "medium shot"
     ],
-    "promptProse": "With her face uncovered and short hair still slightly tousled, the Administrator sets a warm glass of milk beside the viewer's hand using both hands. Her pale-gray cotton pajama shirt has fine gold piping and a closed front. The eye-level medium view includes the home dining table and newly opened curtains behind. Soft morning light rounds the glass and highlights her smile, leaving quiet shadows in the pajama folds.",
+    "promptProse": "With her face uncovered, she sets a warm glass of milk beside the viewer's hand using both hands. Morning light enters through the open curtains.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

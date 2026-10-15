@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_throne_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 408,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "提裙跨坐缓缓沉腰，遥控器抵胸如加冕，星瞳迷离",
     "adult": true,
@@ -23,39 +23,19 @@
     "lighting": "台灯暖光与蕾丝黑金的诱惑光泽",
     "location": "宿舍房间扶手椅",
     "mood": "女王加冕、主控沉溺",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Shokuhou Misaki presses you into the armchair and straddles your lap with her skirt gathered, her black-and-gold lace lingerie glinting under the desk lamp as she holds a TV remote against your chest like a royal scepter. She sinks down in a slow, crowning descent, star-shaped pupils glazing with pleasure while her smile stays imperious, granting you tonight-only access to the queen's limited seat. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, warmth.",
+    "promptProse": "Adult Misaki rides astride her companion in the armchair with her skirt gathered and chest exposed, holding the remote against their chest.",
     "promptTokens": [
-      "straddling",
-      "cowgirl_position",
-      "on_lap",
-      "black_lingerie",
-      "gold_trim",
-      "lace_bra",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "pussy_juice",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "looking_down",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "black lingerie",
+      "gold trim",
+      "topless",
+      "skirt lift",
+      "cowgirl position",
+      "remote control",
+      "armchair",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -70,6 +50,7 @@
       "lamp"
     ],
     "timeOfDay": "深夜",
-    "title": "食蜂操祈 · 女王的主控王座·「本小姐的膝上……是限量席位哦」"
+    "title": "食蜂操祈 · 女王的主控王座·「本小姐的膝上……是限量席位哦」",
+    "nsfwTokens": []
   }
 }

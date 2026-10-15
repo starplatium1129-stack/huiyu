@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lucy_cyberpunk",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "lucy_cyberpunk",
     "profile": {
@@ -132,9 +132,7 @@
         "solo",
         "short_hair",
         "white_hair",
-        "multicolored_hair",
         "gradient_hair",
-        "eyeliner",
         "red_eyeshadow",
         "cyberware",
         "cyberpunk"

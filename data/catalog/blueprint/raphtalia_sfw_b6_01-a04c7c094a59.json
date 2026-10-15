@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1563,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_01",
     "title": "拉芙塔莉雅 · 晨训后的擦剑",
@@ -31,15 +31,16 @@
       "dawn_light",
       "medium_shot"
     ],
-    "promptProse": "Raphtalia sits on a camp stump at dawn, wiping her sword before sliding it back into the scabbard. Her raccoon ears turn toward distant birds and her tail gives a satisfied sway beneath the red-brown tunic and light leather vest. The medium view includes the cleaning cloth and camp boundary behind. First daylight catches the blade edge and ear fur, with longer soft shadows across the ground around the stump.",
+    "promptProse": "Raphtalia wipes her sword before returning it to the scabbard, her ears turning toward the morning birds.",
     "promptTokens": [
-      "Raphtalia",
-      "travel tunic",
-      "sword maintenance",
-      "camp stump",
-      "raccoon ears",
-      "dawn",
-      "medium shot"
+      "tunic",
+      "leather vest",
+      "sword",
+      "cleaning",
+      "sitting",
+      "stump",
+      "camp",
+      "dawn"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +51,8 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

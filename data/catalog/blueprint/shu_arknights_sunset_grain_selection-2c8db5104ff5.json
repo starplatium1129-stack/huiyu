@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_sunset_grain_selection",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 710,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights_sunset_grain_selection",
     "characterId": "shu_arknights",
@@ -29,16 +29,15 @@
       "full_body"
     ],
     "promptTokens": [
-      "sunset",
-      "house entrance",
-      "white blue jacket",
+      "Shu",
+      "white jacket",
       "patterned trousers",
-      "vegetable bag",
-      "open door",
-      "dragon tail",
+      "shopping bag",
+      "doorway",
+      "sunset",
       "full body"
     ],
-    "promptProse": "Shu pauses in the open residence doorway, vegetables in a cloth bag at one side while her free hand holds the door. She smiles sideways toward her companion. Show her full figure at eye level in the original white off-shoulder jacket and patterned trousers, with both the garment hem and dragon tail clear of the threshold. The outer door jamb frames her near shoulder; floorboards continue behind her into the quieter entry hall. Low sunset reaches the outer sleeve, the bag folds and the step. Warm light from inside spills across the inner door edge and floor, leaving a soft shadow directly below the bag and her boots.",
+    "promptProse": "Shu holds the door and smiles toward her companion with vegetables at her side, tail clear of the threshold in evening light.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1626,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_04",
     "title": "久远寺有珠 · 洋馆月桂的黑色花嫁",
@@ -29,15 +29,15 @@
       "rare_invitation",
       "twilight"
     ],
-    "promptProse": "Alice Kuonji sits beneath the mansion courtyard's laurel tree, bouquet on her lap as a bluebird settles on her raised fingertip. Her modest black wedding gown, white collar and silver-rune veil remain composed while dark eyes offer a restrained invitation. The vertical medium-full view includes branches and the quiet garden wall. Violet twilight softens the dress edge, while small silver rune glows illuminate nearby veil embroidery and the bird's lower feathers.",
+    "promptProse": "Alice receives the bluebird on her hand beneath the laurel tree, offering the viewer a reserved glance through her rune veil.",
     "promptTokens": [
-      "Alice Kuonji",
-      "black bridal gown",
-      "silver rune veil",
+      "black wedding dress",
+      "veil",
       "bluebird",
-      "laurel courtyard",
-      "twilight",
-      "medium full shot"
+      "sitting",
+      "laurel",
+      "courtyard",
+      "twilight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

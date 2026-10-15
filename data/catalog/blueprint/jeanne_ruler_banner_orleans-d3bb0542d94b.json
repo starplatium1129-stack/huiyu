@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_ruler_banner_orleans",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 231,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jeanne_ruler_banner_orleans",
     "title": "圣女贞德 · 奥尔良山岗的圣旗展开·「吾名贞德，此地由吾守护」",
@@ -29,20 +29,18 @@
       "holy_light",
       "full_body"
     ],
-    "promptProse": "On the ridge above Orleans, Jeanne raises Luminosite Eternelle with both hands, its pole clear of the ground and cloth opening in the storm wind. Silver breastplate, white-and-blue armored vestments and flowing cape accompany her streaming golden braid. The low full-body view includes planted boots and the raised standard against grey battle clouds. White-gold holy radiance illuminates her resolute eyes and gauntlets, separating the banner from the darker sky.",
+    "promptProse": "Jeanne raises Luminosite Eternelle with both hands on the ridge above Orleans. White-gold light separates the streaming banner from the storm clouds.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne",
-      "Ruler armor",
+      "armor",
       "white cape",
-      "golden braid",
-      "raised sacred banner",
+      "braid",
+      "flag",
       "Luminosite Eternelle",
-      "Orleans ridge",
-      "holy light",
+      "wind",
       "full body",
-      "low angle"
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

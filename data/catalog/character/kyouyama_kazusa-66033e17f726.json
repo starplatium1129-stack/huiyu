@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kyouyama_kazusa",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kyouyama_kazusa",
     "profile": {
@@ -145,7 +145,6 @@
         "halo",
         "cat_ears",
         "cat_tail",
-        "medium_breasts",
         "blue_archive"
       ],
       "negativeTokens": [

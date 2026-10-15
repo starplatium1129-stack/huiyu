@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_subway_evening",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 334,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuzuriha_inori_subway_evening",
     "title": "楪祈 · 地铁通勤",
@@ -30,17 +30,17 @@
       "medium_two_shot",
       "shu_ouma"
     ],
-    "promptProse": "Inori holds an overhead strap with one hand and her bag strap with the other, balancing beside Shu Ouma in his school uniform as the subway moves. Her reassuring crimson-eyed glance follows tunnel lights outside the dark window, red clips framing pink-orange hair above the white-and-blue uniform. The medium two-shot retains their separate supporting postures. Carriage lights illuminate hands and collars, while fleeting tunnel reflections streak across the window behind them.",
+    "promptProse": "Inori holds the overhead strap with one hand and her bag strap with the other, balancing beside Shu as tunnel lights streak past the window.",
     "promptTokens": [
-      "2people",
-      "Inori",
-      "Shu Ouma",
-      "white blue school uniform",
-      "overhead strap",
-      "bag strap",
-      "evening subway",
-      "carriage lights",
-      "medium two-shot"
+      "1girl",
+      "1boy",
+      "shu ouma",
+      "school uniform",
+      "holding strap",
+      "bag",
+      "subway",
+      "evening",
+      "two-shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +48,8 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

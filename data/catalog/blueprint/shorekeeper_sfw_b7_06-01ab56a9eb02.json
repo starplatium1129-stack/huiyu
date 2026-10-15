@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1644,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_06",
     "title": "守岸人 · 与贝壳的对话",
@@ -31,16 +31,15 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "The Shorekeeper crouches at the shallow water's edge in a white cardigan, blue blouse and long cream skirt. She raises a shell to her ear with serious attention, then smiles and replaces it exactly where she found it. The medium view includes wet sand and the incoming ripple beside her hand. Afternoon light brightens shell ridges and cardigan cuffs, with soft reflected water on the lower face and small contact shadows near the shell.",
+    "promptProse": "She listens to a shell at the water's edge, then returns it to the wet sand in afternoon light.",
     "promptTokens": [
       "the_shorekeeper_(wuthering_waves)",
-      "Shorekeeper",
-      "white cardigan",
-      "blue blouse",
-      "cream long skirt",
-      "shell listening",
+      "cardigan",
+      "blouse",
+      "skirt",
+      "shell",
+      "crouching",
       "shallows",
-      "afternoon",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_bath_gold_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 263,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "ishtar_nsfw_bath_gold_solo",
     "title": "伊什塔尔 · 神泉沐浴的金纱独奏·「女神的入浴，是要收观赏费的」",
@@ -27,42 +27,20 @@
       "masturbation",
       "steam"
     ],
-    "promptProse": "During the goddess's private bath, Ishtar reclines against the rim of the sacred spring in a gold-veiled gown soaked to translucence, the wet fabric outlining curves divine and dangerous alike. One hand glides beneath the water over herself while her red eyes glance sidelong at your hiding spot, naming the viewing fee for a goddess's bath and offering to collect the balance by other means. Sensual solo composition, wet translucent veil, cinematic lighting, steam, detailed spring background.",
+    "promptProse": "Adult Ishtar reclines against the spring rim with one hand beneath the water between her thighs, glancing sideways toward the viewer through the steam.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs",
-      "underwater",
-      "wet_clothes",
+      "adult",
+      "sacred spring",
+      "gold-trimmed gown",
+      "wet clothes",
       "see-through",
-      "wet_cloth",
       "veil",
-      "gold_trim",
-      "nipples_visible_through_clothes",
-      "bath",
-      "steam",
-      "water_droplets",
-      "black_hair",
-      "two_side_up",
-      "red_eyes",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "reclining",
+      "masturbation",
+      "steam"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -73,6 +51,7 @@
       "nsfw",
       "solo",
       "special_nsfw"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

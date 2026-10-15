@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_victoria_maid_shear_strike_ice",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1053,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "手持巨型冰刃剪刀贴地突进，巨大鲨鱼尾巴甩动激起冰屑气旋，神情冷峻酷飒",
     "camera": "dynamic low angle, sweeping wide shot",
@@ -20,17 +20,20 @@
     "mood": "冷酷英勇",
     "negativeTokens": [],
     "outfitId": "maid_uniform",
-    "promptProse": "Ellen slides across the frost-crystallized Hollow floor, dragging her oversized shear blades as her heavy shark tail sweeps snow into the air. Her black-and-white Victoria combat maid uniform stays clear in the low sweeping wide view. Blue ether spikes layer through the ruins behind her. Their cold glow catches the frosted weapon and apron, while slanting sunset adds a warmer edge to her hair and disturbed ice trail.",
+    "promptProse": "She drags the oversized shear blades across the frozen floor while her tail sweeps snow through the Hollow ruins.",
     "promptTokens": [
-      "sunset",
-      "Hollow ruins",
-      "blue ether crystals",
-      "combat maid uniform",
-      "giant shears",
-      "sliding",
+      "1girl",
+      "solo",
       "shark tail",
+      "maid",
+      "giant scissors",
+      "sliding",
+      "ice",
+      "crystal",
+      "ruins",
+      "sunset",
       "wide shot",
-      "low angle"
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

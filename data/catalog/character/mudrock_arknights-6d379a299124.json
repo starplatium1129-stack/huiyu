@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mudrock_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 30,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mudrock_arknights",
     "profile": {
@@ -109,11 +109,10 @@
         "mudrock (arknights)",
         "1girl",
         "solo",
-        "silver_hair",
-        "long_hair",
-        "red_eyes",
+        "silver hair",
+        "long hair",
+        "red eyes",
         "horns",
-        "large_breasts",
         "arknights"
       ],
       "negativeTokens": [

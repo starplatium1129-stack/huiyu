@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_cat_costume_embarrassing_blush",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1258,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "戴猫爪手套双手护在深沟胸前，满面通红泪眼汪汪娇嗔，猫耳与尾巴紧绷微颤",
     "camera": "medium shot, eye-level, extreme flustered blush focus",
@@ -19,36 +19,18 @@
     "location": "更衣室屏风布帘后木质地板上",
     "mood": "极度羞耻",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
       "nude"
     ],
     "outfitId": "cat_costume",
-    "promptProse": "Clutching her plush cat-paw mittens defensively over her deep cleavage in a strapless black leather leotard and fluffy cat ears, Yui blushes to the roots of her hair. Warm dressing room lighting highlights her mortified tears and twitching cat tail in peak tsundere embarrassment.",
+    "promptProse": "Adult Yui holds her plush paw mittens over the neckline of her black leotard, embarrassed beneath the warm dressing-room lights.",
     "promptTokens": [
-      "dressing_room",
-      "cat_costume",
-      "cat_ears",
-      "cat_tail",
-      "paw_gloves",
-      "strapless_leotard",
-      "cleavage",
-      "heavy_blush",
-      "teary_eyes",
-      "detailed_background",
-      "cinematic_lighting"
+      "cat costume",
+      "cat ears",
+      "cat tail",
+      "paw gloves",
+      "strapless leotard",
+      "blush",
+      "dressing room"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -62,6 +44,8 @@
       "teary_eyes"
     ],
     "timeOfDay": "下午",
-    "title": "古手川唯 · 羞耻万分的心跳猫娘变身"
+    "title": "古手川唯 · 羞耻万分的心跳猫娘变身",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

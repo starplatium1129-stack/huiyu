@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc255",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc255",
     "title": "休息室丝绸一字领的防线溃败",
@@ -41,11 +41,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, deep_blue_dress, evening_gown, off-shoulder_dress, bare_shoulders, bare_back, cleavage, sideboob, no_underwear, sitting_on_sofa, leaning_back, close-up, looking_at_viewer, one_hand_clutching_chest, heavy_blush, crying_teary_eyes, open_mouth_flustered, heart_ahoge, luxury_vip_lounge, crystal_chandelier, collarbone, slender_waist, full_body, warm_lighting, rim_light, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, standing, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "1girl, adult, ayachi_nene, nene_r18, low twintails, blue dress, evening gown, off shoulder, backless dress, sideboob, no underwear, reclining, sofa, hand on own chest, blush, teary eyes, chandelier, pov, close-up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "",
     "storyJa": "【寧々・パーティードレスのイブニングガウンと恥ずかしさの決壊】文化祭協賛レセプションの裏手、完全にロックされ、淡い香水の匂いが漂う豪華なVIP控室。超自然研究部の撮影の手伝いのため、寧々は非常にエレガントで華麗な深青色のオフショルダー・バックレス仕様のシフォンシルク製イブニングドレスのロングスカートに身を包んでいたが、そのインナーには下着を一切身に着けていない完全な真空状態だった。タイトで華麗なウエストシェイプの裁断のせいで、彼女の豊かな白い胸元の曲線がひときわ豊満に押し上げられて晒されている。ハイヒールを履き慣れていないため、彼女が振り向いた時に足首をひねって小さく悲鳴を上げ、シングルソファに座っていたあなたの胸の中に、逆向きに跨る形でドスンと転がり込んできた。強い引っ張りでドレスのオフショルダーの襟元が瞬間的にさらに数センチずり下がり、広範囲にわたる瑞々しい側乳と美しい肩が無防備に露出してしまった。彼女の頭のアホ毛は猛烈に震えてハート型に丸まり、顔を真っ赤にして羞恥の涙を浮かべながらその場で支離滅裂に自爆した――「うあぁ！柊、柊史！ファスナー、ファスナーが裂けちゃったんじゃない……そんなに下ばかり見ないでよ！私、私は決してわざと上手く歩けないフリをしてあなたに抱きしめてもらったわけじゃ……うう、バカ、早く目を閉じて！」",
     "rating": "R18",
-    "animaCaption": "In the luxurious VIP lounge, Nene in a deep-blue off-shoulder backless silk evening dress — completely bare underneath — reclines on the plush single sofa, one hand clutching her chest as she gazes up flustered and tearful at the viewer under the crystal chandelier.",
+    "animaCaption": "Nene reclines on a plush armchair in the VIP lounge, clutching the chest of her silk gown and looking up at the viewer with a flustered, tearful expression.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

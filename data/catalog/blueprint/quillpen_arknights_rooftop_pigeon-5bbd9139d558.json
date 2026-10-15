@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_rooftop_pigeon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 618,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "抱着遮阳伞靠在沙滩躺椅上打瞌睡",
     "camera": "wide medium shot",
@@ -15,21 +15,18 @@
     "lighting": "brilliant tropical sunlight, dappled shade under parasol, sparkling water highlights",
     "location": "多索雷斯水上乐园",
     "mood": "惬意慵懒",
-    "negativeTokens": [
-      "night"
-    ],
+    "negativeTokens": [],
     "outfitId": "dossoles_tropical_casual",
-    "promptProse": "Curled into a beach chair at the Dossoles water park, La Pluma hugs a large parasol and drifts asleep in a white off-shoulder top, pale denim shorts and sandals. The wide medium view sets the canopy above her, with the artificial beach extending to pool water behind. Afternoon sun brightens the exposed chair frame; moving parasol shade falls across her resting hands and clothes.",
+    "promptProse": "La Pluma curls into the chair hugging the large parasol, drifting to sleep beneath its shade.",
     "promptTokens": [
-      "afternoon",
-      "water park",
-      "beach chair",
-      "parasol",
-      "white off shoulder top",
+      "off shoulder shirt",
       "denim shorts",
       "sandals",
-      "dozing",
-      "wide medium shot"
+      "sleeping",
+      "beach chair",
+      "parasol",
+      "water park",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +39,8 @@
       "sunny_day"
     ],
     "timeOfDay": "午后",
-    "title": "羽毛笔 · 夏卉日光浴"
+    "title": "羽毛笔 · 夏卉日光浴",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

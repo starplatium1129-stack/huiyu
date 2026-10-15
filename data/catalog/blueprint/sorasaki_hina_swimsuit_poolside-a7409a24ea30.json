@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_swimsuit_poolside",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 907,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐躺椅喝冰饮",
     "adult": false,
@@ -26,14 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Hina relaxes on a white poolside lounge chair in her navy swimsuit, holding iced lemonade in both hands and letting her feet move lightly. Silver hair fans over the cushion as she gives the viewer a rare contented smile. The eye-level medium view includes a swim ring beside the chair and pool water beyond. Parasol shade softens her face, with reflected pool light catching the glass and exposed cushion edge.",
+    "promptProse": "Hina rests on the shaded lounge chair with lemonade in both hands, smiling as reflected pool light catches the glass.",
     "promptTokens": [
-      "summer daytime",
-      "poolside",
-      "white lounge chair",
+      "Hina",
       "navy swimsuit",
       "lemonade",
-      "silver hair",
+      "lounge chair",
+      "poolside",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

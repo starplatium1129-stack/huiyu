@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_summer_beach_tanlines_patrol",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 926,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "站在海浪浅水区单手叉腰，另一手扛着特制水枪，微抬下巴傲娇侧视",
     "camera": "cowboy shot, low angle",
@@ -20,16 +20,15 @@
     "mood": "热烈傲娇",
     "negativeTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Iori patrols the bright beach holding a water-squirt rifle, her free hand on her hip and sunglasses pushed up near her hair ribbons. Her black-and-white halterneck swimsuit and white pareo retain their summer outfit without changing her brown skin. The low cowboy view places foam and blue water beyond the sand. Direct sunshine illuminates the rifle casing and pareo edge, with cool sea reflections in the shaded fabric.",
+    "promptProse": "Iori patrols the beach with a water gun and her sunglasses pushed up. Her black-and-white swimsuit and white sarong stand against the blue sea.",
     "promptTokens": [
-      "summer daytime",
-      "beach",
-      "black white swimsuit",
-      "white pareo",
+      "water gun",
+      "hand on hip",
       "sunglasses",
-      "water rifle",
+      "beach",
+      "sunlight",
       "cowboy shot",
-      "low angle"
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_wall_patrol",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 978,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "垛口边俯瞰巡逻",
     "camera": "cowboy shot, standing atop a stone Wall rampart with wind in scarf",
@@ -20,15 +20,13 @@
     "mood": "沉静坚定",
     "negativeTokens": [],
     "outfitId": "survey_corps_uniform",
-    "promptProse": "Mikasa stands beside the Wall’s stone crenellations and looks down toward the settlement inside. Preserve the brown Survey Corps jacket, white shirt and trousers, green cape, red scarf and ODM harness in the cowboy shot. One crenellation fills the near edge; the walkway continues behind her between repeated parapet blocks, while small roofs far below establish the Wall’s height. Wind lifts the scarf clear of the harness. Daylight strikes the top surfaces of the masonry and the scarf folds; the inner faces of the parapet remain darker, with brief metal reflections on the harness matching the same light direction.",
+    "promptProse": "Mikasa patrols beside the battlements and looks down over the wall.",
     "promptTokens": [
-      "daytime",
-      "Wall rampart",
-      "Survey Corps uniform",
+      "military uniform",
       "green cape",
       "red scarf",
-      "ODM harness",
-      "cowboy shot"
+      "maneuver harness",
+      "battlement"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayase_yuuka",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hayase_yuuka",
     "profile": {
@@ -140,8 +140,6 @@
         "twintails",
         "blue_eyes",
         "halo",
-        "thick_thighs",
-        "large_breasts",
         "blue_archive"
       ],
       "negativeTokens": [

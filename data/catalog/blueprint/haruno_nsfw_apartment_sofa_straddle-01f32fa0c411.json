@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_apartment_sofa_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 376,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_nsfw_apartment_sofa_straddle",
     "title": "雪之下阳乃 · 深夜单身公寓的黑丝魅影 ·「真物什么的……比得上现在贴紧的温度吗」",
@@ -24,33 +24,22 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Haruno Yukinoshita from Oregairu kneels forward on her luxury high-rise leather sofa in the intoxicating midnight air. Her sheer black silk chemise slips down to her slender hips, freeing ripe, full breasts that heave with her commanding presence. Her long legs in torn black stockings tuck beneath her, sharp dark eyes narrowing with predatory yet desperately vulnerable warmth as her scarlet lips murmur against the quiet night. Vertical low-angle solo shot, city skyline neon glow filtering through floor-to-ceiling windows, detailed modern apartment background, solo 1girl, no extra people.",
-    "nsfwProse": "Kneeling forward across her leather sofa with sheer black lingerie slipping down to her waist, Haruno Yukinoshita reveals full bare breasts and stockinged thighs with predatory, intoxicating warmth.",
+    "promptProse": "Haruno kneels forward on the leather sofa, her chemise slipped to her hips and stockinged legs tucked beneath her.",
+    "nsfwProse": "",
     "promptTokens": [
-      "living_room",
-      "leather_sofa",
-      "city_skyline",
+      "black lingerie",
+      "clothes down",
+      "topless",
+      "torn stockings",
+      "kneeling",
+      "leaning forward",
+      "blush",
+      "sofa",
+      "city lights",
       "night",
-      "neon_lights",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "from below"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -61,23 +50,6 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [
-      "pov",
-      "kneeling",
-      "sofa",
-      "leather_sofa",
-      "leaning_forward",
-      "black_lingerie",
-      "off_shoulder",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "black_pantyhose",
-      "garter_straps",
-      "pussy_juice",
-      "heavy_blush",
-      "smirk",
-      "parted_lips"
-    ]
+    "nsfwTokens": []
   }
 }

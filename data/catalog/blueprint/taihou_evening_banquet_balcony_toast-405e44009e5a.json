@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_evening_banquet_balcony_toast",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1079,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_evening_banquet_balcony_toast",
     "title": "大凤 · 盛宴露台的月下独酌",
@@ -31,14 +31,15 @@
       "moonlight",
       "harbor_view"
     ],
-    "promptProse": "Taihou turns back on the banquet terrace above the cliffside harbor, lifting a tulip champagne glass in her crimson velvet gown and black opera gloves. White drapes shift beside her in the night wind. The rear three-quarter cowboy view includes the gown's open back and port lights below. Moonlight traces her earrings and shoulders, while silver candleholders warm the glass and the nearby velvet folds.",
+    "promptProse": "Taihou raises her glass above the harbor lights, candlelight warming the velvet beneath the moonlit drapes.",
     "promptTokens": [
-      "moonlit night",
-      "harbor terrace",
-      "crimson velvet gown",
+      "Taihou",
+      "red gown",
       "opera gloves",
       "champagne",
-      "turning back",
+      "looking back",
+      "terrace",
+      "moonlight",
       "cowboy shot"
     ],
     "negativeTokens": [],

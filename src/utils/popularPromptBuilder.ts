@@ -10,7 +10,7 @@ import {
 } from './promptPolicy.ts'
 import type { ResolvedStyle } from '@/config/kreaStyleRecipes.ts'
 import { normalizeProseKey } from './promptPhraseTables.ts'
-import { blueprintNegative, compositionTokens } from './blueprintComposition.ts'
+import { compositionNegative, compositionTokens } from './blueprintComposition.ts'
 import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
 import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 
@@ -156,7 +156,7 @@ function adultIdentityProse(prose: string): string {
 const ADULT_IDENTITY_EXCLUDE_RE =
   /^(?:child|children|loli|underage|minor|young_girl|schoolgirl|student|teenager|middle_school_student|junior_high_student|high_school_student)$/
 
-/** 渲染模板自带动词（Krea "wearing X" / Anima "She wears X"），服装 prose 若
+/** Krea 渲染模板自带动词（"wearing X"），服装 prose 若
  *  自带 "wearing/dressed in" 开头必须剥除，否则编译出 "wearing wearing"。
  *  2026-08-24 实测：8 角色 37 套服装踩坑（yor/reze/fern/jalter/sakura/yui/sylphiette/mimori/cecilia）。 */
 function outfitProseForRender(prose: string): string {
@@ -165,7 +165,7 @@ function outfitProseForRender(prose: string): string {
 
 /**
  * 反推顶替服装时的服装描述：把 tag 还原成可渲染的自然语言（下划线转空格）。
- * 渲染模板自带动词（Anima "She wears X" / Krea "wearing X"），这里只给名词短语。
+ * Krea 渲染模板自带 "wearing X"，这里只给名词短语。
  */
 function outfitOverrideProse(tokens: ReadonlyArray<string>): string {
   return tokens.map(token => String(token || '').replace(/_/g, ' ').trim()).filter(Boolean).join(', ')
@@ -241,6 +241,24 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
           ? (overridden ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
           : proseWithoutOutfit(identityProse))
 
+  const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
+  const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
+  const sourceOutfit = blueprint?.outfitId
+    ? character.outfits.find(item => item.id === blueprint.outfitId)
+    : character.outfits.find(item => item.default) ?? character.outfits[0]
+  const stableIdentity = new Set([...identitySource, ...character.exactTokens].map(normalizeProseKey))
+  const replacedOutfit = !adult && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id)
+    ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
+    : new Set<string>()
+  // 两种引擎共用蓝图的画面要素；手动姿态与换装优先于蓝图原词。
+  const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(token => {
+    if (replacedOutfit.has(normalizeProseKey(token))) return false
+    const hit = mutualGroupWithCategory(token)
+    if (manualPose && hit?.category === 'pose' && hit.group !== manualPose.group) return false
+    if (manualViewpoint && hit?.category === 'viewpoint' && hit.group !== manualViewpoint.group) return false
+    return true
+  })
+
   if (engine === 'krea2') {
     // 成人蓝图：outfitProse 置空（Krea 模板会拼成 "subject, wearing {outfitProse}"，
     // 穿衣服描述会压过显式词导致拒绝出裸）；脱衣叙述由 nsfwProse 前置承载。
@@ -258,6 +276,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       subjectProse,
       outfitProse,
       sceneProse,
+      scenePrompt: compositionTokens([...sceneTokensFiltered, ...nsfwTokens], blueprint).join(', '),
       emotion: emotionTokens,
       camera: shotToken ? [shotToken] : [],
       lighting: lightingTokens,
@@ -296,26 +315,6 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 2026-08-29 需求变更：画师仅来自用户手动选择（artistTags），
   // 蓝图 adultArtistHint 不再自动兜底注入（保持角色原滋原味）。
   const effectiveArtists = (options.artistTags && options.artistTags.length) ? options.artistTags : undefined
-  // 姿势与视角消解：manualTags 中已有明确动作/视角（如反推采纳的站姿）时，
-  // 场景蓝图自带的冲突旧动作（如坐姿）自动让位，确保最大程度还原参考图动作
-  const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
-  const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
-  // Only remove tokens proven to belong to the blueprint's original outfit.
-  // Do not infer clothing from action prose or delete overlapping identity anchors.
-  const sourceOutfit = blueprint?.outfitId
-    ? character.outfits.find(item => item.id === blueprint.outfitId)
-    : character.outfits.find(item => item.default) ?? character.outfits[0]
-  const stableIdentity = new Set([...identitySource, ...character.exactTokens].map(normalizeProseKey))
-  const replacedOutfit = !adult && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id)
-    ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
-    : new Set<string>()
-  const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(token => {
-    if (replacedOutfit.has(normalizeProseKey(token))) return false
-    const hit = mutualGroupWithCategory(token)
-    if (manualPose && hit?.category === 'pose' && hit.group !== manualPose.group) return false
-    if (manualViewpoint && hit?.category === 'viewpoint' && hit.group !== manualViewpoint.group) return false
-    return true
-  })
   const rating = profileRatingTag(profile, { rating: ratingLevel })
   const plan = createPromptPlan({
     profile,
@@ -334,11 +333,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     rating: rating || (ratingLevel === 'R18' ? 'nsfw' : ''),
     visualDescription: userVisual,
     subjectProse,
-    // 2026-08-16 审计：Anima 成人路径此前漏置空 outfitProse（Krea 分支已置空）。
-    // renderPromptPlan('anima') 会在 outfitProse 存在时渲染 "She wears {outfit}",
-    // 服装词会与成人 nsfwProse 的裸体词打架、压过显式词。与 Krea 三铁律「outfitProse 置空」对齐。
-    // 2026-08-29：反推顶替同理——那句 "She wears 校服..." 是热门角色还原不了参考图
-    // 服装的主因，必须连同 controls 一起换成参考图服装。
+    // 计划保留当前衣装语义供检查；Anima 输出使用 controls 标签，不重复注入服装散文。
     outfitProse: (adult || !outfitActive)
       ? ''
       : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose)),
@@ -348,8 +343,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   })
   const rendered = renderPromptPlan(plan, 'anima', profile)
   // renderPromptPlan 对 anima 恒返回空 negative，但无 LoRA 工作流含负向 encode 节点，
-  // 因此负向词由调用方按下发：先按 profile negative_mode 合并 negative_prefix，
-  // 再保留 blueprint 的非样板负向词（样板词由 replace 策略替换）。
+  // 因此负向词由调用方下发：合并 profile 基础与本条明确排除项。
   const negative = assembleNegative(
     profile,
     {
@@ -359,6 +353,6 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     'anima',
     { shot: options.shot, character: character.id },
   )
-  const finalNegative = blueprintNegative(negative, blueprint)
+  const finalNegative = compositionNegative(negative, blueprint)
   return { plan, prompt: rendered.prompt, negative: finalNegative, adult }
 }

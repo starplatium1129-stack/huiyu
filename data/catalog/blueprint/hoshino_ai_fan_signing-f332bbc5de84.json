@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_fan_signing",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 953,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "与粉丝握手交谈",
     "camera": "medium two-shot, handshake across a fan meeting table",
@@ -19,15 +19,14 @@
     "mood": "温柔亲和",
     "negativeTokens": [],
     "outfitId": "stage_two_tone",
-    "promptProse": "Across the fan-event table, Ai gently clasps a fan's hand and meets their gaze with bright star-shaped pupils. Her white-and-pink two-tone dress and collar remain visible beside the second figure in a medium two-shot. The table separates them while hall seating continues behind. Venue lights soften her hair and dress panels, catching both touching hands and leaving a narrow contact shadow between their fingers.",
+    "promptProse": "Ai gently clasps the fan's hand across the table and meets their gaze, keeping both faces visible.",
     "promptTokens": [
-      "daytime",
-      "fan event",
-      "two tone dress",
-      "fan",
+      "2people",
       "handshake",
+      "looking at another",
+      "fan meeting",
       "table",
-      "medium two shot"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +38,8 @@
       "daylight"
     ],
     "timeOfDay": "白天",
-    "title": "星野爱 · 握手会"
+    "title": "星野爱 · 握手会",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

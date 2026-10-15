@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1564,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_02",
     "title": "拉芙塔莉雅 · 市集里的围巾试色",
@@ -29,14 +29,13 @@
       "awning",
       "medium_shot"
     ],
-    "promptProse": "At the market fabric stall, Raphtalia holds an ochre scarf against her teal tunic and cream waistcoat, then feels its edge beside a furry ear to check the weave. Her tail hangs quietly behind brown trousers and lace-up boots. The medium portrait includes folded bolts along the counter. Daylight diffused by the awning reveals scarf fibers and her thoughtful face, with soft shadows between the fabric rolls and beneath her hand.",
+    "promptProse": "Raphtalia holds the ochre scarf against her tunic, then feels its edge beside an ear to judge the weave.",
     "promptTokens": [
-      "Raphtalia",
       "teal tunic",
-      "cream waistcoat",
-      "ochre scarf",
-      "fabric stall",
-      "medium shot"
+      "waistcoat",
+      "scarf",
+      "fabric",
+      "market stall"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +45,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

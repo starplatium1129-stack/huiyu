@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_d_arc",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jeanne_d_arc",
     "profile": {
@@ -99,9 +99,7 @@
         "blonde_hair",
         "very_long_hair",
         "ahoge",
-        "purple_eyes",
-        "gentle_smile",
-        "holy_motherly"
+        "purple_eyes"
       ],
       "exactTokens": [
         "jeanne d'arc (fate)"

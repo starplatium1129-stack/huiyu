@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_school",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 508,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kisara_school",
     "title": "木更 · 学校日常",
@@ -25,18 +25,17 @@
       "hair_ornament",
       "indoor"
     ],
-    "promptProse": "Kisara turns in the sunny school corridor with a playful smile, long pastel hair moving beside her sailor collar and red bow. Grey puff-sleeved jacket, white pleated skirt and black knee socks retain the uniform; the small right-thigh bandage remains ordinary costume detail. The medium view follows corridor windows and classroom doors behind. Clear afternoon light illuminates her face and jacket folds, casting repeating frame shadows along the hallway floor.",
+    "promptProse": "Kisara turns in the sunlit corridor, her red bow and white pleated skirt clear beneath the grey jacket.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Kisara",
-      "white sailor collar",
+      "sailor collar",
       "red bow",
-      "grey puff sleeve jacket",
-      "white pleated skirt",
-      "black knee socks",
-      "school corridor",
-      "daylight",
+      "grey jacket",
+      "pleated skirt",
+      "kneehighs",
+      "turning",
+      "school hallway",
       "medium shot"
     ],
     "negativeTokens": [],

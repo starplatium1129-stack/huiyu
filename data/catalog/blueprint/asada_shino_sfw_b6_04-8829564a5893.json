@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_sfw_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1376,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "asada_shino_sfw_b6_04",
     "title": "朝田诗乃 · 静音礼堂里的蓝色花嫁",
@@ -29,15 +29,15 @@
       "quiet_smile",
       "morning_light"
     ],
-    "promptProse": "Beside the small chapel piano, Shino Asada touches a blue flower in her bouquet and turns toward the viewer with a quiet smile. Her simple blue-and-white wedding gown, veil and silver hair ornament frame ash-brown hair without glasses. The vertical medium-full composition includes the piano side and pale window behind. Clear morning light illuminates her fingers and gown folds, while faint blue window reflection lies across the piano's polished lid.",
+    "promptProse": "She touches a blue flower in the bouquet and turns toward the viewer beside the piano. Morning light reaches her fingers and gown.",
     "promptTokens": [
-      "Shino Asada",
-      "blue-and-white bridal gown",
-      "silver hair ornament",
-      "blue bouquet",
-      "chapel piano",
-      "morning",
-      "medium full shot"
+      "chapel",
+      "wedding dress",
+      "blue and white dress",
+      "veil",
+      "bouquet",
+      "piano",
+      "morning"
     ],
     "negativeTokens": [
       "glasses worn",

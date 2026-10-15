@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1637,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_05",
     "title": "长离 · 荷池边的海滨茶席",
@@ -30,15 +30,16 @@
       "light_smile",
       "afternoon_light"
     ],
-    "promptProse": "Changli sits diagonally on the waterside wooden platform, pouring herself chilled tea before lifting the glass toward the viewer with a lighter smile. Her peach-red swimsuit lies beneath a cream long overshirt and embroidered sash. Lotus leaves and sea breeze move beside her long hair in the horizontal medium view. Warm afternoon light catches the glass rim and leaf edges, with water reflections below the platform and soft sleeve shadows around her wrist.",
+    "promptProse": "She pours chilled tea and lifts the glass toward the viewer. Sunlight catches the lotus leaves beside the platform.",
     "promptTokens": [
-      "Changli",
-      "peach-red swimsuit",
+      "waterfront",
+      "platform",
+      "red swimsuit",
       "cream overshirt",
       "chilled tea",
-      "lotus waterfront",
-      "afternoon",
-      "medium shot"
+      "lotus",
+      "sitting",
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

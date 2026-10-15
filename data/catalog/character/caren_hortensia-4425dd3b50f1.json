@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "caren_hortensia",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "caren_hortensia",
     "profile": {
@@ -98,10 +98,7 @@
         "fate/hollow_ataraxia",
         "white_hair",
         "short_hair",
-        "yellow_eyes",
-        "slender_body",
-        "cool_beauty",
-        "deadpan"
+        "yellow_eyes"
       ],
       "exactTokens": [
         "caren_hortensia",

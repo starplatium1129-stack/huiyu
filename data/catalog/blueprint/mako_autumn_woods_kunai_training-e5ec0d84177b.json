@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_autumn_woods_kunai_training",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1135,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "踩在岩石上舒展腰身投掷苦无，身体前倾发力，枫叶随劲风环绕飞舞",
     "camera": "full body, dynamic action wide shot, low perspective",
@@ -20,17 +20,15 @@
     "mood": "飒爽果敢",
     "negativeTokens": [],
     "outfitId": "ninja_suit",
-    "promptProse": "Mako lowers her stance on a moss-covered rock along the autumn forest path and releases a kunai accurately from her right hand. Her shinobi top, guarded forearms and wrap skirt over safety shorts remain fully framed, black hair and hem moving among red leaves. The low wide view follows the rocky path behind. Gold-red canopy light catches the thrown blade and leaf edges, leaving cool moss shadows beneath her grounded feet.",
+    "promptProse": "Mako plants a foot on the mossy rock and throws her kunai with her right hand through the falling maple leaves.",
     "promptTokens": [
-      "autumn",
-      "forest path",
-      "mossy rock",
-      "shinobi outfit",
+      "ninja clothes",
       "kunai",
-      "right hand",
       "throwing",
-      "full body",
-      "low angle"
+      "rock",
+      "forest",
+      "maple leaves",
+      "full body"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

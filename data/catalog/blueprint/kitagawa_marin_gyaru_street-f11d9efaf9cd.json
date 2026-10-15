@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_gyaru_street",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 501,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "举着手机逛街聊天",
     "camera": "medium shot",
@@ -21,18 +21,16 @@
     "mood": "活泼张扬",
     "negativeTokens": [],
     "outfitId": "gal_casual",
-    "promptProse": "Marin walks through daytime Shibuya holding her phone in one hand and linking her free arm with a clothed companion beside her. Her cropped top and skirt retain the bright gyaru street outfit as she chats energetically. The medium two-shot connects their joined arms to storefronts extending along the route. Clear daylight illuminates their faces and phone edges, while shop-glass reflections color the pavement and softer facade shadows frame the shared stride.",
+    "promptProse": "Marin walks arm-in-arm with her companion through Shibuya, chatting while holding her phone.",
     "promptTokens": [
       "2people",
-      "Marin",
-      "clothed companion",
       "cropped top",
-      "street skirt",
-      "phone",
+      "skirt",
       "linked arms",
-      "daytime Shibuya",
-      "shopfronts",
-      "medium shot"
+      "smartphone",
+      "street",
+      "shops",
+      "daylight"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

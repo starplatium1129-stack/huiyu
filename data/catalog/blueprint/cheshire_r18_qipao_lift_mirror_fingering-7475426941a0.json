@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_qipao_lift_mirror_fingering",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1100,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cheshire_r18_qipao_lift_mirror_fingering",
     "title": "柴郡 · 落地镜前旗袍高撩私密自抚",
@@ -31,48 +31,24 @@
       "fake_hair_ornament",
       "heavy_blush"
     ],
-    "promptProse": "Vanity lamps surround adult Cheshire standing alone beside an ornate mirror. Her silk qipao is lifted above the hips and opened beneath bare breasts, one leg raised on a low stool. She holds the hem with one gloved hand and fingers herself with the other, while her cat tail curves clear of both legs. Purple hair and ears frame blue eyes, wet lashes and a flustered smile. Vertical solo portrait, no text or extra people.",
+    "promptProse": "Adult Cheshire rests one foot on a stool, holding her qipao hem with one hand while the other rests between her thighs beside the lit mirror.",
     "promptTokens": [
-      "mirror_reflection",
-      "masturbation",
-      "fingering",
-      "cheongsam",
-      "high_slit",
-      "cat_ear_headband",
-      "fake_hair_ornament",
-      "large_breasts",
-      "heavy_blush",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "adult",
+      "dressing room",
+      "mirror",
+      "qipao",
+      "dress lift",
+      "topless",
+      "raised leg",
+      "masturbation"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "masturbation",
-      "fingering",
-      "cheongsam",
-      "cat_ear_headband",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

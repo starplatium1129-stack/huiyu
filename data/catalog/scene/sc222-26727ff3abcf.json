@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc222",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc222",
     "title": "玻璃花房骤雨下的诱导过载",
@@ -41,11 +41,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, white_summer_dress, wet_hair, wet_skin, wet_clothes, see_through_clothing, translucent_clothing, clinging_to_body, no_bra, no_underwear, sitting_on_bench, straddling_bench, leaning_forward, close-up, looking_at_viewer, reaching_towards_viewer, hands_on_chest, heavy_blush, open_mouth, crying_with_pleasure, teary_eyes, heart_ahoge, greenhouse, rain, greenhouse_plants_bokeh, collarbone, slender_waist, full_body, soft_diffused_light, sunlight, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, dry_clothes, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, wet white sundress, see-through, no underwear, straddling bench, leaning forward, hands on chest, teary eyes, blush, greenhouse, thunderstorm, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "dry clothes",
     "storyJa": "【寧々】【寨々・ガラス温室の俄か雨と誘導過負荷】休日の午後、突然の雷雨に見舞われた姫松学院裏庭のガラス温室。巨大な雨粒が頭上のガラス天窓を激しく叩きつけ、さらに内部の破損した自動スプリンクラーが突如暴走、寨々の身に纏う薄い真っ白なサマードレスを完全に濡らし尽くした。半透明になった生地が無防備に彼女の瑞々しい肢体にぴったりと張り付き、中の真空状態は一目瞭然、豊かな双丘と羞恥の赤みがはっきりと晒されてしまっている。水溜まりを避けるため、彼女は温室中央の狭い長椅子に跨ることを余儀なくされ、体ごとあなたの胸にきつくしがみついた。頭の上のアホ毛は極度の情動で猛烈に震えて完璧なハート型に丸まり、熱気の中で息を荒げながら、涙声で力なく自爆した――「うあぁ！ド、ドレスがすっかり透明になっちゃったじゃない……そんなにずっと見つめないでよ！べ、別に植物の手入れにかこつけて、わざとこんな格好であなたを誘惑したわけじゃ……ん、早くあなたの体で隠してよ、バカ！」",
     "rating": "R18",
-    "animaCaption": "In the glass greenhouse under a sudden thunderstorm, Nene's thin white summer dress is drenched and translucent, clinging to her bare body; she straddles the narrow wooden bench, leaning in close to the viewer with hands held to her chest, panting with a heavy blush and curled heart-shaped ahoge as rain hammers the glass roof.",
+    "animaCaption": "She straddles the narrow bench and leans toward the viewer with her hands at her chest, rain hammering the greenhouse roof above her soaked dress.",
     "auditRevision": "careful-batch14-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1679,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_05",
     "title": "橘美花莉 · 海滨主题咖啡的限定造型",
@@ -32,14 +32,14 @@
       "sea_breeze",
       "afternoon_light"
     ],
-    "promptProse": "Mikari Tachibana sits beside the convention's themed beach cafe stall, holding the Miriella-patterned iced drink and brushing chestnut hair behind her shoulder for the camera. Her metallic-gold swimsuit, light black wrap and little wing accessories remain clear with pink hair ties. The horizontal medium portrait includes the stall counter and sea beyond. Afternoon sun lights gold fabric and cup condensation, while ocean reflections flicker beneath the wrap's shaded folds.",
+    "promptProse": "Mikari brushes her hair back for the camera while holding a themed drink beside the sunlit beach stall.",
     "promptTokens": [
       "Mikari Tachibana",
       "gold swimsuit",
-      "black beach wrap",
-      "wing accessories",
-      "themed iced drink",
-      "beach stall",
+      "black wrap",
+      "wing ornament",
+      "iced drink",
+      "beach cafe",
       "medium shot"
     ],
     "negativeTokens": [],

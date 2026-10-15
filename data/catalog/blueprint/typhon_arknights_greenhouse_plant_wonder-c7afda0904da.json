@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_greenhouse_plant_wonder",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 701,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "typhon_arknights_greenhouse_plant_wonder",
     "characterId": "typhon_arknights",
@@ -32,15 +32,16 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "daytime",
-      "bookstore",
-      "charcoal wool jacket",
-      "berry midi skirt",
-      "travel book",
+      "Typhon",
+      "jacket",
+      "blouse",
+      "skirt",
+      "atlas",
       "pointing",
+      "bookstore",
       "cowboy shot"
     ],
-    "promptProse": "In front of the travel-book shelves, Typhon holds an atlas open and points to a photograph of a lakeside cabin, tilting the spread so her companion can see it. Keep her charcoal wool jacket, ivory blouse and berry-purple midi skirt in the eye-level cowboy composition. The near corner of the atlas overlaps her jacket; rows of book spines continue behind her to a shelf end that reveals a narrow aisle. Diffuse window light makes the open pages the brightest local surface and gives the silver jacket toggles small, soft reflections. Her fingertip casts a short shadow beside the photograph, and the shelf recesses become darker toward the aisle.",
+    "promptProse": "Typhon tilts an open atlas toward her companion and points to a lakeside cabin photograph in window light.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

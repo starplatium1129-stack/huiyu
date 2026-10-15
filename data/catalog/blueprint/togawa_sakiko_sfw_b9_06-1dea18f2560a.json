@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1753,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_06",
     "title": "丰川祥子 · 和解后的合奏",
@@ -33,20 +33,18 @@
       "afternoon_light",
       "wide_shot"
     ],
-    "promptProse": "Sakiko Togawa plays the foreground keyboard with her eyes briefly closed, cream knit top and blue trousers framed by ribbon-tied blue hair. Four former bandmates join separately: a vocalist at the microphone, guitarist and bassist facing inward, and drummer at the rear. Music stands connect their rehearsal positions in the wide view. Afternoon window light crosses keyboard keys and their playing hands, with instrument shadows anchoring each musician within the shared room.",
+    "promptProse": "Sakiko plays keyboard in front; the vocalist, guitarist and bassist face inward while the drummer sits behind them in afternoon light.",
     "promptTokens": [
       "bang_dream!",
       "togawa_sakiko",
-      "Sakiko Togawa",
       "5girls",
-      "cream knit top",
-      "blue trousers",
       "keyboard",
-      "vocalist",
+      "microphone",
       "guitar",
       "bass guitar",
-      "drum set",
-      "wide ensemble"
+      "drums",
+      "rehearsal",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

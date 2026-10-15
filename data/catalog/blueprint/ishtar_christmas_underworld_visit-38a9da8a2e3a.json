@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_christmas_underworld_visit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 257,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ishtar_christmas_underworld_visit",
     "title": "伊什塔尔 · 冥界圣诞的来访·「姐姐的东西，本女神先看看」",
@@ -29,19 +29,17 @@
       "blue_snow_light",
       "medium_shot"
     ],
-    "promptProse": "On the snowy underworld plain, Ishtar offers a wrapped Christmas box in both gloved hands while bashfully looking aside. Her white winter coat, red scarf and long trousers replace summer clothes beneath the star hairpin; a larger present sack rests beside her boots. The medium view includes the grounded sack and distant blue snow. Cool snowlight reveals wrapping folds, while a nearby lantern warms the ribbon and fingertips against the shaded coat.",
+    "promptProse": "Ishtar offers a Christmas gift with both gloved hands, looking aside bashfully. A sack of presents rests beside her on the blue snow.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Ishtar",
-      "white winter coat",
+      "winter coat",
       "red scarf",
       "gloves",
-      "long trousers",
-      "star hairpin",
-      "Christmas gift",
-      "present sack",
-      "underworld snow",
+      "gift box",
+      "looking away",
+      "snow",
+      "christmas",
       "medium shot"
     ],
     "negativeTokens": [

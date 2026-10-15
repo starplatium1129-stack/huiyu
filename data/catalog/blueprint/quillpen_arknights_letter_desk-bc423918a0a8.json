@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_letter_desk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 620,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "抱抱枕蜷缩在沙发上安稳沉睡",
     "camera": "intimate medium shot",
@@ -18,20 +18,17 @@
     "lighting": "warm golden window sunlight, soft dust motes, gentle ambient fill",
     "location": "罗德岛休息室",
     "mood": "温馨恬静",
-    "negativeTokens": [
-      "standing"
-    ],
+    "negativeTokens": [],
     "outfitId": "sleepy_oversized_loungewear",
-    "promptProse": "La Pluma sleeps curled on the Rhodes Island lounge sofa, hugging a large fluffy cushion to her oversized pink hoodie. Her hair feather rests above the cushion in an intimate medium view. The sofa back encloses her resting shape, with the lounge wall farther behind. Golden afternoon window light grazes her feather and cushion fibers, leaving soft contact shadows between her arms and the upholstery.",
+    "promptProse": "La Pluma sleeps curled around a fluffy cushion on the lounge sofa, her hair feather resting just above it.",
     "promptTokens": [
-      "afternoon",
-      "Rhodes Island lounge",
-      "sofa",
-      "oversized pink hoodie",
-      "cushion",
-      "curled up",
+      "pink hoodie",
       "sleeping",
-      "medium shot"
+      "curled up",
+      "pillow hug",
+      "couch",
+      "lounge",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +40,8 @@
       "iced_drink"
     ],
     "timeOfDay": "午后",
-    "title": "羽毛笔 · 休息室午憩"
+    "title": "羽毛笔 · 休息室午憩",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

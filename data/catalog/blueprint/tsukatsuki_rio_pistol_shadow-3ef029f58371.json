@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_pistol_shadow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 882,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "独自握枪凝视窗外",
     "adult": false,
@@ -26,14 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "seminar_uniform",
-    "promptProse": "Rio stands alone at the Seminar room's floor-to-ceiling window, gripping a special pistol tightly before reacting to the approaching teacher. Her high-neck sweater and pleated skirt remain visible in medium view, with the weapon held close rather than aimed at the camera. Blood-red sunset outlines her dark hair and fingers from the side, and window reflections catch her red eyes above the shadowed room furniture.",
+    "promptProse": "Rio holds the pistol close at the window and reacts to the teacher's approach against the red sunset.",
     "promptTokens": [
-      "sunset",
-      "Seminar room",
-      "floor window",
-      "high neck sweater",
+      "Rio",
+      "turtleneck",
       "pistol",
-      "standing",
+      "window",
+      "sunset",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

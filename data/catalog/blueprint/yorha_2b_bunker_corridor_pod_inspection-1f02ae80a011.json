@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_bunker_corridor_pod_inspection",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1109,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yorha_2b_bunker_corridor_pod_inspection",
     "title": "2B · 残破大教堂的纯白誓约花嫁",
@@ -34,16 +34,16 @@
       "blue_eyes",
       "gentle_smile"
     ],
-    "promptProse": "2B stands near the ruined cathedral altar in a white off-shoulder lace bridal gown and light veil, her blindfold removed. Both white-gloved hands support the bouquet of white Lunar Tears beneath a rare gentle smile. The medium-full view includes the flowing train, ivy and broken stained glass behind her. Golden window light catches the flower petals and lace ridges; colored glass reflections fall across the pale skirt while the altar recess remains darker.",
+    "promptProse": "2B holds Lunar Tears in both hands near the ruined altar, golden light falling through broken stained glass.",
     "promptTokens": [
-      "daytime",
-      "ruined cathedral",
-      "white lace bridal gown",
-      "sheer veil",
-      "white gloves",
-      "Lunar Tears bouquet",
+      "2B",
+      "white wedding dress",
+      "veil",
+      "gloves",
+      "bouquet",
       "uncovered eyes",
-      "medium full shot"
+      "cathedral",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

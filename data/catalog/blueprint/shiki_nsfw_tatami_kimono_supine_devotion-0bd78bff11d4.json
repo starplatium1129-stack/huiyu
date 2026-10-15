@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_tatami_kimono_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1351,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "和服大敞全裸仰卧，双腿大开曲膝，双手拉着视角手掌十指紧扣，咬唇娇喘",
     "adult": true,
@@ -23,43 +23,18 @@
     "lighting": "障子门透进来的清冷月光与床头昏暗暖油灯",
     "location": "散发着蔺草清香的私密和室软榻中央",
     "mood": "深情交付",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "A paper lantern warms adult Ryougi Shiki lying alone on tatami bedding. Her blue kimono is loosened and gathered at the waist, exposing bare breasts above both knees bent into a stable vertical frame. She keeps one hand on the hilt of a sheathed knife placed beside the futon and fingers herself with the other, clearly separating blade and body. Short black hair and grey-blue eyes frame a cool expression breaking into a deep blush. Top-down solo portrait, no text or extra people.",
+    "promptProse": "Shiki touches herself on the futon while her other hand rests on the sheathed knife beside her, the loosened kimono lit by a paper lantern.",
     "promptTokens": [
-      "tatami_room",
+      "Ryougi Shiki",
+      "blue kimono",
+      "on back",
+      "knees up",
       "futon",
-      "white_kimono",
-      "open_clothes",
-      "completely_nude",
-      "lying_on_back",
-      "spread_legs",
-      "knees_up",
-      "bare_breasts",
-      "small_breasts",
-      "pink_nipples",
-      "areola",
-      "pussy",
-      "pussy_juice",
-      "interlocked_fingers",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "saliva_trail",
-      "black_hair",
-      "vertical_shot",
-      "high_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "lantern",
+      "high angle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -77,6 +52,11 @@
       "heavy_blush"
     ],
     "timeOfDay": "深夜",
-    "title": "两仪式 · 榻榻米和服半敞的深情仰卧"
+    "title": "两仪式 · 榻榻米和服半敞的深情仰卧",
+    "nsfwTokens": [
+      "topless",
+      "masturbation",
+      "hand between legs"
+    ]
   }
 }

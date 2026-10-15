@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_flower_bouquet",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 447,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "emilia_rezero_flower_bouquet",
     "title": "爱蜜莉雅 · 超市花束",
@@ -25,16 +25,15 @@
       "day",
       "indoor"
     ],
-    "promptProse": "Emilia holds fresh white lilies at the market flower stall and brings the bouquet closer to smell its petals, smiling beneath her silver hair and comfortable casual outfit. The medium view includes wrapping and leaves near her hands, other flowers arranged behind the counter. Bright stall lighting reveals the petal folds, while soft morning daylight outlines her hair and bouquet edges, leaving green shade where stems overlap inside the wrapping.",
+    "promptProse": "She brings the fresh lilies close to smell them at the market flower stall.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Emilia",
-      "comfortable casual outfit",
-      "white lilies",
+      "casual",
       "bouquet",
-      "flower stall",
-      "bright lights",
+      "white lily",
+      "flower shop",
+      "smile",
       "morning",
       "medium shot"
     ],

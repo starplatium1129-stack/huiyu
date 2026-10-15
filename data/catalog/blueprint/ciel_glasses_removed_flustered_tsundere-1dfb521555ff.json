@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_glasses_removed_flustered_tsundere",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1332,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "摘下的眼镜放在桌上，双手抓住视角衣袖，抬眼露出惊讶而害羞的浅笑。",
     "camera": "medium close-up, eye level, sleeve in foreground",
@@ -24,15 +24,14 @@
       "glasses worn"
     ],
     "outfitId": "sfw_school_uniform_without_glasses",
-    "promptProse": "Ciel faces her nearby companion in the evening clubroom, both hands lightly gripping the sleeve offered toward her. Without glasses, her blue eyes show surprise before a small embarrassed smile appears; her navy blazer, red tie and grey skirt stay orderly. Keep the sleeve in the close foreground and folded glasses on the desk behind. Soft sunset enters from the side, warming her ear and casting a restrained sleeve shadow across her hands.",
+    "promptProse": "She lightly grips her companion's offered sleeve with both hands. Her folded glasses lie on the desk behind her in sunset light.",
     "promptTokens": [
-      "Ciel",
-      "navy school blazer",
-      "grey skirt",
-      "glasses removed",
-      "sleeve contact",
+      "couple",
       "clubroom",
-      "medium close-up"
+      "school uniform",
+      "holding sleeve",
+      "blush",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

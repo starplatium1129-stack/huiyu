@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sakurajima_mai",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakurajima_mai",
     "profile": {
@@ -104,17 +104,13 @@
       "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, an elegant actress with long straight silky black hair with a subtle gloss, soft purple-grey eyes, a delicate beauty mark beneath her left eye, and her iconic white rabbit-shaped hair clip, with a composed, attentive manner",
       "identityTokens": [
         "sakurajima_mai",
-        "seishun_buta_yarou",
+        "seishun buta yarou",
         "1girl",
         "solo",
-        "long_black_hair",
-        "straight_hair",
-        "purple_eyes",
-        "bangs",
-        "ahoge",
-        "rabbit_hair_ornament",
-        "hair_clip",
-        "beauty_mark"
+        "black hair",
+        "long hair",
+        "purple eyes",
+        "rabbit hair ornament"
       ],
       "exactTokens": [
         "sakurajima_mai"

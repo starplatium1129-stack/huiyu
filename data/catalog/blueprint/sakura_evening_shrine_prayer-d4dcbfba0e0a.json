@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_evening_shrine_prayer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 187,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakura_evening_shrine_prayer",
     "title": "间桐樱 · 郊外神社祈愿（想象）",
@@ -31,17 +31,13 @@
       "sunset_light",
       "medium_shot"
     ],
-    "promptProse": "At the small outskirts shrine, Sakura supports a wooden ema with one hand while tying its red cord to the rack with the other, then lowers her eyes once it hangs securely. Her white sleeveless sundress and hair ribbon stir above planted sandals. The medium view follows the rack into the quiet courtyard. Golden-hour sun illuminates the knot and wood grain, casting slender plaque shadows across the upright posts.",
+    "promptProse": "Sakura supports an ema while tying its cord to the shrine rack in the evening sun.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Sakura",
-      "white sleeveless sundress",
-      "red hair ribbon",
-      "sandals",
-      "wooden ema",
-      "tying red cord",
-      "shrine rack",
+      "white dress",
+      "hair ribbon",
+      "ema",
+      "shrine",
       "sunset",
       "medium shot"
     ],

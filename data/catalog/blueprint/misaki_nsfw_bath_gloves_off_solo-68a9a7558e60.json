@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_bath_gloves_off_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 411,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "斜倚缸沿湿身半透蕾丝，水下手指自抚，星瞳半阖",
     "adult": true,
@@ -24,41 +24,19 @@
     "location": "宿舍浴室浴缸",
     "mood": "女王卸甲、湿身媚态",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
+      "gloves"
     ],
     "nsfwProse": "",
     "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Bare-handed for once without her signature white gloves, Shokuhou Misaki reclines against the rim of a steaming bathtub, her black lace lingerie soaked to translucent sheerness and dragged to her thighs. One hand glides slowly beneath the water between her parted legs while her star-shaped pupils fall half-lidded in the fog, murmuring that what lies beneath the gloves is the real her, and tonight she permits you a closer look. Sensual solo composition, wet translucent fabric, cinematic lighting, volumetric steam, detailed bathroom background.",
+    "promptProse": "Adult Misaki reclines against the tub rim without her gloves, touching herself underwater with her soaked lace lingerie gathered at her thighs.",
     "promptTokens": [
-      "sensual_solo",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs",
-      "underwater",
-      "wet_clothes",
+      "black lingerie",
+      "wet clothes",
       "see-through",
-      "wet_cloth",
-      "black_lingerie",
-      "lace_bra",
-      "nipples_visible_through_clothes",
-      "bath",
-      "steam",
-      "water_droplets",
-      "blonde_hair",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "masturbation",
+      "hand between legs",
+      "bathtub",
+      "steam"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -73,6 +51,7 @@
       "steam"
     ],
     "timeOfDay": "深夜",
-    "title": "食蜂操祈 · 蜕下手套的浴缸夜·「白手套之下……才是真正的本小姐」"
+    "title": "食蜂操祈 · 蜕下手套的浴缸夜·「白手套之下……才是真正的本小姐」",
+    "nsfwTokens": []
   }
 }

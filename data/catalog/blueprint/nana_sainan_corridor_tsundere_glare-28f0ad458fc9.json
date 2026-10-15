@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_sainan_corridor_tsundere_glare",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1263,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手叉腰前倾身躯，露出可爱小虎牙傲娇瞪视，粉发双马尾与爱心尾巴晃荡",
     "camera": "cowboy shot, eye-level, classic tsundere confrontation framing",
@@ -20,16 +20,16 @@
     "mood": "傲娇好胜",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Nana blocks Sainan High's hallway with both hands on her hips, glaring at Rito as a small sharp fang shows beneath her pout. Pink twin tails bounce over her sailor uniform and her heart-tipped tail swings behind the skirt. The eye-level cowboy view places classroom doors along one side and windows along the other. Morning backlight passes through hair tips and glints on the floor beyond her feet.",
+    "promptProse": "Nana blocks Rito's path in the school corridor with both hands on her hips, her tail swinging behind her pout.",
     "promptTokens": [
-      "Nana",
-      "Sainan uniform",
+      "2people",
+      "yuuki rito",
+      "school uniform",
       "hands on hips",
-      "pink twintails",
-      "snaggletooth",
-      "devil tail",
+      "glaring",
+      "fang",
       "hallway",
-      "cowboy shot"
+      "morning"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +44,8 @@
     ],
     "timeOfDay": "早晨",
     "title": "娜娜 · 走廊拐角的傲娇小虎牙",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

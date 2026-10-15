@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_bathhouse_wet_lingerie_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1354,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "斜靠在木桶浴池边缘，湿透黑蕾丝贴肤，单手在水下自抚，微仰头咬唇娇喘",
     "adult": true,
@@ -24,36 +24,17 @@
     "lighting": "水面反射出的古朴纸灯笼暖黄烛光",
     "location": "弥漫温暖杉木与水汽的和风私密温泉浴室",
     "mood": "唯美水光",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "outfitId": "black_lace_sensual_lingerie",
-    "promptProse": "Reclining against the smooth cedar ledge of a steaming traditional Japanese bath, Ryougi Shiki is bathed in rising mist. Her sheer black lace bralette is completely soaked and clinging tightly to her pale skin, outlining her petite bust and rosy nipples with exquisite clarity. One hand strokes softly between her parted thighs fingering and masturbating gently beneath the rippling water as she tilts her head back with a breathless shudder. Exquisite anime watercolor style, solo 1girl, no text.",
+    "promptProse": "Shiki rests against the cedar bath edge and touches herself beneath the water, her wet black lace translucent in the steam.",
     "promptTokens": [
-      "onsen",
-      "wooden_bath",
-      "steaming_water",
-      "wet_clothes",
-      "black_lingerie",
-      "translucent_cloth",
-      "clinging_clothes",
-      "nipples_visible_through_clothes",
-      "cleavage",
-      "hand_between_legs",
-      "sensual_solo",
-      "heavy_blush",
-      "blushing_ears",
-      "biting_lip",
-      "black_hair",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "Ryougi Shiki",
+      "black lingerie",
+      "wet clothes",
+      "bath",
+      "steam",
+      "head back",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -70,6 +51,12 @@
       "sensual_solo"
     ],
     "timeOfDay": "深夜沐浴",
-    "title": "两仪式 · 氤氲古风浴池的湿身黑丝自抚"
+    "title": "两仪式 · 氤氲古风浴池的湿身黑丝自抚",
+    "nsfwTokens": [
+      "masturbation",
+      "hand between legs",
+      "see-through"
+    ],
+    "nsfwProse": ""
   }
 }

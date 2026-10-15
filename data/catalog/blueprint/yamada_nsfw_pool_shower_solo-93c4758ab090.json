@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_pool_shower_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1503,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "yamada_nsfw_pool_shower_solo",
     "title": "山田杏奈 · 泳池更衣室淋浴的水光湿身 ·「训练完好热……市川递一下浴巾好不好」",
@@ -24,47 +24,23 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Anna Yamada stands under the cascading warm stream of an empty school shower stall, her navy competitive swimsuit drenched semi-translucent over her statuesque curves, outlining hard pink nipples and a deep cameltoe contour. Water streams down her graceful long spine and voluptuous thighs as her fingers slip beneath the tight leg opening, gently massaging her throbbing center. Her head tilts back, jet-black wet hair plastered to her collarbone, dark eyes swimming in hazy adult ecstasy. Sensual vertical composition, steamy overhead tile lighting, water splashes, detailed shower background, solo 1girl, no text.",
-    "nsfwProse": "Anna Yamada stands under the cascading warm stream of an empty school shower stall, her navy competitive swimsuit drenched semi-translucent over her statuesque curves, outlining hard pink nipples and a deep cameltoe contour. Water streams down her graceful long spine and voluptuous thighs as her fingers slip beneath the tight leg opening, gently massaging her throbbing center. Her head tilts back, jet-black wet hair plastered to her collarbone, dark eyes swimming in hazy adult ecstasy. Sensual vertical composition, steamy overhead tile lighting, water splashes, detailed shower background, solo 1girl, no text.",
+    "promptProse": "Adult Yamada tilts her head back beneath the shower, slipping one hand under the tight leg opening of her soaked competition swimsuit.",
+    "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs",
-      "shower",
-      "wet_skin",
-      "water_droplets",
-      "swimsuit",
-      "bikini",
-      "side-tie_bikini",
-      "tight_swimsuit",
+      "adult",
+      "1girl",
+      "solo",
+      "navy swimsuit",
+      "one-piece swimsuit",
+      "wet clothes",
       "see-through",
-      "nipples_visible_through_clothes",
-      "cameltoe",
-      "exposed_pussy",
-      "pussy_juice",
-      "black_hair",
-      "tall_female",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "standing",
+      "head back",
+      "masturbation",
+      "shower",
+      "steam"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -74,6 +50,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

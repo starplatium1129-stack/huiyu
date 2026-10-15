@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_shrine_offering_sunrise",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 255,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ishtar_shrine_offering_sunrise",
     "title": "伊什塔尔 · 神殿供品的清晨·「今天的供品，本女神勉强收下了」",
@@ -29,17 +29,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Cross-legged on the rebuilt temple dais, Ishtar keeps both hands on her knees as steam from breakfast reaches her, trying to preserve a formal expression despite hungry red eyes. Golden tiara and black goddess attire remain in the medium view above the low offering table. Columns recede behind the seat. Sunrise enters between them, illuminating bowl steam and her relaxed hands, with long column shadows crossing the dais beyond the tray.",
+    "promptProse": "Ishtar sits before the steaming breakfast tray on the temple dais, trying to keep a formal expression while watching the food.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Ishtar",
-      "black goddess outfit",
-      "golden tiara",
       "cross-legged",
       "hands on knees",
-      "breakfast tray",
-      "temple dais",
+      "tiara",
+      "breakfast",
+      "temple",
       "sunrise",
       "medium shot"
     ],

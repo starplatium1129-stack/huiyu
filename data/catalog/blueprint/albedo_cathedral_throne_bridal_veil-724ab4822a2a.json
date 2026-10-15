@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_cathedral_throne_bridal_veil",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1302,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "albedo_cathedral_throne_bridal_veil",
     "title": "雅儿贝德 · 纯白圣堂的魔后花嫁",
@@ -30,15 +30,15 @@
       "radiant_smile",
       "vow"
     ],
-    "promptProse": "Albedo approaches through the cathedral's white-rose-lined aisle in a white bridal gown with a long lace veil draped over her horns. Her black wings unfold behind its sweeping train, and her hands clasp before tear-bright golden eyes above the gold necklace. The slightly low cowboy view keeps the altar beyond her horns and dark hair. Stained-glass daylight colors the roses and gown folds, casting separate patches onto the stone path beneath her.",
+    "promptProse": "She approaches the altar with hands clasped, her veil draped over her horns and wings behind the train. Stained-glass light colors the aisle.",
     "promptTokens": [
-      "Albedo",
-      "white bridal gown",
-      "long lace veil",
-      "gold necklace",
+      "wedding dress",
+      "lace veil",
       "black wings",
+      "horns",
       "white roses",
-      "cathedral aisle",
+      "cathedral",
+      "walking",
       "cowboy shot"
     ],
     "negativeTokens": [],

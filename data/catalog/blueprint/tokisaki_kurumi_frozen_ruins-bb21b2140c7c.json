@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_frozen_ruins",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tokisaki_kurumi_frozen_ruins",
     "title": "时崎狂三 · 时间停止的废墟",
@@ -29,16 +29,14 @@
       "half_smile",
       "wide_shot"
     ],
-    "promptProse": "Kurumi takes a measured step beneath an open black lace parasol through the frozen debris of a ruined city street. Her black-and-crimson dress moves while masonry fragments remain suspended around a clear path. The wide view shows her whole figure against receding broken archways. Cool night light separates the pale stone planes; a small golden clock behind her shoulder locally warms her sleeve and the nearest fragment as she smiles composedly.",
+    "promptProse": "Kurumi walks through suspended debris under her parasol, a golden clock lighting the nearest stone fragment.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Kurumi",
-      "black crimson gothic dress",
-      "black lace parasol",
-      "suspended debris",
-      "ruined street",
-      "golden clock dial",
+      "gothic dress",
+      "lace parasol",
+      "floating rubble",
+      "ruins",
+      "clock",
       "night",
       "wide shot"
     ],

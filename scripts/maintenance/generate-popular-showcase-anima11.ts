@@ -107,31 +107,14 @@ function buildCandidate(character: any, blueprint: any, profile: any, attempt: a
     artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
   });
   if (!result) throw new Error(`popular prompt build failed for ${character.id} / ${blueprint.id}`);
-  // 单人主体强化：压制主画面第二人（背景路人可接受，不强压 bystanders）。
-  // 2026-08-18 增强：分身/复制体压制（Anima 爱在舞会/咖啡店/超市等社交场景画同款第二主角）。
-  // R18 场景双人/分身高发：额外加强 solo/1girl 权重与无路人压制（2026-08-15 用户反馈）。
+  // 构图只补必要正向关系，不自动堆叠分身/人数负面。
   const guards = showcaseSubjectGuards(blueprint);
   const soloGuard = guards.prompt;
   const prompt = result.prompt.includes('\n')
     ? result.prompt.replace('\n', `, ${soloGuard}\n`)
     : `${result.prompt}, ${soloGuard}`;
   const [width, height] = nearestAnimaSize(blueprint).split('x').map(Number);
-  // blueprint 级负面原样追加：anima profile 的 negative_mode=replace(boilerplate) 会把
-  // blueprint negativeTokens 里的大部分词（2girls/clone/twin/inset image 等）当样板过滤掉，
-  // 导致场景级负面定制从未生效（2026-08-15 人物数核查发现）。维护脚本在此强制补回。
-  const blueprintNegativeRaw = Array.isArray(blueprint.negativeTokens)
-    ? blueprint.negativeTokens.join(', ').trim()
-    : String(blueprint.negativeTokens || '').trim();
-  // 成人蓝图不得把正向分级词重新追加进负面。buildPopularPromptPlan 已按评级
-  // 清洗一次，这里的场景级兜底必须保持同一契约。
-  const adultNegativeBlockers = new Set(['nsfw', 'nude', 'explicit']);
-  const blueprintNegative = blueprintNegativeRaw
-    .split(',')
-    .map((token: any) => token.trim())
-    .filter((token: any) => token && (!adult || !adultNegativeBlockers.has(token.toLowerCase().replace(/_/g, ' '))))
-    .join(', ');
-  // 2026-08-18 增强：分身/复制体负面压制（社交场景出同款第二主角共性根因）。
-  const negative = compositionNegative([result.negative, blueprintNegative, guards.negative].filter(Boolean).join(', '), blueprint);
+  const negative = compositionNegative(result.negative, blueprint);
   return {
     batch: 'popular', key: `popular:${character.id}:${blueprint.id}`,
     recordId: `popular:${character.id}:${blueprint.id}@attempt-${attempt}`,

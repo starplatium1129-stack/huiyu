@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_pov_silk_bed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 714,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights_r18_pov_silk_bed",
     "characterId": "shu_arknights",
@@ -30,28 +30,15 @@
       "rumpled_sheets"
     ],
     "promptTokens": [
-      "indoors",
-      "bedroom",
-      "on_bed",
-      "rumpled_sheets",
+      "Shu",
+      "on back",
+      "knees up",
+      "bed",
       "pov",
-      "on_back",
-      "spread_legs",
-      "knees_up",
-      "looking_at_viewer",
-      "overhead_angle"
+      "high angle"
     ],
-    "promptProse": "A quiet guest cabin aboard Rhodes Island after lights-out, with rumpled silk sheets and one shaded bedside lamp. From a direct first-person view above the bed, frame Shu's face, chest, hands and parted legs together so her expression remains readable. Her long hair fans over the pillow; her branching horns clear the headboard, and her tail curves along the outside edge of the mattress without crossing her body.",
-    "negativeTokens": [
-      "extra people",
-      "extra limbs",
-      "bad hands",
-      "bad anatomy",
-      "watermark",
-      "text",
-      "duplicate",
-      "split image"
-    ],
+    "promptProse": "Shu fingers herself with one hand and touches a nipple with the other, her tail clear of her body on the lamp-lit bed.",
+    "negativeTokens": [],
     "coverageTags": [
       "special_nsfw"
     ],
@@ -60,20 +47,10 @@
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [
-      "completely_nude",
-      "pov",
-      "on_back",
-      "spread_legs",
-      "knees_up",
+      "nude",
       "masturbation",
-      "fingering",
-      "pussy",
-      "pussy_juice",
-      "bare_breasts",
-      "nipples",
-      "heavy_blush",
-      "parted_lips"
+      "spread legs"
     ],
-    "nsfwProse": "From a direct POV, Shu lies completely nude on her back with both thighs raised and parted. One golden hand gently fingers her wet pussy, making her breasts rise with quickened breaths as the other hand squeezes one nipple. Moisture shines over her intimate folds and inner thighs; she looks up with flushed cheeks and parted lips, clearly inviting the viewer closer."
+    "nsfwProse": ""
   }
 }

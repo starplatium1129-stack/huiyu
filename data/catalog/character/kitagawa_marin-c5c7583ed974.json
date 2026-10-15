@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kitagawa_marin",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kitagawa_marin",
     "profile": {
@@ -123,12 +123,9 @@
         "1girl",
         "solo",
         "long_blonde_hair",
-        "gradient_hair",
         "pink_hair_tips",
         "pink_eyes",
-        "earrings",
         "piercing",
-        "painted_nails",
         "sono_bisque_doll_wa_koi_wo_suru"
       ],
       "negativeTokens": [

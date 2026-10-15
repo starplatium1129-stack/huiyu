@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_living_room",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 397,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "盘腿坐在客厅地毯上，双手操作游戏手柄",
     "camera": "medium shot",
@@ -20,20 +20,17 @@
     "mood": "放松畅快",
     "negativeTokens": [],
     "outfitId": "casual",
-    "promptProse": "Misaka Mikoto sits cross-legged on the dorm living-room rug with a controller in both hands, thumbs working rapidly through a fighting-game combination. Casual shirt and jeans retain the indoor outfit. The medium view connects her focused face and controller to the screen at the room's far side. Warm table-lamp light reveals rug texture and her nearer sleeve, while shifting display colors illuminate the gripping fingers and cast cooler shade behind her.",
+    "promptProse": "Mikoto sits cross-legged on the rug, concentrating on the game controller beneath the screen glow.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Misaka Mikoto",
-      "casual shirt",
+      "shirt",
       "jeans",
       "cross-legged",
-      "controller",
-      "living room rug",
-      "night",
-      "table lamp",
-      "game screen",
-      "medium shot"
+      "game controller",
+      "rug",
+      "living room",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_modern_street_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 254,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ishtar_modern_street_date",
     "title": "伊什塔尔 · 现代街头的女神考察·「人类的甜甜圈……是供品吗」",
@@ -29,18 +29,16 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Walking the afternoon street, Ishtar raises a half-eaten donut toward the viewer and gestures enthusiastically with her free hand, red eyes delighted by the dessert. Denim jacket, white crop tee, high-waisted shorts and sneakers retain her modern outfit beneath the star-shaped hairpin. The medium view follows storefronts along her route. Bright afternoon light and shop-window reflections catch the hoop earrings and donut glaze, leaving soft shade beneath the jacket collar.",
+    "promptProse": "Ishtar offers the viewer a half-eaten donut while walking past the shops, gesturing excitedly with her free hand.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Ishtar",
       "denim jacket",
-      "white crop tee",
-      "high waist shorts",
-      "sneakers",
-      "star hairpin",
+      "shorts",
       "donut",
-      "afternoon street",
+      "smile",
+      "street",
+      "afternoon",
       "medium shot"
     ],
     "negativeTokens": [

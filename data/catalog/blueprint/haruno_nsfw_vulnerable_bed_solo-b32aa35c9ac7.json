@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_vulnerable_bed_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 379,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_nsfw_vulnerable_bed_solo",
     "title": "雪之下阳乃 · 卸下伪装的床褥动情独奏 ·「哪怕是虚伪的温柔……今晚也给我吧」",
@@ -24,32 +24,21 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Stripped of every calculating smile, Haruno Yukinoshita sprawls completely naked across her disheveled black silk sheets in the cold blue dawn. Her voluptuous body arches violently as two fingers pump urgently between wide-spread, glistening thighs, drenched in her own passion. Her dark hair spreads wild over the pillows, genuine tears streaming across flushed cheeks and catching on her collarbone as broken, choked cries escape her lips. Vulnerable vertical framing, pale morning dusk fighting moody bedroom shadows, detailed luxury background, solo 1girl, no extra people.",
-    "nsfwProse": "Sprawled completely naked across disheveled black silk sheets in the blue dawn, Haruno Yukinoshita arches her hips and pumps wet fingers between wide thighs, weeping genuine tears of surrender.",
+    "promptProse": "Haruno lies on the disheveled silk sheets, touching herself with a tearful expression in the blue dawn light.",
+    "nsfwProse": "",
     "promptTokens": [
-      "bedroom",
-      "silk_bedsheets",
-      "morning_dusk",
-      "dawn",
-      "pillows",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "nude",
+      "on back",
+      "spread legs",
+      "arched back",
+      "female masturbation",
+      "fingering",
+      "tears",
+      "blush",
+      "black sheets",
+      "dawn"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -60,19 +49,6 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [
-      "completely_nude",
-      "on_back",
-      "spread_legs",
-      "arched_back",
-      "bare_breasts",
-      "pink_nipples",
-      "hand_between_legs",
-      "masturbation",
-      "pussy_juice",
-      "teary_eyes",
-      "crying",
-      "heavy_blush"
-    ]
+    "nsfwTokens": []
   }
 }

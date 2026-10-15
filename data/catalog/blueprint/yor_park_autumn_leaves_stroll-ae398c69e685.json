@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_park_autumn_leaves_stroll",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 806,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yor_park_autumn_leaves_stroll",
     "characterId": "yor_forger",
@@ -25,13 +25,14 @@
       "small_smile",
       "red_leaf"
     ],
-    "promptProse": "Yor sits sideways on a wooden park bench in a belted beige trench coat and knee-high boots, knees naturally together. She turns a red maple leaf toward the sun with one hand while the other braces on the bench. The three-quarter medium view follows a leaf-covered path behind the seat. Soft afternoon sidelight reveals the leaf veins and her attentive red eyes, shading the coat under her wrist.",
+    "promptProse": "Yor turns a maple leaf toward the sun while bracing her other hand on the park bench.",
     "promptTokens": [
-      "autumn afternoon",
-      "park bench",
-      "beige trench coat",
-      "knee boots",
+      "Yor",
+      "trench coat",
+      "boots",
       "maple leaf",
+      "bench",
+      "autumn",
       "medium shot"
     ],
     "negativeTokens": [],

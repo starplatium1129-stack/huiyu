@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_mikan_kitchen_cooking_assist",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1225,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手握菜刀在砧板前极其认真精准切胡萝卜丝，神态专注如临大敌，脸颊微红",
     "camera": "medium close-up, eye-level, hands and cutting board visible",
@@ -21,16 +21,16 @@
     "mood": "温馨可爱",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Yami stands at the Yuuki family's cutting board, carefully slicing carrots into evenly sized strips while Mikan smiles beside her and gives guidance. Her sailor uniform sleeves remain clear of the knife. Keep both girls and the working hands in the eye-level close view, with simmering stock on the stove behind. Warm pendant light brightens the board and ruby eyes; rising steam softens the darker backsplash.",
+    "promptProse": "Yami slices carrots while Mikan guides her beside the steaming stove under warm pendant light.",
     "promptTokens": [
       "2girls",
       "Yami",
       "Mikan Yuuki",
-      "cooking lesson",
+      "cooking",
       "carrots",
       "cutting board",
       "kitchen",
-      "medium close-up"
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

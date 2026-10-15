@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hatsune_miku",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hatsune_miku",
     "profile": {
@@ -110,8 +110,6 @@
         "twintails",
         "teal_hair",
         "teal_eyes",
-        "black_hairband",
-        "hair_ribbon",
         "01_shoulder_tattoo",
         "vocaloid"
       ],

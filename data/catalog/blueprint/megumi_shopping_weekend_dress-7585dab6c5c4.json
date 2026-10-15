@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_shopping_weekend_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1439,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "megumi_shopping_weekend_dress",
     "title": "加藤惠 · 周末服装店的认真挑选·「这两件衣服……伦也君觉得哪一件更好看呢」",
@@ -28,16 +28,14 @@
       "serious",
       "cute"
     ],
-    "promptProse": "Megumi Kato holds two summer dresses against herself in the boutique fitting area, studying their tags and fabric combinations. Her own pastel-pink sleeveless knit top and cream pleated midi skirt remain visible, brown hair tied in a practical ponytail. The medium view includes nearby hangers and a side mirror reflecting the garments. Warm boutique spots illuminate the held cloth and scrunchie, with softer mirror light on her thoughtful face.",
+    "promptProse": "Megumi holds a dress against herself and studies the fit, her ponytail shifting as she looks down.",
     "promptTokens": [
       "katou_megumi",
-      "Megumi Kato",
-      "brown ponytail",
-      "pink knit top",
-      "cream midi skirt",
-      "dress comparison",
-      "boutique",
-      "medium shot"
+      "ponytail",
+      "pink sweater",
+      "cream skirt",
+      "holding dress",
+      "boutique"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

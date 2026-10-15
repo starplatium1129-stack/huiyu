@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_cherry_blossom_katana_maintenance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1070,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手捧大拉面碗鼓起腮帮吹热气，嘴咬溏心蛋被撞见双耳竖立，满脸通红强行掩饰",
     "camera": "medium shot, counter seating perspective, focus on puffed cheeks, steam, and blushing fox ears",
@@ -20,16 +20,16 @@
     "mood": "可爱治愈",
     "negativeTokens": [],
     "outfitId": "traditional_miko",
-    "promptProse": "Miyabi sits on a high stool at the old-street ramen counter in her white miko robes and crimson hakama, holding a large blue-and-white bowl and blowing over its pork broth. Her cheeks are full of noodles; surprised by the arriving viewer, she hastily swallows half an egg. The medium view places the curtain behind. Warm pendant light catches the steam, porcelain pattern and blushing fox ears above the shadowed counter.",
+    "promptProse": "Miyabi blows over the ramen bowl, then hastily swallows half an egg when she notices the viewer at the stall.",
     "promptTokens": [
-      "midnight",
-      "ramen stall",
-      "white miko top",
-      "crimson hakama",
-      "porcelain bowl",
+      "white miko clothes",
+      "red hakama",
+      "ramen",
+      "bowl",
+      "eating",
       "fox ears",
-      "steam",
-      "medium shot"
+      "food stall",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

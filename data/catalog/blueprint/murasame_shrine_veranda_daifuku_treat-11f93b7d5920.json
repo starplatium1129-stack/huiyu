@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_shrine_veranda_daifuku_treat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1120,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双膝并拢端坐在走廊坐垫上，双手捧着草莓大福小口品尝，嘴角沾粉，眼神陶醉",
     "camera": "medium shot, seated eye-level, intimate cozy framing",
@@ -20,15 +20,16 @@
     "mood": "治愈甜美",
     "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Murasame kneels on a veranda cushion, holding a white strawberry daifuku in both hands and smiling with rice flour still at the corner of her mouth. Her navy-black ceremonial outfit and red cords remain in the seated eye-level medium view. Murasamemaru rests against a nearby post, with garden water beyond. Warm afternoon light touches the sweet and frills, while pond reflections add clear highlights beneath her shaded sleeves.",
+    "promptProse": "Murasame holds the strawberry daifuku in both hands, smiling with flour at the corner of her mouth while the sword rests against a nearby post.",
     "promptTokens": [
-      "early summer afternoon",
-      "shrine veranda",
-      "blade spirit outfit",
-      "strawberry daifuku",
+      "kimono",
+      "kneeling",
+      "daifuku",
+      "rice flour",
       "cushion",
-      "Murasamemaru",
-      "medium shot"
+      "veranda",
+      "garden",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +44,8 @@
       "powder_on_mouth"
     ],
     "timeOfDay": "午后",
-    "title": "丛雨 · 神社回廊的草莓大福小憩"
+    "title": "丛雨 · 神社回廊的草莓大福小憩",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

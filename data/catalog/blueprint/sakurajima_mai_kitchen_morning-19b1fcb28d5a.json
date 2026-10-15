@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_kitchen_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakurajima_mai_kitchen_morning",
     "title": "樱岛麻衣 · 晨间厨房",
@@ -29,18 +29,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "With one hand on the frying-pan handle and the other holding a spatula, Mai turns gently toward footsteps at the kitchen doorway. A light apron covers her long-sleeved knit top and skirt, black hair tied away from the cooking area. The medium view includes the egg, prepared dishes and soup bowl along the counter. Morning window light reaches the pan rim and her cheek, leaving soft shadows beneath the bowls.",
+    "promptProse": "Mai turns toward the kitchen doorway while holding the pan and spatula, morning light crossing the prepared dishes.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Mai",
-      "light apron",
-      "knit top",
+      "apron",
+      "sweater",
       "tied hair",
       "frying pan",
-      "egg",
       "spatula",
-      "morning kitchen",
+      "kitchen",
       "medium shot"
     ],
     "negativeTokens": [],

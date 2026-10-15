@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akizuki_kanna",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "akizuki_kanna",
     "profile": {
@@ -84,11 +84,8 @@
         "akizuki_kanna",
         "cafe_stella_to_shinigami_no_chou",
         "white_hair",
-        "very_long_hair",
-        "ahoge",
-        "sidelocks",
         "side_ponytail",
-        "hair_ribbon",
+        "ahoge",
         "pink_eyes"
       ],
       "negativeTokens": [

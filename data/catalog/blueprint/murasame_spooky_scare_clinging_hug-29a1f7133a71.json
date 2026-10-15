@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_spooky_scare_clinging_hug",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1125,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "吓得扑抱进对方怀中，双手紧抓胸口衣襟，眼含泪花脸埋肩膀，呆毛剧颤",
     "camera": "medium close-up, first-person pov, emotional proximity",
@@ -21,16 +21,17 @@
     "mood": "反差娇羞",
     "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Startled by shifting tree shadows on the shrine mountain path, Murasame clings to Masaomi's shirt and buries her tearful face against his shoulder, insisting she is only borrowing shelter. Her ceremonial sleeves surround the touching hands in a first-person medium close-up, with an old stone lantern and dark trees behind. Remaining purple dusk outlines her green hair; weak lantern light warms the fingers gripping the fabric and the red ribbons.",
+    "promptProse": "Startled by moving tree shadows, Murasame clings to Masaomi's shirt and hides her face against his shoulder.",
     "promptTokens": [
-      "dusk",
-      "shrine mountain path",
-      "blade spirit outfit",
-      "Masaomi",
-      "clinging hug",
+      "2people",
+      "arichi masaomi",
+      "hug",
+      "grabbing shirt",
+      "scared",
+      "teary eyes",
+      "mountain path",
       "stone lantern",
-      "medium close up",
-      "POV"
+      "dusk"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +45,8 @@
       "lantern"
     ],
     "timeOfDay": "黄昏",
-    "title": "丛雨 · 怕鬼刀灵的投怀送抱"
+    "title": "丛雨 · 怕鬼刀灵的投怀送抱",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

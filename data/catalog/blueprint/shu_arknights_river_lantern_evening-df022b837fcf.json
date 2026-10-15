@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_river_lantern_evening",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 711,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights_river_lantern_evening",
     "characterId": "shu_arknights",
@@ -32,16 +32,15 @@
       "upper_body"
     ],
     "promptTokens": [
-      "daytime",
-      "cafe",
-      "oatmeal cardigan",
-      "cobalt midi skirt",
-      "two drinks",
+      "Shu",
+      "cardigan",
+      "blouse",
+      "blue skirt",
       "cake",
-      "dessert fork",
+      "cafe",
       "medium shot"
     ],
-    "promptProse": "Across the cafe table, Shu listens with a barely contained smile, setting down the dessert fork and lightly crossing her hands at the edge. Preserve the oatmeal cardigan, ivory bow-collar blouse and cobalt-blue midi skirt. Two drinks and the shared cake occupy the near side of the eye-level medium view. Behind her, a window frame intersects the top of the booth seat, and the next table is partly hidden by the seat back. Soft window light catches the bronze cardigan buttons and glass rims. The cake plate has a gentle contact shadow, while the booth’s lower upholstery stays darker than the light-facing cushion seam.",
+    "promptProse": "Shu sets down her dessert fork and listens across the sunlit cafe table, two drinks beside the shared cake.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

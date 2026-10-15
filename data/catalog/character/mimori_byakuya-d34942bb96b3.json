@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mimori_byakuya",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mimori_byakuya",
     "profile": {
@@ -129,20 +129,13 @@
       "identityProse": "Mimori Byakuya from The Magical Girl and the Evil Officer, a petite deadpan magical girl with long straight platinum-white hair styled in iconic twin horn buns, clear blue eyes, a slender flat-chested build, and an expressionless stoic demeanor.",
       "identityTokens": [
         "byakuya (mahimaho)",
-        "katsute_mahou_shoujo_to_aku_wa_tekitai_shiteita.",
+        "katsute mahou shoujo to aku wa tekitai shiteita.",
         "1girl",
         "solo",
-        "white_hair",
-        "platinum_hair",
-        "long_hair",
-        "straight_hair",
-        "twin_horn_buns",
-        "hair_horns",
-        "blue_eyes",
-        "deadpan",
-        "expressionless",
-        "flat_chest",
-        "petite"
+        "white hair",
+        "long hair",
+        "hair horns",
+        "blue eyes"
       ],
       "negativeTokens": [
         "bad anatomy",

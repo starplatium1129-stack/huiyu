@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_alien_greenhouse_plant_summon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1243,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单手抬起操控发光外星藤蔓环绕身姿，王女礼服勾勒曲线，爱心尾巴自如摇摆，神态优雅神秘",
     "camera": "cowboy shot, medium framing, lush exotic botanical depth",
@@ -20,15 +20,15 @@
     "mood": "神秘优雅",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Inside the Yuuki backyard's alien greenhouse, Momo holds a D-Dial and raises her white-gloved hand to guide glowing vines around her wrist and waist. Her lilac royal dress stays distinct from the surrounding giant flower buds. A cowboy view reveals planting beds extending beneath the glass dome. Filtered daylight gives the upper leaves green translucence, while blue and purple plant glow reflects locally onto her glove and skirt folds.",
+    "promptProse": "Momo raises a gloved hand to direct the glowing alien vines around her in the greenhouse.",
     "promptTokens": [
       "Momo",
       "royal dress",
       "white gloves",
       "D-Dial",
-      "alien vines",
-      "greenhouse",
-      "cowboy shot"
+      "raised hand",
+      "glowing vines",
+      "greenhouse"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

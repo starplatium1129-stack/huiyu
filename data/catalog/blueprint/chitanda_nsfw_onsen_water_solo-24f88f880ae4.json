@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_onsen_water_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1492,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "chitanda_nsfw_onsen_water_solo",
     "title": "千反田爱瑠 · 神社古泉的水光湿身独奏 ·「水汽把身体变烫了……也是谜团之一吗」",
@@ -24,44 +24,19 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Eru Chitanda rests against the mossy volcanic stones of a tranquil private hot spring in the early morning fog. Her white cotton bath shirt is thoroughly drenched and semi-transparent, clinging flawlessly to her voluptuous curves and revealing dusky pink nipples beneath. Her slender fingers glide beneath the rippling surface between her parted thighs, purple eyes clouded with innocent desire as she tries to solve the mystery of her hammering heart. Sensual vertical composition, early morning light filtering through bamboo trees, detailed onsen background, solo 1girl, no text.",
-    "nsfwProse": "Eru Chitanda rests against the mossy volcanic stones of a tranquil private hot spring in the early morning fog. Her white cotton bath shirt is thoroughly drenched and semi-transparent, clinging flawlessly to her voluptuous curves and revealing dusky pink nipples beneath. Her slender fingers glide beneath the rippling surface between her parted thighs, purple eyes clouded with innocent desire as she tries to solve the mystery of her hammering heart. Sensual vertical composition, early morning light filtering through bamboo trees, detailed onsen background, solo 1girl, no text.",
+    "promptProse": "Adult Chitanda rests against the mossy stone with one hand between her thighs beneath the water. Early light filters through bamboo and steam.",
+    "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs",
-      "underwater",
-      "wet_clothes",
+      "adult",
+      "hot spring",
+      "white bath shirt",
+      "wet clothes",
       "see-through",
-      "white_shirt",
-      "nipples_visible_through_clothes",
-      "onsen",
-      "steam",
-      "water_droplets",
-      "black_hair",
-      "long_hair",
-      "purple_eyes",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "masturbation",
+      "bamboo",
+      "morning mist"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -71,6 +46,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

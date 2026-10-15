@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_tea_room_veranda_snack_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1331,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "跪坐在走廊上双手奉上热茶与和果子，推了推鼻梁上的眼镜，神态温婉可靠",
     "camera": "cowboy shot, eye level, peaceful school view",
@@ -22,15 +22,16 @@
     "mood": "温婉知性",
     "negativeTokens": [],
     "outfitId": "misaki_school_uniform",
-    "promptProse": "Ciel kneels on the tea club's wooden veranda and slides a tray of matcha and wagashi toward her companion. Her navy blazer, red tie and grey pleated skirt remain neat as she adjusts her rimless glasses with a familiar smile. The eye-level cowboy view follows the corridor beside the bamboo garden. Afternoon light filtered through the bamboo warms the cup rim and blazer shoulder, drawing narrow leaf shadows onto the floor.",
+    "promptProse": "She slides the tray toward her companion beside the bamboo garden. Filtered light draws leaf shadows across the floor.",
     "promptTokens": [
-      "Ciel",
-      "Misaki uniform",
+      "veranda",
+      "school uniform",
+      "glasses",
+      "kneeling",
       "tea tray",
       "matcha",
       "wagashi",
-      "school veranda",
-      "cowboy shot"
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

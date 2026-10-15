@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_morning_chair_straddle_lollipop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1043,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sparkle_morning_chair_straddle_lollipop",
     "title": "花火 · 晨间椅背跨坐的棒棒糖挑衅",
@@ -28,15 +28,15 @@
       "playful_smile",
       "winking"
     ],
-    "promptProse": "Sparkle sits backward on the hotel room's swivel armchair, chin resting on its back while her feet move lightly above the floor. A strawberry lollipop rests at her lips above an oversized red-and-black hoodie, denim shorts and mismatched striped stockings. The eye-level cowboy view places the chair before tall windows. Golden morning sunlight brightens the candy and hair clips, with chair-back shadows crossing the hoodie's folded front.",
+    "promptProse": "Sparkle rests her chin on the swivel chair back with a lollipop at her lips in morning window light.",
     "promptTokens": [
-      "morning",
-      "hotel room",
-      "red black hoodie",
+      "Sparkle",
+      "hoodie",
       "denim shorts",
       "striped stockings",
-      "reverse chair",
+      "sitting backwards",
       "lollipop",
+      "hotel",
       "cowboy shot"
     ],
     "negativeTokens": [],

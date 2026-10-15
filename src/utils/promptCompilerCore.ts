@@ -279,13 +279,13 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const actionText = naturalList(action.map(proseClause))
   const moodText = naturalList(compactMood(mood))
   const portrayal: string[] = []
-  if (actionText) portrayal.push(`${dual ? 'They are' : 'She is'} ${actionText}`)
+  if (actionText) portrayal.push(plan.sceneProse ? `Include ${actionText}` : `${dual ? 'They are' : 'She is'} ${actionText}`)
   if (moodText) portrayal.push(dual ? `their expressions are ${moodText}` : `${actionText ? 'her' : 'Her'} expression is ${moodText}`)
   if (plan.visualDescription) portrayal.push(clean(plan.visualDescription).replace(/[.!?]+\s*/g, '; ').replace(/;\s*$/, ''))
   if (portrayal.length) parts.push(sentence(portrayal.join(actionText && moodText ? ', while ' : ', ')))
-  const environmentText = plan.sceneProse
-    ? clean(plan.sceneProse).replace(/[.!?]+\s*/g, '; ').replace(/;\s*$/, '')
-    : naturalList(environment)
+  // 精简蓝图将环境与镜头放在标签，关系放在 prose；两个通道都须消费。
+  if (plan.sceneProse) parts.push(sentence(plan.sceneProse))
+  const environmentText = naturalList(environment)
   // 2026-08-30 调研 §七/§八：Krea 见「室内/场景」就爱画人，官方推荐空场景
   // 在正句追加 "no characters, no people, no figures"（本地 Turbo 负面失效的
   // 替代通道）。判定：散文里确实没有主体（无 subject 描述、环境句也不含
@@ -293,10 +293,10 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   // 场景（studio 背景图）自动兜底。
   const emptySceneGuard = !subject && !outfitText && Boolean(environmentText)
     && !/no characters|no people|no figures/i.test(environmentText)
-    && !/\b(?:she|her|girl|woman|figure|character|person)\b/i.test(environmentText)
+    && !/\b(?:she|her|girl|woman|figure|character|person)\b/i.test(`${environmentText} ${plan.sceneProse}`)
   if (environmentText) {
     parts.push(sentence(
-      `${plan.sceneProse ? environmentText : `The scene takes place ${environmentText}`}${emptySceneGuard ? '; no characters, no people, no figures' : ''}`,
+      `The scene takes place ${environmentText}${emptySceneGuard ? '; no characters, no people, no figures' : ''}`,
     ))
   }
   // Authored blueprint/recipe prose also carries actions and spatial relations, so keep it.
@@ -322,14 +322,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   if (medium && !style.toLowerCase().includes(medium.toLowerCase())) {
     parts.push(sentence(`polished ${medium} finish`))
   }
-  const assembled = parts.filter(Boolean).join(' ')
-  const sentences = assembled.split(/(?<=\.)\s/).filter(Boolean)
-  if (sentences.length > 5) {
-    const head = sentences.slice(0, 4).join(' ')
-    const tail = sentences.slice(4).join('; ')
-    return `${head} ${tail}`
-  }
-  return assembled
+  return parts.filter(Boolean).join(' ')
 }
 
 const ANIMA_RELATION_RE = /^(?:holding|carrying|standing|sitting|lying|waiting|leaning|kneeling|straddling|clinging|swimming|walking|running|reaching|undressing|looking|turning|adjusting|hug|hugging|back_hug|kiss|kissing|touch|touching|press|pressed|hands?|one_hand|both_hands|playing|reading|writing|drinking|eating|cooking|dancing|sleeping|crying|smiling|eye_contact|close_distance|interlocked_fingers|bare_|nude|naked|cleavage|sideboob|no_bra|no_panties|wet_skin|wet_clothes|see_through|translucent|unbuttoned|unzipped|open_shirt|off_shoulder|high_slit|midriff|collarbone)/
@@ -412,77 +405,18 @@ function buildStudioAnimaCaption(plan: PromptPlan): string {
 }
 
 /**
- * Anima keeps its model-native tag stream for LoRA control. Studio scenes add
- * one short caption for spatial/prop relationships; popular no-LoRA subjects
- * retain the fuller identity/outfit/blueprint description. Only PromptPlan visual fields are read;
+ * Anima uses tags for identity and clothing, captions for authored scene relationships.
+ * Do not repeat the character and outfit dossiers after their tags. Only visual fields are read;
  * title, story, dialogue, search metadata, and audit metadata never enter here.
  */
 function buildAnimaVisualDirection(plan: PromptPlan): string {
   const structured = Boolean(plan.subjectProse || plan.outfitProse || plan.sceneProse || plan.scene)
   if (!structured) return sentence(plan.visualDescription)
   if (plan.scene) return buildStudioAnimaCaption(plan)
-
-  const identityKeys = new Set(plan.identity.map(normalizeProseKey))
-  const exactKeys = new Set(plan.exactControls.map(normalizeProseKey))
-  const authoredDetails: string[] = []
-  const actions: string[] = []
-  const mood: string[] = [...plan.emotion.map(moodPhrase).filter(Boolean)]
-  const environment: string[] = []
-  const camera: string[] = [...plan.camera.map(cameraPhrase).filter(Boolean), ...sceneCameraPhrases(plan.scene)]
-  const lighting: string[] = [...plan.lighting.map(animaLightPhrase).filter(Boolean), ...sceneLightingPhrases(plan.scene)]
-
-  for (const token of [...plan.sceneVisualFragments, ...plan.manual]) {
-    const key = normalizeProseKey(token)
-    if (!key || KREA_META_KEYS.has(key) || identityKeys.has(key) || exactKeys.has(key)) continue
-    if (QUALITY_OR_SCORE_RE.test(key) || /^(?:general|sensitive|safe|nsfw)$/.test(key)) continue
-    if (ANIMA_RELATION_RE.test(key)) { actions.push(actionPhrase(token)); continue }
-    if (/(?:^|_)(?:hairclips?|hair_ribbons?|hair_ornaments?)(?:_|$)/.test(key)) continue
-    if (KREA_CAMERA_KEYS.has(key)) { camera.push(cameraPhrase(token)); continue }
-    if (KREA_LIGHT_KEYS.has(key) || /(?:light|lighting|shadow|shadows|backlit)$/.test(key)) { lighting.push(lightPhrase(token)); continue }
-    // Composite actions can contain outfit nouns (for example adjusting a hair ribbon).
-    // Classify the action before the outfit/environment buckets so it is not discarded.
-    if (KREA_OUTFIT_RE.test(key)) continue
-    if (KREA_MOOD_RE.test(key)) { mood.push(moodPhrase(token)); continue }
-    if (isEnvironmentKey(key) || /^(?:morning|afternoon|evening|night|late_night|dawn|sunset|clear_sky|starry_sky|rain|snow|snowfall)$/.test(key)) {
-      environment.push(environmentPhrase(token))
-      continue
-    }
-    if (/[.!?]/.test(token) || token.trim().split(/\s+/).length >= 8) {
-      authoredDetails.push(proseClause(token))
-      continue
-    }
+  if (plan.sceneProse) {
+    return sentence(sanitizeVisualArtifacts(authoredAnimaCaption(plan, proseClause(plan.sceneProse))))
   }
-
-  environment.unshift(...sceneFieldPhrases(plan.scene))
-  removeIndoorSkyPhrases(environment)
-
-  const subject = proseClause(plan.subjectProse || proseList(plan.identity))
-  const outfit = outfitPhrases(plan)[0]
-  const portrayal: string[] = []
-  if (subject) portrayal.push(subject)
-  if (outfit) portrayal.push(`She wears ${proseClause(outfit)}`)
-  const authoredText = compactPhrases(authoredDetails, 2).join(', ')
-  if (authoredText) portrayal.push(authoredText)
-  const actionText = naturalList(compactPhrases(actions, 4))
-  if (actionText) portrayal.push(`She is shown ${actionText}`)
-  const moodText = naturalList(compactMood(compactPhrases(mood, 2)))
-  if (moodText) portrayal.push(`Her expression is ${moodText}`)
-  if (plan.visualDescription) portrayal.push(proseClause(plan.visualDescription))
-
-  const setting: string[] = []
-  if (plan.sceneProse) setting.push(proseClause(plan.sceneProse))
-  else {
-    const environmentText = naturalList(compactPhrases(environment, 3))
-    if (environmentText) setting.push(`The scene takes place ${environmentText}`)
-  }
-  const direction = naturalList(compactPhrases([
-    ...camera,
-    ...plan.composition.map(cameraPhrase).filter(Boolean),
-  ], 2))
-  if (direction) setting.push(`Frame it with ${direction}`)
-  const atmosphere = naturalList(compactPhrases(lighting, 2))
-  if (atmosphere) setting.push(`Light it with ${atmosphere}`)
-  return [sentence(portrayal.join('; ')), sentence(setting.join('; '))].filter(Boolean).join(' ')
+  return buildStudioAnimaCaption(plan)
 }
 
 export function createPromptPlan(input: PromptCompilerInput): PromptPlan {

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "texas_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "texas_arknights",
     "profile": {
@@ -130,12 +130,10 @@
         "texas (arknights)",
         "1girl",
         "solo",
-        "black_hair",
-        "long_hair",
-        "wolf_ears",
-        "wolf_tail",
-        "amber_eyes",
-        "calm_expression",
+        "black hair",
+        "wolf ears",
+        "wolf tail",
+        "amber eyes",
         "arknights"
       ],
       "negativeTokens": [

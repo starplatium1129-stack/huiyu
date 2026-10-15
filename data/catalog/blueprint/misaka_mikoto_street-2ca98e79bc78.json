@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_street",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 392,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "回旋侧踢自动售货机后接住一罐呱太椰奶递给你",
     "camera": "medium shot",
@@ -17,17 +17,15 @@
     "mood": "元气日常",
     "negativeTokens": [],
     "outfitId": "tokiwadai_uniform",
-    "promptProse": "After her spinning side kick frees two Gekota coconut-milk cans from the vending machine, Misaka Mikoto catches one and offers it toward the viewer, ears reddening. Her white blouse, light-brown vest and beige skirt retain the school uniform. The medium view includes the second can in the retrieval tray and the street behind. Bright daylight glares on the machine glass and curved can, with tray shade framing the remaining drink.",
+    "promptProse": "Mikoto catches a can of Gekota coconut milk from the vending machine and offers it to the viewer.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Misaka Mikoto",
-      "Tokiwadai uniform",
-      "Gekota coconut milk",
+      "school uniform",
       "vending machine",
-      "offered can",
-      "sunny street",
-      "medium shot"
+      "canned drink",
+      "offering",
+      "sunny street"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

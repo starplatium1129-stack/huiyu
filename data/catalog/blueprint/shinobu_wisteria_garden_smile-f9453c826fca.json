@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_wisteria_garden_smile",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1449,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "仰头立于花帘下，花瓣落发，转身浅笑藏悲",
     "adult": false,
@@ -25,14 +25,13 @@
     "mood": "向死而生、温柔悲伤",
     "negativeTokens": [],
     "outfitId": "official_demon_slayer_uniform",
-    "promptProse": "Shinobu Kocho looks up beneath the garden's hanging wisteria, then turns toward her companion with a smile that briefly reveals sadness. Her butterfly haori lies over the black Demon Slayer uniform, the hair ornament clear among falling petals. The medium view follows the trellis posts and violet flower curtains behind. Afternoon light filtered through blossoms colors her cheek and white haori lavender, with denser shade beneath the canopy's overlapping clusters.",
+    "promptProse": "Shinobu turns from the hanging wisteria toward her companion, a brief sadness showing through her sun-dappled smile.",
     "promptTokens": [
       "kochou_shinobu",
-      "Shinobu Kocho",
       "butterfly haori",
-      "wisteria canopy",
+      "wisteria",
       "bittersweet smile",
-      "afternoon",
+      "garden",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

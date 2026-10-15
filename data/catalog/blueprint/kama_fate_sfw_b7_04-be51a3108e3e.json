@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_sfw_b7_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 298,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kama_fate_sfw_b7_04",
     "title": "迦摩 · 金莲宫殿的粉色花嫁",
@@ -30,19 +30,18 @@
       "reluctant_blush",
       "twilight"
     ],
-    "promptProse": "Adult Kama sits on the golden lotus dais edge, rotating her star-shaped bouquet between jeweled fingers and feigning boredom before hiding a reluctant blush behind the veil. Black-and-rose bridal gown and gold trim remain beneath long silver-white hair drifting with cosmic petals. The vertical medium-full view includes lotus layers below and floating flowers behind. Rose-gold sunset illuminates bouquet edges and veil folds, with deep shade between the dais petals.",
+    "promptProse": "Adult Kama turns the star-shaped bouquet beside the golden lotus dais, blushing beneath her veil when she notices the viewer.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Kama",
-      "black rose bridal gown",
-      "gold trim",
-      "sheer veil",
-      "star bouquet",
-      "gold lotus dais",
-      "floating petals",
+      "black wedding dress",
+      "veil",
+      "bouquet",
+      "lotus",
+      "petals",
       "sunset",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

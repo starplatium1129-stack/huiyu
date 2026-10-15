@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_banquet_formal_dress_smile",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 371,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_banquet_formal_dress_smile",
     "title": "雪之下阳乃 · 晚宴幕间的独处",
@@ -31,20 +31,19 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Beyond the ballroom, Haruno Yukinoshita removes a silver clip-on earring into her open palm while seated in the upholstered alcove. Midnight-blue satin jacket and wide-leg trousers frame an ivory high-neck blouse as her social smile eases into a thoughtful exhale. The medium view follows a deserted corridor beyond the seat. Amber wall light illuminates her black bob, tired eyes and metal glint, with darker upholstery folds behind her hands.",
+    "promptProse": "Beyond the ballroom, Haruno removes a clip-on earring into her palm as her social smile gives way to a tired exhale.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Haruno Yukinoshita",
-      "midnight blue satin trouser suit",
-      "ivory high neck blouse",
-      "silver earring",
-      "upholstered alcove",
-      "amber wall lamp",
+      "blue suit",
+      "white blouse",
+      "wide-leg pants",
+      "earring",
+      "sitting",
+      "alcove",
+      "lamp",
       "medium shot"
     ],
     "negativeTokens": [
-      "mirrors",
+      "mirror",
       "guests"
     ],
     "recommendedSize": "1152x1536",
@@ -54,6 +53,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

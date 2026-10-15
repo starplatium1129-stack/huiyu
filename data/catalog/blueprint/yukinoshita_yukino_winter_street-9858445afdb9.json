@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_winter_street",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 339,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_yukino_winter_street",
     "title": "雪之下雪乃 · 冬季街头",
@@ -29,25 +29,23 @@
       "streetlamp_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino pulls the plaid scarf over her mouth and nose with one hand, keeping the other in her navy duffle-coat pocket as she turns concern toward her unseen companion. Dark tights and winter boots complete the warm silhouette. The cowboy view includes snowflakes on the collar and the street receding behind her. Newly lit lamps illuminate long black hair and scarf checks, while snow reflects cooler light onto the coat's shaded side.",
+    "promptProse": "Yukino pulls her scarf over her mouth and nose, turning a concerned glance toward her unseen companion while keeping her other hand in her pocket.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yukino",
       "navy duffle coat",
       "plaid scarf",
-      "dark tights",
-      "winter boots",
+      "black pantyhose",
+      "boots",
       "hand in pocket",
-      "falling snow",
-      "streetlamps",
-      "cowboy shot"
+      "snow",
+      "streetlights"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "snow_dress",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 277,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_01",
     "title": "美杜莎 Rider · 书店文库本的站立阅读",
@@ -30,19 +30,16 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "Between tall bookstore shelves, Medusa supports a small paperback by its spine with one hand and turns a page with the other. Thoughtful violet eyes show above her low reading glasses, very long purple hair falling beside a black long-sleeved knit top and ankle-length purple skirt. The medium view uses book spines to enclose the quiet corner. Warm shelf light brightens page edges and hair, leaving deep shaded gaps between the stacked volumes.",
+    "promptProse": "Medusa quietly reads a paperback between the bookstore shelves, her long hair falling around the book.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medusa",
-      "black knit top",
-      "ankle length purple skirt",
-      "reading glasses",
+      "medusa_(fate)",
+      "knit top",
+      "long skirt",
+      "glasses",
       "paperback",
-      "bookstore shelves",
-      "warm shop light",
-      "medium shot",
-      "medusa_(fate)"
+      "bookstore"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

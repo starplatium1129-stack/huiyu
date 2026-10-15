@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_tatami_pinned_wrists_prone",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1054,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sparkle_nsfw_tatami_pinned_wrists_prone",
     "title": "花火 · 榻榻米和风短裙半褪的更衣自抚·「笨、笨蛋……才没有在想色色的事情呢」",
@@ -31,41 +31,17 @@
       "looking_back",
       "horizontal_shot"
     ],
-    "promptProse": "Bent forward across a fragrant tatami floor with her mini kimono pushed high over her slender waist, Sparkle arches her back in flustered solo surrender. Hands resting against the woven straw mats, her fingers reach down to draw her panties aside and caress her dripping petals. Looking back over her bare shoulder with flushed red ears and tears welling in her ruby eyes, her mouth quivers between defiant pouting and ecstatic gasps under cool moonlight. Dynamic horizontal anime illustration, solo 1girl, no text.",
+    "promptProse": "Sparkle leans over the tatami and draws her panties aside to touch herself, looking back beneath cool moonlight.",
     "promptTokens": [
-      "sensual_solo",
-      "touching_own_body",
-      "hand_under_clothes",
-      "tatami_room",
-      "bent_over",
-      "arched_back",
-      "skirt_lift",
-      "mini_kimono",
-      "panties_aside",
-      "exposed_pussy",
-      "pussy_juice",
-      "twintails",
-      "looking_back",
-      "heavy_blush",
-      "blushing_ears",
-      "red_ears",
-      "biting_lip",
-      "teary_eyes",
-      "wide_shot",
-      "horizontal",
-      "detailed_background",
-      "cinematic_lighting"
+      "Sparkle",
+      "kimono",
+      "bent over",
+      "looking back",
+      "tatami",
+      "moonlight",
+      "wide shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "self-harm, choking",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
     "sampleRating": "R18",
@@ -78,6 +54,11 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "nsfwTokens": [
+      "masturbation",
+      "panties aside",
+      "hand between legs"
+    ]
   }
 }

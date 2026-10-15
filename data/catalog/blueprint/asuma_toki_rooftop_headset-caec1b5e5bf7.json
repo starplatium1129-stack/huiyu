@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_rooftop_headset",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 871,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐天台按耳麦",
     "adult": false,
@@ -26,15 +26,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "casual_maid",
-    "promptProse": "Toki sits at the edge of the Millennium rooftop railing in her black casual dress and light jacket, pressing one fingertip to her headset as the channel falls silent. She looks toward the approaching viewer with a barely visible smile. The medium view includes the railing beneath her and the distant campus skyline. Golden sunset backlight outlines her loose blonde hair, with cool sky reflections softening the shadowed jacket front.",
+    "promptProse": "She touches her headset as the channel falls silent and looks toward the approaching viewer. Sunset outlines her above the campus skyline.",
     "promptTokens": [
-      "sunset",
-      "Millennium rooftop",
+      "rooftop",
+      "railing",
       "black dress",
-      "light jacket",
+      "jacket",
       "headset",
       "sitting",
-      "medium shot"
+      "sunset"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

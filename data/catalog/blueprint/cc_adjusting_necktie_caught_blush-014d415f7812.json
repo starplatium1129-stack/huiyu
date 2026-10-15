@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_adjusting_necktie_caught_blush",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1310,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手整理领带动作停滞，手腕被轻握，微微别开脸颊泛起淡淡红晕",
     "camera": "cowboy shot, intimate eye level, subtle blush focus",
@@ -23,15 +23,15 @@
     "mood": "暗流涌动",
     "negativeTokens": [],
     "outfitId": "black_knights_uniform",
-    "promptProse": "C.C. adjusts her companion's shirt tie with both hands in the preparation room, then pauses when he gently holds her wrists. A rare blush accompanies her averted amber eyes. Her Black Knights jacket, red trim and gold emblems remain clear in the close eye-level cowboy view, with the dressing bench behind. Cool daylight through blinds stripes the jacket shoulder and tie, leaving the wall recess softly shaded.",
+    "promptProse": "She pauses while adjusting her companion's tie as he gently catches her wrists. Light through the blinds stripes their sleeves.",
     "promptTokens": [
-      "C.C.",
+      "couple",
       "Black Knights uniform",
-      "necktie adjustment",
-      "clothed couple",
-      "blushing",
-      "preparation room",
-      "cowboy shot"
+      "adjusting necktie",
+      "held wrists",
+      "blush",
+      "looking away",
+      "preparation room"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

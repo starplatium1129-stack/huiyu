@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_ship_deck_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 608,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "站在船舷边，任海风吹动长发",
     "camera": "medium back shot",
@@ -20,20 +20,16 @@
     "mood": "深蓝寂寥",
     "negativeTokens": [],
     "outfitId": "deep_sea_hunter_trench_coat",
-    "promptProse": "Skadi stands at the rail during Rhodes Island's night voyage, silver hair and black hunter trench-coat hem pulled by the sea wind beneath the blanket on her shoulders. She turns slightly toward the deck lights in the medium back view, red-accented bodysuit kept beneath the coat. The rail leads toward dark water and the ship's receding deck. Dim lamps warm blanket folds and rail tops, while starlight coolly outlines her hair against the sea.",
+    "promptProse": "Skadi turns slightly toward the deck lights at the rail, sea wind lifting her hair beneath the shoulder blanket.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Skadi",
-      "black hunter trench coat",
-      "red accented bodysuit",
-      "blanket on shoulders",
+      "trench coat",
+      "blanket",
       "silver hair",
       "ship railing",
-      "night sea",
-      "deck lamps",
-      "starlight",
-      "medium back shot"
+      "night",
+      "from behind",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

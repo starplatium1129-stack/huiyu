@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_kitchen_baking",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 333,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuzuriha_inori_kitchen_baking",
     "title": "楪祈 · 厨房烘焙",
@@ -29,19 +29,15 @@
       "warm_kitchen_light",
       "medium_shot"
     ],
-    "promptProse": "Inori steadies a cookie tray on the heatproof board with one hand and offers a cooled vanilla cookie with the other, oven mitts left beside the oven. Her plain white apron covers a long-sleeved knee-length dress as she watches hopefully. The medium view includes the counter continuing behind red hair ornaments. Warm kitchen light catches golden cookie tops and her smile, casting distinct tray and mitt shadows across the board.",
+    "promptProse": "Inori steadies the tray on its heatproof board with one hand and offers a cooled vanilla cookie with the other, watching hopefully.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Inori",
-      "long sleeve casual dress",
+      "long sleeve dress",
       "white apron",
       "cookie tray",
-      "heatproof board",
-      "offered cookie",
-      "oven mitts on counter",
+      "cookie",
+      "offering",
       "kitchen",
-      "medium shot"
+      "warm lighting"
     ],
     "negativeTokens": [
       "oven mitts worn"
@@ -50,6 +46,8 @@
     "outfitId": "sfw_baking_apron",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

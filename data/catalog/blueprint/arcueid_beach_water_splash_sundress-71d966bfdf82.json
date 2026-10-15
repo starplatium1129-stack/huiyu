@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_beach_water_splash_sundress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1323,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "赤足踩在海水中双手微提裙摆，回眸向视角招手呼唤，笑容灿烂如阳",
     "camera": "cowboy shot, eye level, dynamic summer beach view",
@@ -22,14 +22,14 @@
     "mood": "开朗元气",
     "negativeTokens": [],
     "outfitId": "casual_summer_sundress",
-    "promptProse": "Arcueid Brunestud steps barefoot into the clear beach shallows, briefly lifting her white sundress hem before releasing it and opening her hands toward her companion. She looks back laughing as a small wave breaks around her ankles. The eye-level cowboy view follows the white sand into the blue horizon. Brilliant summer sunlight passes through spray and blonde hair, while reflected water light flickers beneath the floating skirt edge.",
+    "promptProse": "She steps into the shallows and opens her hands toward her companion as a wave reaches her ankles. Sunlight flashes through the spray.",
     "promptTokens": [
-      "Arcueid Brunestud",
+      "beach",
       "white sundress",
       "barefoot",
-      "sea foam",
+      "splashing",
       "laughing",
-      "beach",
+      "looking back",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",

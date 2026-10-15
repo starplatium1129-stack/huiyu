@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "morgan_le_fay_fate",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "morgan_le_fay_fate",
     "profile": {
@@ -109,11 +109,9 @@
         "morgan (fate/grand order)",
         "1girl",
         "solo",
-        "white_hair",
-        "long_hair",
-        "straight_hair",
-        "blue_eyes",
-        "pale_skin",
+        "white hair",
+        "long hair",
+        "blue eyes",
         "fgo"
       ],
       "exactTokens": [

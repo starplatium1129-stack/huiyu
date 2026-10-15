@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1613,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_01",
     "title": "春日野穹 · 夏日乡道的白裙",
@@ -30,15 +30,15 @@
       "sunlight",
       "medium_shot"
     ],
-    "promptProse": "Sora Kasugano walks along Okukozome's country road, both hands behind her holding a rabbit plush as she squints against the summer sun. Her opaque white knee-length dress, black hair ribbons and flat shoes remain simple. The medium view opens onto rice fields and towering clouds beyond the roadside. Sunlight brightens white hair and dress folds, with a clear walking shadow on the road and softer green reflections from the fields.",
+    "promptProse": "Sora walks along the country road with her rabbit plush held behind her back, rice fields bright in the summer sun.",
     "promptTokens": [
       "kasugano_sora",
-      "Sora Kasugano",
-      "white short-sleeved dress",
+      "white dress",
       "rabbit plush",
-      "country road",
-      "rice fields",
-      "summer sun",
+      "hands behind back",
+      "road",
+      "rice field",
+      "summer",
       "medium shot"
     ],
     "negativeTokens": [],

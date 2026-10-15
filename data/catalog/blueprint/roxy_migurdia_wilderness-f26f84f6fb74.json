@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_wilderness",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 454,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "握法杖独行于荒野",
     "camera": "wide shot",
@@ -19,17 +19,15 @@
       "travel robe"
     ],
     "outfitId": "witch_outfit",
-    "promptProse": "Roxy Migurdia pauses alone across the wilderness plain with her magic staff planted firmly in the earth, looking toward the horizon in her blue witch hat, white blouse and blue skirt. Wind lifts the skirt's hem around the steady stance. The wide view follows open steppe grass beyond her. Golden sunset illuminates hat and staff edges, casting their long shadows into cooler grass toward the foreground.",
+    "promptProse": "Roxy plants her staff in the plain and watches the horizon as sunset casts long shadows over the grass.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Roxy Migurdia",
-      "blue witch hat",
-      "white blouse",
+      "witch hat",
+      "blouse",
       "blue skirt",
-      "planted staff",
-      "wilderness plain",
-      "golden sunset",
+      "staff",
+      "grassland",
+      "sunset",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",

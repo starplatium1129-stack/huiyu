@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_studio_oversized_hoodie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1492,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yamada_studio_oversized_hoodie",
     "title": "山田杏奈 · 拍摄休息室大号卫衣的大长腿瘫坐·「拍摄好累哦……市川，给我吃一口软糖嘛」",
@@ -32,14 +32,15 @@
       "vanity_lights",
       "medium_shot"
     ],
-    "promptProse": "After the photo session, Anna Yamada sits deep in the dressing-room leather sofa, hair tie removed and long black hair loose over her charcoal hoodie. She perks up at her companion's gummy-candy bag, pointing toward it from a broad sleeve. The medium view includes her denim shorts, cushion and discarded hair tie. Warm mirror lamps brighten her refreshed expression and sleeve edge, with softer reflections on the sofa's worn leather.",
+    "promptProse": "Yamada perks up and points at her companion's gummy candy after the photo session, mirror lights warming the sofa.",
     "promptTokens": [
       "Anna Yamada",
-      "charcoal hoodie",
+      "hoodie",
       "denim shorts",
-      "loose black hair",
-      "candy request",
-      "studio lounge",
+      "loose hair",
+      "sofa",
+      "candy",
+      "studio",
       "medium shot"
     ],
     "negativeTokens": [],

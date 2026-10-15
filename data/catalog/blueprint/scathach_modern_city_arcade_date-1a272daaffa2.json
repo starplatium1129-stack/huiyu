@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_modern_city_arcade_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "scathach_modern_city_arcade_date",
     "title": "斯卡哈 · 都市电玩城的师匠·「这里的格斗游戏，判定倒是相当严谨」",
@@ -29,19 +29,15 @@
       "screen_light",
       "medium_shot"
     ],
-    "promptProse": "Scathach holds the joystick with one hand and poises the other over arcade buttons, glancing toward the viewer between fighting-game rounds with an amused invitation. Her white shirt, brown vest and long travelling coat remain beneath the wide-brimmed hat. The medium view includes cabinet and controls, with neighboring machines beyond her purple hair. Screen light colors her fingers and red eyes, while arcade neon traces the coat against shaded cabinet sides.",
+    "promptProse": "Scathach pauses at the fighting-game controls and glances toward the viewer, screen light coloring her hands.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Scathach",
-      "white shirt",
-      "brown vest",
-      "travel coat",
-      "wide brim hat",
+      "shirt",
+      "vest",
+      "coat",
+      "wide-brimmed hat",
+      "arcade",
       "joystick",
-      "arcade buttons",
-      "fighting game cabinet",
-      "neon",
       "medium shot"
     ],
     "negativeTokens": [

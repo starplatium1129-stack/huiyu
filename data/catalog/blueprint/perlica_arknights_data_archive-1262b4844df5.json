@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_data_archive",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 716,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "站在数据架前检索终端",
     "camera": "medium close-up",
@@ -17,15 +17,15 @@
     "mood": "专注求知",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "At a bright retrieval terminal in the data archive, Perlica backs up old civilization records and turns her head toward the Administrator. Her white techwear jacket and high-neck tunic remain visible beside the working glove in medium close-up. Tall storage cores form parallel rows behind her. Soft terminal glow catches her cheek and sleeve cuff, fading gradually across the darker column faces farther from the screen.",
+    "promptProse": "Perlica turns from the archive terminal toward the Administrator while backing up old civilization records.",
     "promptTokens": [
-      "night",
-      "data archive",
-      "terminal",
-      "white techwear jacket",
-      "white tunic",
+      "white jacket",
       "gloves",
-      "medium close up"
+      "terminal",
+      "data storage",
+      "looking back",
+      "night",
+      "screen light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +36,8 @@
       "searching"
     ],
     "timeOfDay": "白天",
-    "title": "佩丽卡 · 数据档案室"
+    "title": "佩丽卡 · 数据档案室",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

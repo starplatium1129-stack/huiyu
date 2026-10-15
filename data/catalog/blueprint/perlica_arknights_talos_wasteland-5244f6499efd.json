@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_talos_wasteland",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "按住耳侧通讯发饰遥望风沙",
     "camera": "medium wide shot",
@@ -17,16 +17,16 @@
     "mood": "辽阔苍茫",
     "negativeTokens": [],
     "outfitId": "wasteland_explorer",
-    "promptProse": "At the edge of a Talos II wasteland cliff, Perlica presses a hand against her windblown pale short hair and watches the huge infrastructure hub rising in the distance. Her khaki explorer coat and backpack face the amber dust in a medium-wide view. The cliff drops past the foreground toward industrial structures. Dust-filtered sunlight catches her sleeve and pack edge, softening the shadows over distant construction.",
+    "promptProse": "Perlica holds back her windblown hair at the cliff edge, watching the distant infrastructure hub through amber dust.",
     "promptTokens": [
-      "daytime",
-      "Talos II wasteland",
-      "cliff",
-      "khaki explorer coat",
+      "khaki coat",
       "cargo pants",
       "backpack",
+      "holding hair",
+      "cliff",
+      "wasteland",
       "wind",
-      "medium wide shot"
+      "dust"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -37,6 +37,8 @@
       "survey"
     ],
     "timeOfDay": "黄昏",
-    "title": "佩丽卡 · 塔罗斯荒原"
+    "title": "佩丽卡 · 塔罗斯荒原",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

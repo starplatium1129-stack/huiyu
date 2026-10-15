@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1088,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_r18_nurse_exam_table_cowgirl_straddle",
     "title": "大凤 · 诊疗台护士服半解跨坐主动骑乘",
@@ -30,47 +30,25 @@
       "twintails",
       "heavy_blush"
     ],
-    "promptProse": "Soft clinic lamps frame adult Taihou seated alone astride a padded examination stool. Her nurse dress is unbuttoned and pulled below bare breasts, while black stockings tighten around folded thighs. She grips the stool back with one hand and fingers herself beneath the lifted hem with the other, red ribbon straps trailing safely along the seat. Dark twin tails and golden eyes hold feverish devotion through tears and a lush blush. Vertical single-subject portrait, no text or extra people.",
+    "promptProse": "Taihou grips the examination stool and fingers herself beneath her raised nurse dress, its bodice lowered in soft clinic light.",
     "promptTokens": [
-      "cowgirl_position",
+      "Taihou",
+      "nurse dress",
+      "stockings",
       "straddling",
-      "nurse_dress",
-      "open_shirt",
-      "bouncing_breasts",
-      "large_breasts",
-      "twintails",
-      "heavy_blush",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "stool",
+      "clinic"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "r18_sensual_bedroom",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [
-      "cowgirl",
-      "straddling",
-      "large_breasts",
-      "wet_pussy",
-      "twintails",
-      "heavy_blush"
+      "topless",
+      "masturbation",
+      "hand under clothes"
     ],
     "nsfwProse": ""
   }

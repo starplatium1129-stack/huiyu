@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_kimono_lift_doggystyle_thrust",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1086,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_r18_kimono_lift_doggystyle_thrust",
     "title": "大凤 · 重樱寝殿金鱼和服半解露宏伟雪乳与病娇依恋自抚",
@@ -35,64 +35,25 @@
       "masturbation",
       "heavy_blush"
     ],
-    "promptProse": "An extraordinarily intense, possessively passionate anime illustration of Taihou from Azur Lane alone upon tatami mats in an opulent Sakura Empire bedchamber at midnight. Her flamboyant crimson and gold goldfish kimono is parted wide, dramatically baring her colossal, overflowing breasts heaving with desperate arousal. Floor-length black twintails pool across the woven rush flooring like glossy dark silk. With eyes glistening with tears of intoxicating yandere devotion, one hand fiercely kneads her heavy bare bosom while her other hand rhythmically strokes her drenched intimate center beneath her silk skirts. Crimson lantern glow, glossy fabric highlights, crisp anime linework, solo 1girl, completely alone in peaceful solitude, fine anime art style.",
+    "promptProse": "Taihou cups one breast and touches herself beneath her parted goldfish kimono, black twintails pooling on the lantern-lit tatami.",
     "promptTokens": [
-      "japanese_room",
-      "tatami",
+      "Taihou",
       "kimono",
-      "open_clothes",
-      "cleavage",
-      "cleavage_spill",
-      "large_breasts",
-      "huge_breasts",
-      "black_hair",
-      "very_long_hair",
-      "twintails",
-      "brown_eyes",
-      "sensual_solo",
-      "masturbation",
-      "touching_own_breasts",
-      "seated_pose",
-      "lifting_leg",
-      "pussy_juice",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "tatami",
+      "sitting",
+      "lantern"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "r18_sensual_bedroom",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [
-      "sensual_solo",
+      "topless",
       "masturbation",
-      "kimono",
-      "open_clothes",
-      "cleavage_spill",
-      "huge_breasts",
-      "black_hair",
-      "pussy_juice",
-      "heavy_blush",
-      "teary_eyes"
+      "hand between legs"
     ],
-    "nsfwProse": "Seated on tatami with her flamboyant goldfish kimono parted to spill out colossal bare cleavage, Taihou fiercely kneads her heavy breasts and pleasures her drenched core, panting in sweet possessive yandere adoration in quiet solitude."
+    "nsfwProse": ""
   }
 }

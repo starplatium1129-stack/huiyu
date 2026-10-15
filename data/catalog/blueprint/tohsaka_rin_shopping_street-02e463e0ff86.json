@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_shopping_street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tohsaka_rin_shopping_street",
     "title": "远坂凛 · 逛街战利品",
@@ -32,20 +32,16 @@
       "shop_window_light",
       "medium_shot"
     ],
-    "promptProse": "Paper shopping bags swing from both of Rin's occupied hands as she steps along Fuyuki's evening shopping street and looks back with her chin raised in satisfaction. Her wine-red cardigan lies over a cream blouse, and the black-and-grey checked midi skirt follows her stride beneath the unchanged black hair ribbons. At the near edge, individual paving stones and the bags' folded corners are clear. A scarf display and shoe shelves fill the window beside her, followed by successive glass storefronts and a narrow side lane further along the route. Compose an eye-level landscape medium view. Sunset from the back left rims her ribbons and bag edges; warm window light from the right reaches her cheek and cardigan buttons. Long diagonal bag shadows cross the pavement, with only indistinct reflections in the shop glass.",
+    "promptProse": "Rin looks back proudly with shopping bags in both hands, sunset and shop light crossing the evening pavement.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "walking and looking back",
-      "chin raised",
-      "paper shopping bags",
-      "scarf display",
-      "shoe shelves",
-      "glass storefronts",
-      "side lane",
-      "stone pavement",
-      "sunset rim light",
-      "warm shop window light",
+      "Rin",
+      "cardigan",
+      "blouse",
+      "plaid skirt",
+      "shopping bags",
+      "walking",
+      "looking back",
+      "street",
       "medium shot"
     ],
     "negativeTokens": [

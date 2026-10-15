@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_poisson_rain_reflection",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "furina_poisson_rain_reflection",
     "title": "芙宁娜 · 雨幕中的落寞独白",
@@ -30,17 +30,18 @@
       "distant_streetlights",
       "medium_shot"
     ],
-    "promptProse": "Rain gathers in Furina's upturned palm as she leans against the carved Fontaine terrace rail, her other hand resting on wet stone. She lowers tired eyes beneath her small top hat, blue formal coat framed at eye level. The balustrade leads away toward distant streets. Diffuse rain light softly defines her face and palm, while warm street-lamp reflections break across the stone beyond her.",
+    "promptProse": "She catches rain in one upturned palm while her other hand rests on the wet stone balustrade.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Fontaine terrace",
-      "stone balustrade",
-      "blue formal coat",
+      "blue coat",
       "top hat",
-      "open palm",
+      "leaning",
+      "open hand",
+      "railing",
       "rain",
-      "street lamps",
+      "terrace",
+      "tired",
       "medium shot"
     ],
     "negativeTokens": [],

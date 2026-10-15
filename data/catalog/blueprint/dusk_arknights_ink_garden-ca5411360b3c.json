@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_ink_garden",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 566,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "执笔立于池边，墨点晕开",
     "camera": "medium shot, painterly",
@@ -17,19 +17,15 @@
     "mood": "清雅出尘",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Dusk grips the giant wolf-hair brush with both hands at the lotus pond and taps its ink-soaked tip into the water, watching layered black rings bloom outward. Ink-black qipao with teal clouds and gradient wide-sleeved robe move in the breeze beside her long hair. The medium view connects brush contact to lotus leaves receding through mist. Soft dawn light reveals ink edges and her unimpressed face, leaving darker ripples beneath the foliage.",
+    "promptProse": "She dips the brush tip into the pond with both hands, watching black ink rings expand among the lotus leaves in dawn light.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Dusk",
-      "ink black teal qipao",
-      "gradient wide sleeve robe",
-      "barefoot",
-      "giant brush",
       "lotus pond",
-      "ink rings",
-      "dawn mist",
-      "medium shot"
+      "black and teal qipao",
+      "wide sleeves",
+      "barefoot",
+      "large brush",
+      "ink",
+      "dawn mist"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

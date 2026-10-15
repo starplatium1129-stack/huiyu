@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_lava_forge",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 723,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "靠在铁砧旁，剑尖垂地",
     "camera": "medium shot",
@@ -20,16 +20,13 @@
     "mood": "炽热专注",
     "negativeTokens": [],
     "outfitId": "ignition",
-    "promptProse": "Laevatain leans beside the hot alloy anvil, gripping her greatsword with its point driven into the forge floor as she wipes sweat from her forehead. Her ignited layered black-and-pink combat outfit moves amid flame and orbiting embers. The medium view places the anvil across the foreground and workshop machinery behind. Forge fire lights her gloves and sword core, throwing sharp orange reflections along the metal edges.",
+    "promptProse": "Laevatain rests against the anvil with her sword point lowered to the forge floor.",
     "promptTokens": [
-      "daytime",
-      "weapon forge",
-      "anvil",
+      "combat dress",
       "greatsword",
-      "flame aura",
-      "layered combat dress",
-      "sparks",
-      "medium shot"
+      "anvil",
+      "forge",
+      "sparks"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

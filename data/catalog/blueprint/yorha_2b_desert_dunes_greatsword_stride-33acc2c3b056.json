@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_desert_dunes_greatsword_stride",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1111,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yorha_2b_desert_dunes_greatsword_stride",
     "title": "2B · 苍茫沙丘的风沙斗篷与大剑独行",
@@ -33,14 +33,14 @@
       "boots",
       "mole_under_mouth"
     ],
-    "promptProse": "2B crosses golden dunes in a tattered gray traveler cloak over her charcoal tactical suit, heavy greatsword secured across her back. She stops and turns, extending one gloved hand toward the viewer before the stronger sandstorm ahead. The cowboy view includes half-buried mechanical remains behind. Harsh desert sun illuminates the cloak's windblown edge and sword fittings, with repeated dune-ripple shadows defining the sandy route beneath her boots.",
+    "promptProse": "2B offers a gloved hand before the advancing sandstorm, her sword secured across her back among buried machine remains.",
     "promptTokens": [
-      "daytime",
-      "desert ruins",
-      "gray cloak",
-      "charcoal tactical suit",
+      "2B",
+      "grey cloak",
+      "tactical suit",
       "greatsword",
-      "gloved hand offered",
+      "reaching out",
+      "desert",
       "cowboy shot"
     ],
     "negativeTokens": [],

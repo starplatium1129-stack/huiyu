@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_shrine_new_year_kimono",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1482,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chitanda_shrine_new_year_kimono",
     "title": "千反田爱瑠 · 神社初诣振袖和服的端庄回眸·「新年快乐，折木同学」",
@@ -31,16 +31,16 @@
       "dignified",
       "elegant"
     ],
-    "promptProse": "At Arakusu Shrine's red torii on New Year's morning, Eru Chitanda folds both hands before her pale-wisteria furisode and turns slightly back with a shy smile. White crane and cherry patterns accompany the gold obi, black hair arranged with a floral kanzashi. The medium-full framing includes snowy stairs below the gate. Morning light and snow reflection illuminate her headdress and patterned sleeves, while the red torii casts a warm tint onto the adjacent snow.",
+    "promptProse": "She turns back with a shy smile beneath the torii, both hands folded before her kimono. Morning snowlight reaches the patterned sleeves.",
     "promptTokens": [
-      "chitanda_eru",
-      "Eru Chitanda",
+      "shrine",
+      "torii",
       "wisteria furisode",
       "gold obi",
       "floral kanzashi",
-      "torii",
+      "folded hands",
       "snow",
-      "medium full shot"
+      "morning"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

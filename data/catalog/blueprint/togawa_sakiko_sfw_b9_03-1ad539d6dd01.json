@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1750,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_03",
     "title": "丰川祥子 · 客服电话结束的一秒",
@@ -32,21 +32,19 @@
       "office_lighting",
       "medium_shot"
     ],
-    "promptProse": "Sakiko Togawa finishes the call at her computer workstation, moving the headset microphone away while the other hand stays on the mouse. Her pale-blue blouse and work cardigan remain orderly as the professional smile relaxes into fatigue. The medium portrait includes indistinct forms on the monitor, neatly arranged notes and a water cup. Soft cool office light illuminates blue hair and yellow eyes, with restrained equipment shadows across the practical desk.",
+    "promptProse": "Sakiko moves the headset microphone away after a call, her professional smile fading into fatigue under office lights.",
     "promptTokens": [
       "Sakiko Togawa",
-      "blue blouse",
-      "work cardigan",
-      "headset microphone",
-      "computer mouse",
-      "call-center cubicle",
+      "blouse",
+      "cardigan",
+      "headset",
+      "mouse",
+      "call center",
       "medium shot"
     ],
     "negativeTokens": [
       "piano",
-      "grand piano",
       "musical keyboard",
-      "playing instrument",
       "concert stage"
     ],
     "recommendedSize": "1152x1536",

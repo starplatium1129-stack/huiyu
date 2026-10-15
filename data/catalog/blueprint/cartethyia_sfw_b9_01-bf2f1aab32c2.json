@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1645,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_01",
     "title": "卡提希娅 · 埃格拉小镇的归还",
@@ -30,15 +30,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Cartethyia stands at the stone-paved corner of her hometown, returning in a cream high-collared tunic, blue travel jacket and practical boots. Beneath the halo, her hesitant expression moves between recognition and uncertainty before the first step home. The medium portrait follows familiar shopfronts down the street. Morning light catches her blonde braid and jacket seam, with a soft halo edge above and long paving shadows carrying the road into the distance.",
+    "promptProse": "She hesitates at the familiar stone-paved corner before taking her first step home. Morning light follows the shopfronts behind her.",
     "promptTokens": [
-      "Cartethyia",
+      "town",
       "cream tunic",
-      "blue travel jacket",
+      "blue jacket",
+      "boots",
       "halo",
-      "home-town corner",
-      "morning",
-      "medium shot"
+      "standing",
+      "morning"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

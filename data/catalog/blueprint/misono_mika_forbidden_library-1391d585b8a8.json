@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_forbidden_library",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 891,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在古老藏书库的高书架前伸手取一本旧书",
     "adult": false,
@@ -26,14 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "tea_party_dress",
-    "promptProse": "Mika rises onto her toes before a tall shelf in the old library, searching among its upper books before turning to wink at the viewer. Her white-and-gold ballgown and shawl retain their formal shape in the eye-level medium view. Shelves overlap behind her toward the secluded corner. Candlelight brightens her fingertips and gold trim, casting book-spine shadows across the darker wood beyond her reach.",
+    "promptProse": "Mika reaches for an old book on the high library shelf by candlelight.",
     "promptTokens": [
-      "night",
-      "old library",
-      "white gold gown",
-      "candlelight",
-      "reaching shelf",
-      "medium shot"
+      "white gold dress",
+      "reaching",
+      "bookshelf",
+      "old book",
+      "library",
+      "candlelight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

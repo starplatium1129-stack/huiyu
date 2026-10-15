@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_training_hall_bent",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 249,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "scathach_nsfw_training_hall_bent",
     "title": "斯卡哈 · 道场更衣紧身衣拉链崩开事故·「武艺上尚有从容……但这身紧身衣，可真是毫无防备呢」",
@@ -30,45 +30,19 @@
       "bare_breasts",
       "sweat"
     ],
-    "promptProse": "Scathach from Fate suffering a stunning wardrobe malfunction in the shadowed underground dojo of the Land of Shadows after a grueling training session. Leaning forward against a fallen wooden practice pillar, the rear zipper of her iconic skin-tight purple bodysuit has burst open down to her hips, completely freeing her firm, glistening bare back and letting her heavy, voluptuous breasts spill bare from the front with erect dark-rose nipples exposed. One hand reaches beneath the unzipped purple fabric to touch her dripping, sensitive core, while beads of sweat gleam across her athletic porcelain curves in the flickering brazier fire. Glancing back over her shoulder with glowing crimson eyes and a breathless, teasing smirk, deep anime visual novel key visual, solo 1girl, no text, no extra people.",
+    "promptProse": "Scathach leans on a fallen practice pillar and touches herself beneath her unzipped bodysuit, looking back in the brazier light.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "touching_own_body",
-      "hand_under_clothes",
-      "dojo",
-      "bodysuit",
-      "purple_bodysuit",
-      "wardrobe_malfunction",
-      "open_clothes",
-      "bare_back",
-      "exposed_breasts",
-      "bare_breasts",
-      "pink_nipples",
-      "exposed_pussy",
-      "pussy_juice",
+      "Scathach",
+      "purple bodysuit",
+      "bare back",
       "sweat",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "looking_back",
-      "purple_hair",
-      "red_eyes",
-      "wide_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "leaning forward",
+      "looking back",
+      "dojo",
+      "wide shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
     "sampleRating": "R18",
@@ -78,6 +52,11 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
+    ],
+    "nsfwTokens": [
+      "topless",
+      "masturbation",
+      "hand under clothes"
     ]
   }
 }

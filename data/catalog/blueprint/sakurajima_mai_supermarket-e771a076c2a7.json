@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_supermarket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakurajima_mai_supermarket",
     "title": "樱岛麻衣 · 超市采购",
@@ -29,17 +29,14 @@
       "supermarket_light",
       "medium_shot"
     ],
-    "promptProse": "Mai compares two sealed ingredient trays, one in each hand, beside a stopped shopping cart at the fresh-food shelves. Plain glasses and a knit beanie complete her quiet disguise above a cardigan and long skirt. In the medium view, the cart handle sits alongside her rather than in her hands, and shelf tiers recede behind. Overhead supermarket lights brighten the tray lids and glasses, with gentle shadows under each shelf.",
+    "promptProse": "Mai compares a sealed ingredient tray in each hand beside her parked cart under the grocery lights.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Mai",
       "glasses",
-      "knit beanie",
+      "beanie",
       "cardigan",
       "long skirt",
-      "parked shopping cart",
-      "ingredient trays",
+      "shopping cart",
       "supermarket",
       "medium shot"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_aesc_forest",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 191,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [],
     "id": "morgan_le_fay_fate_aesc_forest",
@@ -30,19 +30,18 @@
       "after_rain_light",
       "full_body"
     ],
-    "promptProse": "Aesc walks the wet moss path after rain, one hand on her wooden staff and the other lifting a small portion of her closed blue robe above the ground. Its raised hood shelters silver hair, droplets along the edge. The full-body side view includes sturdy boots and ferns overlapping the path, trees receding beyond. Soft daylight from thinning clouds catches wet moss and robe crests, with gentle shade beneath the hood.",
+    "promptProse": "Aesc steadies her robe hem while walking the wet moss path with her wooden staff after the rain.",
     "promptTokens": [
       "1girl",
       "solo",
       "Aesc",
-      "closed blue hooded robe",
+      "hooded blue robe",
       "boots",
-      "wooden staff",
-      "gathered hem",
-      "moss path",
-      "faerie forest",
-      "after rain",
-      "full body side view"
+      "staff",
+      "holding hem",
+      "forest",
+      "moss",
+      "after rain"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "aesc_hooded_travel",

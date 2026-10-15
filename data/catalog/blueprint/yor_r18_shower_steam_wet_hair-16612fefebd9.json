@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_shower_steam_wet_hair",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yor_r18_shower_steam_wet_hair",
     "characterId": "yor_forger",
@@ -20,44 +20,24 @@
       "spy",
       "mirror"
     ],
-    "promptProse": "Amber steam surrounds adult Yor Forger alone beneath a hot shower. Completely nude, she braces one foot on a low bench and lifts her long black hair with both hands, exposing bare breasts and the line of her back in a compact pose. Water tracks down toned thighs while one hand slips free to follow the stream between her legs. Red eyes glance over one shoulder through wet bangs, parted breath and a shy blush. Vertical shower portrait, no text or extra people.",
+    "promptProse": "Yor keeps her hair raised with one hand and touches herself with the other, one foot braced on the shower bench.",
     "promptTokens": [
-      "bathroom",
+      "Yor Forger",
       "shower",
       "steam",
-      "water_droplets",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "foot up",
+      "holding hair",
+      "looking back",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra fingers",
-      "clothes",
-      "assassin dress",
-      "weapon",
-      "towel",
-      "swimsuit",
-      "panties",
-      "bra",
-      "covering",
-      "lowres",
-      "censored",
-      "bad hands",
-      "blurry"
-    ],
+    "negativeTokens": [],
     "adult": true,
     "adultEligibility": "adult",
     "adultArtistHint": "@rella",
     "nsfwTokens": [
-      "completely_nude",
-      "bare_breasts",
-      "pink_nipples",
-      "wet_black_hair",
-      "water_droplets",
-      "heavy_blush"
+      "nude",
+      "masturbation",
+      "hand between legs"
     ],
     "nsfwProse": "",
     "category": "私密写真",

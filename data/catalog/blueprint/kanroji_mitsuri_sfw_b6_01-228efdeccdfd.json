@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1458,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "午后缘侧，蜜璃抱着盛满樱饼的盘子，举起一块准备品尝，绿瞳里全是期待",
     "adult": false,
@@ -27,15 +27,15 @@
       "alternate hairstyle"
     ],
     "outfitId": "sfw_daily",
-    "promptProse": "Mitsuri Kanroji hugs a plate of sakura mochi on the afternoon veranda, lifting one piece with eager green eyes. Her pale-pink kimono is securely overlapped above a green obi, and pink braids end in green beside the belt. Show only this present hairstyle in the medium view. A tea cup and garden cherry leaves sit behind; daylight reflected from the garden brightens the sweets and sleeves, with soft plate shadows on her lap.",
+    "promptProse": "Mitsuri holds a plate of sakura mochi on the veranda, raising one piece with an eager smile.",
     "promptTokens": [
       "kanroji_mitsuri",
-      "Mitsuri Kanroji",
       "pink kimono",
       "green obi",
       "sakura mochi",
+      "plate",
       "veranda",
-      "daylight",
+      "afternoon",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

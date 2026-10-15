@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_bath_translucent_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "megumi_nsfw_bath_translucent_solo",
     "title": "加藤惠 · 浴后薄纱毛巾的水光独奏 ·「在浴室里……脑子里却全是你的事」",
@@ -24,32 +24,19 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Megumi Kato sits on the smooth tiled edge of a steaming bathroom late at night, a soaked white towel clinging translucently over her petite frame. Droplets of moisture glisten down her delicate collarbone and bare stomach as one slender hand glides between her trembling thighs beneath the rising vapor. Her calm brown eyes turn glossy with private longing, lips parted in a quiet sigh of shy pleasure. Sensual vertical composition, soft cinematic rim light cutting through misty steam, detailed bathroom background, solo 1girl, no text.",
-    "nsfwProse": "Sitting upon the tiled tub edge with a soaked white towel clinging translucently over small bare breasts, Megumi Kato touches her wet thighs in quiet, misty yearning amidst warm bathroom vapors.",
+    "promptProse": "Adult Megumi sits on the tiled bath edge and touches herself beneath a soaked white towel in the rising steam.",
+    "nsfwProse": "",
     "promptTokens": [
-      "bathroom",
-      "bath_edge",
+      "wet towel",
+      "see-through",
+      "masturbation",
+      "hand between legs",
+      "sitting on edge",
+      "bathtub",
       "steam",
-      "water_droplets",
-      "night",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "night"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -60,20 +47,6 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [
-      "sitting_on_edge",
-      "bathtub",
-      "wet_skin",
-      "wet_towel",
-      "small_towel",
-      "translucent_clothing",
-      "nipples_visible_through_clothes",
-      "bare_breasts",
-      "hand_between_legs",
-      "masturbation",
-      "pussy_juice",
-      "heavy_blush",
-      "parted_lips"
-    ]
+    "nsfwTokens": []
   }
 }

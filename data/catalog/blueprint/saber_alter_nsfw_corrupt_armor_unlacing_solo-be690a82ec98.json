@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
     "title": "黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持",
@@ -33,42 +33,19 @@
       "heavy_blush",
       "sensual_solo"
     ],
-    "promptProse": "Inside the ruined obsidian throne room beneath a sliver of cold moonlight, Artoria Pendragon Alter experiences a sudden surge of corrupt mana. The spiked black iron breastplate of her gothic armor has unlatched and slipped from her shoulders, boldly spilling her firm, alabaster breasts and perky dark-rose nipples into the open chill. Faint crimson magic circuits pulse faintly along her porcelain collarbone as she kneels upon one knee, leaning on her darkened sword while her other hand slides beneath her tattered black skirts between her thighs to stroke her dripping core. Her cold golden eyes waver with breathless, indignant rapture, biting her lip through heavy crimson flush. Exquisite dark fantasy key visual, solo 1girl, no text.",
+    "promptProse": "Adult Saber Alter kneels on one knee with her breastplate unlatched, leaning on her sword while touching herself beneath her skirts as crimson magic circuits glow.",
     "promptTokens": [
-      "throne_room",
-      "black_throne",
-      "black_armor",
-      "loosened_armor",
-      "open_clothes",
-      "bare_breasts",
-      "large_breasts",
-      "pink_nipples",
-      "areola",
-      "cleavage",
-      "golden_eyes",
-      "yellow_eyes",
-      "hand_between_legs",
-      "exposed_pussy",
-      "pussy_juice",
-      "blonde_hair",
-      "heavy_blush",
-      "blushing_ears",
-      "biting_lip",
-      "teary_eyes",
-      "sensual_solo",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "black armor",
+      "open armor",
+      "topless",
+      "kneeling",
+      "sword",
+      "masturbation",
+      "hand under clothes",
+      "throne room",
+      "moonlight"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -82,6 +59,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "Inside the ruined obsidian throne room beneath a sliver of cold moonlight, Artoria Pendragon Alter experiences a sudden surge of corrupt mana. The spiked black iron breastplate of her gothic armor has unlatched and slipped from her shoulders, boldly spilling her firm, alabaster breasts and perky dark-rose nipples into the open chill. Faint crimson magic circuits pulse faintly along her porcelain collarbone as she kneels upon one knee, leaning on her darkened sword while her other hand slides beneath her tattered black skirts between her thighs to stroke her dripping core. Her cold golden eyes waver with breathless, indignant rapture, biting her lip through heavy crimson flush. Masterpiece dark fantasy key visual, solo 1girl, no text."
+    "nsfwProse": "",
+    "nsfwTokens": []
   }
 }

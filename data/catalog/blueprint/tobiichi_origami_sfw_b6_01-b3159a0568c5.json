@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_01",
     "title": "鸢一折纸 · 教室窗边的完美侧脸",
@@ -31,19 +31,15 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Origami sits perfectly upright beside the classroom window, turning her book's page at an even pace until a vibration from the nearby phone draws her pale-blue eyes aside. Short white hair rests above her navy school collar. The medium seated view follows the wooden desktop toward empty classroom desks behind her. Afternoon window light outlines her bob and precise fingers, leaving the phone's small shadow beside the book.",
+    "promptProse": "Origami pauses her reading at a phone vibration beside the afternoon classroom window.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Origami",
-      "navy school collar",
+      "tobiichi_origami",
+      "school uniform",
       "white bob",
       "book",
       "phone",
-      "classroom window",
-      "afternoon",
-      "medium shot",
-      "tobiichi_origami"
+      "classroom",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

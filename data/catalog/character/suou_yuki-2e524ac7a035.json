@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suou_yuki",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "suou_yuki",
     "profile": {
@@ -76,12 +76,10 @@
       "identityProse": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian, with long black hair in a half-up style, a small ahoge and violet eyes. Her formal smile can shift quickly into lively, unguarded enthusiasm at home.",
       "identityTokens": [
         "suou_yuki",
-        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
-        "black_hair",
-        "long_hair",
-        "half_updo",
-        "ahoge",
-        "purple_eyes"
+        "tokidoki bosotto roshia-go de dereru tonari no alya-san",
+        "black hair",
+        "half updo",
+        "purple eyes"
       ],
       "exactTokens": [
         "suou_yuki"

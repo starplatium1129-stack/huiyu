@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_astral_express_violin_prelude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1031,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kafka_astral_express_violin_prelude",
     "title": "卡芙卡 · 空间站虚空小提琴",
@@ -29,17 +29,20 @@
       "sunglasses_on_head",
       "composed_smile"
     ],
-    "promptProse": "Kafka turns sideways in Herta Station's holographic corridor, raising her hands to bow an invisible violin amid the invasion alarm. Her burgundy-black shoulder coat, white lace-collared shirt and gloved fingers retain their deliberate elegance in the dynamic cowboy view. Blue projection panels layer down the empty hall. Overhead ring lights illuminate her hair and coat seam, while cool hologram light reflects across the space where the imagined instrument rests.",
+    "promptProse": "Kafka mimes playing an invisible violin in Herta Station's holographic corridor while the invasion alarm sounds.",
     "promptTokens": [
-      "indoor",
-      "Herta station",
-      "burgundy black coat",
-      "white shirt",
-      "invisible violin",
-      "playing gesture",
+      "Kafka",
+      "coat",
+      "gloves",
+      "violin pose",
+      "space station",
+      "hologram",
+      "hallway",
       "cowboy shot"
     ],
-    "negativeTokens": [],
+    "negativeTokens": [
+      "visible violin"
+    ],
     "recommendedSize": "1152x1536",
     "outfitId": "official_hunter_coat",
     "coverageTags": [

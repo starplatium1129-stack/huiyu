@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1524,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_02",
     "title": "和泉纱雾 · 直播开场前的招呼练习",
@@ -31,14 +31,13 @@
       "desk_light",
       "medium_shot"
     ],
-    "promptProse": "Sagiri Izumi practices waving toward the small desk camera, then lowers her head with a laugh at her own earnest greeting. Her fully zipped mint fleece hoodie has small bear ears above navy lounge trousers. A bear plush sits securely beside the keyboard, tablet nearby. The medium view holds the bright working corner together; soft frontal desk light illuminates her raised hand and plush face, casting compact shadows beneath the keyboard and toy.",
+    "promptProse": "Sagiri practices a greeting for the desk camera, then laughs shyly. A bear plush sits beside her keyboard.",
     "promptTokens": [
-      "Sagiri Izumi",
-      "mint fleece hoodie",
-      "navy trousers",
-      "camera greeting",
-      "bear plush",
-      "drawing desk",
+      "hoodie",
+      "waving",
+      "camera",
+      "stuffed bear",
+      "desk",
       "medium shot"
     ],
     "negativeTokens": [],

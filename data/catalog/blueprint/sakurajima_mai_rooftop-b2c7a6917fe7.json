@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_rooftop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakurajima_mai_rooftop",
     "title": "樱岛麻衣 · 学校天台·海风与回眸",
@@ -29,17 +29,13 @@
       "sunset_light",
       "medium_shot"
     ],
-    "promptProse": "Mai rests one hand on the rooftop wire fence after school and turns quietly toward the viewer, her other hand relaxed beside her grey pleated skirt. Brown blazer, beige vest and red tie retain her uniform. Straight black hair moves around the rabbit clip. In the cowboy view, fence posts lead toward the distant coast; orange sunset rims her hair and wire, leaving the front of her blazer softly shaded.",
+    "promptProse": "Mai rests one hand on the rooftop fence and turns toward the viewer, sunset outlining her hair above the distant coast.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Mai",
       "school uniform",
-      "brown blazer",
-      "beige sweater vest",
-      "red tie",
-      "grey pleated skirt",
-      "rooftop fence",
+      "rabbit hair ornament",
+      "rooftop",
+      "fence",
       "sunset",
       "cowboy shot"
     ],

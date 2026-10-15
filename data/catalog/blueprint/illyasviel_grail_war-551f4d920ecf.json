@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_grail_war",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "illyasviel_grail_war",
     "title": "伊莉雅丝菲尔 · 圣杯战争",
@@ -28,29 +28,30 @@
       "two_characters",
       "low_angle"
     ],
-    "promptProse": "Illyasviel sits securely on Berserker's broad shoulder and extends one commanding hand toward the distant battlefield, purple winter coat and white hair lifting in the wind. He stands planted on broken Fuyuki paving, battle skirt, greaves and lowered weapon visible beneath her. The wide low-angle view includes both complete figures. Firelight outlines their near sides and rubble; moonlight separates Illya's confident silhouette from smoke above the ruined street.",
+    "promptProse": "Illyasviel extends a commanding hand from Berserker's shoulder while he stands on the broken paving, both complete figures visible.",
     "promptTokens": [
       "1girl",
       "1boy",
-      "Illyasviel",
-      "Berserker",
-      "purple fur trimmed coat",
-      "shoulder riding",
-      "commanding gesture",
-      "ruined Fuyuki street",
+      "berserker",
+      "shoulder ride",
+      "pointing",
+      "ruins",
       "firelight",
       "moonlight",
-      "wide low angle"
+      "wide shot",
+      "from below"
     ],
     "negativeTokens": [
       "injuries",
-      "cropped Berserker"
+      "cropped berserker"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "winter_coat",
     "coverageTags": [
       "iconic"
     ],
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

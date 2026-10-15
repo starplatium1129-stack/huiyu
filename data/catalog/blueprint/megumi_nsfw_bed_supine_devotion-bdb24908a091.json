@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_bed_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1450,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "megumi_nsfw_bed_supine_devotion",
     "title": "加藤惠 · 创作合宿被单深处的柔情真心 ·「这一次……不许再把我当路人了哦」",
@@ -24,31 +24,18 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Megumi Kato lies back across the rumpled futon of the mountain retreat lodge after finishing the doujin game deadline. Her brown hair spreads out across the sheets as her slender frame arches in profound, quiet vulnerability, fingers resting tenderly between her pale thighs. Her soft brown eyes glisten with unguarded devotion, murmuring with parted trembling lips that tonight she is no longer an invisible passerby, but the only heroine meant for you. Intimate vertical composition, warm shadows across flushed skin, detailed tatami background, solo 1girl, no extra people.",
-    "nsfwProse": "Lying back across the futon with hair fanning the mats, Megumi Kato parts slender thighs in quiet vulnerability, offering bare breasts and wet warmth to her only creator.",
+    "promptProse": "Adult Megumi lies back on the lodge futon after finishing the game deadline, resting her fingers between her thighs as she looks toward the viewer.",
+    "nsfwProse": "",
     "promptTokens": [
-      "japanese_room",
-      "tatami",
+      "nude",
+      "on back",
+      "spread legs",
+      "hand between legs",
       "futon",
-      "night",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "tatami",
+      "night"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -59,18 +46,6 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [
-      "completely_nude",
-      "on_back",
-      "spread_legs",
-      "arched_back",
-      "bare_breasts",
-      "pink_nipples",
-      "hand_between_legs",
-      "touching_own_body",
-      "pussy_juice",
-      "heavy_blush",
-      "teary_eyes"
-    ]
+    "nsfwTokens": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_rain_garden",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 892,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "撑着蕾丝洋伞漫步白蔷薇园，微笑回望",
     "adult": false,
@@ -26,15 +26,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "Mika walks among wet white roses beneath a lace parasol, extending a hand toward the teacher in a three-quarter rear medium view. Her white school dress, red ribbon and fur-edged capelet remain clear beside beaded wings. Light through a cloud gap touches the rose petals and her reaching hand, while rain-softened foliage recedes behind and small reflections gather on the path.",
+    "promptProse": "Mika offers her free hand while turning beneath the lace umbrella in the rainy rose garden.",
     "promptTokens": [
-      "rainy day",
-      "white rose garden",
       "school dress",
       "fur capelet",
       "lace umbrella",
       "hand offered",
-      "medium shot"
+      "white roses",
+      "garden",
+      "rain"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

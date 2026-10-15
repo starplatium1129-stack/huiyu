@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_rain_umbrella_park",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1469,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mahiru_rain_umbrella_park",
     "title": "椎名真昼 · 细雨公园递出雨伞的初遇·「淋湿的话，可是会感冒的哦」",
@@ -34,14 +34,15 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Mahiru Shiina sits alone beside the park swings in the rain until Amane Fujimiya steps closer and offers his umbrella over her head. Her damp golden hair lies against the navy school blazer; she raises surprised amber eyes and reaches hesitantly for the handle. The eye-level medium view keeps the offered umbrella forward and swings behind. Overcast rain light reveals wet sleeve edges and paving reflections, with softer shade beneath the canopy.",
+    "promptProse": "Mahiru looks up from beside the swing and reaches for the umbrella Amane offers her.",
     "promptTokens": [
       "Mahiru Shiina",
-      "navy school uniform",
       "Amane Fujimiya",
-      "offered umbrella",
-      "rainy park",
-      "medium shot"
+      "school uniform",
+      "umbrella",
+      "swing",
+      "park",
+      "rain"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

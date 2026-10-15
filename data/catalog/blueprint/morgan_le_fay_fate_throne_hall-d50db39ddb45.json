@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_throne_hall",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 189,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [],
     "id": "morgan_le_fay_fate_throne_hall",
@@ -30,19 +30,16 @@
       "cold_daylight",
       "medium_shot"
     ],
-    "promptProse": "Morgan sits upright on the Winter Palace throne, both hands naturally on its arms and her black-and-blue gown ordered across her lap. Crown and long silver-white hair frame measured attention directed down the hall. The frontal medium-full view places distant pillars behind the high back and wing-like sleeves. Cold daylight enters high windows, highlighting the ruff and sleeve edges while the layered skirt retains deep but distinct folds.",
+    "promptProse": "Morgan sits upright with both hands on the throne armrests, quietly surveying the hall.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Morgan",
-      "black blue royal gown",
-      "high ruff",
+      "royal gown",
+      "high collar",
       "wing sleeves",
       "crown",
-      "high backed throne",
-      "Winter Palace",
-      "cold daylight",
-      "medium full shot"
+      "throne",
+      "palace"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "winter_queen",

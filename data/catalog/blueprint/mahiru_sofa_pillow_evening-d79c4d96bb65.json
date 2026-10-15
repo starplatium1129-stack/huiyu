@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_sofa_pillow_evening",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1471,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mahiru_sofa_pillow_evening",
     "title": "椎名真昼 · 抱枕旁的读书便签",
@@ -31,15 +31,14 @@
       "evening",
       "medium_shot"
     ],
-    "promptProse": "Mahiru Shiina sits cross-legged on the sofa in a cream cable-knit sweater and pale-blue lounge trousers, a white-bear cushion on her lap. She carefully inserts a leaf-shaped bookmark, then laughs softly after noticing it is reversed. The medium portrait includes the partly read book and sofa arm. A warm floor lamp reveals the knit ridges and bookmark edge, with soft lap shadows and a subdued living-room corner behind.",
+    "promptProse": "Mahiru turns a misplaced leaf-shaped bookmark the right way around and smiles beside the bear cushion.",
     "promptTokens": [
-      "Mahiru Shiina",
-      "cream cable-knit sweater",
-      "blue lounge trousers",
-      "white bear cushion",
-      "leaf bookmark",
-      "sofa",
-      "medium shot"
+      "cream sweater",
+      "blue trousers",
+      "cross-legged",
+      "bear cushion",
+      "bookmark",
+      "sofa"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

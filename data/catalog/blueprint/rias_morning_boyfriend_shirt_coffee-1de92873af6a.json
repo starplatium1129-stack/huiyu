@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_morning_boyfriend_shirt_coffee",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1275,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rias_morning_boyfriend_shirt_coffee",
     "title": "莉雅丝 · 晨光微熹的大号衬衫",
@@ -27,13 +27,15 @@
       "gentle_smile",
       "blush"
     ],
-    "promptProse": "Rias Gremory stands barefoot in the apartment kitchen, turning back with a newly brewed coffee mug held in both hands. Her oversized white shirt slips softly from one shoulder as red hair falls beside the collar. The eye-level cowboy view includes the counter and wooden floor beyond her. Morning sunlight filtered through sheer curtains illuminates steam and sleeves, with broad window shadows softening toward the room's interior.",
+    "promptProse": "She turns toward her companion with a coffee mug in both hands; morning light crosses the kitchen counter.",
     "promptTokens": [
       "Rias Gremory",
-      "oversized white shirt",
-      "coffee",
+      "white shirt",
+      "off shoulder",
       "barefoot",
-      "morning kitchen",
+      "holding cup",
+      "coffee",
+      "kitchen",
       "cowboy shot"
     ],
     "negativeTokens": [],

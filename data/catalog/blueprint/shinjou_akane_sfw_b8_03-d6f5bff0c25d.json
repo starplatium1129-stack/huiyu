@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1541,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_03",
     "title": "新条茜 · 深夜零食的战利品",
@@ -29,13 +29,13 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Akane Shinjou bends to select ice cream from the convenience-store freezer's lower shelf, then lifts the cup to check its flavor with a relaxed expression. Her lavender-grey track jacket and full-length trousers remain loose above trainers. Cookies and a roll of model tape occupy her basket. The medium portrait includes freezer rails and store aisle behind; cool freezer light brightens the cup while softer shop light warms her face and jacket shoulder.",
+    "promptProse": "Akane checks an ice-cream cup beside the freezer, cookies and model tape in her basket under mixed shop light.",
     "promptTokens": [
       "Akane Shinjo",
-      "lavender-grey tracksuit",
+      "tracksuit",
       "ice cream",
-      "shopping basket",
-      "convenience freezer",
+      "basket",
+      "convenience store",
       "medium shot"
     ],
     "negativeTokens": [],

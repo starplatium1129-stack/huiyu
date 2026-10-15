@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_rainy_shared_umbrella_crouch",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1493,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yamada_rainy_shared_umbrella_crouch",
     "title": "山田杏奈 · 雨停前的小小收获",
@@ -30,13 +30,13 @@
       "happy",
       "medium_shot"
     ],
-    "promptProse": "Anna Yamada crouches under the shop eaves to retrieve an apple that slipped from her shopping bag, wiping its droplets gently with her sleeve. Her yellow rain jacket covers a striped shirt and full-length denim overalls above rubber boots. The folded black umbrella leans against the wall behind. Diffuse rainy daylight in the medium view lights the intact apple and cheerful face, with wet paving reflections and soft shelter shadows beneath her knees.",
+    "promptProse": "Yamada retrieves a fallen apple and wipes its droplets with her sleeve beneath the rainy shop eaves.",
     "promptTokens": [
       "Anna Yamada",
-      "yellow rain jacket",
-      "denim overalls",
-      "apple pickup",
-      "folded umbrella",
+      "raincoat",
+      "overalls",
+      "crouching",
+      "apple",
       "shop eaves",
       "medium shot"
     ],

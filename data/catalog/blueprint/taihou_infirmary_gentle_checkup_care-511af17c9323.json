@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_infirmary_gentle_checkup_care",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1078,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_infirmary_gentle_checkup_care",
     "title": "大凤 · 私密保健室的贴身诊疗",
@@ -31,17 +31,15 @@
       "whispering",
       "twintails"
     ],
-    "promptProse": "Taihou leans beside the port infirmary examination bed in her pink nurse dress, cap and white stockings, setting a silver stethoscope against the Commander's chest and speaking close to their ear. The first-person medium close-up keeps the instrument and steady contact visible with the privacy curtain behind. Pale light filtered through its white fabric softens her face and uniform, catching the stethoscope rim above the shaded bed edge.",
+    "promptProse": "Taihou places the stethoscope against the Commander's chest, pale curtain-filtered light falling across her face.",
     "promptTokens": [
-      "daytime",
-      "port infirmary",
-      "pink nurse dress",
-      "nurse cap",
+      "Taihou",
+      "nurse",
       "stethoscope",
-      "Commander",
-      "medical checkup",
-      "medium close up",
-      "POV"
+      "examination bed",
+      "infirmary",
+      "pov",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

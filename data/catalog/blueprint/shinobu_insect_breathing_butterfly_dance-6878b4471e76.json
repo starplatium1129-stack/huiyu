@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_insect_breathing_butterfly_dance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1447,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "足尖点梁翻转腾挪，蝶翼羽织展开，毒针寒光，落地眨眼",
     "adult": false,
@@ -25,16 +25,15 @@
     "mood": "轻盈致命、微笑杀伐",
     "negativeTokens": [],
     "outfitId": "official_demon_slayer_uniform",
-    "promptProse": "Shinobu Kocho twists through the ruined keep, her toe pushing off a broken beam as her narrow blade traces the Insect Breathing strike. Butterfly-patterned haori spreads behind the black uniform and white belt while her gentle smile remains composed. The dynamic view holds fractured walls and lower beams at distinct distances. Orange-violet dusk outlines the airborne sleeves, catching a brief cold glint on the blade and leaving the ruins' inner gaps dark.",
+    "promptProse": "Shinobu pushes off a broken beam and turns into an Insect Breathing strike, her haori spreading against the dusk-lit ruins.",
     "promptTokens": [
       "kochou_shinobu",
-      "Shinobu Kocho",
-      "Demon Slayer uniform",
+      "uniform",
       "butterfly haori",
-      "Insect Breathing",
-      "ruined keep",
-      "dusk",
-      "action shot"
+      "sword",
+      "jumping",
+      "ruins",
+      "dusk"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",

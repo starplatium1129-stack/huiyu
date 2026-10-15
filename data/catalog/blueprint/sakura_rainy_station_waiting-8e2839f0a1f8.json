@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_rainy_station_waiting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakura_rainy_station_waiting",
     "characterId": "matou_sakura",
@@ -23,17 +23,13 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Sakura raises her eyes in relief beneath a pale-pink umbrella outside the station exit as her awaited companion passes the unseen gates. One hand holds the shaft and the other rests on her closed winter coat; a damp skirt hem shows below. The medium view includes the exit canopy and puddles near her shoes. Overcast light softly illuminates the umbrella fabric and her face, with canopy reflections trembling in the rainwater.",
+    "promptProse": "Sakura looks up in relief beneath her umbrella outside the station, rain rippling the puddles by her shoes.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Sakura",
-      "closed winter coat",
-      "soft skirt",
-      "pale pink umbrella",
-      "station exit",
-      "rain puddles",
-      "overcast",
+      "winter coat",
+      "pink umbrella",
+      "rain",
+      "station",
       "medium shot"
     ],
     "negativeTokens": [],

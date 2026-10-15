@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_ice_cream",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 162,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_ice_cream",
     "title": "伊莉雅丝菲尔 · 冰淇淋店",
@@ -30,22 +30,18 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Outside Fuyuki's ice-cream shop, Illyasviel proudly raises a waffle cone with an oversized vanilla scoop and opens her free hand excitedly toward the viewer. Her long-sleeved cardigan, knee-length dress and flat shoes retain the ordinary outing. The medium view places the shopfront behind white hair and delighted ruby eyes. Bright daylight illuminates the scoop and cone ridges, casting a small hand shadow on her sleeve before she takes a bite.",
+    "promptProse": "Illyasviel proudly raises her oversized vanilla scoop outside the ice-cream shop, opening her free hand excitedly toward the viewer.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Illyasviel",
       "cardigan",
-      "knee length dress",
-      "flat shoes",
-      "vanilla ice cream",
+      "knee-length dress",
+      "ice cream",
       "waffle cone",
+      "smile",
       "pedestrian street",
-      "daylight",
-      "medium shot"
+      "day"
     ],
     "negativeTokens": [
-      "readable shop signs"
+      "text"
     ],
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "dreamy_pastel",
@@ -53,6 +49,8 @@
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

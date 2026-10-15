@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_dorm_sofa_manic_tease",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 675,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "横躺倒挂在天鹅绒沙发上，长发垂地，单手抛接小刀，神情玩味危险",
     "camera": "medium shot, dynamic tilted angle",
@@ -20,17 +20,15 @@
     "mood": "戏谑危险",
     "negativeTokens": [],
     "outfitId": "casual_leather",
-    "promptProse": "Lappland lies sideways and upside down over the velvet sofa arm, silver hair reaching toward the floor as she tosses a steel dagger above her fingers. Her casual leather jacket and shorts follow the inverted pose while she looks toward the entering Doctor. The tilted medium view holds a window behind her. Yellow wall light catches the blade; moonlight traces her hair against the shaded sofa.",
+    "promptProse": "Lappland hangs upside down across the sofa, casually tossing and catching a small dagger.",
     "promptTokens": [
-      "night",
-      "lounge",
-      "velvet sofa",
-      "casual leather",
-      "upside down",
+      "leather clothes",
+      "upside-down",
+      "sofa",
       "dagger",
-      "silver hair",
-      "medium shot",
-      "tilted angle"
+      "lounge",
+      "night",
+      "dutch angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

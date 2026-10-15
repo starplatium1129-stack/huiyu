@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_headset_bond_riding",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "正面主控反客为主骑乘机位，耳机同调幽蓝微光，挺拔双乳剧烈晃动，修长大腿紧绷律动",
     "adult": true,
@@ -23,44 +23,20 @@
     "lighting": "耳机幽蓝辉光与窗外微明星光勾勒汗珠轮廓",
     "location": "军官寝室床上",
     "mood": "深情主控、痴缠沉溺",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "An exquisite high-impact anime illustration of Vladilena Milize from 86 -Eighty Six- in an intimate, solitary cowgirl straddle perspective atop dark sheets. She is in absolute command of the frame, completely nude except for her white thighhigh stockings and her glowing blue Para-RAID communication device fitted to her neck. Leaning slightly forward with hands gripping her own slender knees, she rolls her supple hips with breathless rhythm, her full natural breasts bouncing softly with erect rose nipples exposed. Her glistening wet pussy is fully visible and glistening with moisture, with sweat beads catching the cool blue device glow as they trickle down her cleavage. Parted lips, flushed face, fluttering silver hair, vertical low-angle framing, cinematic anime visual novel style, solo 1girl, no text, no extra people.",
+    "promptProse": "Adult Lena holds a solitary straddling pose on the sheets, leaning forward with her hands on her knees and rolling her hips under the blue Para-RAID glow.",
     "promptTokens": [
-      "sensual_solo",
+      "topless",
+      "bottomless",
+      "white thighhighs",
+      "garter straps",
       "straddling",
-      "cowgirl_position",
-      "completely_nude",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "areola",
-      "exposed_pussy",
-      "pussy_juice",
-      "liquid_drip",
-      "white_thighhighs",
-      "garter_straps",
-      "headset",
-      "sweat",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "silver_hair",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "hands on knees",
+      "communication device",
+      "bed",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -77,6 +53,7 @@
       "sweat"
     ],
     "timeOfDay": "黎明前",
-    "title": "芙拉蒂蕾娜 · 同调状态下的主控跨坐骑乘·「戴着它的话……就算闭上眼睛，也感受得到你的全部」"
+    "title": "芙拉蒂蕾娜 · 同调状态下的主控跨坐骑乘·「戴着它的话……就算闭上眼睛，也感受得到你的全部」",
+    "nsfwTokens": []
   }
 }

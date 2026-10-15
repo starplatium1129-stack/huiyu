@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_flooded_pillar_pussy_fingering",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1122,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yorha_2b_r18_flooded_pillar_pussy_fingering",
     "title": "2B · 露背黑裙靠柱私密自抚情愫",
@@ -31,50 +31,25 @@
       "mole_under_mouth",
       "heavy_blush"
     ],
-    "promptProse": "Reflected sky surrounds adult 2B leaning alone against a marble pillar in flooded city ruins. Her black evening gown is open beneath bare breasts and gathered above one bent thigh, while shallow water reaches her ankles. One gloved hand supports her chest and the other fingers herself beneath the lifted skirt, sending ripples through white petals. Short white hair and black blindfold frame parted lips, damp skin and quiet wonder. Vertical environmental solo portrait, no text or extra people.",
+    "promptProse": "2B leans against the marble pillar, one hand against her chest and the other beneath the gown gathered over her bent thigh.",
     "promptTokens": [
-      "submerged_ruins",
-      "marble_pillar",
-      "masturbation",
-      "fingering",
-      "evening_gown",
-      "skirt_lift",
-      "gloves",
-      "large_breasts",
-      "blindfold",
-      "mole_under_mouth",
-      "heavy_blush",
-      "detailed_background",
-      "cinematic_lighting",
-      "golden_hour"
+      "black evening gown",
+      "open clothes",
+      "gloved hands",
+      "bent knee",
+      "lifted skirt",
+      "female masturbation",
+      "pillar",
+      "flooded ruins",
+      "white petals"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "masturbation",
-      "fingering",
-      "gloves",
-      "large_breasts",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bath_foam_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "kaoruko_nsfw_bath_foam_solo",
     "title": "和栗薰子 · 甜香泡泡浴池的水光湿身独奏 ·「把奶油洗掉了……可是身上的甜味还在」",
@@ -24,44 +24,18 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Kaoruko Waguri soaks inside a deep cedar bathtub brimming with fragrant vanilla-scented bubbles at dusk. Mountainous foam clings to her round pale shoulders and lush breasts, slowly melting away to reveal perky rose nipples as her hand glides smoothly beneath the warm water between her thighs. Her sweet golden bangs stick damply to her brow, amber-brown eyes welling with innocent erotic daydreams of your strong, gentle baker hands. Sensual vertical framing, soft light glowing through aromatic steam, detailed traditional bath background, solo 1girl, no text.",
-    "nsfwProse": "Kaoruko Waguri soaks inside a deep cedar bathtub brimming with fragrant vanilla-scented bubbles at dusk. Mountainous foam clings to her round pale shoulders and lush breasts, slowly melting away to reveal perky rose nipples as her hand glides smoothly beneath the warm water between her thighs. Her sweet golden bangs stick damply to her brow, amber-brown eyes welling with innocent erotic daydreams of your strong, gentle baker hands. Sensual vertical framing, soft light glowing through aromatic steam, detailed traditional bath background, solo 1girl, no text.",
+    "promptProse": "Adult Kaoruko touches herself beneath the bathwater as foam slips from her chest in the cedar tub.",
+    "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
+      "nude",
       "masturbation",
-      "touching_own_body",
-      "hand_between_legs",
-      "underwater",
-      "bathtub",
-      "foam",
-      "bubbles",
-      "soap_suds",
-      "wet_skin",
-      "water_droplets",
-      "bare_breasts",
-      "pink_nipples",
-      "blonde_hair",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "hand between legs",
+      "wooden bathtub",
+      "soap bubbles",
+      "steam",
+      "dusk"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -71,6 +45,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

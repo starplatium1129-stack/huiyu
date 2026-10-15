@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_old_bookstore",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tokisaki_kurumi_old_bookstore",
     "title": "时崎狂三 · 旧书店午后",
@@ -31,18 +31,14 @@
       "afternoon",
       "medium_shot"
     ],
-    "promptProse": "Red and amber window panes lay muted rectangles of color across the old bookstore's sill. Kurumi leans against it in a black high-neck blouse with ivory cuffs and a burgundy pleated skirt, absorbed in a yellowed art album. Her left hand supports the spine while her right lifts one page corner. Clothbound volumes are stacked along the near sill, with a flat bookmark protruding below the album. A wooden ladder rests against the tall shelf behind her, and the narrow aisle remains visible between successive rows of books. Use an eye-level medium view that includes both hands. Slanting afternoon light picks out the ivory cuff and worn paper edges; stacked books cast overlapping shadows, while the inner shelves fall into warm darkness around her dark hair.",
+    "promptProse": "Kurumi supports the album's spine and turns one page beside colored afternoon light on the bookstore sill.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "yellowed art album",
-      "turning page",
-      "clothbound books",
-      "bookmark",
+      "Kurumi",
+      "black blouse",
+      "pleated skirt",
+      "art book",
       "stained glass",
-      "wooden ladder",
-      "narrow shelf aisle",
-      "colored afternoon light",
+      "bookstore",
       "medium shot"
     ],
     "negativeTokens": [

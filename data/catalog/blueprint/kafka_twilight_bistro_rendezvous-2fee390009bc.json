@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_twilight_bistro_rendezvous",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1037,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kafka_twilight_bistro_rendezvous",
     "title": "卡芙卡 · 街角酒馆黄昏邂逅",
@@ -28,14 +28,16 @@
       "charming_smile",
       "cobblestone_street"
     ],
-    "promptProse": "Kafka sits beneath the corner bistro awning, resting her chin over crossed hands and smiling at the arriving viewer. Her black leather coat and charcoal turtleneck remain clear in the eye-level medium view. The cast-iron round table occupies the foreground and colonial-city facades extend down the street behind. Golden sunset touches the tabletop pattern and her knuckles, while newly lit streetlamps warm the shaded awning edge.",
+    "promptProse": "Kafka watches the viewer across the bistro table with her chin resting on her crossed hands. Sunset catches her wine-colored hair.",
     "promptTokens": [
+      "coat",
+      "turtleneck",
+      "sitting",
+      "hands under chin",
+      "smile",
+      "cafe",
+      "outdoors",
       "sunset",
-      "outdoor bistro",
-      "iron table",
-      "black leather coat",
-      "charcoal turtleneck",
-      "chin on hands",
       "medium shot"
     ],
     "negativeTokens": [],

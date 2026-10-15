@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_rainy_rooftop_neon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 183,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jalter_rainy_rooftop_neon",
     "title": "贞德[Alter] · 雨夜天台",
@@ -31,18 +31,17 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Jeanne Alter wipes a raindrop from the corner of one eye while her other hand holds the wet rooftop railing. Rain reaches her face directly as she looks down toward city lights, silver hair damp against her cheek above the black jacket, tank top and fitted leather trousers. The medium view follows the railing across the terrace. Neon below colors droplets and fingertips cyan and magenta, with darker intervals between the rail posts.",
+    "promptProse": "Jeanne Alter wipes rain from the corner of her eye while holding the rooftop railing, looking down toward the neon city.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne Alter",
-      "black leather jacket",
+      "leather jacket",
       "tank top",
-      "leather trousers",
-      "wet rooftop rail",
-      "wiping eye",
+      "leather pants",
+      "railing",
+      "rooftop",
       "rain",
-      "neon",
+      "neon lights",
       "medium shot"
     ],
     "negativeTokens": [

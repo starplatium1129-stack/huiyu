@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_summer_festival_yukata_lantern",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1145,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "手执折扇倚靠石栏杆侧身回眸，夜空烟花璀璨，浴衣下摆微扬，眼神温柔深情",
     "camera": "cowboy shot, low angle looking up, dramatic festival sky view",
@@ -20,16 +20,16 @@
     "mood": "绚丽浪漫",
     "negativeTokens": [],
     "outfitId": "summer_yukata",
-    "promptProse": "Yoshino turns back on the elevated shrine steps in a midnight-navy wisteria-patterned yukata and lilac obi, holding a lace folding fan while purple-red fireworks open above Hoori. Her silver hair and blossom pins move in the breeze. The low cowboy view keeps the town below and sky beyond. Firework colors reflect in her blue eyes and silk patterns, while shrine lanterns warm the stone beside her sandals.",
+    "promptProse": "Yoshino looks back from the lantern-lined steps, her lace fan lowered as purple and red fireworks open over Hoori.",
     "promptTokens": [
-      "summer night",
-      "shrine steps",
-      "navy wisteria yukata",
-      "lilac obi",
+      "navy yukata",
+      "wisteria print",
+      "purple obi",
       "folding fan",
+      "looking back",
+      "shrine stairs",
       "fireworks",
-      "cowboy shot",
-      "low angle"
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +43,8 @@
       "gazing_at_viewer"
     ],
     "timeOfDay": "夜晚",
-    "title": "朝武芳乃 · 繁星花火下的幽紫浴衣"
+    "title": "朝武芳乃 · 繁星花火下的幽紫浴衣",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

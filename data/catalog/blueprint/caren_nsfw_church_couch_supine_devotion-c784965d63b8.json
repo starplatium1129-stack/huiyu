@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_church_couch_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "caren_nsfw_church_couch_supine_devotion",
     "title": "卡莲 · 教会软榻的深情仰卧索吻",
@@ -29,45 +29,19 @@
       "heavy_blush",
       "parted_lips"
     ],
-    "promptProse": "Candles illuminate adult, age-twenty-plus Caren Hortensia reclining alone across a dark velvet couch inside the sanctuary. Her white ceremonial dress lies open at the waist while red holy shroud ribbons loop around one wrist and a raised thigh under her own control. She tightens the silk with one hand and touches herself with the other, keeping bare breasts, folded legs and both hands readable. Silver hair spreads over the cushions as violet eyes remain eerily calm behind wet lashes and a restrained blush. Diagonal intimate solo portrait, no text or extra people.",
+    "promptProse": "The age-twenty-plus Caren reclines with loose shroud ribbons around one wrist and raised thigh, holding the silk with one hand while the other rests between her legs.",
     "promptTokens": [
-      "church_interior",
-      "candlelight",
-      "completely_nude",
-      "lying_on_back",
-      "spread_legs",
-      "knees_up",
-      "bare_breasts",
-      "small_breasts",
-      "pink_nipples",
-      "areola",
-      "pussy",
-      "pussy_juice",
-      "interlocked_fingers",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "saliva_trail",
-      "white_hair",
-      "purple_eyes",
-      "wide_shot",
-      "high_angle",
-      "detailed_background",
-      "cinematic_lighting",
-      "sensual_solo",
+      "adult",
+      "church",
+      "velvet couch",
+      "white dress",
+      "open clothes",
+      "topless",
+      "red ribbons",
       "masturbation",
-      "touching_own_body",
-      "hand_between_legs"
+      "candlelight"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -80,11 +54,6 @@
       "special_nsfw"
     ],
     "nsfwProse": "",
-    "nsfwTokens": [
-      "sensual_solo",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs"
-    ]
+    "nsfwTokens": []
   }
 }

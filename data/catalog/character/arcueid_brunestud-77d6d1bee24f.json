@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arcueid_brunestud",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "arcueid_brunestud",
     "profile": {
@@ -96,10 +96,7 @@
         "blonde_hair",
         "short_hair",
         "red_eyes",
-        "crimson_eyes",
-        "vampire",
-        "playful_smile",
-        "slender_figure"
+        "vampire"
       ],
       "exactTokens": [
         "arcueid_brunestud"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_sfw_b7_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 299,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kama_fate_sfw_b7_05",
     "title": "迦摩 · 银河海滩的冰镇果汁",
@@ -30,18 +30,17 @@
       "soft_expression",
       "noon"
     ],
-    "promptProse": "Adult Kama lounges on the star-sand beach chair with a chilled fruit drink, skeptical of its sweetness until a distant leaping dolphin softens her red-eyed expression. One foot nudges a glowing shell beside the chair. Her black-and-crimson resort swimsuit, gold jewelry and light wrap remain in the horizontal medium view. Bright cosmic noon catches the glass and chair edges, while ruby water reflections color the wrap's shaded folds.",
+    "promptProse": "Adult Kama frowns at her overly sweet drink, then smiles despite herself when a dolphin leaps beyond her beach chair.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Kama",
-      "black crimson resort swimsuit",
-      "gold jewelry",
-      "beach wrap",
-      "fruit drink",
-      "star sand beach chair",
+      "swimsuit",
+      "sarong",
+      "juice",
+      "deck chair",
+      "beach",
       "dolphin",
-      "cosmic noon",
       "medium shot"
     ],
     "negativeTokens": [],

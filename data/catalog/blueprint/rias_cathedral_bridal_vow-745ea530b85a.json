@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_cathedral_bridal_vow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1280,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rias_cathedral_bridal_vow",
     "title": "莉雅丝 · 逆光圣殿的真红誓约",
@@ -29,26 +29,25 @@
       "gentle_smile",
       "holy"
     ],
-    "promptProse": "Before the cathedral altar, Rias Gremory holds white roses and red camellias against her white off-shoulder mermaid bridal gown. A light lace veil frames her red hair as she makes the vow with tear-bright blue eyes. The slightly low cowboy view connects the soft train to the aisle, with stone columns receding behind. Colored window light catches bouquet petals and lace folds, leaving patterned reflections on the darker floor beneath the pale gown.",
+    "promptProse": "Rias holds white roses and red camellias against her bridal gown, making her vow before the altar with tear-bright eyes.",
     "promptTokens": [
-      "Rias Gremory",
-      "white mermaid bridal gown",
-      "lace veil",
-      "bridal train",
+      "white wedding dress",
+      "mermaid dress",
+      "veil",
       "bouquet",
-      "cathedral altar",
-      "stained glass",
-      "cowboy shot"
+      "tears",
+      "cathedral",
+      "stained glass"
     ],
-    "negativeTokens": [
-      "white wedding dress"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_white_mermaid_bridal",
     "coverageTags": [
       "bridal",
       "romantic",
       "vow"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

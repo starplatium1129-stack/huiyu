@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_requiem_black_uniform_memorial",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1352,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单膝跪地献放白花，双手合拢垂首默祷，赤发与黑军装在晚风中轻扬",
     "adult": false,
@@ -25,16 +25,14 @@
     "mood": "肃穆哀恸、坚毅不屈",
     "negativeTokens": [],
     "outfitId": "bloody_reina_black_uniform",
-    "promptProse": "Before the base memorial wall, Vladilena Milize kneels on one knee to place white flowers beneath the engraved names, then folds her hands and lowers her head. Her black uniform and boots form a still silhouette beneath the single red streak in her silver bangs. The low cowboy view follows the wall's perspective behind. Orange-gold sunset edges her jacket and hair, lighting the flowers against the darker stone and long ground shadow.",
+    "promptProse": "Lena kneels to lay white flowers at the memorial wall, then joins her hands and bows her head.",
     "promptTokens": [
       "vladilena_millize",
-      "Vladilena Milize",
       "black uniform",
-      "red hair streak",
+      "red streak",
       "white flowers",
-      "memorial wall",
       "kneeling",
-      "cowboy shot"
+      "memorial"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

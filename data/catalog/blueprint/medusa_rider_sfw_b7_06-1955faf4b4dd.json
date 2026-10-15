@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 282,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_06",
     "title": "美杜莎 Rider · 天马的梦",
@@ -30,19 +30,17 @@
       "dusk_light",
       "medium_shot"
     ],
-    "promptProse": "Medusa rests one hand against her opaque white long-sleeved maxi dress and watches the dusk sky over a wildflower meadow, purple hair moving slowly in the wind. A distant cloud suggests the pale winged horse of a dream rather than a physical battle companion. The medium view places flowers below her peaceful profile. Golden dusk light brightens her violet eyes and dress edge, with soft flower shadows receding through the grass.",
+    "promptProse": "Medusa watches a faint Pegasus-like shape in the evening clouds from the windblown flower meadow.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medusa",
-      "white long sleeve maxi dress",
-      "flat sandals",
-      "purple hair",
-      "flower meadow",
-      "horse shaped cloud",
-      "dusk",
-      "medium shot",
-      "medusa_(fate)"
+      "medusa_(fate)",
+      "white dress",
+      "sandals",
+      "wildflowers",
+      "meadow",
+      "horse-shaped cloud",
+      "dusk"
     ],
     "negativeTokens": [
       "physical summoned horse"

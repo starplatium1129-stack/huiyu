@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1592,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_04",
     "title": "吹雪 · 暴雪组的白色誓约",
@@ -28,15 +28,18 @@
       "restrained_blush",
       "sunset"
     ],
-    "promptProse": "Among the greenhouse's blooming white roses, Fubuki adjusts her pearl necklace with one hand and accepts the bouquet with the other. Her emerald-and-white wedding gown and structured veil remain formal as her practiced leadership smile becomes faintly shy. The vertical medium-full view follows flower beds under the glass roof. Green-gold evening light brightens veil edges and pearls, with roof-frame shadows extending across the aisle and shaded rose leaves behind.",
+    "promptProse": "She adjusts her pearls with one hand while accepting a bouquet with the other, her formal smile turning shy.",
     "promptTokens": [
-      "Fubuki",
-      "emerald-white bridal gown",
-      "pearls",
-      "rose bouquet",
-      "glass greenhouse",
+      "1girl",
+      "solo",
+      "wedding dress",
+      "veil",
+      "pearl necklace",
+      "bouquet",
+      "white roses",
+      "greenhouse",
       "dusk",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

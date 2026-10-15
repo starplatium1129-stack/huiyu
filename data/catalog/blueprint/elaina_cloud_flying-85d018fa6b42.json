@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_cloud_flying",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 380,
   "createdAt": null,
-  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "elaina_cloud_flying",
     "title": "伊雷娜 · 云端飞行",
@@ -27,18 +27,14 @@
       "travel",
       "fantasy"
     ],
-    "promptProse": "Elaina rides astride her magic broomstick above the vast white cloud sea, smiling at the journey as aerial wind lifts her black witch dress and frilled skirt. The star brooch remains visible in the wide view, broom extending beneath her balanced pose. Brilliant blue sky opens beyond overlapping cloud banks. High-altitude sunlight lights her silver hair and upper sleeves, while cloud reflections brighten the broom's underside against the deeper blue distance.",
+    "promptProse": "She rides the broom above layered clouds with her skirt moving in the wind. Sunlight and reflected cloud light reach the broom.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Elaina",
       "black witch dress",
       "star brooch",
-      "frilled skirt",
-      "magic broomstick",
+      "broom",
+      "flying",
       "cloud sea",
       "blue sky",
-      "daylight",
       "wide shot"
     ],
     "negativeTokens": [],

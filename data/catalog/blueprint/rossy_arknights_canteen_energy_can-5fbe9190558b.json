@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_canteen_energy_can",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 759,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rossy_arknights_canteen_energy_can",
     "characterId": "rossy_arknights",
@@ -32,16 +32,15 @@
       "upper_body"
     ],
     "promptTokens": [
-      "daytime",
-      "kitchen",
-      "cream puff sleeve blouse",
-      "red gingham apron",
+      "blouse",
+      "apron",
       "cookies",
       "plate",
       "oven mitt",
+      "kitchen",
       "medium shot"
     ],
-    "promptProse": "Rossy offers a small plate of homemade cookies beside the kitchen oven, waiting brightly for the viewer's verdict while her other hand holds an oven mitt. Her cream puff-sleeve blouse and red gingham apron remain in the eye-level medium view. Unevenly shaped cookies cool on a rack behind. Warm ceiling light catches their browned edges and her apron ties, leaving fine wire shadows underneath the rack.",
+    "promptProse": "Rossy offers homemade cookies beside the oven, holding an oven mitt in her other hand under warm kitchen light.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

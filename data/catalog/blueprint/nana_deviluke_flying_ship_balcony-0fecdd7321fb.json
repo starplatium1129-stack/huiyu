@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_deviluke_flying_ship_balcony",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单手扶着护盾栏杆眺望蔚蓝地球，微重力下长双马尾与爱心尾巴飘拂，神采飞扬",
     "camera": "cowboy shot, low angle, sweeping cosmic planetary backdrop",
@@ -20,15 +20,15 @@
     "mood": "辽阔壮丽",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Nana rests one hand on the energy-shield railing of Deviluke's orbital viewing deck, looking down at Earth's blue curve. Her dark-grey and vermilion royal dress contrasts with lightly floating pink twin tails and an extended heart-tipped tail. The low cowboy view includes the deck's receding panels beneath the open star field. Earth's bright atmospheric rim lights her downward-facing cheek and railing, while small star reflections trace the shield.",
+    "promptProse": "Nana rests a hand on the observation deck's energy railing and looks down at Earth's blue curve, her hair floating lightly.",
     "promptTokens": [
-      "Nana",
-      "royal mini-dress",
-      "energy railing",
-      "orbital starship",
-      "Earth",
-      "pink twintails",
-      "cowboy low angle"
+      "royal dress",
+      "hand on railing",
+      "looking down",
+      "spaceship",
+      "earth",
+      "stars",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +45,8 @@
       "one_hand_on_rail"
     ],
     "timeOfDay": "外太空",
-    "title": "娜娜 · 皇家战舰露台的星河眺望"
+    "title": "娜娜 · 皇家战舰露台的星河眺望",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

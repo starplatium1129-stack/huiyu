@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kafka",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kafka",
     "profile": {
@@ -110,14 +110,10 @@
         "1girl",
         "solo",
         "purple_hair",
-        "long_hair",
         "low_ponytail",
-        "bangs",
         "purple_eyes",
         "ringed_eyes",
         "sunglasses_on_head",
-        "spider_web_print",
-        "earrings",
         "honkai:_star_rail"
       ],
       "exactTokens": [

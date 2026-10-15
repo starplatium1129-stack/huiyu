@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1716,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_01",
     "title": "玛露希尔 · 魔物料理的真香现场",
@@ -32,16 +32,14 @@
       "embarrassed_smile",
       "firelight"
     ],
-    "promptProse": "Show Marcille Donato in three horizontal panels beside the same dungeon cooking pot: she first leans away with an open palm and firm refusal, then cautiously tastes one spoonful, finally extending an empty bowl for another helping with an embarrassed smile. Each panel contains her once in the same blue robe, cream tunic and blonde braids. Campfire light warms faces, bowls and stone surfaces; repeated pot shadows connect the successive moments.",
+    "promptProse": "Show three horizontal panels: Marcille refuses the meal, cautiously tastes it, then eagerly holds out her bowl for a second helping.",
     "promptTokens": [
       "marcille_donato",
-      "Marcille Donato",
-      "blue travel robe",
-      "camp cooking pot",
-      "three-panel sequence",
-      "refusal",
-      "tasting",
-      "second helping"
+      "blue robe",
+      "cooking pot",
+      "bowl",
+      "triptych",
+      "dungeon camp"
     ],
     "negativeTokens": [
       "speech balloons"

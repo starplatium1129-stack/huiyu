@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_swimsuit_sunset",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐池边披薄纱外套",
     "adult": false,
@@ -26,14 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Rio sits at the pool edge in her black swimsuit with red trim, a damp sheer cover-up laid around her shoulders. Her long black hair falls forward as she watches the sunset and her companion's reflection in the water. The eye-level medium view aligns the pool edge with the warm sky. Golden-pink light catches the wet fabric and hair tips, while the pool returns wavering color beneath her resting hand.",
+    "promptProse": "Rio watches the sunset and her companion's reflection from the pool edge, damp fabric around her shoulders.",
     "promptTokens": [
-      "sunset",
-      "poolside",
-      "black red swimsuit",
-      "sheer cover up",
-      "black hair",
+      "Rio",
+      "black swimsuit",
+      "cover-up",
       "sitting",
+      "poolside",
+      "sunset",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

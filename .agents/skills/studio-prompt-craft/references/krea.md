@@ -6,7 +6,7 @@
 
 人物与环境叙事使用 [构图参考](narrative-composition.md)。详细程度由事件和空间关系决定；不要把纯背景教程的无人要求或托管扩写功能套进本地人物 CG。
 
-- `identityProse`、服装 `prose`、蓝图 `promptProse` 和导演设置共同组装最终输入；`promptProse` 不是唯一正向来源。
+- `identityProse`、服装 `prose`、蓝图 `promptProse`、场景标签和导演设置共同组装最终输入；`promptProse` 不是唯一正向来源。共享蓝图精简为短标签与关系句后，Krea 仍须将标签中的环境、道具、镜头和光照转换进描述，不能只读关系句而漏掉场景。
 - 本地当前分支 `negative = ''`。RAW / 托管版本的能力需单独确认，不能仅为写负面词而改 CFG 或安装自定义节点。
 - 排除项优先表达为清晰的目标状态，例如 `a single person in an empty room`。只添加与请求一致的排除项；单人图不能追加 `no characters`，需要招牌文字时不能追加 `no text`。
 - 官方参考代码的 CFG 数值与 ComfyUI 节点可能采用不同约定。核对实际工作流，不照抄数值。

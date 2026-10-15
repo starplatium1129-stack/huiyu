@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_canteen",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 736,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端餐盘找座位",
     "camera": "medium shot",
@@ -18,17 +18,17 @@
     "mood": "轻快活跃",
     "negativeTokens": [],
     "outfitId": "canteen_casual",
-    "promptProse": "Yvonne steps out of the base canteen crowd carrying her meal tray, a smartphone tucked into her casual cropped-jacket pocket. Her tail swings behind practical trousers and sneakers. The medium view keeps the tray in front and neighboring tables receding around her. Noon daylight through canteen windows brightens the food and her cheerful face, with softer overlapping shadows between the diners farther behind.",
+    "promptProse": "Yvonne steps out of the lunch crowd carrying her tray, her tail swinging as she passes the neighboring tables.",
     "promptTokens": [
-      "noon",
-      "base canteen",
       "cropped jacket",
       "trousers",
       "sneakers",
       "meal tray",
-      "smartphone",
-      "tail",
-      "medium shot"
+      "phone in pocket",
+      "walking",
+      "canteen",
+      "crowd",
+      "noon"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -42,6 +42,8 @@
     ],
     "timeOfDay": "白天",
     "title": "伊冯 · 基地食堂",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

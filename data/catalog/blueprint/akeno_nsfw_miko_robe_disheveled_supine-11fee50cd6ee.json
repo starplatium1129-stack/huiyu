@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_miko_robe_disheveled_supine",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "akeno_nsfw_miko_robe_disheveled_supine",
     "title": "姬岛朱乃 · 巫女罗裳半褪的仰卧心意",
@@ -30,39 +30,20 @@
       "spread_legs",
       "interlocked_fingers"
     ],
-    "promptProse": "Lying supine upon a crimson tapestry inside the tranquil shrine inner sanctum, Akeno Himejima's white miko robes are pulled wide open, exposing her gorgeous full breasts and firm rosy nipples. Her long black hair spreads across the floor while her shapely legs part in total invitation. One hand interlocks tightly with the viewer's fingers as she whispers breathless adoration through parted lips, cheeks glowing crimson. Luminous vertical anime CG, solo 1girl, no text.",
+    "promptProse": "She lies on a crimson tapestry with her robes open and hair spread across the floor, interlocking one hand with the viewer's.",
     "promptTokens": [
-      "shrine_interior",
-      "lying_on_back",
+      "shrine",
       "miko",
-      "open_shirt",
-      "exposed_breasts",
-      "bare_breasts",
-      "large_breasts",
-      "pink_nipples",
-      "areola",
-      "pussy",
-      "spread_legs",
-      "interlocked_fingers",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "saliva_trail",
-      "vertical_shot",
-      "high_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "open clothes",
+      "topless",
+      "lying",
+      "on back",
+      "legs apart",
+      "holding hands",
+      "blush",
+      "from above"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -75,6 +56,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "Lying supine upon a crimson tapestry inside the tranquil shrine inner sanctum, Akeno Himejima's white miko robes are pulled wide open, exposing her gorgeous full breasts and firm rosy nipples. Her long black hair spreads across the floor while her shapely legs part in total invitation. One hand interlocks tightly with the viewer's fingers as she whispers breathless adoration through parted lips, cheeks glowing crimson. Luminous vertical anime CG, solo 1girl, no text."
+    "nsfwProse": "",
+    "nsfwTokens": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 63,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_06",
     "title": "双叶理央 · 书店科学区的新刊",
@@ -30,23 +30,19 @@
       "shop_light",
       "side_view"
     ],
-    "promptProse": "At the bookstore's new science shelf, Rio marks a promising chapter in an open table of contents with one finger. A paperback novel remains beside the technical volume in her shopping basket. Grey cardigan and glasses frame newly interested brown eyes in the medium side view. Warm shop light falls over the open page and basket rim; nearby book spines recede along shelves with darker gaps between them.",
+    "promptProse": "She marks an interesting chapter in a science book's contents with her finger, a paperback novel waiting in her basket.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Rio",
       "grey cardigan",
       "glasses",
-      "science book",
+      "book",
       "shopping basket",
-      "paperback novel",
       "bookstore",
-      "medium shot",
-      "futaba_rio"
+      "profile",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "readable text"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_desk_uniform_rear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1406,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "撑长桌塌腰翘臀更衣整理受力，裙摆掀起黑丝勒大腿，咬手背回眸羞怯隐忍",
     "adult": true,
@@ -22,28 +22,23 @@
     "lighting": "窗外路灯光在制服与白皙肌肤上勾出明暗",
     "location": "秀知院成年同事会室长桌",
     "mood": "优等生崩坏、秘密放学后",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
-    "nsfwProse": "Leaning over the council desk at sunset with her school skirt hitched to her waist and dark pantyhose peeled down, Kaguya bites her hand in breathless, sweet humiliation.",
+    "negativeTokens": [],
+    "nsfwProse": "",
     "outfitId": "official_shuchiin_uniform",
-    "promptProse": "Leaning forward across the polished wooden desk in the locked adult colleague council room at sunset, Shinomiya Kaguya grips the edge with her skirt hitched high to her slender waist. She turns her head back over her shoulder, biting the back of her trembling hand to stifle flustered gasps, red eyes glistening with sweet humiliation as her dark pantyhose are peeled down to her pale thighs. Golden dusk light cuts through the tall private studio windows, highlighting the delicate arch of her spine, taut hips, and flushed cheeks in a cinematic horizontal composition, detailed background.",
+    "promptProse": "Adult Kaguya leans over the council desk with her skirt raised to her waist and her tights lowered to her thighs. One hand grips the desk while she bites the back of the other and looks over her shoulder.",
     "promptTokens": [
-      "council_room",
-      "wooden_desk",
-      "window",
+      "adult",
+      "office",
+      "wooden desk",
+      "skirt lift",
+      "pantyhose pull",
+      "black pantyhose",
+      "crotchless panties",
+      "bent over",
+      "looking back",
+      "biting hand",
       "sunset",
-      "looking_back",
-      "horizontal_framing",
-      "detailed_background",
-      "cinematic_lighting"
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -60,17 +55,6 @@
     ],
     "timeOfDay": "放学后深夜",
     "title": "四宫辉夜 · 成年同事会室的秘密放学后·「钥匙……锁好了吗」",
-    "nsfwTokens": [
-      "bent_over",
-      "leaning_forward",
-      "skirt_lift",
-      "black_pantyhose",
-      "crotchless_panties",
-      "exposed_pussy",
-      "pussy_juice",
-      "biting_hand",
-      "heavy_blush",
-      "red_eyes"
-    ]
+    "nsfwTokens": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuka_langley",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "asuka_langley",
     "profile": {
@@ -138,11 +138,9 @@
         "1girl",
         "solo",
         "orange_hair",
-        "long_hair",
         "twintails",
         "blue_eyes",
         "interface_headset",
-        "hair_ornament",
         "neon_genesis_evangelion"
       ],
       "negativeTokens": [

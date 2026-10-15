@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuzuriha_inori",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuzuriha_inori",
     "profile": {
@@ -105,18 +105,12 @@
         "yuzuriha_inori",
         "1girl",
         "solo",
-        "long_hair",
-        "flowing_hair",
-        "gradient_hair",
-        "pink_hair",
-        "orange_hair",
-        "two_side_up",
-        "hair_tubes",
-        "red_eyes",
-        "red_hair_clips",
-        "hair_ornament",
-        "ahoge",
-        "guilty_crown"
+        "pink hair",
+        "gradient hair",
+        "two side up",
+        "hair tubes",
+        "red eyes",
+        "guilty crown"
       ],
       "exactTokens": [
         "yuzuriha_inori"

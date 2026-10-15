@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1710,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "maomao_sfw_b9_06",
     "title": "猫猫 · 雨廊下的药箱",
@@ -30,15 +30,14 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Maomao stops beneath the corridor after running through the sudden rain, opening her medical case just enough to check each sealed bottle. Her dark-green cape is wet over a closed-collar robe and practical shoes. She exhales in relief, refastening the latch with the case held close. The medium view includes receding corridor posts and rain beyond; overcast daylight reveals droplets and bottle shoulders, with protected interior shadows beneath the case lid.",
+    "promptProse": "Maomao hurries beneath the covered corridor with her medicine case, then checks that its bottles survived the rain.",
     "promptTokens": [
       "maomao_(kusuriya_no_hitorigoto)",
-      "Maomao",
       "green cape",
-      "medical case",
-      "sealed bottles",
-      "rain corridor",
-      "medium shot"
+      "medicine case",
+      "bottles",
+      "corridor",
+      "rain"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

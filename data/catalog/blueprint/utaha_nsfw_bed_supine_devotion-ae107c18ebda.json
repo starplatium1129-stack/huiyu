@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_bed_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "utaha_nsfw_bed_supine_devotion",
     "title": "霞之丘诗羽 · 卸下毒舌的床褥真心·「只有今晚……不毒舌了」",
@@ -27,27 +27,17 @@
       "bare_breasts",
       "tears"
     ],
-    "promptProse": "The sharp-tongued novelist is disarmingly tender in the quiet of the night. Lying across the soft bedsheets with her long black hair spread out like night itself, Kasumigaoka Utaha watches with glistening ruby eyes, words failing her as one hand drifts softly between her pale thighs. Her generous chest rises and falls with gentle, vulnerable gasps, dusky pink nipples glistening beneath the dim warm glow, finally confessing with trembling lips that tonight the sharp tongue is retired because everything she cannot write is right here. Intimate vertical composition, warm cinematic lighting, detailed bedroom background.",
-    "nsfwProse": "Lying supine across soft bedsheets with long dark hair fanning the pillows, Utaha Kasumigaoka curves her bare breasts and glides fingers between pale parted thighs in tender, speechless surrender.",
+    "promptProse": "Utaha touches herself on the bed, looking toward the viewer with a tender expression in the dim warm light.",
+    "nsfwProse": "",
     "promptTokens": [
-      "bedroom",
-      "bed_sheet",
+      "Utaha Kasumigaoka",
+      "on back",
+      "loose hair",
+      "bed",
       "night",
-      "warm_lighting",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "warm light"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -60,18 +50,9 @@
       "special_nsfw"
     ],
     "nsfwTokens": [
-      "completely_nude",
-      "on_back",
-      "spread_legs",
-      "arched_back",
-      "bare_breasts",
-      "pink_nipples",
-      "large_breasts",
-      "hand_between_legs",
+      "nude",
       "masturbation",
-      "pussy_juice",
-      "teary_eyes",
-      "heavy_blush"
+      "spread legs"
     ]
   }
 }

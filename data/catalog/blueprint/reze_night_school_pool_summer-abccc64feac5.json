@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_night_school_pool_summer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 424,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "reze_night_school_pool_summer",
     "characterId": "reze_chainsaw",
@@ -20,18 +20,15 @@
       "wet_hair",
       "holding_hand"
     ],
-    "promptProse": "Reze steps out of the deserted school pool into the midnight air, shaking water from her hair with a light laugh. Her dark-navy school swimsuit and choker retain the outfit. The cowboy view places the pool edge below her and empty tiled lanes receding behind. Silver moonlight illuminates hair droplets and the raised water surface, while wavering pool reflections touch the tiles beside the darker exit ledge.",
+    "promptProse": "Reze steps out of the deserted pool and shakes water from her hair with a light laugh.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Reze",
-      "navy school swimsuit",
+      "navy swimsuit",
       "choker",
-      "pool exit",
       "wet hair",
-      "midnight",
-      "moonlight",
-      "cowboy shot"
+      "poolside",
+      "laughing",
+      "night",
+      "moonlight"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -46,6 +43,8 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

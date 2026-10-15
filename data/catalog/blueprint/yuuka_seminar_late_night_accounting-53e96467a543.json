@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_seminar_late_night_accounting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 912,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端坐在现代办公桌前微俯身核对账目，单手持计算器，微蹙眉头看向镜头",
     "camera": "cowboy shot, slightly high angle",
@@ -20,16 +20,16 @@
     "mood": "专注认真",
     "negativeTokens": [],
     "outfitId": "millennium_uniform",
-    "promptProse": "Yuuka sits at the Seminar office desk amid invoices and budget sheets, quickly entering figures on her calculator in her white blouse and navy blazer. Her blue twin tails sway within a slightly high cowboy view, the broad desktop filling the foreground. Neon city buildings appear through the window behind. A warm desk lamp lights her fingers and paperwork, while cooler outside reflections catch the calculator edge and window frame.",
+    "promptProse": "Yuuka rapidly enters figures amid the budget sheets, neon buildings visible beyond her office window.",
     "promptTokens": [
-      "midnight",
-      "Seminar office",
       "school uniform",
       "calculator",
       "invoices",
-      "budget papers",
-      "city window",
-      "cowboy shot"
+      "desk",
+      "office",
+      "city lights",
+      "midnight",
+      "lamplight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +46,8 @@
       "tsundere"
     ],
     "timeOfDay": "深夜",
-    "title": "早濑优香 · 研讨会深夜清算"
+    "title": "早濑优香 · 研讨会深夜清算",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_silk_bed_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1285,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "rias_nsfw_silk_bed_supine_devotion",
     "title": "莉雅丝 · 丝绸床榻的深情仰卧",
@@ -30,41 +30,19 @@
       "teary_eyes",
       "parted_lips"
     ],
-    "promptProse": "Crimson moonlight surrounds adult Rias Gremory lying alone on black silk sheets. Her red lace gown is open and gathered at the waist, exposing bare breasts above both knees raised into the vertical frame. One hand cups her chest while the other fingers herself between her thighs, releasing red demonic light through the bedding. Long crimson hair and blue-green eyes frame wet lashes, parted breath and a confident blush. Top-down solo portrait, no text or extra people.",
+    "promptProse": "Adult Rias lies on the black silk bed with her gown gathered at her waist, cupping her chest and fingering herself as red magic spreads through the bedding.",
     "promptTokens": [
-      "bedroom",
-      "silk_sheets",
-      "pillows",
-      "completely_nude",
-      "lying_on_back",
-      "spread_legs",
-      "bare_breasts",
-      "large_breasts",
-      "pink_nipples",
-      "areola",
-      "pussy",
-      "reaching_towards_viewer",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "saliva_trail",
-      "vertical_shot",
-      "high_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "red lace gown",
+      "open clothes",
+      "topless",
+      "on back",
+      "knees up",
+      "fingering",
+      "black sheets",
+      "magic",
+      "from above"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "censored",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -77,6 +55,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "nsfwTokens": []
   }
 }

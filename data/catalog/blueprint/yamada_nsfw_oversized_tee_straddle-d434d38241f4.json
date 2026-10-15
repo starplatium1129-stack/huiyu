@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_oversized_tee_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "yamada_nsfw_oversized_tee_straddle",
     "title": "山田杏奈 · 模特大身段的大号T恤跨坐 ·「市川……今天不许看别处」",
@@ -24,49 +24,23 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Anna Yamada from The Dangers in My Heart straddles your lap in the cozy adult bedroom, her towering 172cm model frame clad only in your oversized black graphic t-shirt. Her endlessly long, toned pale legs wrap completely around your hips as she sinks down with earnest, clumsy devotion, her massive natural breasts heaving and jiggling beneath the thin cotton. Her black ponytail spills over her shoulder, beauty mark flushed crimson under misty teary eyes as she gazes down with pure, greedy affection. Vertical low-angle cowgirl shot, afternoon light through closed blinds, detailed otaku bedroom background, solo 1girl, no extra people.",
-    "nsfwProse": "Anna Yamada from The Dangers in My Heart straddles your lap in the cozy adult bedroom, her towering 172cm model frame clad only in your oversized black graphic t-shirt. Her endlessly long, toned pale legs wrap completely around your hips as she sinks down with earnest, clumsy devotion, her massive natural breasts heaving and jiggling beneath the thin cotton. Her black ponytail spills over her shoulder, beauty mark flushed crimson under misty teary eyes as she gazes down with pure, greedy affection. Vertical low-angle cowgirl shot, afternoon light through closed blinds, detailed otaku bedroom background, solo 1girl, no extra people.",
+    "promptProse": "Adult Yamada moves astride the viewer's lap in an oversized black graphic T-shirt, her legs wrapped around their hips as afternoon light filters through the blinds.",
+    "nsfwProse": "",
     "promptTokens": [
-      "straddling",
-      "cowgirl_position",
-      "on_lap",
-      "oversized_t-shirt",
-      "black_shirt",
-      "no_pants",
+      "adult",
+      "1girl",
+      "pov",
+      "oversized t-shirt",
+      "black shirt",
       "bottomless",
-      "tall_female",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "exposed_pussy",
-      "pussy",
-      "pussy_juice",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "black_hair",
-      "long_hair",
-      "mole_under_eye",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "cowgirl position",
+      "on lap",
+      "ponytail",
+      "mole under eye",
+      "bedroom",
+      "afternoon"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -76,6 +50,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

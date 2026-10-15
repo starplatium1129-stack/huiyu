@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_dusk_street",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 600,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "提着理发工具包，在夕阳逆光中漫步",
     "camera": "medium tracking shot",
@@ -17,20 +17,21 @@
     "mood": "温暖日常",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Goldenglow strolls along the Victorian town's red-brick street with a small leather barber-tool bag, slowing to look back warmly as pink hair moves in the wind. White shirt, yellow ascot and dark pinafore retain her work outfit. The medium tracking view follows worn cobblestones past receding brick facades. Orange dusk backlight rims hair and bag edges, drawing her long shadow along the street while the nearer building sides remain cooler and shaded.",
+    "promptProse": "Carrying her barber-tool bag, she slows on the brick-lined street and looks back with a warm smile.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Goldenglow",
+      "cat ears",
+      "pink hair",
       "white shirt",
       "yellow ascot",
-      "dark pinafore",
-      "pleated skirt",
-      "barber tool bag",
+      "pinafore",
+      "tool bag",
+      "walking",
       "looking back",
-      "Victorian brick street",
+      "cobblestone street",
       "dusk",
-      "medium tracking shot"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

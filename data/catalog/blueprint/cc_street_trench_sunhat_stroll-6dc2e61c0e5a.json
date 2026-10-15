@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_street_trench_sunhat_stroll",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1309,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "一手轻按宽檐草帽防风吹落，侧身漫步在落叶大道上回眸浅笑",
     "camera": "cowboy shot, slightly high angle, romantic street stroll",
@@ -22,14 +22,14 @@
     "mood": "知性优雅",
     "negativeTokens": [],
     "outfitId": "beige_trench_sunhat",
-    "promptProse": "On the leaf-covered promenade, C.C. steadies her wide-brimmed black-ribbon sunhat with one hand and glances back toward her companion. Her beige trench coat follows her stride, with long green hair moving beside its collar. A slightly high cowboy view follows the line of plane trees into the distance. Autumn sunlight filters through thinning foliage onto the hat and coat, leaving warm scattered leaf shadows across the paving.",
+    "promptProse": "She steadies her hat as she walks back toward her companion's gaze. Autumn sunlight filters through the plane trees onto fallen leaves.",
     "promptTokens": [
-      "C.C.",
+      "promenade",
       "beige trench coat",
-      "wide-brim sunhat",
-      "autumn promenade",
+      "sunhat",
       "holding hat",
-      "cowboy shot"
+      "looking back",
+      "autumn"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

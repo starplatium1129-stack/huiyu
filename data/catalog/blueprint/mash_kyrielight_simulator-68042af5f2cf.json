@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_simulator",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 200,
   "createdAt": null,
-  "updatedAt": "2026-10-06T10:46:28.602196100+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [
       "injured bodies"
@@ -32,18 +32,16 @@
       "holographic_light",
       "full_body"
     ],
-    "promptProse": "Mash lowers one knee and plants her cross-shaped shield against the training-grid floor, protecting a separate teammate standing behind in a plain practice uniform. Her armored dress, gloves and boots remain clear as she watches the simulated threat. The low full-body view includes the grounded shield and both figures. Blue holographic grid light defines floor perspective, while harmless energy arcs reflect along shield edges and armor, leaving darker chamber walls beyond.",
+    "promptProse": "Mash braces in a low kneeling defense with her shield between the training teammate and the incoming energy arcs.",
     "promptTokens": [
       "2people",
-      "Mash",
-      "training teammate",
-      "combat armored dress",
-      "cross shaped shield",
-      "kneeling defense",
+      "armored dress",
+      "cross-shaped shield",
+      "kneeling",
+      "defending",
       "holographic grid",
-      "blue energy arcs",
-      "full body",
-      "low angle"
+      "blue energy",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_shield_training_armor",

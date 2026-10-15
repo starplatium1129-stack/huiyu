@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_bath_blue_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 274,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "ereshkigal_nsfw_bath_blue_solo",
     "title": "埃列什基伽勒 · 魂泉的幽蓝独奏·「今夜的日记……禁止归档」",
@@ -27,42 +27,21 @@
       "masturbation",
       "steam"
     ],
-    "promptProse": "The queen who tends all the underworld's dead tends herself for once. Reclining at the rim of the soul spring in blue-black lace soaked to translucence, Ereshkigal lets her blonde hair drift across the water while trembling fingers trace her most private curves, red eyes unfocused in the ghostly glow as she adds a page to her official diary about checking the compatibility of soul and body — a page forbidden from archiving. Sensual solo composition, wet translucent lace, cinematic lighting, steam, detailed spring background.",
+    "promptProse": "She reclines at the soul spring, touching herself beneath the water while her hair floats beside her and a private diary lies nearby.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs",
-      "underwater",
-      "wet_clothes",
+      "adult",
+      "blue lingerie",
+      "lace",
+      "wet clothes",
       "see-through",
-      "wet_cloth",
-      "blue_lingerie",
-      "lace_bra",
-      "nipples_visible_through_clothes",
-      "bath",
+      "reclining",
+      "hot spring",
+      "masturbation",
       "steam",
-      "water_droplets",
-      "blonde_hair",
-      "very_long_hair",
-      "red_eyes",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "blush"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -73,6 +52,7 @@
       "nsfw",
       "solo",
       "special_nsfw"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

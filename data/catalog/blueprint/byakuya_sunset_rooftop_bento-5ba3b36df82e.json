@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_sunset_rooftop_bento",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 824,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "夕阳下吃便当，清贫的平静",
     "adult": false,
@@ -21,15 +21,15 @@
     "mood": "wistful",
     "negativeTokens": [],
     "outfitId": "poor_school_uniform",
-    "promptProse": "Byakuya sits on the school rooftop's concrete steps after class, slowly eating a simple rice-and-pickled-plum bento in her faded navy sailor uniform. Her worn schoolbag rests nearby as she looks up with a composed but slightly embarrassed smile. The medium view places the chain fence behind her and open sky beyond. Golden sunset lights the white scarf and rice, laying fence shadows across the empty step beside her.",
+    "promptProse": "She looks up from her rice-and-plum bento on the rooftop steps. Sunset casts fence shadows beside her worn schoolbag.",
     "promptTokens": [
-      "sunset",
-      "school rooftop",
+      "rooftop",
       "concrete steps",
-      "chain fence",
-      "navy sailor uniform",
+      "school uniform",
       "bento",
-      "medium shot"
+      "eating",
+      "schoolbag",
+      "sunset"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",

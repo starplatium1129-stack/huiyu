@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_rainy_day_coffee_shelter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 914,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手捧着热咖啡杯端坐在木椅上，微缩肩膀，羞怯抬眸注视对面",
     "camera": "medium close-up, eye level",
@@ -20,15 +20,16 @@
     "mood": "羞怯甜蜜",
     "negativeTokens": [],
     "outfitId": "rainy_cafe_sweater",
-    "promptProse": "Yuuka sits across the wooden cafe table holding a steaming latte in both hands, glancing shyly toward the teacher. She wears her cream ribbed turtleneck and navy tartan skirt; the beige trench coat hangs over the chair back. The eye-level medium close-up includes the cup and rain-marked window behind. Cool daylight meets warm pendant light across the knit texture and rising steam, shading the tabletop under her wrists.",
+    "promptProse": "Yuuka cups the latte in both hands and glances toward the teacher across the table, her beige coat hanging on the chair back.",
     "promptTokens": [
-      "rainy day",
-      "cafe",
       "cream turtleneck",
-      "navy tartan skirt",
-      "beige coat",
+      "navy plaid skirt",
       "latte",
-      "medium close up"
+      "shy glance",
+      "cafe",
+      "rain",
+      "window",
+      "medium close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +46,8 @@
       "turtleneck_sweater"
     ],
     "timeOfDay": "午后阴雨",
-    "title": "早濑优香 · 雨幕咖啡馆约会"
+    "title": "早濑优香 · 雨幕咖啡馆约会",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

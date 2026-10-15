@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_bamboo_forest_prank",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hu_tao_bamboo_forest_prank",
     "title": "胡桃 · 翠竹幽径捉迷藏",
@@ -30,26 +30,24 @@
       "morning_light",
       "eye_level"
     ],
-    "promptProse": "Half concealed by a thick bamboo stalk, Hu Tao leans into the eye-level cowboy view with one index finger at her lips and her other hand against the stalk. Her dark sweater, red skirt and knee socks accompany a conspiratorial smile. The stone path curves behind her through closely spaced bamboo. Morning sun passes through leaf gaps, placing broken bright stripes on her sleeve and alternating shadows across the path.",
+    "promptProse": "Hu Tao peeks from behind a bamboo stalk with one finger to her lips, her other hand against the stalk beside the stone path.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Qingce bamboo grove",
-      "dark sweater",
-      "red pleated skirt",
+      "sweater",
+      "red skirt",
       "knee socks",
       "peeking",
-      "finger on lips",
-      "morning",
-      "cowboy shot"
+      "shushing",
+      "smile",
+      "bamboo forest",
+      "morning"
     ],
-    "negativeTokens": [
-      "extra people"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_liyue_street",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

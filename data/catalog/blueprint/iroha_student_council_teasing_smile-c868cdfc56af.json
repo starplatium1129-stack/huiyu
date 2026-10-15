@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_student_council_teasing_smile",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 358,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "iroha_student_council_teasing_smile",
     "title": "一色彩羽 · 学生会室小恶魔托腮的虚假拒绝·「前辈，这算是告白吗？对不起，我们是不可能的♪」",
@@ -30,21 +30,17 @@
       "teasing",
       "iconic"
     ],
-    "promptProse": "Iroha Isshiki leans back in the council-office swivel chair, one elbow on the mahogany desk and chin in her hand while the other hand makes a playful rejection gesture. Open navy blazer, cream cardigan and thin red ribbon retain the uniform beneath honey-brown wavy side-pigtails. The medium view includes desk papers and the office behind her. Orange-red sunset lights her mischievous eyes and collar, casting chair and paper-edge shadows across the desk.",
+    "promptProse": "Iroha leans back in the council chair, chin in one hand while the other makes a playful dismissive gesture across the desk.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Iroha Isshiki",
-      "open navy blazer",
-      "cream cardigan",
-      "red ribbon",
-      "plaid skirt",
-      "hand on chin",
-      "rejection gesture",
-      "student council office",
+      "isshiki_iroha",
+      "sitting",
+      "hand on own chin",
+      "teasing",
+      "office",
       "sunset",
-      "medium shot",
-      "isshiki_iroha"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

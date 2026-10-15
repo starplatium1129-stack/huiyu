@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_armor_workshop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 576,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单膝跪地调试装甲关节",
     "camera": "medium shot",
@@ -21,21 +21,16 @@
     "mood": "专注温柔",
     "negativeTokens": [],
     "outfitId": "elite2",
-    "promptProse": "Mudrock kneels beside the towering powered armor, guiding a wrench into its exposed leg hydraulic joint with a gauntleted hand. Heavy plates sit nearby; black high-neck bodysuit, remaining pauldrons, silver-white hair and Sarkaz horns stay visible above an oil-smudged focused face. The medium view includes the open toolkit on concrete. Workshop lamps glint on steel and the joint, throwing the armor's broad shadow behind her and small tool shadows across the floor.",
+    "promptProse": "Mudrock guides a wrench into the armor's exposed leg joint, heavy plates and an open toolkit on the concrete beside her.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Mudrock",
-      "black high neck bodysuit",
-      "remaining pauldrons",
+      "bodysuit",
+      "pauldrons",
       "gauntlets",
-      "silver hair",
-      "Sarkaz horns",
       "kneeling",
       "wrench",
-      "powered armor",
-      "workshop",
-      "medium shot"
+      "power armor",
+      "toolbox",
+      "workshop"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -46,6 +41,8 @@
       "rhodes_island"
     ],
     "timeOfDay": "白天",
-    "title": "泥岩 · 装甲整备"
+    "title": "泥岩 · 装甲整备",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

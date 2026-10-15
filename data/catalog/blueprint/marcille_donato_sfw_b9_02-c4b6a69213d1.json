@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1717,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_02",
     "title": "玛露希尔 · 营地里的香草面包",
@@ -29,15 +29,14 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Marcille Donato sits on the camp supply box in a moss-green cape and rust tunic, breaking a small herb loaf and cautiously smelling its warm center. She turns the crumb toward daylight, raised brows and pointed ears showing reassurance. Cream trousers and brown boots remain practical in the medium view. Soft midday shade reveals blonde braids and bread texture, with gentler reflected light from the ground and dark gaps between the box boards.",
+    "promptProse": "Marcille breaks the herb bread, smells it and holds the soft interior toward the light.",
     "promptTokens": [
-      "Marcille Donato",
       "moss cape",
       "rust tunic",
-      "herb bread",
-      "wooden camp box",
-      "midday shade",
-      "medium shot"
+      "bread",
+      "wooden crate",
+      "camp",
+      "shade"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

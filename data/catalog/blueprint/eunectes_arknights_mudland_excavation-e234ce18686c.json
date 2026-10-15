@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_mudland_excavation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 587,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "扛着勘探镐，用毛巾擦汗",
     "camera": "medium wide shot",
@@ -17,20 +17,20 @@
     "mood": "爽朗热辣",
     "negativeTokens": [],
     "outfitId": "rainforest_safari_explorer",
-    "promptProse": "At the humid rainforest mineral site, Eunectes carries a heavy pickaxe over one shoulder and wipes her brow with the neck towel. Open khaki utility shirt, olive sports top, cargo trousers, climbing harness and explorer boots retain the expedition outfit. The medium-wide view includes muddy excavation ground surrounded by dense foliage. Harsh afternoon sun illuminates metal carabiners and towel edges, leaving deep leaf shadows and darker wet soil beneath the tools.",
+    "promptProse": "She carries the pickaxe over one shoulder and wipes her brow with a towel at the muddy mineral site.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Eunectes",
-      "khaki utility shirt",
-      "olive sports top",
-      "cargo trousers",
+      "utility shirt",
+      "sports bra",
+      "cargo pants",
       "climbing harness",
-      "explorer boots",
       "pickaxe",
-      "neck towel",
-      "rainforest mineral site",
-      "medium wide shot"
+      "towel",
+      "sweat",
+      "jungle",
+      "excavation",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

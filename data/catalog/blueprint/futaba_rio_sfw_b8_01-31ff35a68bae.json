@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_01",
     "title": "双叶理央 · 实验室的烧杯咖啡",
@@ -30,24 +30,21 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Rio sets a clean beaker-shaped coffee mug on the science club's separate break table and studies its surface intently. Her white-coat sleeves are rolled above the wrists and long hair tied back. In the medium portrait, a closed notebook sits beside the mug; experimental equipment remains in the distant work area. Window sunset warms her brown eyes behind the glasses and casts the mug's rounded shadow across the table.",
+    "promptProse": "She studies the surface of coffee in a beaker-shaped mug at the separate break table, with experimental equipment in the distant work area.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Rio",
-      "white coat",
+      "lab coat",
       "rolled sleeves",
-      "tied hair",
+      "ponytail",
       "glasses",
-      "beaker shaped coffee mug",
-      "science club break table",
+      "coffee mug",
+      "notebook",
+      "break room",
       "sunset",
-      "medium shot",
-      "futaba_rio"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "food beside laboratory chemicals"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",

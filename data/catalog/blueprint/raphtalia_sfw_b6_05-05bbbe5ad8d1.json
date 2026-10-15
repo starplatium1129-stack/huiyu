@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1567,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_05",
     "title": "拉芙塔莉雅 · 海风里的尾巴防线",
@@ -30,14 +30,16 @@
       "sun_hat",
       "laughing"
     ],
-    "promptProse": "On the harbor beach's wooden chair, Raphtalia dries her raccoon tail with a cloth, then raises a hand against the sun as sea wind lifts her ears. Her modest red-brown one-piece, cream beach shirt, woven belt and sandals remain consistent. The horizontal medium view includes incoming foam and harbor shoreline behind. Clear summer sunlight highlights tail fur and chair slats, while reflected sea sparkle brightens the shaded shirt folds.",
+    "promptProse": "Raphtalia dries her tail with a cloth, then shades her eyes from the sun as the sea breeze lifts her ears.",
     "promptTokens": [
-      "Raphtalia",
-      "red-brown one-piece swimsuit",
-      "cream beach shirt",
-      "tail drying",
+      "one-piece swimsuit",
+      "beach shirt",
+      "sitting",
+      "towel",
+      "drying tail",
       "beach chair",
-      "medium shot"
+      "sea",
+      "summer"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +51,8 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

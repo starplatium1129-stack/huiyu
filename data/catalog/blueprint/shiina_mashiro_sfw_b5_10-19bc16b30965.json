@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_10",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1518,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_10",
     "title": "椎名真白 · 毕业展的白色展厅",
@@ -29,13 +29,13 @@
       "soft_lighting",
       "medium_shot"
     ],
-    "promptProse": "Mashiro Shiina stands before her enormous painting at the personal exhibition, both hands held behind her back and fingers quietly tightening despite her impassive face. Her ivory short-sleeved dress and flat shoes keep the silhouette simple. The medium view includes the white gallery wall and visitors facing the work farther behind. Soft gallery light reveals the canvas and clean dress folds, with restrained shadows under the frame and around her clasped hands.",
+    "promptProse": "Mashiro clasps her hands behind her back before her exhibition painting, visitors studying it under soft gallery lights.",
     "promptTokens": [
       "Mashiro Shiina",
-      "ivory dress",
+      "white dress",
       "hands behind back",
-      "large painting",
-      "gallery audience",
+      "painting",
+      "gallery",
       "medium shot"
     ],
     "negativeTokens": [],

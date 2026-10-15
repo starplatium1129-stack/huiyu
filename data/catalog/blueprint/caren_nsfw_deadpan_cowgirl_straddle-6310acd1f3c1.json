@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_deadpan_cowgirl_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "caren_nsfw_deadpan_cowgirl_straddle",
     "title": "卡莲 · 小恶魔修女的毒舌主控骑乘",
@@ -30,38 +30,19 @@
       "deadpan",
       "heavy_blush"
     ],
-    "promptProse": "Straddling the viewer's hips in cool, seductive command atop soft white sheets, naked Caren Hortensia rides with controlled yet relentless passion. Her perky natural breasts with firm pink nipples bounce in steady rhythm with her undulating hips. Looking down with half-lidded violet eyes and a mocking yet intensely affectionate smirk, she whispers wicked, biting words through parted lips. Intense vertical anime CG, solo 1girl focus, no text.",
+    "promptProse": "She straddles the viewer's hips on white sheets and looks down with a restrained smirk.",
     "promptTokens": [
+      "adult",
       "bedroom",
+      "nude",
       "straddling",
-      "cowgirl_position",
-      "completely_nude",
-      "small_breasts",
-      "pink_nipples",
-      "areola",
-      "pussy",
-      "white_hair",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
+      "on lap",
+      "sweat",
+      "blush",
       "smirk",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting",
-      "on_lap",
-      "pussy_juice"
+      "from below"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -72,6 +53,8 @@
       "nsfw",
       "straddling",
       "cowgirl"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

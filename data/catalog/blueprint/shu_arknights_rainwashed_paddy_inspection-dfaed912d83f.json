@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_rainwashed_paddy_inspection",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 706,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights_rainwashed_paddy_inspection",
     "characterId": "shu_arknights",
@@ -31,17 +31,15 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "morning",
-      "balcony",
-      "vegetable planter",
-      "sage linen shirt",
-      "cream trousers",
-      "cherry tomato",
-      "golden hands",
+      "Shu",
+      "linen shirt",
+      "trousers",
       "dragon tail",
+      "tomato",
+      "balcony",
       "cowboy shot"
     ],
-    "promptProse": "Shu offers a freshly picked cherry tomato on her golden palm beside the balcony planter, smiling sideways and pointing to the fruiting branch. Her sage linen shirt and cream trousers remain clear in the eye-level cowboy view; her dragon tail curves outside the planter without touching foliage. Morning light from the left catches the tomato and rolled cuff, laying rail and leaf shadows across the balcony.",
+    "promptProse": "Shu offers a cherry tomato on her golden palm and points to its branch in the morning-lit balcony planter.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

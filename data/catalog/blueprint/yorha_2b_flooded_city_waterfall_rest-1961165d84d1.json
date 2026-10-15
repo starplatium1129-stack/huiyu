@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_flooded_city_waterfall_rest",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1112,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yorha_2b_flooded_city_waterfall_rest",
     "title": "2B · 废墟小屋清晨大号男友白衬衫",
@@ -32,15 +32,15 @@
       "mole_under_mouth",
       "morning"
     ],
-    "promptProse": "2B sits at the bed edge in the greenhouse cabin wearing an opaque oversized white cotton shirt, her bare feet resting on the floor and blindfold removed. Short white hair is still slightly tousled as she holds warm coffee in both hands and looks toward the waking viewer. The medium view includes greenery outside the wood-framed window. Golden morning light through the gauze catches her blue eyes and cup steam; shirt folds and a small cup shadow keep the hands distinct from the darker bedding.",
+    "promptProse": "2B holds coffee in both hands at the bed edge, looking toward the waking viewer through greenhouse-window light.",
     "promptTokens": [
-      "morning",
-      "ruined greenhouse cabin",
-      "oversized white cotton shirt",
+      "2B",
+      "white shirt",
       "barefoot",
       "coffee",
-      "bed edge",
+      "bed",
       "uncovered eyes",
+      "morning",
       "medium shot"
     ],
     "negativeTokens": [],

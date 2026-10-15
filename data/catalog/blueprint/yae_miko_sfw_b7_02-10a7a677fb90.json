@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 33,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_02",
     "title": "八重神子 · 八重堂的催稿地狱",
@@ -30,18 +30,14 @@
       "office_light",
       "medium_shot"
     ],
-    "promptProse": "An annotated manuscript stack lands on Yae Miko's publishing-desk blotter as she indicates the page needing revision with one fingertip. Her courteous smile and slightly narrowed violet eye make the editorial conversation visible without lettering. Pink jacket and cream collar lie neatly below her fox ears. Warm office light catches uneven paper edges and the ink beside them; the desk leads back toward shelves beyond her shoulder in the medium view.",
+    "promptProse": "Yae Miko points to a revision in the manuscript stack with a courteous, knowing smile beneath warm office light.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "yae_miko",
       "genshin_impact",
       "pink jacket",
-      "cream collar",
-      "fox ears",
-      "publishing desk",
-      "annotated manuscripts",
+      "manuscript",
       "pointing",
+      "office",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_rover_wind_ride",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 760,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rossy_arknights_rover_wind_ride",
     "characterId": "rossy_arknights",
@@ -31,16 +31,16 @@
       "full_body"
     ],
     "promptTokens": [
-      "sunset",
-      "riverside path",
-      "cream blouse",
-      "wine red skirt",
-      "cocoa cardigan",
-      "hand offered",
+      "blouse",
+      "red skirt",
+      "cardigan",
       "wolf tail",
+      "reaching out",
+      "riverside",
+      "sunset",
       "full body"
     ],
-    "promptProse": "Rossy walks two steps down the riverside path, then turns back smiling and offers an empty hand to her companion. Her cream ribbon-collar blouse, wine-red A-line skirt and short cocoa cardigan remain fully framed with brown Mary Jane shoes. Her bag and wolf tail swing with the turn. Golden sunset reflected from the river touches the skirt hem and shoes, while the path recedes into softer evening shade.",
+    "promptProse": "Rossy turns back along the riverside path and offers her companion a hand as sunset catches her skirt.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

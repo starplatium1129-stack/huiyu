@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 230,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
     "title": "黑呆 · 新宿更衣室皮衣半褪的自抚微喘",
@@ -29,39 +29,19 @@
       "heavy_blush",
       "sensual_solo"
     ],
-    "promptProse": "Inside a narrow boutique fitting room in Shinjuku, Artoria Pendragon Alter is overtaken by unexpected arousal. Her black biker jacket has slipped down her arms and her white tank top is hitched high over her chest, fully exposing her bare breasts and firm pink nipples in the mirror. Trembling with frustrated shyness, she slides one gloved hand beneath her denim shorts and torn stockings to tease her soaked entrance with gentle fingering and masturbation. Cheeks flushed bright crimson, her golden eyes dart toward the curtain gap in breathless embarrassment. Sensual modern anime CG, solo 1girl, no text.",
+    "promptProse": "Adult Saber Alter fingers herself beneath her shorts with her tank top raised and jacket slipped down her arms, glancing toward the curtain gap beside the mirror.",
     "promptTokens": [
-      "dressing_room",
+      "biker jacket",
+      "tank top",
+      "shirt lift",
+      "denim shorts",
+      "torn pantyhose",
+      "gloves",
+      "fingering",
       "mirror",
-      "leather_jacket",
-      "open_clothes",
-      "exposed_breasts",
-      "bare_breasts",
-      "pink_nipples",
-      "areola",
-      "hand_between_legs",
-      "pussy_juice",
-      "black_pantyhose",
-      "heavy_blush",
-      "blushing_ears",
-      "biting_lip",
-      "teary_eyes",
-      "yellow_eyes",
-      "blonde_hair",
-      "sensual_solo",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "fitting room"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -72,6 +52,8 @@
       "nsfw",
       "wardrobe_malfunction",
       "sensual_solo"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

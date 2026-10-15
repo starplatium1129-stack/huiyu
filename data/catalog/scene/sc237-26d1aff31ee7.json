@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc237",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc237",
     "title": "水光波纹间的死水熔断",
@@ -45,11 +45,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, front-tie_bikini, black_bikini_untied, exposed_breasts, bare_breasts, nipples, areola, crotchless_panties, exposed_pussy, pussy_juice, straddling_viewer_at_poolside, water_lapping_bodies, wet_skin, water_droplets, clinging_wet_hair, heavy_blush, shy, teary_watery_eyes, night_pool, moonlight_reflections, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra limbs, 2girls, 1boy, fire, flames, burning ears, fiery ears, fire effects, text, watermark, signature, child, loli, underage",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole under eye, blue swimsuit, wet hair, wet clothes, straddling, blush, indoor pool, poolside, lounge chair, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "",
     "storyJa": "【夏目】【ナツメ・夜のプールサイド】深夜、静まり返った屋内プール。月明かりに濡れた紺のスク水姿のナツメは、プールサイドで足を滑らせ、デッキチェアのあなたの上へと倒れ込んでしまう。肌と肌が触れ合い、水滴が滴る中、目尻の泣きぼくろを揺らしながら耳を赤くして必死に平静を装う――「……勘違いしないで。足が滑っただけよ。……動かないで、少し息を整えるから。……バカ、どこ見てるの」",
     "rating": "R18",
-    "animaCaption": "Late at night beside the quiet rippling indoor landscape pool, Shiki Natsume in a dark navy swimsuit soaked through and clinging to her bare curves slips on the wet marble and tumbles astride onto your lap on the lounger, pressing flush against you with no gap; she grips your shoulders with a heavy blush and shamed watery eyes, keeping an impossibly calm voice under the cool moonlight and the swaying water reflections.",
+    "animaCaption": "After slipping on the wet marble, Natsume lands astride the viewer's lap on the poolside lounger. She grips their shoulders and tries to look calm.",
     "auditRevision": "fix-no-burn-ears-sc237-2026-09-05"
   }
 }

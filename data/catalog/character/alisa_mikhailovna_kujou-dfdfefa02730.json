@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alisa_mikhailovna_kujou",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "alisa_mikhailovna_kujou",
     "profile": {
@@ -113,13 +113,9 @@
         "1girl",
         "solo",
         "silver_hair",
-        "long_hair",
         "blue_eyes",
-        "hair_ribbon",
-        "blue_ribbon",
         "half_updo",
-        "bangs",
-        "fair_skin"
+        "blue_ribbon"
       ],
       "exactTokens": [
         "alisa_mikhailovna_kujou"

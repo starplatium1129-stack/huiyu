@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_para_raid_balcony_nightcall",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1357,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "披军装外套倚栏夜谈，指尖轻抵泛光耳机，侧头露出深夜限定柔笑",
     "adult": false,
@@ -25,15 +25,15 @@
     "mood": "私密静谧、深情羁绊",
     "negativeTokens": [],
     "outfitId": "official_republic_military_uniform",
-    "promptProse": "At the dormitory balcony railing, Vladilena Milize touches the Para-RAID at her neck and turns with a quiet late-night smile. Her blue Handler jacket and rank insignia stay visible beneath flowing silver hair, the skirt hem moving in the wind. The medium framing includes the balcony floor and distant base roofline. Blue starlight edges the cap and hair, while the headset's local glow lights her fingertips and collar.",
+    "promptProse": "Lena touches her glowing Para-RAID beside the balcony railing, smiling softly during the night call.",
     "promptTokens": [
       "vladilena_millize",
-      "Vladilena Milize",
-      "blue Handler uniform",
+      "military uniform",
       "Para-RAID",
-      "balcony railing",
-      "starry night",
-      "medium shot"
+      "leaning",
+      "railing",
+      "balcony",
+      "starry sky"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

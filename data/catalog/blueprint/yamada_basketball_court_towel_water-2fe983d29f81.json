@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_basketball_court_towel_water",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1495,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yamada_basketball_court_towel_water",
     "title": "山田杏奈 · 篮球场边拧开的水瓶",
@@ -30,14 +30,14 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Anna Yamada rests after basketball practice on the court bench in a cobalt track jacket and matching long trousers, a white towel around her neck. She unscrews her water bottle, holding the cap in one palm, then stops a rolling basketball gently with her shoe. The medium portrait includes the court boundary and bench legs. Clear afternoon open shade evenly lights her ponytail and bottle, with firm contact shadows beneath ball and shoes.",
+    "promptProse": "Yamada unscrews her water bottle and stops a rolling basketball with her shoe after practice.",
     "promptTokens": [
       "Anna Yamada",
-      "blue tracksuit",
-      "neck towel",
+      "tracksuit",
+      "towel",
       "water bottle",
-      "basketball stop",
-      "court bench",
+      "basketball",
+      "bench",
       "medium shot"
     ],
     "negativeTokens": [],

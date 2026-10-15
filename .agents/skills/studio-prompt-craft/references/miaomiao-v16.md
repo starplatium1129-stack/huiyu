@@ -26,18 +26,18 @@ negative: worst quality, low quality, score_1, score_2, score_3, artist name, sh
 ## 按画面取舍
 
 - 质量/评分词属于模型层；正式写入 profile 时去重，场景正文不重复粘贴整段前缀。不把旧版本的其他质量词或风格触发词混入后称为“1.6 官方默认”。
-- 分级词按场景实际评级选择，不能让作者示例的默认分级覆盖全年龄场景，也不能同时出现互相冲突的分级。是否可绘制成年题材仍由项目宿主与角色资格决定。
+- 分级词按场景实际评级选择，不能让作者示例的默认分级覆盖全年龄场景，也不能同时出现互相冲突的分级。项目角色按成年创作设定处理，分级不另引入宿主或资格门控。
 - 默认肤色词具有画面含义：保留角色原有肤色，不能用于改白深色肤色角色。对比度、细节强度同样按目标画风取舍；柔和低对比画面可以偏离作者示例，并说明原因。
-- 负向按作者基础、现有项目必需项与场景实际排除项核对。镜头需要文字、留白、分格或指定材质时，指出与通用负向的冲突；不要手填重复长模板，也不要未经授权取消项目保护。镜面/潮湿/光泽材质可能受皮肤去光泽词影响，是否影响需实际画面判定。
+- 负向区分作者原配方与当前项目选择，场景只加必要排除项。需要文字、留白、分格或指定材质时，去掉与原意冲突的负面；不预先堆叠通用手部、边框或克隆词。`shiny skin` 等材质词仅按实际问题选用，不默认压掉所需光泽。
 - 精确角色/LoRA 触发词保持原样；画师词和 LoRA 的效果依赖此 checkpoint，不能假定与 Base 完全相同。
 
-## 项目当前差异（源码核查，2026-10-05）
+## 项目当前差异（源码核查，2026-10-15）
 
-[`data/presets.json`](../../../../data/presets.json) 的 `anima_miaomiao_v16` 已采用作者推荐的质量与两项评分词，场景不重复粘贴整段前缀。分级由评级字段提供，浅肤色与高对比按人物及画面实际选择，避免模型层覆盖深色肤色或柔和场景。基础负向采用作者版本词表，解剖、分级保护和逐条场景排除项由现有上层装配、去重。
+[`data/presets.json`](../../../../data/presets.json) 的 `anima_miaomiao_v16` 保留作者推荐的质量与两项评分词，场景不重复粘贴前缀。分级由评级字段提供，浅肤色与高对比按人物及画面选择。当前负面按用户选择采用 [Anima 基础词表](anima.md#精简负面基础)，不再默认 `shiny skin`；这不是上面作者 1.6 原配方的逐字副本，也不宣称已经获得画质提升。
 
 2026-10-05 的采样迁移已将该 profile 和网关主采样统一为 `euler/normal`、30 步、CFG 4.5，默认画幅仍为 832×1216。扩散高清阶段采用同一采样组合，步数沿用现有二次采样策略。后续本机 MiaoMiao 1.6/SageAttention 同输入对照将 TeaCache 默认阈值调为 0.10，起止比例仍为 0–1；用户接受同种子重画，同时要求保留人物结构和画面丰富度。[缓存节点作者的 Euler 保守建议](https://github.com/CocyNoric/ComfyUI-Anima-TeaCache#recommended-settings)仍为 0.05；本机档位不属于 MiaoMiao 作者配方，效果按实际输入确认。评级由 `rating_all/rating_r15/rating_r18` 分开处理，这个边界应保留。
 
-完整负向还由 [`assembleNegative`](../../../../src/utils/promptPolicy.ts) 追加解剖、文字、边框与分级保护。数据字段的 negative、底层渲染返回值与最终发送的 negative 是不同层次；报告必须标清检查的是哪一层。
+[`assembleNegative`](../../../../src/utils/promptPolicy.ts) 合并基础负面、本条明确排除项与分级词，不再给 Anima 强制追加解剖、文字、边框模板；热门分支也不自动追加分屏/克隆长串。数据 negative、底层返回值与最终发送值须分开核对。
 
 ## 写作示例（原创草稿，未编译/未出图）
 
@@ -45,9 +45,9 @@ negative: worst quality, low quality, score_1, score_2, score_3, artist name, sh
 
 ```text
 safe, 1girl, solo, silver hair, amber eyes, blue cardigan, long skirt, sitting, writing, notebook, window light, medium shot
-An adult woman sits at a desk beside a window. Her right hand writes in an open notebook while her left hand holds the page flat. Frame her from the waist up with the notebook visible along the lower edge. Soft daylight enters from the left and casts gentle shadows across the desk.
+She writes in the notebook while holding its page flat beside the window.
 ```
 
-标签负责人物和画面元素，句子负责左右手、纸张接触、可见范围和入光方向。这是本项目的组织建议，不是官方强制顺序或长度配额。已有角色必须换成内容库中的真实身份与衣装；不能把此示例模板批量套入全部场景。
+标签保留人物鲜明特征与关键元素，句子只补纸张接触关系，其余交给模型补全。已有角色须使用内容库真实身份与衣装；不能把此示例模板批量套入全部场景。
 
 审查时分别记录官方建议、当前 profile 和候选正文。确认关键动作及空间关系进入最终请求后，再按任务实际授权决定是否出图；仅维护此 skill 不启动生成或全库重写。

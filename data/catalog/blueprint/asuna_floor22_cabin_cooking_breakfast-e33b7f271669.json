@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_floor22_cabin_cooking_breakfast",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1363,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "asuna_floor22_cabin_cooking_breakfast",
     "title": "结城明日奈 · 22层木屋的暖心早餐·「快趁热吃吧，特制的三明治烤好了哦！」",
@@ -32,15 +32,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Inside the Floor 22 lakeside cabin, Asuna carries a wooden tray of thick toasted sandwiches toward her companion and pauses beside the table with a bright smile. Her cream sweater, pink floral apron and chestnut side braids stay clear above the tray. The medium eye-level view includes hot tea on the log dining table and cabin boards behind. Morning window light warms bread crusts and sleeves, with tray shadows falling across the apron.",
+    "promptProse": "She carries toasted sandwiches toward her companion beside the dining table. Morning window light catches the bread and the tea steam.",
     "promptTokens": [
-      "Asuna",
+      "cabin",
       "cream sweater",
-      "pink floral apron",
+      "pink apron",
       "breakfast tray",
-      "lake cabin",
-      "morning",
-      "medium shot"
+      "sandwich",
+      "smile",
+      "morning"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

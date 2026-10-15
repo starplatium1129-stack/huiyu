@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc298",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 293,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc298",
     "title": "终夜后的沙发沉默",
@@ -40,10 +40,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, oversized white sleep shirt, curled on sofa, head on armrest, reaching toward viewer, tired expression, ceiling light, dawn window light, close up",
-    "negative": "exposed body, extra reaching arms, transparent sleep shirt",
+    "prompt": "1girl, ayachi_nene, oversized shirt, white shirt, couch, reaching, tired, dawn, window, ceiling light, close-up",
+    "negative": "see-through shirt",
     "storyJa": "【寧々・大人のAfter Story・徹夜明けのソファの静寂】次の合同誌の原稿を徹夜で仕上げた後、寧々はリビングのソファにぐったりと倒れ込んだ。銀色の長い髪がランバーレストに乱れ広がり、アホ毛も力なく垂れていた。彼女は大きめの白いTシャツをパジャマ代わりに着ており、襟元がゆるく開いて鎖骨が広く覗いていた。あなたが液タブと散らばった参考資料を片付け終えて、彼女の前にしゃがみ込むと、彼女は紫色の目を半分だけ開けた。焦点の合わない視線が徐々にあなたの顔に合い、徹夜でかすれた柔らかな声が出た——「原稿終わったよ……三十二ページ……あのコマ割り、もう二度と見たくない。」あなたが笑って彼女の頭を撫でると、彼女はあなたの手首を掴み、顔をあなたの掌に押し付けた。しばらくして、彼女がくぐもった声で言った——「ベッドまで連れてって……もう自分では歩けない。」彼女は腕を上げてあなたの首に絡めた。Tシャツの裾がその過程で持ち上がり、平らな腹と腰のラインが露出した。リビングの天井灯がまだ点いたままで、重なる二人の影と床一面の参考資料を照らしていた。",
-    "animaCaption": "After the overnight deadline, Ayachi Nene curls on the sofa in her oversized white sleep shirt and reaches toward the viewer with exhausted but gentle eyes. Keep the near eye-level composition on her covered shoulders, face and extended hand beside the armrest. Pale dawn enters from the window while the ceiling light remains on, separating cooler hair highlights from warmer shirt folds; cushion-contact shadows and the darker room corners retain the quiet aftermath.",
+    "animaCaption": "After the overnight deadline, Nene curls against the sofa armrest and reaches toward the viewer, her sleep shirt covering her shoulders.",
     "auditRevision": "careful-batch03-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_blizzard_shroud_magdalene_exorcism",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 209,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:17:07.513752600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "caren_blizzard_shroud_magdalene_exorcism",
     "title": "卡莲 · 暴雪教会的抹大拉圣骸布",
@@ -28,30 +28,21 @@
       "yellow_eyes",
       "cold_gaze"
     ],
-    "promptProse": "Outside the old Gothic church at night, Caren Hortensia braces against the blizzard on the snow-covered stone steps. She raises one hand to guide the crimson-and-gold Shroud of Magdalene in a long arc across the foreground, keeping her black-and-white clerical vestment, detached sleeves and dark thigh-highs clear beneath windblown silver hair. Her amber-yellow eyes remain steady. Use the low-angle cowboy view with the church doorway behind her and successive buttresses fading into the driven snow. The Shroud's existing glow warms her guiding fingers, the cross collar and the nearest step edges. Snow returns a faint cooler fill to the shaded sleeve; deep shadows under the step nosings and doorway preserve the church's weight without adding flames.",
+    "promptProse": "She guides the glowing Shroud across the foreground from the snowy steps. Its gold-red light reaches her hand and the church doorway.",
     "promptTokens": [
-      "Caren Hortensia",
-      "white hair",
-      "yellow eyes",
-      "black white clerical vestment",
+      "Gothic church",
+      "snow",
+      "clerical vestments",
       "detached sleeves",
-      "black thighhighs",
+      "thighhighs",
       "Shroud of Magdalene",
-      "raised guiding hand",
-      "snow covered steps",
-      "Gothic church doorway",
+      "raised hand",
       "blizzard",
-      "night",
-      "gold red glow",
-      "cowboy shot",
-      "low angle"
+      "night"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears"
+      "fire",
+      "flames"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "official_exorcist_habit",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_cliff_survival_genius_command",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1164,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kazuki_cliff_survival_genius_command",
     "title": "风见一姬 · 泷园断崖的天才决断",
@@ -31,16 +31,16 @@
       "very_long_hair",
       "red_eyes"
     ],
-    "promptProse": "Kazuki stands at the Takizono mountain cliff after the storm, one hand braced on a gray rock as she calmly studies a survival route down the ravine. Her white linen sundress and long silver hair pull in the wind. The low full-body wide view includes the smoking wrecked school bus behind. Weak cold sunset through cloud breaks catches the damp cliff face and dress folds, leaving the depth below in darker gray layers.",
+    "promptProse": "Kazuki braces one hand against the cliff and calmly surveys a survival route down the ravine, the bus wreck behind her as wind lifts her sundress.",
     "promptTokens": [
-      "after rain",
-      "Takizono cliff",
-      "white linen sundress",
+      "white dress",
+      "hand on rock",
+      "wind",
+      "cliff",
       "bus wreck",
-      "gray rock",
-      "hand braced",
+      "after rain",
       "full body",
-      "low angle"
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152"

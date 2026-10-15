@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1640,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_02",
     "title": "守岸人 · 观测记录的书写",
@@ -30,15 +30,13 @@
       "screen_light",
       "medium_shot"
     ],
-    "promptProse": "At the observation station, the Shorekeeper records tide and world data, fingertips leaving luminous traces across the display before pausing briefly over a familiar person's entry. Her pale-blue high-collared jacket and long white skirt remain orderly. The medium view includes the working screen and receding station consoles. Screen light reveals blue hair and attentive eyes, outlining the hand above the interface while the console edges behind remain in softer darkness.",
+    "promptProse": "She records tide data on the luminous display, pausing over a familiar person's entry in the dim station.",
     "promptTokens": [
       "the_shorekeeper_(wuthering_waves)",
-      "Shorekeeper",
-      "pale-blue jacket",
-      "white long skirt",
-      "data recording",
+      "blue jacket",
+      "white skirt",
+      "hologram",
       "observation station",
-      "screen light",
       "medium shot"
     ],
     "negativeTokens": [],

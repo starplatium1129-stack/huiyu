@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_03",
     "title": "双叶理央 · 雨夜的一碗热汤",
@@ -30,23 +30,21 @@
       "relieved",
       "medium_shot"
     ],
-    "promptProse": "Rio Futaba pushes her misted glasses upward before stirring a steaming soup at the convenience-store counter. Her burgundy hooded jacket, grey T-shirt and black trousers accompany a relieved expression. A folded umbrella rests near her shoes, below the seated medium view. Rain streams down the adjacent window, separating the dark exterior from the counter. Soft shop lighting illuminates her eyes and bowl rim, with spoon and sleeve shadows on the surface.",
+    "promptProse": "She pushes up her misted glasses before stirring the soup, her folded umbrella resting below the counter.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Rio Futaba",
-      "burgundy hooded jacket",
-      "grey T-shirt",
-      "black trousers",
+      "red jacket",
+      "glasses",
       "soup",
       "spoon",
-      "folded umbrella",
-      "rainy window",
+      "umbrella",
+      "convenience store",
+      "rain",
+      "window",
       "medium shot"
     ],
-    "negativeTokens": [
-      "reflections of extra people"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",

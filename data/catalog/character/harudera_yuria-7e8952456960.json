@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "harudera_yuria",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "harudera_yuria",
     "profile": {
@@ -118,12 +118,9 @@
         "1girl",
         "solo",
         "blonde_hair",
-        "very_long_hair",
         "wavy_hair",
         "blue_eyes",
-        "mole",
         "mole_under_eye",
-        "large_breasts",
         "mature_female",
         "grisaia_(series)"
       ],

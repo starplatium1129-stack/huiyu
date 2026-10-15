@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_wine_bath_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 377,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_nsfw_wine_bath_solo",
     "title": "雪之下阳乃 · 豪华大理石浴缸的红酒水光独奏 ·「把醉意都发泄在水里……就不算失态了吧」",
@@ -24,33 +24,20 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Haruno Yukinoshita lounges inside her sunken marble jacuzzi beneath soft light, holding a crystal wine glass while warm whirlpool jets churn around her. Her black lace teddy is drenched clinging translucently over mature, generous curves and taut dark nipples. Her fingers slide aggressively beneath the swirling scented water between her parted thighs, head thrown back against the stone headrest in ragged, drunken moans as tears leak from the corners of her dark eyes. Sensual vertical composition, golden chandelier reflection on rippling water, detailed bathroom background, solo 1girl, no text.",
-    "nsfwProse": "Lounging inside the marble jacuzzi in soaked, transparent black lace that clings to her dark nipples, Haruno Yukinoshita strokes herself underwater in drunken, weeping ecstasy amidst rippling red water.",
+    "promptProse": "Haruno reclines in the marble jacuzzi holding a wine glass, her other hand between her thighs beneath the water.",
+    "nsfwProse": "",
     "promptTokens": [
-      "bathroom",
-      "jacuzzi",
+      "black teddy",
+      "lace",
+      "wet clothes",
+      "see-through clothes",
+      "wine glass",
+      "female masturbation",
       "bathtub",
-      "wine_glass",
-      "rose_petals",
-      "night",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "rose petals",
+      "chandelier"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -61,23 +48,6 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [
-      "sitting_in_water",
-      "bathtub",
-      "marble_bath",
-      "translucent_clothing",
-      "wet_clothes",
-      "see-through",
-      "black_lace",
-      "nipples_visible_through_clothes",
-      "bare_breasts",
-      "wet_skin",
-      "underwater",
-      "hand_between_legs",
-      "masturbation",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips"
-    ]
+    "nsfwTokens": []
   }
 }

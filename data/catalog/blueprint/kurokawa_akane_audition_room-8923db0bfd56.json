@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_audition_room",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 960,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "白墙前入戏试镜",
     "camera": "medium shot, holding script",
@@ -18,13 +18,12 @@
     "mood": "专注入戏",
     "negativeTokens": [],
     "outfitId": "school_uniform",
-    "promptProse": "Akane stands before the audition room's white wall with her script in hand, settling into a character as hesitant expression gives way to concentration and faint star-like light in her eyes. Her Yoto uniform remains clear in medium view. The near script overlaps her torso and the bare studio wall recedes behind. White studio light reveals the page edges and her focused face, with restrained shadows beneath the vest and raised hands.",
+    "promptProse": "Akane enters character for the audition against the plain wall, script in hand and a star-like intensity in her eyes.",
     "promptTokens": [
-      "daytime",
-      "audition room",
-      "Yoto uniform",
+      "school uniform",
       "script",
-      "star eyes",
+      "star-shaped pupils",
+      "audition room",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

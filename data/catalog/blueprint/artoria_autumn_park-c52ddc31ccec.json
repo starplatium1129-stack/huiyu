@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_autumn_park",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "artoria_autumn_park",
     "title": "阿尔托莉雅 · 银杏长椅边的热茶",
@@ -32,22 +32,18 @@
       "leaf_shadows",
       "medium_shot"
     ],
-    "promptProse": "A narrow curl of steam rises between Artoria Pendragon's cupped hands as she lowers her face to smell the tea. She sits with knees together on the ginkgo-shaded bench, wearing a navy wool duffle coat, ivory scarf and green-and-navy tartan skirt. Her braided blonde bun retains its blue ribbon. A closed paper snack bag rests at the bench end, beside clearly separated wooden slats and fallen yellow leaves. Behind the backrest, a stone-paved path curves past a low railing toward the open lawn. The eye-level medium view includes her knees and the path's bend. Low sun from the back left catches the scarf's wool fibers, ribbon and tea steam; light reflected from the pale paving keeps hands readable. Leaf shadows cross the slats, with grounded shade beneath the bench and boots.",
+    "promptProse": "She cups warm tea beneath her face on the bench, a snack bag beside her. Low sun catches the steam as the stone path curves behind.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "seated on bench",
-      "knees together",
-      "warm tea cup",
-      "cupped palms",
-      "tea steam",
-      "paper snack bag",
-      "ginkgo canopy",
-      "curving stone path",
-      "low stone railing",
+      "park",
+      "ginkgo",
+      "bench",
+      "sitting",
+      "duffle coat",
+      "scarf",
+      "plaid skirt",
+      "tea",
       "fallen leaves",
-      "golden hour rim light",
-      "medium shot"
+      "golden hour"
     ],
     "negativeTokens": [
       "readable cup marking"

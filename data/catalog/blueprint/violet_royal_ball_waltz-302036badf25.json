@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_royal_ball_waltz",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1387,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，翡翠双眸顾盼生辉",
     "adult": false,
@@ -26,13 +26,14 @@
     "mood": "高贵华美、深情款款",
     "negativeTokens": [],
     "outfitId": "festive_ballgown_dress",
-    "promptProse": "Violet Evergarden turns through a waltz in her emerald velvet ballgown, one silver mechanical hand placed in her partner's palm and the other resting on his shoulder. Gold waist trim and the satin skirt follow the rotation. The wide view shows the ballroom floor leading toward tall banquet columns. Crystal chandeliers cast warm highlights on finger joints and green velvet ridges, with their connected silhouettes reflected faintly in the polished floor.",
+    "promptProse": "Violet turns with her partner, one mechanical hand in their palm and the other on their shoulder beneath the chandeliers.",
     "promptTokens": [
       "Violet Evergarden",
-      "emerald velvet ballgown",
+      "green ballgown",
       "mechanical hands",
       "waltz",
-      "crystal chandeliers",
+      "ballroom",
+      "chandelier",
       "wide shot"
     ],
     "recommendedSize": "1152x1536",

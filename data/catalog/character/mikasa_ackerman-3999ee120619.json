@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mikasa_ackerman",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mikasa_ackerman",
     "profile": {
@@ -121,12 +121,10 @@
         "mikasa_ackerman",
         "1girl",
         "solo",
-        "black_hair",
-        "short_hair",
-        "gray_eyes",
-        "pale_skin",
-        "red_scarf",
-        "attack_on_titan"
+        "black hair",
+        "short hair",
+        "red scarf",
+        "attack on titan"
       ],
       "negativeTokens": [
         "scar",

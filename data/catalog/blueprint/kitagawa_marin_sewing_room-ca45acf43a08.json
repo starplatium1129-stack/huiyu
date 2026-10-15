@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_sewing_room",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 494,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "身着高中辣妹制服（解开两颗扣子），双手微张配合量身，脸颊泛红，眼神中满是期待与娇羞",
     "camera": "medium shot, arms slightly spread for a fitting with a measuring tape",
@@ -20,18 +20,16 @@
     "mood": "心动纯情",
     "negativeTokens": [],
     "outfitId": "sailor_uniform",
-    "promptProse": "Marin stands with arms slightly spread for a fitting in Gojo's doll workshop, excitedly watching as the clothed Gojo measures her uniform sleeve with a tape. Her light sailor-style school uniform retains its collar and pleated skirt. The medium two-person view keeps tape contact clear beside the worktable and timber interior. Soft afternoon light through wooden lattice windows illuminates cloth texture and their hands, with gentle screen shadows across the tabletop.",
+    "promptProse": "Marin holds her arms slightly apart as Gojo measures her uniform sleeve with a tape in the doll workshop.",
     "promptTokens": [
       "2people",
       "Marin",
       "Gojo",
-      "sailor school uniform",
+      "school uniform",
       "measuring tape",
-      "arms spread",
+      "arms out",
       "doll workshop",
-      "wood lattice window",
-      "afternoon",
-      "medium shot"
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

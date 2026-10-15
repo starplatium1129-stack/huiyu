@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_tavern_corner",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 610,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单手撑着下颌，酒杯未动",
     "camera": "medium shot",
@@ -19,16 +19,15 @@
       "neon signs"
     ],
     "outfitId": "quiet_barista_uniform",
-    "promptProse": "At a secluded wooden table deep in the Iberian tavern, Skadi supports her chin with one hand and watches her untouched rum. Her white rolled-sleeve shirt and dark apron catch weak amber lantern light above charcoal tailored trousers. In this nighttime medium view, the table edge leads toward a dim bar and heavy beams behind her, with soft shade across her lowered eyes.",
+    "promptProse": "Skadi watches an untouched glass of rum from a secluded table, weak lantern light falling across her lowered eyes.",
     "promptTokens": [
-      "night",
-      "tavern",
-      "white shirt",
-      "rolled sleeves",
+      "Skadi",
+      "shirt",
       "apron",
-      "charcoal trousers",
+      "trousers",
+      "chin rest",
       "rum",
-      "chin in hand",
+      "tavern",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

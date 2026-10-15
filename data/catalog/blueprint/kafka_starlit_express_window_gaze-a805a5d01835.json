@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_starlit_express_window_gaze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1036,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kafka_starlit_express_window_gaze",
     "title": "卡芙卡 · 星海巡弋舷窗凝望",
@@ -29,15 +29,16 @@
       "hand_on_cheek",
       "pensive_smile"
     ],
-    "promptProse": "Kafka sits on a high chair in the quiet observation cabin, supporting her chin while studying the purple nebula beyond the panoramic window. Her black leather trench coat, charcoal turtleneck and tailored trousers remain clear in the eye-level cowboy view. Window framing extends behind her toward star bands. Purple-blue cosmic glow reflects softly on the leather shoulder, while warm cabin wall light touches her cheek and chair edge.",
+    "promptProse": "Kafka rests her cheek in one hand on the observation stool, watching the purple nebula through the panoramic window.",
     "promptTokens": [
+      "coat",
+      "turtleneck",
+      "sitting",
+      "hand on own cheek",
+      "spacecraft interior",
+      "window",
+      "nebula",
       "night",
-      "spaceship observation cabin",
-      "panoramic window",
-      "black leather coat",
-      "charcoal turtleneck",
-      "trousers",
-      "chin in hand",
       "cowboy shot"
     ],
     "negativeTokens": [],

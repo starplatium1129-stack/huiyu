@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_mask_taken_off_flustered_tsundere",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sparkle_mask_taken_off_flustered_tsundere",
     "title": "花火 · 被摘面具的破防羞恼",
@@ -29,15 +29,15 @@
       "flustered",
       "tsundere_pout"
     ],
-    "promptProse": "In the theater's empty backstage, Sparkle raises both hands to reclaim her fox mask from the viewer's visible hand, flushed cheeks and damp eyes breaking her usual composed mischief. Her crimson-black kimono sleeves surround the medium close-up. Heavy curtains overlap behind her face and the displaced mask stays near the foreground. A weak backstage spotlight catches her pink eyes and fingertips, leaving folds of the curtain in deep red shade.",
+    "promptProse": "Sparkle reaches with both hands for the mask held by the viewer, a backstage spotlight catching her flustered face.",
     "promptTokens": [
-      "night",
-      "theater backstage",
+      "Sparkle",
       "kimono dress",
-      "removed fox mask",
-      "blushing",
+      "fox mask",
       "reaching",
-      "medium close up"
+      "blush",
+      "backstage",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

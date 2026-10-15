@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_bridal_vow_white_chapel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1356,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "手捧白花立于光柱中，仰头望向新娘入场的方向，泪光与浅笑交织",
     "adult": false,
@@ -26,13 +26,12 @@
     "mood": "神圣圣洁、泪光心动",
     "negativeTokens": [],
     "outfitId": "white_bridal_gown",
-    "promptProse": "Vladilena Milize stands inside the base chapel in an opaque white wedding gown and veil, holding white flowers bound with ribbons in the national colors. She looks toward her approaching companion, silver-grey eyes filled with disbelieving tears and lips trembling into a smile. The wide environmental portrait keeps aisle benches and the small altar around her. Noon light through stained glass lays colored patches over the train and floor, softly illuminating her silver hair.",
+    "promptProse": "Lena holds her white bouquet in the chapel, lifting a tearful smile toward her approaching companion.",
     "promptTokens": [
       "vladilena_millize",
-      "Vladilena Milize",
-      "white wedding gown",
-      "bridal veil",
-      "white bouquet",
+      "wedding dress",
+      "veil",
+      "bouquet",
       "chapel",
       "noon",
       "wide shot"

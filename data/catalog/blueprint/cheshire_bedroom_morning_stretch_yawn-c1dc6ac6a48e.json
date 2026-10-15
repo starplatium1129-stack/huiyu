@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_bedroom_morning_stretch_yawn",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1087,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cheshire_bedroom_morning_stretch_yawn",
     "title": "柴郡 · 晨光微熹的猫猫伸懒腰",
@@ -32,16 +32,17 @@
       "fake_hair_ornament",
       "morning_light"
     ],
-    "promptProse": "Cheshire kneels on the bedroom rug and stretches both arms forward with a sleepy yawn, her ivory cable-knit open-back sweater and black skirt settling above dark tights. Her cat-ear headband shifts with the movement. The low three-quarter medium view includes the woven rug under her and wood flooring toward the curtained window. Very soft golden morning light reveals sweater stitches and rug fibers, with gentle contact shadows beneath her reaching palms.",
+    "promptProse": "She reaches both arms along the bedroom rug in a sleepy stretch. Soft morning light reaches the knit fabric and her palms.",
     "promptTokens": [
-      "morning",
-      "Commander bedroom",
-      "ivory cable knit sweater",
+      "bedroom",
+      "ivory sweater",
       "black skirt",
       "tights",
-      "rug",
+      "cat-ear headband",
+      "kneeling",
       "stretching",
-      "medium shot"
+      "yawning",
+      "morning"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152"

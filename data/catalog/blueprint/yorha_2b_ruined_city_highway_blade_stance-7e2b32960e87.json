@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_ruined_city_highway_blade_stance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1108,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yorha_2b_ruined_city_highway_blade_stance",
     "title": "2B · 废墟倾塌高架的白之契约持刃",
@@ -32,18 +32,22 @@
       "blindfold",
       "wind"
     ],
-    "promptProse": "2B stands on the broken reinforced-concrete highway edge in her black embroidered YoRHa dress and thigh-high boots, blindfold in place as Virtuous Contract floats ready beside her. The low full-body wide view carries fractured beams beneath her toward moss-covered towers and enormous trees. Cold sunlight between buildings catches white embroidery and the katana edge, leaving the ravaged highway's underside shaded beneath the wind-lifted skirt.",
+    "promptProse": "2B holds her position at the highway's broken edge while Virtuous Contract floats beside her above the moss-covered city.",
     "promptTokens": [
-      "daytime",
-      "ruined highway",
-      "YoRHa dress",
+      "black dress",
       "blindfold",
-      "Virtuous Contract",
+      "thigh boots",
+      "katana",
+      "standing",
       "wind",
-      "full body",
-      "low angle"
+      "broken highway",
+      "overgrown ruins",
+      "low angle",
+      "full body"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

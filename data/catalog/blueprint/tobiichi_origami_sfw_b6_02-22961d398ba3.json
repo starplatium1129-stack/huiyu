@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_02",
     "title": "鸢一折纸 · 整备台上的检查记录",
@@ -30,17 +30,14 @@
       "bright_overhead_lighting",
       "medium_shot"
     ],
-    "promptProse": "In the maintenance room, Origami braces an inactive diagnostic unit flat on a rubber mat with one gloved hand and checks its cable connector with the other. Her closed grey technical jacket and short white hair frame pale-blue eyes fixed on the connection. The vertical medium view extends through bench surfaces, wall panels and tool racks. Broad overhead work lights illuminate her face and casing evenly, with soft shadows under tools.",
+    "promptProse": "Origami braces the inactive unit on a rubber mat and inspects its connector beneath the work lights.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Origami",
-      "closed grey technical jacket",
-      "work gloves",
+      "grey jacket",
+      "gloves",
       "diagnostic unit",
-      "rubber mat",
-      "cable connector",
-      "maintenance room",
+      "cable",
+      "workbench",
       "medium shot"
     ],
     "negativeTokens": [

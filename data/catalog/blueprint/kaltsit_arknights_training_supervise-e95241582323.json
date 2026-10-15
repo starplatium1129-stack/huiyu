@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_training_supervise",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 530,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双臂环抱立于场边",
     "camera": "medium shot, slight low angle",
@@ -20,17 +20,14 @@
     "mood": "肃然专业",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Kal'tsit stands arms crossed at the training arena's edge, observing several operators' drills with strict concentration. White lab coat with green trim, black dress, utility belt and emerald earrings retain her clinical outfit. The slight-low medium view places the uniformed trainees farther across the marked floor, clearly separate from her. Bright hall lights illuminate her coat and their equipment, with overhead spotlights casting contained shadows along the arena's receding practice lanes.",
+    "promptProse": "Kal'tsit stands with her arms folded at the edge of the training arena, watching the operators practice.",
     "promptTokens": [
       "Kal'tsit",
-      "training operators",
-      "white green trim lab coat",
-      "black dress",
-      "emerald earrings",
+      "trainees",
+      "lab coat",
       "crossed arms",
-      "training arena",
-      "bright hall light",
-      "medium low angle"
+      "training ground",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

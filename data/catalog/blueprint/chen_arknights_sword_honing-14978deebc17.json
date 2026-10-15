@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_sword_honing",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 540,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "以布擦拭剑身",
     "camera": "medium close-up",
@@ -20,19 +20,15 @@
     "mood": "专注沉淀",
     "negativeTokens": [],
     "outfitId": "morning_kendo_robe",
-    "promptProse": "Ch'en carefully wipes her sword blade with an oil cloth in the dojo, serene eyes fixed on the polished section. Loose white martial-arts jacket with teal accents, dark-teal wide-leg hakama trousers and cloth obi retain the training outfit. The medium close-up includes blade and cloth with sliding screens behind. Cool morning light through the screens glints along the steel and reveals the cloth's weave, leaving gentle hand shadows across the supporting surface.",
+    "promptProse": "She wipes the blade with an oil cloth, watching the polished section. Cool light through the screens catches the steel.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ch'en",
-      "white wushu jacket",
-      "teal hakama trousers",
-      "cloth obi",
-      "oil cloth",
-      "sword blade",
       "dojo",
+      "white martial arts jacket",
+      "teal hakama",
+      "sword",
+      "oil cloth",
       "morning",
-      "medium close-up"
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

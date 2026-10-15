@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_tennis_court_afternoon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 354,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yui_tennis_court_afternoon",
     "title": "由比滨结衣 · 网球训练场",
@@ -28,24 +28,23 @@
       "skirt_flaring",
       "action_shot"
     ],
-    "promptProse": "At the school court's edge, Yui holds her tennis racket in one hand and wipes a bead of sweat with the other, grinning before the next game. Sleeveless athletic top, white pleated tennis skirt and sneakers retain the sporting outfit. The medium view includes the net and painted court lines receding behind her. Afternoon sunlight brightens racket strings and her cheek, casting a clear racket shadow across the court beside her.",
+    "promptProse": "Yui holds her racket in one hand and wipes her forehead with the other, grinning before the next game.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yui",
-      "sleeveless tennis top",
+      "tennis wear",
       "white pleated skirt",
       "sneakers",
       "tennis racket",
       "wiping sweat",
-      "school court",
-      "afternoon",
-      "medium shot"
+      "grin",
+      "tennis court",
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

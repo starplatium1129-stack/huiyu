@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuma_toki",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "asuma_toki",
     "profile": {
@@ -138,8 +138,6 @@
         "side_ponytail",
         "blue_eyes",
         "halo",
-        "expressionless",
-        "medium_breasts",
         "blue_archive"
       ],
       "negativeTokens": [

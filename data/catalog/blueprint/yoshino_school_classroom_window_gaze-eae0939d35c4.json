@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_school_classroom_window_gaze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1144,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端庄端坐课桌前侧头望向窗外远山，黑丝长腿并拢斜放，单手轻抚领口领带",
     "camera": "cowboy shot, medium framing, gentle depth of field",
@@ -20,16 +20,15 @@
     "mood": "清纯优雅",
     "negativeTokens": [],
     "outfitId": "school_uniform",
-    "promptProse": "Yoshino sits beside the classroom window during lunch break, turning toward the distant mountain shrine while lightly touching the red ribbon on her sailor blouse. Her navy skirt and black tights remain naturally settled in the medium cowboy view. An empty desk row extends behind the moving curtain. Bright daylight and blue-sky reflections illuminate her silver hair and ribbon, with soft window shadows beneath the hand at her collar.",
+    "promptProse": "Yoshino touches her ribbon as she gazes toward the mountain shrine beyond the classroom window.",
     "promptTokens": [
-      "noon",
-      "classroom",
-      "white sailor blouse",
-      "navy skirt",
+      "school uniform",
       "red ribbon",
-      "black tights",
+      "black pantyhose",
       "window seat",
-      "cowboy shot"
+      "looking outside",
+      "classroom",
+      "noon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +42,8 @@
       "contemplative"
     ],
     "timeOfDay": "午后",
-    "title": "朝武芳乃 · 穗织学园的黑丝少女心"
+    "title": "朝武芳乃 · 穗织学园的黑丝少女心",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

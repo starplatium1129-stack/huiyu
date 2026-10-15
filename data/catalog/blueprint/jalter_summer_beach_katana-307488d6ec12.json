@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_summer_beach_katana",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 171,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jalter_summer_beach_katana",
     "characterId": "jeanne_alter",
@@ -24,17 +24,18 @@
       "sunset_light",
       "medium_shot"
     ],
-    "promptProse": "Jeanne Alter finishes sheathing her katana, one hand remaining on the hilt and the other steadying the black scabbard as she looks back with a raised eyebrow. Her black summer swimsuit and loose beach wrap frame the completed action in the medium portrait. Wind stirs short silver hair above the sand, waves receding behind. Golden-hour light traces the closed scabbard and wrap folds, leaving soft shade beneath her hands.",
+    "promptProse": "Jeanne Alter finishes sheathing her katana, keeping one hand on the hilt and the other on the scabbard as she glances back.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne Alter",
-      "black summer swimsuit",
-      "beach wrap",
-      "sheathed katana",
-      "hands on hilt and scabbard",
+      "swimsuit",
+      "sarong",
+      "katana",
+      "scabbard",
+      "looking back",
+      "beach",
       "sunset",
-      "medium portrait"
+      "medium shot"
     ],
     "negativeTokens": [
       "drawn blade"

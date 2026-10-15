@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_home_daily",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 507,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kisara_home_daily",
     "title": "木更 · 居家日常",
@@ -25,16 +25,16 @@
       "daily",
       "bright"
     ],
-    "promptProse": "Kisara sits on the apartment sofa sorting monthly bills with a worried expression, her oversized opaque white long-sleeved shirt worn over plain lounge shorts. Long pink hair falls beside the papers and supporting cushions. The medium view includes the low table for the arranged bills and the compact room behind. Bright morning interior light illuminates page edges and her intent face, casting small paper shadows across the tabletop and softer folds around the seat.",
+    "promptProse": "Kisara studies the monthly bills on the apartment sofa in her loose white shirt and lounge shorts.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Kisara",
-      "opaque white long sleeve shirt",
-      "lounge shorts",
-      "monthly bills",
-      "apartment sofa",
-      "bright morning light",
+      "white shirt",
+      "shorts",
+      "bills",
+      "sofa",
+      "apartment",
+      "morning",
       "medium shot"
     ],
     "negativeTokens": [

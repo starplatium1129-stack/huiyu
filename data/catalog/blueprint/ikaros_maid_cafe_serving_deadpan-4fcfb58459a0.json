@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_maid_cafe_serving_deadpan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1211,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手端着茶壶与西瓜的银质托盘立正端立，白羽翼收拢在后，神态严肃呆萌",
     "camera": "cowboy shot, medium framing, eye-level charming service",
@@ -20,15 +20,15 @@
     "mood": "呆萌反差",
     "negativeTokens": [],
     "outfitId": "maid_uniform",
-    "promptProse": "Ikaros stands straight beside Tomoki's cafe table, presenting a silver tray with a teapot and two watermelon slices in both hands. Her ruffled maid dress and pressed apron stay orderly; folded wings clear the nearby cups. The eye-level cowboy view shows wooden tables receding behind her. Afternoon light through colored glass falls across feathers and tray, producing small colored reflections on the red-brown tabletop.",
+    "promptProse": "Ikaros presents the tea and two watermelon slices with both hands, keeping her folded wings clear of the table's cups.",
     "promptTokens": [
-      "Ikaros",
-      "maid uniform",
+      "maid",
+      "tray",
+      "teapot",
+      "watermelon",
       "folded wings",
-      "silver tray",
-      "tea",
-      "watermelon slices",
-      "retro cafe",
+      "cafe",
+      "stained glass",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -43,6 +43,8 @@
       "angel_wings"
     ],
     "timeOfDay": "下午",
-    "title": "伊卡洛斯 · 咖啡茶舍的忠犬端茶"
+    "title": "伊卡洛斯 · 咖啡茶舍的忠犬端茶",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

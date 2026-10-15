@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_rain_shelter_hot_cocoa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1507,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "waguri_rain_shelter_hot_cocoa",
     "title": "和栗薰子 · 雨檐下慢慢变暖的双手",
@@ -32,13 +32,14 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "Kaoruko Waguri sits beneath the shop eaves after school, wrapping both hands around a hot cocoa cup while watching drops fall from her closed umbrella's tip. Her Kikyo uniform remains neat as she settles stray blackish-purple hair, bookbag beside her. The medium view includes the sheltered bench and wet lane beyond. Reflected shop light softly illuminates her calmer blue eyes and white collar, with dimmer rainwater reflections outside the shelter.",
+    "promptProse": "Waguri warms her hands around cocoa under the shop eaves, watching rain drip from the closed umbrella.",
     "promptTokens": [
       "Kaoruko Waguri",
-      "Kikyo uniform",
-      "hot cocoa",
+      "school uniform",
+      "cocoa",
       "closed umbrella",
-      "rain shelter",
+      "rain",
+      "bench",
       "medium shot"
     ],
     "negativeTokens": [],

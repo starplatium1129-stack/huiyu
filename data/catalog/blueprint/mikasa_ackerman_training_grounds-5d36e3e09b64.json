@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_training_grounds",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 980,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "操场列队训练",
     "camera": "cowboy shot, stepping out from formation on dirt training field",
@@ -18,15 +18,13 @@
     "mood": "冷静寡言",
     "negativeTokens": [],
     "outfitId": "training_corps",
-    "promptProse": "Mikasa steps out from the training formation onto the dirt field, wearing her white Training Corps uniform with ODM straps and brown boots. The red scarf rests firmly at her neck in the cowboy view. Other trainees remain behind her in orderly rows, with the drill ground extending between them. Clear field daylight reveals her steady expression and harness fittings, placing short grounded shadows beneath the formation.",
+    "promptProse": "Mikasa steps out from the training formation onto the dirt field while the other trainees remain in orderly rows behind her.",
     "promptTokens": [
-      "daytime",
-      "training field",
-      "white Training Corps uniform",
-      "ODM straps",
+      "white military uniform",
+      "maneuver harness",
       "red scarf",
       "formation",
-      "cowboy shot"
+      "training ground"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

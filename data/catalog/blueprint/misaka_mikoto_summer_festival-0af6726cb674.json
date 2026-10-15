@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_summer_festival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 396,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "蹲在捞金鱼摊前",
     "camera": "medium shot",
@@ -20,20 +20,17 @@
     "mood": "元气雀跃",
     "negativeTokens": [],
     "outfitId": "summer_yukata",
-    "promptProse": "Misaka Mikoto crouches at the festival goldfish pool, gripping a fresh paper net as a red fish darts away from its rim. Her light-blue summer yukata and white obi stay secured above wooden geta, jaw set with stubborn focus. The medium view follows the shallow pool past her hands toward the stall. Warm lantern light ripples over the water and net rim, with darker fish shadows moving beneath the reflected lantern shapes.",
+    "promptProse": "Mikoto crouches by the goldfish pool with her paper net ready beneath the festival lanterns.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Misaka Mikoto",
-      "light blue yukata",
+      "blue yukata",
       "white obi",
       "geta",
       "crouching",
       "paper net",
-      "red goldfish",
-      "festival pool",
-      "lanterns",
-      "medium shot"
+      "goldfish",
+      "festival"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

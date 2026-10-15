@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_sainan_corridor_gentle_courtesy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1244,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手交叠腹前优雅漫步颔首行礼，制服与百褶裙端庄得体，笑容温婉无瑕",
     "camera": "medium shot, eye-level, refined ladylike perspective",
@@ -20,14 +20,13 @@
     "mood": "温婉大方",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Momo walks through Sainan High's wooden corridor with her hands folded before her, turning slightly to nod politely toward an approaching teacher and classmates. Her pink curls, neat sailor uniform and black knee socks remain orderly. The medium eye-level composition follows the long row of windows and classroom doors. White daylight brightens her near cheek and blouse, with soft tree reflections and foot shadows on the polished floor.",
+    "promptProse": "Momo walks through the corridor with her hands folded before her and nods politely toward the approaching teacher and classmates.",
     "promptTokens": [
       "Momo",
-      "Sainan uniform",
-      "polite bow",
-      "black knee socks",
-      "school corridor",
-      "medium shot"
+      "school uniform",
+      "kneehighs",
+      "hands together",
+      "school hallway"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

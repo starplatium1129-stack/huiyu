@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_battle_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 506,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kisara_battle_night",
     "title": "木更 · 都市恶魔战斗",
@@ -29,19 +29,18 @@
       "demon_wings",
       "cursed_sword"
     ],
-    "promptProse": "Kisara leaps across the midnight skyscraper gap with demonic wings unfurled, swinging her cursed blade through a violet arc. Sleeveless black demon dress, red bow and single black glove retain the combat outfit. The dynamic view follows building edges below and shattered glass around the movement. Neon billboards and urban firelight reflect in the fragments, while the blade's violet glow illuminates her gripping hand and wing edges against the dark city depth.",
+    "promptProse": "Kisara fights between the city towers in her demonic form, her cursed blade and wings lit by neon and fire.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Kisara",
-      "black demon dress",
+      "black dress",
       "red bow",
-      "single black glove",
-      "demonic wings",
-      "cursed blade",
-      "skyscraper gap",
-      "neon firelight",
-      "dynamic action shot"
+      "demon wings",
+      "sword",
+      "city",
+      "skyscraper",
+      "night",
+      "action"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

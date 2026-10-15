@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "komine_sachi",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "komine_sachi",
     "profile": {
@@ -117,12 +117,9 @@
         "solo",
         "pink_hair",
         "short_hair",
-        "swept_bangs",
         "two_side_up",
         "hair_bow",
         "blue_eyes",
-        "large_breasts",
-        "cleavage",
         "grisaia_(series)"
       ],
       "exactTokens": [

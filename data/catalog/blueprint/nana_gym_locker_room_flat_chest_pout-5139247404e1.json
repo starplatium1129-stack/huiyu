@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_gym_locker_room_flat_chest_pout",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1271,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:50:34.027913700+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "左手压住长凳上备用制服的袖口，右手把软尺拉到肩缝，低头鼓腮检查袖长。",
     "camera": "medium shot, eye level, closed sports outfit and measuring hands on the bench visible",
@@ -18,37 +18,16 @@
     "lighting": "warm ceiling light on the laid-out white sleeve and tape; soft shade beneath the bench",
     "location": "女生体育更衣室木长凳旁，半开铁柜与挂毛巾在后方",
     "mood": "尺码偏大后的气鼓鼓喜剧",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
-      "nude"
-    ],
+    "negativeTokens": [],
     "outfitId": "sfw_gym_track_set",
-    "promptProse": "A spare white sailor blouse lies flat on the locker-room wooden bench while Nana checks its unexpectedly long sleeve. Wearing a fully closed navy sports jacket and matching track trousers, she presses the cuff with her left hand and draws a soft tape toward the shoulder seam with her right. Her cheeks puff in frustration beneath pink twintails, and the black heart-tipped tail flicks near the bench leg. A half-open locker behind her holds a hanging towel; a small sports bag rests beside the near floor tiles. Keep the laid-out shirt and measuring contacts visible at eye level in a medium view. Warm ceiling light reveals the tape markings and white fabric folds, casting narrow finger shadows on the sleeve. The locker interior and the area beneath the bench remain softly shaded.",
+    "promptProse": "Nana holds a spare sailor blouse's cuff flat on the bench and measures toward its shoulder seam, puffing her cheeks at the long sleeve.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "puffed cheeks",
-      "measuring spare uniform sleeve",
-      "shirt laid flat on bench",
-      "left hand on cuff",
-      "tape to shoulder seam",
-      "half open locker",
-      "hanging towel",
-      "sports bag on floor",
-      "warm ceiling light",
+      "navy tracksuit",
+      "measuring tape",
+      "shirt",
+      "bench",
+      "pout",
+      "locker room",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -80,6 +59,8 @@
       "black_spade_heart_tail",
       "to_love-ru"
     ],
-    "identityProseOverride": "Nana Asta Deviluke from To LOVE-Ru, Deviluke's feisty second princess with long pink twintails, purple-pink eyes and a black spade-heart tail"
+    "identityProseOverride": "Nana Asta Deviluke from To LOVE-Ru, Deviluke's feisty second princess with long pink twintails, purple-pink eyes and a black spade-heart tail",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

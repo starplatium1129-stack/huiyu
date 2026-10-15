@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_sunset_rooftop_breeze_pause",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 929,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "背靠着铁丝网栏杆怀抱狙击枪，微仰头享受晚风吹拂，眼神柔和",
     "camera": "cowboy shot, medium angle",
@@ -20,14 +20,14 @@
     "mood": "宁静唯美",
     "negativeTokens": [],
     "outfitId": "disciplinary_uniform",
-    "promptProse": "Iori rests against the rooftop wire fence with her sniper rifle held close, tilting her face toward the distant sunset as her hair and demon tail move gently. Her Gehenna assault uniform remains clear in the cowboy view. The school roof stretches below and distant towers stand beyond the fence. Orange-purple backlight traces her shoulders and rifle edge, with reflected sky warmth softening her unusually peaceful expression.",
+    "promptProse": "Iori rests against the rooftop fence with her rifle close, watching the sunset as the breeze lifts her hair.",
     "promptTokens": [
-      "sunset",
-      "school rooftop",
-      "wire fence",
-      "assault uniform",
+      "leaning",
+      "fence",
       "sniper rifle",
-      "resting",
+      "rooftop",
+      "wind",
+      "sunset",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",

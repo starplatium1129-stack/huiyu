@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_locker_room_rain_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 366,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "iroha_nsfw_locker_room_rain_solo",
     "title": "一色彩羽 · 暴雨更衣室的湿身白衬衫独奏 ·「被雨淋湿成这样……前辈要负责擦干哦」",
@@ -24,32 +24,23 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Iroha Isshiki sits on a wooden gym locker bench stranded by an afternoon deluge, her white school blouse soaked completely see-through and plastered to her creamy skin, clearly detailing pink nipples and soft curves. One hand slips audaciously beneath her wet pleated hem between her thighs, rubbing herself with slow insolence while her hazel-brown eyes fixate on you through heavy lashes. A mocking, blush-stained smirk plays across her parted lips. Sensual vertical shot, raindrops streaking locker room glass behind her, cinematic cool lighting, detailed background, solo 1girl, no text.",
-    "nsfwProse": "Sitting on the gym locker bench in a rain-soaked blouse that clings sheerly over blushing pink nipples, Iroha Isshiki touches herself beneath her wet skirt with mocking, teasing desire.",
+    "promptProse": "Adult Iroha sits on the bench with one hand beneath her wet skirt, looking toward the viewer. Rain streaks the window behind her.",
+    "nsfwProse": "",
     "promptTokens": [
-      "locker_room",
+      "adult",
+      "locker room",
       "bench",
-      "rain",
-      "rainy_day",
-      "window",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "white blouse",
+      "wet clothes",
+      "see-through",
+      "pleated skirt",
+      "black pantyhose",
+      "sitting",
+      "masturbation",
+      "smirk",
+      "rain"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -60,21 +51,6 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [
-      "sitting_on_bench",
-      "locker_room",
-      "wet_shirt",
-      "see-through",
-      "translucent_clothing",
-      "nipples_visible_through_clothes",
-      "skirt_lift",
-      "black_pantyhose",
-      "hand_between_legs",
-      "masturbation",
-      "pussy_juice",
-      "heavy_blush",
-      "smirk",
-      "parted_lips"
-    ]
+    "nsfwTokens": []
   }
 }

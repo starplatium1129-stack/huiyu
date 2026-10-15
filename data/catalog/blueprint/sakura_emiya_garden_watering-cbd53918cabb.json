@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_garden_watering",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 185,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakura_emiya_garden_watering",
     "title": "间桐樱 · 卫宫家庭院",
@@ -32,20 +32,15 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Sakura directs a fine stream from her green watering can onto the Emiya garden flowers, one hand on the handle and the other beneath its body. She turns her face without changing the water's direction. Beige blazer, red bow and pleated skirt retain her school uniform beneath a moving hair ribbon. The medium view includes plants beside the garden wall; sunlight catches droplets and leaf edges, casting overlapping foliage shadows on the soil.",
+    "promptProse": "Sakura waters the Emiya garden with both hands supporting the can, turning her face while the stream stays on the flowers.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Sakura",
-      "beige school blazer",
+      "blazer",
       "red bow",
       "pleated skirt",
-      "black tights",
-      "green watering can",
-      "flower bed",
-      "Emiya garden",
-      "daylight",
-      "medium portrait"
+      "watering can",
+      "garden",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

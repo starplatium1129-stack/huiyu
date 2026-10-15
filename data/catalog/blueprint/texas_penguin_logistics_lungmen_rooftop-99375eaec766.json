@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_penguin_logistics_lungmen_rooftop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 659,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在暴雨与霓虹反光中单膝点地伫立，嘴里叼着巧克力棒，身后光剑悬浮",
     "camera": "wide shot, low angle, cinematic noir",
@@ -20,16 +20,17 @@
     "mood": "冷峻沉着",
     "negativeTokens": [],
     "outfitId": "penguin_logistics",
-    "promptProse": "Texas stands on a rain-lashed Lungmen rooftop in her black-and-white logistics windbreaker, a chocolate stick between her lips and one hand on her sword hilt. Two energy blades shine behind her. The low wide view shows the wet ledge and immense neon signs across the gap; their colors spread under her boots while faint gold blade light catches raindrops along her coat.",
+    "promptProse": "Texas holds her sword hilt on the rainy rooftop, two energy blades shining against Lungmen neon.",
     "promptTokens": [
-      "rainy night",
-      "rooftop",
-      "logistics windbreaker",
+      "Texas",
+      "windbreaker",
       "chocolate stick",
-      "energy swords",
-      "wolf ears",
-      "wide shot",
-      "low angle"
+      "energy sword",
+      "rooftop",
+      "rain",
+      "neon",
+      "low angle",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

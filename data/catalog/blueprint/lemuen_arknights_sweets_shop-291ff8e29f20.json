@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_sweets_shop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 559,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在靠窗桌边的轮椅上，捧着精致圣代笑意盈盈",
     "camera": "medium close-up",
@@ -17,19 +17,16 @@
     "mood": "甜美放松",
     "negativeTokens": [],
     "outfitId": "baking_apron_loungewear",
-    "promptProse": "By the dessert-shop window, Lemuen sits in her wheelchair and supports a strawberry sundae crowned with gold leaf in both hands, smiling contentedly. Cream ribbed turtleneck with rolled sleeves and beige apple-emblem baking apron retain her current outfit. The medium close-up includes the glass dessert and pastry case behind the chair. Warm shop light catches gold leaf and sweater ribs, while softer window reflections illuminate the glass and leave pastry-case shelves gently shaded.",
+    "promptProse": "Lemuen cradles her strawberry sundae at the dessert-shop window, smiling from her wheelchair.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Lemuen",
-      "cream ribbed turtleneck",
-      "beige apple apron",
+      "turtleneck",
+      "apron",
       "wheelchair",
-      "gold leaf sundae",
-      "strawberries",
-      "dessert shop window",
-      "warm light",
-      "medium close-up"
+      "sundae",
+      "strawberry",
+      "shop window"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

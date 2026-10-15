@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 789,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在玄关凳上系齐半扎发缎带，俏皮歪头检查。",
     "adult": false,
@@ -23,14 +23,14 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_refined_daily",
-    "promptProse": "Before a weekend outing, Yuki sits on the entryway bench in a butter-yellow knit vest over a white puff-sleeve blouse and navy calf-length skirt. She carefully evens the ribbon securing her half-up hair, then tips her head playfully toward the doorway light. The medium environmental view includes the bench beneath her and the entry floor beyond. Soft daylight brightens her ribbon and vest stitches, shading the skirt folds.",
+    "promptProse": "Yuki adjusts the ribbon in her half-up hair on the entryway bench, tilting her head toward the daylight.",
     "promptTokens": [
-      "daytime",
-      "entryway bench",
-      "yellow knit vest",
-      "white blouse",
-      "navy skirt",
+      "Yuki",
+      "sweater vest",
+      "blouse",
+      "long skirt",
       "hair ribbon",
+      "bench",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_03",
     "title": "克洛伊 · 游戏厅的连胜",
@@ -30,20 +30,16 @@
       "colored_lighting",
       "medium_shot"
     ],
-    "promptProse": "Chloe sits cross-legged at the fighting-game cabinet with both hands poised over its buttons, sleeves pushed back from the wrists of her red cardigan and white school blouse. Her orange eyes follow the screen before a broad victory grin opens. The medium view retains the knee-length pleated skirt and cabinet controls, arcade machines farther back. Colored screen light traces pale-pink hair and fingertips, with dimmer cabinet sides framing the seated pose.",
+    "promptProse": "She keeps both hands over the fighting-game buttons as her expression breaks into a grin. Screen light reaches her hair and fingertips.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Chloe",
-      "white school blouse",
+      "arcade",
+      "school blouse",
       "red cardigan",
       "pleated skirt",
-      "arcade cabinet",
-      "hands on buttons",
-      "victory grin",
-      "colored light",
-      "medium shot",
-      "chloe_von_einzbern"
+      "sitting",
+      "crossed legs",
+      "game controls",
+      "victory grin"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

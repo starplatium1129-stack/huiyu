@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1604,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_02",
     "title": "毛利兰 · 侦探事务所的晚餐",
@@ -30,17 +30,16 @@
       "evening_light",
       "medium_shot"
     ],
-    "promptProse": "Ran Mouri carries miso soup from the detective office's kitchen to the table, pausing with a familiar small sigh at her father's voice downstairs. A plain blue cooking apron covers her cream cardigan and pale-blue blouse above the navy knee-length skirt. The medium portrait includes the pot behind and the apartment doorway beside her. Evening light brightens the bowl's rim and sleeve folds, with mild steam above the soup and soft table shadows awaiting the dish.",
+    "promptProse": "Ran brings miso soup to the table from the detective-office kitchen, moving confidently in her blue apron.",
     "promptTokens": [
       "mouri_ran",
-      "Ran Mouri",
-      "cream cardigan",
-      "blue blouse",
+      "cardigan",
+      "blouse",
+      "blue apron",
       "miso soup",
-      "detective-office kitchen",
-      "evening",
-      "medium shot",
-      "blue cooking apron"
+      "tray",
+      "kitchen",
+      "evening"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

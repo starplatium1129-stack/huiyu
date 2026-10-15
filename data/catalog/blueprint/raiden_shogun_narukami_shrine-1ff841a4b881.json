@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_narukami_shrine",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "raiden_shogun_narukami_shrine",
     "title": "雷电将军 · 鸣神神社的落樱",
@@ -32,18 +32,16 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Beneath the Sacred Sakura, Raiden Ei examines the petal resting on her open palm before looking back toward the viewer. Her other hand relaxes beside the obi of her purple shogun robes. In the eye-level medium view, drifting petals pass in front of her sleeve and red torii recede along the stone steps. Low sunset brushes her cheek and the gate edges, leaving gentle shade beneath the tree.",
+    "promptProse": "Ei examines the petal on her palm beneath the Sacred Sakura, then looks back toward the viewer.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Sacred Sakura",
-      "torii",
-      "stone steps",
-      "purple shogun robes",
+      "kimono",
       "open palm",
-      "cherry petals",
-      "sunset",
-      "medium shot"
+      "cherry blossom petals",
+      "looking back",
+      "torii",
+      "stairs",
+      "shrine",
+      "sunset"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,6 +50,8 @@
     "sampleRating": "SFW",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

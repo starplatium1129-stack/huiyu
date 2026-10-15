@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_hotpot_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 539,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "举筷捞起热汤里的菜",
     "camera": "medium shot",
@@ -20,20 +20,16 @@
     "mood": "难得的放松",
     "negativeTokens": [],
     "outfitId": "street_gourmet_casual",
-    "promptProse": "At the Lungmen hotpot table, Ch’en lifts tripe from the boiling spicy broth toward a sesame-oil dipping dish with her chopsticks, smiling beneath a small bead of sweat at her brow. Preserve the vintage floral shirt, white T-shirt and dark jeans. The medium view follows the chopsticks from the near pot to the dish; behind her shoulder, empty stools overlap a farther wooden table, with the restaurant counter against the back wall. Warm evening light makes the broth and rising steam glow above the pot. The chopsticks cast narrow shadows across the dish edge, while the farther table and stool legs stay softly shaded.",
+    "promptProse": "She lifts tripe from the broth toward the dipping dish with chopsticks. Warm restaurant light glows through the steam.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ch'en",
+      "restaurant",
       "floral shirt",
-      "white tee",
-      "dark jeans",
+      "white T-shirt",
+      "jeans",
+      "hotpot",
       "chopsticks",
       "tripe",
-      "hotpot",
-      "sesame oil dish",
-      "restaurant glow",
-      "medium shot"
+      "smile"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

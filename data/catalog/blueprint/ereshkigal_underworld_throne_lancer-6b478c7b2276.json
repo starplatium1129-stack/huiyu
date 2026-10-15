@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_underworld_throne_lancer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 264,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ereshkigal_underworld_throne_lancer",
     "title": "埃列什基伽勒 · 冥界王座的孤独女王·「这里……就是我的全部国土」",
@@ -29,17 +29,17 @@
       "soul_fire_light",
       "wide_shot"
     ],
-    "promptProse": "Ereshkigal sits upright on the great underworld throne, one hand steadying Meslamtaea on the floor beside her and the other resting on its arm. Her black dress, pale-blue ribbons and golden tiara surround blonde twintails and a lonely, restrained red-eyed welcome. The wide view follows the throne into the dark hall. Drifting blue soul fires illuminate the spear and ribbon edges, leaving deep recesses behind the throne's carved structure.",
+    "promptProse": "She sits upright with one hand steadying Meslamtaea on the floor and the other resting on the throne arm.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Ereshkigal",
-      "black goddess dress",
-      "pale blue ribbons",
-      "gold tiara",
-      "Meslamtaea",
+      "black dress",
+      "blue ribbon",
+      "tiara",
+      "sitting",
       "throne",
-      "blue soul fires",
+      "spear",
+      "blue fire",
       "wide shot"
     ],
     "negativeTokens": [],

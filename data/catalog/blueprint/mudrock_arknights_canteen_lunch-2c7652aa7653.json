@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_canteen_lunch",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 580,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端着餐盘，银发扎起",
     "camera": "medium shot",
@@ -20,20 +20,17 @@
     "mood": "日常安宁",
     "negativeTokens": [],
     "outfitId": "clay_artisan_apron",
-    "promptProse": "Mudrock carries a full tray of stewed potatoes and roasted sausages between cafeteria tables, searching for a seat with silver hair tied into a neat ponytail. Ivory linen shirt with rolled sleeves and dark-khaki pottery apron retain her clay-marked work outfit. The medium view keeps the supported meal ahead of several seated diners. Bright noon cafeteria lights illuminate tray rims and apron pockets, casting table shadows across the receding floor lanes.",
+    "promptProse": "Mudrock carries her full lunch tray between the tables, searching for a seat among the other diners.",
     "promptTokens": [
-      "Mudrock",
-      "cafeteria diners",
-      "ivory linen shirt",
-      "khaki artisan apron",
+      "ponytail",
+      "white shirt",
       "rolled sleeves",
-      "silver ponytail",
-      "lunch tray",
+      "apron",
+      "food tray",
       "potatoes",
-      "sausages",
-      "Rhodes cafeteria",
-      "noon",
-      "medium shot"
+      "sausage",
+      "cafeteria",
+      "diners"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +45,8 @@
     ],
     "timeOfDay": "中午",
     "title": "泥岩 · 食堂打饭",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

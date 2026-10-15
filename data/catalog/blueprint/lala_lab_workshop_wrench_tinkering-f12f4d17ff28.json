@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_lab_workshop_wrench_tinkering",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1235,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "半跪在装置前手持激光扳手维修组装，鼻尖带汗，眼神专注聪明，尾巴在身后稳定重心",
     "camera": "cowboy shot, medium framing, sci-fi workshop depth",
@@ -20,15 +20,15 @@
     "mood": "专注聪明",
     "negativeTokens": [],
     "outfitId": "deviluke_dress",
-    "promptProse": "Lala half-kneels before a waist-high quantum teleportation device, tightening its energy-core conduit with a laser wrench. Her battle-dress sleeve covers are rolled up and her green eyes follow the connection. Mechanical arms assist over a bench scattered with alien circuit boards. In the medium workshop view, cold holographic blueprints light her face from the side while the work spotlight picks out tool edges and casts conduit shadows below.",
+    "promptProse": "Lala kneels to repair the teleportation device with her laser wrench, tail balancing her beside the holographic plans.",
     "promptTokens": [
       "Lala",
-      "laser wrench",
+      "kneeling",
+      "wrench",
       "teleportation device",
-      "holographic blueprint",
-      "mechanical arms",
-      "laboratory",
-      "cowboy shot"
+      "hologram",
+      "robotic arms",
+      "laboratory"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

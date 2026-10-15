@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_bakery_scone_lesson",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 842,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "认真地揉面团，鼻尖沾着面粉",
     "adult": false,
@@ -21,16 +21,15 @@
     "mood": "joyful",
     "negativeTokens": [],
     "outfitId": "bakery_apron",
-    "promptProse": "Cecilia kneads scone dough at the bakery workbench in a pastel-yellow dress and white apron, flour on both hands and a small mark on her nose. Her mint-green hair remains in its usual low braid as she concentrates. The medium portrait shows the dough beneath her palms and baking equipment farther back. Window light reveals flour across the wood and her sleeves, shading the dough's creases between presses.",
+    "promptProse": "She kneads scone dough with flour on her hands and nose. Window light reveals the dough creases on the workbench.",
     "promptTokens": [
-      "daytime",
       "bakery",
-      "pastel yellow dress",
+      "yellow dress",
       "white apron",
-      "mint green braid",
-      "scone dough",
+      "kneading",
+      "dough",
       "flour",
-      "medium portrait"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

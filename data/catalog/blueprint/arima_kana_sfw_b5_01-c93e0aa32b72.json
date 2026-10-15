@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 968,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "握着麦克风完成歌曲结尾定格，红瞳专注而额角带汗。",
     "adult": false,
@@ -24,14 +24,15 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_stage",
-    "promptProse": "Kana holds her microphone through the song's final pose, bright and focused beneath short red hair with sweat at her temple. Her opaque red-and-white idol dress, fitted jacket and layered skirt remain in the medium environmental view. The stage behind falls dark beyond her position. A concentrated spotlight illuminates her face and skirt tiers, casting a clear shadow beneath the microphone hand and brightening the glove edges.",
+    "promptProse": "She holds the final singing pose beneath a concentrated spotlight, with the stage dark beyond her.",
     "promptTokens": [
-      "night",
-      "performance stage",
-      "red white idol dress",
+      "stage",
+      "idol clothes",
+      "red dress",
       "jacket",
       "gloves",
       "microphone",
+      "spotlight",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

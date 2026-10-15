@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_bridge_overlook",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 750,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "administrator_arknights_bridge_overlook",
     "characterId": "administrator_arknights",
@@ -33,17 +33,19 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "daytime",
-      "terrace cafe",
-      "graphite jacket",
-      "cream trousers",
-      "uncovered face",
-      "pulling chair",
-      "two drinks",
+      "outdoors",
+      "cafe",
+      "terrace",
+      "jacket",
+      "pants",
+      "standing",
+      "smile",
+      "chair",
+      "drink",
       "cake",
       "cowboy shot"
     ],
-    "promptProse": "The Administrator stands beside a round terrace-cafe table, pulling a chair out for the viewer and smiling with her face uncovered. Her graphite cropped jacket and cream trousers remain clear in the eye-level cowboy view. Two drinks and shared cake sit between the chairs; railing plants move behind. Bright light softened by the parasol touches her ivory top and chair back, with gentle plant shadows at the terrace edge.",
+    "promptProse": "She pulls out the chair opposite the viewer at a terrace table with two drinks and a shared cake. Parasol-filtered daylight falls across the table.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_ruins_shelter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 578,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在断墙上，头盔搁在膝边",
     "camera": "medium shot",
@@ -17,18 +17,15 @@
     "mood": "疲倦而平静",
     "negativeTokens": [],
     "outfitId": "cozy_winter_knit_coat",
-    "promptProse": "Mudrock sits on the ruined fortress wall with her reinforced helmet resting beside one knee, silver-white hair moving in the evening wind. Ivory cable-knit turtleneck, open dark-camel wool coat and cashmere scarf retain her winter outfit. The medium view includes fractured wall stones supporting the seat and the red-lit ruins behind. Amber dusk illuminates sweater ribs and hair edges, casting darker stone shadows beneath the coat's softly shaded folds.",
+    "promptProse": "Mudrock rests on the broken fortress wall with her helmet beside one knee, evening wind moving her hair.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Mudrock",
-      "ivory cable knit sweater",
-      "camel wool coat",
-      "cashmere scarf",
-      "helmet beside knee",
-      "broken fortress wall",
-      "dusk",
-      "medium shot"
+      "cable-knit sweater",
+      "camel coat",
+      "scarf",
+      "helmet",
+      "sitting",
+      "ruined wall",
+      "dusk"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +37,8 @@
       "war_zone"
     ],
     "timeOfDay": "黄昏",
-    "title": "泥岩 · 废墟小憩"
+    "title": "泥岩 · 废墟小憩",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

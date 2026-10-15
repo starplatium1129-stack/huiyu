@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "golden_darkness",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "golden_darkness",
     "profile": {
@@ -134,13 +134,9 @@
         "1girl",
         "solo",
         "blonde_hair",
-        "long_hair",
         "very_long_hair",
         "hair_intakes",
-        "sidelocks",
         "red_eyes",
-        "small_breasts",
-        "kuudere",
         "to_love-ru"
       ],
       "negativeTokens": [

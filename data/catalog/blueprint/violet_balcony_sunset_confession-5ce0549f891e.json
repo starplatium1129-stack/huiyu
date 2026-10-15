@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_balcony_sunset_confession",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1389,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手轻柔捧起你的脸颊，金发在海风中纷飞，霞光染透湛蓝眼眸，探头微吻",
     "adult": false,
@@ -27,15 +27,15 @@
     "mood": "史诗纯爱、浪漫巅峰",
     "negativeTokens": [],
     "outfitId": "casual_white_summer_dress",
-    "promptProse": "On the white-stone terrace above the sea, Violet Evergarden gently cups her companion's face in both silver mechanical hands before a quiet kiss. Her white summer dress and blue-ribbon straw hat remain in place while sea wind loosens blonde strands around the brim. The close view includes the terrace edge and waves far below. Pink-violet sunset edges her fingers and dress, with warm reflected sea light reaching the shadowed side of her face.",
+    "promptProse": "Violet cups her companion's face with both mechanical hands before a quiet kiss in the pink-violet sunset.",
     "promptTokens": [
       "Violet Evergarden",
-      "white cotton dress",
-      "blue-ribbon straw hat",
+      "white dress",
+      "straw hat",
       "mechanical hands",
-      "confession",
-      "sea terrace",
-      "medium close-up"
+      "kiss",
+      "seaside terrace",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_toy_store",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 163,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_toy_store",
     "title": "伊莉雅丝菲尔 · 玩具店",
@@ -31,28 +31,27 @@
       "contact_shadows",
       "full_body_side_view"
     ],
-    "promptProse": "A giant teddy stands on its own broad feet while Illyasviel hugs its middle and buries her face in the plush. Her lavender pullover, ivory knee-length pinafore and opaque grey leggings keep the toy-shop outfit comfortable; red Mary Jane shoes remain planted beside the bear's feet. Show both complete figures from an eye-level side view. A low display behind them holds block boxes and a wooden toy train, with overlapping paper stars suspended further inside the window. Daylight from the front-left glass outlines the bear's individual fur tufts and the pinafore folds. Overhead shop light gently fills the inner side of the embrace. Deep contact shade lies where her arms meet the plush, and the bear and shoes each cast compact shadows directly onto the floor.",
+    "promptProse": "Illyasviel buries her face in the giant teddy's middle while hugging it, both her shoes and the bear's broad feet resting on the floor.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "embracing giant teddy",
-      "face hidden in plush",
-      "bear feet on floor",
-      "block boxes",
-      "wooden toy train",
-      "low toy display",
-      "layered paper stars",
-      "front left window light",
-      "grounded feet",
-      "full body side view"
+      "purple sweater",
+      "pinafore dress",
+      "leggings",
+      "mary janes",
+      "hugging stuffed toy",
+      "teddy bear",
+      "toy shop",
+      "full body",
+      "from side"
     ],
     "negativeTokens": [
-      "face looking at viewer"
+      "looking at viewer"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_lavender_toyshop_pinafore",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

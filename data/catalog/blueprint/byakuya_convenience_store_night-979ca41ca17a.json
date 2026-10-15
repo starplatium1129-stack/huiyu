@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_convenience_store_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 826,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "打工下班数着硬币",
     "adult": false,
@@ -21,15 +21,16 @@
     "mood": "quiet",
     "negativeTokens": [],
     "outfitId": "tattered_oversized_jersey_street",
-    "promptProse": "After her late convenience-store shift, Byakuya sits on a street bench in an old track jacket and gym shorts, counting her wages one coin at a time before tucking them into a faded wallet. The street-level medium view holds the coins near her lap and store entrance behind. Weak streetlamp light glints on their rims, while spill from the store warms her hands and eases the darker bench shadows.",
+    "promptProse": "After her shift she counts coins into a worn wallet. Store light spills across her lap beside the dim streetlamp.",
     "promptTokens": [
-      "midnight",
-      "street bench",
+      "street",
+      "bench",
       "track jacket",
-      "gym shorts",
+      "shorts",
       "coins",
-      "worn wallet",
-      "medium shot"
+      "wallet",
+      "sitting",
+      "night"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",

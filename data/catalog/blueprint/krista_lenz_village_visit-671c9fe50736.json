@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_village_visit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 992,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "木栏上与孩子并坐",
     "camera": "medium shot, sitting on a wooden fence with village children",
@@ -21,15 +21,13 @@
     "mood": "亲民温暖",
     "negativeTokens": [],
     "outfitId": "casual",
-    "promptProse": "Historia sits on the wooden fence beside the village grain-drying yard with farm children, smiling warmly in a plain white dress with grass caught at its hem. The medium view includes the children near her knees and the open yard stretching beyond the fence. Village daylight illuminates their faces and worn fence grain, with soft rail shadows across the dress and small ground shadows beneath the seated group.",
+    "promptProse": "Historia sits beside the village children on a wooden fence during her visit.",
     "promptTokens": [
-      "daytime",
-      "village",
-      "wooden fence",
       "white dress",
       "children",
       "sitting",
-      "medium shot"
+      "wooden fence",
+      "village"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

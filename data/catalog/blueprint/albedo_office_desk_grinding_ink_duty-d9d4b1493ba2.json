@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_office_desk_grinding_ink_duty",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "albedo_office_desk_grinding_ink_duty",
     "title": "雅儿贝德 · 办公桌旁的墨水与公文批改",
@@ -29,14 +29,15 @@
       "gentle_smile",
       "loving_gaze"
     ],
-    "promptProse": "Albedo stands beside the antique office desk in her white backless evening dress and golden necklace, one hand on the edge and the other holding an inked quill. Her wings rest behind as she watches her companion review parchment stacks. At eye-level cowboy height, the arch window and document shelves establish the room. Natural light falls over her face and pen hand, reflecting softly from the white gown onto the desk's shadowed edge.",
+    "promptProse": "She holds an inked quill beside the desk while her companion reviews the documents. Window light reaches her face and writing hand.",
     "promptTokens": [
-      "Albedo",
-      "white evening dress",
-      "quill pen",
+      "white dress",
+      "black wings",
+      "quill",
       "parchment",
-      "office desk",
-      "natural window light",
+      "desk",
+      "standing",
+      "window",
       "cowboy shot"
     ],
     "negativeTokens": [],

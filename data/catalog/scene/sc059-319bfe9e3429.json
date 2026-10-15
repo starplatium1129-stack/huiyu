@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc059",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc059",
     "title": "白衬衫与两颗空扣",
@@ -38,11 +38,11 @@
     "usage": [
       "展示图"
     ],
-    "prompt": "1girl, shiki_natsume, oversized white shirt, denim shorts, holding mug, adjusting collar, kitchen, morning window light, medium shot",
-    "negative": "bunny costume, duplicate mugs, extra collar-adjusting hands",
+    "prompt": "1girl, shiki_natsume, oversized white shirt, denim shorts, holding mug, adjusting collar, kitchen, morning light, medium shot",
+    "negative": "",
     "storyJa": "【夏目・空のボタンが2つ付いた白いシャツ】秋の朝、夏目はあなたの白いシャツを一時的なパジャマとして扱い、キッチンに立ってコーヒーが淹れるのを待ちます。上の２つのボタンは外されていました。あなたの視線に気づいた彼女は、まず襟を引っ張り、それからわざとカップをかざして顔の半分を覆いました。――「荷物に入れていたパジャマがまだ乾いてないから、借りただけ。これ以上見ていたら、今日のコーヒーはブラックだけにする。」",
     "rating": "All",
     "auditRevision": "careful-batch03-2026-08-27",
-    "animaCaption": "Shiki Natsume pauses in the apartment kitchen with a mug in one hand and the other straightening the collar of her oversized white shirt above denim shorts. She faces the viewer with a slightly embarrassed morning smile. The counter runs toward the window behind her, with the floor tiles keeping the room's perspective clear. Autumn sunlight reaches the shirt folds and mug handle; softer reflected light reveals the shaded counter and a small cup shadow."
+    "animaCaption": "She pauses with the mug in one hand and straightens her shirt collar with the other, smiling at the viewer."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_amusement_park_crepe_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1320,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "一手牵着视角手腕，一手举着可丽饼，嘴角沾着奶油回头露出纯真灿烂的笑容",
     "camera": "cowboy shot, eye level, joyful street date",
@@ -22,13 +22,15 @@
     "mood": "纯真欢快",
     "negativeTokens": [],
     "outfitId": "official_white_sweater_purple_skirt",
-    "promptProse": "Beneath the amusement park's Ferris wheel, Arcueid Brunestud draws her companion onward by the wrist while holding a banana-chocolate crepe. A little cream marks her smiling lips; her off-white turtleneck, long purple skirt and gold cross pendant remain visible. The eye-level cowboy view includes ride supports and the pedestrian lane behind. Clear sunshine warms the crepe and blonde hair, with the wheel's structural shadows crossing the ground.",
+    "promptProse": "She draws her companion forward by the wrist while holding a crepe, cream at her lips. The Ferris wheel casts shadows across their path.",
     "promptTokens": [
-      "Arcueid Brunestud",
+      "couple",
+      "amusement park",
+      "ferris wheel",
       "white turtleneck",
-      "purple long skirt",
-      "banana chocolate crepe",
-      "Ferris wheel",
+      "purple skirt",
+      "crepe",
+      "smile",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",

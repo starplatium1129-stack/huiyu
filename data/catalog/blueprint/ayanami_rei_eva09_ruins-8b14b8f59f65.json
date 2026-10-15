@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_eva09_ruins",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1013,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "立于钢铁残骸之上，神情清冷孤傲",
     "camera": "wide shot, dramatic low angle",
@@ -20,15 +20,15 @@
     "mood": "末世苍凉",
     "negativeTokens": [],
     "outfitId": "black_plugsuit_q",
-    "promptProse": "Rei stands on a rusted steel framework in her matte-black Mark.09 plugsuit with neon-orange accents, looking uncertainly over the red crystalline wasteland. The dramatic low wide view keeps the framework crossing the foreground and crystal ridges extending to the horizon. Blood-colored sunset glances along the metal and dark suit panels; muted ground reflections add red light beneath her hands and interface clips against the dim sky.",
+    "promptProse": "She stands on the rusted framework looking over the red crystalline terrain. Sunset glances along the metal and dark suit.",
     "promptTokens": [
+      "wasteland",
+      "black plugsuit",
+      "steel framework",
+      "crystal",
       "sunset",
-      "red wasteland",
-      "steel skeleton",
-      "black Mark 09 plugsuit",
-      "orange accents",
       "wide shot",
-      "low angle"
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

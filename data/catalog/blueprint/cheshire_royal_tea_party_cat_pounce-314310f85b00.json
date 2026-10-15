@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_royal_tea_party_cat_pounce",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1086,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cheshire_royal_tea_party_cat_pounce",
     "title": "柴郡 · 皇家红茶会的猫扑撒娇",
@@ -33,16 +33,16 @@
       "maid_dress",
       "happy"
     ],
-    "promptProse": "Cheshire leans eagerly against the round garden tea table, reaching toward the Commander with bright green eyes beneath her black cat-ear headband. Her elaborate navy-white maid dress and white ribboned gloves remain in the close eye-level cowboy view. A tiered porcelain stand of strawberry scones sits beside her among white roses. Dappled light through the climbing rose arbor catches the lace tablecloth and glove edges, shading the lower pastry tiers.",
+    "promptProse": "She reaches eagerly toward the Commander across the tea table. Light through the rose arbor reaches the pastry stand and lace tablecloth.",
     "promptTokens": [
-      "daytime",
-      "Royal Navy garden",
-      "navy white maid dress",
+      "garden",
+      "maid",
+      "cat-ear headband",
       "gloves",
-      "cat ear headband",
       "tea table",
       "scones",
-      "close cowboy shot"
+      "white roses",
+      "leaning forward"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

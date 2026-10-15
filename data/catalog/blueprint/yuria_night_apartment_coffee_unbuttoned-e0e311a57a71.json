@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_night_apartment_coffee_unbuttoned",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1198,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuria_night_apartment_coffee_unbuttoned",
     "title": "春寺由梨亚 · 私寓深夜的黑咖啡温香与摘镜眷恋",
@@ -31,19 +31,22 @@
       "glasses_removed",
       "mature_female"
     ],
-    "promptProse": "Harudera Yuria sits sideways at her apartment's marble kitchen bar, holding a white coffee mug in both hands and blowing across its steam. Her loose white shirt slips from one shoulder above a black lace edge; crossed stockinged legs rest on the footrail. Red glasses lie folded beside the brewer. A warm pendant lights her weary blue eyes and cup rim, with faint night-sky reflection behind.",
+    "promptProse": "Yuria sits sideways at the kitchen bar and blows across the coffee held in both hands, her red glasses folded beside the brewer.",
     "promptTokens": [
-      "Harudera Yuria",
       "white shirt",
+      "off shoulder",
+      "black lace",
+      "stockings",
+      "crossed legs",
       "coffee mug",
-      "glasses on counter",
-      "kitchen bar",
-      "night",
-      "medium shot"
+      "kitchen counter",
+      "night"
     ],
     "negativeTokens": [
       "glasses worn"
     ],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

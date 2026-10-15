@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1718,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_03",
     "title": "玛露希尔 · 睡前的编发准备",
@@ -31,16 +31,15 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Marcille Donato sits beside the rolled camp sleeping bag, using both hands to braid her blonde hair while checking the small mirror propped against her pack. Spare ribbons wait on a folded cloth beside her cream knit top and comfortable brown trousers. The medium portrait includes the personal working area and darker camp background. Warm lamplight illuminates pointed ears, hopeful green eyes and lifted hair strands, with fine ribbon shadows across the cloth.",
+    "promptProse": "Marcille uses a small mirror to braid a new hairstyle beside her camp sleeping bag.",
     "promptTokens": [
       "marcille_donato",
-      "Marcille Donato",
-      "cream knit top",
+      "knit top",
       "brown trousers",
-      "braid styling",
+      "braiding hair",
       "hand mirror",
-      "camp sleeping bag",
-      "medium shot"
+      "sleeping bag",
+      "camp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

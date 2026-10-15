@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tomotake_yoshino",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tomotake_yoshino",
     "profile": {
@@ -131,17 +131,11 @@
         "tomotake_yoshino",
         "1girl",
         "solo",
-        "white_hair",
-        "very_long_hair",
+        "white hair",
         "twintails",
-        "sidelocks",
-        "blunt_bangs",
-        "blue_eyes",
-        "hair_flower",
-        "hair_ornament",
-        "large_breasts",
-        "cleavage",
-        "senren_banka"
+        "blue eyes",
+        "hair flower",
+        "senren banka"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_bridal_vow_white_chapel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 406,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "捧白纱花束立于圣堂，星瞳湿润含笑",
     "adult": false,
@@ -27,19 +27,17 @@
       "power gesture"
     ],
     "outfitId": "sfw_white_bridal_gown",
-    "promptProse": "In the small Academy City chapel, Shokuhou Misaki holds white flowers before her opaque wedding gown, star-pupiled eyes tear-bright beneath the long veil and an unguarded smile. Her hands remain on the bouquet rather than performing Mental Out. The wide environmental portrait places the gown against receding pews and stained-glass windows. Filtered colored light illuminates bouquet and veil folds, laying pale shapes across the chapel floor beneath the complete ceremonial silhouette.",
+    "promptProse": "Misaki holds her white bouquet in the chapel, smiling through tears beneath the long veil.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Shokuhou Misaki",
-      "opaque white wedding gown",
-      "long veil",
-      "white bouquet",
-      "star pupils",
-      "small chapel",
-      "stained glass",
-      "wide shot",
-      "shokuhou_misaki"
+      "shokuhou_misaki",
+      "wedding dress",
+      "veil",
+      "bouquet",
+      "star-shaped pupils",
+      "chapel",
+      "stained glass"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

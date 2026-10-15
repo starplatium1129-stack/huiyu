@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1416,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "比好两本书后数零钱，把选中的一本抱在怀里。",
     "adult": false,
@@ -23,13 +23,13 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_refined_daily",
-    "promptProse": "Kei Shirogane crouches at the secondhand-book stall, comparing two back covers before counting coins in a small purse. She finally hugs the selected book and nods with bright blue eyes beneath her black headband. Her apricot cardigan and calf-length grey skirt gather above brown loafers. The medium view follows low book stacks along the pavement. Reflected daylight reveals worn cover edges and cardigan knit, with soft shadows beneath the stacks.",
+    "promptProse": "Kei counts coins at the used-book stall, then hugs her selected book among the low pavement stacks.",
     "promptTokens": [
       "Kei Shirogane",
-      "apricot cardigan",
-      "grey long skirt",
+      "cardigan",
+      "long skirt",
       "coin purse",
-      "used-book stall",
+      "book stall",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

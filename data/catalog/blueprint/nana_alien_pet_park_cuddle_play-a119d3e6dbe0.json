@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_alien_pet_park_cuddle_play",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1264,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "盘膝坐在草地上怀抱毛茸茸外星小宠贴脸蹭蹭，眼神充满纯洁宠爱，尾巴轻摆",
     "camera": "medium shot, seated eye-level, intimate gentle depth of field",
@@ -20,15 +20,15 @@
     "mood": "温馨治愈",
     "negativeTokens": [],
     "outfitId": "casual_denim",
-    "promptProse": "Nana sits cross-legged on a checked picnic mat beneath a park tree, snuggling a fluffy long-eared alien animal against her cheek. Her sleeveless casual top and denim shorts are loose enough for the seated pose. Frame her at eye level, with lawn and drifting dandelion seeds behind the pet. Summer sunlight filters through leaves onto its fur and her pink twin tails, while reflected green softens the shadows below.",
+    "promptProse": "Nana hugs the fluffy long-eared alien pet against her cheek on the picnic mat beneath a tree.",
     "promptTokens": [
-      "Nana",
-      "alien pet",
+      "sleeveless shirt",
       "denim shorts",
-      "sleeveless top",
-      "picnic mat",
-      "park lawn",
-      "medium shot"
+      "cross-legged",
+      "holding animal",
+      "picnic blanket",
+      "park",
+      "summer"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +42,8 @@
       "gentle_smile"
     ],
     "timeOfDay": "下午",
-    "title": "娜娜 · 绿荫公园的异星小宠呢喃"
+    "title": "娜娜 · 绿荫公园的异星小宠呢喃",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

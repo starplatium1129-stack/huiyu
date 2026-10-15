@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_rooftop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tohsaka_rin_rooftop",
     "title": "远坂凛 · 学校天台",
@@ -29,16 +29,14 @@
       "sunset_light",
       "medium_shot"
     ],
-    "promptProse": "After class, Rin keeps both palms on the rooftop wire fence while turning her head toward the viewer with a teasing smile. Her navy school uniform and black hair ribbons frame brown twintails moving in the breeze. The eye-level medium view places the fence securely between her and Fuyuki's rooftops. Burning sunset outlines her hair and wire, reaching the nearby school walls and leaving shade inside her sleeves.",
+    "promptProse": "Rin turns with a teasing smile while keeping both hands on the rooftop fence, sunset outlining her twintails.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Rin",
-      "navy school uniform",
+      "school uniform",
       "hair ribbons",
       "hands on fence",
       "looking back",
-      "Fuyuki rooftops",
+      "rooftop",
       "sunset",
       "medium shot"
     ],

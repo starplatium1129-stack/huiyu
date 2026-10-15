@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_dominant_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 251,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "scathach_nsfw_dominant_straddle",
     "title": "斯卡哈 · 师匠的主控反客为主骑乘特训·「今晚的课业只有一项：撑住，不许昏过去」",
@@ -28,48 +28,19 @@
       "exposed_pussy",
       "dominant"
     ],
-    "promptProse": "Inside her private bedchamber, adult, age-twenty-plus Scathach straddles a narrow training cushion alone in a frontal low-angle view. Black-and-crimson lace has slipped below bare breasts while taut garter straps frame powerful folded thighs. Both hands press into her own knees as she grinds against the cushion and touches herself, keeping every limb readable. Violet hair lifts with the motion and wet skin catches torchlight while fierce crimson eyes challenge the lens through a deep blush and parted breath. Vertical intimate solo portrait, no text or extra people.",
+    "promptProse": "The age-twenty-plus Scathach straddles a training cushion and touches herself in the torchlit bedchamber, her black-and-crimson lace lowered beneath her breasts.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "cowgirl_position",
+      "Scathach",
+      "lingerie",
+      "thighhighs",
       "straddling",
-      "black_lingerie",
-      "lace_bra",
-      "bra_pull",
-      "garter_straps",
-      "black_thighhighs",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "exposed_pussy",
-      "pussy_juice",
-      "liquid_drip",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "looking_down",
-      "purple_hair",
-      "red_eyes",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting",
-      "masturbation",
-      "touching_own_body",
-      "hand_between_legs"
+      "cushion",
+      "bedroom",
+      "torch",
+      "low angle"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -82,10 +53,9 @@
       "special_nsfw"
     ],
     "nsfwTokens": [
-      "sensual_solo",
+      "topless",
       "masturbation",
-      "touching_own_body",
-      "hand_between_legs"
+      "hand between legs"
     ]
   }
 }

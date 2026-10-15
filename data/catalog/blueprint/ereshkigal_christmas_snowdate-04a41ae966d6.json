@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_christmas_snowdate",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ereshkigal_christmas_snowdate",
     "title": "埃列什基伽勒 · 冥界圣诞的初雪·「这份温暖……是给我的吗」",
@@ -29,18 +29,17 @@
       "blue_snow_light",
       "medium_shot"
     ],
-    "promptProse": "Ereshkigal stands still in the underworld's imagined first snowfall, holding her palm open beneath the flakes with a hesitant, disbelieving smile. White sweater dress, red scarf, wool beret, dark tights and boots retain her warm winter outfit. The medium view leaves the plain receding behind her blonde twintails. Blue snow reflections brighten her hand and red eyes, with gentle shaded folds beneath the scarf and darker ground in the distance.",
+    "promptProse": "She holds out her palm in wonder at the underworld's first snowfall.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Ereshkigal",
-      "white sweater dress",
+      "sweater dress",
       "red scarf",
-      "wool beret",
-      "dark tights",
-      "knee boots",
-      "open palm",
-      "underworld snowfall",
+      "beret",
+      "winter clothes",
+      "open hand",
+      "snow",
+      "smile",
       "medium shot"
     ],
     "negativeTokens": [],

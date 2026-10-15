@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_classroom_nap_afternoon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 830,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "趴在课桌上睡着了",
     "adult": false,
@@ -21,16 +21,16 @@
     "mood": "quiet",
     "negativeTokens": [],
     "outfitId": "poor_school_uniform",
-    "promptProse": "Byakuya sleeps with her cheek on folded arms at the classroom desk, platinum hair scattered among her books. A coat has been laid over her faded navy sailor uniform. The medium view places the desktop beneath her and quiet rows of desks farther back, with the window beside her. Afternoon daylight touches loose hair and book corners, casting gentle eyelash shadows and soft shading under her resting forearms.",
+    "promptProse": "She sleeps on folded arms with a coat over her shoulders. Afternoon light touches the scattered books and her hair beside the window.",
     "promptTokens": [
-      "afternoon",
       "classroom",
-      "navy sailor uniform",
+      "school uniform",
+      "coat",
       "desk",
       "books",
-      "coat",
       "sleeping",
-      "medium shot"
+      "head on arms",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

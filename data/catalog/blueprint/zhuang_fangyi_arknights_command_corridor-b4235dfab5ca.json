@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_command_corridor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_command_corridor",
     "characterId": "zhuang_fangyi_arknights",
@@ -32,19 +32,23 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "afternoon",
-      "bookstore entrance",
-      "leaf bookmark",
-      "two books",
-      "original Chinese outfit",
+      "chinese clothes",
       "green trousers",
-      "cowboy shot"
+      "black boots",
+      "books",
+      "leaf bookmark",
+      "offering",
+      "looking back",
+      "bookstore",
+      "afternoon"
     ],
-    "promptProse": "At the bookstore entrance, Zhuang Fangyi turns back and offers a leaf-shaped bookmark, holding two new books against her other arm. Her green original trousers fall to her black boots in the eye-level cowboy view, and her restrained smile suggests a carefully chosen gift. Afternoon daylight touches the bookmark and book spines; the entrance frame shades her dark waist harness as shelves continue inside behind her.",
+    "promptProse": "Zhuang Fangyi offers the leaf-shaped bookmark while holding two new books against her other arm, turning back with a restrained smile.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

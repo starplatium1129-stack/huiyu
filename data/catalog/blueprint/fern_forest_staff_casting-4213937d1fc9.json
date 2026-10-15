@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_forest_staff_casting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fern_forest_staff_casting",
     "characterId": "fern_frieren",
@@ -24,23 +24,21 @@
       "morning_light",
       "full_body"
     ],
-    "promptProse": "Fern plants her boots on the damp forest path and raises a complete wooden staff with both hands spaced along its shaft. A compact white mana sphere forms at the tip above her steady violet eyes. Her black hooded coat reveals the high-collared white dress and half-up purple hair. The full-body view follows trees into morning mist; pale filtered rays and sphere light illuminate her hands, with shaded roots beneath her stance.",
+    "promptProse": "She plants her boots firmly and holds the complete staff with both hands as a compact white mana sphere forms at its tip.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Fern",
-      "black hooded coat",
-      "white high collar dress",
+      "black coat",
+      "white dress",
       "boots",
-      "staff",
-      "white mana sphere",
+      "holding staff",
+      "magic",
       "forest path",
       "morning mist",
       "full body"
     ],
     "negativeTokens": [
-      "cropped staff",
-      "injured target"
+      "cropped staff"
     ],
     "adult": false,
     "recommendedEngine": "anima-miaomiao-v1.2",

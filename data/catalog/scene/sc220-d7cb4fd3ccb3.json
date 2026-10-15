@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc220",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc220",
     "title": "琴键余韵间的私密协奏",
@@ -43,11 +43,11 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white blouse, blue skirt, sitting at grand piano, guiding partner hand, piano keys, side view, sunset, medium shot",
-    "negative": "extra guiding hands, fingers merged with piano keys, duplicate keyboards",
+    "prompt": "1girl, ayachi_nene, white blouse, blue skirt, sitting, piano bench, guiding hand, grand piano, smile, sunset, side view, medium shot",
+    "negative": "",
     "storyJa": "【成年 AU・寧々・プライベート音楽スタジオの夕暮れ】同居後の休日、大人になった寧々は予約した私設音楽スタジオで、あなたに連弾曲を教えていた。夕日が大きな窓を通り、ピアノの艶を砕けた金色に染める。彼女は準備ができたか笑顔で確かめてから、あなたの隣に腰を下ろし、その手を取って鍵盤へ導いた。絹のブラウスの襟元が動きに合わせて少し緩んでも、彼女は逃げず、赤くなった額をそっと寄せた――「この小節は二人で弾いてこそ完成するんです……わざと音を外すのは禁止。それから、続ける前には寧々に聞いてくださいね？」",
     "rating": "R15",
-    "animaCaption": "On the grand-piano bench, Ayachi Nene guides the viewer's right hand toward the next key with her left, keeping her free hand on her own keyboard section. Her encouraging smile turns toward the lesson above the white blouse and blue skirt. The keys lead into the darker piano body in the foreground. Sunset from the studio window outlines the hands and hair, while reflections from the instrument keep the overlapping fingers distinct.",
+    "animaCaption": "Her left hand guides the viewer's right hand toward the next key while her free hand stays on her own section of the keyboard.",
     "auditRevision": "sfw-audit-2026-09-09-piano",
     "recommendedSize": "832×1216"
   }

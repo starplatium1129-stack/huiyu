@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_poolside_white_swimsuit_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "caren_nsfw_poolside_white_swimsuit_solo",
     "title": "卡莲 · 黄昏泳池白泳装的圣女卸防低吟",
@@ -29,41 +29,19 @@
       "hand_between_legs",
       "sensual_solo"
     ],
-    "promptProse": "Lapping in the shallow end of a church-school indoor pool at dusk, Caren Hortensia lets her guard dissolve at last. Her sacred white high-cut competitive swimsuit is soaked sheer and clinging to her slender frame, the high-cut hip line baring pale skin as she tugs the crotch panel aside beneath the water. Her fingers slide deep into her slick, aching core with slow, guilty strokes, wet silver hair dripping at her temple and amber-yellow eyes clouded with lonely relief. Exquisite anime watercolor illustration, solo 1girl, no text.",
+    "promptProse": "She rests in the shallow end, drawing the swimsuit panel aside beneath the water with one hand between her thighs.",
     "promptTokens": [
-      "swimming_pool",
-      "dusk",
-      "wet_clothes",
-      "white_swimsuit",
-      "competition_swimsuit",
-      "clinging_clothes",
-      "swimsuit_aside",
-      "exposed_pussy",
-      "pussy_juice",
-      "hand_between_legs",
+      "adult",
+      "indoor pool",
+      "white one-piece swimsuit",
+      "wet clothes",
+      "see-through",
+      "swimsuit aside",
       "masturbation",
-      "touching_own_body",
-      "sensual_solo",
-      "heavy_blush",
-      "blushing_ears",
-      "biting_lip",
-      "parted_lips",
-      "white_hair",
-      "yellow_eyes",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "dusk",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -73,6 +51,8 @@
       "nsfw",
       "wet",
       "sensual_solo"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

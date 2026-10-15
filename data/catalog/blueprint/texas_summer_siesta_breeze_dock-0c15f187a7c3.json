@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_summer_siesta_breeze_dock",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 664,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在木质栈桥边缘双腿悬空，推起墨镜凝望碧蓝大海，微风拂动狼尾",
     "camera": "cowboy shot, golden sunshine",
@@ -20,15 +20,13 @@
     "mood": "惬意悠闲",
     "negativeTokens": [],
     "outfitId": "summer_sunbreeze",
-    "promptProse": "Seated on the Siesta wooden dock, Texas pushes up her sunglasses, wearing a black one-piece swimsuit beneath an open white linen shirt. Her feet hang above the harbor as wind moves her hair and wolf tail. The cowboy view follows planks toward blue water and circling gulls. Tropical sun brightens her shirt shoulder, while reflected ripples shimmer beneath the dock's shaded edge.",
+    "promptProse": "Texas pushes up her sunglasses from the dock, feet hanging above the sunlit harbor water.",
     "promptTokens": [
-      "daytime",
-      "Siesta harbor",
-      "pier",
-      "black one piece swimsuit",
-      "open white shirt",
+      "Texas",
+      "one-piece swimsuit",
+      "white shirt",
       "sunglasses",
-      "wolf tail",
+      "pier",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",

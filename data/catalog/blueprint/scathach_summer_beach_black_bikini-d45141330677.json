@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_summer_beach_black_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 246,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "scathach_summer_beach_black_bikini",
     "title": "斯卡哈 · 夏海黑纱的女王度假·「晒黑了？无妨，反正很快会复原」",
@@ -29,18 +29,14 @@
       "summer_light",
       "medium_shot"
     ],
-    "promptProse": "Scathach rests at a comfortable angle beneath the beach parasol, holding iced fruit juice in one hand while her other forearm supports her on a folded towel. Black bikini with gold rings and violet sarong retain the summer outfit, long purple hair clear of the glass. The horizontal medium view includes white sand and tropical sea beyond. Parasol shade softens her confident smile, with reflected water light glinting on juice and the sunlit towel edge.",
+    "promptProse": "Scathach holds iced juice beneath the parasol, supporting herself on a folded towel beside the bright tropical sea.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Scathach",
       "black bikini",
-      "gold ring accents",
-      "violet sarong",
-      "iced fruit juice",
+      "sarong",
+      "juice",
       "parasol",
-      "folded towel",
-      "tropical beach",
+      "beach",
       "medium shot"
     ],
     "negativeTokens": [],

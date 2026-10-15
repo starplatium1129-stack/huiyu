@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_dress_fitting_malfunction",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 409,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "双手反剪够背后拉链，裙身勒肉挤压，脸红求助",
     "adult": true,
@@ -23,37 +23,17 @@
     "lighting": "试衣间顶灯的狭窄暖光",
     "location": "试衣间窄间",
     "mood": "女王狼狈、勒肉事故",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Trapped in a narrow fitting room with the back zipper of her date-night dress jammed halfway, Shokuhou Misaki twists her hands behind her back trying to reach it, the tight fabric squeezing her large breasts into a breathtaking spill of black lace against the lining. Her star-shaped pupils swim with flustered panic as she orders you to stop staring and help with your hands, gasping as the fabric strains. Warm overhead fitting-room light over squeezed flesh in a sensual solo composition, cinematic lighting.",
+    "promptProse": "Adult Misaki reaches behind her back for the jammed dress zipper, asking for help as the tight neckline presses against her lace lingerie.",
     "promptTokens": [
-      "sensual_solo",
-      "fitting_room",
-      "dressing_room",
-      "zipper",
-      "tight_dress",
-      "clothes_pull",
-      "hands_behind_back",
+      "tight dress",
+      "lace trim",
+      "stuck zipper",
+      "hands behind back",
       "cleavage",
-      "breast_squeeze",
-      "tight_straps",
-      "lace_trim",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "detailed_background",
-      "cinematic_lighting"
+      "fitting room"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -68,6 +48,7 @@
       "cleavage"
     ],
     "timeOfDay": "傍晚",
-    "title": "食蜂操祈 · 试衣间的裙链事故·「别、别用看的！用手帮本小姐……」"
+    "title": "食蜂操祈 · 试衣间的裙链事故·「别、别用看的！用手帮本小姐……」",
+    "nsfwTokens": []
   }
 }

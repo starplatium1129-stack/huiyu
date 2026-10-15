@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tokisaki_kurumi",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tokisaki_kurumi",
     "profile": {
@@ -106,15 +106,11 @@
         "tokisaki_kurumi",
         "1girl",
         "solo",
-        "long_black_hair",
-        "uneven_twintails",
+        "black hair",
+        "uneven twintails",
         "heterochromia",
-        "red_right_eye",
-        "clock_eye",
-        "yellow_left_eye",
-        "bangs",
-        "gothic_hair_ornament",
-        "date_a_live"
+        "clock eye",
+        "date a live"
       ],
       "exactTokens": [
         "tokisaki_kurumi"

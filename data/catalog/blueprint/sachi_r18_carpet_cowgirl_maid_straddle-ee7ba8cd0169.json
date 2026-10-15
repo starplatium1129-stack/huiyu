@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_r18_carpet_cowgirl_maid_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1199,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "sachi_r18_carpet_cowgirl_maid_straddle",
     "title": "小岭幸 · 地毯跨坐女仆装主动轻柔起伏",
@@ -29,45 +29,28 @@
       "large_breasts",
       "heavy_blush"
     ],
-    "promptProse": "A low manor lamp finds adult Komine Sachi seated alone astride a thick carpet bolster. Her maid dress is opened and gathered below bare breasts while white stockings tighten around folded legs. She places one gloved hand on her knee and fingers herself with the bare other hand, cleaning tools arranged neatly in the background. Dark hair and blue eyes remain dutiful through wet lashes, parted breath and a deep blush. Vertical solo portrait, no text or extra people.",
+    "promptProse": "Sachi sits astride the carpet bolster with her maid dress gathered below her chest, one gloved hand on her knee and her bare hand between her legs. Cleaning tools stand neatly behind her.",
     "promptTokens": [
-      "cowgirl_position",
+      "adult",
+      "1girl",
+      "solo",
+      "maid",
+      "open dress",
+      "topless",
+      "white stockings",
       "straddling",
-      "maid_dress",
-      "skirt_lift",
-      "large_breasts",
-      "heavy_blush",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "bolster",
+      "masturbation",
+      "carpet",
+      "lamplight"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "r18_sensual_bedroom",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "cowgirl",
-      "straddling",
-      "large_breasts",
-      "maid_dress",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

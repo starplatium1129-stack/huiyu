@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_bougainvillea_field_parasol",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "漫步在花瀑下，手握蕾丝阳伞与你的手相牵，草帽随风轻扬，蓝眸羞涩而深情地仰望着你",
     "adult": false,
@@ -25,14 +25,14 @@
     "mood": "清纯唯美、少女情怀",
     "negativeTokens": [],
     "outfitId": "casual_white_summer_dress",
-    "promptProse": "Violet Evergarden walks beneath bougainvillea cascading over the white garden wall, holding the lace parasol in one mechanical hand and her companion’s fingertips in the other. Her sleeveless white cotton dress and blue-ribbon straw hat move lightly as she turns with a shy blush. The scenic medium view follows the narrow path around the wall into the garden. Summer sun passing through the flowers makes small warm patches along the white stone. The lace canopy casts a broken pattern over the dress’s upper fabric and hat brim, while the path on the wall’s shaded side stays softer and cooler.",
+    "promptProse": "Violet carries the parasol in one mechanical hand and holds her companion's fingers with the other along the sunlit garden path.",
     "promptTokens": [
       "Violet Evergarden",
-      "white cotton summer dress",
-      "blue-ribbon straw hat",
+      "white dress",
+      "straw hat",
       "lace parasol",
-      "handholding",
-      "bougainvillea path",
+      "holding hands",
+      "bougainvillea",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

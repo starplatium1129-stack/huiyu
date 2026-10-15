@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_snowy_ruins_coffee_can_share",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 225,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "saber_alter_snowy_ruins_coffee_can_share",
     "title": "黑呆 · 寒风断壁的热咖啡分享",
@@ -29,18 +29,15 @@
       "vending_light",
       "medium_shot"
     ],
-    "promptProse": "Sheltered beneath a broken concrete wall, Saber Alter offers one sealed warm coffee can while retaining a second in her other gloved hand. Thick black overcoat, dark scarf and winter boots accompany breath mist and snow on her braided blonde bun. The cowboy view includes the vending machine beside the shelter. Its white light glints on both closed lids and her insistent golden eyes, casting the cans' shadows across her gloves against swirling snow.",
+    "promptProse": "She offers one warm sealed coffee can while keeping the other beneath the broken wall, lit by the vending machine.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Saber Alter",
-      "black winter overcoat",
-      "dark scarf",
+      "black coat",
+      "scarf",
       "gloves",
-      "two sealed coffee cans",
-      "broken wall",
-      "vending machine",
+      "coffee can",
       "snow",
+      "vending machine",
       "cowboy shot"
     ],
     "negativeTokens": [

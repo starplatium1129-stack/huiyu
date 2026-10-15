@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_06",
     "title": "尤贝尔 · 冬夜的缝补失败",
@@ -32,21 +32,16 @@
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "At the inn table, Ubel holds a needle above crooked stitches in her charcoal cardigan sleeve, staring patiently at the tangled thread knot. The cardigan layers over a cream blouse and long skirt, green hair falling toward the repair. The medium view places the sewing kit beside folded fabric and the room wall behind. Warm lamplight gathers on the stitches and her puzzled eyes, leaving the table's far corner dim.",
+    "promptProse": "Ubel pauses over crooked sleeve stitches and a tangled knot beneath the inn lamp.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ubel",
-      "charcoal cardigan",
-      "cream blouse",
-      "long skirt",
+      "ubel_(sousou_no_frieren)",
+      "cardigan",
+      "blouse",
+      "skirt",
       "needle",
-      "tangled thread",
-      "sewing kit",
-      "inn room",
-      "lamplight",
-      "medium shot",
-      "ubel_(sousou_no_frieren)"
+      "thread",
+      "inn",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

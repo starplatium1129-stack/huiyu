@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1646,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_02",
     "title": "卡提希娅 · 街角风车的修补",
@@ -29,14 +29,15 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Cartethyia sits beside the town's stone railing, carefully straightening the folded blades of a paper pinwheel. Her chestnut cape covers a pale-blue tunic and cream trousers. She raises the toy to catch the breeze, blue eyes brightening when it finally spins beside her blonde braid. The medium portrait includes the corner paving and railing behind. Bright diffuse daylight reveals paper creases and cloak folds, with gentle stone-contact shadows below her hand.",
+    "promptProse": "She straightens the paper pinwheel and lifts it into the breeze beside the railing, smiling when its blades begin to turn.",
     "promptTokens": [
-      "Cartethyia",
-      "chestnut hooded cape",
-      "paper pinwheel",
-      "stone railing",
-      "town street",
-      "medium shot"
+      "town",
+      "brown cape",
+      "tunic",
+      "pants",
+      "pinwheel",
+      "sitting",
+      "stone railing"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

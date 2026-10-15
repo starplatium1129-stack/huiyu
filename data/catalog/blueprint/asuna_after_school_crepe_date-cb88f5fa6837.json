@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_after_school_crepe_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1365,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "asuna_after_school_crepe_date",
     "title": "结城明日奈 · 涩谷街角的可丽饼喂食·「啊——先说好，草莓最甜的部分是我的哦！」",
@@ -27,14 +27,15 @@
       "blushing",
       "sweet_smile"
     ],
-    "promptProse": "After school in Shibuya, Asuna holds a strawberry-and-cream crepe with both hands and extends it toward her companion with a playful blink and blush. Her grey school blazer, red ribbon and navy pleated skirt identify the real-world outfit. The close date viewpoint keeps crossing markings and shop windows behind her. Orange sunset warms chestnut hair and crepe edges, while display-window light adds gentle highlights to the nearer blazer sleeve.",
+    "promptProse": "She holds the crepe in both hands and offers it toward her companion. Sunset warms her hair beside the shop windows.",
     "promptTokens": [
-      "Asuna",
-      "grey school blazer",
-      "navy skirt",
+      "street",
+      "school uniform",
       "strawberry crepe",
-      "Shibuya street",
-      "medium close-up"
+      "offering",
+      "blush",
+      "sunset",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

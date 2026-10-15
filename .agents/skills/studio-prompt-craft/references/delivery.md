@@ -8,10 +8,10 @@
 
 | 层 | 要核对的内容 |
 | --- | --- |
-| 角色 | `identityTokens` / `identityProse`、原作、稳定外貌、exact tokens |
+| 角色 | 名字/原作、鲜明身份锚点与 exact tokens；不把 `identityProse` 全文重复灌入 Anima |
 | 服装 | 当前 `outfitId` 与 `outfits[].tokens/prose` 一致，避免身份字段泄漏旧衣装 |
 | 蓝图 | `description` / `action` 的可见核心分别进入 `promptTokens` / `promptProse`，按实际 schema 写字段 |
-| 背景与光影 | 环境 CG 的可见背景与位置、入光及受光关系进入最终正文；地点名、笼统光效词、维护字段或未消费 hint 不算补齐；特写与留白按原意 |
+| 背景与光影 | 事件依赖的空间/光照关系进入最终正文；一般细节交给模型，不强制补齐所有背景与光影细节；维护字段或未消费 hint 不算模型输入 |
 | 导演 | 镜头、光照、构图、`recommendedSize` 和模型参数不互相覆盖冲突 |
 | 最终请求 | 完整 positive / negative、模型/LoRA、seed、尺寸、采样参数及参考输入 |
 

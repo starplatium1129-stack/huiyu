@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_backstage_cosplay",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 496,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "对着随身镜调整假发与饰品，回眸比出角色招牌姿势，元气满满",
     "camera": "medium shot, adjusting her wig and accessories before a dressing-room mirror",
@@ -22,18 +22,15 @@
       "extra person in mirror"
     ],
     "outfitId": "cosplay",
-    "promptProse": "Marin checks her wig and character accessories in the backstage mirror, then turns to make the cosplay's signature pose with lively anticipation. The playful character costume remains distinct from her daily clothes. The medium view includes the portable mirror near the dressing surface and curtains behind her. Warm ring lighting illuminates the wig strands and makeup, while daylight through a curtain gap catches the accessory edges and casts a narrow stripe across the table.",
+    "promptProse": "Marin adjusts her wig and accessories in the portable mirror, then turns to strike the character's signature pose.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Marin",
-      "character cosplay",
+      "cosplay",
       "wig",
-      "accessories",
-      "portable mirror",
+      "mirror",
       "backstage",
       "ring light",
-      "curtain daylight",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1643,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_05",
     "title": "守岸人 · 灯塔下的潮汐泳装",
@@ -30,15 +30,15 @@
       "sea_breeze",
       "evening_light"
     ],
-    "promptProse": "Seated on a shallow-bay rock, the Shorekeeper turns a luminous jellyfish-shaped shell in her palm before looking toward the viewer. Her blue-and-white coastal swimsuit, light shoulder wrap and shell bracelet remain clear beside windblown blue hair and bare feet. The horizontal medium view includes translucent water over the lower rocks. Soft evening glow reflects across wave edges, while the shell lights her fingers and the shaded underside of her wrist.",
+    "promptProse": "She turns a luminous shell in her palm on the bay rocks, its glow lighting her fingers above the evening water.",
     "promptTokens": [
       "Shorekeeper",
-      "blue-white swimsuit",
-      "shoulder wrap",
-      "shell bracelet",
-      "glowing shell",
-      "bay rocks",
-      "evening",
+      "swimsuit",
+      "shawl",
+      "bracelet",
+      "shell",
+      "sitting",
+      "rock",
       "medium shot"
     ],
     "negativeTokens": [],

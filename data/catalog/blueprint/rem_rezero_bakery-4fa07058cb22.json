@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_bakery",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 437,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rem_rezero_bakery",
     "title": "雷姆 · 烘焙坊",
@@ -31,26 +31,24 @@
       "basket_shadows",
       "medium_shot"
     ],
-    "promptProse": "Fresh baguette crust catches the morning light as Rem lifts one loaf with the tongs in her right hand. A bread basket hangs securely from her left forearm, ready below the loaf. She wears a powder-blue cable-knit cardigan, an ivory blouse with a rounded collar and a navy pleated skirt; the white lace headdress remains above her short blue hair. Woven basket strips and its kraft-paper lining fill the near foreground. Behind her, two wooden shelf tiers separate round loaves from croissants, and a clear passage at the counter's end leads toward the bakery oven. Keep hand, tongs, loaf and basket connections legible in an eye-level medium portrait. Sun from the right window warms the crust and her fingers, with fine tong and basket shadows on the paper. Deeper shelf gaps separate the bread rows.",
+    "promptProse": "Rem lifts a baguette with the tongs in her right hand, the paper-lined basket hanging from her left forearm beneath it.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "basket on forearm",
+      "cardigan",
+      "blouse",
+      "pleated skirt",
       "bread tongs",
-      "lifting baguette",
-      "kraft paper liner",
-      "wooden bread display",
-      "round loaves",
-      "croissants",
-      "oven doorway",
-      "right morning light",
-      "medium shot"
+      "baguette",
+      "basket",
+      "bakery",
+      "morning"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_morning_bakery_knit",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

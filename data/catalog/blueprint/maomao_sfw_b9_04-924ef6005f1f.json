@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1708,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "maomao_sfw_b9_04",
     "title": "猫猫 · 后宫药房的草木花嫁",
@@ -29,14 +29,12 @@
       "curious_smile",
       "botanical_light"
     ],
-    "promptProse": "Maomao sits in the palace greenhouse ceremony room wearing a pale-green botanical wedding robe, cream veil pinned behind her practical bun. She brings the safe medicinal-flower bouquet near to examine its scent, then looks up with unusually open curiosity. The vertical medium-full view includes orderly herb beds and glass framing behind. Warm light filtered through leaves and windows reveals embroidered plants and bouquet edges, leaving soft leaf shadows over her skirt.",
+    "promptProse": "Maomao checks each flower in her herbal bouquet, then looks up with frank curiosity in the greenhouse.",
     "promptTokens": [
-      "Maomao",
-      "green botanical bridal robe",
+      "green bridal robe",
       "cream veil",
       "herb bouquet",
-      "greenhouse ceremony room",
-      "medium full shot"
+      "greenhouse"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

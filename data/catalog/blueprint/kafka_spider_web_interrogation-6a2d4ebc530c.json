@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_spider_web_interrogation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1035,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kafka_spider_web_interrogation",
     "title": "卡芙卡 · 蛛网言灵私密审讯",
@@ -29,15 +29,13 @@
       "whispering",
       "seductive"
     ],
-    "promptProse": "Kafka leans toward the camera in the cold metal interrogation room, luminous purple psychic threads wound around her gloved fingertips as she holds an unwavering gaze. Her white lace collar and burgundy-black coat remain close in the high-angle portrait. The metal wall recedes just behind her shoulder. A single cold top spotlight shapes her face and glove, while the threads add violet reflections along her fingers and collar edge.",
+    "promptProse": "Kafka leans close with glowing purple psychic threads around her fingers, fixing the viewer with a controlled stare.",
     "promptTokens": [
-      "indoor",
+      "leaning forward",
+      "purple thread",
       "interrogation room",
-      "Stellaron Hunter coat",
-      "purple psychic thread",
-      "leaning",
-      "close up",
-      "high angle"
+      "close-up",
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

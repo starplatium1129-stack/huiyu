@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_endfield_ruins",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 733,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "断壁间跳跃探索",
     "camera": "wide shot",
@@ -18,15 +18,17 @@
     "mood": "爽朗飒气",
     "negativeTokens": [],
     "outfitId": "combat_outfit",
-    "promptProse": "Yvonne leaps down from a broken wall in the abandoned Endfield ruins, turning both handguns in her gloved fingers. Pink twin tails arc behind her initial combat outfit as the wide view preserves the landing space below. Fractured walls overlap farther back through dusty air. Daylight from the open ruin roof lights her sleeves and gun edges, while the broken masonry casts angular shadows across her descent.",
+    "promptProse": "Yvonne leaps from the broken wall while spinning both handguns, her pink twin tails arcing above the clear landing space.",
     "promptTokens": [
-      "daytime",
-      "Endfield ruins",
       "crop top",
       "detached sleeves",
       "leggings",
-      "dual handguns",
+      "gloves",
+      "dual wielding",
+      "handguns",
       "jumping",
+      "ruins",
+      "daylight",
       "wide shot"
     ],
     "recommendedSize": "1536x1152",
@@ -40,6 +42,8 @@
       "wasteland"
     ],
     "timeOfDay": "白天",
-    "title": "伊冯 · 终末地遗迹"
+    "title": "伊冯 · 终末地遗迹",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

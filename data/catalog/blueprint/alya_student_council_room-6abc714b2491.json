@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_student_council_room",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 774,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端着白瓷红茶杯坐在皮质沙发上，低头专注审阅文件",
     "camera": "medium shot, seated on a leather sofa reviewing documents with a teacup",
@@ -20,14 +20,15 @@
     "mood": "高雅从容与知性专注",
     "negativeTokens": [],
     "outfitId": "seirei_uniform",
-    "promptProse": "Alya sits on the student-council room's leather sofa, reviewing meeting documents and lifting a white porcelain teacup for a careful sip. Her dark-brown school blazer and red ribbon retain a formal line in medium view. The mahogany table occupies the near foreground with papers laid across it. Soft afternoon window light passes through blinds, striping the table and highlighting her silver hair above the shaded seat.",
+    "promptProse": "She pauses over the meeting papers for a sip of tea. Light through the blinds stripes the table in front of the leather sofa.",
     "promptTokens": [
-      "afternoon",
       "student council room",
       "school uniform",
-      "leather sofa",
+      "sofa",
       "documents",
       "teacup",
+      "sitting",
+      "afternoon",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc249",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc249",
     "title": "暴雨车内的心跳加速",
@@ -46,10 +46,10 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, messy_hair, cowboy_shot, pov, white_shirt, unbuttoned_shirt, collarbone, black_lace_lingerie_visible, disheveled_clothes, leaning_on_viewer, pressed_together, head_on_chest, sitting_in_car_backseat, trembling, heavy_blush, shy, parted_lips, looking_away, car_interior, car_backseat, night, pouring_rain, raindrops_on_glass, lightning, lightning_flash, dim_lighting, amber_dashboard_glow, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole under eye, messy hair, white shirt, open collar, black lingerie, blush, looking away, car interior, rain, night, lightning, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "",
     "storyJa": "【夏目・豪雨の車内】深夜の豪雨で停車した任務車両。疲労の残る夏目は後部座席で息を整えていたが、車体の揺れであなたの腕の中へと滑り込んでしまう。狭い車内で密着し、あなたの鼓動が直に伝わる中、耳を赤くしながらも必死に平静を装う――「……勘違いしないで。ただの慣性よ。それに、くっついてた方が暖かいし。……でも、あなたの心臓の音、少しうるさすぎるわ」",
-    "animaCaption": "During a midnight thunderstorm parked along a deserted country road, exhausted agent Shiki Natsume rests in the back seat of the mission vehicle, her disheveled long black hair cascading across her shoulders and her crisp white shirt unbuttoned at the collar to reveal fine black lace lingerie. Jolted by the wind, she slides into your embrace with no gap between your bodies, her cheek pressed softly against your chest to hear your rapid heartbeat; her cheeks are heavily flushed crimson while cool blue lightning flashes through rain-streaked windows to illuminate her amber eyes in an intimate cowboy shot framing.",
+    "animaCaption": "Natsume rests her head against the viewer's chest in the back seat, black lace visible at her loosened collar. Lightning flashes through the rain-streaked windows.",
     "auditRevision": "skill-refine-sc249-2026-09-05"
   }
 }

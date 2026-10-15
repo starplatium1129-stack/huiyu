@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_home_pajama",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 500,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "抱着玩偶趴在床上",
     "camera": "medium shot",
@@ -20,18 +20,16 @@
     "mood": "放松可爱",
     "negativeTokens": [],
     "outfitId": "silk_pajamas",
-    "promptProse": "Marin lies face-down on the bed in loose pastel silk pajamas, hugging a plush toy while laughing at anime on the phone placed nearby. Button-up top and matching pajama trousers remain comfortably closed. The medium view includes pillows around her and anime posters beyond the bed. Warm bedside-lamp light catches the silk folds and toy fur, with cozy fairy lights softly marking the room's depth and shaded bedding beneath her arms.",
+    "promptProse": "Marin lies on her bed hugging a plush toy while watching anime on her phone.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Marin",
-      "pastel silk button pajamas",
-      "pajama trousers",
+      "pajamas",
       "plush toy",
-      "phone anime",
-      "bedroom posters",
-      "bedside lamp",
-      "medium shot"
+      "smartphone",
+      "on stomach",
+      "bed",
+      "lamplight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

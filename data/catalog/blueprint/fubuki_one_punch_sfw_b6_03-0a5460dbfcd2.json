@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1591,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_03",
     "title": "吹雪 · 夜色车窗的霓虹",
@@ -30,15 +30,18 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Fubuki sits in her sedan's rear seat, a fur-collared outer coat laid across her lap above the modest emerald dress. Her phone briefly shows news about her sister before she switches it off and returns her thoughtful gaze to the window. The medium view keeps the seat back and passing city glass close around her. Flowing neon reflections cross her pearls and dark hair, then slip over the coat as the car moves onward.",
+    "promptProse": "With her coat across her lap, she switches off news about her sister on the phone and looks thoughtfully through the car window.",
     "promptTokens": [
       "fubuki_(one-punch_man)",
-      "Fubuki",
-      "emerald long-sleeved dress",
+      "1girl",
+      "solo",
+      "green dress",
       "pearl necklace",
-      "phone switched off",
-      "car backseat",
-      "neon",
+      "fur coat",
+      "phone",
+      "backseat",
+      "car interior",
+      "neon lights",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "waguri_kaoruko",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "waguri_kaoruko",
     "profile": {
@@ -93,13 +93,12 @@
       "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, a sincere Kikyo Girls Academy student with long blackish-purple hair, large blue eyes and a warm, expressive smile. Braids and work aprons belong to the selected daily outfit rather than a permanent identity.",
       "identityTokens": [
         "waguri_kaoruko",
-        "kaoru_hana_wa_rin_to_saku",
+        "kaoru hana wa rin to saku",
         "1girl",
         "solo",
-        "black_hair",
-        "long_hair",
-        "blue_eyes",
-        "smile"
+        "black hair",
+        "long hair",
+        "blue eyes"
       ],
       "exactTokens": [
         "waguri_kaoruko"

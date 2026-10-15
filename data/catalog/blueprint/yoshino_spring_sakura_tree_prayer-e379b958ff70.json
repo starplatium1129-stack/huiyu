@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_spring_sakura_tree_prayer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1146,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在樱花树下双手合十微闭双眼祈祷，樱花如雨落下，巫女衣袖微扬，神圣纯洁",
     "camera": "medium close-up, eye-level serene portrait, petal bokeh depth",
@@ -20,15 +20,16 @@
     "mood": "神圣宁谧",
     "negativeTokens": [],
     "outfitId": "shrine_maiden",
-    "promptProse": "Yoshino stands beneath the shrine courtyard's immense flowering cherry tree, hands joined at her chest and eyes gently closed in prayer. Her broad white miko sleeves lift with the breeze as a petal settles on the ribbon of her silver twin tails. The eye-level medium close-up layers blossoms and old bark behind her. Morning light through dense branches casts pink-white patches across her sleeves, with soft shade beneath the joined hands.",
+    "promptProse": "Yoshino prays beneath the cherry tree as a petal catches on her hair ribbon and the breeze lifts her sleeves.",
     "promptTokens": [
-      "spring morning",
-      "ancient cherry tree",
-      "miko robes",
-      "joined hands",
+      "miko",
       "praying",
+      "hands together",
+      "closed eyes",
+      "cherry blossoms",
       "petals",
-      "medium close up"
+      "wind",
+      "morning"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +43,8 @@
       "hair_flower"
     ],
     "timeOfDay": "清晨",
-    "title": "朝武芳乃 · 百年古樱树下的静心祈祷"
+    "title": "朝武芳乃 · 百年古樱树下的静心祈祷",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

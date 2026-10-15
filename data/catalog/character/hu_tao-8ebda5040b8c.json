@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hu_tao",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hu_tao",
     "profile": {
@@ -109,17 +109,13 @@
         "hu_tao (genshin impact)",
         "1girl",
         "solo",
-        "long_hair",
         "brown_hair",
         "twintails",
         "gradient_hair",
         "red_eyes",
         "flower-shaped_pupils",
-        "symbol-shaped_pupils",
         "porkpie_hat",
         "plum_blossom",
-        "hair_flower",
-        "talisman",
         "genshin_impact"
       ],
       "exactTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_snowy_park_chick_warming",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1214,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手捧着小黄鸡哈气取暖，巨大白羽翼向前环抱护风，长发落雪，神态极度温柔",
     "camera": "medium close-up, eye-level, intimate protective atmosphere",
@@ -20,15 +20,16 @@
     "mood": "纯真圣洁",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "On a snow-covered wooden park bench, Ikaros cups a shivering yellow chick in both hands and bends forward to warm it with her breath. Her white wings curve around the tiny shelter, blocking the winter wind. The close eye-level framing keeps snowy playground forms behind their feather edges. Cold morning light reflected by falling snow reveals the wing layers, while faint orange warmth gathers inside her palms.",
+    "promptProse": "Ikaros warms a shivering chick with her breath, curving her wings around her cupped hands to block the wind.",
     "promptTokens": [
-      "Ikaros",
       "cupped hands",
-      "yellow chick",
-      "snowy bench",
-      "protective wings",
-      "breath vapor",
-      "medium close-up"
+      "chick",
+      "wings",
+      "breath",
+      "snow",
+      "bench",
+      "winter",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +44,8 @@
       "white_wings"
     ],
     "timeOfDay": "上午",
-    "title": "伊卡洛斯 · 冬雪公园的暖心护雏"
+    "title": "伊卡洛斯 · 冬雪公园的暖心护雏",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

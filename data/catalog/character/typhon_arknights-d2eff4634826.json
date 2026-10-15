@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-05T16:47:14.846400+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -102,11 +102,10 @@
         "typhon_(arknights)",
         "1girl",
         "solo",
-        "purple_hair",
-        "very_long_hair",
-        "low_twintails",
-        "twin_drills",
-        "pink_eyes",
+        "purple hair",
+        "low twintails",
+        "twin drills",
+        "pink eyes",
         "horns"
       ],
       "negativeTokens": [

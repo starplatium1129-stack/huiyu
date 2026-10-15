@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_insane_love_cowgirl_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1309,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "albedo_nsfw_insane_love_cowgirl_straddle",
     "title": "雅儿贝德 · 狂乱独占的魅魔女皇骑乘",
@@ -30,40 +30,19 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "Straddling the viewer's waist in wild, possessive abandon atop silk bedding, naked Albedo rides with relentless, fervent passion. Her massive black wings beat the air slowly for balance as her heavy, glistening breasts bounce violently with each descent. With slit golden eyes glowing with sweet yandere obsession, she leans down to press her lips close, panting in boundless ecstasy. Intense, high-impact vertical anime CG, solo 1girl focus, no text.",
+    "promptProse": "She straddles the viewer's waist on silk bedding, using her spread wings for balance as she leans forward.",
     "promptTokens": [
-      "sensual_solo",
       "bedroom",
+      "nude",
       "straddling",
-      "cowgirl_position",
-      "completely_nude",
-      "large_breasts",
-      "bouncing_breasts",
-      "nipples",
-      "areola",
-      "exposed_pussy",
-      "pussy_juice",
-      "black_wings",
-      "curved_horns",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "yandere",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "black wings",
+      "horns",
+      "sweat",
+      "blush",
+      "from below",
+      "cowgirl position"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -76,6 +55,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "Straddling the viewer's waist in wild, possessive abandon atop silk bedding, naked Albedo rides with relentless, fervent passion. Her massive black wings beat the air slowly for balance as her heavy, glistening breasts bounce violently with each descent. With slit golden eyes glowing with sweet yandere obsession, she leans down to press her lips close, panting in boundless ecstasy. Intense, high-impact vertical anime CG, solo 1girl focus, no text."
+    "nsfwProse": "",
+    "nsfwTokens": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_corridor_instrument",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 859,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "抱贝斯盒匆匆赶路",
     "adult": false,
@@ -26,14 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "Kazusa walks quickly through the bright Trinity corridor with a heavy bass case over one shoulder, stopping abruptly when she meets the teacher. She presses down the cat-ear-shaped hood with a shy expression. The medium tracking view keeps the case beside her and window bays receding behind. Daylight catches her short dark hair and case edge, with corridor-frame shadows stretching across the floor beneath her halted steps.",
+    "promptProse": "Kazusa hurries through the corridor carrying her bass case close.",
     "promptTokens": [
-      "daytime",
-      "school corridor",
-      "Trinity uniform",
+      "school uniform",
+      "hood",
       "bass case",
-      "cat ear hood",
-      "medium shot"
+      "hurrying",
+      "school hallway"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

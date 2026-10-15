@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_throne_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 260,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "ishtar_nsfw_throne_supine_devotion",
     "title": "伊什塔尔 · 神座下的奉献夜·「神、神殿里……不可以太用力……」",
@@ -27,44 +27,24 @@
       "tears",
       "jewelry"
     ],
-    "promptProse": "On the temple's sacred marble throne steps with translucent bridal-thin veils scattered around her, Ishtar arches her slender back in an overwhelming rush of divine ecstasy. Her fingers clutch the carved armrests while her golden hoop earrings catch the warm candlelight, ruby red eyes glistening with rare, vulnerable tears no mortal has ever witnessed. Her small divine chest rises and falls rapidly as one trembling hand touches her inner thigh, protesting between ragged gasps that mortal audacity on the goddess's throne has exceeded all bounds. Intimate vertical composition, cinematic lighting, golden glow, detailed temple background.",
+    "promptProse": "Adult Ishtar reclines against the throne steps, one hand gripping the armrest and the other resting at her inner thigh. Thin veils lie around her in the candlelight.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "lying_on_back",
-      "on_throne",
-      "steps",
-      "spread_legs",
-      "arched_back",
-      "hand_between_legs",
-      "touching_own_body",
-      "bare_breasts",
-      "pink_nipples",
-      "petite",
-      "exposed_pussy",
-      "pussy",
-      "pussy_juice",
-      "sweat",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "black_hair",
-      "two_side_up",
-      "hoop_earrings",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "adult",
+      "temple",
+      "throne",
+      "marble steps",
+      "veil",
+      "topless",
+      "on back",
+      "spread legs",
+      "arched back",
+      "hand between legs",
+      "hoop earrings",
+      "tears",
+      "candlelight"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -75,6 +55,7 @@
       "h_cg",
       "sensual_solo",
       "special_nsfw"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

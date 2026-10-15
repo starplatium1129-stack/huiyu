@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_festival_goldfish_scooping_joy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1123,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "蹲在水池前手握纸网小心捞金鱼，浴衣下摆微收，呆毛竖直，神情极度专注",
     "camera": "medium close-up, low angle looking across water, intimate depth",
@@ -20,15 +20,16 @@
     "mood": "童真趣意",
     "negativeTokens": [],
     "outfitId": "festival_red_yukata_no_fan",
-    "promptProse": "Murasame crouches at the festival goldfish basin in her scarlet patterned yukata and dark-red obi, holding a partly torn paper scoop as she watches a red fish with intense concentration. Her upright ahoge stays above the low medium close-up across the water. Red lanterns hang over the stall behind. Their warm reflections move along the basin and her fingertips, contrasting with the darker water beneath the swimming fish.",
+    "promptProse": "Murasame studies a red goldfish intently over the basin, holding her partly torn paper scoop just above the water.",
     "promptTokens": [
-      "summer night",
-      "Hoori festival",
-      "scarlet goldfish yukata",
+      "red yukata",
+      "crouching",
+      "goldfish scooping",
       "paper scoop",
-      "goldfish basin",
-      "medium close up",
-      "low angle"
+      "lantern",
+      "festival",
+      "night",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +44,8 @@
       "red_yukata"
     ],
     "timeOfDay": "夜晚",
-    "title": "丛雨 · 夏日祭捞金鱼的执着对决"
+    "title": "丛雨 · 夏日祭捞金鱼的执着对决",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

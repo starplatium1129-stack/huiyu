@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_section6_iaido_moonlit_slash",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1064,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "微微压低身形拇指推刀出鞘，金瞳凝视前方，白狐尾猎猎扬起，刀刃寒芒迸射",
     "camera": "cinematic dynamic low angle, 3/4 front view",
@@ -20,16 +20,15 @@
     "mood": "冷峻肃穆",
     "negativeTokens": [],
     "outfitId": "section6_uniform",
-    "promptProse": "Miyabi stands in the bamboo Hollow under a pale moon, drawing her katana half an inch as an icy slash cuts through falling leaves. Her navy Section 6 coat, armor guards and alert white fox ears remain in the low three-quarter view. Bamboo trunks overlap behind her black-tipped white tail. Cold moonlight outlines the trunks and gold cords, while blue-white sword light flashes across her gauntlet and focused amber eyes.",
+    "promptProse": "Miyabi lowers her stance and pushes the katana free with her thumb, watching the bamboo Hollow ahead.",
     "promptTokens": [
-      "moonlit night",
-      "bamboo Hollow",
-      "navy Section 6 uniform",
+      "Section 6 uniform",
       "katana",
-      "iaido",
+      "unsheathing",
+      "crouching",
       "fox ears",
-      "fox tail",
-      "low angle"
+      "bamboo",
+      "moonlight"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

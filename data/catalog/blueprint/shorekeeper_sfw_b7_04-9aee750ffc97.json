@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_sfw_b7_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1642,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shorekeeper_sfw_b7_04",
     "title": "守岸人 · 黑海岸潮汐的白色花嫁",
@@ -29,15 +29,16 @@
       "gentle_smile",
       "twilight"
     ],
-    "promptProse": "The Shorekeeper stands in the lighthouse garden at dusk, protecting a small bouquet of coastal flowers with both hands. Her opaque white wedding gown has blue embroidery beneath a light coastal veil, purple eyes unusually warm toward the viewer. The vertical medium-full view includes the garden path and lighthouse behind. Lavender sky light defines the gown's upper folds, while warm lighthouse light rims her veil and blue hair against the cooling coast.",
+    "promptProse": "She protects her coastal bouquet with both hands in the lighthouse garden, warm light outlining her veil against the lavender sky.",
     "promptTokens": [
       "Shorekeeper",
-      "white blue-embroidered bridal gown",
-      "coastal veil",
-      "sea-flower bouquet",
-      "lighthouse garden",
+      "white wedding dress",
+      "blue embroidery",
+      "veil",
+      "bouquet",
+      "lighthouse",
       "dusk",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

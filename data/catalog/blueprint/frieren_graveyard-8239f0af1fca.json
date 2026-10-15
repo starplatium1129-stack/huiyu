@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_graveyard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "frieren_graveyard",
     "title": "芙莉莲 · 墓地回忆",
@@ -29,21 +29,19 @@
       "remembrance",
       "medium_shot"
     ],
-    "promptProse": "Before Himmel's weathered memorial, Frieren rests her fingertips against the stone while holding her travel cloak's edge with the other hand. Reflective green eyes and pointed ears remain clear beside silver-white twintails in the medium view. Small white wildflowers grow at the base; crosses recede through morning mist. Soft daylight brightens the stone's upper face and her touching hand, preserving gentle shade where fingers meet its surface.",
+    "promptProse": "She rests her fingertips on Himmel's memorial while holding her cloak edge with her other hand.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Frieren",
-      "travel cloak",
-      "touching memorial stone",
-      "white wildflowers",
+      "cloak",
+      "gravestone",
+      "wildflowers",
       "cemetery",
       "morning mist",
       "medium shot"
     ],
     "negativeTokens": [
-      "bouquet in hands",
-      "readable inscription"
+      "bouquet"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "travel_clothes",

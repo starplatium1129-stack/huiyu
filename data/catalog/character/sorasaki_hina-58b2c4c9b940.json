@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sorasaki_hina",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sorasaki_hina",
     "profile": {
@@ -153,14 +153,11 @@
         "hina (blue archive)",
         "1girl",
         "solo",
-        "silver_hair",
-        "very_long_hair",
-        "purple_eyes",
+        "silver hair",
         "horns",
         "halo",
-        "bat_wings",
-        "flat_chest",
-        "blue_archive"
+        "bat wings",
+        "blue archive"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1555,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_03",
     "title": "堀京子 · 厨房尝味的侧脸",
@@ -33,15 +33,15 @@
       "sunset",
       "three-quarter_view"
     ],
-    "promptProse": "Kyouko Hori tastes a spoonful of stew at the home stove, frowns thoughtfully, then turns her free hand to adjust the heat. Her blue cotton apron covers a cream T-shirt and dark trousers, tied chestnut hair clear of the pan. The medium view includes the pot and counter behind. Orange evening light from the window warms apron edges and spoon bowl, with deeper stove-side shadows and pale steam rising above the food.",
+    "promptProse": "Hori tastes the stew and frowns thoughtfully, reaching with her free hand to adjust the stove's heat.",
     "promptTokens": [
-      "Kyouko Hori",
       "blue apron",
-      "cream T-shirt",
-      "stew tasting",
-      "stove adjustment",
-      "kitchen sunset",
-      "medium shot"
+      "t-shirt",
+      "cooking",
+      "spoon",
+      "stew",
+      "kitchen",
+      "sunset"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +51,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

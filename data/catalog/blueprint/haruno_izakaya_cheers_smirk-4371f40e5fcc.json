@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_izakaya_cheers_smirk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 374,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_izakaya_cheers_smirk",
     "title": "雪之下阳乃 · 第一杯还没碰完的笑话",
@@ -29,19 +29,15 @@
       "warm_counter_light",
       "medium_shot"
     ],
-    "promptProse": "Haruno raises a half-filled beer mug at the izakaya counter and laughs softly at her own joke, free hand steadying the coaster beside supper. Her covering forest-green turtleneck, calf-length black skirt and silver studs accompany amused eyes beneath the black bob. The seated medium view follows the counter into the evening interior. Warm counter light shines through the beer and catches her earrings, casting mug and plate shadows across the wood.",
+    "promptProse": "Haruno raises her half-filled beer and laughs at her own joke, her free hand resting on the coaster beside supper.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Haruno",
-      "forest green turtleneck",
-      "calf length black skirt",
-      "silver studs",
+      "green turtleneck",
+      "black skirt",
       "beer mug",
-      "coaster",
-      "supper plate",
-      "izakaya counter",
-      "medium shot"
+      "laughing",
+      "counter",
+      "izakaya",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +47,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

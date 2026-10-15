@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_home_dinner",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 418,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "makima_home_dinner",
     "title": "玛奇玛 · 居家晚餐",
@@ -25,18 +25,15 @@
       "apartment",
       "indoor"
     ],
-    "promptProse": "At her apartment dinner table, Makima rests her chin in one palm while pouring red wine into the opposite crystal glass with her other hand, regarding her unseen guest softly. Relaxed casual clothes retain the off-duty scene. The medium view keeps bottle, glass and place settings distinct against the quiet room. Warm pendant light shines through the wine and catches the bottle shoulder, leaving rounded glass shadows across the evening tabletop.",
+    "promptProse": "Makima rests her chin in one hand and pours red wine for the place opposite her at dinner.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Makima",
-      "casual outfit",
-      "hand on chin",
-      "pouring red wine",
-      "crystal glass",
-      "apartment dinner table",
-      "warm pendant light",
-      "medium shot"
+      "casual clothes",
+      "hand on own chin",
+      "pouring wine",
+      "dining table",
+      "pendant light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

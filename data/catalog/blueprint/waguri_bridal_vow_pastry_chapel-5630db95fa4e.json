@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_bridal_vow_pastry_chapel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1508,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "waguri_bridal_vow_pastry_chapel",
     "title": "和栗薰子 · 白花礼堂里的轻声道谢",
@@ -31,11 +31,11 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Inside the small white-flower chapel, Kaoruko Waguri holds a bouquet with fresh strawberry decorations and notices a tiny white bloom among them, smiling gently down. Her layered white bridal gown and flower veil frame long blackish-purple hair and clear blue eyes. The medium portrait includes the small altar and gathered skirt. Soft window light reflected from the chapel walls reveals lace and petal layers, with subtle bouquet shadows across her sleeves.",
+    "promptProse": "Waguri notices a tiny white bloom in her bouquet and smiles down beneath the chapel window light.",
     "promptTokens": [
       "Kaoruko Waguri",
-      "white princess bridal gown",
-      "flower veil",
+      "white wedding dress",
+      "floral veil",
       "strawberry bouquet",
       "chapel",
       "medium shot"

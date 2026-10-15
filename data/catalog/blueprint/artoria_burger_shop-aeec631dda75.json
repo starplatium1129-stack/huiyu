@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_burger_shop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "artoria_burger_shop",
     "title": "阿尔托莉雅 · 双手捧稳的双层汉堡",
@@ -31,18 +31,15 @@
       "sitting_at_table",
       "window_light"
     ],
-    "promptProse": "At a window-side fast-food table, Artoria Pendragon holds a double cheeseburger securely at both sides and leans forward to bite it, her green eyes on the food. Retain the dark-blue cardigan, white collared shirt and skirt, blonde braided bun, blue ribbon and upright ahoge. In the seated eye-level medium shot, the paper tray fills the lower edge and the drink stands beside it. The window ledge continues behind her toward a farther booth, giving the restaurant a readable depth without distracting diners. Broad daylight reaches her cheek and the burger bun; the cup leaves a soft oval shadow on the table, and its pale reflection touches the tray edge.",
+    "promptProse": "She leans forward to bite the burger held in both hands. Daylight from the window reaches the tray and cup on her table.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Artoria Pendragon",
-      "dark blue cardigan",
-      "white collared shirt",
-      "skirt",
-      "double cheeseburger",
-      "paper tray",
-      "drink",
       "restaurant",
+      "cardigan",
+      "collared shirt",
+      "skirt",
+      "cheeseburger",
+      "eating",
+      "drink",
       "medium shot"
     ],
     "negativeTokens": [

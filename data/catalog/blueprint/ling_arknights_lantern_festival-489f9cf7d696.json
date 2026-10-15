@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_lantern_festival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 652,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "披素白羽衣穿行灯会回眸",
     "camera": "medium shot",
@@ -19,16 +19,15 @@
       "empty street"
     ],
     "outfitId": "zhuoying",
-    "promptProse": "Walking through the Yan capital's Lantern Festival, Ling turns back smiling in her white feathered robe, lifting a hand to catch a falling scrap from the fireworks. The medium view follows the lantern-lined street through the crowd toward layered rooftops. Golden lantern light reveals the auspicious embroidery along her moving sleeves; distant fireworks briefly color the feather edges and upper roofs.",
+    "promptProse": "Ling turns back smiling among the festival crowd, lifting a hand to catch a scrap drifting down from the fireworks.",
     "promptTokens": [
-      "night",
-      "Yan festival",
-      "white feathered robe",
+      "white robe",
+      "feather trim",
       "wide sleeves",
-      "lanterns",
+      "looking back",
+      "lantern",
       "fireworks",
-      "turning back",
-      "medium shot"
+      "festival"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

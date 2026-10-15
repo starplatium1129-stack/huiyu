@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1578,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zero_two_sfw_b6_06",
     "title": "02 · 樱树下的约定",
@@ -31,16 +31,15 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Zero Two looks upward beneath the blossoming cherry tree as petals settle on her small red horns and headband. She extends one little finger toward her companion with unexpectedly serious green eyes. Her white long-sleeved shirt and opaque red ankle-length skirt remain simple. The medium portrait holds branches and falling petals behind. Afternoon sunlight filters through the flowers onto pink hair and the offered finger, with scattered blossom shadows across the shirt.",
+    "promptProse": "Zero Two extends a little finger toward her companion beneath the flowering tree, petals settling on her horns and headband.",
     "promptTokens": [
-      "zero_two_(darling_in_the_franxx)",
-      "Zero Two",
-      "white shirt",
+      "white long sleeve shirt",
       "red long skirt",
       "pinky promise",
-      "cherry tree",
-      "afternoon",
-      "medium shot"
+      "serious",
+      "cherry blossoms",
+      "petals",
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +49,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

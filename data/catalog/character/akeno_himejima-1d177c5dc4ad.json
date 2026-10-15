@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akeno_himejima",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "akeno_himejima",
     "profile": {
@@ -96,15 +96,10 @@
       "identityTokens": [
         "himejima_akeno",
         "high_school_dxd",
-        "akeno_himejima",
         "black_hair",
-        "very_long_hair",
         "high_ponytail",
         "orange_hair_ribbon",
-        "orange_ribbon",
-        "purple_eyes",
-        "large_breasts",
-        "seductive_smile"
+        "purple_eyes"
       ],
       "exactTokens": [
         "himejima_akeno"

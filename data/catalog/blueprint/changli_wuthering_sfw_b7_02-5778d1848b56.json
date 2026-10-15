@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1634,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_02",
     "title": "长离 · 庭院里的授课",
@@ -30,16 +30,17 @@
       "dappled_light",
       "medium_shot"
     ],
-    "promptProse": "Changli pours tea while teaching Jinhsi across the courtyard stone table, using nearby objects to guide the discussion. Her peach jacket covers a cream blouse above a long red skirt, expression patient and attentive. Keep both women and the cups distinct in the medium view, with garden branches behind. Dappled daylight illuminates their hands and teapot rim, leaving shifting leaf shadows on the stone and soft reflections beneath the cup glaze.",
+    "promptProse": "She pours tea while teaching Jinhsi across the stone table. Dappled daylight reaches both women's hands and their separate cups.",
     "promptTokens": [
       "changli_(wuthering_waves)",
-      "Changli",
+      "2girls",
       "Jinhsi",
       "peach jacket",
-      "tea lesson",
-      "stone garden table",
-      "dappled light",
-      "medium shot"
+      "cream blouse",
+      "red skirt",
+      "tea",
+      "stone table",
+      "garden"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

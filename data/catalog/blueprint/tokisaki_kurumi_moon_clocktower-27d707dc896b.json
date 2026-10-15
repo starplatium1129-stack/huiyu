@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_moon_clocktower",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tokisaki_kurumi_moon_clocktower",
     "title": "时崎狂三 · 月下钟楼",
@@ -30,18 +30,16 @@
       "wind",
       "full_body"
     ],
-    "promptProse": "Kurumi stands on the broad crown of a gothic clock tower, head tilted in an enigmatic smile as night wind stirs her black-and-crimson ruffles and twintails. The low full-body view includes her feet on the ledge beneath the rotating golden clock face and crimson moon. Golden dial light illuminates her sleeves and clock-patterned left eye; cool moonlight outlines the tower's masonry against the sky.",
+    "promptProse": "Kurumi tilts her head above the clock-tower crown, golden dial light meeting moonlight along the stone ledge.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Kurumi",
-      "black crimson gothic dress",
+      "gothic dress",
       "twintails",
-      "golden clock face",
-      "crimson moon",
-      "clock tower crown",
-      "full body",
-      "low angle"
+      "clock eye",
+      "clock tower",
+      "red moon",
+      "low angle",
+      "full body"
     ],
     "negativeTokens": [
       "cropped feet",

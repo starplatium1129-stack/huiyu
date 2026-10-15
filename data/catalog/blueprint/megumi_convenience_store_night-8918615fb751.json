@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_convenience_store_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "megumi_convenience_store_night",
     "title": "加藤惠 · 赶工后的便利店热饮",
@@ -31,15 +31,15 @@
       "streetlight",
       "medium_shot"
     ],
-    "promptProse": "Megumi Kato rests on the convenience-store bench after game work, holding a hot drink between both palms. Her sage-green hoodie and navy jeans remain relaxed above canvas sneakers; unopened rice balls stay inside the paper bag beside her. She turns toward the streetlamp with a small tired smile. In the medium portrait, soft shopfront light brightens her brown bob and cup, leaving the bench underside and street beyond more subdued.",
+    "promptProse": "Megumi holds her warm drink in both hands on the bench, turning with a tired smile.",
     "promptTokens": [
-      "Megumi Kato",
-      "sage hoodie",
-      "navy jeans",
+      "hoodie",
+      "jeans",
       "hot drink",
-      "convenience-store bench",
-      "night",
-      "medium shot"
+      "sitting",
+      "bench",
+      "convenience store",
+      "night"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_morning_shrine_bento_box",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1286,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "akeno_morning_shrine_bento_box",
     "title": "姬岛朱乃 · 神社晨间的特制便当",
@@ -28,12 +28,14 @@
       "gentle_smile",
       "blush"
     ],
-    "promptProse": "Akeno Himejima leans forward on the shrine veranda to offer a floral-wrapped double-tier bento in both hands. Her white miko top and red hakama are neat after morning sweeping, and her high black ponytail slides over one shoulder. The eye-level cowboy view follows polished floorboards and supporting posts behind her. Morning sun through pine branches highlights the wrapping knot and orange collar tie, with branch shadows crossing the boards.",
+    "promptProse": "She offers the wrapped two-tier bento with both hands on the shrine veranda. Pine-branch shadows cross the sunlit floorboards.",
     "promptTokens": [
-      "Akeno Himejima",
-      "miko robes",
-      "wrapped bento",
-      "shrine veranda",
+      "miko",
+      "bento",
+      "offering",
+      "leaning forward",
+      "shrine",
+      "veranda",
       "morning",
       "cowboy shot"
     ],

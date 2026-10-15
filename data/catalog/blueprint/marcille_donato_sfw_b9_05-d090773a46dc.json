@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1720,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_05",
     "title": "玛露希尔 · 海湾野餐的安全料理",
@@ -30,16 +30,14 @@
       "sea_breeze",
       "afternoon_light"
     ],
-    "promptProse": "Marcille Donato warms the seaside picnic's mushroom dish with a tiny controlled spell, frowning at a suspicious ingredient before setting it aside and presenting the finished plate toward the viewer. Her blue swimsuit, cream travel robe and sunhat remain clear beside the food basket. The horizontal medium view includes coastal rocks and the picnic cloth. Warm afternoon sun lights the plate and blonde braids, with broad rock shadows and faint local spell reflections beneath her hand.",
+    "promptProse": "Marcille warms the picnic meal with a small spell, removes a suspicious ingredient and offers the finished dish.",
     "promptTokens": [
-      "Marcille Donato",
       "blue swimsuit",
-      "cream travel robe",
-      "sunhat",
+      "travel robe",
+      "sun hat",
       "mushroom dish",
-      "seaside picnic",
-      "afternoon",
-      "medium shot"
+      "magic",
+      "seaside picnic"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

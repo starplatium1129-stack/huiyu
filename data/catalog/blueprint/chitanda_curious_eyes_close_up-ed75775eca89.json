@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_curious_eyes_close_up",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1480,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chitanda_curious_eyes_close_up",
     "title": "千反田爱瑠 · 好奇心大盛的紫瞳迫近·「折木同学，我很好奇！」",
@@ -30,15 +30,16 @@
       "curious_expression",
       "iconic"
     ],
-    "promptProse": "Eru Chitanda leans eagerly across the Classics Club desk, both hands planted on its surface as her wide purple eyes search Oreki's face for an answer. Her long black hair falls beside the navy sailor collar and black scarf. The close viewpoint keeps the desk edge below and classroom windows behind. Orange sunset crosses her near cheek and fingertips, making clear reflected window highlights in her eyes without obscuring the hair's darker layers.",
+    "promptProse": "She leans across the desk with both palms planted, searching Oreki's face for an answer. Sunset reaches her cheek and fingertips.",
     "promptTokens": [
-      "chitanda_eru",
-      "Eru Chitanda",
-      "Kamiyama sailor uniform",
-      "hands on desk",
-      "curious purple eyes",
       "clubroom",
-      "close-up POV"
+      "school uniform",
+      "leaning forward",
+      "hands on desk",
+      "curious expression",
+      "purple eyes",
+      "pov",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

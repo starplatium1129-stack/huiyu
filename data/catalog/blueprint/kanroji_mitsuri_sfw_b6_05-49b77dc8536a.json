@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1462,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "遮阳伞下抱高高刨冰，浪花打湿沙滩巾后护住樱花糖浆大笑",
     "adult": false,
@@ -25,13 +25,13 @@
     "mood": "食欲与恋爱感一起满格的假日",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Mitsuri Kanroji sits beneath the festival beach parasol holding a towering colorful shaved ice with both hands, laughing as a wave wets the striped towel beside her feet. She carefully shields the last spoonful of cherry syrup. Her pink-green floral swimsuit and light wrap skirt stay clear in the horizontal medium view. Brilliant sun catches the ice crystals and incoming surf, while parasol shade keeps her face softly lit beneath bouncing braids.",
+    "promptProse": "Mitsuri laughs while protecting her tall shaved ice from a wave that has soaked the beach towel.",
     "promptTokens": [
-      "Mitsuri Kanroji",
-      "pink-green floral swimsuit",
-      "light wrap skirt",
+      "floral swimsuit",
+      "sarong",
       "shaved ice",
-      "beach parasol",
+      "parasol",
+      "beach",
       "medium shot"
     ],
     "recommendedSize": "1536x1152",

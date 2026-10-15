@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shu_arknights",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 166,
   "createdAt": "2026-10-04T10:59:50+00:00",
-  "updatedAt": "2026-10-05T16:47:14.846400+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights",
     "profile": {
@@ -121,20 +121,12 @@
         "shu_(arknights)",
         "1girl",
         "solo",
-        "very_long_hair",
-        "grey_hair",
-        "multicolored_hair",
-        "gradient_hair",
-        "blonde_hair",
-        "blue_hair",
-        "streaked_hair",
-        "aqua_eyes",
-        "orange_pupils",
-        "eastern_dragon_horns",
-        "multicolored_horns",
-        "pointy_ears",
-        "dragon_tail",
-        "colored_extremities"
+        "grey hair",
+        "gradient hair",
+        "aqua eyes",
+        "eastern dragon horns",
+        "dragon tail",
+        "colored extremities"
       ],
       "negativeTokens": [
         "bad anatomy",

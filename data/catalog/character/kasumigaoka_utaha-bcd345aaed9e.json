@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasumigaoka_utaha",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kasumigaoka_utaha",
     "profile": {
@@ -97,9 +97,7 @@
         "black_hair",
         "long_hair",
         "bangs",
-        "red_eyes",
-        "large_breasts",
-        "smirk"
+        "red_eyes"
       ],
       "exactTokens": [
         "kasumigaoka_utaha"

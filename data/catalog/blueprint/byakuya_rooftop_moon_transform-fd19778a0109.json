@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_rooftop_moon_transform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 832,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "变身光效环绕，星尘升起",
     "adult": false,
@@ -18,15 +18,15 @@
     "mood": "mystical",
     "negativeTokens": [],
     "outfitId": "magical_girl_dress",
-    "promptProse": "On a rooftop above closely packed city towers, Byakuya turns toward the viewer as stardust rings rise from around her feet. Her pink-and-white magical dress, detached sleeves and fairy wings remain intact inside the transformation glow. The wide view shows the rooftop edge beneath her and full moon beyond the buildings. Magic light brightens the lower frills and wand, while cool moonlight outlines her shoulders against the night skyline.",
+    "promptProse": "She turns toward the viewer as rings of stardust rise around her feet. The wand and dress glow against the moonlit skyline.",
     "promptTokens": [
-      "moonlit night",
-      "city rooftop",
-      "pink white magical dress",
-      "star wand",
+      "rooftop",
+      "magical girl",
+      "pink and white dress",
       "fairy wings",
-      "stardust",
-      "wide shot"
+      "star wand",
+      "magic circle",
+      "full moon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

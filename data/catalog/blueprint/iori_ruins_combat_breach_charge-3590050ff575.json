@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_ruins_combat_breach_charge",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在硝烟与碎石中贴地滑铲突进，手持卡宾狙击枪射击，恶魔翅膀展开",
     "camera": "cowboy shot, dynamic Dutch angle",
@@ -20,17 +20,15 @@
     "mood": "激情决断",
     "negativeTokens": [],
     "outfitId": "disciplinary_uniform",
-    "promptProse": "Iori slides forward through the blasted ruined corridor, keeping her rifle ready amid flying brick fragments. Her assault jacket and tactical harness remain centered in the dynamic Dutch-angle cowboy view, with shattered openings leading behind through smoke. Muzzle flash briefly lights her determined face and gloves; dawn enters from the breach beyond, outlining debris and casting long broken-wall shadows across the path of her advance.",
+    "promptProse": "Iori slides through a ruined corridor with her rifle ready. Muzzle flash lights her face beneath the broken wall openings.",
     "promptTokens": [
-      "dawn",
-      "ruined corridor",
-      "assault uniform",
-      "tactical harness",
-      "sliding breach",
       "rifle",
       "muzzle flash",
+      "rubble",
+      "hallway",
+      "dawn",
       "cowboy shot",
-      "Dutch angle"
+      "dutch angle"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

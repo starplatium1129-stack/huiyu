@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ciel_tsukihime",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ciel_tsukihime",
     "profile": {
@@ -102,9 +102,7 @@
         "tsukihime",
         "blue_hair",
         "short_hair",
-        "blue_eyes",
-        "curvaceous_body",
-        "intellectual_smile"
+        "blue_eyes"
       ],
       "exactTokens": [
         "ciel_(tsukihime)"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_morning_jog",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 324,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hatsune_miku_morning_jog",
     "title": "初音未来 · 晨跑",
@@ -29,27 +29,26 @@
       "morning_light",
       "full_body"
     ],
-    "promptProse": "Miku slows a little on the seaside promenade and glances back with a bright morning smile, both arms maintaining the running rhythm. Zip-up track jacket, matching shorts and sneakers retain her athletic outfit beneath wind-lifted teal twintails. The horizontal medium view follows her stride along paving that recedes beside the shoreline. Soft morning light reaches her cheek and moving sleeves as early sea haze clears, with gentle shadows crossing the path.",
+    "promptProse": "Miku slows her jog along the seaside promenade to glance back, keeping her arms in rhythm as the sea haze clears.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Miku",
-      "zip track jacket",
-      "matching running shorts",
+      "track jacket",
+      "running shorts",
       "sneakers",
       "jogging",
       "looking back",
-      "seaside promenade",
-      "morning",
-      "medium shot"
+      "smile",
+      "coast",
+      "morning"
     ],
     "negativeTokens": [
-      "riverbank"
+      "river"
     ],
     "recommendedSize": "1536x1152",
     "outfitId": "sporty_athleisure",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

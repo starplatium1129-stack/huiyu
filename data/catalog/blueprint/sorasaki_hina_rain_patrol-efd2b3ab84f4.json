@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rain_patrol",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 849,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "与你共撑黑伞在雨夜巡逻，微微仰头让伞面覆盖你们两人，制服下摆沾着雨水",
     "adult": false,
@@ -27,15 +27,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gehenna_uniform",
-    "promptProse": "Hina and the teacher share one umbrella while patrolling the rain-soaked Gehenna street. Her damp uniform coat sits beside the teacher's wet shoulder as she looks up, the black umbrella held nearer them both. Use a static three-quarter rear medium two-shot, with the street receding beyond. Streetlamps shine along the canopy and reflected paving, separating their coat edges from the darker rainfall behind.",
+    "promptProse": "Hina looks up at the teacher as they patrol beneath one umbrella, streetlights reflecting across the rain-soaked paving.",
     "promptTokens": [
-      "rainy night",
-      "Gehenna street",
+      "Hina",
       "military uniform",
-      "shared umbrella",
       "teacher",
-      "two people",
-      "medium two shot"
+      "shared umbrella",
+      "rain",
+      "street",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

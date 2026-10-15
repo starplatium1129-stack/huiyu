@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_dawn_altar_shroud_bridal_vow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "caren_dawn_altar_shroud_bridal_vow",
     "title": "卡莲 · 破晓圣坛的圣骸之誓",
@@ -30,16 +30,14 @@
       "dawn_light",
       "full_body"
     ],
-    "promptProse": "Caren takes a slow step before the dawn altar, both hands securely holding white lilies above her opaque floor-length bridal gown. The golden shroud forms a veil and trailing train, short silver hair framing a relieved amber-eyed smile. Keep gown, bouquet and careful step complete in the frontal full-body view, marble altar beyond. Dawn light pours through clouds and the dome onto lilies and fabric crests, casting gentle train shadows across stone.",
+    "promptProse": "She takes a careful step toward the altar with lilies in both hands. Dawn light from the dome catches the golden shroud train.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Caren",
-      "opaque white bridal gown",
-      "golden shroud veil",
-      "white lilies",
+      "wedding dress",
+      "gold veil",
+      "lilies",
       "altar",
       "marble dome",
+      "walking",
       "dawn",
       "full body"
     ],

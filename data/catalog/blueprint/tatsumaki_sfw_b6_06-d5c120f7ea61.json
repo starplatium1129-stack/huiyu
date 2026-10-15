@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1588,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_06",
     "title": "战栗的龙卷 · 冬夜窗边的城市",
@@ -31,14 +31,15 @@
       "lamplight",
       "horizontal_composition"
     ],
-    "promptProse": "Tatsumaki floats cross-legged beside her high-rise window, holding hot cocoa in both hands and quietly watching the city she protects. Her cream turtleneck and loose green trousers stay comfortable beneath curled green hair. The horizontal medium portrait includes the window frame and far lights below. Room lamplight warms the cup and sweater texture, while city reflections appear in her green eyes and across the glass behind her suspended outline.",
+    "promptProse": "Tatsumaki holds cocoa in both hands while quietly watching city lights from beside the window.",
     "promptTokens": [
       "Tatsumaki",
-      "cream turtleneck",
-      "green trousers",
-      "cross-legged hovering",
-      "hot cocoa",
-      "night window",
+      "turtleneck",
+      "trousers",
+      "crossed legs",
+      "floating",
+      "cocoa",
+      "window",
       "medium shot"
     ],
     "negativeTokens": [],

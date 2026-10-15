@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_rainy_telephone_booth",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 814,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fiona_frost_rainy_telephone_booth",
     "characterId": "fiona_frost",
@@ -28,15 +28,18 @@
       "expressionless",
       "wet_glass"
     ],
-    "promptProse": "Fiona stands inside a rain-streaked Berlint phone booth, holding a black receiver and keeping her folded umbrella beside the glass door. Her dark-blue double-breasted coat covers a purple turtleneck and leather trousers in the cowboy view. Long bangs conceal the right side of her composed face. The booth's yellow lamp lights her glove and profile through wet glass, while cold street reflections mark the lower panels.",
+    "promptProse": "She holds the receiver inside the rain-streaked booth, with her folded umbrella beside the glass door.",
     "promptTokens": [
-      "rainy midnight",
-      "telephone booth",
-      "navy pea coat",
+      "1girl",
+      "solo",
+      "blue coat",
       "purple turtleneck",
-      "black trousers",
+      "gloves",
+      "telephone",
       "umbrella",
-      "receiver",
+      "phone booth",
+      "rain",
+      "night",
       "cowboy shot"
     ],
     "negativeTokens": [],

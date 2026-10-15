@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_parfait_happy_eating",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1494,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yamada_parfait_happy_eating",
     "title": "山田杏奈 · 甜品店特盛巨无霸芭菲的幸福笑颜·「市川……这一大口草莓，给你吃！」",
@@ -34,14 +34,13 @@
       "bright_interior_light",
       "medium_shot"
     ],
-    "promptProse": "Anna Yamada sits in a family-restaurant booth and offers a long spoonful of strawberry and cream toward her companion. A little cream remains at her mouth; she narrows her eyes happily beneath a swaying black ponytail. Her charcoal hoodie and denim shorts are casual. The medium view keeps the tall parfait and booth back visible. Bright restaurant lights gleam along the spoon and glass ridges, with softer shade underneath the cream layers.",
+    "promptProse": "Yamada offers a spoonful of strawberry and cream toward her companion from the restaurant booth.",
     "promptTokens": [
       "Anna Yamada",
-      "charcoal hoodie",
-      "black ponytail",
-      "strawberry parfait",
-      "sharing spoonful",
-      "restaurant booth",
+      "hoodie",
+      "parfait",
+      "spoon",
+      "restaurant",
       "medium shot"
     ],
     "negativeTokens": [],

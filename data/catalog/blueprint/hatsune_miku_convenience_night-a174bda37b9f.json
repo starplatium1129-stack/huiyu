@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_convenience_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 323,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hatsune_miku_convenience_night",
     "title": "初音未来 · 深夜便利店",
@@ -30,28 +30,26 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Miku pauses before the convenience-store freezer, one finger near her lower lip and the other hand on its handle while comparing mint-chocolate ice cream and a melon ice pop through glass. She turns her questioning turquoise eyes toward the viewer above the teal hoodie and dark skirt. The medium view keeps both treats within the indoor freezer. Cool-white night-store lighting reveals glass edges and her hair, leaving shaded shelves inside the case.",
+    "promptProse": "Miku holds the freezer handle and looks questioningly at the viewer, choosing between mint-chocolate ice cream and a melon ice pop.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Miku",
-      "teal hoodie",
-      "dark skirt",
-      "opaque tights",
-      "freezer handle",
-      "thinking gesture",
-      "mint chocolate ice cream",
-      "melon ice pop",
-      "night store",
-      "medium shot"
+      "hoodie",
+      "skirt",
+      "pantyhose",
+      "finger to mouth",
+      "freezer",
+      "ice cream",
+      "convenience store",
+      "night"
     ],
     "negativeTokens": [
-      "readable brands"
+      "brand name"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "sfw_street_hoodie",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 279,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_03",
     "title": "美杜莎 Rider · 厨房里的围裙反差",
@@ -30,21 +30,17 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "At the Emiya kitchen counter, Medusa arranges neatly cut vegetables beside an open lunch box, purple apron over a cream blouse and dark trousers. Her long hair is secured away from the chopping area. She pauses to set her glasses on the counter and rub her nose bridge. In the medium view, morning light reveals the orderly pieces and unguarded expression, casting soft shadows from the lunch-box partitions onto the counter.",
+    "promptProse": "Medusa slices vegetables for the lunch box with her hair tied back and glasses resting on the kitchen counter.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medusa",
-      "cream blouse",
-      "dark trousers",
+      "medusa_(fate)",
+      "blouse",
+      "trousers",
       "purple apron",
       "tied hair",
-      "cut vegetables",
-      "lunch box",
-      "glasses on counter",
-      "morning kitchen",
-      "medium shot",
-      "medusa_(fate)"
+      "cutting vegetables",
+      "kitchen"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

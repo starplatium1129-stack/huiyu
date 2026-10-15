@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_reef_rest",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 609,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "盘腿坐在礁石上，剑横在膝上",
     "camera": "medium shot",
@@ -19,13 +19,12 @@
       "city skyline"
     ],
     "outfitId": "reef_rest_barefoot",
-    "promptProse": "Skadi sits barefoot and cross-legged on a broad reef as the afternoon tide rises, her greatsword resting horizontally across her lap. Her cropped jacket lies beside her black-and-red bodysuit. Foam reaches her ankles; beyond the rock, successive swells lead toward the open horizon. Bright sea light picks out her drying silver hair and blade edge, with blue reflected light beneath her knees.",
+    "promptProse": "Skadi rests her sword across her lap on the reef as the afternoon tide washes over her ankles.",
     "promptTokens": [
-      "afternoon",
+      "Skadi",
+      "bodysuit",
       "barefoot",
-      "black bodysuit",
-      "red accents",
-      "cross legged",
+      "crossed legs",
       "greatsword",
       "reef",
       "sea",

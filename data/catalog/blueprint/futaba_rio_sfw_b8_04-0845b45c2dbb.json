@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_sfw_b8_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "futaba_rio_sfw_b8_04",
     "title": "双叶理央 · 物理实验室的白色誓约",
@@ -29,18 +29,18 @@
       "tender_smile",
       "afternoon_light"
     ],
-    "promptProse": "At the lab table, Rio Futaba precisely adjusts blue flowers in a graduated beaker before looking toward the viewer with unexpected tenderness through black-rimmed glasses. Her white bridal dress has a silver-grey sash and simple veil. The vertical medium-full view includes the arrangement against orderly laboratory surfaces. Cool daylight defines the dress, while warm task lamps glint on the beaker and cast flower shadows onto the tabletop.",
+    "promptProse": "She precisely arranges blue flowers in a graduated beaker, then looks toward the viewer with unexpected tenderness.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Rio Futaba",
-      "white bridal dress",
-      "silver grey sash",
-      "simple veil",
+      "wedding dress",
+      "grey sash",
+      "veil",
+      "glasses",
       "blue flowers",
-      "graduated beaker",
-      "lab table",
-      "medium full shot"
+      "beaker",
+      "laboratory",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

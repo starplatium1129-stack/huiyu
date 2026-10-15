@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_bedroom_nightgown_tail_touch_giggle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1238,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "侧卧床上被触碰尾巴尖端，满面通红蜷缩娇笑，薄纱睡裙半透雪肌，身姿曼妙",
     "camera": "medium shot, bedside intimate framing, sensitive blush focus",
@@ -19,36 +19,18 @@
     "location": "女生卧房纯白大床被褥中央",
     "mood": "娇羞敏感",
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature",
-      "nsfw",
       "nude"
     ],
     "outfitId": "pajamas_negligee",
-    "promptProse": "Curling up blushingly on soft white bedsheets in a translucent pink lace negligee, Lala shivers adorably as her sensitive spade tail is accidentally brushed. Moonlight through sheer curtains outlines her generous cleavage and flustered laughter in tender intimate warmth.",
+    "promptProse": "Adult Lala curls on the sheets and laughs with a blush when her tail is accidentally brushed.",
     "promptTokens": [
-      "bedroom_bed",
-      "nightgown",
-      "negligee",
-      "sheer_fabric",
+      "pink negligee",
+      "see-through",
       "cleavage",
-      "demon_tail",
-      "heavy_blush",
-      "sensitive_tail",
-      "pink_hair",
-      "detailed_background",
-      "cinematic_lighting"
+      "demon tail",
+      "curled up",
+      "bed",
+      "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -63,6 +45,8 @@
       "cleavage"
     ],
     "timeOfDay": "深夜",
-    "title": "菈菈 · 闺房薄纱睡裙的尾巴敏感小调"
+    "title": "菈菈 · 闺房薄纱睡裙的尾巴敏感小调",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

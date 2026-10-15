@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_starry_stage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "低头全神贯注弹奏电吉他，发丝随激烈演奏飘扬",
     "camera": "medium shot, dynamic low angle",
@@ -20,16 +20,15 @@
     "mood": "激情热烈",
     "negativeTokens": [],
     "outfitId": "kessoku_band_live_tshirt",
-    "promptProse": "Hitori grips her black-and-gold Gibson Les Paul on the STARRY basement stage, drawing a breath before her fingers race along the fretboard through the solo. Her black Kessoku Band T-shirt, dark skirt and red wristband remain clear in the dynamic low medium view. Stage equipment recedes behind. Brilliant top lights catch the guitar hardware and pink hair, while a cool-blue side spotlight separates her sleeve from the dark amplifier.",
+    "promptProse": "Hitori takes a breath before the guitar solo on STARRY's basement stage, her fingers moving along the fretboard under blue side light.",
     "promptTokens": [
+      "electric guitar",
+      "playing instrument",
+      "stage",
+      "spotlight",
       "night",
-      "STARRY stage",
-      "black band T shirt",
-      "dark skirt",
-      "red wristband",
-      "black gold electric guitar",
-      "medium shot",
-      "low angle"
+      "from below",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +44,8 @@
       "stage_lights"
     ],
     "timeOfDay": "夜晚",
-    "title": "后藤一里 · STARRY 舞台觉醒"
+    "title": "后藤一里 · STARRY 舞台觉醒",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_library",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 340,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_yukino_library",
     "title": "雪之下雪乃 · 图书馆午后",
@@ -29,26 +29,26 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "At the heavy public-library table, Yukino half closes her novel with one hand and rests the other on the table edge, lifting composed questioning blue eyes toward the viewer. Long black hair and red ribbons flank her tidy navy school uniform. The close-up includes book cover and worn tabletop beneath the high window. Slanting afternoon light catches page edges and her fingers, leaving shallow shadows where the half-closed volume meets the wood.",
+    "promptProse": "Yukino half closes her novel with one hand and rests the other on the table edge, lifting a composed questioning gaze.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yukino",
-      "navy school uniform",
+      "school uniform",
       "red ribbons",
-      "half closed novel",
+      "novel",
       "hand on table",
-      "public library window",
+      "looking at viewer",
+      "library",
       "afternoon",
       "close-up"
     ],
     "negativeTokens": [
-      "readable lettering"
+      "text"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "school_uniform",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

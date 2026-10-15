@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_rainy_phone_booth_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 423,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "reze_rainy_phone_booth_glance",
     "characterId": "reze_chainsaw",
@@ -20,18 +20,16 @@
       "close_quarters",
       "intense_gaze"
     ],
-    "promptProse": "Inside the cramped glass telephone booth, Reze looks back through wet bangs, her sleeveless white collared shirt, loose black tie and choker pin retaining the selected outfit. The close-up includes the receiver and narrow pane edges beside her face, black shorts below the crop. Diffuse storm light softly reveals her eyes, while blurred street neon filters through rain-streaked glass and reflects in droplets, leaving the booth corners darker behind her.",
+    "promptProse": "Reze looks back through wet bangs inside the cramped phone booth, the receiver beside her face and neon blurred by rain.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Reze",
-      "white sleeveless collared shirt",
-      "black tie",
-      "black shorts",
-      "choker pin",
-      "phone booth",
-      "wet bangs",
-      "storm rain",
+      "white sleeveless shirt",
+      "black necktie",
+      "shorts",
+      "choker",
+      "wet hair",
+      "looking back",
+      "telephone booth",
+      "rain",
       "close-up"
     ],
     "negativeTokens": [],
@@ -47,6 +45,8 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_harbor_dawn",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 606,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "倚着集装箱，遥望海面",
     "camera": "medium wide shot",
@@ -17,19 +17,16 @@
     "mood": "清冷孤寂",
     "negativeTokens": [],
     "outfitId": "deep_sea_hunter_trench_coat",
-    "promptProse": "At the foggy Iberian harbor, Skadi braces one hand on a rusted shipping container and watches the dark sea, wind lifting her black hunter trench-coat collar above the red-accented bodysuit. The medium-wide view includes container ribs beside her and the dock extending toward water through mist. Soft dawn light catches rust edges and silver hair, reflecting faintly across the restless sea while the container's sheltered side remains dark.",
+    "promptProse": "Skadi braces a hand against a rusted container and watches the sea through harbor fog in the first dawn light.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Skadi",
-      "black hunter trench coat",
-      "red accented bodysuit",
-      "thigh boots",
-      "hand on container",
-      "Iberian harbor",
+      "trench coat",
+      "bodysuit",
+      "shipping container",
+      "harbor",
       "fog",
       "dawn",
-      "medium wide shot"
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

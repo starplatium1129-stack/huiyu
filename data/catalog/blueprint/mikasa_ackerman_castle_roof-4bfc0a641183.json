@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_castle_roof",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 983,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "屋顶上望向远方",
     "camera": "cowboy shot, standing on the royal capital castle roof and looking toward the horizon",
@@ -18,14 +18,13 @@
     "mood": "怀念而坚定",
     "negativeTokens": [],
     "outfitId": "survey_corps_uniform",
-    "promptProse": "Mikasa stands on the royal capital castle roof, slightly lifting her head toward the world beyond the Walls. Her green Survey Corps cape and red scarf rise together over the brown uniform. The cowboy view includes roof tiles beneath her and the distant Wall across the horizon. Golden slanting sunset catches the cape edge and ODM blades, with lengthened rooftop shadows carrying the perspective back behind her.",
+    "promptProse": "Mikasa looks across the distant landscape from the castle roof, her red scarf moving in the sunset breeze.",
     "promptTokens": [
-      "sunset",
-      "royal castle roof",
-      "Survey Corps uniform",
+      "military uniform",
       "green cape",
       "red scarf",
-      "cowboy shot"
+      "castle roof",
+      "sunset"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

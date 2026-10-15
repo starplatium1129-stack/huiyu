@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_ancestral_curse_dog_ears_flustered",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1143,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手试图捂住头顶突然长出的白色犬耳，眼含泪花，满面通红娇嗔求饶",
     "camera": "medium close-up, cowboy framing, extreme blush and ear focus",
@@ -20,15 +20,17 @@
     "mood": "极度羞怯",
     "negativeTokens": [],
     "outfitId": "ancestral_dog_ears",
-    "promptProse": "After the ritual, Yoshino covers her head with both hands as fluffy white dog ears unexpectedly appear through her silver hair. Her white ceremonial kimono with gold cloud trim and trailing pink brocade haori remain in the close cowboy framing, blue eyes damp with embarrassment. The shrine chamber stays empty behind. A paper floor lamp casts warm side light across the new ears and fingers, shading the farther sleeve and room corner.",
+    "promptProse": "Yoshino touches the newly appeared white ears through her silver hair, flustered by the ritual's unexpected result.",
     "promptTokens": [
-      "night",
-      "shrine chamber",
-      "white gold kimono",
-      "pink brocade haori",
+      "white kimono",
+      "pink haori",
       "dog ears",
-      "hands on head",
-      "medium close up"
+      "hands on own head",
+      "embarrassed",
+      "teary eyes",
+      "shrine",
+      "lamplight",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +44,8 @@
       "shinto"
     ],
     "timeOfDay": "傍晚",
-    "title": "朝武芳乃 · 犬耳初现的羞耻悸动"
+    "title": "朝武芳乃 · 犬耳初现的羞耻悸动",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

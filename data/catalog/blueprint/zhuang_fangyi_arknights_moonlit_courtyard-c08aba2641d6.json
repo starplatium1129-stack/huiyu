@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_moonlit_courtyard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 746,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_moonlit_courtyard",
     "characterId": "zhuang_fangyi_arknights",
@@ -34,21 +34,22 @@
       "upper_body"
     ],
     "promptTokens": [
-      "rainy day",
-      "living room",
-      "sofa",
       "jade cardigan",
       "ivory skirt",
       "cushion",
-      "folded blanket",
-      "two teas",
-      "pear plate",
-      "medium shot"
+      "blanket",
+      "tea",
+      "sliced pears",
+      "sofa",
+      "rain",
+      "window"
     ],
-    "promptProse": "Zhuang Fangyi sits at the sofa edge in her jade-green knot-button cardigan and ivory midi skirt, moving a cushion aside for the viewer and turning back with a smile. A folded thin blanket rests on her knees; two teas and sliced pears wait on the near coffee table. The medium eye-level view keeps the rainy window behind. Cool daylight blends with a warm room lamp across the upholstery and cardigan folds.",
+    "promptProse": "Zhuang Fangyi moves a cushion aside for the viewer and turns back with a smile, the folded blanket on her knees and two teas on the table.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

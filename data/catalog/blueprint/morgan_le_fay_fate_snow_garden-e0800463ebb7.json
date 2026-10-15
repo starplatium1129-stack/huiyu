@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_snow_garden",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 194,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [
       "extra people"
@@ -32,17 +32,15 @@
       "reflected_snowlight",
       "full_body"
     ],
-    "promptProse": "Alone in the Winter Palace snow garden, Morgan stands with hands loosely joined before her layered black-and-blue skirt, lifting icy blue eyes toward falling flakes. Snow settles on gown edges beneath her crown and silver-white hair. The frontal full-body view leaves undisturbed ground around her and bare branches farther back. Reflected snowlight gently reveals the skirt's darker folds and sleeve shapes, with a soft shadow at her feet.",
+    "promptProse": "Morgan stands alone with her hands lightly joined before her, looking up at the falling snow.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Morgan",
-      "black blue royal gown",
+      "royal gown",
       "crown",
       "hands together",
-      "snow garden",
-      "bare branches",
-      "snowlight",
+      "garden",
+      "snow",
       "full body"
     ],
     "recommendedSize": "1152x1536",

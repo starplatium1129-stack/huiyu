@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_living_room_lazy_scone",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 836,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "身着宽松居家便服慵懒地趴在布艺沙发抱枕上，两条小腿在空中俏皮晃动，眼巴巴望着刚出炉的司康饼",
     "adult": false,
@@ -21,15 +21,15 @@
     "mood": "可爱慵懒",
     "negativeTokens": [],
     "outfitId": "cozy_church_homewear",
-    "promptProse": "Cecilia curls into the church living-room sofa's cushion pile in a pastel-yellow home dress, watching the kitchen with impatient expectation for the scones. The low couch-level view puts a plush cushion near her face and leaves the kitchen doorway visible beyond the sofa arm. Warm diffuse afternoon daylight brightens her dress and nearest cushions, with soft contact shadows around her tucked posture and the deeper upholstery.",
+    "promptProse": "She curls among the cushions while watching the kitchen for the scones. Warm daylight reaches the sofa beside the open doorway.",
     "promptTokens": [
-      "afternoon",
-      "church living room",
-      "pastel yellow dress",
+      "living room",
+      "yellow dress",
       "sofa",
       "cushions",
-      "looking toward kitchen",
-      "low couch shot"
+      "curled up",
+      "waiting",
+      "afternoon"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",

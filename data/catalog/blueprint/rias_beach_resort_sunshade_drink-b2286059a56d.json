@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_beach_resort_sunshade_drink",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1279,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rias_beach_resort_sunshade_drink",
     "title": "莉雅丝 · 碧海金沙的遮阳伞私语",
@@ -29,15 +29,16 @@
       "hourglass_figure",
       "smirk"
     ],
-    "promptProse": "Rias Gremory reclines on a beach chair under a white parasol, lowering her sunglasses with one hand and offering a tropical cold drink with the other. Her red cutout one-piece and windblown crimson hair remain clear in the diagonal cowboy framing. The blue shoreline runs behind the chair. Direct sunshine catches the glass rim and exposed chair slats, while parasol shade softens her face and wave reflections brighten the sand below.",
+    "promptProse": "Rias lowers her sunglasses with one hand and offers the cold tropical drink with the other from beneath the parasol.",
     "promptTokens": [
-      "Rias Gremory",
-      "red one-piece swimsuit",
+      "red swimsuit",
       "sunglasses",
-      "cold drink",
-      "beach lounge",
+      "drink",
+      "offering",
+      "reclining",
+      "beach chair",
       "parasol",
-      "cowboy shot"
+      "coast"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +47,8 @@
       "vacation",
       "summer",
       "swimsuit"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_helicopter_airdrop_briefing",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1201,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuria_helicopter_airdrop_briefing",
     "title": "春寺由梨亚 · 客厅沙发抱枕微醺小酌与慵懒依恋",
@@ -35,21 +35,24 @@
       "glasses_removed",
       "blushing"
     ],
-    "promptProse": "Curled into her apartment's leather sofa, Harudera Yuria hugs a fluffy cushion with one arm and holds an ice-filled whiskey tumbler in the other. Her loose white shirt and sheer black tights suit the quiet late-night movie. Folded glasses rest on the coffee table. The floor lamp warms her flushed cheek and cushion fibers; the television adds faint cooler reflections to the glass and sofa edge.",
+    "promptProse": "Curled on the sofa for a late movie, Yuria hugs a cushion with one arm and holds the iced whiskey with the other; her folded glasses rest on the coffee table.",
     "promptTokens": [
-      "Harudera Yuria",
-      "white shirt",
-      "black tights",
-      "leather sofa",
+      "loose white shirt",
+      "black pantyhose",
       "cushion",
-      "whiskey tumbler",
+      "hugging",
+      "whiskey",
+      "tumbler",
+      "leather sofa",
       "television",
-      "medium shot"
+      "night"
     ],
     "negativeTokens": [
       "glasses worn",
       "helicopter"
     ],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

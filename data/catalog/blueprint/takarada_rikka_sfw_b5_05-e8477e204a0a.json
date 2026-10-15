@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1536,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_05",
     "title": "宝多六花 · 哥哥住处的漫画借阅",
@@ -31,14 +31,14 @@
       "low_angle",
       "medium_shot"
     ],
-    "promptProse": "Rikka Takarada sits cross-legged before the bookshelf in her brother's apartment, hair tucked casually behind one ear as she reads borrowed manga. A canned coffee rests within reach beside her grey hoodie and relaxed dark trousers. She responds to his off-frame remarks without lifting her eyes. The horizontal medium view includes low shelves and the open book. Daylight illuminates the pages and can rim, with deeper recesses behind the packed book spines.",
+    "promptProse": "Rikka reads borrowed manga before the apartment bookshelf, answering off-frame remarks without looking up.",
     "promptTokens": [
       "Rikka Takarada",
-      "grey hoodie",
-      "dark trousers",
+      "hoodie",
+      "trousers",
+      "crossed legs",
       "manga",
-      "canned coffee",
-      "apartment bookshelf",
+      "coffee can",
       "medium shot"
     ],
     "negativeTokens": [],

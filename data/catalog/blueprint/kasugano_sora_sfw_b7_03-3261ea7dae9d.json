@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1615,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_03",
     "title": "春日野穹 · 石阶上安稳的一小步",
@@ -29,14 +29,15 @@
       "tree_shade",
       "medium_shot"
     ],
-    "promptProse": "Sora Kasugano sits on the shaded shrine steps, fastening the strap of her dark Mary Jane shoe beneath a slate-blue pinafore and white blouse. The rabbit plush rests against her cloth bag. After checking the buckle, she brushes a small leaf from her skirt and glances back at the trees. Reflected shade light reveals her white socks and buckle in the medium view, with layered step shadows and leaf silhouettes behind.",
+    "promptProse": "Sora fastens her shoe buckle on the shrine steps, then brushes a fallen leaf from her skirt.",
     "promptTokens": [
-      "Sora Kasugano",
-      "slate-blue pinafore",
-      "white blouse",
+      "pinafore dress",
+      "blouse",
       "shoe buckle",
       "rabbit plush",
-      "shrine stairs",
+      "sitting",
+      "stone stairs",
+      "shrine",
       "medium shot"
     ],
     "negativeTokens": [],

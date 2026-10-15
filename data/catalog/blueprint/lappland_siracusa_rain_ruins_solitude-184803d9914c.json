@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_rain_ruins_solitude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 676,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "独自坐在雨夜古堡断壁顶端，双刀插在身侧，仰天狂笑，任由暴雨冲刷",
     "camera": "cowboy shot, dramatic low angle",
@@ -20,17 +20,16 @@
     "mood": "狂暴凄美",
     "negativeTokens": [],
     "outfitId": "nomad_wasteland",
-    "promptProse": "On the ruined upper wall of a Siracusan castle, Lappland sits alone in her soaked gray nomad poncho and leather pants, both swords planted in rubble by her feet. She laughs upward toward the thunderclouds. The low cowboy view follows shattered masonry behind her. Blue-white lightning reveals droplets on her cheek and fur-trimmed hood, illuminating sword guards against the surrounding rain-dark stone.",
+    "promptProse": "Lappland sits atop the ruined wall with both swords planted beside her, laughing into the storm.",
     "promptTokens": [
-      "stormy night",
-      "castle ruins",
-      "dual swords",
-      "gray poncho",
+      "grey poncho",
       "leather pants",
+      "swords",
       "sitting",
       "laughing",
-      "cowboy shot",
-      "low angle"
+      "castle ruins",
+      "storm",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

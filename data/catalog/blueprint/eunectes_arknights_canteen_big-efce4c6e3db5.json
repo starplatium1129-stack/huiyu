@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_canteen_big",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 589,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "大口吃着大碗烤肉饭，腮帮鼓鼓",
     "camera": "medium close-up",
@@ -20,19 +20,19 @@
     "mood": "豪爽治愈",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Eunectes eats roasted-meat rice at the cafeteria table with chopsticks, cheeks puffed from a large bite and tail moving happily beside her seat. Green halter top, tactical vest and leather shorts retain her outfit. The medium close-up includes three filled bowls and emptied dishes, with other diners farther back. Bright midday ceiling light illuminates steam and browned meat, casting overlapping bowl shadows across the tabletop before her satisfied grin.",
+    "promptProse": "She takes a large bite from one of three rice bowls, her tail moving happily while other diners sit farther back.",
     "promptTokens": [
-      "Eunectes",
-      "cafeteria diners",
-      "green halter top",
+      "multiple people",
+      "snake tail",
+      "green halterneck",
       "tactical vest",
-      "leather shorts",
+      "shorts",
+      "eating",
       "chopsticks",
-      "three rice bowls",
-      "roasted meat",
-      "Rhodes cafeteria",
-      "midday",
-      "medium close-up"
+      "rice",
+      "meat",
+      "cafeteria",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

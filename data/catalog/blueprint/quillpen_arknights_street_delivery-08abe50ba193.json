@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_street_delivery",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 617,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "手持巨型斩首机械镰刀警戒站立",
     "camera": "dynamic full-body shot, low angle",
@@ -15,22 +15,20 @@
     "lighting": "dramatic neon rim light, cool blue and magenta street glow",
     "location": "多索雷斯霓虹街巷",
     "mood": "专注冷冽",
-    "negativeTokens": [
-      "sunny day"
-    ],
+    "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "La Pluma stands alert in a damp Dossoles alley at midnight, supporting her enormous mechanical scythe with one hand at her shoulder. A low full-body view follows the pavement between narrow building walls. Her cropped top, shorts and jacket retain their black and gray colors; cyan street glow outlines the blade, magenta catches her feathered hair, and both colors trail through shallow reflections below.",
+    "promptProse": "La Pluma stands alert with the mechanical scythe at her shoulder, cyan and magenta lights reflected along the wet alley.",
     "promptTokens": [
-      "midnight",
+      "crop top",
+      "shorts",
+      "jacket",
+      "scythe",
+      "standing",
       "alley",
       "wet pavement",
-      "scythe",
-      "crop top",
-      "hotpants",
-      "jacket",
-      "feathers",
-      "full body",
-      "low angle"
+      "neon lights",
+      "midnight",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +41,8 @@
       "feathers"
     ],
     "timeOfDay": "深夜",
-    "title": "羽毛笔 · 镰刃夜巡"
+    "title": "羽毛笔 · 镰刃夜巡",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

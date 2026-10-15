@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_dorm_late_night_snack",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 405,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "系好长睡袍盘坐地毯，一手递出甜点叉，另一手扶矮桌边，含笑邀请分享蛋糕。",
     "adult": false,
@@ -27,19 +27,17 @@
       "readable writing"
     ],
     "outfitId": "sfw_silk_dorm_robe",
-    "promptProse": "Misaki Shokuhou sits cross-legged on the dorm carpet, offering a clean dessert fork across the low table while her other hand rests beside strawberry cake and two plates. Her opaque long pale-blue robe remains closed and securely tied over full-length pajamas beneath flowing blonde hair. The eye-level medium view keeps the snack and conspiratorial star-pupiled smile together. Warm shaded desk light catches fork and cake cream, leaving soft table shadows across the carpet.",
+    "promptProse": "Misaki offers a dessert fork while steadying herself on the low table, inviting the viewer to share the cake.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Misaki Shokuhou",
-      "opaque pale blue long robe",
+      "blue robe",
       "tied sash",
       "pajamas",
       "cross-legged",
       "dessert fork",
       "strawberry cake",
-      "dorm table",
-      "medium shot"
+      "low table"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

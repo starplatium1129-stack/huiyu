@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_library_study_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 776,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "怀抱厚厚精装书倚在书架旁，透过书架空隙不经意回眸",
     "camera": "medium shot, standing beside library shelves and peeking between books",
@@ -20,13 +20,14 @@
     "mood": "静谧知性与心跳加速",
     "negativeTokens": [],
     "outfitId": "seirei_uniform",
-    "promptProse": "Alya pauses beside the library shelves holding thick reference books against her uniform, quietly peeking through a gap at her studying companion across the aisle. A small smile lifts her lips in medium view. Book spines overlap close to her shoulder and the study desk remains farther behind. Afternoon sun reaches between shelves onto her silver hair and the book corners, with dust visible in the warm beam.",
+    "promptProse": "She peeks through a shelf gap at her companion studying across the aisle. Afternoon sunlight reaches her hair and the books in her arms.",
     "promptTokens": [
-      "afternoon",
       "library",
       "school uniform",
-      "reference books",
+      "holding books",
       "peeking",
+      "smile",
+      "afternoon",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

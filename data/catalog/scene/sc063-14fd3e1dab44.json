@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc063",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc063",
     "title": "男友视角下的赖床许可",
@@ -41,11 +41,11 @@
       "头像",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, grey sleep t shirt, blanket, resting on partner, messy hair, bedroom, autumn morning, close up",
-    "negative": "transparent sleep shirt, extra foreground faces, merged hair and eyes",
+    "prompt": "1girl, shiki_natsume, grey oversized t-shirt, blanket, resting on person, messy hair, bedroom, morning, close up",
+    "negative": "see-through clothes",
     "storyJa": "【夏目・彼氏から見たベッドの許可】秋の早朝、夏目があなたの胸に横たわり、今日の旅程を確認します。彼女は明らかに起きていますが、起き上がることを拒否します。あなたが彼女にコケティッシュな態度をとっているのかと尋ねると、彼女は金色の目を上げました。目の横がゆっくりと赤くなったが、それでも顎を元の位置に戻した。――「この枕が合格か確かめていただけ。結論は、ぎりぎり合格……だから今日は、あと五分だけ抱いていてもいい。」",
     "rating": "R15",
-    "animaCaption": "Shiki Natsume rests against the viewer beneath the comforter in an oversized grey sleep T-shirt, lifting her sleepy face into the near view. Her loose black hair crosses the pillow without hiding the eye-side mole. The blanket leads back toward the headboard and softly lit bedroom window. Warm autumn light touches her cheek and hair strands, while the pillow and fabric folds retain gentle contact shadows around the resting pose.",
+    "animaCaption": "She lifts her sleepy face toward the viewer from beneath the comforter, resting against them.",
     "auditRevision": "careful-batch01-2026-08-27"
   }
 }

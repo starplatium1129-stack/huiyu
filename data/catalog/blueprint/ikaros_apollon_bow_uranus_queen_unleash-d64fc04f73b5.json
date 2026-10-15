@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_apollon_bow_uranus_queen_unleash",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1210,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在空中完全拉满金色阿波罗光之巨弓，深红光子翼喷薄能量，眼神冷静凌厉如霜",
     "camera": "dynamic low angle, sweeping wide shot, epic warhead impact",
@@ -20,15 +20,17 @@
     "mood": "毁灭霸气",
     "negativeTokens": [],
     "outfitId": "apollon_battle",
-    "promptProse": "Ikaros hovers in the smoke-filled night sky with her strategic combat form released, drawing the enormous golden Apollon bow toward an unseen target. Her altered left eye aligns with the aim; crimson photon wings sweep outward behind her armor. Use a low wide view across the damaged airspace. The blazing arrow illuminates her face and bow grip, while red wing energy colors smoke layers farther behind.",
+    "promptProse": "Ikaros draws the golden Apollon bow toward an unseen target, the arrow lighting her face as crimson wings spread through the smoke.",
     "promptTokens": [
-      "Ikaros",
-      "Apollon",
-      "energy bow",
-      "crimson energy wings",
-      "battle armor",
-      "night combat",
-      "wide low angle"
+      "armor",
+      "energy wings",
+      "bow",
+      "aiming",
+      "flying",
+      "smoke",
+      "night",
+      "wide shot",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -43,6 +45,8 @@
       "laser"
     ],
     "timeOfDay": "夜晚",
-    "title": "伊卡洛斯 · 空之女王阿波罗天诛之箭"
+    "title": "伊卡洛斯 · 空之女王阿波罗天诛之箭",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

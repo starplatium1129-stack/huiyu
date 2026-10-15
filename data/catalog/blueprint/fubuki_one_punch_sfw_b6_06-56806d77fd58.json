@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1594,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_06",
     "title": "吹雪 · 书房的人事档案",
@@ -31,14 +31,18 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Fubuki annotates the team personnel assessments in her study, pausing to draw a star beside a promising name. A dark-green cardigan covers her cream blouse above tailored black trousers, pearl earrings catching the focused light. The medium portrait includes the spread forms and city map on the wall behind. Her desk lamp illuminates the pen hand and page surfaces, with layered paper shadows at the table edge and a darker map border beyond.",
+    "promptProse": "She marks a star beside a promising team member in the personnel assessments.",
     "promptTokens": [
       "fubuki_(one-punch_man)",
-      "Fubuki",
+      "1girl",
+      "solo",
       "green cardigan",
       "cream blouse",
-      "personnel forms",
-      "city map",
+      "pearl earrings",
+      "writing",
+      "paperwork",
+      "map",
+      "study",
       "desk lamp",
       "medium shot"
     ],

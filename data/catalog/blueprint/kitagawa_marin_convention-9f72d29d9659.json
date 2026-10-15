@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_convention",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 495,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "身着精致的黑紫哥特萝莉女仆装，手提洋伞，紫瞳中闪烁着对角色极致热爱的自信光芒",
     "camera": "cowboy shot, striking gothic lolita cosplay pose",
@@ -23,18 +23,16 @@
       "readable banners"
     ],
     "outfitId": "gothic_lolita",
-    "promptProse": "Marin poses confidently as Shizuku Kuroe, holding a parasol beside her handmade black gothic-lolita dress with lace and a hair bow. The cowboy view puts her in front of several convention photographers, their cameras and the hall's high structure farther back. Overhead spotlights reveal velvet and lace edges; intermittent camera flashes illuminate her enthusiastic expression and parasol underside, casting changing shadows across the floor without obscuring the cosplay silhouette.",
+    "promptProse": "Marin poses confidently with her parasol in Shizuku cosplay as convention photographers gather before her.",
     "promptTokens": [
       "Marin",
-      "convention photographers",
       "Shizuku Kuroe cosplay",
-      "black frilled dress",
-      "lace",
-      "hair bow",
+      "black dress",
+      "frills",
       "parasol",
-      "convention hall",
-      "spotlights",
-      "cowboy shot"
+      "photographers",
+      "convention",
+      "spotlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

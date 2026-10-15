@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_clubroom",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 338,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_yukino_clubroom",
     "title": "雪之下雪乃 · 侍奉部教室",
@@ -29,28 +29,27 @@
       "afternoon_window_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino remains in the wooden chair beside the Service Club window as the door opens, one hand supporting her paperback and the other turning a page. Fresh black tea rests on the desk near her neat navy uniform. The medium view keeps chair, book and cup together with the room's doorway farther back. Afternoon light passing through the curtain highlights long black hair and page edges, with soft cup shadows on the desk.",
+    "promptProse": "Yukino keeps reading beside the window as the clubroom door opens, supporting the paperback with one hand and turning the page with the other.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yukino",
-      "navy school uniform",
+      "school uniform",
       "red hair ribbons",
       "paperback",
-      "turning page",
+      "page turning",
       "black tea",
-      "Service Club window",
-      "afternoon",
-      "medium shot"
+      "chair",
+      "clubroom",
+      "afternoon"
     ],
     "negativeTokens": [
-      "readable text"
+      "text"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "school_uniform",
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

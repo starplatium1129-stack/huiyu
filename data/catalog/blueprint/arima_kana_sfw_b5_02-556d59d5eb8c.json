@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_sfw_b5_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:54:56.677548700+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在地板标记旁喝水，看着镜中自己重新鼓劲。",
     "adult": false,
@@ -23,18 +23,16 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_practice",
-    "promptProse": "Kana sits beside the floor tape marks during a rehearsal pause, drinking from her water bottle while watching her reflected face shift between frustration and resolve. Her charcoal T-shirt, burgundy track trousers and white sneakers remain unchanged. The medium view includes the single corresponding mirror reflection and marked practice space. Studio lights reveal the tape edges and bottle, with soft floor shadows beneath her bent knees and white sneakers.",
+    "promptProse": "During a rehearsal break she drinks water and studies her single corresponding reflection. Floor tape marks remain visible beside her knees.",
     "promptTokens": [
-      "daytime",
-      "rehearsal studio",
-      "sitting on floor",
-      "rehearsal pause",
+      "dance studio",
       "mirror",
-      "charcoal T shirt",
-      "burgundy tracksuit trousers",
+      "reflection",
+      "T-shirt",
+      "track pants",
       "sneakers",
-      "water bottle",
-      "medium shot"
+      "sitting on floor",
+      "water bottle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

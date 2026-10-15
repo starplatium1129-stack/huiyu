@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_academy_courtyard_fountain",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 471,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在喷泉边沿短暂小憩，墨镜挂在衣领",
     "adult": false,
@@ -23,18 +23,14 @@
       "sunglasses worn"
     ],
     "outfitId": "silent_fitz_uniform_no_sunglasses",
-    "promptProse": "Sylphiette rests on the marble fountain rim in her white Fitz academy uniform and cape, sunglasses hanging from the collar rather than hiding her eyes. The medium portrait includes fountain water beside her and green campus lawns beyond the seated pause. Clear sunlight brightens short white hair and the marble edge, with rippling water reflections flickering across the uniform sleeve and soft shade under the fountain's curved rim.",
+    "promptProse": "Sylphiette rests on the fountain rim with her eyes uncovered, sunlight reflected over her sleeve.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Sylphiette",
-      "Fitz white academy uniform",
+      "white uniform",
       "cape",
       "sunglasses at collar",
-      "marble fountain rim",
-      "campus lawn",
-      "daylight",
-      "medium portrait"
+      "fountain",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_morning_bedroom_dakimakura_cuddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1297,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "albedo_morning_bedroom_dakimakura_cuddle",
     "title": "雅儿贝德 · 大坟墓晨间的等身抱枕赖床",
@@ -30,15 +30,15 @@
       "drooling",
       "flustered"
     ],
-    "promptProse": "Albedo curls on her lavish bed in a black silk camisole nightgown, hugging the handmade Ainz body pillow and pressing her cheek into it. Her wings rest over the ruffled sheets; golden eyes lift in sudden bashful surprise. A high cowboy view includes carved bedposts and the chamber window behind. Morning light through Gothic tracery spreads patterned gold across the pillow and feather tips, leaving folds under her arms shaded.",
+    "promptProse": "She hugs the handmade Ainz body pillow on the bed, her wings resting over the sheets. Gothic window tracery casts patterned light across them.",
     "promptTokens": [
-      "Albedo",
-      "black silk nightgown",
-      "Ainz body pillow",
-      "black wings",
       "bedroom",
+      "black nightgown",
+      "hugging pillow",
+      "dakimakura",
+      "black wings",
       "morning",
-      "high angle"
+      "from above"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_morning_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1407,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "跪坐晨光软床身体前倾，绯红蕾丝内衣半褪散发垂落，红瞳湿润娇嗔主动展露",
     "adult": true,
@@ -23,29 +23,18 @@
     "lighting": "晨光透过窗帘缝隙在肌肤上勾出柔光",
     "location": "四宫家寝室大床",
     "mood": "傲娇主控、不服输的心动",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
-    "nsfwProse": "Kneeling forward on the silk mattress in morning light with her crimson lace lingerie pushed below modest bare breasts, Kaguya Shinomiya arches her slender waist with haughty, breathless precision.",
+    "negativeTokens": [],
+    "nsfwProse": "",
     "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Kneeling forward on the holiday morning bed, Shinomiya Kaguya leans in with deliberate, calculated poise while her crimson lace lingerie sits pushed below her modest chest. Her loose black hair curtains down around her shoulders as she insists every tempo is part of her plan and you are not allowed to skip a beat, red eyes gone glassy even as her competitive tone refuses to yield. Morning light seeps through curtain gaps across flushed skin in a tender vertical low-angle solo composition.",
+    "promptProse": "Adult Kaguya kneels forward on the silk bed with her lace bra below her breasts, holding a deliberate pose in the curtain-filtered morning light.",
     "promptTokens": [
-      "bedroom",
+      "red lingerie",
+      "bra down",
+      "kneeling",
+      "leaning forward",
       "bed",
-      "morning_light",
-      "curtains",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "morning",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -61,20 +50,6 @@
     ],
     "timeOfDay": "假日早晨",
     "title": "四宫辉夜 · 假日晨光的主动诱惑·「今天的胜负……由我决定」",
-    "nsfwTokens": [
-      "pov",
-      "kneeling",
-      "on_bed",
-      "silk_sheets",
-      "leaning_forward",
-      "crimson_lingerie",
-      "lace_bra",
-      "bare_breasts",
-      "pink_nipples",
-      "pussy_juice",
-      "heavy_blush",
-      "parted_lips",
-      "red_eyes"
-    ]
+    "nsfwTokens": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_border_camp",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 651,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "披银甲玄袍立于帐前望月",
     "camera": "dynamic full-body shot, low angle",
@@ -19,18 +19,16 @@
       "daylight"
     ],
     "outfitId": "fangqiu_juan",
-    "promptProse": "Ling stands before a border army tent at midnight, wearing silver armor over her dark robe and white beast-patterned lapels. Jade ornaments and broad sleeves move in the night wind. The low full-body view places the tent opening behind her and distant mountains beyond the camp. Silver moonlight traces armor edges and horns; far campfire glow touches the tent canvas without overwhelming the cool foreground.",
+    "promptProse": "Ling stands before the camp tent in silver armor and a dark robe, watching the midnight moon.",
     "promptTokens": [
-      "midnight",
-      "border camp",
-      "tent",
       "silver armor",
       "dark robe",
       "jade",
       "wide sleeves",
+      "tent",
+      "military camp",
       "moonlight",
-      "full body",
-      "low angle"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

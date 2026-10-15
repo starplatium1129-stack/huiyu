@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_library_think",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 881,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "靠书架沉思",
     "adult": false,
@@ -26,14 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "seminar_uniform",
-    "promptProse": "Rio leans beside a metal archive divider and examines an old record chip, her thoughtful gaze lowered above the silver watch at her wrist. Her Seminar sweater and pleated skirt remain in medium view, with shelves narrowing into the darker central archive behind. Recessed ceiling lights pick out the chip edges and watch glass, separating her black hair from the metal while deeper shelving stays quietly shaded.",
+    "promptProse": "Rio examines an old record chip beside the metal archive shelves under recessed ceiling lights.",
     "promptTokens": [
-      "indoor",
+      "Rio",
+      "turtleneck",
+      "skirt",
+      "watch",
+      "data chip",
       "archive",
-      "metal shelves",
-      "record chip",
-      "high neck sweater",
-      "silver watch",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

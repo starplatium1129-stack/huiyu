@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makima",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "makima",
     "profile": {
@@ -104,13 +104,10 @@
         "makima (chainsaw man)",
         "1girl",
         "solo",
-        "pink_hair",
-        "single_braid",
-        "long_braid",
-        "yellow_eyes",
-        "ringed_eyes",
-        "concentric_circles",
-        "chainsaw_man"
+        "pink hair",
+        "single braid",
+        "ringed eyes",
+        "chainsaw man"
       ],
       "exactTokens": [
         "makima (chainsaw man)"

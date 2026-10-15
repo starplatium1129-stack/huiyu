@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_entry_plug",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1009,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端坐于驾驶舱操纵台前，神情安详宁静",
     "camera": "medium shot, eye level",
@@ -20,14 +20,13 @@
     "mood": "空灵神性",
     "negativeTokens": [],
     "outfitId": "plugsuit_white",
-    "promptProse": "Rei sits upright in Unit-00's LCL-filled entry plug, both hands resting lightly on the controls in her white pilot plugsuit with orange-and-black technical accents. Her short blue hair drifts in the liquid around red interface clips. The eye-level medium view places controls before her and cockpit structures behind. Orange LCL refraction warms the suit surface, while cool holographic neural pulses shine on her calm red eyes and glove edges.",
+    "promptProse": "She rests both hands on the controls inside Unit-00's liquid-filled cockpit. Orange LCL refraction meets cool interface light.",
     "promptTokens": [
-      "inside entry plug",
-      "Rei",
+      "cockpit",
       "white plugsuit",
-      "orange black accents",
       "LCL",
       "control sticks",
+      "sitting",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

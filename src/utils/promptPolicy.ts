@@ -25,7 +25,7 @@ export type { MutualGroupCategory, MutualGroupHit, PromptReport } from './prompt
 import { framingShot, type PromptScene } from './sceneFraming.ts'
 export type { PromptScene } from './sceneFraming.ts'
 // Prompt policy — 从重构前 tools/prompt-policy.js + prompt-builder/prompt.js 迁移
-// 负责：Danbooru 标签规范化、模型 profile 质量/负面前缀、LoRA 权重策略、
+// 负责：标签格式化、模型 profile 质量/负面前缀、LoRA 权重策略、
 //       framing 冲突消解、场景模板净化、结构健康报告
 
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
@@ -317,13 +317,12 @@ export function adaptNegative(
   return dedupeSegment(tokens.join(', '), new Set())
 }
 
-/** 紧凑手部/解剖/文字/白边留白保护词：任何 profile 负面都必须带上，防止场景无负面时裸奔或出现白边框/画面缩角。 */
+/** SD 历史默认保护；Anima 从模型基础负面与场景明确排除项开始。 */
 export const NEGATIVE_PROTECTION = 'bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature, border, white_border, framed, letterbox, pillarbox, padding, margin, inset, comic_panel, split_screen'
 
 /**
- * 模型原生负面统一装配（App 与 corpus 测试共用）：
- *   官方前缀 + 场景非样板排除词（generic boilerplate 由 replace 策略移除）
- *   + 紧凑手/解剖/文字保护 + rating 安全。
+ * 模型原生负面统一装配：profile 基础 + 场景排除项 + rating。
+ * SD 额外保留历史保护词；Anima 不预先堆叠手部、边框和分格负面。
  * Krea 恒空；Anima 负面独立于 SD 负面开关；Aesthetic 额外剥掉 score 词。
  */
 export function assembleNegative(
@@ -337,9 +336,9 @@ export function assembleNegative(
   if (engine === 'sd' && context.sdNegativeEnabled === false) return ''
   const profileNegative = modelNegativePrompt(profile, scene?.negative || '', engine)
   const custom = engine === 'sd' ? String(context.custom || '').trim() : ''
-  const merged = custom
-    ? mergeTokenText(custom, mergeTokenText(NEGATIVE_PROTECTION, profileNegative))
-    : mergeTokenText(NEGATIVE_PROTECTION, profileNegative)
+  const merged = engine === 'sd'
+    ? mergeTokenText(custom, NEGATIVE_PROTECTION, profileNegative)
+    : profileNegative
   const adapted = adaptNegative(merged, scene, { shot: context.shot, character: context.character })
   const formatted = engine === 'anima' ? formatPromptForProfile(adapted, profile, engine) : adapted
   if (profile?.strip_quality_tokens === true) {

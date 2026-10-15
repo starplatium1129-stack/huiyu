@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1748,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_01",
     "title": "丰川祥子 · 观众席上的乐团起点",
@@ -30,20 +30,18 @@
       "soft_spotlight",
       "medium_shot"
     ],
-    "promptProse": "Sakiko Togawa listens from the school auditorium’s first-row side seat, both hands resting on the folded program in her lap. Her navy blazer and ribbon-tied blue hair remain neat as golden-yellow eyes lift toward the off-frame stage with a small inspired smile. In the medium portrait, empty padded seats continue beside her and recede behind, while the side aisle opens toward the unseen stage in front. A gentle side spotlight touches her cheek and the program edge. The nearer chair arm leaves a small shadow on the seat, and the repeated chair backs become darker farther from the stage.",
+    "promptProse": "Sakiko listens from the first-row side seat with both hands on her program, a spotlight reaching her inspired smile.",
     "promptTokens": [
       "Sakiko Togawa",
-      "navy school blazer",
-      "audience chair",
-      "folded program",
-      "listening",
+      "school blazer",
+      "program",
+      "sitting",
       "auditorium",
       "medium shot"
     ],
     "negativeTokens": [
       "piano",
       "keyboard",
-      "playing instrument",
       "microphone",
       "standing on stage"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurokawa_akane",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kurokawa_akane",
     "profile": {
@@ -125,9 +125,7 @@
         "solo",
         "blue_purple_hair",
         "long_hair",
-        "straight_hair",
         "blue_purple_eyes",
-        "actress",
         "star_eyes",
         "oshi_no_ko"
       ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_moonlit_wild_hunt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 670,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "手持苍蓝电弧双刃凌空跃起斩击，白狼尾狂甩，狂气大笑露出尖牙",
     "camera": "wide shot, low angle, explosive dynamic action",
@@ -20,17 +20,16 @@
     "mood": "狂放狂乱",
     "negativeTokens": [],
     "outfitId": "standard_mercenary",
-    "promptProse": "Lappland leaps above the ruined Siracusan amphitheater, gripping both swords and baring sharp teeth in a wild grin. Keep the ragged mercenary coat, wind-lifted silver hair and low-angle wide action framing. A broken arch occupies the near side; staggered arena tiers recede behind her airborne figure, with the dark central arena visible below. The blood moon traces the upper rim of the ruin. Blue Originium arcs already running along the blades illuminate her gloves and nearby cloth folds, and a brief blue reflection catches the nearest cracked stone edge without filling the entire arena with uniform light.",
+    "promptProse": "Lappland leaps through the colosseum ruins with both blades arcing blue lightning beneath the blood moon.",
     "promptTokens": [
-      "night",
-      "colosseum ruins",
-      "blood moon",
-      "dual swords",
+      "coat",
+      "dual wielding",
+      "swords",
       "blue lightning",
-      "mercenary coat",
       "jumping",
-      "wide shot",
-      "low angle"
+      "ruins",
+      "blood moon",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

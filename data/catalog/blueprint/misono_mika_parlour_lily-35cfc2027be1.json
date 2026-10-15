@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_parlour_lily",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 890,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在茶具旁整理白蔷薇，回望微笑",
     "adult": false,
@@ -26,15 +26,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "tea_party_dress",
-    "promptProse": "Mika props her chin in both hands in the Pater faction parlour, smiling at the teacher's paperwork beyond her teacup. A freshly picked white rose rests beside the cup, her royal gown and white shawl visible around the close frame. Cool side-window light catches rose petals and her pink hair, leaving the velvet chair farther behind and soft hand shadows beneath her cheeks.",
+    "promptProse": "Mika props her chin in both hands and smiles at the teacher's paperwork beyond her teacup and white rose.",
     "promptTokens": [
-      "daytime",
-      "Pater faction parlour",
-      "white gold gown",
-      "white rose",
-      "tea",
+      "white gold dress",
+      "shawl",
       "chin in hands",
-      "close up"
+      "teacup",
+      "white rose",
+      "parlor",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_mansion_tending_wounds",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "跪坐替你换药缠绷带，指尖轻柔紫瞳认真，微笑叮嘱",
     "adult": false,
@@ -26,16 +26,15 @@
     "mood": "温柔叮嘱、暗藏心疼",
     "negativeTokens": [],
     "outfitId": "official_demon_slayer_uniform",
-    "promptProse": "Shinobu Kocho kneels opposite her seated companion in the Butterfly Mansion treatment room, carefully changing the dressing on his injured arm. Her violet eyes follow the wound while the butterfly haori falls beside her black uniform. The medium two-shot includes the cushion and medicine tray between them. Warm paper-lantern light filtered through shoji illuminates their hands and white bandage, with soft sleeve shadows preserving the careful contact.",
+    "promptProse": "Shinobu changes the dressing on her seated companion's arm, the medicine tray between them in warm lantern light.",
     "promptTokens": [
       "kochou_shinobu",
-      "Shinobu Kocho",
       "butterfly haori",
-      "wound dressing",
+      "bandages",
       "kneeling",
-      "Butterfly Mansion",
-      "night",
-      "two-shot"
+      "treatment room",
+      "lantern",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_dog_park",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 416,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "makima_dog_park",
     "title": "玛奇玛 · 遛狗",
@@ -32,21 +32,17 @@
       "grounded_shadows",
       "medium_wide_shot"
     ],
-    "promptProse": "Two loose leashes connect the dogs beside Makima to her left hand as she crouches at the lawn's edge. Her right hand strokes the Akita's head; the husky stands quietly on her other side. A light sage field jacket, ivory turtleneck and charcoal wide-leg trousers make the pose comfortable. Keep both dogs entirely inside the medium-wide landscape view. Bent blades of grass beneath their paws occupy the foreground. A stone path runs behind them past a drinking fountain and wooden bench, narrowing into deeper tree shade. Afternoon sun enters through foliage from the upper left, lighting the Akita's ear tips, her fingers and jacket shoulder. Grass-reflected light keeps the dogs' faces and her ringed eyes visible; distinct paw shadows and thin leash shadows stay attached to the lawn rather than floating beneath them.",
+    "promptProse": "Makima pets the Akita with her right hand while holding both slack leashes in her left; the husky stands beside her.",
     "promptTokens": [
       "1girl",
       "solo",
-      "crouching on grass",
-      "petting Akita",
-      "husky standing beside her",
-      "two loose leashes",
-      "compressed grass",
-      "stone park path",
-      "water fountain",
-      "wooden bench",
-      "tree canopy",
-      "dappled sunlight",
-      "medium wide shot"
+      "crouching",
+      "petting dog",
+      "akita",
+      "husky",
+      "leash",
+      "park",
+      "dappled sunlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

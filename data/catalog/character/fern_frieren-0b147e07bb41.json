@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fern_frieren",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fern_frieren",
     "profile": {
@@ -96,13 +96,11 @@
       "identityTokens": [
         "fern (sousou no frieren)",
         "sousou_no_frieren",
-        "fern",
         "1girl",
         "solo",
         "long_hair",
         "purple_hair",
         "straight_bangs",
-        "long_sidelocks",
         "purple_eyes"
       ],
       "identityProse": "Fern from Frieren: Beyond Journey's End, a calm and composed human mage with long straight purple hair, straight bangs and long sidelocks, violet eyes, delicate facial features and a quietly attentive manner",

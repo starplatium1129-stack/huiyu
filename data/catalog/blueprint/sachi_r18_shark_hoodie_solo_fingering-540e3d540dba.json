@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_r18_shark_hoodie_solo_fingering",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1200,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "sachi_r18_shark_hoodie_solo_fingering",
     "title": "小岭幸 · 鲨鱼睡衣拉链大敞的私密自抚",
@@ -30,47 +30,28 @@
       "heavy_blush",
       "teary_eyes"
     ],
-    "promptProse": "Soft dorm light surrounds adult Sachi curled alone on a bed in an oversized shark hoodie. The zipper is open below bare breasts and dark shorts loosen above one raised thigh, with the plush hood framing her face. She grips a sleeve cuff with one hand and fingers herself beneath the hem with the other. Dark hair, blue eyes and a precise expression dissolve into tears and a shy blush. Vertical cozy solo portrait, no text or extra people.",
+    "promptProse": "Sachi grips a sleeve cuff while her other hand moves beneath the hoodie hem. The plush shark hood frames her face as she curls on the bed.",
     "promptTokens": [
-      "bedroom",
-      "futon",
+      "adult",
+      "1girl",
+      "solo",
+      "shark hoodie",
+      "unzipped",
+      "topless",
+      "open shorts",
+      "curled up",
+      "knee up",
       "masturbation",
-      "fingering",
-      "onesie",
-      "open_clothes",
-      "large_breasts",
-      "heavy_blush",
-      "teary_eyes",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "bed",
+      "blush"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "masturbation",
-      "fingering",
-      "large_breasts",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

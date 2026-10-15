@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_cliff_sunset",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 558,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "停驻在崖边观景处，端坐于轮椅静赏晚霞",
     "camera": "wide shot, back three-quarter",
@@ -17,20 +17,19 @@
     "mood": "辽阔悠远",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Lemuen parks her wheelchair beside the clifftop's low stone rail, hands folded over the warm lap blanket and dark tailored overcoat while she watches the sunset. Hair moves in the evening wind beneath halo and softly glowing translucent wings. The wide three-quarter rear view opens toward orange-violet clouds below the lookout. Their reflected light warms the stone rail and chair frame, while softer wing glow separates her from the darker near ground.",
+    "promptProse": "Lemuen rests with folded hands in her wheelchair beside the clifftop railing, quietly watching the sunset.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Lemuen",
-      "dark overcoat",
+      "coat",
       "lap blanket",
       "wheelchair",
       "folded hands",
       "halo",
-      "translucent wings",
-      "clifftop railing",
+      "wings",
+      "cliff",
       "sunset",
-      "wide rear view"
+      "from behind"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

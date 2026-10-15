@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_festival_apple_candy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1484,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chitanda_festival_apple_candy",
     "title": "千反田爱瑠 · 夏夜祭典苹果糖的娇憨浅笑·「折木同学，这个苹果糖分你咬一口」",
@@ -30,16 +30,16 @@
       "blush",
       "romantic"
     ],
-    "promptProse": "Eru Chitanda offers a bright red candy apple toward Oreki while carrying her goldfish bag through the festival lane. Her pale-wisteria furisode, golden obi and floral-pinned chignon remain formal despite the busy summer scene. The medium view includes lantern rows and the goldfish stall behind their close figures. Warm red paper-lantern light colors her blush and apple glaze, with smaller reflections catching the bag's rippling water.",
+    "promptProse": "She offers the apple to Oreki while carrying the goldfish bag through the lantern-lined lane. Warm reflections cross the sugar and water.",
     "promptTokens": [
-      "chitanda_eru",
-      "Eru Chitanda",
+      "couple",
+      "festival",
       "wisteria furisode",
+      "gold obi",
       "goldfish bag",
       "candy apple",
-      "Oreki",
-      "festival",
-      "medium shot"
+      "offering",
+      "lantern"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

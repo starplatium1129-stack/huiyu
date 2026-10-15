@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1705,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "maomao_sfw_b9_01",
     "title": "猫猫 · 药房的调配",
@@ -30,16 +30,14 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Maomao compares sealed herb packets with a small balance between the pharmacy drawers and workbench, plant powder dusting her nose. Her green sleeves are tied back over the cream inner collar, blue eyes intent. The medium portrait includes orderly tools and wooden drawer fronts, without readable recipes or doses. Window light falls on the packets and scale pan, glinting along its edge and leaving clear but soft drawer-handle shadows behind her.",
+    "promptProse": "Maomao compares the sealed herb packets on a small balance, a trace of plant powder on her nose.",
     "promptTokens": [
       "maomao_(kusuriya_no_hitorigoto)",
-      "Maomao",
-      "green work jacket",
+      "green jacket",
       "herb packets",
-      "small balance",
-      "pharmacy drawers",
-      "window light",
-      "medium shot"
+      "balance scale",
+      "medicine cabinet",
+      "pharmacy"
     ],
     "negativeTokens": [
       "readable dosage",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_throne_room_hermes_armor_strike",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1296,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "albedo_throne_room_hermes_armor_strike",
     "title": "雅儿贝德 · 赫尔墨斯三层黑铠之威",
@@ -28,14 +28,15 @@
       "curved_horns",
       "intense_gaze"
     ],
-    "promptProse": "Before Nazarick's raised throne, Albedo plants her enormous Bardiche into the marble, cracks radiating from its impact. Hermes Trismegistus black plate encloses her body; the helmet retracts to show white horns and resolute golden eyes above spread black wings. The low cowboy view makes the steps and tall hall recede behind her. Green chandelier light glints across pauldrons, while purple seams illuminate nearby armor edges and fractured stone.",
+    "promptProse": "She plants her Bardiche into the marble before the raised throne, cracks spreading from the impact. Green chandelier light reflects across her armor.",
     "promptTokens": [
-      "Albedo",
-      "Hermes Trismegistus armor",
-      "Bardiche",
-      "cracked marble",
-      "throne hall",
-      "low angle"
+      "black armor",
+      "horns",
+      "black wings",
+      "polearm",
+      "cracked floor",
+      "throne room",
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

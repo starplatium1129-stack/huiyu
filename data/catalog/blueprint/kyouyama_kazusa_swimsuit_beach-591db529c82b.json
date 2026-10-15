@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_swimsuit_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "拿冰淇淋站在海边",
     "adult": false,
@@ -26,14 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Kazusa holds a double scoop of mint-chocolate ice cream on the sunny beach, wearing her black swimsuit and cat-ear swim hood with its small red ribbon. She looks toward the teacher with pleased pink eyes. The eye-level medium view leaves a parasol nearby and sparkling water behind. Summer sun illuminates the melting scoop edges and her raised hand, while the hood casts a gentle shadow around her forehead.",
+    "promptProse": "Kazusa stands by the sea enjoying mint-chocolate ice cream beneath her cat-ear swim hood.",
     "promptTokens": [
-      "summer daytime",
-      "beach",
       "black swimsuit",
-      "cat ear swim hood",
+      "hood",
       "mint chocolate ice cream",
-      "medium shot"
+      "beach",
+      "summer"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

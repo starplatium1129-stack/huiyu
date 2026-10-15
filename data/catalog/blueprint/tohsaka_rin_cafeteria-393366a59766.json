@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_cafeteria",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 152,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tohsaka_rin_cafeteria",
     "title": "远坂凛 · 食堂午餐",
@@ -29,18 +29,14 @@
       "midday_light",
       "medium_shot"
     ],
-    "promptProse": "Seated opposite the viewer, Rin sets down her cafeteria tray and nudges a tamagoyaki dish forward with one hand while tucking hair beside her ribbon with the other. A restrained, embarrassed smile softens her neat navy uniform. The medium view includes the offered dish and distant tables beyond her brown twintails. Midday window light catches the egg's surface and her collar, leaving gentle tray shadows on the table.",
+    "promptProse": "Rin nudges the egg dish toward the viewer while tucking her hair aside at the midday table.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Rin",
-      "navy school uniform",
-      "ribbon",
+      "school uniform",
+      "hair ribbon",
       "lunch tray",
-      "tamagoyaki dish",
-      "tucking hair",
+      "tamagoyaki",
       "cafeteria",
-      "midday",
       "medium shot"
     ],
     "negativeTokens": [],

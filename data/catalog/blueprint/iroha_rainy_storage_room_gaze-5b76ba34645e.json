@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_rainy_storage_room_gaze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 361,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "iroha_rainy_storage_room_gaze",
     "title": "一色彩羽 · 雨天收好的活动横幅",
@@ -29,18 +29,15 @@
       "overhead_light",
       "medium_shot"
     ],
-    "promptProse": "Iroha smooths the damp event banner across her knees and rolls it evenly, pausing at a thunder rumble before holding the finished bundle with deliberate composure. Cream waterproof jacket, red shirt and charcoal cargo trousers retain the working outfit. The medium view includes stacked equipment and rain at the high window. Broad soft overhead light illuminates her face and banner folds, casting contained stool and equipment shadows rather than hiding her expression.",
+    "promptProse": "Iroha rolls a damp event banner across her knees in the equipment room. She pauses at the thunder, then holds the bundle with practiced composure.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Iroha",
-      "cream utility jacket",
-      "red shirt",
-      "charcoal cargo trousers",
-      "rolled event banner",
-      "equipment room stool",
-      "rainy window",
-      "overhead light",
+      "sitting",
+      "banner",
+      "jacket",
+      "storage room",
+      "rain",
       "medium shot"
     ],
     "negativeTokens": [],

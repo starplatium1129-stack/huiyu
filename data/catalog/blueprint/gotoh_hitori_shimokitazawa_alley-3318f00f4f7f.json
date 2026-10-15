@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_shimokitazawa_alley",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1002,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "背着吉他包在街道前行，回首害羞张望",
     "camera": "cowboy shot, eye level",
@@ -20,13 +20,14 @@
     "mood": "羞怯小心",
     "negativeTokens": [],
     "outfitId": "pink_tracksuit",
-    "promptProse": "Hitori carefully follows the curb through a Shimokitazawa backstreet, a heavy black guitar bag over her pink tracksuit jacket and school skirt. Her blue-and-yellow hair clips remain beside windblown pink hair. The eye-level cowboy view layers graffiti walls and vintage shop signs down the lane. Afternoon sunlight through street trees breaks across her sleeves and bag, leaving patterned leaf shadows on the curb under her sneakers.",
+    "promptProse": "Hitori follows the curb through a Shimokitazawa backstreet with the heavy guitar bag over her shoulder.",
     "promptTokens": [
-      "afternoon",
-      "Shimokitazawa alley",
-      "pink tracksuit jacket",
-      "guitar bag",
       "walking",
+      "guitar case",
+      "alley",
+      "graffiti",
+      "shop",
+      "afternoon",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
@@ -42,6 +43,8 @@
       "blushing"
     ],
     "timeOfDay": "午后",
-    "title": "后藤一里 · 下北泽街巷漫步"
+    "title": "后藤一里 · 下北泽街巷漫步",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

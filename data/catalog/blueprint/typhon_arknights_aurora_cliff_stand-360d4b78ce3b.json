@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_aurora_cliff_stand",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 699,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "typhon_arknights_aurora_cliff_stand",
     "characterId": "typhon_arknights",
@@ -31,16 +31,16 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "blue hour",
-      "rooftop",
-      "low railing",
+      "Typhon",
       "hunter outfit",
-      "stars",
-      "two cocoa cups",
+      "railing",
       "pointing",
+      "cocoa",
+      "rooftop",
+      "blue hour",
       "cowboy shot"
     ],
-    "promptProse": "After dinner, Typhon leans on the low rooftop railing in her hunter outfit, pointing toward a newly visible star before glancing back at the viewer. Two cocoa cups sit together on the rail. The eye-level cowboy view opens over warm city windows. Blue-hour sky cools her hair and coat shoulders; the rooftop lamp warms her pointing fingers and both cup handles above the shadowed rooftop.",
+    "promptProse": "Typhon points out the first star and glances back, two cocoa cups resting together on the rooftop rail.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

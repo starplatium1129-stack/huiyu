@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_canteen_hotpot",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 727,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "两眼放光地盯着九宫格辣锅里翻滚的红油与辣椒，熟练地捞起一块爽脆毛肚塞入口中，辣得直哈气却大呼痛快",
     "camera": "medium shot",
@@ -20,16 +20,15 @@
     "mood": "好胜可爱",
     "negativeTokens": [],
     "outfitId": "street_cafe_sweet",
-    "promptProse": "At the base canteen table, Laevatain lifts a piece of tripe from the divided spicy hotpot with chopsticks, cheeks warm as she blows out a breath after tasting it. Her cropped gray techwear jacket and black utility skirt retain their cafe outfit. The medium view places bubbling red oil before her and seating farther back. Bright cafeteria light illuminates rising steam and catches the oil beside the chili peppers.",
+    "promptProse": "Laevatain lifts tripe from the spicy hotpot with her chopsticks, grinning through the heat.",
     "promptTokens": [
-      "daytime",
-      "cafeteria",
-      "spicy hotpot",
       "halter top",
-      "gray techwear jacket",
-      "utility skirt",
+      "jacket",
+      "skirt",
       "chopsticks",
-      "medium shot"
+      "spicy food",
+      "hot pot",
+      "cafeteria"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

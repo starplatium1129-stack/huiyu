@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1676,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_02",
     "title": "橘美花莉 · 放学天台的独占视线",
@@ -33,13 +33,13 @@
       "pouting",
       "medium_shot"
     ],
-    "promptProse": "Mikari Tachibana holds the cold red-tea can against Okumura's cheek at the rooftop fence, puffing her cheeks as she complains about his club plans. Her lavender cardigan and fashionable skirt move with the warm breeze, pink ribbon ties beside chestnut hair. The medium view includes both figures and the wire mesh behind. Sunset warms her profile and cardigan edge, glinting on the can while casting fence shadows along the rooftop floor.",
+    "promptProse": "Mikari presses a cold tea can to Okumura's cheek and complains with puffed cheeks beside the sunset-lit fence.",
     "promptTokens": [
       "Mikari Tachibana",
-      "lavender cardigan",
-      "cold tea can",
+      "cardigan",
+      "tea can",
       "Okumura",
-      "school rooftop",
+      "rooftop",
       "sunset",
       "medium shot"
     ],

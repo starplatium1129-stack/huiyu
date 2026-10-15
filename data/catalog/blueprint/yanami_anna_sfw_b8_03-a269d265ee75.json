@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_03",
     "title": "八奈见杏菜 · 家庭餐厅薯条作战会议",
@@ -30,15 +30,13 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Anna Yanami eats fries while listening to her friend at the family-restaurant table, stopping mid-bite with wide eyes at the crucial part. Her white school blouse and blue bow remain clear beside the drink-bar cup. When she notices the fries have cooled, her face becomes comically distressed. The medium view keeps both conversation positions and booth behind; warm interior light highlights fry edges and glass, with soft shadows below the shared platter.",
+    "promptProse": "Yanami stops mid-bite at her friend's news, then notices the cooled fries beneath the warm booth lights.",
     "promptTokens": [
       "yanami_anna",
-      "Anna Yanami",
       "school uniform",
       "fries",
-      "drink-bar cup",
-      "conversation",
-      "family restaurant",
+      "drink",
+      "restaurant",
       "medium shot"
     ],
     "negativeTokens": [],

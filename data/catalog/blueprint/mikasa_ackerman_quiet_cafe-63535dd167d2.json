@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_quiet_cafe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 981,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "窗边喝热饮",
     "camera": "medium shot, sitting at cafe table holding warm teacup",
@@ -20,15 +20,13 @@
     "mood": "难得的柔软",
     "negativeTokens": [],
     "outfitId": "cafe_white_dress",
-    "promptProse": "Mikasa sits beside the town cafe window in a plain white dress and soft knit cardigan, red scarf resting across her knees as she holds a warm teacup. She watches the passing people outside in the medium view. The table edge projects forward while the window opens onto the street beyond. Soft daylight catches the cup steam and scarf texture, leaving the interior chair and boots quietly shaded.",
+    "promptProse": "Mikasa holds a warm teacup beside the cafe window and watches people passing outside, her red scarf resting across her knees.",
     "promptTokens": [
-      "daytime",
-      "town cafe",
       "white dress",
-      "knit cardigan",
+      "cardigan",
       "red scarf",
-      "teacup",
-      "medium shot"
+      "hot drink",
+      "cafe window"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

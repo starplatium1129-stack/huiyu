@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_feather_shop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 621,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "举着冰镇鸡尾酒杯小口品尝新配方",
     "camera": "medium close-up shot",
@@ -19,18 +19,18 @@
       "empty glass"
     ],
     "outfitId": "classic_bartender_apron",
-    "promptProse": "At dusk, La Pluma tastes her new fruit cocktail through a straw, holding the iced stemmed glass beside her satisfied smile. Her bartender apron and ribbon tie remain visible above the marble counter. Amber light behind the bar passes through the glass and catches the ice; twilight softens her cheek, while bottle rows recede behind her in this medium close-up.",
+    "promptProse": "La Pluma samples her new fruit cocktail through a straw, holding the iced glass beside her satisfied smile.",
     "promptTokens": [
-      "dusk",
-      "bar counter",
-      "white shirt",
+      "bartender",
       "apron",
       "ribbon tie",
-      "cocktail glass",
-      "straw",
+      "cocktail",
+      "drinking straw",
       "ice",
-      "lemon slice",
-      "medium close up"
+      "lemon",
+      "smile",
+      "bar",
+      "dusk"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +43,8 @@
       "bartender"
     ],
     "timeOfDay": "黄昏",
-    "title": "羽毛笔 · 特调品尝"
+    "title": "羽毛笔 · 特调品尝",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

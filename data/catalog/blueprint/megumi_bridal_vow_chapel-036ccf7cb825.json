@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_bridal_vow_chapel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1442,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "megumi_bridal_vow_chapel",
     "title": "加藤惠 · 礼堂里系好的花束缎带",
@@ -29,14 +29,13 @@
       "soft_window_light",
       "medium_shot"
     ],
-    "promptProse": "Beside the chapel's colored window, Megumi Kato tightens the ribbon around her bouquet, then lifts her eyes with a small earnest smile. A simple veil covers her short brown bob above the opaque ivory bridal gown and long lace-overlay sleeves. The medium view leaves the altar wall and window tracery visible beside her. Reflected stained-glass daylight softly colors the sleeve lace and flowers, with gentle shadows separating her fingers from the knot.",
+    "promptProse": "Megumi tightens the bouquet ribbon and looks up with a small, sincere smile.",
     "promptTokens": [
-      "Megumi Kato",
-      "ivory bridal dress",
-      "white veil",
-      "bouquet ribbon",
-      "chapel window",
-      "medium shot"
+      "wedding dress",
+      "veil",
+      "bouquet",
+      "ribbon",
+      "chapel window"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

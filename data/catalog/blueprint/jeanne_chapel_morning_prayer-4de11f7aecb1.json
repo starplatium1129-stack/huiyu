@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_chapel_morning_prayer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jeanne_chapel_morning_prayer",
     "title": "圣女贞德 · 晨光小教堂的祈祷·「今日也请，赐予他们安宁」",
@@ -29,18 +29,18 @@
       "side_view",
       "medium_shot"
     ],
-    "promptProse": "Jeanne kneels at the small chapel altar, ungloved hands joined against her forehead and eyes closed above a plain opaque white long-sleeved prayer dress. Her golden braid rests down her back after armor is set aside. The medium side view places a nearby bench behind her and the modest altar ahead. Slanting sunrise beams illuminate joined fingers and dress folds, carrying floating dust above the shaded floor and bench legs.",
+    "promptProse": "Jeanne kneels before the chapel altar with her bare hands joined against her forehead. Morning light falls across her fingers and white dress.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne",
-      "opaque white prayer dress",
-      "bare hands",
-      "golden braid",
-      "kneeling prayer",
-      "chapel altar",
-      "sunrise beams",
-      "medium side view"
+      "white dress",
+      "braid",
+      "kneeling",
+      "praying",
+      "altar",
+      "chapel",
+      "sunrise",
+      "from side"
     ],
     "negativeTokens": [
       "armor"

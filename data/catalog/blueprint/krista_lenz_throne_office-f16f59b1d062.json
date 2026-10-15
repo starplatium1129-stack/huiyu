@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_throne_office",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 989,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "桌前批阅政务",
     "camera": "medium shot, reviewing government petitions at royal desk",
@@ -18,17 +18,15 @@
     "mood": "沉稳仁厚",
     "negativeTokens": [],
     "outfitId": "queen_casual",
-    "promptProse": "Historia reviews government petitions at the throne hall's desk, blonde hair pinned up above a pale coat, white shirt and trousers. Her brow stays calmly concentrated in the medium view, with papers arranged near her working hands and the throne rising farther behind. Hall daylight illuminates the page she reads and the coat collar, leaving fine stacked-paper shadows and darker carved recesses beyond the desk.",
+    "promptProse": "Historia works through the petitions at her desk in the throne hall.",
     "promptTokens": [
-      "daytime",
-      "throne hall",
-      "royal desk",
-      "pale coat",
-      "white shirt",
+      "coat",
+      "shirt",
       "trousers",
       "hair up",
-      "petitions",
-      "medium shot"
+      "paperwork",
+      "desk",
+      "throne room"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_04",
     "title": "牧之原翔子 · 七里滨的潮声花嫁",
@@ -29,18 +29,16 @@
       "gentle_smile",
       "sunset"
     ],
-    "promptProse": "Shouko Makinohara listens to the waves at the open seaside chapel doorway, then turns with a reassuring smile and white coastal flowers held close to her heart. Her soft white bridal dress carries a sea-blue sash beneath a short veil. In the vertical medium-full view, the doorway frames the shore beyond. Peach sunset colors the veil's edge, while reflected ocean light lifts the folds facing the water.",
+    "promptProse": "Shouko turns with her bouquet at the seaside chapel doorway after listening to the waves, smiling reassuringly.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Shouko Makinohara",
-      "white bridal dress",
-      "sea blue sash",
-      "short veil",
-      "coastal bouquet",
+      "wedding dress",
+      "blue sash",
+      "veil",
+      "bouquet",
       "chapel doorway",
-      "sunset",
-      "medium full shot"
+      "sunset"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

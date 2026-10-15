@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_tea_corner",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 529,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端起茶杯，眉眼微垂",
     "camera": "medium close-up",
@@ -20,17 +20,17 @@
     "mood": "难得松弛",
     "negativeTokens": [],
     "outfitId": "rhodes_island_lounge_knit",
-    "promptProse": "Kal'tsit lifts black tea in her private office corner, eyes lowered as a rare gentle sigh eases the commander's composure. Oatmeal chunky-knit turtleneck and deep-emerald lounge trousers retain the home outfit. The medium close-up includes cup and nearby desk edge, with the quiet office extending behind her shoulder. Soft window light reveals the knit texture and tea rim, leaving delicate cup shadows and darker recesses around the sheltered corner.",
+    "promptProse": "Kal'tsit raises her cup of black tea in the quiet office corner, her gaze lowered in the window light.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Kal'tsit",
-      "oatmeal turtleneck sweater",
-      "emerald lounge trousers",
-      "black tea",
-      "private office corner",
+      "turtleneck",
+      "green trousers",
+      "teacup",
+      "looking down",
+      "office",
       "window light",
-      "medium close-up"
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

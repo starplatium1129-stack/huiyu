@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_off_shoulder",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 950,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "追光下抛飞吻",
     "camera": "cowboy shot, dynamic idol pose with mic",
@@ -18,16 +18,16 @@
     "mood": "灵动撩人",
     "negativeTokens": [],
     "outfitId": "stage_off_shoulder",
-    "promptProse": "On the theater stage, Ai touches her fingers to her lips to send a kiss while holding the performance microphone. Her off-shoulder pink dress, blue necktie and white thighhighs remain in the dynamic cowboy view, black shoes aligned with her turning step. The stage falls away behind her into dark wings. A following spotlight illuminates her face and skirt edge, with other stage lights glancing along the microphone casing.",
+    "promptProse": "Ai touches her fingers to her lips to send a kiss while holding the microphone in her other hand.",
     "promptTokens": [
-      "night",
-      "theater stage",
-      "off shoulder pink dress",
+      "off shoulder dress",
+      "pink dress",
       "blue necktie",
       "white thighhighs",
       "microphone",
-      "blown kiss",
-      "cowboy shot"
+      "blowing kiss",
+      "stage",
+      "spotlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +40,8 @@
       "night"
     ],
     "timeOfDay": "夜晚",
-    "title": "星野爱 · 剧场公演"
+    "title": "星野爱 · 剧场公演",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

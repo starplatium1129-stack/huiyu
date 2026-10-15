@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1737,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_01",
     "title": "不知火舞 · 道场晨训的扇舞",
@@ -30,16 +30,13 @@
       "morning_light",
       "medium_full_shot"
     ],
-    "promptProse": "Mai Shiranui completes a controlled fan-dance sequence in the empty dojo and closes the sensu as her feet settle into a balanced stance. Her securely wrapped red jacket, broad belt and white training trousers remain neat, brown high ponytail following the last movement. The medium portrait includes the plain wooden floor and practice wall. Morning light illuminates fan ribs and focused eyes, with a grounded stance shadow stretching over the floorboards.",
+    "promptProse": "Mai closes her fan and settles into a balanced stance after practice in the morning-lit dojo.",
     "promptTokens": [
       "shiranui_mai",
-      "Mai Shiranui",
-      "red training jacket",
+      "red jacket",
       "white trousers",
       "folding fan",
-      "balanced stance",
       "dojo",
-      "morning",
       "medium shot"
     ],
     "negativeTokens": [

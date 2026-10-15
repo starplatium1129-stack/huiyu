@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_lightning_miko_thunderbolt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1285,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "akeno_lightning_miko_thunderbolt",
     "title": "姬岛朱乃 · 降魔雷光神圣制裁",
@@ -28,14 +28,17 @@
       "high_ponytail",
       "confident_smile"
     ],
-    "promptProse": "Akeno Himejima floats above the shrine beneath night thunderclouds, guiding azure lightning with one raised hand. Black fallen-angel wings spread behind her white wide-sleeved miko top and red hakama; her orange-ribboned ponytail lifts in the storm. The low cowboy view retains the shrine roof below the wing span. Lightning lights her composed violet-eyed face and sleeve edge, revealing cloud layers briefly against the surrounding dark sky.",
+    "promptProse": "She guides blue lightning with one raised hand above the shrine roof. The flash illuminates her spread wings and sleeve against the storm clouds.",
     "promptTokens": [
-      "Akeno Himejima",
-      "miko robes",
-      "black feathered wings",
-      "azure lightning",
-      "stormy shrine",
-      "low angle"
+      "miko",
+      "black wings",
+      "lightning",
+      "floating",
+      "raised arm",
+      "shrine",
+      "storm",
+      "night",
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

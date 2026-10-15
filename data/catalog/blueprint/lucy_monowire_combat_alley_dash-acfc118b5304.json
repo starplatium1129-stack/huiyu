@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_monowire_combat_alley_dash",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1103,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "极速滑铲突进甩出青蓝单分子线切裂敌机，火花在暴雨中炸裂，眼神凌厉绝杀",
     "camera": "dynamic low angle, action freeze frame",
@@ -20,16 +20,16 @@
     "mood": "凌厉决绝",
     "negativeTokens": [],
     "outfitId": "netrunner_suit",
-    "promptProse": "Lucy slides forward through a rain-soaked alley, firing thin cyan monowires from the spool on her right wrist to slice the attacking drone into sparking pieces. Her netrunner jacket and technical bodysuit retain their silhouette in the dynamic low view. Bins and abandoned cables layer behind the action. Wire arcs light her focused face and glove, while sparks reflect across puddles and reveal rain between the broken drone fragments.",
+    "promptProse": "Lucy slides through the rainy alley and whips her glowing monowire through an enemy drone.",
     "promptTokens": [
-      "rainy night",
-      "alley",
-      "netrunner outfit",
+      "netrunner suit",
       "monowire",
-      "drone",
       "sliding",
+      "drone",
       "sparks",
-      "low angle"
+      "alley",
+      "rain",
+      "from below"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

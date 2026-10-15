@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc124",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc124",
     "title": "晚宴落幕后的解封指令",
@@ -48,11 +48,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, natsume_r18, shiki_natsume, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, backless_dress, black_evening_gown, open_back, sheer_black_thighhighs, lying_on_bed, on_back, arms_around_neck, heavy_blush, parted_lips, breathless, neon_lights_through_window, messy_bed, night, warm_lighting, cool_lighting, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, extra_limbs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, 1boy, lower_body, cropped_head, headless, cropped_face, missing_head, out_of_frame, cut_off, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage, fire, flames, burning ears, fiery ears, flame effects",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black evening gown, backless dress, unzipped, sideboob, sheer black thighhighs, on back, arms around neck, blush, hotel bed, neon lights, night, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "",
     "storyJa": "【夏目・イブニングドレスは究極の秋のロックを解除します】豪華な晩餐会を終えた五つ星ホテルのプレジデンシャルスイート。窓の外には都会の喧騒のネオンがいつまでも輝き、部屋はほんのり暖かい。普段は上品で飄々としていた夏目が、この時は力が抜けたあなたに大きなダブルベッドに押し倒されました。彼女の黒い背中の開いたハイスリットのシルクイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に弱々しくスライドし、官能的なラインの広い領域、感情的な紅潮を伴う美しい裸の背中と横の胸を明らかにします。脚に巻きついたセクシーな極薄の黒ストッキングが、暗い光の下で非常に眩しい光沢を放ちます。目尻の泣きぼくろが真っ赤に染まっている。彼女はあえぎ、うめき声​​を上げながらあなたの首を強く締め付けます。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
     "rating": "R18",
-    "animaCaption": "Pushed down onto the wide double bed of the presidential suite after the banquet, Shiki Natsume's black backless high-slit silk evening gown hangs open with its zipper fully undone, the fabric sliding off both sides to bare her flushed back and the curve of one side breast; thin sheer black stockings gleam on her legs as she weakly locks her arms around your neck and moans with half-lidded eyes, her tear-mole flushed red under the mix of bedside lamp and city neon.",
+    "animaCaption": "She lies on the bed with her gown unzipped and slipping at the sides, arms around the viewer's neck beneath mixed bedside and city light.",
     "auditRevision": "careful-batch04-2026-08-27"
   }
 }

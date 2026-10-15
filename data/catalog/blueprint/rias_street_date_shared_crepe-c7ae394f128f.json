@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_street_date_shared_crepe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1276,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rias_street_date_shared_crepe",
     "title": "莉雅丝 · 商业街午后的甜蜜可丽饼",
@@ -28,12 +28,13 @@
       "shy_smile",
       "blush"
     ],
-    "promptProse": "Beneath the shopping street's outdoor parasol, Rias Gremory offers the top strawberry of her cream-filled crepe toward her companion. Her Kuoh blouse, black vest and magenta cross tie remain visible as she leans forward, blue eyes expectant. Frame her from a slightly high medium angle, with cafe tables and cherry branches behind. Afternoon daylight brightens strawberry seeds and white cuffs; petals cast small moving shadows along the tabletop.",
+    "promptProse": "Rias offers the strawberry on her crepe across an outdoor cafe table under sunlit cherry branches.",
     "promptTokens": [
       "Rias Gremory",
-      "Kuoh uniform",
-      "strawberry crepe",
-      "outdoor cafe",
+      "school uniform",
+      "crepe",
+      "strawberry",
+      "cafe",
       "cherry blossoms",
       "medium shot"
     ],

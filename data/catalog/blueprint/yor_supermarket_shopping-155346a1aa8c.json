@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_supermarket_shopping",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yor_supermarket_shopping",
     "title": "约尔·福杰 · 蔬菜摊前的认真挑选",
@@ -34,15 +34,15 @@
       "belted_coat",
       "knee_boots"
     ],
-    "promptProse": "Yor crouches beside the supermarket's low vegetable rack, examining a carrot carefully while her other hand steadies the shopping-basket handle beside her boots. Her belted beige trench coat stays closed over a neat outfit in the three-quarter medium view. Wooden crates of potatoes and cabbages form rows behind her. Soft overhead store light illuminates her concentrated face and the carrot skin, with close basket shadows on the floor.",
+    "promptProse": "Yor examines a carrot beside the low vegetable crates while holding the basket handle under the store lights.",
     "promptTokens": [
-      "daytime",
-      "supermarket",
-      "beige trench coat",
-      "knee boots",
-      "crouching",
+      "Yor",
+      "trench coat",
+      "boots",
       "carrot",
-      "basket",
+      "shopping basket",
+      "crouching",
+      "supermarket",
       "medium shot"
     ],
     "negativeTokens": [],

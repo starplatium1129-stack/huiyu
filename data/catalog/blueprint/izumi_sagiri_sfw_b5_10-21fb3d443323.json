@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_10",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1528,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_10",
     "title": "和泉纱雾 · 新年参拜的许愿",
@@ -30,13 +30,12 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Sagiri Izumi writes a wish to draw better pictures on a wooden ema, then stretches onto her toes to hang it high on the shrine rack. Her cream winter coat, pink wool scarf and boots stay secure as she smiles freely, breath visible. The medium portrait includes other plaques and the wooden support behind. Morning light catches the scarf weave and new plaque's edge, with rack shadows across the cold ground below her reaching arm.",
+    "promptProse": "Sagiri stretches onto her toes to hang an ema on the shrine rack, smiling in the cold morning air.",
     "promptTokens": [
-      "Sagiri Izumi",
-      "cream winter coat",
+      "winter coat",
       "pink scarf",
-      "ema hanging",
-      "tiptoe",
+      "ema",
+      "tiptoes",
       "shrine",
       "morning",
       "medium shot"

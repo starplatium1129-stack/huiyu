@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc213",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc213",
     "title": "影音室巨幕晃动下的防线溃败",
@@ -40,11 +40,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, oversized_hoodie, grey_hoodie, no_underwear, bare_thighs, trembling, sitting_on_sofa, leaning_forward, reaching_towards_viewer, close-up, looking_at_viewer, open_mouth, crying_with_fear, teary_eyes, heavy_blush, heart_ahoge, dropped_game_controller, carpet, living_room, dark_room, screen_glow, cinematic_lighting, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, sitting, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, oversized grey hoodie, no underwear, bare thighs, reaching, crying, scared, blush, sofa, dropped game controller, home theater, screen glow, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "",
     "storyJa": "【寧々・ホームシアターの過負荷自爆】深夜、完全に遮音されたホームシアタールーム、巨大スクリーンの光だけが薄暗く揺れていた。強がって一緒にホラーゲームをクリアすると言っていた寧々は、今や画面上のショックシーンに防衛線が完全に崩壊していた。彼女は中には何も着ていない真空状態の、大きくてルーズなグレーのハイレグパーカー一枚だけを身に着けており、白く豊満な両脚が恐怖で激しく震えている。突然の恐怖に彼女は悲鳴を上げてコントローラーを放り出し、我を忘れてあなたの胸に飛び込み、大腿の上に跨ってきつくしがみついた。パーカーの襟元が大きくはだけ、豊かな胸元が荒い呼吸と共に激しく上下し、頭の上のアホ毛は極度の恥ずかしさと恐怖でハート型に丸まっていた――「うあぁ！柊、柊史！今の怪物、もう通り過ぎた？！うう……嘘つき、わざとこのゲームを選んだんでしょ……わ、私、別にどさくさに紛れて抱きついたわけじゃないんだからね！早くきつく抱きしめてよ、バカ！」",
     "rating": "R18",
-    "animaCaption": "In the soundproofed home theater, the horror game has shattered Nene's composure — she screams, drops the controller, and lunges toward the camera on the sofa with her loose grey hoodie open at the collar, trembling and crying with an ahoge curled into a heart under the flickering screen glow.",
+    "animaCaption": "Startled by the horror game, she drops the controller and lunges from the sofa toward the viewer, trembling in the flickering screen light.",
     "auditRevision": "careful-batch12-2026-08-27"
   }
 }

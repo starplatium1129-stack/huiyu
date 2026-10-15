@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc188",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 185,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc188",
     "title": "甜点协议：围裙与丝绸睡裙的晨间熔断",
@@ -40,11 +40,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, nene_r18, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, apron, maid_apron, kitchen, counter, sideboob, sitting, barefoot, blush, collarbone, slender_waist, full_body, window_light, morning_light, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, stockings, thighhighs, cropped_feet, upper_body, artist_name, chromatic_aberration, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pink silk slip dress, apron, sideboob, sitting on counter, flour, barefoot, blush, kitchen, morning light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "stockings, thighhighs",
     "storyJa": "【寧々・大人のアフターストーリー・・・シルクサスペンダースカートとエプロンは超高機能】結婚式の翌朝、暖かいキッチンでは、パンを焼く温かく甘い香りが空気に満ちています。あなたのリクエストに応じて、寧々は非常にローカットのピンクのシルクのサスペンダーナイトガウンと小さなキッチンエプロンを外で着ているだけでした。あなたが彼女を大理石のバーテーブルに乗せたとき、彼女は顔を赤らめていました。細いエプロンの紐では露出した両側の白い胸を覆うことができませんでした。彼女は恥ずかしそうに小麦粉に汚れた手をあなたの胸に押し付けました。彼女の頭上のアホ毛はすでに恥ずかしそうに愛の完璧なスパイラルに崩壊しており、彼女は速く喘いでいました。――「柊史……朝から台所で急に抱きつかないでください。小麦粉が服についちゃいます……でも、もう少しだけ。」",
     "rating": "R18",
-    "animaCaption": "On the marble kitchen counter in the warm morning, Nene in a low-cut pale pink silk slip dress with a small kitchen apron presses both flour-dusted hands against the viewer's chest, sideboob spilling past the narrow apron strings, blushing hard with her ahoge curling into a heart.",
+    "animaCaption": "She sits on the kitchen counter with the small apron over her slip dress, pressing both flour-dusted hands against the viewer's chest.",
     "auditRevision": "careful-batch02-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_schale_office_budget_lecture",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 915,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "一手叉腰，另一手托着计算器平板与账单文件，鼓腮说教",
     "camera": "cowboy shot, medium angle",
@@ -20,15 +20,15 @@
     "mood": "傲娇关切",
     "negativeTokens": [],
     "outfitId": "millennium_uniform",
-    "promptProse": "Yuuka stands beside the teacher’s office desk, one hand on her hip and the other holding the calculator tablet and rejected snack receipts. Keep the navy blazer, white blouse and blue tie in the cowboy view as she puffs her cheeks in mock sternness. The near desk edge overlaps the papers; a filing cabinet and the office’s blind-covered window occupy the farther wall behind her. Afternoon sunlight through the blinds stripes the desktop and lanyard. Bright room light keeps the shaded face and receipts readable, with a softer cabinet-side shadow and darker gaps between the blinds retaining the room’s depth.",
+    "promptProse": "Yuuka holds the calculator tablet and rejected snack receipts beside the teacher's desk, feigning sternness with her free hand on her hip.",
     "promptTokens": [
-      "afternoon",
-      "Schale office",
       "school uniform",
-      "calculator tablet",
-      "receipts",
       "hand on hip",
-      "cowboy shot"
+      "tablet",
+      "receipts",
+      "puffed cheeks",
+      "office",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +43,8 @@
       "school_uniform"
     ],
     "timeOfDay": "下午",
-    "title": "早濑优香 · 夏莱办公室的说教与陪伴"
+    "title": "早濑优香 · 夏莱办公室的说教与陪伴",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

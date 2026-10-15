@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1586,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_04",
     "title": "战栗的龙卷 · 浮空花廊的傲娇花嫁",
@@ -31,15 +31,16 @@
       "sunset",
       "rose_bouquet"
     ],
-    "promptProse": "Tatsumaki floats in the high-rise rose arcade, her existing telekinesis holding the black-and-emerald wedding skirt above the floor. She hugs the bouquet with one hand and rests the other at her hip, turning away with reddened ears as the bell sounds. The vertical medium-full view includes the layered veil and successive flower arches receding behind her. Low evening sunlight traces the outer veil edge and the curls facing the open side of the arcade. A softer emerald glow from the same levitation field fills the raised skirt folds from below, giving the green light a local source while the farther arches remain in dusk shade.",
+    "promptProse": "Tatsumaki turns away blushing with her bouquet as telekinesis lifts her skirt beneath the rose arcade.",
     "promptTokens": [
       "Tatsumaki",
-      "black-emerald bridal gown",
-      "floating veil",
-      "rose bouquet",
-      "flower arcade",
+      "black wedding dress",
+      "veil",
+      "bouquet",
+      "floating",
+      "flower arch",
       "dusk",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

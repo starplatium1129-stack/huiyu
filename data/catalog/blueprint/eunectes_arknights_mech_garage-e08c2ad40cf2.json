@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_mech_garage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 586,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "仰头调试机甲臂的管线",
     "camera": "medium shot, low angle",
@@ -20,19 +20,18 @@
     "mood": "狂热专注",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Eunectes looks upward while turning a heavy wrench on the giant mech arm's hydraulic lines, oil marking her focused face. Dark-green halter top, grey-green sleeveless tactical vest, leather shorts and heavy work boots retain her mechanical outfit. The low medium view follows pipes into the overhead frame, hangar structures behind. Bright workshop lamps glint on fittings and wrench surfaces, casting narrow pipe shadows across the arm and softer shade beneath the machinery.",
+    "promptProse": "She turns a heavy wrench on the giant mech arm's hydraulic lines, with oil on her focused face.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Eunectes",
-      "green halter top",
-      "grey green tactical vest",
-      "leather shorts",
-      "heavy boots",
+      "green halterneck",
+      "tactical vest",
+      "shorts",
       "wrench",
-      "mech hydraulic lines",
-      "engineering hangar",
-      "low angle"
+      "looking up",
+      "machinery",
+      "hangar",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

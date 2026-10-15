@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_sui_courtyard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 650,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "半卧竹榻把玩酒葫芦听雨",
     "camera": "intimate medium shot",
@@ -22,16 +22,14 @@
       "clear sunny weather"
     ],
     "outfitId": "drunkard_loungewear",
-    "promptProse": "Half-reclined on a cushioned bamboo daybed beneath the Sui manor eaves, Ling loosely wears her ink-gray robe and swirls the last wine in her cup, a jade gourd at her sash. The intimate medium view places bamboo slats below her and rain beyond the corridor. Diffuse overcast light softens the open side; an indoor lamp warms the silk cushion and shaded robe folds.",
+    "promptProse": "Ling reclines on the bamboo daybed, turning the wine gourd in her hand while listening to the rain.",
     "promptTokens": [
-      "rainy day",
-      "Sui manor",
-      "bamboo daybed",
-      "gray robe",
+      "grey robe",
       "jade gourd",
       "wine cup",
       "reclining",
-      "medium shot"
+      "bamboo daybed",
+      "rain"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "raphtalia",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 124,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "raphtalia",
     "profile": {
@@ -76,14 +76,12 @@
       "identityProse": "Raphtalia from The Rising of the Shield Hero, a dependable raccoon demi-human swordswoman with fluffy chestnut hair, soft pink eyes, rounded raccoon ears with pale inner fluff and a striped bushy tail.",
       "identityTokens": [
         "raphtalia",
-        "tate_no_yuusha_no_nariagari",
-        "brown_hair",
-        "long_hair",
-        "messy_hair",
-        "pink_eyes",
-        "raccoon_ears",
-        "raccoon_tail",
-        "animal_ear_fluff"
+        "tate no yuusha no nariagari",
+        "brown hair",
+        "long hair",
+        "pink eyes",
+        "raccoon ears",
+        "raccoon tail"
       ],
       "exactTokens": [
         "raphtalia"

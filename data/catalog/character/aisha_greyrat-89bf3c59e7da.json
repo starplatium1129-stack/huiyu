@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aisha_greyrat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "aisha_greyrat",
     "profile": {
@@ -138,7 +138,6 @@
         "short_hair",
         "ponytail",
         "hairband",
-        "sidelocks",
         "green_eyes",
         "mushoku_tensei"
       ],

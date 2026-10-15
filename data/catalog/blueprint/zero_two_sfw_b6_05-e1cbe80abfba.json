@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1577,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zero_two_sfw_b6_05",
     "title": "02 · 海风里的彩色糖果",
@@ -30,15 +30,16 @@
       "playful_face",
       "noon"
     ],
-    "promptProse": "Zero Two sits at the old seaside pier in her red-and-white sailor swimsuit and loose white overshirt, holding a string of colorful sweets beside the candy pouch. She shifts one leg to kick the water and turns toward the viewer with a proud grimace, pink hair wind-tossed. The horizontal medium view includes weathered boards and turquoise water below. Crisp noon light brightens striped socks and sweets, with water reflections beneath the pier edge.",
+    "promptProse": "Zero Two kicks the water from the old pier while holding her string of colorful sweets, turning proudly toward the viewer.",
     "promptTokens": [
-      "Zero Two",
-      "red-white sailor swimsuit",
+      "red and white swimsuit",
       "white overshirt",
+      "striped socks",
       "candy",
-      "old pier",
-      "noon",
-      "medium shot"
+      "sitting",
+      "pier",
+      "splashing",
+      "noon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +51,8 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

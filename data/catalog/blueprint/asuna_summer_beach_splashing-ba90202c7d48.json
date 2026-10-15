@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_summer_beach_splashing",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1366,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "asuna_summer_beach_splashing",
     "title": "结城明日奈 · 碧海晴空的细带比基尼戏水·「抓不到我吧？再发呆就要被泼水啦！」",
@@ -27,13 +27,14 @@
       "laughing",
       "summer"
     ],
-    "promptProse": "Asuna backs through the tropical beach shallows in a crimson bikini with white cross-string ties, scooping water in both hands to splash her companion. Her chestnut hair swings with her laughter. A wide energetic view keeps the wave foam around her feet and palm shadows on the white sand beyond. Strong summer sunlight lights the airborne spray and swimsuit ties, with thousands of smaller reflections continuing across the blue water.",
+    "promptProse": "She backs through the shallows and scoops water toward her companion with both hands. Sunlight catches the spray above the foam.",
     "promptTokens": [
-      "Asuna",
-      "crimson bikini",
-      "splashing water",
-      "white-sand beach",
+      "beach",
+      "red bikini",
+      "splashing",
+      "laughing",
       "ocean",
+      "summer",
       "wide shot"
     ],
     "negativeTokens": [],

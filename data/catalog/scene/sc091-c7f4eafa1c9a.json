@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc091",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc091",
     "title": "门外递来的换洗衣物",
@@ -38,15 +38,15 @@
     "weather": "晴",
     "camera": "门缝半身近景",
     "lighting": "浴室暖灯与夜间暗部",
-    "prompt": "1girl, shiki_natsume, securely wrapped towel, peeking through door, receiving folded clothes, bathroom, steam, night, close up",
-    "negative": "open towel, extra receiving hands, clothes fused to door",
+    "prompt": "1girl, shiki_natsume, bath towel, peeking, folded clothes, doorway, bathroom, steam, night, close up",
+    "negative": "open towel",
     "usage": [
       "展示图",
       "R15"
     ],
     "storyJa": "【夏目・ドアの外に着替えが届けられます】冬の夜、バスルームのドアがしっかりと閉まっていなかったため、バスタオルを巻いた夏目が赤い顔の半分だけを出し、寝室に残っている服を取り出すのを手伝ってほしいと頼みました。あなたは服をドアに渡し、振り返った。彼女は数秒間沈黙し、そっとそれらを受け取りました。――「処置は一応、合格。着替えたら……お礼に温かい飲み物くらいは淹れてあげる。」",
     "rating": "R15",
-    "animaCaption": "Shiki Natsume peeks through the partly opened bathroom door to receive the folded change of clothes. Her towel stays securely wrapped behind the door; the near view includes half her flushed face and the reaching hand. The lit tile wall recedes through a thin layer of steam. Warm bathroom light outlines the clothing folds against the darker corridor, and the door edge casts a narrow shadow that keeps the hand-to-bundle contact clear.",
+    "animaCaption": "She reaches through the partly opened door to receive the folded clothes, her securely wrapped towel concealed behind it.",
     "auditRevision": "fix-no-burn-ears-2026-09-05"
   }
 }

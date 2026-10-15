@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_sfw_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 790,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "学生会室，她跪坐在矮柜前为大家沏茶，文件在膝边码得整整齐齐",
     "adult": false,
@@ -24,16 +24,14 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_school",
-    "promptProse": "Maria kneels beside the student-council room's low cabinet, preparing tea with documents stacked neatly near her knees. In her navy school jacket and ribbon-tied blouse, she offers a cup with a warm smile, then glances thoughtfully toward one file. The medium view keeps cabinet shelves behind her and the tea service forward. Afternoon light brightens the porcelain and paper edges, with gentle shadows beneath the aligned folders.",
+    "promptProse": "Maria kneels by the low cabinet to prepare tea, council documents stacked neatly beside her knees.",
     "promptTokens": [
-      "afternoon",
-      "student council room",
-      "navy school jacket",
+      "school jacket",
+      "kneeling",
       "tea",
       "cup",
       "documents",
-      "kneeling",
-      "medium shot"
+      "council room"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

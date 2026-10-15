@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1752,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_05",
     "title": "丰川祥子 · 海边闭园后的蓝色灯串",
@@ -29,11 +29,11 @@
       "ocean",
       "dusk"
     ],
-    "promptProse": "Sakiko Togawa sits at the empty seaside stage edge, untangling the blue light strand and getting its final bulb to glow. Her indigo swimsuit and black light overshirt remain clear as sea wind lifts her blue hair ribbons. The horizontal medium portrait includes the closed platform and ocean behind her rare relaxed smile. Blue dusk separates the stage from hazy water, while warm bulbs illuminate her hands and cast small cable shadows over the boards.",
+    "promptProse": "Sakiko untangles the final light on the empty stage, its warm bulb illuminating her hands against blue dusk.",
     "promptTokens": [
       "Sakiko Togawa",
-      "indigo swimsuit",
-      "black overshirt",
+      "swimsuit",
+      "black shirt",
       "string lights",
       "seaside stage",
       "dusk",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_cabin_desk_bent_over",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1373,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "asuna_nsfw_cabin_desk_bent_over",
     "title": "结城明日奈 · 湖畔木屋更衣拉链卡壳事故·「副团长的战袍……怎么会在这种时候卡死呀……」",
@@ -29,51 +29,20 @@
       "skirt_lift",
       "white_thighhighs"
     ],
-    "promptProse": "Asuna Yuuki from Sword Art Online suffering an intoxicating wardrobe malfunction inside a cozy sunlit wooden cabin. Leaning forward over the rustic mahogany table near the open window, the back zipper of her red-and-white Knights of the Blood uniform is jammed tight across her lower back, forcing her supple breasts to spill freely from the parted collar with firm rose nipples bare in the warm breeze. Her pleated skirt is hitched up, with one hand desperately straining behind her back to free the zipper while her other hand slides down to pull her lace panties aside and gently soothe her wet, glistening entrance. Her long chestnut hair tumbles over her shoulder as she bites her lip with blushing hazel eyes wide with breathless pleasure. Warm sunlight streaming through curtains, scenic forest lake view, pristine anime key visual style, solo 1girl, no text, no extra people.",
+    "promptProse": "She leans over the table in her white-and-red uniform, reaching behind for the jammed zipper with one hand while the other draws her panties aside. Sunlight enters from the lake window.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "touching_own_body",
-      "hand_under_clothes",
-      "skirt_lift",
-      "leaning_forward",
-      "leaning_on_table",
-      "table",
+      "adult",
       "cabin",
-      "hands_behind_back",
-      "zipper_pull",
-      "wardrobe_malfunction",
-      "open_clothes",
-      "exposed_breasts",
-      "bare_breasts",
-      "pink_nipples",
-      "cleavage_spill",
-      "panties_aside",
-      "exposed_pussy",
-      "pussy_juice",
-      "white_thighhighs",
-      "chestnut_hair",
-      "long_hair",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "biting_lip",
-      "sweat",
-      "wide_shot",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting"
+      "table",
+      "uniform",
+      "stuck zipper",
+      "open clothes",
+      "topless",
+      "skirt lift",
+      "panties aside"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
     "sampleRating": "R18",
@@ -83,6 +52,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

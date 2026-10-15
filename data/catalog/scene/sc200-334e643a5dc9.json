@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc200",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 195,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc200",
     "title": "终结的誓言：纯白床单下的永恒契约（第200纪元）",
@@ -41,11 +41,11 @@
       "终章大结局",
       "成人向"
     ],
-    "prompt": "adult, 1girl, nene_r18, ayachi_nene, white_hair, very, long, hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, completely_naked, bedroom, on_bed, body, covered, semi, arms, open, wide, blush, happy_tears, love, filled, watery, dawn, light, through, bokeh, collarbone, slender_waist, full_body, morning_light, backlight, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, 2girls, clothed, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, nsfw, nude, explicit",
+    "prompt": "adult, 1girl, nene_r18, ayachi_nene, nude, white sheet, on back, arms open, happy tears, blush, white bed, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "clothes, stockings",
     "storyJa": "【寧々・大人のAfter Story・旅の終わりと新しい朝】幾つもの困難を越えた先、二人だけの寝室に朝の光が差し込んでいた。寧々は真っ白な毛布にくるまり、銀色の髪を枕へ広げている。紫の瞳には幸せそうな涙が浮かび、アホ毛は小さなハートを描くように揺れていた。彼女はあなたへ両腕を伸ばし、決して解けない誓いを静かに口にする――「柊史……魔女の長い旅は、これでおしまいです。これから先の寧々の心も、人生も……ずっと、あなただけのものですよ。」",
     "rating": "R18",
-    "animaCaption": "In the dawn-quiet bedroom at the end of their long journey, Nene lies naked on her back in the center of the white velvet bed, only a translucent white sheet draping her body, arms spread open toward the viewer, ears flushed crimson with blissful tears and an ahoge shaped like a heart in the soft dawn light.",
+    "animaCaption": "She lies beneath the translucent white sheet with her arms open toward the viewer, smiling through happy tears in the dawn light.",
     "auditRevision": "careful-batch11-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_sfw_b8_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1540,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shinjou_akane_sfw_b8_02",
     "title": "新条茜 · 房间里的怪兽制作台",
@@ -30,14 +30,13 @@
       "task_light",
       "medium_shot"
     ],
-    "promptProse": "Akane Shinjou wears craft glasses while smoothing the back fin of a monster model with a small sanding tool. Her lavender sweatshirt cuffs are gathered neatly above grey trousers. Drawings, a parts tray and safely covered tools sit beside the cutting mat. The medium view shows her focused profile and model contact; the task lamp illuminates the fin ridges and glasses rim, with the creature's shadow reaching across the nearby plan sheet.",
+    "promptProse": "Akane sands a monster model's back fin beneath the work lamp, tools and a parts tray beside the cutting mat.",
     "promptTokens": [
       "shinjou_akane",
-      "Akane Shinjo",
       "lavender sweatshirt",
-      "craft glasses",
-      "monster model",
-      "sanding tool",
+      "glasses",
+      "monster figure",
+      "sanding",
       "workbench",
       "medium shot"
     ],

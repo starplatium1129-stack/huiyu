@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_rain_courtyard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 570,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "倚着廊柱，看雨打芭蕉",
     "camera": "medium shot",
@@ -20,19 +20,15 @@
     "mood": "寂寥入画",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Under the covered Jiangnan veranda, Dusk leans against the carved vermilion pillar with one hand supporting her cheek, quietly watching rain strike broad banana leaves. Her ink-black qipao and gradient wide-sleeved robe remain beneath loose dark hair. The medium view places the pillar beside her and wet courtyard paving beyond. Grey rain light softly reveals her face and robe folds, reflecting from leaf surfaces while the veranda roof keeps the nearer timber shaded.",
+    "promptProse": "She leans against the pillar watching rain strike the broad leaves. Gray daylight reaches the courtyard beyond the shaded timber.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Dusk",
-      "ink black teal qipao",
-      "wide sleeve robe",
-      "hand on cheek",
+      "veranda",
       "vermilion pillar",
-      "covered veranda",
+      "black and teal qipao",
+      "wide sleeves",
+      "cheek in hand",
       "banana leaves",
-      "rain",
-      "medium shot"
+      "rain"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

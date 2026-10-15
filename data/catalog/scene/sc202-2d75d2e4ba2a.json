@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc202",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 197,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:50:34.027913700+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc202",
     "title": "深网之下的特工禁区",
@@ -45,11 +45,11 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_black_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, no_hair_ribbon, black_tactical_jacket, relaxed_front_zipper, dark_utility_trousers, leaning_back_against_desk_edge, palms_bracing_desk, looking_back, defiant_expression, sealed_file_folders, metal_file_cabinet, venetian_blinds, desk_lamp, strong_right_side_light, night, medium_shot",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, 3d_render, photorealistic, 2girls, skirt, thighhighs, bare_legs, artist_name, chromatic_aberration, underwear, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person, child, loli, underage",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, black tactical jacket, open zipper, dark pants, leaning on desk, hands on desk, looking back, defiant expression, file folders, office, blinds, night, side lighting, medium shot",
+    "negative": "skirt, thighhighs, bare legs",
     "storyJa": "【夏目・タクティカルベストの下にある制御不能アラーム】深夜、機密指令センターのオフィスは施錠された。普段は冷静でタフな夏目が、少し涼しい机に閉じ込められていた。黒い戦術服のジッパーが腰まで緩んでいた。制服のシャープなラインが赤い肌と対照的だった。懸命に平静を保とうと努めたが、目の端の泣きぼくろが乱れた呼吸で微かに震えていた。夏目はあなたを振り返り、その声にはまだ敗北を認めない鋭さが溢れています。――「店長の権限を悪用するなんて……自由になったら、この作戦は必ず最高機密に指定するから！」",
     "rating": "R15",
-    "animaCaption": "The wooden desk edge supports Shiki Natsume as she braces both palms beside her hips and turns back with an unyielding glance. Her black tactical jacket has a relaxed front zipper and matching dark utility trousers. Golden eyes, two red clips and the small eye mole remain distinct beside long black hair. Sealed folders occupy the near desk corner; a metal filing cabinet and lowered Venetian blinds stand behind her. Frame her face, jacket and bracing hands in a medium view from slightly below eye level. The single lamp on the right gives her sleeve and cheek a clear lit edge and throws folder shadows diagonally across the wood. Cabinet recesses and the opposite jacket side stay dark, with faint city reflections between the blind slats.",
+    "animaCaption": "She braces both palms beside her hips on the desk and turns back toward the viewer; a lamp on the right lights her cheek and the sealed folders.",
     "auditRevision": "careful-batch10-2026-08-27",
     "recommendedSize": "1152×1536"
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1568,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_06",
     "title": "拉芙塔莉雅 · 冬夜壁炉前的信",
@@ -31,14 +31,14 @@
       "firelight",
       "medium_shot"
     ],
-    "promptProse": "Raphtalia writes a letter toward home beside the inn fireplace, her ears lowered over a burgundy sweater and wool shawl. After finishing, she carefully folds the unsigned paper and tucks it close, long brown skirt gathered by the chair. The medium portrait includes the hearth and small writing surface. Firelight warms her finger joints and page edge, leaving quieter shadows behind the chair and between the folded shawl layers.",
+    "promptProse": "Raphtalia finishes the letter beside the hearth, folds it without signing and tucks it close with her ears lowered.",
     "promptTokens": [
-      "Raphtalia",
       "burgundy sweater",
-      "wool shawl",
-      "unsent letter",
-      "inn fireplace",
-      "medium shot"
+      "shawl",
+      "writing",
+      "letter",
+      "fireplace",
+      "inn"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +48,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

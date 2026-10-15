@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1698,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:54:55.473974845+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "vivy_sfw_b9_04",
     "title": "Vivy · 无人舞台的白蓝花嫁",
@@ -30,16 +30,16 @@
       "gentle_smile",
       "morning_light"
     ],
-    "promptProse": "Vivy stands at the empty theater’s stage center in the white-and-blue bridal stage dress with covered shoulders, veil, earpiece and white boots. She places the small white flowers on the piano, then faces the viewer for the opening phrase held for a promise. Keep the vertical medium-full view with the piano beside her and empty seating farther back. An open service doorway at the stage’s side admits the low dawn light across the floor, revealing suspended dust and the veil’s outer folds. Pale reflections touch the piano rim and white fabric, while the piano legs cast elongated shadows along the platform and the distant seats remain subdued.",
+    "promptProse": "Vivy places flowers on the piano and faces the viewer for the opening phrase, dawn entering from a side doorway.",
     "promptTokens": [
       "Vivy",
-      "white-blue bridal stage dress",
+      "bridal stage dress",
       "veil",
-      "white bouquet",
+      "bouquet",
       "piano",
       "empty theater",
       "dawn",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

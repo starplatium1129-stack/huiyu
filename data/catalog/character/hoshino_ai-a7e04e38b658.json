@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshino_ai",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hoshino_ai",
     "profile": {
@@ -130,13 +130,9 @@
         "purple_hair",
         "long_hair",
         "one_side_up",
-        "sidelocks",
-        "swept_bangs",
-        "hair_between_eyes",
         "star_pupils",
         "purple_eyes",
         "rabbit_hair_ornament",
-        "idol",
         "oshi_no_ko"
       ],
       "negativeTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_tea_tasting_heyue",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hu_tao_tea_tasting_heyue",
     "title": "胡桃 · 和裕茶馆跨界听书",
@@ -31,27 +31,25 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Hu Tao sits at the Heyu Tea House window, listening to an unseen storyteller recount Three Kingdoms. Her left palm supports her cheek while her right hand lifts a celadon bowl to cool the steam. Keep the dark sweater and red skirt in the eye-level medium shot. A lid, saucer and pastries remain arranged on the near redwood table; behind her, the window ledge meets a wooden screen that turns into the quieter seating area. Afternoon light passes through the lattice in broken rectangles on the tabletop. It catches the bowl rim and the side of her amused face, leaving a small shadow under the saucer and softer reflected warmth along her supporting wrist.",
+    "promptProse": "Listening to an unseen storyteller, Hu Tao supports her cheek with one hand and lifts the celadon bowl with the other to cool her tea.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Heyu Tea House",
-      "dark sweater",
+      "sweater",
       "red skirt",
-      "celadon tea bowl",
-      "hand on cheek",
+      "cheek rest",
+      "tea bowl",
       "steam",
       "pastries",
-      "afternoon",
-      "medium shot"
+      "teahouse",
+      "window",
+      "afternoon"
     ],
-    "negativeTokens": [
-      "readable book title"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_liyue_street",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_archive_reading",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 521,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "低头翻看一本旧书",
     "camera": "medium close-up",
@@ -22,19 +22,17 @@
       "readable text"
     ],
     "outfitId": "liberte_echec",
-    "promptProse": "Surtr leans beside the Rhodes archive desk and turns a weathered Sakaz geography book, looking down at its old pages. Black top, red-and-black plaid skirt and loose black jacket retain her casual outfit beneath the tiny gold crown accessory; the skateboard rests beside the desk. The medium close-up includes shelf rows behind. Dusty golden afternoon light crosses the page edges and red hair, leaving book stacks and farther shelf compartments softly shaded.",
+    "promptProse": "Surtr turns an old Sakaz geography book at the archive desk, afternoon light crossing its pages beside her skateboard.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Surtr",
       "black top",
-      "red black plaid skirt",
-      "loose jacket",
-      "gold crown accessory",
-      "Sakaz geography book",
+      "plaid skirt",
+      "jacket",
+      "crown",
+      "book",
       "skateboard",
-      "archive desk",
-      "medium close-up"
+      "archive",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

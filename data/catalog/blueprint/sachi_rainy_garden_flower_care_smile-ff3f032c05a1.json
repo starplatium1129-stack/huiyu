@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_rainy_garden_flower_care_smile",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1191,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sachi_rainy_garden_flower_care_smile",
     "title": "小岭幸 · 润物细雨的花圃静候",
@@ -31,14 +31,15 @@
       "pink_hair",
       "peaceful"
     ],
-    "promptProse": "Komine Sachi turns among rain-wet hydrangeas, holding a small green watering can in both hands and smiling toward Yuuji approaching with an umbrella. Her lace headdress and white apron collect droplets. The cowboy composition follows the courtyard path between flowering beds toward the academy wall. Overcast morning light spreads evenly across pink braids and flower heads, with soft contact shadows under leaves and clear highlights on water beads.",
+    "promptProse": "Sachi holds a green watering can and smiles toward Yuuji approaching with an umbrella among rain-wet hydrangeas.",
     "promptTokens": [
-      "maid uniform",
-      "hydrangeas",
-      "green watering can",
-      "light rain",
-      "garden path",
-      "medium shot"
+      "maid",
+      "watering can",
+      "hydrangea",
+      "rain",
+      "garden",
+      "smile",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

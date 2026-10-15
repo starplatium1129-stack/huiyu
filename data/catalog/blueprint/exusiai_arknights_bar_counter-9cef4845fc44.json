@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_bar_counter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 627,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "举着气泡饮，笑容灿烂",
     "camera": "medium shot",
@@ -20,14 +20,16 @@
       "wine glass"
     ],
     "outfitId": "standard",
-    "promptProse": "Laughing at the nighttime jazz bar, Exusiai raises a tall glass of lemon soda, ice and lemon visible, while her other arm reaches around the viewer's shoulder. The counter crosses the lower medium-shot frame and the band occupies the farther stage. Warm bar light brightens her face and glass rim; nearby neon reflections streak across the counter beneath her orange-red hair.",
+    "promptProse": "She raises a tall lemon soda while draping her other arm around the viewer's shoulder; a band plays farther back.",
     "promptTokens": [
-      "night",
-      "jazz bar",
-      "lemon soda",
+      "1girl",
+      "halo",
       "raising glass",
+      "soda",
       "laughing",
-      "arm around shoulder",
+      "bar",
+      "band",
+      "night",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

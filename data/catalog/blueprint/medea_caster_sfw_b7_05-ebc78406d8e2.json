@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 293,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_05",
     "title": "美狄亚 · 魔术师的海滨玻璃瓶",
@@ -30,20 +30,17 @@
       "quiet_smile",
       "afternoon_light"
     ],
-    "promptProse": "Medea sits beside the tide pool and arranges shells and sea glass inside a small clear bottle, looking up with quiet satisfaction. Her violet-blue wrap swimsuit, light hooded cover-up and shell bracelets remain in the horizontal medium view. A faint magic circle in the pool suggests the preserved cove. Soft afternoon light shines through the bottle and shallow water, while the circle's local glow outlines submerged shells against the shaded rock basin.",
+    "promptProse": "Medea places shells and sea glass in a small bottle beside the tide pool, a faint magic circle reflecting the bay.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medea Caster",
-      "violet blue wrap swimsuit",
+      "wrap swimsuit",
       "hooded cover-up",
-      "shell bracelets",
-      "glass bottle",
+      "shell bracelet",
+      "bottle",
       "shells",
       "sea glass",
-      "tide pool",
-      "afternoon",
-      "medium shot"
+      "tide pool"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

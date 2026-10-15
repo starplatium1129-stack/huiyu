@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_morning_dining_double_burger_cheeks",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 221,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "saber_alter_morning_dining_double_burger_cheeks",
     "title": "黑呆 · 晨间餐桌的双层汉堡鼓腮帮",
@@ -29,17 +29,14 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Saber Alter pauses after a burger bite, both hands still supporting the double cheeseburger and a tiny cheese-sauce dot at her mouth corner. Golden eyes turn toward fries arriving at the table edge as she recovers her composure. Oversized dark sweatshirt and black trousers fill the seated cowboy view. Warm morning window light catches her braided blonde bun and puffed cheeks, leaving burger and plate shadows across the dining table.",
+    "promptProse": "She pauses mid-bite with the burger in both hands, watching fries arrive at the morning-lit table.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Saber Alter",
-      "oversized dark sweatshirt",
-      "black trousers",
-      "double cheeseburger",
+      "sweatshirt",
+      "trousers",
+      "cheeseburger",
       "puffed cheeks",
       "fries",
-      "morning table",
       "cowboy shot"
     ],
     "negativeTokens": [],

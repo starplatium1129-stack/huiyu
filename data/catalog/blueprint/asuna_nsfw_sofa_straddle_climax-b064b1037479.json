@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_sofa_straddle_climax",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1376,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "asuna_nsfw_sofa_straddle_climax",
     "title": "结城明日奈 · 客厅沙发上的反客为主主控骑乘·「今晚的亚丝娜……只想完完全全地占有你」",
@@ -29,43 +29,21 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "An astonishing, passionate anime illustration of Asuna Yuuki from Sword Art Online in an intimate solo cowgirl straddling perspective on the spacious living room sofa late at night. She commands the center of the frame completely naked, leaning slightly forward with hands resting on her knees as she arches her slender waist in rhythmic rolls. Her voluptuous natural breasts bounce dynamically with erect pink nipples gleaming under the moonlight streaming through floor-to-ceiling windows. Her glistening wet pussy is open and glistening with clear droplets that trickle down her smooth inner thighs. Long chestnut hair swirling around her shoulders, teary hazel eyes filled with ecstasy and blushing adoration, vertical composition, cinematic anime film visual style, solo 1girl, no text, no extra people.",
+    "promptProse": "She leans forward while straddling the sofa, both hands resting on her knees. Moonlight enters through the tall windows.",
     "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "cowgirl_position",
-      "straddling",
+      "adult",
+      "living room",
       "sofa",
-      "completely_nude",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "areola",
-      "exposed_pussy",
-      "pussy_juice",
-      "liquid_drip",
+      "nude",
+      "straddling",
+      "hands on knees",
       "sweat",
-      "sweat_drops",
-      "chestnut_hair",
-      "flying_hair",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "blush",
+      "moonlight",
+      "from below"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -76,6 +54,7 @@
       "special_nsfw",
       "h_cg",
       "cowgirl"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

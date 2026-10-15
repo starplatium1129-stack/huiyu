@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_seventh_scripture_cannon_strike",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1329,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单臂肩抗巨型重火器第七圣典，神圣光辉汇聚炮口，眼神冷冽推了推眼镜架",
     "camera": "cowboy shot, low angle, heavy artillery combat view",
@@ -21,15 +21,15 @@
     "mood": "冷彻重火",
     "negativeTokens": [],
     "outfitId": "official_burial_agency_habit",
-    "promptProse": "Ciel braces the immense Seventh Scripture cannon with one arm on an abandoned industrial rooftop, her blue eyes steady behind rimless glasses. Her navy sleeveless clergy tunic, white accents and gold crosses remain visible below wind-tossed short hair. The low cowboy view places broken roof fixtures and distant buildings behind the weapon. Its white-gold muzzle light illuminates her glove and face, sharply separating them from the cooler night skyline.",
+    "promptProse": "She braces the cannon on the abandoned industrial roof. Its white-gold muzzle light reaches her glove and face against the cooler skyline.",
     "promptTokens": [
-      "Ciel",
-      "navy clergy combat tunic",
-      "Seventh Scripture",
-      "rimless glasses",
       "rooftop",
-      "night",
-      "low angle"
+      "clergy combat tunic",
+      "glasses",
+      "Seventh Scripture",
+      "cannon",
+      "braced stance",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_forest_odm",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 979,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "立体机动装置疾驰",
     "camera": "cowboy shot, high-speed ODM flight between giant trees with dual blades drawn",
@@ -18,16 +18,14 @@
     "mood": "凌厉迅捷",
     "negativeTokens": [],
     "outfitId": "survey_corps_uniform",
-    "promptProse": "Mikasa flies between immense forest trunks on her ODM cables, both blades drawn and her red scarf stretched behind by speed. Her Survey Corps uniform and green cape follow the cowboy-shot movement, with a near trunk passing across one side and successive trees receding beyond. Light through canopy gaps catches her blades and cable lines, while broad tree shadows separate the darker corridor of her flight.",
+    "promptProse": "Mikasa races between the giant trees on her maneuver gear with both blades ready.",
     "promptTokens": [
-      "daytime",
-      "giant forest",
-      "Survey Corps uniform",
-      "ODM gear",
+      "military uniform",
+      "maneuver gear",
       "dual blades",
       "red scarf",
       "flying",
-      "cowboy shot"
+      "giant trees"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

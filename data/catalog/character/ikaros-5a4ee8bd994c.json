@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ikaros",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ikaros",
     "profile": {
@@ -118,17 +118,12 @@
         "1girl",
         "solo",
         "pink_hair",
-        "long_hair",
         "twintails",
-        "ahoge",
         "green_eyes",
-        "collar",
         "metal_collar",
         "chain",
         "white_wings",
-        "angel_wings",
         "robot_ears",
-        "large_breasts",
         "sora_no_otoshimono"
       ],
       "exactTokens": [

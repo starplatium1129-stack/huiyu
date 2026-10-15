@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_sfw_b5_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1515,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shiina_mashiro_sfw_b5_04",
     "title": "椎名真白 · 便利店甜点柜前",
@@ -29,13 +29,13 @@
       "three-quarter_view",
       "medium_shot"
     ],
-    "promptProse": "Mashiro Shiina stands close to the convenience-store dessert case, staring steadily at the baumkuchen while one fingertip touches the misted glass. She continues nodding at the purchase question, navy school blazer and red ribbon tidy above her pleated skirt. The medium portrait includes stacked desserts inside the case. Display lighting illuminates cake packages and her near cheek, with a faint glass reflection of her face and darker shelving behind.",
+    "promptProse": "Mashiro touches the glass with one fingertip while staring at the baumkuchen under the display lights.",
     "promptTokens": [
       "Mashiro Shiina",
       "school uniform",
-      "dessert display",
-      "baumkuchen",
-      "finger on glass",
+      "dessert",
+      "display case",
+      "convenience store",
       "medium shot"
     ],
     "negativeTokens": [],

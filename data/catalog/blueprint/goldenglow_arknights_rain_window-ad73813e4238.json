@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_rain_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 599,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "趴在窗台上看雨滴滑落",
     "camera": "medium close-up",
@@ -20,20 +20,20 @@
     "mood": "安静悠远",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Goldenglow leans on the barbershop's broad windowsill with chin in both hands, watching rain streak the pane as pink ears twitch and her fluffy tail sways. White shirt, yellow ascot and dark pinafore retain her styling outfit, tool pouch nearby. The medium close-up includes the glass and shop interior behind. Soft grey rain light illuminates her thoughtful face and droplets, while warm shop light catches the back of her hair and sill edges.",
+    "promptProse": "She leans on the broad sill with her chin in both hands, watching the rain while her tail sways.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Goldenglow",
+      "cat ears",
+      "cat tail",
       "white shirt",
       "yellow ascot",
-      "dark pinafore",
-      "pleated skirt",
-      "tool pouch",
-      "chin on hands",
-      "barbershop windowsill",
+      "pinafore",
+      "chin in hands",
+      "window",
       "rain",
-      "medium close-up"
+      "hair salon",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

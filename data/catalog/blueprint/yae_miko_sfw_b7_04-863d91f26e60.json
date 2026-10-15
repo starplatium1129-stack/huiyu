@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 35,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_04",
     "title": "八重神子 · 神樱月下的宫司花嫁",
@@ -29,19 +29,16 @@
       "divine_smile",
       "twilight"
     ],
-    "promptProse": "Yae Miko turns gently beneath the Sacred Sakura, holding a bouquet arranged like a freshly opened volume against her red-and-white shrine bridal kimono. Gold cords and a translucent veil frame pink hair and fox ears. The vertical medium-full composition shows the approach narrowing behind her among falling petals. Lantern light picks out the bouquet and veil folds, while pink twilight softly colors her unhurried smile and the distant branches.",
+    "promptProse": "Yae Miko turns beneath falling blossoms with her bouquet arranged like an open book, lanterns lighting the veil.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "red white bridal kimono",
-      "translucent veil",
-      "gold cords",
-      "sakura bouquet",
-      "fox ears",
-      "Sacred Sakura",
-      "lanterns",
+      "Yae Miko",
+      "bridal kimono",
+      "veil",
+      "bouquet",
+      "sakura",
+      "lantern",
       "twilight",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

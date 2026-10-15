@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_yukino",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_yukino",
     "profile": {
@@ -106,13 +106,10 @@
         "yukinoshita_yukino",
         "1girl",
         "solo",
-        "long_black_hair",
-        "straight_hair",
-        "blue_eyes",
-        "ahoge",
-        "red_hair_ribbons",
-        "side_locks",
-        "beauty_mark",
+        "black hair",
+        "long hair",
+        "blue eyes",
+        "red hair ribbons",
         "oregairu"
       ],
       "exactTokens": [

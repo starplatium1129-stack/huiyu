@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_yellow_sundress_train",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1021,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手背在身后回首傲娇娇嗔，夏裙微扬",
     "camera": "medium shot, eye level",
@@ -20,14 +20,14 @@
     "mood": "傲娇明媚",
     "negativeTokens": [],
     "outfitId": "yellow_summer_sundress",
-    "promptProse": "Asuka waits on the elevated summer train platform in her yellow sundress, both hands behind her back as she turns with a proud, mildly impatient glance toward Shinji. Her twin tails and skirt move in the breeze. The eye-level medium view shows platform markings beneath and overhead rail structures receding behind. Strong summer sunlight brightens the yellow fabric, with blue-sky reflections softening shade under her turned face.",
+    "promptProse": "She waits on the elevated platform and turns toward Shinji, her skirt and twintails moving in the breeze under summer sunlight.",
     "promptTokens": [
-      "summer daytime",
-      "train platform",
+      "train station",
+      "platform",
       "yellow sundress",
       "hands behind back",
       "looking back",
-      "medium shot"
+      "summer"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

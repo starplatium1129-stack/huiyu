@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "momo_velia_deviluke",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "momo_velia_deviluke",
     "profile": {
@@ -138,16 +138,11 @@
         "momo_velia_deviluke",
         "1girl",
         "solo",
-        "pink_hair",
-        "medium_hair",
-        "short_hair",
-        "pink_eyes",
-        "purple_eyes",
-        "demon_tail",
-        "tail",
-        "large_breasts",
-        "cleavage",
-        "to_love-ru"
+        "pink hair",
+        "short hair",
+        "purple eyes",
+        "demon tail",
+        "to love-ru"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_wasteland_survey",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 747,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_wasteland_survey",
     "characterId": "zhuang_fangyi_arknights",
@@ -30,18 +30,20 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "daytime",
-      "market",
       "olive jacket",
       "cream trousers",
-      "two apples",
+      "apples",
       "shopping bag",
-      "cowboy shot"
+      "market",
+      "awning",
+      "daylight"
     ],
-    "promptProse": "Zhuang Fangyi offers a choice of two differently colored apples, raising them on one palm while holding the shopping bag in her other hand. Her olive utility jacket and cream trousers remain in the eye-level cowboy view under the market canopy. Fruit crates overlap behind her shoulder. Soft daylight beneath the awning reveals the apples' contrasting skins and brass jacket buttons, with subdued shade around the bag handle.",
+    "promptProse": "Zhuang Fangyi raises two differently colored apples on one palm for the viewer to choose, her shopping bag in the other hand.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

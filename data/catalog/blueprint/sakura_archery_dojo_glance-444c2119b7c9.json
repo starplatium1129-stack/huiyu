@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_archery_dojo_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakura_archery_dojo_glance",
     "characterId": "matou_sakura",
@@ -24,15 +24,13 @@
       "sunset_light",
       "full_body"
     ],
-    "promptProse": "After the shot, Sakura lowers her long Japanese bow beside her left leg and turns with a shy smile, right gloved hand relaxed and no new arrow drawn. Her white kyudo gi and indigo hakama fall over a stable stance. The full-body view follows wooden floorboards toward a distant target. Sunset enters the dojo's open side, illuminating the bow curve and jacket, casting long soft shadows across the practice floor.",
+    "promptProse": "After the shot, Sakura lowers her bow beside her leg and turns with a shy smile across the sunset-lit dojo.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Sakura",
-      "white kyudo gi",
-      "indigo hakama",
-      "lowered Japanese longbow",
-      "relaxed gloved hand",
+      "hakama",
+      "archery",
+      "bow",
+      "gloves",
       "dojo",
       "sunset",
       "full body"

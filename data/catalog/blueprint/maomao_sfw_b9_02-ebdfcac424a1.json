@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1706,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "maomao_sfw_b9_02",
     "title": "猫猫 · 晒架上的最后一缕日光",
@@ -29,15 +29,13 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Maomao stacks empty bamboo sieves onto the pharmacy courtyard rack, then pauses when a ladybird lands on one rim. Her indigo work jacket and linen waist apron cover a beige long skirt; curiosity replaces concentration between her freckles as she waits. The medium portrait keeps rack slats and courtyard ground visible. Reflected late-afternoon light brightens the insect and woven bamboo, with soft sieve shadows layered against the rack behind.",
+    "promptProse": "Maomao pauses over the bamboo sieve and patiently waits for a ladybird to crawl away.",
     "promptTokens": [
-      "Maomao",
-      "indigo work jacket",
+      "indigo jacket",
       "linen apron",
-      "bamboo sieves",
-      "ladybird",
-      "pharmacy courtyard",
-      "medium shot"
+      "bamboo sieve",
+      "ladybug",
+      "courtyard"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

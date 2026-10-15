@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_final_battle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 139,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "artoria_final_battle",
     "title": "阿尔托莉雅 · 最终决战",
@@ -27,19 +27,16 @@
       "war",
       "epic"
     ],
-    "promptProse": "Artoria raises Excalibur with both hands in a resolute stance on the final battlefield, her blue armored dress and white underdress pulled by the wind beneath long white gloves. The cowboy view follows the radiant blade upward toward storm clouds above ruined ground. Golden mana illuminates her determined eyes, cuirass and gripping hands, projecting hard-edged rubble shadows as the sword's beam cuts through the darker clouds.",
+    "promptProse": "She raises Excalibur in both hands as its golden beam cuts through storm clouds. The light reaches the ruined ground and her armor.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Artoria",
       "blue armored dress",
-      "white underdress",
       "white gloves",
       "Excalibur",
-      "two handed raised sword",
+      "holding sword",
+      "raised arms",
       "battlefield",
-      "golden mana",
-      "cowboy shot"
+      "magic",
+      "wind"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

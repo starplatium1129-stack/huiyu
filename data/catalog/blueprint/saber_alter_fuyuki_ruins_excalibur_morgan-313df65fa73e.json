@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
     "title": "黑呆 · 冬木残垣的卑王铁槌",
@@ -29,17 +29,13 @@
       "golden_eyes",
       "full_body"
     ],
-    "promptProse": "Saber Alter stands firmly atop the broad broken pillar and raises Excalibur Morgan in both armored hands before the strike, golden eyes fixed on the battlefield below. The low full-body view includes boots, blade and black plate armor with red filigree, fractured masonry and black mud far beneath. Crimson energy along the sword illuminates her gauntlets and secured blonde bun, throwing red-edged shadows across the pillar's rough surface.",
+    "promptProse": "Saber Alter raises Excalibur Morgan in both hands atop a broken pillar, its red light falling across her gauntlets.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Saber Alter",
-      "black plate armor",
-      "red filigree",
-      "braided blonde bun",
-      "raised Excalibur Morgan",
-      "broken pillar",
-      "Fuyuki ruins",
+      "black armor",
+      "sword",
+      "raised arms",
+      "ruins",
       "full body",
       "low angle"
     ],

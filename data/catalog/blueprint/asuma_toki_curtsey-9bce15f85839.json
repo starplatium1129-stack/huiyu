@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_curtsey",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 867,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "提裙行礼",
     "adult": false,
@@ -26,13 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "candc_maid",
-    "promptProse": "Toki performs a precise curtsey in the sunlit Millennium corridor, gently lifting the edge of her maid combat skirt while keeping a composed, earnest expression. Her blonde braid, headset and small armor accents remain visible in the eye-level medium view. Window frames repeat down the hall behind her. Morning light catches the lace edge and white fabric panels, with orderly frame shadows across the corridor floor.",
+    "promptProse": "She lifts her skirt edge for a precise curtsey. Morning window light falls across the lace and repeating corridor frames.",
     "promptTokens": [
-      "morning",
-      "Millennium corridor",
-      "maid combat outfit",
+      "corridor",
+      "combat maid",
       "headset",
       "curtsey",
+      "morning",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

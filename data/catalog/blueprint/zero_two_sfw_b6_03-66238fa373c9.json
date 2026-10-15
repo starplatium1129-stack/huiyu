@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_sfw_b6_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1575,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zero_two_sfw_b6_03",
     "title": "02 · 绘本的睡前重读",
@@ -30,16 +30,14 @@
       "night",
       "horizontal_composition"
     ],
-    "promptProse": "Zero Two curls on her bed rereading the worn picture book about the monster and the prince, one finger gently tracing its illustration. Her cream sweatshirt and relaxed red trousers keep the pose quiet, pink hair resting beside the pillow. The horizontal medium view includes the open spread and bed corner. A bedside lamp illuminates the yellowed paper and her still face, with deeper book-fold shadows and soft bedding shade around her knees.",
+    "promptProse": "Zero Two rereads the worn story of the monster and prince, tracing its illustration with one finger.",
     "promptTokens": [
-      "zero_two_(darling_in_the_franxx)",
-      "Zero Two",
       "cream sweatshirt",
       "red trousers",
       "picture book",
+      "curled up",
       "bed",
-      "bedside lamp",
-      "medium shot"
+      "bedside lamp"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,6 +47,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

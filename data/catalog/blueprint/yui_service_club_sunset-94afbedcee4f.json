@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_service_club_sunset",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 348,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yui_service_club_sunset",
     "characterId": "yuigahama_yui",
@@ -20,19 +20,17 @@
       "window_light",
       "gentle_smile"
     ],
-    "promptProse": "Yui sits beside the Service Club window and offers freshly brewed red tea with a bright smile, coral hair gathered into its familiar bun. Her open school blazer, pink cardigan, red ribbon and pleated skirt retain the selected uniform. The medium portrait includes the cup above the desk and classroom chairs receding behind. Golden-hour window light illuminates her face and tea surface, casting the cup's rounded shadow across the nearby tabletop.",
+    "promptProse": "Yui offers the red teacup toward the viewer with a bright smile beside the sunlit clubroom window.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yui",
-      "navy school blazer",
+      "school uniform",
       "pink cardigan",
       "red ribbon",
-      "pleated skirt",
-      "red tea cup",
-      "Service Club",
-      "sunset",
-      "medium portrait"
+      "hair bun",
+      "teacup",
+      "offering",
+      "smile",
+      "clubroom",
+      "sunset"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -48,6 +46,8 @@
     "coverageTags": [
       "iconic",
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

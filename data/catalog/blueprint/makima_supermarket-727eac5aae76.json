@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_supermarket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 417,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "makima_supermarket",
     "title": "玛奇玛 · 超市采购",
@@ -24,17 +24,14 @@
       "day",
       "indoor"
     ],
-    "promptProse": "Makima guides the shopping cart through the supermarket meat aisle, pausing to select dinner ingredients with quiet concentration. Her relaxed casual clothes distinguish the outing from office work. The medium view includes cart handle and chilled displays extending behind her, packages arranged on successive shelves. Bright overhead fluorescent light illuminates her hands and the clear wrapping, casting soft shelf shadows while reflected case light opens the cart's metal grid.",
+    "promptProse": "Makima pushes her shopping cart through the meat aisle, selecting ingredients for dinner.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Makima",
-      "relaxed casual outfit",
+      "casual clothes",
       "shopping cart",
-      "dinner ingredients",
-      "supermarket meat aisle",
-      "fluorescent light",
-      "medium shot"
+      "meat aisle",
+      "supermarket"
     ],
     "negativeTokens": [
       "readable labels"

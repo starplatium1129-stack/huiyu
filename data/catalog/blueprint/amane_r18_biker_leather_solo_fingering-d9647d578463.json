@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_biker_leather_solo_fingering",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1189,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "amane_r18_biker_leather_solo_fingering",
     "title": "周防天音 · 车库独处机车旁私密自抚情愫",
@@ -30,46 +30,25 @@
       "heavy_blush",
       "teary_eyes"
     ],
-    "promptProse": "Neon garage light surrounds adult Amane leaning alone against a parked motorcycle. Her black leather suit is unzipped to the waist and peeled below bare breasts, one boot planted on a low service stand. She holds the handlebar with one hand and fingers herself beneath the loosened suit with the other, keeping metal and body clearly separated. Red hair frames green eyes, damp skin and a fearless blush. Vertical solo portrait, no text or extra people.",
+    "promptProse": "Adult Amane leans against the parked motorcycle with one boot on a service stand, holding the handlebar while her other hand reaches beneath the loosened suit.",
     "promptTokens": [
+      "adult",
       "garage",
       "motorcycle",
+      "leather bodysuit",
+      "unzipped",
+      "topless",
+      "raised leg",
       "masturbation",
-      "fingering",
-      "open_jacket",
-      "huge_breasts",
-      "heavy_blush",
-      "teary_eyes",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "neon lights"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "masturbation",
-      "fingering",
-      "huge_breasts",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

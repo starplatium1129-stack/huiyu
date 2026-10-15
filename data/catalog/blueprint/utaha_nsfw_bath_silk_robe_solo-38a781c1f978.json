@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_bath_silk_robe_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1439,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "utaha_nsfw_bath_silk_robe_solo",
     "title": "霞之丘诗羽 · 浴后的丝绸湿身独奏·「取材日记，禁止外传」",
@@ -27,28 +27,17 @@
       "masturbation",
       "steam"
     ],
-    "promptProse": "Kasumigaoka Utaha's deadline-night ritual is a tub of hot water and a silk robe soaked to translucent sheerness. Reclining against the bath rim with the wet silk clinging to every mature curve, she lets one hand drift beneath the water, tracing remembered contours while her red eyes fall half-lidded, recording in her mental research diary that memory alone has verifiable precision. Sensual solo composition, wet translucent silk, cinematic lighting, steam, detailed bathroom background.",
-    "nsfwProse": "Reclining in hot bathwater with a wet silk robe clinging sheerly over full breasts and taut dark nipples, Utaha touches herself beneath the steaming ripples with lazy, sensual precision.",
+    "promptProse": "Utaha touches herself beneath the bathwater, her soaked robe translucent as she reclines against the rim.",
+    "nsfwProse": "",
     "promptTokens": [
-      "bathroom",
-      "bathtub",
+      "Utaha Kasumigaoka",
+      "silk robe",
+      "wet clothes",
+      "bath",
       "steam",
-      "water_droplets",
-      "night",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "night"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -61,22 +50,9 @@
       "special_nsfw"
     ],
     "nsfwTokens": [
-      "sitting_in_water",
-      "bathtub",
-      "translucent_clothing",
-      "wet_clothes",
-      "see-through",
-      "wet_cloth",
-      "silk_robe",
-      "nipples_visible_through_clothes",
-      "bare_breasts",
-      "submerged",
-      "hand_between_legs",
       "masturbation",
-      "pussy_juice",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips"
+      "see-through",
+      "hand between legs"
     ]
   }
 }

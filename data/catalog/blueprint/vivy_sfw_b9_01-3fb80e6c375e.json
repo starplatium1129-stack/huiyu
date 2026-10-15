@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1695,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "vivy_sfw_b9_01",
     "title": "Vivy · 无人小舞台的每日首唱",
@@ -30,15 +30,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Vivy stands precisely on her mark at the amusement park's small stage, smiling and singing toward rows of empty audience seats. Her opaque white-and-blue stage dress, shoulder coverage, earpiece and white boots remain clear. The medium portrait includes the platform edge and silent seats beyond. Morning light falls across her blue hair and boots, with the stage's low shadow crossing the ground and gentle reflected brightness on the dress's white panels.",
+    "promptProse": "Vivy sings from her mark toward empty amusement-park seats in morning light.",
     "promptTokens": [
       "Vivy",
-      "white-blue stage dress",
+      "white and blue dress",
       "earpiece",
-      "white boots",
-      "empty audience",
-      "small stage",
-      "morning",
+      "boots",
+      "singing",
+      "stage",
+      "empty seats",
       "medium shot"
     ],
     "negativeTokens": [],

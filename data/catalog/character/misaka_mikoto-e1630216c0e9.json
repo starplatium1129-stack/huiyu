@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misaka_mikoto",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "misaka_mikoto",
     "profile": {
@@ -120,11 +120,11 @@
         "misaka_mikoto",
         "1girl",
         "solo",
-        "short_brown_hair",
-        "brown_eyes",
-        "hair_clip",
-        "flower_hair_clip",
-        "toaru_kagaku_no_railgun"
+        "brown hair",
+        "short hair",
+        "brown eyes",
+        "flower hair clip",
+        "toaru kagaku no railgun"
       ],
       "negativeTokens": [
         "bad anatomy",

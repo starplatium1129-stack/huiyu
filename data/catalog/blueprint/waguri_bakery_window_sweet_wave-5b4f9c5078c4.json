@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_bakery_window_sweet_wave",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "waguri_bakery_window_sweet_wave",
     "title": "和栗薰子 · 烘焙课后的窗口招手",
@@ -30,14 +30,14 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Kaoruko Waguri stands at the baking-classroom street window after the workshop, raising a bag of her homemade cookies and waving with her free hand. Her yellow sweater and brown apron retain flour marks, blackish-purple braids gathered by a bandana. The medium portrait shows classroom worktables behind her, establishing a lesson setting. Soft frontal daylight lights blue eyes and the cookie bag, with window-frame shadows receding toward the room.",
+    "promptProse": "Waguri raises her homemade cookie bag and waves from the baking classroom window after the workshop.",
     "promptTokens": [
       "Kaoruko Waguri",
       "yellow sweater",
-      "brown apron",
+      "apron",
       "bandana",
-      "cookie bag",
-      "baking classroom",
+      "cookies",
+      "window",
       "medium shot"
     ],
     "negativeTokens": [

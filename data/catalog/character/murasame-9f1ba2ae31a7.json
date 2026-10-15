@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "murasame",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "murasame",
     "profile": {
@@ -137,19 +137,12 @@
         "murasame (senren)",
         "1girl",
         "solo",
-        "pale_green_hair",
-        "light_green_hair",
-        "very_long_hair",
-        "sidelocks",
-        "blunt_bangs",
-        "ahoge",
-        "red_eyes",
-        "red_ribbon",
-        "hair_ribbon",
-        "flat_chest",
-        "small_breasts",
-        "spirit",
-        "senren_banka"
+        "light green hair",
+        "very long hair",
+        "blunt bangs",
+        "red eyes",
+        "red hair ribbon",
+        "senren banka"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_riverbank_sunset_chain_walk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1213,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "落后半步跟随行走，手轻按胸前红领结，项圈铁链被牵引，白翼染上夕阳暖金",
     "camera": "medium two-shot, companion holding the broken chain as they walk along the sunset riverbank",
@@ -21,16 +21,15 @@
     "mood": "温馨依恋",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "Ikaros walks half a step behind Tomoki Sakurai along the grassy river embankment, her metal collar's broken chain ending in his hand. She lightly touches the red bow on her white dress and looks toward him. Frame both clothed figures from medium distance, with reeds descending toward the river. Low sunset shines through feather edges and pink hair, coloring her wings gold above their long grass shadows.",
+    "promptProse": "Ikaros walks half a step behind Tomoki, touching her dress bow while the broken collar chain ends in his hand.",
     "promptTokens": [
-      "Ikaros",
-      "Tomoki Sakurai",
+      "2people",
+      "sakurai tomoki",
+      "walking",
+      "collar",
+      "chain",
       "riverbank",
-      "broken chain",
-      "white wings",
-      "walking together",
-      "sunset",
-      "two-shot"
+      "sunset"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -45,6 +44,8 @@
       "wind"
     ],
     "timeOfDay": "日落",
-    "title": "伊卡洛斯 · 金红河堤的锁链相伴"
+    "title": "伊卡洛斯 · 金红河堤的锁链相伴",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

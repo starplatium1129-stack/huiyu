@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 287,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_05",
     "title": "克洛伊 · 海滨冰淇淋的胜负",
@@ -30,19 +30,15 @@
       "playful",
       "noon"
     ],
-    "promptProse": "Chloe von Einzbern sits on the beach blanket, raising a double-scoop ice cream like a trophy after rescuing its melting cream, and flashes a victory sign with her free hand. Her white-and-pink ruffled swimsuit, short cape and ribbon sandals remain secure. The horizontal medium view includes approaching surf behind pale-pink hair. Noon sun brightens the ice cream and cape, with reflected sea color beneath and a clear cup shadow on the blanket.",
+    "promptProse": "She raises her saved double-scoop ice cream like a trophy and flashes a victory sign from the blanket beside the surf.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Chloe von Einzbern",
-      "white pink ruffled swimsuit",
-      "short beach cape",
-      "ribbon sandals",
-      "double scoop ice cream",
-      "victory sign",
-      "beach blanket",
-      "noon",
-      "medium shot"
+      "beach",
+      "pink and white swimsuit",
+      "short cape",
+      "ice cream",
+      "peace sign",
+      "sitting",
+      "noon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

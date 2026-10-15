@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maria_mikhailovna_kujou",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "maria_mikhailovna_kujou",
     "profile": {
@@ -76,12 +76,10 @@
       "identityProse": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",
       "identityTokens": [
         "maria_mikhailovna_kujou",
-        "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
-        "brown_hair",
-        "long_hair",
-        "wavy_hair",
-        "ahoge",
-        "brown_eyes"
+        "tokidoki bosotto roshia-go de dereru tonari no alya-san",
+        "brown hair",
+        "wavy hair",
+        "brown eyes"
       ],
       "exactTokens": [
         "maria_mikhailovna_kujou"

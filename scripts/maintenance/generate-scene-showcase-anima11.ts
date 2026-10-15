@@ -15,8 +15,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
  *              the strength written in the scene prompt tag (fallback 0.85);
  *              dual (triad) scenes run in the route's no-LoRA mode with both
  *              identities anchored by prompt tokens.
- *   - negative: project `assembleNegative(anima)` + Anima panel suppression +
- *              single-person suppression for solo scenes (operational fixes).
+ *   - negative: project `assembleNegative(anima)` plus explicit per-run additions.
  *
  * Output goes to AI/Reviews/SceneShowcaseRefresh/<round>/ and is never written
  * into the public SceneShowcase dir (mirrors generate-scene-showcase-candidates.js).
@@ -28,6 +27,7 @@ const path: typeof import('path') = require('path');
 
 const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
+const { CHAR_PROMPT }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
 const sceneInference: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 const { requireDataRecords }: typeof import('../../src/utils/dataRecords.ts') = require('../../src/utils/dataRecords.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
@@ -48,8 +48,6 @@ const ANIMA_LORA_BY_CHARACTER: any = Object.freeze({
   nene: 'L_NENE_V21_ANIMA',
   natsume: 'L_NAT_V21_ANIMA',
 });
-const ANIMA_PANEL_SUPPRESS = 'split image, split screen, split panel, two panels, diptych, triptych, comic strip, multiple frames, panel borders, frame borders, double exposure, double image, duplicated subject, duplicated body';
-const ANIMA_EXTRA_PERSON_SUPPRESS = 'multiple girls, extra girl, second person, additional woman, another woman, extra person, background person';
 
 function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
@@ -132,7 +130,7 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
   const scenePrompt = promptPolicy.sceneTemplateText(scene, { char: characterId, shot, engine: 'anima', profile });
   const artistTag = promptPolicy.tokenize(originalPrompt(scene)).find(tag => tag.startsWith('@')) || null;
   const prompt = renderPromptPlan(createPromptPlan({
-    profile, scenePrompt, scene,
+    profile, scenePrompt, scene, identity: CHAR_PROMPT[characterId],
     controls: promptPolicy.characterControlTokens(scene, characterId, ANIMA_LORA_BY_CHARACTER),
     exactTokens: profile.exact_tokens,
     rating: promptPolicy.profileRatingTag(profile, scene),
@@ -146,8 +144,6 @@ function buildAnimaCandidate(scene: any, attempt: any, seedAttempt: any = attemp
   });
   const negativeAppend = String(overrides.negativeAppend || '').trim();
   if (negativeAppend) negative = negative ? `${negative}, ${negativeAppend}` : negativeAppend;
-  negative = negative ? `${negative}, ${ANIMA_PANEL_SUPPRESS}` : ANIMA_PANEL_SUPPRESS;
-  if (!isTriad) negative = `${negative}, ${ANIMA_EXTRA_PERSON_SUPPRESS}`;
   const [width, height] = nearestAnimaSize(scene, modelId).split('x').map(Number);
   const steps = Number(overrides.steps) || animaConstants.MODELS[modelId].steps;
   const cfg = Number(overrides.cfg) || animaConstants.MODELS[modelId].cfg;

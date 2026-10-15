@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_archive_ledger",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 531,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "执笔在账册上批注",
     "camera": "medium shot",
@@ -22,18 +22,17 @@
       "readable records"
     ],
     "outfitId": "victorian_traveler_coat",
-    "promptProse": "Kal'tsit annotates the thick archive ledger with a fountain pen, pausing over the page to review each precise entry. Forest-green wool greatcoat, dark velvet lapels, shoulder capelet and white stand-collar blouse with burgundy ribbon retain her selected attire. The medium view includes the paper volume and shelves beyond the desk. A single lamp illuminates writing fingers and ledger edges, casting a fine pen shadow while the central archives recede into darkness.",
+    "promptProse": "Kal'tsit annotates the open ledger beneath the archive lamp, pausing with her fountain pen above the page.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Kal'tsit",
-      "forest green greatcoat",
-      "shoulder capelet",
-      "white stand collar blouse",
-      "burgundy ribbon",
+      "green coat",
+      "capelet",
       "ledger",
-      "fountain pen",
-      "archive lamp",
+      "pen",
+      "writing",
+      "archive",
+      "desk lamp",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

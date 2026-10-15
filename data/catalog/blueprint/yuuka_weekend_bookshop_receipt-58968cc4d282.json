@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_weekend_bookshop_receipt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "casual_date",
@@ -16,16 +16,16 @@
     "mood": "轻快认真",
     "description": "【优香 · 周末书店的小票】周末的街角书店门外，优香穿着米色风衣、奶油色高领毛衣和藏青格裙，肩上挎着小黑包。她一手抱住刚买的两本书，另一手看着收据核对金额，确认无误后露出轻松的笑容——「书买到了，预算也正好。接下来可以慢慢逛回去。」",
     "action": "站在书店门外，一手抱住两本书，另一手查看收据",
-    "promptProse": "Yuuka stands outside the corner bookstore with two new books against one arm, checking their receipt before smiling at the matched total. Her beige trench coat, cream turtleneck, navy tartan skirt and small black shoulder bag remain in medium view. The shop window reflects bookshelves behind her. Mild afternoon daylight illuminates the paper and book spines, shading the receipt where her fingertips hold its corner.",
+    "promptProse": "Yuuka holds two new books against one arm and checks their receipt, smiling when the total matches.",
     "promptTokens": [
-      "afternoon",
-      "bookstore entrance",
       "beige trench coat",
       "cream turtleneck",
-      "navy tartan skirt",
+      "navy plaid skirt",
       "books",
       "receipt",
-      "medium shot"
+      "shoulder bag",
+      "bookstore",
+      "afternoon"
     ],
     "camera": "medium shot at the bookstore entrance, books and receipt visible",
     "lighting": "书店橱窗前温和的午后日光",
@@ -50,6 +50,8 @@
       "sunlight",
       "medium_shot"
     ],
-    "negativeTokens": []
+    "negativeTokens": [],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

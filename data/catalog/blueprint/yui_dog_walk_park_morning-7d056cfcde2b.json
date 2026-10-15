@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_dog_walk_park_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 350,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yui_dog_walk_park_morning",
     "characterId": "yuigahama_yui",
@@ -20,18 +20,16 @@
       "cheerful_smile",
       "summer"
     ],
-    "promptProse": "Yui walks Sable along the park tree line, holding the dog's leash as she laughs at the ordinary morning outing. Her pastel puppy-motif hoodie and denim shorts retain the casual outfit beneath her coral hair bun. The medium portrait includes the dog beside the path and greenery extending behind. Fresh morning sun illuminates her smile and the leash's upper curve, while tree shadows alternate across the paving and Sable's moving fur.",
+    "promptProse": "Yui laughs as she walks Sable along the park path, keeping the leash in hand.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yui",
-      "pastel puppy hoodie",
+      "pastel hoodie",
       "denim shorts",
-      "dog leash",
-      "Sable",
-      "park tree line",
-      "morning",
-      "medium portrait"
+      "dog",
+      "leash",
+      "walking",
+      "laughing",
+      "park",
+      "morning"
     ],
     "negativeTokens": [],
     "adult": false,
@@ -46,6 +44,8 @@
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

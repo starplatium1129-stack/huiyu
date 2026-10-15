@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1411,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "清晨五点半的住宅区，她骑着自行车穿梭在还亮着路灯的街道，车筐里整齐码着卷好的报纸",
     "adult": false,
@@ -24,14 +24,14 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_delivery",
-    "promptProse": "Kei Shirogane pedals through the residential street at half past five, the front bicycle basket neatly filled with rolled newspapers. Her blue windbreaker, long trousers and practical sneakers follow the motion as her breath condenses in the cold air. The medium view includes handlebars in front and houses receding behind. Gradually brightening dawn lights the street's upper surfaces, while still-glowing lamps cast warmer reflections along the bicycle frame and basket rim.",
+    "promptProse": "Kei pedals down the residential street with newspapers in the front basket, her breath visible beneath the remaining streetlights.",
     "promptTokens": [
       "shirogane_kei",
-      "Kei Shirogane",
-      "blue windbreaker",
-      "newspaper bicycle",
-      "dawn street",
-      "breath vapor",
+      "windbreaker",
+      "trousers",
+      "bicycle",
+      "newspapers",
+      "dawn",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

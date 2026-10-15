@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_bleachers_warm_tea",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 359,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "iroha_bleachers_warm_tea",
     "title": "一色彩羽 · 看台上尚热的红茶",
@@ -30,17 +30,14 @@
       "empty_field",
       "medium_shot"
     ],
-    "promptProse": "Iroha Isshiki nudges a warm tea can toward the empty bench place beside her, keeping the second can between her hands. Her coral windbreaker over an ivory sweatshirt and charcoal athletic trousers suit the finished sports event. She raises her chin nonchalantly, a small grin betraying the gesture. The seated medium view places the empty goal distant behind. Sunset lights the cans and hair edges; reflected field light softly reveals her honey-brown eyes.",
+    "promptProse": "Iroha slides a warm tea can toward the empty seat beside her, holding the other can with a restrained grin. The distant goal stands behind her coral windbreaker.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Iroha Isshiki",
-      "coral windbreaker",
-      "ivory sweatshirt",
-      "charcoal trousers",
-      "tea cans",
-      "stadium bench",
-      "distant goal",
+      "sitting",
+      "bench",
+      "canned drink",
+      "stadium",
       "sunset",
       "medium shot"
     ],

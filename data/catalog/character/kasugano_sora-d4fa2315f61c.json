@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasugano_sora",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 138,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kasugano_sora",
     "profile": {
@@ -78,8 +78,6 @@
         "kasugano_sora",
         "yosuga_no_sora",
         "white_hair",
-        "very_long_hair",
-        "straight_hair",
         "twintails",
         "black_ribbon",
         "antenna_hair",

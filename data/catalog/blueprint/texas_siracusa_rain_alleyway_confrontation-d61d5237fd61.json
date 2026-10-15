@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_siracusa_rain_alleyway_confrontation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 665,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在雨夜狭巷中持剑半出鞘踏步向前，眼神凌厉威严，风衣下摆飞扬",
     "camera": "cowboy shot, dramatic low angle",
@@ -20,18 +20,16 @@
     "mood": "肃杀凌厉",
     "negativeTokens": [],
     "outfitId": "omertosa_mafia",
-    "promptProse": "Texas steps through a puddle in a narrow Siracusan alley, drawing her rapier half an inch while watching the shadowed pursuers farther down the lane. Her black suit and crimson-lined overcoat remain dark against the masonry. A low cowboy angle aligns the receding walls. Warm wall lamps mark broken patches on wet stone; the exposed blade sends a thin gold gleam through cool rain.",
+    "promptProse": "Texas steps through a puddle and partially draws her rapier while watching pursuers down the lamplit alley.",
     "promptTokens": [
-      "rainy day",
-      "Siracusa alley",
-      "stone wall",
-      "puddle",
-      "black suit",
+      "Texas",
+      "suit",
       "overcoat",
       "rapier",
-      "unsheathing",
-      "cowboy shot",
-      "low angle"
+      "alley",
+      "rain",
+      "low angle",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

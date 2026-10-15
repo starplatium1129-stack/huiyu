@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_rainy_car_interior_cigarette_talk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1202,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuria_rainy_car_interior_cigarette_talk",
     "title": "春寺由梨亚 · 雨夜车厢的密语与摘镜揉眸",
@@ -32,19 +32,23 @@
       "touching_face",
       "intimate"
     ],
-    "promptProse": "From the passenger seat, frame Harudera Yuria resting in the parked official car beside the deserted seaside breakwater. One hand remains on the steering wheel while she rubs her nose bridge with the other, red glasses laid on the dashboard. Rain streaks partly obscure the sea outside. Cold-blue instrument light reveals her right-eye beauty mark; streetlamp reflections trace wet glass and blonde waves as she turns gently toward Yuuji.",
+    "promptProse": "Yuria rubs the bridge of her nose and turns gently toward Yuuji from the driver's seat of the parked car, red glasses on the dashboard.",
     "promptTokens": [
-      "Harudera Yuria",
+      "business suit",
+      "hand on steering wheel",
+      "rubbing eyes",
+      "tired",
       "car interior",
-      "rainy night",
-      "glasses on dashboard",
-      "weary expression",
+      "rain",
+      "night",
       "passenger viewpoint"
     ],
     "negativeTokens": [
       "cigarette",
       "glasses worn"
     ],
-    "recommendedSize": "1536x1152"
+    "recommendedSize": "1536x1152",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

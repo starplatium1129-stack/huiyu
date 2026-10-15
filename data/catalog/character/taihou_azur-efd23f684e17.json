@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "taihou_azur",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_azur",
     "profile": {
@@ -111,14 +111,10 @@
         "taihou (azur lane)",
         "1girl",
         "solo",
-        "black_hair",
-        "very_long_hair",
+        "black hair",
         "twintails",
-        "red_eyes",
-        "huge_breasts",
-        "cleavage",
-        "hair_ornament",
-        "azur_lane"
+        "red eyes",
+        "azur lane"
       ],
       "exactTokens": [
         "taihou (azur lane)"

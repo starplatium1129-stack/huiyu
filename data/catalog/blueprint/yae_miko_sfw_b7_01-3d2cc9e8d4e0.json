@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 32,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_01",
     "title": "八重神子 · 鸣神大社的晨间洒扫",
@@ -30,17 +30,14 @@
       "dawn_light",
       "medium_shot"
     ],
-    "promptProse": "Yae Miko advances slowly along the shrine approach, neatly secured red-and-white robes surrounding the ceremonial paper wand held before her. Her violet eyes lift toward the Sacred Sakura and fox ears stir in the breeze. Stone steps recede behind the medium view beneath pale blossoms and dawn mist. Early light grazes the wand's folded paper and her pink hair, while the sheltered side of her robes retains cool shade.",
+    "promptProse": "Yae Miko carries the gohei along the shrine approach and looks toward the Sacred Sakura in dawn mist.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "yae_miko",
       "genshin_impact",
-      "shrine robes",
+      "miko",
       "gohei",
       "fox ears",
-      "pink hair",
-      "shrine approach",
+      "shrine",
       "dawn",
       "medium shot"
     ],

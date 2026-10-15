@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_summer_ocean_splash_sunshine",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1089,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cheshire_summer_ocean_splash_sunshine",
     "title": "柴郡 · 盛夏蔚蓝浪花的猫耳嬉水",
@@ -32,15 +32,15 @@
       "fake_hair_ornament",
       "summer"
     ],
-    "promptProse": "Cheshire cups seawater in both hands and splashes it toward the viewer, grinning beneath a straw hat with cat-ear openings. Her pink-and-ivory frilled swimsuit and floral pareo remain clear behind the cowboy-shot foreground spray. White beach sand extends toward nearby rocks and blue water beyond. Tropical sunlight catches the lifted droplets in tiny prismatic highlights, while moving water reflections brighten the pareo's shadowed folds.",
+    "promptProse": "She splashes seawater toward the viewer with both hands. Sunlight catches the spray above the sand and nearby rocks.",
     "promptTokens": [
-      "summer daytime",
-      "tropical beach",
-      "pink ivory swimsuit",
+      "beach",
+      "pink and ivory swimsuit",
       "floral pareo",
       "straw hat",
-      "water splash",
-      "cowboy shot"
+      "splashing",
+      "grin",
+      "summer"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

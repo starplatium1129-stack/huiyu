@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_rooftop_overview",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 878,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "俯瞰城市",
     "adult": false,
@@ -26,15 +26,16 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "winter_coat",
-    "promptProse": "Rio stands on the Millennium tower rooftop with hands in her long winter coat pockets, looking over the technology city as wind lifts the belted hem. The low wide view places the roof edge beneath her boots and illuminated streets far below. Dusk sky outlines her dark hair and shoulders; city lights reflect faintly along the coat's lower edge, with overlapping tower silhouettes carrying the depth behind her.",
+    "promptProse": "Rio surveys the city from the tower roof, wind lifting her belted coat above the distant lights.",
     "promptTokens": [
-      "dusk",
-      "Millennium tower rooftop",
-      "long winter coat",
+      "Rio",
+      "winter coat",
       "hands in pockets",
+      "rooftop",
       "city",
-      "wide shot",
-      "low angle"
+      "dusk",
+      "low angle",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

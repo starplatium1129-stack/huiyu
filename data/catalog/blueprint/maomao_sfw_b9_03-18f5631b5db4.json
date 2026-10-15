@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_sfw_b9_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1707,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "maomao_sfw_b9_03",
     "title": "猫猫 · 后宫庭院的採集",
@@ -30,17 +30,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Maomao crouches beside the palace-garden path, examining a dew-covered plant through a magnifying glass and placing a sketch card nearby for notes. Her modest green jacket and long skirt lie clear of the wet leaves as a tiny discovery brings a satisfied smile. The medium portrait includes the path and planting edge. Morning light catches dew and lens rim, with translucent leaf highlights and small hand shadows marking the careful observation.",
+    "promptProse": "Maomao crouches beside the garden path to inspect a dew-covered plant, laying her sketch card nearby.",
     "promptTokens": [
       "maomao_(kusuriya_no_hitorigoto)",
-      "Maomao",
-      "green work jacket",
+      "green jacket",
       "magnifying glass",
-      "dew-covered plant",
+      "plant",
+      "dew",
       "sketch card",
-      "palace garden",
-      "morning",
-      "medium shot"
+      "garden"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

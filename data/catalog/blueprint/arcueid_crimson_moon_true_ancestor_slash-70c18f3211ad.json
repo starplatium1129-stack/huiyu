@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_crimson_moon_true_ancestor_slash",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1318,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "悬空迎风挥出金色月牙爪风，赤瞳闪烁神性杀意，金发翻飞嘴角微扬",
     "camera": "cowboy shot, low angle, majestic combat view",
@@ -21,15 +21,16 @@
     "mood": "真祖神威",
     "negativeTokens": [],
     "outfitId": "archetype_earth_regal_gown",
-    "promptProse": "Arcueid Brunestud hovers above the skyscraper skyline in her white Archetype: Earth ballgown, gold filigree and tiara catching the windborne glow. Her short blonde hair lifts around ruby eyes as golden pressure blades flare from her fingertips. The low cowboy view includes the distant building roofs under a crimson moon. Red moonlight colors gown shadows; the golden magic illuminates her hand and nearby ruffled edges more intensely.",
+    "promptProse": "She hovers above the skyline with golden blades of magic flaring from her fingertips. Red moonlight and the magic illuminate opposite folds of the gown.",
     "promptTokens": [
-      "Arcueid Brunestud",
-      "Archetype Earth gown",
-      "gold tiara",
-      "golden claws",
-      "crimson moon",
-      "city skyline",
-      "low angle"
+      "white gown",
+      "tiara",
+      "floating",
+      "claws",
+      "magic",
+      "red moon",
+      "cityscape",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

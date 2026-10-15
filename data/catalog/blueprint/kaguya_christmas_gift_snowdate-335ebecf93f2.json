@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_christmas_gift_snowdate",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "围白围巾递出礼物盒，雪光里红瞳亮晶晶，傲娇嘴硬",
     "adult": false,
@@ -25,16 +25,15 @@
     "mood": "傲娇告白、雪夜心动",
     "negativeTokens": [],
     "outfitId": "winter_shuchiin_uniform",
-    "promptProse": "Under Ginza's Christmas lights, Kaguya Shinomiya offers a meticulously wrapped gift box toward her companion with both hands. A white scarf lies over her dark winter coat and school uniform, snow settling on the red hair ribbon as she tries to hold a composed expression. The close framing keeps decorated shop windows behind her. Warm gold lights illuminate the package corners and blushing cheeks; cool snow reflection separates the coat from the night street.",
+    "promptProse": "Kaguya offers a gift in snowy Ginza, her red eyes bright above the white scarf despite her reserved expression.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "Kaguya Shinomiya",
-      "dark winter coat",
+      "coat",
       "white scarf",
       "gift box",
-      "snowy Ginza",
-      "Christmas lights",
-      "medium close-up"
+      "snow",
+      "christmas lights",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

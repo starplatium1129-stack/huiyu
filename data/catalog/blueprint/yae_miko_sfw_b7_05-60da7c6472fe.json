@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_05",
     "title": "八重神子 · 海滨祭典的油豆腐冰饮",
@@ -30,17 +30,15 @@
       "knowing_smile",
       "summer"
     ],
-    "promptProse": "Seated above the Inazuma shore, Yae Miko turns back knowingly with a folding fan in one hand and a chilled tofu-flavored drink in the other. Sea wind lifts pink hair beside her fox ears, gold ornaments and light festival robe over a pink-and-white swimsuit. The horizontal medium view places the dark sea below the terrace. Summer dusk and lanterns outline the robe; fireworks glint in the drink and her eyes.",
+    "promptProse": "Yae Miko turns back with a fan and chilled drink, fireworks reflected in the glass above the dark sea.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "pink white swimsuit",
-      "light festival robe",
-      "gold hair ornaments",
+      "Yae Miko",
+      "swimsuit",
+      "festival robe",
       "folding fan",
-      "chilled tofu drink",
+      "drink",
       "fireworks",
-      "summer dusk",
+      "seaside",
       "medium shot"
     ],
     "negativeTokens": [

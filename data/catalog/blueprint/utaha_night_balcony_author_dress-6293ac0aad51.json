@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_night_balcony_author_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1425,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "utaha_night_balcony_author_dress",
     "title": "霞之丘诗羽 · 深夜阳台的黑裙作家·「下一章的恶役，就用你来写」",
@@ -27,15 +27,14 @@
       "city_lights",
       "iconic"
     ],
-    "promptProse": "Utaha Kasumigaoka leans on her apartment balcony railing after finishing her manuscript, lifting a wine glass toward her companion with a dry smile. Her off-shoulder black evening dress, silver earrings and low chignon catch the night breeze. The medium composition keeps balcony bars in front of the distant city. Cold moonlight traces her hair and dress edge, while scattered urban windows reflect in the glass bowl and red eyes.",
+    "promptProse": "Utaha raises her glass after finishing the manuscript, moonlight tracing her dress above the city.",
     "promptTokens": [
       "kasumigaoka_utaha",
-      "Utaha Kasumigaoka",
       "black evening dress",
-      "low chignon",
+      "low bun",
       "wine glass",
       "balcony",
-      "city night",
+      "city lights",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_snowfield_march",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 577,
   "createdAt": null,
-  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "扛着战锤稳步前行",
     "camera": "cowboy shot, marching with warhammer over one shoulder",
@@ -17,18 +17,15 @@
     "mood": "沉默坚毅",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Mudrock marches steadily through the Leithanian snowfield, huge engineering warhammer over one shoulder and hazmat helmet secured over sealed olive-green power armor. She turns back to check her companions beyond the frame without breaking the stride. The cowboy view follows deep snow and wind across the exposed route. Pale snowlight illuminates armor planes and hammer edges, with cooler shadows in plate seams and the churned snow beside her path.",
+    "promptProse": "Mudrock carries the engineering warhammer over one shoulder and glances back to check her companions beyond the frame.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Mudrock",
-      "sealed olive power armor",
-      "hazmat helmet",
-      "engineering warhammer",
-      "marching",
-      "Leithanian snowfield",
-      "pale snowlight",
-      "cowboy shot"
+      "power armor",
+      "helmet",
+      "hammer",
+      "walking",
+      "looking back",
+      "snowfield",
+      "wind"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -40,6 +37,8 @@
       "back_view"
     ],
     "timeOfDay": "白天",
-    "title": "泥岩 · 雪原行军"
+    "title": "泥岩 · 雪原行军",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

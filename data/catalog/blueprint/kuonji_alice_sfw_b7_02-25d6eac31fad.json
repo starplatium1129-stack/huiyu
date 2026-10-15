@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1624,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_02",
     "title": "久远寺有珠 · 药草调配的深夜",
@@ -30,16 +30,14 @@
       "candlelight",
       "side_view"
     ],
-    "promptProse": "Alice Kuonji mixes medicine at the late-night workshop table, measuring from small bottles into a mortar with controlled movements. Her dark-blue robe is closed over a high-neck cotton dress, sleeves tied back clear of the ingredients. The medium view includes the orderly bottle row and old stone wall. Candlelight shines through glass shoulders and illuminates her working fingertips, casting a precise profile shadow and taller bottle shapes onto the rough wall.",
+    "promptProse": "Alice mixes a remedy among the small bottles, her candlelit profile cast onto the workshop stone wall.",
     "promptTokens": [
       "kuonji_alice",
-      "Alice Kuonji",
-      "closed blue robe",
-      "mortar",
+      "blue robe",
+      "mortar and pestle",
       "medicine bottles",
-      "stone workshop",
-      "candlelight",
-      "medium shot"
+      "workshop",
+      "candlelight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

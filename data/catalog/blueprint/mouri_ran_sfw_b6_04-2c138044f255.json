@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1606,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_04",
     "title": "毛利兰 · 樱花道场的温柔花嫁",
@@ -28,15 +28,14 @@
       "warm_smile",
       "afternoon_light"
     ],
-    "promptProse": "Ran Mouri stands on the old Kyoto dojo's wooden veranda in a white wedding gown with pale-blue sash and short veil. She carefully arranges the hem for walking, then smiles warmly toward the viewer; stored protective gear and a cherry-blossom bouquet rest nearby. The vertical medium-full view retains the dojo doorway behind. Spring light through flowering branches highlights skirt embroidery and her long hair, leaving soft petal shadows across the veranda boards.",
+    "promptProse": "Ran puts away the training pads and smooths her bridal gown, holding the cherry bouquet with a warm smile on the veranda.",
     "promptTokens": [
-      "Ran Mouri",
-      "white bridal gown",
+      "wedding dress",
       "blue sash",
-      "cherry bouquet",
+      "bouquet",
+      "cherry blossoms",
       "dojo veranda",
-      "spring",
-      "medium full shot"
+      "spring"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

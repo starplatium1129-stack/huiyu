@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_cafeteria",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 204,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [
       "jacket worn"
@@ -34,20 +34,16 @@
       "midday_light",
       "medium_shot"
     ],
-    "promptProse": "Mash steadies her lunch tray with one hand and separates vegetables from the meat cutlet with a fork in the other. Her grey jacket lies over the chair back, leaving black collared dress, red necktie and glasses visible as she looks up contentedly. The medium view includes a stew bowl and cafeteria tables behind. Midday window light reaches her pink-lavender fringe and plate, casting small fork and tray shadows across the table.",
+    "promptProse": "Mash holds her lunch tray steady while separating vegetables from the cutlet; her grey jacket rests on the chair back.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Mash",
-      "black collared dress",
+      "black dress",
       "red necktie",
       "glasses",
-      "jacket on chair",
       "lunch tray",
       "fork",
-      "Chaldea cafeteria",
-      "midday",
-      "medium shot"
+      "cafeteria"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "chaldea_cafeteria_jacket_off",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1749,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "togawa_sakiko_sfw_b9_02",
     "title": "丰川祥子 · 唱片店试听的午后",
@@ -32,22 +32,21 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "At the record shop's listening station, Sakiko Togawa holds one headphone cup while her other hand rests on the navy skirt after tapping the beat. A grey cardigan covers her pale-blue blouse as her yellow eyes lift into a faint smile. The medium portrait includes the small turntable beside her and record sleeves along the wall. Soft frontal shop light reveals headphone curves and cover textures, with gentle shelf shadows behind her blue ribbons.",
+    "promptProse": "Sakiko holds one headphone cup and smiles faintly at the record shop's listening station.",
     "promptTokens": [
       "Sakiko Togawa",
-      "grey cardigan",
-      "navy long skirt",
+      "cardigan",
+      "blouse",
+      "long skirt",
       "headphones",
       "turntable",
-      "record-store listening",
+      "record shop",
       "medium shot"
     ],
     "negativeTokens": [
       "piano",
-      "grand piano",
       "musical keyboard",
-      "playing instrument",
-      "concert stage"
+      "playing instrument"
     ],
     "recommendedSize": "1152x1536",
     "adult": false,

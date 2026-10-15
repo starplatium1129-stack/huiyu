@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1623,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_01",
     "title": "久远寺有珠 · 洋馆客厅的炉火",
@@ -30,16 +30,15 @@
       "firelight",
       "medium_shot"
     ],
-    "promptProse": "Alice Kuonji sits in the mansion's high-backed armchair reading an old book, a hot tea cup placed among the antique furniture nearby. Her modest black long-sleeved dress and white collar remain orderly above dark tights. The medium portrait keeps carved chair sides and fireplace behind her. Flickering firelight passes over the book edge and dark dress folds, while its warm reflections reveal furniture carvings and leave the room's farther corners quiet.",
+    "promptProse": "Alice reads an old book in the manor armchair as firelight moves across her black dress.",
     "promptTokens": [
       "kuonji_alice",
-      "Alice Kuonji",
       "black dress",
       "white collar",
+      "reading",
       "old book",
-      "high-backed chair",
-      "fireplace",
-      "medium shot"
+      "armchair",
+      "fireplace"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

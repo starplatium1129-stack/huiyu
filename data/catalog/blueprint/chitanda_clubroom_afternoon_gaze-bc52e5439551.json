@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_clubroom_afternoon_gaze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1481,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chitanda_clubroom_afternoon_gaze",
     "title": "千反田爱瑠 · 文集装订的最后一道线",
@@ -31,13 +31,14 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Eru Chitanda repairs the Classics Club anthology at the activity-room table, one hand holding its spine flat while the other carefully straightens loose binding thread. Her lavender blouse and long navy pinafore stay clear as purple eyes widen over an uneven stitch. The medium portrait includes the working tabletop and club shelves behind. Soft window light brightens the thread and paper edges, with a small hand shadow marking her precise contact.",
+    "promptProse": "She holds the anthology spine flat with one hand and straightens a loose binding thread with the other. Window light reaches the stitching.",
     "promptTokens": [
-      "Eru Chitanda",
+      "clubroom",
       "lavender blouse",
       "navy pinafore",
-      "bookbinding repair",
-      "club anthology",
+      "bookbinding",
+      "thread",
+      "book",
       "medium shot"
     ],
     "negativeTokens": [],

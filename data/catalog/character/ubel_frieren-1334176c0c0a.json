@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ubel_frieren",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ubel_frieren",
     "profile": {
@@ -76,12 +76,10 @@
       "identityProse": "Übel from Frieren: Beyond Journey's End, a curious mage with long green hair in a side ponytail, M-shaped bangs and heavy-lidded purple eyes. Her easy smile and unhurried gaze suggest a habit of asking intrusive questions.",
       "identityTokens": [
         "ubel_(sousou_no_frieren)",
-        "sousou_no_frieren",
-        "green_hair",
-        "long_hair",
-        "side_ponytail",
-        "purple_eyes",
-        "half-closed_eyes"
+        "sousou no frieren",
+        "green hair",
+        "side ponytail",
+        "purple eyes"
       ],
       "exactTokens": [
         "ubel_(sousou_no_frieren)"

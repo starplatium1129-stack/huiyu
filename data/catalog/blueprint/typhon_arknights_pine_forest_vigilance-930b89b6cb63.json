@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_pine_forest_vigilance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 697,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "typhon_arknights_pine_forest_vigilance",
     "characterId": "typhon_arknights",
@@ -32,17 +32,15 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "afternoon",
-      "park",
-      "pine tree",
-      "path",
-      "pinecone",
-      "open palm",
+      "Typhon",
       "hunter coat",
-      "looking back",
+      "pinecone",
+      "open hand",
+      "pine tree",
+      "park",
       "cowboy shot"
     ],
-    "promptProse": "Typhon pauses by a pine tree and turns sideways toward her walking companion, displaying a pretty pinecone on her open palm. Her gray-and-white hunter coat hangs beside the park path in the eye-level cowboy view. Overlapping trunks lead down the walkway behind. Afternoon light breaks through the canopy across her sleeve and the cone's scales, leaving cool shade beneath the broad coat hem.",
+    "promptProse": "Typhon turns toward her companion with a pinecone on her palm beneath afternoon foliage shadows.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

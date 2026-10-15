@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_classroom_window_blush",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 773,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "托腮望向窗外夕阳，银发如瀑，蓝眸微转用俄语低声呢喃着害羞的爱意，微风吹拂窗帘",
     "camera": "medium shot, seated at the window desk with one hand on her cheek",
@@ -21,16 +21,14 @@
     "mood": "傲娇而深情",
     "negativeTokens": [],
     "outfitId": "seirei_uniform",
-    "promptProse": "Alya sits at the classroom window desk after school, supporting her cheek with one hand as she looks outside, then glancing toward the viewer with a shy blush. Her dark-brown blazer, white shirt and red ribbon stay clear in medium view. Empty desks recede behind her. Orange-red sunset slants through the window onto silver hair and the desktop, casting long desk-leg shadows across the quieter classroom.",
+    "promptProse": "She rests her cheek in one hand at the window desk, glancing toward the viewer. Sunset light stretches across the empty classroom.",
     "promptTokens": [
-      "sunset",
       "classroom",
-      "window desk",
-      "school blazer",
-      "blue skirt",
-      "silver hair",
+      "school uniform",
+      "sitting",
       "cheek in hand",
       "blush",
+      "sunset",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

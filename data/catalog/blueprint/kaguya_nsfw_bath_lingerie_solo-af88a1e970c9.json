@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_nsfw_bath_lingerie_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1408,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "action": "被窝中绯红内衣凌乱，手指颤动自抚，咬唇失神泛红",
     "adult": true,
@@ -23,28 +23,23 @@
     "lighting": "床头小灯暖光在凌乱被褥间勾出绯色",
     "location": "四宫家卧室被窝",
     "mood": "冰封裂缝、初恋自持",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
-    "nsfwProse": "Curled beneath the covers in disheveled crimson lace lingerie, Kaguya Shinomiya bites her trembling lower lip and strokes her wet thighs in quiet, flustered ecstasy under soft ambient shadows.",
+    "negativeTokens": [],
+    "nsfwProse": "",
     "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Tucked deep into the covers of her bedroom after a late bath, Shinomiya Kaguya wears her crimson lace lingerie grown disheveled, silk straps slipped from one shoulder as her fingers tremble between her thighs. Her red tareme eyes lose focus against the pillow, biting her lower lip through a haze of first-love longing, whispering that this is the one battlefield she has never trained for. Warm bedside lamplight pools over the rumpled bedding in a sensual solo composition, cinematic lighting, warmth, detailed bedroom background.",
+    "promptProse": "Adult Kaguya lies beneath the covers with one lingerie strap slipped from her shoulder and one hand between her thighs. Warm bedside light falls over the rumpled sheets.",
     "promptTokens": [
+      "adult",
       "bedroom",
-      "covers",
-      "bedside_lamp",
+      "crimson lingerie",
+      "lace",
+      "strap slip",
+      "topless",
+      "lying",
+      "under covers",
+      "masturbation",
+      "biting lip",
       "night",
-      "warm_lighting",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "lamplight"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -60,21 +55,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "四宫辉夜 · 浴缸夜色的绯红独奏·「谁……谁在被窝里想这些啊」",
-    "nsfwTokens": [
-      "lying_on_bed",
-      "bedroom",
-      "silk_sheets",
-      "crimson_lingerie",
-      "disheveled_clothes",
-      "bare_breasts",
-      "pink_nipples",
-      "bare_shoulders",
-      "hand_between_legs",
-      "masturbation",
-      "pussy_juice",
-      "biting_lip",
-      "heavy_blush",
-      "teary_eyes"
-    ]
+    "nsfwTokens": []
   }
 }

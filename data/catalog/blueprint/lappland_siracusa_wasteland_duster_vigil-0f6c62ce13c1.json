@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_wasteland_duster_vigil",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 673,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "斜躺沙滩椅穿黑色细带比基尼，墨镜推发顶，端冰饮咬吸管晃腿甩狼尾，爽朗坏笑",
     "camera": "cowboy shot, lounging beach chair perspective, focus on wolf ears, toothy grin, and sunglasses",
@@ -20,18 +20,16 @@
     "mood": "惬意欢愉",
     "negativeTokens": [],
     "outfitId": "casual_leather",
-    "promptProse": "Lappland reclines beneath a colorful Siesta parasol in her studded black leather jacket, cropped camisole, denim shorts and fishnets, legs crossed on a striped beach chair. Sunglasses rest on her silver hair as she drinks iced mint lemonade through a straw, swords set aside on the sand. The cowboy view opens toward turquoise water; tropical sun illuminates the glass outside the parasol's cool striped shade.",
+    "promptProse": "Lappland reclines under the parasol with crossed legs, sipping mint lemonade while her swords rest on the sand.",
     "promptTokens": [
-      "daytime",
-      "Siesta beach",
-      "striped chair",
-      "parasol",
       "leather jacket",
       "denim shorts",
-      "fishnets",
+      "fishnet stockings",
       "sunglasses",
-      "mint lemonade",
-      "cowboy shot"
+      "lemonade",
+      "deck chair",
+      "parasol",
+      "beach"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

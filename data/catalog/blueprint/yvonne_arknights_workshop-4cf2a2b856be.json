@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_workshop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 732,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "维修台前调试双枪",
     "camera": "medium shot",
@@ -20,17 +20,16 @@
     "mood": "自信张扬",
     "negativeTokens": [],
     "outfitId": "combat_outfit",
-    "promptProse": "Yvonne holds a screwdriver between her teeth while spinning the repaired handgun in the base workshop. Oil marks her pink twin tails above her initial combat crop top, detached sleeves and gloves. The medium view includes the workbench in front and stored components behind. Workshop spotlights catch her small horns and the gun's clean metal edge, with darker tool shadows across the bench beneath her hands.",
+    "promptProse": "Yvonne spins the repaired handgun while holding a screwdriver between her teeth, oil marking her pink twin tails.",
     "promptTokens": [
-      "daytime",
-      "repair workshop",
       "crop top",
       "detached sleeves",
       "gloves",
+      "screwdriver in mouth",
       "handgun",
-      "screwdriver",
-      "pink twin tails",
-      "medium shot"
+      "oil stains",
+      "workshop",
+      "workbench"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +42,8 @@
       "mechanical"
     ],
     "timeOfDay": "白天",
-    "title": "伊冯 · 废土工坊"
+    "title": "伊冯 · 废土工坊",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

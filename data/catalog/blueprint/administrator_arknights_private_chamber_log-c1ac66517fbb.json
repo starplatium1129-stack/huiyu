@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_private_chamber_log",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 754,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "administrator_arknights_private_chamber_log",
     "characterId": "administrator_arknights",
@@ -32,15 +32,18 @@
       "upper_body"
     ],
     "promptTokens": [
-      "rainy night",
-      "home sofa",
-      "pale gray pajamas",
+      "indoors",
+      "sofa",
+      "sitting",
+      "crossed legs",
+      "pajamas",
       "cushion",
-      "two hot drinks",
-      "floor lamp",
+      "rain",
+      "window",
+      "night",
       "medium shot"
     ],
-    "promptProse": "The Administrator sits cross-legged at one end of the sofa in her pale-gray pajama set, loosely embracing a cushion and listening with a relaxed uncovered face. A place remains beside her, and two hot drinks wait on the near coffee table. The eye-level medium view holds a rain-marked window behind. The warm floor lamp illuminates gold pajama piping and cushion fibers, with soft shadows toward the cool glass.",
+    "promptProse": "She hugs a cushion and listens with her face uncovered, leaving a seat beside her. Two hot drinks sit on the coffee table; lamplight warms the sofa against the rain-dark window.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"

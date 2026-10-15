@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_sfw_b6_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tobiichi_origami_sfw_b6_04",
     "title": "鸢一折纸 · 白色花园的精确誓约",
@@ -29,18 +29,14 @@
       "small_smile",
       "morning_light"
     ],
-    "promptProse": "Under the geometric rose arch, Origami Tobiichi checks her short veil's alignment and pins the final white rose to her tailored bridal gown. She turns toward the viewer with a rare small smile and softened blue eyes. The vertical medium-full view places arch uprights beside her and the morning garden beyond. Cool daylight defines the silver fastening and veil folds, while dew on the roses catches tiny bright highlights.",
+    "promptProse": "Origami pins the last rose to her gown and gives a small smile beneath the morning garden arch.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Origami Tobiichi",
-      "tailored white bridal gown",
+      "wedding dress",
       "short veil",
-      "silver fastening",
       "white rose",
-      "geometric rose arch",
-      "morning",
-      "medium full shot"
+      "flower arch",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

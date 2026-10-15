@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_kotatsu_winter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 344,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_yukino_kotatsu_winter",
     "title": "雪之下雪乃 · 暖桌冬夜",
@@ -29,19 +29,17 @@
       "table_lamp_light",
       "medium_shot"
     ],
-    "promptProse": "Yukino holds the plush cat in both arms above the kotatsu blanket, looking down with a rare relaxed smile. Preserve her long-sleeved knit top, lounge trousers and warm socks. The medium view includes the quilt folds beside the tabletop and snowfall beyond the apartment window. The existing table lamp illuminates her black hair, blue eyes and the blanket surface facing it; the covered heater supplies warmth without a visible glow through the fabric. A gentle contact shadow surrounds the toy’s soft body. Cool window light separates the farther quilt edge from the darker room, keeping the winter interior calm rather than uniformly bright.",
+    "promptProse": "Yukino cradles the plush cat above the kotatsu blanket, looking down with a rare relaxed smile as snow falls outside.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yukino",
-      "long sleeve knit top",
-      "lounge trousers",
-      "warm socks",
+      "knit sweater",
+      "lounge pants",
+      "socks",
       "cat plush",
-      "kotatsu blanket",
-      "snowy window",
-      "table lamp",
-      "medium shot"
+      "hugging",
+      "kotatsu",
+      "snow",
+      "window",
+      "lamplight"
     ],
     "negativeTokens": [
       "live cat"
@@ -50,6 +48,8 @@
     "outfitId": "sfw_kotatsu_homewear",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

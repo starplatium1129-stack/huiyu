@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_water_princess",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 193,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [
       "cropped feet"
@@ -32,18 +32,16 @@
       "beach_daylight",
       "full_body"
     ],
-    "promptProse": "Morgan walks along the summer waterline in her white halter swimsuit and light white beach wrap, turning her head with a restrained smile. Loose silver hair moves beside the wrap as each step leaves a brief print in wet sand. The full-body side view includes the next wave approaching her feet and the receding shore. Beach sun brightens the moving fabric, with clear reflected water light beneath and a soft sand shadow behind.",
+    "promptProse": "Morgan walks along the shallow surf in her white swimsuit and beach wrap, turning with a slight smile.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Morgan",
-      "white halter swimsuit",
-      "white beach wrap",
-      "loose silver hair",
+      "white swimsuit",
+      "sarong",
       "walking",
-      "shallow surf",
-      "daylight",
-      "full body side view"
+      "shallow water",
+      "beach",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "water_princess",

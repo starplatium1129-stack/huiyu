@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_ruins_geass_sigil_moonlight",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1307,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "迎着夜风立于断壁残垣之上，纯白拘束带飘舞，额间Geass红光微闪，侧身回眸从容浅笑",
     "camera": "cowboy shot, low angle, dramatic wind perspective",
@@ -21,15 +21,15 @@
     "mood": "神秘孤高",
     "negativeTokens": [],
     "outfitId": "official_straitjacket",
-    "promptProse": "C.C. stands among the clock tower's broken ramparts and turns over her shoulder with a knowing amber-eyed smile. Loose buckled straps of her white straitjacket and long green hair stream in the night wind above white leggings. A low cowboy angle reveals fractured masonry below the moon. Cool moonlight edges hair and stone, while the scarlet Geass mark on her forehead adds a narrow red glow to nearby bangs.",
+    "promptProse": "She turns over her shoulder among the broken ramparts. The red Geass mark glows beneath her bangs against the cool moonlit masonry.",
     "promptTokens": [
-      "C.C.",
-      "white straitjacket uniform",
-      "Geass forehead mark",
-      "green hair",
-      "ruined clock tower",
-      "moonlight",
-      "low angle"
+      "clock tower ruins",
+      "white straitjacket",
+      "forehead mark",
+      "looking back",
+      "smile",
+      "wind",
+      "moonlight"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

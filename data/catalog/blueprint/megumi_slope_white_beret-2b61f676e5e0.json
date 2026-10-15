@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_slope_white_beret",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1436,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "megumi_slope_white_beret",
     "title": "加藤惠 · 坡道上的白色贝雷帽·「那个……你刚才是在叫我吗」",
@@ -28,15 +28,15 @@
       "slight_smile",
       "iconic"
     ],
-    "promptProse": "On the cherry-blossom slope, Megumi Kato steadies her white beret with one hand and carries a paper bag in the other. She looks back with a slight smile beneath her short brown bob, the puff-sleeved white dress moving in the spring wind. The medium view follows the rising road between flowering trees. Soft afternoon backlight rims hat and hair, while leaf-filtered golden patches drift across the skirt and paving.",
+    "promptProse": "Megumi steadies her white beret and smiles back along the cherry-blossom slope, a paper bag in her other hand.",
     "promptTokens": [
       "katou_megumi",
-      "Megumi Kato",
       "white dress",
-      "white beret",
+      "beret",
       "paper bag",
-      "cherry-blossom slope",
-      "medium shot"
+      "looking back",
+      "cherry blossoms",
+      "hill"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

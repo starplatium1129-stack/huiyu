@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanroji_mitsuri",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kanroji_mitsuri",
     "profile": {
@@ -86,7 +86,6 @@
         "pink_hair",
         "green_hair",
         "gradient_hair",
-        "long_hair",
         "multiple_braids",
         "green_eyes",
         "mole_under_eye"

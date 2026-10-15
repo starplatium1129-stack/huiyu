@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_maid_cafe_shift",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 831,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端着托盘小心走过，差点绊倒",
     "adult": false,
@@ -21,16 +21,16 @@
     "mood": "lighthearted",
     "negativeTokens": [],
     "outfitId": "part_time_maid_apron",
-    "promptProse": "Byakuya carries a tray of tea and cake through the maid cafe aisle in a simple black dress and white frilled apron. After an awkward near-stumble, she steadies the tray and bows with flushed cheeks. The medium view keeps her hands and balanced dishes together, with table edges guiding the aisle behind. Warm cafe light brightens the porcelain and apron, leaving close shadows beneath the cups on the tray.",
+    "promptProse": "She steadies the tea tray after a near-stumble and bows in the cafe aisle. Warm light reaches the balanced dishes and apron.",
     "promptTokens": [
-      "daytime",
       "maid cafe",
       "black dress",
       "white apron",
-      "tea tray",
+      "tray",
+      "tea",
       "cake",
       "bowing",
-      "medium shot"
+      "blush"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

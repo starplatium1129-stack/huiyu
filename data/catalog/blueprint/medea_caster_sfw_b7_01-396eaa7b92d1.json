@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_01",
     "title": "美狄亚 · 柳洞寺厨房的手作料理",
@@ -31,20 +31,16 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Medea tastes a spoonful from the small cooking pot, concentrating on its seasoning with navy robe sleeves safely tied back above her linen apron. A pointed ear appears through blue hair; vegetables and an empty serving bowl await on the counter. The medium view follows the orderly temple kitchen behind her. Morning light warms her face and spoon, illuminating pot steam while gentle shadows separate the bowl and vegetable pieces from the work surface.",
+    "promptProse": "Medea cooks in the temple kitchen with her long sleeves tied back and an apron over her closed robe.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medea",
-      "closed navy robe",
+      "medea_(caster)_(fate)",
+      "navy robe",
       "tied sleeves",
-      "linen apron",
+      "apron",
       "cooking spoon",
-      "vegetables",
-      "temple kitchen",
-      "morning",
-      "medium shot",
-      "medea_(caster)_(fate)"
+      "temple kitchen"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_nsfw_goddess_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 273,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "ereshkigal_nsfw_goddess_straddle",
     "title": "埃列什基伽勒 · 女王的主动跨坐·「主动一点……也需要练习的」",
@@ -27,40 +27,20 @@
       "glowing",
       "night"
     ],
-    "promptProse": "Even the queen of the dead practices being proactive. Straddling your waist with the ribbons of her blue-black lace half undone and blonde hair curtaining your faces, Ereshkigal moves with earnest, unpracticed rolls while studying every micro-change of your expression like a judgment, red eyes wet as she admits that being watched makes her composure crack. Vertical low-angle cowgirl composition, bouncing breasts, heavy blush, cinematic lighting, soul glow.",
+    "promptProse": "She straddles the viewer's waist and studies their expression, her hair falling around their faces in the soul glow.",
     "nsfwProse": "",
     "promptTokens": [
+      "adult",
+      "blue lingerie",
+      "lace",
+      "open clothes",
+      "topless",
       "straddling",
-      "cowgirl_position",
-      "on_lap",
-      "blue_lingerie",
-      "lace_bra",
-      "bra_pull",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "pussy_juice",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "blonde_hair",
-      "hair_down",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "hair down",
+      "blush",
+      "from below"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -71,6 +51,7 @@
       "nsfw",
       "cowgirl",
       "special_nsfw"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

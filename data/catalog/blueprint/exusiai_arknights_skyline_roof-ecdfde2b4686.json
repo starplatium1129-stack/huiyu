@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_skyline_roof",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 628,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单膝蹲在天台边缘，手搭凉棚远眺龙门都市",
     "camera": "medium wide shot",
@@ -15,21 +15,22 @@
     "lighting": "orange city dusk",
     "location": "龙门天台",
     "mood": "自由洒脱",
-    "negativeTokens": [
-      "indoor scene"
-    ],
+    "negativeTokens": [],
     "outfitId": "city_rider",
-    "promptProse": "Exusiai crouches on one knee atop a Lungmen rooftop guardrail, shading her eyes to inspect traffic far below. Her city-rider outfit, eight guns and golden light wings hold their silhouette against the orange dusk sky. A medium-wide view shows the roof edge beneath her and streets converging among distant towers. Sunset lights the wing edges and rail top, leaving building faces below in deeper shade.",
+    "promptProse": "Balanced on one knee atop the guardrail, she shades her eyes to inspect traffic below, eight guns arranged beside her golden light wings.",
     "promptTokens": [
-      "dusk",
+      "1girl",
+      "solo",
+      "halo",
+      "wings",
+      "guns",
+      "one knee",
+      "hand above eyes",
+      "railing",
       "rooftop",
-      "guardrail",
-      "kneeling",
-      "shading eyes",
-      "eight guns",
-      "golden wings",
-      "city rider",
-      "medium wide shot"
+      "cityscape",
+      "sunset",
+      "wide shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

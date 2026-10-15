@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 295,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kama_fate_sfw_b7_01",
     "title": "迦摩 · 魔王沙发的慵懒午后",
@@ -31,19 +31,19 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Adult Kama lounges on the sofa in an opaque plum sweatshirt and full-length charcoal trousers, one elbow supported by a cushion while she turns a flower-tipped arrow in her other hand. White hair spreads beside a lazy red-eyed glance at the unopened snack packet. The medium view includes the low table and overlapping cushions. Afternoon window light brightens arrow petals and her face, leaving soft folds shaded where her arm meets the cushion.",
+    "promptProse": "Adult Kama rests her head in one hand while twirling a flower-tipped arrow above the sofa, an unopened snack beside her.",
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Kama",
-      "plum sweatshirt",
-      "charcoal trousers",
+      "kama_(fate)",
+      "sweatshirt",
+      "trousers",
+      "reclining",
       "sofa",
-      "flower tipped arrow",
-      "unopened snack packet",
+      "arrow",
+      "snack",
       "afternoon",
-      "medium shot",
-      "kama_(fate)"
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

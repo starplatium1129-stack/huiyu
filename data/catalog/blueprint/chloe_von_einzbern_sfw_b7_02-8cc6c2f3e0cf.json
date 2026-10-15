@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 284,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_02",
     "title": "克洛伊 · 厨房里的星星饭团",
@@ -30,19 +30,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Chloe turns the star-shaped rice mold onto its plate, waits for the rice ball to emerge intact and sets both hands beside it with a triumphant grin. Her orange checked long-sleeved shirt, cream trousers and navy apron remain practical and fully covered. In the seated medium view, the low worktable fills the near edge; the higher kitchen counter extends behind her shoulder, with a closed cabinet below it to establish the room’s scale. Clear morning daylight reveals her warm brown skin and orange eyes. The finished rice ball casts a small star-shaped shadow, and the plate leaves a broader soft contact shadow on the wood.",
+    "promptProse": "She turns the star mold onto a plate and sets her hands beside the intact rice ball. Morning light catches its star-shaped shadow.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Chloe",
+      "kitchen",
       "orange checked shirt",
-      "cream trousers",
+      "cream pants",
       "navy apron",
-      "star shaped rice mold",
+      "rice mold",
       "rice ball",
-      "low kitchen table",
-      "morning",
-      "medium shot"
+      "grin"
     ],
     "negativeTokens": [
       "extra hands"

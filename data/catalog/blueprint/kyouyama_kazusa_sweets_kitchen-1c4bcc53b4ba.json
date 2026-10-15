@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_sweets_kitchen",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 855,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "系围裙搅拌面糊",
     "adult": false,
@@ -26,15 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "sweets_apron",
-    "promptProse": "Kazusa stirs macaron batter in the sweets-club kitchen, a little flour on her cheek above the white apron worn over her Trinity uniform. Her cat-shaped hood is pushed down behind her shoulders as she asks the teacher to steady the bowl. The eye-level medium view holds bowl and whisk near the counter edge. Afternoon window light meets warm kitchen light on her hands, with batter shadows beneath the moving whisk.",
+    "promptProse": "Kazusa whisks macaron batter in the sweets kitchen with her white apron tied over her uniform.",
     "promptTokens": [
-      "afternoon",
-      "sweets kitchen",
+      "school uniform",
       "white apron",
-      "Trinity uniform",
       "whisk",
-      "macaron batter",
-      "medium shot"
+      "batter",
+      "kitchen",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "artoria_pendragon_alter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 59,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "artoria_pendragon_alter",
     "profile": {
@@ -100,10 +100,7 @@
         "fate/stay_night",
         "blonde_hair",
         "yellow_eyes",
-        "golden_eyes",
-        "pale_skin",
-        "kuudere",
-        "cool_beauty"
+        "pale_skin"
       ],
       "exactTokens": [
         "saber_alter"

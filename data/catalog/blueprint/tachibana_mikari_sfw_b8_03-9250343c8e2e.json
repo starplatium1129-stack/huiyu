@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1677,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_03",
     "title": "橘美花莉 · 社团教室的摄影指导",
@@ -39,13 +39,13 @@
       "sunset",
       "medium_shot"
     ],
-    "promptProse": "Mikari Tachibana demonstrates a camera-friendly pose to Okumura before the manga clubroom's blackboard, lifting one hand to brush her chestnut hair. Her open black school blazer, beige vest and red bow stay precise above the grey skirt; pink side ribbons swing lightly. The medium view includes the desks where he watches. Sunset from the windows lights her raised wrist and hair edges, with softer shadows across the board behind her expectant pink eyes.",
+    "promptProse": "Mikari demonstrates a pose to Okumura before the clubroom blackboard, sunset catching her raised wrist.",
     "promptTokens": [
       "Mikari Tachibana",
-      "black school blazer",
-      "beige vest",
-      "modeling demonstration",
-      "manga clubroom",
+      "school uniform",
+      "posing",
+      "hair touch",
+      "clubroom",
       "sunset",
       "medium shot"
     ],

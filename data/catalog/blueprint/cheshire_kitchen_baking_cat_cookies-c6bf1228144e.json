@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_kitchen_baking_cat_cookies",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1090,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cheshire_kitchen_baking_cat_cookies",
     "title": "柴郡 · 甜蜜厨房里的猫咪烘焙",
@@ -32,15 +32,16 @@
       "fake_hair_ornament",
       "proud"
     ],
-    "promptProse": "Cheshire presents a fresh tray of golden heart-marked cookies in the residence kitchen, flour on her nose and green eyes wide with pride. Her navy-white maid dress, white gloves and apron frills remain clear in the frontal medium close-up. The oven and counter extend behind the tray. Warm ceiling light illuminates her face and cookie edges, while orange oven glow touches the metal underside beneath her holding hands.",
+    "promptProse": "She presents the tray of heart-marked cookies with pride. Warm kitchen light and the oven glow catch the tray between her hands.",
     "promptTokens": [
-      "daytime",
-      "Commander kitchen",
-      "navy white maid dress",
+      "kitchen",
+      "maid",
       "white gloves",
       "baking tray",
-      "heart cookies",
-      "medium close up"
+      "cookies",
+      "flour on face",
+      "smile",
+      "upper body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

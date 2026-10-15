@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1407,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "扣下工作手机，挖起第一勺布丁，放松肩膀。",
     "adult": false,
@@ -23,16 +23,16 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_casual",
-    "promptProse": "Ai Hayasaka leans against the convenience-store bench, peeling the pudding lid before lifting the first spoonful with a relieved breath. Her opaque navy jacket, cream T-shirt and jeans remain ordinary and relaxed. A work phone lies face-down beside the paper bag. The medium night view includes the shopfront behind; its soft frontal light reveals her loosening shoulders and blonde ponytail, with the bench casting a low shadow across the pavement.",
+    "promptProse": "Hayasaka opens her pudding on the storefront bench, relaxing over the first spoonful with her work phone face-down beside the bag.",
     "promptTokens": [
-      "Ai Hayasaka",
-      "navy zip jacket",
-      "cream T-shirt",
+      "jacket",
+      "t-shirt",
       "jeans",
       "pudding",
-      "storefront bench",
-      "night",
-      "medium shot"
+      "spoon",
+      "bench",
+      "convenience store",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -49,6 +49,8 @@
       "medium_shot"
     ],
     "timeOfDay": "night",
-    "title": "早坂爱 · 下班后的最后一颗布丁"
+    "title": "早坂爱 · 下班后的最后一颗布丁",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

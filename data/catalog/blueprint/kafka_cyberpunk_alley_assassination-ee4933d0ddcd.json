@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_cyberpunk_alley_assassination",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1032,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kafka_cyberpunk_alley_assassination",
     "title": "卡芙卡 · 霓虹雨巷交锋",
@@ -30,16 +30,17 @@
       "spider_web_tights",
       "high_heels"
     ],
-    "promptProse": "Kafka holds a clear umbrella in one hand and fires her special submachine gun with the other in a rain-soaked alien-city alley. Her burgundy-black coat and dark-purple shorts remain visible in the low cowboy view. Purple holographic signs climb the towers beyond narrow walls. Saturated pink-purple neon reflects through puddles and along the canopy; red muzzle flash briefly lights her firing glove and the nearby wet masonry.",
+    "promptProse": "Kafka fires her submachine gun one-handed while holding a clear umbrella over the rain-soaked alley. Neon and muzzle flash reflect in the puddles.",
     "promptTokens": [
-      "rainy night",
-      "cyberpunk alley",
+      "Kafka",
       "transparent umbrella",
       "submachine gun",
-      "Stellaron Hunter coat",
       "muzzle flash",
+      "alley",
+      "rain",
+      "neon lights",
       "cowboy shot",
-      "low angle"
+      "from below"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

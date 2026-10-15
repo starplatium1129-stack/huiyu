@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_rooftop_moon_gaze_night_city",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1097,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "倚靠栏杆仰望夜空巨大月球，指间夹着泛紫光的电子烟，渐变短发随风飘散",
     "camera": "wide cinematic low angle, grand city and moon backdrop",
@@ -20,18 +20,16 @@
     "mood": "孤独清冷",
     "negativeTokens": [],
     "outfitId": "netrunner_suit",
-    "promptProse": "Lucy sits against the rusted Watson rooftop railing, holding a faintly purple cyber cigarette and lifting her red-shadowed eyes toward the great white moon. Keep her netrunner jacket, white bodysuit and dark shorts in the low-angle wide view. The railing crosses the foreground, a neighboring tower overlaps the lower skyline, and progressively smaller illuminated facades open into Night City beyond. Cyan and magenta billboard light rise onto the rail underside and her rainbow hair. Pale moonlight catches her face and upper jacket shoulder; the rooftop immediately beneath her remains darker, grounding the figure against the brilliant city.",
+    "promptProse": "Lucy watches the moon from the rooftop railing with a violet-lit electronic cigarette between her fingers.",
     "promptTokens": [
-      "night",
-      "Watson rooftop",
-      "netrunner jacket",
+      "jacket",
       "white bodysuit",
       "shorts",
-      "cyber cigarette",
-      "rainbow hair",
+      "electronic cigarette",
+      "railing",
+      "rooftop",
       "moon",
-      "wide shot",
-      "low angle"
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

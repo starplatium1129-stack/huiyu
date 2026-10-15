@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_haruno",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_haruno",
     "profile": {
@@ -95,13 +95,8 @@
         "oregairu",
         "1girl",
         "solo",
-        "black_hair",
-        "medium_hair",
-        "brown_eyes",
-        "purple_eyes",
-        "mature_female",
-        "medium_breasts",
-        "smirk"
+        "black hair",
+        "medium hair"
       ],
       "exactTokens": [
         "yukinoshita_haruno"

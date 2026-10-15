@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_mansion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tohsaka_rin_mansion",
     "title": "远坂凛 · 远坂工坊·红宝石魔术充能",
@@ -30,18 +30,15 @@
       "candlelight",
       "medium_shot"
     ],
-    "promptProse": "Rin stands with both arms folded before the Tohsaka workshop's magic circle, chin lifted in a confident half-smile beneath ribbon-tied brown twintails. Her red turtleneck and black skirt remain distinct from the floating ruby above the circle. In the medium view, old books flank the formation and a workbench recedes behind. Crimson gem light pools across the books and skirt hem, while candlelight outlines the bench's darker side.",
+    "promptProse": "Rin folds her arms before the magic circle, its floating ruby lighting books beside the candlelit workbench.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Rin",
       "red turtleneck",
       "black skirt",
-      "folded arms",
+      "crossed arms",
       "floating ruby",
       "magic circle",
-      "basement workshop",
-      "candlelight",
+      "workshop",
       "medium shot"
     ],
     "negativeTokens": [

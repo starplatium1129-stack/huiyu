@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cheshire_azur",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cheshire_azur",
     "profile": {
@@ -116,15 +116,10 @@
         "solo",
         "grey_hair",
         "blue_hair",
-        "two-tone_hair",
         "streaked_hair",
-        "long_hair",
         "twintails",
         "cat_ear_headband",
-        "fake_animal_ears",
-        "hair_ornament",
         "green_eyes",
-        "large_breasts",
         "azur_lane"
       ],
       "exactTokens": [

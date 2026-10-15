@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_stars_deck",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 591,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "躺在图纸上翘着腿看星星",
     "camera": "overhead shot",
@@ -18,23 +18,21 @@
     "lighting": "starlight",
     "location": "罗德岛甲板",
     "mood": "惬意浪漫",
-    "negativeTokens": [
-      "readable blueprint notes"
-    ],
+    "negativeTokens": [],
     "outfitId": "gala_night_evening_dress",
-    "promptProse": "Eunectes lies back on an unfolded mecha blueprint across the top deck, legs supported by the railing and one hand behind her head as she studies the Milky Way in wonder. Emerald-and-black evening gown pools around her, metal clasp and pendant chain visible in the overhead view. Starlight softly defines her profile; dim safety lamps reveal blueprint lines and gown folds, leaving deeper shadows between deck panels and the railing posts.",
+    "promptProse": "She lies on an unfolded mecha blueprint with her legs supported by the railing, gazing up at the Milky Way.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Eunectes",
-      "emerald black evening gown",
-      "metal clasp",
-      "pendant chain",
-      "mech blueprint",
+      "evening gown",
+      "necklace",
       "reclining",
-      "legs on railing",
-      "Milky Way",
-      "overhead shot"
+      "legs up",
+      "blueprint",
+      "railing",
+      "ship deck",
+      "milky way",
+      "from above"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

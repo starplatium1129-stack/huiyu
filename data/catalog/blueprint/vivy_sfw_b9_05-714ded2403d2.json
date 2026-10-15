@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1699,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "vivy_sfw_b9_05",
     "title": "Vivy · 海边录下第一首潮声",
@@ -30,15 +30,14 @@
       "sea_breeze",
       "afternoon_light"
     ],
-    "promptProse": "Vivy sits on the closed seaside theater's stage steps, recording the tide with compact waterproof equipment. Her light stage jacket lies over a white-and-blue resort swimsuit, blue hair moving in the sea wind. After listening to playback, she offers the earpiece toward the viewer with precise but curious attention. The horizontal medium view includes the lower step and ocean; afternoon sunlight warms the device rim, while cool water reflections brighten her shaded fingers.",
+    "promptProse": "Vivy records the tide from the stage steps, then offers an earpiece after listening to the playback.",
     "promptTokens": [
       "Vivy",
-      "white-blue resort swimsuit",
-      "stage jacket",
-      "waterproof recorder",
-      "shared earphones",
-      "seaside theater",
-      "afternoon",
+      "swimsuit",
+      "jacket",
+      "recorder",
+      "earphones",
+      "seaside stage",
       "medium shot"
     ],
     "negativeTokens": [],

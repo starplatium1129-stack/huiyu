@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_rooftop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuzuriha_inori_rooftop",
     "title": "楪祈 · 屋顶对话",
@@ -29,21 +29,21 @@
       "twilight_light",
       "medium_shot"
     ],
-    "promptProse": "Inori sits on the broad concrete parapet, both hands cradling a warm red-tea can while her lower legs hang relaxed beside the wall. She turns attentively toward her unseen companion, white-and-blue uniform and red clips tidy beneath moving pink-orange hair. The horizontal medium view includes the breakwater beyond the rooftop. Orange-grey dusk lights her face and the can rim, leaving the parapet's vertical side softly shaded against the sea horizon.",
+    "promptProse": "Inori cradles the warm tea can in both hands on the broad parapet, turning attentively toward her unseen companion.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Inori",
-      "white blue school uniform",
-      "red clips",
+      "school uniform",
+      "red hair clips",
       "tea can",
-      "hands on can",
-      "seafront rooftop parapet",
-      "evening",
-      "medium shot"
+      "sitting",
+      "dangling legs",
+      "rooftop",
+      "sea",
+      "evening"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
-    "outfitId": "school_uniform"
+    "outfitId": "school_uniform",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

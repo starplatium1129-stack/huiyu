@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_lungmen_patrol",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 536,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单手按剑，缓步而行",
     "camera": "medium tracking shot",
@@ -20,20 +20,17 @@
     "mood": "利落威严",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Ch'en walks slowly through rain-slick Lungmen on patrol, one hand resting on Chi Xiao's hilt and disciplined eyes scanning the district. Blue-and-black short-sleeved tactical jacket, white shirt, black tie and pleated skirt retain the inspection uniform, twin swords at her back. The tracking medium view follows storefronts along the street. Red neon illuminates her near sleeve and sword fittings, spreading broken pavement reflections while darker building intervals preserve the night depth.",
+    "promptProse": "She patrols the wet street with one hand resting on Chi Xiao's hilt. Red neon reflects along her sword fittings and the pavement.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ch'en",
-      "blue black tactical jacket",
-      "white shirt",
-      "black tie",
+      "Lungmen",
+      "tactical jacket",
+      "shirt",
+      "necktie",
       "pleated skirt",
       "twin swords",
-      "hand on Chi Xiao",
-      "Lungmen patrol",
-      "night neon",
-      "medium tracking shot"
+      "walking",
+      "neon",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

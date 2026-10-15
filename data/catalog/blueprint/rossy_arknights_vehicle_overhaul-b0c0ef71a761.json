@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_vehicle_overhaul",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 755,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rossy_arknights_vehicle_overhaul",
     "characterId": "rossy_arknights",
@@ -32,16 +32,15 @@
       "cowboy_shot"
     ],
     "promptTokens": [
-      "daytime",
-      "flower shop",
-      "red hooded cloak",
+      "red cloak",
       "white dress",
-      "daisies",
       "wolf ears",
       "wolf tail",
+      "daisies",
+      "flower shop",
       "cowboy shot"
     ],
-    "promptProse": "Rossy offers a small bunch of daisies outside the flower shop, smiling openly while her other hand pinches the wrapping. Her original red hooded cloak covers a white A-line dress, wolf ears emerging through the hood openings and her fluffy tail curving behind. The eye-level cowboy view places flower displays beside the doorway. Bright daylight touches the petals and cloak folds, shading the black waist cincher underneath.",
+    "promptProse": "Rossy offers a wrapped bunch of daisies outside the flower shop in bright daylight.",
     "negativeTokens": [],
     "coverageTags": [
       "iconic",

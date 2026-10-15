@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_training_dummy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 581,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "拄锤而立，气定神闲",
     "camera": "low angle",
@@ -20,19 +20,17 @@
     "mood": "沉稳如山",
     "negativeTokens": [],
     "outfitId": "elite2",
-    "promptProse": "Mudrock stands calmly beside her planted enormous warhammer after the exercise, black high-neck bodysuit and remaining pauldrons and gauntlets distinct beneath loose silver-white hair and Sarkaz horns. Earth-and-stone guardian golems encircle the drill ground farther back. The low view connects hammer base to the completed training area. Cool morning light catches armor and rough golem edges, casting broad stone shadows across the ground while preserving her relaxed, steady posture.",
+    "promptProse": "Mudrock stands relaxed beside her planted warhammer after the drill, stone guardians encircling the yard behind her.",
     "promptTokens": [
-      "Mudrock",
-      "stone guardian golems",
-      "black high neck bodysuit",
-      "remaining pauldrons",
+      "bodysuit",
+      "pauldrons",
       "gauntlets",
-      "silver hair",
-      "Sarkaz horns",
-      "planted warhammer",
-      "training yard",
+      "hammer",
+      "standing",
+      "golem",
+      "training ground",
       "morning",
-      "low angle"
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +42,8 @@
     ],
     "timeOfDay": "清晨",
     "title": "泥岩 · 训练场",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

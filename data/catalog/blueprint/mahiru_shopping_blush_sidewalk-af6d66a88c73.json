@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_shopping_blush_sidewalk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1473,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mahiru_shopping_blush_sidewalk",
     "title": "椎名真昼 · 商业街并肩同行的微热红晕·「被同学看到的话……会误会的……但我不讨厌」",
@@ -29,15 +29,15 @@
       "shy",
       "looking_down"
     ],
-    "promptProse": "Mahiru Shiina draws her hands into her ivory duffle-coat sleeves and quietly catches her companion's coat edge while they shop for groceries. Their fingertips touch, and she looks down with an immediate blush above the red-and-white plaid scarf. The medium view follows the red-brick sidewalk between bare street trees. Clear winter sunlight catches scarf fibers and coat toggles, with branch shadows crossing the paving beneath their close steps.",
+    "promptProse": "Mahiru catches her companion's coat edge during their grocery trip and looks down blushing when their fingertips touch.",
     "promptTokens": [
       "shiina_mahiru",
-      "Mahiru Shiina",
-      "ivory duffle coat",
-      "red plaid scarf",
-      "holding sleeve",
-      "winter shopping street",
-      "medium shot"
+      "duffle coat",
+      "plaid scarf",
+      "holding clothes",
+      "blush",
+      "winter",
+      "shopping street"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

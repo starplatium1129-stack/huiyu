@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1686,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_sfw_b9_02",
     "title": "艾尔菲利亚 · 冰之魔法的茶会",
@@ -30,15 +30,15 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Elfaria Alvis Serfort carefully chills her tea by freezing the cup's outer wall, then forms small frost flowers on the coaster with one fingertip. Her opaque white long dress and light-blue cardigan keep the afternoon ritual relaxed. The medium portrait includes the courtyard table and tower walls around it. Afternoon daylight glints through the new ice and reveals flower-shaped frost edges, with a cooler reflection on her hand and a soft cup shadow below.",
+    "promptProse": "She chills the cup by freezing its outer wall, then forms tiny frost flowers on the coaster.",
     "promptTokens": [
-      "elfaria_alvis_serfort",
-      "Elfaria Alvis Serfort",
-      "white long dress",
+      "1girl",
+      "solo",
+      "white dress",
       "blue cardigan",
+      "tea",
       "ice magic",
-      "chilled tea",
-      "tower courtyard",
+      "courtyard",
       "afternoon",
       "medium shot"
     ],

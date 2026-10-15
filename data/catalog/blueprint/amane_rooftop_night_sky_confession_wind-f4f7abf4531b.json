@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_rooftop_night_sky_confession_wind",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1181,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "amane_rooftop_night_sky_confession_wind",
     "title": "周防天音 · 学园天台的夜风倾诉",
@@ -32,15 +32,16 @@
       "hair_rings",
       "emotional"
     ],
-    "promptProse": "Against Mihama Academy's rooftop fence, Suou Amane keeps both hands behind her and raises tear-bright blue eyes toward Yuuji beyond the frame. Night wind moves her crimson hair rings and white pleated skirt. The cowboy view places the mesh immediately behind her, with distant city windows far below. Cool starlight outlines loose hair while faint city glow separates the fence from the dark roof.",
+    "promptProse": "She looks toward Yuuji beyond the frame with her hands behind her back. Wind moves her hair against the fence, with city lights far below.",
     "promptTokens": [
       "school rooftop",
       "chain-link fence",
-      "Mihama uniform",
-      "white pleated skirt",
-      "windblown hair",
-      "tearful eyes",
-      "cowboy shot"
+      "school uniform",
+      "white skirt",
+      "hands behind back",
+      "tears",
+      "wind",
+      "night"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

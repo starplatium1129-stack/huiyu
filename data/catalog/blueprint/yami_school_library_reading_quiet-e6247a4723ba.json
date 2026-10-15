@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_school_library_reading_quiet",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1220,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "倚靠在窗台书桌旁单手捧厚书阅读，制服裙摆微拂，金发及踝，眼神清冷专注",
     "camera": "cowboy shot, medium framing, quiet literary depth of field",
@@ -20,14 +20,12 @@
     "mood": "知性清冷",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Yami leans against a desk among Sainan High's dark wooden library shelves, supporting a thick Earth-science encyclopedia in one hand. Her sailor uniform and pleated skirt are tidy; she raises cautious red eyes toward the approaching Rito. The cowboy view leaves a narrow aisle visible behind her falling blonde hair. Afternoon daylight passes through moving cream curtains, softly reflecting from the open pages onto her lower face.",
+    "promptProse": "Yami looks up toward the approaching Rito while supporting the encyclopedia beside the library desk.",
     "promptTokens": [
       "Yami",
-      "Sainan uniform",
+      "school uniform",
       "encyclopedia",
-      "library desk",
-      "red eyes",
-      "long blonde hair",
+      "library",
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",

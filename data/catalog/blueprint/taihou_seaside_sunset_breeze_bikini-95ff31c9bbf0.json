@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_seaside_sunset_breeze_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1077,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_seaside_sunset_breeze_bikini",
     "title": "大凤 · 暮色海潮的细带红比基尼",
@@ -32,16 +32,15 @@
       "twintails",
       "cleavage"
     ],
-    "promptProse": "Taihou stands at the evening tide in her crimson string swimsuit, gold waist chain and sheer black sarong, looking toward the glowing horizon as the sea breeze moves the dark wrap. The full-body three-quarter side view keeps the surf at her feet and gold-red sand extending behind. Sunset outlines her long black hair and fabric edges; reflected water highlights the chain and damp sand beneath her stance.",
+    "promptProse": "Taihou watches the glowing horizon at the evening tide, sea wind lifting her sarong.",
     "promptTokens": [
-      "sunset",
-      "beach",
-      "crimson swimsuit",
+      "Taihou",
+      "red swimsuit",
       "gold chain",
       "black sarong",
-      "sea breeze",
-      "full body",
-      "side angle"
+      "beach",
+      "sunset",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

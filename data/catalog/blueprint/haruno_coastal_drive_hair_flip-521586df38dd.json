@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_coastal_drive_hair_flip",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 373,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_coastal_drive_hair_flip",
     "title": "雪之下阳乃 · 海滨停车点的短暂停留",
@@ -29,22 +29,19 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Haruno rests sideways in the driver's seat of the parked convertible, pushing sunglasses onto her head and gathering a windblown black strand with quiet ease. Buttoned ivory linen shirt and camel wide-leg trousers retain the coastal outfit. The horizontal medium view includes dashboard, open door and shoreline beyond. Reflected late-afternoon light reveals her eyes and relaxed hand, with dashboard shade beneath the door's sunlit edge and softer fabric folds.",
+    "promptProse": "In the parked convertible, Haruno pushes up her sunglasses and gathers a loose strand of hair, the open door facing the shoreline.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Haruno",
-      "ivory linen shirt",
-      "camel wide leg trousers",
-      "flat sandals",
+      "linen shirt",
+      "wide-leg pants",
       "sunglasses on head",
-      "parked convertible",
-      "coastal viewpoint",
+      "convertible",
+      "coast",
+      "wind",
       "afternoon",
       "medium shot"
     ],
     "negativeTokens": [
-      "moving car"
+      "driving"
     ],
     "recommendedSize": "1536x1152",
     "adult": false,
@@ -53,6 +50,8 @@
     "animaStyleHint": "anime_portrait_sharp",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

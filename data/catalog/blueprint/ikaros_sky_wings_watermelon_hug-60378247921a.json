@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_sky_wings_watermelon_hug",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1208,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "悬浮于云海天际展开巨大白羽翼，双手紧抱大西瓜，神情呆萌纯真，长双马尾飘扬",
     "camera": "full body, dynamic mid-air upward angle, wide cloudscape scale",
@@ -20,16 +20,15 @@
     "mood": "空灵纯真",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "High above Sorami, Ikaros cradles a round striped watermelon in both arms while her broad white mechanical wings spread beside towering clouds. Pink twin tails and the hem of her white dress move in the wind. A low full-body view leaves the land distant below. Clear morning sunlight passes through feather tips, illuminates the melon stripes and flashes along her collar and broken chain.",
+    "promptProse": "Ikaros cradles a round watermelon in both arms high above Sorami, her wings spread beside the towering clouds.",
     "promptTokens": [
-      "Ikaros",
-      "white wings",
-      "white dress",
-      "watermelon",
       "flying",
-      "collar",
-      "cloudscape",
-      "full body"
+      "spread wings",
+      "holding watermelon",
+      "wind",
+      "clouds",
+      "full body",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -45,6 +44,8 @@
       "chain"
     ],
     "timeOfDay": "上午",
-    "title": "伊卡洛斯 · 碧空云海的西瓜守护"
+    "title": "伊卡洛斯 · 碧空云海的西瓜守护",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

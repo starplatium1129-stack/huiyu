@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_coffee_morning",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 343,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_yukino_coffee_morning",
     "title": "雪之下雪乃 · 便利店热咖啡",
@@ -28,27 +28,27 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Outside the convenience store, Yukino holds her own coffee in her left hand and offers a warm latte with her right, both cups upright beneath a reserved sideways smile. White shirt and long casual coat sit below black hair along the collar. The medium view follows the misty school route beyond the entrance. Clear morning light brightens cup lids and her offered fingers, while the entrance canopy softly shades the nearer coat folds.",
+    "promptProse": "Yukino offers the latte in her right hand while keeping her own coffee upright in her left, a reserved smile turned toward her companion.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Yukino",
       "white shirt",
       "long coat",
-      "two paper coffee cups",
-      "offered latte",
-      "convenience store entrance",
-      "misty school route",
-      "morning",
-      "medium shot"
+      "coffee",
+      "paper cups",
+      "offering",
+      "slight smile",
+      "convenience store",
+      "mist",
+      "morning"
     ],
     "negativeTokens": [
-      "brand labels"
+      "logo"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_sfw_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 297,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kama_fate_sfw_b7_03",
     "title": "迦摩 · 连败之后的重开按钮",
@@ -29,18 +29,16 @@
       "table_lamp",
       "medium_shot"
     ],
-    "promptProse": "After losing another round, Kama sets the controller on the carpet and hugs a cushion in stubborn silence, then reaches to play again. Violet sweatshirt, charcoal joggers and indoor socks cover her cross-legged pose beneath white hair and a determined red-eyed frown. The close medium view includes cushion and controller, television outside the frame. Soft table-lamp light illuminates her reaching hand and face, leaving gentle contact shadows across the carpet.",
+    "promptProse": "Kama pauses with the cushion hugged close, then reaches for her game controller again.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Kama",
-      "violet sweatshirt",
-      "charcoal joggers",
-      "indoor socks",
+      "sweatshirt",
+      "sweatpants",
       "cross-legged",
       "cushion",
       "game controller",
-      "table lamp",
+      "lamp",
       "medium shot"
     ],
     "negativeTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_sunset_wagon_travel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fern_sunset_wagon_travel",
     "characterId": "fern_frieren",
@@ -24,23 +24,20 @@
       "sunset_light",
       "medium_shot"
     ],
-    "promptProse": "Fern pauses mid-page in the wagon, one finger on the spellbook's edge and her other palm steadying it across her knees as she looks toward her unseen companion. Her staff is secured beside the seat and the covered teapot in its rack. The medium portrait encloses her black coat, white dress and half-up purple hair within timber walls. Sunset enters the opening, warming the page and casting seat shadows below.",
+    "promptProse": "She pauses mid-page and looks toward her unseen companion, steadying the spellbook on her knees; the staff and teapot are secured beside her.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Fern",
       "black coat",
       "white dress",
-      "spellbook on knees",
-      "secured staff",
-      "wooden wagon",
-      "teapot rack",
+      "book",
+      "staff",
+      "teapot",
+      "wagon",
       "sunset",
-      "medium portrait"
+      "medium shot"
     ],
-    "negativeTokens": [
-      "readable text"
-    ],
+    "negativeTokens": [],
     "adult": false,
     "recommendedEngine": "anima-miaomiao-v1.2",
     "category": "日常羁绊",

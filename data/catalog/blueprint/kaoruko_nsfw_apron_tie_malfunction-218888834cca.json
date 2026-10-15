@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_apron_tie_malfunction",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1515,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "kaoruko_nsfw_apron_tie_malfunction",
     "title": "和栗薰子 · 后厨真空围裙系带松脱事故 ·「面粉蹭到身上了……凛太郎快帮我擦擦」",
@@ -24,48 +24,19 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Caught after-hours in the silent pastry kitchen, Kaoruko Waguri leans forward across the polished stainless-steel prep table as her flour-dusted chef apron snaps its ties, slipping down to expose creamy sideboob and pert pink nipples dusted with confectioner sugar. Her soft rounded bottom arches back in flustered alarm, uniform skirt hitched high. Looking back over her bare shoulder with wide, teary brown eyes and cheeks as red as raspberries, she stammers for help while shifting nervously. Cinematic horizontal composition, warm kitchen pendant lamps reflecting on steel, detailed bakery background, solo 1girl, no extra people.",
-    "nsfwProse": "Caught after-hours in the silent pastry kitchen, Kaoruko Waguri leans forward across the polished stainless-steel prep table as her flour-dusted chef apron snaps its ties, slipping down to expose creamy sideboob and pert pink nipples dusted with confectioner sugar. Her soft rounded bottom arches back in flustered alarm, uniform skirt hitched high. Looking back over her bare shoulder with wide, teary brown eyes and cheeks as red as raspberries, she stammers for help while shifting nervously. Cinematic horizontal composition, warm kitchen pendant lamps reflecting on steel, detailed bakery background, solo 1girl, no extra people.",
+    "promptProse": "Adult Kaoruko leans over the prep table as her apron ties snap and the fabric slips, looking back for help with her skirt caught high.",
+    "nsfwProse": "",
     "promptTokens": [
-      "bent_over",
-      "leaning_forward",
-      "kitchen",
-      "bakery",
-      "counter",
       "apron",
-      "open_apron",
-      "sideboob",
-      "bare_breasts",
-      "pink_nipples",
-      "exposed_pussy",
-      "pussy",
-      "pussy_juice",
-      "sensual_solo",
-      "looking_back",
-      "biting_lip",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "blonde_hair",
-      "wide_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "broken strap",
+      "breast slip",
+      "skirt lift",
+      "bent over",
+      "looking back",
+      "bakery kitchen",
+      "wide shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
     "sampleRating": "R18",
@@ -75,6 +46,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

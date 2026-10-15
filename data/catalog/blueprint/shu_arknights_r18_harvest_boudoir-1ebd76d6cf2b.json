@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_harvest_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights_r18_harvest_boudoir",
     "characterId": "shu_arknights",
@@ -29,27 +29,17 @@
       "blush"
     ],
     "promptTokens": [
-      "indoors",
-      "bedroom",
-      "silk_sheets",
-      "bedside_lamp",
-      "lying_on_side",
-      "looking_back",
-      "sheer_fabric",
-      "three_quarter_view",
-      "medium_shot"
+      "Shu",
+      "lingerie",
+      "nightgown",
+      "on side",
+      "looking back",
+      "bed",
+      "lamplight",
+      "medium shot"
     ],
-    "promptProse": "After the harvest celebration, Shu has returned alone to a quiet wooden guest room. A single amber bedside lamp warms the silk bedding while the open lattice window frames a deep blue night and distant lanterns. Her long tricolored hair spills over one shoulder, her dragon horns and pale gold-edged tail remain unobstructed, and a loose sheer robe lies across the rumpled bed. Compose a polished three-quarter view that keeps her face and reclining figure in frame.",
-    "negativeTokens": [
-      "extra people",
-      "extra limbs",
-      "bad hands",
-      "bad anatomy",
-      "watermark",
-      "text",
-      "duplicate",
-      "split image"
-    ],
+    "promptProse": "Shu lowers her sheer nightgown and draws her panties aside while reclining on the silk bed, looking back beneath the amber lamp.",
+    "negativeTokens": [],
     "coverageTags": [
       "special_nsfw"
     ],
@@ -58,16 +48,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [
-      "lingerie",
-      "sheer_nightgown",
-      "clothes_pulled_down",
-      "panties_aside",
-      "bare_breasts",
-      "pink_nipples",
-      "lying_on_side",
-      "looking_back",
-      "heavy_blush"
+      "topless",
+      "panties aside",
+      "see-through"
     ],
-    "nsfwProse": "Reclining on her side in lace underwear and a sheer nightgown, Shu slides the fabric below her breasts and draws her panties aside with one golden hand. Her bare breasts and flushed nipples catch the amber light, while the parted lace reveals her intimate folds. She hooks a finger under the edge of her lingerie and looks back at the viewer with a warm, inviting blush."
+    "nsfwProse": ""
   }
 }

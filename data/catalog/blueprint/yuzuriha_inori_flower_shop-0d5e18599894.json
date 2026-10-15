@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_flower_shop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 332,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuzuriha_inori_flower_shop",
     "title": "楪祈 · 街角花店",
@@ -31,20 +31,17 @@
       "storefront_daylight",
       "medium_shot"
     ],
-    "promptProse": "White lilies overlap at different heights above the wrapping that Inori steadies with her left hand. Her right rests on the wooden counter as she leans in to smell a petal, then turns with a quiet smile. A blush cardigan and ivory blouse accompany the slate-grey skirt, leaving the red hair ornaments clear beside pink-to-orange strands. A slender ribbon spool rests at the near counter edge. Tall and low flower buckets line the wall behind her; beyond the glass entrance, a pot stand sits under the shop awning. Compose an eye-level medium portrait with the bouquet's support visible. Daylight from the front left shines through thin petal edges and across her cheek. Leaves reflect a restrained green into the underside of the flowers, and the buckets cast soft base shadows on the wooden floor.",
+    "promptProse": "Inori steadies the wrapped lilies with her left hand and rests her right on the counter, leaning toward a petal before turning with a quiet smile.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "smelling white lilies",
-      "supported bouquet",
-      "kraft paper wrapping",
-      "hand resting on counter",
-      "ribbon spool",
-      "staggered flower buckets",
-      "potted plant stand",
-      "glass shop entrance",
-      "front left daylight",
-      "medium shot"
+      "pink cardigan",
+      "ivory blouse",
+      "gray skirt",
+      "lilies",
+      "bouquet",
+      "smelling flowers",
+      "hand on counter",
+      "flower shop",
+      "daylight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +50,8 @@
     "outfitId": "sfw_flower_shop_blush",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

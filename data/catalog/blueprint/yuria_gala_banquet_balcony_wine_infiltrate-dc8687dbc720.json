@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuria_gala_banquet_balcony_wine_infiltrate",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1200,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuria_gala_banquet_balcony_wine_infiltrate",
     "title": "春寺由梨亚 · 海滨露台餐厅的晚装烛光与浪漫小酌",
@@ -32,19 +32,23 @@
       "glasses_removed",
       "bare_face"
     ],
-    "promptProse": "Harudera Yuria rests beside the ocean terrace's marble railing in a backless midnight-blue silk evening gown, turning her uncovered face toward Yuuji with a slight blush. She holds a crystal glass of red wine. From behind at three-quarter cowboy height, white curtains border the dining area and sea beyond. Candlelight warms her cheek and glass bowl; moonlit wave reflections edge the railing and gown folds.",
+    "promptProse": "Yuria turns toward Yuuji beside the ocean terrace rail, her glass of red wine held at her side.",
     "promptTokens": [
-      "Harudera Yuria",
-      "navy evening gown",
+      "backless navy dress",
+      "red wine",
       "wine glass",
-      "ocean terrace",
+      "blush",
       "marble railing",
+      "ocean",
+      "terrace",
       "candlelight",
-      "rear three-quarter view"
+      "from behind"
     ],
     "negativeTokens": [
       "glasses worn"
     ],
-    "recommendedSize": "1152x1536"
+    "recommendedSize": "1152x1536",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

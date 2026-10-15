@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_stage_two_tone",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 951,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "镜头前比偶像手势",
     "camera": "medium shot, wink and peace sign",
@@ -18,15 +18,14 @@
     "mood": "元气满格",
     "negativeTokens": [],
     "outfitId": "stage_two_tone",
-    "promptProse": "Ai faces the music-program camera with a wink and peace sign in her white-and-pink two-tone stage dress and brown belt. Keep the crystal hair ornament among her purple strands. The medium view includes a narrow edge of the camera housing in the foreground, the studio floor beneath her and overlapping scenic panels behind, with a small gap revealing the darker side of the set. Soft studio lamps spread even light across her face, collar and raised fingers. The dress folds retain gentle shadows, and a short soft shadow beneath her feet separates her from the floor without overpowering the highlights in her star-shaped eyes.",
+    "promptProse": "Ai faces the music-program camera with a wink and peace sign, framed by the studio's scenic panels.",
     "promptTokens": [
-      "daytime",
-      "television studio",
-      "white pink dress",
-      "brown belt",
-      "crystal hair ornament",
+      "idol clothes",
+      "hair ornament",
       "wink",
-      "peace sign",
+      "v",
+      "looking at viewer",
+      "television studio",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -40,6 +39,8 @@
       "daylight"
     ],
     "timeOfDay": "白天",
-    "title": "星野爱 · 电视录制"
+    "title": "星野爱 · 电视录制",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

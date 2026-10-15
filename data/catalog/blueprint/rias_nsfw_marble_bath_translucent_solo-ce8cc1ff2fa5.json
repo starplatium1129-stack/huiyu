@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_marble_bath_translucent_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1288,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "rias_nsfw_marble_bath_translucent_solo",
     "title": "莉雅丝 · 玫瑰浴池的水光湿身私语",
@@ -30,37 +30,17 @@
       "heavy_blush",
       "sensual_solo"
     ],
-    "promptProse": "Lounging against the smooth marble ledge of a steaming bath strewn with red rose petals, Rias Gremory is drenched in sensuality. Her sheer crimson silk robe is thoroughly soaked and clinging like a second skin, exposing the distinct curves of her full bust and taut pink nipples through the translucent fabric. One hand glides gently beneath the rippling water between her thighs as she gasps with a rosy flush spreading across her cheeks and neck. Ambient anime watercolor lighting, solo 1girl, no text.",
+    "promptProse": "Adult Rias reclines against the marble bath ledge in her soaked robe, sliding one hand between her thighs beneath the rose-strewn water.",
     "promptTokens": [
-      "onsen",
-      "luxury_bathroom",
-      "steaming_water",
-      "rose_petals",
-      "wet_clothes",
-      "sheer_babydoll",
-      "translucent_cloth",
-      "clinging_clothes",
-      "nipples_visible_through_clothes",
-      "cleavage",
-      "hand_between_legs",
-      "sensual_solo",
-      "heavy_blush",
-      "blushing_ears",
-      "biting_lip",
-      "teary_eyes",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "red robe",
+      "wet clothes",
+      "see-through",
+      "hand between legs",
+      "bathtub",
+      "rose petals",
+      "steam"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "crimson_silk_lingerie",
     "coverageTags": [
@@ -72,6 +52,8 @@
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
-    "animaStyleHint": "r18_explicit_h_cg"
+    "animaStyleHint": "r18_explicit_h_cg",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

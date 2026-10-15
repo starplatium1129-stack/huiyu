@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_desk_bent_over_prone",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1286,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "rias_nsfw_desk_bent_over_prone",
     "title": "莉雅丝 · 办公桌前的更衣自抚·「被你一直看着的话……身体会忍不住变热的」",
@@ -32,43 +32,19 @@
       "looking_back",
       "horizontal_shot"
     ],
-    "promptProse": "Bent forward over the mahogany office desk in the adult colleague council room under soft moonlight, Rias Gremory arches her back in a breathtaking moment of solo surrender. Her professional uniform skirt is hitched up, hands resting against the wood while her fingers reach down between her thighs to pull her lace panties aside and gently stroke her wet core. Looking back over her bare shoulder with biting lip and blushing red ears, her crimson locks tumble over the desk. Horizontal dynamic anime visual novel composition, solo 1girl, no text.",
+    "promptProse": "Adult Rias leans over the office desk with her skirt raised, pulling her panties aside to touch herself while looking back over her shoulder.",
     "promptTokens": [
-      "sensual_solo",
-      "touching_own_body",
-      "hand_under_clothes",
-      "office",
+      "uniform",
+      "open shirt",
+      "skirt lift",
+      "panties aside",
+      "masturbation",
+      "bent over",
+      "looking back",
       "desk",
-      "bent_over",
-      "arched_back",
-      "hands_on_desk",
-      "skirt_lift",
-      "kuoh_academy_uniform",
-      "unbuttoned_shirt",
-      "panties_aside",
-      "exposed_pussy",
-      "pussy_juice",
-      "looking_back",
-      "heavy_blush",
-      "blushing_ears",
-      "red_ears",
-      "biting_lip",
-      "teary_eyes",
-      "wide_shot",
-      "horizontal",
-      "detailed_background",
-      "cinematic_lighting"
+      "moonlight"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "self-harm, choking",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
     "sampleRating": "R18",
@@ -81,6 +57,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "nsfwTokens": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1587,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_05",
     "title": "战栗的龙卷 · 海风也不能命令我",
@@ -30,14 +30,15 @@
       "annoyed",
       "noon"
     ],
-    "promptProse": "Tatsumaki hovers beside the private beach terrace's green parasol, holding chilled citrus soda above a black-and-emerald swimsuit and short wrap skirt. Sea wind lifts her green curls; a splash reaching the skirt draws an annoyed glance toward the viewer. The horizontal medium view includes the sand below her hovering feet. Hard noon sunshine glints on the soda glass, while parasol shade softens her face and turquoise water reflections flicker nearby.",
+    "promptProse": "Tatsumaki holds citrus soda beside the parasol and glares at a splash reaching her skirt.",
     "promptTokens": [
       "Tatsumaki",
-      "black-emerald swimsuit",
+      "swimsuit",
       "wrap skirt",
-      "citrus soda",
+      "soda",
+      "floating",
       "parasol",
-      "beach terrace",
+      "beach",
       "medium shot"
     ],
     "negativeTokens": [],

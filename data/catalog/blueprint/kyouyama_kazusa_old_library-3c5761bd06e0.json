@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_old_library",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "抱书差点绊倒扶住书架",
     "adult": false,
@@ -26,15 +26,14 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "Kazusa carries a stack of dessert recipe books through the old library, catching herself against a nearby shelf after a stumble and looking embarrassed. Her Trinity blazer, plaid skirt and cat-ear-shaped hood remain in the slightly low medium view. Tall bookshelves form a narrow passage behind the stack. Slanting skylight touches her hair and book corners, revealing dust against the shaded aisle while her hand braces on the shelf.",
+    "promptProse": "Kazusa stumbles with a stack of recipe books and catches herself against the shelf.",
     "promptTokens": [
-      "daytime",
-      "old library",
-      "Trinity uniform",
-      "cat ear hood",
+      "school uniform",
+      "hood",
       "recipe books",
       "stumbling",
-      "medium shot"
+      "bookshelf",
+      "library"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_maid_cafe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 436,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rem_rezero_maid_cafe",
     "title": "雷姆 · 女仆咖啡厅",
@@ -25,19 +25,16 @@
       "bright",
       "indoor"
     ],
-    "promptProse": "Rem presents the coffee tray with a radiant greeting at the modern maid cafe, her black-and-white uniform, frilled headdress and apron retaining the service outfit. The medium view includes supported cups and the tray edge below her blue-haired smile, pastel seating and tables receding behind. Bright warm cafe lights illuminate porcelain and apron frills, casting cup shadows across the tray and softer table shadows through the cheerful interior.",
+    "promptProse": "Rem presents the coffee tray with a bright greeting, pastel seating receding behind her.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Rem",
-      "black white maid uniform",
-      "frilled headdress",
+      "maid",
       "apron",
-      "coffee tray",
-      "maid cafe",
-      "pastel decor",
-      "bright warm light",
-      "medium shot"
+      "headdress",
+      "tray",
+      "coffee",
+      "smile",
+      "cafe",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,6 +43,8 @@
     "outfitId": "maid_uniform",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

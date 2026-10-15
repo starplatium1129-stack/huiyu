@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1627,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_05",
     "title": "久远寺有珠 · 潮池里的玻璃魔法",
@@ -29,16 +29,14 @@
       "small_smile",
       "afternoon_light"
     ],
-    "promptProse": "Alice Kuonji sits beside the rocky tide pool in a deep-blue one-piece and long dark cover-up with a shell clasp. After collecting luminous seaweed, she raises the clear glass jar into the sun with a barely visible satisfied smile. The horizontal medium view includes submerged rock shelves and blue water behind. Afternoon light passes through the jar and seaweed, making colored reflections on her fingers and sharp wet highlights across the pool edge.",
+    "promptProse": "Alice raises a jar of glowing seaweed beside the tide pool, studying it with a barely visible smile.",
     "promptTokens": [
-      "Alice Kuonji",
-      "blue one-piece swimsuit",
-      "dark cover-up",
-      "glowing seaweed",
+      "blue swimsuit",
+      "cover-up",
       "glass jar",
+      "glowing seaweed",
       "tide pool",
-      "afternoon",
-      "medium shot"
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

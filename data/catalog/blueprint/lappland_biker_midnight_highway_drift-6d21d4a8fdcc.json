@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_biker_midnight_highway_drift",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 674,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "斜靠在黑色重型改装机车旁，手指转动车钥匙，皮衣敞开露出小蛮腰，狂野挑衅",
     "camera": "cowboy shot, dynamic low angle",
@@ -20,17 +20,16 @@
     "mood": "狂野叛逆",
     "negativeTokens": [],
     "outfitId": "casual_leather",
-    "promptProse": "At the Lungmen highway overlook, Lappland leans against a modified black motorcycle, dangling its keys with a crooked grin. Her studded jacket, denim shorts and fishnets move with the night wind beside her white wolf tail. The low cowboy view looks past the bike toward layered interchanges. Its headlamp sharply lights chrome and nearby asphalt, while distant neon follows the road curves below.",
+    "promptProse": "Lappland leans beside her heavy motorcycle and spins its keys around one finger with a challenging grin.",
     "promptTokens": [
-      "midnight",
-      "highway overlook",
-      "motorcycle",
       "leather jacket",
       "denim shorts",
-      "fishnets",
+      "fishnet stockings",
+      "motorcycle",
       "keys",
-      "cowboy shot",
-      "low angle"
+      "highway",
+      "night",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

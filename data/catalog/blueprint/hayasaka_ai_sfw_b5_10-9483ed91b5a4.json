@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_10",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1410,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "散着头发靠栏杆喝黑咖啡，望向宅邸灯光放松下来。",
     "adult": false,
@@ -23,17 +23,15 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_night",
-    "promptProse": "After work at one in the morning, Ai Hayasaka leans on the servants' narrow balcony railing and drinks black coffee. Her blonde hair is loose above a cream cardigan, buttoned cotton shirt and navy trousers; her expression rests in quiet fatigue. The medium view keeps the mansion's lit windows beyond the railing. Their light touches her cup and near cheek, leaving the far balcony wall shaded and the ground below mostly dark.",
+    "promptProse": "After work, Hayasaka rests at the narrow balcony rail with black coffee, the mansion's lit windows beyond her.",
     "promptTokens": [
-      "hayasaka_ai",
-      "Ai Hayasaka",
-      "cream cardigan",
-      "navy trousers",
-      "loose blonde hair",
-      "black coffee",
-      "narrow balcony",
-      "night",
-      "medium shot"
+      "hair down",
+      "cardigan",
+      "trousers",
+      "coffee",
+      "leaning",
+      "balcony",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -53,6 +51,8 @@
       "close_view"
     ],
     "timeOfDay": "夜晚",
-    "title": "早坂爱 · 深夜阳台的黑咖啡"
+    "title": "早坂爱 · 深夜阳台的黑咖啡",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evening_library_reading_together",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1386,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
     "adult": false,
@@ -26,15 +26,15 @@
     "mood": "沉静治愈、心照不宣",
     "negativeTokens": [],
     "outfitId": "library_casual_no_hat",
-    "promptProse": "Violet Evergarden sits beside her companion at the old library's long table, sharing a thick poetry book and gradually resting her loose blonde hair against his shoulder. Her simple white cotton dress and silver mechanical hands remain visible, with no hat. The close two-person view includes high wooden shelves and window mullions behind. Warm-orange stained-glass sunset crosses the pages and skirt edge, while their joined reading space casts soft shadows beneath the book.",
+    "promptProse": "Violet shares a poetry book and rests against her companion's shoulder, stained-glass sunset crossing their pages.",
     "promptTokens": [
       "Violet Evergarden",
-      "white cotton dress",
-      "shared poetry book",
-      "shoulder rest",
+      "white dress",
+      "mechanical hands",
+      "poetry book",
+      "leaning on shoulder",
       "library",
-      "sunset",
-      "medium close-up"
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

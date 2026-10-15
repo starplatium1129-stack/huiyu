@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1696,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "vivy_sfw_b9_02",
     "title": "Vivy · 休演日的调音练习",
@@ -28,13 +28,12 @@
       "concentrating",
       "medium_shot"
     ],
-    "promptProse": "Vivy sits beside the electronic piano on a performance-free day, pressing one key and listening closely to its fading tone. She moves a sticky note beside the music stand and steadies her breath to sing the same pitch. Her pale-blue collared shirt and white wide-leg trousers remain practical. Soft frontal window light reveals her focused blue eyes and keyboard in the medium view, with subdued key and sheet shadows below.",
+    "promptProse": "Vivy presses one key and listens to its fading tone before matching the pitch beside the window.",
     "promptTokens": [
       "Vivy",
-      "pale-blue shirt",
+      "blue shirt",
       "white trousers",
-      "electronic piano",
-      "pitch rehearsal",
+      "piano",
       "practice room",
       "medium shot"
     ],

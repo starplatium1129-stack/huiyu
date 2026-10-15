@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_morning_balcony_tea",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 466,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "端着热气腾腾的红茶，害羞地露出幸福微笑",
     "adult": false,
@@ -21,19 +21,16 @@
     "mood": "tender",
     "negativeTokens": [],
     "outfitId": "casual_day_dress",
-    "promptProse": "On the Greyrat residence balcony, Sylphiette serves steaming red tea with a shy happy smile, cream knit cardigan layered over a simple light dress. White hair and pointed ears remain clear in the medium portrait above the supported cup. The railing leads toward the mountain landscape beyond the house. Soft morning sunlight brightens her face and tea steam, casting slender rail shadows across the balcony while cardigan folds stay gently shaded.",
+    "promptProse": "Sylphiette serves red tea on the balcony with the mountain view beyond the sunlit railing.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Sylphiette",
-      "cream cardigan",
-      "light dress",
       "white hair",
       "elf ears",
-      "red tea",
-      "Greyrat balcony",
-      "morning",
-      "medium portrait"
+      "cardigan",
+      "dress",
+      "tea",
+      "balcony",
+      "medium shot"
     ],
     "recommendedEngine": "anima-miaomiao-v1.2",
     "recommendedSize": "1152x1536",

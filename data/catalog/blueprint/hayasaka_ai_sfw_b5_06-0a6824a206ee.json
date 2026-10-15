@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1409,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "看着镜中剪短的头发，膝上的手指慢慢松开。",
     "adult": false,
@@ -23,13 +23,14 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_short",
-    "promptProse": "Ai Hayasaka watches the salon mirror as the last longer blonde strands fall, her hands tightening briefly on her knees before relaxing. A neat short bob now frames her relieved expression above a light-blue jacket and cream top. The medium view includes the mirror and cut hair near the chair base. Soft salon lighting illuminates her reflected cheek and fresh hair edges, with muted shadows beneath the chair and along the workstation.",
+    "promptProse": "Hayasaka watches the last longer strands fall in the salon mirror, relaxing her hands on her knees as the new bob frames her relieved face.",
     "promptTokens": [
-      "Ai Hayasaka",
-      "short blonde bob",
-      "light-blue jacket",
-      "salon haircut",
+      "short hair",
+      "bob cut",
+      "light blue jacket",
+      "haircut",
       "mirror",
+      "salon",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -48,6 +49,8 @@
       "soft_lighting"
     ],
     "timeOfDay": "日间",
-    "title": "早坂爱 · 美发沙龙的决断"
+    "title": "早坂爱 · 美发沙龙的决断",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

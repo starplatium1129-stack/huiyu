@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1616,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_04",
     "title": "春日野穹 · 乡间白屋的雪色花嫁",
@@ -30,15 +30,15 @@
       "petals",
       "afternoon_light"
     ],
-    "promptProse": "Sora Kasugano sits beneath the old home's veranda eaves in a simple white wedding dress with lace cuffs and narrow ribbon veil. Her white twin tails fall forward as she places a rabbit plush beside the skirt instead of watching the bouquet, then looks quietly toward someone familiar. The vertical medium-full view includes worn boards and garden petals beyond. Gentle spring light reveals the veil edge and plush seams, with soft eave shade behind her.",
+    "promptProse": "Sora places the rabbit plush beside her bouquet on the old-house veranda and quietly lifts her eyes.",
     "promptTokens": [
-      "Sora Kasugano",
-      "white bridal dress",
-      "ribbon veil",
+      "wedding dress",
+      "veil",
       "rabbit plush",
-      "old-house veranda",
+      "bouquet",
+      "veranda",
       "spring",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

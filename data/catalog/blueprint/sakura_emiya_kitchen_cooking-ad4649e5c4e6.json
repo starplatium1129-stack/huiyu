@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_kitchen_cooking",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 175,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sakura_emiya_kitchen_cooking",
     "characterId": "matou_sakura",
@@ -24,19 +24,15 @@
       "morning_light",
       "medium_shot"
     ],
-    "promptProse": "Sakura turns from the finished miso soup toward the kitchen doorway with a warm smile, hands relaxed near the counter after placing the wooden ladle on its holder. Her purple hair is tied over one shoulder away from the stove, above a pink sweater and white frilled apron. The medium portrait includes breakfast dishes and steaming pot. Warm kitchen light and morning window light reveal her violet eyes and the counter's overlapping dish shadows.",
+    "promptProse": "Sakura turns toward the doorway after placing the ladle on its holder, morning light reaching the steaming breakfast dishes.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Sakura",
-      "pink knit sweater",
-      "white frilled apron",
-      "long skirt",
-      "side tied purple hair",
+      "purple hair",
+      "sweater",
+      "apron",
       "miso soup",
-      "ladle on holder",
-      "morning kitchen",
-      "medium portrait"
+      "kitchen",
+      "medium shot"
     ],
     "negativeTokens": [
       "ladle in hand"

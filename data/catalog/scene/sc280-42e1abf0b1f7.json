@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc280",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
-    "animaCaption": "Shiki Natsume presents a pastry in an opaque folded kraft-paper pouch with both cupped hands above her cafe apron. Her gentle smile remains the waist-up focal point. White cups sit in wooden racks at staggered distances behind the counter, with the nearer rack edge overlapping the shaded wall. Warm cafe light picks out the pouch folds and cup rims, while hand-to-paper shadows and soft reflected wood light keep the offering clear.",
+    "animaCaption": "Natsume presents a pastry in a folded kraft-paper pouch with both hands. Wooden cup racks line the wall behind the counter.",
     "audit": {
       "attempt": 1,
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs14-a1.png",
@@ -27,9 +27,9 @@
     "location": "咖啡馆",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "transparent pouch, duplicate pastries, fused cupped hands",
+    "negative": "transparent bag",
     "officialCgCandidate": "ocs14",
-    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, apron, holding pastry pouch, both hands, wooden cup racks, cafe night, waist up",
+    "prompt": "1girl, shiki_natsume, natsume_cafe_uniform, apron, offering food, paper bag, smile, cup, shelf, cafe, night, upper body",
     "rating": "All",
     "recommendedSize": "1344×768",
     "season": "不限",

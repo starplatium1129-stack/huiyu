@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_rooftop_stargazing_shoulder_rest",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1322,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "并肩坐着头靠在视角肩头，双手抱膝，侧首含情脉脉仰望夜空与视角",
     "camera": "cowboy shot, medium angle, peaceful romantic night",
@@ -23,15 +23,17 @@
     "mood": "深情依恋",
     "negativeTokens": [],
     "outfitId": "casual_summer_sundress",
-    "promptProse": "Arcueid Brunestud sits beside her companion on the rooftop, hugging her bent legs and resting her blonde head on his shoulder. Her white sundress hem moves lightly in the night breeze, ruby eyes quietly reflecting the view. The medium cowboy angle includes the safe rooftop edge and distant city below. Blue night light outlines the shoulder straps and hair, while far golden windows give the lower skyline a warmer band.",
+    "promptProse": "She rests her head on her companion's shoulder while hugging her bent legs. Cool night light outlines them above the warmer city windows.",
     "promptTokens": [
-      "Arcueid Brunestud",
-      "white sundress",
-      "shoulder rest",
+      "couple",
       "rooftop",
-      "starry night",
+      "white sundress",
+      "sitting",
+      "knees up",
+      "head on shoulder",
+      "stars",
       "city lights",
-      "cowboy shot"
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

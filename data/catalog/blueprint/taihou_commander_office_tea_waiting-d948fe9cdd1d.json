@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_commander_office_tea_waiting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1076,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_commander_office_tea_waiting",
     "title": "大凤 · 官邸深夜的温情侍奉",
@@ -31,16 +31,16 @@
       "twintails",
       "gentle_smile"
     ],
-    "promptProse": "Taihou brings carefully brewed red tea to the Commander's locked office desk, leaning forward in her crimson velvet evening gown and dark opera gloves to gently touch their cheek. The low medium close-up holds her attentive face and tea beside the near desk edge, with a quiet moonlit window behind. Warm desk-lamp light illuminates her fingers and cup steam, while silver moonlight outlines her earrings and gown shoulder.",
+    "promptProse": "Taihou brings tea to the Commander's desk and touches their cheek, warm lamplight meeting moonlight at her shoulder.",
     "promptTokens": [
-      "midnight",
-      "Commander office",
-      "crimson velvet gown",
-      "black gloves",
+      "Taihou",
+      "red gown",
+      "opera gloves",
       "tea",
       "cheek touch",
-      "medium close up",
-      "low angle"
+      "office",
+      "low angle",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

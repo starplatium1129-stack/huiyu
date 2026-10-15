@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_sfw_b6_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1607,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "mouri_ran_sfw_b6_05",
     "title": "毛利兰 · 海浪里的沙滩排球",
@@ -29,13 +29,14 @@
       "waving",
       "summer_sunlight"
     ],
-    "promptProse": "Ran Mouri bends her knees to receive the beach volleyball in her blue-and-white sports swimsuit and light visor. After guiding the ball safely upward, she waves toward the viewer with wind lifting her long hair. The horizontal medium view keeps beach umbrellas and bright sea behind her grounded stance. Clean summer sunlight defines the ball and ankle bands, with a compact sand shadow beneath her feet and reflected blue along the shaded arm.",
+    "promptProse": "Ran guides the volleyball upward from a ready stance, then waves toward the viewer with the sea behind her.",
     "promptTokens": [
-      "Ran Mouri",
-      "blue-white sports swimsuit",
+      "blue swimsuit",
       "visor",
       "beach volleyball",
-      "sand",
+      "bent knees",
+      "waving",
+      "beach",
       "summer",
       "medium shot"
     ],
@@ -49,6 +50,8 @@
       "daily",
       "summer",
       "beach"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

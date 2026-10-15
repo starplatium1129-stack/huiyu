@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_painting_studio",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 567,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "盘坐在宣纸中央，手持毛笔悬停沉思，墨龙与山峦从纸面逸出",
     "camera": "dynamic wide angle, swirling ink dragons, traditional calligraphy aura",
@@ -20,21 +20,18 @@
     "mood": "东方古典与磅礴",
     "negativeTokens": [],
     "outfitId": "atelier_slouchy_loungewear",
-    "promptProse": "Dusk sits cross-legged on the enormous sheet of studio rice paper, her brush suspended as dripping ink gives rise to faint dragons and mountain silhouettes. Preserve the ink-gray mascot hoodie, lounge shorts and messy brush-held bun, with her horns and tail clearly separated from the nearby scrolls. In the wide dynamic view, the nearest ink stick and rolled scroll overlap the paper edge; beyond her, successive ink-painted mountain forms become paler and smaller within the unfolding picture-world. Cold blue lantern light illuminates her sleeves and the paper grain. The brush casts a long narrow shadow across the sheet, while subtle golden flecks remain localized near the emerging ink forms.",
+    "promptProse": "She holds the brush above the paper as dripping ink forms dragons and distant mountains. A blue lantern lights the unfolding picture world.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Dusk",
-      "ink grey hoodie",
-      "lounge shorts",
-      "messy brush bun",
+      "studio",
+      "gray hoodie",
+      "shorts",
       "horns",
       "tail",
-      "suspended brush",
+      "sitting",
+      "crossed legs",
+      "brush",
       "rice paper",
-      "ink dragons",
-      "blue lantern",
-      "wide angle"
+      "ink dragons"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

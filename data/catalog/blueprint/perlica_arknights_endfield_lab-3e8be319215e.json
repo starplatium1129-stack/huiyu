@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_endfield_lab",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 712,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "站在全息投影前核对数据",
     "camera": "medium shot",
@@ -20,15 +20,14 @@
     "mood": "冷静专业",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Perlica checks the energy-distribution network before a large holographic star map in the Endfield base laboratory. Wearing her white cropped techwear jacket over a high-neck tunic, she adjusts the communication accessory beside her ear and turns toward the Administrator. The medium view includes projection layers before storage equipment behind. Cool laboratory light defines her wide sleeves, while hologram glow reflects on her glove and concentrated face.",
+    "promptProse": "Perlica adjusts the accessory beside her ear and turns toward the Administrator while checking the holographic energy network.",
     "promptTokens": [
-      "daytime",
-      "Endfield laboratory",
-      "holographic star map",
-      "white techwear jacket",
-      "white tunic",
-      "communication accessory",
-      "medium shot"
+      "white jacket",
+      "high collar",
+      "communication device",
+      "hologram",
+      "laboratory",
+      "day"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -39,6 +38,8 @@
       "data"
     ],
     "timeOfDay": "白天",
-    "title": "佩丽卡 · 终末地实验室"
+    "title": "佩丽卡 · 终末地实验室",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

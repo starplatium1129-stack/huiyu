@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_city_cafe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "frieren_city_cafe",
     "title": "芙莉莲 · 现代咖啡馆",
@@ -32,20 +32,18 @@
       "filtered_daylight",
       "medium_shot"
     ],
-    "promptProse": "The tiny foam cat on her latte has captured Frieren's full attention at a modern-city cafe terrace. She rests her right cheek in her palm; her left hand lies beside the saucer, leaving the cup on the table. A sage-green cardigan and oatmeal knit top accompany charcoal trousers, with silver twintails brushing her shoulders. An almond cookie and teaspoon sit near the saucer along the round table's foreground edge. Beyond her chair, planted boxes follow the terrace railing over stone paving; a parked bicycle and successive shop facades carry the view toward the street corner. Frame her at eye level in a medium environmental portrait. Daylight filtered by the awning enters from the front right, catching green eyes and white foam. Gentle saucer shadows anchor the cup, while the uncovered street stays brighter.",
+    "promptProse": "She studies the tiny foam cat on her latte, resting one cheek in her palm while the cup remains on its saucer.",
     "promptTokens": [
       "1girl",
       "solo",
+      "green cardigan",
+      "sweater",
       "hand on cheek",
-      "cat latte art",
-      "cup on saucer",
-      "almond cookie",
-      "teaspoon",
-      "terrace awning",
-      "planter railing",
-      "parked bicycle",
-      "stone paving",
-      "daylight",
+      "latte art",
+      "coffee",
+      "cookie",
+      "cafe terrace",
+      "day",
       "medium shot"
     ],
     "negativeTokens": [

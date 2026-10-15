@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_dawn_bedroom",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 905,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手背撑床沿微仰注视",
     "adult": false,
@@ -27,15 +27,15 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "casual_pink",
-    "promptProse": "Mika sits at the guest-bedroom bed edge with both hands braced behind her, leaning back slightly in her pastel-pink sundress and ivory cardigan. Her pink hair and white wings spread around a gentle smile. The three-quarter medium view includes the bedspread beneath her and arched floor windows beyond lace curtains. Early sunlight through the gauze lights her hair and dress trim, leaving soft folded shadows on the bedding.",
+    "promptProse": "Mika braces both hands on the bed edge and tilts her face upward in the morning light.",
     "promptTokens": [
-      "morning",
-      "Trinity bedroom",
-      "pink sundress",
-      "ivory cardigan",
-      "bed edge",
+      "pink dress",
+      "cardigan",
       "wings",
-      "medium shot"
+      "sitting",
+      "hands behind back",
+      "bed",
+      "morning"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

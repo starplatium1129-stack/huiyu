@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_geofront_terminal_dogma",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1015,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "伫立于高空平台边缘俯瞰下方红色海洋",
     "camera": "medium shot, standing on a high platform overlooking the crimson LCL lake",
@@ -20,13 +20,13 @@
     "mood": "庄严宏大",
     "negativeTokens": [],
     "outfitId": "plugsuit_white",
-    "promptProse": "Rei stands alone at the front of the steel platform above Terminal Dogma's crimson LCL lake, wearing her white plugsuit and red neural-interface clips. She looks toward the immense sleeping figure suspended on its cross. The medium view carries the platform edge toward the distant body. Dark red lake glow rises onto her suit's lower panels, while a cold overhead searchlight outlines her head and the near platform rail.",
+    "promptProse": "From the steel platform she looks toward the immense figure suspended on a distant cross. Red lake glow rises beneath the cold overhead light.",
     "promptTokens": [
       "underground",
       "Terminal Dogma",
-      "red LCL lake",
-      "steel platform",
       "white plugsuit",
+      "platform",
+      "red lake",
       "crucifix",
       "medium shot"
     ],

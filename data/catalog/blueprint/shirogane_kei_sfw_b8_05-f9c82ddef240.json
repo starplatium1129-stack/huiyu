@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1415,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "海滨贩卖机前比较冷饮性价比，坐到海堤边贴脸降温并偷偷得意",
     "adult": false,
@@ -25,14 +25,13 @@
     "mood": "把节俭过成小小胜利",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "After carefully comparing the seaside vending-machine drinks, Kei Shirogane sits on the seawall and presses her chosen cold can to her cheek. A light windbreaker covers her slate-blue swimsuit, black headband holding her hair as blue eyes show modest triumph. The horizontal medium view includes the vending machine behind and sea below the wall. Warm afternoon sun lights the jacket folds, while the chilled metal carries a cooler sharp highlight beside her face.",
+    "promptProse": "Kei presses her chosen cold drink to her cheek on the seawall in warm afternoon sun.",
     "promptTokens": [
       "Kei Shirogane",
-      "slate-blue swimsuit",
-      "light windbreaker",
-      "cold drink",
-      "sea wall",
-      "afternoon",
+      "swimsuit",
+      "windbreaker",
+      "drink can",
+      "seawall",
       "medium shot"
     ],
     "recommendedSize": "1536x1152",

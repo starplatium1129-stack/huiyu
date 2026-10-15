@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_arcade",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 395,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:02:53.502621300+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "右手握摇杆，左手停在落爪按钮，盯住箱内呱太；机械爪悬在玩偶上方。",
     "animaStyleHint": "anime_promo_art",
@@ -22,22 +22,16 @@
     "mood": "热血专注",
     "negativeTokens": [],
     "outfitId": "sfw_arcade_varsity",
-    "promptProse": "Her right hand grips the joystick while her left hovers over the drop button: Misaka Mikoto is concentrating on the limited Gekota plush inside the crane cabinet. Her cream varsity jacket with brick-red sleeves opens over a white T-shirt, paired with dark shorts over opaque black leggings. The near control deck includes the coin slot; beyond its glass, the green plush rests on a fabric-covered platform with the claw directly above it. Rows of neighboring cabinets recede along a visible aisle, their colors reflecting lightly on the floor. Show her face, separate hand contacts and the toy in an eye-level three-quarter medium view. White cabinet light brightens her face and the plush, while blue-pink screen glow from the right colors the sleeve edge. Dark cabinet framing separates these lit surfaces, with faint glass reflections still visible.",
+    "promptProse": "Mikoto holds the joystick with her right hand and hovers her left over the drop button, watching the claw above the Gekota plush.",
     "promptTokens": [
       "1girl",
       "solo",
-      "crane game controls",
-      "hand on joystick",
-      "hand over button",
-      "coin slot",
+      "crane game",
+      "joystick",
+      "button",
       "Gekota plush",
       "mechanical claw",
-      "toy display platform",
-      "arcade aisle",
-      "white cabinet light",
-      "blue pink screen glow",
-      "glass reflections",
-      "medium shot"
+      "arcade"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

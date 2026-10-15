@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_sfw_b7_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1155,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "咖啡馆开店前把咖啡豆与小白花放入捧花，闻到点心香后放松微笑",
     "adult": false,
@@ -25,16 +25,16 @@
     "mood": "把长年手艺写进花嫁日常",
     "negativeTokens": [],
     "outfitId": "sfw_bridal",
-    "promptProse": "Kanna stands beside the newly opened cafe terrace in her white bridal dress with apron-style waist detail and rose-gold buttons, adding coffee beans and small white flowers to her bouquet. She smiles at the first pastry batch's aroma. The vertical medium-full view includes the dress hem and pastry window behind. Soft morning light shines on the bouquet petals and buttons, with warm window reflections across the shaded waist folds.",
+    "promptProse": "She adds coffee beans and white flowers to her bridal bouquet beside the terrace. Morning light falls across the dress and pastry window.",
     "promptTokens": [
-      "morning",
-      "Starlight cafe terrace",
-      "white bridal dress",
-      "apron waist detail",
-      "coffee beans",
-      "white flowers",
+      "cafe",
+      "terrace",
+      "wedding dress",
       "bouquet",
-      "medium full shot"
+      "white flower",
+      "coffee beans",
+      "morning",
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

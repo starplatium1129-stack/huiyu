@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_wasteland_road",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 647,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "背负双剑，逆风独行",
     "adult": false,
@@ -23,17 +23,16 @@
       "city buildings"
     ],
     "outfitId": "wayfarer_wanderer",
-    "promptProse": "Chen walks alone into the wind along an ancient Terran wasteland road, twin swords strapped across her back and her sage-green travel coat pulling behind her. The cowboy shot preserves her dragon tail and windblown dark-green twin tails. Rutted earth extends past her toward the frontier. Blood-red sunset rims the coat and sword fittings, while drifting dust softens distant ridges without hiding her stride.",
+    "promptProse": "She walks into the wind with the swords across her back. Red sunset outlines the coat above drifting road dust.",
     "promptTokens": [
-      "sunset",
       "wasteland",
       "ancient road",
-      "twin swords",
-      "travel coat",
+      "green travel coat",
       "cargo pants",
+      "twin swords",
       "walking",
       "wind",
-      "cowboy shot"
+      "sunset"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

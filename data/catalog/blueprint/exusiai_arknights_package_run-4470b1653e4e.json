@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_package_run",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 629,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "抱着包裹全力奔跑，衣摆飞扬",
     "camera": "dynamic low angle",
@@ -18,21 +18,21 @@
     "lighting": "bright daylight, motion energy",
     "location": "龙门街道",
     "mood": "风风火火",
-    "negativeTokens": [
-      "stationary pose"
-    ],
+    "negativeTokens": [],
     "outfitId": "red_delivery_windbreaker",
-    "promptProse": "A sealed express parcel is held firmly in both of Exusiai's arms as she races through Lungmen's crowded old street. Her red delivery windbreaker streams behind her cargo pants and sneakers. From a dynamic low angle, nearby obstacles pass across the foreground while shopfronts narrow down the lane. Bright daylight illuminates her face and parcel top, with short shadows anchoring her running feet.",
+    "promptProse": "She races through the crowded Lungmen lane, holding the sealed parcel firmly in both arms.",
     "promptTokens": [
-      "daytime",
-      "Lungmen street",
+      "1girl",
       "crowd",
-      "running",
-      "parcel",
-      "red windbreaker",
+      "halo",
+      "red jacket",
       "cargo pants",
       "sneakers",
-      "low angle"
+      "running",
+      "parcel",
+      "street",
+      "day",
+      "from below"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

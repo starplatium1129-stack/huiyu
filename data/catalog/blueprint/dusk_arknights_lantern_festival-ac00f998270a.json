@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_lantern_festival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 571,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "身着黑金旗袍执一盏纸灯，在融融暖光中回眸浅笑",
     "camera": "medium shot",
@@ -17,18 +17,15 @@
     "mood": "烟火人间",
     "negativeTokens": [],
     "outfitId": "festival_black_gold_qipao",
-    "promptProse": "Dusk turns back on the festival's long bridge with a faint smile, carrying a small rabbit-shaped paper lantern beside her black-and-gold woven qipao and black heeled shoes. The medium view follows the bridge rail into the distance above the night river. Warm lantern glow illuminates her hand and gold threads, while repeated bridge lights ripple on the water below and darker rail intervals separate the figure from the bright reflections.",
+    "promptProse": "She carries the small rabbit lantern along the bridge and looks back. Its warmth meets the repeated lights reflected on the river.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Dusk",
-      "black gold woven qipao",
-      "black heeled shoes",
-      "rabbit paper lantern",
       "bridge",
-      "night river",
-      "lantern festival",
-      "medium shot"
+      "black and gold qipao",
+      "rabbit lantern",
+      "looking back",
+      "smile",
+      "river",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

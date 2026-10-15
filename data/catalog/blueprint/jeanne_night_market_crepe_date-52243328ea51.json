@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_night_market_crepe_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jeanne_night_market_crepe_date",
     "title": "圣女贞德 · 夜市可丽饼的约会·「原来甜食……是这么幸福的东西啊」",
@@ -29,19 +29,18 @@
       "red_lantern_light",
       "medium_closeup"
     ],
-    "promptProse": "Jeanne holds a paper-wrapped strawberry crepe in both hands at the night market, pausing after her first bite with surprised violet-blue eyes and an unnoticed cream spot at her mouth. A soft shawl covers her white blouse above the blue skirt, golden braid over one shoulder. The medium close-up includes evening stalls receding behind. Warm red lanterns light her face and crepe wrapper, with stall light catching rising steam beside her.",
+    "promptProse": "Jeanne pauses after tasting a strawberry crepe, unaware of the cream at her mouth. Warm market lanterns light her surprised eyes.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne",
-      "white blouse",
-      "blue skirt",
-      "evening shawl",
-      "golden braid",
-      "strawberry crepe",
-      "cream spot",
-      "night market lanterns",
-      "medium close-up"
+      "shawl",
+      "braid",
+      "crepe",
+      "strawberry",
+      "cream on face",
+      "night market",
+      "lantern",
+      "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

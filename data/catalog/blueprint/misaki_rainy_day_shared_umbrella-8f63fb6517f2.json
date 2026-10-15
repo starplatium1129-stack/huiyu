@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_rainy_day_shared_umbrella",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 407,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "钻进你的伞下紧贴肩膀，星瞳别扭又满足",
     "adult": false,
@@ -26,19 +26,15 @@
     "mood": "别扭甜蜜、雨日心动",
     "negativeTokens": [],
     "outfitId": "official_tokiwadai_uniform",
-    "promptProse": "Shokuhou Misaki ducks beneath her clothed companion's umbrella in the summer downpour, pressing shoulder to shoulder while pretending indifference. Beige vest, white shirt, grey skirt and spider-web gloves retain her uniform beneath blonde hair and secretly satisfied star pupils. The medium two-shot includes the companion's umbrella-holding hand and wet street beyond. Blue-grey rain light softly defines both profiles, while warm streetlamps reflect in puddles and along the umbrella's dripping edge.",
+    "promptProse": "Misaki settles close beneath her companion's umbrella, their shoulders touching in the summer rain.",
     "promptTokens": [
       "2people",
-      "Shokuhou Misaki",
-      "clothed companion",
-      "Tokiwadai uniform",
+      "shokuhou_misaki",
+      "school uniform",
       "shared umbrella",
       "shoulder contact",
-      "summer rain",
-      "Academy City street",
-      "streetlamps",
-      "medium two-shot",
-      "shokuhou_misaki"
+      "rain",
+      "street"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

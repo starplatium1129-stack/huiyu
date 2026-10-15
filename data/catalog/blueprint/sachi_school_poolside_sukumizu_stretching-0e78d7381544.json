@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_school_poolside_sukumizu_stretching",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1189,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sachi_school_poolside_sukumizu_stretching",
     "title": "小岭幸 · 水光潋滟的死库水压腿",
@@ -31,15 +31,14 @@
       "large_breasts",
       "wet_skin"
     ],
-    "promptProse": "Komine Sachi warms up beside the academy pool in a navy school swimsuit with a white name patch. One hand steadies her on the stainless-steel ladder while one leg rests on its step for a deliberate stretch. The full-body side view keeps the tiles and pool lane behind her. Afternoon sunshine gleams along the rail, and reflected blue ripples move across the shaded tiles.",
+    "promptProse": "Sachi holds the pool ladder while stretching one leg on its step, sunlight reflecting from the water.",
     "promptTokens": [
-      "navy one-piece swimsuit",
-      "poolside",
+      "one-piece swimsuit",
+      "name tag",
       "stretching",
+      "poolside",
       "ladder",
-      "name patch",
-      "full body",
-      "afternoon sun"
+      "full body"
     ],
     "negativeTokens": [
       "bikini"

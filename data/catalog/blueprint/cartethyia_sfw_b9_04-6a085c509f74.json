@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1648,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_04",
     "title": "卡提希娅 · 埃格拉归途的蓝色花嫁",
@@ -29,16 +29,14 @@
       "relieved_smile",
       "morning_light"
     ],
-    "promptProse": "Cartethyia stands at the old Egla chapel's stone-path entrance in a pale-blue wedding gown, cream mantle and braided gold trim. She holds the flower crown, long blonde braid resting over her shoulder, then smiles toward the viewer with the relief of coming home. The vertical medium-full view includes the chapel window behind. Clear morning light through stained glass brightens gown embroidery and the faint halo, with softer colored reflections across the stone.",
+    "promptProse": "She holds the flower crown and smiles toward the viewer at the old chapel entrance. Morning stained-glass light reaches the gown.",
     "promptTokens": [
-      "Cartethyia",
-      "blue bridal gown",
+      "chapel",
+      "blue wedding dress",
       "cream mantle",
       "flower crown",
       "halo",
-      "old chapel",
-      "morning",
-      "medium full shot"
+      "morning"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1678,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_04",
     "title": "橘美花莉 · 摄影棚的金色花嫁",
@@ -31,14 +31,14 @@
       "shy_wink",
       "softbox_light"
     ],
-    "promptProse": "Mikari Tachibana poses before the convention studio's soft pastel backdrop in a white-and-gold bridal cosplay gown, holding a fantasy bouquet against satin and gold ribbons. After finding her practiced angle, she replaces the promotional smile with a shy real wink. The vertical medium-full view includes the layered veil beside chestnut curls. Golden studio light illuminates the bouquet and veil ridges, with gentle skirt shadows grounding the pose against the backdrop.",
+    "promptProse": "Mikari holds a fantasy bouquet in her white-and-gold bridal costume, her practiced smile becoming a shy wink.",
     "promptTokens": [
       "Mikari Tachibana",
-      "white-gold bridal cosplay",
-      "layered veil",
-      "fantasy bouquet",
+      "bridal cosplay",
+      "veil",
+      "bouquet",
       "studio",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

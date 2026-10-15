@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tsukatsuki_rio",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tsukatsuki_rio",
     "profile": {
@@ -134,12 +134,11 @@
         "rio (blue archive)",
         "1girl",
         "solo",
-        "black_hair",
-        "very_long_hair",
-        "red_eyes",
+        "black hair",
+        "very long hair",
+        "red eyes",
         "halo",
-        "large_breasts",
-        "blue_archive"
+        "blue archive"
       ],
       "negativeTokens": [
         "bad anatomy",

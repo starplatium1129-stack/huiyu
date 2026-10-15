@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_christmas_backstage_blush",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "iroha_christmas_backstage_blush",
     "title": "一色彩羽 · 圣诞晚会后台的微醺红晕·「前辈……今晚可不可以只当我的圣诞老人呢」",
@@ -29,20 +29,17 @@
       "sincere_smile",
       "romantic"
     ],
-    "promptProse": "In the quiet auditorium wings, Iroha Isshiki holds a wrapped gift against her chest before offering it with a trembling sincere smile. A red velvet capelet overlays her buttoned navy executive blazer, left armband and white shirt; the pleated skirt remains neat. The medium view includes stage curtains and the snowy window beyond. Colored backstage fairy lights warm her tearful eyes and wrapping, while blue night outside outlines the cape's white trim.",
+    "promptProse": "Iroha offers a wrapped gift from the auditorium wings. Colored lights warm her shy smile and red capelet over the navy blazer.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Iroha Isshiki",
-      "buttoned navy executive blazer",
-      "left armband",
-      "white shirt",
-      "pleated skirt",
-      "red capelet",
+      "isshiki_iroha",
       "gift box",
-      "Christmas backstage",
-      "medium shot",
-      "isshiki_iroha"
+      "red capelet",
+      "smile",
+      "backstage",
+      "christmas",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

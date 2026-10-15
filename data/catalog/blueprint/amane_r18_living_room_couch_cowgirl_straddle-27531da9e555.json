@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_r18_living_room_couch_cowgirl_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1188,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "amane_r18_living_room_couch_cowgirl_straddle",
     "title": "周防天音 · 沙发跨坐主动骑乘与豪乳轻摇",
@@ -30,47 +30,24 @@
       "bouncing_breasts",
       "heavy_blush"
     ],
-    "promptProse": "Warm apartment lamps frame adult Suou Amane seated alone astride a firm sofa arm. Her biker jacket and red top are open below bare breasts, with fitted shorts pulled aside over powerful folded thighs. She grips the backrest with one hand and fingers herself with the other, motorcycle keys glinting on the table. Long red hair and green eyes hold bold affection through sweat and a broad blush. Vertical solo portrait, no text or extra people.",
+    "promptProse": "Adult Amane straddles the sofa arm in her loosened apron outfit, gripping the backrest with one hand while the other rests between her thighs. Motorcycle keys lie on the table.",
     "promptTokens": [
-      "cowgirl_position",
-      "straddling",
+      "adult",
+      "living room",
+      "sofa",
       "apron",
-      "open_clothes",
-      "huge_breasts",
-      "bouncing_breasts",
-      "heavy_blush",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "open clothes",
+      "topless",
+      "straddling",
+      "masturbation"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "r18_sensual_bedroom",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "cowgirl",
-      "straddling",
-      "huge_breasts",
-      "bouncing_breasts",
-      "apron",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

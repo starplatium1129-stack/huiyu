@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_sfw_b7_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 288,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chloe_von_einzbern_sfw_b7_06",
     "title": "克洛伊 · 雨天窗边的真话",
@@ -30,20 +30,15 @@
       "overcast_light",
       "horizontal_composition"
     ],
-    "promptProse": "Chloe quietly hugs her knees on the broad classroom-window bench after school, watching rain rather than making another joke. Her red cardigan wraps over the white blouse and knee-length pleated skirt, one hand briefly tightening its fabric beside pale-pink hair. The horizontal medium view includes droplets on glass and the softened orange-eyed profile. Overcast daylight gently reveals her face, with the bench's interior edge shaded below the pale window.",
+    "promptProse": "She sits on the window bench hugging her knees and watching the rain. Overcast light softly reaches her quiet profile.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Chloe",
-      "white school blouse",
+      "classroom",
+      "window seat",
       "red cardigan",
+      "school blouse",
       "pleated skirt",
       "knees hugged",
-      "classroom window",
-      "rain",
-      "overcast",
-      "medium shot",
-      "chloe_von_einzbern"
+      "rain"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

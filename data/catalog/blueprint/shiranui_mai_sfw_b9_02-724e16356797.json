@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1738,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_02",
     "title": "不知火舞 · 灶前的大和抚子",
@@ -31,14 +31,13 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Mai Shiranui places the last vegetables into a carefully arranged lunch box beside the soup pot. Her red apron covers a cream long-sleeved shirt and dark trousers, high ponytail kept clear of the food as brown eyes narrow with a pleased smile. The medium portrait includes chopsticks and cooking surface behind her hands. Warm kitchen light illuminates food colors and apron folds, with small compartment shadows and soft steam reflections above the pot.",
+    "promptProse": "Mai adds the last vegetables to a lunch box beside the steaming soup pot in warm kitchen light.",
     "promptTokens": [
       "shiranui_mai",
-      "Mai Shiranui",
-      "cream shirt",
+      "shirt",
       "red apron",
-      "bento preparation",
-      "soup pot",
+      "bento",
+      "soup",
       "kitchen",
       "medium shot"
     ],

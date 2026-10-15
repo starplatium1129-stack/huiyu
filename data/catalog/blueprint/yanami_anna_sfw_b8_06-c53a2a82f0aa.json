@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1669,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_06",
     "title": "八奈见杏菜 · 夏日祭的苹果糖与金鱼",
@@ -31,15 +31,14 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "Anna Yanami stops at the water-balloon stall with a candy apple in one hand and a goldfish bag in the other, happily undecided about the next treat. Her blue floral yukata and yellow obi stay clear as she looks up at the fireworks. The medium view includes the basin and festival lane behind. Lantern light warms her sleeves and sugar-marked smile, while firework reflections flicker across the bag's small water surface.",
+    "promptProse": "Yanami pauses at the balloon stall with both hands full of treats and looks up at the fireworks.",
     "promptTokens": [
       "yanami_anna",
-      "Anna Yanami",
-      "blue floral yukata",
+      "floral yukata",
       "yellow obi",
       "candy apple",
       "goldfish bag",
-      "festival stall",
+      "festival",
       "medium shot"
     ],
     "negativeTokens": [],

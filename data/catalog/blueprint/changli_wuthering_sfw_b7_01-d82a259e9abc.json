@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1633,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_01",
     "title": "长离 · 边庭的沙盘推演",
@@ -30,16 +30,15 @@
       "afternoon_light",
       "medium_shot"
     ],
-    "promptProse": "Changli leans over the large strategy board in Jinzhou's side courtyard, one hand moving a piece and fingertips lingering above the final move. Her layered white-and-red robe and high-collared inner blouse remain clear as she lifts her eyes with a measured smile. The medium view includes the board grid in front and courtyard wall behind. Afternoon light highlights embroidered cuffs and piece tops, with distinct small shadows explaining their arrangement.",
+    "promptProse": "She moves a piece on the strategy board and lifts her eyes toward the viewer. Afternoon light reveals the arrangement on the grid.",
     "promptTokens": [
       "changli_(wuthering_waves)",
-      "Changli",
-      "white-red robe",
-      "chessboard",
+      "courtyard",
+      "white and red robe",
+      "strategy board",
       "moving piece",
-      "Jinzhou courtyard",
-      "afternoon",
-      "medium shot"
+      "smile",
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

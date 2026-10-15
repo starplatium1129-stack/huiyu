@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_sacred_kagura_sword_dance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1122,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "手持神刀丛雨丸旋转舞动，巫女宽袖与绯红袴裤翻飞，刀刃拖出神圣白芒",
     "camera": "full body, dynamic mid-action angle, wide composition",
@@ -20,15 +20,16 @@
     "mood": "神圣庄严",
     "negativeTokens": [],
     "outfitId": "shrine_miko",
-    "promptProse": "Murasame turns through the shrine kagura dance in her white miko top and crimson hakama, both hands gripping Murasamemaru as the blade draws a clear arc through the air. Small bells on her red ribbons move with the full-body wide composition. The vermilion stage remains below her and stone lanterns encircle it. Red candles warm the broad sleeves, while the sword edge reflects a cooler white line against the dark hall.",
+    "promptProse": "Murasame turns through the dance with both hands on Murasamemaru, the sword tracing an arc above the candlelit stage.",
     "promptTokens": [
-      "night",
-      "kagura stage",
-      "white miko top",
-      "crimson hakama",
-      "Murasamemaru",
-      "sword dance",
+      "miko",
+      "red hakama",
+      "katana",
+      "dancing",
       "bells",
+      "kagura",
+      "shrine",
+      "night",
       "full body"
     ],
     "recommendedSize": "1536x1152",
@@ -43,6 +44,8 @@
       "night_sky"
     ],
     "timeOfDay": "夜晚",
-    "title": "丛雨 · 神乐殿前的神刀奉纳舞"
+    "title": "丛雨 · 神乐殿前的神刀奉纳舞",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

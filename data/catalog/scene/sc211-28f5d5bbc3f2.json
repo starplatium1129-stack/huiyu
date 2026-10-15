@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc211",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc211",
     "title": "真丝吊带下的魔女引力",
@@ -41,11 +41,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons, pov, mint_green_slip, silk_nightgown, translucent_clothing, see_through_clothing, no_underwear, slipped_strap, bare_shoulders, sideboob, cleavage, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, hands_pushing_towards_viewer, heavy_blush, teary_eyes, open_mouth_pouting, heart_ahoge, bedroom, on_bed, warm_lighting, soft_lighting, collarbone, slender_waist, full_body, <lora:ayachi_nene_v18_wd14:0.8>",
-    "negative": "worst_quality, low_quality, normal_quality, lowres, blurry, jpeg_artifacts, text, watermark, logo, signature, bad_anatomy, bad_hands, extra_fingers, missing_fingers, fused_fingers, extra_arms, extra_legs, deformed, bad_proportions, duplicate, cropped, 3d_render, photorealistic, stockings, thighhighs, cropped_feet, upper_body, child, loli, underage, artist_name, chromatic_aberration, school_uniform, gym_uniform, split_image, split_screen, split_panel, two_panels, diptych, triptych, comic_strip, multiple_frames, panel_borders, frame_borders, double_exposure, double_image, duplicated_subject, duplicated_body, multiple_girls, extra_girl, second_person, additional_woman, another_woman, extra_person, background_person",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, mint green silk slip, see-through, no underwear, strap slip, sideboob, kneeling, leaning forward, reaching, teary eyes, blush, bed, warm lighting, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "negative": "stockings, thighhighs",
     "storyJa": "【寧々・シルクスリップの魔女引力】激しい吹雪が吹き荒れる深夜のプライベートな寝室。寧々は今夜、あなたのストレートな攻勢に防衛線が完全に崩壊し、中には何も身に着けていない真空状態の極薄で半透明なミントグリーンのレースのシルクスリップ一枚だけを纏っていた。ベッドの上で激しくじゃれ合ったせいで、片方の細い肩紐がすでに力なく腕の下まで滑り落ち、極めて豊満でセクシーな白い胸元と透き通るような秘密の輪郭が露出している。彼女はあなたの大腿の上に跨り、頭の上のアホ毛は極度の恥ずかしさと従順さで震えて完璧なハート型に丸まり、顔を真っ赤にして慌てて押し返しながら涙声で自爆した――「うあぁ！大、大色狼！キャミソールの紐が外れちゃったじゃない……そんなところばかり見ないで！べ、別にわざとこんな格好をしてあなたを誘惑したわけじゃないんだから……ん、早くきつく抱きしめてよ、バカ！」",
     "rating": "R18",
-    "animaCaption": "In the dim master bedroom under the weak warm lamp, Nene wears only a sheer mint-green lace silk slip — totally bare underneath — one thin strap slipped below her arm, sideboob showing through; she kneels on the bed leaning in close, playfully pushing toward the viewer with tears and an ahoge curled into a heart.",
+    "animaCaption": "With one slip strap below her arm, she leans from her knees on the bed and playfully pushes her hands toward the viewer.",
     "auditRevision": "careful-batch15-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_fireplace_bible_shoulder_lean",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 213,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:17:07.513752600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "caren_fireplace_bible_shoulder_lean",
     "title": "卡莲 · 壁炉圣经前的倚肩依偎",
@@ -28,30 +28,18 @@
       "gentle_smile",
       "peaceful"
     ],
-    "promptProse": "A closed leather-bound Bible rests across Caren Hortensia's lap on the thick hearth rug. Both hands support its cover as she leans her head against the clothed shoulder at the frame edge, her black silk nightgown and thin straps remaining in place. Her amber-yellow eyes follow the embers with a calm smile. The eye-level cowboy view places the stone hearth beside her; the rug edge leads toward a low reading chair and the shaded wall beyond. Firelight catches the book's worn spine, silver hair and nearer shoulder. The hearth stones return softer warmth to the shaded sleeve-free arm, while the book casts a gentle shadow across her lap and the chair legs disappear into the quieter room.",
+    "promptProse": "She supports the Bible on her lap and rests her head against the clothed shoulder at the frame edge. Firelight reaches the book and nearby chair.",
     "promptTokens": [
-      "Caren Hortensia",
-      "white hair",
-      "yellow eyes",
-      "black silk nightgown",
-      "thin straps",
-      "closed Bible on lap",
-      "hands supporting book",
-      "head on clothed shoulder",
+      "black nightgown",
+      "closed Bible",
+      "head on shoulder",
       "hearth rug",
-      "stone fireplace",
+      "fireplace",
       "reading chair",
-      "night",
-      "firelight",
-      "cowboy shot"
+      "night"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
       "burning hair",
-      "burning ears",
       "burning clothing"
     ],
     "recommendedSize": "1152x1536",

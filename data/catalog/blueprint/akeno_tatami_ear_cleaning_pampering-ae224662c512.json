@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_tatami_ear_cleaning_pampering",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1289,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "akeno_tatami_ear_cleaning_pampering",
     "title": "姬岛朱乃 · 和室榻榻米的治愈耳语",
@@ -28,13 +28,13 @@
       "pampering",
       "gentle_smile"
     ],
-    "promptProse": "Akeno Himejima kneels on woven tatami, holding a cotton-tipped bamboo earpick while patting her lap to invite her companion to rest. Her deep-violet lace negligee lies over matching nightwear, and her expression is calmly attentive. The close cowboy view shows mat seams leading to the bamboo blind behind. Filtered daylight falls in soft stripes across her sleeve and black ponytail, with subdued contact shadow beneath her folded legs.",
+    "promptProse": "She pats her lap invitingly while holding a bamboo ear pick. Daylight through the bamboo blind falls in stripes across the tatami.",
     "promptTokens": [
-      "Akeno Himejima",
-      "violet lace nightwear",
-      "bamboo earpick",
+      "purple negligee",
+      "kneeling",
+      "ear pick",
       "tatami",
-      "lap pillow invitation",
+      "bamboo blinds",
       "cowboy shot"
     ],
     "negativeTokens": [],

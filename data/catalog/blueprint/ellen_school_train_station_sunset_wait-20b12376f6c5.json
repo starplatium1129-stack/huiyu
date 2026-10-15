@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_school_train_station_sunset_wait",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1058,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单肩背包靠在栏杆边听歌，列车进站风卷起发丝与百褶裙，尾尖微摆",
     "camera": "medium shot, side angle, cinematic wide view",
@@ -20,16 +20,19 @@
     "mood": "落日怀旧",
     "negativeTokens": [],
     "outfitId": "school_uniform",
-    "promptProse": "Ellen leans beside the elevated station safety railing, headphone wires falling along her sailor collar and her schoolbag over one shoulder. Train wind moves her short hair and skirt while the shark tail steadies her stance. The side-on medium view includes rails receding into the evening beyond. Rich golden-red sunset lights the rail tops and hair edges, meeting fluorescent platform light across her white sleeves and bag strap.",
+    "promptProse": "She leans at the platform railing as train wind lifts her hair and skirt, her tail steadying her stance.",
     "promptTokens": [
-      "sunset",
-      "elevated station",
-      "summer sailor uniform",
-      "headphones",
-      "schoolbag",
+      "1girl",
+      "solo",
       "shark tail",
-      "medium shot",
-      "side view"
+      "sailor uniform",
+      "headphones",
+      "shoulder bag",
+      "railing",
+      "train station",
+      "sunset",
+      "profile",
+      "medium shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

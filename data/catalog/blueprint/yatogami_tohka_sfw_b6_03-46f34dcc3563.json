@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_03",
     "title": "夜刀神十香 · 雨后水洼的小跳跃",
@@ -30,17 +30,13 @@
       "dynamic_pose",
       "full_body"
     ],
-    "promptProse": "Both yellow rain boots land beyond the puddle as Tohka raises her hands in delight and turns back to inspect the widening ripples. Her orange rain jacket covers full-length navy dungarees, with dark-purple hair swinging around her open smile. Keep one continuous pose at eye level in the full-body view, pavement receding behind. Soft after-rain daylight brightens the jacket and wet ground, with contact shadows beneath her grounded boots.",
+    "promptProse": "Tohka lands beyond the puddle with both boots grounded and turns to admire the spreading ripples.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Tohka",
-      "orange rain jacket",
-      "navy dungarees",
-      "yellow rain boots",
-      "landed hop",
-      "puddle ripples",
-      "after rain",
+      "orange raincoat",
+      "overalls",
+      "rain boots",
+      "puddle",
       "full body"
     ],
     "negativeTokens": [

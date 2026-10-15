@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_fox_den_night",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 641,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "蜷成一团，尾巴盖在身上",
     "camera": "medium close-up",
@@ -22,16 +22,15 @@
       "daylight"
     ],
     "outfitId": "cozy_fluffy_pajamas",
-    "promptProse": "Suzuran curls on her dorm bed in fluffy pastel pajamas, her nine thick golden tails wrapped around her like a blanket. Only her head peeks above the fur as she looks toward the viewer for a bedtime story. The medium close-up holds pillows behind her head and bedding underneath. A dim bedside lamp warms the nearest tails, with layered shadows where their curls overlap.",
+    "promptProse": "Suzuran peeks from her curled tails for a bedtime story, the lamp warming the nearest fur.",
     "promptTokens": [
-      "night",
-      "dorm bed",
-      "fluffy pajamas",
+      "Suzuran",
+      "pajamas",
       "nine tails",
       "curled up",
-      "pillows",
-      "bedside lamp",
-      "medium close up"
+      "bed",
+      "lamplight",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_window_sill_solo_fingering",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1178,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kazuki_r18_window_sill_solo_fingering",
     "title": "风见一姬 · 月夜窗台的私密情愫自抚",
@@ -31,50 +31,25 @@
       "red_eyes",
       "heavy_blush"
     ],
-    "promptProse": "Adult Kazuki is reclining alone across a broad sill. Her fitted dress is unzipped and pooled beneath bare breasts, one leg extended along the ledge and the other folded inward. She steadies herself on the frame with one hand and fingers herself with the other. Black hair frames violet eyes, parted breath and a rare vulnerable blush. Horizontal solo portrait, no text or extra people.",
+    "promptProse": "Adult Kazuki reclines along the broad sill with her dress pooled below her chest, bracing on the frame while fingering herself.",
     "promptTokens": [
-      "window_sill",
-      "moonlight",
-      "masturbation",
+      "1girl",
+      "solo",
+      "open dress",
+      "bare breasts",
+      "reclining",
+      "one leg bent",
       "fingering",
-      "skirt_lift",
-      "white_dress",
-      "white_hair",
-      "very_long_hair",
-      "red_eyes",
-      "heavy_blush",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting",
-      "soft_lighting"
+      "windowsill",
+      "moonlight"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "masturbation",
-      "fingering",
-      "white_hair",
-      "red_eyes",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

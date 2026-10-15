@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc108",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc108",
     "title": "同居协议的微醺惩罚",
@@ -44,11 +44,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, pov, red_lace_lingerie, bra_lift, exposed_breasts, bare_breasts, nipples, areola, garter_straps, torn_thighhighs, laddering, tight_straps, crotchless_panties, exposed_pussy, pussy_juice, kneeling_on_bed, leaning_forward, close-up, looking_at_viewer, arched_back, heavy_blush, flushed_cheeks, intoxicated, biting_lip, bedroom, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, cafe_uniform, fully_clothed, child, loli, underage",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, red lace lingerie, bra lift, bare breasts, crotchless panties, torn thighhighs, garter straps, kneeling, leaning forward, arched back, blush, tipsy, bedroom, candlelight, close up, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "cafe uniform",
     "storyJa": "【夏目・家にある大きなセーターは絶対に特別なもの】深夜、同棲しているアパートのリビング。普段は理性を語るエージェント女子夏目が、今夜は酒の影響で完全に防御力を失っていた。彼女はあなたをソファに乱暴に放り投げると、彼女が着ていた緩い厚手のニットのセーターが片方の腕から完全に滑り落ち、内部は完全な真空状態になりました。露出した面積の広い肩と豊満でセクシーな胸がテレビ画面の薄明かりの中で眩しかった。彼女の目の隅にある泣きぼくろは、究極の独占欲で輝いていました。彼女は頭を下げ、ささやきながらあなたの鎖骨を強く噛みました。――「あなたは私のもの。これから先も、絶対に手放してあげないんだから……ばか。」",
     "rating": "R18",
-    "animaCaption": "Inside the candlelit bedroom, Shiki Natsume kneels on the bed in sheer red lace lingerie with torn garter thighhighs, her breasts and core exposed, leaning in close toward the viewer with an arched back, biting her lip with flushed, intoxicated cheeks.",
+    "animaCaption": "She kneels on the bed and leans toward the viewer with her back arched, biting her lip in the candlelight.",
     "auditRevision": "careful-batch12-2026-08-27"
   }
 }

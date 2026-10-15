@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_futon_cowgirl_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1177,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kazuki_r18_futon_cowgirl_straddle",
     "title": "风见一姬 · 纯白棉被跨坐骑乘与娇羞起伏",
@@ -30,47 +30,27 @@
       "red_eyes",
       "heavy_blush"
     ],
-    "promptProse": "A shaded lamp surrounds adult Kazami Kazuki seated alone astride a narrow futon bolster. Her white blouse is open beneath bare breasts and a dark skirt gathers at the waist above black stockings. She rests one hand on her thigh and fingers herself with the other while a closed medical case anchors the room. Long black hair frames cool violet eyes, wet lashes and a controlled blush. Vertical single-subject portrait, no text or extra people.",
+    "promptProse": "Adult Kazuki straddles the futon bolster with her blouse open and skirt gathered at her waist, resting one hand on her thigh while touching herself with the other.",
     "promptTokens": [
-      "cowgirl_position",
+      "1girl",
+      "solo",
+      "open blouse",
+      "bare breasts",
+      "skirt lift",
+      "black stockings",
       "straddling",
-      "white_dress",
-      "white_hair",
-      "very_long_hair",
-      "red_eyes",
-      "flat_chest",
-      "heavy_blush",
-      "detailed_background",
-      "cinematic_lighting",
-      "soft_lighting"
+      "bolster",
+      "masturbation",
+      "futon",
+      "lamplight"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "r18_sensual_bedroom",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwTokens": [
-      "cowgirl",
-      "straddling",
-      "white_hair",
-      "red_eyes",
-      "heavy_blush"
-    ],
+    "nsfwTokens": [],
     "nsfwProse": ""
   }
 }

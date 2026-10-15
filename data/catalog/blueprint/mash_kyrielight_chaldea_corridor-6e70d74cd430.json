@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_chaldea_corridor",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 199,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "negativeTokens": [
       "tablet",
@@ -34,18 +34,17 @@
       "ceiling_light",
       "medium_shot"
     ],
-    "promptProse": "Mash walks briskly toward the viewer with paper observation reports held securely in both arms, smiling through glasses beneath the pink-lavender fringe covering her right eye. Black collared dress, open grey jacket, red necktie and dark tights retain her daily outfit. The medium-full view follows futuristic panels down the Chaldea corridor. Ceiling lights catch the stacked page edges and jacket shoulders, with alternating panel shadows reinforcing the corridor's depth.",
+    "promptProse": "Mash walks briskly toward the viewer with observation reports held in both arms, smiling through her glasses.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Mash",
-      "black collared dress",
-      "grey open jacket",
+      "black dress",
+      "grey jacket",
       "red necktie",
       "glasses",
-      "paper reports",
-      "Chaldea corridor",
-      "medium full shot"
+      "papers",
+      "walking",
+      "corridor"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "chaldea_casual",

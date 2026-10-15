@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_magic_library",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 106,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "frieren_magic_library",
     "title": "芙莉莲 · 魔法书研究",
@@ -29,22 +29,19 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Frieren studies an open folk-magic grimoire beneath a small blue magic circle at a table between old library shelves. She tucks silver-white hair behind a pointed ear, her staff resting beside the chair and her white hooded robe secured by its belt. The medium view follows shelf aisles behind her. Warm library light reveals paper edges, while blue rune glow illuminates the diagram and her attentive green eyes.",
+    "promptProse": "Studying the folk-magic grimoire, she tucks her hair behind one ear while a small blue magic circle hovers above the pages.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Frieren",
-      "white hooded robe",
-      "belt",
-      "grimoire",
-      "blue magic circle",
-      "staff beside chair",
-      "old library",
+      "white robe",
+      "book",
+      "magic circle",
+      "blue light",
+      "staff",
+      "library",
       "medium shot"
     ],
-    "negativeTokens": [
-      "readable spell instructions"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "wizard_robe"
   }

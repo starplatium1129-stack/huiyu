@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_school_cultural_maid",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手端着托盘微躬身躯，满脸通红眼角带泪",
     "camera": "cowboy shot, eye level",
@@ -20,14 +20,16 @@
     "mood": "羞涩慌乱",
     "negativeTokens": [],
     "outfitId": "cultural_festival_maid",
-    "promptProse": "Hitori carries an omelet-rice tray through the cultural-festival classroom cafe, trembling under the guests' attention in her black maid dress, white apron and lace headdress. A strong blush accompanies her tentative greeting. The eye-level cowboy view includes the tray forward and occupied classroom tables behind. Bright soft afternoon window light illuminates her face and rice dish, casting shallow cup and tray shadows across her holding hands.",
+    "promptProse": "Hitori carries the omelet-rice tray between occupied tables, trying to greet the festival guests despite her trembling hands.",
     "promptTokens": [
-      "afternoon",
-      "school festival",
-      "black maid dress",
-      "white apron",
-      "omelet rice",
+      "maid",
       "tray",
+      "omurice",
+      "blush",
+      "trembling",
+      "classroom",
+      "cafe",
+      "school festival",
       "guests",
       "cowboy shot"
     ],
@@ -46,6 +48,8 @@
     ],
     "timeOfDay": "午后",
     "title": "后藤一里 · 文化祭女仆危机",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

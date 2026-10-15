@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_family_restaurant",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 342,
   "createdAt": null,
-  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yukinoshita_yukino_family_restaurant",
     "title": "雪之下雪乃 · 家庭餐厅",
@@ -31,23 +31,20 @@
       "warm_pendant_light",
       "medium_shot"
     ],
-    "promptProse": "Paused above the cut edge of her hamburger steak, Yukino's knife and fork remain in their separate hands as she looks toward the unseen diner opposite. Her blue-grey cardigan and white blouse sit neatly above a charcoal pleated skirt, with red hair ribbons visible at her side locks. A water glass and folded napkin occupy the near table corner beside the plate. The booth back meets a low partition; a clear aisle continues behind it toward a row of window tables. Evening streetlamp reflections lie faintly on the glass. Keep the meal and both hands inside an eye-level medium portrait. A pendant from the upper left warms her cheek and gives the utensils and sauce small highlights. Plate and glass cast distinct soft shadows, with the lower seat back remaining darker than the tabletop.",
+    "promptProse": "Yukino pauses with a utensil in each hand above the partly cut steak, looking toward the unseen diner opposite.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "paused knife and fork",
-      "partly cut hamburger steak",
-      "water glass",
-      "folded napkin",
+      "blue cardigan",
+      "white blouse",
+      "pleated skirt",
+      "knife",
+      "fork",
+      "hamburger steak",
       "restaurant booth",
-      "low dining partition",
-      "receding table aisle",
-      "evening window reflections",
-      "upper left pendant light",
+      "evening",
       "medium shot"
     ],
     "negativeTokens": [
-      "readable menus"
+      "text"
     ],
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "moody_night_scene",
@@ -55,6 +52,8 @@
     "outfitId": "sfw_evening_dining_cardigan",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

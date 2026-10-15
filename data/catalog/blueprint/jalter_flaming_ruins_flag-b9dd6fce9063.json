@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_flaming_ruins_flag",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 169,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jalter_flaming_ruins_flag",
     "characterId": "jeanne_alter",
@@ -23,18 +23,18 @@
       "firelight",
       "full_body"
     ],
-    "promptProse": "Jeanne Alter steadies the dragon banner planted in broken stones with one armored hand, holding her cursed sword low in a reversed grip with the other. Her purple cape lifts behind black spiked armor as she smiles fiercely across the ruins. The low full-body view includes banner base, boots and complete sword. Rising flames illuminate silver hair and golden eyes, casting jagged rubble shadows while sparks cross the flag's edge.",
+    "promptProse": "Jeanne Alter steadies her planted dragon banner and holds her sword low in the opposite hand, smiling fiercely above the burning rubble.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne Alter",
-      "black spiked armor",
+      "armor",
       "purple cape",
-      "dragon banner",
-      "lowered cursed sword",
-      "burning ruins",
+      "flag",
+      "sword",
+      "ruins",
+      "fire",
       "full body",
-      "low angle"
+      "from below"
     ],
     "negativeTokens": [
       "cropped sword"

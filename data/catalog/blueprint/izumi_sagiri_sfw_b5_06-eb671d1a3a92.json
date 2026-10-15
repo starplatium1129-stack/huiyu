@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1526,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_06",
     "title": "和泉纱雾 · 夏日祭的和服",
@@ -31,13 +31,14 @@
       "evening",
       "medium_shot"
     ],
-    "promptProse": "Sagiri Izumi stands at the goldfish stall in a properly wrapped pale-blue floral yukata, lifting the broad sleeve clear of her arm as she examines a broken paper net. Her frustration shows openly, one sandal tapping the ground below the pink obi. The medium portrait includes basin rim and adjacent nets. Soft daylight reveals damp paper fibers and sleeve flowers, with fish shadows moving beneath the reflective surface and gentler shade under the counter.",
+    "promptProse": "Sagiri lifts her yukata sleeve and examines a torn goldfish net with an exasperated look beside the stall basin.",
     "promptTokens": [
-      "Sagiri Izumi",
-      "pale-blue floral yukata",
+      "floral print",
+      "yukata",
       "pink obi",
-      "torn goldfish net",
-      "festival stall",
+      "goldfish scooping",
+      "festival",
+      "frustrated",
       "medium shot"
     ],
     "negativeTokens": [],

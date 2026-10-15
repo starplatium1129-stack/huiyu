@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_grand_major_arena_candle_waltz",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 681,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在金色聚光灯下轻盈旋身挥动细剑，金鹿巨角泛光，影蛾与烛火漫天飞舞",
     "camera": "wide shot, low angle, majestic poise",
@@ -20,17 +20,17 @@
     "mood": "高洁神圣",
     "negativeTokens": [],
     "outfitId": "candle_knight_armor",
-    "promptProse": "Viviana turns with her rapier at the center of the Kazimierz arena, her black-and-gold ceremonial armor beneath branching golden antlers. Candlelike sparks become shadow moths around her turning skirt. The low wide view shows circular floor markings below and spectator tiers rising behind. Golden spotlights strike her breastplate and sword from above, while the moths leave smaller light accents along the pleated fabric.",
+    "promptProse": "Viviana turns in the arena as candle sparks become shadow moths beneath golden spotlights.",
     "promptTokens": [
-      "night",
-      "Kazimierz arena",
-      "black gold knight armor",
+      "Viviana",
+      "black armor",
+      "gold trim",
       "rapier",
       "antlers",
-      "shadow moths",
-      "twirling",
-      "wide shot",
-      "low angle"
+      "moths",
+      "arena",
+      "low angle",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

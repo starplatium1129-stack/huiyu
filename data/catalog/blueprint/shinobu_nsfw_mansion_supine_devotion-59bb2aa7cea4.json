@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_mansion_supine_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1458,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "仰卧榻榻米双腿轻微分开自抚，渐变发丝散落，紫瞳含泪不再伪装微笑",
     "adult": true,
@@ -23,46 +23,18 @@
     "lighting": "纸灯笼暖光在肌肤上流淌",
     "location": "蝶屋敷寝室大床",
     "mood": "卸下微笑、真心沉沦",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "The always-smiling Insect Hashira puts her smile away for the first time in the quiet of the night. Lying across the Butterfly Mansion's soft futon with her wavy gradient black-purple hair flowing unbound across the tatami, Kochou Shinobu looks up through glistening violet eyes. Her petite chest rises and falls with tender, unadorned sighs as one trembling hand explores the warmth between her parted thighs. Tears slip silently past her flushed cheeks as she confesses in a fragile whisper that only before you does she never have to keep smiling. Vulnerable vertical composition, warm lantern glow over pale skin, detailed Japanese room background.",
+    "promptProse": "Shinobu touches herself while lying on the futon, her usual smile absent as loose black-purple hair spreads beneath warm lantern light.",
     "promptTokens": [
-      "sensual_solo",
-      "lying_on_back",
-      "on_bed",
+      "kochou_shinobu",
+      "on back",
+      "loose hair",
+      "crying",
       "futon",
-      "hair_down",
-      "spread_legs",
-      "arched_back",
-      "hand_between_legs",
-      "touching_own_body",
-      "bare_breasts",
-      "pink_nipples",
-      "petite",
-      "exposed_pussy",
-      "pussy",
-      "pussy_juice",
-      "sweat",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "black_hair",
-      "purple_hair",
-      "gradient_hair",
-      "spread_hair",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "lantern",
+      "japanese room"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -77,6 +49,11 @@
       "tears"
     ],
     "timeOfDay": "深夜",
-    "title": "蝴蝶忍 · 蝶屋寝室的真话夜·「只有在你面前……才不用笑」"
+    "title": "蝴蝶忍 · 蝶屋寝室的真话夜·「只有在你面前……才不用笑」",
+    "nsfwTokens": [
+      "masturbation",
+      "hand between legs",
+      "topless"
+    ]
   }
 }

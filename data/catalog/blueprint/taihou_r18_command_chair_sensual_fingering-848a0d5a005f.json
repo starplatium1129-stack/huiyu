@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "taihou_r18_command_chair_sensual_fingering",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1089,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "taihou_r18_command_chair_sensual_fingering",
     "title": "大凤 · 指挥官专座上的私密情愫自抚",
@@ -31,49 +31,26 @@
       "large_breasts",
       "heavy_blush"
     ],
-    "promptProse": "Late command-room light surrounds adult Taihou seated alone in a leather office chair. Her crimson velvet gown is open and gathered over her lap, exposing bare breasts above crossed stockinged legs. She presses a folded commander jacket to her face with one hand and fingers herself beneath the fabric with the other. Long black twin tails drape over the armrest as golden eyes, wet lashes and a possessive smile glow through flushed cheeks. Vertical solo portrait, no text or extra people.",
+    "promptProse": "Taihou presses the Commander's folded jacket to her face while fingering herself beneath her gathered gown in the office chair.",
     "promptTokens": [
-      "commander_office",
-      "leather_chair",
-      "masturbation",
-      "fingering",
-      "skirt_lift",
-      "evening_gown",
-      "twintails",
-      "large_breasts",
-      "heavy_blush",
-      "teary_eyes",
-      "detailed_background",
-      "cinematic_lighting",
-      "volumetric_lighting",
-      "soft_lighting"
+      "Taihou",
+      "red gown",
+      "stockings",
+      "chair",
+      "jacket",
+      "office",
+      "night"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "lowres",
-      "blurry",
-      "jpeg artifacts",
-      "watermark",
-      "text",
-      "extra fingers",
-      "mutated hands",
-      "bad anatomy",
-      "extra limbs",
-      "deformed",
-      "signature"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [
+      "topless",
       "masturbation",
-      "fingering",
-      "twintails",
-      "large_breasts",
-      "heavy_blush"
+      "hand under clothes"
     ],
     "nsfwProse": ""
   }

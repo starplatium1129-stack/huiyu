@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_sfw_b7_06",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1618,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kasugano_sora_sfw_b7_06",
     "title": "春日野穹 · 赫尔辛基的雪",
@@ -30,14 +30,15 @@
       "winter_sun",
       "medium_shot"
     ],
-    "promptProse": "In the unfamiliar northern town's snowy square, Sora Kasugano turns toward the viewer with a calm look of finally arriving somewhere. Her white wool coat, grey scarf and warm trousers sit securely above winter boots, breath condensing before her face. The medium portrait includes the snow-covered paving and distant building fronts. Low winter sun outlines white hair and scarf fibers, with pale blue ground shadows separating her coat from the snow.",
+    "promptProse": "Sora looks back toward the viewer from the snow-covered plaza, wrapped in her white winter coat and grey scarf.",
     "promptTokens": [
       "kasugano_sora",
-      "Sora Kasugano",
-      "white wool coat",
-      "grey scarf",
-      "winter boots",
-      "snowy plaza",
+      "white coat",
+      "scarf",
+      "boots",
+      "looking back",
+      "snow",
+      "plaza",
       "medium shot"
     ],
     "negativeTokens": [],

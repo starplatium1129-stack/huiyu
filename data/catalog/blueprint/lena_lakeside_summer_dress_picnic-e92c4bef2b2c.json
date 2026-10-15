@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_lakeside_summer_dress_picnic",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "抱膝坐在野餐布上远眺湖面，裙摆长发随风轻扬，被偷看后红着脸嗔怒",
     "adult": false,
@@ -25,15 +25,14 @@
     "mood": "松弛惬意、娇羞反差",
     "negativeTokens": [],
     "outfitId": "casual_summer_dress",
-    "promptProse": "Vladilena Milize sits beside her companion on a lakeside picnic cloth, hugging her knees in a lilac floral sundress with a light cardigan draped over her arms. Silver hair and the ribboned hem move in the breeze; she turns with a sudden shy blush. The eye-level medium-full view includes grass and the bright water behind. Afternoon sun lights her shoulders and flower pattern, while lake reflections flicker along the shaded side of her face.",
+    "promptProse": "Lena sits beside her companion on the lakeside picnic blanket with her knees hugged, turning toward them with a shy blush.",
     "promptTokens": [
       "vladilena_millize",
-      "Vladilena Milize",
-      "lilac floral sundress",
-      "light cardigan",
-      "lakeside picnic",
-      "knees hugged",
-      "medium full shot"
+      "floral sundress",
+      "cardigan",
+      "hugging knees",
+      "picnic blanket",
+      "lake"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "SFW",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_millennium_castle_bridal_vow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1324,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "身着纯白王后花嫁大礼服与长头纱，头戴王冠，捧花步向视角，眼含热泪幸福微笑",
     "camera": "cowboy shot, slightly low angle, grand regal bridal view",
@@ -22,15 +22,17 @@
     "mood": "神圣至高",
     "negativeTokens": [],
     "outfitId": "archetype_earth_regal_gown",
-    "promptProse": "In Millennium Castle's great hall, Arcueid Brunestud approaches with white camellias held in both hands, ruby eyes bright with relieved tears. Her layered white Archetype: Earth ballgown bears gold filigree and crimson gems beneath the gold tiara and a long lace veil. A low cowboy view follows white roses from the doorway toward the throne steps. Clear daylight enters the high dome, illuminating upper gown folds and flowers while the tiered steps retain soft shadows.",
+    "promptProse": "She approaches the throne steps with white camellias in both hands. Daylight from the dome lights the bouquet and embroidered gown.",
     "promptTokens": [
-      "Arcueid Brunestud",
-      "Archetype Earth gown",
-      "gold tiara",
-      "white camellias",
-      "Millennium Castle",
-      "cowboy shot",
-      "long lace veil"
+      "castle",
+      "white gown",
+      "tiara",
+      "veil",
+      "bouquet",
+      "camellia",
+      "tears",
+      "walking",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

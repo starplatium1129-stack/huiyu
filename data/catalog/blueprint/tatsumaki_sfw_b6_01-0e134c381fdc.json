@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1583,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_01",
     "title": "战栗的龙卷 · 英雄协会的蔑视",
@@ -30,13 +30,13 @@
       "office_light",
       "medium_shot"
     ],
-    "promptProse": "Tatsumaki hovers above the seated executives in the Hero Association meeting room, listening until a dull proposal draws an impatient click of her tongue. Her closed-neck black dress and opaque tights keep the silhouette composed, toes well above the floor. The medium view includes the conference table and distinct seated figures below. Office lighting illuminates green curls and table papers evenly, with a floating shadow separated from her feet on the floor.",
+    "promptProse": "Tatsumaki hovers above the seated executives, reacting impatiently to a proposal under the office lights.",
     "promptTokens": [
       "Tatsumaki",
-      "closed-neck black dress",
-      "opaque tights",
-      "hovering",
-      "association meeting",
+      "black dress",
+      "pantyhose",
+      "floating",
+      "meeting room",
       "medium shot"
     ],
     "negativeTokens": [],

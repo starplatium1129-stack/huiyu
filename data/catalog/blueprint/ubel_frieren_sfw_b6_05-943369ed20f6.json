@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_sfw_b6_05",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ubel_frieren_sfw_b6_05",
     "title": "尤贝尔 · 海边捡到的有趣贝壳",
@@ -30,18 +30,15 @@
       "curious_smile",
       "sea_breeze"
     ],
-    "promptProse": "Ubel crouches at the black-sand tide line, sorting unusual shells into the little wooden tray before lifting the most curious find toward the viewer as a wave reaches her ankles. Her deep-green layered swimsuit, short black beach skirt and shell jewelry remain unchanged beneath windblown green hair. The horizontal medium view includes dark wet sand around the tray and the cove’s curve beyond her; farther back, a forested cliff rises above the mist-softened shore. Afternoon light catches the selected shell and narrow silver edges of the water. The black sand stays darker than the foam, with a soft shadow anchoring the tray beside her.",
+    "promptProse": "Ubel lifts an unusual shell from the sorting tray as the tide reaches her ankles on the black-sand shore.",
     "promptTokens": [
-      "1girl",
-      "solo",
       "Ubel",
-      "deep green layered swimsuit",
-      "black beach skirt",
+      "swimsuit",
+      "beach skirt",
       "shell jewelry",
-      "barefoot",
-      "shell tray",
-      "tide line",
-      "afternoon",
+      "crouching",
+      "shells",
+      "black sand",
       "medium shot"
     ],
     "negativeTokens": [],

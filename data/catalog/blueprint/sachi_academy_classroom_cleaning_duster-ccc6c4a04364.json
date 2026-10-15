@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_academy_classroom_cleaning_duster",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1187,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sachi_academy_classroom_cleaning_duster",
     "title": "小岭幸 · 放学后的一尘不染大扫除",
@@ -31,15 +31,15 @@
       "diligence",
       "sunset"
     ],
-    "promptProse": "Komine Sachi rises onto her toes to brush the classroom blackboard's upper frame with a feather duster. Her tied apron bow is visible from the three-quarter cowboy view, and her face stays intent. Precisely aligned desks run behind her toward the windows. Sunset enters from that side, gilding the duster feathers and apron edge while the board and desks cast longer shadows into the room.",
+    "promptProse": "Sachi reaches up to dust the blackboard frame as sunset falls across rows of classroom desks.",
     "promptTokens": [
-      "maid uniform",
+      "maid",
       "feather duster",
-      "tiptoe",
+      "tiptoes",
       "classroom",
       "blackboard",
       "sunset",
-      "three-quarter view"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536"

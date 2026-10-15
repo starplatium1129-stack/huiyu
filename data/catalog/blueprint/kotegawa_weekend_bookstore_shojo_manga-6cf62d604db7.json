@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_weekend_bookstore_shojo_manga",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1257,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双手捧着纯爱少女漫画翻阅，满脸通红沉浸在浪漫幻想中，眼神含情脉脉",
     "camera": "medium close-up, cowboy framing, eye-level romantic blush",
@@ -20,15 +20,15 @@
     "mood": "纯情心动",
     "negativeTokens": [],
     "outfitId": "casual_sweater",
-    "promptProse": "In a quiet corner bookstore, Yui Kotegawa holds a romance manga open in both hands, absorbed in a cover showing its couple embracing. Her pale cardigan and long pleated skirt stay tidy; her white headband frames blushing cheeks and thoughtful amber eyes. The close cowboy view leaves the manga aisle receding behind her. Warm-white overhead shop light falls on pages and dark hair, with gentle shelf shadows below the books.",
+    "promptProse": "Yui reads a romance manga with both hands, blushing as she becomes absorbed in the story.",
     "promptTokens": [
       "Yui Kotegawa",
       "cardigan",
       "pleated skirt",
-      "shojo manga",
-      "blushing",
-      "bookstore",
-      "medium close-up"
+      "reading",
+      "manga",
+      "blush",
+      "bookstore"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

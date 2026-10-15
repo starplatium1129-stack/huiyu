@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chitanda_eru",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chitanda_eru",
     "profile": {
@@ -98,8 +98,7 @@
         "black_hair",
         "long_hair",
         "bangs",
-        "purple_eyes",
-        "large_breasts"
+        "purple_eyes"
       ],
       "exactTokens": [
         "chitanda_eru"

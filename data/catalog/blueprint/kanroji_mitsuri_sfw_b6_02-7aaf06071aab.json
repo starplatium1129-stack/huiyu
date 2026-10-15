@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_sfw_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1459,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "鬼杀队食堂，她面前的碗叠成塔，双手合十开动",
     "adult": false,
@@ -23,14 +23,14 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_home",
-    "promptProse": "Mitsuri Kanroji brings both hands together before an impressively tall stack of emptied bowls and another meal, smiling happily in the Demon Slayer dining hall. Her cream long-sleeved blouse, green skirt and pink apron stay neat. The medium view includes astonished uniformed diners farther behind the table. Warm room light illuminates her pink-green braids and bowl rims, with repeated bowl shadows down the stack and darker seating beyond.",
+    "promptProse": "Mitsuri brings her hands together before another meal beside a tower of empty bowls, while astonished diners watch from the tables behind her.",
     "promptTokens": [
       "kanroji_mitsuri",
-      "Mitsuri Kanroji",
-      "cream blouse",
-      "green long skirt",
+      "blouse",
+      "green skirt",
       "pink apron",
-      "stacked bowls",
+      "bowl",
+      "hands together",
       "dining hall",
       "medium shot"
     ],

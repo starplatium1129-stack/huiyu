@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1665,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_02",
     "title": "八奈见杏菜 · 野餐盒里的最后一口",
@@ -30,14 +30,14 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Anna Yanami sits on the weekend picnic mat, carefully moving the last fried-chicken piece beside her rice ball before pausing with hands together. Her blue-and-white baseball jacket covers a yellow T-shirt above light jeans. She looks up as wind crosses the riverbank grass, disappointment slowly easing into a smile. Gentle midday light brightens the meal and jacket sleeves in the medium view, with soft grass shadows beyond the mat.",
+    "promptProse": "Yanami places the last chicken piece beside her rice ball and looks up, disappointment easing in the river breeze.",
     "promptTokens": [
       "Anna Yanami",
       "baseball jacket",
-      "yellow T-shirt",
+      "T-shirt",
       "jeans",
-      "picnic meal",
-      "river embankment",
+      "picnic",
+      "riverbank",
       "medium shot"
     ],
     "negativeTokens": [],

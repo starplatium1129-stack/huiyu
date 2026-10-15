@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_dominant_cowgirl_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "rias_nsfw_dominant_cowgirl_straddle",
     "title": "莉雅丝 · 反客为主的红发女皇骑乘",
@@ -29,38 +29,15 @@
       "sweat",
       "heavy_blush"
     ],
-    "promptProse": "Straddling the viewer's hips in a commanding cowgirl position atop soft silk bedding, completely naked Rias Gremory reigns supreme. Her breathtaking, heavy breasts with firm pink nipples bounce in steady rhythm with her undulating hips. Her hands press firmly against the viewer's chest while her crimson locks cascade like wild silk. She gazes down with half-lidded, bliss-filled cyan eyes, asserting her passionate, possessive dominance. Vertical low-angle anime CG, solo 1girl focus, no text.",
+    "promptProse": "Adult Rias rides astride her companion on the silk bed, both hands pressed against their chest as she looks down.",
     "promptTokens": [
-      "sensual_solo",
-      "bedroom",
-      "straddling",
-      "cowgirl_position",
-      "completely_nude",
-      "large_breasts",
-      "bouncing_breasts",
-      "nipples",
-      "areola",
-      "exposed_pussy",
-      "pussy_juice",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "dominant_smile",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "nude",
+      "cowgirl position",
+      "bed",
+      "silk sheets",
+      "from below"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -73,6 +50,7 @@
     ],
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "Straddling the viewer's hips in a commanding cowgirl position atop soft silk bedding, completely naked Rias Gremory reigns supreme. Her breathtaking, heavy breasts with firm pink nipples bounce in steady rhythm with her undulating hips. Her hands press firmly against the viewer's chest while her crimson locks cascade like wild silk. She gazes down with half-lidded, bliss-filled cyan eyes, asserting her passionate, possessive dominance. Vertical low-angle anime CG, solo 1girl focus, no text."
+    "nsfwProse": "",
+    "nsfwTokens": []
   }
 }

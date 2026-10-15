@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1408,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "双脚站稳反复练习广播体操，双臂平伸而神情认真。",
     "adult": false,
@@ -23,15 +23,15 @@
     "mood": "自然日常、细腻表情",
     "negativeTokens": [],
     "outfitId": "sfw_sports",
-    "promptProse": "Ai Hayasaka practices a radio-exercise movement with almost solemn concentration in the empty courtyard, raising her arms through the routine. Her blue sports T-shirt is damp from effort above grey tracksuit trousers, blonde side ponytail moving with the pose. The medium portrait includes the courtyard paving and garden boundary behind. Low sunrise lights her sleeve edges and fine forehead sweat, stretching her arm-and-body shadow over the quiet ground.",
+    "promptProse": "Hayasaka follows the radio-exercise routine with solemn concentration, raising her arms in the empty courtyard.",
     "promptTokens": [
-      "Ai Hayasaka",
-      "blue sports T-shirt",
-      "grey tracksuit trousers",
-      "radio exercises",
+      "blue shirt",
+      "track pants",
+      "exercising",
+      "arms up",
+      "sweat",
       "courtyard",
-      "sunrise",
-      "medium shot"
+      "sunrise"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",
@@ -49,6 +49,8 @@
       "medium_full_shot"
     ],
     "timeOfDay": "清晨",
-    "title": "早坂爱 · 广播体操的秘密特训"
+    "title": "早坂爱 · 广播体操的秘密特训",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

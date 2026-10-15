@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirogane_kei",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shirogane_kei",
     "profile": {
@@ -82,13 +82,11 @@
       "identityProse": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",
       "identityTokens": [
         "shirogane_kei",
-        "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
-        "grey_hair",
-        "long_hair",
-        "straight_hair",
-        "blue_eyes",
-        "black_hairband",
-        "ribbon"
+        "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~",
+        "grey hair",
+        "long hair",
+        "blue eyes",
+        "black hairband"
       ],
       "negativeTokens": [
         "worst_quality",

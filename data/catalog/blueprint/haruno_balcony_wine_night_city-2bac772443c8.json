@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_balcony_wine_night_city",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 370,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "haruno_balcony_wine_night_city",
     "title": "雪之下阳乃 · 深夜高层公寓阳台的红酒杯·「雪乃被你改变了呢……真让人不爽，又有点嫉妒」",
@@ -30,19 +30,16 @@
       "mature_female",
       "melancholy"
     ],
-    "promptProse": "Haruno Yukinoshita leans against the penthouse balcony's glass rail, slowly turning a crystal wine glass while sea wind moves her black hair and velvet evening gown. Diamond drop earrings catch light beside wistful dark eyes. The medium view looks past the railing toward Chiba's coastal skyline. City lights reflect in wine and glass, while cool harbor moonlight outlines her shoulder and fabric edge, leaving the nearer gown folds softly dark.",
+    "promptProse": "Haruno turns her wine glass against the penthouse balcony rail, looking wistfully over Chiba's coastal lights.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Haruno Yukinoshita",
-      "black velvet evening gown",
-      "diamond earrings",
-      "red wine glass",
-      "glass balcony rail",
-      "Chiba skyline",
-      "midnight",
-      "medium shot",
-      "yukinoshita_haruno"
+      "evening gown",
+      "wine glass",
+      "leaning",
+      "balcony",
+      "cityscape",
+      "night",
+      "moonlight",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +50,8 @@
     "coverageTags": [
       "daily",
       "city"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

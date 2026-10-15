@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_street_festival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 320,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hatsune_miku_street_festival",
     "title": "初音未来 · 街头庆典",
@@ -30,24 +30,24 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "Miku walks the lantern corridor in her securely wrapped onion-green modified yukata, holding up a leek-shaped lollipop and turning back with a cheerful wink. Her free hand relaxes beside the cloth sash, teal twintails swaying above wooden geta. The medium view follows the walkway toward the distant taiko stage. Warm red lantern light illuminates the lollipop and robe folds, with lantern-post shadows repeating along the path beneath the green fabric.",
+    "promptProse": "Miku raises her leek-shaped lollipop and turns back with a cheerful wink as she walks toward the distant taiko stage.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Miku",
-      "onion green modified yukata",
-      "cloth sash",
+      "green yukata",
       "geta",
-      "leek lollipop",
+      "lollipop",
       "looking back",
-      "festival lantern walkway",
-      "medium shot"
+      "wink",
+      "lantern",
+      "festival",
+      "night"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "festival_yukata",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_silk_restraint",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights_r18_silk_restraint",
     "characterId": "shu_arknights",
@@ -29,28 +29,17 @@
       "looking_back"
     ],
     "promptTokens": [
-      "indoors",
-      "bedroom",
+      "Shu",
+      "silk ribbon",
+      "kneeling",
+      "arms up",
+      "looking back",
       "bed",
       "moonlight",
-      "kneeling",
-      "arms_over_head",
-      "silk_ribbon",
-      "looking_back",
-      "three_quarter_view",
-      "full_body"
+      "full body"
     ],
-    "promptProse": "In a private Yan-style bedroom after dark, a warm bedside lantern meets cool moonlight from the lattice window. Shu poses alone on the bed in a consensual silk-ribbon scene, with her wrists loosely secured to the headboard and enough slack to keep the pose relaxed. Her very long hair falls freely over her shoulder, branched horns remain unobstructed, and her scaled tail curls along the outer edge of the mattress. Use a three-quarter rear view that still shows her face, hands and full pose clearly.",
-    "negativeTokens": [
-      "extra people",
-      "extra limbs",
-      "bad hands",
-      "bad anatomy",
-      "watermark",
-      "text",
-      "duplicate",
-      "split image"
-    ],
+    "promptProse": "Shu kneels with her wrists loosely tied to the headboard by silk ribbons in a consensual pose, looking back under mixed lantern and moonlight.",
+    "negativeTokens": [],
     "coverageTags": [
       "special_nsfw"
     ],
@@ -59,18 +48,10 @@
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [
-      "completely_nude",
-      "kneeling",
-      "silk_ribbon",
-      "wrists_tied",
-      "arms_over_head",
-      "bare_breasts",
-      "nipples",
-      "spread_legs",
-      "arched_back",
-      "looking_back",
-      "heavy_blush"
+      "nude",
+      "spread legs",
+      "bondage"
     ],
-    "nsfwProse": "Shu kneels nude on the bed with her wrists loosely tied to the headboard in soft silk, a consensual pose she chose for the evening. Her back arches gently, her thighs part, and her bare breasts and blushing nipples glow in the mixed moonlight and amber lamp light. She glances back with a teasing smile and parted lips, her relaxed posture and loose ribbon clearly showing playful intimacy rather than distress."
+    "nsfwProse": ""
   }
 }

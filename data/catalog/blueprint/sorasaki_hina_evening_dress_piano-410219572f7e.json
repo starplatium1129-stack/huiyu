@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_evening_dress_piano",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 911,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "穿晚礼服弹钢琴",
     "adult": false,
@@ -26,15 +26,13 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "midnight_piano_gown",
-    "promptProse": "Hina sits upright at the banquet grand piano in a deep-purple evening gown, silver hair gathered into an elegant updo above subtle jewelry. She plays a melody while looking softly toward the teacher beyond the instrument. The medium view holds the keys beneath her hands and the piano body receding behind. Warm banquet light picks out her gown folds, while the piano lamp illuminates her fingers and polished key surfaces.",
+    "promptProse": "Hina plays at the grand piano and looks toward the teacher beyond it, the piano lamp lighting her hands.",
     "promptTokens": [
-      "night",
-      "banquet",
-      "piano",
+      "Hina",
       "purple evening gown",
       "updo",
-      "jewelry",
-      "playing piano",
+      "piano",
+      "banquet",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

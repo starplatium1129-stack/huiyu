@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_library_corner_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1505,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "yamada_nsfw_library_corner_solo",
     "title": "山田杏奈 · 图书馆死角长腿撩裙的私密自持 ·「市川躲在书架后面……偷看会变兴奋吗」",
@@ -24,50 +24,24 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Concealed in the dusty shadows behind the tallest library bookshelf, Anna Yamada hikes her school skirt up to her waist, resting one endless stockinged leg on a low stool. The crotch of her sheer black tights is torn aside as her fingers rhythmically caress her dripping pink slit, a red cherry lollipop rolling between her swollen lips. Her dark eyes gaze through the gaps in the book stacks directly at you, flushed with reckless exhibitionist thrill as muffled whimpers vibrate in her throat. Intimate vertical composition, dusty shafts of afternoon sunlight through vintage bookshelves, detailed background, solo 1girl, no extra people.",
-    "nsfwProse": "Concealed in the dusty shadows behind the tallest library bookshelf, Anna Yamada hikes her school skirt up to her waist, resting one endless stockinged leg on a low stool. The crotch of her sheer black tights is torn aside as her fingers rhythmically caress her dripping pink slit, a red cherry lollipop rolling between her swollen lips. Her dark eyes gaze through the gaps in the book stacks directly at you, flushed with reckless exhibitionist thrill as muffled whimpers vibrate in her throat. Intimate vertical composition, dusty shafts of afternoon sunlight through vintage bookshelves, detailed background, solo 1girl, no extra people.",
+    "promptProse": "Yamada props one leg on a low stool behind the bookshelves, touching herself through the torn tights while looking through a shelf gap with a cherry lollipop between her lips.",
+    "nsfwProse": "",
     "promptTokens": [
-      "sensual_solo",
-      "standing",
-      "leaning_back",
-      "bookshelf",
-      "library",
-      "office_uniform",
-      "skirt_lift",
-      "torn_pantyhose",
-      "black_pantyhose",
-      "crotchless_panties",
-      "exposed_pussy",
-      "pussy",
-      "pussy_juice",
-      "touching_own_body",
-      "hand_between_legs",
+      "adult",
+      "1girl",
+      "solo",
+      "skirt lift",
+      "torn pantyhose",
+      "black pantyhose",
+      "leg up",
+      "masturbation",
       "lollipop",
-      "candy",
-      "bare_breasts",
-      "heavy_blush",
-      "teary_eyes",
-      "parted_lips",
-      "black_hair",
-      "tall_female",
-      "vertical_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "bookshelf",
+      "stool",
+      "library",
+      "afternoon"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -77,6 +51,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

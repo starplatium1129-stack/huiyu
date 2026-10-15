@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ryougi_shiki",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ryougi_shiki",
     "profile": {
@@ -123,13 +123,10 @@
       "identityProse": "Ryougi Shiki from Kara no Kyoukai, an aloof and handsome beauty with chin-length layered raven-black hair, calm deep dark eyes, and a cool, graceful and composed demeanor",
       "identityTokens": [
         "ryougi_shiki",
-        "kara_no_kyoukai",
-        "black_hair",
-        "short_hair",
-        "blue_eyes",
-        "dark_eyes",
-        "slender_body",
-        "cool_beauty"
+        "kara no kyoukai",
+        "black hair",
+        "short hair",
+        "blue eyes"
       ],
       "negativeTokens": [
         "worst quality",

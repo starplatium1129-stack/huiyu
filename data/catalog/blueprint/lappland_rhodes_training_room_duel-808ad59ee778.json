@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_rhodes_training_room_duel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 671,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "穿宽松白T恤蜷缩在沙发上求摸头顺毛，白狼耳舒适微耷，双眼微眯神态满足放松",
     "camera": "medium shot, seated eye-level, intimate domestic charm",
@@ -20,17 +20,15 @@
     "mood": "治愈甜宠",
     "negativeTokens": [],
     "outfitId": "standard_mercenary",
-    "promptProse": "Lappland curls on a soft sofa in the Rhodes Island private lounge, her open slate-gray mercenary coat folded around a white tank top and black shorts. Her wolf ears ease back as the Doctor's visible hand strokes their base. The seated medium view includes blinds behind her. Warm sunlight stripes her silver hair and sleeve, with gentle reflected light across the shaded cushions and harness.",
+    "promptProse": "Lappland curls on the lounge sofa, relaxing as the Doctor strokes the base of her wolf ears.",
     "promptTokens": [
-      "daytime",
-      "Rhodes Island lounge",
-      "sofa",
-      "mercenary coat",
+      "coat",
       "white tank top",
-      "black shorts",
+      "shorts",
+      "curled up",
+      "sofa",
       "headpat",
-      "wolf ears",
-      "medium shot"
+      "lounge"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

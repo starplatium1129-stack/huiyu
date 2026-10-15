@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_volcano_lab",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 546,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "俯身记录实验数据",
     "camera": "medium shot",
@@ -18,22 +18,19 @@
     "lighting": "cool lab light with warm sample glow",
     "location": "罗德岛实验室",
     "mood": "专注热忱",
-    "negativeTokens": [
-      "readable data"
-    ],
+    "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Eyjafjalla leans over the precision spectrometer and records a volcanic rock sample's Originium activity with gloved hands. Dark-grey hooded research coat, white frilled blouse and black pleated skirt retain her lab outfit. The medium view includes instrument controls and sample beside the work surface, laboratory benches receding behind. Cool lab lights illuminate her concentrated face and gloves, while the sample's warm glow touches the instrument casing and nearby recorded page.",
+    "promptProse": "She records the volcanic sample's Originium activity while leaning over the spectrometer, its warm glow lighting her notes.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Eyjafjalla",
-      "volcano research coat",
-      "white frilled blouse",
+      "research coat",
+      "white blouse",
       "black skirt",
       "gloves",
       "spectrometer",
-      "volcanic sample",
-      "lab",
+      "rock sample",
+      "laboratory",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

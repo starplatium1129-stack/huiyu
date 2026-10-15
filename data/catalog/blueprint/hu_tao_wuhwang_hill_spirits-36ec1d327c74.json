@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_wuhwang_hill_spirits",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 21,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "hu_tao_wuhwang_hill_spirits",
     "title": "胡桃 · 无妄坡幽火幻舞",
@@ -30,20 +30,17 @@
       "spooky_forest",
       "smug_smile"
     ],
-    "promptProse": "Hu Tao balances sideways on a broad Wuwang Hill branch, one hand forming a guiding sign toward Boo Tao and the other braced against the trunk. Her director coat, shorts and blossom-trimmed hat remain visible with both supported feet. Blue wisps recede between misty trunks below. The friendly spirit's red firelight warms her grin and sleeve, opposing the cool forest glow along the branch's far edge.",
+    "promptProse": "Hu Tao balances on the broad branch with one hand against the trunk and the other guiding Boo Tao, blue wisps drifting below.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Wuwang Hill",
-      "tree branch",
-      "director uniform",
-      "hat",
-      "hand sign",
-      "Boo Tao",
-      "blue wisps",
-      "red firelight",
+      "standing",
+      "branch",
+      "hand gesture",
+      "ghost",
+      "will-o'-the-wisp",
+      "mist",
+      "forest",
       "full body",
-      "side view"
+      "from side"
     ],
     "negativeTokens": [
       "cropped feet"
@@ -52,6 +49,8 @@
     "outfitId": "official_funeral_director",
     "coverageTags": [
       "iconic"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

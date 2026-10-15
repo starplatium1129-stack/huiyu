@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_rain_station",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 541,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "撑伞立于站台边缘",
     "camera": "medium shot",
@@ -17,19 +17,15 @@
     "mood": "清冷坚毅",
     "negativeTokens": [],
     "outfitId": "lgd_detective_undercover",
-    "promptProse": "Ch'en waits near the midnight platform edge beneath a black umbrella, steady eyes on misty tracks. As train doors open she steps forward, angling the canopy toward the arriving passenger beyond the frame. Charcoal trench coat, black turtleneck and slim trousers retain the undercover outfit. The medium view includes rail lines and the open doorway. Dim platform lights glint on wet paving and umbrella ribs, with reflections stretching toward the darker tracks.",
+    "promptProse": "She steps toward the opening train doors and angles her umbrella toward the arriving passenger. Platform light reflects across the wet paving.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Ch'en",
+      "train station",
       "charcoal trench coat",
       "black turtleneck",
-      "slim trousers",
+      "pants",
       "black umbrella",
-      "rainy train platform",
-      "wet tracks",
-      "midnight",
-      "medium shot"
+      "rain",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_shrine_corridor_maid_curtsy",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1186,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sachi_shrine_corridor_maid_curtsy",
     "title": "小岭幸 · 晨光回廊的恭敬屈膝礼",
@@ -31,13 +31,13 @@
       "pink_hair",
       "polite_smile"
     ],
-    "promptProse": "Komine Sachi performs a careful curtsy in Mihama Academy's wooden corridor, holding both sides of her black skirt while her right foot withdraws half a step. Her white ruffled apron and pink side braids remain neat. Show the complete bow at eye level, with window frames diminishing along the hall. Clear morning light crosses her apron and reflects green trees softly on the polished floor.",
+    "promptProse": "Sachi holds her skirt and steps one foot back for a curtsy in the sunlit academy corridor.",
     "promptTokens": [
-      "maid uniform",
+      "maid",
       "curtsy",
       "pink hair",
-      "wooden corridor",
-      "morning light",
+      "wooden floor",
+      "corridor",
       "full body"
     ],
     "negativeTokens": [],

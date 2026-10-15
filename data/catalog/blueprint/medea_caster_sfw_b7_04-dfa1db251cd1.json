@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_sfw_b7_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 292,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medea_caster_sfw_b7_04",
     "title": "美狄亚 · 柳洞寺后院的蓝色誓约",
@@ -28,19 +28,15 @@
       "protective_smile",
       "morning_light"
     ],
-    "promptProse": "Beneath the temple plum trees, Medea checks the blue wreath she has woven for a final flaw, then offers it toward the viewer with a patient protective smile. Deep-navy long-sleeved bridal gown, silver thread and modest veil frame a side braid. The vertical medium-full view includes stone lanterns and tree trunks behind. Clear morning light illuminates the wreath petals and silver stitching, leaving gentle branch shade across the gown's darker folds.",
+    "promptProse": "Medea inspects the blue flower wreath she has made and gently offers it beneath the temple plum trees.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medea Caster",
-      "navy long sleeve bridal gown",
-      "silver thread",
-      "modest veil",
-      "blue wreath",
+      "navy wedding dress",
+      "veil",
       "side braid",
-      "temple plum trees",
-      "morning",
-      "medium full shot"
+      "blue wreath",
+      "plum tree"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

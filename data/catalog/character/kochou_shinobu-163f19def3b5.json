@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kochou_shinobu",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "kochou_shinobu",
     "profile": {
@@ -106,12 +106,9 @@
         "solo",
         "black_hair",
         "purple_hair",
-        "two-tone_hair",
         "gradient_hair",
         "wavy_hair",
-        "purple_eyes",
-        "pale_skin",
-        "smile"
+        "purple_eyes"
       ],
       "negativeTokens": [
         "worst quality",

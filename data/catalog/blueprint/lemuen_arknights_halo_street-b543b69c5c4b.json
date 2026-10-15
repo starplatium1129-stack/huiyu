@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_halo_street",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 557,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "操控轮椅穿行街角，膝上放着装满点心的纸袋",
     "camera": "medium tracking shot",
@@ -17,20 +17,17 @@
     "mood": "轻盈明亮",
     "negativeTokens": [],
     "outfitId": "standard",
-    "promptProse": "Lemuen guides her electric wheelchair along Laterano's cobblestones with one hand on the joystick, a bag of apple-cinnamon pies balanced on her lap blanket. Dark overcoat, white shirt and black tie remain beneath her bright halo as she turns knowingly toward the viewer. The tracking medium view follows baroque shopfronts and archways behind. Afternoon daylight catches the paper bag and chair edges, with soft shadows between cobbles and under the passing arches.",
+    "promptProse": "Lemuen guides her wheelchair through the street with a bag of apple-cinnamon pastries on her lap.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Lemuen",
-      "dark overcoat",
-      "white shirt",
-      "black tie",
-      "lap blanket",
-      "electric wheelchair",
+      "coat",
+      "shirt",
+      "tie",
+      "wheelchair",
       "joystick",
-      "apple cinnamon pie bag",
-      "Laterano street",
-      "medium tracking shot"
+      "pastry bag",
+      "street"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

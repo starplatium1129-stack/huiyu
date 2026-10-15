@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ellen_joe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "ellen_joe",
     "profile": {
@@ -131,17 +131,13 @@
         "1girl",
         "solo",
         "short_hair",
-        "two-tone_hair",
         "black_hair",
         "red_hair",
         "colored_inner_hair",
         "red_eyes",
-        "mole_under_eye",
         "shark_tail",
-        "tail",
         "shark_teeth",
         "razor_blade_hair_ornament",
-        "hairclip",
         "zenless_zone_zero"
       ],
       "negativeTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_carousel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 164,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_carousel",
     "title": "伊莉雅丝菲尔 · 旋转木马",
@@ -30,25 +30,23 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Riding the gilded white carousel horse, Illyasviel firmly holds its brass pole with one hand and waves toward the viewer with the other. Her cardigan and knee-length dress stay tidy in the stable seated pose, white hair moving behind the collar. The horizontal medium view includes horse and pole with painted panels and pennants beyond. Daylight glints on brass and gilding, while the canopy casts softer shade over her smile.",
+    "promptProse": "Illyasviel holds the carousel's brass pole firmly with one hand and waves toward the viewer with the other.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Illyasviel",
       "cardigan",
-      "knee length dress",
-      "flat shoes",
-      "white carousel horse",
-      "hand on brass pole",
+      "knee-length dress",
+      "carousel",
+      "horse",
+      "holding pole",
       "waving",
-      "daylight",
-      "medium shot"
+      "day"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "outfitId": "casual",
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

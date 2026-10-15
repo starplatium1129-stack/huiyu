@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_salon_solitaire_tea",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "furina_salon_solitaire_tea",
     "title": "芙宁娜 · 独奏沙龙午后茶歇",
@@ -34,23 +34,21 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "A small nonhuman water spirit bobs over the strawberry cake, earning Furina's unguarded smile. She sits sideways in the carved salon armchair, navy cardigan beneath a black beret, supporting a saucer while holding the iris-patterned cup at her lips. The tea table overlaps the chair in the eye-level view; a gramophone stands farther back. Afternoon window light glints through the spirit and along the porcelain, leaving chair carvings shaded.",
+    "promptProse": "She smiles at a small water spirit bobbing above the cake while holding the cup at her lips and supporting its saucer.",
     "promptTokens": [
       "1girl",
-      "solo",
-      "Fontaine salon",
-      "navy cardigan",
+      "blue cardigan",
       "black beret",
       "teacup",
       "saucer",
+      "cake",
       "water spirit",
-      "strawberry cake",
+      "armchair",
       "gramophone",
+      "afternoon",
       "medium shot"
     ],
-    "negativeTokens": [
-      "extra people"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual_director",
     "coverageTags": [

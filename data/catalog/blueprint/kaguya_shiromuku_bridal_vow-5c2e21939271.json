@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_shiromuku_bridal_vow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1399,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "白无垢端坐神前捧扇，闻誓词睫毛颤动落泪红瞳",
     "adult": false,
@@ -25,14 +25,15 @@
     "mood": "放下胜负、泪光倾城",
     "negativeTokens": [],
     "outfitId": "white_shiromuku",
-    "promptProse": "Seated upright before the shrine altar, Kaguya Shinomiya holds a ceremonial fan in both hands above her white shiromuku and woven obi. The tsunokakushi covers her folded ponytail as she listens to her companion's vow, red eyes brightening with restrained tears. The wide formal view shows altar fittings and wooden posts around the seated bride. Soft light beneath the eaves reveals white silk motifs and headdress edges, with gentle sleeve shadows preserving their layers.",
+    "promptProse": "Kaguya sits before the shrine holding her ceremonial fan, tears gathering as she listens to the wedding vows.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "Kaguya Shinomiya",
       "shiromuku",
       "tsunokakushi",
-      "ceremonial fan",
-      "shrine wedding",
+      "folding fan",
+      "sitting",
+      "shrine",
+      "wedding",
       "wide shot"
     ],
     "recommendedSize": "1152x1536",

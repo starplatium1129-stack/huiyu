@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 788,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "海边祭典摊位举起捞到的星星面具，半扎发在灯笼与海风里轻摇",
     "adult": false,
@@ -25,13 +25,14 @@
     "mood": "宅系少女的海滨约会活力",
     "negativeTokens": [],
     "outfitId": "sfw_beach",
-    "promptProse": "Yuki sits beside a seaside festival souvenir stall in her violet-and-white swimsuit and short yukata jacket, lifting a star mask she has chosen toward the camera. Her half-up hair shifts with the sea breeze. The horizontal medium view includes the stall basin nearby and the sea behind. Lantern glow warms her sleeve and mask, while blue evening water light cools her hair ribbon and distant horizon.",
+    "promptProse": "Yuki raises her chosen star mask toward the camera, warm stall lanterns meeting blue evening sea light.",
     "promptTokens": [
-      "evening",
-      "seaside festival",
-      "violet white swimsuit",
+      "Yuki",
+      "swimsuit",
       "yukata jacket",
       "star mask",
+      "festival",
+      "seaside",
       "medium shot"
     ],
     "recommendedSize": "1536x1152",

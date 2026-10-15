@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1525,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_05",
     "title": "和泉纱雾 · 第一次自己出门买书",
@@ -31,14 +31,15 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "At the station bookstore doorway, Sagiri Izumi grips her shopping-bag handles and takes a deep breath before stepping outside. Her zipped pink hoodie, blue jeans, sun cap and plain mask stay ordinary, with determined eyes above tense shoulders. The medium portrait frames the doorway behind and passing pedestrians farther into the street as subdued shapes. Daylight brightens the bag edges and cap brim, with a sheltered threshold shadow marking her first step.",
+    "promptProse": "Sagiri grips her shopping bag and takes a determined breath before stepping out of the station bookstore, with pedestrians passing farther down the street.",
     "promptTokens": [
-      "Sagiri Izumi",
-      "pink hoodie",
-      "sun cap",
+      "hoodie",
+      "jeans",
+      "hat",
       "face mask",
       "shopping bag",
-      "station bookstore",
+      "bookstore",
+      "doorway",
       "medium shot"
     ],
     "negativeTokens": [],

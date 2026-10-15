@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_harbor_patrol_rigging_ready",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1092,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "cheshire_harbor_patrol_rigging_ready",
     "title": "柴郡 · 碧海港湾的重巡护航",
@@ -32,16 +32,15 @@
       "fake_hair_ornament",
       "protective"
     ],
-    "promptProse": "Cheshire stands before the Royal harbor defense line, one gloved hand on her hip and cat ears lowered with new focus. Her navy-white maid dress remains beneath immense cruiser rigging whose paired barrels turn behind her. The low wide view shows the breakwater and broad sea beyond. Daylight catches lace and armor edges, creating cool steel reflections along the guns while white spray lights the darker water under the rigging.",
+    "promptProse": "She stands before the harbor defense line as paired gun barrels turn behind her. Daylight catches the rigging above the sea spray.",
     "promptTokens": [
-      "daytime",
-      "Royal harbor",
-      "navy white maid dress",
+      "harbor",
+      "navy and white maid dress",
       "cat ears",
-      "heavy cruiser rigging",
+      "cruiser rigging",
       "hand on hip",
-      "wide shot",
-      "low angle"
+      "ocean",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152"

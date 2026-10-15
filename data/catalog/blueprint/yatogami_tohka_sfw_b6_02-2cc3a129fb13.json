@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_sfw_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yatogami_tohka_sfw_b6_02",
     "title": "夜刀神十香 · 第一次的章鱼烧",
@@ -30,19 +30,14 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "At the festival stall, Tohka blows carefully on a steaming takoyaki bite held above its tray with a bamboo pick. Her violet yukata sleeve is gathered away from the food; puffed cheeks and widened eyes show its lingering heat. The medium portrait places the stall counter below her hands and lanterns beyond it. Their warm light illuminates steam and the glossy bite, casting small shadows beneath the tray.",
+    "promptProse": "Tohka blows on a steaming takoyaki bite above its tray under the festival lanterns.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Tohka",
+      "yatogami_tohka",
       "violet yukata",
       "takoyaki",
       "bamboo pick",
-      "steam",
-      "festival stall",
-      "lanterns",
-      "medium shot",
-      "yatogami_tohka"
+      "festival",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

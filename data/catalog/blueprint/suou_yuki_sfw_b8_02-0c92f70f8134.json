@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "名流茶会，她穿着连衣裙执杯的姿势无可挑剔，与长辈应对得体",
     "adult": false,
@@ -23,13 +23,13 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_formal",
-    "promptProse": "At a formal tea gathering, Yuki holds her cup with impeccable posture in a modest pale-violet kimono-style dress and cream sash. She briefly turns to breathe in relief before restoring her composed expression. The medium view includes the tea service below and seated elders farther back. Window light softens her face and opaque dress layers, catching the cup rim above her shaded fingers.",
+    "promptProse": "Yuki holds her cup with formal poise at the tea gathering, briefly turning aside to relax with the seated elders behind her.",
     "promptTokens": [
-      "daytime",
-      "formal tea gathering",
-      "pale violet dress",
-      "cream sash",
+      "Yuki",
+      "violet dress",
+      "sash",
       "teacup",
+      "tea gathering",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

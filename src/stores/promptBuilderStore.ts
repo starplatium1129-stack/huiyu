@@ -29,7 +29,8 @@ import {
 import type { DrawSubject } from '@/utils/popularContent'
 import type { RecipeRestoreReport } from '@/utils/recipeComparison'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
-import { SHOT, COMPOSITION, EMOTION } from '@/config/promptConstants'
+import { CHAR_PROMPT, SHOT, COMPOSITION, EMOTION } from '@/config/promptConstants'
+export { CHAR_PROMPT } from '@/config/promptConstants'
 
 import type { CharKey, Selections } from '@/types/promptHistory'
 export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
@@ -37,13 +38,6 @@ export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/prom
 export const SHOT_PROMPT: Record<string, string> = Object.fromEntries(SHOT.map(item => [item.id, item.prompt || '']))
 export const COMPOSITION_PROMPT: Record<string, string> = Object.fromEntries(COMPOSITION.map(item => [item.id, item.prompt || '']))
 export const PROMPT_MAP_EMOTION: Record<string, string> = Object.fromEntries(EMOTION.map(item => [item.id, item.prompt || '']))
-
-export const CHAR_PROMPT: Record<string, string> = {
-  // 单女主壁纸构图默认锁定 solo；互动场景只保留局部手/手臂，避免不稳定的第二人物抢占画面。
-  nene: '1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons',
-  natsume: '1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, hairclip',
-  triad: '2girls',
-}
 
 export const NEGATIVE_DEFAULT = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate'
 

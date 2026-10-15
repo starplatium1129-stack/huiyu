@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yorha_2b",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yorha_2b",
     "profile": {
@@ -112,12 +112,10 @@
         "2b (nier:automata)",
         "1girl",
         "solo",
-        "short_hair",
-        "white_hair",
+        "short hair",
+        "white hair",
         "blindfold",
-        "mole_under_mouth",
-        "cleavage",
-        "large_breasts",
+        "mole under mouth",
         "nier:automata"
       ],
       "exactTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_garden_watering_flowers",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 841,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "提着水壶浇花，阳光洒落",
     "adult": false,
@@ -21,14 +21,13 @@
     "mood": "serene",
     "negativeTokens": [],
     "outfitId": "saint_nun_habit",
-    "promptProse": "In the church's rear garden, Cecilia tips a small brass watering can toward the white rose bushes with careful, slightly awkward concentration. Wearing her white saint habit and veil, she wipes her forehead and turns to smile. The medium view includes the near roses and garden beds behind. Morning sun catches the pouring stream and gold embroidery, while overlapping leaves shade the soil beneath the watered blooms.",
+    "promptProse": "She carefully tips the watering can over the roses and turns to smile. Morning sun catches the stream above the shaded soil.",
     "promptTokens": [
-      "morning",
       "church garden",
       "white nun habit",
-      "brass watering can",
+      "watering can",
       "white roses",
-      "medium shot"
+      "morning"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

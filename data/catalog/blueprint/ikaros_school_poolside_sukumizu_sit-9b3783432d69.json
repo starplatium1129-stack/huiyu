@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_school_poolside_sukumizu_sit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1212,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "坐在池边双腿浸水紧抱大西瓜，死库水贴身水珠滚落，眼神好奇注视水面波纹",
     "camera": "medium shot, seated side 3/4 perspective, shimmering water depth",
@@ -20,15 +20,15 @@
     "mood": "清凉童趣",
     "negativeTokens": [],
     "outfitId": "school_swimsuit",
-    "promptProse": "At Sorami Middle School's outdoor pool, Ikaros sits with both legs together in shallow water and lowers her striped watermelon partly below the surface. She watches the fruit's buoyancy, hands maintaining their grip. Her navy one-piece has a white name patch; wet feather tips rest behind her. The three-quarter medium view follows tiled pool edges into the distance, with noon sunshine and blue water caustics across the melon.",
+    "promptProse": "Ikaros holds the watermelon partly underwater to observe its buoyancy, sitting with both legs together at the tiled pool edge.",
     "promptTokens": [
-      "Ikaros",
-      "navy school swimsuit",
-      "watermelon in water",
-      "pool edge",
+      "navy swimsuit",
+      "sitting",
+      "watermelon",
       "folded wings",
-      "summer noon",
-      "medium shot"
+      "poolside",
+      "water",
+      "noon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +42,8 @@
       "angel_wings"
     ],
     "timeOfDay": "正午",
-    "title": "伊卡洛斯 · 校园泳池边的西瓜浮力实验"
+    "title": "伊卡洛斯 · 校园泳池边的西瓜浮力实验",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

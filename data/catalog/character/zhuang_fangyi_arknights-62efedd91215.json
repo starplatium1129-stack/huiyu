@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zhuang_fangyi_arknights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 162,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-06T15:58:42.515126900+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights",
     "profile": {
@@ -113,18 +113,13 @@
         "zhuang fangyi (arknights)",
         "1girl",
         "solo",
-        "black_hair",
-        "green_hair",
-        "multicolored_hair",
-        "gradient_hair",
-        "red_streaks",
-        "very_long_hair",
-        "green_eyes",
-        "eastern_dragon_horns",
-        "red_horns",
-        "pointy_ears",
-        "eastern_dragon_tail",
-        "arknights:_endfield"
+        "black hair",
+        "green hair",
+        "red streaks",
+        "green eyes",
+        "eastern dragon horns",
+        "eastern dragon tail",
+        "arknights: endfield"
       ],
       "negativeTokens": [
         "bad anatomy",

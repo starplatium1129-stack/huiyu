@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_sfw_b8_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "makinohara_shouko_sfw_b8_05",
     "title": "牧之原翔子 · 海堤长椅的柠檬汽水",
@@ -30,18 +30,16 @@
       "gentle_gaze",
       "afternoon_light"
     ],
-    "promptProse": "On the seawall bench, Shouko Makinohara offers her condensation-beaded lemon soda toward the viewer before taking a sip. A loose white shirt covers her pale-blue swimsuit, and a canvas tote rests beside her. Sea wind sweeps her dark hair sideways across the horizontal medium view. Bright afternoon haze softens the horizon and seabirds; sunlight shines through the soda while the bench casts a short shadow beneath the bottle.",
+    "promptProse": "Shouko offers a lemon soda from the seawall bench, her hair blown aside by the sea breeze.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Shouko Makinohara",
-      "pale blue swimsuit",
-      "loose white shirt",
-      "canvas tote",
+      "blue swimsuit",
+      "white shirt",
+      "tote bag",
       "lemon soda",
-      "seawall bench",
-      "afternoon",
-      "medium shot"
+      "bench",
+      "seawall"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

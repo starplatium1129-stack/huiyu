@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1667,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_04",
     "title": "八奈见杏菜 · 食堂花束里的花嫁定食",
@@ -29,15 +29,15 @@
       "relieved_smile",
       "afternoon_light"
     ],
-    "promptProse": "Anna Yanami sits beside the long table in the school hall's small dining area, checking the ceremony menu before lifting the candy apple hidden in her bouquet toward the viewer. Her blue-and-white wedding dress, ribbon sash and short veil remain fresh and tidy. The vertical medium-full view includes the table settings and blue-white decorations behind. Warm afternoon light reveals the apple glaze and gown folds, with gentle paper shadows across the menu.",
+    "promptProse": "Yanami checks the ceremony menu and lifts the candy apple hidden in her bouquet toward the viewer.",
     "promptTokens": [
       "Anna Yanami",
-      "blue-white bridal dress",
-      "short veil",
+      "bridal dress",
+      "veil",
       "candy apple",
-      "ceremony menu",
+      "menu",
       "school hall",
-      "medium full shot"
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

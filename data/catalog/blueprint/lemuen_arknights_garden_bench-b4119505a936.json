@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_garden_bench",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 561,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "停驻在花丛树荫下的轮椅上，膝盖覆着薄毯翻看诗集",
     "camera": "medium shot",
@@ -19,20 +19,17 @@
       "readable poetry"
     ],
     "outfitId": "rehab_cozy_knitwear",
-    "promptProse": "Lemuen rests in her wheelchair beside the weathered church-garden bench, tracing a line in a leather-bound poetry collection over the blanket on her knees. Sage cable-knit cardigan, champagne camisole and flowing trousers retain the recovery outfit. She looks up serenely in the medium view, white flowers bordering the shaded corner. Fresh morning light filters through leaves onto pages and her face, with moving foliage shadows across the blanket and nearby blooms.",
+    "promptProse": "Lemuen reads poetry in her wheelchair under the garden shade, a light blanket across her knees.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Lemuen",
-      "sage cable knit cardigan",
-      "champagne camisole",
-      "lounge trousers",
+      "cardigan",
+      "trousers",
       "wheelchair",
       "lap blanket",
       "poetry book",
-      "church garden",
-      "morning",
-      "medium shot"
+      "garden",
+      "morning"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

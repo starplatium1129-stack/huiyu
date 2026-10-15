@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_sfw_b7_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 280,
   "createdAt": null,
-  "updatedAt": "2026-10-06T07:44:52.584659500+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "medusa_rider_sfw_b7_04",
     "title": "美杜莎 Rider · 暮色图书馆的紫色花嫁",
@@ -29,19 +29,16 @@
       "trusting_gaze",
       "twilight"
     ],
-    "promptProse": "Medusa sits beside the old library window in a deep-violet bridal gown, long purple hair pooling over the chair. She touches the closed book among her bouquet flowers, then removes her glasses to offer a trusting look beneath the translucent veil. The vertical medium-full view includes silver trim and book-shaped charm against tall shelves. Violet twilight crosses the veil and shelf edges, leaving the bouquet's nested pages in gentle shade.",
+    "promptProse": "Medusa brushes the old book nestled in her bouquet and removes her glasses, meeting the viewer's gaze beneath the violet veil.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Medusa Rider",
-      "deep violet bridal gown",
-      "silver trim",
-      "long veil",
-      "book bouquet charm",
-      "removed glasses",
-      "library window",
-      "twilight",
-      "medium full shot"
+      "violet wedding dress",
+      "veil",
+      "bouquet",
+      "old book",
+      "glasses removed",
+      "library window"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

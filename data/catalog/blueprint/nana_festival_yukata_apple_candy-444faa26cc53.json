@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_festival_yukata_apple_candy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1269,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单手举着红亮苹果糖递向对方喂食，脸颊微红露出小虎牙，爱心尾巴欢快甩动",
     "camera": "medium close-up, cowboy framing, charming festival eye-level",
@@ -20,15 +20,16 @@
     "mood": "甜美傲娇",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Nana walks beside Rito through Sainan Shrine's festival stalls, extending her glossy red candy apple toward him with a hesitant blush and small fang-bearing smile. Her pink twin tails and heart-tipped tail sway beside her teal-and-white sailor uniform. The close cowboy composition retains stall counters and banners on either side of the lane. Orange lantern light warms her cheek and forms curved highlights across the apple's sugar coating.",
+    "promptProse": "Nana offers her candy apple to Rito as they walk between the festival stalls, trying to smile through a hesitant blush.",
     "promptTokens": [
-      "Nana",
-      "Rito Yuuki",
-      "Sainan uniform",
+      "2people",
+      "yuuki rito",
+      "school uniform",
       "candy apple",
-      "summer festival",
-      "paper lanterns",
-      "cowboy shot"
+      "offering food",
+      "blush",
+      "festival",
+      "lantern"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +44,8 @@
     ],
     "timeOfDay": "夜晚",
     "title": "娜娜 · 夏夜祭典的红彤苹果糖",
-    "compositionIntent": "group"
+    "compositionIntent": "group",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_uniform_desk_rear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1459,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "撑诊疗桌塌腰翘臀更衣整理受力，队服微敞羽织滑落，咬唇回眸微嗔喘息",
     "adult": true,
@@ -22,42 +22,19 @@
     "lighting": "药柜烛台的暖黄微光",
     "location": "蝶屋敷诊疗间诊疗桌",
     "mood": "医师失守、毒舌逞强",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "official_demon_slayer_uniform",
-    "promptProse": "Caught in a private examination after hours in the Butterfly Mansion's dispensary, Kochou Shinobu leans forward against the polished wooden treatment table, her butterfly haori slipping from petite pale shoulders. She glances back over her shoulder with an exquisite, biting pout and trembling purple eyes, fingers digging into the edge as her uniform belt hangs loose. Soft candlelight from the medicine cabinets illuminates the graceful arch of her spine and flushed thighs in a breathtaking horizontal composition, detailed background.",
+    "promptProse": "Shinobu grips the treatment table and glances back with her skirt raised, belt loosened and haori slipping, candlelight crossing the dispensary.",
     "promptTokens": [
-      "bent_over",
-      "leaning_forward",
-      "desk",
-      "demon_slayer_uniform",
-      "black_jacket",
-      "skirt_lift",
-      "crotchless_panties",
-      "exposed_pussy",
-      "pussy",
-      "pussy_juice",
-      "sensual_solo",
-      "haori",
-      "butterfly_print",
-      "looking_back",
-      "biting_lip",
-      "heavy_blush",
-      "blushing_ears",
-      "teary_eyes",
-      "parted_lips",
-      "wide_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "kochou_shinobu",
+      "uniform",
+      "butterfly haori",
+      "bent over",
+      "table",
+      "looking back",
+      "candlelight",
+      "wide shot"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -72,6 +49,10 @@
       "biting_lip"
     ],
     "timeOfDay": "熄灯后深夜",
-    "title": "蝴蝶忍 · 诊疗桌上的药方·「这一剂……有点烈哦」"
+    "title": "蝴蝶忍 · 诊疗桌上的药方·「这一剂……有点烈哦」",
+    "nsfwTokens": [
+      "skirt lift",
+      "crotchless panties"
+    ]
   }
 }

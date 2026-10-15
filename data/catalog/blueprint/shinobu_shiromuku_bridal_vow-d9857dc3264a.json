@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_shiromuku_bridal_vow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1453,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "白无垢十指相扣立神前，紫瞳认真含泪微笑",
     "adult": false,
@@ -26,14 +26,13 @@
     "mood": "向死而生、以毒化药",
     "negativeTokens": [],
     "outfitId": "sfw_white_shiromuku",
-    "promptProse": "Shinobu Kocho clasps her companion's hand before the shrine altar, violet eyes unusually earnest beneath a white tsunokakushi. Her opaque shiromuku, woven obi and white tabi keep the ceremony composed. The wide formal portrait includes both joined hands, the shrine's wooden columns and floor stretching toward the altar. Gentle morning light beneath the eaves reveals white silk textures and her face, with soft folds and floor shadows defining the standing ceremonial space.",
+    "promptProse": "Shinobu clasps her companion's hand before the shrine altar in gentle morning light.",
     "promptTokens": [
       "kochou_shinobu",
-      "Shinobu Kocho",
       "shiromuku",
       "tsunokakushi",
-      "handholding",
-      "shrine wedding",
+      "holding hands",
+      "shrine",
       "wide shot"
     ],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_05",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1741,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_05",
     "title": "不知火舞 · 海滨道场的扇子与浪花",
@@ -30,15 +30,14 @@
       "ocean",
       "noon"
     ],
-    "promptProse": "Mai Shiranui sits barefoot at the seaside dojo deck in a crimson athletic swimsuit and white wrap shirt, red ribbon sandals set beside her. She performs a crisp folding-fan flourish to catch spray crossing the steps, then turns with a playful victory pose. The horizontal medium portrait includes the low deck edge and sea. Bright noon light catches red fabric and fan droplets, with wet highlights along the steps and darker shade beneath the deck.",
+    "promptProse": "Mai flicks sea spray with her fan from the dojo deck and turns with a playful victory pose in the noon sun.",
     "promptTokens": [
       "Mai Shiranui",
-      "crimson athletic swimsuit",
-      "white wrap shirt",
+      "swimsuit",
+      "white shirt",
+      "barefoot",
       "folding fan",
-      "spray catching",
-      "seaside dojo",
-      "noon",
+      "seaside",
       "medium shot"
     ],
     "negativeTokens": [],

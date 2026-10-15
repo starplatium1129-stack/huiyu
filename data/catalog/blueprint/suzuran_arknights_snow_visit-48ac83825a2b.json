@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_snow_visit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 638,
   "createdAt": null,
-  "updatedAt": "2026-10-06T07:44:52.584659500+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "拎着食盒，站在门前",
     "camera": "medium shot",
@@ -19,15 +19,13 @@
       "summer"
     ],
     "outfitId": "fluffy_cloak",
-    "promptProse": "Wrapped in a thick fur-trimmed cloak, Suzuran waits outside the Doctor's office with a double-layer insulated food box held carefully in both hands. Snow rests along the cold corridor's outer edge. In medium shot, the closed door rises behind her and the passage extends sideways. Warm window light catches her smile, cloak fibers and little breath clouds, contrasting with the blue-white snow outside.",
+    "promptProse": "Suzuran waits outside the Doctor's door with a food box in both hands, warm window light against the snowy corridor.",
     "promptTokens": [
-      "winter",
+      "Suzuran",
+      "fur-trimmed cloak",
+      "food box",
       "snow",
       "corridor",
-      "office door",
-      "fur cloak",
-      "food box",
-      "breath",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

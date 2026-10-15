@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc287",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 282,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc287",
     "title": "深蓝夜晚的约定",
@@ -45,10 +45,10 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, micro_bikini, black_string_bikini, untied_bikini_top, exposed_breasts, bare_breasts, nipples, areola, string_panties, exposed_pussy, resting_back_against_pool_edge_in_water, pressing_forehead_gently_to_viewer, trembling_breath, golden_eyes, night_pool, blue_underwater_lights, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, fully_clothed, child, loli, underage",
+    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole under eye, black bikini, untied bikini, topless, wet hair, pool, rooftop, city lights, night, blue lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "",
     "storyJa": "【大人のAfter Story・夏目・ホテル屋上プールの深い青の夜】旅の最後の夜、あなたは夏目が一人で屋上の温水プールで泳いでいるのを見つけた。街の灯りが足元に広がり、プールの青い灯りが彼女を深海の人魚のように照らし出していた。水音以外の足音に気づき、彼女は水面から浮かび上がった。濡れた黒髪が肩に張り付き、水滴が鎖骨を伝う。あなたは何も言わずに上着を脱ぎ、水の中へ滑り込んだ。彼女は背を向けていたが、あなたが近づいた瞬間、後ろにもたれかかってきた。二人の間で水が揺れ、彼女は顔を横に向け、息が微かに震えていた——「明日には帰るけど……まだ、ここにさよならを言いたくない。」あなたが彼女を振り向かせると、水の中の体はいつもより軽く、温かかった。街の灯りが彼女の瞳の中で無数の星に砕けていた。彼女は目を閉じ、額をそっとあなたに押し付けた——「それなら——せめて今夜だけは、まだまだ時間があるふりをしよう。」",
-    "animaCaption": "On the last night of the trip at the high-rise hotel rooftop heated infinity pool, city lights spread far below and the blue underwater glow outlines Shiki Natsume like a deep-sea mermaid; wet hair clings to her shoulders and water droplets run along her collarbone, and the moment you slide into the water she leans back into your arms, her back against your chest amid the swaying pool, eyes closed as her forehead gently touches yours, the city lights shattering into points of starlight in her eyes.",
+    "animaCaption": "At the rooftop pool's edge, Natsume leans into the viewer's embrace and turns to touch foreheads. Blue underwater light glows beneath the distant city lights.",
     "auditRevision": "careful-batch08-2026-08-27"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_rain_delivery",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 619,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "趴在窗边木桌上托腮打盹",
     "camera": "medium close-up shot",
@@ -22,15 +22,16 @@
       "direct sunlight"
     ],
     "outfitId": "sleepy_oversized_loungewear",
-    "promptProse": "La Pluma nods off at a round wooden table beside the rainy lounge window, both palms cradling her cheeks. A thin blanket covers her oversized pink hoodie. In medium close-up, the near tabletop curves around her elbows and rain trails obscure the room's exterior. Overcast light softens her lashes' shadows; the indoor lamp warms the blanket edge and wood beneath her hands.",
+    "promptProse": "La Pluma nods off with both palms cradling her cheeks at the round table beside the rainy window.",
     "promptTokens": [
-      "rainy afternoon",
-      "round wooden table",
-      "rain window",
-      "oversized pink hoodie",
+      "pink hoodie",
       "blanket",
-      "cheeks in hands",
-      "medium close up"
+      "hands on own cheeks",
+      "sleepy",
+      "table",
+      "rain",
+      "window",
+      "afternoon"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +43,8 @@
       "cozy_indoor"
     ],
     "timeOfDay": "雨天",
-    "title": "羽毛笔 · 雨窗微困"
+    "title": "羽毛笔 · 雨窗微困",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

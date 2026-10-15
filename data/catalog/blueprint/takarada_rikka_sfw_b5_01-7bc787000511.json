@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_sfw_b5_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1533,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "takarada_rikka_sfw_b5_01",
     "title": "宝多六花 · 绚 JUNK SHOP 的柜台",
@@ -38,15 +38,14 @@
       "horizontal_composition",
       "waist_up"
     ],
-    "promptProse": "Rikka Takarada leans at the JUNK SHOP glass counter after school, writing homework with her right hand while her left holds the page flat. Headphones rest around her neck over the white shirt and navy cardigan. The horizontal medium view keeps old radios and cassette stacks on either side. Sunset filters through the shelving, illuminating forehead strands and counter dust, with layered radio shadows and subtle page reflections beneath the glass.",
+    "promptProse": "Rikka writes with her right hand and steadies the page with her left among the shop's old radios.",
     "promptTokens": [
       "takarada_rikka",
-      "Rikka Takarada",
-      "school shirt",
-      "navy cardigan",
+      "shirt",
+      "cardigan",
+      "headphones",
       "homework",
-      "pencil",
-      "JUNK SHOP",
+      "shop counter",
       "sunset",
       "medium shot"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc110",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sc110",
     "title": "特工长官的越界特权",
@@ -43,11 +43,11 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, solo, adult, shiki_natsume, natsume_r18, black_hair, very_long_hair, golden_yellow_eyes, mole_under_eye, two_red_hairclips, open-front_negligee, sheer_babydoll, black_translucent_cloth, see-through, garter_straps, torn_thighhighs, tight_straps, bra_lift, exposed_breasts, bare_breasts, nipples, areola, sitting_on_executive_desk, moonlight_through_blinds, heavy_blush, panting, sensual, <lora:shiki_natsume_v18_wd14:0.85>",
-    "negative": "worst quality, low quality, normal quality, lowres, blurry, bad anatomy, bad hands, extra fingers, missing fingers, business_suit, fully_clothed, child, loli, underage",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, white shirt, pencil skirt, skirt lift, torn black stockings, sitting on desk, hands behind body, blush, office, blinds, moonlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "",
     "storyJa": "【夏目・職場の狭いスカートは絶対ダメだよ】司令官の独立した執務室は深夜に施錠された。飄々とした職場で、OL夏目は顔を赤らめながら、あなたに大きな机の端に強引に抱きしめられました。彼女の体のプロ仕様のお尻を覆うスカートはあなたによって腰まで完全に持ち上げられ、彼女の脚のセクシーな薄い黒のストッキングはあなたによって完全に引き裂かれ、白く繊細な絶対領域の広い範囲が露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
     "rating": "R18",
     "auditRevision": "careful-batch12-2026-08-27",
-    "animaCaption": "In the locked commander office under faint moonlight through the venetian blinds, Shiki Natsume sits on the edge of the wide desk with both hands propped behind her, her black pencil skirt lifted to her waist and thin black stockings torn wide open over fair thighs; mole trembling from the sensory shock, she turns her head away with a shameful breathless moan."
+    "animaCaption": "She braces both hands on the desk behind her with her skirt lifted to the waist and stockings torn, turning her face away under moonlight through the blinds."
   }
 }

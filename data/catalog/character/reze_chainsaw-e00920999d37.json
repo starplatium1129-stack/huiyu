@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "reze_chainsaw",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 42,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "reze_chainsaw",
     "profile": {
@@ -98,15 +98,13 @@
       "defaultOutfitId": "sleeveless_white_shirt",
       "identityTokens": [
         "reze (chainsaw man)",
-        "chainsaw_man",
-        "reze",
+        "chainsaw man",
         "1girl",
         "solo",
-        "purple_hair",
-        "short_hair",
-        "green_eyes",
-        "choker",
-        "blush"
+        "purple hair",
+        "short hair",
+        "green eyes",
+        "choker"
       ],
       "identityProse": "Reze (Bomb Devil) from Chainsaw Man, a mysterious Soviet agent with short dark purple hair with a soft matte texture, expressive emerald green eyes that catch the light, a signature pin choker, and a playful dangerous smile",
       "animeStudio": "MAPPA, official anime screencap, anime coloring",

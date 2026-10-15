@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuigahama_yui",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yuigahama_yui",
     "profile": {
@@ -101,12 +101,10 @@
         "yuigahama_yui",
         "1girl",
         "solo",
-        "orange_hair",
-        "short_hair",
-        "hair_bun",
-        "side_bun",
-        "amber_eyes",
-        "large_breasts",
+        "orange hair",
+        "short hair",
+        "side bun",
+        "amber eyes",
         "oregairu"
       ],
       "identityProse": "Yui Yuigahama from Oregairu, an energetic high school girl with shoulder-length coral orange hair tied into a signature side bun with a soft warm sheen, amber eyes, and a cheerful blushing smile",

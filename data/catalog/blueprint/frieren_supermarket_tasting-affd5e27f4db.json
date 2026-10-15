@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_supermarket_tasting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "frieren_supermarket_tasting",
     "title": "芙莉莲 · 超市试吃",
@@ -30,21 +30,18 @@
       "indoor_light",
       "medium_shot"
     ],
-    "promptProse": "Frieren lifts a single cooked-sausage sample on a toothpick at the supermarket tasting counter during a modern fantasy outing. Her other hand rests near the tray as she considers the flavor gravely, then nods in approval. The medium view keeps her soft casual dress against receding aisle shelves. Even ceiling light catches green eyes and silver-white twintails, brightening the bite and leaving small tray shadows on the counter.",
+    "promptProse": "She tastes a cooked sausage sample on a toothpick, considers it gravely, then nods in approval.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Frieren",
-      "casual dress",
-      "sausage sample",
+      "dress",
+      "sausage",
       "toothpick",
-      "sample tray",
-      "supermarket counter",
+      "food sample",
+      "supermarket",
       "medium shot"
     ],
-    "negativeTokens": [
-      "readable promotional signs"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "casual",
     "coverageTags": [

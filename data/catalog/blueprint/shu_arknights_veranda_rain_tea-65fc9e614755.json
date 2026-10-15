@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_veranda_rain_tea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 708,
   "createdAt": null,
-  "updatedAt": "2026-10-06T01:40:51.804607688+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "shu_arknights_veranda_rain_tea",
     "characterId": "shu_arknights",
@@ -33,16 +33,16 @@
       "upper_body"
     ],
     "promptTokens": [
-      "rainy day",
-      "veranda",
-      "tea table",
-      "ivory cross collar blouse",
-      "teal skirt",
+      "Shu",
+      "blouse",
+      "skirt",
       "tea",
       "blanket",
+      "veranda",
+      "rain",
       "medium shot"
     ],
-    "promptProse": "Shu sits at the small veranda tea table in her ivory cross-collar blouse and deep-teal skirt. She slides a cup of warm tea toward the viewer with one hand while the other holds down a thin blanket lifted by the breeze. At eye level, keep the empty neighboring chair visible. The near table edge leads to the railing; beyond it, rain falls past the veranda posts, while the roof keeps the seated area dry. Cool overcast daylight fills the open side and softly reflects on the cup. The existing eave lamp warms her fingers and the tea steam, leaving the chair seat and the underside of the table in quiet shade.",
+    "promptProse": "Shu slides tea toward the viewer while holding a wind-lifted blanket, rain beyond the dry lantern-lit veranda.",
     "negativeTokens": [],
     "adult": false,
     "sampleRating": "All",

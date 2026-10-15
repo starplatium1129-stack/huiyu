@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sylphiette",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 37,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sylphiette",
     "profile": {
@@ -125,16 +125,13 @@
       "identityProse": "Sylphiette from Mushoku Tensei, a gentle elf girl with soft short white hair with a feathery texture, delicate long pointed elf ears, and ruby red eyes with a warm glow, carrying a sweet shy demeanor",
       "identityTokens": [
         "sylphiette",
-        "sylphie",
         "1girl",
         "solo",
-        "short_hair",
-        "white_hair",
-        "red_eyes",
-        "elf_ears",
-        "pointed_ears",
-        "flat_chest",
-        "mushoku_tensei"
+        "short hair",
+        "white hair",
+        "red eyes",
+        "elf ears",
+        "mushoku tensei"
       ],
       "negativeTokens": [
         "bad anatomy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_rain_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 434,
   "createdAt": null,
-  "updatedAt": "2026-10-06T07:44:52.584659500+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rem_rezero_rain_night",
     "title": "雷姆 · 雨夜告白",
@@ -25,21 +25,21 @@
       "outdoors",
       "warm_light"
     ],
-    "promptProse": "Beneath the rain-swept royal-capital clock tower at night, Rem looks back with tearful blue eyes and an earnest expression as she addresses the viewer. Her soft casual off-duty outfit remains around the shoulders in the close-up. A near masonry pier overlaps the darker tower recess, while a narrow opening shows rain over the street beyond. The existing warm streetlight catches the tears and the nearer blue hair strands; cool reflected night-sky light softly separates the opposite side of her face from the stone. Rain streaks crossing the darker recess remain visible.",
+    "promptProse": "Rem turns back to address the viewer beneath the clock tower, warm streetlight catching the tears on her face.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "Rem",
-      "soft casual outfit",
-      "blue hair",
-      "tearful eyes",
-      "rain swept clock tower",
-      "rainy night",
-      "streetlights",
+      "casual clothes",
+      "looking back",
+      "tears",
+      "rain",
+      "clock tower",
+      "streetlight",
+      "night",
       "close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
-    "outfitId": "casual"
+    "outfitId": "casual",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

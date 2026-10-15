@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_stigmata_fever_hugged_blush",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 212,
   "createdAt": null,
-  "updatedAt": "2026-10-06T13:17:07.513752600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "caren_stigmata_fever_hugged_blush",
     "title": "卡莲 · 圣痕发作的拥抱索温",
@@ -29,30 +29,19 @@
       "teary_eyes",
       "parted_lips"
     ],
-    "promptProse": "Curled on the wooden confession-booth bench, Caren Hortensia holds the edge of the viewer's coat near its collar with both weak hands while the clothed shoulder supports her. Her black-and-white clerical vestment stays in place, and her fever-flushed face and amber-yellow eyes remain the close view's focus. Only that supporting shoulder enters the frame. The bench back overlaps a carved partition; a narrow opening beyond it shows the darker church aisle. The single existing candle warms her cheek, knuckles and white sleeve edge, leaving a small hand shadow on the coat. Softer wood reflection keeps the shaded side of her face readable while the partition recesses remain dark.",
+    "promptProse": "She curls on the bench, holding the viewer's coat collar with both hands as a clothed shoulder supports her. Candlelight reaches her face beside the carved partition.",
     "promptTokens": [
-      "Caren Hortensia",
-      "white hair",
-      "yellow eyes",
-      "clerical vestment",
-      "clothed supporting shoulder",
-      "hands clutching coat collar",
-      "fever flushed cheeks",
-      "confession booth",
-      "wooden bench",
-      "carved partition",
+      "confessional",
+      "clerical vestments",
+      "fever",
+      "blush",
+      "holding collar",
+      "supporting shoulder",
       "candlelight",
-      "close up"
+      "close-up"
     ],
     "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "burning hair",
-      "burning ears",
       "burning clothing",
-      "self-harm",
       "choking"
     ],
     "recommendedSize": "1152x1536",

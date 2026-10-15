@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_cafe_table",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 961,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "在冰茶旁写角色分析笔记，抬头微笑交谈",
     "camera": "full body",
@@ -20,15 +20,14 @@
     "mood": "温柔放松",
     "negativeTokens": [],
     "outfitId": "pinafore_dress",
-    "promptProse": "Akane sits by the bright cafe window in her blue pinafore dress, white blouse and black heels, writing character-analysis notes before looking up with a warm, serious smile. The full-body view keeps her shoes beneath the chair and iced tea beside the notebook on the table. Soft window light brightens the open page and sleeve folds, while the chair and table cast quiet shadows across the floor.",
+    "promptProse": "Akane writes character notes beside her iced tea, then looks up with a conversational smile.",
     "promptTokens": [
-      "daytime",
-      "cafe",
       "blue pinafore",
       "white blouse",
       "black heels",
       "iced tea",
       "notebook",
+      "cafe",
       "full body"
     ],
     "recommendedSize": "1216x832",

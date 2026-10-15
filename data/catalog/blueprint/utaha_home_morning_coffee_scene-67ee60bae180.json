@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_home_morning_coffee_scene",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1432,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "utaha_home_morning_coffee_scene",
     "title": "霞之丘诗羽 · 居家的咖啡与睡袍·「学姐模式，今天关机」",
@@ -27,27 +27,17 @@
       "casual",
       "daily"
     ],
-    "promptProse": "On a quiet weekend morning, Utaha Kasumigaoka curls into her apartment sofa in an opaque silk lounge robe tied closed at the waist. Loose black hair frames her sleepy red-eyed smile. She supports a steaming black coffee cup with one hand and beckons her companion nearer with the other; an unread magazine lies open across her lap. The medium view places the sofa arm and small side table in front of the window curtains, with a low bookshelf farther into the room. Morning light through the curtains illuminates the cup steam and robe sleeve, while the sofa arm casts a soft shadow across the tied sash. A small window reflection catches the coffee surface.",
+    "promptProse": "Utaha beckons her companion closer with coffee in one hand and an open magazine across her lap in curtain-filtered light.",
     "promptTokens": [
-      "weekend morning",
-      "apartment sofa",
-      "closed silk robe",
-      "tied sash",
-      "loose black hair",
-      "black coffee",
-      "open magazine on lap",
-      "medium shot",
-      "curtain filtered sunlight",
-      "bookshelf behind"
+      "Utaha Kasumigaoka",
+      "silk robe",
+      "coffee",
+      "magazine",
+      "sofa",
+      "morning",
+      "medium shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "extra limbs",
-      "fire, flames, burning ears"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": false,
     "sampleRating": "SFW",

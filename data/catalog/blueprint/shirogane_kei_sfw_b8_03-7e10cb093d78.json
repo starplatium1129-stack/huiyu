@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_sfw_b8_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1413,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "放学后学生会室，她把收据按日期排开贴进账本，动作精准得像机器",
     "adult": false,
@@ -23,15 +23,13 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_school",
-    "promptProse": "Kei Shirogane arranges receipts by date and pastes them into the student council ledger after the others have left. Her dark school uniform, white collar and black headband remain neat as she exhales with a small satisfied smile. The medium view includes the emptied chairs around the working table. Afternoon window light illuminates paper corners and her fingertips, leaving separate receipt shadows on the ledger and a quieter shaded wall behind.",
+    "promptProse": "Kei pastes sorted receipts into the ledger after the council room empties, sunlight crossing the papers.",
     "promptTokens": [
       "shirogane_kei",
-      "Kei Shirogane",
       "school uniform",
       "receipts",
       "ledger",
       "student council room",
-      "afternoon",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",

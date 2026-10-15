@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_fireworks_furisode_okawaii",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1394,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "穿深红振袖回眸浅笑，红瞳倒映金色烟花，广袖随风轻扬",
     "adult": false,
@@ -25,16 +25,16 @@
     "mood": "傲娇破防、心动名场面",
     "negativeTokens": [],
     "outfitId": "festive_furisode_kimono",
-    "promptProse": "At Kyoto's Kamo River steps, Kaguya Shinomiya looks back over her shoulder toward her companion watching the fireworks. Gold maple leaves decorate her crimson furisode, broad sleeves moving with the night breeze and a red ribbon securing her folded ponytail. The close view includes stone steps and river surface behind. A golden firework illuminates her red eyes and restrained smile, while its broken reflection travels across the darker water below.",
+    "promptProse": "Kaguya looks back toward her companion on the river steps, her red sleeves moving in the breeze beneath the fireworks.",
     "promptTokens": [
       "shinomiya_kaguya",
-      "Kaguya Shinomiya",
-      "crimson furisode",
-      "gold maple pattern",
-      "red ribbon",
-      "river steps",
+      "red furisode",
+      "maple leaf print",
+      "looking back",
+      "smile",
       "fireworks",
-      "medium close-up"
+      "river",
+      "close-up"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "SFW",

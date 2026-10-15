@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_commuter_train_shoulder_lean",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 360,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "iroha_commuter_train_shoulder_lean",
     "title": "一色彩羽 · 电车里的半张车票",
@@ -28,17 +28,15 @@
       "carriage_light",
       "medium_shot"
     ],
-    "promptProse": "Iroha smooths a folded train ticket against her knee on the weekend journey home, bracing her other hand on the seat edge as the carriage sways. Pale-blue trench coat, cream knit top and navy trousers accompany an emerging teasing smile beneath wavy honey-brown hair. The medium view extends through upholstery to the broad city window. Gentle carriage lamps illuminate her eyes and ticket creases, leaving soft shade along the seat cushions.",
+    "promptProse": "Iroha smooths a folded ticket against her knee, bracing her other hand on the swaying train seat. The city passes beyond the carriage window.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Iroha",
-      "pale blue trench coat",
-      "cream knit top",
-      "navy trousers",
-      "train ticket",
-      "hand on seat",
-      "weekend carriage",
+      "sitting",
+      "train interior",
+      "ticket",
+      "trench coat",
+      "smile",
       "medium shot"
     ],
     "negativeTokens": [],

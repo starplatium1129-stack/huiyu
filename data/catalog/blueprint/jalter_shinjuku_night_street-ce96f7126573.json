@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_shinjuku_night_street",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 170,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "jalter_shinjuku_night_street",
     "characterId": "jeanne_alter",
@@ -24,19 +24,18 @@
       "night",
       "medium_shot"
     ],
-    "promptProse": "At the wet Shinjuku corner, Jeanne Alter leans against the wall with one hand in her jacket pocket and the other relaxed beside her black pleated skirt. Leather jacket, tank top, dark tights and boots retain the street outfit. She turns reluctantly toward the viewer in the medium view, rain trailing along the wall. Cyan and magenta shop light catches silver hair and eyes, spreading broken reflections across the pavement.",
+    "promptProse": "Jeanne Alter leans against a Shinjuku street wall with one hand in her pocket, turning reluctantly toward the viewer. Neon reflects across the wet pavement.",
     "promptTokens": [
       "1girl",
       "solo",
-      "Jeanne Alter",
-      "black leather jacket",
-      "tank top",
-      "black pleated skirt",
-      "dark tights",
-      "boots",
-      "street corner wall",
-      "Shinjuku",
-      "neon",
+      "leather jacket",
+      "pleated skirt",
+      "tights",
+      "leaning",
+      "wall",
+      "street",
+      "rain",
+      "neon lights",
       "medium shot"
     ],
     "negativeTokens": [

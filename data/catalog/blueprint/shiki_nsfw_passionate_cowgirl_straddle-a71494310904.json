@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_passionate_cowgirl_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸肩，俯身轻喘，眼神水润情动",
     "adult": true,
@@ -24,37 +24,16 @@
     "lighting": "昏暗温暖的壁灯勾勒出白皙后背的线条",
     "location": "和室深处安静被单铺设的床榻中央",
     "mood": "热情相融",
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Straddling the viewer's waist in passionate abandon atop soft bedding, completely naked Ryougi Shiki takes control of the rhythm. Her perky natural breasts with taut pink nipples bounce in steady cadence with her undulating hips, glistening with sweet perspiration. Leaning down with breathy words and tears shining in her dark eyes, she surrenders completely to love. Intense vertical anime CG, solo 1girl focus, no text.",
+    "promptProse": "Shiki rides astride her companion on the bed, leaning toward them with flushed cheeks.",
     "promptTokens": [
-      "sensual_solo",
-      "bedroom",
+      "Ryougi Shiki",
+      "bed",
       "straddling",
-      "cowgirl_position",
-      "completely_nude",
-      "small_breasts",
-      "pink_nipples",
-      "areola",
-      "exposed_pussy",
-      "pussy_juice",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "black_hair",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "looking at viewer",
+      "blush",
+      "low angle"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -70,6 +49,11 @@
       "teary_eyes"
     ],
     "timeOfDay": "深夜",
-    "title": "两仪式 · 卸下防备的深情主动骑乘"
+    "title": "两仪式 · 卸下防备的深情主动骑乘",
+    "nsfwTokens": [
+      "nude",
+      "cowgirl position"
+    ],
+    "nsfwProse": ""
   }
 }

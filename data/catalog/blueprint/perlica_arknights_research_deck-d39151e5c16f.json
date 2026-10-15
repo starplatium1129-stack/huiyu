@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_research_deck",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 714,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "扶着栏杆仰望巨型天体",
     "camera": "cowboy shot, leaning on ship railing",
@@ -17,15 +17,16 @@
     "mood": "宇宙辽阔",
     "negativeTokens": [],
     "outfitId": "research_deck_uniform",
-    "promptProse": "Perlica grips the research ship's alloy railing with both hands and looks upward at the immense alien planet and luminous rings. Her white-and-charcoal supervisor trench coat moves in the night wind. The cowboy view includes the deck behind her and the railing extending toward the ship's bow. Starlight and planet glow trace her pale coat shoulders and rail top, leaving its underside and the deck in cool shade.",
+    "promptProse": "Perlica grips the alloy rail with both hands and looks up at the immense planet and its luminous rings.",
     "promptTokens": [
-      "night",
-      "research ship",
+      "trench coat",
       "railing",
-      "supervisor trench coat",
-      "alien planet",
-      "star rings",
-      "cowboy shot"
+      "looking up",
+      "wind",
+      "research ship",
+      "planet",
+      "planetary rings",
+      "night"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -36,6 +37,8 @@
       "endfield"
     ],
     "timeOfDay": "夜晚",
-    "title": "佩丽卡 · 研究舰甲板"
+    "title": "佩丽卡 · 研究舰甲板",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

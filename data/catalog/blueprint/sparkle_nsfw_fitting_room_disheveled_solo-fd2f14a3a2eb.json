@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_fitting_room_disheveled_solo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1056,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "sparkle_nsfw_fitting_room_disheveled_solo",
     "title": "花火 · 试衣间和风短裙半褪的微喘自抚",
@@ -30,37 +30,17 @@
       "heavy_blush",
       "sensual_solo"
     ],
-    "promptProse": "Hidden behind the curtain of a compact boutique dressing room, Sparkle experiences a tantalizing private moment. Her mini kimono has slipped off her shoulders, revealing her bare, perky bust and soft pink nipples in the mirror. Trembling with bashful excitement, she slides one hand beneath her black lace panties, parting the fabric to tease her soaked entrance with gentle fingering and masturbation. Her cheeks glow bright crimson as her ruby eyes glance furtively toward the curtain gap. Exquisite sensual anime illustration, solo 1girl, no text.",
+    "promptProse": "Sparkle draws her panties aside and touches herself beside the fitting-room mirror, her kimono slipped from her shoulders as she glances at the curtain gap.",
     "promptTokens": [
-      "dressing_room",
+      "Sparkle",
+      "kimono",
       "mirror",
-      "open_clothes",
-      "mini_kimono",
-      "exposed_breasts",
-      "bare_breasts",
-      "small_breasts",
-      "pink_nipples",
-      "panties_aside",
-      "hand_between_legs",
-      "pussy_juice",
-      "twintails",
-      "heavy_blush",
-      "blushing_ears",
-      "biting_lip",
-      "sensual_solo",
-      "cowboy_shot",
-      "detailed_background",
-      "cinematic_lighting"
+      "dressing room",
+      "looking aside",
+      "blush",
+      "cowboy shot"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "extra limbs",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "outfitId": "official_kimono_dress",
     "coverageTags": [
@@ -73,6 +53,11 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "nsfwProse": "Hidden behind the curtain of a compact boutique dressing room, Sparkle experiences a tantalizing private moment. Her mini kimono has slipped off her shoulders, revealing her bare, perky bust and soft pink nipples in the mirror. Trembling with bashful excitement, she slides one hand beneath her black lace panties, parting the fabric to tease her soaked entrance with gentle gentle touching and masturbation. Her cheeks glow bright crimson as her ruby eyes glance furtively toward the curtain gap. Exquisite sensual anime illustration, solo 1girl, no text."
+    "nsfwProse": "",
+    "nsfwTokens": [
+      "topless",
+      "masturbation",
+      "panties aside"
+    ]
   }
 }

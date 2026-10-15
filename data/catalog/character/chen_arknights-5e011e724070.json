@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chen_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 21,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "chen_arknights",
     "profile": {
@@ -118,9 +118,7 @@
         "1girl",
         "solo",
         "teal_hair",
-        "long_hair",
         "low_twintails",
-        "hair_ribbon",
         "amber_eyes",
         "horns",
         "tail",

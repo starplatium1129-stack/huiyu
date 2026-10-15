@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_sfw_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yae_miko_sfw_b7_03",
     "title": "八重神子 · 廊下的油豆腐茶歇",
@@ -29,18 +29,15 @@
       "satisfied_smile",
       "medium_shot"
     ],
-    "promptProse": "Kneeling beside a low veranda table, Yae Miko cools a piece of fried tofu held in her chopsticks with a small breath. Her wisteria-purple komon kimono and cream obi sit neatly around her, pink hair beside softly drooping fox ears. The medium portrait includes the dish and table edge, with garden planting beyond the veranda. Reflected afternoon garden light illuminates her satisfied smile and steam, leaving soft contact shade beneath the dish.",
+    "promptProse": "Yae Miko cools a piece of fried tofu with a breath beside the veranda table in reflected garden light.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "wisteria komon kimono",
-      "cream obi",
-      "fox ears",
+      "Yae Miko",
+      "purple kimono",
+      "obi",
       "seiza",
-      "veranda",
       "fried tofu",
       "chopsticks",
-      "afternoon",
+      "veranda",
       "medium shot"
     ],
     "negativeTokens": [

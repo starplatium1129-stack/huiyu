@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_lakeside_white_bikini_shading",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1301,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "albedo_lakeside_white_bikini_shading",
     "title": "雅儿贝德 · 湖畔水光的黑翼遮阳",
@@ -30,13 +30,14 @@
       "wet_legs",
       "seductive_smile"
     ],
-    "promptProse": "Albedo sits on white lakeside rocks in her white bikini with gold ring connectors, toes touching the clear water. She lifts one broad black wing to shade her companion, looking back with a warm smile. A diagonal cowboy view shows grass beyond the rocks and lake ripples extending outward. Sunshine gleams on her horns and wet stone edges; the lifted feathers create a cool shelter with water reflections below.",
+    "promptProse": "She lifts one wing to shade her companion while her toes touch the lake. Reflected water light moves across the rocks beneath the feathers.",
     "promptTokens": [
-      "Albedo",
       "white bikini",
-      "black wing shade",
-      "lake shore",
-      "white rocks",
+      "black wings",
+      "lake",
+      "rock",
+      "sitting",
+      "smile",
       "cowboy shot"
     ],
     "negativeTokens": [],

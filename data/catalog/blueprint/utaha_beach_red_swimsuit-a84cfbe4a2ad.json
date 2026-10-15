@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_beach_red_swimsuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1429,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "utaha_beach_red_swimsuit",
     "title": "霞之丘诗羽 · 海边的成熟邀请·「愣着做什么，帮你涂防晒是报酬」",
@@ -27,14 +27,13 @@
       "summer",
       "ocean"
     ],
-    "promptProse": "Utaha Kasumigaoka sits on the beach with her back partly toward her companion, gesturing to the swimsuit zipper she cannot reach. Her garnet-red one-piece, white hip sarong and hair tied with a white band remain consistent with the selected outfit. The medium view includes sand ripples and bright sea behind. Strong sunshine illuminates the zipper pull and hairband, while reflected water light softens the shade beneath her bent arm.",
+    "promptProse": "Utaha turns partly away and gestures toward the swimsuit zipper she cannot reach in the bright beach sun.",
     "promptTokens": [
       "kasumigaoka_utaha",
-      "Utaha Kasumigaoka",
-      "garnet one-piece swimsuit",
+      "red one-piece swimsuit",
       "white sarong",
-      "white hairband",
-      "back zipper",
+      "hairband",
+      "zipper",
       "beach",
       "medium shot"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_07",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1726,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_07",
     "title": "玛露希尔 · 学院古籍的书签",
@@ -30,15 +30,13 @@
       "scholarly_delight",
       "afternoon_light"
     ],
-    "promptProse": "At the elven academy library's high window, Marcille Donato presses a leaf-vein bookmark into an ancient book, checking the dried material before looking up with delighted green eyes and lifted pointed ears. Her blue academic jacket, white blouse and long skirt stay orderly. The vertical medium portrait includes the desk and tall shelves behind. Afternoon light reveals drifting dust, translucent leaf veins and paper grain, with a narrow bookmark shadow marking the open page.",
+    "promptProse": "Marcille finishes a leaf-vein bookmark for an old book, her expression brightening as she checks the dried material.",
     "promptTokens": [
-      "Marcille Donato",
-      "blue academic jacket",
-      "leaf-vein bookmark",
-      "ancient book",
-      "high library window",
-      "afternoon",
-      "medium shot"
+      "academic jacket",
+      "leaf bookmark",
+      "old book",
+      "library window",
+      "afternoon"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

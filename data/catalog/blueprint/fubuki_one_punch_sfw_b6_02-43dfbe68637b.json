@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1590,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_02",
     "title": "吹雪 · 咖啡馆里的行程空白",
@@ -29,14 +29,17 @@
       "looking_out_window",
       "medium_shot"
     ],
-    "promptProse": "Fubuki turns her schedule book to an empty page in the cafe corner, lays the pen beside the saucer and cradles coffee with both hands. Her checked blazer, forest-green blouse and cream wide-leg trousers relax as she looks outside. The medium portrait includes the window-side table and quiet seating behind. Soft cafe daylight illuminates pearls and cup steam, with restrained shadows beneath the saucer and across the open planner.",
+    "promptProse": "She leaves the planner open to a blank page, sets down her pen, and cradles coffee in both hands while looking outside.",
     "promptTokens": [
-      "Fubuki",
-      "checked blazer",
-      "cream trousers",
-      "schedule book",
+      "1girl",
+      "solo",
+      "plaid blazer",
+      "green blouse",
+      "cream pants",
+      "planner",
       "coffee",
-      "cafe corner",
+      "cafe",
+      "window",
       "medium shot"
     ],
     "negativeTokens": [],

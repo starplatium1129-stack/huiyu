@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_winter_snowy_shrine_stairs",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1147,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "单手撑红油纸伞伫立雪地回眸，木屐踩在雪中，哈出一缕白汽，眼神脉脉",
     "camera": "full body, 3/4 perspective, deep winter perspective",
@@ -20,14 +20,15 @@
     "mood": "空灵唯美",
     "negativeTokens": [],
     "outfitId": "shrine_maiden",
-    "promptProse": "Yoshino turns sideways beneath a traditional red oil-paper umbrella on the deeply snow-covered shrine steps, wearing her current white miko blouse and vermilion hakama with wooden sandals. A little breath cloud forms beside her silver hair. The full-body three-quarter view follows red lantern rows down the long approach. Reflected snow light defines the robe sleeves and step edges, while red umbrella light warms her shaded face and gripping hand.",
+    "promptProse": "Yoshino pauses sideways on the snowy steps beneath her red umbrella, a small breath cloud escaping into the cold.",
     "promptTokens": [
-      "snowy day",
-      "shrine stairs",
-      "red oil paper umbrella",
-      "miko robes",
+      "miko",
       "red hakama",
       "geta",
+      "red umbrella",
+      "visible breath",
+      "shrine stairs",
+      "snow",
       "full body"
     ],
     "recommendedSize": "1152x1536",
@@ -42,6 +43,8 @@
       "twintails"
     ],
     "timeOfDay": "上午",
-    "title": "朝武芳乃 · 初雪初霁的红伞回眸"
+    "title": "朝武芳乃 · 初雪初霁的红伞回眸",
+    "nsfwTokens": [],
+    "nsfwProse": ""
   }
 }

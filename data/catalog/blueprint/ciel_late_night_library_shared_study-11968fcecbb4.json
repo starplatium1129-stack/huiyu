@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_late_night_library_shared_study",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1333,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "action": "并肩坐于书桌旁，一手微触对方指尖，一手轻托下巴微红着脸温柔对视",
     "camera": "cowboy shot, eye level, tranquil intellectual romance",
@@ -22,15 +22,16 @@
     "mood": "知性温存",
     "negativeTokens": [],
     "outfitId": "casual_knit_sweater_jeans",
-    "promptProse": "At the private library's heavy wooden desk, Ciel and her companion reach simultaneously for the same dictionary and their fingertips meet. She adjusts her glasses, smiling faintly in a cream turtleneck and dark-blue jeans. The eye-level cowboy view shows yellowed open pages between them and tall shelves behind. A green-shaded desk lamp casts warm light on their hands and book edges, leaving the shelving aisles dark beyond the table.",
+    "promptProse": "Their fingertips meet while reaching for the same dictionary. The green-shaded lamp lights their hands against the dark shelves.",
     "promptTokens": [
-      "Ciel",
+      "couple",
+      "library",
       "cream turtleneck",
+      "jeans",
+      "glasses",
       "dictionary",
-      "fingertip contact",
-      "shared study",
-      "green desk lamp",
-      "cowboy shot"
+      "touching fingers",
+      "desk lamp"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

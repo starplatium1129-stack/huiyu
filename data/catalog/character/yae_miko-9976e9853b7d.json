@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yae_miko",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "yae_miko",
     "profile": {
@@ -76,13 +76,11 @@
       "identityProse": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief; no permanent fox tail is added to the everyday form.",
       "identityTokens": [
         "yae_miko",
-        "genshin_impact",
-        "pink_hair",
-        "long_hair",
-        "low-tied_long_hair",
-        "purple_eyes",
-        "floppy_ears",
-        "animal_ears"
+        "genshin impact",
+        "pink hair",
+        "low-tied long hair",
+        "purple eyes",
+        "floppy ears"
       ],
       "exactTokens": [
         "yae_miko"

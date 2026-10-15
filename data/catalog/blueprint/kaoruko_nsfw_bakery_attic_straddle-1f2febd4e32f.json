@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bakery_attic_straddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1513,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
   "data": {
     "id": "kaoruko_nsfw_bakery_attic_straddle",
     "title": "和栗薰子 · 甜品店阁楼的晨光主控跨坐 ·「凛太郎……今天的点心是我哦」",
@@ -24,45 +24,19 @@
       "exposed_pussy",
       "special_nsfw"
     ],
-    "promptProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity straddles your lap in the cozy sunlit attic above her family pastry shop. Her pastel cardigan falls open, revealing surprisingly full, soft breasts that sway with her earnest, sweet hip rolls, pink nipples glistening in the morning air. Her golden hair framing a round, deeply flushed face, she presses a ripe strawberry between your lips before leaning down for a sugar-scented kiss, eyes brimming with pure first-love devotion. Vertical low-angle cowgirl shot, golden morning sunlight, aroma-steeped bakery attic background, solo 1girl, no extra people.",
-    "nsfwProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity straddles your lap in the cozy sunlit attic above her family pastry shop. Her pastel cardigan falls open, revealing surprisingly full, soft breasts that sway with her earnest, sweet hip rolls, pink nipples glistening in the morning air. Her golden hair framing a round, deeply flushed face, she presses a ripe strawberry between your lips before leaning down for a sugar-scented kiss, eyes brimming with pure first-love devotion. Vertical low-angle cowgirl shot, golden morning sunlight, aroma-steeped bakery attic background, solo 1girl, no extra people.",
+    "promptProse": "Adult Kaoruko rides astride her companion in the bakery attic with her cardigan open, offering a strawberry before leaning in for a kiss.",
+    "nsfwProse": "",
     "promptTokens": [
-      "straddling",
-      "cowgirl_position",
-      "on_lap",
       "cardigan",
-      "open_cardigan",
-      "bare_breasts",
-      "bouncing_breasts",
-      "pink_nipples",
-      "crotchless_panties",
-      "pussy_juice",
-      "sweat_drops",
-      "heavy_blush",
-      "blushing_ears",
-      "parted_lips",
-      "blonde_hair",
-      "twin_braids",
-      "sweet_expression",
-      "vertical_shot",
-      "low_angle",
-      "detailed_background",
-      "cinematic_lighting"
+      "open clothes",
+      "topless",
+      "cowgirl position",
+      "strawberry",
+      "attic",
+      "morning",
+      "from below"
     ],
-    "negativeTokens": [
-      "worst quality",
-      "low quality",
-      "bad anatomy",
-      "bad hands",
-      "missing fingers",
-      "extra fingers",
-      "blurry",
-      "cropped",
-      "watermark",
-      "fire, flames, burning ears",
-      "2girls",
-      "1boy"
-    ],
+    "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
@@ -72,6 +46,7 @@
     "coverageTags": [
       "special_nsfw",
       "h_cg"
-    ]
+    ],
+    "nsfwTokens": []
   }
 }

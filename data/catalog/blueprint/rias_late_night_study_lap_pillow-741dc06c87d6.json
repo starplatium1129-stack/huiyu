@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_late_night_study_lap_pillow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1278,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "rias_late_night_study_lap_pillow",
     "title": "莉雅丝 · 深夜书房的温软膝枕",
@@ -29,13 +29,12 @@
       "loving_gaze",
       "warm_glow"
     ],
-    "promptProse": "Beside the private study's stone fireplace, Rias Gremory kneels on a thick rug and lightly pats her lap, inviting her tired companion to rest. Crimson silk and black lace nightwear fall over her stockinged knees, with red hair gathered beside them. The medium cowboy view holds bookshelves and the tea cup behind. Hearth flames warm her profile and cloth folds; the vintage lamp adds a steady highlight on the rug's raised fibers.",
+    "promptProse": "Rias pats her lap beside the study fireplace, inviting her companion to rest as firelight warms her face.",
     "promptTokens": [
       "Rias Gremory",
-      "crimson silk nightwear",
-      "black stockings",
+      "nightgown",
+      "stockings",
       "kneeling",
-      "lap pillow invitation",
       "fireplace",
       "cowboy shot"
     ],

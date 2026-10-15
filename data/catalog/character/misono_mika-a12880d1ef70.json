@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misono_mika",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
   "data": {
     "id": "misono_mika",
     "profile": {
@@ -149,13 +149,12 @@
         "mika (blue archive)",
         "1girl",
         "solo",
-        "pink_hair",
-        "side_ponytail",
-        "orange_eyes",
+        "pink hair",
+        "side ponytail",
+        "orange eyes",
         "wings",
         "halo",
-        "large_breasts",
-        "blue_archive"
+        "blue archive"
       ],
       "negativeTokens": [
         "bad anatomy",

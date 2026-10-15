@@ -40,14 +40,10 @@ const POPULAR_BLUEPRINT_ID = '';
 // 已废弃：popular 批次按角色取专属原型场景（2026-08-14）
 const DEFAULT_LORA_STRENGTH = 0.85;
 
-// Studio identity line mirror of src/stores/promptBuilderStore.ts CHAR_PROMPT.
-// A contract sentinel (test-showcase-candidate-contract.js) pins these strings
-// against the store source so they cannot drift.
-// 2026-09-05 审计 P1-05：natsume 行同步 store 的 52ed8a39 版（对齐自训 LoRA 标准特征），
-// 此前脚本仍停留在旧词组（very_long_black_hair/golden_yellow_eyes/two_red_hairclips/no_hair_ribbon）。
+const { CHAR_PROMPT }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
 const STUDIO_CHAR_PROMPT: any = Object.freeze({
-  nene: '1girl, solo, ayachi_nene, white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, pink_hair_ribbons',
-  natsume: '1girl, solo, shiki_natsume, black_hair, very_long_hair, yellow_eyes, mole_under_eye, hairclip',
+  nene: CHAR_PROMPT.nene,
+  natsume: CHAR_PROMPT.natsume,
 });
 
 // Neutral adult-female subject unrelated to the studio LoRA characters. Only
