@@ -1,13 +1,13 @@
 <template>
-  <section v-if="scenes.length" class="art-journal container" aria-labelledby="journal-title" data-reveal>
+  <section v-if="scenes.length" ref="section" class="art-journal container" aria-labelledby="journal-title" data-reveal @focusin="activateImages">
     <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
       <div><span class="eyebrow">CG JOURNAL / 画里的日常</span><h2 id="journal-title">在喜欢的世界，多停留一会。</h2></div>
       <RouterLink to="/showcase" class="journal-more">翻阅参考画册 <ArchiveIcon name="image" /></RouterLink>
     </header>
     <div class="journal-spread tw:grid">
-      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="'/scene-showcase/images/' + scene.id + '.jpg'" v-slot="{ image, failed }">
+      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? '/scene-showcase/images/' + scene.id + '.jpg' : undefined" v-slot="{ image, failed }">
       <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :to="(failed ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
-        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><template v-if="image.src && !failed"><img v-bind="image" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="scene.rating === 'R18' || scene.mature" :src="image.src" :crossorigin="image.crossorigin" /></template><span v-else class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">样张暂未连接<span>先看看这一幕的故事与设定</span></span></div>
+        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><template v-if="image.src && !failed"><img v-bind="image" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="scene.rating === 'R18' || scene.mature" :src="image.src" :crossorigin="image.crossorigin" /></template><span v-else class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ imagesReady ? '样张暂未连接' : '正在载入样张' }}<span>先看看这一幕的故事与设定</span></span></div>
         <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
       </RouterLink>
       </RuntimeImage>
@@ -15,10 +15,28 @@
   </section>
 </template>
 <script setup lang="ts">
+import { onMounted, onScopeDispose, ref, watch } from 'vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 defineProps<{ scenes: Array<{ id: string; title?: string; story?: string; category?: string; rating?: string; mature?: boolean }> }>()
+const section = ref<HTMLElement | null>(null), imagesReady = ref(false)
+let observer: IntersectionObserver | undefined
+function activateImages() { imagesReady.value = true; observer?.disconnect() }
+onMounted(() => {
+  if (!('IntersectionObserver' in window)) { activateImages(); return }
+  // Keep the original sample quality, but do not let native lazy loading fetch
+  // three large samples several screens ahead of the journal itself.
+  observer = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) activateImages()
+  }, { rootMargin: '300px' })
+  if (section.value) observer.observe(section.value)
+})
+watch(section, (next, previous) => {
+  if (previous) observer?.unobserve(previous)
+  if (next && !imagesReady.value) observer?.observe(next)
+})
+onScopeDispose(() => observer?.disconnect())
 function excerpt(story?: string) { return (story || '一些想留下的光影，一段只属于角色的时光。').replace(/^【[^】]+】/, '').slice(0, 84) }
 </script>
 <style scoped>

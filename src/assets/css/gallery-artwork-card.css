@@ -39,7 +39,8 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-tool-on { border-color:color-mix(in srgb,var(--accent) 42%,var(--on-art-line)); background:color-mix(in srgb,var(--accent) 20%,transparent); color:var(--on-art-primary); }
 .artwork-tool :deep(.archive-icon) { @apply tw:w-[14px] tw:h-[14px]; vertical-align:-.12em; }
 /* Keep decoded thumbnails painted across cached returns; only the card enters. */
-.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); overflow:hidden; background:var(--bg-elevated); }
+/* The explicit aspect ratio preserves wall geometry while offscreen media skips paint. */
+.artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); content-visibility:auto; overflow:hidden; background:var(--bg-elevated); }
 .artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); transition:transform var(--motion-route) var(--ease-out); }
 /* A fixed, image-only focus glow; no pointer loop, grid blur or extra texture copy. */
 .artwork-media::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }

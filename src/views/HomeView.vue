@@ -185,6 +185,7 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import { useHomeHeroes } from '@/composables/useHomeHeroes'
 import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
+import { useHomeSceneHighlights } from '@/composables/useHomeSceneHighlights'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
@@ -213,10 +214,8 @@ import modelOriginal from '@/assets/illustrations/atelier-model-spot.webp'
 import collectionOriginal from '@/assets/illustrations/atelier-collection-spot.webp'
 import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
-import { readRecent } from '@/utils/sceneUX'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useSceneStore } from '@/stores/sceneStore'
-import type { Scene } from '@/stores/sceneStore'
 
 useScrollReveal()
 const inspirationSection = ref<HTMLElement | null>(null)
@@ -227,6 +226,7 @@ let artworkObserver: IntersectionObserver | undefined
 onMounted(() => {
   if (!('IntersectionObserver' in window)) {
     artworkReady.characters = artworkReady.entries = artworkReady.tools = true
+    loadPopularCharacters()
     return
   }
   const sections = new Map<HTMLElement | null, keyof typeof artworkReady>([
@@ -239,6 +239,7 @@ onMounted(() => {
       const section = sections.get(entry.target as HTMLElement)
       if (entry.isIntersecting && section) {
         artworkReady[section] = true
+        if (section === 'characters') loadPopularCharacters()
         artworkObserver?.unobserve(entry.target)
       }
     }
@@ -262,7 +263,6 @@ const DRAFT_KEY = 'aics_pb_last_draft'
 const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
 const continueHint = ref('')
-type HomeScene = Scene & { title?: string; mature?: boolean }
 
 const { recentWorks, loading: recentWorksLoading, error: recentWorksError, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
 async function retryRecentWorks(event: MouseEvent) {
@@ -274,16 +274,8 @@ async function retryRecentWorks(event: MouseEvent) {
     page.querySelector<HTMLElement>('.home-resume .recent-card, .recent-empty-state .btn')?.focus({ preventScroll: true })
   }
 }
-const recentScenes = ref<HomeScene[]>([])
-const homeScenes = ref<HomeScene[] | null>(null)
+const { recentScenes, featuredScenes } = useHomeSceneHighlights()
 const sceneStore = useSceneStore()
-const featuredIds = computed(() => {
-  const { signatureSceneIds, curatedSceneIds } = sceneStore.curation
-  const signatures = Array.isArray(signatureSceneIds) ? signatureSceneIds : []
-  const curated = Array.isArray(curatedSceneIds) ? curatedSceneIds : []
-  return [...signatures, ...curated.filter(id => !signatures.includes(id))]
-})
-const featuredScenes = computed(() => pickFeatured(featuredIds.value, homeScenes.value || [], 6))
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const entryPreviews = new Map([[studioOriginal, studioPreview], [sceneOriginal, scenePreview],
   [motionOriginal, motionPreview], [roomOriginal, roomPreview], [archiveOriginal, archivePreview]])
@@ -326,6 +318,11 @@ watch(homeMuse, muse => { if (muse === 'nene' && neneFailed.value) retryNene(); 
 
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
 const popularCharacters = computed(() => sceneStore.popularCharacters)
+function loadPopularCharacters() {
+  // The home strip needs the complete ordered character count, but its large
+  // profile catalog should only compete for bandwidth when the strip is near.
+  void sceneStore.loadBlueprintCatalog().catch(error => console.warn('角色加载失败：', error))
+}
 function portraitSrc(id: string): string {
   // 横条卡片仅 ~180px 宽，加载 1.2MB 原图曾把首页资源预算打爆 5 倍（16MB）。
   // 改用 build-character-thumbs.py 预生成的 360px WebP 缩略图（~19KB/张）；
@@ -340,15 +337,6 @@ function charName(id: string | undefined) {
 function fmtDate(ts: string | number | undefined) {
   const value = typeof ts === 'number' || typeof ts === 'string' ? ts : 0
   return new Date(value).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })
-}
-
-function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error)
-}
-
-function isHomeScene(scene: Scene): scene is HomeScene {
-  return typeof scene.id === 'string'
-    && (scene.mature === undefined || typeof scene.mature === 'boolean')
 }
 
 function readDraft(value: string | null): { updatedAt: number; sceneId?: string; sceneTitle?: string; story?: string } | null {
@@ -376,43 +364,6 @@ function initContinueDraft() {
   return true
 }
 
-/**
- * 首页横条以日期为种子做确定性轮换：每天从「招牌 + 精选」池里换一窗展示，
- * 与横条文案「今天可以从这里开始」一致，且不改变 curation 的层级语义。
- */
-function pickFeatured(ids: string[], scenes: HomeScene[], count: number): HomeScene[] {
-  const pool = ids
-    .map(id => scenes.find(scene => scene.id === id))
-    .filter((scene): scene is HomeScene => Boolean(scene))
-  if (!pool.length) return []
-  const dayKey = new Date().toISOString().slice(0, 10)
-  let seed = 0
-  for (let i = 0; i < dayKey.length; i += 1) seed = (seed * 31 + dayKey.charCodeAt(i)) >>> 0
-  const start = seed % pool.length
-  const out: HomeScene[] = []
-  for (let i = 0; i < count && out.length < count; i += 1) out.push(pool[(start + i) % pool.length])
-  return out
-}
-
-async function loadSceneHighlights() {
-  try {
-    // 审计 2026-09-05 P2-02：首页只需要精选/最近场景与计数，轻载不再拉 3.4MB 蓝图
-    await sceneStore.loadHome()
-    const scenes = sceneStore.scenes.filter(isHomeScene)
-    homeScenes.value = scenes
-
-    // 最近用过的场景
-    const recent = readRecent(localStorage)
-    const recentPicks = recent
-      .map(item => scenes.find(scene => scene.id === item.id))
-      .filter((scene): scene is HomeScene => Boolean(scene))
-      .slice(0, 6)
-    recentScenes.value = recentPicks
-  } catch (err) {
-    console.warn('场景加载失败：', errorMessage(err))
-  }
-}
-
 watch(recentWorks, works => {
     if (!initContinueDraft() && works[0]) {
       const h = works[0]
@@ -423,7 +374,6 @@ watch(recentWorks, works => {
 
 onMounted(async () => {
   initContinueDraft()
-  void loadSceneHighlights()
   try {
     await loadRecentWorks()
   } catch (e) { console.warn('作品库暂时不可用', e) }

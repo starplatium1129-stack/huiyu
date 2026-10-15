@@ -7,7 +7,7 @@
  * 文本先用 fallback 渲染——@fontsource 全部 font-display:swap，字体到达后
  * 无闪换断点（同字族度量）。
  *
- * 加载时机：main.ts 里不 await 的动态 import，首帧即发起，不阻塞解析。
+ * 加载时机：main.ts 挂载并给出首帧后，在空闲时段动态导入；保留全部字重。
  */
 import '@fontsource/jetbrains-mono/400.css'
 import '@fontsource/jetbrains-mono/600.css'

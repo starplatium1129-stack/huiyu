@@ -65,7 +65,8 @@ export function useLive2D(onStatus: (s: Live2DStatus) => void = () => {}) {
     // skip it for a frame after an outfit change, which made speech look
     // frozen even while the audio analyser was producing amplitudes.
     parameterFrame.apply()
-    if (ctx.mouthValue.value > 0) lifecycle.resumeRendering()
+    // Size, framing and recovery events own layout; audio frames only keep the clock running.
+    if (ctx.mouthValue.value > 0) lifecycle.resumeRendering(false)
   }
 
   function setAudioLevel(level: number, peak = level) {

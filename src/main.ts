@@ -9,10 +9,8 @@ import { initializeDesktopPreferences, installDesktopInteraction } from './compo
 import { installFluidGlass } from './utils/fluidGlass'
 import { installDesktopZoom } from './composables/useDesktopZoom'
 import { contentMotion, installContentMotion } from './directives/contentMotion'
-// 字体声明移入独立异步 chunk（2026-08-28 审计 P1-7）：315 条 @font-face
-// 不再打进入口 CSS（453KB → ~85KB），首帧用 fallback 渲染、swap 无闪换。
-// 不 await —— 首帧即发起加载，不阻塞入口解析。
-import('./assets/fonts')
+// Keep the existing fonts/weights, but let the workspace paint before their
+// declarations and glyph requests compete with initial modules and artwork.
 // 入口只加载主题、utilities 和跨页面材质。场景卡片、色彩卡和查看器
 // 样式由实际使用它们的组件/页面导入，与 director/chat 一起按路由加载。
 import './assets/css/design-system.css'
@@ -35,6 +33,7 @@ let disposed = false
 let stopUi = () => {}
 let stopNavigationFeedback = () => {}
 let stopPlatform = () => {}
+let stopFontLoad = () => {}
 void (async () => {
   const { useTaskCenter } = await import('./composables/useTaskCenter')
   const center = useTaskCenter()
@@ -52,6 +51,19 @@ void (async () => {
   await router.isReady().catch(() => {})
   if (disposed) return
   app.mount('#app')
+  let fontFrame = requestAnimationFrame(() => {
+    fontFrame = requestAnimationFrame(() => {
+      const load = () => { if (!disposed) void import('./assets/fonts').catch(error => console.warn('本地字体暂未加载', error)) }
+      if ('requestIdleCallback' in window) {
+        const idle = window.requestIdleCallback(load, { timeout: 1000 })
+        stopFontLoad = () => window.cancelIdleCallback(idle)
+      } else {
+        const timer = setTimeout(load, 0)
+        stopFontLoad = () => clearTimeout(timer)
+      }
+    })
+  })
+  stopFontLoad = () => cancelAnimationFrame(fontFrame)
   const stopDesktopInteraction = installDesktopInteraction(router)
   const stopFluidGlass = installFluidGlass()
   const stopDesktopZoom = installDesktopZoom()
@@ -63,5 +75,6 @@ if (import.meta.hot) import.meta.hot.dispose(() => {
   stopUi()
   stopPlatform()
   stopNavigationFeedback()
+  stopFontLoad()
   void stopArtworkSession().catch(() => {})
 })

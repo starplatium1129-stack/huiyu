@@ -387,12 +387,12 @@ export function createLifecycleController(
     cvs.addEventListener('webglcontextrestored', () => retry())
   }
 
-  function resumeRendering() {
+  function resumeRendering(refreshLayout = true) {
     if (!ctx.session || isStageHidden(ctx) || prefersReducedMotion()) return
-    ctx.session.setMaxFps(ctx.maxFps)
+    if (refreshLayout) controllers.layoutFit.layout()
+    if (ctx.session.capability.parameterOverride === false && !ctx.nativeOverlayReady) return
     ctx.session.setPaused(false)
     controllers.emotionClock.start()
-    controllers.layoutFit.layout()
   }
 
   function setPaused(paused: boolean) {

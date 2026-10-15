@@ -8,8 +8,8 @@
       :data-character="activeId"
       :data-emotion="emotion"
       :data-presence="presence || undefined"
-      :data-mouth-level="mouthLevel.toFixed(3)"
-      :data-audio-peak="audioPeak.toFixed(3)"
+      data-mouth-level="0.000"
+      data-audio-peak="0.000"
       role="region"
       :aria-label="`${character.name}的角色舞台`"
     >
@@ -227,8 +227,6 @@ function openSettings() { controlsRef.value?.open() }
 const { framing, framingStyle, update: updateFraming, reset: resetFraming } = useStageFraming(computed(() => props.activeId), () => props.surface || 'room')
 const live2dHostRef = ref<HTMLElement>()
 const emotion = ref('neutral')
-const mouthLevel = ref(0)
-const audioPeak = ref(0)
 const avatarText = ref('检测 Live2D…')
 const avatarState = ref('checking')
 const avatarDetail = ref('')
@@ -344,19 +342,19 @@ async function handleAvatarAction() {
 
 function setSpeaking(value: boolean) {
   live2d.setSpeaking(value)
-  if (!value) {
-    mouthLevel.value = 0
-    audioPeak.value = 0
+  if (!value && stageRef.value) {
+    stageRef.value.dataset.mouthLevel = '0.000'
+    stageRef.value.dataset.audioPeak = '0.000'
   }
 }
 
 function setMouth(value: number) {
-  mouthLevel.value = Math.max(0, Math.min(1, value))
+  if (stageRef.value) stageRef.value.dataset.mouthLevel = Math.max(0, Math.min(1, value)).toFixed(3)
   live2d.setMouth(value)
 }
 
 function setAudioLevel(level: number, peak = level) {
-  audioPeak.value = Math.max(0, Math.min(1, peak))
+  if (stageRef.value) stageRef.value.dataset.audioPeak = Math.max(0, Math.min(1, peak)).toFixed(3)
   live2d.setAudioLevel(level, peak)
 }
 

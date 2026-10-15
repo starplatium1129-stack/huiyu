@@ -66,13 +66,13 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
       && sameArtworkMedia(child, current.value ?? undefined) && child.parent_id === current.value?.parent_id
       && sameArtworkMedia(parent, parentArtwork.value ?? undefined);
     const cached = thumbUrls[parent.id];
-    if (cached?.startsWith('data:image/')) { parentPreview.value = cached; parentRead = null; return; }
+    if (!compareMode.value && cached?.startsWith('data:image/')) { parentPreview.value = cached; parentRead = null; return; }
     parentLoading.value = true;
     try {
       if (parent.image_id) {
         // Desktop derives missing thumbnails locally. Legacy web records may
         // lack one, so only that miss/failure needs a separately owned original.
-        const thumb = await artworkRepository.getThumbnail(parent.image_id).catch(() => null);
+        const thumb = compareMode.value ? null : await artworkRepository.getThumbnail(parent.image_id).catch(() => null);
         if (!isCurrent()) return;
         if (thumb?.startsWith('data:image/')) { parentPreview.value = thumb; return; }
         const blob = await artworkRepository.getImage(parent.image_id, controller.signal).catch(() => null);
@@ -96,6 +96,9 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   }, (next, previous) => {
     if (!previous || next.some((value, index) => value !== previous[index])) void loadParent();
   }, { immediate: true });
+  // Wall images are display-sized previews now. Original comparison owns its
+  // own source, so zoom/detail never depends on the wall's resolution or LRU.
+  watch(compareMode, () => { void loadParent(); });
   // current remains set through the viewer leave transition; its final close
   // clears it. Deactivation/unmount must release immediately, including reads.
   onDeactivated(() => { active = false; releaseParent(); });
@@ -106,7 +109,7 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
     if (!parentArtwork.value)
       return '';
     const pId = parentArtwork.value.id;
-    return cardUrls[pId] || parentPreview.value || thumbUrls[pId] || '';
+    return (compareMode.value ? parentPreview.value || cardUrls[pId] : cardUrls[pId] || parentPreview.value) || thumbUrls[pId] || '';
   });
 
   const hasComparableImage = computed(() => {
