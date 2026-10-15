@@ -8,13 +8,16 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   const contentArrivals = new WeakMap<HTMLElement, () => void>()
   let interrupted = new WeakMap<HTMLElement, Keyframe>()
   const departed = new WeakSet<HTMLElement>()
-  const workspaceDeparted = new WeakSet<HTMLElement>()
   let leaving: HTMLElement | undefined
   let departingPath = ''
   const pathname = (path: string) => path.split(/[?#]/, 1)[0]
   const archivePair = (from: string, to: string) => (from === '/popular-scenes' && to === '/character')
     || (from === '/character' && to === '/popular-scenes')
-  function arriveContent(el: HTMLElement, duration: number) {
+  function timing(el: HTMLElement, token: string) {
+    const style = getComputedStyle(el), value = style.getPropertyValue(token).trim()
+    return { duration: parseFloat(value) * (value.endsWith('ms') ? 1 : 1000), easing: style.getPropertyValue('--ease-out').trim() }
+  }
+  function arriveContent(el: HTMLElement, motion: KeyframeAnimationOptions) {
     // Only marked reading surfaces move; fixed navigation and native overlays stay anchored.
     // Finish visibility reads before creating transforms; alternating the two
     // would invalidate style again for every following reading surface.
@@ -22,9 +25,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       const rect = surface.getBoundingClientRect()
       return rect.width && rect.height && rect.bottom > 0 && rect.top < innerHeight
     })
-    return surfaces.map(surface => surface.animate([{ transform: 'translateY(16px)' }, { transform: 'none' }], {
-      duration, easing: 'cubic-bezier(.22,1,.36,1)',
-    }))
+    return surfaces.map(surface => surface.animate([{ transform: 'translateY(16px)' }, { transform: 'none' }], motion))
   }
   function settle(el: HTMLElement) { active.get(el)?.() }
   function settleAll() {
@@ -55,8 +56,6 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     el.inert = false
     const path = el.dataset.routePath || ''
     const cached = el.dataset.routeEntered === 'true'
-    const returning = workspaceDeparted.delete(el)
-    const samePage = cached && !returning
     el.dataset.routeEntered = 'true'
     departed.delete(el)
     if (path) markUiFluidityForPath(path, 'shell-ready')
@@ -79,15 +78,15 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       if (path) markUiFluidityForPath(path, 'settled')
       done()
     }
-    if (samePage || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') { finish(); return }
+    // A cached page already has its reading and scroll state. Resume it fully
+    // visible; interrupted transitions take the presentation path in onEnter.
+    if (cached || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') { finish(); return }
     active.set(el, finish)
     try {
-      const duration = cached ? 280 : 360
-      if (!cached) content = arriveContent(el, duration)
+      const motion = timing(el, '--motion-route')
+      content = arriveContent(el, motion)
       contentArrivals.set(el, releaseContent)
-      animation = el.animate([{ opacity: 0 }, { opacity: 1 }], {
-        duration, easing: 'cubic-bezier(.22, 1, .36, 1)',
-      })
+      animation = el.animate([{ opacity: 0 }, { opacity: 1 }], motion)
       animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
@@ -100,7 +99,6 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       enterWorkspace(el, done)
       return
     }
-    workspaceDeparted.delete(el)
     const current = presentation(el)
     interrupted.delete(el)
     settle(el)
@@ -141,33 +139,29 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     const archive = archivePair(departingPath, pathname(path))
     const offset = pathname(path) === '/character' ? 8 : -8
     let frames: Keyframe[] = [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }]
-    let duration = 180
-    let easing = 'cubic-bezier(.22, 1, .36, 1)'
+    let durationToken = '--motion-hover'
 
     if (crossRoute) {
       // Peer workspaces have no forward/back hierarchy. Keep their geometry
       // still; only the real directory/detail pair below gets a spatial cue.
       frames = [{ opacity: 0 }, { opacity: 1 }]
-      duration = 180
     } else if (options.initialFade) {
       frames = [{ opacity: 0 }, { opacity: 1 }]
     }
     if (archive) {
       frames = [{ opacity: 0, transform: `translateX(${offset}px)` }, { opacity: 1, transform: 'translateX(0)' }]
-      duration = 200
-      easing = 'cubic-bezier(.22, 1, .36, 1)'
+      durationToken = '--motion-control'
     }
     if (cachedActivation) {
       frames = [{ opacity: .88 }, { opacity: 1 }]
-      duration = 120
-      easing = 'cubic-bezier(.22, 1, .36, 1)'
+      durationToken = '--motion-press'
     }
     if (current) {
       frames = [current, { opacity: 1, ...(current.transform ? { transform: 'none' } : {}) }]
-      duration = 120
+      durationToken = '--motion-press'
     }
     try {
-      animation = el.animate(frames, { duration, easing })
+      animation = el.animate(frames, timing(el, durationToken))
       active.set(el, finish)
       animation.onfinish = finish
       animation.oncancel = finish
@@ -179,7 +173,6 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   function onLeave(element: Element, done: () => void) {
     const el = element as HTMLElement
     if (!destinationPath) departed.add(el)
-    else workspaceDeparted.add(el)
     // Fast navigation must not accumulate several full-page compositing layers.
     if (leaving && leaving !== el) settle(leaving)
     departingPath = pathname(el.dataset.routePath || '')
@@ -206,11 +199,8 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       current || { opacity: 1 },
       { opacity: 0, ...(current?.transform ? { transform: current.transform } : {}) },
     ]
-    const leaveDuration = isArchive ? 100 : 140
     try {
-      animation = el.animate(leaveFrames, {
-        duration: leaveDuration, easing: 'cubic-bezier(.22, 1, .36, 1)',
-      })
+      animation = el.animate(leaveFrames, timing(el, isArchive ? '--motion-press' : '--motion-hover'))
       leaving = el; active.set(el, finish); animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
@@ -225,7 +215,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   function completeEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
     settle(el)
-    interrupted.delete(el); departed.delete(el); workspaceDeparted.delete(el)
+    interrupted.delete(el); departed.delete(el)
     el.inert = false
     delete el.dataset.routeEntering
     done()

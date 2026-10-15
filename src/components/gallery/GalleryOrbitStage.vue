@@ -1,11 +1,11 @@
 <template>
-  <div ref="host" class="gallery-orbit" :class="{ 'is-reduced': reduced, 'is-dragging': dragging }" :data-position="position" role="group" aria-label="立体观画" tabindex="0">
+  <div ref="host" class="gallery-orbit" :class="{ 'is-reduced': reduced, 'is-dragging': dragging }" role="group" aria-label="立体观画" tabindex="0">
     <div class="gallery-orbit-surface">
     <div v-for="entry in cards" :key="entry.item.id" class="gallery-orbit-card" :data-orbit-index="entry.index"
-      :class="{ 'is-current': entry.index === index }" :style="{ '--orbit-transform': entry.transform, '--orbit-shade': entry.shade, '--orbit-visibility': entry.visibility }" :aria-hidden="entry.index !== index">
-      <ZoomableImageViewer v-if="entry.index === index && (currentSrc || previewSrc || preview(entry.item))"
+      :class="{ 'is-current': entry.index === index }" :aria-hidden="entry.index !== index">
+      <ZoomableImageViewer v-if="entry.index === index && (currentSrc || previewSrc || preview(entry.item) || loadFailed)"
         :src="resolveRuntimeUrl(currentSrc || previewSrc || preview(entry.item))"
-        :preview-src="resolveRuntimeUrl(previewSrc || preview(entry.item))" :alt="title(entry.item)" @load="emit('load')" @error="emit('error')">
+        :preview-src="resolveRuntimeUrl(previewSrc || preview(entry.item))" :image-key="entry.item.id" :load-failed="loadFailed" :reload="reload" :alt="title(entry.item)" @load="emit('load')" @error="emit('error')">
         <template #fallback><div class="viewer-fallback"><ArchiveIcon name="image" /></div></template>
       </ZoomableImageViewer>
       <button v-else-if="entry.index !== index" class="gallery-orbit-neighbor" type="button" tabindex="-1"
@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends Pick<ArtworkRecord, 'id' | 'width' | 'height' | 'image_width' | 'image_height' | 'actual'>">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onUpdated, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
@@ -42,25 +42,28 @@ const props = defineProps<{
   items: T[]; index: number; active: boolean; currentSrc: string; previewSrc: string
   cardUrls: Record<string, string>; thumbUrls: Record<string, string>; neighborUrls: Record<string, string>
   title: (item: T) => string
+  loadFailed?: boolean; reload?: () => Promise<void>
 }>()
 const emit = defineEmits<{ select: [index: number]; load: []; error: [] }>()
 const host = ref<HTMLElement | null>(null), failed = ref(new Set<string>())
 const imageRatios = ref<Record<string, number>>({})
-const { position, width, reduced, dragging, travel, select, reset } = useGalleryCoverFlow(host, {
+const { getPosition, windowCenter, width, reduced, dragging, travel, select, reset, startTravel, finishTravel, resumeTravel } = useGalleryCoverFlow(host, {
   index: () => props.index, count: () => props.items.length, active: () => props.active, select: index => emit('select', index),
+  present: paint,
 })
 const currentTitle = computed(() => props.items[props.index] ? props.title(props.items[props.index]) : '')
 const cards = computed(() => {
-  const motion=travel.value
-  const movingIndices=motion ? Array.from({length:Math.ceil(Math.max(...motion.samples))-Math.floor(Math.min(...motion.samples))+5},(_,i)=>Math.floor(Math.min(...motion.samples))-2+i) : []
+  const motion = travel.value
+  // A short native flight retains its finite path. Long jumps and dragging
+  // replace only the six neighboring records when the window crosses a cover.
+  const first = motion ? Math.floor(Math.min(...motion.samples)) : windowCenter.value
+  const last = motion ? Math.ceil(Math.max(...motion.samples)) : windowCenter.value + 1
   const indices = reduced.value ? [props.index] : [...new Set([
-    Math.floor(position.value) - 2, Math.floor(position.value) - 1, Math.floor(position.value),
-    Math.ceil(position.value), Math.ceil(position.value) + 1, Math.ceil(position.value) + 2, props.index, ...movingIndices,
-  ])].sort((a, b) => a - b)
+    ...Array.from({ length:last - first + 5 }, (_, index) => first - 2 + index), props.index,
+  ])]
   return indices.flatMap(index => {
     if(!props.items[index])return []
-    const style=cardStyle(index)
-    return [{ index,item:props.items[index],...style,visibility:motion ? 'visible' : style.visibility }]
+    return [{ index, item:props.items[index] }]
   })
 })
 function preview(item: T) { return props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || '' }
@@ -72,7 +75,7 @@ function measurePreview(item: T, event: Event) {
   const image = event.target as HTMLImageElement
   if (image.complete && image.naturalWidth && image.naturalHeight) imageRatios.value[item.id] = image.naturalWidth / image.naturalHeight
 }
-function cardStyle(index: number, at = position.value) {
+function cardStyle(index: number, at: number) {
   if (reduced.value) return { transform: 'none', shade: 0, visibility: 'visible' }
   const distance = index - at, depth = Math.abs(distance)
   return {
@@ -80,22 +83,61 @@ function cardStyle(index: number, at = position.value) {
     shade: Math.min(.45, depth * .18), visibility: depth > 3 ? 'hidden' : 'visible',
   }
 }
-let animations:Animation[]=[]
-function cancelTravel(){animations.forEach(animation=>animation.cancel());animations=[]}
-watch(travel,async motion=>{
-  cancelTravel()
-  if(!motion)return
-  await nextTick()
-  if(travel.value!==motion || !host.value)return
-  for(const card of host.value.querySelectorAll<HTMLElement>('.gallery-orbit-card')) {
-    const index=Number(card.dataset.orbitIndex)
-    const styles=motion.samples.map(at=>cardStyle(index,at))
-    const animation=card.animate(styles.map(style=>({transform:style.transform,opacity:style.visibility==='hidden'?0:1})),{duration:motion.duration,fill:'both',easing:'linear'})
-    animation.id='gallery-cover-flow';animations.push(animation)
-    const shade=card.querySelector<HTMLElement>('.gallery-orbit-shade')
-    if(shade) animations.push(shade.animate(styles.map(style=>({opacity:style.shade})),{duration:motion.duration,fill:'both',easing:'linear'}))
+function paint(at: number) {
+  if (!host.value?.isConnected) return
+  for (const card of host.value.querySelectorAll<HTMLElement>('.gallery-orbit-card')) {
+    const style = cardStyle(Number(card.dataset.orbitIndex), at)
+    card.style.transform = style.transform
+    card.style.opacity = style.visibility === 'hidden' ? '0' : '1'
+    card.style.visibility = style.visibility
+    const shade = card.querySelector<HTMLElement>('.gallery-orbit-shade')
+    if (shade) shade.style.opacity = String(style.shade)
   }
-},{flush:'post'})
-onBeforeUnmount(cancelTravel)
+}
+let animations: Animation[] = []
+let focusRevision = 0
+watch(() => props.index, async () => {
+  const revision = ++focusRevision, root = host.value
+  const focused = document.activeElement
+  if (!(focused instanceof HTMLElement) || !root?.querySelector('.gallery-orbit-card.is-current .zoomable-image-viewer')?.contains(focused)) return
+  await nextTick()
+  if (revision !== focusRevision || !props.active || !root.isConnected) return
+  const modal = document.querySelector('dialog:modal')
+  if (modal && !modal.contains(root)) return
+  // Only the departing picture loses its node; navigation and slider controls
+  // retain their own focus through selection and native timeline updates.
+  ;(root.querySelector<HTMLElement>('.gallery-orbit-card.is-current .zoomable-image-viewer') ?? root).focus({ preventScroll:true })
+})
+function cancelTravel() { animations.forEach(animation => animation.cancel()); animations = [] }
+watch(travel, async motion => {
+  cancelTravel()
+  if (!motion) return
+  await nextTick()
+  if (travel.value !== motion || !host.value) return
+  paint(motion.to)
+  try {
+    for (const card of host.value.querySelectorAll<HTMLElement>('.gallery-orbit-card')) {
+      const styles = motion.samples.map(at => cardStyle(Number(card.dataset.orbitIndex), at))
+      // Discrete visibility follows the same samples as opacity, so transparent
+      // edge covers cannot remain pointer targets during a native flight.
+      const animation = card.animate(styles.map(style => ({ transform:style.transform, opacity:style.visibility === 'hidden' ? 0 : 1, visibility:style.visibility })), { duration:motion.duration, fill:'both', easing:'linear' })
+      animation.id = 'gallery-cover-flow'; animations.push(animation)
+      void animation.finished.catch(() => {})
+      const shade = card.querySelector<HTMLElement>('.gallery-orbit-shade')
+      if (shade) {
+        const effect = shade.animate(styles.map(style => ({ opacity:style.shade })), { duration:motion.duration, fill:'both', easing:'linear' })
+        animations.push(effect); void effect.finished.catch(() => {})
+      }
+    }
+    if (!animations.length) { finishTravel(motion); return }
+    startTravel(motion)
+    void animations[0].finished.then(() => finishTravel(motion), () => resumeTravel(motion))
+  } catch {
+    // The same private spring continues if an optional native timeline fails.
+    resumeTravel(motion)
+  }
+}, { flush:'sync' })
+onUpdated(() => paint(travel.value?.to ?? getPosition()))
+onBeforeUnmount(() => { focusRevision++; cancelTravel() })
 watch(() => props.items.map(item => item.id).join('\u0000'), () => { failed.value.clear(); imageRatios.value = {}; reset() })
 </script>

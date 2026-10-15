@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body"><dialog ref="dialog" class="task-center" aria-labelledby="task-center-title" @click="onDialogClick" @cancel.prevent="opened = false" @close="onClosed">
     <header data-fluid-glass><div><h2 id="task-center-title">任务中心</h2><p>{{ activeCount ? `${activeCount} 项正在处理，切换工作区可继续查看进度。` : '创作进度与最近完成的任务都在这里。' }}</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭任务中心" @click="opened = false"><ArchiveIcon name="close" /></button></header>
-    <RuntimeTaskList v-if="runtimeTasksEnabled && inspected" :active="opened" @navigate="opened = false" />
+    <AsyncPanel v-if="runtimeTasksEnabled && inspected" class="task-runtime-panel" :loader="loadRuntimeTaskList" label="任务与进度" v-slot="{ component }"><component :is="component" :active="opened" @navigate="opened = false" /></AsyncPanel>
     <details :open="!runtimeTasksEnabled"><StudioDisclosureSummary>{{ runtimeTasksEnabled ? '旧版本任务摘要 · 仅供查看' : '任务与进度' }}</StudioDisclosureSummary>
     <div data-disclosure-content class="task-disclosure tw:flex tw:flex-col tw:gap-s-3 tw:flex-1 tw:min-h-0">
     <div v-if="!runtimeTasksEnabled" class="task-center-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" class="btn btn-ghost" type="button" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" type="button" @click="clearCompleted">清理完成记录</button><button class="btn btn-ghost" type="button" :disabled="refreshing" @click="refresh">{{ refreshing ? '查询中…' : '更新任务状态' }}</button></div>
@@ -13,14 +13,15 @@
 </template>
 <script setup lang="ts">
 import { GENERATION_STAGE_LABELS } from '@/utils/generationTask'
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { useTaskCenter, hydrateTasks, consumeTaskReloadApproval, type TaskStatus } from '@/composables/useTaskCenter'
 import { startRuntimeTaskPolling } from '@/api/runtimeTasks'
 import { runtimeTasksEnabled } from '@/stores/runtimeTaskState'
-const RuntimeTaskList = defineAsyncComponent(() => import('./RuntimeTaskList.vue'))
+const loadRuntimeTaskList = () => import('./RuntimeTaskList.vue')
 import { useTaskRecovery } from '@/composables/tasks/useTaskRecovery'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 const recovery = useTaskRecovery()
@@ -58,6 +59,7 @@ async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) ret
 .task-center[open] { @apply tw:flex tw:flex-col tw:gap-s-4; }
 .task-center { @apply tw:overflow-hidden; }
 .task-center > details { @apply tw:min-h-0; }
+.task-runtime-panel { display:flex; flex-direction:column; flex:1; min-height:0; }
 .task-center > details[open] { display:flex; flex-direction:column; flex:1; overflow:hidden; }
 .task-center > header,.task-center > footer,.task-center-controls { flex-shrink:0; }
 .task-center .task-list { flex:1; overscroll-behavior:contain; scrollbar-width:thin; padding-right:var(--s-1); }

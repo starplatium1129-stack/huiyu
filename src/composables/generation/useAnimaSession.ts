@@ -393,7 +393,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const onResult = (result: AnimaResult) => { completedSubmissions.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission); options.onResult(result) }
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
-    patchState({ phase: 'submitting', job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : state.value.online ? '正在连接 ComfyUI…' : '正在启动受管绘图服务…', statusText: '提交任务…', errorMsg: '', errorReport: null })
+    patchState({ phase: 'submitting', backendStatus: undefined, job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : state.value.online ? '正在连接 ComfyUI…' : '正在启动受管绘图服务…', statusText: '提交任务…', errorMsg: '', errorReport: null })
     let accepted = false, submitting = false
     const releaseLocalChat = async () => {
       if(isLocalStudioHost()) {
@@ -441,17 +441,24 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     }
   }
 
-  async function cancel(): Promise<void> {
+  let cancellation: { serial: number; request: Promise<void> } | null = null
+  function cancel(): Promise<void> {
+    if (cancellation?.serial === requestSerial) return cancellation.request
+    const serial = requestSerial, request: Promise<void> = cancelOnce().finally(() => { if (cancellation?.request === request) cancellation = null })
+    cancellation = { serial, request }
+    return request
+  }
+  async function cancelOnce(): Promise<void> {
     if (durableAttempt && durableKey && BUSY_PHASES.includes(state.value.phase)) {
       const serial = requestSerial, key = durableKey
       const isCurrent = () => serial === requestSerial && key === durableKey && BUSY_PHASES.includes(state.value.phase)
-      patchState({ phase: 'cancelling', statusText: '正在记录取消请求…' })
+      patchState({ phase: 'cancelling', statusText: '正在记录取消请求…', errorMsg: '' })
       try {
         const { cancelRuntimeTaskKey, taskMessage } = await import('@/api/runtimeTasks')
         const task = await cancelRuntimeTaskKey(key)
         if (!isCurrent()) return
         patchState({ phase: task?.status === 'cancelled' ? 'cancelled' : 'cancelling', statusText: task ? taskMessage(task) : '取消意图已记录，等待提交核对。' })
-      } catch { if (isCurrent()) patchState({ statusText: '取消尚未确认，请到任务中心核对。' }) }
+      } catch (error) { if (isCurrent()) patchState({ statusText: '取消尚未确认，可以重试停止或到任务中心核对。', errorMsg: error instanceof Error ? error.message : '取消请求未完成' }) }
       return
     }
     const job = state.value.job

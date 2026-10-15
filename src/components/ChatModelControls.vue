@@ -37,7 +37,7 @@
         <p v-if="localStatusText" class="local-model-help" role="status">{{ localStatusText }}</p>
       </div>
       <div v-else v-content-motion:right="chatProvider" class="provider-model-controls">
-        <StudioTooltip :content="apiConfigured || useHostConfig ? '更换模型或修改 API 配置' : '选择服务商并配置聊天模型'">
+        <StudioTooltip anchor :content="busy ? '回复结束后可修改聊天模型' : apiConfigured || useHostConfig ? '更换模型或修改 API 配置' : '选择服务商并配置聊天模型'">
         <button
           class="api-settings-toggle"
           type="button"
@@ -54,7 +54,7 @@
         <StudioDisclosureSummary>更多选项</StudioDisclosureSummary>
         <div class="model-more-body" data-disclosure-content>
           <template v-if="chatProvider === 'api'">
-            <StudioTooltip content="允许模型直接绘图、反推已发送图片和使用本地文件工具，仅本机可用">
+            <StudioTooltip anchor :content="busy ? '回复结束后可修改房间工具' : '允许模型直接绘图、反推已发送图片和使用本地文件工具，仅本机可用'">
               <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="companionTools" :disabled="busy" @click="emit('update:companion-tools', !companionTools)">房间工具：{{ companionTools ? '开' : '关' }}</button>
             </StudioTooltip>
             <StudioTooltip :content="reasoningHint">

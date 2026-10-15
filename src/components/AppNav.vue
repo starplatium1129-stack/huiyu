@@ -74,7 +74,7 @@
 
 <script setup lang="ts">
 import BrandLogo from '@/components/BrandLogo.vue'
-import { ref, computed, shallowRef, watch, onMounted, onUnmounted, nextTick, type Component } from 'vue'
+import { ref, computed, shallowRef, watch, onActivated, onDeactivated, onMounted, onUnmounted, nextTick, type Component } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSoundToggle from './AppSoundToggle.vue'
 import AppThemeToggle from './AppThemeToggle.vue'
@@ -103,7 +103,7 @@ const moreLoaded = ref(false)
 const moreError = ref(false)
 let moreHandoff = false
 let menuDownload: Promise<{ default: Component }> | null = null
-let navigationActive = true
+let navigationActive = false
 function downloadMore() {
   return menuDownload ??= import('./AppMoreMenu.vue').catch(error => { menuDownload = null; throw error })
 }
@@ -257,17 +257,24 @@ function onNavigationKey(event: KeyboardEvent) {
   if (next >= 0) { event.preventDefault(); links[next]?.focus() }
 }
 
-onMounted(() => {
+function activateNavigation() {
+  if (navigationActive) return
+  navigationActive = true
   document.addEventListener('click', onDocClick)
   document.addEventListener('keydown', onDocKey)
   document.addEventListener('focusin', dismissPendingMore)
-})
-onUnmounted(() => {
+}
+function deactivateNavigation() {
   navigationActive = false
+  closeMenu()
   document.removeEventListener('click', onDocClick)
   document.removeEventListener('keydown', onDocKey)
   document.removeEventListener('focusin', dismissPendingMore)
-})
+}
+onMounted(activateNavigation)
+onActivated(activateNavigation)
+onDeactivated(deactivateNavigation)
+onUnmounted(deactivateNavigation)
 </script>
 
 <style scoped>

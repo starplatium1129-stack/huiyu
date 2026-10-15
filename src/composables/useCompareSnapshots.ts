@@ -1,6 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import { ref, onBeforeUnmount, onDeactivated, type Ref } from 'vue'
-import { useFocusTrap } from './useFocusTrap.ts'
 
 /**
  * 出图对比快照的生命周期所有权（2026-08-21 自 PromptBuilderView 拆出）。
@@ -10,7 +9,7 @@ import { useFocusTrap } from './useFocusTrap.ts'
  *   1. 轮转前把 blob 克隆成独立 URL 保活（persistCompareUrl）；
  *   2. 被替换的克隆延迟到对比弹层关闭后再释放（pending 队列，上限 8 张强制回收）；
  *   3. token 防乱序：连续出图时丢弃过期快照，避免旧图覆盖新图；
- *   4. 弹层焦点陷阱与卸载时全量 revoke。
+ *   4. 卸载时全量 revoke；焦点由对比弹层组件管理。
  *   5. 克隆或构建失败时保留最后一对有效快照，不借用可能已失效的引擎 blob。
  *
  * 快照的业务字段（seed/sampler/尺寸等引擎元数据）由调用方通过 `build` 提供，
@@ -23,7 +22,6 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
   const prevResult = ref<T | null>(null)
   const lastResult = ref<T | null>(null)
   const compareOpen = ref(false)
-  const compareEl = ref<HTMLElement | null>(null)
 
   const cloneUrls = new Set<string>()
   const pendingRelease = new Set<string>()
@@ -112,10 +110,6 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
 
   onDeactivated(close)
 
-  useFocusTrap(compareEl, () => compareOpen.value, {
-    onEscape: close,
-  })
-
   onBeforeUnmount(() => {
     disposed = true
     rotateToken += 1
@@ -130,7 +124,6 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
     prevResult: prevResult as Ref<T | null>,
     lastResult: lastResult as Ref<T | null>,
     compareOpen,
-    compareEl,
     rotate,
     release,
     close,

@@ -2,8 +2,8 @@
 <!-- 出图大图对比：上一张 vs 当前 -->
     <Teleport to="body">
       <FluidTransition>
-        <PromptComparePanel v-if="compareOpen && prevResult && lastResult"
-          :previous="prevResult" :current="lastResult" @ready="compareEl = $event" @close="closeCompare" />
+        <PromptComparePanel v-if="prevResult && lastResult" v-show="compareOpen"
+          :open="compareOpen" :previous="prevResult" :current="lastResult" @close="closeCompare" />
       </FluidTransition>
     </Teleport>
 
@@ -38,5 +38,5 @@ import DeferredPanel from './DeferredPanel.vue'
 const PromptComparePanel = defineAsyncComponent(() => import('./PromptComparePanel.vue'))
 const AnimaInpaintModal = defineAsyncComponent(() => import('@/components/AnimaInpaintModal.vue'))
 const props = defineProps<{ bindings: PromptDialogBindings }>()
-const { inpaintManagedStartAvailable, inpaintProvider, inpaintAutomaticMaskAvailable, inpaintAutomaticMaskStatus, compareEl, generationBusy, inpaintPreparing, inpaintImageSource, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.bindings
+const { inpaintManagedStartAvailable, inpaintProvider, inpaintAutomaticMaskAvailable, inpaintAutomaticMaskStatus, generationBusy, inpaintPreparing, inpaintImageSource, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.bindings
 </script>

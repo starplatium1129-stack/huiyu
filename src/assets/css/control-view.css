@@ -55,7 +55,10 @@
 .service-row-actions .btn { @apply tw:min-h-[36px] tw:shrink-0 tw:whitespace-nowrap; }
 .service-row-actions .btn-danger { background: transparent; @apply tw:border-soft tw:text-danger-text; }
 .service-row-actions .btn:disabled { @apply tw:text-disabled; }
-.autostart-row { @apply tw:flex tw:items-center tw:gap-s-2; border-top: 1px solid var(--border-soft); @apply tw:pt-s-4 tw:mt-s-2 tw:text-label tw:text-secondary; }
+/* Reka's switch root does not inherit this view's scoped-style attribute. */
+.control-page :deep(.autostart-row) { @apply tw:flex tw:w-full tw:items-center tw:gap-s-2; border-top: 1px solid var(--border-soft); @apply tw:pt-s-4 tw:mt-s-2 tw:text-label tw:text-secondary; }
+.control-page :deep(.autostart-row[data-disabled]) { color:var(--text-disabled); }
+.control-page :deep(.autostart-row[data-disabled] .autostart-hint) { color:var(--text-disabled); }
 .autostart-hint { display:block; margin-top:var(--s-1); color:var(--text-muted); font-size:var(--fs-label-xs); }
 .script-hint { @apply tw:text-warning-text tw:text-label-xs tw:leading-body; overflow-wrap: anywhere; }
 .control-work-grid { @apply tw:grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); @apply tw:gap-s-5; align-items: start; }

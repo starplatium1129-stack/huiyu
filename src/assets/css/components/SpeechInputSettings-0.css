@@ -29,15 +29,16 @@
   background: var(--success); @apply tw:mr-[5px]; vertical-align: 1px;
 }
 
-.speech-toggle-row {
-  @apply tw:flex tw:gap-s-3 tw:items-start tw:p-s-3;
+/* Reka's switch root does not carry this form's scoped-style attribute. */
+.speech-settings :deep(.speech-toggle-row) {
+  @apply tw:flex tw:w-full tw:min-w-0 tw:gap-s-3 tw:items-start tw:p-s-3;
   background: var(--bg-deep);
   @apply tw:rounded-md tw:cursor-pointer;
 }
 .speech-toggle-copy strong { @apply tw:block tw:text-label-sm tw:text-primary; }
 .speech-toggle-copy { min-width:0; line-height:var(--lh-body); }
 .speech-toggle-copy small { @apply tw:block tw:text-label-xs tw:text-muted tw:mt-[2px]; }
-.speech-toggle-row-sub { @apply tw:mt-s-3; }
+.speech-settings :deep(.speech-toggle-row-sub) { @apply tw:mt-s-3; }
 
 .speech-settings-grid-words { @apply tw:mt-s-3; }
 

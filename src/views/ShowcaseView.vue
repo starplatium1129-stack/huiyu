@@ -22,7 +22,7 @@
         <div class="filter-details" data-disclosure-content>
           <div class="filter-group filter-dropdowns tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center">
             <label for="showcaseTypeSelect">作品类型
-              <StudioSelect :key="`type-${typeFilter}`" id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
+              <StudioSelect id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
                 :options="TYPE_OPTS.map(opt => ({ value: opt.v, label: opt.l }))" /></label>
             <label for="showcaseCharSelect">角色筛选
               <StudioSelect id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
@@ -93,10 +93,10 @@
             :src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :thumb-urls="viewerThumbs" :title="entry => entry.title"
             @select="openViewer(filtered[$event].id)" @close="closeViewer" @toggle-original="toggleOriginalViewer" @dismiss-info="closeViewerInfo"
             @interact="viewerHero.cancel" @load="onViewerImageLoad" @error="viewerImageFailed = true">
-            <template #tools><button class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
+            <template #tools><button ref="viewerInfoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
           </ArtworkViewerStage>
-          <aside id="showcase-viewer-info" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
-            <header class="viewer-info-header"><span class="viewer-kicker">参考画册</span><button class="viewer-info-close" type="button" @click="closeViewerInfo"><ArchiveIcon name="close" />关闭信息</button></header>
+          <aside id="showcase-viewer-info" ref="viewerInfoEl" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
+            <header class="viewer-info-header"><span class="viewer-kicker">参考画册</span><button ref="viewerInfoClose" class="viewer-info-close" type="button" @click="closeViewerInfo"><ArchiveIcon name="close" />关闭信息</button></header>
             <h2 id="showcase-viewer-title" class="viewer-title">{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
               <span>{{ charLabel(currentEntry.char) }}</span>
@@ -130,6 +130,7 @@ import { runtimeFetch } from '@/platform/runtimeUrl'
 import { useMediaQuery } from '@vueuse/core'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
+import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
@@ -196,18 +197,29 @@ const viewerClosing = ref(false)
 const originalViewer = ref(false)
 const viewerInfoOpen = ref(false)
 const narrowViewer = useMediaQuery('(max-width: 900px)')
-async function openViewerInfo() {
+const viewerInfoEl = ref<HTMLElement | null>(null), viewerInfoClose = ref<HTMLButtonElement | null>(null), viewerInfoToggle = ref<HTMLButtonElement | null>(null)
+function openViewerInfo(event: MouseEvent) {
+  dialogEl.value?.toggleAttribute('data-info-instant', event.detail === 0)
+  viewerInfoToggle.value?.focus({ preventScroll: true })
   viewerInfoOpen.value = true
-  await nextTick()
-  dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-info-close')?.focus({ preventScroll: true })
 }
-function closeViewerInfo() {
+function closeViewerInfo(event?: MouseEvent) {
   if (!viewerInfoOpen.value) return
+  dialogEl.value?.toggleAttribute('data-info-instant', !event || event.detail === 0)
   viewerInfoOpen.value = false
-  dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-info-toggle')?.focus({ preventScroll: true })
+  viewerInfoToggle.value?.focus({ preventScroll: true })
 }
 const viewerPreviewSrc = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
+useFocusTrap(viewerInfoEl, () => viewerMounted.value && !viewerClosing.value && narrowViewer.value && viewerInfoOpen.value, {
+  lockScroll: false, initialFocus: viewerInfoClose, onEscape: closeViewerInfo,
+})
+watch(narrowViewer, narrow => {
+  if (!narrow && viewerInfoOpen.value) {
+    viewerInfoOpen.value = false
+    dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-close')?.focus({ preventScroll: true })
+  }
+})
 const viewerHero = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const viewerSurface = useFluidSurface('.art-viewer')
 function sourceImage(id = currentId.value) {
@@ -317,6 +329,7 @@ const viewerThumbs = computed(() => Object.fromEntries(filtered.value.map(entry 
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
 function openViewer(id: string) {
+  if (!filtered.value.some(entry => entry.id === id)) return
   if (!dialogEl.value?.open) { originalViewer.value = false; viewerInfoOpen.value = false }
   const source = sourceImage(id)
   viewerPreviewSrc.value = viewerHero.capture(source)
@@ -331,7 +344,7 @@ function openViewer(id: string) {
   // Opening after the computed entry has rendered avoids relying on a same-card
   // close/reopen value change, which is not guaranteed during dialog teardown.
   void nextTick(() => {
-    if (currentId.value === id && dialogEl.value && !unmounted && viewActive && route.path === '/showcase') {
+    if (currentId.value === id && currentEntry.value && dialogEl.value && !unmounted && viewActive && route.path === '/showcase') {
       viewerMotion.open()
     }
   })
@@ -344,7 +357,10 @@ function toggleOriginalViewer() {
 function openLinkedScene() {
   if (!viewActive || route.path !== '/showcase') return
   const id = route.query.scene
-  if (typeof id === 'string' && entries.value.some(entry => entry.id === id)) openViewer(id)
+  if (typeof id !== 'string' || !entries.value.some(entry => entry.id === id)) return
+  if (!filtered.value.some(entry => entry.id === id)) resetFilters()
+  albumsOpen.value = false
+  openViewer(id)
 }
 watch(() => route.query.scene, openLinkedScene)
 function clearLinkedScene() {
@@ -359,6 +375,7 @@ function closeViewer() {
   // Clear only the tooltip portal before native close (Reka's Teleport anchor
   // otherwise becomes stale), then release native focus and media together.
   viewerClosing.value = true
+  viewerInfoOpen.value = false
   void nextTick(() => {
     if (!viewerClosing.value || !viewActive || unmounted) return
     viewerMotion.close(() => {
@@ -388,6 +405,7 @@ function resetFilters() { albumSelection.value = 'all'; searchQuery.value = ''; 
 
 function onKey(e: KeyboardEvent) {
   if (!dialogEl.value?.open || viewerClosing.value || !currentEntry.value || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return
+  if (narrowViewer.value && viewerInfoOpen.value) return
   if (e.target instanceof Element && e.target.closest('input,textarea,select,[contenteditable="true"]')) return
   if (e.key === 'ArrowLeft') { e.preventDefault(); move(-1) }
   if (e.key === 'ArrowRight') { e.preventDefault(); move(1) }

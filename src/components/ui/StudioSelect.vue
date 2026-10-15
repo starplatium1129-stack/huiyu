@@ -104,6 +104,10 @@ function onEscape(event: KeyboardEvent) {
   event.preventDefault()
   open.value = false
 }
+function onDismissEscape(event: KeyboardEvent) {
+  // Reka also handles Escape at window level, after the trigger/content handler.
+  if (event.isComposing || event.keyCode === 229) event.preventDefault()
+}
 // class 落在外层包裹上，便于页面按上下文控制宽度与布局；其余属性（data-*、
 // aria-*）连同 id 一起加到可见 trigger。样式一律走 class —— 仓库禁止内联 style
 // （test-style-debt 的内联样式预算只允许承载自定义属性），所以 style 不透传。
@@ -163,7 +167,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
       </StudioTooltip>
 
       <SelectPortal v-if="open" :to="portalTarget">
-        <SelectContent data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @close-auto-focus="onCloseAutoFocus">
+        <SelectContent data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @escape-key-down="onDismissEscape" @close-auto-focus="onCloseAutoFocus">
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">
               <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">

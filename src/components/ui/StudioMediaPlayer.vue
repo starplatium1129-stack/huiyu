@@ -32,7 +32,8 @@ const media = ref<HTMLMediaElement | null>(null)
 const taskMedia = useTaskMediaSource(() => props.src)
 const mediaSource = taskMedia.url
 const mediaError = taskMedia.error
-let resumeAt = 0, resumePlaying = false
+let resumeAt: number | null = null
+let resumePlaying = false
 let playRevision = 0
 let reloadRevision = 0, automaticRecoveryAttempted = false
 let viewActive = true
@@ -66,6 +67,8 @@ function formatTime(seconds: number): string {
 async function togglePlay() {
   const element = media.value
   if (!element) return
+  // User input after a URL renewal supersedes the captured playback intent.
+  resumePlaying = false
   const revision = ++playRevision
   if (element.paused) {
     try { await element.play() } catch {
@@ -81,6 +84,7 @@ function onSeek(event: Event) {
   if (!element) return
   const next = Number((event.target as HTMLInputElement).value)
   if (!Number.isFinite(next)) return
+  if (resumeAt !== null) resumeAt = next
   element.currentTime = next
   currentTime.value = next
 }
@@ -108,7 +112,7 @@ function onLoadedMetadata() {
   if (!element) return
   failed.value = false
   duration.value = Number.isFinite(element.duration) ? element.duration : 0
-  if (resumeAt) { element.currentTime = resumeAt; resumeAt = 0 }
+  if (resumeAt !== null) { element.currentTime = resumeAt; resumeAt = null }
   if (resumePlaying) { resumePlaying = false; void element.play().catch(() => {}) }
 }
 
@@ -153,7 +157,7 @@ function onMediaError() {
 // 换片（重新生成 / 换镜头）时把整条状态复位，避免沿用上一条的进度与错误。
 watch(() => props.src, () => {
   reloadRevision++; reloading.value = false; automaticRecoveryAttempted = false
-  resumeAt = 0; resumePlaying = false
+  resumeAt = null; resumePlaying = false
   playing.value = false
   currentTime.value = 0
   duration.value = 0

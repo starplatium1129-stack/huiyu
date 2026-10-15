@@ -167,11 +167,13 @@ html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shado
 .video-job-state { @apply tw:font-semibold; }
 .video-job-state[data-state="running"],.video-job-state[data-state="queued"],.video-job-state[data-state="cancelling"] { @apply tw:text-accent; }
 .video-job-state[data-state="succeeded"] { @apply tw:text-success-text; }
+.video-job-state[data-state="review"] { @apply tw:text-warning-text; }
 .video-job-state[data-state="failed"],.video-job-state[data-state="cancelled"] { @apply tw:text-danger-text; }
 .video-job-meta { @apply tw:flex tw:flex-wrap tw:gap-s-2; margin:var(--s-3) 0; }
 .video-job-meta span { padding:var(--s-1) var(--s-2); border:0; @apply tw:rounded-pill tw:text-secondary; background:var(--bg-base); font:500 var(--fs-label-xs) var(--font-mono); }
 .video-progress { @apply tw:h-[4px]; margin:var(--s-3) 0; @apply tw:overflow-hidden tw:rounded-pill; background:var(--bg-deep); }
 .video-progress i { @apply tw:block tw:h-full tw:w-full; transform-origin:left center; transform:scaleX(var(--progress,0%)); background:var(--accent); transition:transform var(--motion-hover) var(--ease-out); }
+.video-progress[data-indeterminate] i { transform:scaleX(.28); transform-origin:center; transition:none; }
 .video-inline-message { padding:var(--s-2) var(--s-3); @apply tw:rounded-md tw:text-body-sm tw:leading-body; }
 .video-inline-message.error { background:color-mix(in srgb,var(--danger) 10%,transparent); @apply tw:text-danger-text; }
 .video-inline-message.warning { background:color-mix(in srgb,var(--warning) 12%,transparent); @apply tw:text-warning-text; }

@@ -10,17 +10,17 @@
             :src="current.src" :preview-src="openingPreview || current.previewSrc" :card-urls="previews"
             :title="item => item.title" @close="selectedId = null" @select="select"
             @close-button="closeButton = $event" @toggle-original="original = !original"
-            @dismiss-info="infoOpen = false" @interact="cancelFlight">
+            @dismiss-info="closeInfo" @interact="cancelFlight">
             <template #tools>
               <button ref="infoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="场景信息"
-                :aria-controls="infoId" :aria-expanded="infoOpen" @click="infoOpen = !infoOpen"><ArchiveIcon name="info" /></button>
+                :aria-controls="infoId" :aria-expanded="infoOpen" @click="toggleInfo"><ArchiveIcon name="info" /></button>
             </template>
           </ArtworkViewerStage>
           <aside :id="infoId" ref="infoEl" class="viewer-info" :inert="compact && !infoOpen"
             :aria-hidden="compact && !infoOpen ? 'true' : undefined" :aria-labelledby="titleId">
             <header class="viewer-info-header">
               <div class="viewer-kicker">SCENE / 场景</div>
-              <button ref="infoClose" class="viewer-info-close" type="button" @click="infoOpen = false"><ArchiveIcon name="close" /><span>关闭信息</span></button>
+              <button ref="infoClose" class="viewer-info-close" type="button" @click="closeInfo"><ArchiveIcon name="close" /><span>关闭信息</span></button>
             </header>
             <h2 :id="titleId" class="viewer-title">{{ current.title }}</h2>
             <slot name="info" :item="current" />
@@ -113,10 +113,23 @@ watch(() => [selectedId.value, props.items] as const, ([id, items], previous) =>
   void enter()
 }, { immediate: true, flush: 'post' })
 useFocusTrap(viewerEl, () => !!selectedId.value, { initialFocus: closeButton, onEscape: () => { selectedId.value = null } })
-watch(infoOpen, async open => {
-  if (!compact.value || !selectedId.value) return
-  await nextTick()
-  ;(open ? infoClose.value : infoToggle.value)?.focus({ preventScroll: true })
+function toggleInfo(event: MouseEvent) {
+  viewerEl.value?.toggleAttribute('data-info-instant', event.detail === 0)
+  if (!infoOpen.value) infoToggle.value?.focus({ preventScroll: true })
+  infoOpen.value = !infoOpen.value
+}
+function closeInfo(event?: MouseEvent) {
+  viewerEl.value?.toggleAttribute('data-info-instant', !event || event.detail === 0)
+  infoOpen.value = false
+}
+useFocusTrap(infoEl, () => !!selectedId.value && compact.value && infoOpen.value, {
+  initialFocus: infoClose, onEscape: closeInfo, lockScroll: false,
+})
+watch(compact, value => {
+  if (!value && infoOpen.value) {
+    closeInfo()
+    void nextTick(() => { if (selectedId.value && !compact.value) closeButton.value?.focus({ preventScroll: true }) })
+  }
 })
 useEventListener(window, 'resize', cancelFlight)
 useEventListener(window.visualViewport, 'resize', cancelFlight)

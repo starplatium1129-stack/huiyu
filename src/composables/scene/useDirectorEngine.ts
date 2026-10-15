@@ -7,7 +7,7 @@ import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
 import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
-import type { AnimaResult } from '@/types/anima'
+import type { AnimaPhase, AnimaResult } from '@/types/anima'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
@@ -151,7 +151,8 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   const displayResultSeed = computed(() => drawEngine.value !== 'sd' ? animaState.value.result?.metadata.seed ?? null : sd.resultSeed.value)
 
   const drawEngineLabel = computed(() => drawEngine.value === 'sd' ? 'SD' : drawEngine.value === 'anima' ? 'Anima' : 'Krea 2')
-  const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value : animaState.value.statusText)
+  const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value
+    : ['submitting', 'running'].includes(animaState.value.phase) ? animaState.value.progressText || animaState.value.statusText : animaState.value.statusText)
   const engineOnline = computed(() => {
     const ready = animaState.value.online || animaState.value.managedStartAvailable === true
     if (drawEngine.value === 'anima') {
@@ -169,6 +170,9 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     : animaState.value.progress)
   const generationError = computed(() => drawEngine.value === 'sd' ? sd.errorMsg.value : animaState.value.errorMsg)
   const generationStopped = computed(() => drawEngine.value === 'sd' ? sd.statusText.value === '已停止' : animaState.value.phase === 'cancelled')
+  const generationPhase = computed<AnimaPhase>(() => drawEngine.value !== 'sd' ? animaState.value.phase
+    : sd.generating.value ? 'running' : sd.errorMsg.value ? 'failed' : generationStopped.value ? 'cancelled' : 'idle')
+  const generationNeedsReview = computed(() => drawEngine.value !== 'sd' && animaState.value.phase === 'failed' && animaState.value.backendStatus === 'unknown')
   const engineStatusText = computed(() => {
     if (drawEngine.value === 'sd') return 'SD 未连接'
     return animaState.value.checkMsg || `${drawEngineLabel.value} 未连接`
@@ -242,6 +246,8 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     generationProgress,
     generationError,
     generationStopped,
+    generationPhase,
+    generationNeedsReview,
     engineStatusText,
     recheckEngineConnection,
     generationPresetSummary,

@@ -32,7 +32,7 @@
               :data-value="choice.value" @focus="selectedMotion = choice.value">{{ choice.label }}</RadioGroupItem>
           </RadioGroupRoot>
         </fieldset>
-        <GlassMaterialChoice v-if="materialControlsReady && themeStyle === 'atelier'" />
+        <AsyncPanel v-if="materialControlsReady && themeStyle === 'atelier'" :loader="loadGlassMaterial" label="玻璃材质设置" v-slot="{ component }"><component :is="component" /></AsyncPanel>
         <label v-if="zoomAvailable" class="appearance-range">界面缩放 · {{ Math.round(zoom * 100) }}%<input type="range" min="75" max="200" step="5" :value="zoom * 100" aria-label="界面缩放" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)"><button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button></label>
         <p v-if="zoomError" role="status">{{ zoomError }}</p>
         <ToggleSwitch v-if="themeStyle === 'atelier'" class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
@@ -56,13 +56,14 @@
 <script setup lang="ts">
 // Load the optional surfaces before a user can select their style.
 import '@/assets/css/terraria-surfaces.css'
-import { computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import type { AppearanceRequest } from './AppearancePreferences.vue'
 import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import ToggleSwitch from './visual/ToggleSwitch.vue'
-const GlassMaterialChoice = defineAsyncComponent(() => import('./GlassMaterialChoice.vue'))
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadGlassMaterial = () => import('./GlassMaterialChoice.vue')
 import { appearanceFocusOrigin, desktopShortcutAllowed, useDesktopPreferences } from '@/composables/useDesktopInteraction'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useFluidSurface } from '@/composables/useFluidSurface'

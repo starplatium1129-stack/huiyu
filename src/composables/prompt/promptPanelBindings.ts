@@ -15,6 +15,7 @@ import type { usePromptSdQueue } from './usePromptSdQueue'
 import type { useTempResult } from './useTempResult'
 import type { PromptBatchRunnersDeps } from './usePromptBatchRunners'
 import type { ResultSnapshot } from './promptResultSnapshot'
+import type { GenerationPresentation } from './useGenerationPresentation'
 
 type Store = ReturnType<typeof usePromptBuilderStore>
 type Sd = ReturnType<typeof useLegacySdTasks>
@@ -42,6 +43,7 @@ export interface PromptRenderBindings extends
   pb: Pick<Store, 'directorMode' | 'history' | 'subject' | 'isPopular' | 'char' | 'visualDescription' | 'sdModelName' | 'sdParams' | 'markParamTouched'>
   drawEngine: Ref<DrawEngine>
   animaState: Anima['state']
+  generationPresentation: Readonly<Ref<GenerationPresentation>>
   patchAnimaState: Anima['patchState']
   engineTitle: (engine: DrawEngine) => string | undefined
   BUSY_HINT: string
@@ -90,7 +92,7 @@ export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy' | 
 
 export interface PromptDialogBindings extends Pick<Engine, 'displayResultUrl' | 'displayResultSeed' | 'generationBusy'>,
   Pick<Inpaint, 'inpaintOpen' | 'inpaintCharacter' | 'handleInpaintSubmit'>,
-  Pick<Compare, 'compareEl' | 'prevResult' | 'lastResult' | 'compareOpen'> {
+  Pick<Compare, 'prevResult' | 'lastResult' | 'compareOpen'> {
   inpaintProvider: Readonly<Ref<'comfy' | 'native' | undefined>>
   inpaintManagedStartAvailable: Readonly<Ref<boolean>>
   inpaintAutomaticMaskAvailable: Readonly<Ref<boolean>>

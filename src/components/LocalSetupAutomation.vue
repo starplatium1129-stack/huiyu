@@ -8,7 +8,7 @@
         <h3>{{ automation.engineRestartRequired.value ? '重启后就可以开始了' : '资源已准备好' }}</h3>
         <div class="setup-finished-items"><span v-if="automation.drawing.value"><ArchiveIcon name="model" />{{ selectedImage?.label }}</span><span v-if="selectedChat"><ArchiveIcon name="chat" />{{ selectedChat.label }}</span></div>
         <div class="setup-buttons">
-          <button v-if="automation.engineRestartRequired.value && canRestart" class="btn btn-primary" type="button" @click="emit('restart')"><ArchiveIcon name="refresh" />重启以启用绘图</button>
+          <button v-if="automation.engineRestartRequired.value && canRestart" class="btn btn-primary" type="button" :disabled="restarting" @click="emit('restart')"><ArchiveIcon name="refresh" />{{ restarting ? '正在重启…' : '重启以启用绘图' }}</button>
           <span v-else-if="automation.engineRestartRequired.value">退出并重新打开绘遇后，进入画室。</span>
           <RouterLink v-else-if="automation.drawing.value" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { preparedModel: automation.modelId.value } }"><ArchiveIcon name="spark" />生成第一张图片</RouterLink>
           <RouterLink v-if="automation.chatId.value && !automation.engineRestartRequired.value" class="btn btn-ghost" to="/chat"><ArchiveIcon name="chat" />开始聊天</RouterLink>
@@ -85,7 +85,7 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import { useLocalSetupAutomation } from '../composables/useLocalSetupAutomation'
 import { formatSetupBytes as formatBytes, modelPreparationState } from '../utils/localSetupPreparation'
-const props = defineProps<{ snapshot: LocalSetupResponse; workspaceBlocked: boolean; statusConfirmed: boolean; canRestart: boolean }>()
+const props = defineProps<{ snapshot: LocalSetupResponse; workspaceBlocked: boolean; statusConfirmed: boolean; canRestart: boolean; restarting: boolean }>()
 const emit = defineEmits<{ refresh: []; 'download-result': [result: LocalSetupDownloadResult]; 'model-selected': [modelId: string]; phase: [value: 'selection' | 'preparing' | 'ready']; restart: []; workspace: [] }>()
 const automation = useLocalSetupAutomation(toRef(props, 'snapshot'), toRef(props, 'workspaceBlocked'), result => emit('download-result', result), () => emit('refresh'), toRef(props, 'statusConfirmed'))
 const errorEl = ref<HTMLElement | null>(null)

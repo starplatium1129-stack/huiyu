@@ -77,5 +77,10 @@ useScrollReveal()
 @media (hover:hover) and (pointer:fine) { .style-sample:hover img { transform:scale(1.035); } }
 @media (max-width:900px) { .style-mood-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .style-chapter { align-items:start; @apply tw:flex-col tw:gap-s-3; } .style-notes { @apply tw:flex-wrap; } }
 @media (max-width:540px) { .style-mood-grid { grid-template-columns:minmax(0,1fr); } .style-chapter h2 { @apply tw:text-title-sm; } }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .style-sample img { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .style-page .style-mood-card,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .style-sample:hover img { transition:none; transform:none; }
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .style-page .style-mood-card,
+  :root:not([data-motion='full']) .style-sample:hover img { transition:none; transform:none; }
+}
 </style>

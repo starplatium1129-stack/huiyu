@@ -71,15 +71,13 @@
         <GenerationActionBar
           :engine="drawEngine"
           :busy="generationBusy"
-          :progress="generationProgress"
+          :presentation="generationPresentation"
           :online="engineOnline"
           :size="genBarSize"
           :anima-sizes="animaBarSizes"
           :show-size="!actionBarDocked" :docked="actionBarDocked"
           :blocked-reason="generateBlockReason"
           :has-result="Boolean(displayResultUrl)"
-          :completed="drawEngine !== 'sd' && animaState.phase === 'succeeded'"
-          :status-text="generationStatusText"
           :error="generationError"
           :stopped="generationStopped"
           @update:size="genBarSize = $event"
@@ -102,8 +100,7 @@
           :generation-busy="generationBusy"
           :generation-error="generationError"
           :generation-stopped="generationStopped"
-          :generation-status-text="generationStatusText"
-          :generation-progress="generationProgress"
+          :generation="generationPresentation"
           :anima-elapsed="animaState.elapsedSeconds"
           :draw-engine="drawEngine"
           :inpaint-original-url="inpaintOriginalUrl"
@@ -281,8 +278,7 @@ handleHistoryToShotsBatch,
 generationBusy,
 generationError,
 generationStopped,
-generationStatusText,
-generationProgress,
+generationPresentation,
 animaState,
 drawEngine,
 inpaintOriginalUrl,

@@ -30,14 +30,16 @@ export function captureGenerationMorph(control: HTMLElement | null) {
     if (revision !== state.revision || !control.isConnected || document.hidden || prefersReducedMotion() || typeof surface.animate !== 'function') return
     const next = surface.getBoundingClientRect()
     if (!previous.width || !previous.height || !next.width || !next.height) return
+    const style = getComputedStyle(control), time = style.getPropertyValue('--motion-surface').trim()
+    const duration = Number.parseFloat(time) * (time.endsWith('ms') ? 1 : 1000)
+    const options = { duration, easing:style.getPropertyValue('--ease-out').trim() }
     // compositor-exempt: only this bounded outline changes its corner radius,
     // once per task transition; position and size use transform, never layout tweening.
     const animation = surface.animate([
       { transform:`translate(${previous.x-next.x}px,${previous.y-next.y}px) scale(${previous.width/next.width},${previous.height/next.height})`, borderRadius:radius },
       { transform:'none', borderRadius:getComputedStyle(surface).borderRadius },
-    ], { duration:280, easing:'cubic-bezier(.22,1,.36,1)' })
+    ], options)
     state.animations = [animation]
-    const options = { duration:280, easing:'cubic-bezier(.22,1,.36,1)' }
     const icon = label?.querySelector<HTMLElement>('.archive-icon')?.getBoundingClientRect()
     if (label && previousIcon && icon) state.animations.push(label.animate([
       { transform:`translate(${previousIcon.x-icon.x}px,${previousIcon.y-icon.y}px)` }, { transform:'none' },

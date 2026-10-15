@@ -19,7 +19,7 @@
               <span class="companion-fallback-text">{{ companionArtwork[character].name }}的插画暂未加载</span>
             </div>
           </template>
-          <figcaption class="sr-only" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
+          <figcaption class="scene-atlas-caption" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
         </figure>
         <div class="companion-choices">
           <span class="companion-label">陪你翻阅</span>

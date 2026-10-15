@@ -17,8 +17,8 @@
 .artwork-button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .artwork-tools { --text-disabled:var(--on-art-secondary); @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-s-2 tw:right-s-2 tw:flex tw:items-center tw:gap-[3px] tw:p-[3px]; opacity:0; transform:translateY(-4px); @apply tw:pointer-events-none; border:1px solid var(--on-art-line); @apply tw:rounded-pill; background:var(--art-scrim); box-shadow:var(--shadow-sm); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); transition:opacity var(--motion-hover),transform var(--motion-hover); }
 .artwork:focus-within .artwork-tools,.artwork-pending .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
-/* 多选选中态沿用勾选标记和题注底色，画框保持中性。 */
-.artwork-selected,.artwork-selected:hover { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
+/* 选中只改变画框与题注，不改变展墙几何。 */
+.artwork-selected,.artwork-selected:hover { border-color:var(--accent); box-shadow:var(--selection-shadow); }
 .artwork-selected .artwork-caption { background:var(--accent-soft); }
 /* The native checkbox is the sole selection tab stop; its label covers the card. */
 .artwork-check { position:absolute; inset:0; z-index:var(--z-raised); padding:0; }

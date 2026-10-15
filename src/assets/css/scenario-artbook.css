@@ -58,4 +58,10 @@
 @media(max-width:1200px) { .acts { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:768px) { .scenario-page .scenario-list { @apply tw:flex tw:overflow-x-auto; padding:var(--s-1) var(--s-1) var(--s-3); scroll-snap-type:x proximity; } .scenario-card { flex:0 0 min(82vw,340px); scroll-snap-align:start; } .scenario-library-heading, .viewer-header-row { @apply tw:flex-wrap; } .viewer { @apply tw:mt-s-5; } }
 @media(max-width:540px) { .acts { grid-template-columns:minmax(0,1fr); } .act-intent { @apply tw:min-h-[116px]; } .scenario-to-video { @apply tw:w-full; } }
-@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .scenario-cover img, :root:not([data-motion='full']) .act-details > summary .archive-icon { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .scenario-cover img,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .act-details > summary .archive-icon { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .scenario-card:hover .scenario-cover img { transform:none; }
+@media(prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .scenario-cover img, :root:not([data-motion='full']) .act-details > summary .archive-icon { transition:none; }
+  :root:not([data-motion='full']) .scenario-card:hover .scenario-cover img { transform:none; }
+}

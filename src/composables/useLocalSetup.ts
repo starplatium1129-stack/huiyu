@@ -20,13 +20,22 @@ export function useLocalSetup() {
     controller?.abort();controller=null;loading.value=false
     void refresh()
   }
-  async function restartForSetup(){
-    try{await flushProfileWrites();await desktop?.restartForSetup?.()}
-    catch(cause){workspaceError.value=cause instanceof Error?cause.message:'重启未完成，请完全退出后重新打开绘遇'}
+  const restarting = ref(false)
+  async function restartForSetup() {
+    if (!desktop?.restartForSetup || restarting.value || disposed) return
+    restarting.value = true
+    workspaceError.value = ''
+    try {
+      await flushProfileWrites()
+      if (!disposed) await desktop.restartForSetup()
+    } catch (cause) {
+      if (!disposed) workspaceError.value = cause instanceof Error ? cause.message : '重启未完成，请完全退出后重新打开绘遇'
+    } finally { restarting.value = false }
   }
   const verificationFailures = ref<Record<string, string>>({})
   const downloadNotice = ref(''), workspacePending = ref(false)
   const workspaceActiveRoot = ref<string | null>(null)
+  const workspaceSavedRoot = ref('')
   const workspaceUnconfirmed = computed(() => !!desktop && workspaceActiveRoot.value !== snapshot.value?.workspace.path)
   let workspaceRead = 0
   const loading = ref(false), error = ref(''), cancelled = ref(false)
@@ -105,7 +114,7 @@ export function useLocalSetup() {
     workspaceError.value = ''
     try {
       const result = await desktop.getWorkspace()
-      if (!disposed && read === workspaceRead) { workspaceActiveRoot.value = result.activeRoot; workspacePending.value = result.restartRequired }
+      if (!disposed && read === workspaceRead) { workspaceSavedRoot.value = result.root; workspaceActiveRoot.value = result.activeRoot; workspacePending.value = result.restartRequired }
     } catch (cause) {
       if (!disposed && read === workspaceRead) { workspaceActiveRoot.value = null; workspaceError.value = cause instanceof Error ? cause.message : '当前工作区尚未确认，请重新读取。' }
     }
@@ -118,6 +127,7 @@ export function useLocalSetup() {
       const result = await desktop.getWorkspace()
       if (!disposed) {
         workspaceDraft.value = result.root
+        workspaceSavedRoot.value = result.root
         workspacePending.value = result.restartRequired
         workspaceActiveRoot.value = result.activeRoot
         workspaceNotice.value = result.restartRequired ? '已保存的 AI 工作区尚未生效，完全退出并重启绘遇后使用新目录。当前检查仍基于本次运行时目录。' : ''
@@ -148,6 +158,7 @@ export function useLocalSetup() {
     const result = await desktop!.setWorkspace(root.trim())
     if (disposed) return
     workspaceDraft.value = result.root
+    workspaceSavedRoot.value = result.root
     workspacePending.value = result.restartRequired
     workspaceActiveRoot.value = result.activeRoot
     workspaceOpen.value = false
@@ -170,7 +181,7 @@ export function useLocalSetup() {
 
   return { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComplete, currentCheck,
     recommendedModels, otherModels, nodeLabel, checkedAtLabel, checklist, fileLabel,
-    workspaceButton, workspaceOpen, workspaceDraft, workspaceLoading, workspaceSaving,
+    workspaceButton, workspaceOpen, workspaceDraft, workspaceSavedRoot, workspaceLoading, workspaceSaving, restarting,
     workspaceNotice, workspaceError, workspacePending, workspaceUnconfirmed, downloadNotice,
     refresh, cancelCheck, selectSetupModel, recordDownload, recordVerification,
     openWorkspace, chooseWorkspace, closeWorkspace, saveWorkspace, restartForSetup }

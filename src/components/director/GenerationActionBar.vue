@@ -4,7 +4,9 @@
     <GenerationSizePicker v-if="showSize" class="gen-bar-size" compact v-bind="{ engine, size, animaSizes, busy }" @update:size="$emit('update:size', $event)" />
     <div class="gen-bar-meta">
       <div class="gen-bar-status">
-        <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online ? 'warning' : 'success'" />{{ statusSummary }}</span>
+        <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online || presentation.needsReview ? 'warning' : 'success'" />{{ statusSummary }}</span>
+        <button v-if="presentation.phase === 'cancelling'" class="btn btn-quiet gen-bar-recovery" type="button" @click="openGenerationTasks">查看任务</button>
+        <button v-if="presentation.needsReview" class="btn btn-quiet gen-bar-recovery" type="button" :disabled="!online || !!blockedReason" @click="$emit('generate')">另画一张</button>
         <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }" aria-label="打开控制面板，启动并检查绘图服务">打开控制面板</RouterLink>
       </div>
       <small v-if="!showSize">{{ size.replace('x', ' × ') }}</small>
@@ -12,7 +14,7 @@
     <!-- 输入校验原因仍常显；离线原因已与恢复入口合并，不重复占一行。 -->
     <span v-if="online && blockedReason && !busy" class="gen-bar-blocked" role="status">{{ blockedReason }}</span>
     <div class="gen-bar-actions">
-      <StudioTooltip anchor :content="busy ? '停止当前绘制' : unavailableReason || '生成当前画面'">
+      <StudioTooltip :anchor="!busy" :content="presentation.needsReview ? '核对现有任务与已保存结果' : busy ? presentation.phase === 'cancelling' ? presentation.message : '停止当前绘制' : unavailableReason || '生成当前画面'">
         <button
           ref="generationAction"
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
@@ -21,12 +23,14 @@
           :data-state="status"
           type="button"
           :aria-label="actionLabel"
-          :disabled="!busy && (!online || !!blockedReason)"
-          @click="busy ? $emit('cancel') : $emit('generate')"
+          :aria-disabled="cancellationPending || undefined"
+          :aria-busy="cancellationPending || undefined"
+          :disabled="!busy && !presentation.needsReview && (!online || !!blockedReason)"
+          @click="activate"
         >
           <span class="generation-action-surface" aria-hidden="true" />
           <span class="generation-action-content">
-            <span class="generation-action-label"><ArchiveIcon :name="actionIcon" aria-hidden="true" /><span v-content-motion="status">{{ actionText }}</span></span>
+            <span class="generation-action-label"><ArchiveIcon :name="actionIcon" aria-hidden="true" /><span v-content-motion="actionText">{{ actionText }}</span></span>
             <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>
             <span v-if="busy" class="generation-track" :class="{ 'is-indeterminate': progressValue === null }" role="progressbar" aria-label="当前绘制进度" :aria-valuenow="progressValue ?? undefined" aria-valuemin="0" aria-valuemax="100"><i :style="{ '--generation-progress': progressValue === null ? 1 : progressValue / 100 }" /></span>
           </span>
@@ -39,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -47,13 +51,14 @@ import GenerationSizePicker from './GenerationSizePicker.vue'
 import { RouterLink } from 'vue-router'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
+import { openGenerationTasks, type GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
 // 主行动同步加载；组件统一管理停靠与独立两种内部布局。
 import '@/assets/css/director/components/GenerationActionBar.css'
 
 const props = defineProps<{
   engine: DrawEngine
   busy: boolean
-  progress?: number | null
+  presentation: GenerationPresentation
   online: boolean
   /** 当前生效尺寸：SD 取 sdSize，Anima/Krea2 取 width×height（宿主统一收敛）。 */
   size: string
@@ -62,9 +67,6 @@ const props = defineProps<{
   showSize: boolean
   docked: boolean
   hasResult: boolean
-  /** Completion comes from the task phase, never the presence of an older image. */
-  completed?: boolean
-  statusText?: string
   error?: string
   stopped?: boolean
   /**
@@ -77,32 +79,37 @@ const props = defineProps<{
   blockedReason?: string
 }>()
 
-const status = computed(() => props.busy ? 'loading' : props.error ? 'error'
-  // Restoring an older result also uses succeeded; only the generation receipt
-  // (legacy or runtime inbox variant) announces a newly completed drawing.
-  : props.completed && props.hasResult && !props.stopped && props.statusText?.startsWith('生成完成') ? 'success' : 'idle')
-const actionText = computed(() => ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成' })[status.value])
+const status = computed(() => props.busy ? 'loading' : props.presentation.needsReview ? 'review' : props.error ? 'error'
+  : props.presentation.completed && props.hasResult && !props.stopped ? 'success' : 'idle')
+const cancellationPending = computed(() => props.presentation.phase === 'cancelling' && !props.presentation.canRetryCancellation)
+const actionText = computed(() => props.busy && props.presentation.phase === 'cancelling' ? props.presentation.canRetryCancellation ? '重试停止' : '正在停止…'
+  : props.busy && props.presentation.phase === 'preparing' ? '取消准备' : ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成', review: '核对任务与结果' })[status.value])
 const actionLabel = computed(() => status.value === 'success' ? '生成完成，再生成图片' : actionText.value)
-const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh' } as const)[status.value])
-const statusSummary = computed(() => props.busy ? '正在绘制' : !props.online ? '服务未连接'
+const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh', review: 'info' } as const)[status.value])
+const statusSummary = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : !props.online ? '服务未连接'
   : props.error ? '绘制未完成' : props.stopped ? '已停止' : props.blockedReason ? '待补充设置' : '准备就绪')
-const announcement = computed(() => props.busy ? '正在绘制，可随时停止。' : props.stopped ? '绘制已停止。'
+const announcement = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : props.stopped ? '绘制已停止。'
   : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成，可以查看画布或再次生成。' : '')
 const unavailableReason = computed(() => !props.online ? '绘图服务未连接，请先在控制面板启动并检查连接。' : props.blockedReason || '')
-const progressValue = computed(() => typeof props.progress === 'number' && Number.isFinite(props.progress)
-  ? Math.round(Math.max(0, Math.min(1, props.progress)) * 100) : null)
+const progressValue = computed(() => props.presentation.progress === null ? null : Math.round(props.presentation.progress * 100))
+function activate() {
+  if (cancellationPending.value) return
+  if (props.presentation.needsReview) openGenerationTasks()
+  else if (props.busy) emit('cancel')
+  else emit('generate')
+}
 const generationAction = ref<HTMLButtonElement | null>(null)
 let captureMorph: typeof import('@/utils/generationControlMorph')['captureGenerationMorph'] | undefined
 let cancelMorph: typeof import('@/utils/generationControlMorph')['cancelGenerationMorph'] | undefined
 void import('@/utils/generationControlMorph').then(module => { captureMorph = module.captureGenerationMorph; cancelMorph = module.cancelGenerationMorph })
-watch(status, () => { const finish = captureMorph?.(generationAction.value); if (finish) void nextTick(finish) })
+watch(actionText, () => { const finish = captureMorph?.(generationAction.value); if (finish) void nextTick(finish) })
 const settleMorph = () => cancelMorph?.(generationAction.value)
 useEventListener(document, 'visibilitychange', () => { if (document.hidden) settleMorph() })
 useEventListener(window, 'atelier:motion-preference', settleMorph)
 useEventListener(window.matchMedia('(prefers-reduced-motion: reduce)'), 'change', settleMorph)
-onBeforeUnmount(settleMorph)
+onDeactivated(settleMorph); onBeforeUnmount(settleMorph)
 
-defineEmits<{
+const emit = defineEmits<{
   'update:size': [value: string]
   generate: []
   cancel: []

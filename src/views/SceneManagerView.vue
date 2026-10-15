@@ -18,7 +18,7 @@
     </aside>
     <div class="catalog-main" data-route-arrive>
       <header class="catalog-page-head">
-        <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1>{{ sectionTitle }}</h1></div>
+        <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1 ref="pageTitle" tabindex="-1">{{ sectionTitle }}</h1></div>
         <div v-if="section === 'records' || dirty" class="catalog-head-actions">
           <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite"><i></i>{{ busy ? '正在处理…' : dirtyEditor ? '正在编辑' : pending.length ? pending.length + ' 项待保存' : '内容已保存' }}</span>
           <button v-if="pending.length || dirtyEditor" class="btn btn-ghost" type="button" :disabled="busy" @click="reviewEdits">查看修改</button>
@@ -34,8 +34,8 @@
         </div>
       </header>
       <p v-if="hint" class="catalog-feedback" role="status" aria-live="polite">{{ hint }}</p>
-      <div v-if="section === 'portraits'" v-content-motion="section" class="catalog-support-surface"><CharacterArtManager ref="artManager" :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></div>
-      <div v-else-if="section === 'media'" v-content-motion="section" class="catalog-support-surface"><CatalogMediaManager :record="selected" :character-names="characterNames" /></div>
+      <div v-if="section === 'portraits'" v-content-motion="section" class="catalog-support-surface"><AsyncPanel :loader="loadCharacterArt" label="角色立绘维护" v-slot="{ component }"><component :is="component" ref="artManager" :initial-character-id="typeof route.query.character === 'string' ? route.query.character : undefined" /></AsyncPanel></div>
+      <div v-else-if="section === 'media'" v-content-motion="section" class="catalog-support-surface"><AsyncPanel :loader="loadCatalogMedia" label="样张与封面维护" v-slot="{ component }"><component :is="component" :record="selected" :character-names="characterNames" /></AsyncPanel></div>
       <section v-else-if="section === 'tools'" v-content-motion="section" class="catalog-support-surface">
         <h2>文件与备份</h2>
         <div class="catalog-tool-options">
@@ -92,15 +92,15 @@
           </section>
         </div>
       </template>
-      <section v-if="pending.length" class="catalog-review-area">
-        <details :open="!!preview"><StudioDisclosureSummary>{{ pending.length }} 项修改还没有保存</StudioDisclosureSummary><div v-for="(change, index) in pending" :key="change.kind + ':' + change.id" class="catalog-history-row"><span>{{ CATALOG_LABELS[change.kind] }} · {{ pendingTitle(change) }} <small>{{ change.remove ? '准备归档' : change.expectedRevision ? '已编辑' : '新建' }}</small></span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="pending.splice(index, 1)">撤回这项</button></div></details>
+      <section v-if="pending.length" ref="pendingArea" class="catalog-review-area">
+        <details :open="pendingOpen" @toggle="pendingOpen = ($event.target as HTMLDetailsElement).open"><StudioDisclosureSummary>{{ pending.length }} 项修改还没有保存</StudioDisclosureSummary><div data-disclosure-content><div v-for="(change, index) in pending" :key="change.kind + ':' + change.id" class="catalog-history-row"><span>{{ CATALOG_LABELS[change.kind] }} · {{ pendingTitle(change) }} <small>{{ change.remove ? '准备归档' : change.expectedRevision ? '已编辑' : '新建' }}</small></span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="withdrawPending(index)">撤回这项</button></div></div></details>
       </section>
       <CatalogChangePreview v-if="preview" :preview="preview" />
     </div>
   </article>
 </template>
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
@@ -109,6 +109,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import CatalogRecordEditor from '@/components/maintenance/CatalogRecordEditor.vue'
 import CatalogChangePreview from '@/components/maintenance/CatalogChangePreview.vue'
 import { useCatalogMaintenance } from '@/composables/scene/useCatalogMaintenance'
@@ -121,18 +122,20 @@ import { catalogShowcaseId } from '@/utils/showcaseManifest'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import '@/assets/css/catalog-maintenance.css'
 const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
+const pageTitle = ref<HTMLElement | null>(null), pendingArea = ref<HTMLElement | null>(null), pendingOpen = ref(false)
 const { thumbUrl, reload: reloadAssets } = useShowcaseAssets()
 watch(section, value => { if (value === 'records') void reloadAssets().catch(() => {}) })
-const CharacterArtManager = defineAsyncComponent(() => import('@/components/maintenance/CharacterArtManager.vue'))
-const artManager = ref<InstanceType<typeof CharacterArtManager> | null>(null)
+const loadCharacterArt = () => import('@/components/maintenance/CharacterArtManager.vue')
+const artManager = ref<InstanceType<typeof import('@/components/maintenance/CharacterArtManager.vue')['default']> | null>(null)
 const switchingSection = ref(false)
-const CatalogMediaManager = defineAsyncComponent(() => import('@/components/maintenance/CatalogMediaManager.vue'))
+const loadCatalogMedia = () => import('@/components/maintenance/CatalogMediaManager.vue')
 const checking = ref(false), toolHint = ref(''), backups = ref<BackupEntry[]>([])
 const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }> = [
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
   { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
 ]
 const { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
 const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资料', outfit: '服装', scene: '故事', blueprint: '画面方案', document: '词库或推荐资料' } as Record<CatalogKind, string>)[kind.value] + '…')
 const hasFilters = computed(() => !!(character.value || category.value || rating.value))
@@ -155,7 +158,23 @@ function pendingTitle(change: CatalogChange) {
   if (change.data) return recordTitle({ kind: change.kind, id: change.id, revision: change.expectedRevision, sortOrder: 0, createdAt: null, updatedAt: null, data: change.data })
   return catalogTitle(change.kind, change.id, result.value?.items.find(row => row.id === change.id)?.title || '选中的内容')
 }
-async function openContent(item: CatalogSummary) { await select(item); if (window.innerWidth < 1100) editorPane.value?.scrollIntoView({ block: 'start' }) }
+async function openContent(item: CatalogSummary) {
+  const scrollY = window.scrollY
+  if (!await select(item)) return
+  await nextTick()
+  if (selected.value?.kind === item.kind && selected.value.id === item.id && window.innerWidth < 1100 && window.scrollY === scrollY) editorPane.value?.scrollIntoView({ block: 'start' })
+}
+async function withdrawPending(index: number) {
+  if (busy.value) return
+  const previousFocus = document.activeElement
+  pending.value.splice(index, 1)
+  await nextTick()
+  if (!previousFocus || previousFocus.isConnected || document.activeElement !== document.body) return
+  const buttons = pendingArea.value?.querySelectorAll<HTMLButtonElement>('button')
+  const target = buttons?.[Math.min(index, buttons.length - 1)] || pageTitle.value
+  target?.focus()
+  if (target === pageTitle.value) target?.scrollIntoView({ block: 'center', behavior: 'instant' })
+}
 async function saveEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.value) await submit(false) }
 async function reviewEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.value) await submit(true) }
 async function checkContent() { checking.value = true; try { await catalogApi.check(); toolHint.value = '检查完成，资料关联完整' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }

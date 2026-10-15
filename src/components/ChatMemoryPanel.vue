@@ -27,6 +27,7 @@ import { onScopeDispose, reactive, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { confirmAction } from '@/composables/useConfirm'
 import type { ChatMemoryItem } from '@/utils/chatMemory'
+import { normalizeChatMemoryText } from '@/utils/chatMemoryCore'
 
 const props = defineProps<{
   items: ChatMemoryItem[]
@@ -39,6 +40,7 @@ const emit = defineEmits<{
 }>()
 
 const drafts = reactive<Record<string, string>>({})
+const savedTexts = new Map<string, string>()
 let confirmation: AbortController | null = null
 function cancelDelete() { confirmation?.abort(); confirmation = null }
 function close() { cancelDelete(); emit('close') }
@@ -47,13 +49,16 @@ watch(() => [props.items, props.characterName], cancelDelete, { deep: true, flus
 
 watch(() => props.items, items => {
   const ids = new Set(items.map(item => item.id))
-  for (const key of Object.keys(drafts)) if (!ids.has(key)) delete drafts[key]
-  for (const item of items) drafts[item.id] = item.text
+  for (const key of Object.keys(drafts)) if (!ids.has(key)) { delete drafts[key]; savedTexts.delete(key) }
+  for (const item of items) {
+    if (!(item.id in drafts) || drafts[item.id] === savedTexts.get(item.id)) drafts[item.id] = item.text
+    savedTexts.set(item.id, item.text)
+  }
 }, { deep: true, immediate: true })
 
 function save(id: string) {
-  const text = String(drafts[id] || '').trim()
-  if (text) emit('update', id, text)
+  const text = normalizeChatMemoryText(drafts[id])
+  if (text) { drafts[id] = text; emit('update', id, text) }
 }
 
 async function requestDelete(id: string) {

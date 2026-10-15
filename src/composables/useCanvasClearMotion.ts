@@ -83,12 +83,11 @@ function fadeSnapshot(image: HTMLImageElement, host: HTMLElement,
   canvas.width = Math.max(1, Math.floor(rect.width * ratio))
   canvas.height = Math.max(1, Math.floor(rect.height * ratio))
   let animation: Animation | null = null
-  let handoff: ReturnType<typeof setTimeout> | undefined
   let disposed = false
   const release = () => {
     if (disposed) return
     disposed = true
-    clearTimeout(handoff); animation?.cancel(); animation = null
+    animation?.cancel(); animation = null
     canvas.remove(); canvas.width = canvas.height = 0
     lifecycle.onComplete()
   }
@@ -108,8 +107,11 @@ function fadeSnapshot(image: HTMLImageElement, host: HTMLElement,
     })
     host.append(canvas)
     const opacity = Number.parseFloat(getComputedStyle(image).opacity)
-    animation = canvas.animate([{ opacity: Number.isFinite(opacity) ? Math.max(0, Math.min(1, opacity)) : 1 }, { opacity: 0 }], { duration: 460, easing: 'ease-out', fill: 'forwards' })
-    handoff = setTimeout(lifecycle.onHandoff, 280)
+    const style = getComputedStyle(host), time = style.getPropertyValue('--motion-surface').trim()
+    const duration = Number.parseFloat(time) * (time.endsWith('ms') ? 1 : 1000)
+    // The snapshot owns the cleared pixels until its real completion. Neither
+    // business state nor handoff waits for a timer guessing the animation end.
+    animation = canvas.animate([{ opacity: Number.isFinite(opacity) ? Math.max(0, Math.min(1, opacity)) : 1 }, { opacity: 0 }], { duration, easing:style.getPropertyValue('--ease-out').trim(), fill: 'forwards' })
     void animation.finished.then(release, release)
     return release
   } catch { release(); return null }

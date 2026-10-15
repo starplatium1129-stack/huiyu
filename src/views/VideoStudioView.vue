@@ -191,11 +191,13 @@
           </div>
           <div v-if="!job" class="video-queue-empty">
             <ArchiveIcon name="play" />
-            <strong>暂无成片</strong>
+            <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '暂无成片' }}</strong>
+            <button v-if="reconnectState === 'failed'" class="btn btn-ghost" type="button" @click="reconnectVideo">重新读取上次任务</button>
+            <button v-if="reconnectState !== 'idle'" class="btn btn-ghost" type="button" @click="openTaskCenter">到任务中心核对</button>
           </div>
           <template v-else>
             <div class="video-job-head">
-              <span class="video-job-state" :data-state="job.status">{{ jobStatusLabel }}</span>
+              <span class="video-job-state" :data-state="job.needsReview ? 'review' : job.status" role="status">{{ jobStatusLabel }}</span>
               <time>{{ formatTime(job.createdAt) }}</time>
             </div>
             <div class="video-job-meta">
@@ -212,14 +214,15 @@
               label="生成的视频成片"
             />
             <TaskMediaDownload v-if="job.status === 'succeeded' && job.resultUrl" class="btn btn-ghost btn-block" :src="job.resultUrl">下载这段故事 · MP4</TaskMediaDownload>
-            <p v-if="job.status === 'cancelled'" class="video-install-note">任务已取消。镜头描述和输入画面仍在，可以调整后重新生成。</p>
-            <p v-if="job.status === 'queued'" class="video-install-note">镜头已进入队列，等待本机开始处理。</p>
-            <p v-if="job.status === 'cancelling'" class="video-install-note">正在等待本机停止任务，完成后可以重新生成。</p>
-            <div v-if="job.status === 'queued' || job.status === 'running' || job.status === 'cancelling'" class="video-progress" role="progressbar" aria-label="视频生成进度" :aria-valuenow="progressPercent" aria-valuemin="0" aria-valuemax="100">
-              <i :style="{ '--progress': progressPercent + '%' }"></i>
+            <p v-if="job.needsReview" class="video-inline-message warning" role="status">{{ job.error || '任务状态尚待确认，请到任务中心核对现有任务与已保存结果。' }}</p>
+            <p v-else-if="job.status === 'cancelled'" class="video-install-note">任务已取消。镜头描述和输入画面仍在，可以调整后重新生成。</p>
+            <p v-else-if="job.status === 'queued'" class="video-install-note">镜头已进入队列，等待本机开始处理。</p>
+            <p v-else-if="job.status === 'cancelling'" class="video-install-note">正在等待本机停止任务，完成后可以重新生成。</p>
+            <div v-if="!job.needsReview && (job.status === 'queued' || job.status === 'running' || job.status === 'cancelling')" class="video-progress" :data-indeterminate="progressPercent === null || undefined" role="progressbar" aria-label="视频生成进度" :aria-valuenow="progressPercent ?? undefined" :aria-valuetext="progressPercent === null ? jobStatusLabel : undefined" aria-valuemin="0" aria-valuemax="100">
+              <i :style="progressPercent === null ? undefined : { '--progress': progressPercent + '%' }"></i>
             </div>
-            <p v-if="job.status === 'running' && job.estimatedSeconds" class="video-job-eta">
-              {{ progressPercent }}% · 已 {{ formatSeconds(job.elapsedSeconds) }} / 预估 {{ formatSeconds(job.estimatedSeconds) }}
+            <p v-if="!job.needsReview && job.status === 'running'" class="video-job-eta">
+              <span v-if="progressPercent !== null">{{ progressPercent }}% · </span>已 {{ formatSeconds(job.elapsedSeconds) }}<span v-if="job.estimatedSeconds"> / 预估 {{ formatSeconds(job.estimatedSeconds) }}</span>
             </p>
             <p v-if="progressWarning" class="video-inline-message" :class="progressWarning.level === 'danger' ? 'error' : 'warning'">
               {{ progressWarning.text }}
@@ -237,12 +240,14 @@
               </details>
             </div>
             <button
-              v-if="job.status === 'queued' || job.status === 'running'"
+              v-if="!job.needsReview && (job.status === 'queued' || job.status === 'running')"
               class="btn btn-danger btn-block"
               type="button"
               :disabled="cancelling"
               @click="cancelJob"
             >{{ cancelling ? '正在取消…' : '取消任务' }}</button>
+            <button v-if="job.needsReview" class="btn btn-ghost btn-block" type="button" :disabled="jobReading" @click="refreshJob">{{ jobReading ? '正在读取状态…' : '重新读取状态' }}</button>
+            <button class="btn btn-ghost btn-block" type="button" @click="openTaskCenter">{{ job.needsReview ? '到任务中心核对' : '在任务中心查看' }}</button>
           </template>
           <details v-if="t8State" class="video-advanced">
             <StudioDisclosureSummary class="video-disclosure-heading">生成速度与加速状态</StudioDisclosureSummary>
@@ -343,7 +348,9 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import TaskMediaDownload from '@/components/tasks/TaskMediaDownload.vue'
+import { useTaskCenter } from '@/composables/useTaskCenter'
 import { useVideoWorkspace } from "@/composables/video/useVideoWorkspace"
+function openTaskCenter() { useTaskCenter().opened.value = true }
 const {
 archiveStatus,
 archiveState,
@@ -393,7 +400,9 @@ formatSeconds,
 progressWarning,
 jobErrorReport,
 cancelling,
-cancelJob
+cancelJob,
+reconnectState, reconnectVideo,
+jobReading, refreshJob,
 } = useVideoWorkspace()
 </script>
 

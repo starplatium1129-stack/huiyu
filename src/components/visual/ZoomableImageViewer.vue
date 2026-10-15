@@ -16,19 +16,20 @@
   >
     <div ref="viewportEl" class="zoom-viewport tw:relative tw:w-full tw:h-full tw:min-w-0 tw:min-h-0 tw:flex tw:items-center tw:justify-center tw:overflow-hidden">
     <div
-      class="zoom-transform-layer tw:relative tw:flex tw:items-center tw:justify-center tw:max-w-full tw:max-h-full"
-      :style="zoomLayerStyle"
+      ref="transformEl"
+      class="zoom-transform-layer tw:relative tw:w-full tw:h-full tw:flex tw:items-center tw:justify-center tw:min-w-0 tw:min-h-0"
     >
       <!-- 骨架屏占位 -->
       <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder tw:absolute tw:inset-0 tw:min-w-[240px] tw:min-h-[320px] tw:[border-radius:var(--r-lg,_12px)] tw:[background:var(--bg-elevated)]" aria-hidden="true"></div>
 
       <!-- 真实图片 -->
-      <img :crossorigin="runtimeResourceCors()"
+      <img v-if="displayedSrc" :key="`image:${imageRevision}`" :crossorigin="runtimeResourceCors()"
         v-show="!imageFailed"
         ref="imageEl"
-        :src="resolveRuntimeUrl(displayedSrc)"
+        :data-image-attempt="imageAttempt"
+        :src="requestSrc(displayedSrc, imageAttempt)"
         :alt="alt"
-        class="zoomable-img tw:block tw:max-w-full tw:[max-height:min(88vh,_860px)] tw:w-auto tw:h-auto tw:object-contain tw:[border-radius:var(--r-lg,_12px)]"
+        class="zoomable-img tw:block tw:object-contain tw:[border-radius:var(--r-lg,_12px)]"
         :class="{ 'is-ready': imageReady || !!previewSrc }"
         draggable="false"
         @load="onImageLoad"
@@ -36,18 +37,20 @@
       />
 
       <!-- Decode the original offscreen while the already-loaded thumbnail stays visible. -->
-      <img v-if="displayedSrc !== src && !fullImageFailed" :key="src" ref="fullImageEl"
-        :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl(src)" class="zoomable-preload tw:hidden"
+      <img v-if="src && displayedSrc !== src && !fullImageFailed" :key="`full:${src}:${fullAttempt}`" ref="fullImageEl" :data-image-attempt="fullAttempt"
+        :crossorigin="runtimeResourceCors()" :src="requestSrc(src, fullAttempt)" class="zoomable-preload tw:hidden"
         alt="" aria-hidden="true" @load="upgradeImage" @error="onFullImageError" />
-      <span v-if="fullImageFailed && !imageFailed" class="preview-quality-note tw:absolute tw:top-s-3 tw:left-s-3 tw:right-s-3 tw:p-s-2 tw:rounded-sm tw:[background:var(--art-scrim)] tw:[color:var(--on-art-primary)] tw:text-label-sm tw:text-center" role="status">高清图暂时无法读取，当前显示缩略图</span>
-
+    </div>
       <!-- 失败占位 -->
-      <div v-if="imageFailed" class="image-fallback tw:[color:var(--on-art-secondary,_color-mix(in_srgb,_white_60%,_transparent))] tw:[font-size:var(--fs-body-sm,_0.85rem)]">
+      <div v-if="imageFailed || (loadFailed && !displayedSrc)" class="image-fallback tw:absolute tw:inset-0 tw:flex tw:items-center tw:justify-center tw:[color:var(--on-art-secondary)] tw:text-label-sm">
         <slot name="fallback">
           <span>图片暂时无法读取</span>
         </slot>
       </div>
-    </div>
+      <div v-if="loadFailed || fullImageFailed || imageFailed || retrying" class="zoom-recovery" role="status" @pointerdown.stop @dblclick.stop @wheel.stop>
+        <span>{{ retrying ? '正在重新读取图片…' : imageReady && !imageFailed ? '高清图暂时无法读取，当前保留预览' : '图片暂时无法读取' }}</span>
+        <button type="button" :disabled="retrying" @click.stop="retryImage">{{ retrying ? '读取中…' : imageReady && !imageFailed ? '重试高清' : '重新读取' }}</button>
+      </div>
     </div>
 
     <!-- 缩放控制始终可见，键盘和触摸用户不必先猜测手势。 -->
@@ -72,10 +75,12 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { useImageViewport } from '@/composables/useImageViewport'
+import { useViewerImage } from '@/composables/useViewerImage'
 
 const props = defineProps<{
   src: string
@@ -84,6 +89,9 @@ const props = defineProps<{
   alt?: string
   minScale?: number
   maxScale?: number
+  imageKey?: string | number
+  loadFailed?: boolean
+  reload?: () => Promise<void>
 }>()
 
 const emit = defineEmits<{
@@ -91,179 +99,17 @@ const emit = defineEmits<{
   (e: 'error'): void
 }>()
 
-const minScale = props.minScale ?? 1
-const maxScale = props.maxScale ?? 4
-
 const viewportEl = ref<HTMLElement | null>(null)
-const imageEl = ref<HTMLImageElement | null>(null)
-const fullImageEl = ref<HTMLImageElement | null>(null)
-const displayedSrc = ref(props.previewSrc || props.src)
-const fullImageFailed = ref(false)
-let sourceRevision = 0
-onBeforeUnmount(() => { sourceRevision++; releasePan() })
-const imageReady = ref(false)
-const imageFailed = ref(false)
-
-const scale = ref(1)
-const translateX = ref(0)
-const translateY = ref(0)
-const isPanning = ref(false)
-const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片查看器')
-
-// 自定义属性载体：变换规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
-const zoomLayerStyle = computed(() => ({
-  '--zoom-transform': `translate(${translateX.value}px, ${translateY.value}px) scale(${scale.value})`,
-}))
-let startX = 0
-let startY = 0
-let initialTranslateX = 0
-let initialTranslateY = 0
-let panTarget: HTMLElement | null = null
-let panPointerId: number | null = null
-const ZOOM_STEP = 0.25
-const KEYBOARD_PAN_STEP = 32
-
-function onImageLoad() {
-  imageReady.value = true
-  imageFailed.value = false
-  emit('load')
-}
-
-function onImageError() {
-  if (displayedSrc.value !== props.src) { displayedSrc.value = props.src; return }
-  imageReady.value = false
-  imageFailed.value = true
-  emit('error')
-}
-
-async function upgradeImage(event: Event) {
-  const image = event.target as HTMLImageElement, revision = sourceRevision
-  try { if (typeof image.decode === 'function') await image.decode() }
-  catch { if (revision === sourceRevision && fullImageEl.value === image) onFullImageError(); return }
-  if (revision === sourceRevision && fullImageEl.value === image) displayedSrc.value = props.src
-}
-function onFullImageError() { fullImageFailed.value = true; emit('error') }
-
-watch(() => [props.src, props.previewSrc], ([src, preview], [previousSrc, previousPreview]) => {
-  if (src !== previousSrc) sourceRevision++
-  fullImageFailed.value = false
-  // A newly hydrated original for the same preview is a quality upgrade, not
-  // navigation. Keep its painted frame and the user's zoom while it decodes.
-  if (!imageFailed.value && ((preview && preview === previousPreview)
-    || (src === previousSrc && imageReady.value))) return
-  displayedSrc.value = props.previewSrc || props.src
-  imageReady.value = false
-  imageFailed.value = false
-  resetZoom()
+const transformEl = ref<HTMLElement | null>(null)
+const { imageEl, fullImageEl, displayedSrc, fullImageFailed, imageAttempt, fullAttempt, imageRevision, retrying, imageReady, imageFailed,
+  requestSrc, onImageLoad, onImageError, upgradeImage, onFullImageError, retryImage } = useViewerImage(props, {
+  loaded: () => { refreshBounds(); emit('load') }, error: () => emit('error'), reset: () => resetImage(),
+  focus: () => viewportEl.value?.parentElement?.focus({ preventScroll:true }),
 })
 
-function resetZoom() {
-  releasePan()
-  scale.value = 1
-  translateX.value = 0
-  translateY.value = 0
-  isPanning.value = false
-}
-
-function setScale(nextScale: number, point?: { clientX: number; clientY: number }) {
-  const boundedScale = Math.max(minScale, Math.min(maxScale, nextScale))
-  if (boundedScale <= 1.01) {
-    resetZoom()
-    return
-  }
-  const next = Number(boundedScale.toFixed(2))
-  const rect = viewportEl.value?.getBoundingClientRect()
-  const anchorX = point && rect ? point.clientX - rect.left - rect.width / 2 : 0
-  const anchorY = point && rect ? point.clientY - rect.top - rect.height / 2 : 0
-  const ratio = next / scale.value
-  translateX.value = anchorX - (anchorX - translateX.value) * ratio
-  translateY.value = anchorY - (anchorY - translateY.value) * ratio
-  scale.value = next
-}
-
-function zoomIn() {
-  setScale(scale.value + ZOOM_STEP)
-}
-
-function zoomOut() {
-  setScale(scale.value - ZOOM_STEP)
-}
-
-function toggleZoom(event: MouseEvent) {
-  if (scale.value > 1.05) {
-    resetZoom()
-    return
-  }
-  const targetScale = Math.max(minScale, Math.min(maxScale, 2.2))
-  if (targetScale <= 1.01) {
-    resetZoom()
-    return
-  }
-  setScale(targetScale, event)
-}
-
-function handleWheel(event: WheelEvent) {
-  if (event.deltaY) setScale(scale.value + (event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP), event)
-}
-
-function onKeydown(event: KeyboardEvent) {
-  if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || event.ctrlKey || event.metaKey || event.altKey || event.target !== event.currentTarget) return
-  if (event.key === '+' || event.key === '=') { event.preventDefault(); zoomIn(); return }
-  if (event.key === '-') { event.preventDefault(); zoomOut(); return }
-  if (event.key === 'Home') {
-    event.preventDefault()
-    resetZoom()
-    return
-  }
-  if (scale.value <= 1.01) return
-
-  let dx = 0
-  let dy = 0
-  if (event.key === 'ArrowLeft') dx = -KEYBOARD_PAN_STEP
-  else if (event.key === 'ArrowRight') dx = KEYBOARD_PAN_STEP
-  else if (event.key === 'ArrowUp') dy = -KEYBOARD_PAN_STEP
-  else if (event.key === 'ArrowDown') dy = KEYBOARD_PAN_STEP
-  else return
-
-  event.preventDefault()
-  isPanning.value = false
-  translateX.value += dx
-  translateY.value += dy
-}
-
-function startPan(event: PointerEvent) {
-  if (scale.value <= 1.01 || isPanning.value || event.button !== 0) return
-  isPanning.value = true
-  startX = event.clientX
-  startY = event.clientY
-  initialTranslateX = translateX.value
-  initialTranslateY = translateY.value
-  panTarget = event.currentTarget instanceof HTMLElement ? event.currentTarget : null
-  panPointerId = event.pointerId
-  panTarget?.setPointerCapture(event.pointerId)
-}
-
-function onPan(event: PointerEvent) {
-  if (!isPanning.value || event.pointerId !== panPointerId) return
-  const dx = event.clientX - startX
-  const dy = event.clientY - startY
-  translateX.value = initialTranslateX + dx
-  translateY.value = initialTranslateY + dy
-}
-
-function stopPan(event: PointerEvent) {
-  if (event.pointerId === panPointerId) releasePan()
-}
-
-function releasePan() {
-  const target = panTarget, pointerId = panPointerId
-  panTarget = null
-  panPointerId = null
-  isPanning.value = false
-  if (target && pointerId !== null) {
-    try { target.releasePointerCapture(pointerId) } catch {}
-  }
-}
+const { scale, isPanning, refreshBounds, resetZoom, resetImage, zoomIn, zoomOut, toggleZoom,
+  handleWheel, onKeydown, startPan, onPan, stopPan } = useImageViewport(viewportEl, imageEl, transformEl, props)
+const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片查看器')
 </script>
 
 <style scoped>
@@ -281,9 +127,17 @@ function releasePan() {
 }
 
 .zoom-transform-layer {
-  transform: var(--zoom-transform, none);
   transform-origin: center center;
   /* Wheel, keyboard and drag follow the input directly, without queued zoom. */
+}
+
+/* The content always fits this viewport, including low-resolution previews.
+   Keep the element box stable when the decoded original replaces its preview. */
+.zoom-transform-layer > .zoomable-img {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .zoomable-img {
@@ -302,6 +156,10 @@ function releasePan() {
 
 /* Hosts can dock the existing toolbar outside the clipped art viewport. */
 .zoom-toolbar { display: contents; }
+.zoom-recovery { --text-disabled:var(--on-art-secondary); position:absolute; inset:var(--s-3) var(--s-3) auto; z-index:var(--z-raised); display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-2); border-radius:var(--r-sm); background:var(--art-scrim); color:var(--on-art-primary); font-size:var(--fs-label-sm); }
+.zoom-recovery button { min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-sm); background:transparent; color:inherit; font:inherit; cursor:pointer; }
+.zoom-recovery button:disabled { color:var(--text-disabled); cursor:wait; }
+.zoom-recovery button:focus-visible { outline:2px solid var(--on-art-primary); outline-offset:2px; }
 
 @media (hover: hover) and (pointer: fine) {
   .zoom-control:hover {

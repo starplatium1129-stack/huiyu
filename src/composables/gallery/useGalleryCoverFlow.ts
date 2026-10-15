@@ -3,16 +3,17 @@ import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { FluidSpring } from '@/utils/fluidSpring'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 
-export interface CoverFlowTravel { readonly from:number; readonly to:number; readonly velocity:number; readonly startedAt:number; readonly duration:number; readonly samples:readonly number[] }
+export interface CoverFlowTravel { readonly from:number; readonly to:number; readonly velocity:number; readonly duration:number; readonly samples:readonly number[] }
 
 /** One bounded axis for this viewer; image reads remain owned by useGalleryViewer. */
 export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   index: () => number; count: () => number; active: () => boolean; select: (index: number) => void
+  present: (position: number) => void
 }) {
-  const position = ref(options.index()), width = ref(800), reduced = ref(prefersReducedMotion()), dragging = ref(false)
-  const spring = new FluidSpring(position.value, 4.4)
+  let position = options.index(), travelStartedAt = 0
+  const windowCenter = ref(Math.floor(position)), width = ref(800), reduced = ref(prefersReducedMotion()), dragging = ref(false)
+  const spring = new FluidSpring(position, 4.4)
   const travel = shallowRef<CoverFlowTravel | null>(null)
-  let arrival: ReturnType<typeof setTimeout> | undefined
   const stepWidth = computed(() => Math.max(96, Math.min(220, width.value * .18)))
   let frame = 0, lastFrame = 0
   let wheelPosition: number | null = null, wheelTimer: ReturnType<typeof setTimeout> | undefined
@@ -21,21 +22,34 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   let stopPreference: (() => void) | undefined
   let drag: { id: number; x: number; position: number; last: number; time: number; velocity: number } | null = null
   const clamp = (value: number) => Math.max(0, Math.min(Math.max(0, options.count() - 1), value))
+  function present(value: number) {
+    position = value
+    // Only crossing a record boundary changes the bounded media window. The
+    // continuous axis never becomes a Vue rendering dependency.
+    const center = Math.floor(clamp(value))
+    if (center !== windowCenter.value) windowCenter.value = center
+    options.present(value)
+  }
   function stopFrame() { cancelAnimationFrame(frame); frame = 0; lastFrame = 0 }
   function captureTravel() {
-    const current=travel.value
+    const current = travel.value
     if (!current) return
-    const animation=host.value?.getAnimations?.({subtree:true}).find(item=>item.id==='gallery-cover-flow')
-    const elapsed=typeof animation?.currentTime==='number' ? animation.currentTime/1000 : Math.max(0,(performance.now()-current.startedAt)/1000)
-    const live=new FluidSpring(current.from,4.4);live.velocity=current.velocity;live.to(current.to);live.step(elapsed)
-    spring.value=live.value;spring.velocity=live.velocity;position.value=live.value
-    travel.value=null;clearTimeout(arrival)
+    const animation = host.value?.getAnimations?.({ subtree:true }).find(item => item.id === 'gallery-cover-flow')
+    const elapsed = typeof animation?.currentTime === 'number' ? animation.currentTime / 1000
+      : travelStartedAt ? Math.max(0, (performance.now() - travelStartedAt) / 1000) : 0
+    const live = new FluidSpring(current.from, 4.4)
+    live.velocity = current.velocity; live.to(current.to); live.step(elapsed)
+    spring.value = live.value; spring.velocity = live.velocity
+    // Paint the captured value before cancelling native effects so a reversal
+    // cannot expose their underlying destination frame.
+    present(live.value)
+    travel.value = null; travelStartedAt = 0
   }
   function tick(time: number) {
     frame = 0
     const elapsed = lastFrame ? (time - lastFrame) / 1000 : 1 / 60
     lastFrame = time
-    position.value = spring.step(elapsed)
+    present(spring.step(elapsed))
     if (!spring.settled && options.active()) frame = requestAnimationFrame(tick)
     else lastFrame = 0
   }
@@ -43,20 +57,35 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     if (travel.value?.to===clamp(value)) return
     captureTravel()
     spring.to(clamp(value))
-    if (reduced.value || document.hidden) { stopFrame(); spring.snap(); position.value = spring.value }
+    if (reduced.value || document.hidden) { stopFrame(); spring.snap(); present(spring.value) }
     else if (compose && typeof host.value?.animate==='function' && Math.abs(spring.target-spring.value)<=3) {
       stopFrame()
       const curve=new FluidSpring(spring.value,4.4);curve.velocity=spring.velocity;curve.to(spring.target)
       const samples=[curve.value]
       for(let index=0;index<90&&!curve.settled;index++) samples.push(curve.step(1/60))
-      if(samples.length===1){spring.snap();position.value=spring.value;return}
+      if(samples.length===1){spring.snap();present(spring.value);return}
       samples[samples.length-1]=spring.target
-      const motion:CoverFlowTravel={from:spring.value,to:spring.target,velocity:spring.velocity,startedAt:performance.now(),duration:(samples.length-1)/60*1000,samples}
-      travel.value=motion;position.value=motion.to
-      arrival=setTimeout(()=>{if(travel.value===motion){spring.snap(motion.to);travel.value=null;position.value=motion.to}},motion.duration)
+      // A fast reversal during a long jump can retain substantial velocity.
+      // Keep that live spring without mounting its whole overshoot as media.
+      if (Math.ceil(Math.max(...samples)) - Math.floor(Math.min(...samples)) > 4) {
+        frame = requestAnimationFrame(tick)
+        return
+      }
+      travel.value = { from:spring.value, to:spring.target, velocity:spring.velocity, duration:(samples.length-1)/60*1000, samples }
     }
     // Long jumps cross the virtualized cover window and keep its live path.
     else if (!frame) frame = requestAnimationFrame(tick)
+  }
+  function startTravel(motion: CoverFlowTravel) { if (travel.value === motion) travelStartedAt = performance.now() }
+  function finishTravel(motion: CoverFlowTravel) {
+    if (travel.value !== motion) return
+    spring.snap(motion.to); present(spring.value)
+    travel.value = null; travelStartedAt = 0
+  }
+  function resumeTravel(motion: CoverFlowTravel) {
+    if (travel.value !== motion) return
+    captureTravel()
+    if (!frame && options.active() && !document.hidden) frame = requestAnimationFrame(tick)
   }
   function clearWheel() { clearTimeout(wheelTimer); wheelPosition = null }
   function releasePointer() {
@@ -65,13 +94,13 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     if (id !== undefined && host.value?.hasPointerCapture(id)) host.value.releasePointerCapture(id)
   }
   function stop() {
-    captureTravel();clearTimeout(arrival)
+    captureTravel()
     stopFrame(); clearWheel(); releasePointer()
     clearTimeout(clickTimer); suppressClick = false
   }
   function reset() {
     stop(); requestedIndex = options.index()
-    spring.snap(options.index()); position.value = spring.value
+    spring.snap(options.index()); present(spring.value)
   }
   function commit(index: number) {
     requestedIndex = clamp(Math.round(index))
@@ -85,10 +114,11 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     return target instanceof Element && !!target.closest('.zoom-toolbar, .gallery-orbit-caption, .zoomable-image-viewer.is-zoomed')
   }
   function pointerDown(event: PointerEvent) {
-    if (!options.active() || options.count() < 2 || event.button !== 0 || blocked(event.target)) return
+    if (!options.active() || options.count() < 2 || !event.isPrimary || drag || event.button !== 0 || blocked(event.target)) return
     clearWheel()
     captureTravel()
-    drag = { id: event.pointerId, x: event.clientX, position: position.value, last: position.value, time: event.timeStamp, velocity: 0 }
+    stopFrame()
+    drag = { id: event.pointerId, x: event.clientX, position, last: position, time: event.timeStamp, velocity: 0 }
   }
   function pointerMove(event: PointerEvent) {
     if (!drag || drag.id !== event.pointerId) return
@@ -105,17 +135,17 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     const elapsed = event.timeStamp - drag.time
     if (elapsed > 0) drag.velocity = Math.max(-14, Math.min(14, (value - drag.last) / elapsed * 1000))
     drag.last = value; drag.time = event.timeStamp
-    spring.snap(value); position.value = value
+    spring.snap(value); present(value)
   }
   function pointerEnd(event: PointerEvent, cancelled = false) {
     if (!drag || drag.id !== event.pointerId) return
     const wasDragging = dragging.value
     const velocity = event.timeStamp - drag.time > 80 ? 0 : drag.velocity
     releasePointer()
-    if (!wasDragging) return
+    if (!wasDragging) { moveTo(options.index()); return }
     if (cancelled) { moveTo(options.index()); return }
     // Project at most one extra cover, then keep the release velocity in the spring.
-    const target = clamp(Math.round(position.value + Math.max(-1, Math.min(1, velocity * .12))))
+    const target = clamp(Math.round(position + Math.max(-1, Math.min(1, velocity * .12))))
     spring.velocity = velocity; moveTo(target); commit(target)
     suppressClick = true
     clickTimer = setTimeout(() => { suppressClick = false }, 0)
@@ -142,6 +172,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   useResizeObserver(host, entries => {
     width.value = entries[0]?.contentRect.width || width.value
     if(travel.value){const target=travel.value.to;captureTravel();moveTo(target)}
+    else options.present(position)
   })
   watch(options.index, index => {
     if (!options.active()) return
@@ -153,5 +184,5 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   function activate() { reduced.value = prefersReducedMotion(); stopPreference ??= listenMotionChanges(preference); reset() }
   function deactivate() { stop(); stopPreference?.(); stopPreference = undefined }
   onMounted(activate); onActivated(activate); onDeactivated(deactivate); onBeforeUnmount(deactivate)
-  return { position, width, reduced, dragging, travel, select, reset }
+  return { getPosition: () => position, windowCenter, width, reduced, dragging, travel, select, reset, startTravel, finishTravel, resumeTravel }
 }

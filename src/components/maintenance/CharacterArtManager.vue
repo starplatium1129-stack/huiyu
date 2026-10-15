@@ -31,7 +31,7 @@
         </section>
       </div>
       <div v-if="showParticles" v-content-motion:fade="showParticles" class="character-art-particles">
-        <SemanticParticleField :shape="particleTheme.shape" :portrait-id="selectedId" :label="`${current?.name || ''}已保存的粒子形象`" density="ambient" />
+        <AsyncPanel :loader="loadParticleField" label="粒子形象预览" v-slot="{ component }"><component :is="component" :shape="particleTheme.shape" :portrait-id="selectedId" :label="`${current?.name || ''}已保存的粒子形象`" density="ambient" /></AsyncPanel>
       </div>
       <footer class="character-art-actions">
         <button class="btn btn-primary" type="button" :disabled="!file || !ready || saving || reading" @click="save">{{ saving ? '正在同步形象…' : '应用立绘并同步粒子' }}</button>
@@ -42,7 +42,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from 'vue'
+import { computed, ref } from 'vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -53,7 +54,7 @@ const props = defineProps<{ initialCharacterId?: string }>()
 const { selectedId, previewUrl, feedback, error, loading, saving, reading, ready, file,
   profiles, current, custom, originalUrl, local, load, selectCharacter, pick, discard, save, reset, canLeave } = useCharacterArtManager(() => props.initialCharacterId)
 defineExpose({ canLeave })
-const SemanticParticleField = defineAsyncComponent(() => import('@/components/visual/SemanticParticleField.vue'))
+const loadParticleField = () => import('@/components/visual/SemanticParticleField.vue')
 const fileInput = ref<HTMLInputElement | null>(null), showParticles = ref(false)
 const particleTheme = computed(() => characterParticleTheme(selectedId.value))
 async function onFile(event: Event) {
@@ -76,6 +77,7 @@ async function onFile(event: Event) {
 .character-art-error { color: var(--danger-text); margin: 0; }
 .character-art-success { color: var(--success-text); margin: 0; }
 .character-art-particles { height: 360px; min-width: 0; }
+.character-art-particles :deep(.async-panel) { height: 100%; }
 .character-art-particles :deep(.semantic-particle-field) { height: 100%; }
 @media (max-width: 1000px) { .character-art-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

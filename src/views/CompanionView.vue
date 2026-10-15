@@ -23,14 +23,14 @@
       </div>
       <CompanionCharacterPicker :model-value="activeChar" label="切换陪伴角色" @update:model-value="switchPetCharacter" />
       <div class="companion-toolbar-actions">
-        <button
+        <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
+        <template #trigger><button
           type="button"
           class="companion-settings-btn"
           aria-label="设置"
           :aria-expanded="settingsOpen"
-          @click="settingsOpen = !settingsOpen"
-        ><ArchiveIcon name="gear" /><span>设置</span></button>
-        <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
+          @click="desktopBridge && (settingsOpen = !settingsOpen)"
+        ><ArchiveIcon name="gear" /><span>设置</span></button></template>
           <div class="companion-pop-group" data-preference-pane="character">
             <strong>角色外观</strong>
             <button type="button" class="companion-pop-item" @click="openAppearance"><ArchiveIcon name="wardrobe" /><span>角色取景与外观</span><ArchiveIcon class="preference-chevron" name="chevron-down" /></button>
@@ -263,6 +263,7 @@
             <StudioTooltip content="语音输入设置">
               <button
                 class="companion-speech-settings"
+                ref="speechSettingsTrigger"
                 type="button"
                 aria-label="语音输入设置"
                 @click="speechSettingsOpen = !speechSettingsOpen"
@@ -273,6 +274,7 @@
             <StudioTooltip content="配置语音输入">
               <button
                 class="companion-speech-settings"
+                ref="speechSettingsTrigger"
                 type="button"
                 aria-label="配置语音输入"
                 @click="speechSettingsOpen = true"
@@ -288,11 +290,12 @@
            </div>
          </div>
 
-        <SpeechInputSettings
-          v-if="speechSettingsOpen"
-          @save="onSpeechSettingsSaved"
-          @close="speechSettingsOpen = false"
-        />
+        <section v-if="speechSettingsOpen" ref="speechSettingsPanel" tabindex="-1" aria-label="语音输入设置">
+          <SpeechInputSettings
+            @save="onSpeechSettingsSaved"
+            @close="speechSettingsOpen = false"
+          />
+        </section>
 
         <div v-if="(speechState === 'error' && speechError) || chatError" class="companion-errors">
           <div v-if="speechState === 'error' && speechError && speechError !== chatError" class="companion-error" role="status">{{ speechError }}</div>
@@ -353,6 +356,7 @@ import CompanionWorkspaceSettings from '@/components/CompanionWorkspaceSettings.
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
+import { useInlinePanelFocus } from '@/composables/chat/useInlinePanelFocus'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
@@ -460,6 +464,8 @@ liveDotText
 } = useCompanionWorkspace()
 
 const workspaceTriggerEl = ref<HTMLButtonElement | null>(null)
+const speechSettingsTrigger = ref<HTMLElement | null>(null), speechSettingsPanel = ref<HTMLElement | null>(null)
+useInlinePanelFocus(speechSettingsOpen, () => speechSettingsPanel.value, speechSettingsTrigger)
 
 function toggleWorkspace() {
   workspaceOpen.value = !workspaceOpen.value

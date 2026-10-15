@@ -101,7 +101,7 @@
         <div v-if="activityText" class="room-chat-activity" role="status"><span>{{ activityText }}</span><button v-if="speechSessionActive" class="btn btn-ghost btn-sm" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button></div>
         <div class="chat-composer">
           <div class="composer-row">
-            <StudioTooltip v-if="speechReady" :content="speechError || '按住说话'">
+            <StudioTooltip v-if="speechReady" anchor :content="speechError || (busy || voiceActive ? '请等待当前回复或语音结束' : speechButtonText)">
               <button class="hold-talk-btn" type="button" :aria-label="speechButtonText" :data-state="speechState" :disabled="speechButtonDisabled"
                 @keydown.space.prevent="onSpeechKeyPress" @keydown.enter.prevent="onSpeechKeyPress" @keyup.space.prevent="onSpeechRelease" @keyup.enter.prevent="onSpeechRelease"
                 @blur="onSpeechCancel" @pointerdown.prevent="onSpeechPress" @pointerup="onSpeechRelease" @pointercancel="onSpeechCancel" @pointerleave="onSpeechLeave"><ArchiveIcon name="sound" /></button>

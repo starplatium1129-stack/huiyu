@@ -51,6 +51,10 @@
 @media (hover: hover) and (pointer: fine) {
   .mood-card:hover { transform: translateY(-2px); }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .mood-grid .mood-card { transition:none; transform:none; }
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .mood-grid .mood-card { transition:none; transform:none; }
+}
 
 @media (max-width: 768px) {
   .mood-grid-lg { --mood-col: 140px; }

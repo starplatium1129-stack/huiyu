@@ -5,6 +5,8 @@ import { artworkTimestamp, type ArtworkRecord } from '@/types/artwork'
 /** The home cards borrow derived previews; originals are a cancellable fallback. */
 export function useHomeRecentWorks() {
   const recentWorks = ref<ArtworkRecord[]>([])
+  const loading = ref(true)
+  const error = ref('')
   const coverUrls = reactive<Record<string, string>>({})
   let request: AbortController | null = null
   let disposed = false
@@ -16,12 +18,14 @@ export function useHomeRecentWorks() {
   }
   async function load() {
     if (disposed) return
-    request?.abort(); clearCovers()
+    request?.abort()
+    loading.value = true; error.value = ''
     const controller = new AbortController(); request = controller
     const current = () => !disposed && !controller.signal.aborted && request === controller
     try {
       const history = await artworkRepository.readRecentHistory(controller.signal)
       if (!current()) return
+      clearCovers()
       recentWorks.value = history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
       await Promise.all(recentWorks.value.map(async item => {
         const id = item.image_id
@@ -37,9 +41,10 @@ export function useHomeRecentWorks() {
           coverUrls[id] = URL.createObjectURL(blob)
         } catch { /* A missing preview does not block the recent-work links. */ }
       }))
-    } catch (error) { if (current()) console.warn('读取历史失败', error) }
-    finally { if (request === controller) request = null }
+    } catch (cause) {
+      if (current()) { error.value = '作品库暂时无法读取，请重试。'; console.warn('读取历史失败', cause) }
+    } finally { if (request === controller) { loading.value = false; request = null } }
   }
   onUnmounted(() => { disposed = true; request?.abort(); request = null; clearCovers() })
-  return { recentWorks, coverUrl: (item: ArtworkRecord) => item.image_id ? coverUrls[item.image_id] || '' : '', load }
+  return { recentWorks, loading, error, coverUrl: (item: ArtworkRecord) => item.image_id ? coverUrls[item.image_id] || '' : '', load }
 }

@@ -1,7 +1,7 @@
 <template>
   <button v-if="!hideTriggers" class="appearance-entry" type="button" @click="launch('appearance')"><ArchiveIcon name="palette" />外观与动态效果</button>
   <button v-if="!hideTriggers" class="appearance-entry" type="button" @click="launch('keyboard')"><ArchiveIcon name="gear" />键盘快捷键 <kbd>F1</kbd></button>
-  <AppearancePreferencesPanel v-if="request && !launcherOnly" :request="request" @ready="onPanelReady" />
+  <component :is="panel" v-if="request && panel && !launcherOnly" :request="request" @ready="onPanelReady" />
 </template>
 
 <script lang="ts">
@@ -13,10 +13,13 @@ export interface AppearanceRequest {
 </script>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, onUnmounted, shallowRef } from 'vue'
+import { onMounted, onUnmounted, shallowRef, type Component, type ShallowRef } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import { appearanceFocusOrigin, desktopShortcutAllowed } from '@/composables/useDesktopInteraction'
-const AppearancePreferencesPanel = defineAsyncComponent(() => import('./AppearancePreferencesPanel.vue'))
+import { useToast } from '@/composables/useToast'
+const panel: ShallowRef<Component | null> = shallowRef(null)
+const toast = useToast()
+let panelDownload: Promise<{ default: Component }> | null = null, disposed = false
 const props = withDefaults(defineProps<{ launcherOnly?: boolean; hideTriggers?: boolean }>(), { launcherOnly: false, hideTriggers: false })
 const emit = defineEmits<{ open: [] }>()
 const request = shallowRef<AppearanceRequest>()
@@ -27,9 +30,30 @@ function launch(section: AppearanceRequest['section']) {
   window.dispatchEvent(new CustomEvent('atelier:appearance-open', { detail: { section } }))
   emit('open')
 }
-function open(section: AppearanceRequest['section']) {
+function open(section: AppearanceRequest['section'], trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null) {
   // Capture intent and its focus origin before the lazy panel or closing menu settles.
-  request.value = { section, keyboard: keyboardInput, trigger: document.activeElement instanceof HTMLElement ? document.activeElement : null }
+  request.value = { section, keyboard: keyboardInput, trigger }
+  void loadPanel()
+}
+async function loadPanel() {
+  if (panel.value || panelDownload || disposed) return
+  panelDownload = import('./AppearancePreferencesPanel.vue')
+  try {
+    const loaded = await panelDownload
+    if (!disposed) panel.value = loaded.default
+  } catch {
+    if (!disposed && request.value) {
+      const failedRequest = request.value
+      request.value = undefined
+      if (document.activeElement === document.body || document.activeElement === failedRequest.trigger) {
+        appearanceFocusOrigin(failedRequest.trigger)?.focus({ preventScroll: true })
+      }
+      toast.show('设置面板暂未加载，请重新打开。当前外观设置已保留。', 'error', 8000, {
+        label: '重新打开',
+        onClick: () => { if (!disposed) open(failedRequest.section, failedRequest.trigger) },
+      })
+    }
+  } finally { panelDownload = null }
 }
 function keyboardHelp() { keyboardInput = true; open('keyboard') }
 function appearanceOpen(event: Event) { open((event as CustomEvent).detail?.section === 'keyboard' ? 'keyboard' : 'appearance') }
@@ -50,6 +74,7 @@ onMounted(() => {
   window.addEventListener('pointerdown', pointer, true)
 })
 onUnmounted(() => {
+  disposed = true
   if (props.launcherOnly) return
   window.removeEventListener('atelier:keyboard-help', keyboardHelp)
   window.removeEventListener('atelier:appearance-open', appearanceOpen)

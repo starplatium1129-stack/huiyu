@@ -4,10 +4,10 @@
     <button class="viewer-nav viewer-prev" data-fluid-glass type="button" aria-label="上一幅" :disabled="index <= 0" @click="emit('select', index - 1)"><ArchiveIcon name="chevron-down" /></button>
     <slot name="image">
       <GalleryOrbitStage v-if="!original && items[index]" :items="items" :index="index" :active="active"
-        :current-src="src" :preview-src="previewSrc" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborUrls"
+        :current-src="src" :preview-src="currentPreview" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborUrls" :load-failed="loadFailed" :reload="reload"
         :title="title" @select="emit('select', $event)" @load="emit('load')" @error="emit('error')"
         @pointerdown.capture="emit('interact')" @wheel.capture="emit('interact')" />
-      <ZoomableImageViewer v-else-if="src || previewSrc" :src="src || previewSrc" :preview-src="previewSrc"
+      <ZoomableImageViewer v-else-if="src || currentPreview || loadFailed" :src="src || currentPreview" :preview-src="currentPreview" :image-key="items[index]?.id" :load-failed="loadFailed" :reload="reload"
         :alt="items[index] ? title(items[index]) : ''" @load="emit('load', $event)" @error="emit('error')">
         <template #fallback><div class="viewer-fallback"><ArchiveIcon name="image" /><span>图片暂时无法读取</span></div></template>
       </ZoomableImageViewer>
@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends Pick<ArtworkRecord, 'id' | 'width' | 'height' | 'image_width' | 'image_height' | 'actual'>">
+import { computed } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
@@ -28,11 +29,16 @@ import GalleryOrbitStage from './GalleryOrbitStage.vue'
 import '@/assets/css/viewer.css'
 import '@/assets/css/gallery-viewer.css'
 
-withDefaults(defineProps<{
+const props = withDefaults(defineProps<{
   items: T[]; index: number; active: boolean; original: boolean; src: string; previewSrc?: string;
   cardUrls?: Record<string, string>; thumbUrls?: Record<string, string>; neighborUrls?: Record<string, string>;
   title: (item: T) => string;
+  loadFailed?: boolean; reload?: () => Promise<void>;
 }>(), { previewSrc: '', cardUrls: () => ({}), thumbUrls: () => ({}), neighborUrls: () => ({}) })
+const currentPreview = computed(() => {
+  const id = props.items[props.index]?.id
+  return props.previewSrc || (id === undefined ? '' : props.cardUrls[id] || props.neighborUrls[id] || props.thumbUrls[id] || '')
+})
 const emit = defineEmits<{
   close: []; select: [index: number]; 'toggle-original': []; 'dismiss-info': []; interact: [];
   'close-button': [element: HTMLButtonElement | null]; load: [event?: Event]; error: [];

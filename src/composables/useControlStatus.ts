@@ -72,6 +72,8 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const feedbackText = ref('正在检测本地服务…')
   const actionNote = ref('')
   const logs = ref<string[]>([])
+  // File tails repeat on every poll, independently of the server cursor.
+  const seenLogLines = new Set<string>()
   const logBoxEl = ref<HTMLElement | null>(null)
   const logIndex = ref(0)
   // 驱动 opProgress 时间微增的响应式时钟，避免“冻住”观感（仅在操作进行时滴答）
@@ -313,12 +315,20 @@ export function useControlStatus({ showToast }: StatusHooks) {
         syncNowTicker()
       }
       if (data.logs.length) {
-        const fresh = data.logs.filter((l: string) => !logs.value.includes(l))
+        const fresh: string[] = []
+        for (const line of data.logs) {
+          if (!seenLogLines.has(line)) fresh.push(line)
+          seenLogLines.delete(line)
+          seenLogLines.add(line)
+        }
+        while (seenLogLines.size > 600) seenLogLines.delete(seenLogLines.values().next().value!)
         if (fresh.length) {
+          const box = logBoxEl.value
+          const followingTail = !box || box.scrollHeight - box.scrollTop - box.clientHeight < 24
           logs.value.push(...fresh)
           if (logs.value.length > 300) logs.value = logs.value.slice(-200)
           await nextTick()
-          if (logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
+          if (followingTail && logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
         }
       }
       // 2026-08-16 审计：游标改为服务端权威 controlLogs 总长（total），而不是按本批
@@ -334,7 +344,11 @@ export function useControlStatus({ showToast }: StatusHooks) {
     }
   }
 
-  function clearLogs() { logs.value = []; logIndex.value = 0 }
+  function clearLogs() {
+    logsRequest?.abort()
+    logsRequest = null
+    logs.value = []
+  }
   // 轮询底座（2026-08-28 审计 P1-9）：3s 状态/日志轮询收敛到 usePolling，
   // in-flight 去重、页面隐藏暂停（paused=document.hidden）、回前台 sync 续跑。
   let visibilityBound = false

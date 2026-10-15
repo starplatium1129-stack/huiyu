@@ -66,10 +66,12 @@ export interface VideoJob {
   id: string
   status: VideoJobStatus
   provider: 'comfy'
-  progress: number
+  progress: number | null
+  /** Runtime recovery needs a task-center check rather than a fresh generation. */
+  needsReview?: boolean
   /** 预估总时长（秒）：帧数×步数×速率 + 加载余量（服务端校准）。 */
   estimatedSeconds: number
-  /** 已运行秒数（时间外推进度用）。 */
+  /** 已运行秒数，仅用于展示耗时。 */
   elapsedSeconds: number
   modelId: string
   prompt: string

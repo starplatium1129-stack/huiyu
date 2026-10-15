@@ -15,8 +15,8 @@
       <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
       <p v-if="workspaceError && !workspaceOpen" class="setup-error" role="alert">{{ workspaceError }}</p>
       <div v-if="workspacePending" class="setup-restart" role="status">
-        <ArchiveIcon name="refresh" /><div><h3>新位置已保存</h3><code>{{ workspaceDraft }}</code></div>
-        <button v-if="desktop?.restartForSetup" class="btn btn-primary" type="button" :disabled="setupBusy || workspaceSaving" @click="restartForSetup">重启并继续</button>
+        <ArchiveIcon name="refresh" /><div><h3>新位置已保存</h3><code>{{ workspaceSavedRoot }}</code></div>
+        <button v-if="desktop?.restartForSetup" class="btn btn-primary" type="button" :disabled="setupBusy || workspaceSaving || restarting" @click="restartForSetup">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
         <span v-else>退出并重新打开绘遇后继续。</span>
       </div>
       <div v-else-if="guideStep === 'location'" class="setup-location-step">
@@ -38,7 +38,7 @@
             <div><span class="setup-label">第 {{ guideStep === 'ready' ? '3' : '2' }} 步</span><h3 ref="downloadTitle" tabindex="-1">{{ guideStep === 'ready' ? '准备完成' : setupBusy ? '正在自动配置' : '确认要下载的内容' }}</h3></div>
             <button v-if="guideStep === 'download' && !setupBusy" class="btn btn-quiet btn-sm" type="button" @click="guideStep = 'location'">更换位置</button>
           </div>
-          <LocalSetupAutomation :snapshot="snapshot" :status-confirmed="currentCheck" :workspace-blocked="workspacePending || workspaceUnconfirmed" :can-restart="!!desktop?.restartForSetup" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" @phase="onPhase" @restart="restartForSetup" @workspace="guideStep = 'location'" />
+          <LocalSetupAutomation :snapshot="snapshot" :status-confirmed="currentCheck" :workspace-blocked="workspacePending || workspaceUnconfirmed" :can-restart="!!desktop?.restartForSetup" :restarting="restarting" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" @phase="onPhase" @restart="restartForSetup" @workspace="guideStep = 'location'" />
         </div>
         <details v-if="guideStep !== 'location' && !setupBusy" class="setup-details">
           <StudioDisclosureSummary>已有环境与手动管理</StudioDisclosureSummary>
@@ -71,7 +71,7 @@ const steps: { id: GuideStep; label: string }[] = [{ id: 'location', label: '存
 const stepIndex = computed(() => steps.findIndex(step => step.id === guideStep.value))
 watch(guideStep, async step => { await nextTick(); (step === 'location' ? locationTitle.value : downloadTitle.value)?.focus() })
 const { isLocal, desktop, snapshot, loading, error, nextStep, basicComplete, currentCheck,
-  workspaceButton, workspaceOpen, workspaceDraft, workspaceLoading, workspaceSaving, workspaceError, workspacePending, workspaceUnconfirmed,
+  workspaceButton, workspaceOpen, workspaceDraft, workspaceSavedRoot, workspaceLoading, workspaceSaving, workspaceError, workspacePending, workspaceUnconfirmed, restarting,
   refresh, cancelCheck, selectSetupModel, recordDownload, recordVerification,
   openWorkspace, chooseWorkspace, closeWorkspace, saveWorkspace, restartForSetup } = useLocalSetup()
 function onPhase(phase: 'selection' | 'preparing' | 'ready') {

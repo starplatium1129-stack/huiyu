@@ -23,7 +23,7 @@
       <SensitivePreviewVeil v-if="contentRating === 'R18' && thumbSrc && !thumbFailed"
         :src="thumbSrc" :crossorigin="thumbImage.crossorigin" />
       <span v-if="thumbFailed || !thumbId || !thumbSrc" class="sc-preview-unavailable">{{ !thumbSrc && thumbId ? '图片服务暂未连接 · 场景可用' : '样张暂缺 · 场景可用' }}</span>
-      <span v-if="thumbId" class="sc-id">{{ thumbId.toUpperCase() }}</span>
+      <span v-if="thumbId" class="sc-id">{{ archiveCode }}</span>
       <span v-if="contentRating === 'R18'" class="sc-badge sc-rating r18">R18</span>
       <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
       <span v-if="mode === 'grid'" class="sc-cat">{{ scene.category || '场景' }}</span>
@@ -94,6 +94,7 @@ function onCardKeydown(event: KeyboardEvent) {
 }
 const contentRating = computed(() => props.scene.rating || (props.scene.mature ? 'R18' : 'All'))
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
+const archiveCode = computed(() => thumbId.value.replace(/^sc(?=\d)/, 'sc-').toUpperCase())
 const { image: thumbImage, src: thumbSrc, loaded: thumbLoaded, failed: thumbFailed } = useRuntimeImage(() => {
   const v = props.imgVersion ?? ''
   return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`

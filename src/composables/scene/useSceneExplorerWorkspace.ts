@@ -231,11 +231,13 @@ export function useSceneExplorerWorkspace() {
     });
     watch([debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries, fRating, fTier, sortBy, showHidden], () => { visible.value = PAGE_SIZE; });
     function toggleFav(id: string) {
+        const previousFocus = document.activeElement;
         const next = new Set(favs.value);
         if (next.has(id)) next.delete(id); else next.add(id);
         try {
             localStorage.setItem(FAV_KEY, JSON.stringify([...next]));
             favs.value = next;
+            restoreRemovedFocus(previousFocus);
         } catch { toast.error('收藏未保存，原有状态已保留，请稍后重试'); }
     }
     function toggleHidden(id: string) {
@@ -245,8 +247,11 @@ export function useSceneExplorerWorkspace() {
         try {
             writeHiddenScenes(next);
             hiddenIds.value = next;
-            nextTick(() => { if (previousFocus && !previousFocus.isConnected) document.getElementById('sceneSearch')?.focus(); });
+            restoreRemovedFocus(previousFocus);
         } catch { toast.error('隐藏设置未保存，原有状态已保留，请稍后重试'); }
+    }
+    function restoreRemovedFocus(previousFocus: Element | null) {
+        void nextTick(() => { if (previousFocus && !previousFocus.isConnected && document.activeElement === document.body) document.getElementById('sceneSearch')?.focus(); });
     }
     function applyMoodRail(rail: {
         character: string;

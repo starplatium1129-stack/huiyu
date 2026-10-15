@@ -13,20 +13,19 @@
       </div>
     </div>
     <div ref="host" class="inspiration-deck-stage" tabindex="0" role="group" aria-label="灵感卡片，左右方向键翻页"
-      :aria-describedby="hintId" :class="{ dragging, still: !canAnimate || resetting }" :style="{ '--inspiration-side-count': Math.max(1, cards.length - 1) }"
+      :aria-describedby="hintId" :class="{ dragging, still: !canAnimate }" :style="{ '--inspiration-side-count': Math.max(1, cards.length - 1) }"
       @pointerdown="pointerDown" @pointermove="pointerMove" @pointerup="pointerUp"
       @pointercancel="cancel" @lostpointercapture="cancel" @keydown="keydown" @click.capture="clickCapture"
       @pointerleave="!dragging && cancel()" @dragstart.prevent>
       <article v-for="(item, depth) in cards" :key="item.key" class="inspiration-deck-card"
-        :class="{ front: depth === 0, 'inspiration-feature': depth === 0, 'only-card': cards.length === 1 }" :data-character="item.rail.character"
-        :style="depth === 0 ? { '--deck-x': `${turning ? -turning * 16 : canAnimate ? dragX : 0}px`, '--deck-opacity': turning ? 0 : 1 } : undefined">
+        :class="{ front: depth === 0, 'inspiration-feature': depth === 0, 'only-card': cards.length === 1 }" :data-character="item.rail.character">
         <div v-if="depth === 0" class="inspiration-feature-copy">
           <span class="inspiration-feature-label">{{ item.artwork ? sceneCharacter(item.rail.character) : item.scene ? sceneCharacter(item.scene.char) : '灵感手帖' }}</span>
           <h2>{{ item.title }}</h2>
           <p>{{ item.rail.subtitle }}</p>
           <div class="inspiration-feature-actions">
             <RouterLink v-if="item.scene" class="btn btn-primary inspiration-feature-draw" :to="'/prompt-builder?scene=' + encodeURIComponent(item.scene.id)"><ArchiveIcon name="spark" />{{ item.artwork ? '绘制推荐场景' : '用这一幕绘制' }}</RouterLink>
-            <button class="inspiration-deck-open" type="button" :disabled="Boolean(turning)" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
+            <button class="inspiration-deck-open" type="button" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
           </div>
         </div>
         <button class="inspiration-deck-image" :class="{ 'inspiration-feature-image': depth === 0, 'inspiration-header-image': item.artwork }" type="button" :disabled="!item.artwork && !item.scene"
@@ -37,7 +36,7 @@
         <div v-if="depth !== 0" class="inspiration-deck-copy">
           <h2>{{ item.title }}</h2>
           <span class="inspiration-deck-subtitle">{{ item.rail.subtitle }}</span>
-          <button class="inspiration-deck-open" type="button" :disabled="Boolean(turning)" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
+          <button class="inspiration-deck-open" type="button" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
         </div>
       </article>
     </div>
@@ -82,7 +81,7 @@ const entries = computed(() => {
   })
 })
 const keys = computed(() => entries.value.map(item => item.key))
-const { index, dragX, dragging, turning, resetting, canAnimate, step, pointerDown, pointerMove,
+const { index, dragging, canAnimate, step, pointerDown, pointerMove,
   pointerUp, cancel, clickCapture, keydown } = useInspirationDeck(host, () => keys.value)
 function sceneCharacter(character?: string) { return character === 'natsume' ? '四季夏目' : character === 'nene' ? '绫地宁宁' : '双人灵感' }
 const cards = computed(() => Array.from({ length: Math.min(3, entries.value.length) }, (_, depth) =>
@@ -106,7 +105,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-stage.dragging { cursor:grabbing; user-select:none; }
 .inspiration-deck-card { --card-focus-lift:0px; --card-focus-scale:1; display:grid; grid-template-rows:minmax(0,1fr) auto; height:var(--inspiration-height); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); transform:translateY(var(--card-focus-lift)); transition:transform var(--motion-surface) var(--ease-out); }
 .inspiration-deck-card.only-card { grid-column:1/-1; }
-.inspiration-deck-card.front { transform:translate3d(var(--deck-x),var(--card-focus-lift),0); opacity:var(--deck-opacity); transition:transform 240ms var(--ease-out),opacity 240ms var(--ease-out); }
+.inspiration-deck-card.front { transform:translate3d(0,var(--card-focus-lift),0); }
 .inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:has(:focus-visible) { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
 .inspiration-deck-card:has(:focus-visible) :deep(.inspiration-artwork.ready::after) { opacity:1; }
 .inspiration-deck-card :deep(.inspiration-artwork.ready > img) { transform:scale(var(--card-focus-scale)); }

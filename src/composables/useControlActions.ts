@@ -43,6 +43,7 @@ export function useControlActions(
   }
 
   function toggleTunnel() {
+    if (status.actionBusy.value || status.opBusy.value) return
     tunnelEnabled.value = !tunnelEnabled.value
     settingsRepository.set(TUNNEL_ENABLED_SETTING, tunnelEnabled.value)
     status.mainBtnLabel.value = status.tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
@@ -127,6 +128,8 @@ export function useControlActions(
 
   async function doStart() {
     if (status.opBusy.value || savingConfig.value) { showToast('有操作正在进行，请稍候', true); return }
+    if (!tunnelEnabled.value) { showToast('请先开启公网分享通道'); return }
+    if (status.statusError.value) { showToast('请先重新检测本机控制服务', true); return }
     if (!status.lastStatus()) { showToast('控制面板仍在读取配置，请稍候再试', true); status.pollStatus(); return }
     if (status.lastStatus()?.restartRequired) { showToast('配置已保存，请重新启动应用后再启用公网分享'); return }
     status.actionBusy.value = true
@@ -138,7 +141,7 @@ export function useControlActions(
       if (result?.restartRequired) { showToast(result.message || '配置已保存，请重新启动应用后再启用公网分享'); return }
       showToast('生成服务配置已保存')
       await controlApi.start(tunnelEnabled.value)
-      showToast('公网分享已启用')
+      showToast('已请求启动公网分享，连接成功后会显示链接')
       status.startPolling()
     } catch (e) { showToast('启动失败：' + errorMessage(e, '未知原因'), true) }
     finally { status.actionBusy.value = false; status.operationSubmitting.value = false; status.pollStatus() }

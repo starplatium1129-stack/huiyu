@@ -223,12 +223,10 @@ export function useCompanionWorkspace() {
     function onWindowKeydown(event: KeyboardEvent) {
         noteActivity();
         setUiHidden(false);
+        if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || document.querySelector('dialog[open]')) return;
+        if (event.key === 'Escape' && speechSettingsOpen.value) { event.preventDefault(); speechSettingsOpen.value = false; return; }
         if (event.key === 'Escape' && immersive.value) {
             exitImmersive();
-            return;
-        }
-        if (event.key === 'Escape' && settingsOpen.value) {
-            settingsOpen.value = false;
             return;
         }
         // 真双窗口：角色窗不再内嵌输入；Space 呼出聊天窗（如已开则落到聊天窗自身处理）
@@ -252,15 +250,6 @@ export function useCompanionWorkspace() {
     }
     function onWindowKeyup(event: KeyboardEvent) {
         handleSpaceKeyUp(event);
-    }
-    /** 点击齿轮弹层外部时关闭设置弹层（弹层内已 @pointerdown.stop）。 */
-    function onDocPointerDown(event: PointerEvent) {
-        if (!settingsOpen.value)
-            return;
-        const target = event.target;
-        if (target instanceof Element && target.closest('.companion-settings-popover, .companion-settings-btn, .orbit-settings-trigger, .companion-preferences, .companion-workspace-settings'))
-            return;
-        settingsOpen.value = false;
     }
     function onPointerMove(event: PointerEvent) {
         lastPointerMove = Date.now();
@@ -390,7 +379,6 @@ export function useCompanionWorkspace() {
     onMounted(async () => {
         document.documentElement.classList.add('companion-mode');
         window.addEventListener('pointerdown', noteActivity, { passive: true });
-        window.addEventListener('pointerdown', onDocPointerDown, { passive: true });
         window.addEventListener('keydown', onWindowKeydown, { passive: false });
         window.addEventListener('keyup', onWindowKeyup, { passive: false });
         window.addEventListener('wheel', noteActivity, { passive: true });
@@ -461,7 +449,6 @@ export function useCompanionWorkspace() {
         viewAlive = false;
         clearTimeout(uiIdleTimer);
         window.removeEventListener('pointerdown', noteActivity);
-        window.removeEventListener('pointerdown', onDocPointerDown);
         window.removeEventListener('keydown', onWindowKeydown);
         window.removeEventListener('keyup', onWindowKeyup);
         window.removeEventListener('wheel', noteActivity);

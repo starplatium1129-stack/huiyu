@@ -45,6 +45,9 @@
         <RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink>
       </div>
       <div class="recent-grid stagger-container">
+        <ArchiveStatePanel v-if="recentWorksLoading || recentWorksError" class="recent-empty-state" compact :kind="recentWorksLoading ? 'loading' : 'error'" :title="recentWorksLoading ? '正在更新最近创作…' : '最近创作暂未更新'" :message="recentWorksError">
+          <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新读取</button>
+        </ArchiveStatePanel>
         <RouterLink
           v-for="h in recentWorks"
           :key="h.id"
@@ -164,11 +167,13 @@
         <ArchiveStatePanel
           class="recent-empty-state"
           compact
-          kind="empty"
-          title="暂无作品"
+          :kind="recentWorksLoading ? 'loading' : recentWorksError ? 'error' : 'empty'"
+          :title="recentWorksLoading ? '正在读取最近创作…' : recentWorksError ? '最近创作暂未读取' : '暂无作品'"
+          :message="recentWorksError"
         >
-          <template #illustration><img v-if="artworkReady.tools" class="recent-empty-art" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template>
-          <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
+          <template v-if="!recentWorksLoading && !recentWorksError" #illustration><img v-if="artworkReady.tools" class="recent-empty-art" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template>
+          <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新读取</button>
+          <RouterLink v-else-if="!recentWorksLoading" to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
         </ArchiveStatePanel>
       </div>
     </section>
@@ -259,7 +264,16 @@ const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创�
 const continueHint = ref('')
 type HomeScene = Scene & { title?: string; mature?: boolean }
 
-const { recentWorks, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
+const { recentWorks, loading: recentWorksLoading, error: recentWorksError, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
+async function retryRecentWorks(event: MouseEvent) {
+  const origin = event.currentTarget
+  const page = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest('.home-page') : null
+  await loadRecentWorks()
+  await nextTick()
+  if (page?.isConnected && document.activeElement === document.body) {
+    page.querySelector<HTMLElement>('.home-resume .recent-card, .recent-empty-state .btn')?.focus({ preventScroll: true })
+  }
+}
 const recentScenes = ref<HomeScene[]>([])
 const homeScenes = ref<HomeScene[] | null>(null)
 const sceneStore = useSceneStore()

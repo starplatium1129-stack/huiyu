@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body"><dialog ref="dialog" class="candidate-compare" aria-labelledby="candidate-title" @click="onDialogClick" @close="emit('close')" @cancel.prevent="emit('close')">
+  <Teleport to="body"><dialog ref="dialog" class="candidate-compare" aria-labelledby="candidate-title" @click="onDialogClick" @close="onNativeClose" @cancel.prevent="emit('close')">
     <header><div><h2 id="candidate-title">对比挑选</h2><p>并排看画面与参数，选出最满意的一张。暂不采用的图片仍然保留。</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭对比" @click="emit('close')"><ArchiveIcon name="close" /></button></header>
     <p v-if="error" class="candidate-error" role="alert">{{ error }}</p>
     <div class="candidate-controls" role="group" aria-label="候选对比设置">
@@ -9,7 +9,8 @@
       <span>滚轮缩放，放大后拖动画面；键盘加减、方向键和 Home 也可操作</span>
     </div>
     <div class="candidate-grid tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto"><article v-for="(item, index) in candidates" :key="item.id" :data-choice="item.reviewState || 'candidate'" class="candidate-card tw:min-w-0 tw:p-s-3 tw:rounded-lg">
-      <CandidateViewport :src="urls[String(item.id)] || ''" :title="title(item)" :pose="poseFor(item.id)" :loading="loading" @change="update(item.id, $event)" />
+      <CandidateViewport :id="item.id" :src="urls[String(item.id)] || ''" :title="title(item)" :viewport="viewport" :active="open"
+        :loading="!!reading[String(item.id)]" :error="errors[String(item.id)] || ''" :revision="revisions[String(item.id)] || 0" @retry="retryCandidate(item)" />
       <div class="candidate-info"><h3>{{ title(item) }}</h3><p class="candidate-meta">{{ item.model || item.checkpoint || item.engine || '未记录模型' }}<br />{{ item.size || '未记录尺寸' }} · seed {{ item.seed ?? '随机' }}</p><strong class="candidate-verdict tw:text-accent tw:text-label">{{ item.reviewState === 'preferred' ? '本组首选 · 已收藏' : item.reviewState === 'rejected' ? '暂不采用' : '候选' }}</strong>
       <dl class="candidate-parameters" aria-label="候选参数"><div v-for="row in parameterRows" :key="row.key"><dt>{{ row.label }}</dt><dd>{{ row.values[index] }}</dd></div></dl>
       <p v-if="!parameterRows.length" class="candidate-meta">已记录参数没有差异</p>
@@ -35,24 +36,29 @@ const emit = defineEmits<{ close: []; changed: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), busy = ref(false), error = ref(''), onlyDifferent = ref(true)
 const motion = useFluidDialog(dialog)
 const candidates = computed(() => props.items.slice(0, 4))
-const { urls, loading, load, cancel, release } = useCandidateMedia()
-const { synchronized, poseFor, update, toggleSync, reset } = useCandidateViewport()
+const { urls, reading, errors, revisions, load, retry, cancel, release } = useCandidateMedia()
+const viewport = useCandidateViewport()
+const { synchronized, toggleSync, reset } = viewport
 const parameterRows = computed(() => candidateParameterRows(candidates.value, onlyDifferent.value))
 let version = 0
 const title = (item: ArtworkRecord) => item.sceneTitle || item.scene || '未命名作品'
 function onDialogClick(event: MouseEvent) {
   if (isBackdropClick(event, dialog.value)) emit('close')
 }
+function onNativeClose() { if (!dialog.value?.open) emit('close') }
 watch([() => props.open, () => candidates.value.map(({ id, image_id, image_url, image_data }) => ({ id, image_id, image_url, image_data }))], async ([open, items], [previousOpen, previousItems]) => {
   if (open === previousOpen && previousItems?.length === items.length
     && items.every((item, index) => sameArtworkMedia(item, previousItems[index]))) return
   const current = ++version
   if (!open) { cancel(); motion.close(release); return }
-  release(); reset(); error.value = ''
+  if (!previousOpen || previousItems?.length !== items.length || items.some((item, index) => item.id !== previousItems[index]?.id)) reset()
+  error.value = ''
   await nextTick()
   if (!props.open || current !== version) return
-  motion.open(); load(candidates.value)
+  if (!dialog.value?.open) motion.open()
+  load(candidates.value)
 }, { immediate: true })
+function retryCandidate(item: ArtworkRecord) { if (props.open) retry(item) }
 async function save(patches: Array<{ id: string | number; patch: Partial<ArtworkRecord> }>) {
   if (busy.value) return
   const current = version

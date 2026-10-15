@@ -353,7 +353,7 @@ function onSpeechSettingsSaved(config: SpeechInputConfig) {
 }
 
 function onWindowKeydown(event: KeyboardEvent) {
-  if (event.key !== ' ' || event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
+  if (event.key !== ' ' || event.repeat || event.defaultPrevented || event.isComposing || event.keyCode === 229 || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey || document.querySelector('dialog[open]')) return
   const target = event.target
   if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
     || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable)

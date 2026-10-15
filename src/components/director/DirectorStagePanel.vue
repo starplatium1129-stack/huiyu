@@ -6,7 +6,7 @@
       <BorderBeam v-if="generationBusy || waitingForResult" class="canvas-generation-beam"
         :duration="8.8" :border-width="1.1" color-variant="dual" :glow="true" border-radius="var(--r-xl)" />
     </Transition>
-    <div ref="canvasViewport" class="stage-viewport" data-route-arrive>
+    <div ref="canvasViewport" class="stage-viewport" data-route-arrive tabindex="-1" role="group" aria-label="绘制画布">
     <!-- 图片显现只由新生成结果驱动，画布与工具保持静止。 -->
     <Transition name="stage-swap">
       <section
@@ -15,7 +15,7 @@
       :class="{
         'is-generating': generationBusy || waitingForResult,
         'is-awaiting-result': waitingForResult,
-        'is-error': !!generationError || Boolean(displayResultUrl && failedResultUrl === displayResultUrl),
+        'is-error': !generationBusy && !generation.needsReview && (!!generationError || Boolean(displayResultUrl && failedResultUrl === displayResultUrl)),
         'is-paused': generationStopped,
       }"
       aria-label="成片监看区"
@@ -25,10 +25,23 @@
         <DirectorSceneReference v-if="!generationBusy && !waitingForResult" :size="canvasSize" />
           <div v-if="generationBusy || waitingForResult" class="stage-generating-copy">
             <div class="stage-generation-orbit">
-              <GenerationParticles v-if="!coveringResult && !textureMotionActive" :progress="generationProgress" :palette="generationPalette" />
+              <GenerationParticles v-if="!retryingResult && !coveringResult && !textureMotionActive" :progress="stageProgress" :palette="generationPalette" />
             </div>
           </div>
-        <div v-else-if="generationError || (displayResultUrl && failedResultUrl === displayResultUrl)" class="stage-idle" role="alert">
+        <div v-else-if="displayResultUrl && failedResultUrl === displayResultUrl" class="stage-idle" role="alert">
+          <div class="stage-placeholder-title">成片暂时无法显示</div>
+          <div class="stage-placeholder-copy">生成结果已保留，可以重新读取当前图片。</div>
+          <div class="stage-quick-actions"><button class="btn btn-primary" type="button" @click="retryResultImage">重新读取图片</button></div>
+        </div>
+        <div v-else-if="generation.needsReview" class="stage-idle" role="status">
+          <div class="stage-placeholder-title">任务与结果待核对</div>
+          <div class="stage-placeholder-copy">{{ generation.message }}</div>
+          <div class="stage-quick-actions">
+            <button class="btn btn-primary" type="button" @click="openGenerationTasks">核对任务与结果</button>
+            <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">找回上一张未入册成片</button>
+          </div>
+        </div>
+        <div v-else-if="generationError" class="stage-idle" role="alert">
           <div class="stage-placeholder-title">这次画面未能生成</div>
           <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
@@ -72,17 +85,17 @@
 
     <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
     <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
-      <div class="stage-progress-ring" :class="{ 'is-indeterminate': generationProgress === null }" role="progressbar" aria-label="生图进度" :aria-valuenow="generationProgress === null ? undefined : Math.round(generationProgress * 100)" :aria-valuetext="generationStatusText || undefined" :aria-valuemin="0" :aria-valuemax="100">
+      <div class="stage-progress-ring" :class="{ 'is-indeterminate': stageProgress === null }" role="progressbar" :aria-label="waitingForResult ? '成片读取进度' : '生图进度'" :aria-valuenow="stageProgress === null ? undefined : Math.round(stageProgress * 100)" :aria-valuetext="stageStatus || undefined" :aria-valuemin="0" :aria-valuemax="100">
         <svg viewBox="0 0 56 56" aria-hidden="true">
           <circle class="stage-progress-track" cx="28" cy="28" r="24" />
-          <circle class="stage-progress-value" cx="28" cy="28" r="24" pathLength="100" :stroke-dasharray="`${generationProgress === null ? 24 : generationProgress * 100} 100`" />
+          <circle class="stage-progress-value" cx="28" cy="28" r="24" pathLength="100" :stroke-dasharray="`${stageProgress === null ? 24 : stageProgress * 100} 100`" />
         </svg>
-        <strong v-if="generationProgress !== null">{{ Math.round(generationProgress * 100) }}%</strong>
+        <strong v-if="stageProgress !== null">{{ Math.round(stageProgress * 100) }}%</strong>
         <ArchiveIcon v-else name="spark" />
       </div>
       <div class="stage-generating-sub">
-        <span class="stage-generating-title" role="status">{{ waitingForResult ? '显现中' : '绘制中' }}</span>
-        <span v-if="drawEngine !== 'sd' && animaElapsed > 0" class="stage-generating-elapsed">已用时 {{ animaElapsed }} 秒</span>
+        <span class="stage-generating-title" role="status">{{ stageStatus }}</span>
+        <span v-if="generation.phase === 'running' && drawEngine !== 'sd' && animaElapsed > 0" class="stage-generating-elapsed">已用时 {{ animaElapsed }} 秒</span>
       </div>
     </div>
 
@@ -98,6 +111,7 @@
         />
         <CgImageReveal
           v-else
+          :key="`${displayResultUrl}:${imageRetry}`"
           class="result-image-reveal"
           img-class="result-image"
           :src="resolveRuntimeUrl(displayResultUrl)"
@@ -137,6 +151,7 @@ import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasGenerationMotion } from '@/composables/useCanvasGenerationMotion'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
+import { openGenerationTasks, type GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
 import { sampleGenerationPalette } from '@/utils/generationPalette'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
@@ -150,8 +165,7 @@ const props = defineProps<{
   generationBusy: boolean
   generationError: string | null
   generationStopped: boolean
-  generationStatusText: string | null
-  generationProgress: number | null
+  generation: GenerationPresentation
   animaElapsed: number
   drawEngine: string
   inpaintOriginalUrl: string | null
@@ -170,8 +184,8 @@ const canvasViewport = ref<HTMLElement | null>(null)
 const resultPalette = ref<string[]>([])
 const generationPalette = ref<string[]>([])
 // Capture before publication/clearing; the new image's load must not recolor an ongoing wait.
-watch(() => props.generationBusy, busy => { if (busy) generationPalette.value = [...resultPalette.value] }, { flush: 'sync' })
-const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generationProgress, () => generationPalette.value)
+watch(() => props.generationBusy, busy => { if (busy) { generationPalette.value = [...resultPalette.value]; retryingResult.value = false } }, { flush: 'sync' })
+const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generation.progress, () => generationPalette.value)
 const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 // A deliberate clear followed by Generate must not leave two GPU effects alive.
@@ -180,11 +194,13 @@ watch(() => props.generationBusy, busy => { if (busy) stopClearMotion() }, { flu
 const resultAspect = ref(1)
 const loadedResultUrl = ref('')
 const failedResultUrl = ref('')
+const imageRetry = ref(0), retryingResult = ref(false)
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
   loadedResultUrl.value = ''
   failedResultUrl.value = ''
+  imageRetry.value = 0; retryingResult.value = false
 }, { immediate: true })
 async function fitResult(event: Event) {
   const image = event.target as HTMLImageElement
@@ -193,14 +209,21 @@ async function fitResult(event: Event) {
   resultPalette.value = sampleGenerationPalette(image)
   // Settle the canvas ratio before the decoded work receives its reveal.
   await nextTick()
-  if (source === props.displayResultUrl) loadedResultUrl.value = source
+  if (source === props.displayResultUrl) { loadedResultUrl.value = source; retryingResult.value = false }
 }
 
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
 const revealedResults = ref(new Set<string>())
-const waitingForResult = computed(() => Boolean(props.displayResultUrl && props.displayResultUrl === props.resultRevealUrl
+const waitingForResult = computed(() => retryingResult.value || Boolean(props.displayResultUrl && props.displayResultUrl === props.resultRevealUrl
   && !props.inpaintCompareActive && !revealedResults.value.has(props.displayResultUrl) && failedResultUrl.value !== props.displayResultUrl))
-function onResultImageError() { failedResultUrl.value = props.displayResultUrl; stopTextureMotion() }
+const stageProgress = computed(() => waitingForResult.value ? null : props.generation.progress)
+const stageStatus = computed(() => retryingResult.value ? '正在重新读取成片…' : waitingForResult.value ? '正在读取成片…' : props.generation.message)
+function onResultImageError() { failedResultUrl.value = props.displayResultUrl; retryingResult.value = false; stopTextureMotion() }
+async function retryResultImage() {
+  rememberResultReveal(); failedResultUrl.value = ''; loadedResultUrl.value = ''
+  retryingResult.value = true; imageRetry.value++
+  await nextTick(); canvasViewport.value?.focus({ preventScroll: true })
+}
 function onResultReveal() { stopTextureMotion(); rememberResultReveal() }
 function rememberResultReveal() {
   const source = props.displayResultUrl

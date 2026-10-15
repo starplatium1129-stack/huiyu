@@ -74,23 +74,26 @@ export function useCatalogMaintenance() {
   async function canSwitch() {
     return !dirtyEditor.value || await confirmAction({ title: '放下这次修改？', message: '当前内容还没有暂存，离开后这些修改会丢失。', confirmLabel: '放弃修改', danger: true })
   }
-  async function select(item: CatalogSummary | { kind: CatalogKind; id: string }) {
-    if (busy.value || disposed) return
+  async function select(item: CatalogSummary | { kind: CatalogKind; id: string }): Promise<boolean> {
+    if (busy.value || disposed) return false
     const seq = invalidateDetail()
-    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return
+    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return false
     const controller = new AbortController(); detailController = controller
+    let opened = false
     detailLoading.value = true; hint.value = ''; currentServer.value = null; history.value = []
     try {
       const draft = pending.value.find(c => key(c.kind, c.id) === key(item.kind, item.id))
       const record = (await catalogApi.record(item.kind, item.id, undefined, controller.signal)).record
-      if (seq !== detailSeq) return
+      if (seq !== detailSeq) return false
       selected.value = clone(draft?.data ? { ...record, revision: draft.expectedRevision, data: draft.data, sortOrder: draft.sortOrder ?? record.sortOrder } : record)
       if (draft && draft.expectedRevision !== record.revision) currentServer.value = clone(record)
       baseline.value = JSON.stringify(selected.value)
+      opened = true
       const versions = await catalogApi.history(item.kind, item.id, controller.signal)
       if (seq === detailSeq) history.value = versions.items
     } catch (e) { if (seq === detailSeq && !controller.signal.aborted) hint.value = (e as Error).message }
     finally { if (seq === detailSeq) detailLoading.value = false }
+    return opened && seq === detailSeq && !disposed
   }
   async function add(copy = false) {
     if (busy.value || disposed || kind.value === 'document') return

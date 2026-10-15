@@ -26,7 +26,7 @@ export async function runDirectAnima(options: DirectOwner & { request: AnimaRequ
     void client.request(jobPath(family, data.job.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
     return
   }
-  patch({ phase: 'running', backendStatus: data.job.status, statusText: '生成中…', job: metadataFromJob(data.job, request, family) })
+  patch({ phase: 'running', backendStatus: data.job.status, statusText: '生成中…', progressText: data.job.progressText || (data.job.status === 'queued' ? '正在排队…' : '正在绘制…'), job: metadataFromJob(data.job, request, family) })
   await pollAnimaJob({ ...options, id: data.job.id, deadline: Date.now() + 10 * 60 * 1000,
     metadata: job => metadataFromJob(job, request, family) })
 }
@@ -82,7 +82,7 @@ export async function pollAnimaJob(options: {
       backendStatus: job.status,
       progress: typeof job.progress === 'number' ? Math.max(0, Math.min(1, job.progress)) : null,
       elapsedSeconds: typeof job.elapsedSeconds === 'number' ? Math.max(0, job.elapsedSeconds) : state.value.elapsedSeconds,
-      progressText: typeof job.progressText === 'string' ? job.progressText : state.value.progressText,
+      progressText: job.progressText || (job.status === 'queued' ? '正在排队…' : '正在绘制…'),
       currentNode: typeof job.currentNode === 'string' ? job.currentNode : state.value.currentNode,
     })
     if (job.status === 'cancelling') { patch({ phase: 'cancelling', statusText: '取消中…' }); continue }

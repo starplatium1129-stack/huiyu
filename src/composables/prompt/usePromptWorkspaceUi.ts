@@ -19,15 +19,22 @@ export function usePromptWorkspaceUi(pb: ReturnType<typeof usePromptBuilderStore
   })
 
   const characterShifting = ref(false)
+  let active = true
   let characterShiftTimer: ReturnType<typeof setTimeout> | null = null
+  function stopCharacterShift() {
+    if (characterShiftTimer) clearTimeout(characterShiftTimer)
+    characterShiftTimer = null
+    characterShifting.value = false
+  }
+  onActivated(() => { active = true })
+  onDeactivated(() => { active = false; stopCharacterShift() })
   watch(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char, () => {
+    if (!active) return
     characterShifting.value = true
     if (characterShiftTimer) clearTimeout(characterShiftTimer)
     characterShiftTimer = setTimeout(() => { characterShifting.value = false }, 760)
   })
-  onBeforeUnmount(() => {
-    if (characterShiftTimer) clearTimeout(characterShiftTimer)
-  })
+  onBeforeUnmount(stopCharacterShift)
 
   return { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery, characterShifting }
 }

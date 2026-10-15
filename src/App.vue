@@ -24,7 +24,7 @@
 import { getDesktopCapabilities, onDesktopNavigate } from '@/platform/desktop/capabilities'
 import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 
-import { computed, onMounted, onUnmounted, watch } from 'vue'
+import { computed, onErrorCaptured, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { TooltipProvider } from 'reka-ui'
 import AppInteractionLayer from '@/components/AppInteractionLayer.vue'
@@ -40,10 +40,22 @@ import DesktopUpdateBanner from '@/components/DesktopUpdateBanner.vue'
 import { attachDesktopWorkspace } from '@/composables/useDesktopWorkspace'
 import { useRouteTransition } from '@/composables/useRouteTransition'
 import { useCharacterArtRefresh } from '@/composables/useCharacterArtRefresh'
+import { routeRecovery } from '@/composables/useRouteRecovery'
 
 const route = useRoute()
 useCharacterArtRefresh()
 const router = useRouter()
+onErrorCaptured((error, instance, info) => {
+  if (info !== 'async component loader' && info !== 'https://vuejs.org/error-reference/#runtime-13') return
+  console.error('异步组件加载失败', error)
+  // A cached page can finish a rejected import after another route is active.
+  // Keep its failure from replacing recovery for the page the user now sees.
+  for (let source = instance?.$ ?? null; source; source = source.parent) {
+    if (source.isDeactivated) return false
+  }
+  if (routeRecovery.value?.kind !== 'route') routeRecovery.value = { kind: 'panel', target: route.fullPath }
+  return false
+})
 const layoutMotion = useRouteTransition(() => route.path, { initialFade: true })
 function beforeEnterLayout(element: Element) {
   ;(element as HTMLElement).inert = false

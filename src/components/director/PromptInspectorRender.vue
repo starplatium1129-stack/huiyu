@@ -1,16 +1,17 @@
 <template>
   <div class="result-frame step-panel" id="stepResult">
     <section v-if="drawEngine !== 'sd' && (animaState.errorReport || animaState.errorMsg)" class="inspector-generation-error" role="alert" aria-label="绘制恢复">
-      <strong>{{ animaState.errorReport?.title || '绘制未完成' }}</strong>
-      <p>{{ animaState.errorReport?.message || animaState.errorMsg }}</p>
-      <button class="btn btn-ghost btn-sm anima-retry" type="button" :disabled="generationBusy" @click="retryAnima">按当前设置重试</button>
+      <strong>{{ generationPresentation.needsReview ? '任务与结果待核对' : generationPresentation.phase === 'cancelling' ? '取消尚未确认' : animaState.errorReport?.title || '绘制未完成' }}</strong>
+      <p>{{ generationPresentation.needsReview || generationPresentation.phase === 'cancelling' ? generationPresentation.message : animaState.errorReport?.message || animaState.errorMsg }}</p>
+      <button v-if="generationPresentation.needsReview" class="btn btn-ghost btn-sm" type="button" @click="openGenerationTasks">核对任务与结果</button>
+      <button v-else-if="generationPresentation.phase !== 'cancelling'" class="btn btn-ghost btn-sm anima-retry" type="button" :disabled="generationBusy" @click="retryAnima">按当前设置重试</button>
       <details v-if="animaState.errorReport?.details"><StudioDisclosureSummary>技术细节</StudioDisclosureSummary><code>{{ animaState.errorReport.details }}</code></details>
     </section>
     <details v-if="drawEngine !== 'sd' && generationBusy" class="inspector-route inspector-runtime">
       <summary><span>绘制详情</span><ArchiveIcon name="chevron-down" /></summary>
       <div data-disclosure-content>
-        <p role="status">{{ animaState.progressText || animaState.statusText || '正在处理画面…' }}</p>
-        <p v-if="animaState.currentNode">当前节点：{{ animaState.currentNode }}</p>
+        <p role="status">{{ generationPresentation.message }}</p>
+        <p v-if="generationPresentation.phase === 'running' && animaState.currentNode">当前节点：{{ animaState.currentNode }}</p>
       </div>
     </details>
     <div class="inspector-engine-settings" role="group" aria-label="模型与引擎">
@@ -66,11 +67,12 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
+import { openGenerationTasks } from '@/composables/prompt/useGenerationPresentation'
 const CasualCreativeSliders = defineAsyncComponent(() => import('@/components/director/CasualCreativeSliders.vue'))
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const AnimaQuickPanel = defineAsyncComponent(() => import('@/components/AnimaQuickPanel.vue'))
 const props = defineProps<{ bindings: PromptRenderBindings }>()
-const { pb, generationBusy, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
+const { pb, generationBusy, generationPresentation, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
   reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
   animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings
 const animaModelOptions = computed<StudioSelectOption[]>(() => animaState.value.models.map(model => ({

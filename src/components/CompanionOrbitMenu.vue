@@ -4,7 +4,7 @@
       :style="{ '--orbit-size': size + 'px' }" aria-label="桌宠环形菜单" @keydown="key" @contextmenu.prevent.stop="emit('close')">
       <div v-if="!compact || !category" class="orbit-wheel" role="group" aria-label="常用操作">
         <div v-for="(action, index) in actions" :key="action.id" class="orbit-segment"
-          :data-active="active(action) || undefined" :data-tone="action.id" @click="activate(action)">
+          :data-active="active(action) || undefined" :data-tone="action.id" @click="activate(action, $event)">
           <svg viewBox="0 0 440 440" aria-hidden="true"><path :d="orbitSector(index)" /></svg>
           <button type="button" class="orbit-action" :class="{ 'orbit-settings-trigger': action.id === 'settings' }"
             :style="{ '--orbit-x': position(orbitAngle(index), 127).left, '--orbit-y': position(orbitAngle(index), 127).top }" :aria-label="action.label" :aria-pressed="action.toggle ? active(action) : undefined"
@@ -109,7 +109,8 @@ function position(angle: number, radius: number) {
 function active(action: Action) { return action.category ? category.value === action.category : action.id === 'pin' ? props.pinned : action.id === 'pass' ? props.passThrough : false }
 // The icon and painted sector share one click owner: a press/release crossing
 // their boundary targets this ancestor. Child handlers would silently lose it.
-function activate(action: Action) {
+function activate(action: Action, event: MouseEvent) {
+  ;(event.currentTarget as HTMLElement).querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true })
   if (action.category) { category.value = category.value === action.category ? null : action.category; return }
   if (action.id === 'settings') emit('settings')
   else if (action.id === 'chat') emit('chat')

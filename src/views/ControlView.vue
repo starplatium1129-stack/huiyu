@@ -88,7 +88,7 @@
       </section>
 
       <InferenceSettingsPanel />
-      <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><InterrogateSetupPanel /></div>
+      <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><AsyncPanel :loader="loadInterrogateSetup" label="图片反推配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
 
       <!-- 操作进度 -->
       <div v-if="operation" class="panel-card operation-panel" :class="operation.status">
@@ -205,11 +205,12 @@
         <div class="tunnel-toggle-row">
           <div class="tunnel-toggle-label">
             <span id="tunnel-switch-label" class="tunnel-toggle-text">开启公网分享通道</span>
-            <span class="tunnel-toggle-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : '关闭后仅本机可访问' }}</span>
+            <span class="tunnel-toggle-hint">{{ tunnelEnabled ? '朋友可通过临时链接访问' : tunnelActive ? '分享仍在运行，点击下方停止后仅本机可访问' : '当前仅本机可访问' }}</span>
           </div>
           <ToggleSwitch
             class="tunnel-switch-control"
             :model-value="tunnelEnabled"
+            :disabled="actionBusy || opBusy"
             aria-labelledby="tunnel-switch-label"
             @update:model-value="toggleTunnel"
           />
@@ -218,9 +219,9 @@
         <button
           class="btn btn-primary share-start"
           type="button"
-          :disabled="actionBusy || opBusy || (!tunnelActive && savingConfig)"
+          :disabled="actionBusy || opBusy || (!tunnelActive && (savingConfig || !tunnelEnabled || !statusUsable))"
           @click="tunnelActive ? doStop() : doStart()"
-        >{{ mainBtnLabel }}</button>
+        >{{ !tunnelActive && !tunnelEnabled ? '仅本机访问' : mainBtnLabel }}</button>
 
         <div class="access-grid tw:grid tw:gap-s-3">
           <div class="access-card">
@@ -294,7 +295,7 @@ import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import AppearanceButton from '@/components/AppearanceButton.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
-import { computed, defineAsyncComponent, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
@@ -309,7 +310,8 @@ import LocalSetupPanel from '@/components/LocalSetupPanel.vue'
 import InferenceSettingsPanel from '@/components/InferenceSettingsPanel.vue'
 import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
-const InterrogateSetupPanel = defineAsyncComponent(() => import('@/components/InterrogateSetupPanel.vue'))
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadInterrogateSetup = () => import('@/components/InterrogateSetupPanel.vue')
 import { useControlNavigation } from '@/composables/useControlNavigation'
 import { useToast } from '@/composables/useToast'
 // 桌面端更新横幅已收敛到全局 DesktopUpdateBanner（2026-08-31，任何页面可见）。

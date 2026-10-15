@@ -14,6 +14,7 @@ export function useGalleryViewer(options: {
   const viewerIndex = ref(-1)
   const viewerItemId = ref<string | number | null>(null)
   const viewerUrl = ref('')
+  const viewerLoadFailed = ref(false)
   const neighborPreviews = ref<Record<string, string>>({})
   const current = computed(() => {
     const index = artworkIndexById(options.history.value, viewerItemId.value)
@@ -47,32 +48,40 @@ export function useGalleryViewer(options: {
     }
   }
 
+  function showImage(url: string, owned = false) {
+    if (objectUrl && objectUrl !== url) URL.revokeObjectURL(objectUrl)
+    objectUrl = owned ? url : ''
+    viewerUrl.value = url
+    viewerLoadFailed.value = !url
+  }
   function releaseImage() {
-    if (objectUrl) URL.revokeObjectURL(objectUrl)
-    objectUrl = ''
-    viewerUrl.value = ''
+    showImage(''); viewerLoadFailed.value = false
     loadedMedia = null
   }
 
-  async function hydrate(source: ArtworkRecord) {
+  async function hydrate(source: ArtworkRecord, preserve = false) {
     const item = { ...source }
     loading?.abort()
     const request = new AbortController()
     loading = request
-    releaseImage()
+    if (!preserve) releaseImage()
+    viewerLoadFailed.value = false
     loadedMedia = item
     const token = ++loadToken
     const fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
+    const useFallback = () => { if (fallback || !preserve) showImage(fallback); else viewerLoadFailed.value = true }
     try {
       const blob = item.image_id ? await artworkRepository.getImage(item.image_id, request.signal) : null
       if (disposed || request.signal.aborted || token !== loadToken || !sameArtworkMedia(current.value ?? undefined, item)) return
       if (blob) {
-        objectUrl = URL.createObjectURL(blob)
-        viewerUrl.value = objectUrl
-      } else viewerUrl.value = fallback
+        showImage(URL.createObjectURL(blob), true)
+      } else useFallback()
     } catch {
-      if (!disposed && !request.signal.aborted && token === loadToken && sameArtworkMedia(current.value ?? undefined, item)) viewerUrl.value = fallback
+      if (!disposed && !request.signal.aborted && token === loadToken && sameArtworkMedia(current.value ?? undefined, item)) useFallback()
     } finally { if (loading === request) loading = null }
+  }
+  async function retryViewerImage() {
+    if (!disposed && viewerIndex.value >= 0 && current.value) await hydrate(current.value, true)
   }
 
   function openViewer(index: number) {
@@ -124,5 +133,5 @@ export function useGalleryViewer(options: {
   onDeactivated(dispose)
   onUnmounted(() => { disposed = true; dispose() })
 
-  return { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed, step, getViewerRevision: () => previewRevision }
+  return { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed, step, getViewerRevision: () => previewRevision }
 }

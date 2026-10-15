@@ -2,19 +2,20 @@
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
 import { computed, onActivated, onDeactivated, onMounted, onUpdated, ref, watch } from 'vue'
 
-withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end' }>(), { align:'end', contentClass:'' })
+const props = withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end'; portalTo?: HTMLElement | null }>(), { align:'end', contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
 const pointerOpened = ref(false)
 const trigger = ref<{ $el: HTMLElement } | null>(null)
 // Native top layers and custom focus traps both require content inside their modal.
 const portalTarget = ref<HTMLElement>()
 function syncPortalHost() {
-  portalTarget.value = trigger.value?.$el?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined
+  portalTarget.value = trigger.value?.$el?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? props.portalTo ?? undefined
 }
 onMounted(syncPortalHost)
 onUpdated(syncPortalHost)
 watch(open, value => { if (value) syncPortalHost() }, { flush: 'sync' })
-const collisionBoundary = computed(() => portalTarget.value?.tagName === 'DIALOG' ? undefined : portalTarget.value)
+watch(() => props.portalTo, syncPortalHost, { flush: 'post' })
+const collisionBoundary = computed(() => portalTarget.value?.tagName !== 'DIALOG' && portalTarget.value?.matches('[aria-modal="true"]') ? portalTarget.value : undefined)
 const emit = defineEmits<{ openAutoFocus: [event: Event]; closeAutoFocus: [event: Event] }>()
 let viewActive = true
 onActivated(() => { viewActive = true; syncPortalHost() })
@@ -32,6 +33,9 @@ function onEscape(event: KeyboardEvent) {
   event.preventDefault()
   open.value = false
 }
+function onDismissEscape(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) event.preventDefault()
+}
 </script>
 
 <template>
@@ -39,7 +43,7 @@ function onEscape(event: KeyboardEvent) {
     <PopoverTrigger ref="trigger" as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false" @keydown.esc="onEscape"><slot name="trigger" /></PopoverTrigger>
     <PopoverPortal :to="portalTarget">
       <PopoverContent :align="align" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
-        hide-when-detached as-child @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
+        hide-when-detached as-child @escape-key-down="onDismissEscape" @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
         <div data-fluid-glass :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass" @keydown.esc="onEscape"><slot /></div>
       </PopoverContent>
     </PopoverPortal>

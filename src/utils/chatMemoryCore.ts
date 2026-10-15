@@ -36,6 +36,7 @@ export function emptyChatMemoryState(): ChatMemoryState {
 function cleanText(value: unknown): string {
   return String(value ?? '').replace(/[\u0000-\u001f\u007f]+/g, ' ').replace(/\s+/g, ' ').trim().slice(0, MAX_TEXT)
 }
+export { cleanText as normalizeChatMemoryText }
 
 function memoryId(): string {
   if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') return crypto.randomUUID()

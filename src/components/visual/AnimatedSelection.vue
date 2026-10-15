@@ -86,14 +86,14 @@ function update() {
     observedTarget = selected ?? null
     if (observedTarget) resize?.observe(observedTarget)
   }
-  const next = selected?.getBoundingClientRect()
-  if (!next?.width || !next.height) { measurement = null; frame.render(render); return }
-  const host = parent.getBoundingClientRect()
-  const x = next.left - host.left + parent.scrollLeft - parent.clientLeft
-  const y = next.top - host.top + parent.scrollTop - parent.clientTop
-  const box = [x, y, next.width, next.height].map(value => Math.round(value * 100) / 100).join(',')
+  if (!selected?.offsetWidth || !selected.offsetHeight) { measurement = null; frame.render(render); return }
+  // Controls and their indicator share a positioned parent. Layout coordinates
+  // exclude opening/press transforms, which would otherwise be applied twice.
+  const x = selected.offsetLeft, y = selected.offsetTop
+  const width = selected.offsetWidth, height = selected.offsetHeight
+  const box = [x, y, width, height].join(',')
   if (initialized && box === destinationBox && !media?.matches) return
-  measurement = { x, y, width: next.width, height: next.height, box }
+  measurement = { x, y, width, height, box }
   frame.render(render)
 }
 function render() {

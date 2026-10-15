@@ -120,7 +120,7 @@ export function useGalleryWorkspace() {
         clearSelection,
     } = useGallerySelection(visible);
 
-    const { viewerIndex, viewerUrl, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
+    const { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
         history, visible, previewSource: item => cardUrls[item.id] || thumbUrls[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
@@ -414,10 +414,10 @@ export function useGalleryWorkspace() {
         if (viewerIndex.value < 0 || e.defaultPrevented || e.isComposing || e.ctrlKey || e.metaKey || e.altKey || (e.target instanceof HTMLElement && e.target.closest('input, textarea, select, [contenteditable="true"]')))
             return;
         // Escape 与 Tab 陷阱由 useFocusTrap 处理
-        if (e.key === 'ArrowLeft')
-            return step(-1);
-        if (e.key === 'ArrowRight')
-            return step(1);
+        if (narrowViewer.value && infoOpen.value) return;
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+            e.preventDefault(); return step(e.key === 'ArrowLeft' ? -1 : 1);
+        }
         if (e.key.toLowerCase() === 'i') {
             e.preventDefault(); toggleInfoDrawer(e);
             return;
@@ -527,7 +527,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed, step,
-        compareMode, hasComparableImage, viewerUrl, neighborPreviews, parentImageUrl, current, characterName,
+        compareMode, hasComparableImage, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, current, characterName,
         facts, downloadCurrent, copiedPrompt, copyPrompt, showToast, releaseCardResources,
     };
 }

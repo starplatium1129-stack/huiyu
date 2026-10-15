@@ -1,4 +1,5 @@
 <template>
+  <slot v-if="desktop" name="trigger" />
   <Teleport v-if="desktop" to="body">
     <dialog ref="dialog" class="companion-preferences" :data-character="characterId" aria-label="桌宠设置"
       @cancel.prevent.stop="close" @click="backdrop" @keydown.esc.stop>
@@ -14,17 +15,24 @@
       <div :id="`${id}-panel`" v-content-motion:up="pane" class="companion-preferences-body tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto" :data-pane="pane" role="tabpanel" :aria-labelledby="`${id}-${pane}`"><slot /></div>
     </dialog>
   </Teleport>
-  <template v-else><FluidTransition panel=".companion-settings-popover"><div v-if="open" class="companion-settings-popover" data-fluid-glass role="dialog" aria-label="桌宠设置" @pointerdown.stop><slot /></div></FluidTransition></template>
+  <div v-else ref="popoverHost" class="companion-preferences-anchor">
+    <StudioPopover v-if="popoverHost" v-model:open="popoverOpen" label="桌宠设置" content-class="companion-settings-popover companion-preferences-popover" :portal-to="popoverHost">
+      <template #trigger><slot name="trigger" /></template>
+      <slot />
+    </StudioPopover>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, useId, watch } from 'vue'
+import { computed, ref, useId, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
-import FluidTransition from './visual/FluidTransition.vue'
+import StudioPopover from './ui/StudioPopover.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 const props = defineProps<{ open: boolean; desktop: boolean; characterId: string; characterName: string }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
+const popoverHost = ref<HTMLElement | null>(null)
+const popoverOpen = computed({ get: () => props.open, set: value => emit('update:open', value) })
 const dialog = ref<HTMLDialogElement | null>(null)
 const fluid = useFluidDialog(dialog)
 const id = useId()
@@ -36,7 +44,7 @@ const tabs = [
 const pane = ref<(typeof tabs)[number]['value']>('character')
 watch(() => props.open, value => {
   if (!props.desktop) return
-  if (value) { pane.value = 'character'; fluid.open(document.querySelector<HTMLElement>('.orbit-settings-trigger')) }
+  if (value) { pane.value = 'character'; fluid.open() }
   else fluid.close()
 }, { flush: 'post' })
 watch(pane, () => { dialog.value?.querySelector('.companion-preferences-body')?.scrollTo({ top: 0 }) })
@@ -54,6 +62,8 @@ function backdrop(event: MouseEvent) { if (isBackdropClick(event, dialog.value))
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
+.companion-preferences-anchor { display: contents; }
+:global(.companion-page .companion-settings-popover.companion-preferences-popover) { position: static; inset: auto; max-height: min(560px, var(--reka-popover-content-available-height, calc(100dvh - 32px))); }
 .companion-preferences { @apply tw:box-border; width: min(380px, calc(100vw - 24px)); max-height: min(540px, calc(100dvh - 24px)); @apply tw:m-auto tw:p-0 tw:overflow-hidden tw:text-primary; background: var(--bg-elevated); border: 1px solid var(--border-strong); @apply tw:rounded-xl; box-shadow: var(--shadow-lg); }
 .companion-preferences[open] { @apply tw:flex tw:flex-col; }
 .companion-preferences::backdrop { background: color-mix(in srgb, var(--bg-deep) 24%, transparent); }

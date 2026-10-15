@@ -12,10 +12,10 @@
               @click="historyOpen = !historyOpen; speechSettingsOpen = false"><ArchiveIcon name="chat" /></button>
           </StudioTooltip>
           <StudioTooltip content="对白设置">
-            <button type="button" aria-label="对白设置" :aria-expanded="speechSettingsOpen"
+            <button ref="speechSettingsTrigger" type="button" aria-label="对白设置" :aria-expanded="speechSettingsOpen"
               aria-controls="companion-dialogue-preferences" @click="speechSettingsOpen = !speechSettingsOpen; historyOpen = false"><ArchiveIcon name="gear" /></button>
           </StudioTooltip>
-          <StudioTooltip v-if="bridge?.setChatDocked" :content="docked ? '解除贴靠' : '贴靠桌宠'">
+          <StudioTooltip v-if="bridge?.setChatDocked" anchor :content="docking ? '正在调整贴靠…' : docked ? '解除贴靠' : '贴靠桌宠'">
             <button type="button" :disabled="docking" :aria-pressed="docked" :aria-label="docked ? '解除贴靠' : '贴靠桌宠'"
               @click="toggleDock"><ArchiveIcon name="pin" /></button>
           </StudioTooltip>
@@ -25,7 +25,7 @@
         </div>
       </header>
 
-      <section v-if="speechSettingsOpen" id="companion-dialogue-preferences" class="companion-dialogue-preferences" aria-label="对白设置">
+      <section v-if="speechSettingsOpen" ref="speechSettingsPanel" tabindex="-1" id="companion-dialogue-preferences" class="companion-dialogue-preferences" aria-label="对白设置">
         <div class="companion-dialogue-preference-actions">
           <button type="button" @click="openFullRoom"><ArchiveIcon name="gear" />聊天连接与记忆</button>
           <AppearanceButton />
@@ -81,15 +81,15 @@
     </section>
     <input ref="imageInputRef" class="sr-only" type="file" tabindex="-1" aria-hidden="true" accept="image/png,image/jpeg,image/webp" @change="attachments.onImageInputChange" />
     <div class="companion-dialogue-composer">
-      <StudioTooltip v-if="bridge" content="发送图片，也可粘贴或拖入图片">
+      <StudioTooltip v-if="bridge" anchor :content="attachments.preparingImage.value ? '正在准备图片…' : '发送图片，也可粘贴或拖入图片'">
         <button class="companion-dialogue-microphone" type="button" aria-label="添加图片" :disabled="attachments.preparingImage.value"
           @click="attachments.pickImage"><ArchiveIcon name="image" /></button>
       </StudioTooltip>
-      <StudioTooltip v-if="bridge" content="让角色看当前屏幕（需支持图片的聊天模型）">
+      <StudioTooltip v-if="bridge" anchor :content="!liveState.chatReady ? '请先连接聊天模型' : replyPending || attachments.sendingImage.value ? '请等待当前回复或图片发送完成' : '让角色看当前屏幕（需支持图片的聊天模型）'">
         <button class="companion-dialogue-microphone" type="button" aria-label="看屏幕"
           :disabled="!liveState.chatReady || replyPending || attachments.sendingImage.value" @click="attachments.onCaptureAndInspectScreen"><ArchiveIcon name="eye" /></button>
       </StudioTooltip>
-      <StudioTooltip v-if="speechReady" :content="speechError || '按住说话，松开识别'">
+      <StudioTooltip v-if="speechReady" anchor :content="speechError || (replyPending ? '请等待当前回复完成' : speechSettingsOpen ? '关闭对白设置后可按住说话' : speechButtonText)">
         <button class="companion-dialogue-microphone" type="button" :data-state="speechState"
           :aria-label="speechButtonText" :disabled="speechButtonDisabled"
           @pointerdown.prevent="onSpeechPress" @pointerup="onSpeechRelease" @pointercancel="onSpeechCancel" @pointerleave="onSpeechLeave"
@@ -102,7 +102,7 @@
       <StudioTooltip v-if="replyPending || liveState.speaking || liveState.voiceActive || attachments.sendingImage.value" content="停止回复或语音">
         <button class="companion-dialogue-send" type="button" aria-label="停止回复或语音" @click="onStop"><ArchiveIcon name="stop" /></button>
       </StudioTooltip>
-      <StudioTooltip v-else content="发送 · Enter（Shift+Enter 换行）">
+      <StudioTooltip v-else anchor :content="!bridge ? '请在桌面客户端中发送消息' : !liveState.chatReady ? '请先连接聊天模型' : selectedImage ? '发送图片' : !inputText.trim() ? '先写一条消息' : '发送 · Enter（Shift+Enter 换行）'">
         <button class="companion-dialogue-send" type="button" aria-label="发送" :disabled="selectedImage ? !attachments.canSendImage.value : !canSend" @click="sendChat"><ArchiveIcon name="send" /></button>
       </StudioTooltip>
     </div>
@@ -127,6 +127,7 @@ import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
+import { useInlinePanelFocus } from '@/composables/chat/useInlinePanelFocus'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 import { companionChatAvatars as chibiAvatars } from '@/config/companionChatAvatars'
@@ -149,6 +150,8 @@ function sendChat() {
   else onSend()
 }
 const historyOpen = ref(false)
+const speechSettingsTrigger = ref<HTMLElement | null>(null), speechSettingsPanel = ref<HTMLElement | null>(null)
+useInlinePanelFocus(speechSettingsOpen, () => speechSettingsPanel.value, speechSettingsTrigger)
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))
 const displayedMessages = computed(() => historyOpen.value ? visibleMessages.value : visibleMessages.value.slice(-12))
 const avatar = computed(() => chibiAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
@@ -164,7 +167,7 @@ watch(historyOpen, async open => {
 })
 watch(activeChar, () => { historyOpen.value = false; speechSettingsOpen.value = false })
 function onEscape(event: KeyboardEvent) {
-  if (event.defaultPrevented || document.querySelector('dialog[open]')) return
+  if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || document.querySelector('dialog[open]')) return
   event.preventDefault()
   if (speechSettingsOpen.value) speechSettingsOpen.value = false
   else if (historyOpen.value) historyOpen.value = false

@@ -1,65 +1,86 @@
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { safeImageUrl } from './galleryHelpers'
 import { sameArtworkMedia } from './artworkMediaIdentity'
 import type { ArtworkRecord } from '@/types/artwork'
 
-/** At most two original reads and four owned URLs, including obsolete read generations. */
+/** At most two original reads; only the four current candidates retain URLs. */
 export function useCandidateMedia() {
-  const urls = reactive<Record<string, string>>({}), loading = ref(false)
-  const owned = new Set<string>()
-  const loaded = new Map<string, ArtworkRecord>()
-  let request: AbortController | null = null, version = 0, active = 0, remaining = 0
-  let queue: Array<{ item: ArtworkRecord; version: number; signal: AbortSignal }> = []
-  function cancel() { request?.abort(); request = null; version++; queue = []; loading.value = false }
+  const urls = reactive<Record<string, string>>({}), reading = reactive<Record<string, boolean>>({})
+  const errors = reactive<Record<string, string>>({}), revisions = reactive<Record<string, number>>({})
+  const owned = new Set<string>(), records = new Map<string, ArtworkRecord>()
+  type Job = { item: ArtworkRecord; version: number; controller: AbortController; retry: boolean }
+  const requests = new Map<string, Job>()
+  let version = 0, active = 0, enabled = false, queue: Job[] = []
+  function cancel() {
+    enabled = false; version++
+    for (const job of requests.values()) job.controller.abort()
+    requests.clear(); queue = []
+    for (const id of Object.keys(reading)) reading[id] = false
+  }
+  function drop(id: string) {
+    if (owned.delete(urls[id])) URL.revokeObjectURL(urls[id])
+    delete urls[id]; delete reading[id]; delete errors[id]; delete revisions[id]; records.delete(id)
+  }
   function release() {
     cancel()
-    for (const url of owned) URL.revokeObjectURL(url)
-    owned.clear(); loaded.clear()
-    for (const id of Object.keys(urls)) delete urls[id]
+    for (const id of records.keys()) drop(id)
+    owned.clear()
   }
+  const current = (job: Job) => enabled && job.version === version && !job.controller.signal.aborted
+    && requests.get(String(job.item.id)) === job
   function pump() {
     while (active < 2 && queue.length) {
-      const job = queue.shift()!
-      if (job.signal.aborted || job.version !== version) continue
+      const job = queue.shift()!, id = String(job.item.id)
+      if (!current(job)) continue
       active++
       void (async () => {
         try {
-          const blob = job.item.image_id ? await artworkRepository.getImage(job.item.image_id, job.signal).catch(() => null) : null
-          if (job.version !== version || job.signal.aborted) return
-          if (blob) {
-            const url = URL.createObjectURL(blob)
-            owned.add(url); urls[String(job.item.id)] = url
-          } else {
-            const source = String(job.item.image_data || job.item.image_url || '')
-            const fallback = /^(data:image\/|blob:)/.test(source) ? source : safeImageUrl(source)
-            if (fallback) urls[String(job.item.id)] = fallback
-          }
-          if (urls[String(job.item.id)]) loaded.set(String(job.item.id), job.item)
-        } catch { /* Keep an individual unavailable-image placeholder. */ }
+          // A saved remote/data source remains a valid fallback when the local read fails.
+          const blob = job.item.image_id ? await artworkRepository.getImage(job.item.image_id, job.controller.signal).catch(() => null) : null
+          if (!current(job)) return
+          const fallback = String(job.item.image_data || job.item.image_url || '')
+          const source = blob ? URL.createObjectURL(blob) : /^(data:image\/|blob:)/.test(fallback) ? fallback : safeImageUrl(fallback)
+          if (!source) throw new Error('原图暂时没有读出来，作品记录仍保留。')
+          const previous = urls[id]
+          if (source !== previous && owned.delete(previous)) URL.revokeObjectURL(previous)
+          if (blob) owned.add(source)
+          urls[id] = source
+          if (job.retry) revisions[id] = Date.now()
+        } catch {
+          if (current(job)) errors[id] = '原图读取失败，请重新读取；作品记录仍保留。'
+        }
         finally {
           active--
-          if (job.version === version && --remaining === 0) loading.value = false
+          if (current(job)) { requests.delete(id); reading[id] = false }
           pump()
         }
       })()
     }
   }
+  function enqueue(item: ArtworkRecord, retry: boolean) {
+    const id = String(item.id)
+    if (reading[id]) return
+    const job = { item: { ...item }, version, controller: new AbortController(), retry }
+    errors[id] = ''; reading[id] = true; requests.set(id, job); queue.push(job)
+  }
   function load(items: readonly ArtworkRecord[]) {
     cancel()
     const candidates = items.slice(0, 4).map(item => ({ ...item }))
-    // A showcase step shares neighbors with the previous step. Keep their
-    // resolved media until they leave the requested set or their source changes.
-    for (const id of Object.keys(urls)) {
-      if (candidates.some(item => sameArtworkMedia(loaded.get(id), item))) continue
-      if (owned.delete(urls[id])) URL.revokeObjectURL(urls[id])
-      delete urls[id]; loaded.delete(id)
+    for (const [id, record] of records) {
+      if (!candidates.some(item => sameArtworkMedia(record, item))) drop(id)
     }
-    request = new AbortController()
-    const signal = request.signal
-    queue = candidates.filter(item => !urls[String(item.id)]).map(item => ({ item, version, signal }))
-    remaining = queue.length; loading.value = remaining > 0
+    enabled = true
+    for (const item of candidates) {
+      const id = String(item.id)
+      records.set(id, item)
+      if (!urls[id]) enqueue(item, false)
+    }
     pump()
   }
-  return { urls, loading, load, cancel, release }
+  function retry(item: ArtworkRecord) {
+    if (!enabled || !sameArtworkMedia(records.get(String(item.id)), item)) return
+    enqueue(item, true); pump()
+  }
+  return { urls, reading, errors, revisions, load, retry, cancel, release }
 }

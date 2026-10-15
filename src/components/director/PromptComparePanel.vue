@@ -26,23 +26,21 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import type { ResultSnapshot } from '@/composables/prompt/promptResultSnapshot'
 
-defineProps<{ previous: ResultSnapshot; current: ResultSnapshot }>()
-const emit = defineEmits<{ close: []; ready: [element: HTMLElement | null] }>()
+const props = defineProps<{ open: boolean; previous: ResultSnapshot; current: ResultSnapshot }>()
+const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLElement | null>(null)
 const closeButton = ref<HTMLButtonElement | null>(null)
 
-useFocusTrap(dialog, () => true, {
+useFocusTrap(dialog, () => props.open, {
   onEscape: () => emit('close'),
   initialFocus: closeButton,
 })
 
-onMounted(() => { emit('ready', dialog.value); closeButton.value?.focus({ preventScroll: true }) })
-onBeforeUnmount(() => emit('ready', null))
 </script>
 <style>
 @reference "../../assets/css/tailwind.css";

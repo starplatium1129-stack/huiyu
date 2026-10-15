@@ -1,7 +1,7 @@
 import { onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from './useVisualActivity'
-import { startCanvasTextureParticles, type CanvasParticleMotion } from '@/utils/canvasTextureParticles'
+import type { CanvasParticleMotion } from '@/utils/canvasTextureParticles'
 
 /** One particle surface carries the old image through waiting into the decoded result.
  * Presentation never owns submission, task receipts, cancellation or results. */
@@ -12,9 +12,19 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   const { canAnimate, lowEffects } = useVisualActivity(host)
   const active = ref(false)
   let effect: CanvasParticleMotion | null = null
+  let startParticles: typeof import('@/utils/canvasTextureParticles')['startCanvasTextureParticles'] | null = null
   let revision = 0
   let generationSource = ''
   let size = { width:0, height:0 }
+  function loadParticles() {
+    return import('@/utils/canvasTextureParticles').then(module => { startParticles=module.startCanvasTextureParticles })
+  }
+  // A displayed result can become the next generation's texture. Prepare its
+  // code while the picture is intact, without loading it on an empty workbench.
+  watch([source,canAnimate,lowEffects], () => {
+    if (source() && canAnimate.value && !lowEffects.value && !startParticles)
+      void loadParticles().catch(() => {})
+  }, { immediate:true })
   function stop() {
     revision++
     const current=effect; effect=null; active.value=false
@@ -30,12 +40,22 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     if (!root || !canAnimate.value || lowEffects.value || comparing()) return
     const candidate=capturePrevious ? root.querySelector<HTMLImageElement>('img.cg-image-target') : null
     const image=candidate?.complete && candidate.naturalWidth ? candidate : null
-    const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
-    effect=startCanvasTextureParticles(image,root,{
-      generation:{progress,palette:palette()},
-      onComplete:() => { if(version===revision) { effect=null; active.value=false } },
-    })
-    active.value=Boolean(effect)
+    function launch() {
+      if (version!==revision || !root?.isConnected || !canAnimate.value || lowEffects.value || comparing() || !startParticles) return
+      const bounds=root.getBoundingClientRect(); size={width:bounds.width,height:bounds.height}
+      effect=startParticles(image,root,{
+        generation:{progress,palette:palette()},
+        onComplete:() => { if(version===revision) { effect=null; active.value=false } },
+      })
+      active.value=Boolean(effect)
+    }
+    if (startParticles) launch()
+    else {
+      // The ordinary waiting/reveal feedback stays immediate while the optional
+      // texture code loads. A settled or cancelled task cannot start it later.
+      void loadParticles().then(() => { if (busy()) launch() })
+        .catch(() => { /* Keep the existing particle/reveal fallback. */ })
+    }
   }
   function reveal(image: HTMLImageElement) {
     if (!canAnimate.value || lowEffects.value || comparing()) { stop(); return null }

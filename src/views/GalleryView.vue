@@ -160,7 +160,7 @@
           @error.capture="imageOrigin.failed"
         >
       <ArtworkViewerStage :items="visible" :index="displayedIndex" :active="viewerIndex >= 0" :original="originalViewer"
-        :src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews"
+        :src="viewerUrl" :preview-src="imageOrigin.previewSrc.value" :card-urls="cardUrls" :thumb-urls="thumbUrls" :neighbor-urls="neighborPreviews" :load-failed="viewerLoadFailed" :reload="retryViewerImage"
         :title="item => sceneTitle(item.scene, item)" @select="openViewer" @close="closeViewer" @close-button="closeBtn = $event"
         @toggle-original="toggleOriginalViewer" @dismiss-info="closeInfoDrawer" @interact="imageOrigin.cancel">
         <template v-if="(compareMode && hasComparableImage && viewerUrl) || (gestureViewer && current)" #image>
@@ -364,7 +364,7 @@ onViewerClosed,
 step,
 compareMode,
 hasComparableImage,
-viewerUrl,
+viewerUrl, viewerLoadFailed, retryViewerImage,
 neighborPreviews,
 parentImageUrl,
 current,

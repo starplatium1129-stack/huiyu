@@ -15,6 +15,7 @@ import { usePromptMaterials } from './usePromptMaterials';
 import { usePromptLifecycle } from './usePromptLifecycle';
 import { usePromptWorkspaceUi } from './usePromptWorkspaceUi';
 import { usePromptHistoryReuse } from './usePromptHistoryReuse';
+import { useGenerationPresentation } from './useGenerationPresentation';
 import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings, PromptHealthBindings, PromptDeliveryBindings, PromptDialogBindings } from './promptPanelBindings';
 import type { HiresSource } from './promptGenerationActions';
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
@@ -123,6 +124,8 @@ export function usePromptWorkspace() {
     });
     const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy: engineGenerationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration: cancelEngineGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
     const generationBusy = computed(() => engineGenerationBusy.value || inpaintPreparing.value || hiresPreparing.value);
+    const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备高清重绘…' : '',
+        () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value));
     // ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
     // 先收敛到当前底模白名单（closestSupportedSize）再同步双引擎，防服务端 400。
     const genBarSize = computed({
@@ -172,7 +175,7 @@ export function usePromptWorkspace() {
         build: (url) => buildResultSnapshot(url),
     });
     // 模板沿用原名绑定
-    const { prevResult, lastResult, compareOpen, compareEl, close: closeCompare } = compare;
+    const { prevResult, lastResult, compareOpen, close: closeCompare } = compare;
     /** 克隆 URL 前冻结当前成片元数据，异步期间的表单变化不影响快照。 */
     function buildResultSnapshot(persistentUrl: string): ResultSnapshot { return snapshotResult({ animaState, drawEngine, displayResultSeed, pb, sdSize, sd }, persistentUrl); }
     // ── Actions ───────────────────────────────────────────────────────────────
@@ -384,7 +387,7 @@ export function usePromptWorkspace() {
      * 这里并不适用，所以不复用 SDRecoveryPanel 的动作集。
      */
     function retryAnima() {
-        if (generationBusy.value)
+        if (generationBusy.value || generationPresentation.value.needsReview)
             return;
         void generateAnima();
     }
@@ -392,8 +395,10 @@ export function usePromptWorkspace() {
     /** 失败/取消后画布旁可「找回上一张」（Anima/Krea 暂存；SD 旧图从未离开画布）。 */
     const hasStashedResult = computed(() => Boolean(animaSession.stashedResult.value));
     function onRestoreStashed() {
-        if (animaSession.restoreStashedResult())
+        if (animaSession.restoreStashedResult()) {
+            resultRevealUrl.value = '';
             pb.flash('已恢复上一张未入册的成片，可存入作品册或继续新作');
+        }
     }
     /** 「清除」是显式丢弃：临时缓冲同步清掉，避免下次进页又被找回。 */
     function onClearResult() {
@@ -481,7 +486,7 @@ export function usePromptWorkspace() {
             subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'), visualDescription: toRef(pb, 'visualDescription'),
             sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
         }),
-        displayResultUrl, generationBusy, animaState, drawEngine, upscaleCurrentResult,
+        displayResultUrl, generationBusy, generationPresentation, animaState, drawEngine, upscaleCurrentResult,
         generationPresetSummary, managedRoute, applyManagedRoute, reuseSuccessfulRecipe,
         engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
         displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState,
@@ -510,7 +515,6 @@ export function usePromptWorkspace() {
     };
     const dialogBindings: PromptDialogBindings = {
         inpaintProvider: computed(() => animaState.value.provider), inpaintManagedStartAvailable: computed(() => animaState.value.managedStartAvailable === true), inpaintAutomaticMaskAvailable: computed(() => animaState.value.automaticMaskAvailable === true), inpaintAutomaticMaskStatus: computed(() => animaState.value.automaticMaskStatus),
-        compareEl,
         inpaintImageSource: computed(() => ({ url: displayResultUrl.value, blob: animaState.value.result?.blob, historyId: displayedResultHistoryId.value })),
         displayResultUrl, generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
         lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
@@ -530,7 +534,7 @@ export function usePromptWorkspace() {
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
         selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,
         handleHistoryToShots, handleHistoryToShotsBatch, generationBusy, generationError, generationStopped, generationStatusText,
-        generationProgress, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
+        generationProgress, generationPresentation, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
         shotsPending, prevResult, resultArchived, savingResult, resultTemporary, hasStashedResult,
         callGenerate, inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo,
         addToShots, goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed,

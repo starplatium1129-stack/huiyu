@@ -29,7 +29,8 @@ export function isVideoJob(value: unknown): value is VideoJob {
   return isNonEmptyText(value.id)
     && ['queued', 'running', 'cancelling', 'succeeded', 'failed', 'cancelled'].includes(String(value.status))
     && value.provider === 'comfy'
-    && isFiniteNumber(value.progress) && value.progress >= 0 && value.progress <= 1
+    && (value.progress === null || isFiniteNumber(value.progress) && value.progress >= 0 && value.progress <= 1)
+    && (value.needsReview === undefined || typeof value.needsReview === 'boolean')
     && isFiniteNumber(value.estimatedSeconds) && value.estimatedSeconds >= 0
     && isFiniteNumber(value.elapsedSeconds) && value.elapsedSeconds >= 0
     && isNonEmptyText(value.modelId)

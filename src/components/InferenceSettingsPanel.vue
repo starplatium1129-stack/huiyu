@@ -7,14 +7,16 @@
     <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>
     <template v-else>
       <p v-if="error" role="alert" class="inference-error">{{ error }}</p>
+      <button v-if="error && !snapshot" class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="retrySettings">重新读取推理设置</button>
       <p v-if="notice" role="status">{{ notice }}</p>
       <template v-if="snapshot">
         <p v-if="snapshot.restartRequired" role="status">新设置将在重启后生效。</p>
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
         <p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
-        <InferenceSetupPanel :configured="snapshot.configured" :blocked="loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @activated="refresh" />
-        <details class="inference-advanced" :open="dirty || advancedPathsOpen">
+        <AsyncPanel :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @activated="refresh" /></AsyncPanel>
+        <details class="inference-advanced" :open="advancedOpen" @toggle="advancedOpen = ($event.target as HTMLDetailsElement).open">
           <StudioDisclosureSummary>已有资源与高级设置</StudioDisclosureSummary>
+          <div data-disclosure-content>
           <button class="btn btn-quiet btn-sm" type="button" :disabled="loading || saving || setupBusy" @click="refresh">重新检查已有资源</button>
         <div v-if="discovery" class="inference-reuse" aria-labelledby="inference-reuse-title">
           <h3 id="inference-reuse-title">复用本机资源</h3>
@@ -25,9 +27,11 @@
             <span v-if="dirty">请先保存当前修改</span>
           </div>
           <details class="inference-selected-paths">
-            <summary>资源路径</summary>
+            <StudioDisclosureSummary>资源路径</StudioDisclosureSummary>
+            <div data-disclosure-content>
             <dl><template v-for="field in pathFields" :key="field.key"><dt>{{ field.label }}</dt><dd>{{ discovery.suggested[field.key] }}</dd></template></dl>
             <p v-if="discovery.runtimeReceipt">运行库安装记录：{{ discovery.runtimeReceipt }}</p>
+            </div>
           </details>
         </div>
         <form class="inference-form" @submit.prevent="save">
@@ -45,8 +49,9 @@
             <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="独立引擎显存策略" :options="memoryOptions" :disabled="saving || loading || setupBusy" />
             <small>{{ draft.memoryPolicy === 'offload' ? '减少显存占用，生成时需要在内存与显卡间传输模型。' : '模型保留在显卡中，适合连续生成。' }}</small>
           </div>
-          <details class="inference-paths" :open="advancedPathsOpen">
-            <summary>高级路径设置</summary>
+          <details class="inference-paths" :open="advancedPathsOpen" @toggle="advancedPathsOpen = ($event.target as HTMLDetailsElement).open">
+            <StudioDisclosureSummary>高级路径设置</StudioDisclosureSummary>
+            <div data-disclosure-content>
             <p>填写运行绘遇的电脑上的绝对路径。</p>
             <div class="inference-path-grid">
               <div v-for="field in pathFields" :key="field.key" class="inference-field">
@@ -55,14 +60,16 @@
                 <small :id="`inference-${field.key}-hint`">{{ field.hint }}</small>
               </div>
             </div>
+            </div>
           </details>
           <div class="inference-actions">
             <button class="btn btn-primary btn-sm" type="submit" :disabled="saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button>
             <span v-if="dirty">保存后重启绘遇生效</span>
           </div>
         </form>
-        <details class="inference-diagnostics" :open="diagnostics?.configuration === 'invalid' || !!probeError">
-          <summary>检查结果</summary>
+        <details class="inference-diagnostics" :open="diagnosticsOpen" @toggle="diagnosticsOpen = ($event.target as HTMLDetailsElement).open">
+          <StudioDisclosureSummary>检查结果</StudioDisclosureSummary>
+          <div data-disclosure-content>
           <template v-if="diagnostics">
             <p>已保存的路径{{ dirty ? '（不含未保存修改）' : '' }}</p>
             <p v-if="diagnostics.configuration !== 'valid'" role="alert">{{ diagnostics.message }}</p>
@@ -75,14 +82,16 @@
             <p>当前运行环境 · {{ probe.probe.cudaAvailable ? `CUDA 可用：${probe.probe.deviceName || '设备名称未知'}` : 'CUDA 不可用' }}</p>
             <ul><li v-for="(version, name) in probe.probe.dependencies" :key="name">{{ name }}：{{ version }}</li></ul>
           </div>
+          </div>
         </details>
         <details class="inference-capabilities">
-          <summary>支持范围</summary>
-          <div>
+          <StudioDisclosureSummary>支持范围</StudioDisclosureSummary>
+          <div data-disclosure-content>
             <p>支持 Anima 绘图、图生图、蒙版重绘、高清修复与放大。模型需使用完整 Diffusers 目录。</p>
             <p>Krea、SDXL 与 DoRA 请使用对应的其他后端。</p>
           </div>
         </details>
+        </div>
         </details>
       </template>
       <p v-else-if="loading" role="status">正在读取已保存的推理设置…</p>
@@ -92,15 +101,28 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-const InferenceSetupPanel = defineAsyncComponent(() => import('./InferenceSetupPanel.vue'))
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadInferenceSetup = () => import('./InferenceSetupPanel.vue')
 import type { PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import { useInferenceSettings } from '@/composables/useInferenceSettings'
 const { isLocal, draft, snapshot, diagnostics, discovery, adoptionChanges, adopt, loading, saving, error, notice, dirty, refresh, save, probe, probing, probeError, diagnose } = useInferenceSettings()
 const setupBusy = ref(false)
+const advancedOpen = ref(false)
 const advancedPathsOpen = ref(false)
+const diagnosticsOpen = ref(false)
+// Request state may reveal an issue, but must not close a surface the user opened.
+watch([dirty, advancedPathsOpen], ([changed, pathsOpen]) => { if (changed || pathsOpen) advancedOpen.value = true })
+watch([() => diagnostics.value?.configuration === 'invalid', probeError], ([invalid, failure]) => {
+  if (invalid || failure) diagnosticsOpen.value = true
+})
+function retrySettings(event: MouseEvent) {
+  // The initial error button disappears while reading; retain a visible focus stop.
+  (event.currentTarget as HTMLElement).closest('details')?.querySelector('summary')?.focus({ preventScroll: true })
+  void refresh()
+}
 function fillPreparedPaths(paths: PreparedInferencePaths) {
   for (const key of ['python', 'worker', 'modelsRoot', 'lorasRoot'] as const) draft[key] = paths[key]
   advancedPathsOpen.value = true
@@ -128,7 +150,7 @@ onMounted(refresh)
 .inference-form, .inference-path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
 .inference-field { display: grid; align-content: start; gap: var(--s-2); min-width: 0; }
 .inference-field label { color: var(--text-primary); }
-.inference-field input { width: 100%; min-width: 0; box-sizing: border-box; border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: var(--s-3); background: var(--bg-surface); color: var(--text-primary); font: inherit; }
+.inference-field input { width: 100%; min-width: 0; box-sizing: border-box; border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-3); background: var(--bg-surface); color: var(--text-primary); font: inherit; }
 .inference-field input:focus-visible, summary:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .inference-field input:disabled { color: var(--text-disabled); }
 .inference-field small { color: var(--text-secondary); line-height: var(--lh-body); }
@@ -136,7 +158,7 @@ onMounted(refresh)
 .inference-actions { justify-content: flex-start; color: var(--text-secondary); }
 .inference-diagnostics, .inference-capabilities { margin-top: var(--s-5); padding-top: var(--s-4); border-top: 1px solid var(--border-soft); }
 summary { cursor: pointer; min-height: 44px; align-content: center; color: var(--text-primary); }
-.inference-reuse { border: 1px solid var(--border-soft); border-radius: var(--radius-md); padding: var(--s-4); margin: var(--s-4) 0; }
+.inference-reuse { border: 1px solid var(--border-soft); border-radius: var(--r-md); padding: var(--s-4); margin: var(--s-4) 0; }
 .inference-reuse h3 { margin: 0; }
 .inference-settings .btn { flex-shrink: 0; white-space: nowrap; }
 .inference-selected-paths dd { margin: 0 0 var(--s-3); overflow-wrap: anywhere; color: var(--text-secondary); }

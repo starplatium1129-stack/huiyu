@@ -69,7 +69,7 @@
   .pb .stage-generating-title {
     @apply tw:text-secondary tw:text-label; font-family:var(--font-sans); font-weight:500;
   }
-  .pb .stage-generating-sub { display:grid; gap:var(--s-1); }
+  .pb .stage-generating-sub { display:grid; gap:var(--s-1); min-width:0; overflow-wrap:anywhere; }
   .pb .stage-generating-elapsed { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); }
   .pb .stage-progress-ring {
     position:relative; display:grid; place-items:center; width:56px; height:56px; flex:none; color:var(--text-primary);
