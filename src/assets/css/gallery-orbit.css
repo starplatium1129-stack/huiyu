@@ -4,7 +4,9 @@
 :is(.art-viewer,.showcase-viewer) .gallery-orbit:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-md); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-surface { position:relative; min-height:0; container-type:size; perspective:1400px; transform-style:preserve-3d; touch-action:pan-y; pointer-events:none; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-card { position:absolute; inset:0; display:grid; grid-template-rows:minmax(0,1fr); justify-items:center; min-height:0; max-height:100%; transform-style:preserve-3d; opacity:0; visibility:hidden; backface-visibility:hidden; pointer-events:none; }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit-card > :is(.zoomable-image-viewer,.gallery-orbit-neighbor) { width:56%; height:100%; max-height:100%; min-width:0; min-height:0; }
+/* Use the stage for wide artwork while leaving neighboring covers visible.
+   Current and neighboring cards share their fit so selection keeps its size. */
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-card > :is(.zoomable-image-viewer,.gallery-orbit-neighbor) { width:84%; height:100%; max-height:100%; min-width:0; min-height:0; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-card.is-current > .zoomable-image-viewer { pointer-events:none; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit .zoomable-img { pointer-events:auto; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit :is(.zoom-toolbar,.viewer-fallback) { pointer-events:auto; }

@@ -31,7 +31,6 @@
 .pop-filter-reset:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .mature-hint { @apply tw:text-label-xs; }
 
-.pop-grid { @apply tw:grid; align-items: start; @apply tw:gap-s-5; }
 .pop-card {
   @apply tw:flex tw:flex-col tw:min-w-0 tw:overflow-hidden;
   border:0;
@@ -62,8 +61,6 @@
   transition: opacity var(--motion-hover) var(--ease-out);
 }
 .pop-thumb img.pop-thumb-ready { opacity: 1; }
-.pop-thumb:has(.pop-thumb-ready) { aspect-ratio:auto; }
-.pop-thumb img.pop-thumb-ready { position:relative; inset:auto; display:block; height:auto; }
 .pop-thumb img.pop-thumb-missing { @apply tw:hidden; }
 .pop-thumb-skeleton { @apply tw:absolute; inset: 0; opacity: 0; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-deep)); }
 .pop-thumb-skeleton.visible { opacity: 1; }

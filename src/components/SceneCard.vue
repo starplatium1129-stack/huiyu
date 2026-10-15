@@ -2,6 +2,7 @@
   <div
     class="sc"
     :class="[`sc-${mode}`, { 'sc-static': !clickable, 'sc-complete-preview': completePreview }]"
+    :style="previewStyle"
     :data-rating="contentRating"
     :role="clickable ? 'button' : undefined"
     :tabindex="clickable ? 0 : undefined"
@@ -12,7 +13,7 @@
       <div v-if="thumbId && thumbSrc" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
       <img
         v-if="thumbId && thumbSrc"
-        v-bind="thumbImage"
+        v-bind="{ ...thumbImage, onLoad: measurePreview }"
         class="sc-thumb"
         :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
         alt=""
@@ -48,7 +49,8 @@
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { sceneRecommendedSize } from '@/utils/sceneInference'
 
 export interface SceneCardScene {
   [key: string]: unknown
@@ -99,6 +101,18 @@ const { image: thumbImage, src: thumbSrc, loaded: thumbLoaded, failed: thumbFail
   const v = props.imgVersion ?? ''
   return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
 })
+const naturalRatio = ref<number | null>(null)
+watch(thumbSrc, () => { naturalRatio.value = null }, { flush: 'sync' })
+const previewStyle = computed(() => {
+  if (!props.completePreview) return undefined
+  const [width, height] = sceneRecommendedSize(props.scene).split('x').map(Number)
+  return { '--scene-preview-ratio': naturalRatio.value ?? width / height }
+})
+function measurePreview(event: Event) {
+  if (!thumbImage.value.onLoad(event) || !props.completePreview) return
+  const image = event.target as HTMLImageElement
+  naturalRatio.value = image.naturalWidth / image.naturalHeight
+}
 const tags = computed(() => {
   const limit = props.mode === 'strip' ? 2 : 3
   const list = (props.scene.tags || []).filter(t => !TAG_BLOCKLIST.includes(t)).slice(0, limit)

@@ -117,6 +117,7 @@
           :src="resolveRuntimeUrl(displayResultUrl)"
           :auto-reveal="loadedResultUrl === displayResultUrl && displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
           :reveal-effect="revealTextureResult"
+          :duration="900"
           alt="当前生成的画面成片"
           @load="fitResult"
           @reveal-start="rememberResultReveal"
@@ -185,7 +186,7 @@ const resultPalette = ref<string[]>([])
 const generationPalette = ref<string[]>([])
 // Capture before publication/clearing; the new image's load must not recolor an ongoing wait.
 watch(() => props.generationBusy, busy => { if (busy) { generationPalette.value = [...resultPalette.value]; retryingResult.value = false } }, { flush: 'sync' })
-const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generation.progress, () => generationPalette.value)
+const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generation.progress, () => generationPalette.value, () => resultPalette.value)
 const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 // A deliberate clear followed by Generate must not leave two GPU effects alive.

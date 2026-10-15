@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<{
   imgClass?: string
   duration?: number
   autoReveal?: boolean
-  revealEffect?: (image: HTMLImageElement) => CanvasParticleReveal | null
+  revealEffect?: (image: HTMLImageElement, duration: number) => CanvasParticleReveal | null
 }>(), { alt: '生成的画面成片', imgClass: '', duration: 600, autoReveal: true })
 const emit = defineEmits<{
   load: [event: Event]
@@ -93,12 +93,13 @@ async function triggerReveal() {
     emit('reveal-complete')
     return
   }
-  const duration = Number.isFinite(props.duration) ? Math.max(450, Math.min(700, props.duration)) : 600
+  // Texture formation needs a visible travel phase; ordinary fades retain their short limit.
+  const duration = Number.isFinite(props.duration) ? Math.max(450, Math.min(props.revealEffect ? 1100 : 700, props.duration)) : 600
   try {
     // Preparation precedes fading. Any failure leaves the decoded work available.
     const bounds = containerRef.value?.getBoundingClientRect()
     if (bounds) revealSize = { width: bounds.width, height: bounds.height }
-    const effect = props.revealEffect?.(img) ?? (containerRef.value ? startImageDevelopmentReveal(img, containerRef.value, duration) : null)
+    const effect = props.revealEffect?.(img, duration) ?? (containerRef.value ? startImageDevelopmentReveal(img, containerRef.value, duration) : null)
     if (!effect) { emit('reveal-complete'); return }
     stopEffect = effect.stop
     void effect.finished.then(() => {

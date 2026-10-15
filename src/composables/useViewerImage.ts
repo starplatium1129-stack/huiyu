@@ -18,33 +18,34 @@ export function useViewerImage(props: Readonly<{
     try { const url = new URL(src, location.href); url.searchParams.set('_imageRetry', String(attempt)); return url.href }
     catch { return src }
   }
-  function currentImage(event: Event, full = false): event is Event & { target: HTMLImageElement } {
-    const image = event.target
+  function currentImage(image: EventTarget | null, full = false): image is HTMLImageElement {
     return image instanceof HTMLImageElement && image === (full ? fullImageEl.value : imageEl.value)
       && image.dataset.imageAttempt === String(full ? fullAttempt.value : imageAttempt.value)
       && image.getAttribute('src') === requestSrc(full ? props.src : displayedSrc.value, full ? fullAttempt.value : imageAttempt.value)
   }
   function onImageLoad(event: Event) {
-    if (!currentImage(event)) return
+    if (!currentImage(event.target)) return
     imageReady.value = true; imageFailed.value = false
     if (displayedSrc.value === props.src) { fullImageFailed.value = false; retrying.value = false }
     callbacks.loaded()
   }
   function onImageError(event: Event) {
-    if (!currentImage(event)) return
+    if (!currentImage(event.target)) return
     if (displayedSrc.value !== props.src) { imageReady.value = false; displayedSrc.value = props.src; return }
     imageReady.value = false; imageFailed.value = true; retrying.value = false
     callbacks.error()
   }
+  function failFullImage() { fullImageFailed.value = true; retrying.value = false; callbacks.error() }
   function onFullImageError(event: Event) {
-    if (currentImage(event, true)) { fullImageFailed.value = true; retrying.value = false; callbacks.error() }
+    if (currentImage(event.target, true)) failFullImage()
   }
   async function upgradeImage(event: Event) {
-    if (!currentImage(event, true)) return
     const image = event.target, revision = sourceRevision
+    if (!currentImage(image, true)) return
     try { if (typeof image.decode === 'function') await image.decode() }
-    catch { if (revision === sourceRevision) onFullImageError(event); return }
-    if (revision === sourceRevision && currentImage(event, true)) {
+    catch { if (revision === sourceRevision && currentImage(image, true)) failFullImage(); return }
+    // Native event targets may be cleared after dispatch; retain the decoded node.
+    if (revision === sourceRevision && currentImage(image, true)) {
       if (imageAttempt.value !== fullAttempt.value) imageRevision.value++
       imageAttempt.value = fullAttempt.value; displayedSrc.value = props.src
     }
@@ -65,8 +66,10 @@ export function useViewerImage(props: Readonly<{
     if (imageFailed.value) { imageRevision.value++; imageAttempt.value = fullAttempt.value; imageReady.value = false; imageFailed.value = false }
   }
   watch(() => [props.src, props.previewSrc, props.imageKey] as const, ([src, preview, key], [previousSrc, previousPreview, previousKey]) => {
-    sourceRevision++
     const changedRecord = key !== previousKey
+    // Entrance previews can change while the same original is decoding.
+    // Only replacing that original or its record makes the decode obsolete.
+    if (src !== previousSrc || changedRecord) sourceRevision++
     if (changedRecord) { retryRevision++; retrying.value = false }
     if (src !== previousSrc || changedRecord) fullAttempt.value = 0
     fullImageFailed.value = false

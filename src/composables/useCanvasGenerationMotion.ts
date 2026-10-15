@@ -7,7 +7,7 @@ import type { CanvasParticleMotion } from '@/utils/canvasTextureParticles'
  * Presentation never owns submission, task receipts, cancellation or results. */
 export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
   source: () => string, busy: () => boolean, comparing: () => boolean,
-  progress: () => number | null, palette: () => readonly string[],
+  progress: () => number | null, palette: () => readonly string[], resultPalette: () => readonly string[],
 ) {
   const { canAnimate, lowEffects } = useVisualActivity(host)
   const active = ref(false)
@@ -57,11 +57,11 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
         .catch(() => { /* Keep the existing particle/reveal fallback. */ })
     }
   }
-  function reveal(image: HTMLImageElement) {
+  function reveal(image: HTMLImageElement, duration: number) {
     if (!canAnimate.value || lowEffects.value || comparing()) { stop(); return null }
     // Late completion or restored visibility can start from the waiting orbit.
     if (!effect) start(source(),false)
-    return effect?.reveal(image) ?? null
+    return effect?.reveal(image, duration, resultPalette()) ?? null
   }
   watch([source,busy,comparing],([url,generating,comparison],[oldUrl,wasGenerating]) => {
     if (comparison) { stop(); return }

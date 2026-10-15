@@ -136,7 +136,7 @@
 
 /* A single fixed canvas viewport owns all visual states; status and references
    are overlays/contained content, never stacked documents with an inner scroll. */
-.pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(360px,60vh,720px); container-type:size; }
+.pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(360px,60vh,720px); container-type:size; background:var(--bg-base); }
 .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport > :is(.stage-placeholder,.result-image-wrap) { position:absolute; inset:0; width:100%; height:100%; min-height:0; max-height:none; margin:0; }
 .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-message { width:100%; height:100%; min-height:0; overflow:hidden; align-items:center; }
 .pb.atelier-workspace .stage-content { position:relative; height:100%; min-height:0; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
@@ -146,8 +146,8 @@
 .pb.journal-workspace.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); background:var(--bg-base); border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal { width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; max-height:none; }
-.pb.atelier-workspace .stage-swap-leave-active { transition-duration:720ms; pointer-events:none; }
-.pb.atelier-workspace .stage-swap-leave-active .generation-particles { transition-duration:720ms; }
+.pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-hover); pointer-events:none; }
+.pb.atelier-workspace .stage-swap-leave-active .generation-particles { transition-duration:var(--motion-hover); }
 .pb.atelier-workspace .stage-content .scene-reference { min-height:0; flex:1; --reference-max-height:calc(100cqh - 180px); }
 .pb.atelier-workspace .stage-content .stage-idle { flex:0 0 auto; }
 @media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }

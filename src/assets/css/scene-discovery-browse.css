@@ -55,13 +55,16 @@
 .scene-results-meta { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); }
 .scene-count { color:var(--text-muted); font-size:var(--fs-label-xs); }
 
-.scene-grid { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); align-items:start; gap:var(--s-4) var(--workspace-panel-gap,var(--s-4)); }
-.scene-grid :deep(.sc) { border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); box-shadow:none; }
-.scene-grid :deep(.sc-band) { padding:0; background:var(--art-stage); }
-.scene-grid :deep(.sc-thumb) { border:0; border-radius:0; box-shadow:none; }
+/* Match the artbook's ratio-based rows: wide works get more width, in DOM order.
+   Scene actions need a 240px card and a taller target row than image-only captions. */
+.scene-grid { --scene-row-height:calc(380px * var(--desktop-layout-scale,1)); display:flex; flex-wrap:wrap; align-items:stretch; gap:var(--s-4) var(--workspace-panel-gap,var(--s-4)); }
+.scene-grid::after { content:''; flex:1000000 1 0; }
+.scene-grid :deep(.sc) { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(240px,100%); max-width:100%; contain-intrinsic-size:auto calc(var(--scene-row-height) + 168px); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); box-shadow:none; }
+.scene-grid :deep(.sc-band) { aspect-ratio:var(--scene-preview-ratio,3/4); min-height:0; padding:0; background:var(--art-stage); }
+.scene-grid :deep(.sc-thumb) { position:absolute; inset:0; height:100%; border:0; border-radius:0; box-shadow:none; }
 .scene-grid :deep(.sc-band::after) { display:none; }
 .scene-grid :deep(.sc-cat) { display:none; }
-.scene-grid :deep(.sc-body) { gap:var(--s-2); padding:var(--s-3); }
+.scene-grid :deep(.sc-body) { flex:1; gap:var(--s-2); padding:var(--s-3); }
 .scene-grid :deep(.sc-title) { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:var(--fs-body); line-height:1.35; }
 .scene-grid :deep(.sc-story),.scene-grid :deep(.sc-meta) { display:none; }
 .scene-grid :deep(.sc:is(.scene-selected,.scene-flash,:focus-within)) { border-color:var(--border-strong); }
@@ -90,7 +93,7 @@
 .ex-scene-line span+span::before { content:'·'; margin-right:var(--s-1); }
 .scene-curation-note { margin-left:auto; color:var(--accent); }
 .ex-scene-line .scene-curation-note::before { content:none; }
-.ex-actions { display:flex; gap:var(--s-1); }
+.ex-actions { display:flex; gap:var(--s-1); margin-top:auto; }
 .ex-actions .btn { flex:0 0 auto; justify-content:center; min-height:var(--control-height-sm); font-size:var(--fs-label-sm); box-shadow:none; }
 .ex-actions .scene-draw-action { flex:1 1 auto; border-color:color-mix(in srgb,var(--accent) 25%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); }
 .ex-actions .scene-draw-action:hover,.ex-actions .scene-draw-action:focus-visible { border-color:var(--border-strong); background:var(--accent); color:var(--text-inverse); }
@@ -107,23 +110,21 @@
 
 :is(.companion-pill,.filter-toggle,.scene-personal-nav button,.scene-cat,.scene-reset,.scene-active-filters button,.ex-more > summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 
-@media (max-width:1399px) { .scene-grid { grid-template-columns:repeat(4,minmax(0,1fr)); } }
 @media (max-width:1000px) {
+  .scene-grid { --scene-row-height:320px; }
   .page.scene-discovery .scene-toolbar { grid-template-columns:minmax(0,1fr); }
   .scene-personal-nav { grid-column:1; grid-row:1; }
   .toolbar-primary { grid-column:1; grid-row:2; }
 }
-@media (max-width:1100px) { .scene-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media (max-width:900px) {
   .page.scene-discovery { padding:var(--s-4); }
-  .scene-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
   .scene-results-heading { flex-wrap:wrap; }
 }
+@media (max-width:768px) { .scene-grid { --scene-row-height:280px; gap:var(--s-3); } }
 @media (max-width:700px) {
   .scene-atlas { grid-template-columns:minmax(0,1fr); grid-template-areas:'copy' 'choices' 'moods' 'filters'; }
   .curation-intro { flex-wrap:wrap; }
   .scene-personal-nav { flex-wrap:wrap; }
-  .scene-grid { grid-template-columns:minmax(0,1fr); }
 }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; }
