@@ -23,7 +23,7 @@ function readPreferences() { return parseDirectorLayout(profileLocalStorage.getI
 /** Remember rail preferences; actual widths always fit the current CSS viewport. */
 export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   const preferences = ref(readPreferences())
-  const width = ref(960), viewport = ref(typeof innerWidth === 'number' ? innerWidth : 1280), dragging = ref<Side | null>(null)
+  const width = ref(960), viewport = ref(window.innerWidth), dragging = ref<Side | null>(null)
   // Collapse only when the measured workspace cannot fit both rails and a useful canvas.
   // Hiding the inspector leaves enough space for materials beside the canvas.
   const compact = computed(() => viewport.value >= 1024 && width.value < 1120 && !preferences.value.hideInspector)
@@ -42,14 +42,13 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     }
   }, { capture: true })
   let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number; before: LayoutPreference; materialsOpen: boolean } | null = null
-  let suppressClick = false, previousClickSuppressed = false, suppressDoubleClick = false
-  const baseMaterials = computed(() => viewport.value <= 1440 ? 300 : 336)
-  const baseInspector = computed(() => viewport.value <= 1440 ? 320 : 368)
+  let suppressClick = false, suppressDoubleClick = false
+  const preferredInspectorWidth = computed(() => preferences.value.inspector ?? (viewport.value <= 1440 ? 320 : 368))
   // Resizing may use spare canvas width, including a compact portrait workspace.
   const available = computed(() => Math.max(0, width.value - 440 - 48))
-  const materialsWidth = computed(() => Math.max(240, Math.min(preferences.value.materials ?? baseMaterials.value,
-    available.value - (preferences.value.hideInspector ? 0 : Math.min(preferences.value.inspector ?? baseInspector.value, Math.max(280, available.value - 240))))))
-  const inspectorWidth = computed(() => compact.value ? 320 : Math.max(280, Math.min(preferences.value.inspector ?? baseInspector.value,
+  const materialsWidth = computed(() => Math.max(240, Math.min(preferences.value.materials ?? (viewport.value <= 1440 ? 300 : 336),
+    available.value - (preferences.value.hideInspector ? 0 : Math.min(preferredInspectorWidth.value, Math.max(280, available.value - 240))))))
+  const inspectorWidth = computed(() => compact.value ? 320 : Math.max(280, Math.min(preferredInspectorWidth.value,
     available.value - (preferences.value.hideMaterials ? 0 : materialsWidth.value))))
   // Theme navigation and page framing reduce the actual workspace even before
   // a user resizes either rail. Clamp defaults too, without rewriting preferences.
@@ -60,21 +59,20 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   }
   function measure() {
     if (!observing || !root.value?.isConnected) return
-    width.value = root.value?.clientWidth || 960; viewport.value = typeof innerWidth === 'number' ? innerWidth : 1280
+    width.value = root.value.clientWidth || 960; viewport.value = window.innerWidth
   }
   function setWidth(side: Side, value: number) {
     const otherSide = side === 'materials' ? 'inspector' : 'materials'
     const other = collapsed.value[otherSide] ? 0 : currentWidth(otherSide)
     preferences.value[side] = Math.round(Math.max(side === 'materials' ? 240 : 280, Math.min(value, 560, available.value - other)))
   }
-  function endPointer(commit: boolean) {
+  function finish(event?: PointerEvent) {
     const active = activePointer
-    if (!active) return
+    if (!active || (event && active.id !== event.pointerId)) return
+    const commit = event?.type === 'pointerup'
     const resized = dragging.value !== null
     activePointer = null; dragging.value = null
     suppressClick = resized || !commit
-    window.removeEventListener('keydown', escapeResize, true)
-    window.removeEventListener('blur', cancelOnBlur)
     if (!commit) {
       preferences.value = active.before
       compactMaterialsOpen.value = active.materialsOpen
@@ -82,23 +80,15 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (active.element.hasPointerCapture(active.id)) active.element.releasePointerCapture(active.id)
     if (commit && resized) save()
   }
-  function finish(event: PointerEvent) {
-    if (activePointer?.id === event.pointerId) endPointer(true)
-  }
-  function cancel(event?: PointerEvent) {
-    if (!event || activePointer?.id === event.pointerId) endPointer(false)
-  }
-  function cancelOnBlur() { cancel() }
   function escapeResize(event: KeyboardEvent) {
     if (!activePointer || event.key !== 'Escape' || event.isComposing || event.keyCode === 229) return
     event.preventDefault(); event.stopImmediatePropagation()
-    cancel()
+    finish()
   }
   function click(event: MouseEvent) {
     if (event.detail === 0) return
     // A drag can be either click in a native double-click sequence.
-    suppressDoubleClick = event.detail > 1 && (suppressClick || previousClickSuppressed)
-    previousClickSuppressed = suppressClick
+    suppressDoubleClick = suppressClick || (event.detail > 1 && suppressDoubleClick)
     if (suppressClick) { event.preventDefault(); event.stopPropagation() }
   }
   function currentWidth(side: Side) { return side === 'materials' ? materialsWidth.value : inspectorWidth.value }
@@ -110,8 +100,6 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     suppressClick = false
     element.setPointerCapture(event.pointerId)
     element.focus({ preventScroll: true })
-    window.addEventListener('keydown', escapeResize, true)
-    window.addEventListener('blur', cancelOnBlur)
     event.preventDefault()
   }
   function move(event: PointerEvent) {
@@ -125,7 +113,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   function key(side: Side, event: KeyboardEvent) {
     if (event.altKey || event.ctrlKey || event.metaKey) return
     if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return
-    cancel()
+    finish()
     const step = event.shiftKey ? 40 : 10
     const current = currentWidth(side)
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
@@ -137,34 +125,34 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     event.preventDefault(); save()
   }
   function toggle(side: Side) {
-    cancel()
+    finish()
     if (compact.value && side === 'materials') { compactMaterialsOpen.value = !compactMaterialsOpen.value; return }
     const key = side === 'materials' ? 'hideMaterials' : 'hideInspector'
     preferences.value[key] = !preferences.value[key]; save()
   }
   function show(side: Side) { if (collapsed.value[side]) toggle(side) }
   function reset(event?: MouseEvent) {
-    if (event && (suppressClick || suppressDoubleClick)) { event.preventDefault(); event.stopPropagation(); return }
-    cancel(); compactMaterialsOpen.value = false; preferences.value = defaults(); save()
+    if (event && suppressDoubleClick) { event.preventDefault(); event.stopPropagation(); return }
+    finish(); compactMaterialsOpen.value = false; preferences.value = defaults(); save()
   }
-  function changed(event: StorageEvent) { if (event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = readPreferences() }
+  function changed(event: StorageEvent) { if (observing && event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = readPreferences() }
+  useEventListener(window, 'resize', measure)
+  useEventListener(window, 'storage', changed)
+  useEventListener(window, 'keydown', escapeResize, { capture: true })
+  useEventListener(window, 'blur', () => finish())
   function observe() {
     if (observing) return
     observing = true
     preferences.value = readPreferences()
     observer ??= new ResizeObserver(measure)
     if (root.value) observer.observe(root.value)
-    window.addEventListener('resize', measure)
-    window.addEventListener('storage', changed)
     measure()
   }
   function stopObserving() {
     observing = false
-    cancel()
-    suppressClick = previousClickSuppressed = suppressDoubleClick = false
+    finish()
+    suppressClick = suppressDoubleClick = false
     observer?.disconnect()
-    window.removeEventListener('resize', measure)
-    window.removeEventListener('storage', changed)
   }
   watch(root, () => {
     observer?.disconnect()
@@ -183,5 +171,5 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   })
   onDeactivated(stopObserving)
   onBeforeUnmount(() => { stopObserving(); scrollPositions.clear() })
-  return { style, collapsed, compact, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, cancel, click, key, toggle, show, reset }
+  return { style, collapsed, compact, dragging, desktop: computed(() => viewport.value >= 1024), materialsWidth, inspectorWidth, start, move, finish, click, key, toggle, show, reset }
 }

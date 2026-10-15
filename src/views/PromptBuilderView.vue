@@ -87,10 +87,8 @@
           @cancel="cancelGeneration"
         />
       </Teleport>
-      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.compact.value && !directorLayout.collapsed.value.materials" side="materials" :width="directorLayout.materialsWidth.value"
-        @start="directorLayout.start('materials', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @cancel="directorLayout.cancel" @click="directorLayout.click" @key="directorLayout.key('materials', $event)" @reset="directorLayout.reset" />
-      <DirectorResizeHandle v-if="!pb.focusMode && !directorLayout.compact.value && !directorLayout.collapsed.value.inspector" side="inspector" :width="directorLayout.inspectorWidth.value"
-        @start="directorLayout.start('inspector', $event)" @move="directorLayout.move" @finish="directorLayout.finish" @cancel="directorLayout.cancel" @click="directorLayout.click" @key="directorLayout.key('inspector', $event)" @reset="directorLayout.reset" />
+      <DirectorResizeHandle v-for="side in resizeSides" :key="side" :side="side" :width="side === 'materials' ? directorLayout.materialsWidth.value : directorLayout.inspectorWidth.value"
+        @start="directorLayout.start(side, $event)" @move="directorLayout.move" @finish="directorLayout.finish" @click="directorLayout.click" @key="directorLayout.key(side, $event)" @reset="directorLayout.reset" />
 
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
       <div class="director-col col-center" id="drawing-canvas">
@@ -322,6 +320,8 @@ healthBindings,
 deliveryBindings,
 dialogBindings
 } = workspace
+const resizeSides = computed(() => pb.focusMode || directorLayout.compact.value ? []
+  : (['materials', 'inspector'] as const).filter(side => !directorLayout.collapsed.value[side]))
 const actionBarDocked = computed(() => !!inspectorActions.value && directorLayout.desktop.value && !pb.focusMode && !directorLayout.collapsed.value.inspector)
 const descriptionInHeader = computed(() => pb.focusMode)
 const currentSceneTitle = computed(() => {
