@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_pantyhose",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sakurajima_mai_r18_pantyhose",
     "title": "樱岛麻衣 · 黑丝微褪·足尖的大透视",
@@ -29,8 +29,8 @@
     ],
     "promptProse": "The age-twenty-plus Mai reclines against the headboard, using both hands to roll one side of her pantyhose toward the ankle while the other leg remains covered, her blouse open in afternoon light.",
     "promptTokens": [
-      "blouse",
-      "pantyhose",
+      "white blouse",
+      "black pantyhose",
       "reclining",
       "bed",
       "afternoon",
@@ -46,7 +46,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
-    "outfitId": "bunny_girl",
+    "outfitId": "white_blouse_black_tights",
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"

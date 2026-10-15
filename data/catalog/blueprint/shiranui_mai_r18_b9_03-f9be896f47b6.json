@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1749,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_03",
     "title": "不知火舞 · 忍装背部注连绳结卡死崩裂的更衣事故 ·「呀！后背的粗绳死结解不开了……快来帮舞姐姐一把！」",
@@ -50,7 +50,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "red_ninja_costume",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

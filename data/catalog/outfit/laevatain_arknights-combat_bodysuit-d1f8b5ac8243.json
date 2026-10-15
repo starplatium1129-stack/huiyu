@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/combat_bodysuit",
+  "revision": 1,
+  "sortOrder": 1201,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "id": "combat_bodysuit",
+      "name": "贴身战斗内衬",
+      "tokens": [
+        "bodysuit"
+      ],
+      "prose": "a fitted combat bodysuit",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_white_bridal_gown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 792,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sfw_white_bridal_gown",
-      "name": "纯白婚纱与长头纱",
-      "prose": "a pure white wedding gown in opaque fabric with a long white bridal veil",
+      "name": "纯白缎面长纱婚裙",
+      "prose": "An opaque pure-white satin gown with a clean boat neckline, a fitted waist and a softly flowing skirt, paired with a long plain white veil.",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "bridal_veil",
-        "opaque_fabric"
+        "white wedding dress",
+        "satin",
+        "long veil"
       ],
       "default": false,
       "isDefault": false,

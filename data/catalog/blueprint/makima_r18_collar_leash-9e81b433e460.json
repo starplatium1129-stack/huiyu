@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_collar_leash",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 421,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "makima_r18_collar_leash",
     "title": "玛奇玛 · 支配者的游戏·项圈与温柔低语",
@@ -50,7 +50,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
-    "outfitId": "work_suit",
+    "outfitId": "black_collar",
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"

@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/sfw_bridal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 907,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "吹雪·圣洁花嫁",
-      "prose": "an emerald-and-white bridal gown with pearl jewelry and a structured veil",
+      "name": "祖母绿束腰白缎花嫁",
+      "prose": "a structured emerald bridal bodice above a sweeping white satin skirt, paired with a pearl necklace and a crisp veil",
       "tokens": [
-        "wedding_dress",
-        "emerald_gown",
-        "pearl_jewelry",
-        "structured_veil"
+        "white wedding dress",
+        "emerald bodice",
+        "satin skirt",
+        "pearl necklace",
+        "structured veil"
       ],
       "default": false,
       "isDefault": false

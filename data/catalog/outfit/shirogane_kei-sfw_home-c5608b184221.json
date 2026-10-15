@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_home",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 780,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "default": false,
       "id": "sfw_home",
       "isDefault": false,
-      "name": "居家家计针织装",
-      "prose": "a cream knitted pullover and navy lounge trousers",
+      "name": "奶油色针织家居装",
+      "prose": "A cream cotton-knit pullover with ribbed cuffs pairs with soft navy lounge trousers.",
       "tokens": [
-        "cream_sweater",
-        "navy_pants"
+        "cream sweater",
+        "ribbed cuffs",
+        "navy pants"
       ]
     }
   }

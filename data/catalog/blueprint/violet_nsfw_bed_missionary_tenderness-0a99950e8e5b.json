@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_nsfw_bed_missionary_tenderness",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1395,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "薄纱前襟敞开大开双腿仰卧展示私密处，机械手指轻抚雪胸与平坦小腹，晨光下含泪微笑",
     "adult": true,
@@ -28,10 +28,11 @@
     "outfitId": "charming_nightgown_slip",
     "promptProse": "Violet rests her mechanical fingers over her chest to feel her heartbeat, lying on white sheets with her lace negligee open and legs gently parted.",
     "promptTokens": [
+      "lace trim",
       "adult",
       "1girl",
       "solo",
-      "white negligee",
+      "white silk negligee",
       "open clothes",
       "topless",
       "crotchless panties",

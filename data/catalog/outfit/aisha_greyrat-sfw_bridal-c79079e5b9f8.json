@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/sfw_bridal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 267,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "成年版婚礼礼服造型",
+      "name": "象牙白立领蕾丝婚纱",
       "isDefault": false,
       "default": false,
-      "prose": "an ivory bridal gown with lace sleeves, a simple veil, ivory sash and floor-length skirt",
+      "prose": "a floor-length ivory bridal gown with a fitted high lace collar, lace sleeves, a narrow ivory sash and a simple veil",
       "tokens": [
         "ivory wedding dress",
         "lace sleeves",
+        "high collar",
         "veil",
         "ivory sash"
       ]

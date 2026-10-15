@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc062",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Still half asleep after the first alarm, she cups the viewer's wrist in both hands and presses it to her cheek; soft morning light falls across the pillow and her closed eyes.",
     "auditRevision": "careful-batch02-2026-08-27",
@@ -21,15 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, blue pajamas, on side, closed eyes, pillow, holding wrist, alarm clock, morning light, close up",
+    "prompt": "1girl, ayachi_nene, blue pajamas, cat print, white piping, on side, closed eyes, pillow, holding wrist, alarm clock, morning light, close up",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",
     "story": "【成年 After Story · 闹钟响前的五分钟】成年同居后的春日清晨，宁宁还缩在被窝里熟睡，被子只盖到腰间，银白长发铺满枕头。你替她关掉第一遍闹钟，她迷迷糊糊地抓住你的手腕，把它压在自己脸侧——「再五分钟就起来……真的。你不许先走，等我睁开眼的时候，要让我第一个看到。」",
     "storyJa": "【寧々・大人のアフターストーリー・目覚まし時計が鳴る5分前】大人になって一緒に引っ越してきた春の朝、寧々さんはまだベッドに身を寄せ合ってぐっすり眠っていました。掛け布団は腰だけを覆い、長い銀髪が枕を覆っていた。あなたは初めて彼女のために目覚まし時計を止めました。彼女は呆然とあなたの手首を掴み、顔の横に押し付けました。――「あと五分だけで起きます……本当です。先に行っちゃだめですよ。目を開けたとき、最初にあなたが見えるようにしてください。」",
     "tags": [
-      "blue_pajamas",
-      "buttoned_pajama_top",
       "blanket",
       "lying_on_side",
       "head_on_pillow",
@@ -44,7 +42,10 @@
       "bedroom",
       "morning",
       "soft_window_light",
-      "close_up"
+      "close_up",
+      "blue_pajamas",
+      "cat_print",
+      "white_piping"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

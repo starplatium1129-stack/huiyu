@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_slope_white_beret",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1436,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "megumi_slope_white_beret",
     "title": "加藤惠 · 坡道上的白色贝雷帽·「那个……你刚才是在叫我吗」",
@@ -33,7 +33,8 @@
       "paper bag",
       "looking back",
       "cherry blossoms",
-      "hill"
+      "hill",
+      "bob cut"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

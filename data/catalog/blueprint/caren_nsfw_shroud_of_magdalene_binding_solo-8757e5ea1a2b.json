@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
     "title": "卡莲 · 抹大拉圣骸布缠绕与圣痕发热自持",
@@ -36,10 +36,11 @@
     ],
     "promptProse": "She kneels before the altar with the Shroud around her hips and thighs, holding it taut with one hand while the other reaches between her legs.",
     "promptTokens": [
+      "gold embroidery",
       "adult",
       "church",
       "altar",
-      "clerical vestments",
+      "black and white clerical vestments",
       "no skirt",
       "open clothes",
       "topless",

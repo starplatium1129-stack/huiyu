@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_nsfw_marble_bath_translucent_solo",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1343,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "斜靠在浴池边缘，湿透白蕾丝紧贴娇躯，单手在水下自抚，微仰头闭目娇喘",
     "adult": true,
@@ -24,7 +24,7 @@
     "location": "弥漫水汽白雾的私密大理石温泉浴室",
     "mood": "唯美水光",
     "negativeTokens": [],
-    "outfitId": "holy_white_lace_lingerie",
+    "outfitId": "white_lace_camisole",
     "promptProse": "She reclines against the marble ledge with one hand beneath the water between her thighs, tilting her head back.",
     "promptTokens": [
       "bathroom",

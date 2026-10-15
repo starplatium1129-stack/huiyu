@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "kazami_kazuki/white_silk_camisole",
+  "revision": 1,
+  "sortOrder": 1188,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kazami_kazuki",
+    "outfit": {
+      "id": "white_silk_camisole",
+      "name": "白色真丝吊带睡裙",
+      "tokens": [
+        "white silk camisole",
+        "sheer fabric"
+      ],
+      "prose": "a light white silk camisole nightdress",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

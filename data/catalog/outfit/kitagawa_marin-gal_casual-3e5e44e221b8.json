@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/gal_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 272,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "default": false,
       "id": "gal_casual",
       "isDefault": false,
-      "name": "日常辣妹",
-      "prose": "a bright gyaru street outfit with a cropped top and skirt",
+      "name": "黑色短上衣与海梦粉格纹裙",
+      "prose": "A fitted black cotton crop top with a pink plaid miniskirt, a slim silver waist chain and chunky white sneakers, keeping her upbeat gyaru street silhouette.",
       "tokens": [
-        "gyaru",
-        "crop_top",
-        "miniskirt",
-        "sneakers",
-        "casual_clothes"
+        "black crop top",
+        "pink plaid miniskirt",
+        "silver waist chain",
+        "white sneakers"
       ]
     }
   }

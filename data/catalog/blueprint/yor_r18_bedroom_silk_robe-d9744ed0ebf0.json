@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_silk_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yor_r18_bedroom_silk_robe",
     "title": "约尔·福杰 · 浴后睡袍",
     "category": "私密写真",
     "characterId": "yor_forger",
-    "outfitId": "nsfw_nude",
+    "outfitId": "black_silk_robe",
     "adult": true,
     "description": "【约尔 · 浴后睡袍】卧房内烛影微光，刚沐浴出来的约尔站在床边，薄透的真丝睡袍从雪白的香肩缓缓滑落，露出无瑕的后背与饱满诱人的身体曲线。她低着头轻声细语——「劳埃德先生……今晚阿尼亚已经睡得很熟了……接下来的时间，就只有我们两个人了呢。」",
     "location": "主卧床边",
@@ -32,7 +32,7 @@
     "promptProse": "Yor tightens the loose sash around one thigh while fingering herself, her robe gathered below her breasts on the canopy bed.",
     "promptTokens": [
       "Yor Forger",
-      "black robe",
+      "black silk robe",
       "sash",
       "kneeling",
       "canopy bed",

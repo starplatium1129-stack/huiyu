@@ -1,24 +1,21 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/bunny_girl",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 23,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "bunny_girl",
-      "name": "兔女郎",
-      "prose": "the iconic black bunny suit with bunny ears, a black leotard, fishnet stockings and a bow tie",
+      "name": "黑色兔女郎演出服",
+      "prose": "a fitted black bunny leotard with matching bunny ears, black fishnet pantyhose and a neat bow tie",
       "tokens": [
-        "bunny_suit",
-        "black_bunny_suit",
-        "bunny_ears",
-        "black_leotard",
-        "fishnets",
-        "bow_tie",
-        "thighhighs"
+        "black bunny suit",
+        "bunny ears",
+        "black fishnet pantyhose",
+        "bow tie"
       ],
       "isDefault": false,
       "default": false

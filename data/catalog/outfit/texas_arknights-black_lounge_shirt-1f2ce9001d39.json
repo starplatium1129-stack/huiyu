@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "texas_arknights/black_lounge_shirt",
+  "revision": 1,
+  "sortOrder": 1466,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "texas_arknights",
+    "outfit": {
+      "id": "black_lounge_shirt",
+      "name": "舱室·黑色暗纹衬衫",
+      "tokens": [
+        "black cotton shirt",
+        "tonal pinstripes",
+        "matte buttons"
+      ],
+      "prose": "a black cotton shirt with tonal pinstripes and matte buttons",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc028",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
-    "animaCaption": "Nene sits on the left, holding the folded agreement in one hand and the viewer's hand in the other; Natsume sits on the right and reaches across to straighten Nene's hair ornament, their white dresses softly lit by the candles.",
+    "animaCaption": "Nene, in an ivory chiffon wedding dress with a pink waist ribbon, sits on the left, holding the folded agreement in one hand and the viewer's hand in the other; Natsume, in a pearl-white satin wedding dress with a boat neckline, sits on the right and reaches across to straighten Nene's hair ornament, their dresses softly lit by the candles.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "Active_Sync_Scenes",

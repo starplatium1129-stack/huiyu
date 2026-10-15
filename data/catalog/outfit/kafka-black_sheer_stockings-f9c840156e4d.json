@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "kafka/black_sheer_stockings",
+  "revision": 1,
+  "sortOrder": 1389,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kafka",
+    "outfit": {
+      "id": "black_sheer_stockings",
+      "name": "黑色薄纱长袜",
+      "tokens": [
+        "black stockings",
+        "sheer fabric"
+      ],
+      "prose": "Plain sheer black stockings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

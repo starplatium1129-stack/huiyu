@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_r18_b5_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1565,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hori_kyouko_r18_b5_03",
     "title": "堀京子 · 试衣镜前耳钉勾住吊带裙的拉扯事故 ·「痛痛痛……耳钉挂在蕾丝上了……宫村快救我」",
@@ -36,14 +36,15 @@
       "bedroom",
       "vanity",
       "red slip dress",
-      "earrings",
+      "silver earrings",
       "wardrobe malfunction",
       "strap slip",
       "topless",
       "leaning",
       "looking back",
       "blush",
-      "medium shot"
+      "medium shot",
+      "lace trim"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -53,7 +54,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "red_date_slip",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

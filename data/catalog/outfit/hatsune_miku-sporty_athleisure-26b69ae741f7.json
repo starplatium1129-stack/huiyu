@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/sporty_athleisure",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 187,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
       "id": "sporty_athleisure",
-      "name": "晨跑运动休闲装",
+      "name": "青绿品红晨跑套装",
       "tokens": [
-        "track_jacket",
-        "running_shorts",
-        "sneakers",
-        "matching_set"
+        "teal track jacket",
+        "black side panels",
+        "magenta piping",
+        "teal running shorts",
+        "white sneakers"
       ],
-      "prose": "wearing a fresh athletic set of a zip-up track jacket and matching running shorts, lightweight quick-dry sportswear with a bright energetic color palette",
+      "prose": "A lightweight teal track jacket and matching running shorts with black side panels and narrow magenta piping, paired with white running shoes.",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

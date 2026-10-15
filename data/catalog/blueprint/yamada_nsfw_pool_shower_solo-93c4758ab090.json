@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_pool_shower_solo",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1503,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yamada_nsfw_pool_shower_solo",
     "title": "山田杏奈 · 泳池更衣室淋浴的水光湿身 ·「训练完好热……市川递一下浴巾好不好」",
     "category": "水光湿身",
     "characterId": "yamada_anna",
-    "description": "【学校室内泳池浴室·黄昏】训练结束后的淋浴间。温热的水流冲刷着山田高挑健美、凹凸有致的肉体，蓝白条纹运动比基尼被水浸泡得完全贴在肌肤上，勒出惊人的胸臀轮廓与骆驼趾痕迹。她单手抚摸着自己的小腹，眼神迷离地喘息——「市川在外面等得着急了吗……可是身体……好舒服……停不下来……」",
+    "description": "【学校室内泳池浴室·黄昏】训练结束后的淋浴间。温热的水流冲刷着山田高挑健美、凹凸有致的肉体，白色侧片的藏蓝连体竞速泳衣被水浸泡得完全贴在肌肤上，勒出惊人的胸臀轮廓与骆驼趾痕迹。她单手抚摸着自己的小腹，眼神迷离地喘息——「市川在外面等得着急了吗……可是身体……好舒服……停不下来……」",
     "location": "学校室内泳池浴室·黄昏",
     "action": "淋浴喷头下水流冲刷高挑身段，紧身泳衣透肉勒痕，手抚腿间迷离轻喘",
     "timeOfDay": "深夜",
@@ -28,7 +28,7 @@
     "nsfwProse": "",
     "promptTokens": [
       "adult",
-      "navy one-piece swimsuit",
+      "navy one piece swimsuit",
       "wet clothes",
       "see-through",
       "standing",
@@ -36,7 +36,8 @@
       "masturbation",
       "shower",
       "steam",
-      "cowboy shot"
+      "cowboy shot",
+      "white side panels"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,7 +45,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "summer_beach_bikini",
+    "outfitId": "navy_competition_swimsuit",
     "coverageTags": [
       "special_nsfw",
       "h_cg"

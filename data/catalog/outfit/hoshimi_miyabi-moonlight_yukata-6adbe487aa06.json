@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/moonlight_yukata",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 590,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
       "default": false,
       "id": "moonlight_yukata",
       "isDefault": false,
-      "name": "月夜雅韵华纹浴衣",
-      "prose": "a navy silk yukata patterned with gold spider lilies and silver moon crests, a crimson obi, wooden geta and a small silver bell hairpin",
+      "name": "月纹彼岸花深蓝浴衣",
+      "prose": "A navy silk yukata with gold spider lilies and small silver moon crests, a crimson obi, wooden geta and a silver bell hairpin.",
       "tokens": [
-        "navy yukata",
-        "floral print",
+        "navy blue yukata",
+        "gold spider lily print",
+        "silver moon pattern",
         "red obi",
         "geta",
-        "bell hairpin"
+        "silver bell hairpin"
       ]
     }
   }

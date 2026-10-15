@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_hot_spring_private",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 554,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "趴在池边，湿发贴着肩颈",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "siesta_hotspring_yukata",
+    "outfitId": "white_bath_wrap",
     "promptProse": "She keeps her hearing aid above the water while her other hand moves beneath the surface, sending small bubbles outward.",
     "promptTokens": [
       "adult",

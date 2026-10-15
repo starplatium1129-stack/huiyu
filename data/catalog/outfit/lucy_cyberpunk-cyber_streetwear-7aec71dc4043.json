@@ -1,30 +1,25 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/cyber_streetwear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 604,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "default": false,
       "id": "cyber_streetwear",
       "isDefault": false,
-      "name": "夜之城街头便装",
-      "prose": "casual Night City street techwear: an oversized cropped charcoal sleeveless mesh tank top, low-rise baggy dark techwear cargo joggers with neon straps and utility buckles, high-top sneakers, glowing cybernetic cigarette between her fingers, and a moody neon glow",
+      "name": "夜之城网眼背心机能便装",
+      "prose": "A loose cropped charcoal mesh tank and dark cargo joggers with narrow cyan straps and compact utility buckles, paired with high-top sneakers.",
       "tokens": [
-        "casual",
-        "tank_top",
-        "crop_top",
+        "charcoal crop top",
+        "mesh fabric",
         "sleeveless",
-        "cargo_pants",
-        "pants",
-        "sneakers",
-        "cigarette",
-        "smoking",
-        "streetwear",
-        "cyberpunk"
+        "dark cargo joggers",
+        "cyan straps",
+        "high-top sneakers"
       ]
     }
   }

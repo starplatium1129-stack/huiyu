@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_futon_cowgirl_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1177,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "kazuki_r18_futon_cowgirl_straddle",
     "title": "风见一姬 · 纯白棉被跨坐骑乘与娇羞起伏",
     "category": "深层欢愉",
     "characterId": "kazami_kazuki",
-    "outfitId": "white_dress",
+    "outfitId": "blouse_skirt_stockings",
     "coverageTags": [
       "cowgirl"
     ],
@@ -32,6 +32,7 @@
     ],
     "promptProse": "Adult Kazuki straddles the futon bolster with her blouse open and skirt gathered at her waist, resting one hand on her thigh while touching herself with the other.",
     "promptTokens": [
+      "pleated skirt",
       "1girl",
       "solo",
       "open blouse",

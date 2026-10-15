@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "chitanda_eru/white_bath_shirt",
+  "revision": 1,
+  "sortOrder": 1279,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "chitanda_eru",
+    "outfit": {
+      "id": "white_bath_shirt",
+      "name": "温泉白色薄衬衣",
+      "tokens": [
+        "white shirt",
+        "thin fabric"
+      ],
+      "prose": "A simple white lightweight bath shirt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

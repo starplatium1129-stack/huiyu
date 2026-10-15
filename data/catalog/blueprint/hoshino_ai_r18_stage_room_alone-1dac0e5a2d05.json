@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_r18_stage_room_alone",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 959,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "天窗日光下俯身扶台回眸",
     "adult": true,
@@ -13,7 +13,7 @@
     "category": "成人",
     "characterId": "hoshino_ai",
     "coverageTags": [],
-    "description": "【星野爱 · 剧场阳光舞台兔女郎】白日阳光透过剧场巨大天窗倾泻在舞台中央，星野爱身着纯白兔女郎紧身衣与半透白丝，俯身手扶舞台边缘回眸眨眼，兔子尾巴微颤，细腰挺胸在明媚天光下充满灵动魅力。",
+    "description": "【星野爱 · 剧场阳光舞台兔女郎】白日阳光透过剧场巨大天窗倾泻在舞台中央，星野爱身着紫色兔女郎紧身衣与半透白丝，俯身手扶舞台边缘回眸眨眼，兔子尾巴微颤，细腰挺胸在明媚天光下充满灵动魅力。",
     "id": "hoshino_ai_r18_stage_room_alone",
     "kreaStyleHint": "",
     "lighting": "纯白高光舞台聚光灯与舞台天顶主光",
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "stage_off_shoulder",
+    "outfitId": "purple_stage_leotard",
     "promptProse": "Adult Ai plants one heel on a prop block, holding the open costume seam while touching herself through its high-cut opening.",
     "promptTokens": [
       "adult",
@@ -34,7 +34,8 @@
       "wink",
       "blush",
       "stage",
-      "spotlight"
+      "spotlight",
+      "pink heart clasp"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

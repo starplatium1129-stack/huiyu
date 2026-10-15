@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc181",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Seated on the washbasin counter, she wraps her legs around the viewer's waist and her arms around their neck as they kiss.",
     "auditRevision": "careful-batch06-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, wet white camisole, see-through, no underwear, sitting on counter, leg lock, arms around neck, kissing, bathroom, steam, mirror light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, burgundy trim, natsume_r18, wet white camisole, see-through, no underwear, sitting on counter, leg lock, arms around neck, kissing, bathroom, steam, mirror light, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "夏",
     "story": "【夏目 · 湿透背心绝对防线决堤】酷暑夏日的私人安全屋浴室，刚冲完凉的水汽弥漫。平时防线高筑、嘴硬高冷的夏目此时面红耳赤地被你抱上了微凉的洗手台。她身上仅仅穿着一件被温水完全浸透、近乎半透明死死贴紧饱满双峰的白色小背心，里面空无一物。她大片光洁细腻的修长美腿毫无防备地死死环绕在你的腰间，眼角的泪痣挂着晶莹的水滴，因为承受着极大的情欲冲击而剧烈颤动。她一边紧紧搂住你的脖子承受你的深吻，一边发出羞耻至极的呻吟——「哈啊...你这变态笨蛋...把人家的衣服都弄得这么湿...今晚...就彻底随你的便了...嗯嗯...」",
@@ -37,7 +37,8 @@
       "deep_kiss",
       "kissing",
       "bare_legs",
-      "bathroom"
+      "bathroom",
+      "burgundy_trim"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

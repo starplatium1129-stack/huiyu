@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yor_forger/black_silk_robe",
+  "revision": 1,
+  "sortOrder": 1255,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yor_forger",
+    "outfit": {
+      "id": "black_silk_robe",
+      "name": "黑色丝绸系带睡袍",
+      "tokens": [
+        "black robe",
+        "silk",
+        "sash"
+      ],
+      "prose": "a black silk robe with a loose matching sash",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

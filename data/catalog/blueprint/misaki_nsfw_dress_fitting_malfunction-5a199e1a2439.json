@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_dress_fitting_malfunction",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 409,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "双手反剪够背后拉链，裙身勒肉挤压，脸红求助",
     "adult": true,
@@ -17,7 +17,7 @@
       "solo",
       "special_nsfw"
     ],
-    "description": "【试衣间·傍晚】为约会准备的紧身连衣裙在背后卡住了拉链。狭窄的试衣间里，女王蜂双手反剪到背后够不着拉链，裙身把丰盈的曲线勒出惊心动魄的弧度，黑色蕾丝在内衬里挤压出雪白的勒痕——「别、别用看的！用手帮本小姐拉开……嗯啊……轻、轻一点……布料好紧……」",
+    "description": "【试衣间·傍晚】为约会准备的黑色修身连衣裙在背后卡住了金色拉链。狭窄的试衣间里，女王蜂双手反剪到背后够不着拉链，裙身把丰盈的曲线勒出惊心动魄的弧度，黑色蕾丝在内衬里挤压出雪白的勒痕——「别、别用看的！用手帮本小姐拉开……嗯啊……轻、轻一点……布料好紧……」",
     "id": "misaki_nsfw_dress_fitting_malfunction",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "试衣间顶灯的狭窄暖光",
@@ -25,15 +25,16 @@
     "mood": "女王狼狈、勒肉事故",
     "negativeTokens": [],
     "nsfwProse": "",
-    "outfitId": "sensual_lace_lingerie",
-    "promptProse": "Adult Misaki reaches behind her back for the jammed dress zipper, asking for help as the tight neckline presses against her lace lingerie.",
+    "outfitId": "black_fitting_dress",
+    "promptProse": "Adult Misaki reaches behind her back for the jammed gold back zipper, asking for help as the tight neckline presses against her lace lingerie.",
     "promptTokens": [
-      "tight dress",
+      "black sheath dress",
       "lace trim",
       "stuck zipper",
       "hands behind back",
       "cleavage",
-      "fitting room"
+      "fitting room",
+      "gold zipper"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

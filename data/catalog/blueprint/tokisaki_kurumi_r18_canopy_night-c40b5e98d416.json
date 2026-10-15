@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_canopy_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_canopy_night",
     "title": "时崎狂三 · 钟表陈列室·满月银辉与黑丝绒项圈",
@@ -29,7 +29,7 @@
     "adultArtistHint": "@rella",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "outfitId": "gothic_dress",
+    "outfitId": "choker_only",
     "sceneTags": [
       "gothic_room",
       "clock",

@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "morgan_le_fay_fate/aesc_hooded_travel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 105,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "morgan_le_fay_fate",
     "outfit": {
       "id": "aesc_hooded_travel",
-      "name": "梣·雨后兜帽行旅变体",
-      "prose": "a closed blue hooded travelling robe over warm clothes and sturdy boots",
+      "name": "梣雨旅蓝色兜帽袍",
+      "prose": "A closed blue hooded traveling robe fastened with a small silver clasp over a warm dark inner dress and sturdy brown boots.",
       "tokens": [
         "aesc (fate)",
-        "blue_hooded_robe",
-        "boots"
+        "blue hooded robe",
+        "silver clasp",
+        "dark inner dress",
+        "brown boots"
       ],
       "isDefault": false,
       "default": false,

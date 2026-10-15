@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_festival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 535,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "default": false,
       "id": "sfw_festival",
       "isDefault": false,
-      "name": "夏祭红白花纹浴衣",
-      "prose": "a properly wrapped red-and-white floral yukata with a dark obi and sandals",
+      "name": "红白山茶夏祭浴衣",
+      "prose": "A red yukata with white camellias, a plain black obi and wooden geta.",
       "tokens": [
         "red yukata",
-        "floral print",
-        "obi",
-        "sandals"
+        "white camellia print",
+        "black obi",
+        "geta"
       ]
     }
   }

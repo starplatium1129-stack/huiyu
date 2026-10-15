@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc257",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She holds the ice-cream cup in one hand and offers its spoon toward the viewer across the table, glancing away with a blush; bright summer light through the glass catches the melting ice cream.",
     "auditRevision": "skill-refine-sc257-2026-09-05",
@@ -21,16 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white blouse, denim shorts, spoon, ice cream, looking away, blush, cafe, summer, afternoon, cowboy shot",
+    "prompt": "1girl, shiki_natsume, white off shoulder chiffon blouse, navy edging, high waisted denim shorts, brown woven belt, spoon, ice cream, looking away, blush, cafe, summer, afternoon, cowboy shot",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 盛夏甜品店的心动】盛夏午后阳光明媚的冷饮店。夏目身着轻盈的纯白一字领雪纺衫与牛仔短裤，修长的双肩与锁骨在冷气中透着清凉。她正握着小勺吃着手里的双色冰淇淋，看到你一直目不转睛地看着，便有些不解地将自己刚尝过一口的冰淇淋勺递到了你嘴边。间接接触的暧昧气氛瞬间蔓延，夏目手腕一顿，半垂着金瞳，耳根在明媚的夏日日光下迅速泛红，催促着移开视线——「……别误会。我只是看你一直盯着，怕冰淇淋融化太快才分你一口而已。……真是的，别愣着了，快点吃掉啦。」",
     "storyJa": "【夏目】【ナツメ・夏のカフェとひとくちのアイス】盛夏の午後、冷房の効いたカフェ。涼しげな白いオフショルダートップス姿のナツメは、アイスクリームを一口掬い、じっと見ていたあなたの口元へと無造作に差し出した。間接キスの気配に気づいて一瞬動きを止め、金の瞳を伏せながら耳を真っ赤にする――「……勘違いしないで。溶ける前に一口あげようとしただけよ。……もう、突っ立ってないで早く食べなさい」",
     "tags": [
       "mole_under_eye",
-      "off-shoulder_blouse",
-      "white_chiffon_top",
-      "denim_shorts",
       "bare_shoulders",
       "collarbone",
       "holding_spoon",
@@ -42,7 +39,11 @@
       "tsundere",
       "summer",
       "window_sunlight",
-      "depth_of_field"
+      "depth_of_field",
+      "white_off_shoulder_chiffon_blouse",
+      "navy_edging",
+      "high_waisted_denim_shorts",
+      "brown_woven_belt"
     ],
     "time": "白天",
     "timeOfDay": "all_day",

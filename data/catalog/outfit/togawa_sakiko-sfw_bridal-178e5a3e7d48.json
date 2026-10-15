@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "togawa_sakiko/sfw_bridal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1014,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "togawa_sakiko",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "丰川祥子·圣洁花嫁",
-      "prose": "a black-and-indigo bridal gown with feather trim, a delicate veil and pearl buttons",
+      "name": "黑靛羽饰婚礼长裙",
+      "prose": "a black-and-indigo wedding gown with shaped satin panels, feather edging, pearl buttons and a delicate veil",
       "tokens": [
-        "wedding_dress",
-        "black_indigo_gown",
-        "feather_trim",
-        "delicate_veil"
+        "black and indigo wedding dress",
+        "feather trim",
+        "pearl buttons",
+        "veil"
       ],
       "default": false,
       "isDefault": false

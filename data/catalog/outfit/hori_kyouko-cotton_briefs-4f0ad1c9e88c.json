@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "hori_kyouko/cotton_briefs",
+  "revision": 1,
+  "sortOrder": 1304,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hori_kyouko",
+    "outfit": {
+      "id": "cotton_briefs",
+      "name": "居家棉质内裤",
+      "tokens": [
+        "cotton panties",
+        "low-rise panties"
+      ],
+      "prose": "Simple low-rise cotton briefs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_r18_gothic_bedchamber_domination",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 678,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自跨坐木椅咬住腿带，一手抓椅背、一手腿间自抚，黑蕾丝褪至胸下",
     "adult": true,
@@ -25,19 +25,21 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "refined_horrormare",
+    "outfitId": "black_lace_coat",
     "promptProse": "Adult Lappland straddles the carved chair with a belt between her teeth, gripping its back while touching herself with her free hand.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Lappland",
-      "open coat",
+      "open black coat",
       "bare breasts",
       "straddling",
       "chair",
       "belt in mouth",
       "masturbation",
-      "red moon"
+      "red moon",
+      "ragged hem",
+      "black lace top"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_headset_bond_riding",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自跨坐床褥，身体前倾，双手撑在自己的膝头",
     "adult": true,
@@ -25,7 +25,7 @@
     "mood": "深情主控、痴缠沉溺",
     "negativeTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_nude",
+    "outfitId": "white_stockings_headset",
     "promptProse": "Adult Lena holds a solitary straddling pose on the sheets, leaning forward with her hands on her knees and rolling her hips under the blue Para-RAID glow.",
     "promptTokens": [
       "topless",

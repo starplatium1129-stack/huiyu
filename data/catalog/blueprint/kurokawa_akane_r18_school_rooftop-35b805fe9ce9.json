@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_school_rooftop",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 970,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跪坐在戏服箱旁，一手拿剧本，另一手放在腿间",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "school_uniform",
+    "outfitId": "rehearsal_maid",
     "promptProse": "Adult Akane kneels beside costume cases after graduation, holding her marked script while her other hand moves between her legs beneath the opened maid costume.",
     "promptTokens": [
       "1girl",

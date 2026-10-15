@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_r18_schale_desk_feet_worship_sex",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 934,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "制服凌乱坐在办公桌边缘，单腿向前伸出正对镜头，黑丝褪至脚踝露出细腻足弓与蜷曲脚趾，满脸通红傲娇娇嗔",
     "adult": true,
@@ -25,12 +25,12 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "disciplinary_uniform",
+    "outfitId": "black_stockings",
     "promptProse": "Adult Iori extends one bare foot toward the foreground, pulling down a stocking with one hand and touching herself with the other.",
     "promptTokens": [
       "adult",
       "nude",
-      "torn stockings",
+      "torn black stockings",
       "sitting",
       "foot focus",
       "removing stockings",

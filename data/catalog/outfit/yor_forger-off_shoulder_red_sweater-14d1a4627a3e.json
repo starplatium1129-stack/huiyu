@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "yor_forger/off_shoulder_red_sweater",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 460,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yor_forger",
     "outfit": {
       "id": "off_shoulder_red_sweater",
-      "name": "居家露肩红色毛衣",
+      "name": "绯红露肩粗针织居家装",
       "tokens": [
-        "red_sweater",
-        "off_shoulder_sweater",
-        "knit_sweater",
-        "black_tights",
-        "casual_clothes"
+        "red sweater",
+        "off shoulder",
+        "chunky knit",
+        "black pantyhose"
       ],
-      "prose": "wearing her signature chunky knit off-the-shoulder crimson red sweater with black tights in the Forger home",
+      "prose": "her crimson off-shoulder chunky-knit sweater with opaque black tights",
       "styleHint": "cozy warm family living room",
       "isDefault": false,
       "default": false

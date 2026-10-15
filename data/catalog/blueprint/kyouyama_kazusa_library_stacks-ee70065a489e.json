@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_library_stacks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 867,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自坐在书架间，一腿收起，一手扶书架，另一手在提起的裙摆下自抚",
     "adult": true,
@@ -28,10 +28,11 @@
     "outfitId": "trinity_uniform",
     "promptProse": "Adult Kazusa sits between the archive shelves with one leg folded, bracing on a shelf while fingering herself beneath her lifted skirt.",
     "promptTokens": [
+      "grey plaid skirt",
       "1girl",
       "solo",
       "adult Kazusa",
-      "open blouse",
+      "open white blouse",
       "bare breasts",
       "skirt lift",
       "sitting",

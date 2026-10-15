@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "jeanne_alter/shinjuku_jacket_skirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "jeanne_alter",
     "outfit": {
       "id": "shinjuku_jacket_skirt",
-      "name": "新宿黑夹克短裙便服",
-      "prose": "a black leather biker jacket over a black tank top, a short black pleated skirt, dark tights, choker and boots",
+      "name": "新宿皮夹克与黑色百褶短裙",
+      "prose": "A black leather biker jacket with silver hardware over a black tank top, a short black pleated skirt, dark tights, choker and boots.",
       "tokens": [
-        "leather_jacket",
-        "black_tank_top",
-        "black_pleated_skirt",
-        "dark_tights",
+        "black leather jacket",
+        "black tank top",
+        "black pleated skirt",
+        "dark tights",
         "choker",
-        "boots"
+        "black boots"
       ],
       "isDefault": false,
       "default": false,

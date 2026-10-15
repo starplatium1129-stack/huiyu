@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/standard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 357,
   "createdAt": null,
-  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "调酒师装",
-      "prose": "a black crop top with an asymmetrical grey hooded jacket, black hotpants, a tactical belt with a cocktail shaker pouch and a black choker",
+      "name": "多索雷斯灰黑机能调酒装",
+      "prose": "Her black crop top and asymmetrical grey hooded jacket with black shorts, a tactical belt and small shaker pouch, finished with a black choker.",
       "tokens": [
-        "crop_top",
-        "black_clothes",
-        "grey_clothes",
-        "jacket",
-        "hotpants",
+        "black crop top",
+        "grey hooded jacket",
+        "asymmetrical clothes",
+        "black shorts",
+        "utility belt",
         "choker"
       ]
     }

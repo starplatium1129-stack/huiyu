@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yor_forger/black_stiletto_heels",
+  "revision": 1,
+  "sortOrder": 1256,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yor_forger",
+    "outfit": {
+      "id": "black_stiletto_heels",
+      "name": "黑色尖头高跟鞋",
+      "tokens": [
+        "black high heels",
+        "pointed shoes",
+        "earrings"
+      ],
+      "prose": "black pointed stiletto heels and earrings",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

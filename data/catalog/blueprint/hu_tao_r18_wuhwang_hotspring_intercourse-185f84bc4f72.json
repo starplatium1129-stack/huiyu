@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
     "title": "胡桃 · 秘境温泉落月幽欢",
@@ -54,7 +54,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@ask_(askzy)",
-    "outfitId": "nsfw_nude",
+    "outfitId": "crimson_talisman_wrap",
     "coverageTags": [
       "special_nsfw"
     ]

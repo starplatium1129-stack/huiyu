@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "hori_kyouko/cream_home_tshirt",
+  "revision": 1,
+  "sortOrder": 1301,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hori_kyouko",
+    "outfit": {
+      "id": "cream_home_tshirt",
+      "name": "奶油白居家短袖",
+      "tokens": [
+        "cream oversized t-shirt",
+        "blue pocket"
+      ],
+      "prose": "A loose cream cotton T-shirt with a small blue chest pocket.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

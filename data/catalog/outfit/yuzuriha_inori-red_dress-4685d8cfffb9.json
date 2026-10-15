@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "yuzuriha_inori/red_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 191,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yuzuriha_inori",
     "outfit": {
       "id": "red_dress",
-      "name": "红裙",
-      "prose": "a striking red dress with a layered skirt and long sleeves",
+      "name": "绯红层叠歌姬礼裙",
+      "prose": "a crimson stage dress with long fitted sleeves and softly overlapping chiffon skirt panels gathered at a narrow waist",
       "tokens": [
         "red dress",
         "long sleeves",
-        "layered skirt"
+        "layered skirt",
+        "chiffon"
       ],
       "isDefault": false,
       "default": false

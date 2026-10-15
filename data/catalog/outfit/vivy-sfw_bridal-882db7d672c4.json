@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "vivy/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 978,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vivy",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "Vivy·圣洁花嫁",
-      "prose": "an opaque white-and-blue bridal stage dress with covered shoulders, a translucent veil, earpiece and white boots",
+      "name": "白蓝褶光舞台婚纱",
+      "prose": "an opaque white-and-blue bridal stage gown with covered shoulders, fitted long sleeves, a pleated skirt and translucent veil, with an earpiece and white boots",
       "tokens": [
-        "wedding_dress",
-        "white_blue_stage_gown",
-        "covered_shoulders",
-        "translucent_veil",
-        "white_boots"
+        "white and blue wedding dress",
+        "long sleeves",
+        "pleated skirt",
+        "veil",
+        "earpiece",
+        "white boots"
       ],
       "default": false,
       "isDefault": false

@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 194,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "casual",
-      "name": "私服",
-      "prose": "a chic casual outfit with a white shirt and long coat",
+      "name": "青灰长外套与白衬衫",
+      "prose": "A clean-cut slate-blue long coat layers over a white shirt and black A-line midi skirt, with polished ankle boots and a small silver lapel pin.",
       "tokens": [
-        "casual_clothes",
-        "white_shirt",
-        "long_coat",
-        "skirt"
+        "slate blue coat",
+        "white shirt",
+        "black long skirt",
+        "black ankle boots"
       ],
       "isDefault": false,
       "default": false

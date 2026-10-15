@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kazami_kazuki/blouse_skirt_stockings",
+  "revision": 1,
+  "sortOrder": 1189,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kazami_kazuki",
+    "outfit": {
+      "id": "blouse_skirt_stockings",
+      "name": "衬衫褶裙与黑长袜",
+      "tokens": [
+        "blouse",
+        "pleated skirt",
+        "black stockings"
+      ],
+      "prose": "a blouse and pleated skirt with black stockings",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

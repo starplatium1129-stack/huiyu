@@ -1,26 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/official_toyogasaki_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 786,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "official_toyogasaki_uniform",
-      "name": "丰桥学园黑丝学姐制服",
-      "prose": "her Toyogasaki Academy school uniform: a navy blazer with a red ribbon tie over a white blouse, a pleated skirt, a white hairband in her long black hair, and glossy black pantyhose she crosses elegantly",
+      "name": "丰之崎学院深蓝制服",
+      "prose": "Her navy Toyogasaki blazer over a white blouse and red ribbon tie, with a pleated skirt, glossy black pantyhose and white hairband.",
       "tokens": [
-        "toyogasaki_academy_school_uniform",
-        "school_uniform",
-        "blazer",
-        "navy_jacket",
-        "white_shirt",
-        "ribbon_tie",
-        "pleated_skirt",
-        "black_pantyhose",
-        "white_hairband"
+        "toyogasaki academy school uniform",
+        "navy blazer",
+        "white blouse",
+        "red ribbon",
+        "pleated skirt",
+        "black pantyhose",
+        "white hairband"
       ],
       "default": true,
       "isDefault": true

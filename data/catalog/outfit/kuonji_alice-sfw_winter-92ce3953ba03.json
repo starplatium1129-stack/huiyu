@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/sfw_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 926,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "sfw_winter",
-      "name": "冬季学院大衣与毛帽",
-      "prose": "a dark wool coat, plain scarf, rounded fur-trimmed winter hat and boots",
+      "name": "深墨羊毛学院冬装",
+      "prose": "A structured dark wool double-breasted coat with a plain gray scarf, rounded fur-trimmed winter hat and black boots.",
       "tokens": [
-        "dark_coat",
-        "wool",
-        "scarf",
-        "winter_hat",
-        "boots"
+        "black wool coat",
+        "double-breasted coat",
+        "gray scarf",
+        "fur-trimmed winter hat",
+        "black boots"
       ],
       "default": false,
       "isDefault": false

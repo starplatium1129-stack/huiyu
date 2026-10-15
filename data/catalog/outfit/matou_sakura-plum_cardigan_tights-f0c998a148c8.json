@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/plum_cardigan_tights",
+  "revision": 1,
+  "sortOrder": 1326,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "plum_cardigan_tights",
+      "name": "梅色针织开衫与黑丝",
+      "tokens": [
+        "plum cardigan",
+        "fine knit",
+        "black pantyhose"
+      ],
+      "prose": "A soft plum fine-knit cardigan with small matching buttons, worn with black pantyhose.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

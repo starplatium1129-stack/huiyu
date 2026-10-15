@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/festival_black_gold_qipao",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 326,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
       "default": false,
       "id": "festival_black_gold_qipao",
       "isDefault": false,
-      "name": "岁节灯会·黑金旗袍",
-      "prose": "a black-and-gold woven qipao with a modest short silhouette and black heeled shoes",
+      "name": "岁节黑金提花旗袍",
+      "prose": "a short black jacquard qipao with woven gold cloud motifs and small frog fastenings, paired with black heeled shoes",
       "tokens": [
-        "china dress",
-        "black dress",
-        "gold trim",
+        "black jacquard china dress",
+        "gold cloud pattern",
+        "frog buttons",
         "black heels"
       ]
     }

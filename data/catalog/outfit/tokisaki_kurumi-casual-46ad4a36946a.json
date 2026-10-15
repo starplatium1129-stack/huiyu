@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "casual",
-      "name": "私服",
-      "prose": "a casual black outfit with a choker and loose cardigan",
+      "name": "红衬黑针织与钟面颈饰",
+      "prose": "a black cardigan with crimson lining and an antique clasp over a black camisole and midi skirt, with a small clock-pendant choker",
       "tokens": [
-        "casual_clothes",
-        "choker",
-        "cardigan",
-        "black_clothes"
+        "black cardigan",
+        "crimson lining",
+        "antique clasp",
+        "black camisole",
+        "black midi skirt",
+        "clock pendant choker"
       ],
       "isDefault": false,
       "default": false

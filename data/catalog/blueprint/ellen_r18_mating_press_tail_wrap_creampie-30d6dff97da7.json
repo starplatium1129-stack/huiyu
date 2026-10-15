@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_r18_mating_press_tail_wrap_creampie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1065,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "侧卧大床半透黑吊带若隐若现，鲨鱼尾温柔缠腰腿，抱枕蹭脸单手在被底深层自抚娇喘",
     "adult": true,
@@ -24,7 +24,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "black_silk_camisole",
     "promptProse": "She nuzzles a pillow and touches herself beneath the sheets, her shark tail curled around her waist and between her legs.",
     "promptTokens": [
       "adult",
@@ -37,7 +37,8 @@
       "pillow",
       "masturbation",
       "blush",
-      "night"
+      "night",
+      "red trim"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

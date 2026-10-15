@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "maria_mikhailovna_kujou/dark_green_velvet_gown",
+  "revision": 1,
+  "sortOrder": 1408,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "maria_mikhailovna_kujou",
+    "outfit": {
+      "id": "dark_green_velvet_gown",
+      "name": "墨绿丝绒晚礼裙",
+      "tokens": [
+        "dark green evening gown",
+        "velvet",
+        "back zipper"
+      ],
+      "prose": "A fitted dark-green velvet evening gown with a back zipper and a softly shaped neckline.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

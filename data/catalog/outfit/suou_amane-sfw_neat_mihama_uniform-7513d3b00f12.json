@@ -1,28 +1,27 @@
 {
   "kind": "outfit",
   "id": "suou_amane/sfw_neat_mihama_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1148,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "suou_amane",
     "outfit": {
       "id": "sfw_neat_mihama_uniform",
-      "name": "端庄紫衫白裙制服",
+      "name": "端整蓝格领带美浜制服",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "场景衣装状态",
-      "prose": "a lavender-purple Mihama blouse with a neat sailor collar, blue plaid tie, white pleated skirt, black thigh-high stockings and black loafers",
+      "prose": "a neatly fastened lavender sailor-collar blouse with a blue plaid tie, a white pleated skirt, black thigh-high stockings and black loafers",
       "tokens": [
-        "school_uniform",
-        "purple_shirt",
-        "sailor_collar",
-        "blue_plaid_tie",
-        "white_skirt",
-        "pleated_skirt",
-        "black_thighhighs",
+        "school uniform",
+        "lavender shirt",
+        "sailor collar",
+        "blue plaid necktie",
+        "white pleated skirt",
+        "black thighhighs",
         "loafers"
       ]
     }

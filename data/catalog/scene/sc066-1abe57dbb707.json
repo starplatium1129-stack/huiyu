@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc066",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She pauses with one hand holding down the cover-up hem and turns back toward the viewer's camera, the sea visible beside her; sunset outlines her damp hair in gold.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -23,7 +23,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet, see-through clothes",
-    "prompt": "1girl, ayachi_nene, blue swimsuit, white beach coverup, holding hem, looking back, beach, sunset, full body",
+    "prompt": "1girl, ayachi_nene, pale blue one-piece swimsuit, white side panels, small pink bow, white beach coverup, scalloped hem, holding hem, looking back, beach, sunset, full body",
     "rating": "All",
     "recommendedSize": "832×1216",
     "sampler": "res_multistep",
@@ -34,8 +34,6 @@
     "story": "【宁宁 · 夕阳里的回眸】海边黄昏，宁宁披着薄外罩走在前面，忽然被你叫住。她回头时，夕阳给湿润的发梢镀上一圈金边。发现你认真看呆，她害羞地按住被风扬起的衣摆，却没有催促——「拍照可以，但要把海也拍进去。以后看到照片时，我想记得今天的风和你站的位置。」",
     "storyJa": "【寧々・夕日の中での水着の後ろ姿】夕暮れの海岸で、薄いコートを着て前を歩いていた寧々が突然呼び止められました。振り返ると、夕日が濡れた髪の先と水着の輪郭を金色に輝かせた。あなたが彼女を真剣に見ていることに気づいた彼女は、風でめくれ上がった服の裾を恥ずかしそうに押さえましたが、あなたに促すことはありませんでした。――「写真はいいですけど、海も一緒に入れてください。あとで見返したとき、今日の風と、あなたが立っていた場所まで思い出したいから。」",
     "tags": [
-      "light_blue_swimsuit",
-      "white_beach_coverup",
       "holding_coverup_hem",
       "standing_on_sand",
       "looking_back",
@@ -46,7 +44,12 @@
       "ocean",
       "sunset",
       "golden_rim_light",
-      "full_body"
+      "full_body",
+      "pale_blue_one-piece_swimsuit",
+      "white_side_panels",
+      "small_pink_bow",
+      "white_beach_coverup",
+      "scalloped_hem"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",

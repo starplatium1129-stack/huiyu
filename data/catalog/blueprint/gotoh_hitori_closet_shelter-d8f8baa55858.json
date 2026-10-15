@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_closet_shelter",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "蜷坐于壁橱软垫上，头戴耳机专注看吉他谱",
     "camera": "medium shot, eye level",
@@ -27,7 +27,8 @@
       "closet",
       "string lights",
       "night",
-      "medium shot"
+      "medium shot",
+      "headphones"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

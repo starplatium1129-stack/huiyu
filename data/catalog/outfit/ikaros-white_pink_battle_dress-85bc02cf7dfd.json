@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "ikaros/white_pink_battle_dress",
+  "revision": 1,
+  "sortOrder": 1309,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "ikaros",
+    "outfit": {
+      "id": "white_pink_battle_dress",
+      "name": "白粉战斗裙与锁扣胸甲",
+      "tokens": [
+        "white and pink dress",
+        "metal breastplate",
+        "front clasp"
+      ],
+      "prose": "A white-and-pink combat dress with a metal chest plate secured by a front clasp.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

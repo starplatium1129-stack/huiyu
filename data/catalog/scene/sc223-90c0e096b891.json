@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc223",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "After the cream dispenser mishap, she sits astride the viewer's thigh and wipes their cheek with a towel, cream still splattered on her shirt and bra.",
     "auditRevision": "skill-refine-sc223-2026-09-05",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, wet white shirt, see-through, black lace bra, whipped cream, straddling thigh, towel, wiping face, pout, blush, cafe kitchen, night, warm overhead light, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, concealed placket, burgundy cuff piping, natsume_r18, wet white shirt, see-through, black lace bra, whipped cream, straddling thigh, towel, wiping face, pout, blush, cafe kitchen, night, warm overhead light, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R15",
     "season": "冬",
     "story": "【夏目 · 后厨甜点奶油失控】深夜彻底打烊、空无一人的Café Stella后厨料理间。夏目正有些无干劲地尝试制作新季度甜点，不料手中的奶油喷枪突然发生气压故障，大量的浓稠白色鲜奶油瞬间大范围喷溅出来，直接糊满了她胸前的白衬衫与精致的锁骨。轻薄的工装白衬衫遇水瞬间融化般贴在身上，内里精致黑色蕾丝内衣的丰满轮廓完全暴露。为了高效率清理现场，她紧抿着双唇，极其大胆地直接跨坐在不锈钢料理台边的你大腿上，抓起毛巾一边帮你擦拭脸颊，一边用彻底红透的耳根和毫无起伏的冷淡声线掩饰动摇——「……别误会。我只是觉得这样清洗最有效率。原料浪费已经造成了，在原地大呼小叫只会降低清洁速度。大变态，不准乱看……尤其是我的领口，真的把你秘密处决哦。」",
@@ -37,7 +37,9 @@
       "wiping_face",
       "towel",
       "red_ears",
-      "cowboy_shot"
+      "cowboy_shot",
+      "concealed_placket",
+      "burgundy_cuff_piping"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "vladilena_milize/white_bridal_gown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vladilena_milize",
     "outfit": {
       "default": false,
       "id": "white_bridal_gown",
       "isDefault": false,
-      "name": "教堂白色婚纱",
-      "prose": "an opaque white wedding gown with a delicate bridal veil",
+      "name": "银绣收腰白色花嫁",
+      "prose": "a white wedding gown with a tailored waist and fine silver embroidery at the neckline, paired with a delicate white veil",
       "tokens": [
         "white wedding dress",
+        "silver embroidery",
+        "fitted waist",
         "bridal veil"
       ]
     }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_clubroom_computer_deadpan",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1437,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "megumi_clubroom_computer_deadpan",
     "title": "加藤惠 · 社团电脑前的无声吐槽·「伦也君……这个剧情是不是太奇怪了」",
@@ -32,7 +32,8 @@
     "promptTokens": [
       "computer mouse",
       "hand on own cheek",
-      "clubroom"
+      "clubroom",
+      "bob cut"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

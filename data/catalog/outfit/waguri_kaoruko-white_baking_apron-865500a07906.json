@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "waguri_kaoruko/white_baking_apron",
+  "revision": 1,
+  "sortOrder": 1452,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "waguri_kaoruko",
+    "outfit": {
+      "id": "white_baking_apron",
+      "name": "白色烘焙围裙与长裙",
+      "tokens": [
+        "white apron",
+        "navy skirt"
+      ],
+      "prose": "A plain white baking apron with back ties over a navy skirt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

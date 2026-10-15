@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yorha_2b/combat_boots_blindfold",
+  "revision": 1,
+  "sortOrder": 1257,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yorha_2b",
+    "outfit": {
+      "id": "combat_boots_blindfold",
+      "name": "战术眼罩与黑色长靴",
+      "tokens": [
+        "black blindfold",
+        "black thighhigh boots",
+        "high heels"
+      ],
+      "prose": "a black tactical blindfold and thigh-high black leather combat boots with high heels",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

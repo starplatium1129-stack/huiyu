@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc006",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She extends the closed gift box toward the viewer in both mittened hands, her shy face warmed by the Christmas lights against the pale reflected light of the snow.",
     "auditRevision": "careful-batch14-2026-08-27",
@@ -21,17 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "open box",
-    "prompt": "1girl, ayachi_nene, beige coat, red scarf, mittens, gift box, snow, street, christmas lights, night, medium shot",
+    "prompt": "1girl, ayachi_nene, beige duffle coat, capelet, red plaid scarf, mittens, gift box, snow, street, christmas lights, night, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
     "story": "【宁宁 · 平安夜的手作礼物】雪落在圣诞街区的灯串之间，宁宁把围巾拉到鼻尖，犹豫许久才将包装得过分认真的小盒子递给你。盒里是她亲手做的护身符，针脚并不完美，却藏着一枚写有祝福的小纸片。你刚要道谢，她便慌忙别开脸——「不是什么贵重东西啦。只是……希望明年的今天，你也能平安回到我面前。」",
     "storyJa": "【寧々・クリスマスイブの手作りプレゼント】クリスマスストリートのストリングライトの間に雪が降りました。寧々はスカーフを鼻の先まで引っ張り、あまりにも丁寧に梱包された小さな箱をあなたに手渡す前に、長い間ためらっていました。箱の中には彼女が作ったお守りが入っていた。縫製は完璧ではありませんが、祝福が書かれた小さな紙が付いています。ありがとうと言おうとした瞬間、彼女は慌てて顔をそむけた。――「そんなに高いものじゃありませんよ。ただ……来年の今日も、あなたが無事に私の前にいてくれたらって。」",
     "tags": [
-      "winter_coat",
-      "beige_coat",
-      "duffle_coat",
-      "red_scarf",
       "mittens",
       "brown_boots",
       "holding_gift",
@@ -44,7 +40,10 @@
       "snowy_street",
       "night",
       "warm_lighting",
-      "medium_shot"
+      "medium_shot",
+      "beige_duffle_coat",
+      "capelet",
+      "red_plaid_scarf"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

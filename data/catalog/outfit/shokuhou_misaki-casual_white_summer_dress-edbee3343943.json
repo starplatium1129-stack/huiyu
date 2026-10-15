@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "shokuhou_misaki/casual_white_summer_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shokuhou_misaki",
     "outfit": {
       "id": "casual_white_summer_dress",
-      "name": "女王私服纯白连衣裙",
-      "prose": "a white sundress and wide-brimmed straw hat, with gloves, a slim bracelet and sandals",
+      "name": "蛛网蕾边·女王夏日私服",
+      "prose": "A white sundress with a scalloped hem and fine web-pattern lace at the neckline, white gloves, a wide-brimmed straw hat, a slim gold bracelet and sandals.",
       "tokens": [
         "white sundress",
+        "scalloped hem",
+        "lace trim",
+        "white gloves",
         "straw hat",
-        "gloves",
-        "bracelet",
+        "gold bracelet",
         "sandals"
       ]
     }

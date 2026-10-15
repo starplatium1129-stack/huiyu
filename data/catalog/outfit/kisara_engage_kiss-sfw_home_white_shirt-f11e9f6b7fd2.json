@@ -1,19 +1,20 @@
 {
   "kind": "outfit",
   "id": "kisara_engage_kiss/sfw_home_white_shirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kisara_engage_kiss",
     "outfit": {
       "id": "sfw_home_white_shirt",
-      "name": "居家白衬衫与休闲短裤",
-      "prose": "an oversized white button-up shirt with long sleeves over plain lounge shorts",
+      "name": "宽袖白衬衫与酒红家居短裤",
+      "prose": "an oversized white button-up shirt with relaxed long sleeves over plain burgundy lounge shorts",
       "tokens": [
         "oversized white shirt",
-        "shorts"
+        "long sleeves",
+        "burgundy lounge shorts"
       ],
       "isDefault": false,
       "default": false,

@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/sfw_kotatsu_homewear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 197,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "sfw_kotatsu_homewear",
-      "name": "暖桌针织家居服",
-      "prose": "a soft knitted sweater, lounge trousers and warm socks",
+      "name": "冰蓝细绒暖桌家居装",
+      "prose": "A pale ice-blue brushed-knit sweater has a quiet ribbed neckline, with soft grey lounge trousers and cream wool socks.",
       "tokens": [
-        "knit sweater",
-        "lounge pants",
-        "warm socks"
+        "pale blue sweater",
+        "grey lounge pants",
+        "cream socks"
       ],
       "isDefault": false,
       "default": false,

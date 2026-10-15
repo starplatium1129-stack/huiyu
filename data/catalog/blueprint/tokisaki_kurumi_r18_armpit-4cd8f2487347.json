@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_armpit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_armpit",
     "title": "时崎狂三 · 月夜的慵懒",
     "category": "成人",
     "characterId": "tokisaki_kurumi",
-    "description": "【成年 After Story · 时崎狂三 · 月夜的慵懒】二十岁以上成年版本的狂三独自跪坐在哥特卧房的雕花床褥上，月光从高窗倾落。她把双臂交叠举过头顶，用黑色丝带松束手腕，腰背向侧面弯出柔软弧线；薄纱胸衣滑到乳下，腋窝、胸线与腰腹在同一竖向画幅中完整展开。她的金色时钟瞳微微转动，带着潮湿笑意低语——「把时间停在我最毫无防备的一秒……您真的舍得让它继续吗？」",
+    "description": "【成年 After Story · 时崎狂三 · 月夜的慵懒】二十岁以上成年版本的狂三独自跪坐在哥特卧房的雕花床褥上，月光从高窗倾落。她把双臂交叠举过头顶，用黑色丝带松束手腕，腰背向侧面弯出柔软弧线；黑色薄纱胸衣滑到乳下，腋窝、胸线与腰腹在同一竖向画幅中完整展开。她的金色时钟瞳微微转动，带着潮湿笑意低语——「把时间停在我最毫无防备的一秒……您真的舍得让它继续吗？」",
     "location": "哥特卧房",
-    "action": "跪坐床褥将双腕交叠举过头顶，以黑丝带松束手腕并侧弯腰身，薄纱胸衣滑至乳下",
+    "action": "跪坐床褥将双腕交叠举过头顶，以黑丝带松束手腕并侧弯腰身，黑色薄纱胸衣滑至乳下",
     "timeOfDay": "夜晚",
     "lighting": "cold moonlight and candle glow",
     "camera": "full body, low angle",
@@ -26,16 +26,17 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Kurumi crosses her wrists beneath a loose ribbon and bends sideways on the bed, her bodice slipped below her breasts.",
+    "promptProse": "The age-twenty-plus Kurumi crosses her wrists beneath a loose ribbon and bends sideways on the bed, her black sheer bodice slipped below her breasts.",
     "promptTokens": [
-      "bodice",
+      "black sheer bodice",
       "ribbon",
       "kneeling",
       "arms up",
       "bed",
       "moonlight",
       "topless",
-      "full body"
+      "full body",
+      "crimson ribbon edging"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,7 +46,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
-    "outfitId": "casual",
+    "outfitId": "sheer_bodice",
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"

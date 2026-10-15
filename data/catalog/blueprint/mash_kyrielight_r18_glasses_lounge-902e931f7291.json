@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_glasses_lounge",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 207,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -45,7 +45,7 @@
       "sofa"
     ],
     "recommendedSize": "1536x1152",
-    "outfitId": "chaldea_casual",
+    "outfitId": "lounge_cardigan",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [],

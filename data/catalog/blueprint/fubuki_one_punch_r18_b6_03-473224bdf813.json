@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1605,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_03",
     "title": "吹雪 · 晚宴修身绿礼服后背拉链崩坏的更衣事故 ·「衣服被撑破了……不准告诉组员，快帮我遮住！」",
@@ -34,7 +34,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "green dress",
+      "dark green velvet mermaid dress",
       "torn clothes",
       "open back",
       "wardrobe malfunction",
@@ -53,7 +53,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "green_velvet_mermaid",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

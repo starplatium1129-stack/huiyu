@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/sfw_clock_square_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "sfw_clock_square_coat",
-      "name": "钟楼广场风衣围巾装",
-      "prose": "a fitted beige winter trench coat, a plaid muffler, a low-brimmed beret, dark trousers and ankle boots",
+      "name": "燕麦风衣与格纹围巾",
+      "prose": "a fitted beige winter trench with a clean waist belt, a muted plaid wool scarf, a black low-brimmed beret, dark trousers and ankle boots",
       "tokens": [
-        "beige_trench_coat",
-        "plaid_scarf",
-        "beret",
-        "dark_pants",
-        "ankle_boots"
+        "beige trench coat",
+        "plaid scarf",
+        "black beret",
+        "dark pants",
+        "ankle boots"
       ],
       "isDefault": false,
       "default": false,

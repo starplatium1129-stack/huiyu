@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_sui_courtyard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 650,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "半卧竹榻把玩酒葫芦听雨",
     "camera": "medium shot",
@@ -27,7 +27,9 @@
       "wine cup",
       "reclining",
       "bamboo daybed",
-      "rain"
+      "rain",
+      "jade gourd",
+      "hair down"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

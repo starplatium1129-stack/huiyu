@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_apron_only",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 865,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "只穿围裙慌乱遮掩",
     "adult": true,
@@ -25,9 +25,10 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "sweets_apron",
+    "outfitId": "white_apron_only",
     "promptProse": "Adult Kazusa sits backward on a chair with her apron bib lowered, holding the chair back while wiping flour from her inner thigh.",
     "promptTokens": [
+      "white apron",
       "1girl",
       "solo",
       "adult Kazusa",

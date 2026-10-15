@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc134",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc134",
     "title": "黎明拂晓的真空支配",
@@ -32,7 +32,9 @@
       "dawn",
       "morning_light",
       "white_bed",
-      "medium_shot"
+      "medium_shot",
+      "matte_black_buttons",
+      "notched_cuffs"
     ],
     "mature": true,
     "location": "双人床榻被窝",
@@ -44,7 +46,7 @@
       "绝对独占",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, oversized black shirt, open shirt, off shoulder, no underwear, bare legs, crossed legs, on elbow, teasing smile, bed, morning light, medium shot",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, matte black buttons, notched cuffs, oversized black shirt, open shirt, off shoulder, no underwear, bare legs, crossed legs, on elbow, teasing smile, bed, morning light, medium shot",
     "negative": "pants, underwear, thighhighs",
     "storyJa": "【夏目・モーニングバキュームビッグシャツ絶対独占】限りなく怠惰な休日の朝、床から天井まで届く大きな窓から金色の夜明けの光が差し込みます。昨夜二日酔いの後、夏目は大きな白いベッドの真ん中で目を覚ましました。彼女はあなたの真っ黒な長袖シャツをラフに着ているだけで、中は完全に真空でした。シャツのボタンは大きく開き、前立ては丸い肩の両側に垂れ下がっています。長くて色白でまっすぐな脚が無造作に露出します。目尻の泣きぼくろが朝日に照らされて、どうしようもなくセクシーです。彼女は体を半分伸ばして横目であなたを見つめ、非常に独占的で傲慢な笑顔でささやきました。――「おはよう、この大変態。いつまで脚を見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
     "rating": "R18",

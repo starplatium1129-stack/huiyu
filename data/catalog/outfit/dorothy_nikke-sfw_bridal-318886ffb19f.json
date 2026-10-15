@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "桃乐丝·圣洁花嫁",
-      "prose": "a pristine white-and-pink bridal gown with a long veil, pearl details and folded white wings",
+      "name": "伊甸粉白珍珠花嫁",
+      "prose": "A white bridal gown with pale-pink inset pleats, a pearl-edged neckline and a long veil.",
       "tokens": [
-        "wedding_dress",
-        "white_pink_gown",
-        "long_veil",
-        "pearl_details",
-        "folded_wings"
+        "white wedding dress",
+        "pink pleats",
+        "long veil",
+        "pearl trim"
       ],
       "default": false,
       "isDefault": false

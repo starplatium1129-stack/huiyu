@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_bedroom_soles_foreshortening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 783,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "半坐床头用俄语低语，指尖绕着银色发梢",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【艾莉莎·九条 · 枕边俄语私语】深夜的北欧风卧室，月光透过百叶窗洒在白色床铺上。艾莉莎裹着大号睡衣半坐床头，银色长发散在枕边，蓝色发带已经解开。她指尖绕着发梢，用俄语小声说着什么，说完才发现你在看她，瞬间涨红了脸——「……只是练习一下明天的发言，才、才不是在说你！」",
+    "description": "【艾莉莎·九条 · 枕边俄语私语】深夜的北欧风卧室，月光透过百叶窗洒在白色床铺上。艾莉莎裹着床单半坐床头，银色长发散在枕边，蓝色发带已经解开。她指尖绕着发梢，用俄语小声说着什么，说完才发现你在看她，瞬间涨红了脸。",
     "id": "alya_r18_bedroom_soles_foreshortening",
     "kreaStyleHint": "",
     "lighting": "cool moonlight through blinds, soft warm bedside lamp, silver rim light",
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "oversized_nightshirt",
+    "outfitId": "nsfw_nude",
     "promptProse": "The age-twenty-plus Alya draws one knee toward her chest and extends one sole toward the foreground, one hand at her thigh and the other between her legs. Moonlight falls over the white sheets.",
     "promptTokens": [
       "adult",

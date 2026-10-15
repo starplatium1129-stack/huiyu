@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_rooftop_sunset",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "tohsaka_rin_r18_rooftop_sunset",
     "title": "远坂凛 · 天台夕照",
     "category": "成人",
     "characterId": "tohsaka_rin",
-    "description": "【成年 After Story · 远坂凛 · 魔术研究院天台夕照】二十岁以上成年后的凛独自在魔术研究院屋顶露台检查结界。修身红衬衫被安全铁网勾住并从胸前扯开，她一手抓住网格保持平衡，一手反剪到腰后试图解开线头；一膝踩上设备箱让成熟身体折入中近景。落日点燃双马尾和宝石耳坠，她蓝眸含泪地咬唇——「只是结界事故……在我自己解开之前，不许笑。」",
+    "description": "【成年 After Story · 远坂凛 · 魔术研究院天台夕照】二十岁以上成年后的凛独自在魔术研究院屋顶露台检查结界。宝石扣修身红衬衫被安全铁网勾住并从胸前扯开，她一手抓住网格保持平衡，一手反剪到腰后试图解开线头；一膝踩上设备箱让成熟身体折入中近景。落日点燃双马尾和宝石耳坠，她蓝眸含泪地咬唇——「只是结界事故……在我自己解开之前，不许笑。」",
     "location": "学校天台",
     "action": "成年魔术师独自倚靠研究院天台铁网，一膝踩设备箱，一手抓网一手解开勾住衬衫的线头",
     "timeOfDay": "黄昏",
@@ -28,12 +28,14 @@
     "promptProse": "The age-twenty-plus Rin reaches behind to free her blouse from the wire mesh, one breast exposed and a knee braced on the service box.",
     "promptTokens": [
       "adult Rin",
-      "red blouse",
+      "red fitted blouse",
       "knee up",
       "fence",
       "rooftop",
       "sunset",
-      "cowboy shot"
+      "cowboy shot",
+      "faceted buttons",
+      "black cuff edging"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -45,7 +47,7 @@
     ],
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
-    "outfitId": "school_uniform",
+    "outfitId": "red_blouse",
     "sampleRating": "R18"
   }
 }

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "hoshino_ai/white_balcony_blouse",
+  "revision": 1,
+  "sortOrder": 1307,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hoshino_ai",
+    "outfit": {
+      "id": "white_balcony_blouse",
+      "name": "白衬衣与浅紫短裙",
+      "tokens": [
+        "oversized white blouse",
+        "lavender short skirt",
+        "heart button"
+      ],
+      "prose": "A lightweight oversized white blouse with a small heart-shaped cuff button, paired with a lavender short skirt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

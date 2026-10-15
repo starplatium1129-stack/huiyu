@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "elfaria_alvis_serfort/white_ceremonial_robe",
+  "revision": 1,
+  "sortOrder": 1365,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "elfaria_alvis_serfort",
+    "outfit": {
+      "id": "white_ceremonial_robe",
+      "name": "雪白冰纹法袍",
+      "tokens": [
+        "white robe",
+        "long sleeves",
+        "embroidery"
+      ],
+      "prose": "A snow-white ceremonial robe with long sleeves and restrained frost-pattern embroidery.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

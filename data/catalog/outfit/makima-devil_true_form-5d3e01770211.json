@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "makima/devil_true_form",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 237,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "devil_true_form",
-      "name": "支配恶魔真身",
-      "prose": "her true form as the Control Devil: crimson hair in a single braid with golden concentric ring eyes and a menacing aura",
+      "name": "支配形态·黑色精裁正装",
+      "prose": "A sharply tailored black suit over a crisp white shirt and narrow black tie, with straight black trousers and polished shoes.",
       "tokens": [
-        "red_hair",
-        "braid",
-        "single_braid",
-        "ring_eyes",
-        "golden_eyes",
-        "smirk",
-        "dark_aura"
+        "black suit jacket",
+        "white shirt",
+        "black necktie",
+        "black tailored pants",
+        "black shoes"
       ],
       "isDefault": false,
       "default": false

@@ -1,28 +1,22 @@
 {
   "kind": "outfit",
   "id": "kisara_engage_kiss/sheer_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 284,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kisara_engage_kiss",
     "outfit": {
       "id": "sheer_lingerie",
-      "name": "薄纱里衣",
+      "name": "浅樱粉细带里衣",
       "tokens": [
-        "lingerie",
-        "sheer_lingerie",
-        "chemise",
-        "sheer",
-        "translucent",
-        "thin_straps",
-        "delicate_fabric",
-        "slip",
-        "bare_shoulders",
-        "bare_legs"
+        "pale pink chemise",
+        "sheer fabric",
+        "thin straps",
+        "red piping"
       ],
-      "prose": "wearing only a thin sheer chemise of translucent delicate fabric, fine straps and a loose flowing silhouette",
+      "prose": "a pale-pink sheer chemise with thin straps, a loose flowing cut and narrow red piping",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

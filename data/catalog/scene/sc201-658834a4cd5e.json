@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc201",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 196,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc201",
     "title": "微热雨夜的纯白茧化",
@@ -27,7 +27,9 @@
       "embracing",
       "grabbing_viewer_clothes",
       "bedroom",
-      "close_up"
+      "close_up",
+      "oxford_cotton",
+      "button_down_collar"
     ],
     "mature": false,
     "location": "温馨卧室大床",
@@ -38,7 +40,7 @@
       "核心协议",
       "R15"
     ],
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, oversized white shirt, open shirt, off shoulder, no pants, curled up, grabbing clothes, teary eyes, blush, bed, rainy night, warm lamp light, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, oxford cotton, button down collar, oversized white shirt, open shirt, off shoulder, no pants, curled up, grabbing clothes, teary eyes, blush, bed, rainy night, warm lamp light, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "stockings, thighhighs",
     "storyJa": "【寧々・大人のアフターストーリー · ·ゆるいシャツの下に究極の愛着を】窓の外は雷雨で、深夜の寝室には薄暗いベッドサイドランプだけが灯っていました。寧々は腕の中で丸まって、ゆったりとした白いシャツだけを着ています。緩んだフロントと半分露出した肩のラインが、暖かい光によって柔らかく輪郭を描かれます。彼女はあなたの服の裾を両手でしっかりと握り、目には涙と赤みが重なって、頭のアホ毛がパニックになってハート型に丸まりました。彼女は顔を上げ、その声は雨の音にほとんどかき消されそうなほど小さかった。――「もう……抱きしめて話すだけって約束したのに。これ以上からかわれたら、寧々は本当に落ち着けません……。」",
     "rating": "R15",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1634,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_02",
     "title": "久远寺有珠 · 古堡天鹅爪石缸的水光湿身独奏 ·「把魔术回路关闭……身体就会变得如此敏感吗」",
@@ -48,7 +48,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "nsfw_nude",
     "coverageTags": [
       "nsfw",
       "wet",

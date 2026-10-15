@@ -1,19 +1,18 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1006,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "不知火舞·成人私密造型",
-      "prose": "a private adult ensemble built around completely_nude, dressing_room",
+      "name": "无衣休息状态",
+      "prose": "No clothing.",
       "tokens": [
-        "completely_nude",
-        "dressing_room"
+        "nude"
       ],
       "default": false,
       "isDefault": false

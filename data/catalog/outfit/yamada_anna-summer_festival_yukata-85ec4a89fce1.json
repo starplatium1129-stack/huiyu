@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/summer_festival_yukata",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 837,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "summer_festival_yukata",
       "name": "夏祭金鱼纹藏青浴衣",
-      "prose": "a navy yukata with goldfish print, dark red obi and wooden geta, with hair in a high ponytail",
+      "prose": "a navy goldfish-print yukata with a dark red obi and wooden geta, with her hair in a high ponytail",
       "tokens": [
         "navy yukata",
         "goldfish print",
-        "red obi",
+        "dark red obi",
         "geta",
         "ponytail"
       ]

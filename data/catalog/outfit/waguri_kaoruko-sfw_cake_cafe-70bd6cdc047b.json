@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/sfw_cake_cafe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 849,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "sfw_cake_cafe",
-      "name": "草莓红开衫便装",
-      "prose": "a strawberry-red cardigan over a cream collared blouse, a navy calf-length skirt and narrow cream hairband",
+      "name": "草莓红开衫与奶油衬衫",
+      "prose": "A strawberry-red fine-knit cardigan layers over a cream round-collar blouse and a navy calf-length skirt, with a narrow cream hairband.",
       "tokens": [
-        "red cardigan",
+        "strawberry red cardigan",
         "cream blouse",
-        "navy skirt",
-        "hairband"
+        "navy long skirt",
+        "cream hairband"
       ],
       "isDefault": false,
       "isNsfw": false

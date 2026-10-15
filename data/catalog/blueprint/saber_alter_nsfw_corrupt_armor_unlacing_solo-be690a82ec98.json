@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
     "title": "黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持",
@@ -35,6 +35,8 @@
     ],
     "promptProse": "Adult Saber Alter kneels on one knee with her breastplate unlatched, leaning on her sword while touching herself beneath her skirts as crimson magic circuits glow.",
     "promptTokens": [
+      "red trim",
+      "dark blue dress",
       "black armor",
       "open armor",
       "topless",

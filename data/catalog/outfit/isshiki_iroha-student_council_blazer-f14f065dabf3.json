@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/student_council_blazer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 205,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "student_council_blazer",
-      "name": "学生会执行干练正装",
-      "prose": "a buttoned navy blazer with a left-sleeve armband, white shirt with collar pins, a longer pleated skirt and sheer black tights",
+      "name": "学生会海军蓝执行正装",
+      "prose": "A neatly buttoned navy blazer with a left-sleeve armband over a white shirt with small collar pins, paired with a longer navy pleated skirt and sheer black tights.",
       "tokens": [
         "navy blazer",
         "armband",
         "white shirt",
-        "pleated skirt",
+        "collar pins",
+        "navy pleated skirt",
         "black pantyhose"
       ]
     }

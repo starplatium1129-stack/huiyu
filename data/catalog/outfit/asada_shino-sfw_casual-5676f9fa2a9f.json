@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "asada_shino/sfw_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 752,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asada_shino",
     "outfit": {
       "id": "sfw_casual",
-      "name": "现实形态周末便装",
-      "prose": "a grey cardigan, white top and dark trousers",
+      "name": "灰针织与炭色直筒裤",
+      "prose": "a hip-length grey cardigan with ribbed cuffs over a white cotton crew-neck top, paired with charcoal straight trousers",
       "tokens": [
-        "grey_cardigan",
-        "white_shirt",
-        "dark_pants"
+        "grey cardigan",
+        "white shirt",
+        "charcoal pants",
+        "ribbed cuffs"
       ],
       "default": false,
       "isDefault": false

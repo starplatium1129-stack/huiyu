@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 987,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "靛蓝晒药工作衣",
-      "prose": "an indigo long-sleeved cotton work jacket, a pale beige ankle-length skirt and a plain linen waist apron",
+      "name": "靛蓝亚麻晒药工作装",
+      "prose": "An indigo cotton work jacket and pale-beige ankle-length skirt, with a plain linen waist apron and squared sorting pockets.",
       "tokens": [
-        "indigo_jacket",
-        "long_sleeves",
-        "beige_long_skirt",
-        "linen_apron"
+        "indigo cotton jacket",
+        "long sleeves",
+        "beige long skirt",
+        "linen waist apron",
+        "patch pockets"
       ],
       "isDefault": false,
       "isNsfw": false

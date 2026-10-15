@@ -1,23 +1,20 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/summer_swimsuit_night",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 239,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
       "id": "summer_swimsuit_night",
-      "name": "夜间学校泳池死库水",
+      "name": "深蓝连体泳装",
       "tokens": [
-        "school_swimsuit",
-        "one_piece_swimsuit",
-        "wet_skin",
-        "choker",
-        "bare_legs"
+        "navy blue one-piece swimsuit",
+        "school swimsuit"
       ],
-      "prose": "wearing a dark navy Japanese school swimsuit with wet skin and her choker at the midnight school pool",
+      "prose": "A plain dark-navy one-piece athletic swimsuit.",
       "styleHint": "cool blue night swimming glow",
       "isDefault": false,
       "default": false

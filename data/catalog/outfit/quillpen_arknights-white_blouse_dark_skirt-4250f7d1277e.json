@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "quillpen_arknights/white_blouse_dark_skirt",
+  "revision": 1,
+  "sortOrder": 1422,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "quillpen_arknights",
+    "outfit": {
+      "id": "white_blouse_dark_skirt",
+      "name": "白衬衫与炭黑裙装",
+      "tokens": [
+        "white blouse",
+        "charcoal skirt"
+      ],
+      "prose": "A plain white blouse and a charcoal skirt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "kaltsit_arknights/white_bath_undershirt",
+  "revision": 1,
+  "sortOrder": 1391,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kaltsit_arknights",
+    "outfit": {
+      "id": "white_bath_undershirt",
+      "name": "纯白浴间内衫",
+      "tokens": [
+        "white undershirt"
+      ],
+      "prose": "A plain white cotton undershirt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

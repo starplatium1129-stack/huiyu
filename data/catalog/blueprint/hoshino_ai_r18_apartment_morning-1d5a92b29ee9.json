@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_r18_apartment_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 961,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "清晨阳光地毯上抱抱枕屈膝斜倚，单人独处微笑注视镜头",
     "adult": true,
@@ -24,7 +24,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "main_look",
+    "outfitId": "black_string_bikini",
     "promptProse": "Adult Ai hugs the pillow against her chest while reclining on the rug, her other hand drawing the bikini string aside to touch herself.",
     "promptTokens": [
       "adult",
@@ -35,7 +35,8 @@
       "reclining",
       "female masturbation",
       "rug",
-      "sunlight"
+      "sunlight",
+      "pink heart clasp"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

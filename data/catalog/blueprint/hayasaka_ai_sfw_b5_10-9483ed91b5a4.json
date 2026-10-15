@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_10",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1410,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "散着头发靠栏杆喝黑咖啡，望向宅邸灯光放松下来。",
     "adult": false,
@@ -25,6 +25,7 @@
     "outfitId": "sfw_night",
     "promptProse": "She leans one forearm on the narrow balcony rail and raises her coffee with the other hand, looking tiredly toward the mansion's lit windows.",
     "promptTokens": [
+      "hair down",
       "coffee",
       "leaning",
       "balcony",

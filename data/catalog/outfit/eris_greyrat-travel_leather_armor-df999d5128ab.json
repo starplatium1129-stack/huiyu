@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "eris_greyrat/travel_leather_armor",
+  "revision": 1,
+  "sortOrder": 1367,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "eris_greyrat",
+    "outfit": {
+      "id": "travel_leather_armor",
+      "name": "旅途皮革护甲",
+      "tokens": [
+        "brown leather armor",
+        "shoulder straps",
+        "leather buckles"
+      ],
+      "prose": "A practical brown leather cuirass with adjustable shoulder straps and simple buckle fastenings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_winter",
-      "name": "冬季参拜大衣",
-      "prose": "a cream winter coat, plum scarf, warm trousers and ankle boots",
+      "name": "奶油大衣梅紫参拜装",
+      "prose": "A cream wool coat with a discreet gold clasp, a plum scarf, warm charcoal trousers and ankle boots.",
       "tokens": [
-        "cream_coat",
-        "plum_scarf",
-        "pants",
-        "boots"
+        "cream coat",
+        "gold clasp",
+        "plum scarf",
+        "charcoal pants",
+        "ankle boots"
       ],
       "default": false,
       "isDefault": false

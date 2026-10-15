@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "misono_mika/white_lace_morning_robe",
+  "revision": 1,
+  "sortOrder": 1332,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "misono_mika",
+    "outfit": {
+      "id": "white_lace_morning_robe",
+      "name": "白蔷薇蕾丝晨袍",
+      "tokens": [
+        "white silk robe",
+        "sheer fabric",
+        "rose lace trim"
+      ],
+      "prose": "A light white silk morning robe with delicate rose-pattern lace at the cuffs and hem.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/queen_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 544,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
       "default": false,
       "id": "queen_casual",
       "isDefault": false,
-      "name": "女王日常装 854 年",
-      "prose": "her daily outfit as Queen, a pale coat over a white shirt and pants with dark boots and her hair up",
+      "name": "浅色立领女王日常套装",
+      "prose": "a neatly tailored pale coat with a small stand collar over a white shirt and straight trousers, with dark boots",
       "tokens": [
-        "pale_coat",
-        "long_sleeves",
-        "white_shirt",
-        "pants",
-        "dark_boots",
-        "hair_up"
+        "pale coat",
+        "stand collar",
+        "white shirt",
+        "straight pants",
+        "dark boots"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc054",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 52,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She nestles against the viewer's shoulder beneath their shared wool blanket as the first dawn light reaches the sea.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -21,14 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, blue dress, blanket, leaning on person, sitting, beach, dawn, close up",
+    "prompt": "1girl, ayachi_nene, pale blue cotton dress, smocked bodice, small pearl buttons, blanket, leaning on person, sitting, beach, dawn, close up",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
     "story": "【宁宁 · 日出之前借来的体温】夏日旅行的最后一晚，你们坐在海边等日出。夜风比预想中更冷，宁宁把毯子分给你一半，又蜷进你的怀里听潮声。天际开始发白时，她抬起困倦的紫色眼睛——「原来一起等天亮是这种感觉。下一次不用熬夜也可以……只要醒来的时候，你还在旁边就好。」",
     "storyJa": "【寧々・日の出前に体温を借りた】夏の旅行の最後の夜、あなたはビーチに座って日の出を待っていました。夜風は思ったより冷たかったです。寧々は毛布の半分をあなたに渡し、あなたの腕の中で丸まって潮の音を聞きました。空が白み始めると、彼女は眠そうな紫色の目を上げた――「一緒に夜明けを待つって、こんな感じなんですね。次は徹夜じゃなくてもいいです……目を覚ましたとき、あなたが隣にいてくれれば。」",
     "tags": [
-      "light_blue_cotton_dress",
       "wool_blanket",
       "shared_blanket",
       "sitting_on_beach",
@@ -41,7 +40,10 @@
       "dawn_horizon",
       "blue_hour",
       "soft_dawn_light",
-      "close_up"
+      "close_up",
+      "pale_blue_cotton_dress",
+      "smocked_bodice",
+      "small_pearl_buttons"
     ],
     "time": "黎明",
     "timeOfDay": "dawn",

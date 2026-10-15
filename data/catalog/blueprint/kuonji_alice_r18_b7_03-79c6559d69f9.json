@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1635,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_03",
     "title": "久远寺有珠 · 束胸衣系带被使魔绞紧的更衣事故 ·「罗宾！……叫你拿剪刀不是让你乱咬！」",
@@ -32,14 +32,15 @@
     ],
     "promptProse": "Adult Alice leans over the vanity as Robin tangles her corset laces, her neckline tight and skirt raised; she looks back for help.",
     "promptTokens": [
-      "corset",
+      "black corset dress",
       "breast slip",
       "skirt lift",
       "bent over",
       "looking back",
       "bluebird",
       "vanity",
-      "twilight"
+      "twilight",
+      "satin"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,7 +50,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "black_laced_corset_dress",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

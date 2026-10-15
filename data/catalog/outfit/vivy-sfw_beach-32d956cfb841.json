@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "vivy/sfw_beach",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 979,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vivy",
     "outfit": {
       "id": "sfw_beach",
-      "name": "Vivy·海滨泳装",
-      "prose": "a white-and-blue resort swimsuit with a light stage jacket, waterproof earpiece and compact recorder",
+      "name": "白蓝拼接泳装与短舞台夹克",
+      "prose": "a white-and-blue one-piece swimsuit with diagonal panels, beneath a white cropped stage jacket with blue piping",
       "tokens": [
-        "white_blue_swimsuit",
-        "stage_jacket",
-        "waterproof_earpiece",
-        "compact_recorder",
-        "seaside_stage"
+        "white and blue one piece swimsuit",
+        "diagonal panels",
+        "white cropped jacket",
+        "blue piping"
       ],
       "default": false,
       "isDefault": false

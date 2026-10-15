@@ -1,25 +1,25 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/silk_pajamas",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "default": false,
       "id": "silk_pajamas",
       "isDefault": false,
-      "name": "丝绸居家睡衣",
-      "prose": "wearing loose silk pajamas with a button-up top and matching pajama pants, smooth lustrous silk in a soft pastel tone",
+      "name": "蜜桃粉真丝睡衣套装",
+      "prose": "Loose peach-pink silk pajamas with a button-front long-sleeved shirt and matching trousers, edged in fine white piping.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "silk_pajamas",
-        "button_up",
-        "long_sleeves",
-        "pajama_pants",
-        "loose_fit"
+        "pink silk pajamas",
+        "button-up shirt",
+        "long sleeves",
+        "pajama pants",
+        "white piping"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_nsfw_uniform_desk_rear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1459,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "撑诊疗桌塌腰翘臀更衣整理受力，队服微敞羽织滑落，咬唇回眸微嗔喘息",
     "adult": true,
@@ -24,11 +24,13 @@
     "mood": "医师失守、毒舌逞强",
     "negativeTokens": [],
     "nsfwProse": "",
-    "outfitId": "official_demon_slayer_uniform",
+    "outfitId": "skirt_uniform_variant",
     "promptProse": "Shinobu braces both hands on the treatment table and glances back, her belt loosened and haori slipping from one shoulder in candlelight.",
     "promptTokens": [
+      "black skirt",
+      "white belt",
       "kochou_shinobu",
-      "uniform",
+      "black uniform jacket",
       "butterfly haori",
       "bent over",
       "table",

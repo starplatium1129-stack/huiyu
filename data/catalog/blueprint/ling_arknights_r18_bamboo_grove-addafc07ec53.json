@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_bamboo_grove",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 658,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "斜倚漆榻，敞开的袍子覆在身侧，一手执笔停在未完诗稿上方，另一手在衣下；墨迹化为蓝烟",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【令 · 竹林微醺】月下竹林的石台上铺着锦垫，酒盏东倒西歪。全裸的令半醉半醒地侧卧在锦垫上，脸颊浮着薄红，龙角沾着夜色，蓝发散落在竹叶间。她伸手勾住你的衣角，声音软得像化开的酒——「今夜月色这么好……陪我再喝一杯，好不好？」",
+    "description": "【令 · 竹林微醺】月下竹林的石台上铺着锦垫，酒盏东倒西歪。披着墨灰袍的令半醉半醒地侧卧在锦垫上，脸颊浮着薄红，龙角沾着夜色，蓝发散落在竹叶间。她伸手勾住你的衣角，声音软得像化开的酒——「今夜月色这么好……陪我再喝一杯，好不好？」",
     "id": "ling_arknights_r18_bamboo_grove",
     "kreaStyleHint": "",
     "lighting": "moonlight filtered through bamboo leaves, dappled silver shadows, soft mist",
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "drunkard_loungewear",
     "promptProse": "Adult Ling holds a brush above an unfinished poem while touching herself beneath her open robe, turning ink into blue smoke.",
     "promptTokens": [
       "1girl",
@@ -38,7 +38,9 @@
       "poem",
       "masturbation",
       "lacquer bench",
-      "blue smoke"
+      "blue smoke",
+      "gray robe",
+      "ink blue sash"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/sfw_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 993,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "sfw_beach",
-      "name": "玛露希尔·海滨泳装",
-      "prose": "a practical blue swimsuit with a cream travel robe and sunhat",
+      "name": "湖蓝连体泳装与奶油旅行罩袍",
+      "prose": "A practical opaque blue one-piece swimsuit under a cream linen travel robe, paired with a simple wide-brim sunhat.",
       "tokens": [
-        "blue_swimsuit",
-        "cream_travel_robe",
-        "sun_hat"
+        "blue one-piece swimsuit",
+        "cream robe",
+        "linen",
+        "sun hat"
       ],
       "default": false,
       "isDefault": false

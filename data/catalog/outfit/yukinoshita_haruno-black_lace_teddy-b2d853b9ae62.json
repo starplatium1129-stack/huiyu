@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/black_lace_teddy",
+  "revision": 1,
+  "sortOrder": 1260,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "black_lace_teddy",
+      "name": "黑色蕾丝连体衣",
+      "tokens": [
+        "black teddy",
+        "lace"
+      ],
+      "prose": "a black lace teddy",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

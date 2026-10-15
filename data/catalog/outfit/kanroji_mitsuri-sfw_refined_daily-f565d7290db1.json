@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 814,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "id": "sfw_refined_daily",
       "isDefault": false,
       "isNsfw": false,
-      "name": "桃色小纹与工作围裙",
-      "prose": "a securely wrapped peach floral long-sleeved kimono with a cream cotton work apron and plain tabi socks",
+      "name": "桃色小纹与奶油棉围裙",
+      "prose": "A securely wrapped peach kimono with a fine floral repeat, layered under a practical cream cotton apron and worn with plain tabi socks.",
       "tokens": [
-        "peach_kimono",
-        "floral_print",
-        "long_sleeves",
-        "cream_apron",
+        "peach kimono",
+        "small floral print",
+        "long sleeves",
+        "cream apron",
         "tabi"
       ]
     }

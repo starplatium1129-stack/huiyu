@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "cartethyia/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 948,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "卡提希娅·成人私密造型",
-      "prose": "a private adult ensemble built around armor, plate_armor, silver_armor, armory, completely_nude",
+      "name": "白银骑士礼甲",
+      "prose": "Silver plate armor over chainmail, with articulated gauntlets and leather fastening straps.",
       "tokens": [
-        "armor",
-        "plate_armor",
-        "silver_armor",
-        "armory",
-        "completely_nude"
+        "silver armor",
+        "plate armor",
+        "chainmail",
+        "gauntlets",
+        "leather straps"
       ],
       "default": false,
       "isDefault": false

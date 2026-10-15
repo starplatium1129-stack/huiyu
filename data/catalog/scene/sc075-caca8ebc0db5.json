@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc075",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 73,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She follows the shoal with her gaze, one palm resting against the aquarium glass as water reflections cross her sleeve.",
     "camera": "玻璃幕墙前侧面中景",
@@ -20,16 +20,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "fish outside tank",
-    "prompt": "1girl, shiki_natsume, navy cardigan, white blouse, grey pants, hand on glass, looking up, aquarium, fish, blue light, side view, medium shot",
+    "prompt": "1girl, shiki_natsume, navy fine knit cardigan, white blouse, asymmetrical collar, grey tailored pants, hand on glass, looking up, aquarium, fish, blue light, side view, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
     "story": "【夏目 · 蓝光里的忘神片刻】水族馆巨大的玻璃幕墙前，夏目难得忘记周围，仰头追随成群游鱼。蓝色波纹掠过她的黑发与眼下泪痣，你叫了两次她才回神。她轻轻靠上玻璃，语气仍很平淡——「鱼确实比某人安静。不过……你在这儿也不算碍事，再陪我看一会儿。」",
     "storyJa": "【夏目・青い光の中で忘却のひととき】水族館の巨大なガラスのカーテンウォールの前で、夏目は周囲の環境を忘れることなく頭を上げて泳ぐ魚の群れを追いかけます。青い波紋が彼女の黒髪と目の下の泣きぼくろに広がった。彼女が正気に戻るまでに、あなたは彼女に二度電話しました。彼女はそっとガラスに寄りかかったが、口調はまだ穏やかだった――「魚のほうが誰かさんより静かなのは確か。でも……あなたがここにいても邪魔ではないから、もう少し付き合って。」",
     "tags": [
-      "navy_cardigan",
-      "white_blouse",
-      "grey_trousers",
       "standing",
       "palm_on_glass",
       "looking_up",
@@ -41,7 +38,11 @@
       "blue_water",
       "water_caustics",
       "reflected_light",
-      "medium_shot"
+      "medium_shot",
+      "navy_fine_knit_cardigan",
+      "white_blouse",
+      "asymmetrical_collar",
+      "grey_tailored_pants"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_shrine_chamber_pantyhose_fingering",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1155,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "坐在低矮木箱上，一手分开破损裤袜，另一手自抚，尾巴弯在箱后",
     "adult": true,
@@ -24,12 +24,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "shrine_maiden",
+    "outfitId": "shrine_changing_layers",
     "promptProse": "Adult Yoshino sits on the low chest and holds the torn tights apart with one hand while touching herself through the opening with the other. Her tail curls behind the chest.",
     "promptTokens": [
       "adult",
       "dog ears",
       "tail",
+      "white kimono",
       "open robe",
       "topless",
       "torn pantyhose",

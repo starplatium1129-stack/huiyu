@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1726,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_01",
     "title": "玛露希尔 · 迷宫营地帐篷魔法睡袍主控跨坐 ·「莱欧斯……为了生存……这也是没办法的对吧！」",
@@ -50,7 +50,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "sfw_travel",
     "coverageTags": [
       "nsfw",
       "cowgirl",

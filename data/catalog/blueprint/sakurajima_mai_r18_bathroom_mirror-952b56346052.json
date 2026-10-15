@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_bathroom_mirror",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sakurajima_mai_r18_bathroom_mirror",
     "title": "樱岛麻衣 · 镜前水汽",
@@ -46,7 +46,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
-    "outfitId": "street_clothes",
+    "outfitId": "bath_towel",
     "sampleRating": "R18"
   }
 }

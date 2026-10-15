@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "ereshkigal_fate/casual_winter_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ereshkigal_fate",
     "outfit": {
       "id": "casual_winter_date",
-      "name": "冥界圣诞冬装约会",
-      "prose": "a white knit sweater dress with a red scarf, wool beret, dark tights and knee boots",
+      "name": "雪白绞花裙与圣诞红围巾",
+      "prose": "A white cable-knit sweater dress with a softly fitted waist, wrapped in a vivid red wool scarf. A white beret, dark tights and brown knee boots keep the winter silhouette warm; one small gold clasp recalls her crown.",
       "tokens": [
         "white sweater dress",
+        "cable knit",
         "red scarf",
-        "beret",
-        "dark tights",
-        "knee boots"
+        "white beret",
+        "black pantyhose",
+        "brown knee boots"
       ]
     }
   }

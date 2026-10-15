@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/sfw_weekend",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 878,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "sfw_weekend",
-      "name": "周末宽松卫衣",
-      "prose": "an opaque pale grey sweatshirt and loose navy trousers, with her chestnut hair loosely tied back",
+      "name": "浅灰罗纹周末便装",
+      "prose": "A pale-gray sweatshirt with navy ribbed cuffs and collar, paired with loose straight navy trousers.",
       "tokens": [
-        "grey_sweatshirt",
-        "navy_pants",
-        "ponytail"
+        "gray sweatshirt",
+        "navy blue ribbing",
+        "navy blue pants",
+        "straight-leg pants"
       ],
       "default": false,
       "isDefault": false

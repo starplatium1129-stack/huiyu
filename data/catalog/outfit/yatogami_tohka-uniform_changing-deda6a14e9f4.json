@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yatogami_tohka/uniform_changing",
+  "revision": 1,
+  "sortOrder": 1456,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yatogami_tohka",
+    "outfit": {
+      "id": "uniform_changing",
+      "name": "白衬衫制服更衣套装",
+      "tokens": [
+        "white blouse",
+        "navy pleated skirt",
+        "bear print panties"
+      ],
+      "prose": "A white uniform blouse and navy pleated skirt with a side zipper, paired with bear-print underwear.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_studio_scrolls",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 572,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跪坐宣纸，一手运笔，另一手留在袍下。",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "black_ink_robe",
     "promptProse": "Adult Dusk guides her brush through luminous ink with one hand while the other rests beneath the robe. Painted mountains rise from the paper.",
     "promptTokens": [
       "adult",

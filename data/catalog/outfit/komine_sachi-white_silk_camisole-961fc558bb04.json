@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "komine_sachi/white_silk_camisole",
+  "revision": 1,
+  "sortOrder": 1317,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "komine_sachi",
+    "outfit": {
+      "id": "white_silk_camisole",
+      "name": "白色细荷叶边吊带睡裙",
+      "tokens": [
+        "white camisole",
+        "sheer silk",
+        "fine frills"
+      ],
+      "prose": "A white silk camisole with a fine ruffle along the neckline.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

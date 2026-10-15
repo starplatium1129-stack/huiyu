@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_festival",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 810,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "default": false,
       "id": "sfw_festival",
       "isDefault": false,
-      "name": "夏祭花纹浴衣",
-      "prose": "a light green floral yukata with a pink obi and sandals",
+      "name": "浅绿花枝浴衣与粉色腰带",
+      "prose": "A light-green cotton yukata patterned with sparse pink blossoms, tied with a pink obi and worn with simple sandals.",
       "tokens": [
-        "green_yukata",
-        "floral_print",
-        "pink_obi",
+        "light green yukata",
+        "floral print",
+        "pink obi",
         "sandals"
       ]
     }

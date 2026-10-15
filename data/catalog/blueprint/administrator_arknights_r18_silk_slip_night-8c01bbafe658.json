@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_silk_slip_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 769,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "administrator_arknights_r18_silk_slip_night",
     "characterId": "administrator_arknights",
@@ -32,7 +32,8 @@
       "bedroom",
       "bed",
       "sitting",
-      "nightgown",
+      "black silk nightgown",
+      "silver trim",
       "strap slip",
       "topless",
       "looking at viewer",

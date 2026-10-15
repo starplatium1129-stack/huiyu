@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/liberte_echec",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 287,
   "createdAt": null,
-  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -12,13 +12,13 @@
       "id": "liberte_echec",
       "isDefault": false,
       "name": "自由//失效（街头滑板）",
-      "prose": "a black off-shoulder top with a black and red plaid pleated skirt, a loose black jacket worn off her shoulders and a tiny golden crown hair accessory",
+      "prose": "a black off-shoulder top with a black-and-red plaid pleated skirt, a loose black jacket and a small golden crown hair accessory",
       "tokens": [
-        "off_shoulder",
-        "black_clothes",
-        "pleated_skirt",
-        "jacket",
-        "crown"
+        "black off shoulder top",
+        "black and red plaid skirt",
+        "pleated skirt",
+        "black jacket",
+        "small gold crown"
       ]
     }
   }

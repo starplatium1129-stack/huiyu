@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "hayasaka_ai/beige_cardigan_blue_lace",
+  "revision": 1,
+  "sortOrder": 1377,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hayasaka_ai",
+    "outfit": {
+      "id": "beige_cardigan_blue_lace",
+      "name": "米色开衫与蓝色蕾丝内搭",
+      "tokens": [
+        "beige cardigan",
+        "blue lace bra"
+      ],
+      "prose": "A soft beige cardigan over a blue lace bralette.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

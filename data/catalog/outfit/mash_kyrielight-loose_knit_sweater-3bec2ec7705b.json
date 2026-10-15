@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/loose_knit_sweater",
+  "revision": 1,
+  "sortOrder": 1212,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "loose_knit_sweater",
+      "name": "宽大针织居家毛衣",
+      "tokens": [
+        "oversized knit sweater"
+      ],
+      "prose": "a loose knitted lounge sweater",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

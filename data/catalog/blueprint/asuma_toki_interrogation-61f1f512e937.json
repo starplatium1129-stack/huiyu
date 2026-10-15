@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_interrogation",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "交腿坐在椅上，一手按录音机开关，另一手留在大腿处的破损衣料下。",
     "adult": true,
@@ -25,12 +25,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "candc_maid",
+    "outfitId": "black_white_combat_suit",
     "promptProse": "Adult Toki sits with unbound wrists at the chair arms, one hand on the recorder switch and the other beneath the torn fabric at her thigh.",
     "promptTokens": [
       "adult",
       "debriefing room",
       "chair",
+      "black and white combat suit",
       "torn clothes",
       "topless",
       "crossed legs",

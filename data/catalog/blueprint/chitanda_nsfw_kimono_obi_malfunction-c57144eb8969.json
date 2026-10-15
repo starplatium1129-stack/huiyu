@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_kimono_obi_malfunction",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1493,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "chitanda_nsfw_kimono_obi_malfunction",
     "title": "千反田爱瑠 · 和服腰带松脱的更衣室事故 ·「带结解不开了……折木同学快帮帮我」",
@@ -29,13 +29,14 @@
     "promptTokens": [
       "adult",
       "dressing room",
-      "kimono",
-      "obi",
+      "purple furisode",
+      "gold obi",
       "caught clothes",
       "cleavage",
       "bent over",
       "looking back",
-      "wide shot"
+      "wide shot",
+      "crane print"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -43,7 +44,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "sensual_lace_lingerie",
+    "outfitId": "festive_shrine_kimono",
     "coverageTags": [
       "special_nsfw",
       "h_cg"

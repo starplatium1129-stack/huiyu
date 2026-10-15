@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/ice_cream_cafe_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 289,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
       "default": false,
       "id": "ice_cream_cafe_casual",
       "isDefault": false,
-      "name": "香草融意甜品店日常便服",
-      "prose": "a sweet-cool street casual outfit: a loose oatmeal-grey cropped hoodie worn open over a tight black camisole, high-waisted charcoal pleated skirt with a metal-buckle belt, mismatched grey thigh-high socks and retro black-and-white chunky skate sneakers, small black crossbody bag",
+      "name": "香草灰短卫衣与炭灰百褶裙",
+      "prose": "an oatmeal-grey cropped zip hoodie over a black camisole, a charcoal pleated skirt with a metal-buckle belt, mismatched grey thigh-high socks, black-and-white skate sneakers and a small black crossbody bag",
       "tokens": [
-        "casual_clothes",
-        "hoodie",
-        "camisole",
-        "pleated_skirt",
-        "thighhighs",
-        "sneakers",
-        "crossbody_bag"
+        "oatmeal grey cropped hoodie",
+        "black camisole",
+        "charcoal pleated skirt",
+        "metal buckle belt",
+        "mismatched grey thighhighs",
+        "black and white sneakers",
+        "black crossbody bag"
       ]
     }
   }

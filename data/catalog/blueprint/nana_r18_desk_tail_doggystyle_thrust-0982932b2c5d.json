@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_r18_desk_tail_doggystyle_thrust",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1274,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "水手服解扣露浅紫抹胸靠坐窗台，百褶裙撩起尾巴缠腿，单手探入自抚含泪傲娇娇喘",
     "adult": true,
@@ -27,8 +27,9 @@
     "outfitId": "sainan_uniform",
     "promptProse": "Adult Nana sits on the studio sill with one leg folded, lifting her skirt to touch herself while her tail curls around her thighs; a tube top remains beneath her open shirt.",
     "promptTokens": [
+      "teal pleated skirt",
       "school uniform",
-      "open shirt",
+      "open white sailor shirt",
       "lavender tube top",
       "skirt lift",
       "demon tail",

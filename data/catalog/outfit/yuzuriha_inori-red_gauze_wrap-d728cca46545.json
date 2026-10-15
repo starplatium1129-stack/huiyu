@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yuzuriha_inori/red_gauze_wrap",
+  "revision": 1,
+  "sortOrder": 1261,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yuzuriha_inori",
+    "outfit": {
+      "id": "red_gauze_wrap",
+      "name": "红色薄纱披巾",
+      "tokens": [
+        "red wrap",
+        "gauze"
+      ],
+      "prose": "a light red gauze wrap",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

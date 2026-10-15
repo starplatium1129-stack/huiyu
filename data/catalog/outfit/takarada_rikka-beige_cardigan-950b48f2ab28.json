@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "takarada_rikka/beige_cardigan",
+  "revision": 1,
+  "sortOrder": 1442,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "takarada_rikka",
+    "outfit": {
+      "id": "beige_cardigan",
+      "name": "米色长针织开衫",
+      "tokens": [
+        "beige cardigan",
+        "long cardigan",
+        "knit"
+      ],
+      "prose": "A long beige knit cardigan with loose sleeves and plain brown buttons.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

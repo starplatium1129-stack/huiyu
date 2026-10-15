@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "elaina/ivory_travel_shirt",
+  "revision": 1,
+  "sortOrder": 1283,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "elaina",
+    "outfit": {
+      "id": "ivory_travel_shirt",
+      "name": "旅宿象牙白衬衣",
+      "tokens": [
+        "ivory shirt",
+        "gray cuffs",
+        "button-up shirt"
+      ],
+      "prose": "A lightweight ivory button-up shirt with narrow gray cuff borders.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

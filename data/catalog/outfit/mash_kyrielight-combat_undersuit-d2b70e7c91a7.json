@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/combat_undersuit",
+  "revision": 1,
+  "sortOrder": 1211,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "combat_undersuit",
+      "name": "作战拉链内衬",
+      "tokens": [
+        "combat bodysuit",
+        "front zipper"
+      ],
+      "prose": "a fitted zip-front combat undersuit",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,15 +1,15 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_r18_bedroom_nightfall_fantasy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 826,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "fiona_frost_r18_bedroom_nightfall_fantasy",
     "characterId": "fiona_frost",
     "title": "菲奥娜 · 孤枕深宵情思潮泛",
-    "description": "【菲奥娜 · 孤枕深宵情思潮泛】深夜卧房内，狂热的妄想与思念终于彻底冲垮了所有的冷静自持。菲奥娜仅穿着紧身深蓝高领毛衣，下身寸缕未着侧卧在大床上。她死死紧拥着柔软的鹅绒长枕，仿佛那就是渴望已久的前辈臂弯；修长白皙的双腿剧烈纠缠蹭动，纤细的手指深陷于早已泛滥成灾的花径之间，泪光盈盈，唇齿间溢出破碎失控的深情呼唤。",
+    "description": "【菲奥娜 · 孤枕深宵情思潮泛】深夜卧房内，狂热的妄想与思念终于彻底冲垮了所有的冷静自持。菲奥娜仅穿着紧身紫色罗纹高领毛衣，下身寸缕未着侧卧在大床上。她死死紧拥着柔软的鹅绒长枕，仿佛那就是渴望已久的前辈臂弯；修长白皙的双腿剧烈纠缠蹭动，纤细的手指深陷于早已泛滥成灾的花径之间，泪光盈盈，唇齿间溢出破碎失控的深情呼唤。",
     "outfitId": "cozy_nightfall_knit",
     "category": "成人",
     "location": "安全屋主卧大床",
@@ -34,7 +34,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "turtleneck sweater",
+      "purple ribbed turtleneck",
       "bottomless",
       "on side",
       "hugging pillow",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_silk_restraint",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "shu_arknights_r18_silk_restraint",
     "characterId": "shu_arknights",
@@ -17,7 +17,7 @@
     "lighting": "窗外银蓝月光与床边暖灯交映",
     "timeOfDay": "夜晚",
     "camera": "full body, three-quarter rear view",
-    "outfitId": "standard",
+    "outfitId": "unclothed",
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "bedroom",

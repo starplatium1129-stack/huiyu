@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/canteen_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 423,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
       "default": false,
       "id": "canteen_casual",
       "isDefault": false,
-      "name": "基地食堂·休闲装",
-      "prose": "a relaxed casual outfit with a cropped jacket, practical trousers and comfortable sneakers",
+      "name": "烟紫短夹克与石墨工装裤",
+      "prose": "a muted-mauve cropped jacket over a white T-shirt, charcoal tapered trousers with roomy patch pockets and white sneakers",
       "tokens": [
-        "casual_clothes",
-        "cropped_jacket",
-        "trousers",
-        "sneakers"
+        "mauve cropped jacket",
+        "white t-shirt",
+        "charcoal pants",
+        "patch pockets",
+        "white sneakers"
       ]
     }
   }

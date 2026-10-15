@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 966,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "粉灰针织烘焙便装",
-      "prose": "a dusty-rose long-sleeved knit top, a charcoal ankle-length skirt and a plain ivory waist apron",
+      "name": "灰粉针织烘焙便装",
+      "prose": "A dusty-rose fine-knit top pairs with a charcoal ankle-length skirt and a plain ivory waist apron.",
       "tokens": [
-        "pink_sweater",
-        "long_sleeves",
-        "long_skirt",
-        "waist_apron"
+        "dusty pink sweater",
+        "long sleeves",
+        "charcoal long skirt",
+        "ivory waist apron"
       ],
       "isDefault": false,
       "isNsfw": false

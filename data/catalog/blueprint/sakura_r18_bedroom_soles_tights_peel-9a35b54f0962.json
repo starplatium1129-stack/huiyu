@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_bedroom_soles_tights_peel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 179,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sakura_r18_bedroom_soles_tights_peel",
     "characterId": "matou_sakura",
     "title": "间桐樱 · 卫宫家月夜的温柔与晦暗",
     "description": "【成年 After Story · 间桐樱 · 月夜黑丝褪落】二十岁以上成年后的樱独坐在卧室床沿，柔软梅色开衫敞开，紫色长发散在枕边。她双手把一条黑色连裤袜从成熟大腿缓慢卷向脚踝，另一条腿仍被薄纱包裹，裸足在月光前蜷起；烹饪笔记压在被角，绿眸中的温柔不再依附任何人——「现在的幸福不是偷来的……连选择让谁看见，也由我自己决定。」",
-    "outfitId": "nsfw_nude",
+    "outfitId": "plum_cardigan_tights",
     "sceneTags": [
       "bed",
       "bedroom",
@@ -23,8 +23,8 @@
     "promptProse": "The age-twenty-plus Sakura sits on the bed and rolls tights down one thigh with both hands, leaving the other leg covered and one bare foot toward the camera.",
     "promptTokens": [
       "bedroom",
-      "purple cardigan",
-      "pantyhose",
+      "plum knit cardigan",
+      "black pantyhose",
       "sitting",
       "bed",
       "moonlight"

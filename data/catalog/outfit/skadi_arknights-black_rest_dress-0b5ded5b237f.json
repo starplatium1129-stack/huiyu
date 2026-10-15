@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/black_rest_dress",
+  "revision": 1,
+  "sortOrder": 1346,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "id": "black_rest_dress",
+      "name": "深海夜休·黑色连衣裙",
+      "tokens": [
+        "black dress",
+        "red trim",
+        "soft jersey"
+      ],
+      "prose": "A soft black jersey dress with a narrow deep-red neckline binding.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

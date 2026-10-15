@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/ancestral_dog_ears",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 630,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
       "default": false,
       "id": "ancestral_dog_ears",
       "isDefault": false,
-      "name": "祖灵犬耳华彩神装",
-      "prose": "a white silk ceremonial kimono with gold cloud trim and a trailing pink brocade haori, with fluffy white dog ears and both hands free",
+      "name": "祖灵仪式白金华服",
+      "prose": "A white silk ceremonial kimono with gold cloud borders is layered beneath a trailing pink brocade haori.",
       "tokens": [
-        "white kimono",
+        "white silk kimono",
         "pink haori",
         "gold trim",
-        "wide sleeves",
-        "dog ears"
+        "wide sleeves"
       ]
     }
   }

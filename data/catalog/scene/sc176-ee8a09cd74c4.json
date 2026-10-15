@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc176",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 173,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Kneeling astride the viewer on the bed, she grips their shirt front in both hands and looks toward them; the bedside lamp warms her face and the loose beige knit at her shoulder.",
     "auditRevision": "careful-batch11-2026-08-27",
@@ -21,15 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, oversized beige sweater, off shoulder, no pants, kneeling, leaning forward, reaching, sweat, blush, bedroom, night, warm lighting, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, oversized beige cable knit cardigan, pink shell buttons, unbuttoned cardigan, off shoulder, no pants, kneeling, leaning forward, reaching, sweat, blush, bedroom, night, warm lighting, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R18",
     "season": "不限",
     "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 针织衫真空极致高能】反锁的卧室里，空气炙热得让人窒息。宁宁因为白天的傲娇被你拉入了“惩罚协议”。此刻她只穿着一件你送的宽松针织毛衣，里面完全是真空状态，胸前的纽扣已经被你尽数解开，大片温热雪白的饱满身躯与娇嫩的小腹毫无防备地暴露在外。她跪伏在你身上，发带早已滑落，头顶的呆毛因为极度动情而完全软瘫成了一个完美的爱心螺旋。她双手死死抓着你的衣襟，满脸滚烫的红晕连到耳根，含泪的眼睛迷离地注视着你——「呜...柊史...针织衫里面...好奇怪...不要一直盯着看啦...快点抱紧宁宁...」",
     "storyJa": "【寧々・大人のアフターストーリー · ·ニットセーターバキューム極高エネルギー】深夜、鍵のかかった寝室は息が詰まるほど熱い空気が漂っていた。寧々は、昼間のツンデレのせいで、あなたによって「柊史……このニット、やっぱり変じゃないですか？　そんなに見つめないで……早く寧々を抱きしめてください。」",
     "tags": [
       "hair_ribbon",
-      "oversized_sweater",
-      "unbuttoned_shirt",
       "no_underwear",
       "cleavage",
       "kneeling_on_bed",
@@ -43,7 +41,10 @@
       "night",
       "sensual",
       "close_up",
-      "pov"
+      "pov",
+      "oversized_beige_cable_knit_cardigan",
+      "pink_shell_buttons",
+      "unbuttoned_cardigan"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

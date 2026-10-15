@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "morgan_le_fay_fate/black_silk_mantle",
+  "revision": 1,
+  "sortOrder": 1334,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "morgan_le_fay_fate",
+    "outfit": {
+      "id": "black_silk_mantle",
+      "name": "冬宫黑丝披肩",
+      "tokens": [
+        "black silk mantle",
+        "blue lining"
+      ],
+      "prose": "A black silk mantle with a deep-blue lining.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

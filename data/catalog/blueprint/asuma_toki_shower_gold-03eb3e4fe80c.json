@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_shower_gold",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "一脚放在石凳上，一手抬起湿发，另一手沿身前水流冲洗。",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "candc_maid",
+    "outfitId": "nude_state",
     "promptProse": "Adult Toki rests one foot on a stone bench and lifts her wet hair with one hand. The other follows the shower stream between her thighs.",
     "promptTokens": [
       "adult",

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_dark_shadow_bedroom",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sakura_r18_dark_shadow_bedroom",
     "characterId": "matou_sakura",
     "title": "间桐樱 · 黑化私密·红黑魔力流转与完全释放",
     "description": "【成年间桐樱 · 黑化结界的自持】红黑魔力翻滚的虚无结界中，二十岁以上成年版本的黑樱独自悬浮在由她操纵的暗影带上。破碎黑裙停在腰际，令咒纹路沿裸露胸部与腹部发光；两条影带托住大腿并迫使双膝折起，她一手控制影带的轨迹，另一手按在自己腿间感受魔力回流。紫发向上漂散，红瞳含泪却带着清醒而危险的笑。",
-    "outfitId": "nsfw_nude",
+    "outfitId": "dark_shadow_dress",
     "sceneTags": [
       "dark_room",
       "shadow_energy",
@@ -29,7 +29,8 @@
       "body markings",
       "shadow magic",
       "red glow",
-      "medium shot"
+      "medium shot",
+      "ragged hem"
     ],
     "negativeTokens": [],
     "adult": true,

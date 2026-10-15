@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
@@ -12,12 +12,13 @@
       "isDefault": false,
       "isNsfw": false,
       "name": "杏色针织周末装",
-      "prose": "an apricot knit cardigan over a navy collared shirt, a calf-length grey pleated skirt and brown loafers",
+      "prose": "An apricot knit cardigan layers over a navy collared shirt, with a calf-length grey pleated skirt and brown loafers.",
       "tokens": [
-        "orange_cardigan",
-        "collared_shirt",
-        "long_skirt",
-        "loafers"
+        "apricot cardigan",
+        "navy shirt",
+        "grey pleated skirt",
+        "long skirt",
+        "brown loafers"
       ]
     }
   }

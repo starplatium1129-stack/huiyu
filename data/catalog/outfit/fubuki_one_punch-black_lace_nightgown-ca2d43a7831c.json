@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/black_lace_nightgown",
+  "revision": 1,
+  "sortOrder": 1177,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "black_lace_nightgown",
+      "name": "黑色蕾丝睡裙",
+      "tokens": [
+        "black lace nightgown"
+      ],
+      "prose": "a black lace nightgown",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

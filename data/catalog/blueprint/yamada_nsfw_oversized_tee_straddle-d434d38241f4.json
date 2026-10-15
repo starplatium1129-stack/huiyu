@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_oversized_tee_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1502,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yamada_nsfw_oversized_tee_straddle",
     "title": "山田杏奈 · 模特大身段的大号T恤跨坐 ·「市川……今天不许看别处」",
@@ -44,7 +44,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "sensual_lace_lingerie",
+    "outfitId": "black_graphic_tee",
     "coverageTags": [
       "special_nsfw",
       "h_cg"

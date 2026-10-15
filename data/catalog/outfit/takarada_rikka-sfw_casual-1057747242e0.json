@@ -1,19 +1,20 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 864,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_casual",
-      "name": "周末宽松帽衫与长裤",
-      "prose": "a roomy grey hoodie and relaxed dark trousers",
+      "name": "灰色宽松帽衫与炭黑长裤",
+      "prose": "A heather-grey cotton hoodie with dropped shoulders pairs with relaxed charcoal trousers and a small blue zipper pull.",
       "tokens": [
-        "grey_hoodie",
-        "dark_pants"
+        "grey hoodie",
+        "oversized clothes",
+        "charcoal pants"
       ],
       "default": false,
       "isDefault": false

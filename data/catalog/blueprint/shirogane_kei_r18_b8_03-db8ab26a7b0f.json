@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_r18_b8_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1423,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "撑壁橱塌腰回眸双手反剪扯拉链，水手服掀起露出条纹胖次，羞怒瞪视泛泪",
     "adult": true,
@@ -26,7 +26,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "sailor_uniform",
     "promptProse": "Kei braces one palm against the entryway closet and reaches behind for the jammed zipper with her other hand, her lifted skirt revealing striped underwear as she looks back for help.",
     "promptTokens": [
       "adult",

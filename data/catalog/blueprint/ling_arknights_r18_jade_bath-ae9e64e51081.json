@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_jade_bath",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 656,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "倚在玉池边，一手稳住池沿酒杯，另一手在花瓣水面下",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot",
     "category": "成人",
     "characterId": "ling_arknights",
-    "description": "【令 · 玉池汤沐】岁府汤室的玉池水汽氤氲，青瓷香炉吐着袅袅白烟。令倚着白玉池壁，全裸的身子浸在温水中，湿漉漉的蓝发贴着光裸的脊背垂入池面，指尖有一搭没一搭地拨弄着水面漂浮的桃花瓣。她眯起蓝瞳，声音懒洋洋的——「水温正好，雾气也正好……博士，要下来一起泡一会儿吗？」",
+    "description": "【令 · 玉池汤沐】岁府汤室的玉池水汽氤氲，青瓷香炉吐着袅袅白烟。令倚着白玉池壁，身上的墨灰薄袍浸在温水中，湿漉漉的蓝发贴着光裸的脊背垂入池面，指尖有一搭没一搭地拨弄着水面漂浮的桃花瓣。她眯起蓝瞳，声音懒洋洋的——「水温正好，雾气也正好……博士，要下来一起泡一会儿吗？」",
     "id": "ling_arknights_r18_jade_bath",
     "kreaStyleHint": "",
     "lighting": "warm candlelight through carved lattice, incense smoke, glistening jade pool reflections",
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "drunkard_loungewear",
     "promptProse": "Adult Ling balances a wine cup on the bath rim while her other hand moves between her thighs beneath the petal-strewn water.",
     "promptTokens": [
       "1girl",
@@ -34,7 +34,9 @@
       "knee up",
       "wine cup",
       "hand between legs",
-      "jade bath"
+      "jade bath",
+      "gray robe",
+      "ink blue sash"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

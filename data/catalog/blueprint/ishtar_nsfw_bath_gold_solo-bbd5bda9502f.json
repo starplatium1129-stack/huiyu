@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_bath_gold_solo",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 263,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "ishtar_nsfw_bath_gold_solo",
     "title": "伊什塔尔 · 神泉沐浴的金纱独奏·「女神的入浴，是要收观赏费的」",
@@ -46,7 +46,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "sensual_golden_lace_lingerie",
+    "outfitId": "gold_spring_gown",
     "coverageTags": [
       "nsfw",
       "solo",

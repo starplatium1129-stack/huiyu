@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_after_bath",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 868,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自蜷坐沙发，一手用毛巾擦耳，另一手在腿间；开襟家居上衣敞开",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "trinity_uniform",
+    "outfitId": "after_bath_hoodie",
     "promptProse": "Adult Kazusa curls on the sofa, drying one ear with a towel while her other hand moves between her thighs beneath the open hoodie.",
     "promptTokens": [
       "1girl",

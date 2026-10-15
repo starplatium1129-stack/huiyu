@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc155",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 152,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Reclining across the viewer's lap, she gathers their shirt front and looks up, her flushed face lit by the television; the empty glasses stand clear of their hands.",
     "auditRevision": "careful-batch07-2026-08-27",
@@ -21,14 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes, broken glass",
-    "prompt": "1girl, ayachi_nene, loose dress, lap pillow, holding shirt, living room, empty wine glasses, television glow, close up",
+    "prompt": "1girl, ayachi_nene, cream loose knit dress, boat neckline, pink ribbon at cuffs, lap pillow, holding shirt, living room, empty wine glasses, television glow, close up",
     "rating": "R15",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 居家微醺高能篇】客厅地毯上散落着空酒杯。平时容易害羞的宁宁今晚在酒精的催化下彻底放下了所有防线。她换上了一件领口松垮的居家私服，发带微微散落，整个人软绵绵地扑在你的膝盖上。她满脸滚烫的红晕，水汪汪的眼睛紧紧盯着你，头顶的呆毛因为醉意弯成了一个极其可爱的波浪形，双手死死揪住你的衣襟不放——「柊史...不准推开我...魔女的魔法今晚全部失效了...我现在...只要你抱紧我...」",
     "storyJa": "【寧々・大人のアフターストーリー · ·おうちで元気いっぱい】夜遅くに空のワイングラスがリビングルームのカーペットの上に散乱した。普段は内気な寧々は、今夜はアルコールの触媒作用ですべての防御を完全に外した。彼女は襟が緩いホームドレスを着て、ヘアバンドは少しゆるめで、全身が膝の上にぐったりと落ちていました。顔を赤らめ、潤んだ瞳でこちらを見つめ、酔ったせいで頭のてっぺんがとてもかわいらしい波形に曲がり、手はしっかりと服を掴んでいます。――「柊史……離さないでください。今夜は魔女の魔法も全部お休みです……今はただ、あなたに抱きしめてほしいんです。」",
     "tags": [
       "hair_ribbon",
-      "home_dress",
       "open_collar",
       "lying_on_lap",
       "grabbing_viewer_shirt",
@@ -38,7 +37,10 @@
       "night",
       "empty_wine_glass",
       "close_up",
-      "pov"
+      "pov",
+      "cream_loose_knit_dress",
+      "boat_neckline",
+      "pink_ribbon_at_cuffs"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

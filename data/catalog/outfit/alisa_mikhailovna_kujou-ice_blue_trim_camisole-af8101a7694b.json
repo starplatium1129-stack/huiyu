@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "alisa_mikhailovna_kujou/ice_blue_trim_camisole",
+  "revision": 1,
+  "sortOrder": 1271,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "alisa_mikhailovna_kujou",
+    "outfit": {
+      "id": "ice_blue_trim_camisole",
+      "name": "白色冰蓝滚边吊带衫",
+      "tokens": [
+        "white camisole",
+        "light blue piping",
+        "thin straps"
+      ],
+      "prose": "a simple white camisole with fine ice-blue piping and narrow shoulder straps",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

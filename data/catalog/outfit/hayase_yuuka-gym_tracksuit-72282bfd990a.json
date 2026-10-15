@@ -1,31 +1,27 @@
 {
   "kind": "outfit",
   "id": "hayase_yuuka/gym_tracksuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 506,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfit": {
       "default": false,
       "id": "gym_tracksuit",
       "isDefault": false,
-      "name": "晄轮大祭体操服",
-      "prose": "Millennium Halo Festival athletic PE uniform with a dark navy track jacket worn unzipped over a white sports t-shirt, navy gym bloomers, white sports crew socks, blue sneakers, a silver stopwatch whistle around her neck, and high twintails",
+      "name": "晄轮大祭深蓝运动服",
+      "prose": "A dark-navy Millennium athletic jacket worn open over a white sports T-shirt, matching gym shorts, white crew socks and blue sneakers, with a silver stopwatch and whistle on a neck cord.",
       "tokens": [
-        "gym_uniform",
-        "track_jacket",
-        "open_jacket",
-        "t-shirt",
-        "white_shirt",
-        "bloomers",
-        "gym_shorts",
-        "white_socks",
-        "sneakers",
+        "navy blue track jacket",
+        "open jacket",
+        "white t-shirt",
+        "navy blue gym shorts",
+        "white socks",
+        "blue sneakers",
         "stopwatch",
-        "whistle",
-        "athletic"
+        "whistle"
       ]
     }
   }

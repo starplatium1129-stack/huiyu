@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_high_heels_bondage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 890,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "被丝带缚住仍穿高跟鞋",
     "adult": true,
@@ -25,9 +25,10 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "formal_dress",
+    "outfitId": "black_red_sole_heels",
     "promptProse": "Adult Rio loops the silk tie around her raised thigh and pulls it taut with both hands while seated in the leather armchair.",
     "promptTokens": [
+      "red soles",
       "adult",
       "1girl",
       "solo",

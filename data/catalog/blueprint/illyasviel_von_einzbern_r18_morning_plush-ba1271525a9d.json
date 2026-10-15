@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_morning_plush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 168,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_morning_plush",
     "title": "伊莉雅丝菲尔 · 晨光与玩偶",
@@ -46,7 +46,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
-    "outfitId": "nsfw_nude",
+    "outfitId": "red_cotton_nightshirt",
     "sampleRating": "R18"
   }
 }

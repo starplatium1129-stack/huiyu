@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/festival_yukata",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 186,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
       "id": "festival_yukata",
-      "name": "祭典葱绿短浴衣",
+      "name": "葱绿音符夏祭短浴衣",
       "tokens": [
-        "short_yukata",
-        "green_yukata",
-        "obi",
+        "green short yukata",
+        "white musical note print",
+        "black obi",
+        "pink obijime",
         "geta"
       ],
-      "prose": "wearing a short modified onion-green yukata with a slim cloth sash at the waist, a shortened hemline above the knees, and wooden geta sandals, bright festive summer robe",
+      "prose": "A shortened green yukata with a sparse white musical-note pattern, a black obi tied with a fine pink cord and wooden geta.",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

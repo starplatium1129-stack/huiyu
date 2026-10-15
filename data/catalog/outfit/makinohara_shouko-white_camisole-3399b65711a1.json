@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/white_camisole",
+  "revision": 1,
+  "sortOrder": 1208,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "white_camisole",
+      "name": "白色吊带里衣",
+      "tokens": [
+        "white camisole"
+      ],
+      "prose": "a white camisole",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

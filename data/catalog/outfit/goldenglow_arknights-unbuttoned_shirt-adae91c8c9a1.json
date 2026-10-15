@@ -1,29 +1,24 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/unbuttoned_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 346,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
       "default": false,
       "id": "unbuttoned_shirt",
       "isDefault": false,
-      "name": "解开襟口的单薄衬衫",
-      "prose": "wearing a thin white shirt with buttons undone to mid-chest, the soft fabric hanging open over her pale chest and collarbone",
+      "name": "金纽扣白色轻薄衬衫",
+      "prose": "A lightweight white shirt with small gold buttons and an open neckline.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "goldenglow_unbuttoned_shirt",
-        "white_shirt",
-        "thin_shirt",
-        "unbuttoned",
-        "shirt_buttons",
-        "open_clothes",
-        "cleavage",
-        "bare_shoulders",
-        "pale_skin"
+        "white shirt",
+        "thin fabric",
+        "gold buttons",
+        "open clothes"
       ]
     }
   }

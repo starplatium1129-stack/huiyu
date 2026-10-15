@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/sfw_training",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1002,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "sfw_training",
-      "name": "不知火流端庄训练服",
-      "prose": "a securely wrapped red martial-arts jacket, white training trousers and a broad belt",
+      "name": "红白道场训练装",
+      "prose": "A red cotton training jacket wraps securely beneath a broad white belt, paired with loose white trousers.",
       "tokens": [
-        "red_dougi",
-        "white_pants",
-        "wide_belt",
-        "long_sleeves"
+        "red dougi",
+        "long sleeves",
+        "white pants",
+        "white belt"
       ],
       "default": true,
       "isDefault": true

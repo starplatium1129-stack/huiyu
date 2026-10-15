@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "albedo_overlord/pure_white_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 708,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "albedo_overlord",
     "outfit": {
       "id": "pure_white_bikini",
-      "name": "纯白露翼修身度假比基尼",
-      "prose": "a white halterneck micro bikini joined by small gold rings, leaving room for her wings",
+      "name": "金环系带纯白度假泳装",
+      "prose": "a white halterneck micro bikini joined by small gold rings, with the back ties clear of her wings",
       "tokens": [
         "white bikini",
         "micro bikini",
         "halterneck",
-        "gold trim"
+        "gold rings"
       ]
     }
   }

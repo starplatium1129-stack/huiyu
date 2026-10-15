@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_office_unbutton",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 887,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "坐办公桌半解制服",
     "adult": true,
@@ -28,12 +28,13 @@
     "outfitId": "seminar_uniform",
     "promptProse": "Adult Rio balances a tablet in one hand while the other slips beneath her waistband. Her sweater is rolled below her chest and her legs are crossed at the desk.",
     "promptTokens": [
+      "charcoal pleated skirt",
       "adult",
       "1girl",
       "solo",
-      "open sweater",
+      "open black turtleneck",
       "topless",
-      "stockings",
+      "black pantyhose",
       "crossed legs",
       "tablet",
       "hand between legs",

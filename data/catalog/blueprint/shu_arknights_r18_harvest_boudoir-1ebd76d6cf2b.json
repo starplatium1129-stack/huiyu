@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_r18_harvest_boudoir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 713,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "shu_arknights_r18_harvest_boudoir",
     "characterId": "shu_arknights",
@@ -17,7 +17,7 @@
     "lighting": "床头蜜金灯光与窗外深蓝夜色",
     "timeOfDay": "深夜",
     "camera": "three-quarter view, medium shot, eye level",
-    "outfitId": "standard",
+    "outfitId": "sheer_nightgown",
     "recommendedSize": "1152x1536",
     "sceneTags": [
       "bedroom",
@@ -29,8 +29,8 @@
       "blush"
     ],
     "promptTokens": [
-      "lingerie",
-      "nightgown",
+      "lace panties",
+      "ivory nightgown",
       "on side",
       "looking back",
       "bed",

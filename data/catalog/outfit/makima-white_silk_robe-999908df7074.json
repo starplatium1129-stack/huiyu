@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "makima/white_silk_robe",
+  "revision": 1,
+  "sortOrder": 1403,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makima",
+    "outfit": {
+      "id": "white_silk_robe",
+      "name": "白色真丝晨袍",
+      "tokens": [
+        "white silk robe",
+        "waist belt"
+      ],
+      "prose": "A plain white silk robe with a matching waist belt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

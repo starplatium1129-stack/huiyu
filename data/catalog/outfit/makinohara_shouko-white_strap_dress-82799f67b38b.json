@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/white_strap_dress",
+  "revision": 1,
+  "sortOrder": 1207,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "white_strap_dress",
+      "name": "纯白细肩带连衣裙",
+      "tokens": [
+        "white dress",
+        "shoulder straps"
+      ],
+      "prose": "a white dress with narrow shoulder straps",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

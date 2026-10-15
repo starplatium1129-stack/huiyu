@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/chapel_jacket_skirt",
+  "revision": 1,
+  "sortOrder": 1205,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "id": "chapel_jacket_skirt",
+      "name": "礼拜堂外套裙装",
+      "tokens": [
+        "jacket",
+        "skirt"
+      ],
+      "prose": "a tailored jacket with a skirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

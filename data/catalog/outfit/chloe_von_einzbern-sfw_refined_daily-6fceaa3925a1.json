@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 168,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "橙色格纹厨房装",
-      "prose": "an orange checked long-sleeved shirt, loose cream full-length trousers and a navy cotton apron",
+      "name": "橙色格纹藏蓝围裙套装",
+      "prose": "an orange checked shirt with tidy cuffs, loose cream full-length trousers and a navy cotton apron with contrasting orange stitching",
       "tokens": [
-        "orange_shirt",
-        "checkered",
-        "long_sleeves",
-        "cream_pants",
-        "navy_apron"
+        "orange checked shirt",
+        "long sleeves",
+        "cream pants",
+        "navy apron"
       ],
       "isDefault": false,
       "isNsfw": false

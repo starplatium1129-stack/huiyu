@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc068",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Even after the gondola steadies, she keeps both arms around the viewer's arm and turns toward the window to hide her smile.",
     "camera": "缆车内相挽双臂半身中景",
@@ -20,15 +20,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, cream coat, burgundy scarf, sitting, arm hug, cable car, snowy mountains, medium shot",
+    "prompt": "1girl, ayachi_nene, cream hooded duffle coat, burgundy knit scarf, fair isle pattern, sitting, arm hug, cable car, snowy mountains, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
     "story": "【宁宁 · 缆车晃动时的借口】冬日缆车缓缓升向雪山，车厢被侧风吹得轻轻摇晃。宁宁原本坐在对面，晃动后顺势挪到你身边，双手紧紧抱住你的手臂。发现风停了也没有松开，她便认真望向窗外——「现在放手的话又会晃起来，所以保持这样最安全。山顶到了以后……也可以再多借我一会儿。」",
     "storyJa": "【寧々・ケーブルカーが揺れたらすみません】冬、ケーブルカーは雪を頂いた山々に向かってゆっくりと登っていきますが、車両は横風でわずかに揺れます。寧々は彼の向かい側に座っていましたが、震えた後、あなたの側に移動して、両手であなたの腕をしっかりと抱きました。風が止んでもなお衰えていないことに気づき、彼女は真剣に窓の外を眺めた。――「今手を離したら、また揺れてしまいますから。このままが一番安全なんです。頂上に着いてからも……もう少しだけ、借りていてもいいですか？」",
     "tags": [
-      "cream_winter_coat",
-      "burgundy_scarf",
       "sitting_in_cable_car",
       "hugging_viewer_arm",
       "both_arms",
@@ -38,7 +36,10 @@
       "snowy_mountains",
       "winter",
       "diffused_daylight",
-      "medium_shot"
+      "medium_shot",
+      "cream_hooded_duffle_coat",
+      "burgundy_knit_scarf",
+      "fair_isle_pattern"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

@@ -1,28 +1,21 @@
 {
   "kind": "outfit",
   "id": "kisara_engage_kiss/oversized_white_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 282,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kisara_engage_kiss",
     "outfit": {
       "id": "oversized_white_shirt",
-      "name": "白衬衫私服",
+      "name": "宽大白衬衫居家造型",
       "tokens": [
-        "oversized_shirt",
-        "white_shirt",
-        "dress_shirt",
-        "unbuttoned",
-        "open_front",
-        "shirttail",
-        "bare_chest",
-        "bare_midriff",
-        "bare_legs",
-        "night_shirt"
+        "oversized white shirt",
+        "open front",
+        "long shirttails"
       ],
-      "prose": "wearing an oversized white dress shirt worn alone as a night shirt, fully unbuttoned with the long tails falling to mid-thigh",
+      "prose": "an oversized white cotton dress shirt worn open as a night shirt, with long tails reaching mid-thigh",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

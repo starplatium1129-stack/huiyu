@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "albedo_overlord/hermes_black_armor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 706,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "albedo_overlord",
     "outfit": {
       "id": "hermes_black_armor",
       "name": "全覆式三层纯黑重铠赫尔墨斯",
-      "prose": "her full black plate armor, Hermes Trismegistus, with spiked pauldrons and luminous purple seams; its horned helmet is retracted to leave her face visible",
+      "prose": "her full black plate armor, Hermes Trismegistus, with spiked pauldrons and luminous purple seams; its helmet is retracted to leave her face visible",
       "tokens": [
-        "black armor",
+        "black plate armor",
         "full armor",
-        "pauldrons"
+        "spiked pauldrons",
+        "purple glowing seams"
       ]
     }
   }

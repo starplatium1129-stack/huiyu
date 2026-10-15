@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "fern_frieren/town_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "fern_frieren",
     "outfit": {
       "id": "town_casual",
-      "name": "城镇甜品便服",
-      "prose": "a soft knitted cardigan over a blouse and a long pleated skirt, with purple hair tied half up",
+      "name": "雾紫针织与深梅色褶裙",
+      "prose": "a soft muted-lilac cardigan over a cream blouse with a small neck ribbon, paired with a long plum pleated skirt",
       "tokens": [
-        "cardigan",
-        "long_skirt",
-        "blouse",
-        "ribbon",
-        "half_updo"
+        "lilac cardigan",
+        "cream blouse",
+        "plum pleated skirt",
+        "ribbon"
       ]
     }
   }

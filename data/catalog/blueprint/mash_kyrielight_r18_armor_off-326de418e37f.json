@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_armor_off",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 208,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -37,7 +37,7 @@
       "1girl",
       "solo",
       "adult Mash",
-      "open bodysuit",
+      "open combat bodysuit",
       "bare breasts",
       "sitting",
       "zipper",
@@ -45,7 +45,7 @@
       "locker bench"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "combat_armor",
+    "outfitId": "combat_undersuit",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [],

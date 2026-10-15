@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "asuka_langley/red_sleep_camisole",
+  "revision": 1,
+  "sortOrder": 1361,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "asuka_langley",
+    "outfit": {
+      "id": "red_sleep_camisole",
+      "name": "绯红薄纱吊带衫",
+      "tokens": [
+        "red camisole",
+        "sheer fabric"
+      ],
+      "prose": "A scarlet camisole in lightweight sheer fabric with fine shoulder straps.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

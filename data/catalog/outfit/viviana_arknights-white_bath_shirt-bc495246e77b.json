@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/white_bath_shirt",
+  "revision": 1,
+  "sortOrder": 1451,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "id": "white_bath_shirt",
+      "name": "白色薄衬衫",
+      "tokens": [
+        "white shirt",
+        "lightweight fabric"
+      ],
+      "prose": "A plain lightweight white shirt with small pearl buttons.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/sfw_garden",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 968,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
       "id": "sfw_garden",
-      "name": "庭院休憩长裙",
-      "prose": "an opaque white ankle-length dress with a light blue cardigan",
+      "name": "月白长裙与冰蓝短开衫",
+      "prose": "An opaque white cotton-silk ankle-length dress with a softly gathered waist, layered under a cropped ice-blue cardigan with small pearl buttons.",
       "tokens": [
-        "white_dress",
-        "long_dress",
-        "blue_cardigan"
+        "white dress",
+        "ankle-length dress",
+        "light blue cardigan",
+        "pearl buttons"
       ],
       "default": false,
       "isDefault": false

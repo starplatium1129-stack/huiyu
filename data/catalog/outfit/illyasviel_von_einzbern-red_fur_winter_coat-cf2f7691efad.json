@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "illyasviel_von_einzbern/red_fur_winter_coat",
+  "revision": 1,
+  "sortOrder": 1381,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "illyasviel_von_einzbern",
+    "outfit": {
+      "id": "red_fur_winter_coat",
+      "name": "深红毛边冬大衣",
+      "tokens": [
+        "red coat",
+        "fur trim"
+      ],
+      "prose": "A deep-red winter coat with a thick fur-trimmed collar.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_red_sweater_lift",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yor_r18_bedroom_red_sweater_lift",
     "characterId": "yor_forger",
     "title": "约尔·福杰 · 卧室床沿·大红毛衣掀起与真空微醺",
     "description": "【约尔 · 卧室床沿·大红毛衣掀起与真空微醺】主卧昏暗的大床上，微醺的约尔轻咬着大红色露背粗线毛衣的下摆高高掀起，丰满饱满的雪白胸脯与毫无遮掩的娇躯在视线下一览无余。她眼神迷离呼吸急促——「劳埃德先生……我的身体好热……请尽情对我下达‘任务指令’吧……」",
-    "outfitId": "off_shoulder_red_sweater",
+    "outfitId": "red_sweater_black_skirt",
     "sceneTags": [
       "bedroom",
       "bed_edge",

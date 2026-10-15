@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1407,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "扣下工作手机，挖起第一勺布丁，放松肩膀。",
     "adult": false,
@@ -25,6 +25,7 @@
     "outfitId": "sfw_casual",
     "promptProse": "She cradles the open pudding cup in one hand and lifts the first spoonful with the other beneath the storefront light; her work phone lies face-down beside the bag.",
     "promptTokens": [
+      "side ponytail",
       "pudding",
       "spoon",
       "bench",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_fashion_fitting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "试衣间镜前半褪上衣回眸坏笑",
     "adult": true,
@@ -27,10 +27,11 @@
     "outfitId": "fashion_casual",
     "promptProse": "Yvonne reaches behind to free the zipper while pressing her other hand to her inner thigh beside an opaque mirror, her tail curled clear of her legs.",
     "promptTokens": [
+      "silver belt",
       "adult",
       "lowered black top",
       "topless",
-      "skirt",
+      "grey asymmetric skirt",
       "hand behind back",
       "hand on thigh",
       "sunglasses on head",

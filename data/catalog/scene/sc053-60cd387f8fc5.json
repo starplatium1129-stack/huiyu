@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc053",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Seated beside the viewer on the laundromat bench, she rests her head on their shoulder and watches the turning dryer; pale winter window light crosses their adjoining sleeves.",
     "auditRevision": "audit-v25-2026-08-26-batch3",
@@ -21,15 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white t-shirt, denim shorts, black tights, sitting, bench, laundromat, window light, medium shot",
+    "prompt": "1girl, shiki_natsume, white ringer t-shirt, charcoal ribbed collar, high waist denim shorts, black tights, sitting, bench, laundromat, window light, medium shot",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 烘干结束前的十分钟】冬日下午的自助洗衣房只剩滚筒转动的低响。夏目坐在长椅上看着倒计时，困意上来时不自觉靠到你肩上。醒来发现姿势后，她没有立刻坐直，只把视线移向旋转的衣物——「还有十分钟，移动反而麻烦。你就暂时保持不动……如果肩膀酸了，可以提前说。」",
     "storyJa": "【夏目・乾燥終了10分前】冬の午後、セルフサービスのランドリールームに残るのは、ドラムが回る低い音だけだ。夏目はベンチに座ってカウントダウンを見守った。眠くなってくると無意識にあなたの肩にもたれかかってきました。目が覚めて自分の姿勢に気づいた後、彼女はすぐには正座せず、回転する衣服に目を移しただけでした。――「あと十分だから、動くほうが面倒。しばらくそのままでいて……肩がつらくなったら、早めに言って。」",
     "tags": [
       "mole_under_eye",
-      "t_shirt",
-      "denim_shorts",
       "sheer_black_tights",
       "laundromat",
       "leaning_on_shoulder",
@@ -37,7 +35,10 @@
       "bench",
       "medium_shot",
       "sneakers",
-      "window_light"
+      "window_light",
+      "white_ringer_t-shirt",
+      "charcoal_ribbed_collar",
+      "high_waist_denim_shorts"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_teacher",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 456,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "法袍半褪斜倚在床上",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot, side view",
     "category": "成人",
     "characterId": "roxy_migurdia",
-    "description": "【洛琪希 · 魔导教师的私人时间】昏暗的单身宿舍里，褪去宽大法袍的洛琪希仅着内衣斜倚在床上，水蓝色的长发凌乱地铺在枕间。她红着脸将头顶的魔女帽往下压了压遮住眼睛——「身为导师……却在成年同事面前露出这种毫无防备的模样……请不要一直盯着我看，太令人害羞了。」",
+    "description": "【洛琪希 · 魔导教师的私人时间】昏暗的单身宿舍里，成年洛琪希褪去衣装侧卧在床上，头枕摊开的魔导书，水蓝发辫散在枕间。油灯旁的小型水系法术轻轻颤动；她红着脸望向成年同伴——「身为导师……却在成年同事面前露出这种毫无防备的模样……请不要一直盯着我看，太令人害羞了。」",
     "id": "roxy_migurdia_r18_teacher",
     "kreaStyleHint": "",
     "lighting": "warm oil lamp and soft fireplace glow",
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "lingerie_only",
+    "outfitId": "unclothed",
     "promptProse": "Adult Roxy rests her head on the open grimoire and steadies it while touching herself, a small water spell trembling above the study bed.",
     "promptTokens": [
       "nude",

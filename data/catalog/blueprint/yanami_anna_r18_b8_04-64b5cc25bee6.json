@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1677,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_04",
     "title": "八奈见杏菜 · 假装不在意后的被单失恋独奏 ·「为什么……青梅竹马总是赢不过天降啊……」",
@@ -52,7 +52,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "nsfw_nude",
     "coverageTags": [
       "nsfw",
       "self_control",

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "cc_code_geass/white_bath_camisole",
+  "revision": 1,
+  "sortOrder": 1362,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "cc_code_geass",
+    "outfit": {
+      "id": "white_bath_camisole",
+      "name": "纯白细带吊带衫",
+      "tokens": [
+        "white camisole",
+        "thin straps"
+      ],
+      "prose": "A plain white camisole with narrow shoulder straps and a clean neckline.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

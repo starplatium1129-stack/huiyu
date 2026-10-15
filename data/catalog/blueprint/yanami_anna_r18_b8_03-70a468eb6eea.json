@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1676,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_03",
     "title": "八奈见杏菜 · 文艺社零食桌百褶裙纽扣崩飞事故 ·「呜哇！裙子纽扣真的崩掉了！温水快帮我挡住！」",
@@ -38,7 +38,7 @@
       "pleated skirt",
       "broken button",
       "skirt down",
-      "print panties",
+      "strawberry print panties",
       "bent over",
       "looking back",
       "potato chips",
@@ -54,7 +54,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "pleated_skirt",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

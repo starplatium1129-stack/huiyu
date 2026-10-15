@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_barefoot_sofa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 327,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hatsune_miku_r18_barefoot_sofa",
     "title": "初音未来 · 赤足沙发",
@@ -37,7 +37,8 @@
       "reclining",
       "sofa",
       "fairy lights",
-      "afternoon"
+      "afternoon",
+      "magenta zipper"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -47,7 +48,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@rella",
-    "outfitId": "street",
+    "outfitId": "teal_jacket_only",
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"

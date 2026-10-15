@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 900,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "战栗的龙卷·圣洁花嫁",
-      "prose": "a black-and-emerald bridal gown with a floating layered veil, rose embroidery and polished black shoes",
+      "name": "翡翠黑玫瑰花嫁",
+      "prose": "a black-and-emerald bridal gown with sharp panel lines, rose embroidery and a layered veil, paired with polished black shoes",
       "tokens": [
-        "wedding_dress",
-        "emerald_gown",
-        "layered_veil",
-        "rose_embroidery",
-        "black_shoes"
+        "black and green wedding dress",
+        "layered veil",
+        "rose embroidery",
+        "black shoes"
       ],
       "default": false,
       "isDefault": false

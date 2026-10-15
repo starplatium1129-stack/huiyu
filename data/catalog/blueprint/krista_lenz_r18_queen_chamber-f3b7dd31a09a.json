@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_queen_chamber",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "落地窗台前立姿伸手回眸微笑",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "queen_casual",
+    "outfitId": "nsfw_nude",
     "promptProse": "Adult Historia raises both knees on the silk bed, holding one thigh with her ringed hand while fingering herself with the other.",
     "promptTokens": [
       "1girl",

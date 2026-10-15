@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "casual",
-      "name": "便服",
-      "prose": "a soft casual outfit off duty",
+      "name": "雾蓝收腰针织与藏蓝中裙",
+      "prose": "a mist-blue fine-knit sweater with fitted ribbed cuffs and a narrow white lace neckline, tucked into a high-waist navy A-line midi skirt",
       "tokens": [
-        "casual_clothes",
-        "sweater",
-        "skirt"
+        "light blue sweater",
+        "ribbed cuffs",
+        "navy skirt",
+        "high-waist skirt",
+        "white lace trim"
       ],
       "isDefault": false,
       "default": false

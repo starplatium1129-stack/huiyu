@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/city_rider",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 363,
   "createdAt": null,
-  "updatedAt": "2026-10-05T06:08:35.071093+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "default": false,
       "id": "city_rider",
       "isDefault": false,
-      "name": "城市骑手（KFC联动）",
-      "prose": "a red and white delivery rider jacket with a baseball cap, white t-shirt, black shorts and red-striped socks",
+      "name": "城市骑手红白配送装",
+      "prose": "Her red-and-white delivery rider jacket over a white T-shirt and black shorts, with a baseball cap and red-striped socks.",
       "tokens": [
-        "delivery_uniform",
-        "red_clothes",
-        "white_clothes",
-        "baseball_cap",
-        "shorts"
+        "red and white jacket",
+        "white t-shirt",
+        "black shorts",
+        "baseball cap",
+        "striped socks"
       ]
     }
   }

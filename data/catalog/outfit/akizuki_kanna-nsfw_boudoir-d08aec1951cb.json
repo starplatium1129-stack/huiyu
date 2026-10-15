@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 634,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
       "default": false,
       "id": "nsfw_boudoir",
       "isDefault": false,
-      "name": "明月栞那·成人私密造型",
-      "prose": "a private adult ensemble built around dressing_room, garter_straps, completely_nude",
+      "name": "无衣休息状态",
+      "prose": "No clothing.",
       "tokens": [
-        "dressing_room",
-        "garter_straps",
-        "completely_nude"
+        "nude"
       ]
     }
   }

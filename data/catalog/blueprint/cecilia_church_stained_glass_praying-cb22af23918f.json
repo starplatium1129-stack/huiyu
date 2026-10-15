@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "cecilia_church_stained_glass_praying",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 835,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
-    "action": "双手合十闭目祈祷，金发在圣光下熠熠生辉，修女服黑白分明，神圣纯洁得令人屏息",
+    "action": "双手合十闭目祈祷，金发在圣光下熠熠生辉，白色修女袍以金边勾勒，神圣纯洁得令人屏息",
     "adult": false,
     "camera": "cowboy shot, kneeling at cathedral altar under stained glass light",
     "category": "日常羁绊",

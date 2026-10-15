@@ -1,21 +1,24 @@
 {
   "kind": "outfit",
   "id": "asuma_toki/casual_maid",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 499,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asuma_toki",
     "outfit": {
       "default": false,
       "id": "casual_maid",
       "isDefault": false,
-      "name": "日常便服",
-      "prose": "a simple black dress with a light jacket and small headset",
+      "name": "冰蓝短夹克与黑色直筒裙",
+      "prose": "a clean black shift dress beneath a cropped ice-blue jacket with a silver zipper and squared cuffs, paired with her small headset",
       "tokens": [
         "black dress",
-        "jacket",
+        "shift dress",
+        "light blue jacket",
+        "cropped jacket",
+        "silver zipper",
         "headset"
       ]
     }

@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "default": false,
       "id": "sfw_beach",
       "isDefault": false,
-      "name": "甘露寺蜜璃·海滨泳装",
-      "prose": "a pink-and-green floral swimsuit with a light wrap skirt and ribbon sandals",
+      "name": "樱粉叶绿花纹连体泳装",
+      "prose": "An opaque sakura-pink one-piece swimsuit with small leaf-green blossoms, a light matching wrap skirt and ribbon-tied sandals.",
       "tokens": [
-        "floral_swimsuit",
-        "pink_green_swimsuit",
-        "wrap_skirt",
-        "ribbon_sandals"
+        "pink one-piece swimsuit",
+        "green floral print",
+        "wrap skirt",
+        "ribbon sandals"
       ]
     }
   }

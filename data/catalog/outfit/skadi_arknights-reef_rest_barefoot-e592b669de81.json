@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/reef_rest_barefoot",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 356,
   "createdAt": null,
-  "updatedAt": "2026-10-06T12:49:40.092646500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
       "default": false,
       "id": "reef_rest_barefoot",
       "isDefault": false,
-      "name": "礁石小憩·赤足战装",
-      "prose": "her black high-cut sleeveless bodysuit with red accents, barefoot",
+      "name": "赤足礁憩·红缘黑战衣",
+      "prose": "Her black sleeveless hunter bodysuit with its red zipper and narrow red edging, worn without boots.",
       "tokens": [
-        "bodysuit",
-        "black_clothes",
-        "red_clothes",
+        "black bodysuit",
+        "sleeveless",
+        "red trim",
         "barefoot"
       ]
     }

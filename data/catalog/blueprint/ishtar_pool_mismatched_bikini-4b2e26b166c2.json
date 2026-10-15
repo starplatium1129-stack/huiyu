@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "ishtar_pool_mismatched_bikini",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 256,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "ishtar_pool_mismatched_bikini",
     "title": "伊什塔尔 · 泳池女王的不对称裁定·「两边不对称……才显女神品味」",
     "category": "海滨度假",
     "characterId": "ishtar_fate",
-    "description": "【夏日泳池·正午】不对称设计的黑白比基尼衬得女王蜂般的身段愈发张扬。伊什塔尔从水里跃出，水花在阳光下炸成金粉，落进躺椅时还在笑——「评、评审结果呢？本女神特意挑的不对称设计……才、才不是穿错了！没品味的人类，这可是美索不达米亚最新的流行！」",
+    "description": "【夏日泳池·正午】不对称设计的黑金比基尼衬得女王蜂般的身段愈发张扬。伊什塔尔从水里跃出，水花在阳光下炸成金粉，落进躺椅时还在笑——「评、评审结果呢？本女神特意挑的不对称设计……才、才不是穿错了！没品味的人类，这可是美索不达米亚最新的流行！」",
     "location": "夏日泳池",
     "action": "出水后坐稳在池畔躺椅，一手搭扶手、另一手摊掌邀请评审，湿发贴脸",
     "timeOfDay": "正午",
@@ -34,7 +34,11 @@
       "wet hair",
       "poolside",
       "sunlight",
-      "medium shot"
+      "medium shot",
+      "black and gold bikini",
+      "asymmetrical bikini",
+      "red sarong",
+      "gold tiara"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

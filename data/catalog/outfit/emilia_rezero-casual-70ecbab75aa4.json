@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 248,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "casual",
-      "name": "便服",
-      "prose": "a comfortable casual outfit",
+      "name": "浅紫花扣针织约会裙装",
+      "prose": "an ivory cotton short dress beneath a fitted lilac cardigan with small white flower-shaped buttons",
       "tokens": [
-        "casual_clothes",
-        "dress",
-        "cardigan"
+        "ivory dress",
+        "short dress",
+        "lilac cardigan",
+        "flower buttons"
       ],
       "default": false,
       "isDefault": false

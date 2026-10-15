@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/sfw_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 784,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "default": false,
       "id": "sfw_beach",
       "isDefault": false,
-      "name": "白银圭·海滨泳装",
-      "prose": "a slate-blue swimsuit with a light windbreaker and black headband",
+      "name": "蓝灰泳装与轻薄防风衣",
+      "prose": "A slate-blue swimsuit has clean black binding, beneath a lightweight pale-grey zip windbreaker.",
       "tokens": [
-        "slate_blue_swimsuit",
-        "light_windbreaker",
-        "black_headband"
+        "slate blue one-piece swimsuit",
+        "light grey windbreaker"
       ]
     }
   }

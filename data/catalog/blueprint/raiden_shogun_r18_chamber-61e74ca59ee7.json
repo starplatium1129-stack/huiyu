@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_chamber",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "raiden_shogun_r18_chamber",
     "title": "雷电将军 · 天守深闺的紫纱微颤",
@@ -29,7 +29,8 @@
     ],
     "promptProse": "Ei reclines against the purple silk pillows, her sheer negligee open as she touches herself with a tearful blush.",
     "promptTokens": [
-      "sheer babydoll",
+      "dark purple babydoll",
+      "sheer fabric",
       "open clothes",
       "topless",
       "on back",

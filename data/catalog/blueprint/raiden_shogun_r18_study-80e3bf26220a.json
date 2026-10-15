@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_study",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "raiden_shogun_r18_study",
     "title": "雷电将军 · 书斋墨夜",
@@ -29,7 +29,8 @@
     "promptProse": "The age-twenty-plus Ei braces one hand behind her on the floor cushions and moves the other beneath her robe, a bent leg holding the scattered decrees.",
     "promptTokens": [
       "adult",
-      "open robe",
+      "purple robe",
+      "open clothes",
       "topless",
       "on side",
       "knee up",
@@ -48,7 +49,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
-    "outfitId": "shogun_robes",
+    "outfitId": "purple_inner_robe",
     "sampleRating": "R18"
   }
 }

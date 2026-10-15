@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/prelude_to_transcendence",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 288,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
@@ -12,14 +12,14 @@
       "id": "prelude_to_transcendence",
       "isDefault": false,
       "name": "超然序曲（音律礼服）",
-      "prose": "a black and gold gothic rock tailcoat jacket with gold epaulets and chains over a black lace shirt, tight leather pants and high heel boots",
+      "prose": "a black tailcoat with gold epaulettes and chains over a black lace shirt, fitted leather trousers and high-heeled boots",
       "tokens": [
-        "tailcoat",
-        "black_clothes",
-        "gold_trim",
-        "lace_shirt",
-        "leather_pants",
-        "high_heels"
+        "black tailcoat",
+        "gold epaulettes",
+        "gold chains",
+        "black lace shirt",
+        "leather pants",
+        "high heel boots"
       ]
     }
   }

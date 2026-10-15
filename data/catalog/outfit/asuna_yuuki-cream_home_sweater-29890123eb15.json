@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "asuna_yuuki/cream_home_sweater",
+  "revision": 1,
+  "sortOrder": 1276,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "asuna_yuuki",
+    "outfit": {
+      "id": "cream_home_sweater",
+      "name": "木屋奶油绞花毛衣",
+      "tokens": [
+        "cream sweater",
+        "cable knit",
+        "oversized sweater"
+      ],
+      "prose": "An oversized cream cable-knit sweater with a soft ribbed collar and cuffs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

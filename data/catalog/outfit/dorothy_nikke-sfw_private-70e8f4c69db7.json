@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_private",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 997,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_private",
-      "name": "私人房间针织便装",
-      "prose": "a pale rose cardigan, white blouse and navy trousers",
+      "name": "浅玫瑰珍珠针织裤装",
+      "prose": "A pale-rose fine-knit cardigan with small pearl buttons, a white blouse and straight navy trousers.",
       "tokens": [
-        "rose_cardigan",
-        "white_blouse",
-        "navy_pants"
+        "rose cardigan",
+        "pearl buttons",
+        "white blouse",
+        "navy blue pants",
+        "straight-leg pants"
       ],
       "default": false,
       "isDefault": false

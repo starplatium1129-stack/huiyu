@@ -1,28 +1,21 @@
 {
   "kind": "outfit",
   "id": "illyasviel_von_einzbern/cozy_wool_blanket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "illyasviel_von_einzbern",
     "outfit": {
       "id": "cozy_wool_blanket",
-      "name": "羊绒毛毯裹身",
+      "name": "燕麦色厚羊毛毯",
       "tokens": [
-        "wool_blanket",
-        "wrapped_in_blanket",
-        "plush",
+        "oatmeal blanket",
         "wool",
-        "draped",
-        "thick_fabric",
-        "fluffy",
-        "cozy",
-        "soft_fabric",
-        "loungewear"
+        "fringe"
       ],
-      "prose": "wrapped in a thick soft wool blanket, plush fluffy wool fabric draped loosely around the body like a cocoon, warm neutral tone",
+      "prose": "A thick oatmeal wool blanket with a short, soft fringe.",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

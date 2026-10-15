@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "suou_amane/garage_repair_tanktop",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1156,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "suou_amane",
     "outfit": {
       "id": "garage_repair_tanktop",
-      "name": "车库维修黑背心与牛仔短裤",
+      "name": "黑色工字背心维修装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
-      "prose": "a black racerback tank top and denim shorts, with her leather jacket removed for garage work",
+      "prose": "a black cotton racerback tank top and denim shorts with reinforced tool-pocket edges",
       "tokens": [
-        "black tank top",
-        "denim shorts"
+        "black racerback tank top",
+        "denim shorts",
+        "reinforced pockets"
       ]
     }
   }

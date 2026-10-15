@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_tea_change",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 898,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "半解礼装回眸",
     "adult": true,
@@ -36,7 +36,9 @@
       "leg on bench",
       "ribbon",
       "hand between legs",
-      "changing room"
+      "changing room",
+      "white gown",
+      "gold embroidery"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

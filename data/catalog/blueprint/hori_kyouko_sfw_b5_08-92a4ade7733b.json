@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_08",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1557,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_08",
     "title": "堀京子 · 冬夜被炉里的橘子",
@@ -42,7 +42,8 @@
       "orange",
       "kotatsu",
       "television light",
-      "medium shot"
+      "medium shot",
+      "hair down"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

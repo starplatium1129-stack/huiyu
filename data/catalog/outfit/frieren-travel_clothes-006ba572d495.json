@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "frieren/travel_clothes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "travel_clothes",
-      "name": "旅行装",
-      "prose": "a practical traveler's cloak over simple clothes",
+      "name": "白金短斗篷旅行装",
+      "prose": "A white travel cloak with narrow gold edging and a plain brown clasp, over a cream jacket, charcoal trousers and brown boots.",
       "tokens": [
-        "cloak",
-        "jacket",
-        "pants",
-        "traveling_clothes"
+        "white cloak",
+        "gold trim",
+        "brown clasp",
+        "cream jacket",
+        "charcoal pants",
+        "brown boots"
       ],
       "isDefault": false,
       "default": false

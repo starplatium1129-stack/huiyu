@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "akizuki_kanna/black_maid_uniform",
+  "revision": 1,
+  "sortOrder": 1356,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "akizuki_kanna",
+    "outfit": {
+      "id": "black_maid_uniform",
+      "name": "黑色女仆裙与白围裙",
+      "tokens": [
+        "black maid dress",
+        "white apron",
+        "frilled apron",
+        "black thighhighs",
+        "garter straps"
+      ],
+      "prose": "A fitted black maid dress with a white ruffled apron and black thighhighs held by garter straps.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

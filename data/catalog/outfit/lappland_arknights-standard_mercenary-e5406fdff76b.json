@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/standard_mercenary",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 387,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "default": true,
       "id": "standard_mercenary",
       "isDefault": true,
-      "name": "罗德岛作战服",
-      "prose": "an open grey trench coat with a ragged hem over a white tank top and black shorts, a thigh-strapped harness, combat boots, fingerless gloves and paired sword sheaths",
+      "name": "灰风衣双鞘佣兵装",
+      "prose": "An open gray trench coat with a ragged hem over a white tank top and black shorts, a thigh-strapped harness, combat boots, fingerless gloves and paired sword sheaths.",
       "tokens": [
-        "grey trench coat",
+        "gray trench coat",
+        "ragged hem",
         "white tank top",
         "black shorts",
-        "harness",
-        "thigh straps",
+        "thigh harness",
         "combat boots",
         "fingerless gloves",
-        "dual swords"
+        "paired sword sheaths"
       ]
     }
   }

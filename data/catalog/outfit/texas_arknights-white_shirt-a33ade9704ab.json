@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "texas_arknights/white_shirt",
+  "revision": 1,
+  "sortOrder": 1467,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "texas_arknights",
+    "outfit": {
+      "id": "white_shirt",
+      "name": "白色府绸衬衫",
+      "tokens": [
+        "white poplin shirt",
+        "concealed placket"
+      ],
+      "prose": "a white poplin shirt with a concealed placket",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

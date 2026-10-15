@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/knight_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "knight_dress",
-      "name": "骑士裙装",
-      "prose": "her blue armored dress over a white underdress, with a blue cuirass and long white gloves",
+      "name": "骑士王蓝白铠裙",
+      "prose": "the blue knight dress over a white underdress, with a polished silver breastplate and long white gloves",
       "tokens": [
         "blue dress",
-        "armor",
-        "white gloves"
+        "white underskirt",
+        "silver armor",
+        "breastplate",
+        "white elbow gloves"
       ],
       "default": true,
       "isDefault": true

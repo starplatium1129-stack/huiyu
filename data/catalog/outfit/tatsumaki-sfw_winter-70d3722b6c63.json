@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/sfw_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 898,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
       "id": "sfw_winter",
-      "name": "冬夜温暖家居装",
-      "prose": "a cream turtleneck sweater and loose green trousers",
+      "name": "奶油高领与松绿居家裤",
+      "prose": "a cream ribbed turtleneck sweater and loose pine-green lounge trousers",
       "tokens": [
-        "cream_sweater",
-        "turtleneck",
-        "green_pants"
+        "cream turtleneck",
+        "ribbed sweater",
+        "green pants"
       ],
       "default": false,
       "isDefault": false

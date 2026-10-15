@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/red_delivery_windbreaker",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 369,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "default": false,
       "id": "red_delivery_windbreaker",
       "isDefault": false,
-      "name": "极速派送·红色防风外套",
-      "prose": "a red lightweight delivery windbreaker over a black utility shirt, reinforced dark cargo pants and chunky sneakers",
+      "name": "极速派送红色轻量风衣",
+      "prose": "A lightweight scarlet nylon windbreaker with narrow reflective piping over a black utility shirt, reinforced dark cargo pants and chunky sneakers.",
       "tokens": [
-        "red_windbreaker",
-        "utility_shirt",
-        "cargo_pants",
+        "red windbreaker",
+        "black shirt",
+        "dark cargo pants",
         "sneakers",
-        "delivery_uniform"
+        "reflective trim"
       ]
     }
   }

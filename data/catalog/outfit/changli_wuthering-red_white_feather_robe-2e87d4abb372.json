@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "changli_wuthering/red_white_feather_robe",
+  "revision": 1,
+  "sortOrder": 1163,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "changli_wuthering",
+    "outfit": {
+      "id": "red_white_feather_robe",
+      "name": "红白羽饰长袍",
+      "tokens": [
+        "red and white robe",
+        "feather trim",
+        "tassel"
+      ],
+      "prose": "a red-and-white long robe with feather edging and a tasselled fastening",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

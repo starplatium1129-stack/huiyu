@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mahiru/white_nightgown",
+  "revision": 1,
+  "sortOrder": 1233,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiina_mahiru",
+    "outfit": {
+      "id": "white_nightgown",
+      "name": "宽松白色睡裙",
+      "tokens": [
+        "white nightgown",
+        "loose dress"
+      ],
+      "prose": "a loose white nightgown",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

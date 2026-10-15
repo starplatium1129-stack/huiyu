@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/winter_outfit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "winter_outfit",
-      "name": "冬日大衣",
+      "name": "梅色滚边冬日大衣",
       "tokens": [
-        "matou_sakura_winter_outfit",
-        "winter_coat",
-        "long_sleeves",
-        "skirt",
-        "pink_umbrella"
+        "gray wool coat",
+        "plum piping",
+        "cream sweater",
+        "plum skirt",
+        "brown boots"
       ],
-      "prose": "wearing a warm winter outfit with a long coat over a soft skirt, layered and warm for cold rainy days",
+      "prose": "A soft gray wool coat with restrained plum piping over a cream sweater and plum skirt, with brown boots.",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

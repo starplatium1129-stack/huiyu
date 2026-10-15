@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/cozy_fluffy_pajamas",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 372,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
       "default": false,
       "id": "cozy_fluffy_pajamas",
       "isDefault": false,
-      "name": "【小憩时光】软绵绵小狐狸居家睡衣",
-      "prose": "a pastel fleece loungewear set in cream white, butter yellow and peach pink: an extremely oversized fluffy hoodie with a hood and matching fleece shorts, soft cozy pajamas",
+      "name": "奶油黄绒面居家套装",
+      "prose": "A cream fleece hoodie with butter-yellow cuffs pairs with matching shorts; a small lily-shaped stitch marks the pocket.",
       "tokens": [
+        "cream hoodie",
+        "yellow trim",
         "fleece",
-        "pajamas",
-        "hoodie",
-        "pastel",
-        "loungewear"
+        "matching shorts"
       ]
     }
   }

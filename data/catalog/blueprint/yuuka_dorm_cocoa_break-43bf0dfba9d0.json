@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_dorm_cocoa_break",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 946,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hayase_yuuka",
     "outfitId": "pajamas_loungewear",
@@ -22,7 +22,8 @@
       "closed book",
       "table",
       "dorm room",
-      "lamplight"
+      "lamplight",
+      "low twintails"
     ],
     "camera": "medium shot, cocoa mug in both hands and closed ledger beside her",
     "lighting": "床头小灯照亮杯口热气的暖光",

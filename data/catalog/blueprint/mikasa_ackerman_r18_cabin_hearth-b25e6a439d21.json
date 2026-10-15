@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_cabin_hearth",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 988,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "木屋阳光窗台边解衣倚坐回眸凝视",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【三笠 · 森林木屋阳光窗台红围巾】宁静木屋的晨光窗台旁，三笠红色围巾松散地挂在颈间，薄衫滑落，瓷白平坦的小腹、优美纤细的腰线与挺拔饱满的胸型在充沛阳光下极具美感，眼眸流淌着独属于你的温柔。",
+    "description": "【三笠 · 森林木屋阳光窗台红围巾】宁静木屋的晨光窗台旁，三笠红色围巾松散地挂在颈间，薄衫已褪下，瓷白平坦的小腹、优美纤细的腰线与挺拔饱满的胸型在充沛阳光下极具美感，眼眸流淌着独属于你的温柔。",
     "id": "mikasa_ackerman_r18_cabin_hearth",
     "kreaStyleHint": "",
     "lighting": "warm hearth light with soft cabin fill",
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "casual",
+    "outfitId": "scarf_boots_only",
     "promptProse": "Adult Mikasa places one boot on a stool and draws her scarf around the raised thigh with both hands, standing nude beside the hearth.",
     "promptTokens": [
       "1girl",
@@ -33,7 +33,7 @@
       "adult Mikasa",
       "nude",
       "red scarf",
-      "boot",
+      "black boots",
       "leg up",
       "stool",
       "cabin",

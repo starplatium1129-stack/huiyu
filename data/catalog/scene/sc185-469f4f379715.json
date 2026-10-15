@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc185",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 182,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She lies beneath the viewer on the futon with the yukata loosened to her waist, her arms hooked around their neck.",
     "auditRevision": "careful-batch04-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, open yukata, bare chest, bare legs, wet skin, on back, pinned down, arms around neck, futon, tatami, lantern light",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, open dusty pink cotton yukata, camellia print, bare chest, bare legs, wet skin, on back, pinned down, arms around neck, futon, tatami, lantern light",
     "rating": "R18",
     "season": "夏",
     "story": "【夏目 · 温泉浴衣解开极致沦陷】夏日祭典结束后的传统温泉旅馆，窗外传来祭典散场后的隐隐人声。洗完澡后的夏目身穿宽松的棉质浴衣，软绵绵地躺在散发着清香的榻榻米床铺上。因为被你霸道地压在身下，她浴衣的腰带已被完全扯开，整件衣服凌乱地滑落到腰际，大片雪白的胸口、精致的锁骨和毫无防备的长腿毫无保留地暴露在灯光下。她眼角的泪痣因为极度动情被红晕染透，一边无力地勾住你的脖子承受你的索求，一边娇喘着呻吟——「哈啊...你这变态笨蛋...把人家的浴衣弄得这么乱...今晚...就彻底随你的便了...唔嗯...」",
@@ -36,7 +36,9 @@
       "pinned_under_viewer",
       "hooking_neck",
       "paper_lantern",
-      "close_up"
+      "close_up",
+      "camellia_print",
+      "open_dusty_pink_cotton_yukata"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

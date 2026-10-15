@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_adventurer_campfire",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 481,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跪在铺盖旁，双手拉动皮甲肩带。",
     "adult": true,
@@ -24,7 +24,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "dead_end_adventurer",
+    "outfitId": "travel_leather_armor",
     "promptProse": "Kneeling beside the bedroll, she pulls the stubborn shoulder strap with both hands. Morning sun through the trees catches the unbuckled armor and camp gear.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1697,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_03",
     "title": "艾尔菲利亚 · 礼装被冰晶冻住拉链的更衣事故 ·「威尔快来……冰之精灵恶作剧把拉链冻结了」",
@@ -33,7 +33,7 @@
     "promptProse": "Her gown zipper has frozen shut; leaning over the crystal vanity, she looks back for help thawing it. Morning light refracts through the icicles.",
     "promptTokens": [
       "adult",
-      "gown",
+      "light blue robe",
       "wardrobe malfunction",
       "topless",
       "bent over",
@@ -50,7 +50,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "sfw_tower",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

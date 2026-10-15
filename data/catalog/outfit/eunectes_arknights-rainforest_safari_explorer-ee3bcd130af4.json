@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "eunectes_arknights/rainforest_safari_explorer",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 337,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "eunectes_arknights",
     "outfit": {
       "default": false,
       "id": "rainforest_safari_explorer",
       "isDefault": false,
-      "name": "林间搜猎 / 阿卡胡拉丛林勘探轻装",
-      "prose": "an open khaki utility shirt over an olive sports bra, with a climbing harness, cargo pants and explorer boots",
+      "name": "雨林卡其勘探工装",
+      "prose": "An open khaki utility shirt over an olive sports bra, dark cargo trousers with orange reinforced stitching, a climbing harness and explorer boots.",
       "tokens": [
-        "utility shirt",
-        "sports bra",
+        "khaki utility shirt",
+        "olive sports bra",
         "cargo pants",
         "climbing harness",
-        "boots"
+        "orange stitching",
+        "work boots"
       ]
     }
   }

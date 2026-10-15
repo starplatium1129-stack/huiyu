@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc094",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She finishes a small turn, holding the gown hem with one hand and reaching toward the viewer with the other; soft window light spreads across the lined bodice and the full skirt in front of the fitting mirror.",
     "auditRevision": "careful-batch14-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through bodice, cropped dress",
-    "prompt": "1girl, ayachi_nene, wedding dress, white shoes, twirling, holding skirt, reaching, mirror, fitting room, full body",
+    "prompt": "1girl, ayachi_nene, white wedding dress, lined lace bodice, heart shaped neckline, full length chiffon skirt, pink waist ribbon, white shoes, twirling, holding skirt, reaching, mirror, fitting room, full body",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",
@@ -29,9 +29,6 @@
     "storyJa": "【寧々・大人のアフターストーリー・ウェディングドレスの1回転目】大人になった春の午後、寧々さんはブライダルショップで選んだドレスを試着しました。彼女は鏡の前に立っていましたが、まだ緊張していてあなたを見ることができませんでした。あなたが真剣に自分の気持ちを表現して初めて、彼女はスカートの裾を持ち上げて少し向きを変えました。白いガーゼが花のように広がり、彼女は目に幸せの涙を浮かべて手を差し出した――「それなら、これにします。本番の日も、今みたいにずっと私を見ていてくださいね。」",
     "tags": [
       "adult",
-      "opaque_white_wedding_dress",
-      "lined_lace_bodice",
-      "floor_length_skirt",
       "holding_dress_hem",
       "small_turn",
       "extending_hand",
@@ -43,7 +40,12 @@
       "soft_window_light",
       "afternoon",
       "full_body",
-      "standing"
+      "standing",
+      "white_wedding_dress",
+      "lined_lace_bodice",
+      "heart_shaped_neckline",
+      "full_length_chiffon_skirt",
+      "pink_waist_ribbon"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

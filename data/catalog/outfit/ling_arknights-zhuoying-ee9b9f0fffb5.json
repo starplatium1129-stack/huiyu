@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "ling_arknights/zhuoying",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 378,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ling_arknights",
     "outfit": {
       "default": false,
       "id": "zhuoying",
       "isDefault": false,
-      "name": "濯缨（素白羽衣）",
-      "prose": "a white feather-trimmed robe with wide sleeves and a long skirt embroidered with auspicious beasts",
+      "name": "濯缨瑞兽素白羽衣",
+      "prose": "A white feather-trimmed robe with wide sleeves and a long skirt embroidered with auspicious beasts.",
       "tokens": [
         "white hanfu",
         "wide sleeves",
         "feather trim",
-        "long skirt"
+        "long skirt",
+        "beast embroidery"
       ]
     }
   }

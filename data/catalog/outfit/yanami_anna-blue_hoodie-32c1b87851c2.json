@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yanami_anna/blue_hoodie",
+  "revision": 1,
+  "sortOrder": 1481,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yanami_anna",
+    "outfit": {
+      "id": "blue_hoodie",
+      "name": "浅蓝抽绳连帽衫",
+      "tokens": [
+        "light blue oversized hoodie",
+        "white drawstrings",
+        "ribbed cuffs"
+      ],
+      "prose": "a light-blue oversized hoodie with white drawstrings and ribbed cuffs",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

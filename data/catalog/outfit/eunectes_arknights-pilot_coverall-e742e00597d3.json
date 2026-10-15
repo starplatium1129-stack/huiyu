@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "eunectes_arknights/pilot_coverall",
+  "revision": 1,
+  "sortOrder": 1287,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "eunectes_arknights",
+    "outfit": {
+      "id": "pilot_coverall",
+      "name": "机甲驾驶连身工装",
+      "tokens": [
+        "dark green pilot suit",
+        "front zipper",
+        "black panels",
+        "orange piping"
+      ],
+      "prose": "A dark-green front-zip pilot suit with black reinforcement panels and narrow orange piping.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

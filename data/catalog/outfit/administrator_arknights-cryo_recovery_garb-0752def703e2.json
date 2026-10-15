@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/cryo_recovery_garb",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 432,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
       "default": false,
       "id": "cryo_recovery_garb",
       "isDefault": false,
-      "name": "休眠苏醒服",
-      "prose": "a minimalist white cryo-stasis recovery tunic with a loose collar exposing collarbones and bare feet",
+      "name": "白色黑滚边休眠恢复袍",
+      "prose": "a loose white sleeveless recovery tunic with a soft collar, narrow black piping and a single yellow fastening tab, worn barefoot",
       "tokens": [
-        "white_tunic",
-        "sleeveless_tunic",
-        "loose_clothes",
-        "collarbone",
-        "bare_legs",
+        "white tunic",
+        "sleeveless",
+        "loose clothes",
+        "black piping",
+        "yellow tab",
         "barefoot"
       ]
     }

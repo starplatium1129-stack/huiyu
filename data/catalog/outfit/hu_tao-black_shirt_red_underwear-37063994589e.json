@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "hu_tao/black_shirt_red_underwear",
+  "revision": 1,
+  "sortOrder": 1379,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hu_tao",
+    "outfit": {
+      "id": "black_shirt_red_underwear",
+      "name": "黑色短衫与红绳内搭",
+      "tokens": [
+        "black shirt",
+        "red panties",
+        "string panties"
+      ],
+      "prose": "A short black shirt and simple red string-tied briefs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

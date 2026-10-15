@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_inn_bath",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "frieren_r18_inn_bath",
     "title": "芙莉莲 · 旅店浴后·千年的精灵与炉火",
@@ -42,7 +42,9 @@
       "towel",
       "inn",
       "firelight",
-      "cowboy shot"
+      "cowboy shot",
+      "white robe",
+      "gold trim"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -52,7 +54,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
-    "outfitId": "casual",
+    "outfitId": "wizard_robe",
     "sampleRating": "R18"
   }
 }

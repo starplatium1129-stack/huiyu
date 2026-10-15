@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "artoria_pendragon/white_sleep_shirt",
+  "revision": 1,
+  "sortOrder": 1358,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "artoria_pendragon",
+    "outfit": {
+      "id": "white_sleep_shirt",
+      "name": "宽松白棉睡衬衫",
+      "tokens": [
+        "oversized white shirt",
+        "long sleeves"
+      ],
+      "prose": "An oversized white cotton button-front shirt with long sleeves and an unadorned collar.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

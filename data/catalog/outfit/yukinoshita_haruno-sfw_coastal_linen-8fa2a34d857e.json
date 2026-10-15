@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sfw_coastal_linen",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sfw_coastal_linen",
-      "name": "海滨亚麻衬衫套装",
-      "prose": "a buttoned ivory linen long-sleeved shirt, camel wide-leg linen trousers, flat leather sandals and sunglasses resting on her head",
+      "name": "象牙白亚麻海滨裤装",
+      "prose": "a buttoned ivory linen long-sleeved shirt, camel wide-leg linen trousers, flat leather sandals and sunglasses",
       "tokens": [
-        "ivory_linen_shirt",
-        "buttoned_shirt",
-        "long_sleeves",
-        "linen_pants",
-        "sandals",
-        "sunglasses_on_head"
+        "ivory linen shirt",
+        "long sleeves",
+        "camel linen pants",
+        "wide-leg pants",
+        "leather sandals",
+        "sunglasses"
       ],
       "isDefault": false,
       "isNsfw": false

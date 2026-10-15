@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "tomotake_yoshino/crimson_sheer_robe",
+  "revision": 1,
+  "sortOrder": 1447,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tomotake_yoshino",
+    "outfit": {
+      "id": "crimson_sheer_robe",
+      "name": "绯红真丝薄纱睡袍",
+      "tokens": [
+        "red robe",
+        "silk",
+        "sheer fabric"
+      ],
+      "prose": "A lightweight crimson silk-gauze robe with a narrow matching tie.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

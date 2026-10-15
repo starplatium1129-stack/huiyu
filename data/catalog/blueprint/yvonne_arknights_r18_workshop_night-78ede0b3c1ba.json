@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_workshop_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 742,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "工坊工作台上推墨镜晃尾坏笑",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "combat_outfit",
+    "outfitId": "black_string_bikini",
     "promptProse": "Yvonne pushes her sunglasses up onto her pink twin tails with a grin while perched on the polished workbench.",
     "promptTokens": [
       "black string bikini",

@@ -1,24 +1,22 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/bridal_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "bridal_dress",
-      "name": "纯白誓约露肩花嫁婚纱",
-      "prose": "an exquisite strapless white bridal gown with delicate lace embroidery, sheer translucent veil cascading over her golden braided updo, and an exposed sweetheart neckline",
+      "name": "纯白蕾丝誓约婚纱",
+      "prose": "a white strapless bridal gown with a fitted satin bodice, lace-embroidered skirt, long sheer veil and a small sapphire clasp at the waist",
       "tokens": [
-        "wedding_dress",
-        "bridal_veil",
-        "strapless_dress",
-        "bare_shoulders",
-        "cleavage",
-        "white_dress",
-        "lace_trim"
+        "white wedding dress",
+        "strapless dress",
+        "lace embroidery",
+        "bridal veil",
+        "sapphire brooch"
       ],
       "default": false,
       "isDefault": false

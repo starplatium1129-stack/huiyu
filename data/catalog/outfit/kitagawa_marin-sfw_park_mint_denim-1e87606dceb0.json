@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/sfw_park_mint_denim",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1128,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "id": "sfw_park_mint_denim",
-      "name": "游乐园薄荷外套牛仔装",
-      "prose": "a lightweight mint zip jacket over a white crew-neck T-shirt, loose cropped blue jeans and pink high-top canvas shoes, with a small cartoon hairband",
+      "name": "薄荷轻夹克与粉鞋牛仔装",
+      "prose": "A lightweight mint zip jacket over a white crew-neck T-shirt, loose cropped blue jeans and pink high-top canvas shoes, with a small cartoon hairband.",
       "tokens": [
-        "mint_zip_jacket",
-        "white_crew_neck_t_shirt",
-        "loose_cropped_blue_jeans",
-        "pink_high_top_canvas_shoes",
-        "cartoon_hairband"
+        "mint jacket",
+        "white t-shirt",
+        "blue jeans",
+        "cropped pants",
+        "pink high-top sneakers",
+        "cartoon hairband"
       ],
       "default": false,
       "isDefault": false

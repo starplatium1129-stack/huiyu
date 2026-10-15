@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_r18_suite_bed_mating_press_creampie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 946,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "侧卧天鹅绒大床半裹透光白纱睡袍若隐若现，抱枕蹭脸，单手在纱下深层自抚，金发如瀑铺散娇喘",
     "adult": true,
@@ -24,11 +24,11 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "white_silk_robe",
     "promptProse": "She curls on the oceanview bed, hugging a pillow against her cheek with one arm while the other hand rests beneath the robe hem. Warm bedside light meets faint window light above the dark sea.",
     "promptTokens": [
       "bedroom",
-      "sheer white robe",
+      "sheer white silk robe",
       "see-through",
       "halo",
       "lying",

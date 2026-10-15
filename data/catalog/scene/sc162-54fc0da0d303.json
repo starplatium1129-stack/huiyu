@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc162",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Kneeling astride the reclining viewer on the bed, she leans toward them for the morning kiss; light through the curtain outlines her loosened hair and the shoulders of the white shirt.",
     "auditRevision": "careful-batch11-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, oversized white shirt, off shoulder, no pants, kneeling, leaning forward, blush, bed, morning light, backlighting, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, fine blue pinstripes, button down collar, oversized white shirt, off shoulder, no pants, kneeling, leaning forward, blush, bed, morning light, backlighting, pov, close up, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R15",
     "season": "春",
     "story": "【成人 After Story · 宁宁】【成年 After Story · 宁宁 · 新婚晨间绝对沦陷】清晨的阳光透过白纱轻柔地泼洒在凌乱的床榻上。宁宁身上只穿着你那件松垮的白衬衫，纽扣大开，半露的香肩与若隐若现的精致锁骨散发着致命的诱惑。她满脸滚烫地跪伏在你身上，发带凌乱地散在一边，头顶的呆毛早因为极度的动情而软绵绵地瘩成了一个完美的爱心形状。她用近乎融化的迷离眼神俯视着你，急促地喘息着——「大色狼...一大清早就这么欺负人...魔女的早安吻...你还没给够呢...」",
@@ -42,7 +42,9 @@
       "ahoge",
       "sensual",
       "close_up",
-      "pov"
+      "pov",
+      "fine_blue_pinstripes",
+      "button_down_collar"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

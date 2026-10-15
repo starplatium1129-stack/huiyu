@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "kama_fate/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 179,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "迦摩·成人私密造型",
-      "prose": "a private adult ensemble built around sheer_cloth, palace, completely_nude",
+      "name": "黑纱金链神装",
+      "prose": "A flowing black sheer veil held with fine gold chains and a jeweled waist chain.",
       "tokens": [
-        "sheer_cloth",
-        "palace",
-        "completely_nude"
+        "black sheer veil",
+        "gold waist chain",
+        "gold jewelry"
       ],
       "default": false,
       "isDefault": false

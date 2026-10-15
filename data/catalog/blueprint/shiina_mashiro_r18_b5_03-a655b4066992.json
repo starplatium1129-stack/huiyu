@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_r18_b5_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1525,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "shiina_mashiro_r18_b5_03",
     "title": "椎名真白 · 卧室换衣穿反小裤裤的笨拙事故 ·「空太……胖次卡住了，教真白怎么穿」",
@@ -32,6 +32,8 @@
     ],
     "promptProse": "Mashiro braces over her study desk with her skirt lifted and patterned underwear caught around one thigh, looking back to ask for help dressing.",
     "promptTokens": [
+      "white pleated skirt",
+      "cat print panties",
       "adult",
       "1girl",
       "solo",
@@ -51,7 +53,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "white_pleated_skirt",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

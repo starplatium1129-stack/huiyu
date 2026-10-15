@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/hotel_trouser_suit",
+  "revision": 1,
+  "sortOrder": 1206,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "id": "hotel_trouser_suit",
+      "name": "旅店长裤套装",
+      "tokens": [
+        "suit",
+        "trousers"
+      ],
+      "prose": "a tailored suit with matching trousers",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

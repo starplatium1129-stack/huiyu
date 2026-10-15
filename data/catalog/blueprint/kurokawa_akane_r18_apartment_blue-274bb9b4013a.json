@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_apartment_blue",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "坐在窗边弯起一腿，一手伸向背后拉链，另一手留在裙内",
     "adult": true,
@@ -22,13 +22,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "daily_glasses",
+    "outfitId": "long_zip_dress",
     "promptProse": "Adult Akane reaches behind for her dress zipper while fingering herself beneath its loose skirt, seated beside the billowing curtains.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult",
-      "open dress",
+      "open long dress",
       "bare breasts",
       "sitting",
       "bent leg",

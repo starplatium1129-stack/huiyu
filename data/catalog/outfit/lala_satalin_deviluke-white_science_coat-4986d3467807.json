@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "lala_satalin_deviluke/white_science_coat",
+  "revision": 1,
+  "sortOrder": 1322,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "lala_satalin_deviluke",
+    "outfit": {
+      "id": "white_science_coat",
+      "name": "黄扣白色实验外套",
+      "tokens": [
+        "white lab coat",
+        "yellow fasteners",
+        "wide cuffs"
+      ],
+      "prose": "A white laboratory coat with bright yellow fasteners and wide cuffs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

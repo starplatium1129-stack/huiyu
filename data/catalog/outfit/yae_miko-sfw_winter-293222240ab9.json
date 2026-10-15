@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_winter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_winter",
-      "name": "初诣围巾和服",
-      "prose": "a warm plum kimono, cream wool scarf and closed winter sandals",
+      "name": "梅紫冬日和服与奶油围巾",
+      "prose": "A warm plum kimono has a subtle woven blossom pattern, paired with a cream wool scarf, white tabi and closed winter sandals.",
       "tokens": [
         "plum kimono",
         "cream wool scarf",
-        "winter sandals"
+        "white tabi",
+        "closed sandals"
       ],
       "default": false,
       "isDefault": false

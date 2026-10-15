@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_throne_spread_legs",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "jalter_r18_throne_spread_legs",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 漆黑王座·皮夹克大开与绝对支配",
     "description": "成年黑贞靠卧在黑色王座上，皮夹克松开，一条穿靴的腿搭在扶手，短旗杆横在腿上，黑色火光映着银发。",
-    "outfitId": "shinjuku_jacket_casual",
+    "outfitId": "leather_jacket_boots_only",
     "sceneTags": [
       "throne_room",
       "gothic_throne",

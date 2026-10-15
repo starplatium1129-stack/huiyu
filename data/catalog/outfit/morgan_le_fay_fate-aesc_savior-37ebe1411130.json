@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "morgan_le_fay_fate/aesc_savior",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": "2026-10-06T10:32:51.185026700+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "morgan_le_fay_fate",
     "outfit": {
       "id": "aesc_savior",
-      "name": "救世主梣",
-      "prose": "a blue Savior robe with an opaque capelet",
+      "name": "救世主梣蓝色披肩袍",
+      "prose": "A blue Savior robe with an opaque shoulder capelet and a pale lining visible at its folded edge.",
       "tokens": [
         "aesc (fate)",
-        "capelet",
-        "robe",
-        "blue_dress"
+        "blue robe",
+        "opaque capelet",
+        "white lining"
       ],
       "default": false,
       "isDefault": false

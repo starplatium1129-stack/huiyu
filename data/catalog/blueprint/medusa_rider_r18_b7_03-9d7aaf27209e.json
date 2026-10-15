@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 303,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_03",
     "title": "美杜莎 Rider · 锁链缠绕紧身皮衣拉链卡死的受力事故 ·「锁链缠死在拉链上了……Master，请不要用奇怪的眼神看我」",
@@ -34,7 +34,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "bodysuit",
+      "black leather bodysuit",
       "stuck zipper",
       "tangled chain",
       "cleavage",
@@ -51,7 +51,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "black_leather_bodysuit",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

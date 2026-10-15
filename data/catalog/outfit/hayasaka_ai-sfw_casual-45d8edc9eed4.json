@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 774,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "default": false,
       "id": "sfw_casual",
       "isDefault": false,
-      "name": "任务间隙便装",
-      "prose": "an opaque navy zip jacket, cream T-shirt, straight jeans and a blonde side ponytail",
+      "name": "藏蓝短夹克与直筒牛仔裤",
+      "prose": "An opaque cropped navy zip jacket over a cream crew-neck T-shirt, straight indigo jeans and clean white sneakers. Small silver zip pulls keep the practical outfit understated.",
       "tokens": [
-        "navy_jacket",
-        "t-shirt",
-        "jeans",
-        "side_ponytail"
+        "navy jacket",
+        "zipper",
+        "cream t-shirt",
+        "straight jeans",
+        "white sneakers"
       ]
     }
   }

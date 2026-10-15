@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/rose_sleep_gown",
+  "revision": 1,
+  "sortOrder": 1274,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "id": "rose_sleep_gown",
+      "name": "玫瑰粉酒红滚边睡裙",
+      "tokens": [
+        "pink nightgown",
+        "burgundy trim",
+        "thin straps"
+      ],
+      "prose": "A rose-pink nightgown with narrow straps and wine-red edging.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

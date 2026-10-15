@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_bridal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "八重神子·圣洁花嫁",
-      "prose": "a red-and-white shrine bridal kimono with a translucent veil and gold cords",
+      "name": "红白金绳花嫁和装",
+      "prose": "A white bridal kimono has a crimson lining and hem, tied with gold cords beneath a fine translucent veil.",
       "tokens": [
-        "red and white bridal kimono",
-        "sheer veil",
-        "gold cords"
+        "white bridal kimono",
+        "red trim",
+        "gold cords",
+        "sheer veil"
       ],
       "default": false,
       "isDefault": false

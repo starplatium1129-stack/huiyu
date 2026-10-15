@@ -1,24 +1,25 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/classic_bartender_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 359,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
       "default": false,
       "id": "classic_bartender_apron",
       "isDefault": false,
-      "name": "午夜特调经典调酒师工装围裙制服",
-      "prose": "a classic bartender outfit: a dark brown canvas half apron with leather harness straps over a crisp white short-sleeve collared shirt with a crimson ribbon tie at the collar",
+      "name": "白衬衫与深棕帆布调酒围裙",
+      "prose": "A crisp white short-sleeved collared shirt with a narrow crimson ribbon tie, paired with a dark-brown canvas half apron and sturdy leather harness straps.",
       "tokens": [
-        "apron",
-        "white_shirt",
-        "short_sleeves",
-        "ribbon_tie",
-        "bartender"
+        "white shirt",
+        "short sleeves",
+        "crimson ribbon tie",
+        "brown half apron",
+        "canvas",
+        "leather straps"
       ]
     }
   }

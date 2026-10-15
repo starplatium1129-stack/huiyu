@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/ivory_home_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1103,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
       "id": "ivory_home_apron",
       "default": false,
       "isDefault": false,
-      "name": "米白家居衬衫与豆绿围裙",
-      "prose": "a soft ivory cotton shirt with neatly rolled cuffs, pale-gray straight trousers, a muted pea-green linen apron tied in a flat waist bow and woven closed-toe house slippers",
+      "name": "米白棉衫与豆绿亚麻围裙",
+      "prose": "a soft ivory cotton shirt with neatly rolled cuffs, pale-grey straight trousers, a muted pea-green linen apron tied in a flat waist bow and woven closed-toe slippers",
       "tokens": [
-        "white_shirt",
-        "sleeves_rolled_up",
-        "grey_pants",
-        "green_apron",
-        "apron",
-        "waist_bow",
+        "ivory shirt",
+        "rolled sleeves",
+        "pale grey pants",
+        "pea green apron",
+        "waist bow",
         "slippers"
       ],
       "category": "日常衣装（创作）"

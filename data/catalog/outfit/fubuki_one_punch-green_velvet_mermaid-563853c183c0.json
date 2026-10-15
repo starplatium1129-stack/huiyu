@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/green_velvet_mermaid",
+  "revision": 1,
+  "sortOrder": 1178,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "green_velvet_mermaid",
+      "name": "深绿丝绒鱼尾礼服",
+      "tokens": [
+        "dark green velvet dress",
+        "mermaid dress",
+        "back zipper"
+      ],
+      "prose": "a fitted dark-green velvet mermaid gown with a back zipper",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_senpai_straddle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1436,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "utaha_nsfw_senpai_straddle",
     "title": "霞之丘诗羽 · 深夜书房·半解黑蕾丝与踩椅褪袜",
@@ -29,7 +29,7 @@
     "adultArtistHint": "@rella",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "outfitId": "sensual_lace_lingerie",
+    "outfitId": "black_camisole_tights",
     "sceneTags": [
       "study",
       "desk_lamp",
@@ -46,9 +46,9 @@
     "promptProse": "Utaha rolls pantyhose toward her raised ankle from the leather chair, her camisole slipped below her breasts in amber lamplight.",
     "promptTokens": [
       "adult Utaha Kasumigaoka",
-      "camisole",
-      "pantyhose",
-      "high heels",
+      "black lace camisole",
+      "black pantyhose",
+      "black high heels",
       "chair",
       "study",
       "night"

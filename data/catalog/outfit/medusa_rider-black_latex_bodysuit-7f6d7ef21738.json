@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "medusa_rider/black_latex_bodysuit",
+  "revision": 1,
+  "sortOrder": 1409,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "medusa_rider",
+    "outfit": {
+      "id": "black_latex_bodysuit",
+      "name": "黑色乳胶战术连体衣",
+      "tokens": [
+        "black latex bodysuit",
+        "highleg",
+        "front zipper"
+      ],
+      "prose": "A black latex high-cut bodysuit with a front zipper.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

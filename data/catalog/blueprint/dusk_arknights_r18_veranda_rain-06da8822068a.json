@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_veranda_rain",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 574,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独坐雨夜回廊，一手持墨碟、一手沿湿袍探向腿间，水墨游鱼环绕",
     "adult": true,
@@ -22,12 +22,12 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "neo_cyber_ink_techwear",
+    "outfitId": "black_ink_robe",
     "promptProse": "Adult Dusk sits against a wooden pillar with an ink dish in one hand and the other beneath the robe hem. Dim lantern light breaks across the wet floorboards where painted black koi spread.",
     "promptTokens": [
       "adult",
       "veranda",
-      "wet robe",
+      "wet black robe",
       "open clothes",
       "topless",
       "sitting",

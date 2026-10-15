@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/official_knights_of_blood_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
       "id": "official_knights_of_blood_uniform",
-      "name": "血盟骑士团红白战袍副团长装",
-      "prose": "her white Knights of the Blood Oath tunic with red crosses and silver breastplate accents, red pleated skirt and white thighhighs",
+      "name": "血盟骑士团红白战袍",
+      "prose": "A white Knights of the Blood tunic with red crosses and silver breastplate accents, a red pleated skirt and white thigh-high stockings.",
       "tokens": [
         "knights_of_the_blood_uniform",
         "white tunic",
         "red cross",
-        "red skirt",
+        "silver breastplate",
+        "red pleated skirt",
         "white thighhighs"
       ],
       "default": true,

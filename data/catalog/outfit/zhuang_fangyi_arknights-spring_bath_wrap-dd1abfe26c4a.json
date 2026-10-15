@@ -1,24 +1,21 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/spring_bath_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 428,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
       "default": false,
       "id": "spring_bath_wrap",
       "isDefault": false,
-      "name": "清泉透湿浴巾",
-      "prose": "a wet white bath towel wrapped snugly around her chest and hips, clinging translucent against damp skin",
+      "name": "白色亚麻浴巾",
+      "prose": "a plain white linen bath towel",
       "tokens": [
-        "towel",
-        "wet_clothes",
-        "translucent",
-        "bare_shoulders",
-        "wet"
+        "white towel",
+        "linen"
       ]
     }
   }

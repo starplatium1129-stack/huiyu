@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_r18_b9_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 804,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跪坐壁炉旁地毯，身体前倾，向画外伸手邀请拥抱",
     "adult": true,
@@ -26,10 +26,11 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "cream_hearth_cardigan",
     "promptProse": "Adult Masha kneels on the hearthside rug with her sweater parted, reaching toward the viewer for an embrace.",
     "promptTokens": [
-      "open sweater",
+      "cream cardigan",
+      "open clothes",
       "topless",
       "kneeling",
       "leaning forward",

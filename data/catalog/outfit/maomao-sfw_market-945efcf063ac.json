@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_market",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 982,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "sfw_market",
-      "name": "街巷外出襦裙",
-      "prose": "a pale rose long-sleeved blouse, dark green ankle-length skirt and small cloth bag",
+      "name": "藕粉交领街巷襦裙",
+      "prose": "A muted rose crossed-collar blouse with long sleeves, a dark-green ankle-length skirt and a small cloth shoulder bag.",
       "tokens": [
-        "rose_blouse",
-        "long_sleeves",
-        "green_skirt",
-        "cloth_bag"
+        "rose blouse",
+        "crossed collar",
+        "long sleeves",
+        "dark green long skirt",
+        "cloth shoulder bag"
       ],
       "default": false,
       "isDefault": false

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/white_apron_only",
+  "revision": 1,
+  "sortOrder": 1328,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "white_apron_only",
+      "name": "白色荷叶边围裙单件",
+      "tokens": [
+        "white apron",
+        "frills",
+        "waist ties"
+      ],
+      "prose": "A white kitchen apron with a softly frilled edge and plain waist ties.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

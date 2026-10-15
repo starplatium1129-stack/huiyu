@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shinjou_akane/lavender_long_cardigan",
+  "revision": 1,
+  "sortOrder": 1341,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shinjou_akane",
+    "outfit": {
+      "id": "lavender_long_cardigan",
+      "name": "粉紫长开衫",
+      "tokens": [
+        "lavender cardigan",
+        "long sleeves",
+        "ribbed cuffs"
+      ],
+      "prose": "A loose long lavender cardigan in fine cotton knit, with narrow ribbed cuffs and pale-gray buttons.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

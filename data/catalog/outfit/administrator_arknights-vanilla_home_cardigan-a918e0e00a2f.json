@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/vanilla_home_cardigan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1105,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
@@ -12,17 +12,14 @@
       "default": false,
       "isDefault": false,
       "name": "香草白开衫与石墨百褶裙",
-      "prose": "a vanilla-white button cardigan over a fully opaque charcoal crew-neck blouse, a graphite pleated midi skirt, a tiny yellow enamel brooch and soft gray house shoes; her face is uncovered",
+      "prose": "a vanilla-white button cardigan over a charcoal crew-neck blouse, a graphite pleated midi skirt, one small yellow enamel brooch and soft grey house shoes",
       "tokens": [
-        "white_cardigan",
-        "buttons",
-        "blouse",
-        "crew_neck",
-        "grey_skirt",
-        "pleated_skirt",
-        "long_skirt",
-        "brooch",
-        "slippers"
+        "white cardigan",
+        "charcoal blouse",
+        "crew neck",
+        "grey pleated midi skirt",
+        "yellow brooch",
+        "grey slippers"
       ],
       "category": "日常衣装（创作）"
     }

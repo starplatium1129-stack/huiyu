@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_marley_hotel",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 990,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "落地窗边软椅上半解白衬衫斜倚",
     "adult": true,
@@ -22,13 +22,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "marley_uniform",
+    "outfitId": "hotel_white_shirt",
     "promptProse": "Adult Mikasa holds her scarf in one hand while fingering herself beneath the open shirt on the hotel window ledge.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Mikasa",
-      "open shirt",
+      "open white shirt",
       "bare breasts",
       "bent leg",
       "red scarf",

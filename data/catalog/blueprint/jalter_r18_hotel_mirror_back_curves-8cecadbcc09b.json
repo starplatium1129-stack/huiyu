@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_hotel_mirror_back_curves",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 174,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "jalter_r18_hotel_mirror_back_curves",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 暗黑圣堂的告解镜前",
     "description": "暗黑圣堂告解室的雾镜前，成年黑贞一手扶镜框，另一只戴手套的手指划过水雾；不透明的镜面只映烛光，没有第二张面孔。",
-    "outfitId": "nsfw_nude",
+    "outfitId": "black_lace_gloves",
     "sceneTags": [
       "mirror",
       "candle",

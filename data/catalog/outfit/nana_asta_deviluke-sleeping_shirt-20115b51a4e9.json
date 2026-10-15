@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "nana_asta_deviluke/sleeping_shirt",
+  "revision": 1,
+  "sortOrder": 1223,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "nana_asta_deviluke",
+    "outfit": {
+      "id": "sleeping_shirt",
+      "name": "宽松开襟睡衫",
+      "tokens": [
+        "sleep shirt",
+        "button-up shirt"
+      ],
+      "prose": "a loose button-front sleeping shirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/streetwear_hoodie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
       "default": false,
       "id": "streetwear_hoodie",
       "isDefault": false,
-      "name": "潮派街区宽松卫衣",
-      "prose": "an oversized charcoal zip hoodie with a graphic print, frayed denim shorts, striped knee socks and chunky sneakers",
+      "name": "鲨齿红线宽松街头装",
+      "prose": "An oversized charcoal zip hoodie with a red zipper and a small white shark-tooth graphic along the hem, frayed denim shorts, striped knee socks and chunky sneakers.",
       "tokens": [
-        "oversized black hoodie",
+        "oversized charcoal hoodie",
+        "red zipper",
+        "shark teeth print",
         "denim shorts",
         "striped socks",
-        "sneakers"
+        "chunky sneakers"
       ]
     }
   }

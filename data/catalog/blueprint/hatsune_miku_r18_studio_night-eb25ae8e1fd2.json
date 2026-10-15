@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_studio_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 325,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hatsune_miku_r18_studio_night",
     "title": "初音未来 · 录音室深夜",
     "category": "成人",
     "characterId": "hatsune_miku",
-    "description": "【初音未来 · 录音室深夜】深夜调音室昏暗的沙发上，只套着一件宽大短袖的初音未来疲惫地蜷缩在抱枕堆里，修长白皙的双腿毫无防备地展露在外。她半睁开迷蒙的双眼向你伸出手——「Master……调音终于完成了……好累哦，抱我回房间去睡好不好……」",
+    "description": "深夜录音室中，初音戴着监听耳机坐在调音台边，一只脚放在空椅上，一手撑住身旁台面；台灯的青绿色微光照亮她的脸。",
     "location": "录音室",
-    "action": "躺在沙发上小憩",
+    "action": "坐在调音台边，一脚放在空椅上，一手撑住台面。",
     "timeOfDay": "深夜",
     "lighting": "dim mixing console lights",
     "camera": "intimate medium shot, low angle",
@@ -46,7 +46,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@rella",
-    "outfitId": "v2_classic",
+    "outfitId": "nsfw_nude",
     "sampleRating": "R18"
   }
 }

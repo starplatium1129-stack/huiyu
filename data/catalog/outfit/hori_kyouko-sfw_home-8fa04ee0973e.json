@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/sfw_home",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 877,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "sfw_home",
-      "name": "家务围裙与束发",
-      "prose": "a blue cotton apron over an opaque cream T-shirt and comfortable dark trousers, with chestnut hair tied up",
+      "name": "蓝色方袋家务围裙装",
+      "prose": "A blue cotton apron with squared patch pockets and contrasting cream stitching over a cream T-shirt and practical dark trousers.",
       "tokens": [
-        "blue_apron",
-        "cream_t-shirt",
-        "dark_pants",
-        "hair_up"
+        "blue apron",
+        "patch pockets",
+        "cream t-shirt",
+        "dark pants"
       ],
       "default": false,
       "isDefault": false

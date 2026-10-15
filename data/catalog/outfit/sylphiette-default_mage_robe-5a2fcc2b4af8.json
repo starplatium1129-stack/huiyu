@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sylphiette/default_mage_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 254,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
@@ -12,13 +12,13 @@
       "id": "default_mage_robe",
       "isDefault": true,
       "name": "学徒法师长袍",
-      "prose": "a green hooded mage cloak over a plain white shirt and shorts, with travel boots",
+      "prose": "her green hooded mage cloak over a plain white shirt and shorts, with brown travel boots",
       "styleHint": "anime adventure style",
       "tokens": [
         "green hooded cloak",
         "white shirt",
         "shorts",
-        "boots"
+        "brown travel boots"
       ]
     }
   }

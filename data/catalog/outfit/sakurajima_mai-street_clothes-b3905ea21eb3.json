@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/street_clothes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "street_clothes",
-      "name": "私服",
-      "prose": "a soft casual street outfit with a knit sweater and skirt",
+      "name": "酒红针织与炭灰短外套",
+      "prose": "a fine burgundy knit sweater beneath an open charcoal cropped jacket, with a fluid black midi skirt",
       "tokens": [
-        "casual_clothes",
-        "sweater",
-        "skirt",
-        "open_jacket"
+        "burgundy sweater",
+        "grey jacket",
+        "open jacket",
+        "black midi skirt"
       ],
       "isDefault": false,
       "default": false

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ellen_r18_poolside_cowgirl_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1066,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自跨坐池阶，一手撑地、一手腿间自抚",
     "adult": true,
@@ -29,7 +29,7 @@
     "promptTokens": [
       "adult",
       "shark tail",
-      "swimsuit",
+      "black and red bikini",
       "open clothes",
       "topless",
       "swimsuit aside",
@@ -37,7 +37,8 @@
       "masturbation",
       "poolside",
       "wet",
-      "blush"
+      "blush",
+      "shark teeth print"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

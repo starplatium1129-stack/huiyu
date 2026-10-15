@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_02",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1656,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_02",
     "title": "长离 · 焚身离火温汤水光湿身独奏 ·「把体内的离火真气排解出来……才能保持神智清明」",
@@ -48,7 +48,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "red_silk_undergarment",
     "coverageTags": [
       "nsfw",
       "wet",

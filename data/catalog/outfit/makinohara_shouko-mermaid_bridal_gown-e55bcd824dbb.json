@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/mermaid_bridal_gown",
+  "revision": 1,
+  "sortOrder": 1209,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "mermaid_bridal_gown",
+      "name": "纯白鱼尾试婚纱",
+      "tokens": [
+        "white wedding dress",
+        "mermaid skirt",
+        "pearl trim",
+        "back zipper"
+      ],
+      "prose": "a fitted white mermaid wedding gown with pearl trim and a back zipper",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

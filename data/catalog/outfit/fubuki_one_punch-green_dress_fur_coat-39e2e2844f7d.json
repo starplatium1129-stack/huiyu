@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "fubuki_one_punch/green_dress_fur_coat",
+  "revision": 1,
+  "sortOrder": 1176,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "fubuki_one_punch",
+    "outfit": {
+      "id": "green_dress_fur_coat",
+      "name": "墨绿礼裙与白毛领大衣",
+      "tokens": [
+        "dark green dress",
+        "white fur coat",
+        "pearl necklace"
+      ],
+      "prose": "a fitted dark-green evening dress beneath a white fur-collared coat, with a pearl necklace",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

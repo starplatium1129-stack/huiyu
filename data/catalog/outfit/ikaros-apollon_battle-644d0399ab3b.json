@@ -1,24 +1,20 @@
 {
   "kind": "outfit",
   "id": "ikaros/apollon_battle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 660,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ikaros",
     "outfit": {
       "id": "apollon_battle",
-      "name": "空之女王·终极决战武装",
-      "prose": "Uranus Queen battle armor: a metallic mechanical breastplate, crimson energy-thruster wings and a variable combat visor over the left eye",
+      "name": "空之女王银色决战胸甲",
+      "prose": "Uranus Queen combat armor with a silver mechanical breastplate and a variable targeting visor over the left eye.",
       "tokens": [
-        "armor",
-        "breastplate",
-        "mechanical_wings",
-        "energy_wings",
-        "combat_visor",
-        "metal_collar",
-        "sci-fi"
+        "silver armor",
+        "mechanical breastplate",
+        "combat visor"
       ],
       "default": false,
       "isDefault": false

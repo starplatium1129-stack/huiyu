@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc229",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Holding the console in one hand, she draws half the blanket over the viewer's knees with the other; the lamp warms her glasses and knit sleeve against the rainy attic window.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, brown sweater, round eyewear, handheld game console, blanket, couch, attic, rain, window, lamp",
+    "prompt": "1girl, shiki_natsume, light brown cable knit sweater, asymmetrical ribbed collar, burgundy cuff edging, round eyewear, handheld game console, blanket, couch, attic, rain, window, lamp",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 阴雨午后的阁楼书房】窗外细雨绵绵的温馨阁楼书房。没有排班的假日午后，夏目穿着一件宽大松软的浅咖啡色粗针毛衣，乌黑的长发随意散落，鼻梁上罕见地架着一副精巧的细圆框眼镜，正全神贯注地看着掌机屏幕。当你端着热茶坐到她身边时，她自然地拉起身上柔软的羊毛毯，分出一半盖在你腿上。距离瞬间拉近，她眼角的泪痣在屏幕荧光映照下分外动人，耳根悄悄泛起红晕，语气依然带着几分特有的淡然——「……别误会。我只是觉得两个人一起盖毯子比较暖和。……喂，顺便帮我把桌上的红茶递过来一下。」",
@@ -29,8 +29,6 @@
     "tags": [
       "mole_under_eye",
       "round_glasses",
-      "light_coffee_sweater",
-      "thick_knit_sweater",
       "handheld_console",
       "wool_blanket",
       "attic",
@@ -39,7 +37,10 @@
       "red_ears",
       "depth_of_field",
       "medium_shot",
-      "shared_blanket"
+      "shared_blanket",
+      "light_brown_cable_knit_sweater",
+      "asymmetrical_ribbed_collar",
+      "burgundy_cuff_edging"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

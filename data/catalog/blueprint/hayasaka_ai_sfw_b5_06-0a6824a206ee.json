@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_06",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1409,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "看着镜中剪短的头发，膝上的手指慢慢松开。",
     "adult": false,
@@ -25,6 +25,7 @@
     "outfitId": "sfw_short",
     "promptProse": "Hayasaka watches the last longer strands fall in the salon mirror, relaxing her hands on her knees as the new bob frames her relieved face.",
     "promptTokens": [
+      "bob cut",
       "haircut",
       "mirror",
       "salon",

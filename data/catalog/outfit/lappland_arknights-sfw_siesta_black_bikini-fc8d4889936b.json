@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/sfw_siesta_black_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1161,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "id": "sfw_siesta_black_bikini",
-      "name": "汐斯塔黑色细带比基尼",
+      "name": "银扣黑色细带泳装",
       "tokens": [
-        "black bikini",
-        "string bikini"
+        "black string bikini",
+        "silver buckles"
       ],
-      "prose": "a black string bikini",
+      "prose": "A black string bikini finished with small square silver strap buckles.",
       "default": false,
       "isDefault": false
     }

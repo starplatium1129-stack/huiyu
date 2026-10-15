@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_backstage",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 321,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hatsune_miku_r18_backstage",
     "title": "初音未来 · 演唱会后台",
@@ -36,7 +36,10 @@
       "vanity",
       "backstage",
       "night",
-      "warm lighting"
+      "warm lighting",
+      "silver stage top",
+      "teal panels",
+      "black pleated skirt"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,7 +49,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@rella",
-    "outfitId": "stage",
+    "outfitId": "backstage_zip_top",
     "sampleRating": "R18"
   }
 }

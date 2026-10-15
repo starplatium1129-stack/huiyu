@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/remains",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 295,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "default": false,
       "id": "remains",
       "isDefault": false,
-      "name": "残余（决战常服）",
-      "prose": "a dark grey tactical cropped jacket over a black work vest, cargo pants and military boots, her hair in a side ponytail",
+      "name": "残余灰黑战术便装",
+      "prose": "A cropped dark-grey tactical jacket over a black work vest, paired with charcoal cargo trousers and military boots.",
       "tokens": [
-        "tactical",
-        "jacket",
-        "black_clothes",
-        "grey_clothes",
-        "cargo_pants",
-        "side_ponytail"
+        "dark grey cropped jacket",
+        "black vest",
+        "charcoal cargo pants",
+        "military boots"
       ]
     }
   }

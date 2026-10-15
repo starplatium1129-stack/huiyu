@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_tatami_kneeling_spread",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sakura_r18_tatami_kneeling_spread",
     "characterId": "matou_sakura",
     "title": "间桐樱 · 和室床榻·真空围裙与丰满私密",
     "description": "【间桐樱 · 和室床榻·真空围裙与丰满私密】昏暗的和室内榻榻米散发着蔺草香，只系着一条单薄白围裙的樱端庄地跪坐在被褥上。雪白饱满的胸部与丰腴柔美的腰臀曲线在布料边缘若隐若现，她仰起满含泪光的双眸——「只要是学长希望的模样……哪怕是再羞耻的事情，樱都愿意为学长做。」",
-    "outfitId": "kitchen_apron_homewear",
+    "outfitId": "white_apron_only",
     "sceneTags": [
       "tatami",
       "japanese_room",
@@ -25,12 +25,13 @@
     ],
     "promptProse": "The age-twenty-plus Sakura kneels on her heels and opens one knee while gathering her apron hem, violet magic curling around her beneath lantern light.",
     "promptTokens": [
-      "apron",
+      "white apron",
       "kneeling",
       "tatami",
       "futon",
       "purple magic",
-      "lantern"
+      "lantern",
+      "frills"
     ],
     "negativeTokens": [],
     "adult": true,

@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "suou_yuki/undressed_state",
+  "revision": 1,
+  "sortOrder": 1354,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "suou_yuki",
+    "outfit": {
+      "id": "undressed_state",
+      "name": "原场景无下装状态",
+      "tokens": [
+        "bottomless"
+      ],
+      "prose": "No lower-body clothing; the white shirt is held separately rather than worn.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "roxy_migurdia/blue_nightgown",
+  "revision": 1,
+  "sortOrder": 1428,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "roxy_migurdia",
+    "outfit": {
+      "id": "blue_nightgown",
+      "name": "浅蓝棉质睡裙",
+      "tokens": [
+        "light blue nightgown",
+        "cotton"
+      ],
+      "prose": "A simple light-blue cotton nightgown with narrow white edging.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

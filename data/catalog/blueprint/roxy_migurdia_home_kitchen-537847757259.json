@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_home_kitchen",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 458,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "踮脚伸手取高处橱柜里的调料罐",
     "camera": "medium shot",
@@ -23,7 +23,7 @@
     "promptProse": "Roxy reaches toward the high spice jar and turns back to ask the viewer for help, the stew simmering on the counter below. Bright daylight falls across her apron and outstretched hand.",
     "promptTokens": [
       "Roxy Migurdia",
-      "apron",
+      "light blue apron",
       "tiptoes",
       "spice jar",
       "kitchen",

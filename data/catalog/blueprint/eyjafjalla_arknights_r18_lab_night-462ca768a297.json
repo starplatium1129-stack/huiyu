@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_lab_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 552,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "坐在实验台边，外套大衣半褪",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "leithanien_volcanology_lab_coat",
+    "outfitId": "lab_coat_camisole",
     "promptProse": "Seated on the counter with one boot on a stool, she steadies a glowing vial while touching herself beneath the coat.",
     "promptTokens": [
       "adult",

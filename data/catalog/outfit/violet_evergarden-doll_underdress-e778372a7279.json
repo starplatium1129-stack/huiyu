@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "violet_evergarden/doll_underdress",
+  "revision": 1,
+  "sortOrder": 1251,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "violet_evergarden",
+    "outfit": {
+      "id": "doll_underdress",
+      "name": "人偶礼服衬衫束腰裙装",
+      "tokens": [
+        "white blouse",
+        "corset",
+        "white layered skirt"
+      ],
+      "prose": "a white blouse with a lace-up corset and a layered white skirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

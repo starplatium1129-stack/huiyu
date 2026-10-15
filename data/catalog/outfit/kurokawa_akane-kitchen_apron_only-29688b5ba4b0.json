@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "kurokawa_akane/kitchen_apron_only",
+  "revision": 1,
+  "sortOrder": 1194,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kurokawa_akane",
+    "outfit": {
+      "id": "kitchen_apron_only",
+      "name": "厨房围裙造型",
+      "tokens": [
+        "apron"
+      ],
+      "prose": "a plain kitchen apron",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

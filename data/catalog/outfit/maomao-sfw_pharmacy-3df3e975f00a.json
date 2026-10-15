@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_pharmacy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 981,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "sfw_pharmacy",
-      "name": "药房长袖襦裙",
-      "prose": "a modest green long-sleeved jacket over a cream inner collar and ankle-length skirt",
+      "name": "青绿束袖药房襦裙",
+      "prose": "A practical green long-sleeved jacket with a cream inner collar and narrow sleeve ties, worn over a cream ankle-length skirt.",
       "tokens": [
-        "green_jacket",
-        "long_sleeves",
-        "cream_collar",
+        "green jacket",
+        "cream collar",
+        "long sleeves",
+        "sleeve ties",
         "aoqun",
-        "long_skirt"
+        "cream long skirt"
       ],
       "default": true,
       "isDefault": true

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc057",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Seated beneath the parasol, she holds the warm drink in one hand and draws a corner of her shoulder towel over the viewer's knee beside her; reflected sea light softens the shade around her damp hair.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -21,14 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, navy one-piece swimsuit, towel, holding cup, sitting, bench, parasol, beach, medium shot",
+    "prompt": "1girl, shiki_natsume, navy one-piece swimsuit, diagonal white panel, small gold clasp, towel, holding cup, sitting, bench, parasol, beach, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
     "story": "【夏目 · 浪花退去后的浴巾】游泳结束后，夏目用大浴巾裹住肩膀坐在遮阳伞下，黑色长发还滴着水。她发现你递来的热饮，沉默片刻便往长椅内侧挪出位置，把浴巾的一角也盖到你腿上——「海风比想象中凉。坐近一点只是为了挡风……饮料不错，谢谢。」",
     "storyJa": "【夏目・波が引いたらバスタオル】泳ぎ終えた夏目さんは大きなバスタオルを肩に巻き、長い黒髪に水が滴ったまま傘の下に座っていた。彼女はあなたが手渡した温かい飲み物に気づきました。一瞬の沈黙の後、彼女はベンチの内側に移動し、タオルの角をあなたの足の上に置きました。――「海風、思ったより冷たい。近くに座るのは風よけのためだから……飲み物、おいしい。ありがとう。」",
     "tags": [
-      "navy_one_piece_swimsuit",
       "white_towel",
       "towel_over_shoulders",
       "damp_hair",
@@ -42,7 +41,10 @@
       "ocean",
       "afternoon",
       "open_shade",
-      "medium_shot"
+      "medium_shot",
+      "navy_one-piece_swimsuit",
+      "diagonal_white_panel",
+      "small_gold_clasp"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

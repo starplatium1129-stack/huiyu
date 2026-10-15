@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/black_graphic_tee",
+  "revision": 1,
+  "sortOrder": 1479,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "black_graphic_tee",
+      "name": "宽松黑色印花T恤",
+      "tokens": [
+        "oversized black graphic t shirt"
+      ],
+      "prose": "an oversized black graphic T-shirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 921,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "春日野穹·圣洁花嫁",
-      "prose": "a simple white bridal dress with a narrow ribbon veil, lace cuffs and a small rabbit charm",
+      "name": "雪白蕾丝袖口简约婚纱",
+      "prose": "A simple white satin bridal dress with a gently fitted waist and delicate lace cuffs. A narrow ribbon edges the veil, and a tiny rabbit charm rests at the waist.",
       "tokens": [
-        "wedding_dress",
-        "white_dress",
-        "ribbon_veil",
-        "lace_cuffs",
-        "rabbit_charm"
+        "white wedding dress",
+        "lace cuffs",
+        "ribbon-trimmed veil",
+        "rabbit charm"
       ],
       "default": false,
       "isDefault": false

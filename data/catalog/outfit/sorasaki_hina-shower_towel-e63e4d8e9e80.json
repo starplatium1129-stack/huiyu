@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "sorasaki_hina/shower_towel",
+  "revision": 1,
+  "sortOrder": 1351,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "sorasaki_hina",
+    "outfit": {
+      "id": "shower_towel",
+      "name": "晨浴·紫缘白浴巾",
+      "tokens": [
+        "white towel",
+        "purple edging"
+      ],
+      "prose": "A white cotton bath towel with narrow purple woven edging.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

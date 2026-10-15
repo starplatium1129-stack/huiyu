@@ -1,18 +1,19 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 448,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "周防有希·成人私密造型",
-      "prose": "a private adult ensemble built around small_towel",
+      "name": "紫边白巾·浴池造型",
+      "prose": "A small white cotton towel with narrow violet woven edging.",
       "tokens": [
-        "small_towel"
+        "small white towel",
+        "violet edging"
       ],
       "default": false,
       "isDefault": false

@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/sfw_vinyl_knit_vest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1122,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-06T09:25:32.092622500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
       "id": "sfw_vinyl_knit_vest",
-      "name": "黑胶试听青蓝针织背心装",
-      "prose": "a petrol-blue knitted vest over a cream short-sleeved collared shirt, indigo wide-leg trousers, opaque ankle socks and black Mary Jane shoes",
+      "name": "青蓝音轨针织背心装",
+      "prose": "A petrol-blue knitted vest with teal ribbed edges over a cream short-sleeved collared shirt, indigo wide-leg trousers, opaque ankle socks and black Mary Janes.",
       "tokens": [
-        "petrol_blue_knit_vest",
-        "cream_collared_shirt",
-        "short_sleeves",
-        "indigo_wide_leg_trousers",
-        "opaque_ankle_socks",
-        "black_mary_janes"
+        "blue knit vest",
+        "teal ribbing",
+        "cream collared shirt",
+        "short sleeves",
+        "indigo wide-leg pants",
+        "black socks",
+        "black mary janes"
       ],
       "default": false,
       "isDefault": false

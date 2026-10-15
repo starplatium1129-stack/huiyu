@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "chloe_von_einzbern/sfw_festival",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 164,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "chloe_von_einzbern",
     "outfit": {
       "id": "sfw_festival",
-      "name": "草莓色夏祭浴衣",
-      "prose": "a properly wrapped strawberry-pink floral yukata, cream obi and sandals",
+      "name": "草莓粉小花夏祭浴衣",
+      "prose": "a strawberry-pink yukata with a small scattered floral print, a cream obi tied with a red cord and simple sandals",
       "tokens": [
-        "pink_yukata",
-        "floral_print",
-        "cream_obi",
+        "strawberry pink yukata",
+        "small floral print",
+        "cream obi",
+        "red obi cord",
         "sandals"
       ],
       "default": false,

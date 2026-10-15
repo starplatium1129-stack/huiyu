@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 863,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_uniform",
-      "name": "杜鹃台高校制服与耳机",
-      "prose": "a white school shirt, navy cardigan, pleated school skirt, ankle socks",
+      "name": "白衬衫与藏蓝制服开衫",
+      "prose": "A white school shirt sits beneath a navy cardigan, with a grey pleated skirt and plain ankle socks.",
       "tokens": [
-        "school_uniform",
-        "white_shirt",
-        "navy_cardigan",
-        "pleated_skirt",
-        "ankle_socks"
+        "white shirt",
+        "navy cardigan",
+        "grey pleated skirt",
+        "ankle socks"
       ],
       "default": true,
       "isDefault": true

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shu_arknights/oatmeal_cafe_layers",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1109,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shu_arknights",
     "outfit": {
@@ -12,16 +12,15 @@
       "default": false,
       "isDefault": false,
       "name": "燕麦开衫与钴蓝百褶裙",
-      "prose": "an oatmeal cardigan over an ivory bow-collar blouse, cobalt pleated midi skirt, brown belt, cream socks, brown loafers and a tan handbag",
+      "prose": "An oatmeal cardigan layers over an ivory bow-collar blouse and cobalt pleated midi skirt, with a brown belt, cream socks and brown loafers.",
       "tokens": [
-        "cardigan",
-        "blouse",
+        "oatmeal cardigan",
+        "ivory blouse",
         "bowtie",
-        "blue pleated skirt",
+        "cobalt blue pleated skirt",
         "brown belt",
-        "white socks",
-        "loafers",
-        "handbag"
+        "cream socks",
+        "brown loafers"
       ],
       "category": "日常衣装（创作）"
     }

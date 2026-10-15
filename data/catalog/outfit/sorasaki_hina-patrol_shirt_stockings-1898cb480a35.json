@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "sorasaki_hina/patrol_shirt_stockings",
+  "revision": 1,
+  "sortOrder": 1349,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "sorasaki_hina",
+    "outfit": {
+      "id": "patrol_shirt_stockings",
+      "name": "巡逻休整·白衫长袜",
+      "tokens": [
+        "white collared shirt",
+        "black stockings",
+        "black cuffs"
+      ],
+      "prose": "A white collared uniform shirt with black-edged cuffs, paired with black stockings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

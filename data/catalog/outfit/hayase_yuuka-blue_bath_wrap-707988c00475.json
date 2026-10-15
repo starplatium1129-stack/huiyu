@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "hayase_yuuka/blue_bath_wrap",
+  "revision": 1,
+  "sortOrder": 1300,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hayase_yuuka",
+    "outfit": {
+      "id": "blue_bath_wrap",
+      "name": "温泉蓝色浴巾",
+      "tokens": [
+        "blue towel",
+        "waist wrap"
+      ],
+      "prose": "A plain blue bath towel wrapped at the waist.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

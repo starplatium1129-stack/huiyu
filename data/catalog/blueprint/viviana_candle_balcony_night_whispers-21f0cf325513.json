@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_candle_balcony_night_whispers",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 686,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "身着丝绸睡裙赤足倚靠在露台栏杆上，手扶胸口仰望星空，烛火摇曳",
     "camera": "full body, slightly low angle",
@@ -22,6 +22,7 @@
     "outfitId": "candle_silk_slip",
     "promptProse": "One hand rests at her chest as she leans against the marble railing and watches the stars, glass-shaded candles warming the silk beneath the cool moonlight.",
     "promptTokens": [
+      "barefoot",
       "hand on chest",
       "terrace",
       "candlelight",

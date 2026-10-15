@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "yvonne_arknights/white_underwear",
+  "revision": 1,
+  "sortOrder": 1265,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yvonne_arknights",
+    "outfit": {
+      "id": "white_underwear",
+      "name": "白色内裤造型",
+      "tokens": [
+        "white panties"
+      ],
+      "prose": "plain white underwear",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

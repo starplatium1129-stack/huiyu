@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/sfw_kitchen_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 799,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "sfw_kitchen_apron",
-      "name": "柠檬黄厨房围裙",
-      "prose": "a white long-sleeved cotton blouse, a lemon-yellow bib apron, dark straight trousers and indoor slippers, with her brown hair tied in a practical ponytail",
+      "name": "柠檬黄细格厨房围裙装",
+      "prose": "A white long-sleeved cotton blouse beneath a lemon-yellow apron with a subtle yellow gingham pocket, dark straight trousers and indoor slippers, with a simple hair scrunchie.",
       "tokens": [
-        "white_blouse",
-        "long_sleeves",
-        "yellow_apron",
-        "dark_pants",
+        "white blouse",
+        "long sleeves",
+        "yellow apron",
+        "gingham pocket",
+        "dark pants",
         "slippers",
-        "ponytail",
-        "hair_scrunchie"
+        "hair scrunchie"
       ],
       "isDefault": false,
       "isNsfw": false

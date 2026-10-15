@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/oversized_white_sleep_shirt",
+  "revision": 1,
+  "sortOrder": 1297,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "oversized_white_sleep_shirt",
+      "name": "青绿滚边宽松睡衫",
+      "tokens": [
+        "oversized white shirt",
+        "teal piping"
+      ],
+      "prose": "An oversized white sleep shirt with fine teal piping.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

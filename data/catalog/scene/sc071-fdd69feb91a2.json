@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc071",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She offers the thermos cup toward the viewer while using the unlit flashlight to indicate the meteor's direction; the camp lantern warms her face beneath the Milky Way.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,16 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "flashlight beam, day",
-    "prompt": "1girl, shiki_natsume, olive parka, cream scarf, hiking pants, sitting on rock, thermos cup, flashlight, tent, milky way, lantern, wide shot",
+    "prompt": "1girl, shiki_natsume, olive parka, navy shoulder panels, cream ribbed scarf, charcoal hiking pants, sitting on rock, thermos cup, flashlight, tent, milky way, lantern, wide shot",
     "rating": "All",
     "recommendedSize": "1216×832",
     "season": "夏",
     "story": "【夏目 · 星空下只说一遍的约定】夏夜山顶，夏目坐在帐篷外陪你等银河升起。她用手电指出预报中的流星方向，又把保温杯塞到你手里。第一颗流星出现时，她没有许愿，只平静地望着你——「特意带你来，是因为觉得你会喜欢。下次想看什么就直接说……我会考虑继续陪你。」",
     "storyJa": "【夏目・星空の下で一度だけの約束】夏の夜、山の頂上で、夏目はテントの外に座って、あなたと一緒に天の川が昇るのを待っています。彼女は予報にある流星の方向を懐中電灯で示し、魔法瓶のカップを手に持った。最初の流れ星が現れた時、彼女は願い事をせず、ただ静かに君を見つめていた――「わざわざ連れてきたのは、あなたが好きそうだと思ったから。次に見たいものがあったら、素直に言って……また付き合うかは考えてあげる。」",
     "tags": [
-      "olive_parka",
-      "cream_scarf",
-      "hiking_trousers",
       "hiking_boots",
       "sitting_on_rock",
       "offering_thermos_cup",
@@ -42,7 +39,11 @@
       "milky_way",
       "starry_night",
       "camp_lantern",
-      "wide_shot"
+      "wide_shot",
+      "olive_parka",
+      "navy_shoulder_panels",
+      "cream_ribbed_scarf",
+      "charcoal_hiking_pants"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

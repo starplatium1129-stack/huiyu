@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "harudera_yuria/black_silk_negligee",
+  "revision": 1,
+  "sortOrder": 1376,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "harudera_yuria",
+    "outfit": {
+      "id": "black_silk_negligee",
+      "name": "黑色真丝蕾丝睡袍",
+      "tokens": [
+        "black negligee",
+        "silk",
+        "lace trim",
+        "sheer fabric"
+      ],
+      "prose": "A lightweight black silk negligee with fine lace edging, worn without glasses.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

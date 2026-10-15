@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_bath_towels",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 543,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "裹着浴巾擦拭墨绿湿发",
     "adult": true,
@@ -27,6 +27,8 @@
     "promptTokens": [
       "adult",
       "bathroom",
+      "white towel",
+      "navy trim",
       "wet towel",
       "see-through",
       "stool",

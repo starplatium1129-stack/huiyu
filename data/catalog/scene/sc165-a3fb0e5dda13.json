@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc165",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 162,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Seated cross-legged on the counter, she swirls the half-filled wine glass and looks down toward the viewer; the overhead light falls across her face and the red wine.",
     "auditRevision": "careful-batch14-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "cafe uniform",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, oversized black shirt, open shirt, no underwear, bare legs, cross-legged, wine glass, blush, cafe counter, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, matte black buttons, notched cuffs, natsume_r18, oversized black shirt, open shirt, no underwear, bare legs, cross-legged, wine glass, blush, cafe counter, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 吧台绝对独占篇】深夜打烊后的漆黑咖啡馆。夏目在你的霸道要求下，脱掉了全部衣服，仅仅套着你那一身宽大的纯黑衬衫。她面红耳赤地盘腿坐在微凉的吧台桌面上，衬衫下摆刚好遮住绝对领域，大片白皙笔直的长腿毫无防备地交叠袒露。她手里摇晃着半杯红酒，眼神微醺却带着极度撩人、强势的占有欲，居高临下地斜睨着你，眼角的泪痣被红晕浸透，性感得不可救药——「喂，大变态。今晚这间店反锁了，既然不让我回家...你最好做足了被我彻底吃掉的觉悟。」",
@@ -35,7 +35,9 @@
       "holding_wine_glass",
       "red_wine",
       "tipsy",
-      "close_up"
+      "close_up",
+      "matte_black_buttons",
+      "notched_cuffs"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

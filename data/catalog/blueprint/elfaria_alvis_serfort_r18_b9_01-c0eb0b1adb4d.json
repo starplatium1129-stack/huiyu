@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1695,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_01",
     "title": "艾尔菲利亚 · 至高魔导塔冰晶王座主控跨坐 ·「威尔……这是至高之杖只对你一人的特例哦」",
@@ -50,7 +50,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "white_ceremonial_robe",
     "coverageTags": [
       "nsfw",
       "cowgirl",

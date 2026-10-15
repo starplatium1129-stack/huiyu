@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_wooden_desk_bent_over_prone",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1352,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "一手撑木案俯身，另一手探入和服下摆自抚，回头望向身后",
     "adult": true,
@@ -25,7 +25,7 @@
     "location": "伽蓝之堂深处摆放古董雕件的长木案台旁",
     "mood": "咬牙沉沦、唯美自抚",
     "negativeTokens": [],
-    "outfitId": "official_kimono_leather_jacket",
+    "outfitId": "sfw_white_kimono_without_jacket",
     "promptProse": "Shiki braces one hand on the wooden desk and touches herself beneath her raised kimono with the other, glancing back through striped moonlight.",
     "promptTokens": [
       "white kimono",

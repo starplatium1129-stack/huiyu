@@ -1,36 +1,31 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/standard",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 414,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "萨卡兹熔火战装",
-      "prose": "her signature official combat outfit: a black sleeveless dress with white collar and metal pendant, chest straps, deep cleavage, a short layered torn dress with petticoat and pink interior, single free shoulder loose jacket, black long gloves, pink purse, thigh straps, knee boots",
+      "name": "萨卡兹黑裙粉衬战装",
+      "prose": "her black sleeveless combat dress with a short layered ragged skirt and pink interior, white collar, metal pendant and chest straps, a loose jacket, long black gloves, pink purse, thigh straps and knee boots",
       "tokens": [
-        "black_dress",
-        "sleeveless",
-        "short_dress",
-        "layered_dress",
-        "torn_dress",
-        "petticoat",
-        "white_collar",
-        "metal_pendant",
-        "single_free_shoulder",
-        "loose_jacket",
-        "black_long_gloves",
-        "pink_dress_interior",
-        "pink_purse",
-        "thigh_straps",
-        "chest_straps",
-        "knee_boots",
-        "circle_floating_behind"
+        "black sleeveless dress",
+        "layered skirt",
+        "ragged hem",
+        "pink lining",
+        "white collar",
+        "metal pendant",
+        "chest straps",
+        "loose jacket",
+        "black long gloves",
+        "pink purse",
+        "thigh straps",
+        "knee boots"
       ]
     }
   }

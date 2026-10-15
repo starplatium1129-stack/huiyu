@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_bath_warm",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 345,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_bath_warm",
     "title": "雪之下雪乃 · 热汤浴后",
@@ -48,7 +48,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
-    "outfitId": "casual",
+    "outfitId": "white_bath_towel",
     "sampleRating": "R18"
   }
 }

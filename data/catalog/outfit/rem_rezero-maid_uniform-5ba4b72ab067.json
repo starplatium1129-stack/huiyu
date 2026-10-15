@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/maid_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 243,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "maid_uniform",
-      "name": "女仆装",
-      "prose": "her classic black and white maid uniform with a frilled headdress and apron",
+      "name": "黑白蕾丝女仆装",
+      "prose": "her classic black dress with long sleeves, a white apron, a white lace maid headdress and crisp white frill edging",
       "tokens": [
         "maid",
         "black dress",
         "white apron",
+        "white lace headdress",
         "frills",
         "long sleeves"
       ],

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/trenchcoat_stockings",
+  "revision": 1,
+  "sortOrder": 1259,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "trenchcoat_stockings",
+      "name": "卡其风衣与吊带长袜",
+      "tokens": [
+        "khaki trench coat",
+        "double-breasted",
+        "black thighhighs"
+      ],
+      "prose": "a khaki double-breasted trench coat paired with black thigh-high stockings",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

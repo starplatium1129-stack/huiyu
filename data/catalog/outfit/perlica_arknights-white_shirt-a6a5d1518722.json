@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "perlica_arknights/white_shirt",
+  "revision": 1,
+  "sortOrder": 1225,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "perlica_arknights",
+    "outfit": {
+      "id": "white_shirt",
+      "name": "白色衬衫",
+      "tokens": [
+        "white shirt",
+        "button-up shirt"
+      ],
+      "prose": "a plain white button-front shirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

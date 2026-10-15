@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "default": false,
       "id": "casual",
       "isDefault": false,
-      "name": "便服",
-      "prose": "a relaxed casual dress in soft blue tones",
+      "name": "浅蓝棉裙日常装",
+      "prose": "A softly gathered light-blue cotton dress has a small white collar and a row of blue buttons.",
       "tokens": [
-        "casual_clothes",
-        "dress",
-        "blue_clothes"
+        "light blue dress",
+        "cotton",
+        "white collar",
+        "long sleeves",
+        "buttons"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc082",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Her phone lies dark beneath her hand as she turns toward the viewer joining her on the veranda; moonlight catches her eyes and the edge of her sleeve.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -21,14 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "readable screen text",
-    "prompt": "1girl, ayachi_nene, pink floral yukata, sitting, veranda, phone, looking at viewer, garden, moonlight, medium shot",
+    "prompt": "1girl, ayachi_nene, blush pink yukata, moonflower print, cream obi, lavender obijime, sitting, veranda, phone, looking at viewer, garden, moonlight, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",
     "story": "【宁宁 · 月下缘侧的思念】秋夜庭院洒满月光，宁宁独自坐在缘侧，把白天没能说出口的话写在手机备忘录里。你推门出来，她立即锁屏，却在你坐下后主动靠近半步。满月映在她紫色眼睛里——「我刚才在想，如果想念一个人时他正好出现，是不是也算很小的魔法？」",
     "storyJa": "【寧々・月の下縁への思い】秋の夜、中庭は月明かりで満たされ、寧々はその端に一人座って、日中言えなかった言葉を携帯電話に書き留めていました。あなたがドアを開けて出てくると、すぐに画面ロックをかけましたが、あなたが座ると、彼女は率先して半歩近づいてきました。紫の瞳に満月が映る――「今、考えていたんです。会いたいと思った人がちょうど現れるのも、小さな魔法に入るんでしょうか？」",
     "tags": [
-      "pink_floral_yukata",
       "sitting_on_engawa",
       "phone_on_lap",
       "dark_phone_screen",
@@ -39,7 +38,11 @@
       "autumn_night",
       "full_moon",
       "moonlight",
-      "medium_shot"
+      "medium_shot",
+      "blush_pink_yukata",
+      "moonflower_print",
+      "cream_obi",
+      "lavender_obijime"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

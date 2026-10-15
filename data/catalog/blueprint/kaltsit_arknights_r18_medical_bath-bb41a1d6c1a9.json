@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_medical_bath",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 533,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "站在花洒下仰头任水流冲刷",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot, side view",
     "category": "成人",
     "characterId": "kaltsit_arknights",
-    "description": "【凯尔希 · 医疗部浴间】水汽弥漫的医疗部专属淋浴间内，滚烫的水幕顺着凯尔希白皙紧致的背部与优美的脊椎线条滑落。她仰起脸任由热水冲刷，微闭眼眸轻叹——「即便是我，也无法彻底免疫身体与神经的疲惫……能在这个时候走进这间浴室的，在这片大地上也只有你了。」",
+    "description": "成年凯尔希穿着湿白内衫靠在浴池的水下长凳，一手撑住瓷砖，另一手沿大腿内侧检查治疗线；蓝光映着水汽。",
     "id": "kaltsit_arknights_r18_medical_bath",
     "kreaStyleHint": "",
     "lighting": "warm steam and soft light",
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "white_bath_undershirt",
     "promptProse": "Adult Kal'tsit reclines on the submerged bath bench in a wet white undershirt, bracing on the tile while tracing a treatment line along her inner thigh.",
     "promptTokens": [
       "1girl",

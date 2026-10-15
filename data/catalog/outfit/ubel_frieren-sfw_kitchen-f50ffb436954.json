@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "ubel_frieren/sfw_kitchen",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ubel_frieren",
     "outfit": {
       "id": "sfw_kitchen",
-      "name": "借宿厨房围裙装",
-      "prose": "a green long-sleeved shirt, black trousers and a plain linen apron",
+      "name": "森林绿衬衫亚麻围裙装",
+      "prose": "a forest-green long-sleeved shirt and black trousers beneath a plain flax-colored linen apron",
       "tokens": [
-        "green_shirt",
-        "long_sleeves",
-        "black_pants",
-        "linen_apron"
+        "green shirt",
+        "long sleeves",
+        "black pants",
+        "linen apron"
       ],
       "default": false,
       "isDefault": false

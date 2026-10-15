@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yor_forger/red_sweater_black_skirt",
+  "revision": 1,
+  "sortOrder": 1254,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yor_forger",
+    "outfit": {
+      "id": "red_sweater_black_skirt",
+      "name": "红毛衣与黑裙套装",
+      "tokens": [
+        "red sweater",
+        "black skirt"
+      ],
+      "prose": "a red knit sweater with a black skirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

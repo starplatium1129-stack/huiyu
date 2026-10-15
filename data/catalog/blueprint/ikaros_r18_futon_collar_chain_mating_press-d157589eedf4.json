@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_futon_collar_chain_mating_press",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1220,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "纯裸侧卧棉被半裹半透白纱若隐若现，巨大羽翼环护，手握断链另一手在下身深层自抚，含泪微笑娇喘",
     "adult": true,
@@ -24,10 +24,10 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "white_gauze_wrap",
     "promptProse": "Ikaros holds the broken chain against her chest while her other hand moves beneath the bedding, white wings curved around her.",
     "promptTokens": [
-      "white veil",
+      "white sheer shawl",
       "see-through clothes",
       "on side",
       "curled up",

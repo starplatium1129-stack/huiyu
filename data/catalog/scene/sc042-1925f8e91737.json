@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc042",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Keeping her face turned toward the pillow, she reaches back from beneath the blanket to find the viewer's palm.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,15 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "see-through blanket",
-    "prompt": "1girl, shiki_natsume, black camisole, grey pajama pants, on side, blanket, pillow, holding hands, bedside lamp, close up",
+    "prompt": "1girl, shiki_natsume, black ribbed camisole, burgundy piping, grey cotton pajama pants, on side, blanket, pillow, holding hands, bedside lamp, close up",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "冬",
     "story": "【夏目 · 深夜被窝里的借口】冬夜公寓的暖气突然停摆，夏目抱着备用毯子来到卧室，先替你盖好一半，才在另一侧躺下。她背对着你坚持说只是节省取暖空间，几分钟后却悄悄把冰冷的手指塞进你的掌心——「不准笑。这里确实比较暖……今晚借我一点位置，明天我会把毯子洗好。」",
     "storyJa": "【夏目・夜遅くまで寝ている言い訳】ある冬の夜、アパートの暖房が突然止まりました。夏目が予備の毛布を持って寝室にやって来ました。彼女はあなたのために半分を覆ってから、反対側に横になりました。彼女はあなたに背を向けて、暖房のためのスペースを確保しているだけだと主張しましたが、数分後、静かに冷たい指をあなたの手のひらに置きました。――「笑わないで。ここが本当に暖かいだけ……今夜は少し場所を借りるわ。毛布は明日、ちゃんと洗って返すから。」",
     "tags": [
-      "black_camisole",
-      "grey_pajama_trousers",
       "lying_on_side",
       "back_to_viewer",
       "under_blanket",
@@ -41,7 +39,10 @@
       "winter_night",
       "bedside_lamp",
       "warm_dim_light",
-      "close_up"
+      "close_up",
+      "black_ribbed_camisole",
+      "burgundy_piping",
+      "grey_cotton_pajama_pants"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

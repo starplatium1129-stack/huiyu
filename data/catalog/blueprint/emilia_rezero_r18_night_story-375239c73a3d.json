@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_night_story",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 452,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "emilia_rezero_r18_night_story",
     "title": "爱蜜莉雅 · 睡前童话",
@@ -30,7 +30,7 @@
       "1girl",
       "solo",
       "adult",
-      "sheer nightgown",
+      "sheer white nightgown",
       "off shoulder",
       "topless",
       "on stomach",
@@ -49,7 +49,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
-    "outfitId": "casual",
+    "outfitId": "sheer_nightgown",
     "sampleRating": "R18"
   }
 }

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "mudrock_arknights/wrist_wraps_gloves",
+  "revision": 1,
+  "sortOrder": 1416,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mudrock_arknights",
+    "outfit": {
+      "id": "wrist_wraps_gloves",
+      "name": "护腕与工作手套",
+      "tokens": [
+        "wrist wraps",
+        "work gloves"
+      ],
+      "prose": "Simple work gloves and plain wrist wraps.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

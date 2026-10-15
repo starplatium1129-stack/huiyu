@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "quillpen_arknights/grey_jacket_skirt",
+  "revision": 1,
+  "sortOrder": 1420,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "quillpen_arknights",
+    "outfit": {
+      "id": "grey_jacket_skirt",
+      "name": "灰色短夹克与炭黑裙装",
+      "tokens": [
+        "grey jacket",
+        "white shirt",
+        "charcoal skirt",
+        "black stockings"
+      ],
+      "prose": "A short grey jacket over a white shirt and charcoal skirt, paired with black stockings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

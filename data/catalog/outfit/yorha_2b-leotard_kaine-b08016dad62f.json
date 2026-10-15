@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/leotard_kaine",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 610,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
       "id": "leotard_kaine",
-      "name": "破损清凉战装（凯妮装束）",
-      "prose": "the Revealing Outfit combat attire: delicate pale sky-blue and translucent white lace lingerie bodysuit, floral lace trim hugging her voluptuous curves, medical bandage wrap around one arm, matching sheer stockings, and slender ribbon high heels",
+      "name": "浅蓝白蕾丝战斗装",
+      "prose": "the pale-blue and white lace combat bodysuit with floral lace edging, a bandage wrap around one arm, sheer black stockings and ribbon-tied heels",
       "tokens": [
         "pale blue lace bodysuit",
         "white lace trim",
         "bandaged arm",
-        "sheer stockings",
+        "black sheer stockings",
         "ribbon heels"
       ],
       "default": false,

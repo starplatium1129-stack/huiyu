@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "school_uniform",
-      "name": "校服",
-      "prose": "her dark school uniform with a sailor collar and pleated skirt",
+      "name": "深色水手制服",
+      "prose": "her dark school uniform with a black sailor shirt, pleated skirt and white socks",
       "tokens": [
-        "school_uniform",
-        "sailor_collar",
-        "black_shirt",
-        "pleated_skirt",
-        "white_socks"
+        "black sailor shirt",
+        "sailor collar",
+        "pleated skirt",
+        "white socks"
       ],
       "isDefault": false,
       "default": false

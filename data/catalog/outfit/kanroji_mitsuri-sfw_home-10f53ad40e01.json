@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_home",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 809,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "default": false,
       "id": "sfw_home",
       "isDefault": false,
-      "name": "食堂料理围裙装",
-      "prose": "a cream long-sleeved blouse, green long skirt and pink apron",
+      "name": "奶油衬衫与草绿长裙围裙装",
+      "prose": "A cream cotton blouse with softly gathered sleeves, a leaf-green long skirt and a warm-pink apron with one small blossom embroidered at its pocket.",
       "tokens": [
-        "cream_blouse",
-        "long_sleeves",
-        "green_skirt",
-        "pink_apron"
+        "cream blouse",
+        "long sleeves",
+        "green long skirt",
+        "pink apron"
       ]
     }
   }

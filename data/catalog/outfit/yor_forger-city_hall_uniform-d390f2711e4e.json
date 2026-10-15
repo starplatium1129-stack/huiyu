@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "yor_forger/city_hall_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 461,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yor_forger",
     "outfit": {
       "id": "city_hall_uniform",
-      "name": "市政厅职业装套裙",
+      "name": "橄榄绿市政厅套裙",
       "tokens": [
-        "office_uniform",
-        "green_jacket",
-        "white_shirt",
-        "pencil_skirt",
+        "olive green blazer",
+        "white shirt",
+        "olive green pencil skirt",
         "pantyhose"
       ],
-      "prose": "wearing her formal Berlint City Hall olive green uniform blazer with white collared shirt and pencil skirt",
+      "prose": "her olive-green City Hall blazer with a white collared shirt, a matching pencil skirt and plain tights",
       "styleHint": "retro modern office atmosphere",
       "isDefault": false,
       "default": false

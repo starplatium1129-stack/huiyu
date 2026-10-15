@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "quillpen_arknights/white_shirt_lounge_shorts",
+  "revision": 1,
+  "sortOrder": 1421,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "quillpen_arknights",
+    "outfit": {
+      "id": "white_shirt_lounge_shorts",
+      "name": "白棉衬衫与宽松短裤",
+      "tokens": [
+        "white blouse",
+        "white lounge shorts"
+      ],
+      "prose": "A loose white cotton blouse and soft white lounge shorts.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

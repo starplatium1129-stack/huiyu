@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/black_tie_bikini",
+  "revision": 1,
+  "sortOrder": 1240,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "id": "black_tie_bikini",
+      "name": "黑色系带分体泳装",
+      "tokens": [
+        "black bikini",
+        "side-tie bikini bottom"
+      ],
+      "prose": "a black two-piece bikini with narrow side ties",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

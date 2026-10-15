@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "makima/black_collar",
+  "revision": 1,
+  "sortOrder": 1405,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makima",
+    "outfit": {
+      "id": "black_collar",
+      "name": "黑色皮质项圈",
+      "tokens": [
+        "black collar",
+        "leather",
+        "metal studs"
+      ],
+      "prose": "A black leather collar with small metal studs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

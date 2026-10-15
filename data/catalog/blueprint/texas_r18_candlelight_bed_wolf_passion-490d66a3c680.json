@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_r18_candlelight_bed_wolf_passion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 668,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自斜倚黑绸床面，以红绳绕住屈起大腿，一手收绳、一手腿间自抚，狼耳与尾巴轻颤",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【成年德克萨斯 · 烛火床榻的孤狼独处】成年德克萨斯独自斜倚深色丝绸床褥，黑衬衫敞开至腰际。她屈膝将红绳绕在自己大腿，一手收紧绳结，另一手在腿间自抚；狼耳与尾巴随压抑呼吸轻颤，琥珀眼睛在烛光下卸去平日冷意。",
+    "description": "【成年德克萨斯 · 烛火床榻的孤狼独处】成年德克萨斯独自斜倚深色丝绸床褥，黑色暗纹衬衫敞开至腰际。她屈膝将红绳绕在自己大腿，一手收紧绳结，另一手在腿间自抚；狼耳与尾巴随压抑呼吸轻颤，琥珀眼睛在烛光下卸去平日冷意。",
     "id": "texas_r18_candlelight_bed_wolf_passion",
     "kreaStyleHint": "r18_elegant_boudoir",
     "lighting": "床头摇曳烛光与柔和暗金泛光",
@@ -29,11 +29,11 @@
       "masturbation",
       "hand between legs"
     ],
-    "outfitId": "nsfw_nude",
+    "outfitId": "black_lounge_shirt",
     "promptProse": "Texas holds a cord looped around her own thigh while touching herself on the silk bed, her shirt open in candlelight.",
     "promptTokens": [
       "Texas",
-      "black shirt",
+      "black pinstripe shirt",
       "on back",
       "knees up",
       "red cord",
@@ -47,7 +47,7 @@
       "bedroom",
       "bed",
       "candlelight",
-      "completely_nude",
+      "black_pinstripe_shirt",
       "hugging",
       "gentle_expression",
       "wolf_ears"

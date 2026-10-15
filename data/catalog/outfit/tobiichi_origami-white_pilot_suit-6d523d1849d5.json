@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "tobiichi_origami/white_pilot_suit",
+  "revision": 1,
+  "sortOrder": 1446,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tobiichi_origami",
+    "outfit": {
+      "id": "white_pilot_suit",
+      "name": "白色 AST 驾驶连体服",
+      "tokens": [
+        "white bodysuit",
+        "front zipper",
+        "latex"
+      ],
+      "prose": "A white fitted AST pilot suit with a long front zipper and restrained grey panel seams.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

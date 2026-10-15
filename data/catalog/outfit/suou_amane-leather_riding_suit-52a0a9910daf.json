@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "suou_amane/leather_riding_suit",
+  "revision": 1,
+  "sortOrder": 1244,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "suou_amane",
+    "outfit": {
+      "id": "leather_riding_suit",
+      "name": "拉链连体骑行皮衣",
+      "tokens": [
+        "leather bodysuit",
+        "front zipper",
+        "boots"
+      ],
+      "prose": "a front-zip leather riding suit with boots",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

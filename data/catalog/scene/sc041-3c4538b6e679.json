@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc041",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 39,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She leans toward the viewer beneath their shared umbrella, holding its handle in one hand and clasping the viewer's hand with the other; streetlight reflected from the wet pavement brightens her smile.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, ayachi_nene, navy dress, umbrella, holding hands, rain, streetlamp, night, close up",
+    "prompt": "1girl, ayachi_nene, navy long sleeve dress, white sailor collar, pink neck ribbon, flared skirt, umbrella, holding hands, rain, streetlamp, night, close up",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -29,7 +29,6 @@
     "storyJa": "【寧々・大人のアフターストーリー・雨の夜の答え】成人後の夏の夜、二人は同じ傘の下で再び告白し合った交差点を歩いた。寧々は、その日の答えをまだ覚えているかどうかを意図的に尋ねました。あなたが話し終わる前に、彼女はあなたの手をしっかりと握り、肩を近づけました。雨の光が彼女の瞳の笑顔を照らした――「今度は、雨音に隠してもらう必要はありません。柊史、私の答えは今も同じです。それに、あの頃よりずっと確かです。」",
     "tags": [
       "adult",
-      "navy_long_sleeved_dress",
       "shared_umbrella",
       "holding_umbrella",
       "holding_viewer_hand",
@@ -41,7 +40,11 @@
       "night",
       "streetlamp",
       "rain_reflections",
-      "close_up"
+      "close_up",
+      "navy_long_sleeve_dress",
+      "white_sailor_collar",
+      "pink_neck_ribbon",
+      "flared_skirt"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

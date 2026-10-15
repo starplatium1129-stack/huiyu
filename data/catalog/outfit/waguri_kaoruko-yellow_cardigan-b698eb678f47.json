@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "waguri_kaoruko/yellow_cardigan",
+  "revision": 1,
+  "sortOrder": 1453,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "waguri_kaoruko",
+    "outfit": {
+      "id": "yellow_cardigan",
+      "name": "淡黄棉针织开衫",
+      "tokens": [
+        "pale yellow cardigan",
+        "cotton knit"
+      ],
+      "prose": "A pale-yellow fine-knit cardigan with small cream buttons.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

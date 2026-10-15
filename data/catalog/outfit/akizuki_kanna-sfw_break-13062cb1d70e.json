@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_break",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 632,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
       "default": false,
       "id": "sfw_break",
       "isDefault": false,
-      "name": "休息日浅色针织装",
-      "prose": "a pale pink cardigan over a white top and comfortable dark trousers",
+      "name": "烟粉罗纹开衫与炭灰锥形裤",
+      "prose": "a dusty-pink ribbed cardigan with small black buttons over a white cotton top, paired with charcoal tapered trousers",
       "tokens": [
-        "pink_cardigan",
-        "white_top",
-        "dark_pants"
+        "pink cardigan",
+        "ribbed knit",
+        "white shirt",
+        "charcoal pants",
+        "black buttons"
       ]
     }
   }

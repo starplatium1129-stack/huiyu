@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "shiromi_iori/black_stockings",
+  "revision": 1,
+  "sortOrder": 1241,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiromi_iori",
+    "outfit": {
+      "id": "black_stockings",
+      "name": "黑色长袜造型",
+      "tokens": [
+        "black stockings"
+      ],
+      "prose": "plain black stockings",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

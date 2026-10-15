@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_bodysuit_unzipped",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 770,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "administrator_arknights_r18_bodysuit_unzipped",
     "characterId": "administrator_arknights",
@@ -28,7 +28,8 @@
       "athletic"
     ],
     "promptTokens": [
-      "bodysuit",
+      "black bodysuit",
+      "gold piping",
       "unzipped",
       "topless",
       "sweat",

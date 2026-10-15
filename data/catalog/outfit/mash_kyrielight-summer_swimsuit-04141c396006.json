@@ -1,19 +1,20 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/summer_swimsuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "summer_swimsuit",
-      "name": "常夏泳装灵衣",
-      "prose": "a white halterneck one-piece swimsuit with a light dress-like hem",
+      "name": "纯白挂颈纱摆泳装",
+      "prose": "a white halterneck one-piece swimsuit with a light dress-like skirt hem",
       "tokens": [
         "white one-piece swimsuit",
-        "halterneck"
+        "halterneck",
+        "light skirt hem"
       ],
       "default": false,
       "isDefault": false

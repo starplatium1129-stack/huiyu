@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc131",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She lies on her side on the white sheet, one nightgown strap slipped down her arm, looking toward the viewer beneath the warm lamp.",
     "auditRevision": "careful-batch14-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pink silk nightgown, see-through, strap slip, bare shoulder, on side, shy smile, blush, bed, thunderstorm, night, lamp light, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, ivory scalloped neckline, small ribbon trim, pink silk nightgown, see-through, strap slip, bare shoulder, on side, shy smile, blush, bed, thunderstorm, night, lamp light, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R18",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 薄衫单肩滑落】暖黄灯光的温馨卧室大床边。宁宁今晚在你的柔情欺负下彻底向你敞开了心扉。她身上是一件极薄的浅粉色吊带式薄衫，单肩的细带在一侧完全无力地滑落到了手臂以下，露出了大片圆润的香肩。她有些脱力地斜倚在床边，红着脸任由你的视线停留——她头顶的呆毛因为极致的舒适与安心顺从地垂成完美的心形螺旋——「大色狼...一直盯着人家的身体看什么呢...被窝里好热...快点抱紧人家啦...」",
@@ -34,7 +34,9 @@
       "lying_on_side",
       "bedroom",
       "night",
-      "close_up"
+      "close_up",
+      "ivory_scalloped_neckline",
+      "small_ribbon_trim"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

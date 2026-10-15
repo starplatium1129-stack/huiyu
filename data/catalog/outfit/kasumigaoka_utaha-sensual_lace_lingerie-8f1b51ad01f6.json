@@ -1,26 +1,22 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sensual_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 789,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "毒舌学姐纯黑蕾丝",
-      "prose": "a pure black lace lingerie set: a balconette bra framing her large breasts, matching hipster panties, black lace thighhighs with garter straps, and a thin silk kimono robe worn loose off both shoulders",
+      "name": "纯黑蕾丝套装与真丝晨袍",
+      "prose": "A black lace balconette bra and matching hipster briefs, black lace thighhighs with garter straps, and a thin black silk kimono robe.",
       "tokens": [
-        "black_lingerie",
-        "lace_bra",
-        "lace_panties",
-        "black_thighhighs",
-        "garter_straps",
-        "kimono_robe",
-        "off_shoulder",
-        "cleavage",
-        "sensual"
+        "black lace bra",
+        "black panties",
+        "black lace thighhighs",
+        "garter straps",
+        "black silk robe"
       ]
     }
   }

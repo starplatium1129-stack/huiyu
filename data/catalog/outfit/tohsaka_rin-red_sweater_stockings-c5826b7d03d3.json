@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "tohsaka_rin/red_sweater_stockings",
+  "revision": 1,
+  "sortOrder": 1470,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tohsaka_rin",
+    "outfit": {
+      "id": "red_sweater_stockings",
+      "name": "红高领与黑色长袜",
+      "tokens": [
+        "red turtleneck",
+        "white cross print",
+        "black thighhighs"
+      ],
+      "prose": "a red turtleneck with a white cross motif and black thigh-high socks",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

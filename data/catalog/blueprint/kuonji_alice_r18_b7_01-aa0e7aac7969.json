@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1633,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_01",
     "title": "久远寺有珠 · 维多利亚洋馆安乐椅的主控跨坐 ·「童话里的魔女……今夜为你打破纯洁之誓」",
     "category": "主控骑乘",
     "characterId": "kuonji_alice",
-    "description": "【久远寺邸图书洋馆·午夜】古董壁炉泛着暗红的余烬。高冷纯洁的黑魔女解开厚重黑色风衣，跨坐在你的腰间。深蓝色的维多利亚修道睡裙半褪，平素冰冷如霜的黑发下，深黑如墨的眸子凝视着你，纤细的腰肢带着生涩却绝对主控的魔性缓缓起伏——「草十郎……魔女的契约……一旦缔结就至死方休哦。」",
+    "description": "【久远寺邸图书洋馆·午夜】古董壁炉泛着暗红的余烬。高冷纯洁的黑魔女解开厚重黑色风衣，跨坐在你的腰间。黑色细褶长袖睡裙半褪，平素冰冷如霜的黑发下，深黑如墨的眸子凝视着你，纤细的腰肢带着生涩却绝对主控的魔性缓缓起伏——「草十郎……魔女的契约……一旦缔结就至死方休哦。」",
     "location": "久远寺邸图书洋馆·午夜",
     "action": "跨坐安乐椅黑裙半褪露雪肌，黑短发垂落，黑眸冰冷化水主动起伏",
     "timeOfDay": "night",
@@ -38,7 +38,8 @@
       "cowgirl position",
       "armchair",
       "fireplace",
-      "from below"
+      "from below",
+      "pintucks"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

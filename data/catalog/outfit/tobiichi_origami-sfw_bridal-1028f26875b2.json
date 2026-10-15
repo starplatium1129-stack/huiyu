@@ -1,20 +1,19 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_bridal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "鸢一折纸·圣洁花嫁",
-      "prose": "a tailored white bridal gown with a short veil, silver clasp and a single white rose",
+      "name": "白色银扣简裁婚纱",
+      "prose": "A tailored white satin gown keeps a clean fitted waist, short veil and single silver clasp.",
       "tokens": [
         "white wedding dress",
         "short veil",
-        "white rose",
         "silver clasp"
       ],
       "default": false,

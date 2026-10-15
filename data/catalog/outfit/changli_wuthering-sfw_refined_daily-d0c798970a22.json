@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 937,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "青金绣边茶馆便装",
-      "prose": "a teal long-sleeved robe with restrained gold embroidery, an opaque ivory high-collared inner blouse and a navy sash",
+      "name": "青金绣边茶馆长袍",
+      "prose": "a teal long-sleeved robe with restrained gold cuff embroidery over an ivory high-collared blouse, cinched with a broad navy sash",
       "tokens": [
-        "teal_robe",
-        "gold_embroidery",
-        "long_sleeves",
-        "high_collar",
-        "navy_sash"
+        "teal robe",
+        "gold embroidery",
+        "long sleeves",
+        "ivory blouse",
+        "high collar",
+        "navy sash"
       ],
       "isDefault": false,
       "isNsfw": false

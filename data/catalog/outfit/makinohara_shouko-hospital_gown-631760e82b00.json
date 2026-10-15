@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "makinohara_shouko/hospital_gown",
+  "revision": 1,
+  "sortOrder": 1210,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makinohara_shouko",
+    "outfit": {
+      "id": "hospital_gown",
+      "name": "疗养病号服",
+      "tokens": [
+        "hospital gown"
+      ],
+      "prose": "a simple hospital gown",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

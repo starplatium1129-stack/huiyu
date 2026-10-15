@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "hitachi_mako/private_robe",
+  "revision": 1,
+  "sortOrder": 1184,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hitachi_mako",
+    "outfit": {
+      "id": "private_robe",
+      "name": "和室宽袖长袍",
+      "tokens": [
+        "robe",
+        "wide sleeves"
+      ],
+      "prose": "a loose long robe with wide sleeves",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

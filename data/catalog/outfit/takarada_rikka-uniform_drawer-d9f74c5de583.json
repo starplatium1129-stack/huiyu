@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "takarada_rikka/uniform_drawer",
+  "revision": 1,
+  "sortOrder": 1444,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "takarada_rikka",
+    "outfit": {
+      "id": "uniform_drawer",
+      "name": "藏蓝开衫制服与浅灰内搭",
+      "tokens": [
+        "white shirt",
+        "navy cardigan",
+        "grey pleated skirt",
+        "grey cotton panties",
+        "ankle socks"
+      ],
+      "prose": "The white shirt, navy cardigan and grey pleated uniform skirt retain their simple cut, with pale-grey cotton underwear.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

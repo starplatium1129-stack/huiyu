@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc286",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 281,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc286",
     "title": "雨夜的体温",
@@ -37,7 +37,9 @@
       "rain",
       "streetlight",
       "cowboy_shot",
-      "heavy_blush"
+      "heavy_blush",
+      "concealed_placket",
+      "burgundy_cuff_piping"
     ],
     "mature": false,
     "rating": "R15",
@@ -49,7 +51,7 @@
       "展示图",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole under eye, wet hair, wet shirt, white shirt, open shirt, off shoulder, black bra, grabbing clothes, blush, looking at viewer, entrance, night, rain, backlighting, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, concealed placket, burgundy cuff piping, natsume_r18, mole under eye, wet hair, wet shirt, white shirt, open shirt, off shoulder, black bra, grabbing clothes, blush, looking at viewer, entrance, night, rain, backlighting, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "",
     "storyJa": "【夏目・大人のAfter Story・雨に濡れた後】深夜の豪雨に二人はずぶ濡れになって玄関に辿り着いた。夏目の白いブラウスは濡れて肌に張り付いている。彼女は後ろ手に扉を閉め、明かりはつけなかった——暗闇には窓の外の街灯の光と、彼女の微かに荒い呼吸だけがあった。彼女は振り返り、指を襟元に置いて、濡れたブラウスのボタンを一つずつ外していった。濡れた布地が肩から滑り落ち、足元に積もった。彼女は顔を上げた。琥珀色の瞳が薄暗がりの中で驚くほどに輝いていた——もう何も言わなかった。彼女は手を伸ばしてあなたの襟を掴み、雨に打たれた熱い沈黙の中へと引き込んだ。窓の外では雨音が止まず、彼女の肌の感触は、すべての言葉よりも誠実だった。",
     "animaCaption": "In the dark apartment entrance, Natsume pulls the viewer close by their lapel. Her soaked shirt slips from her shoulders as streetlight enters through the rainy window.",

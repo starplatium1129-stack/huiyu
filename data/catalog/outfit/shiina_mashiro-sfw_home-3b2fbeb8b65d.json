@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/sfw_home",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 852,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "sfw_home",
-      "name": "柔软针织居家装",
-      "prose": "a cream knitted sweater and loose brown trousers",
+      "name": "奶油针织与栗棕宽松裤",
+      "prose": "a soft cream sweater with a broad ribbed hem and loose chestnut-brown wide-leg trousers",
       "tokens": [
-        "cream_sweater",
-        "knitwear",
-        "brown_pants"
+        "cream sweater",
+        "ribbed hem",
+        "brown pants",
+        "wide-leg pants"
       ],
       "default": false,
       "isDefault": false

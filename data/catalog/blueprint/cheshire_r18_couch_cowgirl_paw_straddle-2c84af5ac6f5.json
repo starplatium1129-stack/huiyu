@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "cheshire_r18_couch_cowgirl_paw_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1099,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "cheshire_r18_couch_cowgirl_paw_straddle",
     "title": "柴郡 · 沙发戴爪跨坐骑乘与娇憨起伏",
     "category": "深层欢愉",
     "characterId": "cheshire_azur",
-    "outfitId": "summer_bikini",
+    "outfitId": "white_lace_maid_bikini",
     "coverageTags": [
       "cowgirl"
     ],

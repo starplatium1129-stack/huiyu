@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/indigo_yukata_stockings",
+  "revision": 1,
+  "sortOrder": 1458,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "indigo_yukata_stockings",
+      "name": "靛蓝浴衣与黑色长袜",
+      "tokens": [
+        "indigo yukata",
+        "pale grey obi",
+        "black stockings"
+      ],
+      "prose": "A fine-striped indigo cotton yukata and pale-grey obi, paired with black stockings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

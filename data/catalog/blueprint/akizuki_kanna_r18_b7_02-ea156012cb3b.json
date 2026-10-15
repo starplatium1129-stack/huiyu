@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_r18_b7_02",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1163,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "斜坐冥泉黑羽浸水透光，湿透女仆围裙贴身，手探水底自抚娇吟",
     "adult": true,
@@ -26,7 +26,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "bath_maid_apron",
     "promptProse": "She sits on the submerged steps with her wings trailing in the water and one hand between her thighs. Blue spirit butterflies drift through the steam.",
     "promptTokens": [
       "hot spring",

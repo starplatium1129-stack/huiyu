@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1272,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "无衣装",
+      "tokens": [
+        "nude"
+      ],
+      "prose": "No clothing.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

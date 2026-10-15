@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_summer_poolside_white_swimsuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 276,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "caren_summer_poolside_white_swimsuit",
     "title": "卡莲 · 盛夏泳池白泳装的休日午后",
@@ -31,9 +31,10 @@
     ],
     "promptProse": "She supports herself with one palm behind her and turns back, both feet making small ripples. Sunlight reflects from the water onto the tiles.",
     "promptTokens": [
-      "poolside",
       "white one-piece swimsuit",
       "high collar",
+      "crossed straps",
+      "poolside",
       "sitting",
       "feet in water",
       "looking back",

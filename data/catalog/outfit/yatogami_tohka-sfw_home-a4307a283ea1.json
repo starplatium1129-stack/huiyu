@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "yatogami_tohka/sfw_home",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yatogami_tohka",
     "outfit": {
       "id": "sfw_home",
-      "name": "冬季居家针织装",
-      "prose": "a cream knitted sweater, soft purple trousers and warm socks",
+      "name": "奶油白绞花冬日家居装",
+      "prose": "A cream cable-knit sweater pairs with soft purple lounge trousers and warm ribbed socks.",
       "tokens": [
-        "cream_sweater",
-        "purple_pants",
-        "warm_socks"
+        "cream cable knit sweater",
+        "purple pants",
+        "cream socks"
       ],
       "default": false,
       "isDefault": false

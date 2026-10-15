@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/nomad_wasteland",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 390,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "default": false,
       "id": "nomad_wasteland",
       "isDefault": false,
-      "name": "叙拉古荒原行者",
-      "prose": "a hooded grey fur-trimmed poncho with crossed bandoliers, weathered leather trousers, a canteen and combat boots",
+      "name": "灰狼荒原皮革行装",
+      "prose": "A hooded gray fur-trimmed poncho with crossed bandoliers, weathered leather trousers and combat boots.",
       "tokens": [
-        "grey poncho",
-        "hood",
+        "gray hooded poncho",
         "fur trim",
-        "bandolier",
-        "leather pants",
-        "canteen",
+        "crossed bandoliers",
+        "weathered leather pants",
         "combat boots"
       ]
     }

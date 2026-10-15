@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 867,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "宝多六花·成人私密造型",
-      "prose": "a private adult ensemble with sheer lace, soft shadows and a selected character accent",
+      "name": "蓝灰蕾丝内衣",
+      "prose": "A slate-blue lingerie set has restrained black lace edging and a small matching ribbon.",
       "tokens": [
-        "private_lingerie",
-        "sheer_lace",
-        "soft_shadows"
+        "slate blue bra",
+        "slate blue panties",
+        "lace trim"
       ],
       "default": false,
       "isDefault": false

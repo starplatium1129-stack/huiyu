@@ -1,18 +1,18 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_03",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 311,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "medea_caster_r18_b7_03",
     "title": "美狄亚 · 宅房间拼装手办时法袍系带脱落事故 ·「呀！……围裙带子松开了，宗一郎大人不准看！」",
     "category": "更衣事故",
     "characterId": "medea_caster",
-    "description": "【柳洞寺客房·打蜡地板】在秘密拼装Saber的模型手办时，日常穿的围裙系带意外崩开。美狄亚撑在工作桌上，围裙侧滑露出丰满白腻的巨乳与无内衣的成熟胴体，长袍掀起露出修长的美腿。她慌乱回头，尖耳剧烈颤动，羞愧欲死——「宗一郎大人！这是……这是魔术研究！……快闭上眼睛啦！」",
+    "description": "柳洞寺客房的模型工作桌旁，美狄亚穿梅紫针织裙与亚麻围裙拼装未完成的 Saber 手办。围裙系带意外断开并勾住已经松开的裙襟，她俯身扶住桌沿，慌乱地回头看向门边。",
     "location": "柳洞寺客房·打蜡地板",
-    "action": "撑工作台塌腰回眸双手护胸，围裙滑落巨乳侧漏，尖耳微颤羞怒交织",
+    "action": "俯身模型工作桌回头，断开的围裙系带勾在松开的梅紫针织裙边。",
     "timeOfDay": "night",
     "lighting": "warm_cinematic_lighting",
     "camera": "intimate horizontal medium shot",
@@ -30,7 +30,7 @@
       "elf_ears",
       "pointed_ears"
     ],
-    "promptProse": "Medea looks back from the modeling desk as her apron strap breaks and the garment slips aside, exposing her chest beside the unfinished Saber kit.",
+    "promptProse": "Medea looks back from the modeling desk as a broken apron tie catches on her loosened plum dress beside the unfinished Saber kit.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -40,7 +40,9 @@
       "leaning forward",
       "looking back",
       "model kit",
-      "workbench"
+      "workbench",
+      "plum knit dress",
+      "linen apron"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,7 +52,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "sfw_refined_daily",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

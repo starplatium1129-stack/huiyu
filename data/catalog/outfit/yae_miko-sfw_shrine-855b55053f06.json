@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_shrine",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_shrine",
-      "name": "鸣神大社端庄宫司和装",
-      "prose": "a red-and-white shrine robe with an opaque inner layer, wide sleeves and a neatly secured obi",
+      "name": "红白宽袖宫司和装",
+      "prose": "A white wide-sleeved shrine robe layers neatly over vermilion hakama, with a secure red obi and a restrained gold cord detail.",
       "tokens": [
-        "shrine_robes",
-        "white_robe",
-        "red_hakama",
-        "wide_sleeves",
-        "obi"
+        "white kimono",
+        "red hakama",
+        "wide sleeves",
+        "red obi",
+        "gold trim"
       ],
       "default": true,
       "isDefault": true

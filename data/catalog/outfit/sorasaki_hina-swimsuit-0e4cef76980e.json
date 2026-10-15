@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/swimsuit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 489,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "swimsuit",
       "isDefault": false,
-      "name": "夏日泳装 / 死库水",
-      "prose": "a dark navy-blue two-piece swimsuit with white ruffled trim and sandals",
+      "name": "深蓝白褶·夏日分体泳装",
+      "prose": "A dark navy two-piece swimsuit with narrow white ruffled trim and sandals.",
       "tokens": [
         "navy bikini",
         "white frills",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc118",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc118",
     "title": "机密机房的越界重叠",
@@ -30,7 +30,9 @@
       "server_room",
       "blue_lights",
       "sweaty",
-      "night"
+      "night",
+      "burgundy_side_panels",
+      "silver_zipper"
     ],
     "mature": true,
     "location": "反锁控制室机房",
@@ -41,7 +43,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, black leather jumpsuit, unzipped, bare breasts, straddling, leaning forward, sweat, blush, server room, blue lights, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, burgundy side panels, silver zipper, natsume_r18, black leather jumpsuit, unzipped, bare breasts, straddling, leaning forward, sweat, blush, server room, blue lights, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "hands on neck, choking, fully zipped",
     "storyJa": "【夏目・タイツを破いて究極の官能を】中央制御室は深夜に完全に施錠された。周囲にはサーバーの濃い青色の表示灯が点滅し、空気は装置のわずかな熱で満たされていました。普段は飄々として堅物なエージェントの女の子夏目が、今では大量の汗をかきながらあなたの腰にまたがっています。彼女が着ていたダークエージェントのジャンプスーツは、襟元から腹部にかけて乱暴に開かれ、その内側にある人々の血を騒がせる誇らしげなラインが露わになった。頬の紅潮で目尻の泣きぼくろが完全に濡れていた。あなたの胸を両手で強く押さえつけて身動きを封じ、身を乗り出して狂気じみた独占欲の混じる荒い息を吐き出しました。――「店長……ここの通信は完全に切れてる。今夜は、私のそばから逃げられると思わないで。」",
     "rating": "R18",

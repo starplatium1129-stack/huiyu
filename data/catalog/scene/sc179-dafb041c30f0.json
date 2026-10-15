@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc179",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "With the dress hanging from her shoulders, she straddles the viewer and leans down to bite their collarbone in the television light.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, unzipped dress, off shoulder, bare breasts, straddling, biting collarbone, sweat, blush, bedroom, wine glasses, television glow",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, unzipped navy crepe dress, asymmetrical hem, off shoulder, bare breasts, straddling, biting collarbone, sweat, blush, bedroom, wine glasses, television glow",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 宿醉衣衫解开极致独占】深夜同居公寓里，散落着红酒杯。平时永远把理智挂在嘴边的特工少女夏目，今晚在酒精的催化下彻底失去了防线。她主动将你狠狠推倒在床榻上，身上那件休闲连衣裙的拉链已经被她自己粗暴地拉到了底端，挂在圆润的香肩两侧。她跨坐在你的腰间，大汗淋漓，黑色长发散乱。眼角的泪痣因为眼神里燃起的极度独占欲与情欲而闪烁着危险的红晕。她一边剧烈娇喘，一边俯身狠狠地咬在你的锁骨上——「你是我的...哪怕身体和理智全部坏掉...我这辈子也绝对不会放过你了...笨蛋...」",
@@ -35,7 +35,9 @@
       "sweat",
       "wine_glass",
       "disheveled_bed",
-      "close_up"
+      "close_up",
+      "unzipped_navy_crepe_dress",
+      "asymmetrical_hem"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

@@ -1,19 +1,18 @@
 {
   "kind": "outfit",
   "id": "ubel_frieren/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ubel_frieren",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "尤贝尔·成人私密造型",
-      "prose": "a private adult ensemble built around black_dress, completely_nude",
+      "name": "黑色法师裙装",
+      "prose": "a fitted black mage dress",
       "tokens": [
-        "black_dress",
-        "completely_nude"
+        "black dress"
       ],
       "default": false,
       "isDefault": false

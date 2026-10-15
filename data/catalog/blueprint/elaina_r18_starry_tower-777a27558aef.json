@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_starry_tower",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 388,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "elaina_r18_starry_tower",
     "title": "伊雷娜 · 星光塔顶",
@@ -38,7 +38,9 @@
       "wind",
       "blush",
       "cowboy shot",
-      "from below"
+      "from below",
+      "silver gray robe",
+      "star embroidery"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,7 +50,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
-    "outfitId": "travel_clothes",
+    "outfitId": "star_edge_sleep_robe",
     "sampleRating": "R18"
   }
 }

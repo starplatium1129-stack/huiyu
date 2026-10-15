@@ -1,21 +1,18 @@
 {
   "kind": "outfit",
   "id": "yatogami_tohka/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yatogami_tohka",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "夜刀神十香·成人私密造型",
-      "prose": "a private adult ensemble built around astral_dress, armor, completely_nude, dressing_room",
+      "name": "无衣休息状态",
+      "prose": "No clothing.",
       "tokens": [
-        "astral_dress",
-        "armor",
-        "completely_nude",
-        "dressing_room"
+        "nude"
       ],
       "default": false,
       "isDefault": false

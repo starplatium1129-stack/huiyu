@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "elfaria_alvis_serfort/white_silk_wrap",
+  "revision": 1,
+  "sortOrder": 1366,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "elfaria_alvis_serfort",
+    "outfit": {
+      "id": "white_silk_wrap",
+      "name": "白色丝绸浴裹",
+      "tokens": [
+        "white silk",
+        "wrap"
+      ],
+      "prose": "A plain white silk bathing wrap.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

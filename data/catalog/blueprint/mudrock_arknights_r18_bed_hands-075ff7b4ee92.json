@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bed_hands",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 584,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "侧卧床上脱下最后一只手套，手指贴着大腿内侧，石盾靠在墙边",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "rhodes_oversized_hoodie",
+    "outfitId": "wrist_wraps_gloves",
     "promptProse": "Lying on her side, she draws off the last glove with her bare hand while the ungloved fingers rest against her inner thigh; the stone shield stands against the wall.",
     "promptTokens": [
       "adult",

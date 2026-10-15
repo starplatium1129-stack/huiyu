@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1585,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "zero_two_r18_b6_03",
     "title": "02 · 种植园军装制服后拉链卡死事故 ·「达令快点来帮忙！……不然这件烦人的制服就要被我撕碎了！」",
@@ -32,10 +32,11 @@
     ],
     "promptProse": "Zero Two leans over the locker bench after the rear zipper catches in her epaulets, pulling the front buttons open and hiking the skirt over black tights. She looks back impatiently for help.",
     "promptTokens": [
+      "white collar",
       "adult",
       "1girl",
       "solo",
-      "red uniform",
+      "red coat dress",
       "stuck zipper",
       "open clothes",
       "topless",
@@ -55,7 +56,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "sfw_uniform",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

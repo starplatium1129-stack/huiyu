@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "kasumigaoka_utaha/black_camisole_tights",
+  "revision": 1,
+  "sortOrder": 1398,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kasumigaoka_utaha",
+    "outfit": {
+      "id": "black_camisole_tights",
+      "name": "黑蕾丝吊带与黑色裤袜",
+      "tokens": [
+        "black camisole",
+        "lace",
+        "black pantyhose",
+        "black high heels"
+      ],
+      "prose": "A black lace camisole with sheer black pantyhose and pointed black heels.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

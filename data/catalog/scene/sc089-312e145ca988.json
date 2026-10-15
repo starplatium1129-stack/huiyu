@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc089",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Across the picnic blanket, she offers the viewer a drink while steadying the open lunchbox, its sandwiches and fruit arranged for two; soft lakeside sunlight falls across the meal and her expectant face.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,15 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, white blouse, khaki shorts, picnic blanket, lunchbox, sandwiches, fruit, offering drink, lake, medium shot",
+    "prompt": "1girl, shiki_natsume, white sleeveless blouse, scalloped collar, khaki tailored shorts, brown woven belt, picnic blanket, lunchbox, sandwiches, fruit, offering drink, lake, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
     "story": "【夏目 · 野餐盒里多出来的一份】夏日湖畔，夏目把准备得过分整齐的野餐盒打开，里面正好有两人份三明治和水果。她说只是计算失误，却在你吃下第一口时认真观察表情。湖风吹动餐布，她把饮料递来——「盐没有放多吧？如果合口味，下次……我可以再做，不代表这是固定约会。」",
     "storyJa": "【夏目・ピクニックボックスの追加分】夏の湖畔で、夏目さんはきちんと準備されたピクニックボックスを開けました。中にはサンドイッチが2つとフルーツが入っていました。単なる誤算だったと彼女は言いましたが、最初の一口を食べたときのあなたの表情を注意深く観察しました。湖の風がテーブルクロスを波立たせ、彼女は飲み物を手渡した。――「塩、多すぎなかった？　口に合うなら、次も……作ってあげてもいい。これを恒例のデートにするって意味ではないけど。」",
     "tags": [
-      "white_sleeveless_blouse",
-      "khaki_shorts",
       "straw_hat",
       "sitting_on_picnic_blanket",
       "open_lunchbox",
@@ -44,7 +42,11 @@
       "grass",
       "summer_afternoon",
       "sunlight",
-      "medium_shot"
+      "medium_shot",
+      "white_sleeveless_blouse",
+      "scalloped_collar",
+      "khaki_tailored_shorts",
+      "brown_woven_belt"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

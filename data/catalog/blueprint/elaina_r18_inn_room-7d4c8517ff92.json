@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_inn_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 383,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "elaina_r18_inn_room",
     "title": "伊雷娜 · 灰之魔女的旅夜",
@@ -37,7 +37,9 @@
       "hand between legs",
       "inn",
       "night",
-      "lamplight"
+      "lamplight",
+      "ivory shirt",
+      "gray cuffs"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,7 +49,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
-    "outfitId": "witch_dress",
+    "outfitId": "ivory_travel_shirt",
     "sampleRating": "R18"
   }
 }

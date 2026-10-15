@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc096",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Seated cross-legged beside the open refrigerator, she steadies the ice-cream tub for the viewer's approaching spoon while keeping her own spoon in her right hand; cold fridge light meets the warm kitchen lamp across her guilty smile.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white t-shirt, blue shorts, cross-legged, ice cream, spoon, open refrigerator, night, medium shot",
+    "prompt": "1girl, ayachi_nene, oversized white cotton t-shirt, navy ribbed collar, blue drawstring shorts, white piping, cross-legged, ice cream, spoon, open refrigerator, night, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
@@ -29,8 +29,6 @@
     "storyJa": "【寧々・大人のアフターストーリー・午前二時のアイスクリーム同盟】私たちが大人として一緒に引っ越した後の夏の夜、寧々はあなたの特大Tシャツを着たまま、キッチンでこっそりアイスクリームを食べていました。彼女は突然の光に怖くなってスプーンを落としそうになった。あなたはそれを暴露せず、ただ2本目のスプーンを取り出して彼女の隣に座りました。彼女は数秒間カップを腕に抱き、ついに半分まで押し込みました。――「三口だけ分けてあげます。食べ終わったら秘密にしてくださいね。明日の朝、早起きした私にも教えちゃだめです。」",
     "tags": [
       "adult",
-      "oversized_white_t_shirt",
-      "blue_cotton_shorts",
       "sitting_cross_legged_on_floor",
       "holding_ice_cream_tub",
       "holding_spoon",
@@ -42,7 +40,11 @@
       "midnight",
       "fridge_light",
       "warm_night_lamp",
-      "medium_shot"
+      "medium_shot",
+      "oversized_white_cotton_t-shirt",
+      "navy_ribbed_collar",
+      "blue_drawstring_shorts",
+      "white_piping"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

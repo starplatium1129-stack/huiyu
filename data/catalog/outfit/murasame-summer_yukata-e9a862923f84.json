@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "murasame/summer_yukata",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 617,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:13:16.548313600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
       "default": false,
       "id": "summer_yukata",
       "isDefault": false,
-      "name": "穗织花火绯红浴衣",
-      "prose": "a cotton summer yukata patterned with goldfish and water ripples, with a deep-scarlet obi tied into a butterfly bow",
+      "name": "水纹绯红夏夜浴衣",
+      "prose": "a scarlet cotton yukata patterned with goldfish and water ripples, secured by a deep-red obi tied in a broad butterfly bow",
       "tokens": [
-        "yukata",
-        "japanese_clothes",
-        "obi",
-        "red_obi",
-        "geta"
+        "red yukata",
+        "goldfish print",
+        "water print",
+        "dark red obi",
+        "obi bow"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_gym_locker_room_intimacy",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "靠坐跳箱汗湿白背心贴身透肉露大胸，体操短裤微褪勒大腿，咬运动毛巾单手自抚含泪破防",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "gym_tracksuit",
+    "outfitId": "gym_tank_variant",
     "promptProse": "Adult Yuuka leans against the vaulting horse with her shorts lowered and damp tank top beneath an open jacket. She bites her towel while touching herself, listening for adult colleagues outside.",
     "promptTokens": [
       "adult",
@@ -41,7 +41,9 @@
       "masturbation",
       "vaulting horse",
       "gym storage room",
-      "sunset"
+      "sunset",
+      "navy track jacket",
+      "navy gym shorts"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

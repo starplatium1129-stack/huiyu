@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/sfw_craft",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 960,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
       "id": "sfw_craft",
-      "name": "放学约会针织私服",
-      "prose": "a stylish lavender soft cardigan over a white camisole paired with a trendy skirt",
+      "name": "薰衣草开衫与象牙白短裙",
+      "prose": "A fine lavender knit cardigan with small pink buttons layers over a white camisole and a softly pleated ivory miniskirt.",
       "tokens": [
-        "lavender_cardigan",
-        "white_camisole",
-        "short_skirt",
-        "two_side_up",
-        "pink_ribbon"
+        "lavender cardigan",
+        "white camisole",
+        "ivory miniskirt",
+        "pink buttons"
       ],
       "default": false,
       "isDefault": false

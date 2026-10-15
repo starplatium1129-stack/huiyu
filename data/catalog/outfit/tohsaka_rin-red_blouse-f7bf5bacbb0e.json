@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "tohsaka_rin/red_blouse",
+  "revision": 1,
+  "sortOrder": 1472,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tohsaka_rin",
+    "outfit": {
+      "id": "red_blouse",
+      "name": "宝石扣红色衬衫",
+      "tokens": [
+        "red fitted blouse",
+        "faceted buttons",
+        "black cuff edging"
+      ],
+      "prose": "a fitted red blouse with faceted buttons and fine black edging at the cuffs",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

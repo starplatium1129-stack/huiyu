@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_dorm_shower",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 743,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "浴室浴缸泡沫中撩水眨眼",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "combat_outfit",
+    "outfitId": "white_bath_wrap",
     "promptProse": "Yvonne balances foam on one palm while her other hand moves beneath the water, her raised knee beside the curled tail tip.",
     "promptTokens": [
       "adult",

@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "elaina/travel_clothes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 222,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
       "id": "travel_clothes",
-      "name": "旅行装",
-      "prose": "a practical traveler's outfit with a long coat and boots",
+      "name": "灰之魔女拼领长外套",
+      "prose": "A charcoal traveling coat with contrasting gray lapels and a small star brooch, an ivory blouse, straight black trousers and buckle boots.",
       "tokens": [
-        "traveling_clothes",
-        "long_coat",
-        "boots",
-        "pants"
+        "charcoal coat",
+        "gray lapels",
+        "ivory blouse",
+        "black pants",
+        "buckle boots",
+        "star brooch"
       ],
       "isDefault": false,
       "default": false

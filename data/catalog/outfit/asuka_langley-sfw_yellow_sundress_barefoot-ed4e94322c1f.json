@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/sfw_yellow_sundress_barefoot",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1139,
   "createdAt": "2026-10-06T13:54:56.677548700+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
       "id": "sfw_yellow_sundress_barefoot",
-      "name": "湖畔赤足黄色夏裙",
+      "name": "金黄棉质吊带裙·赤足",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "a canary-yellow sundress with thin straps, worn barefoot",
+      "prose": "A canary-yellow cotton sundress with slender straps, a fitted waist and a lightly flared hem, worn barefoot.",
       "tokens": [
         "yellow sundress",
+        "thin straps",
+        "flared skirt",
         "barefoot"
       ]
     }

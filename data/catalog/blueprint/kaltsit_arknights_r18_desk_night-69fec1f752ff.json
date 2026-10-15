@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_desk_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "坐在红木办公桌沿，单手挑起下颌眼神深邃",
     "adult": true,
@@ -30,7 +30,9 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "open dress",
+      "black dress",
+      "velvet",
+      "open clothes",
       "bare breasts",
       "leaning forward",
       "knee up",

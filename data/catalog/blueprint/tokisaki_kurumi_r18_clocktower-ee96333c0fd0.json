@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_clocktower",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_clocktower",
     "title": "时崎狂三 · 刻刻帝的月夜",
@@ -12,7 +12,7 @@
     "characterId": "tokisaki_kurumi",
     "description": "【时崎狂三 · 刻刻帝的月夜】钟楼内室的金色齿轮静默咬合，褪下一半神威灵装的狂三斜倚在软垫之上，雪白香肩与饱满胸脯在红月光芒下泛着醉人的微光。她伸出纤长指尖轻抚唇瓣，眼神湿润而充满诱惑——「吃掉……还是被吃掉？今夜的选择权在您手里，可不要让我失望哦。」",
     "location": "月夜钟塔内殿",
-    "action": "哥特裙半褪倚在金色时钟前",
+    "action": "黑红束衣半褪倚在金色时钟前",
     "timeOfDay": "夜晚",
     "lighting": "silver moonlight and glowing amber clock face",
     "camera": "cowboy shot, low angle",
@@ -25,16 +25,17 @@
       "night",
       "intimate"
     ],
-    "promptProse": "The age-twenty-plus Kurumi holds an antique clock hand against her chest, her corset unlaced while she reclines before the moonlit gears.",
+    "promptProse": "The age-twenty-plus Kurumi holds an antique clock hand against her chest, her black and crimson corset unlaced while she reclines before the moonlit gears.",
     "promptTokens": [
-      "corset",
+      "black and crimson corset",
       "thighhighs",
       "reclining",
       "clock hand",
       "gears",
       "red moon",
       "topless",
-      "cowboy shot"
+      "cowboy shot",
+      "antique gold clasps"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -44,7 +45,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
-    "outfitId": "gothic_dress",
+    "outfitId": "clock_corset",
     "sampleRating": "R18"
   }
 }

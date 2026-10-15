@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/white_bath_towel",
+  "revision": 1,
+  "sortOrder": 1214,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "white_bath_towel",
+      "name": "温泉白浴巾",
+      "tokens": [
+        "white bath towel"
+      ],
+      "prose": "a simple white bath towel",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

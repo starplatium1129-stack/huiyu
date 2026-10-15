@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "makima/black_tie_only",
+  "revision": 1,
+  "sortOrder": 1406,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makima",
+    "outfit": {
+      "id": "black_tie_only",
+      "name": "黑色正装领带",
+      "tokens": [
+        "black necktie"
+      ],
+      "prose": "A plain black formal necktie.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

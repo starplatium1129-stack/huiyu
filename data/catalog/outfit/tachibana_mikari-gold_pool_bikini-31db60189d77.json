@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "tachibana_mikari/gold_pool_bikini",
+  "revision": 1,
+  "sortOrder": 1440,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tachibana_mikari",
+    "outfit": {
+      "id": "gold_pool_bikini",
+      "name": "金色泳池比基尼",
+      "tokens": [
+        "gold bikini",
+        "black sarong",
+        "sheer fabric"
+      ],
+      "prose": "A metallic-gold bikini pairs with a sheer black sarong.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

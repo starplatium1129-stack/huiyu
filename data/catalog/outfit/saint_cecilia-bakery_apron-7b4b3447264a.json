@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/bakery_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 481,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
       "default": false,
       "id": "bakery_apron",
       "isDefault": false,
-      "name": "面包房烘焙围裙",
-      "prose": "a pale-yellow dress under a plain white baking apron",
+      "name": "奶油黄泡袖裙与白棉烘焙围裙",
+      "prose": "a pale-yellow dress with short puff sleeves beneath a white cotton apron with a single broad patch pocket",
       "tokens": [
-        "yellow dress",
-        "white apron"
+        "pale yellow dress",
+        "puff sleeves",
+        "white apron",
+        "patch pocket"
       ]
     }
   }

@@ -1,26 +1,22 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/sfw_kimono_mask_removed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 580,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "sfw_kimono_mask_removed",
-      "name": "红黑和风短裙（摘下面具）",
-      "prose": "an ornate crimson and black mini kimono dress with gold floral trims, wide sleeves, a dark obi with a goldfish-tasselled sash, and black thigh-high stockings",
+      "name": "红黑金鱼和风短裙（无面具）",
+      "prose": "A red-and-black short kimono dress has gold floral trim, wide sleeves and a goldfish-tasselled black obi, paired with black thigh-high stockings.",
       "tokens": [
-        "japanese_clothes",
-        "mini_kimono",
-        "kimono_dress",
-        "black_dress",
-        "red_accents",
-        "wide_sleeves",
-        "obi",
-        "thighhighs",
-        "black_thighhighs"
+        "red and black kimono dress",
+        "gold trim",
+        "wide sleeves",
+        "black obi",
+        "black thighhighs"
       ],
       "default": false,
       "isDefault": false,

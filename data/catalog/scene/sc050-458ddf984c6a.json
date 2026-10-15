@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc050",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Her fingers interlace with the viewer's on their shared armrest while she keeps her face turned toward the film; blue-silver screen light reveals her blush above the faint red aisle lights.",
     "auditRevision": "skill-refine-sc050-2026-09-05",
@@ -21,15 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "daylight",
-    "prompt": "1girl, shiki_natsume, navy blazer, pleated skirt, sitting, holding hands, armrest, movie theater, profile, screen light, cowboy shot",
+    "prompt": "1girl, shiki_natsume, navy double breasted blazer, gold buttons, charcoal pleated midi skirt, burgundy blouse, sitting, holding hands, armrest, movie theater, profile, screen light, cowboy shot",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 · 电影散场前的手心】黑暗影院里，夏目在惊吓镜头出现时轻轻碰到你的手，犹豫片刻后干脆把手指扣紧。你回握，她虽然身体一僵，却没有再抽开。银幕的微光照出她装作专注的侧脸——「只是这里太暗，免得拿错饮料。电影结束前都别说话……也不准提前松手。」",
     "storyJa": "【夏目・映画が終わる前のヤシの木】暗い劇場の中、怖いシーンが出てきた瞬間、夏目はそっと手を触れ、一瞬ためらった後、ただ指を組みました。あなたが手を振り返したとき、彼女の体は硬直しましたが、彼女は再び離れませんでした。画面の仄かな光で、気を配るふりをする彼女の横顔が浮かび上がった――「ここが暗くて、飲み物を取り違えないようにしただけ。映画が終わるまでは黙っていて……それから、先に手を離すのも禁止。」",
     "tags": [
       "mole_under_eye",
-      "blazer",
-      "pleated_skirt",
       "sheer_black_tights",
       "sitting_in_cinema",
       "holding_hands",
@@ -42,7 +40,11 @@
       "flustered",
       "cinema_seats",
       "cowboy_shot",
-      "depth_of_field"
+      "depth_of_field",
+      "navy_double_breasted_blazer",
+      "gold_buttons",
+      "charcoal_pleated_midi_skirt",
+      "burgundy_blouse"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

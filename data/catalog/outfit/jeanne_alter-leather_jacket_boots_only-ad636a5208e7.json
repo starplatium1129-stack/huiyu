@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_alter/leather_jacket_boots_only",
+  "revision": 1,
+  "sortOrder": 1386,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "jeanne_alter",
+    "outfit": {
+      "id": "leather_jacket_boots_only",
+      "name": "黑皮夹克与高靴",
+      "tokens": [
+        "black leather jacket",
+        "black boots"
+      ],
+      "prose": "A black leather biker jacket with silver zippers and matching tall boots.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

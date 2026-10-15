@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_candle_lab",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 555,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "穿宽大白衬衫侧身坐在实验桌沿，烛火摇曳",
     "adult": true,
@@ -22,11 +22,12 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "standard",
+    "outfitId": "white_oversized_shirt",
     "promptProse": "She turns a brass calibration wheel with one hand while pressing the other between her thighs; the suspended crystal glows brighter.",
     "promptTokens": [
       "adult",
-      "open dress",
+      "oversized white shirt",
+      "open clothes",
       "topless",
       "kneeling",
       "hand between legs",

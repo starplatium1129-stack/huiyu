@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "makima/bath_unclothed",
+  "revision": 1,
+  "sortOrder": 1404,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "makima",
+    "outfit": {
+      "id": "bath_unclothed",
+      "name": "沐浴无衣状态",
+      "tokens": [
+        "nude"
+      ],
+      "prose": "No clothing.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

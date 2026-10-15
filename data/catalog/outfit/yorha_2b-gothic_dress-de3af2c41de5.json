@@ -1,25 +1,28 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/gothic_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 609,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
       "id": "gothic_dress",
-      "name": "尤尔哈决战哥特战裙",
-      "prose": "YoRHa black gothic dress with white floral chest embroidery, a sheer mesh inset, feather-trimmed puff sleeves, open-back cutout and side-slit flared skirt over a white leotard, black thigh-high leather boots and black headband",
+      "name": "白绣羽袖尤尔哈战裙",
+      "prose": "her black gothic combat dress with white chest embroidery, a mesh inset, feather-edged puff sleeves and an open back, its side-slit skirt layered over a white leotard, with black thigh-high boots, headband and tactical blindfold",
       "tokens": [
         "black dress",
         "white floral embroidery",
+        "mesh inset",
         "puff sleeves",
         "feather trim",
         "open back",
+        "side slit",
         "white leotard",
         "black thighhigh boots",
-        "black headband"
+        "black headband",
+        "black blindfold"
       ],
       "default": true,
       "isDefault": true

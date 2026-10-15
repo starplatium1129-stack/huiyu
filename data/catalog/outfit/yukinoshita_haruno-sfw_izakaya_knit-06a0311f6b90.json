@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sfw_izakaya_knit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 219,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sfw_izakaya_knit",
-      "name": "酒馆里的墨绿针织装",
-      "prose": "a fully covering forest-green turtleneck sweater, a calf-length black skirt, opaque tights and small silver stud earrings",
+      "name": "墨绿高领酒馆裙装",
+      "prose": "a forest-green turtleneck with fine ribbing, a calf-length black skirt, opaque tights and small silver stud earrings",
       "tokens": [
-        "green_turtleneck",
-        "long_sleeves",
-        "black_long_skirt",
-        "opaque_tights",
-        "stud_earrings"
+        "forest green turtleneck",
+        "black midi skirt",
+        "opaque tights",
+        "silver stud earrings"
       ],
       "isDefault": false,
       "isNsfw": false

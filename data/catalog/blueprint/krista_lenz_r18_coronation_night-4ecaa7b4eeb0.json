@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_coronation_night",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 999,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "王宫阳光长廊微扶王冠展露露背白裙",
     "adult": true,
@@ -22,13 +22,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "coronation_dress",
+    "outfitId": "white_halter_gown",
     "promptProse": "Adult Historia sits on the colonnade bench, holding her loosened bodice open while her other hand reaches beneath the layered skirt.",
     "promptTokens": [
       "1girl",
       "solo",
       "adult Historia",
-      "open dress",
+      "open white halter dress",
       "bare breasts",
       "sitting",
       "one leg bent",

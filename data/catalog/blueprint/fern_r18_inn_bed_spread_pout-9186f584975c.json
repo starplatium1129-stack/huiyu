@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_inn_bed_spread_pout",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 120,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "fern_r18_inn_bed_spread_pout",
     "characterId": "fern_frieren",
@@ -23,6 +23,7 @@
     ],
     "promptProse": "Reclining against the pillows, she folds her arms beneath her chest and turns aside with puffed cheeks, one knee raised beneath the blanket; morning light through the curtain reaches her purple nightgown and flushed profile.",
     "promptTokens": [
+      "white piping",
       "1girl",
       "solo",
       "adult",

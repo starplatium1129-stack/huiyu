@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/sfw_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "sfw_winter",
-      "name": "冬夜针织居家装",
-      "prose": "a warm cream sweater and dark trousers, with chestnut hair loose around her shoulders",
+      "name": "奶油绞花冬日家居装",
+      "prose": "A warm cream cable-knit sweater with small brown elbow patches and comfortable dark trousers.",
       "tokens": [
-        "cream_sweater",
-        "dark_pants",
-        "hair_down"
+        "cream sweater",
+        "cable knit",
+        "brown elbow patches",
+        "dark pants"
       ],
       "default": false,
       "isDefault": false

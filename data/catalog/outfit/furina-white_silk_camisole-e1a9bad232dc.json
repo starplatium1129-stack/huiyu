@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "furina/white_silk_camisole",
+  "revision": 1,
+  "sortOrder": 1374,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "furina",
+    "outfit": {
+      "id": "white_silk_camisole",
+      "name": "纯白真丝小衣",
+      "tokens": [
+        "white camisole",
+        "silk"
+      ],
+      "prose": "A simple white silk camisole with a clean neckline.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

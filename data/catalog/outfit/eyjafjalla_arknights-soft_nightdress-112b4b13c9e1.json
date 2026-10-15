@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/soft_nightdress",
+  "revision": 1,
+  "sortOrder": 1370,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "id": "soft_nightdress",
+      "name": "奶油薄棉睡裙",
+      "tokens": [
+        "cream nightgown",
+        "thin straps",
+        "socks"
+      ],
+      "prose": "A lightweight cream cotton nightdress with narrow shoulder straps and soft matching socks.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

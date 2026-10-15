@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc081",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Lying on her side with her head on a cushion, she catches the blanket corner as the viewer draws it over her; a narrow strip of afternoon light through the shoji reaches the travel notes on the nearby low table.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,15 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, beige t-shirt, grey shorts, on side, cushion, blanket, travel notes, tatami, full body",
+    "prompt": "1girl, shiki_natsume, beige waffle knit t-shirt, burgundy collar trim, charcoal cotton shorts, on side, cushion, blanket, travel notes, tatami, full body",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "春",
     "story": "【夏目 · 和室午睡的无声许可】春日下午，夏目在和室整理旅行资料，不知不觉枕着坐垫睡着。纸门漏进细长阳光，你替她盖上薄毯时，她半睁开眼却没有起身，只轻轻抓住毯角——「我没有睡，只是在闭目整理思路……既然已经盖了，就坐在旁边。醒来的时候我会还你人情。」",
     "storyJa": "【夏目・和室での仮眠を黙って許可】春の午後、夏目は和室で旅行情報を整理していたところ、いつのまにか座布団に頭を乗せて眠ってしまいました。障子からはほのかな陽光が差し込んでいた。薄い毛布をかけてあげると、目は半分開いたものの起き上がろうとしませんでした。彼女は毛布の隅をそっと掴んだだけだった。――「眠っていたわけじゃない。目を閉じて考えを整理していただけ……もう掛けたなら、そばに座っていて。起きたら借りは返すから。」",
     "tags": [
-      "beige_t_shirt",
-      "grey_shorts",
       "lying_on_side",
       "head_on_cushion",
       "blanket",
@@ -41,7 +39,10 @@
       "shoji",
       "afternoon",
       "narrow_sunbeam",
-      "full_body"
+      "full_body",
+      "beige_waffle_knit_t-shirt",
+      "burgundy_collar_trim",
+      "charcoal_cotton_shorts"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

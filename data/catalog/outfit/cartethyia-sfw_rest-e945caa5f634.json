@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_rest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "sfw_rest",
-      "name": "溪边休憩长裙装",
-      "prose": "a white long-sleeved blouse, long blue skirt and simple sandals",
+      "name": "溪边蓝裙亚麻休憩装",
+      "prose": "A white linen blouse with a gathered collar and long sleeves, a long blue pleated skirt and simple sandals.",
       "tokens": [
-        "white_blouse",
-        "long_sleeves",
-        "blue_skirt",
+        "white blouse",
+        "linen",
+        "long sleeves",
+        "blue long skirt",
+        "pleated skirt",
         "sandals"
       ],
       "default": false,

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc293",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 288,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc293",
     "title": "仓库清点时的越界",
@@ -21,8 +21,6 @@
     "timeOfDay": "evening",
     "tags": [
       "mole_under_eye",
-      "grey_sweater",
-      "pleated_skirt",
       "sheer_black_tights",
       "grabbing_collar",
       "cardboard_boxes",
@@ -30,7 +28,10 @@
       "fluorescent_light",
       "cold_light",
       "evening",
-      "close_up"
+      "close_up",
+      "grey_fine_knit_sweater",
+      "burgundy_mock_neck",
+      "charcoal_pleated_midi_skirt"
     ],
     "mature": false,
     "rating": "R15",
@@ -42,7 +43,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, grey sweater, pleated skirt, grabbing clothes, serious, cardboard box, warehouse, fluorescent light, close-up",
+    "prompt": "1girl, shiki_natsume, grey fine knit sweater, burgundy mock neck, charcoal pleated midi skirt, grabbing clothes, serious, cardboard box, warehouse, fluorescent light, close-up",
     "negative": "",
     "storyJa": "【夏目・大人のAfter Story・倉庫整理の越境】同人イベント終了後の倉庫は、まだ整理されていない段ボール箱とグッズで溢れていた。夏目は隅にしゃがみ込み、残数を数えていた。黒い長髪が前屈みになった拍子に垂れ落ち、横顔を隠している。あなたが後ろから伝票板を差し出した時、指がうっかり彼女の首筋を掠めた。彼女の動きが止まったが、振り返らなかった。倉庫の蛍光灯が微かに唸り、半開きの鉄扉の向こうからは遠くの撤収の喧騒が聞こえていた。彼女はゆっくりと立ち上がり、振り返った時もまだペンを握りしめていた。金色の瞳が狭い空間の中でひときわ鋭く光っていた——「あと三箱残ってるんだけど……まさか本当に用事があって来たって言うんじゃないでしょうね。」彼女は後退せず、むしろ半歩前に出た。あなたと彼女の間には伝票板一枚分の距離しか残っていなかった。段ボールの影が彼女の顔に落ち、彼女はわずかに顎を上げた。声は半音低くなり、段ボールの影の中でひときわ軽く響いた——「もういい……伝票のことは、後で話す。」そう言ってペンを箱の上に置き、手を伸ばしてあなたの襟を掴んだ。",
     "animaCaption": "After counting inventory, Natsume leaves her pen on a carton and holds the viewer's lapel to address them directly in the narrow aisle.",

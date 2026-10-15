@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "matou_sakura/dark_shadow_dress",
+  "revision": 1,
+  "sortOrder": 1327,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "matou_sakura",
+    "outfit": {
+      "id": "dark_shadow_dress",
+      "name": "暗影黑色破碎长裙",
+      "tokens": [
+        "black dress",
+        "torn hem"
+      ],
+      "prose": "A black dress with a ragged hem.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

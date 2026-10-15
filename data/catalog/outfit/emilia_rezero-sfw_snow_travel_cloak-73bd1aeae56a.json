@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/sfw_snow_travel_cloak",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1120,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "sfw_snow_travel_cloak",
-      "name": "雪林淡紫保暖旅行装",
-      "prose": "a lilac wool travel cloak with its hood lowered, an ivory cable-knit tunic, dark thermal leggings, fur-lined lace-up boots and pale mittens, leaving her pointed ears and white flower clip visible",
+      "name": "淡紫羊毛雪林旅行装",
+      "prose": "a lilac wool cloak with the hood lowered over an ivory cable-knit tunic and dark thermal leggings, with pale mittens and fur-lined lace-up boots",
       "tokens": [
-        "purple cloak",
+        "lilac wool cloak",
         "hood down",
-        "white sweater",
-        "mittens",
+        "ivory cable knit tunic",
+        "pale mittens",
         "dark leggings",
-        "fur-trimmed boots"
+        "fur-lined boots"
       ],
       "default": false,
       "isDefault": false

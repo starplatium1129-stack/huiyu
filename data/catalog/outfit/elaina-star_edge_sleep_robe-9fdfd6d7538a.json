@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "elaina/star_edge_sleep_robe",
+  "revision": 1,
+  "sortOrder": 1284,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "elaina",
+    "outfit": {
+      "id": "star_edge_sleep_robe",
+      "name": "银灰星缘薄睡袍",
+      "tokens": [
+        "sheer robe",
+        "silver gray robe",
+        "star embroidery"
+      ],
+      "prose": "A light sheer silver-gray robe with a small star embroidered at the cuff.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

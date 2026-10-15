@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_throne_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 408,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "提裙跨坐缓缓沉腰，遥控器抵胸如加冕，星瞳迷离",
     "adult": true,
@@ -25,7 +25,7 @@
     "mood": "女王加冕、主控沉溺",
     "negativeTokens": [],
     "nsfwProse": "",
-    "outfitId": "sensual_lace_lingerie",
+    "outfitId": "black_gold_wrap_skirt",
     "promptProse": "Adult Misaki straddles the offscreen viewer in the armchair, one hand gathering her skirt while the other rests the remote against their chest.",
     "promptTokens": [
       "black lingerie",
@@ -35,7 +35,9 @@
       "cowgirl position",
       "remote control",
       "armchair",
-      "from below"
+      "from below",
+      "black wrap skirt",
+      "satin"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

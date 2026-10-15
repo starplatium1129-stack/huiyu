@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "violet_evergarden/festive_ballgown_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 761,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "violet_evergarden",
     "outfit": {
       "id": "festive_ballgown_dress",
-      "name": "莱顿博罗盛宴翡翠绿晚礼裙",
-      "prose": "a luxurious emerald-green velvet ballgown with off-shoulder neckline, gold filigree trim around her waist, flowing satin skirt, and matching velvet choker",
+      "name": "翡翠丝绒露肩舞会礼裙",
+      "prose": "an emerald-green ballgown with an off-shoulder velvet bodice, fine gold filigree at the waist and a flowing satin skirt, paired with a matching velvet choker",
       "tokens": [
         "emerald green ballgown",
+        "velvet bodice",
+        "satin skirt",
         "off shoulder",
-        "gold trim",
+        "gold waist trim",
         "velvet choker"
       ]
     }

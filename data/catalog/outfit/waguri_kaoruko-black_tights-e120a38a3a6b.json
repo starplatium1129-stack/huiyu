@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "waguri_kaoruko/black_tights",
+  "revision": 1,
+  "sortOrder": 1454,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "waguri_kaoruko",
+    "outfit": {
+      "id": "black_tights",
+      "name": "黑色薄裤袜",
+      "tokens": [
+        "black pantyhose"
+      ],
+      "prose": "Fine black tights.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

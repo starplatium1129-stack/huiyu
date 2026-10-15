@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/white_cotton_camisole",
+  "revision": 1,
+  "sortOrder": 1237,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "white_cotton_camisole",
+      "name": "纯白棉质吊带",
+      "tokens": [
+        "white camisole",
+        "cotton"
+      ],
+      "prose": "a plain white cotton camisole",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

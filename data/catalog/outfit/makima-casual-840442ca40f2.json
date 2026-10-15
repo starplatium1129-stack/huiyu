@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "makima/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 235,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "casual",
-      "name": "私服",
-      "prose": "a relaxed casual outfit off the clock",
+      "name": "象牙衬衫与深灰休闲裙装",
+      "prose": "A relaxed ivory crepe shirt tucked into a straight charcoal midi skirt, with an open short black jacket and polished black loafers. A narrow belt keeps the quiet off-duty silhouette precise.",
       "tokens": [
-        "casual_clothes",
-        "shirt",
-        "skirt",
-        "open_jacket"
+        "ivory shirt",
+        "charcoal midi skirt",
+        "black cropped jacket",
+        "open jacket",
+        "black loafers"
       ],
       "isDefault": false,
       "default": false

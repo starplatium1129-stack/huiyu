@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "suou_yuki/graphic_zip_hoodie_shorts",
+  "revision": 1,
+  "sortOrder": 1353,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "suou_yuki",
+    "outfit": {
+      "id": "graphic_zip_hoodie_shorts",
+      "name": "灰紫痛卫衣·短裤搭配",
+      "tokens": [
+        "gray hoodie",
+        "graphic print",
+        "violet zipper",
+        "black short shorts",
+        "lace trim",
+        "black pantyhose"
+      ],
+      "prose": "A loose gray zip hoodie with an anime graphic and violet zipper tape, black short shorts with a narrow lace hem, and black pantyhose.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

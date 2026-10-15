@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_white_socks",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 462,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "白丝脚搭在椅子横梁上",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【洛琪希 · 白丝与油灯】昏暗的木屋卧房内，洛琪希坐在高木椅上，将穿着纯白过膝袜的纤细双腿搭在椅子横梁上，足尖在灯影下轻轻晃动。她低下头害羞地抓着衣角——「为什么特意让我换上这双白色长袜呢？……要是你真的喜欢看的话，随你怎么看都可以哦。」",
+    "description": "【洛琪希 · 白丝与油灯】昏暗书房里，成年洛琪希仅穿纯白过膝袜反坐在高木椅上，一只脚跟抬到椅面，手指卷住袜口，身体轻靠椅背。油灯照着她低头羞赧的神情——「为什么特意让我换上这双白色长袜呢？……要是你真的喜欢看的话，随你怎么看都可以哦。」",
     "id": "roxy_migurdia_r18_white_socks",
     "kreaStyleHint": "",
     "lighting": "warm oil lamp",
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "casual",
+    "outfitId": "white_thighhighs_only",
     "promptProse": "Adult Roxy sits backward on the chair with one heel raised onto the seat, rolling down the stocking welt while resting against the backrest.",
     "promptTokens": [
       "topless",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc150",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Facing the seated viewer, she braces the chair back on either side of their shoulders and leans close; the clubroom sunset outlines her hair beside their face.",
     "auditRevision": "careful-batch10-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "crowd",
-    "prompt": "1girl, shiki_natsume, navy school blazer, pleated skirt, hands on chair, leaning forward, looking away, blush, clubroom, desk, books, sunset, close up",
+    "prompt": "1girl, shiki_natsume, navy school blazer, burgundy piping, grey box pleated skirt, hands on chair, leaning forward, looking away, blush, clubroom, desk, books, sunset, close up",
     "rating": "All",
     "season": "夏",
     "story": "【夏目 · 强势壁咚反差萌】放学后空无一人的超自然社办，窗外落日熔金。夏目悄悄转动钥匙反锁了门，绕到你的办公椅前，双手撑在椅背两侧将你完全“壁咚”。她微微俯身，黑色发丝伴随着她标志性的傲娇呼吸拂过你的耳畔，眼角的泪痣在夕阳逆光中散发着危险而性感的魅惑——「哼，一下午都在盯着别的女孩子看，把我当空气吗？现在...是我的专属补偿时间了哦。」",
@@ -35,7 +35,10 @@
       "club_room",
       "sunset_backlight",
       "mary_jane",
-      "close_up"
+      "close_up",
+      "navy_school_blazer",
+      "burgundy_piping",
+      "grey_box_pleated_skirt"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",

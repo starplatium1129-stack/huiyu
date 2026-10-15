@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "fern_frieren/plum_silk_robe",
+  "revision": 1,
+  "sortOrder": 1175,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "fern_frieren",
+    "outfit": {
+      "id": "plum_silk_robe",
+      "name": "深梅色系带睡袍",
+      "tokens": [
+        "plum silk robe",
+        "waist sash"
+      ],
+      "prose": "a plum silk robe with a long waist sash",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

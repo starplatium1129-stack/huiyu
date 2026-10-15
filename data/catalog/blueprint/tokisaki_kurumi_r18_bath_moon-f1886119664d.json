@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_bath_moon",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_bath_moon",
     "title": "时崎狂三 · 血月浴池",
@@ -45,7 +45,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
-    "outfitId": "casual",
+    "outfitId": "black_lace",
     "sampleRating": "R18"
   }
 }

@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/cozy_orca_loungewear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 351,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
       "default": false,
       "id": "cozy_orca_loungewear",
       "isDefault": false,
-      "name": "鲸梦独语·连帽卫衣居家服",
-      "prose": "an oversized dark charcoal hoodie with a cute white orca silhouette print and sleeves past the fingertips, black cotton lounge shorts, plush slippers",
+      "name": "鲸梦·炭灰连帽居家服",
+      "prose": "An oversized charcoal hoodie with a small white orca silhouette on the chest and long sleeves, black cotton lounge shorts and plush slippers.",
       "tokens": [
-        "oversized_hoodie",
-        "hoodie",
-        "charcoal",
-        "lounge_shorts",
-        "slippers",
-        "orca"
+        "charcoal hoodie",
+        "oversized clothes",
+        "animal print",
+        "black shorts",
+        "slippers"
       ]
     }
   }

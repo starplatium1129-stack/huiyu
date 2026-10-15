@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_anna",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-15T10:03:27.711174600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yamada_anna",
     "profile": {
@@ -89,7 +89,7 @@
         "吃货超模",
         "我心里危险的东西"
       ],
-      "identityProse": "Anna Yamada from The Dangers in My Heart, a tall junior-high student who works as a model, with long glossy black hair, warm brown eyes and a small beauty mark on her neck; her expressive face often gives away her enthusiasm for everyday treats",
+      "identityProse": "Anna Yamada from The Dangers in My Heart, a tall adult model, with long glossy black hair, warm brown eyes and a small beauty mark on her neck; her expressive face often gives away her enthusiasm for everyday treats",
       "identityTokens": [
         "yamada_anna",
         "boku no kokoro no yabai yatsu",

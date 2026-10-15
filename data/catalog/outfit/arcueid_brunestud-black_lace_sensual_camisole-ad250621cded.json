@@ -1,25 +1,21 @@
 {
   "kind": "outfit",
   "id": "arcueid_brunestud/black_lace_sensual_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 720,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "arcueid_brunestud",
     "outfit": {
       "id": "black_lace_sensual_camisole",
-      "name": "纯黑真丝吊带情趣小睡衣",
-      "prose": "a delicate black silk camisole trimmed with sheer eyelash lace, plunging neckline exposing her collarbone, matching black lace panties, draped loosely over her pale skin",
+      "name": "黑真丝蕾丝吊带套装",
+      "prose": "a black silk camisole with fine eyelash-lace edging and matching black lace briefs",
       "tokens": [
-        "camisole",
-        "black_nightgown",
-        "silk_lingerie",
-        "lace_trim",
-        "cleavage",
-        "bare_shoulders",
-        "bare_legs",
-        "sensual"
+        "black camisole",
+        "silk",
+        "lace trim",
+        "black panties"
       ]
     }
   }

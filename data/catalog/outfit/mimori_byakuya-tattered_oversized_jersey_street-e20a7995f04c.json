@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "mimori_byakuya/tattered_oversized_jersey_street",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 475,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mimori_byakuya",
     "outfit": {
       "default": false,
       "id": "tattered_oversized_jersey_street",
       "isDefault": false,
-      "name": "下班街边旧运动外套",
-      "prose": "a loose, worn track jacket over gym shorts",
+      "name": "蓝灰条纹下班运动便装",
+      "prose": "a loose worn blue-gray track jacket with faded white sleeve stripes and navy gym shorts",
       "tokens": [
-        "oversized track jacket",
-        "shorts"
+        "faded blue gray track jacket",
+        "oversized jacket",
+        "white sleeve stripes",
+        "navy gym shorts"
       ]
     }
   }

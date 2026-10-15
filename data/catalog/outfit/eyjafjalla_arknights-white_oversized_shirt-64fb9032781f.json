@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/white_oversized_shirt",
+  "revision": 1,
+  "sortOrder": 1369,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "id": "white_oversized_shirt",
+      "name": "宽松白棉衬衫",
+      "tokens": [
+        "oversized white shirt",
+        "long sleeves"
+      ],
+      "prose": "A simple oversized white cotton shirt with long sleeves and a button front.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,19 +1,21 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/sfw_study",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
       "id": "sfw_study",
-      "name": "夜间书房针织便装",
-      "prose": "a soft blue sweater and a long cream skirt",
+      "name": "雾蓝宽袖毛衣与奶油长裙",
+      "prose": "A soft mist-blue knit sweater with relaxed sleeves and ribbed cuffs, worn over a fluid cream ankle-length skirt. Pale silver stitching edges the neckline.",
       "tokens": [
-        "blue_sweater",
-        "long_cream_skirt"
+        "blue sweater",
+        "wide sleeves",
+        "cream skirt",
+        "long skirt"
       ],
       "default": false,
       "isDefault": false

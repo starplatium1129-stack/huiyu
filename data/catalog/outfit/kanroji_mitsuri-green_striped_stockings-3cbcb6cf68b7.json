@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "kanroji_mitsuri/green_striped_stockings",
+  "revision": 1,
+  "sortOrder": 1394,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kanroji_mitsuri",
+    "outfit": {
+      "id": "green_striped_stockings",
+      "name": "草绿条纹过膝长袜",
+      "tokens": [
+        "green thighhighs",
+        "striped stockings"
+      ],
+      "prose": "Grass-green striped thigh-high stockings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

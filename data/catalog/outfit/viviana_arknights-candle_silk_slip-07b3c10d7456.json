@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/candle_silk_slip",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 395,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "default": false,
       "id": "candle_silk_slip",
       "isDefault": false,
-      "name": "烛影夜曲丝绸睡裙",
-      "prose": "a champagne-gold silk slip with a lace-trimmed neckline and hem, thin straps, worn barefoot",
+      "name": "香槟金蕾丝真丝睡裙",
+      "prose": "A champagne-gold silk slip has narrow straps and fine ivory lace at its neckline and hem.",
       "tokens": [
-        "silk nightgown",
+        "champagne nightgown",
+        "silk",
         "lace trim",
-        "spaghetti strap",
-        "barefoot"
+        "thin straps"
       ]
     }
   }

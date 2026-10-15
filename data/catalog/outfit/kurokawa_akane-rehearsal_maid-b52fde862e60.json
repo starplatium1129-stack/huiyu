@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "kurokawa_akane/rehearsal_maid",
+  "revision": 1,
+  "sortOrder": 1197,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kurokawa_akane",
+    "outfit": {
+      "id": "rehearsal_maid",
+      "name": "排练用女仆戏服",
+      "tokens": [
+        "maid dress",
+        "stockings"
+      ],
+      "prose": "a maid costume with stockings",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

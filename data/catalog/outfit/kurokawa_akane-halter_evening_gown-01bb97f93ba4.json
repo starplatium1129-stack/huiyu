@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kurokawa_akane/halter_evening_gown",
+  "revision": 1,
+  "sortOrder": 1196,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kurokawa_akane",
+    "outfit": {
+      "id": "halter_evening_gown",
+      "name": "挂颈露背晚礼服",
+      "tokens": [
+        "halter dress",
+        "backless dress",
+        "side zipper"
+      ],
+      "prose": "a halterneck evening gown with a low back and side zipper",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

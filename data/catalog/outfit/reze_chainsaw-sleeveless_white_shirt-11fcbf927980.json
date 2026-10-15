@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/sleeveless_white_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 238,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
       "id": "sleeveless_white_shirt",
-      "name": "经典无袖衬衫与黑领带",
+      "name": "经典白色无袖衬衫黑领带",
       "tokens": [
-        "sleeveless_shirt",
-        "white_shirt",
-        "black_tie",
-        "black_shorts",
-        "choker",
+        "white sleeveless shirt",
+        "collar",
+        "loose black necktie",
+        "black shorts",
         "sneakers"
       ],
-      "prose": "wearing her iconic sleeveless white collared shirt with loose black necktie, black shorts, and choker pin",
+      "prose": "Her white sleeveless collared shirt with a loose black necktie, black shorts and simple sneakers.",
       "styleHint": "gritty cinematic urban anime",
       "isDefault": true,
       "default": true

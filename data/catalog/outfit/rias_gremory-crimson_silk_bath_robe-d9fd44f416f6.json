@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "rias_gremory/crimson_silk_bath_robe",
+  "revision": 1,
+  "sortOrder": 1425,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "rias_gremory",
+    "outfit": {
+      "id": "crimson_silk_bath_robe",
+      "name": "深红薄纱真丝浴袍",
+      "tokens": [
+        "crimson robe",
+        "silk",
+        "sheer fabric"
+      ],
+      "prose": "A lightweight crimson silk robe with a sheer finish.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

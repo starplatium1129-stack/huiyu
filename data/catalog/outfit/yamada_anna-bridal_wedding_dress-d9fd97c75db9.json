@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/bridal_wedding_dress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 838,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "bridal_wedding_dress",
       "name": "高定抹胸鱼尾花嫁婚纱",
-      "prose": "a white strapless mermaid wedding gown with a long veil, heels and jewelry, with hair in a high ponytail",
+      "prose": "a white strapless mermaid wedding gown with a long train, bridal veil, pearl jewelry and heels, her hair in a high ponytail",
       "tokens": [
-        "white wedding dress",
+        "white strapless mermaid wedding dress",
+        "long train",
         "bridal veil",
-        "strapless dress",
+        "pearl jewelry",
         "high heels",
-        "jewelry",
         "ponytail"
       ]
     }

@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "mash_kyrielight/dangerous_beast",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mash_kyrielight",
     "outfit": {
       "id": "dangerous_beast",
-      "name": "Dangerous Beast 狼系灵衣",
-      "prose": "her Dangerous Beast costume, a wolf-themed outfit with wolf ears and tail, elbow gloves, thigh-highs and claws, bare-shouldered",
+      "name": "Dangerous Beast 狼饰灵衣",
+      "prose": "her Dangerous Beast wolf costume with plush ear and tail accessories, elbow-length claw gloves and matching thigh-high legwear",
       "tokens": [
-        "wolf_ears",
-        "wolf_tail",
-        "elbow_gloves",
+        "wolf costume",
+        "fake wolf ears",
+        "costume tail",
+        "elbow gloves",
         "thighhighs",
-        "claws",
-        "bare_shoulders"
+        "claw gloves"
       ],
       "default": false,
       "isDefault": false

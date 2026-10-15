@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yvonne_arknights/black_string_bikini",
+  "revision": 1,
+  "sortOrder": 1266,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yvonne_arknights",
+    "outfit": {
+      "id": "black_string_bikini",
+      "name": "黑色细带泳装",
+      "tokens": [
+        "black string bikini",
+        "sunglasses"
+      ],
+      "prose": "a black string bikini with sunglasses",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

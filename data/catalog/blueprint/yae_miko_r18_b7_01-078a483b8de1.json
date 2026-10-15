@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_r18_b7_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yae_miko_r18_b7_01",
     "title": "八重神子 · 鸣神大社神樱树下巫女服主动诱惑 ·「小家伙……今晚想要本宫司怎么好好疼爱你呢」",
@@ -33,7 +33,8 @@
     "promptProse": "Yae Miko rides astride her companion beneath the sacred sakura, robes gathered at her hips and five pink tails curled around their thighs.",
     "promptTokens": [
       "Yae Miko",
-      "shrine robes",
+      "white kimono",
+      "red hakama",
       "multiple tails",
       "straddling",
       "sacred sakura",
@@ -51,7 +52,7 @@
       "topless"
     ],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "sfw_shrine",
     "coverageTags": [
       "nsfw",
       "cowgirl",

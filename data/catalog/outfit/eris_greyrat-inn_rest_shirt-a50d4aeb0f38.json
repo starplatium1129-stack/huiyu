@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/inn_rest_shirt",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1158,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
       "id": "inn_rest_shirt",
-      "name": "旅店休整衬衣与旅行裤",
+      "name": "米白旅行衬衫与棕色长裤",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
-      "prose": "a simple travel shirt, practical trousers and boots; her adventurer jacket is removed and draped over the chair",
+      "prose": "A plain cream cotton travel shirt with rolled cuffs, practical brown trousers and worn leather boots.",
       "tokens": [
-        "shirt",
-        "pants",
-        "boots"
+        "cream shirt",
+        "rolled sleeves",
+        "brown pants",
+        "brown boots"
       ]
     }
   }

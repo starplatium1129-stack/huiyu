@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 42,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "深红连帽夹克",
-      "prose": "a burgundy hooded jacket over a grey crewneck T-shirt, black straight trousers and plain rectangular glasses",
+      "name": "深红斜袋连帽夹克",
+      "prose": "a burgundy hooded jacket with diagonal welt pockets over a gray crewneck T-shirt, black straight trousers and plain rectangular glasses",
       "tokens": [
-        "burgundy_jacket",
-        "hood",
-        "grey_shirt",
-        "black_pants",
+        "burgundy hooded jacket",
+        "gray crewneck shirt",
+        "black straight pants",
         "glasses"
       ],
       "isDefault": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_summer_cabin",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -40,7 +40,7 @@
       "1girl",
       "solo",
       "adult Mash",
-      "wet towel",
+      "wet white towel",
       "see-through",
       "sitting",
       "bent leg",
@@ -48,7 +48,7 @@
       "steam"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "summer_swimsuit",
+    "outfitId": "white_bath_towel",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [],

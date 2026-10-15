@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "reze_chainsaw/white_morning_shirt",
+  "revision": 1,
+  "sortOrder": 1340,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "reze_chainsaw",
+    "outfit": {
+      "id": "white_morning_shirt",
+      "name": "晨间白衬衫单件",
+      "tokens": [
+        "white shirt",
+        "button-up shirt"
+      ],
+      "prose": "A plain lightweight white button-up shirt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_dorm_cozy_budget_glasses",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 916,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "戴着红框眼镜蜷坐在布艺沙发上，抱着抱枕与手账本，神情放松慵懒",
     "camera": "medium shot, slightly low angle",
@@ -27,7 +27,8 @@
       "curled up",
       "sofa",
       "cocoa",
-      "lamplight"
+      "lamplight",
+      "low twintails"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

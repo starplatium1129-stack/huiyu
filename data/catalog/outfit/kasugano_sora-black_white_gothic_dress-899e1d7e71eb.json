@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "kasugano_sora/black_white_gothic_dress",
+  "revision": 1,
+  "sortOrder": 1396,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kasugano_sora",
+    "outfit": {
+      "id": "black_white_gothic_dress",
+      "name": "黑白哥特礼裙",
+      "tokens": [
+        "black and white dress",
+        "gothic fashion",
+        "lace trim",
+        "black thighhighs",
+        "garter straps"
+      ],
+      "prose": "A black-and-white Gothic dress with lace edging and a back zipper, paired with black thighhighs and garter straps.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

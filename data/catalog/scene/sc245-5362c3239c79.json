@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc245",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 240,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She holds the teacup near her mouth while resting her other hand beside the ledger, watching the viewer sort the scattered orders; the counter lamp warms her tired face and the cup.",
     "auditRevision": "careful-batch07-2026-08-27",
@@ -30,7 +30,6 @@
       "mole_under_eye",
       "cafe_uniform",
       "white_blouse",
-      "navy_apron",
       "cafe_counter",
       "teacup",
       "black_tea",

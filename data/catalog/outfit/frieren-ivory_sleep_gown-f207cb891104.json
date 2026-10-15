@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "frieren/ivory_sleep_gown",
+  "revision": 1,
+  "sortOrder": 1290,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "frieren",
+    "outfit": {
+      "id": "ivory_sleep_gown",
+      "name": "旅宿象牙白睡袍",
+      "tokens": [
+        "ivory nightgown",
+        "long sleeves",
+        "green piping"
+      ],
+      "prose": "An ivory long-sleeved nightgown with a fine green border at the cuffs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

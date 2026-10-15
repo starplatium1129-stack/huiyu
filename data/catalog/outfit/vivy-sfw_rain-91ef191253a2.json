@@ -1,19 +1,21 @@
 {
   "kind": "outfit",
   "id": "vivy/sfw_rain",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 975,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vivy",
     "outfit": {
       "id": "sfw_rain",
-      "name": "闭园雨天蓝色外套",
-      "prose": "a blue waterproof coat over the stage outfit, opaque tights and practical boots",
+      "name": "钴蓝防雨外套与白蓝舞台裙",
+      "prose": "a cobalt-blue waterproof coat with white seam tape over her white-and-blue stage dress, with opaque tights and practical boots",
       "tokens": [
-        "blue_raincoat",
-        "tights",
+        "cobalt blue raincoat",
+        "white seam tape",
+        "white and blue dress",
+        "opaque tights",
         "boots"
       ],
       "default": false,

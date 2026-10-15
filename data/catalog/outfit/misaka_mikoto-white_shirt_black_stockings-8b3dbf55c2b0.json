@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "misaka_mikoto/white_shirt_black_stockings",
+  "revision": 1,
+  "sortOrder": 1414,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "misaka_mikoto",
+    "outfit": {
+      "id": "white_shirt_black_stockings",
+      "name": "白衬衫与黑色长袜",
+      "tokens": [
+        "oversized white shirt",
+        "black thighhighs",
+        "black lace panties"
+      ],
+      "prose": "An oversized white cotton shirt with black thighhighs and black lace briefs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_morning_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 326,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hatsune_miku_r18_morning_room",
     "title": "初音未来 · 清晨的房间",
     "category": "成人",
     "characterId": "hatsune_miku",
-    "description": "【初音未来 · 清晨的房间】清晨温暖的金色阳光洒在大床上，初音未来光着身子端坐在被单间伸了个大大的懒腰，挺翘紧致的身材曲线在晨光下一览无余。她转过头冲你甜甜一笑——「Master 早安！今天也是属于我们两个人的崭新一天哦！」",
+    "description": "【初音未来 · 清晨的房间】清晨温暖的金色阳光洒在大床上，初音未来穿宽大的白色睡衫端坐在被单间伸了个大大的懒腰，挺翘紧致的身材曲线在晨光下一览无余。她转过头冲你甜甜一笑——「Master 早安！今天也是属于我们两个人的崭新一天哦！」",
     "location": "录音室公寓卧室",
     "action": "跪坐在床上伸懒腰",
     "timeOfDay": "清晨",
@@ -36,7 +36,9 @@
       "blush",
       "bed",
       "morning",
-      "sunlight"
+      "sunlight",
+      "white shirt",
+      "teal piping"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -46,7 +48,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@jazz_jack",
-    "outfitId": "v2_classic",
+    "outfitId": "oversized_white_sleep_shirt",
     "sampleRating": "R18"
   }
 }

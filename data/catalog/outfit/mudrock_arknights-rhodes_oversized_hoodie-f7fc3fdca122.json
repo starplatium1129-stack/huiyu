@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/rhodes_oversized_hoodie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 330,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "default": false,
       "id": "rhodes_oversized_hoodie",
       "isDefault": false,
-      "name": "罗德岛大号连帽卫衣",
-      "prose": "a super oversized charcoal-grey Rhodes Island hoodie reaching mid-thigh with sleeves past the fingertips, subtle geometric logo on the chest, black athletic shorts hidden under the hem",
+      "name": "罗德岛炭灰宽松连帽卫衣",
+      "prose": "A roomy charcoal-grey hoodie with long relaxed sleeves and a small geometric chest emblem, paired with black athletic shorts beneath its mid-thigh hem.",
       "tokens": [
-        "oversized_hoodie",
-        "hoodie",
-        "charcoal",
-        "mengkawaii",
-        "loungewear"
+        "charcoal hoodie",
+        "oversized clothes",
+        "long sleeves",
+        "geometric emblem",
+        "black athletic shorts"
       ]
     }
   }

@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "tohsaka_rin/black_lace",
+  "revision": 1,
+  "sortOrder": 1471,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tohsaka_rin",
+    "outfit": {
+      "id": "black_lace",
+      "name": "黑色蕾丝衣装",
+      "tokens": [
+        "black lace clothing"
+      ],
+      "prose": "black lace clothing",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

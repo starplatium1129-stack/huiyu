@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/ruins_cape",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 611,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
       "id": "ruins_cape",
-      "name": "废墟风沙行者斗篷",
-      "prose": "a tattered dark-gray traveler cloak and cowl over a charcoal tactical suit, reinforced knee guards and desert-dusted combat boots",
+      "name": "深灰风沙斗篷战术装",
+      "prose": "a tattered dark-grey hooded traveler cloak over a charcoal tactical suit, reinforced knee guards, black leather gloves and desert-dusted combat boots",
       "tokens": [
         "grey cloak",
         "hood",
         "charcoal bodysuit",
         "knee guards",
+        "black gloves",
         "combat boots"
       ],
       "default": false,

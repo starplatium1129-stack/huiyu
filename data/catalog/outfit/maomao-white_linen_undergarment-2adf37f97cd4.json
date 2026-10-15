@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "maomao/white_linen_undergarment",
+  "revision": 1,
+  "sortOrder": 1324,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "maomao",
+    "outfit": {
+      "id": "white_linen_undergarment",
+      "name": "白麻交领中衣",
+      "tokens": [
+        "white linen undergarment",
+        "crossed collar"
+      ],
+      "prose": "A plain white linen undergarment with a crossed collar.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

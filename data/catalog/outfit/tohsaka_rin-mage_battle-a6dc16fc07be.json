@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/mage_battle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "mage_battle",
-      "name": "魔术战斗",
-      "prose": "her mage combat outfit with glowing magic circuits and gems",
+      "name": "宝石扣赤红战斗连衣裙",
+      "prose": "a red long-sleeved dress with an asymmetrical hem, black waist panel and ruby clasp",
       "tokens": [
-        "magic_circuits",
-        "jewelry",
-        "dress",
-        "glowing",
-        "long_sleeves"
+        "red long sleeved dress",
+        "asymmetrical hem",
+        "black waist panel",
+        "ruby clasp"
       ],
       "isDefault": false,
       "default": false

@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/home_cooking_apron",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 203,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "home_cooking_apron",
-      "name": "粉色料理围裙居家装",
-      "prose": "a cute pink cooking apron worn over a casual short-sleeve top",
+      "name": "粉色小犬口袋料理围裙",
+      "prose": "a pink cooking apron with cream scalloped edging and a puppy-shaped pocket over a white short-sleeved top",
       "tokens": [
-        "apron",
-        "pink_apron",
-        "short_sleeves",
-        "casual_wear"
+        "pink apron",
+        "cream scalloped edging",
+        "puppy shaped pocket",
+        "white short sleeved shirt"
       ]
     }
   }

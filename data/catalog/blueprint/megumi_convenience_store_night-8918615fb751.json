@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_convenience_store_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "megumi_convenience_store_night",
     "title": "加藤惠 · 赶工后的便利店热饮",
@@ -37,7 +37,8 @@
       "sitting",
       "bench",
       "convenience store",
-      "night"
+      "night",
+      "bob cut"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/knight_silk_underlayers",
+  "revision": 1,
+  "sortOrder": 1450,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "id": "knight_silk_underlayers",
+      "name": "白绸衬衫与黑金长裙",
+      "tokens": [
+        "white silk shirt",
+        "black skirt",
+        "gold trim",
+        "white elbow gloves"
+      ],
+      "prose": "A white silk shirt and long white gloves pair with the black pleated knight skirt and fine gold hem.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

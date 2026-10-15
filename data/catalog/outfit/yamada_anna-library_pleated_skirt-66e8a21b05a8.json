@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/library_pleated_skirt",
+  "revision": 1,
+  "sortOrder": 1478,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "library_pleated_skirt",
+      "name": "图书馆·百褶裙与黑色连裤袜",
+      "tokens": [
+        "pleated skirt",
+        "black pantyhose"
+      ],
+      "prose": "a pleated skirt and black tights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "taihou_azur/black_lace_negligee",
+  "revision": 1,
+  "sortOrder": 1245,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "taihou_azur",
+    "outfit": {
+      "id": "black_lace_negligee",
+      "name": "黑色蕾丝薄纱睡袍",
+      "tokens": [
+        "black negligee",
+        "lace",
+        "sheer fabric"
+      ],
+      "prose": "a black lace negligee in light sheer fabric",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

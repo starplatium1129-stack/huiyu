@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_bridal_lab_flowers",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1159,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_bridal_lab_flowers",
-      "name": "实验室插花的银灰腰带婚纱",
+      "name": "银灰腰带白缎婚纱·插花",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
-      "prose": "a simple white bridal dress with a silver-grey sash, with the veil and black-rimmed glasses removed for arranging flowers",
+      "prose": "a clean white satin bridal dress with a square neckline and silver-gray sash, with the veil and glasses set aside",
       "tokens": [
-        "white wedding dress",
-        "silver sash"
+        "white satin wedding dress",
+        "square neckline",
+        "silver gray sash"
       ]
     }
   }

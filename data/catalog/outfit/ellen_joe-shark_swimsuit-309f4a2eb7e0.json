@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/shark_swimsuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 583,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
       "default": false,
       "id": "shark_swimsuit",
       "isDefault": false,
-      "name": "夏日鲨齿运动分体泳装",
-      "prose": "a black-and-vermilion bikini with white shark-tooth trim, sheer cropped hoodie, black choker and red visor sunglasses",
+      "name": "红黑鲨齿运动泳装",
+      "prose": "A black-and-vermilion sports bikini with white shark-tooth edging, a sheer cropped hoodie, black choker and red visor sunglasses.",
       "tokens": [
         "black and red bikini",
         "shark teeth print",
-        "cropped hoodie",
+        "sheer cropped hoodie",
         "black choker",
-        "red visor"
+        "red visor sunglasses"
       ]
     }
   }

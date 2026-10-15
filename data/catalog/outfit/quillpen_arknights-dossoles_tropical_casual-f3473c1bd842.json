@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/dossoles_tropical_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 360,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
       "default": false,
       "id": "dossoles_tropical_casual",
       "isDefault": false,
-      "name": "多索雷斯假日热带海滨街头漫步便服",
-      "prose": "a tropical resort casual outfit: a white off-shoulder ruffled crop top, high-waisted light-blue distressed denim shorts with a woven brown leather belt, strappy sandals",
+      "name": "白色荷叶边上衣与浅蓝牛仔短裤",
+      "prose": "A white cotton off-shoulder crop top with a soft ruffled edge, high-waisted light-blue denim shorts and a woven brown belt, paired with strappy sandals.",
       "tokens": [
-        "crop_top",
-        "off_shoulder",
-        "denim_shorts",
-        "tropical",
+        "white crop top",
+        "off shoulder",
+        "frills",
+        "light blue denim shorts",
+        "woven belt",
         "sandals"
       ]
     }

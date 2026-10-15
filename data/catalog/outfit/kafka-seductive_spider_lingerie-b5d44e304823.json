@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "kafka/seductive_spider_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 573,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kafka",
     "outfit": {
       "id": "seductive_spider_lingerie",
-      "name": "蛛网情趣内衣",
-      "prose": "a seductive sheer black spiderweb lace corset lingerie set with matching lace panties, garter straps, sheer black thighhigh stockings, and bare shoulders",
+      "name": "黑色蛛网蕾丝束衣套装",
+      "prose": "A sheer black spiderweb-lace corset with matching briefs, garter straps and sheer black thighhighs.",
       "tokens": [
-        "lingerie",
-        "corset",
-        "lace_bra",
-        "panties",
-        "garter_straps",
-        "sheer_stockings",
-        "spider_web_motif",
-        "bare_shoulders"
+        "black corset",
+        "sheer lace",
+        "spider web print",
+        "black panties",
+        "garter straps",
+        "black thighhighs"
       ],
       "default": false,
       "isDefault": false

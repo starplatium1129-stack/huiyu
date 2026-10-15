@@ -1,25 +1,23 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/silk_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 433,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
       "default": false,
       "id": "silk_nightgown",
       "isDefault": false,
-      "name": "私人寝舱吊带睡裙",
-      "prose": "a delicate black-and-silver silk slip nightdress with spaghetti straps and a low-cut neckline",
+      "name": "黑银斜裁真丝吊带睡裙",
+      "prose": "a black silk slip nightgown cut on the bias, with slim straps, its existing low neckline and a narrow silver edge",
       "tokens": [
-        "nightgown",
-        "slip_dress",
-        "low_neckline",
-        "bare_shoulders",
-        "cleavage",
-        "silk"
+        "black silk nightgown",
+        "spaghetti straps",
+        "silver trim",
+        "bias cut"
       ]
     }
   }

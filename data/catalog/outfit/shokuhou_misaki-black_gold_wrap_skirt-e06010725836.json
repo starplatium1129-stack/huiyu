@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/black_gold_wrap_skirt",
+  "revision": 1,
+  "sortOrder": 1345,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "id": "black_gold_wrap_skirt",
+      "name": "黑金蕾丝·缎面裹裙搭配",
+      "tokens": [
+        "black lingerie",
+        "gold trim",
+        "lace bra",
+        "black wrap skirt",
+        "satin"
+      ],
+      "prose": "Her black-and-gold lace lingerie paired with a soft black satin wrap skirt secured at one side.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

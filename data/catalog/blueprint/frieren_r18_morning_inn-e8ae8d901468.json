@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_morning_inn",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "frieren_r18_morning_inn",
     "title": "芙莉莲 · 旅店晨光",
@@ -38,7 +38,9 @@
       "knees up",
       "rubbing eyes",
       "hand between legs",
-      "morning"
+      "morning",
+      "ivory nightgown",
+      "green piping"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,7 +50,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@hiten (hitenkei)",
-    "outfitId": "casual",
+    "outfitId": "ivory_sleep_gown",
     "sampleRating": "R18"
   }
 }

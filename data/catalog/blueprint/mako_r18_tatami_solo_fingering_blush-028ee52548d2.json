@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_tatami_solo_fingering_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1144,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "倚着低矮木扶手，一手撑木边，另一手留在掀起的袍摆内",
     "adult": true,
@@ -24,7 +24,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "shrine_casual",
+    "outfitId": "private_robe",
     "promptProse": "Adult Mako reclines against the low armrest, bracing on the wood while fingering herself beneath her lifted robe.",
     "promptTokens": [
       "1girl",

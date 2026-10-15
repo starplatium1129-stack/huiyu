@@ -1,26 +1,21 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/summer_beach_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 834,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "summer_beach_bikini",
-      "name": "盛夏海滩条纹运动比基尼",
-      "prose": "a vibrant navy-and-white striped halterneck bikini that struggles to contain her enormous natural bust, paired with matching tie-side bikini bottoms, her long black hair tied in a messy high ponytail",
+      "name": "藏蓝白条纹运动比基尼",
+      "prose": "a navy-and-white striped halterneck bikini with matching tie-side bottoms, with her hair in a high ponytail",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "striped_bikini",
+        "navy and white striped bikini",
         "halterneck",
-        "cleavage",
-        "large_breasts",
-        "bare_shoulders",
-        "wet_skin",
-        "tall_female"
+        "tie side bikini bottom",
+        "ponytail"
       ]
     }
   }

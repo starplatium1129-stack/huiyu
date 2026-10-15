@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "takarada_rikka/sleep_tshirt",
+  "revision": 1,
+  "sortOrder": 1445,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "takarada_rikka",
+    "outfit": {
+      "id": "sleep_tshirt",
+      "name": "浅灰宽松棉质睡衣",
+      "tokens": [
+        "light grey t-shirt",
+        "grey panties",
+        "cotton"
+      ],
+      "prose": "A loose pale-grey cotton T-shirt and simple matching underwear.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

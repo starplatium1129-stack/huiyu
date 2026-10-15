@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "izumi_sagiri/sfw_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 860,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "izumi_sagiri",
     "outfit": {
       "id": "sfw_winter",
-      "name": "冬季参拜大衣",
-      "prose": "a cream winter coat over trousers, a pink wool scarf and warm boots",
+      "name": "奶油白圆领冬日大衣",
+      "prose": "a cream wool coat with a rounded collar and large covered buttons, a pink wool scarf, gray trousers and warm boots",
       "tokens": [
-        "winter_coat",
-        "pink_scarf",
-        "pants",
-        "boots"
+        "cream wool coat",
+        "rounded collar",
+        "pink scarf",
+        "gray pants",
+        "warm boots"
       ],
       "default": false,
       "isDefault": false

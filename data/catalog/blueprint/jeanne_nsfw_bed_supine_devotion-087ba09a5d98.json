@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_bed_supine_devotion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 239,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "jeanne_nsfw_bed_supine_devotion",
     "title": "圣女贞德 · 纯白花嫁床褥与开档战袍柔情仰卧·「今夜起，我的身体与灵魂都归属于你」",
@@ -32,9 +32,11 @@
     "promptProse": "Jeanne lies on the bridal bed with her gown loosened at her waist and veil across the pillows. She cups her bare breasts with her legs parted, candlelight catching happy tears in her eyes.",
     "nsfwProse": "",
     "promptTokens": [
+      "square neckline",
+      "princess seams",
       "1girl",
       "solo",
-      "wedding dress",
+      "white wedding dress",
       "bridal veil",
       "partially clothed",
       "bare breasts",
@@ -51,7 +53,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "nsfw_nude",
+    "outfitId": "sfw_white_bridal",
     "coverageTags": [
       "h_cg",
       "special_nsfw"

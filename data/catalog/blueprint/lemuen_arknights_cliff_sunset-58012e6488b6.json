@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_cliff_sunset",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 558,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "停驻在崖边观景处，端坐于轮椅静赏晚霞",
     "camera": "wide shot, back three-quarter",
@@ -21,6 +21,8 @@
     "promptTokens": [
       "1girl",
       "solo",
+      "wheelchair",
+      "lap blanket",
       "folded hands",
       "halo",
       "wings",

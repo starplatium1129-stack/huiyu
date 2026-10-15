@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_01",
     "title": "夜刀神十香 · 神威灵装紫水晶座主控跨坐 ·「士道……十香的身体……为什么会变得这么想要你呢」",
@@ -33,7 +33,8 @@
     "promptTokens": [
       "adult",
       "pov",
-      "astral dress",
+      "purple armor",
+      "white astral dress",
       "open armor",
       "topless",
       "cowgirl position",
@@ -52,7 +53,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "astral_armor_dress",
     "coverageTags": [
       "nsfw",
       "cowgirl",

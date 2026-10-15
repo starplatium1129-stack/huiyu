@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon_alter/casual_gothic_lolita_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "artoria_pendragon_alter",
     "outfit": {
       "id": "casual_gothic_lolita_dress",
-      "name": "无光深黑哥特抹胸晚礼裙",
-      "prose": "a black velvet strapless gothic dress with lace trim, black gloves and knee-high boots, with hair worn loose",
+      "name": "无光黑绒哥特抹胸裙",
+      "prose": "a strapless black velvet dress with a fitted bodice, scalloped lace hem, black gloves and knee-high boots",
       "tokens": [
-        "black dress",
-        "strapless dress",
+        "black velvet dress",
+        "strapless",
+        "lace trim",
         "black gloves",
-        "knee boots",
-        "loose hair"
+        "knee boots"
       ]
     }
   }

@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/engineer_tank_top",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 436,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
       "default": false,
       "id": "engineer_tank_top",
       "isDefault": false,
-      "name": "车间工字背心",
-      "prose": "a fitted grey and bright orange ribbed racerback tank top with heavy-duty work shorts and grease smudges",
+      "name": "橙灰罗纹车间背心装",
+      "prose": "An orange ribbed racerback tank with reinforced grey side panels, sturdy dark work shorts, practical gloves and work boots.",
       "tokens": [
-        "tank_top",
+        "orange tank top",
+        "grey side panels",
         "racerback",
-        "crop_top",
-        "shorts",
+        "ribbed fabric",
+        "work shorts",
         "gloves",
-        "boots"
+        "work boots"
       ]
     }
   }

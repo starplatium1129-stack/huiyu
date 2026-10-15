@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "yuigahama_yui/volunteer_blouse_skirt",
+  "revision": 1,
+  "sortOrder": 1485,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yuigahama_yui",
+    "outfit": {
+      "id": "volunteer_blouse_skirt",
+      "name": "珊瑚衬衫与志愿工作窄裙",
+      "tokens": [
+        "coral blouse",
+        "rounded collar",
+        "cream buttons",
+        "navy fitted skirt"
+      ],
+      "prose": "a coral blouse with a rounded collar and cream buttons, paired with a navy fitted skirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

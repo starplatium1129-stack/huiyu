@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc092",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "After straightening her collar, she rests her forehead gently against the viewer's in a shy morning greeting.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,20 +21,22 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, ayachi_nene, oversized white shirt, sitting on bed, adjusting collar, forehead touch, morning light, close up",
+    "prompt": "1girl, ayachi_nene, oversized white cotton shirt, button down collar, fine blue pinstripes, sitting on bed, adjusting collar, forehead touch, morning light, close up",
     "rating": "All",
     "season": "春",
     "story": "【成年 After Story · 起床后十分钟】成年同居后的春日清晨，宁宁披着你的衬衫坐在床边醒神，松开的领口不小心滑到肩侧。她发现你醒来后先慌忙拉好衣服，随后又坐回原处，把额头靠上你的额头——「早安。刚才什么都没看见，对吧？回答正确的话，今天可以多抱十分钟。」",
     "storyJa": "【寧々・大人のアフターストーリー・起きてから10分】私たちが大人として一緒に引っ越してからのある春の朝、寧々は目を覚ますためにあなたのシャツを掛けたままベッドの端に座っていました。緩んだ首輪がうっかり肩の横に滑り落ちてしまった。あなたが目を覚ましたことに気づいた彼女は、急いであなたの服をたくし上げ、再び座り、あなたの額に額を当てました。――「おはようございます。さっきは何も見ていませんよね？　正しく答えられたら、今日はあと十分長く抱いていてもいいですよ。」",
     "tags": [
       "hair_ribbon",
-      "oversized_shirt",
       "forehead_touch",
       "bed_edge",
       "bedroom",
       "medium_close_up",
       "morning",
-      "depth_of_field"
+      "depth_of_field",
+      "oversized_white_cotton_shirt",
+      "button_down_collar",
+      "fine_blue_pinstripes"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

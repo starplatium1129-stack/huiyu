@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_r18_sofa_cowgirl_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1276,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跨坐沙发靠垫，一手扶住靠垫，尾巴与腿分开。",
     "adult": true,
@@ -24,10 +24,11 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "casual_denim",
+    "outfitId": "casual_denim_no_pet",
     "promptProse": "Adult Nana sits astride the sofa cushion with her top raised and shorts pulled aside, gripping the cushion while fingering herself; her tail rests clear of her legs.",
     "promptTokens": [
-      "crop top",
+      "dark red crop top",
+      "denim shorts",
       "shirt lift",
       "shorts aside",
       "demon tail",

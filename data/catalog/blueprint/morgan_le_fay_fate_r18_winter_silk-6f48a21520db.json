@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_winter_silk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 198,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -13,7 +13,7 @@
     "title": "摩根 · 冬之王座阳光殿堂露背私享",
     "category": "成人",
     "characterId": "morgan_le_fay_fate",
-    "description": "【摩根 · 冬之王座阳光殿堂露背私享】晴空天光倾泻的王座殿堂内，摩根身着挂脖露背深黑晚礼服，王冠置于王座扶手旁，明亮高光勾勒出她无瑕的美背脊线、优美侧乳与傲人腰臀轮廓，独占威严而深情。",
+    "description": "【摩根 · 冬之王座阳光殿堂露背私享】晴空天光倾泻的王座殿堂内，摩根身着细肩带露背黑缎礼服，裙缘带着窄窄的深蓝滚边，王冠置于王座扶手旁，明亮高光勾勒出她无瑕的美背脊线、优美侧乳与傲人腰臀轮廓，独占威严而深情。",
     "location": "冬宫雪景暖阁",
     "action": "王座殿堂日光下展露露背礼服与侧乳",
     "timeOfDay": "白天",
@@ -43,10 +43,12 @@
       "looking back",
       "crown",
       "throne",
-      "winter light"
+      "winter light",
+      "black dress",
+      "blue piping"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "winter_queen",
+    "outfitId": "black_backless_gown",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [],

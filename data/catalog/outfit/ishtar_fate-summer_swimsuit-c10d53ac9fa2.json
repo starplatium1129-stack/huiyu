@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "ishtar_fate/summer_swimsuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ishtar_fate",
     "outfit": {
       "id": "summer_swimsuit",
-      "name": "女神度假不对称比基尼",
-      "prose": "an asymmetric black-and-gold bikini with a sheer red sarong and gold tiara",
+      "name": "黑金不对称女神泳装",
+      "prose": "An asymmetric black-and-gold bikini with a sheer red sarong and gold tiara.",
       "tokens": [
-        "mismatched bikini",
+        "black and gold bikini",
+        "asymmetrical bikini",
         "gold trim",
         "red sarong",
-        "tiara"
+        "gold tiara"
       ]
     }
   }

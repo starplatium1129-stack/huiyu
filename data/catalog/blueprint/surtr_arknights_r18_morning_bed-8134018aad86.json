@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_morning_bed",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 524,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "裹着薄被侧卧回眸",
     "adult": true,
@@ -26,17 +26,18 @@
       "masturbation",
       "hand between legs"
     ],
-    "outfitId": "lava_silk_loungewear",
-    "promptProse": "Surtr touches herself beneath the sheet with one arm above her head, her shirt lifted as embers rise in dawn light.",
+    "outfitId": "morning_shirt",
+    "promptProse": "Surtr touches herself beneath the sheet with one arm above her head, her black cotton shirt lifted as embers rise in dawn light.",
     "promptTokens": [
       "Surtr",
-      "shirt",
+      "black cotton shirt",
       "on back",
       "knees up",
       "bed",
       "embers",
       "dawn",
-      "high angle"
+      "high angle",
+      "red cuff piping"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

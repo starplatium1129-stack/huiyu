@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_rooftop_kiss",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 545,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "倚着落地窗，回眸凝视",
     "adult": true,
@@ -28,9 +28,10 @@
       "adult",
       "rooftop",
       "wet uniform",
+      "white shirt",
       "open shirt",
       "topless",
-      "unfastened skirt",
+      "unfastened black skirt",
       "finger to lips",
       "neon",
       "night"

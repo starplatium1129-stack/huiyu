@@ -1,21 +1,22 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/sfw_work",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 925,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "sfw_work",
-      "name": "工作间深蓝晨衣",
-      "prose": "a closed dark blue robe over a high-neck cotton dress, with sleeves tied back",
+      "name": "墨蓝束袖工作间晨衣",
+      "prose": "A closed dark-blue robe with a small silver clasp over a high-neck ivory cotton dress, the sleeves held back with narrow fabric ties.",
       "tokens": [
-        "blue_robe",
-        "high_neck",
-        "cotton_dress",
-        "tied_sleeves"
+        "dark blue robe",
+        "ivory cotton dress",
+        "high neck",
+        "tied sleeves",
+        "silver clasp"
       ],
       "default": false,
       "isDefault": false

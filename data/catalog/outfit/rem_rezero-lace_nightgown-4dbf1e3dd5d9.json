@@ -1,28 +1,22 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/lace_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 246,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "lace_nightgown",
-      "name": "蕾丝月光睡袍",
+      "name": "浅色蕾丝月光睡袍",
       "tokens": [
-        "nightgown",
-        "lace",
-        "lace_trim",
-        "sheer",
-        "thin_fabric",
-        "translucent",
-        "sleeveless",
-        "loose_fit",
-        "nightwear",
-        "bare_shoulders"
+        "pale robe",
+        "sheer fabric",
+        "lace trim",
+        "sleeveless"
       ],
-      "prose": "wearing a thin lace nightgown with delicate lace trim, sheer lightweight fabric and a loose sleeveless silhouette, soft pale color",
+      "prose": "a pale sleeveless sleeping robe with fine lace edging and a softly draped, lightweight fabric",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

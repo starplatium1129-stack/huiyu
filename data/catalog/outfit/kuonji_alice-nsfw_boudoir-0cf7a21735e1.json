@@ -1,19 +1,21 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 927,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "久远寺有珠·成人私密造型",
-      "prose": "a private adult ensemble built around black_dress, completely_nude",
+      "name": "黑色细褶洋馆私服",
+      "prose": "A black long-sleeved private dress with fine bodice pintucks and a row of small front buttons.",
       "tokens": [
-        "black_dress",
-        "completely_nude"
+        "black dress",
+        "pintucks",
+        "front buttons",
+        "long sleeves"
       ],
       "default": false,
       "isDefault": false

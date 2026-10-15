@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "yvonne_arknights/selfie_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 422,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yvonne_arknights",
     "outfit": {
       "default": false,
       "id": "selfie_casual",
       "isDefault": false,
-      "name": "意象影画·自拍邀请",
-      "prose": "a relaxed selfie-ready casual look with her smartphone in hand and a bright smile",
+      "name": "莓粉连帽外套街拍装",
+      "prose": "a berry-pink zip hoodie over a white cropped T-shirt, a plum cargo miniskirt with a silver buckle and low-top sneakers",
       "tokens": [
-        "smartphone",
-        "selfie",
-        "casual_clothes",
-        "smile"
+        "pink zip hoodie",
+        "white cropped t-shirt",
+        "plum cargo skirt",
+        "silver buckle",
+        "sneakers"
       ]
     }
   }

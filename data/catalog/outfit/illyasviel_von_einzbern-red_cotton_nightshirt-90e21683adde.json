@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "illyasviel_von_einzbern/red_cotton_nightshirt",
+  "revision": 1,
+  "sortOrder": 1382,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "illyasviel_von_einzbern",
+    "outfit": {
+      "id": "red_cotton_nightshirt",
+      "name": "红色棉睡衬衫",
+      "tokens": [
+        "red nightshirt",
+        "button front"
+      ],
+      "prose": "A plain red cotton nightshirt with a button front.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

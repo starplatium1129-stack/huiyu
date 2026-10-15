@@ -1,26 +1,22 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/lingerie_silk_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 427,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
       "default": false,
       "id": "lingerie_silk_robe",
       "isDefault": false,
-      "name": "罗帷薄纱亵衣",
-      "prose": "a sheer translucent oriental silk night robe loosely draped over bare shoulders and delicate undergarments",
+      "name": "中式薄纱丝绸睡袍",
+      "prose": "a light sheer Chinese-style silk sleeping robe over delicate undergarments",
       "tokens": [
-        "robe",
-        "see-through_clothes",
-        "nightgown",
-        "translucent",
-        "silk",
-        "bare_shoulders",
-        "collarbone"
+        "silk robe",
+        "sheer fabric",
+        "underwear"
       ]
     }
   }

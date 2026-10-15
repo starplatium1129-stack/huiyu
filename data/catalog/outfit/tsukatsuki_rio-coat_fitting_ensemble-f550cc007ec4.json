@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/coat_fitting_ensemble",
+  "revision": 1,
+  "sortOrder": 1249,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "id": "coat_fitting_ensemble",
+      "name": "风衣衬衫高跟试装",
+      "tokens": [
+        "black coat",
+        "waist belt",
+        "blouse",
+        "black pantyhose",
+        "high heels"
+      ],
+      "prose": "a belted black coat over a blouse, with black tights and high heels",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

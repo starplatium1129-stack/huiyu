@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_mech_seat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 595,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
-    "action": "机甲驾驶座舱内护目镜推到发间，单薄内衬半开",
+    "action": "坐在机甲驾驶座，前襟拉链松开，一手握住头顶把手。",
     "adult": true,
     "adultArtistHint": "@anmi",
     "animaStyleHint": "r18_sensual_cg",
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "【森蚺 · 驾驶座】巨型机甲狭窄而封闭的专属驾驶座舱内，只着单薄内衬的森蚺跨坐在主驾驶位上，额头上的护目镜推到发间。她一把将你拉进驾驶舱将舱门锁死——「这里的空间虽然小……但隔音效果是全罗德岛最好的。今晚，就让我们在驾驶座上做个彻底的性能测试吧！」",
+    "description": "狭窄的机甲驾驶舱内，森蚺穿深绿拼黑驾驶连身工装，前襟拉链松开，额头护目镜推到发间；一手握住头顶把手，双腿分列控制柱两侧。",
     "id": "eunectes_arknights_r18_mech_seat",
     "kreaStyleHint": "",
     "lighting": "cockpit instrument glow",
@@ -25,13 +25,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "thin_undershirt",
+    "outfitId": "pilot_coverall",
     "promptProse": "She grips an overhead handle while touching herself beneath the suit, her legs positioned around the narrow control column.",
     "promptTokens": [
       "1girl",
       "solo",
       "snake tail",
-      "pilot suit",
+      "dark green pilot suit",
       "unzipped",
       "topless",
       "sitting",
@@ -39,7 +39,8 @@
       "cockpit",
       "masturbation",
       "blush",
-      "adult"
+      "adult",
+      "orange piping"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

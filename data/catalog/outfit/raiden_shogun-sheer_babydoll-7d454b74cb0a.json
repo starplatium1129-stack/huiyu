@@ -1,26 +1,21 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/sheer_babydoll",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "sheer_babydoll",
-      "name": "天守夜寝透明薄纱睡袍",
-      "prose": "a sheer translucent dark purple babydoll nightgown, open-front design revealing her cleavage and collarbone, delicate black lace trims, and an untied silk sash slipping off her shoulder",
+      "name": "深紫黑蕾丝薄纱睡袍",
+      "prose": "A sheer dark-purple babydoll with fine black lace edging and a soft silk waist sash.",
       "tokens": [
-        "sheer_babydoll",
-        "open-front_negligee",
-        "translucent_cloth",
-        "see-through",
-        "falling_strap",
-        "cleavage",
-        "bare_shoulders",
-        "bare_legs",
-        "silk_slip"
+        "dark purple babydoll",
+        "sheer fabric",
+        "black lace trim",
+        "silk sash"
       ],
       "default": false,
       "isDefault": false

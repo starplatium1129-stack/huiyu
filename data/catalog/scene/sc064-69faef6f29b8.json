@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc064",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Her head rests on the viewer's lap; one hand steadies the open book face-down on her chest while the other loosely meets the viewer's hand.",
     "auditRevision": "careful-batch03-2026-08-27",
@@ -21,15 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, cream shirt, pink pants, sleeping, lap pillow, sofa, book, holding hands, from above, close up",
+    "prompt": "1girl, ayachi_nene, cream ribbed henley shirt, pink wide leg pajama pants, sleeping, lap pillow, sofa, book, holding hands, from above, close up",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "秋",
     "story": "【宁宁 · 午后膝枕与闭眼许可】秋日下午的客厅很安静，宁宁枕在你腿上读书，翻了几页便困得睁不开眼。她察觉你低头看着自己，没有像往常那样慌乱躲开，只把书放到胸前，慢慢闭上紫色眼睛——「可以看，但不准趁我睡着做奇怪的事。等我醒来以后……也不要马上把手拿走。」",
     "storyJa": "【寧々・午後の膝枕と目を閉じる許可】秋の午後、リビングルームはとても静かでした。寧々はあなたの膝の上で本を読んでいました。数ページめくった後、彼女はとても眠くて目を開けることができませんでした。彼女はあなたが自分を見下ろしていることに気づき、いつものようにパニックになって逃げるのではなく、ただ本を胸に置き、ゆっくりと紫色の目を閉じました。――「見てもいいですけど、寝ている間に変なことをしたらだめですよ。目が覚めてからも……すぐには手を離さないでください。」",
     "tags": [
-      "cream_loungewear",
-      "pink_pajama_pants",
       "lying_on_sofa",
       "head_on_viewer_lap",
       "lap_pillow",
@@ -44,7 +42,9 @@
       "sofa",
       "living_room",
       "afternoon",
-      "soft_window_light"
+      "soft_window_light",
+      "cream_ribbed_henley_shirt",
+      "pink_wide_leg_pajama_pants"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

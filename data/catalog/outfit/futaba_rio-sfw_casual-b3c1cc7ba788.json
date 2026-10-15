@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 37,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_casual",
-      "name": "书店灰色针织便装",
-      "prose": "a grey knitted cardigan, cream blouse, dark trousers and plain glasses",
+      "name": "灰色细针开衫与直筒便装",
+      "prose": "a gray fine-knit cardigan with a narrow ribbed placket over a cream blouse, charcoal straight trousers and plain glasses",
       "tokens": [
-        "grey_cardigan",
-        "cream_blouse",
-        "dark_pants",
+        "gray cardigan",
+        "fine knit",
+        "cream blouse",
+        "charcoal straight pants",
         "glasses"
       ],
       "default": false,

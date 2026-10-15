@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mahiru/oversized_cream_knit",
+  "revision": 1,
+  "sortOrder": 1235,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiina_mahiru",
+    "outfit": {
+      "id": "oversized_cream_knit",
+      "name": "宽大奶油色粗针织衫",
+      "tokens": [
+        "cream sweater",
+        "oversized sweater",
+        "chunky knit"
+      ],
+      "prose": "an oversized cream chunky-knit sweater with a relaxed neckline",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/festive_shrine_kimono",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 824,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
       "id": "festive_shrine_kimono",
-      "name": "新春参拜雅致和服",
-      "prose": "a pale-wisteria furisode patterned with white cranes and cherry blossoms, gold obi and floral kanzashi in her pinned-up hair, worn with geta",
+      "name": "藤紫白鹤新春振袖",
+      "prose": "A pale-wisteria furisode patterned with white cranes and cherry blossoms, a gold obi, floral kanzashi and wooden geta.",
       "tokens": [
         "purple furisode",
         "crane print",
         "cherry blossom print",
         "gold obi",
-        "kanzashi",
+        "floral kanzashi",
         "geta"
       ]
     }

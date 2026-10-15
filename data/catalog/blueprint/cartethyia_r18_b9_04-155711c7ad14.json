@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_04",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "cartethyia_r18_b9_04",
     "title": "卡提希娅 · 圣殿寝宫大床上的誓约臣服独奏 ·「只要能追随在您的身后……这具身躯全部任您驱使」",
@@ -51,7 +51,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "nsfw_nude",
     "coverageTags": [
       "nsfw",
       "self_control",

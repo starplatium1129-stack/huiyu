@@ -1,23 +1,21 @@
 {
   "kind": "outfit",
   "id": "morgan_le_fay_fate/water_princess",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "morgan_le_fay_fate",
     "outfit": {
       "id": "water_princess",
-      "name": "水妃摩根（泳装）",
-      "prose": "her summer Water Princess swimsuit, a stylish white halter swimsuit with bare shoulders and loose silver hair",
+      "name": "水妃白色挂颈泳装",
+      "prose": "A white halter swimsuit with a small silver clasp at the neckline.",
       "tokens": [
         "morgan (water princess) (fate)",
-        "swimsuit",
-        "white_swimsuit",
-        "halterneck",
-        "bare_shoulders",
-        "smile"
+        "white swimsuit",
+        "halter neck",
+        "silver clasp"
       ],
       "default": false,
       "isDefault": false

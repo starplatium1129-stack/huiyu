@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_silk_curtain",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 657,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "立于窗边，一手举过头顶抓住丝帘，另一手伸至袍带下，夜风拂动衣帘",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "cowboy shot, three-quarter view",
     "category": "成人",
     "characterId": "ling_arknights",
-    "description": "【令 · 纱帐月夜】月光透过雕花窗棂洒进寝殿，半垂的纱帐被夜风轻轻拂动。全裸的令倚在窗边，月光在她白皙的肌肤上镀了一层银辉，极长的蓝发垂到脚踝。她侧过身回眸望你，声音里带着吟诗般的慵懒——「月色如酒，醉人的不是月光，是看月亮的人。」",
+    "description": "【令 · 纱帐月夜】月光透过雕花窗棂洒进寝殿，半垂的纱帐被夜风轻轻拂动。披着墨灰袍的令倚在窗边，月光在她白皙的肌肤上镀了一层银辉，极长的蓝发垂到脚踝。她侧过身回眸望你，声音里带着吟诗般的慵懒——「月色如酒，醉人的不是月光，是看月亮的人。」",
     "id": "ling_arknights_r18_silk_curtain",
     "kreaStyleHint": "",
     "lighting": "cool blue moonlight through lattice window, sheer curtain shadows, silver rim light",
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "drunkard_loungewear",
     "promptProse": "Adult Ling catches the silk curtain overhead while slipping her other hand beneath her robe sash, a ribbon of dragon air following the night breeze.",
     "promptTokens": [
       "1girl",
@@ -34,7 +34,9 @@
       "hand between legs",
       "curtain",
       "lattice window",
-      "night"
+      "night",
+      "gray robe",
+      "ink blue sash"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "ciel_tsukihime/white_lace_camisole",
+  "revision": 1,
+  "sortOrder": 1169,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "ciel_tsukihime",
+    "outfit": {
+      "id": "white_lace_camisole",
+      "name": "纯白蕾丝吊带",
+      "tokens": [
+        "white lace camisole",
+        "spaghetti straps"
+      ],
+      "prose": "a white lace camisole with thin shoulder straps",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

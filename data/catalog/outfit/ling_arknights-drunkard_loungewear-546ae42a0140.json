@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "ling_arknights/drunkard_loungewear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 380,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ling_arknights",
     "outfit": {
       "default": false,
       "id": "drunkard_loungewear",
       "isDefault": false,
-      "name": "醉里丹青（慵懒家居）",
-      "prose": "a loose ink-grey hanfu robe and sash with a jade wine gourd, her hair worn loose",
+      "name": "墨灰交领醉梦家居袍",
+      "prose": "A loose ink-gray crossed-collar robe with wide sleeves, a muted cloud weave and an ink-blue sash.",
       "tokens": [
-        "grey robe",
-        "sash",
-        "jade gourd",
-        "hair down"
+        "gray hanfu robe",
+        "wide sleeves",
+        "ink blue sash",
+        "subtle cloud pattern"
       ]
     }
   }

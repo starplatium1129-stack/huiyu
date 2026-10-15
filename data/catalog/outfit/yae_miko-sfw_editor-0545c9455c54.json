@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_editor",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_editor",
-      "name": "八重堂编辑便装",
-      "prose": "a pale pink kimono-style jacket, cream high-collared blouse and long dark skirt",
+      "name": "樱粉短和风外套编辑装",
+      "prose": "A cropped pale-pink kimono jacket layers over a cream stand-collar blouse and a charcoal straight long skirt; a small gold clasp keeps the lines tidy.",
       "tokens": [
-        "pink_jacket",
-        "cream_blouse",
-        "high_collar",
-        "long_skirt"
+        "pale pink jacket",
+        "cream blouse",
+        "high collar",
+        "charcoal long skirt"
       ],
       "default": false,
       "isDefault": false

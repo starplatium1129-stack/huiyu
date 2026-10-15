@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "vladilena_milize/bloody_reina_black_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 738,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vladilena_milize",
     "outfit": {
       "id": "bloody_reina_black_uniform",
-      "name": "染血赤发鲜血女王黑色军装",
-      "prose": "the black version of her Republic uniform, with a cropped jacket, skirt, stockings and boots, a single red streak in her silver bangs and the Para-RAID headset at her neck",
+      "name": "鲜血女王黑色军装",
+      "prose": "the black Republic uniform with a cropped jacket, skirt, thigh-high stockings, officer boots and gloves, with the Para-RAID headset at the neck",
       "tokens": [
         "military uniform",
         "black cropped jacket",
         "black skirt",
-        "red hair streak",
         "black thighhighs",
         "black boots",
+        "black gloves",
         "headset"
       ]
     }

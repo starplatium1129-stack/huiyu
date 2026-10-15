@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "arima_kana/wine_red_fitting_dress",
+  "revision": 1,
+  "sortOrder": 1273,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "arima_kana",
+    "outfit": {
+      "id": "wine_red_fitting_dress",
+      "name": "酒红白滚边试装礼裙",
+      "tokens": [
+        "dark red dress",
+        "fitted dress",
+        "white piping",
+        "back zipper",
+        "black stockings",
+        "red beret"
+      ],
+      "prose": "A fitted dark-red mini dress with fine white piping and a back zipper, worn with black stockings and a red beret.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

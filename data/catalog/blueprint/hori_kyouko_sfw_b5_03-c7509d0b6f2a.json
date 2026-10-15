@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_sfw_b5_03",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1555,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "hori_kyouko_sfw_b5_03",
     "title": "堀京子 · 厨房尝味的侧脸",
@@ -40,7 +40,8 @@
       "stew",
       "kitchen",
       "sunset",
-      "medium shot"
+      "medium shot",
+      "hair up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

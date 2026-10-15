@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "yuzuriha_inori/cropped_sleep_top",
+  "revision": 1,
+  "sortOrder": 1262,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yuzuriha_inori",
+    "outfit": {
+      "id": "cropped_sleep_top",
+      "name": "短款睡衣上装",
+      "tokens": [
+        "cropped sleep top"
+      ],
+      "prose": "a soft cropped sleep top",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

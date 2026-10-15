@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc217",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 212,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Seated astride the wooden offering box, she presses close to the viewer beside her; a flash through the warehouse window catches her wet yukata and the piled festival offerings.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": true,
     "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, wet pink yukata, see-through, open collar, wet hair, straddling box, leaning forward, teary eyes, blush, wooden warehouse, festival offerings, storm, lightning, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, white moonflower print, cream obi, wet pink yukata, see-through, open collar, wet hair, straddling box, leaning forward, teary eyes, blush, wooden warehouse, festival offerings, storm, lightning, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "R18",
     "season": "夏",
     "story": "【成年 After Story · 宁宁】【成人 After Story · 宁宁】【宁宁 · 避雨古仓浴衣半解】夏日祭典突降暴雨，你和宁宁慌不择路地躲进神社后面的阴暗古旧木质仓库。宁宁的姬松学院夏日浴衣在奔跑中被雨水彻底浸透，轻薄的布料近乎全透明地死死贴在她傲人的胴体上，衣领也早已在慌乱中完全松开，大片雪白丰满的酥胸一览无余。因为密闭空间的极度紧绷，她的魔女契约气场瞬间超载。她被你拉着一同坐在堆满祭祀道具的木箱上，紧紧贴着你，头顶那根呆毛疯狂卷成完美的爱心螺旋，红着脸一边慌乱推搡一边带着哭腔绝赞自曝——「呜啊！标签、标签都湿透了啦……不准一直盯着人家透明的地方看！才、才没有故意借助契约来诱惑你呢……唔，快抱紧我帮我挡住啦，笨蛋！」",
@@ -35,7 +35,9 @@
       "white_tabi",
       "storm",
       "straddling",
-      "close_up"
+      "close_up",
+      "white_moonflower_print",
+      "cream_obi"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

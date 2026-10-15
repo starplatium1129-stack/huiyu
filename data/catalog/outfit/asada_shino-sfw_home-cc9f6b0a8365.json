@@ -1,19 +1,21 @@
 {
   "kind": "outfit",
   "id": "asada_shino/sfw_home",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 753,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asada_shino",
     "outfit": {
       "id": "sfw_home",
-      "name": "下线后的居家针织装",
-      "prose": "a soft blue sweater and grey lounge trousers",
+      "name": "雾蓝华夫格居家针织",
+      "prose": "a soft slate-blue waffle-knit sweater and heather-grey lounge trousers with matching blue ankle cuffs",
       "tokens": [
-        "blue_sweater",
-        "grey_pants"
+        "blue sweater",
+        "waffle knit",
+        "grey pants",
+        "blue cuffs"
       ],
       "default": false,
       "isDefault": false

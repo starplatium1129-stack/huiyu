@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc143",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "With her legs folded on the sofa, she pokes the viewer's side with the controller and pouts; the paused game's light catches her cheek and the controller between them.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,15 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, grey hoodie, black shorts, sitting, sofa, game controller, pout, television glow, close up",
+    "prompt": "1girl, shiki_natsume, grey zip hoodie, burgundy hood lining, black drawstring shorts, sitting, sofa, game controller, pout, television glow, close up",
     "rating": "All",
     "season": "冬",
     "story": "【夏目 After Story】大学毕业同居后的某个深夜，客厅的地毯上散落着零食。电视里正放着高难度的双人合作游戏，因为你的“故意放水”，夏目的角色连续落命。平时冷静的夏目彻底炸毛，把双腿盘在沙发上，光着脚丫用手柄气呼呼地戳你的侧腰，嘴里嘟囔着标志性的毒舌——「哈？刚才绝对是你的延迟问题！你是笨蛋吗？再来一局，这次输了的人要去洗一个星期的碗！」",
     "storyJa": "【夏目・アフターストーリー】大学を卒業して同棲を始めたある夜遅く、リビングのカーペットの上にスナック菓子が散乱していた。難しい2人協力型ゲームがテレビでプレイされています。あなたの「は？　今のは絶対、そっちの遅延！　ばかなの？　もう一回。今度負けたほうは、一週間皿洗いだから！」",
     "tags": [
       "mole_under_eye",
-      "grey_hoodie",
-      "shorts",
       "bare_legs",
       "smooth_thighs",
       "living_room",
@@ -38,7 +36,10 @@
       "barefoot",
       "game_controller",
       "controller_poking",
-      "depth_of_field"
+      "depth_of_field",
+      "grey_zip_hoodie",
+      "burgundy_hood_lining",
+      "black_drawstring_shorts"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

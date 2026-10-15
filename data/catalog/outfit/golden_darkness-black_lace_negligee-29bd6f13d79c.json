@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "golden_darkness/black_lace_negligee",
+  "revision": 1,
+  "sortOrder": 1183,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "golden_darkness",
+    "outfit": {
+      "id": "black_lace_negligee",
+      "name": "黑色蕾丝睡裙",
+      "tokens": [
+        "black lace negligee"
+      ],
+      "prose": "a black lace negligee",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

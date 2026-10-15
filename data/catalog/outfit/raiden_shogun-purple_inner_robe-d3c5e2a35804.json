@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "raiden_shogun/purple_inner_robe",
+  "revision": 1,
+  "sortOrder": 1424,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "raiden_shogun",
+    "outfit": {
+      "id": "purple_inner_robe",
+      "name": "紫色轻薄里衣",
+      "tokens": [
+        "purple robe",
+        "light fabric"
+      ],
+      "prose": "A simple lightweight purple inner robe.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "kasumigaoka_utaha/uniform_blouse_only",
+  "revision": 1,
+  "sortOrder": 1399,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kasumigaoka_utaha",
+    "outfit": {
+      "id": "uniform_blouse_only",
+      "name": "白衬衫与制服百褶裙",
+      "tokens": [
+        "white blouse",
+        "rolled sleeves",
+        "red ribbon",
+        "pleated skirt",
+        "black pantyhose",
+        "white hairband"
+      ],
+      "prose": "The white blouse from her academy uniform with rolled cuffs and red ribbon tie, paired with the pleated skirt, black tights and white hairband.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

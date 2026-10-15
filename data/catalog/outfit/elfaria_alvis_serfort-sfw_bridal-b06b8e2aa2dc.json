@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/sfw_bridal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 971,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:40:32.911402100+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "艾尔菲利亚·圣洁花嫁",
-      "prose": "a snow-white bridal robe with icy-blue embroidery and a crystal veil",
+      "name": "霜花刺绣长袍婚纱",
+      "prose": "A snow-white bridal robe with a high collar and flowing covered sleeves. Pale ice-blue frost embroidery follows the cuffs and hem, with tiny crystal accents along a long veil.",
       "tokens": [
-        "wedding_dress",
-        "snow_white_robe",
-        "icy_embroidery",
-        "crystal_veil"
+        "white wedding dress",
+        "long sleeves",
+        "high collar",
+        "blue embroidery",
+        "veil",
+        "crystal ornament"
       ],
       "default": false,
       "isDefault": false

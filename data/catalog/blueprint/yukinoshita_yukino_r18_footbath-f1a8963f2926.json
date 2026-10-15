@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_footbath",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 347,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_footbath",
     "title": "雪之下雪乃 · 足浴时分",
@@ -28,7 +28,8 @@
     "promptProse": "The age-twenty-plus Yukino dries the arch of her raised foot with the loose obi while her other foot stirs the water.",
     "promptTokens": [
       "adult",
-      "open yukata",
+      "indigo yukata",
+      "open clothes",
       "topless",
       "rolled stockings",
       "sitting",
@@ -47,7 +48,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@hiten (hitenkei)",
-    "outfitId": "casual",
+    "outfitId": "indigo_yukata_stockings",
     "sampleRating": "R18",
     "coverageTags": [
       "special_nsfw"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1555,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_03",
     "title": "宝多六花 · 电器店柜台百褶裙被抽屉夹住的受力事故 ·「痛！……裙子被卡在抽屉里了，裕太快来拉我一下」",
@@ -33,9 +33,11 @@
     "promptProse": "Adult Rikka braces one hand on the shop counter and tugs her skirt free of the drawer runner with the other, looking back toward the offscreen viewer for help.",
     "promptTokens": [
       "adult",
-      "pleated skirt",
+      "white shirt",
+      "navy cardigan",
+      "grey pleated skirt",
       "skirt lift",
-      "cotton panties",
+      "grey cotton panties",
       "thick thighs",
       "bent over",
       "looking back",
@@ -53,7 +55,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "uniform_drawer",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

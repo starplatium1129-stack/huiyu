@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "tachibana_mikari/black_latex_costume",
+  "revision": 1,
+  "sortOrder": 1441,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tachibana_mikari",
+    "outfit": {
+      "id": "black_latex_costume",
+      "name": "黑色拉链乳胶战衣",
+      "tokens": [
+        "black latex bodysuit",
+        "front zipper"
+      ],
+      "prose": "A black latex costume bodysuit with a reinforced front zipper.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

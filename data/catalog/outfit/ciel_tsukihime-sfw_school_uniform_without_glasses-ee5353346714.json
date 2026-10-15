@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "ciel_tsukihime/sfw_school_uniform_without_glasses",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 728,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ciel_tsukihime",
     "outfit": {
       "id": "sfw_school_uniform_without_glasses",
-      "name": "校服·摘镜时刻",
-      "prose": "a neat navy school blazer over a white collared shirt and red necktie, a grey pleated skirt and opaque black stockings; her face has no eyewear",
+      "name": "三咲制服·摘镜场景",
+      "prose": "her neat navy Misaki blazer with gold buttons over a white shirt and red necktie, with a gray pleated skirt and opaque black stockings",
       "tokens": [
-        "school_uniform",
-        "navy_blazer",
-        "white_shirt",
-        "red_necktie",
-        "grey_pleated_skirt",
-        "opaque_black_stockings"
+        "navy blazer",
+        "gold buttons",
+        "white shirt",
+        "red necktie",
+        "gray pleated skirt",
+        "black stockings"
       ],
       "default": false,
       "isDefault": false

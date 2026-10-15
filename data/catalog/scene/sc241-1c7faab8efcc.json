@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc241",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 236,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "At the counter, she holds the basket containing the bento, last pudding and hot canned coffee, nodding toward the off-frame clerk; the store's warm light reveals her flushed ears above a tired expression.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,15 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, black hoodie, jeans, shopping basket, bento, pudding, canned coffee, convenience store, counter, night",
+    "prompt": "1girl, shiki_natsume, black zip hoodie, burgundy hood lining, dark straight leg jeans, shopping basket, bento, pudding, canned coffee, convenience store, counter, night",
     "rating": "All",
     "season": "不限",
     "story": "【夏目 · 深夜便利店】凌晨一点，打烊后独自整理完库存的夏目拖着疲惫的身体走进隔壁24小时便利店。她机械地往购物篮里扔着速食便当，直到看见货架上最后一盒你最爱吃的限定布丁。犹豫了三秒，她还是把它放进了篮子里，顺手又拿了一罐热咖啡。结账时店员问要不要加热，她面无表情地点了点头，耳根却在暖黄的灯光下悄悄泛红。推开公寓门时，她把布丁和咖啡轻轻放在熟睡的你床头，用只有自己能听见的声音嘟囔——「……只是顺便买的。不吃的话明天就过期了，属于合理的资源回收。大笨蛋……晚安。」",
     "storyJa": "【夏目】【ナツメ・深夜のコンビニと温かい思いやり】午前一時、閉店後に一人で在庫整理を終えたナツメは疲れた身体を引きずるようにして隣の24時間コンビニに入った。彼女は機械的に買い物かごにインスタント弁当を放り込みながら、棚に並ぶ最後の一箱のあなたの大好きな限定プリンを見つけるまでそうしていた。三秒踌躇して、彼女はそれをかごに入れ、顺便にホットコーヒーの缶も一つ取った。レジで店員が温めるかと尋ねると、彼女は表情を変えずに頷いたが、暖かい蛍光灯の下で耳の裏がそっと赤く染まっていた。マンションの扉を開けると、彼女はプリンとコーヒーを眠っているあなたの枕元にそっと置き、自分にしか聞こえない小さな声で呟いた――「……ただ顺便に買っただけ。食べなかったら明日が賞味期限切れになるから、合理的な資源リサイクル。大バカ者……おやすみ」",
     "tags": [
       "mole_under_eye",
-      "hoodie",
-      "jeans",
       "convenience_store",
       "shopping_basket",
       "bento",
@@ -38,7 +36,10 @@
       "night",
       "red_ears",
       "depth_of_field",
-      "medium_shot"
+      "medium_shot",
+      "black_zip_hoodie",
+      "burgundy_hood_lining",
+      "dark_straight_leg_jeans"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

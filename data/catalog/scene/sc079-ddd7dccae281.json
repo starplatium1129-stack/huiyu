@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc079",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She holds the found book against her chest and looks down from the ladder toward the viewer steadying it.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,16 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, cream sweater, brown pleated skirt, ladder, holding book, looking down, bookstore, window light, side view, medium shot",
+    "prompt": "1girl, shiki_natsume, cream cable knit sweater, burgundy cuffs, brown accordion pleated midi skirt, ladder, holding book, looking down, bookstore, window light, side view, medium shot",
     "rating": "All",
     "season": "秋",
     "story": "【夏目 · 旧书店梯子上的停顿】秋日下午，夏目站在旧书店的木梯上翻找绝版书，黑色长发垂过肩侧。你在下方扶住梯子，她低头道谢，却因为视线角度突然脸红，立刻用书挡住胸前——「扶稳就好，不准抬头乱看。找到以后……我可以把第一章借给你。」",
     "storyJa": "【夏目・古本屋のはしごで立ち止まる】秋の午後、夏目は古書店の木のはしごに立って、絶版になった本を漁っていました。彼女の長い黒髪は肩を越えて垂れ下がっていた。あなたが下のはしごを持っていたので、彼女は頭を下げて感謝しました。しかし、彼女は視線の角度のせいで突然顔を赤らめ、すぐに本で胸を隠しました。――「しっかり支えていればいいから、上を見ないで。見つかったら……第一章を貸してあげてもいい。」",
     "tags": [
       "mole_under_eye",
-      "knit_sweater",
-      "long_skirt",
-      "smooth_thighs",
       "old_bookstore",
       "ladder",
       "standing",
@@ -38,7 +35,10 @@
       "afternoon",
       "depth_of_field",
       "medium_shot",
-      "holding_book_to_chest"
+      "holding_book_to_chest",
+      "cream_cable_knit_sweater",
+      "burgundy_cuffs",
+      "brown_accordion_pleated_midi_skirt"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

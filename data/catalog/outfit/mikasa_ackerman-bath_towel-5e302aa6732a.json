@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/bath_towel",
+  "revision": 1,
+  "sortOrder": 1217,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "id": "bath_towel",
+      "name": "温泉浴巾",
+      "tokens": [
+        "bath towel"
+      ],
+      "prose": "a simple bath towel",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

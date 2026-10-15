@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "medea_caster/sfw_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 174,
   "createdAt": null,
-  "updatedAt": "2026-10-06T11:03:26.342226900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "sfw_beach",
-      "name": "美狄亚·海滨泳装",
-      "prose": "a violet-blue wrap swimsuit with a light hooded cover-up and shell bracelets",
+      "name": "紫蓝交叠泳装与轻兜帽",
+      "prose": "A violet-blue wrap swimsuit with a softly crossed neckline, a light hooded cover-up and small shell bracelets.",
       "tokens": [
-        "wrap_swimsuit",
-        "violet_blue_swimsuit",
-        "hooded_cover_up",
-        "shell_bracelets"
+        "violet blue wrap swimsuit",
+        "light hooded cover-up",
+        "shell bracelets"
       ],
       "default": false,
       "isDefault": false

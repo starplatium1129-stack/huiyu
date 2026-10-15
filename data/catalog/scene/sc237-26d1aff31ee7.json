@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc237",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc237",
     "title": "水光波纹间的死水熔断",
@@ -21,7 +21,6 @@
     "timeOfDay": "late_night",
     "tags": [
       "mole_under_eye",
-      "blue_swimsuit",
       "wet_clothes",
       "sitting_on_lap",
       "straddling",
@@ -31,7 +30,10 @@
       "night",
       "moonlight",
       "water_reflections",
-      "close_up"
+      "close_up",
+      "navy_one_piece_swimsuit",
+      "diagonal_white_panel",
+      "small_gold_clasp"
     ],
     "mature": true,
     "location": "室内池边奢华皮质躺椅上",
@@ -43,7 +45,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole under eye, blue swimsuit, wet hair, wet clothes, straddling, blush, indoor pool, poolside, lounge chair, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, navy one piece swimsuit, diagonal white panel, small gold clasp, natsume_r18, mole under eye, wet hair, wet clothes, straddling, blush, indoor pool, poolside, lounge chair, night, moonlight, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "",
     "storyJa": "【夏目】【ナツメ・夜のプールサイド】深夜、静まり返った屋内プール。月明かりに濡れた紺のスク水姿のナツメは、プールサイドで足を滑らせ、デッキチェアのあなたの上へと倒れ込んでしまう。肌と肌が触れ合い、水滴が滴る中、目尻の泣きぼくろを揺らしながら耳を赤くして必死に平静を装う――「……勘違いしないで。足が滑っただけよ。……動かないで、少し息を整えるから。……バカ、どこ見てるの」",
     "rating": "R18",

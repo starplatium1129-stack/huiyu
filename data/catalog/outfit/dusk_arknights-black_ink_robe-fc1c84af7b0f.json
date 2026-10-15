@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "dusk_arknights/black_ink_robe",
+  "revision": 1,
+  "sortOrder": 1170,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "dusk_arknights",
+    "outfit": {
+      "id": "black_ink_robe",
+      "name": "画斋黑色薄袍",
+      "tokens": [
+        "black robe",
+        "wide sleeves"
+      ],
+      "prose": "a light black robe with loose wide sleeves",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

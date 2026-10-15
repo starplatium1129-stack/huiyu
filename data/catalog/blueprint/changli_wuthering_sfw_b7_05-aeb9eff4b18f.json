@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_05",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1637,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_05",
     "title": "长离 · 荷池边的海滨茶席",
@@ -13,7 +13,7 @@
     "outfitId": "sfw_beach",
     "description": "【今州海湾荷池·午后】长离穿着桃红色泳装外搭轻便长衫，斜坐在水边木台给自己斟一杯冷茶；荷叶与海风同时掠过她的长发，她抬眼向镜头举杯，笑意从授课时的端庄变得轻盈。",
     "location": "Jinzhou coastal lotus garden",
-    "action": "荷池海湾木台边斟冷茶举杯，海风吹动长发与桃红外衫",
+    "action": "荷池海湾木台边斟冷茶举杯，海风吹动长发与米白外衫",
     "timeOfDay": "日间",
     "lighting": "warm afternoon light across water and lotus leaves",
     "camera": "medium shot, horizontal framing",

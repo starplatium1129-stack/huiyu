@@ -1,23 +1,25 @@
 {
   "kind": "outfit",
   "id": "sylphiette/casual_day_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 258,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "default": false,
       "id": "casual_day_dress",
       "isDefault": false,
-      "name": "居家便服连衣裙",
-      "prose": "a cream knit cardigan over a simple light dress",
+      "name": "叶扣奶油开衫与鼠尾草绿裙",
+      "prose": "a cream cropped cardigan with a small leaf clasp over a sage-green cotton dress with a pintucked bodice and gathered skirt",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "sylphiette_casual_day_dress",
-        "cream cardigan",
-        "dress"
+        "cream cropped cardigan",
+        "leaf clasp",
+        "sage green dress",
+        "pintucks",
+        "gathered skirt"
       ]
     }
   }

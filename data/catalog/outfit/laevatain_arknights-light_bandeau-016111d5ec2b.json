@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/light_bandeau",
+  "revision": 1,
+  "sortOrder": 1202,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "id": "light_bandeau",
+      "name": "舱室轻薄抹胸",
+      "tokens": [
+        "bandeau"
+      ],
+      "prose": "a lightweight bandeau",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

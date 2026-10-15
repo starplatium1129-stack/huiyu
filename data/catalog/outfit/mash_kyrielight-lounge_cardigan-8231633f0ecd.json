@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "mash_kyrielight/lounge_cardigan",
+  "revision": 1,
+  "sortOrder": 1213,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mash_kyrielight",
+    "outfit": {
+      "id": "lounge_cardigan",
+      "name": "活动室针织开衫",
+      "tokens": [
+        "cardigan"
+      ],
+      "prose": "a soft knitted cardigan",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

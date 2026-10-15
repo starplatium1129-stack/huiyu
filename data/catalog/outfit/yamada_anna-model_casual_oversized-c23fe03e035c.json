@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/model_casual_oversized",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 833,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "model_casual_oversized",
-      "name": "杂志模特街拍大号卫衣短裤",
-      "prose": "an oversized charcoal hoodie, mid-thigh denim shorts and chunky sneakers, with hair in a high ponytail",
+      "name": "街拍·炭灰大号卫衣与丹宁短裤",
+      "prose": "an oversized charcoal hoodie with dropped shoulders and cream drawstrings, mid-thigh denim shorts and chunky sneakers, with a high ponytail",
       "tokens": [
-        "oversized hoodie",
+        "oversized charcoal hoodie",
+        "dropped shoulders",
+        "cream drawstrings",
         "denim shorts",
-        "sneakers",
+        "chunky sneakers",
         "ponytail"
       ]
     }

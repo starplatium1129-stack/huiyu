@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/sensual_bikini_swimsuit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 747,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
       "id": "sensual_bikini_swimsuit",
-      "name": "深红修身细带比基尼泳装",
-      "prose": "a crimson halterneck bikini with white string ties",
+      "name": "绯红白系带泳装",
+      "prose": "A crimson halter bikini with clean white edges and white ties.",
       "tokens": [
         "red bikini",
         "white string",
-        "halterneck"
+        "halter neck"
       ]
     }
   }

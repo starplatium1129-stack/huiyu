@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc070",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She lowers the watering can in her right hand and draws the curtain with her left as the viewer's arm reaches around her to help; sunset outlines her hair and the curtain folds beside the potted flowers.",
     "auditRevision": "careful-batch11-2026-08-27",
@@ -21,20 +21,22 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "stockings, thighhighs",
-    "prompt": "1girl, ayachi_nene, silk nightdress, watering can, curtain, window, potted flowers, cityscape, dusk, silhouette, backlighting, medium shot",
+    "prompt": "1girl, ayachi_nene, ivory silk nightdress, pink piping, scalloped neckline, watering can, curtain, window, potted flowers, cityscape, dusk, silhouette, backlighting, medium shot",
     "rating": "All",
     "season": "夏",
     "story": "【成年 After Story · 傍晚窗边的剪影】成年后的夏日黄昏，宁宁刚冲完凉，赤足站在公寓窗边给花浇水，逆光将身影映在纱帘上。听见你回家，她才意识到布料在夕阳下过于通透，慌忙拉拢窗帘。你从身后帮忙，她红着脸靠进怀里——「不准故意站在光后面看……先把窗帘关好，然后再让我抱一下。」",
     "storyJa": "【寧々・大人のアフターストーリー・夕方の窓辺のシルエット】大人になった夏の夜、寧々さんは薄手のナイトガウンを着てアパートの窓辺に立って花に水をあげていました。逆光で彼の姿が紗のカーテンに映った。あなたが帰ってきたと聞いたとき、彼女は夕日の下で生地が透けすぎていることに気づき、急いでカーテンを閉めました。あなたが後ろから助けると、彼女は顔を赤らめてあなたの腕に寄りかかる――「わざと光の後ろに立って見ないでください……先にカーテンを閉めて、それからもう一度、抱きしめさせてください。」",
     "tags": [
       "hair_ribbon",
-      "silk_negligee",
       "bare_legs",
       "floor_window",
       "watering_can",
       "sunset_backlight",
       "barefoot",
-      "medium_shot"
+      "medium_shot",
+      "ivory_silk_nightdress",
+      "pink_piping",
+      "scalloped_neckline"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",

@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "maomao/sfw_rain",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 983,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "sfw_rain",
-      "name": "回廊防雨披肩装",
-      "prose": "a dark green cape over a closed-collar long robe and practical shoes",
+      "name": "深绿防雨斗篷长袍",
+      "prose": "A dark-green rain cape fastened with cloth knots over a closed-collar long robe, with practical brown cloth shoes.",
       "tokens": [
-        "green_cape",
-        "high_collar",
-        "long_robe",
-        "shoes"
+        "dark green cape",
+        "cloth knot clasp",
+        "high-collar robe",
+        "brown cloth shoes"
       ],
       "default": false,
       "isDefault": false

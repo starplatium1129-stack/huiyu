@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "misaka_mikoto/navy_front_zip_gown",
+  "revision": 1,
+  "sortOrder": 1412,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "misaka_mikoto",
+    "outfit": {
+      "id": "navy_front_zip_gown",
+      "name": "深蓝前拉链晚礼裙",
+      "tokens": [
+        "navy evening dress",
+        "front zipper",
+        "black lace lingerie"
+      ],
+      "prose": "A deep-navy evening dress with a front zipper, worn over black lace lingerie.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

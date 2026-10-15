@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/white_fitting_dress",
+  "revision": 1,
+  "sortOrder": 1315,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "white_fitting_dress",
+      "name": "白色后拉链试衣裙",
+      "tokens": [
+        "white dress",
+        "back zipper",
+        "black pantyhose"
+      ],
+      "prose": "A simple white dress with a concealed back zipper, worn with black pantyhose.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "fern_frieren/noble_ball_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "fern_frieren",
     "outfit": {
       "id": "noble_ball_dress",
-      "name": "贵族舞会典雅深紫礼服",
-      "prose": "a deep violet satin ball gown with elbow-length white gloves and a neat formal updo of purple hair",
+      "name": "深紫缎面露肩舞会礼服",
+      "prose": "a deep-violet satin ball gown with an off-shoulder neckline, fitted waist and elbow-length white gloves",
       "tokens": [
-        "evening_dress",
-        "purple_dress",
-        "ball_gown",
-        "white_gloves",
-        "updo_hair"
+        "deep violet satin ballgown",
+        "off shoulder",
+        "fitted waist",
+        "white gloves"
       ]
     }
   }

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "vladilena_milize/white_stockings_headset",
+  "revision": 1,
+  "sortOrder": 1253,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "vladilena_milize",
+    "outfit": {
+      "id": "white_stockings_headset",
+      "name": "白色吊带长袜与通讯耳机",
+      "tokens": [
+        "white thighhighs",
+        "garter straps",
+        "headset"
+      ],
+      "prose": "white thigh-high stockings with garter straps and the Para-RAID headset",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

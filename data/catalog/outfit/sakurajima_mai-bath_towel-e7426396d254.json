@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/bath_towel",
+  "revision": 1,
+  "sortOrder": 1229,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "bath_towel",
+      "name": "镜前浴巾",
+      "tokens": [
+        "bath towel"
+      ],
+      "prose": "a soft plain bath towel",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

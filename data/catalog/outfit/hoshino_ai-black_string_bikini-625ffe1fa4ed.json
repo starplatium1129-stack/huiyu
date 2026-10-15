@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "hoshino_ai/black_string_bikini",
+  "revision": 1,
+  "sortOrder": 1306,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hoshino_ai",
+    "outfit": {
+      "id": "black_string_bikini",
+      "name": "黑色心扣细带泳装",
+      "tokens": [
+        "black bikini",
+        "string bikini",
+        "pink heart clasp"
+      ],
+      "prose": "A black string bikini with one small pink heart clasp.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/casual",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 546,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
       "default": false,
       "id": "casual",
       "isDefault": false,
-      "name": "常服便装",
-      "prose": "a simple white casual dress",
+      "name": "象牙白亚麻乡野裙",
+      "prose": "a simple white linen day dress with a square neckline, a fitted waist and a softly gathered skirt",
       "tokens": [
-        "white dress"
+        "white linen dress",
+        "square neckline",
+        "gathered skirt"
       ]
     }
   }

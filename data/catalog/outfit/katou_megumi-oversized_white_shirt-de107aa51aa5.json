@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "katou_megumi/oversized_white_shirt",
+  "revision": 1,
+  "sortOrder": 1316,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "katou_megumi",
+    "outfit": {
+      "id": "oversized_white_shirt",
+      "name": "宽大男式白衬衫",
+      "tokens": [
+        "oversized white shirt",
+        "button-up shirt"
+      ],
+      "prose": "A plain oversized white button-up shirt with a relaxed collar.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

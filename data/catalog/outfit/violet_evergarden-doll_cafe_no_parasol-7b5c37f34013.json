@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "violet_evergarden/doll_cafe_no_parasol",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 763,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "violet_evergarden",
     "outfit": {
       "default": false,
       "id": "doll_cafe_no_parasol",
       "isDefault": false,
-      "name": "咖啡店人偶礼服·无伞",
-      "prose": "a Prussian-blue jacket with a ruffled ascot and emerald brooch, a pleated white skirt and brown travel boots",
+      "name": "普鲁士蓝咖啡店人偶礼服",
+      "prose": "a Prussian-blue tailored jacket with a ruffled ascot and emerald brooch, a pleated white skirt and brown travel boots",
       "tokens": [
-        "blue jacket",
+        "prussian blue jacket",
         "ruffled ascot",
         "emerald brooch",
         "white pleated skirt",

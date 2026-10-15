@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/coronation_winter_wall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 549,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
       "default": false,
       "id": "coronation_winter_wall",
       "isDefault": false,
-      "name": "雪墙加冕披袍",
-      "prose": "her white coronation gown with a ceremonial cloak and crown, paired with dark closed boots for the snowy Wall",
+      "name": "白呢加冕披袍雪墙装",
+      "prose": "her white coronation gown beneath a weighty white wool ceremonial cloak, with a crown and dark closed boots",
       "tokens": [
-        "white_dress",
-        "cloak",
+        "white coronation gown",
+        "white wool cloak",
         "crown",
-        "dark_boots",
-        "formal"
+        "dark boots"
       ]
     }
   }

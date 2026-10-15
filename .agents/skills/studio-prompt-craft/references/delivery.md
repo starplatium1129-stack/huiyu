@@ -9,13 +9,15 @@
 | 层 | 要核对的内容 |
 | --- | --- |
 | 角色 | `characterTokens` 标记名字/别名，`copyrightTokens` 独立提供作品；保留鲜明身份锚点与 exact tokens，不把 `identityProse` 全文重复灌入 Anima |
-| 服装 | 当前 `outfitId` 与 `outfits[].tokens/prose` 一致，避免身份字段泄漏旧衣装；Anima 服装进入画师后的普通标签段 |
+| 服装 | 当前 `outfitId`、名称与 `outfits[].tokens/prose` 一致，避免身份字段泄漏旧衣装；Anima 服装进入画师后的普通标签段，用普通服饰词表达设计，不把自创套装名当模型触发词 |
 | 蓝图 | `description` / `action` 的可见核心进入 `promptTokens` / `promptProse`，旧字段与当前画面冲突时核对并同步；场景已有同伴名字由蓝图 `characterTokens` 分类，不登记成主角别名 |
 | 背景与光影 | 事件依赖的空间/光照关系进入最终正文；一般细节交给模型，不强制补齐所有背景与光影细节；维护字段或未消费 hint 不算模型输入 |
 | 导演 | 镜头、光照、构图、`recommendedSize` 和模型参数不互相覆盖冲突；实际人数不由分级强制改单人，显式 `1girl, 1boy` 等人数组合须保留 |
 | 最终请求 | Anima 六段顺序与自然语言末尾边界，完整 positive / negative、模型/LoRA、seed、尺寸、采样参数及参考输入；批量/维护入口不能编译后另拼标签 |
 
 原场景明确要求的镜面形象／幻影可用 `allowRepeatedSubject` 保留，画内完整同伴使用 `compositionIntent: group`，只有画外视角或伸入的手时保留单主体，三格叙事使用 `triptych`；不能把这些字段当成所有场景的默认。SFW 时间线外貌冲突时，`identityTokensOverride` / `identityProseOverride` 只在该条蓝图中声明已有形态，不改变角色 ID；此类外貌变体拒绝成人蓝图或手动成人词请求。衣装字段只保留衣装，手持道具属于具体场景。
+
+衣装调整同时检查所有引用蓝图及独立场景实际消费的服装词、散文和展示描述。成人蓝图当前不自动注入绑定衣装的 tokens/prose，应同步其已有服饰描写，不能只改 `outfitId`；裸体、浴巾等状态不强行改成另一套穿着。若同一占位衣装被衬衫、浴衣等不同穿着混用，优先绑定匹配的已有衣装；确无匹配时按原场景已有服饰建立独立记录。多人画面分别绑定各人的衣装，必要关系放自然语言末尾，避免共享服装词把两人穿着混成一套；Anima 不自动叠加旧式括号包裹的整组身份词，作者明确写出的 BREAK 作用域单独核对。
 
 代码入口：`src/utils/popularContent.ts`、`src/composables/prompt/usePopularPromptAssembly.ts`、`src/utils/promptCompiler.ts`、`src/utils/promptPolicy.ts`；独立场景检查复用 `scripts/lib/scene-render-contract.js`。
 

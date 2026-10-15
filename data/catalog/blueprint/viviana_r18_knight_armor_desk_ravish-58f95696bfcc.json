@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_knight_armor_desk_ravish",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 689,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "轻铠解扣衬衫半敞露大胸，白丝长手套托胸另一手在长裙下深层自抚，金鹿角流光娇喘",
     "adult": true,
@@ -25,11 +25,12 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "candle_knight_armor",
+    "outfitId": "knight_silk_underlayers",
     "promptProse": "Seated on the bench, she cups her breast with one hand and touches herself beneath her skirt with the other, her removed breastplate resting on the chair back in warm wall light.",
     "promptTokens": [
-      "white shirt",
-      "gloves",
+      "white silk shirt",
+      "black skirt",
+      "white elbow gloves",
       "bench",
       "lounge",
       "candlelight",

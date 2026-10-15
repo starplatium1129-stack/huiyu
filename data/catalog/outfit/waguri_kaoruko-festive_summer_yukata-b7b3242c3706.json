@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/festive_summer_yukata",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 844,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "festive_summer_yukata",
-      "name": "夏祭牵牛花浅蓝浴衣",
-      "prose": "a sky-blue morning-glory yukata with a yellow obi, geta and floral clips securing her braids",
+      "name": "浅蓝朝颜花浴衣",
+      "prose": "A sky-blue cotton yukata has morning-glory blossoms, a warm yellow obi, wooden geta and small floral hair clips.",
       "tokens": [
-        "blue yukata",
-        "floral print",
+        "sky blue yukata",
+        "morning glory print",
         "yellow obi",
-        "twin braids",
         "geta",
         "flower hair ornament"
       ]

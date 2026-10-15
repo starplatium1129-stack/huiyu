@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_bathrobe_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "makima_r18_bathrobe_morning",
     "title": "玛奇玛 · 晨袍沙发",
@@ -30,7 +30,8 @@
       "1girl",
       "solo",
       "adult Makima",
-      "open robe",
+      "white silk robe",
+      "open clothes",
       "bare breasts",
       "crossed legs",
       "coffee",
@@ -46,7 +47,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
-    "outfitId": "casual",
+    "outfitId": "white_silk_robe",
     "sampleRating": "R18"
   }
 }

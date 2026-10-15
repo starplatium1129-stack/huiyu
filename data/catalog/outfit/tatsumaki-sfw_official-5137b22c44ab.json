@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/sfw_official",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 896,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
       "id": "sfw_official",
-      "name": "黑色长袖及膝连衣裙",
-      "prose": "a closed-neck black long-sleeved knee-length dress, opaque tights and simple shoes",
+      "name": "黑色高领长袖连衣裙",
+      "prose": "a black high-neck knee-length dress with long fitted sleeves, opaque tights and simple flat shoes",
       "tokens": [
-        "black_dress",
-        "long_sleeves",
-        "high_neck",
-        "opaque_tights",
-        "shoes"
+        "black dress",
+        "long sleeves",
+        "high neck",
+        "black tights",
+        "flat shoes"
       ],
       "default": true,
       "isDefault": true

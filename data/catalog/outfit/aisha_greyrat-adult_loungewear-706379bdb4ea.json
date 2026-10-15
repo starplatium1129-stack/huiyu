@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/adult_loungewear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 269,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
       "id": "adult_loungewear",
-      "name": "成年私密居家装",
+      "name": "酒红缎面象牙滚边居家袍",
       "isDefault": false,
       "default": false,
       "isNsfw": true,
-      "prose": "opaque burgundy satin loungewear with a high neckline and a long matching robe, fully covering the chest and hips",
+      "prose": "a burgundy satin lounge robe with a high collar, long sleeves and narrow ivory piping",
       "tokens": [
-        "satin_loungewear",
-        "opaque_robe",
-        "high_neckline",
-        "full_coverage"
+        "burgundy satin robe",
+        "high collar",
+        "ivory piping",
+        "long sleeves"
       ]
     }
   }

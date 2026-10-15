@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc208",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 203,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc208",
     "title": "夜灯下的黑发余温",
@@ -21,7 +21,6 @@
     "timeOfDay": "late_night",
     "tags": [
       "mole_under_eye",
-      "dark_bathrobe",
       "bathrobe",
       "sitting_on_bed_edge",
       "long_hair",
@@ -32,7 +31,10 @@
       "bedside_lamp",
       "soft_shadows",
       "medium_shot",
-      "depth_of_field"
+      "depth_of_field",
+      "charcoal_waffle_bathrobe",
+      "burgundy_shawl_collar",
+      "matching_waist_tie"
     ],
     "rating": "R15",
     "mature": false,
@@ -44,7 +46,7 @@
       "氛围优先",
       "R15"
     ],
-    "prompt": "1girl, shiki_natsume, dark bathrobe, sitting on bed, cup, tired smile, bedroom, bedside lamp, medium shot",
+    "prompt": "1girl, shiki_natsume, charcoal waffle bathrobe, burgundy shawl collar, matching waist tie, sitting on bed, cup, tired smile, bedroom, bedside lamp, medium shot",
     "negative": "open robe",
     "storyJa": "【大人のAfter Story・夏目・夜灯の下の静かな誘い】深夜の寝室にはベッドサイドの暖かな灯りだけがついていた。一日の仕事を終えた夏目は濃い色のガウンを羽織り、ベッドの端に座っている。黒い長髪は肩から背中へ落ち、疲れた表情は珍しくやわらかい。彼女はカップを脇へ置き、近くへ来るように目で合図した。――「勘違いしないで。ただ、少し静かにしていたいだけ。鍵はかけたから、今夜は仕事を言い訳に逃げるのはなしよ。」",
     "animaCaption": "She sets the cup on the bedside table and looks toward the viewer with a tired smile, the closed dark robe catching the warm bedside light.",

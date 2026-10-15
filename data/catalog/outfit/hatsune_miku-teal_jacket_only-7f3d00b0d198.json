@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "hatsune_miku/teal_jacket_only",
+  "revision": 1,
+  "sortOrder": 1296,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hatsune_miku",
+    "outfit": {
+      "id": "teal_jacket_only",
+      "name": "青绿短外套单件",
+      "tokens": [
+        "teal cropped jacket",
+        "magenta zipper"
+      ],
+      "prose": "A teal cropped jacket with a magenta zipper.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

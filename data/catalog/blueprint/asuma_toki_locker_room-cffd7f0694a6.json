@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_locker_room",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "更衣室半解战斗紧身衣拉链，金发披散回眸",
     "adult": true,
@@ -25,12 +25,12 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "candc_maid",
+    "outfitId": "black_white_combat_suit",
     "promptProse": "Adult Toki turns her upper body toward the viewer in a rear three-quarter view, pulling the suit zipper behind her with one hand and steadying herself on the bench with the other.",
     "promptTokens": [
       "adult",
       "locker room",
-      "combat suit",
+      "black and white combat suit",
       "unzipped",
       "topless",
       "bare back",

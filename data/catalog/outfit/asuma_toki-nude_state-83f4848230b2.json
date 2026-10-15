@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "asuma_toki/nude_state",
+  "revision": 1,
+  "sortOrder": 1269,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "asuma_toki",
+    "outfit": {
+      "id": "nude_state",
+      "name": "无衣装状态",
+      "tokens": [
+        "nude"
+      ],
+      "prose": "unclothed",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

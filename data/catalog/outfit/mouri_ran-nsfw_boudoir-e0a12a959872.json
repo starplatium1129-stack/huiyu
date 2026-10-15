@@ -1,23 +1,20 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 913,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "毛利兰·成人私密造型",
-      "prose": "a private adult ensemble built around small_towel, dressing_room, bikini, red_bikini, strap_slip, completely_nude",
+      "name": "伊豆红色挂颈细带泳装",
+      "prose": "A red halter bikini with simple ties at the neck and back.",
       "tokens": [
-        "small_towel",
-        "dressing_room",
-        "bikini",
-        "red_bikini",
-        "strap_slip",
-        "completely_nude"
+        "red bikini",
+        "halter neck",
+        "tie-back bikini"
       ],
       "default": false,
       "isDefault": false

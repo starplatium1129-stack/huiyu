@@ -1,12 +1,12 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_silk_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
-    "action": "金黄草垛旁抱膝微褪白裙娇羞微笑",
+    "action": "金黄草垛旁抱膝褪去白裙娇羞微笑",
     "adult": true,
     "animaStyleHint": "r18_sensual_cg",
     "camera": "medium shot, side view",
@@ -15,7 +15,7 @@
     "coverageTags": [
       "intimate"
     ],
-    "description": "【希斯特里亚 · 农场阳光草垛纯欲】墙内农场阳光洒落的金黄草棚内，希斯特里亚抱着双膝坐在松软的干草堆上，纯白连衣裙微褪，明朗晨曦将她娇小可人的身躯、平坦小腹、纤细腰肢与柔嫩胸型映得晶莹剔透，纯欲天使的微笑治愈心灵。",
+    "description": "【希斯特里亚 · 农场阳光草垛纯欲】墙内农场阳光洒落的金黄草棚内，希斯特里亚抱着双膝坐在松软的干草堆上，已褪去纯白连衣裙，明朗晨曦将她娇小可人的身躯、平坦小腹、纤细腰肢与柔嫩胸型映得晶莹剔透，纯欲天使的微笑治愈心灵。",
     "id": "krista_lenz_r18_silk_morning",
     "kreaStyleHint": "",
     "lighting": "木棚板缝倾泻的明媚暖金日光与漫射天光光束",
@@ -24,7 +24,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "casual",
+    "outfitId": "nsfw_nude",
     "promptProse": "Adult Historia reclines across the clean hay with one arm overhead, her other hand moving between her thighs beneath the dawn window.",
     "promptTokens": [
       "1girl",

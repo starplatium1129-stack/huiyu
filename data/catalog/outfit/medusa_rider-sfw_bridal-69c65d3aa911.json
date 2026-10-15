@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/sfw_bridal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "美杜莎 Rider·圣洁花嫁",
-      "prose": "a deep violet wedding gown with silver trim, a long translucent veil and a small book-shaped bouquet charm",
+      "name": "深紫银边长纱婚裙",
+      "prose": "A deep-violet satin bridal gown with a long flowing skirt and fine silver edging, paired with a translucent veil. A tiny book-shaped charm hangs from the waist ribbon.",
       "tokens": [
         "violet wedding dress",
-        "long veil",
         "silver trim",
+        "long veil",
         "book charm"
       ],
       "default": false,

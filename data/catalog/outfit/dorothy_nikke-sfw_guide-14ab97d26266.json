@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_guide",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 995,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_guide",
-      "name": "伊甸园白色端庄长裙",
-      "prose": "an opaque white long-sleeved midi dress with a pale pink jacket and closed shoes",
+      "name": "伊甸园粉白礼仪长裙",
+      "prose": "A structured white long-sleeved midi dress under a pale-pink cropped jacket with pearl buttons, paired with white closed-toe shoes.",
       "tokens": [
-        "white_dress",
-        "long_sleeves",
-        "midi_dress",
-        "pink_jacket",
-        "closed_shoes"
+        "white midi dress",
+        "long sleeves",
+        "pink cropped jacket",
+        "pearl buttons",
+        "white closed-toe shoes"
       ],
       "default": true,
       "isDefault": true

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_r18_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1760,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "togawa_sakiko_r18_b9_03",
     "title": "丰川祥子 · 打工更衣室白衬衫黑丝刮破的狼狈事故 ·「不许看！……就算我沦落到打工，也不是你能随意嘲笑的！」",
     "category": "更衣事故",
     "characterId": "togawa_sakiko",
-    "description": "【客服中心狭窄员工更衣室·深夜换班】换衣服时廉价黑色连裤袜被更衣柜铁皮死死刮破一大截。祥子双手撑在生锈的储物柜上，制服窄裙被扯得高高掀起，刮破的丝袜撕裂开露出整条白嫩大腿与单薄纯白棉质胖次。她回头死死咬住下唇，泪水在眼眶里打转，满是落难大小姐不甘折辱的骄傲——「把头转过去！……要是敢告诉初华她们……我一辈子都不会原谅你！」",
+    "description": "【客服中心狭窄员工更衣室·深夜换班】换衣服时廉价黑色连裤袜被更衣柜铁皮死死刮破一大截。祥子双手撑在生锈的储物柜上，藏蓝制服窄裙被扯得高高掀起，刮破的丝袜撕裂开露出整条白嫩大腿与单薄纯白棉质胖次。她回头死死咬住下唇，泪水在眼眶里打转，满是落难大小姐不甘折辱的骄傲——「把头转过去！……要是敢告诉初华她们……我一辈子都不会原谅你！」",
     "location": "客服中心狭窄员工更衣室·深夜换班",
     "action": "撑更衣柜塌腰回眸双手扯黑丝破洞，制服短裙掀起露白臀，泪眼咬唇抗拒屈辱",
     "timeOfDay": "night",
@@ -30,7 +30,7 @@
       "black_pantyhose",
       "skirt_lift"
     ],
-    "promptProse": "Sakiko's tights catch and tear on a jagged locker hinge, revealing white underwear beneath her bunched work skirt. She looks back and asks the viewer to turn away.",
+    "promptProse": "Sakiko's tights catch and tear on a jagged locker hinge, revealing white underwear beneath her bunched navy work skirt. She looks back and asks the viewer to turn away.",
     "promptTokens": [
       "adult",
       "1girl",
@@ -43,7 +43,8 @@
       "bent over",
       "looking back",
       "biting lip",
-      "locker room"
+      "locker room",
+      "navy pencil skirt"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -53,7 +54,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "white_work_skirt",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

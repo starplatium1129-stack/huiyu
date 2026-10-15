@@ -1,23 +1,21 @@
 {
   "kind": "outfit",
   "id": "morgan_le_fay_fate/aesc_rain_witch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "morgan_le_fay_fate",
     "outfit": {
       "id": "aesc_rain_witch",
-      "name": "雨之魔女梣",
-      "prose": "her Aesc form as the Witch of Rain, a blue witch robe with a wide-brimmed witch hat and wooden staff",
+      "name": "雨之魔女梣蓝袍",
+      "prose": "The Witch of Rain blue robe with a wide-brimmed witch hat and restrained silver edging.",
       "tokens": [
         "aesc (fate)",
-        "witch_hat",
-        "robe",
-        "staff",
-        "blue_dress",
-        "magic"
+        "blue robe",
+        "wide-brimmed witch hat",
+        "silver edging"
       ],
       "default": false,
       "isDefault": false

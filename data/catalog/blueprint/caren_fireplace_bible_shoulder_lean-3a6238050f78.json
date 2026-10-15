@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_fireplace_bible_shoulder_lean",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 213,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "caren_fireplace_bible_shoulder_lean",
     "title": "卡莲 · 壁炉圣经前的倚肩依偎",
@@ -30,7 +30,8 @@
     ],
     "promptProse": "She supports the Bible on her lap and rests her head against the clothed shoulder at the frame edge. Firelight reaches the book and nearby chair.",
     "promptTokens": [
-      "black nightgown",
+      "black silk nightgown",
+      "spaghetti straps",
       "closed Bible",
       "head on shoulder",
       "hearth rug",

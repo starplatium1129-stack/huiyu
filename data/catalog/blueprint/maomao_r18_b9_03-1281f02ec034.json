@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1717,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "maomao_r18_b9_03",
     "title": "猫猫 · 宫女襦裙系带被药柜抽屉夹住的更衣事故 ·「痛痛痛……系带被抽屉咬死了，快帮我剪断！」",
@@ -32,14 +32,16 @@
     ],
     "promptProse": "Adult Maomao bends over the apothecary counter as her sash catches in a drawer, lifting her skirt and parting the collar; she looks back for help before the inspector arrives.",
     "promptTokens": [
-      "hanfu",
+      "green hanfu",
       "stuck clothes",
       "skirt lift",
       "breast slip",
       "bent over",
       "looking back",
       "medicine cabinet",
-      "sunset"
+      "sunset",
+      "cream long skirt",
+      "sleeve ties"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -49,7 +51,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "sfw_pharmacy",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

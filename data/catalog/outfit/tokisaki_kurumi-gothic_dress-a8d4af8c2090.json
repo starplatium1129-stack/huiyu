@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/gothic_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "gothic_dress",
-      "name": "哥特洋装",
-      "prose": "her signature black and crimson gothic dress with frills and a high collar",
+      "name": "黑红哥特洋装",
+      "prose": "her signature black-and-crimson gothic dress with frills and a high collar, black thigh-high socks and matching hair ornament",
       "tokens": [
-        "gothic_lolita",
-        "black_dress",
+        "black and crimson gothic dress",
         "frills",
-        "high_collar",
-        "black_thighhighs",
-        "hair_ornament"
+        "high collar",
+        "black thighhighs",
+        "hair ornament"
       ],
       "default": true,
       "isDefault": true

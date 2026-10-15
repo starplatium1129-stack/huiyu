@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/hotel_white_shirt",
+  "revision": 1,
+  "sortOrder": 1216,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "id": "hotel_white_shirt",
+      "name": "旅店白衬衫与红围巾",
+      "tokens": [
+        "white shirt",
+        "red scarf"
+      ],
+      "prose": "a loose white button-up shirt with the red scarf",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

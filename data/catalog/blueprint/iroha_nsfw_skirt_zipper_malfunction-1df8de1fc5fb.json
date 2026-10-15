@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_skirt_zipper_malfunction",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 367,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "iroha_nsfw_skirt_zipper_malfunction",
     "title": "一色彩羽 · 活动室百褶裙拉链卡壳事故 ·「别装君子啦……前辈明明想看很久了吧」",
@@ -47,7 +47,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "sensual_lace_lingerie",
+    "outfitId": "official_sobu_uniform",
     "coverageTags": [
       "special_nsfw",
       "h_cg"

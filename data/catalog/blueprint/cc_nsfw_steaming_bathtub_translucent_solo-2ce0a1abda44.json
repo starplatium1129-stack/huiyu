@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_steaming_bathtub_translucent_solo",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1321,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "斜靠在浴缸边缘，湿透白吊带贴肤透肉，单手在水下自抚，微仰头闭目娇喘",
     "adult": true,
@@ -25,7 +25,7 @@
     "location": "弥漫温暖水汽的欧式复古大理石浴室",
     "mood": "唯美水光",
     "negativeTokens": [],
-    "outfitId": "casual_oversized_sweater",
+    "outfitId": "white_bath_camisole",
     "promptProse": "She reclines in the tub with green hair floating on the water and one hand between her thighs, her head tilted back. Candlelight glimmers across the water beneath the rising steam.",
     "promptTokens": [
       "bathroom",

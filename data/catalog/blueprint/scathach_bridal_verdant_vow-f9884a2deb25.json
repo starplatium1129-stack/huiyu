@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_bridal_verdant_vow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 248,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "scathach_bridal_verdant_vow",
     "title": "斯卡哈 · 绿野花环的永恒誓约·「比起不死的永恒，我选择了会结束的今日」",
@@ -33,7 +33,9 @@
     "promptTokens": [
       "reaching out",
       "flowers",
-      "wide shot"
+      "wide shot",
+      "braid",
+      "hair flower"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "zero_two/sfw_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 894,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "zero_two",
     "outfit": {
       "id": "sfw_beach",
-      "name": "02·海滨泳装",
-      "prose": "a red-and-white sailor swimsuit with a loose white overshirt and candy pouch, barefoot",
+      "name": "红白水手泳装",
+      "prose": "a red-and-white sailor swimsuit beneath a loose white overshirt, with a small candy pouch at the hip, worn barefoot",
       "tokens": [
-        "red and white sailor swimsuit",
+        "red and white swimsuit",
+        "sailor collar",
         "white overshirt",
-        "candy pouch",
+        "small pouch",
         "barefoot"
       ],
       "default": false,

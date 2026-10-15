@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/military_underlayer",
+  "revision": 1,
+  "sortOrder": 1218,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "id": "military_underlayer",
+      "name": "卸下外套后的军装内搭",
+      "tokens": [
+        "white military shirt",
+        "trousers"
+      ],
+      "prose": "a white military shirt and trousers with the outer jacket removed",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_fitz_unbuttoned_desk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 468,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "半解白色执事衬衫坐在书桌沿，墨镜滑落鼻梁",
     "adult": true,
@@ -27,8 +27,8 @@
     "promptProse": "Sylphiette braces one hand among the books and touches herself beneath her waistband, her shirt open and glasses slipping down her nose.",
     "promptTokens": [
       "adult",
-      "white shirt",
-      "trousers",
+      "white formal shirt",
+      "white trousers",
       "sunglasses",
       "sitting",
       "desk",
@@ -43,7 +43,7 @@
       "study_room",
       "desk",
       "open_shirt",
-      "bottomless",
+      "white_trousers",
       "spread_thighs",
       "exposed_pussy",
       "detailed_vulva",

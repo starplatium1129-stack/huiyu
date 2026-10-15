@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_r18_b5_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1523,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "shiina_mashiro_r18_b5_01",
     "title": "椎名真白 · 画室油画架前白衬衫主控跨坐 ·「空太……想看真白是什么颜色吗」",
@@ -52,7 +52,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "paint_marked_shirt",
     "coverageTags": [
       "nsfw",
       "cowgirl",

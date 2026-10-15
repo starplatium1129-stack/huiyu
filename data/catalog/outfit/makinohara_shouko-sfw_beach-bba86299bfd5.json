@@ -1,19 +1,19 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/sfw_beach",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-06T10:16:06.567639+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "sfw_beach",
-      "name": "牧之原翔子·海滨泳装",
-      "prose": "a pale-blue swimsuit under a loose white shirt",
+      "name": "浅蓝连身泳装与白衬衫",
+      "prose": "a pale-blue one-piece swimsuit with a softly curved neckline beneath a loose white linen shirt",
       "tokens": [
-        "pale_blue_swimsuit",
-        "white_shirt"
+        "pale blue one-piece swimsuit",
+        "white linen shirt"
       ],
       "default": false,
       "isDefault": false

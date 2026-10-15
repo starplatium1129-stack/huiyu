@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "zero_two/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 892,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "zero_two",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "02·成人私密造型",
-      "prose": "a private adult ensemble built around red_bodysuit, completely_nude, dressing_room, red_dress",
+      "name": "深红拉链驾驶服",
+      "prose": "a deep-red close-fitting pilot suit with a front zipper",
       "tokens": [
-        "red_bodysuit",
-        "completely_nude",
-        "dressing_room",
-        "red_dress"
+        "red pilot suit",
+        "bodysuit",
+        "front zipper"
       ],
       "default": false,
       "isDefault": false

@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_snow",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 919,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_snow",
-      "name": "异国雪景白色大衣",
-      "prose": "a white wool coat, soft grey scarf, warm trousers and winter boots",
+      "name": "雪白羊毛大衣与雾灰围巾",
+      "prose": "A white wool coat with a softly flared hem and dark covered buttons, a light-grey knitted scarf, warm grey trousers and winter boots.",
       "tokens": [
-        "white_coat",
-        "grey_scarf",
-        "wool",
-        "pants",
-        "winter_boots"
+        "white wool coat",
+        "grey scarf",
+        "grey pants",
+        "winter boots"
       ],
       "default": false,
       "isDefault": false

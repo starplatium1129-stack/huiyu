@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_bunk_late",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 724,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自斜倚窄床，一手持数据板阅读，另一手在腿间",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "medium shot",
     "category": "成人",
     "characterId": "perlica_arknights",
-    "description": "【佩丽卡 · 夜读报告】深夜床榻上，盘腿坐着的佩丽卡只披着一件单薄的外套，雪白饱满的胸脯在布料边缘若隐若现。她揉了揉泛酸的眼眶靠在你的肩头——「今天审阅了整整四十份工程报告……脑子快要运转过载了。管理员……能让我这样靠着你休息一会儿吗？」",
+    "description": "【佩丽卡 · 夜读报告】深夜床榻上，盘腿坐着的佩丽卡穿着敞襟灰衬衫与宽松短裤，雪白饱满的胸脯在布料边缘若隐若现。她揉了揉泛酸的眼眶靠在你的肩头——「今天审阅了整整四十份工程报告……脑子快要运转过载了。管理员……能让我这样靠着你休息一会儿吗？」",
     "id": "perlica_arknights_r18_bunk_late",
     "kreaStyleHint": "",
     "lighting": "dim reading lamp",
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "standard",
+    "outfitId": "bunk_shirt_shorts",
     "promptProse": "Perlica reads the datapad on her narrow bunk while her other hand slips between her thighs, blue screen light falling across her.",
     "promptTokens": [
       "adult",

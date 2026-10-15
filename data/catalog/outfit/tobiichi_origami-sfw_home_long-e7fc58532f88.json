@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/sfw_home_long",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 55,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "sfw_home_long",
-      "name": "新时间线长发居家装",
-      "prose": "a pale blue long-sleeved blouse and ankle-length skirt, with hair falling to her waist",
+      "name": "浅蓝长袖居家套装",
+      "prose": "A pale-blue blouse with a small stand collar pairs with an ivory ankle-length skirt, its narrow pleats falling in a clean line.",
       "tokens": [
-        "blue blouse",
+        "pale blue blouse",
         "long sleeves",
-        "long skirt",
-        "long hair"
+        "ivory long skirt"
       ],
       "default": false,
       "isDefault": false

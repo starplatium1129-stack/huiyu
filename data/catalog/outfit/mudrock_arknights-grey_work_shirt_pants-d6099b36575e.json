@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "mudrock_arknights/grey_work_shirt_pants",
+  "revision": 1,
+  "sortOrder": 1417,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mudrock_arknights",
+    "outfit": {
+      "id": "grey_work_shirt_pants",
+      "name": "灰色工作衬衫与长裤",
+      "tokens": [
+        "grey shirt",
+        "dark pants",
+        "work gloves"
+      ],
+      "prose": "A plain grey work shirt, dark straight trousers and work gloves.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

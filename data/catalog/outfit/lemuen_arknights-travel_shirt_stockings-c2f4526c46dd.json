@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "lemuen_arknights/travel_shirt_stockings",
+  "revision": 1,
+  "sortOrder": 1204,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "lemuen_arknights",
+    "outfit": {
+      "id": "travel_shirt_stockings",
+      "name": "旅行衬衫与长袜",
+      "tokens": [
+        "shirt",
+        "stockings"
+      ],
+      "prose": "a travel shirt and stockings",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

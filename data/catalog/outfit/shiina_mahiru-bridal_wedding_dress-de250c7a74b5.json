@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/bridal_wedding_dress",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 820,
   "createdAt": null,
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "bridal_wedding_dress",
-      "name": "圣洁教堂纯白花嫁婚纱",
-      "prose": "a pure white wedding gown with a sweeping cathedral train and delicate lace embroidery, a translucent bridal veil over her waist-length blonde hair",
+      "name": "白蕾丝拖尾花嫁礼裙",
+      "prose": "a white wedding gown with delicate lace embroidery, a sweeping cathedral train and a fine translucent bridal veil, paired with white shoes",
       "tokens": [
-        "wedding_dress",
-        "bridal_veil",
-        "lace-trimmed_dress",
-        "jewelry",
-        "white_footwear"
+        "white wedding dress",
+        "lace embroidery",
+        "cathedral train",
+        "bridal veil",
+        "white shoes"
       ]
     }
   }

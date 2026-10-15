@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/summer_yukata",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "default": false,
       "id": "summer_yukata",
       "isDefault": false,
-      "name": "温泉旅馆浴衣",
-      "prose": "a loose cotton yukata with a simple obi sash",
+      "name": "水蓝涟纹浴衣",
+      "prose": "A light-blue cotton yukata carries a sparse wave pattern beneath a plain navy obi.",
       "tokens": [
-        "yukata",
+        "light blue yukata",
         "cotton",
-        "obi"
+        "wave print",
+        "navy obi"
       ]
     }
   }

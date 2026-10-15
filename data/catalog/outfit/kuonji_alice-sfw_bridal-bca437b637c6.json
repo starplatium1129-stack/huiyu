@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "kuonji_alice/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 928,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kuonji_alice",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "久远寺有珠·圣洁花嫁",
-      "prose": "a modest black bridal gown with a silver rune veil, white collar and a small bluebird bouquet charm",
+      "name": "银符黑纱古典花嫁",
+      "prose": "A modest long-sleeved black bridal gown with a white collar and a veil edged in fine silver runic embroidery.",
       "tokens": [
-        "wedding_dress",
-        "black_gown",
-        "silver_rune_veil",
-        "white_collar",
-        "bluebird_charm"
+        "black wedding dress",
+        "white collar",
+        "long sleeves",
+        "silver embroidered veil"
       ],
       "default": false,
       "isDefault": false

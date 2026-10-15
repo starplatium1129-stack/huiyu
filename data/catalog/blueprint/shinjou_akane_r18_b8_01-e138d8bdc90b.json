@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_r18_b8_01",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1549,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "shinjou_akane_r18_b8_01",
-    "title": "新条茜 · 怪兽工作室大号卫衣主控跨坐 ·「你是为我而存在的吧？……那就全部交给我支配」",
+    "title": "新条茜 · 怪兽工作室粉紫长开衫主控跨坐 ·「你是为我而存在的吧？……那就全部交给我支配」",
     "category": "主控骑乘",
     "characterId": "shinjou_akane",
     "description": "【怪兽制作地下室·深夜】粘土雕刻刀与半成品怪兽模型散落一地。茜套着松垮的粉紫长袖开衫，下半身完全真空，跨坐在你的腰间。深粉色的短发下，红宝石般的瞳孔带着病娇神性与极致的自毁脆弱，指尖划破你的颈项，主动剧烈下压腰肢——「如果不按我喜欢的样子回应我……把你变成怪兽吃掉哦？」",
@@ -30,7 +30,7 @@
       "bottomless",
       "barefoot"
     ],
-    "promptProse": "Akane moves astride the viewer's lap in her sculpture-filled bedroom, one hand against their throat and her lavender cardigan open under green monitor light.",
+    "promptProse": "Akane moves astride the viewer's lap in her sculpture-filled bedroom, one hand against their throat and her long lavender knit cardigan open under green monitor light.",
     "promptTokens": [
       "adult",
       "1girl",
@@ -43,7 +43,8 @@
       "on lap",
       "bedroom",
       "monitor glow",
-      "from below"
+      "from below",
+      "lavender cardigan"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,7 +54,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "lavender_long_cardigan",
     "coverageTags": [
       "nsfw",
       "cowgirl",

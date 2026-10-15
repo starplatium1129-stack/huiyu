@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "harudera_yuria/sfw_beige_coat_red_scarf",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 658,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "harudera_yuria",
     "outfit": {
       "id": "sfw_beige_coat_red_scarf",
       "name": "米色羊绒大衣与红围巾",
-      "prose": "a tailored beige double-breasted cashmere overcoat, a bright red knitted wool scarf, and dark leather heeled boots",
+      "prose": "A tailored beige double-breasted cashmere coat pairs with a bright red wool scarf and dark heeled leather boots.",
       "tokens": [
-        "overcoat",
-        "beige_coat",
+        "beige coat",
         "double-breasted",
-        "red_scarf",
-        "wool_scarf",
-        "leather_boots"
+        "cashmere",
+        "red wool scarf",
+        "heeled leather boots"
       ],
       "default": false,
       "isDefault": false,

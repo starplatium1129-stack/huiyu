@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "laevatain_arknights/black_bath_wrap",
+  "revision": 1,
+  "sortOrder": 1200,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "laevatain_arknights",
+    "outfit": {
+      "id": "black_bath_wrap",
+      "name": "黑色浴池裹布",
+      "tokens": [
+        "black wrap"
+      ],
+      "prose": "a plain black bath wrap",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

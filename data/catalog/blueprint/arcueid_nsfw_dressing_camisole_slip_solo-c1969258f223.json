@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_dressing_camisole_slip_solo",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1332,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "黑吊带滑脱露胸，双手环抱自抚腿心，咬唇羞耻眼角泛泪娇喘",
     "adult": true,
@@ -29,10 +29,11 @@
     "promptTokens": [
       "bedroom",
       "mirror",
-      "black camisole",
+      "black silk camisole",
+      "lace trim",
       "strap slip",
       "topless",
-      "panties",
+      "black panties",
       "masturbation",
       "blush"
     ],

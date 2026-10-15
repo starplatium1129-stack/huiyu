@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/formal_gown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 266,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
       "id": "formal_gown",
-      "name": "宅邸正式礼服",
+      "name": "酒红束腰宅邸礼服",
       "isDefault": false,
       "default": false,
-      "prose": "a burgundy and cream ankle-length gown with long sleeves, a high collar and understated gold trim",
+      "prose": "an ankle-length burgundy gown with a fitted waist, cream front inset, long sleeves and fine gold trim at the high collar",
       "tokens": [
-        "burgundy gown",
+        "burgundy dress",
+        "cream inset",
         "long sleeves",
         "high collar",
         "gold trim"

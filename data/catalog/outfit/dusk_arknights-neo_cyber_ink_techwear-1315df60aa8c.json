@@ -1,25 +1,26 @@
 {
   "kind": "outfit",
   "id": "dusk_arknights/neo_cyber_ink_techwear",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 324,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "dusk_arknights",
     "outfit": {
       "default": false,
       "id": "neo_cyber_ink_techwear",
       "isDefault": false,
-      "name": "街头墨客",
-      "prose": "a deconstructed ink-techwear outfit: a black strappy high-neck crop tank top, a lightweight techwear hooded jacket with cyan reflective lines and ink-splatter print worn loose off one shoulder, high-waisted black utility cargo pants with magnetic straps, chunky high-top sneakers",
+      "name": "青墨反光机能套装",
+      "prose": "a black high-neck cropped tank beneath a loose hooded jacket with cyan reflective lines and ink-splatter print, with strapped black cargo pants and chunky high-top sneakers",
       "tokens": [
-        "techwear",
-        "crop_top",
-        "utility_pants",
-        "hooded_jacket",
-        "high_top_sneakers",
-        "cyberpunk"
+        "black crop top",
+        "high collar",
+        "black hooded jacket",
+        "cyan trim",
+        "ink print",
+        "black cargo pants",
+        "high top sneakers"
       ]
     }
   }

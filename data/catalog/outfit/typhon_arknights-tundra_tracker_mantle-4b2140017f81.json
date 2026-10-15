@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/tundra_tracker_mantle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 398,
   "createdAt": null,
-  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
@@ -12,17 +12,16 @@
       "id": "tundra_tracker_mantle",
       "isDefault": false,
       "name": "霜白羊毛披肩与猎装便服",
-      "prose": "a short ivory wool cape with a charcoal lining and a silver antler clasp, a fitted charcoal mock-neck pullover, dark olive tapered trousers with reinforced knees, a narrow brown leather belt and lace-up boots with wool-lined cuffs",
+      "prose": "A short ivory wool cape with charcoal lining and a silver antler clasp covers a charcoal mock-neck pullover, olive tapered trousers with reinforced knees and wool-lined lace-up boots.",
       "tokens": [
-        "white_cape",
+        "ivory cape",
         "wool",
-        "clasp",
-        "black_sweater",
-        "turtleneck",
-        "green_pants",
-        "belt",
-        "lace-up_boots",
-        "fur_trim"
+        "silver clasp",
+        "charcoal sweater",
+        "high collar",
+        "olive pants",
+        "brown belt",
+        "lace-up boots"
       ],
       "category": "日常衣装（创作）"
     }

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "tsukatsuki_rio/black_red_sole_heels",
+  "revision": 1,
+  "sortOrder": 1247,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tsukatsuki_rio",
+    "outfit": {
+      "id": "black_red_sole_heels",
+      "name": "红底黑色高跟鞋",
+      "tokens": [
+        "black high heels",
+        "red soles"
+      ],
+      "prose": "slender black high heels with red soles",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

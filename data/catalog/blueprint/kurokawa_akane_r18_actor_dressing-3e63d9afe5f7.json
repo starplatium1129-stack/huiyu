@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_actor_dressing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 968,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跪坐烤箱旁，一手持勺，一手擦去腿上的面粉",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "sayahime_stage",
+    "outfitId": "kitchen_apron_only",
     "promptProse": "Adult Akane kneels beside the oven with her apron slipped below her chest, holding a spoon and wiping flour from her inner thigh.",
     "promptTokens": [
       "1girl",

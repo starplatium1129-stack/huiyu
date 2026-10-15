@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_hygiene_bay",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 723,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "斜倚清洁舱内的塑形长凳，抬起一膝，一手调节水流，另一手在水流下",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "white_shirt",
     "promptProse": "Perlica adjusts the water control with one hand and moves the other beneath the spray, her raised knee resting on the molded bench.",
     "promptTokens": [
       "adult",

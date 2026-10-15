@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_cloister_sunlit_breeze_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 214,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "caren_cloister_sunlit_breeze_smile",
     "title": "卡莲 · 修道院回廊的微风回眸",
@@ -31,12 +31,13 @@
     ],
     "promptProse": "She rests a hand against the column and turns back toward the viewer. Shroud ribbons move beside her as sunlight bands the stone walkway.",
     "promptTokens": [
+      "black and white clerical vestments",
+      "gold embroidery",
+      "no skirt",
+      "black thighhighs",
       "cloister",
       "column",
-      "clerical vestments",
-      "detached sleeves",
-      "thighhighs",
-      "crimson ribbons",
+      "crimson shroud ribbons",
       "looking back",
       "smile",
       "afternoon"

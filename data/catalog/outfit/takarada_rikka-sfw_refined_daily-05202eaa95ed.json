@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 868,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "牛仔短外套周末装",
-      "prose": "a light denim jacket over a dark green cotton shirt, black straight trousers and white canvas sneakers",
+      "name": "浅色牛仔短外套周末装",
+      "prose": "A cropped light-denim jacket layers over a dark-green cotton shirt, black straight trousers and white canvas sneakers.",
       "tokens": [
-        "denim_jacket",
-        "green_shirt",
-        "black_pants",
-        "canvas_shoes"
+        "light blue denim jacket",
+        "dark green shirt",
+        "black pants",
+        "white sneakers"
       ],
       "isDefault": false,
       "isNsfw": false

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_suitcase_morning",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 390,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "elaina_r18_suitcase_morning",
     "title": "伊雷娜 · 晨光与旅行箱",
     "category": "成人",
     "characterId": "elaina",
-    "description": "【伊蕾娜 · 晨光与旅行箱】清晨金色阳光洒满房间，伊蕾娜穿着单薄的白衬衫坐在敞开的大号旅行箱旁整理衣物。她伸了个大大的懒腰，衣摆滑落露出紧致平坦的小腹——「呜哇——睡得好饱！今天又是崭新的旅程……在出发之前，不打算帮我把这件衣服扣好吗？」",
+    "description": "【伊蕾娜 · 晨光与旅行箱】清晨金色阳光洒满房间，伊蕾娜穿着单薄的象牙白衬衫坐在敞开的大号旅行箱旁整理衣物。她伸了个大大的懒腰，衣摆滑落露出紧致平坦的小腹——「呜哇——睡得好饱！今天又是崭新的旅程……在出发之前，不打算帮我把这件衣服扣好吗？」",
     "location": "旅店房间",
     "action": "坐在敞开的旅行箱旁",
     "timeOfDay": "清晨",
@@ -36,7 +36,9 @@
       "blush",
       "inn",
       "morning light",
-      "medium shot"
+      "medium shot",
+      "ivory shirt",
+      "gray cuffs"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -46,7 +48,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@hiten (hitenkei)",
-    "outfitId": "travel_clothes",
+    "outfitId": "ivory_travel_shirt",
     "sampleRating": "R18"
   }
 }

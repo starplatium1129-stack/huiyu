@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "futaba_rio/labcoat_private",
+  "revision": 1,
+  "sortOrder": 1179,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "futaba_rio",
+    "outfit": {
+      "id": "labcoat_private",
+      "name": "白色实验大褂",
+      "tokens": [
+        "white lab coat"
+      ],
+      "prose": "a white laboratory coat",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

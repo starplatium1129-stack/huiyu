@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "eyjafjalla_arknights/lab_coat_camisole",
+  "revision": 1,
+  "sortOrder": 1372,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "eyjafjalla_arknights",
+    "outfit": {
+      "id": "lab_coat_camisole",
+      "name": "夜班白大褂与奶油吊带衫",
+      "tokens": [
+        "white lab coat",
+        "cream camisole",
+        "black boots"
+      ],
+      "prose": "A white lab coat worn over a simple cream camisole, with practical black boots.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,30 +1,24 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/lingerie_only",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "default": false,
       "id": "lingerie_only",
       "isDefault": false,
-      "name": "私密内衣形态",
-      "prose": "wearing only a simple bra and matching briefs, plain cotton underwear with thin straps, minimal private undergarments",
+      "name": "白色棉质内衣",
+      "prose": "A simple white cotton set with narrow straps and neat blue edging.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "lingerie",
-        "bra",
-        "panties",
-        "underwear",
-        "matching_set",
-        "thin_straps",
+        "white bra",
+        "white panties",
         "cotton",
-        "bare_shoulders",
-        "bare_legs",
-        "bare_midriff"
+        "thin straps"
       ]
     }
   }

@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "default": false,
       "id": "sfw_bridal",
       "isDefault": false,
-      "name": "甘露寺蜜璃·圣洁花嫁",
-      "prose": "a pink-and-white wedding dress with a green sash, petal embroidery and a long translucent veil",
+      "name": "樱花粉白花嫁与嫩绿腰绸",
+      "prose": "A pink-and-white satin bridal dress with a softly layered petal skirt and fine blossom embroidery. A pale-green waist sash ties in a small bow beneath the long translucent veil.",
       "tokens": [
-        "wedding_dress",
-        "pink_white_dress",
-        "green_sash",
-        "petal_embroidery",
-        "long_veil"
+        "pink and white wedding dress",
+        "petal embroidery",
+        "green sash",
+        "long veil"
       ]
     }
   }

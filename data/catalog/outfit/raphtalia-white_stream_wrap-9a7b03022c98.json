@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "raphtalia/white_stream_wrap",
+  "revision": 1,
+  "sortOrder": 1338,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "raphtalia",
+    "outfit": {
+      "id": "white_stream_wrap",
+      "name": "溪边白色覆布",
+      "tokens": [
+        "white cloth wrap"
+      ],
+      "prose": "A plain white cloth covering.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,30 +1,24 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/light_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 309,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
       "default": false,
       "id": "light_lingerie",
       "isDefault": false,
-      "name": "轻薄内衣",
-      "prose": "wearing light lingerie with a delicate bralette and matching panties, soft lightweight fabric",
+      "name": "炭黑青边轻缎内衣",
+      "prose": "a light charcoal satin bralette and matching briefs with narrow dark-teal trim",
       "styleHint": "soft cinematic lighting",
       "tokens": [
-        "lingerie",
-        "light_lingerie",
-        "bralette",
-        "panties",
-        "matching_set",
-        "delicate_fabric",
-        "thin_fabric",
-        "bare_shoulders",
-        "bare_midriff",
-        "navel"
+        "charcoal bralette",
+        "matching panties",
+        "teal trim",
+        "satin"
       ]
     }
   }

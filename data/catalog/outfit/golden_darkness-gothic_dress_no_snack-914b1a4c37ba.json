@@ -1,28 +1,25 @@
 {
   "kind": "outfit",
   "id": "golden_darkness/gothic_dress_no_snack",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 669,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "golden_darkness",
     "outfit": {
       "default": false,
       "id": "gothic_dress_no_snack",
       "isDefault": false,
-      "name": "天台哥特战裙·空手",
-      "prose": "her iconic assassin attire: a form-fitting black leather tube-top mini-dress with crimson inner lining, detached black sleeves, black thigh-high boots and silver chain clasps over the bare midriff, with both hands free",
+      "name": "黑皮红衬哥特战裙·天台",
+      "prose": "her fitted black leather strapless mini-dress with crimson lining and silver chain clasps, detached flared sleeves and black thigh-high boots",
       "tokens": [
-        "gothic_dress",
-        "black_dress",
-        "strapless_dress",
-        "tube_top",
-        "detached_sleeves",
-        "midriff",
-        "bare_shoulders",
-        "thighhighs",
-        "boots"
+        "black strapless dress",
+        "leather",
+        "crimson lining",
+        "silver chain clasps",
+        "detached sleeves",
+        "black thigh boots"
       ]
     }
   }

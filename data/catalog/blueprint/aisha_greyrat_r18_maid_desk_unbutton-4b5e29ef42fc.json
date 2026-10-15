@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_r18_maid_desk_unbutton",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 490,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "aisha_greyrat_r18_maid_desk_unbutton",
     "title": "爱夏·夜阑账房解衣",
@@ -32,7 +32,8 @@
     "promptTokens": [
       "adult",
       "office",
-      "maid",
+      "dark brown maid dress",
+      "white apron",
       "open clothes",
       "topless",
       "skirt lift",

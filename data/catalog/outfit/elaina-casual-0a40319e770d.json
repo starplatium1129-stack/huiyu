@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "elaina/casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 223,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
       "id": "casual",
-      "name": "便服",
-      "prose": "a comfortable everyday dress in soft colors",
+      "name": "灰紫星扣旅间连衣裙",
+      "prose": "A muted lavender square-neck dress under a soft gray cardigan fastened with a small star brooch, with black ankle boots.",
       "tokens": [
-        "casual_clothes",
-        "dress",
-        "cardigan"
+        "lavender dress",
+        "square neckline",
+        "gray cardigan",
+        "star brooch",
+        "black ankle boots"
       ],
       "isDefault": false,
       "default": false

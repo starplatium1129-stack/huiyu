@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "yuzuriha_inori/school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 190,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yuzuriha_inori",
     "outfit": {
       "id": "school_uniform",
-      "name": "校服",
-      "prose": "her white and blue school uniform with a ribbon",
+      "name": "白蓝制服与暗红领结",
+      "prose": "a crisp white school shirt with a dark-red ribbon, a blue skirt and white socks",
       "tokens": [
-        "school_uniform",
-        "white_shirt",
-        "blue_skirt",
-        "ribbon",
-        "white_socks"
+        "school uniform",
+        "white shirt",
+        "blue skirt",
+        "red ribbon",
+        "white socks"
       ],
       "isDefault": false,
       "default": false

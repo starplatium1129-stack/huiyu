@@ -1,20 +1,18 @@
 {
   "kind": "outfit",
   "id": "elfaria_alvis_serfort/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 970,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elfaria_alvis_serfort",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "艾尔菲利亚·成人私密造型",
-      "prose": "a private adult ensemble built around robe, dressing_room, completely_nude",
+      "name": "无衣休息状态",
+      "prose": "No clothing.",
       "tokens": [
-        "robe",
-        "dressing_room",
-        "completely_nude"
+        "nude"
       ],
       "default": false,
       "isDefault": false

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "isshiki_iroha/pastel_sleep_set",
+  "revision": 1,
+  "sortOrder": 1384,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "isshiki_iroha",
+    "outfit": {
+      "id": "pastel_sleep_set",
+      "name": "蜜桃粉棉质睡衣",
+      "tokens": [
+        "pastel pink pajamas",
+        "cotton",
+        "button front"
+      ],
+      "prose": "A soft pastel-pink cotton pajama set with a button-front shirt and subtle cream piping.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

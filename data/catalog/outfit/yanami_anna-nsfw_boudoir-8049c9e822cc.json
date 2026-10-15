@@ -1,19 +1,18 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 955,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "八奈见杏菜·成人私密造型",
-      "prose": "a private adult ensemble built around small_towel, completely_nude",
+      "name": "浴巾造型",
+      "prose": "a small bath towel",
       "tokens": [
-        "small_towel",
-        "completely_nude"
+        "small towel"
       ],
       "default": false,
       "isDefault": false

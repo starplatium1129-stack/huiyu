@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_rooftop_drinks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 635,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "坐天台躺椅，一脚搭栏杆，一手开汽水罐，另一手留在衣料下。",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "tied_delivery_shirt",
     "promptProse": "With one booted leg on the rail, she hooks a soda-can tab while reaching beneath her shorts with her other hand.",
     "promptTokens": [
       "1girl",

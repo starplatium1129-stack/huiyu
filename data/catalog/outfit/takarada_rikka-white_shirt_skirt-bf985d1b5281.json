@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "takarada_rikka/white_shirt_skirt",
+  "revision": 1,
+  "sortOrder": 1443,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "takarada_rikka",
+    "outfit": {
+      "id": "white_shirt_skirt",
+      "name": "白衬衫与灰色百褶裙",
+      "tokens": [
+        "white shirt",
+        "grey pleated skirt",
+        "black lace lingerie"
+      ],
+      "prose": "A white shirt and grey pleated skirt are paired with black lace underwear.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

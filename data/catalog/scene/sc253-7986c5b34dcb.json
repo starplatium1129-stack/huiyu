@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc253",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 248,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc253",
     "title": "深夜居间的纯棉余温共享",
@@ -34,7 +34,9 @@
       "master_bedroom",
       "night",
       "warm_light",
-      "medium_shot"
+      "medium_shot",
+      "ribbed_cotton_neckline",
+      "covered_buttons"
     ],
     "mature": true,
     "location": "公寓主卧温热双人床中央",
@@ -46,7 +48,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "1girl, adult, shiki_natsume, natsume_r18, mole under eye, white camisole, pajama shorts, cotton, no underwear, straddling, lip biting, blush, bedroom, night, lamp, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "1girl, adult, shiki_natsume, ribbed cotton neckline, covered buttons, natsume_r18, mole under eye, white camisole, pajama shorts, cotton, no underwear, straddling, lip biting, blush, bedroom, night, lamp, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "",
     "storyJa": "【夏目】【ナツメ・ルームウェアの余温と効率的密着】深夜、静まり返り居心地の良い、暖色系のベッドサイドランプだけが灯るマンションの寝室。ナツメは非常にクリーンで可愛らしい部屋着に着替えていた。身体にぴったりと密着した柔らかい純白のコットン製細キャミソールと快適なショートパンツのパジャマで、その中身は何も身に着けていない完全な真空状態だった。エアコンの冷気がベッド頭に直撃するため、寒がりの彼女はわずかに唇を噛み、無表情ながらも極めて能動的にベッドの端に座っていたあなたの大腿の上に跨り、しなやかな黒髪が温かい吐息と共にあなたの頬をかすめた。コットンの織物が身体のラインに合わせて、白く豊かな側乳と整った脚のラインを余すところなく描き出している。ジト目は羞恥の動揺で満たされ、真っ赤になった耳の裏が完全に暴露されているものの、口を開けば相変わらず効率を重んじる口調だった――「……勘違いしないで。これは最も合理的な部屋の温度管理対応プロトコル。冷気の直撃は明日のシフト効率を低下させるし、今こうして密着するのが最も早く体温均衡を達成できるの。大変態、手を乱雑に置かないで……聞こえた？」",
     "rating": "R18",

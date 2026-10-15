@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_halo_street",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 557,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "操控轮椅穿行街角，膝上放着装满点心的纸袋",
     "camera": "medium tracking shot",
@@ -21,6 +21,7 @@
     "promptTokens": [
       "1girl",
       "solo",
+      "wheelchair",
       "joystick",
       "pastry bag",
       "street"

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hayase_yuuka/gym_tank_variant",
+  "revision": 1,
+  "sortOrder": 1299,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hayase_yuuka",
+    "outfit": {
+      "id": "gym_tank_variant",
+      "name": "晄轮赛后背心运动装",
+      "tokens": [
+        "navy blue track jacket",
+        "white tank top",
+        "navy blue gym shorts",
+        "white socks",
+        "blue sneakers"
+      ],
+      "prose": "A navy athletic jacket over a white sports tank top, matching navy gym shorts, white socks and blue sneakers.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

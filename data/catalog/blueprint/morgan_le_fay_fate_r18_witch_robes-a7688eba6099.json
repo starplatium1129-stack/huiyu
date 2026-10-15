@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_witch_robes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 196,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -44,7 +44,8 @@
       "folded knee",
       "sash around thigh",
       "window bench",
-      "magic"
+      "magic",
+      "silver edging"
     ],
     "recommendedSize": "1152x1536",
     "outfitId": "aesc_rain_witch",

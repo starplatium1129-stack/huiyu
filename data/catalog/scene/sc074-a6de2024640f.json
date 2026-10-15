@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc074",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She hurries toward the viewer with the cotton candy held away from her cheek, extending the Ferris-wheel tickets in her free hand; sunset lights her eager face beneath the wheel.",
     "auditRevision": "careful-batch08-2026-08-27",
@@ -21,15 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, ayachi_nene, white blouse, blue skirt, cotton candy, tickets, ferris wheel, amusement park, sunset, medium shot",
+    "prompt": "1girl, ayachi_nene, white puff sleeve blouse, peter pan collar, ice blue box pleated skirt, pink waist ribbon, cotton candy, tickets, ferris wheel, amusement park, sunset, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
     "story": "【宁宁 · 摩天轮前差点飞走的棉花糖】黄昏的游乐园里，宁宁拿着棉花糖朝你跑来，险些被风把糖丝吹到脸上。她一边慌忙整理，一边把排了很久才拿到的摩天轮票递给你。夕阳映亮她期待的表情——「最后一圈刚好能看到夜景。我没有特意计算时间……只是觉得，和你一起看会更漂亮。」",
     "storyJa": "【寧々・観覧車の前で飛びそうになったマシュマロ】夕暮れの遊園地で、寧々がマシュマロを持ってあなたに向かって走ってきて、風でキャンディの束があなたの顔に当たりそうになりました。急いで整理している間に、彼女は長い間並んで手に入れた観覧車のチケットをあなたに手渡しました。夕日が彼女の期待に満ちた表情を照らす――「最後の一周なら、ちょうど夜景が見えるんです。時間を計算したわけじゃありません……ただ、あなたと一緒ならもっと綺麗だろうって思って。」",
     "tags": [
-      "white_blouse",
-      "light_blue_skirt",
       "walking_toward_viewer",
       "holding_cotton_candy",
       "offering_tickets",
@@ -40,7 +38,11 @@
       "ferris_wheel",
       "sunset",
       "golden_light",
-      "medium_shot"
+      "medium_shot",
+      "white_puff_sleeve_blouse",
+      "peter_pan_collar",
+      "ice_blue_box_pleated_skirt",
+      "pink_waist_ribbon"
     ],
     "time": "黄昏",
     "timeOfDay": "sunset",

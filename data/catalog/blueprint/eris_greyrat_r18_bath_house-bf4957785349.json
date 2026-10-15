@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_bath_house",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 483,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "露天温泉岩石台阶上全身坐姿回眸招手娇呼",
     "adult": true,
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "sword_king",
+    "outfitId": "unclothed",
     "promptProse": "Bracing one hand on the rocks, she pours water over her thigh with a wooden ladle and looks back with a defiant, embarrassed expression.",
     "promptTokens": [
       "1girl",

@@ -454,7 +454,9 @@ export function sceneTemplateText(
     .filter(Boolean)
     .join(', ')
 
-  if (opts.char === 'triad') {
+  // Anima uses authored character tags and captions; legacy parenthesized lists
+  // are split by the tag compiler and leave dangling brackets after deduplication.
+  if (opts.char === 'triad' && opts.engine !== 'anima') {
     template = enrichDualPrompt(
       template,
       ['ayachi_nene', 'white_hair', 'very_long_hair', 'low_twintails', 'purple_eyes', 'ahoge', 'hair_ribbon'],

@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "cc_code_geass/beige_trench_sunhat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 715,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "cc_code_geass",
     "outfit": {
       "default": false,
       "id": "beige_trench_sunhat",
       "isDefault": false,
-      "name": "米色风衣宽檐草帽",
-      "prose": "a beige trench coat with a wide-brimmed sunhat tied with a black ribbon and comfortable walking shoes",
+      "name": "米色轻风衣与黑缎宽檐帽",
+      "prose": "A softly tailored beige cotton trench coat with a slim matching belt and relaxed storm flap. A wide-brim sunhat with a black satin ribbon and understated walking shoes finish the outfit.",
       "tokens": [
-        "trench coat",
-        "beige coat",
-        "sunhat"
+        "beige trench coat",
+        "belted coat",
+        "sun hat",
+        "black ribbon",
+        "walking shoes"
       ]
     }
   }

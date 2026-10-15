@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "asuna_yuuki/knights_rest_tunic",
+  "revision": 1,
+  "sortOrder": 1275,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "asuna_yuuki",
+    "outfit": {
+      "id": "knights_rest_tunic",
+      "name": "血盟骑士团露台轻装",
+      "tokens": [
+        "knights_of_the_blood_uniform",
+        "white tunic",
+        "red cross",
+        "red pleated skirt",
+        "white thighhighs"
+      ],
+      "prose": "The white and red-cross tunic of the Knights of the Blood, worn without its armor over a red pleated skirt and white thigh-high stockings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

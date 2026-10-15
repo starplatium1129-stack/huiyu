@@ -1,26 +1,26 @@
 {
   "kind": "outfit",
   "id": "murasame/shrine_miko",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 616,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "murasame",
     "outfit": {
       "default": false,
       "id": "shrine_miko",
       "isDefault": false,
-      "name": "神道奉纳小巫女装",
-      "prose": "traditional Shinto junior priestess vestments: pure snow-white crossover miko top with wide flowing sleeves, pleated bright crimson hakama skirt, small golden bells tied to her red hair ribbons, white tabi socks, and wooden geta sandals",
+      "name": "金铃奉纳巫女装",
+      "prose": "a white crossover kimono with wide sleeves, crimson hakama, small gold bells at the red waist cords, white tabi and geta",
       "tokens": [
         "miko",
-        "white_kimono",
-        "wide_sleeves",
-        "red_hakama",
-        "tabi",
-        "geta",
-        "bells"
+        "white kimono",
+        "wide sleeves",
+        "red hakama",
+        "bell",
+        "white tabi",
+        "geta"
       ]
     }
   }

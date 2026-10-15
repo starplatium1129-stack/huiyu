@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_r18_sofa_cowgirl_tail_wrap_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1243,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跨坐沙发靠垫，一手握尾巴，另一手留在身下",
     "adult": true,
@@ -24,7 +24,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "pajamas_negligee",
+    "outfitId": "white_science_coat",
     "promptProse": "Adult Lala straddles a sofa cushion with her science coat open, holding her heart-tipped tail in one hand while fingering herself with the other.",
     "promptTokens": [
       "1girl",
@@ -36,7 +36,9 @@
       "cushion",
       "tail holding",
       "fingering",
-      "sofa"
+      "sofa",
+      "white coat",
+      "yellow fasteners"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc047",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She draws the curtain with one hand as the viewer's arms encircle her from behind, turning her face toward their shoulder; afternoon backlight traces her hair and the folds of the curtain.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -21,14 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through clothes",
-    "prompt": "1girl, ayachi_nene, white nightdress, curtain, back hug, looking back, apartment, window, cityscape, afternoon, medium shot",
+    "prompt": "1girl, ayachi_nene, ivory silk nightdress, scalloped neckline, pink ribbon straps, curtain, back hug, looking back, apartment, window, cityscape, afternoon, medium shot",
     "rating": "All",
     "season": "夏",
     "story": "【成年 After Story · 窗帘合拢之前】午后的阳光透过落地窗洒满卧室，成年的宁宁赤足站在窗边，正准备把窗帘拉拢。你从身后靠近时，她红着脸回头，却没有躲开拥抱。光斑落在微乱的床单上——「外面的人看不见吧？那就再抱一会儿……但是要先帮我把窗帘拉好。」",
     "storyJa": "【寧々・大人のアフターストーリー・幕が閉まる前に】高層マンションの夜景が床から天井までの窓を覆っていた。大人の寧々は柔らかいネグリジェを着てガラスの前に立ち、カーテンを閉める準備をしていた。後ろから近づくと、うっかり肩紐が少しずれてしまい、顔を赤らめながらすぐに肩紐を押さえたが、ハグは避けなかった。街の明かりが互いのシルエットを映す――「外からは見えませんよね？　それなら、もう少しだけ……でも先に、カーテンをきちんと閉めてください。」",
     "tags": [
       "hair_ribbon",
-      "silk_negligee",
       "bare_legs",
       "floor_window",
       "curtain",
@@ -37,7 +36,10 @@
       "barefoot",
       "embrace_from_behind",
       "window_view",
-      "depth_of_field"
+      "depth_of_field",
+      "ivory_silk_nightdress",
+      "scalloped_neckline",
+      "pink_ribbon_straps"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

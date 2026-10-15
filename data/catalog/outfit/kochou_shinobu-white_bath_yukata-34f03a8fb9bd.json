@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "kochou_shinobu/white_bath_yukata",
+  "revision": 1,
+  "sortOrder": 1190,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kochou_shinobu",
+    "outfit": {
+      "id": "white_bath_yukata",
+      "name": "温泉白色浴衣",
+      "tokens": [
+        "white yukata"
+      ],
+      "prose": "a plain white cotton bath yukata",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

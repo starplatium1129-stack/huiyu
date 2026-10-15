@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_alien_pet_park_cuddle_play",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1264,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "盘膝坐在草地上怀抱毛茸茸外星小宠贴脸蹭蹭，眼神充满纯洁宠爱，尾巴轻摆",
     "camera": "medium shot, seated eye-level, intimate gentle depth of field",
@@ -19,7 +19,7 @@
     "location": "街心公园大树荫下草坪野餐垫",
     "mood": "温馨治愈",
     "negativeTokens": [],
-    "outfitId": "casual_denim",
+    "outfitId": "casual_denim_no_pet",
     "promptProse": "Nana sits cross-legged on the picnic mat, cradling the long-eared alien pet against her cheek. Broken sunlight filters through the leaves across its soft fur and her contented smile.",
     "promptTokens": [
       "cross-legged",

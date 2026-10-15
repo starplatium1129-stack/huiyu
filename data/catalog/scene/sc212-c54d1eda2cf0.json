@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc212",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 207,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc212",
     "title": "初夏晨起·阳光原木地板与宽大白衬衫",
@@ -34,7 +34,9 @@
       "updo_motion",
       "barefoot",
       "morning",
-      "tsundere"
+      "tsundere",
+      "oxford_cotton",
+      "button_down_collar"
     ],
     "mature": true,
     "location": "初夏清晨公寓起居室，阳光洒落的原木地板与白纱飘窗旁",
@@ -46,7 +48,7 @@
       "壁纸级",
       "成人向"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, oversized white shirt, open shirt, off shoulder, bare breasts, no underwear, barefoot, sitting on floor, arms up, gathering hair, blush, wooden floor, sheer curtains, morning light, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, shiki_natsume, oxford cotton, button down collar, natsume_r18, oversized white shirt, open shirt, off shoulder, bare breasts, no underwear, barefoot, sitting on floor, arms up, gathering hair, blush, wooden floor, sheer curtains, morning light, <lora:shiki_natsume_v18_wd14:0.85>",
     "negative": "",
     "storyJa": "【夏目】【ナツメ・初夏の朝の陽だまりと白いオーバーサイズシャツ】初夏の爽やかな朝、白いレースのカーテンが風に揺れ、暖かな木漏れ日がフローリングの上に波のような光斑を描いていた。昨夜の甘い時間の後、素足のまま陽だまりの床に座り込んだナツメは、あなたの大きな白シャツを素肌の上に羽織っているだけだった。ボタンは胸元から大きく外れ、滑り落ちた襟元から柔らかな素肌と艶やかな胸の膨らみが零れ落ちている。彼女は両手で長い黒髪を後ろへ束ねながら、朝日を浴びて透き通るような金の瞳であなたを少し睨みつけた。赤く染まった耳元と泣きぼくろが、隠しきれない愛おしさを物語っている――「……バカ、朝からじっと見ないで。着ていた服をあんなにしちゃったんだから、これ借りるしかないでしょ。……見てるだけじゃなくて、早く手を貸しなさいよ」",
     "rating": "R18",

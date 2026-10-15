@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/paint_marked_shirt",
+  "revision": 1,
+  "sortOrder": 1236,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "paint_marked_shirt",
+      "name": "颜料宽松白衬衫",
+      "tokens": [
+        "white shirt",
+        "oversized shirt",
+        "paint splatter"
+      ],
+      "prose": "a loose white cotton shirt marked with oil paint",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

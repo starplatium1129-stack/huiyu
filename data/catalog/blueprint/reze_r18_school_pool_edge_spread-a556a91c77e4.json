@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_school_pool_edge_spread",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 425,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "reze_r18_school_pool_edge_spread",
     "characterId": "reze_chainsaw",
@@ -36,7 +36,8 @@
       "sitting on steps",
       "spread legs",
       "pool",
-      "moonlight"
+      "moonlight",
+      "navy one-piece swimsuit"
     ],
     "negativeTokens": [],
     "adult": true,

@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/gremory_crimson_battle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 692,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "gremory_crimson_battle",
-      "name": "吉蒙里公爵纯血战袍",
-      "prose": "a crimson-and-black noble combat dress with embroidered crests and detached sleeves, her dark bat wings spread behind her",
+      "name": "吉蒙里深红纹章战袍",
+      "prose": "A crimson-and-black noble combat dress with embroidered Gremory crests and detached sleeves, preserving its formal, commanding silhouette.",
       "tokens": [
         "crimson dress",
         "black trim",
-        "detached sleeves",
-        "bat wings"
+        "crest embroidery",
+        "detached sleeves"
       ]
     }
   }

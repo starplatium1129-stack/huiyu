@@ -1,27 +1,22 @@
 {
   "kind": "outfit",
   "id": "golden_darkness/bikini_swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 666,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "golden_darkness",
     "outfit": {
       "default": false,
       "id": "bikini_swimsuit",
       "isDefault": false,
-      "name": "暗夜系带纯黑细带比基尼",
-      "prose": "a minimalist black string halterneck bikini with delicate side-ties highlighting her fair porcelain skin, slender waist, and neat modest curves, water droplets glistening under warm sunshine",
+      "name": "纯黑挂颈系带泳装",
+      "prose": "a minimalist black halterneck string bikini with simple side-tie bottoms",
       "tokens": [
-        "swimsuit",
-        "bikini",
-        "black_bikini",
-        "string_bikini",
+        "black string bikini",
         "halterneck",
-        "wet_skin",
-        "side-tie_bikini_bottom",
-        "bare_legs"
+        "side-tie bikini bottom"
       ]
     }
   }

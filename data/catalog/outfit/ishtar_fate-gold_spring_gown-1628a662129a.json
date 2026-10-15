@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "ishtar_fate/gold_spring_gown",
+  "revision": 1,
+  "sortOrder": 1311,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "ishtar_fate",
+    "outfit": {
+      "id": "gold_spring_gown",
+      "name": "神泉金边轻纱裙",
+      "tokens": [
+        "sheer gown",
+        "gold trim",
+        "veil"
+      ],
+      "prose": "A light gauze gown with fine gold edging and a matching veil.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

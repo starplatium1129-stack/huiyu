@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/graphite_city_layers",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1104,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-05T17:30:04.248295645+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
@@ -12,17 +12,15 @@
       "default": false,
       "isDefault": false,
       "name": "石墨短夹克与奶油白直筒裤",
-      "prose": "a structured graphite cropped jacket with a small golden-yellow zipper pull, an opaque ivory mock-neck top, cream straight-leg trousers, a slim black belt, a compact black shoulder bag and black leather loafers; her face is uncovered",
+      "prose": "a structured graphite cropped jacket with a yellow zipper pull over an ivory mock-neck top, cream straight-leg trousers, a slim black belt, compact black shoulder bag and leather loafers",
       "tokens": [
-        "grey_jacket",
-        "cropped_jacket",
-        "zipper",
-        "white_shirt",
-        "high_collar",
-        "white_pants",
-        "belt",
-        "shoulder_bag",
-        "loafers"
+        "graphite cropped jacket",
+        "yellow zipper pull",
+        "ivory mock neck top",
+        "cream straight-leg pants",
+        "black belt",
+        "black shoulder bag",
+        "black loafers"
       ],
       "category": "日常衣装（创作）"
     }

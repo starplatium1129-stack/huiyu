@@ -1,26 +1,27 @@
 {
   "kind": "outfit",
   "id": "albedo_overlord/sfw_white_bridal_veil",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1149,
   "createdAt": "2026-10-06T14:36:56.397422600+00:00",
-  "updatedAt": "2026-10-06T14:36:56.397422600+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "albedo_overlord",
     "outfit": {
       "id": "sfw_white_bridal_veil",
-      "name": "纯白花嫁与覆角蕾丝头纱",
+      "name": "金丝蛛网束腰白缎花嫁",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "a white bridal gown with a fitted waist and sweeping layered train, a long lace veil draped over her horns, gold necklace and white bridal shoes",
+      "prose": "a white satin wedding gown with a fitted waist cincher, a layered train and gold web embroidery at the waist, a green-gem gold necklace and a long lace veil draped over her horns",
       "tokens": [
-        "white_wedding_dress",
-        "bridal_train",
-        "lace_veil",
-        "gold_necklace",
-        "white_shoes"
+        "white satin wedding dress",
+        "waist cincher",
+        "layered train",
+        "lace veil",
+        "gold necklace",
+        "green gemstone"
       ]
     }
   }

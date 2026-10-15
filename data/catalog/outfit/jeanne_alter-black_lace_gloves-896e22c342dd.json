@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_alter/black_lace_gloves",
+  "revision": 1,
+  "sortOrder": 1387,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "jeanne_alter",
+    "outfit": {
+      "id": "black_lace_gloves",
+      "name": "黑色蕾丝手套",
+      "tokens": [
+        "black gloves",
+        "lace"
+      ],
+      "prose": "Black lace gloves.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

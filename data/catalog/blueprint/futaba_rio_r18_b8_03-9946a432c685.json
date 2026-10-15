@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_03",
     "title": "双叶理央 · 准备室百褶裙挂钩脱落的整理事故 ·「别看！……制服缝线老化而已……不准拍照！」",
@@ -32,9 +32,10 @@
     ],
     "promptProse": "Her skirt snags on a shelf bracket and splits at the hip; she pushes up her glasses while trying to cover the torn tights and exposed underwear.",
     "promptTokens": [
+      "white blouse",
       "adult",
       "glasses",
-      "torn skirt",
+      "torn navy pleated skirt",
       "torn pantyhose",
       "lace panties",
       "bent over",
@@ -51,7 +52,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "school_blouse_skirt",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

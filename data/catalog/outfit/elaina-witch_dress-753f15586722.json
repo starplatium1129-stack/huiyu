@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "elaina/witch_dress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 221,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
       "id": "witch_dress",
-      "name": "魔女装",
-      "prose": "her black witch dress with a star brooch, frilled skirt and short staff",
+      "name": "灰之魔女星徽礼裙",
+      "prose": "Her black witch dress with a frilled skirt and star brooch, finished with the pointed black witch hat and its gold buckle.",
       "tokens": [
-        "witch",
-        "witch_hat",
-        "black_dress",
+        "black witch hat",
+        "gold buckle",
+        "black dress",
         "frills",
-        "brooch",
-        "staff"
+        "star brooch"
       ],
       "default": true,
       "isDefault": true

@@ -1,20 +1,21 @@
 {
   "kind": "outfit",
   "id": "vivy/sfw_rest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 976,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vivy",
     "outfit": {
       "id": "sfw_rest",
-      "name": "后台修补针织便装",
-      "prose": "a cream long-sleeved blouse and comfortable navy trousers",
+      "name": "奶油折袖衬衫与藏蓝便裤",
+      "prose": "a cream long-sleeved blouse with folded cuffs and fine blue piping, paired with navy straight-leg trousers",
       "tokens": [
-        "cream_blouse",
-        "long_sleeves",
-        "navy_pants"
+        "cream blouse",
+        "folded cuffs",
+        "blue piping",
+        "navy straight leg trousers"
       ],
       "default": false,
       "isDefault": false

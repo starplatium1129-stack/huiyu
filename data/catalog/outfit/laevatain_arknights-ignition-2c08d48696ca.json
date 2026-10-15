@@ -1,33 +1,29 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/ignition",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 415,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
       "default": false,
       "id": "ignition",
       "isDefault": false,
-      "name": "熔火战装·完全解放",
-      "prose": "her signature short layered black combat dress with petticoat and pink interior, a loose jacket leaving one shoulder free, black long gloves, knee boots, thigh straps, a white collar and metal pendant",
+      "name": "熔火黑裙粉衬战装",
+      "prose": "her short layered black combat dress with ragged edges and pink petticoat lining, a loose jacket, white collar, metal pendant, long black gloves, thigh straps and knee boots",
       "tokens": [
-        "black_dress",
-        "short_dress",
-        "layered_dress",
-        "torn_dress",
+        "black layered dress",
+        "ragged hem",
+        "pink lining",
         "petticoat",
-        "pink_dress_interior",
-        "single_free_shoulder",
-        "loose_jacket",
-        "black_long_gloves",
-        "knee_boots",
-        "thigh_straps",
-        "chest_straps",
-        "white_collar",
-        "metal_pendant"
+        "loose jacket",
+        "long black gloves",
+        "white collar",
+        "metal pendant",
+        "thigh straps",
+        "knee boots"
       ]
     }
   }

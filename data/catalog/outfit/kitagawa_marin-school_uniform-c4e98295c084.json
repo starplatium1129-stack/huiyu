@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/school_uniform",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 271,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "default": true,
       "id": "school_uniform",
       "isDefault": true,
-      "name": "校服",
-      "prose": "her school uniform with an open blazer and a loose tie",
+      "name": "深蓝西装与松领带制服",
+      "prose": "Her open navy school blazer over a white shirt with a loosely knotted tie, paired with a crisp navy pleated skirt.",
       "tokens": [
-        "school_uniform",
-        "blazer",
-        "open_jacket",
-        "pleated_skirt",
-        "loose_tie"
+        "navy blazer",
+        "open jacket",
+        "white shirt",
+        "loose tie",
+        "navy pleated skirt"
       ]
     }
   }

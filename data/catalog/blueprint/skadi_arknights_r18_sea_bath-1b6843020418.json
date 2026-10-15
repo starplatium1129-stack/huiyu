@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_sea_bath",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 613,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "站在浅水中，湿发贴着背",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "side view, medium shot, horizontal framing",
     "category": "成人",
     "characterId": "skadi_arknights",
-    "description": "【斯卡蒂 · 月光海浴】夜色下波光粼粼的幽静浅海中，赤裸伫立在清凉海水中的斯卡蒂回眸凝视着你，湿漉漉的银发紧贴着光洁无瑕的后背与饱满挺翘的臀线。她向你伸出雪白的手臂——「海水的温度正好……敢脱掉衣服，和我一起沉入这片安静的海底吗？」",
+    "description": "月下幽静的潮池中，斯卡蒂身上的黑色轻薄围裹衣浸着水，暗红细边贴在湿布边缘。她一手扶住礁石，另一手留在水下，银发映着周围微微发亮的涟漪。",
     "id": "skadi_arknights_r18_sea_bath",
     "kreaStyleHint": "",
     "lighting": "moonlit water",
@@ -26,7 +26,7 @@
       "masturbation",
       "hand between legs"
     ],
-    "outfitId": "nsfw_nude",
+    "outfitId": "black_tidal_wrap",
     "promptProse": "Skadi grips the rock edge and touches herself underwater, bioluminescent ripples spreading around her open wet wrap.",
     "promptTokens": [
       "Skadi",
@@ -34,7 +34,8 @@
       "wet clothes",
       "tidal pool",
       "knee up",
-      "night"
+      "night",
+      "red edging"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_summer_festival_yukata",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 778,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "手持红彤彤的苹果糖递向镜头，回眸浅笑",
     "camera": "medium shot",
@@ -24,7 +24,8 @@
       "offering",
       "lantern",
       "night",
-      "medium shot"
+      "medium shot",
+      "hair bun"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

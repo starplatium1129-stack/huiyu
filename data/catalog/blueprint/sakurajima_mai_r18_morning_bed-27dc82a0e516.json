@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_morning_bed",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sakurajima_mai_r18_morning_bed",
     "title": "樱岛麻衣 · 清晨被窝",
@@ -45,7 +45,7 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
-    "outfitId": "silk_sleepwear",
+    "outfitId": "white_sleep_shirt",
     "sampleRating": "R18"
   }
 }

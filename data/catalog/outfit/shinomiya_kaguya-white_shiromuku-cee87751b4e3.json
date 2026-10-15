@@ -1,24 +1,24 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/white_shiromuku",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 771,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "default": false,
       "id": "white_shiromuku",
       "isDefault": false,
-      "name": "神前白无垢与角隐",
-      "prose": "a formal opaque white shiromuku bridal kimono with a white obi, woven silk motifs and a white tsunokakushi head covering",
+      "name": "白无垢·织纹角隐礼装",
+      "prose": "A formal opaque white shiromuku with subtle woven maple-leaf motifs, a white obi and a white tsunokakushi head covering.",
       "tokens": [
         "shiromuku",
-        "white_bridal_kimono",
-        "white_obi",
-        "tsunokakushi",
-        "opaque_fabric"
+        "white kimono",
+        "white obi",
+        "silk",
+        "tsunokakushi"
       ]
     }
   }

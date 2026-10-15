@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/sfw_rain_utility",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "sfw_rain_utility",
-      "name": "米白防雨工作外套",
-      "prose": "a cream waterproof utility jacket over a red long-sleeved shirt, charcoal cargo trousers and rubber-soled work shoes",
+      "name": "奶油防雨夹克与绯红长袖",
+      "prose": "A cream waterproof utility jacket with a neat storm flap over a muted-red long-sleeved shirt, charcoal cargo trousers and rubber-soled shoes. Small brass snaps add a warm finish.",
       "tokens": [
-        "cream_rain_jacket",
-        "red_shirt",
-        "long_sleeves",
-        "cargo_pants",
-        "work_shoes"
+        "cream rain jacket",
+        "red shirt",
+        "long sleeves",
+        "charcoal cargo pants",
+        "work shoes"
       ],
       "isDefault": false,
       "isNsfw": false

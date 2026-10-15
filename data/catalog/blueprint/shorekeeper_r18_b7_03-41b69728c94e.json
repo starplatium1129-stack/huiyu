@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1661,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_03",
     "title": "守岸人 · 概念投影礼服流光锁链卡壳事故 ·「逻辑指令错误……流光纠缠无法解除，请协助我」",
@@ -33,7 +33,7 @@
     "promptProse": "The dress's data chains tighten during recalibration, holding its skirt high as she leans over the console and looks back for assistance.",
     "promptTokens": [
       "Shorekeeper",
-      "dress",
+      "black and white long dress",
       "energy chains",
       "bent over",
       "hologram",

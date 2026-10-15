@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "zero_two/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 895,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "zero_two",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "白色园艺衬衫装",
-      "prose": "a white long-sleeved cotton shirt with rolled cuffs, olive full-length overalls and practical brown boots",
+      "name": "橄榄背带裤园艺装",
+      "prose": "a white long-sleeved cotton shirt with rolled cuffs beneath olive-green full-length overalls, paired with practical brown boots",
       "tokens": [
-        "white_shirt",
-        "rolled_sleeves",
-        "green_overalls",
-        "boots"
+        "white shirt",
+        "rolled sleeves",
+        "olive overalls",
+        "brown boots"
       ],
       "isDefault": false,
       "isNsfw": false

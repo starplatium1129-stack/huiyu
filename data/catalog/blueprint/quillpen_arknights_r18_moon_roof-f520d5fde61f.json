@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_moon_roof",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 625,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "跪在屋顶挎包旁，一手留住风中掀动的信纸。",
     "adult": true,
@@ -22,11 +22,13 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "nsfw_nude",
+    "outfitId": "white_blouse_dark_skirt",
     "promptProse": "La Pluma catches windblown letters with one hand while the other presses between her thighs, kneeling beside her satchel.",
     "promptTokens": [
       "adult",
-      "open blouse",
+      "white blouse",
+      "charcoal skirt",
+      "open clothes",
       "topless",
       "skirt lift",
       "kneeling",

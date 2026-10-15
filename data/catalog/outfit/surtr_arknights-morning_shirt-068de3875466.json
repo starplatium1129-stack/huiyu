@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "surtr_arknights/morning_shirt",
+  "revision": 1,
+  "sortOrder": 1465,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "surtr_arknights",
+    "outfit": {
+      "id": "morning_shirt",
+      "name": "晨间·黑色棉衬衫",
+      "tokens": [
+        "black cotton shirt",
+        "red cuff piping"
+      ],
+      "prose": "a black cotton shirt with narrow red cuff piping",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

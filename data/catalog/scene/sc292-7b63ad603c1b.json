@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc292",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 287,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She looks up from the camera in her lap as the viewer straightens her cardigan at the shoulder, the opaque white top still covering her beneath it; the warm fill light catches her eyes.",
     "auditRevision": "careful-batch01-2026-08-27",
@@ -21,19 +21,20 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "see-through shirt",
-    "prompt": "1girl, ayachi_nene, cardigan, white shirt, camera, sitting, couch, blush, looking up, indoors, from above, close-up",
+    "prompt": "1girl, ayachi_nene, blush pink cable knit cardigan, cream shell buttons, white cotton top, camera, sitting, couch, blush, looking up, indoors, from above, close-up",
     "rating": "R15",
     "season": "不限",
     "story": "【成年 After Story · 宁宁 · 私服拍摄的界线】同人社团的室内私服摄影进行到后半段，其他成员已经先去了便利店。客厅只剩下你和宁宁，补光灯还亮着，她坐在沙发边缘，宽大的针织开衫从一侧肩膀滑落。银白色的长发被风吹散了几缕贴在脸颊边，她低头翻着相机里的成片，却没有调整滑落的衣襟。你走近帮她整理衣领时，她抬起眼，紫色瞳孔在补光灯的暖色里显得格外透亮——「拍了一个下午了……这张构图你觉得怎么样？」她问的是照片，声音却有轻微的颤抖。你的手指没有离开她的肩头，她也没有后退。开衫的纽扣不知何时已经松开大半，白色的棉质内衬边缘微微卷起，她轻轻咬住下唇，呼吸在安静的客厅里清晰可闻——「如果还有想拍的角度……现在只有我们两个人了。」",
     "storyJa": "【寧々・大人のAfter Story・私服撮影の境界線】同人サークルの室内私服撮影も後半に差し掛かり、他のメンバーは先にコンビニへ行ってしまった。リビングにはあなたと寧々だけが残り、補光灯はまだ点いたままだった。彼女はソファの端に座り、大きめのニットカーディガンが片方の肩からずり落ちていた。銀色の長い髪が何本か風に散って頬に張り付き、彼女はうつむいてカメラのプレビューを眺めていたが、落ちた襟元は直そうとしなかった。あなたが近づいて襟元を整えようとすると、彼女は顔を上げた。紫色の瞳が補光灯の暖かな色の中でひときわ透き通って見えた——「一晩中撮ってたね……この構図、どう思う？」彼女は写真について尋ねたが、声は微かに震えていた。あなたの指は彼女の肩先に留まったままで、彼女も後退しなかった。カーディガンのボタンはいつの間にかほとんど外れており、白いコットンのインナーの端がほんのりと卷れていた。彼女はそっと下唇を噛み、静かなリビングで彼女の呼吸がはっきりと聞こえた——「もし他に撮りたいアングルがあったら……今は二人だけだよ。」",
     "tags": [
       "hair_ribbon",
-      "cardigan",
-      "inner_top",
       "sofa",
       "close_up",
       "camera",
-      "heavy_blush"
+      "heavy_blush",
+      "blush_pink_cable_knit_cardigan",
+      "cream_shell_buttons",
+      "white_cotton_top"
     ],
     "time": "傍晚",
     "timeOfDay": "evening",

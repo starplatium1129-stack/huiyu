@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 307,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_03",
     "title": "克洛伊 · 成人研修院旧泳装拉伸崩裂的更衣事故 ·「呀！泳衣胸口崩线了……士郎快用嘴帮我挡住♪」",
@@ -34,7 +34,7 @@
     "promptTokens": [
       "adult",
       "locker room",
-      "navy swimsuit",
+      "navy one-piece swimsuit",
       "torn clothes",
       "topless",
       "bent over",
@@ -49,7 +49,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "navy_one_piece",
     "coverageTags": [
       "nsfw",
       "dressing_malfunction",

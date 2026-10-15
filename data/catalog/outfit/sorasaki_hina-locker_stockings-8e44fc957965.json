@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "sorasaki_hina/locker_stockings",
+  "revision": 1,
+  "sortOrder": 1350,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "sorasaki_hina",
+    "outfit": {
+      "id": "locker_stockings",
+      "name": "更衣间·黑色长袜状态",
+      "tokens": [
+        "black thighhighs"
+      ],
+      "prose": "Plain black thigh-high stockings, with the rest of the uniform removed.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

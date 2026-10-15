@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_queen_chamber",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 195,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
@@ -44,10 +44,11 @@
       "bent knee",
       "inner thigh",
       "frost rune",
-      "rug"
+      "rug",
+      "blue lining"
     ],
     "recommendedSize": "1152x1536",
-    "outfitId": "winter_queen",
+    "outfitId": "black_silk_mantle",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [],

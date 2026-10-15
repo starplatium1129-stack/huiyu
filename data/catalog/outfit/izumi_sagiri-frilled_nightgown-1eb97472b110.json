@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "izumi_sagiri/frilled_nightgown",
+  "revision": 1,
+  "sortOrder": 1186,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "izumi_sagiri",
+    "outfit": {
+      "id": "frilled_nightgown",
+      "name": "荷叶边系带睡裙",
+      "tokens": [
+        "frilled nightgown",
+        "back straps"
+      ],
+      "prose": "a frilled nightgown with straps at the back",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

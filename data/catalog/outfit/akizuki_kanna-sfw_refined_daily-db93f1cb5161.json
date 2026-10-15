@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/sfw_refined_daily",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 637,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
       "id": "sfw_refined_daily",
       "isDefault": false,
       "isNsfw": false,
-      "name": "藏蓝工作连体服",
-      "prose": "a navy long-sleeved utility jumpsuit with rolled cuffs, a pale grey waist apron and flat closed work shoes",
+      "name": "藏蓝斜纹连体服与灰围裙",
+      "prose": "a navy cotton-twill utility jumpsuit with a defined waist and rolled cuffs, pale-grey waist apron edged in muted pink and closed flat work shoes",
       "tokens": [
         "navy jumpsuit",
-        "rolled sleeves",
-        "waist apron",
+        "twill",
+        "sleeves rolled up",
+        "grey waist apron",
+        "pink piping",
         "work shoes"
       ]
     }

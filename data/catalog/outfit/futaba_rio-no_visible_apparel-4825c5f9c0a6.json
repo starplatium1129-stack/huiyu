@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "futaba_rio/no_visible_apparel",
+  "revision": 1,
+  "sortOrder": 1181,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "futaba_rio",
+    "outfit": {
+      "id": "no_visible_apparel",
+      "name": "被褥遮盖·无可见衣装",
+      "tokens": [
+        "bed sheet"
+      ],
+      "prose": "no visible apparel beneath the bed sheet",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

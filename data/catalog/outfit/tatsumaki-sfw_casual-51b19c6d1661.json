@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/sfw_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 897,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
       "id": "sfw_casual",
-      "name": "周末绿色针织便装",
-      "prose": "a moss-green knitted cardigan, cream top and ankle-length black skirt",
+      "name": "苔绿短开衫与黑色长裙",
+      "prose": "a waist-length moss-green ribbed cardigan over a cream top, paired with a straight ankle-length black skirt",
       "tokens": [
-        "green_cardigan",
-        "cream_top",
-        "long_black_skirt"
+        "moss green cardigan",
+        "cream top",
+        "black long skirt"
       ],
       "default": false,
       "isDefault": false

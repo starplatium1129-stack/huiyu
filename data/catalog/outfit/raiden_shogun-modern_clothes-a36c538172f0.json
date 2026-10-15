@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/modern_clothes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "modern_clothes",
-      "name": "现代便服",
-      "prose": "a refined modern purple dress and her signature long single braid",
+      "name": "深紫收腰长袖便裙",
+      "prose": "A refined deep-purple crepe midi dress with long softly tapered sleeves and subtle pleats gathered at the waist, finished by one small pale-gold clasp.",
       "tokens": [
-        "modern_clothing",
-        "dress",
-        "purple_dress",
-        "long_sleeves"
+        "purple dress",
+        "long sleeves",
+        "midi dress",
+        "waist pleats"
       ],
       "isDefault": false,
       "default": false

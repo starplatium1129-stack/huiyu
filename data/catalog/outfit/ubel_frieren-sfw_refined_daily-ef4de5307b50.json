@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "ubel_frieren/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 75,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "ubel_frieren",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "酒红旅店便装",
-      "prose": "a burgundy long-sleeved shirt, a dark brown waistcoat, loose black trousers and flat ankle boots",
+      "name": "酒红衬衫与棕色旅店马甲",
+      "prose": "a burgundy long-sleeved shirt with a dark-brown waistcoat, loose black trousers and flat ankle boots",
       "tokens": [
-        "burgundy_shirt",
-        "long_sleeves",
-        "brown_vest",
-        "black_pants",
-        "ankle_boots"
+        "burgundy shirt",
+        "long sleeves",
+        "brown waistcoat",
+        "black pants",
+        "ankle boots"
       ],
       "isDefault": false,
       "isNsfw": false

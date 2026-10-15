@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "mouri_ran/white_bath_towel",
+  "revision": 1,
+  "sortOrder": 1336,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mouri_ran",
+    "outfit": {
+      "id": "white_bath_towel",
+      "name": "白色浴巾",
+      "tokens": [
+        "white towel"
+      ],
+      "prose": "A plain white bath towel.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

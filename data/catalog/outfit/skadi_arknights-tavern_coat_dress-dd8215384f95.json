@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "skadi_arknights/tavern_coat_dress",
+  "revision": 1,
+  "sortOrder": 1348,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "skadi_arknights",
+    "outfit": {
+      "id": "tavern_coat_dress",
+      "name": "黑裙红衬·酒馆旅装",
+      "tokens": [
+        "black dress",
+        "black coat",
+        "red lining",
+        "red trim"
+      ],
+      "prose": "A soft black dress with narrow red neckline binding under a black traveling coat with dark-red lining.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_sofa_morning_hoodie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 353,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "yui_r18_sofa_morning_hoodie",
     "characterId": "yuigahama_yui",
     "title": "由比滨结衣 · 晨光厨房的笨拙早餐",
-    "description": "【成年 After Story · 由比滨结衣 · 晨光沙发的早餐事故】二十岁以上成年后的结衣端着煎坏的早餐回到客厅，独自蜷坐在晨光沙发里。宽大连帽衫前襟敞开，一腿屈起藏在下摆中；盘边融化的黄油滴到大腿内侧，她红着脸用两根手指擦去，丰满胸线随慌乱呼吸起伏。她把焦边煎蛋藏到盘底小声保证——「焦掉的我会负责……这个意外也会自己收拾，不许笑。」",
-    "outfitId": "dog_pajamas",
+    "description": "【成年 After Story · 由比滨结衣 · 晨光沙发的早餐事故】二十岁以上成年后的结衣端着煎坏的早餐回到客厅，独自蜷坐在晨光沙发里。珊瑚粉宽大连帽衫前襟敞开，一腿屈起藏在下摆中；盘边融化的黄油滴到大腿内侧，她红着脸用两根手指擦去，丰满胸线随慌乱呼吸起伏。她把焦边煎蛋藏到盘底小声保证——「焦掉的我会负责……这个意外也会自己收拾，不许笑。」",
+    "outfitId": "coral_hoodie",
     "sceneTags": [
       "kitchen",
       "morning",
@@ -20,17 +20,19 @@
       "frying_pan",
       "dog_ears"
     ],
-    "promptProse": "The age-twenty-plus Yui steadies the breakfast plate with one hand and wipes butter from her inner thigh with the other, curled into the sunlit sofa with her hoodie open.",
+    "promptProse": "The age-twenty-plus Yui steadies the breakfast plate with one hand and wipes butter from her inner thigh with the other, curled into the sunlit sofa with her coral hoodie open.",
     "promptTokens": [
       "adult",
-      "open hoodie",
+      "open coral hoodie",
       "topless",
       "knee up",
       "embarrassed",
       "eggs",
       "plate",
       "sofa",
-      "morning"
+      "morning",
+      "puppy patch",
+      "cream hood lining"
     ],
     "negativeTokens": [],
     "adult": true,

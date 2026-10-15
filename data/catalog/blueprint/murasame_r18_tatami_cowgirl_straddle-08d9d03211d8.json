@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_r18_tatami_cowgirl_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1132,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "独自跨坐软垫，一手握发带、一手腿间自抚",
     "adult": true,
@@ -27,7 +27,9 @@
     "outfitId": "spirit_kimono",
     "promptProse": "Adult Murasame sits astride the futon cushion, holding a hair ribbon in one hand while fingering herself with the other, her loosened kimono gathered below her chest.",
     "promptTokens": [
-      "kimono",
+      "white frills",
+      "yellow obi",
+      "dark blue sleeveless kimono",
       "open clothes",
       "topless",
       "straddling",

@@ -1,19 +1,20 @@
 {
   "kind": "outfit",
   "id": "togawa_sakiko/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1013,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "togawa_sakiko",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "丰川祥子·成人私密造型",
-      "prose": "a private adult ensemble built around black_dress, completely_nude",
+      "name": "黑蕾丝与靛蓝缎面舞台礼服",
+      "prose": "a black gothic stage gown with a black lace bodice and indigo satin panels",
       "tokens": [
-        "black_dress",
-        "completely_nude"
+        "black gothic dress",
+        "black lace bodice",
+        "indigo satin panels"
       ],
       "default": false,
       "isDefault": false

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "shirogane_kei/grey_hoodie",
+  "revision": 1,
+  "sortOrder": 1432,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shirogane_kei",
+    "outfit": {
+      "id": "grey_hoodie",
+      "name": "宽松灰色连帽衫",
+      "tokens": [
+        "grey hoodie",
+        "oversized clothes"
+      ],
+      "prose": "An oversized grey cotton hoodie with a roomy hood and plain ribbed cuffs.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

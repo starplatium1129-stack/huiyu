@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mashiro/white_pleated_skirt",
+  "revision": 1,
+  "sortOrder": 1238,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiina_mashiro",
+    "outfit": {
+      "id": "white_pleated_skirt",
+      "name": "白色百褶裙与猫纹内衣",
+      "tokens": [
+        "white pleated skirt",
+        "cat print panties"
+      ],
+      "prose": "a white pleated skirt and cat-patterned underwear",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

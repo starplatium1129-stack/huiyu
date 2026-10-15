@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 533,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "default": false,
       "id": "sfw_casual",
       "isDefault": false,
-      "name": "围读针织便装",
-      "prose": "a cream knit cardigan over a white blouse and a navy knee-length skirt",
+      "name": "围读奶油白滚边针织装",
+      "prose": "A short cream cardigan edged in wine red over a white blouse and a navy knee-length A-line skirt.",
       "tokens": [
-        "cream_cardigan",
-        "white_blouse",
-        "navy_skirt"
+        "cream cardigan",
+        "burgundy trim",
+        "white blouse",
+        "navy blue skirt",
+        "a-line skirt"
       ]
     }
   }

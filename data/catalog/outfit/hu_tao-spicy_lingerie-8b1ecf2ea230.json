@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "hu_tao/spicy_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "spicy_lingerie",
-      "name": "绯红情趣内衣",
-      "prose": "a seductive crimson and black silk lace lingerie set with delicate butterfly clasps, matching lace panties, garter straps, sheer black stockings, and bare shoulders",
+      "name": "绯红黑蕾丝蝴蝶扣套装",
+      "prose": "A crimson silk lingerie set edged in black lace with delicate butterfly clasps, matching briefs, garter straps and sheer black stockings.",
       "tokens": [
-        "lingerie",
-        "bra",
-        "panties",
-        "lace",
-        "garter_straps",
-        "stockings",
-        "bare_shoulders"
+        "red bra",
+        "black lace",
+        "red panties",
+        "butterfly clasp",
+        "garter straps",
+        "black stockings"
       ],
       "default": false,
       "isDefault": false

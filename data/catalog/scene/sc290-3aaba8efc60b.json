@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc290",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 285,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "sc290",
     "title": "私拍·真丝晨袍的延长线",
@@ -23,7 +23,9 @@
       "camera",
       "photo_studio",
       "bed_edge",
-      "close_up"
+      "close_up",
+      "pink_satin_piping",
+      "scalloped_cuffs"
     ],
     "mature": false,
     "location": "深夜的摄影工作室",
@@ -34,7 +36,7 @@
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, ayachi_nene, white robe, silk, camera, sitting, bed, photo studio, warm lighting, close-up",
+    "prompt": "1girl, ayachi_nene, pink satin piping, scalloped cuffs, white robe, silk, camera, sitting, bed, photo studio, warm lighting, close-up",
     "negative": "nudity",
     "rating": "R15",
     "character": [

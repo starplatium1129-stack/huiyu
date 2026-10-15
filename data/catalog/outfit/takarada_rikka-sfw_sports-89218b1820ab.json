@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "takarada_rikka/sfw_sports",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 866,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "takarada_rikka",
     "outfit": {
       "id": "sfw_sports",
-      "name": "接力练习运动服",
-      "prose": "an opaque white sports T-shirt, navy tracksuit trousers and running shoes",
+      "name": "白蓝接力练习装",
+      "prose": "A plain white athletic T-shirt pairs with navy track trousers bearing a narrow blue side stripe and white running shoes.",
       "tokens": [
-        "sportswear",
-        "white_t-shirt",
-        "track_pants",
-        "sneakers"
+        "white t-shirt",
+        "navy track pants",
+        "white sneakers"
       ],
       "default": false,
       "isDefault": false

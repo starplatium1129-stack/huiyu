@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "futaba_rio/school_blouse_skirt",
+  "revision": 1,
+  "sortOrder": 1180,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "futaba_rio",
+    "outfit": {
+      "id": "school_blouse_skirt",
+      "name": "白衬衫与藏青褶裙",
+      "tokens": [
+        "white blouse",
+        "navy pleated skirt"
+      ],
+      "prose": "a white school blouse and navy pleated skirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

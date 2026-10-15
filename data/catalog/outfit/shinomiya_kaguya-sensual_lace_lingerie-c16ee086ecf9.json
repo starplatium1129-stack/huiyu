@@ -1,25 +1,22 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/sensual_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 768,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "绯红蕾丝大小姐内衣",
-      "prose": "an elegant crimson lace lingerie set: a delicate lace bra barely containing her modest chest, matching lace panties, a thin silk robe slipping off one shoulder, and a garter strap high on her pale thigh",
+      "name": "绯红蕾丝·丝袍内衣",
+      "prose": "A refined crimson lace bra and matching briefs with narrow garter straps, beneath a light silk robe with tonal satin edging.",
       "tokens": [
-        "red_lingerie",
-        "lace_bra",
-        "lace_panties",
-        "silk_robe",
-        "off_shoulder",
-        "garter_straps",
-        "cleavage",
-        "sensual"
+        "crimson lingerie",
+        "lace bra",
+        "lace panties",
+        "silk robe",
+        "garter straps"
       ]
     }
   }

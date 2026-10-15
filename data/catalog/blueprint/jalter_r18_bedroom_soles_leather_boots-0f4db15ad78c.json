@@ -1,16 +1,16 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_bedroom_soles_leather_boots",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 173,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "jalter_r18_bedroom_soles_leather_boots",
     "characterId": "jeanne_alter",
     "title": "贞德[Alter] · 新宿雨夜的傲娇卸甲",
     "description": "成年黑贞坐在公寓床沿，皮夹克松开，一只靴子放在床垫上，双手解开靴侧拉链；雨夜霓虹沿银发与衣缘映出蓝紫光。",
-    "outfitId": "nsfw_nude",
+    "outfitId": "leather_jacket_boots_only",
     "sceneTags": [
       "window",
       "rain",

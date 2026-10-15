@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hoshino_ai/purple_stage_leotard",
+  "revision": 1,
+  "sortOrder": 1308,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "hoshino_ai",
+    "outfit": {
+      "id": "purple_stage_leotard",
+      "name": "紫色心形扣舞台兔女郎装",
+      "tokens": [
+        "purple leotard",
+        "bunny costume",
+        "front zipper",
+        "pink heart clasp",
+        "white stockings"
+      ],
+      "prose": "A purple stage leotard with a front zipper and a small pink heart clasp, paired with white stockings.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

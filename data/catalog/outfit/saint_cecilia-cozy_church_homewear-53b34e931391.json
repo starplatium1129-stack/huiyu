@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "saint_cecilia/cozy_church_homewear",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 477,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "saint_cecilia",
     "outfit": {
       "default": false,
       "id": "cozy_church_homewear",
       "isDefault": false,
-      "name": "教堂起居室宽松连衣裙",
-      "prose": "a loose pale-yellow home dress, worn barefoot",
+      "name": "淡黄褶领棉质居家裙",
+      "prose": "a loose pale-yellow cotton home dress with a softly gathered neckline and wide, unstructured sleeves, worn barefoot",
       "styleHint": "soft heartwarming golden hour",
       "tokens": [
-        "loose yellow dress",
+        "pale yellow dress",
+        "loose dress",
+        "gathered neckline",
         "barefoot"
       ]
     }

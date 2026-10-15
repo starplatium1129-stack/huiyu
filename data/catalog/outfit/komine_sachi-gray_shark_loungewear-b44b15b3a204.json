@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "komine_sachi/gray_shark_loungewear",
+  "revision": 1,
+  "sortOrder": 1318,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "komine_sachi",
+    "outfit": {
+      "id": "gray_shark_loungewear",
+      "name": "灰鲨拉链居家套装",
+      "tokens": [
+        "gray shark hoodie",
+        "white belly panel",
+        "front zipper",
+        "gray shorts"
+      ],
+      "prose": "A soft gray shark hoodie with a white belly panel, felt teeth around the hood and a front zipper, paired with gray lounge shorts.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

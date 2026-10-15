@@ -1,21 +1,23 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_city",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_city",
-      "name": "咖啡馆遮阳帽便装",
-      "prose": "a pale lavender blouse, long cream skirt, sunhat and small gold earrings",
+      "name": "淡紫金扣遮阳帽便装",
+      "prose": "A pale-lavender blouse with small gold buttons, a flowing cream long skirt and a wide sunhat with a plum ribbon, finished with gold earrings.",
       "tokens": [
-        "lavender_blouse",
-        "long_skirt",
+        "lavender blouse",
+        "gold buttons",
+        "cream long skirt",
         "sunhat",
-        "gold_earrings"
+        "plum hat ribbon",
+        "gold earrings"
       ],
       "default": false,
       "isDefault": false

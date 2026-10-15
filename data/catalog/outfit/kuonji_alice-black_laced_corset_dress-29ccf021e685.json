@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kuonji_alice/black_laced_corset_dress",
+  "revision": 1,
+  "sortOrder": 1320,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kuonji_alice",
+    "outfit": {
+      "id": "black_laced_corset_dress",
+      "name": "黑色缎面系带束腰裙",
+      "tokens": [
+        "black corset dress",
+        "back lacing",
+        "satin"
+      ],
+      "prose": "A black satin dress with a structured corset bodice and back lacing.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

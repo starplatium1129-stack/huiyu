@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/white_blouse_black_tights",
+  "revision": 1,
+  "sortOrder": 1231,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "white_blouse_black_tights",
+      "name": "白衬衫与薄黑连裤袜",
+      "tokens": [
+        "white blouse",
+        "black pantyhose"
+      ],
+      "prose": "a white button-front blouse paired with sheer black pantyhose",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

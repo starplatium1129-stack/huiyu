@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/picnic",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 311,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "default": false,
       "id": "picnic",
       "isDefault": false,
-      "name": "远行前的野餐",
-      "prose": "a dark-green and cream country dress with a wool shawl and beret",
+      "name": "深苔绿田园裙与羊毛披肩",
+      "prose": "A dark moss-green cotton dress with a cream collar and softly gathered waist, paired with a warm oatmeal wool shawl and brown beret. Tiny wooden buttons give it a quiet countryside character.",
       "tokens": [
-        "green dress",
-        "shawl",
-        "beret"
+        "dark green dress",
+        "cream trim",
+        "wool shawl",
+        "brown beret"
       ]
     }
   }

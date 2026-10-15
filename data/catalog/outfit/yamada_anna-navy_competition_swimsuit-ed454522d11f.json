@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yamada_anna/navy_competition_swimsuit",
+  "revision": 1,
+  "sortOrder": 1480,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yamada_anna",
+    "outfit": {
+      "id": "navy_competition_swimsuit",
+      "name": "藏蓝竞速连体泳装",
+      "tokens": [
+        "navy one piece swimsuit",
+        "white side panels"
+      ],
+      "prose": "a navy competition one-piece swimsuit with white side panels",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

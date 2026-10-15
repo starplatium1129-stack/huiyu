@@ -1,22 +1,25 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_practice",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 532,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "default": false,
       "id": "sfw_practice",
       "isDefault": false,
-      "name": "排练室运动便装",
-      "prose": "a charcoal T-shirt, burgundy tracksuit trousers and white sneakers",
+      "name": "酒红拼线排练运动装",
+      "prose": "A charcoal raglan T-shirt with wine-red edging, burgundy track pants with one white side stripe, and white sneakers.",
       "tokens": [
-        "t-shirt",
-        "track_pants",
-        "sneakers"
+        "charcoal t-shirt",
+        "raglan sleeves",
+        "burgundy trim",
+        "burgundy track pants",
+        "white side stripe",
+        "white sneakers"
       ]
     }
   }

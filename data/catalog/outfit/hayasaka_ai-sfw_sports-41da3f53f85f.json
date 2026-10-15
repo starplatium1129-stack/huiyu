@@ -1,23 +1,22 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_sports",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 775,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "default": false,
       "id": "sfw_sports",
       "isDefault": false,
-      "name": "庭院体操运动装",
-      "prose": "an opaque blue sports T-shirt, grey tracksuit trousers and a blonde side ponytail",
+      "name": "钴蓝运动短袖与灰色束脚裤",
+      "prose": "An opaque cobalt-blue athletic T-shirt with pale grey side seams, paired with grey cuffed track trousers and white training shoes.",
       "tokens": [
-        "blue_t-shirt",
-        "track_pants",
-        "sportswear",
-        "side_ponytail"
+        "blue t-shirt",
+        "grey track pants",
+        "white sneakers"
       ]
     }
   }

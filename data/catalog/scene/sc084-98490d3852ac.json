@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc084",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She turns from the fireworks and clasps the viewer's hand, her geta planted on the festival path; lanterns warm her face as the burst above is reflected in her eyes.",
     "auditRevision": "careful-batch09-2026-08-27",
@@ -21,14 +21,13 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "cropped feet, day",
-    "prompt": "1girl, ayachi_nene, blue yukata, geta, looking back, reaching, smile, summer festival, red lanterns, fireworks, full body",
+    "prompt": "1girl, ayachi_nene, blue yukata, white bellflower print, pink obi, bow at back, geta, looking back, reaching, smile, summer festival, red lanterns, fireworks, full body",
     "rating": "All",
     "season": "夏",
     "story": "【宁宁 · 花火大会的侧脸】夏夜祭典上，宁宁穿着浴衣站在灯笼与人群之间，仰头等待下一束烟花。绚烂光影在她紫色眼睛里一层层盛开，她却在最响亮的瞬间转向你，笑着抓住你的手——「烟花很漂亮，但一下就会消失。所以你要认真记住……今晚我站在你身边的样子。」",
     "storyJa": "【寧々・花火大会を横から見たところ】夏の夜祭りで、寧々は提灯と観客の間に浴衣姿で立ち、見上げながら次の花火の花束を待っていました。紫色の瞳に華やかな光と影が重ねて咲いたでも一番大きな瞬間に彼女は君に向き直って微笑んで君の手を掴んだ――「花火は綺麗ですけど、すぐ消えてしまいます。だから、ちゃんと覚えていてください……今夜、私があなたの隣にいた姿を。」",
     "tags": [
       "hair_ribbon",
-      "yukata",
       "bare_legs",
       "fireworks",
       "firework_display",
@@ -38,7 +37,11 @@
       "lanterns",
       "full_body",
       "geta",
-      "depth_of_field"
+      "depth_of_field",
+      "blue_yukata",
+      "white_bellflower_print",
+      "pink_obi",
+      "bow_at_back"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

@@ -1,23 +1,24 @@
 {
   "kind": "outfit",
   "id": "vladilena_milize/festival_navy_yukata",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 742,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vladilena_milize",
     "outfit": {
       "default": false,
       "id": "festival_navy_yukata",
       "isDefault": false,
-      "name": "夏祭藏青烟火浴衣",
-      "prose": "a navy yukata embroidered with silver fireworks, a matching obi and wooden geta, with her silver hair swept up",
+      "name": "银线花火藏青浴衣",
+      "prose": "a navy cotton yukata embroidered with silver fireworks, a matching obi and wooden geta",
       "tokens": [
         "navy yukata",
-        "obi",
-        "geta",
-        "hair up"
+        "silver embroidery",
+        "fireworks print",
+        "navy obi",
+        "geta"
       ]
     }
   }

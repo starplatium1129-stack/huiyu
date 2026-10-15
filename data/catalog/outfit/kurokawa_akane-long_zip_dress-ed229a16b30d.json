@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "kurokawa_akane/long_zip_dress",
+  "revision": 1,
+  "sortOrder": 1195,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kurokawa_akane",
+    "outfit": {
+      "id": "long_zip_dress",
+      "name": "长裙与背后拉链",
+      "tokens": [
+        "long dress",
+        "back zipper"
+      ],
+      "prose": "a long dress with a back zipper",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

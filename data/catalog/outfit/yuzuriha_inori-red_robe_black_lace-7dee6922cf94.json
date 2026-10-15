@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "yuzuriha_inori/red_robe_black_lace",
+  "revision": 1,
+  "sortOrder": 1263,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yuzuriha_inori",
+    "outfit": {
+      "id": "red_robe_black_lace",
+      "name": "红色睡袍与黑纱内衣",
+      "tokens": [
+        "red robe",
+        "black lingerie",
+        "sheer lace"
+      ],
+      "prose": "a loose red sleeping robe over black sheer-lace lingerie",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

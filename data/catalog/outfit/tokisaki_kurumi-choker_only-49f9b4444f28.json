@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "tokisaki_kurumi/choker_only",
+  "revision": 1,
+  "sortOrder": 1475,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tokisaki_kurumi",
+    "outfit": {
+      "id": "choker_only",
+      "name": "黑色颈饰",
+      "tokens": [
+        "black choker"
+      ],
+      "prose": "a black choker",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

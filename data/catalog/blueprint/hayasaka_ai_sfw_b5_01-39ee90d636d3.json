@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_sfw_b5_01",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1405,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "停在高窗边，双手持平板低头核对日程。",
     "adult": false,
@@ -26,6 +26,7 @@
     "outfitId": "sfw_maid",
     "promptProse": "Hayasaka pauses by the tall window to review her schedule on a tablet held in both hands.",
     "promptTokens": [
+      "side ponytail",
       "tablet",
       "standing",
       "window",

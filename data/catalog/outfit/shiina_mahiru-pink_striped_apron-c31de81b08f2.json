@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "shiina_mahiru/pink_striped_apron",
+  "revision": 1,
+  "sortOrder": 1234,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shiina_mahiru",
+    "outfit": {
+      "id": "pink_striped_apron",
+      "name": "粉色条纹料理围裙",
+      "tokens": [
+        "pink apron",
+        "striped apron",
+        "waist ties"
+      ],
+      "prose": "a pink striped kitchen apron with slim waist ties",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "suou_amane/pink_apron",
+  "revision": 1,
+  "sortOrder": 1270,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "suou_amane",
+    "outfit": {
+      "id": "pink_apron",
+      "name": "粉色荷叶边围裙",
+      "tokens": [
+        "pink apron",
+        "frills"
+      ],
+      "prose": "a pastel-pink frilled apron",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "vivy/nsfw_nude",
+  "revision": 1,
+  "sortOrder": 1477,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "vivy",
+    "outfit": {
+      "id": "nsfw_nude",
+      "name": "无衣装",
+      "tokens": [
+        "nude"
+      ],
+      "prose": "no clothing",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_r18_siracusa_mafia_desk_submission",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 667,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "西装大衣敞开露蕾丝内衣与酥胸，陷坐沙发单腿搭扶手，狼尾轻扫单手自抚低吟娇喘",
     "adult": true,
@@ -29,15 +29,18 @@
       "hand under clothes"
     ],
     "outfitId": "omertosa_mafia",
-    "promptProse": "Texas loosens her ascot and touches herself beneath her trousers while reclining before the fireplace.",
+    "promptProse": "Texas loosens her red ascot and touches herself beneath her trousers while reclining before the fireplace.",
     "promptTokens": [
       "Texas",
       "suit",
-      "open shirt",
+      "open white shirt",
       "black lingerie",
-      "ascot",
+      "red ascot",
       "sofa",
-      "fireplace"
+      "fireplace",
+      "charcoal overcoat",
+      "crimson lining",
+      "black pinstripe vest"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",

@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "violet_evergarden/library_casual_no_hat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 764,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "violet_evergarden",
     "outfit": {
       "default": false,
       "id": "library_casual_no_hat",
       "isDefault": false,
-      "name": "图书馆白裙·无帽",
-      "prose": "a white cotton sundress with a lace hem and leather sandals",
+      "name": "白棉蕾丝图书馆连衣裙",
+      "prose": "a white cotton sundress with a narrow lace hem and leather sandals",
       "tokens": [
         "white sundress",
+        "cotton",
         "lace hem",
-        "sandals"
+        "leather sandals"
       ]
     }
   }

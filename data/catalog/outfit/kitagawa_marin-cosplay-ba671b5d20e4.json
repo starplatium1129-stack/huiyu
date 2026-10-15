@@ -1,24 +1,26 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/cosplay",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 273,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "default": false,
       "id": "cosplay",
       "isDefault": false,
-      "name": "泛用 cosplay",
-      "prose": "a playful cosplay outfit with character accents and a wig",
+      "name": "紫粉水手领舞台 Cos 装",
+      "prose": "A playful sailor-style cosplay with a white blouse, lavender pleated skirt and vivid pink bow centered by a small star brooch, paired with its wig and matching hair ornament.",
       "tokens": [
         "cosplay",
-        "costume",
+        "white sailor blouse",
+        "lavender pleated skirt",
+        "pink bow",
+        "star brooch",
         "wig",
-        "hair_ornament",
-        "sailor_uniform"
+        "hair ornament"
       ]
     }
   }

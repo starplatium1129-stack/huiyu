@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_locker_room_rain_solo",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 366,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "iroha_nsfw_locker_room_rain_solo",
     "title": "一色彩羽 · 暴雨更衣室的湿身白衬衫独奏 ·「被雨淋湿成这样……前辈要负责擦干哦」",
@@ -46,7 +46,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "sensual_lace_lingerie",
+    "outfitId": "blouse_pleated_skirt",
     "coverageTags": [
       "special_nsfw",
       "h_cg"

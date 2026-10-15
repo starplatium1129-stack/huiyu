@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/stage",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 184,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
       "id": "stage",
-      "name": "舞台装",
-      "prose": "a sparkling concert stage outfit with light-up accents and flowing sleeves",
+      "name": "青绿银色光带舞台裙",
+      "prose": "A silver concert dress with teal geometric panels, a pleated skirt, long flowing detached sleeves and narrow illuminated hems.",
       "tokens": [
-        "stage_clothes",
-        "sparkling_clothes",
-        "lighting",
-        "frills",
-        "dress"
+        "silver stage dress",
+        "teal panels",
+        "pleated skirt",
+        "detached flowing sleeves",
+        "illuminated trim"
       ],
       "isDefault": false,
       "default": false

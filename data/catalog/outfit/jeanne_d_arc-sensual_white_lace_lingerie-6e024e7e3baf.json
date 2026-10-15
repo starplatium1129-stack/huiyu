@@ -1,25 +1,21 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/sensual_white_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "sensual_white_lace_lingerie",
-      "name": "纯白天使蕾丝圣衣",
-      "prose": "an angelic white lace lingerie set: a sheer lace bra barely containing her full bust, a matching garter belt cinching her waist, and white thighhighs with lace tops that frame her soft thighs",
+      "name": "白色花纹蕾丝套装",
+      "prose": "a white lace bra and matching briefs with a lace garter belt and white thigh-high stockings",
       "tokens": [
-        "white_lingerie",
-        "lace_bra",
-        "lace_panties",
-        "garter_straps",
-        "white_thighhighs",
-        "lace-trimmed",
-        "cleavage",
-        "sensual"
+        "white lace bra",
+        "matching panties",
+        "garter belt",
+        "white thighhighs"
       ]
     }
   }

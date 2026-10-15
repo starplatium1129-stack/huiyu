@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_nsfw_velvet_bed_supine_devotion",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1307,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "albedo_nsfw_velvet_bed_supine_devotion",
     "title": "雅儿贝德 · 天鹅绒大床的深情仰卧",
@@ -43,13 +43,15 @@
       "knees up",
       "black wings",
       "masturbation",
-      "candlelight"
+      "candlelight",
+      "gold necklace",
+      "green gemstone"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
     "sampleRating": "R18",
-    "outfitId": "nsfw_nude",
+    "outfitId": "official_white_dress",
     "coverageTags": [
       "nsfw",
       "supine",

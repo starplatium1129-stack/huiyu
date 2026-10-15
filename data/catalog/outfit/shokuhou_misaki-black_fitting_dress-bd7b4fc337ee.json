@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "shokuhou_misaki/black_fitting_dress",
+  "revision": 1,
+  "sortOrder": 1344,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "shokuhou_misaki",
+    "outfit": {
+      "id": "black_fitting_dress",
+      "name": "黑金背链·试穿连衣裙",
+      "tokens": [
+        "black dress",
+        "sheath dress",
+        "gold zipper",
+        "black lace lingerie"
+      ],
+      "prose": "A fitted black sheath dress with a gold back zipper, worn over her black-and-gold lace lingerie.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

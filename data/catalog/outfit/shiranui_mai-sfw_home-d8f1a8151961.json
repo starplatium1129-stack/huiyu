@@ -1,21 +1,21 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/sfw_home",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1003,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "sfw_home",
-      "name": "厨房与针线日常便装",
-      "prose": "a cream long-sleeved shirt, dark trousers and a red apron",
+      "name": "绯红围裙居家装",
+      "prose": "A cream cotton shirt and charcoal straight trousers sit beneath a scarlet apron with a small fan-shaped pocket stitch.",
       "tokens": [
-        "cream_shirt",
-        "long_sleeves",
-        "dark_pants",
-        "red_apron"
+        "cream shirt",
+        "rolled sleeves",
+        "charcoal pants",
+        "red apron"
       ],
       "default": false,
       "isDefault": false

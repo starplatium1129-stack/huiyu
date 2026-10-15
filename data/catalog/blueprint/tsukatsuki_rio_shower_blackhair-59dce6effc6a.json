@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_shower_blackhair",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 889,
   "createdAt": null,
-  "updatedAt": "2026-10-15T08:25:59.794355+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "泡浴时举着平板查看数据",
     "adult": true,
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "seminar_uniform",
+    "outfitId": "nude_state",
     "promptProse": "Adult Rio steadies a waterproof tablet on the tub rim while her other hand moves beneath the water between her thighs, her eyes still following the display.",
     "promptTokens": [
       "adult",

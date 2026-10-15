@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_tatami_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "chitanda_nsfw_tatami_straddle",
     "title": "千反田爱瑠 · 千反田家和室的主控跨坐 ·「奉太郎……我很好奇……男女之间的事」",
@@ -30,12 +30,13 @@
       "adult",
       "japanese room",
       "tatami",
-      "yukata",
+      "ivory yukata",
       "open clothes",
       "topless",
       "straddling",
       "moonlight",
-      "from below"
+      "from below",
+      "purple hydrangea print"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -43,7 +44,7 @@
     "sampleRating": "R18",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
-    "outfitId": "sensual_lace_lingerie",
+    "outfitId": "sfw_floral_yukata",
     "coverageTags": [
       "special_nsfw",
       "h_cg"

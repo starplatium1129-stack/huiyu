@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "kama_fate/crimson_spring_veil",
+  "revision": 1,
+  "sortOrder": 1312,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "kama_fate",
+    "outfit": {
+      "id": "crimson_spring_veil",
+      "name": "深红神泉薄纱",
+      "tokens": [
+        "crimson veil",
+        "sheer fabric",
+        "gold edging"
+      ],
+      "prose": "A light crimson veil with fine gold edging.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

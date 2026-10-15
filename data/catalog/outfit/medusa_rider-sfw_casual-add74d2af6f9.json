@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "medusa_rider/sfw_casual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "medusa_rider",
     "outfit": {
       "id": "sfw_casual",
-      "name": "书店与采购针织便装",
-      "prose": "a black long-sleeved knit top, ankle-length purple skirt and simple reading glasses",
+      "name": "黑色细针上衣与紫色长裙",
+      "prose": "A close-fitting black fine-knit top with long sleeves over a fluid plum-purple ankle-length skirt, paired with simple reading glasses.",
       "tokens": [
-        "black_sweater",
-        "long_sleeves",
-        "long_purple_skirt",
+        "black sweater",
+        "long sleeves",
+        "purple long skirt",
         "glasses"
       ],
       "default": true,

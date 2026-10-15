@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_01",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1603,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_01",
     "title": "吹雪 · 吹雪组总部沙发皮草大衣主控跨坐 ·「加入吹雪组的最高阶待遇……今晚只破例赋予你」",
@@ -53,7 +53,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "green_dress_fur_coat",
     "coverageTags": [
       "nsfw",
       "cowgirl",

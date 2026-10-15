@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "maria_mikhailovna_kujou/cream_hearth_cardigan",
+  "revision": 1,
+  "sortOrder": 1407,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "maria_mikhailovna_kujou",
+    "outfit": {
+      "id": "cream_hearth_cardigan",
+      "name": "奶油厚针开衫",
+      "tokens": [
+        "cream cardigan",
+        "knit"
+      ],
+      "prose": "A soft cream knit cardigan with a button front.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

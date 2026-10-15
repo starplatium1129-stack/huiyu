@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "yatogami_tohka/sfw_bridal",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "yatogami_tohka",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "夜刀神十香·圣洁花嫁",
-      "prose": "a luminous white bridal gown with a large violet ribbon, crystal embroidery and a sheer veil",
+      "name": "纯白水晶绣花婚纱",
+      "prose": "A white gown has scattered crystal embroidery, a large violet waist ribbon, a sheer veil and fitted white gloves.",
       "tokens": [
-        "wedding_dress",
-        "bridal_veil",
-        "violet_ribbon",
-        "crystal_embroidery",
-        "white_gloves"
+        "white wedding dress",
+        "violet ribbon",
+        "crystal embroidery",
+        "sheer veil",
+        "white gloves"
       ],
       "default": false,
       "isDefault": false

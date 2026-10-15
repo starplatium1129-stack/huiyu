@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_haruno/black_chemise_stockings",
+  "revision": 1,
+  "sortOrder": 1258,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yukinoshita_haruno",
+    "outfit": {
+      "id": "black_chemise_stockings",
+      "name": "黑色吊带睡裙与长袜",
+      "tokens": [
+        "black chemise",
+        "black stockings"
+      ],
+      "prose": "a light black chemise and sheer black stockings",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

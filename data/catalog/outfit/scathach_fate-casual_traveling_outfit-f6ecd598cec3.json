@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/casual_traveling_outfit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "casual_traveling_outfit",
-      "name": "影之国旅装斗篷便服",
-      "prose": "a white shirt under a brown corset vest, a long traveling coat, a wide-brimmed hat and tall leather boots",
+      "name": "影之国·束腰长旅装",
+      "prose": "A white shirt and brown corset vest beneath a long dark-purple traveling coat with a split back, a wide-brimmed hat and tall leather boots.",
       "tokens": [
         "white shirt",
         "brown corset vest",
-        "long coat",
+        "dark purple coat",
         "wide-brimmed hat",
         "leather boots"
       ]

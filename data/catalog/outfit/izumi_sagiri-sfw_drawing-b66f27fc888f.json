@@ -1,19 +1,21 @@
 {
   "kind": "outfit",
   "id": "izumi_sagiri/sfw_drawing",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "izumi_sagiri",
     "outfit": {
       "id": "sfw_drawing",
-      "name": "粉色连帽衫绘画装",
-      "prose": "an opaque pink hoodie, loose grey trousers and a drawing headset",
+      "name": "粉色薄荷滚边绘画连帽装",
+      "prose": "a soft pink hoodie with mint piping and wide ribbed cuffs, loose gray trousers and a drawing headset",
       "tokens": [
-        "pink_hoodie",
-        "grey_pants",
+        "pink hoodie",
+        "mint trim",
+        "wide cuffs",
+        "loose gray pants",
         "headphones"
       ],
       "default": true,

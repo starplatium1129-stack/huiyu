@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "morgan_le_fay_fate/white_halter_bikini",
+  "revision": 1,
+  "sortOrder": 1355,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "morgan_le_fay_fate",
+    "outfit": {
+      "id": "white_halter_bikini",
+      "name": "白银挂颈·海台轻装泳衣",
+      "tokens": [
+        "white bikini",
+        "halter neck",
+        "silver clasp"
+      ],
+      "prose": "A white halter bikini with simple ties and a small silver clasp.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

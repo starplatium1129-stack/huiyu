@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "vivy/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 980,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "vivy",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "淡蓝衬衫与白色长裤",
-      "prose": "a pale-blue long-sleeved collared shirt, white wide-leg full-length trousers and simple dark flats",
+      "name": "淡蓝立领衬衫与白色阔腿裤",
+      "prose": "a pale-blue long-sleeved stand-collar shirt with a concealed placket, white full-length wide-leg trousers and dark flats",
       "tokens": [
-        "blue_shirt",
-        "long_sleeves",
-        "white_pants",
-        "wide_leg_pants",
-        "flat_shoes"
+        "pale blue stand collar shirt",
+        "concealed placket",
+        "long sleeves",
+        "white wide leg trousers",
+        "dark flats"
       ],
       "isDefault": false,
       "isNsfw": false

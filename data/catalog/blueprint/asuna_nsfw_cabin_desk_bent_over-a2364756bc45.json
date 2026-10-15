@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_cabin_desk_bent_over",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1373,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "asuna_nsfw_cabin_desk_bent_over",
     "title": "结城明日奈 · 湖畔木屋更衣拉链卡壳事故·「副团长的战袍……怎么会在这种时候卡死呀……」",
@@ -35,12 +35,14 @@
       "adult",
       "cabin",
       "table",
-      "uniform",
+      "white tunic",
       "stuck zipper",
       "open clothes",
       "topless",
       "skirt lift",
-      "panties aside"
+      "panties aside",
+      "red cross",
+      "red pleated skirt"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

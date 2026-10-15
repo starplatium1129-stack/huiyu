@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yanami_anna/pleated_skirt",
+  "revision": 1,
+  "sortOrder": 1482,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yanami_anna",
+    "outfit": {
+      "id": "pleated_skirt",
+      "name": "百褶裙与草莓印花内衣",
+      "tokens": [
+        "pleated skirt",
+        "strawberry print underwear"
+      ],
+      "prose": "a pleated skirt with strawberry-print underwear",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "桃乐丝·成人私密造型",
-      "prose": "a private adult ensemble built around dress, white_dress, completely_nude, dressing_room, gown",
+      "name": "伊甸园粉白束腰礼服",
+      "prose": "A white gown with pale-pink panels, a velvet waist panel and pearl front buttons.",
       "tokens": [
-        "dress",
-        "white_dress",
-        "completely_nude",
-        "dressing_room",
-        "gown"
+        "white gown",
+        "pink panels",
+        "velvet corset",
+        "pearl buttons"
       ],
       "default": false,
       "isDefault": false

@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "viviana_arknights/black_gold_gown",
+  "revision": 1,
+  "sortOrder": 1449,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "viviana_arknights",
+    "outfit": {
+      "id": "black_gold_gown",
+      "name": "黑金刺绣礼裙",
+      "tokens": [
+        "black gown",
+        "gold embroidery",
+        "pleated skirt"
+      ],
+      "prose": "A midnight-black pleated gown has fine gold embroidery along its fitted bodice and hem.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

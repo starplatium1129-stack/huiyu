@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "yukinoshita_yukino/navy_library_blouse",
+  "revision": 1,
+  "sortOrder": 1459,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "yukinoshita_yukino",
+    "outfit": {
+      "id": "navy_library_blouse",
+      "name": "藏青衬衫与黑蕾丝长裙",
+      "tokens": [
+        "navy blouse",
+        "black lace skirt"
+      ],
+      "prose": "A fitted navy blouse with small dark buttons and a black lace midi skirt.",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

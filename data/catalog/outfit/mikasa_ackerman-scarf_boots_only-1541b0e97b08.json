@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "mikasa_ackerman/scarf_boots_only",
+  "revision": 1,
+  "sortOrder": 1215,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "mikasa_ackerman",
+    "outfit": {
+      "id": "scarf_boots_only",
+      "name": "红围巾与黑长靴造型",
+      "tokens": [
+        "red scarf",
+        "black boots"
+      ],
+      "prose": "her red scarf and black boots without other garments",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

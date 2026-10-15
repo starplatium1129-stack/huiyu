@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc035",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 33,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "With one dessert cup already in the basket on her forearm, she lowers the other flavor beside it and glances toward the viewer; the display light softly illuminates the two cups.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -21,16 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, cream cardigan, shopping basket, dessert, supermarket, refrigerated display, medium shot",
+    "prompt": "1girl, shiki_natsume, cream short sleeve cardigan, burgundy piping, white blouse, navy wrap skirt, shopping basket, dessert, supermarket, refrigerated display, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
     "story": "【夏目 · 超市货架前的选择题】夏日下午，夏目在超市甜品柜前比较两种限定口味，表情严肃得像在做重要决定。你随口选了一款，她便立刻放进购物篮，随后又拿了另一款。面对你的目光，她平静解释——「一种是你的，一种是我的，这样才方便比较。别误会，我没有打算和你分享同一杯。」",
     "storyJa": "【夏目・スーパーマーケットの棚の前での多肢選択式の質問】夏の午後、夏目さんはスーパーのデザート売り場の前で、2つの限定フレーバーを食べ比べていました。その表情は、まるで重要な決断を下しているかのような真剣な表情でした。あなたがランダムに1つを選ぶと、彼女はすぐにそれを買い物かごに入れ、別の1つを受け取りました。君の視線に向かって彼女は冷静に説明する――「片方はあなたの、もう片方は私の。そうすれば比べやすいでしょ。勘違いしないで。同じカップを分け合うつもりはないから。」",
     "tags": [
-      "cream_cardigan",
-      "white_blouse",
-      "navy_skirt",
       "black_tights",
       "standing",
       "holding_shopping_basket",
@@ -43,7 +40,11 @@
       "supermarket",
       "refrigerated_display",
       "soft_overhead_light",
-      "medium_shot"
+      "medium_shot",
+      "cream_short_sleeve_cardigan",
+      "burgundy_piping",
+      "white_blouse",
+      "navy_wrap_skirt"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",

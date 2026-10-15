@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "tokisaki_kurumi/sheer_bodice",
+  "revision": 1,
+  "sortOrder": 1473,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "tokisaki_kurumi",
+    "outfit": {
+      "id": "sheer_bodice",
+      "name": "黑色薄纱胸衣",
+      "tokens": [
+        "black sheer bodice",
+        "crimson ribbon edging"
+      ],
+      "prose": "a black sheer bodice with crimson ribbon edging",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

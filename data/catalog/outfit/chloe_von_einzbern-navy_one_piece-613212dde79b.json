@@ -1,0 +1,21 @@
+{
+  "kind": "outfit",
+  "id": "chloe_von_einzbern/navy_one_piece",
+  "revision": 1,
+  "sortOrder": 1168,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "chloe_von_einzbern",
+    "outfit": {
+      "id": "navy_one_piece",
+      "name": "深蓝连体泳装",
+      "tokens": [
+        "navy one-piece swimsuit"
+      ],
+      "prose": "a dark navy one-piece swimsuit with a front seam",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

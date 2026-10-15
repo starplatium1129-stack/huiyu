@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "medea_caster/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "美狄亚·成人私密造型",
-      "prose": "a private adult ensemble built around robe, purple_robe, completely_nude",
+      "name": "紫色银缘魔女长袍",
+      "prose": "A deep-purple robe with wide sleeves and fine silver edging.",
       "tokens": [
-        "robe",
-        "purple_robe",
-        "completely_nude"
+        "purple robe",
+        "silver trim",
+        "wide sleeves"
       ],
       "default": false,
       "isDefault": false

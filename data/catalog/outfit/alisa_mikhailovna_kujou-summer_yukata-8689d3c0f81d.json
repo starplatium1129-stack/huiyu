@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "alisa_mikhailovna_kujou/summer_yukata",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 443,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "alisa_mikhailovna_kujou",
     "outfit": {
       "id": "summer_yukata",
-      "name": "淡蓝夏日浴衣",
+      "name": "冰蓝白花与深蓝结带浴衣",
       "tokens": [
-        "yukata",
-        "light_blue",
-        "floral_pattern",
-        "sash",
-        "geta",
-        "bun"
+        "light blue yukata",
+        "white floral print",
+        "dark blue obi",
+        "silver obidome",
+        "geta"
       ],
-      "prose": "a light blue summer yukata with a white floral pattern, soft sash belt, wooden geta sandals, silver hair up in a loose bun",
+      "prose": "a light-blue cotton yukata with sparse white blossoms, a dark-blue obi and a single silver obidome clasp, worn with wooden geta",
       "styleHint": "soft cinematic lighting",
       "isDefault": false,
       "default": false

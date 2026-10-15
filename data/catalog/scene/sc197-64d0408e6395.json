@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc197",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 193,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "The unzipped gown slips to her waist as she lies on the hotel bed with her arms around the viewer's neck.",
     "auditRevision": "careful-batch12-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, black evening gown, backless dress, unzipped, dress slip, sideboob, black thighhighs, on bed, arms around neck, blush, hotel suite, neon lights, bedside lamp, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy satin lining, small gold clasp, black evening gown, backless dress, unzipped, dress slip, sideboob, black thighhighs, on bed, arms around neck, blush, hotel suite, neon lights, bedside lamp, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 高开叉晚礼服解开极致沦陷】高档宴会结束后的顶级酒店总统套房。窗外是繁华都市的无边霓虹。平时高冷优雅的夏目此时被你温柔地推倒在宽大的双人床上。她身上那一件奢华的黑色露背高开叉丝绸晚礼服背后的拉链已经被你完全拉开，整件礼服松垮垮地滑落到了腰际，露出了大片极具线条感、泛着潮红的绝美裸背与丰满侧乳。她腿上性感的超薄黑丝袜在灯光下散发着撩人光泽。她眼角的泪痣被红晕彻底染透，一边无力地搂紧你的脖子，一边娇喘着呻吟——「长官...今晚这件衣服...就随你高兴撕裂掉好了...嗯嗯...」",
@@ -38,7 +38,9 @@
       "arms_around_neck",
       "lying_on_bed",
       "neon_light",
-      "cowboy_shot"
+      "cowboy_shot",
+      "burgundy_satin_lining",
+      "small_gold_clasp"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",

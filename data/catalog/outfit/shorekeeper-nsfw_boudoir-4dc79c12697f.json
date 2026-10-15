@@ -1,20 +1,19 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 941,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "守岸人·成人私密造型",
-      "prose": "a private adult ensemble built around dress, black_and_white_dress, completely_nude",
+      "name": "黑白流光长礼裙",
+      "prose": "a flowing black-and-white long dress with a softly luminous surface",
       "tokens": [
-        "dress",
-        "black_and_white_dress",
-        "completely_nude"
+        "black and white dress",
+        "long dress"
       ],
       "default": false,
       "isDefault": false

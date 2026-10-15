@@ -1,25 +1,22 @@
 {
   "kind": "outfit",
   "id": "lemuen_arknights/silk_lace_morning_robe",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 319,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "lemuen_arknights",
     "outfit": {
       "default": false,
       "id": "silk_lace_morning_robe",
       "isDefault": false,
-      "name": "午后私语真丝蕾丝晨袍与私密居家长裙",
-      "prose": "a delicate morning loungewear set: a pearl-white silk slip nightdress with fine French lace trim at the neckline and hem, overlaid with a sheer champagne chiffon lace morning robe",
+      "name": "珍珠白真丝与香槟晨袍",
+      "prose": "a pearl-white silk slip nightdress with fine lace edging beneath a light champagne chiffon morning robe",
       "tokens": [
-        "silk",
-        "nightdress",
-        "lace_trim",
-        "chiffon",
-        "morning_robe",
-        "sheer"
+        "pearl white silk slip",
+        "lace trim",
+        "champagne chiffon robe"
       ]
     }
   }

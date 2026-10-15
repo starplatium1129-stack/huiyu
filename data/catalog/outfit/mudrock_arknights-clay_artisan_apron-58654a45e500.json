@@ -1,23 +1,23 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/clay_artisan_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 329,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "default": false,
       "id": "clay_artisan_apron",
       "isDefault": false,
-      "name": "陶艺工坊泥塑工装",
-      "prose": "an ivory linen shirt with rolled sleeves, a khaki work apron holding wooden carving tools, and loose trousers",
+      "name": "象牙亚麻衬衫与卡其陶艺围裙",
+      "prose": "An ivory linen shirt with rolled cuffs under a sturdy khaki cotton apron, paired with loose brown trousers. Wide patch pockets and a short tool loop keep the craftwear practical.",
       "tokens": [
-        "ivory shirt",
+        "ivory linen shirt",
         "rolled sleeves",
         "khaki apron",
-        "pants"
+        "brown loose pants"
       ]
     }
   }

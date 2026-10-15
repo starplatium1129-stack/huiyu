@@ -1,22 +1,23 @@
 {
   "kind": "outfit",
   "id": "cartethyia/sfw_travel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 945,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "sfw_travel",
-      "name": "流浪骑士轻便旅行装",
-      "prose": "a cream high-collared tunic, blue travel jacket, practical trousers and boots",
+      "name": "流浪骑士蓝金旅行装",
+      "prose": "A cream high-collared tunic beneath a cropped blue travel jacket with narrow gold piping, practical brown trousers and sturdy brown boots.",
       "tokens": [
-        "cream_tunic",
-        "high_collar",
-        "blue_jacket",
-        "pants",
-        "boots"
+        "cream tunic",
+        "high collar",
+        "blue cropped jacket",
+        "gold piping",
+        "brown pants",
+        "brown boots"
       ],
       "default": true,
       "isDefault": true

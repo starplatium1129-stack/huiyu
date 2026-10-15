@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_r18_b9_04",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1740,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "dorothy_nikke_r18_b9_04",
     "title": "桃乐丝 · 废弃王座被单上复仇天使的哭泣自持 ·「如果连你都离开我……我就把这个世界彻底毁灭……」",
@@ -49,7 +49,7 @@
     "sampleRating": "R18",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "outfitId": "nsfw_boudoir",
+    "outfitId": "nsfw_nude",
     "coverageTags": [
       "nsfw",
       "self_control",

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc016",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "Beside the campfire, she reaches toward the phone in the viewer's foreground hand, its screen showing her tilted star photograph; firelight reveals her embarrassed blush.",
     "auditRevision": "careful-batch05-2026-08-27",
@@ -21,16 +21,13 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "day",
-    "prompt": "1girl, shiki_natsume, olive windbreaker, sitting, phone, camping stool, campfire, tent, starry sky, medium shot",
+    "prompt": "1girl, shiki_natsume, olive hooded windbreaker, black shoulder panels, burgundy zipper, charcoal tapered pants, sitting, phone, camping stool, campfire, tent, starry sky, medium shot",
     "rating": "All",
     "recommendedSize": "832×1216",
     "season": "夏",
     "story": "【夏目 · 篝火旁的歪照片】夏夜露营地只剩木柴燃烧的轻响。夏目把刚拍的照片递给你，画面里星空歪了一半，却意外留下你回头看她的瞬间。你说想保留，她立刻伸手来抢，脸颊被火光映得通红——「构图失败的照片有什么好留的……算了，只能存在你手机里，不准发给别人。」",
     "storyJa": "【夏目・キャンプファイヤーの曲がった写真】夏の夜、キャンプ場に残るのは薪が燃える柔らかな音だけ。夏目が撮ったばかりの写真を渡しました。写真の中の星空は半分傾いていたが、思いがけず彼女を振り返った瞬間を残した。あなたがそれを保管したいと言うと、彼女はすぐに手を伸ばしてそれを掴み、焚き火の光で頬を赤らめました。――「構図に失敗した写真なんて、残してどうするの……まあいいわ。あなたのスマホだけに保存して、誰にも送らないで。」",
     "tags": [
-      "olive_jacket",
-      "windbreaker",
-      "dark_pants",
       "hiking_shoes",
       "sitting_on_camping_stool",
       "holding_phone",
@@ -44,7 +41,11 @@
       "starry_sky",
       "night",
       "firelight",
-      "medium_shot"
+      "medium_shot",
+      "olive_hooded_windbreaker",
+      "black_shoulder_panels",
+      "burgundy_zipper",
+      "charcoal_tapered_pants"
     ],
     "time": "夜晚",
     "timeOfDay": "night",

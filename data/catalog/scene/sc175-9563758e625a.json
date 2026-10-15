@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc175",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "animaCaption": "She wakes propped on one elbow with her legs crossed over the white sheets, raising an eyebrow toward the viewer.",
     "auditRevision": "careful-batch13-2026-08-27",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "white shirt, underwear, thighhighs",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, oversized black shirt, no underwear, bare legs, crossed legs, on side, on elbow, teasing smile, rumpled bed, morning light",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, matte black buttons, notched cuffs, oversized black shirt, no underwear, bare legs, crossed legs, on side, on elbow, teasing smile, rumpled bed, morning light",
     "rating": "R18",
     "season": "不限",
     "story": "【夏目 · 晨间真空衬衫绝对独占】一个无限慵懒的假日清晨，阳光透过巨大的落地窗。昨晚宿醉过后的夏目从凌乱的被窝里醒来，身上仅仅松垮垮地套着你那一身纯黑色的长袖衬衫，里面完全是真空状态。她眼神带着一丝微醺过后的慵懒与极致妩媚，半撑着身体侧卧在白色床单上，大片白皙笔直的长腿毫无防备地交叠裸露。眼角的泪痣被清晨的碎光照亮，性感得让人屏息。她挑了挑眉，用极具占有欲的傲娇微笑注视着你——「早安，大变态。盯着人家的腿看够了没有？看够了的话...就过来抱我。」",
@@ -34,7 +34,9 @@
       "half_propped",
       "bedroom",
       "morning_light",
-      "close_up"
+      "close_up",
+      "matte_black_buttons",
+      "notched_cuffs"
     ],
     "time": "清晨",
     "timeOfDay": "morning",

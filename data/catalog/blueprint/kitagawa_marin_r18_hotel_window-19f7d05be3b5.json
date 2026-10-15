@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_hotel_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 502,
   "createdAt": null,
-  "updatedAt": "2026-10-15T07:59:28.830779500+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "站在落地窗前",
     "adult": true,
@@ -13,7 +13,7 @@
     "camera": "intimate medium shot, backlit",
     "category": "成人",
     "characterId": "kitagawa_marin",
-    "description": "【喜多川海梦 · 夜景落地窗】五星级酒店顶层的全景落地窗前，俯瞰着整座城市璀璨如银河的夜景。只披着一件薄透浴袍的海梦从窗前回过身，眼中带着少有的羞涩与深情——「外面的夜景好美……但我现在满脑子想的，全都是待会儿要和你做的事情呢。」",
+    "description": "成年海梦靠在酒店落地窗旁的窗座上，一条腿沿着玻璃伸展，颈间保留细项圈；窗外霓虹映进室内。",
     "id": "kitagawa_marin_r18_hotel_window",
     "kreaStyleHint": "",
     "lighting": "warm room light and glittering city view",
@@ -22,7 +22,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "sheer_bathrobe",
+    "outfitId": "nsfw_nude",
     "promptProse": "Adult Marin reclines on the hotel window seat with one leg along the glass, steadying herself while her other hand moves between her thighs.",
     "promptTokens": [
       "1girl",

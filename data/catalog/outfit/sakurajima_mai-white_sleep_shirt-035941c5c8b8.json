@@ -1,0 +1,22 @@
+{
+  "kind": "outfit",
+  "id": "sakurajima_mai/white_sleep_shirt",
+  "revision": 1,
+  "sortOrder": 1230,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "sakurajima_mai",
+    "outfit": {
+      "id": "white_sleep_shirt",
+      "name": "宽大白色晨睡衬衫",
+      "tokens": [
+        "white shirt",
+        "oversized shirt"
+      ],
+      "prose": "an oversized white button-front sleeping shirt",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,22 +1,20 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sfw_black_wool_coat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 791,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sfw_black_wool_coat",
       "name": "黑呢大衣与酒红围巾",
-      "prose": "a black wool overcoat with a wine-red scarf wrapped snugly at the collar",
+      "prose": "A tailored black wool overcoat has clean lapels, with a wine-red scarf wrapped snugly at the collar.",
       "tokens": [
-        "overcoat",
-        "black_coat",
-        "wool_coat",
-        "scarf",
-        "red_scarf"
+        "black coat",
+        "wool",
+        "wine red scarf"
       ],
       "default": false,
       "isDefault": false,

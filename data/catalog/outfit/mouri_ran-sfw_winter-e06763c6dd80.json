@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_winter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 912,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_winter",
-      "name": "冬日手织围巾装",
-      "prose": "a navy wool coat, hand-knitted cream scarf, warm trousers and boots",
+      "name": "藏蓝大衣手织围巾装",
+      "prose": "A navy wool coat and hand-knitted cream cable scarf, with warm gray trousers and brown boots.",
       "tokens": [
-        "navy_coat",
-        "cream_scarf",
-        "wool",
-        "pants",
-        "boots"
+        "navy blue wool coat",
+        "cream cable-knit scarf",
+        "gray pants",
+        "brown boots"
       ],
       "default": false,
       "isDefault": false

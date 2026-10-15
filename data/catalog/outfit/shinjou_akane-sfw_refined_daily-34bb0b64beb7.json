@@ -1,22 +1,22 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 875,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "紫灰运动套装",
-      "prose": "a lavender-grey zip track jacket with matching loose full-length trousers, a white T-shirt and slip-on trainers",
+      "name": "紫灰折线·运动套装",
+      "prose": "A lavender-gray zip track jacket with angled charcoal side panels, matching loose full-length trousers, a white T-shirt and slip-on trainers.",
       "tokens": [
-        "tracksuit",
-        "purple_jacket",
-        "track_pants",
-        "white_shirt",
-        "sneakers"
+        "lavender track jacket",
+        "gray panels",
+        "track pants",
+        "white t-shirt",
+        "slip-on sneakers"
       ],
       "isDefault": false,
       "isNsfw": false

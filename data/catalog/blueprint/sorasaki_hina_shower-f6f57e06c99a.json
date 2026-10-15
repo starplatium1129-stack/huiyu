@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_shower",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "action": "坐在长椅上，一手用布擦角，另一手留在毛巾下。",
     "adult": true,
@@ -16,7 +16,7 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "晨浴后的私人淋浴间旁，成年日奈裹着湿毛巾坐在长椅上，一手用小布擦拭角，另一手留在毛巾下；高窗晨光照着水雾。",
+    "description": "晨浴后的私人淋浴间旁，成年日奈裹着带紫色窄织边的白浴巾坐在长椅上，一手用小布擦拭角，另一手留在毛巾下；高窗晨光照着水雾。",
     "id": "sorasaki_hina_shower",
     "kreaStyleHint": "",
     "lighting": "soft morning light through high window, gentle steam haze, clean bright glow",
@@ -25,7 +25,7 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
-    "outfitId": "gehenna_uniform",
+    "outfitId": "shower_towel",
     "promptProse": "Adult Hina dries one horn with a small cloth while her other hand slips beneath the towel between her thighs, seated beside the private shower.",
     "promptTokens": [
       "adult",
@@ -39,7 +39,9 @@
       "wings",
       "bench",
       "steam",
-      "morning"
+      "morning",
+      "white towel",
+      "purple edging"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",

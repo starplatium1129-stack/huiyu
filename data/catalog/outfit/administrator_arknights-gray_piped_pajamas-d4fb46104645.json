@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "administrator_arknights/gray_piped_pajamas",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1106,
   "createdAt": "2026-10-04T15:24:42.960074100+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "administrator_arknights",
     "outfit": {
@@ -12,12 +12,13 @@
       "default": false,
       "isDefault": false,
       "name": "浅灰金边棉质家居套装",
-      "prose": "a matte pale-gray cotton pajama shirt with a closed button front, fine golden-yellow piping and a chest pocket, matching full-length drawstring pajama trousers and cream slippers; her face is uncovered",
+      "prose": "matte pale-grey cotton pajamas with a button front, fine yellow piping and a chest pocket, matching drawstring trousers and cream slippers",
       "tokens": [
-        "grey pajamas",
-        "piping",
-        "pajama pants",
-        "slippers"
+        "grey cotton pajamas",
+        "yellow piping",
+        "chest pocket",
+        "drawstring pants",
+        "cream slippers"
       ],
       "category": "日常衣装（创作）"
     }

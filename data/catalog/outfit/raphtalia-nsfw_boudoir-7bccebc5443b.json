@@ -1,21 +1,20 @@
 {
   "kind": "outfit",
   "id": "raphtalia/nsfw_boudoir",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 885,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "raphtalia",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "拉芙塔莉雅·成人私密造型",
-      "prose": "a private adult ensemble built around armor, leather_armor, dressing_room, completely_nude",
+      "name": "赤棕轻皮甲与战裙",
+      "prose": "A russet leather cuirass with sturdy side buckles over a red-brown battle skirt.",
       "tokens": [
-        "armor",
-        "leather_armor",
-        "dressing_room",
-        "completely_nude"
+        "brown leather armor",
+        "side buckles",
+        "red brown battle skirt"
       ],
       "default": false,
       "isDefault": false

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_03",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1707,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "id": "vivy_r18_b9_03",
     "title": "Vivy · 舞台礼服后置散热接口卡壳的更衣事故 ·「后背动力管线被裙钩锁死……无法完成自我检修」",
@@ -30,15 +30,16 @@
       "stuck_zipper",
       "clothes_pull"
     ],
-    "promptProse": "Vivy looks back for help as the gown zipper catches in her cooling port, pulling the neckline and split skirt open beneath mirror bulbs.",
+    "promptProse": "Vivy looks back for help as the white and teal gown zipper catches in her cooling port, pulling the neckline and split skirt open beneath mirror bulbs.",
     "promptTokens": [
       "Vivy",
       "android",
-      "gown",
+      "white and teal gown",
       "stuck zipper",
       "bent over",
       "dressing room",
-      "looking back"
+      "looking back",
+      "geometric dress panels"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",

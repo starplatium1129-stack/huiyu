@@ -1,18 +1,19 @@
 {
   "kind": "outfit",
   "id": "cc_code_geass/casual_oversized_sweater",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 712,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "cc_code_geass",
     "outfit": {
       "id": "casual_oversized_sweater",
-      "name": "居家米白大号粗线毛衣",
-      "prose": "an oversized off-white knitted sweater slipping from one shoulder, denim shorts beneath the hem and bare feet",
+      "name": "奶白粗针毛衣与牛仔短裤",
+      "prose": "An oversized off-white cable-knit sweater with a wide neckline that falls from one shoulder, paired with faded denim shorts and bare feet.",
       "tokens": [
-        "white sweater",
+        "off-white sweater",
+        "cable knit",
         "oversized clothes",
         "off shoulder",
         "denim shorts",

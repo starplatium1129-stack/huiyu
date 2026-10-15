@@ -1,0 +1,23 @@
+{
+  "kind": "outfit",
+  "id": "nana_asta_deviluke/pink_camisole",
+  "revision": 1,
+  "sortOrder": 1222,
+  "createdAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "data": {
+    "characterId": "nana_asta_deviluke",
+    "outfit": {
+      "id": "pink_camisole",
+      "name": "浅粉薄纱吊带睡裙",
+      "tokens": [
+        "pink camisole",
+        "sheer fabric",
+        "spaghetti straps"
+      ],
+      "prose": "a pale-pink gauze camisole with slender shoulder straps",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

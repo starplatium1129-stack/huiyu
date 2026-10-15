@@ -1,20 +1,22 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/sfw_lounge_white_tee",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1160,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
       "id": "sfw_lounge_white_tee",
-      "name": "休息室白T恤与浅蓝短裤",
+      "name": "黑领白T恤与浅蓝旧牛仔",
       "tokens": [
         "oversized white t-shirt",
-        "light blue denim shorts"
+        "black collar",
+        "light blue denim shorts",
+        "frayed hem"
       ],
-      "prose": "a loose white T-shirt and light-blue denim shorts",
+      "prose": "A loose white T-shirt with a narrow black neckband and light-blue denim shorts with worn, frayed hems.",
       "default": false,
       "isDefault": false
     }

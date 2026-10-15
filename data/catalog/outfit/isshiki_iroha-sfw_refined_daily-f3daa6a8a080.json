@@ -1,22 +1,21 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/sfw_refined_daily",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 209,
   "createdAt": null,
-  "updatedAt": null,
+  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "球场应援运动外套",
-      "prose": "a coral windbreaker over an ivory sweatshirt, charcoal straight athletic trousers and white trainers",
+      "name": "珊瑚拼色球场应援装",
+      "prose": "A coral windbreaker with narrow ivory shoulder panels over an ivory sweatshirt, paired with straight charcoal athletic trousers and white trainers.",
       "tokens": [
-        "coral_jacket",
-        "windbreaker",
-        "sweatshirt",
-        "track_pants",
-        "white_sneakers"
+        "coral windbreaker",
+        "ivory sweatshirt",
+        "charcoal track pants",
+        "white sneakers"
       ],
       "isDefault": false,
       "isNsfw": false
