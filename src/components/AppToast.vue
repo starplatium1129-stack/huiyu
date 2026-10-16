@@ -1,22 +1,26 @@
 <template>
   <Teleport to="body">
-    <!-- 只在容器上声明一次 live region。子项再挂 role="status" 会造成
-         嵌套 live region，读屏可能重复播报或整条丢掉。 -->
+    <!-- A single announcement owner avoids re-reading old notices on expansion. -->
+    <span class="sr-only" aria-live="polite" aria-atomic="true"><span :key="announcement.id">{{ announcement.msg }}</span></span>
     <div
       ref="stackEl"
       class="toast-stack"
       :class="{ 'toast-stack-on-left': placement === 'bottom-left' }"
-      aria-live="polite"
-      aria-atomic="false"
-      @mouseenter="pauseAll('hover')"
-      @mouseleave="resumeAll('hover')"
-      @focusin="pauseAll('focus')"
-      @focusout="onFocusOut"
+      :data-expanded="expanded" :data-reduced-motion="reduced"
+      :data-has-notices="toasts.length > 0"
+      role="region" aria-label="提示"
+      @pointerenter="enter" @pointerleave="leave"
+      @focusin="expanded = true" @focusout="onStackFocusOut"
     >
-      <TransitionGroup :css="false" @enter="onToastEnter" @leave="onToastLeave">
+      <button v-if="toasts.length > 1" class="toast-expand" type="button" :aria-expanded="expanded" @click="expanded = true">查看 {{ toasts.length }} 条提示<ArchiveIcon name="chevron-down" /></button>
+      <TransitionGroup tag="div" class="toast-list" move-class="toast-move-disabled" :style="{ height: stackHeight + 'px' }" :css="false" @enter="onToastEnter" @leave="onToastLeave">
         <div
           v-for="t in toasts"
           :key="t.id"
+          :ref="el => bindSlot(el, t.id)" :data-toast-id="t.id"
+          class="toast-slot" :style="slotStyle(t.id)" :inert="hidden(t.id)"
+        >
+        <div
           class="toast-item"
           :class="`toast-${t.type}`"
           @pointerdown="onPointerDown($event, t.id)"
@@ -42,6 +46,7 @@
             @click.stop="dismissNotice(t.id, $event)"
           ><ArchiveIcon name="close" /></button>
         </div>
+        </div>
       </TransitionGroup>
     </div>
   </Teleport>
@@ -49,18 +54,17 @@
 
 <script setup lang="ts">
 import { animateMini } from 'motion'
-import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useToast, type ToastItem, type ToastType } from '@/composables/useToast'
+import { useToastStack } from '@/composables/useToastStack'
 
 const { toasts, dismiss, pauseAll, resumeAll } = useToast()
 withDefaults(defineProps<{ placement?: 'bottom-left' | 'bottom-right' }>(), { placement: 'bottom-right' })
 const stackEl = ref<HTMLElement | null>(null)
+const { expanded, reduced, announcement, stackHeight, bindSlot, slotStyle, hidden, enter, leave, focusOut: onStackFocusOut } = useToastStack(stackEl)
 
-function onFocusOut(event: FocusEvent) {
-  if (!(event.currentTarget as HTMLElement).contains(event.relatedTarget as Node | null)) resumeAll('focus')
-}
 function dismissNotice(id: number, event: MouseEvent) {
   // Keyboard dismissal is immediate; repeated commands do not wait for motion.
   if (!event.detail) (event.currentTarget as HTMLElement).closest<HTMLElement>('.toast-item')?.setAttribute('data-instant-leave', '')
@@ -83,8 +87,8 @@ const icons: Record<ToastType, ArchiveIconName> = {
 interface DragSession {
   id: number
   pointerId: number
-  startY: number
-  lastY: number
+  startX: number
+  lastX: number
   lastTime: number
   velocity: number
   transform: string
@@ -129,7 +133,7 @@ onMounted(() => { motionMedia.addEventListener('change', motionChanged); window.
 onUnmounted(() => {
   motionMedia.removeEventListener('change', motionChanged); window.removeEventListener('atelier:motion-preference', motionChanged)
   for (const motion of motions.values()) motion.controls.stop()
-  motions.clear(); releaseDrag(); resumeAll('hover'); resumeAll('focus')
+  motions.clear(); releaseDrag()
 })
 
 function onPointerDown(e: PointerEvent, id: number) {
@@ -141,8 +145,8 @@ function onPointerDown(e: PointerEvent, id: number) {
   activeDrag = {
     id,
     pointerId: e.pointerId,
-    startY: e.clientY,
-    lastY: e.clientY,
+    startX: e.clientX,
+    lastX: e.clientX,
     lastTime: performance.now(),
     velocity: 0,
     transform: presentation.transform === 'none' ? '' : presentation.transform,
@@ -156,26 +160,26 @@ function onPointerDown(e: PointerEvent, id: number) {
 function onPointerMove(e: PointerEvent) {
   if (!activeDrag || e.pointerId !== activeDrag.pointerId) return
   const now = performance.now()
-  activeDrag.velocity = (e.clientY - activeDrag.lastY) / Math.max(1, now - activeDrag.lastTime)
-  activeDrag.lastY = e.clientY
+  activeDrag.velocity = (e.clientX - activeDrag.lastX) / Math.max(1, now - activeDrag.lastTime)
+  activeDrag.lastX = e.clientX
   activeDrag.lastTime = now
-  const deltaY = Math.max(0, e.clientY - activeDrag.startY) // 仅允许向下滑出
-  activeDrag.el.style.transform = prefersReducedMotion() ? '' : `translateY(${deltaY}px) ${activeDrag.transform}`
-  activeDrag.el.style.opacity = String(activeDrag.opacity * Math.max(0.2, 1 - deltaY / 120))
+  const deltaX = e.clientX - activeDrag.startX
+  activeDrag.el.style.transform = prefersReducedMotion() ? '' : `translateX(${deltaX}px) ${activeDrag.transform}`
+  activeDrag.el.style.opacity = String(activeDrag.opacity * Math.max(0.2, 1 - Math.abs(deltaX) / 180))
 }
 
 function onPointerUp(e: PointerEvent, id: number) {
   if (!activeDrag || e.pointerId !== activeDrag.pointerId || id !== activeDrag.id) return
   const now = performance.now()
-  const deltaY = e.clientY - activeDrag.startY
-  const velocity = now - activeDrag.lastTime > 80 ? 0 : e.clientY === activeDrag.lastY
-    ? activeDrag.velocity : (e.clientY - activeDrag.lastY) / Math.max(1, now - activeDrag.lastTime)
+  const deltaX = e.clientX - activeDrag.startX
+  const velocity = now - activeDrag.lastTime > 80 ? 0 : e.clientX === activeDrag.lastX
+    ? activeDrag.velocity : (e.clientX - activeDrag.lastX) / Math.max(1, now - activeDrag.lastTime)
   const el = activeDrag.el
   releaseDrag()
   stopMotion(el)
 
-  // 向下滑动超过 32px 或滑动速度超过 0.12 px/ms 则顺势消除
-  if (deltaY > 32 || (deltaY > 0 && velocity > 0.12)) {
+  // Sideways swipes dismiss one notice; vertical scrolling remains available.
+  if (Math.abs(deltaX) > 60 || (Math.abs(deltaX) > 8 && Math.abs(velocity) > 0.3)) {
     // The leave hook continues from this exact position; there is no second exit.
     dismiss(id)
   } else {
@@ -203,7 +207,7 @@ function onPointerCancel(e: PointerEvent) {
 
 // Entry sets the initial pose once. Interruptions retain WAAPI's live values.
 function onToastEnter(el: Element, done: () => void) {
-  const element = el as HTMLElement
+  const element = el.firstElementChild as HTMLElement
   element.inert = false
   element.removeAttribute('aria-hidden')
   const interrupted = motions.has(element)
@@ -215,19 +219,15 @@ function onToastEnter(el: Element, done: () => void) {
 }
 
 function onToastLeave(el: Element, done: () => void) {
-  const element = el as HTMLElement
+  const slot = el as HTMLElement
+  const element = slot.firstElementChild as HTMLElement
+  slot.inert = true
   element.inert = true
   element.setAttribute('aria-hidden', 'true')
   if (activeDrag?.el === element) releaseDrag()
   stopMotion(element)
   const reduced = prefersReducedMotion()
-  const finish = () => {
-    done()
-    void nextTick(() => {
-      // Removing a focused close/action button need not emit focusout.
-      if (!stackEl.value?.contains(document.activeElement)) resumeAll('focus')
-    })
-  }
+  const finish = done
   if (element.hasAttribute('data-instant-leave')) { element.style.opacity = '0'; finish(); return }
   const t = animateMini(element, reduced ? { opacity: 0 } : { opacity: 0, transform: `translateY(10px) scale(.98) ${getComputedStyle(element).transform === 'none' ? '' : getComputedStyle(element).transform}` }, { duration: reduced ? 0.1 : 0.14, ease: EASE_OUT })
   track(element, t, 0, finish, finish)
@@ -245,8 +245,22 @@ function onToastLeave(el: Element, done: () => void) {
   overscroll-behavior: contain;
   /* 走 z 阶梯。9999 会盖住 --z-skip(500) 的跳转链接 */
   z-index: var(--z-toast);
-  @apply tw:flex tw:flex-col-reverse tw:items-stretch tw:gap-s-2 tw:pointer-events-none;
+  @apply tw:flex tw:flex-col tw:items-stretch tw:gap-s-2 tw:pointer-events-none;
+  padding:4px;
 }
+.toast-list { position:relative; flex-shrink:0; }
+/* The gaps belong to the same hover surface as the cards. Otherwise moving
+   cards expose the page, repeatedly firing leave/enter under a still pointer. */
+.toast-stack[data-has-notices='true'] { pointer-events:auto; }
+.toast-slot { position:absolute; inset:auto 0 0; transform-origin:50% 100%; transition:transform var(--motion-surface) var(--ease-out),opacity var(--motion-hover) var(--ease-out); }
+/* Disable Vue's automatic FLIP pass: stack geometry already owns this transform. */
+.toast-move-disabled { transition:none !important; }
+.toast-item > * { transition:opacity var(--motion-hover) var(--ease-out); }
+.toast-stack[data-expanded='false'] .toast-slot[inert] .toast-item > * { opacity:0; }
+.toast-expand { display:flex; align-items:center; justify-content:center; gap:var(--s-2); min-height:28px; flex-shrink:0; padding:var(--s-1) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-sans); pointer-events:auto; cursor:pointer; }
+.toast-expand .archive-icon { width:14px; height:14px; transform:rotate(180deg); }
+.toast-expand:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.toast-stack[data-reduced-motion='true'] :is(.toast-slot,.toast-item > *) { transition:none; }
 
 .toast-item {
   @apply tw:flex tw:items-center tw:gap-s-3;
@@ -256,7 +270,7 @@ function onToastLeave(el: Element, done: () => void) {
   background: var(--bg-surface);
   box-shadow: var(--shadow-md);
   @apply tw:text-body-sm tw:font-semibold tw:text-primary tw:pointer-events-auto tw:cursor-grab tw:select-none;
-  touch-action: none;
+  touch-action: pan-y;
   transform-origin: bottom right;
   max-width: min(460px, 90vw);
   @apply tw:whitespace-pre-wrap;

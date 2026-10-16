@@ -6,14 +6,12 @@ import { formatA1111Parameters, injectPngMetadata } from '../../utils/pngMetadat
 import { imageFormat } from '../../utils/imageFormat.ts'
 import { safeImageUrl } from './galleryHelpers.ts'
 import type { useGalleryWorkspace } from './useGalleryWorkspace.ts'
-import { getCurrentInstance, getCurrentScope, onActivated, onDeactivated, onScopeDispose, ref, type Ref } from 'vue'
+import { getCurrentInstance, getCurrentScope, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { copyWithFeedback } from '../useCopyFeedback.ts'
 
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, 'current' | 'stamp' | 'sceneTitle' | 'characterName' | 'showToast'>
 
-export function useGalleryExports({ current, stamp, sceneTitle, characterName, showToast }: Context): { downloadCurrent: () => Promise<void>; copyPrompt: () => Promise<void>; copiedPrompt: Ref<boolean> } {
-  const copiedPrompt = ref(false)
-  let copyTimer: ReturnType<typeof setTimeout> | undefined
+export function useGalleryExports({ current, stamp, sceneTitle, characterName, showToast }: Context): { downloadCurrent: () => Promise<void>; copyPrompt: () => Promise<boolean> } {
   let disposed = false, viewActive = true
   let downloadController: AbortController | null = null
   const downloadUrls = new Map<string, number>()
@@ -30,15 +28,11 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
     onActivated(() => { viewActive = true })
     onDeactivated(() => { viewActive = false; stopDownloads() })
   }
-  if (getCurrentScope()) onScopeDispose(() => { disposed = true; clearTimeout(copyTimer); stopDownloads() })
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; stopDownloads() })
   async function copyPrompt() {
     const item = current.value
-    if (!item?.prompt) return
-    if (await copyWithFeedback(item.prompt, 'Prompt 已复制') && !disposed && current.value?.id === item.id) {
-      copiedPrompt.value = true
-      clearTimeout(copyTimer)
-      copyTimer = setTimeout(() => { copiedPrompt.value = false }, 2000)
-    }
+    if (!item?.prompt) return false
+    return await copyWithFeedback(item.prompt, 'Prompt 已复制') && !disposed && viewActive && current.value?.id === item.id
   }
   let downloading = false
   async function downloadCurrent() {
@@ -120,5 +114,5 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
       downloading = false
     }
   }
-  return { downloadCurrent, copyPrompt, copiedPrompt }
+  return { downloadCurrent, copyPrompt }
 }

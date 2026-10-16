@@ -6,9 +6,10 @@
     </div>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的电脑上完成配置。</p>
     <template v-else>
-      <ol class="setup-steps" aria-label="首次配置步骤">
+      <ol class="setup-steps" :style="{ '--setup-progress': stepIndex / (steps.length - 1) }" aria-label="首次配置步骤">
         <li v-for="(step, index) in steps" :key="step.id" :data-current="guideStep === step.id" :data-done="index < stepIndex" :aria-current="guideStep === step.id ? 'step' : undefined">
-          <span class="setup-step-number"><ArchiveIcon v-if="index < stepIndex" name="success" /><template v-else>{{ index + 1 }}</template></span>
+          <button v-if="index === 0 && index < stepIndex && !setupBusy" class="setup-step-number" type="button" aria-label="返回第 1 步：存放位置" @click="guideStep = 'location'"><ArchiveIcon name="success" /></button>
+          <span v-else class="setup-step-number"><ArchiveIcon v-if="index < stepIndex" name="success" /><template v-else>{{ index + 1 }}</template></span>
           <strong>{{ step.label }}</strong><ArchiveIcon v-if="index < 2" class="setup-step-arrow" name="chevron-down" />
         </li>
       </ol>
@@ -19,7 +20,7 @@
         <button v-if="desktop?.restartForSetup" class="btn btn-primary" type="button" :disabled="setupBusy || workspaceSaving || restarting" @click="restartForSetup">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
         <span v-else>退出并重新打开绘遇后继续。</span>
       </div>
-      <div v-else-if="guideStep === 'location'" class="setup-location-step">
+      <div v-else-if="guideStep === 'location'" v-content-motion:left="guideStep" class="setup-location-step">
         <div class="setup-step-title"><div><span class="setup-label">第 1 步</span><h3 ref="locationTitle" tabindex="-1">模型存到哪里？</h3></div></div>
         <div class="setup-location-card">
           <span class="setup-folder"><ArchiveIcon name="folder" /></span>
@@ -33,7 +34,7 @@
         </div>
       </div>
       <template v-if="snapshot">
-        <div v-show="guideStep !== 'location' && !workspacePending" class="setup-download-step">
+        <div v-show="guideStep !== 'location' && !workspacePending" v-content-motion:right="guideStep" class="setup-download-step">
           <div class="setup-step-title">
             <div><span class="setup-label">第 {{ guideStep === 'ready' ? '3' : '2' }} 步</span><h3 ref="downloadTitle" tabindex="-1">{{ guideStep === 'ready' ? '准备完成' : setupBusy ? '正在自动配置' : '确认要下载的内容' }}</h3></div>
             <button v-if="guideStep === 'download' && !setupBusy" class="btn btn-quiet btn-sm" type="button" @click="guideStep = 'location'">更换位置</button>
@@ -89,11 +90,15 @@ function onPhase(phase: 'selection' | 'preparing' | 'ready') {
 .local-setup h2 { font-size:var(--fs-title-sm); }
 .local-setup h3 { font-size:var(--fs-title-xs); }
 .setup-platform { display:flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); }
-.setup-steps { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:var(--s-5) 0; padding:0; list-style:none; border-block:1px solid var(--border-soft); }
+.setup-steps { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:var(--s-5) 0; padding:0; list-style:none; border-block:1px solid var(--border-soft); }
+/* Lucian #042 · MIT (c) 2026 Seokwoooo. Progress follows the real setup phases. */
+.setup-steps::after { content:''; position:absolute; inset:auto 0 -1px; height:2px; background:var(--accent); transform:scaleX(var(--setup-progress)); transform-origin:left; transition:transform var(--motion-surface) var(--ease-out); }
 .setup-steps li { display:flex; align-items:center; gap:var(--s-3); min-height:72px; padding:var(--s-3); color:var(--text-secondary); }
-.setup-step-number { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; border:1px solid var(--border-strong); border-radius:var(--r-pill); }
+.setup-step-number { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; padding:0; border:1px solid var(--border-strong); border-radius:var(--r-pill); background:var(--bg-surface); color:inherit; font:inherit; }
+button.setup-step-number { cursor:pointer; }
+button.setup-step-number:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 .setup-steps strong { font-size:var(--fs-label); }
-.setup-steps li[data-current="true"] { color:var(--accent); background:var(--accent-soft); box-shadow:inset 0 -2px var(--accent); }
+.setup-steps li[data-current="true"] { color:var(--accent); background:var(--accent-soft); }
 .setup-steps li[data-current="true"] .setup-step-number { border-color:var(--accent); }
 .setup-steps li[data-done="true"] { color:var(--success-text); }
 .setup-step-arrow { margin-left:auto; transform:rotate(-90deg); }
@@ -119,6 +124,8 @@ function onPhase(phase: 'selection' | 'preparing' | 'ready') {
 .local-setup .btn { flex-shrink:0; }
 .local-setup button:disabled { color:var(--text-disabled); opacity:1; cursor:not-allowed; }
 .local-setup :is(button,a,summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .setup-steps::after { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .setup-steps::after { transition:none; }
 @media(max-width:1050px) { .setup-location-card { flex-wrap:wrap; } .setup-location-card > .btn { margin-left:72px; } }
 @media(max-width:650px) { .setup-steps li { padding:var(--s-3) var(--s-2); gap:var(--s-2); } .setup-step-arrow { display:none; } .setup-step-number { width:26px; height:26px; } }
 </style>

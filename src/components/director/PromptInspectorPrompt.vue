@@ -8,7 +8,7 @@
     :prompt="previewPromptView" :context="previewContext" :model-name="modelProfileView?.name"
     :report="reportView" :art-violations="artViolationsView"
     :lora-text="pb.isPopular ? '' : loraSpecs.map(s => s.name + ':' + s.weight).join(' · ')"
-    @copy="copyPrompt" @save="saveCurrentResult" />
+    :copy-action="copyPrompt" @save="saveCurrentResult" />
   <dialog ref="workbenchDialog" class="prompt-workbench-dialog" aria-labelledby="prompt-workbench-heading"
     @cancel.prevent="workbenchMotion.close()" @click="onWorkbenchClick">
     <header class="prompt-reader-heading"><h2 id="prompt-workbench-heading">词条工作台</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭词条工作台" @click="workbenchMotion.close()"><ArchiveIcon name="close" /></button></header>

@@ -1,6 +1,6 @@
 <template>
   <article class="page catalog-studio" style="--page-max:1660px">
-    <aside class="catalog-sidebar" data-fluid-glass="sidebar" aria-label="内容分类">
+    <aside class="catalog-sidebar" aria-label="内容分类">
       <div class="catalog-brand"><ArchiveIcon name="manager" /><strong>内容工作室</strong></div>
       <div class="catalog-nav-group">
         <span class="catalog-nav-caption">创作资料</span>
@@ -79,7 +79,7 @@
               </button>
               <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
             </div>
-            <nav class="catalog-pagination" aria-label="内容分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page <= 1" @click="page--" aria-label="上一页">上一页</button><span role="status">{{ page }} / {{ totalPages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page >= totalPages" @click="page++" aria-label="下一页">下一页</button></nav>
+            <StudioPagination v-model="page" :pages="totalPages" :disabled="loading" label="内容分页" />
           </section>
           <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" aria-label="内容编辑" :aria-busy="detailLoading">
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
@@ -107,6 +107,7 @@ import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIc
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioPagination from '@/components/ui/StudioPagination.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'

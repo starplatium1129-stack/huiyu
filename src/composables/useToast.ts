@@ -24,6 +24,7 @@ const toasts = ref<ToastItem[]>([])
 let nextId = 0
 let listenersInstalled = false
 const pauseReasons = new Set<string>()
+let coveredIds = new Set<number>()
 
 /**
  * 同屏最多留几条（2026-08-30 UX 审计 P2）。
@@ -60,9 +61,18 @@ function pauseToast(t: ToastItem) {
 }
 
 function resumeToast(t: ToastItem) {
-  if (!t.timer && t.remaining > 0) {
+  if (!t.timer && t.remaining > 0 && !coveredIds.has(t.id)) {
     t.startedAt = Date.now()
     t.timer = setTimeout(() => dismiss(t.id), t.remaining)
+  }
+}
+
+/** Covered notices retain their reading/action time until brought to the front. */
+function coverToasts(ids: number[]) {
+  coveredIds = new Set(ids)
+  for (const item of toasts.value) {
+    if (coveredIds.has(item.id)) pauseToast(item)
+    else if (!pauseReasons.size && !document.hidden) resumeToast(item)
   }
 }
 
@@ -131,6 +141,7 @@ export function useToast() {
     dismiss,
     pauseAll: pauseAllToasts,
     resumeAll: resumeAllToasts,
+    coverToasts,
     success,
     error,
     warning,

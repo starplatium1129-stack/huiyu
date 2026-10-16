@@ -81,8 +81,18 @@
                 <template v-if="model.preparation">
                   <strong>{{ model.label }}</strong>
                   <div class="verification-actions">
-                    <button class="btn btn-ghost btn-sm" type="button" :disabled="!!activeId || !!downloadId" @click="download(model)">{{ downloadFailed[model.id] ? '重试下载' : '下载' }} {{ model.label }}（{{ formatBytes(model.preparation.expectedBytes) }}）</button>
-                    <button v-if="downloadId === model.id" class="btn btn-ghost btn-sm" type="button" @click="cancelDownload">取消下载</button>
+                    <StudioProgressDownload
+                      :label="model.label"
+                      :size="formatBytes(model.preparation.expectedBytes)"
+                      :busy="downloadId === model.id"
+                      :phase-label="downloadPhaseLabel"
+                      :progress="downloadBytes / (downloadExpected || 1) * 100"
+                      :complete="downloadFailed[model.id] === false && !!downloadNotices[model.id]"
+                      :disabled="!!activeId || (!!downloadId && downloadId !== model.id)"
+                      :retry="!!downloadFailed[model.id]"
+                      @download="download(model)"
+                      @cancel="cancelDownload"
+                    />
                   </div>
                   <p v-if="downloadId === model.id" role="status">{{ downloadPhaseLabel }} {{ formatBytes(downloadBytes) }} / {{ formatBytes(downloadExpected) }}（{{ Math.floor(downloadBytes / downloadExpected * 100) }}%）</p>
                   <p v-if="downloadNotices[model.id]" role="status">{{ downloadNotices[model.id] }}</p>
@@ -108,6 +118,7 @@
 import { computed, ref, watch } from 'vue'
 import StudioSelect from './ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioProgressDownload from '@/components/ui/StudioProgressDownload.vue'
 import type { LocalSetupModel, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 import { modelPreparationState as state, formatSetupBytes as formatBytes } from '../utils/localSetupPreparation.ts'
 import { useLocalSetupVerification } from '../composables/useLocalSetupVerification.ts'
@@ -141,8 +152,8 @@ const planIdentity = computed(() => JSON.stringify([route.value, props.snapshot.
   models.value.map(model => [model.id, model.path, model.preparation?.url, model.preparation?.revision,
     model.preparation?.expectedBytes, model.preparation?.sha256, model.preparation?.modelCardUrl,
     model.preparation?.licenseUrl, model.preparation?.upstreamLicenseUrl])]))
-watch([() => props.snapshot, planIdentity], ([, plan], [, previous]) => {
-  if (downloadId.value && plan === previous) return
+// Completion refreshes file status; consent remains valid for the same paths, sources and licenses.
+watch(planIdentity, () => {
   reviewed.value = false; confirmed.value = false; copyNotice.value = ''
 })
 watch(reviewed, () => { confirmed.value = false; copyNotice.value = '' })

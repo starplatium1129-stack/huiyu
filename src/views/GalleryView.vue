@@ -204,12 +204,12 @@
           {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }}
         </div>
         <div class="viewer-actions viewer-primary-actions" aria-label="作品操作">
-          <button class="btn btn-ghost" type="button"
+          <StudioFavoriteButton class="btn btn-ghost" :active="!!displayedCurrent.favorite" :label="displayedCurrent.favorite ? '取消收藏' : '收藏这幅'"
             :class="{ 'btn-favorite-on': displayedCurrent.favorite }"
             :aria-pressed="!!displayedCurrent.favorite"
             @click="toggleFavorite(displayedCurrent)">
-            <ArchiveIcon name="love" /><span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
-          </button>
+            <span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
+          </StudioFavoriteButton>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent"><ArchiveIcon name="download" />下载原图</button>
           <RouterLink class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
         </div>
@@ -243,15 +243,7 @@
           <div class="viewer-actions" data-disclosure-content>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" @click="gestureViewer = !gestureViewer">{{ gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
-          <button
-            class="btn btn-ghost"
-            :class="{ 'btn-copied-success': copiedPrompt }"
-            type="button"
-            @click="copyPrompt"
-          >
-            <ArchiveIcon :name="copiedPrompt ? 'success' : 'copy'" />
-            <span>{{ copiedPrompt ? '已复制' : '复制 Prompt' }}</span>
-          </button>
+          <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :action="copyPrompt" :content-key="String(displayedCurrent.id)" :disabled="!displayedCurrent.prompt" />
           <button v-if="pendingDeleteId !== displayedCurrent.id" class="btn btn-ghost btn-danger" type="button"
             @click="pendingDeleteId = displayedCurrent.id">删除这幅</button>
           <template v-else>
@@ -281,6 +273,8 @@ import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
+import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import { defineAsyncComponent, nextTick, reactive, ref, watch } from 'vue'
@@ -371,7 +365,6 @@ current,
 characterName,
 facts,
 downloadCurrent,
-copiedPrompt,
 copyPrompt
 } = workspace
 function toggleOriginalViewer() {

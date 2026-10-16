@@ -6,7 +6,7 @@
   -webkit-backdrop-filter:none !important;
   backdrop-filter:none !important;
 }
-:root[data-glass-material="light"]:not([data-reduced-glass="true"]) body :is(.nav,.nav-more-menu,.sticky-toolbar:where(:not(.gallery-toolbar)),.companion-toolbar,.toolbar-shell,.pop-toolbar,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *))) {
+:root[data-glass-material="light"]:not([data-reduced-glass="true"]) body :is(.nav,.nav-more-menu,.sticky-toolbar:where(:not(.gallery-toolbar)),.companion-toolbar,.toolbar-shell,.pop-toolbar,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) {
   background:linear-gradient(125deg,color-mix(in srgb,var(--glass-highlight) 45%,transparent),transparent 42%),color-mix(in srgb,var(--bg-surface) 96%,transparent);
   border:0; box-shadow:var(--shadow-sm);
 }

@@ -6,7 +6,7 @@
     </header>
     <p class="prompt-health-status" :class="report.level">{{ report.label }}</p>
     <div class="prompt-preview-actions">
-      <button class="btn btn-primary" type="button" @click="emit('copy')">复制提示词</button>
+      <StudioCopyButton class="btn btn-primary" label="复制提示词" :action="copyAction" :content-key="prompt" :disabled="!prompt" />
       <button class="btn btn-ghost" type="button" @click="emit('save')">保存草稿</button>
     </div>
     <ul v-if="warnings.length" class="prompt-health-warnings" aria-label="提示词优化建议">
@@ -23,7 +23,7 @@
     <dialog ref="readerDialog" class="prompt-reader" aria-labelledby="prompt-reader-heading" @cancel.prevent="reader.close()" @click="onReaderClick">
       <header class="prompt-reader-heading"><h2 id="prompt-reader-heading">完整提示词</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭提示词阅读" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
       <div class="prompt-reader-content"><PromptPreviewContent :prompt="prompt" :context="context" :positive-count="report.positiveCount" :negative-count="report.negativeCount" /></div>
-      <footer class="prompt-reader-actions"><button class="btn btn-primary" type="button" @click="emit('copy')">复制提示词</button><button class="btn btn-ghost" type="button" @click="emit('save')">保存草稿</button></footer>
+      <footer class="prompt-reader-actions"><StudioCopyButton class="btn btn-primary" label="复制提示词" :action="copyAction" :content-key="prompt" :disabled="!prompt" /><button class="btn btn-ghost" type="button" @click="emit('save')">保存草稿</button></footer>
     </dialog>
   </section>
 </template>
@@ -32,6 +32,7 @@
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import PromptPreviewContent from '@/components/director/PromptPreviewContent.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import type { PromptReport } from '@/utils/promptPolicy'
@@ -39,6 +40,7 @@ import type { PromptPreviewContext } from '@/utils/promptPreview'
 
 const props = defineProps<{
   prompt: string
+  copyAction: () => Promise<boolean>
   context: PromptPreviewContext
   modelName?: string
   report: PromptReport
@@ -47,7 +49,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  copy: []
   save: []
 }>()
 

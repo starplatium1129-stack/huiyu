@@ -57,6 +57,12 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 .artwork-retry:focus-visible { --focus-shadow:inset 0 -2px 0 var(--on-art-primary); outline:none; box-shadow:var(--focus-shadow); }
 /* Reserve the frame quietly; no repeating shimmer competing with scroll motion. */
 .artwork-skeleton { @apply tw:absolute; inset:0; background:var(--bg-elevated); }
+/* Lucian #079 · MIT (c) 2026 Seokwoooo. The actual image readiness releases
+   the placeholder; cached images keep the existing wall lifecycle. */
+.artwork-skeleton-leave-active { transition:opacity var(--motion-surface) var(--ease-out); pointer-events:none; }
+.artwork-skeleton-leave-to { opacity:0; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .artwork-skeleton-leave-active { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-skeleton-leave-active { transition:none; }
 .artwork-caption { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; padding:var(--s-3); color:var(--text-primary); background:var(--bg-surface); text-align:left; border-top:1px solid var(--border-soft); }
 .artwork-name { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-body-sm tw:font-semibold; }
 .artwork-date { @apply tw:block tw:mt-s-1 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-secondary tw:text-label-xs; }

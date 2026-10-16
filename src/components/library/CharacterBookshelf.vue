@@ -3,7 +3,7 @@
     <header class="bookshelf-header tw:flex tw:items-center tw:justify-between tw:gap-s-5">
       <p class="bookshelf-total tw:m-0 tw:text-secondary tw:text-body-sm"><strong>{{ items.length }}</strong> 位角色<span aria-hidden="true"> · </span><strong>{{ groups.length }}</strong> 部作品</p>
       <div class="bookshelf-modes studio-segments tw:relative tw:isolate tw:flex tw:gap-s-1 tw:shrink-0 tw:p-s-1 tw:rounded-pill" data-fluid-glass role="group" aria-label="角色浏览方式">
-        <AnimatedSelection />
+        <AnimatedSelection stretch />
         <button type="button" :aria-pressed="showingShelf" @click="switchMode('shelf')"><ArchiveIcon name="gallery" />作品书架</button>
         <button type="button" :aria-pressed="!showingShelf" @click="switchMode('characters')"><ArchiveIcon name="character" />全部角色</button>
       </div>
@@ -53,11 +53,7 @@
         <ArchiveIcon name="search" /><p>没有找到匹配的角色</p>
         <button type="button" class="bookshelf-text-button" @click="clearQuery">清除搜索</button>
       </div>
-      <nav v-if="pageCount > 1" class="bookshelf-pagination tw:flex tw:items-center tw:justify-center tw:gap-s-5 tw:mt-s-6 tw:text-secondary tw:text-label" aria-label="角色分页">
-        <button type="button" :disabled="page === 1" @click="changePage(page - 1)">上一页</button>
-        <span role="status">第 {{ page }} / {{ pageCount }} 页</span>
-        <button type="button" :disabled="page === pageCount" @click="changePage(page + 1)">下一页</button>
-      </nav>
+      <StudioPagination v-if="pageCount > 1" class="tw:mt-s-6" :model-value="page" :pages="pageCount" label="角色分页" @update:model-value="changePage" />
     </template>
     </div>
   </section>
@@ -69,6 +65,7 @@ import { captureScrollAnchor, restoreScrollAnchor, type ScrollAnchor } from '@/u
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioPagination from '@/components/ui/StudioPagination.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import type { DirectoryCharacter } from './CharacterDirectory.vue'
 import { useCharacterBookshelf, type CharacterBookshelfState } from '@/composables/useCharacterBookshelf'
@@ -196,8 +193,6 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-empty { padding: var(--s-8) var(--s-4); }
 .bookshelf-empty > .archive-icon { @apply tw:text-title; }
 .bookshelf-empty p { margin-block: var(--s-3); }
-.bookshelf-pagination button { @apply tw:min-h-[40px]; padding: var(--s-2) var(--s-4); border: 1px solid var(--border-soft); @apply tw:rounded-pill; background: var(--bg-base); @apply tw:text-secondary; font: inherit; @apply tw:cursor-pointer; }
-.bookshelf-pagination button:disabled { @apply tw:text-disabled tw:cursor-default; }
 .character-bookshelf button:focus-visible, .bookshelf-results-heading h2:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .sr-only { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden; clip-path: inset(50%); @apply tw:whitespace-nowrap; border: 0; }
 @media (hover: hover) and (pointer: fine) {
@@ -234,7 +229,6 @@ defineExpose({ focusSelected, snapshot })
   .bookshelf-characters { grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; }
   .bookshelf-search-row { @apply tw:gap-s-1 tw:mt-s-4; }
   .bookshelf-results-heading { @apply tw:gap-s-2; }
-  .bookshelf-pagination { @apply tw:gap-s-3; }
 }
 @media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .bookshelf-cover, :root:not([data-motion='full']) .bookshelf-character { transition: none; } }
 </style>

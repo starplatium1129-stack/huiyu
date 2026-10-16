@@ -108,9 +108,11 @@
             </StudioTooltip>
             <textarea ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" placeholder="发消息…" aria-label="聊天输入"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onComposerInput"></textarea>
-            <StudioTooltip v-if="busy || voiceActive" content="停止回复或语音"><button class="btn btn-ghost stop-btn" type="button" aria-label="停止回复或语音" @click="stopEverything"><ArchiveIcon name="stop" /></button></StudioTooltip>
-            <StudioTooltip v-else anchor :content="chatReady ? '发送 · Enter（Shift+Enter 换行）' : '请先连接聊天模型'"><button class="btn btn-primary send-btn" type="button" aria-label="发送"
-              :disabled="!chatReady || !inputText.trim() || storage.writeBlocked.value" @click="handleSend"><ArchiveIcon name="send" /></button></StudioTooltip>
+            <StudioTooltip anchor :content="busy || voiceActive ? '停止回复或语音' : chatReady ? '发送 · Enter（Shift+Enter 换行）' : '请先连接聊天模型'">
+              <StudioSendButton :busy="busy || voiceActive" :disabled="!chatReady || !inputText.trim() || storage.writeBlocked.value"
+                :turn-id="lastUserMessage?.mid || ''" :completed="Boolean(replyAnnouncement) && !chatError && !lastAssistantMessage?.stopped"
+                :context="activeChar" :message-host="chatListRef" @send="handleSend" @stop="stopEverything" />
+            </StudioTooltip>
           </div>
           <div v-if="storage.writeBlocked.value || chatError" class="chat-error" role="status" aria-live="polite" :data-kind="storage.writeBlocked.value ? 'warning' : chatErrorKind">{{ storage.writeBlocked.value ? '聊天数据暂时不可写入，请升级或恢复兼容数据。' : chatError }}</div>
           <p class="sr-only" role="status" aria-live="polite">{{ !busy ? replyAnnouncement : '' }}</p>
@@ -124,6 +126,7 @@
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
+import StudioSendButton from '@/components/ui/StudioSendButton.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
 import { useConversationReading } from '@/composables/chat/useConversationReading'
@@ -228,6 +231,8 @@ const {
   clearAllMemory,
   onAutoVoiceChange,
 } = useCharacterRoomSession()
+const lastUserMessage = computed(() => currentMessages.value.filter(message => message.role === 'user').at(-1))
+const lastAssistantMessage = computed(() => currentMessages.value.filter(message => message.role === 'assistant').at(-1))
 
 type RoomPanel = 'archive' | 'memory' | 'profile' | 'settings'
 const roomPanel = ref<RoomPanel | null>(null)

@@ -29,6 +29,7 @@ import { computed, onActivated, onDeactivated, onScopeDispose, reactive, ref, to
 import { useRoute,useRouter } from 'vue-router';
 import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type ActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
+import { copyText } from '@/utils/clipboard';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
     const router = useRouter();
@@ -307,13 +308,9 @@ export function usePromptWorkspace() {
     });
     /** 分类恢复：对应旧版 runSDRecovery */
     async function copyPrompt() {
-        try {
-            await navigator.clipboard.writeText(previewPromptView.value);
-            pb.flash('Prompt 已复制');
-        }
-        catch {
-            pb.flash('复制失败，请手动选取');
-        }
+        const copied = await copyText(previewPromptView.value);
+        pb.flash(copied ? 'Prompt 已复制' : '复制失败，请手动选取');
+        return copied;
     }
     /** 手动「保存快照」：实现已下沉 useTempResult.saveCurrentResult（含入册后释放临时缓冲）。 */
     // ── 出视频 / 分镜短片（编排已下沉 usePromptVideoBridge）──────────────────

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, type Component, type ShallowRef } from 'vue'
+import StudioOrbitSpinner from './StudioOrbitSpinner.vue'
 
 const props = defineProps<{ loader: () => Promise<{ default: Component }>; label: string }>()
 const panel: ShallowRef<Component | null> = shallowRef(null)
@@ -38,7 +39,7 @@ onBeforeUnmount(() => { disposed = true })
     <slot v-if="panel" :component="panel" />
     <div v-else class="async-panel-feedback">
       <p v-if="failed" role="alert">{{ label }}暂未加载，请重新读取。</p>
-      <p v-else role="status">正在打开{{ label }}…</p>
+      <p v-else class="async-panel-loading" role="status"><StudioOrbitSpinner />正在打开{{ label }}…</p>
       <button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">重新读取</button>
     </div>
   </div>
@@ -49,5 +50,6 @@ onBeforeUnmount(() => { disposed = true })
 .async-panel:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-md); }
 .async-panel-feedback { display:grid; justify-items:start; gap:var(--s-3); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); }
 .async-panel-feedback p { margin:0; line-height:var(--lh-body); }
+.async-panel-loading { display:flex; align-items:center; gap:var(--s-3); }
 @media (forced-colors:active) { .async-panel:focus-visible { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }
 </style>

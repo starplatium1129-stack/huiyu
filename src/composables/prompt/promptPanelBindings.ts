@@ -68,7 +68,7 @@ export interface PromptHealthBindings {
   reportView: Assembly['promptReport']
   artViolationsView: Assembly['artViolations']
   loraSpecs: Assembly['studio']['loraSpecs']
-  copyPrompt: () => Promise<void>
+  copyPrompt: () => Promise<boolean>
   saveCurrentResult: TempResult['saveCurrentResult']
 }
 

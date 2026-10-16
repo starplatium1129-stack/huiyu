@@ -1,8 +1,7 @@
-/* Shared with the original material selector: a lit edge, shaped fill and contact shadow.
-   The moving surface uses transforms; buttons retain their intrinsic label widths. */
+/* One painted control family in every browse page, independent of glass opt-in. */
 html body .studio-segments[role] {
-  --selection-radius: calc(var(--r-lg) - var(--s-1));
-  --selection-shadow: inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 var(--border-soft), 0 1px 2px color-mix(in srgb, var(--ink-base) 18%, transparent);
+  --selection-radius: var(--r-sm);
+  --selection-shadow: none;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -10,21 +9,25 @@ html body .studio-segments[role] {
   gap: var(--s-1);
   padding: var(--s-1);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r-lg);
-  background: color-mix(in srgb, var(--bg-base) 70%, var(--bg-surface));
-  box-shadow: inset 0 1px 1px color-mix(in srgb, var(--ink-base) 4%, transparent);
+  border-radius: var(--r-md);
+  background: var(--bg-surface);
+  box-shadow: none;
 }
 html body .studio-segments[role] > :is(button, a, .studio-tooltip-anchor) { flex: 1 1 auto; }
 html body :is(.appearance-segments, .preferences-tabs).studio-segments[role] > button { flex: 1 1 0; }
 html body .char-source.studio-segments[role] button { white-space: normal; }
 html body .studio-segments[role] .animated-selection {
-  border-color: var(--border-strong);
+  border-color: transparent;
   border-radius: var(--selection-radius);
-  background: linear-gradient(160deg, var(--glass-highlight), transparent 55%), linear-gradient(180deg, color-mix(in srgb, var(--accent-soft) 25%, var(--bg-surface)), var(--bg-elevated));
+  background: var(--accent-soft);
   box-shadow: var(--selection-shadow);
 }
 html body .studio-segments[role] :is(button, a) {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
   z-index: var(--z-raised);
   min-height: var(--control-height);
   padding: var(--s-2) var(--s-3);
@@ -33,7 +36,7 @@ html body .studio-segments[role] :is(button, a) {
   background: transparent;
   box-shadow: none;
   color: var(--text-secondary);
-  font-weight: 500;
+  font: 500 var(--fs-label)/var(--lh-label) var(--font-sans);
   text-decoration: none;
   white-space: nowrap;
   transition: color var(--motion-control) var(--ease-out);

@@ -67,13 +67,16 @@ export function useControlActions(
   }
 
   const savingConfig = ref(false)
+  const configSaved = ref(false)
   async function saveConfig(event?: Event) {
     if (event instanceof KeyboardEvent && (event.isComposing || event.keyCode === 229)) return
     if (savingConfig.value || status.opBusy.value || !status.statusLoaded.value) return
     savingConfig.value = true
+    configSaved.value = false
     status.feedbackText.value = '正在保存并重新检测…'
     try {
       const result = await controlApi.saveConfig(buildConfigPayload())
+      configSaved.value = true
       showToast(result?.restartRequired ? (result.message || '配置已保存，重新启动应用后生效') : '生成服务配置已保存')
       status.pollStatus(true)
     } catch (e) { showToast(errorMessage(e, '保存失败'), true); status.pollStatus() }
@@ -208,7 +211,7 @@ export function useControlActions(
   }
 
   return {
-    tunnelEnabled, errorMessage, copy, toggleTunnel, saveConfig, savingConfig, saveAutoStartVoice,
+    tunnelEnabled, errorMessage, copy, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
     serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag,
     buildWeb, buildingWeb,
   }

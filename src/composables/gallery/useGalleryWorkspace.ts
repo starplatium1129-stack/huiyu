@@ -346,7 +346,7 @@ export function useGalleryWorkspace() {
             void loadGalleryStorage().then(compareFromRoute);
     });
     const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
-    const { copiedPrompt, copyPrompt } = actions;
+    const { copyPrompt } = actions;
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }
     const trashActions = useGalleryTrash({ trashMode, trashItems, trashBusy, showToast, loadGalleryStorage });
     const { clearTrash, trashClearing, trashLoading, trashError } = trashActions;
@@ -372,6 +372,6 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed, step,
         compareMode, hasComparableImage, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, current, characterName,
-        facts, downloadCurrent, copiedPrompt, copyPrompt, showToast, releaseCardResources,
+        facts, downloadCurrent, copyPrompt, showToast, releaseCardResources,
     };
 }

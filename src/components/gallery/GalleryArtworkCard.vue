@@ -22,13 +22,12 @@
     </template>
     <template v-else>
       <StudioTooltip content="收藏后可在顶部按「收藏」筛选">
-        <button class="artwork-tool" type="button"
+        <StudioFavoriteButton class="artwork-tool" :active="!!item.favorite" :label="`${item.favorite ? '取消收藏' : '收藏'}：${title}`"
           :class="{ 'artwork-tool-on': item.favorite }"
           :aria-pressed="!!item.favorite"
           :aria-label="`${item.favorite ? '取消收藏' : '收藏'}：${title}`"
           @click="emit('favorite')">
-          <ArchiveIcon name="love" />
-        </button>
+        </StudioFavoriteButton>
       </StudioTooltip>
       <StudioTooltip content="以此作品配方回填创作台">
         <RouterLink class="artwork-tool" :aria-label="`沿用配方：${title}`" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`">
@@ -80,7 +79,7 @@
         @load="onHdLoad"
         @error="imageFailed = true"
       />
-      <div v-if="previewPending" class="artwork-skeleton" aria-hidden="true"></div>
+      <Transition name="artwork-skeleton"><div v-if="previewPending" class="artwork-skeleton" aria-hidden="true"></div></Transition>
     </div>
       <div class="artwork-caption">
         <span class="artwork-caption-copy tw:min-w-0">
@@ -104,6 +103,7 @@ import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
+import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
   thumbUrl: string; imageUrl: string; cors?: 'anonymous'; missing: boolean;

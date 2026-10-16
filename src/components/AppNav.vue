@@ -1,5 +1,6 @@
+<!-- Lucian UX/UI Prompt #212 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#212 -->
 <template>
-  <nav class="nav" aria-label="主导航">
+  <nav ref="navEl" class="nav u212" aria-label="主导航" :data-scroll-hidden="headerHidden" :data-scrolled="headerScrolled" :data-reduced-motion="headerReduced" @focusin="revealHeader">
     <div class="nav-inner">
       <!-- 用真 RouterLink:role="link" 的 div 没有 href,没有右键菜单、
            中键新标签页,而 Space 激活链接也不是标准行为 -->
@@ -69,6 +70,7 @@
         @click="toggleMenu"
       ><ArchiveIcon :name="menuOpen ? 'close' : 'menu'" /></button>
     </div>
+    <span ref="readingProgress" class="u212-progress" aria-hidden="true" />
   </nav>
 </template>
 
@@ -87,6 +89,7 @@ import { openGlobalSearch } from '@/composables/useGlobalSearch'
 import { useToast } from '@/composables/useToast'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import { useScrollHeader } from '@/composables/useScrollHeader'
 
 const route = useRoute()
 const { show: showToast } = useToast()
@@ -98,6 +101,8 @@ const menuOpen = ref(false)
 const linksEl = ref<HTMLElement | null>(null)
 const moreEl = ref<HTMLDivElement | null>(null)
 const moreOpen = ref(false)
+const navEl = ref<HTMLElement | null>(null)
+const { hidden: headerHidden, scrolled: headerScrolled, progress: readingProgress, reduced: headerReduced, reveal: revealHeader } = useScrollHeader(navEl, () => route.path, () => menuOpen.value || moreOpen.value)
 const moreReady = ref(false)
 const moreLoaded = ref(false)
 const moreError = ref(false)
@@ -279,6 +284,11 @@ onUnmounted(deactivateNavigation)
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
+.u212 { top:var(--desktop-chrome-height,0px); transition:transform var(--motion-surface) var(--ease-out); }
+.u212[data-scroll-hidden='true'] { transform:translateY(calc(-100% - var(--desktop-chrome-height,0px))); pointer-events:none; }
+.u212-progress { position:absolute; inset:auto 0 -1px; height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; opacity:0; pointer-events:none; transition:opacity .3s; }
+.u212[data-scrolled='true'] .u212-progress { opacity:1; }
+.u212[data-reduced-motion='true'], .u212[data-reduced-motion='true'] .u212-progress { transition:none; }
 
 .nav-links a[data-pending="true"], .nav-links a[data-intent="true"],
 .nav-more[data-pending="true"] .nav-more-trigger, .nav-more[data-intent="true"] .nav-more-trigger {
@@ -328,8 +338,8 @@ onUnmounted(deactivateNavigation)
   transition: transform var(--motion-press) var(--ease-out);
 }
 .nav-utilities :deep(.nav-search),
-.nav-utilities :deep(.app-theme-toggle),
 .nav-utilities :deep(.sound-toggle) { width: 40px; @apply tw:p-0; }
+.nav-utilities :deep(.app-theme-toggle) { width:56px; padding:0; }
 .nav-utilities :deep(.archive-icon) { width: 1.15rem; height: 1.15rem; }
 .nav-utilities :deep(.task-center-button) {
   padding: 0 var(--s-3);
@@ -368,5 +378,10 @@ onUnmounted(deactivateNavigation)
   }
   .nav-menu-toggle { width: 40px; height: 40px; flex: none; background: var(--album-surface); }
   .nav-menu-toggle:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+}
+@media (max-width:600px) {
+  .nav-inner { gap:var(--s-1); padding-inline:var(--s-3); }
+  .nav-utilities { gap:0; }
+  .nav-utility-divider { display:none; }
 }
 </style>

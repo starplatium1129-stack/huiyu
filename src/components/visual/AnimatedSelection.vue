@@ -5,7 +5,7 @@ import { frame, cancelFrame } from 'motion'
 import { createFluidMotion } from '@/utils/fluidSpring'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import '@/assets/css/studio-segments.css'
-const props = withDefaults(defineProps<{ target?: string }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]' })
+const props = withDefaults(defineProps<{ target?: string; stretch?: boolean }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]', stretch: false })
 const indicator = ref<HTMLElement | null>(null)
 const highlight = ref<HTMLElement | null>(null)
 let resize: ResizeObserver | undefined
@@ -108,7 +108,11 @@ function render() {
   el.style.height = baseHeight + 'px'
   el.style.opacity = '1'
   fluid ??= createFluidMotion([x, y, width, height], ([left, top, width, height]) => {
-    el.style.transform = `translate(${left}px,${top}px) scale(${width / baseWidth},${height / baseHeight})`
+    // Lucian #039 / #043 · MIT (c) 2026 Seokwoooo. Stretch the existing
+    // spring surface toward its destination; labels keep their own geometry.
+    const extension = props.stretch && !prefersReducedMotion() && !keyboardInput ? Math.min(baseWidth * .65, Math.abs(targetX - left) * .2) : 0
+    const leadingLeft = left - (targetX < left ? extension : 0)
+    el.style.transform = `translate(${leadingLeft}px,${top}px) scale(${(width + extension) / baseWidth},${height / baseHeight})`
     // Light travels with the existing geometry spring and disappears when settled.
     // No timer, layout read, restarting keyframe or extra animation loop on rapid input.
     const light = highlight.value

@@ -21,7 +21,7 @@
         <li v-for="(item, index) in progressSteps" :key="item.id" :data-current="automation.stage.value === item.id" :data-done="index < stageIndex" :aria-current="automation.stage.value === item.id ? 'step' : undefined"><span><ArchiveIcon v-if="index < stageIndex" name="success" /><template v-else>{{ index + 1 }}</template></span><strong>{{ item.label }}</strong></li>
       </ol>
       <div class="setup-progress" role="status" aria-live="polite">
-        <ArchiveIcon name="download" /><h3>{{ activePackage?.label || progressSteps[stageIndex]?.label || '正在核对准备进度' }}</h3>
+        <StudioOrbitSpinner /><h3>{{ activePackage?.label || progressSteps[stageIndex]?.label || '正在核对准备进度' }}</h3>
         <template v-if="automation.download.activeId.value">
           <progress :value="automation.download.bytesRead.value" :max="automation.download.expectedBytes.value || 1" aria-label="当前文件进度" />
           <div class="setup-progress-numbers"><span>{{ downloadPhaseLabel }}</span><strong>{{ progressPercent }}%</strong><span>{{ formatBytes(automation.download.bytesRead.value) }} / {{ formatBytes(automation.download.expectedBytes.value) }}</span></div>
@@ -82,6 +82,7 @@ import { RouterLink } from 'vue-router'
 import type { LocalSetupResponse, LocalSetupDownloadResult, LocalSetupModel } from '../../types/local-setup'
 import StudioSelect from './ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioOrbitSpinner from '@/components/ui/StudioOrbitSpinner.vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import { useLocalSetupAutomation } from '../composables/useLocalSetupAutomation'
 import { formatSetupBytes as formatBytes, modelPreparationState } from '../utils/localSetupPreparation'

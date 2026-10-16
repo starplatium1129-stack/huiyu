@@ -194,7 +194,7 @@
             </div>
           </div>
         </details>
-        <div class="config-save-row" :aria-busy="savingConfig"><button class="btn btn-primary" type="button" :disabled="savingConfig || opBusy || !statusLoaded" @click="saveConfig">{{ savingConfig ? '正在保存…' : '保存全部并检测' }}</button></div>
+        <div class="config-save-row" :aria-busy="savingConfig"><StudioLiquidButton label="保存全部并检测" :busy="savingConfig" :complete="configSaved" :disabled="opBusy || !statusLoaded" @click="saveConfig" /></div>
       </section>
 
       <!-- 公网分享 -->
@@ -304,6 +304,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
+import StudioLiquidButton from '@/components/ui/StudioLiquidButton.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
 import LocalSetupPanel from '@/components/LocalSetupPanel.vue'
@@ -351,7 +352,7 @@ const {
 
 // 模板引用解构：操作域
 const {
-  tunnelEnabled, copy, toggleTunnel, saveConfig, savingConfig, saveAutoStartVoice,
+  tunnelEnabled, copy, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
   serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag, buildWeb, buildingWeb,
 } = actions
 

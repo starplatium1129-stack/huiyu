@@ -30,7 +30,7 @@
             </button>
           </div>
           <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
-          <nav class="catalog-pagination" aria-label="样张分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page <= 1" @click="page--">上一页</button><span role="status">{{ result?.page ?? page }} / {{ totalPages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading || page >= totalPages" @click="page++">下一页</button></nav>
+          <StudioPagination v-model="page" :pages="totalPages" :disabled="loading" label="样张分页" />
         </section>
         <section ref="previewPane" v-content-motion:fade="selectedImageId" class="catalog-media-detail" aria-label="当前样张">
           <template v-if="selectedImageId">
@@ -62,6 +62,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioPagination from '@/components/ui/StudioPagination.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { useSceneShowcaseUpload, type ShowcaseSceneItem } from '@/composables/scene/useSceneShowcaseUpload'
 import { useCatalogMedia, showcaseItem } from '@/composables/scene/useCatalogMedia'
