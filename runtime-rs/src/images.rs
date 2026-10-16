@@ -175,7 +175,9 @@ impl Service {
     }
     pub async fn get_status(&self, family: &str) -> Result<Value> {
         if self.native {
-            native::status(&self.backend, family).await
+            let cancel = self.shutdown.child_token();
+            let _guard = cancel.clone().drop_guard();
+            native::status(&self.backend, family, cancel).await
         } else {
             resources::status(&self.config, &self.backend, family).await
         }
