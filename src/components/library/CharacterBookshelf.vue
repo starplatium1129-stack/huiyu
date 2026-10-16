@@ -1,7 +1,7 @@
 <template>
   <section class="character-bookshelf tw:min-w-0 tw:rounded-xl tw:text-primary" :class="{ 'is-keyboard-input': keyboardInput }" aria-label="角色作品书架" @keydown.capture="keyboardInput = true" @pointerdown.capture="keyboardInput = false">
     <header class="bookshelf-header tw:flex tw:items-center tw:justify-between tw:gap-s-5">
-      <p class="bookshelf-total tw:m-0 tw:text-secondary tw:text-body-sm"><strong>{{ items.length }}</strong> 位角色<span aria-hidden="true"> · </span><strong>{{ groups.length }}</strong> 部作品</p>
+      <p class="bookshelf-total tw:m-0 tw:text-secondary tw:text-body-sm"><span class="bookshelf-stat"><ArchiveIcon name="character" /><strong>{{ items.length }}</strong> 位角色</span><span class="bookshelf-stat"><ArchiveIcon name="book" /><strong>{{ groups.length }}</strong> 部作品</span></p>
       <div class="bookshelf-modes studio-segments tw:relative tw:isolate tw:flex tw:gap-s-1 tw:shrink-0 tw:p-s-1 tw:rounded-pill" data-fluid-glass role="group" aria-label="角色浏览方式">
         <AnimatedSelection stretch />
         <button type="button" :aria-pressed="showingShelf" @click="switchMode('shelf')"><ArchiveIcon name="gallery" />作品书架</button>
@@ -24,8 +24,8 @@
             </span>
             <span v-if="!group.covers.length" class="bookshelf-cover-placeholder tw:absolute tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:rounded-lg tw:text-muted tw:text-label-xs"><ArchiveIcon name="gallery" /><span>封面待补充</span></span>
           </span>
-          <span class="bookshelf-work-title tw:max-w-full tw:text-body tw:font-semibold tw:leading-body tw:text-center">{{ group.label }}</span>
-          <span class="bookshelf-work-count tw:flex tw:items-center tw:gap-s-2 tw:mt-s-2 tw:text-muted tw:text-label">{{ group.count }} 位角色<ArchiveIcon name="chevron-down" /></span>
+          <span class="bookshelf-work-caption"><span class="bookshelf-work-title tw:max-w-full tw:text-body tw:font-semibold tw:leading-body">{{ group.label }}</span><span class="bookshelf-work-count tw:flex tw:items-center tw:gap-s-2 tw:mt-s-2 tw:text-secondary tw:text-label">{{ group.count }} 位角色<ArchiveIcon name="chevron-down" /></span></span>
+          <CardEdgeLight />
         </button>
         <div v-if="group.covers.length > 1" class="bookshelf-flip-row tw:flex tw:items-center tw:justify-center tw:gap-s-2 tw:w-full tw:mt-s-2 tw:text-secondary tw:text-label-xs">
           <span aria-live="polite">{{ rotatedCovers(group.key, group.covers)[0]?.name }}</span>
@@ -43,10 +43,11 @@
         <span role="status">{{ results.length }} 位角色</span>
       </div>
       <div ref="characterGrid" class="bookshelf-characters tw:grid" role="group" aria-label="角色列表">
-        <button v-for="item in visibleResults" :key="item.id" type="button" class="bookshelf-character tw:relative tw:flex tw:flex-col tw:items-stretch tw:min-w-0 tw:p-s-2 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" :data-character="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
+        <button v-for="item in visibleResults" :key="item.id" type="button" class="bookshelf-character tw:relative tw:flex tw:flex-col tw:items-stretch tw:min-w-0 tw:p-s-2 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" :data-character="item.id" :data-list-key="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
           <CharacterPortrait :src="item.image" :name="item.name" />
           <span class="bookshelf-character-copy tw:grid tw:gap-s-1"><strong>{{ item.name }}</strong><small>{{ franchiseLabel(franchiseKey(item.source)) || '未标注作品' }}</small></span>
           <span v-if="selectedId === item.id" class="bookshelf-selected tw:absolute tw:right-s-3 tw:top-s-3 tw:grid tw:w-[28px] tw:h-[28px] tw:rounded-pill tw:text-accent"><ArchiveIcon name="success" /><span class="sr-only">当前角色</span></span>
+          <CardEdgeLight />
         </button>
       </div>
       <div v-if="!results.length" class="bookshelf-empty tw:text-center tw:text-secondary" role="status">
@@ -67,6 +68,8 @@ import CharacterPortrait from './CharacterPortrait.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioPagination from '@/components/ui/StudioPagination.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import { useListTransition } from '@/composables/useListTransition'
 import type { DirectoryCharacter } from './CharacterDirectory.vue'
 import { useCharacterBookshelf, type CharacterBookshelfState } from '@/composables/useCharacterBookshelf'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
@@ -90,6 +93,7 @@ function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
   return [...covers.slice(offset), ...covers.slice(0, offset)]
 }
 const { query, series, page, term, groups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot } = useCharacterBookshelf(() => props.items, props.initialState)
+useListTransition(characterGrid, () => visibleResults.value.map(item => item.id))
 
 function focusResults() {
   const heading = resultsHeading.value
@@ -146,30 +150,36 @@ defineExpose({ focusSelected, snapshot })
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .character-bookshelf { padding: clamp(20px, 2.5vw, 32px); border: 1px solid var(--border-soft); background: var(--bg-surface); }
-.bookshelf-total strong { @apply tw:text-primary tw:font-semibold; }
-.bookshelf-total span { margin-inline: var(--s-2); }
+.bookshelf-total { display:flex; flex-wrap:wrap; gap:var(--s-3); }
+.bookshelf-stat { display:inline-flex; align-items:center; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); }
+.bookshelf-stat > .archive-icon { width:18px; height:18px; color:var(--accent); }
+.bookshelf-total strong { color:var(--text-primary); font:600 var(--fs-body)/var(--lh-label) var(--font-mono); }
 .bookshelf-modes { --selection-radius:var(--r-pill); border: 1px solid transparent; background: var(--bg-base); }
 .bookshelf-modes button { @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2; border: 1px solid transparent; @apply tw:rounded-pill; padding: var(--s-2) var(--s-4); @apply tw:min-h-[40px]; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-label tw:cursor-pointer; }
 .bookshelf-modes button[aria-pressed="true"] { @apply tw:text-accent; }
 .bookshelf-search-row { border-bottom: 0; }
 .bookshelf-search { flex:1; @apply tw:max-w-[620px]; }
 .bookshelf-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 48px); @apply tw:gap-y-s-6; padding: var(--s-5) 0 var(--s-3); }
-.bookshelf-open { border:0; background:transparent; color:inherit; font:inherit; }
+.bookshelf-open { position:relative; isolation:isolate; padding:var(--s-2); border:1px solid var(--border-soft); background:var(--bg-base); color:inherit; font:inherit; box-shadow:inset 0 1px 0 var(--glass-highlight); }
+.bookshelf-open::before { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; background:linear-gradient(160deg,var(--accent-soft),transparent 65%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .bookshelf-flip-row > span { @apply tw:min-w-0 tw:max-w-[60%] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .bookshelf-flip-row button { @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0 tw:min-h-[36px]; padding:var(--s-1) var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; }
 .bookshelf-flip-row button:hover { background:var(--bg-base); @apply tw:text-accent; }
 .bookshelf-work { padding: var(--s-2) 0 var(--s-4); border: 0; background: transparent; color: inherit; font: inherit; }
 .bookshelf-cover-stage { aspect-ratio: 1.15; }
-.bookshelf-cover { border: 3px solid var(--bg-surface); box-shadow: var(--shadow-md); transform-origin: center 85%; transition: transform var(--motion-hover) var(--ease-out); }
+.bookshelf-cover { border:3px solid var(--bg-surface); box-shadow:var(--shadow-md); transform-origin:center 85%; transition:transform var(--motion-art-hover) var(--spring-soft); }
 .bookshelf-cover :deep(.character-portrait) { @apply tw:w-full tw:h-full; border: 0; border-radius: 0; }
 .bookshelf-cover :deep(img) { transform: none; }
-.bookshelf-cover[data-slot="0"] { z-index: calc(var(--z-base) + 4); transform: translateY(-3%); }
-.bookshelf-cover[data-slot="1"] { z-index: calc(var(--z-base) + 3); transform: translate(-12%, 2%) rotate(-6deg); }
-.bookshelf-cover[data-slot="2"] { z-index: calc(var(--z-base) + 2); transform: translate(12%, 3%) rotate(6deg); }
-.bookshelf-cover[data-slot="3"] { z-index: calc(var(--z-base) + 1); transform: translate(-17%, 6%) rotate(-10deg); }
-.bookshelf-cover[data-slot="4"] { z-index: var(--z-base); transform: translate(17%, 6%) rotate(10deg); }
-.bookshelf-work-title { padding-inline: var(--s-2); overflow-wrap: anywhere; }
-.bookshelf-work-count .archive-icon { transform: rotate(-90deg); @apply tw:text-accent; }
+.bookshelf-cover[data-slot="0"] { --cover-rest:translateY(-3%); z-index:calc(var(--z-base) + 4); }
+.bookshelf-cover[data-slot="1"] { --cover-rest:translate(-12%,2%) rotate(-6deg); z-index:calc(var(--z-base) + 3); }
+.bookshelf-cover[data-slot="2"] { --cover-rest:translate(12%,3%) rotate(6deg); z-index:calc(var(--z-base) + 2); }
+.bookshelf-cover[data-slot="3"] { --cover-rest:translate(-17%,6%) rotate(-10deg); z-index:calc(var(--z-base) + 1); }
+.bookshelf-cover[data-slot="4"] { --cover-rest:translate(17%,6%) rotate(10deg); z-index:var(--z-base); }
+.bookshelf-cover { transform:var(--cover-rest); }
+.bookshelf-work-caption { display:grid; width:100%; min-width:0; padding:0 var(--s-3) var(--s-3); text-align:left; }
+.bookshelf-work-title { overflow-wrap:anywhere; }
+.bookshelf-work-count { justify-content:space-between; }
+.bookshelf-work-count .archive-icon { width:24px; height:24px; padding:4px; border:1px solid var(--border-soft); border-radius:var(--r-pill); transform:rotate(-90deg); color:var(--accent); transition:transform var(--motion-route) var(--spring-soft); }
 .bookshelf-cover-placeholder { inset: 5% 21% 9%; border: 1px dashed var(--border-soft); background: var(--bg-base); }
 .bookshelf-cover-placeholder > .archive-icon { @apply tw:text-glyph; }
 .bookshelf-text-button { @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[40px] tw:p-s-2; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:text-accent; font: inherit; @apply tw:text-label tw:cursor-pointer tw:shrink-0; }
@@ -179,12 +189,12 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-results-heading > span { @apply tw:ml-auto tw:text-muted tw:text-label; }
 .bookshelf-back .archive-icon { transform: rotate(90deg); }
 .bookshelf-characters { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }
-.bookshelf-character { border: 1px solid transparent; background: var(--bg-base); font: inherit; transform-origin: center bottom; }
+.bookshelf-character { border:1px solid var(--border-soft); background:var(--bg-base); font:inherit; box-shadow:inset 0 1px 0 var(--glass-highlight); }
 /* A quiet card edge; fade a prepainted shadow instead of animating its blur. */
 .bookshelf-character::before { content: ''; position: absolute; inset: -1px; border: 1px solid var(--border-strong); border-radius: inherit; box-shadow: var(--shadow-sm); opacity: 0; pointer-events: none; }
 .bookshelf-character:focus-visible::before { opacity: 1; }
-.bookshelf-character :deep(.character-portrait) { @apply tw:w-full tw:h-auto; aspect-ratio: .78; border: 0; @apply tw:rounded-md; }
-.bookshelf-character :deep(img) { transform: none; }
+.bookshelf-character :deep(.character-portrait) { @apply tw:w-full tw:h-auto; aspect-ratio:.78; border:0; @apply tw:rounded-md; transition:transform var(--motion-route) var(--spring-soft); }
+.bookshelf-character :deep(img) { transform:none; transition:transform var(--motion-art-hover) var(--spring-soft); }
 .bookshelf-character-copy { padding: var(--s-3) var(--s-1) var(--s-1); overflow-wrap: anywhere; }
 .bookshelf-character-copy strong { @apply tw:text-body-sm tw:font-semibold tw:leading-label; }
 .bookshelf-character-copy small { @apply tw:text-secondary tw:text-label-xs tw:leading-body; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
@@ -196,18 +206,22 @@ defineExpose({ focusSelected, snapshot })
 .character-bookshelf button:focus-visible, .bookshelf-results-heading h2:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .sr-only { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden; clip-path: inset(50%); @apply tw:whitespace-nowrap; border: 0; }
 @media (hover: hover) and (pointer: fine) {
-  html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="0"] { transform: translateY(-6%); }
-  html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="1"] { transform: translate(-16%, 2%) rotate(-8deg); }
-  html:not([data-reduced-motion="true"]) .bookshelf-work:hover .bookshelf-cover[data-slot="2"] { transform: translate(16%, 3%) rotate(8deg); }
-  html:not([data-reduced-motion="true"]) .bookshelf-character { transition: transform var(--motion-hover) var(--ease-out); }
-  html:not([data-reduced-motion="true"]) .bookshelf-character::before { transition: opacity var(--motion-hover) var(--ease-out); }
-  html:not([data-reduced-motion="true"]) .bookshelf-character:hover { transform: perspective(900px) translateY(-2px) rotateX(.6deg); }
-  html:not([data-reduced-motion="true"]) .bookshelf-character:active { transform: translateY(0) scale(.995); }
+  .bookshelf-open:where(:hover:not(:focus-visible)) .bookshelf-cover[data-slot="0"] { transform:translateY(-9%); }
+  .bookshelf-open:where(:hover:not(:focus-visible)) .bookshelf-cover[data-slot="1"] { transform:translate(-22%,1%) rotate(-12deg); }
+  .bookshelf-open:where(:hover:not(:focus-visible)) .bookshelf-cover[data-slot="2"] { transform:translate(22%,2%) rotate(12deg); }
+  .bookshelf-open:where(:hover:not(:focus-visible)) .bookshelf-cover[data-slot="3"] { transform:translate(-26%,6%) rotate(-15deg); }
+  .bookshelf-open:where(:hover:not(:focus-visible)) .bookshelf-cover[data-slot="4"] { transform:translate(26%,6%) rotate(15deg); }
+  .bookshelf-open:hover::before { opacity:1; }
+  .bookshelf-open:where(:hover:not(:focus-visible)) .bookshelf-work-count .archive-icon { transform:translateX(3px) rotate(-90deg); }
+  .bookshelf-character:where(:hover:not(:focus-visible)) :deep(.character-portrait) { transform:translateY(-6px); }
+  .bookshelf-character:where(:hover:not(:focus-visible)) :deep(img) { transform:scale(1.06); }
 }
 @media (hover: hover) and (pointer: fine) {
   .bookshelf-character:hover::before { opacity: 1; }
 }
-.is-keyboard-input .bookshelf-cover { transition:none; }
+.character-bookshelf.is-keyboard-input .bookshelf-cover { transition:none; transform:var(--cover-rest); }
+.bookshelf-character:focus-visible :deep(.character-portrait),.bookshelf-character:focus-visible :deep(img) { transition:none; transform:none; }
+.bookshelf-open:focus-visible .bookshelf-work-count .archive-icon { transition:none; }
 @media (max-width: 1200px) {
   .bookshelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .bookshelf-characters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -230,5 +244,13 @@ defineExpose({ focusSelected, snapshot })
   .bookshelf-search-row { @apply tw:gap-s-1 tw:mt-s-4; }
   .bookshelf-results-heading { @apply tw:gap-s-2; }
 }
-@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .bookshelf-cover, :root:not([data-motion='full']) .bookshelf-character { transition: none; } }
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .character-bookshelf :is(.bookshelf-cover,.bookshelf-work-count .archive-icon),:root:not([data-motion='full']) .bookshelf-character :deep(.character-portrait),:root:not([data-motion='full']) .bookshelf-character :deep(img),:root:not([data-motion='full']) .bookshelf-open::before { transition:none; }
+  :root:not([data-motion='full']) .character-bookshelf .bookshelf-cover { transform:var(--cover-rest); }
+  :root:not([data-motion='full']) .bookshelf-character :deep(.character-portrait),:root:not([data-motion='full']) .bookshelf-character :deep(img) { transform:none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) .character-bookshelf :is(.bookshelf-cover,.bookshelf-work-count .archive-icon),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(.character-portrait),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(img),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-open::before { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .character-bookshelf .bookshelf-cover { transform:var(--cover-rest); }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(.character-portrait),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(img) { transform:none; }
+@media (forced-colors:active) { .bookshelf-open::before { display:none; } .bookshelf-open,.bookshelf-character { border-color:ButtonText; } }
 </style>

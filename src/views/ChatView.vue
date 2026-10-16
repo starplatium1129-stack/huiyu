@@ -66,15 +66,17 @@
           </div>
         </header>
         <div v-if="!chatReady || preparingRoom" class="room-setup">
-          <strong>{{ setupTitle }}</strong>
+          <strong><span class="room-setup-icon" aria-hidden="true"><ArchiveIcon name="model" /></span>{{ setupTitle }}</strong>
           <button v-if="chatProvider === 'local'" class="btn btn-primary btn-sm" type="button" :disabled="preparingRoom" @click="prepareRoom">{{ preparingRoom ? '准备中…' : '连接模型' }}</button>
           <button v-else class="btn btn-primary btn-sm" type="button" @click="apiSettingsOpen = true; openRoomPanel('settings')">选择模型</button>
         </div>
         <div v-show="!immersive" class="chat-list" ref="chatListRef" role="log" aria-live="off" aria-label="对话记录">
           <div v-if="!currentMessages.length" class="chat-empty">
-            <RuntimeImage class="room-empty-avatar" :src="avatar" alt="" />
+            <div class="room-welcome-art" aria-hidden="true"><RuntimeImage class="room-empty-avatar" :src="avatar" alt="" /></div>
+            <h2 class="room-empty-title">和{{ currentCharacter.name }}聊一会儿</h2>
             <div class="chat-empty-greeting">{{ personalizedGreeting }}</div>
-            <div class="chat-starters" aria-label="对话开场建议"><button v-for="s in currentCharacter.starters" :key="s" type="button" @click="useStarter(s)">{{ s }}</button></div>
+            <div class="chat-starters" aria-label="对话开场建议"><button v-for="(s, index) in currentCharacter.starters" :key="s" class="room-starter" type="button" @click="chooseStarter(s)"><span class="room-starter-index" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span><span class="room-starter-copy">{{ s }}</span><span class="room-starter-arrow" aria-hidden="true"><ArchiveIcon name="chevron-down" /><ArchiveIcon name="chevron-down" /></span></button></div>
+            <p class="room-starter-hint">选择开场建议后，可编辑再发送。</p>
           </div>
           <div v-for="msg in currentMessages" :key="msg.mid" class="message"
             :class="[msg.role, { streaming: msg.mid === streamingMid, speaking: msg.mid === playingMid }]" :data-mid="msg.mid">
@@ -100,6 +102,7 @@
         <div v-if="immersive" class="room-current-line" role="log" aria-live="off" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
         <div v-if="activityText" class="room-chat-activity" role="status"><span>{{ activityText }}</span><button v-if="speechSessionActive" class="btn btn-ghost btn-sm" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button></div>
         <div class="chat-composer">
+          <div class="room-composer-meta"><span><ArchiveIcon name="chat" />写给{{ currentCharacter.name }}</span><small><kbd>Enter</kbd> 发送 · <kbd>Shift + Enter</kbd> 换行</small></div>
           <div class="composer-row">
             <StudioTooltip v-if="speechReady" anchor :content="speechError || (busy || voiceActive ? '请等待当前回复或语音结束' : speechButtonText)">
               <button class="hold-talk-btn" type="button" :aria-label="speechButtonText" :data-state="speechState" :disabled="speechButtonDisabled"
@@ -262,6 +265,7 @@ const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
 const { hasNew, latest } = useConversationReading(chatListRef, () => currentMessages.value, activeChar)
 const currentLine = computed(() => [...currentMessages.value].reverse().find(m => m.role === 'assistant')?.content || personalizedGreeting.value)
+function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
 async function copyMessage(content: string) {
   try { await navigator.clipboard.writeText(content); setError('已复制', 'info', 1800) }

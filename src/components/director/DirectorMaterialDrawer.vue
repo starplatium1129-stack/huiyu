@@ -5,7 +5,7 @@
       <AnimatedSelection variant="underline" />
       <TabsTrigger v-for="item in sections" :key="item.id" :value="item.id" as-child><button type="button"
         :id="`material-tab-${item.id}`" :aria-controls="`material-${item.id}`">
-        <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
+        <ArchiveIcon :name="item.icon" /><span class="studio-control-label">{{ item.label }}</span>
       </button></TabsTrigger>
     </TabsList>
     <!-- 首次选中才加载，之后保留输入、搜索与选中状态。 -->
@@ -58,7 +58,6 @@ watch(() => props.expert, value => {
 .material-switch { position:relative; display:flex; gap:4px; margin:0 20px; border-bottom:1px solid var(--border-soft); }
 .material-switch button { display:flex; flex:1; min-width:0; min-height:42px; align-items:center; justify-content:center; gap:6px; padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:0; background:transparent; color:var(--text-secondary); font:500 13px var(--font-sans); cursor:pointer; }
 .material-switch button[data-state=active] { color:var(--accent); font-weight:600; }
-.material-switch button:hover { background:var(--accent-soft); }
 .material-switch button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .material-switch .archive-icon { width:16px; height:16px; }
 .material-content { padding:20px; }

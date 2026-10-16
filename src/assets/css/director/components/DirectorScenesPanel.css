@@ -71,7 +71,6 @@
   }
   .pb .scene-cat-btn:hover:not(.active) { border-color:var(--border-strong); @apply tw:text-primary; }
   .pb .scene-cat-btn:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-  .pb .scene-cat-btn:active { transform:translateY(1px) scale(.97); }
   .pb .scene-cat-btn.active {
     background:var(--accent-soft);
     @apply tw:text-accent tw:border-strong tw:font-semibold;

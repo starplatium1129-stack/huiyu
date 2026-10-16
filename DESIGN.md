@@ -338,8 +338,9 @@ empty space beneath it.
 Depth makes grouping, focus and interactive layers visible:
 
 - Base and panels: shared background roles and soft 1px borders establish grouping.
-- Interactive controls: a surface or border change signals hover; selection adds
-  an explicit indicator, and keyboard focus retains the shared visible ring.
+- Interactive controls: buttons, tabs, segments and menus share authored hover
+  and press feedback through surfaces, icons and labels, with stable hit targets.
+  Selection keeps its own indicator, and keyboard focus stays visible and immediate.
 - Floating surfaces: popovers, dialogs and viewers use existing elevation tokens;
   primary actions gain emphasis from their action color, not an extra shadow tier.
 

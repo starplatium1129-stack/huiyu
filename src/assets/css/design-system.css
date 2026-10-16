@@ -811,11 +811,7 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
   border: 1px solid transparent;
   @apply tw:cursor-pointer;
   text-decoration: none;
-  transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-press) var(--ease-out);
-}
-.btn::before { @apply tw:hidden; }
-@media (hover: hover) {
-  .btn:hover::before { transform: skewX(-18deg) translateX(370%); }
+  transition: transform var(--motion-press) var(--ease-out);
 }
 .btn-primary {
   background: var(--accent); @apply tw:text-inverse;
@@ -869,7 +865,6 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 @media (hover: hover) and (pointer: fine) {
   .card-create:hover { transform: translateY(-2px); }
   .card-direct:hover { transform: translateY(-2px); }
-  .btn-primary:hover { transform: translateY(-1px); }
 }
 
 /* ---- Form controls ---- */
@@ -1678,12 +1673,7 @@ kbd,
 /* ── 全站互动控件物理微按压反馈 (Tactile Press - Emil Kowalski 哲学) ── */
 :where(
   .chip,
-  .token-chip,
-  .outfit-chip,
-  .scene-cat-btn,
   .char-outfit-tab,
-  .gallery-filter,
-  .artist-cat-btn,
   .artist-combo-btn,
   .artwork-tool,
   .history-action,
@@ -1691,8 +1681,6 @@ kbd,
   .viewer-nav,
   .pop-franchise,
   .pop-char-btn,
-  .pop-cat,
-  .director-mode-option,
   .prompt-tag,
   .sc-tag
 ):active:not(:disabled):not([aria-disabled="true"]) {

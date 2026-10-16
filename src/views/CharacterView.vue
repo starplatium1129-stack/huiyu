@@ -68,7 +68,7 @@
               : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '浏览相关场景' : '查看核心场景' }}</RouterLink>
           </div>
           <div v-if="current.voice" class="voice-block">
-            <span class="voice-label">语气示例</span>{{ current.voice }}
+            <span class="voice-label"><ArchiveIcon name="chat" />语气示例</span><p class="voice-line">{{ current.voice }}</p>
           </div>
           <div class="tags-grid">
             <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="tagClass(i)">{{ t }}</span>
@@ -76,11 +76,11 @@
           <section v-if="current.bg_story" class="character-story" aria-label="角色故事">
             <h3 class="lab">角色故事</h3>
             <p id="character-background" class="profile-story" :class="{ expanded: bgExpanded }">{{ current.bg_story }}</p>
-            <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}</button>
+            <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}<ArchiveIcon name="chevron-down" /></button>
           </section>
           <div class="detail-grid">
-            <section class="detail-section"><div class="lab">性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div></section>
-            <section class="detail-section"><div class="lab">喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div></section>
+            <section class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="star" />性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div><CardEdgeLight /></section>
+            <section class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="love" />喜欢的事</div><div class="chips"><span v-for="l in current.likes" :key="l" class="chip">{{ l }}</span></div><CardEdgeLight /></section>
           </div>
         </div>
       </section>
@@ -164,6 +164,7 @@ import { useCharacterArchiveNavigation } from '@/composables/useCharacterArchive
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { usePortraitFallback } from '@/composables/usePortraitFallback'

@@ -29,6 +29,5 @@
 .pb .inspector-actions { flex-shrink:0; border-top:1px solid var(--border-soft); }
 
 .pb .inspector-workbench .inspector-tabs button[data-state=active] { color:var(--accent); font-weight:600; }
-.pb .inspector-workbench .inspector-tabs button:hover { background:var(--accent-soft); }
 @media (min-width:1024px) and (max-width:1440px) { .pb[data-director-mode] .inspector-workbench .inspector-scroll { padding:16px 20px; } }
 @media (forced-colors:active) { .pb .inspector-workbench .inspector-tabs button[data-state="active"] { border-color:Highlight; color:Highlight; } }

@@ -19,7 +19,6 @@
   .pb .focus-mode-btn:hover:not([aria-pressed="true"]) { border-color:var(--border-strong); background:var(--bg-hover); @apply tw:text-primary; }
   .pb .focus-mode-btn[aria-pressed="true"] { @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent tw:font-bold; }
   .pb .focus-mode-btn:focus-visible, .pb .utility-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-  .pb .focus-mode-btn:active, .pb .utility-trigger:active { transform:scale(.95); }
   .pb .utility-menu { @apply tw:relative; }
   .pb .utility-trigger { @apply tw:w-[36px] tw:h-[36px] tw:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--motion-hover),border-color var(--motion-hover),transform var(--motion-hover); }
   .pb .utility-trigger:hover, .pb .utility-trigger[data-state="open"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }

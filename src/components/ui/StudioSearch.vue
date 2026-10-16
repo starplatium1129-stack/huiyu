@@ -27,12 +27,14 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-search-input { min-height:var(--control-height); }
 .studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
 .studio-search[data-size='sm'] .studio-search-input { min-height:var(--control-height-sm); padding-block:var(--s-1); font-size:var(--fs-label-sm); }
-/* Paint the focus line above the glass fill without replacing material shadows. */
-.studio-search::after { content:""; position:absolute; inset:auto var(--s-3) 0; height:2px; background:var(--focus-color); opacity:0; transform:scaleX(.88); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-control) var(--ease-out); pointer-events:none; }
-.studio-search:has(.studio-search-input:focus)::after { opacity:1; transform:none; }
-.studio-search:has(.studio-search-input:focus-visible)::after { transition:none; }
-.studio-search > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
+.studio-search:has(.studio-search-input:focus-visible)::before { border-color:var(--focus-color); transition:none; }
+.studio-search > .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
 .studio-search:focus-within > .archive-icon { transform:scale(1.08); }
+.studio-search:has(.studio-search-input:focus-visible) > .archive-icon { transition:none; }
+@media (hover:hover) and (pointer:fine) {
+  .studio-search:where(:hover:not(:focus-within))::before { opacity:.75; }
+  .studio-search:where(:hover:not(:focus-within)) > .archive-icon { transform:translateY(-1px) rotate(-12deg) scale(1.16); }
+}
 .studio-search-clear { animation:search-clear-in var(--motion-surface) var(--spring-bounce); }
 @keyframes search-clear-in { from { opacity:0; transform:scale(.6) rotate(-45deg); } }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
@@ -41,14 +43,14 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
 .studio-search button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) .studio-search::before,:root:not([data-motion='full']) .studio-search::after,
+  :root:not([data-motion='full']) .studio-search::before,
   :root:not([data-motion='full']) .studio-search > .archive-icon { transition:none; }
-  :root:not([data-motion='full']) .studio-search:focus-within > .archive-icon { transform:none; }
+  :root:not([data-motion='full']) .studio-search > .archive-icon { transform:none; }
   :root:not([data-motion='full']) .studio-search-clear { animation:none; }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search::before,:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search::after,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search::before,
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search > .archive-icon { transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search:focus-within > .archive-icon { transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search > .archive-icon { transform:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search-clear { animation:none; }
 @media(forced-colors:active) { .studio-search:has(.studio-search-input:focus) { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

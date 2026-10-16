@@ -1,7 +1,7 @@
 <template>
   <div class="director-layout-controls" role="group" aria-label="侧栏显示">
-    <button id="director-materials-toggle" class="btn btn-ghost btn-sm" type="button" :aria-pressed="!collapsed.materials" :aria-expanded="!collapsed.materials" aria-controls="drawing-materials" @click="$emit('toggle', 'materials')"><ArchiveIcon name="manager" />素材</button>
-    <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="!collapsed.inspector" :aria-expanded="!collapsed.inspector" aria-controls="drawing-inspector" @click="$emit('toggle', 'inspector')"><ArchiveIcon name="gear" />参数</button>
+    <button id="director-materials-toggle" class="btn btn-ghost btn-sm" type="button" :aria-pressed="!collapsed.materials" :aria-expanded="!collapsed.materials" aria-controls="drawing-materials" @click="$emit('toggle', 'materials')"><ArchiveIcon name="manager" /><span class="studio-control-label">素材</span></button>
+    <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="!collapsed.inspector" :aria-expanded="!collapsed.inspector" aria-controls="drawing-inspector" @click="$emit('toggle', 'inspector')"><ArchiveIcon name="gear" /><span class="studio-control-label">参数</span></button>
   </div>
 </template>
 <script setup lang="ts">

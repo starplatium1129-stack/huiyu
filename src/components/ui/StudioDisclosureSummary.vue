@@ -14,8 +14,6 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 .studio-disclosure-summary > .studio-disclosure-chevron { width:16px; height:16px; flex-shrink:0; margin-inline-start:auto; color:var(--text-secondary); transition:transform var(--spring-gentle-duration) var(--spring-gentle-ease); }
 details[open] > .studio-disclosure-summary > .studio-disclosure-chevron { transform:rotate(180deg); }
 .studio-disclosure-summary:focus-visible > .studio-disclosure-chevron { transition:none; }
-.studio-disclosure-summary:hover:not(:focus-visible) { outline:none; box-shadow:var(--focus-shadow); }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-disclosure-chevron { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .studio-disclosure-chevron { transition:none; }
-@media (forced-colors:active) { .studio-disclosure-summary:hover:not(:focus-visible) { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

@@ -3,11 +3,11 @@
   <StudioPopover v-model:open="utilityOpen" :label="launcherLabel || '数据工具'" content-class="studio-data-tools"
     @close-auto-focus="onMenuCloseAutoFocus">
     <template #trigger>
-      <button type="button" data-migration-control @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
+      <button type="button" data-migration-control data-control-motion @focus="utilityTrigger = $event.currentTarget as HTMLButtonElement"
         :class="launcherLabel ? 'btn btn-ghost btn-sm' : 'utility-trigger'"
         :aria-label="launcherLabel || (backupStale ? `数据工具（${backupReminder}）` : '数据工具')"
       >
-        <template v-if="launcherLabel"><ArchiveIcon name="download" />{{ launcherLabel }}</template>
+        <template v-if="launcherLabel"><ArchiveIcon name="download" /><span class="studio-control-label">{{ launcherLabel }}</span></template>
         <span v-else class="utility-trigger-dots tw:inline-flex tw:items-center tw:justify-center tw:mt-[-2px]" aria-hidden="true">···</span>
         <span v-if="backupStale && !launcherLabel" class="utility-dot tw:absolute tw:top-[3px] tw:right-[3px] tw:w-[6px] tw:h-[6px]" aria-hidden="true"></span>
       </button>

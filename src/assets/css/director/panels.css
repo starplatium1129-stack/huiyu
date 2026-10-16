@@ -91,7 +91,6 @@
   }
   .pb .director-mode-option:hover:not(.active) { @apply tw:text-primary; }
   .pb .director-mode-option:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-  .pb .director-mode-option:active { transform:scale(.96); }
   .pb .director-mode-option.active {
     border-color:var(--glass-edge);
     background:linear-gradient(135deg,var(--glass-specular),var(--glass-fill-strong));
@@ -364,8 +363,6 @@
 
 /* Hover 位移只属于精确指针；触屏保留颜色/边框反馈，不粘住卡片位置。 */
 @media (hover: hover) and (pointer: fine) {
-  .pb .focus-mode-btn:hover,
-  .pb .utility-trigger:hover,
   .pb .scene-card:hover,
   .pb .cat-tab:hover,
   .pb .option:hover,

@@ -41,12 +41,12 @@
           </button>
           <DirectorModeSwitch :model-value="pb.directorMode" @update:model-value="setDirectorMode" />
           <DirectorLayoutControls v-if="!pb.focusMode" :collapsed="directorLayout.collapsed.value" @toggle="toggleLayout" />
-          <button class="focus-mode-btn" type="button"
+          <button class="focus-mode-btn" type="button" data-control-motion
             :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
             :aria-pressed="pb.focusMode"
             @click="pb.focusMode = !pb.focusMode">
             <ArchiveIcon :name="pb.focusMode ? 'compress' : 'expand'" class="focus-mode-icon" aria-hidden="true" />
-            <span class="focus-mode-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
+            <span class="focus-mode-label studio-control-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
           </button>
         </div>
         <div class="pb-utility-actions">

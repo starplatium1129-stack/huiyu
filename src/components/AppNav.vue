@@ -25,7 +25,7 @@
           @click="closeMenu"
         >
           <ArchiveIcon :name="item.icon" />
-          <span>{{ item.label }}</span>
+          <span class="nav-item-label">{{ item.label }}</span>
         </RouterLink>
 
         <!-- The richer menu is loaded on first use, outside the initial navigation bundle. -->
@@ -35,7 +35,7 @@
           <StudioTooltip v-if="!moreLoaded" anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
             <button type="button" class="nav-more-trigger"
               :aria-expanded="moreOpen" :aria-busy="moreReady"
-              @click="openMore">更多<ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
+              @click="openMore"><span class="nav-more-label">更多</span><ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
           </StudioTooltip>
           <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :groups="archiveGroups" :active-id="route.path === '/popular-scenes' ? 'popular-scenes' : activeId"
             :pending-path="pendingPath" :intent-path="intentRoutePath" :open-beside-task="openBesideTask"
@@ -311,8 +311,29 @@ onUnmounted(deactivateNavigation)
 .nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
 .nav-links { --selection-radius: var(--r-md); --selection-shadow: none; border-color:transparent; background:transparent; box-shadow:none; }
 .nav-links :deep(.animated-selection) { background:var(--accent-soft); border-color:transparent; }
-.nav-more-chevron { transition:none; }
-.nav-links > a { white-space:nowrap; }
+.nav-links > a { white-space:nowrap; isolation:isolate; }
+/* Move the label and artwork while navigation hit targets remain fixed. */
+.nav-brand:active,.nav-links > a:active,.nav-more :deep(.nav-more-trigger:active),.nav-utilities :deep(button:active:not(.app-theme-toggle)),.nav-menu-toggle:active { transform:none; }
+.nav-logo,.nav-item-label,.nav-more :deep(.nav-more-label),.nav-links > a > .archive-icon,.nav-utilities :deep(button > .archive-icon),.nav-utilities :deep(.task-center-button > span),.nav-menu-toggle > .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
+.nav-links > a::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--border-soft); border-radius:inherit; background:var(--accent-soft); box-shadow:inset 0 1px 0 var(--glass-highlight); opacity:0; transform:scale(.92); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-route) var(--spring-soft); pointer-events:none; }
+.nav-links > a:hover { background:transparent; }
+.nav-links > a:focus-visible > :is(.archive-icon,.nav-item-label),.nav-brand:focus-visible .nav-logo,.nav-more :deep(.nav-more-trigger:focus-visible > span),.nav-utilities :deep(button:focus-visible > .archive-icon),.nav-menu-toggle:focus-visible > .archive-icon { transform:none; transition:none; }
+.nav-links > a:focus-visible::before { transition:none; }
+.nav-more :deep(.nav-more-chevron) { transition:transform var(--motion-route) var(--spring-soft); }
+.nav-more :deep(.nav-more-trigger:focus-visible .nav-more-chevron) { transition:none; }
+@media (hover:hover) and (pointer:fine) {
+  .nav-brand:where(:hover:not(:focus-visible)) .nav-logo { transform:translateY(-2px) scale(1.025); }
+  .nav-links > a:where(:hover:not(:focus-visible))::before { opacity:1; transform:none; }
+  .nav-links > a:where(:hover:not(:focus-visible)) > .nav-item-label,.nav-more :deep(.nav-more-trigger:where(:hover:not(:focus-visible)) .nav-more-label) { transform:translateY(-2px); }
+  .nav-links > a:where(:hover:not(:focus-visible)) > .archive-icon,.nav-utilities :deep(button:where(:hover:not(:focus-visible)) > .archive-icon),.nav-menu-toggle:where(:hover:not(:focus-visible)) > .archive-icon { transform:translateY(-2px) rotate(-10deg) scale(1.16); }
+  .nav-more :deep(.nav-more-trigger:where(:hover:not(:focus-visible):not([aria-expanded='true'])) .nav-more-chevron) { transform:translateY(2px); }
+}
+.nav-brand:where(:active:not(:focus-visible)) .nav-logo { transform:scale(.97); }
+.nav-links > a:where(:active:not(:focus-visible)) > :is(.archive-icon,.nav-item-label),.nav-more :deep(.nav-more-trigger:where(:active:not(:focus-visible)) > .nav-more-label),.nav-utilities :deep(button:where(:active:not(:focus-visible):not(.app-theme-toggle)) > :is(.archive-icon,span)),.nav-menu-toggle:where(:active:not(:focus-visible)) > .archive-icon { transform:scale(.94); transition-duration:var(--motion-press); }
+.u212[data-reduced-motion='true'] :is(.nav-logo,.nav-item-label),.u212[data-reduced-motion='true'] .nav-links > a > .archive-icon,.u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-label),.u212[data-reduced-motion='true'] .nav-utilities :deep(button > :is(.archive-icon,span):not(.theme-track)),.u212[data-reduced-motion='true'] .nav-menu-toggle > .archive-icon { transform:none; transition:none; }
+.u212[data-reduced-motion='true'] .nav-links > a::before { transform:none; transition:none; }
+.u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-chevron) { transition:none; }
+@media (forced-colors:active) { .nav-links > a::before { display:none; } .nav-links > a:hover { outline:1px solid Highlight; outline-offset:-1px; } }
 @media (min-width:1600px) { .nav-brand-note { display: block; } }
 @media (min-width:1001px) and (max-width:1200px) {
   .nav-inner { gap:var(--s-2); }

@@ -15,7 +15,7 @@
       <template #trigger>
         <button :class="compact ? 'btn btn-ghost btn-sm' : 'random-menu-trigger'" type="button" :disabled="disabled" :aria-label="compact ? '灵感工具' : '夏目的调色笔记'">
           <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
-          <span v-if="compact">灵感工具</span>
+          <span v-if="compact" class="studio-control-label">灵感工具</span>
         </button>
       </template>
         <div class="random-label tw:sticky tw:top-0 tw:flex tw:items-center tw:justify-between tw:text-primary">夏目的调色笔记 <button type="button" class="btn btn-ghost btn-icon" aria-label="关闭调色笔记" @click="menuOpen = false"><ArchiveIcon name="close" /></button></div>

@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import '@/assets/css/control-feedback.css'
 import { getDesktopCapabilities, onDesktopNavigate } from '@/platform/desktop/capabilities'
 import { getDesktopWindowRole } from '@/platform/desktop/runtime'
 

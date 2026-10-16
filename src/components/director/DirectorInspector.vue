@@ -6,7 +6,7 @@
       <AnimatedSelection variant="underline" />
       <TabsTrigger v-for="tab in tabs" :key="tab.id" :value="tab.id" as-child>
         <button :id="`inspector-tab-${tab.id}`" type="button" :aria-controls="`inspector-${tab.id}`">
-          {{ tab.label }}<span v-if="tab.id === 'delivery' && queueCount" class="inspector-count">{{ queueCount }}</span>
+          <span class="studio-control-label">{{ tab.label }}</span><span v-if="tab.id === 'delivery' && queueCount" class="inspector-count">{{ queueCount }}</span>
         </button>
       </TabsTrigger>
     </TabsList>
