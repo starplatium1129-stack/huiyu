@@ -1,6 +1,6 @@
 use super::*;
 use canonical::entity_key;
-use std::borrow::Cow;
+use std::{borrow::Cow, collections::HashMap};
 
 pub(super) fn read(c: &Context, id: &str) -> Result<Vec<Value>> {
     c.db.prepare("SELECT body FROM migration_items WHERE migration_id=? ORDER BY item_id")?
@@ -202,6 +202,7 @@ pub(super) fn publish(
         c.check_cancel()?;
         insert_artwork(c, artwork, None, revision)?;
     }
+    let mut project_positions = HashMap::new();
     for project in &projects {
         body(project)?;
         let key = entity_key(&project["id"])?;
@@ -220,6 +221,11 @@ pub(super) fn publish(
         {
             c.db.prepare_cached("INSERT INTO project_artworks VALUES(?,?,?)")?
                 .execute(params![key, entity_key(id)?, position as i64])?;
+        }
+        if !trash.is_empty() {
+            project_positions
+                .entry(key)
+                .or_insert(project["history_ids"].as_array().unwrap().len());
         }
     }
     for entry in trash {
@@ -242,11 +248,8 @@ pub(super) fn publish(
                     continue;
                 }
                 let project_key = entity_key(&reference["projectId"])?;
-                if let Some(project) = projects
-                    .iter()
-                    .find(|p| entity_key(&p["id"]).is_ok_and(|key| key == project_key))
-                {
-                    refs.push(json!({"project_key":project_key,"position":project["history_ids"].as_array().unwrap().len()}));
+                if let Some(position) = project_positions.get(&project_key) {
+                    refs.push(json!({"project_key":project_key,"position":position}));
                 }
             }
             c.db.prepare_cached("INSERT INTO trash VALUES(?,?,?,?)")?
