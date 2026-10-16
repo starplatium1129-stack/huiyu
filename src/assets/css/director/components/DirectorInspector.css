@@ -7,7 +7,7 @@
 }
 .pb .inspector-workbench .inspector-tabs button {
   display:flex; flex:1; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:42px;
-  padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:0;
+  padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:var(--r-sm);
   background:transparent; color:var(--text-secondary); white-space:nowrap; cursor:pointer;
   font:500 13px/1.4 var(--font-sans);
 }

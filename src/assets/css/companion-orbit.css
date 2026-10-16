@@ -10,7 +10,12 @@
 .companion-orbit .orbit-action { @apply tw:absolute; left: var(--orbit-x); top: var(--orbit-y); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-[4px] tw:w-[54px] tw:h-[50px] tw:p-0; transform: translate(-50%, -50%); border: 0; border-radius: 0; background: transparent; @apply tw:text-primary; box-shadow: none; @apply tw:cursor-pointer tw:pointer-events-auto tw:text-label-sm; line-height: 1.2; }
 .orbit-action .archive-icon { @apply tw:w-[22px] tw:h-[22px] tw:text-accent; }
 .companion-orbit .orbit-action:is(:hover, :focus-visible, :active), .companion-orbit .orbit-segment[data-active] .orbit-action { background: transparent; box-shadow: none; }
-.companion-orbit .orbit-action:active { transform: translate(-50%, -50%) scale(.95); }
+.companion-orbit .orbit-action > :is(.archive-icon,span) { transition:transform var(--control-feedback-duration,var(--motion-route)) var(--spring-soft); }
+@media (hover:hover) and (pointer:fine) { .companion-orbit .orbit-action:where(:hover:not(:focus-visible)) > .archive-icon { transform:translateY(var(--control-feedback-shift,-2px)) scale(var(--control-feedback-zoom,1.14)); } }
+.companion-orbit .orbit-action:where(:active:not(:focus-visible)) > :is(.archive-icon,span) { transform:scale(var(--control-feedback-press,.94)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
+.companion-orbit .orbit-action:focus-visible > :is(.archive-icon,span) { transform:none; transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .orbit-action { --control-feedback-duration:0s; --control-feedback-shift:0px; --control-feedback-zoom:1; --control-feedback-press:1; } }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .orbit-action { --control-feedback-duration:0s; --control-feedback-shift:0px; --control-feedback-zoom:1; --control-feedback-press:1; }
 .orbit-option { @apply tw:box-border tw:absolute; left: var(--orbit-x); top: var(--orbit-y); @apply tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-[4px] tw:w-[58px] tw:min-h-[66px]; transform: translate(-50%, -50%); padding: 6px 4px; background: var(--bg-elevated); @apply tw:text-primary; border: 1px solid var(--border-strong); @apply tw:rounded-lg tw:cursor-pointer tw:pointer-events-auto; }
 .orbit-option img { flex: 0 0 30px; @apply tw:w-[30px] tw:h-[30px] tw:object-cover; object-position: top; @apply tw:rounded-sm; }
 .orbit-option > .archive-icon { @apply tw:w-[22px] tw:h-[22px]; }
@@ -20,7 +25,7 @@
 .orbit-selection > header { @apply tw:flex tw:items-center tw:gap-[8px]; }
 .orbit-selection > header strong { flex: 1; @apply tw:text-label; }
 .orbit-selection > header > span { @apply tw:text-secondary tw:text-label-xs; }
-.orbit-selection > header button { @apply tw:grid; place-items: center; @apply tw:w-[32px] tw:h-[32px]; border: 0; border-radius: 50%; background: var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; }
+.orbit-selection > header button { @apply tw:grid; place-items: center; @apply tw:w-[32px] tw:h-[32px]; border: 0; border-radius:var(--r-md); background: var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; }
 .orbit-selection > header svg { transform: rotate(90deg); }
 .orbit-selection p { @apply tw:text-secondary tw:text-label-sm; line-height: 1.7; margin: 8px 0; }
 .orbit-option-list { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-[8px]; margin-block: 12px; }

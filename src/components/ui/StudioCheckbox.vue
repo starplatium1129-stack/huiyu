@@ -24,7 +24,12 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 <style scoped>
 .studio-checkbox { position:relative; display:inline-flex; align-items:center; gap:var(--s-2); min-width:calc(var(--control-height) + var(--s-1)); min-height:calc(var(--control-height) + var(--s-1)); padding:var(--s-1) var(--s-2); color:var(--text-primary); font:600 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; }
 .studio-checkbox-input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:inherit; }
-.studio-checkbox-box { display:inline-flex; align-items:center; justify-content:center; flex:0 0 22px; width:22px; height:22px; border:1.5px solid var(--text-muted); border-radius:var(--r-xs); background:var(--bg-surface); color:var(--text-primary); pointer-events:none; }
+.studio-checkbox-box { display:inline-flex; align-items:center; justify-content:center; flex:0 0 22px; width:22px; height:22px; border:1.5px solid var(--text-muted); border-radius:var(--r-xs); background:var(--bg-surface); color:var(--text-primary); pointer-events:none; transition:transform var(--control-feedback-duration,var(--motion-route)) var(--spring-soft); }
+@media (hover:hover) and (pointer:fine) { .studio-checkbox:not(.is-disabled):not(:has(:focus-visible)):hover .studio-checkbox-box { transform:scale(var(--control-feedback-zoom,1.12)); } }
+.studio-checkbox:not(.is-disabled):not(:has(:focus-visible)):active .studio-checkbox-box { transform:scale(var(--control-feedback-press,.9)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
+.studio-checkbox-input:focus-visible + .studio-checkbox-box { transform:none; transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-checkbox { --control-feedback-duration:0s; --control-feedback-zoom:1; --control-feedback-press:1; } }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-checkbox { --control-feedback-duration:0s; --control-feedback-zoom:1; --control-feedback-press:1; }
 .studio-checkbox-input:checked + .studio-checkbox-box,
 .studio-checkbox-input:indeterminate + .studio-checkbox-box { border-color:var(--accent); background:var(--accent); color:var(--text-inverse); }
 .studio-checkbox-input:focus-visible + .studio-checkbox-box { outline:none; box-shadow:var(--focus-shadow); }

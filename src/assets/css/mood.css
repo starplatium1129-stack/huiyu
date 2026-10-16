@@ -22,7 +22,7 @@
   /* 情绪色由色条展示，正文保留共享文字色。 */
   font: inherit;
   @apply tw:text-left tw:cursor-pointer;
-  transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out);
+  transition:none;
 }
 .mood-card:hover { @apply tw:border-strong; }
 .mood-card:is(.active,.selected) { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
@@ -30,7 +30,7 @@
 .mood-card:focus-visible .mood-body { box-shadow:var(--focus-shadow); }
 .mood-strip { @apply tw:flex; height: var(--mood-strip-h, 36px); }
 .mood-swatch { flex: 1; background: var(--swatch, transparent); }
-.mood-body { padding: var(--s-2) var(--s-3); }
+.mood-body { padding: var(--s-2) var(--s-3); transition:transform var(--control-feedback-duration,var(--motion-route)) var(--spring-soft); }
 /* 标题必须是常规文字色。design-system.css 提供了 --mood-*-text 压深版,
    但卡片标题本身不需要染色 —— 色彩信号已经由上方的 .mood-strip 色条给足了。 */
 .mood-name { @apply tw:text-primary tw:text-body tw:font-semibold; }
@@ -49,8 +49,10 @@
 .mood-grid-sm .mood-name { @apply tw:text-mono-sm; }
 
 @media (hover: hover) and (pointer: fine) {
-  .mood-card:hover { transform: translateY(-2px); }
+  .mood-card:where(:hover:not(:focus-visible)) .mood-body { transform:translateY(var(--control-feedback-shift,-2px)); }
 }
+.mood-card:where(:active:not(:focus-visible)) .mood-body { transform:scale(var(--control-feedback-press,.94)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
+.mood-card:focus-visible .mood-body { transform:none; transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .mood-grid .mood-card { transition:none; transform:none; }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .mood-grid .mood-card { transition:none; transform:none; }

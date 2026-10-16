@@ -25,7 +25,7 @@
         :disabled="!modeReady(mode.id)"
         @click="selectedMode = mode.id"
       >
-        <span class="video-mode-icon"><ArchiveIcon :name="mode.icon" /></span>
+        <span class="video-mode-icon studio-control-icon"><ArchiveIcon :name="mode.icon" /></span>
         <strong>{{ mode.label }}</strong>
       </button>
       </StudioTooltip>

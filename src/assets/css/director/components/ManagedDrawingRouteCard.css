@@ -54,7 +54,7 @@
   .pb .managed-route-dismissed-wrap { @apply tw:flex tw:mb-s-2; }
   .pb .managed-route-reopen-btn {
     @apply tw:inline-flex tw:items-center tw:gap-s-1; padding:2px var(--s-2);
-    border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-surface);
+    border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface);
     @apply tw:text-muted tw:text-mono-xs tw:cursor-pointer; transition:color var(--motion-hover),border-color var(--motion-hover);
   }
   .pb .managed-route-reopen-btn:hover { @apply tw:text-accent tw:border-accent; }

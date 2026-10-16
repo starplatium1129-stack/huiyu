@@ -856,13 +856,6 @@ html.companion-mode:not(.companion-desktop) body {
   color: var(--companion-ink);
 }
 
-.companion-page .companion-window-actions button:active,
-.companion-page .companion-room-link:active,
-.companion-page .companion-send:active,
-.companion-page .companion-stop:active {
-  transform: scale(.97);
-}
-
 .companion-page .companion-stage {
   @apply tw:h-full tw:min-h-0;
 }
@@ -1575,7 +1568,7 @@ html.companion-desktop.companion-ui-hidden .companion-stage::after {
   @apply tw:min-h-[28px];
   padding: 4px 12px;
   border: 1px solid color-mix(in srgb, var(--character-accent) 50%, var(--border-soft));
-  @apply tw:rounded-pill;
+  @apply tw:rounded-md;
   background: var(--bg-surface);
   @apply tw:text-primary tw:cursor-pointer tw:text-label-xs;
 }
@@ -1632,7 +1625,7 @@ html.companion-immersive .companion-page {
   @apply tw:shrink-0 tw:whitespace-nowrap tw:inline-flex tw:items-center tw:gap-s-1 tw:min-h-[28px];
   padding: 0 10px;
   border: 1px solid var(--border-soft);
-  @apply tw:rounded-pill;
+  @apply tw:rounded-md;
   background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -2008,7 +2001,7 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
   @apply tw:pointer-events-auto tw:inline-flex tw:items-center tw:gap-[6px] tw:min-h-[34px];
   padding: 0 16px;
   border: 1px solid var(--companion-edge);
-  @apply tw:rounded-pill;
+  @apply tw:rounded-md;
   background: color-mix(in srgb, var(--art-scrim) 68%, transparent);
   color: var(--companion-ink);
   box-shadow: var(--shadow-lg), inset 0 1px 0 var(--companion-highlight);

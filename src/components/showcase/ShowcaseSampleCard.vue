@@ -56,8 +56,8 @@ const emit = defineEmits<{ open: [id: string] }>()
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.sample { @apply tw:overflow-hidden tw:relative tw:min-w-0; flex:var(--sample-grow) 1 calc(var(--showcase-row-height,320px) * var(--sample-grow)); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
-:root body .showcase-page .sample { border-radius:var(--r-sm); box-shadow:none; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-route) var(--spring-soft); }
+.sample { @apply tw:overflow-hidden tw:relative tw:min-w-0; flex:var(--sample-grow) 1 calc(var(--showcase-row-height,320px) * var(--sample-grow)); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+:root body .showcase-page .sample { border-radius:var(--r-lg); box-shadow:none; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-route) var(--spring-soft); }
 :root body .showcase-page .sample { --card-focus-lift:-8px; --card-focus-scale:1.06; }
 :root body .showcase-page .sample:has(:focus-visible) { transform:none; transition:none; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
 .sample:not(.sample-r18):has(:focus-visible) .sample-image { transform:none; transition:none; }

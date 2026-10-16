@@ -153,7 +153,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
   @apply tw:flex tw:items-center tw:gap-s-2 tw:w-full tw:min-w-0 tw:min-h-[40px];
   padding: 4px 9px 4px 7px;
   border: 1px solid var(--border-soft);
-  @apply tw:rounded-pill;
+  @apply tw:rounded-md;
   background: color-mix(in srgb, var(--bg-surface) 92%, var(--companion-option-accent) 8%);
   @apply tw:text-primary;
   box-shadow: inset 0 1px 0 var(--glass-highlight);
@@ -257,7 +257,7 @@ html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-
 .companion-picker-option {
   @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[52px] tw:p-s-2;
   border: 0;
-  @apply tw:rounded-lg;
+  @apply tw:rounded-md;
   outline: none;
   background: transparent;
   @apply tw:text-primary tw:cursor-pointer tw:text-left tw:select-none;

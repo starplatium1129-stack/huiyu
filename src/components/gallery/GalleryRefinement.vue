@@ -80,12 +80,12 @@ defineExpose({ focusTag })
   <!-- The controls share the toolbar's layout, without adding a second surface. -->
   <div class="gallery-refinement">
     <button ref="trigger" class="gallery-refine-toggle" type="button" :aria-expanded="expanded" :aria-controls="panelId" @click="toggle">
-      <ArchiveIcon name="pin" /><span>筛选作品</span><span v-if="chips.length" class="gallery-refine-count">{{ chips.length }}</span><ArchiveIcon name="chevron-down" />
+      <ArchiveIcon name="pin" /><span class="studio-control-label">筛选作品</span><span v-if="chips.length" class="gallery-refine-count">{{ chips.length }}</span><ArchiveIcon name="chevron-down" />
     </button>
     <div v-if="chips.length" ref="activeFilters" class="gallery-active-filters" role="group" aria-label="已选筛选条件">
       <span class="gallery-active-label">已选</span>
       <button v-for="chip in chips" :key="chip.key" type="button" class="gallery-filter-chip" :data-filter-key="chip.key" :aria-label="`移除筛选：${chip.label}`" @click="remove(chip.key)">
-        <span>{{ chip.label }}</span><ArchiveIcon name="close" />
+        <span class="studio-control-label">{{ chip.label }}</span><ArchiveIcon name="close" />
       </button>
       <button class="btn btn-quiet btn-sm gallery-filter-reset" type="button" @click="reset">清除全部</button>
     </div>

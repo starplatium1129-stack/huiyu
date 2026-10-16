@@ -22,14 +22,12 @@ html .scene-discovery .scene-toolbar,
 html .library-page .pop-toolbar {
   @apply tw:p-s-3;
   border: 1px solid var(--border-soft);
-  @apply tw:rounded-lg;
+  @apply tw:rounded-xl;
   background: var(--bg-surface);
   box-shadow: var(--workspace-inset);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-html .gallery-page .gallery-toolbar,
-html .scene-discovery .scene-toolbar { border-radius:var(--r-xl); }
 /* Fields are painted controls; only their teleported menus use floating glass. */
 html :is(.gallery-toolbar, .scene-toolbar) :is(.studio-search, .studio-select-trigger, .studio-segments[role]) {
   border-radius:var(--r-md);
@@ -207,7 +205,6 @@ html .companion-page .companion-composer .companion-input { @apply tw:rounded-md
 
 /* Operational workspaces: structure via tone, never obscure logs or statuses. */
 html .control-page .control-rail { box-shadow: inset -1px 0 var(--glass-highlight); }
-html .control-page .control-rail-link { @apply tw:rounded-lg; }
 html .control-page :is(.status-tile, .panel-card) { box-shadow: var(--workspace-inset); }
 html .control-page .log-wrap { background: var(--bg-base); @apply tw:rounded-lg; }
 html .scene-maintenance-page .manager-nav {

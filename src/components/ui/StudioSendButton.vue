@@ -22,12 +22,16 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 </template>
 
 <style scoped>
-.u005 { position:relative; display:grid; place-items:center; flex:none; width:42px; height:42px; border:0; padding:0; border-radius:50%; background:linear-gradient(140deg,var(--accent-violet),var(--accent)); color:var(--text-inverse); cursor:pointer; isolation:isolate; transition:transform .35s cubic-bezier(.34,1.45,.64,1); }
+.u005 { position:relative; display:grid; place-items:center; flex:none; width:42px; height:42px; border:0; padding:0; border-radius:var(--r-md); background:linear-gradient(140deg,var(--accent-violet),var(--accent)); color:var(--text-inverse); cursor:pointer; isolation:isolate; }
 .u005 .archive-icon { width:22px; height:22px; }
 .u005-idle { display:grid; place-items:center; transform:translate(-1px,1px) rotate(-18deg); transition:transform .45s cubic-bezier(.34,1.45,.64,1),opacity .2s; }
 .u005[data-busy='true'] { background:var(--bg-elevated); color:var(--text-primary); }
 .u005[data-busy='true'] .u005-idle { opacity:0; transform:translate(10px,-10px) rotate(-30deg) scale(.6); }
 .u005-stop,.u005-check { position:absolute; }
+.u005-stop { transition:transform var(--motion-route) var(--spring-soft); }
+@media (hover:hover) and (pointer:fine) { .u005:where(:hover:not(:focus-visible):not([data-reduced-motion='true'])) .u005-stop { transform:scale(1.14); } }
+.u005:where(:active:not(:focus-visible):not([data-reduced-motion='true'])) .u005-stop { transform:scale(.9); transition-duration:var(--motion-press); }
+.u005:focus-visible .u005-stop { transform:none; transition:none; }
 .u005-ring { position:absolute; inset:-4px; border:2px solid transparent; border-top-color:var(--accent); border-right-color:var(--accent); border-radius:50%; opacity:0; pointer-events:none; }
 .u005[data-busy='true'] .u005-ring { opacity:1; animation:u005-ring 1.4s linear infinite; }
 .u005-check { opacity:0; }
@@ -42,9 +46,11 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 .u005-trail { position:absolute; right:calc(50% - 140px); bottom:calc(50% - 10px); width:340px; height:340px; overflow:visible; opacity:0; pointer-events:none; transition:opacity .6s; }
 .u005-trail path { fill:none; stroke:var(--accent); stroke-width:1.6; stroke-linecap:round; stroke-dasharray:1.5 6; }
 .u005[data-flying='true'] .u005-trail { opacity:.7; }
-.u005:active:not(:disabled) { transform:scale(.9); }
+@media (hover:hover) and (pointer:fine) { .u005:where(:hover:not(:focus-visible):not(:disabled):not([data-busy='true']):not([data-feedback='done']):not([data-reduced-motion='true'])) .u005-idle { transform:translate(2px,-2px) rotate(-8deg) scale(1.12); } }
+.u005:where(:active:not(:focus-visible):not(:disabled):not([data-busy='true']):not([data-feedback='done']):not([data-reduced-motion='true'])) .u005-idle { transform:rotate(-18deg) scale(.9); transition-duration:var(--motion-press); }
 .u005:disabled { color:var(--text-disabled); background:var(--bg-elevated); cursor:not-allowed; }
 .u005:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.u005:focus-visible .u005-idle { transition:none; }
 @media (pointer:coarse) { .u005 { width:44px; height:44px; } }
 @keyframes u005-ring { to { transform:rotate(360deg); } }
 @keyframes u005-back { from { opacity:0; transform:translate(-26px,14px) rotate(10deg) scale(.7); } }

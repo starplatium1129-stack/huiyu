@@ -56,7 +56,7 @@ watch(() => props.expert, value => {
 .material-drawer { min-width:0; container-type:inline-size; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); overflow:clip; }
 .material-heading { display:flex; justify-content:space-between; align-items:center; gap:8px; }
 .material-switch { position:relative; display:flex; gap:4px; margin:0 20px; border-bottom:1px solid var(--border-soft); }
-.material-switch button { display:flex; flex:1; min-width:0; min-height:42px; align-items:center; justify-content:center; gap:6px; padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:0; background:transparent; color:var(--text-secondary); font:500 13px var(--font-sans); cursor:pointer; }
+.material-switch button { display:flex; flex:1; min-width:0; min-height:42px; align-items:center; justify-content:center; gap:6px; padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); font:500 13px var(--font-sans); cursor:pointer; }
 .material-switch button[data-state=active] { color:var(--accent); font-weight:600; }
 .material-switch button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .material-switch .archive-icon { width:16px; height:16px; }

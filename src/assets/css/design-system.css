@@ -416,7 +416,7 @@ body > *:has(+ .footer),
 .nav-more { @apply tw:relative; }
 .nav-more-trigger {
   @apply tw:flex tw:items-center tw:gap-[5px]; list-style:none; @apply tw:cursor-pointer tw:min-h-[36px]; border:0; background:transparent; font-family:inherit;
-  @apply tw:text-secondary; padding:6px 10px; @apply tw:rounded-pill tw:text-body-sm tw:font-semibold; transition:color var(--motion-hover),background var(--motion-hover),transform var(--motion-press) var(--ease-out);
+  @apply tw:text-secondary; padding:6px 10px; @apply tw:rounded-md tw:text-body-sm tw:font-semibold; transition:transform var(--motion-press) var(--ease-out);
 }
 .nav-more-trigger:disabled { @apply tw:text-disabled; cursor:wait; }
 .nav-more-trigger:hover, .nav-more-trigger[aria-expanded="true"], .nav-more[data-active="true"] .nav-more-trigger {
@@ -598,7 +598,7 @@ body > *:has(+ .footer),
   @apply tw:min-h-[36px];
   padding: 0 15px;
   border: 1px solid transparent;
-  border-radius: var(--r-terminal);
+  border-radius: var(--r-md);
   background: transparent;
   @apply tw:text-secondary;
   font: 650 var(--fs-label-xs) var(--font-sans);
@@ -854,7 +854,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 .btn-quiet:disabled,
 .btn-quiet[aria-disabled="true"] { background:transparent; border-color:transparent; }
 .btn-sm { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-3); @apply tw:text-label-sm tw:rounded-sm; }
-.btn-lg { @apply tw:min-h-[52px]; padding: var(--s-3) var(--s-6); @apply tw:text-title-xs tw:rounded-lg; }
+.btn-lg { @apply tw:min-h-[52px]; padding: var(--s-3) var(--s-6); @apply tw:text-title-xs tw:rounded-md; }
 /* 图标按钮:DESIGN.md 禁止图标唯一化关键操作,故必须带 aria-label */
 .btn-icon { @apply tw:min-w-[40px] tw:p-s-2; }
 .btn-block { @apply tw:w-full; }
@@ -906,7 +906,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   @apply tw:border-danger-text;
 }
 .input-search {
-  @apply tw:pl-s-6 tw:rounded-pill;
+  @apply tw:pl-s-6 tw:rounded-md;
   background:
     var(--bg-deep)
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C8CA3' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E")
@@ -1675,10 +1675,8 @@ kbd,
   .chip,
   .char-outfit-tab,
   .artist-combo-btn,
-  .artwork-tool,
   .history-action,
   .btn-upload-overlay,
-  .viewer-nav,
   .pop-franchise,
   .pop-char-btn,
   .prompt-tag,

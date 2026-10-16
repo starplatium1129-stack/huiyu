@@ -6,7 +6,7 @@
   @apply tw:grid; place-items: center;
   @apply tw:w-[40px] tw:h-[40px];
   border: 1px solid var(--border-soft);
-  border-radius: 50%;
+  border-radius: var(--r-md);
   background: var(--bg-deep);
   @apply tw:text-secondary tw:cursor-pointer tw:text-title-xs;
   transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover);

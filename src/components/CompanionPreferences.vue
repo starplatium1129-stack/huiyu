@@ -71,7 +71,7 @@ function backdrop(event: MouseEvent) { if (isBackdropClick(event, dialog.value))
 .preferences-heading > div { @apply tw:grid tw:gap-[4px]; }
 .preferences-heading small { @apply tw:text-secondary tw:text-label-sm; }
 h2 { @apply tw:m-0 tw:text-body; font-weight: 650; }
-.preferences-heading button { @apply tw:grid; place-items: center; @apply tw:w-[40px] tw:h-[40px]; border: 1px solid var(--border-soft); border-radius: 50%; @apply tw:text-primary; background: var(--bg-surface); @apply tw:cursor-pointer; }
+.preferences-heading button { @apply tw:grid; place-items: center; @apply tw:w-[40px] tw:h-[40px]; border: 1px solid var(--border-soft); border-radius:var(--r-md); @apply tw:text-primary; background: var(--bg-surface); @apply tw:cursor-pointer; }
 .preferences-heading svg { @apply tw:w-[18px] tw:h-[18px]; }
 .preferences-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); flex: 0 0 auto; margin: 0 var(--s-4) var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); }
 .preferences-tabs button { @apply tw:flex tw:items-center tw:justify-center tw:gap-[6px] tw:min-h-[40px] tw:p-[4px]; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer; }

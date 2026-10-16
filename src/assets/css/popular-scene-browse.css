@@ -16,7 +16,7 @@
 .popular-scene-library .library-detail .pop-hero-stat { display:flex; align-items:baseline; gap:var(--s-1); margin:0; color:var(--text-muted); font-size:var(--fs-label-xs); white-space:nowrap; }
 .popular-scene-library .pop-hero-stat strong { color:var(--text-primary); font:500 var(--fs-title)/1 var(--font-mono); }
 .popular-scene-library .pop-toolbar { gap:var(--s-2); margin-bottom:0; }
-.page.popular-scene-library .pop-toolbar { padding:var(--s-3); border:0; border-radius:var(--r-lg); background:transparent; box-shadow:none; }
+.page.popular-scene-library .pop-toolbar { padding:var(--s-3); border:0; border-radius:var(--r-xl); background:transparent; box-shadow:none; }
 .popular-scene-library .pop-toolbar-row { gap:var(--s-2); }
 .popular-scene-library .pop-rating-pill,.popular-scene-library .pop-cat { min-height:32px; padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); background:transparent; }
 .popular-scene-library .pop-rating-pill.active,.popular-scene-library .pop-cat.active { background:var(--accent-soft); }
@@ -24,7 +24,7 @@
 .popular-scene-library .pop-results-bar { margin:var(--s-2) 0 var(--s-3); }
 .popular-scene-library .library-detail .pop-grid { --scene-row-height:calc(380px * var(--desktop-layout-scale,1)); display:flex; flex-wrap:wrap; gap:var(--s-4) var(--workspace-panel-gap,var(--s-4)); align-items:stretch; }
 .popular-scene-library .pop-grid::after { content:''; flex:1000000 1 0; }
-.popular-scene-library .pop-card { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(260px,100%); max-width:100%; border-radius:var(--r-sm); box-shadow:none; contain-intrinsic-size:auto calc(var(--scene-row-height) + 180px); }
+.popular-scene-library .pop-card { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(260px,100%); max-width:100%; border-radius:var(--r-lg); box-shadow:none; contain-intrinsic-size:auto calc(var(--scene-row-height) + 180px); }
 .popular-scene-library .pop-thumb { border-radius:0; background:var(--art-stage); }
 .popular-scene-library .pop-thumb img { object-position:center; }
 .popular-scene-library .pop-card-body { flex:1; gap:var(--s-2); padding:var(--s-3); }

@@ -163,7 +163,7 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-open { position:relative; isolation:isolate; padding:var(--s-2); border:1px solid var(--border-soft); background:var(--bg-base); color:inherit; font:inherit; box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .bookshelf-open::before { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; background:linear-gradient(160deg,var(--accent-soft),transparent 65%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .bookshelf-flip-row > span { @apply tw:min-w-0 tw:max-w-[60%] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-.bookshelf-flip-row button { @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0 tw:min-h-[36px]; padding:var(--s-1) var(--s-2); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; }
+.bookshelf-flip-row button { @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0 tw:min-h-[36px]; padding:var(--s-1) var(--s-2); border:1px solid transparent; @apply tw:rounded-md; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; }
 .bookshelf-flip-row button:hover { background:var(--bg-base); @apply tw:text-accent; }
 .bookshelf-work { padding: var(--s-2) 0 var(--s-4); border: 0; background: transparent; color: inherit; font: inherit; }
 .bookshelf-cover-stage { aspect-ratio: 1.15; }

@@ -2,8 +2,8 @@
 /* Shared control bases retain selector precedence and avoid repeated template payload. */
 .studio-media { @apply tw:grid tw:gap-s-2 tw:m-0 tw:min-w-0; }
 .studio-media-frame { @apply tw:block tw:w-full tw:[max-height:var(--media-max-height,_60vh)] tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-deep tw:cursor-pointer; }
-.studio-media-bar { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:py-s-1 tw:px-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-pill tw:bg-surface; }
-.studio-media-btn { @apply tw:grid tw:place-items-center tw:[flex:0_0_34px] tw:w-[34px] tw:h-[34px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-full tw:bg-transparent tw:text-primary tw:cursor-pointer; }
+.studio-media-bar { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:py-s-1 tw:px-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-lg tw:bg-surface; }
+.studio-media-btn { @apply tw:grid tw:place-items-center tw:[flex:0_0_34px] tw:w-[34px] tw:h-[34px] tw:p-0 tw:border tw:border-solid tw:border-transparent tw:rounded-md tw:bg-transparent tw:text-primary tw:cursor-pointer; }
 .studio-media-seek { @apply tw:flex-auto tw:min-w-0 tw:h-[24px] tw:m-0 tw:border-0 tw:bg-transparent tw:appearance-none; }
 .studio-media-time { @apply tw:flex-none tw:text-secondary tw:[font:500_var(--fs-label-sm)_var(--font-mono)] tw:tabular-nums tw:whitespace-nowrap; }
 .studio-media-transcript { @apply tw:p-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-secondary tw:text-body-sm; }
@@ -11,7 +11,7 @@
 
 .studio-media[data-kind='audio'] .studio-media-audio { display: none; }
 .studio-media-btn {
-  transition: background-color var(--motion-hover) var(--ease-out), border-color var(--motion-hover) var(--ease-out);
+  transition:none;
 }
 .studio-media-btn:hover { border-color: var(--border-soft); background: var(--bg-hover); }
 .studio-media-btn:disabled { color: var(--text-disabled); cursor: not-allowed; }

@@ -93,10 +93,9 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-intro { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-3); }
 .inspiration-deck-kicker { display:flex; align-items:center; gap:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-sm); font-weight:600; }
 .inspiration-deck-kicker .archive-icon { width:16px; height:16px; }
-.inspiration-deck-controls { display:flex; align-items:center; gap:var(--s-1); }
+.inspiration-deck-controls { display:flex; align-items:center; gap:var(--s-1); border-radius:var(--r-md); }
 .inspiration-deck-controls button { display:grid; place-items:center; width:var(--control-height-sm); height:var(--control-height-sm); border:0; border-radius:var(--r-sm); color:var(--text-secondary); background:transparent; cursor:pointer; }
 .inspiration-deck-controls button:hover { color:var(--accent); background:var(--accent-soft); }
-.inspiration-deck-controls button:active { transform:scale(.94); }
 .inspiration-deck button:disabled { color:var(--text-disabled); cursor:default; }
 .inspiration-deck-count { color:var(--text-muted); font:500 var(--fs-label-xs)/1 var(--font-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .previous-icon { transform:rotate(90deg); }
