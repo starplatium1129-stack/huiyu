@@ -25,7 +25,7 @@ export interface Live2DCapability {
   readonly emotionChannel: 'params' | 'bridge'
   /** 眨眼：true=前端 blinkScheduler 覆盖，false=作者工程原生眨眼（Rust 侧） */
   readonly blinkOverride: boolean
-  /** 点击命中：true=DOM 分区 + wl hitTest 兜底，false=Cubism 原生 HitArea（Rust 侧） */
+  /** 点击命中：true=原生可见像素 + Cubism HitArea，false=浏览器像素过滤后按 DOM 分区 */
   readonly hitTestNative: boolean
   /** 登场/告别动作是否由后端（Rust）接管 */
   readonly entranceNative: boolean
@@ -137,6 +137,8 @@ export interface Live2DStageSession {
   ): void
   /** 浏览器：取 canvas 元素（webglcontextlost/restored 绑定）；原生：null */
   canvasElement(): HTMLElement | null
+  /** 浏览器专属：画布逻辑坐标处是否有可见像素，先于分区和默认动作判断。 */
+  containsVisiblePoint?(x: number, y: number): boolean
   resizeCanvas?(width: number, height: number): void
 
   /** 原生专属：Rust 回传的 Cubism 原生 HitArea 命中（kind === 'native' 时存在） */

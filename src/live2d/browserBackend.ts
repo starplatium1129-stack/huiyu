@@ -22,6 +22,7 @@ interface Live2DCoreModel {
 }
 
 interface WlLive2DModel {
+  autoInteract?: boolean
   autoUpdate?: boolean
   update?(deltaMs: number): void
   visible: boolean
@@ -48,7 +49,13 @@ interface WlLive2DApp {
   app?: {
     render?(): void
     screen?: { width: number; height: number }
-    renderer?: { resize(width: number, height: number): void }
+    renderer?: {
+      resize(width: number, height: number): void
+      width: number
+      height: number
+      resolution: number
+      plugins?: { extract?: { pixels(target?: undefined, frame?: { x: number; y: number; width: number; height: number }): Uint8Array } }
+    }
     ticker?: {
       started: boolean
       maxFPS?: number
@@ -219,6 +226,9 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
             if (!model) return // wl-live2d also emits null after a load error.
             if (destroyed) { model.visible = false; return }
             rawModel = model
+            // The interaction controller owns taps; wl-live2d's automatic hit
+            // handler otherwise applies expressions before our pixel filter.
+            model.autoInteract = false
             if (typeof model.update === 'function' && app.app?.ticker?.add) {
               model.autoUpdate = false
               app.app.ticker.add(advanceModel, undefined, 50)
@@ -291,6 +301,26 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           if (typeof document === 'undefined') return null
           const host = document.querySelector<HTMLElement>(options.selector)
           return host?.querySelector('canvas') ?? null
+        },
+        containsVisiblePoint(x, y) {
+          const renderer = app.app?.renderer
+          const extract = renderer?.plugins?.extract
+          if (destroyed || !rawModel?.visible || !renderer || !extract || !app.app?.render) return false
+          const resolution = renderer.resolution
+          const px = Math.floor(x * resolution), py = Math.floor(y * resolution)
+          if (px < 0 || py < 0 || px >= renderer.width || py >= renderer.height) return false
+          try {
+            // WebGL may discard the presented drawing buffer. Render without
+            // advancing the model, then read only the clicked physical pixel.
+            app.app.render()
+            const pixel = extract.pixels(undefined, {
+              x: px / resolution,
+              y: (renderer.height - 1 - py) / resolution,
+              width: 1 / resolution,
+              height: 1 / resolution,
+            })
+            return (pixel[3] ?? 0) > 8
+          } catch { return false }
         },
         destroy() {
           if (destroyed) return

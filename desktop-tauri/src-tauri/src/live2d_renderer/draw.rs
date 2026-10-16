@@ -123,13 +123,25 @@ impl RenderContext {
         Ok(true)
     }
 
-    /// 归一化坐标（0..1，overlay 相对）→ 作者 HitArea 命中。
+    /// 归一化坐标（0..1，overlay 相对）→ 可见像素内的作者 HitArea 命中。
     /// 超采样开启时渲染空间是 2x 离屏目标，命中映射必须换算到同一空间。
-    pub(super) fn hit_test(&self, rect: OverlayRect, framing: crate::live2d_framing::StageFraming, nx: f32, ny: f32) -> Vec<String> {
+    pub(super) fn hit_test(
+        &mut self,
+        rect: OverlayRect,
+        framing: crate::live2d_framing::StageFraming,
+        nx: f32,
+        ny: f32,
+    ) -> Vec<String> {
         let Some(model) = self.model.as_ref() else {
             return vec![];
         };
-        if rect.width == 0 || rect.height == 0 {
+        if rect.width == 0
+            || rect.height == 0
+            || !nx.is_finite()
+            || !ny.is_finite()
+            || !(0.0..1.0).contains(&nx)
+            || !(0.0..1.0).contains(&ny)
+        {
             return vec![];
         }
         let supersample = std::env::var("L2D_SUPERSAMPLE")
@@ -140,14 +152,11 @@ impl RenderContext {
         } else {
             (rect.width as f32, rect.height as f32)
         };
-        let Some(bounds) = self.fit_bounds else { return vec![]; };
+        let Some(bounds) = self.fit_bounds else {
+            return vec![];
+        };
         let transform = framing.transform(bounds, rw, rh);
-        let (canvas_x, canvas_y) = transform.screen_to_canvas(
-            nx * rw,
-            ny * rh,
-            rw,
-            rh,
-        );
+        let (canvas_x, canvas_y) = transform.screen_to_canvas(nx * rw, ny * rh, rw, rh);
         // 作者 HitArea id 表：由 setCharacter 时解析 model3.json 缓存。
         // 当前返回命中 id 列表（空 = 未命中或模型未加载）。
         let hit_ids = self.hit_area_ids();
@@ -167,7 +176,30 @@ impl RenderContext {
                 areas.push(id.clone());
             }
         }
-        areas
+        if areas.is_empty() {
+            return areas;
+        }
+        // Authored HitAreas are bounding boxes, including Natsume's invisible
+        // outer frame. They select an action only where the model is painted.
+        let Some(renderer) = self.renderer.as_mut() else {
+            return vec![];
+        };
+        match renderer.render_alpha_at(
+            model,
+            &transform,
+            &self.textures,
+            rw as u32,
+            rh as u32,
+            (nx * rw).floor() as u32,
+            (ny * rh).floor() as u32,
+        ) {
+            Ok(alpha) if alpha > 8 => areas,
+            Ok(_) => vec![],
+            Err(error) => {
+                eprintln!("[live2d] hit pixel readback failed: {error}");
+                vec![]
+            }
+        }
     }
 
     /// HitArea 名列表：setCharacter 时从 model3.json HitAreas 动态解析（宁宁/夏目通用），
@@ -175,5 +207,4 @@ impl RenderContext {
     pub(super) fn hit_area_ids(&self) -> Vec<String> {
         self.hit_area_names.clone()
     }
-
 }

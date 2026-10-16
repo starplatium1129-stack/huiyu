@@ -24,7 +24,7 @@ export function resolveStageInteraction(character: string, x: number, y: number)
  * 夏目的"外框"是环绕角色的矩形命中区，与头/手/胸/裙/腿/脚分区重叠，
  * 且 model3.json HitAreas 顺序排第一——直接取首个会让所有点击都变成
  * "抬眼"反应（2026-08-16 实机：头/手/裙/腿点击全部命中外框）。
- * 具体分区优先，外框只在没有其他分区命中时兜底（点到角色外的框空白处）。
+ * 具体分区优先；外框只在确认点击处有可见像素后兜底。
  */
 export function resolveHitAreaInteraction(character: string, areas: string[]): Live2DInteraction | null {
   const profile = resolveCompanionAvatar(character)?.profile
@@ -54,10 +54,11 @@ export function createInteractionController(
     const canvas = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
     const rect = canvas?.getBoundingClientRect() ?? ctx.stageEl?.getBoundingClientRect()
     if (!rect || !rect.width || !rect.height) return null
+    if (event.clientX < rect.left || event.clientX >= rect.right || event.clientY < rect.top || event.clientY >= rect.bottom) return null
     const screen = ctx.session?.getScreenSize() ?? { width: 420, height: 610 }
     return {
-      x: Math.max(0, Math.min(screen.width, (event.clientX - rect.left) / rect.width * screen.width)),
-      y: Math.max(0, Math.min(screen.height, (event.clientY - rect.top) / rect.height * screen.height)),
+      x: (event.clientX - rect.left) / rect.width * screen.width,
+      y: (event.clientY - rect.top) / rect.height * screen.height,
     }
   }
 
@@ -70,6 +71,8 @@ export function createInteractionController(
   }
 
   function interactionAt(event: MouseEvent): Live2DInteraction | null {
+    const point = worldPoint(event)
+    if (!point || !ctx.session?.containsVisiblePoint?.(point.x, point.y)) return null
     // The wl-live2d canvas is scaled and positioned inside the portrait card,
     // so its hitTest coordinates do not line up with the visible DOM stage.
     // Use the measured stage bands for user-facing semantics.
@@ -77,8 +80,7 @@ export function createInteractionController(
     if (stageInteraction) return stageInteraction
     // wl-live2d sometimes reports the broad body mesh for every DOM click;
     // retain the measured hit areas only as a last-resort fallback.
-    const point = worldPoint(event)
-    const hitAreas = point && typeof ctx.model?.hitTest === 'function'
+    const hitAreas = typeof ctx.model?.hitTest === 'function'
       ? ctx.model.hitTest(point.x, point.y)
       : []
     const interaction = resolveHitAreaInteraction(ctx.character.value, hitAreas)
@@ -264,6 +266,9 @@ export function createInteractionController(
     if (ctx.session?.capability.hitTestNative) {
       let point: { x: number; y: number } | null = null
       ctx.nativeHitTestUnsubscribe = ctx.session.onNativeHitTest?.((areas) => {
+        // Empty means no visible model pixel or no authored hit area. Stage
+        // bands must never turn that miss into an interaction.
+        if (!areas.length) return
         const interaction = resolveHitAreaInteraction(ctx.character.value, areas)
           || (point ? resolveStageInteraction(ctx.character.value, point.x, point.y) : null)
         if (interaction) playInteraction(interaction)

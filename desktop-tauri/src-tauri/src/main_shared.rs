@@ -247,6 +247,23 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         save_window_bounds(&state.paths.companion_chat_window_file, bounds, Some(&placement.physical));
         let mut builder = WebviewWindowBuilder::new(&app, "companion-chat", source);
         if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
+        #[cfg(windows)]
+        {
+            // Keep the dialogue above the pet's transparent WebView even after
+            // the pet is activated. Windows maintains owned-window z-order
+            // without stealing focus or continuously raising either window.
+            let Some(companion) = app.get_webview_window("companion") else {
+                state.error("open companion-chat: companion window is unavailable");
+                return;
+            };
+            builder = match builder.owner(&companion) {
+                Ok(builder) => builder,
+                Err(error) => {
+                    state.error(&format!("open companion-chat: set owner failed: {error}"));
+                    return;
+                }
+            };
+        }
         match builder
             .title("绘遇对白")
             // Let Windows WebView2 deliver file drops to the chat attachment UI.

@@ -16,6 +16,58 @@ impl Renderer {
         no_mask: bool,
         only_drawable: Option<i32>,
     ) -> Vec<u8> {
+        self.render_region_to_image(
+            model,
+            transform,
+            textures,
+            width,
+            height,
+            no_mask,
+            only_drawable,
+            (0, 0, width, height),
+        )
+        .expect("render image readback failed")
+    }
+
+    /// Query the painted pixel, including texture alpha, masks and hidden parts.
+    /// Only clicks read back from the GPU; the normal frame loop is unchanged.
+    pub fn render_alpha_at(
+        &mut self,
+        model: &Model,
+        transform: &ViewTransform,
+        textures: &[Texture],
+        width: u32,
+        height: u32,
+        x: u32,
+        y: u32,
+    ) -> Result<u8, String> {
+        if x >= width || y >= height {
+            return Ok(0);
+        }
+        let pixel = self.render_region_to_image(
+            model,
+            transform,
+            textures,
+            width,
+            height,
+            false,
+            None,
+            (x, y, 1, 1),
+        )?;
+        Ok(pixel[3])
+    }
+
+    fn render_region_to_image(
+        &mut self,
+        model: &Model,
+        transform: &ViewTransform,
+        textures: &[Texture],
+        width: u32,
+        height: u32,
+        no_mask: bool,
+        only_drawable: Option<i32>,
+        region: (u32, u32, u32, u32),
+    ) -> Result<Vec<u8>, String> {
         let target = self.device.create_texture(&wgpu::TextureDescriptor {
             label: Some("live2d-target"),
             size: wgpu::Extent3d {
@@ -44,11 +96,12 @@ impl Renderer {
         );
 
         // read back（DX12 强制 COPY_BYTES_PER_ROW_ALIGNMENT=256，需按行对齐）
-        let row_size = width * 4;
+        let (x, y, read_width, read_height) = region;
+        let row_size = read_width * 4;
         let padded_row = row_size.div_ceil(256) * 256;
         let readback = self.device.create_buffer(&wgpu::BufferDescriptor {
             label: Some("live2d-readback"),
-            size: (padded_row as u64) * (height as u64),
+            size: (padded_row as u64) * (read_height as u64),
             usage: wgpu::BufferUsages::COPY_DST | wgpu::BufferUsages::MAP_READ,
             mapped_at_creation: false,
         });
@@ -56,7 +109,7 @@ impl Renderer {
             wgpu::TexelCopyTextureInfo {
                 texture: &target,
                 mip_level: 0,
-                origin: wgpu::Origin3d::ZERO,
+                origin: wgpu::Origin3d { x, y, z: 0 },
                 aspect: wgpu::TextureAspect::All,
             },
             wgpu::TexelCopyBufferInfo {
@@ -64,12 +117,12 @@ impl Renderer {
                 layout: wgpu::TexelCopyBufferLayout {
                     offset: 0,
                     bytes_per_row: Some(padded_row),
-                    rows_per_image: Some(height),
+                    rows_per_image: Some(read_height),
                 },
             },
             wgpu::Extent3d {
-                width,
-                height,
+                width: read_width,
+                height: read_height,
                 depth_or_array_layers: 1,
             },
         );
@@ -81,21 +134,25 @@ impl Renderer {
             let _ = tx.send(result);
         });
         self.device
-            .poll(wgpu::PollType::wait_indefinitely())
-            .expect("readback device poll failed");
+            .poll(wgpu::PollType::Wait {
+                submission_index: None,
+                timeout: Some(std::time::Duration::from_secs(1)),
+            })
+            .map_err(|error| format!("readback device poll failed: {error}"))?;
         rx.recv()
-            .expect("map channel")
-            .expect("map readback failed");
+            .map_err(|error| format!("readback channel closed: {error}"))?
+            .map_err(|error| format!("map readback failed: {error}"))?;
         let mapped = slice.get_mapped_range();
-        let mut data = Vec::with_capacity((row_size * height) as usize);
+        let mut data = Vec::with_capacity((row_size * read_height) as usize);
         if padded_row == row_size {
-            data.extend_from_slice(&mapped[..(row_size * height) as usize]);
+            data.extend_from_slice(&mapped[..(row_size * read_height) as usize]);
         } else {
             for row in mapped.chunks_exact(padded_row as usize) {
                 data.extend_from_slice(&row[..row_size as usize]);
             }
         }
         drop(mapped);
+        readback.unmap();
         normalize_readback_rgba(self.format, &mut data);
         if std::env::var("L2D_DEBUG_ALPHA").is_ok() {
             let mut buckets = [0u64; 5];
@@ -113,7 +170,7 @@ impl Renderer {
                 buckets[0], buckets[1], buckets[2], buckets[3]
             );
         }
-        data
+        Ok(data)
     }
 }
 
