@@ -6,7 +6,13 @@
       :aria-label="label || undefined"
       @update:model-value="onChange"
     >
-    <span class="toggle-slider" aria-hidden="true"><SwitchThumb class="toggle-knob" /></span>
+    <span class="toggle-slider" aria-hidden="true">
+      <SwitchThumb class="toggle-knob">
+        <span class="toggle-knob-surface" />
+        <ArchiveIcon class="toggle-off" name="minus" />
+        <ArchiveIcon class="toggle-on" name="success" />
+      </SwitchThumb>
+    </span>
     <slot />
   </SwitchRoot>
 </template>
@@ -14,6 +20,7 @@
 <script setup lang="ts">
 import { computed, useSlots } from 'vue'
 import { SwitchRoot, SwitchThumb } from 'reka-ui'
+import ArchiveIcon from './ArchiveIcon.vue'
 
 const slots = useSlots()
 const hasSlotContent = computed(() => Boolean(slots.default))

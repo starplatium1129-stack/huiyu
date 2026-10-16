@@ -594,22 +594,6 @@ body > *:has(+ .footer),
   padding: var(--s-5) clamp(16px, 2vw, 32px) var(--s-7);
 }
 
-.sticky-toolbar {
-  @apply tw:sticky tw:top-[58px]; z-index: var(--z-sticky);
-  @apply tw:flex tw:items-center tw:gap-[10px] tw:flex-wrap;
-  margin-bottom: clamp(18px, 2.5vw, 32px);
-  @apply tw:p-[10px];
-  border: 1px solid color-mix(in srgb, var(--border-soft) 76%, transparent);
-  border-radius: var(--r-dossier);
-  background: color-mix(in srgb, var(--bg-surface) 84%, transparent);
-  box-shadow: 0 12px 38px color-mix(in srgb, var(--text-primary) 7%, transparent);
-  -webkit-backdrop-filter: blur(18px) saturate(130%);
-  backdrop-filter: blur(18px) saturate(130%);
-}
-.sticky-toolbar::before {
-  @apply tw:absolute tw:top-[-1px] tw:left-s-4 tw:w-[34px]; height: var(--line-hairline);
-  background: var(--archive-cyan); content: "";
-}
 .filter-pill {
   @apply tw:min-h-[36px];
   padding: 0 15px;
@@ -619,7 +603,7 @@ body > *:has(+ .footer),
   @apply tw:text-secondary;
   font: 650 var(--fs-label-xs) var(--font-sans);
   @apply tw:cursor-pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-press) var(--ease-out);
 }
 .filter-pill:hover,
 .filter-pill.active {
@@ -696,7 +680,6 @@ body > *:has(+ .footer),
 
 @media (max-width: 600px) {
   .page-intro { grid-template-columns: 1fr; }
-  .sticky-toolbar { @apply tw:top-[52px]; border-radius: var(--r-dossier); }
 }
 
 /* ============================================================
@@ -851,7 +834,7 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
 a.btn-primary, a.btn-primary:hover, a.btn-primary:active { @apply tw:text-inverse; }
 a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-text; }
 /* 按压位移由 interaction-motion 的控件层负责；按钮保留阴影反馈。 */
-.btn:active:not(:disabled):not([aria-disabled="true"]) { box-shadow: none; }
+.btn:active:not(:disabled):not([aria-disabled="true"]) { box-shadow: none; transform:var(--control-press-transform); }
 /* 统一禁用态:同时覆盖真 disabled 与 aria-disabled 链接
    2026-08-28 审计修复：不再用 opacity 压字。alpha 合成后实测文字对比度只剩
    3.45:1（深色 --bg-elevated 上），而按钮文案是「生成」「发送」这类需要读懂

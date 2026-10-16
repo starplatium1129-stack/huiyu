@@ -6,8 +6,8 @@
           <span class="hero-register">绘遇 HUIYU · AI 角色创作画室</span>
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
           <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
-            <RouterLink :to="continueLink.to" class="btn btn-lg btn-primary" id="continueCta"><ArchiveIcon :name="continueIconName" /> {{ continueLink.label }}</RouterLink>
-            <RouterLink to="/prompt-builder" class="btn btn-lg btn-ghost"><ArchiveIcon name="image" />直接去绘制台</RouterLink>
+            <StudioActionLink id="continueCta" :to="continueLink.to" class="btn-primary" :icon="continueIconName" :label="continueLink.label" />
+            <StudioActionLink to="/prompt-builder" class="btn-ghost" icon="image" label="直接去绘制台" />
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses studio-segments" data-fluid-glass role="group" aria-label="首页角色视觉">
@@ -135,46 +135,50 @@
     </section>
 
     <!-- 资料区 -->
-    <section ref="toolsSection" class="container home-section home-section-quiet" data-reveal>
+    <section ref="toolsSection" class="container home-section home-section-quiet" aria-labelledby="home-library-title" data-reveal>
       <div class="home-section-head">
         <div>
-          <h2>资料与作品</h2>
+          <h2 id="home-library-title">资料与作品</h2>
         </div>
       </div>
       <div class="tools-grid">
         <RouterLink to="/character" class="tool-card">
-          <img v-if="artworkReady.tools" class="tool-art" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
-          <span class="t"><ArchiveIcon name="character" />角色档案</span>
+          <span class="tool-art"><img v-if="artworkReady.tools" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+          <span class="tool-copy"><span class="t"><ArchiveIcon name="character" />角色档案</span><span class="tool-description">查看设定与参考</span></span>
+          <ArchiveIcon name="chevron-down" class="tool-arrow" />
         </RouterLink>
         <RouterLink to="/style" class="tool-card">
-          <img v-if="artworkReady.tools" class="tool-art" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
-          <span class="t"><ArchiveIcon name="palette" />画风</span>
+          <span class="tool-art"><img v-if="artworkReady.tools" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+          <span class="tool-copy"><span class="t"><ArchiveIcon name="palette" />画风</span><span class="tool-description">找到喜欢的笔触</span></span>
+          <ArchiveIcon name="chevron-down" class="tool-arrow" />
         </RouterLink>
         <RouterLink to="/lora" class="tool-card">
-          <img v-if="artworkReady.tools" class="tool-art" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
-          <span class="t"><ArchiveIcon name="model" />模型</span>
+          <span class="tool-art"><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+          <span class="tool-copy"><span class="t"><ArchiveIcon name="model" />模型</span><span class="tool-description">查阅模型资料</span></span>
+          <ArchiveIcon name="chevron-down" class="tool-arrow" />
         </RouterLink>
         <RouterLink to="/gallery" class="tool-card">
-          <img v-if="artworkReady.tools" class="tool-art" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" />
-          <span class="t"><ArchiveIcon name="gallery" />我的作品</span>
+          <span class="tool-art"><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+          <span class="tool-copy"><span class="t"><ArchiveIcon name="gallery" />我的作品</span><span class="tool-description">查看与整理作品</span></span>
+          <ArchiveIcon name="chevron-down" class="tool-arrow" />
         </RouterLink>
       </div>
-    </section>
-
-    <section class="container home-section" v-if="!recentWorks.length" data-reveal>
-      <div class="home-section-head"><h2>最近创作</h2><RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink></div>
-      <div class="recent-grid">
+      <div v-if="!recentWorks.length" class="home-first-work">
         <ArchiveStatePanel
+          v-if="recentWorksLoading || recentWorksError"
           class="recent-empty-state"
           compact
-          :kind="recentWorksLoading ? 'loading' : recentWorksError ? 'error' : 'empty'"
-          :title="recentWorksLoading ? '正在读取最近创作…' : recentWorksError ? '最近创作暂未读取' : '暂无作品'"
+          :kind="recentWorksLoading ? 'loading' : 'error'"
+          :title="recentWorksLoading ? '正在读取最近创作…' : '最近创作暂未读取'"
           :message="recentWorksError"
         >
-          <template v-if="!recentWorksLoading && !recentWorksError" #illustration><img v-if="artworkReady.tools" class="recent-empty-art" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template>
           <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新读取</button>
-          <RouterLink v-else-if="!recentWorksLoading" to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
         </ArchiveStatePanel>
+        <div v-else class="recent-empty-state home-start-card">
+          <span class="recent-empty-art"><img v-if="artworkReady.tools" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+          <div class="home-start-copy"><h3>把灵感变成第一幅作品</h3><p>选场景、定角色，下一幅作品从这里开始。</p></div>
+          <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" />开始绘制</RouterLink>
+        </div>
       </div>
     </section>
   </article>
@@ -195,6 +199,7 @@ const SceneCard = defineAsyncComponent(() => import('@/components/SceneCard.vue'
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
 import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
+import StudioActionLink from '@/components/ui/StudioActionLink.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'

@@ -3,16 +3,20 @@
     <header><h2>修改预览</h2></header>
     <details v-for="diff in preview.diffs" :key="diff.kind + ':' + diff.id" open>
       <StudioDisclosureSummary>{{ diff.after ? recordTitle(diff.after) : diff.before ? recordTitle(diff.before) : '待整理的内容' }} <small>{{ !diff.before ? '新加入' : !diff.after ? '将归档' : '已编辑' }}</small></StudioDisclosureSummary>
-      <div v-for="field in changedFields(diff.before, diff.after)" :key="field.path" class="catalog-change-row">
-        <strong>{{ field.label }}</strong><div><span>原来</span><p>{{ field.before || '尚未填写' }}</p></div><div><span>现在</span><p>{{ field.after || '尚未填写' }}</p></div>
+      <div data-disclosure-content>
+        <div v-for="field in changedFields(diff.before, diff.after)" :key="field.path" class="catalog-change-row">
+          <strong>{{ field.label }}</strong><div><span>原来</span><p>{{ field.before || '尚未填写' }}</p></div><div><span>现在</span><p>{{ field.after || '尚未填写' }}</p></div>
+        </div>
+        <p v-if="diff.before && diff.after && diff.before.sortOrder !== diff.after.sortOrder" class="catalog-note">展示位置已调整。</p>
+        <details class="catalog-advanced"><StudioDisclosureSummary>查看完整变化</StudioDisclosureSummary><div data-disclosure-content class="catalog-diff"><pre>{{ JSON.stringify(diff.before?.data ?? null, null, 2) }}</pre><pre>{{ JSON.stringify(diff.after?.data ?? null, null, 2) }}</pre></div></details>
       </div>
-      <p v-if="diff.before && diff.after && diff.before.sortOrder !== diff.after.sortOrder" class="catalog-note">展示位置已调整。</p>
-      <details class="catalog-advanced"><StudioDisclosureSummary>查看完整变化</StudioDisclosureSummary><div data-disclosure-content class="catalog-diff"><pre>{{ JSON.stringify(diff.before?.data ?? null, null, 2) }}</pre><pre>{{ JSON.stringify(diff.after?.data ?? null, null, 2) }}</pre></div></details>
     </details>
     <details v-for="record in preview.retiredImports ?? []" :key="record.kind + ':' + record.id" open>
       <StudioDisclosureSummary>{{ recordTitle(record) }} <small>登记归档身份</small></StudioDisclosureSummary>
-      <p class="catalog-note">{{ CATALOG_LABELS[record.kind] }} · <code>{{ record.id }}</code></p>
-      <p class="catalog-note">保留归档身份，后续新增内容将继续避开该编号。</p>
+      <div data-disclosure-content>
+        <p class="catalog-note">{{ CATALOG_LABELS[record.kind] }} · <code>{{ record.id }}</code></p>
+        <p class="catalog-note">保留归档身份，后续新增内容将继续避开该编号。</p>
+      </div>
     </details>
   </section>
 </template>

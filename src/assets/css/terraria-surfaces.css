@@ -72,8 +72,8 @@
 :root[data-theme-style='terraria'] body .btn-primary { background:var(--terraria-action); color:var(--terraria-on-wood); border-color:var(--terraria-outline); }
 :root[data-theme-style='terraria'] body .btn-primary:hover { background:var(--terraria-action-hover); }
 :root[data-theme-style='terraria'] body :is(.btn,.app-theme-toggle):active { transform:translate(1px,1px); box-shadow:inset 0 1px 0 var(--glass-highlight); }
-:root[data-theme-style='terraria'] body :is(input:not([type='checkbox']):not([type='radio']):not([type='range']),textarea,select,.studio-segments,.animated-selection,.studio-search,.sticky-toolbar,.scene-toolbar,.gallery-toolbar,.appearance-segments) { border-radius:0; }
-:root[data-theme-style='terraria'] body :is(.sticky-toolbar,.scene-toolbar,.gallery-toolbar,.appearance-segments,.studio-segments) {
+:root[data-theme-style='terraria'] body :is(input:not([type='checkbox']):not([type='radio']):not([type='range']),textarea,select,.studio-segments,.animated-selection,.studio-search,.scene-toolbar,.gallery-toolbar,.appearance-segments) { border-radius:0; }
+:root[data-theme-style='terraria'] body :is(.scene-toolbar,.gallery-toolbar,.appearance-segments,.studio-segments) {
   border:2px solid var(--terraria-soil); background:var(--bg-deep); box-shadow:inset 0 0 0 1px var(--terraria-edge);
 }
 :root[data-theme-style='terraria'] body .studio-segments[role] { --selection-radius:0px; --selection-shadow:inset 0 0 0 1px var(--terraria-edge); }

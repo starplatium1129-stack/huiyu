@@ -48,11 +48,8 @@ const currentYear = new Date().getFullYear()
 
 <style scoped>
 @reference "../assets/css/tailwind.css";
-.page-root { --app-navigation-visible-height:var(--app-navigation-height,80px); --browse-toolbar-top:calc(var(--app-navigation-height,80px) + var(--desktop-chrome-height,0px) + var(--s-2)); --browse-toolbar-shift:0px; }
-.page-root:has(> .nav[data-scroll-hidden='true']) { --app-navigation-visible-height:0px; --browse-toolbar-shift:calc(-1 * var(--app-navigation-height,80px)); }
-.page-main :deep(:is(.showcase-page .toolbar-shell,.gallery-toolbar)) { transform:translateY(var(--browse-toolbar-shift)); transition:transform var(--motion-surface) var(--ease-out); }
-@media(prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .page-main :is(.showcase-page .toolbar-shell,.gallery-toolbar)) { transition:none; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .page-main :is(.showcase-page .toolbar-shell,.gallery-toolbar)) { transition:none; }
+.page-root { --app-navigation-visible-height:var(--app-navigation-height,80px); }
+.page-root:has(> .nav[data-scroll-hidden='true']) { --app-navigation-visible-height:0px; }
 .route-view {
   grid-area: 1 / 1;
   /* Anchor depth motion at the page top, not halfway down a long document. */

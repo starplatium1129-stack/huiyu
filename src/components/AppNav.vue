@@ -330,7 +330,7 @@ onUnmounted(deactivateNavigation)
   padding-left: var(--s-3);
   border-left: 1px solid var(--border-soft);
 }
-.nav-utilities :deep(button) {
+.nav-utilities :deep(button:where(:not(.app-theme-toggle))) {
   @apply tw:inline-flex tw:items-center tw:justify-center tw:shrink-0 tw:rounded-md tw:text-secondary;
   height: 40px; min-height: 40px;
   border: 1px solid transparent;
@@ -346,7 +346,7 @@ onUnmounted(deactivateNavigation)
   background: var(--accent-soft);
   @apply tw:text-accent tw:text-label-sm;
 }
-.nav-utilities :deep(button:hover),
+.nav-utilities :deep(button:hover:where(:not(.app-theme-toggle))),
 .nav-utilities :deep(.sound-toggle.active) {
   background: var(--accent-soft);
   border-color: var(--border-soft);

@@ -108,6 +108,7 @@ html { -webkit-tap-highlight-color: transparent; }
 :where(input[type="checkbox"], input[type="radio"]):disabled { @apply tw:border-soft; background: var(--bg-base); @apply tw:text-disabled tw:cursor-not-allowed; }
 
 :where(input[type="range"]) {
+  --range-thumb-scale:1; --range-thumb-hover:1.1; --range-thumb-press:1.16; --range-thumb-duration:var(--motion-press);
   @apply tw:h-[28px] tw:m-0;
   border: 0;
   outline: 0;
@@ -124,6 +125,8 @@ html { -webkit-tap-highlight-color: transparent; }
   box-shadow: var(--shadow-sm);
   cursor: inherit;
   -webkit-appearance: none;
+  transform:scale(var(--range-thumb-scale));
+  transition:transform var(--range-thumb-duration) var(--ease-out);
 }
 :where(input[type="range"])::-moz-range-thumb {
   @apply tw:w-[12px] tw:h-[12px];
@@ -132,7 +135,18 @@ html { -webkit-tap-highlight-color: transparent; }
   background: var(--accent);
   box-shadow: var(--shadow-sm);
   cursor: inherit;
+  transform:scale(var(--range-thumb-scale));
+  transition:transform var(--range-thumb-duration) var(--ease-out);
 }
+/* Only the thumb responds; the range and its value stay anchored to the pointer. */
+@media (hover:hover) and (pointer:fine) {
+  :where(input[type='range']:not(:disabled):hover) { --range-thumb-scale:var(--range-thumb-hover); }
+}
+:where(input[type='range']:not(:disabled):active) { --range-thumb-scale:var(--range-thumb-press); }
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) input[type='range'] { --range-thumb-hover:1; --range-thumb-press:1; --range-thumb-duration:0s; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) input[type='range'] { --range-thumb-hover:1; --range-thumb-press:1; --range-thumb-duration:0s; }
 :where(input[type="range"]):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 :where(input[type="range"]):disabled { @apply tw:cursor-not-allowed; }
 
@@ -172,6 +186,8 @@ html { -webkit-tap-highlight-color: transparent; }
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) :where(input[type="checkbox"], input[type="radio"])::before { transition: none; }
 }
+/* Both app reduce aliases stop native input marks immediately. */
+[data-motion^='reduc'] input::before { transition:none; }
 
 @media (forced-colors: active) {
   :where(input, textarea):-webkit-autofill { -webkit-text-fill-color: CanvasText; }

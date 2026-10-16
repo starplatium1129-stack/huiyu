@@ -1,6 +1,7 @@
 import { nextTick, readonly, ref } from 'vue'
 import { settingsRepository, THEME_SETTING, type Theme } from '@/storage/settingsRepository'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
+import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 
 export function preferredTheme(): Theme { return settingsRepository.get(THEME_SETTING) || 'dark' }
 const theme = ref<Theme>(preferredTheme())
@@ -56,11 +57,12 @@ export function setTheme(value: Theme, origin?: { x: number; y: number }) {
     if (!origin || transition !== current || prefersReducedMotion() || document.hidden) return
     const x = Math.max(0, Math.min(innerWidth, origin.x)), y = Math.max(0, Math.min(innerHeight, origin.y))
     const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+    const style = getComputedStyle(root)
     /* compositor-exempt: this occasional reveal clips one native snapshot; scaling would distort the entire UI. */
     reveal = root.animate([
       { clipPath: `circle(0px at ${x}px ${y}px)`, opacity: 1 },
       { clipPath: `circle(${radius}px at ${x}px ${y}px)`, opacity: 1 },
-    ], { duration: parseFloat(getComputedStyle(root).getPropertyValue('--motion-surface')), easing: getComputedStyle(root).getPropertyValue('--ease-out').trim(), pseudoElement: '::view-transition-new(root)', fill: 'both' })
+    ], { duration: cssTimeToMilliseconds(style.getPropertyValue('--motion-surface')), easing: style.getPropertyValue('--ease-out').trim(), pseudoElement: '::view-transition-new(root)', fill: 'both' })
   }).catch(() => {}) // Unsupported effects and interrupted captures retain the existing theme fallback.
   void current.finished.catch(applyDocumentTheme).finally(() => {
     if (transition !== current) return

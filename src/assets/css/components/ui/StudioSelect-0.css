@@ -16,10 +16,11 @@
 
 .studio-select-trigger {
   position:relative;
-  transition: border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out);
+  transition: border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out), transform var(--motion-press) var(--ease-out);
 }
-.studio-select-trigger::after { content:""; position:absolute; inset:auto var(--s-3) 0; height:2px; background:var(--focus-color); opacity:0; pointer-events:none; }
-.studio-select-trigger:is(:focus-visible,:focus-within)::after { opacity:1; }
+.studio-select-trigger::after { content:""; position:absolute; inset:auto var(--s-3) 0; height:2px; background:var(--focus-color); opacity:0; transform:scaleX(.88); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-control) var(--ease-out); pointer-events:none; }
+.studio-select-trigger:is(:focus-visible,:focus-within,[data-state='open'])::after { opacity:1; transform:none; }
+.studio-select-trigger:focus-visible::after { transition:none; }
 .studio-select-wrapper[data-size='sm'] .studio-select-trigger {
   gap: var(--s-1);
   min-height: var(--control-height-sm);
@@ -80,9 +81,11 @@
   .studio-select-item { min-height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .studio-select-icon { transition: none; }
-  :root:not([data-motion='full']) .studio-select-content[data-state] { transition:none; }
+  :root:not([data-motion='full']) :is(.studio-select-icon,.studio-select-content) { transition:none; }
+  :root:not([data-motion='full']) .studio-select-trigger::after { transition:none; }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-select-trigger::after { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.studio-select-icon,.studio-select-content) { transition:none; }
 @media (forced-colors: active) {
   .studio-select-content { background: Canvas; border-color: CanvasText; }
   .studio-select-item[data-state='checked'] { outline: 1px solid Highlight; }

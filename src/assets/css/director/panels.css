@@ -130,7 +130,7 @@
   .pb .option-reason { @apply tw:hidden; }
   .pb .option:hover .option-reason, .pb .option.selected .option-reason { @apply tw:block tw:text-label-xs! tw:text-accent tw:italic tw:mt-[2px] tw:leading-label; letter-spacing: 0.01em; }
   .pb .chip-grid { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:max-h-[9.5rem] tw:overflow-auto tw:pr-[2px]; }
-  .pb .chip-select { @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:min-h-[32px]; padding: 4px 10px; @apply tw:rounded-pill tw:text-label-xs; font-weight: 550; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:text-secondary tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover); }
+  .pb .chip-select { @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:min-h-[32px]; padding: 4px 10px; @apply tw:rounded-pill tw:text-label-xs; font-weight: 550; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:text-secondary tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-press) var(--ease-out); }
   .pb .chip-select:hover { @apply tw:border-accent tw:text-accent; }
   .pb .chip-select.selected { background: var(--accent-soft); @apply tw:border-strong tw:text-accent; }
   /* .mood-* 已收敛到 css/mood.css(基准 + .mood-grid-sm 修饰);此处不再重复定义 */

@@ -17,7 +17,7 @@
       </div>
     </header>
 
-    <div class="gallery-toolbar sticky-toolbar" aria-label="作品筛选" data-reveal>
+    <div class="gallery-toolbar" aria-label="作品筛选" data-reveal>
       <div class="gallery-browse-controls studio-segments" role="group" aria-label="浏览作品">
       <AnimatedSelection />
       <button class="gallery-filter" :class="{ active: !albumsOpen && !favoriteOnly && !trashMode && !projectFilter && !characterFilter }" type="button"

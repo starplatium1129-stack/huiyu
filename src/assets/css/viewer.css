@@ -35,7 +35,7 @@
 .viewer-actions .btn { @apply tw:justify-center; }
 
 /* On-art controls must not inherit light-page ink on a dark viewing surface. */
-.art-viewer .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success) {
+.art-viewer .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success):not(:disabled):not([data-state='error']) {
   color: var(--on-art-primary);
   border-color: var(--on-art-line);
 }

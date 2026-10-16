@@ -1,5 +1,6 @@
 import type { ObjectDirective } from 'vue'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
+import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 
 // One animation per changed surface, never one per list item. No cloned DOM,
 // delayed state update, persistent layer, or height animation during a switch.
@@ -52,7 +53,7 @@ function reveal(el: HTMLElement, direction = 'up', holdFirstFrame = false) {
   }
   cancel(el)
   const animation = el.animate([start, end], {
-    duration:parseFloat(style.getPropertyValue('--motion-surface')),
+    duration:cssTimeToMilliseconds(style.getPropertyValue('--motion-surface')),
     easing:style.getPropertyValue('--ease-out').trim(),
     ...(holdFirstFrame ? { fill:'both' as const } : {}),
   })

@@ -1,63 +1,72 @@
 <!-- Lucian UX/UI Prompt #008 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#008 -->
 <script setup lang="ts">
-import { onActivated, onDeactivated, onScopeDispose, ref, watch } from 'vue'
+import { computed, onActivated, onDeactivated, onScopeDispose, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useMotionPreference } from '@/composables/useMotionPreference'
 
 const props = defineProps<{ action: () => Promise<boolean>; label: string; contentKey: string; disabled?: boolean }>()
 const reduced = useMotionPreference()
-const copied = ref(false), pending = ref(false), notice = ref('')
+const state = ref<'idle' | 'pending' | 'copied' | 'error'>('idle')
+const feedback = computed(() => state.value === 'pending' ? '正在复制' : state.value === 'copied' ? '已复制' : state.value === 'error' ? '重试复制' : props.label)
+const notice = ref('')
 let timer: ReturnType<typeof setTimeout> | undefined
 let revision = 0, active = true
-function reset() { revision++; clearTimeout(timer); copied.value = false; pending.value = false; notice.value = '' }
+function reset() { revision++; clearTimeout(timer); state.value = 'idle'; notice.value = '' }
 watch(() => props.contentKey, reset)
 onActivated(() => { active = true })
 onDeactivated(() => { active = false; reset() })
 onScopeDispose(() => { active = false; reset() })
 async function copy() {
-  if (pending.value || props.disabled) return
+  if (state.value === 'pending' || props.disabled) return
   const request = ++revision
   clearTimeout(timer)
-  copied.value = false; notice.value = ''
-  pending.value = true
+  state.value = 'pending'; notice.value = ''
   try {
     const success = await props.action()
     if (!active || request !== revision) return
-    copied.value = success
-    notice.value = success ? '已复制' : '复制未完成'
-    timer = setTimeout(() => { copied.value = false; notice.value = '' }, 1800)
+    state.value = success ? 'copied' : 'error'
+    notice.value = success ? '已复制' : '复制未完成，请重试'
+    if (success) timer = setTimeout(() => { state.value = 'idle'; notice.value = '' }, 1800)
   } catch {
-    if (active && request === revision) { copied.value = false; notice.value = '复制未完成，请重试' }
-  } finally { if (request === revision) pending.value = false }
+    if (active && request === revision) { state.value = 'error'; notice.value = '复制未完成，请重试' }
+  }
 }
 </script>
 
 <template>
-  <button class="u008" :class="{ 'btn-copied-success': copied }" type="button" :data-copied="copied" :data-reduced-motion="reduced" :disabled="disabled || pending" :aria-label="label" :aria-busy="pending" @click="copy">
-    <span class="u008-icons" aria-hidden="true"><ArchiveIcon class="u008-cp" name="copy" /><ArchiveIcon class="u008-ok" name="success" /></span>
-    <span class="u008-label">{{ copied ? '已复制' : label }}</span>
-    <span class="u008-tip" role="status">{{ notice }}</span>
+  <button class="u008" :class="{ 'btn-copied-success': state === 'copied' }" type="button" :data-state="state" :data-reduced-motion="reduced" :disabled="disabled || state === 'pending'" :aria-label="state === 'idle' ? label : `${feedback}：${label}`" :aria-busy="state === 'pending'" @click="copy">
+    <span class="u008-icons" aria-hidden="true">
+      <ArchiveIcon class="u008-cp" name="copy" /><ArchiveIcon class="u008-ok" name="success" />
+      <ArchiveIcon class="u008-wait" name="refresh" /><ArchiveIcon class="u008-error" name="warning" />
+    </span>
+    <span class="u008-label" aria-hidden="true">
+      <span class="u008-measure">{{ label }}</span><span class="u008-measure">正在复制</span><span class="u008-measure">重试复制</span><span class="u008-measure">已复制</span>
+      <span :key="state" class="u008-feedback">{{ feedback }}</span>
+    </span>
+    <span class="u008-live" role="status">{{ notice }}</span>
   </button>
 </template>
 
 <style scoped>
-.u008 { --ux-ease:cubic-bezier(.2,.8,.2,1); --ux-spring:cubic-bezier(.34,1.45,.64,1); position:relative; isolation:isolate; }
-.u008-icons { position:relative; display:inline-grid; place-items:center; width:21px; height:21px; flex:none; }
-.u008-icons .archive-icon { position:absolute; width:21px; height:21px; transition:opacity .25s var(--ux-ease),transform .5s var(--ux-spring); }
-.u008-ok { opacity:0; transform:scale(.4) rotate(-30deg); }
-.u008-ok :deep(path) { stroke-dasharray:24; stroke-dashoffset:24; transition:stroke-dashoffset .4s var(--ux-ease) .1s; }
-.u008[data-copied='true'] { background:var(--success); color:var(--text-inverse); }
-.u008[data-copied='true'] .u008-cp { opacity:0; transform:scale(.4) rotate(30deg); }
-.u008[data-copied='true'] .u008-ok { opacity:1; transform:none; }
-.u008[data-copied='true'] .u008-ok :deep(path) { stroke-dashoffset:0; }
-.u008-label { position:relative; }
-.u008-label::after { content:''; position:absolute; inset:auto 0 -3px; height:2px; background:var(--success); opacity:0; transform:scaleX(0); transform-origin:left; }
-.u008[data-copied='true'] .u008-label::after { animation:u008-sweep .7s var(--ux-ease); }
-.u008-tip { position:absolute; right:0; bottom:calc(100% + 8px); padding:7px 12px; border-radius:var(--r-md); background:var(--text-primary); color:var(--bg-base); font-size:var(--fs-label-sm); font-weight:600; white-space:nowrap; pointer-events:none; opacity:0; transform:translateY(8px) scale(.8); transform-origin:80% 100%; transition:opacity .25s var(--ux-ease),transform .5s var(--ux-spring); }
-.u008-tip:not(:empty) { opacity:1; transform:none; }
-.u008-tip::after { content:''; position:absolute; right:18px; bottom:-4px; width:8px; height:8px; background:inherit; transform:rotate(45deg); }
+.u008 { position:relative; isolation:isolate; }
+.u008-icons { position:relative; display:inline-grid; place-items:center; width:20px; height:20px; flex:none; }
+.u008-icons .archive-icon { position:absolute; width:20px; height:20px; opacity:0; transform:scale(.85); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-control) var(--ease-out); }
+.u008[data-state='idle'] .u008-cp,
+.u008[data-state='copied'] .u008-ok,
+.u008[data-state='pending'] .u008-wait,
+.u008[data-state='error'] .u008-error { opacity:1; transform:none; }
+.u008[data-state='copied'] { background:var(--success); color:var(--text-inverse); border-color:transparent; }
+.u008[data-state='error'] { background:var(--bg-surface); color:var(--danger-text); border-color:var(--danger-text); }
+.u008-label { display:inline-grid; text-align:center; }
+.u008-label > span { grid-area:1/1; white-space:nowrap; }
+.u008-measure { visibility:hidden; }
+.u008-feedback { animation:u008-label-in var(--motion-hover) var(--ease-out); }
+.u008-live { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .u008:disabled { color:var(--text-disabled); background:var(--bg-elevated); opacity:1; }
 .u008:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@keyframes u008-sweep { 0% { opacity:0; transform:scaleX(0); } 50% { opacity:1; } 100% { opacity:0; transform:scaleX(1); } }
-.u008[data-reduced-motion='true'] *, .u008[data-reduced-motion='true'] :deep(path), .u008[data-reduced-motion='true'] *::after { animation:none !important; transition:none !important; }
+.u008[data-state='pending'] .u008-wait { animation:u008-spin 1s linear infinite; }
+@keyframes u008-label-in { from { opacity:0; transform:translateY(3px); } }
+@keyframes u008-spin { to { transform:rotate(360deg); } }
+.u008[data-reduced-motion='true'] * { animation:none !important; transition:none !important; }
+@media (forced-colors:active) { .u008[data-state='copied'],.u008[data-state='error'] { background:ButtonFace; color:ButtonText; border-color:ButtonText; } .u008:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

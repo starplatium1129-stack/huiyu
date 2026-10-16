@@ -17,7 +17,7 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
   <div data-fluid-glass :data-size="size" class="studio-search tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:py-0 tw:px-s-3 tw:border-0 tw:rounded-pill tw:bg-surface tw:text-secondary">
     <ArchiveIcon name="search" />
     <input :id="id" ref="input" v-model="value" :autofocus="autofocus" :autocomplete="autocomplete" class="studio-search-input tw:w-full tw:min-w-0 tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
-    <button v-if="value" type="button" class="tw:grid tw:place-items-center tw:[flex:0_0_32px] tw:w-[32px] tw:h-[32px] tw:border-0 tw:rounded-pill tw:bg-transparent tw:text-secondary tw:cursor-pointer" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
+    <button v-if="value" type="button" class="studio-search-clear tw:grid tw:place-items-center tw:[flex:0_0_32px] tw:w-[32px] tw:h-[32px] tw:border-0 tw:rounded-pill tw:bg-transparent tw:text-secondary tw:cursor-pointer" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>
 <style scoped>
@@ -26,12 +26,27 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
 .studio-search[data-size='sm'] .studio-search-input { min-height:var(--control-height-sm); padding-block:var(--s-1); font-size:var(--fs-label-sm); }
 /* Paint the focus line above the glass fill without replacing material shadows. */
-.studio-search::after { content:""; position:absolute; inset:auto var(--s-3) 0; height:2px; background:var(--focus-color); opacity:0; pointer-events:none; }
-.studio-search:has(.studio-search-input:focus)::after { opacity:1; }
+.studio-search::after { content:""; position:absolute; inset:auto var(--s-3) 0; height:2px; background:var(--focus-color); opacity:0; transform:scaleX(.88); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-control) var(--ease-out); pointer-events:none; }
+.studio-search:has(.studio-search-input:focus)::after { opacity:1; transform:none; }
+.studio-search:has(.studio-search-input:focus-visible)::after { transition:none; }
+.studio-search > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
+.studio-search:focus-within > .archive-icon { transform:scale(1.08); }
+.studio-search-clear { animation:search-clear-in var(--motion-press) var(--ease-out); }
+@keyframes search-clear-in { from { opacity:0; transform:scale(.9); } }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }
 .studio-search input::placeholder { color:var(--text-muted); }
 .studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
 .studio-search button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+@media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .studio-search::after,
+  :root:not([data-motion='full']) .studio-search > .archive-icon { transition:none; }
+  :root:not([data-motion='full']) .studio-search:focus-within > .archive-icon { transform:none; }
+  :root:not([data-motion='full']) .studio-search-clear { animation:none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search::after,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search > .archive-icon { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search:focus-within > .archive-icon { transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search-clear { animation:none; }
 @media(forced-colors:active) { .studio-search:has(.studio-search-input:focus) { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

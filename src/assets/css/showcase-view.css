@@ -12,7 +12,7 @@
 .hero-actions .showcase-refresh { min-width:var(--control-height); padding-inline:var(--s-3); }
 .empty-block { padding:var(--s-8) 0; @apply tw:text-center; }
 
-:root body .showcase-page .toolbar-shell.toolbar-shell { position:sticky; top:var(--browse-toolbar-top,88px); z-index:var(--z-sticky); margin-bottom:var(--s-4); padding:var(--s-3); border-radius:var(--r-lg); }
+:root body .showcase-page .toolbar-shell.toolbar-shell { position:relative; margin-bottom:var(--s-4); padding:var(--s-3); border-radius:var(--r-lg); }
 .search-field { flex:1 1 300px; @apply tw:min-w-0; }
 .filter-pill { @apply tw:min-h-[36px]; padding:var(--s-2) var(--s-4); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:500 var(--fs-label) var(--font-sans); }
 .filter-pill.active { @apply tw:text-accent; background:var(--accent-soft); }
@@ -24,8 +24,6 @@
 .showcase-filters { margin:0; min-width:160px; }
 .showcase-filters[open] { flex-basis:100%; }
 .showcase-filters > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[36px]; list-style:none; @apply tw:cursor-pointer tw:text-secondary tw:text-label; }
-/* Expanded filters keep their sticky anchor even when opened deep in the wall. */
-:root body .showcase-page .toolbar-shell:has(.showcase-filters[open]) { max-height:calc(100svh - var(--app-navigation-visible-height,80px) - var(--desktop-chrome-height,0px) - var(--s-4)); overflow-y:auto; overscroll-behavior:contain; }
 .showcase-filters > summary::-webkit-details-marker { @apply tw:hidden; }
 .showcase-filters > summary > span:first-child { @apply tw:shrink-0 tw:font-semibold; }
 .filter-summary { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-muted; }
@@ -70,7 +68,6 @@
   .search-row { @apply tw:gap-s-2; }
   .search-field { flex-basis:100%; }
   .filter-dropdowns { flex-basis:100%; }
-  :root body .showcase-page .toolbar-shell.toolbar-shell { position:relative; top:auto; }
   .showcase-grid { --showcase-row-height:220px; @apply tw:gap-s-3; }
   .filter-summary { @apply tw:text-label-xs; }
 }

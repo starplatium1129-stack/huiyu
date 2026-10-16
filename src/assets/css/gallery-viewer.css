@@ -1,6 +1,6 @@
 @reference "./tailwind.css";
 /* Teleport 查看器以 .art-viewer 隔离，避免访问作品页后改变参考画册的同名控件。 */
-.art-viewer .viewer-info .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success) { @apply tw:text-primary tw:border-transparent; background:var(--bg-elevated); }
+.art-viewer .viewer-info .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success):not(:disabled):not([data-state='error']) { @apply tw:text-primary tw:border-transparent; background:var(--bg-elevated); }
 .art-viewer .viewer-info .viewer-actions .btn-danger { @apply tw:text-danger-text; }
 .art-viewer .viewer-info .viewer-actions .btn:disabled { @apply tw:text-disabled; }
 .art-viewer .viewer-info .viewer-actions .btn-ghost.btn-favorite-on:not(.btn-danger) { @apply tw:border-accent tw:text-accent; background:var(--accent-soft); }
