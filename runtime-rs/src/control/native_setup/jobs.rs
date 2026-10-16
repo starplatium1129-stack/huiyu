@@ -374,9 +374,21 @@ impl ControlService {
         cancel: &CancellationToken,
     ) -> Result<()> {
         let mut completed = 0;
+        let mut client = None;
         for file in files {
             stopped(cancel)?;
             plan::safe_directory(root)?;
+            // Keep one pool for this batch, after cancellation and directory checks.
+            let client = match client {
+                Some(ref client) => client,
+                None => client.insert(
+                    reqwest::Client::builder()
+                        .https_only(true)
+                        .connect_timeout(Duration::from_secs(30))
+                        .build()
+                        .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "无法连接下载源，请检查网络后重试"))?,
+                ),
+            };
             let (send, mut receive) = tokio::sync::mpsc::channel(16);
             let work = setup_download::managed_file(
                 self.config.ai_workspace_root.clone(),
@@ -387,6 +399,7 @@ impl ControlService {
                     sha256: file.sha256.clone(),
                 },
                 file.url.clone(),
+                client,
                 &send,
                 cancel,
             );

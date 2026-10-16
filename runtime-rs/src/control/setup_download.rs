@@ -36,16 +36,12 @@ pub(super) async fn managed_file(
     root: PathBuf,
     spec: ModelFile,
     url: String,
+    client: &reqwest::Client,
     send: &Sender<Value>,
     cancel: &CancellationToken,
 ) -> Result<Value> {
     let plan = DownloadPlan { workspace, root, spec, url, id: "native-setup".into() };
-    let client = reqwest::Client::builder()
-        .https_only(true)
-        .connect_timeout(Duration::from_secs(30))
-        .build()
-        .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "无法连接下载源，请检查网络后重试"))?;
-    download(&plan, &client, send, cancel).await
+    download(&plan, client, send, cancel).await
 }
 
 impl ControlService {
