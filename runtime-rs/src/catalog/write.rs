@@ -330,7 +330,7 @@ impl Catalog {
                 } else {
                     Some(at.clone())
                 },
-                data: value.clone(),
+                data: change.data.clone().or(patched).unwrap(),
             };
             if current.as_ref().is_some_and(|(r, _)| {
                 r.data == record.data
