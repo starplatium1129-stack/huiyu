@@ -8,7 +8,7 @@
       <details v-if="animaState.errorReport?.details"><StudioDisclosureSummary>技术细节</StudioDisclosureSummary><code>{{ animaState.errorReport.details }}</code></details>
     </section>
     <details v-if="drawEngine !== 'sd' && generationBusy" class="inspector-route inspector-runtime">
-      <summary><span>绘制详情</span><ArchiveIcon name="chevron-down" /></summary>
+      <StudioDisclosureSummary>绘制详情</StudioDisclosureSummary>
       <div data-disclosure-content>
         <p role="status">{{ generationPresentation.message }}</p>
         <p v-if="generationPresentation.phase === 'running' && animaState.currentNode">当前节点：{{ animaState.currentNode }}</p>
@@ -39,7 +39,7 @@
     <section class="inspector-size-section"><slot name="size" /></section>
     <section class="inspector-style-section"><slot name="style" /></section>
     <details class="inspector-route inspector-advanced">
-      <summary><span class="inspector-detail-label"><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><small>{{ generationPresetSummary || `${animaState.steps} 步 · CFG ${animaState.cfg}` }}</small></span><ArchiveIcon name="chevron-down" /></summary>
+      <StudioDisclosureSummary><span class="inspector-detail-label"><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><small>{{ generationPresetSummary || `${animaState.steps} 步 · CFG ${animaState.cfg}` }}</small></span></StudioDisclosureSummary>
       <div data-disclosure-content class="inspector-advanced-body">
         <CasualCreativeSliders v-if="pb.directorMode !== 'pro'" :draw-engine="drawEngine" :disabled="generationBusy"
           v-model:sd-params="pb.sdParams" :anima-state="animaState" @touch-sd="pb.markParamTouched" @patch-anima="patchAnimaState" />
@@ -51,7 +51,7 @@
       </div>
     </details>
     <details v-if="managedRoute" class="inspector-route">
-      <summary><span>推荐配方与复用</span><ArchiveIcon name="chevron-down" /></summary>
+      <StudioDisclosureSummary>推荐配方与复用</StudioDisclosureSummary>
       <ManagedDrawingRouteCard class="pb-managed-route-banner" :route="managedRoute" :history="pb.history" :subject="pb.subject"
         :expert="pb.directorMode === 'pro'" :busy="generationBusy" @apply="applyManagedRoute" @reuse="reuseSuccessfulRecipe" />
     </details>

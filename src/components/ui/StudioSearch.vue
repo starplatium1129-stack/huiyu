@@ -21,7 +21,9 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
   </div>
 </template>
 <style scoped>
-.studio-search { position:relative; }
+.studio-search { position:relative; isolation:isolate; box-shadow:inset 0 1px 0 var(--glass-highlight); }
+.studio-search::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--border-strong); border-radius:inherit; background:var(--accent-soft); opacity:0; transition:opacity var(--motion-control) var(--ease-out); pointer-events:none; }
+.studio-search:focus-within::before { opacity:1; }
 .studio-search-input { min-height:var(--control-height); }
 .studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
 .studio-search[data-size='sm'] .studio-search-input { min-height:var(--control-height-sm); padding-block:var(--s-1); font-size:var(--fs-label-sm); }
@@ -31,20 +33,20 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-search:has(.studio-search-input:focus-visible)::after { transition:none; }
 .studio-search > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
 .studio-search:focus-within > .archive-icon { transform:scale(1.08); }
-.studio-search-clear { animation:search-clear-in var(--motion-press) var(--ease-out); }
-@keyframes search-clear-in { from { opacity:0; transform:scale(.9); } }
+.studio-search-clear { animation:search-clear-in var(--motion-surface) var(--spring-bounce); }
+@keyframes search-clear-in { from { opacity:0; transform:scale(.6) rotate(-45deg); } }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }
 .studio-search input::placeholder { color:var(--text-muted); }
 .studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
 .studio-search button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) .studio-search::after,
+  :root:not([data-motion='full']) .studio-search::before,:root:not([data-motion='full']) .studio-search::after,
   :root:not([data-motion='full']) .studio-search > .archive-icon { transition:none; }
   :root:not([data-motion='full']) .studio-search:focus-within > .archive-icon { transform:none; }
   :root:not([data-motion='full']) .studio-search-clear { animation:none; }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search::after,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search::before,:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search::after,
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search > .archive-icon { transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search:focus-within > .archive-icon { transform:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-search-clear { animation:none; }

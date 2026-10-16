@@ -128,7 +128,7 @@ components:
 ## Overview
 
 绘遇 · HUIYU is a personal Galgame creation desk, not a generic dashboard and not
-a public AI platform. Its visual character is quiet, intimate, precise, and
+a public AI platform. Its visual character is warm, expressive, intimate, precise, and
 slightly romantic. It should feel like opening a private visual-novel art book
 inside a capable creative tool.
 
@@ -161,10 +161,21 @@ and the feeling of entering a story. The selected reference is VoltAgent's
 [Linear DESIGN.md](https://github.com/VoltAgent/awesome-design-md/blob/main/design-md/linear.app/DESIGN.md),
 an independent analysis of Linear's marketing site, not its application specification.
 Borrow its surface hierarchy, consistent control geometry, measured spacing and
-restrained emphasis. Apply these principles to the existing creation workspace;
+clear emphasis. Apply these principles to the existing creation workspace;
 retain HUIYU's character colors, artwork, Chinese typography and both themes.
 Its near-black palette, lavender brand color, proprietary fonts, large promotional
 headlines and landing-page section spacing are outside this adaptation.
+
+Artwork preview effects refer to [Sakuria](https://sakuria.syarolia.com/zh-CN):
+image-card lift, picture zoom and soft highlights with distinct timing. This
+reference covers images and image cards. Navigation, page transitions, dialogs
+and other controls follow HUIYU's own design goals and suitable Inspira UI patterns.
+
+Component composition also draws from Inspira UI's layered cards and interactive
+controls, and Magic UI's Bento layouts. Adapt their material hierarchy, artwork
+depth and authored motion into one HUIYU component family. Visual upgrades may
+reshape existing components and shared surfaces while preserving task state,
+readable Chinese typography and immediate actions in both themes.
 
 The home opening and character archive retain the installed desktop layout from
 `faddab4a`. The opening pairs one character artwork with a calm reading plane,
@@ -324,7 +335,7 @@ empty space beneath it.
 
 ## Elevation & Depth
 
-Depth is restrained and functional:
+Depth makes grouping, focus and interactive layers visible:
 
 - Base and panels: shared background roles and soft 1px borders establish grouping.
 - Interactive controls: a surface or border change signals hover; selection adds
@@ -336,9 +347,9 @@ Glass surfaces are allowed for navigation, floating utilities, and the director
 stage chrome. They must have an opaque fallback and must not be stacked until
 text becomes hazy. Prefer one clear surface boundary over several nested glowing
 cards. Motion uses `--motion-press` (120ms), `--motion-hover` (160ms),
-`--motion-control` (200ms) and `--motion-surface` (260ms). Route and character
-transitions use their existing tokens and never delay an action. Keep the shared
-easing and reduced-motion fallbacks; do not add continuous decorative animation.
+`--motion-control` (200ms) and `--motion-surface` (260ms). Artwork hover, route and
+character presentations have distinct longer roles. Use shared tokens for those
+roles, retain reduced-motion fallbacks and keep actions available throughout.
 
 Honor `prefers-reduced-motion` and `prefers-reduced-transparency`.
 System transparency, increased contrast, and forced colors must update material
@@ -347,40 +358,39 @@ manual preference. Restoring the system setting restores the user's own choice.
 
 ## Interaction & motion
 
-Choose motion by frequency and purpose before choosing an effect. Frequent
-navigation, filtering, typing and keyboard actions respond immediately, with
-instant or very short feedback. Occasional surfaces may show their origin,
-destination or state change. Reading content and dense settings stay stable;
-do not replay a whole-page entrance on every filter or add motion to every node.
-Keep existing character and artwork signatures within their own scope.
+Motion is a visible part of HUIYU's design. Page transitions, card interactions,
+list handoffs and artwork reveals should have a recognizable shape through
+displacement, scale, depth, stagger and rhythm. Review an applicable approved reference's
+actual behavior before choosing an effect. Preserve or strengthen that visual
+intent while improving continuity and response. Frequency alone does not justify
+reducing amplitude, shortening duration or replacing a designed effect with a fade.
 
-Use the shared semantic durations: press, hover, control and surface feedback
-normally finish below 300ms. Frequent operations stay crisp. Low-frequency
-artwork reveals, character performances and other purposeful presentations may
-have enough time to complete their visual story; fewer or shorter animations
-are not inherently better. Judge these effects by continuity, comfort and
-purpose, while keeping reading and controls stable. Existing route, character
-and atmosphere tokens may be longer for their specific purpose. Presentation
-never gates an action, delays cancellation or proves request success, and must
-remain interruptible with reduced-motion and lifecycle fallbacks. Entering,
-exiting and immediate feedback prefer --ease-out; on-screen movement uses
---ease-in-out, drawers use --ease-drawer, and genuinely constant progress uses
-linear. Avoid slow-starting ease-in for immediate UI responses. Reuse current
-curves and spring configuration instead of adding page-local timing systems.
+Actions respond immediately; visual motion can continue while the next action
+is accepted. Keyboard input, typing and cancellation keep their immediate paths.
+Give each visual phase enough time to read: a card can lift first and its artwork
+follow more slowly. Shared semantic durations describe these roles rather than
+impose a universal sub-300ms ceiling. Judge amplitude and timing by clarity,
+continuity, comfort and the chosen reference. Reading remains legible; filters
+do not replay the entire page or every card. Keep character and artwork signatures.
+Entering, exiting and immediate feedback prefer --ease-out; on-screen movement
+uses --ease-in-out, drawers use --ease-drawer, and constant progress uses linear.
+Reuse suitable shared curves and spring configuration; define a shared semantic
+role when an existing token does not express the intended motion.
 
 Simple motion uses CSS transitions with explicit properties; never transition:
 all. Programmatic predetermined motion may use WAAPI. Complex interruptible
 gestures and shared selection reuse existing motion and AnimatedSelection.
 Retarget from the current displayed value; do not reset to the start or replay
-keyframes on every rapid toggle. Ordinary controls have no pronounced bounce.
+keyframes on every rapid toggle. Spring and bounce express a chosen interaction
+and settle cleanly, with amplitude suited to the surface and its content.
 Actions, cancellation and focus restoration proceed without waiting for visual
 completion, and an animation ending never proves a request succeeded.
 
-Press feedback is subtle and does not move the hit target or trigger an action
-early. Avoid scale(0) entrances; a near-full scale with opacity or a short fade
-is sufficient. Anchored popovers use their Reka primitive's transform origin;
-centered modals may remain centered. Enter and exit paths preserve the spatial
-relationship. After the first tooltip opens, adjacent tooltips in the same
+Press feedback visibly acknowledges input without moving the hit target or
+triggering an action early. Choose entrance scale and displacement to express
+the surface's origin and depth; avoid scale(0). Anchored popovers use their Reka
+primitive's transform origin; centered modals may remain centered. Enter and exit
+paths preserve the spatial relationship. After the first tooltip opens, adjacent tooltips in the same
 group skip repeated delay and motion while retaining keyboard access.
 
 High-frequency motion uses transform/opacity. Blur, clip-path, shadow and layout
@@ -472,8 +482,8 @@ than styling the leak at the call site.
 ## Anime Visual Language
 
 The identity comes from authored character artwork, emotional scene choices,
-short dialogue, and restrained character color. Controls are flat, precise,
-and consistently spaced. Glowing surfaces and stickers are not a substitute
+short dialogue, and character color. Controls have tactile surface hierarchy,
+clear geometry and consistent spacing. Glowing surfaces and stickers are not a substitute
 for character presence.
 
 ### Decor layers
@@ -614,12 +624,11 @@ belong inside installation details, not in the default creative composition.
   include mobile only when requested, following AGENTS.md.
 - Preserve keyboard focus, readable contrast, reduced-motion support, and
   minimum target sizes.
-- Prefer one calm hierarchy over many equally loud cards and buttons.
+- Give key interactions visible motion and keep a clear hierarchy around them.
+- Follow the approved visual reference while preserving HUIYU's identity.
 
 ### Don't
 
-- Do not imitate Linear or another brand as an end goal.
-  Borrow useful interaction principles while preserving this project's identity.
 - Do not add decorative whitespace, glow, blur, gradients, or floating shapes
   without a hierarchy or storytelling purpose.
 - Do not hide the generated image behind parameters, logs, or prompt text.

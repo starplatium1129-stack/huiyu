@@ -59,13 +59,13 @@
         <button class="btn btn-ghost btn-sm" type="button" :disabled="assetsLoading" @click="reloadAssets().catch(() => {})">重新读取样张</button>
       </ArchiveStatePanel>
       <!-- 场景卡片网格 -->
-      <div data-route-arrive v-content-motion:up="`${selectedId}:${category}:${ratingFilter}`" class="pop-grid">
+      <div ref="listRoot" data-route-arrive class="pop-grid">
         <article v-for="blueprint in paged" :key="blueprint.id" class="pop-card"
-          :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id"
+          :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id" :data-list-key="blueprint.id"
           :style="{ '--scene-preview-ratio': previewRatio(blueprint) }">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
           <RuntimeImage v-if="thumbSrc(blueprint)" :src="thumbSrc(blueprint)" v-slot="{ image, loaded, failed }" @load="measurePreview(blueprint, $event)">
-          <button class="pop-thumb" :class="{ 'is-missing': failed }" type="button"
+          <button class="pop-thumb" :class="{ 'is-missing': failed, 'is-r18': sampleRatingOf(blueprint) === 'R18' }" type="button"
             :aria-label="`欣赏场景：${blueprint.title}`" @click="openPreview(blueprint, $event)">
             <span class="pop-thumb-skeleton" :class="{ visible: !loaded && !failed }" aria-hidden="true"></span>
             <img v-if="image.src" v-bind="image" alt="" loading="lazy" decoding="async"
@@ -102,6 +102,7 @@
               </div>
             </details>
           </div>
+          <CardEdgeLight />
         </article>
       </div>
       <div v-if="paged.length < filtered.length" ref="loadSentinel" class="tw:mt-s-5 tw:text-center">
@@ -134,7 +135,9 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import SceneArtworkViewer from '@/components/scene/SceneArtworkViewer.vue'
+import { useListTransition } from '@/composables/useListTransition'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, nextTick, onMounted, onUnmounted, onActivated, onDeactivated, watch } from 'vue'
@@ -244,6 +247,8 @@ const filtered = computed(() => {
 
 const visibleCount = ref(24)
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
+const listRoot = ref<HTMLElement | null>(null)
+useListTransition(listRoot, () => paged.value.map(blueprint => blueprint.id))
 const imageRatios = ref<Record<string, number>>({})
 function previewRatio(blueprint: SceneBlueprint) {
   const [width, height] = blueprint.recommendedSize.split('x').map(Number)

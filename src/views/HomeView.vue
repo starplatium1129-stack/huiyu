@@ -123,14 +123,9 @@
         </div>
       </div>
       <div class="atelier-entries">
-        <RouterLink v-for="entry in creationEntries" :key="entry.id" :to="entry.to" class="atelier-entry" :class="{ 'atelier-entry-lead': entry.id === 'make' }">
-          <span class="atelier-entry-art" aria-hidden="true"><img v-if="artworkReady.entries" :srcset="entrySrcset(entry.art)" sizes="(max-width: 1000px) 46vw, min(33vw, 520px)" :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-          <span class="atelier-entry-copy">
-            <span class="atelier-entry-label" aria-hidden="true">{{ entry.label }}</span>
-            <span class="atelier-entry-title">{{ entry.title }}</span>
-            <span class="atelier-entry-action">{{ entry.action }}<ArchiveIcon name="chevron-down" /></span>
-          </span>
-        </RouterLink>
+        <StudioIllustratedCard v-for="entry in creationEntries" :key="entry.id" :to="entry.to" :title="entry.title" :label="entry.label" :action="entry.action" :description="entry.id === 'make' ? '选好角色与场景，把喜欢的故事绘成一张画。' : undefined" :lead="entry.id === 'make'">
+          <template #art><img v-if="artworkReady.entries" :srcset="entrySrcset(entry.art)" sizes="(max-width: 1000px) 46vw, min(33vw, 520px)" :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></template>
+        </StudioIllustratedCard>
       </div>
     </section>
 
@@ -142,26 +137,10 @@
         </div>
       </div>
       <div class="tools-grid">
-        <RouterLink to="/character" class="tool-card">
-          <span class="tool-art"><img v-if="artworkReady.tools" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-          <span class="tool-copy"><span class="t"><ArchiveIcon name="character" />角色档案</span><span class="tool-description">查看设定与参考</span></span>
-          <ArchiveIcon name="chevron-down" class="tool-arrow" />
-        </RouterLink>
-        <RouterLink to="/style" class="tool-card">
-          <span class="tool-art"><img v-if="artworkReady.tools" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-          <span class="tool-copy"><span class="t"><ArchiveIcon name="palette" />画风</span><span class="tool-description">找到喜欢的笔触</span></span>
-          <ArchiveIcon name="chevron-down" class="tool-arrow" />
-        </RouterLink>
-        <RouterLink to="/lora" class="tool-card">
-          <span class="tool-art"><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-          <span class="tool-copy"><span class="t"><ArchiveIcon name="model" />模型</span><span class="tool-description">查阅模型资料</span></span>
-          <ArchiveIcon name="chevron-down" class="tool-arrow" />
-        </RouterLink>
-        <RouterLink to="/gallery" class="tool-card">
-          <span class="tool-art"><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-          <span class="tool-copy"><span class="t"><ArchiveIcon name="gallery" />我的作品</span><span class="tool-description">查看与整理作品</span></span>
-          <ArchiveIcon name="chevron-down" class="tool-arrow" />
-        </RouterLink>
+        <StudioIllustratedCard to="/character" title="角色档案" icon="character" description="查看设定与参考" compact><template #art><img v-if="artworkReady.tools" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+        <StudioIllustratedCard to="/style" title="画风" icon="palette" description="找到喜欢的笔触" compact><template #art><img v-if="artworkReady.tools" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+        <StudioIllustratedCard to="/lora" title="模型" icon="model" description="查阅模型资料" compact><template #art><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+        <StudioIllustratedCard to="/gallery" title="我的作品" icon="gallery" description="查看与整理作品" compact><template #art><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
       </div>
       <div v-if="!recentWorks.length" class="home-first-work">
         <ArchiveStatePanel
@@ -191,6 +170,7 @@ import { useHomeHeroes } from '@/composables/useHomeHeroes'
 import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
 import { useHomeSceneHighlights } from '@/composables/useHomeSceneHighlights'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import StudioIllustratedCard from '@/components/ui/StudioIllustratedCard.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'

@@ -32,7 +32,7 @@
 .mature-hint { @apply tw:text-label-xs; }
 
 .pop-card {
-  @apply tw:flex tw:flex-col tw:min-w-0 tw:overflow-hidden;
+  @apply tw:relative tw:flex tw:flex-col tw:min-w-0 tw:overflow-hidden;
   border:0;
   border-radius:0;
   background:transparent;
@@ -110,16 +110,15 @@
 .pop-draw-action:focus-visible { box-shadow:var(--focus-shadow); }
 
 /* The same bounded image focus used by the artwork and reference libraries. */
-.popular-scene-library .pop-grid .pop-card { --card-focus-lift:-6px; --card-focus-scale:1.06; transition:transform var(--motion-surface) var(--ease-out); }
-.pop-thumb img { transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-route) var(--ease-out); }
+.popular-scene-library .pop-grid .pop-card { --card-focus-lift:-8px; --card-focus-scale:1.06; transition:transform var(--motion-route) var(--spring-soft); }
+.pop-thumb img { transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft); }
 .pop-thumb:not(.is-r18)::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
-.popular-scene-library .pop-card:has(:focus-visible) { transform:translateY(var(--card-focus-lift)); box-shadow:none; }
-.pop-card:has(:focus-visible) .pop-thumb img:not(.pop-thumb-r18) { transform:scale(var(--card-focus-scale)); }
-.pop-card:has(:focus-visible) .pop-thumb::after { opacity:1; }
+.popular-scene-library .pop-card:has(:focus-visible) { transform:none; transition:none; box-shadow:none; }
+.pop-card:has(:focus-visible) .pop-thumb img:not(.pop-thumb-r18) { transform:none; transition:none; }
 .pop-card:has(:focus-visible) .pop-card-head h3 { color:var(--accent); }
 @media (hover:hover) and (pointer:fine) {
-  .popular-scene-library .pop-card:hover { transform:translateY(var(--card-focus-lift)); box-shadow:none; }
-  .pop-card:hover .pop-thumb img:not(.pop-thumb-r18) { transform:scale(var(--card-focus-scale)); }
+  .popular-scene-library .pop-card:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); box-shadow:none; }
+  .pop-card:hover:not(:has(:focus-visible)) .pop-thumb img:not(.pop-thumb-r18) { transform:scale(var(--card-focus-scale)); }
   .pop-card:hover .pop-thumb::after { opacity:1; }
   .pop-card:hover .pop-card-head h3 { color:var(--accent); }
 }

@@ -1,11 +1,11 @@
-<template><span ref="indicator" class="animated-selection tw:absolute tw:[inset:0_auto_auto_0] tw:pointer-events-none tw:[border-radius:var(--selection-radius,_var(--r-md))] tw:[border:1px_solid_var(--glass-edge)] tw:[box-shadow:var(--selection-shadow,_var(--shadow-glass-sm))]" aria-hidden="true"><span ref="highlight" class="animated-selection-highlight"></span></span></template>
+<template><span ref="indicator" class="animated-selection tw:absolute tw:[inset:0_auto_auto_0] tw:pointer-events-none tw:[border-radius:var(--selection-radius,_var(--r-md))] tw:[border:1px_solid_var(--glass-edge)] tw:[box-shadow:var(--selection-shadow,_var(--shadow-glass-sm))]" :class="{ 'animated-selection--underline': variant === 'underline' }" aria-hidden="true"><span ref="highlight" class="animated-selection-highlight"></span></span></template>
 <script setup lang="ts">
 import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { frame, cancelFrame } from 'motion'
 import { createFluidMotion } from '@/utils/fluidSpring'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import '@/assets/css/studio-segments.css'
-const props = withDefaults(defineProps<{ target?: string; stretch?: boolean }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]', stretch: false })
+const props = withDefaults(defineProps<{ target?: string; stretch?: boolean; variant?: 'surface' | 'underline' }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]', stretch: false, variant: 'surface' })
 const indicator = ref<HTMLElement | null>(null)
 const highlight = ref<HTMLElement | null>(null)
 let resize: ResizeObserver | undefined
@@ -194,5 +194,12 @@ onUnmounted(() => {
   opacity: 0;
   background: linear-gradient(105deg, transparent 15%, var(--glass-highlight) 45%, var(--accent-soft) 65%, transparent 85%);
 }
-@media (forced-colors: active) { .animated-selection-highlight { display: none; } }
+/* The same geometry spring can travel beneath labels without painting a panel. */
+.animated-selection.animated-selection--underline { z-index:var(--z-raised); border:0; border-radius:0; box-shadow:none; background:none; }
+.animated-selection--underline::after { content:''; position:absolute; inset:auto 0 0; height:2px; border-radius:var(--r-pill); background:var(--accent); }
+.animated-selection--underline .animated-selection-highlight { display:none; }
+@media (forced-colors: active) {
+  .animated-selection-highlight { display:none; }
+  .animated-selection--underline::after { background:Highlight; }
+}
 </style>

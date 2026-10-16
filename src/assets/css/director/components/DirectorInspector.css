@@ -3,7 +3,7 @@
 .pb[data-director-mode] .inspector-workbench { display:flex; flex-direction:column; }
 .pb .inspector-workbench .inspector-heading { padding:var(--s-3) var(--s-4); }
 .pb .inspector-workbench .inspector-tabs {
-  display:flex; flex-shrink:0; gap:var(--s-1); margin:0 20px; padding:0; border-bottom:1px solid var(--border-soft);
+  position:relative; display:flex; flex-shrink:0; gap:var(--s-1); margin:0 20px; padding:0; border-bottom:1px solid var(--border-soft);
 }
 .pb .inspector-workbench .inspector-tabs button {
   display:flex; flex:1; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:42px;
@@ -28,7 +28,7 @@
 .pb .inspector-workbench .generation-settings .toggle-row { grid-column:auto; flex-wrap:wrap; gap:var(--s-1); }
 .pb .inspector-actions { flex-shrink:0; border-top:1px solid var(--border-soft); }
 
-.pb .inspector-workbench .inspector-tabs button[data-state=active] { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+.pb .inspector-workbench .inspector-tabs button[data-state=active] { color:var(--accent); font-weight:600; }
 .pb .inspector-workbench .inspector-tabs button:hover { background:var(--accent-soft); }
 @media (min-width:1024px) and (max-width:1440px) { .pb[data-director-mode] .inspector-workbench .inspector-scroll { padding:16px 20px; } }
 @media (forced-colors:active) { .pb .inspector-workbench .inspector-tabs button[data-state="active"] { border-color:Highlight; color:Highlight; } }

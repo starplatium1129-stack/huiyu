@@ -100,7 +100,7 @@ export function installContentMotion() {
     const body = details.querySelector<HTMLElement>(':scope > [data-disclosure-content]')
       ?? [...details.children].find((child): child is HTMLElement => child instanceof HTMLElement && child.tagName !== 'SUMMARY')
     if (!body) return
-    if (details.open) reveal(body)
+    if (details.open) reveal(body, 'down')
     else cancel(body)
   }
   document.addEventListener('toggle', toggle, true)

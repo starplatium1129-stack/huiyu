@@ -1,11 +1,12 @@
-import { onDeactivated, onMounted, onUnmounted } from 'vue'
+import { onActivated, onDeactivated, onMounted, onUnmounted } from 'vue'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
+import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
 export function useRouteTransition(destinationPath?: () => string, options: { initialFade?: boolean } = {}) {
   const active = new Map<HTMLElement, () => void>()
-  const contentArrivals = new WeakMap<HTMLElement, () => void>()
+  let keyboard = false
   let interrupted = new WeakMap<HTMLElement, Keyframe>()
   const departed = new WeakSet<HTMLElement>()
   let leaving: HTMLElement | undefined
@@ -15,17 +16,24 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     || (from === '/character' && to === '/popular-scenes')
   function timing(el: HTMLElement, token: string) {
     const style = getComputedStyle(el), value = style.getPropertyValue(token).trim()
-    return { duration: parseFloat(value) * (value.endsWith('ms') ? 1 : 1000), easing: style.getPropertyValue('--ease-out').trim() }
+    return { duration: cssTimeToMilliseconds(value), easing: style.getPropertyValue('--ease-out').trim() }
   }
   function arriveContent(el: HTMLElement, motion: KeyframeAnimationOptions) {
     // Only marked reading surfaces move; fixed navigation and native overlays stay anchored.
     // Finish visibility reads before creating transforms; alternating the two
     // would invalidate style again for every following reading surface.
     const surfaces = [...el.querySelectorAll<HTMLElement>('[data-route-arrive]')].slice(0, 6).filter(surface => {
+      // A nested surface or an image-ready reveal already has an animation owner.
+      if (surface.parentElement?.closest('[data-route-arrive]') || surface.hasAttribute('data-reveal')) return false
       const rect = surface.getBoundingClientRect()
       return rect.width && rect.height && rect.bottom > 0 && rect.top < innerHeight
     })
-    return surfaces.map(surface => surface.animate([{ transform: 'translateY(16px)' }, { transform: 'none' }], motion))
+    // Inspira UI BlurReveal's grouped arrival, without blur or per-child wrappers.
+    // Adapted from 04c57ab62b9713872ebbf68988dff1836ed3d764; MIT: assets/licenses/inspira-ui.txt.
+    const duration = timing(el, '--motion-route').duration
+    return surfaces.map((surface, index) => surface.animate([
+      { opacity: .6, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' },
+    ], { ...motion, duration, delay: Math.min(index * duration / 10, duration / 4), fill: 'backwards' }))
   }
   function settle(el: HTMLElement) { active.get(el)?.() }
   function settleAll() {
@@ -64,7 +72,6 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     const releaseContent = () => {
       for (const effect of content) effect.cancel()
       content = []
-      contentArrivals.delete(el)
     }
     const finish = () => {
       if (finished) return
@@ -78,15 +85,14 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       if (path) markUiFluidityForPath(path, 'settled')
       done()
     }
-    // A cached page already has its reading and scroll state. Resume it fully
-    // visible; interrupted transitions take the presentation path in onEnter.
-    if (cached || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') { finish(); return }
+    // Cached workspaces keep their reading and scroll state. Only their shared
+    // surface fades back in; the first-visit content choreography stays finished.
+    if (keyboard || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') { finish(); return }
     active.set(el, finish)
     try {
-      const motion = timing(el, '--motion-route')
-      content = arriveContent(el, motion)
-      contentArrivals.set(el, releaseContent)
-      animation = el.animate([{ opacity: 0 }, { opacity: 1 }], motion)
+      const motion = timing(el, cached ? '--motion-surface' : '--motion-route-cut')
+      if (!cached) content = arriveContent(el, motion)
+      animation = el.animate([{ opacity: cached ? .6 : 0 }, { opacity: 1 }], motion)
       animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
@@ -110,7 +116,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     const crossRoute = !!departingPath && departingPath !== pathname(path)
     // A same-page/query refresh does not replay motion. Returning to a cached page
     // gets only a short opacity settle: no remount, translation or scroll reset.
-    if ((!current && (restored || (cachedActivation && !crossRoute))) || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') {
+    if ((!current && (restored || (cachedActivation && !crossRoute))) || keyboard || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') {
       delete el.dataset.routeEntering
       if (path) markUiFluidityForPath(path, 'settled')
       done()
@@ -181,7 +187,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     interrupted.delete(el)
     el.inert = true
     settle(el)
-    if (!destination || destination === departingPath || prefersReducedMotion() || document.hidden
+    if (!destination || destination === departingPath || keyboard || prefersReducedMotion() || document.hidden
       || typeof el.animate !== 'function') { done(); return }
     let animation: Animation | undefined, finished = false
     const finish = () => {
@@ -223,28 +229,33 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   function motionChanged() { if (prefersReducedMotion()) settleAll() }
   function visibilityChanged() { if (document.hidden) settleAll() }
   function takeOver(event: Event) {
+    keyboard = event.type === 'keydown'
+    if (keyboard) { settleAll(); return }
     if (!(event.target instanceof Node)) return
-    // Let the chosen panel own its next frame while the page fade continues.
+    // The chosen panel owns the next frame, including full text opacity.
     for (const el of [...active.keys()]) {
       if (!el.inert && el.dataset.routeEntering === 'true' && el.contains(event.target)) {
-        contentArrivals.get(el)?.()
-        delete el.dataset.routeEntering
+        settle(el)
       }
     }
   }
   let stopListening: (() => void) | undefined
-  onMounted(() => {
+  function startListening() {
+    if (stopListening) return
     // Hidden tabs can suspend animation timelines; release Vue callbacks now.
     stopListening = listenMotionChanges(motionChanged, visibilityChanged)
     document.addEventListener('pointerdown', takeOver, true)
     document.addEventListener('keydown', takeOver, true)
-  })
-  onDeactivated(settleAll)
-  onUnmounted(() => {
+  }
+  function stop() {
     settleAll()
-    stopListening?.()
+    stopListening?.(); stopListening = undefined
     document.removeEventListener('pointerdown', takeOver, true)
     document.removeEventListener('keydown', takeOver, true)
-  })
+  }
+  onMounted(startListening)
+  onActivated(startListening)
+  onDeactivated(stop)
+  onUnmounted(stop)
   return { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled, completeEnter }
 }

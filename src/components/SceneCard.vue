@@ -42,12 +42,14 @@
       </div>
       <slot name="body" :scene="scene" />
     </div>
+    <CardEdgeLight v-if="clickable" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 
 import { computed, ref, watch } from 'vue'
 import { sceneRecommendedSize } from '@/utils/sceneInference'

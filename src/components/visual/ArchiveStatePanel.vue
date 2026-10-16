@@ -8,7 +8,7 @@
   >
     <div v-if="$slots.illustration" class="archive-state-illustration" aria-hidden="true"><slot name="illustration" /></div>
     <div v-else class="archive-state-mark tw:relative tw:grid tw:place-items-center tw:w-[68px] tw:h-[68px] tw:mt-0 tw:mx-auto tw:mb-s-3 tw:[color:var(--state-accent,var(--archive-blue))] tw:text-glyph" aria-hidden="true">
-      <ArchiveIcon :name="iconName" />
+      <StudioOrbitSpinner v-if="kind === 'loading'" /><ArchiveIcon v-else :name="iconName" />
     </div>
     <div v-if="code" class="archive-state-code tw:text-secondary tw:[font:500_var(--fs-mono-xs)_var(--font-mono)] tw:[letter-spacing:.1em]">{{ code }}</div>
     <h2 class="archive-state-title">{{ title }}</h2>
@@ -20,6 +20,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import StudioOrbitSpinner from '@/components/ui/StudioOrbitSpinner.vue'
 
 const props = withDefaults(defineProps<{
   kind: 'loading' | 'empty' | 'filtered' | 'error' | 'success' | 'warning'
@@ -39,7 +40,8 @@ const iconName = computed<ArchiveIconName>(() => ({
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 /* Shared control bases retain selector precedence and avoid repeated template payload. */
-.archive-state-panel { @apply tw:min-h-[260px] tw:grid tw:place-items-center tw:content-center tw:border-soft tw:[background:var(--bg-surface)] tw:py-s-6 tw:px-s-4 tw:border-solid tw:[border-width:1px] tw:rounded-lg; }
+.archive-state-panel { @apply tw:min-h-[260px] tw:grid tw:place-items-center tw:content-center tw:border-soft tw:py-s-6 tw:px-s-4 tw:border-solid tw:[border-width:1px] tw:rounded-lg; margin:var(--s-4) auto 0; background:radial-gradient(ellipse at 50% 0,color-mix(in srgb,var(--state-accent,var(--accent)) 8%,transparent),transparent 65%),var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight); }
+.archive-state-panel::before { inset:var(--s-2); border-style:solid; border-color:color-mix(in srgb,var(--border-soft) 55%,transparent); border-radius:calc(var(--r-lg) - 6px); }
 .archive-state-title { @apply tw:my-s-2 tw:mx-0 tw:text-title-sm tw:leading-tight tw:font-semibold; }
 .archive-state-message { @apply tw:max-w-[38em] tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-loose; }
 .archive-state-panel.illustrated { min-height:clamp(340px,48vh,500px); border:0; border-radius:0; background:transparent; box-shadow:none; }
@@ -47,8 +49,11 @@ const iconName = computed<ArchiveIconName>(() => ({
 .archive-state-illustration { width:100%; margin:0 auto var(--s-5); }
 .archive-state-panel.illustrated .archive-state-title { font:600 clamp(1.4rem,1.7vw,1.8rem)/var(--lh-tight) var(--font-serif); }
 
-.archive-state-mark::before { content:''; position:absolute; inset:4px; border-radius:var(--r-lg); background:var(--bg-elevated); }
-.archive-state-mark :deep(.archive-icon) { position:relative; }
+.archive-state-mark::before,.archive-state-mark::after { content:''; position:absolute; inset:6px; border-radius:var(--r-lg); border:1px solid var(--border-soft); }
+.archive-state-mark::before { transform:translate(-4px,3px) rotate(-10deg); background:color-mix(in srgb,var(--state-accent,var(--accent)) 12%,var(--bg-surface)); }
+.archive-state-mark::after { background:var(--bg-surface); box-shadow:var(--shadow-sm); transform:rotate(4deg); }
+.archive-state-mark :deep(.archive-icon),.archive-state-mark :deep(.studio-orbit-spinner) { position:relative; z-index:var(--z-raised); }
+.archive-state-mark :deep(.studio-orbit-spinner) { width:36px; height:36px; color:var(--state-accent); }
 .archive-state-panel.compact { min-height:150px; margin:0; padding:var(--s-4); }
 .archive-state-panel.compact .archive-state-mark { width:52px; height:52px; margin-bottom:var(--s-2); }
 [data-kind="loading"] { --state-accent:var(--archive-blue); }
@@ -57,11 +62,8 @@ const iconName = computed<ArchiveIconName>(() => ({
 [data-kind="error"] { --state-accent:var(--danger-text); }
 [data-kind="success"] { --state-accent:var(--success-text); }
 [data-kind="warning"] { --state-accent:var(--warning-text); }
-[data-kind="loading"] :deep(.archive-icon) { animation:state-counter 1.1s linear infinite; }
 [data-kind="error"] h2 { color:var(--danger-text); }
 [data-kind="success"] h2 { color:var(--success-text); }
 [data-kind="warning"] h2 { color:var(--warning-text); }
-@keyframes state-counter{to{transform:rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){:root:not([data-motion='full']) .archive-state-mark i, :root:not([data-motion='full']) .archive-state-mark :deep(.archive-icon), :root:not([data-motion='full']) .archive-state-mark{animation:none!important}}
-:root:is([data-motion='reduce'],[data-motion='reduced']) .archive-state-mark :deep(.archive-icon) { animation:none!important; }
+@media (forced-colors:active) { .archive-state-panel { background:Canvas; } .archive-state-panel::before { display:none; } .archive-state-mark::before,.archive-state-mark::after { background:Canvas; border-color:CanvasText; } }
 </style>

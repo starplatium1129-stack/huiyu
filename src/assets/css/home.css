@@ -48,8 +48,8 @@
 .hero-muses button[aria-pressed="true"] { background: transparent; @apply tw:text-primary; border-color: transparent; }
 .home-hero .hero-muses .animated-selection { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:var(--border-strong); }
 .home-hero[data-immediate="true"] :is(.hero-character, .hero-fallback) { transition:none; }
-:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.hero-character, .hero-fallback, .hero-muses button, .tool-card, .pop-card-mini, .recent-card) { transition:none; }
-:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.tool-card, .pop-card-mini, .recent-card):hover { transform:none; }
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.hero-character, .hero-fallback, .hero-muses button, .pop-card-mini, .recent-card) { transition:none; }
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.pop-card-mini, .recent-card):hover { transform:none; }
 .muse-marker { @apply tw:w-[6px] tw:h-[6px]; border-radius: 50%; }
 .muse-marker-nene { background: var(--nene-violet); }
 .muse-marker-natsume { background: var(--natsume-amber); }
@@ -60,50 +60,16 @@
 .home-section-head .eyebrow { @apply tw:text-mono-sm; letter-spacing: .16em; @apply tw:text-muted; }
 .home-section-head .link { @apply tw:text-label tw:shrink-0; }
 .tools-grid { @apply tw:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); @apply tw:gap-s-3; }
-.tool-card { @apply tw:relative tw:grid tw:gap-s-3 tw:p-s-4 tw:min-w-0; grid-template-columns:64px minmax(0,1fr) 14px; align-items:center; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
-.tool-card::before, .tool-card::after { @apply tw:hidden; }
-.tool-card .t { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:text-body-sm tw:font-semibold; }
-.tool-card .t .archive-icon { width:16px; height:16px; color:var(--accent); }
-.tool-art { display:block; aspect-ratio:1; }
-.tool-art img, .recent-empty-art img { display:block; width:100%; height:100%; object-fit:contain; }
-.tool-copy { display:grid; gap:var(--s-2); min-width:0; }
-.tool-description { color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-label); }
-.tool-arrow { width:14px; height:14px; color:var(--text-secondary); transform:rotate(-90deg); }
-/* Transparent illustrations and separate reading space form an open studio spread. */
+.recent-empty-art img { display:block; width:100%; height:100%; object-fit:contain; }
+/* Authored illustrations and a larger drawing entry form one feature spread. */
 .home-atelier { padding-block:var(--s-4); }
-.atelier-entries { display:grid; grid-template-columns:1.12fr 1fr 1fr; gap:var(--s-6) var(--s-5); }
-.atelier-entry { display:flex; flex-direction:column; min-width:0; padding:var(--s-3); color:var(--text-primary); text-decoration:none; border-radius:var(--r-lg); }
-.atelier-entry-art { display:block; height:180px; flex-shrink:0; pointer-events:none; }
-.atelier-entry-art img { display:block; width:100%; height:100%; object-fit:contain; transition:transform var(--motion-hover) var(--ease-out); }
-.atelier-entry-copy { display:flex; flex:1; flex-direction:column; align-items:flex-start; gap:var(--s-2); padding:var(--s-3) var(--s-2) 0; }
-.atelier-entry-label { color:var(--text-secondary); font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); letter-spacing:.12em; }
-.atelier-entry-title { font:500 var(--fs-title-xs)/var(--lh-label) var(--font-serif); }
-.atelier-entry-action { display:inline-flex; align-items:center; gap:var(--s-2); margin-top:auto; min-height:44px; color:var(--accent); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
-.atelier-entry-action .archive-icon { width:14px; height:14px; transform:rotate(-90deg); }
-.atelier-entry-lead { grid-row:span 2; justify-content:center; padding-inline:0; }
-.atelier-entry-lead .atelier-entry-art { height:auto; aspect-ratio:3 / 2; }
-.atelier-entry-lead .atelier-entry-copy { flex:0; padding-inline:var(--s-4); padding-top:var(--s-5); }
-.atelier-entry-lead .atelier-entry-title { font-size:var(--fs-title); }
-.atelier-entry:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@media (hover:hover) and (pointer:fine) {
-  .atelier-entry:hover .atelier-entry-art img { transform:translateY(-4px); }
-  .atelier-entry:hover .atelier-entry-action { text-decoration:underline; text-underline-offset:.25em; }
-}
+.atelier-entries { display:grid; grid-template-columns:1.12fr 1fr 1fr; gap:var(--s-4); }
 @media (max-width:1000px) {
   .atelier-entries { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .atelier-entry-lead { grid-row:auto; grid-column:1 / -1; flex-direction:row; align-items:center; gap:var(--s-5); }
-  .atelier-entry-lead .atelier-entry-art { width:46%; flex-shrink:0; }
-  .atelier-entry-lead .atelier-entry-copy { flex:1; min-width:0; padding:var(--s-3); }
 }
 @media (max-width:600px) {
   .atelier-entries { grid-template-columns:minmax(0,1fr); gap:var(--s-4); }
-  .atelier-entry { flex-direction:row; align-items:center; gap:var(--s-3); }
-  .atelier-entry-art, .atelier-entry-lead .atelier-entry-art { width:40%; height:auto; aspect-ratio:3 / 2; flex-shrink:0; }
-  .atelier-entry-copy, .atelier-entry-lead .atelier-entry-copy { padding:0; }
-  .atelier-entry-lead .atelier-entry-title { font-size:var(--fs-title-xs); }
 }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .atelier-entry-art img { transition:none; } :root:not([data-motion='full']) .atelier-entry:hover .atelier-entry-art img { transform:none; } }
-:root:is([data-motion="reduce"], [data-motion="reduced"]) .atelier-entry-art img { transition:none; transform:none; }
 .home-inspiration { @apply tw:grid tw:gap-s-3 tw:mt-s-6 tw:mb-s-8; }
 .pop-strip { @apply tw:min-w-0; padding: var(--s-5) 0; border-bottom: 1px solid var(--border-soft); }
 .strip-label { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mb-s-4 tw:text-primary tw:text-body-sm tw:font-semibold; }
@@ -136,10 +102,8 @@
 .recent-scenes-row > * { flex: 0 0 min(300px, 82vw); }
 .recent-grid .recent-empty-state { grid-column: 1 / -1; @apply tw:m-0; max-width: none; @apply tw:w-full; }
 .recent-empty-art { display:block; flex:0 0 88px; height:88px; }
-.tool-card:focus-visible, .pop-card-mini:focus-visible, .sc-link:focus-visible, .recent-card:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+.pop-card-mini:focus-visible, .sc-link:focus-visible, .recent-card:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 @media (hover: hover) and (pointer: fine) {
-  .tool-card:hover { transform: translateY(-3px); }
-  .tool-card:hover .t { text-decoration:underline; text-underline-offset:.25em; }
   .pop-card-mini:hover, .recent-card:hover { transform: translateY(-3px); @apply tw:border-strong; }
 }
 @media (max-width: 1000px) {
@@ -167,12 +131,11 @@
   .home-start-card .btn { margin-left:auto; }
   .hero-orbit { @apply tw:h-[260px]; }
   .tools-grid { @apply tw:gap-s-2; }
-  .tool-card { @apply tw:p-s-4; }
   .home-section-head { align-items: start; @apply tw:flex-col tw:gap-s-1; }
   .pop-strip { padding: var(--s-4) 0; }
   .recent-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .hero-character, :root:not([data-motion='full']) .hero-fallback, :root:not([data-motion='full']) .hero-muses button, :root:not([data-motion='full']) .tool-card, :root:not([data-motion='full']) .pop-card-mini, :root:not([data-motion='full']) .recent-card { transition: none; }
-  :root:not([data-motion='full']) .home-page :is(.tool-card, .pop-card-mini, .recent-card):hover { transform: none; }
+  :root:not([data-motion='full']) .hero-character, :root:not([data-motion='full']) .hero-fallback, :root:not([data-motion='full']) .hero-muses button, :root:not([data-motion='full']) .pop-card-mini, :root:not([data-motion='full']) .recent-card { transition: none; }
+  :root:not([data-motion='full']) .home-page :is(.pop-card-mini, .recent-card):hover { transform: none; }
 }

@@ -14,12 +14,14 @@
       <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured" class="sample-featured"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
       <h3 class="sample-title tw:text-primary tw:text-body tw:font-semibold tw:leading-body">{{ displayTitle }}</h3>
     </div>
+    <CardEdgeLight />
   </article>
 </template>
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
 import { computed, ref, watch } from 'vue'
@@ -55,19 +57,18 @@ const emit = defineEmits<{ open: [id: string] }>()
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .sample { @apply tw:overflow-hidden tw:relative tw:min-w-0; flex:var(--sample-grow) 1 calc(var(--showcase-row-height,320px) * var(--sample-grow)); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); }
-:root body .showcase-page .sample { border-radius:var(--r-sm); box-shadow:none; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
-:root body .showcase-page .sample { --card-focus-lift:-6px; --card-focus-scale:1.06; }
-:root body .showcase-page .sample:has(:focus-visible) { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:var(--shadow-md); }
-.sample:not(.sample-r18):has(:focus-visible) .sample-image { transform:scale(var(--card-focus-scale)); }
-.sample:not(.sample-r18):has(:focus-visible) .sample-visual::after { opacity:1; }
+:root body .showcase-page .sample { border-radius:var(--r-sm); box-shadow:none; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-route) var(--spring-soft); }
+:root body .showcase-page .sample { --card-focus-lift:-8px; --card-focus-scale:1.06; }
+:root body .showcase-page .sample:has(:focus-visible) { transform:none; transition:none; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
+.sample:not(.sample-r18):has(:focus-visible) .sample-image { transform:none; transition:none; }
 .sample:has(:focus-visible) .sample-title { color:var(--accent); }
 /* 自然尺寸校正缺失或过时的目录尺寸；按原始比例分配行宽，完整展示原画。 */
 .sample-visual { aspect-ratio:var(--sample-ratio, 3 / 4); border:0; background:var(--art-mat); color:var(--on-art-primary); cursor:zoom-in; }
 .sample-visual:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .sample:has(.sample-visual:focus-visible) .sample-caption { box-shadow:var(--focus-shadow); }
 /* Card reveal starts after decoding; the image itself never fades back to black. */
-.sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); transition:transform var(--motion-route) var(--ease-out); }
-/* Keep the highlight below captions and leave restricted preview layers unchanged. */
+.sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); transition:transform var(--motion-art-hover) var(--spring-soft); }
+/* Picture light stays below captions; rating masks retain their own layer. */
 .sample:not(.sample-r18) .sample-visual::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .sample-image-fallback { @apply tw:h-full tw:min-h-0; place-items:center; color:var(--on-art-secondary); }
 /* The blurred veil cross-fades above an otherwise stable sharp image. */
@@ -86,8 +87,8 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-badge { @apply tw:inline-flex tw:items-center tw:gap-s-1; padding:var(--s-1) var(--s-2); border:0; @apply tw:rounded-pill tw:text-accent; background:var(--accent-soft); @apply tw:text-label-xs; }
 .sample-badge-type { @apply tw:text-secondary; background:var(--bg-base); }
 @media (hover: hover) and (pointer: fine) {
-  :root body .showcase-page .sample:hover { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
-  .sample:not(.sample-r18):hover .sample-image { transform:scale(var(--card-focus-scale)); }
+  :root body .showcase-page .sample:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+  .sample:not(.sample-r18):hover:not(:has(:focus-visible)) .sample-image { transform:scale(var(--card-focus-scale)); }
   .sample:not(.sample-r18):hover .sample-visual::after { opacity:1; }
   .sample:hover .sample-title { color:var(--accent); }
   .sample-r18:hover .sample-sensitive { opacity:0; }

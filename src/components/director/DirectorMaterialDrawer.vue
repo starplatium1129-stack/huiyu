@@ -1,7 +1,8 @@
 <template>
   <TabsRoot v-model="active" as-child :unmount-on-hide="false"><section ref="drawerEl" class="material-drawer" aria-label="创作素材">
-    <div class="material-heading"><span>创作素材</span><small>YOUR MATERIALS</small></div>
+    <div class="material-heading"><span><i class="workbench-heading-icon" aria-hidden="true"><ArchiveIcon name="scene" /></i>创作素材</span><small>YOUR MATERIALS</small></div>
     <TabsList class="material-switch" aria-label="素材分类">
+      <AnimatedSelection variant="underline" />
       <TabsTrigger v-for="item in sections" :key="item.id" :value="item.id" as-child><button type="button"
         :id="`material-tab-${item.id}`" :aria-controls="`material-${item.id}`">
         <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
@@ -9,7 +10,7 @@
     </TabsList>
     <!-- 首次选中才加载，之后保留输入、搜索与选中状态。 -->
     <TabsContent v-for="item in sections" :key="item.id" :value="item.id" force-mount as-child><div v-show="active === item.id" :id="`material-${item.id}`"
-      class="material-content" :aria-labelledby="`material-tab-${item.id}`">
+      v-content-motion:up="active === item.id" class="material-content" :aria-labelledby="`material-tab-${item.id}`">
       <DeferredPanel :active="active === item.id"><slot :name="item.id" :active="active === item.id" /></DeferredPanel>
     </div></TabsContent>
     <div class="material-footer"><slot name="footer" /></div>
@@ -21,6 +22,7 @@ import { computed, ref, watch, nextTick } from 'vue'
 import DeferredPanel from './DeferredPanel.vue'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
 import ArchiveIcon, { type ArchiveIconName } from '../visual/ArchiveIcon.vue'
+import AnimatedSelection from '../visual/AnimatedSelection.vue'
 import { scrollBehavior } from '@/utils/motionPreference'
 
 const props = defineProps<{ expert: boolean; sceneContext?: string }>()
@@ -53,9 +55,9 @@ watch(() => props.expert, value => {
 <style scoped>
 .material-drawer { min-width:0; container-type:inline-size; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); overflow:clip; }
 .material-heading { display:flex; justify-content:space-between; align-items:center; gap:8px; }
-.material-switch { display:flex; gap:4px; margin:0 20px; border-bottom:1px solid var(--border-soft); }
+.material-switch { position:relative; display:flex; gap:4px; margin:0 20px; border-bottom:1px solid var(--border-soft); }
 .material-switch button { display:flex; flex:1; min-width:0; min-height:42px; align-items:center; justify-content:center; gap:6px; padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:0; background:transparent; color:var(--text-secondary); font:500 13px var(--font-sans); cursor:pointer; }
-.material-switch button[data-state=active] { color:var(--accent); border-bottom-color:var(--accent); font-weight:600; }
+.material-switch button[data-state=active] { color:var(--accent); font-weight:600; }
 .material-switch button:hover { background:var(--accent-soft); }
 .material-switch button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .material-switch .archive-icon { width:16px; height:16px; }

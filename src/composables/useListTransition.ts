@@ -82,7 +82,8 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
     const before = snapshot; snapshot = null
     if (!before || before.root !== root.value || !canAnimate()) return
     const style = getComputedStyle(before.root)
-    const duration = cssTimeToMilliseconds(style.getPropertyValue('--motion-control'))
+    const moveDuration = cssTimeToMilliseconds(style.getPropertyValue('--motion-control'))
+    const enterDuration = cssTimeToMilliseconds(style.getPropertyValue('--motion-route'))
     let entering = 0
     // Batch geometry/style reads before starting native compositor timelines.
     const changes = visibleCards(before.root).flatMap(card => {
@@ -90,20 +91,21 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
       const fresh = !before.ids.has(card.id)
       if (!old && (!fresh || entering >= MAX_ENTERING)) return []
       const x = old?.element === card.element ? old.rect.left - card.rect.left : 0
-      const y = old?.element === card.element ? old.rect.top - card.rect.top : 6
-      const opacity = old?.opacity ?? (fresh ? '.6' : '1')
+      const y = old?.element === card.element ? old.rect.top - card.rect.top : 12
+      const opacity = old?.opacity ?? (fresh ? '.35' : '1')
       if (Math.abs(x) < .5 && Math.abs(y) < .5 && Number(opacity) >= 1) return []
       const computed = getComputedStyle(card.element)
       const transform = computed.transform === 'none' ? '' : ` ${computed.transform}`
-      const delay = fresh ? Math.min(entering++ * 16, duration / 4) : 0
-      return [{ element: card.element, x, y, opacity, transform, delay }]
+      const duration = fresh ? enterDuration : moveDuration
+      const delay = fresh ? Math.min(entering++ * enterDuration / 12, enterDuration / 4) : 0
+      return [{ element: card.element, x, y, opacity, transform, delay, duration }]
     })
     for (const change of changes) {
       if (typeof change.element.animate !== 'function') continue
       const animation = change.element.animate([
         { transform: `translate(${change.x}px, ${change.y}px)${change.transform}`, opacity: change.opacity },
         { transform: `translate(0px, 0px)${change.transform}`, opacity: 1 },
-      ], { duration, delay: change.delay, easing: style.getPropertyValue('--ease-out').trim(), fill: 'both' })
+      ], { duration: change.duration, delay: change.delay, easing: style.getPropertyValue('--ease-out').trim(), fill: 'both' })
       animations.set(change.element, animation)
       animation.onfinish = animation.oncancel = () => {
         if (animations.get(change.element) !== animation) return

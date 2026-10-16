@@ -51,6 +51,7 @@ async function copy() {
 .u008 { position:relative; isolation:isolate; }
 .u008-icons { position:relative; display:inline-grid; place-items:center; width:20px; height:20px; flex:none; }
 .u008-icons .archive-icon { position:absolute; width:20px; height:20px; opacity:0; transform:scale(.85); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-control) var(--ease-out); }
+.u008-icons .u008-ok { transform:scale(.45) rotate(-28deg); transition:opacity var(--motion-hover) var(--ease-out),transform var(--spring-bouncy-duration) var(--spring-bounce); }
 .u008[data-state='idle'] .u008-cp,
 .u008[data-state='copied'] .u008-ok,
 .u008[data-state='pending'] .u008-wait,
@@ -60,12 +61,12 @@ async function copy() {
 .u008-label { display:inline-grid; text-align:center; }
 .u008-label > span { grid-area:1/1; white-space:nowrap; }
 .u008-measure { visibility:hidden; }
-.u008-feedback { animation:u008-label-in var(--motion-hover) var(--ease-out); }
+.u008-feedback { animation:u008-label-in var(--motion-control) var(--ease-out); }
 .u008-live { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .u008:disabled { color:var(--text-disabled); background:var(--bg-elevated); opacity:1; }
 .u008:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .u008[data-state='pending'] .u008-wait { animation:u008-spin 1s linear infinite; }
-@keyframes u008-label-in { from { opacity:0; transform:translateY(3px); } }
+@keyframes u008-label-in { from { opacity:0; transform:translateY(6px); } }
 @keyframes u008-spin { to { transform:rotate(360deg); } }
 .u008[data-reduced-motion='true'] * { animation:none !important; transition:none !important; }
 @media (forced-colors:active) { .u008[data-state='copied'],.u008[data-state='error'] { background:ButtonFace; color:ButtonText; border-color:ButtonText; } .u008:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
