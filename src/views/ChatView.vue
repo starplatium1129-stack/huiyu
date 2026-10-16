@@ -131,7 +131,6 @@ import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
-import ChatModelControls from '@/components/ChatModelControls.vue'
 import ChatMessageText from '@/components/ChatMessageText.vue'
 import ChatMessageActions from '@/components/ChatMessageActions.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
@@ -146,6 +145,8 @@ import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
+// Model controls and their select/disclosure dependencies are only needed in settings.
+const ChatModelControls = defineAsyncComponent(() => import('@/components/ChatModelControls.vue'))
 const ChatApiSettings = defineAsyncComponent(() => import('@/components/ChatApiSettings.vue'))
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
 const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))

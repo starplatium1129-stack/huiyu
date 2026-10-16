@@ -85,7 +85,7 @@
     </section>
 
     <HomeCreationGuide />
-    <HomeArtJournal :scenes="featuredScenes" />
+    <HomeArtJournal :scenes="featuredScenes" :loading="journalLoading" :error="journalError" :can-refresh="canRefreshJournal" @refresh="refreshJournal" />
 
     <section ref="inspirationSection" class="container home-inspiration" aria-label="场景与角色灵感">
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
@@ -274,7 +274,7 @@ async function retryRecentWorks(event: MouseEvent) {
     page.querySelector<HTMLElement>('.home-resume .recent-card, .recent-empty-state .btn')?.focus({ preventScroll: true })
   }
 }
-const { recentScenes, featuredScenes } = useHomeSceneHighlights()
+const { recentScenes, featuredScenes, loading: journalLoading, error: journalError, canRefresh: canRefreshJournal, refresh: refreshJournal } = useHomeSceneHighlights()
 const sceneStore = useSceneStore()
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const entryPreviews = new Map([[studioOriginal, studioPreview], [sceneOriginal, scenePreview],

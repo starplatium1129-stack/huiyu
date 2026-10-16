@@ -2,10 +2,14 @@
   <section v-if="scenes.length" ref="section" class="art-journal container" aria-labelledby="journal-title" data-reveal @focusin="activateImages">
     <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
       <div><span class="eyebrow">CG JOURNAL / 画里的日常</span><h2 id="journal-title">在喜欢的世界，多停留一会。</h2></div>
-      <RouterLink to="/showcase" class="journal-more">翻阅参考画册 <ArchiveIcon name="image" /></RouterLink>
+      <div class="journal-actions">
+        <button v-if="canRefresh" type="button" class="journal-more journal-refresh" :aria-disabled="loading" :aria-busy="loading" aria-controls="journal-spread" @click="!loading && emit('refresh')"><ArchiveIcon name="refresh" />{{ loading ? '正在换画…' : '换一组' }}</button>
+        <RouterLink to="/showcase" class="journal-more">翻阅参考画册 <ArchiveIcon name="image" /></RouterLink>
+      </div>
     </header>
-    <div class="journal-spread tw:grid">
-      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? '/scene-showcase/images/' + scene.id + '.jpg' : undefined" v-slot="{ image, failed }">
+    <p v-if="error" class="journal-error" role="status">{{ error }}</p>
+    <div id="journal-spread" class="journal-spread tw:grid" :aria-busy="loading">
+      <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? scene.image || '/scene-showcase/images/' + scene.id + '.jpg' : undefined" v-slot="{ image, failed }">
       <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :to="(failed ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
         <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><template v-if="image.src && !failed"><img v-bind="image" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="scene.rating === 'R18' || scene.mature" :src="image.src" :crossorigin="image.crossorigin" /></template><span v-else class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ imagesReady ? '样张暂未连接' : '正在载入样张' }}<span>先看看这一幕的故事与设定</span></span></div>
         <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
@@ -19,7 +23,8 @@ import { onMounted, onScopeDispose, ref, watch } from 'vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
-defineProps<{ scenes: Array<{ id: string; title?: string; story?: string; category?: string; rating?: string; mature?: boolean }> }>()
+defineProps<{ scenes: Array<{ id: string; title?: string; story?: string; category?: string; rating?: string; mature?: boolean; image?: string }>; loading?: boolean; error?: string; canRefresh?: boolean }>()
+const emit = defineEmits<{ refresh: [] }>()
 const section = ref<HTMLElement | null>(null), imagesReady = ref(false)
 let observer: IntersectionObserver | undefined
 function activateImages() { imagesReady.value = true; observer?.disconnect() }
@@ -46,6 +51,10 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
 .journal-heading h2 { font: 500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); margin:var(--s-2) 0 0; }
 .journal-heading .eyebrow { @apply tw:text-label-xs; letter-spacing: .16em; @apply tw:text-muted; }
 .journal-more { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-label tw:text-secondary tw:whitespace-nowrap; }
+.journal-actions { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-x-s-5; }
+.journal-refresh { border: 0; padding: 0; background: transparent; font-family: inherit; cursor: pointer; min-width: 7em; }
+.journal-refresh[aria-disabled="true"] { color: var(--text-disabled); cursor: wait; }
+.journal-error { color: var(--text-secondary); font-size: var(--fs-label); margin: 0 0 var(--s-4); }
 .journal-spread { grid-template-columns: 1.2fr 1fr; gap: var(--s-5); }
 .journal-entry { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); @apply tw:items-center tw:gap-s-5 tw:text-primary tw:min-w-0; }
 .journal-entry.lead { grid-row: span 2; @apply tw:flex tw:flex-col tw:items-stretch; }
