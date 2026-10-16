@@ -1,10 +1,11 @@
-use super::{Result, unavailable};
+use super::{Result, check_cancel, unavailable};
 use sha2::{Digest, Sha256};
 use std::{
     fs::{self, File},
     io::{Read, Take},
     path::Path,
 };
+use tokio_util::sync::CancellationToken;
 
 const MAX_FILE: u64 = 64 * 1024 * 1024;
 
@@ -48,10 +49,22 @@ fn open(path: &Path) -> Result<(Take<File>, u64)> {
     Ok((file.take(MAX_FILE + 1), meta.len()))
 }
 
-pub(super) fn bytes(path: &Path) -> Result<Vec<u8>> {
+pub(super) fn bytes(path: &Path, cancel: &CancellationToken) -> Result<Vec<u8>> {
+    check_cancel(cancel)?;
     let (mut file, size) = open(path)?;
     let mut data = Vec::with_capacity(size as usize);
-    file.read_to_end(&mut data).map_err(|_| unavailable())?;
+    loop {
+        check_cancel(cancel)?;
+        let length = file
+            .by_ref()
+            .take(64 * 1024)
+            .read_to_end(&mut data)
+            .map_err(|_| unavailable())?;
+        if length == 0 {
+            break;
+        }
+    }
+    check_cancel(cancel)?;
     if data.len() as u64 != size {
         return Err(unavailable());
     }
@@ -62,12 +75,14 @@ pub(super) fn digest(bytes: impl AsRef<[u8]>) -> String {
     hex::encode(Sha256::digest(bytes.as_ref()))
 }
 
-pub(super) fn file_digest(path: &Path) -> Result<(u64, String)> {
+pub(super) fn file_digest(path: &Path, cancel: &CancellationToken) -> Result<(u64, String)> {
+    check_cancel(cancel)?;
     let (mut file, size) = open(path)?;
     let mut hash = Sha256::new();
     let mut buffer = [0_u8; 64 * 1024];
     let mut actual = 0;
     loop {
+        check_cancel(cancel)?;
         let length = file.read(&mut buffer).map_err(|_| unavailable())?;
         if length == 0 {
             break;
@@ -75,12 +90,15 @@ pub(super) fn file_digest(path: &Path) -> Result<(u64, String)> {
         actual += length as u64;
         hash.update(&buffer[..length]);
     }
+    check_cancel(cancel)?;
     if actual != size {
         return Err(unavailable());
     }
     Ok((size, hex::encode(hash.finalize())))
 }
 
-pub(super) fn json(path: &Path) -> Result<serde_json::Value> {
-    serde_json::from_slice(&bytes(path)?).map_err(|_| unavailable())
+pub(super) fn json(path: &Path, cancel: &CancellationToken) -> Result<serde_json::Value> {
+    let value = serde_json::from_slice(&bytes(path, cancel)?).map_err(|_| unavailable())?;
+    check_cancel(cancel)?;
+    Ok(value)
 }

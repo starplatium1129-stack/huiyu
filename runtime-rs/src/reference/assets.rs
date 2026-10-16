@@ -27,12 +27,16 @@ impl Reader {
         &mut self,
         relative: &str,
         collect: impl FnOnce(&str) -> bool,
+        cancel: &CancellationToken,
     ) -> Result<Asset> {
+        check_cancel(cancel)?;
         if self.blocked {
             return Err(invalid_release());
         }
         if let Some(release) = &self.release {
-            return match release.image(&self.app_root, relative, collect) {
+            let result = release.image(&self.app_root, relative, collect, cancel);
+            check_cancel(cancel)?;
+            return match result {
                 Ok(Some(image)) => Ok(Asset::Published(image)),
                 Ok(None) => Ok(Asset::Missing),
                 Err(_) => {
@@ -97,9 +101,13 @@ pub(super) async fn serve(
             state.config.content_root(),
             state.config.app_root.clone(),
             &state.shutdown,
-            move |reader| {
+            move |reader, cancel| {
                 Ok::<_, ApiError>((
-                    reader.asset(&target, |hash| !head && !fresh(hash, condition.as_deref()))?,
+                    reader.asset(
+                        &target,
+                        |hash| !head && !fresh(hash, condition.as_deref()),
+                        cancel,
+                    )?,
                     permit,
                 ))
             },

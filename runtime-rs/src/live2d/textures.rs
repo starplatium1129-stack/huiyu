@@ -66,12 +66,11 @@ fn scale(quality: &str) -> Result<i32> {
         _ => Err(manifest::invalid("Invalid Live2D quality")),
     }
 }
-fn selected(snapshot: &catalog::Snapshot, character: &str) -> Result<(catalog::Model, Value)> {
+fn selected<'a>(snapshot: &'a catalog::Snapshot, character: &str) -> Result<(&'a catalog::Model, Value)> {
     let model = snapshot
         .models
         .iter()
         .find(|model| model.id == character)
-        .cloned()
         .ok_or_else(|| manifest::invalid("Unknown Live2D model"))?;
     let name = model
         .receipt
