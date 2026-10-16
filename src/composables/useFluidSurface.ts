@@ -1,6 +1,7 @@
 import { getCurrentInstance, onDeactivated, onUnmounted } from 'vue'
 import { createFluidMotion, FluidSpring } from '@/utils/fluidSpring'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
+import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 
 /**
  * 默认浮层表面与卡片面板选择器（009 交互流畅度与性能规范）。
@@ -65,6 +66,7 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: number, 
     to(targets, instant = false, callback) {
       if (disposed) return
       if (fallback) { fallback.to(targets, instant, callback); return }
+      const backdropOpacity = active && el instanceof HTMLDialogElement ? getComputedStyle(el, '::backdrop').opacity : String(spring.value)
       if (active && effects[0]) {
         spring.value = origin.value; spring.velocity = origin.velocity
         spring.step(Math.max(0, Number(effects[0].currentTime) || 0) / 1000)
@@ -88,7 +90,15 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: number, 
         const root = el.animate(panel === el && transforms ? opacity.map((value, index) => ({ ...value, ...transforms[index] })) : opacity, timing)
         effects.push(root)
         if (panel !== el && transforms) effects.push(panel.animate(transforms, timing))
-        if (el instanceof HTMLDialogElement) effects.push(el.animate(opacity, { ...timing, pseudoElement: '::backdrop' }))
+        if (el instanceof HTMLDialogElement) {
+          // Inspira UI AnimatedModal separates scrim fading from panel motion.
+          // Adapted from 04c57ab62b9713872ebbf68988dff1836ed3d764; MIT notice: assets/licenses/inspira-ui.txt.
+          const style = getComputedStyle(el)
+          effects.push(el.animate([{ opacity: backdropOpacity }, { opacity: spring.target }], {
+            ...timing, duration: cssTimeToMilliseconds(style.getPropertyValue('--motion-control')),
+            easing: style.getPropertyValue('--ease-out').trim(), pseudoElement: '::backdrop',
+          }))
+        }
         for (const effect of effects) void effect.finished.catch(() => {})
         void root.finished.then(() => { if (token === version) finish() }, () => { if (token === version) finish() })
       } catch {
@@ -156,7 +166,7 @@ export function useFluidSurface(panelSelector?: string) {
     if (isFullscreenViewer && !hasVisibleSource) panel.style.transformOrigin = 'center center'
 
     // Even an identity transform changes the containing block for fixed children.
-    const transform = stationary ? undefined : (progress: number) => `translateY(${(1 - progress) * -travel}px) scale(${scale + (1 - scale) * progress})`
+    const transform = stationary ? undefined : (progress: number) => `translateY(${(1 - progress) * travel}px) scale(${scale + (1 - scale) * progress})`
     const promote = () => {
       // Promote only while moving. rAF style writes otherwise keep large,
       // newly opened forms on the main-thread paint path.

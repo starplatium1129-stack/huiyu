@@ -56,8 +56,11 @@ function onDismissEscape(event: KeyboardEvent) {
 .studio-popover { @apply tw:[z-index:var(--z-popover)] tw:[width:min(340px,calc(100vw_-_32px))] tw:[max-height:var(--reka-popover-content-available-height,_calc(100dvh_-_32px))] tw:overflow-y-auto tw:overscroll-contain tw:p-s-4 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:text-primary tw:shadow-(--shadow-lg); }
 /* Reka owns collision placement; only the inner surface grows from its trigger.
    Transitions retain presentation values. Dismissal releases focus immediately. */
-.studio-popover { transform-origin:var(--reka-popover-content-transform-origin,top right); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
-@starting-style { .studio-popover[data-state='open'][data-pointer-open='true'] { opacity:0; transform:scale(.97); } }
+.studio-popover { --popover-x:0px; --popover-y:4px; transform-origin:var(--reka-popover-content-transform-origin,top right); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); }
+.studio-popover[data-side='top'] { --popover-y:-4px; }
+.studio-popover[data-side='left'] { --popover-x:-4px; --popover-y:0px; }
+.studio-popover[data-side='right'] { --popover-x:4px; --popover-y:0px; }
+@starting-style { .studio-popover[data-state='open'][data-pointer-open='true'] { opacity:0; transform:translate(var(--popover-x),var(--popover-y)) scale(.97); } }
 .studio-popover[data-pointer-open='false'] { transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .studio-popover { transition:none; }
 @media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-popover { transition:none; } }

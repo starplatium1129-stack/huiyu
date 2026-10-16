@@ -71,8 +71,8 @@
       <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
 
-    <div v-else data-route-arrive v-content-motion:up="`${scope}:${typeFilter}:${charFilter}:${ratingFilter}`" class="showcase-grid" :aria-busy="manifestLoading">
-      <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)"
+    <div v-else ref="listRoot" data-route-arrive class="showcase-grid" :aria-busy="manifestLoading">
+      <ShowcaseSampleCard v-for="entry in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)" :data-list-key="entry.id"
         :featured="featured.has(entry.id)"
         :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
         @open="openViewer" />
@@ -149,6 +149,7 @@ import ShowcaseSampleCard from '@/components/showcase/ShowcaseSampleCard.vue'
 import { useShowcaseAlbums } from '@/composables/showcase/useShowcaseAlbums'
 import { useAlbumNavigation } from '@/composables/gallery/useAlbumNavigation'
 import { useScrollReveal } from '@/composables/useScrollReveal'
+import { useListTransition } from '@/composables/useListTransition'
 import {
   parseShowcaseManifest,
   type ShowcaseEntry,
@@ -323,6 +324,8 @@ const filtered = computed(() => {
   }).sort((a, b) => b.score - a.score).map(({ entry }) => entry)
 })
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
+const listRoot = ref<HTMLElement | null>(null)
+useListTransition(listRoot, () => paged.value.map(entry => entry.id))
 const currentIdx = computed(() => filtered.value.findIndex(e => e.id === currentId.value))
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
 const viewerThumbs = computed(() => Object.fromEntries(filtered.value.map(entry => [entry.id, thumbSrc(entry)])))

@@ -136,9 +136,9 @@
     >
       <button class="btn btn-primary" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
-    <div v-else data-route-arrive v-content-motion:up="`${activeTheme}:${fTier}:${sortBy}:${showHidden}:${fChar}:${fSeason}:${fTime}:${fSeries}:${fRating}`" class="scene-grid" :aria-busy="loading">
+    <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
-          :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id"
+          :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id" :data-list-key="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
           <template #body="{ scene: s2 }">
             <div class="ex-scene-line">
@@ -207,6 +207,7 @@ import neneAvatar from '@/assets/illustrations/nene-avatar.webp'
 import natsumeAvatar from '@/assets/illustrations/natsume-avatar.webp'
 import { SCENE_FILTER_OPTIONS } from '@/composables/scene/useSceneExplorerFilters'
 import { useSceneExplorerWorkspace } from '@/composables/scene/useSceneExplorerWorkspace'
+import { useListTransition } from '@/composables/useListTransition'
 
 const {
   companionId, activeFilters, activeThemeLabel, scenes, manualCompanion, moodRails, applyMoodRail,
@@ -217,6 +218,8 @@ const {
   loading, loadError, init, paged, flashId, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
   personalReason, drawerScene, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
 } = useSceneExplorerWorkspace()
+const listRoot = ref<HTMLElement | null>(null)
+useListTransition(listRoot, () => paged.value.map(scene => scene.id))
 const storyDialog = ref<InstanceType<typeof SceneStoryDialog> | null>(null)
 const openedDetails = reactive(new Set<string>())
 function rememberDetails(id: string, event: Event) {

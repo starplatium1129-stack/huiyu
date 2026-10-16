@@ -59,7 +59,7 @@ function unlockPageScroll() {
   return restore
 }
 
-/** Native close releases focus and business state immediately; opening retains source motion. */
+/** Native close releases focus and business state immediately; entry motion stays on the surface. */
 export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotion?: Pick<ReturnType<typeof useFluidSurface>, 'enter' | 'dispose'>) {
   const surface = imageMotion ?? useFluidSurface(':scope > .viewer-layout, :scope > .ref-modal-layout')
   let locked = false
@@ -111,10 +111,9 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
       // coordinates yet. Always cancel that trip before the first fade frame.
       window.scrollTo({ left: previousScrollX, top: previousScrollY, behavior: 'instant' })
       trackClose(el)
-      if (source && source !== document.body && !el.contains(source)) {
-        const from = source.getBoundingClientRect(), rect = el.getBoundingClientRect()
-        el.style.transformOrigin = `${Math.max(0, Math.min(100, (from.x + from.width / 2 - rect.x) / rect.width * 100))}% 0%`
-      }
+      // Centered native modals settle around their own center; anchored popovers
+      // keep Reka's collision-aware origin in StudioPopover instead.
+      el.style.transformOrigin = 'center center'
     }
     if (!locked) { locked = true; lockPageScroll() }
     surface.enter(el, () => {})
