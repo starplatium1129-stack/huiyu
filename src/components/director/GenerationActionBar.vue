@@ -18,7 +18,7 @@
         <button
           ref="generationAction"
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
-          class="btn generation-action"
+          class="btn generation-action studio-press-ripple"
           :class="[status === 'idle' ? 'btn-primary' : 'btn-ghost', { 'is-drawing': busy }]"
           :data-state="status"
           type="button"
@@ -26,6 +26,7 @@
           :aria-disabled="cancellationPending || undefined"
           :aria-busy="cancellationPending || undefined"
           :disabled="!busy && !presentation.needsReview && (!online || !!blockedReason)"
+          @click.capture="pressRipple"
           @click="activate"
         >
           <span class="generation-action-surface" aria-hidden="true" />
@@ -46,6 +47,7 @@
 import { computed, nextTick, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
+import { usePressRipple } from '@/composables/usePressRipple'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import GenerationSizePicker from './GenerationSizePicker.vue'
 import { RouterLink } from 'vue-router'
@@ -81,6 +83,7 @@ const props = defineProps<{
 
 const status = computed(() => props.busy ? 'loading' : props.presentation.needsReview ? 'review' : props.error ? 'error'
   : props.presentation.completed && props.hasResult && !props.stopped ? 'success' : 'idle')
+const pressRipple = usePressRipple(() => !props.busy && !props.presentation.needsReview)
 const cancellationPending = computed(() => props.presentation.phase === 'cancelling' && !props.presentation.canRetryCancellation)
 const actionText = computed(() => props.busy && props.presentation.phase === 'cancelling' ? props.presentation.canRetryCancellation ? '重试停止' : '正在停止…'
   : props.busy && props.presentation.phase === 'preparing' ? '取消准备' : ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成', review: '核对任务与结果' })[status.value])

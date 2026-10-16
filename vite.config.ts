@@ -6,6 +6,7 @@ import { dirname, resolve } from 'node:path'
 import type { IncomingMessage } from 'node:http'
 import { createRequire } from 'node:module'
 import { fileURLToPath, URL } from 'node:url'
+import { readFile } from 'node:fs/promises'
 
 const runtimeRequire = createRequire(import.meta.url)
 
@@ -34,6 +35,26 @@ function componentTailwindPlugin(): Plugin {
       })
       const code = compiler.build([])
       return { code, map: toSourceMap(compiler.buildSourceMap()).raw }
+    },
+  }
+}
+
+/** Static manuals use the same compiled tokens and utilities as the app.
+ * Emit their existing URLs inside dist so desktop staging includes every style. */
+function manualStylesPlugin(): Plugin {
+  return {
+    name: 'studio-manual-styles',
+    apply: 'build',
+    async generateBundle() {
+      for (const fileName of ['src/assets/css/design-system.css', 'src/assets/css/light-theme.css', 'css/docs.css']) {
+        const file = fileURLToPath(new URL(`./${fileName}`, import.meta.url))
+        this.addWatchFile(file)
+        const compiler = await compile(await readFile(file, 'utf8'), {
+          base: dirname(file), from: file, polyfills: Polyfills.AtProperty,
+          onDependency: dependency => this.addWatchFile(dependency),
+        })
+        this.emitFile({ type: 'asset', fileName, source: compiler.build([]) })
+      }
     },
   }
 }
@@ -115,6 +136,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     tailwindcss(),
     vue(),
     dataVersionPlugin(),
+    manualStylesPlugin(),
   ]
   if (mode === 'desktop') plugins.push({
     name: 'desktop-startup-assets',

@@ -21,7 +21,7 @@
       <p>
         © {{ currentYear }} 绘遇 HUIYU
         <span class="site-footer-sep tw:text-disabled" aria-hidden="true">·</span>
-        <a class="site-footer-link tw:text-secondary tw:underline-offset-[3px]" href="/docs/getting-started.html" target="_blank" rel="noopener">使用指南</a>
+        <RouterLink class="site-footer-link tw:text-secondary tw:underline-offset-[3px]" to="/guide">使用指南</RouterLink>
         <span class="site-footer-sep tw:text-disabled" aria-hidden="true">·</span>
         <a class="site-footer-link tw:text-secondary tw:underline-offset-[3px]" href="/docs/index.html" target="_blank" rel="noopener">文档索引</a>
       </p>
@@ -71,7 +71,7 @@ const currentYear = new Date().getFullYear()
   background: var(--bg-base);
 }
 .site-footer p { margin: 0; }
-/* 页脚文档入口：docs/ 静态托管目录的应用内唯一入口 */
+/* 指南在应用内阅读，详细文档保留独立入口。 */
 .site-footer-sep { margin: 0 var(--s-2); }
 .site-footer-link { text-decoration: underline; }
 .site-footer-link:hover { @apply tw:text-accent; }

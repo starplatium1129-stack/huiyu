@@ -1,8 +1,10 @@
-<template><button class="task-center-button tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[38px] tw:rounded-md tw:text-primary tw:cursor-pointer" type="button" aria-haspopup="dialog" @click="opened = true"><ArchiveIcon name="queue" /><span>任务</span><strong v-if="activeCount">{{ activeCount }}</strong></button></template>
+<template><button class="task-center-button studio-press-ripple tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[38px] tw:rounded-md tw:text-primary tw:cursor-pointer" type="button" aria-haspopup="dialog" @click.capture="pressRipple" @click="opened = true"><ArchiveIcon name="queue" /><span>任务</span><strong v-if="activeCount">{{ activeCount }}</strong></button></template>
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useTaskCenter } from '@/composables/useTaskCenter'
+import { usePressRipple } from '@/composables/usePressRipple'
 const { opened, activeCount } = useTaskCenter()
+const pressRipple = usePressRipple()
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";

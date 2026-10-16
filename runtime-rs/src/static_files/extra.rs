@@ -21,12 +21,26 @@ pub(super) fn location(state: &AppState, path: &str) -> Option<(PathBuf, String)
             .then(|| (state.config.tools_root(), relative.into()));
     }
     if let Some(relative) = path.strip_prefix("/css/") {
-        return Some((root.join("css"), relative.into()));
+        let compiled = root.join("dist/css");
+        let base = if compiled.join(relative).is_file() {
+            compiled
+        } else {
+            root.join("css")
+        };
+        return Some((base, relative.into()));
     }
     if let Some(relative) = path.strip_prefix("/src/assets/css/") {
         return ["design-system.css", "light-theme.css"]
             .contains(&relative)
-            .then(|| (root.join("src/assets/css"), relative.into()));
+            .then(|| {
+                let compiled = root.join("dist/src/assets/css");
+                let base = if compiled.join(relative).is_file() {
+                    compiled
+                } else {
+                    root.join("src/assets/css")
+                };
+                (base, relative.into())
+            });
     }
     if let Some(relative) = path.strip_prefix("/scene-showcase") {
         if relative.contains(['\\', '%', '?', '#'])

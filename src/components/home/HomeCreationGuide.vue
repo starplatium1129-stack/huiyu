@@ -2,7 +2,7 @@
   <section class="creation-guide container" aria-labelledby="creation-guide-title">
     <header class="guide-heading tw:flex tw:items-center tw:justify-between tw:gap-s-4 tw:mb-s-4">
       <h2 id="creation-guide-title">从灵感到作品</h2>
-      <a href="/docs/getting-started.html" class="guide-direct" target="_blank" rel="noopener" aria-label="使用指南，在新窗口打开">使用指南 <ArchiveIcon name="book" /></a>
+      <RouterLink to="/guide" class="guide-direct">使用指南 <ArchiveIcon name="book" /></RouterLink>
     </header>
     <ol class="guide-steps tw:grid tw:gap-s-4 tw:p-0 tw:m-0">
       <li><RouterLink to="/scene-explorer"><img class="step-art" :src="inspirationArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">01</span><strong>选场景</strong></RouterLink></li>

@@ -65,6 +65,7 @@ const router = createRouter({
       component: () => import('@/components/AppLayout.vue'),
       children: [
         { path: '',                name: 'home',          meta: { title: '绘遇' }, component: () => import('@/views/HomeView.vue') },
+        { path: 'guide',           name: 'guide',         meta: { title: '使用指南' }, component: () => import('@/views/GuideView.vue') },
         { path: 'scene-explorer', name: 'scene',         meta: { title: '灵感场景' }, component: () => import('@/views/SceneExplorerView.vue') },
         { path: 'popular-scenes', name: 'popular-scenes', meta: { title: '角色场景' }, component: () => import('@/views/PopularSceneExplorerView.vue') },
         { path: 'prompt-builder', name: 'director',      meta: { title: '绘制工作台' }, component: () => import('@/views/PromptBuilderView.vue') },

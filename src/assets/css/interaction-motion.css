@@ -1,6 +1,11 @@
 /* Low-specificity fallback: component-specific gestures keep their own motion.
    Feedback starts on press; no new hover loops or permanent compositing layers. */
 :root { --control-press-transform: scale(.98); }
+/* Magic UI's click-origin ripple, kept below text and bounded to one short pulse.
+   A separate clipped surface preserves the button's focus ring and hit target. */
+.studio-press-ripple { position:relative; isolation:isolate; }
+.studio-press-ripple-surface { position:absolute; inset:0; z-index:-1; overflow:hidden; border-radius:inherit; pointer-events:none; }
+.studio-press-ripple-dot { position:absolute; display:block; border-radius:50%; background:currentColor; opacity:0; pointer-events:none; }
 :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']) {
   transition: transform var(--motion-press) var(--ease-out);
 }

@@ -21,8 +21,7 @@
         <p v-if="!isLocalHost" id="guest-guide-description">生成任务在分享者的电脑上执行。</p>
       </div>
       <div class="guest-guide-actions tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:flex-wrap">
-        <!-- docs/ 由网关静态托管（server.js /docs），42 份文档此前在应用内零入口 -->
-        <a class="guest-guide-doc tw:text-secondary tw:text-label-sm" href="/docs/getting-started.html" target="_blank" rel="noopener">翻开使用指南</a>
+        <RouterLink class="guest-guide-doc tw:text-secondary tw:text-label-sm" to="/guide" @click="dismiss">翻开使用指南</RouterLink>
         <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">开始配置</button>
         <button ref="dismissButton" class="btn" :class="isLocalHost ? 'btn-ghost' : 'btn-primary'" type="button" @click="dismiss">
           {{ isLocalHost ? '先浏览' : '开始浏览' }}

@@ -79,7 +79,16 @@ pub async fn serve(
             format!("dist{path}"),
             path.starts_with("/_app/"),
         )
-    } else if path.starts_with("/css/") || path.starts_with("/docs/") {
+    } else if path.starts_with("/css/") || path.starts_with("/src/assets/css/") {
+        let relative = path.trim_start_matches('/').to_owned();
+        let compiled = root.join("dist");
+        let base = if compiled.join(&relative).is_file() {
+            compiled
+        } else {
+            root.to_path_buf()
+        };
+        (base, relative, false)
+    } else if path.starts_with("/docs/") {
         (
             root.to_path_buf(),
             path.trim_start_matches('/').to_owned(),
