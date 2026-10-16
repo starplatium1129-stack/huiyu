@@ -80,7 +80,13 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
             && status != "failed"
             && now() - job.created > plan.timeout.as_millis() as i64
         {
-            let _ = cancellation::targeted(&inner, &id).await;
+            let acknowledged = cancellation::targeted(&inner, &id).await.unwrap_or(false);
+            {
+                let mut state = job.state.lock().await;
+                if state.upstream_id == id {
+                    state.cancel_acknowledged |= acknowledged;
+                }
+            }
             jobs::fail(
                 &job,
                 ApiError::new(
@@ -133,6 +139,12 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
                     history
                 }
                 Err(error) => {
+                    {
+                        let mut state = job.state.lock().await;
+                        if cancellation::timeout_pending(&state, &id) {
+                            state.cancel_checks = 0;
+                        }
+                    }
                     failures = failures.saturating_add(1);
                     if failures >= 60 {
                         jobs::fail(&job, error, true).await;
@@ -160,6 +172,7 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
                 continue;
             }
             if status != "success" {
+                cancellation::confirm_timeout_absent(&inner, &job, &id, &history).await;
                 continue;
             }
             // Result transport/storage retries must not retain GPU admission.

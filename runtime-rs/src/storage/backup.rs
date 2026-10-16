@@ -92,7 +92,7 @@ impl CopyJob {
                 string(manifest, "backupId")?,
             )?;
         }
-        copy_job::run(&self.files, &self.kind)
+        copy_job::run(&self.files, &mut self.kind)
     }
 }
 

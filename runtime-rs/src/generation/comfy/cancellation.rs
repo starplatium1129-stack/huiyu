@@ -23,6 +23,81 @@ fn contains(items: &Value, id: &str) -> bool {
 fn queue_items<'a>(queue: &'a Value, primary: &str, secondary: &str) -> &'a Value {
     queue.get(primary).unwrap_or(&queue[secondary])
 }
+fn queue_absent(items: &Value, id: &str) -> bool {
+    items.as_array().is_some_and(|items| {
+        items.iter().all(|item| {
+            let queued_id = if item.is_array() {
+                item.get(1)
+            } else {
+                item.get("prompt_id")
+            };
+            queued_id
+                .and_then(Value::as_str)
+                .is_some_and(|queued_id| !queued_id.is_empty() && queued_id != id)
+        })
+    })
+}
+pub(super) fn timeout_pending(state: &JobState, id: &str) -> bool {
+    // Manual cancellation always installs a deadline, including retries.
+    // Keep this ownership marker independent of later transport diagnostics.
+    state.upstream_id == id
+        && state.status == "failed"
+        && !state.settled
+        && state.cancel_acknowledged
+        && state.cancel_deadline.is_none()
+}
+pub(super) async fn confirm_timeout_absent(
+    inner: &Inner,
+    job: &Job,
+    id: &str,
+    history: &Value,
+) {
+    {
+        let mut state = job.state.lock().await;
+        if !timeout_pending(&state, id) {
+            return;
+        }
+        if !history.is_object() || !history[id].is_null() {
+            state.cancel_checks = 0;
+            return;
+        }
+    }
+    let absent = inner
+        .json(
+            "comfy",
+            Method::GET,
+            "/queue",
+            None,
+            Duration::from_secs(10),
+            &inner.cancel,
+        )
+        .await
+        .is_ok_and(|queue| {
+            let running = queue_items(&queue, "queue_running", "running");
+            let pending = queue_items(&queue, "queue_pending", "pending");
+            queue_absent(running, id) && queue_absent(pending, id)
+        });
+    let mut state = job.state.lock().await;
+    if !timeout_pending(&state, id) {
+        return;
+    }
+    if !absent {
+        state.cancel_checks = 0;
+        return;
+    }
+    state.cancel_checks += 1;
+    if state.cancel_checks < 2 {
+        return;
+    }
+    // Preserve the failure and its latest diagnostic. Terminal history takes
+    // the ordinary success/error path before this absence-only reconciliation.
+    state.settled = true;
+    state.unknown = false;
+    state.permit.take();
+    drop(state);
+    job.notify.notify_waiters();
+    jobs::notify_settled(job);
+}
 pub(super) async fn targeted(inner: &Inner, id: &str) -> Result<bool> {
     let (status, _) = inner
         .raw_json(
@@ -194,8 +269,8 @@ pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
                 &inner.cancel,
             )
             .await?;
-        if contains(queue_items(&queue, "queue_running", "running"), id)
-            || contains(queue_items(&queue, "queue_pending", "pending"), id)
+        if !queue_absent(queue_items(&queue, "queue_running", "running"), id)
+            || !queue_absent(queue_items(&queue, "queue_pending", "pending"), id)
         {
             return Ok(Cancellation::Active);
         }
@@ -209,6 +284,9 @@ pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
                 &inner.cancel,
             )
             .await?;
+        if !history.is_object() {
+            return Ok(Cancellation::Active);
+        }
         let entry = &history[id];
         Ok::<_, ApiError>(
             if matches!(
