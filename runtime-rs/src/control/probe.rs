@@ -41,7 +41,6 @@ impl ControlService {
                 });
         }
         let (key, path, strict) = match index {
-            0 => ("sdHost", "/sdapi/v1/sd-models", false),
             1 => ("comfyHost", "/system_stats", true),
             _ => ("ttsHost", "/docs", false),
         };

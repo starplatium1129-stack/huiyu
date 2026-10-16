@@ -136,7 +136,8 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     state.code = Some(code(&job, "CANCELLING"));
     state.cancel_deadline = Some(Instant::now() + Duration::from_secs(30));
     state.cancel_checks = 0;
-    state.cancel_acknowledged = false;
+    // Retrying cancellation still targets the same immutable upstream ID.
+    // A deleted queued prompt cannot acknowledge a second deletion.
     drop(state);
     request(inner.clone(), job.clone()).await;
     job.notify.notify_waiters();
@@ -149,22 +150,34 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     }
 }
 pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
-    if job
-        .state
-        .lock()
-        .await
-        .cancel_deadline
-        .is_some_and(|deadline| Instant::now() > deadline)
-    {
+    let expired = {
         let mut state = job.state.lock().await;
-        state.status = "failed".into();
-        state.error = Some("无法确认上游任务已安全取消".into());
-        state.code = Some(code(job, "CANCEL_FAILED"));
-        state.finished = Some(now());
-        state.unknown = true;
-        state.settled = false;
-        return true;
+        if state.settled {
+            return true;
+        }
+        if state.upstream_id != id
+            || state.cancel_deadline.is_none()
+            || !matches!(state.status.as_str(), "cancelling" | "failed")
+        {
+            return false;
+        }
+        let expired = state.status == "cancelling"
+            && state.cancel_deadline.is_some_and(|deadline| Instant::now() > deadline);
+        if expired {
+            state.status = "failed".into();
+            state.error = Some("无法确认上游任务已安全取消".into());
+            state.code = Some(code(job, "CANCEL_FAILED"));
+            state.finished = Some(now());
+            state.unknown = true;
+        }
+        expired
+    };
+    if expired {
+        job.notify.notify_waiters();
+        jobs::notify_settled(job);
     }
+    // The deadline bounds foreground confirmation, not ownership. Keep probing
+    // so an acknowledged deletion can release admission after an outage.
     enum Cancellation {
         Active,
         Absent,
@@ -212,6 +225,15 @@ pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
     }
     .await;
     let mut state = job.state.lock().await;
+    if state.settled {
+        return true;
+    }
+    if state.upstream_id != id
+        || state.cancel_deadline.is_none()
+        || !matches!(state.status.as_str(), "cancelling" | "failed")
+    {
+        return false;
+    }
     let terminal = match observation {
         Ok(Cancellation::Terminal) => true,
         Ok(Cancellation::Absent) if state.cancel_acknowledged => {
@@ -235,6 +257,7 @@ pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
     state.permit.take();
     drop(state);
     jobs::discard_output(job).await;
+    job.notify.notify_waiters();
     jobs::notify_settled(job);
     true
 }

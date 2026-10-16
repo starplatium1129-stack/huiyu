@@ -34,52 +34,22 @@ impl ControlService {
             _ => self.config.app_root.join("scripts/lib/managed-voice.ps1"),
         }
     }
-    fn args(&self, index: usize, start: bool, settings: &Value) -> Vec<String> {
-        let path = |s: &str| {
-            self.config
-                .ai_workspace_root
-                .join(s)
-                .to_string_lossy()
-                .into_owned()
-        };
-        let mut args = vec![
+    fn voice_args(&self, start: bool, settings: &Value) -> Vec<String> {
+        vec![
             "-Action".into(),
             if start { "Start".into() } else { "Stop".into() },
             "-RuntimeRoot".into(),
             self.config.runtime_root.to_string_lossy().into_owned(),
-        ];
-        if index == 0 {
-            args.extend([
-                "-PackageRoot".into(),
-                path("Data/Packages/Stable Diffusion WebUI reForge"),
-                "-WebuiHost".into(),
-                settings["sdHost"].as_str().unwrap_or("").into(),
-                "-ImagesRoot".into(),
-                path("Data/Images"),
-                "-ControlNetRoot".into(),
-                path("Data/Models/ControlNet"),
-            ]);
-        } else if index == 1 {
-            args.extend([
-                "-AIWorkspaceRoot".into(),
-                self.config.ai_workspace_root.to_string_lossy().into_owned(),
-                "-ComfyHost".into(),
-                settings["comfyHost"].as_str().unwrap_or("").into(),
-            ]);
-        } else {
-            args.extend([
-                "-AIWorkspaceRoot".into(),
-                self.config.ai_workspace_root.to_string_lossy().into_owned(),
-                "-Engine".into(),
-                settings["ttsEngine"]
-                    .as_str()
-                    .unwrap_or("gpt-sovits")
-                    .into(),
-                "-TtsHost".into(),
-                settings["ttsHost"].as_str().unwrap_or("").into(),
-            ]);
-        }
-        args
+            "-AIWorkspaceRoot".into(),
+            self.config.ai_workspace_root.to_string_lossy().into_owned(),
+            "-Engine".into(),
+            settings["ttsEngine"]
+                .as_str()
+                .unwrap_or("gpt-sovits")
+                .into(),
+            "-TtsHost".into(),
+            settings["ttsHost"].as_str().unwrap_or("").into(),
+        ]
     }
     pub(super) async fn run_script(
         &self,
@@ -200,7 +170,6 @@ impl ControlService {
             return Ok(());
         }
         let seconds = match (index, start) {
-            (0, true) => 360,
             (2, true) if settings["ttsEngine"] == "voxcpm2" => 390,
             (2, true) => 120,
             (2, false) => 30,
@@ -211,7 +180,7 @@ impl ControlService {
         } else {
             self.run_script(
                 self.script(index, start),
-                self.args(index, start, &settings),
+                self.voice_args(start, &settings),
                 seconds,
             )
             .await

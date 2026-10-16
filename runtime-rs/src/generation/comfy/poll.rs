@@ -47,29 +47,32 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
         if !wait(&inner, &job, delay).await {
             return;
         }
-        let (status, id, pending, settled) = {
+        let (status, id, pending, settled, cancel_requested) = {
             let state = job.state.lock().await;
             (
                 state.status.clone(),
                 state.upstream_id.clone(),
                 state.interrupt_pending,
                 state.settled,
+                state.cancel_deadline.is_some(),
             )
         };
         if terminal(&status) && settled {
             watch(&inner, &id, false);
             return;
         }
-        if status == "cancelling" {
+        if status == "cancelling" || (status == "failed" && !settled && cancel_requested) {
             if !pending && cancellation::confirm(&inner, &job, &id).await {
                 if job.state.lock().await.settled {
                     watch(&inner, &id, false);
                     return;
                 }
-                delay = Duration::from_secs(3);
-                continue;
             }
-            delay = Duration::from_millis(250);
+            delay = if job.state.lock().await.status == "failed" {
+                Duration::from_secs(3)
+            } else {
+                Duration::from_millis(250)
+            };
             continue;
         }
         // A known completed prompt is no longer subject to generation timeout.
