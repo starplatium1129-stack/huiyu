@@ -6,7 +6,7 @@
       <h2>六种心情，六种色调</h2>
     </header>
     <div class="mood-grid style-mood-grid" data-route-arrive data-reveal data-reveal-delay="1">
-      <article v-for="m in MOODS" :key="m.id" class="style-mood-card">
+      <article v-for="(m, moodIndex) in MOODS" :key="m.id" class="style-mood-card" :style="{ '--mood-color': m.colors[1] }">
         <RouterLink class="style-sample" :class="{ 'is-unavailable': !loading && !available.has(m.sceneId) }" :to="'/showcase?scene=' + m.sceneId" :aria-label="'查看' + m.name + '氛围参考'">
           <RuntimeImage :src="available.has(m.sceneId) ? '/scene-showcase/thumbs/' + m.sceneId + '.jpg' : undefined" v-slot="{ image, failed }">
           <img v-if="image.src && !failed" v-bind="image" :alt="m.sampleTitle + ' · 氛围参考'" width="560" height="818" loading="lazy" decoding="async" />
@@ -14,11 +14,12 @@
           </RuntimeImage>
         </RouterLink>
         <div class="style-card-body tw:p-s-4">
-          <div class="style-card-heading tw:flex tw:items-center tw:justify-between tw:gap-s-2"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3><span>{{ m.en }}</span></div>
+          <div class="style-card-heading tw:flex tw:items-center tw:justify-between tw:gap-s-2"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3><span>{{ String(moodIndex + 1).padStart(2, '0') }} / {{ m.en }}</span></div>
           <p class="style-sample-caption">{{ m.caption }}</p>
-          <div class="mood-strip" aria-hidden="true"><span v-for="(color, index) in m.colors" :key="color + index" class="mood-swatch" :style="{ '--swatch': color }"></span></div>
+          <div class="style-palette" aria-hidden="true"><span v-for="(color, index) in m.colors" :key="color + index" class="mood-swatch" :style="{ '--swatch': color, '--swatch-index': index }"></span></div>
           <div class="style-card-foot tw:mt-s-3 tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2"><span>{{ m.desc }}</span><RouterLink :to="'/prompt-builder?mood=' + encodeURIComponent(m.id)" class="btn btn-ghost mood-go">用这个调子绘制<ArchiveIcon name="spark" /></RouterLink></div>
         </div>
+        <CardEdgeLight />
       </article>
     </div>
 
@@ -35,6 +36,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import { COLOR_MOODS } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useMoodReferences } from '@/composables/useMoodReferences'
 
@@ -57,30 +59,44 @@ useScrollReveal()
 .style-chapter { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-5 tw:mb-s-4; }
 .style-chapter h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .style-mood-grid { grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-5; }
-.style-mood-card { @apply tw:min-w-0 tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); }
-.style-sample { @apply tw:block; aspect-ratio:4 / 3; @apply tw:overflow-hidden; background:var(--bg-elevated); }
+.style-mood-card { position:relative; isolation:isolate; @apply tw:min-w-0 tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); }
+.style-mood-card::before { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(160deg,transparent 45%,color-mix(in srgb,var(--mood-color) 9%,transparent)); pointer-events:none; }
+.style-sample { position:relative; @apply tw:block; aspect-ratio:4 / 3; @apply tw:overflow-hidden; background:var(--bg-elevated); }
 .style-sample.is-unavailable { aspect-ratio: auto; @apply tw:min-h-[104px]; }
 .style-sample.is-unavailable .style-sample-missing { @apply tw:flex-row tw:flex-wrap tw:min-h-[104px]; }
-.style-sample img { @apply tw:w-full tw:h-full tw:object-cover; object-position:center 12%; @apply tw:block; transition:transform var(--motion-surface) var(--ease-out); }
+.style-sample img { @apply tw:w-full tw:h-full tw:object-cover; object-position:center 12%; @apply tw:block; transition:transform var(--motion-art-hover) var(--spring-soft); }
+.style-sample::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 30%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 65%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .style-sample-missing { @apply tw:h-full tw:p-s-4 tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:text-secondary tw:text-center tw:text-body-sm; }
 .style-sample-missing .archive-icon { @apply tw:w-[32px] tw:h-[32px]; }
 .style-sample-missing small { font-size:inherit; }
 .style-card-heading h3 { @apply tw:flex tw:items-center tw:gap-s-2 tw:m-0 tw:text-primary; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
-.style-card-heading .archive-icon { @apply tw:text-accent; }
-.style-card-heading > span { @apply tw:text-muted tw:text-body-sm; }
+.style-card-heading .archive-icon { box-sizing:content-box; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); @apply tw:text-accent; width:18px; height:18px; }
+.style-card-heading > span { @apply tw:text-muted; font:400 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); text-align:right; }
 .style-sample-caption { margin:var(--s-2) 0 var(--s-4); @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
-.style-card-body .mood-strip { @apply tw:h-[12px] tw:rounded-xs tw:overflow-hidden; }
+/* Inspira UI Fey Cards' staggered layers, adapted to a finite palette fan.
+   Source: unovue/inspira-ui@04c57ab62b9713872ebbf68988dff1836ed3d764; MIT: assets/licenses/inspira-ui.txt. */
+.style-palette { display:flex; gap:var(--s-2); height:40px; padding-top:var(--s-2); }
+.style-palette .mood-swatch { border:1px solid var(--border-soft); border-radius:var(--r-sm); box-shadow:var(--shadow-sm); transform-origin:50% 100%; transition:transform var(--motion-route-cut) var(--spring-soft); transition-delay:calc(var(--swatch-index) * var(--motion-control) / 10); }
+.mood-go .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
+.style-mood-card:has(:focus-visible) :is(.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
 .style-card-foot > span { @apply tw:text-muted tw:text-body-sm; }
 .style-sample:focus-visible, .mood-go:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
 .style-notes { @apply tw:flex tw:items-center tw:gap-s-4 tw:mt-s-7 tw:pt-s-5; border-top:1px solid var(--border-soft); }
 .style-notes .btn { @apply tw:shrink-0; }
-@media (hover:hover) and (pointer:fine) { .style-sample:hover img { transform:scale(1.035); } }
+@media (hover:hover) and (pointer:fine) {
+  .style-mood-card:hover:not(:focus-within) .style-sample img { transform:scale(1.06) translateY(-4px); }
+  .style-mood-card:hover .style-sample::after { opacity:1; }
+  .style-mood-card:hover:not(:focus-within) .mood-swatch { transform:translateY(-6px) rotate(-4deg); }
+  .style-mood-card:hover:not(:focus-within) .mood-swatch:nth-child(even) { transform:translateY(-3px) rotate(4deg); }
+  .mood-go:hover:not(:focus-visible) .archive-icon { transform:translateX(4px) rotate(12deg); }
+}
 @media (max-width:900px) { .style-mood-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .style-chapter { align-items:start; @apply tw:flex-col tw:gap-s-3; } .style-notes { @apply tw:flex-wrap; } }
 @media (max-width:540px) { .style-mood-grid { grid-template-columns:minmax(0,1fr); } .style-chapter h2 { @apply tw:text-title-sm; } }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .style-page .style-mood-card,
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .style-sample:hover img { transition:none; transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .style-page :is(.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .style-sample::after { transition:none; }
 @media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) .style-page .style-mood-card,
-  :root:not([data-motion='full']) .style-sample:hover img { transition:none; transform:none; }
+  :root:not([data-motion='full']) .style-page :is(.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
+  :root:not([data-motion='full']) .style-sample::after { transition:none; }
 }
+@media (forced-colors:active) { .style-mood-card::before,.style-sample::after { display:none; } }
 </style>

@@ -25,11 +25,15 @@
       <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="按模型、角色或触发词查找…" />
       <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span>
     </div>
+    <div v-if="engineOptions.length > 1" class="model-engine-filters" role="group" aria-label="按绘图引擎筛选模型">
+      <AnimatedSelection />
+      <button v-for="option in engineOptions" :key="option.value" type="button" :aria-pressed="engine === option.value" @click="engine = option.value">{{ option.label }}<span>{{ option.count }}</span></button>
+    </div>
     <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型">
-      <button class="btn btn-ghost btn-sm" type="button" @click="clearSearch">清除搜索</button>
+      <button class="btn btn-ghost btn-sm" type="button" @click="resetFilters">重置筛选</button>
     </ArchiveStatePanel>
-    <div class="lora-grid" data-route-arrive>
-      <article v-for="l in visibleLoras" :key="l.id" class="lora-card">
+    <div ref="listRoot" class="lora-grid" data-route-arrive>
+      <article v-for="l in visibleLoras" :key="l.id" class="lora-card" :data-list-key="l.id" :data-character="modelGuide(l).icon">
         <header class="model-identity">
           <div><ArchiveIcon :name="modelGuide(l).icon" /><h2 class="lora-name">{{ modelGuide(l).name }}</h2></div>
           <span class="model-engine">{{ modelGuide(l).engine }}</span>
@@ -38,11 +42,11 @@
         <p class="model-file"><code>{{ l.name }}</code><span v-if="l.version">v{{ l.version }}</span><span v-if="l.experimental" class="badge badge-warning">实验预览</span></p>
         <div class="model-actions">
           <RouterLink v-if="modelCharacter(l.id)" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { char: modelCharacter(l.id) } }"><ArchiveIcon name="spark" />用此角色绘制</RouterLink>
-          <button v-if="l.triggerWords.length" class="btn btn-ghost" type="button" @click="copyWithFeedback(l.triggerWords.join(', '), '已复制触发词')"><ArchiveIcon name="copy" />复制触发词</button>
+          <StudioCopyButton v-if="l.triggerWords.length" class="btn btn-ghost" label="复制触发词" :content-key="l.triggerWords.join(', ')" :action="() => copyText(l.triggerWords.join(', '))" />
         </div>
         <p v-if="!modelCharacter(l.id)" class="model-availability">旧版模型资料</p>
         <details class="model-details">
-          <summary><span>触发词与模型资料</span><ArchiveIcon name="chevron-down" /></summary>
+          <StudioDisclosureSummary>触发词与模型资料</StudioDisclosureSummary>
           <div class="model-details-body" data-disclosure-content>
             <p v-if="l.description" class="lora-desc">{{ l.description }}</p>
             <dl class="model-facts">
@@ -58,7 +62,7 @@
         </details>
         <section v-if="l.evaluation" class="evaluation-panel" aria-label="模型评测结果">
           <details>
-            <summary><span>历史评测</span><ArchiveIcon name="chevron-down" /></summary>
+            <StudioDisclosureSummary>历史评测</StudioDisclosureSummary>
             <div data-disclosure-content>
             <p class="evaluation-summary">{{ l.evaluation.status === 'passed' ? '已通过' : l.evaluation.status || '已记录' }}<span v-if="l.evaluation.evaluatedAt"> · {{ l.evaluation.evaluatedAt }}</span></p>
             <div class="evaluation-metrics">
@@ -77,6 +81,7 @@
             </div>
           </details>
         </section>
+        <CardEdgeLight />
       </article>
     </div>
     </template>
@@ -86,9 +91,14 @@
 <script setup lang="ts">
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import { useListTransition } from '@/composables/useListTransition'
 import { ref, computed, onMounted } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
-import { copyWithFeedback } from '@/composables/useCopyFeedback'
+import { copyText } from '@/utils/clipboard'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import {
@@ -100,17 +110,29 @@ import {
 const sceneStore = useSceneStore()
 const loras = ref<LoraCatalogEntry[]>([])
 const modelQuery = ref('')
+const engine = ref('')
+const listRoot = ref<HTMLElement | null>(null)
 const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
-function clearSearch() {
+function resetFilters() {
   modelQuery.value = ''
+  engine.value = ''
   searchInput.value?.focus()
 }
+const engineOptions = computed(() => {
+  const counts = new Map<string, number>()
+  for (const model of loras.value) {
+    const value = modelGuide(model).engine
+    counts.set(value, (counts.get(value) ?? 0) + 1)
+  }
+  return [{ value:'', label:'全部引擎', count:loras.value.length }, ...[...counts].map(([value, count]) => ({ value, label:value, count }))]
+})
 const visibleLoras = computed(() => {
   const term = modelQuery.value.trim().toLocaleLowerCase()
-  return loras.value.filter(model => !term || [model.name, model.character, model.baseModel, model.description,
-    modelGuide(model).name, modelGuide(model).engine, ...model.triggerWords].join(' ').toLocaleLowerCase().includes(term))
+  return loras.value.filter(model => (!engine.value || modelGuide(model).engine === engine.value) && (!term || [model.name, model.character, model.baseModel, model.description,
+    modelGuide(model).name, modelGuide(model).engine, ...model.triggerWords].join(' ').toLocaleLowerCase().includes(term)))
     .sort((a, b) => Number(Boolean(modelCharacter(b.id))) - Number(Boolean(modelCharacter(a.id))))
 })
+useListTransition(listRoot, () => visibleLoras.value.map(model => model.id))
 const loading = ref(true)
 const loadError = ref('')
 // Presentation labels describe the four catalog records. Only the previously
@@ -148,8 +170,6 @@ onMounted(() => { void loadCatalog() })
 .model-details { @apply tw:text-body-sm tw:text-secondary; border-top:1px solid var(--border-soft); }
 .model-details summary, .evaluation-panel summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:cursor-pointer tw:min-h-[44px] tw:rounded-sm; padding:var(--s-3) var(--s-2); margin-inline:calc(-1 * var(--s-2)); }
 .model-details summary:hover, .evaluation-panel summary:hover { background:var(--bg-hover); color:var(--text-primary); }
-.model-details summary .archive-icon, .evaluation-panel summary .archive-icon { width:16px; height:16px; flex-shrink:0; color:var(--accent); transition:transform var(--motion-control) var(--ease-out); }
-.model-details[open] > summary .archive-icon, .evaluation-panel details[open] > summary .archive-icon { transform:rotate(180deg); }
 .model-details-body { @apply tw:pb-s-4; }
 .model-facts { @apply tw:grid tw:gap-s-3 tw:m-0 tw:mb-s-3; }
 .model-facts dt { @apply tw:mb-s-1 tw:text-muted tw:text-label-xs; }
@@ -157,10 +177,16 @@ onMounted(() => { void loadCatalog() })
 .model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); margin-bottom:var(--s-4); }
 .model-search-field { flex:1 1 320px; max-width:560px; min-width:0; }
 .model-result-count { color:var(--text-secondary); font-size:var(--fs-label); font-variant-numeric:tabular-nums; }
+.model-engine-filters { position:relative; isolation:isolate; display:flex; width:fit-content; max-width:100%; flex-wrap:wrap; gap:var(--s-1); padding:var(--s-1); margin-bottom:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+.model-engine-filters button { position:relative; display:flex; align-items:center; gap:var(--s-2); min-height:40px; padding:var(--s-2) var(--s-3); border:0; border-radius:var(--r-md); background:transparent; color:var(--text-secondary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
+.model-engine-filters button[aria-pressed='true'] { color:var(--text-primary); }
+.model-engine-filters button > span { display:grid; place-items:center; min-width:22px; min-height:22px; border:1px solid var(--border-soft); border-radius:var(--r-pill); font:400 var(--fs-mono-xs)/1 var(--font-mono); }
+.model-engine-filters button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .model-identity { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2; }
 .model-identity > div { @apply tw:flex tw:items-center tw:gap-s-2; }
-.model-identity .archive-icon { @apply tw:text-accent tw:w-[24px] tw:h-[24px]; }
-.model-engine { @apply tw:text-accent tw:text-body-sm; }
+.model-identity .archive-icon { box-sizing:content-box; padding:var(--s-3); width:24px; height:24px; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:color-mix(in srgb,var(--model-color) 12%,var(--bg-surface)); color:var(--model-color); transition:transform var(--motion-route-cut) var(--spring-soft); }
+.lora-card:has(:focus-visible) .model-identity .archive-icon { transition:none; transform:none; }
+.model-engine { padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); @apply tw:text-secondary tw:text-label-xs; }
 .model-purpose { margin:var(--s-2) 0; @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .model-file { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:text-muted tw:text-mono-sm; margin:0 0 var(--s-4); overflow-wrap:anywhere; }
 .model-file code { font:inherit; }
@@ -168,18 +194,21 @@ onMounted(() => { void loadCatalog() })
 .lora-tag { @apply tw:max-w-full; overflow-wrap:anywhere; }
 .lora-grid { @apply tw:grid tw:gap-s-4; grid-template-columns:repeat(auto-fit,minmax(min(360px, 100%),1fr)); align-items:start; }
 .lora-card {
+  --model-color:var(--accent);
   @apply tw:relative tw:overflow-hidden tw:p-s-5;
-  border:1px solid color-mix(in srgb,var(--archive-blue) 18%,var(--border-soft));
+  border:1px solid var(--border-soft);
   @apply tw:rounded-lg;
   background:
-    linear-gradient(145deg,color-mix(in srgb,var(--archive-blue) 7%,transparent),transparent 32%),
+    linear-gradient(145deg,color-mix(in srgb,var(--model-color) 8%,transparent),transparent 48%),
     var(--bg-surface);
-  box-shadow:var(--shadow-glass-sm);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
 }
+.lora-card[data-character='nene'] { --model-color:var(--nene-violet); }
+.lora-card[data-character='natsume'] { --model-color:var(--natsume-amber); }
 .lora-card::before {
   content:"";
-  @apply tw:absolute tw:top-[-1px] tw:left-s-4 tw:w-[42px] tw:h-[1px];
-  background:linear-gradient(90deg,var(--archive-blue),transparent);
+  position:absolute; inset:var(--s-5) auto var(--s-5) 0; width:3px; border-radius:var(--r-pill);
+  background:var(--model-color);
 }
 .lora-name { @apply tw:m-0 tw:text-title-sm tw:font-semibold; }
 .lora-desc { @apply tw:text-secondary tw:text-body-sm tw:leading-loose tw:mb-s-3; }
@@ -204,5 +233,8 @@ onMounted(() => { void loadCatalog() })
 .evaluation-panel code { @apply tw:whitespace-normal; }
 
 .model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .model-details summary .archive-icon, :root:not([data-motion='full']) .evaluation-panel summary .archive-icon { transition:none; } }
+@media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) .model-identity .archive-icon { transform:rotate(-8deg) translateY(-3px); } .model-engine-filters button:hover { color:var(--text-primary); } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .lora-card .model-identity .archive-icon { transition:none; transform:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .lora-card .model-identity .archive-icon { transition:none; transform:none; }
+@media (forced-colors:active) { .lora-card::before { background:Highlight; } .model-engine-filters button[aria-pressed='true'] { outline:1px solid Highlight; } }
 </style>

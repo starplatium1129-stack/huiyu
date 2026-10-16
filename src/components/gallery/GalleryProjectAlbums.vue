@@ -3,8 +3,8 @@
     <header class="gallery-albums-heading tw:mb-s-3">
       <h2>{{ characters ? '角色画册' : '我的画册' }} <span>{{ albums.length }} {{ characters ? '位角色' : '本' }}</span></h2>
     </header>
-    <div class="gallery-albums-track artwork-albums-track" role="group" :aria-label="characters ? '按角色翻阅作品' : '按画册翻阅作品'">
-      <div v-for="album in albums" :key="album.id" class="gallery-album-entry">
+    <div ref="listRoot" class="gallery-albums-track artwork-albums-track" role="group" :aria-label="characters ? '按角色翻阅作品' : '按画册翻阅作品'">
+      <div v-for="album in albums" :key="album.id" class="gallery-album-entry" :data-list-key="album.id">
       <button class="gallery-album artwork-album tw:rounded-lg" type="button" :aria-pressed="selectedId === album.id"
         :data-album-id="album.id" :aria-label="`${album.title}，${album.count} 幅作品`" @click="emit('select', album.id)">
         <span class="gallery-album-cover artwork-album-cover" :data-covers="album.covers.length" :class="{ 'is-empty': !album.count }" aria-hidden="true">
@@ -15,7 +15,8 @@
           </span>
           <span v-if="!album.covers.length" class="gallery-album-placeholder tw:flex tw:items-center tw:justify-center tw:flex-col tw:gap-s-2 tw:text-secondary"><ArchiveIcon name="gallery" /><span>{{ album.count ? '打开画册' : '空画册' }}</span></span>
         </span>
-        <span class="gallery-album-caption artwork-album-caption"><span><strong>{{ album.title }}</strong><small>{{ album.count }} 幅作品 · {{ album.kind === 'smart' ? '智能画册' : album.kind === 'character' ? '角色归集' : '精选画册' }}</small></span><ArchiveIcon :name="selectedId === album.id ? 'success' : 'chevron-down'" /></span>
+        <span class="gallery-album-caption artwork-album-caption"><span><strong>{{ album.title }}</strong><small>{{ album.count }} 幅作品 · {{ album.kind === 'smart' ? '智能画册' : album.kind === 'character' ? '角色归集' : '精选画册' }}</small></span><span class="artwork-album-mark" aria-hidden="true"><ArchiveIcon name="chevron-down" /><ArchiveIcon name="success" /></span></span>
+        <CardEdgeLight />
       </button>
       <template v-if="album.kind === 'smart'"><p class="gallery-album-rule">{{ album.ruleSummary }}</p><div class="gallery-album-actions"><button type="button" :disabled="busy" :aria-label="`编辑智能画册：${album.title}`" @click="emit('edit',album.id)">编辑条件</button><button type="button" :disabled="busy" :aria-label="`移除智能画册：${album.title}`" @click="emit('remove',album.id)">移除画册</button></div></template>
       </div>
@@ -26,6 +27,8 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import { useListTransition } from '@/composables/useListTransition'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import type { GalleryProjectAlbum } from '@/composables/gallery/useGalleryProjectAlbums'
 import '@/assets/css/album-cards.css'
@@ -33,6 +36,8 @@ import '@/assets/css/album-cards.css'
 const props = withDefaults(defineProps<{ albums: readonly GalleryProjectAlbum[]; selectedId: string; characters?: boolean; busy?: boolean }>(), { characters: false, busy: false })
 const emit = defineEmits<{ select: [id: string]; edit: [id: string]; remove: [id: string]; visible: [ids: string[]] }>()
 const root = ref<HTMLElement | null>(null)
+const listRoot = ref<HTMLElement | null>(null)
+useListTransition(listRoot, () => props.albums.map(album => album.id))
 const visibleIds = new Set<string>()
 let observer: IntersectionObserver | null = null
 let disposed = false, observationVersion = 0
