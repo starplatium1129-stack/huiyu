@@ -68,10 +68,20 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       task.then(resolve, reject).finally(() => signal.removeEventListener('abort', abort))
     })
   }
-  async function dimensions(src: string) {
-    const image = new Image(); image.src = src
-    await image.decode()
-    return { width: image.naturalWidth, height: image.naturalHeight }
+  async function dimensions(src: string, signal: AbortSignal) {
+    signal.throwIfAborted()
+    const image = new Image()
+    const release = () => image.removeAttribute('src')
+    signal.addEventListener('abort', release, { once: true })
+    try {
+      image.src = src
+      await abortable(image.decode(), signal)
+      signal.throwIfAborted()
+      return { width: image.naturalWidth, height: image.naturalHeight }
+    } finally {
+      signal.removeEventListener('abort', release)
+      release()
+    }
   }
   async function hydrate(item: ArtworkRecord, signal: AbortSignal) {
     const epoch = options.epoch(), width = wantedWidth(item.id)
@@ -86,7 +96,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       if (!current()) return
       if (thumbnail?.startsWith('data:image/')) {
         try {
-          const size = await abortable(dimensions(thumbnail), signal)
+          const size = await dimensions(thumbnail, signal)
           if (!current()) return
           options.rememberThumbnail(item.id, thumbnail)
           if (size.width >= width) { satisfied.set(item.id, size.width); return }
@@ -106,7 +116,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
           if (thumbnail) {
             options.rememberThumbnail(item.id, thumbnail)
             void artworkRepository.setThumbnail(item.image_id, thumbnail).catch(() => {})
-            const size = await abortable(dimensions(thumbnail), signal)
+            const size = await dimensions(thumbnail, signal)
             if (!current()) return
             if (size.width >= width) { satisfied.set(item.id, size.width); return }
           }

@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 import { jpegThumbDataUrl } from '@/utils/imageThumb'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { ArtworkRecord } from '@/types/artwork'
 
 /**
@@ -25,6 +26,8 @@ export interface ArtworkRatioDeps {
   pending: Set<string>
   /** 该作品是否已有缩略图 */
   hasThumb: (item: ArtworkRecord) => boolean
+  signal: () => AbortSignal
+  current: (item: ArtworkRecord) => boolean
   /** 缩略图落盘并写回运行时缓存；imageId 由调用方保证非空 */
   saveThumb: (item: ArtworkRecord, dataUrl: string, imageId: string) => Promise<void>
 }
@@ -61,11 +64,14 @@ export function useArtworkRatios(deps: ArtworkRatioDeps) {
   /** 高清图解码成功后顺手回填缩略图缓存，用已解码的 img 绘制，零额外解码 */
   async function backfillThumb(item: ArtworkRecord, img: HTMLImageElement) {
     const imageId = item.image_id
-    if (!imageId || deps.pending.has(imageId) || deps.hasThumb(item)) return
+    const signal = deps.signal()
+    const runtime = runtimeResourceIdentity()
+    if (!imageId || signal.aborted || !deps.current(item) || deps.pending.has(imageId) || deps.hasThumb(item)) return
     deps.pending.add(imageId)
     try {
-      const dataUrl = jpegThumbDataUrl(img)
-      if (dataUrl) await deps.saveThumb(item, dataUrl, imageId)
+      const dataUrl = await jpegThumbDataUrl(img)
+      if (dataUrl && !signal.aborted && runtime === runtimeResourceIdentity()
+        && deps.current(item) && !deps.hasThumb(item)) await deps.saveThumb(item, dataUrl, imageId)
     } catch { /* 缩略图只是缓存，失败不影响展示 */ }
     finally { deps.pending.delete(imageId) }
   }

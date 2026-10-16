@@ -47,6 +47,8 @@ export function useGalleryWorkspace() {
     const { ratioOf, measure, forgetRatio } = useArtworkRatios({
         pending: thumbPending,
         hasThumb: item => Boolean(thumbUrls[item.id]),
+        signal: () => imageReads.signal,
+        current: item => !unmounted && viewActive && isMediaCurrent(item),
         saveThumb: async (item, dataUrl, imageId) => {
             const epoch = imageEpoch;
             await artworkRepository.setThumbnail(imageId, dataUrl);

@@ -61,7 +61,9 @@ export function useRandomInspiration() {
     lastRecipe.value = null
   }, { deep: true, flush: 'sync' })
 
-  watch([includeArtists, () => pb.tags, () => pb.dataReady, () => pb.scenes, () => pb.sceneBlueprints, () => pb.loraMeta, () => pb.popularCharacters], clearCandidates, { deep: true, flush: 'sync' })
+  // Scalar changes must not traverse every catalog to invalidate a preview.
+  watch([includeArtists, () => pb.dataReady], clearCandidates, { flush: 'sync' })
+  watch([() => pb.tags, () => pb.scenes, () => pb.sceneBlueprints, () => pb.loraMeta, () => pb.popularCharacters], clearCandidates, { deep: true, flush: 'sync' })
 
   watch(contextKey, () => {
     lastSnapshot.value = null

@@ -7,7 +7,6 @@ import {
 import {
   editChatFact,
   changeStoredChatMemory,
-  isChatFactRemembered,
   loadChatMemoryState,
   recallChatFacts,
   rememberChatFact,
@@ -43,6 +42,7 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
   }
 
   const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()])
+  const rememberedMessageIds = computed(() => new Set((currentMemories.value || []).map(item => item.sourceMid)))
 
   function onChatAuxStorage(event: StorageEvent) {
     if (event.key === CHAT_RESET_KEY) {
@@ -100,7 +100,7 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
   }
 
   function messageRemembered(mid: string) {
-    return isChatFactRemembered(chatMemory.value, memoryCharacter(), mid)
+    return Boolean(mid && rememberedMessageIds.value.has(mid))
   }
 
   function recallMemories(character: string, query: string) {

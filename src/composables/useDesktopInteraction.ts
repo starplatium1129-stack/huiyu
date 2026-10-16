@@ -71,7 +71,11 @@ export function initializeDesktopPreferences() {
     return loadThemeStyle()
   }
   read(); save(); const appearanceReady = apply()
-  watch([themeMode, themeStyle, motionMode, reducedGlass, glassMode, glassTint], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
+  watch([themeMode, themeStyle, motionMode, reducedGlass, glassMode], () => { if (!reading) { save(); apply() } }, { flush: 'sync' })
+  // Tint previews only change CSS; avoid resaving the theme and notifying every motion consumer per slider step.
+  watch(glassTint, value => {
+    if (!reading) { save(); document.documentElement.style.setProperty('--glass-tint', String(value / 100)) }
+  }, { flush: 'sync' })
   // Existing sun/moon controls are an explicit choice and cancel system-following.
   watch(theme, value => { if (!applyingTheme) themeMode.value = value }, { flush: 'sync' })
   for (const query of [dark, reduce, contrast, transparency, forcedColors]) query.addEventListener('change', apply)
