@@ -1,7 +1,7 @@
 use super::{Duration, Error, Result};
 use axum::body::Bytes;
 use futures_util::{Stream, StreamExt};
-use std::pin::Pin;
+use std::{borrow::Cow, pin::Pin};
 
 const FRAME_LIMIT: usize = 1024 * 1024;
 const TOTAL_LIMIT: usize = 16 * FRAME_LIMIT;
@@ -32,7 +32,7 @@ impl Lines {
         }
     }
 
-    pub(super) async fn next(&mut self) -> Result<Option<String>> {
+    pub(super) async fn next(&mut self) -> Result<Option<Cow<'_, str>>> {
         loop {
             let newline = self.buffer[self.scanned..]
                 .iter()
@@ -43,7 +43,7 @@ impl Lines {
                 return Err(Error::stream("STREAM_BUDGET", "响应超过单帧预算"));
             }
             if let Some(index) = newline {
-                let line = String::from_utf8_lossy(&self.buffer[self.start..index]).into_owned();
+                let line = String::from_utf8_lossy(&self.buffer[self.start..index]);
                 self.start = index + 1;
                 self.scanned = self.start;
                 return Ok(Some(line));
@@ -53,7 +53,7 @@ impl Lines {
                 if self.start == self.buffer.len() {
                     return Ok(None);
                 }
-                let line = String::from_utf8_lossy(&self.buffer[self.start..]).into_owned();
+                let line = String::from_utf8_lossy(&self.buffer[self.start..]);
                 self.start = self.buffer.len();
                 return Ok(Some(line));
             }

@@ -115,7 +115,8 @@ impl Events {
                         if self.json.trim().is_empty() {
                             return Err(Error::stream("INCOMPLETE_STREAM", "上游返回空响应"));
                         }
-                        let value: Value = serde_json::from_str(&self.json).map_err(|_| {
+                        let source = std::mem::take(&mut self.json);
+                        let value: Value = serde_json::from_str(&source).map_err(|_| {
                             Error::stream("INVALID_JSON", "自定义 API 返回了无法识别的响应")
                         })?;
                         let decoded = self.decoder.decode(&value)?;
