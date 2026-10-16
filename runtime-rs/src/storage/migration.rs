@@ -265,8 +265,8 @@ fn begin(c: &mut Context, principal: &str, envelope: &Value) -> Result<Value> {
         c.db.execute("INSERT INTO migration_sessions VALUES(?,?,?,?,'importing','[]',0)",params![id,principal,string(envelope,"fingerprint")?,stringify(envelope)])?;
         for media in envelope["media"].as_array().unwrap() {
             let alias=string(media,"alias")?;let hash=string(media,"sha256")?;
-            c.db.execute("INSERT INTO migration_media VALUES(?,?,?,?,?,0)",params![id,alias,hash,media["bytes"].as_i64(),string(media,"mime")?])?;
-            c.db.execute("INSERT INTO leases VALUES(?,'migration',?,NULL,?)",params![key(id,alias),hash,now()])?;
+            c.db.prepare_cached("INSERT INTO migration_media VALUES(?,?,?,?,?,0)")?.execute(params![id,alias,hash,media["bytes"].as_i64(),string(media,"mime")?])?;
+            c.db.prepare_cached("INSERT INTO leases VALUES(?,'migration',?,NULL,?)")?.execute(params![key(id,alias),hash,now()])?;
         }Ok(())
     })?;
     status(c, id, principal)
@@ -336,10 +336,8 @@ fn release_protection(c: &Context, id: &str, envelope: &Value) -> Result<()> {
     )?;
     for media in envelope["media"].as_array().unwrap() {
         c.check_cancel()?;
-        c.db.execute(
-            "DELETE FROM leases WHERE kind='migration' AND id=?",
-            [key(id, string(media, "alias")?)],
-        )?;
+        c.db.prepare_cached("DELETE FROM leases WHERE kind='migration' AND id=?")?
+            .execute([key(id, string(media, "alias")?)])?;
     }
     Ok(())
 }
