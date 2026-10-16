@@ -10,9 +10,9 @@
     <p v-if="error" class="journal-error" role="status">{{ error }}</p>
     <div id="journal-spread" class="journal-spread tw:grid" :aria-busy="loading">
       <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? scene.image || '/scene-showcase/images/' + scene.id + '.jpg' : undefined" v-slot="{ image, failed }">
-      <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :to="(failed ? '/scene-explorer?scene=' : '/showcase?scene=') + encodeURIComponent(scene.id)">
+      <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :to="failed ? scene.fallbackTo : '/showcase?scene=' + encodeURIComponent(scene.id)">
         <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><template v-if="image.src && !failed"><img v-bind="image" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="scene.rating === 'R18' || scene.mature" :src="image.src" :crossorigin="image.crossorigin" /></template><span v-else class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ imagesReady ? '样张暂未连接' : '正在载入样张' }}<span>先看看这一幕的故事与设定</span></span></div>
-        <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? '查看场景设定' : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
+        <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? scene.fallbackLabel : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
       </RouterLink>
       </RuntimeImage>
     </div>
@@ -23,7 +23,8 @@ import { onMounted, onScopeDispose, ref, watch } from 'vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
-defineProps<{ scenes: Array<{ id: string; title?: string; story?: string; category?: string; rating?: string; mature?: boolean; image?: string }>; loading?: boolean; error?: string; canRefresh?: boolean }>()
+import type { HomeJournalEntry } from '@/composables/useHomeSceneHighlights'
+defineProps<{ scenes: HomeJournalEntry[]; loading?: boolean; error?: string; canRefresh?: boolean }>()
 const emit = defineEmits<{ refresh: [] }>()
 const section = ref<HTMLElement | null>(null), imagesReady = ref(false)
 let observer: IntersectionObserver | undefined
