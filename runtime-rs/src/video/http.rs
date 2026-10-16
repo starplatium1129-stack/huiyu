@@ -352,7 +352,7 @@ async fn stream(
         sha256: String::new(),
     };
     let mut response =
-        crate::workspace_http::stream_media(state, method, &media, range.start, range.length)
+        crate::workspace_http::stream_media(state, method, &media, range.start, range.length, None)
             .await?;
     response
         .headers_mut()

@@ -389,7 +389,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         blocks = text_tools.apply_text_cache(blocks, resident.text_cache)
     blocks = load_mask_tools("anima_prompt_weights").apply_prompt_weights(blocks,
         cache=resident.text_cache if resident is not None and cache_text else None)
-    blocks = load_mask_tools("anima_vae").apply_blocks(blocks, load_mask_tools("anima_tiling"))
+    blocks = load_mask_tools("anima_vae").apply_blocks(blocks, load_mask_tools("anima_tiling"), check=control.check if control is not None else None)
     started = time.perf_counter()
     post_load_fingerprint, reused = 0, False
     from functools import partial
@@ -458,7 +458,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
             sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
             upscale=upscale if job.get("upscaleModelPath") else None,
             prepare_second_blocks=prepare_second,
-            before_decode=before_decode,
+            before_decode=before_decode, check=control.check if control is not None else None,
             vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
             observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
             progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))

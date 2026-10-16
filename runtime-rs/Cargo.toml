@@ -6,10 +6,10 @@ rust-version = "1.88"
 publish = false
 
 [dependencies]
-axum = { version = "0.8", features = ["ws", "macros", "multipart"] }
+axum = { version = "0.8", features = ["ws", "multipart"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "fs", "io-util", "sync", "time", "process"] }
 tokio-util = { version = "0.7", features = ["io", "rt"] }
-tower-http = { version = "0.6", features = ["fs", "compression-br", "compression-gzip", "timeout"] }
+tower-http = { version = "0.6", features = ["fs", "timeout"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 rusqlite = { version = "0.40", features = ["bundled", "backup"] }

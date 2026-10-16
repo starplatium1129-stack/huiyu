@@ -314,6 +314,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     }
     let mut produced = false;
     let mut ready = false;
+    let mut host_failure = false;
     let result = async {
         let mut runtime_observation = Value::Null;
         let events = async {
@@ -389,7 +390,11 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         }
         // Fully decode bounded PNG output; a signature alone is not an image.
         let bytes = Arc::new(bytes);
-        crate::image_decode::validate(bytes.clone(), token).await?;
+        if let Err(error) = crate::image_decode::validate(bytes.clone(), token).await {
+            // Host decoder admission says nothing about worker integrity.
+            host_failure = error.code == "IMAGE_STORAGE_BUSY";
+            return Err(error);
+        }
         let length = bytes.len() as u64;
         drop(bytes);
         {
@@ -398,13 +403,19 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                 state.metadata["nativeRuntime"] = runtime_observation;
             }
         }
-        results::publish(inner, job, &output, length, token).await
+        let publication = results::publish(inner, job, &output, length, token).await;
+        // Only classify storage failures after the worker's PNG fully decoded.
+        host_failure = publication
+            .as_ref()
+            .err()
+            .is_some_and(|error| error.code == "STORAGE_UNAVAILABLE");
+        publication
     };
     let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(600),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
     let cancelling = value.as_ref().err().is_some_and(|error| {
         token.is_cancelled() && matches!(error.code.as_str(), "ABORT_ERR" | "CANCELLED")
     });
-    let retain = if value.is_ok() || (cancelling && ready) {
+    let retain = if value.is_ok() || (ready && (cancelling || host_failure)) {
         true
     } else if cancelling {
         match worker.cancel_and_wait(&job.id, produced, &output).await {

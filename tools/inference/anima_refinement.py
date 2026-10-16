@@ -128,9 +128,9 @@ def _upscale_latents(pipeline, latents, size, vae_tools):
     return vae_tools.upscale_latents(pipeline.vae, latents, size)
 
 
-def _encode(pipeline, pixels, vae_tools, tiling):
+def _encode(pipeline, pixels, vae_tools, tiling, check=None):
     pixels = _rgb(pixels)
-    return vae_tools.encode(pipeline, pixels, tiling, height=pixels.shape[-2], width=pixels.shape[-1])
+    return vae_tools.encode(pipeline, pixels, tiling, height=pixels.shape[-2], width=pixels.shape[-1], check=check)
 
 
 @contextmanager
@@ -233,7 +233,7 @@ def _patch_grid(transformer):
 
 
 
-def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks=None):
+def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks=None, check=None):
     from diffusers import AnimaModularPipeline, ClassifierFreeGuidance
     from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
     blocks = mask_tools.masked_blocks() if spec["masked"] else AnimaAutoBlocks()
@@ -242,7 +242,7 @@ def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tili
     blocks.sub_blocks.pop("text_encoder")
     for name in ("text2image", "img2img"):
         blocks.sub_blocks["denoise"].sub_blocks[name].sub_blocks.pop("text_conditioning")
-    blocks = vae_tools.apply_blocks(blocks, tiling)
+    blocks = vae_tools.apply_blocks(blocks, tiling, check=check)
     if prepare_second_blocks is not None:
         # The owner validates a whole-hires profile, clears per-pass Tea lanes,
         # and wraps only these fresh blocks. Samples/statistics may stay pooled.
@@ -259,7 +259,7 @@ def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tili
 
 def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None,
         postprocess=None, upscale=None, progress=None, prepare_second_blocks=None,
-        observe_schedule=None, before_decode=None, vae_tools=None, tiling=None):
+        observe_schedule=None, before_decode=None, vae_tools=None, tiling=None, check=None):
     """Return (single PIL image, actual scheduler steps, stage observations).
 
     pipeline is the caller's configured first-pass pipeline. sampling supplies
@@ -270,6 +270,7 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
     per-pass controller reset/wrapping. observe_schedule(phase, scheduler, steps)
     optionally captures benchmark evidence after a successful pass; phases are
     first/second and steps are that pass's actual scheduler calls, never the sum.
+    check() is the optional cooperative cancellation boundary for VAE tiles.
 
     Stage timings are CPU wall spans without extra CUDA synchronization; queued
     GPU work can finish in a later stage. Only real CUDA OOM permits the bounded
@@ -359,12 +360,12 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
             cpu_output=not spec["second"] and not spec["rcasStrength"], final_pil=final_pil))
     if spec["second"]:
         latents = (first_latents if spec["firstLatents"] else
-                   timed("pipelineWallSeconds", lambda: _encode(pipeline, pixels, vae_tools, tiling)))
+                   timed("pipelineWallSeconds", lambda: _encode(pipeline, pixels, vae_tools, tiling, check=check)))
         first_latents = None
         pixels = None
         if spec["kind"] == "Latent":
             latents = timed("postprocessWallSeconds", lambda: _upscale_latents(pipeline, latents, size, vae_tools))
-        second = _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks)
+        second = _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks, check=check)
         options = sampling.refinement_options(spec["scheduler"], spec["secondSteps"], data["hiresDenoise"],
                                               second.scheduler, sampler=spec["sampler"])
         kwargs = dict(image_latents=latents, width=size[0], height=size[1], output_type="pt", output="images",
