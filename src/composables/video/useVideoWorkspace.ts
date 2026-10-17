@@ -573,8 +573,10 @@ onMounted(() => {
   void (async () => {
     const selection = selectionVersion, shotsEntry = selectedMode.value === 'shots'
     // restoreDraft hydrates fields synchronously; consume this entry before awaiting its guarded media reads.
-    const restoring = shotsEntry ? null : videoDraftTools.restoreDraft()
-    if (!shotsEntry) consumeVideoCtx()
+    const restoring = videoDraftTools.restoreDraft()
+    // The shared watcher also saves in shots mode; hydrate single-video fields before it can persist them.
+    if (shotsEntry) selectedMode.value = 'shots'
+    else consumeVideoCtx()
     const restored = await restoring
     initialRestorePending = false
     if (disposed || selection !== selectionVersion) return
