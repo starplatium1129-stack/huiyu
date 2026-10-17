@@ -1,5 +1,5 @@
 use super::*;
-pub(super) fn run(c: &Files, kind: &CopyKind) -> Result<Value> {
+pub(super) fn run(c: &Files, kind: &mut CopyKind) -> Result<Value> {
     match kind {
         CopyKind::Restore {
             backup_id,
@@ -11,8 +11,7 @@ pub(super) fn run(c: &Files, kind: &CopyKind) -> Result<Value> {
             existing,
             ..
         } => {
-            let mut manifest = manifest.clone();
-            if !existing {
+            if !*existing {
                 for item in manifest["media"].as_array().unwrap() {
                     let hash = string(item, "hash")?;
                     copy(
@@ -29,10 +28,10 @@ pub(super) fn run(c: &Files, kind: &CopyKind) -> Result<Value> {
                 )?;
                 manifest["database"] = digest_file(c, &directory.join("huiyu.sqlite3"))?;
             }
-            verify_snapshot(c, directory, &manifest)?;
+            verify_snapshot(c, directory, manifest)?;
             c.check_cancel()?;
-            if !existing {
-                marker(directory, "manifest.json", &manifest)?;
+            if !*existing {
+                marker(directory, "manifest.json", manifest)?;
             }
             Ok(
                 json!({"backupId":manifest["backupId"],"revision":manifest["revision"],"mediaCount":manifest["media"].as_array().unwrap().len()}),

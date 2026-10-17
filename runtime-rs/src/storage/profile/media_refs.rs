@@ -15,7 +15,7 @@ fn owner(domain: &str, key: &str) -> String {
     digest(stringify(&json!([domain, key])))
 }
 
-fn collect(value: &Value, aliases: &mut BTreeSet<String>) {
+fn collect<'a>(value: &'a Value, aliases: &mut BTreeSet<&'a str>) {
     match value {
         Value::Array(items) => {
             for item in items {
@@ -27,7 +27,7 @@ fn collect(value: &Value, aliases: &mut BTreeSet<String>) {
                 if ALIAS_FIELDS.contains(&key.as_str())
                     && let Some(alias) = value.as_str().filter(|alias| !alias.is_empty())
                 {
-                    aliases.insert(alias.into());
+                    aliases.insert(alias);
                 } else {
                     collect(value, aliases);
                 }

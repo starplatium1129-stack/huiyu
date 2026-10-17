@@ -32,7 +32,7 @@ def _decode_size(latents):
     return size
 
 
-def _perform(vae, values, kind, tiling):
+def _perform(vae, values, kind, tiling, check=None):
     import torch
     if values.ndim != 5 or values.shape[0] != 1 or values.shape[2] != 1:
         raise ValueError("Anima VAE requires one single-frame [1,C,1,H,W] tensor")
@@ -47,12 +47,20 @@ def _perform(vae, values, kind, tiling):
         vae._huiyu_vae_events.append(event)
         return output
     # The failed operation's traceback is gone before the fallback allocation.
+    if check is not None:
+        check()
     vae.clear_cache()
     torch.cuda.empty_cache()
     size = 256 if kind == "encode" else _decode_size(values)
     event["mode"] = "tiled"
+    def perform_tile(patch):
+        # A CUDA operation is indivisible; stop before starting another tile.
+        # Cancellation bypasses the OOM fallback and unwinds _single_frame.
+        if check is not None:
+            check()
+        return operation(vae, patch.unsqueeze(2))[:, :, 0]
     output = tiling.stitch(values[:, :, 0],
-        lambda patch: operation(vae, patch.unsqueeze(2))[:, :, 0],
+        perform_tile,
         tile=size, overlap=size // 4, scale=1 / 8 if kind == "encode" else 8,
         channels=32 if kind == "encode" else 3, report=event).unsqueeze(2)
     vae._huiyu_vae_events.append(event)
@@ -60,7 +68,7 @@ def _perform(vae, values, kind, tiling):
 
 
 @contextmanager
-def _single_frame(vae, kind, tiling):
+def _single_frame(vae, kind, tiling, check=None):
     import torch
     from diffusers.models.autoencoders.autoencoder_kl_qwenimage import AutoencoderKLQwenImage, QwenImageCausalConv3d, QwenImageRMS_norm
     from diffusers.models.autoencoders.vae import DecoderOutput
@@ -105,10 +113,10 @@ def _single_frame(vae, kind, tiling):
     name = "_encode" if kind == "encode" else "_decode"
     original, owned = getattr(vae, name), name in vae.__dict__
     if kind == "encode":
-        replacement = lambda values: _perform(vae, values, kind, tiling)
+        replacement = lambda values: _perform(vae, values, kind, tiling, check=check)
     else:
         def replacement(values, return_dict=True):
-            output = _perform(vae, values, kind, tiling)
+            output = _perform(vae, values, kind, tiling, check=check)
             return DecoderOutput(sample=output) if return_dict else (output,)
     setattr(vae, name, replacement)
     try:
@@ -155,11 +163,11 @@ def _preprocess(processor, image, *, height, width):
     return processor.preprocess(image, height=height, width=width)
 
 
-def encode(pipeline, image, tiling, *, height, width):
+def encode(pipeline, image, tiling, *, height, width, check=None):
     import torch
     pixels = _preprocess(pipeline.image_processor, image, height=height, width=width)
     pixels = pixels.unsqueeze(2).to(device=pipeline._execution_device, dtype=pipeline.vae.dtype)
-    with torch.no_grad(), _single_frame(pipeline.vae, "encode", tiling):
+    with torch.no_grad(), _single_frame(pipeline.vae, "encode", tiling, check=check):
         raw = pipeline.vae.encode(pixels).latent_dist.mode().float()
     mean, std = _statistics(pipeline.vae, raw)
     normalized = (raw - mean) / std
@@ -178,7 +186,7 @@ def upscale_latents(vae, latents, size):
     return (raw - mean) / std
 
 
-def apply_blocks(blocks, tiling):
+def apply_blocks(blocks, tiling, check=None):
     import torch
     from diffusers.image_processor import VaeImageProcessor
     from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
@@ -189,7 +197,7 @@ def apply_blocks(blocks, tiling):
         def __call__(self, components, state):
             block = self.get_block_state(state)
             block.height, block.width = block.height or components.default_height, block.width or components.default_width
-            block.image_latents = encode(components, block.image, tiling, height=block.height, width=block.width)
+            block.image_latents = encode(components, block.image, tiling, height=block.height, width=block.width, check=check)
             self.set_block_state(state, block)
             return components, state
     class Decoder(AnimaVaeDecoderStep):
@@ -199,7 +207,7 @@ def apply_blocks(blocks, tiling):
             latents = block.latents.float()
             mean, std = _statistics(components.vae, latents)
             raw = (latents * std + mean).to(components.vae.dtype)
-            with _single_frame(components.vae, "decode", tiling):
+            with _single_frame(components.vae, "decode", tiling, check=check):
                 block.images = components.vae.decode(raw, return_dict=False)[0][:, :, 0].float()
             self.set_block_state(state, block)
             return components, state

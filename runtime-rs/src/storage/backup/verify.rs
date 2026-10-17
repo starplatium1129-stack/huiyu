@@ -55,53 +55,64 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
         }
     }
     let db = Connection::open_with_flags(database, OpenFlags::SQLITE_OPEN_READ_ONLY)?;
-    let version: i64 = db.query_row("PRAGMA user_version", [], |r| r.get(0))?;
-    let integrity: String = db.query_row("PRAGMA integrity_check", [], |r| r.get(0))?;
-    let foreign_keys = db.prepare("PRAGMA foreign_key_check")?.exists([])?;
-    if json!(version) != manifest["schemaVersion"] || integrity != "ok" || foreign_keys {
-        return Err(invalid_backup(
-            "Backup database schema or integrity check failed",
-        ));
-    }
-    for (key, expected) in [
-        ("workspaceId", string(manifest, "workspaceId")?.to_string()),
-        ("databaseKind", "huiyu-workspace".into()),
-        ("schemaVersion", version.to_string()),
-        ("revision", manifest["revision"].to_string()),
-    ] {
-        if db.query_row("SELECT value FROM meta WHERE key=?", [key], |r| {
-            r.get::<_, String>(0)
-        })? != expected
-        {
+    let cancel = c.cancel.clone();
+    // These full-database scans must observe an abandoned copy request too.
+    db.progress_handler(1_000, Some(move || cancel.load(Ordering::Relaxed)))?;
+    let verified = (|| -> Result<Vec<&Value>> {
+        c.check_cancel()?;
+        let version: i64 = db.query_row("PRAGMA user_version", [], |r| r.get(0))?;
+        let integrity: String = db.query_row("PRAGMA integrity_check", [], |r| r.get(0))?;
+        let foreign_keys = db.prepare("PRAGMA foreign_key_check")?.exists([])?;
+        if json!(version) != manifest["schemaVersion"] || integrity != "ok" || foreign_keys {
             return Err(invalid_backup(
-                "Backup database identity or revision mismatch",
+                "Backup database schema or integrity check failed",
             ));
         }
-    }
-    if db.query_row("SELECT MAX(version) FROM schema_migrations", [], |r| {
-        r.get::<_, i64>(0)
-    })? != version
-    {
-        return Err(invalid_backup("Unknown backup migration version"));
-    }
-    let mut inventory = manifest["media"].as_array().unwrap().clone();
-    inventory.sort_by(|a, b| a["hash"].as_str().cmp(&b["hash"].as_str()));
-    if media_rows(c, &db)? != inventory {
-        return Err(invalid_backup(
-            "Backup media inventory differs from database",
-        ));
-    }
-    verify_records(c, &db)?;
+        for (key, expected) in [
+            ("workspaceId", string(manifest, "workspaceId")?.to_string()),
+            ("databaseKind", "huiyu-workspace".into()),
+            ("schemaVersion", version.to_string()),
+            ("revision", manifest["revision"].to_string()),
+        ] {
+            if db.query_row("SELECT value FROM meta WHERE key=?", [key], |r| {
+                r.get::<_, String>(0)
+            })? != expected
+            {
+                return Err(invalid_backup(
+                    "Backup database identity or revision mismatch",
+                ));
+            }
+        }
+        if db.query_row("SELECT MAX(version) FROM schema_migrations", [], |r| {
+            r.get::<_, i64>(0)
+        })? != version
+        {
+            return Err(invalid_backup("Unknown backup migration version"));
+        }
+        let mut inventory: Vec<&Value> = manifest["media"].as_array().unwrap().iter().collect();
+        inventory.sort_by(|a, b| a["hash"].as_str().cmp(&b["hash"].as_str()));
+        if !media_rows(c, &db)?.iter().eq(inventory.iter().copied()) {
+            return Err(invalid_backup(
+                "Backup media inventory differs from database",
+            ));
+        }
+        verify_records(c, &db)?;
+        Ok(inventory)
+    })();
     drop(db);
+    // A progress-handler interruption is cancellation only when requested;
+    // otherwise preserve the original SQLite or snapshot verification error.
+    c.check_cancel()?;
+    let inventory = verified?;
     for entry in inventory {
         c.check_cancel()?;
-        let hash = string(&entry, "hash")?;
+        let hash = string(entry, "hash")?;
         media::verify_checked(
             &c.root,
             &schema::safe(root, object_relative(hash)?)?,
             hash,
             entry["bytes"].as_u64().unwrap(),
-            string(&entry, "mime")?,
+            string(entry, "mime")?,
             || c.check_cancel(),
         )?;
     }

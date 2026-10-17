@@ -101,18 +101,26 @@ pub(super) fn expand<'a>(
         let next = after
             .as_array()
             .ok_or_else(|| ApiError::invalid("标签库需要完整数组"))?;
+        let before = before
+            .as_array()
+            .ok_or_else(|| ApiError::invalid("现有标签库无效"))?;
+        let mut next_by_id = HashMap::new();
+        let mut next_names = HashSet::new();
+        for tag in next {
+            // Keep raw JSON equality and the first duplicate ID, just like
+            // the original lookup before normal tag validation runs.
+            next_by_id.entry(&tag["id"]).or_insert(tag);
+            next_names.insert(&tag["en"]);
+        }
         let mut renamed = HashMap::new();
         let mut removed = HashSet::new();
-        for tag in before
-            .as_array()
-            .ok_or_else(|| ApiError::invalid("现有标签库无效"))?
-        {
+        for tag in before {
             let name = tag["en"].as_str().unwrap_or("");
-            if let Some(replacement) = next.iter().find(|t| t["id"] == tag["id"]) {
-                if replacement["en"] != tag["en"] && !next.iter().any(|t| t["en"] == tag["en"]) {
+            if let Some(replacement) = next_by_id.get(&tag["id"]) {
+                if replacement["en"] != tag["en"] && !next_names.contains(&tag["en"]) {
                     renamed.insert(name.to_owned(), replacement["en"].clone());
                 }
-            } else if !next.iter().any(|t| t["en"] == tag["en"]) {
+            } else if !next_names.contains(&tag["en"]) {
                 removed.insert(name.to_owned());
             }
         }

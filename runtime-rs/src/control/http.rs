@@ -119,33 +119,7 @@ async fn logs(
             state.operation.clone(),
         )
     };
-    use tokio::io::{AsyncReadExt, AsyncSeekExt};
-    for name in ["gateway.log", "tunnel.log", "control.log"] {
-        let Ok(mut file) =
-            tokio::fs::File::open(s.config.runtime_root.join("logs").join(name)).await
-        else {
-            continue;
-        };
-        let Ok(metadata) = file.metadata().await else {
-            continue;
-        };
-        let start = metadata.len().saturating_sub(64 * 1024);
-        if file.seek(std::io::SeekFrom::Start(start)).await.is_err() {
-            continue;
-        }
-        let mut bytes = Vec::new();
-        if file.take(64 * 1024).read_to_end(&mut bytes).await.is_err() {
-            continue;
-        }
-        let text = String::from_utf8_lossy(&bytes);
-        let lines: Vec<_> = text.lines().filter(|line| !line.is_empty()).collect();
-        logs.extend(
-            lines
-                .iter()
-                .skip(lines.len().saturating_sub(30))
-                .map(|line| s.redact(line)),
-        );
-    }
+    logs.extend(s.file_logs().await);
     Json(json!({"logs":logs,"total":total,"operation":operation}))
 }
 fn redact_config(s: &ControlService, value: &Value) -> Value {

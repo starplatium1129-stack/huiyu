@@ -44,7 +44,7 @@ pub(super) async fn restore(
     }
     Ok(())
 }
-async fn restore_one(
+pub(super) async fn restore_one(
     config: &Config,
     name: &str,
     hooks: &dyn ExecutionHooks,

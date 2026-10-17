@@ -77,10 +77,9 @@ impl Pending {
             for (media, proof) in self.envelope["media"].as_array().unwrap().iter().zip(&outcome.proofs) {
                 c.check_cancel()?;
                 if proof.is_some() {
-                    c.db.execute(
+                    c.db.prepare_cached(
                         "UPDATE migration_media SET complete=1 WHERE migration_id=? AND alias=?",
-                        params![self.migration_id, string(media, "alias")?],
-                    )?;
+                    )?.execute(params![self.migration_id, string(media, "alias")?])?;
                 }
             }
             c.db.execute(
@@ -95,18 +94,12 @@ impl Pending {
                 for media in self.envelope["media"].as_array().unwrap() {
                     c.check_cancel()?;
                     let hash = string(media, "sha256")?;
-                    c.db.execute(
-                        "INSERT OR IGNORE INTO media_objects VALUES(?,?,?)",
-                        params![hash, media["bytes"].as_i64(), string(media, "mime")?],
-                    )?;
-                    c.db.execute(
-                        "INSERT INTO media_aliases VALUES(?,?)",
-                        params![string(media, "alias")?, hash],
-                    )?;
-                    c.db.execute(
-                        "INSERT OR IGNORE INTO media_refs VALUES('migration',?,?)",
-                        params![self.migration_id, hash],
-                    )?;
+                    c.db.prepare_cached("INSERT OR IGNORE INTO media_objects VALUES(?,?,?)")?
+                        .execute(params![hash, media["bytes"].as_i64(), string(media, "mime")?])?;
+                    c.db.prepare_cached("INSERT INTO media_aliases VALUES(?,?)")?
+                        .execute(params![string(media, "alias")?, hash])?;
+                    c.db.prepare_cached("INSERT OR IGNORE INTO media_refs VALUES('migration',?,?)")?
+                        .execute(params![self.migration_id, hash])?;
                 }
                 records::publish(c, &records, &self.envelope, revision)?;
                 c.db.execute(

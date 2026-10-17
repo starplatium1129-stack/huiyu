@@ -147,6 +147,8 @@ async fn chat(
                 settings,
                 &app.config.app_root,
                 body["character"].as_str().unwrap_or("nene"),
+                &admission,
+                &scope,
             )
             .await
         } else {

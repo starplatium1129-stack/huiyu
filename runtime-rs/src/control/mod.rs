@@ -6,6 +6,7 @@ mod inference;
 mod inference_discovery;
 mod inference_setup;
 mod llama;
+mod logs;
 mod native_setup;
 mod probe;
 mod settings;
@@ -61,6 +62,7 @@ pub struct ControlService {
     tunnel: tokio::sync::Mutex<Option<tunnel::TunnelRun>>,
     tunnel_action: tokio::sync::Mutex<()>,
     build_cache: tokio::sync::Mutex<Option<(Instant, Value)>>,
+    log_tails: Mutex<logs::Cache>,
 }
 #[derive(Default)]
 struct Managed {
@@ -142,6 +144,7 @@ impl ControlService {
             tunnel: tokio::sync::Mutex::new(None),
             tunnel_action: tokio::sync::Mutex::new(()),
             build_cache: tokio::sync::Mutex::new(None),
+            log_tails: Mutex::default(),
         });
         // Restore only the explicitly managed Comfy intent. Opening the app does
         // not launch a model: the first generation wakes it, then watchdog owns it.

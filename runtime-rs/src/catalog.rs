@@ -68,7 +68,19 @@ fn now() -> String {
     chrono::DateTime::<chrono::Utc>::from(std::time::SystemTime::now()).to_rfc3339()
 }
 fn row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Record> {
-    let text: String = row.get(6)?;
+    // Decode the payload while SQLite owns its text, without copying a full
+    // prompt/document first. Preserve the String reader's type and UTF-8 errors.
+    let text = match row.get_ref(6)? {
+        rusqlite::types::ValueRef::Text(bytes) => std::str::from_utf8(bytes)
+            .map_err(|error| rusqlite::Error::Utf8Error(6, error))?,
+        value => {
+            return Err(rusqlite::Error::InvalidColumnType(
+                6,
+                row.as_ref().column_name(6)?.into(),
+                value.data_type(),
+            ));
+        }
+    };
     Ok(Record {
         kind: row.get(0)?,
         id: row.get(1)?,
@@ -76,7 +88,7 @@ fn row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Record> {
         sort_order: row.get(3)?,
         created_at: row.get(4)?,
         updated_at: row.get(5)?,
-        data: serde_json::from_str(&text).map_err(|e| {
+        data: serde_json::from_str(text).map_err(|e| {
             rusqlite::Error::FromSqlConversionFailure(6, rusqlite::types::Type::Text, Box::new(e))
         })?,
     })

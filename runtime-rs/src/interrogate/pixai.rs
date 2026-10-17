@@ -132,17 +132,19 @@ impl Client {
                     drop(image);
                     drop(upload_admission);
                     let mut worker = worker.lock().await;
+                    let mut image_rejected = false;
                     let result = tokio::select! {
                         biased;
                         _ = shutdown.cancelled() => Err(closed()),
                         _ = cancel.cancelled() => Err(cancelled()),
                         result = tokio::time::timeout(timeout, infer(
-                            &settings, &processes, &snapshot, &mut worker, &input, threshold
+                            &settings, &processes, &snapshot, &mut worker, &input, threshold,
+                            &mut image_rejected
                         )) => result.unwrap_or_else(|_| Err(ApiError::new(
                             504, "INTERROGATE_TIMEOUT", "PixAI 加载或反推超过时限"
                         ))),
                     };
-                    let result = if result.is_err() {
+                    let result = if result.is_err() && !image_rejected {
                         let stop = match worker.take() {
                             Some(worker) => worker.stop().await,
                             None => Ok(()),
@@ -292,6 +294,7 @@ async fn infer(
     worker: &mut Option<Worker>,
     image: &Path,
     threshold: f64,
+    image_rejected: &mut bool,
 ) -> Result<Value> {
     if worker
         .as_ref()
@@ -329,7 +332,14 @@ async fn infer(
         .flush()
         .await
         .map_err(|_| unavailable("PixAI 工作进程输入已断开"))?;
-    protocol::response(protocol::read(&mut worker.output).await?, &id)
+    let result = protocol::response(protocol::read(&mut worker.output).await?, &id);
+    // Only a complete, matching request reply can keep the model resident.
+    // The worker rejects these images before GPU work and continues its loop.
+    // Startup, protocol, timeout and cancellation errors must still retire it.
+    *image_rejected = result.as_ref().is_err_and(|error| {
+        matches!(error.code.as_str(), "INVALID_IMAGE" | "IMAGE_TOO_LARGE")
+    });
+    result
 }
 
 impl Worker {

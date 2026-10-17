@@ -142,8 +142,13 @@ impl Service {
                     ));
                 }
                 if let Some(h) = &batch.hooks {
+                    let mut restored = std::collections::HashSet::new();
                     for shot in &shots {
-                        resume::restore(&self.config, &shot.input, h.as_ref(), &cancel).await?;
+                        for name in inputs::names(&shot.input) {
+                            if restored.insert(name) {
+                                resume::restore_one(&self.config, name, h.as_ref(), &cancel).await?;
+                            }
+                        }
                     }
                 }
                 if batch.input["linkLastFrame"] == true

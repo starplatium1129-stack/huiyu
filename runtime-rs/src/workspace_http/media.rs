@@ -4,7 +4,7 @@ use crate::{
     error::{ApiError, Result},
     host::Session,
     security::{host_allowed, is_direct_local},
-    storage::{Media, Storage},
+    storage::{Media, OpenedMedia, Storage},
 };
 use axum::{
     Json,
@@ -19,7 +19,7 @@ use tokio::{
     fs::File,
     io::{AsyncReadExt, AsyncSeekExt},
 };
-use tokio_util::io::ReaderStream;
+use tokio_util::{io::ReaderStream, sync::CancellationToken};
 use url::Url;
 
 pub(super) async fn grant(
@@ -93,7 +93,8 @@ pub(super) async fn serve(
     {
         return Err(denied());
     }
-    let media = resolve(storage, alias).await?;
+    let source = resolve(storage, alias).await?;
+    let media = &source.media;
     let range = match range(header(headers, "range"), media.total_bytes) {
         Ok(range) => range,
         Err(_) => {
@@ -104,7 +105,15 @@ pub(super) async fn serve(
                 .into_response());
         }
     };
-    let mut response = stream(state, method, &media, range.start, range.length).await?;
+    let mut response = stream(
+        state,
+        method,
+        media,
+        range.start,
+        range.length,
+        Some((source.file, source.closed)),
+    )
+    .await?;
     let output = response.headers_mut();
     output.insert(
         "content-type",
@@ -146,7 +155,8 @@ pub(super) async fn chunk(
     method: &Method,
     command: &Value,
 ) -> Result<Response> {
-    let media = resolve(storage, command["alias"].as_str().unwrap()).await?;
+    let source = resolve(storage, command["alias"].as_str().unwrap()).await?;
+    let media = &source.media;
     let offset = command["offset"].as_u64().unwrap();
     if offset > media.total_bytes {
         return Err(ApiError::invalid("Invalid media read range"));
@@ -155,8 +165,16 @@ pub(super) async fn chunk(
         .as_u64()
         .unwrap()
         .min(media.total_bytes - offset);
-    let mut response = stream(state, method, &media, offset, length).await?;
-    metadata_headers(&mut response, &media, offset)?;
+    let mut response = stream(
+        state,
+        method,
+        media,
+        offset,
+        length,
+        Some((source.file, source.closed)),
+    )
+    .await?;
+    metadata_headers(&mut response, media, offset)?;
     Ok(response)
 }
 
@@ -265,8 +283,8 @@ pub(crate) fn download_opened(
     Ok(response)
 }
 
-async fn resolve(storage: &Storage, alias: &str) -> Result<Media> {
-    tokio::time::timeout(Duration::from_secs(30), storage.media(alias))
+async fn resolve(storage: &Storage, alias: &str) -> Result<OpenedMedia> {
+    tokio::time::timeout(Duration::from_secs(30), storage.open_media(alias))
         .await
         .map_err(|_| ApiError::new(504, "WORKSPACE_TIMEOUT", "Media verification timed out"))?
 }
@@ -277,16 +295,23 @@ pub(crate) async fn stream(
     media: &Media,
     start: u64,
     length: u64,
+    opened: Option<(File, CancellationToken)>,
 ) -> Result<Response> {
     let body = if method == Method::HEAD {
         Body::empty()
     } else {
-        let mut file = File::open(&media.path).await?;
+        // Workspace callers transfer their verified handle and lifetime together.
+        // Only provider video outputs use None and still open their result path.
+        let (mut file, closed) = match opened {
+            Some(source) => source,
+            None => (File::open(&media.path).await?, state.shutdown.clone()),
+        };
         file.seek(SeekFrom::Start(start)).await?;
         // ReaderStream only reads when the HTTP consumer polls it. Dropping the
         // body on disconnect closes the file; no background producer or queue.
         Body::from_stream(
             ReaderStream::with_capacity(file.take(length), 64 * 1024)
+                .take_until(closed.cancelled_owned())
                 .take_until(state.shutdown.clone().cancelled_owned()),
         )
     };

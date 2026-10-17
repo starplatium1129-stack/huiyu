@@ -1,6 +1,6 @@
 use super::*;
 use canonical::entity_key;
-use std::borrow::Cow;
+use std::{borrow::Cow, collections::HashMap};
 
 pub(super) fn read(c: &Context, id: &str) -> Result<Vec<Value>> {
     c.db.prepare("SELECT body FROM migration_items WHERE migration_id=? ORDER BY item_id")?
@@ -165,24 +165,19 @@ fn check_refs(value: &Value, media: &HashSet<&str>, blockers: &mut Vec<String>) 
 fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64) -> Result<()> {
     body(item)?;
     let key = entity_key(&item["id"])?;
-    c.db.execute(
-        "INSERT INTO artworks VALUES(?,?,?,?,?)",
-        params![
+    c.db.prepare_cached("INSERT INTO artworks VALUES(?,?,?,?,?)")?
+        .execute(params![
             key,
             stringify(&item["id"]),
             stringify(item),
             revision,
             deleted
-        ],
-    )?;
-    let hash: String = c.db.query_row(
-        "SELECT hash FROM media_aliases WHERE alias=?",
-        [string(item, "image_id")?],
-        |r| r.get(0),
-    )?;
-    c.db.execute(
-        "INSERT OR IGNORE INTO media_refs VALUES(?,?,?)",
-        params![
+        ])?;
+    let hash: String = c.db
+        .prepare_cached("SELECT hash FROM media_aliases WHERE alias=?")?
+        .query_row([string(item, "image_id")?], |r| r.get(0))?;
+    c.db.prepare_cached("INSERT OR IGNORE INTO media_refs VALUES(?,?,?)")?
+        .execute(params![
             if deleted.is_some() {
                 "trash"
             } else {
@@ -190,8 +185,7 @@ fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64
             },
             key,
             hash
-        ],
-    )?;
+        ])?;
     Ok(())
 }
 pub(super) fn publish(
@@ -208,23 +202,30 @@ pub(super) fn publish(
         c.check_cancel()?;
         insert_artwork(c, artwork, None, revision)?;
     }
+    let mut project_positions = HashMap::new();
     for project in &projects {
         body(project)?;
         let key = entity_key(&project["id"])?;
-        c.db.execute(
-            "INSERT INTO projects VALUES(?,?,?,?)",
-            params![key, stringify(&project["id"]), stringify(project), revision],
-        )?;
+        c.db.prepare_cached("INSERT INTO projects VALUES(?,?,?,?)")?
+            .execute(params![
+                key,
+                stringify(&project["id"]),
+                stringify(project),
+                revision
+            ])?;
         for (position, id) in project["history_ids"]
             .as_array()
             .unwrap()
             .iter()
             .enumerate()
         {
-            c.db.execute(
-                "INSERT INTO project_artworks VALUES(?,?,?)",
-                params![key, entity_key(id)?, position as i64],
-            )?;
+            c.db.prepare_cached("INSERT INTO project_artworks VALUES(?,?,?)")?
+                .execute(params![key, entity_key(id)?, position as i64])?;
+        }
+        if !trash.is_empty() {
+            project_positions
+                .entry(key)
+                .or_insert(project["history_ids"].as_array().unwrap().len());
         }
     }
     for entry in trash {
@@ -247,22 +248,17 @@ pub(super) fn publish(
                     continue;
                 }
                 let project_key = entity_key(&reference["projectId"])?;
-                if let Some(project) = projects
-                    .iter()
-                    .find(|p| entity_key(&p["id"]).is_ok_and(|key| key == project_key))
-                {
-                    refs.push(json!({"project_key":project_key,"position":project["history_ids"].as_array().unwrap().len()}));
+                if let Some(position) = project_positions.get(&project_key) {
+                    refs.push(json!({"project_key":project_key,"position":position}));
                 }
             }
-            c.db.execute(
-                "INSERT INTO trash VALUES(?,?,?,?)",
-                params![
+            c.db.prepare_cached("INSERT INTO trash VALUES(?,?,?,?)")?
+                .execute(params![
                     entity_key(&item["id"])?,
                     deleted,
                     stringify(item),
                     stringify(&json!(refs))
-                ],
-            )?;
+                ])?;
         }
     }
     for record in records {
@@ -286,10 +282,8 @@ pub(super) fn publish(
         } else {
             key.into()
         };
-        c.db.execute(
-            "INSERT INTO profile_records VALUES(?,?,?,?)",
-            params![domain, key, stringify(&record["value"]), revision],
-        )?;
+        c.db.prepare_cached("INSERT INTO profile_records VALUES(?,?,?,?)")?
+            .execute(params![domain, key, stringify(&record["value"]), revision])?;
         profile::media_refs::replace(c, domain, &key, &record["value"])?;
     }
     Ok(())

@@ -74,16 +74,19 @@ async fn safe(config: &Config, name: &str) -> Result<PathBuf> {
     }
     Ok(path)
 }
-async fn open(config: &Config, name: &str) -> Result<tokio::fs::File> {
+async fn open(config: &Config, name: &str) -> Result<(tokio::fs::File, u64)> {
     let file = tokio::fs::File::open(safe(config, name).await?).await?;
-    if !file.metadata().await?.is_file() {
+    let metadata = file.metadata().await?;
+    if !metadata.is_file() {
         return Err(error(400, "TASK_INPUT_INVALID", "输入图像不是普通文件"));
     }
-    Ok(file)
+    Ok((file, metadata.len()))
 }
 async fn read(config: &Config, name: &str) -> Result<Vec<u8>> {
-    let file = open(config, name).await?;
-    let mut bytes = Vec::new();
+    let (file, length) = open(config, name).await?;
+    // Metadata only sizes the buffer; the bounded read below remains authoritative.
+    // Leave room to detect EOF without growing a full image allocation.
+    let mut bytes = Vec::with_capacity(length.min(MAX_BYTES) as usize + 1);
     file.take(MAX_BYTES + 1).read_to_end(&mut bytes).await?;
     if bytes.len() < 16 || bytes.len() as u64 > MAX_BYTES {
         return Err(error(
@@ -102,7 +105,7 @@ async fn fingerprint_file(
     let scope = cancel.child_token();
     let _guard = scope.clone().drop_guard();
     let cancelled = || error(499, "CANCELLED", "输入保护已取消");
-    let file = tokio::select! { biased;
+    let (file, _) = tokio::select! { biased;
         _ = scope.cancelled() => return Err(cancelled()),
         file = open(config, name) => file?,
     };

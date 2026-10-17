@@ -211,7 +211,7 @@ async fn recognize(
     settings: Settings,
     audio: Bytes,
 ) -> Result<String> {
-    let part = reqwest::multipart::Part::bytes(audio.to_vec())
+    let part = reqwest::multipart::Part::stream(audio)
         .file_name("speech.wav")
         .mime_str("audio/wav")
         .map_err(|_| ApiError::invalid("录音格式无效"))?;

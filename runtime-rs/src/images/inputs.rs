@@ -31,7 +31,7 @@ pub(super) fn path_for(config: &Config, name: &str, native: bool) -> Result<Path
     }
     Ok(root(config, native).join(name))
 }
-async fn open(config: &Config, name: &str, native: bool) -> Result<tokio::fs::File> {
+async fn open(config: &Config, name: &str, native: bool) -> Result<(tokio::fs::File, u64)> {
     let file = path_for(config, name, native)?;
     let root = tokio::fs::canonicalize(root(config, native)).await?;
     let target = tokio::fs::canonicalize(&file).await?;
@@ -39,14 +39,17 @@ async fn open(config: &Config, name: &str, native: bool) -> Result<tokio::fs::Fi
         return Err(error("TASK_INPUT_INVALID", "输入图像超出授权目录"));
     }
     let file = tokio::fs::File::open(file).await?;
-    if !file.metadata().await?.is_file() {
+    let metadata = file.metadata().await?;
+    if !metadata.is_file() {
         return Err(error("TASK_INPUT_INVALID", "输入图像不是普通文件"));
     }
-    Ok(file)
+    Ok((file, metadata.len()))
 }
 async fn read(config: &Config, name: &str, native: bool) -> Result<Vec<u8>> {
-    let file = open(config, name, native).await?;
-    let mut bytes = Vec::new();
+    let (file, length) = open(config, name, native).await?;
+    // Metadata only sizes the buffer; the bounded read below remains authoritative.
+    // Leave room to detect EOF without growing a full image allocation.
+    let mut bytes = Vec::with_capacity(length.min(MAX_BYTES as u64) as usize + 1);
     file.take(MAX_BYTES as u64 + 1)
         .read_to_end(&mut bytes)
         .await?;
@@ -60,7 +63,7 @@ async fn matches_original(
     original: &Original,
     cancel: &CancellationToken,
 ) -> Result<bool> {
-    let file = tokio::select! { biased;
+    let (file, _) = tokio::select! { biased;
         _ = cancel.cancelled() => return Err(cancelled()),
         file = open(config, &original.name, original.native) => file?,
     };

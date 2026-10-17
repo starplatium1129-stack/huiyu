@@ -1,6 +1,7 @@
-use super::{Result, io, unavailable};
+use super::{Result, check_cancel, io, unavailable};
 use serde_json::{Map, Value};
 use std::{collections::HashSet, path::Path};
+use tokio_util::sync::CancellationToken;
 
 fn source_id(id: &str) -> bool {
     !id.is_empty()
@@ -28,8 +29,8 @@ fn ids(value: &Value) -> Result<Vec<&str>> {
         .collect()
 }
 
-fn manifest(directory: &Path) -> Result<Value> {
-    let value = io::json(&directory.join("manifest.json"))?;
+fn manifest(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
+    let value = io::json(&directory.join("manifest.json"), cancel)?;
     if value["version"] != 1
         || !value["standards"].is_object()
         || value["standards"].get("characters").is_some()
@@ -45,8 +46,8 @@ fn manifest(directory: &Path) -> Result<Value> {
     Ok(value)
 }
 
-fn shard(directory: &Path, id: &str) -> Result<Value> {
-    let value = io::json(&directory.join(format!("{id}.json")))?;
+fn shard(directory: &Path, id: &str, cancel: &CancellationToken) -> Result<Value> {
+    let value = io::json(&directory.join(format!("{id}.json")), cancel)?;
     if value["standard"]["id"] != id
         || value["view"]["characterId"] != id
         || !value["standard"]["outfits"].is_array()
@@ -57,22 +58,23 @@ fn shard(directory: &Path, id: &str) -> Result<Value> {
     Ok(value)
 }
 
-pub(super) fn profile(root: &Path, id: &str) -> Result<Option<Value>> {
+pub(super) fn profile(root: &Path, id: &str, cancel: &CancellationToken) -> Result<Option<Value>> {
+    check_cancel(cancel)?;
     let directory = root.join("data/references");
     if directory
         .join("manifest.json")
         .try_exists()
         .map_err(|_| unavailable())?
     {
-        let manifest = manifest(&directory)?;
+        let manifest = manifest(&directory, cancel)?;
         if !ids(&manifest["characterIds"])?.contains(&id) {
             return Ok(None);
         }
         // The authoritative per-character shard is read lazily; no aggregate is
         // written and unrelated character profiles are not parsed for this request.
-        return Ok(Some(shard(&directory, id)?["view"].take()));
+        return Ok(Some(shard(&directory, id, cancel)?["view"].take()));
     }
-    let mut view = io::json(&root.join("data/character-reference-view.json"))?;
+    let mut view = io::json(&root.join("data/character-reference-view.json"), cancel)?;
     Ok(view
         .as_object_mut()
         .ok_or_else(unavailable)?
@@ -80,28 +82,35 @@ pub(super) fn profile(root: &Path, id: &str) -> Result<Option<Value>> {
         .filter(|value| !value.is_null() && value != &Value::Bool(false)))
 }
 
-pub(super) fn view(root: &Path) -> Result<Value> {
+pub(super) fn view(root: &Path, cancel: &CancellationToken) -> Result<Value> {
+    check_cancel(cancel)?;
     let directory = root.join("data/references");
     if !directory
         .join("manifest.json")
         .try_exists()
         .map_err(|_| unavailable())?
     {
-        let view = io::json(&root.join("data/character-reference-view.json"))?;
+        let view = io::json(&root.join("data/character-reference-view.json"), cancel)?;
         if !view.is_object() {
             return Err(unavailable());
         }
         return Ok(view);
     }
-    let manifest = manifest(&directory)?;
+    let manifest = manifest(&directory, cancel)?;
     let mut profiles = Map::new();
     for id in ids(&manifest["viewOrder"])? {
-        profiles.insert(id.into(), shard(&directory, id)?["view"].take());
+        profiles.insert(id.into(), shard(&directory, id, cancel)?["view"].take());
     }
     Ok(Value::Object(profiles))
 }
 
-pub(super) fn check_products(root: &Path, standards: &[u8], view: &[u8]) -> Result<()> {
+pub(super) fn check_products(
+    root: &Path,
+    standards: &[u8],
+    view: &[u8],
+    cancel: &CancellationToken,
+) -> Result<()> {
+    check_cancel(cancel)?;
     let directory = root.join("data/references");
     if !directory
         .join("manifest.json")
@@ -110,7 +119,7 @@ pub(super) fn check_products(root: &Path, standards: &[u8], view: &[u8]) -> Resu
     {
         return Ok(());
     }
-    let (expected, profiles) = source_products(root)?;
+    let (expected, profiles) = source_products_with_cancel(root, cancel)?;
     let actual_standards: Value = serde_json::from_slice(standards).map_err(|_| unavailable())?;
     let actual_view: Value = serde_json::from_slice(view).map_err(|_| unavailable())?;
     if actual_standards != expected || actual_view != profiles {
@@ -119,17 +128,21 @@ pub(super) fn check_products(root: &Path, standards: &[u8], view: &[u8]) -> Resu
     Ok(())
 }
 pub(crate) fn source_products(root: &Path) -> Result<(Value, Value)> {
+    source_products_with_cancel(root, &CancellationToken::new())
+}
+fn source_products_with_cancel(root: &Path, cancel: &CancellationToken) -> Result<(Value, Value)> {
     let directory = root.join("data/references");
-    let mut manifest = manifest(&directory)?;
+    let mut manifest = manifest(&directory, cancel)?;
     let character_ids = ids(&manifest["characterIds"])?;
     let mut characters = Vec::new();
     let mut profiles = Map::new();
     for id in &character_ids {
-        let mut item = shard(&directory, id)?;
+        let mut item = shard(&directory, id, cancel)?;
         characters.push(item["standard"].take());
         profiles.insert((*id).into(), item["view"].take());
     }
     for entry in std::fs::read_dir(&directory).map_err(|_| unavailable())? {
+        check_cancel(cancel)?;
         let entry = entry.map_err(|_| unavailable())?;
         let name = entry.file_name();
         let name = name.to_str().ok_or_else(unavailable)?;
@@ -144,7 +157,9 @@ pub(crate) fn source_products(root: &Path) -> Result<(Value, Value)> {
     expected["characters"] = characters.into();
     let mut ordered = Map::new();
     for id in ids(&manifest["viewOrder"])? {
+        check_cancel(cancel)?;
         ordered.insert(id.into(), profiles.remove(id).ok_or_else(unavailable)?);
     }
+    check_cancel(cancel)?;
     Ok((expected, Value::Object(ordered)))
 }

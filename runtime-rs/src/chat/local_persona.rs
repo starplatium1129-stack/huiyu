@@ -1,9 +1,15 @@
-use super::settings::Settings;
+use super::{request_body::Admission, settings::Settings};
 use serde_json::Value;
 use std::path::{Path, PathBuf};
+use tokio_util::sync::CancellationToken;
+
+fn check_cancel(cancel: &CancellationToken) -> Option<()> {
+    (!cancel.is_cancelled()).then_some(())
+}
 
 // read has already checked this canonical root against the import directory.
-async fn model_file(canonical_root: &Path, reference: &str) -> Option<PathBuf> {
+fn model_file(canonical_root: &Path, reference: &str, cancel: &CancellationToken) -> Option<PathBuf> {
+    check_cancel(cancel)?;
     if reference.is_empty()
         || reference.contains([':', '%', '?', '#', '\0'])
         || Path::new(reference).is_absolute()
@@ -11,24 +17,32 @@ async fn model_file(canonical_root: &Path, reference: &str) -> Option<PathBuf> {
     {
         return None;
     }
-    let file = tokio::fs::canonicalize(canonical_root.join(reference))
-        .await
-        .ok()?;
-    (file.starts_with(canonical_root)
-        && file.as_path() != canonical_root
-        && tokio::fs::metadata(&file).await.ok()?.is_file())
-    .then_some(file)
+    let file = std::fs::canonicalize(canonical_root.join(reference)).ok()?;
+    check_cancel(cancel)?;
+    if !file.starts_with(canonical_root) || file.as_path() == canonical_root {
+        return None;
+    }
+    let metadata = std::fs::metadata(&file).ok()?;
+    check_cancel(cancel)?;
+    metadata.is_file().then_some(file)
 }
-async fn json(canonical_root: &Path, reference: &str) -> Option<Value> {
-    serde_json::from_slice(
-        &tokio::fs::read(model_file(canonical_root, reference).await?)
-            .await
-            .ok()?,
-    )
-    .ok()
+fn json(canonical_root: &Path, reference: &str, cancel: &CancellationToken) -> Option<Value> {
+    let file = model_file(canonical_root, reference, cancel)?;
+    check_cancel(cancel)?;
+    let bytes = std::fs::read(file).ok()?;
+    check_cancel(cancel)?;
+    let value = serde_json::from_slice(&bytes).ok()?;
+    check_cancel(cancel)?;
+    Some(value)
 }
 
-pub(super) async fn read(settings: &Settings, app: &Path, id: &str) -> Option<String> {
+pub(super) async fn read(
+    settings: &Settings,
+    app: &Path,
+    id: &str,
+    admission: &Admission,
+    cancel: &CancellationToken,
+) -> Option<String> {
     if ["nene", "natsume", "raiden_shogun"].contains(&id)
         || id.is_empty()
         || id.len() > 80
@@ -45,9 +59,30 @@ pub(super) async fn read(settings: &Settings, app: &Path, id: &str) -> Option<St
         app.join("runtime")
     };
     let directory = base.join("live2d-imports").join(id);
+    let id = id.to_owned();
+    let admission = admission.clone();
+    let scope = cancel.child_token();
+    let _guard = scope.clone().drop_guard();
+    check_cancel(&scope)?;
+    // Batch filesystem checks without retaining a CPU-worker slot. The job and
+    // its unpolled result retain admission even when the request goes away.
+    let work = tokio::task::spawn_blocking(move || {
+        let persona = read_blocking(&directory, &id, &scope);
+        (persona, admission)
+    });
+    tokio::select! {
+        biased;
+        _ = cancel.cancelled() => None,
+        result = work => result.ok()?.0,
+    }
+}
+
+fn read_blocking(directory: &Path, id: &str, cancel: &CancellationToken) -> Option<String> {
+    check_cancel(cancel)?;
     // Canonical comparison rejects a completed-import directory replaced by a link.
-    let actual = tokio::fs::canonicalize(&directory).await.ok()?;
-    let expected = std::path::absolute(&directory).ok()?;
+    let actual = std::fs::canonicalize(directory).ok()?;
+    check_cancel(cancel)?;
+    let expected = std::path::absolute(directory).ok()?;
     #[cfg(windows)]
     let same = actual
         .to_string_lossy()
@@ -58,12 +93,12 @@ pub(super) async fn read(settings: &Settings, app: &Path, id: &str) -> Option<St
     if !same {
         return None;
     }
-    let data = json(&actual, "companion.json").await?;
+    let data = json(&actual, "companion.json", cancel)?;
     if data["disabled"] == true || data["character"]["id"] != id || !data["files"].is_array() {
         return None;
     }
     let persona = data["character"]["personaPrompt"].as_str()?.to_owned();
-    let model = json(&actual, data["manifest"].as_str()?).await?;
+    let model = json(&actual, data["manifest"].as_str()?, cancel)?;
     let modern = model["Version"] == 3
         && model["FileReferences"]["Moc"].is_string()
         && model["FileReferences"]["Textures"]
@@ -86,26 +121,32 @@ pub(super) async fn read(settings: &Settings, app: &Path, id: &str) -> Option<St
     } else {
         vec!["model", "physics", "pose"]
     } {
+        check_cancel(cancel)?;
         if let Some(value) = refs.get(key).filter(|v| truthy(v)) {
             files.push(value.as_str()?);
         }
     }
     for value in refs[if modern { "Textures" } else { "textures" }].as_array()? {
+        check_cancel(cancel)?;
         files.push(value.as_str()?);
     }
     if let Some(expressions) = refs.get(if modern { "Expressions" } else { "expressions" }) {
         for item in expressions.as_array()? {
+            check_cancel(cancel)?;
             files.push(item[if modern { "File" } else { "file" }].as_str()?);
         }
     }
     if let Some(motions) = refs.get(if modern { "Motions" } else { "motions" }) {
         for motion in motions.as_object()?.values() {
+            check_cancel(cancel)?;
             for item in motion.as_array()? {
+                check_cancel(cancel)?;
                 for key in if modern {
                     ["File", "Sound"]
                 } else {
                     ["file", "sound"]
                 } {
+                    check_cancel(cancel)?;
                     if let Some(value) = item.get(key).filter(|value| truthy(value)) {
                         files.push(value.as_str()?);
                     }
@@ -114,8 +155,9 @@ pub(super) async fn read(settings: &Settings, app: &Path, id: &str) -> Option<St
         }
     }
     for reference in files {
-        model_file(&actual, reference).await?;
+        model_file(&actual, reference, cancel)?;
     }
+    check_cancel(cancel)?;
     Some(persona)
 }
 

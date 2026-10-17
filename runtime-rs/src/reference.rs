@@ -28,6 +28,13 @@ type ReaderState = Arc<Mutex<Option<Reader>>>;
 fn unavailable() -> ApiError {
     ApiError::new(503, "REFERENCE_UNAVAILABLE", "参考档案暂不可用")
 }
+fn check_cancel(cancel: &CancellationToken) -> Result<()> {
+    if cancel.is_cancelled() {
+        Err(unavailable())
+    } else {
+        Ok(())
+    }
+}
 fn invalid_release() -> ApiError {
     ApiError::new(503, "REFERENCE_RELEASE_INVALID", "参考资源版本未通过校验")
 }
@@ -91,9 +98,9 @@ async fn respond(
             &state.shutdown,
             // Encode and drop the potentially multi-megabyte view in the same
             // blocking job as its read, not on a Tokio request worker.
-            move |reader| {
+            move |reader, cancel| {
                 reader
-                    .read(id.as_deref())
+                    .read(id.as_deref(), cancel)
                     .map(|value| value.map(|profile| Json(profile).into_response()))
             },
         )
@@ -119,7 +126,7 @@ async fn with_reader<T: Send + 'static>(
     root: PathBuf,
     app_root: PathBuf,
     shutdown: &CancellationToken,
-    operation: impl FnOnce(&mut Reader) -> Result<T> + Send + 'static,
+    operation: impl FnOnce(&mut Reader, &CancellationToken) -> Result<T> + Send + 'static,
 ) -> Result<T> {
     let cancelled = shutdown.child_token();
     let _cancel = cancelled.clone().drop_guard();
@@ -135,14 +142,16 @@ async fn with_reader<T: Send + 'static>(
             // Keep the guard in the worker even if the HTTP future is dropped.
             // A queued blocking job can then skip all I/O after cancellation;
             // a running filesystem call retains exclusive access until it ends.
-            if worker_cancel.is_cancelled() {
-                return Err(unavailable());
+            check_cancel(&worker_cancel)?;
+            if slot.is_none() {
+                let reader = Reader::new(root, reference_root(&app_root), &worker_cancel)?;
+                // An abandoned first request must not cache partial initialization.
+                check_cancel(&worker_cancel)?;
+                *slot = Some(reader);
             }
-            let reader = slot.get_or_insert_with(|| Reader::new(root, reference_root(&app_root)));
-            if worker_cancel.is_cancelled() {
-                return Err(unavailable());
-            }
-            operation(reader)
+            let result = operation(slot.as_mut().unwrap(), &worker_cancel);
+            check_cancel(&worker_cancel)?;
+            result
         })
         .await
         .map_err(|_| unavailable())?
@@ -192,12 +201,17 @@ struct Reader {
 }
 
 impl Reader {
-    fn new(app_root: PathBuf, reference_root: Option<PathBuf>) -> Self {
+    fn new(
+        app_root: PathBuf,
+        reference_root: Option<PathBuf>,
+        cancel: &CancellationToken,
+    ) -> Result<Self> {
         let resolved = reference_root
             .as_ref()
-            .map(|root| release::Release::open(root, &app_root))
+            .map(|root| release::Release::open(root, &app_root, cancel))
             .transpose();
-        match resolved {
+        check_cancel(cancel)?;
+        Ok(match resolved {
             Ok(release) => Self {
                 app_root,
                 reference_root,
@@ -210,15 +224,19 @@ impl Reader {
                 release: None,
                 blocked: true,
             },
-        }
+        })
     }
 
-    fn read(&mut self, id: Option<&str>) -> Result<Option<Value>> {
+    fn read(&mut self, id: Option<&str>, cancel: &CancellationToken) -> Result<Option<Value>> {
+        check_cancel(cancel)?;
         if self.blocked {
             return Err(invalid_release());
         }
         if let Some(release) = &self.release {
-            return match release.read(&self.app_root, id) {
+            let result = release.read(&self.app_root, id, cancel);
+            // Cancellation is not evidence that the cached release is corrupt.
+            check_cancel(cancel)?;
+            return match result {
                 Ok(value) => Ok(value),
                 Err(_) => {
                     self.blocked = true;
@@ -227,8 +245,8 @@ impl Reader {
             };
         }
         match id {
-            Some(id) => shards::profile(&self.app_root, id),
-            None => shards::view(&self.app_root).map(Some),
+            Some(id) => shards::profile(&self.app_root, id, cancel),
+            None => shards::view(&self.app_root, cancel).map(Some),
         }
     }
 }
