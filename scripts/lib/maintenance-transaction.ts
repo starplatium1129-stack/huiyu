@@ -3,7 +3,6 @@ import { errorMessage as runtimeErrorMessage } from './runtime-errors';
 
 const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-recovery-fs');
 const backups: typeof import('./maintenance-recovery-backup') = require('./maintenance-recovery-backup');
-const { acquireMaintenanceLease }: typeof import('./maintenance-lease') = require('./maintenance-lease');
 
 function prepareMaintenanceTransaction(lease: any, options: any, snapshot: any, label: any = 'content') {
   lease.assertOwned();
@@ -37,21 +36,4 @@ function rollbackMaintenanceTransaction(lease: any, options: any) {
     return { ok: false, error: runtimeErrorMessage(error), dataIntegrity: 'INCONSISTENT' };
   }
 }
-async function withMaintenanceTransaction(options: any, capture: () => any, task: any, label: any = 'content') {
-  const lease = acquireMaintenanceLease(options);
-  try {
-    const snapshot = capture();
-    const backup = prepareMaintenanceTransaction(lease, options, snapshot, label);
-    const result = await task(lease, backup);
-    commitMaintenanceTransaction(lease);
-    return result;
-  } catch (error: any) {
-    const rollback = rollbackMaintenanceTransaction(lease, options);
-    error.rolledBack = rollback.ok;
-    error.dataIntegrity = rollback.ok ? 'restored' : 'INCONSISTENT';
-    if (!rollback.ok) error.recoveryRequired = true;
-    throw error;
-  }
-}
-
-export = { prepareMaintenanceTransaction, commitMaintenanceTransaction, rollbackMaintenanceTransaction, withMaintenanceTransaction };
+export = { prepareMaintenanceTransaction, commitMaintenanceTransaction, rollbackMaintenanceTransaction };

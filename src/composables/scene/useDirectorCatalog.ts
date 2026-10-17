@@ -107,19 +107,6 @@ export const OUTFIT_BUNDLES: OutfitBundle[] = [
   },
 ]
 
-export const OUTFIT_TAG_LABELS: Record<string, string> = {
-  nene_witch_canonical: '宁宁魔女服主控制词',
-  nene_school_uniform: '宁宁校服主控制词',
-  nene_sailor_uniform: '宁宁水手服主控制词',
-  nene_blue_pajamas: '宁宁蓝色睡衣主控制词',
-  nene_green_sleepwear: '宁宁绿色睡衣主控制词',
-  nene_red_cardigan_uniform: '宁宁红色开衫制服主控制词',
-  natsume_official_qipao: '夏目旗袍主控制词',
-  natsume_cafe_uniform: '夏目咖啡制服主控制词',
-  natsume_maid_uniform: '夏目女仆服主控制词',
-  natsume_sleepwear: '夏目睡衣主控制词',
-}
-
 export const R18_CONTROLS = [
   { character: 'nene', tag: 'nene_r18', label: '宁宁 R18' },
   { character: 'natsume', tag: 'natsume_r18', label: '夏目 R18' },

@@ -150,15 +150,6 @@ export function registerCompanionCharacter(character: CompanionCharacterDefiniti
   characters.set(character.id, character)
 }
 
-export function getCompanionAvatar(avatarId: string): CompanionAvatarDefinition | undefined {
-  return avatars.get(avatarId)
-}
-
-export function listCompanionAvatars(characterId?: string): CompanionAvatarDefinition[] {
-  const all = Array.from(avatars.values())
-  return characterId ? all.filter(a => a.characterId === characterId) : all
-}
-
 export function registerCompanionAvatar(
   avatar: CompanionAvatarDefinition,
   profile?: Live2DAdapterProfile,
@@ -187,10 +178,6 @@ export function registerCompanionAvatar(
     profiles.set(profile.profileId, profile)
   }
   avatars.set(avatar.id, avatar)
-}
-
-export function getCompanionProfile(profileId: string): Live2DAdapterProfile | undefined {
-  return profiles.get(profileId)
 }
 
 export function resolveCompanionAvatar(

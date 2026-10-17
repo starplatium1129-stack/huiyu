@@ -8,7 +8,6 @@ export const CLIPROXY_BASE_URL = 'http://127.0.0.1:8317/v1'
 export const OPENCODE_BASE_URL = 'https://opencode.ai/zen/v1'
 export const OPENCODE_DEFAULT_MODEL = 'deepseek-v4.1-flash'
 export const OPENCODE_GO_BASE_URL = 'https://opencode.ai/zen/go/v1'
-export const OPENCODE_GO_DEFAULT_MODEL = ''
 
 export type ApiVendor = 'deepseek' | 'openai' | 'gemini' | 'openrouter' | 'siliconflow'
   | 'qwen' | 'kimi' | 'cliproxy' | 'lmstudio' | 'ollama' | 'opencode' | 'opencode-go' | 'custom'

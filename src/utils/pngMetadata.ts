@@ -1,6 +1,6 @@
 /**
- * PNG Chunk / Civitai & A1111 兼容元数据写入与读取工具
- * 在 PNG 图像中注入或解析 tEXt 'parameters' 数据段
+ * PNG Chunk / Civitai & A1111 兼容元数据写入工具
+ * 在 PNG 图像中注入 tEXt 'parameters' 数据段
  */
 
 const PNG_SIGNATURE = new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10])
@@ -109,32 +109,4 @@ export function injectPngMetadata(pngBuffer: ArrayBuffer, parametersText: string
   result.set(source.subarray(insertPos), insertPos + totalChunk.length)
 
   return result
-}
-
-/** 从 PNG 文件中解析 parameters 字符串（如有） */
-export function extractPngParameters(pngBuffer: ArrayBuffer): string | null {
-  if (!isPng(pngBuffer)) return null
-  const view = new DataView(pngBuffer)
-  const bytes = new Uint8Array(pngBuffer)
-  const decoder = new TextDecoder()
-
-  let offset = 8
-  while (offset + 8 <= bytes.length) {
-    const chunkLen = view.getUint32(offset, false)
-    const chunkType = decoder.decode(bytes.subarray(offset + 4, offset + 8))
-
-    if (chunkType === 'tEXt') {
-      const data = bytes.subarray(offset + 8, offset + 8 + chunkLen)
-      const nullIdx = data.indexOf(0)
-      if (nullIdx >= 0) {
-        const keyword = decoder.decode(data.subarray(0, nullIdx))
-        if (keyword === 'parameters') {
-          return decoder.decode(data.subarray(nullIdx + 1))
-        }
-      }
-    }
-
-    offset += 8 + chunkLen + 4
-  }
-  return null
 }

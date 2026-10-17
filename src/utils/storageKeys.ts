@@ -206,8 +206,3 @@ export function cleanDeadLocalKeys(storage: KeyedStorage): number {
   }
   return removed.length
 }
-
-/** 备份恢复时只允许写入活键。 */
-export function isRestorableLocalKey(key: string): boolean {
-  return isLiveLocalKey(key)
-}

@@ -34,10 +34,6 @@ export interface MoodTagExtract {
 const TAG_START = /\[mood\s*[:=]/i
 const TAG_PREFIX = /\[(?:m(?:o(?:o(?:d\s*)?)?)?)?$/i
 
-export function extractMoodTag(raw: string): MoodTagExtract {
-  return createMoodTagStream().push(raw)
-}
-
 /** 只重读可能继续组成标签的尾部；未形成起点的前缀仍立即显示。 */
 export function createMoodTagStream() {
   let clean = ''
@@ -75,9 +71,4 @@ export function createMoodTagStream() {
       return { emotion, cleanText: clean }
     },
   }
-}
-
-/** 判断文本是否包含（可能是未闭合的）标签起点，用于提示词约束场景。 */
-export function hasMoodTagOpen(raw: string): boolean {
-  return TAG_START.test(raw)
 }

@@ -30,14 +30,12 @@ import {
 import type { DrawSubject } from '@/utils/popularContent'
 import type { RecipeRestoreReport } from '@/utils/recipeComparison'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
-import { CHAR_PROMPT, SHOT, COMPOSITION, EMOTION } from '@/config/promptConstants'
+import { CHAR_PROMPT, EMOTION } from '@/config/promptConstants'
 export { CHAR_PROMPT } from '@/config/promptConstants'
 
 import type { CharKey, Selections } from '@/types/promptHistory'
 export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
 
-export const SHOT_PROMPT: Record<string, string> = Object.fromEntries(SHOT.map(item => [item.id, item.prompt || '']))
-export const COMPOSITION_PROMPT: Record<string, string> = Object.fromEntries(COMPOSITION.map(item => [item.id, item.prompt || '']))
 export const PROMPT_MAP_EMOTION: Record<string, string> = Object.fromEntries(EMOTION.map(item => [item.id, item.prompt || '']))
 
 export const NEGATIVE_DEFAULT = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate'

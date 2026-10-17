@@ -122,10 +122,6 @@ export function sceneUsageScore(record: SceneUsageRecord | undefined, now = Date
   return Math.min(record.uses, 12) * 4 + recency
 }
 
-export function isPersonaCore(scene: { id: string }, config: SceneUXConfig | null | undefined): boolean {
-  return list(config, 'personaCoreSceneIds').includes(scene.id)
-}
-
 function list(config: SceneUXConfig | null | undefined, key: keyof SceneUXConfig): string[] {
   const v = config?.[key]
   return Array.isArray(v) ? v as string[] : []

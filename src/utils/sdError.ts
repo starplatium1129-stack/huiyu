@@ -129,9 +129,3 @@ export function classifySDError(error: unknown, backend: SDBackend = 'webui'): S
     '已保留 Prompt 与当前参数。检查配置后可随时再次提交。',
     { id: 'open_settings', label: '查看出图参数' }, text, backend)
 }
-
-/** 稳定回退组合：采样器/调度器不被支持时用 */
-export const SAFE_SAMPLING = { sampler: 'Euler a', scheduler: '' }
-
-/** 降负载方案：OOM / 超时时用 */
-export const LIGHT_LOAD = { size: '832x1216', hiresFix: false }

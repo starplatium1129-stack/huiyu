@@ -77,4 +77,3 @@ export function diagnosticSnapshot() {
     entries: entries.map(entry => entry.type === 'request' ? { ...entry, activeTaskIds: [...entry.activeTaskIds] } : { ...entry }),
   }
 }
-export function clearDiagnosticHistory() { entries.length = 0 }

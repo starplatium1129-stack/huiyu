@@ -138,7 +138,6 @@ export function updateTask(id: string, patch: Partial<TaskSummary>) {
   Object.assign(task, patch, { updatedAt: Math.max(Date.now(), task.updatedAt + 1) })
   persist()
 }
-export function flushTaskSummaries() { return writeTail }
 export function forgetTaskControls(id: string) { actions.delete(id) }
 export function hydrateTasks(): Promise<void> {
   const read = () => hasRuntimeTasks() ? import('@/api/runtimeTasks').then(api => api.readRuntimeTaskHistory()) : readTaskHistory()
