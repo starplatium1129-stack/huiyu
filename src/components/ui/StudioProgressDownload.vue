@@ -154,6 +154,7 @@ onScopeDispose(stopMotion)
 .u004-ok { justify-content: center; gap: 10px; opacity: 0; transform: scale(.6); color: var(--ux-accent-ink); }
 .u004-ok i { position: absolute; left: calc(50% - 15px); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, currentColor 18%, transparent); transition: transform var(--motion-surface) var(--ux-ease); }
 .u004-ok .archive-icon { width: 20px; height: 20px; }
+/* compositor-exempt: One short success stroke in a 20px icon; reduced motion disables the transition. */
 .u004-ok :deep(path) { stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .45s var(--ux-ease) .25s; }
 .u004-ok > span { position: absolute; left: calc(50% - 28px); font-size: 16px; font-weight: 700; white-space: nowrap; opacity: 0; transform: translateX(-8px); transition: transform var(--motion-surface) var(--ux-ease), opacity var(--motion-hover) var(--ux-ease); }
 .u004[data-state='run'] .u004-idle { opacity: 0; transform: translateY(-12px); }
