@@ -15,7 +15,7 @@ export interface ThumbnailWarmupDependencies {
 }
 
 /** Optional prewarming only; demand-driven image loading stays independent. */
-export function createThumbnailWarmup(deps: ThumbnailWarmupDependencies): () => void {
+function createThumbnailWarmup(deps: ThumbnailWarmupDependencies): () => void {
   let stopped = false
   let running = false
   let scheduled: number | null = null

@@ -118,7 +118,7 @@ function persist() {
     for (const [id, timestamp] of merged.deleted) deletedTasks.set(id, timestamp)
   }).then(() => { storageError.value = '' }).catch(() => { storageError.value = '任务摘要暂未保存；当前任务继续运行。' })
 }
-export function createTask(summary: TaskSummary, controls: TaskControls = {}): string {
+function createTask(summary: TaskSummary, controls: TaskControls = {}): string {
   const id = `task-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
   tasks.value.unshift({ ...summary, id, createdAt: Date.now(), updatedAt: Date.now() })
   recordDiagnosticTask(id, summary.kind, summary.status)
@@ -138,7 +138,7 @@ export function updateTask(id: string, patch: Partial<TaskSummary>) {
   Object.assign(task, patch, { updatedAt: Math.max(Date.now(), task.updatedAt + 1) })
   persist()
 }
-export function forgetTaskControls(id: string) { actions.delete(id) }
+function forgetTaskControls(id: string) { actions.delete(id) }
 export function hydrateTasks(): Promise<void> {
   const read = () => hasRuntimeTasks() ? import('@/api/runtimeTasks').then(api => api.readRuntimeTaskHistory()) : readTaskHistory()
   return loading ??= read().then(value => {

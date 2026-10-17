@@ -28,7 +28,7 @@ export interface VadSegmenterConfig {
   noiseFloorMs: number
 }
 
-export const DEFAULT_VAD_CONFIG: VadSegmenterConfig = {
+const DEFAULT_VAD_CONFIG: VadSegmenterConfig = {
   sampleRate: 16_000,
   frameMs: 10,
   threshold: 0.02,
@@ -44,17 +44,9 @@ export interface VadSegmenter {
   push(samples: Float32Array): void
   /** 取出全部已完成的语音段并清空（FIFO） */
   takeSegments(): Float32Array[]
-  /** 当前是否有未完成的语音段 */
-  inSpeech(): boolean
-  /** 当前语音段已累积的时长（ms） */
-  speechMs(): number
-  /** 当前生效的能量阈值（校准完成后为估计值，否则为配置阈值） */
-  effectiveThreshold(): number
-  /** 清空内部状态与未完成段 */
-  reset(): void
 }
 
-export function normalizeVadConfig(raw: Partial<VadSegmenterConfig>): VadSegmenterConfig {
+function normalizeVadConfig(raw: Partial<VadSegmenterConfig>): VadSegmenterConfig {
   const base = { ...DEFAULT_VAD_CONFIG }
   const num = (value: unknown, fallback: number, min: number, max: number): number => {
     const n = Number(value)
@@ -217,27 +209,6 @@ export function createVadSegmenter(rawConfig?: Partial<VadSegmenterConfig>): Vad
     },
     takeSegments(): Float32Array[] {
       return completed.splice(0, completed.length)
-    },
-    inSpeech(): boolean {
-      return active || speechFramesSinceStart > 0
-    },
-    speechMs(): number {
-      return (speechSamples.length / config.sampleRate) * 1000
-    },
-    effectiveThreshold(): number {
-      return effectiveThresholdValue()
-    },
-    reset(): void {
-      pending = []
-      speechSamples = []
-      completed.length = 0
-      backfill = []
-      silenceFrames = 0
-      speechFramesSinceStart = 0
-      lastVoiceEnd = 0
-      active = false
-      thresholdEstimate = null
-      calibrationRms.length = 0
     },
   }
 }

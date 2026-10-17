@@ -45,7 +45,7 @@ function dataAccent(record: CharacterThemeRecord | undefined): string | undefine
   return HEX_COLOR.test(value) ? value : undefined
 }
 
-export function resolveCharacterTheme(id: string, records: readonly CharacterThemeRecord[] = [], catalog: CharacterThemeCatalog = STUDIO_CHARACTER_THEMES): CharacterThemeOverride {
+function resolveCharacterTheme(id: string, records: readonly CharacterThemeRecord[] = [], catalog: CharacterThemeCatalog = STUDIO_CHARACTER_THEMES): CharacterThemeOverride {
   const override = catalog[id] || STUDIO_CHARACTER_THEMES[id]
   const accent = override?.accent || dataAccent(recordFor(id, records)) || DEFAULT_THEME.accent
   return {

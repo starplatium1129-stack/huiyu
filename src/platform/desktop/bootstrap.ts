@@ -3,7 +3,7 @@ import type { DesktopBootstrap, DesktopWorkspaceSession } from '../../../types/d
 import { isNativeDesktopOrigin } from '../desktopOrigins.ts'
 import { invokeHost as invoke } from './hostApi.ts'
 
-export function decodeDesktopBootstrap(value: unknown): DesktopBootstrap {
+function decodeDesktopBootstrap(value: unknown): DesktopBootstrap {
   if (!value || typeof value !== 'object') throw new Error('桌面启动响应无效')
   const dto = value as Record<string, unknown>
   if (dto.protocolVersion !== 1) throw new Error('桌面启动协议不兼容')

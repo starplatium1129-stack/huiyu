@@ -63,16 +63,10 @@ export interface CompanionBehaviorHandle {
   noteEvent(eventKind: CompanionEventKind, line: string, now?: number): CompanionReminder | null
   /** 当前是否处于安静时段 */
   inQuietHours(now?: number): boolean
-  /** 勿扰状态（引用会随配置变更） */
-  isDnd(): boolean
   /** 待展示队列（FIFO） */
   pending(): readonly CompanionReminder[]
-  /** 取出并返回队首提醒（勿扰时返回 null，队列保留） */
-  dequeue(now?: number): CompanionReminder | null
   /** 移除指定提醒（用户手动关闭） */
   dismiss(id: string): void
-  /** 距上次提醒剩余冷却毫秒数（负数表示已过冷却） */
-  cooldownRemainingMs(now?: number): number
   /** 清空队列 */
   clear(): void
   /** 替换配置（保留队列与 lastActivity） */
@@ -185,11 +179,6 @@ export function createCompanionBehavior(
     return enqueue('event', line, now, eventKind)
   }
 
-  function dequeue(now = Date.now()): CompanionReminder | null {
-    if (!canProduce(now)) return null
-    return queue.shift() ?? null
-  }
-
   function dismiss(id: string): void {
     const index = queue.findIndex(reminder => reminder.id === id)
     if (index >= 0) queue.splice(index, 1)
@@ -201,11 +190,8 @@ export function createCompanionBehavior(
     noteReturn,
     noteEvent,
     inQuietHours: (now = Date.now()) => isInQuietHours(now, config.quietStartHour, config.quietEndHour),
-    isDnd: () => config.dnd,
     pending: () => queue.slice(),
-    dequeue,
     dismiss,
-    cooldownRemainingMs: (now = Date.now()) => lastReminderAt + config.cooldownMinutes * 60000 - now,
     clear: () => { queue.length = 0 },
     setConfig: patch => {
       Object.assign(config, normalizeCompanionConfig({ ...config, ...patch }))

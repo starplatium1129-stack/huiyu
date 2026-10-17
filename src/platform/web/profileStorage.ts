@@ -45,7 +45,7 @@ function take(snapshot: ProfileSnapshot, session = false) {
 }
 /** Bootstrap awaits hydration before mounting; once selected, runtime failures
  * never select the old browser records as an alternate writable authority. */
-export async function installProfilePort(next: ProfilePort, id: string): Promise<void> {
+async function installProfilePort(next: ProfilePort, id: string): Promise<void> {
   if (outbox.length) throw new Error('仍有未确认的资料保存，请先完成保存。')
   const current = ++generation
   const [settings, chat, drafts] = await Promise.all([next.readSettings(), next.readChat(), next.readDrafts(id)])

@@ -167,7 +167,7 @@ function dedupeSegment(text: string, seen = new Set<string>()): string {
 }
 
 /** BREAK 是角色作用域边界；不同角色可以重复服装、表情等主体属性。 */
-export function dedupeText(text: string, externalSeen?: Set<string>): string {
+function dedupeText(text: string, externalSeen?: Set<string>): string {
   const sections = splitBreaks(text)
   if (sections.length === 1) return dedupeSegment(sections[0], externalSeen ?? new Set())
   return sections
@@ -192,11 +192,11 @@ export function mergeTokenText(...texts: string[]): string {
   return out.join(', ')
 }
 
-export function isNegativeBoilerplate(token: string): boolean {
+function isNegativeBoilerplate(token: string): boolean {
   return NEGATIVE_BOILERPLATE.has(normalizeKey(token))
 }
 
-export function mergeNegativePrompt(
+function mergeNegativePrompt(
   prefix: string,
   base = '',
   mode: 'merge' | 'replace' = 'merge',
@@ -239,7 +239,7 @@ export function resolveModelProfile(
 }
 
 /** 手动词条 R18 门控词（LoRA 控制词 + 显式裸体词），单一事实源。 */
-export const MANUAL_R18_RE = /^(?:nene_r18|natsume_r18|nude|completely_nude|naked|topless|nipples|bare_breasts|pussy|vaginal|penis|sex|uncensored|nsfw)$/i
+const MANUAL_R18_RE = /^(?:nene_r18|natsume_r18|nude|completely_nude|naked|topless|nipples|bare_breasts|pussy|vaginal|penis|sex|uncensored|nsfw)$/i
 
 /**
  * manualTags 是否构成 R18 迹象：门控词正则命中，或命中词条池 Mature 分类
@@ -284,7 +284,7 @@ export function qualityPrefix(profile: ModelProfile | null, scene?: unknown, eng
 }
 
 /** 负面前缀：按 profile 的 merge/replace 策略与场景负面合并 */
-export function modelNegativePrompt(profile: ModelProfile | null, baseNegative: string, engine: PromptEngine = 'sd'): string {
+function modelNegativePrompt(profile: ModelProfile | null, baseNegative: string, engine: PromptEngine = 'sd'): string {
   const prefix = profile?.negative_prefix || ''
   const merged = prefix ? mergeNegativePrompt(
     prefix,
@@ -295,7 +295,7 @@ export function modelNegativePrompt(profile: ModelProfile | null, baseNegative: 
   return engine === 'anima' ? formatPromptForEngine(merged, engine, profile?.exact_tokens || []) : merged
 }
 
-export function adaptNegative(
+function adaptNegative(
   text: string,
   scene?: unknown,
   context: { shot?: string | null; character?: string | null } = {},
@@ -317,7 +317,7 @@ export function adaptNegative(
 }
 
 /** SD 历史默认保护；Anima 从模型基础负面与场景明确排除项开始。 */
-export const NEGATIVE_PROTECTION = 'bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature, border, white_border, framed, letterbox, pillarbox, padding, margin, inset, comic_panel, split_screen'
+const NEGATIVE_PROTECTION = 'bad anatomy, bad hands, extra fingers, missing fingers, fused fingers, extra arms, extra legs, deformed, text, watermark, logo, signature, border, white_border, framed, letterbox, pillarbox, padding, margin, inset, comic_panel, split_screen'
 
 /**
  * 模型原生负面统一装配：profile 基础 + 场景排除项 + rating。
@@ -365,7 +365,7 @@ export function resolveFramingMode(shot?: string | null, manualTags: string[] = 
 }
 
 /** 同一 prompt 里不能既 close_up 又 full_body：保留当前镜头，剔除冲突项 */
-export function filterFraming(text: string, shot?: string | null): string {
+function filterFraming(text: string, shot?: string | null): string {
   const mode = resolveFramingMode(shot)
   if (!mode) return text
   const drop = mode === 'wide'

@@ -357,7 +357,7 @@ function compactActions(values: string[], limit: number): string[] {
  * 全局视觉瑕疵防御过滤器：
  * 阻断将「耳红/害羞」误译为 burning ears / flaming red 的病态词导致模型画出物理火苗/耳朵冒火。
  */
-export function sanitizeVisualArtifacts(text: string): string {
+function sanitizeVisualArtifacts(text: string): string {
   if (!text) return ''
   return text
     .replace(/\b(?:ears?\s+(?:burn(?:ing)?|flam(?:ing)?)(?:\s+completely)?(?:\s+bright)?(?:\s+red)?|(?:burn(?:ing)?|flam(?:ing)?)\s+(?:bright\s+)?red\s+ears?)\b/gi, 'flushed cheeks')

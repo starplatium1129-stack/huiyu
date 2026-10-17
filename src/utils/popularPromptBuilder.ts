@@ -66,7 +66,7 @@ const NENE_NATSUME_POLLUTION = /(?:ayachi_nene|shiki_natsume|nene_r18|natsume_r1
 const NENE_NATSUME_PREFIX = /^(?:nene_|natsume_)[a-z0-9_]+$/i
 
 /** 专家模式手动词条净化：热门角色场景不得出现宁宁/夏目 LoRA 控制词。 */
-export function sanitizePopularManual(tags: string[]): string[] {
+function sanitizePopularManual(tags: string[]): string[] {
   return tags.filter(tag => !NENE_NATSUME_POLLUTION.test(tag) && !NENE_NATSUME_PREFIX.test(tag))
 }
 

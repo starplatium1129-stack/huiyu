@@ -9,14 +9,14 @@ export type ShotId = typeof SHOT_IDS[number]
 export const LIGHTING_IDS = ['golden', 'window', 'back', 'moon', 'lantern', 'overcast'] as const
 export type LightingId = typeof LIGHTING_IDS[number]
 
-export const MOOD_IDS = ['joy', 'love', 'calm', 'sad', 'tension', 'warmth'] as const
+const MOOD_IDS = ['joy', 'love', 'calm', 'sad', 'tension', 'warmth'] as const
 export type MoodId = typeof MOOD_IDS[number]
 
 export const COMPOSITION_IDS = ['center', 'rule3', 'left', 'right', 'foreground', 'frame', 'bywindow'] as const
 export type CompositionId = typeof COMPOSITION_IDS[number]
 
 /** 归一化标签：小写、去权重括号、空格/连字符转下划线。 */
-export function normalizeTag(value: string): string {
+function normalizeTag(value: string): string {
   return String(value || '')
     .trim()
     .toLowerCase()
