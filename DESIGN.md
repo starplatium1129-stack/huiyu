@@ -265,8 +265,12 @@ Chinese text is primary. English labels such as Scene, Prompt, LoRA, Seed, and
 SD WebUI may appear when they are established terms, but must not make an action
 harder to understand.
 
-- Use the system sans stack for controls and reading. The home opening and short
-  character dialogue may use the serif stack for visual-novel intimacy.
+- Use the system sans stack for controls and reading. The home opening, chapter
+  titles, character names and short character dialogue may use the serif stack
+  for visual-novel intimacy. Prefer Chinese serif faces for Chinese text and
+  retain Japanese Mincho for Japanese decoration. Keep Chinese headlines at
+  normal tracking; give story text and reader descriptions the body size and
+  loose line height without enlarging dense controls or collection summaries.
 - Keep the existing local Chinese fonts; do not load Linear's brand fonts or apply
   its tightly tracked display typography to Chinese controls.
 - Use the mono stack only for prompts, seeds, model names, ports, paths, and
@@ -435,6 +439,11 @@ keyframes on every rapid toggle. Spring and bounce express a chosen interaction
 and settle cleanly, with amplitude suited to the surface and its content.
 Actions, cancellation and focus restoration proceed without waiting for visual
 completion, and an animation ending never proves a request succeeded.
+
+Light/dark switching may use a brief translucent paper-layer turn through
+`--motion-theme-turn` (640ms). Commit the real palette immediately; the decorative
+layer must not capture, clone or block the live interface. Repeated toggles
+reverse the current pose, and other input or reduced motion releases the layer.
 
 Press feedback visibly acknowledges input without moving the hit target or
 triggering an action early. Choose entrance scale and displacement to express

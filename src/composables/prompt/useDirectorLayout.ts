@@ -24,9 +24,9 @@ function readPreferences() { return parseDirectorLayout(profileLocalStorage.getI
 export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   const preferences = ref(readPreferences())
   const width = ref(960), viewport = ref(window.innerWidth), dragging = ref<Side | null>(null)
-  // Collapse only when the measured workspace cannot fit both rails and a useful canvas.
+  // Keep laptop viewports compact; also collapse narrower theme workspaces on wide screens.
   // Hiding the inspector leaves enough space for materials beside the canvas.
-  const compact = computed(() => viewport.value >= 1024 && width.value < 1120 && !preferences.value.hideInspector)
+  const compact = computed(() => viewport.value >= 1024 && (viewport.value <= 1440 || width.value < 1120) && !preferences.value.hideInspector)
   const compactMaterialsOpen = ref(false)
   watch(compact, async () => {
     // Capture ownership before Vue hides a rail; only that rail may hand off focus.

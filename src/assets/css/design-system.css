@@ -135,8 +135,9 @@
   --font-sans:      -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
   --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
   --font-display:   -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
-  /* 装饰性衬线字形槽(汉字水印/占位图标),不用于正文 */
-  --font-serif:     "Yu Mincho", "Hiragino Mincho ProN", "Songti SC", "STSong", "SimSun", Georgia, serif;
+  /* 首页、章节、角色主名与短台词；长文和控件仍用 sans。 */
+  --font-serif:     "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
+  --font-serif-jp:  "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif CJK JP", var(--font-serif);
 
   /* ---- Font size scale (DESIGN.md §Typography 的运行时实现) ----
      mono-*  机读标签(kicker/badge/seed)   |  label-*  控件与元数据
@@ -298,6 +299,9 @@
 /* SPA navigation uses AppLayout.vue transitions. Cross-document automatic
    transitions require both documents to remain opted in; async route startup
    can otherwise abort the browser transition before the destination is ready. */
+
+/* Preserve the pixel theme's display face for Japanese ornament too. */
+:root[data-theme-style='terraria'] { --font-serif-jp:var(--font-display); }
 
 /* ---- Reset ---- */
 *, *::before, *::after { @apply tw:box-border tw:m-0 tw:p-0; }
@@ -523,9 +527,9 @@ body > *:has(+ .footer),
 .page-title {
   @apply tw:m-0 tw:text-primary tw:font-display;
   font-size: var(--fs-title);
-  font-weight: 760;
-  letter-spacing: -0.03em;
-  @apply tw:leading-flush;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: var(--lh-tight);
 }
 .page-subtitle {
   margin: 10px 0 0;
