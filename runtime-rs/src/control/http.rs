@@ -70,7 +70,7 @@ async fn status(
 async fn file_status(s: &ControlService) -> (bool, Value) {
     let tunnel_enabled = !s.tunnel_disabled();
     let tunnel = s.tunnel_path();
-    let scripts = [s.script(0, true), s.script(1, true), s.script(2, true)];
+    let scripts = [s.script(0), s.script(1), s.script(2)];
     tokio::task::spawn_blocking(move || {
         let voice = scripts[2].is_file();
         (
@@ -187,7 +187,7 @@ async fn diagnostics(Extension(s): Extension<Arc<ControlService>>) -> Json<Value
     value["runtimeConfig"] = redact_config(&s, &s.saved.read().unwrap());
     value["token"] = json!({"present":!s.config.token.is_empty(),"length":s.config.token.len(),"suffix":"[redacted]"});
     value["operation"] = json!(s.state.lock().unwrap().operation);
-    value["scripts"] = json!({"voiceStart":s.script(2,true),"voiceStop":s.script(2,false),"webui":s.script(0,true),"comfy":s.script(1,true),"voiceStartExists":s.script(2,true).is_file(),"voiceStopExists":s.script(2,false).is_file(),"webuiExists":s.script(0,true).is_file(),"comfyExists":s.script(1,true).is_file()});
+    value["scripts"] = json!({"voiceStart":s.script(2),"voiceStop":s.script(2),"webui":s.script(0),"comfy":s.script(1),"voiceStartExists":s.script(2).is_file(),"voiceStopExists":s.script(2).is_file(),"webuiExists":s.script(0).is_file(),"comfyExists":s.script(1).is_file()});
     value["sceneShowcaseDir"] = json!(
         std::env::var("SCENE_SHOWCASE_DIR")
             .ok()
