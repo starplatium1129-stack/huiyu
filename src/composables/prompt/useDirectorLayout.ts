@@ -8,7 +8,7 @@ interface LayoutPreference { materials: number | null; inspector: number | null;
 const defaults = (): LayoutPreference => ({ materials: null, inspector: null, hideMaterials: false, hideInspector: false })
 // Match the gallery's horizontal intent tolerance, within the 16 CSS px resize hit area.
 const RESIZE_INTENT_PX = 6
-export function parseDirectorLayout(raw: string | null): LayoutPreference {
+function parseDirectorLayout(raw: string | null): LayoutPreference {
   try {
     const value: unknown = JSON.parse(raw || 'null')
     if (!value || typeof value !== 'object') return defaults()
