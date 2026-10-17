@@ -113,7 +113,7 @@
 
 <script setup lang="ts">
 import { ref, shallowRef, computed, onMounted, onUnmounted, nextTick, useId, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { isNavigationFailure, NavigationFailureType, useRoute, useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
@@ -168,6 +168,7 @@ const worksError = ref('')
 const worksLoading = computed(() => worksController.value !== null)
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
+let navigationRequest = 0
 
 const searchInstanceId = useId()
 const listboxId = `global-search-listbox-${searchInstanceId}`
@@ -268,11 +269,25 @@ function resultId(kind: SearchResultKind, id: string | number) {
   return `${listboxId}-${kind}-${encodeURIComponent(String(id))}`
 }
 
-function run(index: number) {
+async function run(index: number) {
   const item = flat.value[index]
   if (!item) return
+  const origin = previousActiveElement, path = route.fullPath, request = ++navigationRequest
   close(false)
-  void router.push(item.path)
+  try {
+    const failure = await router.push(item.path)
+    if (!isNavigationFailure(failure, NavigationFailureType.aborted | NavigationFailureType.duplicated)) return
+    // Release the search/confirmation focus trap before returning to this page.
+    await nextTick()
+    if (request !== navigationRequest || open.value || route.fullPath !== path || document.activeElement !== document.body
+      || !origin?.isConnected || origin.matches(':disabled') || origin.closest('[inert], [hidden]')
+      || !origin.getClientRects().length || document.querySelector('dialog:modal')) return
+    const visibility = getComputedStyle(origin).visibility
+    if (visibility !== 'hidden' && visibility !== 'collapse') origin.focus({ preventScroll: true })
+  } catch {
+    // Router onError already exposes the existing route-recovery banner.
+    // A rejected or superseded navigation must not reclaim another surface's focus.
+  }
 }
 
 function move(step: number) {
@@ -300,6 +315,7 @@ function onInputKeydown(event: KeyboardEvent) {
 function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = document.activeElement as HTMLElement | null) {
   // Global navigation must not open an inert body portal underneath a modal editor.
   if (!open.value && (document.querySelector('dialog:modal') || document.activeElement?.closest('[aria-modal="true"]'))) return
+  navigationRequest++
   previousActiveElement = trigger
   triggerSource.value = source
   open.value = true
@@ -433,6 +449,7 @@ onMounted(() => {
     && (!props.initialPath || props.initialPath === route.fullPath)) openPanel(props.initialSource, props.initialTrigger)
 })
 onUnmounted(() => {
+  navigationRequest++
   scenesRequest++
   resetWorks()
   document.removeEventListener('keydown', onKeydown)

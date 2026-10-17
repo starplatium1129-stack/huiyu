@@ -5,7 +5,7 @@ type ImageRect = { left: number; top: number; width: number; height: number }
 type Origin = { rect: ImageRect; src: string; clipPath?: string }
 const UNCLIPPED = 'inset(0% 0% 0% 0%)'
 type Flight = {
-  proxy: HTMLImageElement | HTMLCanvasElement
+  proxy: HTMLCanvasElement
   target: HTMLImageElement
   host: HTMLElement
   restore: () => void
@@ -67,32 +67,21 @@ function visibleTarget(rect: ImageRect, image: HTMLImageElement, host: HTMLEleme
 }
 
 /** A bounded, reversible image flight; native/Fluid dialog keeps owning focus and opacity. */
-export function useImageOriginTransition(options: { proxyPixelBudget?: number } = {}) {
+export function useImageOriginTransition(options: { proxyPixelBudget: number }) {
   let origin: Origin | null = null
   let capturedAt = 0
   let flight: Flight | null = null
   let revision = 0
-  let stopWaiting: (() => void) | null = null
-  let pendingProxy: HTMLImageElement | null = null
-
-  function clearPendingProxy() {
-    const image = pendingProxy; pendingProxy = null
-    image?.removeAttribute('src')
-  }
-
   function clearFlight() {
     const old = flight; flight = null
     if (!old) return
     old.animation?.cancel()
     old.settle?.(); old.settle = null
     old.restore(); old.proxy.remove()
-    if (old.proxy instanceof HTMLCanvasElement) old.proxy.width = old.proxy.height = 0
-    else old.proxy.removeAttribute('src')
+    old.proxy.width = old.proxy.height = 0
   }
   function cancel() {
     revision++
-    stopWaiting?.(); stopWaiting = null
-    clearPendingProxy()
     clearFlight()
   }
   function capture(sourceImg: HTMLImageElement | null) {
@@ -100,36 +89,10 @@ export function useImageOriginTransition(options: { proxyPixelBudget?: number } 
     return origin?.src || ''
   }
 
-  function ready(image: HTMLImageElement, timeout: number): Promise<boolean> {
-    return new Promise(resolve => {
-      let settled = false
-      const finish = (value: boolean) => {
-        if (settled) return
-        settled = true; clearTimeout(timer)
-        image.removeEventListener('load', loaded); image.removeEventListener('error', failed)
-        if (stopWaiting === stopped) stopWaiting = null
-        resolve(value)
-      }
-      const loaded = () => {
-        if (!image.naturalWidth) return finish(false)
-        if (typeof image.decode !== 'function') return finish(true)
-        try { void image.decode().then(() => finish(image.complete && image.naturalWidth > 0), () => finish(false)) }
-        catch { finish(false) }
-      }
-      const failed = () => finish(false), stopped = () => finish(false)
-      const timer = setTimeout(() => finish(false), timeout)
-      stopWaiting = stopped
-      if (image.complete) loaded()
-      else { image.addEventListener('load', loaded, { once: true }); image.addEventListener('error', failed, { once: true }) }
-    })
-  }
-
   async function move(direction: 'enter' | 'leave', target: HTMLImageElement, host: HTMLElement, sourceImg?: HTMLImageElement | null) {
     const startedAt = performance.now()
     const enterDeadline = capturedAt + 180
     const token = ++revision
-    stopWaiting?.(); stopWaiting = null
-    clearPendingProxy()
     if (direction === 'leave' && sourceImg !== undefined) origin = safeOrigin(sourceImg)
     const source = origin
     if (!source || prefersReducedMotion() || document.hidden || !target.isConnected || typeof target.animate !== 'function') { clearFlight(); return }
@@ -139,13 +102,10 @@ export function useImageOriginTransition(options: { proxyPixelBudget?: number } 
       // the owning dialog's enter hook yields. Never wait for decode here:
       // that can hide a viewer image which has already become visible.
       const warm = target.complete && target.naturalWidth > 0
-      if (remaining <= 0 || (options.proxyPixelBudget ? !warm : !await ready(target, remaining))) {
-        if (token === revision) clearFlight(); return
-      }
+      if (remaining <= 0 || !warm) { clearFlight(); return }
     }
-    if (token !== revision) return
     if (!target.isConnected || !host.isConnected) { clearFlight(); return }
-    let destination = imageRect(target)
+    const destination = imageRect(target)
     if (!destination.width || !destination.height || !target.naturalWidth) { clearFlight(); return }
     // A zoomed/cropped image must not reveal pixels outside its current viewport,
     // and unrelated thumbnail crops must not stretch into a different aspect ratio.
@@ -164,50 +124,19 @@ export function useImageOriginTransition(options: { proxyPixelBudget?: number } 
       flight.settle?.(); flight.settle = null
     } else {
       clearFlight()
-      let proxy: HTMLImageElement | HTMLCanvasElement
-      if (options.proxyPixelBudget) {
-        // Gallery already decoded this frame. Copy only its display pixels so a
-        // 4K original does not create another full-size animated image texture.
-        const canvas = document.createElement('canvas')
-        const scale = Math.min(window.devicePixelRatio || 1,
-          Math.sqrt(options.proxyPixelBudget / (destination.width * destination.height)),
-          target.naturalWidth / destination.width, target.naturalHeight / destination.height)
-        canvas.width = Math.max(1, Math.floor(destination.width * scale))
-        canvas.height = Math.max(1, Math.floor(destination.height * scale))
-        try {
-          const context = canvas.getContext('2d')
-          if (!context || !target.complete) return
-          context.drawImage(target, 0, 0, canvas.width, canvas.height)
-        } catch { canvas.width = canvas.height = 0; return }
-        proxy = canvas
-      } else {
-        proxy = document.createElement('img')
-        pendingProxy = proxy
-        // The desktop gateway requires the same CORS provenance as the real image.
-        // Set request attributes before src; a decoded target does not make a new
-        // no-CORS request safe or guarantee that the proxy itself can be decoded.
-        if (target.crossOrigin !== null) proxy.crossOrigin = target.crossOrigin
-        proxy.referrerPolicy = target.referrerPolicy
-        proxy.decoding = 'async'; proxy.loading = 'eager'
-        proxy.alt = ''
-        const requestSrc = target.currentSrc || target.src || source.src
-        proxy.src = requestSrc
-        // Leaving cannot delay the owning 300ms fade. A cache miss gets a plain
-        // fade; successful decode time is also deducted from the 280ms flight.
-        const remaining = direction === 'enter' ? enterDeadline - performance.now() : 20 - (performance.now() - startedAt)
-        const decoded = remaining > 0 && await ready(proxy, remaining)
-        if (pendingProxy === proxy) pendingProxy = null
-        if (!decoded || token !== revision || !target.isConnected || !host.isConnected || (target.currentSrc || target.src) !== requestSrc) {
-          proxy.removeAttribute('src')
-          if (token === revision) clearFlight()
-          return
-        }
-        destination = imageRect(target)
-        if (!destination.width || !destination.height || !visibleTarget(destination, target, host)
-          || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) {
-          proxy.removeAttribute('src'); return
-        }
-      }
+      // Copy only the warm frame's display pixels so a 4K original does not
+      // create another full-size animated image texture.
+      const proxy = document.createElement('canvas')
+      const scale = Math.min(window.devicePixelRatio || 1,
+        Math.sqrt(options.proxyPixelBudget / (destination.width * destination.height)),
+        target.naturalWidth / destination.width, target.naturalHeight / destination.height)
+      proxy.width = Math.max(1, Math.floor(destination.width * scale))
+      proxy.height = Math.max(1, Math.floor(destination.height * scale))
+      try {
+        const context = proxy.getContext('2d')
+        if (!context || !target.complete) { proxy.width = proxy.height = 0; return }
+        context.drawImage(target, 0, 0, proxy.width, proxy.height)
+      } catch { proxy.width = proxy.height = 0; return }
       proxy.setAttribute('aria-hidden', 'true')
       proxy.setAttribute('data-image-origin-proxy', '')
       from = direction === 'enter' ? source.rect : destination
