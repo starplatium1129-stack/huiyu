@@ -171,6 +171,7 @@ def validate_job(job):
     data = job.get("input")
     if not isinstance(data, dict):
         raise WorkerError("INVALID_INPUT", "input must be an object")
+    # Accept modelId from older hosts; modelDir alone selects the loaded model.
     supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength"}
     # Empty/disabled UI options are harmless; active options never silently degrade.
     disabled = {"teacache", "mask", "maskPath", "loras", "lora", "hires", "rcas", "upscaler", "inputImage", "inputImagePath", "image", "initImage"}
