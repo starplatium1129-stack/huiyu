@@ -5,7 +5,7 @@
     <header class="style-chapter" data-reveal>
       <h2>六种心情，六种色调</h2>
     </header>
-    <p v-if="referenceError" class="library-reference-feedback" role="status"><span>{{ referenceError }}</span><button type="button" class="btn btn-ghost btn-sm" :disabled="loading" @click="retryReferences"><ArchiveIcon name="refresh" />重新读取封面</button></p>
+    <p v-if="referenceError || referenceRetryStarted" class="library-reference-feedback"><span role="status">{{ loading ? '正在重新读取样张清单…' : referenceError || '样张清单已更新' }}</span><button type="button" class="btn btn-ghost btn-sm style-reference-retry" :aria-disabled="loading" @click="retryReferences"><ArchiveIcon name="refresh" />{{ loading ? '正在读取…' : '重新读取封面' }}</button></p>
     <div class="mood-grid style-mood-grid" data-route-arrive data-reveal data-reveal-delay="1">
       <article v-for="(m, moodIndex) in MOODS" :key="m.id" class="style-mood-card" :style="{ '--mood-color': m.colors[1] }">
         <RuntimeImage :src="referenceUrl(m.sceneId)" v-slot="{ image, loaded, failed }">
@@ -37,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import '@/assets/css/mood.css'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
@@ -59,16 +60,17 @@ const references: Record<string, { sceneId: string; sampleTitle: string; caption
 }
 const MOODS = COLOR_MOODS.map(mood => ({ ...mood, ...references[mood.id]! }))
 const { loading, error: referenceError, reload: reloadReferences, referenceUrl, retryReference } = useMoodReferences()
+const referenceRetryStarted = ref(false)
 function retryCover(id: string, event: MouseEvent) {
   const origin = event.currentTarget
   if (origin instanceof HTMLElement && document.activeElement === origin)
     origin.closest('.style-mood-card')?.querySelector<HTMLElement>('.style-sample')?.focus({ preventScroll: true })
   retryReference(id)
 }
-function retryReferences(event: MouseEvent) {
-  const origin = event.currentTarget
-  const page = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest('.style-page') : null
-  page?.querySelector<HTMLElement>('.style-sample')?.focus({ preventScroll: true })
+function retryReferences() {
+  if (loading.value) return
+  // Keep the recovery control mounted and focusable through the request and its result.
+  referenceRetryStarted.value = true
   void reloadReferences().catch(() => {})
 }
 useScrollReveal()
@@ -77,6 +79,8 @@ useScrollReveal()
 <style scoped>@reference "../assets/css/tailwind.css";
 .style-chapter { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-5 tw:mb-s-4; }
 .style-chapter h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
+.style-reference-retry[aria-disabled='true'] { color:var(--text-disabled); cursor:wait; pointer-events:auto; }
+.style-reference-retry:focus-visible { outline:2px solid var(--focus-color); outline-offset:2px; }
 .style-mood-grid { grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-5; }
 .style-mood-card { position:relative; isolation:isolate; @apply tw:min-w-0 tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); transition:transform var(--motion-surface) var(--ease-out); }
 .style-mood-card::before { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(160deg,transparent 45%,color-mix(in srgb,var(--mood-color) 9%,transparent)); pointer-events:none; }

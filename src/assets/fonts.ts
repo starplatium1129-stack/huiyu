@@ -4,8 +4,8 @@
  * 315 条 @font-face（Noto Sans SC unicode-range 子集 + JetBrains Mono）此前
  * 经 main.ts 同步 import 打进入口 CSS（453KB，其中 ~368KB 是字体声明），
  * 每个路由解析 CSS 都要处理。移入独立异步 chunk 后入口 CSS 只留真样式，
- * 文本先用 fallback 渲染——@fontsource 全部 font-display:swap，字体到达后
- * 无闪换断点（同字族度量）。
+ * 文本先用 fallback 渲染——@fontsource 全部 font-display:swap。字体到达后
+ * 会替换对应字形；系统 fallback 与本地字体度量可能不同，换行仍需实际检查。
  *
  * 加载时机：main.ts 挂载并给出首帧后，在空闲时段动态导入；保留全部字重。
  */
