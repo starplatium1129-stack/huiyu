@@ -38,14 +38,3 @@ pub(crate) fn build(root: &Path, scenes: &[Value]) -> Vec<(&'static str, Value)>
         ("scenes-index.json", index),
     ]
 }
-pub(in crate::maintenance) fn sync_version(root: &Path) -> Result<u64> {
-    use sha1::{Digest, Sha1};
-    let mut hash = Sha1::new();
-    for name in super::super::context::VERSIONED_FILES {
-        let bytes = fs::read(&root.join("data").join(name), false)?.unwrap();
-        let count = String::from_utf8_lossy(&bytes).encode_utf16().count();
-        hash.update(format!("{name}={count};").as_bytes());
-        hash.update(bytes);
-    }
-    Ok(u64::from_str_radix(&hex::encode(hash.finalize())[..8], 16).unwrap())
-}

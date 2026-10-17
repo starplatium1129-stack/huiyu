@@ -6,8 +6,6 @@
  * 不调用 LLM；轮询与入队由调用方负责。
  */
 
-import type { CompanionEventKind } from './companionBehavior'
-
 export interface CompanionServicesSnapshot {
   sdOnline: boolean
   ttsOnline: boolean

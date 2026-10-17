@@ -1,6 +1,5 @@
 import { apiClient, type ApiResponseObject } from './client.ts'
 import type { Live2DStatusResponse, SDStatusResponse } from '../types/api.ts'
-import { parseSDStatus } from '../utils/sdStatus.ts'
 
 const MEDIA_STATUS_API_TIMEOUT = 10_000
 
