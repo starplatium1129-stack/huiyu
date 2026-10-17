@@ -248,7 +248,7 @@ impl Model {
     /// models have vertices whose unit differs from the canvas size, so
     /// content-fit must use this rather than the canvas size.
     pub fn content_bounds(&self) -> ([f32; 2], [f32; 2]) {
-        self.drawable_bounds(false)
+        self.drawable_bounds()
             .unwrap_or_else(|| {
                 let half_width = (self.canvas_width().abs() * 0.5).max(0.5);
                 let half_height = (self.canvas_height().abs() * 0.5).max(0.5);
@@ -256,15 +256,12 @@ impl Model {
             })
     }
 
-    fn drawable_bounds(&self, visible_only: bool) -> Option<([f32; 2], [f32; 2])> {
+    fn drawable_bounds(&self) -> Option<([f32; 2], [f32; 2])> {
         let mut min = [f32::MAX, f32::MAX];
         let mut max = [f32::MIN, f32::MIN];
         let mut found = false;
         unsafe {
             for index in 0..self.drawable_count().max(0) {
-                if visible_only && ffi::l2d_model_drawable_visible(self.ptr, index) == 0 {
-                    continue;
-                }
                 let vertex_count = ffi::l2d_model_drawable_vertex_count(self.ptr, index);
                 let positions_ptr = ffi::l2d_model_drawable_positions(self.ptr, index);
                 let positions = slice_from_ffi(positions_ptr as *const [f32; 2], vertex_count);

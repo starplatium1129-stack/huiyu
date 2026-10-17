@@ -316,8 +316,15 @@ impl Service {
                 json!({"id":id,"label":q["label"],"summary":q["summary"],"sizes":sizes})
             })
             .collect::<Vec<_>>();
+        let acceleration_reason = if !online {
+            "ComfyUI 未连接，T8 加速状态待检测"
+        } else if t8 {
+            "T8 双时钟采样 + 4 步加速 LoRA 可用；实际速度取决于模型和设备"
+        } else {
+            "当前未检测到 T8 双时钟节点，使用原生采样器；实际速度取决于模型和设备"
+        };
         Ok(
-            json!({"online":online,"pending":self.backend.pending(),"maxPending":2,"models":models,"qualities":qualities,"defaults":{"modelId":"wan2.2-ti2v-5b","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","quality":"standard"},"t8":{"available":t8,"reason":if t8{"T8 双时钟采样 + 4 步加速 LoRA（最快路径）"}else{"已降级：原生采样器（速度约慢 1 倍）；提交任务时会自动重新探测"}}}),
+            json!({"online":online,"pending":self.backend.pending(),"maxPending":2,"models":models,"qualities":qualities,"defaults":{"modelId":"wan2.2-ti2v-5b","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","quality":"standard"},"t8":{"available":online && t8,"reason":acceleration_reason}}),
         )
     }
     pub async fn close(&self) {

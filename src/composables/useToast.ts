@@ -76,12 +76,12 @@ function coverToasts(ids: number[]) {
   }
 }
 
-export function pauseAllToasts(reason = 'manual') {
+function pauseAllToasts(reason = 'manual') {
   pauseReasons.add(reason)
   toasts.value.forEach(pauseToast)
 }
 
-export function resumeAllToasts(reason = 'manual') {
+function resumeAllToasts(reason = 'manual') {
   pauseReasons.delete(reason)
   if (pauseReasons.size || document.hidden) return
   toasts.value.forEach(resumeToast)

@@ -1,5 +1,5 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-export const QUICK_CREATE_STORAGE_KEY = 'aics_sd_last_success_v1'
+const QUICK_CREATE_STORAGE_KEY = 'aics_sd_last_success_v1'
 
 export interface QuickCreateSettings {
   version: 1
@@ -34,7 +34,7 @@ function normalizeSize(value: unknown): string {
   return match ? `${match[1]}×${match[2]}` : ''
 }
 
-export function normalizeQuickCreate(value: unknown): QuickCreateSettings | null {
+function normalizeQuickCreate(value: unknown): QuickCreateSettings | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   const source = value as Record<string, unknown>
   const settings: QuickCreateSettings = {

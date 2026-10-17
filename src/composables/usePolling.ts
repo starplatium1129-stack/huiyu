@@ -24,8 +24,6 @@ export interface UsePollingOptions {
   paused?: () => boolean
   /** start 时是否立即 tick 一次（默认 true） */
   immediate?: boolean
-  setInterval?: (handler: () => void, timeout: number) => number
-  clearInterval?: (id: number) => void
 }
 
 export interface UsePollingHandle {
@@ -37,12 +35,8 @@ export interface UsePollingHandle {
 }
 
 export function usePolling(options: UsePollingOptions): UsePollingHandle {
-  // 默认走全局定时器：node 测试环境无 window，退回 globalThis（同一函数集）。
-  // node 测试环境的 setInterval 返回 Timeout 而非 number，但用法只是原样传回 clearInterval，
-  // 断言为 window 形状以复用 number 句柄类型。
+  // 使用当前全局环境的定时器，启动与清理始终配对。
   const g = (typeof window !== 'undefined' ? window : globalThis) as unknown as Pick<typeof window, 'setInterval' | 'clearInterval'>
-  const setTimer = options.setInterval ?? ((handler, timeout) => g.setInterval(handler, timeout))
-  const clearTimer = options.clearInterval ?? ((id: number) => g.clearInterval(id))
   const immediate = options.immediate !== false
   const intervalMs = options.intervalMs
 
@@ -72,14 +66,14 @@ export function usePolling(options: UsePollingOptions): UsePollingHandle {
     // 暂停门控在 start 前生效时：保持 active 语义（调用方已请求轮询），
     // 但不排程；paused 翻回 false 后由 sync() 续跑。
     if (options.paused && options.paused()) return
-    timer = setTimer(() => { void runTick() }, intervalMs)
+    timer = g.setInterval(() => { void runTick() }, intervalMs)
     if (immediate && !inFlight) void runTick()
   }
 
   function stop(): void {
     generation += 1
     active.value = false
-    if (timer !== null) clearTimer(timer)
+    if (timer !== null) g.clearInterval(timer)
     timer = null
   }
 
@@ -88,10 +82,10 @@ export function usePolling(options: UsePollingOptions): UsePollingHandle {
     if (!active.value) return
     const shouldPause = Boolean(options.paused && options.paused())
     if (shouldPause && timer !== null) {
-      clearTimer(timer)
+      g.clearInterval(timer)
       timer = null
     } else if (!shouldPause && timer === null) {
-      timer = setTimer(() => { void runTick() }, intervalMs)
+      timer = g.setInterval(() => { void runTick() }, intervalMs)
       if (!inFlight) void runTick()
     }
   }

@@ -36,7 +36,7 @@ pub struct GatewayHostResponse {
     pub owned: bool,
 }
 
-fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&str>) -> Option<String> {
+fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: &str) -> Option<String> {
     let host_port = base_url
         .trim_start_matches("http://")
         .trim_start_matches("https://")
@@ -46,9 +46,8 @@ fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&st
     let mut stream = TcpStream::connect_timeout(&address, timeout).ok()?;
     stream.set_read_timeout(Some(timeout)).ok()?;
     stream.set_write_timeout(Some(timeout)).ok()?;
-    let proof_header = challenge.map(|c| format!("X-AICS-Desktop-Challenge: {c}\r\n")).unwrap_or_default();
     let request = format!(
-        "GET {path} HTTP/1.1\r\nHost: {host_port}\r\n{proof_header}Connection: close\r\n\r\n"
+        "GET {path} HTTP/1.1\r\nHost: {host_port}\r\nX-AICS-Desktop-Challenge: {challenge}\r\nConnection: close\r\n\r\n"
     );
     stream.write_all(request.as_bytes()).ok()?;
     let mut raw = Vec::new();
@@ -75,7 +74,7 @@ fn http_get(base_url: &str, path: &str, timeout: Duration, challenge: Option<&st
     Some(body.to_string())
 }
 
-fn read_health(base_url: &str, timeout: Duration, challenge: Option<&str>) -> Option<GatewayHealth> {
+fn read_health(base_url: &str, timeout: Duration, challenge: &str) -> Option<GatewayHealth> {
     let body = http_get(base_url, "/api/health", timeout, challenge)?;
     let value: serde_json::Value = serde_json::from_str(&body).ok()?;
     let obj = value.as_object()?;
@@ -411,7 +410,7 @@ impl GatewaySupervisor {
 
 fn authenticated_health(base: &str, token: &str) -> bool {
     let Ok(challenge) = identity::random_secret() else { return false; };
-    read_health(base, Duration::from_millis(1200), Some(&challenge))
+    read_health(base, Duration::from_millis(1200), &challenge)
         .map(|health| is_desktop_gateway_compatible(&health) && identity::verify_proof(token, &challenge, &health.desktop_proof))
         .unwrap_or(false)
 }

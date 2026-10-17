@@ -125,8 +125,10 @@ stock processor type matches. It omits `repeat_interleave(1)` K/V copies while
 keeping native attention dispatch and the original projection, normalization,
 rotary and non-unit repetition operations. K/V storage layout changes; current
 CUDA timing, peak memory and image consistency have not been measured. Native
-Tea scopes use `cosmos-v3-native-no-kv-repeat-v1`: old native profiles fall back
-to full computation in auto mode and are rejected in strict mode. Sage modes
+Tea scopes use `cosmos-v3-native-no-kv-repeat-v1`: the standalone
+`read_profile(auto=True)` helper returns no match for old native profiles;
+explicit worker profile selection rejects them. Product jobs use the built-in
+policy and do not call this helper in auto mode. Sage modes
 retain their existing execution revisions. No optional dependency is needed
 for this native path.
 The host now persists `inference.acceleration` in its local settings and passes
@@ -533,6 +535,10 @@ maintenance caller can explicitly pass teaCacheProfilePath; that selection must
 match an accepted exact profile and is never silently replaced by the built-in
 policy. The file remains nonempty, at most 64 KiB and contained by the selected
 model directory. Explicit calibrated thresholds remain 0.01..maxThreshold.
+The standalone `read_profile(auto=True)` helper retains maintenance compatibility:
+it can return `None` for `path=None`, an unmatched scope or an unaccepted profile;
+invalid files still raise errors. It does not itself run inference. Current product jobs do not call this auto
+mode, and explicit worker profile selection uses `auto=False`.
 Product nativeRuntime.teaCache reports actual enabled state, builtin-anima /
 threshold-zero / request-disabled reason, algorithm, threshold and full/skip
 counters; file presence no longer masquerades as acceleration readiness.
@@ -545,7 +551,7 @@ The bundled `teacache_anima.py` retains the original Diffusers 0.41.0 transforme
 - Txt2img, img2img and masked editing share the cache denoiser. V3 masked input/denoised constraints and the final float pixel composite remain active during cached inference; cache reuse never replaces the mask algorithm.
 - All temporary instance forwards and scheduler progress wrappers are restored in `finally`; no class monkey-patch or model-global cache survives a job. Normal progress and atomic PNG output remain. Host process termination still owns cancellation.
 
-`teacache_profile.py` validates the version-1 polynomial, version-2 phase envelope and maintenance-only version-3 `huiyu-anima-local-guard-v1`; product profile selection excludes version 3. Runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes and `sampling.maskExecutionRevision: clipseg-single-image-vision-v1`. Only automatic-mask scopes gain this field; plain generation and manual-mask v3 scopes retain their existing identity. Old automatic-mask profiles fall back to full computation in auto mode and are rejected for strict enablement or acceptance; profiles are never rewritten automatically. The accepted or collected mask digest is checked against assets actually used before reuse/loading and after a new load, including calibration with mask caching disabled. Prompt/seed and source/mask image content may vary within the independently accepted calibration set. This is not a guarantee for unseen content.
+`teacache_profile.py` validates the version-1 polynomial, version-2 phase envelope and maintenance-only version-3 `huiyu-anima-local-guard-v1`; explicit worker file-profile selection excludes version 3. Runtime pins are Diffusers 0.41.0 and Torch 2.8.0. The exact compatibility object identifies SHA-256 content of all local pipeline component assets and ordered LoRA bytes/strengths, width, height, steps, CFG, mode, denoising strength, sampler/scheduler, dtype and GPU device name. Masked scope also binds manual/CLIPSeg source kind, growth, threshold and mask prompt; automatic masking binds all local CLIPSeg asset bytes and `sampling.maskExecutionRevision: clipseg-single-image-vision-v1`. Only automatic-mask scopes gain this field; plain generation and manual-mask v3 scopes retain their existing identity. The standalone `read_profile(auto=True)` helper returns no match for old automatic-mask profiles; explicit worker profile selection and acceptance reject them; profiles are never rewritten automatically. The accepted or collected mask digest is checked against assets actually used before reuse/loading and after a new load, including calibration with mask caching disabled. Prompt/seed and source/mask image content may vary within the independently accepted calibration set. This is not a guarantee for unseen content.
 
 The version-1 profile carries 1–6 finite polynomial `coefficients` in ascending power order, `proxyRange`, `defaultThreshold`, `maxThreshold`, `maxConsecutiveSkips`, and `calibration` containing `source: local-full-compute`, a valid-pair `sampleCount` and `traceSha256`. Explicit profile generation additionally requires `acceptance.status: accepted` and `acceptance.reportSha256`, set only by the explicit local acceptance workflow after reviewing held-out results. These are local evidence links, not cryptographic certification of quality. Changing weights, adapters/scales, sampling/edit scope, dtype, GPU or execution mode/revision requires a compatible new calibration. Identity comes from full content hashes or a still-protected lease to those exact bytes, never file names or mtimes alone. First acquisition and fallback hashing add I/O.
 
@@ -587,11 +593,13 @@ where applicable. Its scope also binds hires scale/denoise, resolved upscaler,
 second-pass sampler/scheduler, refinement revision and the Remacri weight SHA256;
 positive RCAS strength and prompt weighting mode also participate when active.
 Positive `rcasStrength` scopes additionally bind `sampling.rcasExecutionRevision`
-to `rcas-fp32-rows128-v1`; old positive-strength profiles fall back in auto mode
-or reject strict enablement/acceptance. Zero-strength scopes gain no RCAS field.
+to `rcas-fp32-rows128-v1`; the standalone `read_profile(auto=True)` helper
+returns no match for old positive-strength profiles, while explicit worker
+profile selection and acceptance reject them. Zero-strength scopes gain no RCAS field.
 Remacri scopes additionally bind `sampling.upscaleExecutionRevision` to
-`remacri-no-single-cat-packed-v1`. Older Remacri profiles fall back to complete
-computation in auto mode and are rejected when strictly enabled or accepted.
+`remacri-no-single-cat-packed-v1`. The standalone `read_profile(auto=True)`
+helper returns no match for older Remacri profiles; explicit worker profile
+selection and acceptance reject them.
 Profiles are not rewritten. Latent and non-hires scopes retain their identity.
 The same controller is cleared at the pass boundary and attached to fresh second
 pass blocks, so residuals never cross resolutions. Actual GPU evidence captured
@@ -652,7 +660,7 @@ To request different positive text on a warmed model, optionally add `--prompt-v
 
 `sampler` and `scheduler` are not accepted fields of this API payload; the provider/catalog selects them. The plan rejects either field rather than implying that they can be manually aligned through `/api/anima/jobs`. Inspect the server's normalized metadata and actual runtime schedules separately.
 
-For an uncached-algorithm baseline, explicitly set `teaCache: false` and remove `teaCacheThresh` from both payloads: omission enables Comfy TeaCache and selects automatic matching on native; actual native use is reported in runtime observations. This does not disable product model/text/mask residency. For editing, upload the same source/mask bytes through the normal product flow separately after selecting each engine: native uses `inference/input`, while Comfy uses `ComfyUI/input`. Reusing the other engine's upload name can fail. Retain each engine's actual payload and source-image hashes; their upload names may differ.
+For an uncached-algorithm baseline, explicitly set `teaCache: false` and remove `teaCacheThresh` from both payloads: omission enables Comfy TeaCache and the built-in Anima policy on native; actual native use is reported in runtime observations. This does not disable product model/text/mask residency. For editing, upload the same source/mask bytes through the normal product flow separately after selecting each engine: native uses `inference/input`, while Comfy uses `ComfyUI/input`. Reusing the other engine's upload name can fail. Retain each engine's actual payload and source-image hashes; their upload names may differ.
 
 Current Comfy ordinary img2img connects VAE-encoded source latents and denoisingStrength before the optional mask branch. Native v3 now implements the requested mask, KJ RCAS, RRDB assembly, quantization and VAE boundaries. Neither the implemented formulas nor old diagnostic workflows establish current device/pixel/performance parity; compare exact v3 outputs and recorded runtime operations on authorized CUDA hardware.
 
@@ -670,7 +678,7 @@ The tool reuses `scripts/lib/generation-gateway.ts` for submission, polling, sam
 
 Each new output directory retains `plan.json`, per-job requests, settings/status observations, job IDs/status, provider, server-reported seed, terminal `serverMetadata` (including normalized sampling/cache parameters), request/PNG SHA-256, actual output dimensions, PNGs, `report.json` and `review.html`. Failed/cancelled jobs also preserve the server's `code` and `error` as `serverCode` and `serverError`, separate from the runner's local failure. Warm-ups remain visible but do not enter the measured median/min/max/count; p95 is omitted below 20 measured jobs. Failure preserves partial evidence and produces no successful aggregate report; inspect the recorded job before starting a new suite. All raw data belongs under ignored `runtime/`.
 
-`serverMetadata` is partial normalized request metadata plus available native observations, not a complete executed-workflow record. Current Comfy metadata omits mask prompt/threshold/growth and input/mask names; native metadata omits the effective profile-selected TeaCache threshold when it was not explicitly requested, and does not identify that profile. Missing fields mean unobserved here, never default, disabled or equal. The runner does not capture effective mask pixels or establish matching resize/growth/threshold semantics. Explicit request values and diagnostic Comfy graphs remain useful evidence, but do not replace missing runtime observations or establish cross-backend equivalence.
+`serverMetadata` is partial normalized request metadata plus available native observations, not a complete executed-workflow record. Current Comfy metadata omits mask prompt/threshold/growth and input/mask names; current native product jobs do not select calibration profiles. Their `nativeRuntime.teaCache` observations report actual enabled state and, when active, algorithm and threshold; missing or invalid worker observations remain unverified. Missing fields mean unobserved here, never default, disabled or equal. The runner does not capture effective mask pixels or establish matching resize/growth/threshold semantics. Explicit request values and diagnostic Comfy graphs remain useful evidence, but do not replace missing runtime observations or establish cross-backend equivalence.
 
 New native workers also report `job.metadata.nativeRuntime`, retained in each job JSON and the expandable server-parameter section of `review.html`. It includes actual completed scheduler updates, base reuse, current-job text/mask/TeaCache counters and CPU wall intervals for image preparation, model acquisition, the full encoding/denoising/decoding pipeline, compositing and output. These intervals overlap and are not additive; `workerWallSeconds` ends before emitting the result and excludes process startup and gateway delivery. `existingReportSynchronization` identifies pre-existing TeaCache/report synchronization; ordinary product observations add no CUDA synchronization or tensor readback.
 

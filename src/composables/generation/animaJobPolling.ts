@@ -49,7 +49,7 @@ export async function cancelDirectAnima(options: {
 }
 
 /** Observe the accepted job without a second chunk-loading gap. */
-export async function pollAnimaJob(options: {
+async function pollAnimaJob(options: {
   client: ApiClient; id: string; family: 'anima' | 'krea2'; signal: AbortSignal; deadline: number
   current(): boolean; state: Readonly<Ref<AnimaGenerationState>>; context: AnimaResultContext | null
   patch(patch: Partial<AnimaGenerationState>): void

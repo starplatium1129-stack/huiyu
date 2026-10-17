@@ -3,7 +3,7 @@ mod core;
 mod popular;
 mod references;
 
-use super::{Error, Options, Result, fs};
+use super::{Error, Result, fs};
 use serde_json::{Value, json};
 use std::{collections::HashSet, path::Path};
 
@@ -23,12 +23,12 @@ impl AsRef<Path> for DataRoot<'_> {
     }
 }
 pub(crate) fn validate_with(
-    options: &Options,
+    root: &Path,
     overrides: std::collections::HashMap<String, Value>,
 ) -> Result<Value> {
     let mut issues = Vec::new();
     let source = DataRoot {
-        path: &options.root,
+        path: root,
         overrides,
     };
     let root = &source;
@@ -50,40 +50,11 @@ pub(crate) fn validate_with(
         }
     };
     if let Some(data) = &data {
-        core::validate(root, options.assets_root.as_deref(), data, &mut issues);
-        if root.overrides.is_empty() {
-            core::shards(root, data, &mut issues);
-        }
+        core::validate(root, data, &mut issues);
     }
     popular::validate(root, &mut issues);
     artifacts::validate(root, &mut issues);
-    let reference = references::validate(root, options.assets_root.as_deref(), &mut issues);
-    if root.overrides.is_empty() {
-        match super::scenes::sync_version(root) {
-            // Desktop content has no source tree; its version is computed from the
-            // same JSON bytes consumed by the runtime. Source builds also audit the import.
-            Ok(_) if root.path == options.runtime.join("content") => {}
-            Ok(version) => match std::fs::read_to_string(root.join("src/stores/sceneStore.ts")) {
-                Ok(source) => {
-                    if !regex::Regex::new(r#"from\s+['"]virtual:data-version['"]"#)
-                        .unwrap()
-                        .is_match(&source)
-                    {
-                        let version_re = regex::Regex::new(r"DATA_VERSION\s*=\s*(\d+)").unwrap();
-                        match version_re.captures(&source).and_then(|m|m[1].parse::<u64>().ok()) {
-                            Some(actual) if actual!=version=>issues.push(format!("DATA_VERSION mismatch: sceneStore.ts has {actual}, data content expects {version}")),
-                            None=>issues.push("sceneStore.ts is missing DATA_VERSION or virtual:data-version".into()),
-                            _=>{},
-                        }
-                    }
-                }
-                Err(error) => issues.push(format!(
-                    "src/stores/sceneStore.ts is missing or unreadable: {error}"
-                )),
-            },
-            Err(error) => issues.push(format!("DATA_VERSION 计算失败: {error}")),
-        }
-    }
+    let reference = references::validate(root, &mut issues);
     if !issues.is_empty() {
         let mut error = Error::invalid("内容契约校验未通过");
         error.extra = json!({"stage":"validate-content-contracts","issues":issues}).into();

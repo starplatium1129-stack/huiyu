@@ -15,7 +15,6 @@ pub(crate) struct Plan {
     pub settings: Settings,
     pub model_dir: PathBuf,
     pub mask_model_dir: Option<PathBuf>,
-    pub tea_cache_profile_path: Option<PathBuf>,
     pub upscale_model_path: Option<PathBuf>,
     pub init_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub mask_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
@@ -242,7 +241,6 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         "cfg",
         "seed",
         "family",
-        "modelId",
         "sampler",
         "scheduler",
         "teaCache",
@@ -290,7 +288,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     } else {
         None
     };
-    let request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"teaCacheProfilePath":plan.tea_cache_profile_path,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras});
+    let request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras});
     let mut worker = inner.native.take_worker(&plan.settings).await?;
     // Do not interrupt a partially written JSONL request with another command.
     // The stdin reader operates independently of loading and CUDA execution.

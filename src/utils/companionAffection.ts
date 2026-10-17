@@ -130,8 +130,7 @@ export interface PickedAffectionMotion {
 export function pickAffectionMotion(
   character: string,
   group: string,
-  currentScore: number,
-  randomFn = Math.random
+  currentScore: number
 ): PickedAffectionMotion | null {
   const rulesMap = character === 'natsume' ? NATSUME_AFFECTION_RULES : character === 'nene' ? NENE_AFFECTION_RULES : null
   if (!rulesMap) return null
@@ -168,7 +167,7 @@ export function pickAffectionMotion(
   }
 
   const totalWeight = candidates.reduce((sum, item) => sum + item.weight, 0)
-  let randomVal = randomFn() * totalWeight
+  let randomVal = Math.random() * totalWeight
 
   for (const candidate of candidates) {
     if (randomVal <= candidate.weight) {

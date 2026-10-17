@@ -1,4 +1,4 @@
-export const DEFAULT_SD_NEGATIVE = [
+const DEFAULT_SD_NEGATIVE = [
   'worst quality', 'low quality', 'normal quality', 'lowres', 'blurry',
   'photorealistic', 'realistic skin', '3d render', 'bad anatomy',
   'bad hands', 'cropped', 'duplicate',

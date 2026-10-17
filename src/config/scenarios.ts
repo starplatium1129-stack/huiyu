@@ -39,11 +39,11 @@ export const SCENARIO_RES_MAP = {
 
 export const SCENARIO_CHARACTERS = ['nene', 'natsume'] as const
 
-export const SCENARIO_CHAR_TRAITS: Record<ScenarioCharacter, string> = {
+const SCENARIO_CHAR_TRAITS: Record<ScenarioCharacter, string> = {
   nene: 'white_hair, very_long_hair, low_twintails, purple_eyes, ahoge, hair_ribbon',
   natsume: 'black_hair, long_hair, yellow_eyes, mole_under_eye, hairclip',
 }
-export const SCENARIO_CHAR_NAME: Record<ScenarioCharacter, string> = {
+const SCENARIO_CHAR_NAME: Record<ScenarioCharacter, string> = {
   nene: 'ayachi_nene',
   natsume: 'shiki_natsume',
 }

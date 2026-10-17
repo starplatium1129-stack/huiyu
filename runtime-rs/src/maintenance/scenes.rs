@@ -1,7 +1,6 @@
 mod products;
-use super::{Result, fs, prompt, state};
+use super::{fs, prompt, state};
 pub(crate) use products::build as scene_products;
-pub(super) use products::sync_version;
 use serde_json::{Value, json};
 use std::{
     collections::{HashMap, HashSet},

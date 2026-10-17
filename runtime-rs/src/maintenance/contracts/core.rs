@@ -2,7 +2,6 @@ use super::*;
 
 pub(super) fn validate(
     root: &DataRoot,
-    assets: Option<&Path>,
     data: &Value,
     issues: &mut Vec<String>,
 ) {
@@ -48,14 +47,7 @@ pub(super) fn validate(
             None => issues.push(format!("{label}.portrait.image is required")),
             Some(image) => {
                 let path = image.split('?').next().unwrap_or(image);
-                let file = match (
-                    assets,
-                    path.strip_prefix("../assets/")
-                        .or_else(|| path.strip_prefix("/assets/")),
-                ) {
-                    (Some(assets), Some(relative)) => assets.join(relative),
-                    _ => root.join("data").join(path),
-                };
+                let file = root.join("data").join(path);
                 if !file.exists() {
                     issues.push(format!("{label}.portrait.image does not exist: {image}"));
                 }
@@ -152,106 +144,6 @@ pub(super) fn validate(
                 property(scene, "id"),
                 key(scene.get("rating"))
             ));
-        }
-    }
-}
-pub(super) fn shards(root: &DataRoot, data: &Value, issues: &mut Vec<String>) {
-    let Some(scenes) = data["scenes"].as_array() else {
-        return;
-    };
-    let by_id: std::collections::HashMap<_, _> =
-        scenes.iter().map(|s| (key(s.get("id")), s)).collect();
-    let mut seen = HashSet::new();
-    for character in ["nene", "natsume", "shared"] {
-        let file = format!("scenes-{character}.json");
-        match read(root, &format!("data/{file}")) {
-            Ok(value) => {
-                if !value.is_array() {
-                    issues.push(format!("{file} must be an array"));
-                }
-                for scene in list(&value) {
-                    if !truthy(&scene["id"]) {
-                        issues.push(format!("{file} contains an item without id"));
-                        continue;
-                    }
-                    let id = property(scene, "id");
-                    let identity = key(scene.get("id"));
-                    if !seen.insert(identity.clone()) {
-                        issues.push(format!("{id} appears in multiple browser shards"));
-                        continue;
-                    }
-                    let Some(canonical) = by_id.get(&identity) else {
-                        issues.push(format!("{file} contains unknown scene {id}"));
-                        continue;
-                    };
-                    if crate::storage::stringify(scene) != crate::storage::stringify(canonical) {
-                        issues.push(format!("{file} scene {id} differs from scenes.json"));
-                    }
-                    let expected = if scene["char"] == "natsume" {
-                        "natsume"
-                    } else if scene["char"] == "triad" {
-                        "shared"
-                    } else {
-                        "nene"
-                    };
-                    if expected != character {
-                        issues.push(format!(
-                            "{id} is placed in {file} but char={}",
-                            property(scene, "char")
-                        ));
-                    }
-                }
-            }
-            Err(error) => issues.push(error),
-        }
-    }
-    if seen.len() != scenes.len() {
-        issues.push(format!(
-            "browser shards cover {} scenes, expected {}",
-            seen.len(),
-            scenes.len()
-        ));
-    }
-    match (
-        read(root, "data/scenes-index.json"),
-        read(root, "data/scenes-core.json"),
-    ) {
-        (Ok(index), Ok(core)) => {
-            if number(index.get("total")) != scenes.len() as f64 {
-                issues.push("scenes-index.json total mismatch".into());
-            }
-            let ids = list(&index["tiers"]["core"]);
-            if !core.is_array() {
-                issues.push("scenes-core.json must be an array".into());
-            } else {
-                if list(&core).len() != ids.len() {
-                    issues.push("scenes-core.json length differs from index tiers.core".into());
-                }
-                for (position, id) in ids.iter().enumerate() {
-                    if core[position]["id"] != *id || !by_id.contains_key(&key(Some(id))) {
-                        issues.push(format!(
-                            "scenes-core.json[{position}] does not match index tier id {}",
-                            text(id)
-                        ));
-                    }
-                }
-                if list(&core)
-                    .iter()
-                    .any(|scene| !by_id.contains_key(&key(scene.get("id"))))
-                {
-                    issues.push("scenes-core.json references scenes outside scenes.json".into());
-                }
-            }
-            if list(&index["orderedIds"]).len() != scenes.len() {
-                issues.push("scenes-index.json orderedIds length mismatch".into());
-            }
-        }
-        (left, right) => {
-            for result in [left, right] {
-                if let Err(error) = result {
-                    issues.push(error);
-                }
-            }
         }
     }
 }

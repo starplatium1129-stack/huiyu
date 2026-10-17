@@ -94,7 +94,7 @@ export function findStyleRecipe(
 }
 
 /** 按引擎取蓝图 hint（缺省字段可选，未声明返回 undefined）。 */
-export function styleHintForEngine(
+function styleHintForEngine(
   blueprint: StyleBlueprintHint | null,
   engine: RecipeEngine,
 ): string | undefined {
