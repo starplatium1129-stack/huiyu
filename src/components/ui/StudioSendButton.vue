@@ -35,6 +35,7 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 .u005-ring { position:absolute; inset:-4px; border:2px solid transparent; border-top-color:var(--accent); border-right-color:var(--accent); border-radius:50%; opacity:0; pointer-events:none; }
 .u005[data-busy='true'] .u005-ring { opacity:1; animation:u005-ring 1.4s linear infinite; }
 .u005-check { opacity:0; }
+/* compositor-exempt: One short success stroke in a fixed-size icon; reduced motion disables the transition. */
 .u005-check :deep(path) { stroke-dasharray:24; stroke-dashoffset:24; transition:stroke-dashoffset .35s .05s; }
 .u005[data-feedback='done']:not([data-busy='true']) { background:var(--success); color:var(--text-inverse); }
 .u005[data-feedback='done']:not([data-busy='true']) .u005-check { opacity:1; }

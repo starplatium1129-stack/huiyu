@@ -2,7 +2,7 @@
 /* Shared desktop browse-and-detail layout. */
 .library-page { --page-max: 1500px; }
 .library-header { @apply tw:flex tw:justify-between; align-items: end; @apply tw:gap-s-5 tw:mb-s-4; }
-.library-header h1 { margin: var(--s-2) 0 var(--s-3); font: 600 var(--fs-title)/var(--lh-tight) var(--font-display); letter-spacing: -.03em; }
+.library-header h1 { margin: var(--s-2) 0 var(--s-3); font: 600 var(--fs-title)/var(--lh-tight) var(--font-display); letter-spacing: 0; }
 .library-header p { @apply tw:m-0 tw:max-w-[48em] tw:text-muted tw:text-body-sm; }
 .library-layout { @apply tw:grid; grid-template-columns: 260px minmax(0, 1fr); align-items: start; @apply tw:gap-s-5; }
 .library-detail { @apply tw:min-w-0; }

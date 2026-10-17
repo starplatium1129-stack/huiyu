@@ -9,7 +9,7 @@ export function useRouteTransition(destinationPath: () => string) {
   let keyboard = false
   let interrupted = new WeakMap<HTMLElement, Keyframe>()
   let leaving: HTMLElement | undefined
-  let focusHref: string | null | undefined
+  let focusReturn: { href: string | null; origin: Element } | undefined
   const pathname = (path: string) => path.split(/[?#]/, 1)[0]
   const timings = new Map<string, { duration: number; easing: string }>()
   function timing(token: string) {
@@ -64,17 +64,26 @@ export function useRouteTransition(destinationPath: () => string) {
     if (frame) interrupted.set(el, frame)
   }
 
+  function restoreFocus(el: HTMLElement) {
+    const ticket = focusReturn
+    focusReturn = undefined
+    if (!keyboard || !ticket) return
+    // A destination component or the user may already have chosen a new focus.
+    const current = document.activeElement
+    if (current && current !== document.body && current !== ticket.origin) return
+    const link = [...el.querySelectorAll<HTMLAnchorElement>('a[href]')].find(anchor => anchor.href === ticket.href
+      && !anchor.closest('[inert], [hidden]') && anchor.getClientRects().length)
+    const main = el.closest<HTMLElement>('main') || el.querySelector<HTMLElement>('main')
+    ;(link || main)?.focus({ preventScroll: true })
+  }
+
   /** Fade the workspace as one surface; fixed controls keep their viewport geometry. */
   function enterWorkspace(el: HTMLElement, done: () => void) {
     const current = presentation(el)
     interrupted.delete(el)
     settle(el)
     el.inert = false
-    if (keyboard && focusHref !== undefined) {
-      const link = [...el.querySelectorAll<HTMLAnchorElement>('a[href]')].find(anchor => anchor.href === focusHref)
-      ;(link || el.closest<HTMLElement>('main'))?.focus({ preventScroll: true })
-    }
-    focusHref = undefined
+    restoreFocus(el)
     const path = el.dataset.routePath || ''
     const cached = el.dataset.routeEntered === 'true'
     el.dataset.routeEntered = 'true'
@@ -114,8 +123,9 @@ export function useRouteTransition(destinationPath: () => string) {
     const el = element as HTMLElement
     // A chapter link is replaced with the page. Keep keyboard reading at that
     // same destination link when present, otherwise hand off to the main region.
-    focusHref = keyboard && el.contains(document.activeElement)
-      ? document.activeElement?.closest<HTMLAnchorElement>('a[href]')?.href ?? null : undefined
+    const origin = document.activeElement
+    focusReturn = keyboard && origin && el.contains(origin)
+      ? { href: origin.closest<HTMLAnchorElement>('a[href]')?.href ?? null, origin } : undefined
     // Fast navigation must not accumulate several full-page compositing layers.
     if (leaving && leaving !== el) settle(leaving)
     const departingPath = pathname(el.dataset.routePath || '')
@@ -146,7 +156,10 @@ export function useRouteTransition(destinationPath: () => string) {
       leaving = el; active.set(el, finish); animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
-  function onLeaveCancelled(element: Element) { interrupt(element as HTMLElement); (element as HTMLElement).inert = false }
+  function onLeaveCancelled(element: Element) {
+    interrupt(element as HTMLElement); (element as HTMLElement).inert = false
+    if (focusReturn && element.contains(focusReturn.origin)) focusReturn = undefined
+  }
   function onEnterCancelled(element: Element) { interrupt(element as HTMLElement) }
   function onBeforeEnter(element: Element) {
     const el = element as HTMLElement
@@ -160,6 +173,7 @@ export function useRouteTransition(destinationPath: () => string) {
     interrupted.delete(el)
     el.inert = false
     delete el.dataset.routeEntering
+    restoreFocus(el)
     done()
   }
   function motionChanged() { timings.clear(); if (prefersReducedMotion()) settleAll() }
@@ -185,6 +199,7 @@ export function useRouteTransition(destinationPath: () => string) {
   }
   function stop() {
     settleAll()
+    focusReturn = undefined
     stopListening?.(); stopListening = undefined
     document.removeEventListener('pointerdown', takeOver, true)
     document.removeEventListener('keydown', takeOver, true)

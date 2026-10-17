@@ -116,7 +116,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-image :deep(.inspiration-artwork) { width:100%; height:100%; border:0; background:transparent; }
 .inspiration-header-image { cursor:pointer; }
 .inspiration-deck-copy { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; justify-items:start; gap:var(--s-1) var(--s-2); padding-top:var(--s-2); min-width:0; }
-.inspiration-deck-copy h2 { margin:0; color:var(--text-primary); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-display); letter-spacing:-.02em; }
+.inspiration-deck-copy h2 { margin:0; color:var(--text-primary); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-display); letter-spacing:0; }
 .inspiration-deck-subtitle { grid-column:1/-1; color:var(--text-muted); font-size:var(--fs-label-xs); }
 .inspiration-deck-copy .inspiration-deck-open { grid-column:2; grid-row:1; }
 .inspiration-deck-open { color:var(--accent); }
@@ -125,7 +125,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-feature { grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:minmax(0,1fr); align-items:stretch; gap:var(--s-3); padding:var(--s-4); }
 .inspiration-feature-copy { display:flex; flex-direction:column; align-items:flex-start; align-self:center; gap:var(--s-2); min-width:0; }
 .inspiration-feature-label { color:var(--accent); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:.04em; }
-.inspiration-feature-copy h2 { margin:0; color:var(--text-primary); font:500 clamp(22px,2vw,30px)/1.35 var(--font-display); letter-spacing:-.035em; }
+.inspiration-feature-copy h2 { margin:0; color:var(--text-primary); font:500 clamp(22px,2vw,30px)/1.35 var(--font-display); letter-spacing:0; }
 .inspiration-feature-copy p { margin:0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
 .inspiration-feature-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1) var(--s-3); margin-top:var(--s-2); }
 @media (max-width:900px) {

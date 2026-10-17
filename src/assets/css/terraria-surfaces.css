@@ -61,6 +61,12 @@
   --focus-color:var(--text-secondary); --focus-shadow:inset 0 -2px 0 var(--focus-color);
 }
 :root[data-theme-style='terraria'] body .control-rail .task-center-button { --accent:var(--terraria-on-wood); background:var(--terraria-action); }
+/* Pair timber controls with a dark feedback fill; current navigation keeps its accent/paper pair. */
+:root[data-theme-style='terraria'] body .control-rail :is(button,.control-rail-link:not([aria-current]),.nav-local-home) {
+  --control-feedback-fill:var(--terraria-action);
+}
+/* Component hover backgrounds sit below the feedback pseudo-element and need the same pairing. */
+:root[data-theme-style='terraria'] body .control-rail :is(.appearance-entry,.control-rail-link:not([aria-current]),.nav-local-home):hover { background:var(--terraria-action); }
 :root[data-theme-style='terraria'] body :is(.nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-desktop-float) kbd { color:var(--terraria-paper-text-primary); }
 :root[data-theme-style='terraria'] body :is(.guide-steps a,.inspiration-deck-card,.conversation-card,.card-info,.album-card,.appearance-dialog,.modal-card,.confirm-panel,.nav-more-menu,.chat-more-menu,.task-center,.studio-select-content,.status-tile,.model-card,.scenario-card) {
   border:3px solid var(--terraria-soil); border-radius:0;

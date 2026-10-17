@@ -1,0 +1,25 @@
+/* Theme paper handoff is slower than a control press so its turning edge reads.
+   Only this short-lived, non-interactive sheet moves; no UI snapshots or clones. */
+:root { --motion-theme-turn: 640ms; }
+.theme-paper-turn {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+  user-select: none;
+  contain: strict;
+  backface-visibility: hidden;
+  transform-origin: left center;
+  background: linear-gradient(90deg, transparent 0%, var(--theme-paper) 46%, var(--theme-paper) 94%, var(--theme-paper-edge) 99%, transparent 100%);
+}
+.theme-paper-turn[data-direction='backward'] {
+  transform-origin: right center;
+  background: linear-gradient(270deg, transparent 0%, var(--theme-paper) 46%, var(--theme-paper) 94%, var(--theme-paper-edge) 99%, transparent 100%);
+}
+:root:is([data-motion='reduce'], [data-motion='reduced']) .theme-paper-turn { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .theme-paper-turn { display: none; }
+}
+@media (forced-colors: active) {
+  .theme-paper-turn { display: none; }
+}

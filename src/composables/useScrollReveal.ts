@@ -39,7 +39,20 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
   }
   function schedule() { if (!active || frame) return; frame = requestAnimationFrame(() => { frame = 0; observeAll() }) }
   function onMutations(records: MutationRecord[]) {
-    if (!active || frame) return
+    if (!active || !root) return
+    // Filtering can remove unseen cards. Release detached targets even while an
+    // addition scan is queued; moves within this root keep their observation.
+    for (const record of records) for (const node of record.removedNodes) {
+      if (!(node instanceof Element)) continue
+      const elements = [...node.querySelectorAll(selector)]
+      if (node.matches(selector)) elements.unshift(node)
+      for (const el of elements) {
+        if (root.contains(el)) continue
+        observer?.unobserve(el)
+        seen.delete(el)
+      }
+    }
+    if (frame) return
     // Counters, status copy and hover decoration do not introduce reveal targets.
     const changed = records.some(record => [...record.addedNodes].some(node => node instanceof Element && (node.matches(selector) || node.querySelector(selector))))
     if (changed) schedule()
