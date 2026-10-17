@@ -245,4 +245,16 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 /* 窄屏：作品筛选折叠成单行横向条，不再用固定高度裁掉第三行。 */
 @media (max-width:900px) { .directory-catalog { grid-template-columns:minmax(140px,170px) minmax(0,1fr); gap:var(--s-3); } .directory-rail { padding-right:var(--s-2); } }
 @media (max-width: 540px) { .directory-catalog .directory-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } .directory-catalog .directory-item :deep(.character-portrait) { @apply tw:h-[138px]; } }
+/* At 900×500 the catalogue has ~128px of result height for ~275px cover cards.
+   They only fit from roughly 650px tall; 680px leaves room for focus and paging.
+   The studio picker also has a subtitle, so compact rows stay near 82px. */
+@media (max-height:680px) {
+  .directory-catalog .directory-list { grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr)); }
+  .directory-catalog .directory-item { display:grid; grid-template-columns:64px minmax(0,1fr) 24px; align-items:center; gap:var(--s-3); min-height:82px; }
+  .directory-catalog .directory-item :deep(.character-portrait) { width:64px; height:64px; }
+  .directory-catalog .directory-label { padding:0; }
+  .directory-catalog .directory-label strong { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; line-height:var(--lh-label); }
+  .directory-catalog .directory-label small { white-space:nowrap; line-height:var(--lh-label); }
+  .directory-catalog .directory-selected { position:static; grid-column:3; grid-row:1; justify-self:end; width:24px; height:24px; margin:0; }
+}
 </style>

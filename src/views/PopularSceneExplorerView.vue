@@ -1,28 +1,30 @@
 <template>
   <article class="page library-page popular-scene-library" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header"><div><div class="page-kicker">SCENE / 02</div><h1 class="page-title">角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
+    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER SCENES</div><h1 class="page-title">角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
-      <div class="library-detail">
+      <div ref="sceneContent" class="library-detail" tabindex="-1" role="region" :aria-label="`${selectedCharacter?.displayName || '当前角色'}的场景`" :aria-busy="loading">
     <section class="pop-hero" data-route-arrive v-content-motion:fade="selectedId" aria-label="当前角色场景">
       <figure v-if="selectedCharacter" class="pop-character-art">
-        <RuntimeImage :src="popularPortraitSrc(selectedId)" :alt="selectedCharacter.displayName" decoding="async">
-          <template #fallback><ArchiveIcon name="image" /></template>
+        <RuntimeImage :src="popularPortraitSrc(selectedId)" v-slot="{ image, loaded, failed }">
+          <img v-if="image.src && !failed" v-bind="image" :alt="selectedCharacter.displayName" decoding="async" :class="{ 'pop-character-ready': loaded }" />
+          <ArchiveIcon v-if="!loaded" class="pop-character-placeholder" name="image" />
         </RuntimeImage>
       </figure>
       <div class="pop-hero-copy">
         <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
         <h2>{{ selectedCharacter?.displayName || '选择一个角色' }}</h2>
+        <p v-if="selectedCharacter" class="pop-hero-note">翻开属于{{ selectedCharacter.displayName }}的故事，选一幕留在画里。</p>
       </div>
-      <p class="pop-hero-stat" aria-label="场景统计"><strong>{{ totalScenes }}</strong> 幕可选场景</p>
+      <p class="pop-hero-stat" aria-label="场景统计"><strong v-if="!loading && !loadError">{{ totalScenes }}</strong><span>{{ loading ? '正在整理场景' : loadError ? '场景暂不可用' : '幕可选场景' }}</span></p>
     </section>
 
     <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" />
     <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景读取失败" :message="loadError">
-      <button class="btn btn-primary" type="button" @click="init">重新读取</button>
+      <button class="btn btn-primary" type="button" @click="retryScenes">重新读取</button>
     </ArchiveStatePanel>
 
-    <template v-else>
+    <div v-else class="pop-content" data-route-arrive v-content-motion:up="true">
       <div class="pop-toolbar tw:grid tw:gap-s-3 tw:mb-s-3">
         <div class="pop-toolbar-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
           <StudioSearch v-model="query" class="pop-search-field" id="popularSceneSearch" label="搜索场景" placeholder="搜索场景、地点或氛围…" />
@@ -54,10 +56,10 @@
       </ArchiveStatePanel>
 
       <ArchiveStatePanel v-if="assetsError" compact kind="error" title="样张清单暂不可用" :message="assetsError">
-        <button class="btn btn-ghost btn-sm" type="button" :disabled="assetsLoading" @click="reloadAssets().catch(() => {})">重新读取样张</button>
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="assetsLoading" @click="retryAssets">重新读取样张</button>
       </ArchiveStatePanel>
       <!-- 场景卡片网格 -->
-      <div ref="listRoot" data-route-arrive class="pop-grid">
+      <div ref="listRoot" class="pop-grid">
         <article v-for="blueprint in paged" :key="blueprint.id" class="pop-card"
           :class="{ adult: blueprint.adult }" :data-blueprint-id="blueprint.id" :data-list-key="blueprint.id"
           :style="{ '--scene-preview-ratio': previewRatio(blueprint) }">
@@ -106,7 +108,7 @@
       <div v-if="paged.length < filtered.length" ref="loadSentinel" class="tw:mt-s-5 tw:text-center">
         <button class="btn btn-ghost" type="button" @click="loadMore">加载更多（剩余 {{ filtered.length - paged.length }} 幕）</button>
       </div>
-    </template>
+    </div>
       </div>
     </div>
     <SceneArtworkViewer ref="previewViewer" v-model="previewId" :items="previewItems" @after-close="previewBlueprint = null">
@@ -139,7 +141,7 @@ import SceneArtworkViewer from '@/components/scene/SceneArtworkViewer.vue'
 import { useListTransition } from '@/composables/useListTransition'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, computed, nextTick, onMounted, onUnmounted, onActivated, onDeactivated, watch } from 'vue'
+import { ref, computed, nextTick, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
@@ -165,10 +167,18 @@ import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 const route = useRoute()
 const router = useRouter()
 const sceneStore = useSceneStore()
-const { thumbUrl, imageUrl, loading: assetsLoading, error: assetsError, reload: reloadAssets } = useShowcaseAssets()
+const { thumbUrl, imageUrl, dimensions, loading: assetsLoading, error: assetsError, reload: reloadAssets } = useShowcaseAssets()
 
-const loading = ref(true)
 const loadError = ref('')
+const sceneContent = ref<HTMLElement | null>(null)
+function retryScenes() {
+  sceneContent.value?.focus({ preventScroll: true })
+  void init()
+}
+function retryAssets() {
+  sceneContent.value?.focus({ preventScroll: true })
+  void reloadAssets().catch(() => {})
+}
 const routeFilters = () => ({ q: typeof route.query.q === 'string' ? route.query.q : '',
   category: typeof route.query.category === 'string' ? route.query.category : 'all',
   rating: RATING_OPTS.find(option => option.v === route.query.rating)?.v ?? 'all' })
@@ -192,7 +202,7 @@ watch([query, category, ratingFilter], () => {
   if (filters.category !== 'all') next.category = filters.category; else delete next.category
   if (filters.rating !== 'all') next.rating = filters.rating; else delete next.rating
   pendingRouteWrite = filters
-  void router.replace({ query: next }).catch(() => {}).finally(() => {
+  void router.replace({ query: next, hash: route.hash }).catch(() => {}).finally(() => {
     if (pendingRouteWrite === filters) pendingRouteWrite = null
   })
 })
@@ -204,6 +214,7 @@ const selectedId = computed(() => {
   const requested = typeof route.query.character === 'string' ? route.query.character : ''
   return characters.value.some(character => character.id === requested) ? requested : characters.value[0]?.id ?? ''
 })
+const loading = ref(!sceneStore.hasBlueprintCharacter(selectedId.value))
 
 const directoryItems = computed(() => characters.value.map(character => ({
   id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases,
@@ -250,8 +261,9 @@ const listRoot = ref<HTMLElement | null>(null)
 useListTransition(listRoot, () => paged.value.map(blueprint => blueprint.id))
 const imageRatios = ref<Record<string, number>>({})
 function previewRatio(blueprint: SceneBlueprint) {
+  const size = dimensions(showcaseId(blueprint))
   const [width, height] = blueprint.recommendedSize.split('x').map(Number)
-  return imageRatios.value[blueprint.id] || width / height
+  return imageRatios.value[blueprint.id] || (size ? size.width / size.height : width / height)
 }
 function measurePreview(blueprint: SceneBlueprint, event: Event) {
   const image = event.target as HTMLImageElement
@@ -293,7 +305,7 @@ onUnmounted(() => moreObserver?.disconnect())
 function selectCharacter(id: string) {
   const next: LocationQueryRaw = { ...route.query, character: id }
   delete next.q; delete next.category; delete next.rating
-  if (route.query.character !== id) void router.replace({ query: next })
+  if (route.query.character !== id) void router.replace({ query: next, hash: route.hash })
   else resetFilters()
 }
 function drawUrl(blueprint: SceneBlueprint): string {
@@ -320,7 +332,7 @@ const thumbSrc = (blueprint: SceneBlueprint) => thumbUrl(showcaseId(blueprint))
 let loadRevision = 0
 async function init() {
   const revision = ++loadRevision
-  loading.value = true
+  loading.value = !sceneStore.hasBlueprintCharacter(selectedId.value)
   loadError.value = ''
   try {
     await sceneStore.loadBlueprintCatalog()
@@ -333,10 +345,7 @@ async function init() {
   }
 }
 
-onMounted(() => { void init() })
-onActivated(() => { if (!loading.value) void init() })
-watch(selectedId, () => { void init() })
-onDeactivated(() => { loadRevision++; loading.value = false })
+watch(selectedId, () => { if (route.path === '/popular-scenes') void init() }, { immediate: true })
 onUnmounted(() => { loadRevision++ })
 </script>
 

@@ -23,7 +23,7 @@
 .overview-heading h2 { @apply tw:m-0 tw:text-title-sm tw:font-semibold; }
 .overview-heading p { margin: var(--s-2) 0 0; @apply tw:text-label tw:text-secondary tw:leading-body; }
 .overview-local { @apply tw:inline-flex tw:gap-s-2 tw:items-center tw:text-muted tw:whitespace-nowrap tw:text-label-xs; }
-.status-wall { @apply tw:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); @apply tw:gap-s-3; }
+.status-wall { @apply tw:grid tw:gap-s-3; }
 .status-tile { @apply tw:grid tw:gap-s-3 tw:min-w-0 tw:p-s-4; border: 1px solid transparent; @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; }
 .status-tile-head .archive-icon { @apply tw:text-secondary tw:w-[18px] tw:h-[18px]; }
 .status-dot { @apply tw:w-[6px] tw:h-[6px] tw:rounded-pill tw:ml-auto; background: var(--text-muted); }
@@ -124,14 +124,15 @@
 .control-shell :deep(.control-count) { display:inline-flex; }
 @media (min-width: 1600px) { .control-shell { padding-inline: var(--s-7); } }
 @media (max-width: 1200px) { .control-shell { @apply tw:p-s-5; } .voice-grid { grid-template-columns: 1fr; } }
-@media (max-width: 900px) { .control-mobile-nav { @apply tw:block; } .nav-local { @apply tw:flex tw:justify-between tw:p-s-3; } .nav-local-actions { @apply tw:flex tw:items-center tw:gap-s-2; } .nav-local-brand { @apply tw:text-primary; } .control-rail { @apply tw:hidden; } .control-layout { @apply tw:block; } .status-wall { grid-template-columns: repeat(2,minmax(0,1fr)); } .control-work-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .control-mobile-nav { @apply tw:block; } .nav-local { @apply tw:flex tw:justify-between tw:p-s-3; } .nav-local-actions { @apply tw:flex tw:items-center tw:gap-s-2; } .nav-local-brand { @apply tw:text-primary; } .control-rail { @apply tw:hidden; } .control-layout { @apply tw:block; } .control-work-grid { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .control-shell { @apply tw:p-s-4; } .mode-grid { grid-template-columns: 1fr; } .overview-heading { @apply tw:flex-col; } }
-@media (max-width: 480px) { .status-wall { grid-template-columns: 1fr; } }
 
 /* The compact header stays in document flow so section jumps are never covered. */
 @media (max-width:900px) {
   .control-mobile-nav { position:static; }
   .nav-local { flex-wrap:wrap; }
+  .nav-local-brand { display:flex; align-items:center; gap:var(--s-3); text-decoration:none; }
+  .nav-local-brand .nav-logo { width:112px; }
   .nav-local-actions { flex-wrap:wrap; }
   .control-section-jump { display:flex; gap:var(--s-1); overflow-x:auto; padding:var(--s-2) var(--s-3); scrollbar-width:thin; }
   .control-section-jump a { flex:0 0 auto; display:flex; align-items:center; min-height:40px; padding:var(--s-2) var(--s-3); border-radius:var(--r-md); color:var(--text-secondary); font-size:var(--fs-label); }

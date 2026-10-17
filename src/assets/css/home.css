@@ -29,6 +29,7 @@
 .hero-orbit::after { content: ''; @apply tw:absolute; inset: 0; background: linear-gradient(90deg, var(--bg-deep), transparent 25%), linear-gradient(0deg, var(--bg-deep), transparent 45%); @apply tw:pointer-events-none; }
 .hero-character { @apply tw:absolute; inset: 0; @apply tw:w-full tw:h-full tw:object-cover; object-position: center 30%; opacity: 0; transition: opacity var(--motion-hover) var(--ease-out); }
 .hero-character.is-current { opacity: 1; }
+.hero-preload { display:none; }
 /* The portrait keeps one fixed frame; only its visibility changes on selection. */
 .hero-fallback { @apply tw:absolute; z-index: var(--z-base); inset: 0 0 104px; @apply tw:grid; place-content: center; justify-items: center; @apply tw:gap-s-3 tw:p-s-4 tw:text-center; background: var(--bg-deep); @apply tw:text-secondary; opacity: 0; transition: opacity var(--motion-hover) var(--ease-out); }
 .hero-fallback.is-current { opacity: 1; }
@@ -36,7 +37,10 @@
 .hero-fallback .btn .archive-icon { @apply tw:w-[16px] tw:h-[16px]; }
 .hero-fallback-text { @apply tw:text-primary tw:text-body-sm; }
 .hero-fallback-copy p { margin:var(--s-2) 0 0; @apply tw:text-secondary tw:text-label tw:leading-body; }
-.hero-loading { @apply tw:absolute tw:m-0 tw:text-secondary tw:text-label; inset:0 0 104px; display:grid; place-items:center; }
+.hero-fallback.over-art { z-index:var(--z-raised); inset:auto var(--s-4) 112px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
+.hero-fallback.over-art > .archive-icon { display:none; }
+.hero-loading { @apply tw:absolute tw:m-0 tw:text-secondary tw:text-label; z-index:var(--z-raised); inset:0 0 104px; display:grid; place-items:center; }
+.hero-loading.over-art { inset:auto var(--s-4) 112px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
 .hero-orbit.has-fallback::after { @apply tw:hidden; }
 .hero-orbit.has-fallback .orbit-label { background: none; }
 .orbit-label { @apply tw:absolute; z-index: var(--z-raised); @apply tw:bottom-0 tw:left-0 tw:right-0; padding: var(--s-7) var(--s-6) var(--s-5); background: linear-gradient(0deg, var(--bg-deep) 72%, transparent); }
@@ -46,7 +50,7 @@
 .hero-muses { width: fit-content; @apply tw:max-w-full tw:flex-nowrap tw:mt-s-3; }
 .home-hero .hero-muses .animated-selection { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:var(--border-strong); }
 .home-hero[data-immediate="true"] :is(.hero-character, .hero-fallback) { transition:none; }
-:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.hero-character, .hero-fallback, .pop-card-mini, .recent-card) { transition:none; }
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.hero-character, .hero-fallback, .pop-card-mini, .recent-card, .recent-cover img) { transition:none; }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.pop-card-mini, .recent-card):hover { transform:none; }
 .muse-marker { @apply tw:w-[6px] tw:h-[6px]; border-radius: 50%; }
 .muse-marker-nene { background: var(--nene-violet); }
@@ -91,8 +95,9 @@
 .home-start-card .btn { flex-shrink:0; }
 .recent-grid { @apply tw:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); @apply tw:gap-s-4; }
 .recent-card { border: 1px solid var(--border-soft); @apply tw:rounded-xl tw:overflow-hidden; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
-.recent-cover { aspect-ratio: 4/3; @apply tw:grid; place-items: center; background: var(--bg-deep); @apply tw:overflow-hidden; }
-.recent-cover img { @apply tw:w-full tw:h-full tw:object-cover; }
+.recent-cover { position:relative; aspect-ratio: 4/3; @apply tw:grid; place-items: center; background: var(--bg-deep); @apply tw:overflow-hidden; }
+.recent-cover img { position:absolute; inset:0; @apply tw:w-full tw:h-full tw:object-cover; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); }
+.recent-cover img.ready { opacity:1; }
 .recent-cover .placeholder { @apply tw:text-muted tw:w-[32px] tw:h-[32px]; }
 .recent-body { @apply tw:p-s-4; }
 .recent-title { @apply tw:text-body-sm tw:font-semibold; }
@@ -134,6 +139,6 @@
   .recent-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .hero-character, :root:not([data-motion='full']) .hero-fallback, :root:not([data-motion='full']) .pop-card-mini, :root:not([data-motion='full']) .recent-card { transition: none; }
+  :root:not([data-motion='full']) .home-page :is(.hero-character, .hero-fallback, .pop-card-mini, .recent-card, .recent-cover img) { transition:none; }
   :root:not([data-motion='full']) .home-page :is(.pop-card-mini, .recent-card):hover { transform: none; }
 }

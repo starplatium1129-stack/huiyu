@@ -87,6 +87,8 @@
 .room-tool-heading h2 { margin:0; font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-sans); overflow-wrap:anywhere; }
 .room-tool-body { min-width:0; min-height:0; display:grid; grid-auto-rows:max-content; align-content:start; gap:var(--s-4); padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); }
 .room-tool-body > p { margin:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
+.room-panel-loading-status { display:flex; align-items:center; justify-content:center; gap:var(--s-3); padding-block:var(--s-4); }
+.room-panel-loading-status .archive-icon { flex:none; width:24px; height:24px; color:var(--accent); }
 .room-tools-dialog :is(button,input,textarea):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .room-surface .room-setup { margin:var(--s-3); padding:var(--s-3); font:400 13px/1.6 var(--font-sans); }
 .room-surface .room-setup strong { display:inline-flex; align-items:center; gap:var(--s-2); }
@@ -173,11 +175,14 @@
   .chat-page.room-surface { padding:12px; }
   .room-surface .chat-layout { grid-template-columns:220px minmax(0,1fr); gap:12px; }
 }
-@media (max-width:899px) {
+/* 220px 角色栏在 760px 桌面宽度仍可容纳；再窄才切为近景横幅，避免 899px 提前缩成全身小图。 */
+@media (max-width:759px) {
   .chat-page.room-surface { --room-stage-height:120px; }
+  .chat-page.room-surface:not(.room-immersive) { --room-portrait-width:min(42%,220px); }
   .room-surface .chat-layout { grid-template-columns:1fr; grid-template-rows:var(--room-stage-height) minmax(0,1fr); gap:8px; }
-  .room-surface .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) .portrait-main { object-fit:contain; object-position:center; }
+  .room-surface:not(.room-immersive) .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) .portrait-main { left:0; width:var(--room-portrait-width); object-fit:cover; object-position:50% 18%; transform:none; }
   .room-surface .character-info { position:absolute; right:0; bottom:0; z-index:var(--z-raised); border:0; padding:4px; }
+  .room-surface:not(.room-immersive) .character-card:is([data-character='nene'],[data-character='natsume']):not(:has(.live2d-ready)) .character-info { right:var(--s-2); bottom:var(--s-2); max-width:calc(100% - var(--room-portrait-width) - var(--s-4)); padding:0; flex-wrap:wrap; justify-content:flex-end; gap:var(--s-2); }
   .room-surface .character-info-head { display:none; }
   .room-surface .character-controls > summary { padding:8px; border-radius:10px; background:var(--bg-surface); }
   .chat-page.room-surface .character-controls-panel { top:calc(100% + var(--s-2)); bottom:auto; left:auto; right:0; width:min(340px,calc(100vw - var(--s-5))); max-height:min(520px,calc(100dvh - var(--desktop-chrome-height,0px) - var(--app-navigation-visible-height,80px) - var(--room-stage-height) - var(--s-7) - var(--s-4))); }
@@ -187,8 +192,20 @@
   .room-surface .character-info > .btn { min-height:40px; }
   .room-surface .live2d-enable-cta { min-height:40px; }
   .room-surface:not(.room-immersive) .live2d-enable-cta { top:8px; bottom:auto; }
+  .room-surface:not(.room-immersive) .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) :is(.live2d-enable-cta,.avatar-status) { top:var(--s-2); right:var(--s-2); bottom:auto; left:auto; max-width:calc(100% - var(--room-portrait-width) - var(--s-4)); margin:0; transform:none; }
   .room-surface.room-immersive .character-info { top:0; bottom:auto; }
   .room-surface.room-immersive .character-controls-panel { top:100%; bottom:auto; }
+}
+@media (max-width:759px) and (max-height:600px) {
+  .chat-page.room-surface:not(.room-immersive) { --room-stage-height:104px; }
+  .room-surface:not(.room-immersive) .live2d-enable-cta { padding:var(--s-2); }
+  .room-surface:not(.room-immersive) .conversation-head { min-height:56px; }
+  .room-surface:not(.room-immersive) .room-setup { flex-direction:row; align-items:center; gap:var(--s-2); margin:var(--s-2); padding:var(--s-2); }
+}
+@media (max-height:600px) {
+  .room-surface:not(.room-immersive) .room-welcome-art { display:none; }
+  .room-surface:not(.room-immersive) .chat-empty { margin:0 auto; padding:var(--s-2); }
+  .room-surface:not(.room-immersive) .room-empty-title { margin-bottom:var(--s-2); }
 }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .room-surface :is(.message-actions-trigger,.room-starter-copy,.room-starter-arrow .archive-icon,.room-chat-actions .btn .archive-icon),:root:not([data-motion='full']) .room-starter::before,:root:not([data-motion='full']) .room-surface .composer-row::after { transition:none; }

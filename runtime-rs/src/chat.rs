@@ -205,8 +205,12 @@ async fn search_web(
         local(&headers, peer)?;
         running(&app)?;
         let body = body.map_err(body_error)?;
-        let body = serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
-        Ok::<Response, Error>(Json(search::run(&chat.transport, &body, &scope).await?).into_response())
+        let body: Value = serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
+        let host = if body["search"]["hostConfig"] == true && body["search"]["provider"] != "duckduckgo"
+            && body["search"]["apiKey"].as_str().unwrap_or("").trim().is_empty() {
+            chat.settings(&app).await.read_host().await
+        } else { None };
+        Ok::<Response, Error>(Json(search::run(&chat.transport, &body, host.as_ref(), &scope).await?).into_response())
     };
     tokio::select! {
         _ = app.shutdown.cancelled() => Error::new(503,"DESKTOP_DRAINING","桌面正在维护").into_response(),

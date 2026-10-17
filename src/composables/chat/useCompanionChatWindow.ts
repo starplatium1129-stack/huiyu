@@ -71,6 +71,7 @@ const pageHidden = ref(document.hidden)
 const windowFocused = ref(document.hasFocus())
 let alive = true
 let liveInitialized = false
+let textRelay: AbortController | null = null
 const listRef = ref<HTMLDivElement>()
 const inputRef = ref<HTMLTextAreaElement>()
 const { config: speechConfig, loadError } = useSpeechInputConfig()
@@ -161,33 +162,43 @@ function readLive() {
 
 async function onSend() {
   const text = inputText.value.trim()
-  if (!canSend.value) return
+  if (!alive || !windowVisible.value || pageHidden.value || !canSend.value) return
   if (bridge) {
-    const character = activeChar.value
+    const character = activeChar.value, controller = new AbortController()
+    textRelay = controller
+    const current = () => alive && textRelay === controller && !controller.signal.aborted
+      && activeChar.value === character && windowVisible.value && !pageHidden.value
     draft.clear()
     storage.setDraft(character, inputText.value)
     sending.value = true
     try {
-      await relayChatTurn(bridge, text, character)
-      if (activeChar.value === character && inputText.value.trim() === text) inputText.value = ''
+      await relayChatTurn(bridge, text, character, undefined, controller.signal)
+      if (!current()) return
+      if (inputText.value.trim() === text) inputText.value = ''
       if (storage.draft(character).trim() === text) storage.setDraft(character, '')
-    } catch { listenerError('发送失败，草稿已保留，请重试。') }
+    } catch { if (current()) listenerError('发送失败，草稿已保留，请重试。') }
     finally {
-      sending.value = false
-      if (alive && !replyActive.value) speechSession.markReplyIdle()
+      if (textRelay === controller) {
+        textRelay = null; sending.value = false
+        if (alive && !replyActive.value) speechSession.markReplyIdle()
+      }
     }
   } else {
     listenerError('桌宠桥未连接，无法发送（请在角色窗中打开聊天）。')
   }
 }
+function cancelTextRelay() { textRelay?.abort(); textRelay = null; sending.value = false }
+watch(activeChar, cancelTextRelay, { flush: 'sync' })
 
 function onStop() {
+  cancelTextRelay()
   attachments.cancelAttachments()
   if (bridge) void bridge.chatRelay({ command: 'stop' }).catch(() => listenerError('停止失败，请重试。'))
 }
 
 function switchCharacter(id: string) {
   if (!getCompanionCharacterConfig(id) || id === activeChar.value) return
+  cancelTextRelay()
   if (bridge) {
     void bridge.chatRelay({ command: 'switch-character', character: id }).catch(() => listenerError('角色切换失败，请重试。'))
   } else {
@@ -199,6 +210,7 @@ function switchCharacter(id: string) {
 }
 
 function openFullRoom() {
+  cancelTextRelay()
   attachments.cancelAttachments()
   draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
@@ -210,6 +222,7 @@ function openFullRoom() {
 }
 
 function closeWindow() {
+  cancelTextRelay()
   attachments.cancelAttachments()
   draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
@@ -230,6 +243,7 @@ function closeWindow() {
 const errorText = ref('')
 let errorTimer = 0
 function listenerError(message: string) {
+  if (!alive) return
   errorText.value = message
   clearTimeout(errorTimer)
   errorTimer = window.setTimeout(() => { errorText.value = '' }, 4000) as unknown as number
@@ -273,6 +287,7 @@ function commitSpeechText(text: string) {
 const noticeText = ref('')
 let noticeTimer = 0
 function listenerNotice(message: string) {
+  if (!alive) return
   noticeText.value = message
   clearTimeout(noticeTimer)
   noticeTimer = window.setTimeout(() => { noticeText.value = '' }, 3000) as unknown as number
@@ -423,6 +438,7 @@ let visibilitySub = 0
 function onVisibilityChange() {
   pageHidden.value = document.hidden
   windowFocused.value = document.hasFocus()
+  if (!windowVisible.value || pageHidden.value) cancelTextRelay()
   reconcileAutoListen()
 }
 
@@ -477,6 +493,7 @@ function onDocFocus() {
 
 onUnmounted(() => {
   alive = false
+  cancelTextRelay()
   attachments.cancelAttachments()
   quietClock.stop()
   storage.setDraft(activeChar.value, inputText.value)

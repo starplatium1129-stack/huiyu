@@ -62,7 +62,7 @@ export function useCharacterArchiveNavigation(
   function selectCharacter(id: string) {
     if (id === requestedId.value || !characters.value.some(character => character.id === id)) return
     if (showShelf.value) { shelfAnchor = captureScrollAnchor(); enteringFromShelf = true }
-    const target = { query: { ...route.query, character: id } }
+    const target = { query: { ...route.query, character: id }, hash: route.hash }
     // Returning from a profile should restore the shelf, not step through every
     // character visited with the existing detail sidebar.
     void (showShelf.value ? router.push(target) : router.replace(target))
@@ -71,7 +71,7 @@ export function useCharacterArchiveNavigation(
   function showBookshelf() {
     const query = { ...route.query }
     delete query.character
-    void router.push({ query })
+    void router.push({ query, hash: route.hash })
   }
 
   return { current, showShelf, lastViewedId, selectCharacter, showBookshelf }

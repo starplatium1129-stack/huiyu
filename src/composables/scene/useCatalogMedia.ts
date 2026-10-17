@@ -16,6 +16,7 @@ export function useCatalogMedia() {
   const kind = ref<'media' | 'scene' | 'blueprint'>('media')
   const search = ref(''), character = ref(''), rating = ref(''), page = ref(1)
   const debouncedSearch = ref(''), result = ref<CatalogPage | null>(null)
+  const listScope = ref('')
   const loading = ref(false), error = ref('')
   let timer: ReturnType<typeof setTimeout> | undefined, request: AbortController | undefined
   let sequence = 0
@@ -29,15 +30,19 @@ export function useCatalogMedia() {
     request?.abort()
     const controller = new AbortController(); request = controller
     const current = ++sequence
+    const query = { kind: kind.value, search: debouncedSearch.value, character: character.value, rating: rating.value, page: page.value, pageSize: 24 }
     loading.value = true; error.value = ''
     try {
-      const data = await catalogApi.query({ kind: kind.value, search: debouncedSearch.value, character: character.value, rating: rating.value, page: page.value, pageSize: 24 }, controller.signal)
-      if (current === sequence && !controller.signal.aborted) result.value = data
+      const data = await catalogApi.query(query, controller.signal)
+      if (current === sequence && !controller.signal.aborted) {
+        result.value = data
+        listScope.value = JSON.stringify({ ...query, page: data.page })
+      }
     } catch (cause) {
       if (current === sequence && !controller.signal.aborted) error.value = (cause as Error).message
     } finally { if (current === sequence) loading.value = false }
   }
   watch([kind, character, rating, debouncedSearch, page, runtimeResourceIdentity], () => { void load() }, { immediate: true })
   onScopeDispose(() => { clearTimeout(timer); request?.abort(); sequence++ })
-  return { kind, search, character, rating, page, result, loading, error, totalPages, load }
+  return { kind, search, character, rating, page, result, listScope, loading, error, totalPages, load }
 }

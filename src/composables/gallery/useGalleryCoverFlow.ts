@@ -111,7 +111,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     clearWheel(); releasePointer(); moveTo(index); commit(index)
   }
   function blocked(target: EventTarget | null) {
-    return target instanceof Element && !!target.closest('.zoom-toolbar, .gallery-orbit-caption, .zoomable-image-viewer.is-zoomed')
+    return target instanceof Element && !!target.closest('.zoom-toolbar, .zoom-recovery, .gallery-orbit-caption, .zoomable-image-viewer.is-zoomed')
   }
   function pointerDown(event: PointerEvent) {
     if (!options.active() || options.count() < 2 || !event.isPrimary || drag || event.button !== 0 || blocked(event.target)) return

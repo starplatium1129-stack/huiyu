@@ -42,13 +42,12 @@
 }
 .pop-thumb img.pop-thumb-ready { opacity: 1; }
 .pop-thumb img.pop-thumb-missing { @apply tw:hidden; }
-.pop-thumb-skeleton { @apply tw:absolute; inset: 0; opacity: 0; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-deep)); }
+.pop-thumb-skeleton { @apply tw:absolute; inset: 0; opacity: 0; background: linear-gradient(135deg, var(--bg-elevated), var(--bg-deep)); transition:opacity var(--motion-surface) var(--ease-out); }
 .pop-thumb-skeleton.visible { opacity: 1; }
 .pop-preview-missing { @apply tw:absolute; inset: var(--s-3); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-3; @apply tw:rounded-sm tw:text-center tw:text-label-xs tw:leading-body; color:var(--on-art-secondary); }
 .pop-preview-missing > .archive-icon { @apply tw:text-title tw:mb-s-1; }
 .pop-preview-missing strong { @apply tw:text-body-sm tw:font-medium; }
 /* The local-only reveal fades the static blurred veil rather than its filter. */
-.pop-thumb img.pop-thumb-r18 { transform: scale(1.08); }
 .pop-thumb-hint {
   z-index:var(--z-raised);
   @apply tw:absolute tw:left-[50%] tw:top-[50%];

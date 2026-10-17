@@ -11,6 +11,8 @@
 .shot-script-body .field-label { font:600 var(--fs-label)/var(--lh-label) var(--font-sans); letter-spacing:normal; }
 .shot-script-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr)); gap:var(--s-3); }
 .shot-script-foot { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:var(--s-2); padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); }
+.shot-script-feedback { flex:1 0 100%; max-height:5lh; overflow:auto; margin:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
+.shot-script-feedback:empty { display:none; }
 .shot-script-hint { margin:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
 .shot-script-help { padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
 .shot-script-help p { margin:var(--s-2) 0 0; }

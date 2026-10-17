@@ -1,5 +1,5 @@
 import { onBeforeUnmount, ref, watch } from 'vue'
-import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 /** Current-picture decoding and explicit recovery; no neighboring loads or retry loop. */
 export function useViewerImage(props: Readonly<{
@@ -42,40 +42,51 @@ export function useViewerImage(props: Readonly<{
   async function upgradeImage(event: Event) {
     const image = event.target, revision = sourceRevision
     if (!currentImage(image, true)) return
+    const source = image.getAttribute('src'), identity = runtimeResourceIdentity(), attempt = fullAttempt.value
+    const current = () => revision === sourceRevision && identity === runtimeResourceIdentity() && attempt === fullAttempt.value
+      && image.getAttribute('src') === source && currentImage(image, true)
     try { if (typeof image.decode === 'function') await image.decode() }
-    catch { if (revision === sourceRevision && currentImage(image, true)) failFullImage(); return }
+    catch { if (current()) failFullImage(); return }
     // Native event targets may be cleared after dispatch; retain the decoded node.
-    if (revision === sourceRevision && currentImage(image, true)) {
+    if (current() && image.complete && image.naturalWidth && image.naturalHeight) {
       if (imageAttempt.value !== fullAttempt.value) imageRevision.value++
       imageAttempt.value = fullAttempt.value; displayedSrc.value = props.src
     }
   }
   async function retryImage() {
     if (retrying.value) return
-    const revision = ++retryRevision, source = props.src, preview = props.previewSrc
+    const revision = ++retryRevision, source = props.src, preview = props.previewSrc, imageSourceRevision = sourceRevision
     retrying.value = true
     // Recovery disappears after success; leave focus on the picture without scrolling.
     callbacks.focus()
     try { await props.reload?.() }
-    catch { if (revision === retryRevision) { retrying.value = false; callbacks.error() }; return }
-    if (revision !== retryRevision) return
+    catch { if (revision === retryRevision && imageSourceRevision === sourceRevision) { retrying.value = false; callbacks.error() }; return }
+    if (revision !== retryRevision || imageSourceRevision !== sourceRevision) return
     if (props.loadFailed || !props.src) { retrying.value = false; return }
     // A repository refresh can replace the source; its decode owns completion.
     if (props.src !== source || props.previewSrc !== preview) return
     fullAttempt.value = Date.now(); fullImageFailed.value = false
     if (imageFailed.value) { imageRevision.value++; imageAttempt.value = fullAttempt.value; imageReady.value = false; imageFailed.value = false }
   }
-  watch(() => [props.src, props.previewSrc, props.imageKey] as const, ([src, preview, key], [previousSrc, previousPreview, previousKey]) => {
-    const changedRecord = key !== previousKey
+  watch([() => props.src, () => props.previewSrc, () => props.imageKey,
+    () => resolveRuntimeUrl(props.src), () => resolveRuntimeUrl(props.previewSrc), runtimeResourceIdentity],
+  ([src, preview, key, resolved, resolvedPreview, identity], [previousSrc, previousPreview, previousKey, previousResolved, previousResolvedPreview, previousIdentity]) => {
+    const changedOwner = key !== previousKey || identity !== previousIdentity
+    const changedSource = src !== previousSrc || resolved !== previousResolved || changedOwner
+    // Snapshot an already painted alias before its actual request changes in place.
+    const paintedRequest = imageEl.value?.src
+    const retainedPainted = !changedOwner && src === previousSrc && resolved !== previousResolved
+      && displayedSrc.value === src && imageReady.value && !!paintedRequest
+    if (retainedPainted) displayedSrc.value = paintedRequest!
     // Entrance previews can change while the same original is decoding.
-    // Only replacing that original or its record makes the decode obsolete.
-    if (src !== previousSrc || changedRecord) sourceRevision++
-    if (changedRecord) { retryRevision++; retrying.value = false }
-    if (src !== previousSrc || changedRecord) fullAttempt.value = 0
+    // Actual requests and runtime owners also invalidate a decode of the same raw path.
+    if (changedSource) sourceRevision++
+    if (changedOwner) { retryRevision++; retrying.value = false }
+    if (changedSource) fullAttempt.value = src === previousSrc ? fullAttempt.value + 1 : 0
     fullImageFailed.value = false
     // Hydrating the same picture preserves its frame and geometry through decoding.
-    const preserve = !changedRecord && (retrying.value || !imageFailed.value && ((preview && preview === previousPreview)
-      || (src === previousSrc && imageReady.value)))
+    const preserve = !changedOwner && (retainedPainted || retrying.value || !imageFailed.value && ((preview && preview === previousPreview && resolvedPreview === previousResolvedPreview)
+      || (!changedSource && imageReady.value)))
     if (preserve && !imageFailed.value) return
     imageRevision.value++
     displayedSrc.value = props.previewSrc || props.src

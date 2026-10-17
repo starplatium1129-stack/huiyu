@@ -6,41 +6,53 @@
         @cancel.prevent="closeRoomPanel" @close="onRoomPanelClosed" @click="closeRoomPanelFromBackdrop">
         <!-- Keep conditional content separate from Reka's sibling portal anchors. -->
         <div class="room-panel-content">
-        <ChatArchivePanel v-if="roomPanel === 'archive'" :storage="storage" :active-char="activeChar"
-          @vue:mounted="focusRoomPanel" @close="closeRoomPanel" @notice="(message, kind) => setError(message, kind || 'info', 4500)" />
-        <ChatUserProfilePanel v-else-if="roomPanel === 'profile'" :key="roomPanelGeneration" :profile="userProfile" :save-profile="onUserProfileSave"
-          @vue:mounted="focusRoomPanel" @close="closeRoomPanel" />
-        <ChatMemoryPanel v-else-if="roomPanel === 'memory'" :items="currentMemories" :character-name="currentCharacter.name"
-          @vue:mounted="focusRoomPanel" @update="updateMemory" @delete="deleteMemory" @close="closeRoomPanel" />
+        <AsyncPanel v-if="roomPanel && roomPanel !== 'settings'" :key="roomPanelGeneration" :loader="roomToolLoaders[roomPanel]" :label="roomPanelLabels[roomPanel]">
+          <template #default="{ component }">
+            <component :is="component" v-if="roomPanel === 'archive'" :storage="storage" :active-char="activeChar"
+              @vue:mounted="focusRoomPanel" @close="closeRoomPanel" @notice="(message: string, kind?: 'info' | 'warning' | 'error') => setError(message, kind || 'info', 4500)" />
+            <component :is="component" v-else-if="roomPanel === 'profile'" :profile="userProfile" :save-profile="onUserProfileSave"
+              @vue:mounted="focusRoomPanel" @close="closeRoomPanel" />
+            <component :is="component" v-else-if="roomPanel === 'memory'" :items="currentMemories" :character-name="currentCharacter.name"
+              @vue:mounted="focusRoomPanel" @update="updateMemory" @delete="deleteMemory" @close="closeRoomPanel" />
+          </template>
+          <template #feedback="{ failed, retried, retry, reload }">
+            <section class="room-tool-panel room-panel-loading" aria-labelledby="roomPanelLoadingTitle">
+              <header class="room-tool-heading"><div><span>CHAT TOOLS</span><h2 id="roomPanelLoadingTitle">{{ roomPanel ? roomPanelLabels[roomPanel] : '' }}</h2></div><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭聊天工具" @click="closeRoomPanel"><ArchiveIcon name="close" /></button></header>
+              <div class="room-tool-body">
+                <p class="room-panel-loading-status" :role="failed ? 'alert' : 'status'"><ArchiveIcon name="chat" /><span>{{ failed ? (retried ? '聊天工具仍未加载，请检查连接后重新载入应用。' : '聊天工具暂未加载，请重新读取。') : '正在加载…' }}</span></p>
+                <button v-if="failed" class="btn btn-ghost btn-sm tw:justify-self-center" type="button" @click="retried ? reload() : retry()">{{ retried ? '重新载入应用' : '重新读取' }}</button>
+              </div>
+            </section>
+          </template>
+        </AsyncPanel>
         <section v-else-if="roomPanel === 'settings'" class="room-chat-settings chat-page room-tool-panel" aria-labelledby="roomChatSettingsTitle">
           <header class="room-tool-heading"><div><span>CHAT SETTINGS</span><h2 id="roomChatSettingsTitle">聊天设置</h2></div><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭聊天设置" @click="closeRoomPanel"><ArchiveIcon name="close" /></button></header>
           <div class="room-tool-body">
-            <ChatModelControls :chat-provider="chatProvider" :busy="busy"
+            <AsyncPanel :loader="loadChatModelControls" label="聊天模型设置" v-slot="{ component }"><component :is="component" :chat-provider="chatProvider" :busy="busy"
               :ollama-online="ollamaOnline" :local-status-text="localStatusText" :checking-local="checkingChatStatus"
               :models="models" :current-model="currentModel" :reasoning="reasoning" :companion-tools="companionTools" :web-search-enabled="webSearchEnabled"
               :api-settings-open="apiSettingsOpen" :use-host-config="useHostConfig" :host-api-model="hostApiModel" :host-api-base-url="hostApiBaseUrl"
               :api-configured="apiConfigured" :api-model="apiModel" :api-base-url="apiBaseUrl"
               @set-provider="setChatProvider" @refresh-local="refreshChatStatus"
-              @update:current-model="currentModel = $event" @reasoning-change="onReasoningChange" @update:companion-tools="companionTools = $event" @toggle-api-settings="apiSettingsOpen = !apiSettingsOpen" />
-            <ChatApiSettings v-if="chatProvider === 'api' && apiSettingsOpen"
+              @update:current-model="currentModel = $event" @reasoning-change="onReasoningChange" @update:companion-tools="companionTools = $event" @toggle-api-settings="apiSettingsOpen = !apiSettingsOpen" /></AsyncPanel>
+            <AsyncPanel v-if="chatProvider === 'api' && apiSettingsOpen" :loader="loadChatApiSettings" label="API 模型配置" v-slot="{ component }"><component :is="component"
               :vendor="apiVendor" :base-url="apiBaseUrl" :model="apiModel" :api-key="apiKey"
               :credentials-loading="storage.credentialsLoading.value" :busy="busy" :hint="apiConfigHint"
               :is-local-host="isLocalHost" :host-configured="hostApiConfigured" :host-model="hostApiModel"
               @update:vendor="apiVendor = $event" @update:base-url="apiBaseUrl = $event" @update:model="apiModel = $event" @update:api-key="apiKey = $event"
-              @save="saveApiSettings" @clear-key="clearApiCredential" @save-host="saveToHost" @clear-host="clearHostConfigAndRefresh" />
+              @save="saveApiSettings" @clear-key="clearApiCredential" @save-host="saveToHost" @clear-host="clearHostConfigAndRefresh" /></AsyncPanel>
             <div class="room-settings-options">
               <ToggleSwitch v-if="chatProvider === 'api' && isLocalHost" v-model="webSearchEnabled" label="联网检索">联网检索</ToggleSwitch>
               <ToggleSwitch v-if="currentCharacter.voice" :model-value="autoVoice" label="自动播放语音" @update:model-value="autoVoice = $event; onAutoVoiceChange()">自动播放语音</ToggleSwitch>
               <label v-if="currentCharacter.voice" class="room-volume"><span>音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label>
             </div>
+            <AsyncPanel v-if="chatProvider === 'api' && isLocalHost" :loader="loadChatSearchSettings" label="搜索设置" v-slot="{ component }"><component :is="component"
+              :api-base-url="apiBaseUrl" :api-key="apiKey" :use-host-config="useHostConfig" :host-api-base-url="hostApiBaseUrl" :busy="busy" /></AsyncPanel>
             <div class="room-settings-voice">
               <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
               <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="chat-speech-settings speech-settings-popover" @open-auto-focus="focusSpeechPopover" @close-auto-focus="returnSpeechFocus">
                 <template #trigger><button class="btn btn-ghost" type="button">语音输入设置</button></template>
-                <Suspense v-if="speechSettingsOpen">
-                  <SpeechInputSettings :data-character="activeChar" @vue:mounted="focusSpeechSettings" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
-                  <template #fallback><p role="status" class="tw:m-0 tw:p-s-4">正在加载…</p></template>
-                </Suspense>
+                <AsyncPanel v-if="speechSettingsOpen" :loader="loadSpeechInputSettings" label="语音输入设置" v-slot="{ component }"><component :is="component" :data-character="activeChar" @vue:mounted="focusSpeechSettings" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" /></AsyncPanel>
               </StudioPopover>
             </div>
           </div>
@@ -154,16 +166,22 @@ import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
-// Model controls and their select/disclosure dependencies are only needed in settings.
-const ChatModelControls = defineAsyncComponent(() => import('@/components/ChatModelControls.vue'))
-const ChatApiSettings = defineAsyncComponent(() => import('@/components/ChatApiSettings.vue'))
-const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
+// App's TaskCenter already loads this boundary before tools can open; keep its
+// low-frequency use outside the room's static dependency closure.
+const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
+// The local boundary mounts portal controls in the visible dialog and owns import recovery.
+const loadChatModelControls = () => import('@/components/ChatModelControls.vue')
+const loadChatApiSettings = () => import('@/components/ChatApiSettings.vue')
+const loadChatSearchSettings = () => import('@/components/ChatSearchSettings.vue')
+const loadSpeechInputSettings = () => import('@/components/SpeechInputSettings.vue')
 const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 const CompanionChatImages = defineAsyncComponent(() => import('@/components/CompanionChatImages.vue'))
 // These panels mount only after a menu action; load their component CSS then too.
-const ChatArchivePanel = defineAsyncComponent(() => import('@/components/ChatArchivePanel.vue'))
-const ChatUserProfilePanel = defineAsyncComponent(() => import('@/components/ChatUserProfilePanel.vue'))
-const ChatMemoryPanel = defineAsyncComponent(() => import('@/components/ChatMemoryPanel.vue'))
+const roomToolLoaders = {
+  archive: () => import('@/components/ChatArchivePanel.vue'),
+  profile: () => import('@/components/ChatUserProfilePanel.vue'),
+  memory: () => import('@/components/ChatMemoryPanel.vue'),
+}
 
 const {
   chatListRef,
@@ -262,14 +280,21 @@ useResizeObserver(roomPanelDialog, () => {
 }, { box:'border-box' })
 async function openRoomPanel(panel: RoomPanel) {
   roomPanelClosing = false
-  roomPanelGeneration.value++
+  const generation = ++roomPanelGeneration.value
   roomPanel.value = panel
   await nextTick()
+  if (roomPanelClosing || roomPanel.value !== panel || generation !== roomPanelGeneration.value) return
   roomPanelMotion.open(document.querySelector<HTMLElement>(panel === 'settings' ? '.chat-settings-trigger' : '.chat-more-trigger'))
-  focusRoomPanel()
+  void focusRoomPanel()
 }
-function focusRoomPanel() {
-  if (roomPanelDialog.value?.open) roomPanelDialog.value.querySelector<HTMLElement>('button')?.focus({ preventScroll: true })
+async function focusRoomPanel() {
+  const generation = roomPanelGeneration.value
+  await nextTick()
+  const dialog = roomPanelDialog.value, active = document.activeElement
+  if (!dialog?.open || roomPanelClosing || !roomPanel.value || generation !== roomPanelGeneration.value) return
+  // Loading removes its close button on resolve; preserve focus already moved into the ready panel or a nested portal.
+  if (active && active !== document.body && active !== dialog && active !== dialog.querySelector('.room-panel-content > .async-panel')) return
+  dialog.querySelector<HTMLElement>('.room-panel-content button')?.focus({ preventScroll: true })
 }
 function clearRoomPanel() { roomPanel.value = null; apiSettingsOpen.value = false; speechSettingsOpen.value = false }
 function closeRoomPanel() { roomPanelClosing = true; speechSettingsOpen.value = false; roomPanelMotion.close(clearRoomPanel) }
@@ -280,7 +305,7 @@ function closeRoomPanelFromBackdrop(event: MouseEvent) {
 const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
 const { hasNew, latest } = useConversationReading(chatListRef, () => currentMessages.value, activeChar)
-const currentLine = computed(() => [...currentMessages.value].reverse().find(m => m.role === 'assistant')?.content || personalizedGreeting.value)
+const currentLine = computed(() => lastAssistantMessage.value?.content || personalizedGreeting.value)
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
 async function copyMessage(content: string) {
@@ -363,7 +388,7 @@ function focusSpeechSettings() {
   const panel = document.querySelector<HTMLElement>('.chat-speech-settings')
   // An uncached editor arrives after Reka focuses the empty popover. Preserve
   // any focus the user has moved elsewhere while it was loading.
-  if (speechSettingsOpen.value && panel === document.activeElement)
+  if (speechSettingsOpen.value && (panel === document.activeElement || panel?.querySelector(':scope > .async-panel') === document.activeElement))
     panel?.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)')?.focus({ preventScroll: true })
 }
 </script>

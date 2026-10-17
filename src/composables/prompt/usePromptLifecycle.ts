@@ -33,21 +33,27 @@ export interface PromptLifecycleDeps extends
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
 export function usePromptLifecycle({ router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
-    // A delayed storage/backend response must not resume setup or submit a deep-link job
-    // after its workspace has been destroyed. KeepAlive deactivation retains its tasks.
+    // A newer visit owns setup; KeepAlive deactivation only retains jobs already started.
     let disposed = false;
     let viewActive = true;
     let draftInitialized = false;
     let consumedPreparedQuery: unknown;
+    let initializationRequest = 0;
+    let preparedTarget: { entry: string } | null = null;
+    const entryKey = () => JSON.stringify([route.path, route.query]);
     async function applyPreparedLink() {
-        const q = route.query;
+        const q = route.query, request = initializationRequest;
         if (route.path !== '/prompt-builder' || typeof q.preparedModel !== 'string' || q === consumedPreparedQuery) return;
         consumedPreparedQuery = q;
         const modelId = q.preparedModel, wasBusy = generationBusy.value;
         const query = { ...q }; delete query.preparedModel;
-        const target = router.resolve({ path: route.path, query, hash: route.hash }).fullPath;
-        await router.replace(target);
-        const current = () => !disposed && viewActive && consumedPreparedQuery === q && route.fullPath === target;
+        const target = router.resolve({ path: route.path, query, hash: route.hash });
+        const targetEntry = JSON.stringify([target.path, target.query]);
+        const prepared = { entry: targetEntry };
+        preparedTarget = prepared;
+        try { await router.replace(target.fullPath); }
+        finally { if (preparedTarget === prepared) preparedTarget = null; }
+        const current = () => !disposed && viewActive && request === initializationRequest && consumedPreparedQuery === q && entryKey() === targetEntry;
         if (!current() || ['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string')) return;
         if (wasBusy || generationBusy.value) { pb.flash('生成进行中，完成或停止后再从控制室选用准备的底模'); return; }
         if (modelId !== settingsRepository.get(STARTER_MODEL_SETTING)) {
@@ -56,31 +62,47 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
         }
         await applyPreparedModel(modelId, current);
     }
-    watch(() => route.query, () => { if (draftInitialized && viewActive) void applyPreparedLink(); });
+    watch(entryKey, entry => {
+        // Consuming preparedModel is this visit's own navigation, not a replacement entry.
+        if (preparedTarget?.entry === entry) return;
+        initializationRequest++;
+        if (!viewActive || route.path !== '/prompt-builder') return;
+        if (draftInitialized) void applyPreparedLink();
+        else void initializeWorkspace();
+    }, { flush: 'sync' });
     function saveWorkspaceDraft() {
         // Backend defaults may arrive before the saved inputs have been adopted.
         if (!draftInitialized) return;
         if (drawEngine.value === 'sd') pb.sdParams.size = sdSize.value;
         pb.saveDraft?.();
     }
-    onBeforeUnmount(() => { disposed = true; viewActive = false; });
-    onDeactivated(() => { viewActive = false; consumedPreparedQuery = undefined; animaSession.pauseStatusPolling(); });
+    onBeforeUnmount(() => { disposed = true; viewActive = false; initializationRequest++; });
+    onDeactivated(() => { viewActive = false; initializationRequest++; consumedPreparedQuery = undefined; animaSession.pauseStatusPolling(); });
     onActivated(async () => {
         if (viewActive || disposed)
             return;
         viewActive = true;
+        // An interrupted cold visit still needs normal draft setup on its next activation.
+        if (!draftInitialized) { await initializeWorkspace(); return; }
+        const request = initializationRequest;
+        const current = () => !disposed && viewActive && request === initializationRequest;
         if (!useSceneStore().loaded) {
             await pb.loadData();
+            if (!current()) return;
             if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
-            if (disposed || !viewActive) return;
+            if (!current()) return;
         }
         if (draftInitialized) await applyPreparedLink();
-        if (disposed || !viewActive) return;
+        if (!current()) return;
         if (drawEngine.value !== 'sd')
             animaSession.startStatusPolling();
     });
     // ── Lifecycle ─────────────────────────────────────────────────────────────
-    onMounted(async () => {
+    async function initializeWorkspace() {
+        if (disposed || !viewActive || route.path !== '/prompt-builder') return;
+        const request = ++initializationRequest;
+        const query = Object.fromEntries(Object.entries(route.query).map(([key, value]) => [key, Array.isArray(value) ? [...value] : value]));
+        const current = () => !disposed && viewActive && request === initializationRequest && route.path === '/prompt-builder';
         void refreshShotsPending();
         void refreshAnimaBackend();
         // Anima 后端只在引擎激活时轮询：SD 引擎下每 15s 打一次 /api/creative/status
@@ -93,42 +115,40 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
             sceneCollection.value = savedMode === 'pro' ? 'all' : 'core';
         }
         await pb.loadData();
-        if (disposed) return;
+        if (!current()) return;
         await refreshAnimaBackend();
-        if (disposed) return;
+        if (!current()) return;
         await sd.checkStatus();
-        if (disposed) return;
+        if (!current()) return;
         // 拿到 WebUI 真实 checkpoint 后，再按对应 model profile 填参数
         pb.applyModelProfile(pb.sdModelName || sd.checkpoint.value);
         // 历史载入（IndexedDB）
         await pb.loadHistory();
-        if (disposed) return;
+        if (!current()) return;
         // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
-        // KeepAlive may finish hydrating an unchanged draft while hidden. A new
-        // generation owns its inputs and still needs normal draft persistence.
-        const restoreCurrent = () => !disposed && !generationBusy.value;
-        if (typeof route.query.remix === 'string' || typeof route.query.variant === 'string') {
+        const restoreCurrent = () => current() && !generationBusy.value;
+        if (typeof query.remix === 'string' || typeof query.variant === 'string') {
             await pb.restoreDraft(restoreCurrent);
-            if (disposed) return;
+            if (!current()) return;
             if (generationBusy.value) { draftInitialized = true; saveWorkspaceDraft(); return; }
         }
-        const handledDeepLink = await applyDeepLink(route.query);
-        if (disposed) return;
+        const handledDeepLink = await applyDeepLink(query, current);
+        if (!current()) return;
         if (!handledDeepLink) {
             await pb.restoreDraft(restoreCurrent);
-            if (disposed) return;
+            if (!current()) return;
             if (generationBusy.value) { draftInitialized = true; saveWorkspaceDraft(); return; }
         }
         if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
-        if (disposed) return;
+        if (!current()) return;
         // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。
-        if ((!handledDeepLink || route.query.resume === '1') && !displayResultUrl.value) {
+        if ((!handledDeepLink || query.resume === '1') && !displayResultUrl.value) {
             await restoreTempResult();
-            if (disposed) return;
+            if (!current()) return;
         }
-        const restoredRecipe = handledDeepLink && ['remix', 'regen', 'variant'].some(key => typeof route.query[key] === 'string');
+        const restoredRecipe = handledDeepLink && ['remix', 'regen', 'variant'].some(key => typeof query[key] === 'string');
         // Explicit history/scene links own their size; resumed drafts keep a user-picked SD size.
-        if (!restoredRecipe && drawEngine.value === 'sd' && (!handledDeepLink || route.query.resume === '1')
+        if (!restoredRecipe && drawEngine.value === 'sd' && (!handledDeepLink || query.resume === '1')
             && pb.sdParamsTouched.has('size') && /^\d+x\d+$/.test(pb.sdParams.size))
             sdSize.value = pb.sdParams.size;
         else if (!restoredRecipe && pb.lastRecommendedSize)
@@ -137,16 +157,16 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
             await applyManagedRoute({ silent: true });
         else
             await refreshManagedRoute();
-        if (disposed) return;
+        if (!current()) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
-        if (!restoredRecipe && typeof route.query.companionDraft !== 'string') restorePopularDraft();
+        if (!restoredRecipe && typeof query.companionDraft !== 'string') restorePopularDraft();
         await applyPreparedLink();
-        if (disposed) return;
+        if (!current()) return;
         draftInitialized = true;
         saveWorkspaceDraft();
-        if (route.query.quick === '1' && typeof route.query.companionDraft !== 'string') {
+        if (query.quick === '1' && typeof query.companionDraft !== 'string') {
             const [{ quickCreateSummary, readQuickCreate }, { useQuickCreateApply }] = await Promise.all([import('@/utils/quickCreate'), import('./useQuickCreateApply')]);
-            if (disposed) return;
+            if (!current()) return;
             const { applyQuickCreateSettings } = useQuickCreateApply({ pb, sd, sdSize });
             const savedQuick = readQuickCreate();
             applyQuickCreateSettings(savedQuick);
@@ -154,7 +174,7 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
             // pro 模式不会走 applyManagedRoute，这里显式对齐到当前推荐底模。
             if (drawEngine.value !== 'sd' && !pb.isPopular) {
                 const route = await refreshManagedRoute();
-                if (disposed) return;
+                if (!current()) return;
                 if ((route.engine === 'anima' || route.engine === 'krea2')
                     && animaState.value.modelId !== route.modelId
                     && animaState.value.models.some(model => model.id === route.modelId)) {
@@ -162,7 +182,7 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
                 }
             }
             await nextTick();
-            if (disposed) return;
+            if (!current()) return;
             if (!engineOnline.value) {
                 pb.flash('快速出图未启动：SD WebUI 当前未连接，Prompt 已保留');
             }
@@ -172,10 +192,10 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
                 await callGenerate();
             }
         }
-        else if (route.query.generate === '1' && typeof route.query.companionDraft !== 'string') {
+        else if (query.generate === '1' && typeof query.companionDraft !== 'string') {
             // 样张/场景抽屉的「调整后生成」：场景与词条已在上面载入，这里直接出图
             await nextTick();
-            if (disposed) return;
+            if (!current()) return;
             if (!engineOnline.value) {
                 pb.flash(`${drawEngine.value === 'anima' ? 'Anima' : drawEngine.value === 'krea2' ? 'Krea 2' : 'SD WebUI'} 未连接，场景与词条已就位，可稍后生成`);
             }
@@ -184,7 +204,8 @@ export function usePromptLifecycle({ router, generationBusy, applyPreparedModel,
                 await callGenerate();
             }
         }
-    });
+    }
+    onMounted(initializeWorkspace);
     // 离开导演台时的 Anima 会话清理（轮询停止、在途任务取消、结果 URL 释放）
     // 由 useAnimaSession 的自动 onUnmounted(dispose) 承担。
     // Autosave draft

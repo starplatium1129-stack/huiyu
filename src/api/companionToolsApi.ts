@@ -1,5 +1,6 @@
 import { runtimeFetch } from '@/platform/runtimeUrl'
 import type { CompanionChatImage } from '@/types/companionDrawing'
+import type { ChatSearchConnection } from '@/config/chatSearch'
 
 export interface CompanionToolResult {
   ok: boolean
@@ -8,10 +9,12 @@ export interface CompanionToolResult {
   image?: CompanionChatImage
 }
 
-export async function executeCompanionTool(name: string, args: Record<string, unknown>, signal?: AbortSignal): Promise<CompanionToolResult> {
+export async function executeCompanionTool(name: string, args: Record<string, unknown>, signal?: AbortSignal, search?: Pick<ChatSearchConnection, 'hostConfig' | 'chatApi'>): Promise<CompanionToolResult> {
+  const selected = name === 'search_web' ? await (await import('@/utils/chatSearchStorage')).loadChatSearchSettings('search') : undefined
+  signal?.throwIfAborted()
   const response = await runtimeFetch(name === 'search_web' ? '/api/chat/search' : '/api/desktop-tools', {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-    body: JSON.stringify({ name, args }),
+    body: JSON.stringify({ name, args, ...(selected ? { search: { provider: selected.provider, apiKey: selected.apiKey, ...search } } : {}) }),
   })
   const raw: unknown = await response.json()
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('本机工具返回了无效响应。')

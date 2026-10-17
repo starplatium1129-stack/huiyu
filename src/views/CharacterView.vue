@@ -1,5 +1,5 @@
 <template>
-  <article ref="archiveRoot" class="page character-page library-page character-editorial" style="--page-max:1600px">
+  <article ref="archiveRoot" class="page character-page library-page character-editorial" tabindex="-1" :aria-busy="loading" :style="{ '--character-ornament': portraitPalette.accent }">
     <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
@@ -13,7 +13,7 @@
       title="角色档案读取失败"
       message="本地角色资料暂时无法读取，请稍后重试。"
     >
-      <button class="btn btn-primary" type="button" @click="loadProfiles">重新读取</button>
+      <button class="btn btn-primary" type="button" @click="retryProfiles">重新读取</button>
     </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="!characters.length"
@@ -21,27 +21,31 @@
       title="角色档案暂未收录"
     />
     <template v-else>
-        <CharacterBookshelf v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @select="selectCharacter" />
+        <CharacterBookshelf v-if="showShelf || shelfVisited" v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @vue:mounted="shelfVisited = true" @select="selectCharacter" />
       <div v-if="!showShelf" v-content-motion:up="current?.id" class="library-layout">
         <BrowsingCharacterDirectory v-model:search="directorySearch" :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div class="library-detail" data-route-arrive>
       <section v-if="current" ref="profileAnchor" tabindex="-1" :aria-label="current.name + '的角色档案'" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
-        <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="portraitView.state">
-          <img :crossorigin="runtimeResourceCors()" v-if="portraitView.state !== 'missing'" :key="portraitView.token" class="portrait-image"
-            :src="resolveRuntimeUrl(portraitView.src)" :data-attempt-token="portraitView.token"
-            :alt="current.portrait?.alt || current.name"
+        <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="paintedPortrait?.state || portraitView.state" :aria-busy="portraitPending">
+          <img v-for="frame in portraitFrames" :key="frame.token" :crossorigin="frame.crossorigin" class="portrait-image"
+            :src="frame.src" :data-attempt-token="frame.token" :class="{ 'is-loaded': frame.token === paintedPortrait?.token, 'is-candidate': frame.token !== paintedPortrait?.token, 'is-continuous': frame.continued }"
+            :alt="frame.token === paintedPortrait?.token ? (portraitPending || portraitError ? current.name + '的原画（上次已读取）' : current.portrait?.alt || current.name) : ''" :aria-hidden="frame.token !== paintedPortrait?.token ? 'true' : undefined"
             loading="eager" decoding="async" @load="measurePortrait"
             @error="onPortraitError" />
-          <div v-else class="portrait-missing" role="status">
+          <span v-if="!paintedPortrait && portraitPending" class="portrait-loading" role="status"><ArchiveIcon name="image" />正在读取人物原画</span>
+          <div v-if="!paintedPortrait && portraitView.state === 'missing'" class="portrait-missing" role="status">
             <ArchiveIcon name="image" class="portrait-missing-icon" />
             <strong class="portrait-missing-title">{{ portraitView.reason === 'empty' ? '立绘未登记' : '立绘缺失' }}</strong>
             <span class="portrait-missing-text">{{ portraitMissingText }}</span>
           </div>
-          <div class="portrait-footer">
+          <div class="portrait-footer" role="group" :aria-label="current.name + '的原画读取状态'" tabindex="-1">
+            <div v-if="portraitFeedback || portraitError" class="portrait-feedback">
+              <p v-if="portraitFeedback" role="status">{{ portraitFeedback }}</p>
+              <button v-if="portraitError" class="btn btn-ghost btn-sm" type="button" @click="retryPortrait"><ArchiveIcon name="refresh" />重新读取原画</button>
+            </div>
             <RouterLink v-if="isLocalStudioHost()" class="btn btn-ghost btn-sm" :to="{ path: '/scene-manager', query: { tab: 'portraits', character: current.id } }"><ArchiveIcon name="image" />更换立绘</RouterLink>
-            <span class="portrait-badge"><ArchiveIcon name="image" /> {{ characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
-            <span v-if="showFallbackNote" class="portrait-fallback-note">原图无法读取，已显示现有缩略图</span>
+            <span class="portrait-badge"><ArchiveIcon name="image" /> {{ paintedPortrait && (portraitPending || portraitError) ? '上次已读取原画' : characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
             <StudioTooltip :content="current.source">
               <span class="portrait-source" tabindex="0">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
             </StudioTooltip>
@@ -49,7 +53,7 @@
         </div>
         </CharacterParticleStage>
         <div class="character-profile">
-          <div class="profile-kicker">人物档案</div>
+          <div class="profile-kicker"><ArchiveIcon name="character" />人物档案</div>
           <h2 class="character-name">{{ current.name }}</h2>
           <div v-if="hasIdentity" class="identity-row">
             <span v-if="current.identity?.role" class="item role">{{ current.identity.role }}</span>
@@ -71,7 +75,7 @@
             <span class="voice-label"><ArchiveIcon name="chat" />语气示例</span><p class="voice-line">{{ current.voice }}</p>
           </div>
           <div class="tags-grid">
-            <span v-for="(t,i) in current.tags" :key="t" class="tag-chip" :class="tagClass(i)">{{ t }}</span>
+            <span v-for="t in current.tags" :key="t" class="tag-chip">{{ t }}</span>
           </div>
           <section v-if="current.bg_story" class="character-story" aria-label="角色故事">
             <h3 class="lab">角色故事</h3>
@@ -97,7 +101,7 @@
         </div>
       </details>
 
-      <section v-if="current" class="recommend-section" data-reveal data-reveal-delay="2">
+      <section v-if="current" ref="recommendationRoot" class="recommend-section" tabindex="-1" :aria-busy="recommendationsLoading" aria-label="人设核心场景" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
           <div>
             <div class="page-kicker">Persona core</div>
@@ -107,7 +111,7 @@
         </div>
         <ArchiveStatePanel v-if="recommendationsLoading" kind="loading" title="正在读取核心场景" compact />
         <ArchiveStatePanel v-else-if="recommendationsError" kind="error" title="核心场景读取失败" message="请重新读取该角色的场景。" compact>
-          <button class="btn btn-ghost btn-sm" type="button" @click="recommendationReload += 1">重新读取</button>
+          <button class="btn btn-ghost btn-sm" type="button" @click="retryRecommendations">重新读取</button>
         </ArchiveStatePanel>
         <ArchiveStatePanel v-else-if="!recommendations.length" kind="empty" title="暂未收录核心场景" compact />
         <div v-else class="recommend-grid">
@@ -150,9 +154,10 @@ let archiveBrowse: { search: string; shelf?: CharacterBookshelfState } = { searc
 
 <script setup lang="ts">
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 import { popularPortraitFullSrc } from '@/utils/popularPortraitSource'
 import { characterArtEntry } from '@/platform/characterArtState'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
 
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
 import { ref, computed, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
@@ -178,12 +183,13 @@ import {
 } from '@/utils/characterProfiles'
 
 const sceneStore = useSceneStore()
-const characters = ref<CharacterProfile[]>([])
+const characters = ref<CharacterProfile[]>(parseCharacterProfiles(sceneStore.characters))
 const scenes = ref<CharacterScene[]>([])
-const loading = ref(true)
+const loading = ref(!characters.value.length)
 const profileAnchor = ref<HTMLElement | null>(null)
 const archiveRoot = ref<HTMLElement | null>(null)
 const bookshelf = ref<InstanceType<typeof CharacterBookshelf> | null>(null)
+const shelfVisited = ref(false)
 const initialShelf = archiveBrowse.shelf
 const directorySearch = ref(archiveBrowse.search)
 onBeforeUnmount(() => {
@@ -193,6 +199,7 @@ const { current, showShelf, lastViewedId, selectCharacter: navigateCharacter, sh
   characters, profileAnchor, () => bookshelf.value?.focusSelected(),
 )
 const preferOriginal = ref(false)
+const portraitPalette = computed(() => characterParticleTheme(current.value?.id || '', current.value?.source))
 function selectCharacter(id: string) {
   if (showShelf.value) {
     const card = [...(archiveRoot.value?.querySelectorAll<HTMLElement>('.bookshelf-character') || [])].find(item => item.dataset.character === id)
@@ -216,24 +223,38 @@ const portraitSources = computed(() => {
   return { id: profile?.id || '', main,
     thumb: profile?.type === 'popular' ? resolveRuntimeUrl(popularPortraitSrc(profile.id)) : '' }
 })
-const { view: portraitView, fail: failPortrait,
-  loaded: loadPortrait, isLoaded: portraitLoaded } = usePortraitFallback(portraitSources)
+const { view: portraitView, frames: portraitFrames, painted: paintedPortrait, pending: portraitPending,
+  error: portraitError, fail: failPortrait, loaded: loadPortrait, retry: reloadPortrait } = usePortraitFallback(portraitSources)
 function onPortraitError(event: Event) {
-  failPortrait((event.target as HTMLImageElement).dataset.attemptToken || '')
+  const image = event.target as HTMLImageElement
+  failPortrait(image.dataset.attemptToken || '', image)
 }
 function measurePortrait(event: Event) {
   const image = event.target as HTMLImageElement
-  loadPortrait(image.dataset.attemptToken || '', image.naturalWidth, image.naturalHeight)
+  void loadPortrait(image.dataset.attemptToken || '', image)
+}
+function retryPortrait(event: MouseEvent) {
+  const origin = event.currentTarget
+  const footer = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest<HTMLElement>('.portrait-footer') : null
+  if (footer) {
+    const bounds = footer.getBoundingClientRect()
+    if (bounds.top < 0 || bounds.bottom > innerHeight) footer.scrollIntoView({ block:'nearest', behavior:'instant' })
+    footer.focus({ preventScroll:true })
+  }
+  reloadPortrait()
 }
 const portraitMissingText = computed(() => ({
   empty: '该角色档案暂未登记立绘图源。',
   broken: '原图与缩略图均无法读取，本机暂无可显示的立绘。',
   nothumb: '原图无法读取，该角色也没有已登记的缩略图。',
 })[portraitView.value.reason])
-const showFallbackNote = computed(() => portraitView.value.state === 'fallback' && portraitLoaded.value
-  && !!current.value && !isPopularPortraitPending(current.value.id))
-
-function tagClass(index: unknown) { return 'm' + (Number(index) % 6) }
+const portraitFeedback = computed(() => {
+  if (!paintedPortrait.value) return ''
+  if (portraitPending.value) return '正在读取新原画，当前画面保留。'
+  if (portraitError.value) return '新原画暂时无法读取，已保留上次画面。'
+  return paintedPortrait.value.state === 'fallback' && current.value && !isPopularPortraitPending(current.value.id)
+    ? '原图无法读取，已显示现有缩略图' : ''
+})
 
 const hasIdentity = computed(() => {
   const id = current.value?.identity || {}
@@ -243,6 +264,11 @@ const isPopular = computed(() => current.value?.type === 'popular')
 const recommendationsLoading = ref(false)
 const recommendationsError = ref(false)
 const recommendationReload = ref(0)
+const recommendationRoot = ref<HTMLElement | null>(null)
+function retryRecommendations() {
+  recommendationRoot.value?.focus({ preventScroll: true })
+  recommendationReload.value++
+}
 const recommendations = computed(() => {
   if (!current.value) return []
   if (current.value.type === 'popular') {
@@ -296,9 +322,13 @@ function closeRecommendationBackdrop(event: MouseEvent) {
 }
 
 const loadError = ref('')
+function retryProfiles() {
+  archiveRoot.value?.focus({ preventScroll: true })
+  void loadProfiles()
+}
 
 async function loadProfiles() {
-  loading.value = true
+  loading.value = !characters.value.length
   loadError.value = ''
   try {
     // 角色档案首屏只需要目录壳；场景/蓝图画布随后后台补齐，不能阻塞粒子展台挂载。
@@ -315,7 +345,8 @@ watch(() => current.value?.id, () => {
   bgExpanded.value = false
   recommendationStoryDialog.close()
 })
-watch([current, recommendationReload], async ([profile], _previous, onCleanup) => {
+watch([() => current.value?.id, recommendationReload], async (_current, _previous, onCleanup) => {
+  const profile = current.value
   let active = true
   onCleanup(() => { active = false })
   recommendationsLoading.value = Boolean(profile)
@@ -334,7 +365,7 @@ watch([current, recommendationReload], async ([profile], _previous, onCleanup) =
   } finally {
     if (active) recommendationsLoading.value = false
   }
-})
+}, { immediate: true })
 onMounted(() => {
   void loadProfiles()
 })

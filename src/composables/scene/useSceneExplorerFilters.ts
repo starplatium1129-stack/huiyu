@@ -78,7 +78,7 @@ export function useSceneExplorerFilters(defaultTier: string) {
     query.tier = next.tier
     if (next.hidden) query.hidden = '1'; else delete query.hidden
     pendingRouteWrite = next
-    void router.replace({ query }).catch(() => {}).finally(() => {
+    void router.replace({ query, hash: route.hash }).catch(() => {}).finally(() => {
       if (pendingRouteWrite === next) pendingRouteWrite = null
     })
   })

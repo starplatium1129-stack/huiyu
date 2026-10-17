@@ -13,16 +13,8 @@ import { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 
 
 
-import {
-cancelVideoJob,
-createVideoJob,
-fetchVideoJob,
-fetchVideoStatus,
-type VideoDefaults,
-type VideoJob,
-type VideoMode,
-type VideoStatusResponse,
-} from '@/api/videoApi'
+import { cancelVideoJob, createVideoJob, fetchVideoJob, fetchVideoStatus,
+  type VideoDefaults, type VideoJob, type VideoMode, type VideoStatusResponse } from '@/api/videoApi'
 
 
 import { classifySDError } from '@/utils/sdError'
@@ -164,9 +156,9 @@ let reconnectReading = false
 // deep link must not count as a newer selection than the submission itself.
 const selectedTaskId = ref('')
 let selectionVersion = 0
-watch(() => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '', id => {
-  if (id !== selectedTaskId.value) { selectionVersion++; selectedTaskId.value = id; reconnectState.value = 'idle' }
-}, { immediate: true, flush: 'sync' })
+const selectedJobReading = ref(false), selectedJobError = ref('')
+const jobSelectionPending = computed(() => Boolean(selectedTaskId.value && selectedTaskId.value !== job.value?.id))
+let selectionRead: AbortSignal | undefined
 
 let pollTimer = 0
 
@@ -174,6 +166,12 @@ let disposed = false
 let pageActive = true
 let statusRequest: AbortController | null = null
 let pollRequest: AbortController | null = null
+watch(() => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '', id => {
+  if (id === selectedTaskId.value) return
+  selectionVersion++; selectedTaskId.value = id; reconnectState.value = 'idle'; selectedJobError.value = ''
+  window.clearTimeout(pollTimer); pollRequest?.abort(); pollRequest = null; jobReading.value = false
+  schedulePoll()
+}, { immediate: true, flush: 'sync' })
 
 
 /**
@@ -306,6 +304,7 @@ const canGenerate = computed(() => {
     && !jobActive.value
     && !job.value?.needsReview
     && reconnectState.value === 'idle'
+    && !jobSelectionPending.value && !selectedJobReading.value
 })
 
 // 首尾帧模式素材就绪：首帧（绘图页带入 或 本地上传）与尾帧（本地上传）齐备。
@@ -314,9 +313,11 @@ const firstFrameReady = computed(() =>
 
 
 const submitTitle = computed(() => {
+  if (jobSelectionPending.value || selectedJobReading.value) return selectedJobError.value ? '请先重新读取所选视频任务' : '正在读取所选视频任务'
   if (reconnectState.value !== 'idle') return reconnectState.value === 'reading' ? '正在读取上次视频任务' : '请先重新读取上次任务或到任务中心核对'
   if (job.value?.needsReview) return '请先核对当前视频任务'
   if (jobActive.value) return '已有视频正在生成'
+  if (statusLoading.value) return '正在检测视频环境'
   if (statusReadError.value) return '请重新检测视频环境'
   if (!status.value?.online) return '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
@@ -337,6 +338,7 @@ const submitTitle = computed(() => {
 const submitDescription = computed(() => {
   if (job.value?.needsReview) return '原任务与输入已保留，可重新读取状态或到任务中心核对。'
   if (jobActive.value) return '请等待当前任务完成，或取消任务。'
+  if (statusLoading.value) return '正在确认本机连接与可用模型，镜头内容可以继续编辑。'
   if (statusReadError.value) return '请重新检测服务状态。'
   if (!status.value?.online) return '在控制面板启动 ComfyUI 后重新检测。'
   if (!activeModel.value?.available) return '请补齐右侧列出的模型文件。'
@@ -355,7 +357,7 @@ const jobStatusLabel = computed(() => job.value?.needsReview ? '状态待核对'
 
 function schedulePoll() {
   window.clearTimeout(pollTimer)
-  if (!job.value || disposed || !pageActive || pollRequest || cancelling.value || !jobActive.value) return
+  if (!job.value || disposed || !pageActive || pollRequest || cancelling.value || !jobActive.value || jobSelectionPending.value || selectedJobReading.value) return
   pollTimer = window.setTimeout(() => { void pollJob() }, 1500)
 }
 
@@ -364,7 +366,7 @@ async function loadStatus() {
   if (disposed || !pageActive) return
   statusRequest?.abort()
   const controller = new AbortController(); statusRequest = controller
-  void taskSelection.retry()
+  void retrySelectedJob()
   statusLoading.value = true
   try {
     const next = await fetchVideoStatus(controller.signal)
@@ -486,15 +488,15 @@ async function submitVideo() {
 
 
 async function pollJob(force = false) {
-  if (disposed || !pageActive || pollRequest || cancelling.value || !job.value || !force && !jobActive.value) return
-  const id = job.value.id
+  if (disposed || !pageActive || pollRequest || cancelling.value || jobSelectionPending.value || selectedJobReading.value || !job.value || !force && !jobActive.value) return
+  const id = job.value.id, selection = selectionVersion
   const controller = new AbortController(); pollRequest = controller; jobReading.value = true
   try {
     const response = await fetchVideoJob(id, controller.signal)
-    if (disposed || !pageActive || controller.signal.aborted || job.value?.id !== id) return
+    if (disposed || !pageActive || controller.signal.aborted || selection !== selectionVersion || job.value?.id !== id) return
     job.value = response.job; pollError.value = ''
   } catch (error) {
-    if (disposed || !pageActive || controller.signal.aborted || job.value?.id !== id) return
+    if (disposed || !pageActive || controller.signal.aborted || selection !== selectionVersion || job.value?.id !== id) return
     pollError.value = error instanceof Error ? error.message : '视频任务状态读取失败'
   } finally {
     if (pollRequest === controller) { pollRequest = null; jobReading.value = false; schedulePoll() }
@@ -503,7 +505,7 @@ async function pollJob(force = false) {
 
 
 async function cancelJob() {
-  if (!job.value || disposed || cancelling.value) return
+  if (!job.value || disposed || cancelling.value || jobSelectionPending.value || selectedJobReading.value) return
   const id = job.value.id
   const selection = selectionVersion
   cancellingTaskId = id
@@ -539,38 +541,44 @@ watch(selectedMode, (mode) => {
 let activatedOnce = false, initialRestorePending = true
 
 const taskSelection = useBackendSelection(
-  () => cancelling.value && selectedTaskId.value === cancellingTaskId ? '' : selectedTaskId.value,
+  () => !pageActive || cancelling.value && selectedTaskId.value === cancellingTaskId ? '' : selectedTaskId.value,
   () => job.value?.id,
-  fetchVideoJob,
-  response => { job.value = response.job; statusError.value = ''; pollError.value = ''; schedulePoll() },
-  error => { statusError.value = error instanceof Error ? error.message : '任务读取失败，请重新打开任务重试' },
+  async (id, signal) => {
+    selectionRead = signal; selectedJobReading.value = true; selectedJobError.value = ''
+    try { return await fetchVideoJob(id, signal) }
+    finally { if (selectionRead === signal) { selectionRead = undefined; selectedJobReading.value = false; schedulePoll() } }
+  },
+  response => { job.value = response.job; selectedJobError.value = ''; statusError.value = ''; pollError.value = ''; schedulePoll() },
+  error => { selectedJobError.value = error instanceof Error ? error.message : '任务读取失败，请重试' },
 )
+function retrySelectedJob() { selectedJobError.value = ''; return taskSelection.retry() }
 watch(() => route.query.mode, mode => { if (route.path === '/video-studio' && mode === 'shots') selectedMode.value = 'shots' })
 
 function stopPageReads() {
   window.clearTimeout(pollTimer)
   statusRequest?.abort(); statusRequest = null; statusLoading.value = false
   pollRequest?.abort(); pollRequest = null; jobReading.value = false
+  void taskSelection.retry()
 }
 onDeactivated(() => { pageActive = false; stopPageReads() })
-onActivated(() => { pageActive = true; if (!activatedOnce) { activatedOnce = true; return }; consumeVideoCtx(); if (route.query.mode === 'shots') selectedMode.value = 'shots'; void loadStatus(); void pollJob(); if (!initialRestorePending && reconnectState.value === 'reading' && !job.value) void reconnectVideo() })
+onActivated(() => { pageActive = true; if (!activatedOnce) { activatedOnce = true; return }; if (route.query.mode === 'shots') selectedMode.value = 'shots'; else consumeVideoCtx(); void loadStatus(); void pollJob(); if (!initialRestorePending && reconnectState.value === 'reading' && !job.value) void reconnectVideo() })
 
 onMounted(() => {
   // 绘图页「去分镜短片」深链：进入分镜模式并清掉 query（一次性消费）。
   if (route.query.mode === 'shots') {
     selectedMode.value = 'shots'
-    void router.replace({ query: { ...route.query, mode: undefined } })
+    void router.replace({ query: { ...route.query, mode: undefined }, hash: route.hash })
   }
   void loadStatus()
   void (async () => {
-    const selection = selectionVersion
-    // 草稿先回、跨页上下文后覆盖（F1：ctx 是更新的明确意图，优先级更高）。
-    // 分镜模式下草稿由 ShotListEditor 自己的分镜草稿承担，这里跳过。
-    const restored = selectedMode.value !== 'shots' ? await videoDraftTools.restoreDraft() : null
+    const selection = selectionVersion, shotsEntry = selectedMode.value === 'shots'
+    // restoreDraft hydrates fields synchronously; consume this entry before awaiting its guarded media reads.
+    const restoring = shotsEntry ? null : videoDraftTools.restoreDraft()
+    if (!shotsEntry) consumeVideoCtx()
+    const restored = await restoring
     initialRestorePending = false
     if (disposed || selection !== selectionVersion) return
     if (restored?.firstFrameLost || restored?.lastFrameLost) statusError.value = '草稿已恢复，但部分帧图原文件已失效，请重新选择对应图片'
-    consumeVideoCtx()
     // 任务重连（F1）：离页不丢任务——按 jobId 拉回真实状态并恢复轮询。
     if (typeof route.query.job === 'string') return
     await reconnectVideo()
@@ -599,6 +607,6 @@ environmentState, environmentLabel, statusError: statusFeedback, selectedModelId
 formatTime, progressPercent, formatSeconds, progressWarning, jobErrorReport, cancelling,
 cancelJob,
 reconnectState, reconnectVideo,
-jobReading, refreshJob: () => pollJob(true),
+jobReading, refreshJob: () => pollJob(true), jobSelectionPending, selectedJobReading, selectedJobError, retrySelectedJob,
 }
 }

@@ -23,16 +23,18 @@
           <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />先看参考样张</RouterLink>
           </div>
         </div>
-        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] }" :aria-label="`${heroName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
-          <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-character nene" :class="{ 'is-current': homeMuse === 'nene' }" :alt="homeMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="homeMuse !== 'nene'" width="1024" height="1497" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" fetchpriority="high" />
-          <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-character natsume" :class="{ 'is-current': homeMuse === 'natsume' }" :alt="homeMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="homeMuse !== 'natsume'" width="1024" height="1497" sizes="(max-width: 768px) 100vw, 60vw" loading="eager" decoding="async" />
-          <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="homeMuse">
+        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
+          <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
+          <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
+          <img :src="paintedHeroes.nene?.src" :crossorigin="paintedHeroes.nene?.crossorigin" class="hero-character nene" :class="{ 'is-current': displayedMuse === 'nene' }" :alt="displayedMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="displayedMuse !== 'nene'" width="1024" height="1497" decoding="sync" />
+          <img :src="paintedHeroes.natsume?.src" :crossorigin="paintedHeroes.natsume?.crossorigin" class="hero-character natsume" :class="{ 'is-current': displayedMuse === 'natsume' }" :alt="displayedMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="displayedMuse !== 'natsume'" width="1024" height="1497" decoding="sync" />
+          <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="[homeMuse, { 'over-art': displayedMuse }]">
             <ArchiveIcon name="image" />
             <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的画页暂时无法读取。</p></div>
             <button type="button" class="btn btn-ghost btn-sm" @click="retryHero"><ArchiveIcon name="refresh" />重试画页</button>
           </div>
-          <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" role="status">正在载入{{ heroName }}的画页…</p>
-          <div class="orbit-label" aria-live="polite"><span>{{ homeMuse === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ homeMuse === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
+          <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" :class="{ 'over-art': displayedMuse }" role="status">正在载入{{ heroName }}的画页…</p>
+          <div class="orbit-label" aria-live="polite"><span>{{ (displayedMuse || homeMuse) === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ (displayedMuse || homeMuse) === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
         <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
       </div>
@@ -55,8 +57,10 @@
           :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
         >
           <div class="recent-cover" :data-image-id="h.image_id">
-            <img :crossorigin="runtimeResourceCors()" v-if="coverUrl(h)" :src="resolveRuntimeUrl(coverUrl(h))" alt="" class="recent-cover-img" loading="lazy" decoding="async" />
-            <ArchiveIcon v-else name="image" class="placeholder" />
+            <RuntimeImage :src="coverUrl(h)" v-slot="{ image, loaded, failed }">
+              <img v-if="image.src && !failed" v-bind="image" alt="" class="recent-cover-img" :class="{ ready: loaded }" loading="lazy" decoding="async" />
+              <ArchiveIcon v-if="!loaded" name="image" class="placeholder" />
+            </RuntimeImage>
           </div>
           <div class="recent-body">
             <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>
@@ -164,7 +168,7 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import { useHomeHeroes } from '@/composables/useHomeHeroes'
 import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
@@ -277,11 +281,26 @@ const creationEntries = computed(() => [
 ])
 const heroImmediate = ref(false)
 const heroName = computed(() => homeMuse.value === 'nene' ? '绫地宁宁' : '四季夏目')
-const { heroes } = useHomeHeroes()
-const { image: neneHero, loaded: neneLoaded, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroes.value.nene.image)
-const { image: natsumeHero, loaded: natsumeLoaded, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroes.value.natsume.image)
+const { heroes, ready: heroesReady } = useHomeHeroes()
+const { image: neneHero, loaded: neneLoaded, failed: neneFailed, retry: retryNene } = useRuntimeImage(() => heroesReady.value ? heroes.value.nene.image : undefined)
+const { image: natsumeHero, loaded: natsumeLoaded, failed: natsumeFailed, retry: retryNatsume } = useRuntimeImage(() => heroesReady.value ? heroes.value.natsume.image : undefined)
 const heroFailed = computed(() => ({ nene: neneFailed.value, natsume: natsumeFailed.value }))
 const heroLoaded = computed(() => ({ nene: neneLoaded.value, natsume: natsumeLoaded.value }))
+const displayedMuse = ref<'nene' | 'natsume' | null>(null)
+const paintedHeroes = reactive<Partial<Record<'nene' | 'natsume', { src: string; crossorigin?: '' | 'anonymous' | 'use-credentials' }>>>({})
+const portraitName = computed(() => (displayedMuse.value || homeMuse.value) === 'nene' ? '绫地宁宁' : '四季夏目')
+// The visible nodes keep their last decoded URL while a replacement loads on
+// the native staging nodes. Only two painted sources survive, until unmount.
+watch(neneLoaded, loaded => {
+  if (loaded) paintedHeroes.nene = { src: neneHero.value.src, crossorigin: neneHero.value.crossorigin }
+}, { immediate: true, flush: 'sync' })
+watch(natsumeLoaded, loaded => {
+  if (loaded) paintedHeroes.natsume = { src: natsumeHero.value.src, crossorigin: natsumeHero.value.crossorigin }
+}, { immediate: true, flush: 'sync' })
+watch([homeMuse, () => paintedHeroes[homeMuse.value]], ([muse, painted]) => {
+  if (painted) displayedMuse.value = muse
+}, { immediate: true, flush: 'sync' })
+watch(heroesReady, ready => { if (!ready) { delete paintedHeroes.nene; delete paintedHeroes.natsume; displayedMuse.value = null } }, { flush: 'sync' })
 function selectMuse(muse: 'nene' | 'natsume', event: MouseEvent) {
   heroImmediate.value = event.detail === 0
   homeMuse.value = muse

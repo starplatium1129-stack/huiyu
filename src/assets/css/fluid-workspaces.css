@@ -51,7 +51,6 @@ html .showcase-page .filter-pill,
 html .scene-discovery .scene-cat {
   min-height: var(--control-height);
 }
-html .gallery-page .gallery-toolbar-note { font-variant-numeric: tabular-nums; }
 /* 焦点由控件自身和 design-system 的低优先级兜底负责，页面层不再次覆盖。 */
 html .gallery-page .artwork,
 html .showcase-page .sample {
@@ -132,7 +131,6 @@ html .notfound-page .notfound-actions {
   html .control-mobile-nav .nav-local-home { @apply tw:whitespace-nowrap tw:mr-auto; }
   html .gallery-page .gallery-toolbar { @apply tw:gap-s-2 tw:p-s-2; }
   html .gallery-page .gallery-search-field { max-width: none; flex-basis: 100%; }
-  html .gallery-page .gallery-toolbar-note { @apply tw:whitespace-normal tw:ml-0; }
   html .video-studio .video-mode-strip { @apply tw:p-s-1; }
   html .notfound-page .notfound-actions { @apply tw:w-full; }
 }

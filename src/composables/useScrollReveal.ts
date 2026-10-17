@@ -32,7 +32,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     if (root.matches(selector)) elements.unshift(root)
     elements.forEach(el => {
       if (prefersReducedMotion() || !observer || revealedKeys.has(el.getAttribute('data-reveal-key') || '')) { reveal(el); return }
-      if (el.getAttribute('data-reveal-ready') === 'false' || seen.has(el) || el.hasAttribute('data-revealed')) return
+      if (seen.has(el) || el.hasAttribute('data-revealed')) return
       seen.add(el)
       observer.observe(el)
     })
@@ -41,9 +41,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
   function onMutations(records: MutationRecord[]) {
     if (!active || frame) return
     // Counters, status copy and hover decoration do not introduce reveal targets.
-    const changed = records.some(record => record.type === 'attributes'
-      ? record.target instanceof Element && record.target.matches(selector)
-      : [...record.addedNodes].some(node => node instanceof Element && (node.matches(selector) || node.querySelector(selector))))
+    const changed = records.some(record => [...record.addedNodes].some(node => node instanceof Element && (node.matches(selector) || node.querySelector(selector))))
     if (changed) schedule()
   }
   function start() {
@@ -60,7 +58,7 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     window.addEventListener('atelier:motion-preference', observeAll)
     root.addEventListener('focusin', onFocus)
     mutations = new MutationObserver(onMutations)
-    mutations.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-reveal-ready'] })
+    mutations.observe(root, { childList: true, subtree: true })
     observeAll()
   }
   function stop() {

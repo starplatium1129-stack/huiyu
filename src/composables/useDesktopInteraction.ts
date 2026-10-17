@@ -104,7 +104,8 @@ export function usableFocus(element: HTMLElement | null): element is HTMLElement
 
 /** A menu entry may unmount while the appearance panel loads or closes. */
 export function appearanceFocusOrigin(trigger: HTMLElement | null) {
-  return usableFocus(trigger) ? trigger : [...document.querySelectorAll<HTMLElement>(
+  // F1 can start with body focused. It has a box, but cannot receive return focus.
+  return trigger !== document.body && trigger !== document.documentElement && usableFocus(trigger) ? trigger : [...document.querySelectorAll<HTMLElement>(
     '.nav-more-trigger, .nav-menu-toggle, .companion-settings-btn, .orbit-settings-trigger, .appearance-button',
   )].find(usableFocus) ?? null
 }
@@ -123,7 +124,7 @@ export function installDesktopInteraction(router: Router) {
     if (focusFrame !== undefined) cancelAnimationFrame(focusFrame)
     focusFrame = undefined
   }
-  const main = () => document.querySelector<HTMLElement>('.companion-chat-body, .companion-conversation') || document.querySelector<HTMLElement>('main#main, main')
+  const main = () => document.querySelector<HTMLElement>('.companion-chat-body,.companion-conversation') || document.querySelector<HTMLElement>('main')
   const nav = () => document.querySelector<HTMLElement>('.companion-orbit') || [...document.querySelectorAll<HTMLElement>('nav[aria-label="主导航"], .control-rail, .control-mobile-nav, .companion-toolbar, .companion-chat-titlebar, .companion-desktop-float')].find(usableFocus)
   const modalOpen = () => [...document.querySelectorAll<HTMLElement>('dialog[open], [aria-modal="true"]')].some(usableFocus)
   function remember(event: FocusEvent) {
@@ -134,19 +135,19 @@ export function installDesktopInteraction(router: Router) {
     const content = main()
     if (!content) return
     const saved = remembered.get(router.currentRoute.value.path)
-    const candidate = saved && (usableFocus(saved.element) ? saved.element : saved.id ? document.getElementById(saved.id) : null)
+    const candidate = saved && (usableFocus(saved.element) ? saved.element : document.getElementById(saved.id))
     const heading = [...content.querySelectorAll<HTMLElement>('h1')].reverse().find(usableFocus)
     const target = candidate && content.contains(candidate) && usableFocus(candidate) ? candidate : heading || content
-    if (!target.matches('a[href], button, input, select, textarea, [tabindex]')) target.tabIndex = -1
+    if (!target.matches('a[href],button,input,select,textarea,[tabindex]')) target.tabIndex = -1
     target.focus({ preventScroll: true })
   }
   function keydown(event: KeyboardEvent) {
-    if (!desktopShortcutAllowed(event) || modalOpen()) return
-    if (event.key === 'F1' && !event.ctrlKey && !event.shiftKey) {
+    if (event.ctrlKey || !desktopShortcutAllowed(event) || modalOpen()) return
+    if (event.key === 'F1' && !event.shiftKey) {
       if (!nav()) return
       event.preventDefault(); window.dispatchEvent(new Event('atelier:keyboard-help')); return
     }
-    if (event.key === 'F6' && !event.ctrlKey) {
+    if (event.key === 'F6') {
       const navigation = nav()
       if (!navigation || !main()) return
       event.preventDefault()
@@ -155,17 +156,21 @@ export function installDesktopInteraction(router: Router) {
         const active = navigation.querySelector<HTMLElement>('[aria-current]')
         const toggle = navigation.querySelector<HTMLElement>('.nav-menu-toggle')
         const brand = [...navigation.querySelectorAll<HTMLElement>('a[href], button:not(:disabled), [tabindex="0"]')].find(usableFocus)
-        ;(usableFocus(active) ? active : usableFocus(toggle) ? toggle : brand)?.focus()
+        ;(usableFocus(active) ? active : usableFocus(toggle) ? toggle : brand)?.focus({ preventScroll: true })
       }
     }
-    if (event.key === 'Enter' && !event.ctrlKey && !event.shiftKey && event.target instanceof Element && event.target.closest('nav a[href], .nav-more-menu a[href]')) keyboardNavigation = true
+    if (event.key === 'Enter' && !event.shiftKey && event.target instanceof Element) {
+      const anchor = event.target.closest('a[href]')
+      keyboardNavigation = !!(anchor && (nav()?.contains(anchor) || anchor.closest('.nav-more-menu,[data-route-focus]')))
+    }
   }
   function pointerdown() { keyboardNavigation = false; cancelPendingFocus() }
-  const removeAfter = router.afterEach(async (_to, _from, failure) => {
+  const removeAfter = router.afterEach(async (to, from, failure) => {
     const restore = keyboardNavigation; keyboardNavigation = false
     cancelPendingFocus()
     const revision = focusRevision
-    if (disposed || failure || !restore) return
+    // Same-page anchors and selection changes keep their local focus owner.
+    if (disposed || failure || !restore || to.path === from.path) return
     await nextTick()
     if (disposed || revision !== focusRevision) return
     focusFrame = requestAnimationFrame(() => {

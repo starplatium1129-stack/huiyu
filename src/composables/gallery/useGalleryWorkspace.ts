@@ -131,8 +131,8 @@ export function useGalleryWorkspace() {
         compareMode,
         compareOpen,
         compareItems,
-        compareSelected,
-        compareFromRoute,
+        compareSelected: openSelectedComparison,
+        compareFromRoute: openRouteComparison,
         parentImageUrl,
         hasComparableImage,
     } = useGalleryComparison({
@@ -143,6 +143,30 @@ export function useGalleryWorkspace() {
         cardUrls,
         thumbUrls,
     });
+    const requestedComparison = computed(() => route.path === '/gallery' && typeof route.query.compare === 'string' ? route.query.compare : '');
+    let comparisonOwner = '', dismissedComparison = '', comparisonRevision = 0;
+    function compareSelected() {
+        comparisonRevision++; comparisonOwner = ''; dismissedComparison = requestedComparison.value;
+        openSelectedComparison();
+    }
+    function closeComparison() {
+        if (!compareOpen.value) return;
+        const owner = comparisonOwner;
+        comparisonRevision++; comparisonOwner = ''; compareOpen.value = false;
+        if (!owner || unmounted || !viewActive || requestedComparison.value !== owner) return;
+        dismissedComparison = owner;
+        const query = { ...route.query };
+        delete query.compare;
+        void router.replace({ query, hash: route.hash });
+    }
+    async function refreshComparison() {
+        const request = requestedComparison.value, revision = ++comparisonRevision;
+        await loadGalleryStorage();
+        if (unmounted || !viewActive || revision !== comparisonRevision || !request
+            || request !== requestedComparison.value || request === dismissedComparison) return;
+        openRouteComparison();
+        comparisonOwner = compareOpen.value ? request : '';
+    }
 
     const facts = computed(() => artworkFacts(current.value, loras.value));
     /* ---------- 工具函数 ---------- */
@@ -224,8 +248,19 @@ export function useGalleryWorkspace() {
     });
     watch(viewerIndex, index => {
         if (index >= 0 || !viewerReturnFocus.value) return;
-        const box = viewerReturnFocus.value.getBoundingClientRect();
-        if (box.bottom <= 0 || box.right <= 0 || box.top >= innerHeight || box.left >= innerWidth) viewerReturnFocus.value = null;
+        const opener = viewerReturnFocus.value;
+        const cardId = opener.closest<HTMLElement>('[data-card-id]')?.dataset.cardId;
+        const box = opener.getBoundingClientRect();
+        if (!opener.isConnected || (cardId && !visible.value.some(item => String(item.id) === cardId))
+            || box.bottom <= 0 || box.right <= 0 || box.top >= innerHeight || box.left >= innerWidth) {
+            const survivingIds = new Set(visible.value.map(item => String(item.id)));
+            const nearby = [...(shellEl.value?.querySelectorAll<HTMLElement>('[data-card-id]') ?? [])].find(card => {
+                const rect = card.getBoundingClientRect();
+                return survivingIds.has(card.dataset.cardId || '') && rect.bottom > 0 && rect.top < innerHeight;
+            });
+            viewerReturnFocus.value = nearby?.querySelector<HTMLElement>('.artwork-button')
+                ?? shellEl.value?.querySelector<HTMLElement>('.gallery-summary') ?? null;
+        }
     }, { flush: 'sync' });
     useFocusTrap(infoEl, () => viewerIndex.value >= 0 && narrowViewer.value && infoOpen.value, {
         onEscape: closeInfoDrawer, initialFocus: infoCloseBtn, lockScroll: false,
@@ -283,8 +318,7 @@ export function useGalleryWorkspace() {
             .catch(e => console.warn('gallery scene labels load failed', e));
         void sceneStore.loadLoraCatalog().then(() => { loras.value = sceneStore.loras; })
             .catch(e => console.warn('gallery LoRA labels load failed', e));
-        await loadGalleryStorage();
-        compareFromRoute();
+        await refreshComparison();
         // Restore only after the artwork and album snapshot is available.
         restoreFiltersFromQuery();
         // 回收站懒清理（2026-08-30 UX 审计 P0-8）：真删超期软删条目的图片与
@@ -298,21 +332,21 @@ export function useGalleryWorkspace() {
     // Keep an original only where the return viewport has no thumbnail fallback;
     // it still shares the bounded LRU and is released on eviction or unmount.
     let activatedOnce = false;
-    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); if (!activatedOnce) { activatedOnce = true; return; } void loadGalleryStorage().then(compareFromRoute); });
+    onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); if (!activatedOnce) { activatedOnce = true; return; } void refreshComparison(); });
     onDeactivated(() => {
-        viewActive = false; cleanupFilterSync();
+        viewActive = false; comparisonRevision++; cleanupFilterSync();
         const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
         // A stored URL is not a decoded fallback (failed/pending thumbnails
         // otherwise leave a black frame when the painted original is revoked).
         releaseImages(new Set([...keep].filter(id => {
-            const thumb = shellEl.value?.querySelector<HTMLImageElement>(`[data-card-id="${CSS.escape(id)}"] img.artwork-image:not(.artwork-image-hd)`);
-            return !thumb?.complete || !thumb.naturalWidth;
+            const card = shellEl.value?.querySelector<HTMLElement>(`[data-card-id="${CSS.escape(id)}"]`);
+            return card?.dataset.thumbReady !== 'true';
         })));
         retainThumbnails(keep);
         document.removeEventListener('keydown', onKeydown); stopCardObservation();
     });
     onUnmounted(() => {
-        unmounted = true;
+        unmounted = true; comparisonRevision++;
         cleanupFilterSync();
         stopCardObservation();
         narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
@@ -341,10 +375,14 @@ export function useGalleryWorkspace() {
     watch(masonryGroups, scheduleWallScan);
     // Filter URL sync replaces query too. Watch the two values independently so
     // it cannot reload/remount the wall and detach an open viewer's focus target.
-    watch([() => route.query.compare, () => route.query.batch], () => {
-        if (route.path === '/gallery')
-            void loadGalleryStorage().then(compareFromRoute);
-    });
+    watch([requestedComparison, () => route.query.batch], ([request], [previous]) => {
+        comparisonRevision++;
+        if (request !== previous) {
+            dismissedComparison = '';
+            if (comparisonOwner) { comparisonOwner = ''; compareOpen.value = false; }
+        }
+        if (viewActive && route.path === '/gallery') void refreshComparison();
+    }, { flush: 'sync' });
     const actions = useGalleryExports({ current, stamp, sceneTitle, characterName, showToast });
     const { copyPrompt } = actions;
     function downloadCurrent(): Promise<void> { return actions.downloadCurrent(); }
@@ -365,7 +403,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
-        compareOpen, compareItems, loadGalleryStorage, trashBusy,
+        compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy,
         restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryError, history, resetGalleryFilters,
         masonryGroups, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,

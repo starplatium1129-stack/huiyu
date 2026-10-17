@@ -13,7 +13,7 @@
           </StudioTooltip>
           <StudioTooltip content="对白设置">
             <button ref="speechSettingsTrigger" type="button" aria-label="对白设置" :aria-expanded="speechSettingsOpen"
-              aria-controls="companion-dialogue-preferences" @click="speechSettingsOpen = !speechSettingsOpen; historyOpen = false"><ArchiveIcon name="gear" /></button>
+              aria-controls="companion-dialogue-preferences" @click="speechSettingsOpen = !speechSettingsOpen"><ArchiveIcon name="gear" /></button>
           </StudioTooltip>
           <StudioTooltip v-if="bridge?.setChatDocked" anchor :content="docking ? '正在调整贴靠…' : docked ? '解除贴靠' : '贴靠桌宠'">
             <button type="button" :disabled="docking" :aria-pressed="docked" :aria-label="docked ? '解除贴靠' : '贴靠桌宠'"
@@ -36,13 +36,13 @@
         </Suspense>
       </section>
 
-      <section v-else id="companion-dialogue-history" class="companion-dialogue-history" aria-label="最近对话">
-        <div ref="listRef" class="companion-dialogue-history-list" :aria-busy="replyPending" role="log" tabindex="0" aria-label="对话记录" aria-live="off">
+      <section v-show="!speechSettingsOpen" :inert="speechSettingsOpen || undefined" :aria-hidden="speechSettingsOpen || undefined" id="companion-dialogue-history" class="companion-dialogue-history" aria-label="最近对话">
+        <div ref="listRef" class="companion-dialogue-history-list" :aria-busy="replyPending" role="log" tabindex="0" aria-label="对话记录" aria-live="off" @scroll.capture="speechSettingsOpen && $event.stopImmediatePropagation()">
           <div v-if="!displayedMessages.length" class="companion-dialogue-message" data-role="assistant">
             <div class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble"><p class="companion-dialogue-line">{{ currentCharacter.greeting }}</p></div>
           </div>
-          <div v-for="msg in displayedMessages" :key="msg.mid" class="companion-dialogue-message" :data-role="msg.role">
+          <div v-for="msg in displayedMessages" :key="msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid">
             <div v-if="msg.role === 'assistant'" class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble">
               <div class="companion-dialogue-speaker">
@@ -117,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
@@ -160,11 +160,36 @@ const latestReply = computed(() => {
   return last?.role === 'assistant' ? last : undefined
 })
 const replyPending = computed(() => sending.value || liveState.busy || liveState.thinking)
+let viewAlive = true, historyRevision = 0, settingsRevision = 0
+let settingsReading: { character: string; history: boolean; top: number; following: boolean; anchor?: HTMLElement; offset: number } | undefined
+watch(speechSettingsOpen, open => {
+  const revision = ++settingsRevision
+  if (open) {
+    const list = listRef.value
+    const anchor = list && [...list.querySelectorAll<HTMLElement>('[data-message-id]')].find(row => row.getBoundingClientRect().bottom > list.getBoundingClientRect().top)
+    settingsReading = list ? { character: activeChar.value, history: historyOpen.value, top: list.scrollTop, anchor,
+      offset: anchor ? anchor.getBoundingClientRect().top - list.getBoundingClientRect().top : 0,
+      following: list.scrollHeight - list.scrollTop - list.clientHeight < 96 } : undefined
+    return
+  }
+  const reading = settingsReading; settingsReading = undefined
+  void nextTick().then(() => {
+    if (!viewAlive || revision !== settingsRevision || speechSettingsOpen.value || !listRef.value
+      || reading && (reading.character !== activeChar.value || reading.history !== historyOpen.value)) return
+    if (!reading || reading.following) void latest()
+    else if (reading.anchor?.isConnected && listRef.value.contains(reading.anchor)) {
+      listRef.value.scrollTop += reading.anchor.getBoundingClientRect().top - listRef.value.getBoundingClientRect().top - reading.offset
+    } else listRef.value.scrollTop = reading.top
+  })
+}, { flush: 'sync' })
 watch(historyOpen, async open => {
+  const revision = ++historyRevision
   await nextTick()
+  if (!viewAlive || revision !== historyRevision || speechSettingsOpen.value || open !== historyOpen.value) return
   if (open && listRef.value) listRef.value.scrollTop = 0
   else void latest()
 })
+onBeforeUnmount(() => { viewAlive = false; historyRevision++; settingsRevision++ })
 watch(activeChar, () => { historyOpen.value = false; speechSettingsOpen.value = false })
 function onEscape(event: KeyboardEvent) {
   if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || document.querySelector('dialog[open]')) return

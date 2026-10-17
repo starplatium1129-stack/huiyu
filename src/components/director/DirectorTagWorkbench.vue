@@ -1,10 +1,53 @@
 <template>
   <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
+    <section class="tag-browser" aria-label="搜索与选择词条">
+      <div class="tag-dictionary-heading">
+        <strong>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
+        <a v-if="isAnima" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
+      </div>
+      <p v-if="isAnima" class="tag-dictionary-note">普通词条优先 Gelbooru；画师名沿用 Danbooru。</p>
+      <p v-else-if="promptFormat === 'natural-language'" class="tag-dictionary-note">词条用于组织画面，最终以自然语言发送。</p>
+      <div class="tag-search-row">
+        <StudioSearch v-model="tagSearch" class="tag-search" label="搜索词条" placeholder="搜索中文含义、英文词条或别名…" />
+        <button class="btn btn-quiet btn-sm" type="button" aria-controls="manual-tag-entry" @click="focusTagInput">自选词条</button>
+      </div>
+      <div class="tag-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="词条分类">
+        <AnimatedSelection />
+        <button v-for="cat in tagCategories" :key="cat.id" type="button"
+          :aria-pressed="tagCategory === cat.id"
+          @click="tagCategory = cat.id">{{ cat.label }}</button>
+      </div>
+      <div v-content-motion:right="tagCategory" class="tag-results">
+        <StudioTooltip v-for="tag in visibleTags" :key="tag.en" :content="tagDescription(tag)">
+          <button
+            type="button"
+            :class="{ selected: pb.manualTags.has(tag.en) }"
+            :aria-pressed="pb.manualTags.has(tag.en)"
+            @click="pb.toggleManualTag(tag.en)">
+            <ArchiveIcon name="success" class="tag-option-check" />
+            <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ displayTag(tag.en) }}</small>
+          </button>
+        </StudioTooltip>
+        <p v-if="!visibleTags.length" class="tag-results-empty" role="status">没有匹配的词条，试试其他关键词或分类。</p>
+      </div>
+      <p v-if="hiddenTagCount" class="tag-more-hint">
+        另有 {{ hiddenTagCount }} 个匹配词条未展示；可细化搜索，或在「自选词条」中粘贴添加。
+      </p>
+    </section>
+    <section class="tag-editor" aria-label="自选词条与衣橱">
+    <div class="tag-editor-entry">
     <div class="panel-title expert-tags-header">
       <label for="manual-tag-entry">自选词条 <small class="expert-tag-count" v-if="pb.manualTags.size">已选 {{ pb.manualTags.size }} 个</small></label>
       <div v-if="pb.manualTags.size" class="expert-tags-actions">
         <button type="button" class="btn btn-quiet btn-sm clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
+    </div>
+    <input id="manual-tag-entry" ref="tagInput" v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="输入或批量粘贴词条，按回车添加…"
+      @keydown.enter="onTagEnter" />
+    <small class="tag-entry-hint">支持逗号、顿号或换行分隔，按回车添加。</small>
+    <datalist id="prompt-tag-suggestions">
+      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="displayTag(tag.canonicalTag)" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
+    </datalist>
     </div>
     <div v-if="pb.manualTags.size" class="manual-tags">
       <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
@@ -13,15 +56,10 @@
             <span class="manual-tag-en">{{ displayTag(tag) }}</span>
             <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
           </span>
-          <button type="button" class="btn btn-quiet btn-sm btn-icon" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)"><ArchiveIcon name="close" /></button>
+          <button type="button" class="btn btn-quiet btn-sm btn-icon" :aria-label="'移除词条 ' + tag" @click="removeTag(tag, $event)"><ArchiveIcon name="close" /></button>
         </span>
       </StudioTooltip>
     </div>
-    <input id="manual-tag-entry" v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
-      @keydown.enter="onTagEnter" />
-    <datalist id="prompt-tag-suggestions">
-      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="displayTag(tag.canonicalTag)" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
-    </datalist>
     <!-- 全角色通用·特典衣橱预设（无论工作室角色还是热门角色均可一键套用） -->
     <details class="outfit-presets" aria-label="全角色通用·特典衣橱">
       <StudioDisclosureSummary class="wardrobe-summary">
@@ -92,43 +130,8 @@
       </div>
       </div>
     </details>
-    <p v-if="pb.isPopular" class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可用于专家模式微调。</p>
-    <div class="tag-browser">
-      <div class="tag-dictionary-heading">
-        <strong>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
-        <a v-if="isAnima" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
-      </div>
-      <p v-if="isAnima" class="tag-dictionary-note">普通词条优先 Gelbooru；画师名沿用 Danbooru。</p>
-      <p v-else-if="promptFormat === 'natural-language'" class="tag-dictionary-note">词条用于组织画面，最终以自然语言发送。</p>
-      <StudioSearch v-model="tagSearch" class="tag-search tw:mb-s-2" label="搜索词条" placeholder="搜索中文含义、英文词条或别名…" />
-      <div class="tag-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="词条分类">
-        <AnimatedSelection />
-        <button v-for="cat in tagCategories" :key="cat.id" type="button"
-          :aria-pressed="tagCategory === cat.id"
-          @click="tagCategory = cat.id">{{ cat.label }}</button>
-      </div>
-      <div v-content-motion:right="tagCategory" class="tag-results">
-        <StudioTooltip v-for="tag in visibleTags" :key="tag.en" :content="tagDescription(tag)">
-          <button
-            type="button"
-            :class="{ selected: pb.manualTags.has(tag.en) }"
-            :aria-pressed="pb.manualTags.has(tag.en)"
-            @click="pb.toggleManualTag(tag.en)">
-            <ArchiveIcon name="success" class="tag-option-check" />
-            <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ displayTag(tag.en) }}</small>
-          </button>
-        </StudioTooltip>
-        <p v-if="!visibleTags.length" class="tag-results-empty" role="status">没有匹配的词条，试试其他关键词或分类。</p>
-      </div>
-      <!--
-        截断告知（2026-08-30 UX 审计）：这里长期硬截 72 条且不说明，用户会以为
-        「库里只有这些」。提示里给出还能用的手段——继续输入关键词收窄，或直接
-        在输入框手输（那条路径不经过这里的截断）。
-      -->
-      <p v-if="hiddenTagCount" class="tag-more-hint">
-        还有 {{ hiddenTagCount }} 个匹配词条未展示，可输入更具体的关键词收窄，或在上方「自选词条」中粘贴添加
-      </p>
-    </div>
+    <p v-if="pb.isPopular" class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；词库中的词条可用于专家模式微调。</p>
+    </section>
   </div>
 </template>
 
@@ -177,6 +180,24 @@ function tagDescription(tag: TagEntry): string {
 
 const tagSearch = ref('')
 const tagInputText = ref('')
+const tagInput = ref<HTMLInputElement | null>(null)
+function focusTagInput() {
+  const input = tagInput.value
+  const editor = input?.closest<HTMLElement>('.tag-editor'), body = input?.closest<HTMLElement>('.prompt-workbench-body')
+  if (!input || !editor || !body) return
+  input.focus({ preventScroll: true })
+  const container = /auto|scroll/.test(getComputedStyle(editor).overflowY) ? editor : body
+  const entry = editor.querySelector<HTMLElement>('.tag-editor-entry') || input
+  const bounds = container.getBoundingClientRect(), target = entry.getBoundingClientRect()
+  const padding = parseFloat(getComputedStyle(container).scrollPaddingTop) || 0
+  const top = bounds.top + container.clientTop + padding, bottom = bounds.top + container.clientTop + container.clientHeight - padding
+  const delta = target.top < top ? target.top - top : Math.max(0, target.bottom - bottom)
+  if (delta) container.scrollBy({ top: delta, behavior: 'instant' })
+}
+function removeTag(tag: string, event: MouseEvent) {
+  if (event.currentTarget === document.activeElement) focusTagInput()
+  pb.toggleManualTag(tag)
+}
 const inputSuggestions = computed(() => tagInputText.value.trim() && !/[,，、\r\n]/.test(tagInputText.value)
   ? pb.tagDictionary.entries.filter(tag => matchesPromptTag({ en: tag.canonicalTag, cn: tag.zhLabel, cat: tag.category, aliases: tag.aliases }, tagInputText.value)).slice(0, 12) : [])
 const tagCategory = ref('all')

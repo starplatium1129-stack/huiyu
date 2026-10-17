@@ -1,6 +1,6 @@
 <template>
   <div class="page-root tw:relative tw:isolate tw:min-h-screen tw:flex tw:flex-col">
-    <a class="skip-link" href="#main">跳到主要内容</a>
+    <RouterLink class="skip-link" :to="{ query: currentRoute.query, hash: '#main' }" @click="focusMain">跳到主要内容</RouterLink>
     <AppNav />
     <RouteAtmosphere />
     <GuestGuide />
@@ -39,7 +39,8 @@ import GuestGuide from './GuestGuide.vue'
 import { useRoute } from 'vue-router'
 
 const currentRoute = useRoute()
-const { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled } = useRouteTransition(() => currentRoute.path, { initialFade: true })
+function focusMain() { document.getElementById('main')?.focus({ preventScroll: true }) }
+const { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled } = useRouteTransition(() => currentRoute.path)
 const { pendingPath } = useNavigationFeedback()
 // 页脚年份跟随当前年份，避免手写年份过期
 const currentYear = new Date().getFullYear()

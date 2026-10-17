@@ -1,4 +1,4 @@
-import { computed, getCurrentScope, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
+import { computed, getCurrentScope, onDeactivated, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
@@ -57,6 +57,8 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
     if (['submitting', 'running', 'cancelling'].includes(phase)) cancelInpaintPreparation(true)
     if (phase === 'submitting' && !submittingInpaint) clearInpaintOriginal()
   }, { flush: 'sync' })
+  // Accepted generations have already released controller; only preparation belongs to this UI.
+  onDeactivated(() => { cancelInpaintPreparation(true); inpaintOpen.value = false })
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; cancelInpaintPreparation(true); clearInpaintOriginal() })
 
   const inpaintCharacter = computed<'nene' | 'natsume' | null>(() => {

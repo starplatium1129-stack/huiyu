@@ -51,7 +51,8 @@
     </div>
 
     <div v-else v-content-motion:right="pb.isPopular" class="character-source-content">
-      <PopularCharacterPicker
+      <AsyncPanel :loader="loadPopularCharacterPicker" label="热门角色" v-slot="{ component }">
+      <component :is="component"
         v-model:search="popularSearch"
         :characters="pb.popularCharacters"
         :selected-character-id="pb.subject.kind === 'popular' ? pb.subject.characterId : ''"
@@ -59,6 +60,7 @@
         @select="$emit('selectCharacter', $event)"
         @select-outfit="$emit('selectOutfit', $event)"
       />
+      </AsyncPanel>
     </div>
   </div>
 </template>
@@ -66,12 +68,13 @@
 <script setup lang="ts">
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { characterArtEntry } from '@/platform/characterArtState'
-import { ref, defineAsyncComponent } from 'vue'
+import { ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { charOptions as historicalCharacterOptions } from '@/composables/scene/directorOptions'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-const CharacterPortrait = defineAsyncComponent(() => import('@/components/library/CharacterPortrait.vue'))
-const PopularCharacterPicker = defineAsyncComponent(() => import('@/components/popular/PopularCharacterPicker.vue'))
+import CharacterPortrait from '@/components/library/CharacterPortrait.vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadPopularCharacterPicker = () => import('@/components/popular/PopularCharacterPicker.vue')
 import type { PopularCharacter } from '@/utils/popularContent'
 import '@/assets/css/director/components/DirectorCharacterPanel.css'
 

@@ -2,7 +2,9 @@
   <article class="page showcase-page">
     <header class="showcase-heading">
       <div class="heading-copy tw:min-w-0">
-        <div class="heading-title"><h1>参考画册</h1><span class="collection-count"><strong>{{ stats.total }}</strong> 幅灵感</span></div>
+        <p class="showcase-kicker"><ArchiveIcon name="book" />ARTBOOK / 邂逅灵感</p>
+        <div class="heading-title"><h1>参考画册</h1><span class="collection-count"><strong>{{ manifestLoading && !entries.length ? '—' : entries.length }}</strong> 幅灵感</span></div>
+        <p class="showcase-invitation">在光影与故事之间，拾起下一幅画的开端。</p>
       </div>
       <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />按场景寻找灵感</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest(true)"><ArchiveIcon name="refresh" /></button></div>
     </header>
@@ -10,12 +12,12 @@
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
         <div class="showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ !selectedAlbum && typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
-        <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
+        <StudioSearch v-show="!albumsOpen" ref="searchInput" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
         <div v-show="!albumsOpen" class="filter-group studio-segments tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" data-fluid-glass role="group" aria-label="样张来源">
           <AnimatedSelection />
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
-        <button v-if="hasFilters && !albumsOpen" class="filter-reset" type="button" @click="resetFilters">清除筛选</button>
+        <button v-if="hasFilters && !albumsOpen" class="filter-reset" type="button" @click="resetFromControl">清除筛选</button>
       </div>
       <details v-show="!albumsOpen" class="showcase-filters">
         <StudioDisclosureSummary><span>细选画册</span><span class="filter-summary">{{ filterSummary }}</span></StudioDisclosureSummary>
@@ -37,11 +39,11 @@
     </div>
 
     <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册…' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest(true)">重试</button></div>
-    <div v-show="albumsOpen" v-content-motion:up="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
+    <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
       <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
       <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
-    <div v-show="!albumsOpen" v-content-motion:up="!albumsOpen" class="showcase-image-browse">
+    <div v-show="!albumsOpen" v-content-motion:up.defer="!albumsOpen" class="showcase-image-browse">
     <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="selectedAlbum || typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ selectedAlbum?.title || (typeFilter === 'all' ? '全部样张' : typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幅 · R18 默认模糊</span></div>
     <ArchiveStatePanel
       v-if="unavailable"
@@ -68,7 +70,7 @@
       :kind="entries.length ? 'filtered' : 'empty'"
       :title="entries.length ? '没有匹配的参考样张' : '画册暂未收录样张'"
     >
-      <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
+      <button v-if="hasFilters" class="btn btn-ghost" type="button" @click="resetFromControl">重置筛选</button>
     </ArchiveStatePanel>
 
     <div v-else ref="listRoot" data-route-arrive class="showcase-grid" :aria-busy="manifestLoading">
@@ -92,17 +94,24 @@
           <ArtworkViewerStage :items="filtered" :index="currentIdx" :active="viewerMounted && !viewerClosing" :original="originalViewer"
             :src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :thumb-urls="viewerThumbs" :title="entry => entry.title"
             @select="openViewer(filtered[$event].id)" @close="closeViewer" @toggle-original="toggleOriginalViewer" @dismiss-info="closeViewerInfo"
-            @interact="viewerHero.cancel" @load="onViewerImageLoad" @error="viewerImageFailed = true">
+            @interact="viewerHero.cancel" @error="viewerImageFailed = true">
             <template #tools><button ref="viewerInfoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
           </ArtworkViewerStage>
           <aside id="showcase-viewer-info" ref="viewerInfoEl" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
             <header class="viewer-info-header"><span class="viewer-kicker">参考画册</span><button ref="viewerInfoClose" class="viewer-info-close" type="button" @click="closeViewerInfo"><ArchiveIcon name="close" />关闭信息</button></header>
+            <div class="viewer-info-body">
             <h2 id="showcase-viewer-title" class="viewer-title">{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
               <span>{{ charLabel(currentEntry.char) }}</span>
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
             </div>
+            <div class="viewer-actions">
+              <StudioTooltip v-if="workspaceTarget" :content="viewerClosing ? null : workspaceTarget.hint">
+                <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
+              </StudioTooltip>
+            </div>
+            <div class="viewer-story">{{ currentEntry.story }}</div>
             <details v-if="currentEntry.meta" class="viewer-details"><StudioDisclosureSummary>创作参数</StudioDisclosureSummary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
               <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
               <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
@@ -111,11 +120,6 @@
               <span v-if="currentEntry.meta.seed !== undefined">Seed {{ currentEntry.meta.seed }}</span>
             </div>
             </details>
-            <div class="viewer-story">{{ currentEntry.story }}</div>
-            <div class="viewer-actions">
-              <StudioTooltip v-if="workspaceTarget" :content="viewerClosing ? null : workspaceTarget.hint">
-                <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
-              </StudioTooltip>
             </div>
           </aside>
         </template>
@@ -177,11 +181,11 @@ const albumSelection = ref('all')
 const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
 const albumEntryIds = computed(() => selectedAlbum.value ? new Set(selectedAlbum.value.entryIds) : null)
 const featured  = ref(new Set<string>())
-const stats     = ref({ total: '—', safe: '—', r15: '—' })
 const unavailable = ref(false)
 /** manifest 未返回前显示加载面板，避免闪现错误的"没有匹配样张"空状态 */
 const manifestLoading = ref(true)
 const searchQuery = ref('')
+const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const scope       = ref<'all' | 'featured'>('all')
 const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
 const { albumsOpen, albumRoot, imageHeading, showAlbums, showImages, openAlbum: navigateAlbum } = useAlbumNavigation(albumSelection)
@@ -194,6 +198,7 @@ const loadSentinel = ref<HTMLElement | null>(null)
 let sentinelObserver: IntersectionObserver | null = null
 function loadMore() { visibleCount.value += PAGE_SIZE }
 const currentId   = ref('')
+let linkedSceneId = ''
 const viewerMounted = ref(false)
 const viewerClosing = ref(false)
 const originalViewer = ref(false)
@@ -236,10 +241,6 @@ const viewerMotion = useFluidDialog(dialogEl, {
   dispose(el) { viewerHero.cancel(); viewerSurface.dispose(el) },
 })
 const viewerImageFailed = ref(false)
-const viewerImageReady = ref(false)
-function onViewerImageLoad() {
-  viewerImageReady.value = true
-}
 
 const viewerVersion = ref(0)
 // Stable URLs reuse browser-decoded thumbnails; explicit refresh alone busts cache.
@@ -329,6 +330,11 @@ const listRoot = ref<HTMLElement | null>(null)
 useListTransition(listRoot, () => paged.value.map(entry => entry.id))
 const currentIdx = computed(() => filtered.value.findIndex(e => e.id === currentId.value))
 const currentEntry = computed(() => filtered.value[currentIdx.value] ?? null)
+// Let catalogue replacement and linked-scene filter resets settle before closing.
+watch(currentEntry, entry => {
+  if (!entry && viewerMounted.value && viewActive && !unmounted) closeViewer()
+}, { flush: 'post' })
+watch(currentId, () => { viewerInfoEl.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0) }, { flush: 'post' })
 const viewerThumbs = computed(() => Object.fromEntries(filtered.value.map(entry => [entry.id, thumbSrc(entry)])))
 const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
 
@@ -344,11 +350,10 @@ function openViewer(id: string) {
   viewerMounted.value = true
   currentId.value = id
   viewerImageFailed.value = false
-  viewerImageReady.value = false
   // Opening after the computed entry has rendered avoids relying on a same-card
   // close/reopen value change, which is not guaranteed during dialog teardown.
   void nextTick(() => {
-    if (currentId.value === id && currentEntry.value && dialogEl.value && !unmounted && viewActive && route.path === '/showcase') {
+    if (viewerMounted.value && !viewerClosing.value && currentId.value === id && currentEntry.value && dialogEl.value && !unmounted && viewActive && route.path === '/showcase') {
       viewerMotion.open()
     }
   })
@@ -361,21 +366,28 @@ function toggleOriginalViewer() {
 function openLinkedScene() {
   if (!viewActive || route.path !== '/showcase') return
   const id = route.query.scene
-  if (typeof id !== 'string' || !entries.value.some(entry => entry.id === id)) return
+  if (typeof id !== 'string') { if (linkedSceneId) closeViewer(); return }
+  if (!entries.value.some(entry => entry.id === id)) {
+    if (linkedSceneId && !manifestLoading.value && !reloadError.value) closeViewer()
+    return
+  }
+  if (linkedSceneId === id && viewerMounted.value && currentEntry.value) return
+  linkedSceneId = id
   if (!filtered.value.some(entry => entry.id === id)) resetFilters()
   albumsOpen.value = false
   openViewer(id)
 }
 watch(() => route.query.scene, openLinkedScene)
 function clearLinkedScene() {
-  if (route.path !== '/showcase') return
-  if (typeof route.query.scene !== 'string') return
+  const id = linkedSceneId
+  linkedSceneId = ''
+  if (!id || route.path !== '/showcase' || route.query.scene !== id) return
   const query = { ...route.query }
   delete query.scene
-  void router.replace({ query })
+  void router.replace({ query, hash: route.hash })
 }
 function closeViewer() {
-  if (viewerClosing.value || !dialogEl.value?.open) return
+  if (viewerClosing.value || (!viewerMounted.value && !dialogEl.value?.open)) return
   // Clear only the tooltip portal before native close (Reka's Teleport anchor
   // otherwise becomes stale), then release native focus and media together.
   viewerClosing.value = true
@@ -400,12 +412,18 @@ function move(step: number) {
   openViewer(arr[next].id)
 }
 function openRandom() {
-  const safe = filtered.value
-  const src = safe.length ? safe : filtered.value
+  const src = filtered.value
   if (!src.length) return
   openViewer(src[Math.floor(Math.random() * src.length)].id)
 }
 function resetFilters() { albumSelection.value = 'all'; searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
+async function resetFromControl(event: MouseEvent) {
+  const owned = document.activeElement === event.currentTarget
+  resetFilters()
+  await nextTick()
+  if (owned && viewActive && !unmounted && !albumsOpen.value && document.activeElement === document.body && !document.querySelector('dialog:modal'))
+    searchInput.value?.focus({ preventScroll: true })
+}
 
 function onKey(e: KeyboardEvent) {
   if (!dialogEl.value?.open || viewerClosing.value || !currentEntry.value || e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey) return
@@ -435,11 +453,6 @@ async function loadManifest(refreshImages = false) {
     entries.value = parsed.entries
     openLinkedScene()
     featured.value = new Set([...(curation.signatureSceneIds ?? []), ...(curation.curatedSceneIds ?? [])])
-    stats.value = {
-      total: String(parsed.entries.length),
-      safe: String(parsed.counts.All),
-      r15: String(parsed.counts.R15)
-    }
   } catch (err) {
     if (manifestController.signal.aborted || revision !== manifestRevision) return
     console.warn('Showcase unavailable:', err)
@@ -452,6 +465,7 @@ async function loadManifest(refreshImages = false) {
 onActivated(() => { viewActive = true; document.addEventListener('keydown', onKey); if (entries.value.length) openLinkedScene(); if (loadSentinel.value) sentinelObserver?.observe(loadSentinel.value) })
 onDeactivated(() => {
   viewActive = false
+  linkedSceneId = ''
   document.removeEventListener('keydown', onKey)
   sentinelObserver?.disconnect()
   viewerMotion.dispose()
@@ -463,15 +477,16 @@ onMounted(async () => {
   unmounted = false
   document.addEventListener('keydown', onKey)
   await loadManifest()
+  if (unmounted) return
   // 无限滚动：哨兵进入视口（提前 600px 预载）即自动追加一页，直到全部加载完
   if ('IntersectionObserver' in window) {
     sentinelObserver = new IntersectionObserver(
       (entries) => {
-        if (!albumsOpen.value && entries.some(e => e.isIntersecting) && visibleCount.value < filtered.value.length) loadMore()
+        if (viewActive && !albumsOpen.value && entries.some(e => e.isIntersecting) && visibleCount.value < filtered.value.length) loadMore()
       },
       { rootMargin: '600px 0px' }
     )
-    if (loadSentinel.value) sentinelObserver.observe(loadSentinel.value)
+    if (viewActive && loadSentinel.value) sentinelObserver.observe(loadSentinel.value)
   }
 })
 onUnmounted(() => {

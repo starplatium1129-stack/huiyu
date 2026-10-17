@@ -497,7 +497,7 @@ export function usePromptWorkspace() {
     };
     const healthBindings: PromptHealthBindings = {
         pb: reactive({ directorMode: toRef(pb, 'directorMode'), isPopular: toRef(pb, 'isPopular'), manualTags: toRef(pb, 'manualTags') }),
-        previewPromptView, previewContext: unified.previewContext, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveCurrentResult,
+        previewPromptView, previewContext: unified.previewContext, modelProfileView, reportView, artViolationsView, loraSpecs, copyPrompt, saveDraft: pb.saveDraft,
     };
     const deliveryBindings: PromptDeliveryBindings = {
         pb: reactive({ char: toRef(pb, 'char'), activeScene: toRef(pb, 'activeScene'), story: toRef(pb, 'story') }),

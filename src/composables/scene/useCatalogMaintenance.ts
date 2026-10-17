@@ -16,9 +16,12 @@ const isDraftRecord = (value: unknown): value is CatalogRecord => !!value && typ
 export function useCatalogMaintenance() {
   const kind = ref<CatalogKind>('scene'), search = ref(''), character = ref(''), category = ref(''), rating = ref(''), sort = ref('order'), page = ref(1)
   const result = ref<CatalogPage | null>(null), counts = ref<Record<string, number>>({}), loading = ref(false), error = ref(''), hint = ref('')
+  const listScope = ref(''), listKind = ref<CatalogKind>()
+  const listMatchesKind = computed(() => listKind.value === kind.value)
   const selected = ref<CatalogRecord | null>(null), currentServer = ref<CatalogRecord | null>(null), detailLoading = ref(false)
   const pending = ref<CatalogChange[]>([]), busy = ref(false), preview = ref<CatalogReceipt | null>(null)
   const history = ref<Array<{ revision: number; at: string; removed: boolean }>>([])
+  const historyLoading = ref(false), historyError = ref('')
   const baseline = ref(''), bulkInput = ref(''), bulkError = ref('')
   const nextSceneId = ref('')
   const characterNames = ref<Record<string, string>>({})
@@ -39,7 +42,8 @@ export function useCatalogMaintenance() {
     finally { if (namesController === controller) namesLoadingVersion = null }
   }
   const importSnapshot = ref<CatalogSnapshot | null>(null), importPreview = ref(false)
-  let listController: AbortController | null = null, detailController: AbortController | null = null, listSeq = 0, detailSeq = 0
+  let listController: AbortController | null = null, detailController: AbortController | null = null, historyController: AbortController | null = null
+  let listSeq = 0, detailSeq = 0, historySeq = 0
   const dirtyEditor = computed(() => !!selected.value && JSON.stringify(selected.value) !== baseline.value)
   const dirty = computed(() => !!pending.value.length || dirtyEditor.value)
   let disposed = false, requestedPage = 1, bulkReadSeq = 0
@@ -51,18 +55,37 @@ export function useCatalogMaintenance() {
   function resetEditor(record: CatalogRecord | null = null) {
     invalidateDetail()
     selected.value = record; baseline.value = record ? JSON.stringify(record) : ''
-    currentServer.value = null; history.value = []
+    currentServer.value = null; clearHistory()
   }
-  const totalPages = computed(() => Math.max(1, Math.ceil((result.value?.total ?? 0) / 24)))
+  function clearHistory() {
+    historyController?.abort(); historyController = null; historySeq++
+    history.value = []; historyLoading.value = false; historyError.value = ''
+  }
+  async function loadHistory() {
+    const record = selected.value
+    if (disposed || !record?.revision) return
+    historyController?.abort()
+    const controller = new AbortController(), seq = ++historySeq; historyController = controller
+    const current = () => !disposed && seq === historySeq && !controller.signal.aborted
+      && selected.value?.kind === record.kind && selected.value.id === record.id
+    historyLoading.value = true; historyError.value = ''
+    try {
+      const versions = await catalogApi.history(record.kind, record.id, controller.signal)
+      if (current()) history.value = versions.items
+    } catch (e) { if (current()) historyError.value = (e as Error).message }
+    finally { if (current()) { historyLoading.value = false; historyController = null } }
+  }
+  const totalPages = computed(() => listMatchesKind.value ? Math.max(1, Math.ceil((result.value?.total ?? 0) / 24)) : 1)
   async function load() {
     if (disposed) return
     clearTimeout(timer); requestedPage = page.value
     listController?.abort(); const controller = new AbortController(); listController = controller; const seq = ++listSeq
     loading.value = true; error.value = ''
     try {
-      const data = await catalogApi.query({ kind: kind.value, search: search.value, character: character.value, category: category.value, rating: rating.value, sort: sort.value, page: page.value }, controller.signal)
+      const query = { kind: kind.value, search: search.value, character: character.value, category: category.value, rating: rating.value, sort: sort.value, page: page.value }
+      const data = await catalogApi.query(query, controller.signal)
       if (seq !== listSeq) return
-      result.value = data; page.value = data.page
+      result.value = data; listKind.value = query.kind; listScope.value = JSON.stringify({ ...query, page: data.page }); page.value = data.page
       void loadCharacterNames(data.version)
       if (data.version !== statsVersion) {
         const stats = await catalogApi.stats(controller.signal)
@@ -75,12 +98,12 @@ export function useCatalogMaintenance() {
     return !dirtyEditor.value || await confirmAction({ title: '放下这次修改？', message: '当前内容还没有暂存，离开后这些修改会丢失。', confirmLabel: '放弃修改', danger: true })
   }
   async function select(item: CatalogSummary | { kind: CatalogKind; id: string }): Promise<boolean> {
-    if (busy.value || disposed) return false
+    if (busy.value || disposed || item.kind !== kind.value) return false
     const seq = invalidateDetail()
-    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return false
+    if (!await canSwitch() || seq !== detailSeq || busy.value || disposed || item.kind !== kind.value) return false
     const controller = new AbortController(); detailController = controller
     let opened = false
-    detailLoading.value = true; hint.value = ''; currentServer.value = null; history.value = []
+    detailLoading.value = true; hint.value = ''; currentServer.value = null
     try {
       const draft = pending.value.find(c => key(c.kind, c.id) === key(item.kind, item.id))
       const record = (await catalogApi.record(item.kind, item.id, undefined, controller.signal)).record
@@ -89,8 +112,7 @@ export function useCatalogMaintenance() {
       if (draft && draft.expectedRevision !== record.revision) currentServer.value = clone(record)
       baseline.value = JSON.stringify(selected.value)
       opened = true
-      const versions = await catalogApi.history(item.kind, item.id, controller.signal)
-      if (seq === detailSeq) history.value = versions.items
+      clearHistory(); void loadHistory()
     } catch (e) { if (seq === detailSeq && !controller.signal.aborted) hint.value = (e as Error).message }
     finally { if (seq === detailSeq) detailLoading.value = false }
     return opened && seq === detailSeq && !disposed
@@ -237,6 +259,7 @@ export function useCatalogMaintenance() {
   const exportDraft = () => download({ format: 'huiyu-content-draft', version: 1, changes: pending.value,
     editor: selected.value, baseline: baseline.value ? JSON.parse(baseline.value) : null }, 'content-draft.json')
   async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json') } catch (e) { hint.value = (e as Error).message } }
+  watch(kind, invalidateDetail, { flush: 'sync' })
   watch([kind, character, category, rating, sort], () => { page.value = 1; void load() })
   watch(search, () => { clearTimeout(timer); timer = setTimeout(() => { page.value = 1; void load() }, 180) })
   watch(page, () => { if (page.value !== result.value?.page && page.value !== requestedPage) void load() })
@@ -246,7 +269,7 @@ export function useCatalogMaintenance() {
   const release = registerMaintenanceParticipant(() => { if (dirty.value) throw new Error('UNSAVED_CONTENT'); if (busy.value) throw new Error('CONTENT_BUSY') })
   const beforeUnload = (event: BeforeUnloadEvent) => { if (dirty.value || busy.value) event.preventDefault() }
   onMounted(() => { window.addEventListener('beforeunload', beforeUnload); void load() })
-  onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
+  onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); clearHistory(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
   onBeforeRouteLeave(async () => !busy.value && (!dirty.value || await confirmAction({ title: '离开内容维护？', message: '未保存修改将丢失，可先导出草稿。', confirmLabel: '离开', danger: true })))
-  return { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
+  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
 }

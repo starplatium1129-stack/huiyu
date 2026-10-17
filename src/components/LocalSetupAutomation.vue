@@ -1,5 +1,5 @@
 <template>
-  <div class="setup-automation">
+  <div ref="automationRoot" class="setup-automation">
     <p v-if="automation.error.value" ref="errorEl" tabindex="-1" class="setup-error" role="alert">{{ automation.error.value }}</p>
     <div v-if="automation.operationUncertain.value" class="setup-blocker" role="status"><ArchiveIcon name="info" /><span>后台进度尚未确认</span><button class="btn btn-primary btn-sm" type="button" @click="automation.retryOperation">继续核对进度</button></div>
     <template v-if="automation.completed.value">
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="setup-submit">
-        <div v-if="automation.serviceMustStop.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="warning" /><span>补装节点前，请先停止 ComfyUI。</span><a class="btn btn-ghost btn-sm" href="#control-overview">去停止服务</a><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">已停止，重新检查</button></div>
+        <div v-if="automation.serviceMustStop.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="warning" /><span>补装节点前，请先停止 ComfyUI。</span><RouterLink class="btn btn-ghost btn-sm" :to="{ query: $route.query, hash: '#control-overview' }">去停止服务</RouterLink><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">已停止，重新检查</button></div>
         <div v-if="workspaceBlocked || !statusConfirmed || automation.environmentRequired.value || !automation.hasSelection.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="info" /><span>{{ workspaceBlocked ? '请先确认存放位置。' : !statusConfirmed ? '配置检查尚未完成。' : automation.environmentRequired.value ? '请选择上方的绘图运行环境。' : '选择 AI 绘图或本地聊天。' }}</span><button v-if="!statusConfirmed && !workspaceBlocked" class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查</button></div>
         <label class="setup-review"><input v-model="automation.reviewed.value" type="checkbox" :disabled="!automation.hasSelection.value" /><span>同意下载、安装并启用所选功能及其<a v-if="automation.hasSelection.value" :href="automation.drawing.value ? selectedImage?.preparation?.licenseUrl : selectedChat?.preparation?.licenseUrl" target="_blank" rel="noopener noreferrer">使用许可</a></span></label>
         <div class="setup-buttons"><button class="btn btn-primary" type="button" :disabled="!canRun" @click="automation.run"><ArchiveIcon name="download" />{{ automation.error.value ? '继续下载并配置' : '下载并自动配置' }}</button><button v-if="automation.canStartExisting.value" class="btn btn-ghost" type="button" :disabled="!statusConfirmed || workspaceBlocked" @click="automation.startExisting">使用已有环境</button></div>
@@ -90,7 +90,14 @@ const props = defineProps<{ snapshot: LocalSetupResponse; workspaceBlocked: bool
 const emit = defineEmits<{ refresh: []; 'download-result': [result: LocalSetupDownloadResult]; 'model-selected': [modelId: string]; phase: [value: 'selection' | 'preparing' | 'ready']; restart: []; workspace: [] }>()
 const automation = useLocalSetupAutomation(toRef(props, 'snapshot'), toRef(props, 'workspaceBlocked'), result => emit('download-result', result), () => emit('refresh'), toRef(props, 'statusConfirmed'))
 const errorEl = ref<HTMLElement | null>(null)
-watch(automation.error, async value => { if (value) { await nextTick(); errorEl.value?.focus() } })
+const automationRoot = ref<HTMLElement | null>(null)
+watch(automation.error, async value => {
+  const origin = document.activeElement
+  if (!value || !(origin instanceof HTMLElement) || !automationRoot.value?.contains(origin)) return
+  await nextTick()
+  if (automation.error.value === value && errorEl.value?.isConnected && (document.activeElement === document.body
+    || document.activeElement === origin && !origin.getClientRects().length)) errorEl.value.focus({ preventScroll: true })
+})
 watch(automation.modelId, model => emit('model-selected', model), { immediate: true })
 watch([automation.busy, automation.completed], () => emit('phase', automation.busy.value ? 'preparing' : automation.completed.value ? 'ready' : 'selection'), { immediate: true })
 const rank = (id: string) => id === 'anima-miaomiao-v1.6' ? 0 : id === 'anima-base-v1.0' ? 1 : id === 'anima-aesthetic-v1.1' ? 2 : 3

@@ -213,9 +213,12 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
         codeSplitting: {
           // Split feature groups by their actual consumers, retaining lazy
           // boundaries when shared helpers also appear in another route.
-          // Initial modules always travel together. Visual primitives retain their
+          // Keep the HTML wrapper and main's startup effects out of shared helpers.
+          // Initial dependencies stay together; visual primitives retain their
           // consumer boundaries so a static icon cannot pull in async popovers.
           groups: [
+            { name: 'startup', test: /[\\/](?:src[\\/]main\.ts|index\.html)$/,
+              priority: 110, includeDependenciesRecursively: false },
             { name: 'bootstrap', tags: ['$initial'], priority: 100 },
             { name: 'ui-base', priority: 95, entriesAware: true,
               test: /[\\/]src[\\/]components[\\/](visual[\\/](ArchiveIcon|FluidTransition|AnimatedSelection|ToggleSwitch|ArchiveStatePanel)|ui[\\/](StudioTooltip|StudioPopover|StudioDisclosureSummary|StudioSearch))\.vue/ },

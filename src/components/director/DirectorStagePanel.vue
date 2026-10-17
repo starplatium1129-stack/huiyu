@@ -125,6 +125,7 @@
           @error="onResultImageError"
         />
       </div>
+      <div v-if="!generationBusy && !waitingForResult && !inpaintCompareActive && failedResultUrl !== displayResultUrl" class="result-reading-feedback" role="status"><ArchiveIcon name="image" /><span>正在读取成片…</span></div>
     </div>
     </div>
     <DirectorResultTools

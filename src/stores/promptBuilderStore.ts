@@ -7,7 +7,7 @@ export type { Scene } from '../types/scene'
 
 import { defineStore } from 'pinia'
 import type { GeneratedArtworkInput, LegacyArtworkDefaults } from '@/application/artwork/artworkSaveInput'
-import { ref, reactive, computed, watch } from 'vue'
+import { ref, reactive, computed, watch, onScopeDispose } from 'vue'
 import { sceneLighting, sceneShot, sceneColorMood, sceneComposition, sceneRecommendedSize } from '@/utils/sceneInference'
 import { normalizeKey, sceneSupportsCharacter, type ModelProfile } from '@/utils/promptPolicy'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -115,6 +115,34 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const modelProfiles = ref<ModelProfile[]>([])
   const dataReady = ref(false)
   const historyRestoreReport = ref<RecipeRestoreReport | null>(null)
+  const popularBlueprintCharacter = computed(() => subject.value.kind === 'popular' ? subject.value.characterId : '')
+  const popularBlueprintReady = computed(() => !popularBlueprintCharacter.value || sceneStore.hasBlueprintCharacter(popularBlueprintCharacter.value))
+  const popularBlueprintLoading = ref(false), popularBlueprintError = ref('')
+  let popularBlueprintRequest = 0
+  async function loadPopularCharacter(id: string) {
+    if (!id) return
+    const request = id === popularBlueprintCharacter.value ? ++popularBlueprintRequest : -1
+    const current = () => request === popularBlueprintRequest && id === popularBlueprintCharacter.value
+    if (current()) {
+      popularBlueprintLoading.value = !sceneStore.hasBlueprintCharacter(id)
+      popularBlueprintError.value = ''
+    }
+    try {
+      // SceneStore deduplicates reads and owns the catalog epoch/cache; other
+      // consumers may still need a character after this workspace switches away.
+      await sceneStore.loadBlueprintCharacter(id)
+    } catch (error) {
+      if (current()) popularBlueprintError.value = error instanceof Error ? error.message : '当前角色场景建议读取失败，请重新读取。'
+      throw error
+    } finally { if (current()) popularBlueprintLoading.value = false }
+  }
+  watch([popularBlueprintCharacter, popularBlueprintReady, () => sceneStore.version], ([id, ready]) => {
+    popularBlueprintRequest++
+    popularBlueprintLoading.value = false; popularBlueprintError.value = ''
+    if (id && !ready) void loadPopularCharacter(id).catch(() => {})
+    // The default pre-flush waits for invalidate() to clear its old request map.
+  }, { immediate: true })
+  onScopeDispose(() => { popularBlueprintRequest++ })
 
   // ── SD state ────────────────────────────────────────────────────────────
   // 生成生命周期状态（online/generating/progress/result/error）由 useLegacySdTasks
@@ -225,7 +253,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     clearInheritedStory(blueprintId)
     clearRandomVariation()
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId }
-    if (characterId) void sceneStore.loadBlueprintCharacter(characterId).catch(error => flash(error instanceof Error ? error.message : '角色蓝图读取失败'))
     if (!options.preserveReference) clearReferenceInput()
     if (!options.preserveOutfitOverride) outfitOverride.value = null
   }
@@ -351,7 +378,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     applyModelProfile()
     dataReady.value = true
   }
-  function loadPopularCharacter(id: string) { return sceneStore.loadBlueprintCharacter(id) }
 
   function applyModelProfile(modelName?: string, options: { applySize?: boolean } = {}): ModelProfile | null {
     return applyModelProfileToParams(modelProfiles.value, modelName || sdModelName.value, sdParams, sdParamsTouched.value, lastRecommendedSize, options)
@@ -404,6 +430,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, loadPopularCharacter,
+    popularBlueprintReady, popularBlueprintLoading, popularBlueprintError,
     history,
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, lastRecommendedSize,

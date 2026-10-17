@@ -1,5 +1,9 @@
 @reference "../../tailwind.css";
 /* The workbench owns its choices; shared segments and disclosures own their motion. */
+.pb .expert-tag-panel.panel { display:grid; gap:var(--s-5); min-width:0; padding:0; margin:0; border:0; background:transparent; }
+.pb .tag-editor { min-width:0; }
+.pb .tag-editor-entry { padding-bottom:var(--s-3); }
+.pb .tag-entry-hint { display:block; margin-top:var(--s-2); color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
 .pb .expert-tags-header { display:flex; flex-wrap:wrap; align-items:start; justify-content:space-between; gap:var(--s-2); width:100%; line-height:var(--lh-body); }
 .pb .expert-tags-actions { display:inline-flex; flex-wrap:wrap; gap:var(--s-2); margin-left:auto; }
 .pb .expert-tag-count { margin-left:var(--s-2); padding:2px var(--s-2); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
@@ -42,7 +46,11 @@
 .pb .r18-controls-head span { color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .pb .tag-input { width:100%; min-height:var(--control-height); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); outline:none; }
 .pb .tag-input:focus { border-color:var(--accent); box-shadow:var(--focus-shadow); }
-.pb .tag-browser { display:grid; gap:var(--s-2); min-width:0; margin-bottom:var(--s-3); }
+.pb .tag-browser { display:flex; flex-direction:column; gap:var(--s-2); min-width:0; }
+.pb .tag-browser > :not(.tag-results) { flex:none; }
+.pb .tag-search-row { display:flex; align-items:center; gap:var(--s-2); min-width:0; }
+.pb .tag-search-row > .tag-search { flex:1; min-width:0; }
+.pb .tag-search-row > .btn { flex:none; }
 .pb .tag-dictionary-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-2); }
 .pb .tag-dictionary-heading strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .pb .tag-dictionary-link { display:inline-flex; align-items:center; gap:var(--s-1); min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); color:var(--accent); font-size:var(--fs-label-xs); text-underline-offset:3px; }
@@ -51,6 +59,22 @@
 .pb .tag-dictionary-link:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .tag-dictionary-note { margin:0; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
 .pb .tag-categories { flex-wrap:wrap; min-width:0; }
-.pb .tag-results { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr)); grid-auto-rows:max-content; align-content:start; gap:var(--s-2); max-height:430px; padding:var(--s-1); overflow:auto; scrollbar-width:thin; scroll-padding-block:var(--s-2); }
+.pb .tag-results { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr)); grid-auto-rows:max-content; align-content:start; gap:var(--s-2); padding:var(--s-1); }
 .pb .tag-results-empty { grid-column:1 / -1; margin:0; padding:var(--s-4); color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
 .pb .tag-more-hint { margin:0; color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
+/* At 900×500 the body is ~355px high. Give search its own remaining height;
+   expanding the wardrobe must not push it into a second outer scrollbar. */
+@media (min-width:800px) {
+  .pb .prompt-workbench-body { overflow:hidden; }
+  .pb .prompt-workbench-body > .async-panel { height:100%; min-height:0; }
+  .pb .expert-tag-panel.panel { grid-template-columns:minmax(0,1fr) 260px; height:100%; min-height:0; }
+  .pb .tag-editor { min-height:0; overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable; scroll-padding-block:var(--s-2); padding-inline-start:var(--s-4); border-inline-start:1px solid var(--border-soft); }
+  .pb .tag-browser { min-height:0; overflow:auto; overscroll-behavior:contain; }
+  .pb .tag-results { flex:1; min-height:72px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scroll-padding-block:var(--s-2); }
+}
+@media (min-width:800px) and (max-height:680px) {
+  .pb .prompt-workbench-body { padding:var(--s-4); }
+  .pb .expert-tag-panel.panel { gap:var(--s-4); }
+  .pb .tag-categories { flex-wrap:nowrap; overflow-x:auto; scroll-padding-inline:var(--s-1); scrollbar-width:thin; }
+  .pb .tag-categories.studio-segments[role] > button { flex:0 0 auto; }
+}

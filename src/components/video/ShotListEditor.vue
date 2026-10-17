@@ -377,6 +377,7 @@
       <ShotScriptDialog
         :open="scriptOpen"
         :busy="scriptBusy"
+        :note="scriptNote"
         :story="scriptStory"
         :count="scriptCount"
         :total="scriptTotal"
@@ -455,7 +456,7 @@ identityCard, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard
 popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
 setReferenceInput, onReferencePicked, shots, sceneFillId, sceneBlueprints, addShot,
 storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,
-firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptOpen,
+firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptNote, scriptOpen,
 reviewBusy, runAiReview, aiSnapshot, restoreAiSnapshot, polishSnapshot, restorePolishSnapshot,
 clearShots, aiNote, flowHint, reviewIssues, applyReviewSuggestion, shotIssueCount,
 serverShot, shotStatusLabel, moveShot, removeShot, dialogueBusy, runAiDialogue,

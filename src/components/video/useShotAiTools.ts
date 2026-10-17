@@ -1,4 +1,4 @@
-import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
+import { computed, onActivated, onDeactivated, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
 import {
   fetchVideoAiStatus,
   generateVideoScript,
@@ -37,12 +37,18 @@ export interface ShotAiToolsDeps {
 export function useShotAiTools(deps: ShotAiToolsDeps) {
   const { shots, identityCard, batchActive, referenceCards } = deps
 
-  const controller = new AbortController()
-  const { signal } = controller
-  onScopeDispose(() => {
+  let controller = new AbortController()
+  function stopAi() {
+    const wasBusy = aiBusy.value || scriptBusy.value || dialogueBusy.value || reviewBusy.value
     controller.abort()
     aiBusy.value = scriptBusy.value = dialogueBusy.value = reviewBusy.value = false
-  })
+    scriptOpen.value = false
+    dialogueIndex.value = -1; dialogueOptions.value = []; dialogueTarget = null
+    if (wasBusy) aiNote.value = '已停止本次 AI 操作，当前镜头与输入已保留'
+  }
+  onDeactivated(stopAi)
+  onActivated(() => { if (controller.signal.aborted) controller = new AbortController() })
+  onScopeDispose(stopAi)
   const aiBusy = ref(false)
   const aiProgress = ref(0)
   const aiTotal = ref(0)
@@ -59,7 +65,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       if (shots.value.includes(target) && snapshot[index]) Object.assign(target, Object.fromEntries(textFields.map(key => [key, snapshot[index][key]])))
     })
   }
-  const anyAiBusy = () => signal.aborted || aiBusy.value || scriptBusy.value || dialogueBusy.value || reviewBusy.value || batchActive.value
+  const anyAiBusy = () => controller.signal.aborted || aiBusy.value || scriptBusy.value || dialogueBusy.value || reviewBusy.value || batchActive.value
   /** 整批编排的独立快照：撤销编排只回编排前，不影响「AI 整理」的撤销。 */
   const polishSnapshot = ref<ShotDraft[] | null>(null)
 
@@ -79,6 +85,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   // 「撤销整理」恢复。
   async function runAiRewrite() {
     if (anyAiBusy() || !shots.value.length) return
+    const { signal } = controller
     aiBusy.value = true
     aiNote.value = ''
     let status: VideoAiStatusResponse
@@ -131,7 +138,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
           if (signal.aborted) return
           failed += 1
         } finally {
-          if (!signal.aborted) {
+          if (!signal.aborted && signal === controller.signal) {
             aiProgress.value += 1
             aiNote.value = `AI 整理中 ${aiProgress.value}/${total}（${status.label}）…`
           }
@@ -160,6 +167,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   // 「撤销编排」只回编排前状态，与「AI 整理」的撤销互不干扰。
   async function runAiPolish() {
     if (anyAiBusy() || shots.value.length < 2) return
+    const { signal } = controller
     aiBusy.value = true
     aiNote.value = ''
     let status: VideoAiStatusResponse
@@ -224,7 +232,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       polishSnapshot.value = null
       aiNote.value = 'AI 整批编排失败：' + (error instanceof Error ? error.message : String(error))
     } finally {
-      aiBusy.value = false
+      if (!signal.aborted && signal === controller.signal) aiBusy.value = false
     }
   }
 
@@ -242,31 +250,43 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   const scriptCount = ref<number | null>(null)
   const scriptTotal = ref<number | null>(null)
   const scriptBusy = ref(false)
+  const scriptNote = ref('')
+  watch(scriptOpen, open => { if (open && !scriptBusy.value) scriptNote.value = '' }, { flush: 'sync' })
+  function setScriptNote(note: string) { aiNote.value = scriptNote.value = note }
 
   async function runAiScript() {
     if (anyAiBusy() || !scriptStory.value.trim()) return
+    const { signal } = controller
+    const input = {
+      story: scriptStory.value, count: scriptCount.value, total: scriptTotal.value,
+      identity: identityCard.value, labels: referenceCards.value.map(card => card.label),
+    }
     scriptBusy.value = true
     const originalShots = shots.value.slice()
     const originalText = JSON.stringify(shots.value)
-    aiNote.value = 'AI 生成分镜脚本中…'
+    setScriptNote('AI 生成分镜脚本中…')
     try {
-      const cardLabels = referenceCards.value
-        .map(card => card.label.trim())
-        .filter(Boolean)
+      const cardLabels = input.labels.map(label => label.trim()).filter(Boolean)
       const response = await generateVideoScript({
-        identity: identityCard.value.trim() || undefined,
-        story: scriptStory.value.trim(),
-        shotCount: scriptCount.value ?? undefined,
-        totalSeconds: scriptTotal.value ?? undefined,
+        identity: input.identity.trim() || undefined,
+        story: input.story.trim(),
+        shotCount: input.count ?? undefined,
+        totalSeconds: input.total ?? undefined,
         characterLabels: cardLabels.length ? cardLabels : undefined,
       }, signal)
       if (signal.aborted) return
+      if (scriptStory.value !== input.story || scriptCount.value !== input.count || scriptTotal.value !== input.total ||
+        identityCard.value !== input.identity || referenceCards.value.length !== input.labels.length ||
+        referenceCards.value.some((card, index) => card.label !== input.labels[index])) {
+        setScriptNote('生成期间故事设置或角色提示已更改，已保留当前输入与镜头；请确认后重新生成脚本')
+        return
+      }
       if (!response.shots.length) {
-        aiNote.value = 'AI 脚本生成为空，请调整故事梗概后重试'
+        setScriptNote('AI 脚本生成为空，请调整故事梗概后重试')
         return
       }
       if (JSON.stringify(shots.value) !== originalText || shots.value.some((shot, index) => shot !== originalShots[index])) {
-        aiNote.value = '生成期间镜头已编辑，已保留当前内容；请确认后重新生成脚本'
+        setScriptNote('生成期间镜头已编辑，已保留当前内容；请确认后重新生成脚本')
         return
       }
       aiSnapshot.value = null
@@ -291,12 +311,12 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       aiFlowStep.value = 1
       scriptOpen.value = false
       scriptStory.value = ''
-      aiNote.value = `AI 脚本已生成：${shots.value.length} 镜（无首帧，纯文字 T2VA 可直接生成；也可逐镜上传首帧锁构图）`
+      setScriptNote(`AI 脚本已生成：${shots.value.length} 镜（无首帧，纯文字 T2VA 可直接生成；也可逐镜上传首帧锁构图）`)
     } catch (error) {
       if (signal.aborted) return
-      aiNote.value = 'AI 脚本生成失败：' + (error instanceof Error ? error.message : String(error))
+      setScriptNote('AI 脚本生成失败：' + (error instanceof Error ? error.message : String(error)))
     } finally {
-      scriptBusy.value = false
+      if (!signal.aborted && signal === controller.signal) scriptBusy.value = false
     }
   }
 
@@ -309,6 +329,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   async function runAiDialogue(index: number) {
     const shot = shots.value[index]
     if (!shot || anyAiBusy()) return
+    const { signal } = controller
     dialogueTarget = shot
     dialogueBusy.value = true
     dialogueIndex.value = index
@@ -331,7 +352,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       dialogueIndex.value = -1
       aiNote.value = 'AI 台词失败：' + (error instanceof Error ? error.message : String(error))
     } finally {
-      dialogueBusy.value = false
+      if (!signal.aborted && signal === controller.signal) dialogueBusy.value = false
     }
   }
 
@@ -364,6 +385,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
 
   async function runAiReview() {
     if (anyAiBusy() || !shots.value.length) return
+    const { signal } = controller
     reviewBusy.value = true
     aiNote.value = 'AI 质量检查中…'
     reviewIssues.value = []
@@ -386,7 +408,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
       if (signal.aborted) return
       aiNote.value = 'AI 质量检查失败：' + (error instanceof Error ? error.message : String(error))
     } finally {
-      reviewBusy.value = false
+      if (!signal.aborted && signal === controller.signal) reviewBusy.value = false
     }
   }
 
@@ -425,6 +447,7 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
     scriptCount,
     scriptTotal,
     scriptBusy,
+    scriptNote,
     runAiRewrite,
     restoreAiSnapshot,
     runAiPolish,

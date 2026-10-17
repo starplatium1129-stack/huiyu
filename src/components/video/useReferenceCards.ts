@@ -125,7 +125,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   }
 
   /** 读取目录文字资料，不请求或上传参考图片。 */
-  async function selectCardCharacter(charId: string, cardIndex = 0, outfitId?: string, signal?: AbortSignal): Promise<boolean> {
+  async function selectCardCharacter(charId: string, cardIndex = 0, outfitId?: string, signal?: AbortSignal, options: { preserveIdentity?: boolean } = {}): Promise<boolean> {
     if (signal?.aborted || !referenceCards.value[cardIndex]) return false
     const card = referenceCards.value[cardIndex]
     cancelCard(card)
@@ -134,9 +134,12 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     const abort = () => controller.abort()
     signal?.addEventListener('abort', abort, { once: true })
     card.characterId = charId
-    card.outfitId = ''
-    card.label = ''
-    updateMultiCharacterIdentity()
+    if (!options.preserveIdentity) {
+      card.outfitId = ''
+      card.label = ''
+      updateMultiCharacterIdentity()
+    }
+    const identityAtRead = deps.identityCard.value
     try {
       if (!profiles.value[charId]) {
         const result = await catalogApi.character(charId, controller.signal)
@@ -170,7 +173,8 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
         : profile.outfits.find(item => item.default) || profile.outfits[0]
       card.outfitId = outfit?.id || ''
       card.label = profile.displayName + (outfit && !outfit.default ? ` · ${outfit.name}` : '')
-      updateMultiCharacterIdentity()
+      // Profile reads may finish after typing, or another card's automatic merge.
+      if (!options.preserveIdentity && (deps.identityCard.value === identityAtRead || deps.identityCard.value === lastAutoIdentity)) updateMultiCharacterIdentity()
       if (outfitId && !outfit) { deps.batchError.value = '该服装不存在，请重新选择'; return false }
       deps.batchError.value = ''
       return true

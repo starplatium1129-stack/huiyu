@@ -11,16 +11,22 @@
       </button>
     </div>
     <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary" v-content-motion:fade="active">{{ current.question }}</p>
+    <p v-if="referenceError" class="library-reference-feedback" role="status"><span>{{ referenceError }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="retryReferences"><ArchiveIcon name="refresh" />重新读取参考</button></p>
     <div class="comparison-spread tw:grid tw:gap-s-5" v-content-motion:up="active">
       <figure v-for="sample in current.samples" :key="sample.id" class="light-study tw:min-w-0 tw:m-0 tw:overflow-hidden tw:rounded-lg">
-        <RouterLink v-if="available.has(sample.id) && !failed.has(sample.id)" class="study-image" :to="'/showcase?scene=' + sample.id" :aria-label="'查看参考原图：' + sample.title">
-          <img :crossorigin="runtimeResourceCors()" :src="resolveRuntimeUrl('/scene-showcase/thumbs/' + sample.id + '.jpg')" :alt="sample.title + '，' + sample.light" width="560" height="818" loading="lazy" decoding="async" @error="failed.add(sample.id)" />
-        </RouterLink>
-        <div v-else class="study-image study-unavailable" :class="{ 'is-unconnected': !loading && !available.has(sample.id) }" role="status">
-          <ArchiveIcon name="image" />
-          <strong>{{ loading ? '正在翻开参考画册…' : failed.has(sample.id) ? '参考图片加载失败' : '这张参考暂时未能展示' }}</strong>
-          <p>{{ loading ? '正在核对样张目录' : '可继续阅读观察笔记，或选用下方情绪色板。' }}</p>
-        </div>
+        <RuntimeImage :src="referenceUrl(sample.id)" v-slot="{ image, loaded, failed }">
+          <div class="study-image" :class="{ 'is-failed': failed }">
+            <RouterLink v-if="image.src" class="study-image-link" :to="'/showcase?scene=' + sample.id" :aria-label="'查看参考原图：' + sample.title">
+              <img v-if="!failed" v-bind="image" :class="{ ready: loaded }" :alt="sample.title + '，' + sample.light" width="560" height="818" loading="lazy" decoding="async" />
+            </RouterLink>
+            <div v-if="!loaded" class="study-unavailable" role="status">
+              <ArchiveIcon name="image" />
+              <strong>{{ failed ? '参考图片加载失败' : loading || image.src ? '正在翻开参考画册…' : '这张参考暂时未能展示' }}</strong>
+              <p>{{ loading ? '正在核对样张目录' : image.src && !failed ? '正在载入参考画面' : '可继续阅读观察笔记，或选用下方情绪色板。' }}</p>
+            </div>
+            <button v-if="failed" class="btn btn-ghost btn-sm study-image-retry" type="button" :aria-label="'重新读取参考图：' + sample.title" @click="retryCover(sample.id, $event)"><ArchiveIcon name="refresh" />重新读取图片</button>
+          </div>
+        </RuntimeImage>
         <figcaption>
           <div class="study-label tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2 tw:text-muted tw:text-body-sm"><span>画册参考 · {{ sample.id }}</span><span>{{ sample.tone }}</span></div>
           <h3>{{ sample.name }}</h3>
@@ -39,8 +45,8 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -64,8 +70,19 @@ const PAIRS = [
 ]
 const active = ref(0)
 const current = computed(() => PAIRS[active.value]!)
-const { available, loading } = useMoodReferences(PAIRS.flatMap(pair => pair.samples.map(sample => sample.id)))
-const failed = ref(new Set<string>())
+const { loading, error: referenceError, reload, referenceUrl, retryReference } = useMoodReferences()
+function retryCover(id: string, event: MouseEvent) {
+  const origin = event.currentTarget
+  if (origin instanceof HTMLElement && document.activeElement === origin)
+    origin.closest('.light-study')?.querySelector<HTMLElement>('.study-image-link, .study-mood')?.focus({ preventScroll: true })
+  retryReference(id)
+}
+function retryReferences(event: MouseEvent) {
+  const origin = event.currentTarget
+  const notebook = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest('.light-notebook') : null
+  notebook?.querySelector<HTMLElement>('.comparison-choices [aria-pressed="true"]')?.focus({ preventScroll: true })
+  void reload().catch(() => {})
+}
 </script>
 
 <style scoped>
@@ -81,11 +98,14 @@ const failed = ref(new Set<string>())
 .comparison-question { margin:var(--s-4) 0; }
 .comparison-spread { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .light-study { border:1px solid var(--border-soft); background:var(--bg-surface); }
-.study-image { @apply tw:flex tw:items-center tw:justify-center tw:w-full tw:h-[360px]; background:var(--bg-elevated); @apply tw:overflow-hidden; }
-.study-image img { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
-.study-unavailable { @apply tw:p-s-5 tw:flex-col tw:gap-s-3 tw:text-center tw:text-secondary tw:text-body-sm tw:leading-body; }
+.study-image { position:relative; @apply tw:flex tw:items-center tw:justify-center tw:w-full tw:h-[360px]; background:var(--bg-elevated); @apply tw:overflow-hidden; }
+.study-image-link { position:absolute; inset:0; display:block; }
+.study-image img { @apply tw:block tw:w-full tw:h-full tw:object-contain; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); }
+.study-image img.ready { opacity:1; }
+.study-unavailable { position:absolute; inset:0; pointer-events:none; @apply tw:flex tw:items-center tw:justify-center tw:p-s-5 tw:flex-col tw:gap-s-3 tw:text-center tw:text-secondary tw:text-body-sm tw:leading-body; }
 .study-unavailable .archive-icon { @apply tw:w-[36px] tw:h-[36px] tw:text-accent; }
-.study-unavailable.is-unconnected { @apply tw:h-auto tw:min-h-[140px]; }
+.study-image.is-failed .study-unavailable { padding-bottom:calc(var(--control-height) + var(--s-5)); }
+.study-image-retry { position:absolute; z-index:var(--z-raised); inset:auto var(--s-3) var(--s-3); justify-content:center; min-height:var(--control-height); background:var(--bg-surface); }
 figcaption { padding:var(--s-4) var(--s-5); }
 .light-study h3 { margin:var(--s-3) 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); @apply tw:text-primary; }
 dl { margin:var(--s-4) 0 var(--s-2); @apply tw:grid tw:gap-s-3; }
@@ -96,6 +116,10 @@ dd { @apply tw:m-0 tw:text-secondary; }
 .reference-note { align-items:start; background:var(--bg-base); }
 .reference-note .archive-icon { @apply tw:shrink-0 tw:mt-[3px]; }
 button:focus-visible, a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.study-image-link:focus-visible { outline:2px solid var(--focus-color); outline-offset:-4px; box-shadow:none; }
+@media(forced-colors:active) { .study-image-retry:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 @media(max-width:768px) { .notebook-heading { @apply tw:flex-col; align-items:start; @apply tw:gap-s-3; } .notebook-heading > p { max-width:none; } .comparison-spread { @apply tw:gap-s-3; } figcaption { @apply tw:p-s-4; } dl > div { grid-template-columns:1fr; @apply tw:gap-s-1; } .study-image { @apply tw:h-[280px]; } }
 @media(max-width:480px) { .comparison-spread { grid-template-columns:1fr; } .study-image { @apply tw:h-[340px]; } .notebook-heading h2 { @apply tw:text-title-sm; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .light-notebook .study-image img { transition:none; }
+@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .light-notebook .study-image img { transition:none; } }
 </style>

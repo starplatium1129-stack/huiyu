@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <!-- Frequent lookup and keyboard commands keep the focus handoff immediate. -->
-    <div v-show="open" class="global-search" :inert="!open" :aria-hidden="!open" @pointerdown.self="close()">
+    <div v-show="open" class="global-search" :inert="!open" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
         <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>页面、场景与作品</span></div>
         <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3" data-fluid-glass>
@@ -30,6 +30,10 @@
           </StudioTooltip>
         </div>
 
+        <div v-if="scenesLoading || scenesError" class="gs-catalog-state">
+          <p :role="scenesError ? 'alert' : 'status'">{{ scenesError || '正在读取灵感场景…' }}</p>
+          <button v-if="scenesError" type="button" class="btn btn-ghost btn-sm" @click="retryScenes">重新读取场景</button>
+        </div>
         <div :id="listboxId" ref="resultsEl" class="gs-results tw:overflow-y-auto tw:p-s-3" role="listbox" aria-label="搜索结果">
           <template v-if="!query.trim()">
             <section v-if="filteredActions.length" class="gs-group tw:mb-s-2">
@@ -95,7 +99,7 @@
             </section>
             <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
             <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
-            <p v-if="!worksError && !worksLoading && !filteredPages.length && !filteredScenes.length && !filteredWorks.length" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm">
+            <p v-if="!scenesLoading && !scenesError && !worksError && !worksLoading && !filteredPages.length && !filteredScenes.length && !filteredWorks.length" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm">
               没有匹配的结果，试试场景标题、标签或作品名。
             </p>
           </template>
@@ -109,7 +113,7 @@
 
 <script setup lang="ts">
 import { ref, shallowRef, computed, onMounted, onUnmounted, nextTick, useId, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
@@ -121,6 +125,8 @@ import { indexArtworkSearch } from '@/utils/artworkSearch'
 const props = defineProps<{
   initialSource?: 'keyboard' | 'pointer'
   initialTrigger?: HTMLElement | null
+  initialPath?: string
+  initialCloseRequest: number
 }>()
 
 interface SearchItem {
@@ -144,7 +150,7 @@ interface FlatSearchResult {
 }
 
 
-const router = useRouter()
+const router = useRouter(), route = useRoute()
 const sceneStore = useSceneStore()
 const open = ref(false)
 const query = ref('')
@@ -153,6 +159,8 @@ const inputEl = ref<HTMLInputElement | null>(null)
 const panelEl = ref<HTMLElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)
 const scenes = shallowRef<SceneItem[]>([])
+const scenesLoading = ref(false), scenesError = ref('')
+let scenesReady = false, scenesRequest = 0
 const works = shallowRef<ReturnType<typeof indexArtworkSearch> | null>(null)
 const worksController = shallowRef<AbortController | null>(null)
 let worksTimer: ReturnType<typeof setTimeout> | undefined
@@ -247,11 +255,13 @@ const activeResultId = computed(() => {
 })
 const resultsAnnouncement = computed(() => {
   const total = flat.value.length
-  if (!total) return query.value.trim() ? '没有匹配的结果' : '暂无可用结果'
   const result = activeResult.value
-  return result
+  const status = [scenesLoading.value ? '场景目录读取中' : scenesError.value,
+    queryTerms.value.length ? worksLoading.value ? '作品读取中' : worksError.value : ''].filter(Boolean).join('；')
+  const message = !total ? status ? '当前暂无结果' : query.value.trim() ? '没有匹配的结果' : '暂无可用结果' : result
     ? `找到 ${total} 个结果，当前第 ${activeIndex.value + 1} 项：${result.label}`
     : `找到 ${total} 个结果`
+  return [message, status].filter(Boolean).join('；')
 })
 
 function resultId(kind: SearchResultKind, id: string | number) {
@@ -295,8 +305,9 @@ function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = docume
   open.value = true
   query.value = ''
   activeIndex.value = 0
-  void loadScenesOnce()
-  void nextTick(() => { inputEl.value?.focus() })
+  void loadScenes()
+  const path = route.fullPath
+  void nextTick(() => { if (open.value && route.fullPath === path) inputEl.value?.focus({ preventScroll: true }) })
 }
 
 function clearQuery() {
@@ -305,11 +316,21 @@ function clearQuery() {
 }
 
 function close(restoreFocus = true) {
+  if (!restoreFocus) {
+    returnFocus.value = null
+    const active = document.activeElement
+    if (active instanceof HTMLElement && panelEl.value?.contains(active)) active.blur()
+  }
   open.value = false
+  scenesRequest++; scenesLoading.value = false
   resetWorks()
-  const previous = previousActiveElement
+  const previous = previousActiveElement, path = route.fullPath, closing = panelEl.value
   previousActiveElement = null
-  if (restoreFocus && previous?.isConnected) void nextTick(() => previous.focus({ preventScroll: true }))
+  if (restoreFocus && previous) void nextTick(() => {
+    const active = document.activeElement
+    if (!open.value && route.fullPath === path && previous.isConnected && !document.querySelector('dialog:modal')
+      && (active === document.body || closing?.contains(active))) previous.focus({ preventScroll: true })
+  })
 }
 
 function onKeydown(event: KeyboardEvent) {
@@ -319,6 +340,7 @@ function onKeydown(event: KeyboardEvent) {
 
   if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
     event.preventDefault()
+    if (event.repeat) return
     if (open.value) { close() } else { openPanel('keyboard') }
     return
   }
@@ -356,11 +378,15 @@ function loadWorks() {
   }, 150)
 }
 async function loadScenes() {
+  if (scenesReady || scenesLoading.value || !open.value) return
+  const request = ++scenesRequest
+  scenesLoading.value = true; scenesError.value = ''
   try {
-    // 审计 2026-09-05 P2-02：搜索只需要场景分片与轻元数据，走 loadHome 轻载，
-    // 不再借全量 load() 把 3.4MB 蓝图拖进每个页面的首屏
-    await sceneStore.loadHome()
-    scenes.value = sceneStore.scenes.map((scene) => {
+    // Reuse shard caches without taking ownership of another page's scene list/error.
+    const catalogue = await sceneStore.loadBrowserScenes('all')
+    if (request !== scenesRequest || !open.value) return
+    const active = activeResult.value
+    scenes.value = catalogue.scenes.map((scene) => {
       const s = scene as Record<string, unknown>
       return {
         id: String(s.id || ''),
@@ -374,18 +400,18 @@ async function loadScenes() {
         ].filter(Boolean).join(' ').toLowerCase(),
       } satisfies SceneItem
     })
-  } catch { scenesRequested = false /* 下一次打开允许重新读取 */ }
+    if (active) activeIndex.value = Math.max(0, flat.value.findIndex(item => item.kind === active.kind && item.id === active.id))
+    scenesReady = true
+  } catch {
+    if (request === scenesRequest && open.value) scenesError.value = '场景目录暂未读取，页面与作品仍可搜索。'
+  } finally { if (request === scenesRequest) scenesLoading.value = false }
 }
-
-/** 场景索引只建一次：首次打开面板时才拉（此前是挂载即拉，把数据请求摊进每个页面首屏） */
-let scenesRequested = false
-function loadScenesOnce() {
-  if (scenesRequested) return
-  scenesRequested = true
+function retryScenes(event: MouseEvent) {
+  if (document.activeElement === event.currentTarget) inputEl.value?.focus({ preventScroll: true })
   void loadScenes()
 }
 
-useFocusTrap(panelEl, () => open.value, {
+const { returnFocus } = useFocusTrap(panelEl, () => open.value, {
   onEscape: close,
   initialFocus: inputEl,
 })
@@ -396,22 +422,18 @@ watch(query, () => {
   else if (open.value) void loadWorks()
 })
 
-// 可见入口的唤起通道（2026-08-30 UX 审计 P1）：本组件挂在路由之外，导航里的
-// 触发按钮在路由之内，两者没有父子关系，只能经单例请求。watch 的是递增序号
-// 而非布尔量，所以连点也能被感知。
-const { openRequest, openSource } = useGlobalSearchRequest()
-watch(openRequest, () => {
-  if (openRequest.value === 0) return
-  openPanel(openSource.value)
-})
+watch(() => route.fullPath, () => close(false), { flush: 'sync' })
+const { openRequest, openSource, closeRequest } = useGlobalSearchRequest()
+watch(closeRequest, () => close(false), { flush: 'sync' })
+watch(openRequest, () => { if (openRequest.value) openPanel(openSource.value) })
 
 onMounted(() => {
   document.addEventListener('keydown', onKeydown)
-  if (props.initialSource) openPanel(props.initialSource, props.initialTrigger)
-  // 场景索引延迟到首次打开面板（loadScenesOnce）；挂载即拉会把全量数据请求
-  // 摊进包括首页在内的每个页面首屏（审计 2026-09-05 P2-02）
+  if (props.initialSource && props.initialCloseRequest === closeRequest.value
+    && (!props.initialPath || props.initialPath === route.fullPath)) openPanel(props.initialSource, props.initialTrigger)
 })
 onUnmounted(() => {
+  scenesRequest++
   resetWorks()
   document.removeEventListener('keydown', onKeydown)
 })
@@ -457,6 +479,9 @@ onUnmounted(() => {
 .gs-input::placeholder { @apply tw:text-muted; }
 .gs-heading { padding:var(--s-3) var(--s-5); }
 .gs-heading span { @apply tw:text-secondary tw:text-label-xs; }
+.gs-catalog-state { display:flex; align-items:center; gap:var(--s-3); flex-shrink:0; padding:var(--s-2) var(--s-5); border-bottom:1px solid var(--border-soft); }
+.gs-catalog-state p { flex:1; min-width:0; margin:0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); overflow-wrap:anywhere; }
+.gs-catalog-state button { flex:none; }
 .gs-esc, .gs-clear { flex:0 0 auto; }
 .gs-heading, .gs-input-row, .gs-footer { flex-shrink:0; }
 .gs-results { min-height:0; flex:1 1 auto; max-height: min(52vh, 480px); overscroll-behavior:contain; scroll-padding-block:var(--s-2); }

@@ -1,7 +1,7 @@
 <template>
-  <section class="panel-card interrogate-setup" aria-labelledby="interrogate-setup-title">
+  <section ref="panel" class="panel-card interrogate-setup" aria-labelledby="interrogate-setup-title">
     <div class="interrogate-heading">
-      <div><h2 id="interrogate-setup-title" class="panel-heading">图片反推</h2><p>准备 PixAI 模型，将参考图变成创作词条。</p></div>
+      <div><h2 id="interrogate-setup-title" ref="title" class="panel-heading" tabindex="-1">图片反推</h2><p>准备 PixAI 模型，将参考图变成创作词条。</p></div>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="checking || submitting" @click="refresh">{{ checking ? '检查中…' : '重新检查' }}</button>
     </div>
     <div class="interrogate-status" :data-ready="ready" role="status" aria-live="polite">
@@ -10,7 +10,7 @@
     </div>
     <template v-if="plan">
       <div class="interrogate-location"><span>AI 工作区</span><code>{{ plan.workspacePath }}</code></div>
-      <p v-if="workspacePending" class="interrogate-warning" role="status">AI 工作区已更改，请先在<a href="#control-setup">首次配置</a>中完成目录切换，再重新检查。</p>
+      <p v-if="workspacePending" class="interrogate-warning" role="status">AI 工作区已更改，请先在<RouterLink :to="{ query: $route.query, hash: '#control-setup' }">首次配置</RouterLink>中完成目录切换，再重新检查。</p>
       <ul v-if="!plan.supported && plan.reasons.length" class="interrogate-reasons"><li v-for="reason in plan.reasons" :key="reason">{{ reason }}</li></ul>
       <p v-else-if="!plan.supported" class="interrogate-warning">当前环境尚不能准备反推模型，请检查 AI 工作区与设备后重试。</p>
       <template v-if="!ready">
@@ -43,7 +43,7 @@
     <p v-if="otherBusy" role="status">控制室另有操作正在进行，结束后即可准备图片反推。</p>
     <p v-if="error" class="interrogate-error" role="alert">{{ error }}</p>
     <p v-if="message && !running" role="status">{{ message }}</p>
-    <div class="interrogate-actions">
+    <div ref="actions" class="interrogate-actions" tabindex="-1" role="group" aria-label="图片反推操作">
       <button v-if="operationUncertain" class="btn btn-primary" type="button" :disabled="submitting || checking" @click="reconcile">继续核对进度</button>
       <button v-else-if="!ready && plan" class="btn btn-primary" type="button" :disabled="!canPrepare" @click="prepare"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续准备' : '一键准备' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
@@ -53,7 +53,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onBeforeUpdate, onMounted, onUpdated, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useInterrogateSetup } from '@/composables/useInterrogateSetup'
@@ -65,6 +66,29 @@ const paths = computed(() => plan.value ? [
   { label: '运行库', path: plan.value.paths.runtimeRoot }, { label: '反推模型', path: plan.value.paths.modelRoot },
   { label: '模型依赖', path: plan.value.paths.depsRoot }, { label: '下载缓存', path: plan.value.paths.cacheRoot },
 ] : [])
+const route = useRoute()
+const panel = ref<HTMLElement | null>(null), title = ref<HTMLElement | null>(null), actions = ref<HTMLElement | null>(null)
+let focusOrigin: HTMLButtonElement | null = null
+let focusHost: HTMLElement | null = null
+function visible(element: HTMLElement | null) {
+  if (!element?.isConnected || element.closest('[hidden], [inert], [aria-hidden="true"]') || getComputedStyle(element).visibility === 'hidden') return false
+  const bounds = element.getBoundingClientRect()
+  return bounds.width > 0 && bounds.height > 0 && bounds.bottom > 0 && bounds.top < innerHeight
+}
+onBeforeUpdate(() => {
+  const active = document.activeElement
+  focusOrigin = active instanceof HTMLButtonElement && panel.value?.contains(active) && visible(active) ? active : null
+  focusHost = focusOrigin?.closest<HTMLElement>('.interrogate-actions') ?? title.value
+})
+onUpdated(() => {
+  const origin = focusOrigin, host = focusHost
+  focusOrigin = null; focusHost = null
+  if (!origin || origin.isConnected && !origin.disabled || route.path !== '/control' || !document.hasFocus() || !visible(panel.value)) return
+  if (document.activeElement !== document.body && document.activeElement !== origin) return
+  if ([...document.querySelectorAll<HTMLElement>('dialog:modal, [aria-modal="true"]')].some(element =>
+    element.getClientRects().length && !element.closest('[hidden], [aria-hidden="true"]') && getComputedStyle(element).visibility !== 'hidden')) return
+  ;[host, actions.value, title.value].find(visible)?.focus({ preventScroll: true })
+})
 onMounted(() => { void initialize() })
 </script>
 
@@ -72,6 +96,7 @@ onMounted(() => { void initialize() })
 .interrogate-setup { display:grid; gap:var(--s-4); margin-bottom:var(--s-5); color:var(--text-primary); min-width:0; }
 .interrogate-heading, .interrogate-actions { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); }
 .interrogate-heading { justify-content:space-between; }
+.interrogate-actions { min-height:var(--control-height); }
 .interrogate-heading p, .interrogate-setup p { margin:0; color:var(--text-secondary); line-height:var(--lh-loose); overflow-wrap:anywhere; }
 .interrogate-status { display:flex; align-items:flex-start; gap:var(--s-2); color:var(--text-secondary); }
 .interrogate-status > :first-child { width:18px; height:18px; flex-shrink:0; margin-top:3px; }
@@ -94,7 +119,7 @@ onMounted(() => { void initialize() })
 .interrogate-progress > div { display:flex; justify-content:space-between; flex-wrap:wrap; gap:var(--s-2); }
 .interrogate-progress progress { width:100%; height:8px; accent-color:var(--accent); }
 .interrogate-current-file { color:var(--text-secondary); }
-.interrogate-setup button:focus-visible, .interrogate-setup a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.interrogate-setup :is(button,a,#interrogate-setup-title,.interrogate-actions):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .interrogate-setup button:disabled { color:var(--text-disabled); opacity:1; }
-@media (forced-colors:active) { .interrogate-setup button:focus-visible, .interrogate-setup a:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
+@media (forced-colors:active) { .interrogate-setup :is(button,a,#interrogate-setup-title,.interrogate-actions):focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

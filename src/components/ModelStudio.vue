@@ -1,19 +1,20 @@
 <template>
-  <Teleport to="body">
-    <dialog ref="dialog" class="model-studio" aria-label="模型导入与校准" @cancel.prevent="close" @click="backdrop">
-      <header class="model-studio-heading">
-        <div><small>LIVE2D</small><h2>模型导入与校准</h2></div>
-        <button class="btn btn-ghost" type="button" aria-label="关闭模型工作室" @click="close"><ArchiveIcon name="close" /></button>
-      </header>
+  <div class="model-studio-content">
       <div class="model-studio-scroll">
         <div class="model-studio-grid">
           <section class="model-preview-panel" aria-label="模型预览">
-            <div :id="hostId" class="model-preview-host"></div>
-            <p v-if="!studio.ready.value">{{ studio.busy.value ? '正在处理模型…' : '暂无模型预览' }}</p>
+            <div class="model-preview-frame" :class="{ 'is-ready': studio.ready.value }" :aria-busy="studio.previewLoading.value">
+              <div :id="hostId" class="model-preview-host" :aria-hidden="!studio.ready.value"></div>
+              <div v-if="!studio.ready.value" class="model-preview-feedback" role="status">
+                <ArchiveIcon name="model" />
+                <strong>{{ studio.previewLoading.value ? '正在载入模型…' : studio.previewFailed.value ? '预览暂未载入' : '等待角色入画' }}</strong>
+                <span>{{ studio.previewLoading.value ? '正在读取模型与贴图，可随时取消加载。' : studio.previewFailed.value ? '请检查下方提示，修正后重新加载。' : studio.busy.value ? '正在读取模型资料…' : '选择模型并加载预览，校准口型与眨眼。' }}</span>
+              </div>
+            </div>
             <div class="model-actions">
-              <button class="btn btn-primary" type="button" :disabled="studio.busy.value || studio.saved.value?.disabled || (!studio.inspection.value?.valid && !studio.saved.value)" @click="studio.preview">加载预览</button>
+              <button class="btn btn-primary" type="button" :disabled="studio.busy.value || studio.saved.value?.disabled || (!studio.inspection.value?.valid && !studio.saved.value)" @click="loadPreview">{{ studio.previewFailed.value ? '重新加载预览' : '加载预览' }}</button>
               <button class="btn btn-ghost" type="button" :disabled="!studio.ready.value" @click="studio.stopTest">停止测试并复位</button>
-              <button class="btn btn-ghost" type="button" :disabled="studio.busy.value" @click="studio.stopPreview">释放预览</button>
+              <button ref="previewAction" class="btn btn-ghost" type="button" :disabled="studio.busy.value && !studio.previewLoading.value" @click="studio.releasePreview">{{ studio.previewLoading.value ? '取消加载' : '释放预览' }}</button>
             </div>
             <p role="status" class="model-status">{{ studio.message.value }}</p>
             <p v-if="studio.needsReload.value">配置已落盘。完成当前对话后，重新载入页面即可生效。</p>
@@ -86,35 +87,32 @@
       <footer class="model-studio-footer">
         <button class="btn btn-primary" type="button" :disabled="studio.busy.value || !studio.ready.value || studio.needsReload.value" @click="studio.save">{{ studio.saved.value ? '保存校准配置' : '保存并加入角色列表' }}</button>
       </footer>
-    </dialog>
-  </Teleport>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useModelStudio } from '@/composables/useModelStudio'
 import type { CalibrationBinding } from '@/live2d/modelCalibration'
-import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { listCompanionUiCharacters } from '@/utils/companionRegistry'
 import ModelCalibrationFields from './ModelCalibrationFields.vue'
-import ArchiveIcon from './visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/model-studio.css'
-const emit = defineEmits<{ close: [] }>()
-const dialog = ref<HTMLDialogElement | null>(null)
-const fluid = useFluidDialog(dialog)
 const hostId = `model-preview-${crypto.randomUUID()}`
 const studio = useModelStudio(hostId)
 const selected = ref('')
+const previewAction = ref<HTMLButtonElement>()
 const existing = listCompanionUiCharacters().filter(character => character.tags?.includes('local-import'))
+function loadPreview(event: MouseEvent) {
+  if (event.currentTarget === document.activeElement) previewAction.value?.focus({ preventScroll: true })
+  void studio.preview()
+}
 function updateBinding(target: CalibrationBinding, value: CalibrationBinding, select: boolean) {
   studio.stopTest(); Object.assign(target, value)
   if (select) studio.selectBinding(target)
 }
-onMounted(() => fluid.open())
-function close() { studio.dispose(); fluid.close(() => emit('close')) }
-function backdrop(event: MouseEvent) { if (isBackdropClick(event, dialog.value)) close() }
 function chooseFolder(event: Event) {
   selected.value = ''
   const input = event.target as HTMLInputElement

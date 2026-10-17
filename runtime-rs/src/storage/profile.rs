@@ -27,6 +27,7 @@ const SETTINGS: &[&str] = &[
     "aics_chat_model",
     "aics_chat_api_drafts",
     "aics_chat_thinking_v1",
+    "aics_chat_search_v1",
     "aics_chat_volume_v1",
     "aics_companion_live2d_v1",
     "aics_live2d_quality_v1",

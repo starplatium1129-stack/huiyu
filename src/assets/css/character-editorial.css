@@ -1,12 +1,12 @@
 @reference "./tailwind.css";
 /* Character archive: layered reading surfaces around the existing portrait and tools. */
-.character-editorial { padding:clamp(24px,2.2vw,32px) clamp(20px,3.5vw,56px) var(--s-8); background:var(--bg-base); }
-.character-editorial .library-header { @apply tw:items-center tw:mb-s-5; }
-.character-editorial .library-header h1 { font-size:clamp(1.8rem,2.6vw,2.4rem); @apply tw:font-semibold; }
+.character-editorial { --page-max:1680px; padding:var(--workspace-pad-top,var(--s-5)) var(--workspace-gutter,var(--s-5)) var(--s-7); background:var(--bg-base); }
+.character-editorial .library-header { @apply tw:items-center tw:mb-s-4; }
+.character-editorial .library-header h1 { margin:0; font-size:var(--fs-title); @apply tw:font-semibold; }
 .character-editorial .library-header p { @apply tw:text-secondary tw:leading-body; }
 .archive-header-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
 .character-editorial .page-kicker,.profile-kicker { @apply tw:text-secondary; font:500 var(--fs-label-xs) var(--font-mono); letter-spacing:.12em; }
-.character-editorial .library-layout { grid-template-columns:220px minmax(0,1fr); gap:clamp(20px,2.5vw,40px); }
+.character-editorial .library-layout { grid-template-columns:210px minmax(0,1fr); gap:var(--workspace-panel-gap,var(--s-5)); }
 .character-editorial :deep(.character-directory) { @apply tw:rounded-lg; border-color:transparent; background:var(--bg-surface); }
 .character-editorial :deep(.directory-tools) { @apply tw:p-s-3; }
 .character-editorial :deep(.directory-item) { @apply tw:gap-s-2; }
@@ -20,7 +20,9 @@
 .character-editorial .portrait-source { @apply tw:max-w-[65%] tw:text-right; }
 .character-editorial .portrait-fallback-note { order:1; @apply tw:w-full tw:p-0; border:0; background:transparent; }
 .character-profile { @apply tw:min-w-0; padding:var(--s-2) 0; background:transparent; border:0; }
-.profile-kicker { @apply tw:mb-s-2; }
+.profile-kicker { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-2); }
+.profile-kicker .archive-icon { width:18px; height:18px; color:var(--text-secondary); }
+.profile-kicker::after { content:''; width:48px; height:1px; background:var(--character-ornament,var(--accent)); }
 .character-editorial .character-name { margin:0 0 var(--s-3); @apply tw:font-display; font-size:clamp(1.7rem,2.5vw,2.5rem); @apply tw:leading-tight; overflow-wrap:anywhere; }
 .character-editorial .character-alias { overflow-wrap:anywhere; @apply tw:text-secondary; }
 .character-editorial .identity-row { @apply tw:gap-s-1; }
@@ -29,12 +31,11 @@
 .character-editorial .character-actions { @apply tw:gap-s-2; margin:var(--s-5) 0; border:0; }
 .character-editorial .character-actions .btn { @apply tw:min-h-[40px]; }
 .character-editorial .character-actions .btn-primary { flex:1 1 100%; }
-.character-editorial .voice-block { margin:var(--s-4) 0; padding:var(--s-4); border:1px solid var(--border-soft); border-left:3px solid var(--accent); border-radius:var(--r-lg); background:linear-gradient(145deg,var(--accent-soft),transparent 75%),var(--bg-surface); @apply tw:not-italic; box-shadow:inset 0 1px 0 var(--glass-highlight); }
+.character-editorial .voice-block { margin:var(--s-4) 0; padding:var(--s-4); border:1px solid var(--border-soft); border-left:3px solid var(--character-ornament,var(--accent)); border-radius:var(--r-lg); background:linear-gradient(145deg,color-mix(in srgb,var(--character-ornament,var(--accent)) 9%,transparent),transparent 75%),var(--bg-surface); @apply tw:not-italic; box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .character-editorial .voice-label { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-2); color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:0; }
 .character-editorial .voice-label .archive-icon { width:16px; height:16px; color:var(--accent); }
 .voice-line { margin:0; color:var(--text-primary); font:500 var(--fs-body-sm)/var(--lh-loose) var(--font-serif); }
 .character-editorial .tags-grid { @apply tw:gap-s-1; }
-.character-editorial .tag-chip { @apply tw:text-secondary; background:var(--bg-surface); border:0; @apply tw:rounded-pill tw:font-normal; }
 .character-story { margin:var(--s-5) 0; }
 .profile-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; @apply tw:overflow-hidden tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-loose tw:whitespace-pre-line; overflow-wrap:anywhere; }
 .profile-story.expanded { @apply tw:block; }
@@ -64,6 +65,7 @@
 .character-editorial .recommend-head .page-kicker { @apply tw:mb-s-2; }
 .character-editorial .recommend-head p { @apply tw:text-secondary tw:leading-body; }
 .character-editorial .recommend-head > .btn { @apply tw:shrink-0; }
+.character-editorial:focus-visible,.recommend-section:focus-visible { outline:none; box-shadow:inset 0 2px 0 var(--focus-color); }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .profile-story-toggle .archive-icon { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .profile-story-toggle .archive-icon { transition:none; }
 @media (forced-colors:active) { .character-editorial .voice-block,.character-editorial .detail-grid .profile-detail-card { background:Canvas; border-color:CanvasText; } }
@@ -72,11 +74,12 @@
    internal geometry or using the image's changing natural aspect ratio. */
 @media (max-width:1200px) {
   .character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,1fr); }
-  .character-editorial .library-layout { grid-template-columns:190px minmax(0,1fr); @apply tw:gap-s-4; }
   .character-editorial .character-profile { padding:var(--s-4) 0; }
   .character-editorial .detail-grid { grid-template-columns:1fr; }
 }
+@media (max-width:1100px) { .character-editorial .library-layout { grid-template-columns:190px minmax(0,1fr); gap:var(--s-4); } }
 @media (max-width:900px) {
+  .character-editorial { padding:var(--s-4); }
   .character-editorial .library-layout { grid-template-columns:minmax(0,1fr); }
   .character-editorial .library-detail .character-hero { @apply tw:gap-s-4; }
 }

@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { conditionText, normalizeGalleryFilterSnapshot, recordedCondition, recordedSeed, UNRECORDED_CONDITION, type GalleryFilterSnapshot, type GalleryGenerationConditions, type GenerationFilterField } from '@/composables/gallery/galleryGenerationConditions'
 import { useGallerySavedFilters } from '@/composables/gallery/useGallerySavedFilters'
 import { GALLERY_FILTER_NAME_LIMIT } from '@/storage/galleryFilterPreferences'
@@ -37,7 +38,10 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
 
 <template>
   <section class="gallery-generation-filters" aria-label="生成条件与常用组合">
-    <div class="generation-heading"><h3>生成条件</h3><button class="btn btn-quiet btn-sm" type="button" :disabled="!filterCount" @click="emit('clear')">清除生成条件</button></div>
+    <details class="generation-conditions">
+      <StudioDisclosureSummary><span>按生成条件细选</span><span class="generation-summary">{{ filterCount ? `已选 ${filterCount} 项` : '引擎、服装、尺寸与 Seed' }}</span></StudioDisclosureSummary>
+      <div data-disclosure-content>
+      <div class="generation-heading"><button class="btn btn-quiet btn-sm" type="button" :disabled="!filterCount" @click="emit('clear')">清除生成条件</button></div>
       <div class="generation-fields">
         <label v-for="field in fields" :key="field.key" class="generation-field"><span>{{ field.label }}</span>
           <StudioSelect :model-value="conditions[field.key]" :label="`按${field.label}筛选`" :options="[{ value: '', label: field.all }, ...options[field.key]]" @update:model-value="updateCondition(field.key, $event)" />
@@ -49,8 +53,10 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
           </div>
         </div>
       </div>
+      </div>
+    </details>
     <details class="generation-presets">
-      <summary><ArchiveIcon name="book" /><span>常用筛选组合</span><span v-if="presets.length">{{ presets.length }}</span><ArchiveIcon name="chevron-down" /></summary>
+      <StudioDisclosureSummary><ArchiveIcon name="book" /><span>常用筛选组合</span><span v-if="presets.length" class="generation-summary">{{ presets.length }} 组</span></StudioDisclosureSummary>
       <div data-disclosure-content>
       <div class="generation-actions">
         <StudioSelect v-if="presets.length" :model-value="matchedPresetId" label="沿用常用筛选组合" :options="presetOptions" :disabled="busy" @update:model-value="applyPreset(String($event))" />
@@ -71,15 +77,12 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .gallery-generation-filters { @apply tw:min-w-0 tw:text-primary tw:text-label-sm; }
-.generation-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); min-height:var(--control-height-sm); }
-.generation-heading h3 { margin:0; font:600 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
-details { margin-top:var(--s-4); border:0; border-top:1px solid var(--border-soft); background:transparent; }
-summary { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px]; padding-inline:var(--s-2); cursor:pointer; list-style:none; }
-summary .archive-icon { width:16px; height:16px; flex-shrink:0; }
-details[open] summary > :last-child { transform:rotate(180deg); }
-summary::-webkit-details-marker { display:none; }
-summary > :last-child { margin-left:auto; }
-summary:focus-visible,input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.generation-heading { display:flex; justify-content:flex-end; margin-top:var(--s-2); }
+details { border:0; border-top:1px solid var(--border-soft); background:transparent; }
+.generation-presets { margin-top:var(--s-2); }
+.generation-summary { margin-left:auto; color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
+:deep(summary) { min-height:44px; padding-inline:var(--s-1); }
+:deep(summary:focus-visible),input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .generation-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr)); gap:var(--s-3); margin-top:var(--s-3); }
 .generation-field { @apply tw:grid tw:min-w-0 tw:gap-s-1; align-content:start; color:var(--text-secondary); }
 .generation-seed,.generation-actions,.generation-save { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2; }

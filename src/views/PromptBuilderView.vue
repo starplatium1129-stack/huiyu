@@ -63,7 +63,7 @@
     </div>
 
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
-      <a href="#drawing-materials">创作素材</a><a href="#drawing-canvas">画布预览</a><a href="#stepResult">输出设置</a>
+      <RouterLink :to="{ query: route.query, hash: '#drawing-materials' }">创作素材</RouterLink><RouterLink :to="{ query: route.query, hash: '#drawing-canvas' }">画布预览</RouterLink><RouterLink :to="{ query: route.query, hash: '#stepResult' }" @click="inspector?.selectSection('render')">输出设置</RouterLink>
     </nav>
     <div ref="layoutRoot" class="director-workspace">
       <!-- One action bar: inspector on wide screens, workspace-wide sticky row on narrow screens. -->
@@ -92,7 +92,7 @@
       <!-- ─── 中栏：监视器 ────────────────────────────────── -->
       <div class="director-col col-center" id="drawing-canvas">
 
-        <DirectorStagePanel
+        <Suspense><DirectorStagePanel
           ref="stagePanel"
           :canvas-size="genBarSize"
           :display-result-url="displayResultUrl"
@@ -122,7 +122,13 @@
           @restoreStashed="onRestoreStashed"
           @interrogateResult="handleInterrogateResult"
           @interrogateError="handleInterrogateError"
-        />
+        /><template #fallback>
+          <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
+            <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>画布预览</strong></div></div>
+            <div class="stage-viewport director-canvas-loading"><AtelierEmptyArt /><p role="status">正在准备画布…</p></div>
+            <div class="director-canvas-loading-foot" aria-hidden="true"></div>
+          </section>
+        </template></Suspense>
 
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
@@ -130,11 +136,11 @@
         <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
         <template #story>
 
-        <DirectorStoryPanel @ready="focusDescription" />
+        <AsyncPanel :loader="loadStoryPanel" label="故事与画面描述" v-slot="{ component }"><component :is="component" @ready="focusDescription" /></AsyncPanel>
 
         </template>
         <template #character>
-        <DirectorCharacterPanel :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" />
+        <AsyncPanel :loader="loadCharacterPanel" label="角色素材" v-slot="{ component }"><component :is="component" :current-traits="currentTraits" @selectSource="selectPopularSource" @selectCharacter="selectPopularCharacter" @selectOutfit="selectPopularOutfit" /></AsyncPanel>
         <section class="material-current-scene">
           <div><h3>这一幕</h3><button class="btn btn-quiet btn-sm" type="button" @click="openMaterials('scenes')">更换场景<ArchiveIcon name="chevron-down" /></button></div>
           <strong>{{ currentSceneTitle || '当前构想' }}</strong>
@@ -144,17 +150,17 @@
 
         </template>
         <template #scenes>
-          <PromptMaterialScenes :bindings="materialBindings" />
+          <AsyncPanel :loader="loadMaterialScenes" label="场景素材" v-slot="{ component }"><component :is="component" :bindings="materialBindings" /></AsyncPanel>
         </template>
         <template #history="{ active }">
-        <HistoryPanel class="advanced-decision"
+        <AsyncPanel :loader="loadHistoryPanel" label="作品历史" v-slot="{ component }"><component :is="component" class="advanced-decision"
           :history="pb.history" :active="active"
           @resume="resumeHistory"
           @duplicate="duplicateHistory"
           @delete="deleteHistory"
           @to-shots="handleHistoryToShots"
           @to-shots-batch="handleHistoryToShotsBatch"
-        />
+        /></AsyncPanel>
         </template>
         <template #footer><button class="btn btn-quiet btn-sm" type="button" @click="resetLayout"><ArchiveIcon name="refresh" />恢复默认布局</button></template>
         </DirectorMaterialDrawer>
@@ -162,15 +168,14 @@
 
       <DirectorInspector ref="inspector" v-content-motion:fade="pb.directorMode" :queue-count="sdQueue.total.value" :busy="generationBusy">
         <template #render>
-          <PromptInspectorRender :bindings="renderBindings">
+          <AsyncPanel :loader="loadInspectorRender" label="绘制参数" v-slot="{ component }"><component :is="component" :bindings="renderBindings">
             <template #size><GenerationSizePicker :engine="drawEngine" :size="genBarSize" :anima-sizes="animaBarSizes" :busy="generationBusy" @update:size="genBarSize = $event" /></template>
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>
-          </PromptInspectorRender>
+          </component></AsyncPanel>
           <OutfitOverrideNotice v-if="outfitOverridden" />
         </template>
         <template #image>
-              <DirectorImageTools
-                v-if="stagePanel"
+              <AsyncPanel v-if="stagePanel" :loader="loadImageTools" label="图像工具" v-slot="{ component }"><component :is="component"
                 :generation-busy="generationBusy"
                 :interrogate-busy="stagePanel.interrogateBusy"
                 :interrogate-mode="drawEngine === 'krea2' ? 'caption' : 'tag'"
@@ -191,13 +196,14 @@
                 @goVideo="goToVideo"
                 @addToShots="addToShots"
                 @goShots="goToShots"
-              />
+              /></AsyncPanel>
+              <p v-else role="status">画布准备完成后，可继续使用图像工具。</p>
         </template>
         <template #prompt>
-          <PromptInspectorPrompt :bindings="healthBindings" />
+          <AsyncPanel :loader="loadInspectorPrompt" label="提示词工具" v-slot="{ component }"><component :is="component" :bindings="healthBindings" /></AsyncPanel>
         </template>
         <template #delivery>
-          <PromptInspectorDelivery :bindings="deliveryBindings" />
+          <AsyncPanel :loader="loadInspectorDelivery" label="任务与配音工具" v-slot="{ component }"><component :is="component" :bindings="deliveryBindings" /></AsyncPanel>
         </template>
         <template #actions><div ref="inspectorActions" class="inspector-actions" /></template>
       </DirectorInspector>
@@ -205,8 +211,8 @@
 
     <!-- Toast 已于 2026-08-29 UX 收编退役，统一走全局 useToast（AppToast）；空壳 Transition 一并清除 -->
 
-    <HistoryReuseDialog v-if="reuseRequest" :key="String(reuseRequest.record.id)" :record="reuseRequest.record" :busy="reuseBusy" @apply="applyReuse" @cancel="cancelReuse" />
-    <GeneratedSceneDialog v-if="capturedScene" :source="capturedScene" @close="closeSceneCapture" />
+    <HistoryReuseDialog v-if="reuseRequest" :key="String(reuseRequest.record.id)" :record="reuseRequest.record" :busy="reuseBusy" :loading="reuseLoading" :error="reuseError" @apply="applyReuse" @cancel="cancelReuse" @retry="retryReuse" />
+    <GeneratedSceneDialogHost v-if="capturedScene" :source="capturedScene" @close="closeSceneCapture" />
     <DeferredPanel :active="compareOpen || inpaintOpen">
       <PromptResultDialogs :bindings="dialogBindings" />
     </DeferredPanel>
@@ -216,38 +222,40 @@
 <script setup lang="ts">
 import '@/assets/css/director.css'
 import { computed, defineAsyncComponent, nextTick, ref } from 'vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
 const DirectorResizeHandle = defineAsyncComponent(() => import('@/components/director/DirectorResizeHandle.vue'))
 const DirectorLayoutControls = defineAsyncComponent(() => import('@/components/director/DirectorLayoutControls.vue'))
-const GeneratedSceneDialog = defineAsyncComponent(() => import('@/components/maintenance/GeneratedSceneDialog.vue'))
+import GeneratedSceneDialogHost from '@/components/director/GeneratedSceneDialogHost.vue'
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
 const OutfitOverrideNotice = defineAsyncComponent(() => import('@/components/director/OutfitOverrideNotice.vue'))
-const PromptResultDialogs = defineAsyncComponent(() => import('@/components/director/PromptResultDialogs.vue'))
-const PromptInspectorRender = defineAsyncComponent(() => import('@/components/director/PromptInspectorRender.vue'))
+import PromptResultDialogs from '@/components/director/PromptResultDialogs.vue'
+const loadInspectorRender = () => import('@/components/director/PromptInspectorRender.vue')
 const PromptInspectorStyle = defineAsyncComponent(() => import('@/components/director/PromptInspectorStyle.vue'))
-const PromptInspectorPrompt = defineAsyncComponent(() => import('@/components/director/PromptInspectorPrompt.vue'))
-const PromptInspectorDelivery = defineAsyncComponent(() => import('@/components/director/PromptInspectorDelivery.vue'))
+const loadInspectorPrompt = () => import('@/components/director/PromptInspectorPrompt.vue')
+const loadInspectorDelivery = () => import('@/components/director/PromptInspectorDelivery.vue')
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
-const DirectorMaterialDrawer = defineAsyncComponent(() => import('@/components/director/DirectorMaterialDrawer.vue'))
-const DirectorInspector = defineAsyncComponent(() => import('@/components/director/DirectorInspector.vue'))
+import DirectorMaterialDrawer from '@/components/director/DirectorMaterialDrawer.vue'
+import DirectorInspector from '@/components/director/DirectorInspector.vue'
 const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
 const PromptDraftNotice = defineAsyncComponent(() => import('@/components/director/PromptDraftNotice.vue'))
 const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
 const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
-const HistoryReuseDialog = defineAsyncComponent(() => import('@/components/director/HistoryReuseDialog.vue'))
-const HistoryPanel = defineAsyncComponent(() => import('@/components/HistoryPanel.vue'))
-const DirectorStoryPanel = defineAsyncComponent(() => import('@/components/director/DirectorStoryPanel.vue'))
-const DirectorCharacterPanel = defineAsyncComponent(() => import('@/components/director/DirectorCharacterPanel.vue'))
-const PromptMaterialScenes = defineAsyncComponent(() => import('@/components/director/PromptMaterialScenes.vue'))
+import HistoryReuseDialog from '@/components/director/HistoryReuseDialog.vue'
+const loadHistoryPanel = () => import('@/components/HistoryPanel.vue')
+const loadStoryPanel = () => import('@/components/director/DirectorStoryPanel.vue')
+const loadCharacterPanel = () => import('@/components/director/DirectorCharacterPanel.vue')
+const loadMaterialScenes = () => import('@/components/director/PromptMaterialScenes.vue')
 const DirectorStagePanel = defineAsyncComponent(() => import('@/components/director/DirectorStagePanel.vue'))
-const DirectorImageTools = defineAsyncComponent(() => import('@/components/director/DirectorImageTools.vue'))
+import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
+const loadImageTools = () => import('@/components/director/DirectorImageTools.vue')
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const StudioTooltip = defineAsyncComponent(() => import('@/components/ui/StudioTooltip.vue'))
 const GenerationActionBar = defineAsyncComponent(() => import('@/components/director/GenerationActionBar.vue'))
 const GenerationSizePicker = defineAsyncComponent(() => import('@/components/director/GenerationSizePicker.vue'))
 import { usePromptWorkspace } from "@/composables/prompt/usePromptWorkspace"
 const workspace = usePromptWorkspace()
-const { reuseRequest, reuseBusy, applyReuse, cancelReuse } = workspace.historyReuse
+const { reuseRequest, reuseBusy, reuseLoading, reuseError, retryReuse, applyReuse, cancelReuse } = workspace.historyReuse
 const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
 const inspectorActions = ref<HTMLElement | null>(null)
 const actionBarHeight = ref(0)

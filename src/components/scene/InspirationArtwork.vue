@@ -2,7 +2,7 @@
   <figure class="inspiration-artwork" :class="{ ready: loaded, 'inspiration-artwork-full': full }" :aria-busy="Boolean(src && !loaded && !failed)">
     <img v-if="src && !failed" v-bind="image" :alt="artwork?.alt || scene?.title + '，完整场景构图'" decoding="async" draggable="false" />
     <SensitivePreviewVeil v-if="loaded && !artwork && scene?.rating === 'R18'" :src="src" :crossorigin="image.crossorigin" />
-    <div v-if="!loaded" class="inspiration-artwork-fallback" :role="failed ? 'status' : undefined">
+    <div class="inspiration-artwork-fallback" :aria-hidden="loaded" :role="!loaded && failed ? 'status' : undefined">
       <ArchiveIcon :name="icon" />
       <span>{{ failed ? '预览未能加载' : !scene && !artwork ? '场景预览待收录' : !src ? '图片服务未连接' : '加载画面…' }}</span>
     </div>
@@ -26,9 +26,11 @@ const { image, src, loaded, failed } = useRuntimeImage(() => props.artwork?.src 
 .inspiration-artwork::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .inspiration-artwork-full > img { box-shadow:var(--art-frame-shadow); }
 .inspiration-artwork.ready > img { opacity:1; }
-.inspiration-artwork-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-1); padding:var(--s-1); color:var(--on-art-primary); font-size:var(--fs-label-xs); text-align:center; }
-.inspiration-artwork-fallback .archive-icon { width:24px; height:24px; color:var(--on-art-primary); }
-@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .inspiration-artwork > img),:global(:root:not([data-motion='full']) .inspiration-artwork::after) { transition:none; } }
+.inspiration-artwork-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-3); border-radius:inherit; background:var(--bg-elevated); color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-label); text-align:center; overflow-wrap:anywhere; pointer-events:none; }
+.inspiration-artwork-fallback[aria-hidden='true'] { opacity:0; transition:opacity 160ms var(--ease-out); }
+.inspiration-artwork-fallback .archive-icon { width:24px; height:24px; flex:none; color:var(--accent); }
+@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .inspiration-artwork > img),:global(:root:not([data-motion='full']) .inspiration-artwork::after),:global(:root:not([data-motion='full']) .inspiration-artwork-fallback) { transition:none; } }
 :global(:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-artwork > img),
-:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-artwork::after) { transition:none; }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-artwork::after),
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-artwork-fallback) { transition:none; }
 </style>

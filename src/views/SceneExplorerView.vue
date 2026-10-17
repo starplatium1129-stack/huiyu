@@ -50,7 +50,7 @@
           @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
         <button type="button"
           :aria-pressed="fTier === 'all' && sortBy === 'smart' && !showHidden"
-          @click="showAllScenes">完整库 {{ availableCount }}</button>
+          @click="showAllScenes">完整库 {{ loading ? '…' : loadError ? '—' : availableCount }}</button>
       </div>
 
       <div class="toolbar-primary">
@@ -70,7 +70,7 @@
         <AnimatedSelection />
         <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
           :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
-          @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.id === 'all' ? '全部分类' : d.label }} {{ themeCount(d.id) }}</button>
+          @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.id === 'all' ? '全部分类' : d.label }} {{ loading ? '…' : loadError ? '—' : themeCount(d.id) }}</button>
       </div>
 
       <div v-if="activeFilters.length" class="scene-active-filters" aria-label="已选筛选">
@@ -137,7 +137,7 @@
     </ArchiveStatePanel>
     <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
-          :class="{ 'scene-flash': flashId === s.id, 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id" :data-list-key="s.id"
+          :class="{ 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id" :data-list-key="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
           <template #body="{ scene: s2 }">
             <div class="ex-scene-line">
@@ -182,7 +182,7 @@
       </button>
     </div>
 
-    <SceneStoryDialog ref="storyDialog" v-model="drawerScene" :scenes="filtered" />
+    <SceneStoryDialog ref="storyDialog" v-model="drawerScene" :scenes="filtered" @after-close="finishSceneClose" />
   </article>
 </template>
 
@@ -215,8 +215,8 @@ const {
   showPersonalScenes, showRecommendedScenes, usedCount, sortBy, showFavoriteScenes, favoriteCount,
   hiddenCount, showAllScenes, availableCount, THEME_DEFS, activeTheme, themeCount,
   searchIntent, fChar, fSeason, fTime, fSeries, fRating, matureCount, resetFilters,
-  loading, loadError, init, paged, flashId, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
-  personalReason, drawerScene, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
+  loading, loadError, init, paged, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
+  personalReason, drawerScene, finishSceneClose, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
 } = useSceneExplorerWorkspace()
 const listRoot = ref<HTMLElement | null>(null)
 useListTransition(listRoot, () => paged.value.map(scene => scene.id))

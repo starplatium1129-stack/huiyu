@@ -1,7 +1,6 @@
 @reference "../tailwind.css";
   /* 窄栏里禁止竖排:字号与内距收紧,强制单行 */
   .pb .char-btn { flex: 1; @apply tw:min-w-0 tw:inline-flex tw:items-center tw:justify-center tw:gap-s-1; padding: var(--s-2) var(--s-1); @apply tw:rounded-md; border: 1px solid var(--border-soft); background: var(--bg-surface); @apply tw:text-secondary tw:cursor-pointer tw:text-label-sm; font-weight: 650; @apply tw:whitespace-nowrap; transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover); }
-  .pb .char-btn .aic-icon { @apply tw:text-body tw:shrink-0; }
   .pb .char-btn:hover { @apply tw:border-accent tw:text-accent; }
   .pb .char-btn.active { @apply tw:border-strong; background: var(--accent-soft); @apply tw:text-primary; box-shadow: var(--shadow-sm); }
 
@@ -100,7 +99,6 @@
     .pb[data-character="triad"] .stage-muse { opacity:.1 !important; }
   }
   @media (max-width: 768px) {
-    .pb .nav-back, .pb-kicker { @apply tw:hidden; }
     .pb #stepResult > * { grid-column:1 !important; grid-row:auto !important; }
     .pb .char-btn, .pb .tag-chip, .pb .cat-tab { @apply tw:min-h-[44px]; }
     .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger { @apply tw:min-h-[44px]; }

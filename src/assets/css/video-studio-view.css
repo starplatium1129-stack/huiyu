@@ -103,21 +103,24 @@ html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shado
 .video-upload-drop:focus-within::after { opacity:1; transition:none; }
 .video-upload-drop:focus-within .video-upload-icon { transform:none; transition:none; }
 .video-upload-drop:focus-within { outline:none; box-shadow:var(--focus-shadow); transform:none; transition:none; }
-.video-upload-drop--single { @apply tw:min-h-[220px]; align-content:center; @apply tw:gap-s-3; }
+.video-upload-drop--single { height:clamp(220px,30vh,300px); align-content:center; @apply tw:gap-s-3; }
 .video-upload-drop--single strong { @apply tw:text-primary tw:text-title-xs; }
 .video-upload-drop--single span { max-width:38ch; }
-.video-dual-frame-grid .video-first-frame { height:clamp(160px,18vh,240px); }
+.video-dual-frame-grid .video-frame-preview,.video-dual-frame-grid .video-upload-drop { height:clamp(180px,18vh,240px); }
 .video-upload-drop[data-busy="true"] { @apply tw:text-disabled tw:pointer-events-none; }
 .video-upload-drop input[type="file"] { @apply tw:absolute tw:w-[1px] tw:h-[1px]; opacity:0; @apply tw:overflow-hidden; }
 .video-upload-drop span { max-width:24ch; }
-.video-first-frame {
-  @apply tw:block tw:w-full;
-  max-height:min(30vh,300px);
-  @apply tw:object-contain;
+.video-frame-preview {
+  display:grid; grid-template:minmax(0,1fr)/minmax(0,1fr); place-items:center;
+  height:clamp(220px,30vh,300px); overflow:hidden;
   border:1px solid var(--border-soft);
   @apply tw:rounded-lg;
   background:var(--bg-deep);
 }
+.video-frame-preview>* { grid-area:1/1; }
+.video-frame-preview>span { padding:var(--s-4); color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); text-align:center; }
+.video-first-frame { display:block; width:100%; height:100%; min-height:0; object-fit:contain; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); }
+.video-first-frame.is-ready { opacity:1; }
 .video-choice-pair { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-3; }
 .video-details-panel .video-panel-heading { margin-bottom:var(--s-3); }
 .video-advanced { @apply tw:mt-s-4 tw:pt-s-4; border-top:1px solid var(--border-soft); }

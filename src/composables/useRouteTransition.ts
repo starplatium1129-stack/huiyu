@@ -4,19 +4,24 @@ import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 
 /** Release animation effects after navigation so fixed toolbars stay viewport-bound. */
-export function useRouteTransition(destinationPath?: () => string, options: { initialFade?: boolean } = {}) {
+export function useRouteTransition(destinationPath: () => string) {
   const active = new Map<HTMLElement, () => void>()
   let keyboard = false
   let interrupted = new WeakMap<HTMLElement, Keyframe>()
-  const departed = new WeakSet<HTMLElement>()
   let leaving: HTMLElement | undefined
-  let departingPath = ''
+  let focusHref: string | null | undefined
   const pathname = (path: string) => path.split(/[?#]/, 1)[0]
-  const archivePair = (from: string, to: string) => (from === '/popular-scenes' && to === '/character')
-    || (from === '/character' && to === '/popular-scenes')
-  function timing(el: HTMLElement, token: string) {
-    const style = getComputedStyle(el), value = style.getPropertyValue(token).trim()
-    return { duration: cssTimeToMilliseconds(value), easing: style.getPropertyValue('--ease-out').trim() }
+  const timings = new Map<string, { duration: number; easing: string }>()
+  function timing(token: string) {
+    let motion = timings.get(token)
+    if (!motion) {
+      // These tokens are root-owned. Reading a departing, inert subtree here
+      // otherwise forces a full style update in the middle of Vue's DOM patch.
+      const style = getComputedStyle(document.documentElement)
+      motion = { duration: cssTimeToMilliseconds(style.getPropertyValue(token)), easing: style.getPropertyValue('--ease-out').trim() }
+      timings.set(token, motion)
+    }
+    return motion
   }
   function arriveContent(el: HTMLElement, motion: KeyframeAnimationOptions) {
     // Only marked reading surfaces move; fixed navigation and native overlays stay anchored.
@@ -30,7 +35,7 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     })
     // Inspira UI BlurReveal's grouped arrival, without blur or per-child wrappers.
     // Adapted from 04c57ab62b9713872ebbf68988dff1836ed3d764; MIT: assets/licenses/inspira-ui.txt.
-    const duration = timing(el, '--motion-route').duration
+    const duration = timing('--motion-route').duration
     return surfaces.map((surface, index) => surface.animate([
       { opacity: .6, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' },
     ], { ...motion, duration, delay: Math.min(index * duration / 10, duration / 4), fill: 'backwards' }))
@@ -41,7 +46,8 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     interrupted = new WeakMap()
   }
   function presentation(el: HTMLElement): Keyframe | undefined {
-    if (interrupted.has(el)) return interrupted.get(el)
+    const frame = interrupted.get(el)
+    if (frame) return frame
     if (!active.has(el)) return undefined
     try {
       const style = getComputedStyle(el)
@@ -60,12 +66,18 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
 
   /** Fade the workspace as one surface; fixed controls keep their viewport geometry. */
   function enterWorkspace(el: HTMLElement, done: () => void) {
+    const current = presentation(el)
+    interrupted.delete(el)
     settle(el)
     el.inert = false
+    if (keyboard && focusHref !== undefined) {
+      const link = [...el.querySelectorAll<HTMLAnchorElement>('a[href]')].find(anchor => anchor.href === focusHref)
+      ;(link || el.closest<HTMLElement>('main'))?.focus({ preventScroll: true })
+    }
+    focusHref = undefined
     const path = el.dataset.routePath || ''
     const cached = el.dataset.routeEntered === 'true'
     el.dataset.routeEntered = 'true'
-    departed.delete(el)
     if (path) markUiFluidityForPath(path, 'shell-ready')
     let animation: Animation | undefined, finished = false
     let content: Animation[] = []
@@ -90,99 +102,24 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
     if (keyboard || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') { finish(); return }
     active.set(el, finish)
     try {
-      const motion = timing(el, cached ? '--motion-surface' : '--motion-route-cut')
-      if (!cached) content = arriveContent(el, motion)
-      animation = el.animate([{ opacity: cached ? .6 : 0 }, { opacity: 1 }], motion)
+      const motion = timing(current ? '--motion-press' : cached ? '--motion-surface' : '--motion-route-cut')
+      if (!cached && !current) content = arriveContent(el, motion)
+      animation = el.animate([current || { opacity: cached ? .6 : 0 }, { opacity: 1 }], motion)
       animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
 
-  function onEnter(element: Element, done: () => void) {
-    const el = element as HTMLElement
-    const path = el.dataset.routePath || ''
-    // Peer pages become interactive immediately while their content fades in.
-    if (destinationPath && !archivePair(departingPath, pathname(path)) && !interrupted.has(el)) {
-      enterWorkspace(el, done)
-      return
-    }
-    const current = presentation(el)
-    interrupted.delete(el)
-    settle(el)
-    el.inert = false
-    if (path) markUiFluidityForPath(path, 'shell-ready')
-    const cachedActivation = el.dataset.routeEntered === 'true'
-    el.dataset.routeEntered = 'true'
-    const restored = departed.delete(el)
-    const crossRoute = !!departingPath && departingPath !== pathname(path)
-    // A same-page/query refresh does not replay motion. Returning to a cached page
-    // gets only a short opacity settle: no remount, translation or scroll reset.
-    if ((!current && (restored || (cachedActivation && !crossRoute))) || keyboard || prefersReducedMotion() || document.hidden || typeof el.animate !== 'function') {
-      delete el.dataset.routeEntering
-      if (path) markUiFluidityForPath(path, 'settled')
-      done()
-      return
-    }
-    let animation: Animation | undefined
-    let finished = false
-    const finish = () => {
-      if (finished) return
-      finished = true
-      delete el.dataset.routeEntering
-      active.delete(el)
-      if (animation) {
-        animation.onfinish = null
-        animation.oncancel = null
-        try {
-          animation.cancel()
-        } catch {
-          // An optional animation implementation must not strand Vue's enter callback.
-          try { animation.effect = null } catch { /* Best-effort effect release. */ }
-        }
-      }
-      if (path) markUiFluidityForPath(path, 'settled')
-      done()
-    }
-    const archive = archivePair(departingPath, pathname(path))
-    const offset = pathname(path) === '/character' ? 8 : -8
-    let frames: Keyframe[] = [{ transform: 'translateY(6px)' }, { transform: 'translateY(0)' }]
-    let durationToken = '--motion-hover'
-
-    if (crossRoute) {
-      // Peer workspaces have no forward/back hierarchy. Keep their geometry
-      // still; only the real directory/detail pair below gets a spatial cue.
-      frames = [{ opacity: 0 }, { opacity: 1 }]
-    } else if (options.initialFade) {
-      frames = [{ opacity: 0 }, { opacity: 1 }]
-    }
-    if (archive) {
-      frames = [{ opacity: 0, transform: `translateX(${offset}px)` }, { opacity: 1, transform: 'translateX(0)' }]
-      durationToken = '--motion-control'
-    }
-    if (cachedActivation) {
-      frames = [{ opacity: .88 }, { opacity: 1 }]
-      durationToken = '--motion-press'
-    }
-    if (current) {
-      frames = [current, { opacity: 1, ...(current.transform ? { transform: 'none' } : {}) }]
-      durationToken = '--motion-press'
-    }
-    try {
-      animation = el.animate(frames, timing(el, durationToken))
-      active.set(el, finish)
-      animation.onfinish = finish
-      animation.oncancel = finish
-    } catch {
-      // Capability detection alone does not guarantee animate() can start.
-      finish()
-    }
-  }
+  function onEnter(element: Element, done: () => void) { enterWorkspace(element as HTMLElement, done) }
   function onLeave(element: Element, done: () => void) {
     const el = element as HTMLElement
-    if (!destinationPath) departed.add(el)
+    // A chapter link is replaced with the page. Keep keyboard reading at that
+    // same destination link when present, otherwise hand off to the main region.
+    focusHref = keyboard && el.contains(document.activeElement)
+      ? document.activeElement?.closest<HTMLAnchorElement>('a[href]')?.href ?? null : undefined
     // Fast navigation must not accumulate several full-page compositing layers.
     if (leaving && leaving !== el) settle(leaving)
-    departingPath = pathname(el.dataset.routePath || '')
-    const destination = pathname(destinationPath?.() || '')
+    const departingPath = pathname(el.dataset.routePath || '')
+    const destination = pathname(destinationPath())
     const current = presentation(el)
     interrupted.delete(el)
     el.inert = true
@@ -200,13 +137,12 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
       }
       done()
     }
-    const isArchive = archivePair(departingPath, destination)
     const leaveFrames: Keyframe[] = [
       current || { opacity: 1 },
       { opacity: 0, ...(current?.transform ? { transform: current.transform } : {}) },
     ]
     try {
-      animation = el.animate(leaveFrames, timing(el, isArchive ? '--motion-press' : '--motion-hover'))
+      animation = el.animate(leaveFrames, timing('--motion-hover'))
       leaving = el; active.set(el, finish); animation.onfinish = animation.oncancel = finish
     } catch { finish() }
   }
@@ -221,12 +157,12 @@ export function useRouteTransition(destinationPath?: () => string, options: { in
   function completeEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
     settle(el)
-    interrupted.delete(el); departed.delete(el)
+    interrupted.delete(el)
     el.inert = false
     delete el.dataset.routeEntering
     done()
   }
-  function motionChanged() { if (prefersReducedMotion()) settleAll() }
+  function motionChanged() { timings.clear(); if (prefersReducedMotion()) settleAll() }
   function visibilityChanged() { if (document.hidden) settleAll() }
   function takeOver(event: Event) {
     keyboard = event.type === 'keydown'

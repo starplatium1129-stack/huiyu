@@ -60,6 +60,7 @@ async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) ret
 .task-center { @apply tw:overflow-hidden; }
 .task-center > details { @apply tw:min-h-0; }
 .task-runtime-panel { display:flex; flex-direction:column; flex:1; min-height:0; }
+.task-runtime-panel > :deep(.async-panel-content) { display:flex; flex-direction:column; flex:1; min-height:0; height:auto; }
 .task-center > details[open] { display:flex; flex-direction:column; flex:1; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scroll-padding-block:var(--s-2); padding-right:var(--s-1); }
 .task-center > header,.task-center > footer,.task-center-controls { flex-shrink:0; }
 .task-disclosure { flex:none; }

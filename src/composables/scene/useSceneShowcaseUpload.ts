@@ -5,7 +5,7 @@
  * 2026-08-18：全量支持经典场景（302 个）与热门角色蓝图（347 个）样张在线预览与无感替换。
  */
 
-import { ref, computed, onScopeDispose } from 'vue'
+import { ref, computed, onScopeDispose, watch } from 'vue'
 import { maintenanceApi, maintenanceFailure } from '@/api/maintenanceApi'
 import type { HomeHeroCharacter } from '@/types/api'
 import { confirmAction } from '@/composables/useConfirm'
@@ -22,6 +22,7 @@ export interface ShowcaseSceneItem {
 
 interface UploadHooks {
   errorMessage: (error: unknown, fallback: string) => string
+  mode: () => 'samples' | 'covers'
 }
 
 /** 归一化为 JPEG，与后端 15MB 原图 / 3MB 缩略图限制对齐 */
@@ -51,7 +52,7 @@ function readFileAsImage(file: File): Promise<HTMLImageElement> {
   })
 }
 
-export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
+export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
   const selectedImageId = ref('')
   const selectedImageTitle = ref('')
   const showcaseFeedback = ref('')
@@ -65,7 +66,17 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   const selectedHeroTitle = ref('')
   const { heroes, reload: loadHomeHeroes } = useHomeHeroes()
   const homeHeroes = computed(() => Object.values(heroes.value))
-  let alive = true
+  let alive = true, feedbackRevision = 0
+  watch(() => [mode(), mode() === 'samples' ? selectedImageId.value : selectedHeroId.value], () => {
+    feedbackRevision++
+    showcaseError.value = false
+    showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
+  }, { flush: 'sync' })
+  function feedbackOwner(targetMode: 'samples' | 'covers', id: string) {
+    const revision = feedbackRevision
+    return () => alive && revision === feedbackRevision && mode() === targetMode
+      && (targetMode === 'samples' ? selectedImageId.value : selectedHeroId.value) === id
+  }
   let heroRequest: AbortController | undefined
   let uploadRequest: AbortController | undefined
   onScopeDispose(() => {
@@ -82,11 +93,10 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   function previewImage(s: ShowcaseSceneItem) {
     selectedImageId.value = s.id
     selectedImageTitle.value = s.title
-    showcaseError.value = false
-    showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
   }
 
   function onShowcaseMissing() {
+    if (!alive || mode() !== 'samples' || !selectedImageId.value) return
     showcaseError.value = true
     showcaseFeedback.value = '该场景还没有样张，可直接上传一张。'
   }
@@ -95,8 +105,6 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   function previewHero(hero: HeroEntry) {
     selectedHeroId.value = hero.id
     selectedHeroTitle.value = hero.title
-    showcaseError.value = false
-    showcaseFeedback.value = '支持 PNG / JPEG / WebP，最大 15MB；仅本机可替换。'
   }
   function pickHero() { heroFileEl.value?.click() }
 
@@ -108,29 +116,29 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
       : message
   }
 
-  async function refreshSavedHero(character: HomeHeroCharacter, message: string) {
+  async function refreshSavedHero(message: string, current: () => boolean) {
     if (!alive) return
-    if (selectedHeroId.value === character) showcaseFeedback.value = message
+    if (current()) showcaseFeedback.value = message
     try { await loadHomeHeroes() } catch (error) {
-      if (!alive || selectedHeroId.value !== character) return
+      if (!current()) return
       showcaseError.value = true
       showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
     }
   }
 
   async function resetHero() {
-    if (!selectedHeroId.value || uploadBusy.value) return
-    const character = selectedHeroId.value
+    if (!alive || mode() !== 'covers' || !selectedHeroId.value || uploadBusy.value) return
+    const character = selectedHeroId.value, current = feedbackOwner('covers', character)
     if (!(await confirmAction({ title: `恢复${selectedHeroTitle.value}的内置首页图？`, danger: false }))) return
-    if (!alive || uploadBusy.value) return
+    if (!current() || uploadBusy.value) return
     uploadBusy.value = true
     showcaseError.value = false
     heroRequest = new AbortController()
     try {
       const data = await maintenanceApi.resetHomeHero(character, { signal: heroRequest.signal })
-      await refreshSavedHero(character, data.message || '已恢复内置图')
+      await refreshSavedHero(data.message || '已恢复内置图', current)
     } catch (err) {
-      if (!alive || selectedHeroId.value !== character) return
+      if (!current()) return
       showcaseError.value = true
       showcaseFeedback.value = '未能恢复：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
     } finally { uploadBusy.value = false; heroRequest = undefined }
@@ -139,8 +147,8 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   async function onShowcasePicked(e: Event) {
     const input = e.target as HTMLInputElement
     const file = input.files?.[0]
-    if (!file || !selectedImageId.value || uploadBusy.value) return
-    const id = selectedImageId.value
+    if (!alive || mode() !== 'samples' || !file || !selectedImageId.value || uploadBusy.value) return
+    const id = selectedImageId.value, current = feedbackOwner('samples', id)
     showcaseError.value = false
     if (file.size > 15 * 1024 * 1024) {
       showcaseError.value = true
@@ -166,15 +174,15 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
       }, { signal: uploadRequest.signal })
       if (!alive) return
       const message = data.message || '样张已保存'
-      if (selectedImageId.value === id) showcaseFeedback.value = message
+      if (current()) showcaseFeedback.value = message
       invalidateAsset(id)
       try { await loadShowcaseManifest() } catch (error) {
-        if (!alive || selectedImageId.value !== id) return
+        if (!current()) return
         showcaseError.value = true
         showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
       }
     } catch (err) {
-      if (!alive || selectedImageId.value !== id) return
+      if (!current()) return
       showcaseError.value = true
       showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
     } finally {
@@ -187,8 +195,8 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
   async function onHeroPicked(e: Event) {
     const input = e.target as HTMLInputElement
     const file = input.files?.[0]
-    if (!file || !selectedHeroId.value || uploadBusy.value) return
-    const character = selectedHeroId.value
+    if (!alive || mode() !== 'covers' || !file || !selectedHeroId.value || uploadBusy.value) return
+    const character = selectedHeroId.value, current = feedbackOwner('covers', character)
     showcaseError.value = false
     uploadBusy.value = true
     heroRequest = new AbortController()
@@ -200,9 +208,9 @@ export function useSceneShowcaseUpload({ errorMessage }: UploadHooks) {
       if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
       const normalized = jpegAtWidth(image, 4096, 0.94)
       const data = await maintenanceApi.saveHomeHero(character, normalized, { signal: heroRequest.signal })
-      await refreshSavedHero(character, data.message || '首页主视觉已保存')
+      await refreshSavedHero(data.message || '首页主视觉已保存', current)
     } catch (err) {
-      if (!alive || selectedHeroId.value !== character) return
+      if (!current()) return
       showcaseError.value = true
       showcaseFeedback.value = '未能保存：' + uploadErrorMessage(err, '请确认通过本机控制面板打开网站')
     } finally { uploadBusy.value = false; heroRequest = undefined; input.value = '' }

@@ -4,6 +4,9 @@
 .heading-title { @apply tw:flex tw:items-baseline tw:flex-wrap; gap:var(--s-2) var(--s-4); margin:0; }
 .showcase-heading h1 { font:600 var(--fs-title)/var(--lh-tight) var(--font-sans); margin:0; letter-spacing:-.03em; }
 .showcase-heading p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
+.showcase-heading .showcase-kicker { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-2); font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); letter-spacing:.12em; }
+.showcase-kicker .archive-icon { width:16px; height:16px; color:var(--accent); }
+.showcase-heading .showcase-invitation { margin-top:var(--s-2); font-family:var(--font-serif); }
 .collection-count { @apply tw:whitespace-nowrap tw:text-label tw:text-muted; }
 .collection-count strong { @apply tw:text-primary tw:font-semibold; font-variant-numeric:tabular-nums; }
 .hero-actions .btn { @apply tw:text-label; }

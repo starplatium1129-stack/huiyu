@@ -4,21 +4,24 @@
     <div
       ref="stageRef"
       class="portrait-stage"
-      :class="[{ speaking, 'live2d-ready': live2d.ready.value && live2d.loadedCharacter.value === activeId }, `emotion-${emotion}`]"
+      :class="[{ speaking, 'live2d-ready': live2dReady }, `emotion-${emotion}`]"
       :data-character="activeId"
       :data-emotion="emotion"
       :data-presence="presence || undefined"
       data-mouth-level="0.000"
       data-audio-peak="0.000"
-      role="region"
+      role="region" tabindex="-1"
       :aria-label="`${character.name}的角色舞台`"
     >
       <div class="room-signal">
         <span>{{ character.roomCode }}</span>
         <small>{{ character.roomMood }}</small>
       </div>
-      <img v-if="portraitImage.src && !portraitFailed" v-bind="portraitImage" class="portrait-main" :alt="character.name" />
-      <div v-if="portraitFailed && !live2d.ready.value" class="stage-portrait-missing" role="status">
+      <img v-if="portraitImage.src && !portraitFailed" v-bind="portraitImage" class="portrait-main" :class="{ 'portrait-decoded': portraitLoaded }" :alt="character.name" />
+      <div v-if="!portraitLoaded && !portraitFailed && !live2dReady" class="stage-portrait-feedback stage-portrait-loading" role="status">
+        <ArchiveIcon name="image" /><div><strong>{{ character.name }}</strong><span>{{ portraitImage.src ? '正在加载立绘…' : '暂无静态立绘，可加载动态立绘' }}</span></div>
+      </div>
+      <div v-if="portraitFailed && !live2dReady" class="stage-portrait-feedback stage-portrait-missing" role="status">
         <ArchiveIcon name="image" /><strong>{{ character.name }}</strong>
         <span>立绘暂未加载，对话仍可继续</span>
         <button type="button" class="btn btn-ghost btn-sm" @click="retryPortrait">重新加载立绘</button>
@@ -56,9 +59,9 @@
           <span>{{ chatStatusText }}</span>
         </div>
       </div>
-      <button v-if="localStudio && surface !== 'companion'" type="button" class="btn btn-ghost" @click="modelStudioOpen = true">导入或校准模型</button>
+      <button v-if="localStudio && surface !== 'companion'" type="button" class="btn btn-ghost" @click="openModelStudio">导入或校准模型</button>
       <CharacterStageSettings ref="controlsRef" :companion="surface === 'companion'" :character-id="activeId">
-      <button v-if="localStudio && surface === 'companion'" type="button" class="btn btn-ghost" @click="modelStudioOpen = true">导入或校准模型</button>
+      <button v-if="localStudio && surface === 'companion'" type="button" class="btn btn-ghost" @click="openModelStudio">导入或校准模型</button>
       <details class="character-about">
         <StudioDisclosureSummary>关于{{ character.name }}</StudioDisclosureSummary>
         <p class="character-caption">{{ character.caption }}</p>
@@ -82,7 +85,6 @@
             <small>SINGLE COSTUME</small>
             <strong>{{ activeOutfitLabel }}</strong>
           </span>
-          <span class="wardrobe-note">互动动作含原生图层效果</span>
         </div>
         <button
           v-else
@@ -145,7 +147,13 @@
       </CharacterStageSettings>
     </div>
   </aside>
-  <ModelStudio v-if="modelStudioOpen" @close="modelStudioOpen = false" />
+  <Teleport to="body">
+    <dialog ref="modelStudioDialog" class="model-studio stage-model-studio" aria-label="模型导入与校准"
+      @cancel.prevent.stop="closeModelStudio" @close="!modelStudioDialog?.open && closeModelStudio()" @click="isBackdropClick($event, modelStudioDialog) && closeModelStudio()">
+      <header class="model-studio-heading"><div><small>LIVE2D</small><h2>模型导入与校准</h2></div><button class="btn btn-ghost" type="button" aria-label="关闭模型工作室" autofocus @click="closeModelStudio"><ArchiveIcon name="close" /></button></header>
+      <AsyncPanel v-if="modelStudioOpen" class="stage-model-studio-panel" :loader="loadModelStudio" label="模型工作室" v-slot="{ component }"><component :is="component" /></AsyncPanel>
+    </dialog>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -153,7 +161,7 @@ import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
 import { getNativeLive2dCapabilities } from '@/platform/desktop/nativeLive2d'
 
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import neneWallpaper from '@/assets/illustrations/nene-webchat-wallpaper.webp'
 import natsumeWallpaper from '@/assets/illustrations/natsume-webchat-wallpaper.webp'
@@ -178,12 +186,15 @@ import { useStageFraming, type StageSurface } from '@/composables/chat/useStageF
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import '@/assets/css/character-stage.css'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
 import { profileEmotionConfig } from '@/live2d/companionEmotion'
 import type { Live2DBackendKind } from '@/live2d/types'
 import type { Live2DAdapterCapabilityItem, Live2DCapabilityStatus } from '@/live2d/adapterProfile'
 
+const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
+const loadModelStudio = () => import('./ModelStudio.vue')
 const companionCharacters = listCompanionUiCharacters()
 const CHARACTER_IDS = listCompanionCharacterIds()
 
@@ -200,11 +211,7 @@ const props = defineProps<{
   desktopWindowBounds?: { x: number; y: number; width: number; height: number } | null
   outfit: string
   volume?: number
-  /**
-   * 渲染后端：'auto' 时按 html dataset `data-live2d-backend` 或 URL
-   * `?live2dBackend=` 解析（桌面 Rust 壳注入用），默认浏览器 wl-live2d。
-   * 原生后端不可用（桥缺失）时自动回退浏览器并标记 backend-fallback。
-   */
+  /** auto reads the desktop dataset or URL, falling back to the browser backend. */
   backend?: Live2DBackendKind | 'auto'
 }>()
 
@@ -217,11 +224,15 @@ const emit = defineEmits<{
 const stageRef = ref<HTMLElement>()
 const staticPortraitSource = computed(() => props.surface === 'companion' ? props.character.image
   : props.activeId === 'nene' ? neneWallpaper : props.activeId === 'natsume' ? natsumeWallpaper : props.character.image)
-const { image: portraitImage, failed: portraitFailed, retry: retryPortrait } = useRuntimeImage(staticPortraitSource)
+const { image: portraitImage, loaded: portraitLoaded, failed: portraitFailed, retry: reloadPortrait } = useRuntimeImage(staticPortraitSource)
+function retryPortrait() { stageRef.value?.focus({ preventScroll: true }); reloadPortrait() }
 const controlsRef = ref<InstanceType<typeof CharacterStageSettings>>()
-const ModelStudio = defineAsyncComponent(() => import('./ModelStudio.vue'))
 const localStudio = isLocalStudioHost()
 const modelStudioOpen = ref(false)
+const modelStudioDialog = ref<HTMLDialogElement | null>(null)
+const modelStudioMotion = useFluidDialog(modelStudioDialog)
+function openModelStudio() { modelStudioOpen.value = true; modelStudioMotion.open() }
+function closeModelStudio() { modelStudioOpen.value = false; modelStudioMotion.close() }
 watch(modelStudioOpen, updateStageVisibility)
 function openSettings() { controlsRef.value?.open() }
 const { framing, framingStyle, update: updateFraming, reset: resetFraming } = useStageFraming(computed(() => props.activeId), () => props.surface || 'room')
@@ -245,13 +256,13 @@ function closeWardrobe() {
   wardrobeTriggerRef.value?.focus()
 }
 const live2dInitialized = ref(false)
+let stageAlive = true, characterRequest = 0, enableRequest = 0
+const currentCharacterRequest = (id: string, request: number) => stageAlive && props.activeId === id && request === characterRequest
 // 换装选择按角色记忆（宁宁/夏目共用 storage 单字段，值空间分离）
 const outfitByChar = ref<Record<string, string>>({
   ...Object.fromEntries(CHARACTER_IDS.map(id => [id, getCompanionDefaultOutfit(id)])),
 })
-function currentOutfitId() {
-  return outfitByChar.value[props.activeId] ?? props.outfit
-}
+const currentOutfitId = () => outfitByChar.value[props.activeId] ?? props.outfit
 const outfitOptions = computed(() =>
   listCompanionOutfits(props.activeId),
 )
@@ -267,6 +278,7 @@ const live2d = useLive2D((status) => {
   avatarDetail.value = status.detail
   avatarRetryable.value = status.retryable
 })
+const live2dReady = computed(() => live2d.ready.value && live2d.loadedCharacter.value === props.activeId)
 watch(framing, () => live2d.layout(), { deep: true, flush: 'post' })
 let desktopVisible = true
 watch(() => props.suspended, updateStageVisibility, { immediate: true })
@@ -327,9 +339,7 @@ const avatarActionTitle = computed(() => {
 
 async function handleAvatarAction() {
   if (!live2d.enabled.value) {
-    await activeRuntime()?.activate()
-    await live2d.enable()
-    emit('live2dEnabled', true)
+    if (await enableCharacter()) emit('live2dEnabled', true)
     return
   }
   if (live2d.ready.value) {
@@ -338,6 +348,15 @@ async function handleAvatarAction() {
     return
   }
   if (avatarRetryable.value) await live2d.retry()
+}
+
+async function enableCharacter(automatic = false) {
+  const id = props.activeId, request = ++enableRequest
+  const current = () => stageAlive && props.activeId === id && request === enableRequest && (!automatic || props.autoLoad)
+  await activeRuntime()?.activate()
+  if (!current()) return false
+  await live2d.enable()
+  return current()
 }
 
 function setSpeaking(value: boolean) {
@@ -364,19 +383,14 @@ function setEmotion(value: string) {
   live2d.syncNativeEmotion()
 }
 
-function setUserMessage() {
-  activeRuntime()?.onUserMessage()
-  live2d.syncNativeEmotion()
-}
+function setUserMessage() { activeRuntime()?.onUserMessage(); live2d.syncNativeEmotion() }
 
 function setDesktopVisible(visible: boolean) {
   desktopVisible = visible
   updateStageVisibility()
 }
 
-function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) {
-  live2d.setDesktopWindowBounds(bounds)
-}
+function setDesktopWindowBounds(bounds: { x: number; y: number; width: number; height: number }) { live2d.setDesktopWindowBounds(bounds) }
 
 function setGlobalPointer(
   screenX: number,
@@ -386,9 +400,7 @@ function setGlobalPointer(
   live2d.setGlobalPointer(screenX, screenY, windowBounds)
 }
 
-function releasePointerFocus() {
-  live2d.releasePointerFocus()
-}
+function releasePointerFocus() { live2d.releasePointerFocus() }
 
 let desktopBatteryPower: boolean | null = null
 function applyDesktopPerformanceMode() {
@@ -406,10 +418,11 @@ watch(live2d.backendKind, applyDesktopPerformanceMode, { flush: 'sync' })
 async function handleOutfitChange(next: string) {
   if (outfitBusy.value) return
   if (normalizeCompanionOutfit(props.activeId, next) !== next) return
+  const id = props.activeId, request = characterRequest
   outfitBusy.value = true
   try {
-    if (await live2d.setOutfit(next)) {
-      outfitByChar.value = { ...outfitByChar.value, [props.activeId]: next }
+    if (await live2d.setOutfit(next) && currentCharacterRequest(id, request)) {
+      outfitByChar.value = { ...outfitByChar.value, [id]: next }
       emit('outfitChanged', next)
       closeWardrobe()
     }
@@ -418,17 +431,21 @@ async function handleOutfitChange(next: string) {
   }
 }
 
-watch(() => props.activeId, (id) => {
+async function synchronizeCharacter(id: string) {
+  const request = ++characterRequest
+  if (modelStudioOpen.value) closeModelStudio()
+  enableRequest++
   wardrobeOpen.value = false
   live2d.attachEmotionRuntime(activeRuntime())
   const remembered = normalizeCompanionOutfit(id, props.outfit)
   outfitByChar.value = { ...outfitByChar.value, [id]: remembered }
-  void (async () => {
-    if (live2d.enabled.value) await activeRuntime()?.activate()
-    await live2d.setCharacter(id)
-    if (props.activeId === id && remembered !== live2d.outfit.value) await live2d.setOutfit(remembered)
-  })()
-})
+  if (!live2dInitialized.value) return
+  if (live2d.enabled.value) await activeRuntime()?.activate()
+  if (!currentCharacterRequest(id, request)) return
+  await live2d.setCharacter(id)
+  if (currentCharacterRequest(id, request) && remembered !== live2d.outfit.value) await live2d.setOutfit(remembered)
+}
+watch(() => props.activeId, id => { void synchronizeCharacter(id) }, { flush: 'sync' })
 
 watch(() => props.outfit, (value) => {
   // 外部（storage 恢复/其他标签页）带来的值只认当前角色的值空间
@@ -439,20 +456,15 @@ watch(() => props.outfit, (value) => {
   }
 })
 
-let pendingAutoLoad = false
-
 watch(() => props.autoLoad, (enabled) => {
-  if (!enabled || live2d.enabled.value) return
-  // init 尚未完成时先记下请求，init 完成后统一按最新 autoLoad 决定，
-  // 避免桌面 Companion 的 getState 异步完成落在 init 之前把事件丢掉。
-  if (!live2dInitialized.value) {
-    pendingAutoLoad = true
+  if (!enabled) {
+    enableRequest++
+    if (live2d.enabled.value) live2d.disable()
     return
   }
-  void (async () => {
-    await activeRuntime()?.activate()
-    await live2d.enable()
-  })()
+  if (live2d.enabled.value) return
+  // Cold initialization adopts the latest preference after its own await.
+  if (live2dInitialized.value) void enableCharacter(true)
 })
 
 watch(() => props.desktopWindowBounds, (bounds) => {
@@ -470,31 +482,26 @@ function resolvedBackendKind(): Live2DBackendKind {
   return 'browser'
 }
 
-onMounted(() => {
-  if (!live2dHostRef.value || !stageRef.value) return
+onMounted(async () => {
+  const host = live2dHostRef.value, stage = stageRef.value, id = props.activeId
+  if (!stageAlive || !host || !stage) return
   live2d.attachEmotionRuntime(activeRuntime())
-  const initialOutfit = normalizeCompanionOutfit(props.activeId, props.outfit)
-  outfitByChar.value = { ...outfitByChar.value, [props.activeId]: initialOutfit }
-  void (async () => {
-    if (props.autoLoad) await activeRuntime()?.activate()
-    await live2d.init(props.activeId, live2dHostRef.value!, stageRef.value!, {
-      autoLoad: props.autoLoad,
-      outfit: initialOutfit,
-      backendKind: resolvedBackendKind(),
-    })
-    live2dInitialized.value = true
-    if ((props.autoLoad || pendingAutoLoad) && !live2d.enabled.value) {
-      pendingAutoLoad = false
-      await activeRuntime()?.activate()
-      await live2d.enable()
-    }
-  })()
+  const initialOutfit = normalizeCompanionOutfit(id, props.outfit)
+  outfitByChar.value = { ...outfitByChar.value, [id]: initialOutfit }
+  await live2d.init(id, host, stage, {
+    // Prepare once; enable only after the latest selection and preference are known.
+    autoLoad: false,
+    outfit: initialOutfit,
+    backendKind: resolvedBackendKind(),
+  })
+  if (!stageAlive) return
+  live2dInitialized.value = true
+  if (props.activeId !== id) await synchronizeCharacter(props.activeId)
+  if (stageAlive && props.autoLoad && !live2d.enabled.value) await enableCharacter(true)
 })
 
-onUnmounted(() => {
-  live2d.attachEmotionRuntime(null)
-  live2d.destroy()
-})
+onBeforeUnmount(() => { stageAlive = false; characterRequest++; enableRequest++ })
+onUnmounted(() => { live2d.attachEmotionRuntime(null); live2d.destroy() })
 
 defineExpose({
   ...useCharacterPetControls(() => props.activeId, live2d),

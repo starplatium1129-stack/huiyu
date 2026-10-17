@@ -447,7 +447,7 @@ watch(isRunning, running => { if (running) phase.value = 'results'; emit('runnin
 if (jobs.value.length) { phase.value = 'results'; batchMode.value = jobs.value[0].kind === 'character' ? 'character' : 'scene' }
 // The surface spring owns opening; only later mode/phase changes reveal this body.
 watch([batchMode, phase], () => { if (props.open) contentMotionKey.value = `${batchMode.value}:${phase.value}` })
-onDeactivated(() => { previewJob.value = null; previewSource.value = null })
+onDeactivated(() => { batchDraw.cancel(); previewJob.value = null; previewSource.value = null })
 onUnmounted(() => batchDraw.dispose())
 </script>
 

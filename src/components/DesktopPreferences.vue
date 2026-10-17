@@ -1,5 +1,5 @@
 <template>
-  <section v-if="isDesktop" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-xl" aria-labelledby="desktop-preferences-title">
+  <section v-if="isDesktop" ref="preferences" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-xl" aria-labelledby="desktop-preferences-title">
     <div>
       <span class="desktop-preferences-kicker">桌面偏好</span>
       <h2 id="desktop-preferences-title">我的桌面工作台</h2>
@@ -13,7 +13,7 @@
       @update:model-value="saveStartPageValue"
     />
     <p v-if="feedback" class="desktop-preferences-note" role="status">{{ feedback }}</p>
-    <button v-if="saveFailed" type="button" class="btn btn-ghost btn-sm" @click="saveStartPageValue(startPage)">重试保存</button>
+    <button v-if="saveFailed" type="button" class="btn btn-ghost btn-sm" @click="retrySave">重试保存</button>
   </section>
 </template>
 
@@ -26,11 +26,19 @@ import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { settingsRepository } from '@/storage/settingsRepository'
 import { desktopPages, DESKTOP_START_PAGE_SETTING } from '@/storage/desktopPreferences'
 const isDesktop = Boolean(getDesktopCapabilities())
+const preferences = ref<HTMLElement | null>(null)
 const startPage = ref(settingsRepository.get(DESKTOP_START_PAGE_SETTING) || '/')
 const feedback = ref('')
 const saveFailed = ref(false)
 let saveGeneration = 0
 onBeforeUnmount(() => { saveGeneration++ })
+function retrySave(event: MouseEvent) {
+  // The retry button disappears as saving starts; keep keyboard context on
+  // the persistent choice before releasing that button.
+  if (document.activeElement === event.currentTarget)
+    preferences.value?.querySelector<HTMLElement>('[role="combobox"]')?.focus({ preventScroll: true })
+  void saveStartPageValue(startPage.value)
+}
 
 async function saveStartPageValue(value: string | number) {
   const parsed = DESKTOP_START_PAGE_SETTING.parse(String(value))

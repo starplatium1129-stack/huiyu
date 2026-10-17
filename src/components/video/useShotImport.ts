@@ -117,16 +117,21 @@ export function useShotImport(deps: ShotImportDeps) {
    * 只重试首帧缺失的镜头（有 imageId 无 imageName）：导入失败/草稿恢复图失效
    * 后的精确补救入口，不重跑整轮导入。
    */
-  async function retryPendingFrames(): Promise<{ fixed: number; remaining: number }> {
+  async function retryPendingFrames(): Promise<{ fixed: number; remaining: number } | null> {
+    const version = viewVersion
+    const current = () => !disposed && active && version === viewVersion
+    if (!current()) return null
     let fixed = 0
     let remaining = 0
     for (const shot of shots.value) {
+      if (!current()) return null
       if (!shot.imageId || shot.imageName) continue
       const result = await mountShotFrame(shot, shot.imageId)
+      if (!current()) return null
       if (result === true) fixed += 1
       else if (result === false) remaining += 1
     }
-    return { fixed, remaining }
+    return current() ? { fixed, remaining } : null
   }
 
   function consumePendingShot(ctx: VideoCtxPayload): boolean {

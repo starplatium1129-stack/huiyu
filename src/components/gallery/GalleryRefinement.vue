@@ -1,13 +1,27 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, nextTick, ref, useId } from 'vue'
+import { computed, nextTick, onDeactivated, onScopeDispose, ref, shallowRef, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import type { SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import { UNASSIGNED_CHARACTER_ID } from '@/composables/gallery/galleryAlbumRules'
 import { emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionLabel, type GalleryFilterSnapshot, type GenerationFilterField } from '@/composables/gallery/galleryGenerationConditions'
 
-const GalleryCollectionFilters = defineAsyncComponent(() => import('./GalleryCollectionFilters.vue'))
-const GalleryGenerationFilters = defineAsyncComponent(() => import('./GalleryGenerationFilters.vue'))
+const panels = shallowRef<{ collection: typeof import('./GalleryCollectionFilters.vue')['default']; generation: typeof import('./GalleryGenerationFilters.vue')['default'] } | null>(null)
+const loading = ref(false), loadError = ref(false)
+let loadRequest = 0
+async function loadPanels() {
+  if (panels.value || loading.value) return
+  const request = ++loadRequest
+  if (loadError.value) trigger.value?.focus({ preventScroll: true })
+  loading.value = true; loadError.value = false
+  try {
+    const [collection, generation] = await Promise.all([import('./GalleryCollectionFilters.vue'), import('./GalleryGenerationFilters.vue')])
+    if (request === loadRequest) panels.value = { collection: collection.default, generation: generation.default }
+  } catch { if (request === loadRequest) loadError.value = true }
+  finally { if (request === loadRequest) loading.value = false }
+}
+onDeactivated(() => { loadRequest++; loading.value = false; expanded.value = false })
+onScopeDispose(() => { loadRequest++ })
 const props = defineProps<{
   filters: GalleryFilterSnapshot
   projects: { value: string; label: string }[]
@@ -21,7 +35,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ apply: [filters: GalleryFilterSnapshot]; reset: []; save: []; edit: [] }>()
 const panelId = `gallery-refinement-${useId()}`
-const expanded = ref(false), visited = ref(false)
+const expanded = ref(false)
 const trigger = ref<HTMLButtonElement | null>(null)
 const activeFilters = ref<HTMLElement | null>(null)
 const generationLabels: Record<GenerationFilterField, string> = {
@@ -47,7 +61,7 @@ function update<K extends keyof GalleryFilterSnapshot>(key: K, value: GalleryFil
 }
 function toggle() {
   expanded.value = !expanded.value
-  if (expanded.value) visited.value = true
+  if (expanded.value) void loadPanels()
 }
 function close(event: KeyboardEvent) {
   if (event.defaultPrevented || event.isComposing) return
@@ -89,19 +103,20 @@ defineExpose({ focusTag })
       </button>
       <button class="btn btn-quiet btn-sm gallery-filter-reset" type="button" @click="reset">清除全部</button>
     </div>
-    <section v-show="expanded" :id="panelId" class="gallery-refine-panel" aria-label="作品筛选条件" @keydown.esc="close">
-      <template v-if="visited">
+    <section v-show="expanded" v-content-motion:down.defer="expanded" :id="panelId" class="gallery-refine-panel" aria-label="作品筛选条件" :aria-busy="loading" @keydown.esc="close">
+      <template v-if="panels">
       <div class="gallery-library-fields">
         <label class="gallery-project-field"><span>画册</span><StudioSelect :model-value="filters.projectFilter" label="按画册筛选" :options="projects" @update:model-value="update('projectFilter', String($event))" /></label>
-        <GalleryCollectionFilters :character="filters.characterFilter" :tag="filters.tagFilter" :characters="characters" :tags="tags"
+        <component :is="panels.collection" :character="filters.characterFilter" :tag="filters.tagFilter" :characters="characters" :tags="tags"
           :smart-rule="smartRule" :character-name="characterName" :disabled="disabled"
           @update:character="update('characterFilter', $event)" @update:tag="update('tagFilter', $event)" @save="emit('save')" @edit="emit('edit')" />
       </div>
       <p v-if="projectUnavailable" class="gallery-filter-warning" role="status">当前画册已不存在，可移除上方的画册条件或选择其他画册。</p>
-      <GalleryGenerationFilters :conditions="filters.generation" :options="generationOptions" :filter-count="generationCount"
+      <component :is="panels.generation" :conditions="filters.generation" :options="generationOptions" :filter-count="generationCount"
         :snapshot="filters" :has-active="!!chips.length" @update:conditions="update('generation', $event)"
         @apply="emit('apply', $event)" @clear="update('generation', emptyGenerationConditions())" />
       </template>
+      <div v-else class="gallery-refine-feedback"><ArchiveIcon name="pin" /><p :role="loadError ? 'alert' : 'status'">{{ loadError ? '筛选工具暂未加载，请重新读取。' : '正在准备作品筛选…' }}</p><button v-if="loadError" class="btn btn-ghost btn-sm" type="button" @click="loadPanels">重新读取</button></div>
     </section>
   </div>
 </template>
@@ -122,7 +137,10 @@ defineExpose({ focusTag })
 .gallery-filter-chip > .archive-icon { flex-shrink:0; width:14px; height:14px; color:var(--text-secondary); }
 .gallery-filter-reset { margin-left:auto; }
 .gallery-refine-toggle:focus-visible,.gallery-filter-chip:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.gallery-refine-panel { display:grid; flex:1 0 100%; min-width:0; gap:var(--s-4); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
+.gallery-refine-panel { display:grid; align-content:start; flex:1 0 100%; min-width:0; min-height:calc(200px + var(--s-4) + 1px); gap:var(--s-4); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
+.gallery-refine-feedback { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:var(--s-3); min-height:200px; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-secondary); background:var(--bg-base); }
+.gallery-refine-feedback > svg { width:32px; height:32px; color:var(--accent); }
+.gallery-refine-feedback p { margin:0; font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
 .gallery-library-fields { display:flex; flex-wrap:wrap; align-items:flex-start; gap:var(--s-3); }
 .gallery-project-field { display:grid; gap:var(--s-1); flex:0 1 200px; min-width:0; color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .gallery-library-fields > :deep(.collection-filters) { flex:1 1 28rem; }

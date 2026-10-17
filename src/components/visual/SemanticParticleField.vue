@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue'
 import { createParticleShape, type ParticlePoint, type ParticleShapeId } from '@/utils/particleShapes'
 import { loadPortraitCloud, portraitCloudIdentity, samplePortraitPoints, legibleParticleColor, lightPortraitColor, type PortraitCloud } from '@/utils/particlePortrait'
 import { registerParticleFrame } from '@/utils/particleScheduler'
@@ -144,6 +144,7 @@ let lastDrawReport = 0
 const performance = useParticlePerformanceLifecycle({
   rebuild: () => setShape(false), start: startLoop, stop: stopLoop, resize,
   cancelDeferred: () => {
+    stopLoop(true)
     if (paletteFrame) { cancelAnimationFrame(paletteFrame); paletteFrame = 0 }
     gpuRenderer?.release(); gpuRenderer = undefined; gpuAvailable.value = false; gpuRevision.value++; bodyDirty = true
   },
@@ -359,8 +360,8 @@ function simulateParticles(now: number): boolean {
 /* compositor-exempt: DESIGN.md 要求交互粒子形象，Canvas/WebGL 须重绘点阵。
  * 现有基线：点数上限 48000、DPR 上限 2，低效果 20fps；隐藏、停用或减弱动效时停止循环。
  * 常规模式保留原生刷新率、GPU/局部快照路径；真实设备的帧耗与显存仍需对应环境验收。 */
-function draw() {
-  if (!context || !canvas.value || !performance.active.value) return
+function draw(freeze = false) {
+  if (!context || !canvas.value || (!freeze && !performance.active.value)) return
   const ctx = context
   ctx.clearRect(0, 0, width, height)
   // 剪影模式按人物调色板分批填充 + 统一点径；抽象形状沿用三档 tone
@@ -374,8 +375,8 @@ function draw() {
   const energyScale = props.signal === 'active' ? 1.16 : props.signal === 'warning' ? 1.08 : 1
   const style: ParticleBodyStyle = { paints, radii: portraitRadii, darkTheme, energyScale,
     surface: particleSurface, outline: particleOutline, palette }
-  if (paints && gpuRenderer === undefined && gpuCanvas.value) gpuRenderer = createParticleGpuRenderer(gpuCanvas.value)
-  const accelerated = !!paints && !!gpuRenderer?.draw(width, height, dpr, particles, style, bodyDirty)
+  if (!freeze && paints && gpuRenderer === undefined && gpuCanvas.value) gpuRenderer = createParticleGpuRenderer(gpuCanvas.value)
+  const accelerated = !freeze && !!paints && !!gpuRenderer?.draw(width, height, dpr, particles, style, bodyDirty)
   gpuAvailable.value = accelerated
   const drawnCount = accelerated ? particles.length : paints
     ? snapshot.draw(ctx, width, height, dpr, particles, style)
@@ -442,12 +443,12 @@ function startLoop() {
   stopScheduledFrame = registerParticleFrame(renderFrame, lowEffects.value ? 20 : 0)
 }
 
-function stopLoop() {
+function stopLoop(freeze = false) {
   stopScheduledFrame?.()
   stopScheduledFrame = null
-  lastFrame = 0
-  lastPhysicsFrame = 0
-  lastAmbientFrame = 0
+  lastFrame = lastPhysicsFrame = lastAmbientFrame = 0
+  // Vue can keep a leaving root visible after GPU disposal; retain its body on the existing 2D canvas.
+  if (freeze && gpuAvailable.value) draw(true)
 }
 
 function resize() {
@@ -491,10 +492,7 @@ function onPointerMove(event: PointerEvent) {
   startLoop()
 }
 
-function onPointerLeave() {
-  pointerActive = false
-  startLoop()
-}
+function onPointerLeave() { pointerActive = false; startLoop() }
 
 watch(() => props.shape, () => { if (!portraitCloud) setShape(true) })
 watch(() => portraitCloudIdentity(props.portraitId), () => { void applyPortrait(props.portraitId) })
@@ -552,6 +550,7 @@ onMounted(() => {
   if (props.portraitId) void applyPortrait(props.portraitId)
 })
 
+onBeforeUnmount(() => stopLoop(true))
 onUnmounted(() => {
   portraitToken++; gpuRenderer?.release()
   snapshot.release()

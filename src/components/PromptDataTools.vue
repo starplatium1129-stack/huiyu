@@ -90,6 +90,7 @@
         aria-labelledby="backup-restore-title"
       >
         <h3 id="backup-restore-title">从备份恢复</h3>
+        <div class="pb-backup-body" role="region" aria-label="备份文件与恢复说明" tabindex="0">
         <p v-if="backup.pendingWorkspace.value">先创建并核验独立恢复副本，当前工作区继续保留。</p>
         <p v-else>选择恢复方式。覆盖会替换现有数据，合并会按 id 保留较新的记录。</p>
         <div class="pb-backup-summary">
@@ -106,8 +107,9 @@
             缺少的原图不会被伪造关联；对应记录仍会保留并以无图状态恢复。
           </small>
         </div>
+        </div>
         <div class="pb-backup-actions">
-          <button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="discard">取消</button>
+          <button ref="backupCancelEl" class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="discard">取消</button>
           <button v-if="backup.pendingWorkspace.value" class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">验证恢复副本</button>
           <template v-else><button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>
           <button class="btn btn-danger" type="button" :disabled="backup.busy.value" @click="backup.restore('replace')">覆盖本地</button></template>
@@ -144,6 +146,7 @@ const emit = defineEmits<{
 const backup = useBackup((message) => emit('flash', message))
 const migration = useWorkspaceMigration(message => emit('flash', message))
 const backupCardEl = ref<HTMLElement | null>(null)
+const backupCancelEl = ref<HTMLButtonElement | null>(null)
 const backupFileEl = ref<HTMLInputElement | null>(null)
 const blueprintFileEl = ref<HTMLInputElement | null>(null)
 const utilityOpen = defineModel<boolean>('open', { default: false })
@@ -175,6 +178,7 @@ const backupReminder = computed(() => backup.lastBackupAt.value
   : '尚未备份，建议导出备份')
 
 const { returnFocus } = useFocusTrap(backupCardEl, () => backup.pending.value !== null || backup.pendingWorkspace.value !== null, {
+  initialFocus: backupCancelEl,
   onEscape: () => { if (!backup.busy.value) discard() },
 })
 watch(() => backup.pending.value || backup.pendingWorkspace.value, pending => {

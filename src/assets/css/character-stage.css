@@ -72,12 +72,6 @@
   transform: none;
 }
 
-.open-character-stage .wardrobe-note {
-  @apply tw:max-w-[9rem] tw:text-secondary;
-  font: 600 var(--fs-mono-xs) var(--font-mono);
-  @apply tw:leading-label tw:text-right;
-}
-
 .open-character-stage .wardrobe-symbol {
   @apply tw:grid;
   flex: 0 0 20px;
@@ -188,3 +182,31 @@
 .open-character-stage .wardrobe-option { @apply tw:min-h-[40px]; }
 .open-character-stage .wardrobe-trigger:focus-visible,
 .open-character-stage .wardrobe-option:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+
+/* The stage owns the loading frame before the heavier studio module arrives. */
+.stage-model-studio.model-studio { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; box-sizing:border-box; width:min(1080px,calc(100vw - 24px)); max-width:none; height:min(760px,calc(100dvh - var(--desktop-chrome-height,0px) - 24px)); max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 24px); margin:auto; padding:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-elevated); color:var(--text-primary); box-shadow:var(--shadow-lg); }
+.stage-model-studio[open], .stage-model-studio-panel, .stage-model-studio-panel > .async-panel-content, .stage-model-studio-panel > .async-panel-content > .model-studio-content { display:flex; flex-direction:column; }
+.stage-model-studio-panel, .stage-model-studio-panel > .async-panel-content, .stage-model-studio-panel > .async-panel-content > .model-studio-content { flex:1; min-width:0; min-height:0; overflow:hidden; }
+.stage-model-studio .stage-model-studio-panel > .async-panel-feedback { flex:1; min-height:0; overflow:auto; overscroll-behavior:contain; align-content:safe center; justify-items:center; border:0; border-radius:0; background:transparent; text-align:center; }
+.stage-model-studio::backdrop { background:var(--art-backdrop); }
+.stage-model-studio > .model-studio-heading { display:flex; flex:0 0 auto; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-4); border-bottom:1px solid var(--border-soft); }
+.stage-model-studio .model-studio-heading > div { min-width:0; }
+.stage-model-studio .model-studio-heading h2 { margin:0; font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-sans); overflow-wrap:anywhere; }
+.stage-model-studio .model-studio-heading small { color:var(--text-secondary); }
+.stage-model-studio .model-studio-heading button { flex:none; }
+.stage-model-studio .model-studio-heading svg { width:20px; height:20px; }
+.stage-model-studio :focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+
+.open-character-stage .portrait-main { opacity:0; }
+.open-character-stage .portrait-main.portrait-decoded { opacity:1; }
+.open-character-stage .portrait-stage.live2d-ready .portrait-main { opacity:0; }
+.open-character-stage .portrait-stage:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.open-character-stage .stage-portrait-feedback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:safe center; gap:var(--s-3); padding:var(--s-3); overflow:auto; overscroll-behavior:contain; background:var(--bg-surface); color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); text-align:center; }
+.open-character-stage .stage-portrait-feedback > * { flex-shrink:0; }
+.open-character-stage .stage-portrait-feedback > svg { width:44px; height:44px; color:var(--accent); }
+.open-character-stage .stage-portrait-feedback strong { color:var(--text-primary); font-size:var(--fs-title-sm); overflow-wrap:anywhere; }
+.open-character-stage .stage-portrait-loading { flex-direction:row; }
+.open-character-stage .stage-portrait-loading > div { display:grid; flex-shrink:1; gap:var(--s-1); min-width:0; }
+html.companion-desktop .open-character-stage .stage-portrait-loading { display:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .open-character-stage .portrait-main { transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .open-character-stage .portrait-main { transition:none; } }

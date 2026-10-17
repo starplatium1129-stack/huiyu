@@ -20,6 +20,7 @@ export type SearchOpenSource = 'keyboard' | 'pointer'
  * watch 不到变化，界面毫无反应。序号每次调用都变，语义是「又请求了一次」。
  */
 const openRequest = ref(0)
+const closeRequest = ref(0)
 const openSource = ref<SearchOpenSource>('keyboard')
 
 /** 供任意组件调用：请求打开全局搜索面板。 */
@@ -28,7 +29,10 @@ export function openGlobalSearch(source: SearchOpenSource = 'pointer') {
   openRequest.value += 1
 }
 
+/** Navigation releases search ownership before any asynchronous route preparation. */
+export function closeGlobalSearch() { closeRequest.value++ }
+
 /** 仅供 GlobalSearch 宿主组件读取与监听。 */
 export function useGlobalSearchRequest() {
-  return { openRequest, openSource }
+  return { openRequest, openSource, closeRequest }
 }

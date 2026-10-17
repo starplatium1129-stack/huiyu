@@ -1,5 +1,5 @@
 <template>
-  <section class="local-setup" aria-labelledby="local-setup-title">
+  <section ref="setupRoot" class="local-setup" aria-labelledby="local-setup-title">
     <div class="setup-heading">
       <div><span class="panel-kicker">开始使用绘遇</span><h2 id="local-setup-title">首次配置</h2></div>
       <span class="setup-platform"><ArchiveIcon name="model" />Windows · NVIDIA</span>
@@ -66,11 +66,21 @@ import { useLocalSetup } from '../composables/useLocalSetup'
 
 type GuideStep = 'location' | 'download' | 'ready'
 const guideStep = ref<GuideStep>('location')
+const setupRoot = ref<HTMLElement | null>(null)
 const locationTitle = ref<HTMLElement | null>(null), downloadTitle = ref<HTMLElement | null>(null)
 const setupBusy = ref(false)
 const steps: { id: GuideStep; label: string }[] = [{ id: 'location', label: '存放位置' }, { id: 'download', label: '下载与安装' }, { id: 'ready', label: '开始创作' }]
 const stepIndex = computed(() => steps.findIndex(step => step.id === guideStep.value))
-watch(guideStep, async step => { await nextTick(); (step === 'location' ? locationTitle.value : downloadTitle.value)?.focus() })
+watch(guideStep, async step => {
+  const origin = document.activeElement
+  if (!(origin instanceof HTMLElement) || !setupRoot.value?.contains(origin)) return
+  await nextTick()
+  // Background setup may change phases while the user is working elsewhere.
+  // Only replace focus that belonged to a control removed or hidden by this step.
+  const title = step === 'location' ? locationTitle.value : downloadTitle.value
+  if (guideStep.value === step && title?.isConnected && (document.activeElement === document.body
+    || document.activeElement === origin && !origin.getClientRects().length)) title.focus()
+})
 const { isLocal, desktop, snapshot, loading, error, nextStep, basicComplete, currentCheck,
   workspaceButton, workspaceOpen, workspaceDraft, workspaceSavedRoot, workspaceLoading, workspaceSaving, workspaceError, workspacePending, workspaceUnconfirmed, restarting,
   refresh, cancelCheck, selectSetupModel, recordDownload, recordVerification,

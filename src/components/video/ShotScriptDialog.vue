@@ -37,6 +37,7 @@
             <p v-if="referenceLabels.length" class="shot-script-hint">参考角色：{{ referenceLabels.join('、') }}</p>
           </div>
           <footer class="shot-script-foot">
+            <p class="shot-script-feedback" role="status">{{ note }}</p>
             <button class="btn btn-ghost" type="button" @click="emit('close')">{{ busy ? '关闭窗口' : '取消' }}</button>
             <button class="btn btn-primary" type="button" :disabled="!story.trim()" :aria-disabled="busy || undefined" :aria-busy="busy" @click="!busy && emit('submit')">
               {{ busy ? '生成中…' : '生成分镜表' }}
@@ -60,6 +61,7 @@ import { useFocusTrap } from '@/composables/useFocusTrap'
 const props = defineProps<{
   open: boolean
   busy: boolean
+  note: string
   story: string
   count: number | null
   total: number | null

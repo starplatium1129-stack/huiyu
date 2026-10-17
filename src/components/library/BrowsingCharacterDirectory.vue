@@ -1,5 +1,5 @@
 <template>
-  <div class="browsing-directory tw:sticky tw:min-w-0">
+  <div ref="root" class="browsing-directory tw:sticky tw:min-w-0">
     <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" data-fluid-glass aria-haspopup="dialog"
       :aria-label="'选择角色，当前' + (selected?.name || '未选择')" @click="openDirectory">
       <CharacterPortrait :src="resolveRuntimeUrl(selected?.image)" :name="selected?.name || '角色'" />
@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
-import { computed, nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, onUnmounted, ref, useId } from 'vue'
 import CharacterDirectory, { type DirectoryCharacter } from './CharacterDirectory.vue'
 import CharacterPortrait from './CharacterPortrait.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -36,26 +36,68 @@ const media = window.matchMedia('(max-width: 900px)')
 const narrow = ref(media.matches)
 const selected = computed(() => props.items.find(item => item.id === props.selectedId))
 const search = defineModel<string>('search', { default: '' })
+const root = ref<HTMLElement | null>(null)
 const trigger = ref<HTMLButtonElement | null>(null)
 const dialog = ref<HTMLDialogElement | null>(null)
 const dialogHost = ref<HTMLDivElement | null>(null)
 const headingId = useId()
 const motion = useFluidDialog(dialog)
+let active = true, focusVersion = 0
+function stopFocus() { active = false; focusVersion++ }
+onActivated(() => { active = true })
+onDeactivated(stopFocus)
+onBeforeUnmount(stopFocus)
 function openDirectory() {
+  if (!active || !narrow.value) return
+  const version = ++focusVersion
   motion.open(trigger.value)
   void nextTick(() => {
+    if (!active || version !== focusVersion || !narrow.value || !dialog.value?.open) return
     dialog.value?.querySelector<HTMLInputElement>('.directory-search input')?.focus({ preventScroll: true })
     dialog.value?.querySelector('.directory-item[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest' })
   })
 }
 function choose(id: string) {
+  if (!active) return
+  focusVersion++
   if (narrow.value) motion.close(() => emit('select', id))
   else emit('select', id)
 }
-function resizeDirectory() {
+function owns(element: Element | null) { return !!element && Boolean(root.value?.contains(element) || dialog.value?.contains(element)) }
+function portalTrigger(element: Element | null) {
+  if (!element) return
+  const controls = [...(root.value?.querySelectorAll<HTMLElement>('[role="combobox"][aria-controls]') ?? []),
+    ...(dialog.value?.querySelectorAll<HTMLElement>('[role="combobox"][aria-controls]') ?? [])]
+  return controls.find(control => control.getAttribute('aria-controls')?.split(/\s+/).some(id => document.getElementById(id)?.contains(element)))
+}
+function available(element: HTMLElement | null | undefined): element is HTMLElement {
+  return !!element?.isConnected && owns(element) && !!element.getClientRects().length
+    && !element.matches(':disabled') && !element.closest('[inert], [hidden], dialog:not([open])')
+    && getComputedStyle(element).visibility !== 'hidden'
+}
+async function resizeDirectory() {
+  const next = media.matches
+  if (next === narrow.value) return
+  const version = ++focusVersion, focused = document.activeElement
+  const control = portalTrigger(focused)
+  const owned = active && (owns(focused) || !!control)
+  const previous = control || (focused instanceof HTMLElement ? focused : null)
   // Release native modality before moving its content back into the desktop rail.
   motion.dispose()
-  narrow.value = media.matches
+  const closedFocus = document.activeElement
+  narrow.value = next
+  if (!owned) return
+  // The child first awaits this patch, then changes page and awaits its rows.
+  await nextTick()
+  await nextTick()
+  await nextTick()
+  if (!active || version !== focusVersion || narrow.value !== next || !root.value?.isConnected) return
+  const focusedNow = document.activeElement
+  if (focusedNow !== focused && focusedNow !== closedFocus && focusedNow !== document.body) return
+  const directory = root.value.querySelector<HTMLElement>('.character-directory')
+  const target = next ? trigger.value : [previous, directory?.querySelector<HTMLElement>('.directory-search input'),
+    directory?.querySelector<HTMLElement>('.directory-item[aria-pressed="true"]')].find(available)
+  if (available(target)) target.focus({ preventScroll: true })
 }
 onMounted(() => media.addEventListener('change', resizeDirectory))
 onUnmounted(() => media.removeEventListener('change', resizeDirectory))

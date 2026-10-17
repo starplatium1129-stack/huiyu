@@ -1,4 +1,5 @@
 import { useTaskCenter, approveTaskReload } from '@/composables/useTaskCenter'
+import { closeGlobalSearch } from '@/composables/useGlobalSearch'
 import { hasPendingArtworkSource } from '@/platform/web/migrationBarrier'
 import { confirmAction } from '@/composables/useConfirm'
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
@@ -10,7 +11,7 @@ export { needsDocumentReload } from './documentPolicy'
 export { prefetchRouteResources } from './prefetch'
 
 /** Keep a bounded window-scroll snapshot for explicit SPA returns to cached pages. */
-const SCROLL_MEMORY_ROUTES = new Set(['/scene-explorer', '/showcase', '/gallery', '/prompt-builder', '/video-studio'])
+const SCROLL_MEMORY_ROUTES = new Set(['/scene-explorer', '/popular-scenes', '/showcase', '/gallery', '/prompt-builder', '/video-studio'])
 const SCROLL_MEMORY_LIMIT = 16
 const routeScrollMemory = new Map<string, { left: number; top: number }>()
 let cancelRouteScrollRestore: (() => void) | null = null
@@ -98,8 +99,16 @@ const router = createRouter({
       if (savedPosition.top || savedPosition.left) scheduleScrollRestore(to.fullPath, savedPosition)
       return { ...savedPosition, behavior: 'instant' }
     }
-    if (to.path === from.path && !to.hash && !from.hash) return false
-    if (to.hash) return { el: to.hash, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }
+    // Filtering or disclosure state must not replay an unchanged reading anchor.
+    if (to.path === from.path && to.hash === from.hash
+      && (!to.hash || to.fullPath !== from.fullPath)) return false
+    if (to.hash) {
+      const target = document.getElementById(to.hash.slice(1))
+      // Router element scrolling uses absolute coordinates; carry the authored
+      // margin so sticky navigation and generation controls do not cover headings.
+      const top = target ? Number.parseFloat(getComputedStyle(target).scrollMarginTop) || 0 : 0
+      return { el: target ?? to.hash, top, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }
+    }
     const remembered = routeScrollMemory.get(to.fullPath)
     if (remembered) {
       routeScrollMemory.delete(to.fullPath)
@@ -113,6 +122,13 @@ const router = createRouter({
   }
 })
 
+// Track navigation before loading local characters; room setup still waits for them.
+router.beforeResolve(async to => {
+  if (['/chat', '/companion', '/companion-chat'].includes(to.path)) {
+    await (await import('@/utils/localCompanions')).loadLocalCompanions()
+  }
+})
+
 // Capture while the old page is still laid out. Reading scrollY inside
 // scrollBehavior after the new DOM patch can itself force a full layout.
 router.beforeResolve(() => { navigationScrollStart = captureScrollAnchor() || { left: 0, top: 0 } })
@@ -121,6 +137,7 @@ router.beforeResolve(() => { navigationScrollStart = captureScrollAnchor() || { 
 // intentionally separate from scrollBehavior, which runs after the old page
 // may already have been moved to the top.
 router.beforeEach((to, from) => {
+  closeGlobalSearch()
   cancelPendingScrollRestore()
   if (from.path !== to.path) rememberRouteScroll(from.fullPath)
 })
@@ -140,9 +157,6 @@ router.beforeEach((to, from) => {
 export const prefetchRoute = createRoutePrefetcher(router)
 
 router.beforeEach(async (to, from) => {
-  if (['/chat', '/companion', '/companion-chat'].includes(to.path)) {
-    await (await import('@/utils/localCompanions')).loadLocalCompanions()
-  }
   // 初次进入（无 from）由浏览器自己请求文档，CSP 已经对路径生效
   if (!from.matched.length) return true
   // Bundled desktop documents have the application CSP already; changing a

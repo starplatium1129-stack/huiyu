@@ -27,9 +27,6 @@
      占位层退出时绝对定位浮层化，避免与进入中的结果层双占布局撑跳高度
      （两层 min-height 同源 clamp，正常无跳变，此处为 error/paused 变体兜底）；
      只补间 opacity/transform。结果容器保持静止，图片由 CgImageReveal 接管。 */
-  .pb .stage-slot { @apply tw:relative; }
-  /* Canvas and toolbar retain the same two rows in empty, working and result states. */
-  .pb.atelier-workspace .stage-slot { overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); }
   .pb .stage-slot > .canvas-generation-beam.border-beam-wrap { z-index:calc(var(--z-raised) + 1); }
   .pb .canvas-generation-beam .border-beam-track { opacity:.64; }
   .pb .canvas-generation-beam .border-beam-bloom { opacity:.14; }
@@ -117,9 +114,12 @@
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
 .pb.atelier-workspace .result-image-reveal .result-image,
 .pb.atelier-workspace .result-image-wrap .image-split-compare { background:transparent; border-radius:inherit; }
-/* Keep decoding and reveal capture mounted at their final size, but never expose
-   an empty frame. CgImageReveal owns decoded/revealing state for this same image. */
-.pb .result-image-wrap:is(.is-error,:has(.cg-image-reveal:not(.is-loaded))) { opacity:0; pointer-events:none; }
+/* Use this same image's decoded state for old results too, without replaying CG reveal. */
+.pb .result-image-wrap.is-error { opacity:0; pointer-events:none; }
+.pb .result-image-wrap:has(.cg-image-reveal:not(.is-loaded)) { background:transparent; pointer-events:none; }
+.pb .result-image-wrap:has(.cg-image-reveal:not(.is-loaded)) .result-artwork { opacity:0; }
+.pb .result-reading-feedback { display:none; position:absolute; inset:0; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-5); color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-sans); pointer-events:none; }
+.pb .result-image-wrap:has(.cg-image-reveal:not(.is-loaded)) .result-reading-feedback { display:flex; }
 /* Particle reveal temporarily hides the original; its frame must wait too.
    Keep the reveal pixels visible, including the non-WebGL fallback inside it. */
 .pb.atelier-workspace .result-image-wrap:has(.cg-image-reveal.is-revealing),
@@ -136,7 +136,6 @@
 
 /* A single fixed canvas viewport owns all visual states; status and references
    are overlays/contained content, never stacked documents with an inner scroll. */
-.pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(360px,60vh,720px); container-type:size; background:var(--bg-base); }
 .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport > :is(.stage-placeholder,.result-image-wrap) { position:absolute; inset:0; width:100%; height:100%; min-height:0; max-height:none; margin:0; }
 .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-message { width:100%; height:100%; min-height:0; overflow:hidden; align-items:center; }
 .pb.atelier-workspace .stage-content { position:relative; height:100%; min-height:0; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
@@ -150,26 +149,19 @@
 .pb.atelier-workspace .stage-swap-leave-active .generation-particles { transition-duration:var(--motion-hover); }
 .pb.atelier-workspace .stage-content .scene-reference { min-height:0; flex:1; --reference-max-height:calc(100cqh - 180px); }
 .pb.atelier-workspace .stage-content .stage-idle { flex:0 0 auto; }
-@media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }
 @container (max-height:400px) {
   .pb.atelier-workspace .stage-generation-feedback { top:62%; gap:var(--s-1); }
   .pb.atelier-workspace .stage-content .scene-reference { --reference-max-height:42cqh; }
   .pb.atelier-workspace .scene-reference figcaption p { display:none; }
+  /* Reserve short-canvas space for the full title, copy and scene action, not just the illustration. */
+  .pb.atelier-workspace .stage-idle-guide .atelier-canvas-illustration { width:auto; max-width:min(336px,70%); max-height:max(64px,calc(100cqh - 216px)); margin-bottom:var(--s-3); }
 }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-press); }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-press); }
 
-.pb.atelier-workspace .canvas-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:64px; padding:12px 24px; }
-.pb.atelier-workspace .canvas-heading>div { display:flex; align-items:center; gap:10px; min-width:0; }
-.pb.atelier-workspace .canvas-heading strong { font-size:14px; font-weight:600; overflow-wrap:anywhere; }
-.pb.atelier-workspace .canvas-heading span { font-size:11px; color:var(--text-muted); border-left:1px solid var(--border-soft); padding-left:10px; }
-.pb.atelier-workspace .canvas-heading .archive-icon { width:16px; height:16px; }
-.pb.atelier-workspace .canvas-heading button { white-space:nowrap; font-size:12px; }
 .pb.atelier-workspace .stage-content { padding:24px; }
 .pb.atelier-workspace .stage-placeholder:has(.scene-reference):not(.is-error):not(.is-paused) .stage-idle-guide { display:none; }
 .pb.atelier-workspace .stage-generation-feedback { top:auto; bottom:24px; padding:12px 16px; border:1px solid var(--border-strong); border-radius:var(--r-md); background:var(--bg-surface); }
 .pb.atelier-workspace .result-image-actions .btn { font-size:12px; min-height:36px; }
-@container canvas-column (max-width:740px) { .pb.atelier-workspace .canvas-heading span { display:none; } }
-@media (max-width:1023px) { .pb.atelier-workspace .stage-slot { display:grid; grid-template-rows:auto minmax(0,1fr) auto; } }

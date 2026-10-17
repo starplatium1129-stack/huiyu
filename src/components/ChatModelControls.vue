@@ -24,15 +24,14 @@
         </button>
       </div>
       <div v-if="chatProvider === 'local'" v-content-motion:right="chatProvider" class="provider-model-controls">
-        <ChatModelPicker
-          class="model-select"
+        <AsyncPanel class="model-select" :loader="loadChatModelPicker" label="本地聊天模型选择" v-slot="{ component }"><component :is="component"
           :model-value="currentModel"
           :disabled="busy || !ollamaOnline || !models.length"
           label="选择本地聊天模型"
           :placeholder="ollamaOnline ? (models.length ? '搜索并选择模型' : '没有可用模型') : 'Ollama 尚未连接'"
           :options="models.map(m => ({ value: m.name, label: m.name + (m.parameters ? ' · ' + m.parameters : '') }))"
           @update:model-value="emit('update:currentModel', String($event))"
-        />
+        /></AsyncPanel>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="busy || checkingLocal" @click="emit('refresh-local')">{{ checkingLocal ? '检测中…' : '重新检测' }}</button>
         <p v-if="localStatusText" class="local-model-help" role="status">{{ localStatusText }}</p>
       </div>
@@ -79,11 +78,12 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { computed, defineAsyncComponent } from 'vue'
+import { computed } from 'vue'
 import { chatApiVendorFor } from '@/config/chatApi'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-const ChatModelPicker = defineAsyncComponent(() => import('@/components/ChatModelPicker.vue'))
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadChatModelPicker = () => import('@/components/ChatModelPicker.vue')
 
 
 const reasoningOptions = [

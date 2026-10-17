@@ -1,9 +1,10 @@
 <template>
   <article class="sample" :class="{ 'sample-r18': entry.rating === 'R18' }" :style="cardStyle" :data-rating="entry.rating" :data-sample-id="entry.id"
-    data-reveal :data-reveal-key="`sample:${entry.id}`" :data-reveal-ready="loaded || broken">
+    data-reveal :data-reveal-key="`sample:${entry.id}`">
     <button class="sample-visual tw:block tw:w-full tw:p-0 tw:text-left tw:relative tw:overflow-hidden" type="button"
       :style="imageStyle"
       :aria-label="'查看 ' + entry.title + ' 大图'" @click="emit('open', entry.id)">
+      <span v-if="!loaded && !broken" class="sample-loading" aria-hidden="true"><ArchiveIcon name="image" /></span>
       <img v-if="image.src && !broken" v-bind="{ ...image, onLoad: measureImage }" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
         :alt="entry.title" :width="entry.width" :height="entry.height" loading="lazy" decoding="async" />
       <span v-else class="sample-image-fallback tw:grid tw:min-h-[260px] tw:text-glyph" aria-hidden="true"><ArchiveIcon name="image" /></span>
@@ -24,7 +25,9 @@ import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
-import { computed, ref, watch } from 'vue'
+import { cachedImageDimensions, rememberImageDimensions } from '@/utils/imageDimensions'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { computed, shallowRef, watch } from 'vue'
 
 const props = defineProps<{ entry: ShowcaseEntry; src: string; featured: boolean; characterLabel: string; ratingLabel: string }>()
 const displayTitle = computed(() => {
@@ -40,8 +43,11 @@ const displayTitle = computed(() => {
   return title
 })
 const { image, loaded, failed: broken } = useRuntimeImage(() => props.src)
-const naturalSize = ref<{ width: number; height: number } | null>(null)
-watch([() => props.src, () => props.entry.id], () => { naturalSize.value = null })
+const naturalSize = shallowRef(cachedImageDimensions(image.value.src))
+watch([() => props.entry.id, () => image.value.src, runtimeResourceIdentity], ([id, src, identity], [previousId, , previousIdentity]) => {
+  const cached = cachedImageDimensions(src)
+  if (cached || id !== previousId || identity !== previousIdentity) naturalSize.value = cached
+})
 const dimensions = computed(() => naturalSize.value || (props.entry.width && props.entry.height ? { width: props.entry.width, height: props.entry.height } : { width: 3, height: 4 }))
 const imageStyle = computed(() => ({ '--sample-ratio': `${dimensions.value.width} / ${dimensions.value.height}` }))
 const cardStyle = computed(() => ({ '--sample-grow': dimensions.value.width / dimensions.value.height }))
@@ -49,7 +55,7 @@ function measureImage(event: Event) {
   // useRuntimeImage validates the source and retry identity before accepting a load.
   if (!image.value.onLoad(event)) return
   const img = event.target as HTMLImageElement
-  naturalSize.value = { width: img.naturalWidth, height: img.naturalHeight }
+  naturalSize.value = rememberImageDimensions(image.value.src, img.naturalWidth, img.naturalHeight)
 }
 const emit = defineEmits<{ open: [id: string] }>()
 </script>
@@ -66,13 +72,15 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-visual { aspect-ratio:var(--sample-ratio, 3 / 4); border:0; background:var(--art-mat); color:var(--on-art-primary); cursor:zoom-in; }
 .sample-visual:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .sample:has(.sample-visual:focus-visible) .sample-caption { box-shadow:var(--focus-shadow); }
-/* Card reveal starts after decoding; the image itself never fades back to black. */
-.sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); transition:transform var(--motion-art-hover) var(--spring-soft); }
+/* The frame and caption arrive first; only decoded media fades onto the mat. */
+.sample-loading { position:absolute; inset:0; display:grid; place-items:center; color:var(--on-art-secondary); background:var(--art-mat); }
+.sample-loading .archive-icon { width:28px; height:28px; }
+.sample-image { @apply tw:h-full tw:object-contain; background:var(--art-mat); opacity:0; transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft); }
+.sample-image-ready { opacity:1; }
 /* Picture light stays below captions; rating masks retain their own layer. */
 .sample:not(.sample-r18) .sample-visual::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .sample-image-fallback { @apply tw:h-full tw:min-h-0; place-items:center; color:var(--on-art-secondary); }
 /* The blurred veil cross-fades above an otherwise stable sharp image. */
-.sample-r18 .sample-image { transform:scale(1.08); }
 .sample-sensitive { z-index:var(--z-raised); inset:50% auto auto 50%; justify-items:center; padding:var(--s-3) var(--s-4); transform:translate(-50%,-50%); border:1px solid var(--on-art-line); background:var(--art-scrim); color:var(--on-art-primary); transition:opacity 340ms var(--ease-out); }
 .sample-sensitive strong { @apply tw:text-label-sm; letter-spacing:.12em; }
 .sample-sensitive span { color:var(--on-art-secondary); @apply tw:text-mono-xs; }

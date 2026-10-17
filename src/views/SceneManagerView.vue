@@ -57,39 +57,46 @@
       <template v-else>
         <div v-content-motion="`${section}:${kind}`" class="catalog-workspace">
           <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
-            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : (result?.total ?? 0) + ' 份' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />新建</button></header>
+            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : listMatchesKind ? (result?.total ?? 0) + ' 份' : '尚未读取' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />新建</button></header>
             <StudioSearch v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
             <div class="catalog-list-controls">
               <StudioSelect v-model="sort" label="排列方式" :options="sortOptions" />
               <StudioPopover label="筛选内容" align="start">
                 <template #trigger><button class="catalog-filter-button" type="button" :class="{ active: hasFilters }"><ArchiveIcon name="manager" />筛选<span v-if="hasFilters" class="catalog-filter-dot"></span></button></template>
                 <div class="catalog-filter-fields">
-                  <StudioSelect v-model="character" label="角色" :options="[{ value: '', label: '全部角色' }, ...(result?.facets.characters ?? []).map(id => ({ value: id, label: characterNames[id] || '未命名角色' }))]" />
-                  <StudioSelect v-model="category" label="分类" :options="[{ value: '', label: '全部分类' }, ...(result?.facets.categories ?? []).map(value => ({ value, label: catalogCategory(value) || value }))]" />
-                  <StudioSelect v-model="rating" label="适用范围" :options="[{ value: '', label: '全部内容' }, ...(result?.facets.ratings ?? []).map(value => ({ value, label: catalogRating(value) || '其他内容' }))]" />
+                  <StudioSelect v-model="character" label="角色" :options="[{ value: '', label: '全部角色' }, ...(listMatchesKind ? result?.facets.characters ?? [] : []).map(id => ({ value: id, label: characterNames[id] || '未命名角色' }))]" />
+                  <StudioSelect v-model="category" label="分类" :options="[{ value: '', label: '全部分类' }, ...(listMatchesKind ? result?.facets.categories ?? [] : []).map(value => ({ value, label: catalogCategory(value) || value }))]" />
+                  <StudioSelect v-model="rating" label="适用范围" :options="[{ value: '', label: '全部内容' }, ...(listMatchesKind ? result?.facets.ratings ?? [] : []).map(value => ({ value, label: catalogRating(value) || '其他内容' }))]" />
                   <button class="btn btn-ghost btn-sm" type="button" @click="character = ''; category = ''; rating = ''">清除筛选</button>
                 </div>
               </StudioPopover>
             </div>
             <ArchiveStatePanel v-if="error" compact kind="error" title="内容暂时没能读出来" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">再试一次</button></ArchiveStatePanel>
-            <div v-content-motion:right="loading ? false : page" class="catalog-record-list">
-              <button v-for="item in result?.items ?? []" :key="item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy" @click="openContent(item, $event)">
+            <div ref="recordList" v-content-motion:right="loading ? false : listScope" class="catalog-record-list">
+              <button v-for="item in result?.items ?? []" :key="item.kind + ':' + item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy || !listMatchesKind" @click="openContent(item, $event)">
                 <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
                 <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span>
                 <span class="catalog-row-state"><ArchiveIcon v-if="selected?.id === item.id && selected.kind === item.kind" name="success" /><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span></span>
               </button>
-              <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
+              <ArchiveStatePanel v-if="!loading && !error && listMatchesKind && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
             </div>
-            <StudioPagination v-model="page" :pages="totalPages" :disabled="loading" label="内容分页" />
+            <StudioPagination v-model="page" :pages="totalPages" :disabled="loading || !listMatchesKind" label="内容分页" />
           </section>
           <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" tabindex="-1" aria-label="内容编辑" :aria-busy="detailLoading">
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
               <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" @stage="stage" @duplicate="add(true)" @remove="remove" />
-              <details v-if="selected.revision" class="catalog-history"><StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary><div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="restore(entry.revision)">找回这一版</button></div><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button></details>
+              <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
+                <StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary>
+                <p v-if="historyLoading" role="status">正在读取版本…</p>
+                <div v-else-if="historyError" class="catalog-error" role="alert"><p>历史版本暂时无法读取：{{ historyError }}</p><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="retryHistory">重读版本</button></div>
+                <p v-else-if="!history.length" class="catalog-note">暂无历史版本</p>
+                <div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="restore(entry.revision)">找回这一版</button></div>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button>
+              </details>
               <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy" @click="adoptRevision">已核对，继续编辑</button></section>
             </template>
-            <div v-else class="catalog-editor-empty"><span class="catalog-empty-illustration"><ArchiveIcon :name="kindIcon(kind)" /></span><h2>选择{{ sectionTitle }}</h2><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">新建内容</button></div>
+            <div v-else class="catalog-editor-empty"><img class="catalog-empty-illustration" :src="collectionArt" width="512" height="512" alt="" /><h2>翻开一份{{ sectionTitle }}</h2><p>从左侧选取，让角色与故事慢慢成册。</p><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">新建内容</button></div>
           </section>
         </div>
       </template>
@@ -123,8 +130,12 @@ import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { catalogShowcaseId } from '@/utils/showcaseManifest'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import { scrollBehavior } from '@/utils/motionPreference'
+import collectionOriginal from '@/assets/illustrations/atelier-collection-spot.webp'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
 import '@/assets/css/catalog-maintenance.css'
 const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
+const collectionArt = useThemeIllustration(collectionOriginal, 'collection')
+const recordList = ref<HTMLElement | null>(null)
 const pageTitle = ref<HTMLElement | null>(null), pendingArea = ref<HTMLElement | null>(null), pendingOpen = ref(false)
 const { thumbUrl, reload: reloadAssets } = useShowcaseAssets()
 watch(section, value => { if (value === 'records') void reloadAssets().catch(() => {}) })
@@ -137,7 +148,8 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
   { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
 ]
-const { kind, search, character, category, rating, sort, page, result, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+watch(listScope, () => { recordList.value?.scrollTo(0, 0) }, { flush: 'post' })
 watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
 const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资料', outfit: '服装', scene: '故事', blueprint: '画面方案', document: '词库或推荐资料' } as Record<CatalogKind, string>)[kind.value] + '…')
@@ -157,6 +169,11 @@ function rowSubtitle(item: CatalogSummary) {
   return [role, catalogCategory(item.category), item.rating === 'R18' ? catalogRating(item.rating) : ''].filter(Boolean).join(' · ') || CATALOG_LABELS[item.kind]
 }
 function isPending(item: CatalogSummary) { return pending.value.some(c => c.kind === item.kind && c.id === item.id) }
+function retryHistory(event: MouseEvent) {
+  const button = event.currentTarget
+  if (button instanceof HTMLButtonElement && document.activeElement === button) button.closest('details')?.querySelector<HTMLElement>(':scope > summary')?.focus({ preventScroll: true })
+  void loadHistory()
+}
 function pendingTitle(change: CatalogChange) {
   if (change.data) return recordTitle({ kind: change.kind, id: change.id, revision: change.expectedRevision, sortOrder: 0, createdAt: null, updatedAt: null, data: change.data })
   return catalogTitle(change.kind, change.id, result.value?.items.find(row => row.id === change.id)?.title || '选中的内容')

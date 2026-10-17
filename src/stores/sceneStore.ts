@@ -353,6 +353,7 @@ export const useSceneStore = defineStore('scenes', () => {
     metaFailuresByEpoch.clear()
     metaFailedFiles.value = new Set()
     blueprintRequests.clear()
+    blueprintCharacters.value = new Set()
     sceneBlueprints.value = []
     // Do not cancel or clear old transports here. Their completion handlers
     // still run, but their epoch guards make the result harmless.
@@ -481,6 +482,7 @@ export const useSceneStore = defineStore('scenes', () => {
   }
 
   const blueprintRequests = new Map<string, Promise<void>>()
+  const blueprintCharacters = ref(new Set<string>())
   function loadBlueprintCharacter(id: string): Promise<void> {
     const existing = blueprintRequests.get(id)
     if (existing) return existing
@@ -489,7 +491,10 @@ export const useSceneStore = defineStore('scenes', () => {
       const raw = isLocalStudioHost() ? (await catalogApi.character(id)).blueprints
         : requireDataCollection(await fetchJson('scene-blueprints.json', version.value), 'blueprints')
       const parsed = parseSceneBlueprints(raw).filter(item => item.characterId === id)
-      if (epoch === loadEpoch) sceneBlueprints.value = [...sceneBlueprints.value.filter(item => item.characterId !== id), ...parsed]
+      if (epoch === loadEpoch) {
+        sceneBlueprints.value = [...sceneBlueprints.value.filter(item => item.characterId !== id), ...parsed]
+        blueprintCharacters.value = new Set(blueprintCharacters.value).add(id)
+      }
     })().catch(error => { if (blueprintRequests.get(id) === request) blueprintRequests.delete(id); throw error })
     blueprintRequests.set(id, request)
     return request
@@ -530,7 +535,7 @@ export const useSceneStore = defineStore('scenes', () => {
 
   return {
     scenes, curation, characters, loras, tags, presets, index,
-    popularCharacters, sceneBlueprints,
+    popularCharacters, sceneBlueprints, hasBlueprintCharacter: (id: string) => blueprintCharacters.value.has(id),
     loading, error, loaded, loadedShards, version, metaFailedFiles,
     load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, loadPresetCatalog, ensureCharacter, ensureCore, reload, invalidate, byId, count,
   }

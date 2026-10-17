@@ -71,37 +71,42 @@ export function useShotWorkspace(props: {
     const storyboardBlueprintId = ref('');
     const storyboardIntent = ref('');
     const storyboardBusy = ref(false);
+    let storyboardRequest: AbortController | null = null;
+    function stopStoryboard() { storyboardRequest?.abort(); storyboardRequest = null; storyboardBusy.value = false; }
     async function runStoryboard() {
         const blueprintId = storyboardBlueprintId.value;
-        if (!blueprintId || storyboardBusy.value)
-            return;
+        if (!blueprintId || storyboardBusy.value || !routeActive.value || batchActive.value || submitting.value) return;
+        const controller = new AbortController(); storyboardRequest = controller;
+        const originalShots = shots.value.slice(), originalText = JSON.stringify(shots.value);
+        const intent = storyboardIntent.value.trim();
+        const current = () => storyboardRequest === controller && !controller.signal.aborted && routeActive.value;
         storyboardBusy.value = true;
         batchError.value = '';
         try {
-            const intent = storyboardIntent.value.trim();
-            const res = await createVideoStoryboard(blueprintId, intent || undefined);
+            const res = await createVideoStoryboard(blueprintId, intent || undefined, controller.signal);
+            if (!current()) return;
+            if (batchActive.value || submitting.value || storyboardBlueprintId.value !== blueprintId || storyboardIntent.value.trim() !== intent
+                || JSON.stringify(shots.value) !== originalText || shots.value.some((shot, index) => shot !== originalShots[index])) {
+                batchError.value = '生成期间工作区已变化，已保留当前内容；请确认后重新生成剧本';
+                return;
+            }
+            shots.value.forEach(shot => { if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl); });
             shots.value = res.storyboard.shots.map((shot) => ({
-                prompt: shot.prompt,
-                dialogue: shot.dialogue ?? '',
-                shotSize: shot.shotSize,
-                camera: shot.camera,
-                motion: shot.motion,
+                prompt: shot.prompt, dialogue: shot.dialogue ?? '', shotSize: shot.shotSize,
+                camera: shot.camera, motion: shot.motion,
                 // 服务端固定产 3 秒；这里对 API number 做字面量收窄，非法值回落 3。
                 duration: (shot.duration === 5 || shot.duration === 10 || shot.duration === 15 ? shot.duration : 3) as ShotDraft['duration'],
-                seedText: '',
-                imageName: '',
-                imageUrl: '',
-                cast: '',
+                seedText: '', imageName: '', imageUrl: '', cast: '',
                 firstFramePrompt: shot.firstFramePrompt ?? undefined,
             }));
             storyboardBlueprintId.value = '';
             storyboardIntent.value = '';
         }
         catch (error) {
-            batchError.value = error instanceof Error ? error.message : '剧本生成失败，请稍后重试';
+            if (current()) batchError.value = error instanceof Error ? error.message : '剧本生成失败，请稍后重试';
         }
         finally {
-            storyboardBusy.value = false;
+            if (storyboardRequest === controller) { storyboardRequest = null; storyboardBusy.value = false; }
         }
     }
     /** 本组件共用的用户可见错误通道：批量提交/轮询/重抽、首帧与参考图上传失败都回写这里。 */
@@ -127,7 +132,7 @@ export function useShotWorkspace(props: {
         steps,
         linkLastFrame,
         shotReferences,
-        inputsBusy: computed(() => loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0),
+        inputsBusy: computed(() => storyboardBusy.value || loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0),
         h3Ready,
         online: computed(() => props.status?.online === true),
         batchError,
@@ -140,7 +145,7 @@ export function useShotWorkspace(props: {
         },
     });
     // ── AI 整理链路（逐镜整理/整批编排/脚本/台词/质检）已下沉 useShotAiTools ──
-    const { aiBusy, aiNote, aiSnapshot, polishSnapshot, aiFlowStep, flowHint, scriptOpen, scriptStory, scriptCount, scriptTotal, scriptBusy, runAiRewrite, restoreAiSnapshot, runAiPolish, restorePolishSnapshot, runAiScript, dialogueIndex, dialogueOptions, dialogueBusy, runAiDialogue, applyDialogueOption, reviewIssues, reviewBusy, runAiReview, applyReviewSuggestion, shotIssueCount } = useShotAiTools({
+    const { aiBusy, aiNote, aiSnapshot, polishSnapshot, aiFlowStep, flowHint, scriptOpen, scriptStory, scriptCount, scriptTotal, scriptBusy, scriptNote, runAiRewrite, restoreAiSnapshot, runAiPolish, restorePolishSnapshot, runAiScript, dialogueIndex, dialogueOptions, dialogueBusy, runAiDialogue, applyDialogueOption, reviewIssues, reviewBusy, runAiReview, applyReviewSuggestion, shotIssueCount } = useShotAiTools({
         shots,
         identityCard,
         batchActive,
@@ -150,7 +155,7 @@ export function useShotWorkspace(props: {
     const { importShotsFromDrawing, retryPendingFrames, mountShotFrame } = useShotImport({
         shots, frameRequests,
         referenceCards,
-        selectCardCharacter,
+        selectCardCharacter: (id, index, outfit) => selectCardCharacter(id, index, outfit, workspaceAbort.signal),
         onError: (message) => { batchError.value = message; },
         persistShotsDraft: () => persistShotsDraft(),
     });
@@ -176,6 +181,7 @@ export function useShotWorkspace(props: {
         if (retrying.value) return '正在重新提交失败镜头';
         if (cancelling.value) return '正在取消整批';
         if (concating.value) return '正在拼接成片';
+        if (storyboardBusy.value) return '正在生成剧本';
         if (loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0) return '正在准备参考图与首帧';
         if (shots.value.some(shot => shot.seedText.trim() && (!Number.isSafeInteger(Number(shot.seedText)) || Number(shot.seedText) < 0 || Number(shot.seedText) > 0x7fffffff))) return '请检查镜头 Seed：需为 0–2147483647 的整数';
         if (!canSubmit.value)
@@ -278,6 +284,11 @@ export function useShotWorkspace(props: {
     // Explicit character links win over restored drafts, but ordinary activation never resets edits.
     const routeReady = ref(false), routeActive = ref(true);
     let routeLoad: AbortController | null = null, consumedIntent = '';
+    let workspaceVisit = 0, restoreReady = false, workspaceDisposed = false;
+    let workspaceAbort = new AbortController();
+    let workspaceRead: Promise<void> | null = null;
+    const workspaceCurrent = (visit: number) => !workspaceDisposed && routeActive.value
+        && route.path === '/video-studio' && workspaceVisit === visit;
     const routeCharacter = () => typeof route.query.character === 'string' ? route.query.character.trim() : '';
     const routeOutfit = () => typeof route.query.outfit === 'string' ? route.query.outfit.trim() : '';
     watch([routeReady, routeActive, () => route.path, routeCharacter, routeOutfit], async () => {
@@ -295,19 +306,17 @@ export function useShotWorkspace(props: {
             if (card?.characterId === id && (!outfit || card.outfitId === outfit)) {
                 shots.value.forEach(shot => { if (!shot.cast) shot.cast = '1'; });
             }
-            await router.replace({ query: { ...route.query, character: undefined, outfit: undefined } });
+            await router.replace({ query: { ...route.query, character: undefined, outfit: undefined }, hash: route.hash });
         } catch (error) {
             if (!controller.signal.aborted && routeCharacter() === id && routeOutfit() === outfit) batchError.value = error instanceof Error ? error.message : '角色资料载入失败，请重试';
         } finally { if (routeLoad === controller) routeLoad = null; }
     });
     onActivated(() => {
         routeActive.value = true;
-        if (routeReady.value) void (async () => {
-            await runImportFromDrawing();
-            importScenarioActs();
-        })();
+        if (workspaceAbort.signal.aborted) workspaceAbort = new AbortController();
+        if (workspaceVisit) resumeWorkspace();
     });
-    onDeactivated(() => { routeActive.value = false; if (routeLoad) consumedIntent = ''; routeLoad?.abort(); });
+    onDeactivated(() => { workspaceVisit++; workspaceAbort.abort(); routeActive.value = false; if (routeLoad) consumedIntent = ''; routeLoad?.abort(); stopStoryboard(); });
     // 场景蓝图 → 填入所有空镜头（用户已写的不覆盖），并顺带推断景别/镜头/运动。
     watch(sceneFillId, (id) => {
         if (!id)
@@ -386,9 +395,9 @@ export function useShotWorkspace(props: {
         }
     }
     // ── 绘图页「加入分镜」批量带入（F4：逐镜确认 + 如实汇报；实现已下沉 useShotImport）──
-    async function runImportFromDrawing() {
+    async function runImportFromDrawing(visit: number) {
         const outcome = await importShotsFromDrawing();
-        if (!outcome)
+        if (!outcome || !workspaceCurrent(visit))
             return;
         const parts = [`已从绘图页带入 ${outcome.imported} 个镜头`, `首帧就绪 ${outcome.framesReady} 张`];
         if (outcome.framesPending)
@@ -399,7 +408,7 @@ export function useShotWorkspace(props: {
         aiFlowStep.value = 0;
     }
     // ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
-    // 切模式（v-if 卸载）/切页/刷新后恢复：镜头文本 + 身份锚点 + 参考卡元信息。
+    // 切模式保留缓存实例；真正卸载后恢复镜头文本、身份锚点和参考卡元信息。
     // 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
     const { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission } = useShotDraft({
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
@@ -408,11 +417,13 @@ export function useShotWorkspace(props: {
     const { importScenarioActs } = useScenarioShotImport({ shots, active: routeActive, batchError, persistShotsDraft });
     /** 整批任务重连（F1）：离页不中断服务端批次，回来按 batchId 接回真实进度。 */
     async function reconnectShotsBatch() {
+        const visit = workspaceVisit;
         const requestedBatch = typeof route.query.batch === 'string' ? route.query.batch : '';
         const record = requestedBatch ? { batchId: requestedBatch } : videoStore.shotsBatch ?? (batch.value ? { batchId: batch.value.id } : null);
         if (!record)
             return;
         const ok = await reconnectBatch(record.batchId);
+        if (!workspaceCurrent(visit)) return;
         if (!ok) {
             if ((typeof route.query.batch === 'string' ? route.query.batch : '') !== requestedBatch) return;
             if (videoStore.shotsBatch?.batchId === record.batchId) videoStore.clearShotsBatch();
@@ -426,7 +437,7 @@ export function useShotWorkspace(props: {
     const canReturnToBatch = computed(() => Boolean(batch.value && batchReadError.value && !batchReadRetryable.value && route.query.batch !== batch.value.id));
     function returnToCurrentBatch() {
         if (!canReturnToBatch.value || batchReading.value || submitting.value || cancelling.value || retrying.value || concating.value) return;
-        return router.replace({ path: '/video-studio', query: { ...route.query, mode: 'shots', batch: batch.value!.id } });
+        return router.replace({ path: '/video-studio', query: { ...route.query, mode: 'shots', batch: batch.value!.id }, hash: route.hash });
     }
     watch(() => route.query.batch, () => {
         if (route.path === '/video-studio') void reconnectShotsBatch();
@@ -435,18 +446,29 @@ export function useShotWorkspace(props: {
         if (!route.query.batch && !submitting.value && route.path === '/video-studio'
             && shots.value.some(shot => getShotSubmission(shot)?.batchId === id)) void reconnectShotsBatch();
     });
-    onMounted(() => {
-        void sceneStore.loadCharacterShell().catch(() => { batchError.value = '角色目录读取失败，请刷新页面重试'; });
-        void (async () => {
-            await restoreShotsDraft();
-            await runImportFromDrawing();
+    function resumeWorkspace() {
+        if (!restoreReady || !workspaceCurrent(workspaceVisit) || workspaceRead) return;
+        const visit = workspaceVisit;
+        workspaceRead = (async () => {
+            await runImportFromDrawing(visit);
+            if (!workspaceCurrent(visit)) return;
             importScenarioActs();
             routeReady.value = true;
             await reconnectShotsBatch();
-        })();
+        })().catch(error => { if (workspaceCurrent(visit)) batchError.value = error instanceof Error ? error.message : '分镜工作区恢复失败，请重新进入分镜重试'; }).finally(() => {
+            workspaceRead = null;
+            // Keep one import owner until it settles; a quick return then resumes the new visit.
+            if (workspaceVisit !== visit) resumeWorkspace();
+        });
+    }
+    onMounted(() => {
+        const visit = workspaceVisit;
+        void sceneStore.loadCharacterShell().catch(() => { if (workspaceCurrent(visit)) batchError.value = '角色目录读取失败，请刷新页面重试'; });
+        void restoreShotsDraft().then(() => { if (!workspaceDisposed) { restoreReady = true; resumeWorkspace(); } });
     });
     onBeforeUnmount(() => {
-        cancelFrameRequests();
+        workspaceDisposed = true; workspaceVisit++; workspaceAbort.abort();
+        cancelFrameRequests(); stopStoryboard();
         routeLoad?.abort(); routeActive.value = false;
         // 批量轮询与 disposed 标记归 useShotBatchMachine；这里只释镜头首帧 blob URL。
         shots.value.forEach((shot) => {
@@ -461,7 +483,7 @@ frameInputs,
         popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
         setReferenceInput, onReferencePicked, shots, sceneFillId, sceneBlueprints, addShot,
         storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,
-        firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptOpen,
+        firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptNote, scriptOpen,
         reviewBusy, runAiReview, aiSnapshot, restoreAiSnapshot, polishSnapshot, restorePolishSnapshot,
         clearShots, aiNote, flowHint, reviewIssues, applyReviewSuggestion, shotIssueCount,
         serverShot, shotStatusLabel, moveShot, removeShot, dialogueBusy, runAiDialogue,

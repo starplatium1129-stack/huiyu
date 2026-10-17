@@ -62,8 +62,10 @@
 .sc-thumb-ready { opacity:1; }
 /* The inspiration library displays reviewed artwork at its natural ratio.
    Other card consumers retain the compact cover preview. */
+.sc-complete-preview { content-visibility:visible; contain-intrinsic-size:none; }
 .sc-complete-preview .sc-band { aspect-ratio:auto; display:block; min-height:120px; padding:var(--s-2); background:var(--art-stage); }
-.sc-complete-preview .sc-thumb { position:relative; inset:auto; display:block; width:100%; height:auto; object-fit:contain; object-position:center; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); box-shadow:var(--art-frame-shadow); }
+.sc-complete-preview .sc-thumb { position:relative; inset:auto; display:block; width:100%; height:auto; aspect-ratio:var(--scene-preview-ratio, 3 / 4); object-fit:contain; object-position:center; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); box-shadow:var(--art-frame-shadow); }
+.sc-complete-preview .sc-band:has(.sc-preview-unavailable) { aspect-ratio:var(--scene-preview-ratio, 3 / 4); }
 .sc-complete-preview .sc-band::after { inset:var(--s-2); border-radius:var(--r-sm); }
 /* Keep a static mat until the decoded thumbnail arrives. */
 .sc-thumb-skeleton { @apply tw:absolute; inset:0; z-index:var(--z-sc-media); opacity:0; @apply tw:overflow-hidden; transition:opacity var(--motion-hover); }
@@ -74,7 +76,6 @@
 .sc-thumb-skeleton.visible { opacity:1; }
 .sc-thumb-missing { @apply tw:hidden; }
 /* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
-.sc-thumb-r18 { transform: scale(1.08); }
 .sc[data-rating="R18"] .sc-band::before {
   content:"R18 · 悬停预览"; @apply tw:absolute; z-index:var(--z-raised);
   @apply tw:left-[50%] tw:top-[50%]; transform:translate(-50%,-50%);

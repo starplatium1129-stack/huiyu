@@ -1,5 +1,6 @@
 import { computed, onActivated, onDeactivated, onUnmounted, ref, watch, type ComputedRef, type Ref } from 'vue';
 import { artworkRepository } from '@/storage/artworkRepository';
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl';
 import { sameArtworkMedia } from './artworkMediaIdentity';
 import { safeImageUrl } from './galleryHelpers';
 import type { RouteLocationNormalizedLoaded } from 'vue-router';
@@ -50,21 +51,61 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   const parentPreview = ref(''), parentLoading = ref(false);
   let parentObjectUrl = '', version = 0, active = true, disposed = false;
   let parentRead: AbortController | null = null;
+  let relation: { child: ArtworkRecord; parent: ArtworkRecord } | null = null;
+  let parentOriginal = false, readingOriginal = false;
   function releaseParent() {
     version++;
     parentRead?.abort(); parentRead = null;
     if (parentObjectUrl) URL.revokeObjectURL(parentObjectUrl);
     parentObjectUrl = ''; parentPreview.value = ''; parentLoading.value = false;
+    relation = null; parentOriginal = false; readingOriginal = false;
   }
   async function loadParent() {
-    releaseParent();
+    const retained = relation && sameArtworkMedia(relation.child, current.value ?? undefined)
+      && relation.child.parent_id === current.value?.parent_id
+      && sameArtworkMedia(relation.parent, parentArtwork.value ?? undefined);
+    if (!retained) releaseParent();
     if (!active || disposed || !current.value || !parentArtwork.value) return;
     const child = { ...current.value }, parent = { ...parentArtwork.value };
-    const token = version, controller = new AbortController();
-    parentRead = controller;
+    relation = { child, parent };
+    // A mode toggle upgrades this pair; it never discards a usable preview or
+    // downgrades an owned original. An original already in flight can finish.
+    if (parentOriginal || (!compareMode.value && parentPreview.value)
+      || (parentRead && (!compareMode.value || readingOriginal))) return;
+    parentRead?.abort();
+    const token = ++version, controller = new AbortController();
+    parentRead = controller; readingOriginal = compareMode.value;
     const isCurrent = () => active && !disposed && token === version && !controller.signal.aborted
       && sameArtworkMedia(child, current.value ?? undefined) && child.parent_id === current.value?.parent_id
       && sameArtworkMedia(parent, parentArtwork.value ?? undefined);
+    async function publishOriginal(source: string, owned = false) {
+      const image = new Image();
+      let candidate = owned ? source : '', settle: ((ready: boolean) => void) | undefined;
+      const release = () => {
+        image.removeAttribute('src');
+        if (candidate) { URL.revokeObjectURL(candidate); candidate = ''; }
+      };
+      const abort = () => { release(); settle?.(false); };
+      try {
+        if (!isCurrent()) return false;
+        const resolved = resolveRuntimeUrl(source), cors = runtimeResourceCors();
+        if (!resolved) return false;
+        if (cors) image.crossOrigin = cors;
+        image.decoding = 'async';
+        const decoded = await new Promise<boolean>(resolve => {
+          settle = resolve;
+          controller.signal.addEventListener('abort', abort, { once: true });
+          image.src = resolved;
+          void image.decode().then(() => resolve(image.complete && image.naturalWidth > 0 && image.naturalHeight > 0), () => resolve(false));
+        });
+        if (!decoded || !isCurrent()) return false;
+        if (parentObjectUrl && parentObjectUrl !== source) URL.revokeObjectURL(parentObjectUrl);
+        parentObjectUrl = candidate; candidate = '';
+        parentPreview.value = source; parentOriginal = true;
+        return true;
+      } catch { return false; }
+      finally { controller.signal.removeEventListener('abort', abort); release(); }
+    }
     const cached = thumbUrls[parent.id];
     if (!compareMode.value && cached?.startsWith('data:image/')) { parentPreview.value = cached; parentRead = null; return; }
     parentLoading.value = true;
@@ -72,21 +113,23 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
       if (parent.image_id) {
         // Desktop derives missing thumbnails locally. Legacy web records may
         // lack one, so only that miss/failure needs a separately owned original.
-        const thumb = compareMode.value ? null : await artworkRepository.getThumbnail(parent.image_id).catch(() => null);
+        const thumb = readingOriginal ? null : await artworkRepository.getThumbnail(parent.image_id).catch(() => null);
         if (!isCurrent()) return;
         if (thumb?.startsWith('data:image/')) { parentPreview.value = thumb; return; }
+        readingOriginal = true;
         const blob = await artworkRepository.getImage(parent.image_id, controller.signal).catch(() => null);
         if (!isCurrent()) return;
-        if (blob) {
-          parentObjectUrl = URL.createObjectURL(blob);
-          parentPreview.value = parentObjectUrl;
-          return;
-        }
+        // Keep the proven preview until these exact original bytes are paintable.
+        if (blob?.size && await publishOriginal(URL.createObjectURL(blob), true)) return;
       }
-      if (isCurrent()) parentPreview.value = safeImageUrl(parent.image_url)
-        || (parent.image_data?.startsWith('data:image/') ? parent.image_data : '');
+      // A failed original read must not replace a proven preview with an
+      // unverified fallback. Records without stored originals still use theirs.
+      if (isCurrent() && (!parentPreview.value || !parent.image_id)) {
+        const fallback = safeImageUrl(parent.image_url) || (parent.image_data?.startsWith('data:image/') ? parent.image_data : '');
+        if (fallback) await publishOriginal(fallback);
+      }
     } finally {
-      if (isCurrent()) { parentLoading.value = false; parentRead = null; }
+      if (isCurrent()) { parentLoading.value = false; parentRead = null; readingOriginal = false; }
     }
   }
   watch(() => {

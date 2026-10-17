@@ -1,6 +1,7 @@
 import { executeCompanionTool, type CompanionToolResult } from '@/api/companionToolsApi'
 import type { CompanionChatImage } from '@/types/companionDrawing'
 import { companionImageSource } from './companionChatImages'
+import type { ChatSearchConnection } from '@/config/chatSearch'
 
 export interface CompanionToolContext {
   character: string
@@ -8,6 +9,7 @@ export interface CompanionToolContext {
   report: (message: string) => void
   image?: CompanionChatImage
   imageUrl?: string
+  search?: Pick<ChatSearchConnection, 'hostConfig' | 'chatApi'>
 }
 
 export async function executeSerializedCompanionChatTool(call: { name: string; arguments: string }, context: CompanionToolContext, completedDrawings?: Map<string, CompanionToolResult>): Promise<CompanionToolResult> {
@@ -22,7 +24,7 @@ export async function executeSerializedCompanionChatTool(call: { name: string; a
 export async function executeCompanionChatTool(name: string, args: Record<string, unknown>, context: CompanionToolContext, completedDrawings?: Map<string, CompanionToolResult>): Promise<CompanionToolResult> {
   context.signal.throwIfAborted()
   if (!['generate_character_image', 'generate_image_from_reference'].includes(name)) {
-    return executeCompanionTool(name, args, context.signal)
+    return executeCompanionTool(name, args, context.signal, name === 'search_web' ? context.search : undefined)
   }
   const reference = name === 'generate_image_from_reference'
   const input = {

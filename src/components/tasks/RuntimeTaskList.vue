@@ -35,9 +35,9 @@
   </section>
 </template>
 <script setup lang="ts">
-import { defineAsyncComponent, ref, useId } from 'vue'
+import { ref, useId } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-const RuntimeTaskPreview = defineAsyncComponent(() => import('./RuntimeTaskPreview.vue'))
+import RuntimeTaskPreview from './RuntimeTaskPreview.vue'
 import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskSummary } from '@/api/runtimeTasks'
 import { runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
 import { useRuntimeTaskBrowser } from '@/composables/tasks/useRuntimeTaskBrowser'
@@ -71,7 +71,11 @@ async function act(task: TaskSummary, action: 'cancel' | 'reconcile' | 'resume' 
       await confirmWebuiTaskStopped(task.taskId, task.revision)
       feedback.value = '已按你的确认解除占用，可以发起新任务。'
     } else if (action === 'cancel') await cancelRuntimeTask(task.taskId)
-    else if (action === 'discard') { await markRuntimeTask(task.taskId, 'discarded'); expanded.value = ''; discarding.value = '' }
+    else if (action === 'discard') {
+      await markRuntimeTask(task.taskId, 'discarded')
+      if (expanded.value === task.taskId) expanded.value = ''
+      if (discarding.value === task.taskId) discarding.value = ''
+    }
     else await actOnRuntimeTask(task.taskId, action)
   }
   catch (error) { feedback.value = error instanceof Error ? error.message : '操作尚未完成，请重新核对。' }

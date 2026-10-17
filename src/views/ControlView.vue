@@ -2,7 +2,7 @@
   <div class="control-page">
     <RouteAtmosphere />
     <!-- /control 挂在 AppLayout 之外，所以跳转链接与 main 地标要在这里自备 -->
-    <a class="skip-link" href="#control-main">跳到主要内容</a>
+    <RouterLink class="skip-link" :to="{ query: route.query, hash: '#control-main' }" @click="focusMain">跳到主要内容</RouterLink>
     <nav class="nav control-mobile-nav">
       <div class="nav-inner nav-local">
         <RouterLink to="/" class="nav-local-brand">
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="control-section-jump" role="group" aria-label="控制室分区">
-        <a v-for="item in sections" :key="item.id" :href="'#' + item.id" :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id)">{{ item.label }}</a>
+        <RouterLink v-for="item in sections" :key="item.id" :to="{ query: route.query, hash: '#' + item.id }" :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id, $event)">{{ item.label }}</RouterLink>
       </div>
     </nav>
 
@@ -31,10 +31,10 @@
         <span class="control-nav-label">工作台管理</span>
         <AppearancePreferences launcher-only />
         <nav class="control-rail-nav tw:grid tw:gap-s-2" aria-label="控制区">
-          <a v-for="item in sections" :key="item.id" class="control-rail-link" :href="'#' + item.id"
-            :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id)">
+          <RouterLink v-for="item in sections" :key="item.id" class="control-rail-link" :to="{ query: route.query, hash: '#' + item.id }"
+            :aria-current="activeSection === item.id ? 'location' : undefined" @click="openSection(item.id, $event)">
             <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span>
-          </a>
+          </RouterLink>
         </nav>
         <div class="control-rail-foot">
           <RouterLink class="nav-local-home tw:inline-flex tw:items-center tw:gap-s-2" to="/"><ArchiveIcon name="chevron-down" class="tw:rotate-90" />回绘遇</RouterLink>
@@ -49,7 +49,7 @@
           <button class="btn btn-ghost" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
             <ArchiveIcon name="refresh" /> {{ serviceChecking ? '检测中…' : '检测所有服务' }}
           </button>
-          <RouterLink class="btn btn-primary" to="/prompt-builder"><ArchiveIcon name="spark" /> 回到创作</RouterLink>
+          <RouterLink class="btn btn-primary" to="/prompt-builder" data-route-focus><ArchiveIcon name="spark" /> 回到创作</RouterLink>
         </template>
       </ControlIntro>
 
@@ -67,7 +67,7 @@
             <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
             <div class="service-row-actions">
               <template v-if="service.key === 'llama'">
-                <a href="#control-setup" class="btn btn-ghost btn-sm" @click="openSection('control-setup')">准备模型</a>
+                <RouterLink :to="{ query: route.query, hash: '#control-setup' }" class="btn btn-ghost btn-sm" @click="openSection('control-setup', $event)">准备模型</RouterLink>
                 <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放显存</button>
               </template>
               <template v-else-if="service.key !== 'ollama'">
@@ -410,6 +410,7 @@ const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
 const { activeSection, openSection } = useControlNavigation(sections.map(section => section.id))
 const statusUsable = computed(() => statusLoaded.value && !statusError.value)
 const route = useRoute()
+function focusMain() { document.getElementById('control-main')?.focus({ preventScroll: true }) }
 const requestedService = computed(() => route.query.engine === 'sd' ? 'webui'
   : ['anima', 'krea2', 'video'].includes(String(route.query.engine)) ? 'comfy' : '')
 const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima 绘图', krea2: 'Krea 2 绘图', video: '故事短片' } as Record<string, string>)[String(route.query.engine)] || '当前创作')

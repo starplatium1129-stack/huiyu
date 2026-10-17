@@ -29,6 +29,7 @@ export function useModelStudio(hostId: string) {
   const inspection = shallowRef<ModelInspection | null>(null)
   const parameters = ref<ModelParameter[]>([])
   const busy = ref(false), ready = ref(false), message = ref('选择完整的 Cubism 3 模型文件夹，或打开已导入的角色。')
+  const previewLoading = ref(false), previewFailed = ref(false)
   const saved = shallowRef<SavedModel | null>(null)
   const needsReload = ref(false)
   const identity = reactive({ id: '', name: '', persona: '', author: '', terms: '' })
@@ -64,7 +65,16 @@ export function useModelStudio(hostId: string) {
     const previous = session; session = null; model = null; baseline.clear()
     try { previous?.destroy() } catch { /* Continue cleanup even when a renderer has already failed. */ } finally {
       releaseUrls?.(); releaseUrls = null; ready.value = false; parameters.value = []; busy.value = false
+      previewLoading.value = false; previewFailed.value = false
     }
+  }
+  function releasePreview() {
+    const loading = previewLoading.value
+    stopPreview(); message.value = loading ? '已取消预览加载，可重新加载。' : '预览已释放，校准内容仍保留。'
+  }
+  function failPreview(token: number, error: unknown) {
+    if (token !== generation) return
+    stopPreview(); previewFailed.value = true; message.value = errorText(error)
   }
   function dispose() { request?.abort(); request = null; stopPreview() }
   const releaseMaintenance = registerMaintenanceParticipant(() => {
@@ -154,11 +164,13 @@ export function useModelStudio(hostId: string) {
     finally { if (token === generation) busy.value = false; if (request === controller) request = null }
   }
   async function preview() {
+    if (busy.value) return
     if (saved.value?.disabled) { message.value = '该模型已停用，请重新载入页面更新角色列表'; return }
-    stopPreview(); const token = generation; busy.value = true
+    stopPreview(); const token = generation; busy.value = true; previewLoading.value = true
+    message.value = '正在载入模型与贴图，可随时取消加载。'
     try {
       const controller = new AbortController(); abort = controller
-      loadTimer = setTimeout(() => { if (token === generation) { stopPreview(); message.value = '模型加载超时，可修正文件后重试' } }, 30000)
+      loadTimer = setTimeout(() => failPreview(token, new Error('模型加载超时，可修正文件后重试')), 30000)
       let modelUrl = saved.value ? resolveCompanionAvatar(identity.id)?.avatar.modelPath : undefined
       if (!saved.value && inspection.value) {
         const urls = await createModelPreviewUrls(inspection.value, controller.signal)
@@ -166,19 +178,20 @@ export function useModelStudio(hostId: string) {
         modelUrl = urls.modelUrl; releaseUrls = urls.release
       }
       if (!modelUrl) throw new Error('尚未选择可预览的模型')
+      // Connecting creates a session; only the model callbacks complete this load.
       const connected = await connectModelPreview(`#${hostId}`, modelUrl, controller.signal, value => {
         if (token !== generation) return
-        clearTimeout(loadTimer); model = value
+        model = value
         const enumeration = value.enumerateParameters?.()
         parameters.value = enumeration?.supported ? enumeration.parameters.map(item => ({ id: item.id, min: item.minimum, max: item.maximum, default: item.defaultValue, value: item.value })) : []
         baseline = new Map(parameters.value.map(item => [item.id, item.value ?? item.default]))
-        value.onBeforeModelUpdate(() => { if (token === generation && model === value) applyTest() }); ready.value = true
+        value.onBeforeModelUpdate(() => { if (token === generation && model === value) applyTest() })
+        clearTimeout(loadTimer); ready.value = true; previewLoading.value = false; busy.value = false
         message.value = parameters.value.length ? `预览已加载，读取到 ${parameters.value.length} 个真实参数。候选需要逐项确认。` : '预览已加载，但运行库未提供参数枚举；不能保存猜测的参数绑定。'
-      }, error => { if (token === generation) { stopPreview(); message.value = errorText(error) } })
+      }, error => failPreview(token, error))
       if (token !== generation) connected.destroy()
       else session = connected
-    } catch (error) { if (token === generation) { stopPreview(); message.value = errorText(error) } }
-    finally { if (token === generation) busy.value = false }
+    } catch (error) { failPreview(token, error) }
   }
   async function play(kind: 'expression' | 'motion', name: string, index = 0) {
     stopTest(); const current = model, token = generation, playbackToken = playbackVersion
@@ -310,7 +323,7 @@ export function useModelStudio(hostId: string) {
     } catch (error) { if (token === generation) message.value = errorText(error) }
     finally { if (token === generation) busy.value = false }
   }
-  return { inspection, parameters, busy, ready, message, identity, saved, needsReload, mouth, leftEye, rightEye,
+  return { inspection, parameters, busy, ready, previewLoading, previewFailed, message, identity, saved, needsReload, mouth, leftEye, rightEye,
     level, blinkLevel, focusX, focusY, expressions, motions, fingerprint, selectFiles, openExisting, preview, test,
-    selectBinding, stopTest, stopPreview, dispose, play, saveDraft, restoreDraft, undo, save, rollback, deactivate, exportProfile, importProfile }
+    selectBinding, stopTest, releasePreview, dispose, play, saveDraft, restoreDraft, undo, save, rollback, deactivate, exportProfile, importProfile }
 }

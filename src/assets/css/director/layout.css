@@ -4,16 +4,10 @@
      左侧=剧本与素材，右侧=导演决策、监看与大画幅成品
      ============================================================ */
   .pb { @apply tw:w-full; margin: 0 auto; }
-  .pb .nav-back { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label tw:mb-s-2; text-decoration: none; }
-  .pb .nav-back:hover { @apply tw:text-accent; }
   .pb-topline { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-4 tw:mb-s-3; }
   .pb-header { @apply tw:mb-0; }
-  .pb-kicker { @apply tw:flex tw:items-center tw:gap-[6px] tw:mb-[2px] tw:text-muted; font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; @apply tw:uppercase; }
-  .pb-kicker::before { content:''; @apply tw:w-[16px] tw:h-[1px]; background:linear-gradient(90deg,var(--accent),var(--natsume-amber)); }
   .pb-title { font-size:1.35rem; font-weight:750; letter-spacing:-.02em; @apply tw:text-primary tw:m-0 tw:leading-tight; }
   .pb-top-actions { @apply tw:flex tw:items-center tw:justify-end tw:gap-s-2 tw:flex-wrap; }
-  .pb .aic-icon { @apply tw:w-[1em] tw:h-[1em] tw:inline-grid; place-items:center; flex:0 0 auto; }
-  .pb .aic-icon svg { @apply tw:w-full tw:h-full tw:block; }
   .pb .focus-mode-btn { @apply tw:min-h-[36px] tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2; padding:0 var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-md; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:650 var(--fs-label-sm) var(--font-sans); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover),transform var(--motion-hover); }
   .pb .focus-mode-icon { @apply tw:inline-grid; place-items:center; @apply tw:text-body-lg tw:leading-flush; }
   .pb .focus-mode-btn:hover:not([aria-pressed="true"]) { border-color:var(--border-strong); background:var(--bg-hover); @apply tw:text-primary; }
@@ -22,16 +16,12 @@
   .pb .utility-menu { @apply tw:relative; }
   .pb .utility-trigger { @apply tw:w-[36px] tw:h-[36px] tw:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--motion-hover),border-color var(--motion-hover),transform var(--motion-hover); }
   .pb .utility-trigger:hover, .pb .utility-trigger[data-state="open"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }
-  .pb .shortcut-hint { @apply tw:text-muted; font:var(--fs-mono-sm) var(--font-mono); @apply tw:whitespace-nowrap; }
-  .pb .shortcut-hint kbd { padding:2px var(--s-2); border:1px solid var(--border-soft); border-bottom-color:var(--border-strong); @apply tw:rounded-sm; background:var(--bg-deep); @apply tw:text-secondary; box-shadow:0 1px 0 var(--border-soft); }
-  .pb .icon-label { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
   /* .panel-title 唯一定义 */
   .pb .panel-title { @apply tw:flex tw:items-center tw:gap-s-2; }
   .pb .panel-title {
     @apply tw:mb-s-3 tw:text-secondary tw:text-label-sm tw:font-bold;
     letter-spacing:.06em; @apply tw:uppercase;
   }
-  .pb .panel-title .aic-icon { @apply tw:text-accent tw:text-body-lg; }
 
 /* Shell geometry lives here. Panel styles must not redistribute these columns.
    Both modes share desktop geometry; only the panel contents change. */
@@ -80,6 +70,10 @@
     scroll-margin-top:calc(var(--drawing-sticky-top) + var(--drawing-action-height,0px) + var(--s-3));
     scroll-margin-bottom:var(--s-3);
   }
+  /* Native range focus must keep its label above the track in view too. */
+  .pb.journal-workspace .director-workspace .casual-range-input {
+    scroll-margin-top:calc(var(--drawing-sticky-top) + var(--drawing-action-height,0px) + var(--s-3) + var(--s-5));
+  }
 }
 
 @media (max-width: 900px) {
@@ -119,6 +113,23 @@
 .pb.journal-workspace.focus-mode .director-workspace { grid-template-columns: minmax(0, 1fr); grid-template-areas: "actions" "stage"; grid-template-rows:auto minmax(0,1fr); }
 .pb.journal-workspace.focus-mode .director-inspector { @apply tw:hidden; }
 .pb.journal-workspace.focus-mode .gen-bar { @apply tw:top-s-3; }
+
+/* Keep the canvas frame in the route while its image tools load on demand. */
+.pb .stage-slot { position:relative; }
+.pb.atelier-workspace .stage-slot { overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); }
+.pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(360px,60vh,720px); container-type:size; background:var(--bg-base); }
+.pb.atelier-workspace .canvas-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:64px; padding:12px 24px; }
+.pb.atelier-workspace .canvas-heading>div { display:flex; align-items:center; gap:10px; min-width:0; }
+.pb.atelier-workspace .canvas-heading strong { font-size:14px; font-weight:600; overflow-wrap:anywhere; }
+.pb.atelier-workspace .canvas-heading span { font-size:11px; color:var(--text-muted); border-left:1px solid var(--border-soft); padding-left:10px; }
+.pb.atelier-workspace .canvas-heading .archive-icon { width:16px; height:16px; }
+.pb.atelier-workspace .canvas-heading button { white-space:nowrap; font-size:12px; }
+.pb .director-canvas-loading { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:var(--s-4); padding:var(--s-5); color:var(--text-secondary); }
+.director-canvas-loading p { margin:0; font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
+.director-canvas-loading-foot { height:64px; border-top:1px solid var(--border-soft); }
+@media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }
+@media (max-width:1023px) { .pb.atelier-workspace .stage-slot { display:grid; grid-template-rows:auto minmax(0,1fr) auto; } }
+@container canvas-column (max-width:740px) { .pb.atelier-workspace .canvas-heading span { display:none; } }
 
 @media (min-width:1024px) {
   .pb.journal-workspace.atelier-workspace { max-width:none; margin:0; }

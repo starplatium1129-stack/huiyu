@@ -15,9 +15,9 @@ export function useScrollHeader(host: Ref<HTMLElement | null>, path: () => strin
     const pinned = sidebar || ['/prompt-builder', '/chat', '/video-studio'].includes(path())
     const keyboardFocus = host.value?.contains(document.activeElement) && document.activeElement?.matches(':focus-visible')
     scrolled.value = !pinned && y > 20
-    // Scrolling back through content keeps the header tucked away. Only the
-    // page top or an explicit navigation interaction brings it back.
-    if (pinned || expanded() || keyboardFocus || y === 0) hidden.value = false
+    // Reveal throughout the opening range, including a restored near-top
+    // position; do not strand a previously hidden header a few pixels from zero.
+    if (pinned || expanded() || keyboardFocus || y <= 20) hidden.value = false
     else if (y > 60) hidden.value = true
     const range = document.documentElement.scrollHeight - innerHeight
     if (progress.value) progress.value.style.transform = `scaleX(${pinned ? 0 : Math.min(1, y / Math.max(1, range))})`

@@ -24,10 +24,9 @@ export function historyReuseActions(deps: HistoryReuseDeps, state: HistoryReuseS
   }
   async function request(record: ArtworkRecord, variant: boolean, choose: boolean) {
     if (blocked()) return false
-    state.request.value = null
-    if (!choose) return restore(record, variant, 'full', state.revision)
+    if (!choose) { state.request.value = null; return restore(record, variant, 'full', state.revision) }
     const detached = tools.prepareHistoryReuse(record)
-    if (!detached) return false
+    if (!detached) { state.request.value = null; return false }
     state.request.value = { record: detached, variant }
     return true
   }

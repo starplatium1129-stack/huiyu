@@ -1,10 +1,10 @@
 <template>
-  <section v-if="active || canUndo || busy || message || error" class="gallery-organization" aria-label="整理所选作品">
+  <section v-if="active || canUndo || busy || message || error" ref="region" class="gallery-organization" aria-label="整理所选作品" tabindex="-1">
     <div class="organization-actions">
       <button v-if="active" class="btn btn-ghost btn-sm" type="button" :disabled="!ids.length || busy" :aria-expanded="opened" @click="opened = !opened"><ArchiveIcon name="book" />整理画册与标签</button>
       <button v-if="active" class="btn btn-ghost btn-sm" type="button" :disabled="!ids.length || busy || !!pendingProject" @click="opened = true; albumChoice = 'new'"><ArchiveIcon name="book" />新建画册</button>
-      <button v-if="canUndo" class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="undo"><ArchiveIcon name="refresh" />撤销本次整理</button>
-      <button v-if="busy && !stopping" class="btn btn-ghost btn-sm" type="button" @click="stop">停止后续整理</button>
+      <button v-if="canUndo" class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="fromRegion(undo)"><ArchiveIcon name="refresh" />撤销本次整理</button>
+      <button v-if="busy && !stopping" class="btn btn-ghost btn-sm" type="button" @click="fromRegion(stop)">停止后续整理</button>
       <p v-if="message" role="status">{{ message }}</p>
     </div>
     <p v-if="error" class="organization-error" role="alert">{{ error }}</p>
@@ -29,6 +29,8 @@ import { ARTWORK_ORGANIZATION_SELECTION_LIMIT, type ArtworkOrganizationId, type 
 import { ARTWORK_PROJECT_TITLE_LIMIT } from '@/application/artwork/projects'
 const props = defineProps<{ active: boolean; ids: ArtworkOrganizationId[]; projects: GalleryProject[] }>()
 const emit = defineEmits<{ changed: [] }>()
+const region = ref<HTMLElement | null>(null)
+function fromRegion(action: () => unknown) { region.value?.focus({ preventScroll: true }); return action() }
 const opened = ref(false), albumChoice = ref('keep'), albumTitle = ref(''), addText = ref(''), removeText = ref('')
 const { busy, stopping, message, error, canUndo, pendingProject, createdProject, apply, undo, tagsFromInput, stop } = useGalleryOrganization({ ids: () => props.ids, changed: () => emit('changed') })
 const availableProjects = computed(() => {
@@ -58,6 +60,7 @@ async function submit() {
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .gallery-organization { @apply tw:w-full tw:min-w-0 tw:rounded-md; border:1px solid var(--border-soft); padding:var(--s-3); margin-bottom:var(--s-3); background:var(--bg-surface); }
+.gallery-organization:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .organization-actions { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2; }
 .organization-actions p,.organization-note { @apply tw:m-0 tw:text-secondary tw:text-label-sm; }
 .organization-form { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)) auto; align-items:end; gap:var(--s-3); margin-top:var(--s-3); }
@@ -71,4 +74,5 @@ async function submit() {
 .organization-note { grid-column:1 / -1; line-height:var(--lh-body); }
 .organization-error { @apply tw:text-warning-text tw:text-label-sm; margin:var(--s-2) 0 0; }
 @media (max-width:1200px) { .organization-form { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media (forced-colors:active) { .gallery-organization:focus-visible { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }
 </style>

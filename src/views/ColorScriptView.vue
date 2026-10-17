@@ -1,6 +1,6 @@
 <template>
   <article class="page color-script-page creative-library-page">
-    <CreativeLibraryHeader title="色彩情绪" />
+    <CreativeLibraryHeader title="色彩情绪" description="把光与色，写成故事里的情绪。" />
 
     <section class="color-selection" data-route-arrive aria-labelledby="mood-palette-title">
     <header class="color-section-heading"><div><h2 id="mood-palette-title">心境色板</h2><p>选一种心情，让色彩与光照跟着故事走。</p></div><span v-if="selected" class="color-current"><ArchiveIcon name="success" />已选{{ selected.name }}</span></header>
@@ -11,7 +11,7 @@
         type="button" class="mood-card"
         :class="{ active: selected?.id === m.id }"
         :aria-pressed="selected?.id === m.id"
-        @click="select(m)"
+        @click="chooseMood(m.id)"
       >
         <div class="mood-strip" aria-hidden="true">
           <div v-for="c in m.palette" :key="c" class="mood-swatch" :style="{ '--swatch': c }"></div>
@@ -26,7 +26,7 @@
     </div>
     </section>
 
-      <section v-if="selected" v-content-motion:up="selected.id" ref="resultPanel" class="result-panel" tabindex="-1" aria-labelledby="current-palette-title">
+      <section v-if="selected" v-content-motion:fade="selected.id" ref="resultPanel" class="result-panel" tabindex="-1" aria-labelledby="current-palette-title">
         <header class="palette-result-heading">
           <div><p>当前色板</p><h2 id="current-palette-title"><ArchiveIcon :name="selected.iconName" />{{ selected.name }}的色彩与光照</h2></div>
           <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-primary"><ArchiveIcon name="spark" />带入工作台使用</RouterLink>
@@ -57,7 +57,7 @@
         </div>
       </section>
 
-    <details class="color-reading">
+    <details class="color-reading" :open="notebookOpen" @toggle="onNotebookToggle">
       <StudioDisclosureSummary><ArchiveIcon name="book" /><span><strong>光色手帖</strong><small>色彩搭配与光影参考</small></span></StudioDisclosureSummary>
       <div class="color-reading-body" data-disclosure-content>
     <ColorLightNotebook @choose="chooseMood" />
@@ -95,12 +95,14 @@ import '@/assets/css/mood.css'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import ColorLightNotebook from '@/components/library/ColorLightNotebook.vue'
-import { ref, computed, nextTick } from 'vue'
+import { ref, computed, nextTick, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { BANNED_TAGS } from '@/utils/promptPolicy'
+import { scrollBehavior } from '@/utils/motionPreference'
 
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
 const LIGHTINGS = [
@@ -132,21 +134,52 @@ const MOODS: ColorMood[] = [
   { id:'warmth',  iconName:'lantern',   name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, warm color palette, gentle colors' },
 ]
 
-const selected = ref<ColorMood | null>(null)
+const route = useRoute(), router = useRouter()
+function routeMood() { return MOODS.find(mood => mood.id === route.query.mood) ?? null }
+const selected = ref<ColorMood | null>(routeMood())
+const notebookOpen = ref(route.query.notebook === '1')
+let restoringReading = false
+watch(() => [route.path, route.query.mood, route.query.notebook], () => {
+  if (route.path !== '/color-script') return
+  restoringReading = true
+  selected.value = routeMood()
+  notebookOpen.value = route.query.notebook === '1'
+  restoringReading = false
+}, { flush: 'sync' })
+watch([selected, notebookOpen], ([mood, notebook]) => {
+  if (restoringReading || route.path !== '/color-script') return
+  const id = mood?.id ?? '', requested = typeof route.query.mood === 'string' ? route.query.mood : ''
+  if (id === requested && notebook === (route.query.notebook === '1')) return
+  const query = { ...route.query }
+  if (id) query.mood = id
+  else delete query.mood
+  if (notebook) query.notebook = '1'
+  else delete query.notebook
+  void router.replace({ path: route.path, query, hash: route.hash })
+}, { flush: 'sync' })
+function onNotebookToggle(event: Event) {
+  const panel = event.currentTarget
+  if (route.path === '/color-script' && panel instanceof HTMLDetailsElement && panel.isConnected
+    && !panel.closest('[inert]') && panel.open !== notebookOpen.value) notebookOpen.value = panel.open
+}
 const resultPanel = ref<HTMLElement | null>(null)
 const moodGrid = ref<HTMLElement | null>(null)
 async function resetMood() {
   const id = selected.value?.id
   selected.value = null
   await nextTick()
-  moodGrid.value?.querySelector<HTMLButtonElement>(`[data-mood="${id}"]`)?.focus()
+  const choice = moodGrid.value?.querySelector<HTMLButtonElement>(`[data-mood="${id}"]`)
+  choice?.focus({ preventScroll: true })
+  choice?.scrollIntoView({ block: 'nearest', behavior: scrollBehavior() })
 }
 
 async function chooseMood(id: string) {
   selected.value = MOODS.find(mood => mood.id === id) ?? null
   await nextTick()
-  resultPanel.value?.focus({ preventScroll: true })
-  resultPanel.value?.scrollIntoView({ block: 'nearest' })
+  const panel = resultPanel.value
+  if (!panel?.isConnected || panel.closest('[inert]')) return
+  panel.focus({ preventScroll: true })
+  panel.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
 }
 
 function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
@@ -167,8 +200,6 @@ const colorizedPrompt = computed(() => {
     return bad ? `<span class="violate">${esc(t)}</span>` : esc(t)
   }).join(',')
 })
-
-function select(m: ColorMood) { selected.value = m }
 
 async function copyPrompt() {
   if (!selected.value) return false
@@ -231,13 +262,14 @@ function exportTxt() {
 .section-title.spaced { @apply tw:mt-s-6; }
 
 .result-panel { @apply tw:p-s-5; border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); @apply tw:mt-s-5; }
+.result-panel,.color-mood-grid .mood-card { scroll-margin-block:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-height,80px) + var(--s-4)); }
 /* 色号使用稳定阅读底色，不受任意深浅的样本色影响。 */
 .palette-swatch { flex:1 1 88px; width:88px; overflow:hidden; padding:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); cursor:pointer; }
 .palette-swatch:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .palette-color { display:block; height:56px; background:var(--swatch); transform-origin:bottom; transition:transform var(--palette-duration) var(--spring-soft); }
 .palette-code { display:flex; align-items:center; justify-content:center; gap:var(--s-1); padding:var(--s-2) var(--s-1); color:var(--text-primary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-mono); }
 .palette-code .archive-icon { flex:none; width:12px; height:12px; color:var(--text-secondary); }
-.mapping-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); @apply tw:gap-s-3; }
+.mapping-grid { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-3; }
 .mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3; }
 .mapping-label { @apply tw:text-label-sm tw:text-muted tw:uppercase; letter-spacing:.05em; @apply tw:mb-s-1; }
 .mapping-value { @apply tw:text-body tw:font-semibold; }
@@ -274,4 +306,5 @@ function exportTxt() {
 :root:is([data-motion='reduce'],[data-motion='reduced']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; }
 @media (forced-colors:active) { .color-mood-grid .mood-card.active { outline:2px solid Highlight; } .palette-swatch:focus-visible,.color-mood-grid .mood-card:focus-visible { outline:2px solid Highlight; } }
 @media(max-width:768px) { .art-ref { grid-template-columns:1fr; } }
+@media(max-width:540px) { .mapping-grid { grid-template-columns:1fr; } }
 </style>

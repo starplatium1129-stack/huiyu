@@ -1,8 +1,8 @@
 <template>
-  <section class="inference-setup" aria-labelledby="native-setup-title">
+  <section ref="panel" class="inference-setup" aria-labelledby="native-setup-title">
     <div class="setup-intro">
       <span class="setup-mark"><ArchiveIcon name="spark" /></span>
-      <div><h3 id="native-setup-title">让画室准备好</h3><p>自动准备运行库和模型，无需手工配置。</p></div>
+      <div><h3 id="native-setup-title" ref="title" tabindex="-1">让画室准备好</h3><p>自动准备运行库和模型，无需手工配置。</p></div>
     </div>
     <ol class="setup-route" aria-label="配置流程">
       <li :data-ready="currentPlan"><span>1</span>选择位置</li>
@@ -43,14 +43,14 @@
     </div>
     <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
     <p v-else-if="message && !running && !pendingRestart && !nativeEnabled" role="status">{{ message }}</p>
-    <div class="setup-primary">
+    <div ref="actions" class="setup-primary" tabindex="-1" role="group" aria-label="原生引擎操作">
       <RouterLink v-if="nativeEnabled" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { preparedModel: modelId } }"><ArchiveIcon name="spark" />开始创作</RouterLink>
-      <button v-else-if="desktop?.restartForSetup && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" @click="restart">重启并继续</button>
+      <button v-else-if="desktop?.restartForSetup && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
       <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续准备' : '一键准备' }}</button>
       <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="refreshPlan">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
-      <a v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" href="#control-setup" @click="openOtherSetup">查看其他配置</a>
+      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ query: $route.query, hash: '#control-setup' }" @click="openOtherSetup">查看其他配置</RouterLink>
       <small v-if="running">可以离开此页，后台会继续准备。</small>
     </div>
     <details v-if="plan && !workspacePending" class="setup-details">
@@ -77,8 +77,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
-import { RouterLink } from 'vue-router'
+import { computed, onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue'
+import { RouterLink, useRoute } from 'vue-router'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -91,7 +91,7 @@ const props = defineProps<{ configured: InferenceSettings; blocked: boolean }>()
 const emit = defineEmits<{ prepared: [paths: PreparedInferencePaths]; busy: [value: boolean]; activated: [] }>()
 const { desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
   basePython, wheelhouse, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
-  operation, busy, checking, activating, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
+  operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
   workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
   initialize, refreshPlan, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
   openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'))
@@ -115,7 +115,30 @@ const resourcePaths = computed(() => plan.value ? [
 function sourceName(label: string) { return label.startsWith('Python') ? 'Python.org' : label.startsWith('PyTorch') ? 'PyTorch' : label.startsWith('PyPI') ? 'PyPI' : label.startsWith('Microsoft') ? 'Microsoft VC++' : label.startsWith('NVIDIA') ? 'NVIDIA CUDA' : label }
 function fillSettings() { if (preparedPaths.value && !locked.value) emit('prepared', { ...preparedPaths.value }) }
 function openOtherSetup() { const section = document.getElementById('control-setup'); if (section instanceof HTMLDetailsElement) section.open = true }
-watch([busy, checking, inspecting, activating, workspaceSaving, operationUncertain], () => emit('busy', busy.value || checking.value || inspecting.value || activating.value || workspaceSaving.value || operationUncertain.value), { immediate: true })
+const route = useRoute()
+const panel = ref<HTMLElement | null>(null), title = ref<HTMLElement | null>(null), actions = ref<HTMLElement | null>(null)
+let focusOrigin: HTMLButtonElement | null = null
+let focusHost: HTMLElement | null = null
+function visible(element: HTMLElement | null) {
+  if (!element?.isConnected || element.closest('[hidden], [inert], [aria-hidden="true"]') || getComputedStyle(element).visibility === 'hidden') return false
+  const bounds = element.getBoundingClientRect()
+  return bounds.width > 0 && bounds.height > 0 && bounds.bottom > 0 && bounds.top < innerHeight
+}
+onBeforeUpdate(() => {
+  const active = document.activeElement
+  focusOrigin = active instanceof HTMLButtonElement && panel.value?.contains(active) && visible(active) ? active : null
+  focusHost = focusOrigin?.closest<HTMLElement>('.setup-primary') ?? title.value
+})
+onUpdated(() => {
+  const origin = focusOrigin, host = focusHost
+  focusOrigin = null; focusHost = null
+  if (!origin || origin.isConnected && !origin.disabled || route.path !== '/control' || !document.hasFocus() || !visible(panel.value)) return
+  if (document.activeElement !== document.body && document.activeElement !== origin) return
+  if ([...document.querySelectorAll<HTMLElement>('dialog:modal, [aria-modal="true"]')].some(element =>
+    element.getClientRects().length && !element.closest('[hidden], [aria-hidden="true"]') && getComputedStyle(element).visibility !== 'hidden')) return
+  ;[host, actions.value, title.value].find(visible)?.focus({ preventScroll: true })
+})
+watch([busy, checking, inspecting, activating, restarting, workspaceSaving, operationUncertain], () => emit('busy', busy.value || checking.value || inspecting.value || activating.value || restarting.value || workspaceSaving.value || operationUncertain.value), { immediate: true })
 onMounted(initialize)
 </script>
 
@@ -152,7 +175,7 @@ code { color:var(--text-primary); font-size:var(--fs-label-sm); overflow-wrap:an
 .setup-consent { display:flex; align-items:flex-start; gap:var(--s-2); color:var(--text-primary); line-height:var(--lh-body); }
 .setup-consent input { flex-shrink:0; margin-top:var(--s-1); }
 .setup-hint { margin-top:calc(-1 * var(--s-2)); }
-.setup-primary { padding-bottom:var(--s-2); }
+.setup-primary { min-height:var(--control-height); padding-bottom:var(--s-2); }
 .setup-primary > .btn-primary { min-width:160px; }
 .setup-progress { display:grid; gap:var(--s-2); }
 .setup-progress > div { display:flex; align-items:center; justify-content:space-between; }
@@ -173,7 +196,8 @@ code { color:var(--text-primary); font-size:var(--fs-label-sm); overflow-wrap:an
 .setup-field input { box-sizing:border-box; width:100%; min-width:0; min-height:var(--control-height); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:inherit; }
 .inference-setup .setup-error { color:var(--danger-text); }
 .inference-setup :is(input,button):disabled { color:var(--text-disabled); }
-.inference-setup :is(input,button,summary,a):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.inference-setup :is(input,button,summary,a,#native-setup-title,.setup-primary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .inference-setup a:not(.btn) { color:var(--accent); text-decoration:underline; text-underline-offset:3px; }
+@media(forced-colors:active) { .inference-setup :is(#native-setup-title,.setup-primary):focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 @media(max-width:768px) { .setup-fields, .setup-paths { grid-template-columns:minmax(0,1fr); } .setup-status { flex-wrap:wrap; } .setup-location { align-items:flex-start; flex-wrap:wrap; } .setup-budget { width:100%; } }
 </style>

@@ -81,14 +81,6 @@ interface TurnEmotionTracker {
   reset(): void
 }
 
-/** 单回合挂起看门狗：无首事件 / 事件间静默超时即中断请求。 */
-interface TurnWatchdog {
-  touch(): void
-  stop(): void
-  readonly sawFirstEvent: boolean
-  readonly idleTimedOut: boolean
-}
-
 /** 判断一条临时消息是否为多模态图片消息（视觉轮专用）。 */
 function isVisionMessage(message: Record<string, unknown>): boolean {
   return Array.isArray(message.content)
@@ -222,7 +214,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   // ── Pipeline 步骤③：挂起看门狗 ───────────────────────────────────────
-  function startTurnWatchdog(controller: AbortController): TurnWatchdog {
+  function startTurnWatchdog(controller: AbortController) {
     // 2026-08-16 审计：挂起兜底看门狗——无首事件 / 事件间长时间静默即中断，
     // 避免上游挂起时无限 spinner（idleTimedOut 区分用户主动停止与超时中断）。
     const state = { firstEventAt: 0, idleTimedOut: false, lastEventAt: Date.now() }
@@ -348,7 +340,8 @@ export function useChatConversation(options: ChatConversationOptions) {
     const tracker = createTurnEmotionTracker(turn.characterId)
     const report = (message: string) => { watchdog.touch(); options.onToolActivity?.(message) }
     const sourceImage = parseCompanionChatImage(sendOptions.image) || [...turn.messages].reverse().flatMap(message => message.images || [])[0]
-    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, image: sourceImage, imageUrl }
+    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, image: sourceImage, imageUrl,
+      search: connection.hostConfig ? { hostConfig: true } : { chatApi: { baseUrl: connection.baseUrl, apiKey: connection.apiKey } } }
     const drawingResults = new Map<string, ToolCallResult>()
 
     try {

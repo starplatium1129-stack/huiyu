@@ -35,6 +35,43 @@
   --first-paint-text:#263a2c;
 }
 
+.startup-recovery {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  overflow: auto;
+  background: var(--bg-base, var(--first-paint-background));
+  color: var(--text-primary, var(--first-paint-text));
+  font: 400 14px/1.7 "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.startup-recovery-card {
+  box-sizing: border-box;
+  width: min(100%, 400px);
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid var(--border-strong, currentColor);
+  border-radius: var(--r-lg, 16px);
+  background: var(--bg-surface, var(--first-paint-background));
+}
+.startup-recovery h1 { margin: 0; font-size: 18px; line-height: 1.5; }
+.startup-recovery p { margin: 12px 0 20px; color: var(--text-secondary, var(--first-paint-text)); }
+.startup-recovery button {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid var(--border-strong, currentColor);
+  border-radius: var(--r-md, 10px);
+  background: var(--bg-elevated, var(--first-paint-background));
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.startup-recovery button:focus-visible { outline: 2px solid var(--focus-color, currentColor); outline-offset: 3px; }
+
 /* Native pet only: prevent the normal full-window loading card and theme wash. */
 html.companion-desktop,
 html.companion-desktop body,
@@ -43,3 +80,4 @@ html.companion-desktop #app {
   transition: none;
 }
 html.companion-desktop #app:empty::before { display: none; }
+html.companion-desktop .startup-recovery { background: transparent; }

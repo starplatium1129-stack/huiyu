@@ -21,6 +21,8 @@ const items = [
 <style scoped>
 html body .creative-library-nav.studio-segments[role] { display:grid; width:min(800px,100%); grid-template-columns:repeat(4,minmax(0,1fr)); }
 .creative-library-nav a { min-width:0; text-align:center; }
+.creative-library-nav a::after { content:''; position:absolute; inset:auto 24% 0; height:2px; border-radius:var(--r-pill); background:var(--accent); opacity:0; transition:opacity var(--motion-control) var(--ease-out); }
+.creative-library-nav a[aria-current='page']::after { opacity:1; }
 .creative-library-nav .archive-icon { width:18px; height:18px; flex-shrink:0; }
 @media (max-width:600px) { html body .creative-library-nav.studio-segments[role] { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 </style>

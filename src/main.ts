@@ -69,7 +69,28 @@ void (async () => {
   const stopDesktopZoom = installDesktopZoom()
   const stopContentMotion = installContentMotion()
   stopUi = () => { stopDesktopInteraction(); stopFluidGlass(); stopDesktopZoom(); stopContentMotion() }
-})()
+})().catch(error => {
+  console.error('绘遇启动失败', error)
+  const root = document.getElementById('app')
+  // A late HMR rejection or a post-mount installer error must not replace the app.
+  if (disposed || !root || root.childElementCount) return
+  const recovery = document.createElement('section')
+  recovery.className = 'startup-recovery'
+  recovery.setAttribute('role', 'alert')
+  const card = document.createElement('div')
+  card.className = 'startup-recovery-card'
+  const title = document.createElement('h1')
+  title.textContent = '画室暂时没能打开'
+  const message = document.createElement('p')
+  message.textContent = '请检查连接后重新载入。'
+  const reload = document.createElement('button')
+  reload.type = 'button'
+  reload.textContent = '重新载入'
+  reload.addEventListener('click', () => window.location.reload())
+  card.append(title, message, reload)
+  recovery.append(card)
+  root.replaceChildren(recovery)
+})
 if (import.meta.hot) import.meta.hot.dispose(() => {
   disposed = true
   stopUi()

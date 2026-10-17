@@ -1,5 +1,5 @@
 <template>
-  <TabsRoot v-model="active" as-child :unmount-on-hide="false"><section ref="drawerEl" class="material-drawer" aria-label="创作素材">
+  <TabsRoot v-model="active" as-child :unmount-on-hide="false"><section class="material-drawer" aria-label="创作素材">
     <div class="material-heading"><span><i class="workbench-heading-icon" aria-hidden="true"><ArchiveIcon name="scene" /></i>创作素材</span><small>YOUR MATERIALS</small></div>
     <TabsList class="material-switch" aria-label="素材分类">
       <AnimatedSelection variant="underline" />
@@ -26,15 +26,18 @@ import AnimatedSelection from '../visual/AnimatedSelection.vue'
 import { scrollBehavior } from '@/utils/motionPreference'
 
 const props = defineProps<{ expert: boolean; sceneContext?: string }>()
-const drawerEl = ref<HTMLElement | null>(null)
 const active = ref(props.sceneContext ? 'scenes' : 'character')
 async function selectSection(section: string) {
   if (!sections.value.some(item => item.id === section)) return
   active.value = section
   await nextTick()
-  drawerEl.value?.querySelector<HTMLButtonElement>('[aria-controls="material-' + section + '"]')?.focus({ preventScroll: true })
-  const rect = drawerEl.value?.getBoundingClientRect()
-  if (rect && (rect.top < 0 || rect.top > innerHeight - 100)) drawerEl.value?.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
+  const button = document.getElementById(`material-tab-${section}`)
+  button?.focus({ preventScroll: true })
+  const drawer = button?.closest<HTMLElement>('.material-drawer')
+  if (!drawer) return
+  const rect = drawer.getBoundingClientRect()
+  const top = parseFloat(getComputedStyle(drawer).scrollMarginTop) || 0
+  if (rect.top < top || rect.top > innerHeight - 100) drawer.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
 }
 watch(() => props.sceneContext, value => { if (value) active.value = 'scenes' })
 defineExpose({ selectSection })
@@ -53,7 +56,7 @@ watch(() => props.expert, value => {
 </script>
 
 <style scoped>
-.material-drawer { min-width:0; container-type:inline-size; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); overflow:clip; }
+.material-drawer { min-width:0; container-type:inline-size; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); overflow:clip; scroll-margin-top:inherit; }
 .material-heading { display:flex; justify-content:space-between; align-items:center; gap:8px; }
 .material-switch { position:relative; display:flex; gap:4px; margin:0 20px; border-bottom:1px solid var(--border-soft); }
 .material-switch button { display:flex; flex:1; min-width:0; min-height:42px; align-items:center; justify-content:center; gap:6px; padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); font:500 13px var(--font-sans); cursor:pointer; }

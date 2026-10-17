@@ -1,11 +1,15 @@
 @reference "./tailwind.css";
-.appearance-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(480px,calc(100vw - 32px)); height:fit-content; max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4)); margin:auto; padding:0; overflow:hidden; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); }
+.appearance-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(480px,calc(100vw - 32px)); height:min(680px,calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4))); margin:auto; padding:0; overflow:hidden; color:var(--text-primary); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-xl); box-shadow:var(--shadow-lg); }
 .appearance-dialog[open] { display:grid; grid-template-rows:auto minmax(0,1fr); }
 .appearance-dialog::backdrop { background: var(--art-backdrop); backdrop-filter: blur(8px); }
 .appearance-heading { display:flex; align-items:start; justify-content:space-between; gap:var(--s-4); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
 .appearance-heading h2 { @apply tw:m-0 tw:text-title-sm tw:font-semibold; }
 .appearance-save-note { margin:var(--s-2) 0 0; @apply tw:text-secondary tw:text-label-xs tw:leading-body; }
 .appearance-content { min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); }
+.appearance-feedback { display:grid; align-content:center; justify-items:start; gap:var(--s-4); min-height:100%; overflow-wrap:anywhere; }
+.appearance-feedback p { margin:0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
+.appearance-feedback-mark { display:grid; place-items:center; width:48px; height:48px; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--accent-soft); color:var(--accent); transform:rotate(-5deg); }
+.appearance-feedback-mark .archive-icon { width:26px; height:26px; }
 .appearance-fields { @apply tw:grid tw:gap-s-5; align-content:start; }
 .appearance-fields label { @apply tw:grid tw:gap-s-2 tw:text-secondary tw:text-label; }
 .appearance-choice-field { @apply tw:min-w-0 tw:m-0 tw:p-0; border: 0; }

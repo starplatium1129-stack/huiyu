@@ -2,7 +2,14 @@
 /* One reading frame for the four creative-library routes; their bodies keep their own task layouts. */
 .page.creative-library-page { --page-max:1600px; padding:clamp(var(--s-5),2.4vw,var(--s-6)) clamp(var(--s-5),2.4vw,var(--s-6)) var(--s-8); }
 .creative-library-header { @apply tw:mb-s-5; }
-.creative-library-heading { @apply tw:mb-s-5; }
-.creative-library-heading h1 { margin:0 0 var(--s-2); @apply tw:text-primary tw:font-display tw:font-semibold; font-size:var(--fs-title); line-height:var(--lh-tight); }
-/* Route destinations use the same control labels as browse filters. */
+.creative-library-heading { display:flex; align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); }
+.creative-library-heading h1 { margin:0; @apply tw:text-primary tw:font-display tw:font-semibold; font-size:var(--fs-title); line-height:var(--lh-tight); }
+.creative-library-kicker { margin:0 0 var(--s-1); color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.creative-library-description { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
+.library-reference-feedback { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); margin:0 0 var(--s-4); color:var(--text-secondary); font-size:var(--fs-body-sm); overflow-wrap:anywhere; }
+.library-reference-feedback > span { min-width:0; flex:1 1 20rem; }
+.creative-library-mark { position:relative; isolation:isolate; display:grid; place-items:center; width:48px; height:56px; flex:none; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--accent); box-shadow:var(--workspace-inset); }
+.creative-library-mark::before { content:''; position:absolute; z-index:-1; inset:3px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--accent-soft); transform:rotate(-8deg); }
+.creative-library-mark .archive-icon { width:24px; height:24px; }
+/* Destinations read as chapters; selection and keyboard geometry stay shared. */
 .page.creative-library-page .creative-library-nav a { font-size:var(--fs-label-sm); line-height:var(--lh-label); }

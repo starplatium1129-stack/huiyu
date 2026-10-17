@@ -61,10 +61,10 @@ import { defineAsyncComponent } from 'vue'
 import type { PromptDeliveryBindings } from '@/composables/prompt/promptPanelBindings'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import BatchSceneDrawPanel from '@/components/BatchSceneDrawPanel.vue'
 const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/GenerationQueuePanel.vue'))
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
-const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 
 const props = defineProps<{ bindings: PromptDeliveryBindings }>()
 const { voiceStudioRef, pb, generationBusy, legacyProgress, animaOnline, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, queuePausedReason, scenes, batchPanelDeps } = props.bindings

@@ -23,7 +23,6 @@
 
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import { useEventListener } from '@vueuse/core'
 import { TabsContent, TabsList, TabsRoot, TabsTrigger } from 'reka-ui'
 import DeferredPanel from './DeferredPanel.vue'
 import AnimatedSelection from '../visual/AnimatedSelection.vue'
@@ -48,9 +47,5 @@ async function selectSection(section: string, scrollToStart = false) {
   const bounds = button?.getBoundingClientRect()
   if (bounds && (bounds.top < 0 || bounds.bottom > innerHeight)) button?.scrollIntoView({ block: 'nearest' })
 }
-// The existing scene-mode output link must reveal its target after visiting another tool.
-useEventListener(document, 'click', event => {
-  if (event.target instanceof Element && event.target.closest('.pb a[href="#stepResult"]')) void selectSection('render')
-})
 defineExpose({ selectSection })
 </script>

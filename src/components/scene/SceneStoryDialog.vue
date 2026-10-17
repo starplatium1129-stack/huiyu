@@ -19,13 +19,23 @@ import { sceneCharacterName, sceneSeasonLabel, sceneTimeLabel, type ExplorerScen
 import { quickCreateUrl } from '@/utils/quickCreate'
 
 const props = withDefaults(defineProps<{ scenes?: ExplorerScene[] }>(), { scenes: () => [] })
+const emit = defineEmits<{ 'after-close': [] }>()
 const scene = defineModel<ExplorerScene | null>({ required: true })
 const viewer = ref<InstanceType<typeof SceneArtworkViewer> | null>(null)
 const displayedScene = ref(scene.value)
-watch(scene, value => { if (value) displayedScene.value = value }, { flush: 'sync' })
+const openingScene = ref(scene.value)
+watch([scene, () => props.scenes], ([value, items], previous) => {
+  if (openingScene.value) openingScene.value = items.find(item => item.id === openingScene.value?.id) ?? openingScene.value
+  if (!value) return
+  const current = items.find(item => item.id === value.id) ?? value
+  if (!previous?.[0] || openingScene.value?.id === value.id) openingScene.value = current
+  displayedScene.value = current
+}, { immediate: true, flush: 'sync' })
 const available = computed(() => {
-  const selected = displayedScene.value
-  return selected && !props.scenes.some(item => item.id === selected.id) ? [selected, ...props.scenes] : props.scenes
+  // An out-of-filter entry remains reachable after browsing the next scene.
+  const extras = [openingScene.value, displayedScene.value].filter((item, index, items): item is ExplorerScene =>
+    !!item && !props.scenes.some(scene => scene.id === item.id) && items.findIndex(scene => scene?.id === item.id) === index)
+  return extras.length ? [...extras, ...props.scenes] : props.scenes
 })
 const selectedId = computed({
   get: () => scene.value?.id ?? null,
@@ -36,7 +46,11 @@ const previews = computed(() => available.value.map(item => {
   return { id: item.id, title: item.title || '未命名场景', src: `/scene-showcase/images/${id}.jpg`,
     previewSrc: `/scene-showcase/thumbs/${id}.jpg` }
 }))
-function releaseStory() { if (!scene.value) displayedScene.value = null }
+function releaseStory() {
+  if (scene.value) return
+  displayedScene.value = null; openingScene.value = null
+  emit('after-close')
+}
 function capture(event: MouseEvent) {
   const card = (event.target as HTMLElement).closest<HTMLElement>('.sc, .inspiration-deck-image')
   viewer.value?.capture(card?.querySelector<HTMLImageElement>('img') ?? null)

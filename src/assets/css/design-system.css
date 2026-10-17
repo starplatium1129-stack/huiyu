@@ -527,15 +527,13 @@ body > *:has(+ .footer),
 }
 .nav-back:hover { @apply tw:text-accent; }
 
-.page-kicker,
-.pb-kicker {
+.page-kicker {
   @apply tw:flex tw:items-center tw:gap-[8px] tw:mb-[6px] tw:text-muted;
   font: 650 var(--fs-mono-sm) var(--font-mono);
   letter-spacing: 0.13em;
   @apply tw:uppercase;
 }
-.page-kicker::before,
-.pb-kicker::before {
+.page-kicker::before {
   content: "";
   @apply tw:w-[26px] tw:h-[6px] tw:rounded-pill;
   background: linear-gradient(90deg, var(--accent), var(--accent-hover));

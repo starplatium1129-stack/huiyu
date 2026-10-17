@@ -3,7 +3,7 @@
     <FluidTransition @before-leave="leave" @after-leave="finishClose">
       <div v-show="selectedId" ref="viewerEl" class="art-viewer scene-artwork-viewer"
         :class="{ 'info-open': infoOpen }" data-image-transition
-        role="dialog" aria-modal="true" :aria-hidden="!selectedId" aria-label="场景观赏模式"
+        role="dialog" aria-modal="true" aria-label="场景观赏模式"
         @keydown="navigate" @load.capture="enter">
         <template v-if="current">
           <ArtworkViewerStage :items="displayedItems" :index="displayedIndex" :active="!!selectedId" :original="original"
@@ -22,8 +22,10 @@
               <div class="viewer-kicker">SCENE / 场景</div>
               <button ref="infoClose" class="viewer-info-close" type="button" @click="closeInfo"><ArchiveIcon name="close" /><span>关闭信息</span></button>
             </header>
-            <h2 :id="titleId" class="viewer-title">{{ current.title }}</h2>
-            <slot name="info" :item="current" />
+            <div class="viewer-info-body">
+              <h2 :id="titleId" class="viewer-title">{{ current.title }}</h2>
+              <slot name="info" :item="current" />
+            </div>
           </aside>
         </template>
       </div>
@@ -109,7 +111,7 @@ watch(() => [selectedId.value, props.items] as const, ([id, items], previous) =>
   if (index < 0) { selectedId.value = null; return }
   if (!previous?.[0]) { original.value = false; infoOpen.value = false }
   displayedItems.value = items.slice(); displayedIndex.value = index
-  if (infoEl.value) infoEl.value.scrollTop = 0
+  if (id !== previous?.[0]) infoEl.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0)
   void enter()
 }, { immediate: true, flush: 'post' })
 useFocusTrap(viewerEl, () => !!selectedId.value, { initialFocus: closeButton, onEscape: () => { selectedId.value = null } })

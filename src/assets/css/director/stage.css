@@ -105,7 +105,7 @@
      是全引擎唯一进度源，Anima 场景模式不再黑盒等待。 */
   body:has(.pb.focus-mode) .nav,
   body:has(.pb.focus-mode) .site-footer,
-  .pb.focus-mode .nav-back, .pb.focus-mode .pb-header,
+  .pb.focus-mode .pb-header,
   .pb.focus-mode .col-left, .pb.focus-mode .col-right, .pb.focus-mode .history-wrap, .pb.focus-mode .collapsible,
   .pb.focus-mode .footer { @apply tw:hidden!; }
   .pb.focus-mode .api-status, .pb.focus-mode .utility-menu,

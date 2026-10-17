@@ -2,7 +2,9 @@
   <article class="gallery-shell gallery-page" ref="shellEl" :style="{ '--gallery-dock-height': `${selectionDockHeight}px` }">
     <header class="gallery-intro">
       <div class="gallery-heading-copy">
+        <p class="gallery-kicker"><ArchiveIcon name="image" />COLLECTION / 我的画集</p>
         <h1 class="gallery-title">我的作品</h1>
+        <p class="gallery-invitation">把心动留在画里，让故事慢慢成册。</p>
         <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
           <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
           <ArchiveIcon name="chevron-down" />
@@ -42,10 +44,9 @@
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? (trashLoading ? '读取中…' : trashError ? '数量待确认' : `${trashItems.length} 幅作品`) : countLabel }}</span>
       <div class="gallery-manage-controls" role="group" aria-label="管理作品">
-        <button v-if="!trashMode" ref="selectionToggle" class="gallery-filter gallery-select-toggle" type="button" :class="{ active: selectMode }" :aria-pressed="selectMode" @click="toggleSelectMode"><ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}</button>
+        <button v-if="!trashMode" ref="selectionToggle" class="gallery-filter gallery-select-toggle" type="button" :class="{ active: selectMode }" :aria-pressed="selectMode" :disabled="!selectMode && !visible.length" @click="toggleSelectMode"><ArchiveIcon name="pin" />{{ selectMode ? '退出选择' : '选择' }}</button>
         <button class="gallery-filter gallery-trash-toggle" type="button" :class="{ active: trashMode }" :aria-pressed="trashMode" @click="selectMode && toggleSelectMode(); toggleTrashMode()"><ArchiveIcon name="trash" />回收站{{ !trashLoading && !trashError && trashItems.length ? `（${trashItems.length}）` : '' }}</button>
       </div>
-      <span v-if="trashMode" class="gallery-toolbar-note">删除的作品保留 30 天，可随时恢复</span>
     </div>
 
     <div ref="selectionDock" class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined">
@@ -64,7 +65,7 @@
     <GalleryOrganization v-if="visitedPanels.organization" :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
     </div>
 
-    <CandidateCompare :open="compareOpen" :items="compareItems" @close="compareOpen = false" @changed="loadGalleryStorage" />
+    <CandidateCompare :open="compareOpen" :items="compareItems" @close="closeComparison" @changed="loadGalleryStorage" />
     <section aria-live="polite">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
       <GalleryTrashWall
@@ -172,7 +173,7 @@
               after-label="当前成片"
             />
           </div>
-          <PhotoSwipeStage v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="gestureViewer = false" />
+          <component :is="PhotoSwipeStage" v-else-if="gestureViewer && current" :items="visible" :index="displayedIndex" @change="viewerIndex >= 0 && openViewer($event)" @error="failGesture" />
         </template>
         <template #tools>
         <StudioTooltip v-if="hasComparableImage && viewerUrl" :content="compareMode ? '退出对比' : '开启对比滑块'">
@@ -199,7 +200,8 @@
             <ArchiveIcon name="close" /><span>关闭信息</span>
           </button>
         </header>
-        <h2 id="viewer-info-title" v-content-motion="viewerIndex < 0 ? false : displayedCurrent.id" class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
+        <div class="viewer-info-body">
+        <h2 id="viewer-info-title" tabindex="-1" v-content-motion="viewerIndex < 0 ? false : displayedCurrent.id" class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
         <div class="viewer-meta">
           {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }}
         </div>
@@ -230,9 +232,7 @@
           <div class="viewer-facts">
           <div class="viewer-fact" v-for="f in facts" :key="f.label">
             <small>{{ f.label }}</small>
-            <StudioTooltip :content="f.value || '—'">
-              <strong>{{ f.value || '—' }}</strong>
-            </StudioTooltip>
+            <strong>{{ f.value || '—' }}</strong>
           </div>
           </div>
           <div class="viewer-prompt">{{ displayedCurrent.prompt || '未保存 Prompt' }}</div>
@@ -242,7 +242,9 @@
           <StudioDisclosureSummary><span class="viewer-disclosure-copy">更多操作<small>重跑、复制与管理</small></span></StudioDisclosureSummary>
           <div class="viewer-actions" data-disclosure-content>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
-          <button class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" @click="gestureViewer = !gestureViewer">{{ gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
+          <button data-gesture-toggle class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" :aria-busy="gestureLoading" @click="toggleGesture">{{ gestureLoading ? '取消手势加载' : gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
+          <p v-if="gestureLoading" class="gallery-gesture-feedback" role="status">正在准备手势观画…</p>
+          <div v-if="gestureError" class="gallery-gesture-feedback"><span role="alert">手势观画暂未加载。</span><button class="btn btn-ghost btn-sm" type="button" @click="toggleGesture">重新读取</button></div>
           <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :action="copyPrompt" :content-key="String(displayedCurrent.id)" :disabled="!displayedCurrent.prompt" />
           <button v-if="pendingDeleteId !== displayedCurrent.id" class="btn btn-ghost btn-danger" type="button"
             @click="pendingDeleteId = displayedCurrent.id">删除这幅</button>
@@ -254,6 +256,7 @@
           </template>
           </div>
         </details>
+        </div>
       </aside>
         </div>
       </FluidTransition>
@@ -278,16 +281,42 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
-import { defineAsyncComponent, nextTick, onActivated, onDeactivated, reactive, ref, watch } from 'vue'
+import { defineAsyncComponent, nextTick, onActivated, onDeactivated, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { useElementSize } from '@vueuse/core'
 import { artworkTags } from '@/composables/gallery/artworkTags'
-const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
+const PhotoSwipeStage = shallowRef<typeof import('@/components/gallery/PhotoSwipeStage.vue')['default'] | null>(null)
 const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
 const gestureViewer = ref(false)
+const gestureLoading = ref(false), gestureError = ref(false)
+let gestureRequest = 0
+function cancelGesture() { gestureRequest++; gestureViewer.value = false; gestureLoading.value = false; gestureError.value = false }
+async function failGesture() {
+  const focused = document.activeElement, owned = focused?.closest('.photoswipe-stage')
+  cancelGesture(); gestureError.value = true
+  const request = gestureRequest
+  await nextTick()
+  if (owned && request === gestureRequest && viewerIndex.value >= 0 && document.activeElement === document.body)
+    closeBtn.value?.focus({ preventScroll: true })
+}
+async function toggleGesture() {
+  if (gestureViewer.value || gestureLoading.value) { cancelGesture(); return }
+  if (viewerIndex.value < 0 || !current.value) return
+  const request = ++gestureRequest, id = current.value.id
+  // A retry removes its own button; the mode toggle survives every loading state.
+  if (gestureError.value) viewerEl.value?.querySelector<HTMLElement>('[data-gesture-toggle]')?.focus({ preventScroll: true })
+  gestureLoading.value = true; gestureError.value = false; compareMode.value = false
+  const currentRequest = () => request === gestureRequest && viewerIndex.value >= 0 && current.value?.id === id
+  try {
+    const component = PhotoSwipeStage.value || (await import('@/components/gallery/PhotoSwipeStage.vue')).default
+    if (currentRequest()) { PhotoSwipeStage.value = component; gestureViewer.value = true }
+  } catch { if (currentRequest()) gestureError.value = true }
+  finally { if (currentRequest()) gestureLoading.value = false }
+}
+onScopeDispose(cancelGesture)
 const originalViewer = ref(false)
 import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
 const GalleryOrganization = defineAsyncComponent(() => import('@/components/gallery/GalleryOrganization.vue'))
-const GalleryTrashWall = defineAsyncComponent(() => import('@/components/gallery/GalleryTrashWall.vue'))
+import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
 import GalleryAlbumOverview from '@/components/gallery/GalleryAlbumOverview.vue'
 import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEditor.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
@@ -302,7 +331,7 @@ import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrig
 const selectionDock = ref<HTMLElement | null>(null), dockActive = ref(true)
 const { height: selectionDockHeight } = useElementSize(() => dockActive.value ? selectionDock.value : null, { width: 0, height: 140 }, { box: 'border-box' })
 onActivated(() => { dockActive.value = true })
-onDeactivated(() => { dockActive.value = false })
+onDeactivated(() => { dockActive.value = false; cancelGesture() })
 const workspace = useGalleryWorkspace()
 const {
 tagFilter, tagOptions, characterFilter, collectionPreviewItems,
@@ -323,7 +352,7 @@ allVisibleSelected,
 bulkDeleting,
 bulkDelete,
 compareOpen,
-compareItems,
+compareItems, closeComparison,
 loadGalleryStorage,
 trashBusy,
 restoreTrashItem,
@@ -372,10 +401,12 @@ downloadCurrent,
 copyPrompt
 } = workspace
 function toggleOriginalViewer() {
-  originalViewer.value = !originalViewer.value; gestureViewer.value = false; compareMode.value = false
+  originalViewer.value = !originalViewer.value; cancelGesture(); compareMode.value = false
   void nextTick(() => viewerEl.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll:true }))
 }
-watch(viewerIndex, (index, previous) => { if (index >= 0 && previous < 0) { originalViewer.value = false; gestureViewer.value = false } })
+watch(viewerIndex, (index, previous) => { if (index < 0 || previous < 0) cancelGesture(); if (index >= 0 && previous < 0) originalViewer.value = false }, { flush:'sync' })
+watch(() => current.value?.id, () => { if (gestureLoading.value || gestureError.value) cancelGesture() }, { flush:'sync' })
+watch(compareMode, value => { if (value) cancelGesture() }, { flush:'sync' })
 const imageOrigin = useGalleryImageOrigin({ viewerEl, shellEl, viewerIndex, viewerUrl, current })
 function openFromCard(index: number, event: MouseEvent) {
   imageOrigin.capture(event)
@@ -409,7 +440,7 @@ const selectionToggle = ref<HTMLButtonElement | null>(null)
 async function finishSelection() {
   toggleSelectMode()
   await nextTick()
-  selectionToggle.value?.focus({ preventScroll: true })
+  ;(selectionToggle.value?.disabled ? imageHeading.value : selectionToggle.value)?.focus({ preventScroll: true })
 }
 async function filterByTag(tag: string) {
   closeViewer(); tagFilter.value = tag
@@ -418,6 +449,16 @@ async function filterByTag(tag: string) {
 
 const displayedCurrent = ref(current.value)
 const displayedIndex = ref(viewerIndex.value)
+watch(() => current.value?.id, async (id, previous) => {
+  if (id == null || id === previous || viewerIndex.value < 0) return
+  const focused = infoEl.value?.contains(document.activeElement) ? document.activeElement : null
+  await nextTick()
+  if (current.value?.id !== id || viewerIndex.value < 0 || !infoEl.value?.isConnected) return
+  const body = infoEl.value?.querySelector<HTMLElement>('.viewer-info-body')
+  body?.scrollTo(0, 0)
+  if (focused && !focused.isConnected && !infoDrawerHidden.value && viewerIndex.value >= 0)
+    body?.querySelector<HTMLElement>('.viewer-title')?.focus({ preventScroll: true })
+})
 watch([current, viewerIndex], ([value, index]) => {
   if (value && index >= 0) {
     displayedCurrent.value = value
@@ -438,3 +479,7 @@ function finishViewerClose() {
 
 
 <style src="@/assets/css/gallery-viewer.css"></style>
+
+<style scoped>
+.gallery-gesture-feedback { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); flex-basis:100%; margin:0; color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
+</style>

@@ -9,10 +9,12 @@
       </ArtworkViewerStage>
       <aside class="viewer-info" :inert="narrow && !infoOpen" :aria-hidden="narrow && !infoOpen ? true : undefined">
         <header class="viewer-info-header"><span class="viewer-kicker">批量作品</span><button class="viewer-info-close" type="button" @click="closeInfo"><ArchiveIcon name="close" />关闭信息</button></header>
+        <div class="viewer-info-body">
         <h2 class="viewer-title">{{ current?.sceneTitle }}</h2>
         <p class="viewer-meta">{{ current?.subtitle }}</p>
         <p v-if="imageError" class="viewer-meta" role="status">{{ imageError }}</p>
         <dl v-if="current" class="viewer-record"><div><dt>候选</dt><dd>{{ current.variant + 1 }}</dd></div><div><dt>Seed</dt><dd>{{ current.seed >= 0 ? current.seed : '随机' }}</dd></div></dl>
+        </div>
       </aside>
     </dialog>
   </Teleport>
@@ -55,6 +57,7 @@ function select(value: number) {
   origin.cancel(); preview.value = ''; selected.value = items.value[value].id; emit('select', selected.value)
 }
 watch(() => props.selectedId, id => { selected.value = id })
+watch(selected, () => { dialog.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0) }, { flush: 'post' })
 async function toggleOriginal() {
   origin.cancel(); original.value = !original.value
   await nextTick(); dialog.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll: true })

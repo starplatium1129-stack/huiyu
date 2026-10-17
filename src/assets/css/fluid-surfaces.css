@@ -48,6 +48,7 @@ html :is(.candidate-compare > header, .character-browser-heading, .pb-compare-he
   @apply tw:border-soft;
 }
 html [data-fluid-leaving] { @apply tw:pointer-events-none; }
+html[data-reduced-motion="true"],
 html[data-reduced-motion="true"] *,
 html[data-reduced-motion="true"] *::before,
 html[data-reduced-motion="true"] *::after {

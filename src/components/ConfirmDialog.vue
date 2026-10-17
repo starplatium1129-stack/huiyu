@@ -4,7 +4,6 @@
       <div
         v-show="state.visible"
         :inert="!state.visible"
-        :aria-hidden="!state.visible"
         class="confirm-overlay"
         @pointerdown.self="cancel"
       >
@@ -47,11 +46,13 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, ref, shallowRef, useId, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 
 const state = useConfirmState()
+const route = useRoute()
 const teleportTarget = shallowRef<string | HTMLElement>('body')
 // A body portal is inert below a native showModal top layer. Capture the
 // requesting dialog before its action button becomes disabled or loses focus.
@@ -68,7 +69,9 @@ function cancel() { resolveConfirm(false) }
 function ok() { resolveConfirm(true) }
 
 // 与下层弹窗共用焦点栈和滚动锁；破坏性操作默认聚焦取消。
-useFocusTrap(panel, () => state.value.visible, { onEscape: cancel, initialFocus })
+const { returnFocus } = useFocusTrap(panel, () => state.value.visible, { onEscape: cancel, initialFocus })
+// Only a committed page change cancels intent; leave guards keep their own confirmation.
+watch(() => route.path, () => { returnFocus.value = null; cancel() }, { flush: 'sync' })
 
 // 新请求可替换仍显示的确认框；每次都重新选择安全默认项。
 watch(state, (current) => {
@@ -76,9 +79,7 @@ watch(state, (current) => {
 }, { flush: 'post' })
 
 // Enter 交给浏览器激活当前焦点按钮；卸载则安全取消未完成的请求。
-onUnmounted(() => {
-  cancel()
-})
+onUnmounted(cancel)
 </script>
 
 <style scoped>

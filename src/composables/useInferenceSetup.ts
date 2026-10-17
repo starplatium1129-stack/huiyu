@@ -20,12 +20,12 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const inspection = shallowRef<InferenceModelInspection | null>(null), inspecting = ref(false)
   const preparedPaths = shallowRef<PreparedInferencePaths | null>(null)
   const operation = shallowRef<InferenceSetupOperation | null>(null)
-  const busy = ref(false), checking = ref(false), activating = ref(false), operationUncertain = ref(false)
+  const busy = ref(false), checking = ref(false), activating = ref(false), restarting = ref(false), operationUncertain = ref(false)
   const workspaceOpen = ref(false), workspaceDraft = ref(''), workspaceSaving = ref(false), workspacePending = ref(false)
   const workspaceButton = ref<HTMLElement | null>(null), workspaceError = ref('')
   const message = ref(''), error = ref(''), cancelState = ref<'idle' | 'pending' | 'accepted' | 'failed'>('idle')
   const hasRunningOperation = computed(() => operation.value?.status === 'running')
-  const locked = computed(() => blocked.value || busy.value || checking.value || inspecting.value || activating.value || workspaceSaving.value || operationUncertain.value)
+  const locked = computed(() => blocked.value || busy.value || checking.value || inspecting.value || activating.value || restarting.value || workspaceSaving.value || operationUncertain.value)
   const currentPlan = computed(() => !!plan.value && plan.value.freeBytes !== null && !workspacePending.value && plan.value.workspacePath === workspacePath.value)
   const selectedModel = computed(() => plan.value?.models.find(model => model.id === modelId.value))
   const runtimeSpaceEnough = computed(() => !!plan.value && plan.value.freeBytes !== null && plan.value.freeBytes >= plan.value.runtime.requiredBytes)
@@ -275,8 +275,14 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   }
   async function restart() {
     if (!desktop?.restartForSetup || locked.value || disposed) return
-    try { await flushProfileWrites(); await desktop.restartForSetup() }
+    restarting.value = true; error.value = ''
+    try {
+      await flushProfileWrites()
+      if (disposed) return
+      await desktop.restartForSetup()
+    }
     catch (cause) { if (!disposed) error.value = '重启未完成，请完全退出并重新打开绘遇。' + causeText(cause) }
+    finally { if (!disposed) restarting.value = false }
   }
   // Aborting an activation observer only detaches the client; a submitted save
   // may still complete. The next mount must read the plan and active engine.
@@ -286,7 +292,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   })
   return { desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, runtimeSpaceEnough, modelSpaceEnough, canInstall, canDownload, canActivate,
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
-    operation, busy, checking, activating, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
+    operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
     workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
     initialize, refreshPlan, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
     openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart }

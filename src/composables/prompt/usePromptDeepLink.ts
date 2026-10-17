@@ -50,11 +50,11 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     return fields.length ? JSON.stringify(fields) : ''
   }
 
-  async function applyDeepLink(q: Record<string, unknown>): Promise<boolean> {
+  async function applyDeepLink(q: Record<string, unknown>, stillCurrent: () => boolean = () => true): Promise<boolean> {
     const request = ++historyRequest
-    if (disposed || (!historyKey(q) && !contextKey(q))) return false
+    if (disposed || !stillCurrent() || (!historyKey(q) && !contextKey(q))) return false
     const query = { ...q }
-    const isCurrent = () => !disposed && request === historyRequest
+    const isCurrent = () => !disposed && request === historyRequest && stillCurrent()
     if (typeof query.popular === 'string') await pb.loadPopularCharacter(query.popular)
     if (!isCurrent()) return false
     const { applyPromptDeepLink } = await import('./promptDeepLinkActions')

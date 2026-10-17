@@ -16,6 +16,7 @@
 .art-viewer .viewer-section { @apply tw:mt-s-4; }
 .art-viewer .viewer-section h3 { margin:0 0 var(--s-2); @apply tw:text-secondary tw:text-label-sm tw:font-semibold; }
 .art-viewer .viewer-story { overflow-wrap:anywhere; }
+.art-viewer .viewer-actions + .viewer-story { margin-block:var(--s-4); }
 .art-viewer .viewer-tags { @apply tw:flex tw:flex-wrap tw:gap-s-2; margin-block:var(--s-3); }
 .art-viewer .viewer-tags button { @apply tw:max-w-full; overflow-wrap:anywhere; border:0; @apply tw:rounded-pill; background:var(--accent-soft); @apply tw:text-accent; padding:var(--s-2) var(--s-3); font:inherit; @apply tw:text-label-xs tw:cursor-pointer; }
 .art-viewer .viewer-tags button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
@@ -66,8 +67,9 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
 /* 审计修复: .24 远低于 UI 组件 3:1 门槛 */
 .art-viewer .viewer-nav:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-default; }
 .art-viewer .viewer-position { @apply tw:absolute tw:left-[50%] tw:top-[30px]; transform:translateX(-50%); @apply tw:text-secondary; font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em; }
-.art-viewer .viewer-info { @apply tw:box-border tw:min-w-0 tw:overflow-y-auto; padding:var(--s-5) var(--s-5); border-left:1px solid var(--border-soft); background:var(--bg-surface); overscroll-behavior:contain; }
-.art-viewer .viewer-info-header { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3; }
+.art-viewer .viewer-info { @apply tw:box-border tw:min-w-0 tw:min-h-0 tw:flex tw:flex-col tw:overflow-hidden; border-left:1px solid var(--border-soft); background:var(--bg-surface); }
+.art-viewer .viewer-info-header { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; flex-shrink:0; padding:var(--s-5) var(--s-5) var(--s-2); }
+.art-viewer .viewer-info-body { min-height:0; overflow-y:auto; padding:0 var(--s-5) var(--s-5); overscroll-behavior:contain; scrollbar-gutter:stable; }
 .art-viewer .viewer-info-close { @apply tw:hidden tw:items-center tw:gap-[6px] tw:min-h-[40px]; padding:0 12px; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; }
 .art-viewer .viewer-info-close:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .art-viewer .viewer-info-close .archive-icon { @apply tw:w-[16px] tw:h-[16px]; }
@@ -76,7 +78,7 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
 .art-viewer .viewer-meta { @apply tw:text-secondary tw:text-label-xs tw:leading-body; overflow-wrap:anywhere; }
 .art-viewer .viewer-facts { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-2 tw:mb-s-3; }
 .art-viewer .viewer-fact { @apply tw:min-w-0; padding-block:var(--s-2); border-bottom:1px solid var(--border-soft); }
-.art-viewer .viewer-fact small,.art-viewer .viewer-fact strong { @apply tw:block tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
+.art-viewer .viewer-fact small,.art-viewer .viewer-fact strong { @apply tw:block; overflow-wrap:anywhere; }
 .art-viewer .viewer-fact small { @apply tw:text-secondary tw:text-mono-xs tw:uppercase; letter-spacing:.08em; }
 .art-viewer .viewer-fact strong { @apply tw:mt-s-1 tw:text-primary tw:text-label-xs; }
 .art-viewer .viewer-details { margin:0 0 var(--s-5); border-top:1px solid var(--border-soft); }
@@ -97,9 +99,9 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
 }
 @media (max-width:600px) {
   .art-viewer .viewer-stage { padding:58px 38px 76px; }
-  .art-viewer .viewer-info { width:min(100%,360px); padding:var(--s-4) var(--s-3) var(--s-5); }
-  .art-viewer .viewer-info-header { @apply tw:items-stretch tw:flex-col; }
-  .art-viewer .viewer-info-close { @apply tw:self-start; }
+  .art-viewer .viewer-info { width:min(100%,360px); }
+  .art-viewer .viewer-info-header { padding:var(--s-4) var(--s-3) var(--s-2); }
+  .art-viewer .viewer-info-body { padding:0 var(--s-3) var(--s-5); }
   .art-viewer .viewer-nav { top:calc(50% - 28px); @apply tw:w-[36px] tw:h-[56px]; }
   .art-viewer .viewer-prev { @apply tw:left-s-2; }
   .art-viewer .viewer-next { @apply tw:right-s-2; }

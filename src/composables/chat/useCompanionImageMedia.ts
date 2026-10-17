@@ -5,7 +5,7 @@ import { fetchRuntimeResult, isRuntimeResultPath } from '@/api/runtimeTasks'
 import { blobThumbDataUrl } from '@/utils/imageThumb'
 import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
 
-export const companionImageKey = (image: CompanionChatImage) => image.imageId || image.path
+export const companionImageKey = (image: CompanionChatImage) => JSON.stringify([image.imageId || '', image.path])
 const mediaId = (image: CompanionChatImage) => image.imageId || (/^(?:image-|img_|task-)/.test(image.path) ? image.path : '')
 function mediaSession() {
   const state = getDesktopRuntime(), runtime = state.bootstrap?.runtime, workspace = runtime?.workspace
@@ -21,6 +21,8 @@ export function useCompanionImageMedia(isActive: () => boolean, onSessionChange:
   const originalUrl = ref(''), originalLoading = ref(false), originalError = ref('')
   const rejectedThumbnails = new Set<string>()
   let thumbnails: AbortController | null = null, original: AbortController | null = null
+  let previewRepository = artworkRepository
+  let thumbnailImages: CompanionChatImage[] = [], thumbnailKeys = new Set<string>()
   let disposed = false
 
   async function readOriginal(image: CompanionChatImage, signal: AbortSignal, repository: ArtworkRepository) {
@@ -38,17 +40,30 @@ export function useCompanionImageMedia(isActive: () => boolean, onSessionChange:
   function releaseThumbnails() {
     thumbnails?.abort(); thumbnails = null
     sources.value = {}; failures.value = {}; thumbnailsLoading.value = false
+    thumbnailImages = []; thumbnailKeys.clear()
   }
-  async function loadThumbnails(images: readonly CompanionChatImage[]): Promise<void> {
-    releaseThumbnails()
+  async function loadThumbnails(images: readonly CompanionChatImage[], retry = false): Promise<void> {
     if (disposed || !isActive()) return
+    if (previewRepository !== artworkRepository) { releaseThumbnails(); rejectedThumbnails.clear(); previewRepository = artworkRepository }
+    const list = [...new Map(images.map(image => [companionImageKey(image), { ...image }])).values()]
+    const keys = new Set(list.map(companionImageKey))
+    thumbnailImages = list
+    sources.value = Object.fromEntries(Object.entries(sources.value).filter(([key]) => keys.has(key)))
+    failures.value = Object.fromEntries(Object.entries(failures.value).filter(([key]) => keys.has(key)))
+    for (const key of rejectedThumbnails) if (!keys.has(key)) rejectedThumbnails.delete(key)
+    const appendOnly = [...thumbnailKeys].every(key => keys.has(key))
+    thumbnailKeys = keys
+    if (!retry && thumbnails && appendOnly) return
+    thumbnails?.abort(); thumbnails = null; thumbnailsLoading.value = false
+    const pending = list.filter(image => !sources.value[companionImageKey(image)] && (retry || !failures.value[companionImageKey(image)]))
+    if (!pending.length) return
     const request = new AbortController(), repository = artworkRepository, session = mediaSession()
     thumbnails = request; thumbnailsLoading.value = true
     const current = () => !disposed && isActive() && thumbnails === request && !request.signal.aborted
       && repository === artworkRepository && session === mediaSession()
     try {
       // Serial fallback decoding avoids requesting every full attachment in a message at once.
-      for (const image of images.map(item => ({ ...item }))) {
+      for (const image of pending) {
         if (!current()) return
         const key = companionImageKey(image), id = mediaId(image)
         try {
@@ -60,7 +75,10 @@ export function useCompanionImageMedia(isActive: () => boolean, onSessionChange:
             thumbnail = await blobThumbDataUrl(blob)
             if (!current()) return
           }
-          if (thumbnail?.startsWith('data:image/')) sources.value = { ...sources.value, [key]: thumbnail }
+          if (thumbnail?.startsWith('data:image/')) {
+            sources.value = { ...sources.value, [key]: thumbnail }
+            const remaining = { ...failures.value }; delete remaining[key]; failures.value = remaining
+          }
           else failures.value = { ...failures.value, [key]: true }
         } catch {
           if (current()) failures.value = { ...failures.value, [key]: true }
@@ -69,10 +87,10 @@ export function useCompanionImageMedia(isActive: () => boolean, onSessionChange:
     } finally {
       if (thumbnails === request) {
         thumbnails = null; thumbnailsLoading.value = false
-        // The first ready publication can precede platform adapter activation.
-        // Discard its old response, then read through the newly selected authority.
+        // Appended images wait for the current serial reader; successful entries stay
+        // visible. A replacement authority clears its own old previews on entry.
         if (!disposed && isActive() && !request.signal.aborted
-          && repository !== artworkRepository && session === mediaSession()) await loadThumbnails(images)
+          && session === mediaSession()) await loadThumbnails(thumbnailImages)
       }
     }
   }

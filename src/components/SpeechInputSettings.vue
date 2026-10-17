@@ -4,7 +4,7 @@
       <div><span>SPEECH INPUT</span><h3 :id="titleId">语音输入</h3></div>
       <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭语音输入设置" @click="close"><ArchiveIcon name="close" /></button>
     </header>
-    <div class="speech-settings-body">
+    <div ref="settingsBody" class="speech-settings-body" role="region" aria-label="语音配置" tabindex="-1">
       <p class="speech-storage-note"><ArchiveIcon name="lock" />配置保存在本机</p>
       <template v-if="loadError">
         <p class="speech-test-status" data-state="fail" role="status" aria-label="配置读取状态">
@@ -107,6 +107,7 @@ import { probeSpeechService } from '@/utils/voiceApi'
 
 const emit = defineEmits<{ save: [config: SpeechInputConfig]; close: [] }>()
 const titleId = useId()
+const settingsBody = ref<HTMLElement | null>(null)
 let disposed = false
 onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_SPEECH_SETTINGS') }))
 onUnmounted(() => { disposed = true; invalidateProbe() })
@@ -126,8 +127,9 @@ const wakeWordsInput = ref(draft.value.wakeWords.join('，'))
 const endWordsInput = ref(draft.value.endWords.join('，'))
 watch([draft, wakeWordsInput, endWordsInput], invalidateProbe, { deep: true, flush: 'sync' })
 
-function retryLoad(): void {
+function retryLoad(event: MouseEvent): void {
   if (disposed) return
+  if (event.currentTarget === document.activeElement) settingsBody.value?.focus({ preventScroll: true })
   reload()
   wakeWordsInput.value = draft.value.wakeWords.join('，')
   endWordsInput.value = draft.value.endWords.join('，')

@@ -10,7 +10,7 @@ const open = computed({
   get: () => route.path === '/gallery' && route.query.panel === 'backup',
   set: value => {
     // KeepAlive closes the popover after navigation; it must not replace the destination route.
-    if (route.path === '/gallery') void router.replace({ query: { ...route.query, panel: value ? 'backup' : undefined } })
+    if (route.path === '/gallery') void router.replace({ query: { ...route.query, panel: value ? 'backup' : undefined }, hash: route.hash })
   },
 })
 </script>

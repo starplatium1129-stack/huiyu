@@ -7,6 +7,7 @@
           <h2 id="generated-scene-title">{{ savedId ? '场景已加入你的场景库' : '把这张图保存为场景' }}</h2>
           <button class="btn btn-ghost btn-sm" type="button" :disabled="saving" aria-label="关闭保存场景窗口" @click="close"><ArchiveIcon name="close" /></button>
         </header>
+        <div class="generated-scene-body">
         <div class="generated-scene-layout">
           <img class="generated-scene-preview" :src="source.previewUrl" alt="将要保存为场景的成片" />
           <div v-content-motion:fade="savedId || false" class="generated-scene-fields">
@@ -33,6 +34,7 @@
         <p v-if="error" class="generated-scene-error" role="alert">{{ error }}</p>
         <p v-if="imageError" class="generated-scene-error" role="alert">{{ imageError }}</p>
         <div v-if="preview && !savedId" class="generated-scene-review" role="status">检查完成：新增 1 个{{ popular ? '角色场景' : '场景' }}，不会修改已有场景。保存后可在内容维护中找到。结构检查不代表已验证再次出图效果。</div>
+        </div>
         <footer class="modal-actions">
           <button v-if="!baseline && !loading && !savedId" class="btn btn-ghost" type="button" @click="load">重新读取</button>
           <button v-if="imageError" class="btn btn-ghost" type="button" :disabled="saving" @click="saveImage">重试保存样张</button>
@@ -93,6 +95,13 @@ const compositionOptions = [{ value: 'single', label: '单人画面' }, { value:
 </script>
 
 <style scoped>
+.overlay { inset:var(--desktop-chrome-height,0px) 0 0; }
+.generated-scene-dialog { display:flex; flex-direction:column; max-height:min(84dvh,720px,calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4))); min-width:0; padding:0; overflow:hidden; }
+.generated-scene-dialog > .modal-head { flex:none; margin:0; padding:var(--s-4) var(--s-5); border-bottom:1px solid var(--border-soft); }
+.modal-head h2 { min-width:0; overflow-wrap:anywhere; }
+.modal-head > button { flex:none; }
+.generated-scene-body { min-height:0; padding:var(--s-5); overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable; scroll-padding-block:var(--s-3); }
+.generated-scene-dialog > .modal-actions { flex:none; margin:0; padding:var(--s-3) var(--s-5); border-top:1px solid var(--border-soft); }
 .generated-scene-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: var(--s-5); }
 .generated-scene-preview { width: 100%; max-height: 360px; object-fit: contain; border-radius: var(--radius-md); background: var(--bg-deep); }
 .generated-scene-fields { display: grid; gap: var(--s-3); min-width: 0; }

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
+import { useThemeIllustration } from '@/composables/useThemeIllustration'
+
+const createArt = useThemeIllustration(createOriginal, 'draw')
 
 const steps = [
   { title: '浏览灵感场景', icon: 'spark' as const, paragraphs: ['在「灵感」中浏览故事、角色与画面设定，也可以按关键词搜索。想先了解构图与风格，可以翻看「参考画册」。'], links: [{ to: '/scene-explorer', label: '浏览灵感' }, { to: '/showcase', label: '参考画册' }] },
@@ -14,9 +18,12 @@ const steps = [
   <article class="page page-narrow guide-page" aria-labelledby="guide-title">
     <RouterLink class="nav-back" to="/">回到首页</RouterLink>
     <header class="page-header">
-      <p class="page-kicker">使用指南</p>
-      <h1 id="guide-title" class="page-title">开始你的第一张 CG</h1>
-      <p class="page-subtitle">选场景、确认画面、生成并保存。按自己的节奏开始创作。</p>
+      <div>
+        <p class="page-kicker">画室 / 使用指南</p>
+        <h1 id="guide-title" class="page-title">开始你的第一张 CG</h1>
+        <p class="page-subtitle">选场景、确认画面、生成并保存。按自己的节奏开始创作。</p>
+      </div>
+      <img class="guide-cover-art" :src="createArt" alt="" width="512" height="512" decoding="async" draggable="false" />
     </header>
 
     <section class="guide-preparation" data-route-arrive aria-labelledby="guide-preparation-title">
@@ -44,7 +51,9 @@ const steps = [
 
 <style scoped>
 .guide-page { --page-max:860px; --guide-duration:var(--motion-route); --guide-lift:-4px; --guide-tilt:-8deg; }
-.page-header { margin-bottom:var(--s-5); }
+.guide-page .page-header { display:grid; grid-template-columns:minmax(0,1fr) 144px; align-items:center; gap:var(--s-5); padding:var(--s-5) 0; margin-bottom:var(--s-5); text-align:left; }
+.guide-page .page-title { margin:var(--s-2) 0 0; font:600 clamp(26px,2.6vw,36px)/var(--lh-tight) var(--font-serif); letter-spacing:-.02em; }
+.guide-cover-art { display:block; width:144px; height:144px; object-fit:contain; pointer-events:none; }
 .guide-preparation { display:grid; grid-template-columns:auto minmax(0,1fr); align-items:start; gap:var(--s-4); padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .guide-preparation-icon,.guide-step-icon { display:grid; place-items:center; flex:none; width:40px; height:40px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); color:var(--accent); }
 .guide-preparation-icon .archive-icon,.guide-step-icon .archive-icon { width:20px; height:20px; }
@@ -54,9 +63,10 @@ const steps = [
 .guide-steps { display:grid; gap:var(--s-4); margin:var(--s-5) 0 0; padding:0; list-style:none; }
 .guide-step { position:relative; display:grid; grid-template-columns:40px minmax(0,1fr); align-items:start; gap:var(--s-4); }
 .guide-step:not(:last-child)::before { content:''; position:absolute; left:19px; top:48px; bottom:calc(-1 * var(--s-4)); width:1px; background:var(--border-soft); }
-.guide-step-number { display:grid; place-items:center; width:40px; height:40px; margin-top:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--accent); font:500 var(--fs-label)/1 var(--font-mono); }
+.guide-step-number { display:grid; place-items:center; width:40px; height:40px; margin-top:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--accent); font:500 var(--fs-body)/1 var(--font-serif); }
 .guide-step-card { position:relative; isolation:isolate; min-width:0; padding:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .guide-step-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); }
+.guide-step-heading h2 { font-family:var(--font-serif); }
 .guide-step-icon { width:32px; height:32px; background:var(--accent-soft); border-color:transparent; transition:transform var(--guide-duration) var(--spring-soft); }
 .guide-step-card p + p { margin-top:var(--s-2); }
 .guide-links { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-4); }
@@ -65,6 +75,8 @@ const steps = [
 .guide-link-arrow { width:16px; height:16px; transform:rotate(-90deg); }
 @media (hover:hover) and (pointer:fine) { .guide-step-card:hover:not(:focus-within) .guide-step-icon { transform:translateY(var(--guide-lift)) rotate(var(--guide-tilt)); } }
 @media (max-width:768px) {
+  .guide-page .page-header { grid-template-columns:minmax(0,1fr) 88px; gap:var(--s-3); padding:var(--s-4) 0; }
+  .guide-cover-art { width:88px; height:88px; }
   .guide-step { gap:var(--s-3); grid-template-columns:32px minmax(0,1fr); }
   .guide-step-number { width:32px; height:32px; }
   .guide-step:not(:last-child)::before { left:15px; top:56px; }

@@ -1,7 +1,7 @@
-import { onBeforeUnmount, watch, type Ref } from 'vue'
+import { onActivated, onBeforeUnmount, onDeactivated, watch, type Ref } from 'vue'
 import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
-import type { ReferenceCard } from './useReferenceCards'
+import type { ReferenceCard, useReferenceCards } from './useReferenceCards'
 import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
@@ -16,8 +16,8 @@ interface ShotDraftDeps {
   batchError: Ref<string>
   getShotSubmission: (shot: ShotDraft) => ShotSubmissionRecord | undefined
   restoreShotSubmission: (shot: ShotDraft, submission: ShotSubmissionRecord | undefined) => void
-  selectCardCharacter: (id: string, index?: number, outfit?: string) => Promise<boolean>
-  retryPendingFrames: () => Promise<{ fixed: number; remaining: number }>
+  selectCardCharacter: ReturnType<typeof useReferenceCards>['selectCardCharacter']
+  retryPendingFrames: () => Promise<{ fixed: number; remaining: number } | null>
 }
 
 export function useShotDraft(deps: ShotDraftDeps) {
@@ -28,6 +28,8 @@ let restoringDraft = false
 let shotsDraftTimer = 0
 let saveFailed = false
 let disposed = false
+let active = true, framesPending = false
+let frameRestore: Promise<void> | null = null
 const submissionTokens = new WeakMap<ShotDraft, string>()
 let scenarioImportReceipts: string[] = []
 
@@ -118,7 +120,7 @@ watch(
   { deep: true },
 )
 
-/** 草稿水合：角色与服装资料恢复→ 首帧重挂载 → 身份锚点以草稿为准。 */
+/** 先同步水合可编辑草稿；补读角色资料不覆盖身份描述，再重挂首帧。 */
 async function restoreShotsDraft() {
   const draft = videoStore.shotsDraft
   scenarioImportReceipts = Array.isArray(draft?.scenarioImportReceipts)
@@ -130,6 +132,7 @@ async function restoreShotsDraft() {
     if (draft.quality === 'fast' || draft.quality === 'standard' || draft.quality === 'fine') quality.value = draft.quality
     if (draft.steps === 4 || draft.steps === 8) steps.value = draft.steps
     linkLastFrame.value = draft.linkLastFrame !== false
+    identityCard.value = draft.identityCard
     if (draft.cards.length) {
       referenceCards.value = draft.cards.map(card => ({
         label: card.label,
@@ -165,19 +168,35 @@ async function restoreShotsDraft() {
     restoringDraft = false
   }
   // 从内容目录恢复角色和服装；参考图片不再从固定图库自动装配。
-  for (const [index, card] of referenceCards.value.entries()) {
-    if (card.characterId) await selectCardCharacter(card.characterId, index, card.outfitId || undefined)
-  }
-  // 身份锚点以草稿为准（用户可能手改过），卡装配的合并结果不覆盖它。
-  if (draft.identityCard) identityCard.value = draft.identityCard
-  // 首帧重挂载：失效图保留镜头文本并明示，可逐镜重试（F1 验收第 3 条）。
-  const { remaining } = await retryPendingFrames()
-  if (remaining) {
-    batchError.value = `${remaining} 张首帧暂未挂载：镜头文本与图片引用已保留，可在镜头上重试或重新上传`
-  }
+  // 同时启动水合，避免等前一卡读完才重置用户已编辑的后一张卡。
+  await Promise.all(referenceCards.value.map((card, index) => card.characterId
+    ? selectCardCharacter(card.characterId, index, card.outfitId || undefined, undefined, { preserveIdentity: true })
+    : false))
+  if (disposed) return
+  framesPending = true
+  await resumeDraftFrames()
 }
 
+function resumeDraftFrames(): Promise<void> | undefined {
+  if (disposed || !active || !framesPending || frameRestore) return frameRestore ?? undefined
+  let interrupted = false
+  frameRestore = (async () => {
+    const outcome = await retryPendingFrames()
+    interrupted = outcome === null
+    if (disposed || !active || !outcome) return
+    framesPending = false
+    if (outcome.remaining) batchError.value = `${outcome.remaining} 张首帧暂未挂载：镜头文本与图片引用已保留，可在镜头上重试或重新上传`
+  })().finally(() => {
+    frameRestore = null
+    // A quick return can precede the interrupted read settling. Resume once,
+    // after its frame request has released ownership; failed frames stay manual.
+    if (interrupted && active && !disposed && framesPending) void resumeDraftFrames()
+  })
+  return frameRestore
+}
 
+  onActivated(() => { active = true; void resumeDraftFrames() })
+  onDeactivated(() => { active = false })
   onBeforeUnmount(() => {
     releaseMaintenance()
     window.clearTimeout(shotsDraftTimer)

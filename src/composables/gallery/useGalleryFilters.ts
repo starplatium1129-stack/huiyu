@@ -220,7 +220,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
         query.q = next;
       else
         delete query.q;
-      void router.replace({ query });
+      void router.replace({ query, hash: route.hash });
     }, 300);
   }
 

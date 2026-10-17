@@ -1,6 +1,6 @@
 <template>
   <div class="trash-wall" :style="{ '--wall-cols': columnCount }" :aria-busy="trashClearing || trashLoading">
-    <div class="trash-toolbar">
+    <div v-if="trashItems.length || trashClearing" class="trash-toolbar">
       <span class="trash-hint">删除的作品保留 30 天，可恢复，也可提前清空</span>
       <div class="trash-actions">
         <span class="trash-count" aria-live="polite">{{ trashLoading ? '读取中…' : trashError ? '数量待确认' : `${trashItems.length} 幅作品` }}</span>

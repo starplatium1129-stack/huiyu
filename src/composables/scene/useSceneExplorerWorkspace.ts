@@ -3,7 +3,6 @@ import { useToast } from '@/composables/useToast';
 import { useSceneExplorerFilters } from './useSceneExplorerFilters';
 import { artworkRepository } from '@/storage/artworkRepository';
 import { useSceneStore,type CurationData,type SceneBrowseTarget } from '@/stores/sceneStore';
-import { scrollBehavior } from '@/utils/motionPreference';
 import { quickCreateUrl } from '@/utils/quickCreate';
 import { buildPreferenceProfile,readHiddenScenes,readSceneUsage,analyzeQuery as uxAnalyze,isPersonalFavorite as uxIsFav,matchesSearch as uxMatchesSearch,personalReason as uxPersonalReason,prepareSceneSearch,searchScore as uxSearchScore,tier as uxTier,writeHiddenScenes,type PreferenceProfile,type SceneUsageRecord,type SceneUXConfig } from '@/utils/sceneUX';
 import { captureScrollAnchor,restoreScrollAnchor,watchForUserScroll,type ScrollAnchor } from '@/utils/scrollAnchor';
@@ -23,6 +22,10 @@ import {
 import { orderExplorerScenes } from './sceneExplorerOrdering';
 import { computed,nextTick,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
 import { useRoute } from 'vue-router';
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
+
+// Remember only the rendered range; route scroll restoration owns the position.
+const browseRanges = new Map<string, number>();
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useSceneExplorerWorkspace() {
     interface ExplorerCuration extends CurationData, SceneUXConfig {
@@ -46,8 +49,19 @@ export function useSceneExplorerWorkspace() {
     const profile = ref<PreferenceProfile>(buildPreferenceProfile([]));
     const loading = ref(true);
     const loadError = ref('');
-    const flashId = ref('');
     const drawerScene = ref<ExplorerScene | null>(null);
+    const requestedScene = computed(() => route.path === '/scene-explorer' && typeof route.query.scene === 'string' ? route.query.scene : '');
+    let handledScene = '', linkedViewer = false, closingLinked = false;
+    watch(drawerScene, scene => {
+        if (scene) closingLinked = false;
+        else { closingLinked = linkedViewer; linkedViewer = false; }
+    }, { flush: 'sync' });
+    function finishSceneClose() {
+        if (!closingLinked) return;
+        closingLinked = false;
+        if (route.path === '/scene-explorer' && !drawerScene.value && !document.hidden && document.activeElement === document.body)
+            document.getElementById('sceneSearch')?.focus({ preventScroll: true });
+    }
     function readFavorites() {
         try {
             const value = JSON.parse(localStorage.getItem(FAV_KEY) || '[]');
@@ -103,8 +117,7 @@ export function useSceneExplorerWorkspace() {
     }
     watch(debouncedQuery, holdFilterAnchor);
     let loadRevision = 0;
-    let flashTimer: ReturnType<typeof setTimeout> | undefined;
-    onUnmounted(() => { dataReady = false; loadRevision++; clearTimeout(flashTimer); clearFilterAnchor(); });
+    onUnmounted(() => { dataReady = false; loadRevision++; clearFilterAnchor(); });
     const manualCompanion = ref<'nene' | 'natsume' | null>(null);
     const companionId = computed<'nene' | 'natsume'>(() => {
         if (manualCompanion.value) return manualCompanion.value;
@@ -119,7 +132,17 @@ export function useSceneExplorerWorkspace() {
             return 'nene';
         return 'nene';
     });
-    const visible = ref(PAGE_SIZE);
+    const browseKey = computed(() => JSON.stringify([runtimeResourceIdentity(), sceneStore.version,
+        debouncedQuery.value.trim(), activeTheme.value, fChar.value, fSeason.value, fTime.value,
+        fSeries.value, fRating.value, fTier.value, sortBy.value, showHidden.value]));
+    const visible = ref(browseRanges.get(browseKey.value) ?? PAGE_SIZE);
+    watch(browseKey, key => { visible.value = browseRanges.get(key) ?? PAGE_SIZE; }, { flush: 'sync' });
+    watch(visible, count => {
+        const key = browseKey.value;
+        browseRanges.delete(key);
+        if (count > PAGE_SIZE) browseRanges.set(key, count);
+        while (browseRanges.size > 16) browseRanges.delete(browseRanges.keys().next().value!);
+    }, { flush: 'sync' });
     // --- derived ---
     const moodRails = computed(() => curation.value.moodRails?.length ? curation.value.moodRails : DEFAULT_RAILS);
     const matureCount = computed(() => scenes.value.filter(s => s.mature).length);
@@ -229,7 +252,6 @@ export function useSceneExplorerWorkspace() {
             personal: profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 还没有创作记录，先画几张，推荐会更懂你。',
         };
     });
-    watch([debouncedQuery, activeTheme, fChar, fSeason, fTime, fSeries, fRating, fTier, sortBy, showHidden], () => { visible.value = PAGE_SIZE; });
     function toggleFav(id: string) {
         const previousFocus = document.activeElement;
         const next = new Set(favs.value);
@@ -265,7 +287,8 @@ export function useSceneExplorerWorkspace() {
             manualCompanion.value = rail.character;
         nextTick(() => document.getElementById('sceneSearch')?.focus());
     }
-    const browseTarget = computed<SceneBrowseTarget>(() => fChar.value !== 'all'
+    // An explicit scene can be outside the current collection or rendered range.
+    const browseTarget = computed<SceneBrowseTarget>(() => requestedScene.value ? 'all' : fChar.value !== 'all'
         ? fChar.value as SceneBrowseTarget
         : debouncedQuery.value.trim() || fTier.value !== 'core' ? 'all' : 'core');
     let preferenceLoad: Promise<PreferenceProfile | null> | undefined;
@@ -298,31 +321,30 @@ export function useSceneExplorerWorkspace() {
         await nextTick();
         if (openingRevision !== loadRevision) return;
         dataReady = true;
-        const published = await refreshScenes(browseTarget.value);
-        const revision = loadRevision;
-        const focusId = typeof route.query.scene === 'string' ? route.query.scene : null;
-        if (published && focusId) {
-            await nextTick();
-            if (!dataReady || revision !== loadRevision) return;
-            const el = document.querySelector(`[data-scene-id="${focusId}"]`) as HTMLElement;
-            if (el) {
-                el.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
-                flashId.value = focusId;
-                clearTimeout(flashTimer);
-                flashTimer = setTimeout(() => flashId.value = '', 2000);
-            }
-        }
+        await refreshScenes(browseTarget.value);
     }
     // Query changes only fetch when crossing core/full coverage, never per key.
     watch(browseTarget, target => { if (dataReady) void refreshScenes(target); });
+    watch([requestedScene, loading], ([id, pending]) => {
+        if (!id) {
+            handledScene = '';
+            if (linkedViewer) drawerScene.value = null;
+            return;
+        }
+        if (!dataReady || pending || loadError.value || id === handledScene) return;
+        handledScene = id;
+        const scene = scenes.value.find(item => item.id === id);
+        if (scene) { drawerScene.value = scene; linkedViewer = true; }
+        else { if (linkedViewer) drawerScene.value = null; toast.error('这个场景暂不可用，可继续浏览其他灵感'); }
+    }, { flush: 'post' });
     onMounted(() => { init(); });
     return {
         ...filters,
         companionId, scenes, manualCompanion, moodRails, applyMoodRail,
         visible, filtered, tierLabel, usedCount, favoriteCount, hiddenCount, availableCount,
         THEME_DEFS, themeCount, searchIntent, matureCount, loading,
-        loadError, init, paged, flashId, usageFor, isCore,
-        tier, charName, seasonLabel, timeLabel, personalReason, drawerScene,
+        loadError, init, paged, usageFor, isCore,
+        tier, charName, seasonLabel, timeLabel, personalReason, drawerScene, finishSceneClose,
         dv: sceneVisualLabels, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
         PAGE_SIZE,
     };

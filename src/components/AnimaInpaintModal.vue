@@ -2,7 +2,6 @@
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -12,7 +11,6 @@ import type { ComfyNodeReadiness } from '@/types/anima'
 import { automaticMaskBlocker } from '@/composables/generation/animaBackendReadiness'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CornerFrame from '@/components/visual/CornerFrame.vue'
-import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useToast } from '@/composables/useToast'
 import { useInpaintMaskCanvas } from './inpaint/useInpaintMaskCanvas'
 import { useInpaintImageSource, type InpaintSource } from './inpaint/useInpaintImageSource'
@@ -52,25 +50,23 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'close'): void
+  (e: 'whole-image', value: boolean): void
   (e: 'submit', payload: InpaintSubmitPayload): void
 }>()
 
-// Mount the form once on demand. v-show can reverse an exit on the same surface
-// and retains scroll, textarea selection and the existing draft on reopen.
-const hasOpened = ref(props.open)
-watch(() => props.open, open => { if (open) hasOpened.value = true })
+// The eager dialog owns focus and visibility; this form stays mounted for its draft.
 const modalEl = ref<HTMLElement | null>(null)
-useFocusTrap(modalEl, () => props.open, { onEscape: () => emit('close') })
 
 const native = computed(() => props.provider === 'native')
 const maskUnavailable = computed(() => automaticMaskBlocker(props))
 const automaticMaskAllowed = computed(() => !maskUnavailable.value)
 const editMode = ref<'masked' | 'whole'>('masked')
 const wholeImage = computed(() => editMode.value === 'whole')
+watch(wholeImage, value => emit('whole-image', value), { immediate: true })
 async function returnToMask() {
   editMode.value = 'masked'
   await nextTick()
-  modalEl.value?.querySelector<HTMLButtonElement>('.mask-mode-switch button[aria-pressed="true"]')?.focus()
+  if (props.open) modalEl.value?.querySelector<HTMLButtonElement>('.mask-mode-switch button[aria-pressed="true"]')?.focus()
 }
 
 const previewImageEl = ref<HTMLImageElement | null>(null)
@@ -109,9 +105,13 @@ const {
   previewSurfaceStyle,
   detectedResolution,
   imageReady,
+  previewFailed,
+  previewAttempt,
   sourceRevision,
   sourceHistoryId,
   onPreviewLoad,
+  onPreviewError,
+  retryPreview,
   uploadedBlob,
   fileInputRef,
   isDragging,
@@ -192,9 +192,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
 </script>
 
 <template>
-  <FluidTransition v-if="hasOpened" appear>
-  <div v-show="open" class="modal-backdrop" @click.self="emit('close')">
-    <div ref="modalEl" class="modal-card inpaint-modal" role="dialog" aria-modal="true" :aria-label="wholeImage ? '整图重绘' : native ? '局部重绘（实验性）' : '智能局部换装'">
+    <div ref="modalEl" class="inpaint-content">
       <CornerFrame variant="ghost" />
 
       <!-- Hidden file input for uploading external image -->
@@ -205,18 +203,6 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
         accept="image/png,image/jpeg,image/webp"
         @change="onFileChange"
       />
-
-      <header class="modal-header">
-        <div class="header-title">
-          <h2>
-            <ArchiveIcon name="wardrobe" />
-            <span>{{ wholeImage ? '整图重绘' : native ? '局部重绘（实验性）' : '智能局部换装' }}</span>
-          </h2>
-        </div>
-        <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭" @click="emit('close')">
-          <ArchiveIcon name="close" />
-        </button>
-      </header>
 
       <div class="inpaint-body">
       <p v-if="native && !wholeImage" class="modal-intro">局部重绘（实验性）：手绘或本地自动识别区域参与采样，遮罩外按原图合成保留。TeaCache 沿用生成参数，无需单独校准；具体换装效果仍取决于选区与重绘幅度。</p>
@@ -243,8 +229,14 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
               <div
                 class="preview-surface"
                 :style="previewSurfaceStyle"
+                tabindex="-1" role="group" aria-label="原图预览" :aria-busy="!imageReady && !previewFailed"
               >
-                <img decoding="async" :key="sourceRevision" :data-source-revision="sourceRevision" :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="onPreviewLoad" />
+                <img decoding="async" :key="`${sourceRevision}:${previewAttempt}`" :data-source-revision="sourceRevision" :data-preview-attempt="previewAttempt" :crossorigin="runtimeResourceCors()" ref="previewImageEl" class="preview-thumb" :class="{ 'is-ready': imageReady }" :src="resolveRuntimeUrl(activeImageUrl)" alt="换装基准图" @load="onPreviewLoad" @error="onPreviewError" />
+                <div v-if="!imageReady" class="preview-feedback" :role="previewFailed ? 'alert' : 'status'">
+                  <ArchiveIcon :name="previewFailed ? 'warning' : 'image'" />
+                  <span>{{ previewFailed ? '原图未能载入，可以重试或更换图片。' : '正在准备原图…' }}</span>
+                  <button v-if="previewFailed" class="btn btn-ghost btn-sm" type="button" @click="previewImageEl?.parentElement?.focus({ preventScroll: true }); retryPreview()">重试原图</button>
+                </div>
                 <canvas
                   ref="maskCanvasEl"
                   class="mask-canvas"
@@ -262,7 +254,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 ></canvas>
                 <!-- 笔刷尺寸跟随光标圈 -->
                 <div
-                  v-if="!wholeImage && maskMode === 'paint' && cursorVisible"
+                  v-if="imageReady && !wholeImage && maskMode === 'paint' && cursorVisible"
                   class="brush-cursor-indicator"
                   :style="brushCursorStyle"
                 ></div>
@@ -482,8 +474,6 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
         </button>
       </footer>
     </div>
-  </div>
-  </FluidTransition>
 </template>
 
 <style scoped src="@/assets/css/anima-inpaint.css"></style>

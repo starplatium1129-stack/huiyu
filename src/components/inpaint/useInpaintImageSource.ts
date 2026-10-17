@@ -1,5 +1,5 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
 import { inpaintCanvasSize } from '../../utils/inpaintCanvas.ts'
 import { useToast } from '../../composables/useToast.ts'
 
@@ -34,8 +34,11 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
   const isDragging = ref(false)
   const detectedResolution = ref<{ width: number; height: number } | null>(null)
   const imageReady = ref(false)
+  const previewFailed = ref(false)
+  const previewAttempt = ref(0)
   const sourceRevision = ref(0)
   const sourceHistoryId = ref<string | number | null>(null)
+  let alive = true, attached = true, decodeRequest = 0
 
   const activeImageUrl = computed(() => uploadedUrl.value || deps.source().url || '')
 
@@ -110,37 +113,72 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
   }, { flush: 'sync' })
 
   watch([activeImageUrl, () => deps.source().blob], () => {
+    decodeRequest++
     sourceRevision.value++
     // Adopt the URL/blob and its parent together; later gallery selection is not this source.
     sourceHistoryId.value = uploadedBlob.value ? null : deps.source().historyId
     imageReady.value = false
+    previewFailed.value = false
+    previewAttempt.value = 0
     detectedResolution.value = null
     deps.clearMask()
   }, { immediate: true, flush: 'sync' })
 
-  function measurePreview(image: HTMLImageElement | null) {
-    // The preview is keyed by revision: detached old images and duplicate loads
-    // must never resize the active canvas or erase a stroke already drawn on it.
-    if (!deps.open() || imageReady.value || !image
-      || image.dataset.sourceRevision !== String(sourceRevision.value)
-      || !image.naturalWidth || !image.naturalHeight) return
-    detectedResolution.value = inpaintCanvasSize(image.naturalWidth, image.naturalHeight)
-    imageReady.value = deps.syncMaskCanvas()
+  function currentImage(image: HTMLImageElement, revision: number, attempt: number) {
+    return alive && attached && deps.open() && image === deps.previewImage()
+      && revision === sourceRevision.value && attempt === previewAttempt.value
+  }
+
+  async function measurePreview(image: HTMLImageElement | null) {
+    if (!image || imageReady.value) return
+    // Capture the element and attempt before yielding; never reread the load event.
+    const revision = Number(image.dataset.sourceRevision), attempt = Number(image.dataset.previewAttempt)
+    if (!currentImage(image, revision, attempt)) return
+    const request = ++decodeRequest
+    try {
+      await image.decode()
+      if (!currentImage(image, revision, attempt) || request !== decodeRequest || imageReady.value) return
+      if (!image.naturalWidth || !image.naturalHeight) { previewFailed.value = true; return }
+      detectedResolution.value = inpaintCanvasSize(image.naturalWidth, image.naturalHeight)
+      imageReady.value = deps.syncMaskCanvas()
+      previewFailed.value = !imageReady.value
+    } catch {
+      if (currentImage(image, revision, attempt) && request === decodeRequest) previewFailed.value = true
+    }
   }
 
   function onPreviewLoad(event: Event) {
     const image = deps.previewImage()
-    if (event.target === image) measurePreview(image)
+    if (event.target === image) void measurePreview(image)
+  }
+
+  function onPreviewError(event: Event) {
+    const image = deps.previewImage()
+    if (!image || event.target !== image || imageReady.value
+      || !currentImage(image, Number(image.dataset.sourceRevision), Number(image.dataset.previewAttempt))) return
+    decodeRequest++
+    previewFailed.value = true
+  }
+
+  function retryPreview() {
+    if (!alive || !attached || !deps.open() || imageReady.value) return
+    decodeRequest++
+    previewFailed.value = false
+    previewAttempt.value++
   }
 
   watch(deps.open, open => {
+    decodeRequest++
     if (open) {
       const image = deps.previewImage()
-      if (image?.complete) measurePreview(image)
+      if (image?.complete) void measurePreview(image)
     }
   }, { flush: 'post' })
 
+  onActivated(() => { attached = true })
+  onDeactivated(() => { attached = false; decodeRequest++; isDragging.value = false })
   onBeforeUnmount(() => {
+    alive = false; decodeRequest++
     clearUploadedImage()
   })
 
@@ -149,9 +187,13 @@ export function useInpaintImageSource(deps: InpaintImageSourceDeps) {
     previewSurfaceStyle,
     detectedResolution,
     imageReady,
+    previewFailed,
+    previewAttempt,
     sourceRevision,
     sourceHistoryId,
     onPreviewLoad,
+    onPreviewError,
+    retryPreview,
     /** 本地上传的原图 blob（模板用它区分「已导入外部图片/原图基准」标签）。 */
     uploadedBlob,
     fileInputRef,

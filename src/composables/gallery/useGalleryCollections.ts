@@ -26,7 +26,7 @@ export function useGalleryCollections(options: Options) {
       options.projectFilter.value = id.startsWith('character:') ? '' : id
     },
   })
-  const navigation = useAlbumNavigation(selection)
+  const navigation = useAlbumNavigation(selection, albumSection)
   const selectedProject = computed(() => options.projects.value.find(project => project.id === options.projectFilter.value))
   const collectionTitle = computed(() => selectedProject.value?.title || (options.characterFilter.value === UNASSIGNED_CHARACTER_ID
     ? '未标注角色' : options.characterFilter.value ? options.characterName(options.characterFilter.value) : '作品展墙'))

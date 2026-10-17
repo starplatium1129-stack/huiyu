@@ -2,7 +2,7 @@
   <div v-content-motion:fade="pb.isPopular" class="panel step-panel" id="stepScene">
     <template v-if="pb.isPopular">
       <!-- Blueprint 是内部数据结构的名字，不该出现在用户看得见的标题上 -->
-      <div class="panel-title">场景建议<span class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
+      <div class="panel-title">场景建议<span v-if="pb.popularBlueprintReady && !pb.popularBlueprintLoading" class="scene-count-badge">{{ popularBlueprintPool.length }}</span></div>
       <PopularBlueprintPicker
         :pool="popularBlueprintPool"
         :categories="blueprintCategories"
@@ -10,13 +10,16 @@
         :filtered="filteredPopularBlueprints"
         :category="popularCategory"
         :show-all="showAllBlueprints"
-        :data-ready="pb.dataReady"
+        :data-ready="pb.popularBlueprintReady"
+        :loading="pb.popularBlueprintLoading"
+        :error="pb.popularBlueprintError"
         :selected-blueprint-id="pb.subject.kind === 'popular' ? pb.subject.blueprintId ?? '' : ''"
         @update:category="$emit('update:popularCategory', $event)"
         @update:show-all="$emit('update:showAllBlueprints', $event)"
         @select="$emit('selectBlueprint', $event)"
         @rotate="$emit('rotateBlueprintSet')"
         @toggle="$emit('toggleBlueprintList')"
+        @retry="retryBlueprints"
       />
     </template>
     <template v-else>
@@ -95,6 +98,9 @@ import '@/assets/css/director/components/DirectorScenesPanel.css'
 
 const pb = usePromptBuilderStore()
 const currentThemeLabel = computed(() => SCENE_THEMES.find(theme => theme.id === pb.sceneTheme)?.label ?? '全部')
+function retryBlueprints() {
+  if (pb.subject.kind === 'popular') void pb.loadPopularCharacter(pb.subject.characterId).catch(() => {})
+}
 
 defineProps<{
   popularBlueprintPool: SceneBlueprint[]

@@ -57,7 +57,7 @@ onErrorCaptured((error, instance, info) => {
   if (routeRecovery.value?.kind !== 'route') routeRecovery.value = { kind: 'panel', target: route.fullPath }
   return false
 })
-const layoutMotion = useRouteTransition(() => route.path, { initialFade: true })
+const layoutMotion = useRouteTransition(() => route.path)
 function beforeEnterLayout(element: Element) {
   ;(element as HTMLElement).inert = false
   if (!element.classList.contains('page-root')) layoutMotion.onBeforeEnter(element)

@@ -12,7 +12,6 @@ import type { useCompareSnapshots } from '@/composables/useCompareSnapshots'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { usePromptMaterials, VoiceStudioHandle } from './usePromptMaterials'
 import type { usePromptSdQueue } from './usePromptSdQueue'
-import type { useTempResult } from './useTempResult'
 import type { PromptBatchRunnersDeps } from './usePromptBatchRunners'
 import type { ResultSnapshot } from './promptResultSnapshot'
 import type { GenerationPresentation } from './useGenerationPresentation'
@@ -25,7 +24,6 @@ type Derived = ReturnType<typeof useDirectorDerived>
 type Popular = ReturnType<typeof useDirectorPopular>
 type Materials = ReturnType<typeof usePromptMaterials>
 type Queue = ReturnType<typeof usePromptSdQueue>
-type TempResult = ReturnType<typeof useTempResult>
 type Assembly = ReturnType<typeof useUnifiedPromptAssembly>
 type Inpaint = ReturnType<typeof useAnimaInpaint>
 type Compare = ReturnType<typeof useCompareSnapshots<ResultSnapshot>>
@@ -69,7 +67,7 @@ export interface PromptHealthBindings {
   artViolationsView: Assembly['artViolations']
   loraSpecs: Assembly['studio']['loraSpecs']
   copyPrompt: () => Promise<boolean>
-  saveCurrentResult: TempResult['saveCurrentResult']
+  saveDraft: Store['saveDraft']
 }
 
 export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy'> {
