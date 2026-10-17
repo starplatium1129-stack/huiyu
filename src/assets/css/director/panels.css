@@ -84,11 +84,6 @@
     @apply tw:p-s-4 tw:text-muted tw:text-label-sm tw:text-center;
   }
   .pb .scene-more { @apply tw:w-full tw:mt-s-2 tw:justify-center; }
-   @keyframes aicsBloomReveal {
-     from { opacity:0; transform:scale(.985); }
-
-     to { opacity:1; transform:scale(1); }
-   }
   .pb .badge-online { --badge-color:var(--success-text); }
   .pb .badge-offline { --badge-color:var(--warning-text); }
   /* Liquid glass is reserved for floating controls and navigation surfaces. */
@@ -125,5 +120,4 @@
 }
    @media (prefers-reduced-motion: reduce) {
      :root:not([data-motion='full']) .pb .director-workspace > .col-left, :root:not([data-motion='full']) .pb .director-workspace > .col-center { animation:none !important; }
-     :root:not([data-motion='full']) .pb .stage-placeholder.is-generating::before, :root:not([data-motion='full']) .pb .stage-placeholder.is-generating::after { animation:none !important; }
    }
