@@ -27,10 +27,6 @@ html.companion-desktop dialog[data-fluid-dialog]::backdrop { background:transpar
 .companion-redesign .companion-empty { @apply tw:hidden; }
 .companion-redesign .character-info { @apply tw:absolute; z-index: var(--z-popover); @apply tw:top-[76px] tw:right-s-3 tw:left-s-3 tw:p-0; background: transparent; border: 0; }
 .companion-redesign .character-info-head { @apply tw:hidden; }
-.companion-redesign .character-controls { @apply tw:m-0; }
-.companion-redesign .character-controls:not([open]) { @apply tw:hidden; }
-.companion-redesign .character-controls > summary { @apply tw:p-s-3 tw:text-primary; background: var(--bg-elevated); @apply tw:rounded-md; }
-.companion-redesign .character-controls-panel { @apply tw:static; max-height: calc(100dvh - 170px); @apply tw:overflow-auto tw:p-s-4; border: 1px solid var(--border-soft); background: var(--bg-elevated); @apply tw:rounded-lg; }
 .companion-redesign .companion-live-dot { background: var(--bg-surface); @apply tw:text-secondary; text-shadow: none; }
 .companion-redesign .companion-live-dot[data-state="idle"] { @apply tw:hidden; }
 .companion-redesign .companion-chat-chip { @apply tw:text-primary; background: var(--bg-surface); @apply tw:border-soft; backdrop-filter: none; box-shadow: var(--shadow-glass-sm); }
@@ -55,9 +51,7 @@ html.companion-desktop .companion-redesign .companion-desktop-float { @apply tw:
 html.companion-desktop.companion-ui-hidden .companion-redesign .companion-desktop-float { opacity: 1; transform: translateX(-50%); }
 html.companion-desktop.companion-ui-hidden .companion-redesign .companion-chat-chip { opacity: 1; }
 html.companion-desktop.companion-ui-hidden .companion-redesign .companion-chat-chip:is(:hover, :focus-visible) { opacity: 1; }
-html.companion-desktop .companion-redesign:focus-within .companion-toolbar,
-html.companion-desktop .companion-redesign:has(.character-controls[open]) .companion-toolbar,
-html.companion-desktop .companion-redesign:has(.companion-settings-popover) .companion-toolbar { opacity: 1; visibility: visible; transform: none; @apply tw:pointer-events-auto; }
+html.companion-desktop .companion-redesign:focus-within .companion-toolbar { opacity: 1; visibility: visible; transform: none; @apply tw:pointer-events-auto; }
 
 /* Only the character and explicit controls paint pixels in the native pet window. */
 html.companion-desktop .companion-page.companion-redesign,
