@@ -21,6 +21,7 @@ let initialized = false
 let parent: HTMLElement | null = null
 let observedTarget: HTMLElement | null = null
 let destinationBox = ''
+let parentBox = ''
 let keyboardInput = false
 let measureFrame = 0
 function keyboard(event: KeyboardEvent) {
@@ -41,10 +42,37 @@ function keyboard(event: KeyboardEvent) {
     const next = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (index + (previous ? -1 : 1) + buttons.length) % buttons.length
     event.preventDefault()
     event.stopPropagation()
-    buttons[next].focus({ preventScroll: true })
+    focusSegment(buttons[next])
     buttons[next].click()
     return
   }
+}
+function focusSegment(button: HTMLButtonElement) {
+  button.focus({ preventScroll: true })
+  // Scroll only clipped controls, by the missing distance. Native focus scrolling
+  // can leave a wrapped row partly outside a short nested viewport.
+  for (let ancestor = button.parentElement; ancestor; ancestor = ancestor.parentElement) {
+    if (ancestor === document.scrollingElement) break
+    const style = getComputedStyle(ancestor), bounds = ancestor.getBoundingClientRect()
+    const box = button.getBoundingClientRect()
+    const left = bounds.left + ancestor.clientLeft + (parseFloat(style.scrollPaddingLeft) || 0)
+    const top = bounds.top + ancestor.clientTop + (parseFloat(style.scrollPaddingTop) || 0)
+    const right = Math.min(bounds.right, bounds.left + ancestor.clientLeft + ancestor.clientWidth) - (parseFloat(style.scrollPaddingRight) || 0)
+    const bottom = Math.min(bounds.bottom, bounds.top + ancestor.clientTop + ancestor.clientHeight) - (parseFloat(style.scrollPaddingBottom) || 0)
+    const x = /auto|scroll/.test(style.overflowX) ? box.left < left ? box.left - left : Math.max(0, box.right - right) : 0
+    const y = /auto|scroll/.test(style.overflowY) ? box.top < top ? box.top - top : Math.max(0, box.bottom - bottom) : 0
+    if (x || y) ancestor.scrollBy({ left:x, top:y, behavior:'instant' })
+    // A native top-layer dialog is not clipped by its DOM ancestors behind it.
+    if (ancestor instanceof HTMLDialogElement && ancestor.open) return
+  }
+  const box = button.getBoundingClientRect()
+  const style = getComputedStyle(button)
+  const margin = parseFloat(style.getPropertyValue('--s-2')) || 0
+  const top = margin + (parseFloat(style.getPropertyValue('--desktop-chrome-height')) || 0)
+    + (parseFloat(style.getPropertyValue('--app-navigation-visible-height')) || 0)
+  const x = box.left < margin ? box.left - margin : Math.max(0, box.right - innerWidth + margin)
+  const y = box.top < top ? box.top - top : Math.max(0, box.bottom - innerHeight + margin)
+  if (x || y) window.scrollBy({ left:x, top:y, behavior:'instant' })
 }
 function pointer() { keyboardInput = false; indicator.value?.style.removeProperty('transition') }
 // Motion batches all indicator reads before any indicator writes in this frame.
@@ -74,6 +102,28 @@ function onVisibilityChange() {
   } else {
     schedule()
   }
+}
+function resized(entries: ResizeObserverEntry[]) {
+  if (suspended || document.hidden) return
+  const entry = entries.find(entry => entry.target === parent)
+  if (entry) {
+    const box = `${entry.contentRect.width}:${entry.contentRect.height}`
+    const reflowed = parentBox !== '' && parentBox !== box
+    parentBox = box
+    if (reflowed) {
+      // A row/size change belongs to layout, not selection travel. Snap before
+      // paint so the old spring cannot leave a newly shortened control group.
+      // Absolute indicator writes do not resize the observed parent or buttons.
+      cancelScheduled()
+      update()
+      cancelFrame(render)
+      render()
+      return
+    }
+  }
+  // Observing a newly selected button produces an initial notification too;
+  // it must not interrupt the ordinary continuous selection spring.
+  schedule()
 }
 function update() {
   const el = indicator.value
@@ -142,7 +192,7 @@ onMounted(() => {
   }
   parent = indicator.value?.parentElement ?? null
   if (!parent) return
-  resize = new ResizeObserver(schedule)
+  resize = new ResizeObserver(resized)
   resize.observe(parent)
   mutations = new MutationObserver(schedule)
   mutations.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-current', 'aria-pressed', 'aria-selected', 'aria-checked', 'data-state', 'hidden'] })

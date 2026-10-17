@@ -2,10 +2,11 @@
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
 import { computed, onActivated, onDeactivated, onMounted, onUpdated, ref, watch } from 'vue'
 
-const props = withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end'; portalTo?: HTMLElement | null }>(), { align:'end', contentClass:'' })
+const props = withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end'; side?: 'top' | 'right' | 'bottom' | 'left'; prioritizePosition?: boolean; portalTo?: HTMLElement | null }>(), { align:'end', side:'bottom', prioritizePosition:false, contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
 const pointerOpened = ref(false)
 const trigger = ref<{ $el: HTMLElement } | null>(null)
+const content = ref<HTMLElement | null>(null)
 // Native top layers and custom focus traps both require content inside their modal.
 const portalTarget = ref<HTMLElement>()
 function syncPortalHost() {
@@ -30,6 +31,8 @@ function onCloseAutoFocus(event: Event) {
 }
 function onEscape(event: KeyboardEvent) {
   if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+  // Let an expanded child select/menu own Escape before closing this surface.
+  if (content.value?.querySelector('[aria-haspopup][aria-expanded="true"], [role="combobox"][aria-expanded="true"]')) return
   event.preventDefault()
   open.value = false
 }
@@ -40,11 +43,11 @@ function onDismissEscape(event: KeyboardEvent) {
 
 <template>
   <PopoverRoot v-model:open="open">
-    <PopoverTrigger ref="trigger" as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false" @keydown.esc="onEscape"><slot name="trigger" /></PopoverTrigger>
+    <PopoverTrigger ref="trigger" as-child @pointerdown="pointerOpened = true" @keydown="pointerOpened = false" @keydown.esc.capture="onEscape"><slot name="trigger" /></PopoverTrigger>
     <PopoverPortal :to="portalTarget">
-      <PopoverContent :align="align" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
+      <PopoverContent :align="align" :side="side" :prioritize-position="prioritizePosition" :side-offset="10" :collision-padding="16" :collision-boundary="collisionBoundary"
         hide-when-detached as-child @escape-key-down="onDismissEscape" @open-auto-focus="emit('openAutoFocus', $event)" @close-auto-focus="onCloseAutoFocus">
-        <div data-fluid-glass :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass" @keydown.esc="onEscape"><slot /></div>
+        <div ref="content" data-fluid-glass :aria-label="label" :aria-labelledby="undefined" :data-pointer-open="pointerOpened" class="studio-popover" :class="contentClass" @keydown.esc.capture="onEscape"><slot /></div>
       </PopoverContent>
     </PopoverPortal>
   </PopoverRoot>

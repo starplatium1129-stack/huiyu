@@ -2,40 +2,18 @@
 .pb .image-tools { @apply tw:grid tw:min-w-0 tw:gap-s-3; }
 .pb .image-tools-group { @apply tw:grid tw:min-w-0 tw:gap-s-2; }
 .pb .image-tools-group h4 { @apply tw:flex tw:items-center tw:gap-s-2 tw:m-0 tw:text-secondary tw:text-label; font-weight:600; }
+.pb :is(.image-tools-group h4,.reference-interrogate summary > span) > .archive-icon { width:16px; height:16px; flex-shrink:0; }
 /* Wrap whole actions at their content width instead of squeezing their labels. */
 .pb .image-tool-buttons { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:min-w-0; }
 .pb .image-tool-buttons > * { flex:1 1 max-content; @apply tw:w-auto tw:min-w-0 tw:max-w-full; }
 .pb .image-tool-buttons > .studio-tooltip-anchor { @apply tw:flex tw:items-stretch; }
-.pb .image-tool-buttons .btn { @apply tw:w-full tw:min-h-[40px] tw:justify-start tw:text-left tw:whitespace-nowrap tw:text-label; }
+.pb .image-tool-buttons .btn { @apply tw:w-full tw:justify-start tw:text-left tw:whitespace-nowrap; }
 .pb .image-tools-error { @apply tw:m-0 tw:text-danger-text tw:text-label; overflow-wrap:anywhere; }
 .pb .reference-interrogate summary > span { @apply tw:flex tw:items-center tw:gap-s-2; }
 .pb .reference-interrogate summary small,.pb .image-continuation summary small { @apply tw:ml-auto tw:text-secondary tw:text-label-xs; }
 .pb .reference-interrogate-body,.pb .image-continuation-body { @apply tw:pt-s-3; }
 .pb .reference-interrogate-body { @apply tw:grid tw:gap-s-2; }
 .pb .reference-interrogate-status { @apply tw:m-0 tw:text-secondary tw:text-label; }
+.pb .reference-interrogate-refresh { justify-self:start; }
 .pb .reference-outfit-actions:empty { display:none; }
 .pb .btn-compare-inpaint[aria-pressed='true'] { color:var(--accent); border-color:var(--border-strong); }
-
-/* Native disclosure keeps focus, search drafts and button actions synchronous.
-   Older engines retain the native instant toggle rather than a JS height shim. */
-@supports (interpolate-size: allow-keywords) and selector(details::details-content) {
-  .pb .image-tools .inspector-route { interpolate-size: allow-keywords; }
-  .pb .image-tools .inspector-route::details-content {
-    /* compositor-exempt: one short intrinsic-size disclosure reflows only this inspector;
-       scaling the text would distort it and a fixed max-height would mis-time short content. */
-    height: 0;
-    overflow: clip;
-    opacity: 0;
-    transition: height var(--motion-control) var(--ease-out), opacity var(--motion-hover) var(--ease-out), content-visibility var(--motion-control) allow-discrete;
-  }
-  .pb .image-tools .inspector-route[open]::details-content { height: auto; opacity: 1; }
-}
-.pb .image-tools .inspector-route > summary > .archive-icon { transition: transform var(--motion-control) var(--ease-out); }
-/* Only the chevron turns; the search pictogram remains upright. */
-.pb .image-tools .inspector-route[open] > summary > span .archive-icon { transform: none; }
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .pb .image-tools .inspector-route::details-content,
-  :root:not([data-motion='full']) .pb .image-tools .inspector-route > summary > .archive-icon { transition: none; }
-}
-:root:is([data-motion='reduce'], [data-motion='reduced']) .pb .image-tools .inspector-route::details-content,
-:root:is([data-motion='reduce'], [data-motion='reduced']) .pb .image-tools .inspector-route > summary > .archive-icon { transition: none; }

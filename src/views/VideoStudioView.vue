@@ -26,13 +26,13 @@
         @click="selectedMode = mode.id"
       >
         <span class="video-mode-icon studio-control-icon"><ArchiveIcon :name="mode.icon" /></span>
-        <strong>{{ mode.label }}</strong>
+        <strong class="studio-control-label">{{ mode.label }}</strong>
       </button>
       </StudioTooltip>
     </section>
     <div class="video-mode-context">
       <p id="video-mode-description"><strong>{{ modeBadge(selectedMode) }}</strong></p>
-      <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:p-s-1 tw:rounded-pill" data-fluid-glass aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">查看成片</a></nav>
+      <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:p-s-1 tw:rounded-md" data-fluid-glass aria-label="视频工作区导航"><a v-if="selectedMode !== 'text'" href="#video-frames">准备画面</a><a href="#video-brief">镜头描述</a><a href="#video-settings">画幅与时长</a><a href="#video-queue">查看成片</a></nav>
     </div>
     <VideoGenerationBar v-if="selectedMode !== 'shots'" id="video-settings"
       v-model:aspect-ratio="aspectRatio" v-model:duration="duration" v-model:quality="quality"
@@ -57,8 +57,9 @@
           <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
           <label v-else class="video-upload-drop video-upload-drop--single" :data-busy="uploadingImage || undefined">
             <input type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
-            <ArchiveIcon name="image" />
+            <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>
             <strong>{{ uploadingImage ? '正在准备首帧…' : '上传首帧' }}</strong>
+            <span>选择故事的起点，让画面接着动起来</span>
           </label>
         </section>
 
@@ -76,7 +77,7 @@
               <img v-if="videoImageUrl" class="video-first-frame" :src="videoImageUrl" alt="视频首帧" />
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
                 <input type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
-                <ArchiveIcon name="image" />
+                <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>
                 <span>上传首帧</span>
               </label>
               <button v-if="videoImageUrl" class="btn btn-ghost btn-block" type="button" @click="clearFirstFrame">移除首帧</button>
@@ -86,7 +87,7 @@
               <img v-if="lastFrameUrl" class="video-first-frame" :src="lastFrameUrl" alt="视频尾帧" />
               <label v-else class="video-upload-drop" :data-busy="uploadingImage || undefined">
                 <input type="file" accept="image/*" aria-label="上传视频尾帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'last')" />
-                <ArchiveIcon name="image" />
+                <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>
                 <span>上传尾帧</span>
               </label>
               <button v-if="lastFrameUrl" class="btn btn-ghost btn-block" type="button" @click="clearLastFrame">移除尾帧</button>
@@ -143,7 +144,7 @@
 
           <details class="video-advanced">
             <StudioDisclosureSummary class="video-disclosure-heading">高级设置</StudioDisclosureSummary>
-            <div class="video-advanced-grid">
+            <div class="video-advanced-grid" data-disclosure-content>
               <ToggleSwitch
                 v-if="activeModel?.id === 'minimax-h3'"
                 class="video-steps-toggle"
@@ -190,8 +191,9 @@
             </span>
           </div>
           <div v-if="!job" class="video-queue-empty">
-            <ArchiveIcon name="play" />
+            <span class="video-empty-reel" aria-hidden="true"><ArchiveIcon name="play" /></span>
             <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '暂无成片' }}</strong>
+            <span v-if="reconnectState === 'idle'">准备好镜头与描述，生成的短片会出现在这里。</span>
             <button v-if="reconnectState === 'failed'" class="btn btn-ghost" type="button" @click="reconnectVideo">重新读取上次任务</button>
             <button v-if="reconnectState !== 'idle'" class="btn btn-ghost" type="button" @click="openTaskCenter">到任务中心核对</button>
           </div>
@@ -293,6 +295,7 @@
 
         <details class="video-panel video-model-catalog">
           <StudioDisclosureSummary class="video-disclosure-heading"><span>更换生成模型 <small>{{ activeModel?.label || '等待环境检测' }}</small></span></StudioDisclosureSummary>
+          <div class="video-model-options" data-disclosure-content>
           <button
             v-for="model in status?.models || []"
             :key="model.id"
@@ -303,13 +306,14 @@
             @click="selectedModelId = model.id"
           >
             <span>
-              <strong>{{ model.label }}</strong>
+              <strong><ArchiveIcon v-if="selectedModelId === model.id" name="success" />{{ model.label }}</strong>
               <small>{{ model.summary }}</small>
             </span>
             <em :data-state="model.available ? 'ready' : (model.executable ? 'missing' : 'planned')">
               {{ model.available ? '已就绪' : (model.executable ? '待安装' : '待适配') }}
             </em>
           </button>
+          </div>
         </details>
 
 

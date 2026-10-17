@@ -19,12 +19,8 @@ const items = [
 ] as const
 </script>
 <style scoped>
-@reference "../../assets/css/tailwind.css";
 html body .creative-library-nav.studio-segments[role] { display:grid; width:min(800px,100%); grid-template-columns:repeat(4,minmax(0,1fr)); }
-.creative-library-nav a { position:relative; z-index:var(--z-raised); @apply tw:flex tw:min-w-0 tw:min-h-[44px] tw:items-center tw:justify-center tw:gap-s-2 tw:rounded-md tw:text-secondary tw:text-body-sm tw:text-center; padding:var(--s-2) var(--s-3); }
+.creative-library-nav a { min-width:0; text-align:center; }
 .creative-library-nav .archive-icon { width:18px; height:18px; flex-shrink:0; }
-.creative-library-nav a:hover { background:var(--bg-hover); @apply tw:text-primary; }
-.creative-library-nav a[aria-current="page"] { background:transparent; @apply tw:text-accent tw:font-semibold; }
-.creative-library-nav a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (max-width:600px) { html body .creative-library-nav.studio-segments[role] { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 </style>

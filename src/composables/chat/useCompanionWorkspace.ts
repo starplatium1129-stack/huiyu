@@ -13,14 +13,12 @@ import { useCompanionClipboardImport } from '../useCompanionClipboardImport.ts';
 import { useCompanionSpeechInput } from '../useCompanionSpeechInput.ts';
 import { useCompanionPerformance } from '../useCompanionPerformance.ts';
 import { pickCompanionLine } from '../../config/characters.ts';
-import { listCompanionUiCharacters } from '../../utils/companionRegistry.ts';
 import { resolveCompanionPresence } from '../../utils/companionPresence.ts';
 import { scrollBehavior } from '../../utils/motionPreference.ts';
 import { COMPANION_CHAT_LIVE_KEY,COMPANION_LIVE2D_KEY } from '../../utils/storageKeys.ts';
 import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
-    const companionCharacters = listCompanionUiCharacters();
     const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState } = useCharacterRoomSession();
     const desktopBridge = getDesktopCapabilities();
     const presentationSuspended = useRoomPresentation('companion');
@@ -478,7 +476,7 @@ export function useCompanionWorkspace() {
 chatListRef,
 characterStageRef,
         activeChar, desktopBridge, onBatteryPower, uiHidden, presence, immersive, presentationSuspended,
-        currentCharacter, affectionScore, affectionInfo, companionCharacters, switchCharacter, settingsOpen,
+        currentCharacter, affectionScore, affectionInfo, switchCharacter, settingsOpen,
         autoVoice, onAutoVoiceChange, behaviorEnabled, dnd, toggleDnd, importInputRef,
         onImportInputChange, alwaysOnTop, togglePin, ignoreMouseEvents, toggleMouseEvents, enterImmersive,
         workspaceExists, workspaceRestartRequired, workspaceTooltip, workspaceOpen, volume, onVolumeChange, exitImmersive,

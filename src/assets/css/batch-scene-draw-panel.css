@@ -2,29 +2,34 @@
 .batch-overlay {
   @apply tw:fixed; inset: 0; z-index: var(--z-dock);
   @apply tw:grid; place-items: center;
-  padding: clamp(12px, 3vw, 32px);
+  padding:var(--s-4);
+  padding-top:calc(var(--desktop-chrome-height,0px) + var(--s-4));
   background: color-mix(in srgb, var(--bg-deep) 55%, transparent);
   backdrop-filter: blur(4px);
 }
 .batch-panel {
   @apply tw:relative;
   width: min(920px, 100%);
-  max-height: min(88vh, 940px);
-  @apply tw:grid tw:gap-s-4;
-  padding: clamp(18px, 2.6vw, 28px);
+  max-height:min(88dvh,940px,calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4)));
+  @apply tw:flex tw:flex-col tw:gap-s-4;
+  padding:var(--s-5);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-xl;
   background: var(--bg-surface);
   box-shadow: var(--shadow-md);
-  @apply tw:overflow-auto;
+  @apply tw:overflow-hidden;
 }
+.batch-body { display:grid; align-content:start; gap:var(--s-4); flex:1; min-width:0; min-height:0; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; padding-right:var(--s-1); scroll-padding-block:var(--s-2); }
 .batch-panel::before {
   @apply tw:absolute tw:top-[-1px] tw:left-s-5 tw:w-[44px] tw:h-[1px];
   background: linear-gradient(90deg, var(--archive-cyan), transparent); content: "";
 }
 .batch-head { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3; }
+.batch-head,.batch-foot { flex-shrink:0; }
+.batch-head > div { min-width:0; }
+.batch-head > .btn { flex-shrink:0; }
 .batch-head h2 { margin: 2px 0 4px; @apply tw:text-title-sm; }
-.batch-head p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
+.batch-description { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
 .batch-step { @apply tw:text-accent; font: 700 var(--fs-mono-xs) var(--font-mono); letter-spacing: .12em; @apply tw:uppercase; }
 
 /* ── 配置态 ── */
@@ -41,7 +46,7 @@
 }
 
 .batch-scene-grid {
-  @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-2 tw:max-h-[40vh] tw:overflow-auto tw:p-s-2;
+  @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2 tw:p-s-2;
   border: 1px solid var(--border-soft); @apply tw:rounded-md;
   background: var(--bg-deep);
 }
@@ -49,14 +54,15 @@
   @apply tw:grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto auto;
   @apply tw:gap-x-s-2 tw:items-center;
   padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft); @apply tw:rounded-md;
+  border:1px solid var(--border-soft); @apply tw:rounded-lg;
   background: var(--bg-surface); color: inherit; @apply tw:text-left tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
 .batch-scene-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-scene-card.selected {
-  @apply tw:border-strong;
+  border-color:var(--accent);
   background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface));
+  box-shadow:var(--selection-shadow);
 }
 .batch-scene-check {
   grid-row: 1 / span 2;
@@ -80,21 +86,22 @@
 
 /* ── 角色卡网格 ── */
 .batch-char-grid {
-  @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); @apply tw:gap-s-2 tw:max-h-[40vh] tw:overflow-auto tw:p-s-2;
+  @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(135px,1fr)); @apply tw:gap-s-2 tw:p-s-2;
   border: 1px solid var(--border-soft); @apply tw:rounded-md;
   background: var(--bg-deep);
 }
 .batch-char-card {
   @apply tw:flex tw:flex-col tw:items-center tw:text-center tw:gap-s-2;
   padding: var(--s-3) var(--s-2);
-  border: 1px solid var(--border-soft); @apply tw:rounded-md;
+  border:1px solid var(--border-soft); @apply tw:rounded-lg;
   background: var(--bg-surface); color: inherit; @apply tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-press);
 }
 .batch-char-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-char-card.selected {
-  @apply tw:border-strong;
+  border-color:var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface));
+  box-shadow:var(--selection-shadow);
 }
 .batch-char-avatar-wrap {
   @apply tw:relative tw:w-[56px] tw:h-[56px] tw:rounded-pill tw:overflow-hidden;
@@ -156,7 +163,7 @@
   transition: transform var(--motion-surface) var(--ease-out);
 }
 .batch-result-grid {
-  @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); @apply tw:gap-s-3 tw:max-h-[44vh] tw:overflow-auto tw:p-s-1;
+  @apply tw:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); @apply tw:gap-s-3 tw:p-s-1;
 }
 .batch-card { @apply tw:grid tw:gap-s-1 tw:m-0; }
 .batch-thumb-btn {
@@ -190,11 +197,15 @@
 .batch-card-seed { @apply tw:text-muted; font: 600 var(--fs-mono-xs) var(--font-mono); @apply tw:text-label-xs tw:overflow-hidden tw:whitespace-normal; overflow-wrap: anywhere; }
 
 .batch-foot { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3; }
-.batch-foot-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
+.batch-foot .btn { max-width:100%; white-space:normal; text-align:center; }
+.batch-foot-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:min-w-0 tw:max-w-full; }
+.batch-foot-actions > * { min-width:0; max-width:100%; }
 .batch-hint { @apply tw:text-muted tw:text-label-xs; }
+.batch-panel :is(.batch-scene-card,.batch-char-card):focus-visible { box-shadow:var(--focus-shadow); }
 
 
 @media (max-width: 768px) {
   .batch-scene-grid { grid-template-columns: 1fr; }
   .batch-result-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
 }
+@media (max-height:600px) { .batch-panel { padding:var(--s-4); gap:var(--s-3); } }

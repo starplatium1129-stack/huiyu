@@ -16,7 +16,7 @@
 .pb .inspector-workbench :is(.inspector-tabs button, .inspector-scroll):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .inspector-count { font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .pb[data-director-mode] .inspector-workbench .inspector-scroll {
-  flex:1 1 auto; gap:16px; min-height:0; padding:20px; scrollbar-gutter:stable;
+  flex:1 1 auto; gap:16px; min-height:0; padding:20px; scrollbar-gutter:stable; scroll-padding-block:var(--s-3);
 }
 .pb .inspector-workbench .panel,
 .pb .inspector-workbench .result-frame { padding:0; border:0; background:transparent; box-shadow:none; }
@@ -27,6 +27,13 @@
 .pb .inspector-workbench .artist-summary-right strong { text-align:right; }
 .pb .inspector-workbench .generation-settings .toggle-row { grid-column:auto; flex-wrap:wrap; gap:var(--s-1); }
 .pb .inspector-actions { flex-shrink:0; border-top:1px solid var(--border-soft); }
+
+/* All inspector tabs share native disclosure geometry, independent of lazy panels. */
+.pb .inspector-workbench .inspector-route { padding:var(--s-4) 0; border-top:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-label); }
+.pb .inspector-workbench .inspector-route > summary { justify-content:space-between; min-height:var(--control-height); padding:0; border:0; border-radius:var(--r-sm); background:transparent; list-style:none; cursor:pointer; }
+.pb .inspector-workbench .inspector-route > summary::-webkit-details-marker { display:none; }
+.pb .inspector-workbench .inspector-route > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+@media (hover:hover) and (pointer:fine) { .pb .inspector-workbench .inspector-route > summary:hover { background:var(--bg-hover); color:var(--accent); } }
 
 .pb .inspector-workbench .inspector-tabs button[data-state=active] { color:var(--accent); font-weight:600; }
 @media (min-width:1024px) and (max-width:1440px) { .pb[data-director-mode] .inspector-workbench .inspector-scroll { padding:16px 20px; } }

@@ -3,17 +3,17 @@
     <div class="panel-title">角色 · Character</div>
     <div class="char-source studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="角色来源">
       <AnimatedSelection />
-      <button type="button" class="char-source-btn" :class="{ active: !pb.isPopular && !pb.isUnbound }"
+      <button type="button" class="char-source-btn"
         :aria-pressed="!pb.isPopular && !pb.isUnbound" @click="$emit('selectSource', 'studio')">
         <ArchiveIcon name="character" class="char-source-icon" />
         <span class="char-source-label studio-control-label">工作室角色</span>
       </button>
-      <button type="button" class="char-source-btn" :class="{ active: pb.isPopular }"
+      <button type="button" class="char-source-btn"
         :aria-pressed="pb.isPopular" @click="$emit('selectSource', 'popular')">
         <ArchiveIcon name="spark" class="char-source-icon" />
         <span class="studio-control-label"><span class="char-source-label">热门角色</span><span class="char-source-note">无需 LoRA</span></span>
       </button>
-      <button type="button" class="char-source-btn" :class="{ active: pb.isUnbound }"
+      <button type="button" class="char-source-btn"
         :aria-pressed="pb.isUnbound" @click="$emit('selectSource', 'none')">
         <ArchiveIcon name="image" class="char-source-icon" />
         <span class="char-source-label studio-control-label">无角色</span>

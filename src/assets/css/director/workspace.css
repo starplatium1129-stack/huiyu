@@ -16,20 +16,15 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
 .pb.journal-workspace .pb-mode-actions,
 .pb.journal-workspace .pb-utility-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-w-0; }
 .pb.journal-workspace .focus-mode-btn, .pb.journal-workspace .utility-trigger,
-.pb.journal-workspace .random-dice, .pb.journal-workspace .random-menu-trigger,
 .pb.journal-workspace .api-status .badge { background: transparent; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-color: transparent; }
-.pb.journal-workspace .focus-mode-btn,
-.pb.journal-workspace .random-dice { @apply tw:text-label tw:min-h-[40px]; }
+.pb.journal-workspace .focus-mode-btn { @apply tw:text-label tw:min-h-[40px]; }
 .pb.journal-workspace .focus-mode-btn:hover,
-.pb.journal-workspace .random-dice:hover,
-.pb.journal-workspace .random-menu-trigger:hover,
 .pb.journal-workspace .utility-trigger:hover { background: var(--bg-hover); }
 .pb.journal-workspace .focus-mode-btn[aria-pressed="true"] { background: var(--accent-soft); @apply tw:border-strong; }
 .pb.journal-workspace .api-status { @apply tw:flex-wrap tw:gap-s-2 tw:m-0 tw:p-0; border: 0; }
 .pb.journal-workspace .api-status .badge { @apply tw:min-h-[32px] tw:p-s-1 tw:font-sans tw:text-label; }
 .pb.journal-workspace .api-recovery-link { @apply tw:inline-flex tw:items-center tw:min-h-[32px] tw:text-label; }
 .pb.journal-workspace .api-status .badge::before { @apply tw:hidden; }
-.pb.journal-workspace .pb-managed-route-banner { @apply tw:mb-s-4 tw:border-soft; background: var(--bg-surface); box-shadow: none; }
 .pb.journal-workspace .panel, .pb.journal-workspace .result-frame { @apply tw:border-soft tw:rounded-xl; box-shadow: none; background: var(--bg-surface); }
 .pb.journal-workspace .panel::before, .pb.journal-workspace .panel::after { @apply tw:hidden; }
 .pb.journal-workspace .panel-title { @apply tw:text-label; letter-spacing: normal; @apply tw:font-semibold; }
@@ -55,9 +50,6 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
   .pb.journal-workspace .pb-header { @apply tw:w-full; }
   .pb.journal-workspace .pb-top-actions { @apply tw:w-full tw:justify-start; }
 }
-/* Short desktop windows retain the character/scene summary and primary action. */
-@media (min-width: 901px) and (max-height: 760px) {
-}
 @media (max-width: 1023px) {
   .pb.journal-workspace .drawing-jump-links { @apply tw:flex tw:gap-s-2 tw:mb-s-3; border-bottom: 1px solid var(--border-soft); }
   .pb.journal-workspace .drawing-jump-links a { @apply tw:flex tw:items-center tw:justify-center; flex: 1; @apply tw:min-h-[44px] tw:text-center tw:p-s-2 tw:rounded-md tw:text-secondary tw:text-label; }
@@ -69,14 +61,12 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
   .pb.journal-workspace .pb-top-actions { gap: var(--s-1) var(--s-3); }
   .pb.journal-workspace .pb-mode-actions,
   .pb.journal-workspace .pb-utility-actions { flex: 1 1 100%; @apply tw:justify-between; }
-  .pb.journal-workspace .director-mode-option { @apply tw:min-h-[44px] tw:text-label; }
   .pb.journal-workspace .focus-mode-btn,
   .pb.journal-workspace .utility-trigger,
   .pb.journal-workspace .random-menu-trigger { @apply tw:min-w-[44px] tw:h-[44px]; }
-  .pb.journal-workspace .random-dice { @apply tw:min-h-[44px]; }
   .pb.journal-workspace .api-status { @apply tw:min-w-0; }
   .pb.journal-workspace .api-status .badge { @apply tw:max-w-full tw:whitespace-normal tw:text-left; }
   .pb.journal-workspace .stage-placeholder { @apply tw:min-h-[360px]; }
   .pb.journal-workspace .stage-quick-actions { @apply tw:flex-col; }
 }
-.pb.journal-workspace.focus-mode .pb-managed-route-banner, .pb.journal-workspace.focus-mode .drawing-jump-links { @apply tw:hidden; }
+.pb.journal-workspace.focus-mode .drawing-jump-links { @apply tw:hidden; }

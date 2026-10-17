@@ -2,23 +2,20 @@
   <Teleport to="body">
     <FluidTransition>
     <div v-if="open" class="batch-overlay" @click.self="emit('close')">
-      <section ref="panel" v-content-motion="`${batchMode}:${phase}`" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
+      <section ref="panel" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
         <header class="batch-head">
           <div>
             <span class="batch-step">BATCH · {{ batchMode === 'scene' ? 'SCENES' : 'CHARACTERS' }}</span>
             <h2>批量出图 · {{ batchMode === 'scene' ? '多场景蓝图' : '多角色漫游' }}</h2>
-            <p>{{ phase === 'config'
-              ? (batchMode === 'scene'
-                  ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。'
-                  : '使用当前词条，一次性勾选多位角色批量出图，成片自动归入各角色画廊。')
-              : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。' }}</p>
           </div>
           <button class="btn btn-ghost btn-icon" type="button" aria-label="关闭批量出图" @click="emit('close')"><ArchiveIcon name="close" /></button>
         </header>
-        <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
 
         <!-- ── 配置态 ── -->
         <template v-if="phase === 'config'">
+          <div v-content-motion="contentMotionKey" class="batch-body">
+          <p class="batch-description">{{ batchDescription }}</p>
+          <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
           <div class="batch-config-row">
             <div class="batch-field">
               <span class="field-label">模式</span>
@@ -129,6 +126,7 @@
             <button v-if="filteredCharacters.length > charLimit" class="btn btn-ghost" type="button" @click="charLimit += 30">再显示 30 位角色（共 {{ filteredCharacters.length }} 位匹配）</button>
           </template>
 
+          </div>
           <footer class="batch-foot">
             <span class="batch-hint">
               <template v-if="batchMode === 'scene'">
@@ -151,6 +149,9 @@
 
         <!-- ── 结果态（进行中与完成后统一，完成后不自动弹回配置）── -->
         <template v-else>
+          <div v-content-motion="contentMotionKey" class="batch-body">
+          <p class="batch-description">{{ batchDescription }}</p>
+          <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
           <div class="batch-progress-head">
             <strong>{{ isRunning ? (batchDraw.cancelRequested.value ? '当前张完成后停止…' : '正在逐张出图…') : (progress.unresolved ? '本批待核对' : progress.remaining ? '本批已暂停' : '本批完成') }}</strong>
             <span class="batch-count-label">
@@ -191,6 +192,7 @@
             </figure>
           </div>
 
+          </div>
           <footer class="batch-foot">
             <template v-if="isRunning">
               <span class="batch-hint">关闭面板可继续；离页保存计划，原任务保留，剩余项等待你继续</span>
@@ -250,7 +252,6 @@ import type { SceneBlueprint } from '@/utils/popularContent'
 const props = defineProps<{
   open: boolean
   scenes: SceneBlueprint[]
-  sdAvailable: boolean
   animaAvailable: boolean
   deps: PromptBatchRunnersDeps
 }>()
@@ -264,6 +265,10 @@ const panel = ref<HTMLElement | null>(null)
 const batchMode = ref<'scene' | 'character'>('scene')
 const count = ref<1 | 3>(1)
 const phase = ref<'config' | 'results'>('config')
+const contentMotionKey = ref<string | false>(false)
+const batchDescription = computed(() => phase.value === 'config'
+  ? batchMode.value === 'scene' ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。' : '使用当前词条，一次性勾选多位角色批量出图，成片自动归入各角色画廊。'
+  : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。')
 const previewJob = ref<BatchDrawJob | null>(null)
 const previewSource = ref<HTMLImageElement | null>(null)
 useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close') })
@@ -437,9 +442,11 @@ function placeholderText(job: BatchDrawJob): string {
 
 watch([filter, categoryFilter], () => { sceneLimit.value = 30 })
 watch([charFilter, franchiseFilter], () => { charLimit.value = 30 })
-watch(() => props.open, open => { if (!open) { previewJob.value = null; previewSource.value = null } })
+watch(() => props.open, open => { if (!open) { previewJob.value = null; previewSource.value = null; contentMotionKey.value = false } })
 watch(isRunning, running => { if (running) phase.value = 'results'; emit('running-change', running) }, { immediate: true })
 if (jobs.value.length) { phase.value = 'results'; batchMode.value = jobs.value[0].kind === 'character' ? 'character' : 'scene' }
+// The surface spring owns opening; only later mode/phase changes reveal this body.
+watch([batchMode, phase], () => { if (props.open) contentMotionKey.value = `${batchMode.value}:${phase.value}` })
 onDeactivated(() => { previewJob.value = null; previewSource.value = null })
 onUnmounted(() => batchDraw.dispose())
 </script>

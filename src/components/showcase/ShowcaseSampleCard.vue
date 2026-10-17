@@ -82,10 +82,6 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-title { grid-column:1 / -1; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-body-sm); }
 .sample-featured { display:inline-flex; margin-left:auto; color:var(--accent); }
 .sample-featured .archive-icon { width:14px; height:14px; }
-.sample-badges { justify-content:end; }
-.sample-category,.sample-open-hint { display:none; }
-.sample-badge { @apply tw:inline-flex tw:items-center tw:gap-s-1; padding:var(--s-1) var(--s-2); border:0; @apply tw:rounded-pill tw:text-accent; background:var(--accent-soft); @apply tw:text-label-xs; }
-.sample-badge-type { @apply tw:text-secondary; background:var(--bg-base); }
 @media (hover: hover) and (pointer: fine) {
   :root body .showcase-page .sample:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
   .sample:not(.sample-r18):hover:not(:has(:focus-visible)) .sample-image { transform:scale(var(--card-focus-scale)); }
@@ -94,7 +90,7 @@ const emit = defineEmits<{ open: [id: string] }>()
   .sample-r18:hover .sample-sensitive { opacity:0; }
 }
 .sample-r18:focus-within .sample-sensitive { opacity:0; }
-@media (max-width: 480px) { .sample-caption { @apply tw:p-s-3; } .sample-open-hint { @apply tw:hidden; } .sample-title { @apply tw:text-body-sm; } }
+@media (max-width: 480px) { .sample-caption { @apply tw:p-s-3; } .sample-title { @apply tw:text-body-sm; } }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .sample-image, :root:not([data-motion='full']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-image,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); }

@@ -1,6 +1,5 @@
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
 import { downloadBlob } from '../utils/downloadBlob.ts'
-import { copyText } from '../utils/clipboard.ts'
 /**
  * 控制面板 · 操作编排（从 ControlView.vue 拆出）。
  *
@@ -36,12 +35,6 @@ export function useControlActions(
     const text = String(error ?? '').trim()
     return text || fallback
   }
-  async function copy(text: string) {
-    if (!text) return
-    const copied = await copyText(text)
-    showToast(copied ? '已复制到剪贴板' : '复制未完成，请选中内容后手动复制', !copied)
-  }
-
   function toggleTunnel() {
     if (status.actionBusy.value || status.opBusy.value) return
     tunnelEnabled.value = !tunnelEnabled.value
@@ -211,7 +204,7 @@ export function useControlActions(
   }
 
   return {
-    tunnelEnabled, errorMessage, copy, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
+    tunnelEnabled, errorMessage, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
     serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag,
     buildWeb, buildingWeb,
   }

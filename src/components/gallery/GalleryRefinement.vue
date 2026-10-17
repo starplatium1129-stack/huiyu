@@ -111,7 +111,9 @@ defineExpose({ focusTag })
 .gallery-refine-toggle { display:flex; align-items:center; gap:var(--s-2); flex-shrink:0; min-height:var(--control-height); padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); background:var(--bg-surface); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; }
 .gallery-refine-toggle[aria-expanded='true'] { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
 .gallery-refine-toggle > .archive-icon { width:16px; height:16px; }
+.gallery-refine-toggle > .archive-icon:last-child { transition:transform var(--spring-gentle-duration) var(--spring-gentle-ease); }
 .gallery-refine-toggle[aria-expanded='true'] > .archive-icon:last-child { transform:rotate(180deg); }
+.gallery-refine-toggle:focus-visible > .archive-icon:last-child { transition:none; }
 .gallery-refine-count { min-width:var(--s-5); color:var(--accent); font-variant-numeric:tabular-nums; text-align:center; }
 .gallery-active-filters { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); flex:1 0 100%; min-width:0; }
 .gallery-active-label { color:var(--text-secondary); font-size:var(--fs-label-sm); }
@@ -132,4 +134,6 @@ defineExpose({ focusTag })
   .gallery-project-field { flex:1 1 100%; }
   .gallery-filter-chip,.gallery-refine-toggle { min-height:44px; }
 }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .gallery-refine-toggle > .archive-icon:last-child { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .gallery-refine-toggle > .archive-icon:last-child { transition:none; }
 </style>

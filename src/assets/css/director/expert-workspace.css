@@ -12,6 +12,7 @@
 .pb .anima-prompt-details textarea { margin-block: 6px; }
 .pb .director-inspector .result-frame { @apply tw:m-0; }
 .pb .director-inspector #stepResult { @apply tw:min-h-0; }
+.pb .material-content { scroll-padding-block:var(--s-2); }
 .pb[data-director-mode="basic"] .inspector-section[data-panel="style"] { @apply tw:hidden; }
 .pb[data-director-mode="basic"] .inspector-scroll { @apply tw:flex tw:flex-col tw:gap-s-4; }
 .pb[data-director-mode="basic"] .inspector-section { @apply tw:shrink-0; }
@@ -19,13 +20,6 @@
 .pb[data-director-mode] .inspector-scroll { @apply tw:p-s-4 tw:overflow-y-auto; scrollbar-width: thin; overscroll-behavior: contain; @apply tw:min-h-0; }
 .pb[data-director-mode="pro"] .director-inspector .panel,
 .pb[data-director-mode="pro"] .director-inspector .result-frame { border: 0; box-shadow: none; background: transparent; @apply tw:p-0; }
-.pb .inspector-route { @apply tw:text-secondary tw:text-label; }
-.pb .inspector-route summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[40px] tw:p-s-3 tw:rounded-md tw:cursor-pointer; border:0; background:var(--bg-base); list-style:none; }
-.pb .inspector-route summary::-webkit-details-marker { display: none; }
-.pb .inspector-route summary:hover { background: var(--bg-hover); color: var(--text-primary); }
-.pb .inspector-route summary:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-.pb .inspector-route[open] > summary > .archive-icon:last-child { transform: rotate(180deg); }
-.pb .inspector-route .pb-managed-route-banner { margin: var(--s-3) 0 0; }
 .pb .result-shelf { border:0; background:transparent; padding:0; }
 .pb .shelf-preview .zoomable-image-viewer { display:grid; grid-template-rows:minmax(0,1fr) 48px; }
 .pb .shelf-preview .zoom-toolbar { position:relative; display:grid; place-items:center; min-height:48px; }
@@ -42,32 +36,18 @@
   .pb.journal-workspace[data-director-mode] .result-image-wrap { @apply tw:h-full tw:flex tw:flex-col tw:overflow-hidden; }
   .pb.journal-workspace[data-director-mode] .result-image { flex: 1; @apply tw:w-full tw:min-h-0; max-height: none; @apply tw:object-contain; }
   .pb.journal-workspace[data-director-mode] .result-image-actions { @apply tw:shrink-0; }
-  .pb.journal-workspace[data-director-mode] .material-drawer { --scene-list-max-height: none; @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }
+  .pb.journal-workspace[data-director-mode] .material-drawer { @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }
   .pb.journal-workspace[data-director-mode] .material-heading,
   .pb.journal-workspace[data-director-mode] .material-switch { @apply tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .material-content { flex: 1; @apply tw:min-h-0 tw:overflow-y-auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-gutter: stable; }
-  /* Scene filters stay above the results. Only windows too short for the filters
-     and 120px of results need the material-content fallback scrollbar. */
-  .pb.journal-workspace[data-director-mode] .material-content:has(> #stepScene > .scene-list) { @apply tw:flex tw:flex-col; }
-  .pb.journal-workspace[data-director-mode] #stepScene:has(> .scene-list) { @apply tw:flex tw:flex-col; flex: 1; @apply tw:min-h-0; }
-  .pb.journal-workspace[data-director-mode] #stepScene > :not(.scene-list) { @apply tw:shrink-0; }
-  .pb.journal-workspace[data-director-mode] #stepScene > .scene-list { flex: 1; @apply tw:min-h-[120px]; scrollbar-gutter: stable; }
-  .pb.journal-workspace[data-director-mode] #stepScene > .scene-list > * { @apply tw:shrink-0; }
 }
-@media (max-width: 900px) {
+/* Stacked rails use one bounded reading area for fields, filters and results. */
+@media (max-width: 1023px) {
   .pb.journal-workspace .material-content { @apply tw:max-h-[420px] tw:overflow-y-auto; }
 }
 
 /* Parameter cards follow the inspector width, including on wide desktop screens. */
-.pb .director-inspector .expert-tags-header { @apply tw:flex-wrap tw:items-start tw:leading-body; }
-.pb .director-inspector .expert-tags-actions { @apply tw:ml-0 tw:flex-wrap; }
-.pb .director-inspector .expert-tag-panel .tag-results { grid-template-columns: repeat(auto-fit, minmax(min(100%, 145px), 1fr)); @apply tw:gap-s-2; }
-.pb .director-inspector .outfit-preset-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
-.pb .director-inspector .outfit-preset strong,
-.pb .director-inspector .outfit-preset small { @apply tw:whitespace-normal; overflow-wrap: anywhere; @apply tw:leading-body; }
 .pb .director-inspector .decision-summary { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr) auto; @apply tw:gap-s-2; padding-block: var(--s-2); }
 .pb .director-inspector .decision-summary > span:first-child { grid-column: 1; }
 .pb .director-inspector .decision-current { grid-row: 1; grid-column: 2; @apply tw:m-0; max-width: none; @apply tw:text-right tw:whitespace-normal; overflow-wrap: anywhere; @apply tw:leading-body; }
 .pb .director-inspector .decision-summary::after { grid-row: 1; grid-column: 3; }
-.pb .director-inspector .manual-tag { @apply tw:max-w-full; overflow-wrap: anywhere; }
-.pb .director-inspector .tag-categories { @apply tw:flex-wrap; }

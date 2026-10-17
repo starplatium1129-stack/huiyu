@@ -152,7 +152,7 @@
   --fs-body-lg:  1rem;     /* DESIGN.md typography.body */
   --fs-title-xs: 1.05rem;  /* 卡片标题 */
   --fs-title-sm: 1.2rem;   /* h3 */
-  --fs-title:    1.5rem;   /* h2 / DESIGN.md typography.heading */
+  --fs-title:    1.6rem;   /* 24px at the default 15px UI root; DESIGN.md Layout */
   --fs-display:  2.2rem;   /* h1 / DESIGN.md typography.display */
   /* 装饰性字形槽(空状态占位图标、画面回退符),不参与文字层级 */
   --fs-glyph:    2rem;
@@ -415,7 +415,7 @@ body > *:has(+ .footer),
 .nav-links :is(> a, .studio-tooltip-anchor > a, a).active::after { opacity:0; }
 .nav-more { @apply tw:relative; }
 .nav-more-trigger {
-  @apply tw:flex tw:items-center tw:gap-[5px]; list-style:none; @apply tw:cursor-pointer tw:min-h-[36px]; border:0; background:transparent; font-family:inherit;
+  @apply tw:flex tw:items-center tw:gap-[5px]; list-style:none; @apply tw:cursor-pointer; min-height:var(--control-height); border:0; background:transparent; font-family:inherit;
   @apply tw:text-secondary; padding:6px 10px; @apply tw:rounded-md tw:text-body-sm tw:font-semibold; transition:transform var(--motion-press) var(--ease-out);
 }
 .nav-more-trigger:disabled { @apply tw:text-disabled; cursor:wait; }
@@ -424,27 +424,6 @@ body > *:has(+ .footer),
 }
 .nav-more-chevron { @apply tw:text-label-xs; transition:transform var(--motion-hover); }
 .nav-more-trigger[aria-expanded="true"] .nav-more-chevron { transform:rotate(180deg); }
-.nav-more-menu {
-  @apply tw:p-[8px] tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-[4px];
-  background:var(--glass-fill-strong); border:1px solid var(--glass-edge);
-  @apply tw:rounded-lg; box-shadow:var(--shadow-lg);
-  -webkit-backdrop-filter:blur(24px) saturate(145%); backdrop-filter:blur(24px) saturate(145%);
-}
-.nav-more-group-label {
-  grid-column:1 / -1;
-  margin:6px 2px 2px;
-  @apply tw:pt-[6px];
-  border-top:1px solid color-mix(in srgb, var(--border-soft) 60%, transparent);
-  @apply tw:text-muted;
-  font:700 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing:.14em;
-  @apply tw:uppercase;
-}
-.nav-more-group-label:first-child { @apply tw:mt-0; border-top:0; @apply tw:pt-0; }
-.nav-more-menu a {
-  @apply tw:flex tw:items-center tw:gap-[7px] tw:rounded-md;
-  padding:9px 10px; @apply tw:text-label-sm tw:whitespace-nowrap;
-}
 .nav-links .archive-icon { @apply tw:w-[1.05em] tw:h-[1.05em]; }
 
 /* ---- Local atelier status ---- */
@@ -549,8 +528,7 @@ body > *:has(+ .footer),
 .nav-back:hover { @apply tw:text-accent; }
 
 .page-kicker,
-.pb-kicker,
-.gallery-kicker {
+.pb-kicker {
   @apply tw:flex tw:items-center tw:gap-[8px] tw:mb-[6px] tw:text-muted;
   font: 650 var(--fs-mono-sm) var(--font-mono);
   letter-spacing: 0.13em;
@@ -563,11 +541,6 @@ body > *:has(+ .footer),
   background: linear-gradient(90deg, var(--accent), var(--accent-hover));
   box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 30%, transparent);
   transform: rotate(-2deg);
-}
-.gallery-kicker {
-  @apply tw:text-accent;
-  font-weight: 750;
-  letter-spacing: 0.16em;
 }
 
 .page-title {
@@ -856,7 +829,10 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 .btn-sm { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-3); @apply tw:text-label-sm tw:rounded-sm; }
 .btn-lg { @apply tw:min-h-[52px]; padding: var(--s-3) var(--s-6); @apply tw:text-title-xs tw:rounded-md; }
 /* 图标按钮:DESIGN.md 禁止图标唯一化关键操作,故必须带 aria-label */
-.btn-icon { @apply tw:min-w-[40px] tw:p-s-2; }
+.btn-icon { min-width:var(--control-height); padding:var(--s-2); }
+.btn-icon.btn-sm { min-width:var(--control-height-sm); padding:var(--s-1); }
+:root .btn-icon > .archive-icon { width:20px; height:20px; }
+:root .btn-icon.btn-sm > .archive-icon { width:16px; height:16px; }
 .btn-block { @apply tw:w-full; }
 /* 主入口的光晕:只在 .btn-lg.btn-primary 上出现一次,避免每页自定义阴影 */
 .btn-lg.btn-primary { box-shadow: var(--shadow-sm); }
@@ -1483,28 +1459,10 @@ body:has(.pb) .route-atmosphere .route-index {
 }
 .flash-value { animation: flash-accent .9s var(--ease-out) both; }
 
-/* Theme changes composite two complete frames, including teleported overlays.
-   Suppress local interpolation only while capturing the final palette. */
-:root[data-theme-transition] *,
-:root[data-theme-transition] *::before,
-:root[data-theme-transition] *::after { transition: none !important; }
-:root[data-theme-transition]::view-transition { pointer-events: none; }
-:root[data-theme-transition]::view-transition-group(root),
-:root[data-theme-transition]::view-transition-old(root) { animation: none; }
-:root[data-theme-transition]::view-transition-new(root) {
-  mix-blend-mode: normal;
-  animation: theme-frame-in var(--motion-control) var(--ease-out) both;
-}
-@keyframes theme-frame-in { from { opacity: 0; } to { opacity: 1; } }
-:root:is([data-motion='reduce'], [data-reduced-motion='true'])::view-transition-new(root) { animation: none; }
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full'])::view-transition-new(root) { animation: none; }
-}
-/* 禁止为动画元素叠加颜色过渡（避免闪烁） */
-[data-no-theme-transition],
-[data-no-theme-transition] * {
-  transition: none !important;
-}
+/* Theme colors commit together; local control motion remains available. */
+:root[data-theme-changing] *,
+:root[data-theme-changing] *::before,
+:root[data-theme-changing] *::after { transition-property:transform,opacity !important; }
 
 /* At narrow desktop widths the existing compact menu keeps labels and tools
    separate. The full navigation fits from the shared 1000px breakpoint. */
@@ -1595,7 +1553,7 @@ summary::-webkit-details-marker {
 
 /* ── 排版节奏：叙事行宽 ──
    subtitle / hint / note 等引导语限宽，避免整行撑满后阅读感散掉 */
-:where(.subtitle, .hero-sub, .hint, .note, .page-subtitle, .chat-subtitle, .gallery-subtitle) {
+:where(.subtitle, .hero-sub, .hint, .note, .page-subtitle, .gallery-subtitle) {
   max-width: 62ch;
 }
 
@@ -1674,9 +1632,6 @@ kbd,
 :where(
   .chip,
   .char-outfit-tab,
-  .artist-combo-btn,
-  .history-action,
-  .btn-upload-overlay,
   .pop-franchise,
   .pop-char-btn,
   .prompt-tag,

@@ -1,5 +1,5 @@
 <template>
-  <div class="browsing-directory tw:sticky tw:top-[82px] tw:min-w-0">
+  <div class="browsing-directory tw:sticky tw:min-w-0">
     <button v-if="narrow" ref="trigger" type="button" class="directory-pocket" data-fluid-glass aria-haspopup="dialog"
       :aria-label="'选择角色，当前' + (selected?.name || '未选择')" @click="openDirectory">
       <CharacterPortrait :src="resolveRuntimeUrl(selected?.image)" :name="selected?.name || '角色'" />
@@ -44,7 +44,7 @@ const motion = useFluidDialog(dialog)
 function openDirectory() {
   motion.open(trigger.value)
   void nextTick(() => {
-    dialog.value?.querySelector('input')?.focus({ preventScroll: true })
+    dialog.value?.querySelector<HTMLInputElement>('.directory-search input')?.focus({ preventScroll: true })
     dialog.value?.querySelector('.directory-item[aria-pressed="true"]')?.scrollIntoView({ block: 'nearest' })
   })
 }
@@ -63,6 +63,7 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 
 <style scoped>
 @reference "../../assets/css/tailwind.css";
+.browsing-directory { top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-visible-height,80px) + var(--s-2)); }
 .browsing-directory :deep(.character-directory) { @apply tw:static; }
 .directory-pocket { @apply tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[80px] tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:text-primary tw:text-left tw:cursor-pointer; }
 .directory-pocket:not(:disabled):not(:focus-visible):hover { outline:none; box-shadow:var(--focus-shadow); }

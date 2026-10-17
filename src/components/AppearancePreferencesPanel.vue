@@ -1,18 +1,18 @@
 <template>
   <Teleport to="body">
     <dialog ref="dialog" class="appearance-dialog" aria-labelledby="appearance-title" @close="restoreFocus" @cancel.prevent="fluidDialog.close()" @click="backdropClose">
-      <div class="appearance-heading" data-fluid-glass>
+      <header class="appearance-heading">
         <div><h2 id="appearance-title">{{ section === 'keyboard' ? '键盘快捷键' : '外观与动态效果' }}</h2><p v-if="section === 'appearance'" class="appearance-save-note">自动保存</p></div>
-        <button class="appearance-close" type="button" aria-label="关闭" @click="fluidDialog.close()"><ArchiveIcon name="close" /></button>
-      </div>
-      <div v-if="section === 'appearance'" v-content-motion:up="section" class="appearance-fields">
+        <button class="btn btn-quiet btn-icon appearance-close" type="button" aria-label="关闭" @click="fluidDialog.close()"><ArchiveIcon name="close" /></button>
+      </header>
+      <div v-if="section === 'appearance'" v-content-motion:up="section" class="appearance-content appearance-fields">
         <fieldset class="appearance-choice-field">
           <legend>界面风格</legend>
           <RadioGroupRoot v-model="selectedStyle" class="appearance-style-choices" aria-label="界面风格">
             <RadioGroupItem v-for="choice in styleChoices" :key="choice.value" :value="choice.value" :data-value="choice.value"
               @focus="selectedStyle = choice.value">
               <span class="appearance-style-preview" :class="choice.value" aria-hidden="true"><i></i><i></i><i></i></span>
-              <strong>{{ choice.label }}</strong>
+              <span class="appearance-style-label"><strong>{{ choice.label }}</strong><ArchiveIcon v-if="selectedStyle === choice.value" name="success" /></span>
             </RadioGroupItem>
           </RadioGroupRoot>
         </fieldset>
@@ -40,15 +40,17 @@
         </ToggleSwitch>
         <p v-if="themeStyle === 'atelier'" class="appearance-note">系统开启减少透明度或高对比度时，会自动降低玻璃效果。</p>
       </div>
-      <dl v-else v-content-motion:up="section" class="appearance-shortcuts">
-        <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>
-        <div><dt><kbd>←</kbd> <kbd>→</kbd> / <kbd>Home</kbd> <kbd>End</kbd></dt><dd>主导航内移动焦点</dd></div>
-        <div><dt><kbd>Enter</kbd></dt><dd>打开聚焦的导航页面</dd></div>
-        <div><dt><kbd>Ctrl / ⌘ K</kbd></dt><dd>搜索页面、场景与作品</dd></div>
-        <div><dt><kbd>Tab</kbd> / <kbd>Shift Tab</kbd></dt><dd>依次访问操作与表单</dd></div>
-        <div><dt><kbd>Esc</kbd></dt><dd>关闭当前弹窗</dd></div>
-        <div><dt><kbd>Ctrl + / − / 0</kbd></dt><dd>{{ zoomAvailable ? '界面缩放 / 恢复 100%（自动保存）' : '浏览器缩放 / 恢复 100%' }}</dd></div>
-      </dl>
+      <div v-else v-content-motion:up="section" class="appearance-content" tabindex="0" role="region" aria-label="快捷键列表">
+        <dl class="appearance-shortcuts">
+          <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>
+          <div><dt><kbd>←</kbd> <kbd>→</kbd> / <kbd>Home</kbd> <kbd>End</kbd></dt><dd>主导航内移动焦点</dd></div>
+          <div><dt><kbd>Enter</kbd></dt><dd>打开聚焦的导航页面</dd></div>
+          <div><dt><kbd>Ctrl / ⌘ K</kbd></dt><dd>搜索页面、场景与作品</dd></div>
+          <div><dt><kbd>Tab</kbd> / <kbd>Shift Tab</kbd></dt><dd>依次访问操作与表单</dd></div>
+          <div><dt><kbd>Esc</kbd></dt><dd>关闭当前弹窗</dd></div>
+          <div><dt><kbd>Ctrl + / − / 0</kbd></dt><dd>{{ zoomAvailable ? '界面缩放 / 恢复 100%（自动保存）' : '浏览器缩放 / 恢复 100%' }}</dd></div>
+        </dl>
+      </div>
     </dialog>
   </Teleport>
 </template>

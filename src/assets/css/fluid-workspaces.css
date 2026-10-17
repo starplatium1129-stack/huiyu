@@ -10,35 +10,29 @@
 }
 
 /* Browse: shared rounded surfaces; page styles own layout, not the material. */
-html :is(.gallery-page, .scene-discovery) {
-  font-size: var(--fs-body-sm);
-  --fs-body: var(--fs-body-sm);
-  --fs-label: var(--fs-label-xs);
-  --fs-label-sm: var(--fs-label-xs);
-}
 html .gallery-page .gallery-toolbar,
 html .showcase-page .toolbar-shell,
 html .scene-discovery .scene-toolbar,
 html .library-page .pop-toolbar {
   @apply tw:p-s-3;
   border: 1px solid var(--border-soft);
-  @apply tw:rounded-xl;
+  @apply tw:rounded-lg;
   background: var(--bg-surface);
   box-shadow: var(--workspace-inset);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 /* Fields are painted controls; only their teleported menus use floating glass. */
-html :is(.gallery-toolbar, .scene-toolbar) :is(.studio-search, .studio-select-trigger, .studio-segments[role]) {
+html :is(.gallery-toolbar, .scene-toolbar, .pop-toolbar) :is(.studio-search, .studio-select-trigger, .studio-segments[role]) {
   border-radius:var(--r-md);
   background:var(--bg-surface);
   -webkit-backdrop-filter:none;
   backdrop-filter:none;
 }
-html :is(.gallery-toolbar, .scene-toolbar) :is(.studio-search, .studio-select-trigger) {
+html :is(.gallery-toolbar, .scene-toolbar, .pop-toolbar) :is(.studio-search, .studio-select-trigger) {
   border:1px solid var(--border-soft);
 }
-html :is(.gallery-toolbar, .scene-toolbar) .studio-search[data-size='md'] .studio-search-input {
+html :is(.gallery-toolbar, .scene-toolbar, .pop-toolbar) .studio-search[data-size='md'] .studio-search-input {
   min-height:calc(var(--control-height) - 2px);
 }
 html .scene-discovery .scene-toolbar::before { @apply tw:hidden; }
@@ -54,20 +48,17 @@ html .scene-discovery .scene-search {
    边框、底色与悬停强调色由组件触发器统一提供。 */
 html .gallery-page .gallery-filter,
 html .showcase-page .filter-pill,
-html .scene-discovery .scene-cat,
-html .library-page :is(.pop-cat, .pop-rating-pill) {
+html .scene-discovery .scene-cat {
   min-height: var(--control-height);
 }
 html .gallery-page .gallery-toolbar-note { font-variant-numeric: tabular-nums; }
 /* 焦点由控件自身和 design-system 的低优先级兜底负责，页面层不再次覆盖。 */
 html .gallery-page .artwork,
-html .showcase-page .sample,
-html .library-page .pop-card {
+html .showcase-page .sample {
   @apply tw:rounded-lg;
 }
 html .gallery-page .artwork:not(.artwork-selected),
-html .showcase-page .sample,
-html .library-page .pop-card {
+html .showcase-page .sample {
   box-shadow: var(--workspace-inset);
   transition: transform var(--motion-surface) var(--ease-out);
 }
@@ -76,82 +67,7 @@ html .scene-discovery .scene-facet-panel {
   background: var(--bg-surface);
 }
 
-/* Character archives keep the full portrait and a quiet, separate reading page. */
-html .character-page .voice-block {
-  @apply tw:rounded-lg;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-soft);
-  @apply tw:p-s-4 tw:leading-loose;
-}
-html .character-page :is(.bg-story, .recommend-section) {
-  @apply tw:rounded-xl;
-  background: var(--bg-surface);
-  box-shadow: var(--workspace-inset);
-}
-html .character-page .char-outfit-tabs {
-  @apply tw:gap-s-2 tw:p-s-2;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-lg;
-  background: var(--bg-base);
-}
-
 /* Creative references: navigation is a small shelf; color chips stay unfiltered. */
-html .page .creative-library-nav {
-  @apply tw:gap-s-1 tw:p-s-2;
-  border: 1px solid var(--workspace-edge);
-  @apply tw:rounded-lg;
-  background: var(--bg-surface);
-  box-shadow: var(--workspace-inset);
-}
-html .style-page .style-mood-card,
-html .page:has(> .lighting-ref) .mood-card {
-  @apply tw:rounded-xl;
-  background: var(--bg-surface);
-  box-shadow: var(--workspace-inset);
-  transition: transform var(--motion-surface) var(--ease-out);
-}
-html .style-page .style-mood-card .mood-go {
-  opacity: 1;
-  transform: none;
-}
-html .style-page .style-tips { @apply tw:rounded-xl; background: var(--bg-surface); }
-html .page:has(> .model-search-row) .model-search-row {
-  @apply tw:flex-wrap tw:gap-s-3 tw:p-s-3;
-  border: 1px solid var(--workspace-edge);
-  @apply tw:rounded-lg;
-  background: var(--bg-surface);
-  box-shadow: var(--workspace-inset);
-}
-html .page:has(> .model-search-row) .lora-card {
-  @apply tw:rounded-xl;
-  box-shadow: var(--workspace-inset);
-  transition: transform var(--motion-surface) var(--ease-out);
-}
-html .page:has(> .lighting-ref) .result-panel {
-  @apply tw:border-strong;
-  box-shadow: var(--workspace-inset);
-}
-html .page:has(> .lighting-ref) :is(.prompt-code, .mapping-item) {
-  background: var(--bg-base);
-  border: 1px solid var(--border-soft);
-}
-html .page:has(> .lighting-ref) .lighting-mini { @apply tw:rounded-lg; }
-
-/* Scenario readers: the selected story is navigational, each act is a page. */
-html .scenario-page .scenario-list {
-  @apply tw:gap-s-2 tw:p-s-2;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-xl;
-  background: var(--bg-base);
-}
-html .scenario-page .scenario-list .scenario-card { @apply tw:rounded-lg; }
-html .scenario-page .viewer .viewer-header-row {
-  border-color: var(--workspace-edge);
-  box-shadow: var(--workspace-lift);
-}
-html .scenario-page .act { box-shadow: var(--workspace-inset); }
-html .scenario-page .prompt-code { background: var(--bg-base); border: 1px solid var(--border-soft); }
-
 /* Drawing: small chrome receives depth, large prompts and preview stay stable. */
 html .pb.journal-workspace :is(.panel, .result-frame) { box-shadow: var(--workspace-inset); }
 html .pb.journal-workspace .panel-title { @apply tw:leading-label; }
@@ -163,7 +79,7 @@ html .video-studio .video-mode-strip {
   @apply tw:rounded-xl;
   background: var(--bg-base);
 }
-html .video-studio .video-mode-card { @apply tw:rounded-lg; box-shadow: none; }
+html .video-studio .video-mode-card { border-radius:var(--r-sm); box-shadow:none; }
 html .video-studio .video-mode-card.active { box-shadow: var(--workspace-inset); }
 html .video-studio .video-panel {
   background: var(--bg-surface);
@@ -188,50 +104,12 @@ html .chat-page .chat-input {
 }
 html .chat-page .chat-starters { @apply tw:gap-s-2; }
 
-/* Independent windows: do not alter transparent root/stage/native pet hit area. */
-html .companion-page .companion-toolbar {
-  @apply tw:rounded-xl;
-  box-shadow: var(--workspace-lift);
-}
-html .companion-page .companion-composer {
-  border-color: var(--workspace-edge);
-  @apply tw:rounded-xl;
-  background: var(--bg-surface);
-  box-shadow: var(--workspace-lift);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-html .companion-page .companion-composer .companion-input { @apply tw:rounded-md tw:leading-loose; }
-
 /* Operational workspaces: structure via tone, never obscure logs or statuses. */
 html .control-page .control-rail { box-shadow: inset -1px 0 var(--glass-highlight); }
 html .control-page :is(.status-tile, .panel-card) { box-shadow: var(--workspace-inset); }
 html .control-page .log-wrap { background: var(--bg-base); @apply tw:rounded-lg; }
-html .scene-maintenance-page .manager-nav {
-  border-color: var(--workspace-edge);
-  @apply tw:rounded-xl;
-  box-shadow: var(--workspace-inset);
-}
-html .scene-maintenance-page .catalog-workspace { @apply tw:rounded-xl; }
-html .scene-maintenance-page .inspector-header { box-shadow: var(--workspace-inset); }
-html .scene-maintenance-page .catalog-browser { background: var(--bg-base); }
-html .scene-maintenance-page .table-wrap { @apply tw:rounded-lg; }
 
-/* Home and recovery: retain the editorial hero and make destinations tactile. */
-html .home-page .tool-card {
-  @apply tw:rounded-xl;
-  transition: transform var(--motion-surface) var(--ease-out);
-}
-html .home-page .hero-muses {
-  --selection-radius: var(--r-pill);
-  --selection-shadow: inset 0 1px var(--glass-highlight);
-  @apply tw:flex-nowrap tw:gap-s-1 tw:p-s-1;
-  width: fit-content;
-  @apply tw:max-w-full;
-  border: 1px solid var(--workspace-edge);
-  @apply tw:rounded-pill;
-  background: var(--bg-surface);
-}
+/* Recovery actions share the workspace surface. */
 html .notfound-page .notfound-actions {
   @apply tw:p-s-3;
   border: 1px solid var(--workspace-edge);
@@ -242,11 +120,7 @@ html .notfound-page .notfound-actions {
 
 @media (hover: hover) and (pointer: fine) {
   html .gallery-page .artwork:hover,
-  html .showcase-page .sample:hover,
-  html .library-page .pop-card:hover,
-  html .page:has(> .model-search-row) .lora-card:hover,
-  html .style-page .style-mood-card:hover,
-  html .home-page .tool-card:hover { transform: translateY(-2px); }
+  html .showcase-page .sample:hover { transform: translateY(-2px); }
 }
 @media (max-width: 600px) {
   html :is(.gallery-page, .showcase-page, .scene-discovery, .library-page) :is(.gallery-toolbar, .toolbar-shell, .scene-toolbar, .pop-toolbar) :is(input:not([type='checkbox']):not([type='radio']), select, button) { @apply tw:min-h-[44px]; }
@@ -256,19 +130,15 @@ html .notfound-page .notfound-actions {
   html .control-mobile-nav .nav-local-actions { @apply tw:w-full tw:justify-end; }
   html .control-mobile-nav .nav-local-actions > * { @apply tw:shrink-0; }
   html .control-mobile-nav .nav-local-home { @apply tw:whitespace-nowrap tw:mr-auto; }
-  html .scene-maintenance-page .sm-head-actions { @apply tw:flex tw:flex-wrap; }
-  html .scene-maintenance-page .sm-head-actions > .btn { @apply tw:whitespace-nowrap; flex: 1 0 auto; }
   html .gallery-page .gallery-toolbar { @apply tw:gap-s-2 tw:p-s-2; }
   html .gallery-page .gallery-search-field { max-width: none; flex-basis: 100%; }
   html .gallery-page .gallery-toolbar-note { @apply tw:whitespace-normal tw:ml-0; }
-  html .page:has(> .model-search-row) .model-search-row input { @apply tw:w-full; }
   html .video-studio .video-mode-strip { @apply tw:p-s-1; }
-  html .scenario-page .viewer .viewer-header-row { @apply tw:static; }
   html .notfound-page .notfound-actions { @apply tw:w-full; }
 }
 @media (prefers-reduced-motion: reduce) {
-  html:not([data-motion='full']) .gallery-page .artwork, html:not([data-motion='full']) .showcase-page .sample, html:not([data-motion='full']) .library-page .pop-card, html:not([data-motion='full']) .page:has(> .model-search-row) .lora-card, html:not([data-motion='full']) .style-page .style-mood-card, html:not([data-motion='full']) .home-page .tool-card { transition: none; }
-  html:not([data-motion='full']) .gallery-page .artwork:hover, html:not([data-motion='full']) .showcase-page .sample:hover, html:not([data-motion='full']) .library-page .pop-card:hover, html:not([data-motion='full']) .page:has(> .model-search-row) .lora-card:hover, html:not([data-motion='full']) .style-page .style-mood-card:hover, html:not([data-motion='full']) .home-page .tool-card:hover { transform: none; }
+  html:not([data-motion='full']) .gallery-page .artwork, html:not([data-motion='full']) .showcase-page .sample { transition: none; }
+  html:not([data-motion='full']) .gallery-page .artwork:hover, html:not([data-motion='full']) .showcase-page .sample:hover { transform: none; }
   html:not([data-motion='full']) .gallery-page .artwork:hover .artwork-image { transform: none; }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {

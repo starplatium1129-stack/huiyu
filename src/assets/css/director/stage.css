@@ -21,15 +21,6 @@
       min-height: clamp(420px, 48vh, 580px);
       @apply tw:max-h-[620px];
     }
-    .pb .story-input {
-      @apply tw:min-h-[80px];
-    }
-    .pb .visual-description-input {
-      @apply tw:min-h-[72px];
-    }
-    .pb .scene-list {
-      max-height: min(55vh, 680px);
-    }
   }
   /* 位置与表面合并于此(原先 :703 又声明了一次 left/right/top/padding/border/radius) */
    .pb .stage-chrome {
@@ -118,19 +109,13 @@
   .pb.focus-mode .col-left, .pb.focus-mode .col-right, .pb.focus-mode .history-wrap, .pb.focus-mode .collapsible,
   .pb.focus-mode .footer { @apply tw:hidden!; }
   .pb.focus-mode .api-status, .pb.focus-mode .utility-menu,
-  .pb.focus-mode .col-center > .monitor, .pb.focus-mode .col-center > .generation-settings { @apply tw:hidden!; }
+  .pb.focus-mode .col-center > .generation-settings { @apply tw:hidden!; }
   /* 专注成片模式：配音面板（含折叠态）整体不占舞台——配音是独立工序，出片时不需要 */
   .pb.focus-mode .voice-studio { @apply tw:hidden!; }
   .pb.focus-mode .pb-topline { @apply tw:items-center tw:justify-end tw:mb-s-3; }
   /* 专注成片：舞台恢复大尺寸（单列全宽），输出控制台保持紧凑防空位 */
   .pb.focus-mode .stage-placeholder { min-height:clamp(380px, 46vh, 560px); }
   .pb.focus-mode #stepResult { min-height:clamp(300px, 40vh, 420px); }
-  /* Prompt 监视器默认折叠 */
-  .pb .monitor-preview-collapsed .preview-output,
-  .pb .monitor-preview-collapsed .token-row,
-  .pb .monitor-preview-collapsed .art-warn { @apply tw:hidden; }
-  .pb .monitor-toggle { @apply tw:inline-block tw:ml-auto tw:text-label-sm; opacity:0.7; @apply tw:cursor-pointer; }
-  .pb .monitor-toggle:hover { opacity:1; }
   /* Step workflow */
   .pb .stepbar { @apply tw:flex tw:items-center tw:gap-0; padding:var(--s-3) 0 var(--s-5); }
   /* Vue SPA 始终展示输出面板；旧 step-4 流程仅抬高高度。
@@ -139,45 +124,6 @@
   .pb #stepResult { @apply tw:flex tw:flex-col tw:gap-s-3; }
   .pb.has-result #stepResult { min-height:clamp(300px, 40vh, 420px); }
   .pb #stepResult > .panel-title { order:0; @apply tw:mb-0; }
-   .pb #stepResult > .voice-studio { order:4; @apply tw:w-full; max-width:none; @apply tw:overflow-hidden tw:static; }
-  /* Scene 卡片色带(按分类着色,直观区分场景类型) */
-  .pb .scene-card { @apply tw:relative tw:p-0; background:var(--bg-surface); border:1px solid var(--border-soft); @apply tw:rounded-md; transition:border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out); @apply tw:overflow-hidden tw:shrink-0 tw:min-h-0; }
-  .pb .scene-card:hover, .pb .scene-card:focus-within { @apply tw:border-strong; }
-  .pb .scene-card::before { content:''; @apply tw:absolute tw:left-0 tw:top-0 tw:bottom-0 tw:w-[4px]; border-radius:var(--r-md) 0 0 var(--r-md); }
-  .pb .scene-card-main { @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:min-h-full; padding:var(--s-3) var(--s-3) calc(var(--s-3) + 28px); border:0; background:transparent; color:inherit; @apply tw:text-left; font:inherit; @apply tw:cursor-pointer; }
-  .pb .scene-card-main:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-  /* 左栏场景紧凑缩略图(审核样张,404 时自动移除) */
-  .pb .scene-thumb { @apply tw:w-[64px] tw:h-[64px]; flex:0 0 64px; @apply tw:rounded-md tw:object-cover; object-position:center 22%; background:var(--bg-deep); border:1px solid var(--border-soft); transition:none; }
-  .pb .scene-thumb.r18 { filter:blur(12px) saturate(.85); }
-  .pb .scene-card:hover .scene-thumb.r18, .pb .scene-card:focus-within .scene-thumb.r18 { filter:none; }
-  .pb .scene-text { flex:1; @apply tw:min-w-0 tw:flex tw:flex-col; }
-  .pb .scene-card .scene-direct-btn { @apply tw:absolute tw:right-s-2 tw:bottom-s-2 tw:inline-flex; z-index:var(--z-raised); padding:var(--s-1) var(--s-3); @apply tw:text-label-sm tw:font-semibold; background:var(--accent); @apply tw:text-inverse tw:rounded-pill; box-shadow:var(--shadow-md); @apply tw:cursor-pointer; border:none; opacity:0; visibility:hidden; @apply tw:pointer-events-none; transform:translateY(4px); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out),visibility var(--motion-hover); }
-  .pb .scene-card:hover .scene-direct-btn, .pb .scene-card:focus-within .scene-direct-btn { opacity:1; visibility:visible; @apply tw:pointer-events-auto; transform:translateY(0); }
-  .pb .scene-card .scene-direct-btn:hover { transform:none; }
-  .pb .scene-card[data-recommended="1"], .pb .scene-card[data-char-match="1"] { @apply tw:border-accent; box-shadow:var(--selection-shadow); }
-  .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { content:''; @apply tw:absolute; inset:0; border-radius:inherit; @apply tw:pointer-events-none; box-shadow:var(--selection-shadow); opacity:0; animation:obScenePulse .9s ease 1; }
-  .pb .scene-card[data-char-match="0"] { opacity:0.45; }
-  @keyframes obScenePulse { 0%,100%{opacity:0;transform:scale(.985);} 50%{opacity:1;transform:scale(1);} }
-  @media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .pb .scene-card:is([data-recommended="1"], [data-char-match="1"])::after { animation:none; } }
-  .pb .scene-card[data-category="校园"]::before { background:linear-gradient(180deg,#81C784,#388E3C); }
-  .pb .scene-card[data-category="祭典・节日"]::before { background:linear-gradient(180deg,#FF8A65,#D84315); }
-  .pb .scene-card[data-category="日常"]::before { background:linear-gradient(180deg,#4FC3F7,#0288D1); }
-  .pb .scene-card[data-category="旅行"]::before { background:linear-gradient(180deg,#80DEEA,#00838F); }
-  .pb .scene-card[data-category="恋爱"]::before { background:linear-gradient(180deg,#CE93D8,#6A1B9A); }
-  .pb .scene-card[data-category="亲密"]::before { background:linear-gradient(180deg,#FF80AB,#AD1457); }
-  .pb .scene-card[data-category="R15"]::before { background:linear-gradient(180deg,#CFD8DC,#37474F); }
-  .pb .scene-card[data-category="Active_Sync_Scenes"]::before { background:linear-gradient(180deg,#7C4DFF,#311B92); }
-  .pb .scene-card[data-category="战斗"]::before { background:linear-gradient(180deg,#EF5350,#B71C1C); }
-  .pb .scene-name { @apply tw:block tw:font-bold tw:text-body tw:mb-[2px]; }
-  .pb .scene-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:3; @apply tw:overflow-hidden tw:text-label-sm tw:text-secondary tw:mb-s-2 tw:leading-body; }
-  .pb .scene-meta { @apply tw:flex tw:flex-wrap tw:gap-[4px]; }
-  .pb .scene-tag { @apply tw:text-label-sm!; padding:3px 8px; @apply tw:font-semibold; background:var(--bg-deep); @apply tw:rounded-sm tw:text-muted; }
-  .pb .scene-tag.emotion { background:var(--accent-soft); @apply tw:text-accent; }
-  .pb .scene-tag.rating.r18 { background:color-mix(in srgb, var(--danger) 22%, var(--bg-deep)); color:color-mix(in srgb, var(--danger) 70%, #fff); }
-  .pb .scene-tag.rating.r15 { background:color-mix(in srgb, var(--warning) 24%, var(--bg-deep)); color:color-mix(in srgb, var(--warning) 74%, #fff); }
-  .pb .scene-card[data-rating="R18"]::before { background:linear-gradient(180deg,#e85d75,#8d1732); }
-  .pb .scene-card[data-rating="R15"]::before { background:linear-gradient(180deg,#d6a039,#7a5210); }
-  .pb .scene-card.is-current { @apply tw:border-strong; box-shadow:var(--selection-shadow); }
   /* 故事联想 tag 高亮 */
   .pb .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
   .pb .tag-chip[data-suggested="1"]::after { content:' · 联想'; font-size:0.6em; }

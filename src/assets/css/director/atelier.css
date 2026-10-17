@@ -1,7 +1,7 @@
 @reference "../tailwind.css";
 /* Director surfaces only. layout.css owns all viewport and rail geometry. */
-.pb.journal-workspace.atelier-workspace { background:var(--bg-base); --fs-label:13px; --fs-label-sm:13px; --fs-label-xs:12px; --fs-body-sm:13px; --fs-body:14px; --fs-title:24px; --fs-title-sm:18px; }
-.pb.atelier-workspace .material-drawer,.pb.atelier-workspace .director-inspector { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); }
+.pb.journal-workspace.atelier-workspace { background:var(--bg-base); --fs-label:13px; --fs-label-sm:13px; --fs-label-xs:12px; --fs-body-sm:13px; --fs-body:15px; --fs-title:24px; --fs-title-sm:18px; }
+.pb.atelier-workspace .material-drawer,.pb.atelier-workspace .director-inspector { border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); }
 .pb.atelier-workspace .material-heading,.pb.atelier-workspace .inspector-heading { min-height:68px; padding:20px 20px 16px; color:var(--text-primary); background:var(--bg-surface); border:0; font-size:16px; font-weight:600; }
 .pb.atelier-workspace .material-heading small { display:none; }
 .pb.atelier-workspace :is(.material-heading>span,.inspector-heading>strong) { display:inline-flex; align-items:center; gap:10px; }

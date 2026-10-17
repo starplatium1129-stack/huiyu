@@ -2,10 +2,5 @@
 
 .pb {
   --pb-active: var(--mood-love);
-  --pb-active-text: var(--mood-love-text);
-  --pb-active-grad: var(--mood-tension);
-  --pb-badge-blue: var(--info);
-  --pb-badge-green: var(--success);
   @apply tw:relative tw:isolate;
 }
-/* char-source / popular-tags-note / btn-video-action 已外移至 src/assets/css/director/panels.css（.pb 全局），scoped 内不再保留以免抽离后失活 */

@@ -6,7 +6,7 @@
       <header class="preferences-heading tw:flex tw:items-center tw:justify-between"><div><h2>桌宠设置</h2><small>{{ characterName }}</small></div>
         <button type="button" aria-label="关闭桌宠设置" autofocus @click="close"><ArchiveIcon name="close" /></button>
       </header>
-      <nav class="preferences-tabs studio-segments tw:grid tw:gap-[4px] tw:p-[4px] tw:rounded-lg" data-fluid-glass role="tablist" aria-label="设置分类" @keydown="tabKey">
+      <nav class="preferences-tabs studio-segments" data-fluid-glass role="tablist" aria-label="设置分类" @keydown="tabKey">
         <AnimatedSelection />
         <button v-for="tab in tabs" :id="`${id}-${tab.value}`" :key="tab.value" type="button" role="tab"
           :aria-selected="pane === tab.value" :aria-controls="`${id}-panel`" :tabindex="pane === tab.value ? 0 : -1"
@@ -72,11 +72,9 @@ function backdrop(event: MouseEvent) { if (isBackdropClick(event, dialog.value))
 .preferences-heading small { @apply tw:text-secondary tw:text-label-sm; }
 h2 { @apply tw:m-0 tw:text-body; font-weight: 650; }
 .preferences-heading button { @apply tw:grid; place-items: center; @apply tw:w-[40px] tw:h-[40px]; border: 1px solid var(--border-soft); border-radius:var(--r-md); @apply tw:text-primary; background: var(--bg-surface); @apply tw:cursor-pointer; }
-.preferences-heading svg { @apply tw:w-[18px] tw:h-[18px]; }
-.preferences-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); flex: 0 0 auto; margin: 0 var(--s-4) var(--s-3); border: 1px solid var(--border-soft); background: var(--bg-surface); }
-.preferences-tabs button { @apply tw:flex tw:items-center tw:justify-center tw:gap-[6px] tw:min-h-[40px] tw:p-[4px]; border: 1px solid transparent; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer; }
-.preferences-tabs button[aria-selected="true"] { @apply tw:text-primary; background: color-mix(in srgb, var(--accent) 12%, var(--bg-elevated)); @apply tw:border-strong; }
-.preferences-tabs svg { @apply tw:w-[17px] tw:h-[17px]; }
+.preferences-heading svg { @apply tw:w-[20px] tw:h-[20px]; }
+.preferences-tabs { flex:0 0 auto; margin:0 var(--s-4) var(--s-3); }
+.preferences-tabs svg { @apply tw:w-[16px] tw:h-[16px]; }
 .companion-preferences-body { overscroll-behavior: contain; padding: 0 var(--s-4) var(--s-4); scrollbar-width: thin; }
 .companion-preferences-body :deep(.companion-pop-group) { @apply tw:hidden tw:gap-[4px] tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); }
 .companion-preferences-body[data-pane="character"] :deep([data-preference-pane="character"]),

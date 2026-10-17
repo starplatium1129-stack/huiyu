@@ -50,11 +50,8 @@
         </div>
       </div>
     </details>
-    <details v-if="managedRoute" class="inspector-route">
-      <StudioDisclosureSummary>推荐配方与复用</StudioDisclosureSummary>
-      <ManagedDrawingRouteCard class="pb-managed-route-banner" :route="managedRoute" :history="pb.history" :subject="pb.subject"
-        :expert="pb.directorMode === 'pro'" :busy="generationBusy" @apply="applyManagedRoute" @reuse="reuseSuccessfulRecipe" />
-    </details>
+    <ManagedDrawingRouteCard v-if="managedRoute" :route="managedRoute" :history="pb.history" :subject="pb.subject"
+      :expert="pb.directorMode === 'pro'" :busy="generationBusy" @apply="applyManagedRoute" @reuse="reuseSuccessfulRecipe" />
   </div>
 </template>
 

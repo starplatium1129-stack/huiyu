@@ -85,7 +85,9 @@
   width: 14px;
   height: 14px;
 }
-@media (max-width: 600px) {
+/* Desktop size follows the component's md/sm choice at every viewport width.
+   Coarse pointers expand real hit areas; narrow browse toolbars own their 44px rule. */
+@media (pointer: coarse) {
   .studio-select-trigger { min-height: 44px; }
   .studio-select-wrapper[data-size='sm'] .studio-select-trigger { min-height: 44px; }
   .studio-select-item { min-height: 44px; }

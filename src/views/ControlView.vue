@@ -116,11 +116,12 @@
         <h2 class="panel-heading">显存与运行偏好</h2>
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
-            <span class="mode-title"><ArchiveIcon name="spark" /> Anima 绘图优先<span class="mode-arrow">→</span></span>
+            <span class="mode-title"><ArchiveIcon name="spark" /> Anima 绘图优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
             <span class="mode-desc">{{ imageProvider === 'native' ? '释放本地聊天与语音显存，独立模型在生成时按需加载。' : '释放本地聊天与语音显存，启动 ComfyUI。' }}</span>
           </button>
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
-            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<span class="mode-arrow">→</span></span>            <span class="mode-desc">释放空闲绘图模型，启动语音；发送消息时加载本地聊天。</span>
+            <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
+            <span class="mode-desc">释放空闲绘图模型，启动语音；发送消息时加载本地聊天。</span>
           </button>
         </div>
 
@@ -196,10 +197,11 @@
         </details>
         <div class="config-save-row" :aria-busy="savingConfig"><StudioLiquidButton label="保存全部并检测" :busy="savingConfig" :complete="configSaved" :disabled="opBusy || !statusLoaded" @click="saveConfig" /></div>
       </section>
+      </div>
 
       <!-- 公网分享 -->
       <details id="control-share" class="panel-card share-panel">
-        <summary class="panel-summary"><span><span class="panel-kicker">低频管理</span><span class="panel-heading" role="heading" aria-level="2">分享与访问</span></span><span class="summary-state">{{ !statusLoaded || statusError ? '状态待确认' : tunnelActive ? '分享中' : '仅本机' }}<ArchiveIcon name="chevron-down" /></span></summary>
+        <StudioDisclosureSummary class="panel-summary"><span><span class="panel-kicker">低频管理</span><span class="panel-heading" role="heading" aria-level="2">分享与访问</span></span><span class="summary-state">{{ !statusLoaded || statusError ? '状态待确认' : tunnelActive ? '分享中' : '仅本机' }}</span></StudioDisclosureSummary>
         <div data-disclosure-content class="share-content">
 
         <div class="tunnel-toggle-row">
@@ -225,20 +227,18 @@
 
         <div class="access-grid tw:grid tw:gap-s-3">
           <div class="access-card">
-            <div class="access-kicker">Local</div>
             <div class="access-title">本机地址</div>
             <div class="link-value">{{ localLink }}</div>
             <div class="inline-actions tw:flex tw:gap-s-2">
-              <button class="btn btn-ghost btn-sm" type="button" @click="copy(localLink)">复制</button>
+              <StudioCopyButton class="btn btn-ghost btn-sm" label="复制地址" :content-key="localLink" :action="() => copyWithFeedback(localLink)" />
               <a class="btn btn-ghost btn-sm" :href="localLink" target="_blank" rel="noreferrer">打开</a>
             </div>
           </div>
           <div class="access-card">
-            <div class="access-kicker">Share</div>
             <div class="access-title">分享链接</div>
             <div class="link-value" :class="{ waiting: !shareLink }">{{ shareLink || (tunnelStatus === 'disabled' ? '未生成公网链接' : '等待分享链接…') }}</div>
             <div class="inline-actions tw:flex tw:gap-s-2">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="!shareLink" @click="copy(shareLink)">复制</button>
+              <StudioCopyButton class="btn btn-ghost btn-sm" label="复制链接" :content-key="shareLink" :disabled="!shareLink" :action="() => copyWithFeedback(shareLink)" />
             </div>
           </div>
         </div>
@@ -260,21 +260,20 @@
       </details>
 
       </div>
-      </div>
 
       <!-- 日志 -->
       <details id="control-logs" class="log-panel">
-        <summary>
+        <StudioDisclosureSummary>
           <span class="log-summary-title"><ArchiveIcon name="book" /> 运行日志</span>
-          <span class="summary-side">
-            <StudioTooltip anchor content="仅保存版本与运行状态，不包含密钥、聊天正文或图片">
-              <button class="btn btn-ghost btn-sm" type="button" :disabled="exportingDiag" @click.stop="exportDiag">{{ exportingDiag ? '正在整理…' : '导出诊断包' }}</button>
-            </StudioTooltip>
-            <button class="btn btn-ghost btn-sm" type="button" @click.stop="clearLogs">清空显示</button>
-            <span class="chevron">›</span>
-          </span>
-        </summary>
+          <span class="summary-state">{{ logs.length }} 条</span>
+        </StudioDisclosureSummary>
         <div data-disclosure-content class="log-wrap">
+          <div class="log-toolbar" role="group" aria-label="日志操作">
+            <StudioTooltip anchor content="仅保存版本与运行状态，不包含密钥、聊天正文或图片">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="exportingDiag" @click="exportDiag">{{ exportingDiag ? '正在整理…' : '导出诊断包' }}</button>
+            </StudioTooltip>
+            <button class="btn btn-ghost btn-sm" type="button" @click="clearLogs">清空显示</button>
+          </div>
           <div class="log-box" ref="logBoxEl">
             <div v-if="!logs.length" class="log-empty">暂无日志。</div>
             <div v-for="(line, i) in logs" :key="i" :class="lineClass(line)">
@@ -302,6 +301,8 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
+import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import AppSoundToggle from '@/components/AppSoundToggle.vue'
 import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import StudioLiquidButton from '@/components/ui/StudioLiquidButton.vue'
@@ -340,9 +341,9 @@ const actions = useControlActions(status, { showToast })
 
 // 模板引用解构：状态域
 const {
-  tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, webuiManaged, comfyManaged, ollamaModels, ollamaVram,
+  tunnelActive, comfyOnline, ttsOnline, ollamaOnline, comfyManaged, ollamaModels,
   modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
-  sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, llamaOnline,llamaManaged,llamaLabel,voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
+  comfyHost, ttsHost, ttsEngine, activeVoiceEngine, llamaOnline,llamaManaged,llamaLabel,voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
   feedbackText, actionNote, imageProvider, logs, logBoxEl,
   opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
@@ -352,7 +353,7 @@ const {
 
 // 模板引用解构：操作域
 const {
-  tunnelEnabled, copy, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
+  tunnelEnabled, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
   serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag, buildWeb, buildingWeb,
 } = actions
 

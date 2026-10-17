@@ -25,7 +25,7 @@
       <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="按模型、角色或触发词查找…" />
       <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span>
     </div>
-    <div v-if="engineOptions.length > 1" class="model-engine-filters" role="group" aria-label="按绘图引擎筛选模型">
+    <div v-if="engineOptions.length > 1" class="model-engine-filters studio-segments" role="group" aria-label="按绘图引擎筛选模型">
       <AnimatedSelection />
       <button v-for="option in engineOptions" :key="option.value" type="button" :aria-pressed="engine === option.value" @click="engine = option.value">{{ option.label }}<span>{{ option.count }}</span></button>
     </div>
@@ -176,16 +176,14 @@ onMounted(() => { void loadCatalog() })
 .model-facts dd { @apply tw:m-0 tw:text-secondary; overflow-wrap:anywhere; }
 .model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); margin-bottom:var(--s-4); }
 .model-search-field { flex:1 1 320px; max-width:560px; min-width:0; }
-.model-result-count { color:var(--text-secondary); font-size:var(--fs-label); font-variant-numeric:tabular-nums; }
-.model-engine-filters { position:relative; isolation:isolate; display:flex; width:fit-content; max-width:100%; flex-wrap:wrap; gap:var(--s-1); padding:var(--s-1); margin-bottom:var(--s-5); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
-.model-engine-filters button { position:relative; display:flex; align-items:center; gap:var(--s-2); min-height:40px; padding:var(--s-2) var(--s-3); border:0; border-radius:var(--r-md); background:transparent; color:var(--text-secondary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
-.model-engine-filters button[aria-pressed='true'] { color:var(--text-primary); }
+.model-result-count { color:var(--text-secondary); font-size:var(--fs-label); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.model-engine-filters { width:fit-content; max-width:100%; flex-wrap:wrap; margin-bottom:var(--s-5); }
 .model-engine-filters button > span { display:grid; place-items:center; min-width:22px; min-height:22px; border:1px solid var(--border-soft); border-radius:var(--r-pill); font:400 var(--fs-mono-xs)/1 var(--font-mono); }
-.model-engine-filters button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .model-identity { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2; }
 .model-identity > div { @apply tw:flex tw:items-center tw:gap-s-2; }
 .model-identity .archive-icon { box-sizing:content-box; padding:var(--s-3); width:24px; height:24px; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:color-mix(in srgb,var(--model-color) 12%,var(--bg-surface)); color:var(--model-color); transition:transform var(--motion-route-cut) var(--spring-soft); }
 .lora-card:has(:focus-visible) .model-identity .archive-icon { transition:none; transform:none; }
+.lora-card:has(:focus-visible) { transition:none; transform:none; }
 .model-engine { padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); @apply tw:text-secondary tw:text-label-xs; }
 .model-purpose { margin:var(--s-2) 0; @apply tw:text-secondary tw:text-body-sm tw:leading-body; }
 .model-file { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:text-muted tw:text-mono-sm; margin:0 0 var(--s-4); overflow-wrap:anywhere; }
@@ -202,6 +200,7 @@ onMounted(() => { void loadCatalog() })
     linear-gradient(145deg,color-mix(in srgb,var(--model-color) 8%,transparent),transparent 48%),
     var(--bg-surface);
   box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
+  transition:transform var(--motion-surface) var(--ease-out);
 }
 .lora-card[data-character='nene'] { --model-color:var(--nene-violet); }
 .lora-card[data-character='natsume'] { --model-color:var(--natsume-amber); }
@@ -233,8 +232,8 @@ onMounted(() => { void loadCatalog() })
 .evaluation-panel code { @apply tw:whitespace-normal; }
 
 .model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) .model-identity .archive-icon { transform:rotate(-8deg) translateY(-3px); } .model-engine-filters button:hover { color:var(--text-primary); } }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .lora-card .model-identity .archive-icon { transition:none; transform:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .lora-card .model-identity .archive-icon { transition:none; transform:none; }
-@media (forced-colors:active) { .lora-card::before { background:Highlight; } .model-engine-filters button[aria-pressed='true'] { outline:1px solid Highlight; } }
+@media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) { transform:translateY(-2px); } .lora-card:hover:not(:focus-within) .model-identity .archive-icon { transform:rotate(-8deg) translateY(-3px); } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .lora-page :is(.lora-card,.model-identity .archive-icon) { transition:none; transform:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .lora-page :is(.lora-card,.model-identity .archive-icon) { transition:none; transform:none; }
+@media (forced-colors:active) { .lora-card::before { background:Highlight; } }
 </style>

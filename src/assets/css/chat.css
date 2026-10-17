@@ -3,55 +3,13 @@
    chat.css —— 聊天页样式（ChatView / ChatCharacterStage）
    ------------------------------------------------------------
    由 ChatView.vue 懒加载引入，仅服务 /chat 路由，不进首屏包。
-   分区（2026-08-28 补）：主布局 → 角色选择 → 立绘舞台 → 换装 →
+   分区：主布局 → 会话卡片 → 立绘舞台 → 换装 →
    API 设置 → 房间设置 → 消息流 → 语音交互 → 响应式与降级。
-   此前的 2000+ 行零分区注释是 AI 协作里最难啃的一块 ——
-   动这里的样式前先定位区块，别在 1800 行的位置加"新"规则。
   ============================================================ */
 .chat-page {
   @apply tw:relative tw:w-full tw:max-w-[1280px];
   margin: 0 auto;
   @apply tw:p-s-5;
-}
-
-.chat-page .chat-head {
-  @apply tw:relative tw:flex tw:items-end tw:justify-between tw:gap-s-4 tw:mb-s-3;
-  padding: var(--s-2) 0 var(--s-3);
-  border-top: 0;
-}
-
-.chat-page .chat-title {
-  font: 750 clamp(1.5rem, 2.2vw, 1.9rem)/1.25 var(--font-serif);
-  letter-spacing: .035em;
-}
-
-.chat-page .chat-title span {
-  @apply tw:ml-s-2;
-  color: var(--editorial-gold);
-  font: 600 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .14em;
-}
-
-.chat-page .chat-subtitle {
-  @apply tw:max-w-[50rem] tw:mt-[2px] tw:text-secondary tw:text-body-sm;
-}
-
-.chat-page .chat-actions {
-  @apply tw:flex tw:flex-wrap tw:justify-end tw:gap-s-2;
-}
-
-.chat-page .chat-actions .btn-ghost {
-  @apply tw:min-h-[32px];
-  padding: 3px 8px;
-  border-color: transparent transparent var(--border-soft);
-  border-radius: 0;
-  @apply tw:text-label-xs;
-}
-
-.chat-page .chat-actions .btn-ghost:hover {
-  border-color: transparent transparent var(--editorial-gold);
-  background: transparent;
-  @apply tw:text-primary;
 }
 
 .chat-page .chat-layout {
@@ -71,7 +29,7 @@
 .chat-page .character-card,
 
 /*   ============================================================
-   角色选择：会话卡片 / 角色标签页（宁宁 / 夏目）
+   会话卡片
   ============================================================ */
 .chat-page .conversation-card {
   @apply tw:relative tw:min-w-0;
@@ -96,53 +54,6 @@
 .chat-page .conversation-card {
   @apply tw:flex tw:flex-col tw:overflow-hidden;
 }
-
-.chat-page .character-tabs {
-  @apply tw:flex tw:gap-s-2 tw:p-s-3;
-  border-bottom: 1px solid var(--border-soft);
-}
-
-.chat-page .character-tab {
-  flex: 1;
-  @apply tw:min-h-[42px];
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-deep);
-  @apply tw:text-secondary tw:cursor-pointer;
-  font: 650 var(--fs-label) var(--font-sans);
-}
-
-.chat-page .character-tab:hover,
-.chat-page .character-tab:focus-visible {
-  @apply tw:border-strong;
-}
-
-.chat-page .character-tab[data-character="nene"]:hover,
-.chat-page .character-tab[data-character="nene"]:focus-visible {
-  border-color: color-mix(in srgb, var(--nene-violet) 70%, var(--border-soft));
-  background: color-mix(in srgb, var(--nene-violet) 10%, var(--bg-deep));
-  color: var(--nene-violet);
-}
-
-.chat-page .character-tab[data-character="natsume"]:hover,
-.chat-page .character-tab[data-character="natsume"]:focus-visible {
-  border-color: color-mix(in srgb, var(--natsume-amber) 70%, var(--border-soft));
-  background: color-mix(in srgb, var(--natsume-amber) 10%, var(--bg-deep));
-  color: var(--natsume-amber);
-}
-
-.chat-page .character-tab.active[data-character="nene"] {
-  border-color: var(--nene-violet);
-  background: color-mix(in srgb, var(--nene-violet) 15%, var(--bg-deep));
-  color: var(--nene-violet);
-}
-
-.chat-page .character-tab.active[data-character="natsume"] {
-  border-color: var(--natsume-amber);
-  background: color-mix(in srgb, var(--natsume-amber) 15%, var(--bg-deep));
-  color: var(--natsume-amber);
-}
-
 
 /*   ============================================================
    立绘舞台：角色立绘 / Live2D 宿主 / 房间信号 / 语音光环
@@ -401,7 +312,6 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:text-muted tw:text-mono-xs;
 }
 
-
 .chat-page .live2d-interaction-hint {
   @apply tw:absolute;
   z-index: var(--z-float);
@@ -489,53 +399,7 @@ body:has(.chat-page) .sakura-fall {
 }
 
 .chat-page .provider-switch {
-  @apply tw:flex;
   flex: 0 0 auto;
-  @apply tw:gap-[2px] tw:p-[2px];
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-terminal);
-  background: var(--bg-deep);
-}
-
-.chat-page .provider-switch button {
-  @apply tw:min-h-[30px];
-  padding: 0 var(--s-3);
-  border: 0;
-  border-radius: var(--r-terminal);
-  background: transparent;
-  @apply tw:text-muted tw:cursor-pointer;
-  font: 650 var(--fs-label-sm) var(--font-sans);
-}
-
-.chat-page .provider-switch button:hover,
-.chat-page .provider-switch button:focus-visible {
-  @apply tw:text-primary;
-}
-
-.chat-page .provider-switch button.active {
-  background: var(--bg-elevated);
-  color: var(--character-ink, var(--character-accent));
-  box-shadow: var(--shadow-sm);
-}
-
-.chat-page .provider-switch button:disabled {
-  @apply tw:cursor-not-allowed;
-  /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌 */
-  @apply tw:text-disabled;
-  background: var(--bg-surface);
-}
-
-.chat-page .api-settings-toggle {
-  @apply tw:max-w-[230px] tw:min-h-[34px];
-  padding: 4px 9px;
-  @apply tw:overflow-hidden;
-  border: 1px solid color-mix(in srgb, var(--character-accent) 36%, var(--border-soft));
-  @apply tw:rounded-sm;
-  background: var(--accent-soft);
-  color: var(--character-ink, var(--character-accent));
-  @apply tw:cursor-pointer;
-  font: 650 var(--fs-mono-sm) var(--font-sans);
-  @apply tw:text-ellipsis tw:whitespace-nowrap;
 }
 
 .chat-page .api-settings {
@@ -624,42 +488,15 @@ body:has(.chat-page) .sakura-fall {
 
 .chat-page .api-storage-note .archive-icon { @apply tw:w-[14px] tw:h-[14px]; }
 
-
 /*   ============================================================
    API 与引擎设置：提供商切换 / 密钥字段 / 测试状态
   ============================================================ */
 .chat-page .api-field {
-  @apply tw:grid tw:content-start tw:gap-[4px] tw:min-w-0 tw:text-muted tw:text-label-xs;
+  display:grid; align-content:start; gap:var(--s-2); min-width:0;
 }
 
 .chat-page .api-field > span {
-  @apply tw:flex tw:items-center tw:gap-[6px] tw:text-secondary;
-  font-weight: 650;
-}
-
-.chat-page .api-field input {
-  @apply tw:box-border tw:w-full tw:min-w-0 tw:h-[44px];
-  padding: 8px 11px;
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-terminal);
-  background: color-mix(in srgb, var(--bg-deep) 88%, transparent);
-  @apply tw:text-primary;
-  font: var(--fs-label-sm) var(--font-sans);
-  outline: none;
-}
-.chat-page .api-field .studio-select-trigger { min-height:44px; }
-
-/* 原生 select 已迁至 StudioSelect（2026-09-22 去原生化）：外观由触发器提供，
-   焦点色保留本页的角色强调色，改挂触发器。 */
-.chat-page .api-field .studio-select-trigger:focus-visible {
-  border-color: var(--border-strong);
-}
-
-
-
-.chat-page .api-field input:focus {
-  border-color: var(--border-strong);
-  box-shadow: var(--focus-shadow);
+  display:flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans);
 }
 
 .chat-page .api-field small {
@@ -671,29 +508,7 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:text-muted tw:text-mono-sm tw:leading-label;
 }
 
-.chat-page .api-key-field {
-  @apply tw:relative;
-}
-
-.chat-page .api-key-field input {
-  @apply tw:pr-[54px];
-}
-
-.chat-page .api-key-field button {
-  @apply tw:absolute tw:top-[50%] tw:right-[7px];
-  padding: 4px 7px;
-  border: 1px solid transparent;
-  @apply tw:rounded-sm;
-  background: color-mix(in srgb, var(--bg-elevated) 60%, transparent);
-  @apply tw:text-muted tw:cursor-pointer;
-  font: var(--fs-label-xs) var(--font-sans);
-  transform: translateY(-50%);
-}
-
-.chat-page .api-key-field button:hover {
-  @apply tw:border-soft tw:text-primary;
-}
-
+.chat-page .api-key-field { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2); }
 
 /*   ============================================================
    房间设置：开场引导 / 会话卡片 / 角色标签页
@@ -710,8 +525,6 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .room-setup .btn { flex:0 0 auto; @apply tw:justify-center; }
 
 .chat-page .chat-input::placeholder { color: color-mix(in srgb,var(--text-primary) 58%,var(--text-muted)); }
-.chat-page .api-settings-toggle { color: color-mix(in srgb,var(--character-accent) 78%,var(--text-primary)); }
-.chat-page .keyboard-hint { @apply tw:text-label-xs; }
 
 .chat-page .model-select { @apply tw:max-w-[230px]; }
 .chat-page .model-select .studio-select-trigger:hover:not(:disabled) {
@@ -723,12 +536,6 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .model-select .studio-select-trigger[data-disabled] {
   @apply tw:text-disabled tw:cursor-not-allowed;
 }
-
-
-
-
-
-
 
 .chat-page .chat-list {
   @apply tw:flex;
@@ -779,7 +586,6 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:text-primary;
 }
 @media (hover:hover) and (pointer:fine) { .chat-page .chat-starters button:hover { transform:translateX(2px); } }
-
 
 /*   ============================================================
    消息流：气泡排版 / 头像 / 语音与记忆操作按钮
@@ -854,21 +660,12 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .message-note { color:var(--text-secondary); font-size:12px; }
 
 /*   ============================================================
-   输入区：撰写器 / 发送与停止 / 工具指示 / 语音与思考开关
+   输入区：撰写器 / 发送与停止 / 模型思考档位
   ============================================================ */
 .chat-page .chat-composer {
   @apply tw:p-s-3;
   border-top: 1px solid var(--border-soft);
   background: var(--bg-surface);
-}
-
-.chat-page .chat-tool-indicator {
-  @apply tw:flex tw:items-center tw:gap-s-2;
-  padding: var(--s-2) var(--s-4);
-  border-top: 1px solid var(--border-soft);
-  background: var(--accent-soft);
-  @apply tw:text-accent tw:text-label-sm tw:font-mono;
-  letter-spacing: .02em;
 }
 
 .chat-page .composer-row {
@@ -905,28 +702,6 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:text-danger-text;
 }
 
-.chat-page .composer-tools {
-  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mt-s-2 tw:text-muted tw:text-mono-sm;
-}
-
-.chat-page .voice-console {
-  @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:min-w-0 tw:min-h-[40px];
-  padding: var(--s-1) var(--s-2) var(--s-1) var(--s-3);
-  border: 1px solid color-mix(in srgb, var(--character-accent) 22%, var(--border-soft));
-  @apply tw:rounded-lg;
-  background: color-mix(in srgb, var(--character-accent) 5%, var(--bg-deep));
-  box-shadow: inset 0 1px 0 var(--glass-highlight), 0 5px 16px -14px var(--character-accent);
-}
-/* narrow screens: title only; show helper text on wide layouts */
-.chat-page .voice-toggle-copy small { @apply tw:hidden; }
-@media (min-width: 1000px) {
-  .chat-page .voice-toggle-copy small { @apply tw:block; }
-}
-
-.chat-page .voice-toggle {
-  @apply tw:inline-flex tw:items-center tw:gap-[8px] tw:cursor-pointer tw:whitespace-nowrap;
-}
-
 .chat-page .thinking-group {
   @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:whitespace-nowrap;
 }
@@ -935,177 +710,8 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:text-secondary tw:text-label-sm;
 }
 
-.chat-page .thinking-segments {
-  @apply tw:inline-flex tw:gap-[2px] tw:p-[2px];
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-deep);
-}
-
-.chat-page .thinking-segments button {
-  @apply tw:min-h-[26px];
-  padding: 0 var(--s-2);
-  border: 1px solid transparent;
-  @apply tw:rounded-sm;
-  background: transparent;
-  @apply tw:text-muted;
-  font: 600 var(--fs-label-xs) var(--font-sans);
-  @apply tw:cursor-pointer;
-  transition: background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
-}
-
-.chat-page .thinking-segments button:is(:hover, :focus-visible):not(:disabled) {
-  @apply tw:text-primary;
-}
-
-.chat-page .thinking-segments button.active {
-  border-color: var(--border-strong);
-  background: var(--accent-soft);
-  @apply tw:text-accent;
-  box-shadow: var(--shadow-sm);
-}
-
-.chat-page .thinking-segments button:disabled {
-  @apply tw:text-disabled tw:cursor-not-allowed;
-}
-
-.chat-page .thinking-toggle {
-  @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:cursor-pointer tw:whitespace-nowrap tw:text-secondary tw:text-label-sm;
-}
-
-/* 原生 select 已迁至 StudioSelect（2026-09-22 去原生化）。 */
-
-
-.chat-page .thinking-toggle:has(.studio-select-trigger[data-disabled]) {
-  /* 审计修复：不用 opacity 压整块容器（压后低于 AA），改用禁用令牌 */
-  @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed;
-}
-
-.chat-page .voice-toggle input {
-  @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:overflow-hidden;
-  clip-path: inset(50%);
-}
-
-.chat-page .voice-switch {
-  @apply tw:relative;
-  flex: none;
-  @apply tw:w-[30px] tw:h-[18px];
-  border: 1px solid var(--border-strong);
-  @apply tw:rounded-pill;
-  background: var(--bg-surface);
-  transition: border-color var(--motion-control) ease, background var(--motion-control) ease;
-}
-
-.chat-page .voice-switch span {
-  @apply tw:absolute tw:top-[3px] tw:left-[3px] tw:w-[10px] tw:h-[10px];
-  border-radius: 50%;
-  background: var(--text-muted);
-  box-shadow: 0 1px 4px var(--art-scrim-soft);
-  transition: transform var(--motion-control) ease, background var(--motion-control) ease;
-}
-
-.chat-page .voice-toggle input:checked + .voice-switch {
-  border-color: color-mix(in srgb, var(--character-accent) 65%, var(--border-soft));
-  background: color-mix(in srgb, var(--character-accent) 24%, var(--bg-surface));
-}
-
-.chat-page .voice-toggle input:checked + .voice-switch span {
-  background: var(--character-accent);
-  transform: translateX(12px);
-}
-
-.chat-page .voice-toggle input:focus-visible + .voice-switch {
-  box-shadow: var(--focus-shadow);
-}
-
-.chat-page .voice-toggle-copy {
-  @apply tw:grid tw:gap-[1px] tw:leading-flush;
-}
-
-.chat-page .voice-toggle-copy strong {
-  @apply tw:text-primary tw:text-label-xs;
-}
-
-.chat-page .voice-toggle-copy small {
-  @apply tw:text-muted tw:text-mono-xs;
-}
-
-.chat-page .voice-divider {
-  @apply tw:self-stretch tw:w-[1px];
-  background: var(--border-soft);
-}
-
-.chat-page .voice-capability {
-  @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:text-muted tw:text-mono-sm tw:whitespace-nowrap;
-}
-
-.chat-page .voice-capability-dot {
-  @apply tw:w-[6px] tw:h-[6px];
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.chat-page .voice-capability[data-state="ready"] {
-  @apply tw:text-success-text;
-}
-
-.chat-page .voice-capability[data-state="warning"] {
-  @apply tw:text-warning-text;
-}
-
-.chat-page .voice-status {
-  @apply tw:min-w-0 tw:overflow-hidden;
-  color: var(--character-accent, var(--accent));
-  @apply tw:text-mono-sm tw:text-ellipsis tw:whitespace-nowrap;
-}
-
-.chat-page .voice-status:empty {
-  @apply tw:hidden;
-}
-
-.chat-page .voice-recovery {
-  flex: none;
-  padding: 4px 8px;
-  border: 1px solid color-mix(in srgb, var(--warning) 38%, var(--border-soft));
-  @apply tw:rounded-md tw:text-warning-text;
-  font: 650 var(--fs-mono-xs) var(--font-sans);
-  @apply tw:whitespace-nowrap;
-}
-
-.chat-page .voice-recovery:hover {
-  background: color-mix(in srgb, var(--warning) 10%, transparent);
-  @apply tw:text-warning-text;
-}
-
-.chat-page .replay-btn {
-  @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:min-h-[28px] tw:ml-auto;
-  padding: 4px 9px;
-  border: 1px solid color-mix(in srgb, var(--character-accent) 28%, var(--border-soft));
-  @apply tw:rounded-md;
-  background: color-mix(in srgb, var(--character-accent) 8%, var(--bg-surface));
-  @apply tw:text-secondary tw:cursor-pointer;
-  font: 650 var(--fs-mono-sm) var(--font-sans);
-  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover),
-              transform var(--motion-hover) var(--ease-out);
-  @apply tw:whitespace-nowrap;
-}
-
-.chat-page .replay-btn:hover {
-  @apply tw:border-accent;
-  background: var(--accent-soft);
-  @apply tw:text-accent;
-}
-
-.chat-page .replay-btn:disabled {
-  border-color: transparent;
-  background: transparent;
-  /* 审计修复：不用 opacity 压字，直接给更弱的禁用文字色 */
-  @apply tw:text-disabled tw:cursor-default;
-}
-
-
 /*   ============================================================
-   语音交互：按住说话 / 重放 / 音频均衡 / 音量滑块
+   语音交互：按住说话
   ============================================================ */
 .chat-page .hold-talk-btn {
   @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:min-h-[28px];
@@ -1148,127 +754,6 @@ body:has(.chat-page) .sakura-fall {
   background: var(--bg-surface);
 }
 
-.chat-page .speech-state-text {
-  @apply tw:text-muted;
-}
-
-.chat-page .speech-session-badge {
-  @apply tw:inline-flex tw:items-center tw:gap-[6px];
-  padding: 3px 9px;
-  border: 1px solid color-mix(in srgb, var(--character-accent) 42%, var(--border-soft));
-  @apply tw:rounded-pill;
-  background: color-mix(in srgb, var(--character-accent) 12%, var(--bg-surface));
-  color: var(--character-accent, var(--accent));
-  font: 650 var(--fs-mono-xs) var(--font-sans);
-  @apply tw:whitespace-nowrap;
-}
-
-.chat-page .speech-session-badge-muted {
-  @apply tw:border-soft;
-  background: var(--bg-surface);
-  @apply tw:text-muted;
-}
-
-.chat-page .speech-session-dot {
-  @apply tw:w-[6px] tw:h-[6px];
-  border-radius: 50%;
-  background: currentColor;
-  animation: aics-speech-pulse 1.6s var(--ease-out) infinite;
-}
-
-.chat-page .speech-session-badge-muted .speech-session-dot {
-  animation: none;
-  opacity: .55;
-}
-
-@keyframes aics-speech-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .35; }
-}
-
-.chat-page .speech-session-end {
-  padding: 0 5px;
-  border: 0;
-  background: transparent;
-  color: currentColor;
-  @apply tw:cursor-pointer;
-  font: 700 var(--fs-label) var(--font-sans);
-  @apply tw:leading-flush;
-  opacity: .75;
-}
-
-.chat-page .speech-session-end:hover {
-  opacity: 1;
-}
-
-.chat-page .speech-notice {
-  @apply tw:text-warning-text tw:text-mono-xs tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis;
-}
-
-.chat-page .speech-config-btn {
-  flex: none;
-  @apply tw:min-h-[32px];
-  padding: 4px 8px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: transparent;
-  @apply tw:text-muted tw:cursor-pointer;
-  font: 600 var(--fs-label-sm) var(--font-sans);
-  @apply tw:whitespace-nowrap;
-  transition: border-color var(--motion-hover), color var(--motion-hover);
-}
-
-.chat-page .speech-config-btn:hover {
-  @apply tw:border-accent tw:text-accent;
-}
-
-.chat-page .volume-slider {
-  @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:text-muted tw:text-mono-sm;
-}
-
-.chat-page .volume-slider .volume-value {
-  @apply tw:text-mono-xs tw:text-muted tw:min-w-[28px];
-  font-variant-numeric: tabular-nums;
-}
-
-.chat-page .volume-icon {
-  @apply tw:text-label-xs tw:leading-flush;
-}
-
-.chat-page .volume-slider input[type="range"] {
-  @apply tw:w-[52px];
-  /* 原 height:4px —— 轨道 4px 粗、拖块 12px，指针与触屏都几乎抓不住
-     （WCAG 2.2 SC 2.5.8 目标尺寸下限 24px）。抬到 24px 命中高度，
-     轨道改由背景层画在垂直居中处，视觉粗细不变。 */
-  @apply tw:h-[24px];
-  border: 0;
-  @apply tw:rounded-pill;
-  background: linear-gradient(var(--border-strong), var(--border-strong)) center / 100% 4px no-repeat;
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.chat-page .volume-slider input[type="range"]::-webkit-slider-thumb {
-  @apply tw:w-[12px] tw:h-[12px];
-  border: 0;
-  border-radius: 50%;
-  background: var(--character-accent, var(--accent));
-  -webkit-appearance: none;
-}
-
-.chat-page .volume-slider input[type="range"]::-moz-range-thumb {
-  @apply tw:w-[12px] tw:h-[12px];
-  border: 0;
-  border-radius: 50%;
-  background: var(--character-accent, var(--accent));
-}
-
-.chat-page .volume-slider input[type="range"]:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-shadow);
-}
-
 .chat-page .chat-error {
   @apply tw:min-h-[1.25em] tw:mt-s-2 tw:text-danger-text tw:text-label-xs;
 }
@@ -1294,10 +779,9 @@ body:has(.chat-page) .sakura-fall {
   to { opacity: 1; transform: translateY(0); }
 }
 
-
 /*   ============================================================
    响应式与无障碍降级
-   reduced-motion 短路 / 三档断点（1100 / 820 / 560）/ 高度受限兜底
+   reduced-motion 短路 / 窄栏布局 / 高度受限兜底
   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) .chat-page *, :root:not([data-motion='full']) .chat-page *::before, :root:not([data-motion='full']) .chat-page *::after {
@@ -1310,14 +794,6 @@ body:has(.chat-page) .sakura-fall {
 @media (max-width: 900px) {
   .chat-page {
     @apply tw:p-s-3;
-  }
-
-  .chat-page .chat-head {
-    @apply tw:items-start tw:flex-col;
-  }
-
-  .chat-page .chat-actions {
-    @apply tw:justify-start;
   }
 
   .chat-page .chat-layout {
@@ -1355,11 +831,8 @@ body:has(.chat-page) .sakura-fall {
 }
 
 @media (max-width: 600px) {
-  .chat-page .chat-head { @apply tw:mb-s-5; }
-
   .chat-page .room-setup { @apply tw:items-stretch tw:flex-col; }
-  .chat-page .conversation-head,
-  .chat-page .composer-tools {
+  .chat-page .conversation-head {
     @apply tw:items-stretch tw:flex-col;
   }
 
@@ -1370,16 +843,6 @@ body:has(.chat-page) .sakura-fall {
 
   .chat-page .model-controls {
     @apply tw:items-stretch tw:flex-col tw:w-full;
-  }
-
-  .chat-page .provider-switch button {
-    flex: 1;
-    @apply tw:min-h-[40px];
-  }
-
-  .chat-page .api-settings-toggle {
-    @apply tw:w-full;
-    max-width: none;
   }
 
   .chat-page .message {
@@ -1399,47 +862,12 @@ body:has(.chat-page) .sakura-fall {
     flex: 1;
   }
 
-  .chat-page .voice-console {
-    @apply tw:items-stretch tw:p-s-2;
-  }
-
-  .chat-page .voice-recovery {
-    order: 4;
-    flex: 1 1 auto;
-    @apply tw:text-center;
-  }
-
-  .chat-page .voice-status {
-    order: 5;
-    flex-basis: 100%;
-    @apply tw:pl-0 tw:text-center;
-  }
-
-  .chat-page .voice-console .volume-slider {
-    order: 6;
-    flex: 1 1 100%;
-    @apply tw:justify-center tw:min-h-[30px];
-  }
-
-  .chat-page .voice-console .volume-slider input[type="range"] {
-    width: min(180px, 58vw);
-  }
-
-  .chat-page .voice-console .replay-btn {
-    order: 7;
-    @apply tw:justify-center tw:w-full tw:ml-0;
-  }
-
-  .chat-page .keyboard-hint {
-    @apply tw:hidden;
-  }
 }
 
 /* Desktop room keeps the composer in the viewport; only the conversation scrolls. */
 @media (min-width: 1000px) {
   .chat-page { height: calc(100dvh - 72px); @apply tw:flex tw:flex-col tw:mb-0; padding-block: var(--s-4); }
   .chat-page > .chat-layout { flex: 1; @apply tw:min-h-0 tw:h-auto; }
-  .chat-page > .chat-head { @apply tw:shrink-0 tw:mb-s-4; }
   .chat-page .portrait-stage { @apply tw:min-h-0; }
   .chat-page:where(.aics-desktop-shell *) { height: calc(100dvh - 110px); }
 }
@@ -1452,7 +880,5 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .portrait-stage.live2d-ready .room-signal small { @apply tw:hidden; }
 @media (min-width: 1000px) {
   .chat-page { @apply tw:max-w-[1600px]; }
-  .chat-page .character-tabs { @apply tw:shrink-0 tw:p-[8px]; }
-  .chat-page .character-tab { @apply tw:min-h-[36px]; }
   .chat-page .chat-layout { grid-template-columns: clamp(290px, 27vw, 390px) minmax(0, 1fr); }
 }

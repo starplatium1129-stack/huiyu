@@ -32,25 +32,20 @@
 
           <!-- 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动进作品册，
                批量/队列不受此开关影响，它们按收集语义始终入册） -->
-          <div class="auto-save-gallery-row" role="group" aria-label="出图自动入册">
-            <ToggleSwitch v-model="autoSaveToGallery" label="出图自动存入作品册" />
+          <ToggleSwitch v-model="autoSaveToGallery" class="auto-save-gallery-row" label="出图自动存入作品册">
             <span class="auto-save-gallery-label">出图自动存入作品册</span>
-          </div>
+          </ToggleSwitch>
 
-          <details class="inspector-voice">
-          <StudioDisclosureSummary>配音与字幕</StudioDisclosureSummary>
           <VoiceStudio
             ref="voiceStudioRef"
             :initial-voice="pb.char === 'natsume' ? 'natsume' : 'nene'"
             :suggested-caption="pb.activeScene?.story || pb.story"
           />
-          </details>
 
           <DeferredPanel :active="batchOpen">
           <BatchSceneDrawPanel
             :open="batchOpen"
             :scenes="scenes"
-            :sd-available="sdOnline"
             :anima-available="animaOnline"
             :deps="batchPanelDeps"
             @close="batchOpen = false"
@@ -66,14 +61,13 @@ import { defineAsyncComponent } from 'vue'
 import type { PromptDeliveryBindings } from '@/composables/prompt/promptPanelBindings'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 const GenerationQueuePanel = defineAsyncComponent(() => import('@/components/GenerationQueuePanel.vue'))
 const VoiceStudio = defineAsyncComponent(() => import('@/components/VoiceStudio.vue'))
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
 const BatchSceneDrawPanel = defineAsyncComponent(() => import('@/components/BatchSceneDrawPanel.vue'))
 
 const props = defineProps<{ bindings: PromptDeliveryBindings }>()
-const { voiceStudioRef, pb, sdOnline, generationBusy, legacyProgress, animaOnline, drawEngine, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, queuePausedReason, scenes, batchPanelDeps } = props.bindings
+const { voiceStudioRef, pb, generationBusy, legacyProgress, animaOnline, sdQueue, BUSY_HINT, autoSaveToGallery, batchRunning, batchOpen, queuePausedReason, scenes, batchPanelDeps } = props.bindings
 </script>
 
 <style src="@/assets/css/director/components/PromptInspectorDelivery.css"></style>

@@ -180,7 +180,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.character-directory { @apply tw:sticky tw:top-[82px] tw:flex tw:flex-col; max-height: max(360px, calc(100dvh - 280px)); border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-hidden; }
+.character-directory { @apply tw:sticky tw:flex tw:flex-col; top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-visible-height,80px) + var(--s-2)); max-height:calc(100dvh - var(--desktop-chrome-height,0px) - var(--app-navigation-visible-height,80px) - var(--s-5)); border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:overflow-hidden; }
 .directory-main { @apply tw:flex-col; flex: 1 1 auto; }
 .directory-tools { @apply tw:p-s-4 tw:grid tw:gap-s-3 tw:shrink-0; }
 .directory-heading { @apply tw:flex tw:justify-between tw:text-body-sm tw:font-semibold; }
@@ -230,7 +230,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-catalog button:focus-visible,
 .directory-pagination :deep(.studio-select-trigger):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .directory-catalog .directory-tools { padding: var(--s-3) 0 0; }
-.directory-catalog .directory-list { @apply tw:min-h-0 tw:grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr)); @apply tw:gap-s-2; padding: var(--s-1) var(--s-1) var(--s-3); align-content: start; }
+.directory-catalog .directory-list { @apply tw:min-h-0 tw:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,144px),1fr)); @apply tw:gap-s-2; padding:var(--s-1) var(--s-1) var(--s-3); align-content:start; }
 .directory-catalog .directory-item { @apply tw:relative tw:flex tw:flex-col tw:items-stretch tw:gap-s-3 tw:m-0 tw:min-w-0 tw:p-s-2; background: var(--bg-surface); @apply tw:rounded-lg; }
 .directory-catalog .directory-item :deep(.character-portrait) { @apply tw:w-full tw:h-[170px]; border: 0; @apply tw:rounded-md; background: var(--bg-elevated); }
 .directory-catalog .directory-item :deep(.character-portrait img) { transform: none; object-position: center 20%; }
@@ -238,7 +238,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-catalog .directory-label small { @apply tw:whitespace-normal tw:leading-body; }
 .directory-catalog .directory-selected { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items: center; @apply tw:w-[28px] tw:h-[28px]; border: 1px solid var(--accent); @apply tw:rounded-pill; background: var(--bg-surface); }
 .directory-catalog .directory-item:hover { @apply tw:border-accent; }
-.directory-catalog .directory-item[aria-pressed="true"] { background: var(--accent-soft); @apply tw:border-strong; }
+.directory-catalog .directory-item[aria-pressed="true"] { background:var(--accent-soft); border-color:var(--accent); box-shadow:var(--selection-shadow); }
 .directory-catalog .directory-label strong { overflow-wrap: anywhere; @apply tw:leading-body; }
 .directory-catalog .directory-empty { grid-column: 1 / -1; }
 .directory-catalog .directory-current { padding-inline: 0; }

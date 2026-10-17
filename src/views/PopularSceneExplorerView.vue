@@ -1,6 +1,6 @@
 <template>
   <article class="page library-page popular-scene-library" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header"><div><div class="page-kicker">SCENE / 02</div><h1>角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
+    <header class="library-header"><div><div class="page-kicker">SCENE / 02</div><h1 class="page-title">角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
       <div class="library-detail">
@@ -29,7 +29,6 @@
           <div class="pop-rating-filters studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="分级筛选">
             <AnimatedSelection />
             <button v-for="r in RATING_OPTS" :key="r.v" type="button" class="pop-rating-pill"
-              :class="{ active: ratingFilter === r.v, ['rating-' + r.v]: r.v !== 'all' }"
               :aria-pressed="ratingFilter === r.v"
               @click="ratingFilter = r.v">{{ r.l }}</button>
           </div>
@@ -37,7 +36,6 @@
         <div class="pop-cats studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景分类">
           <AnimatedSelection />
           <button v-for="cat in categories" :key="cat.id" type="button" class="pop-cat"
-            :class="{ active: category === cat.id, adult: cat.id === '成人' }"
             :aria-pressed="category === cat.id"
             @click="category = cat.id">{{ cat.label }}<em>{{ cat.count }}</em></button>
         </div>
@@ -89,7 +87,7 @@
               <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
             </footer>
             <details class="pop-scene-details" :open="openDetails.has(blueprint.id)" @toggle="setDetailsOpen(blueprint.id, $event)">
-              <summary><span>场景细节</span><ArchiveIcon name="chevron-down" /></summary>
+              <StudioDisclosureSummary>场景细节</StudioDisclosureSummary>
               <div v-if="openDetails.has(blueprint.id)" data-disclosure-content>
               <p v-if="blueprint.description" class="pop-full-description">{{ displayDescription(blueprint) }}</p>
               <dl class="pop-decision">
@@ -134,6 +132,7 @@ import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import SceneArtworkViewer from '@/components/scene/SceneArtworkViewer.vue'

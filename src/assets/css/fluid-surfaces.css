@@ -20,12 +20,7 @@
   .nav-links :is(> a, .studio-tooltip-anchor > a, a) { @apply tw:rounded-md; }
 }
 .btn-primary { box-shadow: var(--shadow-glass-sm); }
-html :is(.appearance-heading, .task-center > header, .gs-input-row)[data-fluid-glass] { padding:var(--s-3); border-radius:var(--r-lg); }
-.nav-more-menu {
-  @apply tw:p-s-3 tw:rounded-xl;
-  box-shadow: var(--shadow-glass-elevated);
-}
-.nav-more-group-label { font: 600 var(--fs-label-sm) var(--font-sans); letter-spacing: normal; }
+html .gs-input-row[data-fluid-glass] { padding:var(--s-3); border-radius:var(--r-lg); }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .nav, .nav-links, .nav-more-menu { background: var(--bg-surface); backdrop-filter: none; }
 }
@@ -45,7 +40,7 @@ html :is(.modal-card, .batch-panel, .pb-backup-card, .pb-compare,
   .confirm-panel) {
   background: var(--bg-surface);
 }
-html :is(.modal-card, .batch-panel, .pb-backup-card, .shot-script-panel) > :is(h2, h3, header) {
+html :is(.modal-card, .batch-panel, .pb-backup-card) > :is(h2, h3, header) {
   @apply tw:leading-tight;
   letter-spacing: -.01em;
 }
@@ -60,7 +55,7 @@ html[data-reduced-motion="true"] *::after {
   transition: none !important;
   scroll-behavior: auto !important;
 }
-html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay, .nav, .gallery-toolbar, .gen-bar, .pb .gen-bar) {
+html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay, .guest-guide, .nav, .gallery-toolbar, .gen-bar, .pb .gen-bar) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   background: var(--bg-surface) !important;
@@ -72,6 +67,5 @@ html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-bac
     .companion-workspace-settings, .guest-guide-card, .random-popover, .chat-more-menu) {
     background: Canvas; color: CanvasText; border: 1px solid CanvasText; box-shadow: none;
   }
-  html :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay) { backdrop-filter: none; }
-  html .gs-input:focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+  html :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay, .guest-guide) { backdrop-filter: none; }
 }

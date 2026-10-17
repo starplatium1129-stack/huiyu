@@ -25,7 +25,7 @@
           <span class="companion-label">陪你翻阅</span>
           <div class="companion-switch studio-segments" data-fluid-glass role="group" aria-label="看板娘陪伴选择">
             <AnimatedSelection />
-            <button v-for="character in companions" :key="character" type="button" class="companion-pill" :class="{ active: companionId === character }" :aria-pressed="companionId === character" @click="manualCompanion = character">
+            <button v-for="character in companions" :key="character" type="button" class="companion-pill" :aria-pressed="companionId === character" @click="manualCompanion = character">
               <img v-if="!companionArtwork[character].avatarFailed" class="companion-avatar" :src="companionArtwork[character].avatar" width="256" height="256" alt="" aria-hidden="true" decoding="async" draggable="false" @error="companionArtwork[character].avatarFailed = true" />
               <ArchiveIcon v-else :name="character" class="companion-avatar" />
               {{ companionArtwork[character].name }}
@@ -36,19 +36,19 @@
       <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" @open="drawerScene = $event" />
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
-    <div class="scene-toolbar" :class="{ 'filters-expanded': filtersOpen }">
+    <div class="scene-toolbar">
       <div id="scenePersonalViews" class="scene-personal-nav studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="我的场景视图">
         <AnimatedSelection />
-        <button type="button" :class="{ active: fTier === 'core' && !showHidden }"
+        <button type="button"
           :aria-pressed="fTier === 'core' && !showHidden"
           @click="showRecommendedScenes">人设核心</button>
-        <button type="button" :class="{ active: fTier === 'personal' && !showHidden }"
+        <button type="button"
           :aria-pressed="fTier === 'personal' && !showHidden"
           @click="showPersonalScenes">常用 {{ usedCount }}</button>
-        <button type="button" :class="{ active: sortBy === 'favorite' && !showHidden }"
-          :aria-pressed="sortBy === 'favorite' && !showHidden"
+        <button type="button"
+          :aria-pressed="fTier === 'all' && sortBy === 'favorite' && !showHidden"
           @click="showFavoriteScenes">收藏 {{ favoriteCount }}</button>
-        <button type="button" :class="{ active: fTier === 'all' && sortBy === 'smart' && !showHidden }"
+        <button type="button"
           :aria-pressed="fTier === 'all' && sortBy === 'smart' && !showHidden"
           @click="showAllScenes">完整库 {{ availableCount }}</button>
       </div>
@@ -69,14 +69,13 @@
       <div class="scene-cats studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景主题">
         <AnimatedSelection />
         <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
-          :class="{ active: activeTheme === d.id }"
           :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
           @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.id === 'all' ? '全部分类' : d.label }} {{ themeCount(d.id) }}</button>
       </div>
 
       <div v-if="activeFilters.length" class="scene-active-filters" aria-label="已选筛选">
         <span>已选</span>
-        <button v-for="filter in activeFilters" :key="filter.key" type="button" :aria-label="'移除筛选：' + filter.label" @click="filter.clear()">{{ filter.label }}<ArchiveIcon name="close" /></button>
+        <button v-for="filter in activeFilters" :key="filter.key" class="btn btn-ghost btn-sm" type="button" :aria-label="'移除筛选：' + filter.label" @click="filter.clear()">{{ filter.label }}<ArchiveIcon name="close" /></button>
       </div>
 
       <div v-if="searchQuery && searchIntent.intents.length" class="search-intent" aria-live="polite">
@@ -97,7 +96,7 @@
         <div class="scene-filter-meta">
           <span class="mature-hint">成人 <em>{{ matureCount }}</em> · R18 图片默认模糊</span>
           <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
-          <button class="scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
+          <button class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
         </div>
       </div>
     </div>
@@ -108,7 +107,7 @@
 
     <header class="scene-results-heading">
       <div><h2>{{ sortBy === 'favorite' && !showHidden ? '我的收藏' : tierLabel }}<span v-if="activeTheme !== 'all'"> · {{ activeThemeLabel }}</span></h2></div>
-      <div class="scene-results-meta"><span class="scene-count" role="status" aria-live="polite">{{ loading ? '正在读取…' : loadError ? '读取失败' : `已显示 ${Math.min(visible, filtered.length)} / ${filtered.length} 个场景` }}</span><button v-if="searchQuery || activeTheme !== 'all' || activeFacetCount" class="scene-reset" type="button" @click="resetFilters">重置筛选</button></div>
+      <div class="scene-results-meta"><span class="scene-count" role="status" aria-live="polite">{{ loading ? '正在读取…' : loadError ? '读取失败' : `已显示 ${Math.min(visible, filtered.length)} / ${filtered.length} 个场景` }}</span><button v-if="searchQuery || activeTheme !== 'all' || activeFacetCount" class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置筛选</button></div>
     </header>
 
     <ArchiveStatePanel
@@ -150,13 +149,13 @@
               <span v-else-if="tier(s2) === 'signature' || tier(s2) === 'curated'" class="scene-curation-note">{{ tier(s2) === 'signature' ? '招牌' : '精选' }}</span>
             </div>
             <div class="ex-actions" @click.stop>
-              <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
+              <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary btn-sm scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-quiet btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
               <StudioTooltip :content="favs.has(s2.id) ? '取消收藏' : '收藏场景'">
-              <button class="btn btn-quiet btn-sm scene-fav" :class="{ saved: favs.has(s2.id) }" type="button" :aria-label="(favs.has(s2.id) ? '取消收藏：' : '收藏：') + s2.title" :aria-pressed="favs.has(s2.id)" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /></button>
+              <button class="btn btn-quiet btn-sm btn-icon scene-fav" :class="{ saved: favs.has(s2.id) }" type="button" :aria-label="(favs.has(s2.id) ? '取消收藏：' : '收藏：') + s2.title" :aria-pressed="favs.has(s2.id)" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /></button>
               </StudioTooltip>
             </div>
-            <details class="ex-more" @click.stop @toggle="rememberDetails(s2.id, $event)"><summary>镜头与更多</summary>
+            <details class="ex-more" @click.stop @toggle="rememberDetails(s2.id, $event)"><StudioDisclosureSummary>镜头与更多</StudioDisclosureSummary>
               <div data-disclosure-content>
               <DeferredPanel :active="openedDetails.has(s2.id)">
               <div v-if="personalReason(s2)" class="ex-curation">{{ personalReason(s2) }}</div>
@@ -167,8 +166,8 @@
               </div>
               <div class="ex-secondary">
                 <RouterLink class="btn btn-ghost btn-sm" :to="quickCreateUrl(s2.id)"><ArchiveIcon name="lightning" /> 直接出图</RouterLink>
-              <button class="btn btn-ghost scene-hide-action" type="button" @click.stop="toggleHidden(s2.id)">
-                {{ hiddenIds.has(s2.id) ? '↩ 恢复' : '隐藏' }}
+              <button class="btn btn-ghost btn-sm" type="button" @click.stop="toggleHidden(s2.id)">
+                {{ hiddenIds.has(s2.id) ? '恢复' : '隐藏' }}
               </button>
               </div>
               </DeferredPanel>
@@ -197,6 +196,7 @@ import SceneStoryDialog from '@/components/scene/SceneStoryDialog.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

@@ -70,53 +70,57 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
   <section class="panel step-panel anima-quick-panel" aria-label="引擎采样参数">
     <div class="panel-title anima-heading">
        <span>{{ state.family === 'krea2' ? 'Krea 2 · Comfy 创作引擎' : 'Anima · 生成参数' }}</span>
-      <span class="anima-status" :class="state.online ? 'is-on' : 'is-off'">{{ state.online ? '● 在线' : '○ 离线' }}</span>
+      <span class="anima-status" :class="state.online ? 'is-on' : 'is-off'">{{ state.online ? '在线' : '离线' }}</span>
     </div>
-    <div data-disclosure-content class="anima-body tw:flex tw:flex-col tw:gap-[8px]">
+    <div class="anima-body">
        <p class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">{{ state.checkMsg }}</p>
-       <RouterLink v-if="state.family === 'krea2' && !state.online" class="anima-btn" :to="{ path: '/control', query: { engine: 'krea2' } }">查看 Krea 环境与准备范围</RouterLink>
+       <RouterLink v-if="state.family === 'krea2' && !state.online" class="btn btn-ghost anima-setup-link" :to="{ path: '/control', query: { engine: 'krea2' } }">查看 Krea 环境与准备范围</RouterLink>
        <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份还原需以实际出图为准。</p>
         <p v-else-if="noLoraMode" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>无需 LoRA</strong> · 通用底模直出，不加载角色 LoRA，身份由词条锚定</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
-       <div v-if="capabilities.lora && !noLoraMode" class="anima-row">
-        <label :for="idOf('lora')">LoRA</label>
-        <StudioSelect :id="idOf('lora')" v-model="loraId" label="LoRA" :disabled="busy"
-          :options="state.loras.map(l => ({ value: l.id, label: l.name || l.id }))" />
-        <label :for="idOf('strength')" class="anima-inline tw:text-label-xs tw:text-secondary">强度</label>
-        <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
+       <div v-if="capabilities.lora && !noLoraMode" class="anima-field anima-lora-fields">
+        <div class="anima-form-field">
+          <label :for="idOf('lora')">LoRA</label>
+          <StudioSelect :id="idOf('lora')" v-model="loraId" label="LoRA" :disabled="busy"
+            :options="state.loras.map(l => ({ value: l.id, label: l.name || l.id }))" />
+        </div>
+        <div class="anima-form-field">
+          <label :for="idOf('strength')">强度</label>
+          <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
+        </div>
        </div>
-      <div class="anima-parameter-grid tw:grid tw:gap-s-2">
+      <div class="anima-parameter-grid">
         <div class="anima-field anima-seed-field">
           <label :for="idOf('seed')">随机种子</label>
-          <div class="anima-seed-control tw:flex tw:gap-[6px] tw:min-w-0">
-            <input :id="idOf('seed')" v-model.number="seed" type="number" min="0" step="1" class="anima-num anima-seed" :disabled="busy" />
-            <button type="button" class="anima-btn tw:rounded-sm tw:text-label-xs tw:cursor-pointer" :disabled="busy" @click="randomSeed">随机</button>
+          <div class="anima-seed-control">
+            <input :id="idOf('seed')" v-model.number="seed" type="number" min="0" step="1" class="anima-num" :disabled="busy" />
+            <button type="button" class="btn btn-ghost" :disabled="busy" @click="randomSeed">随机</button>
           </div>
         </div>
         <div class="anima-field anima-field--slider">
-          <div class="tw:flex tw:items-center tw:justify-between">
+          <div class="anima-field-heading">
             <label :for="idOf('steps')">采样步数</label>
             <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
           </div>
           <input type="range" min="1" max="60" step="1" :value="steps"
-            class="anima-slider tw:w-full" aria-label="采样步数滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
+            class="anima-slider" aria-label="采样步数滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
             @input="steps = Number(($event.target as HTMLInputElement).value)" />
         </div>
         <div class="anima-field anima-field--slider">
-          <div class="tw:flex tw:items-center tw:justify-between">
+          <div class="anima-field-heading">
             <label :for="idOf('cfg')">引导强度 · CFG</label>
             <input :id="idOf('cfg')" v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
           </div>
           <input type="range" min="0.5" max="10" step="0.5" :value="cfg"
-            class="anima-slider tw:w-full" aria-label="引导强度滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
+            class="anima-slider" aria-label="引导强度滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
             @input="cfg = Number(($event.target as HTMLInputElement).value)" />
         </div>
       </div>
-      <p class="anima-output-note tw:flex tw:flex-wrap tw:items-center tw:gap-[6px] tw:p-[10px] tw:rounded-sm tw:text-primary"><ArchiveIcon name="spark" />预计成片 {{ outputSize }}<span>放大倍率越高，显存与等待时间通常越多</span></p>
+      <p class="anima-output-note"><ArchiveIcon name="spark" />预计成片 {{ outputSize }}<span>放大倍率越高，显存与等待时间通常越多</span></p>
 
       <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
-      <div v-if="native || capabilities.hires || capabilities.teaCache" class="anima-row anima-hires-row">
+      <div v-if="native || capabilities.hires || capabilities.teaCache" class="anima-hires-options">
         <ToggleSwitch v-model="teaCache" :disabled="busy || (!native && !capabilities.teaCache && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>特征缓存加速 · TeaCache</span>
@@ -125,22 +129,23 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <ArchiveIcon name="spark" class="anima-hires-icon" />
           <span>高清放大</span>
         </ToggleSwitch>
-        <template v-if="hiresFix">
-          <template v-if="native">
-            <label :for="idOf('upscaler')" class="anima-inline tw:text-label-xs tw:text-secondary">放大方式</label>
-            <StudioSelect :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy"
+        <div v-if="hiresFix" class="anima-parameter-grid">
+          <div class="anima-field">
+            <label :for="idOf('upscaler')">放大方式</label>
+            <StudioSelect v-if="native" :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy"
               :options="[{ value: 'Auto', label: 'Auto · 优先 Remacri' }, { value: 'Latent', label: 'Latent · 二次采样' }, { value: 'Remacri', label: 'Remacri', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri') }]" />
-          </template>
-          <template v-else>
-            <label :for="idOf('upscaler')" class="anima-inline tw:text-label-xs tw:text-secondary">放大方式</label>
-            <StudioSelect :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy" :options="comfyUpscalers" />
-          </template>
-          <label :for="idOf('scale')" class="anima-inline tw:text-label-xs tw:text-secondary">倍率</label>
-          <StudioSelect :id="idOf('scale')" v-model.number="hiresScale" label="倍率" :disabled="busy"
-            :options="[{ value: 1.5, label: '1.5×' }, { value: 2.0, label: '2.0×' }]" />
-          <label :for="idOf('denoise')" class="anima-inline tw:text-label-xs tw:text-secondary">二次重绘幅度</label>
-          <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy || (!native && comfyHiresPath !== 'latent')" />
-        </template>
+            <StudioSelect v-else :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy" :options="comfyUpscalers" />
+          </div>
+          <div class="anima-field">
+            <label :for="idOf('scale')">倍率</label>
+            <StudioSelect :id="idOf('scale')" v-model.number="hiresScale" label="倍率" :disabled="busy"
+              :options="[{ value: 1.5, label: '1.5×' }, { value: 2.0, label: '2.0×' }]" />
+          </div>
+          <div class="anima-field">
+            <label :for="idOf('denoise')">二次重绘幅度</label>
+            <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="anima-num" :disabled="busy || (!native && comfyHiresPath !== 'latent')" />
+          </div>
+        </div>
       </div>
       <p v-if="!native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
         <template v-if="comfyHiresPath === 'unknown'">Auto 放大路径待确认，请刷新引擎状态；暂不调整二次重绘幅度。</template>
@@ -152,19 +157,19 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
       <p v-if="native" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
         已内置 Anima TeaCache，换角色、尺寸或高清倍率无需校准。缓存会改变部分采样结果，可关闭以使用完整计算。
       </p>
-      <div v-if="native && teaCache" class="anima-row">
+      <div v-if="native && teaCache" class="anima-field">
         <label :for="idOf('cache-threshold')">缓存阈值</label>
         <input :id="idOf('cache-threshold')" type="number" min="0" max="1" step="0.01" :value="state.teaCacheThresh ?? 0.10" class="anima-num" :disabled="busy" @change="patch({ teaCacheThresh: Number(($event.target as HTMLInputElement).value) })" />
         <span class="tw:text-label-xs tw:text-secondary">默认 0.10 · 数值越低越保守，0 为完整计算</span>
       </div>
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>
-      <label :for="idOf('prompt')" class="anima-label tw:mt-[4px]">正向提示词</label>
-      <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="anima-textarea tw:w-full tw:rounded-sm tw:resize-y" readonly></textarea>
+      <label :for="idOf('prompt')" class="anima-label">正向提示词</label>
+      <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="anima-textarea" readonly></textarea>
 
        <template v-if="capabilities.negative">
-         <label :for="idOf('negative')" class="anima-label tw:mt-[4px]">负向提示词</label>
-         <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="anima-textarea tw:w-full tw:rounded-sm tw:resize-y" readonly></textarea>
+         <label :for="idOf('negative')" class="anima-label">负向提示词</label>
+         <textarea :id="idOf('negative')" :value="state.negative" rows="2" class="anima-textarea" readonly></textarea>
        </template>
 
       </div></details>
@@ -173,46 +178,41 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 </template>
 
 <style scoped>
-@reference "../assets/css/tailwind.css";
-.anima-quick-panel { @apply tw:mt-[14px] tw:min-w-0 tw:border-strong; background: var(--bg-surface) }
-.anima-status { @apply tw:ml-auto tw:text-label-xs; padding: 2px 8px; @apply tw:rounded-pill }
-.anima-status.is-on { @apply tw:text-success-text; background: color-mix(in srgb, var(--success) 12%, transparent) }
-.anima-status.is-off { @apply tw:text-danger-text; background: color-mix(in srgb, var(--danger) 12%, transparent) }
-.anima-body { padding: 12px 14px 14px }
-.anima-row { @apply tw:flex tw:items-center tw:gap-[6px] tw:flex-wrap }
-.anima-hires-row { @apply tw:pt-[6px]; border-top: 1px dashed var(--border-soft); @apply tw:mt-[2px] }
-.anima-hires-toggle { @apply tw:text-label-xs tw:font-semibold tw:text-accent tw:max-w-full tw:flex-wrap }
-.anima-hires-icon { @apply tw:w-[14px] tw:h-[14px] tw:text-accent tw:shrink-0 }
-.anima-row label, .anima-label { @apply tw:text-label-xs tw:text-secondary tw:min-w-[44px] }
-/* 原生 <select> 已迁移为 StudioSelect：外观由组件统一提供；行内布局（flex/min-width）
-   由 .studio-select-wrapper 承接，保持 LoRA / 倍率与原生 select 一致的拉伸行为。 */
-.anima-row .studio-select-wrapper { flex: 1; @apply tw:min-w-[120px] }
-.anima-num { background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); @apply tw:rounded-md; padding: 4px 8px; @apply tw:text-label-xs }
-.anima-num { @apply tw:w-[72px] }
-.anima-seed { @apply tw:w-[140px] }
-/* 行内标签原本是裸 span，改为 label 后会继承上一行 .anima-row label 的 44px
-   最小宽，把 Steps/CFG/尺寸撑开。这里还原成原来的紧凑外观，只换语义不换版式 */
-.anima-row label.anima-inline { @apply tw:min-w-0 }
-.anima-textarea { background: var(--bg-deep); color: inherit; border: 1px solid var(--border-soft); padding: 6px 8px; @apply tw:text-label-xs; font-family: inherit }
-.anima-btn { background: var(--bg-hover); color: inherit; border: 1px solid var(--border-soft); padding: 5px 12px }
-/* 审计修复: 不用 opacity 压字 */
-.anima-btn:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed }
-.anima-primary { background: var(--accent); @apply tw:border-accent tw:text-inverse tw:font-semibold }
-.anima-result { @apply tw:mt-[8px] }
-.anima-result img { @apply tw:max-w-full tw:rounded-lg; border: 1px solid var(--border-soft) }
-.anima-parameter-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); }
-.anima-field { @apply tw:grid; align-content: start; @apply tw:gap-s-2 tw:min-w-0 tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-base); }
-.anima-field label { @apply tw:text-secondary tw:text-label-xs; }
-.anima-field .anima-num { @apply tw:w-full tw:min-w-0 tw:min-h-[40px] tw:box-border; font-variant-numeric: tabular-nums; background: var(--bg-surface); }
+.anima-quick-panel { min-width:0; margin:0; }
+.anima-heading { display:flex; align-items:center; gap:var(--s-2); }
+.anima-heading > span:first-child { min-width:0; overflow-wrap:anywhere; }
+.anima-status { display:inline-flex; align-items:center; flex:none; gap:var(--s-1); margin-inline-start:auto; padding:2px var(--s-2); border-radius:var(--r-pill); font-size:var(--fs-label-xs); white-space:nowrap; }
+.anima-status::before { content:''; width:6px; height:6px; border:1px solid currentColor; border-radius:50%; background:currentColor; }
+.anima-status.is-on { color:var(--success-text); background:color-mix(in srgb,var(--success) 12%,var(--bg-surface)); }
+.anima-status.is-off { color:var(--danger-text); background:color-mix(in srgb,var(--danger) 12%,var(--bg-surface)); }
+.anima-status.is-off::before { background:transparent; }
+.anima-body { display:grid; gap:var(--s-3); min-width:0; }
+.anima-setup-link { justify-self:start; white-space:normal; text-align:left; }
+/* Each slider keeps its label beside a bounded number field. The cards wrap
+   before either Chinese label needs to squeeze into a narrow column. */
+.anima-parameter-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr)); gap:var(--s-2); min-width:0; }
+.anima-field { display:grid; align-content:start; gap:var(--s-2); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.anima-form-field { display:grid; align-content:start; gap:var(--s-2); min-width:0; }
+.anima-lora-fields { grid-template-columns:minmax(0,1fr) minmax(0,5rem); }
+.anima-field label,.anima-label { color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-label); }
+.anima-field .studio-select-wrapper { width:100%; min-width:0; }
+.anima-num,.anima-textarea { width:100%; min-width:0; background:var(--bg-surface); font-size:var(--fs-label); font-variant-numeric:tabular-nums; }
+.anima-field-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-2); min-width:0; }
+.anima-field-heading .anima-num { flex:0 0 5rem; width:5rem; }
+.anima-slider { width:100%; }
 .anima-seed-field { grid-column: 1 / -1; }
-.anima-seed-control .anima-seed { flex: 1; @apply tw:w-0; }
-.anima-seed-control .anima-btn { @apply tw:shrink-0; }
-.anima-output-note { margin: 4px 0; border: 1px solid var(--border-soft); background: var(--accent-soft); @apply tw:text-label-xs; font-variant-numeric: tabular-nums; }
-.anima-output-note svg { @apply tw:w-[16px] tw:h-[16px] tw:text-accent tw:shrink-0; }
-.anima-output-note span { flex-basis: 100%; @apply tw:text-secondary; }
-.anima-quick-panel input:disabled { opacity: 1; @apply tw:text-disabled; -webkit-text-fill-color: var(--text-disabled); @apply tw:cursor-not-allowed; }
-.anima-quick-panel :is(input, textarea, button, summary):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-.anima-quick-panel :is(button):active:not(:disabled) { transform: scale(.97); }
-.anima-status { @apply tw:whitespace-nowrap; }
-.anima-heading > span:first-child { @apply tw:min-w-0; overflow-wrap: anywhere; }
+.anima-seed-control { display:flex; gap:var(--s-2); min-width:0; }
+.anima-seed-control .anima-num { flex:1; width:0; }
+.anima-seed-control .btn { flex:none; }
+.anima-output-note { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); margin:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--accent-soft); color:var(--text-primary); font-size:var(--fs-label); line-height:var(--lh-body); font-variant-numeric:tabular-nums; }
+.anima-output-note .archive-icon,.anima-hires-icon { flex:none; width:16px; height:16px; color:var(--accent); }
+.anima-output-note span { flex-basis:100%; color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.anima-hires-options { display:grid; gap:var(--s-2); min-width:0; padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
+.anima-hires-toggle { width:100%; min-width:0; color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.anima-hires-toggle > span:last-child { flex:1; min-width:0; overflow-wrap:anywhere; }
+.anima-label { display:block; margin:var(--s-2) 0; }
+.anima-textarea { font-family:var(--font-mono); }
+.anima-prompt-details summary { color:var(--text-secondary); font-size:var(--fs-label); cursor:pointer; }
+.anima-quick-panel :is(.anima-num,.anima-textarea):disabled { color:var(--text-disabled); -webkit-text-fill-color:var(--text-disabled); cursor:not-allowed; }
+.anima-quick-panel :is(.anima-num,.anima-textarea,summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 </style>

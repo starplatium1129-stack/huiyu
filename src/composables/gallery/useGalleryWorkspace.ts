@@ -1,5 +1,5 @@
 import { sameArtworkMedia, watchArtworkMedia } from './artworkMediaIdentity';
-import { artworkFacts, characterName as resolveCharacterName, formatDate, formatTrashTime, sceneTitle as resolveSceneTitle, trashPrompt } from './galleryHelpers';
+import { artworkFacts, characterName as resolveCharacterName, formatDate, sceneTitle as resolveSceneTitle } from './galleryHelpers';
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { useMasonryColumns } from '@/composables/gallery/useMasonryWall';
 import { useFocusTrap } from '@/composables/useFocusTrap';
@@ -365,8 +365,8 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
-        compareOpen, compareItems, loadGalleryStorage, trashBusy, trashPrompt,
-        formatTrashTime, restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryError, history, resetGalleryFilters,
+        compareOpen, compareItems, loadGalleryStorage, trashBusy,
+        restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryError, history, resetGalleryFilters,
         masonryGroups, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,

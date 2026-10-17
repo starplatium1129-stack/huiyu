@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="catalog-document-editor">
     <template v-if="record.id === 'tags' && Array.isArray(record.data)">
       <StudioSearch v-model="query" label="搜索标签" placeholder="搜索标签…" />
       <p class="hint-sm">修改名称或删除用词时，相关故事也会一起更新。保存前可以核对这些变化。</p>
@@ -10,7 +10,7 @@
         <button class="btn btn-danger btn-sm" type="button" :disabled="disabled" @click="tagRows.splice(tagRows.indexOf(tag), 1)">删除标签</button>
       </div></div>
       <button class="btn btn-ghost" type="button" :disabled="disabled" @click="addTag">新增标签</button>
-      <nav class="catalog-pagination" aria-label="标签分页"><button class="btn btn-ghost btn-sm" type="button" :disabled="page <= 1" @click="page--">上一页</button><span role="status">{{ page }} / {{ pages }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="page >= pages" @click="page++">下一页</button></nav>
+      <StudioPagination v-model="page" :pages="pages" label="标签分页" />
     </template>
     <template v-else-if="record.id === 'curation'">
       <label v-for="field in curationFields" :key="field[0]" class="form-group catalog-curation-field"><span class="field-label">{{ field[1] }}</span><textarea class="input" rows="5" :value="list(field[0])" :disabled="disabled" @change="setList(field[0], ($event.target as HTMLTextAreaElement).value)"></textarea><span class="hint-sm">每行填写一份故事的编号，顺序就是展示次序</span></label>
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioPagination from '@/components/ui/StudioPagination.vue'
 import type { CatalogRecord } from '@/api/catalogApi'
 defineProps<{ disabled: boolean }>()
 const record = defineModel<CatalogRecord>('record', { required: true })

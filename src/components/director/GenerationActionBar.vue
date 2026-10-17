@@ -1,6 +1,6 @@
 <template>
   <!-- 桌面常驻侧栏；窄窗口独立吸附于整个编辑区，保留尺寸、生成与停止。 -->
-  <div class="gen-bar" :data-docked="docked || undefined" role="group" aria-label="出图尺寸与生成">
+  <div ref="generationBar" class="gen-bar" :data-docked="docked || undefined" role="group" aria-label="出图尺寸与生成">
     <GenerationSizePicker v-if="showSize" class="gen-bar-size" compact v-bind="{ engine, size, animaSizes, busy }" @update:size="$emit('update:size', $event)" />
     <div class="gen-bar-meta">
       <div class="gen-bar-status">
@@ -44,8 +44,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
-import { useEventListener } from '@vueuse/core'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
+import { useElementSize, useEventListener } from '@vueuse/core'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import { usePressRipple } from '@/composables/usePressRipple'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -114,10 +114,18 @@ onDeactivated(settleMorph); onBeforeUnmount(settleMorph)
 
 const emit = defineEmits<{
   'update:size': [value: string]
+  resize: [height: number]
   generate: []
   cancel: []
 }>()
-
+// Wrapped status/recovery text changes the sticky space too. Pause the observer
+// with the retained workspace; scrolling itself never updates reactive layout.
+const generationBar = ref<HTMLElement | null>(null)
+const sizeActive = ref(true)
+const { height: generationBarHeight } = useElementSize(() => sizeActive.value ? generationBar.value : null, { width:0, height:0 }, { box:'border-box' })
+watch(generationBarHeight, height => emit('resize', height), { immediate:true })
+onActivated(() => { sizeActive.value = true })
+onDeactivated(() => { sizeActive.value = false })
 </script>
 
 <style scoped>

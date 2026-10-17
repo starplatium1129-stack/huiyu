@@ -1,54 +1,4 @@
 @reference "./tailwind.css";
-.archive-status { padding:4px 9px; border:1px solid var(--border-soft); @apply tw:text-muted; font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
-/* 2026-08-15：全量角色浏览区——作品筛选 + 分组网格卡片 */
-.character-browse { @apply tw:mb-s-6; }
-.cb-search-wrap { @apply tw:relative tw:mb-s-3; }
-.cb-search-icon { @apply tw:absolute tw:left-[12px] tw:top-[50%] tw:w-[15px] tw:h-[15px]; transform: translateY(-50%); @apply tw:text-muted tw:pointer-events-none; }
-.cb-search { @apply tw:w-full; padding: var(--s-3) var(--s-4) var(--s-3) 38px; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body; outline: none; }
-.cb-search:focus { @apply tw:border-strong; }
-.cb-franchises { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:mb-s-4 tw:p-s-3; border: 1px solid color-mix(in srgb, var(--archive-blue) 22%, var(--border-soft)); border-radius: var(--r-dossier); background: color-mix(in srgb, var(--bg-surface) 62%, transparent); }
-.cb-franchise { @apply tw:inline-flex tw:items-center tw:gap-[6px]; padding: 5px 12px; border: 1px solid var(--border-soft); @apply tw:rounded-pill; background: var(--bg-surface); @apply tw:text-secondary tw:text-label-sm tw:font-semibold tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover); }
-.cb-franchise:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
-.cb-franchise.active { @apply tw:border-strong tw:text-accent; background: var(--accent-soft); }
-/* 单角色作品折叠项与「更多」开关：弱化层级，不与高频作品抢注意力 */
-.cb-franchise-minor { border-style: dashed; opacity: .88; }
-.cb-franchise-toggle { @apply tw:text-muted; background: transparent; @apply tw:border-soft; }
-.cb-franchise-toggle:hover { @apply tw:text-accent; }
-.cb-franchise .cb-caret { @apply tw:text-mono-xs tw:leading-flush; opacity: .7; }
-.cb-count { font: 650 var(--fs-mono-xs) var(--font-mono); opacity: .7; }
-.cb-groups { @apply tw:grid tw:gap-s-5; }
-.cb-group-head { @apply tw:flex tw:items-baseline tw:gap-s-2; margin: 0 0 var(--s-2); @apply tw:text-title-xs tw:text-secondary; }
-.cb-group-count { font: 650 var(--fs-mono-xs) var(--font-mono); @apply tw:text-accent; }
-.cb-grid { @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); @apply tw:gap-s-2; }
-.cb-card {
-  @apply tw:flex tw:flex-col tw:items-center tw:gap-[6px]; padding: var(--s-3) var(--s-2) var(--s-2);
-  border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface);
-  @apply tw:text-secondary tw:cursor-pointer;
-  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
-  /* 离屏卡片跳过布局/绘制，长列表滚动满帧 */
-  content-visibility: auto;
-  contain-intrinsic-size: auto 150px;
-}
-.cb-card:active { transform: translateY(1px) scale(.98); }
-/* 2026-08-22 动效审计 #12：带位移的 hover 统一收进精确指针门控（触屏点按不再卡在浮起态，同其余五个视图） */
-@media (hover: hover) and (pointer: fine) {
-  .cb-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); transform: translateY(-1px); }
-}
-.cb-card.active { @apply tw:border-strong; background: color-mix(in srgb, var(--accent) 10%, var(--bg-surface)); }
-.cb-avatar { @apply tw:relative tw:w-[64px] tw:h-[64px]; border-radius: 50%; @apply tw:overflow-hidden; border: 1px solid var(--border-soft); background: var(--bg-deep); @apply tw:grid; place-items: center; }
-.cb-card.active .cb-avatar { @apply tw:border-strong; }
-.cb-avatar img { @apply tw:w-full tw:h-full tw:object-cover; }
-.cb-avatar-fallback {
-  @apply tw:w-full tw:h-full tw:grid; place-items: center;
-  @apply tw:text-title-sm tw:font-extrabold;
-  color: color-mix(in srgb, white 94%, transparent);
-  text-shadow: 0 1px 4px color-mix(in srgb, #000 34%, transparent);
-  background: linear-gradient(135deg, var(--avatar-a, #77717f), var(--avatar-b, #4a4553));
-}
-.cb-name { @apply tw:text-label-sm tw:font-bold tw:text-primary tw:text-center tw:leading-tight; }
-.cb-original { @apply tw:text-mono-xs tw:text-muted tw:max-w-full tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-.cb-empty { @apply tw:p-s-5 tw:text-center tw:text-muted; border: 1px dashed var(--border-soft); @apply tw:rounded-lg; }
-.cb-empty .btn { @apply tw:mt-s-3; }
 .character-hero { @apply tw:relative tw:overflow-hidden tw:grid; grid-template-columns:320px 1fr; @apply tw:gap-s-6 tw:p-s-6; }
 .character-hero::before { content:""; @apply tw:absolute tw:top-[-1px] tw:left-s-6 tw:w-[42px] tw:h-[1px]; background:var(--archive-blue); opacity:.86; }
 /* 立绘按"画框里的展品"处理：底光 + 顶部渐隐，入场交由档案转场，
@@ -108,7 +58,7 @@
 .portrait-missing-icon { font-size:1.7rem; }
 .portrait-missing-title { @apply tw:text-primary tw:text-title-xs tw:font-bold; letter-spacing:.04em; }
 .portrait-missing-text { max-width:30ch; @apply tw:text-label-sm tw:leading-label; }
-/* 缺失时的"空展位"虚线框：与档案语言（cb-empty 等虚线空态）一致 */
+/* 缺失立绘保留清晰的空态与恢复入口。 */
 .portrait[data-portrait-state="missing"]::after {
   content:''; @apply tw:absolute; inset:var(--s-2);
   border:1px dashed var(--on-art-line);
@@ -148,13 +98,6 @@
 .tag-chip.m3 { --chip-tone:var(--mood-sad-text); }
 .tag-chip.m4 { --chip-tone:var(--mood-tension-text); }
 .tag-chip.m5 { --chip-tone:var(--mood-warmth-text); }
-/* 现在是 <button>：重置默认样式，保留原来的截断+展开观感 */
-/* compositor-exempt: 点击一次性展开长文阅读辅助；height:auto 终态依赖 interpolate-size
-   渐进增强，transform 无 auto 折叠等价物，且非高频交互。 */
-.bg-story { @apply tw:block tw:w-full tw:text-left; border:none; background:none; font-family:inherit; @apply tw:relative; interpolate-size: allow-keywords; @apply tw:h-[80px] tw:overflow-hidden tw:text-secondary tw:text-body-sm tw:leading-loose tw:cursor-pointer; transition:height var(--motion-surface) var(--ease-out); }
-.bg-story.expanded { @apply tw:h-auto; }
-.bg-story::after { content:'展开'; @apply tw:absolute tw:right-0 tw:bottom-0 tw:pl-s-6; background:linear-gradient(90deg,transparent,var(--bg-surface)); @apply tw:text-accent tw:text-label-xs; }
-.bg-story.expanded::after { content:none; }
 .detail-grid { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-3; }
 .detail-section { @apply tw:p-s-3 tw:rounded-md; background:var(--bg-deep); }
 .detail-section.wide { grid-column:1/-1; }

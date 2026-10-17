@@ -21,14 +21,14 @@
     </template>
     <template v-else>
       <div class="scene-scope studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景库范围">
-      <AnimatedSelection />
-        <button type="button" :class="{ active: sceneCollection === 'core' }"
+        <AnimatedSelection />
+        <button type="button"
           :aria-pressed="sceneCollection === 'core'"
           @click="$emit('update:sceneCollection', 'core')">人设核心 {{ personaCoreCount }}</button>
-        <button type="button" :class="{ active: sceneCollection === 'curated' }"
+        <button type="button"
           :aria-pressed="sceneCollection === 'curated'"
           @click="$emit('update:sceneCollection', 'curated')">精选 {{ curatedCount }}</button>
-        <button type="button" :class="{ active: sceneCollection === 'all' }"
+        <button type="button"
           :aria-pressed="sceneCollection === 'all'"
           @click="$emit('update:sceneCollection', 'all')">完整库</button>
       </div>
@@ -37,34 +37,36 @@
         <span class="scene-result-count" role="status" aria-live="polite">
           {{ availableScenes.length }} 个场景
         </span>
-        <button class="scene-filter-reset" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
+        <button class="btn btn-quiet btn-sm" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
       </div>
       <details class="scene-theme-filter">
-        <summary>主题 · {{ currentThemeLabel }}<span class="scene-theme-expand">展开</span><span class="scene-theme-collapse">收起</span></summary>
-        <div class="scene-cats" role="group" aria-label="场景主题">
-          <button v-for="t in SCENE_THEMES" :key="t.id"
-            class="scene-cat-btn" type="button"
-            :aria-pressed="pb.sceneTheme === t.id"
-            :class="{ active: pb.sceneTheme === t.id }"
-            @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
+        <StudioDisclosureSummary>主题 · {{ currentThemeLabel }}</StudioDisclosureSummary>
+        <div data-disclosure-content>
+          <div class="scene-cats studio-segments studio-segments--compact" role="group" aria-label="场景主题">
+            <AnimatedSelection />
+            <button v-for="t in SCENE_THEMES" :key="t.id"
+              class="scene-cat-btn" type="button"
+              :aria-pressed="pb.sceneTheme === t.id"
+              @click="pb.sceneTheme = t.id"><ArchiveIcon :name="t.iconName" /> {{ t.label }}</button>
+          </div>
         </div>
       </details>
       <div v-content-motion:right="pb.dataReady ? `${sceneCollection}:${pb.sceneTheme}` : false" class="scene-list">
-        <div v-if="!pb.dataReady" class="scene-loading">正在加载场景库…</div>
-        <div v-else-if="!availableScenes.length" class="scene-empty">未找到匹配场景</div>
+        <div v-if="!pb.dataReady" class="scene-loading" role="status">正在加载场景库…</div>
+        <div v-else-if="!availableScenes.length" class="scene-empty" role="status">未找到匹配场景</div>
         <button v-for="scene in visibleScenes" :key="scene.id"
           class="scene-card"
-          :class="{ active: pb.sceneId === scene.id }"
+          data-control-motion
           :aria-pressed="pb.sceneId === scene.id"
           type="button"
           @click="$emit('selectScene', scene)">
           <div class="scene-card-title">
             <ArchiveIcon v-if="pb.sceneId === scene.id" name="success" class="scene-selection-check" />
-            {{ scene.title }}
-            <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
+            <span class="scene-card-name">{{ scene.title }}</span>
           </div>
           <div v-if="scene.story" class="scene-card-story">{{ scene.story }}</div>
           <div class="scene-card-meta">
+            <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
             <span v-if="scene.category" class="scene-cat-tag">{{ scene.category }}</span>
             <span v-if="scene.rating && scene.rating !== 'All'" class="scene-rating-tag">{{ scene.rating }}</span>
           </div>
@@ -82,13 +84,13 @@
 import { computed } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { SCENE_THEMES } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import PopularBlueprintPicker from '@/components/popular/PopularBlueprintPicker.vue'
 import type { Scene } from '@/stores/promptBuilderStore'
 import type { SceneBlueprint } from '@/utils/popularContent'
-import '@/assets/css/director/components/DirectorSceneLibrary.css'
 import '@/assets/css/director/components/DirectorScenesPanel.css'
 
 const pb = usePromptBuilderStore()

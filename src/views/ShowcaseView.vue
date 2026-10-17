@@ -9,16 +9,16 @@
 
     <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
       <div class="search-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
-        <div class="collection-scope showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ !selectedAlbum && typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
+        <div class="showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ !selectedAlbum && typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
         <StudioSearch v-show="!albumsOpen" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
-        <div v-show="!albumsOpen" class="filter-group collection-scope studio-segments tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" data-fluid-glass role="group" aria-label="样张来源">
+        <div v-show="!albumsOpen" class="filter-group studio-segments tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" data-fluid-glass role="group" aria-label="样张来源">
           <AnimatedSelection />
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
         <button v-if="hasFilters && !albumsOpen" class="filter-reset" type="button" @click="resetFilters">清除筛选</button>
       </div>
       <details v-show="!albumsOpen" class="showcase-filters">
-        <summary><span>细选画册</span><span class="filter-summary">{{ filterSummary }}</span><ArchiveIcon name="chevron-down" /></summary>
+        <StudioDisclosureSummary><span>细选画册</span><span class="filter-summary">{{ filterSummary }}</span></StudioDisclosureSummary>
         <div class="filter-details" data-disclosure-content>
           <div class="filter-group filter-dropdowns tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center">
             <label for="showcaseTypeSelect">作品类型
@@ -103,7 +103,7 @@
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
             </div>
-            <details v-if="currentEntry.meta" class="viewer-details"><summary>创作参数 <ArchiveIcon name="chevron-down" /></summary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
+            <details v-if="currentEntry.meta" class="viewer-details"><StudioDisclosureSummary>创作参数</StudioDisclosureSummary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
               <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
               <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
               <span v-if="currentEntry.meta.model">模型 {{ currentEntry.meta.model }}</span>
@@ -141,6 +141,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'

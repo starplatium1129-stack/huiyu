@@ -3,7 +3,7 @@
     <CreativeLibraryHeader title="色彩情绪" />
 
     <section class="color-selection" data-route-arrive aria-labelledby="mood-palette-title">
-    <header class="color-section-heading"><h2 id="mood-palette-title">心境色板</h2></header>
+    <header class="color-section-heading"><div><h2 id="mood-palette-title">心境色板</h2><p>选一种心情，让色彩与光照跟着故事走。</p></div><span v-if="selected" class="color-current"><ArchiveIcon name="success" />已选{{ selected.name }}</span></header>
     <div ref="moodGrid" class="mood-grid color-mood-grid">
       <button
         v-for="m in MOODS" :key="m.id"
@@ -13,13 +13,15 @@
         :aria-pressed="selected?.id === m.id"
         @click="select(m)"
       >
-        <div class="mood-strip">
+        <div class="mood-strip" aria-hidden="true">
           <div v-for="c in m.palette" :key="c" class="mood-swatch" :style="{ '--swatch': c }"></div>
         </div>
         <div class="mood-body">
           <div class="mood-name"><ArchiveIcon :name="m.iconName" /> {{ m.name }}</div>
           <div class="mood-en">{{ m.en }}</div>
+          <span class="mood-choice-mark" aria-hidden="true"><ArchiveIcon :name="selected?.id === m.id ? 'success' : 'chevron-down'" /></span>
         </div>
+        <CardEdgeLight />
       </button>
     </div>
     </section>
@@ -31,10 +33,10 @@
         </header>
         <div class="palette-content">
           <div class="palette tw:flex tw:flex-wrap tw:gap-s-2">
-            <div v-for="c in selected.palette" :key="c" class="palette-swatch">
+            <button v-for="c in selected.palette" :key="c" type="button" class="palette-swatch" :aria-label="`复制色号 ${c}`" @click="copyWithFeedback(c, `已复制色号 ${c}`)">
               <span class="palette-color" :style="{ '--swatch': c }" aria-hidden="true"></span>
-              <span class="palette-code">{{ c }}</span>
-            </div>
+              <span class="palette-code">{{ c }}<ArchiveIcon name="copy" /></span>
+            </button>
           </div>
           <div class="mapping-grid">
             <div v-for="(val, key) in selected.mapping" :key="key" class="mapping-item">
@@ -49,14 +51,14 @@
         <div class="prompt-label">自动翻译 Prompt</div>
         <div class="prompt-code" v-html="colorizedPrompt"></div>
         <div class="result-actions tw:flex tw:flex-wrap tw:gap-s-2">
-          <button class="btn btn-ghost" type="button" @click="copyPrompt"><ArchiveIcon name="copy" /> 复制 Prompt</button>
+          <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :content-key="selected.id" :action="copyPrompt" />
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
           <button class="btn btn-ghost" type="button" @click="resetMood"><ArchiveIcon name="refresh" /> 换一个情绪</button>
         </div>
       </section>
 
     <details class="color-reading">
-      <summary><ArchiveIcon name="book" /><strong>光色手帖</strong><ArchiveIcon name="chevron-down" /></summary>
+      <StudioDisclosureSummary><ArchiveIcon name="book" /><span><strong>光色手帖</strong><small>色彩搭配与光影参考</small></span></StudioDisclosureSummary>
       <div class="color-reading-body" data-disclosure-content>
     <ColorLightNotebook @choose="chooseMood" />
     <h2 class="section-title">美术指导 · 色彩语言</h2>
@@ -95,6 +97,9 @@ import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vu
 import ColorLightNotebook from '@/components/library/ColorLightNotebook.vue'
 import { ref, computed, nextTick } from 'vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { BANNED_TAGS } from '@/utils/promptPolicy'
 
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
@@ -165,10 +170,9 @@ const colorizedPrompt = computed(() => {
 
 function select(m: ColorMood) { selected.value = m }
 
-function copyPrompt() {
-  if (!selected.value) return
-  const text = selected.value.prompt
-  void copyWithFeedback(text)
+async function copyPrompt() {
+  if (!selected.value) return false
+  return copyWithFeedback(selected.value.prompt)
 }
 
 function exportTxt() {
@@ -188,18 +192,38 @@ function exportTxt() {
 <style scoped>@reference "../assets/css/tailwind.css";
 .color-section-heading, .palette-result-heading { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-4; }
 .color-section-heading h2, .palette-result-heading h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
+.color-section-heading p { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
+.color-current { display:inline-flex; align-items:center; gap:var(--s-2); color:var(--accent); font-size:var(--fs-label-sm); }
+.color-current .archive-icon { width:16px; height:16px; }
+.color-script-page { --palette-duration:var(--motion-route); --palette-shift:-6px; --palette-press:.97; }
 .color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); }
+.color-mood-grid .mood-card { position:relative; isolation:isolate; border-radius:var(--r-lg); box-shadow:inset 0 1px 0 var(--glass-highlight); }
+.color-mood-grid .mood-card.active { border-color:var(--accent); box-shadow:var(--selection-shadow); }
+.color-mood-grid .mood-strip { height:72px; gap:var(--s-1); padding:var(--s-3) var(--s-3) 0; overflow:hidden; background:var(--bg-base); }
+.color-mood-grid .mood-swatch { height:100%; border-radius:var(--r-sm) var(--r-sm) 0 0; transition:transform var(--palette-duration) var(--spring-soft); }
+.color-mood-grid .mood-swatch:nth-child(even) { transform:translateY(8px); }
+.color-mood-grid .mood-body { position:relative; padding:var(--s-4); padding-right:40px; transform:none; transition:none; }
+.color-mood-grid .mood-card.active .mood-body { background:var(--accent-soft); box-shadow:none; }
+.color-mood-grid .mood-name { display:flex; align-items:center; gap:var(--s-2); }
+.color-mood-grid .mood-name .archive-icon { width:18px; height:18px; color:var(--text-secondary); }
+.color-mood-grid .mood-en { margin-top:var(--s-1); }
+.mood-choice-mark { position:absolute; right:var(--s-3); top:50%; display:grid; place-items:center; width:24px; height:24px; border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-secondary); background:var(--bg-surface); transform:translateY(-50%); }
+.mood-choice-mark .archive-icon { width:14px; height:14px; transform:rotate(-90deg); }
+.active .mood-choice-mark { color:var(--accent); border-color:var(--accent); }
+.active .mood-choice-mark .archive-icon { transform:none; }
+.color-mood-grid .mood-card:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.color-mood-grid .mood-card:focus-visible .mood-body { box-shadow:none; }
 .palette-result-heading > div > p { @apply tw:m-0 tw:mb-s-2 tw:text-accent tw:text-label-xs; }
 .palette-result-heading h2 { @apply tw:flex tw:items-center tw:gap-s-2; }
 .palette-result-heading h2 .archive-icon { @apply tw:text-accent; }
 .palette-content { @apply tw:grid tw:gap-s-5 tw:mb-s-4; grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr)); align-items:start; }
-.color-reading { @apply tw:mt-s-6; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
-.color-reading > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[72px] tw:cursor-pointer; list-style:none; padding-block:var(--s-3); }
+.color-reading { @apply tw:mt-s-6; border:1px solid var(--border-soft); border-radius:var(--r-lg); padding-inline:var(--s-4); background:var(--bg-surface); }
+.color-reading > summary { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[72px] tw:cursor-pointer; list-style:none; padding:var(--s-3); margin-inline:calc(-1 * var(--s-3)); border-radius:var(--r-md); }
 .color-reading > summary::-webkit-details-marker { display:none; }
 .color-reading > summary strong { @apply tw:text-primary tw:text-body tw:font-semibold; }
+.color-reading > summary small { display:block; margin-top:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .color-reading > summary > .archive-icon:first-child { @apply tw:text-accent tw:w-[24px] tw:h-[24px]; }
 .color-reading > summary > .archive-icon:last-child { @apply tw:ml-auto tw:text-muted; }
-.color-reading[open] > summary > .archive-icon:last-child { transform:rotate(180deg); }
 .color-reading > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .color-reading-body { @apply tw:pb-s-5; }
 .color-reading-body :deep(.light-notebook) { margin-top:var(--s-4); }
@@ -208,9 +232,11 @@ function exportTxt() {
 
 .result-panel { @apply tw:p-s-5; border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); @apply tw:mt-s-5; }
 /* 色号使用稳定阅读底色，不受任意深浅的样本色影响。 */
-.palette-swatch { flex:1 1 76px; @apply tw:w-[76px] tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); }
-.palette-color { @apply tw:block tw:h-[48px]; background:var(--swatch); }
-.palette-code { @apply tw:block; padding:var(--s-2) var(--s-1); @apply tw:text-center tw:text-primary; font:500 var(--fs-body-sm)/var(--lh-label) var(--font-mono); }
+.palette-swatch { flex:1 1 88px; width:88px; overflow:hidden; padding:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); cursor:pointer; }
+.palette-swatch:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.palette-color { display:block; height:56px; background:var(--swatch); transform-origin:bottom; transition:transform var(--palette-duration) var(--spring-soft); }
+.palette-code { display:flex; align-items:center; justify-content:center; gap:var(--s-1); padding:var(--s-2) var(--s-1); color:var(--text-primary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-mono); }
+.palette-code .archive-icon { flex:none; width:12px; height:12px; color:var(--text-secondary); }
 .mapping-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); @apply tw:gap-s-3; }
 .mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3; }
 .mapping-label { @apply tw:text-label-sm tw:text-muted tw:uppercase; letter-spacing:.05em; @apply tw:mb-s-1; }
@@ -239,5 +265,13 @@ function exportTxt() {
 .lighting-reason { @apply tw:text-body-sm tw:text-secondary tw:mt-s-2 tw:leading-body; }
 
 
+@media (hover:hover) and (pointer:fine) {
+  .color-mood-grid .mood-card:hover:not(:focus-visible) .mood-swatch:nth-child(even) { transform:translateY(calc(8px + var(--palette-shift))); }
+  .palette-swatch:hover:not(:focus-visible) .palette-color { transform:translateY(var(--palette-shift)); }
+}
+.palette-swatch:active:not(:focus-visible) .palette-color { transform:scale(var(--palette-press)); transition-duration:var(--motion-press); }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; }
+@media (forced-colors:active) { .color-mood-grid .mood-card.active { outline:2px solid Highlight; } .palette-swatch:focus-visible,.color-mood-grid .mood-card:focus-visible { outline:2px solid Highlight; } }
 @media(max-width:768px) { .art-ref { grid-template-columns:1fr; } }
 </style>

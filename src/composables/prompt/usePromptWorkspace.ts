@@ -501,9 +501,8 @@ export function usePromptWorkspace() {
     };
     const deliveryBindings: PromptDeliveryBindings = {
         pb: reactive({ char: toRef(pb, 'char'), activeScene: toRef(pb, 'activeScene'), story: toRef(pb, 'story') }),
-        voiceStudioRef, sdOnline: sd.online, legacyProgress: computed(() => sd.progress.value === null ? null : sd.progress.value / 100), animaOnline: computed(() => animaState.value.online),
-        scenes: toRef(sceneStore, 'sceneBlueprints'), generationBusy, generationProgress, drawEngine,
-        shotsPending, goToShots,
+        voiceStudioRef, legacyProgress: computed(() => sd.progress.value === null ? null : sd.progress.value / 100), animaOnline: computed(() => animaState.value.online),
+        scenes: toRef(sceneStore, 'sceneBlueprints'), generationBusy,
         sdQueue: { total: sdQueue.total, done: sdQueue.done, paused: sdQueue.paused,
             activeJob: sdQueue.activeJob, queue: sdQueue.queue,
             pause: sdQueue.pause, resume: sdQueue.resume, clear: sdQueue.clear, remove: sdQueue.remove },
@@ -513,8 +512,8 @@ export function usePromptWorkspace() {
     const dialogBindings: PromptDialogBindings = {
         inpaintProvider: computed(() => animaState.value.provider), inpaintManagedStartAvailable: computed(() => animaState.value.managedStartAvailable === true), inpaintAutomaticMaskAvailable: computed(() => animaState.value.automaticMaskAvailable === true), inpaintAutomaticMaskStatus: computed(() => animaState.value.automaticMaskStatus),
         inpaintImageSource: computed(() => ({ url: displayResultUrl.value, blob: animaState.value.result?.blob, historyId: displayedResultHistoryId.value })),
-        displayResultUrl, generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
-        lastResult, closeCompare, livePrompt, negativePrompt, inpaintCharacter, handleInpaintSubmit,
+        generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
+        lastResult, closeCompare, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
     usePromptLifecycle({
         router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,

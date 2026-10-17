@@ -31,7 +31,7 @@
             >{{ state.cancelLabel }}</button>
             <!-- Keep the safe choice first among actions and confirmation last in keyboard order.
                  The alternate close action stays reachable at its visual corner. -->
-            <button class="confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
+            <button class="btn btn-ghost btn-icon confirm-close" type="button" aria-label="关闭确认框" @click="cancel"><ArchiveIcon name="close" /></button>
             <button
               ref="confirmBtn"
               class="btn confirm-btn"
@@ -88,25 +88,22 @@ onUnmounted(() => {
   inset: 0;
   z-index: var(--z-confirm);
   @apply tw:flex tw:items-center tw:justify-center tw:p-s-4;
+  padding-top:calc(var(--desktop-chrome-height,0px) + var(--s-4));
   background: var(--art-scrim);
   backdrop-filter: blur(6px);
 }
 .confirm-panel {
   @apply tw:relative tw:flex tw:flex-col;
   width: min(380px, calc(100vw - 32px));
-  max-height: calc(100dvh - 2 * var(--s-4));
+  max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4));
   overflow: hidden;
   @apply tw:p-s-5;
   border: 1px solid var(--glass-edge);
   @apply tw:text-primary;
 }
-.confirm-close { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items:center; @apply tw:w-[40px] tw:h-[40px]; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-base); @apply tw:text-secondary tw:cursor-pointer; }
-.confirm-close:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@media (hover:hover) and (pointer:fine) {
-  .confirm-close:hover { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
-}
-.confirm-icon { @apply tw:pr-[44px] tw:min-h-[28px]; }
-.confirm-icon { @apply tw:block tw:mb-s-2 tw:text-secondary; }
+.confirm-close { @apply tw:absolute tw:top-s-3 tw:right-s-3; }
+.confirm-icon { @apply tw:block tw:mb-s-2 tw:pr-[44px] tw:min-h-[28px] tw:text-secondary; }
+.confirm-icon > .archive-icon { display:block; width:24px; height:24px; }
 .confirm-icon, .confirm-title, .confirm-actions { flex-shrink:0; }
 .confirm-danger .confirm-icon { @apply tw:text-danger-text; }
 .confirm-title {

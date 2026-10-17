@@ -121,7 +121,7 @@ function onStepsInput(event: Event) {
 @reference "../../assets/css/tailwind.css";
 
 .casual-creative-sliders {
-  @apply tw:p-s-3 tw:rounded-md tw:grid tw:gap-s-3;
+  @apply tw:p-s-3 tw:rounded-lg tw:grid tw:gap-s-3;
   background: var(--bg-surface);
   border: 1px solid var(--border-soft);
 }
@@ -132,15 +132,15 @@ function onStepsInput(event: Event) {
 
 .casual-sliders-title {
   @apply tw:flex tw:items-center tw:gap-s-1 tw:font-semibold;
-  font-size: var(--fs-label-sm);
+  font-size: var(--fs-label);
   color: var(--accent);
 }
 
 .casual-sliders-badge {
   @apply tw:text-secondary;
   font-size: var(--fs-label-xs);
-  padding: 1px 8px;
-  border-radius: 999px;
+  padding: 2px var(--s-2);
+  border-radius: var(--r-pill);
   background: var(--accent-soft);
   border: 1px solid var(--border-soft);
 }
@@ -155,12 +155,12 @@ function onStepsInput(event: Event) {
 
 .casual-slider-name {
   @apply tw:text-secondary;
-  font-size: var(--fs-label-sm);
+  font-size: var(--fs-label);
 }
 
 .casual-slider-value {
   @apply tw:font-medium tw:font-mono;
-  font-size: var(--fs-label-sm);
+  font-size: var(--fs-label);
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }

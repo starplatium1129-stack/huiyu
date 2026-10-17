@@ -11,7 +11,6 @@
 
 
 .pb .inspector-advanced-body { @apply tw:grid tw:gap-s-3 tw:pt-s-3; }
-.pb .inspector-advanced-body .anima-quick-panel { margin:0; }
 .pb .inspector-advanced-body .generation-auto-summary { font-size:var(--fs-label); }
 .pb .inspector-advanced-body .panel { margin:0; }
 .pb .inspector-generation-error { @apply tw:grid tw:gap-s-2 tw:p-s-3 tw:rounded-md tw:text-danger-text tw:text-label; border:1px solid var(--border-strong); background:var(--bg-deep); overflow-wrap:anywhere; }
@@ -36,9 +35,6 @@
 .pb .inspector-detail-label { display:grid; gap:8px; min-width:0; }
 .pb .inspector-detail-label>span { display:flex; gap:8px; align-items:center; }
 .pb .inspector-detail-label small { color:var(--text-muted); font-size:12px; font-weight:400; line-height:1.6; overflow-wrap:anywhere; }
-.pb .inspector-workbench .inspector-route { padding:16px 0; border-top:1px solid var(--border-soft); }
-.pb .inspector-workbench .inspector-route>summary { padding:0; background:transparent; border-radius:4px; }
-.pb .inspector-workbench .inspector-route>summary:hover { color:var(--accent); }
 @media (min-width:1024px) and (max-width:1440px) {
   .pb .inspector-engine-settings { gap:10px; padding-bottom:16px; }
   .pb .inspector-size-section,.pb .inspector-style-section { padding:16px 0; }

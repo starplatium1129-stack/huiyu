@@ -1,24 +1,5 @@
-@reference "../tailwind.css";
-.chat-memory-panel {
-  margin: 0 0 var(--s-4);
-  @apply tw:p-s-4;
-  border: 1px solid var(--border-strong);
-  @apply tw:rounded-lg;
-  background: var(--glass-fill);
-  box-shadow: var(--shadow-md);
-}
-.chat-memory-panel header,
-.memory-item > div {
-  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3;
-}
-.chat-memory-panel header div { @apply tw:grid tw:gap-[2px]; }
-.chat-memory-panel header span { @apply tw:text-muted tw:text-label-xs tw:font-bold; letter-spacing: .08em; }
-.chat-memory-panel header strong { @apply tw:text-primary tw:text-title-xs; }
-.chat-memory-panel > p { margin: var(--s-2) 0 var(--s-4); @apply tw:text-secondary tw:text-label; }
-.memory-close { border: 0; background: transparent; @apply tw:text-muted tw:text-title tw:cursor-pointer; }
-.memory-empty { @apply tw:p-s-4; border: 1px dashed var(--border-soft); @apply tw:rounded-md tw:text-muted tw:text-center; }
-.memory-list { @apply tw:grid tw:gap-s-3; }
-.memory-item { @apply tw:grid tw:gap-s-2; }
-.memory-item textarea { @apply tw:w-full; padding: 9px 11px; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-deep); @apply tw:text-primary; font: inherit; }
-.memory-item > div { @apply tw:justify-end; }
-.memory-item > div span { @apply tw:mr-auto tw:text-muted tw:text-mono-sm; }
+.memory-empty { padding:var(--s-4); border:1px dashed var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); text-align:center; }
+.memory-list { min-width:0; display:grid; gap:var(--s-3); }
+.memory-item { min-width:0; display:grid; gap:var(--s-2); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.memory-item > div { display:flex; align-items:center; flex-wrap:wrap; justify-content:flex-end; gap:var(--s-2); }
+.memory-item > div span { margin-right:auto; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); }

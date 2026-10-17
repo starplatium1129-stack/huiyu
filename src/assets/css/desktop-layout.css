@@ -34,7 +34,5 @@
   :root .page { width: min(calc(var(--page-max, 1200px) * var(--desktop-layout-scale)), 100%); }
   :root .library-layout { grid-template-columns: minmax(260px, 17.5rem) minmax(0, 1fr); }
   :root .chat-page.room-surface { max-width: calc(1720px * var(--desktop-layout-scale)); }
-  .room-surface .chat-head > div:first-child { flex: 1; min-width: 0; }
-  .room-surface .room-title-group { flex-shrink: 0; }
   :root .video-studio { --page-max: 1480px; }
 }

@@ -6,7 +6,7 @@ import FluidTransition from "@/components/visual/FluidTransition.vue"
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { ComfyNodeReadiness } from '@/types/anima'
 import { automaticMaskBlocker } from '@/composables/generation/animaBackendReadiness'
@@ -18,7 +18,6 @@ import { useInpaintMaskCanvas } from './inpaint/useInpaintMaskCanvas'
 import { useInpaintImageSource, type InpaintSource } from './inpaint/useInpaintImageSource'
 import { useInpaintOutfitPresets } from './inpaint/useInpaintOutfitPresets'
 import { useInpaintPreparation } from './inpaint/useInpaintPreparation'
-import '@/assets/css/director/components/AnimaInpaintModal.css'
 
 export interface InpaintSubmitPayload {
   editMode?: 'masked' | 'whole'
@@ -44,7 +43,6 @@ const props = defineProps<{
   managedStartAvailable?: boolean
   open: boolean
   imageSource: InpaintSource
-  currentPrompt?: string
   currentNegative?: string
   character?: 'nene' | 'natsume' | 'triad' | null
   seed?: number | null
@@ -69,6 +67,11 @@ const maskUnavailable = computed(() => automaticMaskBlocker(props))
 const automaticMaskAllowed = computed(() => !maskUnavailable.value)
 const editMode = ref<'masked' | 'whole'>('masked')
 const wholeImage = computed(() => editMode.value === 'whole')
+async function returnToMask() {
+  editMode.value = 'masked'
+  await nextTick()
+  modalEl.value?.querySelector<HTMLButtonElement>('.mask-mode-switch button[aria-pressed="true"]')?.focus()
+}
 
 const previewImageEl = ref<HTMLImageElement | null>(null)
 
@@ -191,7 +194,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
 <template>
   <FluidTransition v-if="hasOpened" appear>
   <div v-show="open" class="modal-backdrop" @click.self="emit('close')">
-    <div ref="modalEl" class="modal-card inpaint-modal" role="dialog" aria-modal="true" :aria-label="wholeImage ? '整图重绘' : '智能局部换装'">
+    <div ref="modalEl" class="modal-card inpaint-modal" role="dialog" aria-modal="true" :aria-label="wholeImage ? '整图重绘' : native ? '局部重绘（实验性）' : '智能局部换装'">
       <CornerFrame variant="ghost" />
 
       <!-- Hidden file input for uploading external image -->
@@ -205,20 +208,17 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
 
       <header class="modal-header">
         <div class="header-title">
-          <span class="header-badge">
-            <ArchiveIcon name="lightning" />
-            <span>{{ native ? '原生推理' : 'TeaCache 加速' }}</span>
-          </span>
           <h2>
             <ArchiveIcon name="wardrobe" />
-            <span>{{ wholeImage ? '整图重绘 (Img2Img)' : native ? '局部重绘（实验性）' : '智能视觉换装 (AI Inpaint)' }}</span>
+            <span>{{ wholeImage ? '整图重绘' : native ? '局部重绘（实验性）' : '智能局部换装' }}</span>
           </h2>
         </div>
-        <button class="btn btn-ghost btn-xs btn-close" type="button" aria-label="关闭" @click="emit('close')">
+        <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭" @click="emit('close')">
           <ArchiveIcon name="close" />
         </button>
       </header>
 
+      <div class="inpaint-body">
       <p v-if="native && !wholeImage" class="modal-intro">局部重绘（实验性）：手绘或本地自动识别区域参与采样，遮罩外按原图合成保留。TeaCache 沿用生成参数，无需单独校准；具体换装效果仍取决于选区与重绘幅度。</p>
       <p v-if="wholeImage" class="modal-intro">整图重绘会重新生成整张图片，人物、面部和背景均可能变化，不保留遮罩外区域。</p>
       <p v-else-if="!native" class="modal-intro">
@@ -267,24 +267,22 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                   :style="brushCursorStyle"
                 ></div>
               </div>
-              <div class="preview-overlay-tag">
-                <ArchiveIcon name="spark" />
-                <span>{{ wholeImage ? '整张图片都会参与重绘' : maskMode === 'paint' ? '涂白换装，Shift/右键保护' : '自动识别服装区域' }}</span>
+              <div class="preview-actions">
+                <div class="preview-guidance">
+                  <ArchiveIcon name="spark" />
+                  <span>{{ wholeImage ? '整张图片都会参与重绘' : maskMode === 'paint' ? '涂白换装，Shift/右键保护' : '自动识别服装区域' }}</span>
+                </div>
+                <StudioTooltip content="选择或拖入其他本地图片">
+                  <button class="btn btn-quiet btn-sm" type="button" @click="triggerUpload">
+                    <ArchiveIcon name="upload" />
+                    <span>更换外部图片</span>
+                  </button>
+                </StudioTooltip>
               </div>
-              <StudioTooltip content="选择或拖入其他本地图片">
-                <button
-                  class="btn btn-xs btn-upload-overlay"
-                  type="button"
-                  @click="triggerUpload"
-                >
-                  <ArchiveIcon name="upload" />
-                  <span>更换外部图片</span>
-                </button>
-              </StudioTooltip>
             </template>
 
             <template v-else>
-              <button class="dropzone-empty" type="button" aria-label="选择本地图片换装" @click="triggerUpload">
+              <button class="dropzone-empty" data-control-motion type="button" aria-label="选择本地图片换装" @click="triggerUpload">
                 <ArchiveIcon name="upload" class="dropzone-icon" />
                 <span class="dropzone-title">点击或拖拽上传本地图片</span>
                 <span class="dropzone-hint">支持 PNG / JPG / WebP 任意动漫图像</span>
@@ -305,7 +303,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
               v-model="characterMode"
               label="角色模型辅助 (LoRA)"
               :options="[
-                { value: 'auto', label: `自动跟随当前角色 (${character || '通用'})` },
+                { value: 'auto', label: `自动跟随当前角色 (${character === 'nene' ? '宁宁' : character === 'natsume' ? '夏目' : character === 'triad' ? '宁宁与夏目' : '通用'})` },
                 { value: 'none', label: '通用模式 (无 LoRA / 任意第三方动漫图)' },
                 { value: 'nene', label: '绫地宁宁专属 LoRA (Ayachi Nene)' },
                 { value: 'natsume', label: '四季夏目专属 LoRA (Shiki Natsume)' },
@@ -320,17 +318,17 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 <span>重绘区域</span>
               </span>
             </label>
-            <p v-if="native" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 文件已就绪；首次使用时加载并校验模型，不会联网下载。' : '自动识别未就绪：请在配置的模型根目录下准备 clipseg-rd64-refined，包含配置、分词器及 model.safetensors；不会自动下载。手绘遮罩仍可使用。' }}</p>
-            <p v-else class="field-hint" role="status">{{ maskUnavailable || (automaticMaskAvailable ? '文字自动蒙版节点已注册；不代表其模型文件、加载或识别效果已验证。' : '自动识别节点尚未确认。明确选择自动识别后，提交时会启动受管服务并检查节点；未通过不会提交生成。') }}</p>
-            <RouterLink v-if="!native && maskUnavailable" class="btn btn-ghost" :to="{ path: '/control', query: { engine: 'anima' } }" @click="emit('close')">查看控制面板与准备范围</RouterLink>
+            <p v-if="native && !wholeImage" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 文件已就绪；首次使用时加载并校验模型，不会联网下载。' : '自动识别未就绪：请在配置的模型根目录下准备 clipseg-rd64-refined，包含配置、分词器及 model.safetensors；不会自动下载。手绘遮罩仍可使用。' }}</p>
+            <p v-else-if="!native && !wholeImage" class="field-hint" role="status">{{ maskUnavailable || (automaticMaskAvailable ? '文字自动蒙版节点已注册；不代表其模型文件、加载或识别效果已验证。' : '自动识别节点尚未确认。明确选择自动识别后，提交时会启动受管服务并检查节点；未通过不会提交生成。') }}</p>
+            <RouterLink v-if="!native && !wholeImage && maskUnavailable" class="btn btn-ghost" :to="{ path: '/control', query: { engine: 'anima' } }" @click="emit('close')">查看控制面板与准备范围</RouterLink>
             <button v-if="native || wholeImage" type="button" class="btn btn-ghost" :aria-pressed="wholeImage" @click="editMode = 'whole'">选择整图重绘（人物与背景均可能变化）</button>
-            <button v-if="wholeImage" type="button" class="btn btn-ghost" @click="editMode = 'masked'">返回局部遮罩换装</button>
+            <button v-if="wholeImage" type="button" class="btn btn-ghost" @click="returnToMask">返回局部遮罩换装</button>
             <div v-if="!wholeImage" class="mask-mode-switch studio-segments studio-segments--compact" role="group" aria-label="遮罩模式">
-      <AnimatedSelection />
+              <AnimatedSelection />
               <button type="button" :aria-pressed="maskMode === 'paint'"
-                :class="{ active: maskMode === 'paint' }" @click="maskMode = 'paint'">手绘精确遮罩</button>
+                @click="maskMode = 'paint'">手绘精确遮罩</button>
               <button type="button" :disabled="!automaticMaskAllowed" :aria-pressed="maskMode === 'auto'"
-                :class="{ active: maskMode === 'auto' }" @click="maskMode = 'auto'">自动识别</button>
+                @click="maskMode = 'auto'">自动识别</button>
             </div>
             <template v-if="!wholeImage && maskMode === 'paint'">
               <div class="brush-size-header">
@@ -342,7 +340,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 <StudioTooltip anchor content="撤销上一步笔画 (Ctrl+Z)">
                   <button
                     type="button"
-                    class="btn btn-ghost btn-xs"
+                    class="btn btn-ghost btn-sm"
                     :disabled="maskUndoCount === 0"
                     @click="undoMask"
                   >
@@ -350,7 +348,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                     <span>撤销 <kbd>Ctrl+Z</kbd></span>
                   </button>
                 </StudioTooltip>
-                <button type="button" class="btn btn-ghost btn-xs btn-clear-mask" @click="clearMask">清空遮罩</button>
+                <button type="button" class="btn btn-quiet btn-sm" @click="clearMask">清空遮罩</button>
               </div>
               <span class="field-hint">
                 涂白服装区域（支持 <kbd>Alt</kbd>+<kbd>滚轮</kbd> 调粗细；按住 <kbd>Shift</kbd> 或右键擦除保护五官手脚）。
@@ -358,7 +356,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
             </template>
             <template v-else-if="automaticMaskAllowed && !wholeImage">
               <label class="field-label" for="maskPromptInput">自动识别区域</label>
-              <input id="maskPromptInput" v-model="maskPrompt" class="input input-sm" placeholder="clothing | clothes | outfit | dress | shirt..." />
+              <input id="maskPromptInput" v-model="maskPrompt" class="input" placeholder="clothing | clothes | outfit | dress | shirt..." />
               <div class="param-slider-group">
                 <div class="param-header">
                   <span>识别灵敏度</span>
@@ -395,21 +393,24 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 type="button"
                 :aria-pressed="selectedPresetId === p.id"
                 class="preset-card"
-                :class="{ active: selectedPresetId === p.id, 'is-nsfw': p.isNsfw }"
+                data-control-motion
+                :class="{ 'is-nsfw': p.isNsfw }"
                 @click="selectedPresetId = p.id"
               >
                 <ArchiveIcon :name="p.icon" class="preset-icon" />
                 <span class="preset-title">{{ p.label }}</span>
+                <ArchiveIcon v-if="selectedPresetId === p.id" name="success" class="preset-check" />
               </button>
               <button
                 type="button"
                 :aria-pressed="selectedPresetId === 'custom'"
-                class="preset-card custom-card"
-                :class="{ active: selectedPresetId === 'custom' }"
+                class="preset-card"
+                data-control-motion
                 @click="selectedPresetId = 'custom'"
               >
                 <ArchiveIcon name="palette" class="preset-icon" />
                 <span class="preset-title">自由定制</span>
+                <ArchiveIcon v-if="selectedPresetId === 'custom'" name="success" class="preset-check" />
               </button>
             </div>
           </div>
@@ -422,7 +423,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
             <textarea
               id="promptDesc"
               v-model="customPrompt"
-              class="textarea prompt-textarea"
+              class="textarea"
               rows="3"
               placeholder="例如：wearing white frilled bikini, swimsuit..."
             ></textarea>
@@ -440,7 +441,7 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 aria-label="重绘去噪幅度"
                 min="0.50"
                 max="0.98"
-                step="0.02"
+                step="0.01"
                 class="slider"
               />
               <span class="slider-hint">越高换装越彻底（推荐 0.85 ~ 0.95）</span>
@@ -464,21 +465,20 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
             </div>
           </div>
 
-          <div class="seed-option-row">
             <ToggleSwitch v-model="preserveSeed" label="锁定原图 Seed" class="seed-toggle">
               <span>锁定原图 Seed ({{ seed ?? '随机' }}) 保持光影与环境色调高度一致</span>
             </ToggleSwitch>
-          </div>
         </div>
+      </div>
       </div>
 
       <footer class="modal-footer">
         <button class="btn btn-ghost" type="button" :disabled="submitting && !preparing" @click="emit('close')">
           取消
         </button>
-        <button class="btn btn-primary btn-submit-inpaint" type="button" :disabled="submitting || readingSource || !imageReady" @click="handleStart">
+        <button class="btn btn-primary" type="button" :disabled="submitting || readingSource || !imageReady" @click="handleStart">
           <ArchiveIcon name="lightning" />
-          <span>{{ preparing || readingSource ? '正在准备图片…' : submitting ? '正在生成…' : wholeImage ? '开始整图重绘' : native ? '开始手绘局部重绘（实验性）' : '开始智能换装 (~6秒)' }}</span>
+          <span>{{ preparing || readingSource ? '正在准备图片…' : submitting ? '正在生成…' : wholeImage ? '开始整图重绘' : native ? '开始手绘局部重绘（实验性）' : '开始智能换装' }}</span>
         </button>
       </footer>
     </div>

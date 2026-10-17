@@ -57,9 +57,9 @@
       <template v-else>
         <div v-content-motion="`${section}:${kind}`" class="catalog-workspace">
           <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
-            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : (result?.total ?? 0) + ' 份' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><span aria-hidden="true">＋</span>新建</button></header>
+            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : (result?.total ?? 0) + ' 份' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />新建</button></header>
             <StudioSearch v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
-            <div class="catalog-list-controls tw:p-s-1 tw:rounded-pill" data-fluid-glass>
+            <div class="catalog-list-controls">
               <StudioSelect v-model="sort" label="排列方式" :options="sortOptions" />
               <StudioPopover label="筛选内容" align="start">
                 <template #trigger><button class="catalog-filter-button" type="button" :class="{ active: hasFilters }"><ArchiveIcon name="manager" />筛选<span v-if="hasFilters" class="catalog-filter-dot"></span></button></template>
@@ -73,15 +73,16 @@
             </div>
             <ArchiveStatePanel v-if="error" compact kind="error" title="内容暂时没能读出来" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">再试一次</button></ArchiveStatePanel>
             <div v-content-motion:right="loading ? false : page" class="catalog-record-list">
-              <button v-for="item in result?.items ?? []" :key="item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy" @click="openContent(item)">
+              <button v-for="item in result?.items ?? []" :key="item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy" @click="openContent(item, $event)">
                 <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
-                <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span>
+                <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span>
+                <span class="catalog-row-state"><ArchiveIcon v-if="selected?.id === item.id && selected.kind === item.kind" name="success" /><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span></span>
               </button>
               <ArchiveStatePanel v-if="!loading && !error && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
             </div>
             <StudioPagination v-model="page" :pages="totalPages" :disabled="loading" label="内容分页" />
           </section>
-          <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" aria-label="内容编辑" :aria-busy="detailLoading">
+          <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" tabindex="-1" aria-label="内容编辑" :aria-busy="detailLoading">
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
               <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" @stage="stage" @duplicate="add(true)" @remove="remove" />
@@ -121,6 +122,7 @@ import { maintenanceApi, type BackupEntry } from '@/api/maintenanceApi'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { catalogShowcaseId } from '@/utils/showcaseManifest'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
+import { scrollBehavior } from '@/utils/motionPreference'
 import '@/assets/css/catalog-maintenance.css'
 const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
 const pageTitle = ref<HTMLElement | null>(null), pendingArea = ref<HTMLElement | null>(null), pendingOpen = ref(false)
@@ -159,11 +161,20 @@ function pendingTitle(change: CatalogChange) {
   if (change.data) return recordTitle({ kind: change.kind, id: change.id, revision: change.expectedRevision, sortOrder: 0, createdAt: null, updatedAt: null, data: change.data })
   return catalogTitle(change.kind, change.id, result.value?.items.find(row => row.id === change.id)?.title || '选中的内容')
 }
-async function openContent(item: CatalogSummary) {
-  const scrollY = window.scrollY
-  if (!await select(item)) return
-  await nextTick()
-  if (selected.value?.kind === item.kind && selected.value.id === item.id && window.innerWidth < 1100 && window.scrollY === scrollY) editorPane.value?.scrollIntoView({ block: 'start' })
+async function openContent(item: CatalogSummary, event: MouseEvent) {
+  const intent = new AbortController()
+  let interrupted = false
+  const interrupt = () => { interrupted = true }
+  // Loading can shrink a long editor and clamp scrollY. Only subsequent input
+  // indicates that the user has moved on; layout changes must not cancel entry.
+  for (const name of ['wheel', 'touchstart', 'pointerdown', 'keydown']) window.addEventListener(name, interrupt, { passive: true, signal: intent.signal })
+  try {
+    if (!await select(item)) return
+    await nextTick()
+    if (interrupted || selected.value?.kind !== item.kind || selected.value.id !== item.id || window.innerWidth > 1100) return
+    if (event.detail === 0) editorPane.value?.focus({ preventScroll: true })
+    editorPane.value?.scrollIntoView({ block: 'start', behavior: event.detail === 0 ? 'instant' : scrollBehavior() })
+  } finally { intent.abort() }
 }
 async function withdrawPending(index: number) {
   if (busy.value) return

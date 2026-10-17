@@ -1,6 +1,6 @@
 <template>
   <div class="artist-style-picker basic-visible" data-testid="artist-style-picker">
-    <button type="button" class="artist-picker-trigger" aria-haspopup="dialog" :aria-expanded="dialogOpen" @click="openPicker">
+    <button type="button" class="artist-picker-trigger" data-control-motion aria-haspopup="dialog" :aria-expanded="dialogOpen" @click="openPicker">
       <div class="artist-summary-title">
         <span>画师风格</span>
         <small v-if="selected.length" class="artist-active-pill">已启用 {{ selected.length }}/2</small>
@@ -22,6 +22,7 @@
       <!-- 灵感混搭黄金预设：一键应用顶级画师组合 -->
       <details class="artist-presets-section">
         <StudioDisclosureSummary>画风组合</StudioDisclosureSummary>
+        <div data-disclosure-content>
         <div class="artist-presets-head">
           <span class="artist-presets-head-title">
             <ArchiveIcon name="spark" class="artist-header-icon" />
@@ -37,7 +38,7 @@
             <button
               type="button"
               class="artist-combo-btn"
-              :class="{ active: isComboActive(combo.artistIds) }"
+              data-control-motion
               :aria-pressed="isComboActive(combo.artistIds)"
               @click="applyCombo(combo.artistIds)"
             >
@@ -46,21 +47,23 @@
                 <span class="combo-label">{{ combo.label }}</span>
               </div>
               <small class="combo-tagline">{{ combo.tagline }}</small>
+              <ArchiveIcon v-if="isComboActive(combo.artistIds)" class="artist-selected-check" name="success" />
             </button>
           </StudioTooltip>
+        </div>
         </div>
       </details>
 
       <div class="artist-controls-bar">
         <div class="artist-scope studio-segments studio-segments--compact" role="group" aria-label="画师范围"><AnimatedSelection /><button v-for="scope in scopes" :key="scope.id" type="button" :aria-pressed="currentScope === scope.id" @click="currentScope = scope.id">{{ scope.label }}</button></div>
         <!-- 分类选项卡 -->
-        <div class="artist-category-tabs" role="group" aria-label="画师分类">
+        <div class="artist-category-tabs studio-segments studio-segments--compact" role="group" aria-label="画师分类">
+          <AnimatedSelection />
           <button
             v-for="cat in ARTIST_CATEGORIES"
             :key="cat.id"
             type="button"
             class="artist-cat-btn"
-            :class="{ active: currentCategory === cat.id }"
             :aria-pressed="currentCategory === cat.id"
             @click="currentCategory = cat.id"
           >
@@ -74,13 +77,13 @@
       </div>
 
       <!-- 画师网格 -->
-      <div class="artist-style-grid">
+      <div v-if="filteredOptions.length" class="artist-style-grid">
         <button
           v-for="option in filteredOptions"
           :key="option.id"
           type="button"
           :data-artist-style-id="option.id"
-          :class="{ selected: selected.includes(option.id) }"
+          data-control-motion
           :aria-pressed="selected.includes(option.id)"
           :disabled="!selected.includes(option.id) && selected.length >= 2"
           @click="toggle(option.id)"
@@ -104,6 +107,7 @@
             </StudioTooltip>
             <small v-else class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
           </span>
+          <ArchiveIcon v-if="selected.includes(option.id)" class="artist-selected-check" name="success" />
           <small class="artist-desc">{{ option.description }}</small>
           <StudioTooltip v-if="option.masterpiece" :content="option.masterpiece">
             <small class="artist-masterpiece">
@@ -114,7 +118,7 @@
         </button>
       </div>
 
-      <p v-if="!filteredOptions.length" class="artist-style-empty">未找到匹配的画师风格，可尝试更换关键词或代表作名称。</p>
+      <p v-else class="artist-style-empty" role="status">未找到匹配的画师风格，可尝试更换关键词或代表作名称。</p>
 
       <!-- Token 预览 -->
       <div v-if="modelTokens" class="artist-style-tokens">
@@ -122,7 +126,7 @@
         <code>{{ modelTokens }}</code>
       </div>
     </div>
-    <footer class="artist-dialog-selected"><div><span>已选 {{ selected.length }}/2</span><div class="artist-selected-chips"><button v-for="option in selectedOptions" :key="option.id" type="button" class="btn btn-ghost btn-sm" :aria-label="`移除${option.cnName || option.name}`" @click="toggle(option.id)">{{ option.cnName || option.name }}<ArchiveIcon name="close" /></button><span v-if="!selected.length" class="artist-style-empty">自然画风</span></div></div><button class="btn btn-primary" type="button" @click="closePicker">完成</button></footer>
+    <footer class="artist-dialog-selected"><div><span>已选 {{ selected.length }}/2</span><div class="artist-selected-chips"><button v-for="option in selectedOptions" :key="option.id" type="button" class="btn btn-ghost btn-sm" :aria-label="`移除${option.cnName || option.name}`" @click="toggle(option.id)">{{ option.cnName || option.name }}<ArchiveIcon name="close" /></button><span v-if="!selected.length" class="artist-selection-empty">自然画风</span></div></div><button class="btn btn-primary" type="button" @click="closePicker">完成</button></footer>
     </dialog>
     </Teleport>
   </div>

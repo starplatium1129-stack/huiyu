@@ -1,5 +1,5 @@
 <template>
-  <article class="gallery-shell gallery-page" ref="shellEl">
+  <article class="gallery-shell gallery-page" ref="shellEl" :style="{ '--gallery-dock-height': `${selectionDockHeight}px` }">
     <header class="gallery-intro">
       <div class="gallery-heading-copy">
         <h1 class="gallery-title">我的作品</h1>
@@ -48,7 +48,7 @@
       <span v-if="trashMode" class="gallery-toolbar-note">删除的作品保留 30 天，可随时恢复</span>
     </div>
 
-    <div class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined">
+    <div ref="selectionDock" class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined">
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
       <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }}</span></span>
       <span class="gallery-bulk-actions">
@@ -225,7 +225,7 @@
           </dl>
         </section>
         <details class="viewer-details" :key="displayedCurrent.id">
-          <summary>创作参数与 Prompt <ArchiveIcon name="chevron-down" /><span>查看配方</span></summary>
+          <StudioDisclosureSummary><span class="viewer-disclosure-copy">创作参数与 Prompt<small>查看配方</small></span></StudioDisclosureSummary>
           <div data-disclosure-content>
           <div class="viewer-facts">
           <div class="viewer-fact" v-for="f in facts" :key="f.label">
@@ -239,7 +239,7 @@
           </div>
         </details>
         <details class="viewer-details viewer-more" :key="`tools-${displayedCurrent.id}`">
-          <summary>更多操作 <ArchiveIcon name="chevron-down" /><span>重跑、复制与管理</span></summary>
+          <StudioDisclosureSummary><span class="viewer-disclosure-copy">更多操作<small>重跑、复制与管理</small></span></StudioDisclosureSummary>
           <div class="viewer-actions" data-disclosure-content>
           <RouterLink class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
           <button class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" @click="gestureViewer = !gestureViewer">{{ gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
@@ -274,10 +274,12 @@ import StudioSearch from '@/components/ui/StudioSearch.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
-import { defineAsyncComponent, nextTick, reactive, ref, watch } from 'vue'
+import { defineAsyncComponent, nextTick, onActivated, onDeactivated, reactive, ref, watch } from 'vue'
+import { useElementSize } from '@vueuse/core'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = defineAsyncComponent(() => import('@/components/gallery/PhotoSwipeStage.vue'))
 const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
@@ -297,6 +299,10 @@ import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
+const selectionDock = ref<HTMLElement | null>(null), dockActive = ref(true)
+const { height: selectionDockHeight } = useElementSize(() => dockActive.value ? selectionDock.value : null, { width: 0, height: 140 }, { box: 'border-box' })
+onActivated(() => { dockActive.value = true })
+onDeactivated(() => { dockActive.value = false })
 const workspace = useGalleryWorkspace()
 const {
 tagFilter, tagOptions, characterFilter, collectionPreviewItems,
@@ -320,8 +326,6 @@ compareOpen,
 compareItems,
 loadGalleryStorage,
 trashBusy,
-trashPrompt,
-formatTrashTime,
 restoreTrashItem,
 clearTrash, trashClearing, trashLoading, trashError, loadTrash,
 galleryLoading,

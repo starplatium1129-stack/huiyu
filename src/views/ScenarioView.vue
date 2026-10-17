@@ -5,7 +5,7 @@
       <div><h2>选一本故事手帖</h2><p>{{ SCENARIOS.length }} 本故事 · 封面为氛围参考</p></div>
       <div class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
         <AnimatedSelection />
-        <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" />{{ c === 'nene' ? '宁宁' : '夏目' }}</button>
+        <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" /><span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span></button>
       </div>
     </header>
     <div class="scenario-workspace" data-route-arrive>
@@ -18,17 +18,19 @@
             </RuntimeImage>
           </span>
           <span class="scenario-book-copy tw:grid tw:gap-s-2 tw:p-s-4"><span class="scenario-book-title tw:flex tw:items-center tw:justify-between tw:gap-s-2"><strong class="scenario-name">{{ s.name }}</strong><ArchiveIcon v-if="activeScenario?.id === s.id" name="success" /></span><span class="scenario-desc">{{ s.desc }}</span><span class="scenario-count">{{ s.acts.length }} 幕故事<span>{{ s.en }}</span></span></span>
+          <CardEdgeLight />
         </button>
       </div>
-      <section v-if="activeScenario" class="viewer show" aria-label="分幕手帖">
+      <section v-if="activeScenario" class="viewer" aria-label="分幕手帖">
         <header class="viewer-header-row"><div><span class="scenario-kicker">分幕手帖 / {{ activeScenario.acts.length }} 幕</span><h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2><p class="viewer-desc">{{ activeScenario.desc }}</p></div><button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />制作分镜短片</button></header>
-        <div class="acts" data-route-arrive v-content-motion:up="`${activeScenario.id}:${currentChar}`" :style="{ '--act-count': activeScenario.acts.length }">
+        <div class="acts" :data-act-count="activeScenario.acts.length" data-route-arrive v-content-motion:up="`${activeScenario.id}:${currentChar}`">
           <article v-for="a in activeScenario.acts" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
             <div class="act-heading tw:flex tw:items-center tw:gap-s-3"><span class="act-num">{{ a.n }}</span><div><h3 class="act-title">{{ a.title }}</h3><span class="act-en">{{ a.en }}</span></div></div>
             <div class="act-intent"><span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true"><ArchiveIcon :name="frameIcon(a.res)" /></span><div><span class="act-emotion">{{ a.emotion }}</span><p class="act-desc">{{ a.desc }}</p></div></div>
             <div class="act-format"><span>{{ currentChar === 'nene' ? '宁宁' : '夏目' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
+            <div class="act-actions"><StudioCopyButton class="btn btn-ghost" label="复制本幕 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" /></div>
             <details class="act-details">
-              <summary><span>提示词与参数</span><ArchiveIcon name="chevron-down" /></summary>
+              <StudioDisclosureSummary><span>提示词与参数</span></StudioDisclosureSummary>
               <div class="act-details-body" data-disclosure-content>
                 <p class="act-settings">LoRA {{ a.lora }} · {{ LOCK_PARAMS }}</p>
                 <p class="res-rec">{{ resInfo(a.res).reason }} · {{ resInfo(a.res).vram }}</p>
@@ -37,7 +39,6 @@
                 <div class="neg-section"><div class="prompt-label prompt-label-neg">Negative</div><div class="neg-layer"><div class="neg-layer-label">基础层（始终生效）</div><div class="neg-output">{{ BASE_NEG }}</div></div><div class="neg-layer"><div class="neg-layer-label">场景特定层</div><div class="neg-output">{{ a.neg }}</div></div></div>
               </div>
             </details>
-            <div class="act-actions"><button class="btn btn-ghost" type="button" @click="copyPrompt(a)"><ArchiveIcon name="copy" />复制本幕 Prompt</button></div>
           </article>
         </div>
         <footer class="scenario-handoff"><RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, char: currentChar } }" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
@@ -57,7 +58,9 @@ import { useVideoStore, type StagedScenarioAct } from '@/stores/videoStore'
 import { useToast } from '@/composables/useToast'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { useScrollReveal } from '@/composables/useScrollReveal'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useMoodReferences } from '@/composables/useMoodReferences'
 import { BANNED_TAGS } from '@/utils/promptPolicy'
 import {
@@ -74,7 +77,6 @@ import {
 
 const videoStore = useVideoStore()
 const router = useRouter()
-useScrollReveal()
 
 // 引擎参数由导演台按所选引擎自动锁定（Anima: res_multistep · CFG 4.5 · 30 步；放大二阶段 res_multistep · sgm_uniform）。
 // 2026-08-23 剧本模式激活：清掉 SD 时代的硬编码采样参数与内联 <lora:> 展示
@@ -131,7 +133,7 @@ function renderModules(a: ScenarioAct) {
 
 function copyPrompt(a: ScenarioAct) {
   const text = buildFullPrompt(a, currentChar.value)
-  void copyWithFeedback(text, '已复制本幕提示词')
+  return copyWithFeedback(text, '已复制本幕提示词')
 }
 
 function openScenario(s: Scenario) { activeScenario.value = s }

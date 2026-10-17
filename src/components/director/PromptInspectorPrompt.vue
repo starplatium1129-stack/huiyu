@@ -1,7 +1,7 @@
 <template>
-  <button class="prompt-workbench-entry" type="button" @click="openWorkbench">
-    <span class="prompt-workbench-mark"><ArchiveIcon name="palette" /></span>
-    <span class="prompt-workbench-copy"><strong>词条工作台</strong><small>{{ pb.directorMode === 'pro' ? (pb.manualTags.size ? '已选 ' + pb.manualTags.size + ' 个词条 · 搜索与编辑' : '搜索词条 · 服装预设 · 批量添加') : '进入专家模式，搜索与编辑词条' }}</small></span>
+  <button class="prompt-workbench-entry" data-control-motion type="button" @click="openWorkbench">
+    <span class="prompt-workbench-mark studio-control-icon"><ArchiveIcon name="palette" /></span>
+    <span class="prompt-workbench-copy studio-control-label"><strong>词条工作台</strong><small>{{ pb.directorMode === 'pro' ? (pb.manualTags.size ? '已选 ' + pb.manualTags.size + ' 个词条 · 搜索与编辑' : '搜索词条 · 服装预设 · 批量添加') : '进入专家模式，搜索与编辑词条' }}</small></span>
     <ArchiveIcon class="prompt-workbench-arrow" name="chevron-down" />
   </button>
   <PromptHealthPanel class="advanced-decision basic-visible"
@@ -11,7 +11,7 @@
     :copy-action="copyPrompt" @save="saveCurrentResult" />
   <dialog ref="workbenchDialog" class="prompt-workbench-dialog" aria-labelledby="prompt-workbench-heading"
     @cancel.prevent="workbenchMotion.close()" @click="onWorkbenchClick">
-    <header class="prompt-reader-heading"><h2 id="prompt-workbench-heading">词条工作台</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭词条工作台" @click="workbenchMotion.close()"><ArchiveIcon name="close" /></button></header>
+    <header class="prompt-reader-heading"><h2 id="prompt-workbench-heading">词条工作台</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭词条工作台" @click="workbenchMotion.close()"><ArchiveIcon name="close" /></button></header>
     <div class="prompt-workbench-body"><DeferredPanel :active="workbenchLoaded"><DirectorTagWorkbench :prompt-format="previewContext.format" :model-profile="modelProfileView" /></DeferredPanel></div>
   </dialog>
 </template>

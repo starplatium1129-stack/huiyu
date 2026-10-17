@@ -1,161 +1,56 @@
 @reference "../../tailwind.css";
-  /* ============================================================
-   DirectorTagWorkbench 面板样式 —— 随 defineAsyncComponent 组件懒加载
-   （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
-   ============================================================ */
-  .pb .expert-tags-header { @apply tw:gap-s-2; }
-  .pb .expert-tags-actions { @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:ml-auto; }
-  .pb .expert-tags-header { @apply tw:flex tw:items-center tw:justify-between tw:w-full; }
-  .pb .expert-tag-count { @apply tw:ml-s-2 tw:text-label-xs tw:text-accent tw:font-semibold; padding:2px 6px; @apply tw:rounded-pill; background:var(--accent-soft); }
-  .pb .clear-tags-btn { @apply tw:text-label-xs; padding:2px 8px; @apply tw:rounded-sm tw:text-muted; }
-  .pb .clear-tags-btn:hover { @apply tw:text-danger-text tw:border-danger; }
-  .pb .manual-tags { @apply tw:flex tw:flex-wrap tw:items-start tw:gap-s-1 tw:min-h-[32px] tw:mb-s-2 tw:p-s-2 tw:rounded-md; background:color-mix(in srgb,var(--bg-deep) 70%,transparent); border:1px dashed var(--border-soft); }
-  .pb .manual-tags.empty { border-style:dashed; padding:var(--s-2) var(--s-3); }
-  .pb .manual-tags-empty-hint { @apply tw:m-0 tw:text-label-xs tw:text-muted tw:leading-body; }
-  .pb .manual-tag {
-    @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:min-w-0 tw:max-w-full tw:leading-tight;
-    padding:2px;
-    border:1px solid var(--border-strong); @apply tw:rounded-md;
-    background:color-mix(in srgb, var(--bg-elevated) 88%, transparent); @apply tw:text-primary tw:text-label-xs;
-    box-shadow:inset 0 1px 0 var(--glass-highlight);
-    transition:border-color var(--motion-hover), background var(--motion-hover);
-  }
-  .pb .manual-tag[data-weight-tier="boost"] {
-    @apply tw:border-accent;
-    background:var(--accent-soft);
-    @apply tw:text-accent;
-    box-shadow:0 0 8px color-mix(in srgb,var(--accent) 24%,transparent);
-  }
-  .pb .manual-tag[data-weight-tier="strong-boost"] {
-    border-color:color-mix(in srgb, var(--accent) 80%, #fff);
-    background:color-mix(in srgb,var(--accent) 30%,var(--bg-surface));
-    box-shadow:0 0 12px color-mix(in srgb,var(--accent) 55%,transparent), inset 0 1px 0 var(--glass-specular);
-  }
-  .pb .manual-tag[data-weight-tier="reduce"] {
-    border-color:color-mix(in srgb, var(--archive-cyan) 44%, var(--border-soft));
-    background:color-mix(in srgb, var(--archive-blue-soft) 40%, var(--bg-deep));
-    color:var(--archive-cyan);
-    box-shadow:none;
-    opacity:.88;
-  }
-  .pb .manual-tag-text { @apply tw:min-w-0; overflow-wrap:anywhere; }
-  .pb .manual-tag-en { @apply tw:font-mono tw:font-bold; letter-spacing:.02em; }
-  .pb .manual-tag-cn { @apply tw:inline-block tw:max-w-full tw:text-secondary tw:text-label-xs; padding-inline-start:var(--s-1); }
-  .pb .manual-tag .tag-remove { @apply tw:inline-flex tw:items-center tw:justify-center tw:shrink-0 tw:rounded-xs; width:20px; height:20px; opacity:1; }
-  .pb .manual-tag .tag-remove:hover { background:var(--bg-hover); }
-  .pb .universal-wardrobe-section {
-    border-color: color-mix(in srgb, var(--mood-love) 40%, var(--border-soft));
-    background: color-mix(in srgb, var(--mood-love) 8%, var(--bg-deep));
-  }
-  .pb .universal-outfit-btn {
-    border-color: color-mix(in srgb, var(--mood-love) 25%, var(--border-soft));
-  }
-  .pb .universal-outfit-btn:hover, .pb .universal-outfit-btn.selected {
-    border-color: var(--border-strong);
-    background: color-mix(in srgb, var(--mood-love) 15%, var(--bg-deep));
-    color: var(--mood-love);
-  }
-  .pb .outfit-presets {
-    @apply tw:grid tw:gap-s-2; margin:var(--s-3) 0;
-    @apply tw:p-s-3; border:1px solid color-mix(in srgb,var(--accent) 28%,var(--border-soft));
-    @apply tw:rounded-md; background:color-mix(in srgb,var(--accent-soft) 42%,var(--bg-deep));
-  }
-  .pb .outfit-presets-head { @apply tw:flex tw:items-baseline tw:justify-between tw:gap-s-2 tw:flex-wrap; }
-  .pb .outfit-presets-head strong { @apply tw:text-primary tw:text-label; }
-  .pb .outfit-presets-head span { @apply tw:text-muted tw:text-label-xs; }
-  .pb details.outfit-presets { display:block; }
-  .pb .wardrobe-summary { @apply tw:items-center tw:min-h-[36px] tw:cursor-pointer; list-style:none; }
-  .pb .wardrobe-summary::-webkit-details-marker { display:none; }
-  .pb .wardrobe-summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
-  .pb .wardrobe-summary strong { @apply tw:flex tw:items-center tw:gap-s-1 tw:min-w-0; flex:1; }
-  .pb .wardrobe-summary-copy { display:grid; gap:var(--s-1); min-width:0; flex:1; }
-  .pb .wardrobe-selection { overflow-wrap:anywhere; }
-  .pb .wardrobe-summary .wardrobe-selection.has-selection { color:var(--accent); }
-  .pb .wardrobe-toggle { @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:flex-none; }
-  .pb .wardrobe-summary .wardrobe-toggle,
-  .pb .wardrobe-summary .wardrobe-toggle span { @apply tw:text-secondary; }
-  .pb .wardrobe-chevron { transition:transform var(--motion-hover) var(--ease-out); }
-  .pb details.outfit-presets[open] .wardrobe-chevron { transform:rotate(180deg); }
-  .pb .wardrobe-collapse,
-  .pb details.outfit-presets[open] .wardrobe-expand { display:none; }
-  .pb details.outfit-presets[open] .wardrobe-collapse { display:inline; }
-  .pb .wardrobe-description { margin:var(--s-2) 0; @apply tw:text-muted tw:text-label-xs tw:leading-body; }
-  @media (prefers-reduced-motion:reduce) {
-    :root:not([data-motion='full']) .pb .wardrobe-chevron { transition:none; }
-  }
-  .pb .outfit-preset-list { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2; }
-  .pb .outfit-preset {
-    @apply tw:grid tw:gap-[3px] tw:min-w-0 tw:p-s-2;
-    border:1px solid var(--border-soft); @apply tw:rounded-sm;
-    background:var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer tw:text-left;
-  }
-  .pb .outfit-preset:hover, .pb .outfit-preset.selected {
-    @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent;
-  }
-  .pb .outfit-preset strong, .pb .outfit-preset small { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-  .pb .outfit-preset strong { @apply tw:text-label-sm; }
-  .pb .outfit-preset small { @apply tw:text-muted; font:var(--fs-mono-xs) var(--font-mono); }
-  .pb .r18-controls {
-    @apply tw:grid tw:gap-s-2 tw:mt-s-2 tw:pt-s-3;
-    border-top:1px solid var(--border-soft);
-  }
-  .pb .r18-controls-head strong { @apply tw:text-danger-text; }
-  .pb .r18-control {
-    border-color:color-mix(in srgb,var(--danger) 28%,var(--border-soft));
-    background:color-mix(in srgb,var(--danger) 5%,var(--bg-deep));
-  }
-  .pb .r18-control:hover, .pb .r18-control.selected {
-    @apply tw:border-danger;
-    background:color-mix(in srgb,var(--danger) 12%,var(--bg-deep));
-    @apply tw:text-danger-text;
-  }
-  .pb .r18-control.selected { box-shadow:inset 3px 0 0 var(--danger); }
-  @media (max-width:480px) {
-    .pb .outfit-preset-list { grid-template-columns:1fr; }
-  }
-  .pb .tag-remove {
-    border:0; background:transparent; color:inherit; @apply tw:cursor-pointer;
-    font:inherit; opacity:.7; @apply tw:leading-flush tw:p-0;
-  }
-  .pb .tag-remove:hover { opacity:1; }
-  .pb .tag-input {
-    @apply tw:w-full tw:min-h-[36px]; padding:var(--s-2) var(--s-3);
-    border:1px solid var(--border-soft); @apply tw:rounded-md;
-    background:var(--bg-deep); @apply tw:text-primary; font:400 var(--fs-label) var(--font-sans); outline:none;
-  }
-  .pb .tag-input:focus { @apply tw:border-strong; box-shadow:var(--ring); }
-  .pb .tag-browser { @apply tw:grid tw:gap-s-2 tw:mb-s-3; }
-  .pb .tag-dictionary-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-2); }
-  .pb .tag-dictionary-heading strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
-  .pb .tag-dictionary-link { display:inline-flex; align-items:center; gap:var(--s-1); min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); color:var(--accent); font-size:var(--fs-label-xs); text-underline-offset:3px; }
-  .pb .tag-dictionary-link:hover { text-decoration:underline; }
-  .pb .tag-dictionary-link:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-  .pb .tag-dictionary-note { margin:0; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
-  .pb .tag-categories { @apply tw:flex tw:gap-[4px] tw:overflow-x-auto tw:pb-[2px]; scrollbar-width:thin; }
-  .pb .tag-categories button {
-    flex:0 0 auto; @apply tw:min-h-[28px]; padding:0 var(--s-2);
-    border:1px solid var(--border-soft); @apply tw:rounded-pill;
-    background:transparent; @apply tw:text-secondary tw:cursor-pointer;
-    font:600 var(--fs-mono-xs) var(--font-sans);
-  }
-  .pb .tag-categories button.active { border-color:transparent; background:transparent; @apply tw:text-accent; }
-  .pb .tag-results { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-[4px] tw:max-h-[280px] tw:overflow-auto tw:pr-[2px]; }
-  /* 截断告知：还有多少条没显示（2026-08-30 UX 审计——原先静默截断，用户以为库里只有这些） */
-  .pb .tag-more-hint { margin:6px 0 0; @apply tw:text-muted tw:text-label-sm tw:leading-label; }
-  .pb .expert-tag-panel .tag-results { grid-template-columns:repeat(4,minmax(0,1fr)); @apply tw:max-h-[430px]; }
-  @media (max-width:768px) {
-    .pb .expert-tag-panel .tag-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  }
-  @media (max-width:480px) {
-    .pb .expert-tag-panel .tag-results { grid-template-columns:1fr; }
-  }
-  .pb .tag-results button {
-    @apply tw:grid tw:gap-[1px] tw:min-w-0; padding:7px var(--s-2);
-    border:1px solid var(--border-soft); @apply tw:rounded-sm;
-    background:var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer tw:text-left;
-  }
-  .pb .tag-results button:hover,
-  .pb .tag-results button.selected { @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent; }
-  .pb .tag-results strong { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-label-sm; }
-  .pb .tag-results small { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-muted; font:var(--fs-mono-xs) var(--font-mono); }
+/* The workbench owns its choices; shared segments and disclosures own their motion. */
+.pb .expert-tags-header { display:flex; flex-wrap:wrap; align-items:start; justify-content:space-between; gap:var(--s-2); width:100%; line-height:var(--lh-body); }
+.pb .expert-tags-actions { display:inline-flex; flex-wrap:wrap; gap:var(--s-2); margin-left:auto; }
+.pb .expert-tag-count { margin-left:var(--s-2); padding:2px var(--s-2); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.pb .clear-tags-btn:hover { color:var(--danger-text); }
+.pb .manual-tags { display:flex; flex-wrap:wrap; align-items:start; gap:var(--s-1); min-height:var(--control-height-sm); margin-bottom:var(--s-2); padding:var(--s-2); border:1px dashed var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); }
+.pb .manual-tag { display:inline-flex; align-items:center; gap:var(--s-1); min-width:0; max-width:100%; padding:2px; border:1px solid var(--border-strong); border-radius:var(--r-md); background:var(--bg-elevated); color:var(--text-primary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); transition:border-color var(--motion-hover),background var(--motion-hover); }
+.pb .manual-tag[data-weight-tier="boost"] { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); box-shadow:0 0 8px color-mix(in srgb,var(--accent) 24%,transparent); }
+.pb .manual-tag[data-weight-tier="strong-boost"] { border-color:var(--accent); background:color-mix(in srgb,var(--accent) 30%,var(--bg-surface)); box-shadow:0 0 12px color-mix(in srgb,var(--accent) 55%,transparent),inset 0 1px 0 var(--glass-specular); }
+.pb .manual-tag[data-weight-tier="reduce"] { border-color:color-mix(in srgb,var(--info-text) 32%,var(--border-soft)); background:color-mix(in srgb,var(--info) 8%,var(--bg-surface)); color:var(--info-text); }
+.pb .manual-tag-text { min-width:0; overflow-wrap:anywhere; }
+.pb .manual-tag-en { font-family:var(--font-mono); font-weight:600; }
+.pb .manual-tag-cn { display:inline-block; max-width:100%; padding-inline-start:var(--s-1); color:var(--text-secondary); }
+.pb .manual-tag > .btn { flex-shrink:0; }
+.pb .outfit-presets { display:block; margin:var(--s-3) 0; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.pb .wardrobe-summary { min-height:var(--control-height); padding:var(--s-3); border-radius:var(--r-lg); cursor:pointer; }
+.pb .wardrobe-summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.pb .wardrobe-summary strong { display:flex; align-items:center; gap:var(--s-2); min-width:0; color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.pb .wardrobe-summary strong > .archive-icon { width:16px; height:16px; flex-shrink:0; }
+.pb .wardrobe-summary-copy { display:grid; gap:var(--s-1); min-width:0; flex:1; }
+.pb .wardrobe-selection { color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
+.pb .wardrobe-selection.has-selection { color:var(--accent); }
+.pb .wardrobe-toggle { flex:none; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.pb .wardrobe-collapse,.pb .outfit-presets[open] .wardrobe-expand { display:none; }
+.pb .outfit-presets[open] .wardrobe-collapse { display:inline; }
+.pb .outfit-presets > [data-disclosure-content] { padding:var(--s-3); border-top:1px solid var(--border-soft); }
+.pb .wardrobe-description { margin:0 0 var(--s-3); color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
+.pb .outfit-preset-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:var(--s-2); }
+.pb :is(.outfit-preset,.tag-results button) { display:grid; grid-template-columns:minmax(0,1fr) 16px; gap:var(--s-1) var(--s-2); min-width:0; min-height:var(--control-height); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); text-align:left; cursor:pointer; }
+.pb :is(.outfit-preset,.tag-results button) > :is(strong,small) { grid-column:1; min-width:0; white-space:normal; overflow-wrap:anywhere; }
+.pb :is(.outfit-preset,.tag-results button) > strong { grid-row:1; font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.pb :is(.outfit-preset,.tag-results button) > small { grid-row:2; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-mono); }
+.pb :is(.outfit-preset,.tag-results button):hover { border-color:var(--accent); background:var(--accent-soft); }
+.pb :is(.outfit-preset,.tag-results button).selected { border-color:var(--accent); background:var(--accent-soft); color:var(--accent); box-shadow:var(--selection-shadow); }
+.pb :is(.outfit-preset,.tag-results button):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.pb .tag-option-check { grid-column:2; grid-row:1 / span 2; align-self:center; width:16px; height:16px; color:var(--accent); opacity:0; }
+.pb .selected > .tag-option-check { opacity:1; }
+.pb .r18-controls { display:grid; gap:var(--s-2); margin-top:var(--s-3); padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
+.pb .r18-controls-head { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:var(--s-2); }
+.pb .r18-controls-head strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.pb .r18-controls-head span { color:var(--text-secondary); font-size:var(--fs-label-xs); }
+.pb .tag-input { width:100%; min-height:var(--control-height); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); outline:none; }
+.pb .tag-input:focus { border-color:var(--accent); box-shadow:var(--focus-shadow); }
+.pb .tag-browser { display:grid; gap:var(--s-2); min-width:0; margin-bottom:var(--s-3); }
+.pb .tag-dictionary-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-2); }
+.pb .tag-dictionary-heading strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.pb .tag-dictionary-link { display:inline-flex; align-items:center; gap:var(--s-1); min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); color:var(--accent); font-size:var(--fs-label-xs); text-underline-offset:3px; }
+.pb .tag-dictionary-link > .archive-icon { width:16px; height:16px; }
+.pb .tag-dictionary-link:hover { text-decoration:underline; }
+.pb .tag-dictionary-link:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.pb .tag-dictionary-note { margin:0; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
+.pb .tag-categories { flex-wrap:wrap; min-width:0; }
+.pb .tag-results { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr)); grid-auto-rows:max-content; align-content:start; gap:var(--s-2); max-height:430px; padding:var(--s-1); overflow:auto; scrollbar-width:thin; scroll-padding-block:var(--s-2); }
+.pb .tag-results-empty { grid-column:1 / -1; margin:0; padding:var(--s-4); color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
+.pb .tag-more-hint { margin:0; color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }

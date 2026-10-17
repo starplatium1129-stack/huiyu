@@ -26,12 +26,12 @@
   .pb .shortcut-hint kbd { padding:2px var(--s-2); border:1px solid var(--border-soft); border-bottom-color:var(--border-strong); @apply tw:rounded-sm; background:var(--bg-deep); @apply tw:text-secondary; box-shadow:0 1px 0 var(--border-soft); }
   .pb .icon-label { @apply tw:inline-flex tw:items-center tw:gap-s-2; }
   /* .panel-title 唯一定义 */
-  .pb .panel-title, .pb .director-card-name { @apply tw:flex tw:items-center tw:gap-s-2; }
+  .pb .panel-title { @apply tw:flex tw:items-center tw:gap-s-2; }
   .pb .panel-title {
     @apply tw:mb-s-3 tw:text-secondary tw:text-label-sm tw:font-bold;
     letter-spacing:.06em; @apply tw:uppercase;
   }
-  .pb .panel-title .aic-icon, .pb .director-card-name .aic-icon { @apply tw:text-accent tw:text-body-lg; }
+  .pb .panel-title .aic-icon { @apply tw:text-accent tw:text-body-lg; }
 
 /* Shell geometry lives here. Panel styles must not redistribute these columns.
    Both modes share desktop geometry; only the panel contents change. */
@@ -70,11 +70,15 @@
 .pb.journal-workspace .gen-bar { order: 1; top: var(--drawing-sticky-top); }
 .pb.journal-workspace .director-workspace > .gen-bar { grid-area:actions; align-self:start; }
 @media (max-width:1023px) {
+  /* Keyboard focus lands immediately in the space reserved for the sticky
+     action row, rather than continuing a page scroll after the field is visible. */
+  html:has(.pb.journal-workspace :focus-visible) { scroll-behavior:auto; }
   /* The full-width action row owns sticky space; the material column must not sit underneath it. */
   .pb.journal-workspace .col-left { position:static; max-height:none; overflow:visible; }
-  .pb.journal-workspace .director-workspace :is(input,textarea,button,summary),
+  .pb.journal-workspace .director-workspace :is(input,textarea,button,summary):not(dialog *),
   .pb.journal-workspace #drawing-materials,.pb.journal-workspace #drawing-canvas,.pb.journal-workspace #stepResult {
-    scroll-margin-top:calc(var(--drawing-sticky-top) + 9rem);
+    scroll-margin-top:calc(var(--drawing-sticky-top) + var(--drawing-action-height,0px) + var(--s-3));
+    scroll-margin-bottom:var(--s-3);
   }
 }
 

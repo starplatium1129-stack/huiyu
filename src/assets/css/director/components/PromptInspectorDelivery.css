@@ -4,7 +4,7 @@
 
 /* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
 .pb .auto-save-gallery-row {
-  @apply tw:flex tw:items-center tw:gap-s-2;
+  @apply tw:flex tw:items-center tw:gap-s-2 tw:w-full tw:min-h-[40px];
   margin: var(--s-2) 0;
   padding: var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
@@ -12,7 +12,4 @@
   background: var(--bg-elevated);
   @apply tw:text-primary;
 }
-.pb .auto-save-gallery-label { @apply tw:text-body-sm tw:text-primary; }
-.pb .auto-save-gallery-row { @apply tw:grid; grid-template-columns:auto minmax(0,1fr); }
-.pb .inspector-voice { border-top:1px solid var(--border-soft); @apply tw:mt-s-3 tw:pt-s-2; }
-.pb .inspector-voice > summary { padding:var(--s-2) 0; @apply tw:text-secondary tw:text-body-sm tw:cursor-pointer; }
+.pb .auto-save-gallery-label { min-width:0; font:400 var(--fs-label)/var(--lh-label) var(--font-sans); color:var(--text-primary); }

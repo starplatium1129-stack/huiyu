@@ -9,9 +9,6 @@ export function usePromptSceneFilters(scenes: Readonly<Ref<Scene[]>>, char: Read
   const directorMode  = ref<'basic' | 'pro'>('basic')
   const sceneSearch   = ref('')
   const sceneTheme    = ref('all')
-  const sceneLibMode  = ref<'grid' | 'list'>('grid')
-  const currentStep   = ref(1)
-  const activeTab     = ref('tags')
 
   const filteredScenes = computed(() => {
     let list = scenes.value
@@ -33,5 +30,5 @@ export function usePromptSceneFilters(scenes: Readonly<Ref<Scene[]>>, char: Read
   })
 
 
-  return { focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode, currentStep, activeTab, filteredScenes }
+  return { focusMode, directorMode, sceneSearch, sceneTheme, filteredScenes }
 }

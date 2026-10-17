@@ -7,7 +7,7 @@
   .scene-active-filters button,.scene-reset,.gallery-refine-toggle,.gallery-filter-chip,.inspiration-deck-controls button,
   .gallery-album-actions button,.gallery-breadcrumb button,.filter-reset,.showcase-album-back,.pop-filter-reset,
   .journal-more,.guide-direct,.hero-particle-link,.home-section-head .link,.strip-label .link,.nav-back,.guide-page a,
-  .directory-count button,.directory-current button,.directory-page-turn,.directory-item,.bookshelf-flip-row button,.managed-route-reopen-btn,
+  .directory-count button,.directory-current button,.directory-page-turn,.directory-item,.bookshelf-flip-row button,
   .viewer-close,.viewer-info-toggle,.viewer-info-close,.viewer-mode-switch,.viewer-compare-toggle,.viewer-nav,.viewer-tags button,.artwork-tool,.artwork-retry,
   .control-rail-link,.control-section-jump a,.nav-local-home,.mode-card,
   .catalog-nav-group button,.catalog-more-menu button,.catalog-add,.catalog-filter-button,.catalog-record-row,.catalog-tool-options button,.catalog-text-button,
@@ -58,7 +58,7 @@
 }
 :where(.btn-primary,.companion-send,.companion-dialogue-send,.companion-dialogue-microphone) { --control-feedback-fill:transparent; --control-feedback-edge:currentColor; }
 :where(.btn-danger) { --control-feedback-fill:transparent; --control-feedback-edge:var(--danger-text); }
-:where(.artwork-tool,.viewer-close-on-art) { --control-feedback-fill:var(--art-scrim); --control-feedback-edge:var(--on-art-line); }
+:where(.artwork-tool) { --control-feedback-fill:var(--art-scrim); --control-feedback-edge:var(--on-art-line); }
 .studio-control-label { display:inline-block; }
 /* Media keeps its frame and hit area stationary while the inner picture responds. */
 :where(.catalog-sample-card,.catalog-hero-card,a.study-image,.companion-chat-image-open) {

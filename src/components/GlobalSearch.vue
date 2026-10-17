@@ -22,13 +22,14 @@
             :aria-describedby="searchAnnouncementId"
             @keydown="onInputKeydown"
           />
+          <StudioTooltip v-if="query" content="清空搜索">
+            <button type="button" class="btn btn-ghost btn-sm btn-icon gs-clear" aria-label="清空搜索" @click="clearQuery"><ArchiveIcon name="broom" /></button>
+          </StudioTooltip>
           <StudioTooltip content="关闭搜索（Esc）">
-            <button type="button" class="gs-esc tw:inline-grid tw:w-[40px] tw:h-[40px] tw:cursor-pointer tw:rounded-pill tw:text-muted" aria-label="关闭搜索" @click="close()"><ArchiveIcon name="close" /></button>
+            <button type="button" class="btn btn-ghost btn-icon gs-esc" aria-label="关闭搜索" @click="close()"><ArchiveIcon name="close" /></button>
           </StudioTooltip>
         </div>
 
-        <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
-        <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
         <div :id="listboxId" ref="resultsEl" class="gs-results tw:overflow-y-auto tw:p-s-3" role="listbox" aria-label="搜索结果">
           <template v-if="!query.trim()">
             <section v-if="filteredActions.length" class="gs-group tw:mb-s-2">
@@ -92,6 +93,8 @@
                 <small>{{ item.meta }}</small>
               </button>
             </section>
+            <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
+            <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
             <p v-if="!worksError && !worksLoading && !filteredPages.length && !filteredScenes.length && !filteredWorks.length" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm">
               没有匹配的结果，试试场景标题、标签或作品名。
             </p>
@@ -181,6 +184,7 @@ const PAGES: PageItem[] = [
   { id: 'color-script', label: '色彩情绪', icon: 'palette', path: '/color-script', keywords: '色彩 情绪 色调 脚本 剧本 配色 对照' },
   { id: 'manager', label: '内容维护', icon: 'manager', path: '/scene-manager', keywords: '管理 编辑 维护' },
   { id: 'control', label: '控制面板', icon: 'gear', path: '/control', keywords: '控制 服务 设置' },
+  { id: 'guide', label: '使用指南', icon: 'book', path: '/guide', keywords: '入门 帮助 使用说明 guide help' },
 ]
 
 const ACTIONS: SearchItem[] = [
@@ -293,6 +297,11 @@ function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = docume
   activeIndex.value = 0
   void loadScenesOnce()
   void nextTick(() => { inputEl.value?.focus() })
+}
+
+function clearQuery() {
+  query.value = ''
+  void nextTick(() => { if (open.value) inputEl.value?.focus({ preventScroll: true }) })
 }
 
 function close(restoreFocus = true) {
@@ -415,16 +424,17 @@ onUnmounted(() => {
   @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
   @apply tw:flex tw:items-start tw:justify-center;
   padding: var(--search-inset) var(--s-4);
+  padding-top:calc(var(--desktop-chrome-height,0px) + var(--search-inset));
   background: color-mix(in srgb, var(--art-backdrop) 72%, transparent);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .gs-panel {
   width: min(640px, 96vw);
-  max-height: calc(100dvh - 2 * var(--search-inset));
+  max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--search-inset));
   display: flex;
   flex-direction: column;
   border: 1px solid var(--glass-edge);
-  @apply tw:rounded-2xl;
+  @apply tw:rounded-xl;
   background: var(--bg-surface);
   box-shadow: var(--shadow-glass-elevated);
   @apply tw:overflow-hidden;
@@ -434,24 +444,21 @@ onUnmounted(() => {
   background: var(--bg-base);
   border-bottom: 1px solid var(--border-soft);
 }
-.gs-search-icon { @apply tw:text-muted; flex: 0 0 auto; }
+.gs-search-icon { @apply tw:text-muted tw:w-[20px] tw:h-[20px]; flex:0 0 auto; }
 .gs-input {
   flex: 1; @apply tw:min-w-0;
-  background: transparent; border: 0; outline: 0;
-  @apply tw:text-primary tw:text-body-lg tw:min-h-[32px];
+  background: transparent; border: 0; outline: 0; padding:0;
+  @apply tw:text-primary tw:text-body-lg;
+  min-height:var(--control-height);
 }
-.gs-input:focus-visible { outline: none; box-shadow: none; }
+.gs-input-row .gs-input:focus-visible { outline:none; box-shadow:none; }
+.gs-input::-webkit-search-cancel-button { display:none; }
 .gs-input-row:focus-within { box-shadow: inset 0 -2px var(--accent); }
 .gs-input::placeholder { @apply tw:text-muted; }
 .gs-heading { padding:var(--s-3) var(--s-5); }
 .gs-heading span { @apply tw:text-secondary tw:text-label-xs; }
-.gs-esc { place-items: center;
-  background: var(--bg-surface);
-  flex: 0 0 auto;
-  padding: 2px var(--s-2);
-  border: 1px solid var(--border-soft); font: 600 var(--fs-mono-xs) var(--font-mono);
-}
-.gs-heading, .gs-input-row, .gs-footer, .gs-panel > .gs-empty { flex-shrink:0; }
+.gs-esc, .gs-clear { flex:0 0 auto; }
+.gs-heading, .gs-input-row, .gs-footer { flex-shrink:0; }
 .gs-results { min-height:0; flex:1 1 auto; max-height: min(52vh, 480px); overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
 .gs-group-title {
   margin: var(--s-2) var(--s-2) var(--s-1);
@@ -461,12 +468,14 @@ onUnmounted(() => {
   background: transparent;
   font: inherit;
 }
-.gs-row small { @apply tw:ml-auto tw:text-muted tw:text-label-sm tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:max-w-[46%]; }
+.gs-row > .archive-icon { width:16px; height:16px; flex-shrink:0; }
+.gs-row > span { min-width:0; overflow-wrap:anywhere; }
+.gs-row small { @apply tw:min-w-0 tw:ml-auto tw:text-muted tw:text-label-sm tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:max-w-[46%]; }
 .gs-row.active { background: var(--accent-soft); @apply tw:text-primary; }
 .gs-row.active small { @apply tw:text-secondary; }
 .gs-footer { padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border-soft); background: var(--bg-surface); }
 .gs-sr-status { clip: rect(0 0 0 0); clip-path: inset(50%); border: 0; }
-@media (max-width: 600px) { .global-search { @apply tw:pt-s-5; } .gs-input { @apply tw:text-body; } .gs-results { @apply tw:max-h-[60dvh]; } }
+@media (max-width:600px) { .global-search { --search-inset:var(--s-5); } .gs-input { @apply tw:text-body; } .gs-results { @apply tw:max-h-[60dvh]; } }
 .gs-empty { padding: var(--s-6) var(--s-4); }
-@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .gs-panel { animation: none; } }
+@media (forced-colors:active) { .gs-input-row:focus-within { outline:2px solid Highlight; outline-offset:-2px; } }
 </style>

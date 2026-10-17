@@ -36,16 +36,16 @@
         <button class="btn btn-ghost btn-sm" type="button" :disabled="busy || checkingLocal" @click="emit('refresh-local')">{{ checkingLocal ? '检测中…' : '重新检测' }}</button>
         <p v-if="localStatusText" class="local-model-help" role="status">{{ localStatusText }}</p>
       </div>
-      <div v-else v-content-motion:right="chatProvider" class="provider-model-controls">
+      <div v-else v-content-motion:right="chatProvider" class="provider-model-controls api-model-controls">
         <StudioTooltip anchor :content="busy ? '回复结束后可修改聊天模型' : apiConfigured || useHostConfig ? '更换模型或修改 API 配置' : '选择服务商并配置聊天模型'">
         <button
-          class="api-settings-toggle"
+          class="btn btn-ghost api-settings-toggle"
           type="button"
           :aria-expanded="apiSettingsOpen"
           :disabled="busy"
           @click="emit('toggle-api-settings')"
         >
-          {{ useHostConfig ? (hostApiModel || '站主模型') : (apiConfigured ? (apiModel==='huiyu-local'?'绘遇本地聊天':apiModel) : '配置聊天模型') }}
+          <span class="studio-control-label">{{ useHostConfig ? (hostApiModel || '站主模型') : (apiConfigured ? (apiModel==='huiyu-local'?'绘遇本地聊天':apiModel) : '配置聊天模型') }}</span>
           <ArchiveIcon name="gear" />
         </button>
         </StudioTooltip>
@@ -137,6 +137,9 @@ const emit = defineEmits<{
 <style scoped>
 .provider-model-controls { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-width:0; }
 .provider-model-controls .model-select { flex:1; min-width:min(180px,100%); max-width:none; }
+.api-model-controls > :deep(.studio-tooltip-anchor) { width:100%; min-width:0; }
+.api-settings-toggle { width:100%; min-width:0; max-width:100%; justify-content:space-between; text-align:left; }
+.api-settings-toggle > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .local-model-help { flex-basis:100%; margin:0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:1.6; }
 .model-more-settings { flex-basis:100%; color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .model-more-settings > summary { cursor:pointer; }

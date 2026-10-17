@@ -146,7 +146,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // 配音状态（online/mode/caption/custom）由 VoiceStudio.vue 与 useVoice 拥有，
   // 这里不再重复存放，避免两份状态漂移。
 
-  const { focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode, currentStep, activeTab, filteredScenes } = usePromptSceneFilters(scenes, char)
+  const { focusMode, directorMode, sceneSearch, sceneTheme, filteredScenes } = usePromptSceneFilters(scenes, char)
   const lastRecommendedSize = ref('832x1216')
 
   // ── Derived ─────────────────────────────────────────────────────────────
@@ -408,8 +408,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     popularCharacters, sceneBlueprints, dataReady, loadPopularCharacter,
     history,
     sdModelName, lastSeed, sdParams,
-    focusMode, directorMode, sceneSearch, sceneTheme, sceneLibMode,
-    currentStep, activeTab, lastRecommendedSize,
+    focusMode, directorMode, sceneSearch, sceneTheme, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes, currentCuratedArtistStyles,
     setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,

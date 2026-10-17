@@ -12,35 +12,37 @@
           @vue:mounted="focusRoomPanel" @close="closeRoomPanel" />
         <ChatMemoryPanel v-else-if="roomPanel === 'memory'" :items="currentMemories" :character-name="currentCharacter.name"
           @vue:mounted="focusRoomPanel" @update="updateMemory" @delete="deleteMemory" @close="closeRoomPanel" />
-        <section v-else-if="roomPanel === 'settings'" class="room-chat-settings chat-page">
-          <header><strong>聊天设置</strong><button class="btn btn-ghost" type="button" aria-label="关闭聊天设置" @click="closeRoomPanel"><ArchiveIcon name="close" /></button></header>
-          <ChatModelControls :chat-provider="chatProvider" :busy="busy"
-            :ollama-online="ollamaOnline" :local-status-text="localStatusText" :checking-local="checkingChatStatus"
-            :models="models" :current-model="currentModel" :reasoning="reasoning" :companion-tools="companionTools" :web-search-enabled="webSearchEnabled"
-            :api-settings-open="apiSettingsOpen" :use-host-config="useHostConfig" :host-api-model="hostApiModel" :host-api-base-url="hostApiBaseUrl"
-            :api-configured="apiConfigured" :api-model="apiModel" :api-base-url="apiBaseUrl"
-            @set-provider="setChatProvider" @refresh-local="refreshChatStatus"
-            @update:current-model="currentModel = $event" @reasoning-change="onReasoningChange" @update:companion-tools="companionTools = $event" @toggle-api-settings="apiSettingsOpen = !apiSettingsOpen" />
-          <ChatApiSettings v-if="chatProvider === 'api' && apiSettingsOpen"
-            :vendor="apiVendor" :base-url="apiBaseUrl" :model="apiModel" :api-key="apiKey"
-            :credentials-loading="storage.credentialsLoading.value" :busy="busy" :hint="apiConfigHint"
-            :is-local-host="isLocalHost" :host-configured="hostApiConfigured" :host-model="hostApiModel"
-            @update:vendor="apiVendor = $event" @update:base-url="apiBaseUrl = $event" @update:model="apiModel = $event" @update:api-key="apiKey = $event"
-            @save="saveApiSettings" @clear-key="clearApiCredential" @save-host="saveToHost" @clear-host="clearHostConfigAndRefresh" />
-          <div class="room-settings-options">
-            <ToggleSwitch v-if="chatProvider === 'api' && isLocalHost" v-model="webSearchEnabled" label="联网检索">联网检索</ToggleSwitch>
-            <ToggleSwitch v-if="currentCharacter.voice" :model-value="autoVoice" label="自动播放语音" @update:model-value="autoVoice = $event; onAutoVoiceChange()">自动播放语音</ToggleSwitch>
-            <label v-if="currentCharacter.voice" class="room-volume"><span>音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label>
-          </div>
-          <div class="room-settings-voice">
-            <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
-            <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" content-class="chat-speech-settings" @open-auto-focus="focusSpeechPopover">
-              <template #trigger><button class="btn btn-ghost" type="button">语音输入设置</button></template>
-              <Suspense v-if="speechSettingsOpen">
-                <SpeechInputSettings :data-character="activeChar" @vue:mounted="focusSpeechSettings" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
-                <template #fallback><p role="status" class="tw:m-0 tw:p-s-4">正在加载…</p></template>
-              </Suspense>
-            </StudioPopover>
+        <section v-else-if="roomPanel === 'settings'" class="room-chat-settings chat-page room-tool-panel" aria-labelledby="roomChatSettingsTitle">
+          <header class="room-tool-heading"><div><span>CHAT SETTINGS</span><h2 id="roomChatSettingsTitle">聊天设置</h2></div><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭聊天设置" @click="closeRoomPanel"><ArchiveIcon name="close" /></button></header>
+          <div class="room-tool-body">
+            <ChatModelControls :chat-provider="chatProvider" :busy="busy"
+              :ollama-online="ollamaOnline" :local-status-text="localStatusText" :checking-local="checkingChatStatus"
+              :models="models" :current-model="currentModel" :reasoning="reasoning" :companion-tools="companionTools" :web-search-enabled="webSearchEnabled"
+              :api-settings-open="apiSettingsOpen" :use-host-config="useHostConfig" :host-api-model="hostApiModel" :host-api-base-url="hostApiBaseUrl"
+              :api-configured="apiConfigured" :api-model="apiModel" :api-base-url="apiBaseUrl"
+              @set-provider="setChatProvider" @refresh-local="refreshChatStatus"
+              @update:current-model="currentModel = $event" @reasoning-change="onReasoningChange" @update:companion-tools="companionTools = $event" @toggle-api-settings="apiSettingsOpen = !apiSettingsOpen" />
+            <ChatApiSettings v-if="chatProvider === 'api' && apiSettingsOpen"
+              :vendor="apiVendor" :base-url="apiBaseUrl" :model="apiModel" :api-key="apiKey"
+              :credentials-loading="storage.credentialsLoading.value" :busy="busy" :hint="apiConfigHint"
+              :is-local-host="isLocalHost" :host-configured="hostApiConfigured" :host-model="hostApiModel"
+              @update:vendor="apiVendor = $event" @update:base-url="apiBaseUrl = $event" @update:model="apiModel = $event" @update:api-key="apiKey = $event"
+              @save="saveApiSettings" @clear-key="clearApiCredential" @save-host="saveToHost" @clear-host="clearHostConfigAndRefresh" />
+            <div class="room-settings-options">
+              <ToggleSwitch v-if="chatProvider === 'api' && isLocalHost" v-model="webSearchEnabled" label="联网检索">联网检索</ToggleSwitch>
+              <ToggleSwitch v-if="currentCharacter.voice" :model-value="autoVoice" label="自动播放语音" @update:model-value="autoVoice = $event; onAutoVoiceChange()">自动播放语音</ToggleSwitch>
+              <label v-if="currentCharacter.voice" class="room-volume"><span>音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label>
+            </div>
+            <div class="room-settings-voice">
+              <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
+              <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="chat-speech-settings speech-settings-popover" @open-auto-focus="focusSpeechPopover" @close-auto-focus="returnSpeechFocus">
+                <template #trigger><button class="btn btn-ghost" type="button">语音输入设置</button></template>
+                <Suspense v-if="speechSettingsOpen">
+                  <SpeechInputSettings :data-character="activeChar" @vue:mounted="focusSpeechSettings" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+                  <template #fallback><p role="status" class="tw:m-0 tw:p-s-4">正在加载…</p></template>
+                </Suspense>
+              </StudioPopover>
+            </div>
           </div>
         </section>
         </div>
@@ -100,7 +102,7 @@
         </div>
         <button v-if="!immersive && hasNew" class="room-latest btn btn-ghost" type="button" @click="latest">回到最新消息</button>
         <div v-if="immersive" class="room-current-line" role="log" aria-live="off" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
-        <div v-if="activityText" class="room-chat-activity" role="status"><span>{{ activityText }}</span><button v-if="speechSessionActive" class="btn btn-ghost btn-sm" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button></div>
+        <div v-if="activityText" class="room-chat-activity" role="status"><span>{{ activityText }}</span><button v-if="speechSessionActive" class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button></div>
         <div class="chat-composer">
           <div class="room-composer-meta"><span><ArchiveIcon name="chat" />写给{{ currentCharacter.name }}</span><small><kbd>Enter</kbd> 发送 · <kbd>Shift + Enter</kbd> 换行</small></div>
           <div class="composer-row">
@@ -136,6 +138,7 @@ import { useConversationReading } from '@/composables/chat/useConversationReadin
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
 import ChatMessageText from '@/components/ChatMessageText.vue'
 import ChatMessageActions from '@/components/ChatMessageActions.vue'
@@ -244,6 +247,19 @@ let roomPanelClosing = false
 const roomPanelLabels = { archive: '对话归档', memory: '长期记忆', profile: '我的档案', settings: '聊天设置' }
 const roomPanelDialog = ref<HTMLDialogElement | null>(null)
 const roomPanelMotion = useFluidDialog(roomPanelDialog)
+useResizeObserver(roomPanelDialog, () => {
+  if (!speechSettingsOpen.value) return
+  const dialog = roomPanelDialog.value
+  const popover = dialog?.querySelector<HTMLElement>('.chat-speech-settings')
+  const trigger = dialog?.querySelector<HTMLElement>('.room-settings-voice [aria-haspopup="dialog"]')
+  const body = trigger?.closest<HTMLElement>('.room-tool-body')
+  if (!trigger || !body || (document.activeElement !== document.body && !popover?.contains(document.activeElement))) return
+  const bounds = body.getBoundingClientRect(), anchor = trigger.getBoundingClientRect()
+  if (anchor.top >= bounds.top && anchor.bottom <= bounds.bottom) return
+  // Keep the draft mounted when a smaller viewport clips Reka's anchor.
+  trigger.scrollIntoView({ block:'nearest', inline:'nearest', behavior:'instant' })
+  trigger.focus({ preventScroll:true })
+}, { box:'border-box' })
 async function openRoomPanel(panel: RoomPanel) {
   roomPanelClosing = false
   roomPanelGeneration.value++
@@ -336,6 +352,12 @@ async function focusSpeechPopover(event: Event) {
   const panel = document.querySelector<HTMLElement>('.chat-speech-settings')
   if (!speechSettingsOpen.value || !panel || (document.activeElement !== opener && !panel.contains(document.activeElement))) return
   ;(panel.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)') || panel).focus({ preventScroll: true })
+}
+function returnSpeechFocus(event: Event) {
+  const dialog = roomPanelDialog.value, active = document.activeElement
+  if (!dialog?.open || (active !== document.body && !active?.closest('.chat-speech-settings'))) return
+  const trigger = dialog.querySelector<HTMLElement>('.room-settings-voice [aria-haspopup="dialog"]')
+  if (trigger) { event.preventDefault(); trigger.focus({ preventScroll:true }) }
 }
 function focusSpeechSettings() {
   const panel = document.querySelector<HTMLElement>('.chat-speech-settings')

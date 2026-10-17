@@ -10,52 +10,15 @@
   .pb .trait-chip { padding: 3px var(--s-3); background: color-mix(in srgb, var(--bg-elevated) 88%, var(--accent-soft)); border: 1px solid color-mix(in srgb, var(--border-soft) 80%, var(--accent-soft)); @apply tw:rounded-pill; font:inherit; @apply tw:text-label-sm tw:text-primary tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-press) var(--ease-out); }
   .pb .trait-chip:hover:not(:focus-visible) { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
   .pb .traits-row:empty { @apply tw:mt-0; }
-  /* 角色来源：胶囊外框 + 胶囊选中块的分段切换。
-     外框与内块同用 --r-pill，外框 padding 上下与端部等距，内外弧线同心；
-     与工作台 .director-mode-switch「场景模式 / 专家模式」保持同一关系，
-     不再用「大胶囊外框包小圆角矩形」。 */
-  .pb .char-source {
-    @apply tw:inline-flex tw:flex-nowrap tw:items-stretch tw:gap-[2px];
-    width: fit-content;
-    @apply tw:max-w-full tw:p-[3px];
-    border: 1px solid var(--border-soft);
-    @apply tw:rounded-pill;
-    background: var(--bg-deep);
-    box-shadow: inset 0 1px 3px color-mix(in srgb, var(--bg-base) 55%, transparent);
-  }
-  .pb .char-source-btn {
-    @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-[5px];
-    flex: 1 1 auto;
-    @apply tw:min-w-0 tw:min-h-[36px];
-    padding: 4px 12px;
-    @apply tw:rounded-pill;
-    border: 1px solid transparent;
-    background: transparent;
-    @apply tw:text-secondary tw:text-label;
-    line-height: 1.25;
-    font-weight: 650;
-    /* 标签超出容器时换行成可读的两行，不压成竖排文字、也不靠减小字号塞入。 */
-    @apply tw:whitespace-normal tw:text-center tw:cursor-pointer;
-    transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
-  }
+  .pb .char-source { width:fit-content; max-width:100%; margin-bottom:var(--s-3); }
+  .pb .char-source-btn { min-width:0; text-align:center; }
   .pb .char-source-label { @apply tw:whitespace-nowrap; }
   .pb .char-source-note::before { content:' · '; }
   .pb .char-source-btn > span { @apply tw:min-w-0; }
-  .pb .char-source-btn:hover { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); }
   .pb .char-source-icon {
-    @apply tw:w-[13px] tw:h-[13px] tw:shrink-0;
+    @apply tw:w-[16px] tw:h-[16px] tw:shrink-0;
     color: currentColor;
-    opacity: 0.85;
   }
-  /* 选中块也是胶囊：实底填充让「当前来源」在深一档的外框里成形，
-     文字仍用 --mood-love-text（在 --mood-elevated 合成底上双主题 ≥4.5:1）。 */
-  .pb .char-source-btn.active {
-    border-color: var(--border-strong);
-    background: color-mix(in srgb, var(--mood-love) 18%, var(--bg-elevated));
-    color: var(--pb-active-text, var(--accent));
-    box-shadow: inset 0 1px 0 var(--glass-highlight);
-  }
-  .pb .char-source-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
   .pb .trait-chip.active {
     background:var(--accent-soft); @apply tw:text-accent;
     box-shadow:var(--selection-shadow);

@@ -43,12 +43,10 @@
 .orbit-label span { @apply tw:block tw:text-accent tw:text-label-xs; letter-spacing: .14em; @apply tw:mb-s-2; }
 .orbit-label strong { @apply tw:text-primary; font: 400 var(--fs-title-xs)/var(--lh-loose) var(--font-serif); }
 .hero-jp { @apply tw:absolute tw:bottom-s-4 tw:left-s-7 tw:text-muted; font: 400 var(--fs-label-xs)/var(--lh-label) var(--font-serif); letter-spacing: .14em; }
-.hero-muses { @apply tw:relative tw:isolate tw:flex; width: fit-content; @apply tw:flex-wrap tw:gap-s-2 tw:mt-s-3; }
-.hero-muses button { @apply tw:relative; z-index: var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px]; padding: var(--s-2) var(--s-3); border: 1px solid transparent; @apply tw:rounded-pill tw:text-secondary; background: transparent; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); @apply tw:cursor-pointer; }
-.hero-muses button[aria-pressed="true"] { background: transparent; @apply tw:text-primary; border-color: transparent; }
+.hero-muses { width: fit-content; @apply tw:max-w-full tw:flex-nowrap tw:mt-s-3; }
 .home-hero .hero-muses .animated-selection { background:color-mix(in srgb,var(--accent) 12%,var(--bg-surface)); border-color:var(--border-strong); }
 .home-hero[data-immediate="true"] :is(.hero-character, .hero-fallback) { transition:none; }
-:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.hero-character, .hero-fallback, .hero-muses button, .pop-card-mini, .recent-card) { transition:none; }
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.hero-character, .hero-fallback, .pop-card-mini, .recent-card) { transition:none; }
 :root:is([data-motion="reduce"], [data-motion="reduced"]) .home-page :is(.pop-card-mini, .recent-card):hover { transform:none; }
 .muse-marker { @apply tw:w-[6px] tw:h-[6px]; border-radius: 50%; }
 .muse-marker-nene { background: var(--nene-violet); }
@@ -136,6 +134,6 @@
   .recent-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .hero-character, :root:not([data-motion='full']) .hero-fallback, :root:not([data-motion='full']) .hero-muses button, :root:not([data-motion='full']) .pop-card-mini, :root:not([data-motion='full']) .recent-card { transition: none; }
+  :root:not([data-motion='full']) .hero-character, :root:not([data-motion='full']) .hero-fallback, :root:not([data-motion='full']) .pop-card-mini, :root:not([data-motion='full']) .recent-card { transition: none; }
   :root:not([data-motion='full']) .home-page :is(.pop-card-mini, .recent-card):hover { transform: none; }
 }

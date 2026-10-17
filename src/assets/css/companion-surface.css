@@ -9,11 +9,10 @@ html.companion-desktop dialog[data-fluid-dialog]::backdrop { background:transpar
 .companion-redesign .companion-toolbar { --companion-ink: var(--text-primary); --companion-ink-soft: var(--text-secondary); inset: var(--s-3) var(--s-3) auto; @apply tw:min-h-[48px] tw:p-s-2; border: 0; @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:text-primary; box-shadow: none; backdrop-filter: none; }
 .companion-redesign .companion-toolbar .companion-identity > span { @apply tw:text-secondary; text-shadow: none; }
 .companion-redesign .companion-toolbar .companion-identity h1 { @apply tw:text-primary; text-shadow: none; }
+.companion-redesign .companion-identity { flex-shrink:0; }
+.companion-redesign .companion-toolbar .companion-picker { flex:0 1 220px; min-width:0; }
 .companion-redesign .companion-settings-btn { @apply tw:text-primary; background: var(--bg-elevated); @apply tw:border-soft; }
 .companion-redesign .companion-toolbar-actions { @apply tw:shrink-0; }
-.companion-drag-handle { @apply tw:inline-flex tw:gap-s-1 tw:items-center tw:min-h-[36px] tw:p-s-2 tw:text-secondary tw:cursor-grab; touch-action: none; }
-.companion-drag-handle svg { @apply tw:w-[16px] tw:h-[16px] tw:pointer-events-none; }
-.companion-drag-handle span { @apply tw:pointer-events-none tw:text-label-sm; }
 .companion-redesign .companion-settings-popover { top: calc(100% + 8px); max-height: calc(100dvh - 100px); @apply tw:text-primary; background: var(--bg-elevated); @apply tw:border-soft; backdrop-filter: none; }
 .companion-redesign .companion-pop-group > strong { @apply tw:text-secondary; }
 .companion-redesign .companion-pop-item { @apply tw:text-primary; }
@@ -23,8 +22,6 @@ html.companion-desktop dialog[data-fluid-dialog]::backdrop { background:transpar
 .companion-redesign .portrait-main { @apply tw:bottom-[210px]; max-height: calc(100% - 290px); }
 .companion-redesign .avatar-status[data-state="ready"], .companion-redesign .live2d-interaction-hint, .companion-redesign .companion-presence-cue { @apply tw:hidden; }
 .companion-redesign .companion-conversation { background: transparent; box-shadow: none; border: 0; @apply tw:p-s-3; }
-.companion-redesign .companion-composer { background: var(--bg-surface); @apply tw:text-primary tw:border-soft; backdrop-filter: none; }
-.companion-redesign .companion-input { @apply tw:text-primary; background: var(--bg-elevated); }
 .companion-redesign .companion-bubbles { @apply tw:max-h-[100px]; }
 .companion-redesign .companion-bubble { @apply tw:text-primary; background: var(--bg-surface); }
 .companion-redesign .companion-empty { @apply tw:hidden; }
@@ -84,10 +81,6 @@ html.companion-desktop .companion-redesign .companion-identity { @apply tw:absol
 html.companion-desktop .companion-redesign .companion-picker { flex:1; @apply tw:min-w-0 tw:max-w-[160px]; }
 html.companion-desktop .companion-redesign .companion-picker-trigger { @apply tw:min-h-[36px]; }
 html.companion-desktop .companion-redesign .companion-toolbar-actions { @apply tw:gap-s-1; }
-.companion-hide-btn { @apply tw:grid; place-items:center; @apply tw:w-[32px] tw:h-[36px] tw:p-s-1; border:0; @apply tw:rounded-sm; background:transparent; @apply tw:text-secondary tw:cursor-pointer; }
-.companion-hide-btn svg { @apply tw:w-[16px] tw:h-[16px]; }
-.companion-hide-btn:hover { background:var(--bg-hover); @apply tw:text-primary; }
-.companion-hide-btn:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 html.companion-desktop .companion-redesign .companion-chat-chip { @apply tw:min-h-[32px]; box-shadow:none; }
 
 /* Pure-pet default. Hover and a previously focused picker must not pin chrome open. */
@@ -95,7 +88,7 @@ html.companion-desktop .companion-page.companion-redesign:not([data-controls-ope
 html.companion-desktop .companion-page.companion-redesign:not([data-controls-open]) .companion-chat-chip { @apply tw:hidden; }
 html.companion-desktop .companion-page.companion-redesign[data-controls-open] .companion-toolbar { @apply tw:flex; opacity:1; visibility:visible; transform:none; @apply tw:pointer-events-auto; }
 @media (max-width: 400px) {
-  .companion-drag-handle span { @apply tw:hidden; }
+  .companion-redesign .companion-identity { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden tw:whitespace-nowrap; clip-path:inset(50%); border:0; }
   html.companion-desktop .companion-redesign .companion-settings-popover { @apply tw:fixed; top:calc(var(--s-7) + var(--s-2)); @apply tw:right-s-2 tw:left-s-2 tw:w-auto; }
 }
 

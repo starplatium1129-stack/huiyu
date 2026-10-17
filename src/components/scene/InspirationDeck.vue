@@ -4,12 +4,12 @@
       <span class="inspiration-deck-kicker"><ArchiveIcon name="spark" /> 灵感手帖</span>
       <p :id="hintId" class="sr-only">左右方向键切换主推，也可拖动画面旁的文字区域。按 Tab 预览或探索任一场景。</p>
       <div class="inspiration-deck-controls" data-fluid-glass>
-        <button type="button" aria-label="上一张灵感" :disabled="rails.length < 2" @click="step(-1, $event.detail === 0)"><ArchiveIcon name="chevron-down" class="previous-icon" /></button>
+        <button class="btn btn-quiet btn-sm btn-icon" type="button" aria-label="上一张灵感" :disabled="rails.length < 2" @click="step(-1, $event.detail === 0)"><ArchiveIcon name="chevron-down" class="previous-icon" /></button>
         <span class="inspiration-deck-count" role="status" aria-live="polite" aria-atomic="true">
           <span aria-hidden="true">{{ String(index + 1).padStart(2, '0') }} / {{ String(rails.length).padStart(2, '0') }}</span>
           <span class="sr-only">第 {{ index + 1 }} 张，共 {{ rails.length }} 张：{{ entries[index]?.title }}</span>
         </span>
-        <button type="button" aria-label="下一张灵感" :disabled="rails.length < 2" @click="step(1, $event.detail === 0)"><ArchiveIcon name="chevron-down" class="next-icon" /></button>
+        <button class="btn btn-quiet btn-sm btn-icon" type="button" aria-label="下一张灵感" :disabled="rails.length < 2" @click="step(1, $event.detail === 0)"><ArchiveIcon name="chevron-down" class="next-icon" /></button>
       </div>
     </div>
     <div ref="host" class="inspiration-deck-stage" tabindex="0" role="group" aria-label="灵感卡片，左右方向键翻页"
@@ -24,8 +24,8 @@
           <h2>{{ item.title }}</h2>
           <p>{{ item.rail.subtitle }}</p>
           <div class="inspiration-feature-actions">
-            <RouterLink v-if="item.scene" class="btn btn-primary inspiration-feature-draw" :to="'/prompt-builder?scene=' + encodeURIComponent(item.scene.id)"><ArchiveIcon name="spark" />{{ item.artwork ? '绘制推荐场景' : '用这一幕绘制' }}</RouterLink>
-            <button class="inspiration-deck-open" type="button" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
+            <RouterLink v-if="item.scene" class="btn btn-primary btn-sm" :to="'/prompt-builder?scene=' + encodeURIComponent(item.scene.id)"><ArchiveIcon name="spark" />{{ item.artwork ? '绘制推荐场景' : '用这一幕绘制' }}</RouterLink>
+            <button class="btn btn-quiet btn-sm inspiration-deck-open" type="button" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
           </div>
         </div>
         <button class="inspiration-deck-image" :class="{ 'inspiration-feature-image': depth === 0, 'inspiration-header-image': item.artwork }" type="button" :disabled="!item.artwork && !item.scene"
@@ -36,7 +36,7 @@
         <div v-if="depth !== 0" class="inspiration-deck-copy">
           <h2>{{ item.title }}</h2>
           <span class="inspiration-deck-subtitle">{{ item.rail.subtitle }}</span>
-          <button class="inspiration-deck-open" type="button" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
+          <button class="btn btn-quiet btn-sm inspiration-deck-open" type="button" :aria-label="'探索：' + item.rail.title" @click="emit('select', item.rail)">探索场景 <ArchiveIcon name="chevron-down" class="next-icon" /></button>
         </div>
       </article>
     </div>
@@ -94,9 +94,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-kicker { display:flex; align-items:center; gap:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-sm); font-weight:600; }
 .inspiration-deck-kicker .archive-icon { width:16px; height:16px; }
 .inspiration-deck-controls { display:flex; align-items:center; gap:var(--s-1); border-radius:var(--r-md); }
-.inspiration-deck-controls button { display:grid; place-items:center; width:var(--control-height-sm); height:var(--control-height-sm); border:0; border-radius:var(--r-sm); color:var(--text-secondary); background:transparent; cursor:pointer; }
-.inspiration-deck-controls button:hover { color:var(--accent); background:var(--accent-soft); }
-.inspiration-deck button:disabled { color:var(--text-disabled); cursor:default; }
+.inspiration-deck-image:disabled { color:var(--text-disabled); cursor:default; }
 .inspiration-deck-count { color:var(--text-muted); font:500 var(--fs-label-xs)/1 var(--font-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .previous-icon { transform:rotate(90deg); }
 .next-icon { transform:rotate(-90deg); }
@@ -121,16 +119,15 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-copy h2 { margin:0; color:var(--text-primary); font:600 var(--fs-label-sm)/var(--lh-body) var(--font-display); letter-spacing:-.02em; }
 .inspiration-deck-subtitle { grid-column:1/-1; color:var(--text-muted); font-size:var(--fs-label-xs); }
 .inspiration-deck-copy .inspiration-deck-open { grid-column:2; grid-row:1; }
-.inspiration-deck-open { display:inline-flex; align-items:center; gap:var(--s-1); min-height:var(--control-height-sm); padding:0; border:0; background:transparent; color:var(--accent); font:500 var(--fs-label-sm)/var(--lh-body) var(--font-sans); cursor:pointer; }
+.inspiration-deck-open { color:var(--accent); }
 .inspiration-deck-open:hover { text-decoration:underline; text-underline-offset:3px; }
-.inspiration-deck-stage:focus-visible, .inspiration-deck :is(button,a):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.inspiration-deck-stage:focus-visible, .inspiration-deck-image:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .inspiration-feature { grid-template-columns:minmax(0,1fr) minmax(0,1fr); grid-template-rows:minmax(0,1fr); align-items:stretch; gap:var(--s-3); padding:var(--s-4); }
 .inspiration-feature-copy { display:flex; flex-direction:column; align-items:flex-start; align-self:center; gap:var(--s-2); min-width:0; }
 .inspiration-feature-label { color:var(--accent); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:.04em; }
 .inspiration-feature-copy h2 { margin:0; color:var(--text-primary); font:500 clamp(22px,2vw,30px)/1.35 var(--font-display); letter-spacing:-.035em; }
 .inspiration-feature-copy p { margin:0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
 .inspiration-feature-actions { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1) var(--s-3); margin-top:var(--s-2); }
-.inspiration-feature-draw { justify-content:center; min-height:var(--control-height-sm); padding:var(--s-2) var(--s-3); font-size:var(--fs-label-sm); }
 @media (max-width:900px) {
   .inspiration-deck-stage { grid-template-columns:repeat(var(--inspiration-side-count),minmax(0,1fr)); }
   .inspiration-feature { grid-column:1/-1; }

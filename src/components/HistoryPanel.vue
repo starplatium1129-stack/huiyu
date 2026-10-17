@@ -1,53 +1,48 @@
 <template>
   <section class="history-wrap" aria-label="作品历史">
-    <div class="panel-title history-head">
-      <span>最近作品</span>
-      <span v-if="selectedEntries.length" class="history-batch">
-        <button class="history-action primary" type="button" @click="$emit('to-shots-batch', selectedEntries)">
-          加入分镜 ({{ selectedEntries.length }})
+    <div class="history-head">
+      <h3 class="panel-title">最近作品</h3>
+      <span v-if="selectedEntries.length" class="history-batch" role="group" aria-label="已选作品操作">
+        <button class="btn btn-primary btn-sm" type="button" @click="$emit('to-shots-batch', selectedEntries)">
+          <ArchiveIcon name="gallery" />加入分镜 ({{ selectedEntries.length }})
         </button>
-        <button class="history-action" type="button" @click="selectedSet.clear()">取消选择</button>
+        <button class="btn btn-quiet btn-sm" type="button" @click="selectedSet.clear()">取消选择</button>
       </span>
     </div>
-    <div v-if="!items.length" class="history-empty">
+    <div v-if="!items.length" class="history-empty" role="status">
       <ArchiveIcon name="image" class="history-empty-icon" />
       <span>还没有保存的作品。生成后点“存入作品册”，把喜欢的这一刻留在这里。</span>
     </div>
-    <div v-else class="history-list compact-history-list">
+    <div v-else class="history-list">
       <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
           <img :crossorigin="runtimeResourceCors()" v-if="thumbs[item.id]" :src="resolveRuntimeUrl(thumbs[item.id])" alt="历史作品缩略图" loading="lazy">
-          <img :crossorigin="runtimeResourceCors()" v-else class="history-placeholder" :src="resolveRuntimeUrl(placeholderUrl)" alt="" aria-hidden="true">
+          <div v-else class="history-placeholder"><ArchiveIcon name="image" /><span>暂未载入预览</span></div>
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
-          <StudioTooltip content="勾选后可批量加入分镜">
-            <label class="history-pick tw:absolute tw:top-[6px] tw:left-[6px] tw:inline-flex tw:items-center tw:justify-center tw:cursor-pointer">
-              <input v-model="selectedSet" type="checkbox" :value="item.id" :aria-label="'选择作品：' + (item.sceneTitle || item.story || item.id)" class="history-pick-input tw:absolute tw:w-[1px] tw:h-[1px] tw:pointer-events-none" />
-              <span class="history-pick-box tw:grid tw:w-[20px] tw:h-[20px] tw:rounded-sm" aria-hidden="true">
-                <ArchiveIcon name="success" class="history-pick-check" />
-              </span>
-            </label>
-          </StudioTooltip>
+          <StudioCheckbox class="history-pick" :checked="selectedSet.has(item.id)"
+            :label="'选择作品：' + (item.sceneTitle || item.story || item.id)"
+            @update:checked="setSelected(item.id, $event)" />
         </div>
         <div class="history-main">
           <div class="history-card-title">{{ item.sceneTitle || item.story || '未命名作品' }}</div>
           <div class="history-meta">
             <span v-if="item.engine === 'anima' && item.preview" class="history-preview-badge">实验预览</span>
-            <span v-if="item.engine === 'anima' || item.engine === 'krea2'" class="history-engine">{{ engineSummary(item) }}</span>
-            <span class="primary">seed {{ item.seed ?? -1 }}</span>
-            <span class="sep">·</span>
+            <span v-if="item.engine === 'anima' || item.engine === 'krea2'">{{ engineSummary(item) }}</span>
+            <span class="history-seed">Seed {{ item.seed ?? -1 }}</span>
+            <span aria-hidden="true">·</span>
             <span>{{ item.size || '未记录尺寸' }}</span>
           </div>
           <div class="history-side">
-            <span v-if="item.favorite" class="history-rating favorite">
+            <span v-if="item.favorite" class="history-favorite" role="img" aria-label="已收藏">
               <ArchiveIcon name="love" />
             </span>
-            <div class="history-actions" aria-label="历史操作">
-              <button class="history-action primary" type="button" @click="$emit('resume', item)">继续</button>
+            <div class="history-actions" role="group" aria-label="历史操作">
+              <button class="btn btn-ghost btn-sm" type="button" @click="$emit('resume', item)">继续</button>
               <StudioTooltip content="把这张图加入分镜短片待带入列表">
-              <button class="history-action" type="button" aria-label="加入分镜" @click="$emit('to-shots', item)"><ArchiveIcon name="gallery" /></button>
+              <button class="btn btn-quiet btn-icon btn-sm" type="button" aria-label="加入分镜" @click="$emit('to-shots', item)"><ArchiveIcon name="gallery" /></button>
               </StudioTooltip>
-              <StudioTooltip content="复制配方"><button class="history-action" type="button" aria-label="复制配方" @click="$emit('duplicate', item)"><ArchiveIcon name="copy" /></button></StudioTooltip>
-              <StudioTooltip content="删除历史"><button class="history-action delete" type="button" aria-label="删除历史" @click="$emit('delete', item)"><ArchiveIcon name="close" /></button></StudioTooltip>
+              <StudioTooltip content="复制配方"><button class="btn btn-quiet btn-icon btn-sm" type="button" aria-label="复制配方" @click="$emit('duplicate', item)"><ArchiveIcon name="copy" /></button></StudioTooltip>
+              <StudioTooltip content="删除历史"><button class="btn btn-danger btn-icon btn-sm" type="button" aria-label="删除历史" @click="$emit('delete', item)"><ArchiveIcon name="close" /></button></StudioTooltip>
             </div>
           </div>
         </div>
@@ -63,13 +58,11 @@ import { computed, ref } from 'vue'
 import { useHistoryThumbnails } from '@/composables/prompt/useHistoryThumbnails'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import { artworkTimestamp } from '@/types/artwork'
 import type { ArtworkRecord } from '@/types/artwork'
 import { useSceneStore } from '@/stores/sceneStore'
-import '@/assets/css/director/components/HistoryPanel.css'
 
-// 与角色配置共用运行时立绘 URL，避免 Vite 打包副本。
-const placeholderUrl = '/assets/characters/nene-official.webp'
 const sceneStore = useSceneStore()
 
 const props = defineProps<{ history: ArtworkRecord[]; active: boolean }>()
@@ -81,10 +74,11 @@ defineEmits<{
   'to-shots-batch': [entries: ArtworkRecord[]]
 }>()
 
-// 必须用 ref 而非 reactive/const 裸 Set：checkbox 的 v-model 在选中变化时会整体赋值
-// （Vue 运行时先对 Set 做 add/delete，再 assign 回绑定）。裸 const 会编译成
-// `selectedSet = $event` 并在运行时抛 TypeError（esbuild 构建期即告警）。
 const selectedSet = ref(new Set<string | number>())
+function setSelected(id: ArtworkRecord['id'], checked: boolean) {
+  if (checked) selectedSet.value.add(id)
+  else selectedSet.value.delete(id)
+}
 const selectedEntries = computed(() =>
   props.history.filter(entry => selectedSet.value.has(entry.id)))
 
@@ -103,53 +97,4 @@ function engineSummary(item: ArtworkRecord): string {
 
 </script>
 
-<style scoped>
-@reference "../assets/css/tailwind.css";
-.history-head { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2; }
-.history-empty {
-  @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-2;
-  padding: var(--s-5) var(--s-4);
-  @apply tw:text-muted tw:text-center tw:text-label-sm;
-  background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
-  border: 1px dashed var(--border-soft);
-  @apply tw:rounded-md;
-}
-.history-empty-icon {
-  @apply tw:text-title;
-  color: var(--archive-blue);
-  opacity: 0.7;
-}
-.history-batch { @apply tw:inline-flex tw:gap-s-1; }
-.history-pick {
-  z-index: 2;
-}
-.history-pick-input { opacity: 0;
-}
-.history-pick-box { place-items: center;
-  background: color-mix(in srgb, var(--bg-surface) 82%, transparent);
-  border: 1px solid var(--border-strong);
-  color: transparent;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 1px 4px var(--art-scrim-soft);
-  transition: border-color var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
-}
-.history-pick:hover .history-pick-box {
-  @apply tw:border-accent;
-  background: color-mix(in srgb, var(--accent-soft) 60%, var(--bg-surface));
-}
-.history-pick-input:checked + .history-pick-box {
-  background: var(--accent);
-  @apply tw:border-accent tw:text-inverse;
-  box-shadow: 0 0 10px -1px var(--accent-glow);
-}
-.history-pick-input:focus-visible + .history-pick-box {
-  outline: none;
-  box-shadow: var(--focus-shadow);
-}
-.history-pick-input:checked:focus-visible + .history-pick-box { --focus-shadow:inset 0 -2px 0 var(--text-inverse); }
-.history-pick-check {
-  @apply tw:w-[13px] tw:h-[13px];
-}
-.history-item[data-selected="true"] { outline: none; box-shadow: var(--selection-shadow); @apply tw:rounded-md; }
-.history-thumb { @apply tw:relative; }
-</style>
+<style scoped src="@/assets/css/director/components/HistoryPanel.css"></style>

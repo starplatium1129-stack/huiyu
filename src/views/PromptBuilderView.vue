@@ -2,7 +2,7 @@
   <article
     class="pb journal-workspace atelier-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
-    :style="[currentCharacterThemeStyle, directorLayout.style.value]"
+    :style="[currentCharacterThemeStyle, directorLayout.style.value, { '--drawing-action-height': actionBarHeight + 'px' }]"
     :data-materials-collapsed="directorLayout.collapsed.value.materials || undefined"
     :data-inspector-collapsed="directorLayout.collapsed.value.inspector || undefined"
     :data-resizing="directorLayout.dragging.value || undefined"
@@ -51,7 +51,7 @@
         </div>
         <div class="pb-utility-actions">
           <HistoryRestoreNotice v-if="pb.historyRestoreReport" :context="workspace.recipePreviewContext" :mode="pb.directorMode" @expert="setDirectorMode('pro')" />
-          <RandomInspirationButton compact />
+          <RandomInspirationButton />
           <PromptDataTools
             launcher-label="数据工具"
             :blueprint-data="currentBlueprintData"
@@ -81,6 +81,7 @@
           :error="generationError"
           :stopped="generationStopped"
           @update:size="genBarSize = $event"
+          @resize="actionBarHeight = $event"
           @generate="callGenerate()"
           @cancel="cancelGeneration"
         />
@@ -249,6 +250,7 @@ const workspace = usePromptWorkspace()
 const { reuseRequest, reuseBusy, applyReuse, cancelReuse } = workspace.historyReuse
 const stagePanel = ref<InstanceType<typeof DirectorStagePanel> | null>(null)
 const inspectorActions = ref<HTMLElement | null>(null)
+const actionBarHeight = ref(0)
 const layoutRoot = ref<HTMLElement | null>(null)
 const directorLayout = useDirectorLayout(layoutRoot)
 const {

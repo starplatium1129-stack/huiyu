@@ -1,84 +1,72 @@
 <template>
-  <div class="random-inspiration tw:relative tw:inline-flex tw:items-center tw:gap-s-2" :class="{ open: menuOpen }">
-    <StudioTooltip v-if="!compact" anchor :content="disabled ? '数据准备中…' : '夏目：“不知道画什么？那就让我随便给你摇一组词条……顺手而已，别想多。”'">
-      <button
-        class="random-dice"
-        type="button"
-        :disabled="disabled"
-        @click="onRoll"
-      >
-        <ArchiveIcon name="dice" class="random-dice-icon" aria-hidden="true" />
-        <span>夏目的灵感骰子</span>
-      </button>
-    </StudioTooltip>
-    <StudioPopover v-model:open="menuOpen" label="夏目的调色笔记" content-class="random-popover">
+  <div class="random-inspiration">
+    <StudioPopover v-model:open="menuOpen" label="夏目的调色笔记" content-class="random-popover" prioritize-position>
       <template #trigger>
-        <button :class="compact ? 'btn btn-ghost btn-sm' : 'random-menu-trigger'" type="button" :disabled="disabled" :aria-label="compact ? '灵感工具' : '夏目的调色笔记'">
+        <button class="btn btn-ghost btn-sm random-menu-trigger" type="button" :disabled="disabled" aria-label="灵感工具">
           <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
-          <span v-if="compact" class="studio-control-label">灵感工具</span>
+          <span class="studio-control-label">灵感工具</span>
         </button>
       </template>
-        <div class="random-label tw:sticky tw:top-0 tw:flex tw:items-center tw:justify-between tw:text-primary">夏目的调色笔记 <button type="button" class="btn btn-ghost btn-icon" aria-label="关闭调色笔记" @click="menuOpen = false"><ArchiveIcon name="close" /></button></div>
-        <button v-if="compact" class="btn btn-ghost" type="button" :disabled="disabled" @click="onRoll"><ArchiveIcon name="dice" class="random-dice-icon" />夏目的灵感骰子</button>
+      <header class="random-popover-heading">
+        <div><span>INSPIRATION</span><h3>夏目的调色笔记</h3></div>
+        <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭调色笔记" @click="menuOpen = false"><ArchiveIcon name="close" /></button>
+      </header>
+      <div ref="body" class="random-popover-body">
+        <button class="btn btn-ghost" type="button" :disabled="disabled" @click="onRoll"><ArchiveIcon name="dice" />夏目的灵感骰子</button>
         <ToggleSwitch v-model="includeArtists" class="random-toggle" label="混入知名画师特调笔触">
-          <span class="random-toggle-copy tw:flex tw:gap-[2px] tw:text-left">
-            <strong class="random-toggle-text tw:text-primary">混入知名画师特调笔触</strong>
-            <small class="random-toggle-hint tw:text-muted">开启后由夏目悄悄塞入画师特调风格；默认关闭，保留少女最纯粹的原生神韵。</small>
+          <span class="random-toggle-copy">
+            <strong>混入知名画师特调笔触</strong>
+            <small>开启后由夏目悄悄塞入画师特调风格；默认关闭，保留少女最纯粹的原生神韵。</small>
           </span>
         </ToggleSwitch>
-        <label class="random-seed tw:grid tw:gap-s-1 tw:text-secondary tw:text-label-sm">灵感种子
-          <input v-model="seedText" type="text" inputmode="numeric" aria-label="灵感种子" placeholder="留空则随机" />
+        <label class="random-seed">灵感种子
+          <input v-model="seedText" class="input" type="text" inputmode="numeric" aria-label="灵感种子" placeholder="留空则随机" />
         </label>
-        <button class="random-choice tw:w-full tw:min-h-[36px] tw:mt-s-2 tw:rounded-md tw:text-primary tw:cursor-pointer" type="button" @click="previewCandidates">预览 3 组候选</button>
-        <div v-for="(candidate, index) in candidates" :key="candidate.recipe.seed" class="random-candidate tw:text-secondary tw:text-label-sm">
-          <small>种子 {{ candidate.recipe.seed }}</small>
-          <p>{{ candidate.draw.manualTags.join(' · ') || '镜头与情绪组合' }}</p>
-          <small v-if="candidate.draw.kept.length">本次保持：{{ candidate.draw.kept.join('、') }}</small>
-          <button class="random-choice tw:w-full tw:min-h-[36px] tw:mt-s-2 tw:rounded-md tw:text-primary tw:cursor-pointer" type="button" @click="applyCandidate(index)">应用候选 {{ index + 1 }}</button>
-        </div>
-        <button v-if="lastRecipe" class="random-choice tw:w-full tw:min-h-[36px] tw:mt-s-2 tw:rounded-md tw:text-primary tw:cursor-pointer" type="button" @click="exportRecipe">保存种子与配置快照</button>
-        <button class="random-undo tw:w-full tw:min-h-[36px] tw:mt-s-2 tw:rounded-md tw:text-secondary tw:cursor-pointer" type="button" :disabled="!canUndo" @click="onUndo">
-          夏目：“退回刚才那一抽”
-        </button>
+        <button class="btn btn-ghost" type="button" :disabled="disabled" @click="previewCandidates">预览 3 组候选</button>
+        <ol v-if="candidates.length" v-content-motion="candidates" class="random-candidates" aria-label="灵感候选">
+          <li v-for="(candidate, index) in candidates" :key="candidate.recipe.seed" class="random-candidate">
+            <div class="random-candidate-heading"><h4>候选 {{ index + 1 }}</h4><small>种子 {{ candidate.recipe.seed }}</small></div>
+            <p>{{ candidate.draw.manualTags.join(' · ') || '镜头与情绪组合' }}</p>
+            <small v-if="candidate.draw.kept.length">本次保持：{{ candidate.draw.kept.join('、') }}</small>
+            <button class="btn btn-ghost" type="button" :disabled="disabled" @click="applyCandidate(index)">应用候选 {{ index + 1 }}</button>
+          </li>
+        </ol>
+        <button v-if="lastRecipe" class="btn btn-ghost" type="button" @click="exportRecipe">保存种子与配置快照</button>
+      </div>
+      <footer class="random-popover-footer">
+        <button class="btn btn-quiet" type="button" :disabled="!canUndo" @click="onUndo">夏目：“退回刚才那一抽”</button>
+      </footer>
     </StudioPopover>
   </div>
 </template>
 
 <script setup lang="ts">
 import StudioPopover from '@/components/ui/StudioPopover.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import { computed, onDeactivated, onUnmounted, ref } from 'vue'
-import { createFluidMotion } from '@/utils/fluidSpring'
+import { computed, ref } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useRandomInspiration } from '@/composables/useRandomInspiration'
 
 const pb = usePromptBuilderStore()
-defineProps<{ compact?: boolean }>()
 const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration()
-
 const menuOpen = ref(false)
+const body = ref<HTMLElement | null>(null)
+useResizeObserver(body, () => {
+  const active = document.activeElement
+  if (menuOpen.value && active instanceof HTMLElement && body.value?.contains(active)) {
+    active.scrollIntoView({ block:'nearest', inline:'nearest', behavior:'instant' })
+  }
+}, { box:'border-box' })
 const seedText = ref('')
-function previewCandidates() { prepareCandidates(3, seedText.value.trim() ? Number(seedText.value) : undefined) }
 const disabled = computed(() => !pb.dataReady)
 const canUndo = computed(() => Boolean(hasUndo.value))
-
-let diceMotion: ReturnType<typeof createFluidMotion> | undefined
-let diceTurn = 0
-function stopDice() { diceMotion?.settle(); diceMotion?.dispose(); diceMotion = undefined; diceTurn = 0 }
-onDeactivated(stopDice)
-onUnmounted(stopDice)
-function onRoll(event: MouseEvent) {
+function previewCandidates() { prepareCandidates(3, seedText.value.trim() ? Number(seedText.value) : undefined) }
+function onRoll() {
   menuOpen.value = false
-  // Commit the result immediately. The dice is feedback, never an action timer.
-  if (!roll(seedText.value.trim() ? Number(seedText.value) : undefined)) return
-  const icon = (event.currentTarget as HTMLElement).querySelector<HTMLElement>('.random-dice-icon')
-  if (!icon) return
-  diceMotion ??= createFluidMotion([0], ([angle]) => { icon.style.transform = `rotate(${angle}deg)` }, 4.5)
-  diceMotion.to([diceTurn += 180])
+  roll(seedText.value.trim() ? Number(seedText.value) : undefined)
 }
-
 function onUndo() {
   menuOpen.value = false
   undo()
@@ -86,130 +74,35 @@ function onUndo() {
 </script>
 
 <style scoped>
-@reference "../assets/css/tailwind.css";
-.random-dice {
-  @apply tw:min-h-[36px] tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2;
-  padding: 0 var(--s-3);
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  background: transparent;
-  @apply tw:text-secondary tw:cursor-pointer;
-  font: 650 var(--fs-label-sm) var(--font-sans);
-  transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover);
-}
-.random-dice::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: var(--accent-soft);
-  opacity: 0;
-  transform: translateY(100%);
-  transition: transform var(--motion-control) var(--ease-out), opacity var(--motion-hover) var(--ease-out);
-}
-@media (hover:hover) and (pointer:fine) { .random-dice:hover:not(:disabled)::before { opacity:1; transform:translateY(0); } }
-.random-dice:focus-visible::before { opacity:1; transform:none; transition:none; }
-.random-dice:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
-  @apply tw:text-accent;
-}
-.random-dice:focus-visible,
-.random-menu-trigger:focus-visible {
-  outline: none;
-  box-shadow: var(--focus-shadow);
-}
-.random-dice:active,
-.random-menu-trigger:active {
-  transform: scale(.95);
-}
-.random-dice:disabled,
-.random-menu-trigger:disabled {
-  @apply tw:text-disabled;
-  border-color: color-mix(in srgb, var(--border-soft) 40%, transparent);
-  background: color-mix(in srgb, var(--bg-deep) 60%, transparent);
-  @apply tw:cursor-not-allowed;
-  transform: none;
-}
-.random-dice-icon {
-  @apply tw:inline-grid;
-  place-items: center;
-  @apply tw:text-body-lg tw:leading-flush;
-}
-.random-menu-trigger {
-  @apply tw:w-[36px] tw:h-[36px] tw:grid;
-  place-items: center;
-  border: 1px solid var(--border-soft);
-  border-radius: 50%;
-  background: transparent;
-  @apply tw:text-secondary tw:cursor-pointer;
-  transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover);
-}
-.random-menu-trigger:hover,
-.random-inspiration.open .random-menu-trigger {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
-  background: var(--bg-elevated);
-  @apply tw:text-accent;
-}
-.random-inspiration.open .random-menu-icon { transform: rotate(35deg); }
-.random-menu-icon {
-  transition: transform var(--motion-control) var(--ease-out);
-  @apply tw:grid;
-  place-items: center;
-  @apply tw:text-body tw:leading-flush;
-}
-.random-seed { margin-block: var(--s-2); }
-.random-seed input { @apply tw:min-w-0 tw:p-s-2 tw:text-primary; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md; }
-.random-choice { border: 1px solid var(--border-soft); background: var(--bg-deep); }
-.random-candidate { padding-block: var(--s-2); border-bottom: 1px solid var(--border-soft); }
-.random-candidate p { overflow-wrap: anywhere; margin: var(--s-1) 0; }
-.random-label {
-  z-index: 1;
-  background: var(--bg-surface);
-  margin: 2px 4px 8px;
-  font: 600 var(--fs-body)/var(--lh-body) var(--font-sans);
-}
-.random-toggle {
-  @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:p-s-2 tw:rounded-md tw:cursor-pointer;
-}
-.random-toggle:hover {
-  background: var(--bg-elevated);
-}
-.random-toggle-copy {
-  @apply tw:flex-col;
-  flex: 1;
-}
-.random-toggle-text {
-  font: 500 var(--fs-label-sm) var(--font-sans);
-}
-.random-toggle-hint {
-  font: var(--fs-label-xs) var(--font-sans);
-  line-height: 1.5;
-}
-.random-undo {
-  border: 1px solid var(--border-soft);
-  background: transparent;
-  font: 650 var(--fs-label-sm) var(--font-sans);
-  transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover);
-}
-.random-undo:hover:not(:disabled) {
-  border-color: color-mix(in srgb, var(--accent) 50%, var(--border-soft));
-  background: var(--bg-elevated);
-  @apply tw:text-accent;
-}
-.random-undo:disabled {
-  @apply tw:text-disabled;
-  border-color: color-mix(in srgb, var(--border-soft) 60%, transparent);
-  background: var(--bg-deep);
-  @apply tw:cursor-not-allowed;
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .random-dice::before, :root:not([data-motion='full']) .random-menu-icon { transition: none; }
-}
-:root:is([data-motion='reduce'], [data-motion='reduced']) .random-dice::before,
-:root:is([data-motion='reduce'], [data-motion='reduced']) .random-menu-icon { transition: none; }
+.random-inspiration { display:inline-flex; align-items:center; min-width:0; }
+.random-menu-icon { transition:transform var(--motion-control) var(--ease-out); }
+.random-menu-trigger[aria-expanded='true'] .random-menu-icon { transform:rotate(35deg); }
+.random-popover-heading { display:flex; align-items:start; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
+.random-popover-heading > div { display:grid; gap:var(--s-1); min-width:0; }
+.random-popover-heading > div > span { color:var(--text-secondary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:.08em; }
+.random-popover-heading h3 { margin:0; color:var(--text-primary); font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-sans); overflow-wrap:anywhere; }
+.random-popover-heading > button { flex:none; }
+.random-popover-body { display:grid; grid-auto-rows:max-content; align-content:start; gap:var(--s-4); min-width:0; min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); }
+.random-popover-body > .btn { width:100%; }
+/* The switch root is owned by Reka and needs this deep selector. */
+.random-popover-body :deep(.random-toggle) { width:100%; min-width:0; min-height:var(--control-height); align-items:start; gap:var(--s-3); }
+.random-toggle-copy { display:grid; gap:var(--s-1); min-width:0; }
+.random-toggle-copy strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-body) var(--font-sans); }
+.random-toggle-copy small { color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
+.random-seed { display:grid; gap:var(--s-2); min-width:0; color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.random-candidates { display:grid; gap:var(--s-3); min-width:0; margin:0; padding:0; list-style:none; }
+.random-candidate { display:grid; gap:var(--s-3); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.random-candidate-heading { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--s-1) var(--s-3); }
+.random-candidate h4 { margin:0; color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.random-candidate small { color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
+.random-candidate p { margin:0; color:var(--text-primary); font:400 var(--fs-body)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
+.random-popover-footer { padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); }
+.random-popover-footer .btn { width:100%; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .random-menu-icon { transition:none; }
+@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .random-menu-icon { transition:none; } }
+</style>
+
+<style>
+/* The portalled surface owns the viewport bound; only its body scrolls. */
+.studio-popover.random-popover { display:grid; grid-template-rows:auto minmax(0,1fr) auto; width:min(440px,calc(100vw - 32px)); max-height:min(640px,var(--reka-popover-content-available-height,calc(100dvh - 32px))); padding:0; overflow:hidden; background:var(--bg-surface); }
 </style>

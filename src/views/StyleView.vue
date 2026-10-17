@@ -59,7 +59,7 @@ useScrollReveal()
 .style-chapter { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-5 tw:mb-s-4; }
 .style-chapter h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .style-mood-grid { grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-5; }
-.style-mood-card { position:relative; isolation:isolate; @apply tw:min-w-0 tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-xl; background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); }
+.style-mood-card { position:relative; isolation:isolate; @apply tw:min-w-0 tw:overflow-hidden; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); transition:transform var(--motion-surface) var(--ease-out); }
 .style-mood-card::before { content:''; position:absolute; inset:0; z-index:-1; background:linear-gradient(160deg,transparent 45%,color-mix(in srgb,var(--mood-color) 9%,transparent)); pointer-events:none; }
 .style-sample { position:relative; @apply tw:block; aspect-ratio:4 / 3; @apply tw:overflow-hidden; background:var(--bg-elevated); }
 .style-sample.is-unavailable { aspect-ratio: auto; @apply tw:min-h-[104px]; }
@@ -79,11 +79,16 @@ useScrollReveal()
 .style-palette .mood-swatch { border:1px solid var(--border-soft); border-radius:var(--r-sm); box-shadow:var(--shadow-sm); transform-origin:50% 100%; transition:transform var(--motion-route-cut) var(--spring-soft); transition-delay:calc(var(--swatch-index) * var(--motion-control) / 10); }
 .mood-go .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
 .style-mood-card:has(:focus-visible) :is(.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
+.style-mood-card:has(:focus-visible) { transition:none; transform:none; }
 .style-card-foot > span { @apply tw:text-muted tw:text-body-sm; }
-.style-sample:focus-visible, .mood-go:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
+.mood-go:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.style-sample:focus-visible { outline:none; }
+/* The card clips artwork; paint the focus ring inside the image viewport. */
+.style-sample:focus-visible::after { opacity:1; background:transparent; box-shadow:inset 0 0 0 2px var(--bg-base),inset 0 0 0 4px var(--focus-color); transition:none; }
 .style-notes { @apply tw:flex tw:items-center tw:gap-s-4 tw:mt-s-7 tw:pt-s-5; border-top:1px solid var(--border-soft); }
 .style-notes .btn { @apply tw:shrink-0; }
 @media (hover:hover) and (pointer:fine) {
+  .style-mood-card:hover:not(:focus-within) { transform:translateY(-2px); }
   .style-mood-card:hover:not(:focus-within) .style-sample img { transform:scale(1.06) translateY(-4px); }
   .style-mood-card:hover .style-sample::after { opacity:1; }
   .style-mood-card:hover:not(:focus-within) .mood-swatch { transform:translateY(-6px) rotate(-4deg); }
@@ -92,11 +97,11 @@ useScrollReveal()
 }
 @media (max-width:900px) { .style-mood-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .style-chapter { align-items:start; @apply tw:flex-col tw:gap-s-3; } .style-notes { @apply tw:flex-wrap; } }
 @media (max-width:540px) { .style-mood-grid { grid-template-columns:minmax(0,1fr); } .style-chapter h2 { @apply tw:text-title-sm; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .style-page :is(.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .style-page :is(.style-mood-card,.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .style-sample::after { transition:none; }
 @media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) .style-page :is(.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
+  :root:not([data-motion='full']) .style-page :is(.style-mood-card,.style-sample img,.mood-swatch,.mood-go .archive-icon) { transition:none; transform:none; }
   :root:not([data-motion='full']) .style-sample::after { transition:none; }
 }
-@media (forced-colors:active) { .style-mood-card::before,.style-sample::after { display:none; } }
+@media (forced-colors:active) { .style-mood-card::before,.style-sample::after { display:none; } .style-sample:focus-visible { outline:2px solid Highlight; outline-offset:-4px; } }
 </style>

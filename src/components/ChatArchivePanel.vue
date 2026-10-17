@@ -1,36 +1,41 @@
 <template>
-  <section class="chat-archive-panel" aria-label="对话历史归档">
-    <div class="archive-panel-head">
+  <section class="chat-archive-panel room-tool-panel" aria-labelledby="chatArchiveTitle">
+    <header class="room-tool-heading">
       <div>
-        <strong>对话归档</strong>
-        <small>对话超过 20 条时，早期消息自动转入本地归档；可随时导出备份或并回当前对话。</small>
+        <span>CHAT ARCHIVE</span>
+        <h2 id="chatArchiveTitle">对话归档</h2>
       </div>
-      <button class="btn btn-ghost btn-sm" type="button" @click="close">收起</button>
-    </div>
+      <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭对话归档" @click="close"><ArchiveIcon name="close" /></button>
+    </header>
+    <div class="room-tool-body">
+      <p>对话超过 20 条时，早期消息自动转入本地归档；可随时导出备份或并回当前对话。</p>
 
-    <div class="archive-counts" role="list" aria-label="各角色归档条数">
-      <span v-for="id in characterIds" :key="id" role="listitem">
-        {{ characterName(id) }}：<strong>{{ counts[id] || 0 }}</strong> 条
-      </span>
-    </div>
+      <div class="archive-counts" role="list" aria-label="各角色归档条数">
+        <span v-for="id in characterIds" :key="id" role="listitem">
+          {{ characterName(id) }}：<strong>{{ counts[id] || 0 }}</strong> 条
+        </span>
+      </div>
 
-    <div class="archive-actions tw:p-s-2 tw:rounded-lg" data-fluid-glass>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="exporting" @click="exportJson">导出 JSON</button>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="exporting" @click="exportMarkdown">导出 Markdown</button>
-      <button class="btn btn-ghost btn-sm" type="button" @click="fileEl?.click()">导入归档</button>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="restoring || !counts[activeChar]" @click="restoreCurrent">
-        归档并入当前对话
-      </button>
-      <button class="btn btn-ghost btn-sm danger" type="button" :disabled="clearing || !totalCount" @click="clearArchive">
-        清空归档
-      </button>
-      <input ref="fileEl" class="archive-file-input" type="file" accept=".json,application/json" @change="onFile">
+      <div v-if="!totalCount" class="archive-empty" role="status"><ArchiveIcon name="book" /><strong>当前没有可显示的归档消息。</strong></div>
+      <div class="archive-actions" role="group" aria-label="归档备份与整理">
+        <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportJson">导出 JSON</button>
+        <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportMarkdown">导出 Markdown</button>
+        <button class="btn btn-ghost btn-sm" type="button" @click="fileEl?.click()">导入归档</button>
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="!counts[activeChar]" :aria-disabled="restoring || undefined" :aria-busy="restoring" @click="restoreCurrent">
+          归档并入当前对话
+        </button>
+        <button class="btn btn-danger btn-sm" type="button" :disabled="!totalCount" :aria-disabled="clearing || undefined" :aria-busy="clearing" @click="clearArchive">
+          清空归档
+        </button>
+        <input ref="fileEl" class="archive-file-input" type="file" accept=".json,application/json" @change="onFile">
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { downloadBlob } from "@/utils/downloadBlob"
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { computed, onScopeDispose, ref, watch } from 'vue'
 import { chatResetRevision } from '@/utils/chatReset'
 import { getCompanionCharacter } from '@/utils/companionRegistry'

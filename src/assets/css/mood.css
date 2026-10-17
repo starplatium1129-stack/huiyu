@@ -1,12 +1,6 @@
 @reference "./tailwind.css";
 
-/* ============================================================
-   绘遇 · Color mood cards
-   原先同一组件在 css/director.css、tools/color-script.html、tools/style.html
-   三处各有一份不同取值(网格列宽/圆角/色带高度/字号)。此处收敛为一份基准
-   + 两个尺寸修饰类,尺寸差异用 .mood-grid-sm / .mood-grid-lg 表达。
-   Depends on: design-system.css
-   ============================================================ */
+/* Color-script controls and the style gallery share palette primitives. */
 
 /* 基准:色彩剧本页的中等密度 */
 .mood-grid {
@@ -35,18 +29,6 @@
    但卡片标题本身不需要染色 —— 色彩信号已经由上方的 .mood-strip 色条给足了。 */
 .mood-name { @apply tw:text-primary tw:text-body tw:font-semibold; }
 .mood-en { @apply tw:text-muted; font: 400 var(--fs-label-xs) var(--font-mono); }
-.mood-desc { @apply tw:text-muted tw:text-label-xs tw:leading-label; }
-
-/* 画风页:更大的取色卡 */
-.mood-grid-lg { --mood-col: 160px; --mood-strip-h: 40px; }
-.mood-grid-lg .mood-name { @apply tw:font-bold; }
-
-/* 导演台右栏:极紧凑,一行放得下 4 张 */
-.mood-grid-sm { --mood-col: 64px; --mood-strip-h: 20px; @apply tw:gap-s-2; }
-.mood-grid-sm .mood-card { @apply tw:rounded-md; background: var(--bg-deep); }
-/* 2px 5px:紧凑卡内部微调,升到 4px 会让右栏多出一行 */
-.mood-grid-sm .mood-body { padding: 2px 5px; }
-.mood-grid-sm .mood-name { @apply tw:text-mono-sm; }
 
 @media (hover: hover) and (pointer: fine) {
   .mood-card:where(:hover:not(:focus-visible)) .mood-body { transform:translateY(var(--control-feedback-shift,-2px)); }
@@ -56,14 +38,4 @@
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .mood-grid .mood-card { transition:none; transform:none; }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .mood-grid .mood-card { transition:none; transform:none; }
-}
-
-@media (max-width: 768px) {
-  .mood-grid-lg { --mood-col: 140px; }
-}
-@media (max-width: 480px) {
-  .mood-grid-lg { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 360px) {
-  .mood-grid-lg { grid-template-columns: 1fr; }
 }

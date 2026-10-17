@@ -1,22 +1,13 @@
-@reference "../../tailwind.css";
-/* ============================================================
-   DirectorStoryPanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
-   （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
-   ============================================================ */
-/* Story */
-  .pb .story-input { @apply tw:w-full tw:min-h-[70px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
-  .pb .story-input:focus { @apply tw:border-strong; box-shadow:var(--focus-shadow); }
-  .pb .story-input::placeholder { @apply tw:text-muted; }
-  .pb .scene-context, .pb .story-prompt-hint { @apply tw:flex tw:items-center tw:gap-s-2 tw:mt-s-2; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-sm; background:color-mix(in srgb,var(--accent-soft) 48%,transparent); @apply tw:text-muted tw:text-mono-sm tw:leading-label; }
-  .pb .scene-context[hidden], .pb .story-prompt-hint[hidden] { @apply tw:hidden; }
-  .pb .scene-context strong, .pb .story-prompt-hint strong { @apply tw:min-w-0 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-secondary; }
-  .pb .scene-context button { @apply tw:ml-auto; flex:0 0 auto; border:0; background:transparent; @apply tw:text-accent tw:cursor-pointer; font:650 var(--fs-mono-sm) var(--font-sans); }
-  .pb .story-chips { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:mt-s-2; }
-  .pb .story-chip { padding: 4px 12px; background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-pill tw:cursor-pointer; font:inherit; @apply tw:text-label-sm tw:text-secondary; transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
-  .pb .story-chip:hover { @apply tw:border-accent tw:text-accent; }
-  /* Visual description */
-  .pb .visual-description-label { @apply tw:block tw:mt-s-4 tw:mb-s-2 tw:text-label-sm tw:text-secondary; }
-  .pb .visual-description-input { @apply tw:w-full tw:min-h-[88px] tw:p-s-3; background:var(--bg-deep); border:1px solid var(--border-soft); @apply tw:rounded-lg tw:text-primary tw:text-body tw:leading-loose; outline:none; transition:border-color var(--motion-hover); @apply tw:resize-y tw:font-sans tw:box-border; }
-  .pb .visual-description-input:focus { @apply tw:border-strong; box-shadow:var(--focus-shadow); }
-  .pb .visual-description-input::placeholder { @apply tw:text-muted; }
+/* Native editing fields and shared buttons keep the Studio control family. */
+.pb :is(.story-input,.visual-description-input) { width:100%; min-height:96px; padding:var(--s-3); }
+.pb .visual-description-label { display:block; margin:var(--s-4) 0 var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); }
+.pb .scene-context { display:grid; gap:var(--s-2); min-width:0; margin-top:var(--s-2); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-label); }
+.pb .scene-context-title { min-width:0; overflow-wrap:anywhere; color:var(--text-primary); }
+.pb .scene-context > .btn { justify-self:start; max-width:100%; white-space:normal; text-align:left; }
+.pb .story-chips { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-top:var(--s-3); }
+.pb .story-chip { justify-content:flex-start; max-width:100%; white-space:normal; text-align:left; line-height:var(--lh-label); }
+/* Touch editing retains the iOS zoom safeguard without changing desktop text. */
+@media (max-width:768px) and (pointer:coarse) {
+  .pb :is(.story-input,.visual-description-input) { font-size:var(--fs-ios-control); }
+  .pb .story-chip { min-height:44px; }
+}

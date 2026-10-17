@@ -28,7 +28,7 @@
       <section v-if="speechSettingsOpen" ref="speechSettingsPanel" tabindex="-1" id="companion-dialogue-preferences" class="companion-dialogue-preferences" aria-label="对白设置">
         <div class="companion-dialogue-preference-actions">
           <button type="button" @click="openFullRoom"><ArchiveIcon name="gear" />聊天连接与记忆</button>
-          <AppearanceButton />
+          <AppearanceButton compact />
         </div>
         <Suspense>
           <SpeechInputSettings :data-character="activeChar" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />

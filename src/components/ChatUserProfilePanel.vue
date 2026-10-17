@@ -1,37 +1,39 @@
 <template>
-  <section class="chat-user-profile" aria-labelledby="chatUserProfileTitle">
-    <header>
+  <section class="chat-user-profile room-tool-panel" aria-labelledby="chatUserProfileTitle">
+    <header class="room-tool-heading">
       <div>
         <span>USER PROFILE</span>
-        <strong id="chatUserProfileTitle">她该怎样认识你</strong>
+        <h2 id="chatUserProfileTitle">她该怎样认识你</h2>
       </div>
-      <button type="button" class="btn btn-ghost btn-sm btn-icon profile-close" aria-label="关闭用户档案" @click="close"><ArchiveIcon name="close" /></button>
+      <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭用户档案" @click="close"><ArchiveIcon name="close" /></button>
     </header>
-    <p>这些资料只用于称呼和关系连续性，保存在本机，不会覆盖角色设定。</p>
-    <div class="profile-grid">
-      <label>
-        <span>希望她怎样称呼你</span>
-        <input v-model="draft.callName" maxlength="40" placeholder="留空时仍称呼“你”" />
-      </label>
-      <label>
-        <span>关系定位</span>
-        <StudioSelect
-          v-model="draft.relationship"
-          label="关系定位"
-          :options="CHAT_RELATIONSHIPS.map(option => ({ value: option.id, label: option.label }))"
-        />
-      </label>
-      <label class="profile-note">
-        <span>希望她记住的背景</span>
-        <textarea v-model="draft.note" maxlength="200" rows="3" placeholder="例如：我习惯夜间工作，聊到压力时希望先听我说完。"></textarea>
-        <small>{{ draft.note.length }} / 200</small>
-      </label>
+    <div class="room-tool-body">
+      <p>这些资料只用于称呼和关系连续性，保存在本机，不会覆盖角色设定。</p>
+      <div class="profile-grid">
+        <label>
+          <span>希望她怎样称呼你</span>
+          <input v-model="draft.callName" class="input" maxlength="40" placeholder="留空时仍称呼“你”" />
+        </label>
+        <label>
+          <span>关系定位</span>
+          <StudioSelect
+            v-model="draft.relationship"
+            label="关系定位"
+            :options="CHAT_RELATIONSHIPS.map(option => ({ value: option.id, label: option.label }))"
+          />
+        </label>
+        <label class="profile-note">
+          <span>希望她记住的背景</span>
+          <textarea v-model="draft.note" class="textarea" maxlength="200" rows="3" placeholder="例如：我习惯夜间工作，聊到压力时希望先听我说完。" @focus="revealProfileField"></textarea>
+          <small>{{ draft.note.length }} / 200</small>
+        </label>
+      </div>
     </div>
-    <p v-if="saveMessage" role="status">{{ saveMessage }}</p>
-    <div class="profile-actions">
+    <footer class="profile-actions">
+      <p v-if="saveMessage" role="status">{{ saveMessage }}</p>
       <button type="button" class="btn btn-ghost" @click="reset">恢复默认</button>
-      <button type="button" class="btn btn-primary" :disabled="saving" @click="save">{{ saving ? '保存中…' : '保存档案' }}</button>
-    </div>
+      <button type="button" class="btn btn-primary" :aria-disabled="saving || undefined" :aria-busy="saving" @click="save">{{ saving ? '保存中…' : '保存档案' }}</button>
+    </footer>
   </section>
 </template>
 
@@ -74,6 +76,10 @@ watch(() => props.profile, profile => {
 
 function close() { disposed = true; emit('close') }
 function reset() { Object.assign(draft, EMPTY_CHAT_USER_PROFILE) }
+function revealProfileField(event: FocusEvent) {
+  // Native caret scrolling can leave the editor behind the fixed action footer.
+  (event.currentTarget as HTMLTextAreaElement).scrollIntoView({ block:'nearest', inline:'nearest', behavior:'instant' })
+}
 
 async function save() {
   if (saving.value || disposed) return

@@ -1,46 +1,48 @@
 <template>
   <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
     <div class="panel-title expert-tags-header">
-      <span>自选词条 <small class="expert-tag-count" v-if="pb.manualTags.size">已选 {{ pb.manualTags.size }} 个</small></span>
-      <div class="expert-tags-actions">
-        <button v-if="pb.manualTags.size" type="button" class="btn btn-ghost btn-xs clear-tags-btn" @click="clearTags">清空词条</button>
+      <label for="manual-tag-entry">自选词条 <small class="expert-tag-count" v-if="pb.manualTags.size">已选 {{ pb.manualTags.size }} 个</small></label>
+      <div v-if="pb.manualTags.size" class="expert-tags-actions">
+        <button type="button" class="btn btn-quiet btn-sm clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
     </div>
-    <div class="manual-tags" :class="{ empty: !pb.manualTags.size }">
+    <div v-if="pb.manualTags.size" class="manual-tags">
       <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
         <span class="manual-tag" :data-weight-tier="tagWeightTier(tag)">
           <span class="manual-tag-text">
             <span class="manual-tag-en">{{ displayTag(tag) }}</span>
             <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
           </span>
-          <button type="button" class="tag-remove" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)">×</button>
+          <button type="button" class="btn btn-quiet btn-sm btn-icon" :aria-label="'移除词条 ' + tag" @click="pb.toggleManualTag(tag)"><ArchiveIcon name="close" /></button>
         </span>
       </StudioTooltip>
-      <p v-if="!pb.manualTags.size" class="manual-tags-empty-hint">
-        搜索或批量输入标签，也可展开衣橱与服装词包一键装配。
-      </p>
     </div>
+    <input id="manual-tag-entry" v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
+      @keydown.enter="onTagEnter" />
+    <datalist id="prompt-tag-suggestions">
+      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="displayTag(tag.canonicalTag)" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
+    </datalist>
     <!-- 全角色通用·特典衣橱预设（无论工作室角色还是热门角色均可一键套用） -->
-    <details class="outfit-presets universal-wardrobe-section" aria-label="全角色通用·特典衣橱">
-      <summary class="outfit-presets-head wardrobe-summary">
+    <details class="outfit-presets" aria-label="全角色通用·特典衣橱">
+      <StudioDisclosureSummary class="wardrobe-summary">
         <span class="wardrobe-summary-copy">
           <strong><ArchiveIcon name="wardrobe" /> 通用衣橱</strong>
           <span class="wardrobe-selection" :class="{ 'has-selection': selectedUniversalLabels.length }">{{ universalWardrobePresets.length }} 套 · {{ selectedUniversalLabels.length ? '已选：' + selectedUniversalLabels.join('、') : '跨角色换装' }}</span>
         </span>
         <span class="wardrobe-toggle">
           <span class="wardrobe-expand">展开</span><span class="wardrobe-collapse">收起</span>
-          <ArchiveIcon name="chevron-down" class="wardrobe-chevron" />
         </span>
-      </summary>
+      </StudioDisclosureSummary>
       <div data-disclosure-content>
       <p class="wardrobe-description">一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</p>
       <div class="outfit-preset-list universal-preset-list">
         <StudioTooltip v-for="preset in universalWardrobePresets" :key="preset.id" :content="preset.description">
           <button
-            type="button" class="outfit-preset universal-outfit-btn"
+            type="button" class="outfit-preset"
             :class="{ selected: isPresetActive(preset.tags) }"
             :aria-pressed="isPresetActive(preset.tags)"
             @click="toggleUniversalPreset(preset.tags, preset.label)">
+            <ArchiveIcon name="success" class="tag-option-check" />
             <strong>{{ preset.label }}</strong>
             <small>{{ preset.description }}</small>
           </button>
@@ -49,17 +51,16 @@
       </div>
     </details>
 
-    <details v-if="!pb.isPopular && visibleOutfitBundles.length" class="outfit-presets character-outfit-section" aria-label="专属角色服装词包">
-      <summary class="outfit-presets-head wardrobe-summary">
+    <details v-if="!pb.isPopular && visibleOutfitBundles.length" class="outfit-presets" aria-label="专属角色服装词包">
+      <StudioDisclosureSummary class="wardrobe-summary">
         <span class="wardrobe-summary-copy">
           <strong><ArchiveIcon name="wardrobe" /> {{ outfitCharacters }} · 服装词包</strong>
           <span class="wardrobe-selection" :class="{ 'has-selection': selectedOutfitLabels.length }">{{ visibleOutfitBundles.length }} 套 · {{ selectedOutfitLabels.length ? '已选：' + selectedOutfitLabels.join('、') : '角色专属，一键装配' }}</span>
         </span>
         <span class="wardrobe-toggle">
           <span class="wardrobe-expand">展开</span><span class="wardrobe-collapse">收起</span>
-          <ArchiveIcon name="chevron-down" class="wardrobe-chevron" />
         </span>
-      </summary>
+      </StudioDisclosureSummary>
       <div data-disclosure-content>
       <div class="outfit-preset-list">
         <button v-for="bundle in visibleOutfitBundles" :key="bundle.id"
@@ -67,21 +68,23 @@
           :class="{ selected: isPresetActive(bundle.tags) }"
           :aria-pressed="isPresetActive(bundle.tags)"
           @click="toggleOutfitBundle(bundle.tags)">
+          <ArchiveIcon name="success" class="tag-option-check" />
           <strong>{{ bundle.label }}</strong>
           <small>{{ bundle.tags.slice(0, 4).map(displayTag).join(', ') }}{{ bundle.tags.length > 4 ? ' …' : '' }}</small>
         </button>
       </div>
-      <div class="r18-controls" aria-label="R18 角色门控词">
-        <div class="outfit-presets-head r18-controls-head">
-          <strong>R18 角色门控词</strong>
-          <span>按角色启用，仅在成人场景中选择</span>
+      <div class="r18-controls" aria-label="成人场景词条">
+        <div class="r18-controls-head">
+          <strong>成人场景词条</strong>
+          <span>角色专属，按需添加</span>
         </div>
         <div class="outfit-preset-list">
         <button v-for="control in visibleR18Controls" :key="control.tag"
-          type="button" class="outfit-preset r18-control"
+          type="button" class="outfit-preset"
           :class="{ selected: pb.manualTags.has(control.tag) }"
           :aria-pressed="pb.manualTags.has(control.tag)"
           @click="pb.toggleManualTag(control.tag)">
+          <ArchiveIcon name="success" class="tag-option-check" />
           <strong>{{ control.label }}</strong>
           <small>{{ control.tag }}</small>
         </button>
@@ -89,7 +92,7 @@
       </div>
       </div>
     </details>
-    <p v-if="pb.isPopular" class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可直接用于专家模式微调，成人蓝图仅对成年角色可见。</p>
+    <p v-if="pb.isPopular" class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；下方词条可用于专家模式微调。</p>
     <div class="tag-browser">
       <div class="tag-dictionary-heading">
         <strong>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
@@ -101,7 +104,6 @@
       <div class="tag-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="词条分类">
         <AnimatedSelection />
         <button v-for="cat in tagCategories" :key="cat.id" type="button"
-          :class="{ active: tagCategory === cat.id }"
           :aria-pressed="tagCategory === cat.id"
           @click="tagCategory = cat.id">{{ cat.label }}</button>
       </div>
@@ -112,24 +114,21 @@
             :class="{ selected: pb.manualTags.has(tag.en) }"
             :aria-pressed="pb.manualTags.has(tag.en)"
             @click="pb.toggleManualTag(tag.en)">
+            <ArchiveIcon name="success" class="tag-option-check" />
             <strong>{{ tagMeaning(tag.en, tag.cn) }}</strong><small>{{ displayTag(tag.en) }}</small>
           </button>
         </StudioTooltip>
+        <p v-if="!visibleTags.length" class="tag-results-empty" role="status">没有匹配的词条，试试其他关键词或分类。</p>
       </div>
       <!--
         截断告知（2026-08-30 UX 审计）：这里长期硬截 72 条且不说明，用户会以为
         「库里只有这些」。提示里给出还能用的手段——继续输入关键词收窄，或直接
-        在下方输入框手输（那条路径不经过这里的截断）。
+        在输入框手输（那条路径不经过这里的截断）。
       -->
       <p v-if="hiddenTagCount" class="tag-more-hint">
-        还有 {{ hiddenTagCount }} 个匹配词条未展示，可输入更具体的关键词收窄，或在下方直接粘贴添加
+        还有 {{ hiddenTagCount }} 个匹配词条未展示，可输入更具体的关键词收窄，或在上方「自选词条」中粘贴添加
       </p>
     </div>
-    <input v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="支持直接输入或批量粘贴标签（逗号/顿号/换行分隔），按回车添加…"
-      @keydown.enter="onTagEnter" />
-    <datalist id="prompt-tag-suggestions">
-      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="displayTag(tag.canonicalTag)" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
-    </datalist>
   </div>
 </template>
 
@@ -142,6 +141,7 @@ import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import { confirmAction } from '@/composables/useConfirm'
 import {

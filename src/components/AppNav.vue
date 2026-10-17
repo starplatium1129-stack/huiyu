@@ -102,6 +102,7 @@ const linksEl = ref<HTMLElement | null>(null)
 const moreEl = ref<HTMLDivElement | null>(null)
 const moreOpen = ref(false)
 const navEl = ref<HTMLElement | null>(null)
+const menuToggleEl = ref<HTMLButtonElement | null>(null)
 const { hidden: headerHidden, scrolled: headerScrolled, progress: readingProgress, reduced: headerReduced, reveal: revealHeader } = useScrollHeader(navEl, () => route.path, () => menuOpen.value || moreOpen.value)
 const moreReady = ref(false)
 const moreLoaded = ref(false)
@@ -109,12 +110,32 @@ const moreError = ref(false)
 let moreHandoff = false
 let menuDownload: Promise<{ default: Component }> | null = null
 let navigationActive = false
+let lastNavigationFocus: HTMLElement | null = null
+const compactNavigation = matchMedia('(max-width:1000px)')
+// Match the shared navigation breakpoint: hidden anchors must release their menus and focus.
+async function onNavigationLayoutChange(event: MediaQueryListEvent) {
+  if (!navigationActive) return
+  const compact = event.matches
+  const active = document.activeElement
+  const origin = active instanceof HTMLElement && isNavigationTarget(active) ? active
+    : active === document.body && lastNavigationFocus?.isConnected ? lastNavigationFocus : null
+  const moreWasOpen = moreOpen.value
+  const handoff = moreWasOpen || menuOpen.value || Boolean(origin)
+  closeMenu()
+  if (!handoff) return
+  await nextTick()
+  if (!navigationActive || compactNavigation.matches !== compact) return
+  const target = compact ? menuToggleEl.value
+    : moreWasOpen ? moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')
+      : origin && linksEl.value?.contains(origin) ? origin
+        : linksEl.value?.querySelector<HTMLElement>('a[aria-current="page"]') ?? linksEl.value?.querySelector<HTMLElement>('a[href]')
+  target?.focus({ preventScroll:true })
+}
 function downloadMore() {
   return menuDownload ??= import('./AppMoreMenu.vue').catch(error => { menuDownload = null; throw error })
 }
 function prepareMore() { if (!AppMoreMenu.value) void downloadMore().catch(() => {}) }
 watch(moreOpen, open => { if (open) moreHandoff = false }, { flush:'sync' })
-const menuToggleEl = ref<HTMLButtonElement | null>(null)
 
 interface NavItem {
   id: string
@@ -228,14 +249,32 @@ function openSearch(event: MouseEvent) {
 }
 
 function onDocClick(e: MouseEvent) {
+  // Lazy loading can replace the trigger before this click reaches document.
+  const path = e.composedPath()
+  const inLinks = Boolean(linksEl.value && path.includes(linksEl.value))
+  const inToggle = Boolean(menuToggleEl.value && path.includes(menuToggleEl.value))
+  const inMore = path.some(node => node instanceof Element && node.classList.contains('nav-more-menu'))
+  if (!inLinks && !inToggle && !inMore) lastNavigationFocus = null
   dismissPendingMore(e)
-  const inMore = e.target instanceof Element && e.target.closest('.nav-more-menu')
-  if (menuOpen.value && !inMore && !linksEl.value?.contains(e.target as Node) && !menuToggleEl.value?.contains(e.target as Node)) closeMenu()
+  if (menuOpen.value && !inMore && !inLinks && !inToggle) closeMenu()
+}
+function isNavigationTarget(target: EventTarget | null) {
+  return target instanceof Node && Boolean(linksEl.value?.contains(target) || menuToggleEl.value?.contains(target)
+    || target instanceof Element && target.closest('.nav-more-menu'))
+}
+function onDocFocus(event: FocusEvent) {
+  dismissPendingMore(event)
+  // CSS hiding a focused link can fall back to body before the media query callback.
+  if (event.target instanceof HTMLElement && event.target !== document.body) {
+    lastNavigationFocus = isNavigationTarget(event.target) ? event.target : null
+  }
 }
 function dismissPendingMore(event: Event) {
-  const target = event.target
-  if (moreReady.value && moreOpen.value && !moreEl.value?.contains(target as Node)
-    && !(target instanceof Element && target.closest('.nav-more-menu'))) moreOpen.value = false
+  if (!moreReady.value || !moreOpen.value) return
+  const path = event.composedPath()
+  const inTrigger = Boolean(moreEl.value && path.includes(moreEl.value))
+  const inContent = path.some(node => node instanceof Element && node.classList.contains('nav-more-menu'))
+  if (!inTrigger && !inContent) moreOpen.value = false
 }
 function onDocKey(e: KeyboardEvent) {
   if (e.key !== 'Escape' || e.defaultPrevented || e.isComposing) return
@@ -267,14 +306,17 @@ function activateNavigation() {
   navigationActive = true
   document.addEventListener('click', onDocClick)
   document.addEventListener('keydown', onDocKey)
-  document.addEventListener('focusin', dismissPendingMore)
+  document.addEventListener('focusin', onDocFocus)
+  compactNavigation.addEventListener('change', onNavigationLayoutChange)
 }
 function deactivateNavigation() {
   navigationActive = false
+  lastNavigationFocus = null
   closeMenu()
   document.removeEventListener('click', onDocClick)
   document.removeEventListener('keydown', onDocKey)
-  document.removeEventListener('focusin', dismissPendingMore)
+  document.removeEventListener('focusin', onDocFocus)
+  compactNavigation.removeEventListener('change', onNavigationLayoutChange)
 }
 onMounted(activateNavigation)
 onActivated(activateNavigation)
@@ -381,7 +423,8 @@ onUnmounted(deactivateNavigation)
   .nav-links {
     --selection-radius: var(--r-md);
     padding: var(--s-3);
-    border-radius: var(--r-lg);
+    border-radius: var(--r-xl);
+    border-color: var(--border-soft);
     background: var(--bg-surface);
   }
   .nav-links > a { min-height: 44px; border-radius: var(--r-md); }

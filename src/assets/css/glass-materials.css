@@ -7,45 +7,45 @@
 /* One material per floating group; text is original and never filtered or copied.
    Workspace surfaces opt in via data-fluid-glass. Keep their selector weight so
    other surfaces retain the same cascade against theme-specific materials. */
-:root[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pop-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) {
+:root[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) {
   border:0; background:var(--material-fill); box-shadow:var(--shadow-sm);
   --text-secondary:var(--text-primary); --text-muted:var(--text-primary); --text-tertiary:var(--text-primary);
   --accent-soft:color-mix(in srgb,var(--accent) 10%,var(--bg-surface));
 }
-:root[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pop-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) {
+:root[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) {
   -webkit-backdrop-filter:blur(var(--material-blur)) saturate(145%);
   backdrop-filter:blur(var(--material-blur)) saturate(145%);
 }
 /* Menus share the selected glass tint; edge light and elevation define the floating layer. */
-:root[data-glass-material='liquid'] body [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)):is(.studio-select-content,.studio-popover,.chat-more-menu) {
+:root[data-glass-material='liquid'] body [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)):is(.studio-select-content,.studio-popover,.chat-more-menu) {
   box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 0 0 1px var(--glass-edge),var(--shadow-md);
 }
-:root[data-glass-material='liquid'] body .studio-select-content[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)) .studio-select-item[data-state='checked']:not([data-disabled]) {
+:root[data-glass-material='liquid'] body .studio-select-content[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)) .studio-select-item[data-state='checked']:not([data-disabled]) {
   color:var(--text-primary);
 }
-:root[data-glass-material] body :is(.studio-search,.studio-select-trigger):where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)) { border:0; border-radius:var(--r-md); }
+:root[data-glass-material] body :is(.studio-search,.studio-select-trigger):where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)) { border:0; border-radius:var(--r-md); }
 :root[data-glass-material] body .nav .nav-links .animated-selection { border:0; }
 /* Embedded fields share the parent backdrop rather than sampling it a second time. */
-:root[data-glass-material='liquid'] body :is(.nav,.companion-toolbar,.toolbar-shell,.pop-toolbar,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) :is(.studio-search,.studio-select-trigger,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) {
+:root[data-glass-material='liquid'] body :is(.nav,.companion-toolbar,.toolbar-shell,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) :is(.studio-search,.studio-select-trigger,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) {
   background:color-mix(in srgb,var(--bg-surface) 18%,transparent); box-shadow:none;
   -webkit-backdrop-filter:none; backdrop-filter:none;
 }
-:root[data-glass-material] body :is(.nav,.toolbar-shell,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) :is(.btn,.nav-links a,.nav-more-trigger) { border-color:transparent; }
-:root[data-glass-material='liquid'] body :is(.nav,.toolbar-shell,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) :is(button:disabled,.badge) { background:var(--bg-surface); }
+:root[data-glass-material] body :is(.nav,.toolbar-shell,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) :is(.btn,.nav-links a,.nav-more-trigger) { border-color:transparent; }
+:root[data-glass-material='liquid'] body :is(.nav,.toolbar-shell,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) :is(button:disabled,.badge) { background:var(--bg-surface); }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
   :root[data-glass-material] { --material-fill:var(--bg-surface); }
 }
-:root:is([data-reduced-glass='true'],[data-fluid-effects='low']) body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pop-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) {
+:root:is([data-reduced-glass='true'],[data-fluid-effects='low']) body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) {
   background:var(--bg-surface) !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
 }
 @media(prefers-reduced-transparency:reduce),(prefers-contrast:more),(forced-colors:active) {
-  :root[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pop-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) {
+  :root[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) {
     background:var(--bg-surface) !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
   }
 }
 @media(forced-colors:active) {
-  :root[data-glass-material] body :is(.nav,.nav-more-menu,.toolbar-shell,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) { background:Canvas !important; color:CanvasText; border:1px solid CanvasText; }
+  :root[data-glass-material] body :is(.nav,.nav-more-menu,.toolbar-shell,[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) { background:Canvas !important; color:CanvasText; border:1px solid CanvasText; }
 }
 @media(prefers-contrast:more) {
-  :root[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pop-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .studio-segments))) { border:1px solid var(--text-primary); }
+  :root[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.toolbar-shell,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *, .pop-toolbar *, .studio-segments))) { border:1px solid var(--text-primary); }
 }

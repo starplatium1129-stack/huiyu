@@ -1,8 +1,7 @@
 <template>
   <article
     tabindex="-1"
-    class="companion-page"
-    :class="{ 'has-character-picker': companionCharacters.length > 3, 'companion-redesign': true }"
+    class="companion-page companion-redesign"
     :data-character="activeChar"
     :data-power-mode="desktopBridge ? (onBatteryPower ? 'efficiency' : 'quality') : undefined"
     :data-ui-hidden="uiHidden || undefined"
@@ -230,56 +229,42 @@
           </StudioTooltip>
           <button v-if="busy || voiceActive" class="companion-stop" type="button" @click="stopEverything">停止</button>
           <button class="companion-send" type="button" :disabled="busy || !chatReady" @click="handleSend">{{ busy ? '回复中' : '发送' }}</button>
-           <div v-if="speechReady" class="companion-speech-cluster">
-            <StudioTooltip anchor :content="speechError || '按住说话，松开识别；也可按住 Space'">
-              <button
-                class="companion-speech-btn"
-                type="button"
-                :data-state="speechState"
-                :disabled="speechButtonDisabled"
-                @pointerdown.prevent="onSpeechPress"
-                @pointerup="onSpeechRelease"
-                @pointercancel="onSpeechCancel"
-                @pointerleave="onSpeechLeave"
-                @keydown.space.prevent="!$event.repeat && onSpeechPress()" @keyup.space.prevent="onSpeechRelease"
-                @keydown.enter.prevent="!$event.repeat && onSpeechPress()" @keyup.enter.prevent="onSpeechRelease"
-                @blur="onSpeechCancel"
-              >{{ speechButtonText }}</button>
-            </StudioTooltip>
-            <span v-if="speechState !== 'error'" class="companion-speech-state" role="status" aria-live="polite">
-              {{ speechStateText || (speechAutoListening ? '听候唤醒' : '') }}
-            </span>
-             <span v-if="speechSessionActive" class="companion-speech-session" role="status">
-               连续对话中
-               <StudioTooltip content="结束连续对话">
-                 <button
-                   class="companion-speech-session-end"
-                   type="button"
-                   aria-label="结束连续对话"
-                   @click="onSpeechSessionEnd"
-                 >×</button>
-               </StudioTooltip>
-             </span>
-            <StudioTooltip content="语音输入设置">
-              <button
-                class="companion-speech-settings"
-                ref="speechSettingsTrigger"
-                type="button"
-                aria-label="语音输入设置"
-                @click="speechSettingsOpen = !speechSettingsOpen"
-              >设置</button>
-            </StudioTooltip>
-           </div>
-           <div v-else class="companion-speech-cluster">
-            <StudioTooltip content="配置语音输入">
-              <button
-                class="companion-speech-settings"
-                ref="speechSettingsTrigger"
-                type="button"
-                aria-label="配置语音输入"
-                @click="speechSettingsOpen = true"
-              >语音设置</button>
-            </StudioTooltip>
+           <div class="companion-speech-cluster">
+            <template v-if="speechReady">
+              <StudioTooltip anchor :content="speechError || '按住说话，松开识别；也可按住 Space'">
+                <button
+                  class="companion-speech-btn"
+                  type="button"
+                  :data-state="speechState"
+                  :disabled="speechButtonDisabled"
+                  @pointerdown.prevent="onSpeechPress"
+                  @pointerup="onSpeechRelease"
+                  @pointercancel="onSpeechCancel"
+                  @pointerleave="onSpeechLeave"
+                  @keydown.space.prevent="!$event.repeat && onSpeechPress()" @keyup.space.prevent="onSpeechRelease"
+                  @keydown.enter.prevent="!$event.repeat && onSpeechPress()" @keyup.enter.prevent="onSpeechRelease"
+                  @blur="onSpeechCancel"
+                >{{ speechButtonText }}</button>
+              </StudioTooltip>
+              <span v-if="speechState !== 'error'" class="companion-speech-state" role="status" aria-live="polite">
+                {{ speechStateText || (speechAutoListening ? '听候唤醒' : '') }}
+              </span>
+               <span v-if="speechSessionActive" class="companion-speech-session" role="status">
+                 连续对话中
+                 <StudioTooltip content="结束连续对话">
+                   <button
+                     class="companion-speech-session-end"
+                     type="button"
+                     aria-label="结束连续对话"
+                     @click="onSpeechSessionEnd"
+                   >×</button>
+                 </StudioTooltip>
+               </span>
+            </template>
+            <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="speech-settings-popover">
+              <template #trigger><button class="btn btn-ghost" type="button" :aria-label="speechReady ? '语音输入设置' : '配置语音输入'">{{ speechReady ? '设置' : '语音设置' }}</button></template>
+              <SpeechInputSettings v-if="speechSettingsOpen" :data-character="activeChar" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+            </StudioPopover>
            </div>
            <div class="companion-composer-meta" aria-live="polite">
              <span class="companion-chat-status">{{ chatStatusText }}</span>
@@ -289,13 +274,6 @@
              </StudioTooltip>
            </div>
          </div>
-
-        <section v-if="speechSettingsOpen" ref="speechSettingsPanel" tabindex="-1" aria-label="语音输入设置">
-          <SpeechInputSettings
-            @save="onSpeechSettingsSaved"
-            @close="speechSettingsOpen = false"
-          />
-        </section>
 
         <div v-if="(speechState === 'error' && speechError) || chatError" class="companion-errors">
           <div v-if="speechState === 'error' && speechError && speechError !== chatError" class="companion-error" role="status">{{ speechError }}</div>
@@ -355,8 +333,8 @@ import CompanionDesktopFloat from '@/components/CompanionDesktopFloat.vue'
 import CompanionWorkspaceSettings from '@/components/CompanionWorkspaceSettings.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
-import { useInlinePanelFocus } from '@/composables/chat/useInlinePanelFocus'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
@@ -375,7 +353,6 @@ immersive,
 currentCharacter,
 affectionScore,
 affectionInfo,
-companionCharacters,
 switchCharacter,
 settingsOpen,
 autoVoice,
@@ -464,8 +441,6 @@ liveDotText
 } = useCompanionWorkspace()
 
 const workspaceTriggerEl = ref<HTMLButtonElement | null>(null)
-const speechSettingsTrigger = ref<HTMLElement | null>(null), speechSettingsPanel = ref<HTMLElement | null>(null)
-useInlinePanelFocus(speechSettingsOpen, () => speechSettingsPanel.value, speechSettingsTrigger)
 
 function toggleWorkspace() {
   workspaceOpen.value = !workspaceOpen.value

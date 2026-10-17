@@ -1,28 +1,7 @@
 @reference "./tailwind.css";
 /* Scene covers are the focus; secondary production choices stay in the disclosure. */
 .pop-search-field { flex:1 1 260px; @apply tw:min-w-0; }
-.pop-rating-pill,
-.pop-cat {
-  @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[36px];
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid transparent;
-  @apply tw:rounded-pill;
-  background: var(--bg-surface);
-  @apply tw:text-secondary;
-  font: 500 var(--fs-label-sm) var(--font-sans);
-  @apply tw:cursor-pointer;
-}
-.pop-rating-pill { background: transparent; }
-@media (hover:hover) and (pointer:fine) {
-  .pop-rating-pill:hover,.pop-cat:hover { background:var(--bg-elevated); color:var(--text-primary); }
-}
-.pop-rating-pill.active,
-.pop-cat.active { background: var(--accent-soft); @apply tw:text-accent; }
-.pop-rating-pill.rating-R18.active,
-.pop-cat.adult.active { @apply tw:border-danger-text tw:text-danger-text; background: var(--bg-surface); }
-.pop-rating-pill:focus-visible,
-.pop-cat:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-.pop-cats { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
+.pop-cats { @apply tw:flex-wrap; }
 .pop-cat em { @apply tw:text-muted tw:text-label-xs tw:not-italic; font-variant-numeric: tabular-nums; }
 .pop-results-bar { @apply tw:flex tw:flex-wrap tw:justify-between tw:items-center tw:gap-s-2; margin: var(--s-4) 0; }
 .pop-count { @apply tw:text-secondary tw:text-label-sm; }
@@ -51,7 +30,8 @@
   background:transparent;
   text-decoration: none;
 }
-.pop-thumb:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+.pop-thumb:focus-visible { outline:none; }
+.pop-thumb:focus-visible::before { content:''; position:absolute; inset:0; z-index:2; pointer-events:none; box-shadow:inset 0 0 0 2px var(--bg-base),inset 0 0 0 4px var(--focus-color); }
 .pop-thumb img {
   @apply tw:absolute;
   inset: 0;
@@ -95,10 +75,7 @@
 .pop-meta span + span:not(:empty)::before { content: '·'; @apply tw:mr-s-1; }
 .pop-meta span:empty + span::before { content: none; }
 .pop-scene-details { @apply tw:mt-s-2; border-top: 1px solid var(--border-soft); }
-.pop-scene-details summary { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:text-secondary tw:text-label-sm; list-style: none; @apply tw:cursor-pointer; }
-.pop-scene-details summary::-webkit-details-marker { @apply tw:hidden; }
-.pop-scene-details summary:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-sm; }
-.pop-scene-details[open] summary > .archive-icon { transform: rotate(180deg); }
+.pop-scene-details summary { @apply tw:text-secondary tw:text-label; }
 .pop-decision { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; margin: var(--s-1) 0 var(--s-4); @apply tw:text-label-xs; }
 .pop-decision > div { @apply tw:grid tw:gap-s-1; }
 .pop-decision dt { @apply tw:text-muted; }
@@ -123,7 +100,7 @@
   .pop-card:hover .pop-card-head h3 { color:var(--accent); }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .pop-card, :root:not([data-motion='full']) .pop-thumb img, :root:not([data-motion='full']) .pop-thumb-hint, :root:not([data-motion='full']) .pop-scene-details summary > .archive-icon { transition: none; }
+  :root:not([data-motion='full']) .pop-card, :root:not([data-motion='full']) .pop-thumb img, :root:not([data-motion='full']) .pop-thumb-hint { transition: none; }
   :root:not([data-motion='full']) .pop-card:hover, :root:not([data-motion='full']) .pop-card:hover .pop-thumb img:not(.pop-thumb-r18) { transform: none; }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb img,
@@ -134,3 +111,4 @@
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .popular-scene-library .pop-card { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pop-thumb::after { transition:none; }
+@media (forced-colors:active) { .pop-thumb:focus-visible::before { display:none; } .pop-thumb:focus-visible { outline:2px solid Highlight; outline-offset:-4px; } }

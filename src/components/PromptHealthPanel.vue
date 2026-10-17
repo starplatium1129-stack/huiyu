@@ -1,5 +1,5 @@
 <template>
-  <section class="monitor advanced-decision prompt-health-panel" id="promptMonitor" aria-labelledby="prompt-preview-heading">
+  <section class="advanced-decision prompt-health-panel" id="promptMonitor" aria-labelledby="prompt-preview-heading">
     <header class="prompt-preview-heading">
       <div class="prompt-preview-title"><span class="prompt-preview-mark"><ArchiveIcon name="spark" /></span><h3 id="prompt-preview-heading">提示词预览</h3></div>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="!prompt" aria-label="展开阅读完整提示词" @click="reader.open()"><ArchiveIcon name="expand" />阅读</button>
@@ -21,8 +21,8 @@
       </dl>
     </details>
     <dialog ref="readerDialog" class="prompt-reader" aria-labelledby="prompt-reader-heading" @cancel.prevent="reader.close()" @click="onReaderClick">
-      <header class="prompt-reader-heading"><h2 id="prompt-reader-heading">完整提示词</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭提示词阅读" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
-      <div class="prompt-reader-content"><PromptPreviewContent :prompt="prompt" :context="context" :positive-count="report.positiveCount" :negative-count="report.negativeCount" /></div>
+      <header class="prompt-reader-heading"><h2 id="prompt-reader-heading">完整提示词</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭提示词阅读" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
+      <div class="prompt-reader-content" tabindex="0" role="region" aria-label="提示词正文"><PromptPreviewContent :prompt="prompt" :context="context" :positive-count="report.positiveCount" :negative-count="report.negativeCount" /></div>
       <footer class="prompt-reader-actions"><StudioCopyButton class="btn btn-primary" label="复制提示词" :action="copyAction" :content-key="prompt" :disabled="!prompt" /><button class="btn btn-ghost" type="button" @click="emit('save')">保存草稿</button></footer>
     </dialog>
   </section>

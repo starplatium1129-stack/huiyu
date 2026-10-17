@@ -3,6 +3,6 @@
 .page.creative-library-page { --page-max:1600px; padding:clamp(var(--s-5),2.4vw,var(--s-6)) clamp(var(--s-5),2.4vw,var(--s-6)) var(--s-8); }
 .creative-library-header { @apply tw:mb-s-5; }
 .creative-library-heading { @apply tw:mb-s-5; }
-.creative-library-heading h1 { margin:0 0 var(--s-2); @apply tw:text-primary tw:font-display tw:font-semibold; font-size:clamp(1.55rem,2.4vw,var(--fs-display)); line-height:var(--lh-tight); letter-spacing:-.03em; }
-/* Route destinations keep their 44px targets, with the same label size as browse filters. */
+.creative-library-heading h1 { margin:0 0 var(--s-2); @apply tw:text-primary tw:font-display tw:font-semibold; font-size:var(--fs-title); line-height:var(--lh-tight); }
+/* Route destinations use the same control labels as browse filters. */
 .page.creative-library-page .creative-library-nav a { font-size:var(--fs-label-sm); line-height:var(--lh-label); }

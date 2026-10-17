@@ -14,7 +14,7 @@
    .pb-backup-summary span { @apply tw:text-muted tw:text-label-xs; }
    .pb-backup-warning { @apply tw:text-warning-text tw:text-label-xs tw:leading-body; }
    .pb-backup-actions { @apply tw:flex tw:justify-end tw:gap-s-2 tw:flex-wrap; }
-  .pb-backup-card, .pb-managed-route-banner {
+  .pb-backup-card {
     background:
       linear-gradient(125deg,var(--glass-specular),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 9%,transparent)),
       var(--glass-fill-strong);

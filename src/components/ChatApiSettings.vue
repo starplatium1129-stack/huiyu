@@ -25,9 +25,9 @@
     <label v-if="needsKey" class="api-field">
       <span>API 密钥</span>
       <div class="api-key-field">
-        <input v-model.trim="apiKeyProxy" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
+        <input v-model.trim="apiKeyProxy" class="input" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
           maxlength="1000" placeholder="粘贴服务商的 API Key" autocomplete="off" required aria-label="API 密钥" spellcheck="false" />
-        <button type="button" :disabled="locked" :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
+        <button class="btn btn-quiet btn-sm" type="button" :disabled="locked" :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
       </div>
     </label>
 
@@ -48,7 +48,7 @@
       <div class="api-connection-body" data-disclosure-content>
         <label class="api-field">
           <span>API 地址</span>
-          <input v-model.trim="baseUrlProxy" type="url" maxlength="500" :disabled="locked"
+          <input v-model.trim="baseUrlProxy" class="input" type="url" maxlength="500" :disabled="locked"
             placeholder="https://api.example.com/v1" autocomplete="url" required :aria-invalid="Boolean(addressError)"
             :aria-describedby="addressError ? id + '-address-help' : undefined" />
           <small v-if="addressError" :id="id + '-address-help'" class="api-address-error">{{ addressError }}</small>
@@ -56,9 +56,9 @@
         <label v-if="!needsKey" class="api-field">
           <span>访问密钥 <small>可选</small></span>
           <div class="api-key-field">
-            <input v-model.trim="apiKeyProxy" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
+            <input v-model.trim="apiKeyProxy" class="input" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
               maxlength="1000" placeholder="服务未开启认证时留空" autocomplete="off" aria-label="访问密钥" spellcheck="false" />
-            <button type="button" :disabled="locked" :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
+            <button class="btn btn-quiet btn-sm" type="button" :disabled="locked" :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
           </div>
         </label>
         <div class="api-connection-actions">
@@ -127,13 +127,13 @@ function onConnectionToggle(event: Event) { connectionOpen.value = (event.curren
 
 <style scoped>
 .api-provider-row { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:var(--s-3); align-items:end; }
-.api-provider-help { min-height:44px; align-items:center; }
+.api-provider-help { min-height:var(--control-height); align-items:center; }
 .api-provider-help, .api-host-advanced { color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.6; }
 .api-help-links { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); }
 .api-help-links a { color:var(--character-ink, var(--accent)); text-decoration:underline; text-underline-offset:3px; }
 .api-model-row { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-3); align-items:end; }
 .api-model-row > :last-child { align-self:end; }
-.api-fetch-models { min-height:44px; white-space:nowrap; }
+.api-fetch-models { white-space:nowrap; }
 .api-connection-settings { min-width:0; color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .api-connection-settings > summary, .api-host-advanced > summary { cursor:pointer; padding:var(--s-2) 0; }
 .api-connection-body { display:grid; gap:var(--s-3); padding-top:var(--s-2); }

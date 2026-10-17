@@ -1,23 +1,22 @@
 <template>
   <section class="voice-studio" aria-label="成片配音">
     <div class="voice-head">
-      <div>
-        <div class="voice-title">成片配音</div>
-        <div class="voice-sub">中文字幕可单独保留；日文配音稿用于角色声线合成。</div>
-      </div>
-      <div class="voice-head-actions">
+      <div class="voice-headline">
+        <h3 class="voice-title">成片配音</h3>
         <span class="voice-state" :class="voiceStateKind" aria-live="polite">{{ voiceStateLabel }}</span>
-        <StudioTooltip :content="collapsed ? '展开配音面板' : '收起配音面板'">
-          <button class="voice-collapse" type="button"
-            :aria-expanded="!collapsed"
-            :aria-label="collapsed ? '展开配音面板' : '收起配音面板'"
-            @click="collapsed = !collapsed">
-            <ArchiveIcon :name="collapsed ? 'expand' : 'compress'" />
-          </button>
-        </StudioTooltip>
       </div>
+      <StudioTooltip :content="collapsed ? '展开配音面板' : '收起配音面板'">
+        <button class="btn btn-quiet btn-icon btn-sm" type="button"
+          :aria-controls="bodyId"
+          :aria-expanded="!collapsed"
+          :aria-label="collapsed ? '展开配音面板' : '收起配音面板'"
+          @click="collapsed = !collapsed">
+          <ArchiveIcon :name="collapsed ? 'expand' : 'compress'" />
+        </button>
+      </StudioTooltip>
+      <p class="voice-sub">中文字幕可单独保留；日文配音稿用于角色声线合成。</p>
     </div>
-    <div v-show="!collapsed" v-content-motion="!collapsed" class="voice-body">
+    <div :id="bodyId" v-show="!collapsed" v-content-motion="!collapsed" class="voice-body">
         <div class="voice-controls">
           <label class="voice-field">角色
             <StudioSelect v-model="voiceChar" label="角色" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }]" />
@@ -32,16 +31,18 @@
             <StudioSelect v-model.number="voiceSpeed" label="语速" :options="[{ value: 0.85, label: '慢 0.85×' }, { value: 1, label: '正常 1.0×' }, { value: 1.15, label: '快 1.15×' }]" />
           </label>
         </div>
-        <div class="voice-copy">
+        <div>
           <div class="voice-copy-head">
-            <span class="voice-copy-title">中文字幕</span>
+            <label class="voice-copy-title" :for="captionId">中文字幕</label>
             <span class="voice-copy-note">画面旁白 / 台词</span>
           </div>
-          <textarea class="voice-text voice-caption-text" v-model="voiceCaption" aria-label="中文字幕" rows="3" placeholder="写下要配的中文台词或旁白…"></textarea>
+          <textarea :id="captionId" class="textarea voice-text" v-model="voiceCaption" aria-label="中文字幕" rows="3" placeholder="写下要配的中文台词或旁白…" @focus="revealVoiceField"></textarea>
         </div>
         <details class="voice-script-details" :open="voiceLang === 'ja'">
-          <summary>日文 / 实际配音稿</summary>
-          <textarea class="voice-text" v-model="voiceScript" aria-label="日文配音稿" rows="3" placeholder="日文配音稿；可从中文一键翻译"></textarea>
+          <StudioDisclosureSummary>日文 / 实际配音稿</StudioDisclosureSummary>
+          <div data-disclosure-content class="voice-script-body">
+            <textarea class="textarea voice-text" v-model="voiceScript" aria-label="日文配音稿" rows="3" placeholder="日文配音稿；可从中文一键翻译" @focus="revealVoiceField"></textarea>
+          </div>
         </details>
         <div class="voice-actions">
           <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang !== 'ja'" @click="translateVoice">翻译成日文</button>
@@ -52,9 +53,9 @@
           <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">重新检测</button>
         </div>
         <div class="voice-status" role="status">{{ voiceStatus }}</div>
-        <RouterLink v-if="!voiceOnline" class="voice-recovery" to="/control">→ 到控制面板启动语音服务</RouterLink>
-        <StudioMediaPlayer v-if="voiceAudioUrl" ref="voicePlayer" @play="stopOwnedSpeech" class="voice-audio show" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
-        <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download show" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
+        <RouterLink v-if="!voiceOnline" class="btn btn-quiet btn-sm voice-recovery" to="/control"><ArchiveIcon name="gear" />启动语音服务</RouterLink>
+        <StudioMediaPlayer v-if="voiceAudioUrl" ref="voicePlayer" @play="stopOwnedSpeech" class="voice-audio" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
+        <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
     </div>
   </section>
 </template>
@@ -63,11 +64,12 @@
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-import { computed, onMounted, onUnmounted, onActivated, onDeactivated, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, onActivated, onDeactivated, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useToast } from '@/composables/useToast'
 import { voiceApi, type VoiceSynthesisPayload } from '@/api/voiceApi'
 import '@/assets/css/director/components/VoiceStudio.css'
@@ -80,6 +82,13 @@ const props = defineProps<{
 }>()
 
 const toast = useToast()
+const bodyId = useId()
+const captionId = useId()
+function revealVoiceField(event: FocusEvent) {
+  // Native caret scrolling can leave most of the editor below the inspector footer.
+  const field = event.currentTarget as HTMLTextAreaElement
+  field.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'instant' })
+}
 // 2026-08-30：配音使用频率低，默认折叠以省纵向空间；状态记忆在 localStorage（点击标题栏按钮展开/收起）。
 // 无记录时默认折叠（用户从未点过 = 折叠），immediate 写入确保任意重挂载都读回一致状态。
 const COLLAPSED_KEY = 'aics-voice-studio-collapsed'

@@ -41,9 +41,9 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
     <StudioSelect v-if="compact || engine === 'sd'" label="画幅比例" :model-value="size" :disabled="busy"
       :groups="engine === 'sd' ? sizeGroups : undefined" :options="engine === 'sd' ? undefined : sizeOptions" @update:model-value="change" />
     <div v-else class="size-picker-grid">
-      <button v-for="card in cards" :key="card.value" type="button" :aria-pressed="size === card.value" :disabled="busy" @click="change(card.value)">
+      <button v-for="card in cards" :key="card.value" type="button" data-control-motion :aria-pressed="size === card.value" :disabled="busy" @click="change(card.value)">
         <i :style="{ aspectRatio: card.ratio }" aria-hidden="true"></i><span>{{ card.label }}</span><small>{{ card.value.replace('x', ' × ') }}</small>
-        <ArchiveIcon v-if="size === card.value" name="success" />
+        <ArchiveIcon v-if="size === card.value" class="size-picker-check" name="success" />
       </button>
     </div>
     <p v-if="!compact">画幅影响下一次输出，参考图保持原始比例。</p>
@@ -51,21 +51,25 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
 </template>
 <style scoped>
 .generation-size-picker { min-width:0; }
-.size-picker-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px; }
-.size-picker-heading strong { font-size:14px; font-weight:600; color:var(--text-primary); }
-.size-picker-heading>span { font:11px var(--font-mono); color:var(--text-muted); }
-.size-picker-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
-.size-picker-grid button { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; min-width:0; min-height:72px; padding:8px 4px; border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-secondary); background:transparent; font:12px var(--font-sans); cursor:pointer; }
-.size-picker-grid button:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-hover); }
-.size-picker-grid button[aria-pressed=true] { color:var(--accent); border-color:var(--border-strong); background:var(--accent-soft); }
+.generation-size-picker:not(.is-compact) { container:generation-size / inline-size; }
+.size-picker-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-3); }
+.size-picker-heading strong { font-size:var(--fs-label); font-weight:600; color:var(--text-primary); }
+.size-picker-heading>span { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); color:var(--text-secondary); }
+.size-picker-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,104px),1fr)); gap:var(--s-2); }
+.size-picker-grid button { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:calc(2 * var(--control-height)); padding:var(--s-2) var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-secondary); background:var(--bg-base); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
+.size-picker-grid button[aria-pressed=true] { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); box-shadow:var(--selection-shadow); }
 .size-picker-grid button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .size-picker-grid button:disabled { color:var(--text-disabled); cursor:not-allowed; }
 .size-picker-grid i { height:21px; max-width:28px; border:1.4px solid currentColor; border-radius:2px; }
-.size-picker-grid small { font-size:11px; font-variant-numeric:tabular-nums; }
-.size-picker-grid .archive-icon { position:absolute; top:6px; right:6px; width:12px; height:12px; }
-.generation-size-picker p { margin:10px 0 0; font-size:12px; line-height:1.7; color:var(--text-muted); }
-.is-compact { display:flex; align-items:center; gap:12px; }
+.size-picker-grid small { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
+.size-picker-grid .size-picker-check { position:absolute; top:var(--s-2); right:var(--s-2); width:16px; height:16px; transform:none; transition:none; }
+.generation-size-picker p { margin:var(--s-3) 0 0; font-size:var(--fs-label-xs); line-height:var(--lh-body); color:var(--text-secondary); }
+.is-compact { display:flex; align-items:center; gap:var(--s-3); }
 .is-compact .size-picker-heading { margin:0; }.is-compact .size-picker-heading>span { display:none; }
 .is-compact .studio-select-wrapper { flex:1; min-width:0; }
+/* Three cards need 3 × 104px plus two gaps; narrower parameter rails wrap
+   without shrinking the resolution text. The action bar stays a compact select. */
+@container generation-size (min-width:328px) { .size-picker-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media (hover:hover) and (pointer:fine) { .size-picker-grid button:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-hover); } }
 @media (forced-colors:active) { .size-picker-grid button[aria-pressed=true] { outline:2px solid Highlight; } }
 </style>

@@ -72,16 +72,12 @@ export interface PromptHealthBindings {
   saveCurrentResult: TempResult['saveCurrentResult']
 }
 
-export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy' | 'generationProgress'> {
+export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy'> {
   pb: Pick<Store, 'char' | 'activeScene' | 'story'>
   voiceStudioRef: Ref<VoiceStudioHandle | null>
-  drawEngine: Ref<DrawEngine>
   legacyProgress: Readonly<Ref<number | null>>
-  sdOnline: Sd['online']
   animaOnline: Readonly<Ref<boolean>>
   scenes: Readonly<Ref<ReturnType<PromptBatchRunnersDeps['sceneBlueprints']>>>
-  shotsPending: Ref<number>
-  goToShots: () => Promise<void>
   sdQueue: Pick<Queue['sdQueue'], 'total' | 'done' | 'paused' | 'activeJob' | 'queue' | 'pause' | 'resume' | 'clear' | 'remove'>
   BUSY_HINT: string
   autoSaveToGallery: Ref<boolean>
@@ -91,7 +87,7 @@ export interface PromptDeliveryBindings extends Pick<Engine, 'generationBusy' | 
   batchPanelDeps: PromptBatchRunnersDeps
 }
 
-export interface PromptDialogBindings extends Pick<Engine, 'displayResultUrl' | 'displayResultSeed' | 'generationBusy'>,
+export interface PromptDialogBindings extends Pick<Engine, 'displayResultSeed' | 'generationBusy'>,
   Pick<Inpaint, 'inpaintOpen' | 'inpaintCharacter' | 'handleInpaintSubmit'>,
   Pick<Compare, 'prevResult' | 'lastResult' | 'compareOpen'> {
   inpaintProvider: Readonly<Ref<'comfy' | 'native' | undefined>>
@@ -100,7 +96,6 @@ export interface PromptDialogBindings extends Pick<Engine, 'displayResultUrl' | 
   inpaintAutomaticMaskStatus: Readonly<Ref<import('@/types/anima').ComfyNodeReadiness | undefined>>
   inpaintPreparing: Readonly<Ref<boolean>>
   inpaintImageSource: Readonly<Ref<InpaintSource>>
-  livePrompt: Assembly['positivePrompt']
   negativePrompt: Assembly['studio']['negativePrompt']
   closeCompare: Compare['close']
 }

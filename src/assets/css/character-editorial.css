@@ -7,11 +7,11 @@
 .archive-header-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }
 .character-editorial .page-kicker,.profile-kicker { @apply tw:text-secondary; font:500 var(--fs-label-xs) var(--font-mono); letter-spacing:.12em; }
 .character-editorial .library-layout { grid-template-columns:220px minmax(0,1fr); gap:clamp(20px,2.5vw,40px); }
-.character-editorial :deep(.character-directory) { @apply tw:rounded-lg; border-color:transparent; background:var(--bg-surface); max-height:calc(100dvh - 112px); }
+.character-editorial :deep(.character-directory) { @apply tw:rounded-lg; border-color:transparent; background:var(--bg-surface); }
 .character-editorial :deep(.directory-tools) { @apply tw:p-s-3; }
 .character-editorial :deep(.directory-item) { @apply tw:gap-s-2; }
 .character-editorial :deep(.directory-label strong) { overflow-wrap:anywhere; }
-.character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr); align-items:start; gap:clamp(20px,2.5vw,32px); @apply tw:overflow-visible; scroll-margin-top:100px; transform:none; }
+.character-editorial .library-detail .character-hero { grid-template-columns:minmax(0,.94fr) minmax(0,1.06fr); align-items:start; gap:clamp(20px,2.5vw,32px); @apply tw:overflow-visible; scroll-margin-top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-height,80px) + var(--s-4)); transform:none; }
 .character-editorial .library-detail .portrait { border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); }
 .character-editorial .library-detail .portrait-image { @apply tw:max-h-[760px] tw:object-contain; }
 .character-editorial .portrait-footer { @apply tw:justify-between tw:items-center; background:var(--bg-surface); @apply tw:p-s-3; border-top:1px solid var(--border-soft); }
@@ -78,9 +78,6 @@
 }
 @media (max-width:900px) {
   .character-editorial .library-layout { grid-template-columns:minmax(0,1fr); }
-  .character-editorial :deep(.character-directory) { @apply tw:max-h-[300px]; }
-  .character-editorial :deep(.directory-tools) { grid-template-columns:1fr 1fr; @apply tw:gap-s-2; }
-  .character-editorial :deep(.directory-heading),.character-editorial :deep(.directory-count) { grid-column:1 / -1; }
   .character-editorial .library-detail .character-hero { @apply tw:gap-s-4; }
 }
 @media (max-width:600px) {

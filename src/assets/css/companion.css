@@ -1,30 +1,6 @@
 @reference "./tailwind.css";
-/* ============================================================
-   companion.css —— 桌宠陪伴窗口样式（CompanionView / CompanionChatView）
-   ------------------------------------------------------------
-   随桌宠视图懒加载引入。分区（2026-08-28 补）：
-   全局模式 → 主容器与工具栏 → 桌宠舞台 → 对话气泡 → 输入区 →
-   语音 → 状态错误 → 在场提示 → 提醒气泡 → 设置面板 →
-   对话标题栏与消息流 → 语音按钮与元信息 → 浮层提醒。
-   注意：本文件存在**新旧两套并存**（2026-08-16 桌宠主角化重构后
-   旧规则未清理，例如 366-826 与 1085-1386 两组 conversation/composer）。
-   动规则前先确认自己命中的是哪一套，改完顺手把旧的那套移除。
-  ============================================================ */
-/* ============================================================
-   companion.css —— 桌宠陪伴窗口样式（CompanionView / CompanionChatView）
-   ------------------------------------------------------------
-   随桌宠视图懒加载引入。分区（2026-08-28 补）：
-   全局模式 → 主容器与工具栏 → 桌宠舞台 → 对话气泡 → 输入区 →
-   语音 → 状态错误 → 在场提示 → 提醒气泡 → 设置面板 →
-   对话标题栏与消息流 → 语音按钮与元信息 → 浮层提醒。
-   注意：本文件存在**新旧两套并存**（2026-08-16 桌宠主角化重构后
-   旧规则未清理，例如 366-826 与 1085-1386 两组 conversation/composer）。
-   动规则前先确认自己命中的是哪一套，改完顺手把旧的那套移除。
-  ============================================================ */
-
-/*   ============================================================
-   全局模式：companion-mode 下的 html/body 容器接管
-  ============================================================ */
+/* CompanionView 的陪伴舞台与操作层；独立对白由 companion-dialogue.css 负责。
+   原生透明根、舞台命中区域与桌面窗口布局沿用各自的所有权。 */
 
 /*   ============================================================
    全局模式：companion-mode 下的 html/body 容器接管
@@ -58,10 +34,6 @@ html.companion-mode body {
 /*   ============================================================
    主容器与工具栏：窗口外框 / 身份徽章 / 好感度 / 窗口操作
   ============================================================ */
-
-/*   ============================================================
-   主容器与工具栏：窗口外框 / 身份徽章 / 好感度 / 窗口操作
-  ============================================================ */
 .companion-page .companion-toolbar {
   @apply tw:relative;
   z-index: var(--z-overlay);
@@ -91,122 +63,15 @@ html.companion-mode body {
   letter-spacing: .04em;
 }
 
-.companion-page .companion-affection-pill {
-  @apply tw:inline-flex tw:items-center tw:gap-[5px] tw:mt-[3px];
-  padding: 1px 7px;
-  @apply tw:rounded-pill;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-soft);
-  @apply tw:text-label-xs tw:text-secondary tw:select-none;
-  cursor: help;
-  transition: border-color var(--motion-hover), background-color var(--motion-hover);
-}
-
-.companion-page .companion-affection-pill:hover {
-  @apply tw:border-accent;
-  background: var(--bg-elevated);
-}
-
-.companion-page .companion-affection-icon {
-  @apply tw:w-[12px] tw:h-[12px] tw:text-accent tw:shrink-0;
-}
-
-.companion-page .companion-affection-label {
-  @apply tw:font-medium tw:text-primary;
-}
-
-.companion-page .companion-affection-value {
-  padding: 0 4px;
-  @apply tw:rounded-sm;
-  background: color-mix(in srgb, var(--accent) 15%, transparent);
-  @apply tw:text-accent tw:font-semibold tw:text-mono-xs;
-}
-
 .companion-page .companion-toolbar-actions {
   @apply tw:flex tw:items-center tw:gap-s-2;
 }
 
-.companion-page .companion-window-actions {
-  @apply tw:flex tw:items-center tw:gap-[4px];
-}
-
-.companion-page .companion-window-actions button {
-  @apply tw:min-h-[26px];
-  padding: 3px 7px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm;
-  background: transparent;
-  @apply tw:text-muted tw:cursor-pointer tw:text-label-xs;
-}
-
-.companion-page .companion-window-actions button:hover,
-.companion-page .companion-window-actions button:focus-visible {
-  border-color: var(--border-strong);
-  @apply tw:text-primary;
-}
-
 
 /*   ============================================================
    语音：语音开关 / 房间链接 / 快捷入口
   ============================================================ */
 
-/*   ============================================================
-   语音：语音开关 / 房间链接 / 快捷入口
-  ============================================================ */
-.companion-page .companion-voice-toggle {
-  @apply tw:flex tw:items-center tw:gap-[6px] tw:text-secondary tw:cursor-pointer tw:text-label-xs;
-}
-
-.companion-page .companion-voice-toggle input {
-  @apply tw:absolute;
-  opacity: 0;
-  @apply tw:pointer-events-none;
-}
-
-.companion-page .companion-voice-toggle > span {
-  @apply tw:relative tw:w-[28px] tw:h-[16px];
-  border: 1px solid var(--border-strong);
-  @apply tw:rounded-pill;
-  background: var(--bg-elevated);
-}
-
-.companion-page .companion-voice-toggle > span::after {
-  @apply tw:absolute tw:top-[2px] tw:left-[2px] tw:w-[10px] tw:h-[10px];
-  border-radius: 50%;
-  background: var(--text-muted);
-  content: "";
-  transition: transform var(--motion-hover), background var(--motion-hover);
-}
-
-.companion-page .companion-voice-toggle input:checked + span::after {
-  background: var(--character-accent);
-  transform: translateX(12px);
-}
-
-.companion-page .companion-voice-toggle input:focus-visible + span {
-  outline: none;
-  box-shadow: var(--focus-shadow);
-}
-
-.companion-page .companion-room-link {
-  padding: 6px 9px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm tw:text-secondary tw:cursor-pointer;
-  font-family: inherit;
-  @apply tw:text-label-xs;
-  text-decoration: none;
-}
-
-.companion-page .companion-room-link:hover,
-.companion-page .companion-room-link:focus-visible {
-  border-color: var(--border-strong);
-  @apply tw:text-primary;
-}
-
-
-/*   ============================================================
-   桌宠舞台：立绘 / 场景层 / 背景氛围
-  ============================================================ */
 
 /*   ============================================================
    桌宠舞台：立绘 / 场景层 / 背景氛围
@@ -222,27 +87,6 @@ html.companion-mode body {
   @apply tw:absolute;
   inset: var(--s-2) 0 0;
   @apply tw:flex tw:flex-col tw:min-h-0;
-}
-
-.companion-page .character-tabs {
-  @apply tw:absolute;
-  z-index: var(--z-overlay);
-  @apply tw:top-s-3 tw:left-s-3 tw:flex tw:gap-[4px];
-}
-
-.companion-page .character-tab {
-  @apply tw:min-h-[30px];
-  padding: 4px 8px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm;
-  background: color-mix(in srgb, var(--bg-deep) 76%, transparent);
-  @apply tw:text-secondary tw:cursor-pointer tw:text-label-xs;
-  backdrop-filter: blur(10px);
-}
-
-.companion-page .character-tab.active {
-  border-color: var(--border-strong);
-  color: var(--character-accent);
 }
 
 .companion-page .portrait-stage {
@@ -364,11 +208,7 @@ html.companion-mode body {
 
 
 /*   ============================================================
-   对话与气泡（旧版）：会话容器 / 气泡排版（注意与 1085 起新版并存）
-  ============================================================ */
-
-/*   ============================================================
-   对话与气泡（旧版）：会话容器 / 气泡排版（注意与 1085 起新版并存）
+   对话与气泡：会话容器、正文与输入布局
   ============================================================ */
 .companion-page .companion-conversation {
   @apply tw:absolute;
@@ -460,13 +300,13 @@ html.companion-mode body {
   /* textarea | 看屏幕 | 停止(条件) | 发送 | 语音簇 —— 新增看屏幕按钮后
      列数必须跟上，否则语音簇被挤进隐式行与发送键坐标重叠 */
   grid-template-columns: minmax(0, 1fr) auto auto auto auto;
-  gap: 7px;
-  @apply tw:p-s-3 tw:rounded-lg;
+  gap: var(--s-2);
+  @apply tw:p-s-3 tw:rounded-lg tw:text-primary;
   border: 1px solid var(--border-soft);
   background: var(--bg-surface);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  backdrop-filter: blur(14px) saturate(1.2);
-  box-shadow: var(--shadow-md);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: var(--workspace-lift);
 }
 
 .companion-page .companion-composer > .companion-setup-inline {
@@ -474,19 +314,18 @@ html.companion-mode body {
   grid-column: 1 / -1;
 }
 
-.companion-page .companion-speech-btn,
-.companion-page .companion-speech-settings {
-  @apply tw:min-w-[58px] tw:min-h-[48px];
-  padding: 0 8px;
+.companion-page .companion-speech-btn {
+  min-height: var(--control-height);
+  padding: var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md;
   background: var(--bg-elevated);
   @apply tw:text-secondary tw:cursor-pointer;
-  font: 700 var(--fs-label-xs) var(--font-sans);
+  font: 500 var(--fs-label)/var(--lh-label) var(--font-sans);
 }
 
 .companion-page .companion-speech-cluster {
-  @apply tw:flex tw:items-stretch tw:justify-end tw:gap-s-2 tw:min-w-0;
+  @apply tw:flex tw:items-stretch tw:justify-end tw:gap-s-2 tw:min-w-0 tw:self-end;
 }
 
 .companion-page .companion-speech-btn[data-state='capturing'] {
@@ -495,8 +334,7 @@ html.companion-mode body {
   color: var(--character-accent);
 }
 
-.companion-page .companion-speech-btn:disabled,
-.companion-page .companion-speech-settings:disabled {
+.companion-page .companion-speech-btn:disabled {
   /* 审计修复：不用 opacity 压字（压后低于 AA），改用禁用令牌三件套 */
   @apply tw:text-disabled tw:border-soft;
   background: var(--bg-surface);
@@ -522,15 +360,6 @@ html.companion-mode body {
   @apply tw:cursor-pointer tw:text-label-sm tw:leading-flush;
 }
 
-.companion-page .speech-settings {
-  @apply tw:absolute;
-  z-index: var(--z-popover);
-  @apply tw:right-0 tw:bottom-[100%];
-  width: min(100%, 520px);
-  @apply tw:mb-s-2;
-  box-shadow: var(--shadow-lg);
-}
-
 .companion-page .companion-tool-indicator {
   @apply tw:flex tw:items-center tw:gap-s-2;
   padding: var(--s-2) var(--s-3);
@@ -541,40 +370,45 @@ html.companion-mode body {
 }
 
 .companion-page .companion-input {
-  @apply tw:min-w-0 tw:min-h-[48px] tw:max-h-[92px] tw:resize-none;
+  @apply tw:min-w-0 tw:max-h-[84px] tw:resize-none;
+  min-height: var(--control-height);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md;
-  background: var(--bg-elevated);
+  background: var(--bg-base);
   @apply tw:text-primary;
   font: inherit;
   @apply tw:leading-label;
-  padding: 8px 10px;
+  padding: var(--s-2) var(--s-3);
 }
 
+.companion-page .companion-input::placeholder { color:var(--text-muted); }
 .companion-page .companion-input:focus {
   border-color: var(--border-strong);
+  background:var(--bg-elevated);
   outline: none;
 }
 
 .companion-page .companion-send,
 .companion-page .companion-vision-btn,
 .companion-page .companion-stop {
-  @apply tw:self-stretch tw:min-w-[54px];
+  @apply tw:self-end;
+  min-width:var(--control-height);
+  min-height:var(--control-height);
+  padding:var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md tw:cursor-pointer;
-  font: 700 var(--fs-label-xs) var(--font-sans);
+  font: 500 var(--fs-label)/var(--lh-label) var(--font-sans);
 }
 
 .companion-page .companion-vision-btn {
   @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-1;
-  padding: 0 var(--s-2);
   background: var(--bg-elevated);
   @apply tw:border-soft tw:text-secondary;
   transition: border-color var(--motion-hover), color var(--motion-hover), background-color var(--motion-hover);
 }
 
 .companion-page .companion-vision-btn .archive-icon {
-  @apply tw:w-[14px] tw:h-[14px];
+  @apply tw:w-[16px] tw:h-[16px];
 }
 
 .companion-page .companion-vision-btn:hover:not(:disabled) {
@@ -589,9 +423,8 @@ html.companion-mode body {
 }
 
 .companion-page .companion-send {
-  border-color: color-mix(in srgb, var(--character-accent) 55%, var(--border-soft));
-  background: var(--character-accent);
-  @apply tw:text-inverse;
+  @apply tw:text-inverse tw:border-accent;
+  background:var(--accent);
 }
 
 .companion-page .companion-stop {
@@ -602,7 +435,7 @@ html.companion-mode body {
 .companion-page .companion-send:disabled {
   /* 审计修复：填充色按钮禁用时压暗容器 + 给达标的文字色，不用 opacity 压字 */
   @apply tw:text-disabled tw:border-soft;
-  background: var(--bg-surface);
+  background: var(--bg-elevated);
   @apply tw:cursor-not-allowed;
 }
 
@@ -610,26 +443,6 @@ html.companion-mode body {
 /*   ============================================================
    状态与错误：连接状态 / 错误提示条
   ============================================================ */
-
-/*   ============================================================
-   状态与错误：连接状态 / 错误提示条
-  ============================================================ */
-.companion-page .companion-status {
-  @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[20px] tw:text-muted tw:text-mono-xs;
-}
-
-.companion-page .companion-status > span:first-child {
-  @apply tw:text-secondary;
-}
-
-.companion-page .companion-status label {
-  @apply tw:flex tw:items-center tw:gap-[6px] tw:ml-auto;
-}
-
-.companion-page .companion-status input {
-  @apply tw:w-[88px];
-  accent-color: var(--character-accent);
-}
 
 @media (max-width: 600px) {
   .companion-page {
@@ -639,10 +452,6 @@ html.companion-mode body {
 
   .companion-page .companion-toolbar {
     @apply tw:min-h-[42px];
-  }
-
-  .companion-page .companion-voice-toggle strong {
-    @apply tw:hidden;
   }
 
   .companion-page .companion-stage {
@@ -835,55 +644,12 @@ html.companion-mode:not(.companion-desktop) body {
   @apply tw:gap-[5px];
 }
 
-.companion-page .companion-voice-toggle {
-  color: var(--companion-ink-soft);
-}
-
-.companion-page .companion-window-actions button,
-.companion-page .companion-room-link {
-  border-color: var(--companion-edge);
-  background: var(--companion-wash);
-  color: var(--companion-ink-soft);
-  transition: transform var(--motion-hover) var(--ease-out), background var(--motion-hover) ease, border-color var(--motion-hover) ease, color var(--motion-hover) ease;
-}
-
-.companion-page .companion-window-actions button:hover,
-.companion-page .companion-window-actions button:focus-visible,
-.companion-page .companion-room-link:hover,
-.companion-page .companion-room-link:focus-visible {
-  border-color: var(--border-strong);
-  background: color-mix(in srgb, var(--character-accent) 24%, var(--companion-wash));
-  color: var(--companion-ink);
-}
-
 .companion-page .companion-stage {
   @apply tw:h-full tw:min-h-0;
 }
 
 .companion-page .character-card {
   inset: 0;
-}
-
-.companion-page .character-tabs {
-  @apply tw:top-[78px] tw:left-[16px] tw:gap-[5px];
-}
-
-.companion-page .character-tab {
-  @apply tw:min-h-[30px];
-  padding: 5px 10px;
-  border-color: var(--companion-edge);
-  @apply tw:rounded-md;
-  background: color-mix(in srgb, var(--art-scrim) 48%, transparent);
-  color: var(--companion-ink-soft);
-  box-shadow: inset 0 1px 0 var(--companion-highlight);
-  backdrop-filter: blur(14px);
-}
-
-.companion-page .character-tab.active {
-  border-color: var(--border-strong);
-  background: color-mix(in srgb, var(--character-accent) 32%, var(--art-scrim));
-  color: var(--companion-ink);
-  box-shadow: 0 8px 22px color-mix(in srgb, var(--character-accent) 20%, transparent), inset 0 1px 0 var(--companion-highlight);
 }
 
 .companion-page .portrait-stage {
@@ -960,10 +726,6 @@ html.companion-mode:not(.companion-desktop) body {
   transition: opacity var(--motion-surface);
 }
 
-
-/*   ============================================================
-   在场提示：桌宠存在感光效 / 唤起引导
-  ============================================================ */
 
 /*   ============================================================
    在场提示：桌宠存在感光效 / 唤起引导
@@ -1123,68 +885,6 @@ html.companion-mode:not(.companion-desktop) body {
   color: var(--companion-ink);
 }
 
-.companion-page .companion-input {
-  @apply tw:min-h-[46px] tw:max-h-[84px];
-  padding: 8px 10px;
-  border-color: transparent;
-  @apply tw:rounded-md;
-  background: var(--companion-wash);
-  color: var(--companion-ink);
-}
-
-.companion-page .companion-input::placeholder {
-  color: var(--companion-ink-soft);
-}
-
-.companion-page .companion-input:focus {
-  border-color: var(--border-strong);
-  background: var(--companion-fill);
-}
-
-.companion-page .companion-send,
-.companion-page .companion-stop {
-  @apply tw:min-w-[58px];
-  border-color: var(--companion-edge);
-  @apply tw:rounded-md;
-}
-
-.companion-page .companion-send {
-  border-color: color-mix(in srgb, var(--character-accent) 72%, var(--companion-ink));
-  background: linear-gradient(135deg, color-mix(in srgb, var(--character-accent) 76%, var(--companion-ink)), var(--character-accent));
-  color: var(--companion-ink);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--character-accent) 22%, transparent);
-}
-
-.companion-page .companion-stop {
-  background: var(--companion-wash);
-  color: var(--companion-ink-soft);
-}
-
-.companion-page .companion-status {
-  @apply tw:min-h-[18px];
-  padding: 0 4px;
-  color: var(--companion-ink-soft);
-  text-shadow: var(--companion-text-shadow);
-}
-
-.companion-page .companion-status > span:first-child {
-  color: var(--companion-ink);
-}
-
-.companion-page .companion-runtime-mode {
-  padding: 1px 5px;
-  border: 1px solid var(--companion-edge);
-  @apply tw:rounded-pill;
-  background: var(--companion-wash);
-  color: var(--companion-ink-soft);
-  @apply tw:font-mono tw:whitespace-nowrap;
-  opacity: .82;
-}
-
-.companion-page .companion-status input {
-  accent-color: var(--character-accent);
-}
-
 @media (max-width: 600px) {
   .companion-page .companion-toolbar {
     @apply tw:top-[8px] tw:right-[8px] tw:left-[8px] tw:pl-[11px] tw:rounded-xl;
@@ -1192,15 +892,6 @@ html.companion-mode:not(.companion-desktop) body {
 
   .companion-page .companion-toolbar-actions {
     @apply tw:gap-[3px];
-  }
-
-  .companion-page .companion-window-actions button,
-  .companion-page .companion-room-link {
-    padding: 5px 7px;
-  }
-
-  .companion-page .character-tabs {
-    @apply tw:top-[70px] tw:left-[10px];
   }
 
   .companion-page .room-signal {
@@ -1265,25 +956,6 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 /* Companion behavior: DND toggle + proactive reminder bubbles */
-.companion-page .companion-dnd-toggle {
-  @apply tw:min-h-[26px];
-  padding: 3px 9px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm;
-  background: transparent;
-  @apply tw:text-muted tw:cursor-pointer tw:text-label-xs;
-}
-
-.companion-page .companion-dnd-toggle:hover,
-.companion-page .companion-dnd-toggle:focus-visible {
-  border-color: var(--border-strong);
-  @apply tw:text-primary;
-}
-
-.companion-page .companion-dnd-toggle[aria-pressed="true"] {
-  border-color: var(--border-strong);
-  color: var(--character-accent);
-}
 
 .companion-reminders {
   @apply tw:grid tw:gap-[6px] tw:mb-[8px];
@@ -1394,33 +1066,8 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 /* Companion local image import button */
-.companion-page .companion-import-btn {
-  @apply tw:min-h-[26px];
-  padding: 3px 9px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm;
-  background: transparent;
-  @apply tw:text-muted tw:cursor-pointer tw:text-label-xs;
-}
-
-.companion-page .companion-import-btn:hover,
-.companion-page .companion-import-btn:focus-visible {
-  border-color: var(--border-strong);
-  @apply tw:text-primary;
-}
 
 /* Companion AI workspace indicator + settings popover */
-.companion-page .companion-workspace-state {
-  @apply tw:cursor-pointer tw:text-label-xs;
-}
-
-.companion-page .companion-workspace-state[data-state="missing"] {
-  @apply tw:text-danger-text;
-}
-
-.companion-page .companion-workspace-state[data-state="ok"] {
-  @apply tw:text-muted;
-}
 
 .companion-page .companion-workspace-settings {
   @apply tw:grid tw:gap-[8px] tw:p-[10px];
@@ -1547,20 +1194,6 @@ html.companion-desktop.companion-ui-hidden .companion-stage::after {
 }
 
 /* Immersive mode: only the character and the dialog remain */
-.companion-page .companion-immersive-btn {
-  @apply tw:min-h-[26px];
-  padding: 3px 9px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm;
-  background: transparent;
-  @apply tw:text-muted tw:cursor-pointer tw:text-label-xs;
-}
-
-.companion-page .companion-immersive-btn:hover,
-.companion-page .companion-immersive-btn:focus-visible {
-  border-color: var(--border-strong);
-  @apply tw:text-primary;
-}
 
 .companion-page .companion-exit-immersive {
   @apply tw:fixed tw:top-[10px] tw:right-[10px];
@@ -1575,7 +1208,6 @@ html.companion-desktop.companion-ui-hidden .companion-stage::after {
 
 /* Immersive mode hides everything except the character and the dialog */
 html.companion-immersive .companion-toolbar,
-html.companion-immersive .companion-status,
 html.companion-immersive .companion-workspace-settings,
 html.companion-immersive .companion-clipboard-card,
 html.companion-immersive .companion-reminders,
@@ -1617,22 +1249,20 @@ html.companion-immersive .companion-page {
 /*   ============================================================
    设置面板：角色形象 / 对话偏好 / 语音开关
   ============================================================ */
-
-/*   ============================================================
-   设置面板：角色形象 / 对话偏好 / 语音开关
-  ============================================================ */
 .companion-page .companion-settings-btn {
-  @apply tw:shrink-0 tw:whitespace-nowrap tw:inline-flex tw:items-center tw:gap-s-1 tw:min-h-[28px];
-  padding: 0 10px;
+  @apply tw:shrink-0 tw:whitespace-nowrap tw:inline-flex tw:items-center tw:gap-s-2;
+  min-height:var(--control-height);
+  padding:var(--s-2) var(--s-3);
   border: 1px solid var(--border-soft);
   @apply tw:rounded-md;
   background: color-mix(in srgb, var(--bg-elevated) 70%, transparent);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   @apply tw:text-secondary tw:cursor-pointer;
-  font: 700 var(--fs-label-xs) var(--font-sans);
+  font: 500 var(--fs-label)/var(--lh-label) var(--font-sans);
   transition: border-color var(--motion-hover), color var(--motion-hover);
 }
+.companion-page .companion-settings-btn .archive-icon { width:16px; height:16px; }
 .companion-page .companion-settings-btn:hover,
 .companion-page .companion-settings-btn:focus-visible,
 .companion-page .companion-settings-btn[aria-expanded="true"] {
@@ -1710,13 +1340,6 @@ html.companion-immersive .companion-page {
 .companion-page .companion-pop-item[data-state="missing"] {
   @apply tw:text-danger-text;
 }
-
-/* —— 输入文字与控件状态 —— */
-.companion-page .companion-composer .companion-input { @apply tw:text-primary; background: var(--bg-deep); @apply tw:border-soft; }
-.companion-page .companion-composer .companion-input::placeholder { @apply tw:text-muted; }
-.companion-page .companion-composer .companion-input:focus { background: var(--bg-elevated); @apply tw:border-strong; }
-.companion-page .companion-send { background: var(--accent); @apply tw:text-inverse tw:border-accent; }
-.companion-page .companion-send:disabled { opacity: 1; background: var(--bg-elevated); @apply tw:text-disabled tw:border-soft; }
 
 .companion-page .companion-composer-meta {
   @apply tw:flex tw:items-center tw:gap-s-2;
@@ -1878,38 +1501,9 @@ html.companion-desktop .companion-page .companion-conversation {
 }
 
 /* —— 2) 舞台悬浮件收敛（角色切换进顶栏，状态进输入面板） —— */
-html.companion-desktop .companion-page .character-tabs,
 html.companion-desktop .companion-page .companion-presence-cue,
 html.companion-desktop .companion-page .avatar-status {
   @apply tw:hidden;
-}
-
-/* 顶栏角色切换分段控件 */
-html.companion-desktop .companion-char-switch {
-  @apply tw:shrink-0 tw:inline-flex tw:items-center tw:gap-[3px] tw:mr-[2px] tw:p-[2px];
-  border: 1px solid var(--companion-edge);
-  @apply tw:rounded-pill;
-  background: var(--companion-wash);
-}
-html.companion-desktop .companion-char-switch button {
-  @apply tw:shrink-0 tw:whitespace-nowrap tw:min-h-[26px];
-  padding: 0 10px;
-  border: 0;
-  @apply tw:rounded-pill;
-  background: transparent;
-  color: var(--companion-ink-soft);
-  @apply tw:cursor-pointer;
-  font: 700 var(--fs-label-xs) var(--font-sans);
-  transition: background var(--motion-hover) ease, color var(--motion-hover) ease;
-}
-html.companion-desktop .companion-char-switch button:hover,
-html.companion-desktop .companion-char-switch button:focus-visible {
-  color: var(--companion-ink);
-}
-html.companion-desktop .companion-char-switch button.active {
-  background: color-mix(in srgb, var(--character-accent) 18%, var(--bg-surface));
-  color: var(--companion-ink);
-  box-shadow: inset 0 1px 0 var(--companion-highlight);
 }
 
 /* —— 3) 桌面模式背景：窗口保持透明，只留中性暗角 + 角色柔和背光 ——
@@ -2058,10 +1652,6 @@ html.companion-desktop.companion-ui-hidden .companion-live-dot {
 .companion-float-reminders {
   @apply tw:flex tw:flex-col tw:gap-[6px] tw:items-center tw:pointer-events-auto;
 }
-
-/*   ============================================================
-   浮层提醒：提醒气泡 / 剪贴卡（列表容器走 TransitionGroup）
-  ============================================================ */
 
 /*   ============================================================
    浮层提醒：提醒气泡 / 剪贴卡（列表容器走 TransitionGroup）

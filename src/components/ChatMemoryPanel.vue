@@ -1,23 +1,25 @@
 <template>
-  <section class="chat-memory-panel" aria-labelledby="chatMemoryTitle">
-    <header>
+  <section class="chat-memory-panel room-tool-panel" aria-labelledby="chatMemoryTitle">
+    <header class="room-tool-heading">
       <div>
         <span>LONG-TERM MEMORY</span>
-        <strong id="chatMemoryTitle">{{ characterName }}的长期记忆</strong>
+        <h2 id="chatMemoryTitle">{{ characterName }}的长期记忆</h2>
       </div>
-      <button type="button" class="btn btn-ghost btn-sm btn-icon memory-close" aria-label="关闭长期记忆" @click="close"><ArchiveIcon name="close" /></button>
+      <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭长期记忆" @click="close"><ArchiveIcon name="close" /></button>
     </header>
-    <p>只保存你主动固定的事实。发送消息时最多召回 4 条相关内容，不自动记录角色说过的话。</p>
-    <div v-if="!items.length" class="memory-empty">在自己的聊天气泡下点击“记住”，事实会出现在这里。</div>
-    <div v-else class="memory-list">
-      <article v-for="item in items" :key="item.id" class="memory-item">
-        <textarea v-model="drafts[item.id]" maxlength="240" rows="2" :aria-label="`编辑记忆：${item.text}`"></textarea>
-        <div>
-          <span>{{ drafts[item.id]?.length || 0 }} / 240</span>
-          <button type="button" class="btn btn-ghost" @click="save(item.id)">保存</button>
-          <button type="button" class="btn btn-ghost" @click="requestDelete(item.id)">删除</button>
-        </div>
-      </article>
+    <div class="room-tool-body">
+      <p>只保存你主动固定的事实。发送消息时最多召回 4 条相关内容，不自动记录角色说过的话。</p>
+      <div v-if="!items.length" class="memory-empty">在自己的聊天气泡下点击“记住”，事实会出现在这里。</div>
+      <div v-else class="memory-list">
+        <article v-for="item in items" :key="item.id" class="memory-item">
+          <textarea v-model="drafts[item.id]" class="textarea" maxlength="240" rows="2" :aria-label="`编辑记忆：${item.text}`"></textarea>
+          <div>
+            <span>{{ drafts[item.id]?.length || 0 }} / 240</span>
+            <button type="button" class="btn btn-ghost btn-sm" @click="save(item.id)">保存</button>
+            <button type="button" class="btn btn-quiet btn-sm" @click="requestDelete(item.id)">删除</button>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 </template>

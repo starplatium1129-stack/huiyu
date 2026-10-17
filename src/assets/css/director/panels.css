@@ -1,41 +1,15 @@
 @reference "../tailwind.css";
-/* Director workspace — shared tokens (from PromptBuilderView scoped, globalised for child panels) */
-.pb {
-  --pb-active: var(--mood-love);
-  --pb-active-text: var(--mood-love-text);
-  --pb-active-grad: var(--mood-tension);
-  --pb-badge-blue: var(--info);
-  --pb-badge-green: var(--success);
-}
-
   /* 窄栏里禁止竖排:字号与内距收紧,强制单行 */
   .pb .char-btn { flex: 1; @apply tw:min-w-0 tw:inline-flex tw:items-center tw:justify-center tw:gap-s-1; padding: var(--s-2) var(--s-1); @apply tw:rounded-md; border: 1px solid var(--border-soft); background: var(--bg-surface); @apply tw:text-secondary tw:cursor-pointer tw:text-label-sm; font-weight: 650; @apply tw:whitespace-nowrap; transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover); }
   .pb .char-btn .aic-icon { @apply tw:text-body tw:shrink-0; }
   .pb .char-btn:hover { @apply tw:border-accent tw:text-accent; }
   .pb .char-btn.active { @apply tw:border-strong; background: var(--accent-soft); @apply tw:text-primary; box-shadow: var(--shadow-sm); }
 
-  /* Character source toggle (工作室/热门) — 2026-08-26 修复：原在 PromptBuilderView.vue scoped，抽离至 DirectorCharacterPanel 后失活致破版 */
-  .pb .char-source {
-    @apply tw:flex tw:gap-[6px] tw:mb-[10px] tw:flex-wrap;
-  }
-  /* 热门角色说明与视频动作按钮原在 PromptBuilderView scoped，外移后同需全局 */
+  /* 热门角色说明 */
   .pb .popular-tags-note {
     @apply tw:text-mono-sm tw:text-muted;
     margin: var(--s-2) 0;
     @apply tw:leading-body;
-  }
-  .pb .btn-video-action {
-    @apply tw:text-accent;
-    border-color: color-mix(in srgb, var(--accent) 30%, var(--border-soft));
-    background: color-mix(in srgb, var(--accent-soft) 30%, transparent);
-  }
-  .pb .btn-video-action:hover {
-    background: var(--accent-soft);
-    @apply tw:border-accent;
-  }
-  .pb .btn-video-action .aic-icon,
-  .pb .btn-video-action .archive-icon {
-    @apply tw:w-[1rem] tw:h-[1rem];
   }
   .pb .tag-interrogate-error {
     @apply tw:mt-s-2;
@@ -46,142 +20,21 @@
     @apply tw:text-danger-text tw:text-label-xs tw:leading-body;
   }
 
-  /* ---- 中栏: Prompt 监视器 ---- */
-  .pb .monitor { background:var(--bg-deep); border:1px solid color-mix(in srgb,var(--accent) 46%,var(--border-soft)); @apply tw:rounded-xl tw:p-s-4 tw:relative; box-shadow:inset 0 1px 0 var(--glass-highlight); }
   /* 可见性由 hidden 属性驱动(原先靠 style.display 内联切换);
      [hidden] 与类选择器同权重,故显式写一条保证隐藏生效 */
   .pb .art-warn { @apply tw:flex tw:items-center tw:gap-s-2; background: color-mix(in srgb,var(--warning) 12%,transparent); border: 1px solid var(--warning); @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:mt-s-3 tw:text-warning-text tw:text-label tw:font-semibold; }
   .pb .art-warn[hidden] { @apply tw:hidden; }
-  .pb .preview-actions { @apply tw:flex tw:gap-s-2 tw:flex-wrap tw:mt-s-3 tw:items-center; }
-  .pb .preview-actions .btn { @apply tw:text-label; padding: var(--s-2) var(--s-4); @apply tw:rounded-pill; }
-  .pb .preview-actions .btn-primary {
-    padding: var(--s-2) var(--s-5);
-    background: linear-gradient(135deg, color-mix(in srgb, var(--accent-hover) 68%, var(--accent)), var(--accent));
-    @apply tw:text-inverse;
-    font-weight: 750;
-    letter-spacing: -0.01em;
-    border: 1px solid color-mix(in srgb, var(--editorial-gold) 45%, var(--accent));
-    box-shadow: inset 0 1px 0 var(--glass-specular), inset 0 -1px 0 color-mix(in srgb, black 22%, transparent), var(--shadow-sm), var(--glow-sm);
-    transition: transform var(--motion-hover) var(--ease-out), background var(--motion-hover) var(--ease-out);
-  }
-  .pb .preview-actions .btn-primary:hover {
-    box-shadow: inset 0 1px 0 var(--glass-specular), inset 0 -1px 0 color-mix(in srgb, black 18%, transparent), var(--shadow-md), var(--glow-md);
-  }
-  @media (hover:hover) and (pointer:fine) { .pb .preview-actions .btn-primary:hover:not(:disabled) { transform:translateY(-1px); } }
-  .pb .preview-actions .btn-primary:active {
-    transform: translateY(0) scale(0.96);
-    box-shadow: inset 0 2px 4px color-mix(in srgb, black 30%, transparent), var(--shadow-sm);
-  }
   .pb .result-frame { @apply tw:mt-0; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-surface); @apply tw:p-s-4; }
   .pb .ctrl { @apply tw:flex tw:flex-col tw:gap-[2px]; }
   .pb .ctrl label { @apply tw:text-mono-sm tw:text-muted; }
     /* 原生 select 已迁至 StudioSelect：外观由触发器统一提供（2026-09-22 去原生化）。 */
 
-  .pb .director-card:hover { border-color:color-mix(in srgb,var(--accent) 24%,var(--border-soft)); }
-  .pb .director-mode-switch {
-    @apply tw:inline-flex tw:p-[3px];
-    border:1px solid var(--border-soft); @apply tw:rounded-pill;
-    background:var(--bg-deep); @apply tw:shrink-0;
-    box-shadow:inset 0 1px 3px color-mix(in srgb,var(--bg-base) 55%,transparent);
-  }
-  .pb .director-mode-option {
-    @apply tw:min-h-[32px]; padding:0 16px; border:1px solid transparent; @apply tw:rounded-pill;
-    background:transparent; @apply tw:text-muted tw:cursor-pointer; font:700 var(--fs-label-sm) var(--font-sans);
-    transition:background var(--motion-surface) var(--ease-out), color var(--motion-surface) var(--ease-out), transform var(--motion-hover) var(--ease-out);
-  }
-  .pb .director-mode-option:hover:not(.active) { @apply tw:text-primary; }
-  .pb .director-mode-option:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-  .pb .director-mode-option.active {
-    border-color:var(--glass-edge);
-    background:linear-gradient(135deg,var(--glass-specular),var(--glass-fill-strong));
-    @apply tw:text-accent;
-    box-shadow:var(--shadow-sm);
-  }
-  .pb-managed-route-banner { @apply tw:mb-s-3; }
   /* 默认（basic）模式下收起专家面板。
      例外：带 .basic-visible 的面板保持可见——提示词编译预览属于「提示词自主权」
      的核心，只读、零风险，不该被默认模式整块藏掉（2026-08-30 UX 审计：
      默认路径下用户看不到编译后的提示词、加不了任何自定义词条）。 */
   .pb[data-director-mode="basic"] .advanced-decision:not(.basic-visible) { @apply tw:hidden; }
   .pb[data-director-mode="basic"] .scene-tag.raw { @apply tw:hidden; }
-  .pb .director-card[open] { border-color:color-mix(in srgb,var(--accent) 32%,var(--border-soft)); }
-  .pb .director-card-head { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:m-0 tw:cursor-pointer; list-style:none; }
-  .pb .director-card-head::-webkit-details-marker { @apply tw:hidden; }
-  .pb .director-card-head::after { content:'›'; @apply tw:text-muted tw:text-title-sm; transform:rotate(0); transition:transform var(--motion-hover); }
-  .pb .director-card[open] > .director-card-head { @apply tw:mb-s-3; }
-  .pb .director-card[open] > .director-card-head::after { transform:rotate(90deg); @apply tw:text-accent; }
-  .pb .director-card-name { @apply tw:text-label tw:font-bold tw:text-primary; }
-  .pb .director-card-selected { @apply tw:text-mono-sm tw:text-accent tw:font-mono tw:text-right tw:max-w-[55%] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-  .pb .options { @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); @apply tw:gap-s-2; }
-  /* 未选中的选项降饱和：16 个高饱和色块会把视线从画布拽走 */
-  .pb .option {
-    @apply tw:w-full; background: var(--bg-deep);
-    border: 1px solid color-mix(in srgb,var(--border-strong) 62%,transparent);
-    @apply tw:rounded-md tw:p-s-2 tw:text-center;
-    color:inherit; font:inherit; @apply tw:cursor-pointer;
-    transition: border-color var(--motion-hover), transform var(--motion-surface) var(--ease-out), opacity var(--motion-surface);
-  }
-  .pb .option:hover { @apply tw:border-accent; background: var(--accent-soft); transform: translateY(-1px); }
-  .pb .option.selected { @apply tw:border-strong; background: var(--accent-soft); box-shadow: var(--shadow-sm); }
-  .pb .option-icon { @apply tw:text-title-xs; }
-  .pb .option-name { @apply tw:font-semibold tw:text-label-sm tw:text-primary; }
-  .pb .option-en { @apply tw:text-label-xs! tw:text-muted tw:font-mono; letter-spacing: 0.04em; @apply tw:uppercase; opacity: 0.55; }
-  .pb .option-reason { @apply tw:hidden; }
-  .pb .option:hover .option-reason, .pb .option.selected .option-reason { @apply tw:block tw:text-label-xs! tw:text-accent tw:italic tw:mt-[2px] tw:leading-label; letter-spacing: 0.01em; }
-  .pb .chip-grid { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:max-h-[9.5rem] tw:overflow-auto tw:pr-[2px]; }
-  .pb .chip-select { @apply tw:inline-flex tw:items-center tw:gap-s-1 tw:min-h-[32px]; padding: 4px 10px; @apply tw:rounded-pill tw:text-label-xs; font-weight: 550; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:text-secondary tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-press) var(--ease-out); }
-  .pb .chip-select:hover { @apply tw:border-accent tw:text-accent; }
-  .pb .chip-select.selected { background: var(--accent-soft); @apply tw:border-strong tw:text-accent; }
-  /* .mood-* 已收敛到 css/mood.css(基准 + .mood-grid-sm 修饰);此处不再重复定义 */
-  /* 主操作按钮:唯一定义(原先 3 处,3 种圆角与阴影)。
-     DESIGN.md「主操作 = L3」→ 圆角 --r-pill,阴影 --shadow-md + accent 光晕 --glow-sm */
-  .pb .generate-btn {
-    @apply tw:sticky tw:bottom-s-3; z-index:var(--z-sticky);
-    @apply tw:isolate tw:overflow-hidden tw:w-full tw:mt-s-1; padding:var(--s-3) var(--s-4);
-    /* 手绘描边试点（2026-08-28）。此前主 CTA 是标准玻璃胶囊：圆角 999px、
-       描边 1px，与手绘双线图标（主笔 1.8 / 副笔 1.2 + 错位墨点）各说各话。
-       这里沿 --r-brand-mark 已有的不对称思路，把四角写成 16/13/17/14，
-       描边提到 1.8px 与图标主笔同粗，让"手绘的牌子"和"手绘的图标"
-       读起来是一套东西。
-       顺带落回 DESIGN.md §Shapes 的规矩：pill 只给筛选/徽章/分段控件，
-       主操作不在其列 —— 之前的 --r-pill 其实是越界用法。
-       只试点这一个按钮，不全站铺：导航与浮层的玻璃分层是功能性的，不该动。 */
-    border:1.8px solid color-mix(in srgb,var(--editorial-gold) 45%,var(--accent));
-    border-radius:var(--r-hand-plate);
-    background:linear-gradient(135deg, color-mix(in srgb, var(--accent-hover) 65%, var(--accent)), var(--accent));
-    @apply tw:text-body; font-weight:720; letter-spacing:-.01em;
-    @apply tw:text-inverse;
-    box-shadow:inset 0 1px 0 var(--glass-specular), inset 0 -1px 0 color-mix(in srgb, black 25%, transparent), var(--shadow-md), var(--glow-sm);
-    transition:background var(--motion-surface) var(--ease-out), transform var(--motion-hover) var(--spring-bounce), border-color var(--motion-surface) var(--ease-out);
-  }
-  .pb .generate-btn::after {
-    content: "";
-    @apply tw:absolute;
-    inset: 0;
-    background: linear-gradient(90deg, transparent 0%, color-mix(in srgb, white 28%, transparent) 50%, transparent 100%);
-    transform: translateX(-100%) skewX(-20deg);
-    transition: transform var(--motion-atmosphere) var(--ease-out);
-    @apply tw:pointer-events-none;
-  }
-  .pb .generate-btn:hover {
-    transform: translateY(-2px) scale(1.01);
-    box-shadow: inset 0 1px 0 var(--glass-specular), inset 0 -1px 0 color-mix(in srgb, black 20%, transparent), var(--shadow-lg), var(--glow-md);
-  }
-  .pb .generate-btn:hover::after {
-    transform: translateX(120%) skewX(-20deg);
-  }
-  .pb .generate-btn:active {
-    transform: translateY(0) scale(0.96);
-    box-shadow: inset 0 2px 4px color-mix(in srgb, black 30%, transparent), var(--shadow-sm);
-    transition-duration: var(--motion-press);
-  }
-  /* 审计修复: 不用 opacity 压字（压后低于 AA 4.5:1） */
-  .pb .generate-btn:disabled { @apply tw:text-disabled tw:border-soft; background: var(--bg-surface); @apply tw:cursor-not-allowed; transform:none; }
-
-  .pb .voice-live-caption { @apply tw:block tw:mt-s-2 tw:p-s-3; border:1px dashed var(--border-soft); @apply tw:rounded-md; background:var(--bg-deep); @apply tw:text-muted tw:text-label-sm tw:leading-loose; }
-  .pb .voice-live-caption.show { border-style:solid; border-color:color-mix(in srgb,var(--accent) 42%,var(--border-soft)); background:color-mix(in srgb,var(--accent) 9%,var(--bg-surface)); @apply tw:text-primary tw:text-body-sm tw:leading-loose; box-shadow:inset 3px 0 0 var(--accent); }
-  .pb .voice-live-caption small { @apply tw:block tw:mb-[3px] tw:text-muted tw:text-mono-sm; letter-spacing:.04em; }
-  .pb .voice-status { @apply tw:min-h-[1.35em] tw:mt-s-2 tw:text-muted tw:text-label-xs tw:leading-body; }
 
   /* Negative prompt collapsible */
   .pb .collapsible { border: 1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3 tw:mt-s-4; }
@@ -248,17 +101,11 @@
   }
   @media (max-width: 768px) {
     .pb .nav-back, .pb-kicker { @apply tw:hidden; }
-    .pb .director-mode-head { @apply tw:items-stretch tw:flex-col; }
-    .pb .director-mode-switch { @apply tw:self-start; }
     .pb #stepResult > * { grid-column:1 !important; grid-row:auto !important; }
-    .pb .voice-controls { grid-template-columns:1fr; }
-    .pb .story-chip, .pb .char-btn, .pb .scene-cat, .pb .scene-filter-reset, .pb .chip-select, .pb .tag-chip, .pb .option, .pb .cat-tab { @apply tw:min-h-[44px]; }
-    .pb .scene-filter-field .studio-select-trigger, .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger { @apply tw:min-h-[44px]; }
+    .pb .char-btn, .pb .tag-chip, .pb .cat-tab { @apply tw:min-h-[44px]; }
+    .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger { @apply tw:min-h-[44px]; }
     /* iOS 聚焦自动放大要求控件字号不低于平台阈值,与正文阶梯分开归属 */
-    .pb .story-input, .pb .scene-search, .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger, .pb .seed-input-wrap input, .pb .voice-text, .pb .review-notes, .pb .review-image-url { @apply tw:text-ios-control!; }
-    .pb .scene-card-main { @apply tw:pb-s-3; }
-    .pb .scene-card .scene-direct-btn { @apply tw:inline-flex tw:static; margin:0 var(--s-3) var(--s-3); @apply tw:min-h-[40px] tw:items-center; }
-    .pb .scene-story { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; @apply tw:overflow-hidden; }
+    .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger, .pb .seed-input-wrap input, .pb .review-notes, .pb .review-image-url { @apply tw:text-ios-control!; }
   }
   /* 表面(玻璃底/边/内衬)统一由下方 liquid glass 组声明,此处只留自身几何与排版 */
   .pb .api-status { @apply tw:flex tw:items-center tw:gap-s-2 tw:justify-end tw:mb-0 tw:ml-s-1 tw:pl-s-3; border-left:1px solid var(--border-soft); @apply tw:text-label tw:text-muted; }
@@ -298,13 +145,9 @@
     .pb .sd-advanced-options > summary { @apply tw:justify-center tw:w-full; }
     .pb .sd-advanced-grid { @apply tw:static; grid-template-columns:1fr; @apply tw:w-full tw:min-w-0 tw:mt-s-2; box-shadow:none; }
     .pb .sd-advanced-grid #sdSeedDisplay { grid-column:auto; }
-    .pb .preview-actions .btn { flex:1 1 calc(50% - var(--s-2)); @apply tw:min-h-[44px]; }
     .pb.has-result #stepResult { order:1; }
-    .pb.has-result #stepResult .preview-actions { order:1; }
     .pb.has-result #stepResult .sd-queue { order:2; }
-    .pb.has-result #stepResult .voice-studio { order:3; }
     .pb-backup-actions .btn { flex:1 1 100%; @apply tw:min-h-[44px]; }
-    .pb .col-right .generate-btn { @apply tw:min-h-[50px]; }
     .pb.focus-mode .pb-top-actions { @apply tw:justify-end; }
     .pb.focus-mode .focus-mode-label { @apply tw:inline; }
     .pb.focus-mode .focus-mode-btn { @apply tw:w-auto; padding:0 var(--s-4); }
@@ -313,12 +156,6 @@
   }
 
   .pb .scene-rating-tag { background:color-mix(in srgb,var(--warning) 18%,var(--bg-deep)); @apply tw:text-warning-text; }
-  .pb button.scene-card {
-    @apply tw:flex tw:flex-col tw:gap-[4px] tw:w-full tw:p-s-3 tw:text-left tw:cursor-pointer; font:inherit;
-  }
-  .pb button.scene-card.active, .pb button.scene-card.is-current {
-    @apply tw:border-strong; box-shadow:var(--selection-shadow);
-  }
   .pb .scene-loading, .pb .scene-empty {
     @apply tw:p-s-4 tw:text-muted tw:text-label-sm tw:text-center;
   }
@@ -330,12 +167,6 @@
    }
   .pb .badge-online { --badge-color:var(--success-text); }
   .pb .badge-offline { --badge-color:var(--warning-text); }
-  .pb .mood-card .mood-icon { @apply tw:block; padding:8px 8px 0; @apply tw:text-body; }
-    /* 文字色不在这里定：mood.css 的 .mood-name 已经统一给 --text-primary。
-     这条以前是全局泄漏出去、替 mood.css 兜底的那一条。 */
-  .pb .mood-card .mood-name { @apply tw:block; padding:4px 8px 0; @apply tw:text-label-sm tw:font-bold; }
-  .pb .mood-card .mood-desc { @apply tw:block; padding:2px 8px 8px; @apply tw:text-mono-xs tw:text-muted tw:leading-label; }
-  /* 出图快门曝光动效 */
   /* Liquid glass is reserved for floating controls and navigation surfaces. */
   .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome {
     background:
@@ -351,39 +182,25 @@
   @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }
   @media (max-width:768px) {
     .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome { -webkit-backdrop-filter:blur(16px) saturate(145%); backdrop-filter:blur(16px) saturate(145%); }
-    .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
+    .pb-backup-card { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
     .pb .stage-chrome { @apply tw:left-[12px] tw:right-[12px] tw:top-[12px]; }
   }
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card, .pb-managed-route-banner { background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card { background:var(--bg-surface); }
   }
 @media (prefers-reduced-transparency: reduce) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card, .pb-managed-route-banner { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
 }
 
 /* Hover 位移只属于精确指针；触屏保留颜色/边框反馈，不粘住卡片位置。 */
 @media (hover: hover) and (pointer: fine) {
-  .pb .scene-card:hover,
-  .pb .cat-tab:hover,
-  .pb .option:hover,
-  .pb .generate-btn:hover,
-  .pb .history-item:hover { transform: translateY(-1px); }
-  .pb .scene-card:hover { transform: translateY(-2px); }
-  .pb .scene-card .scene-direct-btn:hover { transform: scale(1.06); }
-  .pb .history-item:hover .history-thumb img { transform: scale(1.025); }
+  .pb .cat-tab:hover { transform: translateY(-1px); }
   .pb .review-star:hover { transform: scale(1.15); }
 }
 @media (hover: none), (pointer: coarse) {
   .pb .focus-mode-btn:hover,
   .pb .utility-trigger:hover,
-  .pb .scene-card:hover,
-  .pb .scene-card:focus-within,
-  .pb .scene-card .scene-direct-btn:hover,
   .pb .cat-tab:hover,
-  .pb .option:hover,
-  .pb .generate-btn:hover,
-  .pb .history-item:hover,
-  .pb .history-item:hover .history-thumb img,
   .pb .review-star:hover { transform: none !important; }
 }
 

@@ -3,7 +3,7 @@
     <header class="catalog-editor-head"><span class="catalog-editor-kind"><ArchiveIcon :name="icon" /></span><div><p>{{ CATALOG_LABELS[record.kind] }}</p><h2>{{ title }}</h2></div><small v-if="!record.revision" class="catalog-new-badge">新内容</small></header>
     <template v-if="record.kind !== 'document'">
       <details v-for="section in sections" :key="section" class="catalog-writing-section" :open="defaultOpen(section)">
-        <summary><span>{{ sectionLabel(section) }}</span><ArchiveIcon name="chevron-down" /></summary>
+        <StudioDisclosureSummary>{{ sectionLabel(section) }}</StudioDisclosureSummary>
         <div data-disclosure-content class="form-grid">
           <label v-for="field in fields.filter(f => f.section === section && !technicalPaths.has(f.path))" :key="field.path" class="form-group" :class="{ 'form-group-full': field.type === 'long' || field.type === 'list' }">
             <span class="field-label">{{ field.label }}</span>

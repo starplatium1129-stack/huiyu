@@ -23,9 +23,8 @@
 .art-viewer .viewer-record div { @apply tw:grid; grid-template-columns:4em minmax(0,1fr); @apply tw:gap-s-3; }
 .art-viewer .viewer-record dt { @apply tw:text-secondary; }
 .art-viewer .viewer-record dd { @apply tw:m-0 tw:text-primary; overflow-wrap:anywhere; }
-.art-viewer .viewer-details summary span { @apply tw:block; margin:var(--s-1) 0 0; @apply tw:text-label-xs tw:text-secondary; }
-.art-viewer .viewer-details summary > .archive-icon { float:right; @apply tw:w-[16px] tw:h-[16px]; }
-.art-viewer .viewer-details[open] > summary > .archive-icon { transform:rotate(180deg); }
+.art-viewer .viewer-disclosure-copy { display:grid; gap:var(--s-1); min-width:0; }
+.art-viewer .viewer-disclosure-copy > small { color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 .art-viewer .viewer-details summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .art-viewer .viewer-info .viewer-primary-actions { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2 tw:mt-s-4; }
 .art-viewer .viewer-primary-actions .btn { @apply tw:min-h-[40px]; padding-inline:var(--s-2); }
@@ -35,6 +34,9 @@
 .art-viewer .viewer-info .viewer-more { @apply tw:mt-s-5; }
 .art-viewer .viewer-more .viewer-actions { margin:0 0 var(--s-3); }
 .art-viewer { @apply tw:fixed; inset:0; z-index:var(--z-overlay); @apply tw:grid; grid-template-columns:minmax(0,1fr) minmax(300px,340px); width:100vw; height:100dvh; max-width:none; max-height:none; margin:0; padding:0; border:0; background:var(--bg-deep); @apply tw:text-primary; }
+/* The closed drawer lives beyond the viewport; it must not scroll the dialog.
+   Artwork and the information column keep their own overflow behavior. */
+.art-viewer { overflow:hidden; }
 dialog.art-viewer:not([open]) { display:none; }
 dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-backdrop-opacity,1); }
 .art-viewer .viewer-compare-host { @apply tw:w-full; height:calc(100vh - 120px); max-width:min(90vw, 1200px); @apply tw:flex tw:items-center tw:justify-center; }
@@ -50,7 +52,6 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
 .art-viewer .viewer-stage { @apply tw:relative tw:min-w-0 tw:min-h-0 tw:grid; place-items:center; padding:64px clamp(48px,4vw,72px) var(--s-4); @apply tw:overflow-hidden; }
 .art-viewer .viewer-mode-switch { position:absolute; top:18px; left:74px; z-index:var(--z-raised); display:inline-flex; align-items:center; gap:var(--s-2); min-height:40px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); cursor:pointer; }
 .art-viewer .viewer-mode-switch:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.art-viewer .viewer-image { @apply tw:block tw:max-w-full; max-height:calc(100dvh - 120px); @apply tw:w-auto tw:h-auto tw:object-contain; }
 .art-viewer .viewer-fallback { @apply tw:text-secondary tw:text-glyph-lg; }
 .art-viewer .viewer-close { @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[18px] tw:left-[18px]; }
 .art-viewer .viewer-nav,.art-viewer .viewer-info-toggle { @apply tw:absolute; z-index:var(--z-raised); @apply tw:grid; place-items:center; border:1px solid var(--border-soft); background:var(--bg-surface); @apply tw:text-primary tw:cursor-pointer; }
