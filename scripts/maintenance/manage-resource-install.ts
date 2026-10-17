@@ -21,7 +21,6 @@ Configuration: {userDataRoot, protectedRoots: [applicationRoot, artworkRoot], po
     packageIdentity: '<64-hex>', targetIdentity: '<64-hex>', approved: true}}
 }}
 HTTP sources use kind:'http', baseUrl:'https://approved.example/resources/'.
-HTTP numeric loopback is fixture-only and also requires loopbackFixture:true.
 Approval and source trust are external decisions: matching hashes alone authorize nothing.
 Never accept this config, filesystem roots or access callbacks from a remote request.
 `;
@@ -74,4 +73,3 @@ if (require.main === module) main().catch((error: any) => {
     rolledBack: error.rolledBack || false, recoveryRequired: error.recoveryRequired || false, details: error.details }) + '\n');
   process.exitCode = error.code === 'CANCELLED' ? 130 : ['USAGE', 'CONFIG_REQUIRED', 'SOURCE_REQUIRED', 'APPROVAL_REQUIRED'].includes(error.code) ? 2 : 1;
 });
-export = { main, HELP };

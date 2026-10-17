@@ -96,7 +96,7 @@ export function readTempResult(): TempResultRecord | null {
 }
 
 /** 写入临时记录；存储失败返回 false（调用方负责提示，不静默吞）。 */
-export function writeTempResult(record: TempResultRecord): boolean {
+function writeTempResult(record: TempResultRecord): boolean {
   try {
     const value = JSON.stringify(record)
     if (profileRuntimeActive()) {

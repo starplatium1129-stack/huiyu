@@ -231,4 +231,4 @@ function buildPlan(result: any, targets: any[], globalReasons: string[]) {
     acceptance: 'A scoped equality/relationship pass never means all content, assets or rendering passed' };
 }
 
-export = { historyImpact, pathDomain, fieldDiff, buildPlan };
+export = { historyImpact };

@@ -229,4 +229,4 @@ function executePredicates(selection: { mode: string; targets: Iterable<any>|nul
     evidence: [...reader.evidence.values()], wholeLibrary: 'not-validated', exitCode: failed ? 1 : 3 };
 }
 
-export = { DOMAINS, UNTRACKED, FIELD_VALIDATION, fieldInventory, selectExecution, executePredicates, recordEquality, relationCheck, fullFieldChecks, runtimeFieldChecks };
+export = { DOMAINS, FIELD_VALIDATION, selectExecution, executePredicates };

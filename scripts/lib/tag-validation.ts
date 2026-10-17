@@ -5,7 +5,7 @@ export interface TagDictionaryPolicy {
   aliasOverrides?: Record<string, { target: string; shadowed: string[] }>;
 }
 
-export const tagKey = (value: string): string => value.trim().toLowerCase().replace(/[\s\-/]+/g, '_');
+const tagKey = (value: string): string => value.trim().toLowerCase().replace(/[\s\-/]+/g, '_');
 function text(value: unknown, context: string): asserts value is string {
   if (typeof value !== 'string' || !value.trim()) throw new Error(`${context} must be a non-empty string`);
 }

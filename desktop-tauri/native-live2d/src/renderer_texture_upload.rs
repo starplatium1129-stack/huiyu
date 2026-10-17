@@ -19,8 +19,6 @@ impl Renderer {
             usage: wgpu::TextureUsages::TEXTURE_BINDING | wgpu::TextureUsages::COPY_DST,
             view_formats: &[],
         });
-        self.resource_stats.textures_created += 1;
-        self.record_resource_creation();
         let row_size = width as usize * 4;
         assert_eq!(
             rgba.len(),
@@ -39,8 +37,6 @@ impl Renderer {
                 mapped_at_creation: false,
             }));
             self.texture_upload.capacity = capacity;
-            self.resource_stats.texture_upload_buffers_created += 1;
-            self.record_resource_creation();
         }
         let upload_buffer = self
             .texture_upload

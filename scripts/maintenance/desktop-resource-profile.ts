@@ -13,4 +13,3 @@ async function main(args: string|any[]) {
 if (require.main === module) main(process.argv.slice(2)).catch((error: any) => {
   console.error(error.message); process.exitCode = 1;
 });
-export = { main };

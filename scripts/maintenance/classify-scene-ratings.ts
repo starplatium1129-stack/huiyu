@@ -200,4 +200,4 @@ return !write && changed ? 1 : 0;
 }
 }
 if (require.main === module) process.exitCode = main();
-export = { parseManualRatings, main };
+export = { parseManualRatings };

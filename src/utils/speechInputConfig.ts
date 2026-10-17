@@ -36,7 +36,7 @@ export interface SpeechInputConfig {
   endWords: string[]
 }
 
-export const DEFAULT_SPEECH_INPUT_CONFIG: SpeechInputConfig = {
+const DEFAULT_SPEECH_INPUT_CONFIG: SpeechInputConfig = {
   enabled: false,
   kind: 'openai',
   endpoint: '',
@@ -91,21 +91,13 @@ export function speechInputEndpointError(endpoint: string): string {
   } catch { return '请填写有效的语音识别服务地址，例如 http://127.0.0.1:8000/v1。' }
 }
 
-export interface KeyedStorage {
-  getItem(key: string): string | null
-  setItem(key: string, value: string): void
-  removeItem(key: string): void
-}
-
 /** 读取并归一化配置；读取/解析失败交由调用方展示重试，不能当作未配置。 */
-export function loadSpeechInputConfig(storage?: KeyedStorage): SpeechInputConfig {
+export function loadSpeechInputConfig(): SpeechInputConfig {
   // profile adapter 决定读取桌面权威缓存还是浏览器，避免先探测浏览器权限。
-  const store = storage ?? localStorage
-  const raw = store.getItem(SPEECH_INPUT_KEY)
+  const raw = localStorage.getItem(SPEECH_INPUT_KEY)
   return normalizeSpeechInputConfig(raw === null ? null : JSON.parse(raw))
 }
 
-export function saveSpeechInputConfig(config: SpeechInputConfig, storage?: KeyedStorage): void {
-  const store = storage ?? localStorage
-  store.setItem(SPEECH_INPUT_KEY, JSON.stringify(normalizeSpeechInputConfig(config)))
+export function saveSpeechInputConfig(config: SpeechInputConfig): void {
+  localStorage.setItem(SPEECH_INPUT_KEY, JSON.stringify(normalizeSpeechInputConfig(config)))
 }

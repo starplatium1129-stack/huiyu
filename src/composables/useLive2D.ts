@@ -9,7 +9,7 @@ import { createLayoutFitController } from '@/composables/live2d/layoutFit'
 import { createParameterFrame } from '@/composables/live2d/parameterFrame'
 import { createLifecycleController } from '@/composables/live2d/lifecycle'
 
-export type { Live2DStatus }
+
 
 /**
  * useLive2D 组合根（拆分 Step 7 收薄）：

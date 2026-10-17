@@ -12,7 +12,7 @@ const RESOURCE_PREFIX = 'desktop-tauri/src-tauri/resources/';
 const HOST = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe';
 const REQUIRED = ['ai-cg-studio-desktop.exe', 'gateway/huiyu-runtime.exe', 'gateway/native/libvips-42.dll', 'gateway/data/catalog/manifest.json'];
 const digest = (bytes: Buffer) => createHash('sha256').update(bytes).digest('hex');
-export const manifestPath = (installer: string) => `${path.resolve(installer)}.deployment.json`;
+const manifestPath = (installer: string) => `${path.resolve(installer)}.deployment.json`;
 
 function checkedFile(root: string, expected: FileIdentity) {
   const actual = safe.fileEntry(root, expected.path);
@@ -69,7 +69,7 @@ function validateManifest(manifest: DeploymentManifest, installer: string) {
   if (REQUIRED.some(file => !manifest.files.some(entry => entry.path === file))) throw Error('安装校验清单缺少宿主、后端、原生库或内容快照');
 }
 
-export function verifyInstaller(installer: string, expectedManifestSha256?: string, installedRoot?: string) {
+function verifyInstaller(installer: string, expectedManifestSha256?: string, installedRoot?: string) {
   installer = path.resolve(installer);
   const directory = safe.rootPath(path.dirname(installer));
   const record = safe.readJson(directory, path.basename(manifestPath(installer)));
@@ -86,7 +86,7 @@ export function verifyInstaller(installer: string, expectedManifestSha256?: stri
   return { installer, manifestSha256: record.entry.sha256, installerSha256: manifest.installer.sha256, fileCount: manifest.files.length };
 }
 
-export function freezeInstaller(installer: string, directory: string, manifestSha256: string) {
+function freezeInstaller(installer: string, directory: string, manifestSha256: string) {
   verifyInstaller(installer, manifestSha256);
   fs.mkdirSync(directory, { recursive: true });
   const selected = path.join(directory, path.basename(installer));

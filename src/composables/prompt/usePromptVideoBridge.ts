@@ -78,10 +78,6 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
     return { image_id: entry.image_id, prompt: entry.prompt, story: entry.story,
       blueprintId: entry.blueprintId, characterId: entry.characterId, outfitId: entry.outfitId, scene: entry.scene }
   }
-  async function videoTargetData() {
-    const snapshot = await captureResult()
-    return snapshot ? (await loadActions()).videoTargetData(snapshot) : null
-  }
   async function goToVideo(push: (path: string) => Promise<unknown> | void) {
     const snapshot = await captureResult()
     if (snapshot) await (await loadActions()).goToVideo(snapshot, push)
@@ -109,7 +105,7 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
   }
   return {
     shotsPending, refreshShotsPending,
-    videoTargetData, goToVideo, addToShots, goToShots,
+    goToVideo, addToShots, goToShots,
     handleHistoryToShots, handleHistoryToShotsBatch,
   }
 }

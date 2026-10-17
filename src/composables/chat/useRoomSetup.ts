@@ -172,13 +172,11 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
 
   return {
     preparingRoom,
-    roomSetupText,
     setupTitle,
     setupDescription,
     refreshVoiceStatus,
     refreshRoomState,
     prepareRoom,
-    stopRoomPolling,
     destroy,
   }
 }

@@ -111,4 +111,3 @@ function main(args: any = process.argv.slice(2)) {
 }
 
 if (require.main === module) process.exitCode = main();
-export = { main, HELP };

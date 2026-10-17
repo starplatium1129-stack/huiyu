@@ -1,7 +1,7 @@
 import { randomPromptPlan, type RandomInspirationOptions } from './randomPromptAssembler'
 import pools from '@/config/randomInspirationPools.json'
 
-export const MAX_RANDOM_CANDIDATES = 8
+const MAX_RANDOM_CANDIDATES = 8
 export interface RandomRecipe {
   schemaVersion: 1
   poolVersion: number
@@ -9,7 +9,7 @@ export interface RandomRecipe {
   seed: number
   config: Omit<RandomInspirationOptions, 'rng' | 'identityExclude'> & { identityExclude?: string[] }
 }
-export function seededRandom(seed: number) {
+function seededRandom(seed: number) {
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('种子须为 0–4294967295 的整数')
   let state = seed >>> 0
   return () => {
@@ -19,7 +19,7 @@ export function seededRandom(seed: number) {
     return ((x ^ (x >>> 14)) >>> 0) / 4294967296
   }
 }
-export function randomRecipe(options: RandomInspirationOptions, seed: number): RandomRecipe {
+function randomRecipe(options: RandomInspirationOptions, seed: number): RandomRecipe {
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('种子须为 0–4294967295 的整数')
   const { rng: _rng, identityExclude, ...config } = options
   return {
@@ -27,7 +27,7 @@ export function randomRecipe(options: RandomInspirationOptions, seed: number): R
     config: JSON.parse(JSON.stringify({ ...config, ...(identityExclude ? { identityExclude: [...identityExclude] } : {}) })),
   }
 }
-export function replayRandomRecipe(recipe: RandomRecipe) {
+function replayRandomRecipe(recipe: RandomRecipe) {
   if (recipe.schemaVersion !== 1 || recipe.poolVersion !== pools.version || recipe.algorithm !== 'huiyu-random-v2') throw new Error('随机配方版本不兼容')
   return randomPromptPlan({ ...recipe.config, identityExclude: recipe.config.identityExclude ? new Set(recipe.config.identityExclude) : undefined, rng: seededRandom(recipe.seed) })
 }

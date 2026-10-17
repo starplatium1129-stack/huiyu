@@ -46,10 +46,10 @@ impl RenderContext {
         // 叠层参数每帧守卫（2026-08-16 静止发灰修复）：Idle 动作 Idle_6 把
         // Param36/37 拉出隐藏态（到 5+），静止时叠层显示 → 眼睛/全身发灰；
         // 点击互动（Tap 动作/复位）拉回隐藏态 → 恢复，回 Idle 又灰。非互动
-        // 非登场期间每帧强制写回隐藏态（0/-1 分组，与 reset_overlay_params
-        // 同表）——叠层只允许在互动/登场动作播放时显示。
+        // 非登场期间按当前 profile 的隐藏态逐帧守卫，叠层只允许在
+        // 互动/登场动作播放时显示。
         // 2026-08-23 换装闪回修复：动作结束后的回落改为 smoothstep 缓动
-        // （step_overlay_settle），回落期间跳过硬性守卫；回落结束恢复守卫。
+        // （OverlaySettler），回落期间跳过硬性守卫；回落结束恢复守卫。
         // 原单帧硬写会让换装部件一帧内消失/回穿（桌宠实机"闪一下"）。
         let interaction_playing = matches!(
             &self.active_motion,
@@ -100,7 +100,7 @@ impl RenderContext {
         requested: Option<i64>,
         priority: i32,
         phase: MotionPhase,
-    ) -> Result<i32, String> {
+    ) -> Result<(), String> {
         let index = self.next_motion_index(group, requested)?;
         let model = self.model.as_mut().ok_or("model not loaded")?;
         let handle = model
@@ -124,43 +124,29 @@ impl RenderContext {
             index,
             remaining_seconds,
         });
-        Ok(index)
+        Ok(())
     }
 
-    pub(super) fn emit_motion_started(app: Option<&RendererEvents>, group: &str, index: i32) {
-        if let Some(app) = app {
-            let _ = app.emit(
-                "aics:live2d:motion-started",
-                serde_json::json!({ "group": group, "index": index }),
-            );
-        }
-    }
-
-    pub(super) fn start_idle_motion(&mut self, app: Option<&RendererEvents>) {
+    pub(super) fn start_idle_motion(&mut self) {
         if !self.motion_counts.contains_key("Idle") {
             return;
         }
-        match self.start_motion("Idle", None, model::PRIORITY_IDLE, MotionPhase::Idle) {
-            Ok(index) => Self::emit_motion_started(app, "Idle", index),
-            Err(error) => eprintln!("[live2d] idle motion failed: {error}"),
+        if let Err(error) = self.start_motion("Idle", None, model::PRIORITY_IDLE, MotionPhase::Idle) {
+            eprintln!("[live2d] idle motion failed: {error}");
         }
     }
 
-    pub(super) fn start_initial_motion(&mut self, app: Option<&RendererEvents>) -> Result<(), String> {
+    pub(super) fn start_initial_motion(&mut self) -> Result<(), String> {
         let entrance_group = self.profile.as_ref().and_then(|profile| profile.entrance_group.clone());
         if let Some(group) = entrance_group.filter(|group| self.motion_counts.contains_key(group)) {
-            let index = self.start_motion(&group, None, model::PRIORITY_NORMAL, MotionPhase::Entrance)?;
-            Self::emit_motion_started(app, &group, index);
+            self.start_motion(&group, None, model::PRIORITY_NORMAL, MotionPhase::Entrance)?;
         } else {
-            if let Some(app) = app {
-                let _ = app.emit("aics:live2d:entrance-finished", ());
-            }
-            self.start_idle_motion(app);
+            self.start_idle_motion();
         }
         Ok(())
     }
 
-    pub(super) fn advance_motion(&mut self, dt: f32, app: Option<&RendererEvents>) {
+    pub(super) fn advance_motion(&mut self, dt: f32) {
         if let Some(active) = self.active_motion.as_mut() {
             if let Some(remaining) = active.remaining_seconds.as_mut() {
                 *remaining = (*remaining - dt).max(0.0);
@@ -183,11 +169,6 @@ impl RenderContext {
         }
         let phase = active.phase;
         self.active_motion = None;
-        if phase == MotionPhase::Entrance {
-            if let Some(app) = app {
-                let _ = app.emit("aics:live2d:entrance-finished", ());
-            }
-        }
         // 夏目互动/登场动作结束后回落叠层与换装参数：Tap* 驱动它们而 Idle
         // 不覆盖，不复位则叠层残留（2026-08-15 实机缺陷，见
         // docs/live2d-natsume-overlay-research.md）。回落为 smoothstep 缓动
@@ -200,6 +181,6 @@ impl RenderContext {
                 self.overlay_settler = OverlaySettler::begin(model, config);
             }
         }
-        self.start_idle_motion(app);
+        self.start_idle_motion();
     }
 }

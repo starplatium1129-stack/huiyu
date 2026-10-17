@@ -198,7 +198,7 @@ function candidateTasks(tasks: any) {
 }
 
 async function main(args: any = process.argv.slice(2), deps: any = {}) {
-  const opts = safety.parseArgs(args, { force: 'flag', character: 'value', limit: 'value' }, deps.env || process.env);
+  const opts = safety.parseArgs(args, { force: 'flag', character: 'value', limit: 'value' });
   if (opts.help) return safety.help(__filename, '[--force] [--character <id>] [--limit <n>]');
   opts.limit = Number(opts.limit || 0);
   if (!Number.isInteger(opts.limit) || opts.limit < 0) throw new Error('limit must be a non-negative integer');
@@ -207,5 +207,4 @@ async function main(args: any = process.argv.slice(2), deps: any = {}) {
   return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources }, deps);
 }
 
-export = { main, loadInputs, collectAllSceneTasks, buildPayload, candidateTasks };
 if (require.main === module) safety.runCli(main);

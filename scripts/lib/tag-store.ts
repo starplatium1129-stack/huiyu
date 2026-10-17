@@ -14,7 +14,7 @@ export interface TagEntry {
   [key: string]: unknown;
 }
 
-export interface TagManifestEntry {
+interface TagManifestEntry {
   file: string;
   category: string;
   label?: string;
@@ -28,7 +28,7 @@ export interface TagManifest {
   dictionary?: TagDictionaryPolicy;
 }
 
-export interface TagShardFile {
+interface TagShardFile {
   version: number;
   category: string;
   label?: string;
@@ -56,7 +56,7 @@ export interface TagDictionaryOutput {
   aliases: Record<string, string>;
 }
 
-export function buildTagDictionary(tags: TagEntry[], policy: TagDictionaryPolicy = {}): TagDictionaryOutput {
+function buildTagDictionary(tags: TagEntry[], policy: TagDictionaryPolicy = {}): TagDictionaryOutput {
   return buildValidatedTagDictionary(tags, policy);
 }
 

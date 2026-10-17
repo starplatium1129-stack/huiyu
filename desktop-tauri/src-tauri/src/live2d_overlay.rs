@@ -127,33 +127,6 @@ pub async fn aics_live2d_set_character(
     }
 }
 
-/// 只读状态查询。未初始化时不得创建 overlay 或启动渲染线程。
-#[tauri::command]
-pub async fn aics_live2d_get_state(app: AppHandle) -> Result<serde_json::Value, String> {
-    if crate::live2d_process::enabled() { return crate::live2d_process::call(&app, ProcessCommand::GetState).await; }
-    let Some(state) = app.try_state::<Arc<Live2DOverlayState>>() else {
-        return Ok(serde_json::json!({
-            "active": false,
-            "rect": OverlayRect::default(),
-            "visible": false,
-            "frameCount": 0,
-            "targetFps": 0,
-            "character": null,
-            "ready": false,
-            "windowReady": false,
-            "rendererAttached": false,
-            "starting": false,
-            "modelBounds": null,
-            "mouthLevel": 0.0,
-            "mouthMappedValue": 0.0,
-            "surfaceFailures": 0,
-            "surfaceRecoveries": 0,
-            "renderErrors": 0,
-        }));
-    };
-    Ok(crate::live2d_renderer::state_snapshot(state.inner()))
-}
-
 #[tauri::command]
 pub async fn aics_live2d_play_motion(
     app: AppHandle,

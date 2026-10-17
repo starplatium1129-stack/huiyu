@@ -112,12 +112,12 @@ function buildPayload(char: any, outfit: any, persId: any, seed: any) {
 }
 
 async function main(args: any = process.argv.slice(2), deps: any = {}) {
-  const opts = safety.parseArgs(args, { ids: 'value', keys: 'value', force: 'flag' }, deps.env || process.env);
+  const opts = safety.parseArgs(args, { ids: 'value', keys: 'value', force: 'flag' });
   if (opts.help) return safety.help(__filename, '[--ids=a,b,c] [--keys <reference keys>] [--force]');
   const input: any = safety.snapshot(opts.root, ['data/character-reference-standards.json']);
   const tasks = collectTasks(input.data['data/character-reference-standards.json'], opts);
   return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources, maxAttempts: 5 }, deps);
 }
 
-export = { main, buildPrompt, buildPayload, collectTasks };
+export = { main };
 if (require.main === module) safety.runCli(main);

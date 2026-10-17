@@ -186,7 +186,7 @@ function requestKey(url: string, method: string): string {
   return `${method} ${url}`
 }
 
-export function createApiClient(fetchImplementation: FetchImplementation = defaultFetch): ApiClient {
+function createApiClient(fetchImplementation: FetchImplementation = defaultFetch): ApiClient {
   const responseCache = new Map<string, CacheEntry>()
   interface InflightEntry {
     response: Promise<TransportedResponse>

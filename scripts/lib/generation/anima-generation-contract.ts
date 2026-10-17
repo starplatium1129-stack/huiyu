@@ -29,41 +29,4 @@ const KREA_DEFAULTS = Object.freeze({
   scheduler: 'simple',
 });
 
-const MANUAL_REPAIR_PRESET = Object.freeze({
-  steps: 30,
-  cfg: 4.5,
-  sampler: ANIMA_DEFAULTS.sampler,
-  scheduler: ANIMA_DEFAULTS.scheduler,
-});
-
-const PARAMETER_LIMITS = Object.freeze({
-  steps: Object.freeze({ min: 1, max: 60, integer: true }),
-  cfg: Object.freeze({ min: 0.5, max: 10, integer: false }),
-  seed: Object.freeze({ min: 0, max: Number.MAX_SAFE_INTEGER, integer: true }),
-  teaCacheThresh: Object.freeze({ min: 0.0, max: 1.0, integer: false }),
-  denoisingStrength: Object.freeze({ min: 0.1, max: 1.0, integer: false }),
-  growMaskBy: Object.freeze({ min: 0, max: 32, integer: true }),
-  maskThreshold: Object.freeze({ min: 0.05, max: 0.95, integer: false }),
-});
-
-const CHARACTER_LORA_BINDINGS = Object.freeze({
-  nene: 'L_NENE_V21_ANIMA',
-  natsume: 'L_NAT_V21_ANIMA',
-});
-
-function requiredCharacterForLora(loraId: any) {
-  return Object.entries(CHARACTER_LORA_BINDINGS)
-    .find(([, binding]: any) => binding === loraId)?.[0] || '';
-}
-
-function validateTunableNumber(value: any, name: string|number) {
-  const limit = PARAMETER_LIMITS[name as keyof typeof PARAMETER_LIMITS];
-  if (!limit || typeof value !== 'number' || !Number.isFinite(value)
-    || (limit.integer && !Number.isInteger(value))
-    || value < limit.min || value > limit.max) {
-    return false;
-  }
-  return true;
-}
-
-export = { ANIMA_DEFAULTS, MIAOMIAO_V16_DEFAULTS, KREA_DEFAULTS, MANUAL_REPAIR_PRESET, PARAMETER_LIMITS, CHARACTER_LORA_BINDINGS, requiredCharacterForLora, validateTunableNumber };
+export = { ANIMA_DEFAULTS, MIAOMIAO_V16_DEFAULTS, KREA_DEFAULTS };

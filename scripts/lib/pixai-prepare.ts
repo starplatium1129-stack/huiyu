@@ -36,7 +36,7 @@ export async function adoptCandidate(source: string, target: string): Promise<vo
   }
 }
 
-export async function pythonJson(python: string, code: string, args: string[] = []): Promise<Record<string, any>> {
+async function pythonJson(python: string, code: string, args: string[] = []): Promise<Record<string, any>> {
   const child = spawn(python, ['-B', '-c', code, ...args], { windowsHide: true, shell: false,
     env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1', HF_HUB_OFFLINE: '1', TRANSFORMERS_OFFLINE: '1' },
     stdio: ['ignore', 'pipe', 'pipe'],

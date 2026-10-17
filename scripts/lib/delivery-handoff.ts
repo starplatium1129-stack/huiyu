@@ -142,4 +142,4 @@ function inspectHandoff(root: any, document: any, freshness: any, options: any =
   result.status = result.errors.length ? 'failed' : result.pending.length ? 'pending' : 'passed';
   return result;
 }
-export = { capture, inspectHandoff, mainRequirements };
+export = { capture, inspectHandoff };

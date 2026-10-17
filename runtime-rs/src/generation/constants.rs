@@ -1,5 +1,4 @@
 pub const CHECKPOINT: &str = "waiIllustriousSDXL_v170.safetensors";
-pub const MODEL: &str = "waiIllustriousSDXL_v170";
 pub const MAX_PENDING: usize = 4;
 pub const MAX_JSON: usize = 8 * 1024 * 1024;
 pub const MAX_IMAGE: usize = 16 * 1024 * 1024;
@@ -17,28 +16,6 @@ pub const SUPER_RES_FILES: &[(&str, &str)] = &[
     ("RealESRGAN_x4plus_anime_6B.pth", "R-ESRGAN 4x+ Anime6B"),
     ("R-ESRGAN 4x+ Anime6B.pth", "R-ESRGAN 4x+ Anime6B"),
     ("RealESRGAN_x4plus.pth", "R-ESRGAN 4x+"),
-];
-pub const ALLOWED: &[&str] = &[
-    "prompt",
-    "negative",
-    "profile",
-    "modelId",
-    "character",
-    "loras",
-    "width",
-    "height",
-    "steps",
-    "cfg",
-    "seed",
-    "sampler",
-    "scheduler",
-    "hiresFix",
-    "hiresScale",
-    "hiresUpscaler",
-    "hiresSteps",
-    "denoisingStrength",
-    "faceDetailer",
-    "adultEnabled", // Legacy saved requests may include this ignored field.
 ];
 pub const LORAS: &[(&str, &str, &str)] = &[
     (

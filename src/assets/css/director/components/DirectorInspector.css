@@ -25,7 +25,6 @@
 .pb .inspector-workbench .artist-picker-trigger { padding:var(--s-2) 0; gap:var(--s-2); }
 .pb .inspector-workbench .artist-summary-right { width:auto; flex:1; }
 .pb .inspector-workbench .artist-summary-right strong { text-align:right; }
-.pb .inspector-workbench .generation-settings .toggle-row { grid-column:auto; flex-wrap:wrap; gap:var(--s-1); }
 .pb .inspector-actions { flex-shrink:0; border-top:1px solid var(--border-soft); }
 
 /* All inspector tabs share native disclosure geometry, independent of lazy panels. */

@@ -6,7 +6,7 @@ import { runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
 export const CHARACTER_ART_CHANNEL = 'huiyu-character-art'
 export type CharacterArtSavePayload = { baseVersion: string; id: string; image?: string; reset?: true }
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
-export function parseCharacterArtManifest(value: unknown): CharacterArtManifest {
+function parseCharacterArtManifest(value: unknown): CharacterArtManifest {
   if (!object(value) || value.ok !== true || typeof value.version !== 'string' || !object(value.entries)) throw new Error('角色立绘清单格式无效')
   const entries: Record<string, CharacterArtEntry> = {}
   for (const [id, raw] of Object.entries(value.entries)) {

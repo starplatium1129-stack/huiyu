@@ -186,8 +186,6 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       },
       '/api':         { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/sdapi':       { target: 'http://127.0.0.1:3000', changeOrigin: true },
-      '/controlnet':  { target: 'http://127.0.0.1:3000', changeOrigin: true },
-      '/adetailer':   { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/scene-showcase': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/character-references': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/docs':        { target: 'http://127.0.0.1:3000', changeOrigin: true },

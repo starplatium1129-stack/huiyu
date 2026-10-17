@@ -5,7 +5,7 @@ import type { TaskRecord } from '../../../types/tasks'
 import type { RuntimeSdAttempt } from './legacySdTaskSession'
 import type { AnimaResultContext } from '@/types/anima'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
-export type { SDGenerateParams } from '@/utils/sdRequest'
+
 
 export interface LegacySdObserveOptions {
   /** Existing FIFO intent; batch plans continue to own their own request keys. */
@@ -30,7 +30,6 @@ export function useLegacySdTasks() {
   const online      = ref(false)
   const checkpoint  = ref('')
   const generating  = ref(false)
-  const taskState = ref('idle')
   /**
    * 0–100 的真实进度；`null` = 后端给不出进度（WebUI 路径 / 尚未收到步骤事件）。
    * 保持可空而非默认 0：UI 的进度环对 null 走 indeterminate 动画，对 0 则画一个
@@ -82,12 +81,11 @@ export function useLegacySdTasks() {
     }
     if (!options.attempt?.key && !options.requestKey && !options.resumeId) {
       const error = new Error('SD 新生成已退役；只能核对已有任务编号。')
-      errorMsg.value = error.message; taskState.value = 'failed'; statusText.value = error.message
+      errorMsg.value = error.message; statusText.value = error.message
       options.onError?.(error)
       return null
     }
     generating.value = true
-    taskState.value = 'running'
     progress.value   = null
     statusText.value = '正在核对旧任务…'
     errorMsg.value   = ''
@@ -112,7 +110,7 @@ export function useLegacySdTasks() {
         if (!durableKey) throw new Error('旧 SD 任务缺少原请求编号，不能创建新任务。')
         const { observeRuntimeSd } = await import('./legacySdTaskSession')
         const url = await observeRuntimeSd(durableKey, controller.signal,
-          { taskState, statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt, resultContext },
+          { statusText, progress, provider, resultUrl, resultSeed, resultTaskId, resultPrompt, resultContext },
           async task => { accepted = true; await options.onAccepted?.(task) }, options.attempt)
         lastLoras.value = resultContext.value?.history?.loras?.map(lora => ({ ...lora })) ?? []
         return url
@@ -129,7 +127,7 @@ export function useLegacySdTasks() {
       const { blob, seed } = await observeWebGeneration(options.resumeId, {
         signal: controller.signal, steps: params.steps, hires: params.hr_fix, hiresSteps: params.hr_second_pass_steps,
         async accepted(id, selectedProvider) { activeJobId = id; provider.value = selectedProvider; await options.onAcceptedId?.(id) },
-        progress(value) { taskState.value = value.status; if (value.progress !== undefined) progress.value = value.progress; if (value.text !== undefined) statusText.value = value.text },
+        progress(value) { if (value.progress !== undefined) progress.value = value.progress; if (value.text !== undefined) statusText.value = value.text },
       })
       controller.signal.throwIfAborted()
       const url = URL.createObjectURL(blob)
@@ -141,7 +139,6 @@ export function useLegacySdTasks() {
       resultSeed.value = seed
       resultPrompt.value = payload.prompt
       lastLoras.value = loras
-      taskState.value = 'succeeded'
       statusText.value = '生成完成'
       return url
     } catch (e) {
@@ -149,15 +146,13 @@ export function useLegacySdTasks() {
       if (durableAttempt) {
         const { runtimeSdFailure } = await import('./legacySdTaskSession')
         const failure = runtimeSdFailure(e, controller.signal.aborted, submitted, accepted, cancelRequested)
-        taskState.value = failure.state; statusText.value = failure.message; errorMsg.value = failure.error
+        statusText.value = failure.message; errorMsg.value = failure.error
         return null
       }
       if (isAbortError(e) || controller.signal.aborted) {
-        taskState.value = cancelRequested ? 'cancelled' : 'unknown'
         statusText.value = cancelRequested ? '已停止' : '已停止查看，原任务仍由服务端管理'
         return null
       }
-      taskState.value = e instanceof AcceptedTaskTerminalError ? e.status : 'unknown'
       errorMsg.value = e instanceof AcceptedTaskTerminalError && e.status === 'cancelled' ? '' : errorMessage(e)
       statusText.value = e instanceof AcceptedTaskTerminalError ? (e.status === 'cancelled' ? '任务已取消' : '任务失败') : '原任务状态尚未确认，请继续核对'
       return null
@@ -173,7 +168,6 @@ export function useLegacySdTasks() {
   function cancel() {
     if (!generating.value) return
     cancelRequested = true
-    taskState.value = 'cancelling'
     abortCtrl?.abort()
     if (durableAttempt) {
       if (durableKey) {
@@ -182,7 +176,6 @@ export function useLegacySdTasks() {
         const cancellation = queueAttempt ? queueAttempt.cancel() : import('@/api/runtimeTasks').then(api => api.cancelRuntimeTaskKey(key))
         void cancellation.then(task => {
           if (!task || serial !== requestSerial || !task.upstreamSettled) return
-          taskState.value = task.status
           statusText.value = task.status === 'cancelled' ? '任务已取消' : '任务已经结束，请在收件箱核对结果'
         }).catch(() => { if (serial === requestSerial) errorMsg.value = '取消尚未确认，请到任务中心核对' })
       }
@@ -196,7 +189,6 @@ export function useLegacySdTasks() {
   }
 
   function clearResult() {
-    if (!generating.value) taskState.value = 'idle'
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
     lastLoras.value = []
     resultTaskId.value = ''
@@ -209,7 +201,6 @@ export function useLegacySdTasks() {
    * 把 blob URL 与它的 seed/prompt 挂回会话，舞台与「出视频/加入分镜」随即可用。
    */
   function adoptResult(url: string, seed: number | null, prompt: string, taskId = '') {
-    taskState.value = 'succeeded'
     if (resultUrl.value && resultUrl.value !== url) URL.revokeObjectURL(resultUrl.value)
     resultUrl.value = url
     resultSeed.value = seed
@@ -230,11 +221,11 @@ export function useLegacySdTasks() {
     if (resultUrl.value) { URL.revokeObjectURL(resultUrl.value); resultUrl.value = '' }
   }
 
-  // 在组件上下文里自动挂载；被普通函数调用时（如测试）跳过
+  // 在组件上下文里自动释放当前会话资源
   if (getCurrentInstance()) onUnmounted(dispose)
 
   return {
-    taskState: readonly(taskState), online: readonly(online), checkpoint: readonly(checkpoint),
+    online: readonly(online), checkpoint: readonly(checkpoint),
     generating: readonly(generating),
     progress: readonly(progress), statusText: readonly(statusText),
     resultUrl: readonly(resultUrl), resultSeed: readonly(resultSeed), resultPrompt: readonly(resultPrompt), resultTaskId: readonly(resultTaskId), resultContext: readonly(resultContext),

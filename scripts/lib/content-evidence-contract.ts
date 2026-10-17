@@ -61,4 +61,4 @@ function validateDecisions(value: { schemaVersion: number; kind: string; runId: 
   return value;
 }
 
-export = { UUID, METADATA, validateRecord, inputVersion, reviewState, validateDecisions };
+export = { UUID, validateRecord, inputVersion, reviewState, validateDecisions };

@@ -125,9 +125,6 @@ export function usePopularPromptAssembly(
     })
   })
 
-  /** 角色默认服装是否正被反推结果顶替（供 UI 展示/一键恢复）。 */
-  const outfitOverridden = computed(() => Boolean(pb.outfitOverride?.tokens.length))
-
   /**
    * 用户是否**显式**挑过服装（而非选中角色时自动回退到默认那套）。
    *
@@ -168,7 +165,6 @@ export function usePopularPromptAssembly(
     profile,
     character,
     outfit,
-    outfitOverridden,
     blueprint,
     resolvedStyle,
     structuredPlan,

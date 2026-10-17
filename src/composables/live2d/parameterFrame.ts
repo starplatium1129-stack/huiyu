@@ -77,8 +77,8 @@ export function createParameterFrame(
       // 互动计时清空 activeInteraction）启动 smoothstep 回落（与原生端
       // OVERLAY_SETTLE_SECONDS 同款），替代原先的单帧硬写——后者让换装
       // 部件一帧内消失/回穿，视觉上是"闪一下"；回落结束后恢复每帧硬性
-      // 写回隐藏态（0/-1 分组）——与 native 端 step_overlay_settle /
-      // force_overlay_hidden 行为一致。
+      // 写回隐藏态（0/-1 分组）——与 native 端按 profile 回落及隐藏
+      // 守卫的行为一致。
       const interactionPlaying = ctx.activeInteraction !== ''
       const overlayByMotion = inEntrance || interactionPlaying
       if (overlayByMotion) {

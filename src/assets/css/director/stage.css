@@ -22,45 +22,6 @@
       @apply tw:max-h-[620px];
     }
   }
-  /* 位置与表面合并于此(原先 :703 又声明了一次 left/right/top/padding/border/radius) */
-   .pb .stage-chrome {
-     @apply tw:absolute; z-index:var(--z-raised); @apply tw:top-[14px] tw:left-[16px] tw:right-[16px] tw:flex tw:items-center tw:justify-between;
-     padding:var(--s-2) var(--s-3); border:1px solid var(--glass-edge); border-radius:var(--r-terminal);
-     @apply tw:text-muted; font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.12em;
-   }
-  /* 生成中魔法阵：双环断弧反向旋转（conic 断弧 + mask 环带裁切，零硬编码色；
-     只有 .is-generating 时淡入，reduced-motion 由全局动画降级） */
-  .pb .stage-magic-ring {
-    @apply tw:absolute; z-index:var(--z-base);
-    @apply tw:left-[50%] tw:top-[46%];
-    width:min(40vw,470px); aspect-ratio:1;
-    transform:translate(-50%,-50%);
-    border-radius:50%;
-    @apply tw:pointer-events-none;
-    opacity:0;
-    transition:opacity var(--motion-atmosphere) var(--ease-out);
-    background:
-      conic-gradient(from 20deg, transparent 0 42%, color-mix(in srgb,var(--accent) 34%,transparent) 58% 76%, transparent 94%),
-      radial-gradient(circle, transparent 0 60%, color-mix(in srgb,var(--accent-hover) 18%,transparent) 65% 67%, transparent 69%);
-    -webkit-mask:radial-gradient(closest-side, transparent 0 76%, var(--text-primary) 76% 79%, transparent 79%);
-    mask:radial-gradient(closest-side, transparent 0 76%, var(--text-primary) 76% 79%, transparent 79%);
-  }
-  .pb .stage-magic-ring::after {
-    content:''; @apply tw:absolute; inset:19%;
-    border-radius:50%;
-    background:conic-gradient(from 200deg, transparent 0 32%, color-mix(in srgb,var(--accent-hover) 32%,transparent) 50% 64%, transparent 84%);
-    -webkit-mask:radial-gradient(closest-side, transparent 0 70%, var(--text-primary) 70% 74%, transparent 74%);
-    mask:radial-gradient(closest-side, transparent 0 70%, var(--text-primary) 70% 74%, transparent 74%);
-  }
-  .pb .stage-placeholder.is-generating .stage-magic-ring {
-    opacity:1;
-    animation:stageMagicSpin 24s linear infinite;
-  }
-  .pb .stage-placeholder.is-generating .stage-magic-ring::after {
-    animation:stageMagicSpinRev 31s linear infinite;
-  }
-  @keyframes stageMagicSpin { to { transform:translate(-50%,-50%) rotate(360deg); } }
-  @keyframes stageMagicSpinRev { to { transform:rotate(-360deg); } }
   /* 显影仪式感：在生成状态下，画布底层光晕呈现暗房显影液般的轻柔呼吸（GPU 属性 opacity/transform，零重排） */
   .pb .stage-placeholder.is-generating::before {
     opacity: 0.85;
@@ -71,30 +32,13 @@
     50% { transform: scale(1.03); opacity: 0.92; }
     100% { transform: scale(1.01); opacity: 0.72; }
   }
-  .pb .stage-ready { @apply tw:flex tw:items-center tw:gap-s-2; }
-  .pb .stage-ready::before { content:''; @apply tw:w-[6px] tw:h-[6px]; border-radius:50%; background:var(--success); box-shadow:0 0 10px color-mix(in srgb,var(--success) 50%,transparent); }
-  .pb .stage-placeholder.is-error .stage-ready { @apply tw:text-danger-text; }
-  .pb .stage-placeholder.is-error .stage-ready::before { background:var(--danger); box-shadow:0 0 10px color-mix(in srgb,var(--danger) 50%,transparent); }
-  .pb .stage-placeholder.is-paused .stage-ready { @apply tw:text-warning-text; }
-  .pb .stage-placeholder.is-paused .stage-ready::before { background:var(--warning); box-shadow:0 0 10px color-mix(in srgb,var(--warning) 50%,transparent); }
-  .pb .stage-muse { @apply tw:absolute; z-index:var(--z-base); @apply tw:right-[-12%] tw:bottom-[-3%] tw:w-[52%] tw:h-[92%] tw:object-contain; object-position:center bottom; opacity:0; filter:saturate(.76) contrast(.96); @apply tw:pointer-events-none; transition:opacity var(--motion-atmosphere) ease, transform var(--motion-atmosphere) var(--ease-out); -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); mask-image:linear-gradient(180deg,transparent 0%,#000 28%,#000 100%); }
-  /* 审计修复：呼吸动画原为逐帧补间 filter（6s 无限循环 · 大图离屏合成 = 常驻每帧开销）。
-     .stage-muse 是 <img>，无法挂伪元素承载滤镜层；而 saturate .76→.88 / contrast .96→1.02
-     的差值本就几乎不可感，故去掉 filter 补间、只保留 transform 呼吸（合成器属性，零重绘）。 */
-  @keyframes stageMuseBreath { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-7px) scale(1.018); } }
-  .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.34; animation: stageMuseBreath 6s ease-in-out infinite alternate; }
   .pb[data-character="natsume"] .stage-placeholder {
     background:
       radial-gradient(circle at 68% 22%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 38%),
       linear-gradient(145deg,color-mix(in srgb,var(--accent) 7%,var(--bg-elevated)),var(--bg-deep));
   }
-  .pb[data-character="natsume"] .stage-muse.natsume { filter:saturate(.78) contrast(.96) sepia(.04); }
-  .pb[data-character="triad"] .stage-muse { opacity:.16; }
-  .pb[data-character="triad"] .stage-muse.nene { @apply tw:right-auto tw:left-[-12%]; }
-  .pb[data-character="triad"] .stage-muse.natsume { @apply tw:right-[-12%]; }
   .pb .stage-message { @apply tw:relative; z-index:var(--z-raised); width:min(58%,430px); transform:translateX(-24%); }
   .pb[data-character="triad"] .stage-message { transform:none; }
-  .pb .stage-placeholder-icon { @apply tw:w-[68px] tw:h-[68px] tw:grid; place-items:center; margin:0 auto var(--s-4); border:1px solid color-mix(in srgb,var(--accent) 30%,var(--border-soft)); @apply tw:rounded-2xl; background:color-mix(in srgb,var(--accent-soft) 68%,transparent); @apply tw:text-accent; font:700 var(--fs-stage-glyph) var(--font-serif); box-shadow:0 22px 64px var(--accent-glow); }
   /* 装饰性汉字水印「綾」使用独立光学字号,不属于文本字号阶梯 */
   .pb .stage-placeholder-title { @apply tw:text-primary tw:text-title-xs; font-weight:720; letter-spacing:-.01em; }
   .pb .stage-placeholder-copy { @apply tw:max-w-[330px] tw:mt-s-2 tw:text-muted tw:text-label tw:leading-loose; }
@@ -106,10 +50,9 @@
   body:has(.pb.focus-mode) .nav,
   body:has(.pb.focus-mode) .site-footer,
   .pb.focus-mode .pb-header,
-  .pb.focus-mode .col-left, .pb.focus-mode .col-right, .pb.focus-mode .history-wrap, .pb.focus-mode .collapsible,
+  .pb.focus-mode .col-left, .pb.focus-mode .history-wrap,
   .pb.focus-mode .footer { @apply tw:hidden!; }
-  .pb.focus-mode .api-status, .pb.focus-mode .utility-menu,
-  .pb.focus-mode .col-center > .generation-settings { @apply tw:hidden!; }
+  .pb.focus-mode .api-status, .pb.focus-mode .utility-menu { @apply tw:hidden!; }
   /* 专注成片模式：配音面板（含折叠态）整体不占舞台——配音是独立工序，出片时不需要 */
   .pb.focus-mode .voice-studio { @apply tw:hidden!; }
   .pb.focus-mode .pb-topline { @apply tw:items-center tw:justify-end tw:mb-s-3; }
@@ -117,7 +60,6 @@
   .pb.focus-mode .stage-placeholder { min-height:clamp(380px, 46vh, 560px); }
   .pb.focus-mode #stepResult { min-height:clamp(300px, 40vh, 420px); }
   /* Step workflow */
-  .pb .stepbar { @apply tw:flex tw:items-center tw:gap-0; padding:var(--s-3) 0 var(--s-5); }
   /* Vue SPA 始终展示输出面板；旧 step-4 流程仅抬高高度。
      2026-08-28：min-height 收窄到 has-result——生成期间舞台自持进度，
      输出面板不再膨胀抢视口（消除点生成瞬间的整页跳变）。 */
@@ -135,11 +77,11 @@
     @apply tw:rounded-md tw:p-s-4; box-shadow:none; @apply tw:relative;
     transition:border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover);
   }
-  .pb .col-left .panel::before, .pb .col-right .panel::before { content:''; @apply tw:absolute tw:top-[-1px] tw:left-s-4 tw:w-[34px] tw:h-[1px]; background:var(--archive-blue); opacity:.72; @apply tw:pointer-events-none; }
-  .pb .col-left .panel:hover, .pb .col-right .panel:hover {
+  .pb .col-left .panel::before { content:''; @apply tw:absolute tw:top-[-1px] tw:left-s-4 tw:w-[34px] tw:h-[1px]; background:var(--archive-blue); opacity:.72; @apply tw:pointer-events-none; }
+  .pb .col-left .panel:hover {
     border-color:color-mix(in srgb,var(--border-soft) 92%,transparent);
   }
   /* 侧栏标题降噪，把注意力留给画布 */
-  .pb .col-left .panel-title, .pb .col-right .panel-title {
+  .pb .col-left .panel-title {
     color:color-mix(in srgb,var(--text-secondary) 78%,transparent);
   }

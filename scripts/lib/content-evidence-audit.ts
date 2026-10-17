@@ -149,4 +149,4 @@ function auditContentEvidence(options: any) {
   return result;
 }
 
-export = { auditContentEvidence, sourceEvidence, assetEvidence, publicationState };
+export = { auditContentEvidence };

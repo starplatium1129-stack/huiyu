@@ -20,7 +20,8 @@ import {
   type AnimaStatusResponse,
   type AnimaSubmission,
 } from './animaSessionContract'
-export * from './animaSessionContract'
+export { ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, animaRequestPayload, closestSupportedSize, resolveInpaintRequestBinding } from './animaSessionContract'
+export type { AnimaPublicJob, AnimaRequest } from './animaSessionContract'
 
 /**
  * Anima / Krea 2 生成会话 —— 生成、进度、取消和错误的会话内聚实现。

@@ -85,7 +85,7 @@ function parseRecord(value: unknown): CharacterSettingRecord | null {
   }
 }
 
-export function parseCharacterSettingCards(value: unknown): CharacterSettingRecord[] {
+function parseCharacterSettingCards(value: unknown): CharacterSettingRecord[] {
   if (!Array.isArray(value)) return []
   const seen = new Set<string>()
   const cards: CharacterSettingRecord[] = []
@@ -130,7 +130,7 @@ export function characterSettingCards(): CharacterSettingRecord[] {
 // ── 检索与注入 ──────────────────────────────────────────────────────────
 
 /** 单个角色设定 → 一组可注入的条目文本（预算受控）。 */
-export function buildCharacterSettingEntries(card: CharacterSettingRecord): string[] {
+function buildCharacterSettingEntries(card: CharacterSettingRecord): string[] {
   const entries: string[] = []
   if (card.bgStory) {
     entries.push(`背景：${card.bgStory.slice(0, MAX_ITEM_TEXT)}`)

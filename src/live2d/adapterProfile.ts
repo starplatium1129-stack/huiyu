@@ -301,7 +301,7 @@ function validStageHitZone(
     && zone.minY < zone.maxY && (zone.minX ?? 0) < (zone.maxX ?? 1)
 }
 
-export function adapterCapabilityReport(
+function adapterCapabilityReport(
   profile: Live2DAdapterProfile,
   backend: Live2DBackendKind,
 ): Live2DAdapterCapabilityReport {

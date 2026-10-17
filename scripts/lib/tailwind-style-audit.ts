@@ -3,7 +3,7 @@
  * Keeping their policy-relevant declarations visible prevents @apply/classes
  * from bypassing the same literal and compositor gates as handwritten CSS.
  */
-export interface TailwindUtility {
+interface TailwindUtility {
   candidate: string;
   index: number;
   line: number;
@@ -40,7 +40,7 @@ function decode(value: string) {
   return value.replace(/(?<!\\)_/g, ' ').replace(/\\_/g, '_');
 }
 
-export function utilityDeclarations(candidate: string): TailwindUtility['declarations'] {
+function utilityDeclarations(candidate: string): TailwindUtility['declarations'] {
   const core = coreUtility(candidate);
   const declaration = (property: string, value: string) => [{ property, value }];
   const size = (value: string) => [{ property: 'width', value }, { property: 'height', value }];

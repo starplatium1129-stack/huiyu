@@ -113,7 +113,7 @@ impl InterrogateService {
         let (image, permit) = result
             .await
             .map_err(|_| ApiError::new(503, "INTERROGATE_UNAVAILABLE", "参考图片读取未完成"))??;
-        self.interrogate(json!({}), Some(image), permit).await
+        self.interrogate(json!({}), image, permit).await
     }
 }
 

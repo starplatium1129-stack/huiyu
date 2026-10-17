@@ -55,19 +55,6 @@ impl Service {
         transport: LocalUpstream,
         shutdown: CancellationToken,
     ) -> Result<Self> {
-        Self::with_transcoder(
-            config,
-            transport,
-            shutdown,
-            Arc::new(transcode::Ffmpeg::default()),
-        )
-    }
-    pub fn with_transcoder(
-        config: Config,
-        transport: LocalUpstream,
-        shutdown: CancellationToken,
-        runner: Arc<dyn Transcoder>,
-    ) -> Result<Self> {
         let shutdown = shutdown.child_token();
         let backend = Arc::new(generation::Service::for_video(
             config.clone(),
@@ -84,7 +71,7 @@ impl Service {
             shutdown,
             tasks,
             batches,
-            transcode: transcode::Queue::new(runner),
+            transcode: transcode::Queue::new(),
             t8: Mutex::new((false, None)),
         })
     }
@@ -220,7 +207,7 @@ impl Service {
     }
     pub(crate) async fn upload(
         &self,
-        data: crate::images::Upload,
+        data: axum::body::Bytes,
         owner: String,
         reference: bool,
         cancel: CancellationToken,

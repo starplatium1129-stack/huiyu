@@ -73,7 +73,7 @@ export interface SceneCardScene {
 
 const props = withDefaults(defineProps<{
   scene: SceneCardScene
-  mode?: 'grid' | 'strip' | 'recent'
+  mode?: 'grid' | 'strip'
   clickable?: boolean
   suppressTags?: boolean
   completePreview?: boolean

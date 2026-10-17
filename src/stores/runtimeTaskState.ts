@@ -2,8 +2,8 @@ import { computed, ref, shallowRef, toRaw } from 'vue'
 import type { TaskRecord, TaskSummary } from '../../types/tasks'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
 // Revision snapshots are immutable here; merges replace the root array.
-export const taskRecords = shallowRef<TaskSummary[]>([])
-export const copyTask = <T extends TaskSummary>(task: T): T => structuredClone(toRaw(task))
+const taskRecords = shallowRef<TaskSummary[]>([])
+const copyTask = <T extends TaskSummary>(task: T): T => structuredClone(toRaw(task))
 const viewCopies = new WeakMap<TaskSummary, TaskSummary>()
 export const runtimeTasks = computed(() => taskRecords.value.map(task => {
   let copy = viewCopies.get(task)

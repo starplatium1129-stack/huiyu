@@ -23,7 +23,7 @@ export type NativeAnimationPolicies = Readonly<Record<string, NativeAnimationPol
 // Nene's expression1-5 are outfits, and Natsume has no Expressions. Existing
 // Tap/Idle/Start/Leave motions are interaction or lifecycle assets, not verified
 // emotion motions, so both emotion allowlists intentionally start empty.
-export const LIVE2D_NATIVE_POLICIES: NativeAnimationPolicies = {
+const LIVE2D_NATIVE_POLICIES: NativeAnimationPolicies = {
   nene: { expressions: [], motions: [] },
   natsume: { expressions: [], motions: [] },
 }

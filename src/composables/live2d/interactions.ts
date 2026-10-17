@@ -7,7 +7,7 @@ import { resolveCompanionAvatar } from '../../utils/companionRegistry.ts'
 import { hasAffectionMotionRules } from '../../utils/companionAffection.ts'
 
 /** 分区带映射：舞台归一化坐标（x/y ∈ [0,1]）→ 互动动作。 */
-export function resolveStageInteraction(character: string, x: number, y: number): Live2DInteraction | null {
+function resolveStageInteraction(character: string, x: number, y: number): Live2DInteraction | null {
   const profile = resolveCompanionAvatar(character)?.profile
   if (!profile?.interactions) return null
   const zone = profile.stageHitZones?.find(candidate => {
@@ -26,7 +26,7 @@ export function resolveStageInteraction(character: string, x: number, y: number)
  * "抬眼"反应（2026-08-16 实机：头/手/裙/腿点击全部命中外框）。
  * 具体分区优先；外框只在确认点击处有可见像素后兜底。
  */
-export function resolveHitAreaInteraction(character: string, areas: string[]): Live2DInteraction | null {
+function resolveHitAreaInteraction(character: string, areas: string[]): Live2DInteraction | null {
   const profile = resolveCompanionAvatar(character)?.profile
   if (!profile?.interactions) return null
   const fallbacks = new Set(profile.hitAreaFallbacks || [])

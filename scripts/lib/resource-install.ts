@@ -3,7 +3,7 @@ import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } fr
 
 const { randomUUID }: typeof import('node:crypto') = require('node:crypto');
 const { context, access, locked, child, noLinks, mkdir, readJson, writeJson, unlink, ensureSpace,
-  cancelled, event, fail, flushDir, cleanAtomicTemps }: typeof import('./resource-install-fs') = require('./resource-install-fs');
+  cancelled, yieldForCancellation, fail, flushDir, cleanAtomicTemps }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 const { HASH, releasePolicy, reference, readPack, targetManifest, verifyTree }: typeof import('./resource-install-policy') = require('./resource-install-policy');
 const { equal, readState, verifyVersion, existingVersion, nextState, readJournal }: typeof import('./resource-install-state') = require('./resource-install-state');
 const { copyEntry, fileMatches }: typeof import('./resource-install-copy') = require('./resource-install-copy');
@@ -58,7 +58,7 @@ async function commit(ctx: any, journal: any, signal: any) {
   try {
     ensureSpace(ctx, 65536);
     writeJson(ctx.io, child(ctx.store, 'current.json'), next);
-    await event(ctx, 'switched', { identity: journal.target.identity }, signal);
+    await yieldForCancellation(signal);
     access(ctx);
     verifyVersion(ctx, journal.target);
     cancelled(signal);
@@ -126,7 +126,7 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
       releaseId, packageIdentity: release.packageIdentity, before, target: reusable?.reference || reference(release) };
     ensureSpace(ctx, 65536);
     savedJournal(ctx, journal);
-    await event(ctx, 'journal', { id: journal.id }, signal);
+    await yieldForCancellation(signal);
     if (reusable) {
       journal.phase = 'prepared';
       savedJournal(ctx, journal);
@@ -152,7 +152,7 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
   writeJson(ctx.io, child(tree, 'manifest.json'), target);
   writeJson(ctx.io, child(tree, 'receipt.json'), { schemaVersion: 1, reference: journal.target });
   verifyTree(ctx, tree, target, ['manifest.json', 'receipt.json']);
-  await event(ctx, 'staged', { identity: journal.target.identity }, signal);
+  await yieldForCancellation(signal);
   const versions = child(ctx.store, 'versions');
   mkdir(ctx.io, versions);
   const destination = child(versions, journal.target.identity);
@@ -163,7 +163,7 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
   verifyVersion(ctx, journal.target);
   journal.phase = 'prepared';
   savedJournal(ctx, journal);
-  await event(ctx, 'prepared', { identity: journal.target.identity }, signal);
+  await yieldForCancellation(signal);
   return commit(ctx, journal, signal);
 }
 

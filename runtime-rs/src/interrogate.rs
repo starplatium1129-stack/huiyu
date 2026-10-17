@@ -8,7 +8,7 @@ use crate::{
     AppState,
     config::Config,
     error::{ApiError, Result},
-    images::upload_body::{RawUploadBody, UploadBody},
+    images::upload_body::RawUploadBody,
     security,
 };
 use axum::{
@@ -20,15 +20,11 @@ use axum::{
     response::{IntoResponse, Response},
     routing::{get, post},
 };
-use base64::{Engine, engine::general_purpose::STANDARD};
 use serde_json::{Value, json};
 use std::{collections::HashMap, net::SocketAddr, sync::Arc};
 use tokio_util::sync::CancellationToken;
 
 const MAX_BYTES: usize = 20 * 1024 * 1024;
-// Allow base64 expansion of the maximum-size image, with bounded room for its
-// data URL prefix and JSON fields as well.
-const MAX_BODY_BYTES: usize = MAX_BYTES.div_ceil(3) * 4 + 64 * 1024;
 pub struct InterrogateService {
     client: tokio::sync::RwLock<pixai::Client>,
     shutdown: CancellationToken,
@@ -77,7 +73,7 @@ impl InterrogateService {
     async fn interrogate(
         &self,
         input: Value,
-        image: Option<Bytes>,
+        image: Bytes,
         upload_admission: tokio::sync::OwnedSemaphorePermit,
     ) -> Result<Value> {
         if self.shutdown.is_cancelled() {
@@ -121,7 +117,7 @@ struct Input {
     threshold: f64,
     image: Bytes,
 }
-fn validate(mut input: Value, image: Option<Bytes>) -> Result<Input> {
+fn validate(input: Value, bytes: Bytes) -> Result<Input> {
     if !input.is_object() {
         return Err(ApiError::new(400, "INVALID_BODY", "请求体必须是 JSON"));
     }
@@ -145,10 +141,6 @@ fn validate(mut input: Value, image: Option<Bytes>) -> Result<Input> {
     }
     .filter(|n| n.is_finite() && (0.05..=0.95).contains(n))
     .ok_or_else(|| ApiError::new(400, "INVALID_PARAMETER", "threshold 需在 0.05-0.95"))?;
-    let bytes = match image {
-        Some(bytes) => bytes,
-        None => decode_image(&mut input)?,
-    };
     if bytes.len() < 1024 {
         return Err(ApiError::new(400, "INVALID_IMAGE", "图片过小"));
     }
@@ -160,28 +152,6 @@ fn validate(mut input: Value, image: Option<Bytes>) -> Result<Input> {
         threshold,
         image: bytes,
     })
-}
-fn decode_image(input: &mut Value) -> Result<Bytes> {
-    let object = input.as_object_mut().unwrap();
-    let image = object
-        .remove("image")
-        .filter(|value| value.as_str().is_some_and(|value| !value.is_empty()))
-        .or_else(|| object.remove("imageBase64"));
-    let Some(Value::String(mut base64)) = image else {
-        return Err(ApiError::new(400, "INVALID_IMAGE", "请上传图片"));
-    };
-    // Normalize the owned upload in place instead of copying up to 27 MiB.
-    base64.truncate(base64.trim_end().len());
-    let start = base64.len() - base64.trim_start().len();
-    let start = base64[start..]
-        .find("base64,")
-        .map_or(start, |offset| start + offset + 7);
-    base64.drain(..start);
-    base64.retain(|ch| ch != '\r' && ch != '\n');
-    STANDARD
-        .decode(base64)
-        .map(Bytes::from)
-        .map_err(|_| ApiError::new(400, "INVALID_IMAGE", "图片 base64 非法"))
 }
 pub(crate) fn local(headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
     if security::is_direct_local(headers, peer.ip())
@@ -197,10 +167,6 @@ pub(crate) fn local(headers: &HeaderMap, peer: SocketAddr) -> Result<()> {
 }
 pub fn router(service: Arc<InterrogateService>) -> Router<AppState> {
     Router::new()
-        .route(
-            "/api/interrogate",
-            post(interrogate).layer(DefaultBodyLimit::max(MAX_BODY_BYTES)),
-        )
         .route(
             "/api/interrogate/raw",
             post(interrogate_raw).layer(DefaultBodyLimit::max(MAX_BYTES)),
@@ -219,19 +185,13 @@ async fn local_only(
     }
     next.run(request).await
 }
-async fn interrogate(
-    Extension(service): Extension<Arc<InterrogateService>>,
-    UploadBody(input, admission): UploadBody,
-) -> Result<Json<Value>> {
-    service.interrogate(input, None, admission).await.map(Json)
-}
 async fn interrogate_raw(
     Extension(service): Extension<Arc<InterrogateService>>,
     Query(parameters): Query<HashMap<String, String>>,
     RawUploadBody(image, admission): RawUploadBody,
 ) -> Result<Json<Value>> {
     service
-        .interrogate(json!(parameters), Some(image), admission)
+        .interrogate(json!(parameters), image, admission)
         .await
         .map(Json)
 }

@@ -3,8 +3,8 @@
  * IndexedDB 落盘在 desktopImport.ts 集成层。
  */
 
-export const MAX_IMPORT_BATCH = 8
-export const MAX_IMPORT_BYTES = 24 * 1024 * 1024
+const MAX_IMPORT_BATCH = 8
+const MAX_IMPORT_BYTES = 24 * 1024 * 1024
 
 export interface ImportResult {
   imported: number

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 import { writeJsonAtomic } from '../lib/atomic-files';
-import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
+
+const { switchTarget }: typeof import('../lib/showcase-publication') = require('../lib/showcase-publication');
 
 /**
  * Publish ALL audit-passed popular-character showcase candidates into a NEW
@@ -23,7 +24,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
-const { spawnSync }: typeof import('child_process') = require('child_process');
+const { convertImages }: typeof import('../lib/showcase-image-conversion') = require('../lib/showcase-image-conversion');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
@@ -32,11 +33,6 @@ const DEFAULT_SHOWCASE_ROOT = path.join(AI_ROOT, 'SceneShowcase');
 const DEFAULT_TARGET = '2026-08-15_v22';
 const DEFAULT_SOURCE = '2026-08-15_v22';
 const DEFAULT_PORTRAITS = path.join(ROOT, 'assets', 'characters');
-
-const IMAGE_BOX = '1800x2400';
-const IMAGE_QUALITY = 94;
-const THUMB_BOX = '480x640';
-const THUMB_QUALITY = 85;
 
 function argument(name: any, fallback: any = '') {
   const index = process.argv.indexOf(name);
@@ -196,20 +192,6 @@ function sourcePathFor(record: any, from: any) {
   }
   return resolved;
 }
-function convertImages(python: any, sourceFile: any, imageOut: any, thumbOut: any) {
-  const result = spawnSync(python, [
-    path.join(ROOT, 'scripts', 'maintenance', 'convert-showcase-image.py'),
-    sourceFile, imageOut, thumbOut,
-    '--image-box', IMAGE_BOX, '--image-quality', String(IMAGE_QUALITY),
-    '--thumb-box', THUMB_BOX, '--thumb-quality', String(THUMB_QUALITY),
-  ], { encoding: 'utf8', timeout: 120000, windowsHide: true });
-  if (result.error) throw new Error(`image conversion could not run (${python}): ${result.error.message}`);
-  if (result.status !== 0) throw new Error(`image conversion failed for ${sourceFile}:\n${result.stderr || result.stdout || 'unknown error'}`);
-  for (const out of [imageOut, thumbOut]) {
-    if (!fs.existsSync(out) || fs.statSync(out).size === 0) throw new Error(`image conversion produced no output: ${out}`);
-  }
-}
-
 function verifyTarget(tempDir: any, manifest: any) {
   const { parseShowcaseManifest }: typeof import('../../src/utils/showcaseManifest.ts') = require('../../src/utils/showcaseManifest.ts');
   const { isShowcaseAssetPath }: typeof import('../lib/content/showcase-assets.js') = require('../lib/content/showcase-assets.js');
@@ -230,27 +212,6 @@ function verifyTarget(tempDir: any, manifest: any) {
   }
 }
 
-function switchTarget(tempDir: any, targetDir: any, force: any, renameSync: any = fs.renameSync, rmSync: any = fs.rmSync) {
-  const backupDir = path.join(path.dirname(targetDir), `.${path.basename(targetDir)}.backup-${process.pid}`);
-  const targetExists = fs.existsSync(targetDir);
-  if (targetExists) {
-    if (!force) throw new Error(`target already exists: ${targetDir} (use --force to overwrite)`);
-    if (!fs.existsSync(path.join(targetDir, 'manifest.json'))) throw new Error(`refusing to replace target without manifest.json: ${targetDir}`);
-    rmSync(backupDir, { recursive: true, force: true });
-    renameSync(targetDir, backupDir);
-  }
-  try {
-    renameSync(tempDir, targetDir);
-  } catch (error) {
-    if (targetExists) {
-      try { renameSync(backupDir, targetDir); } catch (restoreError) {
-        (error as any).message = `${runtimeErrorMessage(error)}\n  additionally failed to restore backup ${backupDir}: ${runtimeErrorMessage(restoreError)}`;
-      }
-    }
-    throw error;
-  }
-  if (targetExists) rmSync(backupDir, { recursive: true, force: true });
-}
 
 /** 每角色立绘：数据顺序第一张「通过审核 + 竖构图（高>宽）」的 SFW 候选；
  *  无竖图 SFW 时回退竖图任意，再回退数据顺序第一张。 */
@@ -355,12 +316,6 @@ async function main() {
   console.log(JSON.stringify(Object.assign(summary, { written: true }), null, 2));
 }
 
-export = {
-  loadPassedRecords, popularEntry, buildManifest, pickPortraits,
-  resolveDirArg, validateTarget, sourcePathFor, convertImages, verifyTarget, switchTarget,
-  argument,
-  constants: { ROOT, AI_ROOT, DEFAULT_FROM, DEFAULT_SHOWCASE_ROOT, DEFAULT_TARGET, DEFAULT_SOURCE, DEFAULT_PORTRAITS },
-};
 
 if (require.main === module) {
   main().catch((error: any) => {

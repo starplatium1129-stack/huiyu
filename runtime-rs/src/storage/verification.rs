@@ -1,7 +1,5 @@
-use super::{Media, Storage, invalid, media, schema, string, unavailable};
+use super::{Media, invalid, media, schema, unavailable};
 use crate::error::{ApiError, Result};
-use base64::{Engine, engine::general_purpose::STANDARD};
-use serde_json::{Value, json};
 use std::{
     collections::HashMap,
     fs::File,
@@ -231,28 +229,4 @@ fn check(cancelled: &CancellationToken) -> Result<()> {
     } else {
         Ok(())
     }
-}
-
-pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
-    use tokio::io::{AsyncReadExt, AsyncSeekExt};
-    let source = storage.media(string(command, "alias")?).await?;
-    let offset = command
-        .get("offset")
-        .map(Value::as_u64)
-        .unwrap_or(Some(0))
-        .filter(|v| *v <= source.total_bytes)
-        .ok_or_else(|| invalid("Invalid media read range"))?;
-    let length = command
-        .get("length")
-        .map(Value::as_u64)
-        .unwrap_or(Some(media::CHUNK as u64))
-        .filter(|v| *v >= 1 && *v <= media::CHUNK as u64)
-        .ok_or_else(|| invalid("Invalid media read range"))?;
-    let mut data = vec![0; length.min(source.total_bytes - offset) as usize];
-    let mut file = tokio::fs::File::open(&source.path).await?;
-    file.seek(std::io::SeekFrom::Start(offset)).await?;
-    file.read_exact(&mut data).await?;
-    Ok(
-        json!({"data":STANDARD.encode(data),"mime":source.mime,"totalBytes":source.total_bytes,"sha256":source.sha256,"offset":offset}),
-    )
 }

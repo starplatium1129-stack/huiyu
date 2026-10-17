@@ -225,7 +225,7 @@ pub(crate) fn overlay_window_thread(
             let dt = (now - last_frame).as_secs_f32().min(0.1);
             last_frame = now;
             ctx.step(dt);
-            ctx.advance_motion(dt, app);
+            ctx.advance_motion(dt);
             match ctx.render_frame(&state, hwnd, rect) {
                 Ok(true) => {
                     state.frame_count.fetch_add(1, Ordering::Relaxed);

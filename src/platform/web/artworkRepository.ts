@@ -12,7 +12,7 @@ import { createArtworkMedia } from './artworkMedia.ts'
 import { createArtworkOrganization } from './artworkOrganization.ts'
 import { createArtworkProjects } from './artworkProjects.ts'
 import { purgeWebTrash } from './artworkTrashPurge.ts'
-export { ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, ARTWORK_TRASH_KEY, ARTWORK_TRASH_RETENTION_DAYS, ArtworkDeletionError } from './artworkStorage.ts'
+
 
 export function createWebArtworkRepository(): ArtworkRepository {
   const kv: ArtworkKvAdapter = {

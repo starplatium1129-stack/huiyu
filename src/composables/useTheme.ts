@@ -1,7 +1,7 @@
 import { readonly, ref } from 'vue'
 import { settingsRepository, THEME_SETTING, type Theme } from '@/storage/settingsRepository'
 
-export function preferredTheme(): Theme { return settingsRepository.get(THEME_SETTING) || 'dark' }
+function preferredTheme(): Theme { return settingsRepository.get(THEME_SETTING) || 'dark' }
 const theme = ref<Theme>(preferredTheme())
 let initialized = false
 let paletteFrame = 0
@@ -33,7 +33,7 @@ export function initializeTheme() {
     if (event.key === THEME_SETTING.key || event.key === null) applyTheme(preferredTheme())
   })
 }
-export function setTheme(value: Theme) {
+function setTheme(value: Theme) {
   settingsRepository.set(THEME_SETTING, value)
   if (theme.value === value) return
   applyTheme(value)

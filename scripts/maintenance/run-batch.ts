@@ -4,25 +4,13 @@
 /**
  * scripts/maintenance/run-batch.js — 统一批量调度器
  *
- * 合并 8 个 run-batch-*.js 的重复逻辑：
- *   run-batch-all-popular-attempt2.js
- *   run-batch-all-scenes-attempt2.js
- *   run-regen-popular-fails.js
- *   run-regen-scene-fails.js
- *   run-test-5-reconstructed.js etc.
- *
- * 原先每个文件硬编码 keys/ids、batchSize、concurrency，仅参数不同。
- * 现统一为一个脚本，兼容旧入口（旧脚本改为薄封装转发）。
+ * 调度热门蓝图与场景生成批次，通过参数设置来源、数量和并发。
  *
  * 用法:
  *   node scripts/maintenance/run-batch.js --source popular --batch-size 10 --concurrency 3
  *   node scripts/maintenance/run-batch.js --source scenes --keys sc001,sc002 --concurrency 2 --attempt 2
  *   node scripts/maintenance/run-batch.js --source popular --dry-run
  *   node scripts/maintenance/run-batch.js --help
- *
- * 兼容:
- *   旧脚本 `node scripts/maintenance/run-batch-all-popular-attempt2.js` 等仍可用（内部转发到本脚本），
- *   但推荐统一使用本脚本。
  */
 
 const fs: typeof import('fs') = require('fs');
@@ -68,7 +56,7 @@ function parseArgs() {
 
 function printHelp() {
   console.log(`
-统一批量调度器 — 替代 8 个 run-batch-*.js
+统一批量调度器
 
 用法:
   node scripts/maintenance/run-batch.js --source <popular|scenes> [options]
@@ -92,9 +80,6 @@ function printHelp() {
   node scripts/maintenance/run-batch.js --source popular --keys pc_raiden_shogun_tenshukaku --dry-run
   node scripts/maintenance/run-batch.js --source scenes --ids sc001,sc002,sc003 --attempt 3
 
-旧入口兼容:
-  node scripts/maintenance/run-batch-all-popular-attempt2.js  ->  本脚本 --source popular
-  node scripts/maintenance/run-batch-all-scenes-attempt2.js   ->  本脚本 --source scenes --batch-size 10 --concurrency 2
 `);
 }
 
@@ -102,7 +87,7 @@ function readFailedList(source: any) {
   const file = source === 'popular' ? 'runtime/failed-popular-keys.txt' : 'runtime/failed-scene-ids.txt';
   const full = path.join(ROOT, file);
   if (!fs.existsSync(full)) {
-    console.error(`未找到 ${file}，请先运行 dump-failed-*.js 或通过 --keys/--ids 显式指定`);
+    console.error(`未找到 ${file}，请先准备失败项清单，或通过 --keys/--ids 显式指定`);
     process.exitCode = 1;
     return [];
   }
@@ -174,4 +159,3 @@ function main() {
 }
 
 if (require.main === module) main();
-export = { parseArgs };

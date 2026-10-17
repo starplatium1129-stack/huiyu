@@ -1,6 +1,6 @@
-export const BACKUP_APP = 'ai-cg-studio'
-export const BACKUP_TYPE = 'aics-personal-backup'
-export const BACKUP_SCHEMA_VERSION = 2
+const BACKUP_APP = 'ai-cg-studio'
+const BACKUP_TYPE = 'aics-personal-backup'
+const BACKUP_SCHEMA_VERSION = 2
 
 export type BackupRecord = Record<string, unknown> & {
   id?: unknown

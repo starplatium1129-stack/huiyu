@@ -58,9 +58,7 @@
   --character-aura-secondary:color-mix(in srgb, var(--character-accent) 14%, transparent);
 }
 
-.pb.character-shifting .col-left,
-.pb.character-shifting .col-right,
-.pb.character-shifting .generation-settings {
+.pb.character-shifting .col-left {
   transition: border-color var(--motion-route-cut) ease;
 }
 

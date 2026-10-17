@@ -24,9 +24,9 @@ interface SceneStats {
 }
 
 const RECENT_KEY = 'aics_recent_scenes'
-export const HIDDEN_SCENES_KEY = 'aics_hidden_scenes'
-export const SCENE_USAGE_KEY = 'aics_scene_usage_v1'
-export const SCENE_USAGE_VERSION = 1
+const HIDDEN_SCENES_KEY = 'aics_hidden_scenes'
+const SCENE_USAGE_KEY = 'aics_scene_usage_v1'
+const SCENE_USAGE_VERSION = 1
 
 export interface SceneUsageRecord {
   uses: number
@@ -134,16 +134,7 @@ export function tier(scene: { id: string }, config: SceneUXConfig | null | undef
   return 'standard'
 }
 
-export function priority(scene: { id: string }, config: SceneUXConfig | null | undefined): number {
-  const sigs = list(config, 'signatureSceneIds')
-  const cur  = list(config, 'curatedSceneIds')
-  const si = sigs.indexOf(scene.id), ci = cur.indexOf(scene.id)
-  if (si >= 0) return 30000 - si
-  if (ci >= 0) return 20000 - ci
-  return 10000 - (Number(scene.id.replace(/\D/g, '')) || 0)
-}
-
-export function characterLabel(value: string): string {
+function characterLabel(value: string): string {
   if (value === 'nene' || value === 'ayachi_nene') return '宁宁'
   if (value === 'natsume' || value === 'shiki_natsume') return '夏目'
   if (value === 'triad' || value === 'both') return '双人'

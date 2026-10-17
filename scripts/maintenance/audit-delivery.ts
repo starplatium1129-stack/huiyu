@@ -292,4 +292,3 @@ function main(args: any) {
   return r.exitCode;
 }
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
-export = { parse, report, state };

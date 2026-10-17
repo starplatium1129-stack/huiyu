@@ -2,7 +2,6 @@ use std::sync::atomic::Ordering;
 
 use serde::Serialize;
 use tauri::{AppHandle, Emitter, Manager, State};
-use tauri_plugin_autostart::ManagerExt;
 use tauri_plugin_opener::OpenerExt;
 
 use crate::state::AppState;
@@ -27,7 +26,7 @@ pub async fn desktop_workspace_enable_bundled(window: tauri::WebviewWindow) -> R
     crate::bootstrap::request(window, "enable-bundled", None, true, None).await
 }
 
-/// IPC 命令层：与 Electron 版 preload 桥一一对应（前端零改动由 shim 保证）。
+/// 桌面窗口状态。
 
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -82,24 +81,10 @@ pub fn hide(app: AppHandle) {
     crate::main_shared::hide_companion(&app);
 }
 
-#[tauri::command]
-pub fn quit(app: AppHandle) {
-    let state = app.state::<AppState>();
-    state.quitting.store(true, Ordering::Relaxed);
-    state.info("quit from bridge");
-    app.exit(0);
-}
 
 #[tauri::command]
 pub fn set_ignore_mouse_events_cmd(app: AppHandle, ignore: bool) {
     set_ignore_mouse_events(&app, ignore);
-}
-
-#[tauri::command]
-pub fn toggle_ignore_mouse_events(app: AppHandle, state: State<AppState>) -> bool {
-    let next = !state.ignore_mouse_events.load(Ordering::Relaxed);
-    set_ignore_mouse_events(&app, next);
-    next
 }
 
 #[tauri::command]
@@ -121,23 +106,7 @@ pub fn set_live2d_enabled(_app: AppHandle, state: State<AppState>, enabled: bool
     state.save_preferences();
 }
 
-#[tauri::command]
-pub fn get_settings(app: AppHandle) -> serde_json::Value {
-    serde_json::json!({
-        "openAtLogin": app.autolaunch().is_enabled().unwrap_or(false)
-    })
-}
 
-#[tauri::command]
-pub fn set_autostart(app: AppHandle, enabled: bool) -> bool {
-    let result = if enabled {
-        app.autolaunch().enable()
-    } else {
-        app.autolaunch().disable()
-    };
-    crate::tray::refresh_tray_menu(&app);
-    result.is_ok() && app.autolaunch().is_enabled().unwrap_or(false) == enabled
-}
 
 #[tauri::command]
 pub fn is_packaged(app: AppHandle) -> bool {
@@ -232,12 +201,6 @@ pub fn open_companion_chat(app: AppHandle, state: State<AppState>) {
     crate::main_shared::open_companion_chat(&app, &gateway);
 }
 
-/// 开/关聊天窗（快捷键用）。
-#[tauri::command]
-pub fn toggle_companion_chat(app: AppHandle, state: State<AppState>) {
-    let gateway = state.gateway_url.lock().unwrap().clone();
-    crate::main_shared::toggle_companion_chat(&app, &gateway);
-}
 
 /// 聊天窗 ×：直接 hide（不触发 close 链路，避免 WebView2 卸载导致空白）。
 #[tauri::command]
@@ -339,24 +302,6 @@ pub fn get_window_state(app: AppHandle) -> serde_json::Value {
     })
 }
 
-#[tauri::command]
-pub fn set_progress(app: AppHandle, progress: Option<f64>) {
-    use tauri::window::ProgressBarState;
-    let value = match progress {
-        Some(v) if v.is_finite() => v.clamp(0.0, 1.0),
-        _ => -1.0,
-    };
-    let state = if value < 0.0 {
-        ProgressBarState { status: None, progress: None }
-    } else {
-        ProgressBarState { status: None, progress: Some((value * 100.0).round() as u64) }
-    };
-    for label in ["atelier", "companion"] {
-        if let Some(w) = app.get_webview_window(label) {
-            let _ = w.set_progress_bar(ProgressBarState { status: state.status, progress: state.progress });
-        }
-    }
-}
 
 #[tauri::command]
 pub fn open_workspace(app: AppHandle, state: State<AppState>) -> bool {
@@ -372,36 +317,4 @@ pub fn open_workspace(app: AppHandle, state: State<AppState>) -> bool {
         std::path::PathBuf::from(&root)
     };
     app.opener().open_path(root.to_string_lossy().to_string(), None::<&str>).is_ok()
-}
-
-#[tauri::command]
-pub fn open_runtime(app: AppHandle, state: State<AppState>) -> bool {
-    app.opener().open_path(state.paths.config_root.to_string_lossy().to_string(), None::<&str>).is_ok()
-}
-
-#[tauri::command]
-pub fn open_log(app: AppHandle, state: State<AppState>) -> bool {
-    app.opener().open_path(state.paths.desktop_log.to_string_lossy().to_string(), None::<&str>).is_ok()
-}
-
-/// 对话框：文件选择（pickFiles）
-#[tauri::command]
-pub async fn pick_files(app: AppHandle) -> Vec<serde_json::Value> {
-    use tauri_plugin_dialog::DialogExt;
-    let picked = app.dialog().file().blocking_pick_files().unwrap_or_default();
-    picked
-        .into_iter()
-        .filter_map(|path| {
-            let path = path.into_path().ok()?;
-            let name = path.file_name()?.to_string_lossy().to_string();
-            let size = std::fs::metadata(&path).map(|m| m.len()).unwrap_or(0);
-            let ext = path.extension().map(|e| e.to_string_lossy().to_string()).unwrap_or_default();
-            Some(serde_json::json!({
-                "name": name,
-                "path": path.to_string_lossy(),
-                "size": size,
-                "type": ext
-            }))
-        })
-        .collect()
 }

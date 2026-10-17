@@ -172,7 +172,6 @@ export function createPromptVideoActions(flash: PromptVideoBridgeDeps['flash'], 
   }
 
   return {
-    videoTargetData,
     goToVideo,
     addToShots,
     goToShots,

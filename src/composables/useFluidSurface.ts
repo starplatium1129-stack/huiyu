@@ -7,7 +7,7 @@ import { cssTimeToMilliseconds } from '@/utils/motionTiming'
  * 默认浮层表面与卡片面板选择器（009 交互流畅度与性能规范）。
  * 覆盖故事卡片、模态窗卡片、批次面板、分镜面板、对比面板、备份卡片、任务中心、大图查看器等。
  */
-export const DEFAULT_FLUID_PANEL_SELECTORS = [
+const DEFAULT_FLUID_PANEL_SELECTORS = [
   '.story-card',
   '.modal-card',
   '.batch-panel',
@@ -26,7 +26,7 @@ export const DEFAULT_FLUID_PANEL_SELECTORS = [
 export const DEFAULT_FLUID_PANEL_SELECTOR = DEFAULT_FLUID_PANEL_SELECTORS.join(', ')
 
 /** 全屏与超大图查看器类名清单 */
-export const FLUID_FULLSCREEN_SELECTORS = [
+const FLUID_FULLSCREEN_SELECTORS = [
   '.art-viewer',
   '.showcase-viewer',
   '.candidate-compare',
@@ -35,16 +35,16 @@ export const FLUID_FULLSCREEN_SELECTORS = [
   '.viewer-layout',
 ] as const
 
-export const FLUID_FULLSCREEN_SELECTOR = FLUID_FULLSCREEN_SELECTORS.join(', ')
+const FLUID_FULLSCREEN_SELECTOR = FLUID_FULLSCREEN_SELECTORS.join(', ')
 
 /** 小型气泡与下拉弹出层类名清单 */
-export const FLUID_POPOVER_SELECTORS = [
+const FLUID_POPOVER_SELECTORS = [
   '.utility-popover',
   '.random-popover',
   '.popover-menu',
 ] as const
 
-export const FLUID_POPOVER_SELECTOR = FLUID_POPOVER_SELECTORS.join(', ')
+const FLUID_POPOVER_SELECTOR = FLUID_POPOVER_SELECTORS.join(', ')
 
 /** Sample the existing spring once; native timelines keep fading while a newly
  * opened form lays out. Retarget from presentation and retain spring velocity. */

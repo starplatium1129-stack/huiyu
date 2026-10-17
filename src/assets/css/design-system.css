@@ -362,8 +362,6 @@ img { @apply tw:max-w-full tw:block; }
   padding: 0 var(--workspace-gutter, var(--s-5));
 }
 
-.container-narrow { @apply tw:max-w-[800px]; }
-
 /* ---- Sticky footer:body 改列向弹性布局,页脚推至视口底部 ---- */
 body { @apply tw:flex tw:flex-col; }
 body > *:has(+ .footer),
@@ -478,7 +476,6 @@ body > *:has(+ .footer),
   @apply tw:border-accent tw:text-accent;
   transform: rotate(-15deg);
 }
-.theme-toggle-icon { @apply tw:grid; place-items:center; @apply tw:pointer-events-none tw:text-body-lg; }
 .nav-menu-toggle .archive-icon { @apply tw:w-[1em] tw:h-[1em]; }
 
 /* ---- Page header ----
@@ -498,24 +495,6 @@ body > *:has(+ .footer),
   @apply tw:text-secondary tw:text-title-xs tw:max-w-[600px]; margin: 0 auto;
 }
 /* 工具页紧凑标题（训练台 / 控制面板 / 模型 / 场景管理 / Prompt Builder） */
-.page-header--compact {
-  padding: 0 0 var(--s-4);
-  @apply tw:text-left;
-  border-bottom: 0;
-  @apply tw:mb-s-4;
-}
-.page-header--compact h1,
-.page-header--compact .title {
-  font-size: clamp(1.35rem, 2vw, 1.55rem);
-  font-weight: 750;
-  letter-spacing: -.02em;
-  @apply tw:leading-tight tw:mb-s-2;
-  background: none;
-  -webkit-background-clip: unset;
-  background-clip: unset;
-  -webkit-text-fill-color: var(--text-primary);
-}
-.page-header--compact .subtitle { @apply tw:text-body-sm tw:m-0 tw:max-w-[620px]; }
 
 /* ============================================================
    Shared atelier chrome (kickers, back link, toolbars, empty)
@@ -551,18 +530,6 @@ body > *:has(+ .footer),
 .page-subtitle {
   margin: 10px 0 0;
   @apply tw:max-w-[640px] tw:text-secondary tw:text-body tw:leading-loose;
-}
-.page-intro {
-  @apply tw:grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  @apply tw:gap-s-5;
-  margin-bottom: var(--s-4);
-}
-.atelier-shell {
-  width: min(1880px, 100%);
-  margin: 0 auto;
-  padding: var(--s-5) clamp(16px, 2vw, 32px) var(--s-7);
 }
 
 .filter-pill {
@@ -606,15 +573,6 @@ body > *:has(+ .footer),
   @apply tw:pointer-events-none;
 }
 .empty-state > * { @apply tw:relative; z-index: var(--z-base); }
-.empty-state-icon {
-  @apply tw:grid; place-items: center;
-  @apply tw:w-[64px] tw:h-[64px]; margin: 0 auto 16px;
-  @apply tw:rounded-2xl;
-  border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
-  background: var(--accent-soft);
-  @apply tw:text-accent tw:text-title;
-  box-shadow: 0 12px 32px var(--accent-glow);
-}
 .empty-state h2 {
   margin: 0 0 8px;
   @apply tw:text-primary;
@@ -630,28 +588,6 @@ body > *:has(+ .footer),
 /* 审计修复：涟漪圈原为逐帧补间 box-shadow（无限循环 → 每帧重绘），
    改为伪元素静态光晕 + transform:scale/opacity 补间（合成器属性，零重绘）。
    视觉等价：8px 实心点背后扩散一层光晕，放大到约 3.5 倍（=原 10px spread）并淡出。 */
-.loading-pulse {
-  @apply tw:relative tw:inline-block tw:w-[8px] tw:h-[8px];
-  border-radius: 50%;
-  background: var(--accent);
-}
-.loading-pulse::after {
-  content: "";
-  @apply tw:absolute;
-  inset: 0;
-  z-index: -1; /* 光晕在圆点背后扩散，不遮住实心点 */
-  border-radius: 50%;
-  background: var(--accent-glow);
-  animation: atelierPulse 1.2s ease-out infinite;
-}
-@keyframes atelierPulse {
-  0% { transform: scale(1); opacity: .55; }
-  70%, 100% { transform: scale(3.5); opacity: 0; }
-}
-
-@media (max-width: 600px) {
-  .page-intro { grid-template-columns: 1fr; }
-}
 
 /* ============================================================
    Typography
@@ -765,7 +701,6 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
 .card-create:focus-visible::after,.card-direct:focus-visible::before { opacity:1; transition:none; }
 
 /* shadow 阶梯修饰 — 与三级叠加使用 */
-.card-level-1 { box-shadow: var(--shadow-sm); }
 .card-level-2 { box-shadow: var(--shadow-md); }
 .card-level-3 { box-shadow: var(--shadow-lg); }
 
@@ -861,7 +796,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
 .textarea { @apply tw:min-h-[96px] tw:resize-y tw:leading-body; }
-.input-mono, .textarea-mono { @apply tw:font-mono tw:text-label; }
+.input-mono { @apply tw:font-mono tw:text-label; }
 .input::placeholder, .textarea::placeholder { @apply tw:text-muted; }
 .input:hover, .textarea:hover { @apply tw:border-strong; }
 .input:focus, .textarea:focus {
@@ -886,10 +821,6 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C8CA3' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E")
     no-repeat var(--s-3) center / 14px 14px;
 }
-.checkbox-row {
-  @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-sm tw:cursor-pointer;
-}
-.checkbox-row input { accent-color: var(--accent); @apply tw:cursor-pointer; }
 
 /* ---- Status badge（二次元博客甜系贴纸角标：颜色不是唯一信号，保留文字与圆点） ---- */
 .badge {
@@ -914,12 +845,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   background: currentColor; flex: none;
   box-shadow: 0 0 6px currentColor;
 }
-.badge-plain::before { @apply tw:hidden; }
-.badge-success { --badge-color: var(--success-text); }
 .badge-warning { --badge-color: var(--warning-text); }
-.badge-danger  { --badge-color: var(--danger-text); }
-.badge-info    { --badge-color: var(--info-text); }
-.badge-accent  { --badge-color: var(--accent); }
 
 /* ---- Meter / progress(值走 --fill,样式留在 CSS) ---- */
 .meter {
@@ -936,7 +862,6 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
      填充上的扫光伪元素，保 width 过渡（单元素小子树重排可忽略）。 */
   transition: width var(--motion-surface) var(--ease-out);
 }
-.meter-lg { @apply tw:h-[10px]; }
 
 /* ---- Overlay / modal(6 套弹层实现的统一目标) ---- */
 /* 弹层打开时锁背景滚动。由 useFocusTrap 统一挂这个 class ——
@@ -957,17 +882,6 @@ body.overlay-open { @apply tw:overflow-hidden; margin-right:var(--overlay-scroll
    遮罩淡入淡出、内容卡（首个子元素）上浮落位，退场保持更短的 --motion-hover。
    接入方：Teleport 内 v-if 弹层根节点包 <Transition name="layer-pop">；
    原 .overlay/.modal-card 的入场 animation 已删，避免与 Transition 双重动画。 */
-.layer-pop-enter-active { transition: opacity var(--motion-surface) var(--ease-out); }
-.layer-pop-enter-active > :first-child {
-  transition: transform var(--motion-surface) var(--spring-soft), opacity var(--motion-surface) var(--ease-out);
-}
-.layer-pop-leave-active { transition: opacity var(--motion-hover) var(--ease-out); }
-.layer-pop-leave-active > :first-child {
-  transition: transform var(--motion-hover) var(--ease-out), opacity var(--motion-hover) var(--ease-out);
-}
-.layer-pop-enter-from, .layer-pop-leave-to { opacity: 0; }
-.layer-pop-enter-from > :first-child { transform: translateY(14px) scale(.96); opacity: 0; }
-.layer-pop-leave-to > :first-child { transform: translateY(8px) scale(.98); opacity: 0; }
 /* 纯淡入淡出变体：弹层内的二级浮层（大图预览等） */
 .layer-fade-enter-active { transition: opacity var(--motion-control) var(--ease-out); }
 .layer-fade-leave-active { transition: opacity var(--motion-hover) var(--ease-out); }
@@ -999,7 +913,6 @@ body.overlay-open { @apply tw:overflow-hidden; margin-right:var(--overlay-scroll
   padding: var(--workspace-pad-top, var(--s-5)) var(--workspace-gutter, var(--s-5)) var(--s-7);
 }
 .page-narrow { --page-max: 860px; }
-.page-wide   { --page-max: 1480px; }
 /* 注意:保持单类选择器(0,1,0),这样尚未迁移的页面本地 .title 仍能按层叠顺序覆盖 */
 .title {
   margin: 0 0 var(--s-2);
@@ -1096,25 +1009,8 @@ tr:hover td { background: var(--bg-hover); }
   border-left: 3px solid var(--info-text);
   background: color-mix(in srgb, var(--info) 8%, transparent);
 }
-.callout-warn { border-left-color: var(--warning-text); background: color-mix(in srgb, var(--warning) 8%, transparent); }
-.callout-danger { border-left-color: var(--danger-text); background: color-mix(in srgb, var(--danger) 8%, transparent); }
-.callout-success { border-left-color: var(--success-text); background: color-mix(in srgb, var(--success) 8%, transparent); }
 
 /* ---- Progress / step ---- */
-.step-list { counter-reset: step; list-style: none; }
-.step-list li {
-  counter-increment: step;
-  @apply tw:relative tw:pl-s-7 tw:mb-s-5;
-}
-.step-list li::before {
-  content: counter(step);
-  @apply tw:absolute tw:left-0 tw:top-0 tw:w-[32px] tw:h-[32px];
-  background: var(--accent-soft);
-  border: 1px solid var(--accent);
-  @apply tw:text-accent;
-  border-radius: 50%;
-  @apply tw:flex tw:items-center tw:justify-center tw:font-bold tw:text-body-sm;
-}
 
 /* ---- Footer ---- */
 .footer {
@@ -1126,31 +1022,19 @@ tr:hover td { background: var(--bg-hover); }
 
 @media (prefers-reduced-motion: reduce) {
   /* 只移除会造成位移、缩放、旋转或持续扫光的动效，颜色与透明度反馈仍保留。 */
-  :root:not([data-motion='full']) .nav-links > a::after, :root:not([data-motion='full']) :is(.pulse, .spin, .skeleton-shimmer,
+  :root:not([data-motion='full']) .nav-links > a::after, :root:not([data-motion='full']) :is(.pulse, .spin,
   .route-atmosphere *,
-  [data-reveal], .animate-in, [class*="stagger-in"], .stagger-item, .stagger-container > *) {
+  [data-reveal], [class*="stagger-in"], .stagger-container > *) {
     animation:none !important;
   }
-  :root:not([data-motion='full']) :is(.layer-pop-enter-active > :first-child,
-  .layer-pop-leave-active > :first-child,
-  .layer-pop-enter-from > :first-child,
-  .layer-pop-leave-to > :first-child) {
-    transform:none !important;
-  }
-  :root:not([data-motion='full']) :is(.layer-pop-enter-active,
-  .layer-pop-leave-active,
+  :root:not([data-motion='full']) :is(
   .layer-fade-enter-active,
   .layer-fade-leave-active) { transition:opacity var(--motion-control) ease-out; }
-  :root:not([data-motion='full']) :is(.layer-pop-enter-from > :first-child,
-  .layer-pop-leave-to > :first-child) { opacity:0; }
   html:not([data-motion='full']) { scroll-behavior:auto !important; }
 }
 
 /* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；
    其余页面仍保留首屏水印（滚动后由 RouteAtmosphere 渐隐） */
-body:has(.pb) .route-atmosphere .route-index {
-  @apply tw:hidden;
-}
 
 @media (prefers-reduced-transparency: reduce) {
   :root { --glass-fill:var(--bg-surface); --glass-fill-strong:var(--bg-elevated); }
@@ -1185,7 +1069,6 @@ body:has(.pb) .route-atmosphere .route-index {
 .lede      { @apply tw:text-secondary tw:text-body-lg tw:leading-loose; }
 .note      { @apply tw:text-secondary tw:text-body-sm tw:leading-loose; }
 .note-sm   { @apply tw:text-muted tw:text-label-sm tw:leading-body; }
-.note-mono { @apply tw:text-muted; font: 400 var(--fs-mono-sm) var(--font-mono); }
 .emphasis  { @apply tw:text-accent tw:font-semibold; }
 .section-title { margin: var(--s-6) 0 var(--s-3); @apply tw:text-title; }
 .section-title:first-child { @apply tw:mt-0; }
@@ -1193,24 +1076,15 @@ body:has(.pb) .route-atmosphere .route-index {
 /* ---- Layout utilities ---- */
 .row      { @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; }
 .row-tight{ @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
-.row-end  { @apply tw:justify-end; }
 .stack    { @apply tw:grid tw:gap-s-3; }
-.stack-sm { @apply tw:grid tw:gap-s-2; }
-.auto-grid {
-  @apply tw:grid;
-  grid-template-columns: repeat(auto-fill, minmax(var(--col-min, 220px), 1fr));
-  @apply tw:gap-s-3;
-}
 .spread   { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; }
 
 /* ---- Spacing utilities(仅 token 档位) ---- */
-.mt-2 { @apply tw:mt-s-2; }
 .mt-3 { @apply tw:mt-s-3; }
 .mt-5 { @apply tw:mt-s-5; }
 .mt-6 { @apply tw:mt-s-6; }
 .mb-2 { @apply tw:mb-s-2; }
 .mb-3 { @apply tw:mb-s-3; }
-.mb-5 { @apply tw:mb-s-5; }
 .m-0  { @apply tw:m-0; }
 
 .muted   { @apply tw:text-muted; }
@@ -1224,8 +1098,6 @@ body:has(.pb) .route-atmosphere .route-index {
 .mt-4    { @apply tw:mt-s-4; }
 .mb-4    { @apply tw:mb-s-4; }
 .flex    { @apply tw:flex; }
-.gap-3   { @apply tw:gap-s-3; }
-.gap-4   { @apply tw:gap-s-4; }
 .wrap    { @apply tw:flex-wrap; }
 
 /* ============================================================
@@ -1356,12 +1228,6 @@ body:has(.pb) .route-atmosphere .route-index {
 .spin { animation: spin .7s linear infinite; }
 
 /* ── 浮动悬停（卡片增强） ── */
-.hover-lift {
-  transition: transform var(--motion-surface);
-}
-@media (hover: hover) and (pointer: fine) {
-  .hover-lift:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-}
 
 /* ── 按钮加载状态 ── */
 .btn[data-loading]::after {
@@ -1375,18 +1241,10 @@ body:has(.pb) .route-atmosphere .route-index {
 }
 
 /* ── 淡入淡出与阶梯动效工具 ── */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: none; }
-}
-.animate-in { animation: fade-in .28s var(--ease-out) both; }
 
 @keyframes stagger-in {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: none; }
-}
-.stagger-item {
-  animation: stagger-in var(--motion-control) var(--ease-out) both;
 }
 /* 容器内的直接子项自动级联入场：列表只需挂 stagger-container 类 */
 .stagger-container > * {
@@ -1400,62 +1258,8 @@ body:has(.pb) .route-atmosphere .route-index {
 :is(.scene-grid, .showcase-grid, .gallery-wall).stagger-container > * { animation: none; }
 
 /* ── Archive 质感扩展：硬质面板、刻度、微型坐标与网格底纹 ── */
-.archive-plate {
-  @apply tw:relative;
-  background: var(--bg-surface);
-  border: 1px solid var(--archive-line);
-  border-radius: var(--r-dossier);
-  box-shadow: var(--shadow-sm);
-  @apply tw:overflow-hidden;
-}
-.archive-plate::before {
-  content: '';
-  @apply tw:absolute tw:top-0 tw:left-0 tw:w-[3px] tw:h-full;
-  background: var(--archive-blue);
-  opacity: 0.85;
-}
-
-.archive-grid-bg {
-  background-image: linear-gradient(var(--archive-grid) 1px, transparent 1px),
-                    linear-gradient(90deg, var(--archive-grid) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-.archive-kicker {
-  @apply tw:font-mono tw:text-mono-xs;
-  letter-spacing: 0.08em;
-  @apply tw:uppercase;
-  color: var(--archive-blue);
-  opacity: 0.9;
-}
-
-.archive-tag {
-  @apply tw:inline-flex tw:items-center tw:gap-s-1;
-  padding: 2px 6px;
-  @apply tw:font-mono tw:text-mono-xs;
-  border: 1px solid var(--archive-line);
-  border-radius: var(--r-terminal);
-  background: var(--bg-deep);
-  @apply tw:text-secondary;
-}
-
-.archive-corner-mark {
-  @apply tw:absolute tw:w-[6px] tw:h-[6px];
-  border-color: var(--archive-blue);
-  opacity: 0.6;
-  @apply tw:pointer-events-none;
-}
-.archive-corner-mark.top-left { @apply tw:top-[4px] tw:left-[4px]; border-top: 1px solid; border-left: 1px solid; }
-.archive-corner-mark.top-right { @apply tw:top-[4px] tw:right-[4px]; border-top: 1px solid; border-right: 1px solid; }
-.archive-corner-mark.bottom-left { @apply tw:bottom-[4px] tw:left-[4px]; border-bottom: 1px solid; border-left: 1px solid; }
-.archive-corner-mark.bottom-right { @apply tw:bottom-[4px] tw:right-[4px]; border-bottom: 1px solid; border-right: 1px solid; }
 
 /* ── 数字/内容变化高亮 ── */
-@keyframes flash-accent {
-  0%   { color: var(--accent); }
-  100% { color: inherit; }
-}
-.flash-value { animation: flash-accent .9s var(--ease-out) both; }
 
 /* Theme colors commit together; local control motion remains available. */
 :root[data-theme-changing] *,
@@ -1545,13 +1349,11 @@ summary::-webkit-details-marker {
   @apply tw:hidden;
 }
 /* 统计数字 / 进度 / 参数等机器数字纵向对齐，跳动时不左右抖 */
-:where(code, .mono, .archive-code, .fs-mono, .count, .stat, .seed, .progress-copy strong) { font-variant-numeric: tabular-nums; }
-/* 通用图片入场：给需要"翻开画集"质感的图片用 */
-@keyframes archive-image-in { from { opacity: 0 } to { opacity: 1 } }
+:where(code, .mono, .fs-mono, .count, .stat, .seed) { font-variant-numeric: tabular-nums; }
 
 /* ── 排版节奏：叙事行宽 ──
    subtitle / hint / note 等引导语限宽，避免整行撑满后阅读感散掉 */
-:where(.subtitle, .hero-sub, .hint, .note, .page-subtitle, .gallery-subtitle) {
+:where(.subtitle, .hint, .note, .page-subtitle) {
   max-width: 62ch;
 }
 
@@ -1571,9 +1373,6 @@ summary::-webkit-details-marker {
 .anim-collapse-grid[data-open="true"] {
   grid-template-rows: 1fr;
 }
-.anim-collapse-inner {
-  @apply tw:overflow-hidden tw:min-h-0;
-}
 
 /* 2026-08-22 动效审计 #11：原 heartBounce 静态挂在所有已收藏图标上——
    收藏目前是纯展示状态（无切换入口），作品册每次打开全部红心齐弹一遍。
@@ -1581,38 +1380,15 @@ summary::-webkit-details-marker {
    切换，应做成点击瞬时类（toggle 时挂 400ms 后移除）。 */
 
 /* ── 二次元 Galgame 梦幻质感增强工具类 ── */
-.title-gradient,
-.title-gradient-sakura {
+.title-gradient {
   background: linear-gradient(135deg, var(--text-primary) 0%, var(--mood-love-text) 52%, var(--accent-violet) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   filter: drop-shadow(0 2px 10px var(--accent-glow));
 }
-.title-gradient-violet {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--mood-tension-text) 52%, var(--archive-blue) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 10px rgba(183, 132, 246, 0.28));
-}
-.acrylic-glass {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-soft);
-  backdrop-filter: blur(18px) saturate(130%);
-  box-shadow: var(--shadow-glass-md);
-}
-.acrylic-glass-elevated {
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-strong);
-  backdrop-filter: blur(20px) saturate(135%);
-  box-shadow: var(--shadow-glass-elevated);
-}
-.glow-bloom {
-  box-shadow: 0 0 22px var(--accent-glow), inset 0 1px 0 var(--hl-inset-32);
-}
 
 /* ── 键盘快捷键徽章 (<kbd> Keyboard Shortcut Badge) ── */
-kbd,
-.kbd-badge {
+kbd {
   @apply tw:inline-flex tw:items-center tw:justify-center tw:min-w-[18px] tw:h-[18px];
   padding: 0 5px;
   font-family: var(--font-mono, monospace);
@@ -1629,9 +1405,6 @@ kbd,
 /* ── 全站互动控件物理微按压反馈 (Tactile Press - Emil Kowalski 哲学) ── */
 :where(
   .chip,
-  .char-outfit-tab,
-  .pop-franchise,
-  .pop-char-btn,
   .prompt-tag,
   .sc-tag
 ):active:not(:disabled):not([aria-disabled="true"]) {
@@ -1667,21 +1440,19 @@ kbd,
   .card,
   .panel,
   .nav,
-  .director-stage,
   .modal-card {
     border: 1px solid CanvasText;
   }
 
   /* 状态标识：只靠颜色的状态点/徽章，补文字与边框信号 */
-  .status-badge,
+
   .tag-chip,
   .badge {
     border: 1px solid ButtonText;
   }
 
   /* 键盘快捷键提示（kbd）：键帽拟物色被覆盖后至少保留边框 */
-  kbd,
-  .kbd-badge {
+  kbd {
     border: 1px solid ButtonText;
   }
 

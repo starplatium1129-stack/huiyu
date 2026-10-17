@@ -5,14 +5,14 @@ import { apiClient, type ApiResponseObject } from './client.ts'
  * 二进制结果（/jobs/:id/result）不属于 JSON 信封契约，仍由调用方直接 fetch。
  */
 
-export const GENERATION_API_TIMEOUTS = {
+const GENERATION_API_TIMEOUTS = {
   status: 15_000,
   job: 15_000,
   delete: 10_000,
 } as const
 
 import type { GenerationStatus, GenerationJobEnvelope } from '../types/generation.ts'
-export type { GenerationJob, GenerationStatus, GenerationJobEnvelope } from '../types/generation.ts'
+export type { GenerationJobEnvelope } from '../types/generation.ts';
 import { decodeGenerationJobEnvelope, isGenerationStatus } from './generationResponse.ts'
 export interface GenerationCallOptions {
   signal?: AbortSignal

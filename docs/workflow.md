@@ -268,7 +268,7 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 内容记录保存通过 SQLite 事务更新记录、修订历史和版本，不回写旧分片、聚合或压缩文件；本机静态数据接口由数据库生成视图。项目构建从显式导出的快照生成派生产物，客户端版本由 `virtual:data-version` 注入，不写回 `sceneStore.ts`。样张、角色图片与仍支持的旧格式维护使用各自的跨进程 lease/journal 和文件备份；活进程或未能证明已退出的进程不被抢锁。`/api/maintenance/recovery-status` 只检查其支持的文件事务，损坏元数据不会自动清除，不代表内容库健康或恢复完成。实际断电和文件系统持久性仍需设备验收。
 
-`maintenance:recover --root <绝对项目根> --runtime-root <绝对运行目录> [--showcase-root <绝对样张根>] [--backup-id <ID>] [--out <新计划文件>]` 现调用原生 Rust 恢复 CLI，默认只读预览并输出 JSON；`--out` 不覆盖已有文件。审核后用相同根参数和 `--apply-plan <保存的签名JSON>` 显式应用，不能同时带 `--out` 或 `--backup-id`。重新核对签名、根身份、备份/当前字节、PID 与 nonce；活进程、未知锁、损坏 journal 或漂移拒绝恢复。需先 `rust:build`，也可直接运行 EXE 的 `maintenance-recovery` 子命令，无需启动网关。旧 Node 恢复工具不覆盖新启动聚合的词条备份范围。工作流 `--plan` 仍是零执行命令预览；退出 0 为可用预览/成功，1 为阻塞/失败，2 为参数错误。
+`maintenance:recover --root <绝对项目根> --runtime-root <绝对运行目录> [--showcase-root <绝对样张根>] [--backup-id <ID>] [--out <新计划文件>]` 现调用原生 Rust 恢复 CLI，默认只读预览并输出 JSON；`--out` 不覆盖已有文件。审核后用相同根参数和 `--apply-plan <保存的签名JSON>` 显式应用，不能同时带 `--out` 或 `--backup-id`。重新核对签名、根身份、备份/当前字节、PID 与 nonce；活进程、未知锁、损坏 journal 或漂移拒绝恢复。需先 `rust:build`，也可直接运行 EXE 的 `maintenance-recovery` 子命令，无需启动网关。工作流 `--plan` 仍是零执行命令预览；退出 0 为可用预览/成功，1 为阻塞/失败，2 为参数错误。
 
 `audit:impact --base <本地commit/ref>` 对照历史与当前源/产物，保留删除、重命名、旧新角色/服装关系和字节证据；`audit:ownership --consistency` 核对热门角色、蓝图、场景分组/core/index 与已覆盖参考字段镜像。未知约束明确保留，增量报告仅生成计划，不执行命令；不能将局部相等视为全库通过。impact 参数错误退出 2、已证明问题退出 1；ownership 显式一致性检查的 unknown/mismatch 退出 1。
 

@@ -5,9 +5,9 @@ import { withArtworkMutation } from './artworkMutation.ts'
  * be inspected across tabs. This lease is separate from the short library lock:
  * normal reads/writes remain concurrent; never acquire these in reverse order.
  */
-export const ARTWORK_SESSION_LOCK = 'huiyu-artwork-documents'
+const ARTWORK_SESSION_LOCK = 'huiyu-artwork-documents'
 
-export function createArtworkSession(locks: LockManager | undefined) {
+function createArtworkSession(locks: LockManager | undefined) {
   let held: { ready: Promise<void>; done: Promise<unknown>; release: () => void } | null = null
   let tail = Promise.resolve()
   let stopVersion = 0

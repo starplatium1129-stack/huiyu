@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { isSpeechInputReady } from '@/utils/speechInputConfig'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import type { UseVoiceInput, UseVoiceInputOptions, VoiceInputMode, VoiceInputState } from './voiceInputRecorder'
-export type { UseVoiceInput, UseVoiceInputOptions, VoiceInputMode, VoiceInputState, VoiceTextSource } from './voiceInputRecorder'
+export type { VoiceTextSource } from './voiceInputRecorder';
 
 /** Vue owns stable UI state and maintenance admission; the audio implementation
  * loads only when requested. Unlock AudioContext before the asynchronous import. */

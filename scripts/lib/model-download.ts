@@ -58,7 +58,7 @@ async function response(url: URL, signal: AbortSignal, timeoutMs: number, redire
 }
 
 /** Only verified temporary bytes become the final weight; failed downloads leave existing files intact. */
-export async function downloadModel(url: string, target: string, entry: ModelFile, options: DownloadOptions = {}): Promise<'downloaded' | 'verified-existing'> {
+async function downloadModel(url: string, target: string, entry: ModelFile, options: DownloadOptions = {}): Promise<'downloaded' | 'verified-existing'> {
   const signal = options.signal ?? new AbortController().signal
   if (await matchesModel(target, entry, signal)) return 'verified-existing'
   const cancelled = new AbortController()

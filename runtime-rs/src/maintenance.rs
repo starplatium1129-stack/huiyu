@@ -16,7 +16,6 @@ mod recovery_claim;
 mod request_body;
 mod save;
 pub(crate) mod scenes;
-pub mod semantics;
 mod showcase;
 pub(crate) mod state;
 

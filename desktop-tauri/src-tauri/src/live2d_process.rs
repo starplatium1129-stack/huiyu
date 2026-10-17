@@ -186,9 +186,7 @@ fn spawn(emit: EventSink) -> Result<Starting, String> {
                         if reading.shutdown_requested.load(Ordering::SeqCst) { continue; }
                         reading.stop(payload["reason"].as_str().unwrap_or("renderer stopped")); break;
                     }
-                    if matches!(name.as_str(), "aics:live2d:ready"
-                        | "aics:live2d:entrance-finished" | "aics:live2d:adapter-diagnostic"
-                        | "aics:live2d:motion-started" | "aics:live2d:motion-failed") {
+                    if name == "aics:live2d:motion-failed" {
                         reading.emit_current(&name, payload);
                     }
                 }

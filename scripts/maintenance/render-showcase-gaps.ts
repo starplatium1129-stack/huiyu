@@ -132,7 +132,7 @@ function seedFor(entryId: any, attempt: any) {
 }
 
 async function main(args: any = process.argv.slice(2), deps: any = {}) {
-  const opts = safety.parseArgs(args, { only: 'value', 'redo-mine': 'flag', manifest: 'value' }, deps.env || process.env);
+  const opts = safety.parseArgs(args, { only: 'value', 'redo-mine': 'flag', manifest: 'value' });
   if (opts.help) return safety.help(__filename, '[--only a,b] [--redo-mine] [--manifest <source manifest>]');
   const input = loadInputs(opts);
   const tasks = collectTasks(opts, input);
@@ -140,5 +140,4 @@ async function main(args: any = process.argv.slice(2), deps: any = {}) {
     pollMs: 1500, timeoutMs: 300000, protectedPaths: [path.dirname(input.manifestFile)] }, deps);
 }
 
-export = { main, loadInputs, collectTasks, seedFor };
 if (require.main === module) safety.runCli(main);

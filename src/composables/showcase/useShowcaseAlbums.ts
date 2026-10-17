@@ -29,7 +29,7 @@ function collection(id: string, group: ShowcaseAlbum['group'], album: Pick<Showc
 }
 
 /** 只从已加载的受控展示目录派生；相册封面不提升任何条目的浏览权限。 */
-export function buildShowcaseAlbums(entries: readonly ShowcaseEntry[], characters: readonly AlbumCharacter[] = []): ShowcaseAlbum[] {
+function buildShowcaseAlbums(entries: readonly ShowcaseEntry[], characters: readonly AlbumCharacter[] = []): ShowcaseAlbum[] {
   const overview = ALBUMS.flatMap(album => {
     const members = entries.filter(entry => entry.type === album.type)
     if (!members.length) return []

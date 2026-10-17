@@ -108,7 +108,7 @@ export function useInterfaceFeedback() {
     else releaseAudio()
   }
   function toggleSound() { setSoundEnabled(!soundEnabled.value) }
-  return { soundEnabled: readonly(soundEnabled), setSoundEnabled, toggleSound, playInterfaceTone }
+  return { soundEnabled: readonly(soundEnabled), toggleSound }
 }
 
 if (import.meta.hot) import.meta.hot.dispose(() => {

@@ -63,7 +63,7 @@ html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-bac
 }
 @media (forced-colors: active) {
   html :is(.gs-panel, .confirm-panel, .task-center, .modal-card, .batch-panel, .story-card,
-    .pb-backup-card, .pb-compare, .shot-script-panel, .appearance-dialog, .char-ref-modal,
+    .pb-backup-card, .pb-compare, .shot-script-panel, .appearance-dialog,
     .candidate-compare, .character-browser-dialog, .companion-settings-popover,
     .companion-workspace-settings, .guest-guide-card, .random-popover, .chat-more-menu) {
     background: Canvas; color: CanvasText; border: 1px solid CanvasText; box-shadow: none;

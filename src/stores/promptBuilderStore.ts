@@ -21,7 +21,6 @@ const toast = useToast()
 import {
   cloneReferenceInput,
   isSDParamKey,
-  type PromptPreset,
   type DraftOutfitOverride,
   type DraftReferenceInput,
   type DraftRandomVariation,
@@ -34,9 +33,9 @@ import { CHAR_PROMPT, EMOTION } from '@/config/promptConstants'
 export { CHAR_PROMPT } from '@/config/promptConstants'
 
 import type { CharKey, Selections } from '@/types/promptHistory'
-export type { CharKey, DrawEngine, HistoryEntry, Selections } from '@/types/promptHistory'
+export type { CharKey, HistoryEntry } from '@/types/promptHistory';
 
-export const PROMPT_MAP_EMOTION: Record<string, string> = Object.fromEntries(EMOTION.map(item => [item.id, item.prompt || '']))
+const PROMPT_MAP_EMOTION: Record<string, string> = Object.fromEntries(EMOTION.map(item => [item.id, item.prompt || '']))
 
 export const NEGATIVE_DEFAULT = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate'
 
@@ -111,7 +110,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return ['kobuichi', 'muririn', 'kantoku']
   })
   const sceneBlueprints = computed(() => sceneStore.sceneBlueprints)
-  const presets = ref<PromptPreset[]>([])
   const modelProfiles = ref<ModelProfile[]>([])
   const dataReady = ref(false)
   const historyRestoreReport = ref<RecipeRestoreReport | null>(null)
@@ -263,10 +261,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     subject.value = { ...subject.value, blueprintId }
   }
   function setStory(t: string) { story.value = t }
-  function toggleEmotion(id: string) {
-    const i = selections.emotion.indexOf(id)
-    if (i >= 0) selections.emotion.splice(i, 1); else selections.emotion.push(id)
-  }
   function setShot(id: string | null)        { selections.shot = id }
   function setLighting(id: string | null)    { selections.lighting = id }
   function setComposition(id: string | null) { selections.composition = id }
@@ -371,7 +365,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     await sceneStore.loadPresetCatalog()
     const { parsePresetCatalog, fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
     const catalog = parsePresetCatalog(sceneStore.presets)
-    presets.value = catalog.presets
     // Upgrades preserve personal content. Fill only missing software model
     // profiles in memory; never replace a user's existing model or preset.
     modelProfiles.value = await fillMissingModelProfiles(catalog.modelProfiles)
@@ -428,14 +421,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
-    scenes, curation, loraMeta, presets, modelProfiles, tags, characters,
+    scenes, curation, loraMeta, modelProfiles, tags, characters,
     popularCharacters, sceneBlueprints, dataReady, loadPopularCharacter,
     popularBlueprintReady, popularBlueprintLoading, popularBlueprintError,
     history,
     sdModelName, lastSeed, sdParams,
     focusMode, directorMode, sceneSearch, sceneTheme, lastRecommendedSize,
     activeScene, charPrompt, loraLine, emotionPrompt, filteredScenes, currentCuratedArtistStyles,
-    setChar, setStory, toggleEmotion, setShot, setLighting, setComposition,
+    setChar, setStory, setShot, setLighting, setComposition,
     setColorMood, toggleManualTag, addManualTag, setArtistStyleIds, loadScene, clearScene, flash,
     setOutfitOverride, clearOutfitOverride, clearReferenceInput, clearRandomVariation,
     snapshotStyleLayers, restoreStyleLayers,

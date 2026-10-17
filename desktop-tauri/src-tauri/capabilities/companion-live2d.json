@@ -15,8 +15,7 @@
     "allow-aics-live2d-set-emotion",
     "allow-aics-live2d-set-gaze",
     "allow-aics-live2d-hit-test",
-    "allow-aics-live2d-destroy",
-    "allow-aics-live2d-get-state"
+    "allow-aics-live2d-destroy"
   ],
   "local": true
 }

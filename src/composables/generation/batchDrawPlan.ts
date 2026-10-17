@@ -19,7 +19,7 @@ const statuses = new Set(['pending', 'running', 'accepted', 'unknown', 'succeede
 const record = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value)
 
 /** Planning snapshots hold frozen input and request identities, never runtime task records or Blob URLs. */
-export function parseBatchDrawPlan(value: unknown): BatchDrawPlan | null {
+function parseBatchDrawPlan(value: unknown): BatchDrawPlan | null {
   if (!record(value) || value.version !== 1 || !['sd', 'anima'].includes(String(value.engine))
     || typeof value.runtimeOwned !== 'boolean' || typeof value.createdAt !== 'number' || !Number.isFinite(value.createdAt)
     || !Array.isArray(value.targets) || !Array.isArray(value.jobs) || !value.jobs.length) return null

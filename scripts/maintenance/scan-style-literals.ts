@@ -9,13 +9,10 @@ const root = sources.ROOT;
 const args = process.argv.slice(2).filter((a: any) => !a.startsWith('--'));
 // 必须覆盖应用真正加载的样式:src/assets/css/*.css + 各 SFC 的 <style> 块。
 // 曾经这里只扫 css/ + tools/ + docs/,而 SPA 一个字节都不加载 css/。
-// 独立发布的审计报告(见 style-sources.STANDALONE_REPORTS)是自带设计系统的
-// 静态文档,不占用应用 token 回归预算,显式豁免。
 const targets = args.length
   ? args
   : [...sources.appCssFiles(), ...sources.sfcFiles(), ...sources.utilityScriptFiles(),
-     ...sources.staticHtmlFiles(), ...sources.legacyDocsCssFiles()]
-    .filter((f: any) => !sources.isStandaloneReport(f));
+     ...sources.staticHtmlFiles(), ...sources.legacyDocsCssFiles()];
 
 // 已在源文件里写注释说明理由的合理例外(根字号基准、品牌图形圆角、
 // iOS 16px 约束、装饰性字形槽、卡内堆叠底层)。默认只报告趋势；需要硬门禁时显式传 --strict。

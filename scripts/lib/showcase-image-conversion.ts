@@ -36,4 +36,4 @@ function convertImages(python: any, sourceFile: any, imageOut: any, thumbOut: an
   }
 }
 
-export = { IMAGE_BOX, IMAGE_QUALITY, THUMB_BOX, THUMB_QUALITY, convertImages };
+export = { convertImages };

@@ -1,6 +1,6 @@
-export type TaskStatus = 'queued' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled';
-export type TaskRecovery = 'normal' | 'reconciling' | 'unknown' | 'interrupted';
-export interface TaskResultRef { alias: string; sha256: string; bytes: number; mime: string; index: number }
+type TaskStatus = 'queued' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled';
+type TaskRecovery = 'normal' | 'reconciling' | 'unknown' | 'interrupted';
+interface TaskResultRef { alias: string; sha256: string; bytes: number; mime: string; index: number }
 export interface TaskRecord {
   taskId: string; workspaceId: string; principalId: string; requestKey: string; requestFingerprint: string;
   kind: 'generation' | 'anima' | 'creative' | 'video' | 'batch';

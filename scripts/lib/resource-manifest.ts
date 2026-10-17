@@ -560,4 +560,4 @@ function compareManifestFiles({ root, manifestPath, compareManifestPath, io = no
   return { ...base, ...compareManifests({ oldManifest, newManifest }) };
 }
 
-export = { SCHEMA_VERSION, SCAN_ROOT, EXCLUDED_PATHS, UsageError, generateManifest, verifyManifest, verifyManifestEntries, compareManifests, compareManifestFiles, checkManifestPath, resolveRealpathBoundary };
+export = { SCHEMA_VERSION, UsageError, generateManifest, verifyManifest, verifyManifestEntries, compareManifests, compareManifestFiles, checkManifestPath, resolveRealpathBoundary };

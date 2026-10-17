@@ -1,7 +1,7 @@
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { CHAT_RELAY_RECEIPT_KEY as CHAT_RELAY_RECEIPT } from '@/utils/storageKeys'
 import type { CompanionChatSendOptions } from '@/types/companionDrawing'
-export { CHAT_RELAY_RECEIPT }
+
 
 export function publishChatReceipt(requestId: string | undefined, accepted: boolean) {
   if (!requestId) return true

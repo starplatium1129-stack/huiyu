@@ -82,4 +82,4 @@ function assertNativeReleaseIntegrity(gateway: string): void {
   checkedBytes(gateway, 'huiyu-runtime.exe', report.runtime);
   for (const file of manifest.files) checkedBytes(gateway, `native/${file.name}`, file);
 }
-export = { SOURCES, EXECUTABLE, NATIVE_MANIFEST, checkedBytes, runtimeBuild, copyRustPayload, developmentNativeEnvironment, assertNativeReleaseIntegrity };
+export = { SOURCES, runtimeBuild, copyRustPayload, developmentNativeEnvironment, assertNativeReleaseIntegrity };

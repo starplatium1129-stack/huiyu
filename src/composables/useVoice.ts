@@ -103,13 +103,10 @@ export function useVoice(options: {
   onExpression?: (emotion: string) => void
   onMouth?: (v: number) => void
   onAudioLevel?: (level: number, peak: number) => void
-  onAudioReady?: (mid: string) => void
-  onAudioCleared?: () => void
   onActivity?: (active: boolean) => void
 }) {
   const { enabled, onStatus = () => {}, onError = () => {}, onSpeaking = () => {},
-    onExpression = () => {}, onMouth = () => {}, onAudioLevel = () => {},
-    onAudioReady = () => {}, onAudioCleared = () => {}, onActivity = () => {} } = options
+    onExpression = () => {}, onMouth = () => {}, onAudioLevel = () => {}, onActivity = () => {} } = options
 
   const availability = ref<VoiceAvailability>({ online: false, voices: {} })
 
@@ -248,7 +245,6 @@ export function useVoice(options: {
       const stored = { url: item.stream ? '' : item.url, emotion: item.emotion || 'neutral' }
       clips.push(stored); messageAudio.set(meta.mid, clips)
       queue.push({ ...item, mid: meta.mid, session: sess, recorded: stored })
-      if (!item.stream) onAudioReady(meta.mid)
       pump(sess); prefetch()
     }).catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)) })
     .finally(() => {
@@ -327,7 +323,6 @@ export function useVoice(options: {
     void item.stream.start().then(blob => {
       if (item.session !== session || !item.recorded || !messageAudio.get(item.mid)?.includes(item.recorded)) return
       replayCache.remember(item.mid, item.recorded, blob, item.url)
-      onAudioReady(item.mid)
     }).catch(() => {}) // Playback reports a prefetched failure once it owns this clip.
   }
   function prefetch() { if (playing && queue[0]?.stream) observeStream(queue[0]) }
@@ -400,7 +395,7 @@ export function useVoice(options: {
         if (sess !== session || currentPcm !== stream || isAbortError(e)) return
         // Retain a manual whole-clip retry, never the incomplete PCM data.
         if (item.recorded && !item.recorded.url && messageAudio.get(item.mid)?.includes(item.recorded)) {
-          item.recorded.url = item.url; onAudioReady(item.mid)
+          item.recorded.url = item.url
         }
         onError('一句配音失败：' + errorMessage(e))
       })
@@ -415,7 +410,6 @@ export function useVoice(options: {
     if (item.stream) {
       item.stream.cancel()
       if (item.recorded) item.recorded.url = item.url
-      onAudioReady(item.mid)
     }
     const audio = new Audio() as AudioWithSource
     audio.crossOrigin = runtimeResourceCors() ?? null
@@ -478,9 +472,7 @@ export function useVoice(options: {
   function hasAudio(mid: string) { return Boolean(messageAudio.get(mid)?.some(clip => clip.url)) }
 
   function clearMessages(mids: string[]) {
-    const changed = mids.some(mid => hasAudio(mid))
     mids.forEach(mid => { const c = messageAudio.get(mid) || []; c.forEach(cl => replayCache.remove(cl)); messageAudio.delete(mid) })
-    if (changed) onAudioCleared()
   }
 
   function stop(opts: { preserveMessageAudio?: boolean; silent?: boolean } = {}) {

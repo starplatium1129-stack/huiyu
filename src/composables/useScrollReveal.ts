@@ -72,5 +72,4 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
   onActivated(start)
   onDeactivated(stop)
   onUnmounted(stop)
-  return { observeAll }
 }

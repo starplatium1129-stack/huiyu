@@ -226,7 +226,6 @@ defineExpose({ focusSelected, snapshot })
   .bookshelf-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .bookshelf-characters { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .bookshelf-header { @apply tw:items-start; }
-  .bookshelf-search-row > .bookshelf-hint { @apply tw:hidden; }
 }
 @media (max-width: 760px) {
   .character-bookshelf { @apply tw:p-s-5; }

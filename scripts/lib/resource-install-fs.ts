@@ -14,17 +14,12 @@ interface ResourceContext {
   store: string;
   policy: any;
   access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
-  onEvent?: (event: { phase: string; [key: string]: any }) => any;
-  freeBytes?: () => number;
 }
 interface ContextOptions {
   userDataRoot: string;
-  io?: typeof fs;
   protectedRoots?: string[];
   policy?: any;
   access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
-  onEvent?: (event: { phase: string; [key: string]: any }) => any;
-  freeBytes?: () => number;
 }
 
 const STORE_NAME = 'resource-library-v1';
@@ -187,9 +182,8 @@ function unlink(io: typeof fs, target: string): void {
 function cancelled(signal?: AbortSignal): void {
   if (signal?.aborted) fail('CANCELLED', 'Operation cancelled; verified files and previous installation are retained');
 }
-async function event(ctx: ResourceContext, phase: string, details: Record<string, any> = {}, signal?: AbortSignal): Promise<void> {
+async function yieldForCancellation(signal?: AbortSignal): Promise<void> {
   cancelled(signal);
-  if (ctx.onEvent) await ctx.onEvent({ phase, ...details });
   await new Promise((resolve) => setImmediate(resolve));
   cancelled(signal);
 }
@@ -200,7 +194,7 @@ function access(ctx: ResourceContext): void {
 }
 function context(options: Partial<ContextOptions> = {}): ResourceContext {
   if (typeof options.userDataRoot !== 'string' || !path.isAbsolute(options.userDataRoot)) fail('CONFIG_REQUIRED', 'An absolute userDataRoot is required');
-  const io = options.io || fs;
+  const io = fs;
   const userRoot = path.resolve(options.userDataRoot);
   const store = path.join(userRoot, STORE_NAME);
   const protectedRoots = [path.resolve(__dirname, '../..'), ...(options.protectedRoots || [])];
@@ -210,8 +204,7 @@ function context(options: Partial<ContextOptions> = {}): ResourceContext {
   }
   const userStat = noLinks(io, userRoot);
   if (!userStat || !userStat.isDirectory()) fail('CONFIG_REQUIRED', 'userDataRoot must already be a directory');
-  return { io, userRoot, store, policy: JSON.parse(JSON.stringify(options.policy || {})), access: options.access,
-    onEvent: options.onEvent, freeBytes: options.freeBytes };
+  return { io, userRoot, store, policy: JSON.parse(JSON.stringify(options.policy || {})), access: options.access };
 }
 function initialize(ctx: ResourceContext): void {
   access(ctx);
@@ -230,12 +223,8 @@ function initialize(ctx: ResourceContext): void {
 }
 function ensureSpace(ctx: ResourceContext, bytes: number): void {
   if (!Number.isSafeInteger(bytes) || bytes < 0) fail('SIZE_INVALID', 'Invalid required byte count');
-  let available;
-  if (ctx.freeBytes) available = BigInt(ctx.freeBytes());
-  else {
-    const stat = ctx.io.statfsSync(ctx.store, { bigint: true });
-    available = stat.bavail * stat.bsize;
-  }
+  const stat = ctx.io.statfsSync(ctx.store, { bigint: true });
+  const available = stat.bavail * stat.bsize;
   if (available < BigInt(bytes)) fail('ENOSPC', 'Not enough free space; previous installation is retained', { required: bytes, available: available.toString() });
 }
 function alive(owner: LockOwner): boolean {
@@ -291,6 +280,6 @@ async function locked(ctx: ResourceContext, fn: () => any): Promise<any> {
   const release = lockFile(ctx);
   try { return await fn(); } finally { release(); }
 }
-export = { STORE_NAME, MAX_JSON, ResourceError, fail, digest, within, samePath, relativePath, child,
+export = { ResourceError, fail, digest, within, relativePath, child,
   noLinks, mkdir, readBytes, readJson, writeAtomic, writeJson, writeAll, unlink, flushDir, cleanAtomicTemps,
-  cancelled, event, access, context, initialize, ensureSpace, lockFile, locked };
+  cancelled, yieldForCancellation, access, context, ensureSpace, lockFile, locked };

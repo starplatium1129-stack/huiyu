@@ -73,4 +73,3 @@ function main(args: any) {
   } catch (error) { console.error(runtimeErrorMessage(error)); return 1; }
 }
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
-export = { parse, main };

@@ -1,9 +1,9 @@
-export type WorkflowEffect = 'read-only' | 'preview' | 'self-heal-missing' | 'guard'
+type WorkflowEffect = 'read-only' | 'preview' | 'self-heal-missing' | 'guard'
   | 'writes-source' | 'writes-product' | 'writes-release'
   | 'delete' | 'external-model' | 'network-download' | 'publish-remote' | 'service' | 'isolated-fixture';
-export type WorkflowMachine = 'node' | 'windows' | 'windows-toolchain' | 'python' | 'python-pillow'
+type WorkflowMachine = 'node' | 'windows' | 'windows-toolchain' | 'python' | 'python-pillow'
   | 'gateway' | 'comfyui' | 'vision-api' | 'network' | 'build-present';
-export interface WorkflowRun {
+interface WorkflowRun {
   nature: WorkflowEffect[];
   machine: WorkflowMachine[];
   switches?: Record<string, WorkflowEffect[]>;
@@ -26,7 +26,3 @@ export interface WorkflowDefinition {
 export type WorkflowRegistry = Record<string, WorkflowDefinition>;
 export type RegisteredWorkflows = Record<string, WorkflowDefinition & { run: WorkflowRun }>;
 export interface WorkflowStep { name: string; args: string[]; def: WorkflowDefinition }
-export interface WorkflowCommandResult { error?: Error; status: number | null; signal?: NodeJS.Signals | null }
-export type WorkflowCommandRunner = (command: string, args: string[], options: {
-  cwd: string; stdio: 'inherit'; shell: boolean; windowsHide: boolean; env: NodeJS.ProcessEnv;
-}) => WorkflowCommandResult;

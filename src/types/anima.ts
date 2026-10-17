@@ -35,7 +35,7 @@ export interface AnimaOption {
   sizes?: string[]
 }
 
-export interface KreaStyleLoraOption {
+interface KreaStyleLoraOption {
   id: string
   trigger: string
   recommendedStrength: number

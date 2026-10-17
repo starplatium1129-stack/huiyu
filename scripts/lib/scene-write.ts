@@ -3,7 +3,7 @@ import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } fr
  * scripts/lib/scene-write.js — 场景写入侧治理（计划 006 / D5）
  *
  * 职责边界：日常保存走「稳定目标 + 增量写分片」；全量重切只属于显式维护
- * （split-scenes / clean-scenes 经 scene-store.writeSceneSet）。这里不迁移
+ * （split-scenes 经 scene-store.writeSceneSet）。这里不迁移
  * 数据库、不打开安装版写入口；兼容既有 scNNN，sc999 后自然续接 sc1000。
  *
  * 关键约定：
@@ -304,7 +304,6 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
 }
 
 export = {
-  applySceneChanges,
-  readRetiredSceneIds,
-  verifyShardIntegrity,
+    applySceneChanges,
+    readRetiredSceneIds
 };

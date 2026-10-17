@@ -3,7 +3,7 @@ import type { CompanionReminder } from '@/utils/companionBehavior'
 
 /** Presentation only: authored Live2D motions and character dialogue remain the source of truth. */
 interface PerformanceRule { emotion: ChatEmotion; closeEmotion?: ChatEmotion; minimumAffection?: number; expiresMs: number }
-export const COMPANION_PERFORMANCES: Readonly<Record<string, Readonly<PerformanceRule>>> = {
+const COMPANION_PERFORMANCES: Readonly<Record<string, Readonly<PerformanceRule>>> = {
   return: { emotion: 'gentle', closeEmotion: 'happy', minimumAffection: 50, expiresMs: 90_000 },
   idle: { emotion: 'gentle', expiresMs: 90_000 },
   'sd-done': { emotion: 'happy', expiresMs: 90_000 },

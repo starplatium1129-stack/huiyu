@@ -1,11 +1,4 @@
-export interface DesktopFile {
-  name: string
-  path: string
-  size: number
-  type: string
-}
-
-export interface DesktopAiWorkspace {
+interface DesktopAiWorkspace {
   root: string
   exists: boolean
   activeRoot: string
@@ -15,13 +8,10 @@ export interface DesktopAiWorkspace {
 export interface CompanionDesktopBridge {
   readChatCredential?(endpoint: string): Promise<string | null>
   writeChatCredential?(endpoint: string, secret: string): Promise<void>
-  readonly isDesktop: true
   startDragging?(): Promise<void>
   hide(): void
-  quit(): void
   openAtelier(pathname?: string): void
   openChat(): Promise<unknown>
-  toggleChat(): Promise<unknown>
   hideChatWindow(): Promise<unknown>
   setChatDocked?(docked: boolean): Promise<boolean>
   getChatDocked?(): Promise<boolean>
@@ -40,21 +30,14 @@ export interface CompanionDesktopBridge {
     bounds?: { x: number; y: number; width: number; height: number }
   }>
   toggleAlwaysOnTop(): Promise<boolean>
-  getSettings(): Promise<{ openAtLogin: boolean }>
   isPackaged(): Promise<boolean>
-  setAutostart(enabled: boolean): Promise<boolean>
-  pickFiles(): Promise<DesktopFile[]>
   saveImage(payload: { data: Uint8Array; name?: string }): Promise<{ saved: boolean; filePath?: string; error?: string }>
   openWorkspace(): Promise<boolean>
-  openRuntime(): Promise<boolean>
-  openLog(): Promise<boolean>
   getWorkspace(): Promise<DesktopAiWorkspace>
   setWorkspace(root: string): Promise<DesktopAiWorkspace>
   restartForSetup?(): Promise<void>
   pickWorkspace(root?: string): Promise<string | null>
   notify(title: string, body: string): void
-  setProgress(progress: number | null): void
-  runTool(name: string, args: Record<string, unknown>, options?: { signal?: AbortSignal }): Promise<{ ok: boolean; output: string; imageDataUrl?: string }>
   onResume(listener: () => void): number
   offResume(subscriptionId: number): void
   onShown(listener: () => void): number

@@ -160,5 +160,5 @@ function saveReview(inspection: any, output: any, review: any) {
   return target;
 }
 
-export = { GENERATOR, SOURCE, SHA, bytes, json, within, relativeImage, jsonHash,
-  inspectCandidates, collectReview, attachReview, saveReview };
+export = { SOURCE, SHA, bytes, json, within, relativeImage, jsonHash,
+    inspectCandidates, collectReview, attachReview, saveReview };

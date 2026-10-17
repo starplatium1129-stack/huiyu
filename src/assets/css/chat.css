@@ -160,10 +160,6 @@
   text-shadow: 0 1px 10px var(--bg-deep);
 }
 
-body:has(.chat-page) .sakura-fall {
-  opacity: .26;
-}
-
 .chat-page .portrait-main {
   @apply tw:absolute;
   z-index: var(--z-base);
@@ -558,13 +554,6 @@ body:has(.chat-page) .sakura-fall {
   @apply tw:mb-s-2 tw:text-glyph;
 }
 
-.chat-page .chat-empty-kicker {
-  @apply tw:block tw:mb-s-2;
-  color: var(--character-ink, var(--character-accent));
-  font: 750 var(--fs-mono-xs) var(--font-mono);
-  letter-spacing: .12em;
-}
-
 .chat-page .chat-starters {
   @apply tw:grid tw:gap-[7px] tw:mt-s-4;
 }
@@ -689,17 +678,6 @@ body:has(.chat-page) .sakura-fall {
 .chat-page .chat-input:focus {
   @apply tw:border-strong;
   box-shadow: var(--focus-shadow);
-}
-
-.chat-page .send-btn,
-.chat-page .stop-btn {
-  @apply tw:min-h-[50px];
-  padding: 0 18px;
-}
-
-.chat-page .stop-btn {
-  border-color: color-mix(in srgb, var(--danger) 45%, var(--border-soft));
-  @apply tw:text-danger-text;
 }
 
 .chat-page .thinking-group {
@@ -855,11 +833,6 @@ body:has(.chat-page) .sakura-fall {
 
   .chat-page .chat-input {
     flex-basis: 100%;
-  }
-
-  .chat-page .send-btn,
-  .chat-page .stop-btn {
-    flex: 1;
   }
 
 }

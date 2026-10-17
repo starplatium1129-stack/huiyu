@@ -4,7 +4,7 @@ import { useTrackedTask } from './useTaskCenter.ts'
 import { abortableTask } from '@/utils/abortableTask'
 import { getCurrentScope, getCurrentInstance, onActivated, onDeactivated, onScopeDispose, ref } from 'vue'
 import type { InterrogateMode, InterrogateResult } from '../api/interrogateResult.ts'
-export type { InterrogateMode, InterrogateResult } from '../api/interrogateResult.ts'
+export type { InterrogateResult } from '../api/interrogateResult.ts';
 
 // Both mounted entry points write the same reference draft. The latest request
 // owns that draft, while separate application roots remain independent.

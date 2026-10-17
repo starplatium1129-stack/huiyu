@@ -198,13 +198,9 @@ fn main() {
             credentials::chat_credential_write,
             bridge::get_state,
             bridge::hide,
-            bridge::quit,
             bridge::set_ignore_mouse_events_cmd,
-            bridge::toggle_ignore_mouse_events,
             bridge::toggle_always_on_top,
             bridge::set_live2d_enabled,
-            bridge::get_settings,
-            bridge::set_autostart,
             bridge::is_packaged,
             bridge::get_workspace,
             bridge::set_workspace,
@@ -213,7 +209,6 @@ fn main() {
             bridge::notify,
             bridge::open_atelier,
             bridge::open_companion_chat,
-            bridge::toggle_companion_chat,
             bridge::hide_companion_chat,
             chat_dock::set_chat_docked,
             chat_dock::get_chat_docked,
@@ -225,11 +220,7 @@ fn main() {
             bridge::get_window_state,
             window_presentation::window_zoom_get,
             window_presentation::window_zoom_set,
-            bridge::set_progress,
             bridge::open_workspace,
-            bridge::open_runtime,
-            bridge::open_log,
-            bridge::pick_files,
             save_image::save_image,
             updater_cmd::desktop_update_check,
             updater_cmd::desktop_update_state,
@@ -245,7 +236,6 @@ fn main() {
             live2d_overlay::aics_live2d_set_gaze,
             live2d_overlay::aics_live2d_hit_test,
             live2d_overlay::aics_live2d_destroy,
-            live2d_overlay::aics_live2d_get_state,
             ];
             move |invoke: tauri::ipc::Invoke| {
                 let view = invoke.message.webview();
@@ -367,7 +357,6 @@ fn main() {
                     Err(e) => {
                         s.error(&format!("Gateway start failed: {e}"));
                         if ui_entry::bundled(&handle) {
-                            let _ = handle.emit("aics:gateway-unavailable", ());
                             return;
                         }
                         use tauri_plugin_dialog::DialogExt;
@@ -452,7 +441,7 @@ fn main() {
         match event {
             RunEvent::ExitRequested { api, .. } => {
                 // 托盘常驻：所有窗口关闭不退出（对应 Electron 版
-                // "keep the tray process alive"）；显式退出（托盘菜单/quit 命令）
+                // "keep the tray process alive"）；显式退出（托盘菜单）
                 // 会先置 quitting 标志。
                 let state = app_handle.state::<AppState>();
                 if !state.quitting.load(Ordering::Relaxed) {

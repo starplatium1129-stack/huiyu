@@ -8,7 +8,6 @@ use serde::Deserialize;
 
 use crate::ffi::{self, l2d_model as L2dModelOpaque};
 
-pub const PRIORITY_NONE: i32 = ffi::L2D_PRIORITY_NONE;
 pub const PRIORITY_IDLE: i32 = ffi::L2D_PRIORITY_IDLE;
 pub const PRIORITY_NORMAL: i32 = ffi::L2D_PRIORITY_NORMAL;
 pub const PRIORITY_FORCE: i32 = ffi::L2D_PRIORITY_FORCE;
@@ -24,7 +23,7 @@ unsafe fn slice_from_ffi<'a, T>(pointer: *const T, count: i32) -> &'a [T] {
     }
 }
 
-pub fn ensure_framework() -> Result<(), String> {
+fn ensure_framework() -> Result<(), String> {
     FRAMEWORK_READY
         .get_or_init(|| {
             let code = unsafe { ffi::l2d_initialize() };
@@ -110,15 +109,11 @@ impl Model {
         self.hidden_drawables = ids.iter().copied().collect();
     }
 
-    pub fn hidden_drawables(&self) -> &[i32] {
-        &self.hidden_drawables
-    }
-
     /// Stable identity for renderer-side GPU caches.
     ///
     /// The native model can be replaced in the same Rust storage slot, so a
     /// pointer address alone is not sufficient to invalidate cached buffers.
-    pub fn cache_key(&self) -> u64 {
+    pub(crate) fn cache_key(&self) -> u64 {
         self.id
     }
 
@@ -180,16 +175,8 @@ impl Model {
         (handle > 0).then_some(MotionHandle(handle))
     }
 
-    pub fn stop_all_motions(&mut self) {
-        unsafe { ffi::l2d_model_stop_all_motions(self.ptr) }
-    }
-
     pub fn is_finished(&self, handle: MotionHandle) -> bool {
         unsafe { ffi::l2d_model_is_finished(self.ptr, handle.0) != 0 }
-    }
-
-    pub fn has_playing_motion(&self) -> bool {
-        unsafe { ffi::l2d_model_has_playing_motion(self.ptr) != 0 }
     }
 
     pub fn set_parameter(&mut self, id: &str, value: f32, weight: f32) {
@@ -202,54 +189,9 @@ impl Model {
         unsafe { ffi::l2d_model_get_parameter(self.ptr, id.as_ptr()) }
     }
 
-    pub fn set_part_opacity(&mut self, id: &str, opacity: f32) {
-        let id = ffi::CStringGuard::new(id);
-        unsafe { ffi::l2d_model_set_part_opacity(self.ptr, id.as_ptr(), opacity) }
-    }
-
-    /// 复位夏目叠层/换装参数到作者默认值（互动动作结束后调用，见 C++ 侧注释）。
-    pub fn reset_overlay_params(&mut self) {
-        unsafe { ffi::l2d_model_reset_overlay_params(self.ptr) }
-    }
-
-    /// 每帧守卫：非互动/非登场期间把叠层参数强制写回隐藏态（Idle 动作
-    /// Idle_6 会把 Param36/37 拉出隐藏态导致静止时叠层显示发灰，见
-    /// docs/live2d-native-runtime.md；C++ 侧与 reset 共用隐藏态表）。
-    pub fn force_overlay_hidden(&mut self) {
-        unsafe { ffi::l2d_model_force_overlay_hidden(self.ptr) }
-    }
-
-    /// 互动/登场动作结束后开始叠层/换装参数的平滑回落：捕获各参数当前
-    /// 值（动作曲线留下的换装显隐态），此后由 step_overlay_settle 向隐藏
-    /// 态 smoothstep 缓动。替代一次性硬写——后者让换装部件在单帧内消失
-    /// 回穿，视觉上是"闪一下"（2026-08-23 桌宠实机反馈）。duration<=0
-    /// 时 C++ 侧退化为立即复位。
-    pub fn begin_overlay_settle(&mut self, duration_seconds: f32) {
-        unsafe { ffi::l2d_model_begin_overlay_settle(self.ptr, duration_seconds) }
-    }
-
-    /// 推进回落动画（须在 model.update 之后调用）。返回 true 表示本帧仍在
-    /// 回落中，调用方应跳过硬性隐藏守卫；false 表示已结束或未激活。
-    pub fn step_overlay_settle(&mut self, delta_time_seconds: f32) -> bool {
-        unsafe { ffi::l2d_model_step_overlay_settle(self.ptr, delta_time_seconds) != 0 }
-    }
-
     /// TEMP DIAG: 把所有参数重置为 moc3 默认值。
     pub fn reset_all_parameters(&mut self) {
         unsafe { ffi::l2d_model_reset_all_parameters(self.ptr) }
-    }
-
-    pub fn get_part_opacity(&self, id: &str) -> f32 {
-        let id = ffi::CStringGuard::new(id);
-        unsafe { ffi::l2d_model_get_part_opacity(self.ptr, id.as_ptr()) }
-    }
-
-    pub fn set_eye_blink_enabled(&mut self, enabled: bool) {
-        unsafe { ffi::l2d_model_set_eye_blink_enabled(self.ptr, enabled as i32) }
-    }
-
-    pub fn set_opacity(&mut self, opacity: f32) {
-        unsafe { ffi::l2d_model_set_opacity(self.ptr, opacity) }
     }
 
     pub fn update(&mut self, delta_time_seconds: f32) {
@@ -492,28 +434,12 @@ pub struct HitArea {
 pub struct ViewTransform {
     pub scale: f32,
     /// Canvas-space center of the fitted content. `fit_content` derives it
-    /// from the vertex bbox; `fit` keeps the canvas origin (0, 0).
+    /// from the vertex bbox.
     pub center_x: f32,
     pub center_y: f32,
 }
 
 impl ViewTransform {
-    /// Fit the canvas into (width x height) preserving aspect ratio.
-    pub fn fit(
-        canvas_w: f32,
-        canvas_h: f32,
-        width: f32,
-        height: f32,
-        scale_override: Option<f32>,
-    ) -> Self {
-        let scale = scale_override.unwrap_or((width / canvas_w).min(height / canvas_h));
-        Self {
-            scale,
-            center_x: 0.0,
-            center_y: 0.0,
-        }
-    }
-
     /// Fit the *content* (vertex bbox) into (width x height), centered on the
     /// bbox center. Works for old Cubism 3 models whose vertex unit differs
     /// from the canvas size and for models whose character is offset inside
@@ -549,24 +475,7 @@ impl ViewTransform {
         )
     }
 
-    /// Model canvas coordinate -> clip space (x right, y up).
-    pub fn canvas_to_clip(&self, x: f32, y: f32, width: f32, height: f32) -> [f32; 2] {
-        [
-            (x - self.center_x) / width * 2.0 * self.scale,
-            (y - self.center_y) / height * 2.0 * self.scale,
-        ]
-    }
-
-    pub fn as_uniform(&self, width: f32, height: f32) -> [f32; 4] {
-        [
-            2.0 * self.scale / width,
-            2.0 * self.scale / height,
-            -self.center_x * 2.0 * self.scale / width,
-            -self.center_y * 2.0 * self.scale / height,
-        ]
-    }
-
-    /// Debug: same as `as_uniform` plus an extra clip-space X shift.
+    /// Model-to-clip uniform with an extra clip-space X shift.
     pub fn as_uniform_shifted(&self, width: f32, height: f32, x_shift: f32) -> [f32; 4] {
         [
             2.0 * self.scale / width,
@@ -582,7 +491,7 @@ pub fn parse_model3(json: &[u8]) -> Result<Model3Json, String> {
     serde_json::from_slice(json).map_err(|e| format!("model3.json parse failed: {e}"))
 }
 
-pub fn blend_mode_name(color_blend: i32) -> &'static str {
+pub(crate) fn blend_mode_name(color_blend: i32) -> &'static str {
     match color_blend {
         ffi::L2D_COLOR_BLEND_NORMAL => "Normal",
         ffi::L2D_COLOR_BLEND_ADD_COMPATIBLE => "Add(compat)",

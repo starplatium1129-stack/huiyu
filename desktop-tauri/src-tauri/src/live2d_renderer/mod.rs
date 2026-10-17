@@ -100,8 +100,7 @@ pub struct Live2DOverlayState {
     pub model_bounds: Mutex<Option<OverlayRect>>,
     /// 原生渲染循环目标帧率。
     pub target_fps: AtomicU32,
-    /// 模型 ready 标记：setCharacter 成功后置 true，前端 onReady 订阅前先查
-    /// 此状态（一次性 ready 事件在订阅前发出会丢失，导致前端 connect 超时）。
+    /// 模型 ready 标记：仅在 setCharacter 成功后允许绘制模型。
     pub model_ready: AtomicBool,
     /// 最近一次规范化口型意图与角色映射值，仅供只读发布验收诊断。
     pub last_mouth_level: AtomicU32,
@@ -294,7 +293,6 @@ struct RenderContext {
     motion_last_indices: HashMap<String, usize>,
     motion_seed: u64,
     active_motion: Option<ActiveMotion>,
-    ready_emitted: bool,
     last_rect: OverlayRect,
     /// 连续拿不到可绘制 surface 的帧数，见 SURFACE_FAILURE_LIMIT。
     surface_failures: u32,

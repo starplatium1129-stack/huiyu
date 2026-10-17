@@ -6,15 +6,15 @@ import { timeDesktopBuild } from '../lib/desktop-build-timing';
 const { withDesktopBuildLock }: typeof import('./desktop-build-lock') = require('./desktop-build-lock');
 const { stageResources }: typeof import('./desktop-stage-resources') = require('./desktop-stage-resources');
 const ROOT = path.resolve(__dirname, '../..');
-async function prepareTauri(options: any = {}) {
-  const root = options.root || ROOT, webDir = options.webDir || path.join(root, 'desktop-tauri/web');
-  await timeDesktopBuild('installer assets', options.buildInstaller || (() => (require('./build-game-installer') as typeof import('./build-game-installer')).buildGameInstaller()));
-  await timeDesktopBuild('Rust runtime', options.buildRuntime || (() => execFileSync(process.execPath, [path.join(root, 'scripts/maintenance/run-rust-runtime.js'), 'build'], { cwd: root, env:{...process.env,CARGO_TARGET_DIR:path.join(root,'runtime-rs/target')}, windowsHide: true, stdio: 'inherit' })));
-  await timeDesktopBuild('desktop UI', options.buildDesktopUi || (() => execFileSync(process.execPath,
+async function prepareTauri(options: { root?: string } = {}) {
+  const root = options.root || ROOT, webDir = path.join(root, 'desktop-tauri/web');
+  await timeDesktopBuild('installer assets', (() => (require('./build-game-installer') as typeof import('./build-game-installer')).buildGameInstaller()));
+  await timeDesktopBuild('Rust runtime', (() => execFileSync(process.execPath, [path.join(root, 'scripts/maintenance/run-rust-runtime.js'), 'build'], { cwd: root, env:{...process.env,CARGO_TARGET_DIR:path.join(root,'runtime-rs/target')}, windowsHide: true, stdio: 'inherit' })));
+  await timeDesktopBuild('desktop UI', (() => execFileSync(process.execPath,
     [path.join(path.dirname(require.resolve('vite/package.json')), 'bin/vite.js'), 'build', '--mode', 'desktop', '--outDir', webDir],
     { cwd: root, stdio: 'inherit', windowsHide: true })));
   if (!fs.existsSync(path.join(webDir, 'index.html'))) throw Error('Desktop bundled UI was not built');
-  const staged = await timeDesktopBuild('resource staging', () => stageResources({ root, stage: options.stage, resourceProfile: options.resourceProfile, logger: options.logger }));
+  const staged = await timeDesktopBuild('resource staging', () => stageResources({ root }));
   console.log(`[tauri] Rust candidate prepared; releaseReady=${staged.releaseReady}`);
   return { webDir, ...staged };
 }

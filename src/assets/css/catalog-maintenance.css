@@ -122,7 +122,6 @@
 .catalog-conflict h3 { font-size:var(--fs-body); margin:0 0 var(--s-2); }
 .catalog-conflict p { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.8; }
 .catalog-error { color:var(--danger); font-size:var(--fs-body-sm); overflow-wrap:anywhere; }
-.catalog-media-preview { display:block; max-width:100%; max-height:520px; object-fit:contain; margin-block:var(--s-4); }
 .catalog-curation-field,.catalog-tag-row { margin-block:var(--s-4); }
 .catalog-document-editor > .studio-pagination { border-top:1px solid var(--border-soft); padding-top:var(--s-3); margin-top:var(--s-3); }
 .catalog-studio button:disabled,.catalog-studio button:disabled span,.catalog-studio button:disabled small,.catalog-studio .input:disabled,.catalog-more-menu button:disabled,.catalog-more-menu button:disabled span { color:var(--text-disabled); cursor:default; }

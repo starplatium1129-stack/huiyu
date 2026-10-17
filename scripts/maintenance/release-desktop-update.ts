@@ -138,12 +138,11 @@ function assertPublishReady(version: any) {
   return head;
 }
 
-function publishRelease(version: any, head: any, files: any, options: any = {}) {
-  const run = options.run || execFileSync;
-  const manual = options.manual ?? MANUAL;
-  const completeManual = options.completeManual ?? COMPLETE_MANUAL;
+function publishRelease(version: any, head: any, files: any) {
+  const manual = MANUAL;
+  const completeManual = COMPLETE_MANUAL;
   if (manual && files.some((file: any) => path.basename(file) === 'latest.json' || file.endsWith('.sig'))) throw new Error('手动安装版不能发布自动更新清单或签名');
-  const workspaceRoot = options.root || ROOT;
+  const workspaceRoot = ROOT;
   const installers = files.filter((file: string) => file.endsWith('.exe'));
   if (installers.length !== 2 || new Set(installers.map((file: string) => path.basename(file))).size !== 2) throw Error('公开发布必须同时提供完整包与升级包');
   for (const installer of installers) binding.verifyDistribution(workspaceRoot, installer);
@@ -154,36 +153,36 @@ function publishRelease(version: any, head: any, files: any, options: any = {}) 
     if (!files.includes(`${installer}.sha256`) || (!manual && !files.includes(`${installer}.sig`))) throw Error('每种安装包都必须附带校验文件及对应签名');
   }
   const tag = releaseTag(version);
-  const baseNotes = options.notesFile || path.join(ROOT, 'docs/releases', `${tag}.md`);
+  const baseNotes = path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
   const packageHelp = `> 新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。样张素材继续独立提供。\n\n`;
   const notes = (manual ? `${MANUAL_MARKER}\n> 本次为手动安装版：自动更新通道继续保留上一份已签名版本，待原签名主机补签后启用。安装包未签名，SHA-256 用于文件完整性校验。\n\n` : '') + packageHelp + fs.readFileSync(baseNotes, 'utf8');
-  const outputDir = options.outputDir || OUT_DIR;
+  const outputDir = OUT_DIR;
   fs.mkdirSync(outputDir, { recursive: true });
   const notesPath = path.join(outputDir, `release-notes-${tag}.md`);
   fs.writeFileSync(notesPath, notes);
   const cli = ghCommand();
-  const queryOptions = { cwd: ROOT, encoding: 'utf8', windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] };
-  const writeOptions = { cwd: ROOT, stdio: 'inherit', windowsHide: true };
+  const queryOptions = { cwd: ROOT, encoding: 'utf8', windowsHide: true, stdio: ['ignore', 'pipe', 'pipe'] } satisfies import('node:child_process').ExecFileSyncOptionsWithStringEncoding;
+  const writeOptions = { cwd: ROOT, stdio: 'inherit', windowsHide: true } satisfies import('node:child_process').ExecFileSyncOptions;
   let existing = null;
-  try { existing = JSON.parse(run(cli, ['release', 'view', tag, '--repo', RELEASE_REPOSITORY, '--json', 'isDraft,body,targetCommitish'], queryOptions)); }
+  try { existing = JSON.parse(execFileSync(cli, ['release', 'view', tag, '--repo', RELEASE_REPOSITORY, '--json', 'isDraft,body,targetCommitish'], queryOptions)); }
   catch (error) { if (!/release not found|404|Not Found/i.test(String(runtimeErrorOutput(error, 'stderr') || runtimeErrorMessage(error)))) throw error; }
   if (existing && !existing.isDraft && !(completeManual && !manual && existing.body.includes(MANUAL_MARKER))) throw new Error('该版本已公开发布；只有显式 --complete-manual 才能补签手动版');
   if (existing) {
     // Existing tags are immutable: completion must sign the exact released source.
-    const tagCommit = existing.isDraft ? existing.targetCommitish : run('git', ['rev-parse', `${tag}^{commit}`], queryOptions).trim();
+    const tagCommit = existing.isDraft ? existing.targetCommitish : execFileSync('git', ['rev-parse', `${tag}^{commit}`], queryOptions).trim();
     if (tagCommit !== head) throw new Error('发行源码与草稿或已发布版本标签不一致');
-    run(cli, ['release', 'upload', tag, ...files, '--repo', RELEASE_REPOSITORY, '--clobber'], writeOptions);
+    execFileSync(cli, ['release', 'upload', tag, ...files, '--repo', RELEASE_REPOSITORY, '--clobber'], writeOptions);
   } else {
-    run(cli, ['release', 'create', tag, ...files, '--repo', RELEASE_REPOSITORY, '--target', head, '--title', `绘遇 HUIYU ${version}`, '--notes-file', notesPath, '--draft'], writeOptions);
+    execFileSync(cli, ['release', 'create', tag, ...files, '--repo', RELEASE_REPOSITORY, '--target', head, '--title', `绘遇 HUIYU ${version}`, '--notes-file', notesPath, '--draft'], writeOptions);
   }
-  const uploaded = JSON.parse(run(cli, ['release', 'view', tag, '--repo', RELEASE_REPOSITORY, '--json', 'assets'], queryOptions));
+  const uploaded = JSON.parse(execFileSync(cli, ['release', 'view', tag, '--repo', RELEASE_REPOSITORY, '--json', 'assets'], queryOptions));
   for (const file of files) {
     const asset = uploaded.assets.find((asset: any) => asset.name === path.basename(file));
     if (!asset || asset.size !== fs.statSync(file).size) throw new Error(`发行资产上传不完整：${path.basename(file)}，未晋升发布`);
     if (asset.digest && asset.digest.toLowerCase() !== `sha256:${hashInstallerFile(file, 'sha256').toString('hex')}`) throw new Error(`发行资产校验失败：${path.basename(file)}，未晋升发布`);
   }
-  run(cli, ['release', 'edit', tag, '--repo', RELEASE_REPOSITORY, '--title', `绘遇 HUIYU ${version}${manual ? ' · 手动安装版' : ''}`, '--notes-file', notesPath, '--draft=false', `--latest=${manual ? 'false' : 'true'}`], writeOptions);
+  execFileSync(cli, ['release', 'edit', tag, '--repo', RELEASE_REPOSITORY, '--title', `绘遇 HUIYU ${version}${manual ? ' · 手动安装版' : ''}`, '--notes-file', notesPath, '--draft=false', `--latest=${manual ? 'false' : 'true'}`], writeOptions);
 }
 
 async function main() {
@@ -318,5 +317,3 @@ async function main() {
 }
 
 if (require.main === module) main().catch(error => { console.error(runtimeErrorMessage(error)); process.exitCode = 1; });
-
-export = { RELEASE_REPOSITORY, createManifest, releaseTag, installerNames, publishRelease, MANUAL_MARKER, bumpVersion };

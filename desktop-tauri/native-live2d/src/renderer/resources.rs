@@ -27,8 +27,6 @@ impl Renderer {
         let mut color_bind_groups = Vec::with_capacity(textures.len());
         for texture in textures {
             color_bind_groups.push(self.create_color_bind_group(texture));
-            self.resource_stats.color_bind_groups_created += 1;
-            self.record_resource_creation();
         }
         self.model_cache = Some(ModelGpuCache {
             model_id,
@@ -83,10 +81,6 @@ impl Renderer {
             let geometry = self.create_geometry(d, uv_flipped);
             let cache = self.model_cache.as_mut().expect("model GPU cache");
             cache.geometry[drawable_index] = Some(geometry);
-            self.resource_stats.vertex_buffers_created += 1;
-            self.resource_stats.uv_buffers_created += 1;
-            self.resource_stats.index_buffers_created += 1;
-            self.record_resource_creation_n(3);
             return;
         }
 
@@ -197,9 +191,6 @@ impl Renderer {
             bind_group,
             capacity_slots,
         });
-        self.resource_stats.uniform_buffers_created += 1;
-        self.resource_stats.uniform_bind_groups_created += 1;
-        self.record_resource_creation_n(2);
     }
 
     pub(super) fn prepare_dynamic_uploads(
@@ -260,8 +251,6 @@ impl Renderer {
         });
         self.upload_buffer = Some(buffer);
         self.upload_capacity = capacity;
-        self.resource_stats.upload_buffers_created += 1;
-        self.record_resource_creation();
     }
 
     pub(super) fn create_color_bind_group(&self, texture: &Texture) -> wgpu::BindGroup {
@@ -279,15 +268,6 @@ impl Renderer {
                 },
             ],
         })
-    }
-
-    pub(super) fn record_resource_creation(&mut self) {
-        self.record_resource_creation_n(1);
-    }
-
-    pub(super) fn record_resource_creation_n(&mut self, count: usize) {
-        self.resource_stats.frame_creations += count;
-        self.resource_stats.total_creations += count as u64;
     }
 }
 

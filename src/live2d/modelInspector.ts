@@ -26,7 +26,7 @@ export interface ModelInspection {
   }
   totalBytes: number
 }
-export const MODEL_IMPORT_LIMITS = Object.freeze({
+const MODEL_IMPORT_LIMITS = Object.freeze({
   files: 512, fileBytes: 64 * 1024 * 1024, totalBytes: 256 * 1024 * 1024,
   jsonBytes: 4 * 1024 * 1024, depth: 32, textureSide: 8192,
   texturePixels: 32 * 1024 * 1024, readTimeoutMs: 10_000, inspectionTimeoutMs: 30_000,

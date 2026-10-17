@@ -12,7 +12,7 @@ const axes: Record<CameraAxis, ReadonlySet<string>> = {
     'three_quarter_view']),
 }
 
-export function cameraAxis(token: string): CameraAxis | undefined {
+function cameraAxis(token: string): CameraAxis | undefined {
   const key = normalizeKey(token)
   return (Object.keys(axes) as CameraAxis[]).find(axis => axes[axis].has(key))
 }

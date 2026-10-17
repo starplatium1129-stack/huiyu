@@ -209,9 +209,6 @@ async fn perform(
         }
         json::Request::Command(command) => command,
     };
-    if command["kind"] == "readMedia" {
-        return media::chunk(state, &storage, method, &command).await;
-    }
     let long_request = matches!(
         command["kind"].as_str(),
         Some("backup" | "restoreBackup" | "restoreArtworks")

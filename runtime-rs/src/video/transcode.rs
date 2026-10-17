@@ -1,47 +1,38 @@
 use super::*;
-use futures_util::future::BoxFuture;
 use std::process::Stdio;
 use tokio::sync::{Mutex, Semaphore};
-pub trait Transcoder: Send + Sync {
-    fn run(&self, args: Vec<String>, cancel: CancellationToken) -> BoxFuture<'_, Result<()>>;
-    fn close(&self) -> BoxFuture<'_, ()> {
-        Box::pin(async {})
-    }
-}
 #[derive(Default)]
 pub(super) struct Ffmpeg {
     processes: Arc<crate::processes::Processes>,
 }
-impl Transcoder for Ffmpeg {
-    fn run(&self, args: Vec<String>, cancel: CancellationToken) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async move {
-            let mut command = tokio::process::Command::new("ffmpeg");
-            command
-                .args(args)
-                .stdin(Stdio::null())
-                .stdout(Stdio::null())
-                .stderr(Stdio::null());
-            let process = self.processes.spawn(&mut command)?;
-            let result = tokio::select! {_=cancel.cancelled()=>Err(error(499,"VIDEO_BATCH_CANCELLED","视频处理已取消")),_=tokio::time::sleep(Duration::from_secs(600))=>Err(error(504,"FFMPEG_TIMEOUT","视频处理超时")),result=async{loop{if let Some(ok)=process.exited()?{return if ok{Ok(())}else{Err(error(502,"FFMPEG_FAILED","ffmpeg 执行失败"))}}tokio::time::sleep(Duration::from_millis(50)).await;}}=>result};
-            process.stop().await?;
-            result
-        })
+impl Ffmpeg {
+    async fn run(&self, args: Vec<String>, cancel: CancellationToken) -> Result<()> {
+        let mut command = tokio::process::Command::new("ffmpeg");
+        command
+            .args(args)
+            .stdin(Stdio::null())
+            .stdout(Stdio::null())
+            .stderr(Stdio::null());
+        let process = self.processes.spawn(&mut command)?;
+        let result = tokio::select! {_=cancel.cancelled()=>Err(error(499,"VIDEO_BATCH_CANCELLED","视频处理已取消")),_=tokio::time::sleep(Duration::from_secs(600))=>Err(error(504,"FFMPEG_TIMEOUT","视频处理超时")),result=async{loop{if let Some(ok)=process.exited()?{return if ok{Ok(())}else{Err(error(502,"FFMPEG_FAILED","ffmpeg 执行失败"))}}tokio::time::sleep(Duration::from_millis(50)).await;}}=>result};
+        process.stop().await?;
+        result
     }
-    fn close(&self) -> BoxFuture<'_, ()> {
-        Box::pin(async { self.processes.close().await })
+    async fn close(&self) {
+        self.processes.close().await
     }
 }
 pub(super) struct Queue {
     capacity: Arc<Semaphore>,
     serial: Mutex<()>,
-    runner: Arc<dyn Transcoder>,
+    runner: Ffmpeg,
 }
 impl Queue {
-    pub fn new(runner: Arc<dyn Transcoder>) -> Self {
+    pub fn new() -> Self {
         Self {
             capacity: Arc::new(Semaphore::new(4)),
             serial: Mutex::new(()),
-            runner,
+            runner: Ffmpeg::default(),
         }
     }
     pub async fn run(&self, args: Vec<String>, cancel: CancellationToken) -> Result<()> {

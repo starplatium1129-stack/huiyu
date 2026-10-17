@@ -1,5 +1,4 @@
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
-import type { CompanionDesktopBridge } from '../types/desktop.d.ts'
 import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 
 const session = new Map<string, string>()
@@ -9,10 +8,9 @@ registerMaintenanceParticipant(async () => {
   await Promise.all(writes.values())
   if (failedWrites.size) throw new Error('CREDENTIAL_SAVE_FAILED')
 })
-type CredentialBridge = Pick<CompanionDesktopBridge, 'readChatCredential' | 'writeChatCredential'>
-
 /** Web credentials live only in this page's memory. Desktop never falls back to plaintext. */
-export function createChatCredentials(bridge: CredentialBridge | undefined = getDesktopCapabilities()) {
+export function createChatCredentials() {
+  const bridge = getDesktopCapabilities()
   function requireBridge() {
     if (!bridge?.readChatCredential || !bridge.writeChatCredential) {
       throw new Error('当前桌面版本不支持安全凭据，请更新后重试；原配置已保留。')

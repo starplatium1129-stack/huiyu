@@ -126,4 +126,3 @@ function main(args = process.argv.slice(2)): number {
 }
 
 if (require.main === module) process.exitCode = main()
-export = { extractCoverage, main }

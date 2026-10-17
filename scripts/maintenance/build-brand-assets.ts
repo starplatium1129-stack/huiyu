@@ -50,4 +50,3 @@ if (require.main === module) {
   if (process.argv.includes('--help')) console.log('Build HUIYU wordmarks from assets/brand-mark.svg and app icons from assets/app-icon.png. No arguments.');
   else buildBrandAssets().catch((error: any) => { console.error(error); process.exitCode = 1; });
 }
-export = { buildBrandAssets };

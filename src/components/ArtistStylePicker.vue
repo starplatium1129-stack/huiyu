@@ -142,7 +142,6 @@ import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import {
   type ArtistStyleEngine,
-  type ArtistStyleOption,
   type ArtistStyleVerification,
   ARTIST_COMBO_PRESETS,
   ARTIST_CATEGORIES,

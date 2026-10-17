@@ -84,4 +84,4 @@ if (require.main === module) {
   console.log(process.argv.includes('--json') ? JSON.stringify(report, null, 2) : report.checks.map((check: any) => `${check.ready ? 'OK' : 'MISSING'} ${check.name}: ${check.detail || check.help}`).join('\n'));
   process.exitCode = report.ready ? 0 : 1;
 }
-export = { resolveSdkRoot, sdkInputSnapshot, desktopBuildEnvironment, inspectDesktopBuildEnvironment, assertDesktopBuildEnvironment };
+export = { resolveSdkRoot, sdkInputSnapshot, desktopBuildEnvironment, assertDesktopBuildEnvironment };

@@ -6,7 +6,7 @@ type Framing = { zoom: number; x: number; y: number }
 export type StageSurface = 'room' | 'immersive' | 'companion'
 
 /** Room defaults are calibrated independently; other surfaces keep their own framing. */
-export function defaultStageFraming(character: string, surface: StageSurface): Framing {
+function defaultStageFraming(character: string, surface: StageSurface): Framing {
   if (surface === 'room') {
     if (character === 'hatsune_miku') return { zoom: 1, x: 0, y: 0 }
     if (character === 'natsume') return { zoom: .9, x: 0, y: 0 }
@@ -47,7 +47,7 @@ export function useStageFraming(character: Ref<string>, surface: () => StageSurf
   return { framing, framingStyle, update, reset }
 }
 
-export function normalizeFraming(value: Partial<Framing> | null, fallback: Framing): Framing {
+function normalizeFraming(value: Partial<Framing> | null, fallback: Framing): Framing {
   const clamp = (v: unknown, base: number, min: number, max: number) => typeof v === 'number' && Number.isFinite(v) ? Math.min(max, Math.max(min, v)) : base
   return { zoom: clamp(value?.zoom, fallback.zoom, .65, 2.2), x: clamp(value?.x, fallback.x, -25, 25), y: clamp(value?.y, fallback.y, -25, 25) }
 }

@@ -8,7 +8,7 @@ import type {
   ShowcaseSaveResult,
 } from '../types/api.ts'
 
-export const MAINTENANCE_API_TIMEOUTS = {
+const MAINTENANCE_API_TIMEOUTS = {
   query: 10_000,
   upload: 120_000,
   buildWeb: 120_000,

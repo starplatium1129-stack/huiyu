@@ -15,25 +15,10 @@ const ROOT = path.resolve(__dirname, '../..');
 const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
 
 type RunCommandOptions = {
-  spawnSync?: typeof spawnSync;
   cwd?: string;
   stdio?: import('node:child_process').StdioOptions;
   env?: NodeJS.ProcessEnv;
   windowsHide?: boolean;
-};
-
-type RunTauriOptions = {
-  binding?: Pick<typeof binding, 'sourceIdentity' | 'sdkIdentity' | 'recordBuild'>;
-  root?: string;
-  withLock?: typeof withDesktopBuildLock;
-  checkEnvironment?: typeof assertDesktopBuildEnvironment;
-  npmCommand?: string;
-  npmArgs?: string[];
-  runCommand?: typeof runCommand;
-  prepareTauri?: typeof prepareTauri;
-  tauriCli?: string;
-  spawnTauri?: typeof runCommand;
-  env?: NodeJS.ProcessEnv;
 };
 
 function tauriEnvironment(root: any = ROOT) {
@@ -41,7 +26,7 @@ function tauriEnvironment(root: any = ROOT) {
 }
 
 function runCommand(command: string, args: string[], options: RunCommandOptions = {}): number {
-  const result = (options.spawnSync || spawnSync)(command, args, {
+  const result = spawnSync(command, args, {
     cwd: options.cwd || ROOT,
     stdio: options.stdio || 'inherit',
     env: options.env || process.env,
@@ -51,7 +36,7 @@ function runCommand(command: string, args: string[], options: RunCommandOptions 
   return result.status == null ? 1 : result.status;
 }
 
-async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<number> {
+async function runTauri(argv: string[]): Promise<number> {
   let args = [...argv];
   // 2026-08-29 updater 落地：设置了签名私钥时忽略 --no-sign（package:tauri 默认带它），
   // 否则 build 不产出 .sig，updater 发布流程拿不到签名。
@@ -63,12 +48,12 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
     throw new Error('usage: node scripts/maintenance/run-tauri.js <dev|build> [tauri args]');
   }
 
-  const workspaceRoot = options.root || ROOT;
+  const workspaceRoot = ROOT;
   const separator = args.indexOf('--');
   const cliArgs = separator < 0 ? args : args.slice(0, separator);
   if (cliArgs.some(arg => arg === '--help' || arg === '-h')) {
     if (mode === 'dev') console.log('[tauri dev] --refresh-ui rebuilds both UI entries; Rust-only development reuses them.');
-    return (options.spawnTauri || runCommand)(process.execPath, [options.tauriCli || require.resolve('@tauri-apps/cli/tauri.js'), mode, ...args], { cwd: path.join(workspaceRoot, 'desktop-tauri') });
+    return runCommand(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), mode, ...args], { cwd: path.join(workspaceRoot, 'desktop-tauri') });
   }
   const forwarded = separator < 0 ? [] : args.slice(separator + 1);
   const applicationSeparator = forwarded.indexOf('--');
@@ -77,11 +62,11 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
   const fastDevelopment = mode === 'dev' && !cliArgs.includes('--release') && !customProfile;
   const refreshUi = fastDevelopment && cliArgs.includes('--refresh-ui');
   if (refreshUi) args.splice(args.indexOf('--refresh-ui'), 1);
-  const lock = options.withLock || withDesktopBuildLock;
+  const lock = withDesktopBuildLock;
   return lock({ workspaceRoot }, async () => {
-    (options.checkEnvironment || assertDesktopBuildEnvironment)(workspaceRoot);
-    const buildBinding = options.binding || binding;
-    const run = options.runCommand || runCommand;
+    assertDesktopBuildEnvironment(workspaceRoot);
+    const buildBinding = binding;
+    const run = runCommand;
     if (mode === 'build') {
       // Packaging must refresh stale ignored products before either UI captures DATA_VERSION.
       const dataStatus = await timeDesktopBuild('data preparation', () => run(process.execPath, ['-e', 'require(process.argv[1]).ensureAll()', path.join(workspaceRoot, 'scripts/lib/ensure-data-build.js')], {
@@ -90,7 +75,7 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
       if (dataStatus !== 0) return dataStatus;
     }
     const source = mode === 'build' ? await timeDesktopBuild('source identity', () => buildBinding.sourceIdentity(workspaceRoot)) : null;
-    let env = { ...(options.env || tauriEnvironment(workspaceRoot)) };
+    let env = { ...tauriEnvironment(workspaceRoot) };
     const sdk = mode === 'build' ? buildBinding.sdkIdentity(workspaceRoot, env) : null;
     if (sdk) { env.LIVE2D_CUBISM_SDK_DIR = sdk.root; env.LIVE2D_CUBISM_SDK_SHA256 = sdk.inputs.sha256; }
     if (fastDevelopment) {
@@ -125,18 +110,16 @@ async function runTauri(argv: string[], options: RunTauriOptions = {}): Promise<
       const split = args.indexOf('--');
       args.splice(split < 0 ? args.length : split, 0, '--no-dev-server', '--config', JSON.stringify({ build: { devUrl: null }, bundle: { resources: [] } }));
     } else {
-      const npm = options.npmCommand
-        ? { command: options.npmCommand, args: options.npmArgs || [] }
-        : resolveNpmInvocation();
+      const npm = resolveNpmInvocation();
       const status = await timeDesktopBuild('web build and precompression', () => run(npm.command, [...npm.args, 'run', 'build'], { cwd: workspaceRoot }));
       if (status !== 0) return status;
 
-      const prepare = options.prepareTauri || prepareTauri;
+      const prepare = prepareTauri;
       await prepare({ root: workspaceRoot });
     }
 
-    const cli = options.tauriCli || require.resolve('@tauri-apps/cli/tauri.js');
-    const spawnTauri = options.spawnTauri || runCommand;
+    const cli = require.resolve('@tauri-apps/cli/tauri.js');
+    const spawnTauri = runCommand;
     const result = await timeDesktopBuild(fastDevelopment ? 'Tauri development session' : 'Tauri native build and bundle', () => spawnTauri(process.execPath, [cli, mode, ...args], {
       cwd: path.join(workspaceRoot, 'desktop-tauri'),
       stdio: 'inherit',
@@ -162,4 +145,4 @@ if (require.main === module) {
   });
 }
 
-export = { runCommand, runTauri, tauriEnvironment };
+export = { runTauri, tauriEnvironment };

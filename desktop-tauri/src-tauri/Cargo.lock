@@ -22,7 +22,6 @@ name = "ai-cg-studio-desktop"
 version = "1.9.2"
 dependencies = [
  "base64 0.22.1",
- "bytemuck",
  "image",
  "live2d-native",
  "minisign-verify",

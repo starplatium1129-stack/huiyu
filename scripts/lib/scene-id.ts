@@ -12,20 +12,6 @@ function formatSceneId(number: any) {
   return 'sc' + String(number).padStart(3, '0');
 }
 
-function nextSceneId(activeIds: any[] = [], retiredIds: any[] = []) {
-  let highest = 0;
-  for (const ids of [activeIds, retiredIds]) {
-    for (const id of ids) {
-      if (!isSceneId(id)) throw new Error('现有场景编号不规范，停止分配：' + String(id));
-      highest = Math.max(highest, Number(id.slice(2)));
-    }
-  }
-  if (highest === Number.MAX_SAFE_INTEGER) {
-    throw Object.assign(new Error('场景编号已达到安全整数上限'), { code: 'SCENE_ID_EXHAUSTED' });
-  }
-  return formatSceneId(highest + 1);
-}
-
 function missingSceneIdRanges(activeIds: any[] = [], retiredIds: any[] = []) {
   const numbers = [...new Set([...activeIds, ...retiredIds].filter(isSceneId).map(id => Number(id.slice(2))))].sort((a, b) => a - b);
   const missing = [];
@@ -37,4 +23,4 @@ function missingSceneIdRanges(activeIds: any[] = [], retiredIds: any[] = []) {
   return missing;
 }
 
-export = { isSceneId, formatSceneId, nextSceneId, missingSceneIdRanges };
+export = { isSceneId, formatSceneId, missingSceneIdRanges };

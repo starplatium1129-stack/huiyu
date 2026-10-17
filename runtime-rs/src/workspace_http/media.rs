@@ -149,35 +149,6 @@ pub(super) async fn serve(
     Ok(response)
 }
 
-pub(super) async fn chunk(
-    state: &AppState,
-    storage: &Storage,
-    method: &Method,
-    command: &Value,
-) -> Result<Response> {
-    let source = resolve(storage, command["alias"].as_str().unwrap()).await?;
-    let media = &source.media;
-    let offset = command["offset"].as_u64().unwrap();
-    if offset > media.total_bytes {
-        return Err(ApiError::invalid("Invalid media read range"));
-    }
-    let length = command["length"]
-        .as_u64()
-        .unwrap()
-        .min(media.total_bytes - offset);
-    let mut response = stream(
-        state,
-        method,
-        media,
-        offset,
-        length,
-        Some((source.file, source.closed)),
-    )
-    .await?;
-    metadata_headers(&mut response, media, offset)?;
-    Ok(response)
-}
-
 fn metadata_headers(response: &mut Response, media: &Media, offset: u64) -> Result<()> {
     let output = response.headers_mut();
     output.insert(

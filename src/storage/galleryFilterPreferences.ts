@@ -1,18 +1,18 @@
 import { GENERATION_FILTER_FIELDS, normalizeGalleryFilterSnapshot, type GalleryFilterSnapshot } from '@/composables/gallery/galleryGenerationConditions'
 import { flushProfileWrites, profileLocalStorage } from '@/platform/web/profileStorage'
 import { GALLERY_FILTER_PRESETS_KEY } from '@/utils/storageKeys'
-import type { KeyedStorage, SettingDefinition } from './settingsRepository'
+import type { SettingDefinition } from './settingsRepository'
 
-export const GALLERY_FILTER_PRESET_LIMIT = 24
+const GALLERY_FILTER_PRESET_LIMIT = 24
 export const GALLERY_FILTER_NAME_LIMIT = 60
 // Cross-window merges can exceed the UI creation count. Bound bytes instead of
 // making valid concurrent additions unreadable and impossible to remove.
-export const GALLERY_FILTER_PRESET_MAX_BYTES = 4 * 1024 * 1024
+const GALLERY_FILTER_PRESET_MAX_BYTES = 4 * 1024 * 1024
 function withinPresetBudget(raw: string): boolean {
   return raw.length <= GALLERY_FILTER_PRESET_MAX_BYTES && new TextEncoder().encode(raw).byteLength <= GALLERY_FILTER_PRESET_MAX_BYTES
 }
 export interface GalleryFilterPreset { id: string; name: string; filters: GalleryFilterSnapshot }
-export const GALLERY_FILTER_PRESETS_SETTING: SettingDefinition<GalleryFilterPreset[]> = {
+const GALLERY_FILTER_PRESETS_SETTING: SettingDefinition<GalleryFilterPreset[]> = {
   key: GALLERY_FILTER_PRESETS_KEY,
   parse(raw) {
     if (raw === null) return []
@@ -45,17 +45,17 @@ export const GALLERY_FILTER_PRESETS_SETTING: SettingDefinition<GalleryFilterPres
     return raw
   },
 }
-export function createGalleryFilterPreferences(storage: KeyedStorage = profileLocalStorage, flush: () => Promise<void> = flushProfileWrites) {
+function createGalleryFilterPreferences() {
   function read(): GalleryFilterPreset[] {
-    const presets = GALLERY_FILTER_PRESETS_SETTING.parse(storage.getItem(GALLERY_FILTER_PRESETS_KEY))
+    const presets = GALLERY_FILTER_PRESETS_SETTING.parse(profileLocalStorage.getItem(GALLERY_FILTER_PRESETS_KEY))
     if (!presets) throw new Error('已保存的筛选组合格式无法读取，请先核对本机资料。')
     return presets
   }
   async function commit(change: (presets: GalleryFilterPreset[]) => GalleryFilterPreset[]) {
-    await flush()
+    await flushProfileWrites()
     const next = change(read())
-    storage.setItem(GALLERY_FILTER_PRESETS_KEY, GALLERY_FILTER_PRESETS_SETTING.serialize(next))
-    await flush()
+    profileLocalStorage.setItem(GALLERY_FILTER_PRESETS_KEY, GALLERY_FILTER_PRESETS_SETTING.serialize(next))
+    await flushProfileWrites()
     return read()
   }
   return {

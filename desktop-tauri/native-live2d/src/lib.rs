@@ -4,6 +4,6 @@
 //! behind a small C API, wrapped safely for Rust, with a wgpu renderer that
 //! reproduces the official GLES2 renderer semantics.
 
-pub mod ffi;
+mod ffi;
 pub mod model;
 pub mod renderer;

@@ -7,12 +7,10 @@ import type { GalleryFilterSnapshot } from './galleryGenerationConditions'
 export function useGallerySavedFilters(options: {
   snapshot: () => GalleryFilterSnapshot
   apply: (filters: GalleryFilterSnapshot) => void
-  preferences?: typeof galleryFilterPreferences
 }) {
-  const preferences = options.preferences || galleryFilterPreferences
   const presets = ref<GalleryFilterPreset[]>([]), busy = ref(false), error = ref(''), message = ref('')
   function reload() {
-    try { presets.value = preferences.read(); error.value = '' }
+    try { presets.value = galleryFilterPreferences.read(); error.value = '' }
     catch (cause) { error.value = cause instanceof Error ? cause.message : String(cause) }
   }
   reload()
@@ -32,8 +30,8 @@ export function useGallerySavedFilters(options: {
   }
   const savePreset = (name: string) => {
     const snapshot = options.snapshot()
-    return mutate(() => preferences.save(name, snapshot), '筛选组合已保存，同名组合会更新为当前条件。')
+    return mutate(() => galleryFilterPreferences.save(name, snapshot), '筛选组合已保存，同名组合会更新为当前条件。')
   }
-  const removePreset = (id: string) => mutate(() => preferences.remove(id), '筛选组合已移除。')
+  const removePreset = (id: string) => mutate(() => galleryFilterPreferences.remove(id), '筛选组合已移除。')
   return { presets, matchedPresetId, busy, error, message, savePreset, applyPreset, removePreset }
 }

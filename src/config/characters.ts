@@ -117,7 +117,7 @@ export interface CompanionEventLines {
   'service-down': string[]
 }
 
-export const COMPANION_LINES: Record<string, { idle: string[]; return: string[]; events: CompanionEventLines }> = {
+const COMPANION_LINES: Record<string, { idle: string[]; return: string[]; events: CompanionEventLines }> = {
   nene: {
     idle: [
       '……那个，你还在忙吗？如果累了的话，休息一下也没关系的哦。',

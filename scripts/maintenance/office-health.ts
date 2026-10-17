@@ -24,7 +24,7 @@ check('docs index', fs.existsSync(path.join(root, 'docs', 'INDEX.md')), '工程�
 
 const packageJson = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 check('workflow command', Boolean(packageJson.scripts && packageJson.scripts.workflow), '维护工作流入口');
-check('quality command', Boolean(packageJson.scripts && packageJson.scripts.validate), '完整验证入口');
+check('typecheck command', Boolean(packageJson.scripts && packageJson.scripts.typecheck), '类型检查入口');
 
 const failed = checks.filter((item: any) => !item.passed);
 for (const item of checks) {

@@ -27,8 +27,8 @@ export async function exportMigrationSource(options: {
   sourceProfileId: string; expectedOrigin: string; sink: MigrationSink; signal?: AbortSignal
   target?: MigrationEnvelope['target']
   migrateCredential?: (reference: string, secret: string) => Promise<boolean>
-  consume?: (envelope: MigrationEnvelope) => Promise<void>
-}): Promise<MigrationEnvelope> {
+  consume: (envelope: MigrationEnvelope) => Promise<void>
+}): Promise<void> {
   if (!options.sourceProfileId || location.origin !== options.expectedOrigin) throw new Error('来源 profile 或 origin 不匹配，不能迁移。')
   return freezeMigrationSource(async snapshot => {
     const source: MigrationIdentity = { sourceProfileId: options.sourceProfileId, origin: location.origin, windowIds: snapshot.windowIds }
@@ -122,7 +122,6 @@ export async function exportMigrationSource(options: {
     const envelope: MigrationEnvelope = { ...unsigned, fingerprint: await migrationFingerprint(unsigned) }
     await options.sink.manifest(envelope)
     await options.sink.verify(envelope)
-    await options.consume?.(envelope)
-    return envelope
+    await options.consume(envelope)
   }, options.signal)
 }

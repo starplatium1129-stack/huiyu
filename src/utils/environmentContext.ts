@@ -14,7 +14,7 @@ export type EnvironmentTimeSlot =
   | 'evening'      // 18:00 - 21:00 傍晚
   | 'night'        // 21:00 - 24:00 夜晚
 
-export function timeSlotOf(date: Date): EnvironmentTimeSlot {
+function timeSlotOf(date: Date): EnvironmentTimeSlot {
   const hour = date.getHours()
   if (hour < 5) return 'late-night'
   if (hour < 9) return 'early-morning'
@@ -25,7 +25,7 @@ export function timeSlotOf(date: Date): EnvironmentTimeSlot {
   return 'night'
 }
 
-export function isWeekend(date: Date): boolean {
+function isWeekend(date: Date): boolean {
   const day = date.getDay()
   return day === 0 || day === 6
 }
@@ -46,7 +46,7 @@ const SLOT_LABEL: Record<EnvironmentTimeSlot, string> = {
   night: '夜晚',
 }
 
-export function slotLabel(slot: EnvironmentTimeSlot): string {
+function slotLabel(slot: EnvironmentTimeSlot): string {
   return SLOT_LABEL[slot]
 }
 

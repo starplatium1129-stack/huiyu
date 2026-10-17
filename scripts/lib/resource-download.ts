@@ -3,7 +3,7 @@ import { errorCode as runtimeErrorCode } from './runtime-errors';
 
 const path: typeof import('node:path') = require('node:path');
 const { context, locked, access, child, mkdir, noLinks, readJson, writeJson, writeAtomic, unlink,
-  ensureSpace, writeAll, event, cancelled, fail, digest, flushDir, ResourceError, cleanAtomicTemps }: typeof import('./resource-install-fs') = require('./resource-install-fs');
+  ensureSpace, writeAll, yieldForCancellation, cancelled, fail, digest, flushDir, ResourceError, cleanAtomicTemps }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 const { releasePolicy, decodePack, readPack, verifyTree }: typeof import('./resource-install-policy') = require('./resource-install-policy');
 const { fileMatches }: typeof import('./resource-install-copy') = require('./resource-install-copy');
 const { sourceUrl, response, fetchMetadata, rangeStart }: typeof import('./resource-download-http') = require('./resource-download-http');
@@ -11,7 +11,7 @@ const { sourceUrl, response, fetchMetadata, rangeStart }: typeof import('./resou
 async function downloadEntry(ctx: any, release: any, pack: string, parts: string, entry: any, signal: any, timeoutMs: any) {
   const target = child(pack, entry.path);
   if (fileMatches(ctx, target, entry)) {
-    await event(ctx, 'download-reused', { path: entry.path }, signal);
+    await yieldForCancellation(signal);
     return;
   }
   const partial = child(parts, digest(entry.path) + '.part');
@@ -51,7 +51,7 @@ async function downloadEntry(ctx: any, release: any, pack: string, parts: string
       noLinks(ctx.io, partial);
       writeAll(ctx.io, fd, chunk);
       received += chunk.length;
-      await event(ctx, 'download-progress', { path: entry.path, bytes: received, total: entry.bytes, resumedFrom: start }, signal);
+      await yieldForCancellation(signal);
     }
     if (received !== entry.bytes) fail('HTTP_SIZE', 'Resource response is incomplete');
     ctx.io.fsyncSync(fd);
@@ -75,7 +75,7 @@ async function publishEntry(ctx: any, partial: string, target: string, entry: an
   unlink(ctx.io, target);
   ctx.io.renameSync(partial, target);
   flushDir(ctx.io, path.dirname(target));
-  await event(ctx, 'downloaded', { path: entry.path }, signal);
+  await yieldForCancellation(signal);
 }
 function createResourceDownloader(options: any) {
   const ctx = context(options);

@@ -59,9 +59,6 @@ pub(super) fn namespace(raw: &str) -> Option<&'static str> {
         .into_iter()
         .find(|name| first.eq_ignore_ascii_case(name))
 }
-pub fn is_content_path(raw: &str) -> bool {
-    namespace(raw).is_some()
-}
 pub fn is_private_asset_path(raw: &str) -> bool {
     let Some(path) = normalized(raw) else {
         return false;

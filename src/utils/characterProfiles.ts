@@ -1,5 +1,5 @@
 import type { CharacterIdentity, CharacterPortrait, CharacterLora, CharacterProfile, CharacterScene } from '../types/character'
-export type { CharacterIdentity, CharacterPortrait, CharacterLora, CharacterProfile, CharacterScene } from '../types/character'
+export type { CharacterProfile, CharacterScene } from '../types/character';
 
 import type { Scene } from '@/stores/sceneStore'
 export { popularPortraitSrc, isPopularPortraitPending } from './popularPortraitSource.ts'

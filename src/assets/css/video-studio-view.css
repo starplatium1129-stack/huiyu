@@ -44,8 +44,6 @@
 }
 .video-t8-bar[data-state="fast"] { background:color-mix(in srgb,var(--success) 8%,transparent); @apply tw:text-success-text; border-color:color-mix(in srgb,var(--success) 30%,var(--border-soft)); }
 .video-t8-bar[data-state="slow"] { background:color-mix(in srgb,var(--warning) 10%,transparent); @apply tw:text-warning-text; border-color:color-mix(in srgb,var(--warning) 35%,var(--border-soft)); }
-.video-t8-dot { @apply tw:w-[8px] tw:h-[8px]; border-radius:50%; background:currentColor; }
-.video-t8-hint { @apply tw:text-muted; }
 .video-t8-badge { display:inline-flex; align-items:center; gap:var(--s-1); padding:var(--s-1) var(--s-2); @apply tw:rounded-pill; font:600 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
 .video-t8-badge[data-state="fast"] { background:color-mix(in srgb,var(--success) 14%,transparent); @apply tw:text-success-text; }
 .video-t8-badge[data-state="slow"] { background:color-mix(in srgb,var(--warning) 14%,transparent); @apply tw:text-warning-text; }

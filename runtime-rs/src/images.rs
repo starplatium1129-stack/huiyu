@@ -18,7 +18,6 @@ use crate::{
     upstream::LocalUpstream,
 };
 pub use admission::Limits;
-pub(crate) use admission::Upload;
 pub(crate) use admission::read_media;
 pub(crate) use admission::{Kind as ImageKind, owner_matches_for, store_for, store_media_for};
 pub use catalog::catalog;
@@ -30,8 +29,7 @@ use tokio_util::{sync::CancellationToken, task::TaskTracker};
 pub use validation::validate;
 pub use workflow::build as build_workflow;
 
-// Independent unit fixtures must not consume each other's process-wide upload
-// admission budget. Each fixture still exercises the real two-slot limiter.
+// Each image service owns its upload admission budget.
 
 pub struct Prepared {
     pub input: Value,
@@ -70,14 +68,7 @@ impl Service {
         transport: LocalUpstream,
         shutdown: CancellationToken,
     ) -> Result<Self> {
-        Self::with_limits(config, transport, shutdown, Limits::from_environment())
-    }
-    pub fn with_limits(
-        config: Config,
-        transport: LocalUpstream,
-        shutdown: CancellationToken,
-        limits: Limits,
-    ) -> Result<Self> {
+        let limits = Limits::from_environment();
         let shutdown = shutdown.child_token();
         let backend = Arc::new(generation::Service::for_images(
             config.clone(),
@@ -208,7 +199,7 @@ impl Service {
     }
     pub(crate) async fn upload(
         &self,
-        image: Upload,
+        image: axum::body::Bytes,
         owner: String,
         cancel: CancellationToken,
         admission: tokio::sync::OwnedSemaphorePermit,

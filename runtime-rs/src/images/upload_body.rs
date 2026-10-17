@@ -1,15 +1,13 @@
 use crate::{AppState, error::ApiError};
 use axum::{
-    Json,
     body::Bytes,
     extract::{
         FromRequest, Request,
-        rejection::{JsonRejection, MissingJsonContentType},
+        rejection::JsonRejection,
     },
     http::header,
     response::{IntoResponse, Response},
 };
-use serde_json::Value;
 use std::{
     sync::{Arc, LazyLock},
     time::Duration,
@@ -19,50 +17,7 @@ use tokio_util::sync::CancellationToken;
 
 static UPLOADS: LazyLock<Arc<Semaphore>> = LazyLock::new(|| Arc::new(Semaphore::new(2)));
 
-pub(crate) struct UploadBody(pub Value, pub OwnedSemaphorePermit);
 pub(crate) struct RawUploadBody(pub Bytes, pub OwnedSemaphorePermit);
-
-impl FromRequest<AppState> for UploadBody {
-    type Rejection = Response;
-
-    async fn from_request(request: Request, state: &AppState) -> Result<Self, Self::Rejection> {
-        // Keep Axum Json's MIME check before body collection, including +json
-        // and its original MissingJsonContentType/BytesRejection responses.
-        let json = request
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .and_then(|value| value.to_str().ok())
-            .and_then(|value| value.parse::<mime::Mime>().ok())
-            .is_some_and(|value| {
-                value.type_() == mime::APPLICATION
-                    && (value.subtype() == mime::JSON || value.suffix() == Some(mime::JSON))
-            });
-        if !json {
-            return Err(MissingJsonContentType::default().into_response());
-        }
-        let scope = state.shutdown.child_token();
-        let _guard = scope.clone().drop_guard();
-        let (bytes, permit) = collect(request, state, &scope).await?;
-        // CPU work owns both the body and admission after caller cancellation;
-        // the handler then transfers admission to the tracked save worker.
-        tokio::task::spawn_blocking(move || {
-            if scope.is_cancelled() {
-                return Err(cancelled());
-            }
-            let Json(body) =
-                Json::<Value>::from_bytes(&bytes).map_err(IntoResponse::into_response)?;
-            drop(bytes);
-            if scope.is_cancelled() {
-                return Err(cancelled());
-            }
-            Ok(Self(body, permit))
-        })
-        .await
-        .map_err(|_| {
-            ApiError::new(503, "IMAGE_PARSE_FAILED", "图片请求解析未完成").into_response()
-        })?
-    }
-}
 
 impl FromRequest<AppState> for RawUploadBody {
     type Rejection = Response;
@@ -95,7 +50,7 @@ async fn collect(
     state: &AppState,
     scope: &CancellationToken,
 ) -> Result<(Bytes, OwnedSemaphorePermit), Response> {
-    // Raw and JSON uploads share admission before collecting any full body.
+    // Image uploads share admission before collecting any full body.
     // Preserve each route's DefaultBodyLimit extensions on the original request.
     let permit = admit(scope).await.map_err(IntoResponse::into_response)?;
     let bytes = tokio::select! {

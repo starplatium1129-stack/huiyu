@@ -138,7 +138,7 @@ function preparePublication(options: any) {
     ready: items.length > 0 && additions.length === items.length };
 }
 
-async function publishReferenceCandidates(options: any, deps: any = {}) {
+async function publishReferenceCandidates(options: any) {
   const plan = preparePublication(options);
   const summary = { mode: options.apply ? 'publish' : 'preview', target: plan.target, identity: plan.release.identity,
     candidates: plan.items.length, approved: plan.additions.length, ready: plan.ready,
@@ -184,16 +184,14 @@ async function publishReferenceCandidates(options: any, deps: any = {}) {
     writeJson(fs, path.join(staging, MARKER), plan.release);
     fs.writeFileSync(path.join(staging, VIEW), plan.viewBytes, { flag: 'wx' });
     resolveReferenceRelease(staging, { dataRoot: plan.inspection.sourceRoot });
-    await deps.onPhase?.('prepared', { staging, target: plan.target });
     const finalPlan = preparePublication(options);
     if (!finalPlan.ready || finalPlan.release.identity !== plan.release.identity) throw new Error('Publication inputs changed before commit');
     if (fs.existsSync(plan.target)) throw new Error('Target appeared during publication');
     fs.renameSync(staging, plan.target);
     flushDir(fs, path.dirname(plan.target));
-    await deps.onPhase?.('published', { target: plan.target });
     resolveReferenceRelease(plan.target, { dataRoot: plan.inspection.sourceRoot });
     return { ...summary, exitCode: 0 };
   } finally { unlock(); }
 }
 
-export = { MARKER, VIEW, scanImages, resolveReferenceRelease, preparePublication, publishReferenceCandidates };
+export = { publishReferenceCandidates };

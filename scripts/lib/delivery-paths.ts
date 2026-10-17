@@ -100,4 +100,4 @@ function saveJson(root: any, name: any, value: any) {
   // Exclusive creation preserves earlier evidence; an existing file is never overwritten.
   fs.writeFileSync(resolveSafe(root, name, true), `${JSON.stringify(value, null, 2)}\n`, { flag: 'wx' });
 }
-export = { EVIDENCE_DIR, object, canonical, sha256, relative, within, excluded, evidencePath, rootPath, resolveSafe, fileEntry, readJson, saveJson };
+export = { object, canonical, sha256, relative, within, excluded, evidencePath, rootPath, resolveSafe, fileEntry, readJson, saveJson };

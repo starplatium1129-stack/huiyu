@@ -1,7 +1,6 @@
 import type { Ref } from 'vue'
 import type { InpaintSource } from '@/components/inpaint/useInpaintImageSource'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
-import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint'
 import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine'
@@ -17,7 +16,6 @@ import type { ResultSnapshot } from './promptResultSnapshot'
 import type { GenerationPresentation } from './useGenerationPresentation'
 
 type Store = ReturnType<typeof usePromptBuilderStore>
-type Sd = ReturnType<typeof useLegacySdTasks>
 type Anima = ReturnType<typeof useAnimaSession>
 type Engine = ReturnType<typeof useDirectorEngine>
 type Derived = ReturnType<typeof useDirectorDerived>

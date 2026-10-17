@@ -141,7 +141,5 @@ async function withDesktopBuildLock<T>(options: LockOptions, callback: () => T |
 }
 
 export = {
-  acquireDesktopBuildLock,
-  desktopBuildLockPath,
-  withDesktopBuildLock,
+    withDesktopBuildLock
 };

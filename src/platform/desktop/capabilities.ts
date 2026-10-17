@@ -1,16 +1,14 @@
 import type { CompanionDesktopBridge } from '../../types/desktop.d.ts'
-import { apiClient } from '../../api/client.ts'
 import { hostApi, invokeHost as invoke, onHostEvent as on, offHostEvent as off } from './hostApi.ts'
 import { getDesktopWindowRole } from './runtime.ts'
 
 const capabilities: CompanionDesktopBridge = {
-  isDesktop: true,
   readChatCredential: endpoint => invoke('chat_credential_read', { endpoint }),
   writeChatCredential: (endpoint, secret) => invoke('chat_credential_write', { endpoint, secret }),
   startDragging: () => hostApi()!.window.getCurrentWindow().startDragging(),
-  hide: () => { void invoke('hide') }, quit: () => { void invoke('quit') },
+  hide: () => { void invoke('hide') },
   openAtelier: (pathname = '/') => { void invoke('open_atelier', { pathname }) },
-  openChat: () => invoke('open_companion_chat'), toggleChat: () => invoke('toggle_companion_chat'),
+  openChat: () => invoke('open_companion_chat'),
   hideChatWindow: () => invoke('hide_companion_chat'),
   setChatDocked: docked => invoke('set_chat_docked', { docked }), getChatDocked: () => invoke('get_chat_docked'),
   chatRelay: payload => invoke('chat_relay', { payload }),
@@ -18,8 +16,7 @@ const capabilities: CompanionDesktopBridge = {
   setIgnoreMouseEvents: ignore => { void invoke('set_ignore_mouse_events_cmd', { ignore }) },
   setLive2dEnabled: enabled => { void invoke('set_live2d_enabled', { enabled }) },
   getState: () => invoke('get_state'), toggleAlwaysOnTop: () => invoke('toggle_always_on_top'),
-  getSettings: () => invoke('get_settings'), isPackaged: () => invoke('is_packaged'),
-  setAutostart: enabled => invoke('set_autostart', { enabled }), pickFiles: () => invoke('pick_files'),
+  isPackaged: () => invoke('is_packaged'),
   saveImage: payload => {
     const host = hostApi()
     if (!host) return Promise.reject(new Error('桌面能力不可用'))
@@ -27,7 +24,7 @@ const capabilities: CompanionDesktopBridge = {
     if (payload.name !== undefined) headers['x-aics-image-name'] = btoa(String.fromCharCode(...new TextEncoder().encode(payload.name)))
     return host.core.invoke('save_image', payload.data, { headers })
   },
-  openWorkspace: () => invoke('open_workspace'), openRuntime: () => invoke('open_runtime'), openLog: () => invoke('open_log'),
+  openWorkspace: () => invoke('open_workspace'),
   pickWorkspace: root => invoke('pick_workspace', { root }),
   getWorkspace: () => invoke('get_workspace'), setWorkspace: async root => {
     const result = await invoke<Awaited<ReturnType<CompanionDesktopBridge['setWorkspace']>>>('set_workspace', { root })
@@ -36,10 +33,6 @@ const capabilities: CompanionDesktopBridge = {
   },
   restartForSetup: () => invoke('restart_for_setup'),
   notify: (title, body) => { void invoke('notify', { title, body }) },
-  setProgress: progress => { void invoke('set_progress', { progress }) },
-  runTool: (name, args, options = {}) => apiClient.request('/api/desktop-tools', {
-    method: 'POST', body: { name, args }, signal: options.signal,
-  }),
   onResume: listener => on('aics:resume', listener), offResume: off,
   onShown: listener => on('aics:shown', listener), offShown: off,
   onVisibilityChanged: listener => on('aics:visibility', listener), offVisibilityChanged: off,

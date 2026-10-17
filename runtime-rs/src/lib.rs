@@ -1,39 +1,41 @@
+mod startup;
+pub use startup::run;
 mod admission;
-pub mod bootstrap;
-pub mod catalog;
-pub mod character_art;
-pub mod chat;
+mod bootstrap;
+mod catalog;
+mod character_art;
+mod chat;
 mod collation;
-pub mod config;
-pub mod control;
-pub mod desktop_tools;
-pub mod error;
-pub mod execution;
+mod config;
+mod control;
+mod desktop_tools;
+mod error;
+mod execution;
 pub(crate) mod file_identity;
 mod file_paths;
-pub mod generation;
-pub mod host;
+mod generation;
+mod host;
 mod image_decode;
-pub mod images;
-pub mod interrogate;
-pub mod live2d;
-pub mod maintenance;
-pub mod native_images;
+mod images;
+mod interrogate;
+mod live2d;
+mod maintenance;
+mod native_images;
 pub(crate) mod processes;
-pub mod reference;
-pub mod remote_content;
-pub mod resources;
-pub mod security;
+mod reference;
+mod remote_content;
+mod resources;
+mod security;
 mod speech_input;
-pub mod static_files;
-pub mod storage;
-pub mod task_contract;
-pub mod task_runtime;
-pub mod tasks_http;
-pub mod upstream;
-pub mod video;
-pub mod voice;
-pub mod workspace_http;
+mod static_files;
+mod storage;
+mod task_contract;
+mod task_runtime;
+mod tasks_http;
+mod upstream;
+mod video;
+mod voice;
+mod workspace_http;
 
 use axum::{
     Json, Router,
@@ -48,7 +50,7 @@ use std::{net::SocketAddr, sync::Arc};
 use tokio_util::sync::CancellationToken;
 
 #[derive(Clone)]
-pub struct AppState {
+pub(crate) struct AppState {
     pub config: Arc<config::Config>,
     pub(crate) catalog_facets: Arc<catalog::FacetCache>,
     pub(crate) catalog_projections: Arc<catalog::ProjectionCache>,
@@ -97,7 +99,7 @@ impl AppState {
     }
 }
 
-pub fn router(state: AppState) -> Router {
+pub(crate) fn router(state: AppState) -> Router {
     if let Some(control) = &state.control {
         if let Some(service) = &state.generation {
             service.bind_control(control);

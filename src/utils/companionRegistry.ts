@@ -108,7 +108,7 @@ export function getCompanionCharacter(id: string): CompanionCharacterDefinition 
   return characters.get(id)
 }
 
-export function listCompanionCharacters(): CompanionCharacterDefinition[] {
+function listCompanionCharacters(): CompanionCharacterDefinition[] {
   return Array.from(characters.values())
 }
 

@@ -85,7 +85,7 @@ fn handle_model_command(
             let result = (|| {
                 ctx.ensure_surface(hwnd)?;
                 ctx.load_model(assets_root, &character, texture_scale, adapter, local_root)?;
-                ctx.start_initial_motion(app)
+                ctx.start_initial_motion()
             })();
             // Also release staging after a partially failed load.
             if let Some(renderer) = ctx.renderer.as_mut() {
@@ -94,12 +94,6 @@ fn handle_model_command(
             if result.is_ok() {
                 *state.character.lock().unwrap() = Some(character.clone());
                 state.model_ready.store(true, Ordering::SeqCst);
-                if !ctx.ready_emitted {
-                    ctx.ready_emitted = true;
-                    if let Some(app) = app {
-                        let _ = app.emit("aics:live2d:ready", ());
-                    }
-                }
             }
             let loaded = result.is_ok();
             let _ = reply.send(result);
@@ -111,7 +105,7 @@ fn handle_model_command(
             priority,
             reply,
         } => {
-            let result = (|| -> Result<i32, String> {
+            let result = (|| -> Result<(), String> {
                 // 同一互动组仍在播放时拒绝重复请求：前端据 motion-failed 的
                 // reason 显示"动作进行中"，不能用 force 重启打断自己。
                 if would_reject_interaction(ctx.active_motion.as_ref(), &group) {
@@ -130,20 +124,15 @@ fn handle_model_command(
                 };
                 ctx.start_motion(&group, index, priority, MotionPhase::Interaction)
             })();
-            match &result {
-                Ok(index) => {
-                    RenderContext::emit_motion_started(app, &group, *index);
-                }
-                Err(reason) => {
-                    if let Some(app) = app {
-                        let _ = app.emit(
-                            "aics:live2d:motion-failed",
-                            serde_json::json!({ "group": group, "index": index, "reason": reason }),
-                        );
-                    }
+            if let Err(reason) = &result {
+                if let Some(app) = app {
+                    let _ = app.emit(
+                        "aics:live2d:motion-failed",
+                        serde_json::json!({ "group": group, "index": index, "reason": reason }),
+                    );
                 }
             }
-            let _ = reply.send(result.map(|_| ()));
+            let _ = reply.send(result);
         }
         OverlayCommand::SetExpression { name, reply } => {
             let result = (|| -> Result<(), String> {

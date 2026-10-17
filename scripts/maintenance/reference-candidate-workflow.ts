@@ -54,7 +54,7 @@ function reviewCandidates(options: any, inspection: any) {
 }
 
 async function main(args: any = process.argv.slice(2), deps: any = {}) {
-  const env = deps.env || process.env;
+  const env = process.env;
   const options: any = parse(args, env);
   if (options.help) {
     console.log('reference-candidate-workflow.js inspect --from <reference-generation-manifest.json> [--root <project>]\n'
@@ -72,7 +72,7 @@ async function main(args: any = process.argv.slice(2), deps: any = {}) {
     const generationArgs = ['--output', options.output, '--root', options.root];
     for (const key of ['gateway', 'ids', 'keys', 'concurrency']) if (options[key]) generationArgs.push('--' + key, options[key]);
     for (const key of ['dry-run', 'retry-unknown']) if (options[key]) generationArgs.push('--' + key);
-    const generated = await generator.main(generationArgs, { ...deps, env });
+    const generated = await generator.main(generationArgs, deps);
     if (generated.exitCode || options['dry-run']) return generated;
     options.from = path.join(path.resolve(options.output), 'reference-generation-manifest.json');
     const inspection = R.inspectCandidates(options);
@@ -82,12 +82,12 @@ async function main(args: any = process.argv.slice(2), deps: any = {}) {
       return result;
     }
     if (options.decisions) options.review = reviewCandidates(options, inspection).out;
-    const result = await publishReferenceCandidates(options, deps);
+    const result = await publishReferenceCandidates(options);
     console.log(JSON.stringify(result, null, 2));
     return result;
   }
   if (options.action === 'publish') {
-    const result = await publishReferenceCandidates(options, deps);
+    const result = await publishReferenceCandidates(options);
     console.log(JSON.stringify(result, null, 2));
     return result;
   }
@@ -104,5 +104,4 @@ async function main(args: any = process.argv.slice(2), deps: any = {}) {
   return output;
 }
 
-export = { main, parse, reviewCandidates };
 if (require.main === module) runCli(main);

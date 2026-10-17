@@ -299,4 +299,3 @@ if (require.main === module) {
   const failures = run();
   if (process.argv.includes('--check') && failures) process.exitCode = 1;
 }
-export = { characterThemes, block, resolveColor, compositeSurface, ratio, themes, run };

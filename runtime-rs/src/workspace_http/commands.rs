@@ -143,9 +143,6 @@ pub(super) fn command(
         ("GET", ["media", alias, "thumbnail"]) => {
             json!({"kind": "readThumbnail", "alias": route_op(alias)?})
         }
-        ("GET", ["media", alias, "chunks"]) => {
-            json!({"kind": "readMedia", "alias": route_op(alias)?, "offset": query_int(query, "offset", 0, 0)?, "length": query_int(query, "length", 1_048_576, 1)?.as_u64().unwrap().min(1_048_576)})
-        }
         ("POST", ["media-uploads", id]) => {
             json!({"kind": "prepareMedia", "operationId": route_op(id)?, "media": media(&input["media"])?})
         }

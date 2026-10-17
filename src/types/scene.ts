@@ -29,6 +29,3 @@ export interface Scene {
   recommendedSize?: string; animaCaption?: string
   usage?: string[]; [k: string]: unknown
 }
-
-export type { SceneBlueprint } from './sceneBlueprint'
-export type { SceneDraft, SceneRating } from './api'

@@ -18,7 +18,6 @@
 .character-editorial .library-detail .portrait-badge,.character-editorial .library-detail .portrait-source { @apply tw:m-0 tw:text-secondary tw:leading-body; }
 .character-editorial .portrait-badge { @apply tw:inline-flex tw:items-center tw:gap-s-1; }
 .character-editorial .portrait-source { @apply tw:max-w-[65%] tw:text-right; }
-.character-editorial .portrait-fallback-note { order:1; @apply tw:w-full tw:p-0; border:0; background:transparent; }
 .character-profile { @apply tw:min-w-0; padding:var(--s-2) 0; background:transparent; border:0; }
 .profile-kicker { display:flex; align-items:center; gap:var(--s-2); margin-bottom:var(--s-2); }
 .profile-kicker .archive-icon { width:18px; height:18px; color:var(--text-secondary); }

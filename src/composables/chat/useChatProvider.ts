@@ -8,7 +8,7 @@ import { chatApi } from '../../api/chatApi.ts'
 import { ApiClientError } from '../../api/client.ts'
 import { rememberSavedChatApiDraft } from '../../utils/chatApiDrafts.ts'
 
-export type { ApiVendor } from '../../config/chatApi.ts'
+
 type ChatStorage = ReturnType<typeof useChatStorage>
 
 interface ChatProviderOptions {

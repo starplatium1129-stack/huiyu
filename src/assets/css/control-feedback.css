@@ -2,7 +2,7 @@
    Existing component gestures retain priority over these zero-specificity defaults. */
 :where(
   .btn,.u008,.u022,.studio-segments[role] :is(button,a),[role='tab'],[data-control-motion],
-  button:is(.filter-pill,.gallery-filter,.scene-cat-btn,.trait-chip,.token-chip,.outfit-chip,.artist-cat-btn,.pop-cat,.pop-rating-pill),
+  button:is(.filter-pill,.gallery-filter,.scene-cat-btn,.trait-chip,.outfit-chip,.artist-cat-btn,.pop-cat,.pop-rating-pill),
   .studio-pagination .page-arrow,.studio-select-trigger,.studio-media-btn,.studio-search-clear,.zoom-control,.zoom-recovery button,summary,
   .scene-active-filters button,.scene-reset,.gallery-refine-toggle,.gallery-filter-chip,.inspiration-deck-controls button,
   .gallery-album-actions button,.gallery-breadcrumb button,.filter-reset,.showcase-album-back,.pop-filter-reset,
@@ -16,7 +16,7 @@
   .companion-dialogue-controls button,.companion-dialogue-speaker button,.companion-dialogue-presence > button,.companion-dialogue-connection button,
   .companion-dialogue-attachment button,.companion-dialogue-latest,.companion-dialogue-preference-actions > button,.companion-dialogue-send,.companion-dialogue-microphone,
   :is(button,a).companion-pop-item,.companion-settings-btn,.companion-setup-action,.companion-vision-btn,.companion-stop,.companion-send,
-  .companion-window-actions button,.companion-room-link,.companion-reminder-action,.companion-reminder-dismiss,.companion-exit-immersive,.companion-chat-chip,
+  .companion-reminder-action,.companion-reminder-dismiss,.companion-exit-immersive,.companion-chat-chip,
   .companion-picker-trigger,.companion-picker-option,.preferences-heading button,.reply-actions button,.companion-chat-image-open,.companion-chat-image-retry,
   .orbit-option,.orbit-option-list button,.orbit-manage,.orbit-selection > header button
 ) {

@@ -75,19 +75,6 @@ export function useChatSpeechInteraction({
     }
   })
 
-  const speechStateText = computed(() => {
-    switch (speechState.value) {
-      case 'capturing':
-        return '聆听中…'
-      case 'recognizing':
-        return '正在识别…'
-      case 'error':
-        return speechError.value
-      default:
-        return ''
-    }
-  })
-
   const speechSessionActive = computed(() => {
     void speechSessionState.value
     return speechSession.isSessionActive()
@@ -235,7 +222,6 @@ export function useChatSpeechInteraction({
     speechReady,
     speechButtonDisabled,
     speechButtonText,
-    speechStateText,
     speechSessionActive,
     onSpeechPress,
     onSpeechKeyPress,

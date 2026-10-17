@@ -7,7 +7,7 @@ import { modelFile } from '../lib/live2d/live2d-manifest'
 const hash = (bytes: Buffer) => crypto.createHash('sha256').update(bytes).digest('hex')
 
 /** Personal deployment only. Creator assets never enter the distributable installer. */
-export function syncLocalLive2d(source: string, target: string, apply = false) {
+function syncLocalLive2d(source: string, target: string, apply = false) {
   const sourceRoot = path.resolve(source), targetRoot = path.resolve(target)
   if (targetRoot === sourceRoot || targetRoot.startsWith(sourceRoot + path.sep) || sourceRoot.startsWith(targetRoot + path.sep)) throw new Error('Local model roots overlap')
   const entries = readLocalCompanions(sourceRoot)

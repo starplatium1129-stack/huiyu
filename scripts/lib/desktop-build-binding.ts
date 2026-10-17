@@ -207,4 +207,4 @@ if(require.main===module){
   try{const args=process.argv.slice(2);if(args.length<1||args.length>2)throw Error('Expected source root and optional bound installer');verifyDeployment(path.resolve(args[0]),args[1]||undefined);}
   catch(error){console.error(error instanceof Error?error.message:String(error));process.exitCode=1;}
 }
-export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayloads, bindDistribution, verifyDistribution, verifyDeployment, receiptPath };
+export = { sourceIdentity, sdkIdentity, recordBuild, verifyBuild, extendBuild, bindDerivedPayloads, bindDistribution, verifyDistribution };

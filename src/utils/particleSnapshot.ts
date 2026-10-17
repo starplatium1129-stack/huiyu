@@ -11,7 +11,7 @@ function paintMargin(point: ParticleBodyPoint, style: ParticleBodyStyle, dpr: nu
 }
 
 /** Cover both the target dots to erase and the moving heads/tails to replace them. */
-export function particleDirtyRect(points: readonly ParticleBodyPoint[], style: ParticleBodyStyle, width: number, height: number, dpr: number): DirtyRect | null {
+function particleDirtyRect(points: readonly ParticleBodyPoint[], style: ParticleBodyStyle, width: number, height: number, dpr: number): DirtyRect | null {
   let left = width, top = height, right = 0, bottom = 0
   for (const point of points) {
     // Physics continues unchanged. Sub-thousandth-pixel residuals are visually settled.
@@ -32,7 +32,7 @@ export function particleDirtyRect(points: readonly ParticleBodyPoint[], style: P
 }
 
 /** Keep distant wakes separate instead of repainting the untouched space between them. */
-export function particleDirtyRegions(points: readonly ParticleBodyPoint[], style: ParticleBodyStyle, width: number, height: number, dpr: number): DirtyRect[] {
+function particleDirtyRegions(points: readonly ParticleBodyPoint[], style: ParticleBodyStyle, width: number, height: number, dpr: number): DirtyRect[] {
   const tile = Math.ceil(64 * dpr), w = Math.round(width * dpr), h = Math.round(height * dpr)
   const cols = Math.ceil(w / tile), rows = Math.ceil(h / tile)
   const dirty = new Uint8Array(cols * rows)

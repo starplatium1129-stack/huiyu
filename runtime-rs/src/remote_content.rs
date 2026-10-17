@@ -5,7 +5,7 @@ mod paths;
 mod precompressed;
 mod projection;
 
-pub use paths::{PUBLIC_DATA_FILES, is_content_path, is_private_asset_path};
+pub use paths::{PUBLIC_DATA_FILES, is_private_asset_path};
 pub use precompressed::serve as precompressed;
 
 use crate::{

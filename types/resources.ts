@@ -1,11 +1,11 @@
 export type ResourceAction = 'import' | 'download' | 'recover' | 'rollback'
-export type ResourceTaskState = 'running' | 'cancelling' | 'completed' | 'failed' | 'cancelled' | 'interrupted'
-export interface ResourceIssue { code: string; message: string }
-export interface ResourceOperationResult {
+type ResourceTaskState = 'running' | 'cancelling' | 'completed' | 'failed' | 'cancelled' | 'interrupted'
+interface ResourceIssue { code: string; message: string }
+interface ResourceOperationResult {
   action: 'installed' | 'already-installed' | 'recovered' | 'rolled-back' | 'nothing-to-recover' | 'downloaded' | 'already-downloaded'
   warning: ResourceIssue | null
 }
-export interface ResourceTask {
+interface ResourceTask {
   id: string
   action: ResourceAction
   releaseId: string | null
@@ -19,7 +19,7 @@ export interface ResourceTask {
   error: ResourceIssue | null
   result?: ResourceOperationResult | null
 }
-export interface ResourceRelease {
+interface ResourceRelease {
   id: string
   label: string
   kind: 'full' | 'delta'

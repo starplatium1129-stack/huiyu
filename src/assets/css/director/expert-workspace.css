@@ -5,7 +5,6 @@
 .pb .inspector-heading { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:p-s-4; background:var(--bg-surface); }
 .pb .inspector-heading strong { @apply tw:text-body; letter-spacing: .04em; }
 .pb .inspector-heading span { @apply tw:text-label tw:text-muted; }
-.pb .director-inspector .col-right { @apply tw:flex tw:flex-col tw:shrink-0 tw:p-0; }
 .pb .inspector-section > * { @apply tw:shrink-0; }
 .pb .anima-prompt-details { @apply tw:text-label-xs tw:text-muted; }
 .pb .anima-prompt-details summary { @apply tw:cursor-pointer; padding-block: 8px; }
@@ -20,14 +19,7 @@
 .pb[data-director-mode] .inspector-scroll { @apply tw:p-s-4 tw:overflow-y-auto; scrollbar-width: thin; overscroll-behavior: contain; @apply tw:min-h-0; }
 .pb[data-director-mode="pro"] .director-inspector .panel,
 .pb[data-director-mode="pro"] .director-inspector .result-frame { border: 0; box-shadow: none; background: transparent; @apply tw:p-0; }
-.pb .result-shelf { border:0; background:transparent; padding:0; }
-.pb .shelf-preview .zoomable-image-viewer { display:grid; grid-template-rows:minmax(0,1fr) 48px; }
-.pb .shelf-preview .zoom-toolbar { position:relative; display:grid; place-items:center; min-height:48px; }
-.pb .shelf-preview .zoom-controls { position:static; transform:none; background:var(--bg-base); }
-.pb[data-director-mode="pro"] .director-inspector .controls-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .pb[data-director-mode="pro"] .director-inspector .panel-title { @apply tw:mb-[10px]; }
-.pb[data-director-mode="pro"] .director-inspector .settings-summary { padding: 0 0 var(--s-2); }
-.pb[data-director-mode="pro"] .director-inspector .decision-fold { @apply tw:pb-[12px]; border-bottom: 1px solid var(--border-soft); }
 @media (min-width: 1024px) {
   .pb[data-director-mode] .director-inspector { @apply tw:flex tw:flex-col; }
   .pb.journal-workspace[data-director-mode] .inspector-heading,
@@ -45,9 +37,3 @@
 @media (max-width: 1023px) {
   .pb.journal-workspace .material-content { @apply tw:max-h-[420px] tw:overflow-y-auto; }
 }
-
-/* Parameter cards follow the inspector width, including on wide desktop screens. */
-.pb .director-inspector .decision-summary { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(0, .8fr) auto; @apply tw:gap-s-2; padding-block: var(--s-2); }
-.pb .director-inspector .decision-summary > span:first-child { grid-column: 1; }
-.pb .director-inspector .decision-current { grid-row: 1; grid-column: 2; @apply tw:m-0; max-width: none; @apply tw:text-right tw:whitespace-normal; overflow-wrap: anywhere; @apply tw:leading-body; }
-.pb .director-inspector .decision-summary::after { grid-row: 1; grid-column: 3; }

@@ -110,7 +110,7 @@ export async function migrateProfileToCandidate(options: {
   activate?: (verified: MigrationStatus) => Promise<void>
   onProgress?: (phase: 'export' | 'import' | 'verify', completed: number, total: number) => void
   resume?: boolean
-}): Promise<{ envelope: MigrationEnvelope; status: MigrationStatus; backupName: string }> {
+}): Promise<{ backupName: string }> {
   if (options.resume) return resumeProfileMigration(options)
   options.signal?.throwIfAborted()
   assertMigrationArtworkSourcesReady()
@@ -122,18 +122,17 @@ export async function migrateProfileToCandidate(options: {
   }, options.signal)
   options.signal?.throwIfAborted()
   const sink = await createMigrationDirectoryBackup(options.backupDirectory)
-  let status: MigrationStatus | undefined
-  const envelope = await exportMigrationSource({ sourceProfileId: options.sourceProfileId, expectedOrigin: options.expectedOrigin,
+  await exportMigrationSource({ sourceProfileId: options.sourceProfileId, expectedOrigin: options.expectedOrigin,
     signal: options.signal, sink, target: { workspaceId: candidate.workspaceId }, migrateCredential: options.migrateCredential,
     consume: async envelope => {
       if (envelope.blockers.length) throw new Error('来源包含未分类资料或未迁移凭据，已保留独立备份，尚未激活。')
-      status = await importMigrationBackup(envelope, sink, candidate, options)
+      const status = await importMigrationBackup(envelope, sink, candidate, options)
       if (status.state !== 'verified' || status.blockers.length) throw new Error('迁移校验发现缺失或冲突，来源与备份已保留，尚未激活。')
       options.signal?.throwIfAborted()
       await options.activate?.(status)
     },
   })
-  return { envelope, status: status!, backupName: sink.backupName }
+  return { backupName: sink.backupName }
 }
 
 async function resumeProfileMigration(options: Parameters<typeof migrateProfileToCandidate>[0]) {
@@ -141,7 +140,6 @@ async function resumeProfileMigration(options: Parameters<typeof migrateProfileT
   const { fingerprint, ...unsigned } = reader.envelope
   if (await migrationFingerprint(unsigned) !== fingerprint || reader.envelope.blockers.length) throw new Error('迁移备份指纹不一致或有未解决的来源问题。')
   const sourceSnapshot = ({ source, records, media, credentials }: MigrationEnvelope) => ({ source, records, media, credentials })
-  let status: MigrationStatus | undefined
   await exportMigrationSource({ sourceProfileId: options.sourceProfileId, expectedOrigin: options.expectedOrigin,
     signal: options.signal, migrateCredential: options.migrateCredential,
     // Existing independently saved files remain the backup; this pass verifies
@@ -155,11 +153,11 @@ async function resumeProfileMigration(options: Parameters<typeof migrateProfileT
       assertMigrationArtworkSourcesReady()
       const candidate = await options.prepareCandidate({ mode: 'resume', workspaceId: reader.envelope.target?.workspaceId,
         migrationId: reader.envelope.migrationId, expectedFingerprint: reader.envelope.fingerprint })
-      status = await importMigrationBackup(reader.envelope, reader, candidate, options)
+      const status = await importMigrationBackup(reader.envelope, reader, candidate, options)
       if (status.state !== 'verified' || status.blockers.length) throw new Error('迁移副本尚未通过完整性校验。')
       options.signal?.throwIfAborted()
       await options.activate?.(status)
     },
   })
-  return { envelope: reader.envelope, status: status!, backupName: options.backupDirectory.name }
+  return { backupName: options.backupDirectory.name }
 }

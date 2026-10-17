@@ -155,7 +155,7 @@ pub fn migrate_electron_data(config_root: &Path, runtime_root: &Path) -> Vec<Str
         return Vec::new();
     };
     let mut migrated = Vec::new();
-    let copy_if_missing = |_name: &str, from: &Path, to: &Path| -> bool {
+    let copy_if_missing = |from: &Path, to: &Path| -> bool {
         if to.exists() || !from.exists() {
             return false;
         }
@@ -171,7 +171,7 @@ pub fn migrate_electron_data(config_root: &Path, runtime_root: &Path) -> Vec<Str
         "desktop-gateway.json",
         "ai-workspace.json",
     ] {
-        if copy_if_missing(name, &source.join(name), &config_root.join(name)) {
+        if copy_if_missing(&source.join(name), &config_root.join(name)) {
             migrated.push(name.to_string());
         }
     }
@@ -182,7 +182,7 @@ pub fn migrate_electron_data(config_root: &Path, runtime_root: &Path) -> Vec<Str
         for entry in entries.flatten() {
             let name = entry.file_name();
             if name.to_string_lossy().contains("gateway_token") {
-                if copy_if_missing(&name.to_string_lossy().to_string(), &entry.path(), &dst_state.join(&name)) {
+                if copy_if_missing(&entry.path(), &dst_state.join(&name)) {
                     migrated.push(format!("gateway/runtime/state/{name:?}"));
                 }
             }

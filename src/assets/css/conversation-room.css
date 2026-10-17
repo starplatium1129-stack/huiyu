@@ -73,8 +73,8 @@
 .room-composer-meta kbd { color:var(--text-secondary); font:inherit; font-family:var(--font-mono); }
 .chat-page.room-surface .chat-input { flex:1 1 auto; min-width:0; min-height:var(--control-height); max-height:120px; padding:var(--s-2); resize:none; border:0; border-radius:0; background:transparent; color:var(--text-primary); font:400 var(--fs-body)/var(--lh-label) var(--font-sans); box-shadow:none; }
 .chat-page.room-surface .chat-input:focus { outline:none; box-shadow:none; }
-.chat-page.room-surface :is(.send-btn,.stop-btn,.hold-talk-btn) { display:grid; place-items:center; flex:none; width:var(--control-height); height:var(--control-height); min-height:var(--control-height); padding:0; border:0; border-radius:var(--r-sm); }
-.room-surface :is(.send-btn,.stop-btn,.hold-talk-btn) .archive-icon { width:20px; height:20px; }
+.chat-page.room-surface .hold-talk-btn { display:grid; place-items:center; flex:none; width:var(--control-height); height:var(--control-height); min-height:var(--control-height); padding:0; border:0; border-radius:var(--r-sm); }
+.room-surface .hold-talk-btn .archive-icon { width:20px; height:20px; }
 /* Low-frequency room tools scroll in the top layer without shrinking the conversation. */
 .room-tools-dialog { width:min(760px,calc(100vw - 48px)); max-height:calc(100dvh - 48px); margin:auto; padding:0; overflow:auto; overscroll-behavior:contain; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); }
 .room-tools-dialog::backdrop { background:var(--art-scrim); }

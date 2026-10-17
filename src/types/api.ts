@@ -10,7 +10,7 @@
  */
 
 // ── 统一错误信封（server/http-envelope.js）────────────────────────────────
-export interface ApiFailure {
+interface ApiFailure {
   ok: false
   error: string
   /** 技术细节，可直接展示给本机用户 */
@@ -33,7 +33,7 @@ export interface Live2DStatusResponse { models: Record<string, unknown> }
 export interface SDStatusResponse { online: boolean; checkpoint: string; models: string[]; samplers: string[]; schedulers: string[]; upscalers: string[] }
 
 // ── 控制面板 ───────────────────────────────────────────────────────────────
-export type TunnelStatus = 'active' | 'waiting' | 'disabled'
+type TunnelStatus = 'active' | 'waiting' | 'disabled'
 
 export interface ControlOperationView {
   id: string
@@ -48,7 +48,7 @@ export interface ControlOperationView {
   error: string
 }
 
-export interface VoiceProfileView {
+interface VoiceProfileView {
   refAudioPath?: string
   promptText?: string
   promptLang?: string
@@ -111,7 +111,7 @@ export interface ControlStatus {
   }
 }
 
-export interface ControlWebBuildStatus {
+interface ControlWebBuildStatus {
   distReady: boolean
   builtAt: string | null
   stale: boolean
@@ -187,7 +187,7 @@ export interface ControlDiagnostics {
 
 // ── 场景管理领域模型 ────────────────────────────────────────────────────────
 export type SceneRating = 'All' | 'R15' | 'R18'
-export type SceneCharacter = 'nene' | 'natsume' | 'triad' | 'both' | string
+type SceneCharacter = 'nene' | 'natsume' | 'triad' | 'both' | string
 
 /**
  * 场景编辑器的字段集。
@@ -219,16 +219,6 @@ export interface SceneDraft {
   storyJa: string
   prompt: string
   negative: string
-  [key: string]: unknown
-}
-
-export interface CurationData {
-  curatedSceneIds?: string[]
-  signatureSceneIds?: string[]
-  personaCoreSceneIds?: string[]
-  personaCoreReasons?: Record<string, string>
-  reviewSceneIds?: string[]
-  recommendationReasons?: Record<string, string>
   [key: string]: unknown
 }
 

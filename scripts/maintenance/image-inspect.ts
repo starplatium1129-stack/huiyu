@@ -388,16 +388,3 @@ async function main() {
 if (require.main === module) {
   main().catch(function (error: any) { console.error('[错误]', error.message); process.exit(1); });
 }
-
-export = {
-  TASKS: TASKS,
-  DEFAULT_BASE_URL: DEFAULT_BASE_URL,
-  DEFAULT_API_KEY: DEFAULT_API_KEY,
-  DEFAULT_MODEL: DEFAULT_MODEL,
-  FALLBACK_BASE_URL: FALLBACK_BASE_URL,
-  isConnectionError: isConnectionError,
-  MAX_IMAGE_BYTES: MAX_IMAGE_BYTES,
-  imageUrl: imageUrl,
-  chatCompletion: chatCompletion,
-  requestWithRetry: requestWithRetry,
-};

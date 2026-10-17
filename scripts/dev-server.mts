@@ -10,11 +10,7 @@ const {developmentCargo,buildDevelopmentRuntime}:typeof import('./lib/rust-devel
 const defaultRoot=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const ROOT_INPUTS=new Set(['runtime-rs/Cargo.toml','runtime-rs/Cargo.lock','runtime-rs/build.rs','runtime-rs/native-dependencies.windows-x64.json']);
 const SOURCE_DIRECTORIES=['runtime-rs/src','runtime-rs/native-data','data','native'];
-interface DevelopmentOptions {
-  watch?:boolean;debounceMs?:number;build?:()=>boolean|Promise<boolean>;start?:()=>ChildProcess;
-  stop?:(child:ChildProcess)=>Promise<void>;reportError?:(error:unknown)=>void;
-}
-interface Running {directory:string;secret:string;profile:string;origin:string}
+interface Running {secret:string;profile:string;origin:string}
 function waitExit(child:ChildProcess,timeout:number):Promise<void>{
   if(child.exitCode!==null||child.signalCode!==null)return Promise.resolve();
   return new Promise((resolve,reject)=>{const close=()=>{clearTimeout(timer);resolve();};
@@ -22,7 +18,7 @@ function waitExit(child:ChildProcess,timeout:number):Promise<void>{
     child.once('close',close);
   });
 }
-export async function drainDevelopmentRuntime(previous:ChildProcess,owned:{secret:string;profile:string;origin:string}){
+async function drainDevelopmentRuntime(previous:ChildProcess,owned:{secret:string;profile:string;origin:string}){
     // Startup may still be opening storage. Challenge authentication prevents a
     // same-port stranger from authorizing shutdown or replacement of our child.
     const deadline=Date.now()+20000;let ready=false;
@@ -43,10 +39,10 @@ export async function drainDevelopmentRuntime(previous:ChildProcess,owned:{secre
 
 /** Builds write Cargo's normal output; running images are independent copies so
  * Windows never locks the next compilation's EXE. Failed builds preserve service. */
-export async function startDevelopment(root=defaultRoot,options:DevelopmentOptions={}){
+async function startDevelopment(){
   // Supported Node/libuv on Windows can abort when 8.3 watch roots receive long-path events.
   // Keep native canonical paths while those runtime versions remain supported.
-  root=fs.realpathSync.native(path.resolve(root));const reportError=options.reportError||((error:unknown)=>console.error(error instanceof Error?error.message:String(error)));
+  const root=fs.realpathSync.native(defaultRoot);const reportError=(error:unknown)=>console.error(error instanceof Error?error.message:String(error));
   const watchers:fs.FSWatcher[]=[];const watched=new Set<string>();const ownership=new WeakMap<ChildProcess,Running>();
   let child:ChildProcess|undefined,timer:ReturnType<typeof setTimeout>|undefined,running:Promise<void>|undefined;
   let requested=false,closed=false,candidate:{directory:string;executable:string;env:NodeJS.ProcessEnv}|undefined;
@@ -54,34 +50,34 @@ export async function startDevelopment(root=defaultRoot,options:DevelopmentOptio
   const bind=`${host.includes(':')?`[${host}]`:host}:${port}`,origin=`http://${bind}`;
   const profile=`profile-${randomBytes(32).toString('hex')}`;
   function discardCandidate(){if(candidate){fs.rmSync(candidate.directory,{recursive:true,force:true});candidate=undefined;}}
-  const cargo=options.build?undefined:developmentCargo(path.join(root,'runtime-rs/Cargo.toml'),root);
-  const build=options.build||async function(){
+  const cargo=developmentCargo(path.join(root,'runtime-rs/Cargo.toml'),root);
+  async function build(){
     const built=await buildDevelopmentRuntime(root,cargo);
     const native=developmentNativeEnvironment(root,built.env),executable=built.executable;
     fs.mkdirSync(path.join(root,'runtime'),{recursive:true});const directory=fs.mkdtempSync(path.join(root,'runtime/dev-server-build-'));
     const versioned=path.join(directory,path.basename(executable));
     try{fs.copyFileSync(executable,versioned);if(process.platform!=='win32')fs.chmodSync(versioned,0o755);}
     catch(error){fs.rmSync(directory,{recursive:true,force:true});throw error;}
-    discardCandidate();candidate={directory,executable:versioned,env:native};return true;
+    discardCandidate();candidate={directory,executable:versioned,env:native};
   };
-  const start=options.start||function(){
+  function start(){
     if(!candidate)throw Error('No successfully built Rust executable');
     const prepared=candidate;candidate=undefined;const secret=randomBytes(32).toString('hex');
     const env:NodeJS.ProcessEnv={...prepared.env,AICS_APP_ROOT:root,AICS_RUNTIME_ROOT:path.join(root,'runtime'),AICS_DESKTOP_GATEWAY_TOKEN:secret,AICS_DESKTOP_SOURCE_PROFILE_ID:profile};
     delete env.AICS_DESKTOP_CONFIG_ROOT;
     const started=spawn(prepared.executable,['--app-root',root,'--bind',bind],{cwd:root,env,stdio:'inherit',windowsHide:true});
-    ownership.set(started,{directory:prepared.directory,secret,profile,origin});
+    ownership.set(started,{secret,profile,origin});
     started.once('close',()=>{try{fs.rmSync(prepared.directory,{recursive:true,force:true,maxRetries:3,retryDelay:50});}catch(error){reportError(error);}});
-    if(options.watch!==false&&env.AICS_VIPS_DYLIB_PATH){try{watchNative(env.AICS_VIPS_DYLIB_PATH);}catch(error){reportError(error);}}
+    if(env.AICS_VIPS_DYLIB_PATH){try{watchNative(env.AICS_VIPS_DYLIB_PATH);}catch(error){reportError(error);}}
     return started;
   };
   async function authenticatedStop(previous:ChildProcess){
-    const owned=ownership.get(previous);if(!owned)throw Error('A custom development start requires an explicit stop fixture');
+    const owned=ownership.get(previous);if(!owned)throw Error('Development runtime ownership is missing; no replacement started');
     await drainDevelopmentRuntime(previous,owned);
   }
   async function stopChild(){
     const previous=child;if(!previous)return;
-    if(previous.exitCode===null&&previous.signalCode===null)await (options.stop||authenticatedStop)(previous);
+    if(previous.exitCode===null&&previous.signalCode===null)await authenticatedStop(previous);
     // Failed drain retains the actual owned process; a retry cannot create a
     // second writer, and neither Windows SIGTERM nor taskkill bypasses storage.
     if(child===previous)child=undefined;
@@ -89,7 +85,7 @@ export async function startDevelopment(root=defaultRoot,options:DevelopmentOptio
   function rebuild():Promise<void>{
     if(closed)return Promise.resolve();requested=true;if(running)return running;
     running=Promise.resolve().then(async()=>{while(requested&&!closed){requested=false;
-      try{const changed=await build();if(!closed&&(!child||changed)){await stopChild();if(closed)break;
+      try{await build();if(!closed){await stopChild();if(closed)break;
         const started=start();child=started;started.once('error',reportError);started.once('close',()=>{if(child===started)child=undefined;});
       }}catch(error){reportError(error);}
     }}).finally(()=>{running=undefined;});return running;
@@ -97,7 +93,7 @@ export async function startDevelopment(root=defaultRoot,options:DevelopmentOptio
   function schedule(relative:string){
     relative=relative.replaceAll('\\','/');if(closed)return;
     if(!ROOT_INPUTS.has(relative)&&!SOURCE_DIRECTORIES.some(dir=>relative.startsWith(dir+'/')))return;
-    clearTimeout(timer);timer=setTimeout(()=>{void rebuild();},options.debounceMs??180);
+    clearTimeout(timer);timer=setTimeout(()=>{void rebuild();},180);
   }
   function watch(directory:string,recursive:boolean){
     const absolute=path.join(root,directory);if(!fs.existsSync(absolute)||watched.has(absolute))return;
@@ -106,11 +102,11 @@ export async function startDevelopment(root=defaultRoot,options:DevelopmentOptio
   }
   function watchNative(file:string){
     const absolute=path.resolve(file);if(watched.has(absolute))return;
-    const watcher=fs.watch(path.dirname(absolute),(_event,filename)=>{if(filename&&String(filename)===path.basename(absolute)){clearTimeout(timer);timer=setTimeout(()=>{void rebuild();},options.debounceMs??180);}});
+    const watcher=fs.watch(path.dirname(absolute),(_event,filename)=>{if(filename&&String(filename)===path.basename(absolute)){clearTimeout(timer);timer=setTimeout(()=>{void rebuild();},180);}});
     watcher.on('error',reportError);watchers.push(watcher);watched.add(absolute);
   }
-  if(options.watch!==false){watch('runtime-rs',false);for(const directory of SOURCE_DIRECTORIES)watch(directory,true);}
-  await rebuild();return {rebuild,get pid(){return child?.pid;},async close(){closed=true;clearTimeout(timer);for(const watcher of watchers)watcher.close();await running;await stopChild();discardCandidate();}};
+  watch('runtime-rs',false);for(const directory of SOURCE_DIRECTORIES)watch(directory,true);
+  await rebuild();return {async close(){closed=true;clearTimeout(timer);for(const watcher of watchers)watcher.close();await running;await stopChild();discardCandidate();}};
 }
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url){
   if(process.argv.slice(2).some(arg=>arg==='--help'||arg==='--plan'))console.log('dev-server.mts\nWatch Rust source/Cargo/native data. Build first, then authenticate and drain the prior runtime before restarting. Failed builds keep the working service; failed drains never start another writer.');

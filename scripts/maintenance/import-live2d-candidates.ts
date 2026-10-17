@@ -24,7 +24,7 @@ function walk(directory: string, prefix = ''): string[] {
   })
 }
 
-export function prepareCandidate(root: string, candidate: Candidate) {
+function prepareCandidate(root: string, candidate: Candidate) {
   if (!/^[a-z0-9][a-z0-9_-]{0,79}$/.test(candidate.id) || ['nene', 'natsume'].includes(candidate.id)
     || !/^[a-z0-9][a-z0-9_-]{0,119}$/.test(candidate.directory)) throw new Error('Invalid candidate identity or directory')
   if (!candidate.entry && !candidate.unpackedEntry) return { id: candidate.id, state: 'blocked', blocked: candidate.blocked }
@@ -137,7 +137,7 @@ export function prepareCandidate(root: string, candidate: Candidate) {
   return { id, receipt, contents }
 }
 
-export function importCandidates(root: string, apply = false, only?: string[], refresh = false) {
+function importCandidates(root: string, apply = false, only?: string[], refresh = false) {
   const candidates: Candidate[] = json(path.join(root, 'data/live2d-candidates.json'))
   if (only?.some(id => !candidates.some(candidate => candidate.id === id))) throw new Error('Unknown candidate ID')
   return candidates.filter(c => !only || only.includes(c.id)).map(candidate => {

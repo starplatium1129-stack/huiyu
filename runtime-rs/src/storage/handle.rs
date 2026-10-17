@@ -55,9 +55,6 @@ impl Storage {
         if command["kind"] == "readThumbnail" {
             return thumbnail::read(self, &command).await;
         }
-        if command["kind"] == "readMedia" {
-            return verification::read(self, &command).await;
-        }
         if matches!(
             command["kind"].as_str(),
             Some("searchArtworks" | "readArtworkRecentIndex")

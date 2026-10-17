@@ -3,16 +3,15 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const { validateRun, PASSIVE_EFFECTS }: typeof import('../lib/workflow-runner') = require('../lib/workflow-runner');
-import type { RegisteredWorkflows } from '../lib/workflow-types';
 
 type ReportOptions = {
   root?: string;
   domain?: string;
-  registry?: RegisteredWorkflows;
 };
 type EffectList = string[];
 
-function reportConditions({ root = path.resolve(__dirname, '../..'), domain, registry = (require('../workflow') as typeof import('../workflow')).WORKFLOWS }: ReportOptions = {}) {
+function reportConditions({ root = path.resolve(__dirname, '../..'), domain }: ReportOptions = {}) {
+  const registry = (require('../workflow') as typeof import('../workflow')).WORKFLOWS;
   const base = fs.realpathSync(root);
   const exists = (file: string) => {
     try {
@@ -92,5 +91,4 @@ function main(argv: any = process.argv.slice(2)) {
   console.log(json ? JSON.stringify(result, null, 2) : formatConditions(result));
   return result.ok ? 0 : 1;
 }
-export = { reportConditions, formatConditions, formatConditionRow, main };
 if (require.main === module) { try { process.exitCode = main(); } catch (error) { console.error(runtimeErrorMessage(error)); process.exitCode = 1; } }

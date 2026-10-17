@@ -191,7 +191,6 @@ const {
   voiceActive,
   chatError,
   chatErrorKind,
-  voiceCapabilityState,
   voiceCapabilityText,
   showVoiceRecovery,
   playingMid,

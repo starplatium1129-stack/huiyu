@@ -80,7 +80,7 @@ export interface CompanionBehaviorHandle {
   config(): Readonly<CompanionBehaviorConfig>
 }
 
-export const DEFAULT_COMPANION_CONFIG: CompanionBehaviorConfig = {
+const DEFAULT_COMPANION_CONFIG: CompanionBehaviorConfig = {
   enabled: true,
   dnd: false,
   idleMinutes: 30,
@@ -117,7 +117,7 @@ function hourOf(date: Date): number {
 }
 
 /** 安静时段可能跨天（23:00-08:00），也可能在同一天内（08:00-23:00）。 */
-export function isInQuietHours(
+function isInQuietHours(
   now: number,
   quietStartHour: number,
   quietEndHour: number,

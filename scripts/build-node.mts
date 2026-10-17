@@ -5,7 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import ts from 'typescript';
 
 /** Bootstrap from TypeScript itself; works on a clean checkout before any JS exists. */
-export const PROJECTS = {
+const PROJECTS = {
   node: 'tsconfig.node.json',
   browser: 'tsconfig.browser-tools.json',
 } as const;
@@ -32,7 +32,7 @@ function formatDiagnostics(diagnostics: readonly ts.Diagnostic[], root: string):
   });
 }
 
-export function loadProject(root: string, project: ProjectName): ts.ParsedCommandLine {
+function loadProject(root: string, project: ProjectName): ts.ParsedCommandLine {
   const file = path.join(root, PROJECTS[project]);
   const loaded = ts.readConfigFile(file, ts.sys.readFile);
   if (loaded.error) throw new Error(formatDiagnostics([loaded.error], root));
@@ -141,7 +141,7 @@ function ownedOutput(project: ProjectName, relative: string): boolean {
 }
 
 /** No output is published until every selected project passes type checking. */
-export function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] {
+function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] {
   root = fs.realpathSync(root);
   const pending: Array<{ project: ProjectName; recordFile: string; previous?: BuildManifest;
     record: BuildRecord; contents: Map<string, string> }> = [];

@@ -434,4 +434,4 @@ function main(argv: any = process.argv.slice(2)) {
 
 if (require.main === module) main();
 
-export = { analyseThemes, analyseReferences, extractThemeSelectors, normalizeAlias, popularAliasMapOf, buildReport, makeFileExists, DEFAULT_THEME_ALLOWED };
+export = { extractThemeSelectors, DEFAULT_THEME_ALLOWED };

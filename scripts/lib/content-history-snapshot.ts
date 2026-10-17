@@ -219,4 +219,4 @@ function loadDomain(reader: { json: (file: string) => any; read: (file: string) 
   return result;
 }
 
-export = { loadDomain, TIERS, PRODUCTS, keyFor };
+export = { loadDomain, PRODUCTS, keyFor };

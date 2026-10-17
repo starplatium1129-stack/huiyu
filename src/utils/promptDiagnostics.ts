@@ -59,7 +59,7 @@ const WEATHER_GROUPS: Array<{ name: string; tokens: string[] }> = [
 ]
 
 /** 主体姿势互斥：站姿 vs 坐姿 vs 躺姿 vs 跪姿 vs 蹲姿 */
-export const POSE_GROUPS: Array<{ name: string; tokens: string[] }> = [
+const POSE_GROUPS: Array<{ name: string; tokens: string[] }> = [
   { name: '站姿', tokens: ['standing', 'standing_up', 'standing_split'] },
   { name: '坐姿', tokens: ['sitting', 'sitting_on_chair', 'sitting_on_bed', 'sitting_on_floor', 'sitting_on_ground', 'seiza', 'lotus_position', 'cross-legged'] },
   { name: '躺姿', tokens: ['lying', 'lying_on_back', 'lying_on_side', 'lying_on_stomach'] },
@@ -68,27 +68,23 @@ export const POSE_GROUPS: Array<{ name: string; tokens: string[] }> = [
 ]
 
 /** 视角朝向互斥：正面 vs 背面 vs 侧面 */
-export const VIEWPOINT_GROUPS: Array<{ name: string; tokens: string[] }> = [
+const VIEWPOINT_GROUPS: Array<{ name: string; tokens: string[] }> = [
   { name: '正面视角', tokens: ['front_view', 'straight-on'] },
   { name: '背面视角', tokens: ['back_view', 'from_behind', 'turned_back', 'looking_back'] },
   { name: '侧面视角', tokens: ['profile', 'from_side'] },
 ]
 
 /** 拍摄角度互斥：俯拍 vs 仰拍 */
-export const ANGLE_GROUPS: Array<{ name: string; tokens: string[] }> = [
+const ANGLE_GROUPS: Array<{ name: string; tokens: string[] }> = [
   { name: '俯拍视角', tokens: ['from_above', 'high_angle'] },
   { name: '仰拍视角', tokens: ['from_below', 'low_angle'] },
 ]
 
 /** 空间环境互斥：室内 vs 室外 */
-export const ENVIRONMENT_GROUPS: Array<{ name: string; tokens: string[] }> = [
+const ENVIRONMENT_GROUPS: Array<{ name: string; tokens: string[] }> = [
   { name: '室内', tokens: ['indoors', 'indoor'] },
   { name: '室外', tokens: ['outdoors', 'outdoor'] },
 ]
-
-export const FACE_CLOSEUP_TOKENS: ReadonlySet<string> = new Set([
-  'face_focus', 'extreme_close_up', 'close_up_detail', 'macro', 'upper_face', 'close_up',
-])
 
 export const FOOTWEAR_AND_LEG_TOKENS: ReadonlySet<string> = new Set([
   'boots', 'shoes', 'sneakers', 'heels', 'sandals', 'socks', 'stockings',

@@ -148,11 +148,6 @@ function ensureAll({ onlyIfMissing = false }: any = {}) {
 }
 
 export = {
-  ensureAll,
-  ensurePopularBuilt,
-  ensureScenesBuilt,
-  ensureBlueprintsBuilt,
-  ensureTagsBuilt,
-  ensureReferencesBuilt,
-  refreshPrecompressed,
+    ensureAll,
+    refreshPrecompressed
 };

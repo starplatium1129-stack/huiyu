@@ -10,7 +10,7 @@ import type {
   ControlStatus,
 } from '../types/api.ts'
 
-export const CONTROL_API_TIMEOUTS = {
+const CONTROL_API_TIMEOUTS = {
   quick: 10_000,
   action: 30_000,
 } as const

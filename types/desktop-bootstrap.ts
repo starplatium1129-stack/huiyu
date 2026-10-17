@@ -11,7 +11,7 @@ export interface DesktopWorkspaceSession {
   /** Host-owned durable activation identity; absent on older hosts. */
   activeMigrationId?: string | null
 }
-export interface DesktopRuntimeDescriptor {
+interface DesktopRuntimeDescriptor {
   origin: string
   protocolVersion: 1
   ownership: 'managed' | 'attached'

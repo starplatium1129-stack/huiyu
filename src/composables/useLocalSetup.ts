@@ -5,7 +5,7 @@ import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 import { getDesktopCapabilities } from '../platform/desktop/capabilities.ts'
 import { STARTER_MODEL_SETTING, settingsRepository } from '../storage/settingsRepository'
 import { flushProfileWrites } from '../platform/web/profileStorage'
-import type { LocalSetupFileState, LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
+import type { LocalSetupResponse, LocalSetupVerificationResult, LocalSetupDownloadResult } from '../../types/local-setup.ts'
 
 /** Owns first-setup reads, workspace activation and verification evidence. */
 export function useLocalSetup() {
@@ -33,7 +33,7 @@ export function useLocalSetup() {
     } finally { restarting.value = false }
   }
   const verificationFailures = ref<Record<string, string>>({})
-  const downloadNotice = ref(''), workspacePending = ref(false)
+  const workspacePending = ref(false)
   const workspaceActiveRoot = ref<string | null>(null)
   const workspaceSavedRoot = ref('')
   const workspaceUnconfirmed = computed(() => !!desktop && workspaceActiveRoot.value !== snapshot.value?.workspace.path)
@@ -42,8 +42,6 @@ export function useLocalSetup() {
   let controller: AbortController | null = null
   let disposed = false
   const recommendedModels = computed(() => snapshot.value?.models.filter(model => model.required) ?? [])
-  const otherModels = computed(() => snapshot.value?.models.filter(model => !model.required && (!model.kind || model.kind === 'image')) ?? [])
-  const nodesChecked = computed(() => snapshot.value?.nodes.state === 'checked' && snapshot.value.nodes.required.length > 0)
   const failedModels = computed(() => recommendedModels.value.filter(model => verificationFailures.value[model.id] === model.path))
   function recordVerification(result: LocalSetupVerificationResult) {
     const failures = { ...verificationFailures.value }
@@ -56,22 +54,12 @@ export function useLocalSetup() {
       if (result.code === 'MODEL_CONFLICT') verificationFailures.value = { ...verificationFailures.value, [result.modelId]: result.path }
       return
     }
-    downloadNotice.value = result.message
     const failures = { ...verificationFailures.value }; delete failures[result.modelId]; verificationFailures.value = failures
     void refresh()
   }
   const readiness = computed(() => snapshot.value ? drawingSetupReadiness(snapshot.value, selectedModel.value) : null)
   const currentCheck = computed(() => !loading.value && !error.value && !cancelled.value && !workspacePending.value && !workspaceUnconfirmed.value)
   const basicComplete = computed(() => currentCheck.value && failedModels.value.length === 0 && readiness.value?.complete === true)
-  const checklist = computed(() => readiness.value?.steps.map(step => ({
-    ...step, ready: currentCheck.value && step.ready && (!['files', 'nodes'].includes(step.id) || failedModels.value.length === 0),
-  })) ?? [])
-  const nodeLabel = computed(() => !nodesChecked.value ? '尚未确认' : snapshot.value!.nodes.missing.length ? `缺少 ${snapshot.value!.nodes.missing.length} 项` : '所需节点已注册')
-  const checkedAtLabel = computed(() => snapshot.value ? new Date(snapshot.value.checkedAt).toLocaleTimeString('zh-CN') + ' 检查' : '')
-  const summary = computed(() => loading.value ? '正在读取本机配置…' : error.value ? '检查未完成，状态待确认'
-    : cancelled.value ? '检查已取消' : workspacePending.value ? '工作区已保存，重启后继续检查'
-      : workspaceUnconfirmed.value ? '当前工作区尚未确认' : basicComplete.value ? '环境、模型文件、连接与节点已确认，可尝试生成第一张图（尚未实际出图）'
-      : snapshot.value ? '绘图准备尚未完成，请按下方步骤继续' : '尚未检查')
   const nextStep = computed(() => {
     const value = snapshot.value
     if (loading.value) return '等待本次只读检查，或取消后稍后再试。'
@@ -82,7 +70,6 @@ export function useLocalSetup() {
     if (failedModels.value.length) return `${failedModels.value.map(model => model.label).join('、')} 的完整性校验未通过。重新检查不会清除此问题；请核对文件并重新校验 SHA-256 后再尝试出图。`
     return readiness.value!.nextStep
   })
-  const fileLabel = (state: LocalSetupFileState) => ({ present: '已发现', missing: '未发现', unknown: '未知' })[state]
   async function refresh() {
     if (!isLocal || loading.value || disposed) return
     const request = new AbortController()
@@ -107,7 +94,7 @@ export function useLocalSetup() {
 
   const workspaceButton = ref<HTMLElement | null>(null)
   const workspaceOpen = ref(false), workspaceDraft = ref(''), workspaceLoading = ref(false), workspaceSaving = ref(false)
-  const workspaceNotice = ref(''), workspaceError = ref('')
+  const workspaceError = ref('')
   async function readWorkspaceBinding() {
     if (!desktop || disposed || workspaceSaving.value) return
     const read = ++workspaceRead
@@ -130,7 +117,6 @@ export function useLocalSetup() {
         workspaceSavedRoot.value = result.root
         workspacePending.value = result.restartRequired
         workspaceActiveRoot.value = result.activeRoot
-        workspaceNotice.value = result.restartRequired ? '已保存的 AI 工作区尚未生效，完全退出并重启绘遇后使用新目录。当前检查仍基于本次运行时目录。' : ''
         workspaceOpen.value = true
       }
     } catch (cause) {
@@ -162,13 +148,10 @@ export function useLocalSetup() {
     workspacePending.value = result.restartRequired
     workspaceActiveRoot.value = result.activeRoot
     workspaceOpen.value = false
-    workspaceNotice.value = result.restartRequired
-      ? 'AI 工作区已保存，完全退出并重启绘遇后生效。当前检查仍基于本次运行时目录。'
-      : 'AI 工作区已保存，当前运行时目录未改变。'
   }
   async function saveWorkspace() {
     if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
-    workspaceSaving.value = true; workspaceError.value = ''; workspaceNotice.value = ''
+    workspaceSaving.value = true; workspaceError.value = ''
     ++workspaceRead
     try {
       await applyWorkspace(workspaceDraft.value)
@@ -179,10 +162,9 @@ export function useLocalSetup() {
   onMounted(() => { void refresh() })
   onUnmounted(() => { disposed = true; controller?.abort(); controller = null })
 
-  return { isLocal, desktop, snapshot, loading, error, summary, nextStep, basicComplete, currentCheck,
-    recommendedModels, otherModels, nodeLabel, checkedAtLabel, checklist, fileLabel,
+  return { isLocal, desktop, snapshot, loading, error, nextStep, basicComplete, currentCheck,
     workspaceButton, workspaceOpen, workspaceDraft, workspaceSavedRoot, workspaceLoading, workspaceSaving, restarting,
-    workspaceNotice, workspaceError, workspacePending, workspaceUnconfirmed, downloadNotice,
+    workspaceError, workspacePending, workspaceUnconfirmed,
     refresh, cancelCheck, selectSetupModel, recordDownload, recordVerification,
     openWorkspace, chooseWorkspace, closeWorkspace, saveWorkspace, restartForSetup }
 }

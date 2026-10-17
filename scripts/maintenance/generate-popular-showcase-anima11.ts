@@ -288,13 +288,3 @@ if (require.main === module) {
     process.exitCode = 1;
   });
 }
-
-export = {
-  buildCandidate,
-  planAll,
-  buildSubmissionBody,
-  canReuseCandidate,
-  nearestAnimaSize,
-  stableSeed,
-  constants: { DEFAULT_OUTPUT, ANIMA_MODEL_ID, ANIMA_PROFILE_ID, ARTIST_TAG },
-};

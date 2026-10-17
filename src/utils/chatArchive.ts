@@ -11,8 +11,8 @@ import { assertChatVersion } from './chatVersion.ts'
 import { parseCompanionChatImages, parseCompanionDrawingDraft, type CompanionDrawingDraft } from '@/types/companionDrawing'
 
 export const CHAT_ARCHIVE_KEY = 'aics_chat_archive_v1'
-export const CHAT_ARCHIVE_VERSION = 1
-export const CHAT_ARCHIVE_MAX_PER_CHAR = 5000
+const CHAT_ARCHIVE_VERSION = 1
+const CHAT_ARCHIVE_MAX_PER_CHAR = 5000
 
 export interface ChatArchive {
   version: number

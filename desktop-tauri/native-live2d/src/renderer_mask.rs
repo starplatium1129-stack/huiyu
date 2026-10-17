@@ -50,9 +50,6 @@ impl Renderer {
             width,
             height,
         });
-        self.resource_stats.mask_textures_created += 1;
-        self.resource_stats.mask_bind_groups_created += 1;
-        self.record_resource_creation_n(2);
     }
 
     /// Render a mask channel to a CPU buffer for debugging.

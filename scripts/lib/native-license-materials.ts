@@ -5,11 +5,11 @@ import path = require('node:path');
 import crypto = require('node:crypto');
 import safe = require('./delivery-paths');
 
-export const NATIVE_MANIFEST = 'runtime-rs/native-dependencies.windows-x64.json';
-export const MATERIAL_ROOT = 'runtime-rs/native-licenses/';
-export const MATERIAL_INDEX = `${MATERIAL_ROOT}materials.sha256.json`;
-export type ReadNativeMaterial = (relativePath: string) => Buffer | null;
-export interface NativeLicenseMaterial {
+const NATIVE_MANIFEST = 'runtime-rs/native-dependencies.windows-x64.json';
+const MATERIAL_ROOT = 'runtime-rs/native-licenses/';
+const MATERIAL_INDEX = `${MATERIAL_ROOT}materials.sha256.json`;
+type ReadNativeMaterial = (relativePath: string) => Buffer | null;
+interface NativeLicenseMaterial {
   readonly bytes: number;
   readonly sha256: string;
   readonly preserveBytes: boolean;
@@ -30,7 +30,7 @@ const RAW_FILES = new Set([
 
 /** This predicate alone grants nothing: callers must also find a descriptor
  * from the same tree's verified index and check the exact blob bytes. */
-export function shouldPreserveMaterial(relativePath: string): boolean {
+function shouldPreserveMaterial(relativePath: string): boolean {
   if (relativePath === MATERIAL_INDEX) return true;
   if (!relativePath.startsWith(MATERIAL_ROOT)) return false;
   const file = relativePath.slice(MATERIAL_ROOT.length);

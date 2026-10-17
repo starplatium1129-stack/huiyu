@@ -1,6 +1,5 @@
 import { computed, type Ref } from 'vue'
-import { usePromptBuilderStore, type Scene } from '@/stores/promptBuilderStore'
-import { EMOTION, SHOT, LIGHTING, COMPOSITION, COLOR_MOODS } from '@/config/promptConstants'
+import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 
 export interface DirectorDerivedInput {
   pb: ReturnType<typeof usePromptBuilderStore>
@@ -11,25 +10,11 @@ export interface DirectorDerivedInput {
 }
 
 /**
- * 导演台派生状态：场景筛选、镜头/光照/情绪摘要、
- * 显存与分辨率风险提示。只做派生，不持有场景/UI/队列生命周期。
+ * 导演台派生状态：场景筛选、显存与分辨率风险提示。
+ * 只做派生，不持有场景/UI/队列生命周期。
  */
 export function useDirectorDerived(input: DirectorDerivedInput) {
   const { pb, hiddenSceneIds, sceneCollection, sceneLimit, sdSize } = input
-
-  const optionName = (options: readonly { id: string; name: string }[], id: string | null) =>
-    options.find(option => option.id === id)?.name ?? '自动'
-  const emotionSummary = computed(() => {
-    const names = pb.selections.emotion
-      .map(id => EMOTION.find(option => option.id === id)?.name)
-      .filter(Boolean)
-    if (!names.length) return '自动'
-    return names.length > 2 ? `${names.slice(0, 2).join('、')} +${names.length - 2}` : names.join('、')
-  })
-  const shotSummary = computed(() => optionName(SHOT, pb.selections.shot))
-  const lightingSummary = computed(() => optionName(LIGHTING, pb.selections.lighting))
-  const compositionSummary = computed(() => optionName(COMPOSITION, pb.selections.composition))
-  const moodSummary = computed(() => optionName(COLOR_MOODS, pb.colorMood))
 
   const personaCoreIds = computed(() => new Set(
     Array.isArray(pb.curation.personaCoreSceneIds)
@@ -99,18 +84,11 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
   })
 
   return {
-    optionName,
-    emotionSummary,
-    shotSummary,
-    lightingSummary,
-    compositionSummary,
-    moodSummary,
     personaCoreIds,
     availableScenes,
     visibleScenes,
     personaCoreCount,
     curatedCount,
-    vramBudget,
     vramLevel,
     baseResolutionRisk,
     vramHint,
@@ -118,5 +96,3 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
     canUseFaceDetailer,
   }
 }
-
-export type { Scene }

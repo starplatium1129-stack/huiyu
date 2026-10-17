@@ -3,7 +3,7 @@ import { ApiClientError, apiClient, type ApiResponseObject } from './client.ts'
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
 import type { TranslateResult, TtsStatus, VoicePrepareResult } from '../types/api.ts'
 
-export const VOICE_API_TIMEOUTS = {
+const VOICE_API_TIMEOUTS = {
   status: 10_000,
   prepare: 200_000,
   translate: 200_000,

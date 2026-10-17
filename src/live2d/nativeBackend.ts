@@ -91,7 +91,6 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         (a, b) => a.name === b.name && a.intensity === b.intensity, 50,
       )
       const hitTestListeners = new Set<(areas: string[]) => void>()
-      const motionStartedListeners = new Set<() => void>()
       const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
       const errorListeners = new Set<(error: Error) => void>()
 
@@ -138,10 +137,6 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
       }
 
       const subscriptions: number[] = []
-      subscriptions.push(bridge.onMotionStarted(() => {
-        if (destroyed) return
-        for (const listener of motionStartedListeners) listener()
-      }))
       subscriptions.push(bridge.onMotionFailed((info) => {
         if (destroyed) return
         for (const listener of motionFailedListeners) listener(info)
@@ -261,7 +256,6 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
           emotionIntent.dispose()
           queuedGaze = null
           hitTestListeners.clear()
-          motionStartedListeners.clear()
           motionFailedListeners.clear()
           errorListeners.clear()
           for (const id of subscriptions) bridge.off(id)

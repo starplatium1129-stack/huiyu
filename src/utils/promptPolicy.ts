@@ -14,7 +14,6 @@ export {
   mutualGroupWithCategory,
   membersOfMutualGroup,
   analyzeParts,
-  FACE_CLOSEUP_TOKENS,
   FOOTWEAR_AND_LEG_TOKENS,
   SHOE_TOKENS,
   BAREFOOT_TOKENS,

@@ -1,4 +1,4 @@
-use super::upload_body::{RawUploadBody, UploadBody};
+use super::upload_body::RawUploadBody;
 use super::*;
 use crate::{AppState, security};
 use axum::{
@@ -20,10 +20,6 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     for family in ["anima", "creative"] {
         router = router
             .route(&format!("/api/{family}/status"), get(status))
-            .route(
-                &format!("/api/{family}/images"),
-                post(upload).layer(DefaultBodyLimit::max(28 * 1024 * 1024)),
-            )
             .route(
                 &format!("/api/{family}/images/raw"),
                 post(upload_raw).layer(DefaultBodyLimit::max(16 * 1024 * 1024)),
@@ -79,37 +75,6 @@ async fn status(
         StatusCode::OK,
     )
 }
-async fn upload(
-    State(state): State<AppState>,
-    Extension(http): Extension<Arc<Http>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    Query(query): Query<HashMap<String, String>>,
-    headers: HeaderMap,
-    UploadBody(mut body, admission): UploadBody,
-) -> Response {
-    if let Err(error) = state.host.check_running() {
-        return error.into_response();
-    }
-    let owner = generation::request_owner(&headers, peer, &query);
-    let result = async {
-        let Some(Value::String(image)) = body.get_mut("image").map(Value::take) else {
-            return Err(error("INVALID_BODY", "请求体必须包含 image base64 字符串"));
-        };
-        drop(body);
-        let name = http
-            .service
-            .upload(
-                Upload::Encoded(image),
-                owner,
-                http.service.shutdown.child_token(),
-                admission,
-            )
-            .await?;
-        Ok(json!({"name":name}))
-    }
-    .await;
-    response(result, StatusCode::OK)
-}
 async fn upload_raw(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
@@ -125,7 +90,7 @@ async fn upload_raw(
     let result = http
         .service
         .upload(
-            Upload::Raw(bytes),
+            bytes,
             owner,
             http.service.shutdown.child_token(),
             admission,

@@ -445,4 +445,4 @@ function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs }: any 
   };
 }
 
-export = { DELTA_KIND, VERIFY_SCOPE, verifyDeltaPackContent, verifyDeltaPack, UsageError };
+export = { verifyDeltaPackContent, verifyDeltaPack, UsageError };

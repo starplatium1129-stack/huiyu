@@ -313,4 +313,4 @@ function runCli(main: any) {
   });
 }
 
-export = { CODE_ROOT, hash, parseArgs, help, snapshot, noLinks, assertOutput, runCandidates, runCli };
+export = { CODE_ROOT, hash, parseArgs, help, snapshot, noLinks, runCandidates, runCli };

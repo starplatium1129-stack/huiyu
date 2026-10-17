@@ -1,5 +1,5 @@
-export const INPAINT_MAX_EDGE = 1216
-export const INPAINT_MAX_AREA = 1_400_000
+const INPAINT_MAX_EDGE = 1216
+const INPAINT_MAX_AREA = 1_400_000
 
 export function inpaintCanvasSize(
   sourceWidth: number,

@@ -3,6 +3,8 @@ import { writeJsonAtomic } from '../lib/atomic-files';
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
+const { switchTarget }: typeof import('../lib/showcase-publication') = require('../lib/showcase-publication');
+
 /**
  * Publish the anima-aesthetic-v1.1 + @rella scene generation into a NEW
  * showcase version dir, replacing EVERY scene sample preview.
@@ -45,7 +47,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
-const { IMAGE_BOX, IMAGE_QUALITY, THUMB_BOX, THUMB_QUALITY, convertImages }: typeof import('../lib/showcase-image-conversion.js') = require('../lib/showcase-image-conversion.js');
+const { convertImages }: typeof import('../lib/showcase-image-conversion.js') = require('../lib/showcase-image-conversion.js');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
@@ -230,8 +232,7 @@ function buildSceneEntry(scene: any, record: any, review: any, loraVersions: any
 }
 
 /** 合并新场景条目与 source 的非场景条目，重算计数。 */
-function buildManifest(scenes: any, sourceManifest: any, additions: any, context: any) {
-  const _sceneById = new Map(scenes.map((scene: any) => [scene.id, scene]));
+function buildManifest(sourceManifest: any, additions: any, context: any) {
   const additionById = new Map(additions.map((item: any) => [item.entry.id, item.entry]));
   const sourceEntries = (sourceManifest.entries || [])
     .filter((entry: any) => isRecord(entry))
@@ -385,33 +386,6 @@ function verifyTarget(tempDir: any, manifest: any) {
   }
 }
 
-function switchTarget(tempDir: any, targetDir: any, force: any, renameSync: any = fs.renameSync, rmSync: any = fs.rmSync) {
-  const backupDir = path.join(path.dirname(targetDir), `.${path.basename(targetDir)}.backup-${process.pid}`);
-  const targetExists = fs.existsSync(targetDir);
-  if (targetExists) {
-    if (!force) throw new Error(`target already exists: ${targetDir} (use --force to overwrite)`);
-    if (!fs.existsSync(path.join(targetDir, 'manifest.json'))) {
-      throw new Error(`refusing to replace an existing target without manifest.json: ${targetDir}`);
-    }
-    rmSync(backupDir, { recursive: true, force: true });
-    renameSync(targetDir, backupDir);
-  }
-  try {
-    renameSync(tempDir, targetDir);
-  } catch (error) {
-    if (targetExists) {
-      try {
-        renameSync(backupDir, targetDir);
-      } catch (restoreError) {
-        (error as { message: string }).message = `${runtimeErrorMessage(error)}\n  additionally failed to restore backup ${backupDir}: ${runtimeErrorMessage(restoreError)}`;
-      }
-    }
-    throw error;
-  }
-  if (targetExists) {
-    rmSync(backupDir, { recursive: true, force: true });
-  }
-}
 
 async function main() {
   const from = path.resolve(argument('--from', DEFAULT_FROM));
@@ -453,7 +427,7 @@ async function main() {
   }
 
   const sourceManifest = readJson(path.join(sourceDir, 'manifest.json'));
-  const manifest = buildManifest(scenes, sourceManifest, additions, {
+  const manifest = buildManifest(sourceManifest, additions, {
     sourceName: path.basename(sourceDir),
     publishedAt: new Date().toISOString(),
   });
@@ -530,35 +504,6 @@ async function main() {
   console.log(JSON.stringify(Object.assign(summary, { written: true }), null, 2));
 }
 
-export = {
-  parseReviewData,
-  readReview,
-  planPublished,
-  assertFullReviewCoverage,
-  buildSceneEntry,
-  buildManifest,
-  resolveDirArg,
-  validateTarget,
-  sourcePathFor,
-  convertImages,
-  verifyTarget,
-  switchTarget,
-  cleanMeta,
-  argument,
-  constants: {
-    ROOT,
-    AI_ROOT,
-    DEFAULT_FROM,
-    DEFAULT_SHOWCASE_ROOT,
-    DEFAULT_TARGET,
-    DEFAULT_SOURCE,
-    IMAGE_BOX,
-    IMAGE_QUALITY,
-    THUMB_BOX,
-    THUMB_QUALITY,
-    HOME_HERO_SCENES,
-  },
-};
 
 if (require.main === module) {
   main().catch((error: any) => {

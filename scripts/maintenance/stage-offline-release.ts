@@ -78,4 +78,3 @@ async function main(argv = process.argv.slice(2)) {
   } finally { process.removeListener('SIGINT', cancel); process.removeListener('SIGTERM', cancel); }
 }
 if (require.main === module) main().catch(error => { console.error(error); process.exitCode = 1; });
-export = { main, parse, HELP };

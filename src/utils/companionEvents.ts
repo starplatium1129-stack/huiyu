@@ -71,5 +71,3 @@ export const EVENT_NOTIFY_TITLE: Record<CompanionDetectedEvent, string> = {
   'service-back': '服务恢复',
   'service-down': '服务掉线',
 }
-
-export type { CompanionEventKind }

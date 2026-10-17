@@ -1,6 +1,5 @@
 use super::*;
 use axum::body::Bytes;
-use base64::{Engine, engine::general_purpose::STANDARD};
 use hmac::{Hmac, Mac};
 use regex::Regex;
 use sha2::{Digest, Sha256};
@@ -176,14 +175,10 @@ async fn owner_salt(root: &Path, cancel: &CancellationToken) -> Result<Vec<u8>> 
     }
 }
 
-pub(crate) enum Upload {
-    Encoded(String),
-    Raw(Bytes),
-}
 
 pub(super) async fn store(
     root: PathBuf,
-    image: Upload,
+    image: Bytes,
     owner: String,
     limits: Limits,
     cancel: CancellationToken,
@@ -192,17 +187,13 @@ pub(super) async fn store(
 }
 pub(crate) async fn store_for(
     root: PathBuf,
-    image: Upload,
+    image: Bytes,
     owner: String,
     limits: Limits,
     cancel: CancellationToken,
     kind: Kind,
 ) -> Result<String> {
-    let source = match image {
-        Upload::Encoded(image) => Source::Encoded(image),
-        Upload::Raw(bytes) => Source::Raw(bytes),
-    };
-    store_source_for(root, source, owner, limits, cancel, kind).await
+    store_source_for(root, Source::Raw(image), owner, limits, cancel, kind).await
 }
 
 pub(crate) async fn store_media_for(
@@ -217,7 +208,6 @@ pub(crate) async fn store_media_for(
 }
 
 enum Source {
-    Encoded(String),
     Raw(Bytes),
     Stored(crate::storage::Media),
 }
@@ -237,27 +227,6 @@ async fn store_source_for(
     let _serial = tokio::select! {guard=SERIAL.lock()=>guard,_=cancel.cancelled()=>return Err(inputs::cancelled())};
     let bytes = match source {
         Source::Raw(bytes) => bytes,
-        Source::Encoded(image) => {
-            if image.len() > 28 * 1024 * 1024 {
-                return Err(error("INVALID_IMAGE", "图片数据超出大小限制"));
-            }
-            tokio::task::spawn_blocking(move || {
-                let data = if image.starts_with("data:image/") {
-                    image
-                        .split_once(";base64,")
-                        .map(|(_, data)| data)
-                        .unwrap_or(&image)
-                } else {
-                    &image
-                };
-                STANDARD
-                    .decode(data)
-                    .map(Bytes::from)
-                    .map_err(|_| error("INVALID_IMAGE", "图片编码无效"))
-            })
-            .await
-            .map_err(|_| error("INVALID_IMAGE", "图片解码失败"))??
-        }
         Source::Stored(media) => Bytes::from(read_media(media, kind.maximum(), &cancel).await?),
     };
     if bytes.is_empty() || bytes.len() > kind.maximum() {

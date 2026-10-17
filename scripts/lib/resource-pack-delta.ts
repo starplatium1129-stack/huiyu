@@ -206,4 +206,4 @@ function stageResourcePackDelta({ root, name, manifestPath, baseManifestPath, io
   return { ...result, baseManifestPath: plan.baseManifestPath, delta: plan.delta };
 }
 
-export = { IDENTITY_BASIS, manifestContentIdentity, planResourcePackDelta, stageResourcePackDelta };
+export = { manifestContentIdentity, planResourcePackDelta, stageResourcePackDelta };

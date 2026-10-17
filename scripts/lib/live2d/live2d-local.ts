@@ -2,7 +2,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { inspectModelFiles, modelFile, modelFormat } from './live2d-manifest'
 
-export interface LocalCompanion {
+interface LocalCompanion {
   character: Record<string, any> & { id: string; personaPrompt: string }
   avatar: Record<string, any> & { modelPath: string }
   profile: Record<string, any>

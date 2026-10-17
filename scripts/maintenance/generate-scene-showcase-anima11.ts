@@ -18,7 +18,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
  *   - negative: project `assembleNegative(anima)` plus explicit per-run additions.
  *
  * Output goes to AI/Reviews/SceneShowcaseRefresh/<round>/ and is never written
- * into the public SceneShowcase dir (mirrors generate-scene-showcase-candidates.js).
+ * into the public SceneShowcase dir.
  */
 
 const crypto: typeof import('crypto') = require('crypto');
@@ -328,12 +328,3 @@ if (require.main === module) {
     process.exitCode = 1;
   });
 }
-
-export = {
-  buildAnimaCandidate,
-  planScenes,
-  buildSubmissionBody,
-  nearestAnimaSize,
-  stableSeed,
-  constants: { DEFAULT_OUTPUT, ANIMA_MODEL_ID, ANIMA_PROFILE_ID, ANIMA_LORA_BY_CHARACTER },
-};

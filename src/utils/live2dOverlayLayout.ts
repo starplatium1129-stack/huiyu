@@ -70,7 +70,7 @@ export function computeOverlayRect(input: OverlayLayoutInput): OverlayRect {
 }
 
 /** 把 overlay 钳制回可见屏幕：四边不超过任一 monitor 的范围。 */
-export function clampToMonitors(rect: OverlayRect, monitors?: readonly OverlayMonitor[]): OverlayRect {
+function clampToMonitors(rect: OverlayRect, monitors?: readonly OverlayMonitor[]): OverlayRect {
   if (!monitors || monitors.length === 0) return { ...rect }
   let x = rect.x
   let y = rect.y

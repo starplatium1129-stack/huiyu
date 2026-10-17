@@ -38,7 +38,7 @@ export type { BackupSummary } from '@/utils/backupCore'
 // 备份时间戳键（BACKUP_AT_KEY）已登记在 storageKeys.ts：
 // 活键但刻意不参与备份导出，恢复时不覆盖新环境的时间戳。
 
-export function readLastBackupAt(): number {
+function readLastBackupAt(): number {
   try {
     const value = Number(localStorage.getItem(BACKUP_AT_KEY))
     return Number.isFinite(value) && value > 0 ? value : 0

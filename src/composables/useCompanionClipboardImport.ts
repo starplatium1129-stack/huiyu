@@ -196,7 +196,6 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   async function inspectClipboardImage() {
     if (!active() || capturingScreen.value || deps.busy.value || !deps.chatReady.value) { deps.onError?.('请先连接支持图片的聊天模型，并等待当前操作完成。'); return }
     const revision = characterRevision
-    const character = activeChar.value
     const card = clipboardCard.value
     if (!card || card.saving || card.kind !== 'image' || !card.imageBlob) return
     const blob = card.imageBlob

@@ -158,7 +158,6 @@ fn main() {
                 .expect("add expression");
             println!("expression: {} ({})", expr.name, expr.file);
         }
-        let mut groups: Vec<(String, usize)> = Vec::new();
         for (group, motions) in &refs.motions {
             for (idx, m) in motions.iter().enumerate() {
                 let data = read(&base.join(&m.file)).expect("motion file");
@@ -167,9 +166,7 @@ fn main() {
                     .expect("add motion");
             }
             println!("motion group {group}: {} motions", motions.len());
-            groups.push((group.clone(), motions.len()));
         }
-        let _ = groups;
 
         // Textures.
         let (device, queue) = renderer::new_device().expect("wgpu device");

@@ -21,7 +21,7 @@ function nsisPath(value: string) {
   return value;
 }
 
-export function upgradeScript(source: string, assets: Asset[], verifier: string, host: string, output: string) {
+function upgradeScript(source: string, assets: Asset[], verifier: string, host: string, output: string) {
   if (!assets.length) throw Error('Upgrade requires a nonempty retained asset inventory');
   let text = source.replace(/\r\n/g, '\n');
   const required = new Set(assets.map(file => file.path));
@@ -80,7 +80,7 @@ FunctionEnd
 // Tauri 2.12 restores the bound host to UNK after packaging. A derived NSIS must
 // embed its single NSS stamp with every other byte preserved. Use an official
 // packaged-host receipt when upstream exposes one; marker drift must fail closed.
-export function nsisHost(bytes: Buffer) {
+function nsisHost(bytes: Buffer) {
   const marker = Buffer.from('__TAURI_BUNDLE_TYPE_VAR_UNK');
   const offset = bytes.indexOf(marker);
   if (offset < 0 || bytes.indexOf(marker, offset + marker.length) >= 0) throw Error('Expected one bound Tauri NSIS host marker');

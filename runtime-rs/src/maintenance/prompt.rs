@@ -7,18 +7,12 @@ macro_rules! re {
         &*VALUE
     }};
 }
-pub(super) use re;
-mod normalize;
 mod policy;
-mod render;
-pub(super) use normalize::{classify, optimize};
-pub(super) use policy::{au, issues, rating, token_key, token_keys};
-pub(super) use render::effective;
+pub(super) use policy::rating;
 use serde_json::Value;
 use std::sync::LazyLock;
 
-// Literal source data only; sources.json binds every table/template to its TS
-// baseline. Runtime never evaluates JavaScript or rewrites these source files.
+// Rating vocabulary shared with scripts/lib/prompt-policy.ts.
 pub(super) static CONSTANTS: LazyLock<Value> =
     LazyLock::new(|| serde_json::from_str(include_str!("prompt/constants.json")).unwrap());
 pub(super) const JS_SPACE: &str = r"[\t\n\x0b\x0c\r \u{00a0}\u{1680}\u{2000}-\u{200a}\u{2028}\u{2029}\u{202f}\u{205f}\u{3000}\u{feff}]";
@@ -83,9 +77,6 @@ pub(super) fn trim(value: &str) -> &str {
                     | '\u{feff}'
         )
     })
-}
-pub(super) fn utf16_len(value: &str) -> usize {
-    value.encode_utf16().count()
 }
 pub(super) fn js_units(value: &str) -> String {
     value

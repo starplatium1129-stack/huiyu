@@ -17,7 +17,7 @@ export interface Live2DGazeRect {
   height: number
 }
 
-export function clampGaze(value: number, limit = 1): number {
+function clampGaze(value: number, limit = 1): number {
   const safeLimit = Math.max(0, Math.min(1, Number(limit) || 0))
   return Math.max(-safeLimit, Math.min(safeLimit, Number(value) || 0))
 }

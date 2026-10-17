@@ -2,12 +2,12 @@ import { assertChatVersion } from './chatVersion.ts'
 import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '../config/chatApi.ts'
 import { parseCompanionChatImages, parseCompanionDrawingDraft, type CompanionChatImage, type CompanionDrawingDraft } from '@/types/companionDrawing'
 
-export interface ChatStorageOptions {
+interface ChatStorageOptions {
   characterIds: string[]
   maxMessages: number
   version: number
   createMessageId: () => string
-  normalizeOutfit?: (characterId: string, value: unknown) => string
+  normalizeOutfit: (characterId: string, value: unknown) => string
 }
 
 export interface PersistedChatMessage {
@@ -46,20 +46,8 @@ export interface PersistedChatState {
   }
 }
 
-const NENE_OUTFIT_IDS = new Set(['school', 'casual', 'sleepwear', 'cosplay', 'witch'])
-const NATSUME_OUTFIT_IDS = new Set(['natsume-cafe'])
-
-function legacyNormalizedOutfit(character: string, candidate: unknown): string {
-  const outfit = text(candidate, 40)
-  if (character === 'natsume') {
-    return NATSUME_OUTFIT_IDS.has(outfit) ? outfit : 'natsume-cafe'
-  }
-  return NENE_OUTFIT_IDS.has(outfit) ? outfit : 'school'
-}
-
-export interface NormalizedChatStorage {
+interface NormalizedChatStorage {
   state: PersistedChatState
-  migratedApiKey: string
   /** 用户从未配置过 API（当前用的是开箱即用的兜底默认值）。
    *  此时站主托管配置应优先于兜底默认 —— 否则公网访客永远
    *  被默认值"伪装成已配置"，站主配置形同虚设。 */
@@ -140,9 +128,7 @@ export function normalizeChatStorage(
     // v3 stored one outfit string. It belonged to the active room, so only
     // use it as the migration fallback for that character.
     const candidate = rawOutfits[id] ?? (id === active ? outfitCandidate : '')
-    live2dOutfits[id] = options.normalizeOutfit
-      ? options.normalizeOutfit(id, candidate)
-      : legacyNormalizedOutfit(id, candidate)
+    live2dOutfits[id] = options.normalizeOutfit(id, candidate)
   }
 
   // API 配置：逐层取用户已保存的值；只有"从未配置过"（三个字段全空）时
@@ -213,7 +199,6 @@ export function normalizeChatStorage(
         drafts: normalizedDrafts,
       },
     },
-    migratedApiKey: '',
   }
 }
 export function serializeChatStorage(state: PersistedChatState): string {

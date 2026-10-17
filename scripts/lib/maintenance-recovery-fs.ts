@@ -189,5 +189,5 @@ function unseal(value: any, key: any) {
   return body;
 }
 
-export = { fs, path, crypto, failure, keyPath, samePath, within, canonical, digest, equal, stat, safePath, directoryIdentity,
+export = { fs, path, crypto, failure, keyPath, samePath, within, canonical, digest, equal, safePath, directoryIdentity,
   ensureDirectory, syncDirectory, readBytes, fileState, snapshotFiles, atomicWrite, removeFile, writeJson, readJson, context, targetPath, readKey, seal, unseal };

@@ -3,7 +3,7 @@ import { WD14_FILES, officialUrl, type ModelFile } from '../lib/model-download-m
 import { downloadPlan, runModelDownloads } from '../lib/model-download'
 import { errorMessage } from '../lib/runtime-errors'
 
-export function wd14Url(entry: ModelFile, source: 'official' | 'mirror' | 'modelscope'): string {
+function wd14Url(entry: ModelFile, source: 'official' | 'mirror' | 'modelscope'): string {
   if (source === 'mirror') return officialUrl(entry).replace('https://huggingface.co/', 'https://hf-mirror.com/')
   if (source === 'modelscope') return `https://www.modelscope.cn/models/fireicewolf/wd-v1-4-moat-tagger-v2/resolve/master/${entry.remotePath}`
   return officialUrl(entry)

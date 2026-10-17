@@ -39,7 +39,7 @@ export function canVarySceneOutfit(scene: RandomSceneContext): boolean {
   return !unsafe && garmentWords(rest).length === 0
 }
 
-export function sceneTimeBand(scene: RandomSceneContext): 'night' | 'day' | 'evening' | null {
+function sceneTimeBand(scene: RandomSceneContext): 'night' | 'day' | 'evening' | null {
   const text = `${scene.time} ${scene.tags.join(' ')} ${scene.prompt}`.replace(/_/g, ' ')
   if (/\b(?:night|midnight|moonlight)\b|夜|月光/.test(text)) return 'night'
   if (/\b(?:sunset|dusk|evening|golden hour)\b|黄昏|夕阳|傍晚|落日/.test(text)) return 'evening'

@@ -43,23 +43,6 @@ pub struct Texture {
     pub view: wgpu::TextureView,
 }
 
-#[derive(Default, Debug, Clone, Copy)]
-pub struct RenderResourceStats {
-    pub frame_creations: usize,
-    pub total_creations: u64,
-    pub textures_created: u64,
-    pub texture_upload_buffers_created: u64,
-    pub upload_buffers_created: u64,
-    pub uniform_buffers_created: u64,
-    pub uniform_bind_groups_created: u64,
-    pub vertex_buffers_created: u64,
-    pub uv_buffers_created: u64,
-    pub index_buffers_created: u64,
-    pub mask_textures_created: u64,
-    pub mask_bind_groups_created: u64,
-    pub color_bind_groups_created: u64,
-}
-
 struct UniformCache {
     buffer: wgpu::Buffer,
     bind_group: wgpu::BindGroup,
@@ -163,7 +146,6 @@ pub struct Renderer {
     upload_capacity: usize,
     upload_staging: Vec<u8>,
     texture_upload: TextureUploadState,
-    resource_stats: RenderResourceStats,
     stats: RenderStats,
     /// 2x supersample offscreen target: (width, height, texture, view).
     /// Recreated when the render size changes; cleared per frame by the main
@@ -261,10 +243,6 @@ impl Renderer {
         &self.stats
     }
 
-    pub fn resource_stats(&self) -> &RenderResourceStats {
-        &self.resource_stats
-    }
-
     /// Release every GPU/CPU allocation whose lifetime belongs to the loaded
     /// model while retaining device-wide pipelines and layouts.
     pub fn release_model_resources(&mut self) {
@@ -279,20 +257,6 @@ impl Renderer {
         self.release_texture_uploads();
         self.ss_bg = None;
         self.ss_texture = None;
-        self.resource_stats.frame_creations = 0;
-    }
-
-    pub fn model_resources_released(&self) -> bool {
-        self.model_cache.is_none()
-            && self.uniform_cache.is_none()
-            && self.upload_buffer.is_none()
-            && self.upload_capacity == 0
-            && self.texture_upload.buffer.is_none()
-            && self.texture_upload.capacity == 0
-            && self.ss_bg.is_none()
-            && self.ss_texture.is_none()
-            && self.upload_staging.capacity() == 0
-            && self.drawables_scratch.capacity() == 0
     }
 }
 

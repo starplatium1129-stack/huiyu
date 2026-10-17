@@ -263,7 +263,7 @@ export const NATSUME_RUNTIME_CONFIG: EmotionRuntimeConfig = {
   },
 }
 
-export const EMOTION_RUNTIME_CONFIGS: Readonly<Record<string, EmotionRuntimeConfig>> = {
+const EMOTION_RUNTIME_CONFIGS: Readonly<Record<string, EmotionRuntimeConfig>> = {
   nene: NENE_RUNTIME_CONFIG,
   natsume: NATSUME_RUNTIME_CONFIG,
 }

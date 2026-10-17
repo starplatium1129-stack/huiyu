@@ -115,5 +115,5 @@ export function useCompanionChatImageInput(options: Options) {
     if (clipboardSubscription !== undefined) options.bridge?.offClipboardImage(clipboardSubscription)
   })
   return { selectedImage, imageInputRef, preparingImage, canSendImage, canGenerateImage,
-    pickImage, onImageInputChange, onImagePaste, onImageDrop, removeSelectedImage, cancelImageInput, sendPendingImage }
+    pickImage, onImageInputChange, onImagePaste, onImageDrop, cancelImageInput, sendPendingImage }
 }

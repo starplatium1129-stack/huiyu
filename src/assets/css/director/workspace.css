@@ -1,7 +1,5 @@
 @reference "../tailwind.css";
 /* Workspace surfaces and typography. Viewport and columns belong to layout.css. */
-body:has(.pb.journal-workspace) .route-atmosphere-field,
-body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
 .pb.journal-workspace .pb-topline { align-items:center; gap:16px; margin-bottom:20px; padding:0; border:0; }
 .pb.journal-workspace .pb-header { @apply tw:min-w-0; flex: 1; }
 .pb.journal-workspace .pb-heading-row { @apply tw:flex tw:items-center tw:flex-wrap; gap: var(--s-2) var(--s-4); }
@@ -31,8 +29,6 @@ body:has(.pb.journal-workspace) .sakura-fall { @apply tw:hidden; }
 .pb.journal-workspace .material-content #stepChar > .panel-title { @apply tw:hidden; }
 .pb.journal-workspace .stage-placeholder { min-height: clamp(280px, calc(var(--drawing-viewport-height) - 390px), 580px); max-height: none; @apply tw:border-soft tw:rounded-xl; background: radial-gradient(ellipse at 85% 100%, var(--character-soft), transparent 60%), var(--bg-deep); box-shadow: none; transition: none; }
 .pb.journal-workspace .stage-placeholder::before { background: none; }
-.pb.journal-workspace .stage-chrome { background: transparent; box-shadow: none; border: 0; backdrop-filter: none; font: 500 var(--fs-label)/var(--lh-label) var(--font-sans); letter-spacing: normal; }
-.pb.journal-workspace .stage-muse { animation: none; filter: none; }
 .pb.journal-workspace .stage-idle { @apply tw:relative; z-index: var(--z-raised); padding: var(--s-6) var(--s-4); }
 .pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide { padding-block:var(--s-3); }
 .pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide :is(.atelier-canvas-illustration, .stage-placeholder-title, .stage-placeholder-copy) { @apply tw:hidden; }

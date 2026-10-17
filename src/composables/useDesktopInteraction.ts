@@ -96,7 +96,7 @@ export function useDesktopPreferences() {
   }
 }
 
-export function usableFocus(element: HTMLElement | null): element is HTMLElement {
+function usableFocus(element: HTMLElement | null): element is HTMLElement {
   return !!element?.isConnected && !element.closest('[inert], [hidden], [aria-hidden="true"], [data-hidden="true"]')
     && !element.matches(':disabled') && element.getClientRects().length > 0
     && getComputedStyle(element).visibility !== 'hidden'

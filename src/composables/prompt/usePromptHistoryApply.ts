@@ -40,8 +40,8 @@ export interface PromptHistoryApplyDeps {
  *
  * 恢复 / 复制历史条目回导演台：按 entry.subject 分流——热门角色走
  * setPopularSubject + 蓝图决策回放 + Anima 面板收敛；工作室角色走
- * setChar / loadScene / 决策与词条回放，旧历史（无 engine 字段）按
- * 既有 SD 契约恢复。删除历史与「复用成功成片配方」同归此处。
+ * setChar / loadScene / 决策与词条回放。退役引擎或未确认引擎的工作室
+ * 旧作保留查看与选择性沿用。删除历史与「复用成功成片配方」同归此处。
  */
 export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
   const { pb, animaState, patchAnimaState, clearAnimaResult, refreshAnimaBackend, setDrawEngine, resetBlueprintRotation } = deps
@@ -85,21 +85,21 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
     const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
     if (popularEntry) {
       const character = findPopularCharacter(pb.popularCharacters, entry.characterId || '')
-      if (!character || !findPopularOutfit(character, entry.outfitId || '') || entry.engine === 'sd') {
-        const note = entry.engine === 'sd' ? '原作记录的 SD 引擎不支持当前热门角色，配方未载入；当前草稿已保留' : '原角色或服装已不在当前角色库，配方未载入；当前草稿已保留'
+      if (!character || !findPopularOutfit(character, entry.outfitId || '')) {
+        const note = '原角色或服装已不在当前角色库，配方未载入；当前草稿已保留'
         pb.historyRestoreReport = { title: '配方未载入', notes: [note], original: snapshotHistoricalRecipe(record) }
         pb.flash(note, 9000, 'warning')
         return false
       }
     } else if (entry.character && !['nene', 'natsume', 'triad', 'none'].includes(entry.character)
-      || (entry.character || pb.char) === 'triad' && entry.engine && entry.engine !== 'sd') {
+      || (entry.character || pb.char) === 'triad' && entry.engine) {
       const note = '原角色不可用，配方未载入；当前草稿已保留'
       pb.historyRestoreReport = { title: '配方未载入', notes: [note], original: snapshotHistoricalRecipe(record) }
       pb.flash(note, 9000, 'warning')
       return false
     }
     pb.randomVariation = null
-    if (!entry.engine) restoreNotes.push(popularEntry ? '旧作品未记录引擎，按当前角色支持的 Anima 配方读取；不是原引擎确认' : '旧作品未记录引擎，按 SD 配方读取')
+    if (!entry.engine) restoreNotes.push('旧作品未记录引擎，按当前角色支持的 Anima 配方读取；不是原引擎确认')
     if (!entry.model && !entry.checkpoint) restoreNotes.push('沿用当前底模')
     restoreNotes.push('提示词已重建，请核对')
     // 合法零值保留：Number(x)||fallback 会把 0 误判为缺失，必须显式判有限数。

@@ -3,7 +3,7 @@ import { H3_FILES, officialUrl, type ModelFile } from '../lib/model-download-man
 import { downloadPlan, runModelDownloads } from '../lib/model-download'
 import { errorMessage } from '../lib/runtime-errors'
 
-export function h3Url(entry: ModelFile, source: 'official' | 'mirror' | 'modelscope'): string {
+function h3Url(entry: ModelFile, source: 'official' | 'mirror' | 'modelscope'): string {
   if (source === 'mirror') return officialUrl(entry).replace('https://huggingface.co/', 'https://hf-mirror.com/')
   if (source === 'modelscope') return `https://www.modelscope.cn/models/${entry.repo}/resolve/master/${entry.remotePath}`
   return officialUrl(entry)

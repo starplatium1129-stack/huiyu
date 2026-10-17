@@ -10,14 +10,6 @@
     margin: var(--s-2) 0;
     @apply tw:leading-body;
   }
-  .pb .tag-interrogate-error {
-    @apply tw:mt-s-2;
-    padding: 6px 10px;
-    border: 1px solid color-mix(in srgb, var(--danger) 30%, transparent);
-    @apply tw:rounded-md;
-    background: color-mix(in srgb, var(--danger) 8%, transparent);
-    @apply tw:text-danger-text tw:text-label-xs tw:leading-body;
-  }
 
   /* 可见性由 hidden 属性驱动(原先靠 style.display 内联切换);
      [hidden] 与类选择器同权重,故显式写一条保证隐藏生效 */
@@ -33,59 +25,17 @@
      的核心，只读、零风险，不该被默认模式整块藏掉（2026-08-30 UX 审计：
      默认路径下用户看不到编译后的提示词、加不了任何自定义词条）。 */
   .pb[data-director-mode="basic"] .advanced-decision:not(.basic-visible) { @apply tw:hidden; }
-  .pb[data-director-mode="basic"] .scene-tag.raw { @apply tw:hidden; }
 
   /* Negative prompt collapsible */
-  .pb .collapsible { border: 1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3 tw:mt-s-4; }
-  .pb .collapsible-btn { background: none; border: none; @apply tw:text-secondary tw:text-label tw:cursor-pointer tw:flex tw:items-center tw:gap-s-2 tw:font-sans tw:w-full tw:text-left tw:p-0; }
-  .pb .collapsible-btn .arrow { transition: transform var(--motion-hover); @apply tw:text-mono-sm; }
-  .pb .collapsible-btn.open .arrow { transform: rotate(90deg); }
-  .pb .collapsible-body { @apply tw:hidden tw:mt-s-3; }
-  .pb .collapsible-body.open { @apply tw:block; }
-  .pb .info-grid { @apply tw:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); @apply tw:gap-s-3; }
-  .pb .info-item { background: var(--bg-deep); @apply tw:rounded-md; padding: var(--s-2) var(--s-3); }
-  .pb .info-item .label { @apply tw:text-label-xs! tw:text-muted tw:uppercase; letter-spacing: 0.06em; @apply tw:font-semibold; }
-  .pb .info-item .val { @apply tw:text-label tw:font-semibold tw:text-accent tw:mt-[2px]; }
   .pb .callout { padding: var(--s-3) var(--s-4); @apply tw:rounded-md tw:mt-s-3; }
-  .pb .callout-warn { background: color-mix(in srgb,var(--warning) 10%,transparent); border: 1px solid color-mix(in srgb,var(--warning) 30%,transparent); @apply tw:text-warning-text; }
   .pb .neg-output { background: var(--bg-deep); @apply tw:rounded-sm tw:p-s-2 tw:font-mono tw:text-label-sm tw:leading-loose; word-break: break-all; @apply tw:whitespace-pre-wrap tw:max-h-[100px] tw:overflow-y-auto; }
 
   .pb .review-head { @apply tw:flex tw:items-center tw:justify-between tw:mb-s-4; }
   .pb .review-head h3 { @apply tw:m-0 tw:text-title-sm; }
-  .pb .review-x { background: none; border: none; @apply tw:text-muted tw:text-title tw:cursor-pointer; }
-  .pb .review-x:hover { @apply tw:text-accent; }
-  .pb .review-axis { @apply tw:mb-s-4; }
-  .pb .review-axis-label { @apply tw:text-body-sm tw:font-semibold tw:mb-s-1 tw:text-primary; }
-  .pb .review-stars { @apply tw:flex tw:gap-[4px]; }
-  .pb .review-star { padding:0 2px; border:0; background:transparent; font:inherit; @apply tw:text-title tw:cursor-pointer tw:text-strong; transition: color var(--motion-hover), transform var(--motion-hover); @apply tw:select-none; }
-  .pb .review-star.on { color: var(--mood-joy-text); }
-  .pb .review-star:hover { transform: scale(1.15); }
-  .pb .review-fav { @apply tw:flex tw:items-center tw:gap-s-3 tw:mb-s-4; }
-  .pb .review-fav-label { @apply tw:text-body-sm tw:font-semibold; }
-  .pb .review-fav-toggle { @apply tw:inline-flex tw:items-center tw:gap-s-2; padding: var(--s-2) var(--s-4); @apply tw:rounded-pill; border: 1px solid var(--border-soft); background:var(--bg-deep); @apply tw:text-secondary tw:cursor-pointer; font:inherit; @apply tw:text-body-sm; transition: border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover) var(--ease-out); }
-  .pb .review-fav-toggle.on { background: var(--accent-soft); @apply tw:border-accent tw:text-accent; }
-  .pb .review-notes { @apply tw:w-full tw:min-h-[60px] tw:resize-y; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:text-primary tw:font-sans tw:text-body-sm; outline: none; @apply tw:mb-s-4; }
-  .pb .review-notes:focus { @apply tw:border-strong; }
-  .pb .review-image-source { border: 1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3 tw:mb-s-3; background: var(--bg-deep); }
-  .pb .review-image-source.primary { border-color: color-mix(in srgb, var(--accent) 55%, var(--border-soft)); }
   /* Quick preset select */
   .pb #presetSelect { @apply tw:w-full; background:var(--bg-deep); border:1px solid var(--accent); @apply tw:rounded-sm tw:text-primary; padding:var(--s-2) 8px; @apply tw:text-body-sm; outline:none; }
   .pb #presetSelect:focus { box-shadow: var(--focus-shadow); }
-  .pb .review-file-row { @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
-  .pb .review-file-input { @apply tw:absolute tw:w-[1px] tw:h-[1px] tw:overflow-hidden; clip: rect(0,0,0,0); @apply tw:whitespace-nowrap; }
-  .pb .review-file-name { @apply tw:min-w-0; flex: 1; @apply tw:text-secondary tw:text-label-sm tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-  .pb .review-file-remove { @apply tw:hidden; }
-  .pb .review-file-remove.show { @apply tw:inline-flex; }
-  .pb .review-image-hint { @apply tw:text-muted tw:text-label-xs tw:mt-s-2; }
-  .pb .review-image-url { @apply tw:w-full; background: var(--bg-deep); border: 1px solid var(--border-soft); @apply tw:rounded-md; padding: var(--s-2) var(--s-3); @apply tw:text-primary; font: var(--fs-label) var(--font-mono); outline: none; }
-  .pb .review-image-url:focus { @apply tw:border-strong; }
-  .pb .review-image-feedback { @apply tw:min-h-[1.2em] tw:text-danger-text tw:text-label-sm; margin: var(--s-1) 0; }
-  .pb .review-image-preview { @apply tw:hidden tw:w-full; aspect-ratio: 16 / 9; @apply tw:object-contain; background: var(--bg-deep); @apply tw:rounded-md; border: 1px solid var(--border-soft); @apply tw:mb-s-4; }
-  .pb .review-image-preview.show { @apply tw:block; }
-  .pb .review-submit { @apply tw:w-full; }
   /* 审计修复: 提交中态同样要读得清 */
-  .pb .review-submit:disabled { @apply tw:text-disabled tw:border-soft; cursor: wait; }
-  .pb[data-character="natsume"] .stage-placeholder-icon { color:var(--natsume-amber); background:color-mix(in srgb,var(--natsume-amber) 14%,transparent); box-shadow:var(--shadow-lg); }
 
   @media (min-width: 1380px) and (max-height:780px) {
     .pb .stage-placeholder { @apply tw:min-h-[430px]; }
@@ -94,16 +44,11 @@
     .pb .stage-placeholder { min-height:clamp(340px, 44vh, 520px); }
     .pb.has-result #stepResult { min-height:clamp(300px, 40vh, 420px); }
     .pb .stage-message { width:min(78%,360px); transform:none; }
-    .pb .stage-muse { @apply tw:w-[72%]; opacity:0 !important; }
-    .pb[data-character="nene"] .stage-muse.nene, .pb[data-character="natsume"] .stage-muse.natsume { opacity:.13 !important; }
-    .pb[data-character="triad"] .stage-muse { opacity:.1 !important; }
   }
   @media (max-width: 768px) {
     .pb #stepResult > * { grid-column:1 !important; grid-row:auto !important; }
     .pb .char-btn, .pb .tag-chip, .pb .cat-tab { @apply tw:min-h-[44px]; }
-    .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger { @apply tw:min-h-[44px]; }
     /* iOS 聚焦自动放大要求控件字号不低于平台阈值,与正文阶梯分开归属 */
-    .pb .controls-grid .studio-select-trigger, .pb .sd-inline-options .studio-select-trigger, .pb .seed-input-wrap input, .pb .review-notes, .pb .review-image-url { @apply tw:text-ios-control!; }
   }
   /* 表面(玻璃底/边/内衬)统一由下方 liquid glass 组声明,此处只留自身几何与排版 */
   .pb .api-status { @apply tw:flex tw:items-center tw:gap-s-2 tw:justify-end tw:mb-0 tw:ml-s-1 tw:pl-s-3; border-left:1px solid var(--border-soft); @apply tw:text-label tw:text-muted; }
@@ -115,34 +60,15 @@
   .pb .api-status .badge.badge-online { opacity:1; }
   .pb .api-status .badge.badge-online:hover { opacity:1; }
   .pb .api-recovery-link { @apply tw:text-accent tw:text-label-xs tw:whitespace-nowrap; }
-  .pb .sd-budget-hint { @apply tw:w-full tw:mt-[-5px] tw:text-muted tw:text-mono-sm; }
-  .pb .scene-mature-row input { accent-color:var(--accent); }
-  .pb .settings-caret { @apply tw:mr-s-1 tw:text-mono-sm; }
-  .pb .settings-hint { @apply tw:text-muted tw:text-mono-sm tw:font-normal; }
   .pb #sdSeedDisplay { @apply tw:font-mono; opacity:.6; }
   /* 2026-08-28：.sd-result-area/.sd-status/.sd-progress 系列已随「输出面板重复进度条」
      移除而清退，生成进度统一由画布舞台 is-generating 态承担。 */
-  .pb .sd-save-actions { @apply tw:flex tw:justify-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3; }
-  .pb .sd-save-actions[hidden] { @apply tw:hidden; }
-  .pb .neg-output-spaced { @apply tw:mt-s-3; }
-  .pb .panel-title-spaced { @apply tw:mt-s-3; }
-  .pb .scene-size-hint { @apply tw:inline-flex tw:items-center tw:min-h-[24px]; padding:3px var(--s-3); border:1px solid color-mix(in srgb,var(--accent) 38%,var(--border-soft)); @apply tw:rounded-pill; background:var(--accent-soft); @apply tw:text-accent tw:text-mono-sm tw:font-bold; }
-  .pb .sd-budget-hint.warn { @apply tw:text-warning-text; }
-  .pb .sd-budget-hint.danger { @apply tw:text-danger-text; font-weight:650; }
   @media (max-width: 768px) {
     .pb-topline { @apply tw:items-stretch tw:flex-col tw:gap-s-2 tw:mb-s-2; }
     .pb-top-actions { @apply tw:justify-between tw:w-full; }
     .pb .api-status { border-left:0; @apply tw:pl-0 tw:ml-0; }
     .pb .focus-mode-label { @apply tw:hidden; }
     .pb .focus-mode-btn { @apply tw:w-[36px] tw:p-0; }
-    .pb .shortcut-only { @apply tw:hidden; }
-    .pb .sd-inline-options { @apply tw:items-stretch; }
-    .pb .sd-inline-options label:has(.studio-select-wrapper) { @apply tw:w-full tw:justify-between; }
-    .pb .sd-inline-options .studio-select-wrapper { flex:1; @apply tw:min-w-0; }
-    .pb .sd-advanced-options { @apply tw:w-full; }
-    .pb .sd-advanced-options > summary { @apply tw:justify-center tw:w-full; }
-    .pb .sd-advanced-grid { @apply tw:static; grid-template-columns:1fr; @apply tw:w-full tw:min-w-0 tw:mt-s-2; box-shadow:none; }
-    .pb .sd-advanced-grid #sdSeedDisplay { grid-column:auto; }
     .pb.has-result #stepResult { order:1; }
     .pb.has-result #stepResult .sd-queue { order:2; }
     .pb-backup-actions .btn { flex:1 1 100%; @apply tw:min-h-[44px]; }
@@ -166,7 +92,7 @@
   .pb .badge-online { --badge-color:var(--success-text); }
   .pb .badge-offline { --badge-color:var(--warning-text); }
   /* Liquid glass is reserved for floating controls and navigation surfaces. */
-  .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome {
+  .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge {
     background:
       linear-gradient(135deg,var(--glass-specular),transparent 34%,transparent 68%,color-mix(in srgb,var(--accent) 10%,transparent)),
       var(--glass-fill);
@@ -177,41 +103,27 @@
   }
   /* Keep canvas actions readable while the surface enters; blur and scale soften text. */
   @keyframes directorViewIn { from { transform:translateY(4px); } to { transform:none; } }
-  @keyframes characterGlassSweep { 0% { opacity:0; transform:translateX(-22%) rotate(-4deg); } 42% { opacity:.26; } 100% { opacity:0; transform:translateX(22%) rotate(-4deg); } }
   @media (max-width:768px) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome { -webkit-backdrop-filter:blur(16px) saturate(145%); backdrop-filter:blur(16px) saturate(145%); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge { -webkit-backdrop-filter:blur(16px) saturate(145%); backdrop-filter:blur(16px) saturate(145%); }
     .pb-backup-card { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
-    .pb .stage-chrome { @apply tw:left-[12px] tw:right-[12px] tw:top-[12px]; }
   }
   @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card { background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb-backup-card { background:var(--bg-surface); }
   }
 @media (prefers-reduced-transparency: reduce) {
-    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb .stage-chrome, .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
+    .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
 }
 
 /* Hover 位移只属于精确指针；触屏保留颜色/边框反馈，不粘住卡片位置。 */
 @media (hover: hover) and (pointer: fine) {
   .pb .cat-tab:hover { transform: translateY(-1px); }
-  .pb .review-star:hover { transform: scale(1.15); }
 }
 @media (hover: none), (pointer: coarse) {
   .pb .focus-mode-btn:hover,
   .pb .utility-trigger:hover,
-  .pb .cat-tab:hover,
-  .pb .review-star:hover { transform: none !important; }
+  .pb .cat-tab:hover { transform: none !important; }
 }
-
-  @keyframes stageBreath {
-    0%, 100% { opacity:.55; transform:scale(1); }
-    50%      { opacity:1;   transform:scale(1.04); }
-  }
-  @keyframes stageSweep {
-    0%   { opacity:0;   transform:translateX(-34%) rotate(-4deg); }
-    45%  { opacity:.22; }
-    100% { opacity:0;   transform:translateX(34%) rotate(-4deg); }
-  }
    @media (prefers-reduced-motion: reduce) {
-     :root:not([data-motion='full']) .pb .director-workspace > .col-left, :root:not([data-motion='full']) .pb .director-workspace > .col-center, :root:not([data-motion='full']) .pb .director-workspace > .col-right { animation:none !important; }
+     :root:not([data-motion='full']) .pb .director-workspace > .col-left, :root:not([data-motion='full']) .pb .director-workspace > .col-center { animation:none !important; }
      :root:not([data-motion='full']) .pb .stage-placeholder.is-generating::before, :root:not([data-motion='full']) .pb .stage-placeholder.is-generating::after { animation:none !important; }
    }

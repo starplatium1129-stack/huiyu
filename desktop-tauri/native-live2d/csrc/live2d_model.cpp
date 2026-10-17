@@ -23,10 +23,6 @@
 #include "Motion/CubismExpressionMotionManager.hpp"
 #include "Motion/CubismMotion.hpp"
 #include "Motion/CubismExpressionMotion.hpp"
-#include "Motion/CubismUpdateScheduler.hpp"
-#include "Motion/CubismExpressionUpdater.hpp"
-#include "Motion/CubismPhysicsUpdater.hpp"
-#include "Motion/CubismPoseUpdater.hpp"
 #include "Physics/CubismPhysics.hpp"
 #include "Effect/CubismPose.hpp"
 #include "Effect/CubismEyeBlink.hpp"
@@ -62,7 +58,6 @@ public:
 
 static AicsAllocator s_allocator;
 static std::once_flag s_frameworkInitFlag;
-static bool s_frameworkInitialized = false;
 
 static void sdkLog(const csmChar* message)
 {
@@ -84,40 +79,9 @@ static int initializeFramework()
             return;
         }
         CubismFramework::Initialize();
-        s_frameworkInitialized = true;
     });
     return result;
 }
-
-/*
- * Overlay/outfit parameter hidden-state table (2026-08-16). Natsume author
- * motions (Tap group / Start group / Idle_6) drive these params to show
- * temporary overlay parts; hidden state differs per param (verified via
- * idle snapshots): most default -1 (hidden), Param18/44-51/56/57/62 default
- * 0. Writing 0 to the -1 group lands in the "visible" range and leaves the
- * overlay half-transparent (ghosting). Values must match the frontend
- * NATSUME_RESET_PARAMS exactly.
- */
-struct OverlayParamEntry { const char* id; float hidden; };
-static const OverlayParamEntry kOverlayParams[] = {
-    { "Param18", 0.0f },
-    { "Param36", 0.0f },
-    { "Param44", 0.0f }, { "Param45", 0.0f }, { "Param46", 0.0f },
-    { "Param47", 0.0f }, { "Param48", 0.0f }, { "Param49", 0.0f },
-    { "Param50", 0.0f }, { "Param51", 0.0f }, { "Param56", 0.0f },
-    { "Param57", 0.0f }, { "Param62", 0.0f },
-    { "Param37", -1.0f }, { "Param38", -1.0f }, { "Param39", -1.0f },
-    { "Param40", -1.0f }, { "Param41", -1.0f }, { "Param42", -1.0f },
-    { "Param43", -1.0f }, { "Param52", -1.0f }, { "Param53", -1.0f },
-    { "Param54", -1.0f }, { "Param55", -1.0f }, { "Param58", -1.0f },
-    { "Param59", -1.0f }, { "Param60", -1.0f }, { "Param61", -1.0f },
-    { "Param63", -1.0f }, { "Param64", -1.0f },
-    { "ParamMouthForm5", 0.0f }, { "ParamMouthForm6", 0.0f },
-    { "ParamMouthForm7", 0.0f }, { "ParamMouthForm8", 0.0f },
-    { "ParamMouthForm9", 0.0f }, { "ParamMouthForm10", 0.0f }
-};
-static const int kOverlayParamCount =
-    static_cast<int>(sizeof(kOverlayParams) / sizeof(kOverlayParams[0]));
 
 struct l2d_model
 {
@@ -131,26 +95,10 @@ struct l2d_model
     CubismPose* pose = nullptr;
     CubismPhysics* physics = nullptr;
 
-    csmBool motionUpdated = false;
-    csmBool eyeBlinkEnabled = true;
-
     /* group -> vector of motions (index == vector position) */
     csmMap<csmString, csmVector<ACubismMotion*>*> motionGroups;
     /* name -> expression */
     csmMap<csmString, ACubismMotion*> expressions;
-
-    /* Smooth settle ramp toward the overlay hidden state (2026-08-23): the
-       instant hard write made costume parts pop back within one frame after
-       an interaction motion ("flicker" on outfit revert). l2d_model_begin_
-       overlay_settle captures each overlay param's current value; the step
-       call eases them in over the settle duration. */
-    int overlaySettleActive = 0;
-    float overlaySettleTotal = 0.0f;
-    float overlaySettleElapsed = 0.0f;
-    int overlaySettleCount = 0;
-    int overlaySettleIndices[kOverlayParamCount] = {};
-    float overlaySettleStart[kOverlayParamCount] = {};
-    float overlaySettleTarget[kOverlayParamCount] = {};
 
     ~l2d_model()
     {
@@ -191,15 +139,6 @@ extern "C" {
 int l2d_initialize(void)
 {
     return initializeFramework();
-}
-
-void l2d_terminate(void)
-{
-    if (s_frameworkInitialized)
-    {
-        CubismFramework::Dispose();
-        s_frameworkInitialized = false;
-    }
 }
 
 l2d_model* l2d_model_create(const uint8_t* mocData, size_t mocSize,
@@ -367,23 +306,11 @@ int64_t l2d_model_start_expression(l2d_model* m, const char* name, int priority)
     return handle ? static_cast<int64_t>(reinterpret_cast<intptr_t>(handle)) : 0;
 }
 
-void l2d_model_stop_all_motions(l2d_model* m)
-{
-    if (!m) { return; }
-    m->motionManager->StopAllMotions();
-}
-
 int l2d_model_is_finished(l2d_model* m, int64_t handle)
 {
     if (!m || handle <= 0) { return 1; }
     return m->motionManager->IsFinished(
         reinterpret_cast<CubismMotionQueueEntryHandle>(static_cast<intptr_t>(handle))) ? 1 : 0;
-}
-
-int l2d_model_has_playing_motion(l2d_model* m)
-{
-    if (!m || !m->motionManager) { return 0; }
-    return m->motionManager->IsFinished() ? 0 : 1;
 }
 
 void l2d_model_set_parameter(l2d_model* m, const char* id, float value, float weight)
@@ -400,87 +327,6 @@ float l2d_model_get_parameter(l2d_model* m, const char* id)
     return m->model->GetParameterValue(m->model->GetParameterIndex(paramId));
 }
 
-/*
- * Reset natsume overlay/outfit parameters to author defaults after an
- * interaction motion finishes (2026-08-15 fix). Tap* motions drive these
- * parameters (author overlay parts temporarily shown), Idle motions never
- * cover them, so without reset the overlay stays visible (official
- * "Notes on Pose Switching" clothing-double-display scenario). Whitelist
- * derived from the Tap and Idle motion3.json curve difference set.
- * Hidden-state grouping lives in kOverlayParams above.
- */
-static void apply_overlay_hidden(l2d_model* m)
-{
-    if (!m || !m->model) { return; }
-    for (int i = 0; i < kOverlayParamCount; ++i)
-    {
-        CubismIdHandle paramId = CubismFramework::GetIdManager()->GetId(kOverlayParams[i].id);
-        csmInt32 index = m->model->GetParameterIndex(paramId);
-        if (index >= 0)
-        {
-            m->model->SetParameterValue(index, kOverlayParams[i].hidden);
-        }
-    }
-}
-
-void l2d_model_reset_overlay_params(l2d_model* m)
-{
-    apply_overlay_hidden(m);
-}
-
-void l2d_model_force_overlay_hidden(l2d_model* m)
-{
-    apply_overlay_hidden(m);
-}
-
-void l2d_model_begin_overlay_settle(l2d_model* m, float duration_seconds)
-{
-    if (!m || !m->model) { return; }
-    if (duration_seconds <= 0.0f)
-    {
-        apply_overlay_hidden(m);
-        return;
-    }
-    int count = 0;
-    for (int i = 0; i < kOverlayParamCount; ++i)
-    {
-        CubismIdHandle paramId = CubismFramework::GetIdManager()->GetId(kOverlayParams[i].id);
-        csmInt32 index = m->model->GetParameterIndex(paramId);
-        if (index < 0) { continue; }
-        m->overlaySettleIndices[count] = index;
-        m->overlaySettleStart[count] = m->model->GetParameterValue(index);
-        m->overlaySettleTarget[count] = kOverlayParams[i].hidden;
-        ++count;
-    }
-    m->overlaySettleCount = count;
-    m->overlaySettleTotal = duration_seconds;
-    m->overlaySettleElapsed = 0.0f;
-    m->overlaySettleActive = count > 0 ? 1 : 0;
-}
-
-int l2d_model_step_overlay_settle(l2d_model* m, float delta_time_seconds)
-{
-    if (!m || !m->model || !m->overlaySettleActive) { return 0; }
-    m->overlaySettleElapsed += delta_time_seconds;
-    float t = m->overlaySettleTotal > 0.0f
-        ? m->overlaySettleElapsed / m->overlaySettleTotal
-        : 1.0f;
-    if (t >= 1.0f)
-    {
-        t = 1.0f;
-        m->overlaySettleActive = 0;
-    }
-    /* smoothstep: ease-in-out so the revert reads as a crossfade, not a pop */
-    const float eased = t * t * (3.0f - 2.0f * t);
-    for (int i = 0; i < m->overlaySettleCount; ++i)
-    {
-        const float value = m->overlaySettleStart[i]
-            + (m->overlaySettleTarget[i] - m->overlaySettleStart[i]) * eased;
-        m->model->SetParameterValue(m->overlaySettleIndices[i], value);
-    }
-    return m->overlaySettleActive;
-}
-
 /* TEMP DIAG (2026-08-16): reset every parameter to its moc3 default value. */
 void l2d_model_reset_all_parameters(l2d_model* m)
 {
@@ -492,44 +338,13 @@ void l2d_model_reset_all_parameters(l2d_model* m)
     }
 }
 
-void l2d_model_set_part_opacity(l2d_model* m, const char* id, float opacity)
-{
-    if (!m || !id || !m->model) { return; }
-    CubismIdHandle partId = CubismFramework::GetIdManager()->GetId(id);
-    m->model->SetPartOpacity(m->model->GetPartIndex(partId), opacity);
-}
-
-float l2d_model_get_part_opacity(l2d_model* m, const char* id)
-{
-    if (!m || !id || !m->model) { return 0.0f; }
-    CubismIdHandle partId = CubismFramework::GetIdManager()->GetId(id);
-    return m->model->GetPartOpacity(m->model->GetPartIndex(partId));
-}
-
-void l2d_model_set_eye_blink_enabled(l2d_model* m, int enabled)
-{
-    if (!m) { return; }
-    m->eyeBlinkEnabled = enabled ? 1 : 0;
-}
-
-int l2d_model_get_eye_blink_enabled(l2d_model* m)
-{
-    return m ? (m->eyeBlinkEnabled ? 1 : 0) : 0;
-}
-
-void l2d_model_set_opacity(l2d_model* m, float opacity)
-{
-    (void)m;
-    (void)opacity;
-}
-
 void l2d_model_update(l2d_model* m, float deltaTimeSeconds)
 {
     if (!m || !m->model) { return; }
 
-    m->motionUpdated = m->motionManager->UpdateMotion(m->model, deltaTimeSeconds);
+    m->motionManager->UpdateMotion(m->model, deltaTimeSeconds);
     m->expressionManager->UpdateMotion(m->model, deltaTimeSeconds);
-    if (m->eyeBlinkEnabled && m->eyeBlink)
+    if (m->eyeBlink)
     {
         m->eyeBlink->UpdateParameters(m->model, deltaTimeSeconds);
     }
@@ -546,11 +361,6 @@ float l2d_model_canvas_width(l2d_model* m)
 float l2d_model_canvas_height(l2d_model* m)
 {
     return m && m->model ? m->model->GetCanvasHeight() : 0.0f;
-}
-
-int l2d_model_parameter_count(l2d_model* m)
-{
-    return m && m->model ? m->model->GetParameterCount() : 0;
 }
 
 int l2d_model_parameter_index(l2d_model* m, const char* id)

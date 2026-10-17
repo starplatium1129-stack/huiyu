@@ -89,7 +89,7 @@ const FRANCHISE_CN: Record<string, string> = {
 }
 
 /** Every catalog franchise must explicitly register a display label. Unknown imports remain identifiable. */
-export function hasFranchiseLabel(source: string): boolean { return Object.hasOwn(FRANCHISE_CN, String(source || '').trim()) }
+function hasFranchiseLabel(source: string): boolean { return Object.hasOwn(FRANCHISE_CN, String(source || '').trim()) }
 
 const HAS_HAN = /[\u4e00-\u9fff]/
 const HAS_KANA = /[\u3040-\u30ff]/

@@ -181,7 +181,6 @@ impl Renderer {
                 buffer: None,
                 capacity: 0,
             },
-            resource_stats: RenderResourceStats::default(),
             stats: RenderStats::default(),
             ss_texture: None,
             ss_bg: None,

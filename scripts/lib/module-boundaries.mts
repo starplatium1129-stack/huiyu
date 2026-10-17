@@ -3,7 +3,7 @@ import { isBuiltin } from 'node:module'
 import type { Rule } from 'eslint'
 
 /** Normalize direct edges; pure domain modules also constrain type-only imports. */
-export function boundaryViolation(filename: string, specifier: string, typeOnly = false): string | null {
+function boundaryViolation(filename: string, specifier: string, typeOnly = false): string | null {
   const normalized = filename.replaceAll('\\', '/')
   const marker = normalized.lastIndexOf('/src/')
   if (marker < 0) return null

@@ -28,20 +28,13 @@ pub const L2D_COLOR_BLEND_LINEAR_LIGHT: c_int = 15;
 pub const L2D_COLOR_BLEND_HUE: c_int = 16;
 pub const L2D_COLOR_BLEND_COLOR: c_int = 17;
 
-pub const L2D_ALPHA_BLEND_OVER: c_int = 0;
-pub const L2D_ALPHA_BLEND_ATOP: c_int = 1;
-pub const L2D_ALPHA_BLEND_OUT: c_int = 2;
-pub const L2D_ALPHA_BLEND_CONJOINT_OVER: c_int = 3;
-pub const L2D_ALPHA_BLEND_DISJOINT_OVER: c_int = 4;
 
-pub const L2D_PRIORITY_NONE: c_int = 0;
 pub const L2D_PRIORITY_IDLE: c_int = 1;
 pub const L2D_PRIORITY_NORMAL: c_int = 2;
 pub const L2D_PRIORITY_FORCE: c_int = 3;
 
 extern "C" {
     pub fn l2d_initialize() -> c_int;
-    pub fn l2d_terminate();
     pub fn l2d_model_create(
         moc_data: *const c_uchar,
         moc_size: usize,
@@ -75,9 +68,7 @@ extern "C" {
         name: *const c_char,
         priority: c_int,
     ) -> i64;
-    pub fn l2d_model_stop_all_motions(m: *mut l2d_model);
     pub fn l2d_model_is_finished(m: *mut l2d_model, handle: i64) -> c_int;
-    pub fn l2d_model_has_playing_motion(m: *mut l2d_model) -> c_int;
     pub fn l2d_model_set_parameter(
         m: *mut l2d_model,
         id: *const c_char,
@@ -85,23 +76,10 @@ extern "C" {
         weight: c_float,
     );
     pub fn l2d_model_get_parameter(m: *mut l2d_model, id: *const c_char) -> c_float;
-    pub fn l2d_model_set_part_opacity(m: *mut l2d_model, id: *const c_char, opacity: c_float);
-    pub fn l2d_model_get_part_opacity(m: *mut l2d_model, id: *const c_char) -> c_float;
-    pub fn l2d_model_reset_overlay_params(m: *mut l2d_model);
-    pub fn l2d_model_force_overlay_hidden(m: *mut l2d_model);
-    pub fn l2d_model_begin_overlay_settle(m: *mut l2d_model, duration_seconds: c_float);
-    pub fn l2d_model_step_overlay_settle(
-        m: *mut l2d_model,
-        delta_time_seconds: c_float,
-    ) -> c_int;
     pub fn l2d_model_reset_all_parameters(m: *mut l2d_model);
-    pub fn l2d_model_set_eye_blink_enabled(m: *mut l2d_model, enabled: c_int);
-    pub fn l2d_model_get_eye_blink_enabled(m: *mut l2d_model) -> c_int;
-    pub fn l2d_model_set_opacity(m: *mut l2d_model, opacity: c_float);
     pub fn l2d_model_update(m: *mut l2d_model, delta_time_seconds: c_float);
     pub fn l2d_model_canvas_width(m: *mut l2d_model) -> c_float;
     pub fn l2d_model_canvas_height(m: *mut l2d_model) -> c_float;
-    pub fn l2d_model_parameter_count(m: *mut l2d_model) -> c_int;
     pub fn l2d_model_parameter_index(m: *mut l2d_model, id: *const c_char) -> c_int;
     pub fn l2d_model_drawable_count(m: *mut l2d_model) -> c_int;
     pub fn l2d_model_drawable_index(m: *mut l2d_model, id: *const c_char) -> c_int;

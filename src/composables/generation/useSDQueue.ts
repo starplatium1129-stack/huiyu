@@ -6,7 +6,7 @@ import { ref, computed, readonly, getCurrentScope, onScopeDispose } from 'vue'
  * 接收状态不明时保留原身份；用户可继续核对或明确移出。
  */
 
-export const SD_QUEUE_LIMIT = 8
+const SD_QUEUE_LIMIT = 8
 
 export interface SDQueueJob {
   attempt?: { key: string; submitted: boolean; cancelRequested?: boolean }
@@ -79,8 +79,6 @@ export function useSDQueue(options: {
   const done = ref(0)
 
   const total = computed(() => queue.value.length + (activeJob.value ? 1 : 0))
-  /** 本轮总量（已完成 + 等待 + 在途）：进度展示用，与容量上限无关。 */
-  const batchTotal = computed(() => done.value + total.value)
   function remove(id: string) {
     if (options.beforeRemove) return removeDurably(queue.value.filter(j => j.id === id))
     queue.value = queue.value.filter(j => j.id !== id)
@@ -188,7 +186,7 @@ export function useSDQueue(options: {
     activeJob: readonly(activeJob),
     paused: readonly(paused),
     done: readonly(done),
-    total, batchTotal,
+    total,
     remove, clear, pause, resume, process, restore, checkpoint,
   }
 }

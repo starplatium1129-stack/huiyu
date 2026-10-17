@@ -46,14 +46,14 @@ export const H3_FILES: readonly ModelFile[] = [
 
 const ANIMA_REPO = 'circlestone-labs/Anima'
 const ANIMA_REVISION = 'f973fc41ec7545364ac9776c2440285f43ff2a30'
-export const ANIMA_FILES: readonly ModelFile[] = [
+const ANIMA_FILES: readonly ModelFile[] = [
   file(ANIMA_REPO, ANIMA_REVISION, 'diffusion_models/anima-base-v1.0.safetensors', 4182218328,
     'bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e', 'split_files/diffusion_models/anima-base-v1.0.safetensors'),
   ...setupModels.files.filter(entry => entry.id === 'anima-aesthetic-v1.1' || entry.id === 'qwen-encoder' || entry.id === 'qwen-vae')
     .map(entry => ({ ...entry, repo: ANIMA_REPO, revision: ANIMA_REVISION, remotePath: 'split_files/' + entry.path })),
 ]
 
-export const KREA_FILES: readonly ModelFile[] = [
+const KREA_FILES: readonly ModelFile[] = [
   file('Comfy-Org/Krea-2', 'eb1eddd3983a54678545a9b2c178c5853b30f7be', 'diffusion_models/krea2_turbo_fp8_scaled.safetensors', 13141730784,
     'eb4dd8c612cfd10f64f25b057e6e6bbcb5737c94a7372177e456dbf7579502f1'),
   file('DreamFast/Qwen3-VL-4b-Heretic-ComfyUI', 'c5bd34e940564e4b5b64286694d72f47f429c126', 'text_encoders/qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors', 4831492476,
@@ -63,7 +63,7 @@ export const KREA_FILES: readonly ModelFile[] = [
 
 const WAN_REPO = 'Comfy-Org/Wan_2.2_ComfyUI_Repackaged'
 const WAN_REVISION = 'ee6f4a40737a995bf5818954cfce6d59443b0f04'
-export const WAN_FILES: readonly ModelFile[] = [
+const WAN_FILES: readonly ModelFile[] = [
   file(WAN_REPO, WAN_REVISION, 'diffusion_models/wan2.2_ti2v_5B_fp16.safetensors', 9999658848,
     '456f901338bd9eadbded3828b819109a9b68e8a525ca5cf8d0049a69fcfeca1e', 'split_files/diffusion_models/wan2.2_ti2v_5B_fp16.safetensors'),
   file(WAN_REPO, WAN_REVISION, 'text_encoders/umt5_xxl_fp8_e4m3fn_scaled.safetensors', 6735906897,
@@ -73,7 +73,7 @@ export const WAN_FILES: readonly ModelFile[] = [
 ]
 
 // Civitai fixes identity by model-version and file IDs; some downloads require an account.
-export const COMMUNITY_ANIMA_FILES: readonly ModelFile[] = [
+const COMMUNITY_ANIMA_FILES: readonly ModelFile[] = [
   { ...file('', '3020110', 'diffusion_models/miaomiaoHarem_anima12.safetensors', 4182218328,
     '127f4ad350dfe011a7cce2f5042d194e4228a4f855cdb774eba1f0cc86ac893e'), sourceUrl: 'https://civitai.com/api/download/models/3020110?fileId=2925299' },
   { ...file('', '3248362', 'diffusion_models/miaomiaoHarem_anima16.safetensors', 4182218328,
@@ -84,7 +84,7 @@ export const COMMUNITY_ANIMA_FILES: readonly ModelFile[] = [
     .map(entry => ({ ...entry, repo: '', remotePath: entry.path })),
 ]
 
-export const KREA_STYLE_FILES: readonly ModelFile[] = [
+const KREA_STYLE_FILES: readonly ModelFile[] = [
   ['darkbrush', 'f47c4316dd93af66e0518c93b582f459571d4925b519133770c73a52cd5db7c6'],
   ['dotmatrix', '805aa30d863347222485b9d3ce81642dbc70a73cebc95ab57219d98b878fceec'],
   ['kidsdrawing', '8c1d45d204aeb4e34a7d9e16a7d473917592ba0048b03f4e03e037e3578ca500'],
@@ -96,7 +96,7 @@ export const KREA_STYLE_FILES: readonly ModelFile[] = [
   ['vintagetarot', '8cca96c56658fb3ac5269f9ef2245bd07cbf1b7a189f517c8763470bb1385f9f'],
 ].map(([style, sha256]) => file('Comfy-Org/Krea-2', KREA_FILES[0]!.revision, `loras/krea2_${style}.safetensors`, 469291992, sha256!))
 
-export const WAI_FILE: ModelFile = { ...file('', '2883731', 'checkpoints/waiIllustriousSDXL_v170.safetensors', 6938040682,
+const WAI_FILE: ModelFile = { ...file('', '2883731', 'checkpoints/waiIllustriousSDXL_v170.safetensors', 6938040682,
   'f116b0c78ff441467b0cdc8f1936e1ed18ea31e9997c7b132b1b8db533f0bd04'), sourceUrl: 'https://civitai.com/api/download/models/2883731?fileId=2763986' }
 
 export const COMFY_KNOWN_FILES = [...ANIMA_FILES, ...COMMUNITY_ANIMA_FILES, ...KREA_FILES, ...KREA_STYLE_FILES, ...WAN_FILES, ...H3_FILES, WAI_FILE]

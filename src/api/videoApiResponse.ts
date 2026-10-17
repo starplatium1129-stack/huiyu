@@ -24,7 +24,7 @@ function isNonEmptyText(value: unknown): value is string {
   return isText(value) && value.trim().length > 0
 }
 
-export function isVideoJob(value: unknown): value is VideoJob {
+function isVideoJob(value: unknown): value is VideoJob {
   if (!isRecord(value)) return false
   return isNonEmptyText(value.id)
     && ['queued', 'running', 'cancelling', 'succeeded', 'failed', 'cancelled'].includes(String(value.status))
@@ -118,7 +118,7 @@ function isVideoBatchShot(value: unknown): value is VideoBatchShot {
     && isNullableText(value.resultUrl)
 }
 
-export function isVideoBatch(value: unknown): value is VideoBatch {
+function isVideoBatch(value: unknown): value is VideoBatch {
   if (!isRecord(value)) return false
   return isNonEmptyText(value.id)
     && ['running', 'paused', 'done', 'cancelled'].includes(String(value.status))

@@ -9,20 +9,18 @@ const { execFileSync }: typeof import('child_process') = require('child_process'
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 import type { ExecFileSyncOptionsWithStringEncoding } from 'node:child_process';
-type HookCommand = (command: string, args: string[], options: ExecFileSyncOptionsWithStringEncoding) => string;
-
-function migrateHooks(root: any = path.resolve(__dirname, '../..'), run: HookCommand = execFileSync) {
+function migrateHooks() {
+  const root = path.resolve(__dirname, '../..');
   const options: ExecFileSyncOptionsWithStringEncoding = { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], windowsHide: true };
   let configured;
   try {
-    configured = run('git', ['config', '--local', '--get', 'core.hooksPath'], options).trim();
+    configured = execFileSync('git', ['config', '--local', '--get', 'core.hooksPath'], options).trim();
   } catch {
     return 'no local hooks override';
   }
   if (configured !== '.githooks' || fs.existsSync(path.join(root, '.githooks'))) return 'existing hooks preserved';
-  run('git', ['config', '--local', '--unset-all', 'core.hooksPath'], options);
+  execFileSync('git', ['config', '--local', '--unset-all', 'core.hooksPath'], options);
   return 'removed obsolete .githooks override';
 }
 
 if (require.main === module) console.log(`[hooks] ${migrateHooks()}`);
-export = { migrateHooks };

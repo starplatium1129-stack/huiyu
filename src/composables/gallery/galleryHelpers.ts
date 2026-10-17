@@ -51,14 +51,14 @@ export function formatTrashTime(ts: number): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
 }
 
-export function loraName(id: string | null | undefined, loras: LoraMeta[]): string {
+function loraName(id: string | null | undefined, loras: LoraMeta[]): string {
   if (!id) return '—'
   const item = loras.find(l => l.id === id || (l.name && (l.name === id || String(id).startsWith(l.name))))
   return (item?.name || id) as string
 }
 
 /** 高清修复参数回显：旧条目无字段显示「—」，新条目精确显示倍率/放大器/步数。 */
-export function hiresLabel(i: ArtworkRecord): string {
+function hiresLabel(i: ArtworkRecord): string {
   if (i.hiresFix == null) return '—'
   if (!i.hiresFix) return '关'
   const scale = i.hiresScale ? ` ×${i.hiresScale}` : ''
@@ -67,7 +67,7 @@ export function hiresLabel(i: ArtworkRecord): string {
   return `开${scale}${upscaler}${steps}`
 }
 
-export function modelName(value: string | undefined): string {
+function modelName(value: string | undefined): string {
   if (!value) return 'WebUI 当前模型'
   const name = String(value).split(/[\\/]/).pop()!.replace(/\s*\[[a-f0-9]+\]\s*$/i, '')
   return name.length > 42 ? name.slice(0, 39) + '…' : name

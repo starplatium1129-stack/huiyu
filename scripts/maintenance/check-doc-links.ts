@@ -70,4 +70,3 @@ function check() {
   if (errors.length) { console.error(errors.join('\n')); process.exitCode = 1; }
 }
 if (require.main === module) check();
-export = { check, generatedSourceExists };

@@ -55,4 +55,3 @@ function main(args: any = process.argv.slice(2)) {
   return result.exitCode;
 }
 if (require.main === module) process.exitCode = main();
-export = { parse, main };

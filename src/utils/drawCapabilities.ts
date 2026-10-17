@@ -6,7 +6,7 @@ import type { DrawCapabilities, ModelProfile, PromptEngine } from '@/utils/promp
  * 业务代码不应再写 `engine === 'krea2'` 这类散落分支来判断能力；
  * 应通过 resolveDrawCapabilities() 拿到合并后的能力表，再决定 UI/组装行为。
  */
-export const ENGINE_DEFAULT_CAPABILITIES: Record<PromptEngine, DrawCapabilities> = Object.freeze({
+const ENGINE_DEFAULT_CAPABILITIES: Record<PromptEngine, DrawCapabilities> = Object.freeze({
   sd: Object.freeze({
     negative: true,
     lora: true,
@@ -59,9 +59,4 @@ export function resolveDrawCapabilities(
     ...(profile?.capabilities || {}),
     ...(modelCapabilities || {}),
   }
-}
-
-/** 便捷判断：当前引擎是否使用自然语言散文（Krea2 类）。 */
-export function isNaturalLanguage(capabilities: Pick<DrawCapabilities, 'promptFormat'>): boolean {
-  return capabilities.promptFormat === 'natural-language'
 }

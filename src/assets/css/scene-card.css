@@ -107,19 +107,6 @@
 }
 .sc-rating.r18 { background: var(--bg-surface); @apply tw:text-danger-text; border: 1px solid var(--danger-text); }
 .sc-rating.r15 { background: var(--bg-surface); @apply tw:text-warning-text; border: 1px solid var(--warning-text); }
-/* 精品层级徽标(图区左上) */
-.sc-tier {
-  @apply tw:absolute; z-index: var(--z-raised); @apply tw:top-s-2 tw:left-s-2 tw:text-mono-sm tw:font-extrabold; letter-spacing: 0.04em;
-  /* 徽标压在样张上:底色恒为深色(与主题无关),文字用角色品牌色的浅色调 */
-  color: color-mix(in srgb, var(--accent) 40%, white);
-  background: var(--art-backdrop);
-  border: 1px solid var(--on-art-line);
-  padding: 2px var(--s-2); @apply tw:rounded-pill;
-  box-shadow: inset 0 1px 0 var(--hl-inset-18), 0 2px 8px rgba(0, 0, 0, 0.35);
-}
-.sc-tier.signature {
-  color: color-mix(in srgb, var(--natsume-amber) 34%, white);
-}
 
 /* ---- 主体 ---- */
 .sc-body { @apply tw:p-s-3 tw:flex tw:flex-col tw:gap-s-1 tw:min-w-0; }
@@ -138,38 +125,9 @@
 .sc-meta { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-1 tw:text-mono-sm tw:text-muted; }
 .sc-meta-r { @apply tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:text-right; }
 
-/* ---- 操作按钮 ---- */
-.sc-actions { @apply tw:flex tw:gap-s-1 tw:mt-s-1; }
-.sc-btn {
-  /* 卡内紧凑操作:比全局 .btn-sm 更矮(卡片高度有限),故不复用 .btn */
-  flex: 1; @apply tw:text-center tw:text-label-xs tw:font-semibold;
-  padding: var(--s-1) var(--s-2); @apply tw:rounded-lg; text-decoration: none;
-  border: 1px solid var(--border-soft); @apply tw:text-secondary;
-  background: var(--bg-deep);
-  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover),
-              transform var(--motion-hover) var(--ease-out);
-  @apply tw:whitespace-nowrap;
-}
-.sc-btn:active { transform:scale(.97); }
-.sc-btn:hover { @apply tw:border-accent tw:text-accent; }
-.sc-btn-primary { background: var(--accent); @apply tw:text-inverse tw:border-accent; }
-.sc-btn-primary:hover { background: var(--accent); @apply tw:text-inverse; opacity: 0.92; }
-
-/* ---- strip 修饰(首页精选胶片:比网格卡更宽,故事多露一行) ---- */
+/* ---- strip 修饰（首页精选胶片） ---- */
 .sc-strip { @apply tw:w-[240px]; flex: 0 0 240px; scroll-snap-align: start; }
-.sc-strip .sc-story { -webkit-line-clamp: 3; }
-.sc-strip .sc-cat, .sc-strip .sc-rating, .sc-strip .sc-meta, .sc-strip .sc-tags, .sc-strip .sc-actions { @apply tw:hidden; }
-
-/* ---- recent 修饰 ---- */
-.sc-recent .sc-story { -webkit-line-clamp: 2; }
-
-/* ---- 空态 ---- */
-.sc-empty {
-  grid-column: 1 / -1; @apply tw:text-center; padding: var(--s-7) var(--s-5);
-  background: var(--bg-surface); border: 1px dashed var(--border-soft); @apply tw:rounded-lg;
-}
-.sc-empty .ic { @apply tw:text-glyph tw:mb-s-3; }
-.sc-empty p { @apply tw:text-muted tw:mb-s-4; }
+.sc-strip .sc-rating, .sc-strip .sc-meta, .sc-strip .sc-tags { @apply tw:hidden; }
 
 /* An unavailable preview is explicit; keep frame dimensions stable while it loads. */
 .sc-preview-unavailable { @apply tw:absolute; inset: 0; @apply tw:grid; place-items: center; @apply tw:p-s-4 tw:text-muted tw:text-label-sm; background: var(--bg-deep); }

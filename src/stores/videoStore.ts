@@ -1,5 +1,5 @@
 import { profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import {
@@ -234,10 +234,6 @@ export const useVideoStore = defineStore('videoStudio', () => {
   const pendingShotCtxs = ref<VideoCtxPayload[]>(readStoredShots())
   const pendingScenarioActs = ref<StagedScenarioAct[]>(readStoredScenarioActs())
 
-  // ── 派生 ──
-  /** 绘图页「已加入分镜」角标计数。 */
-  const shotsPending = computed(() => pendingShotCtxs.value.length)
-
   // ── 单图出视频交接 ──
   function stageImageCtx(ctx: VideoCtxPayload): boolean {
     if (!writeJson(IMAGE_CTX_KEY, ctx)) return false
@@ -297,11 +293,6 @@ export const useVideoStore = defineStore('videoStudio', () => {
     return true
   }
 
-  function clearVideoDraft(): void {
-    videoDraft.value = null
-    removeKey(VIDEO_DRAFT_KEY)
-  }
-
   function recordVideoTask(record: VideoTaskRecord): boolean {
     if (!writeJson(VIDEO_TASK_KEY, record)) return false
     videoTask.value = record
@@ -319,11 +310,6 @@ export const useVideoStore = defineStore('videoStudio', () => {
     return true
   }
 
-  function clearShotsDraft(): void {
-    shotsDraft.value = null
-    removeKey(VIDEO_SHOTS_DRAFT_KEY)
-  }
-
   function recordShotsBatch(record: ShotsBatchRecord): boolean {
     if (!writeJson(VIDEO_SHOTS_BATCH_KEY, record)) return false
     shotsBatch.value = record
@@ -338,7 +324,6 @@ export const useVideoStore = defineStore('videoStudio', () => {
   return {
     pendingImageCtx,
     pendingShotCtxs,
-    shotsPending,
     stageImageCtx,
     consumeImageCtx,
     appendShotCtx,
@@ -350,11 +335,9 @@ export const useVideoStore = defineStore('videoStudio', () => {
     shotsDraft,
     shotsBatch,
     saveVideoDraft,
-    clearVideoDraft,
     recordVideoTask,
     clearVideoTask,
     saveShotsDraft,
-    clearShotsDraft,
     recordShotsBatch,
     clearShotsBatch,
   }

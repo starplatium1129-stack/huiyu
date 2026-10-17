@@ -75,7 +75,6 @@ impl RenderContext {
             motion_last_indices: HashMap::new(),
             motion_seed: 0x9E37_79B9_7F4A_7C15 ^ u64::from(std::process::id()),
             active_motion: None,
-            ready_emitted: false,
             last_rect: OverlayRect::default(),
             surface_failures: 0,
             surface_recoveries: 0,

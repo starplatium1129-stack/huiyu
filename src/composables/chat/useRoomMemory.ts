@@ -122,7 +122,6 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
     userProfile,
     chatMemory,
     currentMemories,
-    memoryCharacter,
     updateUserProfile,
     rememberMessage,
     updateMemory,

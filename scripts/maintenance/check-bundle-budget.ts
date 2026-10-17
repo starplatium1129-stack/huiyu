@@ -239,5 +239,3 @@ if (require.main === module) {
     process.exitCode = 1;
   }
 }
-
-export = { DEFAULT_BUDGETS, evaluateManifest, routeEntries, lazyChunks, staticClosureKeys, staticClosureSize, run };

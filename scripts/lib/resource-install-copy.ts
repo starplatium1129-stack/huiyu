@@ -2,7 +2,7 @@
 
 const path: typeof import('node:path') = require('node:path');
 const { createHash }: typeof import('node:crypto') = require('node:crypto');
-const { child, noLinks, mkdir, ensureSpace, writeAll, event, cancelled, fail, digest, flushDir, unlink }: typeof import('./resource-install-fs') = require('./resource-install-fs');
+const { child, noLinks, mkdir, ensureSpace, writeAll, yieldForCancellation, cancelled, fail, digest, flushDir, unlink }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
 const CHUNK = 512 * 1024;
 function fileMatches(ctx: any, file: string, entry: { bytes: number; sha256: string; }) {
@@ -31,7 +31,7 @@ async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: a
   cancelled(signal);
   const target = child(tree, entry.path);
   if (fileMatches(ctx, target, entry)) {
-    await event(ctx, 'copy-reused', { path: entry.path }, signal);
+    await yieldForCancellation(signal);
     return;
   }
   ensureSpace(ctx, entry.bytes + 65536);
@@ -63,7 +63,7 @@ async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: a
       hash.update(bytes);
       noLinks(ctx.io, partial);
       writeAll(ctx.io, output, bytes);
-      await event(ctx, 'copy-progress', { path: entry.path, bytes: total, total: entry.bytes }, signal);
+      await yieldForCancellation(signal);
     }
     if (total !== entry.bytes || hash.digest('hex') !== entry.sha256) fail('CONTENT_INVALID', 'Copied source no longer matches approved manifest');
     ctx.io.fsyncSync(output);
@@ -76,6 +76,6 @@ async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: a
   unlink(ctx.io, target);
   ctx.io.renameSync(partial, target);
   flushDir(ctx.io, path.dirname(target));
-  await event(ctx, 'copied', { path: entry.path }, signal);
+  await yieldForCancellation(signal);
 }
-export = { CHUNK, fileMatches, copyEntry };
+export = { fileMatches, copyEntry };

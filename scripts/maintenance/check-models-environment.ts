@@ -15,7 +15,7 @@ interface FileCheck {
   source?: string
 }
 
-export async function inspectModelFile(root: string, relative: string, known?: ModelFile, hashes = false): Promise<FileCheck> {
+async function inspectModelFile(root: string, relative: string, known?: ModelFile, hashes = false): Promise<FileCheck> {
   const file = path.resolve(root, relative)
   const result: FileCheck = { path: relative, state: 'missing' }
   if (known) { result.expectedBytes = known.bytes; if (known.repo || known.sourceUrl) result.source = officialUrl(known) }
@@ -88,7 +88,7 @@ async function inspectPixai(appRoot: string, runtimeRoot: string, aiRoot: string
     gpu: 'not-probed; CUDA, BF16 and free VRAM require device acceptance' }
 }
 
-export async function checkModels(appRoot: string, env: NodeJS.ProcessEnv = process.env, hashes = false, probeHardware = true) {
+async function checkModels(appRoot: string, env: NodeJS.ProcessEnv = process.env, hashes = false, probeHardware = true) {
   appRoot = path.resolve(appRoot)
   const aiRoot = path.resolve(env.AI_WORKSPACE_ROOT || path.join(appRoot, '..', 'AI'))
   const runtimeRoot = path.resolve(env.AICS_RUNTIME_ROOT || path.join(appRoot, 'runtime'))

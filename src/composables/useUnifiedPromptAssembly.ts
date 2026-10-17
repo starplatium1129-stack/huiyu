@@ -54,7 +54,6 @@ export function useUnifiedPromptAssembly(
     promptReport,
     artViolations,
     modelProfile,
-    loraSpecs: studio.loraSpecs,
     // 兼容旧视图的三元分发，逐步迁移后可移除
     studio,
     popular,

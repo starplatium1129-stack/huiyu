@@ -41,7 +41,7 @@ export function taskVideoJob(task: TaskRecord): VideoJob {
     resultUrl: task.resultRefs.some(ref => ref.index === 0) ? runtimeResultPath(task) : null,
     error: needsReview || task.status === 'failed' ? taskMessage(task) : null, code: task.errorCode }
 }
-export function videoRetrySource(task: TaskRecord): VideoBatch['retrySource'] {
+function videoRetrySource(task: TaskRecord): VideoBatch['retrySource'] {
   const context = record(task.metadata.context)
   return typeof context.retriedTaskId === 'string' && context.retriedTaskId
     && Number.isSafeInteger(context.stepIndex) && Number(context.stepIndex) >= 0

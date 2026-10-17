@@ -172,7 +172,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
         bulkDeleting.value = false;
     }
 }
-export async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Promise<void> {
+async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;
     let restored = 0;
     let missingImages = 0;
@@ -204,7 +204,7 @@ export async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[
     if (unconfirmed) outcomes.push(`${unconfirmed} 幅恢复尚未确认，请重新查看回收站后重试`);
     showToast(outcomes.join('；'), restored === requested.length ? 'success' : 'warning');
 }
-export async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void> {
+async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;
     try {
         const result = await artworkRepository.restoreArtwork(item.id);

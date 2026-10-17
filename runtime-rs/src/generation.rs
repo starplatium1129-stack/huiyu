@@ -27,7 +27,6 @@ use crate::{
 pub(crate) use http::{RateLimit, limit_request, owner as request_owner};
 use plan::Execution;
 pub(crate) use plan::{ComfyPlan, MediaKind};
-pub use resources::{is_wai_checkpoint, normalize_checkpoint};
 pub(crate) use resources::{super_res, super_res_name};
 use serde_json::{Value, json};
 use std::{
@@ -41,9 +40,7 @@ use std::{
 use tokio::sync::{Mutex, Notify, OnceCell, OwnedSemaphorePermit, Semaphore};
 use tokio_util::{sync::CancellationToken, task::TaskTracker};
 pub use types::{Config, Input};
-pub use validation::validate;
 pub(crate) use validation::truthy;
-pub use workflow::build as build_workflow;
 
 /// Prepared owns admission capacity and the validated execution input. Its public
 /// JSON is a detached ledger copy; changing it cannot change an admitted request.

@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto';
 import snapshot = require('./catalog-snapshot');
 
 /** Called by deployment after the desktop has drained, using the installed payload. */
-export function updateCatalog(app: string, runtime: string) {
+function updateCatalog(app: string, runtime: string) {
   const records = snapshot.read(app);
   if (!records) throw Error('CATALOG_SNAPSHOT_MISSING: 安装包缺少内容快照，请重新构建；不能宣称人物已更新。');
   // A new profile must be initialized by the desktop's atomic full-data seed,

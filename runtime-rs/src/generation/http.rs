@@ -3,11 +3,11 @@ use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
     body::{Body, Bytes},
-    extract::{ConnectInfo, DefaultBodyLimit, Path, Query, Request, State},
+    extract::{ConnectInfo, Path, Query, Request, State},
     http::{HeaderMap, HeaderValue, Method, StatusCode, header},
     middleware::Next,
     response::{IntoResponse, Response},
-    routing::{get, post},
+    routing::get,
 };
 use sha2::{Digest, Sha256};
 use std::{net::SocketAddr, sync::Mutex as SyncMutex};
@@ -64,17 +64,9 @@ impl RateLimit {
 pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     Router::new()
         .route("/api/generation/status", get(status))
-        .route(
-            "/api/generation/jobs",
-            post(create).layer(DefaultBodyLimit::max(64 * 1024)),
-        )
         .route("/api/generation/jobs/{id}", get(get_job).delete(cancel))
         .route("/api/generation/jobs/{id}/result", get(result))
         .layer(Extension(Arc::new(Http { service })))
-        .layer(axum::middleware::from_fn_with_state(
-            Arc::new(RateLimit::new("WAI 出图")),
-            limit_request,
-        ))
 }
 pub(crate) async fn limit_request(
     State(limit): State<Arc<RateLimit>>,
@@ -82,11 +74,11 @@ pub(crate) async fn limit_request(
     request: Request,
     next: Next,
 ) -> Response {
-    // Admission runs before Json allocates an upload body. Sharing clients use
+    // Admission runs before request body extraction. Sharing clients use
     // one bucket even when they change forwarded IP headers.
     if request.method() == Method::POST
         && request.uri().path().rsplit('/').next().is_some_and(|part| {
-            ["images", "jobs", "batches", "retry"].contains(&part)
+            ["jobs", "batches", "retry"].contains(&part)
                 || (part == "raw" && request.uri().path().ends_with("/images/raw"))
         })
         && let Some(response) = limit.check(security::is_direct_local(request.headers(), peer.ip()))
@@ -140,14 +132,6 @@ async fn status(State(state): State<AppState>, Extension(http): Extension<Arc<Ht
         Ok(()) => http.service.get_status().await,
         Err(error) => Err(error),
     })
-}
-async fn create() -> Response {
-    ApiError::new(
-        410,
-        "SD_RETIRED",
-        "SD 新生成已退役，旧任务仍可查询与取消；请使用 Anima 或 Krea 2",
-    )
-    .into_response()
 }
 async fn get_job(
     State(state): State<AppState>,

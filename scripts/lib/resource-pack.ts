@@ -452,4 +452,4 @@ function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = p
   return applyPackPlan({ plan, io, platform, resultKind: 'resource-pack-result', buildMetadata: fullPackMetadata });
 }
 
-export = { PACKS_DIR_SEGMENTS, PACK_NAME_RE, STAGING_PREFIX, UsageError, BYTE_ONLY_NOTE, validatePackName, checkDestination, loadVerifiedManifest, planResourcePack, applyPackPlan, stageResourcePack };
+export = { UsageError, BYTE_ONLY_NOTE, checkDestination, loadVerifiedManifest, planResourcePack, applyPackPlan, stageResourcePack };

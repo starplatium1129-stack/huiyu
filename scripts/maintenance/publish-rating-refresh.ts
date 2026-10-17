@@ -2,6 +2,8 @@
 import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
+const { switchTarget }: typeof import('../lib/showcase-publication') = require('../lib/showcase-publication');
+
 /**
  * Publish a RATING-ONLY refresh of the showcase manifest into a NEW version
  * dir. Images/thumbs are copied wholesale — nothing is re-generated.
@@ -118,25 +120,6 @@ function verifyTarget(tempDir: any, manifest: any) {
   }
 }
 
-function switchTarget(tempDir: any, targetDir: any, force: any) {
-  const backupDir = path.join(path.dirname(targetDir), `.${path.basename(targetDir)}.backup-${process.pid}`);
-  const targetExists = fs.existsSync(targetDir);
-  if (targetExists) {
-    if (!force) throw new Error(`target already exists: ${targetDir} (use --force to overwrite)`);
-    if (!fs.existsSync(path.join(targetDir, 'manifest.json'))) throw new Error(`refusing to replace target without manifest.json: ${targetDir}`);
-    fs.rmSync(backupDir, { recursive: true, force: true });
-    fs.renameSync(targetDir, backupDir);
-  }
-  try {
-    fs.renameSync(tempDir, targetDir);
-  } catch (error) {
-    if (targetExists) {
-      try { fs.renameSync(backupDir, targetDir); } catch (restoreError) { /* keep original error */ }
-    }
-    throw error;
-  }
-  if (targetExists) fs.rmSync(backupDir, { recursive: true, force: true });
-}
 
 function main() {
   const apply = process.argv.includes('--apply');

@@ -101,9 +101,9 @@ export interface CreateVideoJobInput {
   camera: VideoDefaults['camera']
   motion: VideoDefaults['motion']
   seed?: number
-  /** 首帧图：POST /api/video/images 返回的受控文件名（I2VA/FL2VA 模式）。 */
+  /** 首帧图：POST /api/video/images/raw 返回的受控文件名（I2VA/FL2VA 模式）。 */
   image?: string
-  /** 尾帧图：POST /api/video/images 返回的受控文件名（FL2VA/L2VA 模式，H3 专属）。 */
+  /** 尾帧图：POST /api/video/images/raw 返回的受控文件名（FL2VA/L2VA 模式，H3 专属）。 */
   lastFrame?: string
   /** 画质档位：fast 0.2MP / standard 0.4MP（默认）/ fine 0.5MP。 */
   quality?: VideoQuality
@@ -242,7 +242,7 @@ export interface CreateVideoBatchShotInput {
   /** 分镜时长，缺省 5 秒（H3 训练区间下限，剧情片推荐档）。 */
   duration?: VideoDefaults['duration']
   seed?: number
-  /** 首帧图：POST /api/video/images 返回的受控文件名。 */
+  /** 首帧图：POST /api/video/images/raw 返回的受控文件名。 */
   image?: string
   /** 参考图（Ref2VA 角色卡）：受控文件名数组，≤9 张，仅 H3；prompt 用 <Picture N> 引用。 */
   references?: string[]

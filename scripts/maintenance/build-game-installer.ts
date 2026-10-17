@@ -144,4 +144,4 @@ if (require.main === module) {
   if (args.includes('--help')) console.log('Build native installer UI. Options: --preview [--capture] [--theme=system|dark|light] [--page=welcome|directory|install|finish|maintenance|uninstall|uninstall-progress|uninstall-finish]');
   else buildGameInstaller({ preview: args.includes('--preview'), capture: args.includes('--capture'), page: args.find((arg: any) => arg.startsWith('--page='))?.slice(7) || 'welcome', theme: args.find((arg: any) => arg.startsWith('--theme='))?.slice(8) || 'system' }).catch((error: any) => { console.error(error.message); process.exitCode = 1; });
 }
-export = { buildGameInstaller, customizeTemplate };
+export = { buildGameInstaller };

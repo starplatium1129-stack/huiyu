@@ -34,7 +34,7 @@
 | `pwsh` | `run_command` | `/api/desktop-tools` (`name: run_command`) | 默认关闭；仅操作员启用 trusted 档后按当前系统账户权限执行，不是工作区沙箱 |
 | `read` / `write` | `read_file` / `write_file` | `/api/desktop-tools` | 安全读写 AI 工作区内的文本、脚本、配置 |
 | 维护出图脚本 | `generate_character_image` | 桌宠编排 → `/api/tasks/v1` | 复用当前 Anima/Krea 模型、Profile、画幅与角色绑定，提交私人任务，完成后回送对话并入册 |
-| 图片反推 | `generate_image_from_reference` | `/api/interrogate` → `/api/tasks/v1` | 本机 PixAI 提取服装、动作与环境，身份跟随所选角色；沿用工作台编译重新生成，可取消 |
+| 图片反推 | `generate_image_from_reference` | `/api/interrogate/raw` → `/api/tasks/v1` | 本机 PixAI 提取服装、动作与环境，身份跟随所选角色；沿用工作台编译重新生成，可取消 |
 
 2026-09-12 权限调整：文件工具解析实际链接目标，拒绝指向 AI 工作区外的目录联接；通用命令的启用和撤销见[启动与排错](../../../STARTUP.md#运行配置与凭据恢复)。进程起始目录、命令白名单和取消机制均不能当作操作系统级隔离。
 

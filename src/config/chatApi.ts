@@ -4,10 +4,10 @@
  */
 export const DEEPSEEK_BASE_URL = 'https://api.deepseek.com'
 export const DEEPSEEK_DEFAULT_MODEL = 'deepseek-flash'
-export const CLIPROXY_BASE_URL = 'http://127.0.0.1:8317/v1'
-export const OPENCODE_BASE_URL = 'https://opencode.ai/zen/v1'
-export const OPENCODE_DEFAULT_MODEL = 'deepseek-v4.1-flash'
-export const OPENCODE_GO_BASE_URL = 'https://opencode.ai/zen/go/v1'
+const CLIPROXY_BASE_URL = 'http://127.0.0.1:8317/v1'
+const OPENCODE_BASE_URL = 'https://opencode.ai/zen/v1'
+const OPENCODE_DEFAULT_MODEL = 'deepseek-v4.1-flash'
+const OPENCODE_GO_BASE_URL = 'https://opencode.ai/zen/go/v1'
 
 export type ApiVendor = 'deepseek' | 'openai' | 'gemini' | 'openrouter' | 'siliconflow'
   | 'qwen' | 'kimi' | 'cliproxy' | 'lmstudio' | 'ollama' | 'opencode' | 'opencode-go' | 'custom'

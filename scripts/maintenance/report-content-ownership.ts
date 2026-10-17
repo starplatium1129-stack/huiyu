@@ -165,4 +165,3 @@ function main(args: any = process.argv.slice(2)) {
   } catch (error) { console.error(runtimeErrorMessage(error)); return 2; }
 }
 if (require.main === module) process.exitCode = main();
-export = { reportOwnership, main };

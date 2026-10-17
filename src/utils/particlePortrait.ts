@@ -83,7 +83,7 @@ export type PortraitCloudResult = Readonly<
 const pendingLoads = new Map<string, Promise<PortraitCloudResult>>()
 const failedCloud: PortraitCloudResult = { status: 'failed', cloud: null }
 
-export function portraitCloudUrl(id: string): string {
+function portraitCloudUrl(id: string): string {
   return characterArtEntry(id)?.particleUrl || `/assets/particles/p_${encodeURIComponent(id)}.json`
 }
 export function portraitCloudIdentity(id: string): string { return `${runtimeResourceIdentity()}:${id}:${characterArtRevision(id)}` }

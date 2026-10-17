@@ -1,7 +1,6 @@
 use super::*;
 use crate::images::{
-    Upload,
-    upload_body::{RawUploadBody, UploadBody},
+    upload_body::RawUploadBody,
 };
 use crate::{AppState, security};
 use axum::{
@@ -19,10 +18,6 @@ struct Http {
 pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     Router::new()
         .route("/api/video/status", get(status))
-        .route(
-            "/api/video/images",
-            post(upload).layer(DefaultBodyLimit::max(28 * 1024 * 1024)),
-        )
         .route(
             "/api/video/images/raw",
             post(upload_raw).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
@@ -77,32 +72,6 @@ async fn status(State(state): State<AppState>, Extension(http): Extension<Arc<Ht
         StatusCode::OK,
     )
 }
-async fn upload(
-    State(state): State<AppState>,
-    Extension(http): Extension<Arc<Http>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    Query(query): Query<HashMap<String, String>>,
-    headers: HeaderMap,
-    UploadBody(mut body, admission): UploadBody,
-) -> Response {
-    if let Err(e) = state.host.check_running() {
-        return e.into_response();
-    }
-    let owner = generation::request_owner(&headers, peer, &query);
-    response(
-        async {
-            let data = match body.get_mut("data").map(Value::take) {
-                Some(Value::String(data)) if !data.is_empty() => data,
-                _ => return Err(error(400, "INVALID_IMAGE", "缺少图片数据")),
-            };
-            let reference = body["kind"] == "reference";
-            drop(body);
-            store_image(&http, Upload::Encoded(data), owner, reference, admission).await
-        }
-        .await,
-        StatusCode::OK,
-    )
-}
 async fn upload_raw(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
@@ -117,13 +86,13 @@ async fn upload_raw(
     let owner = generation::request_owner(&headers, peer, &query);
     let reference = query.get("kind").is_some_and(|kind| kind == "reference");
     response(
-        store_image(&http, Upload::Raw(data), owner, reference, admission).await,
+        store_image(&http, data, owner, reference, admission).await,
         StatusCode::OK,
     )
 }
 async fn store_image(
     http: &Http,
-    data: Upload,
+    data: axum::body::Bytes,
     owner: String,
     reference: bool,
     admission: tokio::sync::OwnedSemaphorePermit,

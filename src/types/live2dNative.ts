@@ -17,7 +17,7 @@
 /** overlay 矩形（Companion-local 物理像素） */
 import type { Live2DRuntimeAdapterConfig } from '../live2d/types.ts'
 
-export interface Live2DOverlayRect {
+interface Live2DOverlayRect {
   x: number
   y: number
   width: number
@@ -27,9 +27,9 @@ export interface Live2DOverlayRect {
 export type Live2DMotionPriority = 'idle' | 'normal' | 'force'
 
 /** 原生 hit test 命中区（作者在模型里画的 HitArea id） */
-export type Live2DHitArea = string
+type Live2DHitArea = string
 
-export interface Live2DNativeCommands {
+interface Live2DNativeCommands {
   /** 创建/切换模型。modelPath 只接受 Rust 侧白名单资产，不接收任意路径。 */
   setCharacter(modelPath: string, options?: {
     character: string
@@ -62,15 +62,9 @@ export interface Live2DNativeCommands {
 }
 
 /** Rust → 前端事件。订阅函数返回 id，off 注销。 */
-export interface Live2DNativeEvents {
-  /** 模型加载完成（此时可发 setFrame 显示） */
-  onReady(listener: () => void): number
-  /** 动作已启动（前端据此显示互动提示/高亮，与浏览器端 markInteractionStarted 对齐） */
-  onMotionStarted(listener: (info: { group: string; index?: number }) => void): number
+interface Live2DNativeEvents {
   /** 动作被拒绝（前端显示"动作进行中/重试"） */
   onMotionFailed(listener: (info: { group: string; index?: number; reason: string }) => void): number
-  /** 入场动作结束（前端恢复常规状态提示） */
-  onEntranceFinished(listener: () => void): number
   /** 渲染线程停止（异常退出/通道断开/窗口销毁；前端显示错误并允许重试） */
   onStopped(listener: (info: { reason: string }) => void): number
   off(subscriptionId: number): void

@@ -155,18 +155,12 @@ function auMetadataIssues(scene: any) {
 }
 
 export = {
-  ADULT_SAFETY_NEGATIVE,
-  R15_TAGS,
-  R18_TAGS,
-  YOUTH_UNIFORM_TAGS,
-  adultSafetyIssues,
-  auMetadataIssues,
-  framingConflicts,
-  gazeConflicts,
-  poseConflicts,
-  promptTokenKeys,
-  ratingFor,
-  scenePositiveKeys,
-  splitPromptSegments,
-  tokenKey
+    adultSafetyIssues,
+    auMetadataIssues,
+    framingConflicts,
+    gazeConflicts,
+    poseConflicts,
+    ratingFor,
+    scenePositiveKeys,
+    tokenKey
 };

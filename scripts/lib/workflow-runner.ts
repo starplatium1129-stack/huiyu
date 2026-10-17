@@ -3,7 +3,7 @@
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
-import type { WorkflowDefinition, WorkflowRegistry, WorkflowStep, WorkflowCommandRunner } from './workflow-types';
+import type { WorkflowDefinition, WorkflowRegistry, WorkflowStep } from './workflow-types';
 import { errorMessage } from './runtime-errors';
 const isRecord = (value: any): value is Record<string, any> => value !== null && typeof value === 'object' && !Array.isArray(value);
 
@@ -149,7 +149,7 @@ function invocation(def: WorkflowDefinition, args: string[]): [string, string[]]
   return [cmd, [...defaults, ...args]];
 }
 
-function main(argv: string[], registry: WorkflowRegistry, root: string, run: WorkflowCommandRunner = spawnSync) {
+function main(argv: string[], registry: WorkflowRegistry, root: string) {
   try {
     const [name, ...raw] = argv;
     if (name === 'audit:workflows' && !raw.includes('--help')) {
@@ -188,7 +188,7 @@ function main(argv: string[], registry: WorkflowRegistry, root: string, run: Wor
       if (batch && process.platform !== 'win32') throw new Error('桌面部署仅支持 Windows。');
       // The batch entry accepts only switches; never interpolate arbitrary paths into cmd.exe.
       if (batch && cmdArgs.some(a => !/^-[A-Za-z]+$/.test(a))) throw new Error('桌面入口仅接受开关参数。');
-      const result = run(cmd, cmdArgs, { cwd: root, stdio: 'inherit', shell: batch, windowsHide: true, env: { ...process.env, AICS_WORKFLOW_NONINTERACTIVE: '1' } });
+      const result = spawnSync(cmd, cmdArgs, { cwd: root, stdio: 'inherit', shell: batch, windowsHide: true, env: { ...process.env, AICS_WORKFLOW_NONINTERACTIVE: '1' } });
       if (result.error || result.status !== 0) {
         console.error(`${step} 失败: ${result.error?.message || result.signal || result.status}`);
         return result.status || 1;
@@ -201,4 +201,4 @@ function main(argv: string[], registry: WorkflowRegistry, root: string, run: Wor
   }
 }
 
-export = { main, plan, audit, invocation, validateRun, EFFECTS, MACHINES, RESUME_MODES, PASSIVE_EFFECTS };
+export = { main, validateRun, PASSIVE_EFFECTS };

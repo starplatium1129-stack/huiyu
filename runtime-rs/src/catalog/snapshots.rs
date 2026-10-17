@@ -109,9 +109,6 @@ impl Catalog {
         transaction.commit()?;
         Ok(value)
     }
-    pub fn export(&self, directory: &Path) -> Result<Value> {
-        self.export_selected(directory, &Scope::default())
-    }
     pub(super) fn export_selected(&self, directory: &Path, scope: &Scope) -> Result<Value> {
         if directory.exists() && !directory.join("manifest.json").exists() {
             return Err(ApiError::invalid("导出目录已被其他内容占用"));

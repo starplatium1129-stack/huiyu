@@ -15,7 +15,7 @@
 import type { ChatEmotion } from './emotionRuntime'
 
 /** 协议接受的合法情绪（与 emotionRuntime 的 ChatEmotion 一致）。 */
-export const MOOD_TAG_EMOTIONS: readonly ChatEmotion[] = [
+const MOOD_TAG_EMOTIONS: readonly ChatEmotion[] = [
   'neutral',
   'shy',
   'happy',

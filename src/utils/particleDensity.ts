@@ -1,7 +1,7 @@
 export interface PortraitReferenceSize { width: number; height: number }
 
 /** Scale by the fitted portrait, not the empty space beside it. */
-export function portraitAreaMultiplier(aspect: number, width: number, height: number, reference: PortraitReferenceSize): number {
+function portraitAreaMultiplier(aspect: number, width: number, height: number, reference: PortraitReferenceSize): number {
   if (![aspect, width, height, reference.width, reference.height].every(n => Number.isFinite(n) && n > 0)) return 1
   const fittedHeight = Math.min(height, width / aspect)
   const referenceHeight = Math.min(reference.height, reference.width / aspect)

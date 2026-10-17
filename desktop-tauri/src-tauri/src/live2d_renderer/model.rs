@@ -34,7 +34,6 @@ impl RenderContext {
         self.motion_durations.clear();
         self.motion_last_indices.clear();
         self.active_motion = None;
-        self.ready_emitted = false;
         let files = live2d_assets::resolve_model(assets_root, local_root, character, &profile.profile_id)?;
         let dir = files.directory;
         let moc_path = files.moc;

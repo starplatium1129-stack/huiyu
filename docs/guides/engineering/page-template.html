@@ -35,20 +35,20 @@
 <script src="../../../tools/theme.js?v=5"></script>
 <style>
   /* 页面容器: .page / .title / .subtitle 都来自 design-system.css，
-     这里只覆写宽度变量。860 用 .page-narrow，1480 用 .page-wide，
-     其它值就像下面这样只改 --page-max 一行。 */
+     这里只覆写宽度变量。860 用 .page-narrow，
+     其它宽度像下面这样只改 --page-max 一行。 */
   .page { --page-max: 960px; }
 
   /* ---- 你的自定义样式从这往下写 ----
      先翻一遍 design-system.css，能复用就不要新造:
      .btn(-primary/-ghost/-danger/-sm/-lg/-icon/-block) · .card(-info/-create/-direct)
-     .input/.select/.textarea · .field/.field-label/.field-hint · .checkbox-row
-     .badge(-success/-warning/-danger/-info/-accent) · .meter/.meter-fill(值走 --fill)
-     .chip · .callout(-warn/-danger/-success) · .empty-state · .prompt-code
-     .overlay/.modal-card/.modal-head/.modal-actions · .step-list
-     .lede/.note/.note-sm/.note-mono/.emphasis/.section-title
-     .row/.row-tight/.stack/.stack-sm/.auto-grid(--col-min)/.spread
-     .mt-2…mt-6 / .mb-2…mb-5 / .m-0
+     .input/.select/.textarea · .field/.field-label/.field-hint
+     .badge(-warning) · .meter/.meter-fill(值走 --fill)
+     .chip · .callout · .empty-state · .prompt-code
+     .overlay/.modal-card/.modal-head/.modal-actions
+     .lede/.note/.note-sm/.emphasis/.section-title
+     .row/.row-tight/.stack/.spread
+     .mt-3…mt-6 / .mb-2…mb-4 / .m-0
      需要给某个组件统一改样式时，写 ".my-card p { … }" 这类组件规则，
      不要给每个元素挂一堆工具类，更不要退回内联 style。 */
 

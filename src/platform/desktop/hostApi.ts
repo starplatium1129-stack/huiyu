@@ -27,4 +27,3 @@ export function offHostEvent(id: number): void {
   const entry = subscriptions.get(id)
   if (entry) { entry.cancelled = true; entry.remove?.(); subscriptions.delete(id) }
 }
-export function hasHostEvent(id: number): boolean { return subscriptions.has(id) }

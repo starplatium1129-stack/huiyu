@@ -20,7 +20,7 @@ pub(super) fn routes() -> Router<crate::AppState> {
         )
         .route(
             "/api/local-setup/llama",
-            get(llama_status).post(start_llama).delete(stop_llama),
+            post(start_llama).delete(stop_llama),
         )
         .route("/api/local-setup/llama-ensure", post(ensure_llama))
         .route("/api/local-setup/operation", get(setup_operation))
@@ -51,9 +51,6 @@ async fn cancel_environment(
     Json(body): Json<Value>,
 ) -> Result<Json<Value>> {
     Ok(Json(s.cancel_environment(body["operationId"].as_str())?))
-}
-async fn llama_status(Extension(s): Extension<Arc<ControlService>>) -> Json<Value> {
-    Json(json!({"ok":true,"llama":s.llama_status().await}))
 }
 async fn start_llama(
     Extension(s): Extension<Arc<ControlService>>,

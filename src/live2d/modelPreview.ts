@@ -2,7 +2,7 @@ import { createBrowserLive2DBackend } from './browserBackend'
 import { normalizeModelPath, type ModelInspection } from './modelInspector'
 import type { Live2DModelHandle, Live2DStageSession } from './types'
 
-export const MODEL_PREVIEW_LIMITS = Object.freeze({ dependencyBytes: 96 * 1024 * 1024, encodedBytes: 128 * 1024 * 1024 })
+const MODEL_PREVIEW_LIMITS = Object.freeze({ dependencyBytes: 96 * 1024 * 1024, encodedBytes: 128 * 1024 * 1024 })
 
 function dataUrl(file: File, type: string, signal: AbortSignal): Promise<string> {
   signal.throwIfAborted()

@@ -8,7 +8,7 @@ function rawLiteralTag(value: string): string {
 }
 
 /** Idempotent on already escaped parentheses; never call this on an entire free-form prompt. */
-export function escapeLiteralTagParentheses(tag: string): string {
+function escapeLiteralTagParentheses(tag: string): string {
   let result = ''
   let backslashes = 0
   for (const character of tag) {

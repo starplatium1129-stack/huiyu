@@ -8,7 +8,7 @@
  */
 
 /** 浏览器配额写满（Chrome/Firefox 的 QuotaExceededError 家谱命名不统一） */
-export function isQuotaError(error: unknown): boolean {
+function isQuotaError(error: unknown): boolean {
   if (!error) return false
   const name = (error as { name?: string } | null)?.name ?? ''
   if (name === 'QuotaExceededError' || name === 'NS_ERROR_DOM_QUOTA_REACHED') return true

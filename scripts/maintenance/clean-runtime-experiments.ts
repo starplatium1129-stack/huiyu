@@ -49,7 +49,7 @@ if (!Number.isFinite(DAYS) || DAYS <= 0) throw new Error('--days must be a posit
 const PRUNE = process.argv.includes('--prune');
 const CUTOFF = Date.now() - DAYS * 24 * 60 * 60 * 1000;
 
-export function scanDir(dir: string, io: Pick<typeof fs, 'lstatSync' | 'readdirSync'> = fs) {
+function scanDir(dir: string) {
   let bytes = 0;
   let newest = 0;
   let files = 0;
@@ -58,12 +58,12 @@ export function scanDir(dir: string, io: Pick<typeof fs, 'lstatSync' | 'readdirS
   while (stack.length) {
     const cur = stack.pop()!;
     try {
-      const directory = io.lstatSync(cur);
+      const directory = fs.lstatSync(cur);
       if (!directory.isDirectory() || directory.isSymbolicLink()) { complete = false; continue; }
       newest = Math.max(newest, directory.mtimeMs);
-      for (const ent of io.readdirSync(cur, { withFileTypes: true })) {
+      for (const ent of fs.readdirSync(cur, { withFileTypes: true })) {
         const file = path.join(cur, ent.name);
-        const stat = io.lstatSync(file);
+        const stat = fs.lstatSync(file);
         if (stat.isSymbolicLink()) { complete = false; continue; }
         if (stat.isDirectory()) stack.push(file);
         else if (stat.isFile()) {

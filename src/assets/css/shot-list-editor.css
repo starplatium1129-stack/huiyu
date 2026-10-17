@@ -85,8 +85,6 @@
 .shot-toggle strong, .shot-toggle small { @apply tw:block; }
 .shot-toggle small { @apply tw:mt-[3px] tw:text-muted tw:text-label-xs tw:leading-body; }
 .shot-identity-field { @apply tw:grid tw:gap-s-2 tw:mt-s-4; }
-.shot-identity-row { @apply tw:grid; grid-template-columns: minmax(0, 1fr) 220px; @apply tw:gap-s-2; align-items: start; }
-.shot-identity-row .studio-select-wrapper { align-self: start; }
 .shot-row { @apply tw:grid tw:gap-s-3; padding:var(--s-5) 0; border-top:1px solid var(--border-soft); scroll-margin-top:calc(var(--app-navigation-height,80px) + var(--s-4)); }
 .shot-row:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-md; }
 .shot-row:first-of-type { border-top: 0; @apply tw:pt-0; }
@@ -126,7 +124,6 @@
   .shot-selects { grid-template-columns:repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 1000px) {
-  .shot-identity-row { grid-template-columns: 1fr; }
   .shot-selects { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .shot-submit-panel { grid-template-columns: 1fr; }
   .shot-submit-actions { @apply tw:justify-start; }

@@ -2,7 +2,7 @@ import { apiClient, type ApiResponseObject } from './client.ts'
 import type { ChatStatus, ConfiguredHostConfig, HostConfig, ProviderTestResult } from '../types/api.ts'
 import { parseChatStatus } from '../utils/chatStatus.ts'
 
-export const CHAT_API_TIMEOUTS = {
+const CHAT_API_TIMEOUTS = {
   status: 10_000,
   host: 10_000,
   hostAction: 30_000,
@@ -87,5 +87,3 @@ export const chatApi: ChatApi = {
     })
   },
 }
-
-export { parseChatStatus }

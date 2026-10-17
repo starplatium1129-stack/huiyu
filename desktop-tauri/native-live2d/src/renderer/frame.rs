@@ -21,7 +21,6 @@ impl Renderer {
         supersample: bool,
     ) -> wgpu::CommandEncoder {
         self.stats = RenderStats::default();
-        self.resource_stats.frame_creations = 0;
         let options = RenderOptions::from_env();
         let (rw, rh) = if supersample {
             (
@@ -445,8 +444,6 @@ impl Renderer {
         });
         self.ss_texture = Some((width, height, texture, view));
         self.ss_bg = Some(bind_group);
-        self.resource_stats.textures_created += 1;
-        self.record_resource_creation();
     }
 }
 

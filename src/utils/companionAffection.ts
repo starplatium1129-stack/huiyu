@@ -31,7 +31,7 @@ export interface AffectionLevelInfo {
   description: string
 }
 
-export const AFFECTION_LEVELS: readonly AffectionLevelInfo[] = [
+const AFFECTION_LEVELS: readonly AffectionLevelInfo[] = [
   { level: 1, title: '初识', minScore: 0, maxScore: 24, description: '略显生疏，保持着礼貌而克制的距离' },
   { level: 2, title: '习惯', minScore: 25, maxScore: 49, description: '逐渐熟悉你的存在，偶尔会流露出真实的反应' },
   { level: 3, title: '信赖', minScore: 50, maxScore: 74, description: '对你完全放下戒备，展现出标志性的傲娇与俏皮' },
@@ -40,7 +40,7 @@ export const AFFECTION_LEVELS: readonly AffectionLevelInfo[] = [
 ]
 
 /** 夏目（Natsume）Live2D 原作者动作与亲密度映射规则 */
-export const NATSUME_AFFECTION_RULES: Record<string, readonly AffectionMotionEntry[]> = {
+const NATSUME_AFFECTION_RULES: Record<string, readonly AffectionMotionEntry[]> = {
   TapHead: [
     { name: '摸头1', file: 'motions/TapHead_0.motion3.json', sound: '/assets/live2d/natsume/sounds/Motions_Tap摸头_0.mp3', text: '需要我帮您拧一下脸吗？主人', bonus: 5, weight: 2 },
     { name: '摸头2', file: 'motions/TapHead_1.motion3.json', sound: '/assets/live2d/natsume/sounds/Motions_Tap摸头_1.mp3', text: '您满意了吗？主人', bonus: 5, weight: 2 },
@@ -86,7 +86,7 @@ export const NATSUME_AFFECTION_RULES: Record<string, readonly AffectionMotionEnt
 }
 
 /** 绫地宁宁（Nene）互动台词与好感度加成配置 */
-export const NENE_AFFECTION_RULES: Record<string, readonly AffectionMotionEntry[]> = {
+const NENE_AFFECTION_RULES: Record<string, readonly AffectionMotionEntry[]> = {
   TapHair: [
     { name: '摸呆毛1', file: 'motions/TapHair_0.motion3.json', sound: '/assets/live2d/nene/sounds/song_restart.mp3', text: '呀！呆毛不可以乱碰啦……', bonus: 3, weight: 2 },
     { name: '摸呆毛2', file: 'motions/TapHair_1.motion3.json', sound: '/assets/live2d/nene/sounds/song_restart.mp3', text: '呜……头发会乱掉的啦。', bonus: 3, weight: 2 },

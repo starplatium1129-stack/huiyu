@@ -157,23 +157,3 @@ pub(super) fn validate(scene: &Value, blueprint: bool) -> Result<bool> {
     }
     Ok(true)
 }
-pub(super) fn valid(scene: &Value) -> bool {
-    matches!(validate(scene, false), Ok(true))
-}
-pub(super) fn rating(scene: &Value) -> &'static str {
-    let mut source = scene.clone();
-    source["story"] = format!(
-        "{} {}",
-        prompt::text(&scene["story"]),
-        prompt::text(&scene["prompt"])
-    )
-    .into();
-    let inferred = prompt::rating(&source);
-    if scene["rating"] == "R18" || inferred == "R18" {
-        "R18"
-    } else if scene["rating"] == "R15" || inferred == "R15" {
-        "R15"
-    } else {
-        "All"
-    }
-}

@@ -14,7 +14,7 @@ function checkAbort(signal?: AbortSignal) {
   if (signal?.aborted) throw new DOMException('已取消备份', 'AbortError')
 }
 
-export function readImageDataUrl(blob: Blob, signal?: AbortSignal): Promise<string> {
+function readImageDataUrl(blob: Blob, signal?: AbortSignal): Promise<string> {
   return new Promise((resolve, reject) => {
     checkAbort(signal)
     const reader = new FileReader()

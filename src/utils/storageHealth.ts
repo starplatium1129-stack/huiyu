@@ -1,29 +1,16 @@
-export interface HistoryValidation {
-  ok: boolean
-  reasons: string[]
-}
-
-export interface QuarantineCandidate {
-  entry: Record<string, unknown>
-  reasons: string[]
-  index: number
-  quarantinedAt: number
-}
-
-export interface StorageQuota {
+interface StorageQuota {
   usage: number
   quota: number
   ratio: number | null
 }
 
-export interface StorageHealthReport {
+interface StorageHealthReport {
   ok: boolean
   historyCount: number
   imageCount: number
   quarantineCount: number
   orphanImageIds: string[]
   missingImageIds: string[]
-  quarantineCandidates: QuarantineCandidate[]
   quota: StorageQuota | null
 }
 
@@ -32,45 +19,36 @@ function record(value: unknown): Record<string, unknown> | null {
     ? value as Record<string, unknown> : null
 }
 
-export function validateHistoryEntry(value: unknown): HistoryValidation {
-  const entry = record(value)
-  if (!entry) return { ok: false, reasons: ['not_object'] }
-  const reasons: string[] = []
+function validHistoryEntry(entry: Record<string, unknown>): boolean {
   const id = entry.id
   if (id == null || id === ''
       || (typeof id === 'number' && !Number.isFinite(id))
       || (typeof id === 'string' && !id.trim())
-      || (typeof id !== 'number' && typeof id !== 'string')) reasons.push('missing_id')
+      || (typeof id !== 'number' && typeof id !== 'string')) return false
   if (entry.timestamp == null || entry.timestamp === '' || !Number.isFinite(Number(entry.timestamp))) {
-    reasons.push('missing_timestamp')
+    return false
   }
   if (entry.image_id != null && entry.image_id !== '' && typeof entry.image_id !== 'string') {
-    reasons.push('invalid_image_id')
+    return false
   }
-  return { ok: reasons.length === 0, reasons }
+  return true
 }
 
-export function quarantinePartition(values: unknown): {
+function quarantinePartition(values: unknown): {
   good: Record<string, unknown>[]
-  bad: QuarantineCandidate[]
+  badCount: number
 } {
   const good: Record<string, unknown>[] = []
-  const bad: QuarantineCandidate[] = []
-  ;(Array.isArray(values) ? values : []).forEach((value, index) => {
-    const validation = validateHistoryEntry(value)
+  let badCount = 0
+  ;(Array.isArray(values) ? values : []).forEach(value => {
     const entry = record(value)
-    if (validation.ok && entry) good.push(entry)
-    else bad.push({
-      entry: entry || { value },
-      reasons: validation.reasons,
-      index,
-      quarantinedAt: Date.now(),
-    })
+    if (entry && validHistoryEntry(entry)) good.push(entry)
+    else badCount++
   })
-  return { good, bad }
+  return { good, badCount }
 }
 
-export function estimateStorageQuota(value: unknown): StorageQuota | null {
+function estimateStorageQuota(value: unknown): StorageQuota | null {
   const source = record(value)
   if (!source) return null
   const usage = Number(source.usage)
@@ -107,18 +85,17 @@ export function inspectStorageHealth(
   const missingImageIds = [...referenced].filter(id => !storedSet.has(id))
   const orphanImageIds = stored.filter(id => !referenced.has(id))
   return {
-    ok: partition.bad.length === 0 && missingImageIds.length === 0,
+    ok: partition.badCount === 0 && missingImageIds.length === 0,
     historyCount: partition.good.length,
     imageCount: stored.length,
-    quarantineCount: partition.bad.length,
+    quarantineCount: partition.badCount,
     orphanImageIds,
     missingImageIds,
-    quarantineCandidates: partition.bad,
     quota: estimateStorageQuota(options.quota),
   }
 }
 
-export function formatBytes(bytes: unknown): string {
+function formatBytes(bytes: unknown): string {
   const value = Number(bytes) || 0
   if (value < 1024) return `${value} B`
   if (value < 1024 ** 2) return `${(value / 1024).toFixed(1)} KB`

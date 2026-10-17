@@ -58,4 +58,3 @@ function main(args: any = process.argv.slice(2)) {
   } catch (error) { console.log(JSON.stringify({ error: runtimeErrorMessage(error), executed: false, status: 'error', exitCode: 1 })); return 1; }
 }
 if (require.main === module) process.exitCode = main();
-export = { parse, checkContentImpact, main };

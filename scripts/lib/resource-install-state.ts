@@ -50,4 +50,4 @@ function readJournal(ctx: any) {
   if (!Number.isSafeInteger(journal.before.sequence + 1)) fail('JOURNAL_INVALID', 'State sequence overflow');
   return journal;
 }
-export = { emptyState, equal, validateState, readState, versionRoot, verifyVersion, existingVersion, nextState, readJournal };
+export = { equal, readState, verifyVersion, existingVersion, nextState, readJournal };

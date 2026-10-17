@@ -33,4 +33,4 @@ function views(records: RecordRow[]) {
 function assertLegacyWrite(root: string) {
   if ([path.join(root, 'data/catalog/manifest.json'), path.join(root, 'catalog.identity.json'), path.join(root, 'runtime/content/catalog.identity.json')].some(file => fs.existsSync(file))) throw Error('内容已迁入记录库；请使用场景管理或 content:catalog patch/import，保存后显式 export 项目快照。旧聚合/分片不能回写为主库。');
 }
-export = { read, readDirectory, views, assertLegacyWrite };
+export = { read, views, assertLegacyWrite };

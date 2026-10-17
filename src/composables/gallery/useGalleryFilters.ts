@@ -56,7 +56,6 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     favoriteOnly: favoriteOnly.value, projectFilter: projectFilter.value, searchQuery: searchQuery.value.trim(),
     tagFilter: tagFilter.value, characterFilter: characterFilter.value, generation: { ...generationConditions.value },
   }));
-  const hasActiveFilters = computed(() => !!(favoriteOnly.value || projectFilter.value || characterFilter.value || searchQuery.value.trim() || tagFilter.value || generationFilterCount.value));
   const tagOptions = computed(() => {
     const counts = new Map<string, number>();
     for (const item of history.value) for (const tag of artworkTags(item)) counts.set(tag, (counts.get(tag) || 0) + 1);
@@ -153,9 +152,6 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   }
   function resetGalleryFilters() {
     applyFilterSnapshot(normalizeGalleryFilterSnapshot(null));
-  }
-  function clearGenerationConditions() {
-    generationConditions.value = emptyGenerationConditions();
   }
 
   /* ---------- 筛选状态进 URL（2026-08-30 UX 审计 P1）---------- */
@@ -284,7 +280,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
 
   return {
     tagFilter, tagOptions, characterFilter,
-    generationConditions, generationOptions, generationFilterCount, filterSnapshot, hasActiveFilters, applyFilterSnapshot, clearGenerationConditions, projectOptions, projectUnavailable,
+    generationOptions, filterSnapshot, applyFilterSnapshot, projectOptions, projectUnavailable,
     favoriteOnly,
     projectFilter,
     searchQuery,

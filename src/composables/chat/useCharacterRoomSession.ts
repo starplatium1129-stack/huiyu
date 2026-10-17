@@ -45,7 +45,6 @@ export function useCharacterRoomSession() {
   const activeChar = ref(DEFAULT_COMPANION_CHARACTER_ID)
   const busy = ref(false)
   const voiceActive = ref(false)
-  const replayRevision = ref(0)
   const chatError = ref('')
   const chatErrorKind = ref('')
   const voiceStatusText = ref('')
@@ -136,8 +135,6 @@ export function useCharacterRoomSession() {
 
   const voice = useVoice({
     enabled: () => autoVoice.value,
-    onAudioReady: () => { replayRevision.value++ },
-    onAudioCleared: () => { replayRevision.value++ },
     onStatus: (text) => { voiceStatusText.value = text },
     onError: (message) => setError(message, 'warning'),
     onSpeaking: (speaking, mid) => {
@@ -186,7 +183,6 @@ export function useCharacterRoomSession() {
 
   const {
     preparingRoom,
-    roomSetupText,
     setupTitle,
     setupDescription,
     refreshVoiceStatus,
@@ -204,11 +200,6 @@ export function useCharacterRoomSession() {
     updateVoiceCapability,
     setError,
     isDisposed: () => disposed,
-  })
-
-  const hasReplayable = computed(() => {
-    replayRevision.value
-    return currentMessages.value.some(message => message.role === 'assistant' && message.mid && voice.hasAudio(message.mid))
   })
 
   function nearBottom() {
@@ -390,16 +381,6 @@ export function useCharacterRoomSession() {
     }
   }
 
-  async function replayLast() {
-    const latest = [...currentMessages.value].reverse()
-      .find(message => message.role === 'assistant' && message.mid && voice.hasAudio(message.mid))
-    if (!latest) {
-      setError('本次打开页面后还没有可重播的语音。', 'info', 3500)
-      return
-    }
-    await voice.playMessage(latest.mid)
-  }
-
   watch(currentModel, (value) => { if (value) storage.setModel(value) })
 
   onMounted(async () => {
@@ -469,7 +450,6 @@ export function useCharacterRoomSession() {
     autoVoice,
     volume,
     preparingRoom,
-    roomSetupText,
     storage,
     ollamaOnline, localStatusText, checkingChatStatus,
     models,
@@ -496,7 +476,6 @@ export function useCharacterRoomSession() {
     webSearchEnabled, companionTools,
     setupTitle,
     setupDescription,
-    hasReplayable,
     inputText,
     streamingMid,
     replyAnnouncement,
@@ -518,7 +497,6 @@ export function useCharacterRoomSession() {
     clearCharacterConversation,
     clearAllMemory,
     onAutoVoiceChange,
-    replayLast,
     refreshRoomState,
   }
 }

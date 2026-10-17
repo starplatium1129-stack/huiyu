@@ -270,7 +270,6 @@ function main(argv: any = process.argv.slice(2)) {
   console.log(`[apply-scene-patch] ${outcome.outcome}${outcome.backup ? '，备份 ' + path.basename(outcome.backup) : ''}`);
 }
 
-export = { PROTECTED_SCENE_FIELDS, loadPinnedScenes, validatePatch, planPatches, snapshotFiles, restoreSnapshot, refreshCompression, commitPlan, parseArgs, main, validateOutput, changeSetReport };
 if (require.main === module) {
   try { main(); } catch (error) { console.error('[apply-scene-patch] ' + runtimeErrorMessage(error)); process.exitCode = 1; }
 }

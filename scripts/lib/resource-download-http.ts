@@ -1,6 +1,5 @@
 'use strict';
 
-const http: typeof import('node:http') = require('node:http');
 const https: typeof import('node:https') = require('node:https');
 const { fail, ResourceError, relativePath, cancelled }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
@@ -11,9 +10,8 @@ function sourceUrl(release: any, relative: any) {
   if (base!.username || base!.password || base!.search || base!.hash || !base!.pathname.endsWith('/')) {
     fail('UNSAFE_SOURCE', 'Source URL must have a directory path and no credentials/query/fragment');
   }
-  const loopback = ['127.0.0.1', '[::1]'].includes(base!.hostname);
-  if (base!.protocol !== 'https:' && !(base!.protocol === 'http:' && loopback && source.loopbackFixture === true)) {
-    fail('UNSAFE_SOURCE', 'HTTPS is required; HTTP is limited to explicitly configured numeric loopback fixtures');
+  if (base!.protocol !== 'https:') {
+    fail('UNSAFE_SOURCE', 'HTTPS is required');
   }
   // Source and release locations come only from reviewed local configuration, never a request URL.
   if (base!.pathname !== '/') relativePath(decodeURIComponent(base!.pathname.slice(1, -1)));
@@ -27,11 +25,10 @@ function response(url: any, { headers = {}, signal, timeoutMs = 30000 }: any = {
   cancelled(signal);
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail('CONFIG_REQUIRED', 'timeoutMs must be 1..60000');
   return new Promise((resolve, reject) => {
-    const client = url.protocol === 'https:' ? https : http;
     let activeResponse: any;
     // Own the connection and abort listener. Passing signal through the pooled HTTP socket can
     // leave a late abort on a released socket while an asynchronous progress callback is paused.
-    const request = client.get(url, { headers: { 'accept-encoding': 'identity', ...headers }, agent: false }, incoming => {
+    const request = https.get(url, { headers: { 'accept-encoding': 'identity', ...headers }, agent: false }, incoming => {
       activeResponse = incoming;
       // Cancellation may arrive while the consumer is validating headers or awaiting a progress
       // callback. Keep an error listener during that gap; async iteration still observes errored.
@@ -93,4 +90,4 @@ function rangeStart(res: any, offset: any, total: any, previousEtag: any) {
   if (previousEtag && res.headers.etag !== previousEtag) fail('HTTP_RANGE', 'ETag changed during partial response');
   return offset;
 }
-export = { sourceUrl, response, contentLength, fetchMetadata, rangeStart };
+export = { sourceUrl, response, fetchMetadata, rangeStart };

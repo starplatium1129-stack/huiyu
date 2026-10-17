@@ -229,4 +229,4 @@ if (require.main === module) {
 
 /** 供 scripts/lib/ensure-data-build.js 复用：重建数据产物后刷新对应预压文件，
  *  避免 precompressed 中间件按文件名直发陈旧 .br/.gz。 */
-export = { compress, compressAsync, main };
+export = { compress };

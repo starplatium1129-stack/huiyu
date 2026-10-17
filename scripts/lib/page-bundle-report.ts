@@ -1,7 +1,7 @@
 import ts = require('typescript');
 import path = require('node:path');
 
-export interface PageMapping { route: string; sources: string[]; unknown: string[] }
+interface PageMapping { route: string; sources: string[]; unknown: string[] }
 type Manifest = Record<string, { file?: string; src?: string; name?: string; isEntry?: boolean; imports?: string[] }>;
 
 /** Read actual router nesting without importing browser code or guessing layout names. */

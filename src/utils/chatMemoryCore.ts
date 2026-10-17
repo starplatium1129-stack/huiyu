@@ -159,10 +159,6 @@ export function removeChatFact(state: ChatMemoryState, character: ChatMemoryChar
   return true
 }
 
-export function isChatFactRemembered(state: ChatMemoryState, character: ChatMemoryCharacter, sourceMid: string): boolean {
-  return Boolean(sourceMid && state.byCharacter[character]?.some(item => item.sourceMid === sourceMid))
-}
-
 function relevanceTerms(value: string): Set<string> {
   const text = cleanText(value).toLocaleLowerCase()
   const terms = new Set<string>(text.match(/[a-z0-9][a-z0-9_-]+/g) || [])

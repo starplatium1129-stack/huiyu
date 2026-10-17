@@ -18,4 +18,4 @@ function resolveContentRoot(env?: NodeJS.ProcessEnv) {
   return path.resolve(env.AICS_DATA_ROOT || env.AICS_APP_ROOT || REPO_ROOT);
 }
 
-export = { REPO_ROOT: REPO_ROOT, resolveContentRoot: resolveContentRoot };
+export = { resolveContentRoot };

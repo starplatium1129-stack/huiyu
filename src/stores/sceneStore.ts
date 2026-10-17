@@ -5,7 +5,7 @@ import type { SceneRecord as Scene } from '../types/scene.ts'
 export type { SceneRecord as Scene } from '../types/scene.ts'
 
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import { DATA_VERSION } from 'virtual:data-version'
 import { requireDataRecords, requireDataCollection } from '../utils/dataRecords.ts'
 import {
@@ -118,7 +118,6 @@ export const useSceneStore = defineStore('scenes', () => {
   const loras = ref<LoraMeta[]>([])
   const tags = ref<TagMeta[]>([])
   const presets = ref<Record<string, unknown> | unknown[]>([])
-  const index = ref<SceneIndex | null>(null)
   const popularCharacters = ref<PopularCharacter[]>([])
   const sceneBlueprints = ref<SceneBlueprint[]>([])
 
@@ -126,7 +125,6 @@ export const useSceneStore = defineStore('scenes', () => {
   const error = ref<string | null>(null)
   /** 完整数据已加载（三条角色分片齐了才算）；部分加载只算 partial。 */
   const loaded = ref(false)
-  const loadedShards = ref<Set<ShardChar>>(new Set())
   /** 手动作废缓存时递增，用于绕过浏览器缓存（场景管理保存后要读到新数据） */
   const version = ref(DATA_VERSION)
   /** 最近一次加载中失败的元数据文件（可选资源失败在此可见，不阻塞完成） */
@@ -163,7 +161,6 @@ export const useSceneStore = defineStore('scenes', () => {
     { file: 'loras.json', required: false, lite: false, parse: (raw) => requireDataRecords(raw, 'LoRA资料'), apply: (d) => { loras.value = d as LoraMeta[] } },
     { file: 'tags.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
     { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
-    { file: 'scenes-index.json', required: false, lite: true, parse: (raw) => raw ?? null, apply: (d) => { index.value = d as SceneIndex | null } },
     { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[] } },
   ]
 
@@ -285,7 +282,6 @@ export const useSceneStore = defineStore('scenes', () => {
         const parsed = requireDataRecords(list, SHARD_FILES[char]) as Scene[]
         if (epoch === loadEpoch) {
           shardCache[char] = { epoch, list: parsed }
-          if (char !== 'core') loadedShards.value = new Set([...loadedShards.value, char])
         }
         return parsed
       })
@@ -347,7 +343,6 @@ export const useSceneStore = defineStore('scenes', () => {
     version.value += 1
     loaded.value = false
     shardCache = {}
-    loadedShards.value = new Set()
     metaOk.clear()
     metaLoadedEpoch = null
     metaFailuresByEpoch.clear()
@@ -396,31 +391,6 @@ export const useSceneStore = defineStore('scenes', () => {
     })
   }
 
-  function ensureCharacter(char: string): Promise<void> {
-    if (loaded.value) return Promise.resolve()
-    const shard = resolveShard(char)
-    const cached = shardCache[shard]
-    const shared = shardCache.shared
-    if (loadedShards.value.has(shard)
-      && cached?.epoch === loadEpoch
-      && shared?.epoch === loadEpoch
-      // Concurrent shards can finish before required metadata; only a complete
-      // studio catalog may take the cached-view shortcut.
-      && META_SPECS.every(spec => !spec.required || metaOk.get(spec.file)?.epoch === loadEpoch)) {
-      viewTarget = `char:${shard}`
-      scenes.value = mergeScenes(shared.list, cached.list)
-      return Promise.resolve()
-    }
-    return loadCharacter(char)
-  }
-
-  function ensureCore(): Promise<void> {
-    if (loaded.value) return Promise.resolve()
-    // A browser may have warmed the shards without the studio metadata.
-    // loadCore reuses those shards while completing the original studio contract.
-    return loadCore()
-  }
-
   /** Browsing needs scene shards and curation, not the studio's model/tag/blueprint catalogs. */
   async function loadBrowserScenes(target: SceneBrowseTarget): Promise<{ scenes: Scene[]; curation: CurationData }> {
     const epoch = loadEpoch, requestVersion = version.value
@@ -459,11 +429,6 @@ export const useSceneStore = defineStore('scenes', () => {
     })
   }
 
-  /** 场景管理写回 data/ 之后调用 */
-  function reload() {
-    return load(true)
-  }
-
   /** 角色档案首屏壳：只取角色目录与热门角色，不等待场景/蓝图大资源。 */
   function loadCharacterShell(force = false): Promise<void> {
     if (force) {
@@ -500,17 +465,8 @@ export const useSceneStore = defineStore('scenes', () => {
     return request
   }
 
-  /** 场景维护只需要角色元数据；不要为一个编辑器首屏拉取三份场景分片。 */
-  function loadMetadata(force = false): Promise<void> {
-    if (force) {
-      invalidate()
-      inflightByKey.delete('metadata')
-    }
-    return loadMeta(force, true)
-  }
-
   /**
-   * 目录页轻载（审计 2026-09-05 P2-02）：首页与全局搜索只吃 curation/角色目录/索引
+   * 目录页轻载（审计 2026-09-05 P2-02）：首页与全局搜索只吃 curation/角色目录
    * 与三分片；3.4MB 场景蓝图与 prompt 元数据不在此拉取，由创作页的 load()/
    * loadCharacter()/loadCore() 依据逐资源缓存增量补拉。有意不置 loaded 标志——
    * 它只代表"重元数据也齐了"的全量完成态。
@@ -527,16 +483,10 @@ export const useSceneStore = defineStore('scenes', () => {
     })
   }
 
-  function byId(id: string) {
-    return scenes.value.find((s) => s.id === id) ?? null
-  }
-
-  const count = computed(() => scenes.value.length)
-
   return {
-    scenes, curation, characters, loras, tags, presets, index,
+    scenes, curation, characters, loras, tags, presets,
     popularCharacters, sceneBlueprints, hasBlueprintCharacter: (id: string) => blueprintCharacters.value.has(id),
-    loading, error, loaded, loadedShards, version, metaFailedFiles,
-    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadMetadata, loadHome, loadCharacter, loadCore, loadLoraCatalog, loadPresetCatalog, ensureCharacter, ensureCore, reload, invalidate, byId, count,
+    loading, error, loaded, version, metaFailedFiles,
+    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadHome, loadCharacter, loadCore, loadLoraCatalog, loadPresetCatalog, invalidate,
   }
 })

@@ -36,7 +36,6 @@ use std::{
 };
 use tokio::sync::{OwnedSemaphorePermit, mpsc, oneshot};
 
-pub use canonical::fingerprint;
 pub(crate) use canonical::stringify;
 pub use media::Media;
 pub(crate) use verification::OpenedMedia;
@@ -205,7 +204,6 @@ impl Context {
                 | "organizeArtworks"
                 | "undoArtworkOrganization"
                 | "countMedia"
-                | "readMedia"
                 | "readThumbnail"
                 | "backup"
                 | "restoreBackup"
@@ -347,7 +345,6 @@ fn is_read(kind: &str) -> bool {
             | "getArtworks"
             | "listProjects"
             | "getOperation"
-            | "readMedia"
             | "readThumbnail"
             | "countMedia"
             | "profile.readSettings"

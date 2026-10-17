@@ -1,6 +1,6 @@
-export type LocalSetupFileState = 'present' | 'missing' | 'unknown'
+type LocalSetupFileState = 'present' | 'missing' | 'unknown'
 
-export interface LocalSetupModelSource {
+interface LocalSetupModelSource {
   url: string
   modelCardUrl: string
   licenseUrl: string

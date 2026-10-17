@@ -1,5 +1,5 @@
 /** Read caught values without assuming that every library throws an Error instance. */
-export function errorField(error: any, key: string): any {
+function errorField(error: any, key: string): any {
   return error !== null && (typeof error === 'object' || typeof error === 'function')
     ? (error as Record<string, any>)[key] : undefined;
 }

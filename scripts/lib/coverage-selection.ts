@@ -142,11 +142,10 @@ function filterReportToScope(report: any, selection: any) {
 }
 
 export = {
-  parseSelectionArgs,
-  collectKnownIds,
-  assertSelectionKnown,
-  collectScopedRefUrls,
-  scopeFileExists,
-  describeScope,
-  filterReportToScope,
+    parseSelectionArgs,
+    collectKnownIds,
+    assertSelectionKnown,
+    collectScopedRefUrls,
+    scopeFileExists,
+    filterReportToScope
 };

@@ -85,10 +85,10 @@ function definitive(message: string|undefined) {
 }
 
 async function generate(record: any, save: any, options: any = {}) {
-  const { signal, fetchImpl = globalThis.fetch, pollMs = 2000, timeoutMs = 600000 } = options;
+  const { signal, pollMs = 2000, timeoutMs = 600000 } = options;
   const signalForRequest = () => AbortSignal.any([...(signal ? [signal] : []), AbortSignal.timeout(Math.min(timeoutMs, 30000))]);
   async function request(url: string, init?: any) {
-    const response = await fetchImpl(url, { ...init, redirect: 'error', signal: signalForRequest() });
+    const response = await fetch(url, { ...init, redirect: 'error', signal: signalForRequest() });
     if (!response.ok) throw new Error(`gateway HTTP ${response.status}`);
     return response;
   }

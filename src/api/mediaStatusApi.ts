@@ -2,7 +2,7 @@ import { apiClient, type ApiResponseObject } from './client.ts'
 import type { Live2DStatusResponse, SDStatusResponse } from '../types/api.ts'
 import { parseSDStatus } from '../utils/sdStatus.ts'
 
-export const MEDIA_STATUS_API_TIMEOUT = 10_000
+const MEDIA_STATUS_API_TIMEOUT = 10_000
 
 export interface MediaStatusCallOptions { signal?: AbortSignal }
 
@@ -38,5 +38,3 @@ export const mediaStatusApi: MediaStatusApi = {
     })
   },
 }
-
-export { parseSDStatus }

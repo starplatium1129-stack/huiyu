@@ -19,10 +19,9 @@ export const STARTER_MODEL_SETTING: SettingDefinition<string> = {
 export type Theme = 'dark' | 'light'
 export type ReasoningLevel = 'off' | 'low' | 'medium' | 'high'
 
-export interface KeyedStorage {
+interface KeyedStorage {
   getItem(key: string): string | null
   setItem(key: string, value: string): void
-  removeItem(key: string): void
 }
 
 export interface SettingDefinition<T> {
@@ -90,15 +89,13 @@ function browserStorage(): KeyedStorage | null {
   }
 }
 
-export interface SettingsRepository {
+interface SettingsRepository {
   get<T>(definition: SettingDefinition<T>): T | null
-  has<T>(definition: SettingDefinition<T>): boolean
   set<T>(definition: SettingDefinition<T>, value: T): void
-  remove<T>(definition: Pick<SettingDefinition<T>, 'key'>): void
 }
 
-export function createSettingsRepository(storage?: KeyedStorage | null): SettingsRepository {
-  const store = storage === undefined ? browserStorage() : storage
+function createSettingsRepository(): SettingsRepository {
+  const store = browserStorage()
   return {
     get<T>(definition: SettingDefinition<T>): T | null {
       if (!store) return null
@@ -108,17 +105,9 @@ export function createSettingsRepository(storage?: KeyedStorage | null): Setting
         return null
       }
     },
-    has<T>(definition: SettingDefinition<T>): boolean {
-      if (!store) return false
-      try { return store.getItem(definition.key) !== null } catch { return false }
-    },
     set<T>(definition: SettingDefinition<T>, value: T): void {
       if (!store) return
       try { store.setItem(definition.key, definition.serialize(value)) } catch { /* private mode */ }
-    },
-    remove<T>(definition: Pick<SettingDefinition<T>, 'key'>): void {
-      if (!store) return
-      try { store.removeItem(definition.key) } catch { /* private mode */ }
     },
   }
 }

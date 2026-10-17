@@ -10,7 +10,7 @@ export interface MigrationRecord {
   value: unknown
 }
 export interface MigrationRecordManifest { id: string; sha256: string; bytes?: number; source: MigrationSource; key: string; windowId?: string; index?: number; domain: MigrationDomain }
-export interface MigrationMediaManifest { alias: string; sha256: string; bytes: number; mime: string; metadata: Record<string, unknown>; derived: boolean }
+interface MigrationMediaManifest { alias: string; sha256: string; bytes: number; mime: string; metadata: Record<string, unknown>; derived: boolean }
 export interface MigrationEnvelope {
   format: 'huiyu-migration'
   version: 1
