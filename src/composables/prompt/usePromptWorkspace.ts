@@ -6,6 +6,7 @@ import { useAnimaSession } from '@/composables/generation/useAnimaSession';
 import { readDrawingSettings } from '@/storage/drawingSettings';
 import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
+import { usePromptDraftRecovery } from './usePromptDraftRecovery';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
 
 import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge';
@@ -35,6 +36,7 @@ export function usePromptWorkspace() {
     const router = useRouter();
     const route = useRoute();
     const pb = usePromptBuilderStore();
+    const draftRecovery = usePromptDraftRecovery(pb);
     const sceneStore = useSceneStore();
     const sd = useLegacySdTasks();
     const { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery, characterShifting } = usePromptWorkspaceUi(pb, route);
@@ -420,12 +422,9 @@ export function usePromptWorkspace() {
     const { applyHistory, resumeHistory, duplicateHistory, deleteHistory, reuseSuccessfulRecipe } = historyReuse;
     watch(() => route.fullPath, () => historyReuse.cancelReuse());
     // ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
-    // onMounted 首放 + watch(route.query) 按 deepLinkNeeded 条件重放：
-    // 组件复用 / 后退恢复（bfcache）时组件不会重挂载、onMounted 不重跑，
-    // URL 变了状态却不更新——按「URL 与当前选中不一致」重放，保证
-    // 「点场景卡片后提示词跟随新场景」。八类参数全部走视图注入的同一路径动作。
     const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
         pb,
+        draftRecovery,
         generationBusy,
         sdSize: computed({ get: () => sdSize.value, set: applyRecommendedSize }),
         patchAnimaState,
@@ -516,6 +515,7 @@ export function usePromptWorkspace() {
         lastResult, closeCompare, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
     usePromptLifecycle({
+        draftRecovery,
         router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
         pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
         applyManagedRoute, refreshManagedRoute, restorePopularDraft,

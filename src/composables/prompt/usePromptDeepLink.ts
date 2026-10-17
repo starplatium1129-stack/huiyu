@@ -5,12 +5,14 @@ import { isCharKey } from '@/composables/scene/directorOptions'
 import { COLOR_MOODS } from '@/config/promptConstants'
 import type { PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
+import type { usePromptDraftRecovery } from './usePromptDraftRecovery'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
 
 export interface PromptDeepLinkDeps {
   pb: PromptBuilderStore
+  draftRecovery: ReturnType<typeof usePromptDraftRecovery>
   generationBusy: Readonly<Ref<boolean>>
   /** Host setter synchronizes engine dimensions through the existing supported-size policy. */
   sdSize: Ref<string>
