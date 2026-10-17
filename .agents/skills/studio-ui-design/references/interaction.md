@@ -18,7 +18,7 @@
 
 ## 浮层与 tooltip
 
-锚定浮层使用所属 primitive 的原点变量和碰撞结果。确认框在触发层之上可达；关闭后回到合理入口，内部 portal 沿用当前 dialog 接入机制。
+锚定浮层使用所属 primitive 的原点变量和碰撞结果，接入现有桌面标题栏与可用空间令牌，不另写固定避让值。确认框在触发层之上可达；关闭后回到合理入口，内部 portal 沿用当前 dialog 接入机制。断点或容器变化使浮层失去可见锚点时收拢；仅在焦点原本属于被隐藏/移除的入口或该浮层时，交接到仍可见的合理位置，保留已经移到其他区域的焦点。
 
 tooltip 同时支持 hover 与键盘焦点。首个说明可有短延迟；同组已经打开后，邻近 tooltip 跳过重复延迟与演出。说明不承担唯一标签，不覆盖正在使用的按钮，也不能留在已消失入口上。
 
@@ -42,6 +42,6 @@ tooltip 同时支持 hover 与键盘焦点。首个说明可有短延迟；同�
 
 ## 画面验收
 
-范围与记录遵循 [AGENTS.md · 审查与验收](../../../../AGENTS.md#审查与验收)。涉及浮层时重点查看真实触发器的返焦、dialog 内 portal 的层级，以及视觉退出期间是否仍接收点击；源码不能代替这些画面证据。
+范围与记录遵循 [AGENTS.md · 审查与验收](../../../../AGENTS.md#审查与验收)。沿受影响流程查看适用的状态与恢复操作；涉及浮层时查看真实触发器的返焦、dialog 内 portal 的层级、标题栏和固定动作区避让、长内容滚动及视觉退出期间的输入隔离。布局变化涉及入口隐藏时，查看变化前后的浮层收拢和焦点交接；源码不能代替这些画面证据。
 
 来源：[emil-design-eng](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/emil-design-eng/SKILL.md)、[apple-design](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/apple-design/SKILL.md)、[pick-ui-library](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/pick-ui-library/SKILL.md)；保留绘遇现有组件和 Windows 桌面语义。

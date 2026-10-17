@@ -1,18 +1,19 @@
 @reference "./tailwind.css";
 /* Character opening: artwork and an opaque reading plane share one stage. */
 .home-page { @apply tw:pb-s-8; }
-.home-page .container { max-width:1200px; padding-inline:var(--s-5); }
+.home-page .container { max-width:1800px; padding-inline:var(--workspace-gutter,var(--s-5)); }
+.home-opening { container-type:inline-size; }
 @media (max-width:768px) { .home-page .container { padding-inline:var(--s-4); } }
-.home-hero { @apply tw:relative tw:isolate tw:grid; grid-template-columns: 1fr 1.25fr; min-height: clamp(440px, 62dvh, 600px); @apply tw:overflow-hidden tw:rounded-stage; background: var(--bg-deep); border: 1px solid var(--border-soft); }
+.home-hero { @apply tw:relative tw:isolate tw:grid; grid-template-columns: minmax(0,1fr) minmax(0,1.25fr); min-height:clamp(440px,42cqw,760px); @apply tw:overflow-hidden tw:rounded-stage; background: var(--bg-deep); border: 1px solid var(--border-soft); }
 /* 首页角色视觉取 design-system 的全局角色令牌（--nene-violet / --natsume-amber）。
    2026-09-07 起全项目已统一到这一组值：director/tokens.css、
    characterParticleTheme.ts、config/characters.ts 与此处同源，改色需四处同步。
    accent-hover 必须与 accent 同色系（提亮变体），不可拿文字色顶替。 */
 .home-hero[data-muse="nene"] { --accent: var(--nene-violet); --accent-hover: color-mix(in srgb, var(--nene-violet) 78%, #fff); }
 .home-hero[data-muse="natsume"] { --accent: var(--natsume-amber); --accent-hover: color-mix(in srgb, var(--natsume-amber) 78%, #fff); }
-.hero-copy { @apply tw:relative; z-index: var(--z-raised); @apply tw:min-w-0; padding: var(--s-6) var(--s-4) var(--s-6) var(--s-6); @apply tw:self-center; }
+.hero-copy { @apply tw:relative; z-index: var(--z-raised); @apply tw:min-w-0; max-width:42rem; padding:clamp(32px,3cqw,64px); @apply tw:self-center; }
 .hero-register { @apply tw:text-secondary tw:text-label-sm; letter-spacing: .08em; }
-.hero-title { margin: var(--s-3) 0; font: 500 clamp(2.25rem, 3.2vw, 3.1rem)/1.25 var(--font-serif); letter-spacing: -.035em; @apply tw:text-primary; }
+.hero-title { margin: var(--s-3) 0; font: 500 clamp(2.25rem,3.4cqw,4.2rem)/1.25 var(--font-serif); letter-spacing: -.035em; @apply tw:text-primary; }
 .hero-title-accent { @apply tw:text-accent; }
 .ctas { margin-top:var(--s-5); }
 .ctas .btn { @apply tw:text-body-sm; }

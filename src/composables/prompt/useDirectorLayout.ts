@@ -1,4 +1,4 @@
-import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
+import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
 import { DIRECTOR_LAYOUT_KEY } from '@/utils/storageKeys'
@@ -28,7 +28,20 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
   // Hiding the inspector leaves enough space for materials beside the canvas.
   const compact = computed(() => viewport.value >= 1024 && width.value < 1120 && !preferences.value.hideInspector)
   const compactMaterialsOpen = ref(false)
-  watch(compact, () => { compactMaterialsOpen.value = false })
+  watch(compact, async () => {
+    // Capture ownership before Vue hides a rail; only that rail may hand off focus.
+    const materials = root.value?.querySelector<HTMLElement>('#drawing-materials')
+    const active = document.activeElement
+    const ownedFocus = active instanceof HTMLElement && materials?.contains(active)
+    compactMaterialsOpen.value = false
+    if (!ownedFocus) return
+    await nextTick()
+    if (!observing || !materials?.isConnected || materials.getClientRects().length) return
+    const current = document.activeElement
+    if (current !== active && current !== document.body) return
+    const toggle = root.value?.closest('.pb')?.querySelector<HTMLButtonElement>('#director-materials-toggle')
+    if (toggle?.getClientRects().length) toggle.focus({ preventScroll: true })
+  })
   let observer: ResizeObserver | null = null
   let observing = false
   const scrollPositions = new Map<HTMLElement, { left: number; top: number }>()

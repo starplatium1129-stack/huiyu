@@ -118,18 +118,19 @@ async function onNavigationLayoutChange(event: MediaQueryListEvent) {
   const compact = event.matches
   const active = document.activeElement
   const origin = active instanceof HTMLElement && isNavigationTarget(active) ? active
-    : active === document.body && lastNavigationFocus?.isConnected ? lastNavigationFocus : null
+    : active === document.body && lastNavigationFocus?.isConnected && !lastNavigationFocus.getClientRects().length ? lastNavigationFocus : null
   const moreWasOpen = moreOpen.value
-  const handoff = moreWasOpen || menuOpen.value || Boolean(origin)
   closeMenu()
-  if (!handoff) return
+  if (!origin) return
   await nextTick()
   if (!navigationActive || compactNavigation.matches !== compact) return
+  const current = document.activeElement
+  if (current === document.body ? lastNavigationFocus !== origin : current !== active && current !== origin) return
   const target = compact ? menuToggleEl.value
     : moreWasOpen ? moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')
       : origin && linksEl.value?.contains(origin) ? origin
         : linksEl.value?.querySelector<HTMLElement>('a[aria-current="page"]') ?? linksEl.value?.querySelector<HTMLElement>('a[href]')
-  target?.focus({ preventScroll:true })
+  if (target?.isConnected && target.getClientRects().length) target.focus({ preventScroll:true })
 }
 function downloadMore() {
   return menuDownload ??= import('./AppMoreMenu.vue').catch(error => { menuDownload = null; throw error })

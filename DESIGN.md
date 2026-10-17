@@ -154,6 +154,28 @@ These principles guide future UI work alongside HUIYU's brand,
 desktop scope and AGENTS.md constraints. Review upstream changes before adopting
 them; a newer upstream version does not silently replace this standard.
 
+## UI delivery standard
+
+Prioritize visual appeal and practical usefulness together in layout, controls
+and motion. Deliver a coherent composition, readable content, clear primary
+actions and comfortable operation. Shape required motion to improve the visual
+experience and clarify interaction, keeping content and actions accessible.
+
+Apply the current visual and interaction requirements in the first implementation
+of the affected flow. Shared control consistency, applicable failure states and
+desktop usability belong to completion; do not defer them to a later polish pass
+or wait for the user to enumerate them. Distinguish omissions against existing
+requirements from a newly chosen visual direction.
+Perceptible motion for key interactions is required in this first delivery,
+with reduced-motion alternatives defined under
+[Interaction & motion](#interaction--motion).
+
+Before editing, identify the primary action, the path from entry through result
+or recovery and back, applicable states, shared component/style owners and the
+intended visual reference. Keep the reference's hierarchy, depth and motion
+visible while making the flow complete. Scope implementation and review to the
+affected flow and consumers of changed shared rules.
+
 ## Product character
 
 Anime and Galgame establish the identity: characters, intimate dialogue, artwork,
@@ -177,8 +199,11 @@ depth and authored motion into one HUIYU component family. Visual upgrades may
 reshape existing components and shared surfaces while preserving task state,
 readable Chinese typography and immediate actions in both themes.
 
-The home opening and character archive retain the installed desktop layout from
-`faddab4a`. The opening pairs one character artwork with a calm reading plane,
+The home opening and character archive retain the composition from the installed
+desktop layout in `faddab4a`. Home sections expand together up to 1800 CSS px,
+with shared outer gutters; the opening's height and title follow its actual
+container width while its reading plane stays bounded. The opening pairs one
+character artwork with a calm reading plane,
 manual Nene/Natsume selection, a serif title and character accent. Scene and character discovery precede the tool
 catalog. Utilities use short labels and progressive disclosure. Status bars
 communicate actual state without decorative radar, arbitrary coordinates, or
@@ -289,6 +314,11 @@ Resizable rails, drawers and split views use their own available inline width
 to decide wrapping and disclosure. Keep current values and primary actions
 visible; secondary controls may move into an accessible disclosure. Chinese
 labels must retain readable lines as the container narrows.
+Available width and height account for desktop title chrome, navigation and
+fixed action regions exactly once. Dialogs, drawers and menus stay within their
+actual container or viewport; long content scrolls without hiding close,
+confirmation or recovery actions. Review both sides of an affected breakpoint
+and resizing while a surface is open.
 
 Resizing distinguishes a deliberate drag from a press with minor movement.
 Escape during an active resize restores the widths and collapsed state from
@@ -323,6 +353,25 @@ single column, primary actions stay reachable, and tap targets should be at leas
 project touch target, not an Apple platform point conversion. Expand controls in
 normal layout without overlapping neighboring targets; retain desktop text size
 on narrow screens. Mobile compatibility must not weaken the desktop stage.
+
+Desktop visual review prioritizes the primary 4K output machine, then 2K
+monitors and the usual laptop proportions. At 100% browser zoom, use these
+physical-resolution / Windows-scale combinations as the desktop baseline:
+
+| Priority / display | Physical resolution | Windows scale | Nominal logical screen area (CSS px) |
+| --- | --- | --- | --- |
+| Primary 4K, 16:9 | 3840 × 2160 | 150% / 200% | 2560 × 1440 / 1920 × 1080 |
+| 2K, 16:9 | 2560 × 1440 | 100% / 125% | 2560 × 1440 / 2048 × 1152 |
+| Laptop, 16:10 | 2560 × 1600 | 150% | approximately 1707 × 1067 |
+
+These are logical screen bounds before taskbar, window and application chrome;
+record the actual content viewport for each review. Start with the affected
+pages at the usual maximized desktop size in both themes, judging composition,
+artwork size, readable controls, action reachability and visible motion. Narrow
+windows and breakpoint checks supplement this review. Reuse equal-CSS-size
+layout evidence across combinations, while keeping physical DPI, font/image
+sharpness and device motion evidence separate. Viewport resizing or DPR
+emulation establishes equivalent layout only, not real 4K/2K device acceptance.
 
 Scene discovery must expose search and the most useful filters near the results.
 Do not require a friend who has never used the site to understand the taxonomy
@@ -528,6 +577,10 @@ for character presence.
 Keep the primary navigation short and stable. The current page is visible, but
 navigation does not compete with the artwork. Mobile navigation opens as a clear
 menu with text labels.
+When a layout change hides or removes a trigger, close any transient surface
+that loses its anchor. Hand off focus to an available equivalent or a logical
+reading position only when focus belonged to that hidden/removed entry or the
+closing surface; preserve focus already outside them.
 
 Shared atelier chrome lives in `src/assets/css/design-system.css`: `.nav-back`,
 `.page-kicker` (aliases `.pb-kicker` / `.gallery-kicker`), `.page-title`,
@@ -592,6 +645,15 @@ Connection, generation, voice, and sharing states use a short label plus a
 specific recovery action. Color reinforces the state but is never the only
 signal. Raw logs stay behind a disclosure unless troubleshooting is active.
 
+Implement the states that apply to the affected flow on its first delivery:
+initial/loading, empty, selected, disabled, success, failure/retry and
+cancellation/interruption. Startup and lazy-loaded surfaces need visible loading
+and failure recovery where applicable. Preserve useful input and existing results
+through recovery; distinguish retrying a request from reloading the application,
+and protect active work through the existing reload flow. Repeated actions and
+late responses must respect the current request and page lifecycle. Add only
+states the flow can actually reach.
+
 ### Character styling
 
 Nene context may use silver-violet accents; Natsume context may use amber-coffee
@@ -637,8 +699,9 @@ belong inside installation details, not in the default creative composition.
 - Do not use emoji-only controls for navigation or important actions.
 - Do not duplicate Scene titles or character data in page markup.
 - Do not show every advanced option merely because space is available.
-- Do not redesign one page in isolation without checking navigation, director,
-  scene library, showcase, character pages, and control panel as one family.
+- Do not redesign a page in isolation from its shared components and styles.
+  Trace changed shared rules to their actual consumers and local overrides;
+  keep affected pages in one family and remove superseded styling in this scope.
 
 ## 2026-09-07 · 夜色手帐布局
 
