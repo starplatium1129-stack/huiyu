@@ -49,19 +49,6 @@
   --editorial-gold: #f2bb68;
   --editorial-gold-soft: rgba(242, 187, 104, 0.14);
 
-  /* ---- Rella 夜空氛围（Galgame 梦幻星尘夜空） ----
-     只做背景/辉光/渐变层，不做文字色；对比度仍由既有文字 token 承担。 */
-  --rella-night:       #0d141b;
-  --rella-night-soft:  #192632;  /* 夜空过渡层 */
-  --rella-night-glass: rgba(20, 30, 41, 0.88); /* 夜空玻璃卡 */
-  --rella-star:        #fff2f9;  /* 糖果粉白星辉 */
-  --rella-cyan:        #5eead4;  /* 汽水苏打青 */
-  --rella-violet:      #b784f6;  /* 梦幻薰衣草紫 */
-  --rella-glow-cyan:   rgba(94, 234, 212, 0.22);  /* 青辉光点缀层 */
-  --rella-glow-violet: rgba(183, 132, 246, 0.24);  /* 紫辉光主导层 */
-  --rella-glow-pink:   rgba(255, 117, 160, 0.32);  /* 樱粉辉光强化层 */
-  --stage-rella: linear-gradient(160deg, #203648 0%, #17232f 48%, #101820 100%);
-
   /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
   --archive-paper:       #f2f5f3;
   --archive-ink:         #11181d;
