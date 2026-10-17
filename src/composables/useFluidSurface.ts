@@ -3,48 +3,18 @@ import { createFluidMotion, FluidSpring } from '@/utils/fluidSpring'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 
-/**
- * 默认浮层表面与卡片面板选择器（009 交互流畅度与性能规范）。
- * 覆盖故事卡片、模态窗卡片、批次面板、分镜面板、对比面板、备份卡片、任务中心、大图查看器等。
- */
-const DEFAULT_FLUID_PANEL_SELECTORS = [
-  '.story-card',
-  '.modal-card',
-  '.batch-panel',
-  '.shot-script-panel',
-  '.pb-compare',
-  '.pb-backup-card',
-  '.pb-backup-modal',
-  '.candidate-compare',
-  '.task-center',
-  '.art-viewer',
-  '.showcase-viewer',
-  '.guest-guide-card',
-  '[role="dialog"]',
-] as const
-
-export const DEFAULT_FLUID_PANEL_SELECTOR = DEFAULT_FLUID_PANEL_SELECTORS.join(', ')
+/** Default transition consumers expose their panel as a dialog; custom cards pass an explicit selector. */
+export const DEFAULT_FLUID_PANEL_SELECTOR = '[role="dialog"]'
 
 /** 全屏与超大图查看器类名清单 */
 const FLUID_FULLSCREEN_SELECTORS = [
   '.art-viewer',
-  '.showcase-viewer',
   '.candidate-compare',
   '.pb-compare',
   '.inpaint-modal',
-  '.viewer-layout',
 ] as const
 
 const FLUID_FULLSCREEN_SELECTOR = FLUID_FULLSCREEN_SELECTORS.join(', ')
-
-/** 小型气泡与下拉弹出层类名清单 */
-const FLUID_POPOVER_SELECTORS = [
-  '.utility-popover',
-  '.random-popover',
-  '.popover-menu',
-] as const
-
-const FLUID_POPOVER_SELECTOR = FLUID_POPOVER_SELECTORS.join(', ')
 
 /** Sample the existing spring once; native timelines keep fading while a newly
  * opened form lays out. Retarget from presentation and retain spring velocity. */
@@ -151,7 +121,7 @@ export function useFluidSurface(panelSelector?: string) {
     }
     const rect = panel.getBoundingClientRect()
     const isFullscreenViewer = (panel.matches && panel.matches(FLUID_FULLSCREEN_SELECTOR)) || rect.width > innerWidth * 0.85 || rect.height > innerHeight * 0.85
-    const isPopover = (panel.matches && panel.matches(FLUID_POPOVER_SELECTOR)) || (rect.width > 0 && rect.width < 340 && rect.height < 380)
+    const isPopover = rect.width > 0 && rect.width < 340 && rect.height < 380
     const isReduced = prefersReducedMotion()
 
     // Image previews animate their own source-to-image proxy; moving the
