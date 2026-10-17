@@ -141,11 +141,10 @@
 .pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; max-height:none; }
 .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-hover); pointer-events:none; }
 .pb.atelier-workspace .stage-swap-leave-active .generation-particles { transition-duration:var(--motion-hover); }
-.pb.atelier-workspace .stage-content .scene-reference { min-height:0; flex:1; --reference-max-height:calc(100cqh - 180px); }
+.pb.atelier-workspace .stage-content .scene-reference { min-height:0; flex:1; }
 .pb.atelier-workspace .stage-content .stage-idle { flex:0 0 auto; }
 @container (max-height:400px) {
   .pb.atelier-workspace .stage-generation-feedback { top:62%; gap:var(--s-1); }
-  .pb.atelier-workspace .stage-content .scene-reference { --reference-max-height:42cqh; }
   .pb.atelier-workspace .scene-reference figcaption p { display:none; }
   /* Reserve short-canvas space for the full title, copy and scene action, not just the illustration. */
   .pb.atelier-workspace .stage-idle-guide .atelier-canvas-illustration { width:auto; max-width:min(336px,70%); max-height:max(64px,calc(100cqh - 216px)); margin-bottom:var(--s-3); }

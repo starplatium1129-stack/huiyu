@@ -25,7 +25,6 @@
   --fs-stage-glyph: 1.7rem;
   --fs-ios-control: 16px;
   --z-stage-backdrop: 0;
-  --ease-stage-sweep: cubic-bezier(.4,0,.2,1);
   --character-accent:#ff75a0;
   --character-accent-hover:color-mix(in srgb, var(--character-accent) 75%, white);
   --character-soft:color-mix(in srgb, var(--character-accent) 16%, transparent);

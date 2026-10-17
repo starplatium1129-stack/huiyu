@@ -319,7 +319,7 @@ impl Service {
         let acceleration_reason = if !online {
             "ComfyUI 未连接，T8 加速状态待检测"
         } else if t8 {
-            "T8 双时钟采样 + 4 步加速 LoRA 可用；实际速度取决于模型和设备"
+            "已检测到 T8 双时钟采样节点；使用前仍需准备模型和加速权重，实际速度取决于设备"
         } else {
             "当前未检测到 T8 双时钟节点，使用原生采样器；实际速度取决于模型和设备"
         };

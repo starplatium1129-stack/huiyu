@@ -89,8 +89,6 @@
 :root[data-theme="light"] .semantic-particle-field { --particle-accent: color-mix(in srgb, var(--archive-blue) 48%, var(--ink-base)); }
 
 :root[data-theme="light"] .desktop-titlebar {
-  --desktop-titlebar-bg-top: #fcf9fd;
-  --desktop-titlebar-bg-bottom: #f3ebe8;
   --desktop-titlebar-text: var(--text-secondary);
   --desktop-titlebar-name: var(--text-primary);
   --desktop-titlebar-page: var(--text-muted);

@@ -3,7 +3,6 @@
    above opaque reading surfaces. html makes these rules independent of lazy CSS
    load order without overriding page-specific state selectors. */
 :root {
-  --workspace-chrome: color-mix(in srgb, var(--bg-surface) 80%, transparent);
   --workspace-edge: color-mix(in srgb, var(--border-soft) 76%, var(--glass-highlight));
   --workspace-inset: inset 0 1px 0 var(--glass-highlight);
   --workspace-lift: var(--workspace-inset), 0 10px 28px -10px color-mix(in srgb, var(--ink-base) 28%, transparent);

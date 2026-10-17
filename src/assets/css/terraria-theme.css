@@ -41,7 +41,6 @@
   --terraria-shadow:#0b131d;
   --terraria-grass:#79ad47;
   --terraria-soil:#795337;
-  --terraria-grid:rgba(168,201,177,.025);
   --nav-bg:var(--bg-deep);
   --glass-fill:var(--bg-surface);
   --glass-fill-strong:var(--bg-elevated);
@@ -62,8 +61,6 @@
   --font-display:'JetBrains Mono','Noto Sans SC','Microsoft YaHei',monospace;
   --font-serif:var(--font-display);
   --success-text:#b9e69e; --warning-text:#ffe29a; --danger-text:#ffc0b7; --info-text:#badfff;
-  --desktop-titlebar-bg-top:var(--bg-deep);
-  --desktop-titlebar-bg-bottom:var(--bg-deep);
   --desktop-titlebar-text:var(--text-secondary);
 }
 :root[data-theme-style='terraria'][data-theme='light'] {
@@ -96,7 +93,6 @@
   --terraria-shadow:#b3be99;
   --terraria-grass:#4a7732;
   --terraria-soil:#916c42;
-  --terraria-grid:rgba(53,86,47,.035);
   --glass-highlight:rgba(255,255,235,.65);
   --success-text:#285c27; --warning-text:#79500e; --danger-text:#983536; --info-text:#25557d;
 }
