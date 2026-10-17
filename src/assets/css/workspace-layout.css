@@ -10,7 +10,6 @@
 .library-page .library-detail .character-hero { grid-template-columns: minmax(0, min(44%, calc(max(340px, 100dvh - 370px) * var(--portrait-ratio, .7)))) minmax(0, 1fr); @apply tw:gap-s-6 tw:p-0; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
 .library-page .library-detail .character-hero::before, .library-page .library-detail .character-hero::after { @apply tw:hidden; }
 .library-page .library-detail .portrait { @apply tw:min-h-0; max-height: none; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
-.library-page .library-detail .portrait::before { @apply tw:hidden; }
 .library-page .library-detail .portrait-image { @apply tw:w-full tw:h-auto; max-height: none; @apply tw:object-contain; filter: none; }
 .library-page .library-detail .portrait-badge,
 .library-page .library-detail .portrait-source { @apply tw:static tw:text-muted tw:mt-s-2; }

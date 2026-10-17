@@ -195,7 +195,6 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-item { @apply tw:w-full tw:flex tw:items-center tw:gap-s-3 tw:p-s-2 tw:mb-s-1 tw:text-left; background: transparent; border: 1px solid transparent; @apply tw:rounded-md tw:text-primary tw:cursor-pointer; }
 .directory-item:hover { background: var(--bg-hover); }
 .directory-item[aria-pressed="true"] { background: var(--accent-soft); }
-.directory-item img { @apply tw:w-[48px] tw:h-[60px] tw:shrink-0 tw:rounded-sm tw:object-cover; object-position: center 20%; background: var(--bg-elevated); }
 .directory-label { @apply tw:min-w-0 tw:grid tw:gap-s-1; }
 .directory-label strong { @apply tw:text-body-sm tw:font-semibold; }
 .directory-label small { @apply tw:text-label-xs tw:text-secondary tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }

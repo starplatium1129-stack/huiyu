@@ -56,11 +56,9 @@
 .muse-marker { @apply tw:w-[6px] tw:h-[6px]; border-radius: 50%; }
 .muse-marker-nene { background: var(--nene-violet); }
 .muse-marker-natsume { background: var(--natsume-amber); }
-.home-page .eyebrow { @apply tw:p-0; border: 0; border-radius: 0; box-shadow: none; background: none; transform: none; }
 .home-section { @apply tw:mt-s-6 tw:mb-s-7; }
 .home-section-head { @apply tw:flex; align-items: end; @apply tw:justify-between tw:gap-s-4 tw:mb-s-5; }
 .home-section-head h2 { margin: var(--s-2) 0; font: 600 var(--fs-title-sm)/var(--lh-label) var(--font-sans); letter-spacing: 0; }
-.home-section-head .eyebrow { @apply tw:text-mono-sm; letter-spacing: .16em; @apply tw:text-muted; }
 .home-section-head .link { @apply tw:text-label tw:shrink-0; }
 .tools-grid { @apply tw:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); @apply tw:gap-s-3; }
 .recent-empty-art img { display:block; width:100%; height:100%; object-fit:contain; }
