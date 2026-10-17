@@ -21,11 +21,18 @@ interface Live2DCoreModel {
   getParamFloat?(id: string): number
 }
 
+interface WlCachedTexture {
+  constructor: { removeFromCache?(texture: WlCachedTexture): unknown }
+  baseTexture?: WlCachedTexture
+  resource?: { url?: string }
+}
+
 interface WlLive2DModel {
   autoInteract?: boolean
   autoUpdate?: boolean
   update?(deltaMs: number): void
   destroy(): void
+  textures?: WlCachedTexture[]
   visible: boolean
   width: number
   height: number
@@ -91,6 +98,21 @@ function readLibrary(value: unknown): WlLive2DLibrary | null {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
+}
+
+/** Drop imported preview cache roots without invalidating another session's textures. */
+function releasePreviewTextureCache(model: WlLive2DModel, options: Live2DConnectOptions) {
+  if (options.character !== 'preview' || !options.modelUrl.startsWith('blob:')) return
+  // wl-live2d 1.0.8 embeds its own Pixi: use the actual instance constructors.
+  // Their instance overloads only remove cache keys and empty cacheIds, making
+  // repeated cleanup safe; they do not destroy textures, images or GPU objects.
+  // A failed load that never exposes a model's textures cannot be cleaned here.
+  for (const texture of model.textures ?? []) {
+    const base = texture.baseTexture
+    if (!base?.resource?.url?.startsWith('data:image/')) continue
+    texture.constructor.removeFromCache?.(texture)
+    base.constructor.removeFromCache?.(base)
+  }
 }
 
 /** 包装 wl-live2d model 为统一句柄（原 useLive2D 中对 model 的全部操作都在这里） */
@@ -236,6 +258,7 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           model.visible = false
           model.autoUpdate = false
           model.autoInteract = false
+          releasePreviewTextureCache(model, options)
           model.destroy()
           return
         }
@@ -351,7 +374,10 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
           // ResizePlugin cleanup. Use its setter to detach the global listener.
           application?.cancelResize?.()
           if (application) application.resizeTo = null
-          if (rawModel) rawModel.autoUpdate = false
+          if (rawModel) {
+            rawModel.autoUpdate = false
+            releasePreviewTextureCache(rawModel, options)
+          }
           rawModel = null
           if (modelHandle) modelHandle.visible = false
           modelHandle = null
