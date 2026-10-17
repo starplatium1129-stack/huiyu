@@ -21,11 +21,11 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const preparedPaths = shallowRef<PreparedInferencePaths | null>(null)
   const operation = shallowRef<InferenceSetupOperation | null>(null)
   const busy = ref(false), checking = ref(false), activating = ref(false), restarting = ref(false), operationUncertain = ref(false)
-  const workspaceOpen = ref(false), workspaceDraft = ref(''), workspaceSaving = ref(false), workspacePending = ref(false)
+  const workspaceOpen = ref(false), workspaceOpening = ref(false), workspaceDraft = ref(''), workspaceSaving = ref(false), workspacePending = ref(false)
   const workspaceButton = ref<HTMLElement | null>(null), workspaceError = ref('')
   const message = ref(''), error = ref(''), cancelState = ref<'idle' | 'pending' | 'accepted' | 'failed'>('idle')
   const hasRunningOperation = computed(() => operation.value?.status === 'running')
-  const locked = computed(() => blocked.value || busy.value || checking.value || inspecting.value || activating.value || restarting.value || workspaceSaving.value || operationUncertain.value)
+  const locked = computed(() => blocked.value || busy.value || checking.value || inspecting.value || activating.value || restarting.value || workspaceOpening.value || workspaceSaving.value || operationUncertain.value)
   const currentPlan = computed(() => !!plan.value && plan.value.freeBytes !== null && !workspacePending.value && plan.value.workspacePath === workspacePath.value)
   const selectedModel = computed(() => plan.value?.models.find(model => model.id === modelId.value))
   const runtimeSpaceEnough = computed(() => !!plan.value && plan.value.freeBytes !== null && plan.value.freeBytes >= plan.value.runtime.requiredBytes)
@@ -42,7 +42,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const canImport = computed(() => !locked.value && currentPlan.value && !!inspection.value && importReviewed.value)
   const canCancel = computed(() => hasRunningOperation.value && operation.value?.cancelAllowed !== false && !['pending', 'accepted'].includes(cancelState.value))
   const progress = computed(() => operation.value?.totalBytes ? Math.min(100, Math.round((operation.value.downloadedBytes ?? 0) / operation.value.totalBytes * 100)) : null)
-  let disposed = false, observing = false, inspectionVersion = 0, planVersion = 0
+  let disposed = false, observing = false, inspectionVersion = 0, planVersion = 0, workspaceOpenVersion = 0
   let inspectionController: AbortController | null = null, planController: AbortController | null = null, activationController: AbortController | null = null
   let submission: Submission | null = null, previousOperationId: string | null = null
   let cancelRequest: Promise<void> | null = null
@@ -56,6 +56,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     }
   }
   function workspaceChanged() {
+    workspaceOpenVersion++; workspaceOpening.value = false
     workspacePending.value = true; reviewed.value = false; preparedPaths.value = null; invalidateInspection()
     planVersion++; planController?.abort(); checking.value = false
     void refreshPlan()
@@ -74,7 +75,8 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
 
   async function refreshPlan() {
     if (!local() || checking.value) return
-    checking.value = true; workspaceError.value = ''
+    checking.value = true
+    if (!workspaceOpen.value) workspaceError.value = ''
     const revision = ++planVersion
     planController?.abort(); planController = new AbortController()
     try {
@@ -82,7 +84,8 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       if (disposed || revision !== planVersion) return
       if (binding && binding.activeRoot !== result.workspacePath) throw new Error('当前 AI 工作区与运行时目录不一致，请重启绘遇后重新检查')
       workspacePending.value = binding?.restartRequired ?? false
-      workspaceDraft.value = binding?.root ?? result.workspacePath
+      // Background readiness owns the saved state, not an open directory draft.
+      if (!workspaceOpen.value) workspaceDraft.value = binding?.root ?? result.workspacePath
       if (workspacePath.value !== result.workspacePath) {
         workspacePath.value = result.workspacePath; invalidateInspection()
         if (operation.value?.status !== 'running') operation.value = null
@@ -249,12 +252,20 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     await cancelRequest
   }
   async function openWorkspace() {
-    if (!desktop || locked.value) return
-    workspaceError.value = ''
-    try { const binding = await desktop.getWorkspace(); if (!disposed) { workspaceDraft.value = binding.root; workspacePending.value = binding.restartRequired; workspaceOpen.value = true } }
-    catch (cause) { if (!disposed) workspaceError.value = causeText(cause) }
+    if (!desktop || disposed || locked.value || workspaceOpen.value) return
+    const revision = ++workspaceOpenVersion
+    workspaceOpening.value = true; workspaceError.value = ''
+    try {
+      const binding = await desktop.getWorkspace()
+      if (disposed || revision !== workspaceOpenVersion) return
+      workspaceDraft.value = binding.root; workspacePending.value = binding.restartRequired; workspaceOpen.value = true
+    } catch (cause) { if (!disposed && revision === workspaceOpenVersion) workspaceError.value = causeText(cause) }
+    finally { if (!disposed && revision === workspaceOpenVersion) workspaceOpening.value = false }
   }
-  function closeWorkspace() { if (!workspaceSaving.value) workspaceOpen.value = false }
+  function closeWorkspace() {
+    if (workspaceSaving.value) return
+    workspaceOpenVersion++; workspaceOpening.value = false; workspaceOpen.value = false
+  }
   async function saveWorkspace() {
     if (!desktop || workspaceSaving.value || !workspaceOpen.value || disposed) return
     workspaceSaving.value = true; workspaceError.value = ''
@@ -287,7 +298,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   // Aborting an activation observer only detaches the client; a submitted save
   // may still complete. The next mount must read the plan and active engine.
   onScopeDispose(() => {
-    disposed = true; planVersion++; inspectionVersion++; planController?.abort(); inspectionController?.abort(); activationController?.abort()
+    disposed = true; workspaceOpenVersion++; planVersion++; inspectionVersion++; planController?.abort(); inspectionController?.abort(); activationController?.abort()
     window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged); window.removeEventListener('focus', focused)
   })
   return { desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, runtimeSpaceEnough, modelSpaceEnough, canInstall, canDownload, canActivate,

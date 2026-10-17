@@ -38,7 +38,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const statusError = ref('')
   const scripts = ref({ voiceStart: true, voiceStop: true, webui: true, comfy: true })
 
-  // renderStatus 会按焦点状态回填的配置回显（不主动覆盖正在输入的字段）
+  // 轮询只回填没有未确认编辑的配置字段。
   const sdHost = ref('http://127.0.0.1:7860')
   const comfyHost = ref('http://127.0.0.1:8188')
   const ttsHost = ref('http://127.0.0.1:9880')
@@ -50,13 +50,31 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const voiceNenePrompt = ref('')
   const voiceNatsumeRef = ref('')
   const voiceNatsumePrompt = ref('')
-  // Polling updates clean fields; moving focus must never discard an unsaved draft.
   const configFields = [sdHost, comfyHost, ttsHost, ttsEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt]
-  const syncedConfig = new Map(configFields.map(field => [field, field.value]))
+  const configEdits = new Map(configFields.map(field => [field, { revision: 0, acknowledged: 0 }]))
+  let syncingConfig = false
+  for (const [field, edit] of configEdits) {
+    watch(field, () => { if (!syncingConfig) edit.revision++ }, { flush: 'sync' })
+  }
+  function captureConfigEdits() {
+    return new Map([...configEdits].map(([field, edit]) => [field, edit.revision]))
+  }
+  function acknowledgeConfigEdits(snapshot: Map<Ref<string>, number>) {
+    let hasNewerEdits = false
+    for (const [field, edit] of configEdits) {
+      if (edit.revision === snapshot.get(field)) edit.acknowledged = edit.revision
+      else hasNewerEdits = true
+    }
+    return hasNewerEdits
+  }
   function syncConfigField(field: Ref<string>, incoming: string | undefined) {
     if (incoming === undefined) return
-    if (field.value === syncedConfig.get(field)) field.value = incoming
-    syncedConfig.set(field, incoming)
+    const edit = configEdits.get(field)!
+    // Even returning to the old server value is a new draft until a save confirms it.
+    if (edit.revision !== edit.acknowledged) return
+    syncingConfig = true
+    try { field.value = incoming }
+    finally { syncingConfig = false }
   }
   const autoStartVoice = ref(false)
   const savingAutoStartVoice = ref(false)
@@ -401,6 +419,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
     readyLabel,
     lastStatus: () => lastStatus,
+    captureConfigEdits, acknowledgeConfigEdits,
     renderStatus, loadShareLink, pollStatus, pollLogs, clearLogs, startPolling, stopPolling,
     fmtVram, lineClass,
   }
