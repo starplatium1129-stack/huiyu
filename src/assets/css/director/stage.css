@@ -56,9 +56,6 @@
   .pb #stepResult { @apply tw:flex tw:flex-col tw:gap-s-3; }
   .pb.has-result #stepResult { min-height:clamp(300px, 40vh, 420px); }
   .pb #stepResult > .panel-title { order:0; @apply tw:mb-0; }
-  /* 故事联想 tag 高亮 */
-  .pb .tag-chip[data-suggested="1"] { outline:1px dashed var(--accent); opacity:1; }
-  .pb .tag-chip[data-suggested="1"]::after { content:' · 联想'; font-size:0.6em; }
 
   /* 侧栏面板压一档：中央画布是主角，左右栏不该和它抢同等边框亮度 */
   .pb .panel {

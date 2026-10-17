@@ -27,14 +27,10 @@
   .pb[data-director-mode="basic"] .advanced-decision:not(.basic-visible) { @apply tw:hidden; }
 
   /* Negative prompt collapsible */
-  .pb .callout { padding: var(--s-3) var(--s-4); @apply tw:rounded-md tw:mt-s-3; }
   .pb .neg-output { background: var(--bg-deep); @apply tw:rounded-sm tw:p-s-2 tw:font-mono tw:text-label-sm tw:leading-loose; word-break: break-all; @apply tw:whitespace-pre-wrap tw:max-h-[100px] tw:overflow-y-auto; }
 
   .pb .review-head { @apply tw:flex tw:items-center tw:justify-between tw:mb-s-4; }
   .pb .review-head h3 { @apply tw:m-0 tw:text-title-sm; }
-  /* Quick preset select */
-  .pb #presetSelect { @apply tw:w-full; background:var(--bg-deep); border:1px solid var(--accent); @apply tw:rounded-sm tw:text-primary; padding:var(--s-2) 8px; @apply tw:text-body-sm; outline:none; }
-  .pb #presetSelect:focus { box-shadow: var(--focus-shadow); }
   /* 审计修复: 提交中态同样要读得清 */
 
   @media (min-width: 1380px) and (max-height:780px) {
@@ -47,7 +43,7 @@
   }
   @media (max-width: 768px) {
     .pb #stepResult > * { grid-column:1 !important; grid-row:auto !important; }
-    .pb .char-btn, .pb .tag-chip, .pb .cat-tab { @apply tw:min-h-[44px]; }
+    .pb .char-btn, .pb .tag-chip { @apply tw:min-h-[44px]; }
     /* iOS 聚焦自动放大要求控件字号不低于平台阈值,与正文阶梯分开归属 */
   }
   /* 表面(玻璃底/边/内衬)统一由下方 liquid glass 组声明,此处只留自身几何与排版 */
@@ -60,7 +56,6 @@
   .pb .api-status .badge.badge-online { opacity:1; }
   .pb .api-status .badge.badge-online:hover { opacity:1; }
   .pb .api-recovery-link { @apply tw:text-accent tw:text-label-xs tw:whitespace-nowrap; }
-  .pb #sdSeedDisplay { @apply tw:font-mono; opacity:.6; }
   /* 2026-08-28：.sd-result-area/.sd-status/.sd-progress 系列已随「输出面板重复进度条」
      移除而清退，生成进度统一由画布舞台 is-generating 态承担。 */
   @media (max-width: 768px) {
@@ -109,14 +104,9 @@
     .pb .focus-mode-btn, .pb .utility-trigger, .pb .api-status .badge, .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
 }
 
-/* Hover 位移只属于精确指针；触屏保留颜色/边框反馈，不粘住卡片位置。 */
-@media (hover: hover) and (pointer: fine) {
-  .pb .cat-tab:hover { transform: translateY(-1px); }
-}
 @media (hover: none), (pointer: coarse) {
   .pb .focus-mode-btn:hover,
-  .pb .utility-trigger:hover,
-  .pb .cat-tab:hover { transform: none !important; }
+  .pb .utility-trigger:hover { transform: none !important; }
 }
    @media (prefers-reduced-motion: reduce) {
      :root:not([data-motion='full']) .pb .director-workspace > .col-left, :root:not([data-motion='full']) .pb .director-workspace > .col-center { animation:none !important; }
