@@ -151,7 +151,8 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     clickTimer = setTimeout(() => { suppressClick = false }, 0)
   }
   function wheel(event: WheelEvent) {
-    if (!options.active() || options.count() < 2 || dragging.value || event.ctrlKey || event.metaKey || blocked(event.target)) return
+    if (event.defaultPrevented || !options.active() || options.count() < 2 || dragging.value || event.ctrlKey || event.metaKey) return
+    if (event.target instanceof Element && event.target.closest('.zoom-toolbar, .zoom-recovery, .gallery-orbit-caption')) return
     const delta = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY
     if (!delta) return
     event.preventDefault(); event.stopPropagation()
@@ -167,7 +168,9 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   useEventListener(host, 'pointercancel', event => pointerEnd(event, true))
   useEventListener(host, 'lostpointercapture', event => pointerEnd(event, true))
   useEventListener(host, 'click', event => { if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false } }, { capture: true })
-  useEventListener(host, 'wheel', wheel, { passive: false, capture: true })
+  // The current picture consumes wheel zoom first; its letterboxing and the
+  // surrounding covers keep the gallery's existing navigation gesture.
+  useEventListener(host, 'wheel', wheel, { passive: false })
   useEventListener(window, 'blur', () => { if (drag) { releasePointer(); moveTo(options.index()) } })
   useResizeObserver(host, entries => {
     width.value = entries[0]?.contentRect.width || width.value

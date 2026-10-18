@@ -3,7 +3,6 @@
 .pb.journal-workspace.atelier-workspace { background:var(--bg-base); --fs-label:13px; --fs-label-sm:13px; --fs-label-xs:12px; --fs-body-sm:13px; --fs-body:15px; --fs-title:24px; --fs-title-sm:18px; }
 .pb.atelier-workspace .material-drawer,.pb.atelier-workspace .director-inspector { border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); }
 .pb.atelier-workspace .material-heading,.pb.atelier-workspace .inspector-heading { min-height:68px; padding:20px 20px 16px; color:var(--text-primary); background:var(--bg-surface); border:0; font-size:16px; font-weight:600; }
-.pb.atelier-workspace .material-heading small { display:none; }
 .pb.atelier-workspace :is(.material-heading>span,.inspector-heading>strong) { display:inline-flex; align-items:center; gap:10px; }
 .pb.atelier-workspace .workbench-heading-icon { display:grid; place-items:center; flex:none; width:30px; height:30px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--accent-soft); color:var(--accent); }
 .pb.atelier-workspace .workbench-heading-icon .archive-icon { width:17px; height:17px; }
@@ -34,6 +33,14 @@
 .pb.atelier-workspace .material-current-scene>strong { display:block; font-size:14px; line-height:1.6; }
 .pb.atelier-workspace .material-current-scene p { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; margin:12px 0 16px; color:var(--text-secondary); font-size:13px; line-height:1.9; }
 .pb.atelier-workspace .material-current-scene>button { width:100%; }
+/* A compact workspace can lend its full canvas column to materials. Use that
+   width for the scene context; character controls still query their own column. */
+.pb.atelier-workspace .material-content #stepChar { min-width:0; container-type:inline-size; }
+@container materials (min-width:640px) {
+  .pb.atelier-workspace #material-character { display:grid; grid-template-columns:minmax(0,1fr) minmax(240px,.85fr); align-content:start; gap:var(--s-5); }
+  .pb.atelier-workspace #material-character > .async-panel { min-width:0; }
+  .pb.atelier-workspace .material-current-scene { align-self:start; margin:0; padding:0 0 0 var(--s-5); border-top:0; border-left:1px solid var(--border-soft); }
+}
 @media (min-width:1024px) {
   .pb.journal-workspace.atelier-workspace[data-director-mode] .material-drawer { flex:1; max-height:100%; }
   .pb.journal-workspace.atelier-workspace[data-director-mode] .material-content { flex:1; }

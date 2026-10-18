@@ -1,5 +1,5 @@
-import { watchDebounced } from '@vueuse/core'
 import { computed, nextTick, ref, watch } from 'vue'
+import { useBrowseSearch } from '@/composables/useBrowseSearch'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { THEME_DEFS, sceneTimeLabel, themeDefinition } from './sceneExplorerPresentation'
 
@@ -30,12 +30,7 @@ export function useSceneExplorerFilters(defaultTier: string) {
     tier: routeOption('tier', defaultTier), sort: routeOption('sort', 'smart'), hidden: route.query.hidden === '1',
   })
   const opening = routeFilters()
-  const searchQuery = ref(routeQuery())
-  // Input echoes immediately; catalog filtering debounces ordinary typing only.
-  const debouncedQuery = ref(searchQuery.value)
-  watchDebounced(searchQuery, value => {
-    if (value === searchQuery.value) debouncedQuery.value = value
-  }, { debounce: 150, immediate: true })
+  const { query: searchQuery, settledQuery: debouncedQuery, restoreQuery } = useBrowseSearch(routeQuery())
   const activeTheme = ref(opening.theme)
   const activeThemeLabel = computed(() => themeDefinition(activeTheme.value).label)
   const fChar = ref(opening.character)
@@ -55,11 +50,11 @@ export function useSceneExplorerFilters(defaultTier: string) {
   watch(routeFilters, filters => {
     if (route.path !== '/scene-explorer') return
     if (pendingRouteWrite && JSON.stringify(pendingRouteWrite) === JSON.stringify(filters)) {
-      if (searchQuery.value.trim() === filters.q) debouncedQuery.value = filters.q
+      if (searchQuery.value.trim() === filters.q) restoreQuery(searchQuery.value)
       return
     }
     pendingRouteWrite = null
-    searchQuery.value = filters.q; debouncedQuery.value = filters.q; fChar.value = filters.character
+    restoreQuery(filters.q); fChar.value = filters.character
     activeTheme.value = filters.theme; fSeason.value = filters.season; fTime.value = filters.time
     fSeries.value = filters.series; fRating.value = filters.rating; fTier.value = filters.tier
     sortBy.value = filters.sort; showHidden.value = filters.hidden

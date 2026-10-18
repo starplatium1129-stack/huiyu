@@ -1,7 +1,7 @@
-/* One painted control family in every browse page, independent of glass opt-in. */
+/* One painted control family across workspaces, independent of glass opt-in. */
 html body .studio-segments[role] {
   --selection-radius: var(--r-sm);
-  --selection-shadow: none;
+  --selection-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   position: relative;
   isolation: isolate;
   display: flex;
@@ -17,9 +17,9 @@ html body .studio-segments[role] > :is(button, a, .studio-tooltip-anchor) { flex
 html body :is(.appearance-segments, .preferences-tabs).studio-segments[role] > button { flex: 1 1 0; }
 html body .char-source.studio-segments[role] button { white-space: normal; }
 html body .studio-segments[role] .animated-selection {
-  border-color: transparent;
+  border-color: var(--border-strong);
   border-radius: var(--selection-radius);
-  background: var(--accent-soft);
+  background: linear-gradient(var(--glass-highlight), transparent), var(--bg-elevated);
   box-shadow: var(--selection-shadow);
 }
 html body .studio-segments[role] :is(button, a) {
@@ -43,10 +43,10 @@ html body .studio-segments[role] :is(button, a) {
 }
 html body .studio-segments--compact[role] :is(button, a) { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-2); }
 html body .studio-segments[role] :is(button, a):is([aria-pressed='true'], [aria-selected='true'], [aria-checked='true'], [aria-current='page']) { color: var(--accent); background: transparent; border-color: transparent; box-shadow: none; }
-html body .studio-segments[role] :is(button, a):hover { color: var(--text-primary); background: transparent; }
+html body .studio-segments[role] :is(button, a):hover:not(:disabled):not([aria-disabled='true']) { color: var(--text-primary); background: transparent; }
 html body .studio-segments[role] :is(button, a):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 html body .studio-segments[role] :is(button, a):active { transform: none; }
-html body .studio-segments[role] button:disabled { color: var(--text-disabled); }
+html body .studio-segments[role] :is(button, a):is(:disabled, [aria-disabled='true']) { color: var(--text-disabled); cursor:not-allowed; }
 @media (forced-colors: active) {
   html body .studio-segments[role] { background: Canvas; border-color: ButtonText; }
   html body .studio-segments[role] .animated-selection { background: Canvas; border-color: Highlight; box-shadow: none; }

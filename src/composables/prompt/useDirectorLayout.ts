@@ -149,7 +149,9 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     finish(); compactMaterialsOpen.value = false; preferences.value = defaults(); save()
   }
   function changed(event: StorageEvent) { if (observing && event.key === DIRECTOR_LAYOUT_KEY && !activePointer) preferences.value = readPreferences() }
-  useEventListener(window, 'resize', measure)
+  // Workspace size comes from ResizeObserver. Window resize only changes the
+  // viewport breakpoint; reading clientWidth here would force layout first.
+  useEventListener(window, 'resize', () => { if (observing) viewport.value = window.innerWidth })
   useEventListener(window, 'storage', changed)
   useEventListener(window, 'keydown', escapeResize, { capture: true })
   useEventListener(window, 'blur', () => finish())
@@ -157,7 +159,14 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     if (observing) return
     observing = true
     preferences.value = readPreferences()
-    observer ??= new ResizeObserver(measure)
+    // ResizeObserver already supplies the content width; do not force another
+    // layout read whenever the workspace height or a rail changes.
+    observer ??= new ResizeObserver(entries => {
+      if (!observing) return
+      const entry = entries.find(item => item.target === root.value)
+      if (entry) width.value = entry.contentRect.width
+      viewport.value = window.innerWidth
+    })
     if (root.value) observer.observe(root.value)
     measure()
   }

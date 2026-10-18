@@ -1,9 +1,10 @@
 <template>
-  <div ref="host" class="gallery-orbit" :class="{ 'is-reduced': reduced, 'is-dragging': dragging }" role="group" aria-label="立体观画" tabindex="0">
+  <div ref="host" class="gallery-orbit" :class="{ 'is-reduced': reduced, 'is-dragging': dragging }" :style="{ '--orbit-perspective': `${1400 * depthScale}px` }" role="group" aria-label="立体观画" tabindex="0">
     <div class="gallery-orbit-surface">
     <div v-for="entry in cards" :key="entry.item.id" class="gallery-orbit-card" :data-orbit-index="entry.index"
       :class="{ 'is-current': entry.index === index }" :aria-hidden="entry.index !== index">
       <ZoomableImageViewer v-if="entry.index === index && (currentSrc || previewSrc || preview(entry.item) || loadFailed)"
+        wheel-on-image-only
         :src="resolveRuntimeUrl(currentSrc || previewSrc || preview(entry.item))"
         :preview-src="resolveRuntimeUrl(previewSrc || preview(entry.item))" :image-key="entry.item.id" :load-failed="loadFailed" :reload="reload" :alt="title(entry.item)" @load="emit('load')" @error="emit('error')">
         <template #fallback><div class="viewer-fallback"><ArchiveIcon name="image" /></div></template>
@@ -24,7 +25,7 @@
     <div class="gallery-orbit-caption">
       <p class="gallery-orbit-title">{{ currentTitle }}</p>
       <div class="gallery-orbit-navigation" data-fluid-glass><span>{{ index + 1 }} / {{ items.length }}</span><input type="range" aria-label="选择作品" min="0" :max="Math.max(0, items.length - 1)" step="1" :value="index" :disabled="items.length < 2" :aria-valuetext="`第 ${index + 1} 幅，共 ${items.length} 幅：${currentTitle}`" @input="select(Number(($event.target as HTMLInputElement).value))" /></div>
-      <small>{{ dragging ? '松开选定作品' : '拖拽或滚轮切换 · 方向键逐幅浏览' }}</small>
+      <small>{{ dragging ? '松开选定作品' : '图上滚轮缩放 · 图外滚轮切换 · 方向键逐幅浏览' }}</small>
     </div>
   </div>
 </template>
@@ -51,6 +52,9 @@ const { getPosition, windowCenter, width, reduced, dragging, travel, select, res
   index: () => props.index, count: () => props.items.length, active: () => props.active, select: index => emit('select', index),
   present: paint,
 })
+// Keep the established desktop depth proportions as the stage grows: fixed
+// perspective would magnify a rotated cover's near edge on a 4K viewport.
+const depthScale = computed(() => Math.max(1, width.value / 1100))
 const currentTitle = computed(() => props.items[props.index] ? props.title(props.items[props.index]) : '')
 const cards = computed(() => {
   const motion = travel.value
@@ -79,7 +83,7 @@ function cardStyle(index: number, at: number) {
   if (reduced.value) return { transform: 'none', shade: 0, visibility: 'visible' }
   const distance = index - at, depth = Math.abs(distance)
   return {
-    transform: `translateX(${Math.sign(distance) * (Math.min(depth, 1) * width.value * .34 + Math.max(0, depth - 1) * width.value * .12)}px) translateZ(${-Math.min(depth, 3) * 150}px) rotateY(${-Math.max(-1, Math.min(1, distance)) * 58}deg) scale(${Math.max(.78, 1 - depth * .045)})`,
+    transform: `translateX(${Math.sign(distance) * (Math.min(depth, 1) * width.value * .34 + Math.max(0, depth - 1) * width.value * .12)}px) translateZ(${-Math.min(depth, 3) * 150 * depthScale.value}px) rotateY(${-Math.max(-1, Math.min(1, distance)) * 58}deg) scale(${Math.max(.78, 1 - depth * .045)})`,
     shade: Math.min(.45, depth * .18), visibility: depth > 3 ? 'hidden' : 'visible',
   }
 }

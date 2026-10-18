@@ -28,9 +28,8 @@
   padding: var(--s-1) var(--s-2);
   font-size: var(--fs-label-sm);
 }
-.studio-select-trigger:hover:not(:disabled) {
-  border-color: var(--accent);
-  background-color: var(--bg-surface);
+@media (hover:hover) and (pointer:fine) {
+  .studio-select-trigger:hover:not(:disabled):not([data-disabled]) { border-color:var(--accent); }
 }
 .studio-select-trigger:focus-visible {
   border-color: var(--border-strong);
@@ -101,7 +100,7 @@
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-select-trigger::after { transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-select-content { --control-feedback-press:1; --control-feedback-duration:0s; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.studio-select-icon,.studio-select-content,.studio-select-item-text) { transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .studio-select-content .studio-select-item .studio-select-item-text { transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-select-content .studio-select-item .studio-select-item-text { transform:none; }
 @media (forced-colors: active) {
   .studio-select-content { background: Canvas; border-color: CanvasText; }
   .studio-select-item[data-state='checked'] { outline: 1px solid Highlight; }

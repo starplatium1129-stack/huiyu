@@ -128,11 +128,15 @@ useFocusTrap(infoEl, () => !!selectedId.value && compact.value && infoOpen.value
   initialFocus: infoClose, onEscape: closeInfo, lockScroll: false,
 })
 watch(compact, value => {
-  if (!value && infoOpen.value) {
+  if (!selectedId.value) return
+  // Capture focus before the responsive info panel becomes inert or its launcher hides.
+  if (value && !infoOpen.value && infoEl.value?.contains(document.activeElement)) {
+    void nextTick(() => { if (selectedId.value && compact.value) infoToggle.value?.focus({ preventScroll: true }) })
+  } else if (!value && (infoOpen.value || document.activeElement === infoToggle.value)) {
     closeInfo()
     void nextTick(() => { if (selectedId.value && !compact.value) closeButton.value?.focus({ preventScroll: true }) })
   }
-})
+}, { flush: 'sync' })
 useEventListener(window, 'resize', cancelFlight)
 useEventListener(window.visualViewport, 'resize', cancelFlight)
 onDeactivated(() => { selectedId.value = null; cancelFlight() })

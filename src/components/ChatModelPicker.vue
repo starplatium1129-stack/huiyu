@@ -14,6 +14,7 @@ const props = withDefaults(defineProps<{
 }>(), { placeholder: '搜索并选择模型', disabled: false, allowCustom: false })
 const value = defineModel<string>({ required: true })
 const open = ref(false)
+const pointerOpened = ref(false)
 const root = ref<HTMLElement>()
 const portalTarget = computed(() => root.value?.closest('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') as HTMLElement || undefined)
 const customValue = computed(() => props.allowCustom && value.value.trim()
@@ -39,7 +40,9 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
 <template>
   <div ref="root" class="chat-model-picker" @keydown.esc.capture="onEscape">
     <ComboboxRoot v-model="value" v-model:open="open" :disabled="disabled" :open-on-click="true">
-      <ComboboxAnchor class="studio-select-trigger chat-model-picker-anchor" :data-disabled="disabled ? '' : undefined" data-fluid-glass>
+      <ComboboxAnchor class="studio-select-trigger chat-model-picker-anchor" :data-disabled="disabled ? '' : undefined"
+        :data-state="open ? 'open' : 'closed'" :data-pointer-open="pointerOpened"
+        @pointerdown="pointerOpened = true" @keydown="pointerOpened = false">
         <ComboboxInput class="chat-model-picker-input" :display-value="displayValue" :aria-label="label"
           :placeholder="placeholder" :disabled="disabled" maxlength="200" spellcheck="false" @input="onInput" />
         <ComboboxTrigger class="chat-model-picker-trigger" :aria-label="`展开${label}`" :disabled="disabled">
@@ -48,7 +51,7 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
       </ComboboxAnchor>
       <ComboboxPortal :to="portalTarget">
         <ComboboxContent class="studio-select-content chat-model-picker-content" position="popper" align="start" :side-offset="6" :collision-padding="12" data-fluid-glass
-          @keydown.esc.capture="onEscape" @escape-key-down="onDismissEscape">
+          :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc.capture="onEscape" @escape-key-down="onDismissEscape">
           <ComboboxViewport class="studio-select-viewport">
             <ComboboxEmpty class="chat-model-picker-empty">{{ allowCustom ? '可直接输入模型名' : '没有匹配的模型' }}</ComboboxEmpty>
             <ComboboxItem v-for="option in options" :key="option.value" :value="option.value" class="studio-select-item">

@@ -36,7 +36,7 @@
       <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" @open="drawerScene = $event" />
 
     <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
-    <div class="scene-toolbar">
+    <div class="browse-toolbar scene-toolbar">
       <div id="scenePersonalViews" class="scene-personal-nav studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="我的场景视图">
         <AnimatedSelection />
         <button type="button"

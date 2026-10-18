@@ -102,6 +102,7 @@
   .page.scene-discovery .scene-toolbar { grid-template-columns:minmax(0,1fr); }
   .scene-personal-nav { grid-column:1; grid-row:1; }
   .toolbar-primary { grid-column:1; grid-row:2; }
+  .scene-search-wrap { max-width:none; }
 }
 @media (max-width:900px) {
   .page.scene-discovery { padding:var(--s-4); }
@@ -113,6 +114,6 @@
   .curation-intro { flex-wrap:wrap; }
   .scene-personal-nav { flex-wrap:wrap; }
 }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; }
+@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .scene-atlas-portrait :is(img,.companion-fallback)) { transition:none; } }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .scene-atlas-portrait :is(img,.companion-fallback)) { transition:none; }
 .scene-atlas:has(.companion-pill:focus-visible) .scene-atlas-portrait :is(img,.companion-fallback) { transition:none; }

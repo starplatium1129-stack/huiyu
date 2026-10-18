@@ -199,6 +199,15 @@ depth and authored motion into one HUIYU component family. Visual upgrades may
 reshape existing components and shared surfaces while preserving task state,
 readable Chinese typography and immediate actions in both themes.
 
+[Lucian UX/UI Prompt](https://lucianlabs.dev/uxui-prompt/) is an ongoing reference
+for component styling and motion across controls, navigation, filtering, details,
+save feedback and artwork handoffs. Study the working example and its source
+before adapting its trigger, origin, phases, timing and interruption behavior to
+the actual HUIYU flow. Keep the reference's visible motion and surface hierarchy,
+map it to shared Vue components and theme tokens, and retain keyboard access,
+reduced-motion alternatives and truthful request states. Gallery autoplay and
+simulated progress demonstrate an effect; they do not become product behavior.
+
 The home opening and character archive retain the composition from the installed
 desktop layout in `faddab4a`. Home sections expand together up to 1800 CSS px,
 with shared outer gutters; the opening's height and title follow its actual
@@ -376,6 +385,9 @@ windows and breakpoint checks supplement this review. Reuse equal-CSS-size
 layout evidence across combinations, while keeping physical DPI, font/image
 sharpness and device motion evidence separate. Viewport resizing or DPR
 emulation establishes equivalent layout only, not real 4K/2K device acceptance.
+When target hardware is unavailable, continue browser viewport review and
+implementation fixes. Keep only physical DPI, sharpness and device performance
+acceptance pending; their absence does not block equivalent layout review.
 
 Scene discovery must expose search and the most useful filters near the results.
 Do not require a friend who has never used the site to understand the taxonomy
@@ -440,10 +452,15 @@ and settle cleanly, with amplitude suited to the surface and its content.
 Actions, cancellation and focus restoration proceed without waiting for visual
 completion, and an animation ending never proves a request succeeded.
 
-Light/dark switching may use a brief translucent paper-layer turn through
-`--motion-theme-turn` (640ms). Commit the real palette immediately; the decorative
-layer must not capture, clone or block the live interface. Repeated toggles
-reverse the current pose, and other input or reduced motion releases the layer.
+Light/dark switching follows the actual site control at
+[Lucian UX/UI Prompt](https://lucianlabs.dev/uxui-prompt/): a sun/moon icon and
+a circular reveal from the button center, using `--motion-theme-reveal` (650ms).
+Keep HUIYU's hand-drawn line icons. A single native view-transition capture pair
+is the bounded clip-path exception; do not animate live layout or add blur.
+Moving away from the switch, keyboard input or resizing releases the capture;
+repeated switch presses reverse the current circle and retain the latest palette.
+Reduced motion, coarse pointers, forced colors, native companion windows,
+open modal dialogs and unsupported browsers commit directly.
 
 Press feedback visibly acknowledges input without moving the hit target or
 triggering an action early. Choose entrance scale and displacement to express
@@ -505,7 +522,11 @@ focus handoffs when the menu closes. A failed menu download must leave primary
 navigation usable and explain how to recover by refreshing; never automatically
 reload a workspace that could have an active generation task.
 Business views supply values and content; the wrappers own theme styling and
-keyboard behavior. Do not add a second focus trap or manual viewport positioning
+keyboard behavior. Search fields and select triggers keep opaque theme surfaces,
+shared borders and 40/32px control geometry in every workspace; their components
+own those rules. Optional glass belongs to floating menus and structural chrome,
+not nested fields. Page styles arrange controls without repainting them.
+Do not add a second focus trap or manual viewport positioning
 around these primitives. Existing modal dialogs keep their current focus stack
 until migrated and manually reviewed as a complete flow; portalled content inside legacy
 trapped dialogs needs an explicit integration check.
@@ -644,7 +665,12 @@ space; save, regenerate, vary, voice, and review actions sit near it without
 forming a second competing dashboard.
 
 Artwork-viewer zoom and pan limits follow the actual image and viewport sizes,
-keeping the work recoverable when the viewer resizes. Thumbnail-to-viewer
+keeping the work recoverable when the viewer resizes. In the 3D artbook, wheel
+input over the current painted image zooms around the pointer; letterboxing and
+neighboring covers retain wheel navigation. Reaching a zoom limit must not turn
+that same image gesture into a page change. Scale 3D perspective and depth with
+the stage width so neighboring covers retain their hierarchy on large desktops.
+Thumbnail-to-viewer
 transitions are optional enhancements: a missing origin, unavailable API or
 interrupted transition must leave viewing, closing and focus restoration usable.
 
@@ -728,7 +754,7 @@ belong inside installation details, not in the default creative composition.
 
 提示词栏优先保证视觉美感与阅读舒适度，保留轻盈词条、语义配色和清晰层次，用分组、留白与渐进展开缓解密度。Anima 按五层展示：质量/分级（暖金）、角色与作品（角色强调色，组内分开标识）、画师（紫）、画面标签（蓝）、自然语言（青绿）；对应 studio-prompt-craft 的六段发送顺序，展示合组不改变编译。Krea 保留自然语言阅读，不套标签分层。避免在固定侧栏里重复嵌套面板、计数与滚动区；负向词、模型和 LoRA 信息按需展开，复制、保存和词条工作台入口保持可达。长提示词提供宽幅阅读入口，按实际栏宽换行与排列操作，不靠缩小字号容纳内容。
 
-1024–1440 CSS px 默认显示画布与 320px 参数栏；“素材”切换同一主区域，Escape 返回画布并返焦入口，不改写宽屏栏宽和隐藏偏好。低于 1024px 将参数放在画布下方，900px 以下单列并提供锚点导航。专注模式保留单画布与动作条。画布使用跟随主题的 --bg-surface / --bg-base，提示文字用 --text-*；图片上的分级遮罩继续使用 --art-scrim / --on-art-*。角色强调色、实际样张来源及动效清理沿用现有实现，支持减少动态效果。
+1024–1440 CSS px 默认显示画布与 320px 参数栏；“素材”切换同一主区域，素材头部提供“返回画布”，与 Escape 共用返回及返焦入口，不改写宽屏栏宽和隐藏偏好。素材容器足够宽时，角色选择与“这一幕”并排，按各自容器保留完整标签。低于 1024px 将参数放在画布下方，900px 以下单列并提供锚点导航。专注模式保留单画布与动作条。画布使用跟随主题的 --bg-surface / --bg-base，提示文字用 --text-*；图片上的分级遮罩继续使用 --art-scrim / --on-art-*。角色强调色、实际样张来源及动效清理沿用现有实现，支持减少动态效果。
 
 
 ## Iconography

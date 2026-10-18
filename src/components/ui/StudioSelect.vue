@@ -149,7 +149,6 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
       <StudioTooltip :content="effectiveHint" :anchor="disabled">
         <SelectTrigger
           ref="selectTrigger"
-          data-fluid-glass
           v-bind="triggerAttrs"
           :id="id"
           class="studio-select-trigger"

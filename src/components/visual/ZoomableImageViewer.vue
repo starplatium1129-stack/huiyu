@@ -6,7 +6,7 @@
     tabindex="0"
     :aria-label="viewerLabel"
     @keydown="onKeydown"
-    @wheel.prevent="handleWheel"
+    @wheel="onWheel"
     @pointerdown="startPan"
     @pointermove="onPan"
     @pointerup="stopPan"
@@ -90,6 +90,8 @@ const props = defineProps<{
   minScale?: number
   maxScale?: number
   imageKey?: string | number
+  /** Let a surrounding gallery handle wheel input over the image's letterboxing. */
+  wheelOnImageOnly?: boolean
   loadFailed?: boolean
   reload?: () => Promise<void>
 }>()
@@ -108,7 +110,13 @@ const { imageEl, fullImageEl, displayedSrc, fullImageFailed, imageAttempt, fullA
 })
 
 const { scale, isPanning, refreshBounds, resetZoom, resetImage, zoomIn, zoomOut, toggleZoom,
-  handleWheel, onKeydown, startPan, onPan, stopPan } = useImageViewport(viewportEl, imageEl, transformEl, props)
+  containsImagePoint, handleWheel, onKeydown, startPan, onPan, stopPan } = useImageViewport(viewportEl, imageEl, transformEl, props)
+function onWheel(event: WheelEvent) {
+  if (props.wheelOnImageOnly && !containsImagePoint(event)) return
+  event.preventDefault()
+  event.stopPropagation()
+  handleWheel(event)
+}
 const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片查看器')
 </script>
 

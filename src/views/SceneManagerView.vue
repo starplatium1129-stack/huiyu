@@ -17,12 +17,13 @@
       </div>
     </aside>
     <div class="catalog-main" data-route-arrive>
-      <header class="catalog-page-head">
+      <!-- Save feedback follows Lucian #250; state and completion come from the catalog request. -->
+      <header class="catalog-page-head" :class="{ 'has-changes': dirty }">
         <div><p class="catalog-breadcrumb">内容工作室 <span>/</span> {{ sectionTitle }}</p><h1 ref="pageTitle" tabindex="-1">{{ sectionTitle }}</h1></div>
         <div v-if="section === 'records' || dirty" class="catalog-head-actions">
-          <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite"><i></i>{{ busy ? '正在处理…' : dirtyEditor ? '正在编辑' : pending.length ? pending.length + ' 项待保存' : '内容已保存' }}</span>
+          <span class="catalog-save-status" :class="{ 'has-changes': dirty }" role="status" aria-live="polite" aria-atomic="true"><span v-content-motion:down="saveStatus" class="catalog-save-status-content"><i aria-hidden="true"></i>{{ saveStatus }}</span></span>
           <button v-if="pending.length || dirtyEditor" class="btn btn-ghost" type="button" :disabled="busy" @click="reviewEdits">查看修改</button>
-          <button class="btn btn-primary" type="button" :disabled="busy || (!pending.length && !dirtyEditor)" @click="saveEdits">{{ busy ? '正在处理…' : '保存更改' }}</button>
+          <button class="btn btn-primary" type="button" :disabled="busy || (!pending.length && !dirtyEditor)" :data-loading="busy || undefined" :aria-busy="busy" @click="saveEdits">{{ busy ? '正在处理…' : '保存更改' }}</button>
           <StudioPopover label="更多整理操作">
             <template #trigger><button class="btn btn-ghost catalog-more-trigger" type="button" aria-label="更多整理操作"><ArchiveIcon name="chevron-down" /></button></template>
             <div class="catalog-more-menu">
@@ -58,7 +59,7 @@
         <div v-content-motion="`${section}:${kind}`" class="catalog-workspace">
           <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
             <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : listMatchesKind ? (result?.total ?? 0) + ' 份' : '尚未读取' }}</span></div><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />新建</button></header>
-            <StudioSearch v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
+            <StudioSearch ref="contentSearch" v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
             <div class="catalog-list-controls">
               <StudioSelect v-model="sort" label="排列方式" :options="sortOptions" />
               <StudioPopover label="筛选内容" align="start">
@@ -78,7 +79,7 @@
                 <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span>
                 <span class="catalog-row-state"><ArchiveIcon v-if="selected?.id === item.id && selected.kind === item.kind" name="success" /><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span></span>
               </button>
-              <ArchiveStatePanel v-if="!loading && !error && listMatchesKind && !result?.items.length" compact kind="empty" title="没有匹配的内容" />
+              <ArchiveStatePanel v-if="!loading && !error && listMatchesKind && !result?.items.length" compact :kind="hasFilters || search ? 'filtered' : 'empty'" :title="hasFilters || search ? '没有匹配的内容' : '这里还没有内容'" :message="hasFilters || search ? '试试更短的关键词，或清除筛选重新找找。' : ''"><button v-if="hasFilters || search" class="btn btn-ghost btn-sm" type="button" @click="clearListFilters">清除搜索与筛选</button></ArchiveStatePanel>
             </div>
             <StudioPagination v-model="page" :pages="totalPages" :disabled="loading || !listMatchesKind" label="内容分页" />
           </section>
@@ -136,6 +137,7 @@ import '@/assets/css/catalog-maintenance.css'
 const section = ref('records'), route = useRoute(), editorPane = ref<HTMLElement | null>(null)
 const collectionArt = useThemeIllustration(collectionOriginal, 'collection')
 const recordList = ref<HTMLElement | null>(null)
+const contentSearch = ref<InstanceType<typeof StudioSearch> | null>(null)
 const pageTitle = ref<HTMLElement | null>(null), pendingArea = ref<HTMLElement | null>(null), pendingOpen = ref(false)
 const { thumbUrl, reload: reloadAssets } = useShowcaseAssets()
 watch(section, value => { if (value === 'records') void reloadAssets().catch(() => {}) })
@@ -154,9 +156,15 @@ watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
 const searchPlaceholder = computed(() => '找一份' + ({ character: '角色资料', outfit: '服装', scene: '故事', blueprint: '画面方案', document: '词库或推荐资料' } as Record<CatalogKind, string>)[kind.value] + '…')
 const hasFilters = computed(() => !!(character.value || category.value || rating.value))
+const saveStatus = computed(() => busy.value ? '正在处理…' : dirtyEditor.value ? '正在编辑 · 尚未保存' : pending.value.length ? pending.value.length + ' 项待保存' : '内容已保存')
 const sortOptions = [{ value: 'order', label: '按整理顺序' }, { value: 'title', label: '按名称' }, { value: 'newest', label: '最近加入' }, { value: 'updated', label: '最近编辑' }]
 function kindIcon(value: CatalogKind): ArchiveIconName { return kinds.find(entry => entry.value === value)!.icon }
 function refreshContent() { void load(); void reloadAssets().catch(() => {}) }
+async function clearListFilters() {
+  search.value = ''; character.value = ''; category.value = ''; rating.value = ''
+  await nextTick()
+  contentSearch.value?.focus()
+}
 function rowImage(item: CatalogSummary) {
   if (item.kind === 'character') return popularPortraitSrc(item.id)
   if (item.kind === 'outfit') return popularPortraitSrc(item.characterId)

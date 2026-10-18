@@ -13,29 +13,20 @@
 .pop-character-art img { width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); }
 .pop-character-art img.pop-character-ready { opacity:1; }
 .pop-character-placeholder { position:absolute; width:24px; height:24px; }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .pop-character-art img { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .pop-character-art img { transition:none; }
+@media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .popular-scene-library .pop-character-art img) { transition:none; } }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .popular-scene-library .pop-character-art img) { transition:none; }
 .popular-scene-library .library-detail .pop-hero-copy { display:grid; gap:var(--s-1); padding:0; }
 .popular-scene-library .pop-hero-copy .page-kicker { margin:0; letter-spacing:.04em; }
 .popular-scene-library .library-detail .pop-hero-copy h2 { margin:0; color:var(--text-primary); font:600 clamp(24px,2.4vw,36px)/1.3 var(--font-display); overflow-wrap:anywhere; }
 .pop-hero-note { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); overflow-wrap:anywhere; }
 .popular-scene-library .library-detail .pop-hero-stat { display:flex; flex-direction:column; align-items:flex-end; gap:var(--s-2); margin:0; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); white-space:nowrap; }
 .popular-scene-library .pop-hero-stat strong { color:var(--text-primary); font:500 var(--fs-title)/1 var(--font-mono); }
-.popular-scene-library .pop-toolbar { gap:var(--s-2); margin-bottom:0; }
-.popular-scene-library .pop-toolbar-row { gap:var(--s-2); }
+.popular-scene-library .pop-toolbar { display:grid; gap:var(--s-2); }
+.popular-scene-library .pop-toolbar-row { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); }
 .popular-scene-library .pop-results-bar { margin:var(--s-2) 0 var(--s-3); }
 .popular-scene-library .library-detail .pop-grid { --scene-row-height:calc(380px * var(--desktop-layout-scale,1)); display:flex; flex-wrap:wrap; gap:var(--s-4) var(--workspace-panel-gap,var(--s-4)); align-items:stretch; }
 .popular-scene-library .pop-grid::after { content:''; flex:1000000 1 0; }
-.popular-scene-library .pop-card { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(260px,100%); max-width:100%; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--workspace-inset); contain-intrinsic-size:auto calc(var(--scene-row-height) + 180px); }
-.popular-scene-library .pop-thumb { border-radius:0; background:var(--art-stage); }
-.popular-scene-library .pop-thumb img { object-position:center; }
-.popular-scene-library .pop-card-body { flex:1; gap:var(--s-2); padding:var(--s-3); }
-.popular-scene-library .pop-card-category { min-height:0; color:var(--text-muted); }
-.popular-scene-library .pop-card-head h3 { font-size:var(--fs-body); line-height:1.35; }
-.popular-scene-library .pop-card-actions { margin:auto 0 0; }
-.popular-scene-library .pop-draw-action { min-height:var(--control-height-sm); background:var(--accent-soft); border-color:color-mix(in srgb,var(--accent) 25%,var(--border-soft)); color:var(--accent); font-size:var(--fs-label-sm); }
-.popular-scene-library .pop-draw-action:hover,.popular-scene-library .pop-draw-action:focus-visible { background:var(--accent); border-color:var(--border-strong); color:var(--text-inverse); }
-.popular-scene-library .pop-scene-details { margin-top:0; }
+.popular-scene-library .pop-card { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(260px,100%); max-width:100%; }
 .pop-full-description { margin:0 0 var(--s-3); color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); white-space:pre-line; overflow-wrap:anywhere; }
 @media (max-width:1100px) {
   .popular-scene-library .library-layout { grid-template-columns:190px minmax(0,1fr); gap:var(--s-4); }

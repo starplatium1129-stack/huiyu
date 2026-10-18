@@ -10,30 +10,16 @@
 
 /* Browse: shared rounded surfaces; page styles own layout, not the material. */
 html .gallery-page .gallery-toolbar,
-html .showcase-page .toolbar-shell,
-html .scene-discovery .scene-toolbar,
-html .library-page .pop-toolbar {
+html .browse-toolbar {
   @apply tw:p-s-3;
   border: 1px solid var(--border-soft);
-  @apply tw:rounded-lg;
+  @apply tw:rounded-xl;
   background: var(--bg-surface);
   box-shadow: var(--workspace-inset);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
-/* Fields are painted controls; only their teleported menus use floating glass. */
-html :is(.gallery-toolbar, .scene-toolbar, .pop-toolbar) :is(.studio-search, .studio-select-trigger, .studio-segments[role]) {
-  border-radius:var(--r-md);
-  background:var(--bg-surface);
-  -webkit-backdrop-filter:none;
-  backdrop-filter:none;
-}
-html :is(.gallery-toolbar, .scene-toolbar, .pop-toolbar) :is(.studio-search, .studio-select-trigger) {
-  border:1px solid var(--border-soft);
-}
-html :is(.gallery-toolbar, .scene-toolbar, .pop-toolbar) .studio-search[data-size='md'] .studio-search-input {
-  min-height:calc(var(--control-height) - 2px);
-}
+/* Fields and segments own their painted surfaces in their shared components. */
 html .scene-discovery .scene-toolbar::before { @apply tw:hidden; }
 /* 2026-09-22 去原生化：作品集/样张类型筛选已换成 StudioSelect，
    原生的下拉外观（内边距、appearance、双线性渐变伪箭头）整块删除；
@@ -44,21 +30,7 @@ html .scene-discovery .scene-cat {
   min-height: var(--control-height);
 }
 /* 焦点由控件自身和 design-system 的低优先级兜底负责，页面层不再次覆盖。 */
-html .gallery-page .artwork,
-html .showcase-page .sample {
-  @apply tw:rounded-lg;
-}
-html .gallery-page .artwork:not(.artwork-selected),
-html .showcase-page .sample {
-  box-shadow: var(--workspace-inset);
-  transition: transform var(--motion-surface) var(--ease-out);
-}
-html .scene-discovery .scene-facet-panel {
-  @apply tw:p-s-3 tw:rounded-lg;
-  background: var(--bg-surface);
-}
-
-/* Creative references: navigation is a small shelf; color chips stay unfiltered. */
+/* Artwork card components own their lift, selection and reduced-motion states. */
 /* Drawing: small chrome receives depth, large prompts and preview stay stable. */
 html .pb.journal-workspace :is(.panel, .result-frame) { box-shadow: var(--workspace-inset); }
 html .pb.journal-workspace .panel-title { @apply tw:leading-label; }
@@ -109,12 +81,8 @@ html .notfound-page .notfound-actions {
   box-shadow: var(--workspace-inset);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  html .gallery-page .artwork:hover,
-  html .showcase-page .sample:hover { transform: translateY(-2px); }
-}
 @media (max-width: 600px) {
-  html :is(.gallery-page, .showcase-page, .scene-discovery, .library-page) :is(.gallery-toolbar, .toolbar-shell, .scene-toolbar, .pop-toolbar) :is(input:not([type='checkbox']):not([type='radio']), select, button) { @apply tw:min-h-[44px]; }
+  html :is(.gallery-page, .showcase-page, .scene-discovery, .library-page) :is(.gallery-toolbar, .browse-toolbar) :is(input:not([type='checkbox']):not([type='radio']), select, button) { @apply tw:min-h-[44px]; }
   html .control-mobile-nav .nav-local { @apply tw:flex-wrap tw:gap-s-3; }
   html .control-mobile-nav .nav-local-brand { flex: 1 0 100%; @apply tw:flex tw:items-center tw:gap-s-3; }
   html .control-mobile-nav .nav-logo { @apply tw:w-[90px]; }
@@ -126,16 +94,9 @@ html .notfound-page .notfound-actions {
   html .video-studio .video-mode-strip { @apply tw:p-s-1; }
   html .notfound-page .notfound-actions { @apply tw:w-full; }
 }
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion='full']) .gallery-page .artwork, html:not([data-motion='full']) .showcase-page .sample { transition: none; }
-  html:not([data-motion='full']) .gallery-page .artwork:hover, html:not([data-motion='full']) .showcase-page .sample:hover { transform: none; }
-  html:not([data-motion='full']) .gallery-page .artwork:hover .artwork-image { transform: none; }
-}
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
   html .gallery-page .gallery-toolbar,
-  html .showcase-page .toolbar-shell,
-  html .scene-discovery .scene-toolbar,
-  html .library-page .pop-toolbar,
+  html .browse-toolbar,
   html .pb.journal-workspace .gen-bar {
     background: var(--bg-surface);
     -webkit-backdrop-filter: none;
@@ -148,7 +109,5 @@ html .notfound-page .notfound-actions {
 @media (forced-colors: active) {
   :root { --workspace-edge: CanvasText; --workspace-lift: none; --workspace-inset: none; }
   html .gallery-page .gallery-toolbar,
-  html .showcase-page .toolbar-shell,
-  html .scene-discovery .scene-toolbar,
-  html .library-page .pop-toolbar { background: Canvas; border-color: CanvasText; }
+  html .browse-toolbar { background: Canvas; border-color: CanvasText; }
 }

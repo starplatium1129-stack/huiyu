@@ -9,7 +9,7 @@
       <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机邂逅一张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />按场景寻找灵感</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest(true)"><ArchiveIcon name="refresh" /></button></div>
     </header>
 
-    <div class="toolbar-shell" aria-label="样张筛选" data-reveal>
+    <div class="browse-toolbar showcase-toolbar" aria-label="样张筛选" data-reveal>
       <div class="search-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
         <div class="showcase-browse-modes studio-segments" role="group" aria-label="画册浏览方式"><AnimatedSelection /><button class="filter-pill" type="button" :class="{ active: !albumsOpen }" :aria-pressed="!albumsOpen" @click="showImages">{{ !selectedAlbum && typeFilter === 'all' ? '全部样张' : '画册样张' }}</button><button class="filter-pill" type="button" :class="{ active: albumsOpen }" :aria-pressed="albumsOpen" @click="showAlbums"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button></div>
         <StudioSearch v-show="!albumsOpen" ref="searchInput" v-model="searchQuery" class="search-field" id="showcaseSearch" label="搜索画册" placeholder="搜索场景、情绪、角色或关键词…" />
@@ -17,7 +17,7 @@
           <AnimatedSelection />
           <button v-for="opt in SCOPE_OPTS" :key="opt.v" class="filter-pill" :class="{active:scope===opt.v}" type="button" :aria-pressed="scope===opt.v" @click="scope=opt.v">{{ opt.l }}</button>
         </div>
-        <button v-if="hasFilters && !albumsOpen" class="filter-reset" type="button" @click="resetFromControl">清除筛选</button>
+        <button v-if="hasFilters && !albumsOpen" class="btn btn-quiet btn-sm" type="button" @click="resetFromControl">清除筛选</button>
       </div>
       <details v-show="!albumsOpen" class="showcase-filters">
         <StudioDisclosureSummary><span>细选画册</span><span class="filter-summary">{{ filterSummary }}</span></StudioDisclosureSummary>
@@ -25,10 +25,10 @@
           <div class="filter-group filter-dropdowns tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center">
             <label for="showcaseTypeSelect">作品类型
               <StudioSelect id="showcaseTypeSelect" v-model="typeFilter" label="筛选作品类型"
-                :options="TYPE_OPTS.map(opt => ({ value: opt.v, label: opt.l }))" /></label>
+                :options="typeOptions" /></label>
             <label for="showcaseCharSelect">角色筛选
               <StudioSelect id="showcaseCharSelect" v-model="charFilter" label="筛选角色"
-                :options="allCharOptions.map(opt => ({ value: opt.v, label: opt.l }))" /></label>
+                :options="characterOptions" /></label>
           </div>
           <div class="rating-options"><span>内容分级</span><div class="filter-group studio-segments studio-segments--compact tw:flex tw:gap-s-1 tw:flex-wrap tw:items-center" data-fluid-glass role="group" aria-label="内容分级">
             <AnimatedSelection />
@@ -38,7 +38,7 @@
       </details>
     </div>
 
-    <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册…' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="filter-reset" type="button" @click="loadManifest(true)">重试</button></div>
+    <div v-if="entries.length && (manifestLoading || reloadError)" class="showcase-load-status" role="status"><ArchiveIcon :name="manifestLoading ? 'book' : 'warning'" /><span>{{ manifestLoading ? '正在刷新画册…' : reloadError }}</span><button v-if="reloadError && !manifestLoading" class="btn btn-quiet btn-sm" type="button" @click="loadManifest(true)">重试</button></div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
       <ShowcaseAlbums v-if="albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :aria-busy="manifestLoading" @select="openAlbum" />
       <ArchiveStatePanel v-if="(manifestLoading && !entries.length) || unavailable || (!manifestLoading && !albums.length)" compact :kind="manifestLoading ? 'loading' : unavailable ? 'error' : 'empty'" :title="manifestLoading ? '正在整理画册' : unavailable ? '画册读取失败' : '暂未收录画册'"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
@@ -137,7 +137,7 @@ import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
-import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
+import { ref, shallowRef, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
 import { showcaseDestination } from '@/utils/showcaseDestination'
@@ -155,6 +155,7 @@ import { useShowcaseAlbums } from '@/composables/showcase/useShowcaseAlbums'
 import { useAlbumNavigation } from '@/composables/gallery/useAlbumNavigation'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useListTransition } from '@/composables/useListTransition'
+import { useBrowseSearch } from '@/composables/useBrowseSearch'
 import {
   parseShowcaseManifest,
   type ShowcaseEntry,
@@ -175,7 +176,7 @@ const RATING_OPTS= [{ v:'all', l:'全部分级' }, { v:'All', l:'全年龄' }, {
 const LABELS: Record<string,string> = { nene:'绫地宁宁', natsume:'四季夏目', triad:'宁宁×夏目', All:'全年龄', R15:'R15', R18:'R18' }
 const TYPE_LABELS: Record<string,string> = { scene:'场景样张', artist:'画师风格', popular:'热门角色', lora:'LoRA 样张' }
 
-const entries   = ref<ShowcaseEntry[]>([])
+const entries   = shallowRef<ShowcaseEntry[]>([])
 const albums = useShowcaseAlbums(entries, () => sceneStore.popularCharacters)
 const albumSelection = ref('all')
 const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
@@ -184,7 +185,7 @@ const featured  = ref(new Set<string>())
 const unavailable = ref(false)
 /** manifest 未返回前显示加载面板，避免闪现错误的"没有匹配样张"空状态 */
 const manifestLoading = ref(true)
-const searchQuery = ref('')
+const { query: searchQuery, settledQuery, restoreQuery } = useBrowseSearch()
 const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const scope       = ref<'all' | 'featured'>('all')
 const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
@@ -222,11 +223,14 @@ useFocusTrap(viewerInfoEl, () => viewerMounted.value && !viewerClosing.value && 
   lockScroll: false, initialFocus: viewerInfoClose, onEscape: closeViewerInfo,
 })
 watch(narrowViewer, narrow => {
-  if (!narrow && viewerInfoOpen.value) {
+  // A breakpoint can hide the focused sidebar control or its compact launcher.
+  if (narrow && !viewerInfoOpen.value && viewerInfoEl.value?.contains(document.activeElement)) {
+    void nextTick(() => viewerInfoToggle.value?.focus({ preventScroll: true }))
+  } else if (!narrow && (viewerInfoOpen.value || document.activeElement === viewerInfoToggle.value)) {
     viewerInfoOpen.value = false
-    dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-close')?.focus({ preventScroll: true })
+    void nextTick(() => dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-close')?.focus({ preventScroll: true }))
   }
-})
+}, { flush: 'sync' })
 const viewerHero = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const viewerSurface = useFluidSurface('.art-viewer')
 function sourceImage(id = currentId.value) {
@@ -252,7 +256,7 @@ let unmounted = false
 let viewActive = true
 
 // Reset visible count whenever filters change
-watch([searchQuery, scope, typeFilter, charFilter, ratingFilter, albumSelection], () => { visibleCount.value = PAGE_SIZE })
+watch([settledQuery, scope, typeFilter, charFilter, ratingFilter, albumSelection], () => { visibleCount.value = PAGE_SIZE })
 watch(typeFilter, () => { charFilter.value = 'all' })
 
 function norm(s: string) { return String(s||'').trim().toLocaleLowerCase('zh-CN') }
@@ -307,9 +311,11 @@ const allCharOptions = computed<{ v: string; l: string }[]>(() => {
   }
   return base
 })
+const typeOptions = TYPE_OPTS.map(option => ({ value: option.v, label: option.l }))
+const characterOptions = computed(() => allCharOptions.value.map(option => ({ value: option.v, label: option.l })))
 
 const filtered = computed(() => {
-  const term = norm(searchQuery.value)
+  const term = norm(settledQuery.value)
   const matches = entries.value.filter(e => {
     if (albumEntryIds.value && !albumEntryIds.value.has(e.id)) return false
     if (scope.value === 'featured' && !featured.value.has(e.id)) return false
@@ -416,7 +422,7 @@ function openRandom() {
   if (!src.length) return
   openViewer(src[Math.floor(Math.random() * src.length)].id)
 }
-function resetFilters() { albumSelection.value = 'all'; searchQuery.value = ''; scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
+function resetFilters() { albumSelection.value = 'all'; restoreQuery(''); scope.value = 'all'; typeFilter.value = 'all'; charFilter.value = 'all'; ratingFilter.value = 'all' }
 async function resetFromControl(event: MouseEvent) {
   const owned = document.activeElement === event.currentTarget
   resetFilters()

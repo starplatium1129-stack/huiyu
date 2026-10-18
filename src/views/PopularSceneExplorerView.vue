@@ -25,8 +25,8 @@
     </ArchiveStatePanel>
 
     <div v-else class="pop-content" data-route-arrive v-content-motion:up="true">
-      <div class="pop-toolbar tw:grid tw:gap-s-3 tw:mb-s-3">
-        <div class="pop-toolbar-row tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap">
+      <div class="browse-toolbar pop-toolbar">
+        <div class="pop-toolbar-row">
           <StudioSearch v-model="query" class="pop-search-field" id="popularSceneSearch" label="搜索场景" placeholder="搜索场景、地点或氛围…" />
           <div class="pop-rating-filters studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="分级筛选">
             <AnimatedSelection />
@@ -44,7 +44,7 @@
       </div>
       <div class="pop-results-bar">
         <span class="pop-count" role="status">已显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 幕</span>
-        <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="pop-filter-reset" type="button" @click="resetFilters">清除筛选</button>
+        <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="btn btn-quiet btn-sm" type="button" @click="resetFilters">清除筛选</button>
         <StudioTooltip content="成人场景可浏览，R18 样张保留模糊遮罩">
           <span class="pop-count mature-hint" tabindex="0">成人 {{ adultCount }}</span>
         </StudioTooltip>
@@ -139,6 +139,7 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import SceneArtworkViewer from '@/components/scene/SceneArtworkViewer.vue'
 import { useListTransition } from '@/composables/useListTransition'
+import { useBrowseSearch } from '@/composables/useBrowseSearch'
 
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, computed, nextTick, onUnmounted, watch } from 'vue'
@@ -183,7 +184,7 @@ const routeFilters = () => ({ q: typeof route.query.q === 'string' ? route.query
   category: typeof route.query.category === 'string' ? route.query.category : 'all',
   rating: RATING_OPTS.find(option => option.v === route.query.rating)?.v ?? 'all' })
 const openingFilters = routeFilters()
-const query = ref(openingFilters.q)
+const { query, settledQuery, restoreQuery } = useBrowseSearch(openingFilters.q)
 const category = ref(openingFilters.category)
 const ratingFilter = ref(openingFilters.rating)
 let pendingRouteWrite: ReturnType<typeof routeFilters> | null = null
@@ -191,11 +192,11 @@ watch(routeFilters, filters => {
   if (route.path !== '/popular-scenes') return
   if (pendingRouteWrite && JSON.stringify(pendingRouteWrite) === JSON.stringify(filters)) return
   pendingRouteWrite = null
-  query.value = filters.q; category.value = filters.category; ratingFilter.value = filters.rating
+  restoreQuery(filters.q); category.value = filters.category; ratingFilter.value = filters.rating
 }, { flush: 'sync' })
-watch([query, category, ratingFilter], () => {
+watch([settledQuery, category, ratingFilter], () => {
   if (route.path !== '/popular-scenes') return
-  const filters = { q: query.value, category: category.value, rating: ratingFilter.value }
+  const filters = { q: settledQuery.value, category: category.value, rating: ratingFilter.value }
   if (JSON.stringify(filters) === JSON.stringify(routeFilters())) return
   const next = { ...route.query }
   if (filters.q) next.q = filters.q; else delete next.q
@@ -239,9 +240,13 @@ const totalScenes = computed(() => pool.value.length)
 const adultCount = computed(() => pool.value.filter(bp => bp.adult).length)
 
 const categories = computed(() => buildPopularCategories(pool.value))
+const searchIndex = computed(() => new Map(pool.value.map(blueprint => [blueprint.id,
+  [blueprint.title, blueprint.description, blueprint.location, blueprint.promptProse, blueprint.category, blueprint.mood]
+    .filter(Boolean).map(text => String(text).toLowerCase()),
+])))
 
 const filtered = computed(() => {
-  const q = query.value.trim().toLowerCase()
+  const q = settledQuery.value.trim().toLowerCase()
   return pool.value.filter(bp => {
     if (ratingFilter.value !== 'all') {
       const r = sampleRatingOf(bp)
@@ -249,9 +254,7 @@ const filtered = computed(() => {
     }
     if (category.value !== 'all' && (bp.adult ? '成人' : bp.category) !== category.value) return false
     if (!q) return true
-    return [bp.title, bp.description, bp.location, bp.promptProse, bp.category, bp.mood]
-      .filter(Boolean)
-      .some(text => String(text).toLowerCase().includes(q))
+    return searchIndex.value.get(bp.id)?.some(text => text.includes(q))
   })
 })
 
@@ -291,7 +294,7 @@ function setDetailsOpen(id: string, event: Event) {
   if ((event.target as HTMLDetailsElement).open) openDetails.value.add(id)
   else openDetails.value.delete(id)
 }
-watch([selectedId, query, category, ratingFilter], () => { visibleCount.value = 24; previewId.value = null })
+watch([selectedId, settledQuery, category, ratingFilter], () => { visibleCount.value = 24; previewId.value = null })
 watch(loadSentinel, element => {
   moreObserver?.disconnect()
   if (!element) return
@@ -317,7 +320,7 @@ function displayDescription(blueprint: SceneBlueprint): string {
 }
 function resetFilters() {
   const previousFocus = document.activeElement
-  query.value = ''
+  restoreQuery('')
   category.value = 'all'
   ratingFilter.value = 'all'
   void nextTick(() => { if (previousFocus && !previousFocus.isConnected) document.getElementById('popularSceneSearch')?.focus() })

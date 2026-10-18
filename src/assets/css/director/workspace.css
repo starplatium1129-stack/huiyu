@@ -1,14 +1,14 @@
 @reference "../tailwind.css";
 /* Workspace surfaces and typography. Viewport and columns belong to layout.css. */
-.pb.journal-workspace .pb-topline { align-items:center; gap:16px; margin-bottom:20px; padding:0; border:0; }
-.pb.journal-workspace .pb-header { @apply tw:min-w-0; flex: 1; }
+.pb.journal-workspace .pb-topline { align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:20px; padding:0; border:0; }
+.pb.journal-workspace .pb-header { @apply tw:min-w-0; flex:1 1 320px; }
 .pb.journal-workspace .pb-heading-row { @apply tw:flex tw:items-center tw:flex-wrap; gap: var(--s-2) var(--s-4); }
 .pb.journal-workspace .pb-title { @apply tw:text-title tw:font-semibold; }
 .pb.journal-workspace .pb-header-meta { display:flex; align-items:center; flex-wrap:wrap; gap:8px 16px; }
 .pb.journal-workspace .pb-header-meta:has(.draft-save-notice) { margin-top:8px; }
 .pb.journal-workspace .pb-header-meta .draft-save-notice { margin:0; font-size:12px; }
 .pb.journal-workspace .pb-header-meta .draft-save-notice[data-state='failed'] { flex-basis:100%; }
-.pb.journal-workspace .pb-top-actions { gap:16px; min-width:0; flex-wrap:nowrap; }
+.pb.journal-workspace .pb-top-actions { gap:8px 16px; min-width:0; flex-wrap:wrap; }
 .pb.journal-workspace .pb-mode-actions,
 .pb.journal-workspace .pb-utility-actions { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-w-0; }
 .pb.journal-workspace .focus-mode-btn, .pb.journal-workspace .utility-trigger,
@@ -39,11 +39,13 @@
 .pb.journal-workspace .stage-quick-actions .btn-ghost { background: var(--bg-surface); }
 .pb.journal-workspace .result-image-wrap { @apply tw:border-soft tw:rounded-xl; box-shadow: none; }
 .pb.journal-workspace .drawing-jump-links { @apply tw:hidden; }
-@media (max-width: 1100px) {
-  .pb.journal-workspace .pb-topline { @apply tw:flex-col tw:gap-s-3; }
-  .pb.journal-workspace .pb-header { @apply tw:w-full; }
-  .pb.journal-workspace .pb-top-actions { @apply tw:w-full tw:justify-start; }
-}
+/* Materials and parameters use the same tabs; AnimatedSelection owns motion. */
+.pb .workbench-tabs { position:relative; display:flex; flex-shrink:0; gap:var(--s-1); margin:0 20px; padding:0; border-bottom:1px solid var(--border-soft); }
+.pb .workbench-tabs button { display:flex; flex:1; min-width:0; min-height:42px; align-items:center; justify-content:center; gap:6px; padding:8px 4px; border:0; border-bottom:2px solid transparent; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); font:500 13px/1.4 var(--font-sans); white-space:nowrap; cursor:pointer; }
+.pb .workbench-tabs button[data-state='active'] { color:var(--accent); font-weight:600; }
+.pb .workbench-tabs button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.pb .workbench-tabs .archive-icon { width:16px; height:16px; }
+@media (hover:hover) and (pointer:fine) { .pb .workbench-tabs button:hover { color:var(--text-primary); } }
 @media (max-width: 1023px) {
   .pb.journal-workspace .drawing-jump-links { @apply tw:flex tw:gap-s-2 tw:mb-s-3; border-bottom: 1px solid var(--border-soft); }
   .pb.journal-workspace .drawing-jump-links a { @apply tw:flex tw:items-center tw:justify-center; flex: 1; @apply tw:min-h-[44px] tw:text-center tw:p-s-2 tw:rounded-md tw:text-secondary tw:text-label; }

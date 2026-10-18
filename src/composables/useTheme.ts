@@ -6,87 +6,40 @@ import '@/assets/css/theme-motion.css'
 
 function preferredTheme(): Theme { return settingsRepository.get(THEME_SETTING) || 'dark' }
 const theme = ref<Theme>(preferredTheme())
+let requestedTheme = theme.value
 let initialized = false
 let paletteFrame = 0
-type PaperTurn = { target: Theme; sheet: HTMLDivElement; animation: Animation; release: () => void }
-let paperTurn: PaperTurn | undefined
+type ThemeReveal = { target: Theme; origin: HTMLElement; transition?: ViewTransition; animation?: Animation; release: () => void }
+let reveal: ThemeReveal | undefined
 
-function stopPaperTurn() {
-  const previous = paperTurn
-  paperTurn = undefined
+function stopReveal() {
+  const previous = reveal
+  reveal = undefined
   if (!previous) return
   previous.release()
-  previous.animation.cancel()
-  previous.sheet.remove()
+  previous.transition?.skipTransition()
+  previous.animation?.cancel()
+  delete document.documentElement.dataset.themeReveal
 }
 
-function canTurnPaper() {
+function canReveal() {
   return !prefersReducedMotion() && !document.hidden &&
     !document.documentElement.classList.contains('companion-desktop') &&
     !window.matchMedia('(forced-colors: active)').matches &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches &&
+    !document.querySelector('dialog[open]') &&
     Boolean(document.querySelector('#app[data-v-app]')) &&
-    typeof document.documentElement.animate === 'function'
+    typeof document.startViewTransition === 'function'
 }
 
-function turnPaper(target: Theme, paper: string, edge: string, duration: number, easing: string) {
-  // A decorative sheet, never a captured/duplicated UI. Native view-transition
-  // captures disable hit-testing on their contents, even with pointer-events:none.
-  // The real page and every control remain stationary and usable underneath.
-  const sheet = document.createElement('div')
-  sheet.className = 'theme-paper-turn'
-  sheet.setAttribute('aria-hidden', 'true')
-  sheet.inert = true
-  sheet.dataset.direction = target === 'light' ? 'forward' : 'backward'
-  sheet.style.setProperty('--theme-paper', paper)
-  sheet.style.setProperty('--theme-paper-edge', edge)
-  document.body.append(sheet)
-  const direction = target === 'light' ? -1 : 1
-  try {
-    const animation = sheet.animate([
-      { transform: 'perspective(1600px) translateX(0%) rotateY(0deg)', opacity: 0, offset: 0 },
-      { transform: `perspective(1600px) translateX(${direction * 3}%) rotateY(${direction * 12}deg)`, opacity: .3, offset: .16 },
-      { transform: `perspective(1600px) translateX(${direction * 14}%) rotateY(${direction * 54}deg)`, opacity: .22, offset: .65 },
-      { transform: `perspective(1600px) translateX(${direction * 24}%) rotateY(${direction * 88}deg)`, opacity: 0, offset: 1 },
-    ], { duration, easing, fill: 'both' })
-    const onInput = (event: Event) => {
-      // A second press on the actual theme switch reverses this same timeline.
-      const toggle = event.target instanceof Element && event.target.closest('.app-theme-toggle')
-      if (toggle && (!(event instanceof KeyboardEvent) || event.key === 'Enter' || event.key === ' ')) return
-      stopPaperTurn()
-    }
-    const onMotion = () => { if (!canTurnPaper()) stopPaperTurn() }
-    const releaseMotion = listenMotionChanges(onMotion)
-    document.addEventListener('pointerdown', onInput, true)
-    document.addEventListener('keydown', onInput, true)
-    document.addEventListener('scroll', stopPaperTurn, true)
-    window.addEventListener('resize', stopPaperTurn)
-    window.addEventListener('popstate', stopPaperTurn)
-    window.addEventListener('pagehide', stopPaperTurn)
-    const current: PaperTurn = { target, sheet, animation, release: () => {
-      releaseMotion()
-      document.removeEventListener('pointerdown', onInput, true)
-      document.removeEventListener('keydown', onInput, true)
-      document.removeEventListener('scroll', stopPaperTurn, true)
-      window.removeEventListener('resize', stopPaperTurn)
-      window.removeEventListener('popstate', stopPaperTurn)
-      window.removeEventListener('pagehide', stopPaperTurn)
-    } }
-    paperTurn = current
-    animation.onfinish = () => {
-      if (paperTurn === current && animation.playState === 'finished') stopPaperTurn()
-    }
-    animation.oncancel = () => { if (paperTurn === current) stopPaperTurn() }
-  } catch { sheet.remove() }
-}
-
-function applyDocumentTheme() {
+function commitTheme(value: Theme) {
   const root = document.documentElement
-  // Commit the palette immediately; only the non-interactive paper layer moves.
+  theme.value = value
   root.dataset.themeChanging = ''
-  root.dataset.theme = theme.value
-  root.style.colorScheme = theme.value
+  root.dataset.theme = value
+  root.style.colorScheme = value
   cancelAnimationFrame(paletteFrame)
-  // Paint one coherent palette before restoring ordinary surface transitions.
+  // Paint one palette, without interpolating thousands of local surface colors.
   paletteFrame = requestAnimationFrame(() => {
     paletteFrame = requestAnimationFrame(() => {
       paletteFrame = 0
@@ -94,10 +47,11 @@ function applyDocumentTheme() {
     })
   })
 }
+
 function applyTheme(value: Theme) {
-  stopPaperTurn()
-  theme.value = value
-  applyDocumentTheme()
+  requestedTheme = value
+  stopReveal()
+  commitTheme(value)
 }
 function onThemeStorage(event: StorageEvent) {
   if (event.key === THEME_SETTING.key || event.key === null) applyTheme(preferredTheme())
@@ -108,31 +62,93 @@ export function initializeTheme() {
   initialized = true
   window.addEventListener('storage', onThemeStorage)
 }
-function setTheme(value: Theme) {
+
+// Circular reveal adapted from Lucian UX/UI Prompt's site theme control.
+// https://lucianlabs.dev/uxui-prompt/ · MIT (c) 2026 Seokwoooo.
+function setTheme(value: Theme, origin?: HTMLElement) {
+  if (requestedTheme === value) return
   settingsRepository.set(THEME_SETTING, value)
-  if (theme.value === value) return
-  const animate = canTurnPaper()
-  const previous = animate ? paperTurn : undefined
-  const style = animate && !previous ? getComputedStyle(document.documentElement) : undefined
-  const paper = style?.getPropertyValue('--bg-base').trim() || ''
-  const edge = style?.getPropertyValue('--border-strong').trim() || ''
-  const duration = style ? cssTimeToMilliseconds(style.getPropertyValue('--motion-theme-turn')) : 0
-  const easing = style?.getPropertyValue('--ease-in-out').trim() || 'ease-in-out'
-  theme.value = value
-  applyDocumentTheme()
-  if (!animate) { stopPaperTurn(); return }
-  if (previous) {
-    // Preserve the displayed pose on fast reversals; no replay from frame zero.
+  requestedTheme = value
+  const previous = reveal
+  if (origin === previous?.origin && previous?.animation?.playState === 'running' && canReveal()) {
+    commitTheme(value)
     previous.animation.updatePlaybackRate(value === previous.target ? 1 : -1)
     previous.animation.play()
-  } else if (Number.isFinite(duration) && duration > 0) turnPaper(value, paper, edge, duration, easing)
+    return
+  }
+  stopReveal()
+  if (!origin?.isConnected || !canReveal()) { commitTheme(value); return }
+  const rect = origin.getBoundingClientRect()
+  const x = rect.left + rect.width / 2, y = rect.top + rect.height / 2
+  const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y))
+  const root = document.documentElement
+  const style = getComputedStyle(root)
+  const duration = cssTimeToMilliseconds(style.getPropertyValue('--motion-theme-reveal'))
+  const easing = style.getPropertyValue('--ease-theme-reveal').trim()
+  if (!Number.isFinite(duration) || duration <= 0) { commitTheme(value); return }
+  // A root capture is absent from pointer hit-testing. Leaving this stationary
+  // button releases it before the next workspace press. Repeated presses at the
+  // same point use only this button's own click path and reverse the same circle.
+  const interrupt = () => { if (reveal === current) { commitTheme(requestedTheme); stopReveal() } }
+  const insideOrigin = (event: MouseEvent) => event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom
+  const onPointer = (event: PointerEvent) => { if (event.pointerType !== 'mouse' || !insideOrigin(event)) interrupt() }
+  const onClick = (event: MouseEvent) => {
+    if (event.target !== root || event.button !== 0 || !insideOrigin(event)) return
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    origin.click()
+  }
+  const onMotion = () => { if (!canReveal()) interrupt() }
+  const releaseMotion = listenMotionChanges(onMotion)
+  document.addEventListener('pointermove', onPointer, true)
+  document.addEventListener('pointerdown', onPointer, true)
+  document.addEventListener('click', onClick, true)
+  document.addEventListener('keydown', interrupt, true)
+  document.addEventListener('scroll', interrupt, true)
+  window.addEventListener('resize', interrupt)
+  window.addEventListener('pagehide', interrupt)
+  window.addEventListener('popstate', interrupt)
+  const current: ThemeReveal = { target:value, origin, release: () => {
+    releaseMotion()
+    document.removeEventListener('pointermove', onPointer, true)
+    document.removeEventListener('pointerdown', onPointer, true)
+    document.removeEventListener('click', onClick, true)
+    document.removeEventListener('keydown', interrupt, true)
+    document.removeEventListener('scroll', interrupt, true)
+    window.removeEventListener('resize', interrupt)
+    window.removeEventListener('pagehide', interrupt)
+    window.removeEventListener('popstate', interrupt)
+  } }
+  reveal = current
+  root.dataset.themeReveal = ''
+  try {
+    const transition = current.transition = document.startViewTransition(() => {
+      if (reveal === current) commitTheme(value)
+    })
+    void transition.ready.then(() => {
+      if (reveal !== current) return
+      current.animation = root.animate({ clipPath: [
+        `circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`,
+      ] }, { duration, easing, fill:'both', pseudoElement: '::view-transition-new(root)' })
+    }).catch(() => { if (reveal === current) interrupt() })
+    void transition.finished.then(() => { if (reveal === current) stopReveal() }, interrupt)
+  } catch { interrupt() }
 }
+
 export function useTheme() {
-  return { theme: readonly(theme), setTheme, toggleTheme: () => setTheme(theme.value === 'dark' ? 'light' : 'dark') }
+  return {
+    theme: readonly(theme), setTheme,
+    toggleTheme: (origin?: HTMLElement) => setTheme(requestedTheme === 'dark' ? 'light' : 'dark', origin),
+    cancelThemeReveal(origin: HTMLElement | null) {
+      if (reveal?.origin !== origin) return
+      commitTheme(requestedTheme)
+      stopReveal()
+    },
+  }
 }
 
 if (import.meta.hot) import.meta.hot.dispose(() => {
-  stopPaperTurn()
+  stopReveal()
   window.removeEventListener('storage', onThemeStorage)
   cancelAnimationFrame(paletteFrame)
   paletteFrame = 0

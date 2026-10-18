@@ -69,10 +69,12 @@ export function useResourceLibrary() {
     if (!stopped && isLocal && !hidden()) poll = setTimeout(() => void refresh(), status.value?.busy ? 750 : 5000)
   }
   async function refresh(fresh = false) {
-    if (!isLocal || stopped || loading.value || submitting.value) return
+    if (!isLocal || stopped || submitting.value || request && !fresh) return
+    if (request) { generation++; request.abort() }
     const ticket = generation
     request = new AbortController()
-    loading.value = true
+    // Background polling keeps the last state readable; only explicit checks show busy feedback.
+    loading.value = fresh || !status.value
     try {
       const result = await resourceApi.status(fresh, request.signal)
       if (ticket !== generation || stopped) return

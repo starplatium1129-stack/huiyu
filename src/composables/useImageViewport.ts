@@ -75,6 +75,17 @@ export function useImageViewport(
     if (scale.value > 1.05) resetZoom()
     else setScale(2.2, event)
   }
+  function containsImagePoint(point: { clientX: number; clientY: number }) {
+    const rect = viewport.value?.getBoundingClientRect()
+    if (!active || !geometry.width || !geometry.height || !rect?.width || !rect.height
+      || point.clientX < rect.left || point.clientX > rect.right || point.clientY < rect.top || point.clientY > rect.bottom) return false
+    // Use the fitted picture, including its current pan/zoom, rather than the
+    // full-size <img> box whose object-contain letterboxing is still a hit target.
+    const localX = (point.clientX - rect.left) * geometry.viewportWidth / rect.width - geometry.viewportWidth / 2
+    const localY = (point.clientY - rect.top) * geometry.viewportHeight / rect.height - geometry.viewportHeight / 2
+    return Math.abs(localX - x) <= geometry.width * scale.value / 2
+      && Math.abs(localY - y) <= geometry.height * scale.value / 2
+  }
   function handleWheel(event: WheelEvent) {
     if (event.deltaY) setScale(scale.value + (event.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP), event)
   }
@@ -136,5 +147,5 @@ export function useImageViewport(
   watch([viewport, image, layer], observe, { flush: 'post' })
   onMounted(activate); onActivated(activate)
   onDeactivated(deactivate); onBeforeUnmount(deactivate)
-  return { scale, isPanning, refreshBounds, resetZoom, resetImage, zoomIn, zoomOut, toggleZoom, handleWheel, onKeydown, startPan, onPan, stopPan }
+  return { scale, isPanning, refreshBounds, resetZoom, resetImage, zoomIn, zoomOut, toggleZoom, containsImagePoint, handleWheel, onKeydown, startPan, onPan, stopPan }
 }

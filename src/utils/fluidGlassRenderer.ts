@@ -1,6 +1,7 @@
 import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
 
-const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .companion-toolbar, .toolbar-shell, .pop-toolbar, [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *))'
+// Match the material opt-ins: painted browse controls and segments never own optics.
+const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .companion-toolbar, [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))'
 
 /** Native backdrop filters paint the material. JS moves one compositor light. */
 export function mountFluidGlass(): () => void {

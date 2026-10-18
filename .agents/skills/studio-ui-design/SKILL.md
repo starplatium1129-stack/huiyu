@@ -33,6 +33,8 @@ description: 依据绘遇 DESIGN.md 的视觉动效目标与 Emil Kowalski 的�
 
 ## 来源与采用边界
 
+组件样式与动效另参考 [Lucian UX/UI Prompt](https://lucianlabs.dev/uxui-prompt/)；已核对的源码快照为 [7e339faa1cc5e87496cb7ce556a5b22aadbe76f8](https://github.com/Seokwoooo/lucian-uxui-prompt/tree/7e339faa1cc5e87496cb7ce556a5b22aadbe76f8)，许可为 MIT © 2026 Seokwoooo。按当前操作路径选择示例，先观察实际演示，再核对同版 `src/elements` 的时序和中断；已有适配先审查后复用。复制实现时保留来源、示例编号和许可，不把演示自动播放或模拟成功带入真实状态。
+
 融合自 [emilkowalski/skills](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202)，采用基线为 `2d228630ba1446365f614a108cb8252f1feda202`（2026-10-14 接入），保留 [MIT 许可证](LICENSE)。
 
 本入口与参考提炼 emil-design-eng、animate、review-animations、animation-performance、apple-design、find-animation-opportunities 和 pick-ui-library 的适用原则；采用后的规范维护在 DESIGN.md，参考只补充 Vue 实施细节。后续上游更新需审查实际差异后融入，不自动改变项目标准。

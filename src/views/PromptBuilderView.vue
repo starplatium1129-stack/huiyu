@@ -133,7 +133,7 @@
       </div>
       <!-- ─── 左栏：剧本 ──────────────────────────────────── -->
       <div class="director-col col-left" id="drawing-materials" @keydown.esc="closeCompactMaterials">
-        <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :scene-context="String(route.query.scene || route.query.blueprint || '')">
+        <DirectorMaterialDrawer ref="materialDrawer" :expert="pb.directorMode === 'pro'" :compact="directorLayout.compact.value" :scene-context="String(route.query.scene || route.query.blueprint || '')" @back="closeCompactMaterials">
         <template #story>
 
         <AsyncPanel :loader="loadStoryPanel" label="故事与画面描述" v-slot="{ component }"><component :is="component" @ready="focusDescription" /></AsyncPanel>
@@ -348,9 +348,11 @@ async function toggleLayout(side: 'materials' | 'inspector') {
   if (directorLayout.compact.value && side === 'materials' && !directorLayout.collapsed.value.materials)
     layoutRoot.value?.querySelector<HTMLButtonElement>('.material-switch button[aria-selected="true"]')?.focus({ preventScroll: true })
 }
-async function closeCompactMaterials(event: KeyboardEvent) {
-  if (!directorLayout.compact.value || event.defaultPrevented) return
+async function closeCompactMaterials(event: Event) {
+  if (!directorLayout.compact.value || directorLayout.collapsed.value.materials || event.defaultPrevented) return
+  if (event instanceof KeyboardEvent && (event.isComposing || event.keyCode === 229)) return
   event.preventDefault()
+  event.stopPropagation()
   directorLayout.toggle('materials')
   await nextTick()
   document.getElementById('director-materials-toggle')?.focus()

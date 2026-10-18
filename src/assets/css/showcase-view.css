@@ -13,11 +13,8 @@
 .hero-actions .showcase-refresh { min-width:var(--control-height); padding-inline:var(--s-3); }
 .empty-block { padding:var(--s-8) 0; @apply tw:text-center; }
 
-:root body .showcase-page .toolbar-shell.toolbar-shell { position:relative; margin-bottom:var(--s-4); padding:var(--s-3); border-radius:var(--r-xl); }
+.showcase-page .showcase-toolbar { position:relative; display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); margin-bottom:var(--s-4); }
 .search-field { flex:1 1 300px; @apply tw:min-w-0; }
-.filter-reset { @apply tw:min-h-[36px] tw:p-s-2; border:0; @apply tw:rounded-sm; background:transparent; @apply tw:text-accent; font:inherit; @apply tw:text-label tw:cursor-pointer; }
-.filter-reset:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.showcase-page .toolbar-shell { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); }
 .showcase-page .search-row { flex:1; min-width:0; }
 .showcase-filters { margin:0; min-width:160px; }
 .showcase-filters[open] { flex-basis:100%; }
@@ -45,7 +42,7 @@
 .showcase-load-status { @apply tw:flex tw:items-center tw:gap-s-3 tw:p-s-3 tw:rounded-md tw:mb-s-4 tw:text-secondary tw:text-label-sm; background:var(--bg-base); }
 .showcase-load-status > .archive-icon { flex:0 0 auto; color:var(--accent); }
 .showcase-load-status > span { flex:1; min-width:0; overflow-wrap:anywhere; }
-.showcase-load-status .filter-reset { flex:0 0 auto; }
+.showcase-load-status .btn { flex:0 0 auto; }
 
 /* 按原始比例分配行宽：横图获得更多空间，同一行画面等高；DOM 与键盘顺序不变。 */
 .showcase-grid { --showcase-row-height:calc(340px * var(--desktop-layout-scale,1)); display:flex; flex-wrap:wrap; gap:var(--workspace-panel-gap,var(--s-4)); align-items:start; }
@@ -63,5 +60,3 @@
   .filter-summary { @apply tw:text-label-xs; }
 }
 @media (max-width:480px) { .hero-actions { @apply tw:gap-s-1; } .hero-actions .btn { padding-inline:var(--s-2); } }
-@media (prefers-contrast:more) { .showcase-page .toolbar-shell { @apply tw:border-muted; } }
-@media (forced-colors:active) { .showcase-page .toolbar-shell { background:Canvas; border-color:CanvasText; } }
