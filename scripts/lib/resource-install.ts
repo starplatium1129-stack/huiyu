@@ -7,17 +7,20 @@ const { context, access, locked, child, noLinks, mkdir, readJson, writeJson, unl
 const { HASH, releasePolicy, reference, readPack, targetManifest, verifyTree }: typeof import('./resource-install-policy') = require('./resource-install-policy');
 const { equal, readState, verifyVersion, existingVersion, nextState, readJournal }: typeof import('./resource-install-state') = require('./resource-install-state');
 const { copyEntry, fileMatches }: typeof import('./resource-install-copy') = require('./resource-install-copy');
+type Context = ReturnType<typeof context>;
+type State = ReturnType<typeof readState>;
+type Journal = NonNullable<ReturnType<typeof readJournal>>;
 
-function savedJournal(ctx: any, journal: any) { writeJson(ctx.io, child(ctx.store, 'pending.json'), journal); }
-function forgetJournal(ctx: any) { unlink(ctx.io, child(ctx.store, 'pending.json')); }
-function verifyBefore(ctx: any, journal: any) {
+function savedJournal(ctx: Context, journal: Journal) { writeJson(ctx.io, child(ctx.store, 'pending.json'), journal); }
+function forgetJournal(ctx: Context) { unlink(ctx.io, child(ctx.store, 'pending.json')); }
+function verifyBefore(ctx: Context, journal: Journal) {
   if (journal.before.current) verifyVersion(ctx, journal.before.current);
 }
-function result(ctx: any, state: any, action: any, extra: any = {}) {
+function result<T extends object>(ctx: Context, state: State, action: string, extra?: T) {
   return { ok: true, kind: 'resource-install-result', action, state,
     installedRoot: state.current ? child(ctx.store, 'versions/' + state.current.identity) : null, ...extra };
 }
-function quarantineFailedTarget(ctx: any, journal: any) {
+function quarantineFailedTarget(ctx: Context, journal: Journal) {
   if (journal.kind !== 'install' || [journal.before.current, journal.before.previous]
     .some(ref => ref?.identity === journal.target.identity)) return;
   const target = child(ctx.store, 'versions/' + journal.target.identity);
@@ -34,7 +37,7 @@ function quarantineFailedTarget(ctx: any, journal: any) {
 
 // A pointer written before a process exit is accepted only after re-reading all installed
 // bytes. Invalid new bytes restore the independently verified old pointer.
-function finishInterruptedSwitch(ctx: any, journal: any, state: any) {
+function finishInterruptedSwitch(ctx: Context, journal: Journal, state: State) {
   if (!equal(state, nextState(journal))) return null;
   try {
     verifyVersion(ctx, journal.target);
@@ -48,7 +51,7 @@ function finishInterruptedSwitch(ctx: any, journal: any, state: any) {
   forgetJournal(ctx);
   return result(ctx, state, 'recovered');
 }
-async function commit(ctx: any, journal: any, signal: any) {
+async function commit(ctx: Context, journal: Journal, signal?: AbortSignal) {
   cancelled(signal);
   access(ctx);
   const state = readState(ctx);
@@ -64,26 +67,26 @@ async function commit(ctx: any, journal: any, signal: any) {
     cancelled(signal);
     forgetJournal(ctx);
     return result(ctx, next, journal.kind === 'rollback' ? 'rolled-back' : 'installed');
-  } catch (error: any) {
+  } catch (error) {
+    const failure = error instanceof Error ? error : new Error(runtimeErrorMessage(error), { cause: error });
     const current = readState(ctx);
     if (equal(current, next)) {
       try {
         verifyBefore(ctx, journal);
         writeJson(ctx.io, child(ctx.store, 'current.json'), journal.before);
-        error.rolledBack = true;
+        Object.assign(failure, { rolledBack: true });
       } catch (rollbackError) {
-        error.recoveryRequired = true;
-        error.rollbackError = { code: runtimeErrorCode(rollbackError), message: runtimeErrorMessage(rollbackError) };
+        Object.assign(failure, { recoveryRequired: true, rollbackError: { code: runtimeErrorCode(rollbackError), message: runtimeErrorMessage(rollbackError) } });
       }
     }
-    throw error;
+    throw failure;
   }
 }
-async function performInstall(ctx: any, releaseId: any, signal: any) {
+async function performInstall(ctx: Context, releaseId: string, signal?: AbortSignal) {
   const release = releasePolicy(ctx, releaseId);
   cancelled(signal);
   let journal = readJournal(ctx);
-  const before: any = readState(ctx);
+  const before = readState(ctx);
   if (journal) {
     if (journal.kind !== 'install' || journal.releaseId !== releaseId || journal.packageIdentity !== release.packageIdentity) {
       fail('PENDING_TRANSACTION', 'Recover the existing transaction before starting another release');
@@ -108,7 +111,7 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
       return commit(ctx, journal, signal);
     }
   }
-  const installed: any = before.current ? verifyVersion(ctx, before.current) : null;
+  const installed = before.current ? verifyVersion(ctx, before.current) : null;
   const pack = readPack(ctx, release);
   if (!journal && before.current?.identity === release.targetIdentity) {
     if (pack.delta) {
@@ -143,10 +146,11 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
     if (!fileMatches(ctx, child(tree, entry.path), entry)) remaining += entry.bytes;
   }
   ensureSpace(ctx, remaining);
-  const candidatePaths = new Set(pack.manifest.entries.map((entry: any) => entry.path));
+  const candidatePaths = new Set(pack.manifest.entries.map(entry => entry.path));
   for (const entry of target.entries) {
     access(ctx);
-    const sourceRoot = candidatePaths.has(entry.path) ? pack.root : installed.root;
+    // Only a delta can reuse a baseline file; targetManifest already required that baseline.
+    const sourceRoot = candidatePaths.has(entry.path) ? pack.root : installed!.root;
     await copyEntry(ctx, { sourceRoot, tree, parts, entry, signal });
   }
   writeJson(ctx.io, child(tree, 'manifest.json'), target);
@@ -167,19 +171,19 @@ async function performInstall(ctx: any, releaseId: any, signal: any) {
   return commit(ctx, journal, signal);
 }
 
-function createResourceInstaller(options: any) {
+function createResourceInstaller(options: Parameters<typeof context>[0]) {
   const ctx = context(options);
   return {
     root: ctx.store,
-    async install({ releaseId, signal }: any = {}) {
-      releasePolicy(ctx, releaseId); // Fail closed before creating a directory or lock.
-      return locked(ctx, () => performInstall(ctx, releaseId, signal));
+    async install({ releaseId, signal }: { releaseId?: string; signal?: AbortSignal } = {}) {
+      const release = releasePolicy(ctx, releaseId); // Fail closed before creating a directory or lock.
+      return locked(ctx, () => performInstall(ctx, release.releaseId, signal));
     },
-    async recover({ signal }: any = {}) {
+    async recover({ signal }: { signal?: AbortSignal } = {}) {
       access(ctx);
       return locked(ctx, async () => {
         const journal = readJournal(ctx);
-        const state: any = readState(ctx);
+        const state = readState(ctx);
         if (!journal) {
           if (state.current) verifyVersion(ctx, state.current);
           return result(ctx, state, 'nothing-to-recover');
@@ -190,14 +194,14 @@ function createResourceInstaller(options: any) {
         return commit(ctx, journal, signal);
       });
     },
-    async rollback({ signal }: any = {}) {
+    async rollback({ signal }: { signal?: AbortSignal } = {}) {
       access(ctx);
       return locked(ctx, async () => {
         if (readJournal(ctx)) fail('PENDING_TRANSACTION', 'Recover the pending transaction first');
-        const before: any = readState(ctx);
-        if (!before.previous) fail('NO_PREVIOUS_VERSION', 'No previous resource installation is retained');
+        const before = readState(ctx);
+        if (!before.previous) throw fail('NO_PREVIOUS_VERSION', 'No previous resource installation is retained');
         verifyVersion(ctx, before.previous);
-        const journal = { schemaVersion: 1, id: randomUUID(), kind: 'rollback', phase: 'prepared',
+        const journal: Journal = { schemaVersion: 1, id: randomUUID(), kind: 'rollback', phase: 'prepared',
           before, target: before.previous };
         savedJournal(ctx, journal);
         return commit(ctx, journal, signal);
@@ -207,7 +211,7 @@ function createResourceInstaller(options: any) {
       access(ctx);
       if (!noLinks(ctx.io, ctx.store, { missing: true })) return { ok: true, action: 'not-installed', state: null, installedRoot: null };
       return locked(ctx, async () => {
-        const state: any = readState(ctx);
+        const state = readState(ctx);
         const current = state.current ? verifyVersion(ctx, state.current) : null;
         const pending = readJournal(ctx);
         let previous = null;
@@ -220,7 +224,7 @@ function createResourceInstaller(options: any) {
           pending: pending ? { kind: pending.kind, phase: pending.phase, releaseId: pending.releaseId || null } : null, previous });
       });
     },
-    plan({ releaseId }: any = {}) {
+    plan({ releaseId }: { releaseId?: string } = {}) {
       const release = releasePolicy(ctx, releaseId);
       return { ok: true, mode: 'preview', releaseId, sourceId: release.sourceId, sourceKind: release.source.kind,
         kind: release.kind, targetIdentity: release.targetIdentity, store: ctx.store,

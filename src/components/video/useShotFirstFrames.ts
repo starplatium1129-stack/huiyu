@@ -213,5 +213,5 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
     }
   }
 
-  return { firstFrameBusy, firstFrameProgress, generateFirstFrames, cancelFirstFrames }
+  return { firstFrameBusy, firstFrameProgress, generateFirstFrames }
 }

@@ -3,6 +3,11 @@
 
 import { PathOrFileDescriptor } from 'node:fs';
 import { readReferenceLibrary, writeReferenceLibrary } from '../lib/reference-store';
+import type { ReferenceOutfit, ReferencePerspective } from '../lib/reference-standards';
+const popularStore: typeof import('../lib/popular-store') = require('../lib/popular-store');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+type PopularCharacter = ReturnType<typeof popularStore.readCharacters>[number];
+type PopularOutfit = NonNullable<PopularCharacter['outfits']>[number];
 
 /**
  * 登记「已上架但尚无参考资产」的角色形态，消除 standards / view 的形态集合漂移。
@@ -34,19 +39,19 @@ const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
 
 const argv = process.argv.slice(2);
 const dryRun = argv.includes('--dry-run');
-const idsArg = argv.find((a: any) => a.startsWith('--ids='));
-const onlyIds = idsArg ? new Set(idsArg.slice('--ids='.length).split(',').map((s: any) => s.trim()).filter(Boolean)) : null;
+const idsArg = argv.find(a => a.startsWith('--ids='));
+const onlyIds = idsArg ? new Set(idsArg.slice('--ids='.length).split(',').map(s => s.trim()).filter(Boolean)) : null;
 
-const readJson = (file: PathOrFileDescriptor) => JSON.parse(fs.readFileSync(file, 'utf8'));
+const readJson = (file: PathOrFileDescriptor): unknown => JSON.parse(fs.readFileSync(file, 'utf8'));
 
-function isReferenceNsfw(outfit: any) {
+function isReferenceNsfw(outfit: PopularOutfit) {
   return Boolean(outfit.isNsfw === true
     || /私密|泳装|浴|裸/.test(String(outfit.name || ''))
     || String(outfit.id || '').includes('nsfw'));
 }
 
-function pendingReferences(perspectives: any[]) {
-  return perspectives.map((p: any) => ({
+function pendingReferences(perspectives: ReferencePerspective[]) {
+  return perspectives.map(p => ({
     id: p.id,
     name: p.name,
     shotType: p.shotType,
@@ -58,8 +63,8 @@ function pendingReferences(perspectives: any[]) {
   }));
 }
 
-function standardOutfit(popOutfit: any, existingOutfits: any[]) {
-  const hasDefault = existingOutfits.some((o: any) => o.isDefault === true);
+function standardOutfit(popOutfit: PopularOutfit, existingOutfits: ReferenceOutfit[]) {
+  const hasDefault = existingOutfits.some(o => o.isDefault === true);
   return {
     id: popOutfit.id,
     name: popOutfit.name,
@@ -70,7 +75,7 @@ function standardOutfit(popOutfit: any, existingOutfits: any[]) {
   };
 }
 
-function viewOutfit(standard: any, perspectives: any[]) {
+function viewOutfit(standard: ReferenceOutfit, perspectives: ReferencePerspective[]) {
   return {
     outfitId: standard.id,
     outfitName: standard.name,
@@ -83,21 +88,23 @@ function viewOutfit(standard: any, perspectives: any[]) {
 
 function main() {
   const { standards, view } = readReferenceLibrary(ROOT);
-  const popular = fs.existsSync(path.join(ROOT, 'data/popular/manifest.json'))
-    ? { characters: (require('../lib/popular-store') as typeof import('../lib/popular-store')).loadPopularShards().characters }
+  const popular: unknown = fs.existsSync(path.join(ROOT, 'data/popular/manifest.json'))
+    ? { characters: popularStore.loadPopularShards().characters }
     : readJson(POPULAR_FILE);
+  if (!object(popular)) throw new Error('Invalid popular character catalog');
+  const characters = popularStore.readCharacters(popular.characters || []);
   const perspectives = standards.perspectives;
 
-  const popularById = new Map((popular.characters || []).map((c: any) => [c.id, c]));
+  const popularById = new Map(characters.map(c => [c.id, c]));
 
-  const standardById = new Map<string, any>(standards.characters.map((c: any) => [c.id, c] as [string, any]));
-  const targets: any[] = [];
+  const standardById = new Map(standards.characters.map(c => [c.id, c]));
+  const targets: { id: string; displayName: string; outfits: string[]; perspectivesPerOutfit: number }[] = [];
   const errors: string[] = [];
   let addedOutfits = 0;
 
   for (const id of onlyIds || []) if (!popularById.has(id) && !standardById.has(id)) errors.push(`${id}: 未知角色 ID`);
 
-  for (const popChar of popular.characters || []) {
+  for (const popChar of characters) {
     if (onlyIds && !onlyIds.has(popChar.id)) continue;
     let character = standardById.get(popChar.id);
     if (!character) {
@@ -115,17 +122,18 @@ function main() {
     }
     const viewChar = view[popChar.id];
 
-    const standardIds = new Set(character.outfits.map((o: any) => o.id));
-    const viewIds = new Set((viewChar.outfits || []).map((o: any) => o.outfitId));
-    const missing = (popChar.outfits || []).filter((o: any) => !standardIds.has(o.id) || !viewIds.has(o.id));
+    const standardIds = new Set(character.outfits.map(o => o.id));
+    const viewIds = new Set(viewChar.outfits.map(o => o.outfitId));
+    const popOutfits = popChar.outfits || [];
+    const missing = popOutfits.filter(o => !standardIds.has(o.id) || !viewIds.has(o.id));
     if (!missing.length) continue;
 
-    const added: any[] = [];
+    const added: string[] = [];
     for (const popOutfit of missing) {
-      let standard = character.outfits.find((o: any) => o.id === popOutfit.id);
-      if (!standardIds.has(popOutfit.id)) {
+      let standard = character.outfits.find(o => o.id === popOutfit.id);
+      if (!standard) {
         standard = standardOutfit({ ...popOutfit, default: popOutfit.default === true
-          || (!popChar.outfits.some((o: any) => o.default === true || o.isDefault === true) && popChar.outfits[0].id === popOutfit.id) }, character.outfits);
+          || (!popOutfits.some(o => o.default === true || o.isDefault === true) && popOutfits[0].id === popOutfit.id) }, character.outfits);
         character.outfits.push(standard);
         standardIds.add(popOutfit.id);
       }
@@ -150,18 +158,19 @@ function main() {
     if (character.outfits.length > 0 || !(view[character.id]?.outfits || []).length) continue;
     if (onlyIds && !onlyIds.has(character.id)) continue;
     const viewChar = view[character.id];
-    const popChar: any = popularById.get(character.id);
+    const popChar = popularById.get(character.id);
     const added: string[] = [];
     for (const vo of viewChar.outfits) {
-      const popOutfit = (popChar?.outfits || []).find((o: any) => o.id === vo.outfitId);
+      const popOutfit = (popChar?.outfits || []).find(o => o.id === vo.outfitId);
+      if (!popOutfit && vo.outfitName === undefined) throw new Error(`${character.id}/${vo.outfitId}: 缺少服装名称`);
       const fallback = {
         id: vo.outfitId,
-        name: vo.outfitName,
+        name: vo.outfitName ?? popOutfit!.name,
         default: vo.isDefault,
         isDefault: vo.isDefault,
         isNsfw: vo.isNsfw,
         prose: vo.prose,
-        tokens: (popOutfit?.tokens || []).length ? popOutfit.tokens : [vo.outfitId],
+        tokens: popOutfit?.tokens?.length ? popOutfit.tokens : [vo.outfitId],
       };
       character.outfits.push(standardOutfit(popOutfit || fallback, character.outfits));
       // Existing URLs and reviewed/pending states are asset facts; registration never erases them.

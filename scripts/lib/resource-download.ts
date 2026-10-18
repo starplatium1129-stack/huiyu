@@ -1,14 +1,17 @@
 import { errorCode as runtimeErrorCode } from './runtime-errors';
+import type { ManifestEntry } from './resource-manifest-types';
 'use strict';
 
 const path: typeof import('node:path') = require('node:path');
 const { context, locked, access, child, mkdir, noLinks, readJson, writeJson, writeAtomic, unlink,
-  ensureSpace, writeAll, yieldForCancellation, cancelled, fail, digest, flushDir, ResourceError, cleanAtomicTemps }: typeof import('./resource-install-fs') = require('./resource-install-fs');
+  ensureSpace, writeAll, yieldForCancellation, cancelled, fail, object, digest, flushDir, ResourceError, cleanAtomicTemps }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 const { releasePolicy, decodePack, readPack, verifyTree }: typeof import('./resource-install-policy') = require('./resource-install-policy');
 const { fileMatches }: typeof import('./resource-install-copy') = require('./resource-install-copy');
 const { sourceUrl, response, fetchMetadata, rangeStart }: typeof import('./resource-download-http') = require('./resource-download-http');
+type Context = ReturnType<typeof context>;
+type Release = ReturnType<typeof releasePolicy>;
 
-async function downloadEntry(ctx: any, release: any, pack: string, parts: string, entry: any, signal: any, timeoutMs: any) {
+async function downloadEntry(ctx: Context, release: Release, pack: string, parts: string, entry: ManifestEntry, signal: AbortSignal | undefined, timeoutMs: number) {
   const target = child(pack, entry.path);
   if (fileMatches(ctx, target, entry)) {
     await yieldForCancellation(signal);
@@ -20,20 +23,20 @@ async function downloadEntry(ctx: any, release: any, pack: string, parts: string
   let stat = noLinks(ctx.io, partial, { missing: true });
   if (stat && (!stat.isFile() || stat.size > entry.bytes)) fail('PARTIAL_INVALID', 'Invalid partial resource');
   // A checkpoint is only a resume hint. Final bytes always have to match the approved hash.
-  if (stat && (!saved || saved.sha256 !== entry.sha256 || saved.bytes !== entry.bytes)) {
+  if (stat && (!object(saved) || saved.sha256 !== entry.sha256 || saved.bytes !== entry.bytes)) {
     unlink(ctx.io, partial);
     stat = null;
   }
   let offset = stat?.size || 0;
   if (stat && offset === entry.bytes) {
-    if (fileMatches(ctx, partial, entry)) return publishEntry(ctx, partial, target, entry, signal);
+    if (fileMatches(ctx, partial, entry)) return publishEntry(ctx, partial, target, signal);
     unlink(ctx.io, partial);
     offset = 0;
   }
   ensureSpace(ctx, entry.bytes - offset + 65536);
-  const etag = typeof saved?.etag === 'string' && /^"[^\r\n]*"$/.test(saved.etag) ? saved.etag : null;
+  const etag = object(saved) && typeof saved.etag === 'string' && /^"[^\r\n]*"$/.test(saved.etag) ? saved.etag : null;
   const headers = offset ? { range: 'bytes=' + offset + '-', ...(etag ? { 'if-range': etag } : {}) } : {};
-  const res: any = await response(sourceUrl(release, entry.path), { signal, headers, timeoutMs });
+  const res = await response(sourceUrl(release, entry.path), { signal, headers, timeoutMs });
   let fd;
   try {
     const start = rangeStart(res, offset, entry.bytes, offset ? etag : null);
@@ -45,6 +48,7 @@ async function downloadEntry(ctx: any, release: any, pack: string, parts: string
     noLinks(ctx.io, partial);
     let received = start;
     for await (const chunk of res) {
+      if (!Buffer.isBuffer(chunk)) throw fail('HTTP_ENCODING', 'Expected an undecoded byte response');
       cancelled(signal);
       access(ctx);
       if (received + chunk.length > entry.bytes) fail('HTTP_SIZE', 'Response exceeds approved resource length');
@@ -65,9 +69,9 @@ async function downloadEntry(ctx: any, release: any, pack: string, parts: string
     unlink(ctx.io, partial);
     fail('CONTENT_INVALID', 'Downloaded bytes differ from the approved hash; retry starts this file again');
   }
-  return publishEntry(ctx, partial, target, entry, signal);
+  return publishEntry(ctx, partial, target, signal);
 }
-async function publishEntry(ctx: any, partial: string, target: string, entry: any, signal: any) {
+async function publishEntry(ctx: Context, partial: string, target: string, signal?: AbortSignal) {
   cancelled(signal);
   mkdir(ctx.io, path.dirname(target));
   noLinks(ctx.io, partial);
@@ -77,12 +81,12 @@ async function publishEntry(ctx: any, partial: string, target: string, entry: an
   flushDir(ctx.io, path.dirname(target));
   await yieldForCancellation(signal);
 }
-function createResourceDownloader(options: any) {
+function createResourceDownloader(options: NonNullable<Parameters<typeof context>[0]> & { timeoutMs?: number }) {
   const ctx = context(options);
   const timeoutMs = options.timeoutMs || 30000;
   return {
     root: ctx.store,
-    async download({ releaseId, signal }: any = {}) {
+    async download({ releaseId, signal }: { releaseId?: string; signal?: AbortSignal } = {}) {
       const release = releasePolicy(ctx, releaseId);
       if (release.source.kind !== 'http') fail('SOURCE_REQUIRED', 'Download requires a configured HTTP source');
       sourceUrl(release, 'manifest.json'); // Validate transport before any disk/network mutation.
@@ -93,7 +97,7 @@ function createResourceDownloader(options: any) {
         const parts = child(directory, 'parts');
         const complete = child(directory, 'complete.json');
         const done = readJson(ctx.io, complete, true);
-        if (done?.packageIdentity === release.packageIdentity) {
+        if (object(done) && done.packageIdentity === release.packageIdentity) {
           try {
             const existing = readPack(ctx, release);
             return { ok: true, kind: 'resource-download-result', action: 'already-downloaded', releaseId,

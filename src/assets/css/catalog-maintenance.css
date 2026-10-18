@@ -75,11 +75,6 @@
 .catalog-editor .form-group { display:grid; gap:var(--s-2); min-width:0; }
 .catalog-editor .form-group-full { grid-column:1/-1; }
 .catalog-studio .field-label { color:var(--text-secondary); font-size:var(--fs-body-sm); }
-.catalog-studio .input { min-width:0; font-size:var(--fs-body-sm); }
-.catalog-studio input.input { height:var(--control-height); min-height:var(--control-height); }
-.catalog-studio textarea.input { padding:var(--s-3); line-height:1.8; resize:vertical; }
-.catalog-studio .input::placeholder { color:var(--text-muted); }
-.catalog-studio .input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .catalog-editor .studio-select-wrapper { width:100%; }
 .catalog-field-note,.catalog-note { color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:1.8; }
 .catalog-editor-footer { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:var(--s-3); padding-top:var(--s-5); }

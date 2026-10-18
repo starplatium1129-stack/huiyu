@@ -301,7 +301,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     disposed = true; workspaceOpenVersion++; planVersion++; inspectionVersion++; planController?.abort(); inspectionController?.abort(); activationController?.abort()
     window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged); window.removeEventListener('focus', focused)
   })
-  return { desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, runtimeSpaceEnough, modelSpaceEnough, canInstall, canDownload, canActivate,
+  return { desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
     operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
     workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,

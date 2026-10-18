@@ -229,7 +229,7 @@ async function main() {
       if (binaryVersion !== version) fail(`已构建程序版本 ${binaryVersion} 与发行版本 ${version} 不一致，请完整构建`);
       execFileSync(process.execPath, [path.join(ROOT, 'scripts/maintenance/build-game-installer.js')], { cwd: ROOT, stdio: 'inherit' });
     }
-    const buildEnv = (require('./run-tauri') as typeof import('./run-tauri')).tauriEnvironment();
+    const buildEnv = (require('./desktop-build-environment') as typeof import('./desktop-build-environment')).desktopBuildEnvironment();
     if (MANUAL) {
       delete buildEnv.TAURI_SIGNING_PRIVATE_KEY; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PATH; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PASSWORD;
     } else {

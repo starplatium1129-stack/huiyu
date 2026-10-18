@@ -14,7 +14,7 @@ const THUMB_BOX = '480x640';
 
 const THUMB_QUALITY = 85;
 
-function convertImages(python: any, sourceFile: any, imageOut: any, thumbOut: any) {
+function convertImages(python: string, sourceFile: string, imageOut: string, thumbOut: string) {
   const result = spawnSync(python, [
     path.join(ROOT, 'scripts', 'maintenance', 'convert-showcase-image.py'),
     sourceFile,

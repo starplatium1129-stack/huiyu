@@ -26,7 +26,7 @@
 | --- | --- |
 | `diagnostics:window-capture -Out runtime/<PNG> [-Title <标题>] [-ProcessId <PID>] [-Scale 2]` | `scripts/maintenance/capture-window.ps1` 用 PrintWindow 截取指定窗口，写入PNG，可覆盖旧文件。默认标题为绘遇 Companion、倍率为2；工作流要求明确传入 `-Out`，输出父目录须预先存在 |
 
-四个旧 `diagnostics:companion-*` CDP 探针已退出注册表。其源文件原样保留在 [历史探针归档](../scripts/archive/companion-cdp-20260930/README.md)，没有删除测试；旧选择器、固定截图目标与按 URL 子串选择最后一个页面的做法不构成当前有效的公共诊断 CLI，也不应直接运行。不能把归档探针输出作为现行桌宠功能或设备验收证据。
+四个旧 `diagnostics:companion-*` CDP 探针及其归档源码已删除，历史可从 Git 取回。旧选择器、固定截图目标与按 URL 子串选择最后一个页面的做法不构成当前有效的公共诊断 CLI；旧探针输出不能作为现行桌宠功能或设备验收证据。
 
 人工诊断的当次截图与日志归入被忽略的 `runtime/`，避免覆盖已有证据。浏览器行为按实际影响人工验收，不恢复 Playwright 或其他测试入口；本节只说明工具边界，不代表连接或设备验收已完成。
 
@@ -408,7 +408,7 @@ Windows 上已授权的单窗口截图可用 `powershell -NoProfile -File script
 
 `-Scale` 默认 2，只调整截图位图，不改变实际窗口、系统 DPI 或 CSS 视口。`PrintWindow` 返回失败仍可能落盘，日志里的 saved 不能证明画面正确；须人工打开 PNG 检查黑屏、透明或缺失内容，并独立记录实际分辨率、DPI/缩放和主题。此处仅说明静态审查确认的用途和限制，未宣称当次 Windows/WebView2 端到端验收。
 
-2026-09-30 的四个旧 CDP 探针已原样移至 `scripts/archive/companion-cdp-20260930/`，本次特意保留 Git 跟踪供审阅与恢复，详见[归档理由](../scripts/archive/companion-cdp-20260930/README.md)。它们硬编码调试端口、存在失效 DOM 选择器/用户路径，且只打印状态而没有回归断言，因此不再作为维护入口或通过证据。归档探针不作为当前验收证据。
+四个旧 CDP 探针硬编码调试端口、存在失效 DOM 选择器及用户路径，且只打印状态而没有回归断言，已从注册表及源码中清理。需要历史实现时从 Git 取回；历史输出不能作为当前验收证据。
 
 `backup:git` 创建本地 bundle 增量链（2 个锚点 + 默认 10 个增量），不能替代 push 或异地副本。`runtime:clean` 默认只预览；`--prune --days 60` 会实际清理。先检查路径与白名单，避免清除当前运行资料。
 

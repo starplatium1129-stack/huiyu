@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { errorStack } from '../lib/runtime-errors';
 'use strict';
 
 /**
@@ -55,7 +56,7 @@ const HELP = [
   '核验通过不是数字签名、可信来源、当前安装状态或质量验收。',
 ].join('\n');
 
-function main(args: any = process.argv.slice(2)) {
+function main(args: string[] = process.argv.slice(2)) {
   let root = path.resolve(__dirname, '..', '..');
   let baseManifestPath = null;
   let packPath = null;
@@ -83,12 +84,12 @@ function main(args: any = process.argv.slice(2)) {
     const result = verifyDeltaPack({ root, baseManifestPath, packPath });
     console.log(JSON.stringify(result, null, 2));
     return result.ok ? 0 : 1;
-  } catch (err: any) {
+  } catch (err) {
     if (err instanceof UsageError) {
       console.error(`错误: ${err.message}`);
       return 2;
     }
-    console.error(err && err.stack ? err.stack : String(err));
+    console.error(errorStack(err));
     return 2;
   }
 }

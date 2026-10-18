@@ -1,4 +1,5 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
+import type { CandidateOptions, CandidateRecord, CandidateSource, CandidateTask, GenerationOptions } from './generation-types';
 'use strict';
 
 const fs: typeof import('node:fs') = require('node:fs');
@@ -6,18 +7,24 @@ const path: typeof import('node:path') = require('node:path');
 const os: typeof import('node:os') = require('node:os');
 const crypto: typeof import('node:crypto') = require('node:crypto');
 const gateway: typeof import('./generation-gateway') = require('./generation-gateway');
+const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
 
 const CODE_ROOT = path.resolve(__dirname, '..', '..');
-const hash = (value: any) => crypto.createHash('sha256').update(value).digest('hex');
+const hash = (value: string | NodeJS.ArrayBufferView) => crypto.createHash('sha256').update(value).digest('hex');
 const now = () => new Date().toISOString();
 
-function parseArgs(args: any, extra: any = {}, env: any = process.env) {
+type OptionSpec = Record<string, 'flag' | 'value'>;
+type ParsedExtra<S extends OptionSpec> = { [K in keyof S]?: S[K] extends 'flag' ? boolean : string };
+type Help = { help: true; plan: boolean };
+function parseArgs(args: string[], extra?: undefined, env?: NodeJS.ProcessEnv): Help | CandidateOptions;
+function parseArgs<const S extends OptionSpec>(args: string[], extra: S, env?: NodeJS.ProcessEnv): Help | (CandidateOptions & ParsedExtra<S>);
+function parseArgs(args: string[], extra: OptionSpec = {}, env: NodeJS.ProcessEnv = process.env): Help | CandidateOptions {
   if (args.includes('--help') || args.includes('-h') || args.includes('--plan')) {
-    return { help: true, plan: args.includes('--plan') };
+    return { help: true as const, plan: args.includes('--plan') };
   }
-  const spec: any = { root: 'value', output: 'value', gateway: 'value', 'dry-run': 'flag',
+  const spec: OptionSpec = { root: 'value', output: 'value', gateway: 'value', 'dry-run': 'flag',
     concurrency: 'value', 'retry-unknown': 'flag', ...extra };
-  const parsed: any = {};
+  const parsed: Record<string, string | boolean | undefined> = {};
   for (let i = 0; i < args.length; i++) {
     const match = /^(--[a-z-]+)(?:=(.*))?$/.exec(args[i]);
     const name = match?.[1].slice(2);
@@ -32,16 +39,22 @@ function parseArgs(args: any, extra: any = {}, env: any = process.env) {
       parsed[name] = value;
     }
   }
-  const opts = { ...parsed, env, root: path.resolve(parsed.root || env.AICS_DATA_ROOT || env.AICS_APP_ROOT || CODE_ROOT),
-    gateway: gateway.gatewayUrl(parsed.gateway, env), dryRun: !!parsed['dry-run'],
-    retryUnknown: !!parsed['retry-unknown'], output: parsed.output ? path.resolve(parsed.output) : null,
+  const value = (name: string) => {
+    const item = parsed[name];
+    if (item !== undefined && typeof item !== 'string') throw new Error(`--${name} requires a value`);
+    return item;
+  };
+  const output = value('output');
+  const opts = { ...parsed, help: false as const, env, root: path.resolve(value('root') || env.AICS_DATA_ROOT || env.AICS_APP_ROOT || CODE_ROOT),
+    gateway: gateway.gatewayUrl(value('gateway'), env), dryRun: !!parsed['dry-run'],
+    retryUnknown: !!parsed['retry-unknown'], output: output ? path.resolve(output) : null,
     concurrency: Number(parsed.concurrency ?? env.CONCURRENCY ?? 3) };
   if (!Number.isInteger(opts.concurrency) || opts.concurrency < 1 || opts.concurrency > 32) throw new Error('concurrency must be an integer from 1 to 32');
   if (!opts.dryRun && !opts.output) throw new Error('--output <isolated candidate directory> is required');
   return opts;
 }
 
-function help(script: any, extra: any = '') {
+function help(script: string, extra = '') {
   console.log(`${path.basename(script)} --output <candidate directory> ${extra}\n` +
     '[--root <data root>] [--gateway <url>] [--concurrency <1-32>] [--dry-run] [--retry-unknown]\n' +
     '--help/--plan: usage only, no target reads. --dry-run: read inputs and print plan; no writes or requests.\n' +
@@ -52,12 +65,12 @@ function help(script: any, extra: any = '') {
   return { exitCode: 0 };
 }
 
-function inside(file: any, root: any) {
+function inside(file: string, root: string) {
   const relative = path.relative(path.resolve(root), path.resolve(file));
   return relative === '' || (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative));
 }
 
-function noLinks(file: any) {
+function noLinks(file: string) {
   let current = path.resolve(file);
   for (;;) {
     let stat;
@@ -70,7 +83,8 @@ function noLinks(file: any) {
   return path.resolve(file);
 }
 
-function assertOutput(opts: any, protectedPaths: any = []) {
+function assertOutput(opts: CandidateOptions, protectedPaths: Array<string | undefined> = []) {
+  if (!opts.output) throw new Error('--output <isolated candidate directory> is required');
   const output = noLinks(opts.output);
   for (const root of new Set([CODE_ROOT, opts.root])) {
     const archive = path.join(root, 'scripts', 'archive', 'generation-candidates');
@@ -80,9 +94,10 @@ function assertOutput(opts: any, protectedPaths: any = []) {
     const ai = path.resolve(root, '..', 'AI');
     protectedPaths = [...protectedPaths, path.join(ai, 'SceneShowcase'), path.join(ai, 'CharacterReferences')];
   }
-  if (opts.env.AI_WORKSPACE_ROOT) protectedPaths.push(...['SceneShowcase', 'CharacterReferences'].map(p => path.join(opts.env.AI_WORKSPACE_ROOT, p)));
+  const workspace = opts.env.AI_WORKSPACE_ROOT;
+  if (workspace) protectedPaths.push(...['SceneShowcase', 'CharacterReferences'].map(p => path.join(workspace, p)));
   protectedPaths.push(opts.env.SCENE_SHOWCASE_DIR, opts.env.AICS_CHARACTER_REF_ROOT);
-  for (const protectedPath of protectedPaths.filter(Boolean)) {
+  for (const protectedPath of protectedPaths.filter((value): value is string => Boolean(value))) {
     const paths = [path.resolve(protectedPath)];
     if (fs.existsSync(protectedPath)) paths.push(fs.realpathSync(protectedPath));
     if (paths.some(p => inside(output, p) || inside(p, output))) throw new Error(`candidate output overlaps published assets: ${output}`);
@@ -90,8 +105,8 @@ function assertOutput(opts: any, protectedPaths: any = []) {
   return output;
 }
 
-function snapshot(root: any, names: any) {
-  const data: any = {}, sources = [];
+function snapshot(root: string, names: readonly string[]) {
+  const data: Record<string, unknown> = {}, sources: CandidateSource[] = [];
   for (const name of names) {
     const file = noLinks(path.resolve(root, name));
     if (!inside(file, root)) throw new Error('input outside selected root');
@@ -102,7 +117,7 @@ function snapshot(root: any, names: any) {
   return { data, sources };
 }
 
-function atomic(file: any, value: any) {
+function atomic(file: string, value: unknown) {
   noLinks(file);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const temporary = `${file}.${crypto.randomUUID()}.tmp`;
@@ -110,11 +125,11 @@ function atomic(file: any, value: any) {
   fs.renameSync(temporary, file);
 }
 
-function lockDirectory(output: any) {
+function lockDirectory(output: string) {
   const file = noLinks(path.join(output, '.generation.lock'));
   if (fs.existsSync(file)) {
-    const owner = JSON.parse(fs.readFileSync(file, 'utf8'));
-    if (owner.host !== os.hostname() || !Number.isInteger(owner.pid) || owner.pid < 1) throw new Error('unrecognized candidate lock; inspect before recovery');
+    const owner: unknown = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (!object(owner) || owner.host !== os.hostname() || typeof owner.pid !== 'number' || !Number.isInteger(owner.pid) || owner.pid < 1) throw new Error('unrecognized candidate lock; inspect before recovery');
     let alive = true;
     try { process.kill(owner.pid, 0); } catch (error) { if (runtimeErrorCode(error) === 'ESRCH') alive = false; else throw error; }
     if (alive) throw new Error('candidate directory is in use');
@@ -124,7 +139,7 @@ function lockDirectory(output: any) {
   return () => fs.unlinkSync(file);
 }
 
-function openStore(opts: any, script: any, protectedPaths: any) {
+function openStore(opts: CandidateOptions, script: string, protectedPaths: string[]) {
   const output = assertOutput(opts, protectedPaths);
   const markerFile = path.join(output, 'candidate-run.json');
   noLinks(markerFile);
@@ -135,42 +150,45 @@ function openStore(opts: any, script: any, protectedPaths: any) {
   const unlock = lockDirectory(output);
   try {
     const generator = path.basename(script);
-    let marker;
+    let marker: { kind: string; schemaVersion: number; generator: string; runId: string; createdAt?: unknown };
     if (fs.existsSync(markerFile)) {
-      marker = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
-      if (marker.kind !== 'generation-candidates' || marker.schemaVersion !== 1 || marker.generator !== generator || !marker.runId) {
+      const value: unknown = JSON.parse(fs.readFileSync(markerFile, 'utf8'));
+      if (!object(value) || value.kind !== 'generation-candidates' || value.schemaVersion !== 1 || value.generator !== generator || typeof value.runId !== 'string' || !value.runId) {
         throw new Error('candidate directory belongs to a different or invalid run');
       }
+      marker = { ...value, kind: value.kind, schemaVersion: value.schemaVersion, generator: value.generator, runId: value.runId };
     } else {
       marker = { kind: 'generation-candidates', schemaVersion: 1, generator, runId: crypto.randomUUID(), createdAt: now() };
       atomic(markerFile, marker);
     }
     const directory = noLinks(path.join(output, 'records'));
-    const records: any = [];
+    const records: CandidateRecord[] = [];
     if (fs.existsSync(directory)) for (const name of fs.readdirSync(directory)) {
       if (!name.endsWith('.json')) continue; // Interrupted atomic writes remain available for inspection.
-      const record = JSON.parse(fs.readFileSync(noLinks(path.join(directory, name)), 'utf8'));
-      if (record.schemaVersion !== 1 || record.runId !== marker.runId || record.generator !== generator ||
-          !/^[0-9a-f-]{36}$/.test(record.candidateId) || name !== `${record.candidateId}.json` ||
-          !Number.isInteger(record.attempt) || record.attempt < 1 || !record.key ||
+      const record: unknown = JSON.parse(fs.readFileSync(noLinks(path.join(directory, name)), 'utf8'));
+      if (!object(record) || record.schemaVersion !== 1 || record.runId !== marker.runId || record.generator !== generator ||
+          typeof record.candidateId !== 'string' || !/^[0-9a-f-]{36}$/.test(record.candidateId) || name !== `${record.candidateId}.json` ||
+          typeof record.attempt !== 'number' || !Number.isInteger(record.attempt) || record.attempt < 1 || typeof record.key !== 'string' || !record.key ||
+          typeof record.createdAt !== 'string' || typeof record.gateway !== 'string' || typeof record.status !== 'string' ||
+          (record.jobId !== undefined && record.jobId !== null && typeof record.jobId !== 'string') || !object(record.payload) ||
           record.recordId !== `${record.key}@attempt-${record.attempt}-${record.candidateId}` ||
-          record.payloadSha256 !== hash(JSON.stringify(record.payload)) || record.review?.verdict !== 'pending' ||
+          record.payloadSha256 !== hash(JSON.stringify(record.payload)) || !object(record.review) || record.review.verdict !== 'pending' ||
           record.review.recordId !== record.recordId || record.review.reviewedAt || record.publishedAt ||
           record.image !== `images/${record.candidateId}.png`) throw new Error(`invalid or forged candidate record: ${name}`);
-      records.push(record);
+      records.push(record as CandidateRecord); // Persisted identity, request and recovery fields were checked above.
     }
-    records.sort((a: any, b: any) => a.attempt - b.attempt || a.createdAt.localeCompare(b.createdAt));
+    records.sort((a, b) => a.attempt - b.attempt || a.createdAt.localeCompare(b.createdAt));
     const manifestFile = noLinks(path.join(output, 'generation-manifest.json'));
     const flush = () => {
       atomic(manifestFile, records);
       // Existing audit/publish tools accept explicit manifests but expect one batch type.
       // Keep these beside the full ledger so image paths remain relative to the same root.
       for (const batch of ['reference', 'popular', 'scene']) {
-        const selected = records.filter((record: any) => record.batch === batch);
+        const selected = records.filter(record => record.batch === batch);
         if (selected.length) atomic(path.join(output, `${batch}-generation-manifest.json`), selected);
       }
     };
-    const save = (record: any) => {
+    const save = (record: CandidateRecord) => {
       record.updatedAt = now();
       atomic(path.join(directory, `${record.candidateId}.json`), record);
       flush();
@@ -180,16 +198,16 @@ function openStore(opts: any, script: any, protectedPaths: any) {
   } catch (error) { unlock(); throw error; }
 }
 
-function validAsset(store: any, record: any) {
+function validAsset(store: ReturnType<typeof openStore>, record: CandidateRecord) {
   try {
     const file = noLinks(path.join(store.output, record.image));
     const bytes = fs.readFileSync(file);
     gateway.validatePng(bytes);
-    return record.asset?.sha256 === hash(bytes) && record.asset.bytes === bytes.length;
+    return object(record.asset) && record.asset.sha256 === hash(bytes) && record.asset.bytes === bytes.length;
   } catch { return false; }
 }
 
-function writeImage(store: any, record: any, image: any) {
+function writeImage(store: ReturnType<typeof openStore>, record: CandidateRecord, image: Awaited<ReturnType<typeof gateway.generate>>) {
   const file = noLinks(path.join(store.output, record.image));
   fs.mkdirSync(path.dirname(file), { recursive: true });
   if (fs.existsSync(file)) {
@@ -201,21 +219,25 @@ function writeImage(store: any, record: any, image: any) {
     fs.writeFileSync(temporary, image.buffer, { flag: 'wx' });
     fs.renameSync(temporary, file);
   }
-  record.asset = { path: record.image, sha256: hash(image.buffer), bytes: image.buffer.length,
+  const asset = { path: record.image, sha256: hash(image.buffer), bytes: image.buffer.length,
     mime: image.mime, width: image.width, height: image.height };
-  record.sha256 = record.asset.sha256;
-  record.bytes = record.asset.bytes;
-  record.mime = record.asset.mime;
+  record.asset = asset;
+  record.sha256 = asset.sha256;
+  record.bytes = asset.bytes;
+  record.mime = asset.mime;
   record.status = 'succeeded';
   record.generatedAt = now();
   record.error = null;
   store.save(record);
 }
 
-async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, pollMs = 2000, timeoutMs = 600000, protectedPaths = [] }: any, deps: any = {}) {
+async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, pollMs = 2000, timeoutMs = 600000, protectedPaths = [] }: {
+  opts: CandidateOptions; script: string; tasks: CandidateTask[]; sources: CandidateSource[];
+  maxAttempts?: number; pollMs?: number; timeoutMs?: number; protectedPaths?: string[];
+}, deps: GenerationOptions = {}) {
   const recipeSource = { path: script, sha256: hash(fs.readFileSync(script)) };
-  const seen = new Set();
-  const plans = tasks.map((task: any) => {
+  const seen = new Set<string>();
+  const plans = tasks.map(task => {
     if (!task.key || seen.has(task.key)) throw new Error(`missing or duplicate task key: ${task.key}`);
     seen.add(task.key);
     const firstPayload = task.payload(1);
@@ -225,7 +247,7 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
   });
   if (opts.dryRun) {
     const result = { mode: 'preview', gateway: opts.gateway, output: opts.output, count: plans.length,
-      tasks: plans.map((p: any) => ({ key: p.task.key, inputVersion: p.inputVersion, payload: p.firstPayload })), exitCode: 0 };
+      tasks: plans.map(p => ({ key: p.task.key, inputVersion: p.inputVersion, payload: p.firstPayload })), exitCode: 0 };
     console.log(JSON.stringify(result, null, 2));
     return result;
   }
@@ -233,26 +255,29 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
   const result = { succeeded: 0, reused: 0, failed: 0, interrupted: false, output: store.output, exitCode: 0 };
   let cursor = 0;
   try {
-    async function work(plan: any) {
+    async function work(plan: typeof plans[number]) {
       const { task, inputVersion } = plan;
-      let record = [...store.records].reverse().find(r => r.key === task.key && r.inputVersion === inputVersion && r.gateway === opts.gateway);
+      let record: CandidateRecord | null | undefined = [...store.records].reverse().find(r => r.key === task.key && r.inputVersion === inputVersion && r.gateway === opts.gateway);
       if (record?.status === 'succeeded' && !validAsset(store, record)) {
         record.status = 'invalid-asset';
         record.error = 'candidate image missing, damaged or changed';
         store.save(record);
       }
       if (record?.status === 'succeeded' && !opts.force) { result.reused++; return; }
-      const unsettled = record && !['succeeded', 'failed', 'invalid-asset'].includes(record.status);
-      if (unsettled && !record.jobId && record.status !== 'planned' && !opts.retryUnknown) {
-        console.error(`${task.key}: uncertain submission; inspect saved record and gateway, then use --retry-unknown explicitly`);
-        result.failed++;
-        return;
-      }
-      if (!unsettled || (!record.jobId && record.status !== 'planned')) record = null;
+      if (record && !['succeeded', 'failed', 'invalid-asset'].includes(record.status)) {
+        if (!record.jobId && record.status !== 'planned') {
+          if (!opts.retryUnknown) {
+            console.error(`${task.key}: uncertain submission; inspect saved record and gateway, then use --retry-unknown explicitly`);
+            result.failed++;
+            return;
+          }
+          record = null;
+        }
+      } else record = null;
       for (let retry = 1; retry <= maxAttempts; retry++) {
         if (deps.signal?.aborted) { result.interrupted = true; return; }
         if (!record) {
-          const attempt = Math.max(0, ...store.records.filter((r: any) => r.key === task.key).map((r: any) => r.attempt)) + 1;
+          const attempt = Math.max(0, ...store.records.filter(r => r.key === task.key).map(r => r.attempt)) + 1;
           const candidateId = crypto.randomUUID();
           const recordId = `${task.key}@attempt-${attempt}-${candidateId}`;
           const payload = retry === 1 ? plan.firstPayload : task.payload(retry);
@@ -269,13 +294,14 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
           writeImage(store, record, image);
           result.succeeded++;
           return;
-        } catch (error: any) {
+        } catch (error) {
+          const definitive = object(error) && error.definitive === true;
           record.status = deps.signal?.aborted ? (record.jobId ? 'interrupted' : 'submission-unknown')
-            : error.definitive ? 'failed' : record.jobId ? 'recoverable' : 'submission-unknown';
+            : definitive ? 'failed' : record.jobId ? 'recoverable' : 'submission-unknown';
           record.error = String(runtimeErrorMessage(error) || error);
           store.save(record);
           if (deps.signal?.aborted) { result.interrupted = true; return; }
-          if (!error.definitive || retry === maxAttempts) {
+          if (!definitive || retry === maxAttempts) {
             result.failed++;
             console.error(`${task.key}: ${record.error}`);
             return;
@@ -297,15 +323,15 @@ async function runCandidates({ opts, script, tasks, sources, maxAttempts = 1, po
   } finally { store.close(); }
 }
 
-function runCli(main: any) {
+function runCli(main: (args: string[], deps: GenerationOptions) => Promise<{ exitCode?: number } | void>) {
   const controller = new AbortController();
   const stop = () => controller.abort(new Error('generation interrupted'));
   process.once('SIGINT', stop);
   process.once('SIGTERM', stop);
-  return main(process.argv.slice(2), { signal: controller.signal }).then((result: any) => {
+  return main(process.argv.slice(2), { signal: controller.signal }).then(result => {
     process.exitCode = result?.exitCode || 0;
-  }).catch((error: any) => {
-    console.error(error.message || error);
+  }).catch((error: unknown) => {
+    console.error(runtimeErrorMessage(error) || error);
     process.exitCode = 1;
   }).finally(() => {
     process.removeListener('SIGINT', stop);

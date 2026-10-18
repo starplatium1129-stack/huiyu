@@ -361,7 +361,6 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
   return {
     popularCategory,
     showAllBlueprints,
-    popularCharacter,
     managedRoute,
     refreshManagedRoute,
     popularBlueprintPool,

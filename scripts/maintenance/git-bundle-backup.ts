@@ -44,7 +44,7 @@ const ANCHOR_KEEP = 2;   // 全量锚点保留份数
 const INC_KEEP = keepArg || 10; // 增量保留份数（兼容 --keep 旧语义）
 const FULL_EVERY = 8;    // 每 N 份增量强制落一次新锚点
 
-function git(args: any) {
+function git(args: readonly string[]) {
   return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 
@@ -54,8 +54,11 @@ function sizeMB(file: PathLike) {
 
 function loadState() {
   try {
-    const raw = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-    if (raw && typeof raw.lastRev === 'string' && raw.lastRev.length >= 7) return raw;
+    const raw: unknown = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
+    if (raw && typeof raw === 'object' && 'lastRev' in raw && typeof raw.lastRev === 'string' && raw.lastRev.length >= 7
+      && 'sinceAnchor' in raw && typeof raw.sinceAnchor === 'number' && Number.isSafeInteger(raw.sinceAnchor) && raw.sinceAnchor >= 0) {
+      return { lastRev: raw.lastRev, sinceAnchor: raw.sinceAnchor };
+    }
   } catch { /* 状态损坏 → 全量回退 */ }
   return null;
 }
@@ -65,12 +68,12 @@ function saveState(state: { lastRev: string; sinceAnchor: number; kind: string; 
 }
 
 function sweep() {
-  const names = fs.readdirSync(BACKUP_DIR).filter((f: any) => /^aics-.*\.bundle$/.test(f)).sort();
-  const anchors = names.filter((f: any) => f.startsWith('aics-full-'));
-  const incs = names.filter((f: any) => f.startsWith('aics-inc-'));
+  const names = fs.readdirSync(BACKUP_DIR).filter(f => /^aics-.*\.bundle$/.test(f)).sort();
+  const anchors = names.filter(f => f.startsWith('aics-full-'));
+  const incs = names.filter(f => f.startsWith('aics-inc-'));
   // v1 旧命名（aics-2026-*.bundle，纯全量）：新链锚点凑齐 ANCHOR_KEEP 份后整体退役，
   // 过渡期保留最近的 (ANCHOR_KEEP - 链上锚点数) 份兜底
-  const legacy = names.filter((f: any) => !f.startsWith('aics-full-') && !f.startsWith('aics-inc-'));
+  const legacy = names.filter(f => !f.startsWith('aics-full-') && !f.startsWith('aics-inc-'));
   const drop = new Set<string>();
   // 锚点保留最近 ANCHOR_KEEP 份
   for (const name of anchors.slice(0, Math.max(0, anchors.length - ANCHOR_KEEP))) drop.add(name);
@@ -79,7 +82,7 @@ function sweep() {
   // 增量保留最近 INC_KEEP 份
   for (const name of incs.slice(0, Math.max(0, incs.length - INC_KEEP))) drop.add(name);
   // 早于最老存活锚点的增量已断链（恢复时无基点），一并回收
-  const oldestAnchor = anchors.filter((n: any) => !drop.has(n))[0];
+  const oldestAnchor = anchors.filter(n => !drop.has(n))[0];
   if (oldestAnchor) {
     for (const name of incs) {
       if (!drop.has(name) && name < oldestAnchor) drop.add(name);
@@ -120,7 +123,7 @@ function main() {
 
   const file = path.join(BACKUP_DIR, `aics-${kind}-${stamp}.bundle`);
   try {
-    if (kind === 'full') {
+    if (kind === 'full' || !state) {
       git(['bundle', 'create', file, '--all']);
     } else {
       git(['bundle', 'create', file, '--all', '--not', state.lastRev]);
@@ -134,7 +137,7 @@ function main() {
     return;
   }
 
-  saveState({ lastRev: headRev, sinceAnchor: kind === 'full' ? 0 : Number(state.sinceAnchor) + 1, kind, at: new Date().toISOString() });
+  saveState({ lastRev: headRev, sinceAnchor: kind === 'full' || !state ? 0 : state.sinceAnchor + 1, kind, at: new Date().toISOString() });
   sweep();
 
   const kindLabel = kind === 'full' ? '锚点' : '增量';

@@ -125,7 +125,7 @@
           </button>
         </div>
       </div>
-      <Live2DQualityControl :native="live2d.backendKind.value === 'native'" />
+      <Live2DQualityControl />
       <button v-if="live2d.ready.value" type="button" class="btn btn-ghost" @click="handleAvatarAction">切换为静态立绘</button>
       <fieldset v-if="live2d.ready.value" class="stage-framing">
         <legend>角色取景</legend>
@@ -159,7 +159,6 @@
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
-import { getNativeLive2dCapabilities } from '@/platform/desktop/nativeLive2d'
 
 import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, onUnmounted, ref, watch } from 'vue'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -308,9 +307,8 @@ const capabilitySummary = computed(() => {
   return '模型能力 · 已验证'
 })
 const { quality } = useLive2DPreferences()
-watch([quality, live2d.backendKind], ([value, backend]) => {
-  const legacyNative = backend === 'native' && getNativeLive2dCapabilities() && !getNativeLive2dCapabilities()!.supportsTextureQuality
-  void live2d.setQuality(legacyNative ? 'original' : value)
+watch([quality, live2d.backendKind], ([value]) => {
+  void live2d.setQuality(value)
 }, { immediate: true, flush: 'sync' })
 watch(() => props.volume, value => live2d.setVolume((value ?? 80) / 100), { immediate: true })
 

@@ -1,9 +1,11 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
+import type { Scene } from '../../src/types/scene';
+const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
 /**
  * scripts/lib/scene-write.js — 场景写入侧治理（计划 006 / D5）
  *
  * 职责边界：日常保存走「稳定目标 + 增量写分片」；全量重切只属于显式维护
- * （split-scenes 经 scene-store.writeSceneSet）。这里不迁移
+ * （split-scenes 经 scene-store.writeSceneShards）。这里不迁移
  * 数据库、不打开安装版写入口；兼容既有 scNNN，sc999 后自然续接 sc1000。
  *
  * 关键约定：
@@ -20,6 +22,9 @@ const store: typeof import('./scene-store') = require('./scene-store');
 const recoveryFs: typeof import('./maintenance-recovery-fs') = require('./maintenance-recovery-fs');
 
 const shardsDir = store.shardsDir;
+type SceneShards = ReturnType<typeof store.loadSceneShards>;
+type ManifestEntry = SceneShards['manifest']['files'][number];
+type ChangeOptions = { retiredIds?: ReadonlySet<string>; planOnly?: boolean };
 
 /** 读取已退役场景 ID 集合；文件缺失视为空（fresh clone）。 */
 function readRetiredSceneIds(dataDir?: string) {
@@ -28,14 +33,16 @@ function readRetiredSceneIds(dataDir?: string) {
   try {
     data = store.readJson(path.join(dir, 'retired-scenes.json'));
   } catch (error) {
-    if (runtimeErrorCode(error) === 'ENOENT') return new Set();
+    if (runtimeErrorCode(error) === 'ENOENT') return new Set<string>();
     throw new Error('retired-scenes.json 无法读取，停止场景写入: ' + runtimeErrorMessage(error));
   }
-  if (!data || !Array.isArray(data.records)
-    || data.records.some((record: { id: string; }) => !record || typeof record.id !== 'string' || !record.id.trim())) {
+  if (!object(data) || !Array.isArray(data.records)) {
     throw new Error('retired-scenes.json 格式无效，停止场景写入');
   }
-  return new Set(data.records.map((record: any) => record.id));
+  return new Set(data.records.map((record: unknown) => {
+    if (!object(record) || typeof record.id !== 'string' || !record.id.trim()) throw new Error('retired-scenes.json 格式无效，停止场景写入');
+    return record.id;
+  }));
 }
 
 // ── 源分片完整性（manifest ↔ 目录 ↔ 内容） ──────────────────────────────
@@ -47,34 +54,37 @@ function groupPrefix(baseFile: string) {
 /** 校验 data/scenes 源分片：缺号、孤立分片、重复 ID、归属冲突。
  *  与 test-scene-shard-integrity.js（产物层 oracle）互补，这里只看源文件层。 */
 function verifyShardIntegrity() {
-  const problems = [];
+  const problems: string[] = [];
   let manifest;
   try {
     manifest = store.readJson(path.join(shardsDir, 'manifest.json'));
   } catch (error) {
     return { ok: false, problems: ['manifest.json 无法读取: ' + runtimeErrorMessage(error)] };
   }
-  if (!manifest || !Array.isArray(manifest.files) || !manifest.files.length) {
+  if (!object(manifest) || !Array.isArray(manifest.files) || !manifest.files.length) {
     return { ok: false, problems: ['manifest.json 必须声明非空 files 数组'] };
   }
-  const manifestNames = new Set();
-  for (const entry of manifest.files) {
-    if (!entry || typeof entry.file !== 'string'
+  const manifestNames = new Set<string>();
+  const entries: ManifestEntry[] = [];
+  const rawEntries: unknown[] = manifest.files;
+  for (const entry of rawEntries) {
+    if (!object(entry) || typeof entry.file !== 'string'
       || !/^[a-zA-Z0-9_-]+\.json$/.test(entry.file) || entry.file === 'manifest.json') {
       problems.push('manifest.json 包含无效分片文件名（必须是目录内的基础 JSON 文件名）');
+    } else if (entry.character !== undefined && typeof entry.character !== 'string') {
+      problems.push(entry.file + ': character 必须是字符串');
     } else if (manifestNames.has(entry.file)) {
       problems.push('manifest.json 重复声明 ' + entry.file);
     } else {
       manifestNames.add(entry.file);
+      entries.push({ file: entry.file, character: entry.character });
     }
   }
   if (problems.length) return { ok: false, problems };
-  const declared = new Set((manifest.files || []).map((entry: any) => entry.file));
-  const declaredPrefixes = new Set((manifest.files || []).map((entry: { file: string; }) => groupPrefix(entry.file)));
-  const characterOf = new Map((manifest.files || []).map((entry: any) => [entry.file, entry.character]));
+  const declaredPrefixes = new Set(entries.map(entry => groupPrefix(entry.file)));
 
-  const seenIds = new Map();
-  for (const entry of manifest.files || []) {
+  const seenIds = new Map<string, string>();
+  for (const entry of entries) {
     const base = groupPrefix(entry.file);
     let files;
     try {
@@ -122,9 +132,10 @@ function verifyShardIntegrity() {
         problems.push(file + ': 根必须是数组');
         continue;
       }
-      for (const scene of scenes) {
-        const id = String(scene && scene.id || '');
-        if (!id) {
+      const records: unknown[] = scenes;
+      for (const scene of records) {
+        const id = object(scene) ? String(scene.id || '') : '';
+        if (!object(scene) || !id) {
           problems.push(file + ': 存在缺少 id 的场景');
           continue;
         }
@@ -133,7 +144,7 @@ function verifyShardIntegrity() {
         } else {
           seenIds.set(id, file);
         }
-        const expectedCharacter = characterOf.get(entry.file);
+        const expectedCharacter = entry.character;
         if (scene.char && expectedCharacter && scene.char !== expectedCharacter) {
           problems.push(id + ' 的 char=' + scene.char + ' 与 ' + file + ' 声明的 character=' + expectedCharacter + ' 不一致');
         }
@@ -144,7 +155,7 @@ function verifyShardIntegrity() {
   for (const name of fs.existsSync(shardsDir) ? fs.readdirSync(shardsDir) : []) {
     if (name === 'manifest.json' || !name.endsWith('.json')) continue;
     const prefix = groupPrefix(name).replace(/\.\d+$/, '');
-    if (!declared.has(name) && !declaredPrefixes.has(prefix)) {
+    if (!manifestNames.has(name) && !declaredPrefixes.has(prefix)) {
       problems.push(name + ': 未在 manifest.json 声明（非本清单管理的分片文件）');
     }
   }
@@ -153,18 +164,17 @@ function verifyShardIntegrity() {
 
 // ── 增量分片写入 ────────────────────────────────────────────────────────
 
-function sameScene(left: any, right: any) {
+function sameScene(left: Scene, right: Scene) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
-/** 组内当前批次文件名（磁盘真实形态，按展开顺序）：单文件 → [base.json]，
- *  批次 → [base.1.json, ...]。workingFiles 优先（同一事务内已改写的形态）。 */
-function groupFileOrder(entry: { file: string; }, workingFiles: any[]|Map<any,any>) {
+/** 组内当前批次文件名：只读同一事务中已经更新过的工作副本。 */
+function groupFileOrder(entry: ManifestEntry, workingFiles: ReadonlyMap<string, Scene[]>) {
   const base = groupPrefix(entry.file);
-  const names = workingFiles ? [...workingFiles.keys()] : fs.readdirSync(shardsDir);
+  const names = [...workingFiles.keys()];
   const batch = names
-    .filter((name: any) => name.startsWith(base + '.') && /^\.\d+\.json$/.test(name.slice(base.length)))
-    .sort((a: any, b: any) => Number(a.slice(base.length + 1, -5)) - Number(b.slice(base.length + 1, -5)));
+    .filter(name => name.startsWith(base + '.') && /^\.\d+\.json$/.test(name.slice(base.length)))
+    .sort((a, b) => Number(a.slice(base.length + 1, -5)) - Number(b.slice(base.length + 1, -5)));
   if (batch.length) return batch;
   return names.includes(entry.file) ? [entry.file] : [];
 }
@@ -177,30 +187,30 @@ function groupFileOrder(entry: { file: string; }, workingFiles: any[]|Map<any,an
  * @param {{ retiredIds?: Set<string>, planOnly?: boolean }} options 保存前已读出的退役 ID；planOnly 不写入
  * @returns {{ addedIds:string[], updatedIds:string[], removedIds:string[], touchedFiles:string[] }}
  */
-function applySceneChanges(incoming: any, previous: any, options?: any) {
+function applySceneChanges(incoming: Scene[], previous: SceneShards, options?: ChangeOptions) {
   const integrity = verifyShardIntegrity();
   if (!integrity.ok) throw new Error('场景分片完整性检查失败: ' + integrity.problems.join('; '));
   const options_ = options || {};
-  const retiredIds = options_.retiredIds || new Set();
+  const retiredIds = options_.retiredIds || new Set<string>();
   /** fileName → 场景数组（工作副本，最后统一落盘） */
-  const working = new Map();
+  const working = new Map<string, Scene[]>();
   /** fileName → manifest entry */
-  const entryOf = new Map();
+  const entryOf = new Map<string, ManifestEntry>();
   for (const source of previous.sources) {
     if (!working.has(source.file)) working.set(source.file, source.scenes.slice());
     entryOf.set(source.file, source.entry);
   }
   const touched = new Set<string>();
-  const addedIds = [];
-  const updatedIds = [];
-  const removedIds = [];
+  const addedIds: string[] = [];
+  const updatedIds: string[] = [];
+  const removedIds: string[] = [];
 
-  const idMap = new Map();
+  const idMap = new Map<string, { file: string; scene: Scene }>();
   for (const [file, scenes] of working) {
     for (const scene of scenes) idMap.set(String(scene.id), { file, scene });
   }
 
-  function appendToGroup(entry: any, scene: any) {
+  function appendToGroup(entry: ManifestEntry | undefined, scene: Scene) {
     if (!entry) throw new Error('manifest does not declare a shard for scene ' + String(scene.id));
     const base = groupPrefix(entry.file);
     const order = groupFileOrder(entry, working);
@@ -211,8 +221,9 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
       touched.add(entry.file);
       return;
     }
-    const last: any = order[order.length - 1];
-    const lastScenes = working.get(last);
+    const last = order[order.length - 1];
+    // groupFileOrder returns keys from this working map.
+    const lastScenes = working.get(last)!;
     if (lastScenes.length >= batchSize) {
       // 满批：单文件形态先升级为批次形态（内容原样搬进 .1），新场景进下一个批次
       if (last === entry.file) {
@@ -240,14 +251,15 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
     touched.add(last);
   }
 
-  function removeFrom(file: any, id: string) {
-    const scenes = working.get(file);
-    const index = scenes.findIndex((scene: any) => String(scene.id) === id);
+  function removeFrom(file: string, id: string) {
+    // File locations are populated from working and updated on every rename.
+    const scenes = working.get(file)!;
+    const index = scenes.findIndex(scene => String(scene.id) === id);
     if (index >= 0) scenes.splice(index, 1);
     touched.add(file);
   }
 
-  const incomingIds = new Set();
+  const incomingIds = new Set<string>();
   for (const scene of incoming) {
     const id = String(scene.id);
     incomingIds.add(id);
@@ -269,8 +281,8 @@ function applySceneChanges(incoming: any, previous: any, options?: any) {
         removeFrom(prev.file, id);
         appendToGroup(previous.manifest.files.find((entry: { file: string; }) => entry.file === store.targetFile(scene)), scene);
       } else {
-        const scenes = working.get(prev.file);
-        const index = scenes.findIndex((item: any) => String(item.id) === id);
+        const scenes = working.get(prev.file)!;
+        const index = scenes.findIndex(item => String(item.id) === id);
         scenes[index] = scene;
         touched.add(prev.file);
       }

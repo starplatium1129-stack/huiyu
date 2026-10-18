@@ -7,28 +7,37 @@ const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const { CODE_ROOT, hash, noLinks }: typeof import('./generation-candidates') = require('./generation-candidates');
 const { validatePng }: typeof import('./generation-gateway') = require('./generation-gateway');
+const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
+
+type ReferenceRecord = Record<string, unknown> & {
+  candidateId: string; attempt: number; characterId: string; outfitId: string; persId: string;
+  key: string; recordId: string; image: string; intendedReferencePath: string;
+  inputVersion: string; payload: Record<string, unknown>;
+};
+type Decision = { verdict: 'pass' | 'fail'; recordId: string; recordSha256: string;
+  sha256: string | null; inputVersion: string; reviewedAt: string; notes: string };
 
 const GENERATOR = 'render-all-outfits-references.js';
 const SOURCE = 'data/character-reference-standards.json';
 const ID = /^[a-zA-Z0-9][a-zA-Z0-9_-]{0,99}$/;
 const SHA = /^[a-f0-9]{64}$/;
 const uuid = /^[a-f0-9-]{36}$/;
-const jsonHash = (value: any) => hash(JSON.stringify(value));
+const jsonHash = (value: unknown) => hash(JSON.stringify(value));
 
-function bytes(file: any, max: any = 64 * 1024 * 1024) {
+function bytes(file: string, max = 64 * 1024 * 1024) {
   noLinks(file);
   const stat = fs.statSync(file);
   if (!stat.isFile() || stat.nlink !== 1 || stat.size > max) throw new Error('Expected a bounded, ordinary file: ' + file);
   return fs.readFileSync(file);
 }
 
-function json(file: any) { return JSON.parse(bytes(file).toString('utf8')); }
-function within(root: any, file: any) {
+function json(file: string): unknown { return JSON.parse(bytes(file).toString('utf8')); }
+function within(root: string, file: string) {
   const rel = path.relative(path.resolve(root), path.resolve(file));
   return !path.isAbsolute(rel) && rel !== '..' && !rel.startsWith('..' + path.sep);
 }
 
-function relativeImage(value: any) {
+function relativeImage(value: unknown) {
   if (typeof value !== 'string' || value.includes('\\') || value.includes('%') || value.includes(':')) throw new Error('Unsafe reference image path');
   const parts = value.split('/');
   if (parts.length < 2 || !/\.(png|webp|jpg|jpeg)$/i.test(parts.at(-1)!)
@@ -37,28 +46,31 @@ function relativeImage(value: any) {
   return value;
 }
 
-function verifyRecord(record: any, marker: any) {
-  if (!record || record.schemaVersion !== 1 || record.batch !== 'reference' || record.generator !== GENERATOR
-      || record.runId !== marker.runId || !uuid.test(record.candidateId)
-      || !Number.isSafeInteger(record.attempt) || record.attempt < 1
+function verifyRecord(record: unknown, marker: { runId: string }): ReferenceRecord {
+  if (!object(record) || record.schemaVersion !== 1 || record.batch !== 'reference' || record.generator !== GENERATOR
+      || record.runId !== marker.runId || typeof record.candidateId !== 'string' || !uuid.test(record.candidateId)
+      || typeof record.attempt !== 'number' || !Number.isSafeInteger(record.attempt) || record.attempt < 1
       || ![record.characterId, record.outfitId, record.persId].every(value => typeof value === 'string' && ID.test(value))
       || record.key !== `reference:${record.characterId}:${record.outfitId}:${record.persId}`
       || record.recordId !== `${record.key}@attempt-${record.attempt}-${record.candidateId}`
       || record.image !== `images/${record.candidateId}.png`
       || record.intendedReferencePath !== `${record.characterId}/${record.outfitId}/${record.persId}.png`
-      || !SHA.test(record.inputVersion) || !record.payload || jsonHash(record.payload) !== record.payloadSha256
-      || record.review?.verdict !== 'pending' || record.review.recordId !== record.recordId
+      || typeof record.inputVersion !== 'string' || !SHA.test(record.inputVersion) || !object(record.payload) || jsonHash(record.payload) !== record.payloadSha256
+      || !object(record.review) || record.review.verdict !== 'pending' || record.review.recordId !== record.recordId
       || record.review.reviewedAt || record.publishedAt) throw new Error('Invalid reference candidate identity/evidence');
   relativeImage(record.intendedReferencePath);
+  return record as ReferenceRecord;
 }
 
-function currentInput(record: any, root: any) {
+function currentInput(record: ReferenceRecord, root: string) {
   // Never follow arbitrary file paths embedded in an imported ledger.
   const source = path.join(root, SOURCE);
   const recipe = path.join(CODE_ROOT, 'scripts/maintenance', GENERATOR);
   if (!Array.isArray(record.sources) || record.sources.length !== 1
+      || !object(record.sources[0]) || typeof record.sources[0].path !== 'string'
       || path.resolve(record.sources[0].path || '') !== path.resolve(source)
-      || path.resolve(record.recipeSource?.path || '') !== path.resolve(recipe)) return false;
+      || !object(record.recipeSource) || typeof record.recipeSource.path !== 'string'
+      || path.resolve(record.recipeSource.path || '') !== path.resolve(recipe)) return false;
   const actual = bytes(source);
   if (record.sources[0].sha256 !== hash(actual) || record.sources[0].bytes !== actual.length
       || record.recipeSource.sha256 !== hash(bytes(recipe))) return false;
@@ -71,20 +83,21 @@ function currentInput(record: any, root: any) {
   return jsonHash({ sources: record.sources, recipeSource: record.recipeSource, key: record.key, metadata, recipe: recipePayload }) === record.inputVersion;
 }
 
-function inspectCandidates({ from, root = CODE_ROOT }: any) {
+function inspectCandidates({ from, root = CODE_ROOT }: { from: string; root?: string }) {
   const manifestFile = path.resolve(from);
   const directory = path.dirname(manifestFile);
   if (!['generation-manifest.json', 'reference-generation-manifest.json'].includes(path.basename(manifestFile))) throw new Error('Use an explicit reference candidate manifest');
   const marker = json(path.join(directory, 'candidate-run.json'));
-  if (marker.kind !== 'generation-candidates' || marker.schemaVersion !== 1 || marker.generator !== GENERATOR || !uuid.test(marker.runId)) throw new Error('Unrecognized reference candidate directory');
+  if (!object(marker) || marker.kind !== 'generation-candidates' || marker.schemaVersion !== 1 || marker.generator !== GENERATOR || typeof marker.runId !== 'string' || !uuid.test(marker.runId)) throw new Error('Unrecognized reference candidate directory');
   const raw = bytes(manifestFile);
-  const records = JSON.parse(raw.toString('utf8'));
-  if (!Array.isArray(records) || records.length > 100000) throw new Error('Invalid candidate manifest');
-  const ids = new Set();
-  const ledgerIds = new Set();
-  const latest = new Map();
+  const values: unknown = JSON.parse(raw.toString('utf8'));
+  if (!Array.isArray(values) || values.length > 100000) throw new Error('Invalid candidate manifest');
+  const runId = marker.runId;
+  const records = values.map((value: unknown) => verifyRecord(value, { runId }));
+  const ids = new Set<string>();
+  const ledgerIds = new Set<string>();
+  const latest = new Map<string, ReferenceRecord>();
   for (const record of records) {
-    verifyRecord(record, marker);
     if (ids.has(record.recordId)) throw new Error('Duplicate candidate record');
     ids.add(record.recordId);
     ledgerIds.add(`${record.candidateId}.json`);
@@ -105,12 +118,13 @@ function inspectCandidates({ from, root = CODE_ROOT }: any) {
       else if (record.status === 'succeeded') {
         const image = bytes(path.join(directory, record.image));
         validatePng(image);
-        if (record.asset?.sha256 !== hash(image) || record.asset?.bytes !== image.length || record.asset?.path !== record.image) throw new Error('Candidate bytes differ from generated evidence');
+        if (!object(record.asset) || record.asset.sha256 !== hash(image) || record.asset.bytes !== image.length || record.asset.path !== record.image) throw new Error('Candidate bytes differ from generated evidence');
         integrity = 'pass';
       }
     } catch (error) { integrity = 'invalid'; reason = runtimeErrorMessage(error); }
     return { key: record.key, recordId: record.recordId, inputVersion: record.inputVersion, recordSha256: jsonHash(record),
-      sha256: record.asset?.sha256 || null, image: record.image, intendedReferencePath: record.intendedReferencePath,
+      sha256: object(record.asset) && typeof record.asset.sha256 === 'string' ? record.asset.sha256 || null : null,
+      image: record.image, intendedReferencePath: record.intendedReferencePath,
       integrity, reason, review: 'pending' };
   });
   return { schemaVersion: 1, kind: 'reference-candidate-inspection', runId: marker.runId,
@@ -118,13 +132,13 @@ function inspectCandidates({ from, root = CODE_ROOT }: any) {
     directory, sourceFile: path.join(path.resolve(root), SOURCE), review: 'pending' };
 }
 
-function collectReview(inspection: any, decisions: any, decisionSource: any) {
-  if (!decisions || typeof decisions !== 'object' || Array.isArray(decisions)) throw new Error('Decisions must be an object keyed by reference identity');
-  const items = new Map(inspection.items.map((item: any) => [item.key, item]));
-  const reviewed: any = {};
-  for (const [key, decision] of Object.entries<any>(decisions)) {
-    const item: any = items.get(key);
-    if (!item || item.integrity !== 'pass' || !decision || !['pass', 'fail'].includes(decision.verdict)
+function collectReview(inspection: ReturnType<typeof inspectCandidates>, decisions: unknown, decisionSource: { file: string; sha256: string }) {
+  if (!object(decisions)) throw new Error('Decisions must be an object keyed by reference identity');
+  const items = new Map(inspection.items.map(item => [item.key, item]));
+  const reviewed: Record<string, Decision> = {};
+  for (const [key, decision] of Object.entries(decisions)) {
+    const item = items.get(key);
+    if (!item || item.integrity !== 'pass' || !object(decision) || (decision.verdict !== 'pass' && decision.verdict !== 'fail')
         || decision.recordId !== item.recordId || decision.sha256 !== item.sha256
         || decision.inputVersion !== item.inputVersion || typeof decision.reviewedAt !== 'string'
         || !Number.isFinite(Date.parse(decision.reviewedAt))) throw new Error('Decision must identify the current verified image, source version and review time: ' + key);
@@ -134,24 +148,27 @@ function collectReview(inspection: any, decisions: any, decisionSource: any) {
   }
   return { schemaVersion: 1, kind: 'reference-human-review', runId: inspection.runId,
     manifestSha256: inspection.manifestSha256, decisionSource, recordedAt: new Date().toISOString(), records: reviewed,
-    pending: inspection.items.filter((item: any) => !reviewed[item.key]).map((item: any) => item.key) };
+    pending: inspection.items.filter(item => !reviewed[item.key]).map(item => item.key) };
 }
 
-function attachReview(inspection: any, review: any) {
-  if (!review || review.schemaVersion !== 1 || review.kind !== 'reference-human-review'
+function attachReview(inspection: ReturnType<typeof inspectCandidates>, review: unknown) {
+  if (!object(review) || review.schemaVersion !== 1 || review.kind !== 'reference-human-review'
       || review.runId !== inspection.runId || review.manifestSha256 !== inspection.manifestSha256
-      || !review.records || typeof review.records !== 'object' || Array.isArray(review.records)) throw new Error('Review is missing or belongs to a different candidate version');
-  if (Object.keys(review.records).some(key => !inspection.items.some((item: any) => item.key === key))) throw new Error('Review contains unknown candidates');
-  return inspection.items.map((item: any) => {
-    const decision = review.records[item.key];
+      || !object(review.records)) throw new Error('Review is missing or belongs to a different candidate version');
+  const records = review.records;
+  if (Object.keys(records).some(key => !inspection.items.some(item => item.key === key))) throw new Error('Review contains unknown candidates');
+  const items = inspection.items.map(item => {
+    const decision = records[item.key];
     if (!decision) return { ...item, review: 'pending' };
-    if (!['pass', 'fail'].includes(decision.verdict) || !Number.isFinite(Date.parse(decision.reviewedAt))
-        || ['recordId', 'recordSha256', 'sha256', 'inputVersion'].some(key => decision[key] !== item[key])) throw new Error('Review evidence no longer matches candidate: ' + item.key);
+    if (!object(decision) || (decision.verdict !== 'pass' && decision.verdict !== 'fail')
+        || typeof decision.reviewedAt !== 'string' || !Number.isFinite(Date.parse(decision.reviewedAt))
+        || (['recordId', 'recordSha256', 'sha256', 'inputVersion'] as const).some(key => decision[key] !== item[key])) throw new Error('Review evidence no longer matches candidate: ' + item.key);
     return { ...item, review: item.integrity === 'pass' ? decision.verdict : 'stale' };
   });
+  return { items, records };
 }
 
-function saveReview(inspection: any, output: any, review: any) {
+function saveReview(inspection: ReturnType<typeof inspectCandidates>, output: string, review: ReturnType<typeof collectReview>) {
   const target = path.resolve(output);
   if (!within(inspection.directory, target) || !/^manual-review(?:-[a-zA-Z0-9_-]+)?\.json$/.test(path.basename(target))
       || path.dirname(target) !== inspection.directory) throw new Error('Review output must be a new manual-review*.json beside the candidate manifest');

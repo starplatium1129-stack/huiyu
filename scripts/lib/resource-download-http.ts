@@ -1,10 +1,14 @@
 'use strict';
+import type { IncomingMessage, OutgoingHttpHeaders } from 'node:http';
 
 const https: typeof import('node:https') = require('node:https');
 const { fail, ResourceError, relativePath, cancelled }: typeof import('./resource-install-fs') = require('./resource-install-fs');
+type Release = ReturnType<typeof import('./resource-install-policy').releasePolicy>;
+type RequestOptions = { headers?: OutgoingHttpHeaders; signal?: AbortSignal; timeoutMs?: number };
 
-function sourceUrl(release: any, relative: any) {
+function sourceUrl(release: Release, relative: string) {
   const source = release.source;
+  if (source.kind !== 'http' || typeof source.baseUrl !== 'string') throw fail('SOURCE_REQUIRED', 'A valid configured source baseUrl is required');
   let base;
   try { base = new URL(source.baseUrl); } catch { fail('SOURCE_REQUIRED', 'A valid configured source baseUrl is required'); }
   if (base!.username || base!.password || base!.search || base!.hash || !base!.pathname.endsWith('/')) {
@@ -21,11 +25,11 @@ function sourceUrl(release: any, relative: any) {
   if (url.origin !== base!.origin || !url.pathname.startsWith(base!.pathname)) fail('UNSAFE_SOURCE', 'URL left its approved source directory');
   return url;
 }
-function response(url: any, { headers = {}, signal, timeoutMs = 30000 }: any = {}) {
+function response(url: URL, { headers = {}, signal, timeoutMs = 30000 }: RequestOptions = {}): Promise<IncomingMessage> {
   cancelled(signal);
   if (!Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 60000) fail('CONFIG_REQUIRED', 'timeoutMs must be 1..60000');
   return new Promise((resolve, reject) => {
-    let activeResponse: any;
+    let activeResponse: IncomingMessage | undefined;
     // Own the connection and abort listener. Passing signal through the pooled HTTP socket can
     // leave a late abort on a released socket while an asynchronous progress callback is paused.
     const request = https.get(url, { headers: { 'accept-encoding': 'identity', ...headers }, agent: false }, incoming => {
@@ -42,7 +46,7 @@ function response(url: any, { headers = {}, signal, timeoutMs = 30000 }: any = {
         reject(new ResourceError('HTTP_ENCODING', 'Encoded response cannot be checked against resource byte ranges'));
       } else resolve(incoming);
     });
-    const stop = (error: any) => { activeResponse?.destroy(error); request.destroy(error); };
+    const stop = (error: Error) => { activeResponse?.destroy(error); request.destroy(error); };
     const abort = () => stop(new ResourceError('CANCELLED', 'Download cancelled; partial bytes are retained'));
     signal?.addEventListener('abort', abort, { once: true });
     request.once('close', () => signal?.removeEventListener('abort', abort));
@@ -52,22 +56,23 @@ function response(url: any, { headers = {}, signal, timeoutMs = 30000 }: any = {
     if (signal?.aborted) abort();
   });
 }
-function contentLength(res: any) {
+function contentLength(res: IncomingMessage) {
   const length = res.headers['content-length'];
   if (length === undefined) return null;
   if (!/^\d+$/.test(length) || !Number.isSafeInteger(Number(length))) fail('HTTP_SIZE', 'Invalid Content-Length');
   return Number(length);
 }
-async function fetchMetadata(url: any, options: any = {}) {
+async function fetchMetadata(url: URL, options: RequestOptions & { maxBytes?: number } = {}) {
   const maxBytes = options.maxBytes || 16 * 1024 * 1024;
-  const res: any = await response(url, options);
+  const res = await response(url, options);
   try {
     if (res.statusCode !== 200) fail('HTTP_STATUS', 'Metadata request failed: ' + res.statusCode);
     const declared = contentLength(res);
     if (declared !== null && declared > maxBytes) fail('HTTP_SIZE', 'Metadata exceeds size limit');
-    const chunks = [];
+    const chunks: Buffer[] = [];
     let total = 0;
     for await (const chunk of res) {
+      if (!Buffer.isBuffer(chunk)) throw fail('HTTP_ENCODING', 'Expected an undecoded byte response');
       cancelled(options.signal);
       total += chunk.length;
       if (total > maxBytes) fail('HTTP_SIZE', 'Metadata exceeds size limit');
@@ -77,7 +82,7 @@ async function fetchMetadata(url: any, options: any = {}) {
     return Buffer.concat(chunks);
   } finally { res.destroy(); }
 }
-function rangeStart(res: any, offset: any, total: any, previousEtag: any) {
+function rangeStart(res: IncomingMessage, offset: number, total: number, previousEtag: string | null) {
   const length = contentLength(res);
   if (res.statusCode === 200) {
     if (length !== null && length !== total) fail('HTTP_SIZE', 'Full response length differs from manifest');

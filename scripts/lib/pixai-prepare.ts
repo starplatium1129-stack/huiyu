@@ -36,7 +36,7 @@ export async function adoptCandidate(source: string, target: string): Promise<vo
   }
 }
 
-async function pythonJson(python: string, code: string, args: string[] = []): Promise<Record<string, any>> {
+async function pythonJson(python: string, code: string, args: string[] = []): Promise<Record<string, unknown>> {
   const child = spawn(python, ['-B', '-c', code, ...args], { windowsHide: true, shell: false,
     env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1', HF_HUB_OFFLINE: '1', TRANSFORMERS_OFFLINE: '1' },
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -65,7 +65,11 @@ async function pythonJson(python: string, code: string, args: string[] = []): Pr
         if (stopped) reject(stopped)
         else if (code !== 0) reject(Error(`PixAI Python environment is unavailable: ${stderr.trim() || code}`))
         else {
-          try { resolve(JSON.parse(stdout.trim()) as Record<string, any>) } catch { reject(Error('Python environment returned invalid JSON')) }
+          try {
+            const value: unknown = JSON.parse(stdout.trim())
+            if (!value || typeof value !== 'object' || Array.isArray(value)) throw Error('Expected an object')
+            resolve(value as Record<string, unknown>)
+          } catch { reject(Error('Python environment returned invalid JSON')) }
         }
       })
     })
@@ -84,8 +88,8 @@ export async function resolvePython(python: string, torchSite?: string): Promise
   return { python: path.resolve(info.python), pythonVersion: info.pythonVersion, torchSitePackages: path.resolve(torchSite || info.site) }
 }
 
-export async function checkPython(python: string, site: string, deps: string): Promise<Record<string, any>> {
-  return pythonJson(python, [
+export async function checkPython(python: string, site: string, deps: string) {
+  const info = await pythonJson(python, [
     'import sys,json,importlib.metadata as m',
     'assert sys.version_info >= (3, 11), f"PixAI requires Python 3.11 or newer; selected {sys.version.split()[0]}"',
     'sys.path[:0]=[sys.argv[1],sys.argv[2]]',
@@ -97,6 +101,14 @@ export async function checkPython(python: string, site: string, deps: string): P
     'assert torch.cuda.is_available(),"CUDA GPU is unavailable"',
     'print(json.dumps({"pythonVersion":sys.version.split()[0],"versions":{n:m.version(n) for n in ["torch","torchvision","transformers","timm","numpy","Pillow","safetensors"]},"cuda":torch.version.cuda,"gpuAvailable":True}))',
   ].join('\n'), [deps, site])
+  const versions = info.versions
+  if (typeof info.pythonVersion !== 'string' || typeof info.cuda !== 'string' || info.gpuAvailable !== true
+    || !versions || typeof versions !== 'object' || Array.isArray(versions)
+    || !Object.values(versions).every((version: unknown) => typeof version === 'string')
+    || !['torch', 'torchvision', 'transformers', 'timm', 'numpy', 'Pillow', 'safetensors'].every(name => typeof (versions as Record<string, unknown>)[name] === 'string')) {
+    throw Error('Python environment returned invalid dependency metadata')
+  }
+  return { ...info, pythonVersion: info.pythonVersion, versions: versions as Record<string, string>, cuda: info.cuda, gpuAvailable: info.gpuAvailable }
 }
 
 export async function installTimm(python: string, root: string): Promise<void> {

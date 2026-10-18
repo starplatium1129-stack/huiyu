@@ -3,6 +3,7 @@ import fs = require('node:fs');
 import path = require('node:path');
 import { execFileSync } from 'node:child_process';
 import { timeDesktopBuild } from '../lib/desktop-build-timing';
+import { errorStack } from '../lib/runtime-errors';
 const { withDesktopBuildLock }: typeof import('./desktop-build-lock') = require('./desktop-build-lock');
 const { stageResources }: typeof import('./desktop-stage-resources') = require('./desktop-stage-resources');
 const ROOT = path.resolve(__dirname, '../..');
@@ -18,5 +19,5 @@ async function prepareTauri(options: { root?: string } = {}) {
   console.log(`[tauri] Rust candidate prepared; releaseReady=${staged.releaseReady}`);
   return { webDir, ...staged };
 }
-if (require.main === module) withDesktopBuildLock({ workspaceRoot: ROOT }, () => prepareTauri()).catch((error: any) => { console.error(`[tauri] prepare failed: ${error.stack || error.message}`); process.exitCode = 1; });
+if (require.main === module) withDesktopBuildLock({ workspaceRoot: ROOT }, () => prepareTauri()).catch((error: unknown) => { console.error(`[tauri] prepare failed: ${errorStack(error)}`); process.exitCode = 1; });
 export = { prepareTauri };

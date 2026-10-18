@@ -9,7 +9,6 @@ import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks
 import type { LegacySdObserveOptions } from '@/composables/generation/useLegacySdTasks'
 import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import { useSDQueue, type SDQueueJob } from '@/composables/generation/useSDQueue'
-import { sdJobRequest } from './sdJobRequest'
 import type { AnimaResultContext } from '@/types/anima'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { profileLocalStorage as localStorage } from '@/platform/web/profileStorage'
@@ -162,8 +161,8 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
     }
     let context = jobResultContext(submitted)
     const url = await sd.observe({
-      ...sdJobRequest(submitted),
-      runtimeContext: context as Record<string, unknown>,
+      prompt: submitted.prompt, lora: submitted.lora, steps: submitted.steps,
+      hr_fix: submitted.hiresFix, hr_second_pass_steps: submitted.hiresSteps,
     }, opts)
 
     if (url) {

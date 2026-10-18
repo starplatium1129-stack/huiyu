@@ -69,7 +69,6 @@ onUnmounted(library.stop)
 .resource-selection { margin-block: var(--s-4); }
 .resource-selection label { @apply tw:text-label; }
 .resource-selection .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
-.resource-selection :deep(.studio-select-trigger) { min-height:40px; }
 .resource-notice, .resource-task { border: 1px solid var(--border-strong); @apply tw:rounded-md tw:p-s-3 tw:leading-body tw:text-label; overflow-wrap: anywhere; }
 .resource-task p { @apply tw:mb-0; }
 .resource-task strong { display:block; margin-top:var(--s-2); }
@@ -93,7 +92,5 @@ onUnmounted(library.stop)
 .resource-actions .btn:not(.btn-sm) { min-height:40px; }
 .resource-footnote { margin:var(--s-3) 0 0; font-size:var(--fs-label-xs); }
 .resource-actions button:disabled { @apply tw:text-disabled; opacity: 1; @apply tw:cursor-not-allowed; }
-.resource-selection :deep(.studio-select-trigger):disabled { @apply tw:text-disabled; opacity: 1; @apply tw:cursor-not-allowed; }
 .resource-actions button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-.resource-selection :deep(.studio-select-trigger):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

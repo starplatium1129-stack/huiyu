@@ -166,7 +166,6 @@ export function usePopularPromptAssembly(
     character,
     outfit,
     blueprint,
-    resolvedStyle,
     structuredPlan,
     positivePrompt,
     negativePrompt,

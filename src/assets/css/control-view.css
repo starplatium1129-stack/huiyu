@@ -65,8 +65,6 @@
 .control-settings-stack > :is(.panel-card,.resource-library,.desktop-preferences) { margin:0; }
 .control-work-grid > .share-panel { grid-column:1 / -1; margin:0; }
 .field-label { @apply tw:block; margin: var(--s-4) 0 var(--s-2); @apply tw:text-label tw:text-secondary; }
-.input { @apply tw:w-full tw:min-w-0 tw:min-h-[40px]; padding: var(--s-2) var(--s-3); border: 1px solid var(--border-strong); @apply tw:rounded-md; background: var(--bg-deep); @apply tw:text-primary; font: 400 var(--fs-label)/var(--lh-body) var(--font-sans); }
-.input-mono { @apply tw:font-mono; }
 .field-help { @apply tw:text-muted tw:text-label-xs tw:leading-body; margin: var(--s-2) 0 0; }
 .field-help code { @apply tw:text-secondary; }
 .voice-config { @apply tw:mt-s-5; border-top: 1px solid var(--border-soft); }
@@ -75,7 +73,6 @@
 .voice-grid { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3; }
 .voice-card-title { @apply tw:text-label tw:font-semibold tw:text-accent; }
 .voice-card label { @apply tw:text-secondary tw:text-label-xs tw:leading-label; }
-.voice-card .input { @apply tw:text-label-xs; }
 .config-save-row { @apply tw:flex tw:items-center tw:flex-wrap tw:justify-end tw:gap-s-3 tw:mt-s-4 tw:pt-s-4; border-top: 1px solid var(--border-soft); }
 .tunnel-toggle-row { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-4; padding: var(--s-3) 0; @apply tw:mb-s-3; border-block: 1px solid var(--border-soft); }
 .tunnel-toggle-text { @apply tw:block tw:text-label; }

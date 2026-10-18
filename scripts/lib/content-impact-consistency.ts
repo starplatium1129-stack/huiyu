@@ -5,24 +5,24 @@ const { compareReferenceProjection }: typeof import('../maintenance/content-impa
 
 // Only import pure inspection functions. In particular do not import builders,
 // stores with a process-global root, or the production-data contract test suite.
-function inspectDomain(reader: any, domain: string) {
+function inspectDomain(reader: Parameters<typeof loadDomain>[0], domain: string) {
   const snapshot = loadDomain(reader, domain);
   if (domain === 'references') {
     try {
-      const check: any = compareReferenceProjection(reader.json('data/character-reference-standards.json'), reader.json('data/character-reference-view.json'));
+      const check = compareReferenceProjection(reader.json('data/character-reference-standards.json'), reader.json('data/character-reference-view.json'));
       snapshot.checks.push(check);
       snapshot.issues.push(...check.issues);
-      if (check.status === 'unknown') { snapshot.complete = false; snapshot.unknown.push(check.reason); }
+      if (check.status === 'unknown') { snapshot.complete = false; snapshot.unknown.push(check.reason || 'Reference projection unknown'); }
     } catch (error) { snapshot.complete = false; snapshot.unknown.push(runtimeErrorMessage(error)); }
   }
   return snapshot;
 }
 
-function summarizeConsistency(snapshot: any) {
+function summarizeConsistency(snapshot: ReturnType<typeof loadDomain>) {
   return { domain: snapshot.domain, status: snapshot.issues.length ? 'mismatch' : !snapshot.complete ? 'unknown'
     : snapshot.checks.length ? 'current' : 'not-derived',
   scope: 'Explicit JSON projections/fields only; no build, rendering or full-library validation',
-  groups: Object.entries(snapshot.groups).map(([name, group]: any) => ({ name, complete: group.complete })),
+  groups: Object.entries(snapshot.groups).map(([name, group]) => ({ name, complete: group.complete })),
   checks: snapshot.checks, issues: snapshot.issues, unknown: snapshot.unknown,
   untracked: ['compressed products', 'DATA_VERSION', 'schema/semantic validation', 'asset existence and review authenticity'] };
 }

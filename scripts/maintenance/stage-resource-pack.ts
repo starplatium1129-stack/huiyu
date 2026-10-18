@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { errorStack } from '../lib/runtime-errors';
 'use strict';
 
 /**
@@ -57,7 +58,7 @@ const HELP = [
   '候选包已通过字节核验仅表示复制内容与清单一致；不代表图片质量、审核或部署完成。',
 ].join('\n');
 
-function main(args: any = process.argv.slice(2)) {
+function main(args: string[] = process.argv.slice(2)) {
   let root = path.resolve(__dirname, '..', '..');
   let manifestPath = null;
   let baseManifestPath = null;
@@ -88,6 +89,8 @@ function main(args: any = process.argv.slice(2)) {
     return 2;
   }
   try {
+    if (!name) throw new UsageError('--name 缺失或不是字符串');
+    if (!manifestPath) throw new UsageError('--manifest 缺失或不是字符串');
     let result;
     if (baseManifestPath) {
       result = apply
@@ -100,12 +103,12 @@ function main(args: any = process.argv.slice(2)) {
     }
     console.log(JSON.stringify(result, null, 2));
     return result.ok ? 0 : 1;
-  } catch (err: any) {
+  } catch (err) {
     if (err instanceof UsageError) {
       console.error(`错误: ${err.message}`);
       return 2;
     }
-    console.error(err && err.stack ? err.stack : String(err));
+    console.error(errorStack(err));
     return 2;
   }
 }

@@ -1,5 +1,7 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 import { PathOrFileDescriptor } from 'node:fs';
+import type { Scene } from '../../src/types/scene';
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 
 /**
  * 绫季绘境 scene and character data quality gate.
@@ -43,14 +45,14 @@ const required = [
 const timeValues = new Set(['morning', 'afternoon', 'sunset', 'evening', 'night', 'late_night', 'dawn', 'all_day']);
 const charValues = new Set(['nene', 'natsume', 'triad']);
 const ratingValues = new Set(['All', 'R15', 'R18']);
-const promptTrigger: any = { nene: 'ayachi_nene', natsume: 'shiki_natsume' };
-const promptLora: any = { nene: '', natsume: '' };
+const promptTrigger: Partial<Record<string, string>> = { nene: 'ayachi_nene', natsume: 'shiki_natsume' };
+const promptLora: Partial<Record<string, string>> = { nene: '', natsume: '' };
 const driftMarkers = [
   '\u4e03\u7eea', '\u3059\u3054\u3044', '\u9b45\u9b54', '\u732b\u8033', 'Devon', '\u758f\u53f2',
   '\u94f6\u8272\u53d1\u4e1d', '\u6e7f\u900f\u7684\u94f6\u8272\u957f\u53d1', '\u7c89\u8272\u957f\u53d1', '\u7c89\u53d1'
 ];
 
-function readJson(source: PathOrFileDescriptor, label: string, errors: string[]) {
+function readJson(source: PathOrFileDescriptor, label: string, errors: string[]): unknown {
   try {
     return JSON.parse(fs.readFileSync(source, 'utf8'));
   } catch (error) {
@@ -59,9 +61,9 @@ function readJson(source: PathOrFileDescriptor, label: string, errors: string[])
   }
 }
 
-function hasRepeatedNgram(value: any, size: any = 12) {
+function hasRepeatedNgram(value: string, size = 12) {
   const compact = String(value || '').replace(/\s+/g, '');
-  const counts = new Map();
+  const counts = new Map<string, number>();
   for (let index = 0; index <= compact.length - size; index += 1) {
     const gram = compact.slice(index, index + size);
     const count = (counts.get(gram) || 0) + 1;
@@ -71,16 +73,20 @@ function hasRepeatedNgram(value: any, size: any = 12) {
   return false;
 }
 
-const errors: any[] = [];
-let scenes: any[] = [];
+const errors: string[] = [];
+let scenes: Scene[] = [];
 try {
   scenes = loadSceneShards().scenes;
 } catch (error) {
   errors.push('scene shards cannot be loaded: ' + runtimeErrorMessage(error));
 }
-const characters = readJson(characterSource, 'characters.json', errors);
-for (const character of Array.isArray(characters) ? characters : []) {
-  if ((character.id === 'nene' || character.id === 'natsume') && character.lora?.name) {
+const characters: unknown[] = (() => {
+  const value = readJson(characterSource, 'characters.json', errors);
+  return Array.isArray(value) ? value : [];
+})();
+for (const character of characters) {
+  if (object(character) && (character.id === 'nene' || character.id === 'natsume')
+    && object(character.lora) && typeof character.lora.name === 'string' && character.lora.name) {
     promptLora[character.id] = character.lora.name;
   }
 }
@@ -89,17 +95,11 @@ const presetData = readJson(presetSource, 'presets.json', errors);
 const curationData = readJson(curationSource, 'curation.json', errors);
 const retiredData = readJson(retiredSource, 'retired-scenes.json', errors);
 const pinnedData = readJson(pinnedSource, 'prompt-pinned-scenes.json', errors);
-const pinnedScenes = pinnedData && pinnedData.scenes ? pinnedData.scenes : {};
-const ids: any = new Set();
+const pinnedScenes = object(pinnedData) && object(pinnedData.scenes) ? pinnedData.scenes : {};
+const ids = new Set<string>();
 
-if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
-
-(Array.isArray(scenes) ? scenes : []).forEach((scene: any, index: any) => {
-  const label = scene && scene.id ? scene.id : 'index ' + index;
-  if (!scene || typeof scene !== 'object') {
-    errors.push(label + ': scene must be an object');
-    return;
-  }
+scenes.forEach((scene, index) => {
+  const label = scene.id || 'index ' + index;
 
   for (const key of required) {
     const value = scene[key];
@@ -116,8 +116,8 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (ids.has(scene.id)) errors.push(label + ': duplicate id');
   ids.add(scene.id);
 
-  if (!charValues.has(scene.char)) errors.push(label + ': unknown char ' + scene.char);
-  if (!timeValues.has(scene.timeOfDay)) errors.push(label + ': unknown timeOfDay ' + scene.timeOfDay);
+  if (!charValues.has(scene.char || '')) errors.push(label + ': unknown char ' + scene.char);
+  if (!timeValues.has(scene.timeOfDay || '')) errors.push(label + ': unknown timeOfDay ' + scene.timeOfDay);
   if (!Array.isArray(scene.character)) errors.push(label + ': character must be an array');
   if (!Array.isArray(scene.tags)) errors.push(label + ': tags must be an array');
   if (!Array.isArray(scene.usage)) errors.push(label + ': usage must be an array');
@@ -130,7 +130,7 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
       if (width < 512 || height < 512) errors.push(label + ': recommendedSize must be at least 512x512');
     }
   }
-  if (!ratingValues.has(scene.rating)) errors.push(label + ': rating must be All, R15, or R18');
+  if (!ratingValues.has(scene.rating || '')) errors.push(label + ': rating must be All, R15, or R18');
   if (typeof scene.rating === 'string' && scene.mature !== (scene.rating === 'R18')) {
     errors.push(label + ': mature must match R18 rating');
   }
@@ -172,7 +172,7 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (typeof scene.prompt === 'string' && /\{[^}]+\}/.test(scene.prompt)) {
     errors.push(label + ': unresolved prompt placeholder');
   }
-  const effective: any = renderedScene(scene);
+  const effective = renderedScene(scene);
   if (typeof scene.negative === 'string') {
     const negativeTokens = effective.negative.split(',').map(tokenKey).filter(Boolean);
     for (const token of ['text', 'watermark', 'signature', 'bad_hands', 'extra_fingers', 'missing_fingers']) {
@@ -192,19 +192,20 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
           if (!negativeTokens.includes(token)) errors.push(label + ': ' + scene.rating + ' negative prompt missing ' + token);
         }
       }
-      const overlap = [...scenePositiveKeys(effective)].filter((token: any) => negativeTokens.includes(token));
+      const overlap = [...scenePositiveKeys(effective)].filter(token => negativeTokens.includes(token));
       if (overlap.length) {
         errors.push(label + ': positive/negative token overlap: ' + [...new Set(overlap)].join(', '));
       }
     }
   }
-  if (!isPinned) adultSafetyIssues(effective).forEach((issue: any) => errors.push(label + ': ' + issue));
-  framingConflicts(effective).forEach((issue: any) => errors.push(label + ': conflicting framing ' + issue));
-  poseConflicts(effective).forEach((issue: any) => errors.push(label + ': conflicting pose ' + issue));
-  gazeConflicts(effective).forEach((issue: any) => errors.push(label + ': conflicting gaze ' + issue));
-  auMetadataIssues(scene).forEach((issue: any) => errors.push(label + ': ' + issue));
+  if (!isPinned) adultSafetyIssues(effective).forEach(issue => errors.push(label + ': ' + issue));
+  framingConflicts(effective).forEach(issue => errors.push(label + ': conflicting framing ' + issue));
+  poseConflicts(effective).forEach(issue => errors.push(label + ': conflicting pose ' + issue));
+  gazeConflicts(effective).forEach(issue => errors.push(label + ': conflicting gaze ' + issue));
+  auMetadataIssues(scene).forEach(issue => errors.push(label + ': ' + issue));
   if (Array.isArray(scene.character) && typeof scene.prompt === 'string') {
     for (const character of scene.character) {
+      if (typeof character !== 'string') { errors.push(label + ': character entries must be strings'); continue; }
       const trigger = promptTrigger[character];
       if (trigger && !scene.prompt.includes(trigger)) errors.push(label + ': prompt missing ' + trigger);
       const lora = promptLora[character];
@@ -224,10 +225,10 @@ if (!Array.isArray(scenes)) errors.push('scenes.json root must be an array');
   if (scene.mature && includesNene && !adultMarked) errors.push(label + ': mature Nene scene must be explicitly adult');
 });
 
-const retiredRecords = retiredData && Array.isArray(retiredData.records) ? retiredData.records : [];
-const retiredIds: any = new Set();
+const retiredRecords: unknown[] = object(retiredData) && Array.isArray(retiredData.records) ? retiredData.records : [];
+const retiredIds = new Set<string>();
 for (const record of retiredRecords) {
-  if (!record || !isSceneId(record.id)) {
+  if (!object(record) || !isSceneId(record.id)) {
     errors.push('retired-scenes.json contains an invalid id');
     continue;
   }
@@ -236,7 +237,7 @@ for (const record of retiredRecords) {
   if (!record.reason) errors.push('retired scene lacks reason: ' + record.id);
   retiredIds.add(record.id);
 }
-for (const gap of missingSceneIdRanges(ids, retiredIds)) {
+for (const gap of missingSceneIdRanges([...ids], [...retiredIds])) {
   // Work scales with recorded IDs, not with the largest supplied number.
   if (gap.count <= 20) {
     for (let number = gap.start; number <= gap.end; number++) errors.push('missing undeclared id ' + formatSceneId(number));
@@ -245,39 +246,43 @@ for (const gap of missingSceneIdRanges(ids, retiredIds)) {
   }
 }
 
-const curatedSceneIds = curationData && Array.isArray(curationData.curatedSceneIds) ? curationData.curatedSceneIds : [];
-const signatureSceneIds = curationData && Array.isArray(curationData.signatureSceneIds) ? curationData.signatureSceneIds : [];
-const reviewSceneIds = curationData && Array.isArray(curationData.reviewSceneIds) ? curationData.reviewSceneIds : [];
-const recommendationReasons = curationData && curationData.recommendationReasons && typeof curationData.recommendationReasons === 'object' ? curationData.recommendationReasons : {};
-const searchAliases = curationData && curationData.searchAliases && typeof curationData.searchAliases === 'object' ? curationData.searchAliases : {};
-const moodRails = curationData && Array.isArray(curationData.moodRails) ? curationData.moodRails : [];
+const curation = object(curationData) ? curationData : {};
+const curatedSceneIds: unknown[] = Array.isArray(curation.curatedSceneIds) ? curation.curatedSceneIds : [];
+const signatureSceneIds: unknown[] = Array.isArray(curation.signatureSceneIds) ? curation.signatureSceneIds : [];
+const reviewSceneIds: unknown[] = Array.isArray(curation.reviewSceneIds) ? curation.reviewSceneIds : [];
+const recommendationReasons = object(curation.recommendationReasons) ? curation.recommendationReasons : {};
+const searchAliases = object(curation.searchAliases) ? curation.searchAliases : {};
+const moodRails: unknown[] = Array.isArray(curation.moodRails) ? curation.moodRails : [];
 if (!curatedSceneIds.length) errors.push('curation.json must define curatedSceneIds');
 if (!signatureSceneIds.length) errors.push('curation.json must define signatureSceneIds');
 if (!moodRails.length) errors.push('curation.json must define moodRails');
-const curatedSeen = new Set();
+const curatedSeen = new Set<string>();
 for (const sceneId of curatedSceneIds) {
+  if (typeof sceneId !== 'string') { errors.push('curation.json curatedSceneIds must contain strings'); continue; }
   if (curatedSeen.has(sceneId)) errors.push('curation.json duplicate curated scene: ' + sceneId);
   curatedSeen.add(sceneId);
   if (!ids.has(sceneId)) errors.push('curation.json references missing scene: ' + sceneId);
 }
 for (const sceneId of signatureSceneIds) {
+  if (typeof sceneId !== 'string') { errors.push('curation.json signatureSceneIds must contain strings'); continue; }
   if (!ids.has(sceneId)) errors.push('curation.json signature references missing scene: ' + sceneId);
   if (!curatedSeen.has(sceneId)) errors.push('curation.json signature must also be curated: ' + sceneId);
   if (!String(recommendationReasons[sceneId] || '').trim()) errors.push('curation.json signature needs a recommendation reason: ' + sceneId);
 }
 for (const sceneId of reviewSceneIds) {
+  if (typeof sceneId !== 'string') { errors.push('curation.json reviewSceneIds must contain strings'); continue; }
   if (!ids.has(sceneId)) errors.push('curation.json review references missing scene: ' + sceneId);
   if (curatedSeen.has(sceneId)) errors.push('curation.json scene cannot be both curated and review: ' + sceneId);
 }
 // personaCoreSceneIds：字段存在时核对数组、非空字符串 ID、重复项与活跃引用；
 // 空数组与缺省保持兼容（首屏预算、角色覆盖等政策检查归 test-scene-shard-integrity.js）。
-const personaCoreSceneIds = curationData?.personaCoreSceneIds;
+const personaCoreSceneIds = curation.personaCoreSceneIds;
 if (personaCoreSceneIds !== undefined) {
   if (!Array.isArray(personaCoreSceneIds)) {
     errors.push('curation.json personaCoreSceneIds must be an array');
   } else {
-    const coreSeen = new Set();
-    personaCoreSceneIds.forEach((sceneId: any, index: any) => {
+    const coreSeen = new Set<string>();
+    personaCoreSceneIds.forEach((sceneId: unknown, index) => {
       if (typeof sceneId !== 'string' || !sceneId.trim()) {
         errors.push('curation.json personaCoreSceneIds[' + index + '] must be a non-empty string');
         return;
@@ -291,28 +296,28 @@ if (personaCoreSceneIds !== undefined) {
 for (const sceneId of Object.keys(recommendationReasons)) {
   if (!ids.has(sceneId)) errors.push('curation.json recommendation reason references missing scene: ' + sceneId);
 }
-const curationText = (scene: any) => [scene.id, scene.title, scene.story, scene.emotion, scene.char, scene.category, scene.season,
+const curationText = (scene: Scene) => [scene.id, scene.title, scene.story, scene.emotion, scene.char, scene.category, scene.season,
   scene.timeOfDay, scene.location, scene.weather, scene.camera, scene.lighting].concat(scene.tags || []).join(' ').toLowerCase();
 for (const [intent, aliases] of Object.entries(searchAliases)) {
   if (!Array.isArray(aliases) || !aliases.length) {
     errors.push('curation.json search alias must be a non-empty array: ' + intent);
     continue;
   }
-  const candidates = [intent].concat(aliases).map((item: any) => String(item).toLowerCase());
-  if (!scenes.some((scene: any) => candidates.some((candidate: any) => curationText(scene).includes(candidate)))) {
+  const candidates = [intent, ...aliases].map((item: unknown) => String(item).toLowerCase());
+  if (!scenes.some(scene => candidates.some(candidate => curationText(scene).includes(candidate)))) {
     errors.push('curation.json search alias returns no scenes: ' + intent);
   }
 }
 for (const rail of moodRails) {
-  const label = rail && rail.id ? rail.id : 'mood rail';
-  if (!rail || !rail.id || !rail.title || !rail.query) {
+  const label = object(rail) && rail.id ? rail.id : 'mood rail';
+  if (!object(rail) || !rail.id || !rail.title || !rail.query) {
     errors.push(label + ': curation mood rail is missing id, title, or query');
     continue;
   }
   const terms = String(rail.query).toLowerCase().split(/\s+/).filter(Boolean);
-  const hasMatch = scenes.some((scene: any) => {
+  const hasMatch = scenes.some(scene => {
     const text = curationText(scene);
-    return terms.every((term: any) => text.includes(term));
+    return terms.every(term => text.includes(term));
   });
   if (!hasMatch) errors.push(label + ': curation query returns no scenes: ' + rail.query);
 }
@@ -322,22 +327,22 @@ const expectedCharacters = {
   natsume: ['black_hair', 'long_hair', 'yellow_eyes', 'mole_under_eye', 'hairclip']
 };
 for (const [id, traits] of Object.entries(expectedCharacters)) {
-  const character = Array.isArray(characters) ? characters.find((item: any) => item.id === id) : null;
-  if (!character) {
+  const character = characters.find(item => object(item) && item.id === id);
+  if (!object(character)) {
     errors.push('characters.json missing ' + id);
     continue;
   }
-  const actual = new Set((character.traits || []).map((trait: any) => trait.tag));
+  const actual = new Set((Array.isArray(character.traits) ? character.traits : []).map((trait: unknown) => object(trait) ? trait.tag : undefined));
   for (const trait of traits) if (!actual.has(trait)) errors.push(id + ': missing visual trait ' + trait);
-  if (!character.lora || !character.lora.name) errors.push(id + ': missing LoRA binding');
+  if (!object(character.lora) || !character.lora.name) errors.push(id + ': missing LoRA binding');
 
-  const recommendations = character.lora && character.lora.recommended_scene;
+  const recommendations = object(character.lora) ? character.lora.recommended_scene : undefined;
   if (!Array.isArray(recommendations) || recommendations.length === 0) {
     errors.push(id + ': missing recommended scenes');
     continue;
   }
   for (const sceneId of recommendations) {
-    const scene = scenes.find((item: any) => item.id === sceneId);
+    const scene = scenes.find(item => item.id === sceneId);
     if (!scene) {
       errors.push(id + ': recommended scene does not exist: ' + sceneId);
       continue;
@@ -349,14 +354,14 @@ for (const [id, traits] of Object.entries(expectedCharacters)) {
   }
 }
 
-const modelProfiles = presetData && Array.isArray(presetData.model_profiles) ? presetData.model_profiles : [];
-const presets = presetData && Array.isArray(presetData.presets) ? presetData.presets : [];
+const modelProfiles: unknown[] = object(presetData) && Array.isArray(presetData.model_profiles) ? presetData.model_profiles : [];
+const presets: unknown[] = object(presetData) && Array.isArray(presetData.presets) ? presetData.presets : [];
 if (!modelProfiles.length) errors.push('presets.json must define model_profiles');
 if (!presets.length) errors.push('presets.json must define presets');
-const profileIds = new Set();
+const profileIds = new Set<string>();
 for (const profile of modelProfiles) {
-  const label = profile && profile.id ? profile.id : 'model profile';
-  if (!profile || !profile.id) { errors.push('model profile missing id'); continue; }
+  const label = object(profile) && profile.id ? profile.id : 'model profile';
+  if (!object(profile) || typeof profile.id !== 'string' || !profile.id) { errors.push('model profile missing id'); continue; }
   if (profileIds.has(profile.id)) errors.push(label + ': duplicate model profile id');
   profileIds.add(profile.id);
   if (!Array.isArray(profile.match) || !profile.match.length) errors.push(label + ': missing model match patterns');
@@ -366,19 +371,19 @@ for (const profile of modelProfiles) {
     errors.push(label + ': invalid prompt prefixes');
   }
   if (!profile.sampler || !Number.isFinite(Number(profile.steps)) || !Number.isFinite(Number(profile.cfg))) errors.push(label + ': invalid generation defaults');
-  if (!/^\d+×\d+$/.test(profile.size || '')) errors.push(label + ': invalid output size');
+  if (!/^\d+×\d+$/.test(String(profile.size || ''))) errors.push(label + ': invalid output size');
 }
 for (const requiredProfile of ['wai_illustrious_v17', 'anima_base_v10', 'anima_aesthetic_v11', 'anima_miaomiao_v16', 'krea2_turbo_fp8']) {
   if (!profileIds.has(requiredProfile)) errors.push('presets.json missing model profile ' + requiredProfile);
 }
-const presetIds = new Set();
+const presetIds = new Set<string>();
 for (const preset of presets) {
-  const label = preset && preset.id ? preset.id : 'preset';
-  if (!preset || !preset.id || !preset.name) { errors.push('preset missing id or name'); continue; }
+  const label = object(preset) && preset.id ? preset.id : 'preset';
+  if (!object(preset) || typeof preset.id !== 'string' || !preset.id || !preset.name) { errors.push('preset missing id or name'); continue; }
   if (presetIds.has(preset.id)) errors.push(label + ': duplicate preset id');
   presetIds.add(preset.id);
   if (!preset.sampler || !Number.isFinite(Number(preset.steps)) || !Number.isFinite(Number(preset.cfg))) errors.push(label + ': invalid generation values');
-  if (!/^\d+×\d+$/.test(preset.size || '')) errors.push(label + ': invalid output size');
+  if (!/^\d+×\d+$/.test(String(preset.size || ''))) errors.push(label + ': invalid output size');
 }
 
 if (errors.length) {

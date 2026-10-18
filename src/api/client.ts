@@ -139,21 +139,10 @@ const defaultFetch: FetchImplementation = (input, init) => globalThis.fetch(inpu
 
 const GET_METHOD = 'GET'
 
-/** 请求层消费者隔离（2026-09-10 复核 R3）：响应正文只来自 JSON.parse，
- * 交给缓存或第二个消费者前必须复制，否则调用方改顶层或嵌套字段都会污染其他结果。
- * 序列化回退保证非纯 JSON 结构也不会抛错。 */
+/** Cached/shared bodies come only from JSON.parse, so every consumer can receive
+ * a structuredClone without mutating the transport's retained JSON object. */
 function cloneResponse(value: ApiResponseObject): ApiResponseObject {
-  const structured = (globalThis as typeof globalThis & {
-    structuredClone?: (input: unknown) => unknown
-  }).structuredClone
-  if (typeof structured === 'function') {
-    try {
-      return structured(value) as ApiResponseObject
-    } catch {
-      // 含不可克隆值时退回 JSON 往返
-    }
-  }
-  return JSON.parse(JSON.stringify(value)) as ApiResponseObject
+  return structuredClone(value)
 }
 
 /** 每个消费者在自己的传输结果上应用自己的响应契约（2026-09-10 复核 R2）。

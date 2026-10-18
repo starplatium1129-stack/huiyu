@@ -71,9 +71,9 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
 
 <style scoped>
 .chat-model-picker { width:100%; min-width:0; }
-.chat-model-picker-anchor { padding:0 var(--s-2) 0 var(--s-3); min-height:var(--control-height); cursor:text; }
+.chat-model-picker-anchor { padding:0 var(--s-2) 0 var(--s-3); cursor:text; }
 .chat-model-picker-anchor:focus-within { border-color:var(--border-strong); outline:none; box-shadow:var(--focus-shadow); }
-.chat-model-picker .chat-model-picker-input { flex:1; width:100%; min-width:0; min-height:0; height:calc(var(--control-height) - 2px); padding:0; border:0; border-radius:0; background:transparent; color:var(--text-primary); font:inherit; }
+.chat-model-picker .chat-model-picker-input { flex:1; width:100%; min-width:0; min-height:calc(var(--control-height) - 2px); padding:var(--s-2) 0; border:0; border-radius:0; background:transparent; color:var(--text-primary); font:inherit; }
 .chat-model-picker .chat-model-picker-input:focus { outline:none; box-shadow:none; }
 .chat-model-picker .chat-model-picker-input:disabled { color:var(--text-disabled); }
 .chat-model-picker-input::placeholder { color:var(--text-secondary); }
@@ -84,7 +84,7 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
 @media (pointer:coarse) {
   /* The input and trigger keep 44px targets inside the 1px control frame. */
   .chat-model-picker-anchor { min-height:calc(44px + 2px); }
-  .chat-model-picker .chat-model-picker-input { height:44px; }
+  .chat-model-picker .chat-model-picker-input { min-height:44px; }
   .chat-model-picker-trigger { flex-basis:44px; width:44px; min-height:44px; }
 }
 </style>

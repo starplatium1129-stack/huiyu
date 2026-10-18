@@ -415,12 +415,12 @@ export function useControlStatus({ showToast }: StatusHooks) {
     modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-    feedbackText, actionNote, imageProvider, logs, logBoxEl, logIndex,
+    feedbackText, actionNote, imageProvider, logs, logBoxEl,
     opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
     readyLabel,
     lastStatus: () => lastStatus,
     captureConfigEdits, acknowledgeConfigEdits,
-    renderStatus, loadShareLink, pollStatus, pollLogs, clearLogs, startPolling, stopPolling,
-    fmtVram, lineClass,
+    pollStatus, pollLogs, clearLogs, startPolling, stopPolling,
+    lineClass,
   }
 }

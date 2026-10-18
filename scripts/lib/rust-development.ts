@@ -57,11 +57,14 @@ async function buildDevelopmentRuntime(root: string, context?: DevelopmentCargo)
     cwd: root, env: prepared.env, stdio: ['inherit', 'pipe', 'inherit'], windowsHide: true,
   });
   function consume(line: string) {
-    let message: any;
+    let message: unknown;
     try { message = JSON.parse(line); } catch { if (line.trim()) console.log(line); return; }
-    if (message && typeof message === 'object' && message.reason === 'compiler-artifact' && message.target?.name === 'huiyu-runtime'
-        && Array.isArray(message.target.kind) && message.target.kind.includes('bin') && typeof message.manifest_path === 'string'
-        && normalize(message.manifest_path) === normalize(manifest) && typeof message.executable === 'string') executable = message.executable;
+    if (!message || typeof message !== 'object' || Array.isArray(message)) return;
+    const artifact = message as Record<string, unknown>;
+    const target = artifact.target;
+    if (artifact.reason === 'compiler-artifact' && target && typeof target === 'object' && 'name' in target && target.name === 'huiyu-runtime'
+        && 'kind' in target && Array.isArray(target.kind) && target.kind.includes('bin') && typeof artifact.manifest_path === 'string'
+        && normalize(artifact.manifest_path) === normalize(manifest) && typeof artifact.executable === 'string') executable = artifact.executable;
   }
   compiling.stdout!.setEncoding('utf8');
   compiling.stdout!.on('data', (chunk: string) => {

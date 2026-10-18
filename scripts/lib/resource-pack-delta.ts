@@ -1,4 +1,5 @@
 import { errorMessage as runtimeErrorMessage } from './runtime-errors';
+import type { ManifestEntry as PackEntry, ResourceManifest } from './resource-manifest-types';
 'use strict';
 
 /**
@@ -36,15 +37,12 @@ function sha256Hex(buffer: string|NodeJS.ArrayBufferView<ArrayBufferLike>|Buffer
   return createHash('sha256').update(buffer).digest('hex');
 }
 
-type PackEntry = { path: string; bytes: number; sha256: string };
-type ResourceManifest = { entries: PackEntry[] };
-
 function sumEntryBytes(entries: PackEntry[]) {
   return entries.reduce((acc, e) => acc + e.bytes, 0);
 }
 
 /** 清单内容身份（纯函数）：只由条目 (path, bytes, sha256) 决定，与 generatedAt/root 无关。 */
-function manifestContentIdentity(manifest: ResourceManifest) {
+function manifestContentIdentity(manifest: Pick<ResourceManifest, 'entries'>) {
   const triples = (manifest && Array.isArray(manifest.entries) ? manifest.entries : [])
     .map((e: PackEntry) => [e.path, e.bytes, e.sha256.toLowerCase()])
     .sort((a, b) => (String(a[0]) < String(b[0]) ? -1 : String(a[0]) > String(b[0]) ? 1 : 0));
@@ -84,7 +82,7 @@ function loadBaseManifestStructure({ rootReal, manifestPath, io }: { rootReal: s
   } catch (err) {
     throw new UsageError(`--base-manifest 不可读取: ${runtimeErrorMessage(err)}`);
   }
-  let manifest;
+  let manifest: unknown;
   try {
     manifest = JSON.parse(raw.toString('utf8'));
   } catch (err) {
@@ -107,19 +105,19 @@ function planResourcePackDelta({ root, name, manifestPath, baseManifestPath, io 
   const errors = [...dest.errors, ...loaded.errors, ...baseLoaded.errors];
   let candidates = null;
   let delta = null;
-  if (errors.length === 0) {
+  if (errors.length === 0 && loaded.ok) {
     const diff = compareManifests({ oldManifest: baseLoaded.manifest, newManifest: loaded.manifest });
     if (!diff.ok) {
-      errors.push(...(diff.errors as any[]));
+      errors.push(...diff.errors);
     } else {
       const newByPath = new Map(loaded.manifest.entries.map((e: PackEntry) => [e.path, e]));
-      const changedEntries = diff.changed as Array<{ path: string }>;
-      candidates = [...(diff.added as PackEntry[]), ...changedEntries]
+      candidates = [...diff.added, ...diff.changed]
         .map((d) => newByPath.get(d.path))
         .filter((e): e is PackEntry => Boolean(e))
         .sort((a, b) => comparePath(a.path, b.path));
       delta = {
-        baseManifest: manifestIdentityRecord(baseLoaded.manifestRel, baseLoaded.manifest),
+        // compareManifests accepted every baseline entry before this branch.
+        baseManifest: manifestIdentityRecord(baseLoaded.manifestRel, baseLoaded.manifest as ResourceManifest),
         newManifest: manifestIdentityRecord(loaded.manifestRel, loaded.manifest),
         totals: diff.totals,
         removed: diff.removed,
@@ -150,7 +148,8 @@ function planResourcePackDelta({ root, name, manifestPath, baseManifestPath, io 
 }
 
 /** 增量模式的候选包元数据：manifest.json（仅实际复制条目）+ delta.json（差异记录）。 */
-function deltaMetadataFiles({ plan, destAbs, rootReal }: any) {
+function deltaMetadataFiles({ plan, destAbs, rootReal }: { plan: ReturnType<typeof planResourcePackDelta> & { entries: PackEntry[] }; destAbs: string; rootReal: string }) {
+  const delta = plan.delta!; // applyPackPlan calls metadata builders only for a successful plan.
   const bytes = sumEntryBytes(plan.entries);
   const packManifest = {
     schemaVersion: SCHEMA_VERSION,
@@ -165,12 +164,12 @@ function deltaMetadataFiles({ plan, destAbs, rootReal }: any) {
         sourceRoot: rootReal,
         sourceManifestPath: plan.manifestPath,
         baseManifestPath: plan.baseManifestPath,
-        deltaTotals: plan.delta.totals,
+        deltaTotals: delta.totals,
       },
       coverageNote: `增量候选包的 manifest.json 仅列实际复制的 added/changed 项，不代表基线全集；${BYTE_ONLY_NOTE}`,
     },
     totals: { files: plan.entries.length, bytes, unverified: 0 },
-    entries: plan.entries.map((e: any) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
+    entries: plan.entries.map(e => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
     unverified: [],
   };
   const deltaJson = {
@@ -178,10 +177,10 @@ function deltaMetadataFiles({ plan, destAbs, rootReal }: any) {
     kind: 'resource-pack-delta',
     generatedAt: new Date().toISOString(),
     identityBasis: IDENTITY_BASIS,
-    baseManifest: plan.delta.baseManifest,
-    newManifest: plan.delta.newManifest,
-    totals: plan.delta.totals,
-    removed: plan.delta.removed,
+    baseManifest: delta.baseManifest,
+    newManifest: delta.newManifest,
+    totals: delta.totals,
+    removed: delta.removed,
     candidate: {
       files: plan.entries.length,
       bytes,

@@ -231,6 +231,6 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     showcaseUrl, heroUrl, manifestLoading, manifestError,
     thumbUrl, imageUrl, hasShowcase, loadShowcaseManifest,
     previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
-    loadHomeHeroes, resetHero, onShowcasePicked, onHeroPicked,
+    resetHero, onShowcasePicked, onHeroPicked,
   }
 }

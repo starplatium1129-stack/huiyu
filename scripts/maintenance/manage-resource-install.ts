@@ -1,11 +1,12 @@
 #!/usr/bin/env node
+import { errorCode, errorMessage } from '../lib/runtime-errors';
 'use strict';
 
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const { createResourceInstaller }: typeof import('../lib/resource-install') = require('../lib/resource-install');
 const { createResourceDownloader }: typeof import('../lib/resource-download') = require('../lib/resource-download');
-const { readJson, fail }: typeof import('../lib/resource-install-fs') = require('../lib/resource-install-fs');
+const { readJson, fail, object }: typeof import('../lib/resource-install-fs') = require('../lib/resource-install-fs');
 
 const HELP = `Resource lifecycle (local CLI; no server/URL endpoint)
   node scripts/maintenance/manage-resource-install.js <import|download|recover|rollback|status>
@@ -25,14 +26,14 @@ Approval and source trust are external decisions: matching hashes alone authoriz
 Never accept this config, filesystem roots or access callbacks from a remote request.
 `;
 
-async function main(argv: any = process.argv.slice(2)) {
+async function main(argv: string[] = process.argv.slice(2)) {
   if (argv.includes('--help') || argv.includes('--plan')) { process.stdout.write(HELP); return; }
   const [action, ...rest] = argv;
-  if (!['import', 'download', 'recover', 'rollback', 'status'].includes(action)) fail('USAGE', 'Choose a resource lifecycle action; see --help');
-  const flags: Record<string, any> = {};
+  if (action !== 'import' && action !== 'download' && action !== 'recover' && action !== 'rollback' && action !== 'status') throw fail('USAGE', 'Choose a resource lifecycle action; see --help');
+  const flags: { '--config'?: string; '--release'?: string; '--apply'?: boolean } = {};
   for (let index = 0; index < rest.length; index++) {
     const flag = rest[index];
-    if (!['--config', '--release', '--apply'].includes(flag) || Object.hasOwn(flags, flag)) fail('USAGE', 'Unknown or duplicate option: ' + flag);
+    if ((flag !== '--config' && flag !== '--release' && flag !== '--apply') || Object.hasOwn(flags, flag)) throw fail('USAGE', 'Unknown or duplicate option: ' + flag);
     if (flag === '--apply') flags[flag] = true;
     else {
       const value = rest[++index];
@@ -40,15 +41,19 @@ async function main(argv: any = process.argv.slice(2)) {
       flags[flag] = value;
     }
   }
-  if (!flags['--config']) fail('USAGE', '--config is required');
+  if (!flags['--config']) throw fail('USAGE', '--config is required');
   if (['import', 'download'].includes(action) && !flags['--release']) fail('USAGE', '--release is required');
   if (!['import', 'download'].includes(action) && flags['--release']) fail('USAGE', '--release is only valid for import/download');
   const config = readJson(fs, path.resolve(flags['--config']));
+  if (!object(config) || typeof config.userDataRoot !== 'string'
+    || (config.protectedRoots !== undefined && (!Array.isArray(config.protectedRoots) || !config.protectedRoots.every((root: unknown) => typeof root === 'string')))) {
+    throw fail('CONFIG_REQUIRED', 'Configuration requires userDataRoot and an optional array of protectedRoots');
+  }
   // This CLI is an explicitly invoked local administration surface. An eventual gateway must
   // inject its existing isLocalStudioHost and authorization checks instead of these callbacks.
-  const options = { userDataRoot: config.userDataRoot, protectedRoots: config.protectedRoots,
+  const options = { userDataRoot: config.userDataRoot, protectedRoots: config.protectedRoots as string[] | undefined,
     policy: config.policy, access: { isLocalStudioHost: () => true, isAuthorized: () => true } };
-  const installer: any = createResourceInstaller(options);
+  const installer = createResourceInstaller(options);
   const controller = new AbortController();
   const cancel = () => controller.abort();
   process.once('SIGINT', cancel);
@@ -61,6 +66,7 @@ async function main(argv: any = process.argv.slice(2)) {
         : { ok: true, mode: 'preview', action, store: installer.root, note: 'No mutation; --apply is required.' };
     } else if (action === 'import') output = await installer.install(request);
     else if (action === 'download') output = await createResourceDownloader(options).download(request);
+    else if (action === 'status') output = await installer.status();
     else output = await installer[action](request);
     process.stdout.write(JSON.stringify(output, null, 2) + '\n');
   } finally {
@@ -68,8 +74,10 @@ async function main(argv: any = process.argv.slice(2)) {
     process.removeListener('SIGTERM', cancel);
   }
 }
-if (require.main === module) main().catch((error: any) => {
-  process.stderr.write(JSON.stringify({ ok: false, code: error.code || 'FAILED', message: error.message,
-    rolledBack: error.rolledBack || false, recoveryRequired: error.recoveryRequired || false, details: error.details }) + '\n');
-  process.exitCode = error.code === 'CANCELLED' ? 130 : ['USAGE', 'CONFIG_REQUIRED', 'SOURCE_REQUIRED', 'APPROVAL_REQUIRED'].includes(error.code) ? 2 : 1;
+if (require.main === module) main().catch((error: unknown) => {
+  const code = errorCode(error) || 'FAILED';
+  const fields = object(error) ? error : {};
+  process.stderr.write(JSON.stringify({ ok: false, code, message: errorMessage(error),
+    rolledBack: fields.rolledBack || false, recoveryRequired: fields.recoveryRequired || false, details: fields.details }) + '\n');
+  process.exitCode = code === 'CANCELLED' ? 130 : typeof code === 'string' && ['USAGE', 'CONFIG_REQUIRED', 'SOURCE_REQUIRED', 'APPROVAL_REQUIRED'].includes(code) ? 2 : 1;
 });

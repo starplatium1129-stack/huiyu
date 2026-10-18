@@ -74,10 +74,4 @@ interface Live2DNativeEvents {
  * 由桌面平台 adapter 提供的窄能力；仅宿主确认的 Companion 窗口可用。
  * 普通 Web 使用 browser backend。
  */
-export interface Live2DNativeBridge extends Live2DNativeCommands, Live2DNativeEvents {
-  readonly isNativeLive2D: true
-  readonly supportsTextureQuality?: boolean
-  readonly supportsFraming?: boolean
-}
-
-export {}
+export type Live2DNativeBridge = Live2DNativeCommands & Live2DNativeEvents

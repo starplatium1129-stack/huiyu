@@ -5,15 +5,32 @@ const { isDeepStrictEqual: equal }: typeof import('node:util') = require('node:u
 const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
 const { hash, jsonHash, SHA, evidencePath, evidenceReader, explicitSource }: typeof import('./content-evidence-io') = require('./content-evidence-io');
 const { UUID, validateRecord, inputVersion, reviewState, validateDecisions }: typeof import('./content-evidence-contract') = require('./content-evidence-contract');
+type Candidate = ReturnType<typeof validateRecord>;
+type Reader = ReturnType<typeof evidenceReader>;
+type AuditOptions = { root: string; manifest: string; candidateRoot?: string; publishedRoot?: string; sources?: string[]; recipe?: string; decisions?: string; publication?: string; expectManifestSha256?: string };
+type SourceEvidence = { role: string; file: string | null; expectedSha256: string; status: string; reason?: string; actualSha256?: string; bytes?: number };
+type AuditItem = {
+  key: string; recordId: string; recordSha256: string; inputVersion: string; structure: string; generation: string;
+  source: ReturnType<typeof sourceEvidence>; payload: { status: string; actualSha256: string; expectedSha256: string };
+  version: ReturnType<typeof inputVersion>; asset: ReturnType<typeof assetEvidence>; freshness: string;
+  review: ReturnType<typeof reviewState>; publication: ReturnType<typeof publicationState>;
+};
+type AuditResult = {
+  schemaVersion: number; kind: string; readOnly: boolean; executed: boolean; structure: { status: string }; items: AuditItem[];
+  errors: string[]; unknown: string[]; evidence: ReturnType<Reader['evidence']>; exitCode: number; status?: string;
+  manifest?: { file: string; sha256: string };
+  acceptance: { imageQuality: string; reviewerAuthenticity: string; publicationPerformed: boolean; wholeLibrary: string };
+};
 
-function sourceEvidence(record: any, reader: any, options: any) {
-  const files = [];
-  for (const [role, declaration, allowed] of [
-    ...record.sources.map((source: any) => ['source', source, options.sources || []]),
+function sourceEvidence(record: Candidate, reader: Reader, options: AuditOptions) {
+  const files: SourceEvidence[] = [];
+  const declarations: [string, { path: string; sha256: string; bytes?: unknown }, string[]][] = [
+    ...record.sources.map(source => ['source', source, options.sources || []] as [string, typeof source, string[]]),
     ['recipe', record.recipeSource, options.recipe ? [options.recipe] : []],
-  ]) {
+  ];
+  for (const [role, declaration, allowed] of declarations) {
     const file = explicitSource(reader.root, declaration.path, allowed);
-    const item: any = { role, file, expectedSha256: declaration.sha256, status: 'unknown' };
+    const item: SourceEvidence = { role, file, expectedSha256: declaration.sha256, status: 'unknown' };
     files.push(item);
     if (!file) { item.reason = 'Path was not explicitly allowed by --source/--recipe; not read'; continue; }
     try {
@@ -28,7 +45,7 @@ function sourceEvidence(record: any, reader: any, options: any) {
   coverage: 'Only explicitly declared and allowed files; no claim of complete generator dependencies' };
 }
 
-function assetEvidence(reader: any, file: string, declared: any) {
+function assetEvidence(reader: Reader, file: string, declared: { sha256: string; bytes: number } | undefined) {
   try {
     const { bytes, sha256 } = reader.fingerprint(file, 64 * 1024 * 1024);
     return { status: !declared ? 'unverified' : declared.sha256 === sha256 && declared.bytes === bytes ? 'verified' : 'mismatch',
@@ -36,18 +53,18 @@ function assetEvidence(reader: any, file: string, declared: any) {
   } catch (error) { return { status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'invalid', file, reason: runtimeErrorMessage(error), imageQuality: 'unverified' }; }
 }
 
-function publicationState(record: any, item: any, publication: any, publishedReader: any, bindings: any) {
+function publicationState(record: Candidate, item: Pick<AuditItem, 'recordSha256' | 'review'>, publication: unknown, publishedReader: Reader | null, bindings: { manifestSha256: string; decisionSha256: string | null }) {
   if (!publication) return { status: 'not-provided', activation: 'unknown' };
   if (!object(publication) || publication.schemaVersion !== 1 || publication.kind !== 'content-publication-evidence' || !object(publication.records)) {
     return { status: 'unknown', reason: 'Unsupported publication format; use its dedicated release audit', activation: 'unknown' };
   }
-  const receipt: any = publication.records[record.key];
+  const receipt = publication.records[record.key];
   if (!receipt) return { status: 'not-listed', activation: 'unknown' };
   if (!object(receipt) || typeof receipt.publishedAt !== 'string' || !Number.isFinite(Date.parse(receipt.publishedAt))
-    || !SHA.test(receipt.sha256) || !Number.isSafeInteger(receipt.bytes) || receipt.bytes <= 0) return { status: 'invalid', activation: 'unknown' };
+    || typeof receipt.path !== 'string' || typeof receipt.sha256 !== 'string' || !SHA.test(receipt.sha256) || typeof receipt.bytes !== 'number' || !Number.isSafeInteger(receipt.bytes) || receipt.bytes <= 0) return { status: 'invalid', activation: 'unknown' };
   let file;
   try { file = evidencePath(receipt.path); } catch (error) { return { status: 'invalid', reason: runtimeErrorMessage(error), activation: 'unknown' }; }
-  const asset = publishedReader ? assetEvidence(publishedReader, file, receipt) : { status: 'unknown', reason: '--published-root not provided; no published file accessed' };
+  const asset = publishedReader ? assetEvidence(publishedReader, file, { sha256: receipt.sha256, bytes: receipt.bytes }) : { status: 'unknown', reason: '--published-root not provided; no published file accessed' };
   const same = publication.runId === record.runId && publication.manifestSha256 === bindings.manifestSha256
     && !!bindings.decisionSha256 && publication.reviewSha256 === bindings.decisionSha256
     && receipt.recordId === record.recordId && receipt.recordSha256 === item.recordSha256
@@ -58,8 +75,8 @@ function publicationState(record: any, item: any, publication: any, publishedRea
   reason: 'Only explicit local receipt/bytes verified; no publication performed or service activation inferred' };
 }
 
-function auditContentEvidence(options: any) {
-  const result: any = { schemaVersion: 1, kind: 'content-evidence-audit', readOnly: true, executed: true,
+function auditContentEvidence(options: AuditOptions) {
+  const result: AuditResult = { schemaVersion: 1, kind: 'content-evidence-audit', readOnly: true, executed: true,
     structure: { status: 'unknown' }, items: [], errors: [], unknown: [], evidence: [], exitCode: 3,
     acceptance: { imageQuality: 'unverified', reviewerAuthenticity: 'unverified', publicationPerformed: false, wholeLibrary: 'not-validated' } };
   const readers = [];
@@ -80,19 +97,21 @@ function auditContentEvidence(options: any) {
     result.manifest = { file: manifestFile, sha256: manifestSha256 };
     if (options.expectManifestSha256 && options.expectManifestSha256 !== manifestSha256) throw new Error('Explicit manifest SHA-256 does not match');
     const records = candidates.json(manifestFile);
-    const marker: any = candidates.json(nearby('candidate-run.json'));
-    if (!object(marker) || marker.kind !== 'generation-candidates' || marker.schemaVersion !== 1 || !UUID.test(marker.runId)
+    const marker = candidates.json(nearby('candidate-run.json'));
+    if (!object(marker) || marker.kind !== 'generation-candidates' || marker.schemaVersion !== 1 || typeof marker.runId !== 'string' || !UUID.test(marker.runId)
       || typeof marker.generator !== 'string') throw new Error('Invalid candidate run marker');
     if (!Array.isArray(records) || records.length > 100000) throw new Error('Invalid candidate manifest container');
-    const identities = new Set(), candidatesSeen = new Set(), attempts = new Set(), latest = new Map();
-    for (const record of records) {
-      validateRecord(record, marker);
+    const identities = new Set<string>(), candidatesSeen = new Set<string>(), attempts = new Set<string>(), latest = new Map<string, Candidate>();
+    const runMarker = { runId: marker.runId, generator: marker.generator };
+    for (const value of records) {
+      const record = validateRecord(value, runMarker);
       if (batch && record.batch !== batch) throw new Error('Batch manifest contains another batch');
       if (identities.has(record.recordId) || candidatesSeen.has(record.candidateId) || attempts.has(`${record.key}@${record.attempt}`)) throw new Error('Duplicate candidate identity or ambiguous attempt');
       identities.add(record.recordId); candidatesSeen.add(record.candidateId); attempts.add(`${record.key}@${record.attempt}`);
       const ledger = candidates.json(nearby(`records/${record.candidateId}.json`));
       if (!equal(ledger, record)) throw new Error('Manifest differs from authoritative candidate record');
-      if (!latest.has(record.key) || latest.get(record.key).attempt < record.attempt) latest.set(record.key, record);
+      const previous = latest.get(record.key);
+      if (!previous || previous.attempt < record.attempt) latest.set(record.key, record);
     }
     // Exports must not conceal a newer attempt. Other batch ledgers are validated
     // for identity, but are never interpreted as selected assets or decisions.
@@ -100,8 +119,7 @@ function auditContentEvidence(options: any) {
     if (names.length > 100000) throw new Error('Candidate ledger exceeds entry limit');
     for (const name of names.filter((file) => file.endsWith('.json'))) {
       if (!UUID.test(name.slice(0, -5))) throw new Error('Unrecognized authoritative record filename');
-      const ledger = candidates.json(nearby(`records/${name}`));
-      validateRecord(ledger, marker);
+      const ledger = validateRecord(candidates.json(nearby(`records/${name}`)), runMarker);
       if (name !== `${ledger.candidateId}.json`) throw new Error('Ledger filename and candidate ID differ');
       if ((!batch || ledger.batch === batch) && !identities.has(ledger.recordId)) throw new Error('Candidate manifest omits authoritative records');
     }
@@ -121,11 +139,10 @@ function auditContentEvidence(options: any) {
       const asset = assetEvidence(candidates, nearby(record.image), record.asset);
       const freshness = source.status === 'stale' ? 'stale'
         : source.status === 'verified' && payload.status === 'verified' && version.status === 'verified' && asset.status === 'verified' ? 'current' : 'unknown';
-      const item: any = { key: record.key, recordId: record.recordId, recordSha256: jsonHash(record), inputVersion: record.inputVersion,
+      const item = { key: record.key, recordId: record.recordId, recordSha256: jsonHash(record), inputVersion: record.inputVersion,
         structure: 'passed', generation: record.status, source, payload, version, asset, freshness,
         review: reviewState(record, record.status === 'succeeded' ? freshness : 'unknown', decisions, manifestSha256, marker.runId) };
-      item.publication = publicationState(record, item, publication, published, { manifestSha256, decisionSha256 });
-      result.items.push(item);
+      result.items.push({ ...item, publication: publicationState(record, item, publication, published, { manifestSha256, decisionSha256 }) });
     }
     if (!records.length) result.unknown.push('Empty candidate manifest does not prove completed assets');
   } catch (error) { result.structure.status = 'invalid'; result.errors.push(runtimeErrorMessage(error)); }
@@ -137,11 +154,11 @@ function auditContentEvidence(options: any) {
     if (['approved', 'rejected'].includes(item.review.status)) item.review.status = 'stale';
     if (item.publication.status === 'evidence-verified') item.publication.status = 'stale';
   }
-  const failed = result.errors.length || result.items.some((item: any) => item.payload.status === 'mismatch' || item.version.status === 'mismatch'
+  const failed = result.errors.length || result.items.some(item => item.payload.status === 'mismatch' || item.version.status === 'mismatch'
     || ['mismatch', 'invalid'].includes(item.asset.status) || (item.generation === 'succeeded' && item.asset.status === 'missing')
     || ['invalid', 'rejected'].includes(item.review.status) || item.publication.status === 'invalid'
-    || ['mismatch', 'missing', 'invalid'].includes(item.publication.asset?.status));
-  const unresolved = result.unknown.length || !result.items.length || result.items.some((item: any) => item.freshness !== 'current'
+    || ['mismatch', 'missing', 'invalid'].includes(item.publication.asset?.status || ''));
+  const unresolved = result.unknown.length || !result.items.length || result.items.some(item => item.freshness !== 'current'
     || item.generation !== 'succeeded' || item.review.status !== 'approved'
     || !['not-provided', 'evidence-verified'].includes(item.publication.status));
   result.exitCode = failed ? 1 : unresolved ? 3 : 0;

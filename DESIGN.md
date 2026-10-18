@@ -500,7 +500,7 @@ and compact buttons use `--r-md` (10px). Browse toolbar surfaces are owned by
 `fluid-workspaces.css`: opaque theme surface, soft border, and restrained depth.
 Page styles control placement and wrapping without replacing this shape with
 square corners. Borderless reading regions and full-screen viewers may remain
-flush. Narrow browse controls provide a 44px minimum touch height.
+flush. Coarse-pointer controls provide a 44px minimum touch target.
 
 ## Vue interaction components
 
@@ -523,8 +523,14 @@ navigation usable and explain how to recover by refreshing; never automatically
 reload a workspace that could have an active generation task.
 Business views supply values and content; the wrappers own theme styling and
 keyboard behavior. Search fields and select triggers keep opaque theme surfaces,
-shared borders and 40/32px control geometry in every workspace; their components
-own those rules. Optional glass belongs to floating menus and structural chrome,
+shared borders and 40/32px minimum control geometry in every workspace; controls
+grow with the desktop typography scale instead of clipping text. Their components
+own those rules. `studio-fields.css` owns the common field geometry, material and
+native text-field states; each Studio component owns its internal layout and
+interaction motion. `native-controls.css` owns browser chrome and native choice
+controls. Page styles must not redefine field surfaces, heights or focus states.
+Theme and motion preferences must remain effective across portals and live changes.
+Optional glass belongs to floating menus and structural chrome,
 not nested fields. Page styles arrange controls without repainting them.
 Do not add a second focus trap or manual viewport positioning
 around these primitives. Existing modal dialogs keep their current focus stack
@@ -670,6 +676,10 @@ input over the current painted image zooms around the pointer; letterboxing and
 neighboring covers retain wheel navigation. Reaching a zoom limit must not turn
 that same image gesture into a page change. Scale 3D perspective and depth with
 the stage width so neighboring covers retain their hierarchy on large desktops.
+`useArtworkInfoDrawer` owns the shared sidebar-to-drawer breakpoint, nested
+focus scope and focus handoff for scene, showcase and gallery viewers. Keyboard
+opening/closing is immediate; resizing must never leave focus in a hidden panel
+or launcher. Viewers keep their own image data and enclosing modal lifecycle.
 Thumbnail-to-viewer
 transitions are optional enhancements: a missing origin, unavailable API or
 interrupted transition must leave viewing, closing and focus restoration usable.

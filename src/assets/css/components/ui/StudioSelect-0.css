@@ -1,7 +1,7 @@
 @reference "../../tailwind.css";
 /* Shared control bases retain selector precedence and avoid repeated template payload. */
 .studio-select-wrapper { @apply tw:relative tw:inline-flex tw:w-full tw:min-w-0; }
-.studio-select-trigger { @apply tw:inline-flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:py-s-2 tw:px-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-primary tw:[font:500_var(--fs-label)_var(--font-sans)] tw:text-start tw:cursor-pointer tw:[outline:none]; min-height: var(--control-height); }
+.studio-select-trigger { @apply tw:inline-flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:text-start tw:cursor-pointer tw:[outline:none]; font-weight:500; }
 .studio-select-value { @apply tw:min-w-0 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .studio-select-icon { @apply tw:w-[15px] tw:h-[15px] tw:shrink-0 tw:text-muted; }
 .studio-select-content { @apply tw:[z-index:var(--z-popover)] tw:[width:var(--reka-select-trigger-width,_max-content)] tw:min-w-[140px] tw:[max-width:calc(100vw_-_24px)] tw:[max-height:var(--reka-select-content-available-height,_320px)] tw:overflow-hidden tw:p-s-1 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:shadow-(--shadow-lg) tw:text-primary; }
@@ -29,16 +29,12 @@
   font-size: var(--fs-label-sm);
 }
 @media (hover:hover) and (pointer:fine) {
-  .studio-select-trigger:hover:not(:disabled):not([data-disabled]) { border-color:var(--accent); }
+  .studio-select-trigger:hover:not(:disabled):not([data-disabled]):where(:not([aria-invalid='true'])) { border-color:var(--accent); }
 }
-.studio-select-trigger:focus-visible {
+.studio-select-trigger:focus-visible:where(:not([aria-invalid='true'])) {
   border-color: var(--border-strong);
   outline: none;
   box-shadow: var(--focus-shadow);
-}
-.studio-select-trigger[data-disabled] {
-  color: var(--text-disabled);
-  cursor: not-allowed;
 }
 .studio-select-trigger[data-empty]:where(:not([data-disabled])) .studio-select-value { color: var(--text-muted); }
 .studio-select-icon {
@@ -85,7 +81,7 @@
   height: 14px;
 }
 /* Desktop size follows the component's md/sm choice at every viewport width.
-   Coarse pointers expand real hit areas; narrow browse toolbars own their 44px rule. */
+   Coarse pointers expand real hit areas within this component. */
 @media (pointer: coarse) {
   .studio-select-trigger { min-height: 44px; }
   .studio-select-wrapper[data-size='sm'] .studio-select-trigger { min-height: 44px; }

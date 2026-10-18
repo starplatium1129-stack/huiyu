@@ -69,7 +69,7 @@ function refreshPrecompressed(files: string[]) {
   }
 }
 
-function ensureScenesBuilt({ onlyIfMissing = false }: any = {}) {
+function ensureScenesBuilt({ onlyIfMissing = false } = {}) {
   if (onlyIfMissing && fs.existsSync(scenesAggregatePath)) return { rebuilt: false };
   const { scenes } = loadSceneShards();
   if (scenesIsCurrent(scenes)) return { rebuilt: false };
@@ -85,7 +85,7 @@ function ensureScenesBuilt({ onlyIfMissing = false }: any = {}) {
   return { rebuilt: true, count: scenes.length };
 }
 
-function ensurePopularBuilt({ onlyIfMissing = false }: any = {}) {
+function ensurePopularBuilt({ onlyIfMissing = false } = {}) {
   if (onlyIfMissing && fs.existsSync(popularAggregatePath)) return { rebuilt: false };
   if (popularIsCurrent()) return { rebuilt: false };
   const count = writePopularAggregate();
@@ -93,7 +93,7 @@ function ensurePopularBuilt({ onlyIfMissing = false }: any = {}) {
   return { rebuilt: true, count };
 }
 
-function ensureBlueprintsBuilt({ onlyIfMissing = false }: any = {}) {
+function ensureBlueprintsBuilt({ onlyIfMissing = false } = {}) {
   if (onlyIfMissing && fs.existsSync(blueprintsAggregatePath)) return { rebuilt: false };
   if (blueprintsIsCurrent()) return { rebuilt: false };
   loadBlueprintShards(); // 分片损坏会在此抛出（见下方注释）；聚合由 writeBlueprintAggregate 内部自取
@@ -102,7 +102,7 @@ function ensureBlueprintsBuilt({ onlyIfMissing = false }: any = {}) {
   return { rebuilt: true, count };
 }
 
-function ensureTagsBuilt({ onlyIfMissing = false }: any = {}) {
+function ensureTagsBuilt({ onlyIfMissing = false } = {}) {
   if (onlyIfMissing && fs.existsSync(tagsAggregatePath) && fs.existsSync(tagsDictionaryPath)) return { rebuilt: false };
   if (tagsIsCurrent()) return { rebuilt: false };
   loadTagShards();
@@ -111,7 +111,7 @@ function ensureTagsBuilt({ onlyIfMissing = false }: any = {}) {
   return { rebuilt: true, count };
 }
 
-function ensureReferencesBuilt({ onlyIfMissing = false }: any = {}) {
+function ensureReferencesBuilt({ onlyIfMissing = false } = {}) {
   const root = require('node:path').resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || require('node:path').join(__dirname, '../..'));
   const files = ['standards', 'view'].map(name => require('node:path').join(root, `data/character-reference-${name}.json`));
   if (onlyIfMissing && files.every(file => fs.existsSync(file))) return { rebuilt: false };
@@ -125,7 +125,7 @@ function ensureReferencesBuilt({ onlyIfMissing = false }: any = {}) {
  *  - onlyIfMissing（门禁/测试套件）：产物缺失（fresh clone）才构建，
  *    已构建但陈旧时不动手——"改源忘重建"必须继续由 --check 门禁报红，
  *    自愈不能把守卫静默抹掉。 */
-function ensureAll({ onlyIfMissing = false }: any = {}) {
+function ensureAll({ onlyIfMissing = false } = {}) {
   const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
   const root = require('node:path').resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || require('node:path').join(__dirname, '../..'));
   const records = catalog.read(root);

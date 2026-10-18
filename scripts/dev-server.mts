@@ -24,8 +24,8 @@ async function drainDevelopmentRuntime(previous:ChildProcess,owned:{secret:strin
     const deadline=Date.now()+20000;let ready=false;
     while(Date.now()<deadline){if(previous.exitCode!==null||previous.signalCode!==null)return;
       const challenge=randomBytes(32).toString('hex');
-      try{const response=await fetch(owned.origin+'/api/health',{headers:{'X-AICS-Desktop-Challenge':challenge},signal:AbortSignal.timeout(1200)});const value:any=await response.json();
-        if(response.ok&&value.desktopProof===createHmac('sha256',owned.secret).update(challenge).digest('hex')){ready=true;break;}
+      try{const response=await fetch(owned.origin+'/api/health',{headers:{'X-AICS-Desktop-Challenge':challenge},signal:AbortSignal.timeout(1200)});const value:unknown=await response.json();
+        if(response.ok&&value!==null&&typeof value==='object'&&'desktopProof' in value&&value.desktopProof===createHmac('sha256',owned.secret).update(challenge).digest('hex')){ready=true;break;}
       }catch{}
       await new Promise(resolve=>setTimeout(resolve,100));
     }
@@ -33,7 +33,7 @@ async function drainDevelopmentRuntime(previous:ChildProcess,owned:{secret:strin
     const body=JSON.stringify({action:'shutdown',windowId:'atelier',origin:owned.origin,sourceProfileId:owned.profile,timestamp:Date.now(),nonce:randomBytes(32).toString('hex')});
     const proof=createHmac('sha256',owned.secret).update('aics-desktop-host:v1\n'+body).digest('hex');
     const response=await fetch(owned.origin+'/api/desktop-host',{method:'POST',headers:{'content-type':'application/json','X-AICS-Host-Proof':proof},body,signal:AbortSignal.timeout(30000)});
-    const result:any=await response.json();if(!response.ok||result.closed!==true)throw Error(`Runtime ${previous.pid} drain not confirmed; no replacement started`);
+    const result:unknown=await response.json();if(!response.ok||result===null||typeof result!=='object'||!('closed' in result)||result.closed!==true)throw Error(`Runtime ${previous.pid} drain not confirmed; no replacement started`);
     await waitExit(previous,8000);
   }
 

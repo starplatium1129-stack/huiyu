@@ -1,5 +1,5 @@
 import { ref, readonly, onUnmounted, getCurrentInstance } from 'vue'
-import type { SDGenerateParams } from '@/utils/sdRequest'
+import type { LegacySdResultInput } from '@/utils/legacySdResult'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import type { TaskRecord } from '../../../types/tasks'
 import type { RuntimeSdAttempt } from './legacySdTaskSession'
@@ -74,7 +74,7 @@ export function useLegacySdTasks() {
     if (value.upscalers) upscalers.value = value.upscalers
     return value.online
   }
-  async function observe(params: SDGenerateParams, options: LegacySdObserveOptions = {}): Promise<string | null> {
+  async function observe(params: LegacySdResultInput, options: LegacySdObserveOptions = {}): Promise<string | null> {
     if (generating.value) {
       // Concurrent observers keep the original persisted task identity.
       return null
@@ -96,7 +96,6 @@ export function useLegacySdTasks() {
     const controller = abortCtrl
     requestSerial += 1
     cancelRequested = false
-    const submitted = Boolean(options.attempt?.key || options.requestKey || options.resumeId)
     let accepted = false
     const stopObservation = () => controller.abort()
     options.signal?.addEventListener('abort', stopObservation, { once: true })
@@ -105,7 +104,7 @@ export function useLegacySdTasks() {
     queueAttempt = options.attempt
 
     try {
-      params = JSON.parse(JSON.stringify(params)) as SDGenerateParams
+      params = JSON.parse(JSON.stringify(params)) as LegacySdResultInput
       if (durableAttempt) {
         if (!durableKey) throw new Error('旧 SD 任务缺少原请求编号，不能创建新任务。')
         const { observeRuntimeSd } = await import('./legacySdTaskSession')
@@ -118,11 +117,8 @@ export function useLegacySdTasks() {
       if (!options.resumeId) throw new Error('旧浏览器任务没有接收编号，请在任务中心核对；不会重新提交。')
       activeJobId = options.resumeId
       // Frozen legacy parameters supply result facts, never a new request.
-      const [{ buildTxt2ImgRequest }, { buildRuntimeSdInput }] = await Promise.all([
-        import('@/utils/sdRequest'), import('@/utils/sdRuntimeRequest'),
-      ])
-      const { payload } = buildTxt2ImgRequest(params)
-      const loras = buildRuntimeSdInput(params, payload).loras
+      const { legacySdResultFacts } = await import('@/utils/legacySdResult')
+      const result = legacySdResultFacts(params)
       const { observeWebGeneration } = await import('@/platform/web/generationSession')
       const { blob, seed } = await observeWebGeneration(options.resumeId, {
         signal: controller.signal, steps: params.steps, hires: params.hr_fix, hiresSteps: params.hr_second_pass_steps,
@@ -137,15 +133,15 @@ export function useLegacySdTasks() {
       resultTaskId.value = ''
       resultContext.value = null
       resultSeed.value = seed
-      resultPrompt.value = payload.prompt
-      lastLoras.value = loras
+      resultPrompt.value = result.prompt
+      lastLoras.value = result.loras
       statusText.value = '生成完成'
       return url
     } catch (e) {
       options.onError?.(e)
       if (durableAttempt) {
         const { runtimeSdFailure } = await import('./legacySdTaskSession')
-        const failure = runtimeSdFailure(e, controller.signal.aborted, submitted, accepted, cancelRequested)
+        const failure = runtimeSdFailure(e, controller.signal.aborted, accepted, cancelRequested)
         statusText.value = failure.message; errorMsg.value = failure.error
         return null
       }

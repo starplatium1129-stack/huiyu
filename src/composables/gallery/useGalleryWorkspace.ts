@@ -3,13 +3,14 @@ import { artworkFacts, characterName as resolveCharacterName, formatDate, sceneT
 import { useArtworkRatios } from '@/composables/gallery/useArtworkRatios';
 import { useMasonryColumns } from '@/composables/gallery/useMasonryWall';
 import { useFocusTrap } from '@/composables/useFocusTrap';
+import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer';
 import { useScrollReveal } from '@/composables/useScrollReveal';
 import { useToast } from '@/composables/useToast';
 import { artworkRepository,type TrashEntry } from '@/storage/artworkRepository';
 import type { LoraMeta,Scene } from '@/stores/sceneStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
-import { computed,nextTick,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
+import { computed,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { bulkDeleteAction,confirmDeleteAction,toggleFavoriteAction } from './galleryMutations';
 import { loadGalleryStorageAction,type GalleryProject } from './galleryStorage';
@@ -33,10 +34,6 @@ export function useGalleryWorkspace() {
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
     const galleryLoading = ref(true), galleryError = ref('');
     const infoOpen = ref(false);
-    const narrowViewerMedia = typeof window !== 'undefined' && typeof window.matchMedia === 'function'
-        ? window.matchMedia('(max-width: 900px)') : null;
-    const narrowViewer = ref(narrowViewerMedia?.matches ?? false);
-    const infoDrawerHidden = computed(() => narrowViewer.value && !infoOpen.value);
     const cardUrls = reactive<Record<string, string>>({});
     const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
     const { urls: thumbUrls, remember: rememberThumbnail, forget: forgetThumbnail, trim: trimThumbnails, retain: retainThumbnails, clear: clearThumbnails } = useGalleryThumbnails(() =>
@@ -237,17 +234,6 @@ export function useGalleryWorkspace() {
         });
         return thumbHydration;
     }
-    function toggleInfoDrawer(event?: MouseEvent | KeyboardEvent) { if (!narrowViewer.value) return; viewerEl.value?.toggleAttribute('data-info-instant', event?.detail === 0); if (!infoOpen.value) infoToggleBtn.value?.focus({ preventScroll: true }); infoOpen.value = !infoOpen.value; }
-    function closeInfoDrawer(event?: MouseEvent) { viewerEl.value?.toggleAttribute('data-info-instant', !event || event.detail === 0); infoOpen.value = false; }
-    function syncNarrowViewer() {
-        const nextNarrow = narrowViewerMedia?.matches ?? false, focused = document.activeElement;
-        const leavingInfo = nextNarrow && !infoOpen.value && infoEl.value?.contains(focused);
-        narrowViewer.value = nextNarrow;
-        if (leavingInfo) void nextTick(() => infoToggleBtn.value?.focus({ preventScroll: true }));
-        else if (!nextNarrow && (infoOpen.value || focused === infoToggleBtn.value)) {
-            closeInfoDrawer(); void nextTick(() => closeBtn.value?.focus({ preventScroll: true }));
-        }
-    }
     // 父查看器与窄屏信息抽屉叠成两层陷阱：抽屉打开时 Escape 只交给顶层抽屉，
     // 关闭后由子陷阱把焦点还给 .viewer-info-toggle，再由父陷阱管理整个查看器。
     const { returnFocus: viewerReturnFocus } = useFocusTrap(viewerEl, () => viewerIndex.value >= 0, {
@@ -270,8 +256,9 @@ export function useGalleryWorkspace() {
                 ?? shellEl.value?.querySelector<HTMLElement>('.gallery-summary') ?? null;
         }
     }, { flush: 'sync' });
-    useFocusTrap(infoEl, () => viewerIndex.value >= 0 && narrowViewer.value && infoOpen.value, {
-        onEscape: closeInfoDrawer, initialFocus: infoCloseBtn, lockScroll: false,
+    const { compact: narrowViewer, hidden: infoDrawerHidden, toggle: toggleInfoDrawer, close: closeInfoDrawer } = useArtworkInfoDrawer({
+        viewer: viewerEl, panel: infoEl, trigger: infoToggleBtn, closeButton: infoCloseBtn,
+        viewerCloseButton: closeBtn, open: infoOpen, active: () => viewerIndex.value >= 0,
     });
     /* ---------- 删除 ---------- */
     /**
@@ -318,7 +305,7 @@ export function useGalleryWorkspace() {
     /* ---------- 初始化 ---------- */
     function loadGalleryStorage(): Promise<void> { return loadGalleryStorageAction({ galleryLoading, galleryError, history, projects }) }
     onMounted(async () => {
-        unmounted = false; syncNarrowViewer(); narrowViewerMedia?.addEventListener('change', syncNarrowViewer);
+        unmounted = false;
         document.addEventListener('keydown', onKeydown);
         // Labels are supplemental: library browsing and saved filters do not
         // depend on the studio's character/tag/preset/blueprint catalogs.
@@ -357,7 +344,6 @@ export function useGalleryWorkspace() {
         unmounted = true; comparisonRevision++;
         cleanupFilterSync();
         stopCardObservation();
-        narrowViewerMedia?.removeEventListener('change', syncNarrowViewer);
         document.removeEventListener('keydown', onKeydown);
         releaseImages();
         clearThumbnails();

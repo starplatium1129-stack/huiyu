@@ -70,6 +70,5 @@ async function saveStartPageValue(value: string | number) {
 .desktop-preferences p { @apply tw:m-0 tw:text-secondary tw:text-label tw:leading-body; }
 .desktop-preferences label { @apply tw:text-primary tw:text-label; }
 .desktop-preferences .studio-select-wrapper { width:100%; min-width:0; }
-.desktop-preferences :deep(.studio-select-trigger) { min-height:40px; }
 .desktop-preferences .btn { justify-self:start; }
 </style>

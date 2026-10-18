@@ -314,7 +314,6 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
 
   return {
     referenceCards,
-    referenceInputs,
     loadingRefAssets,
     loadingRefCardIndex,
     getCharOutfits,

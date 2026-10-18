@@ -1,8 +1,31 @@
 import { writeTextAtomic } from './atomic-files';
+const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
 
-type PopularCharacter = { id?: any; franchise?: any; [key: string]: any };
-type PopularManifestEntry = { file: string; franchise?: any; count?: number };
-type PopularManifest = { version?: number; files: PopularManifestEntry[] };
+type PopularOutfit = Record<string, unknown> & { id: string; name: string; prose?: string; tokens?: string[];
+  default?: boolean; isDefault?: boolean; isNsfw?: boolean };
+type PopularCharacter = Record<string, unknown> & { id: string; displayName: string; franchise?: string; originalName?: string;
+  identityProse?: string; identityTokens?: string[]; outfits?: PopularOutfit[] };
+type PopularManifestEntry = Record<string, unknown> & { file: string; franchise?: string; count?: number };
+type PopularManifest = Record<string, unknown> & { version?: number; files: PopularManifestEntry[] };
+
+/** Preserve author fields and legacy isDefault; the UI parser intentionally normalizes them. */
+function readCharacters(value: unknown): PopularCharacter[] {
+  const strings = (list: unknown): list is string[] => Array.isArray(list) && list.every(item => typeof item === 'string');
+  if (!Array.isArray(value)) throw new Error('Popular characters must be an array');
+  return value.map((character: unknown) => {
+    if (!object(character) || typeof character.id !== 'string' || typeof character.displayName !== 'string'
+      || !['franchise', 'originalName', 'identityProse'].every(key => character[key] === undefined || typeof character[key] === 'string')
+      || (character.identityTokens !== undefined && !strings(character.identityTokens))
+      || (character.outfits !== undefined && (!Array.isArray(character.outfits)
+        || !character.outfits.every((outfit: unknown) => object(outfit) && typeof outfit.id === 'string' && typeof outfit.name === 'string'
+          && (outfit.prose === undefined || typeof outfit.prose === 'string')
+          && (outfit.tokens === undefined || strings(outfit.tokens))
+          && ['default', 'isDefault', 'isNsfw'].every(key => outfit[key] === undefined || typeof outfit[key] === 'boolean'))))) {
+      throw new Error('Invalid popular character metadata');
+    }
+    return character as PopularCharacter;
+  });
+}
 
 /**
  * scripts/lib/popular-store.js — 热门角色分片存储
@@ -28,11 +51,11 @@ const shardsDir = path.join(dataDir, 'popular');
 const manifestPath = path.join(shardsDir, 'manifest.json');
 const aggregatePath = path.join(dataDir, 'popular-characters.json');
 
-function readJson(source: string) {
+function readJson(source: string): unknown {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
 }
 
-function jsonText(value: any) {
+function jsonText(value: unknown) {
   return JSON.stringify(value, null, 2) + '\n';
 }
 
@@ -40,7 +63,7 @@ function jsonText(value: any) {
 
 /** franchise -> 文件名 slug：小写、撇号去掉、其余非字母数字转连字符
  *  （如 "Frieren: Beyond Journey's End" -> frieren-beyond-journeys-end）。 */
-function franchiseSlug(franchise: any) {
+function franchiseSlug(franchise: string | undefined) {
   const slug = String(franchise || 'unknown')
     .toLowerCase()
     .replace(/'/g, '')
@@ -51,9 +74,13 @@ function franchiseSlug(franchise: any) {
 
 function readManifest() {
   const manifest = readJson(manifestPath);
-  if (!manifest || !Array.isArray(manifest.files) || !manifest.files.length) {
+  if (!object(manifest) || !Array.isArray(manifest.files) || !manifest.files.length) {
     throw new Error('data/popular/manifest.json must define a non-empty files array');
   }
+  if ((manifest.version !== undefined && typeof manifest.version !== 'number')
+    || !manifest.files.every((entry: unknown) => object(entry) && typeof entry.file === 'string'
+      && (entry.franchise === undefined || typeof entry.franchise === 'string')
+      && (entry.count === undefined || typeof entry.count === 'number'))) throw new Error('Invalid popular manifest entry');
   return manifest as PopularManifest;
 }
 
@@ -61,7 +88,7 @@ function loadPopularShards() {
   const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
   const records = catalog.read(root);
   if (records) {
-    const characters = catalog.views(records).popular;
+    const characters = readCharacters(catalog.views(records).popular);
     const groups = new Map<string, PopularCharacter[]>();
     for (const character of characters) { const key = character.franchise || 'unknown'; if (!groups.has(key)) groups.set(key, []); groups.get(key)!.push(character); }
     const sources = [...groups].map(([franchise, characters]) => ({ entry: { file: franchiseSlug(franchise) + '.json', franchise, count: characters.length }, source: path.join(shardsDir, franchiseSlug(franchise) + '.json'), characters }));
@@ -71,10 +98,10 @@ function loadPopularShards() {
   const sources = manifest.files.map((entry) => {
     const source = path.join(shardsDir, entry.file);
     const data = readJson(source);
-    if (!data || !Array.isArray(data.characters)) {
+    if (!object(data) || !Array.isArray(data.characters)) {
       throw new Error(entry.file + ' root must be { characters: [...] }');
     }
-    return { entry, source, characters: data.characters as PopularCharacter[] };
+    return { entry, source, characters: readCharacters(data.characters) };
   });
   return { manifest, sources, characters: sources.flatMap((item) => item.characters) };
 }
@@ -98,13 +125,14 @@ function aggregateIsCurrent() {
 function writePopularShards() {
   (require('./catalog-snapshot') as typeof import('./catalog-snapshot')).assertLegacyWrite(root);
   const aggregate = readJson(aggregatePath);
-  const characters = Array.isArray(aggregate.characters) ? aggregate.characters : [];
+  if (!object(aggregate) || !Array.isArray(aggregate.characters)) throw new Error('Popular aggregate must contain characters');
+  const characters = readCharacters(aggregate.characters);
   const manifest = fs.existsSync(manifestPath)
     ? readManifest()
     : { version: 1, description: '热门角色分片清单。每个 franchise 一个文件，按首次出现顺序合并为 data/popular-characters.json。', files: [] as PopularManifestEntry[] };
-  const known = new Map<any, PopularManifestEntry>(manifest.files.map((entry) => [entry.franchise, entry]));
+  const known = new Map<string | undefined, PopularManifestEntry>(manifest.files.map(entry => [entry.franchise, entry]));
 
-  const groups = new Map<any, PopularCharacter[]>();
+  const groups = new Map<string, PopularCharacter[]>();
   for (const character of characters) {
     const franchise = character.franchise || 'unknown';
     if (!groups.has(franchise)) groups.set(franchise, []);
@@ -119,15 +147,11 @@ function writePopularShards() {
     }
   }
 
-  const written = new Set();
   for (const [franchise, items] of groups) {
-    let entry = known.get(franchise);
+    // Every group was registered above, before any shard is written.
+    const entry = known.get(franchise)!;
     const expectedFile = franchiseSlug(franchise) + '.json';
-    if (!entry) {
-      entry = { file: expectedFile, franchise };
-      manifest.files.push(entry);
-      known.set(franchise, entry);
-    } else if (entry.file !== expectedFile) {
+    if (entry.file !== expectedFile) {
       // slug 规则变化导致的改名：清理旧命名文件，manifest 换新名
       const oldFile = path.join(shardsDir, entry.file);
       if (fs.existsSync(oldFile)) fs.unlinkSync(oldFile);
@@ -135,12 +159,11 @@ function writePopularShards() {
     }
     entry.count = items.length;
     writeTextAtomic(path.join(shardsDir, entry.file), jsonText({ version: 1, franchise, characters: items }));
-    written.add(entry.file);
   }
 
   // 清理 manifest 声明但聚合中已不存在的系列文件
   for (const entry of [...manifest.files]) {
-    if (!groups.has(entry.franchise)) {
+    if (entry.franchise === undefined || !groups.has(entry.franchise)) {
       const file = path.join(shardsDir, entry.file);
       if (fs.existsSync(file)) fs.unlinkSync(file);
       manifest.files.splice(manifest.files.indexOf(entry), 1);
@@ -159,6 +182,7 @@ export = {
   franchiseSlug,
   jsonText,
   loadPopularShards,
+  readCharacters,
   readJson,
   writePopularAggregate,
   writePopularShards

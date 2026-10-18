@@ -28,6 +28,8 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { execFile }: typeof import('child_process') = require('child_process');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+import { readReferenceStandards, type ReferenceCharacter, type ReferenceOutfit } from '../lib/reference-standards';
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
@@ -35,14 +37,16 @@ const REPORT_FILE = path.join(ROOT, 'runtime', 'multi-outfit-audit-report.json')
 const OUT_BASE = path.join(ROOT, 'assets', 'character-references');
 const BASE = 'http://127.0.0.1:3000';
 
-const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
-let auditReport = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
+const standards = readReferenceStandards(JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8')));
+const savedReport: unknown = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
+if (!object(savedReport)) throw new Error('Invalid saved audit results');
+const auditReport = savedReport;
 
 function saveReport() {
   fs.writeFileSync(REPORT_FILE, JSON.stringify(auditReport, null, 2), 'utf8');
 }
 
-const TAILORED_PERSPECTIVE_PROMPTS: any = {
+const TAILORED_PERSPECTIVE_PROMPTS: Partial<Record<string, { guide: string; suffix: string; negative: string }>> = {
   ref_01_face_closeup: {
     guide: "此图是否为标准的角色【面部与微表情特写】（头部或脸部特写，平视，85mm浅景深）？画面中是否单人、五官清晰、无崩坏、无双人或分身、无漫画分格？",
     suffix: "tight headshot portrait, extreme close-up on face, chin to forehead framing, 85mm macro lens, face focus, eye level straight-on, expressive detailed eyes, soft cinematic portrait lighting",
@@ -65,12 +69,12 @@ const TAILORED_PERSPECTIVE_PROMPTS: any = {
   }
 };
 
-function runVisionInspect(imagePath: any, promptGuide: any) {
-  return new Promise<any>((resolve: any) => {
+function runVisionInspect(imagePath: string, promptGuide: string) {
+  return new Promise<{ passed: boolean; reason: string }>(resolve => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;
     
-    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error: any, stdout: any, stderr: any) => {
+    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (_error, stdout, stderr) => {
       const output = (stdout || '') + (stderr || '');
       let passed = false;
       const conclusionMatch = output.match(/【审核结论】[：:]\s*(通过|不通过)/);
@@ -91,8 +95,9 @@ function runVisionInspect(imagePath: any, promptGuide: any) {
   });
 }
 
-function buildFineTunedPrompt(char: any, outfit: any, persId: any) {
+function buildFineTunedPrompt(char: ReferenceCharacter, outfit: ReferenceOutfit, persId: string) {
   const pConfig = TAILORED_PERSPECTIVE_PROMPTS[persId];
+  if (!pConfig) throw new Error(`Unsupported repair perspective: ${persId}`);
   const isNude = outfit.id === 'nsfw_nude' || outfit.name.includes('全裸') || outfit.name.includes('纯粹');
 
   let charTokens = Array.isArray(char.identityTokens) ? char.identityTokens.join(', ') : char.id;
@@ -126,9 +131,9 @@ function buildFineTunedPrompt(char: any, outfit: any, persId: any) {
   };
 }
 
-async function renderImage(char: any, outfit: any, persId: any, targetPath: any) {
+async function renderImage(char: ReferenceCharacter, outfit: ReferenceOutfit, persId: string, targetPath: string) {
   const { prompt, negative } = buildFineTunedPrompt(char, outfit, persId);
-  const payload: any = {
+  const payload: Record<string, unknown> = {
     modelId: 'anima-miaomiao-v1.6',
     prompt,
     negative,
@@ -158,44 +163,52 @@ async function renderImage(char: any, outfit: any, persId: any, targetPath: any)
     body: JSON.stringify(payload)
   });
 
-  const submitJson = await submitRes.json();
-  if (!submitRes.ok || !submitJson.ok || !submitJson.job?.id) {
+  const submitJson: unknown = await submitRes.json();
+  if (!submitRes.ok || !object(submitJson) || !submitJson.ok || !object(submitJson.job)
+      || typeof submitJson.job.id !== 'string' || !submitJson.job.id) {
     throw new Error(`提交重绘失败: ${JSON.stringify(submitJson)}`);
   }
 
   const jobId = submitJson.job.id;
   const deadline = Date.now() + 10 * 60 * 1000;
-  let jobState = null;
+  let resultUrl: string | undefined;
 
   while (Date.now() < deadline) {
-    await new Promise<any>((r: any) => setTimeout(r, 2000));
+    await new Promise<void>(resolve => setTimeout(resolve, 2000));
     const queryRes = await fetch(`${BASE}/api/anima/jobs/${encodeURIComponent(jobId)}`);
-    const queryJson = await queryRes.json();
-    if (queryRes.ok && queryJson.ok && queryJson.job) {
-      jobState = queryJson.job;
-      if (jobState.status === 'succeeded' && jobState.resultUrl) break;
+    const queryJson: unknown = await queryRes.json();
+    if (queryRes.ok && object(queryJson) && queryJson.ok && object(queryJson.job)) {
+      const jobState = queryJson.job;
+      if (jobState.status === 'succeeded' && typeof jobState.resultUrl === 'string' && jobState.resultUrl) {
+        resultUrl = jobState.resultUrl;
+        break;
+      }
       if (jobState.status === 'failed' || jobState.status === 'cancelled') {
         throw new Error(`重绘失败: ${jobState.error || jobState.status}`);
       }
     }
   }
 
-  const imgRes = await fetch(`${BASE}${jobState.resultUrl}`);
+  if (!resultUrl) throw new Error(`重绘超时或未返回图片: ${jobId}`);
+  const imgRes = await fetch(`${BASE}${resultUrl}`);
   const buffer = Buffer.from(await imgRes.arrayBuffer());
   fs.writeFileSync(targetPath, buffer);
 }
 
 async function runFineTunedRepair() {
-  const validKeys: any[] = [];
-  standards.characters.forEach((c: any) => {
-    c.outfits.forEach((o: any) => {
-      standards.perspectives.forEach((p: any) => {
+  const validKeys: string[] = [];
+  standards.characters.forEach(c => {
+    c.outfits.forEach(o => {
+      standards.perspectives.forEach(p => {
         validKeys.push(c.id + '/' + o.id + '/' + p.id);
       });
     });
   });
 
-  const pendingFailedKeys = validKeys.filter((k: any) => auditReport[k] && !auditReport[k].passed);
+  const pendingFailedKeys = validKeys.filter(key => {
+    const entry = auditReport[key];
+    return object(entry) && !entry.passed;
+  });
   console.log(`================================================`);
   console.log(`[Fine-Tuned Repair Engine] 启动 98 张顽固未通过项定向微调修复`);
   console.log(`待修复总数: ${pendingFailedKeys.length} 张`);
@@ -205,9 +218,9 @@ async function runFineTunedRepair() {
   for (let i = 0; i < pendingFailedKeys.length; i++) {
     const key = pendingFailedKeys[i];
     const [charId, outfitId, persId] = key.split('/');
-    const char = standards.characters.find((c: any) => c.id === charId);
+    const char = standards.characters.find(c => c.id === charId);
     if (!char) continue;
-    const outfit = char.outfits.find((o: any) => o.id === outfitId);
+    const outfit = char.outfits.find(o => o.id === outfitId);
     if (!outfit) continue;
     const targetPath = path.join(OUT_BASE, charId, outfitId, `${persId}.png`);
     const pConfig = TAILORED_PERSPECTIVE_PROMPTS[persId];
@@ -218,7 +231,7 @@ async function runFineTunedRepair() {
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         await renderImage(char, outfit, persId, targetPath);
-        const res = await runVisionInspect(targetPath, pConfig.guide);
+        const res = await runVisionInspect(targetPath, pConfig!.guide); // renderImage already checked this perspective.
         if (res.passed) {
           console.log(`  🎉 第 ${attempt} 次微调复审判定通过！(PASS)`);
           auditReport[key] = { passed: true, fineTuned: true, retries: attempt, verifiedAt: new Date().toISOString() };
@@ -231,7 +244,7 @@ async function runFineTunedRepair() {
         }
       } catch (err) {
         console.warn(`  ⚠️ 异常: ${runtimeErrorMessage(err)}`);
-        await new Promise<any>((r: any) => setTimeout(r, 3000));
+        await new Promise<void>(resolve => setTimeout(resolve, 3000));
       }
     }
 

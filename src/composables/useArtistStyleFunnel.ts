@@ -42,7 +42,6 @@ export function sortByStyleFunnel(
 
 /** 使用频次追踪（localStorage 持久化）+ Top 3 常用画师 computed。 */
 export function useArtistStyleFunnel(options: readonly ArtistStyleOption[]): {
-  usageCounts: Ref<Record<string, number>>
   recordUsage: (ids: string[]) => void
   frequentTop3Ids: Ref<string[]>
   recentIds: Ref<string[]>
@@ -78,5 +77,5 @@ export function useArtistStyleFunnel(options: readonly ArtistStyleOption[]): {
     .slice(0, 3)
     .map(([id]) => id))
 
-  return { usageCounts, recordUsage, frequentTop3Ids, recentIds }
+  return { recordUsage, frequentTop3Ids, recentIds }
 }

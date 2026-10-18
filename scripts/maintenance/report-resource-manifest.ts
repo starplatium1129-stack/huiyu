@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { errorStack } from '../lib/runtime-errors';
 'use strict';
 
 /**
@@ -46,7 +47,7 @@ const HELP = [
   '哈希一致只证明字节一致；文件存在不代表内容已交付、图片质量或审核通过。',
 ].join('\n');
 
-function main(args: any = process.argv.slice(2)) {
+function main(args: string[] = process.argv.slice(2)) {
   let root = path.resolve(__dirname, '..', '..');
   let manifestPath = null;
   let compareManifestPath = null;
@@ -68,7 +69,7 @@ function main(args: any = process.argv.slice(2)) {
   }
   try {
     if (manifestPath && compareManifestPath) {
-      const result: any = compareManifestFiles({ root, manifestPath, compareManifestPath });
+      const result = compareManifestFiles({ root, manifestPath, compareManifestPath });
       console.log(JSON.stringify(result, null, 2));
       return result.ok ? 0 : 1;
     }
@@ -83,12 +84,12 @@ function main(args: any = process.argv.slice(2)) {
     const manifest = generateManifest({ root });
     console.log(JSON.stringify(manifest, null, 2));
     return manifest.unverified.length ? 1 : 0;
-  } catch (err: any) {
+  } catch (err) {
     if (err instanceof UsageError) {
       console.error(`错误: ${err.message}`);
       return 2;
     }
-    console.error(err && err.stack ? err.stack : String(err));
+    console.error(errorStack(err));
     return 2;
   }
 }

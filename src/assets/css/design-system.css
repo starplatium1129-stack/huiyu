@@ -18,8 +18,6 @@
   --bg-surface:    #1e2935;
   --bg-elevated:   #25313d;
   --bg-hover:      var(--bg-elevated);
-  /* 实底浮层别名：换装弹窗等重遮罩场景需要不透明面板 */
-  --bg-surface-elevated: var(--bg-elevated);
 
   --border-soft:   rgba(170, 198, 223, 0.14);
   --border-strong: rgba(187, 214, 235, 0.28);
@@ -43,21 +41,13 @@
   --accent-violet:  #b784f6;
   --archive-blue:   #5eead4;
   --archive-blue-soft: rgba(94, 234, 212, 0.16);
-  --archive-cyan-glow: rgba(94, 234, 212, 0.38); /* 档案 scan line / 签名光 */
   --nene-violet:    #b784f6;
   --natsume-amber:  #fbb040;
   --editorial-gold: #f2bb68;
   --editorial-gold-soft: rgba(242, 187, 104, 0.14);
 
   /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
-  --archive-paper:       #f2f5f3;
-  --archive-ink:         #11181d;
   --archive-cyan:        #5eead4;
-  --archive-graphite:    #667078;
-  --archive-ember:       #e65338;
-  --archive-grid:        rgba(255, 255, 255, 0.05);
-  --archive-line:        rgba(255, 255, 255, 0.12);
-  --archive-glass:       rgba(22, 31, 42, 0.92);
   /* 档案面板圆角：语义别名统一走 --r-lg，避免只改一处。 */
   --r-dossier:           var(--r-lg);
   --r-terminal:          10px;
@@ -66,21 +56,15 @@
   --nav-bg: rgba(21, 28, 36, .96);
   --glass-highlight: rgba(227, 240, 252, 0.07);
   /* 内衬高光以共享令牌表达，面板正文保持稳定底色。 */
-  --hl-inset-04: rgba(255, 255, 255, 0.04);
-  --hl-inset-06: rgba(255, 255, 255, 0.06);
   --hl-inset-08: rgba(255, 255, 255, 0.08);
-  --hl-inset-10: rgba(255, 255, 255, 0.10);
   --hl-inset-16: rgba(255, 255, 255, 0.16);
-  --hl-inset-18: rgba(255, 255, 255, 0.18);
   --hl-inset-22: rgba(255, 255, 255, 0.22);
-  --hl-inset-32: rgba(255, 255, 255, 0.32);
   --glass-fill: rgba(30, 41, 53, .94);
   --glass-fill-strong: var(--bg-elevated);
   --glass-edge: rgba(187, 214, 235, .18);
   --glass-specular: color-mix(in srgb, #eaf4ff 15%, transparent);
   --glass-shadow: 0 12px 32px rgba(5, 11, 18, 0.30);
-  --album-surface: var(--bg-surface); --album-raised: var(--bg-elevated);
-  --album-edge: var(--border-soft); --album-shadow: var(--shadow-sm);
+  --album-surface: var(--bg-surface);
 
   /* ---- Functional ---- */
   --success:        #4ade80;
@@ -93,7 +77,6 @@
   --mood-love:      #ff75a0;
   --mood-calm:      #4ade80;
   --mood-sad:       #60a5fa;
-  --mood-tension:   #b784f6;
   --mood-warmth:    #fbb040;
 
   /* ---- 文字专用色阶 ----------------------------------------------------
@@ -114,9 +97,6 @@
   --mood-sad-text:      var(--mood-sad);
   --mood-tension-text:  #c498ff;   /* 薰衣草紫，elevated 上 ≥4.5:1 */
   --mood-warmth-text:   var(--mood-warmth);
-  /* mood 色块之上的文字:6 种 mood 底全部是高亮度色,白字最差 1.4:1,
-     故统一用深墨。此值不随主题翻转 —— 底色是 mood 而不是页面底。 */
-  --on-mood-text:   #17171c;
 
   /* ---- Typography ---- */
   --font-sans:      -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
@@ -182,8 +162,6 @@
   --r-sm: 8px; --r-md: 10px; --r-lg: 16px; --r-xl: 20px;
   --r-2xl: 26px; --r-3xl: 30px; --r-stage: 32px; --r-pill: 999px;
   --r-brand-mark: 9px 15px 9px 15px;
-  /* 手绘描边牌：四角不对称是「手绘贴纸牌」语义本身。 */
-  --r-hand-plate: 18px 15px 19px 16px;
   /* 微圆角：徽章内衬 / 小芯片 / 画布控件 */
   --r-xs: 6px;
 
@@ -196,10 +174,7 @@
   --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
   --shadow-glass-elevated: inset 0 1px 0 var(--glass-highlight), var(--shadow-lg);
-  /* 战术硬边框（1px 高对比）：替代柔和阴影作为主要层级手段 */
-  --line-tactical: 1px solid var(--border-strong);
   /* accent 光晕: 恋爱感柔光弥散 (Bloom) */
-  --glow-sm: 0 0 14px var(--accent-glow);
   --glow-md: 0 0 28px var(--accent-glow), 0 0 10px rgba(183, 132, 246, 0.25);
   /* 焦点用主题墨色底线，选中用单侧标记，不向控件外扩描边。 */
   --ring-color: var(--focus-color);
@@ -772,42 +747,6 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   letter-spacing: .02em;
 }
 .field-hint { @apply tw:text-muted tw:text-mono-sm tw:leading-body; }
-.input, .textarea {
-  @apply tw:w-full tw:min-h-[40px];
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-deep);
-  @apply tw:text-primary;
-  font: 400 var(--fs-body) var(--font-sans);
-  transition: border-color var(--motion-hover), background var(--motion-hover);
-}
-.textarea { @apply tw:min-h-[96px] tw:resize-y tw:leading-body; }
-.input-mono { @apply tw:font-mono tw:text-label; }
-.input::placeholder, .textarea::placeholder { @apply tw:text-muted; }
-.input:hover, .textarea:hover { @apply tw:border-strong; }
-.input:focus, .textarea:focus {
-  outline: none;
-  @apply tw:border-strong;
-  box-shadow: inset 0 -2px 0 var(--ring-color);
-}
-/* 同 .btn:disabled —— 不用 opacity 压字（实测浅色底 3.01:1 不达 AA），
-   改为显式文字色 + 压暗底。 */
-.input:disabled, .textarea:disabled {
-  @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed;
-  background: var(--bg-base);
-}
-.input[aria-invalid="true"], .textarea[aria-invalid="true"] {
-  --ring-color: var(--danger-text);
-  @apply tw:border-danger-text;
-}
-.input-search {
-  @apply tw:pl-s-6 tw:rounded-md;
-  background:
-    var(--bg-deep)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238C8CA3' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E")
-    no-repeat var(--s-3) center / 14px 14px;
-}
 
 /* ---- Status badge（二次元博客甜系贴纸角标：颜色不是唯一信号，保留文字与圆点） ---- */
 .badge {
@@ -1323,28 +1262,6 @@ summary::-webkit-details-marker {
 :where(.subtitle, .hint, .note, .page-subtitle) {
   max-width: 62ch;
 }
-
-/* ── 平滑折叠展开过渡（CSS Grid 0fr → 1fr，避免 JS 高度测量与重排突兀感） ──
-   /* compositor-exempt: 折叠容器高度未知，grid-template-rows 0fr→1fr 是唯一
-      免 JS 测高的纯 CSS 方案 —— transform: scaleY 会把内容文字一起压扁，
-      max-height 则要填一个魔法上限值且动画速度随实际高度失真。
-      此动画是一次性展开/收起（非高频），220ms 内重排成本可接受。
-      注：2026-08-28 门禁补检才发现它 —— 此前 grid-template-rows 不在
-      lint-animations 的布局属性名单内，属漏检。 */
-.anim-collapse-grid {
-  @apply tw:grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows var(--motion-control) var(--ease-out);
-}
-.anim-collapse-grid.open,
-.anim-collapse-grid[data-open="true"] {
-  grid-template-rows: 1fr;
-}
-
-/* 2026-08-22 动效审计 #11：原 heartBounce 静态挂在所有已收藏图标上——
-   收藏目前是纯展示状态（无切换入口），作品册每次打开全部红心齐弹一遍。
-   连同零引用的 .heart-pop/.btn-favorite 选择器整块删除；将来若加收藏
-   切换，应做成点击瞬时类（toggle 时挂 400ms 后移除）。 */
 
 /* ── 二次元 Galgame 梦幻质感增强工具类 ── */
 .title-gradient {

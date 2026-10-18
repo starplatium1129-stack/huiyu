@@ -94,25 +94,23 @@ function isReferenced(content: string, basename: string) {
 function main() {
   const asJson = process.argv.includes('--json');
   const scripts = fs.readdirSync(MAINT, { withFileTypes: true })
-    .filter((ent: any) => ent.isFile() && /\.(?:[cm]?[jt]s|ps1|py)$/.test(ent.name) && !isGenerated(path.join(MAINT, ent.name)))
-    .map((ent: any) => ent.name)
+    .filter(ent => ent.isFile() && /\.(?:[cm]?[jt]s|ps1|py)$/.test(ent.name) && !isGenerated(path.join(MAINT, ent.name)))
+    .map(ent => ent.name)
     .sort();
 
   const corpusFiles = collectCorpus();
   // 预读语料，缓存 {path: content}
-  const corpus: any[] = [];
+  const corpus: Array<{ path: string; content: string }> = [];
   for (const f of corpusFiles) {
-    // 跳过 maintenance/ 自身目录下的文件（它们互相引用算有效，但自引用不算）
     const c = readText(f);
     if (c != null) corpus.push({ path: f, content: c });
   }
 
-  const orphans: any[] = [];
-  const referenced: any[] = [];
+  const orphans: Array<{ name: string }> = [];
+  let referencedCount = 0;
   for (const name of scripts) {
     const self = path.join(MAINT, name);
     let found = false;
-    let refs: any[] = [];
     // 2026-09-05 审计 P3：Node 的 require 支持 ./desktop-build-lock 这类无扩展名
     // 导入，仅按完整 basename 匹配会把真实引用误报为孤儿（desktop-build-lock.js、
     // runtime-generated-files.js 即此类误报）。补一条"无扩展名 stem"token 匹配：
@@ -124,17 +122,15 @@ function main() {
       if (entry.path === self) continue;
       if (isReferenced(entry.content, name) || isReferenced(entry.content, runtimeName) || isReferenced(entry.content, stem)) {
         found = true;
-        refs.push(path.relative(ROOT, entry.path));
-        // 只记前 3 个引用出处，足够判断非孤儿
-        if (refs.length >= 3) break;
+        break;
       }
     }
-    if (found) referenced.push({ name, refs });
+    if (found) referencedCount++;
     else orphans.push({ name });
   }
 
   if (asJson) {
-    console.log(JSON.stringify({ orphanCount: orphans.length, orphans, referencedCount: referenced.length, total: scripts.length }, null, 2));
+    console.log(JSON.stringify({ orphanCount: orphans.length, orphans, referencedCount, total: scripts.length }, null, 2));
     if (process.argv.includes('--check') && orphans.length) process.exitCode = 1;
     return;
   }
@@ -144,7 +140,7 @@ function main() {
   if (orphans.length) {
     for (const o of orphans) console.log(`  - ${o.name}`);
   }
-  console.log(`\n被引用：${referenced.length} 个（抽样前 3 出处）`);
+  console.log(`\n被引用：${referencedCount} 个`);
   // 仅打印孤儿详情 + 已引用计数；已引用清单太长默认不展开
   console.log(`\n孤儿归档前请人工复核：确认无手动用途后 git mv <file> scripts/archive/（已 .gitignore）`);
   if (process.argv.includes('--check') && orphans.length) process.exitCode = 1;

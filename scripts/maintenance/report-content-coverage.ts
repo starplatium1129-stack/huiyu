@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
+import type { Identity, PopularCharacter, PopularRow, ViewRow, ViewOutfit, ThemeInput, ReferenceInput, ReferenceCoverage, CoverageReport } from '../lib/coverage-types';
 'use strict';
 
 import { PathOrFileDescriptor } from 'node:fs';
@@ -40,6 +41,7 @@ import { PathOrFileDescriptor } from 'node:fs';
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 const {
   parseSelectionArgs, collectKnownIds, assertSelectionKnown,
   collectScopedRefUrls, scopeFileExists, filterReportToScope,
@@ -49,22 +51,22 @@ const {
  *  characterTheme.ts 从 characters.json 注入，新增角色不再需要写 tokens.css。 */
 const DEFAULT_THEME_ALLOWED = Object.freeze(['nene']);
 
-function readJson(file: PathOrFileDescriptor) {
+function readJson(file: PathOrFileDescriptor): unknown {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function sortedUnique(values: Iterable<any>|null|undefined) {
+function sortedUnique<T>(values: Iterable<T> | null | undefined) {
   return [...new Set(values)].sort();
 }
 
 /** 别名归一：小写、非字母数字折叠为下划线（"historia reiss" -> "historia_reiss"）。 */
-function normalizeAlias(value: any) {
+function normalizeAlias(value: unknown) {
   return String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
 }
 
 /** 从 CSS 文本提取全部 data-character 选择器 id（去重排序）。 */
 function extractThemeSelectors(cssText: string) {
-  const ids: any[] = [];
+  const ids: string[] = [];
   for (const match of String(cssText).matchAll(/data-character="([A-Za-z0-9_-]+)"/g)) ids.push(match[1]);
   // `*` is an internal sentinel for the selector-free runtime contract:
   // `.pb[data-character]` covers every canonical character and the actual
@@ -77,24 +79,24 @@ function extractThemeSelectors(cssText: string) {
  * 主题覆盖分析（纯函数，便于夹具测试）。
  * inputs: { characters:[{id,accent_color?}], selectors:[string], popularAliasMap:Map<normalized, canonicalId> }
  */
-function analyseThemes({ characters, selectors, popularAliasMap }: any) {
-  const charIds = characters.map((c: any) => c.id);
-  const dupCharacters = sortedUnique(charIds.filter((id: any, index: any) => charIds.indexOf(id) !== index));
+function analyseThemes({ characters, selectors, popularAliasMap }: ThemeInput) {
+  const charIds = characters.map(c => c.id);
+  const dupCharacters = sortedUnique(charIds.filter((id, index) => charIds.indexOf(id) !== index));
   const charSet = new Set(charIds);
   const selectorSet = new Set(selectors);
   const dynamic = selectorSet.has('*');
-  const accentById = new Map(characters.map((c: any) => [c.id, c.accent_color]));
+  const accentById = new Map(characters.map(c => [c.id, c.accent_color]));
 
-  const explicit: any[] = [];
-  const missingTheme: any[] = [];
-  const defaultAllowed: any[] = [];
+  const explicit: string[] = [];
+  const missingTheme: Array<{ id: string; accentColor: unknown; source: string }> = [];
+  const defaultAllowed: string[] = [];
   for (const id of sortedUnique(charIds)) {
     if (dynamic || selectorSet.has(id)) explicit.push(id);
     else if (DEFAULT_THEME_ALLOWED.includes(id)) defaultAllowed.push(id);
     else missingTheme.push({ id, accentColor: accentById.get(id) || null, source: 'data/characters.json' });
   }
-  const staleAlias: any[] = [];
-  const nonCharacter: any[] = [];
+  const staleAlias: Array<{ selector: string; suggestion: string; matchType: string; note: string }> = [];
+  const nonCharacter: Array<{ selector: string; note: string }> = [];
   for (const selector of selectors) {
     if (selector === '*') continue;
     if (charSet.has(selector)) continue;
@@ -114,49 +116,49 @@ function analyseThemes({ characters, selectors, popularAliasMap }: any) {
  *   fileExists: (url) => true|false|null   // null = 无法核实（素材根缺失/structure 模式）
  * }
  */
-function analyseReferences({ popular, standards, view, fileExists }: any) {
-  const duplicateRegistrations: any[] = [];
-  for (const [source, records, outfitsOf] of [
-    ['standards', standards, (c: any) => c.outfitIds],
-    ['view', view, (c: any) => c.outfits.map((o: any) => o.outfitId)],
-  ]) {
-    const seen = new Set();
+function analyseReferences({ popular, standards, view, fileExists }: ReferenceInput): ReferenceCoverage {
+  const duplicateRegistrations: string[] = [];
+  for (const [source, records] of [
+    ['standards', standards],
+    ['view', view.map(c => ({ id: c.id, outfitIds: c.outfits.map(o => o.outfitId) }))],
+  ] as const) {
+    const seen = new Set<string>();
     for (const record of records) {
       if (seen.has(record.id)) duplicateRegistrations.push(`${source}: 重复角色 ${record.id}`);
       seen.add(record.id);
-      const outfits = new Set();
-      for (const id of outfitsOf(record)) {
+      const outfits = new Set<string>();
+      for (const id of record.outfitIds) {
         if (outfits.has(id)) duplicateRegistrations.push(`${source}: 重复形态 ${record.id}/${id}`);
         outfits.add(id);
       }
     }
   }
-  const standardsMap = new Map<string, Set<string>>(standards.map((c: any) => [c.id, new Set(c.outfitIds)]));
-  const viewMap = new Map<string, any[]>(view.map((c: any) => [c.id, c.outfits]));
+  const standardsMap = new Map(standards.map(c => [c.id, new Set(c.outfitIds)]));
+  const viewMap = new Map(view.map(c => [c.id, c.outfits]));
 
-  const missingRegistration: any[] = [];
-  const pending: any[] = [];
-  const missingImage: any[] = [];
-  const unverifiedImage: any[] = [];
+  const missingRegistration: ReferenceCoverage['missingRegistration'] = [];
+  const pending: ReferenceCoverage['pending'] = [];
+  const missingImage: ReferenceCoverage['missingImage'] = [];
+  const unverifiedImage: ReferenceCoverage['unverifiedImage'] = [];
   let verifiedImage = 0;
 
   // 双向镜像校验（contract 语义）：standards 与 view 的形态集合必须一致。
-  const mirrorErrors: any[] = [];
+  const mirrorErrors: string[] = [];
   for (const [id, outfitIds] of standardsMap) {
-    const viewOutfits = new Set((viewMap.get(id) || []).map((o: any) => o.outfitId));
+    const viewOutfits = new Set((viewMap.get(id) || []).map(o => o.outfitId));
     for (const outfitId of outfitIds) if (!viewOutfits.has(outfitId)) mirrorErrors.push(`${id}: standards 独有形态 ${outfitId}`);
     for (const outfitId of viewOutfits) if (!outfitIds.has(outfitId)) mirrorErrors.push(`${id}: view 独有形态 ${outfitId}`);
   }
   for (const id of viewMap.keys()) if (!standardsMap.has(id)) mirrorErrors.push(`${id}: view 有角色而 standards 无`);
 
   // 跨分片重复检测：角色 ID 应只出现在一个分片文件；服装 ID 在角色内应唯一。
-  const charFiles = new Map();
-  const outfitRowCount = new Map();
-  const duplicateCharacters: any[] = [];
-  const duplicateOutfits: any[] = [];
+  const charFiles = new Map<string, Set<string>>();
+  const outfitRowCount = new Map<string, number>();
+  const duplicateCharacters: string[] = [];
+  const duplicateOutfits: string[] = [];
   for (const entry of popular) {
     if (!charFiles.has(entry.id)) charFiles.set(entry.id, new Set());
-    const files = charFiles.get(entry.id);
+    const files = charFiles.get(entry.id)!;
     files.add(entry.file);
     if (files.size === 2) duplicateCharacters.push(entry.id);
     const key = `${entry.id}/${entry.outfitId}`;
@@ -170,9 +172,9 @@ function analyseReferences({ popular, standards, view, fileExists }: any) {
       missingRegistration.push({ id: entry.id, outfitId: entry.outfitId, source: entry.file, related: 'data/character-reference-standards.json 无此形态' });
       continue;
     }
-    const viewOutfit = (viewMap.get(entry.id) || []).find((o: any) => o.outfitId === entry.outfitId);
+    const viewOutfit = (viewMap.get(entry.id) || []).find(o => o.outfitId === entry.outfitId);
     const refs = viewOutfit?.references || [];
-    const pendingRefs = refs.filter((r: any) => r.pending === true || !r.url);
+    const pendingRefs = refs.filter(r => r.pending === true || !r.url);
     if (pendingRefs.length) {
       pending.push({ id: entry.id, outfitId: entry.outfitId, source: 'data/character-reference-view.json', pending: pendingRefs.length, total: refs.length });
     }
@@ -186,11 +188,11 @@ function analyseReferences({ popular, standards, view, fileExists }: any) {
   }
 
   // standards 独有（popular 无对应）单列；集合差额本身不能证明来源或正确性。
-  const referenceOnlyForms: any[] = [];
-  const popularMap = new Map();
+  const referenceOnlyForms: ReferenceCoverage['referenceOnlyForms'] = [];
+  const popularMap = new Map<string, Set<string>>();
   for (const entry of popular) {
     if (!popularMap.has(entry.id)) popularMap.set(entry.id, new Set());
-    popularMap.get(entry.id).add(entry.outfitId);
+    popularMap.get(entry.id)!.add(entry.outfitId);
   }
   for (const [id, outfitIds] of standardsMap) {
     const popularOutfits = popularMap.get(id);
@@ -207,11 +209,11 @@ function analyseReferences({ popular, standards, view, fileExists }: any) {
 
 /** 由 URL 判定素材文件是否存在的工厂；返回 true|false|null（null=无法核实）。
  *  解析语义与 scripts/maintenance/check-ref-urls.js auditReferenceView 一致。 */
-function makeFileExists({ appRoot, env }: any) {
+function makeFileExists({ appRoot, env }: { appRoot: string; env: NodeJS.ProcessEnv }) {
   const { resolveCharRefRoot }: typeof import('../lib/content/asset-roots') = require('../lib/content/asset-roots');
   const assetsRoot = path.resolve(env.AICS_ASSETS_ROOT || path.join(appRoot, 'assets'));
   const structureOnly = env.AICS_REFERENCE_AUDIT_MODE === 'structure';
-  return function fileExists(url: any) {
+  return function fileExists(url: unknown) {
     const value = typeof url === 'string' ? url : '';
     const prefix = value.startsWith('/character-references/') ? '/character-references/'
       : value.startsWith('/assets/') ? '/assets/' : '';
@@ -231,10 +233,10 @@ function makeFileExists({ appRoot, env }: any) {
   };
 }
 
-function buildReport({ characters, popularRows, standards, view, selectors, popularAliasMap, fileExists }: any) {
+function buildReport({ characters, popularRows, standards, view, selectors, popularAliasMap, fileExists }: ThemeInput & Omit<ReferenceInput, 'popular'> & { popularRows: PopularRow[] }): CoverageReport {
   const themes = analyseThemes({ characters, selectors, popularAliasMap });
   const references = analyseReferences({ popular: popularRows, standards, view, fileExists });
-  const structuralErrors: any[] = [];
+  const structuralErrors: string[] = [];
   for (const id of themes.dupCharacters) structuralErrors.push(`characters.json 重复角色 ID: ${id}`);
   for (const id of references.duplicateCharacters) structuralErrors.push(`热门分片跨文件重复角色 ID: ${id}`);
   for (const row of references.duplicateOutfits) structuralErrors.push(`热门分片重复服装 ID: ${row}`);
@@ -243,10 +245,12 @@ function buildReport({ characters, popularRows, standards, view, selectors, popu
   return { version: 1, structuralErrors, reference: references, themes };
 }
 
-function popularAliasMapOf(popularCharacters: any) {
-  const map = new Map();
+function popularAliasMapOf(popularCharacters: Identity[]) {
+  const map = new Map<string, string>();
   for (const character of popularCharacters) {
-    for (const alias of [character.id, character.displayName, character.originalName, ...(character.aliases || [])]) {
+    const aliases = character.aliases || [];
+    if (!Array.isArray(aliases)) throw new Error(`${character.id}: aliases 必须为数组`);
+    for (const alias of [character.id, character.displayName, character.originalName, ...aliases]) {
       const key = normalizeAlias(alias);
       if (key && !map.has(key)) map.set(key, character.id);
     }
@@ -254,7 +258,7 @@ function popularAliasMapOf(popularCharacters: any) {
   return map;
 }
 
-function printHuman(report: any) {
+function printHuman(report: CoverageReport) {
   const scope = report.scope || null;
   if (scope) {
     const target = scope.outfit ? `${scope.character}/${scope.outfit}` : scope.character;
@@ -262,12 +266,12 @@ function printHuman(report: any) {
   }
   const ref = report.reference;
   console.log(`[coverage] 热门服装→参考登记：缺登记 ${ref.missingRegistration.length}；登记未出图(pending) ${ref.pending.length}；URL 已填缺实图 ${ref.missingImage.length}；无法核实(素材根缺失) ${ref.unverifiedImage.length}；实图在位 ${ref.verifiedImage}；参考库独有形态 ${ref.referenceOnlyForms.length}`);
-  const byChar = new Map();
+  const byChar = new Map<string, string[]>();
   for (const row of ref.missingRegistration) {
     if (!byChar.has(row.id)) byChar.set(row.id, []);
-    byChar.get(row.id).push(row.outfitId);
+    byChar.get(row.id)!.push(row.outfitId);
   }
-  for (const [id, outfits] of [...byChar.entries()].sort(([a]: any, [b]: any) => a.localeCompare(b))) {
+  for (const [id, outfits] of [...byChar.entries()].sort(([a], [b]) => a.localeCompare(b))) {
     console.log(`  缺登记 ${id} (${outfits.length}): ${outfits.join(', ')}`);
   }
   for (const row of ref.pending) console.log(`  pending ${row.id}/${row.outfitId}: ${row.pending}/${row.total} 视角待出图`);
@@ -291,44 +295,49 @@ function printHuman(report: any) {
 function loadSources(root: string) {
   const shardsRoot = path.join(root, 'data', 'popular');
   const manifest = readJson(path.join(shardsRoot, 'manifest.json'));
-  if (!Array.isArray(manifest?.files) || !manifest.files.length) throw new Error('manifest.files 必须为非空数组');
-  const seenFiles = new Set();
-  const seenCharacters = new Set();
-  const sources = manifest.files.map((entry: any) => {
-    if (typeof entry?.file !== 'string' || !entry.file) throw new Error('manifest 条目缺 file');
+  if (!object(manifest) || !Array.isArray(manifest.files) || !manifest.files.length) throw new Error('manifest.files 必须为非空数组');
+  const seenFiles = new Set<string>();
+  const seenCharacters = new Set<string>();
+  const sources = manifest.files.map((entry: unknown) => {
+    if (!object(entry) || typeof entry.file !== 'string' || !entry.file) throw new Error('manifest 条目缺 file');
     const source = path.resolve(shardsRoot, entry.file);
     const relative = path.relative(shardsRoot, source);
     if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('分片路径越界');
     if (seenFiles.has(source)) throw new Error(`重复分片文件: ${entry.file}`);
     seenFiles.add(source);
     const data = readJson(source);
-    validateCharacters(data?.characters, entry.file, 'id');
-    if (!Number.isInteger(entry.count) || entry.count !== data.characters.length) throw new Error(`manifest count 不符: ${entry.file}`);
-    for (const character of data.characters) {
+    const characters = validateCharacters(object(data) ? data.characters : undefined, entry.file, 'id');
+    if (typeof entry.count !== 'number' || !Number.isInteger(entry.count) || entry.count !== characters.length) throw new Error(`manifest count 不符: ${entry.file}`);
+    for (const character of characters) {
       if (seenCharacters.has(character.id)) throw new Error(`热门分片重复角色 ID: ${character.id}`);
       seenCharacters.add(character.id);
     }
-    return { entry, characters: data.characters };
+    return { entry: { ...entry, file: entry.file, count: entry.count }, characters };
   });
-  return { manifest, sources };
+  return sources;
 }
 
-function validateCharacters(records: any, source: string, outfitKey: string|undefined) {
+function validateCharacters(records: unknown, source: string, outfitKey: undefined): Identity[];
+function validateCharacters(records: unknown, source: string, outfitKey: 'id'): PopularCharacter[];
+function validateCharacters(records: unknown, source: string, outfitKey: 'outfitId'): Array<Identity & { outfits: ViewOutfit[] }>;
+function validateCharacters(records: unknown, source: string, outfitKey: 'id' | 'outfitId' | undefined) {
   if (!Array.isArray(records)) throw new Error(`${source} 角色必须为数组`);
   for (const record of records) {
-    if (!record || typeof record.id !== 'string' || !record.id.trim()) throw new Error(`${source} 角色缺有效 id`);
+    if (!object(record) || typeof record.id !== 'string' || !record.id.trim()) throw new Error(`${source} 角色缺有效 id`);
     if (!outfitKey) continue;
     if (!Array.isArray(record.outfits)) throw new Error(`${source}/${record.id} outfits 必须为数组`);
     for (const outfit of record.outfits) {
-      if (!outfit || typeof outfit[outfitKey] !== 'string' || !outfit[outfitKey].trim()) throw new Error(`${source}/${record.id} 形态缺有效 ID`);
-      if (outfitKey === 'outfitId' && (!Array.isArray(outfit.references) || outfit.references.some((r: any) => !r || typeof r !== 'object' || Array.isArray(r)))) {
+      if (!object(outfit) || typeof outfit[outfitKey] !== 'string' || !outfit[outfitKey].trim()) throw new Error(`${source}/${record.id} 形态缺有效 ID`);
+      if (outfitKey === 'outfitId' && (!Array.isArray(outfit.references) || !outfit.references.every(object))) {
         throw new Error(`${source}/${record.id} references 必须为对象数组`);
       }
     }
   }
+  // Each overload selects exactly the identity/outfit/reference fields checked above.
+  return records as Identity[] | PopularCharacter[] | Array<Identity & { outfits: ViewOutfit[] }>;
 }
 
-function main(argv: any = process.argv.slice(2)) {
+function main(argv: string[] = process.argv.slice(2)) {
   const json = argv.includes('--json');
   const rootIndex = argv.indexOf('--root');
   let selection = null;
@@ -343,62 +352,55 @@ function main(argv: any = process.argv.slice(2)) {
     ? path.resolve(argv[rootIndex + 1])
     : path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '..', '..'));
 
-  const structuralErrors: any[] = [];
-  let manifest = null;
-  let sources: any[] = [];
+  let sources: ReturnType<typeof loadSources>;
   try {
     if (rootIndex >= 0 && (!argv[rootIndex + 1] || argv[rootIndex + 1].startsWith('--'))) throw new Error('--root 需要目录');
-    ({ manifest, sources } = loadSources(root));
+    sources = loadSources(root);
   } catch (error) {
     console.error(`[coverage] 结构错误：${runtimeErrorMessage(error)}`);
     process.exitCode = 1;
     return;
   }
 
-  let characters;
-  let standards;
-  let view;
+  let characters: Identity[];
+  let standards: PopularCharacter[];
+  let view: ViewRow[];
   let cssText = '';
   try {
-    characters = readJson(path.join(root, 'data', 'characters.json'));
-    standards = readJson(path.join(root, 'data', 'character-reference-standards.json'));
-    view = readJson(path.join(root, 'data', 'character-reference-view.json'));
+    const characterData = readJson(path.join(root, 'data', 'characters.json'));
+    const standardsData = readJson(path.join(root, 'data', 'character-reference-standards.json'));
+    const viewData = readJson(path.join(root, 'data', 'character-reference-view.json'));
     cssText = fs.readFileSync(path.join(root, 'src', 'assets', 'css', 'director', 'tokens.css'), 'utf8');
-    validateCharacters(characters, 'characters.json', undefined);
-    validateCharacters(standards?.characters, 'standards', 'id');
-    if (!view || typeof view !== 'object' || Array.isArray(view)) throw new Error('view 根必须为对象');
-    validateCharacters(Object.entries(view).map(([id, profile]: any) => ({ ...profile, id })), 'view', 'outfitId');
+    characters = validateCharacters(characterData, 'characters.json', undefined);
+    standards = validateCharacters(object(standardsData) ? standardsData.characters : undefined, 'standards', 'id');
+    if (!object(viewData)) throw new Error('view 根必须为对象');
+    view = validateCharacters(Object.entries(viewData).map(([id, profile]) => {
+      if (!object(profile)) throw new Error(`view/${id} 必须为对象`);
+      return { ...profile, id };
+    }), 'view', 'outfitId');
   } catch (error) {
     console.error(`[coverage] 结构错误：${runtimeErrorMessage(error)}`);
     process.exitCode = 1;
     return;
   }
-  if (!Array.isArray(characters)) { console.error('[coverage] 结构错误：characters.json 根必须是数组'); process.exitCode = 1; return; }
-
-  // manifest 批次数核对（缺批号/批次数不符 → 结构错误）。
-  for (const entry of manifest.files) {
-    if (typeof entry.count !== 'number') structuralErrors.push(`data/popular/manifest.json 条目缺 count: ${entry.file}`);
-  }
-
-  // 每服装一行（含所属分片文件，供差额定位）；manifest 批次数另行核对。
-  const rows: any[] = [];
+  // 每服装一行（含所属分片文件，供差额定位）；loadSources 已核对 manifest count。
+  const rows: PopularRow[] = [];
   for (const { entry, characters: items } of sources) {
     for (const character of items) {
-      for (const outfit of character.outfits || []) rows.push({ id: character.id, outfitId: outfit.id, file: entry.file });
+      for (const outfit of character.outfits) rows.push({ id: character.id, outfitId: outfit.id, file: entry.file });
     }
   }
 
-  const standardsRows = standards.characters.map((c: any) => ({ id: c.id, outfitIds: (c.outfits || []).map((o: any) => o.id) }));
-  const viewRows = Object.entries(view).map(([id, profile]: any) => ({
-    id,
-    outfits: (profile.outfits || []).map((o: any) => ({ outfitId: o.outfitId, references: o.references || [] })),
+  const standardsRows = standards.map(c => ({ id: c.id, outfitIds: c.outfits.map(o => o.id) }));
+  const viewRows = view.map(profile => ({ id: profile.id,
+    outfits: profile.outfits.map(o => ({ outfitId: o.outfitId, references: o.references })),
   }));
-  const aliasMap = popularAliasMapOf(sources.flatMap(({ characters: items }: any) => items));
+  const aliasMap = popularAliasMapOf(sources.flatMap(({ characters: items }) => items));
 
   if (selection) {
     try {
       assertSelectionKnown(selection, collectKnownIds({
-        characters, popularCharacters: sources.flatMap(({ characters: items }: any) => items),
+        characters, popularCharacters: sources.flatMap(({ characters: items }) => items),
         popularRows: rows, standards: standardsRows, view: viewRows,
       }), aliasMap);
     } catch (error) {
@@ -424,9 +426,7 @@ function main(argv: any = process.argv.slice(2)) {
       ? scopeFileExists(baseFileExists, collectScopedRefUrls({ view: viewRows, character: selection.character, outfit: selection.outfit }), selection)
       : baseFileExists,
   });
-  report.structuralErrors.push(...structuralErrors);
-
-  const output: any = selection ? filterReportToScope(report, selection) : report;
+  const output = selection ? filterReportToScope(report, selection) : report;
   if (json) console.log(JSON.stringify(output, null, 2));
   else printHuman(output);
   process.exitCode = output.structuralErrors.length ? 1 : 0;

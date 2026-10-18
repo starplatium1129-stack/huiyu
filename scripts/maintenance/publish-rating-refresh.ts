@@ -2,7 +2,9 @@
 import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
 
-const { switchTarget }: typeof import('../lib/showcase-publication') = require('../lib/showcase-publication');
+const { switchTarget, resolveDirArg, validateTarget }: typeof import('../lib/showcase-publication') = require('../lib/showcase-publication');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+type Entry = Record<string, unknown> & { id: string };
 
 /**
  * Publish a RATING-ONLY refresh of the showcase manifest into a NEW version
@@ -29,56 +31,22 @@ const path: typeof import('path') = require('path');
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_SHOWCASE_ROOT = path.resolve(ROOT, '..', 'AI', 'SceneShowcase');
 
-function argument(name: any, fallback: any = '') {
+function argument(name: string, fallback = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function readJson(file: any) {
+function readJson(file: string): unknown {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function isRecord(value: any) {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-function resolveDirArg(showcaseRoot: any, value: any, label: any, mustExist: any) {
-  const raw = value || '';
-  const explicitPath = path.isAbsolute(raw) || /^[a-zA-Z]:[\\/]/.test(raw);
-  const candidate = explicitPath ? path.resolve(raw) : path.join(path.resolve(showcaseRoot), raw);
-  if (mustExist) {
-    if (!fs.existsSync(candidate)) throw new Error(`${label} does not exist: ${candidate}`);
-    if (!fs.existsSync(path.join(candidate, 'manifest.json'))) throw new Error(`${label} has no manifest.json: ${candidate}`);
-  }
-  return path.resolve(candidate);
-}
-function isSameOrChild(child: any, parent: any) {
-  const rel = path.relative(parent, child);
-  return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
-}
-function validateTarget(showcaseRoot: any, sourceDir: any, targetDir: any) {
-  const root = path.resolve(showcaseRoot);
-  const source = path.resolve(sourceDir);
-  const target = path.resolve(targetDir);
-  if (target === source) throw new Error(`--target must not equal --source: ${source}`);
-  if (target === root) throw new Error('--target must not be the showcase root');
-  if (isSameOrChild(target, source) || isSameOrChild(source, target)) {
-    throw new Error(`--target must not contain or be contained by --source: source=${source}, target=${target}`);
-  }
-  if (isSameOrChild(target, root)) {
-    if (path.dirname(target) !== root) throw new Error(`--target must be a direct child of the showcase root: ${target}`);
-    return target;
-  }
-  if (isSameOrChild(root, target)) throw new Error(`absolute --target must not contain --source or the showcase root: ${target}`);
-  return target;
-}
-
 /** 从 `pc_<char>_<blueprint>` 提取 blueprintId（蓝图 id 均以角色 id 开头）。 */
-function blueprintIdOf(entry: any) {
+function blueprintIdOf(entry: Entry) {
   const prefix = `pc_${entry.char}_`;
-  if (typeof entry.id !== 'string' || !entry.id.startsWith(prefix)) return '';
+  if (!entry.id.startsWith(prefix)) return '';
   return entry.id.slice(prefix.length);
 }
 
-function ratingForEntry(entry: any, scenesById: any, blueprintsById: any, warnings: any) {
+function ratingForEntry(entry: Entry, scenesById: Map<string, Entry>, blueprintsById: Map<string, Entry>, warnings: string[]) {
   if (entry.type === 'scene') {
     const scene = scenesById.get(entry.id);
     if (!scene) {
@@ -101,12 +69,12 @@ function ratingForEntry(entry: any, scenesById: any, blueprintsById: any, warnin
   return entry.rating;
 }
 
-function verifyTarget(tempDir: any, manifest: any) {
+function verifyTarget(tempDir: string, manifest: { entries: Entry[]; sceneCount: number }) {
   const { parseShowcaseManifest }: typeof import('../../src/utils/showcaseManifest.ts') = require('../../src/utils/showcaseManifest.ts');
   const { isShowcaseAssetPath }: typeof import('../lib/content/showcase-assets.js') = require('../lib/content/showcase-assets.js');
   const parsed = parseShowcaseManifest(manifest);
   if (parsed.entries.length !== manifest.entries.length) throw new Error(`manifest lost entries: ${parsed.entries.length} != ${manifest.entries.length}`);
-  const ids = new Set(parsed.entries.map((entry: any) => entry.id));
+  const ids = new Set(parsed.entries.map(entry => entry.id));
   if (ids.size !== parsed.entries.length) throw new Error('manifest ids are not unique');
   if (parsed.sceneCount !== manifest.sceneCount) throw new Error('sceneCount mismatch');
   for (const entry of parsed.entries) {
@@ -121,6 +89,19 @@ function verifyTarget(tempDir: any, manifest: any) {
 }
 
 
+function readEntries(value: unknown): Entry[] {
+  if (!Array.isArray(value)) throw new Error('Expected catalog entries');
+  return value.map((entry: unknown) => {
+    if (!object(entry) || typeof entry.id !== 'string') throw new Error('Invalid catalog entry identity');
+    return { ...entry, id: entry.id };
+  });
+}
+
+function catalogById(value: unknown, key: string) {
+  const rows = Array.isArray(value) ? value : object(value) ? value[key] || [] : value;
+  return new Map(readEntries(rows).map(entry => [entry.id, entry]));
+}
+
 function main() {
   const apply = process.argv.includes('--apply');
   const force = process.argv.includes('--force');
@@ -129,24 +110,19 @@ function main() {
   const targetDir = validateTarget(showcaseRoot, sourceDir, resolveDirArg(showcaseRoot, argument('--target', ''), '--target', false));
 
   const sourceManifest = readJson(path.join(sourceDir, 'manifest.json'));
+  if (!object(sourceManifest) || (sourceManifest.version != null && typeof sourceManifest.version !== 'number')) throw new Error('Invalid source showcase manifest');
+  const sourceEntries = readEntries(sourceManifest.entries || []);
   const scenesAggregate = readJson(path.join(ROOT, 'data', 'scenes.json'));
-  const sceneList = Array.isArray(scenesAggregate) ? scenesAggregate : (scenesAggregate.scenes || []);
-  const scenesById = new Map(sceneList.map((scene: any) => [scene.id, scene]));
+  const scenesById = catalogById(scenesAggregate, 'scenes');
   const blueprintsData = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
-  const blueprintList = Array.isArray(blueprintsData) ? blueprintsData : (blueprintsData.blueprints || []);
-  const blueprintsById = new Map(blueprintList.map((blueprint: any) => [blueprint.id, blueprint]));
+  const blueprintsById = catalogById(blueprintsData, 'blueprints');
 
-  const warnings: any[] = [];
-  const entries = (sourceManifest.entries || []).filter(isRecord).map((entry: any) => {
-    const next = { ...entry };
-    const nextRating = ratingForEntry(next, scenesById, blueprintsById, warnings);
-    next.rating = next.rating === nextRating ? next.rating : nextRating;
-    return next;
-  });
+  const warnings: string[] = [];
+  const entries: Entry[] = sourceEntries.map(entry => ({ ...entry, rating: ratingForEntry(entry, scenesById, blueprintsById, warnings) }));
 
-  const typeCounts: any = { scene: 0, artist: 0, popular: 0, lora: 0 };
-  for (const entry of entries) if (typeCounts[entry.type] !== undefined) typeCounts[entry.type] += 1;
-  const counts: any = { All: 0, R15: 0, R18: 0 };
+  const typeCounts: Record<string, number> = { scene: 0, artist: 0, popular: 0, lora: 0 };
+  for (const entry of entries) if (typeof entry.type === 'string' && typeCounts[entry.type] !== undefined) typeCounts[entry.type] += 1;
+  const counts = { All: 0, R15: 0, R18: 0 };
   for (const entry of entries) {
     const rating = entry.rating === 'R15' || entry.rating === 'R18' ? entry.rating : 'All';
     counts[rating] += 1;
@@ -163,11 +139,11 @@ function main() {
     entries,
   };
 
-  const changed = entries.filter((entry: any, index: any) => entry.rating !== sourceManifest.entries[index].rating);
+  const changed = entries.filter((entry, index) => entry.rating !== sourceEntries[index].rating);
   console.log(`rating refresh: source=${sourceDir} target=${targetDir}`);
   console.log(`  entries=${entries.length} changed=${changed.length}`);
   console.log(`  counts before=${JSON.stringify(sourceManifest.counts)} after=${JSON.stringify(counts)}`);
-  for (const entry of changed) console.log(`  ${entry.id}: ${sourceManifest.entries.find((e: any) => e.id === entry.id).rating} -> ${entry.rating}`);
+  for (const entry of changed) console.log(`  ${entry.id}: ${sourceEntries.find(e => e.id === entry.id)!.rating} -> ${entry.rating}`);
   if (warnings.length) for (const warning of warnings) console.log(`  warn: ${warning}`);
   if (!apply) {
     console.log('dry-run: pass --apply to build');

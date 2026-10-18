@@ -4,15 +4,15 @@
 .page-root:has(.room-surface) > .nav { @apply tw:shrink-0; }
 .page-main:has(.room-surface) { @apply tw:pb-0 tw:min-h-0; grid-template-rows:minmax(0,1fr); }
 .chat-page.room-surface { @apply tw:relative tw:max-w-[1720px] tw:h-full tw:min-h-0 tw:mb-0 tw:flex tw:flex-col; padding:var(--s-3) clamp(12px,2vw,28px); background:var(--bg-base); }
-.room-surface .chat-layout { flex:1; @apply tw:h-auto; grid-template-columns:clamp(240px,25vw,340px) minmax(0,1fr); gap:var(--s-4); @apply tw:min-h-0; }
+/* 角色舞台与对话按可用宽度共同扩展，避免大屏仍被固定侧栏宽度截断。 */
+.room-surface .chat-layout { flex:1; @apply tw:h-auto; grid-template-columns:minmax(280px,2fr) minmax(0,3fr); gap:var(--s-4); @apply tw:min-h-0; }
 .room-surface .character-card { border: 0; border-radius: 0; background: transparent; box-shadow: none; @apply tw:overflow-visible tw:min-w-0 tw:min-h-0; }
 .room-surface .character-card:has(.character-controls[open]) { z-index:var(--z-popover); }
 .room-surface .character-card::before, .room-surface .portrait-stage::before, .room-surface .portrait-stage::after, .room-surface .room-signal { @apply tw:hidden; }
 .room-surface .portrait-stage { @apply tw:min-h-0; background: transparent; border: 0; @apply tw:overflow-hidden; }
 .room-surface .portrait-stage[data-character] { background: transparent; }
-.room-surface .portrait-main { @apply tw:max-h-full; width: min(95%, 680px); @apply tw:bottom-0; }
-/* 档案保留全身辨识，陪伴页以近景取景；不改变动态模型的用户校准。 */
-.room-surface .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) .portrait-main { @apply tw:w-full tw:h-full; max-height:none; @apply tw:object-cover; object-position:50% 18%; }
+/* 静态立绘始终保留原比例与完整构图；仅窄窗口横幅采用近景，不改变动态模型校准。 */
+.room-surface .portrait-main { @apply tw:w-full tw:h-full tw:max-h-full tw:bottom-0 tw:object-contain; object-position:center; }
 .stage-portrait-missing { @apply tw:absolute; inset:0; @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:p-s-5 tw:text-secondary; background:var(--bg-surface); @apply tw:text-center tw:text-body-sm; }
 .stage-portrait-missing > svg { @apply tw:w-[44px] tw:h-[44px] tw:text-accent; }
 .stage-portrait-missing strong { @apply tw:text-primary tw:text-title-sm; }
@@ -100,7 +100,7 @@
 .room-surface.room-immersive .chat-layout { @apply tw:relative tw:block; }
 .room-surface.room-immersive .character-card { @apply tw:absolute; inset: 0; }
 .room-surface.room-immersive .character-info { @apply tw:absolute tw:right-0 tw:top-0 tw:rounded-md; z-index: var(--z-raised); background:var(--bg-surface); }
-.room-surface.room-immersive .portrait-stage:is([data-character='nene'],[data-character='natsume']):not(.live2d-ready) .portrait-main { object-fit:contain; object-position:center top; }
+.room-surface.room-immersive .portrait-main { object-position:center top; }
 .room-surface.room-immersive .avatar-status { right:auto; left:var(--s-3); }
 .room-surface.room-immersive .character-name { @apply tw:hidden; }
 .room-surface.room-immersive .character-controls-panel { top: calc(100% + 8px); @apply tw:bottom-auto tw:left-auto tw:right-0; width: min(340px, 84vw); }

@@ -82,7 +82,6 @@ html .notfound-page .notfound-actions {
 }
 
 @media (max-width: 600px) {
-  html :is(.gallery-page, .showcase-page, .scene-discovery, .library-page) :is(.gallery-toolbar, .browse-toolbar) :is(input:not([type='checkbox']):not([type='radio']), select, button) { @apply tw:min-h-[44px]; }
   html .control-mobile-nav .nav-local { @apply tw:flex-wrap tw:gap-s-3; }
   html .control-mobile-nav .nav-local-brand { flex: 1 0 100%; @apply tw:flex tw:items-center tw:gap-s-3; }
   html .control-mobile-nav .nav-logo { @apply tw:w-[90px]; }

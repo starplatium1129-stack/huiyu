@@ -225,8 +225,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-page-next .archive-icon { transform:rotate(-90deg); }
 .directory-page-turn:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .directory-pagination button:disabled { @apply tw:text-disabled tw:cursor-default; }
-.directory-catalog button:focus-visible,
-.directory-pagination :deep(.studio-select-trigger):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+.directory-catalog button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .directory-catalog .directory-tools { padding: var(--s-3) 0 0; }
 .directory-catalog .directory-list { @apply tw:min-h-0 tw:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,144px),1fr)); @apply tw:gap-s-2; padding:var(--s-1) var(--s-1) var(--s-3); align-content:start; }
 .directory-catalog .directory-item { @apply tw:relative tw:flex tw:flex-col tw:items-stretch tw:gap-s-3 tw:m-0 tw:min-w-0 tw:p-s-2; background: var(--bg-surface); @apply tw:rounded-lg; }

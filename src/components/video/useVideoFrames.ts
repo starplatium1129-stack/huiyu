@@ -247,7 +247,6 @@ export function useVideoFrames(deps: VideoFramesDeps) {
   function disposeFrames() { disposed = true; firstVersion++; lastVersion++; firstUpload?.abort(); lastUpload?.abort() }
 
   return {
-    applyVideoCtx,
     consumeVideoCtx,
     clearFirstFrame,
     clearLastFrame,

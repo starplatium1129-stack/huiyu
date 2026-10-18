@@ -6,19 +6,24 @@ import { PathLike } from 'node:fs';
 const path: typeof import('node:path') = require('node:path');
 const { isDeepStrictEqual: equal }: typeof import('node:util') = require('node:util');
 const { inspectDomain, summarizeConsistency }: typeof import('./content-impact-consistency') = require('./content-impact-consistency');
-const { localReader }: typeof import('./content-history-reader') = require('./content-history-reader');
+const { localReader, object }: typeof import('./content-history-reader') = require('./content-history-reader');
 const { PRODUCTS }: typeof import('./content-history-snapshot') = require('./content-history-snapshot');
 const { relations, relationshipIssues }: typeof import('./content-history-relations') = require('./content-history-relations');
+type Snapshot = ReturnType<typeof inspectDomain>;
+type Snapshots = Record<string, Snapshot>;
+type History = ReturnType<typeof import('../maintenance/content-impact-history').historyImpact>;
+type HistoryContext = Parameters<NonNullable<Parameters<typeof import('../maintenance/content-impact-history').historyImpact>[1]>>[0];
+type CheckIssue = { reason?: string; key?: string; file?: string; location?: string; field?: string; path?: string; schemaPath?: string; domain?: string };
+type UnknownFinding = string | { domain: string; reason: string };
 
 const DOMAINS = ['popular', 'blueprints', 'scenes', 'characters', 'curation', 'retired', 'references'];
-const CODE_ROOT = path.resolve(__dirname, '../..');
 const UNTRACKED = [
   'DATA_VERSION and compressed companions require the full content gate',
   'Unexported popular/blueprint semantic predicates and field readers require the full content gate',
   'Asset existence, human review, rendering and publication are not certified by structure checks',
 ];
 
-const FIELD_VALIDATION = {
+const FIELD_VALIDATION: Record<string, { rules: string[]; unknown: string[] }> = {
   popular: { rules: ['src/utils/popularContent.ts:parsePopularCharacter', 'content-history-relations.js:relationshipIssues'], unknown: ['Normalized/dropped input fields', 'Complete writer coverage', 'Model semantics'] },
   blueprints: { rules: ['src/utils/popularContent.ts:parseSceneBlueprint', 'content-history-relations.js:relationshipIssues'], unknown: ['Optional normalized fields', 'Complete writer coverage', 'Model semantics'] },
   scenes: { rules: ['content-history-snapshot.js:loadDomain', 'validate-scenes.js scalar prompt/negative/rating/mature contracts'], unknown: ['Unexported full scene policy', 'Rendering', 'Other field readers/writers'] },
@@ -33,12 +38,11 @@ const FIELD_VALIDATION = {
  * newly added source field impossible to hide behind a successful JSON
  * projection check.
  */
-function fieldInventory(snapshots: any) {
-  return Object.entries<any>(snapshots).map(([domain, snapshot]) => {
-    const sourceRows = (snapshot?.rows || []).filter((row: any) => row.role === 'source');
-    const derivedRows = (snapshot?.rows || []).filter((row: any) => row.role === 'derived');
-    const fields = (rows: any[]) => [...new Set(rows.flatMap((row: any) => row.value && typeof row.value === 'object' && !Array.isArray(row.value)
-      ? Object.keys(row.value) : []))].sort();
+function fieldInventory(snapshots: Snapshots) {
+  return Object.entries(snapshots).map(([domain, snapshot]) => {
+    const sourceRows = snapshot.rows.filter(row => row.role === 'source');
+    const derivedRows = snapshot.rows.filter(row => row.role === 'derived');
+    const fields = (rows: Snapshot['rows']) => [...new Set(rows.flatMap(row => Object.keys(row.value)))].sort();
     const sourceFields = fields(sourceRows);
     const derivedFields = fields(derivedRows);
     return {
@@ -50,21 +54,21 @@ function fieldInventory(snapshots: any) {
       sourceOnlyFields: sourceFields.filter((field: string) => !derivedFields.includes(field)),
       derivedOnlyFields: derivedFields.filter((field: string) => !sourceFields.includes(field)),
       sourceComplete: snapshot?.groups?.[`${domain}:source`]?.complete !== false && snapshot?.complete !== false,
-      derivedComplete: Object.entries<any>(snapshot?.groups || {}).filter(([name]) => name.includes(':derived:')).every(([, group]: any) => group.complete !== false),
+      derivedComplete: Object.entries(snapshot.groups).filter(([name]) => name.includes(':derived:')).every(([, group]) => group.complete !== false),
     };
   });
 }
 
-function selectExecution(report: any, forceFull: any = false, context: any) {
+function selectExecution(report: History | null, forceFull = false, context?: HistoryContext) {
   const reasons = [];
   if (forceFull) reasons.push('Explicit --full');
   if (!report || report.gitHistory?.status !== 'compared') reasons.push('No proved historical comparison');
   if (report) {
     reasons.push(...report.unknown);
-    const knownPaths = new Set((report.evidence?.files || []).map((entry: any) => entry.file));
-    for (const snapshots of [context?.before, context?.after]) for (const snapshot of Object.values<any>(snapshots || {})) {
-      for (const [file, value] of Object.entries<any>(snapshot.metadata)) if (file.endsWith('/manifest.json')) {
-        for (const entry of (value as any).files || []) knownPaths.add(path.posix.join(path.posix.dirname(file), entry.file));
+    const knownPaths = new Set((report.evidence?.files || []).map(entry => entry.file));
+    for (const snapshots of [context?.before, context?.after]) for (const snapshot of Object.values(snapshots || {})) {
+      for (const [file, value] of Object.entries(snapshot.metadata)) if (file.endsWith('/manifest.json') && object(value) && Array.isArray(value.files)) {
+        for (const entry of value.files) if (object(entry) && typeof entry.file === 'string') knownPaths.add(path.posix.join(path.posix.dirname(file), entry.file));
       }
     }
     for (const file of new Set([...(report.gitHistory?.paths || []), ...(report.input?.paths || [])])) {
@@ -80,54 +84,58 @@ function selectExecution(report: any, forceFull: any = false, context: any) {
     if (!report.history.entities.length) reasons.push('No record delta proved; explicit targets or an empty diff do not prove a full baseline');
   }
   const mode = reasons.length ? 'full' : 'incremental';
-  const targets = (report?.affected || []).filter((row: { impact: string; }) => row.impact === 'revalidate').map((row: any) => row.key);
+  const targets = (report?.affected || []).filter(row => row.impact === 'revalidate').map(row => row.key);
   return { mode, reasons: [...new Set(reasons)], targets: mode === 'incremental' ? [...new Set(targets)] : null,
     predicateScope: mode === 'full' ? 'all supported structural domains' : 'enumerated stable IDs; complete indexes read for proof',
     fullGate: 'required-not-run', wholeLibrary: 'not-validated' };
 }
 
-function outcome(id: string, scope: string|any[], issues: any = [], unknown: any = []) {
+function outcome(id: string, scope: string | string[], issues: CheckIssue[] = [], unknown: UnknownFinding[] = []) {
   return { id, scope, executed: true, status: issues.length ? 'failed' : unknown.length ? 'unknown' : 'passed', issues, unknown };
 }
 
-function recordEquality(snapshots: { [x: string]: any; }, keys: Set<any>) {
-  const issues: any = [], unknown = [];
+function recordEquality(snapshots: Snapshots, keys: ReadonlySet<string>) {
+  const issues: CheckIssue[] = [], unknown = [];
   for (const key of keys) {
-    const [kind, , id] = JSON.parse(key);
-    const domain = ({ blueprint: 'blueprints', scene: 'scenes', character: 'popular', outfit: 'popular' } as Record<string, any>)[kind];
+    const identity: unknown = JSON.parse(key);
+    if (!Array.isArray(identity) || typeof identity[0] !== 'string' || typeof identity[2] !== 'string') { unknown.push(`${key}: invalid record identity`); continue; }
+    const [kind, , id] = identity;
+    const domain = ({ blueprint: 'blueprints', scene: 'scenes', character: 'popular', outfit: 'popular' } as Record<string, string>)[kind];
     if (!domain) { unknown.push(`${key}: no record projection predicate`); continue; }
-    const snapshot: any = snapshots[domain];
+    const snapshot = snapshots[domain];
     if (!snapshot?.complete) { unknown.push(`${key}: incomplete source/derived index`); continue; }
-    const source = snapshot.rows.filter((row: any) => row.role === 'source' && row.key === key);
+    const source = snapshot.rows.filter(row => row.role === 'source' && row.key === key);
     if (source.length !== 1) { issues.push({ key, reason: 'Source identity is absent or ambiguous' }); continue; }
     const value = source[0].value;
-    for (const [group, data] of Object.entries<any>(snapshot.groups).filter(([name]: any) => name.includes(':derived:'))) {
+    for (const [group, data] of Object.entries(snapshot.groups).filter(([name]) => name.includes(':derived:'))) {
       const file = group.slice(group.indexOf(':derived:') + 9);
       let count = 1;
       if (domain === 'scenes' && file !== PRODUCTS.scenes) {
         const owner = value.char === 'natsume' ? 'natsume' : value.char === 'triad' ? 'shared' : 'nene';
-        count = file === 'data/scenes-core.json'
-          ? snapshot.metadata['data/curation.json'].personaCoreSceneIds.slice(0, 2000).filter((v: any) => v === id).length
-          : Number(file === `data/scenes-${owner}.json`);
+        if (file === 'data/scenes-core.json') {
+          const curation = snapshot.metadata['data/curation.json'];
+          if (!object(curation) || !Array.isArray(curation.personaCoreSceneIds)) { unknown.push(`${file}: incomplete curation projection`); continue; }
+          count = curation.personaCoreSceneIds.slice(0, 2000).filter((value: unknown) => value === id).length;
+        } else count = Number(file === `data/scenes-${owner}.json`);
       }
-      const actual = data.rows.filter((row: any) => row.key === key);
+      const actual = data.rows.filter(row => row.key === key);
       if (!data.complete) unknown.push(`${file}: incomplete projection`);
-      else if (actual.length !== count || actual.some((row: any) => !equal(row.value, value))) issues.push({ key, file, reason: 'Selected source/derived record mismatch' });
+      else if (actual.length !== count || actual.some(row => !equal(row.value, value))) issues.push({ key, file, reason: 'Selected source/derived record mismatch' });
     }
   }
   return outcome('record-equality', [...keys], issues, unknown);
 }
 
-function relationCheck(snapshots: any, keys?: Set<any>|undefined) {
+function relationCheck(snapshots: Snapshots, keys?: ReadonlySet<string>) {
   const unknown = [];
-  for (const snapshot of Object.values<any>(snapshots)) {
+  for (const snapshot of Object.values(snapshots)) {
     if (!snapshot.groups[`${snapshot.domain}:source`]?.complete) unknown.push(`${snapshot.domain}: source relationship coverage incomplete`);
-    for (const row of snapshot.rows.filter((row: any) => row.role === 'source' && (!keys || keys.has(row.key)))) relations(row, snapshots, unknown);
+    for (const row of snapshot.rows.filter(row => row.role === 'source' && (!keys || keys.has(row.key)))) relations(row, snapshots, unknown);
   }
   return outcome('source-relationships', keys ? [...keys] : 'all supported source IDs', relationshipIssues(snapshots, { keys }), [...new Set(unknown)]);
 }
 
-function runtimeFieldChecks(snapshots: { [s: string]: any; }|ArrayLike<any>, keys?: Set<any>|undefined) {
+function runtimeFieldChecks(snapshots: Snapshots, keys?: ReadonlySet<string>) {
   const issues = [], unknown = [], coverage = [];
   let parsers;
   try { parsers = (require('../../src/utils/popularContent.ts') as typeof import('../../src/utils/popularContent.ts')); }
@@ -153,7 +161,7 @@ function runtimeFieldChecks(snapshots: { [s: string]: any; }|ArrayLike<any>, key
           issues.push({ key: row.key, field, reason: 'Scene text field must be a nonempty string' });
         }
         if (value.mature !== undefined && typeof value.mature !== 'boolean') issues.push({ key: row.key, field: 'mature', reason: 'Expected boolean' });
-        if (value.rating !== undefined && !['All', 'R15', 'R18'].includes(value.rating)) issues.push({ key: row.key, field: 'rating', reason: 'Unknown rating enum' });
+        if (value.rating !== undefined && (typeof value.rating !== 'string' || !['All', 'R15', 'R18'].includes(value.rating))) issues.push({ key: row.key, field: 'rating', reason: 'Unknown rating enum' });
         if ((value.rating === 'R18') !== (value.mature === true)) issues.push({ key: row.key, reason: 'Rating/mature interlock mismatch' });
         coverage.push({ key: row.key, rule: 'validate-scenes scalar fields; full semantic rule not executed', unknownFields: Object.keys(value).filter((field) => !['id', 'prompt', 'negative', 'rating', 'mature'].includes(field)) });
       } else if (parsers) {
@@ -168,7 +176,7 @@ function runtimeFieldChecks(snapshots: { [s: string]: any; }|ArrayLike<any>, key
   return { ...outcome('runtime-field-contracts', keys ? [...keys] : 'all supported source rows', issues, unknown), coverage };
 }
 
-function fullFieldChecks(reader: any, snapshots: any) {
+function fullFieldChecks(reader: ReturnType<typeof localReader>, snapshots: Snapshots) {
   const checks = [];
   // The exported validator is pure. Do not call its CLI or private I/O helpers.
   try {
@@ -179,31 +187,27 @@ function fullFieldChecks(reader: any, snapshots: any) {
   } catch (error) { checks.push(outcome('existing-core-field-contract', 'core fields', [], [runtimeErrorMessage(error)])); }
   for (const name of ['standards', 'view']) {
     try {
-      const Ajv: any = require('ajv');
-      const schema = require(`../contracts/character-reference-${name}.schema.json`);
-      const validate = new Ajv({ allErrors: true }).compile(schema);
+      const { Ajv }: typeof import('ajv') = require('ajv');
+      const schema: unknown = require(`../contracts/character-reference-${name}.schema.json`);
+      if (!object(schema) && typeof schema !== 'boolean') throw new Error('Invalid reference schema container');
+      const validate = new Ajv({ allErrors: true }).compile<unknown>(schema);
       const valid = validate(reader.json(`data/character-reference-${name}.json`));
-      checks.push(outcome(`existing-reference-${name}-schema`, 'all declared schema fields', valid ? [] : validate.errors.map((error: any) => ({
+      checks.push(outcome(`existing-reference-${name}-schema`, 'all declared schema fields', valid ? [] : (validate.errors || []).map(error => ({
         path: error.instancePath, schemaPath: error.schemaPath, reason: error.message,
       }))));
     } catch (error) { checks.push(outcome(`existing-reference-${name}-schema`, 'reference fields', [], [runtimeErrorMessage(error)])); }
   }
-  const unknown = [];
-  for (const domain of ['characters', 'popular', 'blueprints', 'scenes']) {
-    const fields = [...new Set((snapshots[domain]?.rows || []).filter((row: { role: string; }) => row.role === 'source').flatMap((row: { value: any; }) => Object.keys(row.value)))];
-    unknown.push({ domain, observedFields: fields.sort(), semanticCoverage: 'unknown beyond explicit exported predicates and JSON projections' });
-  }
   const coverage = fieldInventory(snapshots);
   checks.push(outcome('field-inventory', 'all supported source/derived rows', [],
-    coverage.filter((entry: any) => !entry.sourceComplete || !entry.derivedComplete).map((entry: any) => ({ domain: entry.domain, reason: 'source or derived field projection is incomplete' }))));
-  return { checks, fields: unknown, fieldCoverage: coverage, ruleRoot: CODE_ROOT };
+    coverage.filter(entry => !entry.sourceComplete || !entry.derivedComplete).map(entry => ({ domain: entry.domain, reason: 'source or derived field projection is incomplete' }))));
+  return { checks, fieldCoverage: coverage };
 }
 
-function executePredicates(selection: { mode: string; targets: Iterable<any>|null|undefined; }, context: any, root: PathLike) {
+function executePredicates(selection: ReturnType<typeof selectExecution>, context: HistoryContext | undefined, root: PathLike) {
   const reader = context?.currentReader || localReader(root);
   const snapshots = { ...(context?.after || {}) };
   const checks = [];
-  let fieldCoverage: any[] = [];
+  let fieldCoverage: ReturnType<typeof fieldInventory> = [];
   if (selection.mode === 'full') {
     for (const domain of DOMAINS) {
       snapshots[domain] ||= inspectDomain(reader, domain);

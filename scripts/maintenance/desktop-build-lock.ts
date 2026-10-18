@@ -23,7 +23,7 @@ type LockOwner = {
   hostname?: string;
 };
 
-const isNodeError = (error: any): error is NodeJS.ErrnoException => error instanceof Error && 'code' in error;
+const isNodeError = (error: unknown): error is NodeJS.ErrnoException => error instanceof Error && 'code' in error;
 
 function canonicalWorkspace(workspaceRoot: string): string {
   const resolved = fs.existsSync(workspaceRoot)
@@ -32,7 +32,7 @@ function canonicalWorkspace(workspaceRoot: string): string {
   return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
 }
 
-function desktopBuildLockPath(workspaceRoot: string, lockRoot: any = path.join(os.tmpdir(), 'aics-desktop-build-locks')): string {
+function desktopBuildLockPath(workspaceRoot: string, lockRoot = path.join(os.tmpdir(), 'aics-desktop-build-locks')): string {
   const workspace = canonicalWorkspace(workspaceRoot);
   const digest = crypto.createHash('sha256').update(workspace).digest('hex').slice(0, 24);
   return path.join(lockRoot, `${digest}.lock`);
@@ -51,7 +51,7 @@ function processIsAlive(pid: number | undefined): boolean {
   try {
     process.kill(pid, 0);
     return true;
-  } catch (error: any) {
+  } catch (error) {
     return isNodeError(error) && error.code === 'EPERM';
   }
 }
@@ -60,7 +60,7 @@ function clearStaleLock(lockPath: string, staleMs: number): boolean {
   let stat;
   try {
     stat = fs.statSync(lockPath);
-  } catch (error: any) {
+  } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') return true;
     throw error;
   }
@@ -75,7 +75,7 @@ function clearStaleLock(lockPath: string, staleMs: number): boolean {
   const stalePath = `${lockPath}.stale-${process.pid}-${crypto.randomUUID()}`;
   try {
     fs.renameSync(lockPath, stalePath);
-  } catch (error: any) {
+  } catch (error) {
     if (isNodeError(error) && error.code === 'ENOENT') return true;
     return false;
   }
@@ -84,7 +84,7 @@ function clearStaleLock(lockPath: string, staleMs: number): boolean {
 }
 
 function delay(ms: number): Promise<void> {
-  return new Promise<any>((resolve: any) => setTimeout(resolve, ms));
+  return new Promise<void>(resolve => setTimeout(resolve, ms));
 }
 
 async function acquireDesktopBuildLock(options: LockOptions): Promise<() => boolean> {
@@ -119,7 +119,7 @@ async function acquireDesktopBuildLock(options: LockOptions): Promise<() => bool
         fs.rmSync(lockPath, { recursive: true, force: true });
         return true;
       };
-    } catch (error: any) {
+    } catch (error) {
       if (!isNodeError(error) || error.code !== 'EEXIST') throw error;
       if (clearStaleLock(lockPath, staleMs)) continue;
       if (Date.now() >= deadline) {

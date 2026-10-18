@@ -21,6 +21,7 @@ import './assets/css/fluid-workspaces.css'
 import './assets/css/fluid-glass.css'
 import './assets/css/glass-material-base.css'
 import './assets/css/native-controls.css'
+import './assets/css/studio-fields.css'
 import './assets/css/desktop-layout.css'
 import './assets/css/interaction-motion.css'
 // Keep saved pixel-theme colors in the loading frame; its surfaces load on demand.

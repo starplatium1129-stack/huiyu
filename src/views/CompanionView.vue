@@ -30,7 +30,7 @@
           <div class="companion-pop-group" data-preference-pane="character">
             <strong>角色外观</strong>
             <button type="button" class="companion-pop-item" @click="openAppearance"><ArchiveIcon name="wardrobe" /><span>角色取景与外观</span><ArchiveIcon class="preference-chevron" name="chevron-down" /></button>
-            <Live2DQualityControl :native="Boolean(desktopBridge)" />
+            <Live2DQualityControl />
           </div>
           <div class="companion-pop-group" data-preference-pane="companion">
             <strong>声音与问候</strong>

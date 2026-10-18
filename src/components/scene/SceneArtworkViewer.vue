@@ -46,11 +46,12 @@ export interface SceneArtworkPreview {
 
 <script setup lang="ts">
 import { computed, nextTick, onDeactivated, onUnmounted, ref, useId, watch } from 'vue'
-import { useMediaQuery, useEventListener } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 
 const props = defineProps<{ items: SceneArtworkPreview[] }>()
@@ -58,7 +59,7 @@ const selectedId = defineModel<string | null>({ required: true })
 const emit = defineEmits<{ 'after-close': [] }>()
 const viewerEl = ref<HTMLElement | null>(null), closeButton = ref<HTMLElement | null>(null), infoEl = ref<HTMLElement | null>(null)
 const infoToggle = ref<HTMLElement | null>(null), infoClose = ref<HTMLElement | null>(null)
-const infoId = useId(), titleId = useId(), compact = useMediaQuery('(max-width: 900px)')
+const infoId = useId(), titleId = useId()
 const infoOpen = ref(false), original = ref(false)
 const displayedItems = ref<SceneArtworkPreview[]>([]), displayedIndex = ref(0)
 const current = computed(() => displayedItems.value[displayedIndex.value] ?? null)
@@ -100,7 +101,7 @@ function select(index: number) {
   cancelFlight(); sourceImage = null; selectedId.value = item.id
 }
 function navigate(event: KeyboardEvent) {
-  if (event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey
+  if ((compact.value && infoOpen.value) || event.defaultPrevented || event.isComposing || event.ctrlKey || event.metaKey || event.altKey
     || (event.target as HTMLElement).closest('input, textarea, select, .zoomable-image-viewer.is-zoomed')) return
   if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
   event.preventDefault(); select(displayedIndex.value + (event.key === 'ArrowLeft' ? -1 : 1))
@@ -115,28 +116,10 @@ watch(() => [selectedId.value, props.items] as const, ([id, items], previous) =>
   void enter()
 }, { immediate: true, flush: 'post' })
 useFocusTrap(viewerEl, () => !!selectedId.value, { initialFocus: closeButton, onEscape: () => { selectedId.value = null } })
-function toggleInfo(event: MouseEvent) {
-  viewerEl.value?.toggleAttribute('data-info-instant', event.detail === 0)
-  if (!infoOpen.value) infoToggle.value?.focus({ preventScroll: true })
-  infoOpen.value = !infoOpen.value
-}
-function closeInfo(event?: MouseEvent) {
-  viewerEl.value?.toggleAttribute('data-info-instant', !event || event.detail === 0)
-  infoOpen.value = false
-}
-useFocusTrap(infoEl, () => !!selectedId.value && compact.value && infoOpen.value, {
-  initialFocus: infoClose, onEscape: closeInfo, lockScroll: false,
+const { compact, toggle: toggleInfo, close: closeInfo } = useArtworkInfoDrawer({
+  viewer: viewerEl, panel: infoEl, trigger: infoToggle, closeButton: infoClose,
+  viewerCloseButton: closeButton, open: infoOpen, active: () => !!selectedId.value,
 })
-watch(compact, value => {
-  if (!selectedId.value) return
-  // Capture focus before the responsive info panel becomes inert or its launcher hides.
-  if (value && !infoOpen.value && infoEl.value?.contains(document.activeElement)) {
-    void nextTick(() => { if (selectedId.value && compact.value) infoToggle.value?.focus({ preventScroll: true }) })
-  } else if (!value && (infoOpen.value || document.activeElement === infoToggle.value)) {
-    closeInfo()
-    void nextTick(() => { if (selectedId.value && !compact.value) closeButton.value?.focus({ preventScroll: true }) })
-  }
-}, { flush: 'sync' })
 useEventListener(window, 'resize', cancelFlight)
 useEventListener(window.visualViewport, 'resize', cancelFlight)
 onDeactivated(() => { selectedId.value = null; cancelFlight() })

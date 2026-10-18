@@ -1,4 +1,5 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
+import type { ManifestEntry, ManifestIssue } from './resource-manifest-types';
 'use strict';
 
 /**
@@ -40,10 +41,10 @@ const EXCLUDED_PATHS = Object.freeze(['assets/character-references', 'assets/liv
 const HEX_ESCAPE_RE = /%[0-9a-fA-F]{2}/;
 const FORBIDDEN_CHARS_RE = /[\\:\u0000-\u001f\u007f]/;
 
-type ManifestEntry = { path: string; bytes: number; sha256: string };
-type ManifestObject = { schemaVersion: number; entries: any; unverified?: any };
 type ScanItem = { kind: string; path: string; message?: string };
 type ManifestOptions = { root: string; io?: typeof import('node:fs') };
+type PathCheck = { ok: true } | { ok: false; code: string; message: string };
+const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 /** 参数/环境级失败；CLI 捕获后退出 2，区别于目标内容问题（退出 1）。 */
 class UsageError extends Error {}
@@ -77,7 +78,7 @@ function tryDecodePercent(text: string) {
  * 清单路径合规检查（字面路径，非 URL）。返回 { ok: true } 或 { ok: false, code, message }。
  * 非法路径不得触发任何 fs 访问。
  */
-function checkManifestPath(rel: string) {
+function checkManifestPath(rel: unknown): PathCheck {
   if (typeof rel !== 'string' || rel === '') return { ok: false, code: 'bad-entry', message: '路径必须是非空字符串' };
   if (FORBIDDEN_CHARS_RE.test(rel)) return { ok: false, code: 'illegal-path', message: '路径包含反斜杠、冒号或控制字符（Windows 分隔符/盘符/数据流形态不是资源路径）' };
   const normalized = path.posix.normalize(rel);
@@ -111,7 +112,7 @@ function checkManifestPath(rel: string) {
  * 向上找最近存在祖先（覆盖悬空链接），不能以「目标不存在」跳过边界。只解析路径，
  * 不读取任何文件内容；junction/symlink 越界在 stat/读取之前被拒绝。
  */
-function resolveRealpathBoundary(io: typeof import("node:fs"), absPath: string, rootReal: string) {
+function resolveRealpathBoundary(io: typeof import("node:fs"), absPath: string, rootReal: string): { ok: true; realTarget: string } | { ok: false; code: string; message: string } {
   let cur = absPath;
   const missingTail = [];
   for (;;) {
@@ -272,11 +273,13 @@ function generateManifest({ root, io = nodeFs }: ManifestOptions) {
  * { count, bytes, sha256 }）与 invalidPaths（路径合规失败的路径，调用方跳过其后续
  * fs 检查，比较端不得用其产出差异）。
  */
-function parseManifestStructure(manifest: ManifestObject) {
-  const errors: any[] = [];
-  const push = (error: any) => errors.push(error);
-  const empty = () => ({ errors, listed: 0, byPath: new Map(), invalidPaths: new Set() });
-  if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
+function parseManifestStructure(manifest: unknown) {
+  const errors: ManifestIssue[] = [];
+  const push = (error: ManifestIssue) => errors.push(error);
+  const byPath = new Map<string, { count: number; bytes: number; sha256: string }>();
+  const invalidPaths = new Set<string>();
+  const empty = () => ({ errors, listed: 0, byPath, invalidPaths });
+  if (!object(manifest)) {
     push({ code: 'bad-manifest', message: '清单必须是 JSON 对象' });
     return empty();
   }
@@ -295,13 +298,11 @@ function parseManifestStructure(manifest: ManifestObject) {
       push({ code: 'unverified-items', count: manifest.unverified.length, message: '清单仍包含未核验项；已列条目字节正确不代表完整清单通过' });
     }
   }
-  const byPath = new Map<string, { count: number; bytes: number; sha256: string }>();
-  const invalidPaths = new Set();
-  const pathIdentities = new Map();
+  const pathIdentities = new Map<string, string>();
   let listed = 0;
   for (const entry of manifest.entries) {
     listed++;
-    if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
+    if (!object(entry)) {
       push({ code: 'bad-entry', message: '条目必须是对象' });
       continue;
     }
@@ -310,7 +311,7 @@ function parseManifestStructure(manifest: ManifestObject) {
       push({ code: 'bad-entry', message: '条目缺少非空字符串 path' });
       continue;
     }
-    if (!Number.isSafeInteger(bytes) || bytes < 0) {
+    if (typeof bytes !== 'number' || !Number.isSafeInteger(bytes) || bytes < 0) {
       push({ path: rel, code: 'bad-entry', message: `bytes 必须是非负整数，收到 ${JSON.stringify(bytes)}` });
       continue;
     }
@@ -339,9 +340,9 @@ function parseManifestStructure(manifest: ManifestObject) {
 }
 
 /** 清单条目内容核验（不可信数据）：先结构，再边界，最后 stat/字节/哈希。 */
-function verifyEntries(rootReal: string, manifest: ManifestObject, io: typeof import("node:fs")) {
+function verifyEntries(rootReal: string, manifest: unknown, io: typeof import("node:fs")) {
   const { errors, listed, byPath, invalidPaths } = parseManifestStructure(manifest);
-  const push = (error: any) => errors.push(error);
+  const push = (error: ManifestIssue) => errors.push(error);
   for (const [rel, record] of byPath) {
     if (invalidPaths.has(rel)) continue;
     const abs = path.join(rootReal, ...rel.split('/'));
@@ -350,7 +351,7 @@ function verifyEntries(rootReal: string, manifest: ManifestObject, io: typeof im
       push({ path: rel, code: boundary.code, message: boundary.message });
       continue;
     }
-    const realRel = path.relative(rootReal, boundary.realTarget ?? rootReal).split(path.sep).join('/');
+    const realRel = path.relative(rootReal, boundary.realTarget).split(path.sep).join('/');
     const realCheck = checkManifestPath(realRel);
     if (!realCheck.ok) {
       push({ path: rel, code: 'out-of-scope', message: '真实目标不在允许资源域内或位于排除域，未读取文件' });
@@ -382,20 +383,20 @@ function verifyEntries(rootReal: string, manifest: ManifestObject, io: typeof im
       push({ path: rel, code: 'hash-mismatch', expected: record.sha256.toLowerCase(), actual, message: 'SHA-256 不匹配：实际内容与清单记录不一致' });
     }
   }
-  errors.sort((a, b) => comparePath(String((a as { path?: any }).path || ''), String((b as { path?: any }).path || '')) || comparePath(String((a as { code?: any }).code || ''), String((b as { code?: any }).code || '')));
+  errors.sort((a, b) => comparePath(a.path || '', b.path || '') || comparePath(a.code, b.code));
   return { errors, listed, uniquePaths: byPath.size, byPath };
 }
 
 /**
  * 校验内存清单对象（测试/调用者可直接传入）。返回结果对象，不抛内容性错误。
  */
-function verifyManifestEntries({ root, manifest, io = nodeFs }: any) {
+function verifyManifestEntries({ root, manifest, io = nodeFs }: ManifestOptions & { manifest: unknown }) {
   const rootReal = resolveRoot({ root, io });
   const { errors, listed, uniquePaths, byPath } = verifyEntries(rootReal, manifest, io);
-  const errorPaths = new Set(errors.map((e) => (e as { path?: string }).path).filter((e): e is string => Boolean(e)));
+  const errorPaths = new Set(errors.map((e) => e.path).filter((e): e is string => Boolean(e)));
   // verified/failedPaths 只统计结构合法的唯一路径；bad-entry 等无 path 或路径未入
   // 索引的结构错误只计入 errorCount，不虚增 verified，也不使 verified 变负。
-  const failedPaths = [...byPath].filter(([rel]: any) => errorPaths.has(rel)).map(([rel]: any) => rel);
+  const failedPaths = [...byPath].filter(([rel]) => errorPaths.has(rel)).map(([rel]) => rel);
   return {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-manifest-verification',
@@ -435,7 +436,7 @@ function verifyManifest({ root, manifestPath, io = nodeFs }: { root: string; man
   if (!manifestPath || typeof manifestPath !== 'string') throw new UsageError('--manifest 缺失或不是字符串');
   const rootReal = resolveRoot({ root, io });
   const { resolved, raw } = readManifestFile(rootReal, manifestPath, '--manifest', io);
-  let manifest;
+  let manifest: unknown;
   try {
     manifest = JSON.parse(raw.toString('utf8'));
   } catch (err) {
@@ -448,7 +449,7 @@ function verifyManifest({ root, manifestPath, io = nodeFs }: { root: string; man
       errors: [{ code: 'bad-manifest', message: `清单 JSON 解析失败: ${runtimeErrorMessage(err)}` }],
     };
   }
-  const result = verifyManifestEntries({ root: rootReal, manifest: manifest as ManifestObject, io });
+  const result = verifyManifestEntries({ root: rootReal, manifest, io });
   return { ...result, manifestPath: manifestRelPath(rootReal, resolved) };
 }
 
@@ -468,35 +469,30 @@ const DIFF_SCOPE = Object.freeze({
  * 仍比较已列条目，但整体 ok=false，不构成「完整一致」的成功结论。old→new 由调用
  * 参数顺序决定；结果路径按码元顺序稳定排序。
  */
-function compareManifests({ oldManifest, newManifest }: any) {
+function compareManifests({ oldManifest, newManifest }: { oldManifest: unknown; newManifest: unknown }) {
   const oldStructure = parseManifestStructure(oldManifest);
   const newStructure = parseManifestStructure(newManifest);
-  const errors: Array<Record<string, any>> = [
-    ...oldStructure.errors.map((e) => ({ ...(e as object), side: 'old' })),
-    ...newStructure.errors.map((e) => ({ ...(e as object), side: 'new' })),
+  const errors = [
+    ...oldStructure.errors.map((e) => ({ ...e, side: 'old' })),
+    ...newStructure.errors.map((e) => ({ ...e, side: 'new' })),
   ];
-  const result: {
-    added: ManifestEntry[];
-    removed: ManifestEntry[];
-    changed: Array<{ path: string; before: Omit<ManifestEntry, 'path'>; after: Omit<ManifestEntry, 'path'> }>;
-    [key: string]: any;
-  } = {
+  const added: ManifestEntry[] = [];
+  const removed: ManifestEntry[] = [];
+  const changed: Array<{ path: string; before: Omit<ManifestEntry, 'path'>; after: Omit<ManifestEntry, 'path'> }> = [];
+  const result = {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-manifest-diff',
     ok: errors.length === 0,
     identical: false,
     totals: { added: 0, removed: 0, changed: 0, unchanged: 0 },
-    added: [],
-    removed: [],
-    changed: [],
+    added,
+    removed,
+    changed,
     errors,
     scope: DIFF_SCOPE,
   };
-  const blocking = (list: any[]) => list.some((e) => (e as { code?: string }).code !== 'unverified-items');
+  const blocking = (list: ManifestIssue[]) => list.some((e) => e.code !== 'unverified-items');
   if (blocking(oldStructure.errors) || blocking(newStructure.errors)) return result;
-  const added: ManifestEntry[] = [];
-  const removed: ManifestEntry[] = [];
-  const changed: Array<{ path: string; before: Omit<ManifestEntry, 'path'>; after: Omit<ManifestEntry, 'path'> }> = [];
   let unchanged = 0;
   for (const [rel, before] of oldStructure.byPath) {
     const after = newStructure.byPath.get(rel);
@@ -516,9 +512,6 @@ function compareManifests({ oldManifest, newManifest }: any) {
   removed.sort(byPathOrder);
   changed.sort(byPathOrder);
   result.totals = { added: added.length, removed: removed.length, changed: changed.length, unchanged };
-  result.added = added;
-  result.removed = removed;
-  result.changed = changed;
   result.identical = added.length === 0 && removed.length === 0 && changed.length === 0;
   return result;
 }
@@ -541,8 +534,8 @@ function compareManifestFiles({ root, manifestPath, compareManifestPath, io = no
     oldManifestPath: manifestRelPath(rootReal, oldRead.resolved),
     newManifestPath: manifestRelPath(rootReal, newRead.resolved),
   };
-  let oldManifest = null;
-  let newManifest = null;
+  let oldManifest: unknown = null;
+  let newManifest: unknown = null;
   const parseErrors = [];
   try {
     oldManifest = JSON.parse(oldRead.raw.toString('utf8'));

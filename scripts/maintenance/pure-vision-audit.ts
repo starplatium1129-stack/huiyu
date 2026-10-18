@@ -12,6 +12,10 @@
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { execFile }: typeof import('child_process') = require('child_process');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+import { readReferenceStandards, type ReferenceCharacter, type ReferenceOutfit } from '../lib/reference-standards';
+type AuditItem = { key: string; char: ReferenceCharacter; outfit: ReferenceOutfit;
+  pers: { id: string; name: string }; targetPath: string };
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
@@ -24,12 +28,13 @@ const OUT_BASE = (() => {
 })();
 const AUDIT_CONCURRENCY = 4;
 
-const standards = JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8'));
+const standards = readReferenceStandards(JSON.parse(fs.readFileSync(STANDARDS_FILE, 'utf8')));
 
-let auditReport: Record<string, any> = {};
+let auditReport: Record<string, unknown> = {};
 if (fs.existsSync(REPORT_FILE)) {
   try {
-    auditReport = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
+    const saved: unknown = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
+    if (object(saved)) auditReport = saved;
   } catch (e) {
     auditReport = {};
   }
@@ -40,8 +45,8 @@ function saveReport() {
   // 合并磁盘最新报告（防多进程并发覆盖）+ 原子写入
   try {
     if (fs.existsSync(REPORT_FILE)) {
-      const disk = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
-      auditReport = Object.assign({}, disk, auditReport);
+      const disk: unknown = JSON.parse(fs.readFileSync(REPORT_FILE, 'utf8'));
+      if (object(disk)) auditReport = { ...disk, ...auditReport };
     }
   } catch (_) {}
   const tmp = REPORT_FILE + '.tmp';
@@ -49,7 +54,7 @@ function saveReport() {
   fs.renameSync(tmp, REPORT_FILE);
 }
 
-const PERSPECTIVE_CONFIGS: any = {
+const PERSPECTIVE_CONFIGS: Partial<Record<string, { promptGuide: string }>> = {
   ref_01_face_closeup: {
     promptGuide: "此图是否为标准的角色【面部与微表情特写】（胸部以上或头部特写，85mm浅景深）？画面中是否单人、五官清晰、无崩坏、无双人或分身、无漫画分格？"
   },
@@ -64,12 +69,12 @@ const PERSPECTIVE_CONFIGS: any = {
   }
 };
 
-function runVisionInspect(imagePath: string, promptGuide: any) {
-  return new Promise<any>((resolve: any) => {
+function runVisionInspect(imagePath: string, promptGuide: string) {
+  return new Promise<{ passed: boolean; reason: string }>(resolve => {
     const inspectScript = path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js');
     const promptText = `${promptGuide}\n\n请按以下格式回答：\n【审核结论】：通过 / 不通过\n【详细理由】：...`;
 
-    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (error: any, stdout: any, stderr: any) => {
+    execFile('node', [inspectScript, imagePath, '-p', promptText], { timeout: 60000 }, (_error, stdout, stderr) => {
       const output = (stdout || '') + (stderr || '');
       let passed = false;
       let reason = output.trim();
@@ -101,14 +106,14 @@ function findActualFile(dir: string, persId: string) {
   if (fs.existsSync(plain)) return plain;
   if (fs.existsSync(dir)) {
     const files = fs.readdirSync(dir);
-    const match = files.find((f: any) => f.includes(persId) && f.endsWith('.png'));
+    const match = files.find(f => f.includes(persId) && f.endsWith('.png'));
     if (match) return path.join(dir, match);
   }
   return plain;
 }
 
 function getAllItems() {
-  const items: any[] = [];
+  const items: AuditItem[] = [];
   for (const char of standards.characters) {
     for (const outfit of char.outfits) {
       for (const pers of standards.perspectives) {
@@ -127,8 +132,9 @@ function getAllItems() {
   return items;
 }
 
-async function auditSingleItem(item: any) {
+async function auditSingleItem(item: AuditItem) {
   const pConfig = PERSPECTIVE_CONFIGS[item.pers.id];
+  if (!pConfig) throw new Error(`Unsupported audit perspective: ${item.pers.id}`);
   const isNude = item.outfit.isNsfw;
   const guide = isNude
     ? `${pConfig.promptGuide} 特别注意：此图为全裸形态，请确认画面为纯粹裸体，无浴袍、泳装或内衣遮挡。`
@@ -169,25 +175,25 @@ async function main() {
     return;
   }
   const force = args.includes('--force');
-  const keysArg = args.find((a: any) => a.startsWith('--keys='));
+  const keysArg = args.find(a => a.startsWith('--keys='));
   const keysValue = keysArg ? keysArg.split('=')[1] : (args.includes('--keys') ? args[args.indexOf('--keys') + 1] : '');
-  const filterKeys = keysValue ? keysValue.split(',').map((s: any) => s.trim()).filter(Boolean) : null;
+  const filterKeys = keysValue ? keysValue.split(',').map(s => s.trim()).filter(Boolean) : null;
 
   const allItems = getAllItems();
 
   while (true) {
     // 找出磁盘上已有但尚未审核的项（默认跳过已审的 pass/fail，避免无限重审）
     // --force 强制重审；--keys 仅审指定前缀；重渲染后推荐 --force --keys <key>
-    const pendingItems = allItems.filter((item: any) => {
+    const pendingItems = allItems.filter(item => {
       if (!force && auditReport[item.key]) return false;
-      if (filterKeys && !filterKeys.some((k: any) => item.key === k || item.key.startsWith(k))) return false;
+      if (filterKeys && !filterKeys.some(k => item.key === k || item.key.startsWith(k))) return false;
       if (!fs.existsSync(item.targetPath)) return false;
       const stat = fs.statSync(item.targetPath);
       return stat.size > 20000;
     });
 
     if (pendingItems.length === 0) {
-      const passedCount = Object.values(auditReport).filter((r: any) => r.passed).length;
+      const passedCount = Object.values(auditReport).filter(r => object(r) && r.passed).length;
       console.log(`[Pure Auditor] 无待审核项。已审 ${Object.keys(auditReport).length}/${allItems.length}，通过 ${passedCount}。`);
       break;
     }
@@ -197,14 +203,14 @@ async function main() {
     console.log(`================================================\n`);
 
     let cursor = 0;
-    async function worker(_id?: number) {
+    async function worker() {
       while (cursor < pendingItems.length) {
         const item = pendingItems[cursor++];
         await auditSingleItem(item);
       }
     }
 
-    const workers = Array.from({ length: AUDIT_CONCURRENCY }, (_: any, i: any) => worker(i + 1));
+    const workers = Array.from({ length: AUDIT_CONCURRENCY }, () => worker());
     await Promise.all(workers);
     saveReport();
   }

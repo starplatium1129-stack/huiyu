@@ -1,6 +1,6 @@
 type WorkflowEffect = 'read-only' | 'preview' | 'self-heal-missing' | 'guard'
   | 'writes-source' | 'writes-product' | 'writes-release'
-  | 'delete' | 'external-model' | 'network-download' | 'publish-remote' | 'service' | 'isolated-fixture';
+  | 'delete' | 'external-model' | 'network-download' | 'publish-remote' | 'service';
 type WorkflowMachine = 'node' | 'windows' | 'windows-toolchain' | 'python' | 'python-pillow'
   | 'gateway' | 'comfyui' | 'vision-api' | 'network' | 'build-present';
 interface WorkflowRun {

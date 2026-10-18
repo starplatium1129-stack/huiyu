@@ -5,7 +5,7 @@ const path: typeof import('node:path') = require('node:path');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 import type { WorkflowDefinition, WorkflowRegistry, WorkflowStep } from './workflow-types';
 import { errorMessage } from './runtime-errors';
-const isRecord = (value: any): value is Record<string, any> => value !== null && typeof value === 'object' && !Array.isArray(value);
+const isRecord = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
 
 /**
  * 运行条件元数据（W1）枚举。run.nature / run.switches 的值取自 EFFECTS，
@@ -25,7 +25,6 @@ const EFFECTS = Object.freeze([
   'network-download',   // 从外网下载
   'publish-remote',     // 推送远端（GitHub Releases 等）
   'service',            // 启动长驻服务
-  'isolated-fixture',   // 仅使用临时夹具，不触碰生产数据
 ]);
 const MACHINES = Object.freeze([
   'node', 'windows', 'windows-toolchain', 'python', 'python-pillow', 'gateway',
@@ -33,17 +32,17 @@ const MACHINES = Object.freeze([
 ]);
 const RESUME_MODES = Object.freeze(['idempotent', 'checkpoint', 'na']);
 /** 描述性标签无需在复合项中逐个重复；有副作用的子项必须被完整声明。 */
-const PASSIVE_EFFECTS = Object.freeze(['read-only', 'preview', 'isolated-fixture']);
+const PASSIVE_EFFECTS = Object.freeze(['read-only', 'preview']);
 
 /** 校验单个注册项的 run 元数据；返回错误消息数组（空 = 合法）。 */
-function validateRun(name: string, def: any) {
+function validateRun(name: string, def: { run?: unknown; cmd?: unknown }) {
   const errors: string[] = [];
   const run = def.run;
   if (!isRecord(run)) {
     errors.push(`${name}: 缺少 run 运行条件元数据`);
     return errors;
   }
-  const list = (value: any): any[] => (Array.isArray(value) ? value : value == null ? [] : [value]);
+  const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : value == null ? [] : [value]);
   const nature = list(run.nature);
   if (!Array.isArray(run.nature)) errors.push(`${name}: run.nature 必须是数组`);
   if (!nature.length) errors.push(`${name}: run.nature 不能为空`);
@@ -54,7 +53,7 @@ function validateRun(name: string, def: any) {
   for (const item of machine) if (!MACHINES.some(machine => machine === item)) errors.push(`${name}: 未知 machine "${String(item)}"`);
   if (run.switches != null && typeof run.switches === 'object' && !Array.isArray(run.switches)) {
     for (const [flag, effects] of Object.entries(run.switches)) {
-      const command = Array.isArray(def.cmd) ? def.cmd : [];
+      const command: unknown[] = Array.isArray(def.cmd) ? def.cmd : [];
       const executable = String(command[0] || '').replace(/\\/g, '/').split('/').pop() || '';
       const scriptIndex = command.findIndex((part: unknown) => typeof part === 'string' && part.toLowerCase() === '-file');
       const powershellScript = /^(?:powershell|pwsh)(?:\.exe)?$/i.test(executable)
@@ -77,7 +76,7 @@ function validateRun(name: string, def: any) {
 }
 
 function audit(registry: WorkflowRegistry, root: string) {
-  const scripts: Record<string, any> = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).scripts;
+  const scripts: Record<string, unknown> = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).scripts;
   const errors: string[] = [];
   for (const [name, def] of Object.entries(registry)) {
     if (!def.cmd && !def.steps && !def.builtin) errors.push(`${name}: 缺少入口`);
@@ -161,10 +160,10 @@ function main(argv: string[], registry: WorkflowRegistry, root: string) {
     const search = name === 'search';
     if (help || search || (name && !registry[name] && Object.keys(registry).some(k => k.startsWith(name + ':')))) {
       const query = search ? raw.join(' ').toLowerCase() : '';
-      const entries = Object.entries(registry).filter(([k, v]: any) => search ? `${k} ${v.desc}`.toLowerCase().includes(query) : !name || name.startsWith('-') || k === name || k.startsWith(name + ':'));
+      const entries = Object.entries(registry).filter(([k, v]) => search ? `${k} ${v.desc}`.toLowerCase().includes(query) : !name || name.startsWith('-') || k === name || k.startsWith(name + ':'));
       if (!entries.length) throw new Error(`没有匹配工作流: ${name} ${query}`);
       console.log('用法: npm run wf -- <命令> [参数]；search <关键词>；--plan 只预览；audit:workflows --json 只读审计');
-      for (const [k, v] of entries.sort(([a]: any, [b]: any) => a.localeCompare(b))) {
+      for (const [k, v] of entries.sort(([a], [b]) => a.localeCompare(b))) {
         console.log(`${k.padEnd(25)} ${v.desc}`);
         if (k === name) console.log(JSON.stringify({ command: v.cmd, steps: v.steps, required: v.required, options: v.opts, docs: v.docs, needs: v.needs, run: v.run }, null, 2));
       }
@@ -179,8 +178,8 @@ function main(argv: string[], registry: WorkflowRegistry, root: string) {
       const [cmd, cmdArgs] = invocation(def, args);
       // 保留默认与各开关说明的区别，不将 --apply 错标成仅预览，也不猜组合开关优先级。
       const conditions = preview && def.run
-        ? Object.entries(def.run.switches || {}).filter(([flag]: any) => cmdArgs.some(arg => arg === flag || arg.startsWith(flag + '=')))
-          .map(([flag, effects]: any) => `[${flag}: ${effects.join(', ')}]`) : [];
+        ? Object.entries(def.run.switches || {}).filter(([flag]) => cmdArgs.some(arg => arg === flag || arg.startsWith(flag + '=')))
+          .map(([flag, effects]) => `[${flag}: ${effects.join(', ')}]`) : [];
       const tags = preview && def.run ? ` [默认: ${(def.run.nature || []).join(', ')}]${conditions.length ? ' ' + conditions.join(' ') : ''}` : '';
       console.error(`${preview ? '[预览]' : '[执行]'} ${step}: ${JSON.stringify([cmd, ...cmdArgs])}${tags}`);
       if (preview) continue;

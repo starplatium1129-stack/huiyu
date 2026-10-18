@@ -13,8 +13,13 @@
  */
 
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
+import type { CandidateOptions, CandidateTask, GenerationOptions } from '../lib/generation-types';
+import { readReferenceStandards, type ReferenceOutfit as Outfit, type ReferenceCharacter as Character,
+  type ReferenceStandards as Standards } from '../lib/reference-standards';
 
-const PERSPECTIVE_CONFIGS: any = {
+type Options = CandidateOptions & { ids?: string; keys?: string };
+
+const PERSPECTIVE_CONFIGS: Record<string, { suffix: string; negSuffix: string }> = {
   ref_01_face_closeup: {
     suffix: "face and eyes extreme close-up portrait, 85mm f/1.4 shallow depth of field, soft bokeh, expressive anime eyes, looking at viewer, subtle gentle expression, soft cinematic studio key light, highly detailed facial features and skin texture",
     negSuffix: "full body, upper body, hands, extra limbs, blurry face, bad eyes, lowres",
@@ -33,7 +38,7 @@ const PERSPECTIVE_CONFIGS: any = {
   }
 };
 
-function buildPrompt(char: any, outfit: any, persId: any) {
+function buildPrompt(char: Character, outfit: Outfit, persId: string) {
   const pConfig = PERSPECTIVE_CONFIGS[persId];
   const isNude = outfit.id === 'nsfw_nude' || outfit.name.includes('全裸') || outfit.name.includes('纯粹');
 
@@ -68,9 +73,9 @@ function buildPrompt(char: any, outfit: any, persId: any) {
 }
 
 // 收集所有待渲染任务
-function collectTasks(standards: any, opts: any) {
-  const tasks: any[] = [];
-  const only = opts.ids ? new Set(opts.ids.split(',').map((s: any) => s.trim()).filter(Boolean)) : null;
+function collectTasks(standards: Standards, opts: Options) {
+  const tasks: CandidateTask[] = [];
+  const only = opts.ids ? new Set(opts.ids.split(',').map(s => s.trim()).filter(Boolean)) : null;
   for (const char of standards.characters) {
     if (only && !only.has(char.id)) continue;
     for (const outfit of char.outfits) {
@@ -90,12 +95,12 @@ function collectTasks(standards: any, opts: any) {
     }
   }
   if (!opts.keys) return tasks;
-  const selected = new Set(opts.keys.split(',').map((key: any) => key.trim()).filter(Boolean));
-  if (!selected.size || [...selected].some((key: any) => !tasks.some((task: any) => task.key === key))) throw new Error('Unknown reference candidate key');
-  return tasks.filter((task: any) => selected.has(task.key));
+  const selected = new Set(opts.keys.split(',').map(key => key.trim()).filter(Boolean));
+  if (!selected.size || [...selected].some(key => !tasks.some(task => task.key === key))) throw new Error('Unknown reference candidate key');
+  return tasks.filter(task => selected.has(task.key));
 }
 
-function buildPayload(char: any, outfit: any, persId: any, seed: any) {
+function buildPayload(char: Character, outfit: Outfit, persId: string, seed: number) {
   const { prompt, negative } = buildPrompt(char, outfit, persId);
   return {
     modelId: 'anima-miaomiao-v1.6',
@@ -111,11 +116,11 @@ function buildPayload(char: any, outfit: any, persId: any, seed: any) {
   };
 }
 
-async function main(args: any = process.argv.slice(2), deps: any = {}) {
+async function main(args: string[] = process.argv.slice(2), deps: GenerationOptions = {}) {
   const opts = safety.parseArgs(args, { ids: 'value', keys: 'value', force: 'flag' });
   if (opts.help) return safety.help(__filename, '[--ids=a,b,c] [--keys <reference keys>] [--force]');
-  const input: any = safety.snapshot(opts.root, ['data/character-reference-standards.json']);
-  const tasks = collectTasks(input.data['data/character-reference-standards.json'], opts);
+  const input = safety.snapshot(opts.root, ['data/character-reference-standards.json']);
+  const tasks = collectTasks(readReferenceStandards(input.data['data/character-reference-standards.json']), opts);
   return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources, maxAttempts: 5 }, deps);
 }
 

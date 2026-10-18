@@ -10,8 +10,8 @@ const { TextDecoder }: typeof import('node:util') = require('node:util');
 const { isSceneId }: typeof import('./scene-id') = require('./scene-id');
 
 const MAX_BYTES = 16 * 1024 * 1024;
-const object = (value: any): value is Record<string, any> => value !== null && typeof value === 'object' && !Array.isArray(value);
-const validId = (value: any): value is string => typeof value === 'string' && value.length > 0 && value.trim() === value;
+const object = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === 'object' && !Array.isArray(value);
+const validId = (value: unknown): value is string => typeof value === 'string' && value.length > 0 && value.trim() === value;
 // Keep the existing three-digit namespace; wider IDs cannot have redundant zeroes.
 const canonicalSceneId = isSceneId;
 const digest = (bytes: string|NodeJS.ArrayBufferView<ArrayBufferLike>) => createHash('sha256').update(bytes).digest('hex');
@@ -73,10 +73,15 @@ function localReader(root: PathLike) {
   });
 }
 
-function reader(source: any) {
-  const cache = new Map();
-  const evidence = new Map();
-  const directories = new Map();
+type ReadItem = { file: string; status: 'read'; raw: string; sha256: string; bytes: number; reason?: never }
+  | { file: string; status: 'missing' | 'unknown'; reason: string; raw?: never; sha256?: never; bytes?: never };
+type ReaderSource = { side: 'base' | 'working-tree'; bytes(file: string): Buffer; list(directory: string): string[] };
+type ReadEvidence = { file: string; side: ReaderSource['side']; kind?: 'directory'; status: ReadItem['status']; sha256: string | null };
+
+function reader(source: ReaderSource) {
+  const cache = new Map<string, ReadItem>();
+  const evidence = new Map<string, ReadEvidence>();
+  const directories = new Map<string, string[]>();
   return {
     side: source.side,
     list(directory: string) {
@@ -86,13 +91,14 @@ function reader(source: any) {
         directories.set(directory, names);
         evidence.set(`${directory}/`, { file: `${directory}/`, side: source.side, kind: 'directory', status: 'read', sha256: digest(JSON.stringify(names)) });
       }
-      return [...directories.get(directory)];
+      return [...directories.get(directory)!];
     },
     evidence,
-    read(file: string) {
+    read(file: string): ReadItem {
       safeRelative(file);
-      if (cache.has(file)) return cache.get(file);
-      let item;
+      const cached = cache.get(file);
+      if (cached) return cached;
+      let item: ReadItem;
       try {
         const bytes = source.bytes(file);
         if (bytes.length > MAX_BYTES) throw new Error('Content exceeds read limit');
@@ -105,7 +111,7 @@ function reader(source: any) {
       evidence.set(file, { file, side: source.side, status: item.status, sha256: item.sha256 || null });
       return item;
     },
-    json(file: string) {
+    json(file: string): unknown {
       const item = this.read(file);
       if (item.status !== 'read') throw new Error(`${file}: ${item.status}: ${item.reason}`);
       try { return JSON.parse(item.raw); } catch { throw new Error(`${file}: invalid JSON`); }

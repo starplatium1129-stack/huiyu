@@ -18,18 +18,26 @@
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
+import type { CandidateOptions, CandidateTask, GenerationOptions } from '../lib/generation-types';
+type Options = CandidateOptions & { character?: string; limit: number };
+type SceneTask = {
+  id: string; characterId: string; title: string; prompt: string; negative: string;
+  width: number; height: number; seed: number; type?: 'popular'; standardId?: string;
+  story?: string; category?: string; rating?: 'All' | 'R18'; outfitId?: string; adult?: boolean;
+};
 const MODEL_ID = 'anima-miaomiao-v1.6';
 const PROFILE_ID = 'anima_miaomiao_v16';
 const ARTIST_TAG = 'rella';
 
-function resolveProfile(presets: any) {
-  const profile = (presets.model_profiles || []).find((item: any) =>
+function resolveProfile(presets: unknown) {
+  const { parsePresetCatalog }: typeof import('../../src/utils/modelProfileDefaults.ts') = require('../../src/utils/modelProfileDefaults.ts');
+  const profile = parsePresetCatalog(presets).modelProfiles.find(item =>
     item.id === PROFILE_ID && item.model_id === MODEL_ID && item.engine === 'anima');
   if (!profile) throw new Error(`presets.json missing profile ${PROFILE_ID} for ${MODEL_ID}`);
   return profile;
 }
 
-function collectAllSceneTasks(opts: any, input: any) {
+function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.snapshot>) {
   const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
   const popularPrompt: typeof import('../../src/utils/popularPromptBuilder.ts') = require('../../src/utils/popularPromptBuilder.ts');
   const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
@@ -38,8 +46,9 @@ function collectAllSceneTasks(opts: any, input: any) {
   const { createPromptPlan, renderPromptPlan }: typeof import('../../src/utils/promptCompiler.ts') = require('../../src/utils/promptCompiler.ts');
   const { CHAR_PROMPT, STUDIO_PROMPT_SUBJECTS }: typeof import('../../src/config/promptConstants.ts') = require('../../src/config/promptConstants.ts');
   const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
+  const { parsePromptScenes }: typeof import('../../src/utils/promptCatalog.ts') = require('../../src/utils/promptCatalog.ts');
   const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
-  const tasks: any[] = [];
+  const tasks: SceneTask[] = [];
   const popularRaw = input.data['data/popular-characters.json'];
   const characters = popularContent.parsePopularCharacters(popularRaw);
   const blueprintsRaw = input.data['data/scene-blueprints.json'];
@@ -49,7 +58,7 @@ function collectAllSceneTasks(opts: any, input: any) {
   // 1. 热门角色场景蓝图（必须走 buildPopularPromptPlan 保证角色DNA）
   for (const character of characters) {
     if (opts.character && character.id !== opts.character) continue;
-    const owned = blueprints.filter((bp: any) => bp.characterId === character.id);
+    const owned = blueprints.filter(bp => bp.characterId === character.id);
 
     for (const bp of owned) {
       const isHorizontal = bp.recommendedSize && (bp.recommendedSize.includes('1536x1152') || bp.recommendedSize.includes('1216x832') || bp.recommendedSize.includes('1344x768'));
@@ -73,8 +82,6 @@ function collectAllSceneTasks(opts: any, input: any) {
         manual: promptPolicy.tokenize(guards.prompt),
       });
 
-      if (!plan) continue;
-
       tasks.push({
         id: bp.id,
         standardId: `pc_${character.id}_${bp.id}`,
@@ -82,7 +89,7 @@ function collectAllSceneTasks(opts: any, input: any) {
         story: bp.description || '',
         category: bp.category || '热门角色',
         characterId: character.id,
-        rating: bp.adult || (bp as any).rating === 'R18' ? 'R18' : ((bp as any).rating === 'R15' ? 'R15' : 'All'),
+        rating: bp.adult ? 'R18' : 'All',
         type: 'popular',
         prompt: plan.prompt,
         negative: plan.negative,
@@ -97,16 +104,16 @@ function collectAllSceneTasks(opts: any, input: any) {
 
   // 2. 经典主线场景 (scenes.json - 宁宁/夏目主线)
   if (input.data['data/scenes.json']) {
-    const scenes = input.data['data/scenes.json'];
+    const scenes = parsePromptScenes(input.data['data/scenes.json']);
     for (const sc of scenes) {
       if (opts.character && sc.char !== opts.character) continue;
-      if (tasks.some((t: any) => t.id === sc.id)) continue;
+      if (tasks.some(t => t.id === sc.id)) continue;
 
       const isHorizontal = sc.recommendedSize && (sc.recommendedSize.includes('1536x1152') || sc.recommendedSize.includes('1216x832') || sc.recommendedSize.includes('1344x768'));
       const width = isHorizontal ? 1216 : 832;
       const height = isHorizontal ? 832 : 1216;
 
-      const characterId = sc.char === 'both' ? 'triad' : sc.char;
+      const characterId = sc.char === 'both' ? 'triad' : sc.char || '';
       const loraIds = characterId === 'nene' ? ['L_NENE_V21_ANIMA']
         : characterId === 'natsume' ? ['L_NAT_V21_ANIMA'] : [];
       const contracts = loraData.filter(item => loraIds.includes(item.id)).map(item => item.prompt_contract);
@@ -147,8 +154,8 @@ function collectAllSceneTasks(opts: any, input: any) {
   return tasks;
 }
 
-function buildPayload(task: any) {
-  const payload: any = {
+function buildPayload(task: SceneTask) {
+  const payload: ReturnType<CandidateTask['payload']> = {
     modelId: MODEL_ID,
     prompt: task.prompt,
     negative: task.negative,
@@ -175,14 +182,14 @@ function buildPayload(task: any) {
   return payload;
 }
 
-function loadInputs(opts: any) {
+function loadInputs(opts: Options) {
   const names = ['data/popular-characters.json', 'data/scene-blueprints.json', 'data/presets.json'];
   if (fs.existsSync(safety.noLinks(path.join(opts.root, 'data/scenes.json')))) names.push('data/scenes.json');
   return safety.snapshot(opts.root, names);
 }
 
-function candidateTasks(tasks: any) {
-  return tasks.map((task: any) => ({
+function candidateTasks(tasks: SceneTask[]): CandidateTask[] {
+  return tasks.map(task => ({
     key: task.type === 'popular' ? `popular:${task.characterId}:${task.id}` : `scene:${task.id}`,
     metadata: { batch: task.type || 'scene', engine: 'anima', characterId: task.characterId,
       blueprintId: task.type === 'popular' ? task.id : undefined,
@@ -197,10 +204,10 @@ function candidateTasks(tasks: any) {
   }));
 }
 
-async function main(args: any = process.argv.slice(2), deps: any = {}) {
-  const opts = safety.parseArgs(args, { force: 'flag', character: 'value', limit: 'value' });
-  if (opts.help) return safety.help(__filename, '[--force] [--character <id>] [--limit <n>]');
-  opts.limit = Number(opts.limit || 0);
+async function main(args: string[] = process.argv.slice(2), deps: GenerationOptions = {}) {
+  const parsed = safety.parseArgs(args, { force: 'flag', character: 'value', limit: 'value' });
+  if (parsed.help) return safety.help(__filename, '[--force] [--character <id>] [--limit <n>]');
+  const opts = { ...parsed, limit: Number(parsed.limit || 0) };
   if (!Number.isInteger(opts.limit) || opts.limit < 0) throw new Error('limit must be a non-negative integer');
   const input = loadInputs(opts);
   const tasks = candidateTasks(collectAllSceneTasks(opts, input));

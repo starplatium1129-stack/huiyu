@@ -292,7 +292,7 @@ export const useSceneStore = defineStore('scenes', () => {
 
   // ── 视图层：按目标键去重 + 最新意图守卫 ────────────────────────────────
 
-  /** 当前展示目标键。每次调用 load / loadCharacter / loadCore 都是一次意图申明。 */
+  /** 当前展示目标键。每次调用 load / loadHome 都是一次意图申明。 */
   let viewTarget: string | null = null
   /** 同键强制重载的代际：只有该键最新一次工作才允许回写视图。 */
   let workSeq = 0
@@ -356,39 +356,6 @@ export const useSceneStore = defineStore('scenes', () => {
 
   function resolveShard(char: string): ShardChar {
     return char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'
-  }
-
-  /** 只加载某角色所需的分片（shared + 目标角色），用于场景库按需浏览。 */
-  function loadCharacter(char: string, force = false): Promise<void> {
-    const shard = resolveShard(char)
-    if (force) {
-      invalidate()
-      inflightByKey.delete(`char:${shard}`)
-    }
-    return beginTargetLoad(`char:${shard}`, async (_isCurrent, epoch, requestVersion) => {
-      const [, shared, target] = await Promise.all([
-        loadMeta(false),
-        loadShard('shared', epoch, requestVersion),
-        loadShard(shard, epoch, requestVersion),
-      ])
-      return mergeScenes(shared, target)
-    })
-  }
-
-  /** 只加载默认"人设核心"视图所需的数据（index + shared + core 精选子集）。 */
-  function loadCore(force = false): Promise<void> {
-    if (force) {
-      invalidate()
-      inflightByKey.delete('core')
-    }
-    return beginTargetLoad('core', async (_isCurrent, epoch, requestVersion) => {
-      const [, shared, core] = await Promise.all([
-        loadMeta(false),
-        loadShard('shared', epoch, requestVersion),
-        loadShard('core', epoch, requestVersion),
-      ])
-      return mergeScenes(shared, core)
-    })
   }
 
   /** Browsing needs scene shards and curation, not the studio's model/tag/blueprint catalogs. */
@@ -467,8 +434,8 @@ export const useSceneStore = defineStore('scenes', () => {
 
   /**
    * 目录页轻载（审计 2026-09-05 P2-02）：首页与全局搜索只吃 curation/角色目录
-   * 与三分片；3.4MB 场景蓝图与 prompt 元数据不在此拉取，由创作页的 load()/
-   * loadCharacter()/loadCore() 依据逐资源缓存增量补拉。有意不置 loaded 标志——
+   * 与三分片；3.4MB 场景蓝图与 prompt 元数据不在此拉取，由创作页的 load()
+   * 依据逐资源缓存增量补拉。有意不置 loaded 标志——
    * 它只代表"重元数据也齐了"的全量完成态。
    */
   function loadHome(): Promise<void> {
@@ -487,6 +454,6 @@ export const useSceneStore = defineStore('scenes', () => {
     scenes, curation, characters, loras, tags, presets,
     popularCharacters, sceneBlueprints, hasBlueprintCharacter: (id: string) => blueprintCharacters.value.has(id),
     loading, error, loaded, version, metaFailedFiles,
-    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadHome, loadCharacter, loadCore, loadLoraCatalog, loadPresetCatalog, invalidate,
+    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadHome, loadLoraCatalog, loadPresetCatalog, invalidate,
   }
 })

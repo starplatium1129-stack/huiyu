@@ -1,5 +1,6 @@
 import { PathLike } from 'node:fs';
-import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
+import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStack } from './runtime-errors';
+import type { ManifestEntry, ManifestIssue, ResourceManifest } from './resource-manifest-types';
 'use strict';
 
 /**
@@ -41,6 +42,11 @@ const PACK_NAME_RE = /^[A-Za-z0-9_-]{1,64}$/;
 const STAGING_PREFIX = '.staging-';
 
 const BYTE_ONLY_NOTE = '候选包已通过字节核验仅表示复制内容与清单记录一致；不代表图片质量、内容审核或部署完成，也不是可信发布源。';
+type PackOptions = { root: string; name: string; manifestPath: string; io?: typeof nodeFs };
+type PackPlan = Omit<ReturnType<typeof planResourcePack>, 'destination'> & { destination?: string };
+type ReadyPlan<P> = P & { entries: ManifestEntry[] };
+type MetadataOptions<P> = { plan: ReadyPlan<P>; destAbs: string; rootReal: string };
+type MetadataFile = { name: string; object: unknown; mismatchCode: string };
 
 function relFromRoot(rootReal: string, abs: string) {
   return path.relative(rootReal, abs).split(path.sep).join('/');
@@ -85,7 +91,7 @@ function destinationAbsPath(rootReal: string, name: string) {
  * 真实目录（非符号链接/junction，realpath 与字面路径一致，仍在 root 内）；最终路径
  * 不得存在（含空目录、文件与链接）。返回 { ok, rootReal, destAbs, errors }。
  */
-function checkDestination({ root, name, io = nodeFs }: any) {
+function checkDestination({ root, name, io = nodeFs }: Omit<PackOptions, 'manifestPath'>) {
   validatePackName(name);
   const rootReal = resolveRootReal(root, io);
   const destAbs = destinationAbsPath(rootReal, name);
@@ -140,7 +146,7 @@ function checkDestination({ root, name, io = nodeFs }: any) {
  * （退出 1）。核验复用 verifyManifestEntries：不支持格式、重复/越界、排除域、
  * 非空 unverified、缺失、错大小/错哈希全部在此被拒。
  */
-function loadVerifiedManifest({ rootReal, manifestPath, io }: any) {
+function loadVerifiedManifest({ rootReal, manifestPath, io }: { rootReal: string; manifestPath: string; io: typeof nodeFs }) {
   if (!manifestPath || typeof manifestPath !== 'string') throw new UsageError('--manifest 缺失或不是字符串');
   const resolved = path.resolve(rootReal, manifestPath);
   // 与 resource-manifest 的 isInsideRoot 同语义（跨盘符时 path.relative 返回绝对路径，须拒绝）
@@ -156,28 +162,29 @@ function loadVerifiedManifest({ rootReal, manifestPath, io }: any) {
   } catch (err) {
     throw new UsageError(`--manifest 不可读取: ${runtimeErrorMessage(err)}`);
   }
-  let manifest;
+  let manifest: unknown;
   try {
     manifest = JSON.parse(raw.toString('utf8'));
   } catch (err) {
-    return { ok: false, manifest: null, verification: null, manifestRel: rel, errors: [{ code: 'bad-manifest', message: `清单 JSON 解析失败: ${runtimeErrorMessage(err)}` }] };
+    return { ok: false as const, manifest: null, verification: null, manifestRel: rel, errors: [{ code: 'bad-manifest', message: `清单 JSON 解析失败: ${runtimeErrorMessage(err)}` }] };
   }
   const verification = verifyManifestEntries({ root: rootReal, manifest, io });
-  if (!verification.ok) return { ok: false, manifest, verification, manifestRel: rel, errors: verification.errors };
-  return { ok: true, manifest, verification, manifestRel: rel, errors: [] };
+  if (!verification.ok) return { ok: false as const, manifest, verification, manifestRel: rel, errors: verification.errors };
+  // The verifier checked schemaVersion, entries and unverified before checking file bytes.
+  return { ok: true as const, manifest: manifest as ResourceManifest, verification, manifestRel: rel, errors: [] };
 }
 
-function planTotals(loaded: any) {
-  if (!loaded.ok || !loaded.manifest || !Array.isArray(loaded.manifest.entries)) return { files: 0, bytes: 0 };
+function planTotals(loaded: ReturnType<typeof loadVerifiedManifest>) {
+  if (!loaded.ok) return { files: 0, bytes: 0 };
   // 核验通过时条目无重复，字节数直接对已核验条目求和
-  return { files: loaded.manifest.entries.length, bytes: loaded.manifest.entries.reduce((acc: any, e: any) => acc + e.bytes, 0) };
+  return { files: loaded.manifest.entries.length, bytes: loaded.manifest.entries.reduce((acc, e) => acc + e.bytes, 0) };
 }
 
 /**
  * 预览计划（零写入，但会读取清单并核验源文件）：校验包名/root/目标边界与清单内容，
  * 输出将复制的条目、目标路径与核验摘要。--help/--plan 的零读取由 CLI 层保证。
  */
-function planResourcePack({ root, name, manifestPath, io = nodeFs }: any = {}) {
+function planResourcePack({ root, name, manifestPath, io = nodeFs }: PackOptions) {
   const dest = checkDestination({ root, name, io });
   const loaded = loadVerifiedManifest({ rootReal: dest.rootReal, manifestPath, io });
   const errors = [...dest.errors, ...loaded.errors];
@@ -193,7 +200,7 @@ function planResourcePack({ root, name, manifestPath, io = nodeFs }: any = {}) {
     destination: relFromRoot(dest.rootReal, dest.destAbs),
     totals: planTotals(loaded),
     verification: loaded.verification ? { verified: loaded.verification.totals.verified, errorCount: loaded.verification.totals.errorCount } : null,
-    entries: loaded.ok ? loaded.manifest.entries.map((e: any) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })) : null,
+    entries: loaded.ok ? loaded.manifest.entries.map(e => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })) : null,
     errors,
     notes: [
       '预览模式零写入；--apply 将把上列已核验文件复制到目标新目录（目标必须不存在，不覆盖任何旧包）。',
@@ -203,13 +210,13 @@ function planResourcePack({ root, name, manifestPath, io = nodeFs }: any = {}) {
 }
 
 /** 复制单个条目到暂存目录并读回核验；任何失败推入 errors 并返回 false（快速终止）。 */
-function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
+function copyEntryVerified({ rootReal, staging, entry, io, errors }: { rootReal: string; staging: string; entry: ManifestEntry; io: typeof nodeFs; errors: ManifestIssue[] }) {
   const srcAbs = path.join(rootReal, ...entry.path.split('/'));
   const manifest = { schemaVersion: SCHEMA_VERSION, entries: [entry] };
   try {
     const source = verifyManifestEntries({ root: rootReal, manifest, io });
     if (!source.ok) {
-      errors.push(...source.errors.map((error: any) => ({ ...error,
+      errors.push(...source.errors.map(error => ({ ...error,
         code: ['missing', 'not-file'].includes(error.code) ? 'read-error' : error.code })));
       return false;
     }
@@ -230,7 +237,7 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
     errors.push({ path: entry.path, code: boundary.code, message: `复制前真实路径边界检查失败: ${boundary.message}` });
     return false;
   }
-  const sourceScope = checkManifestPath(relFromRoot(rootReal, boundary.realTarget!));
+  const sourceScope = checkManifestPath(relFromRoot(rootReal, boundary.realTarget));
   if (!sourceScope.ok) {
     errors.push({ path: entry.path, code: 'out-of-scope', message: '复制时源真实目标进入排除域或离开 assets，未读取' });
     return false;
@@ -250,14 +257,14 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
   try {
     const back = verifyManifestEntries({ root: staging, manifest, io });
     if (back.ok) return true;
-    const issue: any = back.errors[0];
+    const issue = back.errors[0];
     if (!['size-mismatch', 'hash-mismatch'].includes(issue.code)) throw new Error(issue.message);
     let actual = issue.actual;
     if (issue.code === 'size-mismatch') {
       // The existing report exposes SHA strings even for a wrong-sized copy.
       // Only this failure path needs an extra bounded read: the verifier skips its hash.
       const checked = resolveRealpathBoundary(io, stageAbs, staging);
-      if (!checked.ok || !checkManifestPath(relFromRoot(staging, checked.realTarget!)).ok) throw new Error('候选副本读回路径越界');
+      if (!checked.ok || !checkManifestPath(relFromRoot(staging, checked.realTarget)).ok) throw new Error('候选副本读回路径越界');
       if (!io.statSync(stageAbs).isFile()) throw new Error('候选副本不再是普通文件');
       const fd = io.openSync(stageAbs, 'r');
       try {
@@ -275,8 +282,8 @@ function copyEntryVerified({ rootReal, staging, entry, io, errors }: any) {
 }
 
 /** 全包模式的候选包元数据：manifest.json 与源清单条目逐条一致。 */
-function fullPackMetadata({ plan, destAbs, rootReal }: any) {
-  const bytes = plan.entries.reduce((acc: any, e: any) => acc + e.bytes, 0);
+function fullPackMetadata({ plan, destAbs, rootReal }: MetadataOptions<PackPlan>) {
+  const bytes = plan.entries.reduce((acc, e) => acc + e.bytes, 0);
   const packManifest = {
     schemaVersion: SCHEMA_VERSION,
     kind: 'resource-manifest',
@@ -293,7 +300,7 @@ function fullPackMetadata({ plan, destAbs, rootReal }: any) {
       coverageNote: BYTE_ONLY_NOTE,
     },
     totals: { files: plan.entries.length, bytes, unverified: 0 },
-    entries: plan.entries.map((e: any) => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
+    entries: plan.entries.map(e => ({ path: e.path, bytes: e.bytes, sha256: e.sha256 })),
     unverified: [],
   };
   return [{ name: 'manifest.json', object: packManifest, mismatchCode: 'manifest-write-mismatch' }];
@@ -306,7 +313,10 @@ function fullPackMetadata({ plan, destAbs, rootReal }: any) {
  * 复核暂存树，全部成功后才原子改名为最终包名并做发布后验收。失败不报告成功；
  * 暂存目录保留并在结果中给出路径。不修改源清单与源文件，不添加未列条目。
  */
-function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultKind, buildMetadata }: any) {
+function applyPackPlan<P extends PackPlan>({ plan, io = nodeFs, platform = process.platform, resultKind, buildMetadata }: {
+  plan: P; io?: typeof nodeFs; platform?: NodeJS.Platform; resultKind: string;
+  buildMetadata: (options: MetadataOptions<P>) => MetadataFile[];
+}) {
   const base = {
     schemaVersion: SCHEMA_VERSION,
     kind: resultKind,
@@ -325,7 +335,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
     errors: plan.errors,
     notes: plan.notes,
   };
-  if (!plan.ok) return base;
+  if (!plan.ok || !plan.entries) return base;
   if (platform !== 'win32') return {
     ...base,
     errors: [{ code: 'unsupported-platform', message: '--apply 仅支持 Windows；其他平台请使用只读预览，避免 rename 覆盖已有空目录' }],
@@ -334,7 +344,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
   const rootReal = plan.root;
   const destAbs = destinationAbsPath(rootReal, plan.name);
   const packsDir = path.join(rootReal, ...PACKS_DIR_SEGMENTS);
-  const errors: any[] = [];
+  const errors: ManifestIssue[] = [];
   let staging = null;
   let destinationCreated = false;
   try {
@@ -345,9 +355,9 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
     for (const entry of plan.entries) {
       if (!copyEntryVerified({ rootReal, staging, entry, io, errors })) break;
     }
-    let metadataFiles = null;
+    let metadataFiles: MetadataFile[] = [];
     if (errors.length === 0) {
-      metadataFiles = buildMetadata({ plan, destAbs, rootReal });
+      metadataFiles = buildMetadata({ plan: { ...plan, entries: plan.entries }, destAbs, rootReal });
       for (const file of metadataFiles) {
         try {
           io.writeFileSync(path.join(staging, file.name), `${JSON.stringify(file.object, null, 2)}\n`);
@@ -360,7 +370,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
     if (errors.length === 0) {
       // 发布前逐个读回磁盘元数据，不能以内存对象掩盖清单写入损坏或丢条目。
       for (const file of metadataFiles) {
-        let persisted = null;
+        let persisted: unknown = null;
         try {
           persisted = JSON.parse(io.readFileSync(path.join(staging, file.name), 'utf8'));
         } catch (err) {
@@ -412,7 +422,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
     }
     for (const file of metadataFiles) {
       try {
-        const persisted = JSON.parse(io.readFileSync(path.join(destAbs, file.name), 'utf8'));
+        const persisted: unknown = JSON.parse(io.readFileSync(path.join(destAbs, file.name), 'utf8'));
         if (JSON.stringify(persisted) !== JSON.stringify(file.object)) {
           errors.push({ code: file.mismatchCode, message: '发布后 ' + file.name + ' 与预期内容不同，候选包不可用' });
         }
@@ -431,13 +441,13 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
         ? [...plan.notes, `候选包已通过字节核验并写入 ${plan.destination}；可用 audit:resource-manifest --root <包目录> --manifest manifest.json 复核。`]
         : [...plan.notes, '候选包已写到目标位置但发布后核验失败，不要作为可用候选包使用。'],
     };
-  } catch (err: any) {
+  } catch (err) {
     return {
       ...base,
       ok: false,
       destinationCreated,
       stagingPath: staging ? relFromRoot(rootReal, staging) : null,
-      errors: [...errors, { code: 'internal-error', message: err && err.stack ? err.stack : String(err) }],
+      errors: [...errors, { code: 'internal-error', message: errorStack(err) }],
       notes: [...plan.notes, staging ? `暂存目录保留: ${staging}` : null].filter(Boolean),
     };
   }
@@ -447,7 +457,7 @@ function applyPackPlan({ plan, io = nodeFs, platform = process.platform, resultK
  * 暂存导出（--apply，仅 Windows）：复用预览的全部检查，经通用 applyPackPlan 协议
  * 完成复制与发布；全包 manifest.json 与源清单条目逐条一致。
  */
-function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = process.platform }: any = {}) {
+function stageResourcePack({ root, name, manifestPath, io = nodeFs, platform = process.platform }: PackOptions & { platform?: NodeJS.Platform }) {
   const plan = planResourcePack({ root, name, manifestPath, io });
   return applyPackPlan({ plan, io, platform, resultKind: 'resource-pack-result', buildMetadata: fullPackMetadata });
 }

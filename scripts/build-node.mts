@@ -21,7 +21,7 @@ interface BuildResult { project: ProjectName; sources: number; outputs: number; 
 const defaultRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const digest = (data: string | Buffer) => crypto.createHash('sha256').update(data).digest('hex');
 const posix = (value: string) => value.replaceAll('\\', '/');
-const isRecord = (value: any): value is Record<string, any> =>
+const isRecord = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 
 function formatDiagnostics(diagnostics: readonly ts.Diagnostic[], root: string): string {
@@ -83,16 +83,19 @@ function outputForSource(source: string): string {
 
 function readManifest(file: string): BuildManifest | undefined {
   try {
-    const value: any = JSON.parse(fs.readFileSync(file, 'utf8'));
+    const value: unknown = JSON.parse(fs.readFileSync(file, 'utf8'));
     if (!isRecord(value) || !isRecord(value.outputs)
       || !Object.values(value.outputs).every(item => typeof item === 'string')) return;
-    const current = value.version === 2 && typeof value.fingerprint === 'string'
-      && Array.isArray(value.queries) && value.queries.length > 0
-      && value.queries.every((query: unknown) => isRecord(query) && filesystemMethods.includes(query.method)
-        && Array.isArray(query.args) && typeof query.args[0] === 'string' && typeof query.value === 'string');
+    const outputs = value.outputs as Record<string, string>;
+    const queries = value.queries;
+    const cache: BuildRecord | undefined = value.version === 2 && typeof value.fingerprint === 'string'
+      && Array.isArray(queries) && queries.length > 0
+      && queries.every((query: unknown): query is FilesystemQuery => isRecord(query) && filesystemMethods.some(method => method === query.method)
+        && Array.isArray(query.args) && typeof query.args[0] === 'string' && typeof query.value === 'string')
+      ? { version: 2, fingerprint: value.fingerprint, queries, outputs } : undefined;
     // Output ownership survives cache invalidation. Only the current input
     // schema can certify a hit; unchanged orphan outputs can still be retired.
-    return { outputs: value.outputs, cache: current ? value as unknown as BuildRecord : undefined };
+    return { outputs, cache };
   } catch { return; }
 }
 
@@ -224,7 +227,7 @@ function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] 
         throw new Error(`${project}: source/output inventory is incomplete`);
       }
       pending.push({ project, recordFile, previous, contents, record: { version: 2, fingerprint, queries: [...queries.values()],
-        outputs: Object.fromEntries([...contents].map(([file, text]: any) => [file, digest(text)])) } });
+        outputs: Object.fromEntries([...contents].map(([file, text]) => [file, digest(text)])) } });
     }
     results.push({ project, sources: parsed.fileNames.length, outputs: options.check ? 0 : contents.size, cached: false });
   }

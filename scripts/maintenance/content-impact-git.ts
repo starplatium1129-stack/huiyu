@@ -27,29 +27,39 @@ function worktreeRootKey(directory: string) {
   return process.platform === 'win32' ? real.toLowerCase() : real;
 }
 
-function nulRecords(raw: any) {
+interface GitCommandRecord { args: readonly string[]; status: number | null; stderr: string }
+interface GitChange { status: string; oldPath: string | null; path: string | null }
+interface GitHistory {
+  status: 'error' | 'compared'; base: string | null; baseCommit: string | null; headCommit: string | null;
+  comparison: 'base-commit-to-working-tree'; changes: GitChange[]; paths: string[];
+  raw: GitCommandRecord[]; unknown: string[]; reason: string;
+}
+
+function nulRecords(raw: string) {
   if (raw && !raw.endsWith('\0')) throw new Error('Git output missing NUL terminator');
   return raw ? raw.slice(0, -1).split('\0') : [];
 }
 
 // All arguments are an argv array. No shell, remote commands, checkout or index refresh.
 function collectGitHistory(root: string, base: string) {
-  const result: any = { status: 'error', base: base || null, baseCommit: null, headCommit: null,
-    comparison: 'base-commit-to-working-tree', changes: [], paths: [], raw: [], unknown: [] };
+  const result: GitHistory = { status: 'error', base: base || null, baseCommit: null, headCommit: null,
+    comparison: 'base-commit-to-working-tree', changes: [], paths: [], raw: [], unknown: [], reason: '' };
   try {
     validateRevision(base);
     const settings = ['-c', 'core.fsmonitor=false', '-c', 'gc.auto=0', '-c', 'maintenance.auto=false'];
     const env = gitEnvironment();
-    const run = (args: any[], allowed: any = [0], record: any = true, binary: any = false): any => {
+    function run(args: readonly string[], allowed: readonly number[], record: boolean, binary: true): Buffer;
+    function run(args: readonly string[], allowed?: readonly number[], record?: boolean, binary?: false): string;
+    function run(args: readonly string[], allowed: readonly number[] = [0], record = true, binary = false): Buffer | string {
       const output = childProcess.spawnSync('git', [...settings, ...args], {
         cwd: root, env, timeout: 15000, maxBuffer: MAX_BYTES, windowsHide: true, shell: false,
       });
       const stdout = output.stdout || Buffer.alloc(0);
       const stderr = output.stderr?.toString('utf8') || '';
       if (record) result.raw.push({ args, status: output.status, stderr });
-      if (output.error || !allowed.includes(output.status)) throw new Error(output.error?.message || `Git failed: ${args[0]}: ${stderr}`);
+      if (output.error || output.status === null || !allowed.includes(output.status)) throw new Error(output.error?.message || `Git failed: ${args[0]}: ${stderr}`);
       return binary ? stdout : new TextDecoder('utf-8', { fatal: true }).decode(stdout);
-    };
+    }
     const top = run(['rev-parse', '--show-toplevel']).replace(/\r?\n$/, '');
     if (worktreeRootKey(top) !== worktreeRootKey(root)) throw new Error('--root must be the Git working-tree root');
     const resolve = (ref: string) => {
@@ -67,7 +77,7 @@ function collectGitHistory(root: string, base: string) {
       settings.push('-c', `${key}=${key.endsWith('.required') ? 'false' : ''}`);
     }
     const tracked = nulRecords(run(['ls-files', '-v', '-z', '--']));
-    const trackedPaths = tracked.map((line: any) => {
+    const trackedPaths = tracked.map(line => {
       if (!/^[A-Za-z?] /.test(line)) throw new Error('Unrecognized tracked-file state');
       const file = safeRelative(line.slice(2));
       if (line[0] !== 'H') result.unknown.push(`${file}: Git flag ${line[0]}; diff cannot prove full worktree coverage`);
@@ -76,7 +86,7 @@ function collectGitHistory(root: string, base: string) {
     assertWorktreePaths(root, trackedPaths);
     const untracked = nulRecords(run(['ls-files', '--others', '--exclude-standard', '-z', '--'])).map(safeRelative);
     assertWorktreePaths(root, untracked);
-    const changes: any[] = [];
+    const changes: GitChange[] = [];
     const tokens = nulRecords(run(['diff', '--name-status', '-z', '--find-renames=50%', '--no-ext-diff', '--no-textconv', '--ignore-submodules=all', result.baseCommit, '--']));
     for (let i = 0; i < tokens.length;) {
       const status = tokens[i++];
@@ -86,7 +96,7 @@ function collectGitHistory(root: string, base: string) {
       changes.push({ status, oldPath: oldPath || (status === 'D' ? file : null), path: status === 'D' ? null : file });
     }
     for (const file of untracked) changes.push({ status: '?', oldPath: null, path: file });
-    const tree = new Map();
+    const tree = new Map<string, { mode: string; type: string; oid: string }>();
     for (const line of nulRecords(run(['ls-tree', '-r', '-z', '--full-tree', result.baseCommit]))) {
       const match = /^(\d{6}) (blob|commit) ([a-f0-9]{40}|[a-f0-9]{64})\t([\s\S]+)$/.exec(line);
       if (!match) throw new Error('Unrecognized Git tree entry');
@@ -105,11 +115,11 @@ function collectGitHistory(root: string, base: string) {
       list(directory: string) {
         safeRelative(directory);
         const prefix = `${directory}/`;
-        return [...new Set([...tree.keys()].filter((file: any) => file.startsWith(prefix)).map((file: any) => file.slice(prefix.length).split('/')[0]))].sort();
+        return [...new Set([...tree.keys()].filter(file => file.startsWith(prefix)).map(file => file.slice(prefix.length).split('/')[0]))].sort();
       },
     });
     result.changes = changes;
-    result.paths = [...new Set(changes.flatMap((item: any) => [item.oldPath, item.path]).filter(Boolean))];
+    result.paths = [...new Set(changes.flatMap(item => [item.oldPath, item.path]).filter((file): file is string => !!file))];
     result.status = 'compared';
     result.reason = 'Local base commit versus effective staged/unstaged/untracked working tree; ignored untracked files excluded. Rename similarity is Git evidence, not proof of entity identity.';
     return { result, baseReader };
@@ -124,19 +134,19 @@ function collectGitHistory(root: string, base: string) {
 // NUL records preserve spaces, quotes and newlines. Disable rename detection so
 // both old and new names remain in the conservative path set.
 function collectGitChanges(root: string) {
-  const result: any = { status: 'error', raw: [], paths: [], reason: '' };
+  const result: { status: 'error' | 'collected'; raw: (GitCommandRecord & { stdout: string })[]; paths: string[]; reason: string } = { status: 'error', raw: [], paths: [], reason: '' };
   try {
     const env = gitEnvironment();
     const run = (args: readonly string[]) => {
       const output = childProcess.spawnSync('git', args, { cwd: root, env, timeout: 15000, maxBuffer: 16 * 1024 * 1024, windowsHide: true });
-      const record: any = { args, status: output.status, stdout: output.stdout?.toString('utf8') || '', stderr: output.stderr?.toString('utf8') || '' };
+      const record = { args, status: output.status, stdout: output.stdout?.toString('utf8') || '', stderr: output.stderr?.toString('utf8') || '' };
       result.raw.push(record);
       if (output.error || output.status !== 0) throw new Error(output.error?.message || `Git 命令失败：${record.stderr}`);
       return new TextDecoder('utf-8', { fatal: true }).decode(output.stdout);
     };
     const top = run(['rev-parse', '--show-toplevel']).replace(/\r?\n$/, '');
     if (worktreeRootKey(top) !== worktreeRootKey(root)) throw new Error('--root 必须为 Git 工作树根目录，不能把父仓库路径映射到子目录');
-    const paths: any[] = [];
+    const paths: string[] = [];
     for (const args of [
       ['diff', '--name-only', '-z', '--no-renames', '--no-ext-diff', '--no-textconv', 'HEAD', '--'],
       ['ls-files', '--others', '--exclude-standard', '-z', '--'],
@@ -144,7 +154,7 @@ function collectGitChanges(root: string) {
       const raw = run(args);
       if (raw && !raw.endsWith('\0')) throw new Error('Git 路径输出缺少 NUL 终止符');
       for (const file of raw ? raw.slice(0, -1).split('\0') : []) {
-        if (!file || file.includes('\\') || file.includes(':') || file.split('/').some((part: any) => !part || part === '.' || part === '..')) throw new Error('Git 路径不可安全解析');
+        if (!file || file.includes('\\') || file.includes(':') || file.split('/').some(part => !part || part === '.' || part === '..')) throw new Error('Git 路径不可安全解析');
         paths.push(file);
       }
     }

@@ -1,4 +1,5 @@
 'use strict';
+import type { Identity, PopularRow, StandardRow, ViewRow, Selection, FileExists, CoverageReport } from './coverage-types';
 
 /**
  * scripts/lib/coverage-selection.js — audit:coverage 的 --character/--outfit 筛选纯辅助。
@@ -19,17 +20,17 @@
 
 /** 解析 --character/--outfit；无 --character 时返回 null（全库模式）。
  *  语法不合法（缺值、--outfit 单独出现）抛 Error，由调用方按参数错误处理。 */
-function parseSelectionArgs(argv: string|string[]) {
+function parseSelectionArgs(argv: readonly string[]): Selection | null {
   for (const arg of argv) {
     if (/^--(?:character|outfit)=/.test(arg)) throw new Error('筛选参数需使用 --character <ID> / --outfit <ID>');
   }
   const readFlag = (flag: string) => {
     const index = argv.indexOf(flag);
-    if (index < 0) return { present: false };
+    if (index < 0) return { present: false as const };
     if (argv.indexOf(flag, index + 1) >= 0) throw new Error(`${flag} 不能重复指定`);
     const value = argv[index + 1];
     if (value === undefined || !String(value).trim() || String(value).startsWith('--')) throw new Error(`${flag} 需要一个 ID 值`);
-    return { present: true, value: String(value) };
+    return { present: true as const, value: String(value) };
   };
   const character = readFlag('--character');
   const outfit = readFlag('--outfit');
@@ -39,12 +40,14 @@ function parseSelectionArgs(argv: string|string[]) {
 }
 
 /** 汇总身份全集：characters.json、热门分片行、standards、view 中出现过的角色/服装。 */
-function collectKnownIds({ characters, popularCharacters = [], popularRows, standards, view }: any) {
-  const characterIds = new Set();
-  const outfitsByCharacter = new Map();
-  const addOutfit = (id: any, outfitId: any) => {
+function collectKnownIds({ characters, popularCharacters = [], popularRows, standards, view }: {
+  characters: Identity[]; popularCharacters?: Identity[]; popularRows: PopularRow[]; standards: StandardRow[]; view: ViewRow[];
+}) {
+  const characterIds = new Set<string>();
+  const outfitsByCharacter = new Map<string, Set<string>>();
+  const addOutfit = (id: string, outfitId: string) => {
     if (!outfitsByCharacter.has(id)) outfitsByCharacter.set(id, new Set());
-    outfitsByCharacter.get(id).add(outfitId);
+    outfitsByCharacter.get(id)!.add(outfitId);
   };
   for (const record of characters) if (record?.id) characterIds.add(record.id);
   for (const record of popularCharacters) if (record?.id) characterIds.add(record.id);
@@ -57,7 +60,7 @@ function collectKnownIds({ characters, popularCharacters = [], popularRows, stan
 /** 校验所选角色/服装存在；未知则抛出带定位信息的参数错误。
  *  aliasMap（normalize 别名 → 规范 ID）可选，仅用于给旧别名一个可行动的提示，
  *  不做自动改写。 */
-function assertSelectionKnown(selection: any, known: any, aliasMap: any) {
+function assertSelectionKnown(selection: Selection, known: ReturnType<typeof collectKnownIds>, aliasMap?: ReadonlyMap<string, string>) {
   const { character, outfit } = selection;
   if (!known.characterIds.has(character)) {
     const suggestion = aliasMap?.get(character);
@@ -70,8 +73,8 @@ function assertSelectionKnown(selection: any, known: any, aliasMap: any) {
 }
 
 /** 所选范围在 view 中声明的参考 URL 集合；调用方仍需校验 URL 所属条目。 */
-function collectScopedRefUrls({ view, character, outfit }: any) {
-  const urls = new Set();
+function collectScopedRefUrls({ view, character, outfit }: Selection & { view: ViewRow[] }) {
+  const urls = new Set<unknown>();
   for (const record of view) {
     if (record.id !== character) continue;
     for (const entry of record.outfits) {
@@ -83,8 +86,8 @@ function collectScopedRefUrls({ view, character, outfit }: any) {
 }
 
 /** 包装 fileExists：范围外 URL 直接返回 null（未核实），不调用底层实现。 */
-function scopeFileExists(fileExists: any, scopedUrls: any, selection?: any) {
-  return (url: any, owner: any) => {
+function scopeFileExists(fileExists: FileExists, scopedUrls: ReadonlySet<unknown>, selection?: Selection): FileExists {
+  return (url, owner) => {
     if (selection && (!owner || owner.id !== selection.character
       || (selection.outfit && owner.outfitId !== selection.outfit))) return null;
     return scopedUrls.has(url) ? fileExists(url) : null;
@@ -92,7 +95,7 @@ function scopeFileExists(fileExists: any, scopedUrls: any, selection?: any) {
 }
 
 /** scope 元数据：机器可读地声明局部报告的口径。 */
-function describeScope(selection: any) {
+function describeScope(selection: Selection) {
   return {
     mode: selection.outfit ? 'character-outfit' : 'character',
     character: selection.character,
@@ -107,9 +110,9 @@ function describeScope(selection: any) {
  *  结构性字段（mirrorErrors、duplicate*、duplicateRegistrations）保留全库结果；
  *  verifiedImage 已由范围化 fileExists 保证只统计所选范围真实核对过的图片。
  *  主题只保留所选角色自身的状态；staleAlias/nonCharacter 属全库信息，局部不列出。 */
-function filterReportToScope(report: any, selection: any) {
+function filterReportToScope(report: CoverageReport, selection: Selection): CoverageReport {
   const { character, outfit } = selection;
-  const inScope = (row: any) => row.id === character && (!outfit || row.outfitId === outfit);
+  const inScope = (row: Pick<PopularRow, 'id' | 'outfitId'>) => row.id === character && (!outfit || row.outfitId === outfit);
   const reference = report.reference;
   const scopedReference = {
     missingRegistration: reference.missingRegistration.filter(inScope),
@@ -125,9 +128,9 @@ function filterReportToScope(report: any, selection: any) {
   };
   const themes = report.themes;
   const scopedThemes = {
-    explicit: themes.explicit.filter((id: any) => id === character),
-    defaultAllowed: themes.defaultAllowed.filter((id: any) => id === character),
-    missingTheme: themes.missingTheme.filter((row: any) => row.id === character),
+    explicit: themes.explicit.filter(id => id === character),
+    defaultAllowed: themes.defaultAllowed.filter(id => id === character),
+    missingTheme: themes.missingTheme.filter(row => row.id === character),
     staleAlias: [],
     nonCharacter: [],
     dupCharacters: themes.dupCharacters,

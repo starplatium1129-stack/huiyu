@@ -3,21 +3,20 @@
 
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
-type Sharp = (input?: any, options?: any) => any;
-const sharp: Sharp = require('sharp');
+const sharp: typeof import('sharp') = require('sharp');
 const { noLinks, child, within, readBytes, digest, writeAtomic }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
 // Profile generation runs only inside a fresh desktop staging directory. Every original URL
 // remains available offline; base changes only popular portraits, never thumbnails/brand/Live2D.
-async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: any) {
+async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { root: string; gatewayRoot: string; profile?: string }) {
   if (!['full', 'base'].includes(profile)) throw new Error('Resource profile must be full or base');
   root = path.resolve(root); gatewayRoot = path.resolve(gatewayRoot);
   const source = path.join(root, 'assets');
   const target = path.join(gatewayRoot, 'assets');
   if (within(source, target) || within(target, source) || within(gatewayRoot, root)) throw new Error('Profile output overlaps source assets');
   noLinks(fs, source); noLinks(fs, target);
-  const entries: any = [];
-  function walk(directory: string, prefix: any = '') {
+  const entries: Array<{ rel: string; sourceBytes: number }> = [];
+  function walk(directory: string, prefix = '') {
     noLinks(fs, directory);
     for (const name of fs.readdirSync(directory).sort()) {
       const rel = prefix + name;

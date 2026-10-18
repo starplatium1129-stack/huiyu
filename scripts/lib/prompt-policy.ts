@@ -1,4 +1,6 @@
 'use strict';
+import type { Scene } from '../../src/types/scene';
+type PolicyScene = Partial<Pick<Scene, 'title' | 'story' | 'tags' | 'prompt' | 'negative' | 'char' | 'rating' | 'category'>> | null | undefined;
 
 /**
  * Shared semantic policy for scene prompts.
@@ -45,7 +47,7 @@ const YOUTH_UNIFORM_TAGS = new Set([
 
 const ADULT_SAFETY_NEGATIVE = ['child', 'loli', 'underage'];
 
-function tokenKey(value: any) {
+function tokenKey(value: unknown) {
   let token = String(value || '').trim().toLowerCase();
   if (!token || /^<lora:/i.test(token) || /^break$/i.test(token)) return token;
   token = token.replace(/^[\s([{]+/, '').replace(/[\s)\]}]+$/, '');
@@ -53,24 +55,25 @@ function tokenKey(value: any) {
   return token.trim().replace(/[\s-]+/g, '_');
 }
 
-function splitPromptSegments(prompt: any) {
+function splitPromptSegments(prompt: unknown) {
   return String(prompt || '')
     .split(/\s*,?\s*\bBREAK\b\s*,?\s*/i)
     .map((segment) => segment.split(',').map((token) => token.trim()).filter(Boolean));
 }
 
-function promptTokenKeys(prompt: any) {
+function promptTokenKeys(prompt: unknown) {
   return splitPromptSegments(prompt).flat().map(tokenKey).filter(Boolean);
 }
 
-function scenePositiveKeys(scene: any) {
+function scenePositiveKeys(scene: PolicyScene) {
+  const tags = scene?.tags;
   return new Set([
-    ...(Array.isArray(scene && scene.tags) ? scene.tags.map(tokenKey) : []),
+    ...(Array.isArray(tags) ? tags.map(tokenKey) : []),
     ...promptTokenKeys(scene && scene.prompt)
   ].filter(Boolean));
 }
 
-function ratingFor(scene: any) {
+function ratingFor(scene: PolicyScene) {
   const keys = scenePositiveKeys(scene);
   const story = [scene && scene.title, scene && scene.story].join(' ').toLowerCase();
   if ([...R18_TAGS].some((tag) => keys.has(tag)) || R18_STORY.some((pattern) => pattern.test(story))) return 'R18';
@@ -78,7 +81,7 @@ function ratingFor(scene: any) {
   return 'All';
 }
 
-function framingConflicts(scene: any) {
+function framingConflicts(scene: PolicyScene) {
   const keys = scenePositiveKeys(scene);
   const conflicts = [];
   const close = keys.has('close_up') || keys.has('face_focus');
@@ -90,7 +93,7 @@ function framingConflicts(scene: any) {
   return conflicts;
 }
 
-function poseConflicts(scene: any) {
+function poseConflicts(scene: PolicyScene) {
   const poseGroups = {
     standing: ['standing'],
     sitting: ['sitting', 'sitting_on_bed', 'sitting_on_chair', 'sitting_on_sofa', 'sitting_on_floor',
@@ -99,9 +102,9 @@ function poseConflicts(scene: any) {
       'lying_on_table', 'lying_on_lap', 'lying_on_stomach'],
     kneeling: ['kneeling', 'all_fours']
   };
-  const activeFor = (keys: Set<any>) => Object.entries(poseGroups)
-    .filter(([, tags]: any) => tags.some((tag: string) => keys.has(tag)))
-    .map(([name]: any) => name);
+  const activeFor = (keys: Set<string>) => Object.entries(poseGroups)
+    .filter(([, tags]) => tags.some(tag => keys.has(tag)))
+    .map(([name]) => name);
   if ((scene && scene.char === 'triad') || /\bBREAK\b/i.test(String(scene && scene.prompt || ''))) {
     const conflicts: string[] = [];
     splitPromptSegments(scene && scene.prompt).forEach((segment, index) => {
@@ -114,7 +117,7 @@ function poseConflicts(scene: any) {
   return active.length > 1 ? [active.join(' + ')] : [];
 }
 
-function gazeConflicts(scene: any) {
+function gazeConflicts(scene: PolicyScene) {
   const conflicts = [];
   const segments = splitPromptSegments(scene && scene.prompt);
   for (let index = 0; index < segments.length; index += 1) {
@@ -126,7 +129,7 @@ function gazeConflicts(scene: any) {
   return conflicts;
 }
 
-function adultSafetyIssues(scene: any) {
+function adultSafetyIssues(scene: PolicyScene) {
   if (!scene || scene.rating !== 'R18') return [];
   const issues = [];
   const positive = scenePositiveKeys(scene);
@@ -142,12 +145,12 @@ function adultSafetyIssues(scene: any) {
   return issues;
 }
 
-function auMetadataIssues(scene: any) {
+function auMetadataIssues(scene: PolicyScene) {
   if (!scene) return [];
   const storyHasAu = /\bAU\b/i.test(String(scene.story || ''));
   const categoryHasAu = /AU|Active_Sync|\u540c\u4eba/i.test(String(scene.category || ''));
   const tags = new Set((scene.tags || []).map(tokenKey));
-  const tagHasAu = [...tags].some((tag: any) => /_au$/.test(tag));
+  const tagHasAu = [...tags].some(tag => /_au$/.test(tag));
   const issues = [];
   if (storyHasAu && !categoryHasAu && !tagHasAu) issues.push('AU story needs AU category or *_au metadata tag');
   if (tagHasAu && !storyHasAu && !categoryHasAu) issues.push('AU metadata tag needs an AU story/category marker');

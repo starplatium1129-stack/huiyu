@@ -1,4 +1,5 @@
 'use strict';
+import type { Manifest } from 'vite';
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
@@ -50,34 +51,34 @@ const DEFAULT_BUDGETS = Object.freeze({
   routeClosureJavaScript: 680 * 1024,
 });
 
-function routeEntries(manifest: any) {
+function routeEntries(manifest: Manifest) {
   return Object.entries(manifest)
-    .map(([key, entry]: any) => ({ key, ...entry }))
-    .filter((entry: any) => entry.isDynamicEntry === true && (
+    .map(([key, entry]) => ({ key, ...entry }))
+    .filter(entry => entry.isDynamicEntry === true && (
       /^src\/views\/.+\.vue$/.test(entry.src || entry.key)
       || (!entry.src && /View$/.test(entry.name || ''))
     ));
 }
 
-function lazyChunks(manifest: any) {
+function lazyChunks(manifest: Manifest) {
   return Object.entries(manifest)
-    .map(([key, entry]: any) => ({ key, ...entry }))
-    .filter((entry: any) => entry.isDynamicEntry === true && !/^src\/views\/.+\.vue$/.test(entry.src || entry.key));
+    .map(([key, entry]) => ({ key, ...entry }))
+    .filter(entry => entry.isDynamicEntry === true && !/^src\/views\/.+\.vue$/.test(entry.src || entry.key));
 }
 
-function entryEntry(manifest: any) {
+function entryEntry(manifest: Manifest) {
   return Object.entries(manifest)
-    .map(([key, entry]: any) => ({ key, ...entry }))
-    .find((entry: any) => entry.isEntry === true) || null;
+    .map(([key, entry]) => ({ key, ...entry }))
+    .find(entry => entry.isEntry === true) || null;
 }
 
 // 静态 import 闭包（不含 dynamicImports）：从起点沿 imports BFS 收集全部
 // manifest key。闭包大小只统计 .js 产物（CSS 已有独立预算），去重后求和。
-function staticClosureKeys(manifest: any, startKey: any) {
+function staticClosureKeys(manifest: Manifest, startKey: string) {
   const seen = new Set([startKey]);
   const queue = [startKey];
   while (queue.length) {
-    const entry = manifest[queue.shift()];
+    const entry = manifest[queue.shift()!];
     if (!entry) continue;
     for (const dep of entry.imports || []) {
       if (!seen.has(dep)) {
@@ -89,44 +90,44 @@ function staticClosureKeys(manifest: any, startKey: any) {
   return [...seen];
 }
 
-function staticClosureSize(manifest: any, startKey: any, sizeOf: any) {
-  return staticClosureKeys(manifest, startKey).reduce((total: any, key: any) => {
+function staticClosureSize(manifest: Manifest, startKey: string, sizeOf: (file: string) => number) {
+  return staticClosureKeys(manifest, startKey).reduce((total, key) => {
     const file = manifest[key] && manifest[key].file;
     return file && /\.js$/.test(file) ? total + sizeOf(file) : total;
   }, 0);
 }
 
-function evaluateManifest(manifest: any, sizeOf: any, budgets: any = DEFAULT_BUDGETS) {
-  const routes: any[] = routeEntries(manifest).map((entry: any) => {
+function evaluateManifest(manifest: Manifest, sizeOf: (file: string) => number) {
+  const routes = routeEntries(manifest).map(entry => {
     const cssFiles = [...new Set(entry.css || [])];
     return {
       route: entry.name || path.basename(entry.src || entry.key, '.vue'),
       file: entry.file,
       javascript: sizeOf(entry.file),
-      css: cssFiles.reduce((total: any, file: any) => total + sizeOf(file), 0),
+      css: cssFiles.reduce((total, file) => total + sizeOf(file), 0),
       // 2026-09-06 审计 P2-03：路由自身 chunk + 全部静态共享依赖（去重）。
       // 路由 javascript 变小而闭包变大 = 代码被搬进同步共享块，同样算回涨。
       closureJavaScript: staticClosureSize(manifest, entry.key, sizeOf),
     };
   });
 
-  const warnings: any[] = [];
-  const violations: any[] = [];
+  const warnings: string[] = [];
+  const violations: string[] = [];
   for (const route of routes) {
-    if (route.javascript > budgets.routeJavaScript) {
-      violations.push(`${route.route} JavaScript ${route.javascript} > ${budgets.routeJavaScript}`);
-    } else if (route.javascript > budgets.routeJavaScript * 0.9) {
-      warnings.push(`${route.route} JavaScript ${kib(route.javascript)} > 90% of ${kib(budgets.routeJavaScript)}`);
+    if (route.javascript > DEFAULT_BUDGETS.routeJavaScript) {
+      violations.push(`${route.route} JavaScript ${route.javascript} > ${DEFAULT_BUDGETS.routeJavaScript}`);
+    } else if (route.javascript > DEFAULT_BUDGETS.routeJavaScript * 0.9) {
+      warnings.push(`${route.route} JavaScript ${kib(route.javascript)} > 90% of ${kib(DEFAULT_BUDGETS.routeJavaScript)}`);
     }
-    if (route.css > budgets.routeCss) {
-      violations.push(`${route.route} CSS ${route.css} > ${budgets.routeCss}`);
-    } else if (route.css > budgets.routeCss * 0.9) {
-      warnings.push(`${route.route} CSS ${kib(route.css)} > 90% of ${kib(budgets.routeCss)}`);
+    if (route.css > DEFAULT_BUDGETS.routeCss) {
+      violations.push(`${route.route} CSS ${route.css} > ${DEFAULT_BUDGETS.routeCss}`);
+    } else if (route.css > DEFAULT_BUDGETS.routeCss * 0.9) {
+      warnings.push(`${route.route} CSS ${kib(route.css)} > 90% of ${kib(DEFAULT_BUDGETS.routeCss)}`);
     }
-    if (route.closureJavaScript > budgets.routeClosureJavaScript) {
-      violations.push(`${route.route} static closure JavaScript ${route.closureJavaScript} > ${budgets.routeClosureJavaScript}`);
-    } else if (route.closureJavaScript > budgets.routeClosureJavaScript * 0.9) {
-      warnings.push(`${route.route} static closure JavaScript ${kib(route.closureJavaScript)} > 90% of ${kib(budgets.routeClosureJavaScript)}`);
+    if (route.closureJavaScript > DEFAULT_BUDGETS.routeClosureJavaScript) {
+      violations.push(`${route.route} static closure JavaScript ${route.closureJavaScript} > ${DEFAULT_BUDGETS.routeClosureJavaScript}`);
+    } else if (route.closureJavaScript > DEFAULT_BUDGETS.routeClosureJavaScript * 0.9) {
+      warnings.push(`${route.route} static closure JavaScript ${kib(route.closureJavaScript)} > 90% of ${kib(DEFAULT_BUDGETS.routeClosureJavaScript)}`);
     }
   }
   const entry = entryEntry(manifest);
@@ -135,24 +136,28 @@ function evaluateManifest(manifest: any, sizeOf: any, budgets: any = DEFAULT_BUD
   const entryCssFiles: string[] = entry ? [...new Set<string>(staticClosureKeys(manifest, entry.key)
     .flatMap(key => manifest[key]?.css || []))] : [];
   const entryCss = entryCssFiles.reduce((total, file) => total + sizeOf(file), 0);
-  if (entryCss > budgets.entryCss) {
-    violations.push(`Entry CSS ${entryCssFiles.join(', ')} = ${entryCss} > ${budgets.entryCss}`);
+  if (entryCss > DEFAULT_BUDGETS.entryCss) {
+    violations.push(`Entry CSS ${entryCssFiles.join(', ')} = ${entryCss} > ${DEFAULT_BUDGETS.entryCss}`);
   }
   return { routes, violations, warnings, entryCss };
 }
 
-function kib(bytes: any) {
+function kib(bytes: number) {
   return `${(bytes / 1024).toFixed(1)} KiB`;
 }
 
-function run(distDir: any = path.resolve(__dirname, '../../dist'), options: { json?: boolean } = {}) {
+function run(distDir = path.resolve(__dirname, '../../dist'), options: { json?: boolean } = {}) {
   const manifestPath = path.join(distDir, '.vite', 'manifest.json');
   if (!fs.existsSync(manifestPath)) {
     throw new Error(`Vite manifest missing: ${manifestPath}`);
   }
-  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  const sizeOf = (file: any) => fs.statSync(path.join(distDir, file)).size;
-  const result: any = evaluateManifest(manifest, sizeOf);
+  const manifest: Manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  const sizeOf = (file: string) => fs.statSync(path.join(distDir, file)).size;
+  const result: ReturnType<typeof evaluateManifest> & {
+    pages?: ReturnType<typeof pageBundleReport>;
+    pageMeasurement?: { mode: string; unit: string; scope: string; manifestSha256: string; routerSha256: string };
+    entryClosureJavaScript?: number;
+  } = evaluateManifest(manifest, sizeOf);
   const routerSource = fs.readFileSync(path.resolve(__dirname, '../../src/router/index.ts'), 'utf8');
   result.pages = pageBundleReport(manifest, readPageMappings(routerSource), sizeOf);
   result.pageMeasurement = {
@@ -169,7 +174,7 @@ function run(distDir: any = path.resolve(__dirname, '../../dist'), options: { js
   }
 
   // 非路由动态块（wl-live2d 等）只监控大小上限，不设路由级预算
-  const lazy = lazyChunks(manifest).map((entry: any) => ({
+  const lazy = lazyChunks(manifest).map(entry => ({
     key: entry.key,
     file: entry.file,
     javascript: fs.statSync(path.join(distDir, entry.file)).size,
@@ -177,11 +182,11 @@ function run(distDir: any = path.resolve(__dirname, '../../dist'), options: { js
   // 2026-08-27 审计：懒块此前只有硬上限，90% 告警只覆盖路由预算，
   // wl-live2d 实测 92.3% 时静默逼近悬崖 —— 口径对齐路由块的告警线。
   const lazyWarnings = lazy
-    .filter((entry: any) => entry.javascript > DEFAULT_BUDGETS.lazyChunk * 0.9)
-    .map((entry: any) => `${path.basename(entry.key)} lazy JavaScript ${kib(entry.javascript)} > 90% of ${kib(DEFAULT_BUDGETS.lazyChunk)}`);
+    .filter(entry => entry.javascript > DEFAULT_BUDGETS.lazyChunk * 0.9)
+    .map(entry => `${path.basename(entry.key)} lazy JavaScript ${kib(entry.javascript)} > 90% of ${kib(DEFAULT_BUDGETS.lazyChunk)}`);
   const lazyViolations = lazy
-    .filter((entry: any) => entry.javascript > DEFAULT_BUDGETS.lazyChunk)
-    .map((entry: any) => `${entry.key} JavaScript ${entry.javascript} > ${DEFAULT_BUDGETS.lazyChunk}`);
+    .filter(entry => entry.javascript > DEFAULT_BUDGETS.lazyChunk)
+    .map(entry => `${entry.key} JavaScript ${entry.javascript} > ${DEFAULT_BUDGETS.lazyChunk}`);
   if (lazyViolations.length) {
     throw new Error(`Lazy chunk budget exceeded:\n${lazyViolations.join('\n')}`);
   }
@@ -199,10 +204,10 @@ function run(distDir: any = path.resolve(__dirname, '../../dist'), options: { js
     result.entryClosureJavaScript = entryClosure;
   }
 
-  const largestJs = [...result.routes].sort((a: any, b: any) => b.javascript - a.javascript)[0];
-  const largestCss = [...result.routes].sort((a: any, b: any) => b.css - a.css)[0];
-  const largestLazy = lazy.sort((a: any, b: any) => b.javascript - a.javascript)[0];
-  const largestClosure = [...result.routes].sort((a: any, b: any) => b.closureJavaScript - a.closureJavaScript)[0];
+  const largestJs = [...result.routes].sort((a, b) => b.javascript - a.javascript)[0];
+  const largestCss = [...result.routes].sort((a, b) => b.css - a.css)[0];
+  const largestLazy = lazy.sort((a, b) => b.javascript - a.javascript)[0];
+  const largestClosure = [...result.routes].sort((a, b) => b.closureJavaScript - a.closureJavaScript)[0];
   if (!options.json) console.log(
     `Route bundle budget passed: ${result.routes.length} routes; `
     + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `
@@ -214,10 +219,10 @@ function run(distDir: any = path.resolve(__dirname, '../../dist'), options: { js
   );
   if (options.json) console.log(JSON.stringify(result, null, 2));
   else {
-    const measured = result.pages.filter((page: any) => page.status === 'measured').sort((a: any, b: any) => b.pageJavaScript - a.pageJavaScript);
+    const measured = result.pages.filter((page): page is typeof page & { pageJavaScript: number } => page.status === 'measured').sort((a, b) => b.pageJavaScript - a.pageJavaScript);
     console.log(`Page JS union (report only): ${measured.length}/${result.pages.length} resolved; `
-      + measured.slice(0, 3).map((page: any) => `${page.route} ${kib(page.pageJavaScript)}`).join('; '));
-    for (const page of result.pages.filter((page: any) => page.status === 'unknown')) {
+      + measured.slice(0, 3).map(page => `${page.route} ${kib(page.pageJavaScript)}`).join('; '));
+    for (const page of result.pages.filter(page => page.status === 'unknown')) {
       console.warn(`[unknown] page JS ${page.route}: ${page.unknown.join('; ')}`);
     }
   }

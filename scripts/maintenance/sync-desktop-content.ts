@@ -78,8 +78,9 @@ function assertStopped(target: string) {
   const config = path.resolve(content, '../..');
   const capability = path.join(config, 'desktop-maintenance.json');
   if (io.safePath(capability)) {
-    const { hostPid } = io.readJson(capability);
-    if (!Number.isInteger(hostPid) || hostPid <= 0) throw new Error('DESKTOP_IDENTITY_INVALID: 宿主身份无效');
+    const identity = io.readJson(capability);
+    const hostPid = io.object(identity) ? identity.hostPid : undefined;
+    if (typeof hostPid !== 'number' || !Number.isInteger(hostPid) || hostPid <= 0) throw new Error('DESKTOP_IDENTITY_INVALID: 宿主身份无效');
     let alive = true;
     try { process.kill(hostPid, 0); }
     catch (error) { if ((error as NodeJS.ErrnoException).code === 'ESRCH') alive = false; else throw error; }
@@ -88,7 +89,8 @@ function assertStopped(target: string) {
   for (const name of ['workspace-active.json', 'workspace-candidate.json']) {
     const pointer = path.join(config, name);
     if (!io.safePath(pointer)) continue;
-    const { workspaceId } = io.readJson(pointer);
+    const value = io.readJson(pointer);
+    const workspaceId = io.object(value) ? value.workspaceId : undefined;
     if (typeof workspaceId !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(workspaceId)) throw new Error('WORKSPACE_POINTER_INVALID');
     if (io.safePath(path.join(config, 'workspaces', workspaceId, '.workspace-owner.json'))) throw new Error('WORKSPACE_LOCK_REMAINS: 请先完成桌面端退出或工作区恢复');
   }
@@ -124,17 +126,17 @@ function main(args = process.argv.slice(2)) {
   const targetFiles = walk(target);
   const sourceSet = new Set(sourceFiles);
   const changes = sourceFiles.flatMap(file => {
-    const bytes = io.readBytes(path.join(source, file)) as Buffer;
+    const bytes = io.readBytes(path.join(source, file));
     if (/\.(br|gz)$/i.test(file)) {
-      const raw = io.readBytes(path.join(source, file.replace(/\.(br|gz)$/i, ''))) as Buffer;
+      const raw = io.readBytes(path.join(source, file.replace(/\.(br|gz)$/i, '')));
       const decoded = /\.gz$/i.test(file) ? zlib.gunzipSync(bytes) : zlib.brotliDecompressSync(bytes);
       if (!raw.equals(decoded)) throw new Error(`预压内容与源不一致，请先重新预压: ${file}`);
     }
-    const previous = io.readBytes(path.join(target, file), true) as Buffer | null;
+    const previous = io.readBytes(path.join(target, file), true);
     return previous?.equals(bytes) ? [] : [{ file, bytes, previous }];
   });
   const toAdd = changes.filter(change => change.previous === null);
-  const toUpdate = changes.filter(change => change.previous !== null);
+  const toUpdate = changes.filter((change): change is typeof change & { previous: Buffer } => change.previous !== null);
   const targetOnly = targetFiles.filter(file => !sourceSet.has(file));
   const cacheRoot = args.includes('--clear-webview-cache') ? value('webview-root') || defaultWebviewRoot() : null;
   const caches: string[] = [];
@@ -167,11 +169,11 @@ function main(args = process.argv.slice(2)) {
     // A running application must be closed by its owner. Refuse concurrent edits
     // rather than silently replacing bytes that were not included in the backup.
     for (const { file, previous } of changes) {
-      const current = io.readBytes(path.join(target, file), true) as Buffer | null;
+      const current = io.readBytes(path.join(target, file), true);
       if (previous === null ? current !== null : !current?.equals(previous)) throw new Error(`CONTENT_CHANGED: 同步期间目标发生变化，未覆盖: ${file}`);
     }
     for (const { file, bytes, previous } of changes) {
-      const current = io.readBytes(path.join(target, file), true) as Buffer | null;
+      const current = io.readBytes(path.join(target, file), true);
       if (previous === null ? current !== null : !current?.equals(previous)) throw new Error(`CONTENT_CHANGED: 同步期间目标发生变化，未覆盖: ${file}`);
       io.atomicWrite(path.join(target, file), bytes, true);
     }

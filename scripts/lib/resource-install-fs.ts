@@ -12,13 +12,13 @@ interface ResourceContext {
   io: typeof fs;
   userRoot: string;
   store: string;
-  policy: any;
+  policy: unknown;
   access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
 }
 interface ContextOptions {
   userDataRoot: string;
   protectedRoots?: string[];
-  policy?: any;
+  policy?: unknown;
   access?: { isLocalStudioHost?: () => boolean; isAuthorized?: () => boolean };
 }
 
@@ -28,15 +28,16 @@ const MAX_JSON = 16 * 1024 * 1024;
 
 class ResourceError extends Error {
   code: string;
-  details?: any;
-  constructor(code: string, message: string, details?: any) {
+  details?: unknown;
+  constructor(code: string, message: string, details?: unknown) {
     super(message);
     this.name = 'ResourceError';
     this.code = code;
     if (details !== undefined) this.details = details;
   }
 }
-function fail(code: string, message: string, details?: any): never { throw new ResourceError(code, message, details); }
+function fail(code: string, message: string, details?: unknown): never { throw new ResourceError(code, message, details); }
+function object(value: unknown): value is Record<string, unknown> { return value !== null && typeof value === 'object' && !Array.isArray(value); }
 function digest(bytes: string | Uint8Array): string { return createHash('sha256').update(bytes).digest('hex'); }
 function samePath(a: string, b: string): boolean {
   const normalize = (value: string) => process.platform === 'win32' ? path.resolve(value).toLowerCase() : path.resolve(value);
@@ -46,7 +47,7 @@ function within(root: string, target: string): boolean {
   const rel = path.relative(root, target);
   return rel === '' || (rel !== '..' && !rel.startsWith('..' + path.sep) && !path.isAbsolute(rel));
 }
-function relativePath(value: string): string {
+function relativePath(value: unknown): string {
   if (typeof value !== 'string' || !value || /[\\:\x00-\x1f\x7f<>"|?*]/.test(value)
     || path.posix.normalize(value) !== value || value.startsWith('/')) fail('UNSAFE_PATH', 'Expected a relative POSIX path');
   const segments = value.split('/');
@@ -128,7 +129,7 @@ function readBytes(io: typeof fs, target: string, max: number = MAX_JSON, hardli
     return bytes;
   } finally { io.closeSync(fd); }
 }
-function readJson(io: typeof fs, target: string, optional: boolean = false, hardlinks: boolean = false): any {
+function readJson(io: typeof fs, target: string, optional: boolean = false, hardlinks: boolean = false): unknown {
   try { return JSON.parse(readBytes(io, target, MAX_JSON, hardlinks).toString('utf8')); } catch (error) {
     if (optional && runtimeErrorCode(error) === 'ENOENT') return null;
     if (error instanceof SyntaxError) fail('METADATA_INVALID', 'Invalid JSON: ' + target);
@@ -164,7 +165,7 @@ function writeAtomic(io: typeof fs, target: string, bytes: Buffer): void {
   io.renameSync(tmp, target);
   flushDir(io, path.dirname(target));
 }
-function writeJson(io: typeof fs, target: string, value: any): void { writeAtomic(io, target, Buffer.from(JSON.stringify(value) + '\n')); }
+function writeJson(io: typeof fs, target: string, value: unknown): void { writeAtomic(io, target, Buffer.from(JSON.stringify(value) + '\n')); }
 function cleanAtomicTemps(io: typeof fs, directory: string, names: string[]): void {
   noLinks(io, directory);
   for (const name of io.readdirSync(directory)) {
@@ -227,9 +228,12 @@ function ensureSpace(ctx: ResourceContext, bytes: number): void {
   const available = stat.bavail * stat.bsize;
   if (available < BigInt(bytes)) fail('ENOSPC', 'Not enough free space; previous installation is retained', { required: bytes, available: available.toString() });
 }
+function lockOwner(value: unknown): LockOwner {
+  if (!object(value) || value.host !== os.hostname() || typeof value.pid !== 'number' || !Number.isInteger(value.pid) || value.pid <= 0
+    || typeof value.token !== 'string' || !/^[\da-f-]{36}$/.test(value.token)) fail('LOCK_UNCERTAIN', 'Lock owner cannot be established safely');
+  return { host: value.host, pid: value.pid, token: value.token };
+}
 function alive(owner: LockOwner): boolean {
-  if (!owner || owner.host !== os.hostname() || !Number.isInteger(owner.pid) || owner.pid <= 0
-    || !/^[\da-f-]{36}$/.test(owner.token || '')) fail('LOCK_UNCERTAIN', 'Lock owner cannot be established safely');
   try { process.kill(owner.pid, 0); return true; } catch (error) {
     if (runtimeErrorCode(error) === 'ESRCH') return false;
     return true; // PID reuse/permission uncertainty must never steal a live lock.
@@ -239,7 +243,7 @@ function alive(owner: LockOwner): boolean {
 // Publish a fully written claim with an exclusive hard link: no empty-owner crash window.
 // Stale takeover is itself locked by the old nonce, preventing two recoverers from unlinking
 // a new owner's lock. A killed reaper is handled by the same bounded protocol.
-function lockFile(ctx: ResourceContext, name: string = 'writer', depth: number = 0): () => void {
+function lockFile(ctx: Pick<ResourceContext, 'io' | 'store'>, name: string = 'writer', depth: number = 0): () => void {
   if (depth > 8) fail('LOCK_UNCERTAIN', 'Too many interrupted lock recoveries');
   const { io } = ctx;
   const target = child(ctx.store, 'locks/' + name + '.json');
@@ -254,19 +258,20 @@ function lockFile(ctx: ResourceContext, name: string = 'writer', depth: number =
         flushDir(io, path.dirname(target));
         return () => {
           const current = readJson(io, target, true, true);
-          if (current?.token === owner.token) {
+          if (object(current) && current.token === owner.token) {
             io.unlinkSync(target);
             flushDir(io, path.dirname(target));
           }
         };
       } catch (error) { if (runtimeErrorCode(error) !== 'EEXIST') throw error; }
-      const old = readJson(io, target, true, true);
-      if (!old) continue;
+      const saved = readJson(io, target, true, true);
+      if (!saved) continue;
+      const old = lockOwner(saved);
       if (alive(old)) fail('BUSY', 'Another resource operation is active');
       const releaseReaper = lockFile(ctx, 'reap-' + old.token, depth + 1);
       try {
         const now = readJson(io, target, true, true);
-        if (now?.token === old.token && !alive(now)) io.unlinkSync(target);
+        if (object(now) && now.token === old.token && !alive(lockOwner(now))) io.unlinkSync(target);
       } finally { releaseReaper(); }
     }
     throw fail('BUSY', 'Resource lock changed during recovery');
@@ -275,11 +280,11 @@ function lockFile(ctx: ResourceContext, name: string = 'writer', depth: number =
     if (noLinks(io, claim, { missing: true, hardlinks: true })) io.unlinkSync(claim);
   }
 }
-async function locked(ctx: ResourceContext, fn: () => any): Promise<any> {
+async function locked<T>(ctx: ResourceContext, fn: () => T | Promise<T>): Promise<T> {
   initialize(ctx);
   const release = lockFile(ctx);
   try { return await fn(); } finally { release(); }
 }
-export = { ResourceError, fail, digest, within, relativePath, child,
+export = { ResourceError, fail, object, digest, within, relativePath, child,
   noLinks, mkdir, readBytes, readJson, writeAtomic, writeJson, writeAll, unlink, flushDir, cleanAtomicTemps,
   cancelled, yieldForCancellation, access, context, ensureSpace, lockFile, locked };

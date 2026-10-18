@@ -1,11 +1,13 @@
 'use strict';
+import type { ManifestEntry } from './resource-manifest-types';
 
 const path: typeof import('node:path') = require('node:path');
 const { createHash }: typeof import('node:crypto') = require('node:crypto');
 const { child, noLinks, mkdir, ensureSpace, writeAll, yieldForCancellation, cancelled, fail, digest, flushDir, unlink }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
 const CHUNK = 512 * 1024;
-function fileMatches(ctx: any, file: string, entry: { bytes: number; sha256: string; }) {
+type Context = ReturnType<typeof import('./resource-install-fs').context>;
+function fileMatches(ctx: Context, file: string, entry: { bytes: number; sha256: string }) {
   const st = noLinks(ctx.io, file, { missing: true });
   if (!st) return false;
   if (!st.isFile()) fail('UNSAFE_FILE', 'Expected an ordinary resource file');
@@ -27,7 +29,7 @@ function fileMatches(ctx: any, file: string, entry: { bytes: number; sha256: str
     return total === entry.bytes && hash.digest('hex') === entry.sha256;
   } finally { ctx.io.closeSync(fd); }
 }
-async function copyEntry(ctx: any, { sourceRoot, tree, parts, entry, signal }: any) {
+async function copyEntry(ctx: Context, { sourceRoot, tree, parts, entry, signal }: { sourceRoot: string; tree: string; parts: string; entry: ManifestEntry; signal?: AbortSignal }) {
   cancelled(signal);
   const target = child(tree, entry.path);
   if (fileMatches(ctx, target, entry)) {

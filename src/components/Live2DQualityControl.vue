@@ -1,15 +1,15 @@
 <template>
-  <fieldset class="live2d-quality-control" :disabled="!supported">
+  <fieldset class="live2d-quality-control">
     <legend>
       <span>Live2D 画质</span>
-      <small>{{ supported ? qualityHint : '当前桌面版本仅支持原始资源' }}</small>
+      <small>{{ qualityHint }}</small>
     </legend>
-    <StudioTooltip :content="supported ? '切换后重新加载模型，原始资源保持不变' : '更新桌面程序后可选择其他画质'">
+    <StudioTooltip content="切换后重新加载模型，原始资源保持不变">
       <div
         class="live2d-quality-options"
         role="radiogroup"
         aria-label="Live2D 画质"
-        :data-value="supported ? quality : 'original'"
+        :data-value="quality"
       >
         <button
           v-for="option in options"
@@ -18,8 +18,7 @@
           role="radio"
           class="live2d-quality-option"
           :data-value="option.value"
-          :aria-checked="(supported ? quality : 'original') === option.value"
-          :disabled="!supported"
+          :aria-checked="quality === option.value"
           @click="setQuality(option.value)"
         >
           <strong>{{ option.label }}</strong>
@@ -31,15 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import { getNativeLive2dCapabilities } from '@/platform/desktop/nativeLive2d'
-
 import { computed } from 'vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
-const props = defineProps<{ native?: boolean }>()
 const { quality, setQuality } = useLive2DPreferences()
-const supported = computed(() => !props.native || !getNativeLive2dCapabilities() || getNativeLive2dCapabilities()!.supportsTextureQuality === true)
 const options = [
   { value: 'original', label: '原始', caption: '高清' },
   { value: 'standard', label: '标准', caption: '省内存' },

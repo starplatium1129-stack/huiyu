@@ -1,8 +1,9 @@
 'use strict';
+import { errorMessage } from '../lib/runtime-errors';
 
 // Internal staging step, not an install/download or user-selected filesystem API.
 const { applyResourceProfile }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
-async function main(args: string|any[]) {
+async function main(args: string[]) {
   if (args.includes('--help') || args.includes('--plan')) {
     console.log('Internal desktop staging helper: <source root> <fresh gateway staging root> <full|base>. Called by desktop-stage-resources; does not install or download. Help/plan read no target files.');
     return;
@@ -10,6 +11,6 @@ async function main(args: string|any[]) {
   if (args.length !== 3) throw new Error('Expected source root, fresh gateway staging root, and profile');
   await applyResourceProfile({ root: args[0], gatewayRoot: args[1], profile: args[2] });
 }
-if (require.main === module) main(process.argv.slice(2)).catch((error: any) => {
-  console.error(error.message); process.exitCode = 1;
+if (require.main === module) main(process.argv.slice(2)).catch((error: unknown) => {
+  console.error(errorMessage(error)); process.exitCode = 1;
 });

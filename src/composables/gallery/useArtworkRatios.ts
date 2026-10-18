@@ -88,5 +88,5 @@ export function useArtworkRatios(deps: ArtworkRatioDeps) {
   /** 作品被删除后丢掉它的实测值 */
   function forgetRatio(id: string | number) { delete measuredRatios[id] }
 
-  return { measuredRatios, ratioOf, measure, forgetRatio }
+  return { ratioOf, measure, forgetRatio }
 }

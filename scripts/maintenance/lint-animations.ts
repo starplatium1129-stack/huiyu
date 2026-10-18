@@ -23,6 +23,8 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const sources: typeof import('./style-sources') = require('./style-sources');
 const root = sources.ROOT;
+type Finding = { kind: string; snippet: string; exempt: boolean; warnOnly?: boolean; repaintProp?: string };
+type FileFinding = Finding & { file: string };
 
 // 当前获准保留的豁免数（2026-08-27 立项时基线）：
 // 1. design-system.css .meter-fill width —— scaleX 会压扁圆头并把子扫光伪元素横向拉伸；
@@ -55,7 +57,7 @@ const REPAINT_NAMES = ['box-shadow', 'filter', 'backdrop-filter', 'background-po
 // （2026-08-29 实测抓出 atelierPulse / pulse-dot 两处）。
 const KEYFRAME_REPAINT_DECL = new RegExp('(?:^|[\\s;{])(' + REPAINT_NAMES.join('|') + ')\\s*:', 'g');
 
-function isLayoutName(token: any) {
+function isLayoutName(token: string) {
   const name = token.replace(/!important$/i, '').trim().toLowerCase();
   if (!name || name === 'none' || name.startsWith('--')) return false;
   if (name === 'all') return true;
@@ -67,12 +69,12 @@ function isLayoutName(token: any) {
   return ['width', 'height', 'top', 'bottom', 'left', 'right', 'gap', 'row-gap', 'column-gap', 'flex-basis'].includes(name);
 }
 
-function isRepaintName(token: any) {
+function isRepaintName(token: string) {
   const name = token.replace(/!important$/i, '').trim().toLowerCase();
   return REPAINT_NAMES.includes(name);
 }
 
-function findExemption(text: any, index: any) {
+function findExemption(text: string, index: number) {
   // 豁免标记在违规点前 ~700 字符内（个别超长单行规则整行近 500 字符，
   // 标记写在紧邻上一行也要能命中）或声明同段后 200 字符内均有效。
   const before = text.slice(Math.max(0, index - 700), index);
@@ -80,13 +82,13 @@ function findExemption(text: any, index: any) {
   return before.includes(MARKER) || after.includes(MARKER);
 }
 
-function snippetOf(text: any, index: any) {
+function snippetOf(text: string, index: number) {
   const lineStart = text.lastIndexOf('\n', Math.max(0, index - 1)) + 1;
   const raw = text.slice(lineStart).split('\n').slice(0, 3).join(' ').trim();
   return raw.length > 90 ? `${raw.slice(0, 90)}…` : raw;
 }
 
-function scanTransitionValue(css: any, match: any) {
+function scanTransitionValue(css: string, match: RegExpExecArray): Finding | null {
   // "width 0.08s ease, height 0.1s" → 每个逗号项的首 token 即补间属性名
   for (const item of match[1].split(',')) {
     const lead = item.trim().split(/[\s]+/)[0];
@@ -97,10 +99,10 @@ function scanTransitionValue(css: any, match: any) {
   return null;
 }
 
-function scanCss(relPath: any, css: any) {
+function scanCss(relPath: string, css: string): FileFinding[] {
   css = sources.expandTailwindApply(css.replace(/\/\*[\s\S]*?\*\//g, (comment: string) =>
     comment.includes(MARKER) ? comment : comment.replace(/[^\n]/g, ' ')));
-  const findings: any[] = [];
+  const findings: Finding[] = [];
 
   for (const match of css.matchAll(TRANSITION_DECL)) {
     const hit = scanTransitionValue(css, match);
@@ -152,7 +154,7 @@ function scanCss(relPath: any, css: any) {
     }
   }
 
-  return findings.map((f: any) => ({ file: relPath, ...f }));
+  return findings.map(f => ({ file: relPath, ...f }));
 }
 
 function scanUtilityAnimations(relPath: string, source: string) {
@@ -165,7 +167,7 @@ function scanUtilityAnimations(relPath: string, source: string) {
 
 function collect() {
   const targets = [...sources.appCssFiles(), ...sources.sfcFiles(), ...sources.utilityScriptFiles()];
-  const all: any[] = [];
+  const all: FileFinding[] = [];
   for (const relPath of targets) {
     const abs = path.join(root, relPath);
     if (!fs.existsSync(abs)) continue; // 与 scan-style-literals 同口径：缺失仅提示不阻断
@@ -180,34 +182,34 @@ function collect() {
   return all;
 }
 
-function report(findings: any) {
-  const gate = findings.filter((f: any) => !f.warnOnly);
-  const warns = findings.filter((f: any) => f.warnOnly);
+function report(findings: FileFinding[]) {
+  const gate = findings.filter(f => !f.warnOnly);
+  const warns = findings.filter(f => f.warnOnly);
 
   if (!gate.length) {
     console.log('动效合成器检查通过：真实样式树无布局属性补间。');
   } else {
     console.log('布局属性补间清单（transform/opacity 以外的过渡/关键帧补间）：');
-    for (const f of gate.sort((a: any, b: any) => Number(a.exempt) - Number(b.exempt))) {
+    for (const f of gate.sort((a, b) => Number(a.exempt) - Number(b.exempt))) {
       console.log(`  [${f.exempt ? '豁免' : '违规'}] ${f.file} · ${f.kind}`);
       console.log(`          ${f.snippet}`);
     }
-    console.log(`TOTAL ${gate.length} 处，其中已豁免 ${gate.filter((f: any) => f.exempt).length} 处 / 基线 ${ALLOWED_EXEMPT}`);
+    console.log(`TOTAL ${gate.length} 处，其中已豁免 ${gate.filter(f => f.exempt).length} 处 / 基线 ${ALLOWED_EXEMPT}`);
   }
 
   if (warns.length) {
     console.log(`\n重绘型过渡 ${warns.length} 处（不阻断：会逐帧重绘，filter 还需离屏合成）：`);
-    const byProp = new Map();
-    const byFile = new Map();
+    const byProp = new Map<string, number>();
+    const byFile = new Map<string, number>();
     for (const f of warns) {
       const prop = f.repaintProp || '其他';
       byProp.set(prop, (byProp.get(prop) || 0) + 1);
       byFile.set(f.file, (byFile.get(f.file) || 0) + 1);
     }
-    for (const [prop, n] of [...byProp].sort((a: any, b: any) => b[1] - a[1])) {
+    for (const [prop, n] of [...byProp].sort((a, b) => b[1] - a[1])) {
       console.log(`  ${prop.padEnd(18)} ${n} 处`);
     }
-    const hot = [...byFile].sort((a: any, b: any) => b[1] - a[1]).slice(0, 5);
+    const hot = [...byFile].sort((a, b) => b[1] - a[1]).slice(0, 5);
     if (hot.length) {
       console.log('  集中文件：');
       for (const [file, n] of hot) console.log(`    ${n} 处  ${file}`);
@@ -223,8 +225,8 @@ function main() {
   if (!process.argv.includes('--check')) return;
 
   // 警告项（重绘型）不参与门禁判定：它是改进清单，不是失败条件
-  const gate = findings.filter((f: any) => !f.warnOnly);
-  const violations = gate.filter((f: any) => !f.exempt);
+  const gate = findings.filter(f => !f.warnOnly);
+  const violations = gate.filter(f => !f.exempt);
   if (violations.length) {
     console.error(`\n动效铁律违规 ${violations.length} 处：布局属性不得用于补间，请改用 transform/opacity；`);
     console.error(`确有必要的例外请在违规声明上方写 /* ${MARKER}: <理由> */ 并评审上调 ALLOWED_EXEMPT。`);

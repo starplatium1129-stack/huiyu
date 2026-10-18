@@ -7,28 +7,31 @@ const path: typeof import('node:path') = require('node:path');
 const crypto: typeof import('node:crypto') = require('node:crypto');
 const { VERSIONED_FILES }: typeof import('./data-version') = require('./data-version');
 
-function failure(code: any, message: any) {
+function failure(code: string, message: string) {
   return Object.assign(new Error(message), { code, statusCode: 409, recoveryRequired: true });
 }
-const keyPath = (value: any) => process.platform === 'win32' ? value.toLowerCase() : value;
-const samePath = (a: any, b: any) => keyPath(path.resolve(a)) === keyPath(path.resolve(b));
-function within(parent: any, file: any) {
+const keyPath = (value: string) => process.platform === 'win32' ? value.toLowerCase() : value;
+const samePath = (a: string, b: string) => keyPath(path.resolve(a)) === keyPath(path.resolve(b));
+function within(parent: string, file: string) {
   const relative = path.relative(keyPath(path.resolve(parent)), keyPath(path.resolve(file)));
   return relative !== '' && relative !== '..' && !relative.startsWith('..' + path.sep) && !path.isAbsolute(relative);
 }
-function canonical(value: any): any {
+function object(value: unknown): value is Record<string, unknown> { return value !== null && typeof value === 'object' && !Array.isArray(value); }
+function canonical(value: Record<string, unknown>): string;
+function canonical(value: unknown): string | undefined;
+function canonical(value: unknown): string | undefined {
   if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']';
-  if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
+  if (object(value)) return '{' + Object.keys(value).sort().map(key => JSON.stringify(key) + ':' + canonical(value[key])).join(',') + '}';
   return JSON.stringify(value);
 }
-const digest = (bytes: any) => crypto.createHash('sha256').update(bytes).digest('hex');
-const equal = (a: any, b: any) => canonical(a) === canonical(b);
+const digest = (bytes: string | NodeJS.ArrayBufferView) => crypto.createHash('sha256').update(bytes).digest('hex');
+const equal = (a: unknown, b: unknown) => canonical(a) === canonical(b);
 
-function stat(file: any) {
+function stat(file: string) {
   try { return fs.lstatSync(file, { bigint: true }); }
   catch (error) { if (runtimeErrorCode(error) === 'ENOENT') return null; throw error; }
 }
-function safePath(file: any, kind: any = 'file', allowMissing: any = true) {
+function safePath(file: string, kind: 'file' | 'directory' = 'file', allowMissing = true) {
   const abs = path.resolve(file);
   const parsed = path.parse(abs);
   let cursor = parsed.root;
@@ -52,23 +55,25 @@ function safePath(file: any, kind: any = 'file', allowMissing: any = true) {
   if (kind !== 'directory') throw failure('MAINTENANCE_PATH', '目标不能是文件系统根');
   return stat(abs);
 }
-function directoryIdentity(file: any) {
+function directoryIdentity(file: string) {
   const info = safePath(file, 'directory', false);
   return { path: keyPath(path.resolve(file)), dev: String(info!.dev), ino: String(info!.ino) };
 }
-function ensureDirectory(file: any) {
+function ensureDirectory(file: string) {
   if (safePath(file, 'directory')) return;
   ensureDirectory(path.dirname(file));
   try { fs.mkdirSync(file); } catch (error) { if (runtimeErrorCode(error) !== 'EEXIST') throw error; }
   safePath(file, 'directory', false);
 }
-function syncDirectory(dir: any) {
+function syncDirectory(dir: string) {
   // Windows does not expose directory fsync through Node. File contents are flushed.
   if (process.platform === 'win32') return;
   const fd = fs.openSync(dir, 'r');
   try { fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
 }
-function readBytes(file: any, allowMissing: any = false) {
+function readBytes(file: string, allowMissing?: false): Buffer;
+function readBytes(file: string, allowMissing: boolean): Buffer | null;
+function readBytes(file: string, allowMissing = false): Buffer | null {
   const before = safePath(file, 'file', allowMissing);
   if (!before) return null;
   const fd = fs.openSync(file, fs.constants.O_RDONLY | (fs.constants.O_NOFOLLOW || 0));
@@ -81,20 +86,20 @@ function readBytes(file: any, allowMissing: any = false) {
     return bytes;
   } finally { fs.closeSync(fd); }
 }
-function fileState(file: any) {
+function fileState(file: string) {
   const bytes = readBytes(file, true);
   if (bytes === null) return { exists: false, sha256: null, size: 0 };
   return { exists: true, sha256: digest(bytes), size: bytes.length };
 }
-function snapshotFiles(files: any) {
+function snapshotFiles(files: readonly string[]) {
   const seen = new Set();
-  return files.filter((file: any) => { const key = keyPath(path.resolve(file)); if (seen.has(key)) return false; seen.add(key); return true; }).map((file: any) => {
+  return files.filter(file => { const key = keyPath(path.resolve(file)); if (seen.has(key)) return false; seen.add(key); return true; }).map(file => {
     file = path.resolve(file);
     const content = readBytes(file, true);
-    return { file, exists: content !== null, content };
+    return content === null ? { file, exists: false as const, content } : { file, exists: true as const, content };
   });
 }
-function atomicWrite(file: any, bytes: any, createParents: any = false) {
+function atomicWrite(file: string, bytes: Parameters<typeof fs.writeFileSync>[1], createParents = false) {
   if (createParents) ensureDirectory(path.dirname(file));
   safePath(path.dirname(file), 'directory', false);
   const old = safePath(file);
@@ -112,20 +117,20 @@ function atomicWrite(file: any, bytes: any, createParents: any = false) {
     if (owned) { try { fs.unlinkSync(temp); } catch { /* Only this call's temporary file. */ } }
   }
 }
-function removeFile(file: any) {
+function removeFile(file: string) {
   if (!safePath(file)) return;
   fs.unlinkSync(file);
   syncDirectory(path.dirname(file));
 }
-function writeJson(file: any, value: any) { atomicWrite(file, JSON.stringify(value, null, 2) + '\n'); }
-function readJson(file: any) {
+function writeJson(file: string, value: unknown) { atomicWrite(file, JSON.stringify(value, null, 2) + '\n'); }
+function readJson(file: string): unknown {
   const bytes = readBytes(file);
-  if (bytes!.length > 32 * 1024 * 1024) throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据过大');
-  try { return JSON.parse(bytes!.toString('utf8')); }
+  if (bytes.length > 32 * 1024 * 1024) throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据过大');
+  try { return JSON.parse(bytes.toString('utf8')); }
   catch { throw failure('MAINTENANCE_INVALID_JOURNAL', '元数据不是有效 JSON：' + file); }
 }
 
-function context(options: any = {}) {
+function context(options: { rootDir?: string; runtimeRoot?: string; showcaseRoot?: string } = {}) {
   if (!options.rootDir) throw failure('MAINTENANCE_ARGUMENT', '必须明确指定 rootDir');
   const rootDir = path.resolve(options.rootDir);
   const root = directoryIdentity(rootDir);
@@ -148,7 +153,7 @@ function context(options: any = {}) {
   return { rootDir, root, runtimeRoot, showcaseRoot, stateDir, leaseDir: path.join(stateDir, 'lease'), backupRoot: path.join(runtimeRoot, 'maintenance-backups') };
 }
 const DATA_NAMES = new Set([...VERSIONED_FILES, 'retired-scenes.json', 'character-reference-standards.json', 'character-reference-view.json']);
-function targetPath(ctx: any, source: any) {
+function targetPath(ctx: ReturnType<typeof context>, source: unknown) {
   if (typeof source !== 'string' || !path.isAbsolute(source)) throw failure('MAINTENANCE_PATH', '备份 source 必须是绝对路径');
   const file = path.resolve(source);
   const relative = path.relative(ctx.rootDir, file).replace(/\\/g, '/');
@@ -164,7 +169,7 @@ function targetPath(ctx: any, source: any) {
   }
   throw failure('MAINTENANCE_UNSUPPORTED_SCOPE', '未授权的恢复范围；外部样张必须显式配置 showcaseRoot：' + file);
 }
-function readKey(ctx: any, create: any = false) {
+function readKey(ctx: ReturnType<typeof context>, create = false) {
   const file = path.join(ctx.stateDir, 'key');
   if (create) {
     ensureDirectory(ctx.stateDir);
@@ -176,12 +181,12 @@ function readKey(ctx: any, create: any = false) {
     }
   }
   const key = readBytes(file);
-  if (key!.length !== 32) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护签名密钥不完整，拒绝恢复');
+  if (key.length !== 32) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护签名密钥不完整，拒绝恢复');
   return key;
 }
-function seal(value: any, key: any) { return { ...value, hmacSha256: crypto.createHmac('sha256', key).update(canonical(value)).digest('hex') }; }
-function unseal(value: any, key: any) {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) throw failure('MAINTENANCE_INVALID_JOURNAL', '签名记录格式无效');
+function seal<T extends Record<string, unknown>>(value: T, key: Buffer) { return { ...value, hmacSha256: crypto.createHmac('sha256', key).update(canonical(value)).digest('hex') }; }
+function unseal(value: unknown, key: Buffer) {
+  if (!object(value)) throw failure('MAINTENANCE_INVALID_JOURNAL', '签名记录格式无效');
   const { hmacSha256, ...body } = value;
   const expected = seal(body, key).hmacSha256;
   if (typeof hmacSha256 !== 'string' || !/^[0-9a-f]{64}$/.test(hmacSha256)
@@ -189,5 +194,5 @@ function unseal(value: any, key: any) {
   return body;
 }
 
-export = { fs, path, crypto, failure, keyPath, samePath, within, canonical, digest, equal, safePath, directoryIdentity,
+export = { fs, path, crypto, failure, keyPath, samePath, within, object, canonical, digest, equal, safePath, directoryIdentity,
   ensureDirectory, syncDirectory, readBytes, fileState, snapshotFiles, atomicWrite, removeFile, writeJson, readJson, context, targetPath, readKey, seal, unseal };

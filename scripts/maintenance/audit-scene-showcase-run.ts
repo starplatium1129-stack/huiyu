@@ -19,6 +19,10 @@
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { spawn }: typeof import('child_process') = require('child_process');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+import { errorStack } from '../lib/runtime-errors';
+type GenerationRecord = { key: string; attempt: number; sceneId?: string; recordId: string; image: string };
+type Inspection = { file: string } & ({ ok: true; result: unknown } | { ok: false; error: string });
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_DIR = path.join(
@@ -29,15 +33,15 @@ const DEFAULT_DIR = path.join(
 );
 const DEFAULT_MANIFEST = path.join(DEFAULT_DIR, 'generation-manifest.json');
 
-function argument(name: any, fallback: any = '') {
+function argument(name: string, fallback = '') {
   const index = process.argv.indexOf(name);
   return index >= 0 && process.argv[index + 1] ? process.argv[index + 1] : fallback;
 }
-function splitList(value: any) {
-  return String(value || '').split(',').map((item: any) => item.trim()).filter(Boolean);
+function splitList(value: string) {
+  return String(value || '').split(',').map(item => item.trim()).filter(Boolean);
 }
-function runInspect(imageFile: any, timeoutMs: any, prompt: any) {
-  return new Promise<any>((resolve: any) => {
+function runInspect(imageFile: string, timeoutMs: number, prompt: string) {
+  return new Promise<Inspection>(resolve => {
     const args = [path.join(ROOT, 'scripts', 'maintenance', 'image-inspect.js'), imageFile, '-t', 'audit', '--json'];
     if (prompt) args.push('-p', prompt);
     const child = spawn(
@@ -47,20 +51,20 @@ function runInspect(imageFile: any, timeoutMs: any, prompt: any) {
     );
     let stdout = '';
     let stderr = '';
-    child.stdout.on('data', (chunk: any) => { stdout += chunk; });
-    child.stderr.on('data', (chunk: any) => { stderr += chunk; });
+    child.stdout.on('data', (chunk: Buffer) => { stdout += chunk.toString(); });
+    child.stderr.on('data', (chunk: Buffer) => { stderr += chunk.toString(); });
     const timer = setTimeout(() => {
       child.kill();
       resolve({ file: imageFile, ok: false, error: 'inspect timeout' });
     }, timeoutMs);
-    child.on('error', (error: any) => {
+    child.on('error', error => {
       clearTimeout(timer);
       resolve({ file: imageFile, ok: false, error: error.message });
     });
-    child.on('close', (code: any) => {
+    child.on('close', code => {
       clearTimeout(timer);
       try {
-        const data = JSON.parse(stdout);
+        const data: unknown = JSON.parse(stdout);
         resolve({ file: imageFile, ok: true, result: Array.isArray(data) ? data[0] : data });
       } catch (error) {
         resolve({ file: imageFile, ok: false, error: `bad inspect output (${code}): ${stderr.slice(0, 300)}` });
@@ -78,21 +82,29 @@ async function main() {
   const timeoutMs = Math.max(60000, Number(argument('--timeout', '240000')) || 240000);
   const auditPrompt = argument('--prompt', '');
 
-  const records = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  let selected = records.filter((record: any) => record.status === 'succeeded');
+  const records: unknown = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (!Array.isArray(records) || !records.every(object)) throw new Error('Invalid generation manifest');
+  let selected: GenerationRecord[] = records.filter(record => record.status === 'succeeded').map(record => {
+    if (typeof record.key !== 'string' || typeof record.attempt !== 'number'
+      || !Number.isSafeInteger(record.attempt) || record.attempt < 1
+      || typeof record.recordId !== 'string' || typeof record.image !== 'string'
+      || (record.sceneId !== undefined && typeof record.sceneId !== 'string')) throw new Error('Invalid succeeded generation record');
+    return { key: record.key, attempt: record.attempt, recordId: record.recordId, image: record.image, sceneId: record.sceneId };
+  });
   if (latestOnly) {
-    const best = new Map();
+    const best = new Map<string, GenerationRecord>();
     for (const record of selected) {
       const previous = best.get(record.key);
       if (!previous || record.attempt > previous.attempt) best.set(record.key, record);
     }
     selected = [...best.values()];
   }
-  if (ids.length) selected = selected.filter((record: any) => ids.includes(record.sceneId));
+  if (ids.length) selected = selected.filter(record => record.sceneId !== undefined && ids.includes(record.sceneId));
 
   const outputPath = path.join(dir, 'audit-results.json');
-  const existing = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, 'utf8')) : {};
-  const results = Object.assign({}, existing);
+  const existing: unknown = fs.existsSync(outputPath) ? JSON.parse(fs.readFileSync(outputPath, 'utf8')) : {};
+  if (!object(existing)) throw new Error('Invalid saved audit results');
+  const results: Record<string, unknown> = { ...existing };
 
   console.log(`[audit-plan] ${selected.length} succeeded records, concurrency ${concurrency}`);
   let cursor = 0;
@@ -107,17 +119,19 @@ async function main() {
         console.log(`[missing] ${record.recordId}`);
         continue;
       }
-      if (results[record.recordId] && results[record.recordId].ok === true && !process.argv.includes('--force')) {
+      const saved = results[record.recordId];
+      if (object(saved) && saved.ok === true && !process.argv.includes('--force')) {
         console.log(`[reuse] ${record.recordId}`);
         continue;
       }
       console.log(`[audit] ${record.recordId} ${imageFile}`);
       const outcome = await runInspect(imageFile, timeoutMs, auditPrompt);
-      results[record.recordId] = outcome.ok
+      const result = outcome.ok
         ? { ok: true, verdict: classify(outcome.result), summary: summarize(outcome.result), inspectedAt: new Date().toISOString() }
         : { ok: false, error: outcome.error, file: imageFile };
+      results[record.recordId] = result;
       fs.writeFileSync(outputPath, JSON.stringify(results, null, 2), 'utf8');
-      console.log(`[done] ${record.recordId} -> ${results[record.recordId].ok ? results[record.recordId].verdict : 'error'}`);
+      console.log(`[done] ${record.recordId} -> ${result.ok ? result.verdict : 'error'}`);
     }
   }
   await Promise.all(Array.from({ length: Math.min(concurrency, selected.length) }, () => worker()));
@@ -125,25 +139,25 @@ async function main() {
 }
 
 /** 轻量归类：硬伤关键词判 fail；其余 pass（复核由人终审）。 */
-function classify(result: any) {
-  if (!result || !result.content) return 'unknown';
+function classify(result: unknown) {
+  if (!object(result) || !result.content) return 'unknown';
   const text = String(result.content);
   if (text.includes('不通过')) return 'fail';
   if (text.includes('需复核') || text.includes('需注意')) return 'review';
   return 'pass';
 }
-function summarize(result: any) {
-  if (!result || !result.content) return '';
+function summarize(result: unknown) {
+  if (!object(result) || !result.content) return '';
   const text = String(result.content);
-  const lines = text.split('\n').map((line: any) => line.trim()).filter(Boolean);
-  const conclusion = lines.find((line: any) => line.includes('结论')) || '';
-  const issues = lines.filter((line: any) => /^\d+[\.、]/.test(line) || line.startsWith('- ')).slice(0, 6);
+  const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
+  const conclusion = lines.find(line => line.includes('结论')) || '';
+  const issues = lines.filter(line => /^\d+[\.、]/.test(line) || line.startsWith('- ')).slice(0, 6);
   return [conclusion, ...issues].join('\n');
 }
 
 if (require.main === module) {
-  main().catch((error: any) => {
-    console.error(error && error.stack || error);
+  main().catch((error: unknown) => {
+    console.error(errorStack(error));
     process.exitCode = 1;
   });
 }

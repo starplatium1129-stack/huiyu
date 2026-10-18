@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 import { buildReferenceDesignWorkflow } from '../lib/generation/reference-design-workflow';
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 'use strict';
 
 
@@ -57,7 +58,7 @@ const REF_ROOT = process.env.AI_WORKSPACE_ROOT
 const COMFY_OUTPUT = process.env.COMFY_OUTPUT || path.resolve(REF_ROOT, '..', 'ComfyUI', 'output');
 
 // 负面词：基础词照抄项目前端权威来源 promptBuilderStore.ts NEGATIVE_DEFAULT，
-// 防双子镜像追加词照抄 src/utils/sdRequest.ts DUAL_SAFETY_NEGATIVE（identical twins /
+// 双人参考页保留防双子镜像追加词（identical twins /
 // merged bodies / fused limbs / duplicate person / cloned face / swapped hair），
 // 防掀裙追加自然语言负面（2026-08-31：back 视角曾翻车成掀裙）。
 const NEGATIVE =
@@ -65,7 +66,7 @@ const NEGATIVE =
 
 // 视角模板（2026-08-31 修订）：side/back 曾翻车为双子镜像 / 掀裙，
 // 靠负面词压制（见 NEGATIVE，照抄项目现成词表），视角词保持标准。
-const VIEWS: any = {
+const VIEWS: Partial<Record<string, string>> = {
   front: 'front_view, facing_viewer, looking_at_viewer, solo, single character',
   side: 'side_view, profile, looking_ahead, solo, single character',
   back: 'back_view, from_behind, solo, single character',
@@ -104,25 +105,25 @@ if (args.includes('--help') || args.includes('-h')) {
 依赖: ComfyUI http://127.0.0.1:8188（--disable-smart-memory）`);
   process.exit(0);
 }
-function pick(flag: any, splitter: any = ',') {
-  const hit = args.find((a: any) => a.startsWith(flag + '='));
+function pick(flag: string) {
+  const hit = args.find(a => a.startsWith(flag + '='));
   if (!hit) return null;
-  return hit.slice(flag.length + 1).split(splitter).map((s: any) => s.trim()).filter(Boolean);
+  return hit.slice(flag.length + 1).split(',').map(s => s.trim()).filter(Boolean);
 }
 const charsFilter = pick('--chars');
 const outfitsFilter = pick('--outfits');
 const viewsFilter = pick('--views');
 const all = args.includes('--all');
 const dryRun = args.includes('--dry-run');
-const limit = Number((args.find((a: any) => a.startsWith('--limit=')) || '').split('=')[1] || 0) || null;
-const seedShift = Number((args.find((a: any) => a.startsWith('--seed-shift=')) || '').split('=')[1] || 0) || 0;
+const limit = Number((args.find(a => a.startsWith('--limit=')) || '').split('=')[1] || 0) || null;
+const seedShift = Number((args.find(a => a.startsWith('--seed-shift=')) || '').split('=')[1] || 0) || 0;
 // MiaoMiao 1.6 的本机对照缓存：0.10、起止比例 0–1、CUDA 缓存。
 // 需要对照画质可 --no-teacache 关闭，或 --tea-thresh=<值> 调档（0 = 关闭）。
-const teaThreshArg = args.find((a: any) => a.startsWith('--tea-thresh='));
+const teaThreshArg = args.find(a => a.startsWith('--tea-thresh='));
 const teaThresh = teaThreshArg ? Number(teaThreshArg.split('=')[1]) : (args.includes('--no-teacache') ? 0 : 0.10);
 
 // ── 工具 ─────────────────────────────────────────────────────────────────────
-function stableSeed(charId: any, outfitId: any, view: any) {
+function stableSeed(charId: string, outfitId: string, view: string) {
   const digest = crypto.createHash('sha1').update(`${charId}/${outfitId}/${view}`).digest();
   return (digest.readUInt32BE(0) % 1000000) + seedShift * 1000000;
 }
@@ -134,12 +135,12 @@ function stableSeed(charId: any, outfitId: any, view: any) {
  *   自行发明任何角色/服装描述词（教训：自编体型 tag 出过 NSFW 身材、浪费整轮重跑）。
  *   脚本只允许追加：质量词前缀 + 视角/站姿技术后缀（VIEWS/SHEET，非角色内容）。
  */
-function buildPrompt(identityProse: any, identity: any, outfitProse: any, outfit: any, viewTags: any) {
+function buildPrompt(identityProse: string, identity: string, outfitProse: string, outfit: string, viewTags: string) {
   return `score_7, score_6, masterpiece, best quality, ${identityProse}, ${outfitProse}, ${identity}, ${outfit}, ${viewTags}, ${SHEET}`;
 }
 
 // The offline sheet builder owns the fixed model, 960×1536 canvas and candidate prefix.
-function buildWorkflow(text: any, seed: any) {
+function buildWorkflow(text: string, seed: number) {
   return buildReferenceDesignWorkflow({ prompt: text, negative: NEGATIVE, seed, teaCacheThresh: teaThresh });
 }
 
@@ -166,27 +167,29 @@ async function submitAndWait(text: string, seed: number) {
       log('  submit 网络错误，重试');
       continue;
     }
-    const data = await resp.json().catch(() => ({}));
-    if (!resp.ok) {
+    const data: unknown = await resp.json().catch(() => ({}));
+    if (!resp.ok || !object(data) || typeof data.prompt_id !== 'string' || !data.prompt_id) {
       log('  submit fail: ' + JSON.stringify(data).slice(0, 120));
       continue;
     }
     const id = data.prompt_id;
     for (let i = 0; i < 240; i++) {
-      await new Promise<any>((r: any) => setTimeout(r, 2000));
+      await new Promise<void>(resolve => setTimeout(resolve, 2000));
       try {
-        const h = await (await fetch(HOST + '/history/' + id)).json();
+        const h: unknown = await (await fetch(HOST + '/history/' + id)).json();
+        if (!object(h)) continue;
         const entry = h[id];
-        if (!entry) continue;
-        if (entry.status && entry.status.completed) {
-          const images = entry.outputs && entry.outputs['10'] && entry.outputs['10'].images;
-          if (images && images.length) {
-            const img = images[0];
+        if (!object(entry) || !object(entry.status)) continue;
+        if (entry.status.completed === true) {
+          const output = object(entry.outputs) ? entry.outputs['10'] : undefined;
+          const img: unknown = object(output) && Array.isArray(output.images) ? output.images[0] : undefined;
+          if (object(img) && typeof img.filename === 'string'
+            && (img.subfolder === undefined || typeof img.subfolder === 'string')) {
             return img.subfolder ? path.join(img.subfolder, img.filename) : img.filename;
           }
           return null;
         }
-        if (entry.status && entry.status.status_str === 'error') {
+        if (entry.status.status_str === 'error') {
           log('  渲染错误，重试');
           break;
         }
@@ -224,7 +227,7 @@ function moveOutput(relFile: string, destDir: string, destFile: string) {
  * 覆盖该角色的默认服装设计图（11 张被覆盖事故）。改为按 isDefault 判定：
  * 默认服装 → 角色根；非默认 → <角色>/<服装>/（目录由调用方确保存在）。
  */
-function targetRelPath(charId: string, outfitId: string, view: any, isDefault: boolean) {
+function targetRelPath(charId: string, outfitId: string, view: string, isDefault: boolean) {
   return isDefault
     ? path.join(charId, `ref_design_${view}.png`)
     : path.join(charId, outfitId, `ref_design_${view}.png`);
@@ -233,22 +236,24 @@ function targetRelPath(charId: string, outfitId: string, view: any, isDefault: b
 // ── 收集任务 ─────────────────────────────────────────────────────────────────
 const referenceStore: typeof import('../lib/reference-store') = require('../lib/reference-store');
 const { view, standards } = referenceStore.readReferenceLibrary(ROOT);
-const stdByChar = new Map((standards.characters || []).map((c: any) => [c.id, c]));
+const stdByChar = new Map(standards.characters.map(c => [c.id, c]));
 
-const tasks: any[] = [];
+type DesignTask = { charId: string; outfitId: string; viewName: string; viewTags: string; identityProse: string; identity: string;
+  outfitProse: string; outfitTokens: string; rel: string; abs: string };
+const tasks: DesignTask[] = [];
 const skipped = { existing: 0, missingTokens: 0 };
 
-for (const profile of Object.values<any>(view)) {
+for (const profile of Object.values(view)) {
   const charId = profile.characterId;
   if (charsFilter && !charsFilter.includes(charId)) continue;
-  const stdChar: any = stdByChar.get(charId);
+  const stdChar = stdByChar.get(charId);
   const identityProse = (stdChar && stdChar.identityProse || '').trim();
-  const identity = (stdChar && (stdChar.identityTokens || []).join(', ')).trim();
+  const identity = (stdChar?.identityTokens || []).join(', ').trim();
   for (const o of profile.outfits || []) {
     if (outfitsFilter && !outfitsFilter.includes(o.outfitId)) continue;
-    const stdOutfit = stdChar && stdChar.outfits && stdChar.outfits.find((x: any) => x.id === o.outfitId);
+    const stdOutfit = stdChar?.outfits.find(x => x.id === o.outfitId);
     const outfitProse = (stdOutfit && stdOutfit.prose || '').trim();
-    const outfitTokens = (stdOutfit && (stdOutfit.tokens || []).join(', ')).trim();
+    const outfitTokens = (stdOutfit?.tokens || []).join(', ').trim();
     for (const ref of o.references || []) {
       if (!ref.id || !String(ref.id).startsWith('ref_design_')) continue;
       const viewName = ref.id.replace('ref_design_', '');
@@ -258,16 +263,18 @@ for (const profile of Object.values<any>(view)) {
       const abs = path.join(REF_ROOT, rel);
       if (!needRun && fs.existsSync(abs)) { skipped.existing++; continue; }
       if (!identityProse || !outfitProse) { skipped.missingTokens++; continue; }
+      const viewTags = VIEWS[viewName];
+      if (!viewTags) throw new Error(`Unsupported design view: ${viewName}`);
       // 非默认服装输出到 <角色>/<服装>/ 子目录：目录不存在则创建，避免落回角色根覆盖默认图。
       if (o.isDefault !== true) { try { fs.mkdirSync(path.dirname(abs), { recursive: true }); } catch (error) {} }
-      tasks.push({ charId, outfitId: o.outfitId, viewName, identityProse, identity, outfitProse, outfitTokens, rel, abs });
+      tasks.push({ charId, outfitId: o.outfitId, viewName, viewTags, identityProse, identity, outfitProse, outfitTokens, rel, abs });
     }
   }
 }
 
 if (dryRun) {
   log(`[dry-run] 待跑 ${tasks.length} 张（跳过：已存在 ${skipped.existing} / 缺 token ${skipped.missingTokens}）`);
-  tasks.slice(0, limit || 20).forEach((t: any, i: any) =>
+  tasks.slice(0, limit || 20).forEach((t, i) =>
     log(`  ${i + 1}. ${t.charId}/${t.outfitId}/${t.viewName} -> ${t.rel}`));
   process.exit(0);
 }
@@ -286,7 +293,7 @@ let ok = 0, failCount = 0;
 
 for (const t of slice) {
   const seed = stableSeed(t.charId, t.outfitId, t.viewName);
-  const text = buildPrompt(t.identityProse, t.identity, t.outfitProse, t.outfitTokens, VIEWS[t.viewName]);
+  const text = buildPrompt(t.identityProse, t.identity, t.outfitProse, t.outfitTokens, t.viewTags);
   log(`▶ ${t.charId}/${t.outfitId}/${t.viewName} (seed ${seed})`);
   const outFile = await submitAndWait(text, seed);
   if (!outFile) {
@@ -310,7 +317,7 @@ try {
   // Rendering can take hours: update the current source, not the initial snapshot.
   const current = referenceStore.readReferenceLibrary(ROOT);
   let filled = 0;
-  for (const profile of Object.values<any>(current.view)) {
+  for (const profile of Object.values(current.view)) {
     for (const o of profile.outfits || []) {
       for (const ref of o.references || []) {
         if (!ref.id || !String(ref.id).startsWith('ref_design_') || !ref.pending) continue;
@@ -321,7 +328,7 @@ try {
           `/character-references/${profile.characterId}/${o.outfitId}/${ref.id}.png`,
           `/character-references/${profile.characterId}/${ref.id}.png`,
         ];
-        const hit = candidates.find((c: any) => fs.existsSync(path.join(REF_ROOT, c.replace(/^\/character-references\//, ''))));
+        const hit = candidates.find(c => fs.existsSync(path.join(REF_ROOT, c.replace(/^\/character-references\//, ''))));
         if (hit) {
           ref.url = hit;
           delete ref.pending;
@@ -332,8 +339,8 @@ try {
   }
   if (filled) {
     referenceStore.writeReferenceLibrary(ROOT, current.standards, current.view);
-    const c: any = compress(VIEW_FILE);
-    log(`view.json 已更新: ${filled} 个 design 条目填 url，预压缩产物已重建（br ${c.brotli}B / gz ${c.gzip}B）`);
+    const c = compress(VIEW_FILE);
+    log(`view.json 已更新: ${filled} 个 design 条目填 url，${c ? `预压缩产物已重建（br ${c.brotli}B / gz ${c.gzip}B）` : '小文件无需预压缩'}`);
   } else {
     log('view.json 无新增可填条目');
   }
@@ -342,4 +349,4 @@ try {
 }
 }
 
-main().catch((e: any) => fail(e.stack || e.message));
+main().catch((error: unknown) => fail(error instanceof Error ? error.stack || error.message : String(error)));

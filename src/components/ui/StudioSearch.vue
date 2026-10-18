@@ -14,20 +14,21 @@ function keydown(event: KeyboardEvent) {
 defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 </script>
 <template>
-  <div :data-size="size" class="studio-search tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:py-0 tw:px-s-3 tw:border tw:border-solid tw:border-soft tw:rounded-md tw:bg-surface tw:text-secondary">
+  <div :data-size="size" class="studio-search">
     <ArchiveIcon name="search" />
-    <input :id="id" ref="input" v-model="value" :autofocus="autofocus" :autocomplete="autocomplete" class="studio-search-input tw:w-full tw:min-w-0 tw:py-s-2 tw:px-0 tw:border-0 tw:[outline:0] tw:bg-transparent tw:text-primary tw:[font:400_var(--fs-body-sm)_var(--font-sans)] tw:appearance-none" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
-    <button v-if="value" type="button" class="studio-search-clear tw:grid tw:place-items-center tw:[flex:0_0_32px] tw:w-[32px] tw:h-[32px] tw:border-0 tw:rounded-sm tw:bg-transparent tw:text-secondary tw:cursor-pointer" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
+    <input :id="id" ref="input" v-model="value" :autofocus="autofocus" :autocomplete="autocomplete" class="studio-search-input" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
+    <button v-if="value" type="button" class="studio-search-clear" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>
 <style scoped>
-.studio-search { position:relative; isolation:isolate; box-shadow:inset 0 1px 0 var(--glass-highlight); }
+.studio-search { position:relative; isolation:isolate; display:flex; align-items:center; gap:var(--s-2); padding-block:0; color:var(--text-secondary); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .studio-search::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--border-strong); border-radius:inherit; background:var(--accent-soft); opacity:0; transition:opacity var(--motion-control) var(--ease-out); pointer-events:none; }
 .studio-search:focus-within::before { opacity:1; }
-.studio-search-input { min-height:calc(var(--control-height) - 2px); }
+.studio-search-input { width:100%; min-width:0; min-height:calc(var(--control-height) - 2px); padding:var(--s-2) 0; border:0; outline:0; background:transparent; color:var(--text-primary); font:400 var(--fs-body-sm)/var(--lh-label) var(--font-sans); appearance:none; }
 .studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
 .studio-search[data-size='sm'] .studio-search-input { min-height:calc(var(--control-height-sm) - 2px); padding-block:var(--s-1); font-size:var(--fs-label-sm); }
 .studio-search[data-size='sm'] .studio-search-clear { flex-basis:28px; width:28px; height:28px; }
+.studio-search[data-size='sm'] { min-height:var(--control-height-sm); }
 .studio-search:has(.studio-search-input:focus-visible)::before { border-color:var(--focus-color); transition:none; }
 .studio-search > .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
 .studio-search:focus-within > .archive-icon { transform:scale(1.08); }
@@ -35,14 +36,19 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 @media (hover:hover) and (pointer:fine) {
   .studio-search:where(:hover:not(:focus-within))::before { opacity:.75; }
   .studio-search:where(:hover:not(:focus-within)) > .archive-icon { transform:translateY(-1px) rotate(-12deg) scale(1.16); }
+  .studio-search-clear:hover { background:var(--accent-soft); color:var(--accent); }
 }
-.studio-search-clear { animation:search-clear-in var(--motion-surface) var(--spring-bounce); }
+.studio-search-clear { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; padding:0; border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); cursor:pointer; animation:search-clear-in var(--motion-surface) var(--spring-bounce); }
 @keyframes search-clear-in { from { opacity:0; transform:scale(.6) rotate(-45deg); } }
 .studio-search input:focus-visible { outline:0; box-shadow:none; }
 .studio-search input::-webkit-search-cancel-button { display:none; }
 .studio-search input::placeholder { color:var(--text-muted); }
-.studio-search button:hover { background:var(--accent-soft); color:var(--accent); }
 .studio-search button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+@media (pointer:coarse) {
+  .studio-search,.studio-search[data-size='sm'] { min-height:46px; }
+  .studio-search .studio-search-input { min-height:44px; }
+  .studio-search .studio-search-clear { flex-basis:44px; width:44px; height:44px; }
+}
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .studio-search::before,
   :root:not([data-motion='full']) .studio-search > .archive-icon { transition:none; }

@@ -23,13 +23,6 @@ import {
 import type { Live2DMotionPriority, Live2DNativeBridge } from '../types/live2dNative.ts'
 import { createLatestIntent } from './latestIntent.ts'
 
-export type NativeBridgeProvider = () => Live2DNativeBridge | null | undefined
-
-function defaultBridgeProvider(): Live2DNativeBridge | null | undefined {
-  if (typeof window === 'undefined') return undefined
-  return getNativeLive2dCapabilities()
-}
-
 const PRIORITY_MAP: Record<number, Live2DMotionPriority> = {
   1: 'idle',
   2: 'normal',
@@ -51,7 +44,7 @@ async function connectCharacter(bridge: Live2DNativeBridge, options: Live2DConne
   try {
     return await Promise.race([
       bridge.setCharacter(options.modelUrl, { character: options.character || 'nene',
-        ...(bridge.supportsTextureQuality ? { textureScale: options.textureScale ?? 1 } : {}),
+        textureScale: options.textureScale ?? 1,
         ...(options.adapter ? { adapter: options.adapter } : {}),
       }),
       cancelled,
@@ -61,13 +54,13 @@ async function connectCharacter(bridge: Live2DNativeBridge, options: Live2DConne
   }
 }
 
-export function createNativeLive2DBackend(provider: NativeBridgeProvider = defaultBridgeProvider): Live2DStageBackend {
+export function createNativeLive2DBackend(): Live2DStageBackend {
   return {
     kind: 'native',
     capability: NATIVE_CAPABILITY,
 
     async connect(options: Live2DConnectOptions): Promise<Live2DStageSession> {
-      const bridge = provider()
+      const bridge = getNativeLive2dCapabilities()
       if (!bridge) {
         throw new Error(NATIVE_BACKEND_UNAVAILABLE)
       }
@@ -113,7 +106,7 @@ export function createNativeLive2DBackend(provider: NativeBridgeProvider = defau
         ) return
         const frame = { rect: { ...lastRect }, visible: lastVisible }
         pushedFrame = frame
-        void Promise.resolve(bridge.setFrame({ ...frame, opacity: 1, ...(bridge.supportsFraming ? { framing } : {}) })).catch(() => {
+        void Promise.resolve(bridge.setFrame({ ...frame, opacity: 1, framing })).catch(() => {
           // 只撤销失败请求自己的缓存，旧失败不能覆盖较新的成功更新。
           if (pushedFrame === frame) pushedFrame = null
         })

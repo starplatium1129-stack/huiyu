@@ -5,13 +5,12 @@ import { ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 
 /** Display projection of one runtime attempt; the runtime's task state stays authoritative. */
-export function runtimeSdFailure(error: unknown, stopped: boolean, submitted: boolean, accepted: boolean, cancelRequested: boolean) {
+export function runtimeSdFailure(error: unknown, stopped: boolean, accepted: boolean, cancelRequested: boolean) {
   if (error instanceof AcceptedTaskTerminalError) return {
     message: error.status === 'cancelled' ? '任务已取消' : '生成失败', error: error.status === 'failed' ? error.message : '' }
   if (stopped || error instanceof Error && error.name === 'AbortError') {
-    const owned = submitted || accepted
     return {
-      message: owned ? cancelRequested ? '已请求取消，请在任务中心核对' : '已停止查看，任务仍由运行时管理' : '已停止', error: '' }
+      message: cancelRequested ? '已请求取消，请在任务中心核对' : '已停止查看，任务仍由运行时管理', error: '' }
   }
   const rejected = !accepted && error instanceof ApiClientError && error.kind === 'http' && error.status < 500
   return { message: rejected ? '生成失败' : '请在任务中心核对接收与结果状态', error: error instanceof Error ? error.message : String(error) }

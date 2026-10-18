@@ -4,11 +4,36 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 
 const { isDeepStrictEqual: equal }: typeof import('node:util') = require('node:util');
 const { collectGitHistory }: typeof import('./content-impact-git') = require('./content-impact-git');
-const { localReader, canonicalSceneId }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+const { localReader, canonicalSceneId, object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 const { inspectDomain, summarizeConsistency }: typeof import('../lib/content-impact-consistency') = require('../lib/content-impact-consistency');
 const { keyFor }: typeof import('../lib/content-history-snapshot') = require('../lib/content-history-snapshot');
 const { relations, relationshipIssues, target }: typeof import('../lib/content-history-relations') = require('../lib/content-history-relations');
 const { WORKFLOWS }: typeof import('../workflow') = require('../workflow');
+type Snapshot = ReturnType<typeof inspectDomain>;
+type Row = Snapshot['rows'][number];
+type Relation = ReturnType<typeof relations>[number];
+type Identity = ReturnType<typeof target>;
+type Location = { file: string; side: string };
+type ImpactOptions = { root: string; base: string; character?: string; outfit?: string; scene?: string; paths?: string[]; showcaseManifests?: string[] };
+type CapturedSnapshots = { before: Record<string, Snapshot>; after: Record<string, Snapshot>; currentReader: ReturnType<typeof localReader> };
+type ReadEvidence = ReturnType<typeof localReader>['evidence'] extends Map<string, infer Entry> ? Entry : never;
+type Finding = { domain: string; object: string; reason: string };
+type Affected = Identity & { impact: string; oldRelations: Relation[]; newRelations: Relation[]; sources: Location[]; derived: Location[] };
+type EntityChange = Identity & {
+  domain: string; role: Row['role']; group: string; change: string; changedFields: string[]; before: Location[]; after: Location[];
+  beforeComplete: boolean; afterComplete: boolean; oldRelations: Relation[]; newRelations: Relation[]; removedRelations: Relation[]; addedRelations: Relation[];
+};
+type HistoryResult = {
+  version: number; readOnly: boolean; input: { base: string; character: string | null; outfit: string | null; scene: string | null; paths: string[] };
+  mustChange: Finding[]; revalidate: Finding[]; related: Finding[]; unknown: string[]; affected: Affected[];
+  recommendations: { name: string; argv: string[]; nature: typeof WORKFLOWS[string]['run']['nature']; executed: boolean }[];
+  consistency: (ReturnType<typeof summarizeConsistency> & { side: string })[]; gitHistory: ReturnType<typeof collectGitHistory>['result'];
+  history: { entities: EntityChange[]; metadata: { domain: string; file: string; changedFields: string[]; status: string }[];
+    ordering: { domain: string; group: string; beforeKeys: string[]; afterKeys: string[]; affectedKeys: string[]; status: string }[];
+    baseline: string | null; comparison: string; assetAcceptance: string; wholeLibrary: string };
+  incrementalPlan?: ReturnType<typeof buildPlan>;
+  evidence?: { baseCommit: string | null; headCommit: string | null; files: ReadEvidence[]; validity: string; remoteAccess: boolean };
+};
 
 function pathDomain(file: string) {
   if (/^data\/popular\//.test(file) || file === 'data/popular-characters.json') return 'popular';
@@ -18,27 +43,26 @@ function pathDomain(file: string) {
     'data/character-reference-standards.json': 'references', 'data/character-reference-view.json': 'references' }[file] || null;
 }
 
-function fieldDiff(before: any, after: any, prefix: any = ''): any {
+function fieldDiff(before: unknown, after: unknown, prefix = ''): string[] {
   if (equal(before, after)) return [];
-  if (!before || !after || typeof before !== 'object' || typeof after !== 'object' || Array.isArray(before) || Array.isArray(after)) return [prefix || '/'];
-  return [...new Set([...Object.keys(before), ...Object.keys(after)])].sort().flatMap((field: any) =>
+  if (!object(before) || !object(after)) return [prefix || '/'];
+  return [...new Set([...Object.keys(before), ...Object.keys(after)])].sort().flatMap(field =>
     fieldDiff(before[field], after[field], `${prefix}/${field.replace(/~/g, '~0').replace(/\//g, '~1')}`));
 }
 
-function historyImpact(opts: any, captureSnapshots: any) {
-  const result: any = { version: 2, readOnly: true,
+function historyImpact(opts: ImpactOptions, captureSnapshots?: (snapshots: CapturedSnapshots) => void) {
+  const { result: git, baseReader } = collectGitHistory(opts.root, opts.base);
+  const result: HistoryResult = { version: 2, readOnly: true,
     input: { base: opts.base, character: opts.character || null, outfit: opts.outfit || null, scene: opts.scene || null, paths: opts.paths || [] },
-    mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [], affected: [], consistency: [] };
-  const add = (level: string, domain: string, object: string, reason: string) => result[level].push({ domain, object, reason });
+    mustChange: [], revalidate: [], related: [], unknown: [], recommendations: [], affected: [], consistency: [], gitHistory: git,
+    history: { entities: [], metadata: [], ordering: [], baseline: git.baseCommit, comparison: git.comparison,
+      assetAcceptance: 'unverified', wholeLibrary: 'not-validated' } };
+  const add = (level: 'mustChange' | 'revalidate' | 'related', domain: string, object: string, reason: string) => result[level].push({ domain, object, reason });
   const recommend = (name: string) => {
     const definition = WORKFLOWS[name];
-    if (definition && !result.recommendations.some((entry: any) => entry.name === name)) result.recommendations.push({ name,
+    if (definition && !result.recommendations.some(entry => entry.name === name)) result.recommendations.push({ name,
       argv: ['node', 'scripts/workflow.js', name], nature: definition.run.nature, executed: false });
   };
-  const { result: git, baseReader } = collectGitHistory(opts.root, opts.base);
-  result.gitHistory = git;
-  result.history = { entities: [], metadata: [], ordering: [], baseline: git.baseCommit, comparison: git.comparison,
-    assetAcceptance: 'unverified', wholeLibrary: 'not-validated' };
   if (!baseReader) {
     add('mustChange', 'git-history', '--base', git.reason);
     result.unknown.push(git.reason, 'Historical comparison unavailable; no partial Git result used');
@@ -47,7 +71,7 @@ function historyImpact(opts: any, captureSnapshots: any) {
   }
   result.unknown.push(...git.unknown);
   const paths = [...new Set([...git.paths, ...(opts.paths || [])])];
-  const direct = new Set<string>(paths.map(pathDomain).filter(Boolean) as string[]);
+  const direct = new Set(paths.map(pathDomain).filter((domain): domain is string => domain !== null));
   if (opts.character) direct.add('popular');
   if (opts.scene) direct.add('scenes');
   const domains = new Set<string>(direct);
@@ -69,41 +93,41 @@ function historyImpact(opts: any, captureSnapshots: any) {
     result.incrementalPlan = buildPlan(result, [], ['Working-tree reader unavailable']);
     return result;
   }
-  const before: Record<string, any> = {};
-  const after: Record<string, any> = {};
+  const before: Record<string, Snapshot> = {};
+  const after: Record<string, Snapshot> = {};
   for (const domain of domains) {
     before[domain] = inspectDomain(baseReader, domain);
     after[domain] = inspectDomain(currentReader, domain);
-    for (const [side, snapshot] of [['base', before[domain]], ['working-tree', after[domain]]]) {
+    for (const [side, snapshot] of [['base', before[domain]], ['working-tree', after[domain]]] as const) {
       result.consistency.push({ side, ...summarizeConsistency(snapshot) });
-      result.unknown.push(...snapshot.unknown.map((message: any) => `${side}: ${message}`));
+      result.unknown.push(...snapshot.unknown.map(message => `${side}: ${message}`));
       for (const issue of snapshot.issues) {
         if (side === 'working-tree') add('mustChange', domain, issue.file + (issue.location ? `#${issue.location}` : ''), issue.reason);
         else result.unknown.push(`base: ${issue.file}: ${issue.reason}; baseline cannot certify prior validation`);
       }
     }
   }
-  const oldRows = Object.values(before).flatMap((s: any) => s.rows);
-  const newRows = Object.values(after).flatMap((s: any) => s.rows);
-  const edges = new Map();
-  for (const [side, snapshots, rows] of [['base', before, oldRows], ['working-tree', after, newRows]] as [string, any, any[]][]) {
+  const oldRows = Object.values(before).flatMap(s => s.rows);
+  const newRows = Object.values(after).flatMap(s => s.rows);
+  const edges = new Map<Row, { side: string; targets: Relation[]; unknown: string[] }>();
+  for (const [side, snapshots, rows] of [['base', before, oldRows], ['working-tree', after, newRows]] as const) {
     for (const row of rows) {
       const unknown: string[] = [];
       edges.set(row, { side, targets: relations(row, snapshots, unknown), unknown });
     }
   }
-  const seeds = new Set();
-  const globalReasons: any[] = [];
+  const seeds = new Set<string>();
+  const globalReasons: string[] = [];
   for (const domain of domains) {
     const left = before[domain];
     const right = after[domain];
     for (const group of new Set([...Object.keys(left.groups), ...Object.keys(right.groups)])) {
       const oldGroup = left.groups[group] || { complete: false, rows: [] };
       const newGroup = right.groups[group] || { complete: false, rows: [] };
-      const keys = new Set([...oldGroup.rows, ...newGroup.rows].map((row: any) => row.key));
+      const keys = new Set([...oldGroup.rows, ...newGroup.rows].map(row => row.key));
       for (const key of keys) {
-        const old = oldGroup.rows.filter((row: any) => row.key === key);
-        const current = newGroup.rows.filter((row: any) => row.key === key);
+        const old = oldGroup.rows.filter(row => row.key === key);
+        const current = newGroup.rows.filter(row => row.key === key);
         if (old.length === 1 && current.length === 1 && equal(old[0].value, current[0].value) && old[0].file === current[0].file) continue;
         const row = current[0] || old[0];
         seeds.add(key);
@@ -113,22 +137,22 @@ function historyImpact(opts: any, captureSnapshots: any) {
         else if (!current.length) change = newGroup.complete ? 'removed' : 'unresolved-removal';
         else if (old[0].file !== current[0].file) change = equal(old[0].value, current[0].value) ? 'moved' : 'modified-and-moved';
         else change = 'modified';
-        const oldRelations = old.flatMap((r: any) => edges.get(r).targets);
-        const newRelations = current.flatMap((r: any) => edges.get(r).targets);
+        const oldRelations = old.flatMap(r => edges.get(r)!.targets);
+        const newRelations = current.flatMap(r => edges.get(r)!.targets);
         const changedFields = old.length === 1 && current.length === 1 ? fieldDiff(old[0].value, current[0].value) : ['/'];
         result.history.entities.push({ ...target(row.kind, row.id, row.characterId || null), domain, role: row.role, group, change, changedFields,
-          before: old.map((r: any) => ({ file: r.file, side: 'base' })), after: current.map((r: any) => ({ file: r.file, side: 'working-tree' })),
+          before: old.map(r => ({ file: r.file, side: 'base' })), after: current.map(r => ({ file: r.file, side: 'working-tree' })),
           beforeComplete: oldGroup.complete, afterComplete: newGroup.complete, oldRelations, newRelations,
-          removedRelations: oldRelations.filter((r: any) => !newRelations.some((n: any) => equal(n, r))),
-          addedRelations: newRelations.filter((r: any) => !oldRelations.some((n: any) => equal(n, r))) });
+          removedRelations: oldRelations.filter(r => !newRelations.some(n => equal(n, r))),
+          addedRelations: newRelations.filter(r => !oldRelations.some(n => equal(n, r))) });
         if (change === 'ambiguous' || change.startsWith('unresolved')) result.unknown.push(`${domain}/${row.id}: ${change}; no authoritative absence inferred`);
         if (change !== 'modified' || !equal(oldRelations, newRelations)) globalReasons.push(`${domain}/${row.id}: identity, location or relation membership changed`);
       }
-      const beforeKeys = oldGroup.rows.map((row: any) => row.key);
-      const afterKeys = newGroup.rows.map((row: any) => row.key);
+      const beforeKeys = oldGroup.rows.map(row => row.key);
+      const afterKeys = newGroup.rows.map(row => row.key);
       if (!equal(beforeKeys, afterKeys)) {
         globalReasons.push(`${group}: global ID set/order requires full comparison`);
-        const movedKeys = [...new Set([...beforeKeys, ...afterKeys])].filter((key: any) => beforeKeys.indexOf(key) !== afterKeys.indexOf(key));
+        const movedKeys = [...new Set([...beforeKeys, ...afterKeys])].filter(key => beforeKeys.indexOf(key) !== afterKeys.indexOf(key));
         result.history.ordering.push({ domain, group, beforeKeys, afterKeys, affectedKeys: movedKeys,
           status: oldGroup.complete && newGroup.complete ? 'requires-full-check' : 'unknown' });
         for (const key of movedKeys) seeds.add(key);
@@ -140,7 +164,9 @@ function historyImpact(opts: any, captureSnapshots: any) {
       globalReasons.push(`${file}: manifest, ordering, counts or container metadata changed`);
       for (const row of [...left.rows, ...right.rows]) seeds.add(row.key);
       if (file === 'data/scenes-index.json') for (const value of [left.metadata[file], right.metadata[file]]) {
-        for (const id of [...(Array.isArray(value?.orderedIds) ? value.orderedIds : []), ...(Array.isArray(value?.tiers?.core) ? value.tiers.core : [])]) {
+        if (!object(value)) continue;
+        const core = object(value.tiers) ? value.tiers.core : undefined;
+        for (const id of [...(Array.isArray(value.orderedIds) ? value.orderedIds : []), ...(Array.isArray(core) ? core : [])]) {
           if (canonicalSceneId(id)) seeds.add(keyFor('scene', id));
         }
       }
@@ -155,28 +181,29 @@ function historyImpact(opts: any, captureSnapshots: any) {
   while (grew) {
     grew = false;
     for (const row of [...oldRows, ...newRows]) {
-      if (!affected.has(row.key) && edges.get(row).targets.some((edge: any) => affected.has(edge.key))) {
+      if (!affected.has(row.key) && edges.get(row)!.targets.some(edge => affected.has(edge.key))) {
         affected.add(row.key); grew = true;
       }
     }
   }
   // Include both former and current relation endpoints as context, without
   // recursively treating an unchanged parent as a change to all its children.
-  const contexts = new Map();
-  for (const row of [...oldRows, ...newRows].filter((r: any) => affected.has(r.key))) {
-    for (const edge of edges.get(row).targets) contexts.set(edge.key, edge);
-    result.unknown.push(...edges.get(row).unknown.map((message: any) => `${edges.get(row).side}: ${message}`));
+  const contexts = new Map<string, Relation>();
+  for (const row of [...oldRows, ...newRows].filter(r => affected.has(r.key))) {
+    const relation = edges.get(row)!;
+    for (const edge of relation.targets) contexts.set(edge.key, edge);
+    result.unknown.push(...relation.unknown.map(message => `${relation.side}: ${message}`));
   }
-  const proofTargets: any[] = [];
+  const proofTargets: Affected[] = [];
   for (const key of new Set([...affected, ...contexts.keys()])) {
-    const old = oldRows.filter((row: any) => row.key === key);
-    const current = newRows.filter((row: any) => row.key === key);
+    const old = oldRows.filter(row => row.key === key);
+    const current = newRows.filter(row => row.key === key);
     const identity = current[0] || old[0] || contexts.get(key);
     if (!identity) { result.unknown.push(`${key}: explicit target not found in either snapshot`); continue; }
-    const locations = (rows: any[], side: string, role: string) => rows.filter((r: { role: string; }) => r.role === role).map((r: any) => ({ file: r.file, side }));
-    const item: any = { ...target(identity.kind, identity.id, identity.characterId || null),
+    const locations = (rows: Row[], side: string, role: Row['role']) => rows.filter(r => r.role === role).map(r => ({ file: r.file, side }));
+    const item: Affected = { ...target(identity.kind, identity.id, identity.characterId || null),
       impact: affected.has(key) ? 'revalidate' : 'related-context',
-      oldRelations: old.flatMap((row: any) => edges.get(row).targets), newRelations: current.flatMap((row: any) => edges.get(row).targets),
+      oldRelations: old.flatMap(row => edges.get(row)!.targets), newRelations: current.flatMap(row => edges.get(row)!.targets),
       sources: [...locations(old, 'base', 'source'), ...locations(current, 'working-tree', 'source')],
       derived: [...locations(old, 'base', 'derived'), ...locations(current, 'working-tree', 'derived')] };
     result.affected.push(item);
@@ -209,23 +236,23 @@ function historyImpact(opts: any, captureSnapshots: any) {
   return result;
 }
 
-function buildPlan(result: any, targets: any[], globalReasons: string[]) {
+function buildPlan(result: HistoryResult, targets: Affected[], globalReasons: string[]) {
   const unknown = [...result.unknown];
   const reasons = [...new Set([...globalReasons, ...unknown])];
   const byGroup = result.history.entities;
-  const proven = byGroup.filter((change: any) => ['popular', 'scenes', 'blueprints'].includes(change.domain)
+  const proven = byGroup.filter(change => ['popular', 'scenes', 'blueprints'].includes(change.domain)
     && change.beforeComplete && change.afterComplete && change.change !== 'ambiguous'
-    && result.consistency.filter((entry: any) => entry.domain === change.domain).length === 2
-    && result.consistency.filter((entry: any) => entry.domain === change.domain).every((entry: { groups: any[]; }) => entry.groups.every((group: any) => group.complete)));
+    && result.consistency.filter(entry => entry.domain === change.domain).length === 2
+    && result.consistency.filter(entry => entry.domain === change.domain).every(entry => entry.groups.every(group => group.complete)));
   const full = reasons.length > 0;
   return { version: 1, preview: true, executed: false, mode: full ? 'full' : 'incremental',
     wholeLibrary: 'not-validated', baselineAcceptance: 'unknown (a commit identifies input, not a previously passed gate)',
     incrementalChecks: proven.length ? [{ id: 'source-derived-record-equality', nature: ['read-only'], scope: 'only enumerated stable IDs',
-      targets: [...new Set(proven.map((item: any) => item.key))], status: 'preview',
+      targets: [...new Set(proven.map(item => item.key))], status: 'preview',
       proof: 'Both manifests/containers were read; source and derived records are kept separate; record equality is independent of other IDs. Global ordering/count/version predicates remain full.',
       evidence: 'history.entities + consistency + evidence.files; no reuse after input hashes change' }] : [],
     dependencyChecks: targets.length ? [{ id: 'old-and-new-relationship-closure', nature: ['read-only'], status: unknown.length ? 'requires-full' : 'preview',
-      targets: targets.map((row: any) => row.key), proof: 'Union of dependency edges from both snapshots, including former owners/outfits; unknown edges prevent claiming complete incremental coverage' }] : [],
+      targets: targets.map(row => row.key), proof: 'Union of dependency edges from both snapshots, including former owners/outfits; unknown edges prevent claiming complete incremental coverage' }] : [],
     fullChecks: full ? [{ id: 'full-content-contracts', status: 'required-not-run', reasons }] : [],
     safety: 'No execution entry is provided. Registered recommendations may rebuild data; inspect their nature and isolate/authorize separately.',
     acceptance: 'A scoped equality/relationship pass never means all content, assets or rendering passed' };

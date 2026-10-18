@@ -9,7 +9,7 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 const { TextDecoder }: typeof import('node:util') = require('node:util');
 const { safeRelative }: typeof import('./content-history-reader') = require('./content-history-reader');
 const hash = (value: string|NodeJS.ArrayBufferView<ArrayBufferLike>|NonSharedBuffer) => createHash('sha256').update(value).digest('hex');
-const jsonHash = (value: any) => hash(JSON.stringify(value));
+const jsonHash = (value: unknown) => hash(JSON.stringify(value));
 const SHA = /^[a-f0-9]{64}$/;
 
 function evidencePath(file: string) {
@@ -19,9 +19,11 @@ function evidencePath(file: string) {
   return file;
 }
 
-function evidenceReader(root: PathLike, label: any) {
+type CachedRead = { value: Buffer | null; sha256: string; bytes: number; status: 'read'; limit: number; error?: never }
+  | { status: 'missing' | 'invalid'; error: unknown; limit: number; value?: never; sha256?: never; bytes?: never };
+function evidenceReader(root: PathLike, label: string) {
   const base = fs.realpathSync(root);
-  const cache = new Map(), directories = new Map();
+  const cache = new Map<string, CachedRead>(), directories = new Map<string, string[]>();
   const resolve = (file: string) => {
     let current = base;
     for (const part of evidencePath(file).split('/')) {
@@ -32,7 +34,7 @@ function evidenceReader(root: PathLike, label: any) {
     }
     return current;
   };
-  const read = (file: any, limit: number) => {
+  const read = (file: string, limit: number) => {
     const target = resolve(file);
     const stat = fs.statSync(target);
     if (!stat.isFile() || stat.size > limit) throw new Error('Expected a bounded ordinary evidence file');
@@ -42,14 +44,14 @@ function evidenceReader(root: PathLike, label: any) {
   };
   return {
     root: base,
-    bytes(file: string, limit: any = 16 * 1024 * 1024) {
+    bytes(file: string, limit = 16 * 1024 * 1024): Buffer {
       evidencePath(file);
       if (!cache.has(file)) {
         try { const value = read(file, limit); cache.set(file, { value, sha256: hash(value), bytes: value.length, status: 'read', limit }); }
         catch (error) { cache.set(file, { status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'invalid', error, limit }); }
       }
-      const item = cache.get(file);
-      if (item.error) throw item.error;
+      const item = cache.get(file)!;
+      if (item.status !== 'read') throw item.error;
       if (item.bytes > limit) throw new Error('Evidence exceeds this caller read limit');
       if (!item.value) {
         const value = read(file, limit);
@@ -58,27 +60,28 @@ function evidenceReader(root: PathLike, label: any) {
       }
       return item.value;
     },
-    fingerprint(file: any, limit: number|undefined) {
+    fingerprint(file: string, limit?: number) {
       this.bytes(file, limit);
-      const item = cache.get(file);
+      const item = cache.get(file)!;
+      if (item.status !== 'read') throw item.error;
       // Keep hashes, not all image buffers, for the final stability check.
       item.value = null;
       return { bytes: item.bytes, sha256: item.sha256 };
     },
-    json(file: string) { return JSON.parse(new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(this.bytes(file))); },
+    json(file: string): unknown { return JSON.parse(new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(this.bytes(file))); },
     list(directory: string) {
       if (!directories.has(directory)) directories.set(directory, fs.readdirSync(resolve(directory)).sort());
-      return [...directories.get(directory)];
+      return [...directories.get(directory)!];
     },
     evidence() {
-      return [...[...cache].map(([file, item]: any) => ({ scope: label, file, status: item.status, sha256: item.sha256 || null, bytes: item.bytes ?? null })),
-        ...[...directories].map(([file, names]: any) => ({ scope: label, file, kind: 'directory', sha256: jsonHash(names) }))];
+      return [...[...cache].map(([file, item]) => ({ scope: label, file, status: item.status, sha256: item.sha256 || null, bytes: item.bytes ?? null })),
+        ...[...directories].map(([file, names]) => ({ scope: label, file, kind: 'directory', sha256: jsonHash(names) }))];
     },
     verify() {
       const changed = [];
       for (const [file, item] of cache) {
         try { if (hash(read(file, item.limit)) !== item.sha256) changed.push(`${label}:${file}: changed during audit`); }
-        catch (error) { if (!item.error || runtimeErrorCode(error) !== item.error.code || runtimeErrorMessage(error) !== item.error.message) changed.push(`${label}:${file}: changed during audit`); }
+        catch (error) { if (item.status === 'read' || runtimeErrorCode(error) !== runtimeErrorCode(item.error) || runtimeErrorMessage(error) !== runtimeErrorMessage(item.error)) changed.push(`${label}:${file}: changed during audit`); }
       }
       for (const [directory, names] of directories) {
         try { if (jsonHash(fs.readdirSync(resolve(directory)).sort()) !== jsonHash(names)) changed.push(`${label}:${directory}: membership changed during audit`); }
@@ -90,7 +93,7 @@ function evidenceReader(root: PathLike, label: any) {
 }
 
 // Imported absolute source paths are identities only. They never grant read access.
-function explicitSource(root: string, embedded: string, allowed: any[]) {
+function explicitSource(root: string, embedded: string, allowed: readonly string[]) {
   if (typeof embedded !== 'string' || embedded.includes('\0')) return null;
   let relative = path.isAbsolute(embedded) ? path.relative(root, embedded).replace(/\\/g, '/') : embedded.replace(/\\/g, '/');
   try { relative = evidencePath(relative); } catch { return null; }

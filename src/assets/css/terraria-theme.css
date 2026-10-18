@@ -11,7 +11,6 @@
   --bg-base:#172638;
   --bg-surface:#1a2a3a;
   --bg-elevated:#1f2d3e;
-  --bg-surface-elevated:var(--bg-elevated);
   --bg-hover:#355166;
   --text-primary:#f6edcf;
   --text-secondary:#d4dfce;
@@ -33,7 +32,6 @@
   --archive-blue:#a0e0d4;
   --archive-cyan:var(--archive-blue);
   --archive-blue-soft:#244b50;
-  --archive-line:#789387;
   --border-soft:#789387;
   --border-strong:#b1bd92;
   --terraria-outline:#090f19;
@@ -46,10 +44,9 @@
   --glass-fill-strong:var(--bg-elevated);
   --glass-highlight:rgba(255,244,204,.1);
   --glass-edge:var(--border-soft);
-  --archive-glass:var(--bg-surface);
   --r-xs:0px; --r-sm:0px; --r-md:0px; --r-lg:0px; --r-xl:0px;
   --r-2xl:0px; --r-3xl:0px; --r-stage:0px; --r-pill:0px;
-  --r-brand-mark:0px; --r-hand-plate:0px; --r-terminal:0px;
+  --r-brand-mark:0px; --r-terminal:0px;
   --selection-radius:0px;
   --shadow-sm:3px 3px 0 var(--terraria-shadow);
   --shadow-md:4px 4px 0 var(--terraria-shadow);
@@ -85,7 +82,6 @@
   --editorial-gold-soft:#eddbac;
   --archive-blue:#255b64;
   --archive-blue-soft:#d1e3d2;
-  --archive-line:#8b916d;
   --border-soft:#8b916d;
   --border-strong:#51683c;
   --terraria-outline:#50402b;

@@ -5,32 +5,43 @@ const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-re
 const backups: typeof import('./maintenance-recovery-backup') = require('./maintenance-recovery-backup');
 const { fs, path, crypto, failure } = io;
 const phases = new Set(['preparing', 'writing', 'rolling-back', 'committed', 'rolled-back', 'recovering', 'recovery-failed', 'recovered', 'INCONSISTENT']);
-const validPid = (pid: any) => Number.isSafeInteger(pid) && pid > 0;
-const validNonce = (nonce: any) => typeof nonce === 'string' && /^[0-9a-f-]{36}$/.test(nonce);
+type Context = ReturnType<typeof io.context>;
+type ContextOptions = Parameters<typeof io.context>[0];
+type Participant = { pid: number; state: 'running' | 'exited' };
+type BackupIdentity = { id: string; sha256: string };
+type Journal = Record<string, unknown> & {
+  pid: number; nonce: string; phase: string; participants: Participant[]; backup?: BackupIdentity | null;
+};
+const validPid = (pid: unknown): pid is number => typeof pid === 'number' && Number.isSafeInteger(pid) && pid > 0;
+const validNonce = (nonce: unknown): nonce is string => typeof nonce === 'string' && /^[0-9a-f-]{36}$/.test(nonce);
+const validParticipant = (item: unknown): item is Participant => io.object(item) && validPid(item.pid) && (item.state === 'running' || item.state === 'exited');
+const validBackup = (value: unknown): value is BackupIdentity => io.object(value) && typeof value.id === 'string' && typeof value.sha256 === 'string' && /^[0-9a-f]{64}$/.test(value.sha256);
 
-function pidStatus(pid: any) {
+function pidStatus(pid: unknown) {
   if (!validPid(pid)) return 'unknown';
   try { process.kill(pid, 0); return 'alive'; }
   catch (error) { return runtimeErrorCode(error) === 'ESRCH' ? 'dead' : 'unknown'; }
 }
-function readLease(ctx: any) {
+function readLease(ctx: Context) {
   if (!io.safePath(ctx.leaseDir, 'directory')) return null;
   const file = path.join(ctx.leaseDir, 'journal.json');
   const bytes = io.readBytes(file);
   const journal = io.unseal(io.readJson(file), io.readKey(ctx));
   if (journal.schemaVersion !== 1 || journal.kind !== 'maintenance-journal' || !validPid(journal.pid) || !validNonce(journal.nonce)
-    || !io.equal(journal.root, ctx.root) || !io.samePath(journal.runtimeRoot || '', ctx.runtimeRoot)
+    || !io.equal(journal.root, ctx.root) || typeof journal.runtimeRoot !== 'string' || !io.samePath(journal.runtimeRoot, ctx.runtimeRoot)
     || !io.equal(journal.runtimeIdentity, io.directoryIdentity(ctx.runtimeRoot))
-    || !phases.has(journal.phase) || !Array.isArray(journal.participants)
-    || journal.participants.some((item: any) => !validPid(item.pid) || !['running', 'exited'].includes(item.state))) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护 journal 格式或根身份无效');
+    || typeof journal.phase !== 'string' || !phases.has(journal.phase) || !Array.isArray(journal.participants)
+    || !journal.participants.every(validParticipant)
+    || (journal.backup != null && !validBackup(journal.backup))) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护 journal 格式或根身份无效');
   if (journal.phase !== 'preparing' && !(journal.phase === 'recovered' && journal.noMutation === true)
-    && (!journal.backup || typeof journal.backup.id !== 'string' || !/^[0-9a-f]{64}$/.test(journal.backup.sha256))) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护 journal 缺少已建立备份');
-  return { journal, sha256: io.digest(bytes), directory: io.directoryIdentity(ctx.leaseDir) };
+    && !validBackup(journal.backup)) throw failure('MAINTENANCE_INVALID_JOURNAL', '维护 journal 缺少已建立备份');
+  // Signature verification authenticates bytes; the checks above validate the fields used by the lease.
+  return { journal: journal as Journal, sha256: io.digest(bytes), directory: io.directoryIdentity(ctx.leaseDir) };
 }
-function ownerDead(journal: any) {
-  return pidStatus(journal.pid) === 'dead' && journal.participants.every((item: any) => item.state === 'exited' || pidStatus(item.pid) === 'dead');
+function ownerDead(journal: Journal) {
+  return pidStatus(journal.pid) === 'dead' && journal.participants.every(item => item.state === 'exited' || pidStatus(item.pid) === 'dead');
 }
-function recoveryOwners(ctx: any, journal: any) {
+function recoveryOwners(ctx: Context, journal: Journal) {
   const owners = [];
   let directory = path.join(ctx.leaseDir, 'recovery');
   for (let depth = 0; io.safePath(directory, 'directory'); depth++, directory = path.join(directory, 'next')) {
@@ -43,11 +54,11 @@ function recoveryOwners(ctx: any, journal: any) {
       if (value.nonce !== owner.nonce || value.transaction !== journal.nonce) throw failure('MAINTENANCE_INVALID_JOURNAL', '恢复结束标记无效');
       finished = true;
     }
-    owners.push({ ...owner, directory, finished, process: pidStatus(owner.pid) });
+    owners.push({ ...owner, pid: owner.pid, nonce: owner.nonce, directory, finished, process: pidStatus(owner.pid) });
   }
   return owners;
 }
-function inspectMaintenanceLease(options: any) {
+function inspectMaintenanceLease(options: ContextOptions) {
   try {
     const ctx = io.context(options);
     const current = readLease(ctx);
@@ -59,13 +70,13 @@ function inspectMaintenanceLease(options: any) {
       journalSha256: current.sha256, recoveryOwner: activeRecovery ? { pid: activeRecovery.pid, nonce: activeRecovery.nonce } : null };
   } catch (error) { return { status: 'invalid', recoveryRequired: true, code: runtimeErrorCode(error) || 'MAINTENANCE_INVALID_JOURNAL', error: runtimeErrorMessage(error) }; }
 }
-function blocked(state: any) {
+function blocked(state: ReturnType<typeof inspectMaintenanceLease>) {
   const code = state.status === 'active' ? 'MAINTENANCE_BUSY' : state.status === 'invalid' ? 'MAINTENANCE_INVALID_JOURNAL' : 'MAINTENANCE_RECOVERY_REQUIRED';
   return Object.assign(failure(code, state.status === 'active' ? '维护事务仍在运行，请稍后重试' : '维护事务尚未完整结束，请先预览并执行恢复'), {
     transactionId: state.journal?.nonce, phase: state.journal?.phase, leaseStatus: state.status,
   });
 }
-function publishDirectory(ctx: any, destination: any, fileName: any, value: any) {
+function publishDirectory(ctx: Context, destination: string, fileName: string, value: Record<string, unknown>) {
   const staging = path.join(ctx.stateDir, '.claim-' + crypto.randomUUID());
   io.ensureDirectory(staging);
   io.writeJson(path.join(staging, fileName), io.seal(value, io.readKey(ctx)));
@@ -79,10 +90,10 @@ function publishDirectory(ctx: any, destination: any, fileName: any, value: any)
     throw error;
   }
 }
-function writeJournal(ctx: any, journal: any) {
+function writeJournal(ctx: Context, journal: Journal) {
   io.writeJson(path.join(ctx.leaseDir, 'journal.json'), io.seal({ ...journal, updatedAt: new Date().toISOString() }, io.readKey(ctx)));
 }
-function archiveLease(ctx: any, nonce: any) {
+function archiveLease(ctx: Context, nonce: string) {
   const directory = path.join(ctx.stateDir, 'completed');
   io.ensureDirectory(directory);
   const target = path.join(directory, nonce);
@@ -94,7 +105,7 @@ function archiveLease(ctx: any, nonce: any) {
   return target;
 }
 
-function acquireMaintenanceLease(options: any) {
+function acquireMaintenanceLease(options: ContextOptions) {
   const ctx = io.context(options);
   const before = inspectMaintenanceLease(options);
   if (before.status !== 'free') throw blocked(before);
@@ -118,11 +129,11 @@ function acquireMaintenanceLease(options: any) {
     if (!current || current.journal.pid !== process.pid || current.journal.nonce !== journal.nonce || !io.equal(identity, current.directory)) throw failure('MAINTENANCE_CONFLICT', '维护锁 PID/nonce/目录身份已变化');
     return current.journal;
   }
-  function update(patch: any) { const current = own(); writeJournal(ctx, { ...current, ...patch }); return own(); }
+  function update(patch: Partial<Journal>) { const current = own(); writeJournal(ctx, { ...current, ...patch }); return own(); }
   const handle = {
     nonce: journal.nonce,
     assertOwned: own,
-    setBackup(directory: any) {
+    setBackup(directory: string) {
       const current = own();
       if (current.phase !== 'preparing' || current.backup) throw failure('MAINTENANCE_CONFLICT', '事务备份只能建立一次');
       if (!io.samePath(path.dirname(directory), ctx.backupRoot)) throw failure('MAINTENANCE_PATH', '备份不在本事务 runtime 内');
@@ -130,27 +141,20 @@ function acquireMaintenanceLease(options: any) {
       update({ phase: 'writing', backup: { id: backup.id, sha256: backup.sha256 } });
       return backup;
     },
-    addParticipant(pid: any) {
-      if (!validPid(pid) || pidStatus(pid) !== 'alive') throw failure('MAINTENANCE_CONFLICT', '子进程尚未可确认运行');
-      const current = own();
-      if (current.phase !== 'writing') throw failure('MAINTENANCE_CONFLICT', '必须先建立备份再启动写入子进程');
-      update({ participants: [...current.participants.filter((item: any) => item.pid !== pid), { pid, state: 'running' }] });
-    },
-    participantExited(pid: any) { const current = own(); update({ participants: current.participants.map((item: any) => item.pid === pid ? { pid, state: 'exited' } : item) }); },
     assertQuiescent() {
       const current = own();
-      if (current.participants.some((item: any) => item.state !== 'exited' && pidStatus(item.pid) !== 'dead')) throw failure('MAINTENANCE_BUSY', '子进程仍可能写盘，拒绝提交或回滚');
+      if (current.participants.some(item => item.state !== 'exited' && pidStatus(item.pid) !== 'dead')) throw failure('MAINTENANCE_BUSY', '子进程仍可能写盘，拒绝提交或回滚');
     },
     beginRollback() { handle.assertQuiescent(); update({ phase: 'rolling-back' }); },
-    markInconsistent(message: any) { update({ phase: 'INCONSISTENT', error: String(message).slice(0, 2000) }); },
-    complete(phase: any) {
+    markInconsistent(message: unknown) { update({ phase: 'INCONSISTENT', error: String(message).slice(0, 2000) }); },
+    complete(phase: 'committed' | 'rolled-back') {
       if (!['committed', 'rolled-back'].includes(phase)) throw failure('MAINTENANCE_ARGUMENT', '结束状态无效');
       handle.assertQuiescent();
       const current = own();
       if (!current.backup) { if (phase !== 'rolled-back') throw failure('MAINTENANCE_CONFLICT', '事务未建立备份'); return; }
       const backup = backups.readBackup(options, current.backup.id, current.backup.sha256);
-      const final = backup.entries.map((item: any) => ({ source: item.file, ...io.fileState(item.file) }));
-      if (phase === 'rolled-back' && final.some((item: any, index: any) => !io.equal({ exists: item.exists, sha256: item.sha256, size: item.size }, backup.entries[index].expected))) throw failure('MAINTENANCE_INCONSISTENT', '回滚后原始字节不匹配');
+      const final = backup.entries.map(item => ({ source: item.file, ...io.fileState(item.file) }));
+      if (phase === 'rolled-back' && final.some((item, index) => !io.equal({ exists: item.exists, sha256: item.sha256, size: item.size }, backup.entries[index].expected))) throw failure('MAINTENANCE_INCONSISTENT', '回滚后原始字节不匹配');
       update({ phase, final });
     },
     release() {

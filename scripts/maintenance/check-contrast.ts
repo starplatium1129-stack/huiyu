@@ -8,6 +8,10 @@
 // AA 正文阈值 4.5:1;大号文字/图形 3:1。这里一律按 4.5 严格核算。
 
 const sources: typeof import('./style-sources') = require('./style-sources');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+type Tokens = Partial<Record<string, string>>;
+type RGB = readonly [number, number, number];
+type Theme = [string, Tokens];
 
 // 必须读应用真正加载的那一份。曾经这里读 css/design-system.css，
 // 而 SPA 加载的是 src/assets/css/design-system.css —— 门槛在审计一棵死树。
@@ -15,35 +19,36 @@ const css = sources.read(sources.DESIGN_SYSTEM);
 const lightCss = sources.read('src/assets/css/light-theme.css');
 const terrariaCss = sources.read('src/assets/css/terraria-theme.css');
 
-function hexToRgb(hex: any) {
+function hexToRgb(hex: string | undefined): RGB {
+  if (hex === undefined) throw new Error('Missing hex color token');
   const value = hex.replace('#', '');
-  const full = value.length === 3 ? value.split('').map((c: any) => c + c).join('') : value;
+  const full = value.length === 3 ? value.split('').map(c => c + c).join('') : value;
   return [parseInt(full.slice(0, 2), 16), parseInt(full.slice(2, 4), 16), parseInt(full.slice(4, 6), 16)];
 }
 
-function luminance(rgb: any) {
-  const [r, g, b] = rgb.map((channel: any) => {
+function luminance(rgb: RGB) {
+  const [r, g, b] = rgb.map(channel => {
     const c = channel / 255;
     return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
   });
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 
-function ratio(fg: any, bg: any) {
+function ratio(fg: RGB, bg: RGB) {
   const l1 = luminance(fg);
   const l2 = luminance(bg);
   return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
 }
 
 // 精确匹配选择器，避免 :root 误取 :root[data-theme] 或嵌套规则。
-function block(selector: any, source: any = css) {
-  const map: Record<string, any> = {};
+function block(selector: string, source = css): Tokens {
+  const map: Tokens = {};
   const clean = source.replace(/\/\*[^]*?\*\//g, '')
     // Statement at-rules precede the first selector after Tailwind migration.
     // They have no token declarations and must not become part of its name.
     .replace(/@(?:reference|import|charset|layer)\s+[^;{}]*;/g, '');
   for (const rule of clean.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
-    if (!rule[1].split(',').map((s: any) => s.trim()).includes(selector)) continue;
+    if (!rule[1].split(',').map(s => s.trim()).includes(selector)) continue;
     for (const match of rule[2].matchAll(/(--[\w-]+)\s*:\s*([^;]+);/g)) map[match[1]] = match[2].trim();
   }
   if (!Object.keys(map).length) throw new Error('Missing CSS token block: ' + selector);
@@ -52,7 +57,7 @@ function block(selector: any, source: any = css) {
 const dark = block(':root');
 const light = { ...dark, ...block(':root[data-theme="light"]', lightCss) };
 const pixel = block(":root[data-theme-style='terraria']", terrariaCss);
-const themes = [['dark', dark], ['light', light],
+const themes: Theme[] = [['dark', dark], ['light', light],
   ['terraria-dark', { ...dark, ...pixel }],
   ['terraria-light', { ...light, ...pixel, ...block(":root[data-theme-style='terraria'][data-theme='light']", terrariaCss) }]];
 
@@ -67,12 +72,12 @@ const TEXT_TOKENS = [
 ];
 
 // 解开 var(--x) 别名链,拿到最终字面值
-function resolve(tokens: any, name: any, depth: any): any {
+function resolve(tokens: Tokens, name: string, depth = 0): string | null {
   const raw = tokens[name];
   if (!raw) return null;
-  if ((depth || 0) > 8) return null;
+  if (depth > 8) return null;
   const alias = raw.match(/^var\(\s*(--[\w-]+)\s*\)$/);
-  return alias ? resolve(tokens, alias[1], (depth || 0) + 1) : raw;
+  return alias ? resolve(tokens, alias[1], depth + 1) : raw;
 }
 
 // 文字实际会落在的表面。只测 --bg-deep 是不够的:
@@ -80,8 +85,8 @@ function resolve(tokens: any, name: any, depth: any): any {
 const SURFACES = ['--bg-deep', '--bg-base', '--bg-surface', '--bg-elevated'];
 
 // 括号内的逗号属于 var/color-mix 参数，不能用单个正则截断。
-function splitArgs(value: any) {
-  const parts: any[] = []; let depth = 0, start = 0;
+function splitArgs(value: string) {
+  const parts: string[] = []; let depth = 0, start = 0;
   for (let i = 0; i < value.length; i++) {
     if (value[i] === '(') depth++;
     if (value[i] === ')') depth--;
@@ -90,10 +95,14 @@ function splitArgs(value: any) {
   parts.push(value.slice(start).trim());
   return parts;
 }
-function compositeSurface(tokens: any, name: any, parentRgb?: any, depth: any = 0) {
-  return resolveColor(tokens, tokens[name], parentRgb, depth);
+function compositeSurface(tokens: Tokens, name: string, parentRgb?: RGB | null) {
+  return resolveColor(tokens, tokens[name], parentRgb);
 }
-function resolveColor(tokens: any, expr: any, parentRgb?: any, depth: any = 0) {
+function blend(rgb: RGB, parentRgb: RGB | null | undefined, alpha: number): RGB {
+  const channel = (i: 0 | 1 | 2) => rgb[i] * alpha + (parentRgb?.[i] || 0) * (1 - alpha);
+  return [channel(0), channel(1), channel(2)];
+}
+function resolveColor(tokens: Tokens, expr: string | undefined, parentRgb?: RGB | null, depth = 0): RGB | null {
   if (!expr || depth > 16) return null;
   const value = expr.replace(/!important/g, '').trim();
   const alias = value.match(/^var\((.*)\)$/);
@@ -104,18 +113,18 @@ function resolveColor(tokens: any, expr: any, parentRgb?: any, depth: any = 0) {
   if (value === 'transparent') return parentRgb || null;
   const hex = value.match(/^#([\da-f]{3,4}|[\da-f]{6}|[\da-f]{8})$/i);
   if (hex) {
-    const full = hex[1].length <= 4 ? [...hex[1]].map((c: any) => c + c).join('') : hex[1];
+    const full = hex[1].length <= 4 ? [...hex[1]].map(c => c + c).join('') : hex[1];
     const rgb = hexToRgb('#' + full.slice(0, 6));
     const alpha = full.length === 8 ? parseInt(full.slice(6), 16) / 255 : 1;
     if (alpha < 1 && !parentRgb) return null;
-    return rgb.map((c: any, i: any) => c * alpha + (parentRgb?.[i] || 0) * (1 - alpha));
+    return blend(rgb, parentRgb, alpha);
   }
   const rgba = value.match(/^rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)\s*(?:[,/]\s*([\d.]+)(%)?)?\s*\)$/);
   if (rgba) {
-    const rgb = rgba.slice(1, 4).map(Number);
+    const rgb: RGB = [Number(rgba[1]), Number(rgba[2]), Number(rgba[3])];
     const alpha = rgba[4] === undefined ? 1 : Number(rgba[4]) / (rgba[5] ? 100 : 1);
-    if (rgb.some((c: any) => !Number.isFinite(c) || c > 255) || !Number.isFinite(alpha) || alpha > 1 || (alpha < 1 && !parentRgb)) return null;
-    return rgb.map((c: any, i: any) => c * alpha + (parentRgb?.[i] || 0) * (1 - alpha));
+    if (rgb.some(c => !Number.isFinite(c) || c > 255) || !Number.isFinite(alpha) || alpha > 1 || (alpha < 1 && !parentRgb)) return null;
+    return blend(rgb, parentRgb, alpha);
   }
   const mix = value.match(/^color-mix\((.*)\)$/);
   if (mix) {
@@ -124,22 +133,28 @@ function resolveColor(tokens: any, expr: any, parentRgb?: any, depth: any = 0) {
     const weighted = first.match(/^(.*)\s+([\d.]+)%$/);
     if (!weighted || !Number.isFinite(Number(weighted[2])) || Number(weighted[2]) > 100) return null;
     const weight = Number(weighted[2]) / 100;
-    const a: any = resolveColor(tokens, weighted[1], parentRgb, depth + 1);
-    const b: any = resolveColor(tokens, second, parentRgb, depth + 1);
-    return a && b ? a.map((c: any, i: any) => c * weight + b[i] * (1 - weight)) : null;
+    const a = resolveColor(tokens, weighted[1], parentRgb, depth + 1);
+    const b = resolveColor(tokens, second, parentRgb, depth + 1);
+    return a && b ? [a[0] * weight + b[0] * (1 - weight),
+      a[1] * weight + b[1] * (1 - weight), a[2] * weight + b[2] * (1 - weight)] : null;
   }
   return null;
 }
 
-function characterThemes() {
+function characterThemes(): Theme[] {
   const director = sources.read('src/assets/css/director/tokens.css');
   const { characterThemeStyle }: typeof import('../../src/utils/characterTheme.ts') = require('../../src/utils/characterTheme.ts');
   const { POPULAR_CHARACTER_THEMES }: typeof import('../../src/utils/characterThemeCatalog.ts') = require('../../src/utils/characterThemeCatalog.ts');
-  const records = JSON.parse((require('node:fs') as typeof import('node:fs')).readFileSync('data/characters.json', 'utf8'));
+  const records: unknown = JSON.parse((require('node:fs') as typeof import('node:fs')).readFileSync('data/characters.json', 'utf8'));
+  if (!Array.isArray(records) || !records.every(object)) throw new Error('Invalid character theme records');
   const base = block('.pb', director);
-  return themes.flatMap(([theme, tokens]: any) => records.map((record: any) => {
+  return themes.flatMap(([theme, tokens]) => records.map((record): Theme => {
     const id = String(record?.id || '');
-    const inline = characterThemeStyle(id, records, POPULAR_CHARACTER_THEMES);
+    const inline: Tokens = {};
+    for (const [token, value] of Object.entries(characterThemeStyle(id, records, POPULAR_CHARACTER_THEMES))) {
+      if (typeof value !== 'string') throw new Error('Non-string character theme token: ' + token);
+      inline[token] = value;
+    }
     return [theme + ' / .pb[data-character="' + id + '"]', {
       ...tokens,
       ...base,
@@ -153,17 +168,17 @@ function run() {
   let failures = 0;
 
   for (const [themeName, tokens] of themes) {
-    const deepRaw = (tokens as Record<string, any>)['--bg-deep'];
+    const deepRaw = tokens['--bg-deep'];
     if (!/^#/.test(deepRaw || '')) { failures++; console.error(themeName + ': 背景无法解析'); continue; }
     const deep = hexToRgb(deepRaw);
 
     for (const surfaceToken of SURFACES) {
       const bg = compositeSurface(tokens, surfaceToken, deep);
       if (!bg) { failures++; console.error(themeName + ': 无法解析 ' + surfaceToken); continue; }
-      const hex = '#' + bg.map((c: any) => Math.round(c).toString(16).padStart(2, '0')).join('');
+      const hex = '#' + bg.map(c => Math.round(c).toString(16).padStart(2, '0')).join('');
       console.log('\n=== ' + themeName + ' theme / ' + surfaceToken + ' (合成后 ' + hex + ') ===');
       for (const name of TEXT_TOKENS) {
-        const raw = resolve(tokens, name, undefined);
+        const raw = resolve(tokens, name) ?? tokens[name] ?? '';
         const fg = compositeSurface(tokens, name, bg);
         if (!fg) { failures++; console.error('FAIL 无法解析 ' + name + ': ' + raw); continue; }
         const value = ratio(fg, bg);
@@ -182,9 +197,9 @@ function run() {
       const bg = compositeSurface(tokens, surface, deep);
       const fg = bg && compositeSurface(tokens, '--accent', bg);
       characterChecks++;
-      if (!fg || ratio(fg, bg) < 4.5) {
+      if (!bg || !fg || ratio(fg, bg) < 4.5) {
         failures++;
-        console.error('FAIL character ' + name + ' / ' + surface + ': ' + (fg ? ratio(fg, bg).toFixed(2) : 'unresolved'));
+        console.error('FAIL character ' + name + ' / ' + surface + ': ' + (fg && bg ? ratio(fg, bg).toFixed(2) : 'unresolved'));
       }
     }
   }
@@ -195,11 +210,11 @@ function run() {
   const NON_TEXT_TOKENS = ['--success', '--warning', '--danger', '--info'];
   let nonTextFailures = 0;
   for (const [themeName, tokens] of themes) {
-    const deep = hexToRgb((tokens as Record<string, any>)['--bg-deep']);
+    const deep = hexToRgb(tokens['--bg-deep']);
     const bg = compositeSurface(tokens, '--bg-elevated', deep) || deep;
     console.log('\n=== ' + themeName + ' theme / 非文字图形 3:1 (--bg-elevated) ===');
     for (const name of NON_TEXT_TOKENS) {
-      const raw = resolve(tokens, name, undefined);
+      const raw = resolve(tokens, name) ?? tokens[name] ?? '';
       const fg = compositeSurface(tokens, name, bg);
       if (!fg) { nonTextFailures++; console.error('FAIL 无法解析 ' + name); continue; }
       const value = ratio(fg, bg);
@@ -223,13 +238,14 @@ function run() {
   let sfcChecks = 0;
   let sfcFailures = 0;
   let sfcExempt = 0;
-  const sfcSurfaces = SURFACES.map((name: any) => ({ name, bg: compositeSurface(dark, name, hexToRgb(dark['--bg-deep'])) })).filter((s: any) => s.bg);
+  const sfcSurfaces = SURFACES.map(name => compositeSurface(dark, name, hexToRgb(dark['--bg-deep'])))
+    .filter((bg): bg is RGB => bg !== null);
 
   // 从声明值里解析出可计算的颜色。除字面 hex 外，也解析 rgba() / rgb() /
   // color-mix() / var() 令牌 —— 半透明白字（rgba(255,255,255,.6)）是组件里最常见的
   // 漏网写法，不合成到落点上根本看不出它压线不过。
   const SKIP_VALUES = new Set(['transparent', 'inherit', 'initial', 'unset', 'currentColor', 'none']);
-  function declColor(raw: any, parentRgb: any) {
+  function declColor(raw: string, parentRgb: RGB) {
     const value = raw.replace(/!important/g, '').trim();
     if (!value || SKIP_VALUES.has(value)) return null;
     return resolveColor(dark, value, parentRgb);
@@ -242,7 +258,7 @@ function run() {
       const styleBody = styleMatch[1];
       for (const rule of styleBody.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
         const ruleBody = rule[2];
-        const ownBackgrounds: any[] = [];
+        const ownBackgrounds: RGB[] = [];
         let ownBgUnknown = false; // 规则自身声明了底色但解析不动（动态 var/渐变/图像）
         for (const bg of ruleBody.matchAll(/(?:^|;)\s*(?:background(?:-color)?|backdrop)\s*:\s*([^;}]+)/g)) {
           const rgb = declColor(bg[1], hexToRgb(dark['--bg-deep']));
@@ -260,14 +276,12 @@ function run() {
           if (!/^(#|rgb|hsl|color-mix|var\()/i.test(rawValue)) continue;
           if (exempt || ownBgUnknown) continue; // 落点未知或已声明豁免 —— 不猜、不错杀
           const line = baseLine + styleBody.slice(0, rule.index + rule[1].length + 2 + decl.index).split('\n').length;
-          const candidates = sfcSurfaces.map((s: any) => ({ name: s.name, bg: s.bg })).concat(
-            ownBackgrounds.map((bg: any, i: any) => ({ name: '规则自身背景#' + (i + 1), bg }))
-          );
+          const candidates = sfcSurfaces.concat(ownBackgrounds);
           // 前景色随落点合成（alpha 值要在具体背景上才算得准），解析不动的跳过
-          const results: any[] = [];
-          for (const c of candidates) {
-            const fg = declColor(rawValue, c.bg);
-            if (fg) results.push(ratio(fg, c.bg));
+          const results: number[] = [];
+          for (const bg of candidates) {
+            const fg = declColor(rawValue, bg);
+            if (fg) results.push(ratio(fg, bg));
           }
           if (!results.length) continue;
           sfcChecks += 1;

@@ -31,6 +31,19 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const http: typeof import('http') = require('http');
+const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
+type Options = {
+  task: string; mode: string; model: string | null; prompt: string | null; expect: string | null;
+  out: string | null; json: boolean; maxTokens: number; timeoutMs: number; help: boolean;
+  noFallback: boolean; concurrency: number; paths: string[];
+};
+type ImageFile = { file: string; size: number };
+type ContentPart = { type: 'text'; text: string } | { type: 'image_url'; image_url: { url: string } };
+type Message = { role: 'user'; content: ContentPart[] };
+type BackendResult = { ok: true; content: unknown; model: string; error?: never }
+  | { ok: false; content: null; model: string; error: string };
+type InspectResult = { model: string; ok: boolean; content: unknown; error: string | null } &
+  ({ mode: 'each'; file: string } | { mode: 'group'; files: string[]; prompt: string });
 
 const DEFAULT_BASE_URL = process.env.VISION_BASE_URL || 'http://127.0.0.1:8317/v1';
 // Key 解析顺序：VISION_API_KEY 环境变量 → runtime/vision-api-key.txt（gitignored，首行）→ 空。
@@ -57,7 +70,7 @@ const MAX_IMAGE_BYTES = 15 * 1024 * 1024; // base64 后 ≈20MB，对齐 opencod
 
 const IMAGE_EXT = new Set(['.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp']);
 
-const TASKS: any = {
+const TASKS: Readonly<Partial<Record<string, string>>> = {
   describe:
     '请详细、准确地描述这张图片的内容：主体、人物、场景、构图、色彩、光照、风格与氛围；' +
     '画面中的文字请一并转录。请用中文回答。',
@@ -122,15 +135,19 @@ function printHelp() {
   node scripts/maintenance/image-inspect.js a.png b.png --mode group -p "对比两张图并说明差异"`);
 }
 
-function parseArgs(argv: any) {
-  const opts = {
+function parseArgs(argv: string[]) {
+  const opts: Options = {
     task: 'describe', mode: 'each', model: null, prompt: null, expect: null,
     out: null, json: false, maxTokens: 4000, timeoutMs: 180000, help: false,
-    noFallback: false, concurrency: 1, paths: [] as string[],
+    noFallback: false, concurrency: 1, paths: [],
   };
   for (let i = 0; i < argv.length; i++) {
-    const a: any = argv[i];
-    const next = () => argv[++i];
+    const a = argv[i];
+    const next = () => {
+      const value = argv[++i];
+      if (value === undefined) throw new Error(`选项 ${a} 缺少参数`);
+      return value;
+    };
     switch (a) {
       case '-t': case '--task': opts.task = next(); break;
       case '-p': case '--prompt': opts.prompt = next(); break;
@@ -155,8 +172,8 @@ function parseArgs(argv: any) {
   return opts;
 }
 
-function collectImages(inputs: any) {
-  const files: any[] = [];
+function collectImages(inputs: string[]) {
+  const files: ImageFile[] = [];
   for (const p of inputs) {
     if (!fs.existsSync(p)) { console.error(`[错误] 路径不存在: ${p}`); continue; }
     const st = fs.statSync(p);
@@ -164,9 +181,10 @@ function collectImages(inputs: any) {
       for (const f of fs.readdirSync(p)) {
         const full = path.join(p, f);
         if (!IMAGE_EXT.has(path.extname(f).toLowerCase())) continue;
-        if (fs.statSync(full).isFile()) files.push({ file: full, size: fs.statSync(full).size });
+        const stat = fs.statSync(full);
+        if (stat.isFile()) files.push({ file: full, size: stat.size });
       }
-      files.sort((a: any, b: any) => a.file.localeCompare(b.file));
+      files.sort((a, b) => a.file.localeCompare(b.file));
     } else if (st.isFile()) {
       files.push({ file: p, size: st.size });
     }
@@ -174,8 +192,8 @@ function collectImages(inputs: any) {
   return files;
 }
 
-function httpJson(method: any, urlPath: any, body: any, opts: any, base: any) {
-  return new Promise<any>((resolve: any, reject: any) => {
+function httpJson(method: string, urlPath: string, body: unknown, opts: Options, base?: string) {
+  return new Promise<unknown>((resolve, reject) => {
     const url = new URL((base || DEFAULT_BASE_URL) + urlPath);
     const payload = body ? JSON.stringify(body) : null;
     const req = http.request({
@@ -185,14 +203,14 @@ function httpJson(method: any, urlPath: any, body: any, opts: any, base: any) {
         'Authorization': `Bearer ${DEFAULT_API_KEY}`,
         ...(payload ? { 'Content-Length': Buffer.byteLength(payload) } : {}),
       },
-    }, (res: any) => {
+    }, res => {
       let d = '';
-      res.on('data', (c: any) => d += c);
+      res.on('data', (chunk: Buffer) => d += chunk.toString());
       res.on('end', () => {
-        let json = null;
+        let json: unknown = null;
         try { json = JSON.parse(d); } catch { /* raw below */ }
-        if (res.statusCode >= 200 && res.statusCode < 300 && json) return resolve(json);
-        const detail = json && json.error ? JSON.stringify(json.error) : d.slice(0, 600);
+        if (res.statusCode !== undefined && res.statusCode >= 200 && res.statusCode < 300 && json) return resolve(json);
+        const detail = object(json) && json.error ? JSON.stringify(json.error) : d.slice(0, 600);
         reject(new Error(`HTTP ${res.statusCode}: ${detail}`));
       });
     });
@@ -203,7 +221,7 @@ function httpJson(method: any, urlPath: any, body: any, opts: any, base: any) {
   });
 }
 
-async function chatCompletion(messages: any, opts: any, model: any, base?: any) {
+async function chatCompletion(messages: Message[], opts: Options, model: string, base?: string) {
   return httpJson('POST', '/chat/completions', {
     model,
     messages,
@@ -211,34 +229,36 @@ async function chatCompletion(messages: any, opts: any, model: any, base?: any) 
   }, opts, base);
 }
 
-function imageUrl(file: any) {
+function imageUrl(file: string) {
   const ext = path.extname(file).toLowerCase().replace('.', '');
   const mime = ext === 'jpg' ? 'jpeg' : ext;
   return 'data:image/' + mime + ';base64,' + fs.readFileSync(file).toString('base64');
 }
 
-function isConnectionError(err: any) {
+function isConnectionError(err: string) {
   return /ECONNREFUSED|ECONNRESET|EPIPE|ETIMEDOUT|ENETUNREACH|EAI_AGAIN|超时/.test(err);
 }
 
-async function fetchModelId(base: any, opts: any) {
+async function fetchModelId(base: string, opts: Options) {
   const j = await httpJson('GET', '/models', null, opts, base);
-  const id = j && j.data && j.data[0] && j.data[0].id;
-  if (!id) throw new Error(`${base} 的 /v1/models 未返回模型`);
+  const first: unknown = object(j) && Array.isArray(j.data) ? j.data[0] : undefined;
+  const id = object(first) ? first.id : undefined;
+  if (typeof id !== 'string' || !id) throw new Error(`${base} 的 /v1/models 未返回模型`);
   return id;
 }
 
-async function attemptBackend(base: any, model: any, messages: any, opts: any, file: any) {
-  let lastErr: any = null;
+async function attemptBackend(base: string, model: string, messages: Message[], opts: Options, file: string): Promise<BackendResult> {
+  let lastErr: unknown;
   for (let attempt = 0; attempt < 2; attempt++) {
     if (attempt > 0) {
       console.error(`[重试 ${attempt}] ${file || 'group'}（等待 2s）`);
-      await new Promise<any>((r: any) => setTimeout(r, 2000));
+      await new Promise<void>(resolve => setTimeout(resolve, 2000));
     }
     try {
       const j = await chatCompletion(messages, opts, model, base);
-      const content = j.choices && j.choices[0] && j.choices[0].message
-        ? j.choices[0].message.content
+      const first: unknown = object(j) && Array.isArray(j.choices) ? j.choices[0] : undefined;
+      const content = object(first) && object(first.message)
+        ? first.message.content
         : JSON.stringify(j).slice(0, 800);
       return { ok: true, content, model };
     } catch (e) {
@@ -247,10 +267,10 @@ async function attemptBackend(base: any, model: any, messages: any, opts: any, f
       if (!retriable) break;
     }
   }
-  return { ok: false, content: null, model, error: lastErr.message };
+  return { ok: false, content: null, model, error: runtimeErrorMessage(lastErr) };
 }
 
-async function requestWithRetry(messages: any, opts: any, model: any, file: any) {
+async function requestWithRetry(messages: Message[], opts: Options, model: string, file: string): Promise<BackendResult> {
   const r1 = await attemptBackend(DEFAULT_BASE_URL, model, messages, opts, file);
   if (r1.ok || opts.noFallback || !isConnectionError(r1.error)) return r1;
   if (FALLBACK_BASE_URL === DEFAULT_BASE_URL) return r1;
@@ -266,19 +286,15 @@ async function requestWithRetry(messages: any, opts: any, model: any, file: any)
   }
 }
 
-function buildTextAndImages(prompt: any, files: any, labeled: any) {
-  const text = labeled
-    ? `${prompt}\n\n本次共 ${files.length} 张图片，请严格按编号逐一分析，不要遗漏。`
-    : prompt;
-  const content: any[] = [{ type: 'text', text }];
-  files.forEach((f: any, i: any) => {
+function buildTextAndImages(prompt: string, files: ImageFile[]) {
+  const text = `${prompt}\n\n本次共 ${files.length} 张图片，请严格按编号逐一分析，不要遗漏。`;
+  const content: ContentPart[] = [{ type: 'text', text }];
+  files.forEach((f, i) => {
     content.push({
       type: 'image_url',
       image_url: { url: imageUrl(f.file) },
     });
-    if (labeled) {
-      content.push({ type: 'text', text: `图片 ${i + 1}: ${f.file}` });
-    }
+    content.push({ type: 'text', text: `图片 ${i + 1}: ${f.file}` });
   });
   return content;
 }
@@ -309,23 +325,23 @@ async function main() {
     process.exit(2);
   }
   const model = opts.model || DEFAULT_MODEL;
-  const results: any[] = [];
-  const skipped: any[] = [];
+  const results: InspectResult[] = [];
+  const skipped: string[] = [];
 
   if (opts.mode === 'group') {
-    const tooBig = files.find((f: any) => f.size > MAX_IMAGE_BYTES);
+    const tooBig = files.find(f => f.size > MAX_IMAGE_BYTES);
     if (tooBig) {
       console.error(`[错误] group 模式图片过大（>${MAX_IMAGE_BYTES / 1024 / 1024}MB）: ${tooBig.file}`);
       process.exit(2);
     }
     console.error(`[识图] ${files.length} 张图 → ${model}（group）`);
-    const content = buildTextAndImages(finalPrompt, files, true);
-    const r = await requestWithRetry([{ role: 'user', content }], opts, model, files.map((f: any) => f.file).join('; '));
+    const content = buildTextAndImages(finalPrompt, files);
+    const r = await requestWithRetry([{ role: 'user', content }], opts, model, files.map(f => f.file).join('; '));
     results.push({
       mode: 'group',
       model: r.model,
       prompt: taskPrompt,
-      files: files.map((f: any) => f.file),
+      files: files.map(f => f.file),
       ok: r.ok,
       content: r.content,
       error: r.error || null,
@@ -333,15 +349,15 @@ async function main() {
   } else {
     const n = Math.max(1, Math.min(8, Math.floor(opts.concurrency) || 1));
     if (n > 1) console.error(`[并发] ${n} 路并行请求（each 模式）`);
-    const resultsArr = new Array(files.length);
-    const runOne = async (f: any, i: any) => {
+    const resultsArr = new Array<InspectResult>(files.length);
+    const runOne = async (f: ImageFile, i: number): Promise<InspectResult> => {
       if (f.size > MAX_IMAGE_BYTES) {
         console.error(`[跳过] 图片过大（>${MAX_IMAGE_BYTES / 1024 / 1024}MB）: ${f.file}`);
         skipped.push(f.file);
         return { mode: 'each', model, file: f.file, ok: false, content: null, error: '图片过大被跳过' };
       }
       console.error(`[识图 ${i + 1}/${files.length}] ${f.file} → ${model}`);
-      const content = [
+      const content: ContentPart[] = [
         { type: 'text', text: `${finalPrompt}\n\n图片文件：${f.file}` },
         { type: 'image_url', image_url: { url: imageUrl(f.file) } },
       ];
@@ -370,9 +386,9 @@ async function main() {
     }
   }
   if (opts.out) {
-    const md = results.map((r: any) => {
+    const md = results.map(r => {
       const title = r.mode === 'group'
-        ? `## Group（${r.files.length} 张图）\n\n${r.files.map((f: any) => `- \`${f}\``).join('\n')}`
+        ? `## Group（${r.files.length} 张图）\n\n${r.files.map(f => `- \`${f}\``).join('\n')}`
         : `## ${r.file}`;
       return `${title}\n\n${r.ok ? r.content : `> 失败：${r.error}`}\n`;
     }).join('\n');
@@ -380,11 +396,11 @@ async function main() {
     console.error(`[已写入] ${opts.out}`);
   }
 
-  const failed = results.filter((r: any) => !r.ok).length;
+  const failed = results.filter(r => !r.ok).length;
   if (skipped.length) console.error(`[跳过] ${skipped.length} 张（图片过大）`);
   process.exit(failed ? 1 : 0);
 }
 
 if (require.main === module) {
-  main().catch(function (error: any) { console.error('[错误]', error.message); process.exit(1); });
+  main().catch(function (error: unknown) { console.error('[错误]', runtimeErrorMessage(error)); process.exit(1); });
 }

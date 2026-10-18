@@ -164,11 +164,9 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
   return {
     compareMode,
     compareOpen,
-    compareIds,
     compareItems,
     compareSelected,
     compareFromRoute,
-    parentArtwork,
     parentImageUrl,
     hasComparableImage,
   };

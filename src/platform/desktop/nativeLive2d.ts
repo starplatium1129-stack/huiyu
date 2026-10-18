@@ -3,7 +3,6 @@ import { getDesktopRuntime } from './runtime.ts'
 import { hostApi, invokeHost as invoke, onHostEvent as on, offHostEvent as off } from './hostApi.ts'
 
 const native: Live2DNativeBridge = {
-  isNativeLive2D: true, supportsTextureQuality: true, supportsFraming: true,
   setCharacter: (modelPath, options) => invoke('aics_live2d_set_character', { modelPath, character: options?.character, textureScale: options?.textureScale, adapter: options?.adapter }),
   setFrame: frame => invoke('aics_live2d_set_frame', { rect: frame.rect, visible: frame.visible, opacity: frame.opacity ?? null, framing: frame.framing ?? null }),
   setMaxFps: fps => invoke('aics_live2d_set_max_fps', { fps }),

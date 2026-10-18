@@ -94,7 +94,7 @@
           <ArtworkViewerStage :items="filtered" :index="currentIdx" :active="viewerMounted && !viewerClosing" :original="originalViewer"
             :src="imgSrc(currentEntry)" :preview-src="viewerPreviewSrc" :thumb-urls="viewerThumbs" :title="entry => entry.title"
             @select="openViewer(filtered[$event].id)" @close="closeViewer" @toggle-original="toggleOriginalViewer" @dismiss-info="closeViewerInfo"
-            @interact="viewerHero.cancel" @error="viewerImageFailed = true">
+            @interact="viewerHero.cancel" @error="viewerImageFailed = true" @close-button="viewerClose = $event">
             <template #tools><button ref="viewerInfoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
           </ArtworkViewerStage>
           <aside id="showcase-viewer-info" ref="viewerInfoEl" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
@@ -131,10 +131,9 @@
 <script setup lang="ts">
 import '@/assets/css/viewer.css'
 import { runtimeFetch } from '@/platform/runtimeUrl'
-import { useMediaQuery } from '@vueuse/core'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
-import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { ref, shallowRef, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
@@ -204,33 +203,14 @@ const viewerMounted = ref(false)
 const viewerClosing = ref(false)
 const originalViewer = ref(false)
 const viewerInfoOpen = ref(false)
-const narrowViewer = useMediaQuery('(max-width: 900px)')
 const viewerInfoEl = ref<HTMLElement | null>(null), viewerInfoClose = ref<HTMLButtonElement | null>(null), viewerInfoToggle = ref<HTMLButtonElement | null>(null)
-function openViewerInfo(event: MouseEvent) {
-  dialogEl.value?.toggleAttribute('data-info-instant', event.detail === 0)
-  viewerInfoToggle.value?.focus({ preventScroll: true })
-  viewerInfoOpen.value = true
-}
-function closeViewerInfo(event?: MouseEvent) {
-  if (!viewerInfoOpen.value) return
-  dialogEl.value?.toggleAttribute('data-info-instant', !event || event.detail === 0)
-  viewerInfoOpen.value = false
-  viewerInfoToggle.value?.focus({ preventScroll: true })
-}
+const viewerClose = ref<HTMLElement | null>(null)
 const viewerPreviewSrc = ref('')
 const dialogEl    = ref<HTMLDialogElement | null>(null)
-useFocusTrap(viewerInfoEl, () => viewerMounted.value && !viewerClosing.value && narrowViewer.value && viewerInfoOpen.value, {
-  lockScroll: false, initialFocus: viewerInfoClose, onEscape: closeViewerInfo,
+const { compact: narrowViewer, toggle: openViewerInfo, close: closeViewerInfo } = useArtworkInfoDrawer({
+  viewer: dialogEl, panel: viewerInfoEl, trigger: viewerInfoToggle, closeButton: viewerInfoClose,
+  viewerCloseButton: viewerClose, open: viewerInfoOpen, active: () => viewerMounted.value && !viewerClosing.value,
 })
-watch(narrowViewer, narrow => {
-  // A breakpoint can hide the focused sidebar control or its compact launcher.
-  if (narrow && !viewerInfoOpen.value && viewerInfoEl.value?.contains(document.activeElement)) {
-    void nextTick(() => viewerInfoToggle.value?.focus({ preventScroll: true }))
-  } else if (!narrow && (viewerInfoOpen.value || document.activeElement === viewerInfoToggle.value)) {
-    viewerInfoOpen.value = false
-    void nextTick(() => dialogEl.value?.querySelector<HTMLButtonElement>('.viewer-close')?.focus({ preventScroll: true }))
-  }
-}, { flush: 'sync' })
 const viewerHero = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const viewerSurface = useFluidSurface('.art-viewer')
 function sourceImage(id = currentId.value) {

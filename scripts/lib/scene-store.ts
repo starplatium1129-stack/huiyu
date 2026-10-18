@@ -1,4 +1,7 @@
 import { writeTextAtomic } from './atomic-files';
+import type { Scene } from '../../src/types/scene';
+const { parsePromptScenes }: typeof import('../../src/utils/promptCatalog.ts') = require('../../src/utils/promptCatalog.ts');
+const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
@@ -24,22 +27,23 @@ const indexPath = path.join(dataDir, 'scenes-index.json');
 /** 单批默认场景数；可由 manifest 根级 batchSize 或条目级 batchSize 覆盖。 */
 const DEFAULT_BATCH_SIZE = 50;
 
-type Scene = { id: any; char?: string; category?: any; [key: string]: any };
-type SceneManifestEntry = { file: string; batchSize?: any };
-type SceneManifest = { files: SceneManifestEntry[]; batchSize?: any };
+type SceneManifestEntry = Record<string, unknown> & { file: string; character?: string; batchSize?: unknown };
+type SceneManifest = Record<string, unknown> & { files: SceneManifestEntry[]; batchSize?: unknown };
 type BrowserGroups = { nene: Scene[]; natsume: Scene[]; shared: Scene[] };
+type SceneSource = { entry: SceneManifestEntry; source: string; file: string; scenes: Scene[] };
+type SceneShards = { manifest: SceneManifest; sources: SceneSource[]; scenes: Scene[] };
 
-function readJson(source: string) {
+function readJson(source: string): unknown {
   return JSON.parse(fs.readFileSync(source, 'utf8'));
 }
 
-function jsonText(value: any) {
+function jsonText(value: unknown) {
   return JSON.stringify(value, null, 2) + '\n';
 }
 
 
 
-function sceneNumber(scene: any) {
+function sceneNumber(scene: Scene) {
   const match = String(scene && scene.id || '').match(/^sc(\d+)$/);
   return match ? Number(match[1]) : Number.MAX_SAFE_INTEGER;
 }
@@ -50,9 +54,11 @@ function sortScenes(scenes: Scene[]) {
 
 function readManifest() {
   const manifest = readJson(manifestPath);
-  if (!manifest || !Array.isArray(manifest.files) || !manifest.files.length) {
+  if (!object(manifest) || !Array.isArray(manifest.files) || !manifest.files.length) {
     throw new Error('data/scenes/manifest.json must define a non-empty files array');
   }
+  if (!manifest.files.every((entry: unknown) => object(entry) && typeof entry.file === 'string'
+    && (entry.character === undefined || typeof entry.character === 'string'))) throw new Error('Invalid scene manifest entry');
   return manifest as SceneManifest;
 }
 
@@ -80,11 +86,11 @@ function expandShardFiles(entry: SceneManifestEntry) {
   return [entry.file];
 }
 
-function loadSceneShards() {
+function loadSceneShards(): SceneShards {
   const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
   const records = catalog.read(root);
   if (records) {
-    const scenes: Scene[] = catalog.views(records).scenes;
+    const scenes = parsePromptScenes(catalog.views(records).scenes);
     const groups = new Map<string, Scene[]>();
     for (const scene of scenes) { const file = targetFile(scene); if (!groups.has(file)) groups.set(file, []); groups.get(file)!.push(scene); }
     const sources = [...groups].map(([file, scenes]) => ({ entry: { file, character: scenes[0].char }, source: path.join(shardsDir, file), file, scenes }));
@@ -94,12 +100,13 @@ function loadSceneShards() {
   const sources = manifest.files.flatMap((entry) =>
     expandShardFiles(entry).map((file) => {
       const source = path.join(shardsDir, file);
-      const scenes = readJson(source);
-      if (!Array.isArray(scenes)) throw new Error(file + ' root must be an array');
+      const data = readJson(source);
+      if (!Array.isArray(data)) throw new Error(file + ' root must be an array');
+      const scenes = parsePromptScenes(data);
       return { entry, source, file, scenes };
     })
   );
-  return { manifest, sources, scenes: sortScenes(sources.flatMap((item) => item.scenes as Scene[])) };
+  return { manifest, sources, scenes: sortScenes(sources.flatMap(item => item.scenes)) };
 }
 
 function targetFile(scene: Scene) {
@@ -161,26 +168,27 @@ function writeSceneShards(scenes: Scene[]) {
 function readCuration() {
   try {
     const curation = readJson(path.join(dataDir, 'curation.json'));
-    return curation && typeof curation === 'object' ? curation : {};
+    return object(curation) ? curation : {};
   } catch (error) {
     return {};
   }
 }
 
-function tierIds(curation: { [x: string]: any; }, key: string) {
-  const ids = curation && Array.isArray(curation[key]) ? curation[key] : [];
-  return ids.filter((id) => typeof id === 'string').slice(0, 2000);
+function tierIds(curation: Record<string, unknown>, key: string) {
+  const value = curation[key];
+  const ids: unknown[] = Array.isArray(value) ? value : [];
+  return ids.filter((id): id is string => typeof id === 'string').slice(0, 2000);
 }
 
 function groupBrowserShards(scenes: Scene[]) {
   const groups: BrowserGroups = { nene: [], natsume: [], shared: [] };
-  const seen = new Set();
+  const seen = new Set<string>();
   for (const scene of sortScenes(scenes)) {
     if (!scene || !scene.id) continue;
     const char = scene.char === 'natsume' ? 'natsume' : (scene.char === 'triad' ? 'shared' : 'nene');
     if (seen.has(scene.id)) continue;
     seen.add(scene.id);
-    groups[char as CharacterKey].push(scene);
+    groups[char].push(scene);
   }
   return groups;
 }
@@ -193,10 +201,10 @@ function writeBrowserShards(scenes: Scene[]) {
   return groups;
 }
 
-function writeCoreAndIndex(scenes: Scene[], curation: any, groups: BrowserGroups) {
+function writeCoreAndIndex(scenes: Scene[], curation: Record<string, unknown>, groups: BrowserGroups) {
   const byId = new Map(scenes.map((scene) => [scene.id, scene]));
-  const coreIds = tierIds((curation && typeof curation === 'object' ? curation : {}) as Record<string, any>, 'personaCoreSceneIds').filter((id) => byId.has(id));
-  writeTextAtomic(corePath, jsonText(coreIds.map((id) => byId.get(id) as Scene)));
+  const coreIds = tierIds(curation, 'personaCoreSceneIds').filter(id => byId.has(id));
+  writeTextAtomic(corePath, jsonText(coreIds.map(id => byId.get(id))));
 
   const index = {
     version: 1,
@@ -219,11 +227,6 @@ function writeAggregate(scenes: Scene[]) {
   writeTextAtomic(aggregatePath, jsonText(sorted));
   const groups = writeBrowserShards(sorted);
   writeCoreAndIndex(sorted, readCuration(), groups);
-}
-
-function writeSceneSet(scenes: Scene[]) {
-  writeSceneShards(scenes);
-  writeAggregate(scenes);
 }
 
 function aggregateIsCurrent(scenes: Scene[]) {
@@ -272,7 +275,6 @@ export = {
   sortScenes,
   targetFile,
   writeAggregate,
-  writeSceneSet,
   writeSceneShards,
   aggregateIsCurrent
 };

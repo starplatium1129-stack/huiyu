@@ -288,7 +288,6 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     favoriteCount,
     countLabel,
     PAGE_SIZE,
-    renderLimit,
     pagedVisible,
     hasMoreToRender,
     groups,
@@ -296,9 +295,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     resetGalleryFilters,
     restoreFiltersFromQuery,
     restoreDeferredFiltersFromQuery,
-    syncFiltersToQuery,
     cleanupFilterSync,
     sentinelEl,
-    loadMoreIfNeeded,
   };
 }

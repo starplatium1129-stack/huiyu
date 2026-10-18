@@ -3,8 +3,10 @@ import { errorMessage as runtimeErrorMessage } from './runtime-errors';
 
 const io: typeof import('./maintenance-recovery-fs') = require('./maintenance-recovery-fs');
 const backups: typeof import('./maintenance-recovery-backup') = require('./maintenance-recovery-backup');
+type Lease = ReturnType<typeof import('./maintenance-lease').acquireMaintenanceLease>;
+type ContextOptions = Parameters<typeof io.context>[0];
 
-function prepareMaintenanceTransaction(lease: any, options: any, snapshot: any, label: any = 'content') {
+function prepareMaintenanceTransaction(lease: Lease, options: ContextOptions, snapshot: ReturnType<typeof io.snapshotFiles>, label = 'content') {
   lease.assertOwned();
   const ctx = io.context(options);
   for (const item of snapshot) {
@@ -15,11 +17,11 @@ function prepareMaintenanceTransaction(lease: any, options: any, snapshot: any, 
   lease.setBackup(directory);
   return directory;
 }
-function commitMaintenanceTransaction(lease: any) {
+function commitMaintenanceTransaction(lease: Lease) {
   lease.complete('committed');
   lease.release();
 }
-function rollbackMaintenanceTransaction(lease: any, options: any) {
+function rollbackMaintenanceTransaction(lease: Lease | null | undefined, options: ContextOptions) {
   if (!lease) return { ok: true };
   try {
     const journal = lease.assertOwned();
