@@ -125,14 +125,17 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     try {
       check()
       const recovered = submission.pending.value ? await recoverRequest(controller.signal) : null
+      if (disposed || controller.signal.aborted || serial !== operationSerial) return
       const source = submission.request.value?.details?.retrySource as { batchId?: string } | undefined
       const id = reconnectTarget.value || batch.value?.id || source?.batchId || recovered?.id || submission.request.value?.taskId || videoStore.shotsBatch?.batchId
       if (!id) return
       let value = recovered?.id === id ? recovered : (await fetchVideoBatch(id, controller.signal)).batch
+      if (disposed || controller.signal.aborted || serial !== operationSerial) return
       check(); submission.update(value)
       if (value.retrySource) {
         if (value.retrySource.batchId === value.id) throw new Error('重抽来源无法确认，请到任务中心查看结果')
         value = (await fetchVideoBatch(value.retrySource.batchId, controller.signal)).batch
+        if (disposed || controller.signal.aborted || serial !== operationSerial) return
         check(); batchError.value = '当前显示原分镜批次；独立重抽结果保留在任务中心。'
       }
       if (disposed || controller.signal.aborted || serial !== operationSerial) return

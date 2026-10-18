@@ -1,7 +1,7 @@
 import { generationTask, canExecuteVideo } from '@/utils/generationTask'
 
 import { useTrackedTask } from '@/composables/useTaskCenter'
-import { useBackendSelection } from '@/composables/tasks/useBackendSelection'
+import { useVideoJobObservation } from './useVideoJobObservation'
 
 import { computed,onBeforeUnmount,onMounted,ref,watch,onActivated,onDeactivated } from 'vue'
 
@@ -141,43 +141,27 @@ const status = ref<VideoStatusResponse | null>(null)
 
 const statusLoading = ref(false)
 
-const statusError = ref(''), statusReadError = ref(''), pollError = ref('')
-const statusFeedback = computed(() => statusError.value || statusReadError.value || pollError.value)
+const statusError = ref(''), statusReadError = ref('')
+const statusFeedback = computed(() => statusError.value || statusReadError.value || recoveryError.value || pollError.value)
 
 const submitting = ref(false)
 
 const cancelling = ref(false)
-let cancellingTaskId = ''
 
 const job = ref<VideoJob | null>(null)
-const jobReading = ref(false)
 const videoStore = useVideoStore(), submission = useVideoRequest('video', VIDEO_REQUEST_DRAFT_KEY)
 const pageOwner = tempResultOwner()
 const requestPending = submission.pending, requestUnconfirmed = submission.unconfirmed
 const checkOwner = () => { submission.check(); if (!sameTempResultOwner(pageOwner)) throw new Error('视频所属工作区已变化，请回到原连接核对') }
-const reconnectState = ref<'idle' | 'reading' | 'failed'>((submission.request.value || submission.issue.value || videoStore.videoTask || videoStore.videoTaskIssue) && typeof route.query.job !== 'string' ? 'reading' : 'idle')
-let reconnectReading = false, pageReadVersion = 0
 
 // Route selections and local submissions share ownership; clearing a consumed
 // deep link must not count as a newer selection than the submission itself.
 const selectedTaskId = ref('')
 let selectionVersion = 0
-const selectedJobReading = ref(false), selectedJobError = ref('')
-const jobSelectionPending = computed(() => Boolean(selectedTaskId.value && selectedTaskId.value !== job.value?.id))
-let selectionRead: AbortSignal | undefined
-
-let pollTimer = 0
 
 let disposed = false
 let pageActive = true
 let statusRequest: AbortController | null = null
-let pollRequest: AbortController | null = null
-watch(() => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '', id => {
-  if (id === selectedTaskId.value) return
-  selectionVersion++; selectedTaskId.value = id; reconnectState.value = 'idle'; selectedJobError.value = ''
-  window.clearTimeout(pollTimer); pollRequest?.abort(); pollRequest = null; jobReading.value = false
-  schedulePoll()
-}, { immediate: true, flush: 'sync' })
 
 
 /**
@@ -247,11 +231,6 @@ const parsedSeed = computed(() => {
   const value = Number(seedText.value)
   return Number.isSafeInteger(value) && value >= 0 && value <= 0x7fffffff ? value : null
 })
-
-const jobActive = computed(() => job.value?.status === 'queued'
-  || job.value?.status === 'running'
-  || job.value?.status === 'cancelling')
-
 
 // Only measured progress is determinate; runtime tasks may provide no sample count.
 function formatSeconds(total: number) {
@@ -361,13 +340,6 @@ const jobStatusLabel = computed(() => job.value?.needsReview ? '状态待核对'
 })[job.value?.status || 'queued'])
 
 
-function schedulePoll() {
-  window.clearTimeout(pollTimer)
-  if (!job.value || disposed || !pageActive || pollRequest || cancelling.value || !jobActive.value || jobSelectionPending.value || selectedJobReading.value) return
-  pollTimer = window.setTimeout(() => { void pollJob() }, 1500)
-}
-
-
 async function loadStatus() {
   if (disposed || !pageActive) return
   statusRequest?.abort()
@@ -424,39 +396,33 @@ const videoDraftTools = useVideoStudioDraft({
 })
 
 const stopDraftWatch = videoDraftTools.startDraftWatch()
-async function reconnectVideo() {
-  if (disposed || !pageActive || reconnectReading) return
-  const selection = selectionVersion, visit = pageReadVersion
-  const previousError = reconnectState.value === 'failed' ? statusError.value : ''
-  reconnectReading = true; reconnectState.value = 'reading'
-  try {
-    checkOwner()
+const observation = useVideoJobObservation({
+  job, selectedId: () => selectedTaskId.value,
+  available: () => !disposed && pageActive && !submitting.value && !cancelling.value,
+  hasRecovery: () => Boolean(submission.request.value || submission.issue.value || videoStore.videoTask || videoStore.videoTaskIssue),
+  check: checkOwner,
+  async recover(signal) {
     if (videoStore.videoTaskIssue) throw new Error(videoStore.videoTaskIssue)
-    const controller = new AbortController()
-    const restored = submission.request.value ? await submission.observe(controller.signal)
-      : videoStore.videoTask ? (await fetchVideoJob(videoStore.videoTask.jobId, controller.signal)).job : null
-    checkOwner()
-    if (disposed || selection !== selectionVersion) return
-    reconnectState.value = 'idle'
-    if (restored && !('shots' in restored)) {
-      if (!selectedTaskId.value || selectedTaskId.value === restored.id) job.value = restored
-      if (previousError && statusError.value === previousError) statusError.value = ''
-      schedulePoll()
-    }
-  } catch (error) {
-    if (!disposed && pageActive && visit === pageReadVersion) { reconnectState.value = requestPending.value || videoStore.videoTask ? 'failed' : 'idle'; statusError.value = error instanceof Error ? error.message : '原视频请求状态待核对；身份已保留，不会重新提交' }
-  } finally {
-    reconnectReading = false
-    if (!disposed && selection === selectionVersion && reconnectState.value === 'reading') reconnectState.value = 'idle'
-    if (!disposed && pageActive && visit !== pageReadVersion && !selectedTaskId.value) void reconnectVideo()
-  }
+    const value = submission.request.value ? await submission.observe(signal)
+      : videoStore.videoTask ? (await fetchVideoJob(videoStore.videoTask.jobId, signal)).job : null
+    if (value && 'shots' in value) throw new Error('视频请求返回了错误的任务类型')
+    return value
+  },
+  update: value => submission.update(value),
+  selected: () => { statusError.value = '' },
+})
+const { reconnectState, recoveryError, pollError, jobReading, jobActive, jobSelectionPending, selectedJobReading, selectedJobError } = observation
+async function reconnectVideo() {
+  const previousError = reconnectState.value === 'failed' ? statusError.value : ''
+  if (await observation.recover() && previousError && statusError.value === previousError) statusError.value = ''
 }
 
 
 async function submitVideo() {
-  if (!canGenerate.value) return
+  if (disposed || !pageActive || !canGenerate.value) return
   statusError.value = ''
   submitting.value = true
+  observation.stop()
   const selection = ++selectionVersion
   selectedTaskId.value = ''
   if (typeof route.query.job === 'string') void router.replace({ query: { ...route.query, job: undefined }, hash: route.hash })
@@ -476,19 +442,19 @@ async function submitVideo() {
       steps: steps.value,
     }
     const frames = await resolveSubmitFrames(mode)
-    if (disposed || selection !== selectionVersion) return
+    if (disposed || !pageActive || selection !== selectionVersion) return
     checkOwner()
     if (videoStore.videoTask) {
       if (!videoRequestSettled(job.value) || job.value?.id !== videoStore.videoTask.jobId) throw new Error('请先读取并核对旧视频任务')
       videoStore.clearVideoTask(); await flushProfileWrites()
     }
+    if (disposed || !pageActive || selection !== selectionVersion) return
     const accepted = await submission.submit({ ...request, ...frames }, new AbortController().signal, undefined, { mode })
     if ('shots' in accepted) throw new Error('视频请求返回了错误的任务类型')
-    if (disposed || selection !== selectionVersion) return
-    job.value = accepted; pollError.value = ''; reconnectState.value = 'idle'
-    schedulePoll()
+    if (disposed || !pageActive || selection !== selectionVersion) return
+    job.value = accepted; pollError.value = ''; recoveryError.value = ''; reconnectState.value = 'idle'
   } catch (error) {
-    if (disposed || selection !== selectionVersion) return
+    if (disposed || !pageActive || selection !== selectionVersion) return
     // 提交失败多半是 Comfy 侧（显存 / 模型 / 参数），走分类器给中文结论；
     // 分类不出具体原因时仍退回原始消息，不丢信息。
     const report = classifySDError(error, 'comfy')
@@ -497,28 +463,12 @@ async function submitVideo() {
       : `${report.title}：${report.message}`
     if (requestPending.value) reconnectState.value = 'failed'
     await loadStatus()
-    if (!disposed && selection === selectionVersion) statusError.value = requestPending.value ? '原视频接收状态待核对，已阻止重复提交。' + submissionError : submissionError
+    if (!disposed && pageActive && selection === selectionVersion) statusError.value = requestPending.value ? '原视频接收状态待核对，已阻止重复提交。' + submissionError : submissionError
   } finally {
     submitting.value = false
-  }
-}
-
-
-async function pollJob(force = false) {
-  if (disposed || !pageActive || pollRequest || cancelling.value || jobSelectionPending.value || selectedJobReading.value || !job.value || !force && !jobActive.value) return
-  const id = job.value.id, selection = selectionVersion
-  const controller = new AbortController(); pollRequest = controller; jobReading.value = true
-  try {
-    checkOwner()
-    const response = await fetchVideoJob(id, controller.signal)
-    checkOwner(); submission.update(response.job)
-    if (disposed || !pageActive || controller.signal.aborted || selection !== selectionVersion || job.value?.id !== id) return
-    job.value = response.job; pollError.value = ''
-  } catch (error) {
-    if (disposed || !pageActive || controller.signal.aborted || selection !== selectionVersion || job.value?.id !== id) return
-    pollError.value = error instanceof Error ? error.message : '视频任务状态读取失败'
-  } finally {
-    if (pollRequest === controller) { pollRequest = null; jobReading.value = false; schedulePoll() }
+    if (jobSelectionPending.value) void retrySelectedJob()
+    else if (pageActive && selection !== selectionVersion && requestUnconfirmed.value) void reconnectVideo()
+    else observation.schedule()
   }
 }
 
@@ -527,28 +477,27 @@ async function cancelJob(original = false) {
   if (disposed || cancelling.value || !original && (jobSelectionPending.value || selectedJobReading.value) || !job.value && !submission.request.value) return
   const id = job.value?.id || ''
   const selection = selectionVersion
-  cancellingTaskId = id
   cancelling.value = true
-  void taskSelection.retry()
   // Cancellation owns the next status; an earlier read cannot turn it back
   // into a running job, and no fresh reads should race the pending command.
-  window.clearTimeout(pollTimer)
-  pollRequest?.abort(); pollRequest = null; jobReading.value = false
+  observation.stop()
   try {
     checkOwner()
     const owned = submission.request.value
     const value = owned && (original || !id || owned.taskId === id) ? await submission.cancel() : (await cancelVideoJob(id)).job
     checkOwner()
-    if (!disposed && selection === selectionVersion) {
+    if (!disposed && pageActive && selection === selectionVersion) {
       if (value && !('shots' in value) && (!job.value || value.id === job.value.id)) job.value = value
-      reconnectState.value = 'idle'; pollError.value = ''
-      if (!value) statusError.value = '取消意图已保存，原请求不会再执行'
+      reconnectState.value = 'idle'; pollError.value = ''; recoveryError.value = ''
+      statusError.value = value ? '' : '取消意图已保存，原请求不会再执行'
     }
   } catch (error) {
-    if (!disposed && selection === selectionVersion) statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
+    if (!disposed && pageActive && selection === selectionVersion) statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
   } finally {
     cancelling.value = false
-    schedulePoll()
+    if (jobSelectionPending.value) void retrySelectedJob()
+    else if (pageActive && selection !== selectionVersion && requestUnconfirmed.value) void reconnectVideo()
+    else observation.schedule()
   }
 }
 
@@ -566,28 +515,28 @@ watch(selectedMode, (mode) => {
 
 let activatedOnce = false, initialRestorePending = true
 
-const taskSelection = useBackendSelection(
-  () => !pageActive || cancelling.value && selectedTaskId.value === cancellingTaskId ? '' : selectedTaskId.value,
-  () => job.value?.id,
-  async (id, signal) => {
-    selectionRead = signal; selectedJobReading.value = true; selectedJobError.value = ''
-    try { checkOwner(); const value = await fetchVideoJob(id, signal); checkOwner(); submission.update(value.job); return value }
-    finally { if (selectionRead === signal) { selectionRead = undefined; selectedJobReading.value = false; schedulePoll() } }
-  },
-  response => { job.value = response.job; selectedJobError.value = ''; statusError.value = ''; pollError.value = ''; schedulePoll() },
-  error => { selectedJobError.value = error instanceof Error ? error.message : '任务读取失败，请重试' },
-)
-function retrySelectedJob() { selectedJobError.value = ''; return taskSelection.retry() }
+function retrySelectedJob() { return observation.select(true) }
+watch(() => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '', id => {
+  if (id === selectedTaskId.value) return
+  selectionVersion++; selectedTaskId.value = id; reconnectState.value = 'idle'; selectedJobError.value = ''
+  observation.stop()
+  if (id) void observation.select()
+  else observation.schedule()
+}, { immediate: true, flush: 'sync' })
 watch(() => route.query.mode, mode => { if (route.path === '/video-studio' && mode === 'shots') selectedMode.value = 'shots' })
 
 function stopPageReads() {
-  pageReadVersion++; window.clearTimeout(pollTimer)
   statusRequest?.abort(); statusRequest = null; statusLoading.value = false
-  pollRequest?.abort(); pollRequest = null; jobReading.value = false
-  void taskSelection.retry()
+  observation.stop()
 }
-onDeactivated(() => { pageActive = false; stopPageReads() })
-onActivated(() => { pageActive = true; if (!activatedOnce) { activatedOnce = true; return }; if (route.query.mode === 'shots') selectedMode.value = 'shots'; else consumeVideoCtx(); void loadStatus(); void pollJob(); if (!initialRestorePending && !selectedTaskId.value) void reconnectVideo() })
+onDeactivated(() => { pageActive = false; selectionVersion++; stopPageReads() })
+onActivated(() => {
+  pageActive = true
+  if (!activatedOnce) { activatedOnce = true; return }
+  if (route.query.mode === 'shots') selectedMode.value = 'shots'; else consumeVideoCtx()
+  void loadStatus()
+  if (!initialRestorePending && !selectedTaskId.value) void reconnectVideo()
+})
 
 onMounted(() => {
   // 绘图页「去分镜短片」深链：进入分镜模式并清掉 query（一次性消费）。
@@ -605,8 +554,8 @@ onMounted(() => {
     else consumeVideoCtx()
     const restored = await restoring
     initialRestorePending = false
-    if (disposed || selection !== selectionVersion) return
-    if (restored?.firstFrameLost || restored?.lastFrameLost) statusError.value = '草稿已恢复，但部分帧图原文件已失效，请重新选择对应图片'
+    if (disposed || !pageActive) return
+    if (selection === selectionVersion && (restored?.firstFrameLost || restored?.lastFrameLost)) statusError.value = '草稿已恢复，但部分帧图原文件已失效，请重新选择对应图片'
     // 新任务按原请求键恢复；旧 ID 仅沿原任务读取。
     if (typeof route.query.job === 'string') return
     await reconnectVideo()
@@ -635,6 +584,6 @@ environmentState, environmentLabel, statusError: statusFeedback, selectedModelId
 formatTime, progressPercent, formatSeconds, progressWarning, jobErrorReport, cancelling,
 cancelJob: () => cancelJob(), cancelOriginalRequest: () => cancelJob(true),
 reconnectState, reconnectVideo, requestPending: requestUnconfirmed,
-jobReading, refreshJob: () => pollJob(true), jobSelectionPending, selectedJobReading, selectedJobError, retrySelectedJob,
+jobReading, refreshJob: () => observation.poll(true), jobSelectionPending, selectedJobReading, selectedJobError, retrySelectedJob,
 }
 }
