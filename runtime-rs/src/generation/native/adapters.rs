@@ -1,7 +1,11 @@
 //! Local native adapter contracts. File readiness never proves model execution.
 use super::*;
 use std::{path::Path, sync::LazyLock};
-use super::resources::within;
+use super::resources::{self, within};
+const FILES: &[&str] = &[
+    "adapter_worker.py", "adapter_contract.py", "adapter_media.py", "adapter_video.py",
+    "adapter-models.json", "worker_lifecycle.py",
+];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
         "../../../../tools/inference/adapter-models.json"
@@ -39,26 +43,22 @@ pub(crate) fn settings(settings: &Settings) -> Result<Settings> {
     }
     Ok(adapter)
 }
+fn validate_runtime(settings: &Settings) -> Result<()> {
+    settings.validate_files_sync()?;
+    if let Some(issue) = resources::worker_bundle_issue(&settings.worker, FILES) {
+        return Err(ApiError::new(503, "NATIVE_ADAPTER_RUNTIME_MISSING", issue));
+    }
+    Ok(())
+}
 pub(crate) fn status(settings: &Settings, id: &str) -> Value {
     let Some(model) = model(id) else {
         return json!({"id":id,"available":false,"readiness":"unavailable", "validation":"待主力机验证",
             "unavailableReason":manifest()["pendingVideo"][id].as_str().unwrap_or("尚无原生适配")});
     };
     let path = settings.models_root.join(id);
-    let issue = if settings
-        .adapter_python
-        .as_ref()
-        .is_none_or(|p| !p.is_file())
-    {
-        Some("新增模型独立 Python 未配置或不存在（HUIYU_NATIVE_ADAPTER_PYTHON）".to_owned())
-    } else if !settings
-        .worker
-        .with_file_name("adapter_worker.py")
-        .is_file()
-    {
-        Some("缺少随包 adapter_worker.py".to_owned())
-    } else if settings.acceleration != "native" {
-        Some("新增模型仅支持 native 加速模式".to_owned())
+    let runtime_issue = self::settings(settings).and_then(|adapter| validate_runtime(&adapter)).err().map(|e| e.message);
+    let issue = if runtime_issue.is_some() {
+        runtime_issue
     } else if within(&settings.models_root, &path).is_none() {
         Some("模型根目录内缺少完整 Diffusers 目录".to_owned())
     } else {
@@ -83,10 +83,11 @@ pub(crate) async fn plan(
         .as_str()
         .ok_or_else(|| ApiError::invalid("缺少模型 ID"))?;
     let adapter = self::settings(settings)?;
-    adapter.validate_files().await?;
+    let inspected = adapter.clone();
     let root = adapter.models_root.clone();
     let model_id = id.to_owned();
     let path = tokio::task::spawn_blocking(move || {
+        validate_runtime(&inspected)?;
         let path = within(&root, &root.join(&model_id)).ok_or_else(|| ApiError::new(
             503,
             "NATIVE_MODEL_UNAVAILABLE",

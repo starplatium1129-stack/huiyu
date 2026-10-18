@@ -255,19 +255,16 @@ impl ControlService {
                 "运行库或模型尚未完成校验，请先完成准备或重试下载",
             ));
         }
-        let mut command = tokio::process::Command::new(&settings.python);
+        // Validate the configuration that will be saved, including its preparation floor.
+        settings.engine = "native".into();
+        settings.acceleration = "native".into();
+        settings.memory_policy = "offload".into();
+        let mut command = settings.worker_command();
         command
-            .args(["-I", "-B", "-u", "-X", "utf8"])
-            .arg(&settings.worker)
             .arg("--diagnose")
             .stdin(std::process::Stdio::null())
             .stdout(std::process::Stdio::piped())
-            .stderr(std::process::Stdio::piped())
-            .env_remove("PYTHONPATH")
-            .env_remove("PYTHONHOME")
-            .env("HF_HUB_OFFLINE", "1")
-            .env("TRANSFORMERS_OFFLINE", "1")
-            .env("HUIYU_INFERENCE_ACCELERATION", "native");
+            .stderr(std::process::Stdio::piped());
         let diagnostic = self.run_setup_helper(&mut command, cancel, 120).await?;
         if diagnostic["event"] != "diagnostic" || diagnostic["cudaAvailable"] != true {
             return Err(ApiError::new(
@@ -278,13 +275,8 @@ impl ControlService {
         }
         self.native_stage(operation, 1);
         jobs::verify_files(&root, &model.files, cancel).await?;
-        self.validate_native_model(&settings.python, &settings.worker, &root, cancel)
+        self.validate_native_model(&settings, &root, cancel)
             .await?;
-        settings.engine = "native".into();
-        settings.acceleration = "native".into();
-        // The supported preparation floor uses component offload. Existing custom
-        // acceleration is opt-in and is never implied by downloading the runtime.
-        settings.memory_policy = "offload".into();
         let target = serde_json::to_value(&settings)?;
         let active = self.active_inference()?;
         let current = serde_json::to_value(&active)?;

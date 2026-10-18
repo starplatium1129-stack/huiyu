@@ -236,7 +236,7 @@ impl ControlService {
                 "当前工作区运行库不可用，请重新准备",
             ));
         }
-        self.validate_native_model(&settings.python, &settings.worker, root, cancel)
+        self.validate_native_model(&settings, root, cancel)
             .await?;
         stopped(cancel)?;
         self.native_stage(operation, 3);
@@ -281,27 +281,23 @@ impl ControlService {
 
     pub(super) async fn validate_native_model(
         &self,
-        python: &Path,
-        worker: &Path,
+        settings: &crate::generation::native::Settings,
         model: &Path,
         cancel: &CancellationToken,
     ) -> Result<()> {
-        if let Some(issue) = crate::generation::native::model_issue(model) {
+        let inspect = model.to_owned();
+        let issue = tokio::task::spawn_blocking(move || crate::generation::native::model_issue(&inspect)).await
+            .map_err(|_| ApiError::new(503, "NATIVE_MODEL_INCOMPLETE", "模型目录读取未完成"))?;
+        if let Some(issue) = issue {
             return Err(ApiError::new(409, "NATIVE_MODEL_INCOMPLETE", issue));
         }
-        let mut command = tokio::process::Command::new(python);
+        let mut command = settings.worker_command();
         command
-            .args(["-I", "-B", "-u", "-X", "utf8"])
-            .arg(worker)
             .arg("--validate")
             .arg(model)
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .env_remove("PYTHONPATH")
-            .env_remove("PYTHONHOME")
-            .env("HF_HUB_OFFLINE", "1")
-            .env("TRANSFORMERS_OFFLINE", "1");
+            .stderr(Stdio::piped());
         let value = self.run_setup_helper(&mut command, cancel, 120).await?;
         if value["event"] != "validation" || value["valid"] != true {
             return Err(ApiError::new(

@@ -32,6 +32,15 @@ const FILES: &[&str] = &[
     "MANGALINE_LICENSE.txt",
 ];
 
+async fn validate_runtime(settings: &Settings) -> Result<()> {
+    settings.validate_files().await?;
+    let worker = settings.worker.clone();
+    let issue = tokio::task::spawn_blocking(move || generation::native::resources::worker_bundle_issue(&worker, FILES))
+        .await.map_err(|_| ApiError::new(503, "MANGA_RUNTIME_MISSING", "漫画运行文件读取未完成"))?;
+    if let Some(issue) = issue { return Err(ApiError::new(503, "MANGA_RUNTIME_MISSING", issue)); }
+    Ok(())
+}
+
 pub(super) fn validate(raw: &Value) -> Result<Value> {
     let object = raw
         .as_object()
@@ -198,19 +207,7 @@ pub(super) async fn plan(
 ) -> Result<Plan> {
     let input = normalize(&input)?;
     let settings = settings(runtime)?;
-    settings.validate_files().await?;
-    for name in FILES {
-        if !tokio::fs::metadata(settings.worker.with_file_name(name))
-            .await
-            .is_ok_and(|m| m.is_file())
-        {
-            return Err(ApiError::new(
-                503,
-                "MANGA_RUNTIME_MISSING",
-                format!("缺少随包漫画处理文件：{name}"),
-            ));
-        }
-    }
+    validate_runtime(&settings).await?;
     let source = |key: &str| -> Result<Option<Arc<Vec<u8>>>> {
         input[key]
             .as_str()
@@ -240,25 +237,13 @@ pub(super) async fn plan(
 }
 pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
     let runtime = backend.native_settings()?;
-    let capabilities = models::status(&runtime);
+    let inspected = runtime.clone();
+    let capabilities = tokio::task::spawn_blocking(move || models::status(&inspected)).await
+        .map_err(|_| ApiError::new(503, "MANGA_RUNTIME_MISSING", "漫画模型状态读取未完成"))?;
     let settings = settings(&runtime);
     let issue = match &settings {
         Err(error) => Some(error.message.clone()),
-        Ok(settings) => {
-            let mut issue = settings.validate_files().await.err().map(|e| e.message);
-            if issue.is_none() {
-                for name in FILES {
-                    if !tokio::fs::metadata(settings.worker.with_file_name(name))
-                        .await
-                        .is_ok_and(|m| m.is_file())
-                    {
-                        issue = Some(format!("缺少随包漫画处理文件：{name}"));
-                        break;
-                    }
-                }
-            }
-            issue
-        }
+        Ok(settings) => validate_runtime(settings).await.err().map(|e| e.message),
     };
     Ok(
         json!({"provider":"native","engine":"native","processor":*MANIFEST,"online":issue.is_none(),

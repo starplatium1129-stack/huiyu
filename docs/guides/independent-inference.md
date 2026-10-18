@@ -2,6 +2,8 @@
 
 维护入口：共享文件识别在 `runtime-rs/src/generation/native/resources.rs`，Anima 与 adapter 目录结构在 `model_layout.rs`；状态与提交使用同一规则。运行配置经 `Settings.worker_command` 构造解释器命令，准备环境仍沿现有控制室和离线准备器。模型扩展、调度与释放的审查要求见[工程契约](../engineering-contracts.md#模块边界)，不复制环境准备、队列或取消循环。
 
+诊断、受管启用和模型目录校验同样沿用该解释器策略；受管启用按 native/offload 目标检查，不写随包 Python 缓存。adapter 状态与提交共同核对主 worker、立即加载的四个 helper 和模型声明；漫画共同核对自己的文件集，可选 Qwen 重绘再核对 adapter。文件缺失或为空会显示尚未就绪，不代表依赖导入、真实权重或设备已经验证。
+
 ## 原生图像与视频适配入口（待主力机验证）
 
 这些适配复用固定 Diffusers 源码，不使用 ComfyUI 节点、Python 或量化分片。

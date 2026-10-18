@@ -104,9 +104,14 @@ impl Settings {
         Ok(())
     }
     pub(crate) async fn validate_files(&self) -> Result<()> {
+        let settings = self.clone();
+        tokio::task::spawn_blocking(move || settings.validate_files_sync()).await
+            .map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "独立推理运行文件读取未完成"))?
+    }
+    pub(crate) fn validate_files_sync(&self) -> Result<()> {
         self.validate()?;
         for path in [&self.python, &self.worker] {
-            if !tokio::fs::metadata(path).await.is_ok_and(|m| m.is_file()) {
+            if !std::fs::metadata(path).is_ok_and(|m| m.is_file()) {
                 return Err(ApiError::new(
                     503,
                     "NATIVE_RUNTIME_UNAVAILABLE",
@@ -117,10 +122,11 @@ impl Settings {
         Ok(())
     }
     /// Keep diagnostics and all model workers on the same isolated offline policy.
+    /// Installed worker sources are read-only: never write Python bytecode beside them.
     /// The caller owns arguments, I/O, process registration and execution limits.
     pub(crate) fn worker_command(&self) -> tokio::process::Command {
         let mut command = tokio::process::Command::new(&self.python);
-        command.arg("-I").arg("-u").args(["-X", "utf8"]).arg(&self.worker)
+        command.arg("-I").arg("-B").arg("-u").args(["-X", "utf8"]).arg(&self.worker)
             .env_remove("PYTHONPATH").env_remove("PYTHONHOME")
             .env("HUIYU_INFERENCE_ACCELERATION", &self.acceleration)
             .env("HUIYU_INFERENCE_MEMORY", &self.memory_policy)

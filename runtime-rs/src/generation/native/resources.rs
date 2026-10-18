@@ -32,3 +32,11 @@ pub(crate) fn clipseg(root: &Path) -> Option<PathBuf> {
     }
     Some(path)
 }
+
+/// Only required siblings of this worker, never weights or Python dependencies.
+pub(crate) fn worker_bundle_issue(worker: &Path, files: &[&str]) -> Option<String> {
+    files.iter().find(|name| {
+        !std::fs::metadata(worker.with_file_name(name))
+            .is_ok_and(|meta| meta.is_file() && meta.len() > 0)
+    }).map(|name| format!("缺少或为空的随包推理文件：{name}"))
+}
