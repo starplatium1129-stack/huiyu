@@ -1,5 +1,5 @@
 import { artworkRepository } from '@/storage/artworkRepository'
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { imageMediaSession } from '@/composables/useOriginalImage'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { downloadBlob } from '@/utils/downloadBlob'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -11,8 +11,8 @@ export function mangaResult(blob: Blob, job: MangaJob) {
     download:() => downloadMangaPng(blob, `绘遇-漫画-${job.id.slice(0, 8)}.png`)}
 }
 /** Imported previews have no task; retain their upload identity on save retries. */
-export function mangaLineResult(blob: Blob, details: {id:string; width:number; height:number; metadata:Record<string, unknown>; name?:string}, source?: ArtworkRecord) {
-  const repository = artworkRepository, authority = runtimeResourceIdentity()
+export function mangaLineResult(blob: Blob, details: {id:string; width:number; height:number; metadata:Record<string, unknown>; name?:string}, checkInput: () => void, source?: ArtworkRecord) {
+  const repository = artworkRepository, authority = imageMediaSession()
   const record: ArtworkRecord = {
     id: `manga-lineart-${details.id}`, timestamp: Date.now(), engine: 'manga-screen', provider: 'local', artifactKind: 'lineart',
     sceneTitle: `${source?.sceneTitle || details.name || '图片'} · 线稿`, parent_id: source?.id ?? null,
@@ -23,7 +23,10 @@ export function mangaLineResult(blob: Blob, details: {id:string; width:number; h
     prompt: '', manual_tags: ['线稿'], postprocess: structuredClone(details.metadata), validation: '待主力机验证',
   }
   let imageId = '', saving: Promise<ArtworkRecord> | null = null
-  const check = () => { if (repository !== artworkRepository || authority !== runtimeResourceIdentity()) throw new Error('作品库连接已变化，请回到原工作区保存；也可导出 PNG') }
+  const check = () => {
+    checkInput()
+    if (repository !== artworkRepository || authority !== imageMediaSession()) throw new Error('作品库连接已变化，请回到原工作区保存；也可导出 PNG')
+  }
   async function save(): Promise<ArtworkRecord> {
     if (saving) return saving
     check()

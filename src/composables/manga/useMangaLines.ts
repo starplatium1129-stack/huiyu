@@ -8,7 +8,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 
 export type MangaLineMode = 'none' | 'auto' | 'external'
 const message = (e: unknown) => e instanceof Error ? e.message : '线稿操作失败'
-export function useMangaLines(options: { signal: AbortSignal; check: () => void; locked: () => boolean; loading: Ref<boolean>; exporting: Ref<boolean>;
+export function useMangaLines(options: { signal: AbortSignal; check: () => void; checkInput: () => void; locked: () => boolean; loading: Ref<boolean>; exporting: Ref<boolean>;
   source: () => ArtworkRecord | undefined; onSaved: () => void }) {
   const mode = ref<MangaLineMode>('none'), polarity = ref<MangaLinePolarity>('black-on-white'), stretch = ref(false)
   const imported = shallowRef<MangaImage | null>(null), inputUrl = ref(''), inputBlob = shallowRef<Blob | null>(null)
@@ -40,18 +40,18 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
     const current = ++sequence
     options.loading.value = true; error.value = ''; notice.value = ''
     try {
-      options.check()
+      options.checkInput()
       const image = file ? await inspectMangaImage(file, file.name) : imported.value
       if (!image) return false
       if (Math.max(image.width, image.height) > mangaManifest.maxInputSide || image.width * image.height > mangaManifest.maxInputPixels)
         throw new Error('线稿宽高不得超过 4096，总像素不超过 2097152；请先缩小后再导入')
       const selectedPolarity = polarity.value
       const blob = await previewMangaLines(image, selectedPolarity)
-      options.check(); if (current !== sequence) return false
+      options.checkInput(); if (current !== sequence) return false
       imported.value = image; inputBlob.value = blob; preparedPolarity.value = selectedPolarity
       inputResult.value = mangaLineResult(blob, {id:`import-${crypto.randomUUID()}`, width:image.width, height:image.height, name:image.name,
         metadata:{operation:'lineart-import', sourceName:image.name, sourcePolarity:selectedPolarity,
-          polarity:'black-on-white', stage:'import-preview', processorVersion:mangaManifest.schemaVersion, validation:'待主力机验证'}}, options.source())
+          polarity:'black-on-white', stage:'import-preview', processorVersion:mangaManifest.schemaVersion, validation:'待主力机验证'}}, options.checkInput, options.source())
       inputSaved.value = false; inputSaveAttempted.value = false
       setUrl(inputUrl, blob); selected.value = 'input'
       if (file) { revision.value++; stretch.value = false; mode.value = 'external' }
