@@ -137,12 +137,10 @@ impl Settings {
     /// Installed worker sources are read-only: never write Python bytecode beside them.
     /// The caller owns arguments, I/O, process registration and execution limits.
     pub(crate) fn worker_command(&self) -> tokio::process::Command {
-        let mut command = tokio::process::Command::new(&self.python);
-        command.arg("-I").arg("-B").arg("-u").args(["-X", "utf8"]).arg(&self.worker)
-            .env_remove("PYTHONPATH").env_remove("PYTHONHOME")
+        let mut command = crate::native_python::command(&self.python, &self.worker);
+        command
             .env("HUIYU_INFERENCE_ACCELERATION", &self.acceleration)
-            .env("HUIYU_INFERENCE_MEMORY", &self.memory_policy)
-            .env("HF_HUB_OFFLINE", "1").env("TRANSFORMERS_OFFLINE", "1");
+            .env("HUIYU_INFERENCE_MEMORY", &self.memory_policy);
         command
     }
 }

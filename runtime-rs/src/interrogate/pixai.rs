@@ -14,7 +14,7 @@ use std::{
 };
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt, BufReader},
-    process::{ChildStdin, ChildStdout, Command},
+    process::{ChildStdin, ChildStdout},
     sync::{Mutex, OwnedSemaphorePermit, Semaphore, oneshot},
     task::JoinHandle,
 };
@@ -353,20 +353,14 @@ impl Worker {
         if !settings.python.is_file() || !settings.script.is_file() {
             return Err(unavailable("PixAI Python 或模型脚本未安装"));
         }
-        let mut command = Command::new(&settings.python);
+        let mut command = crate::native_python::command(&settings.python, &settings.script);
         command
-            .arg("-u")
-            .arg(&settings.script)
             .arg("--model-dir")
             .arg(&settings.model_dir)
             .arg("--deps-dir")
             .arg(&settings.deps_dir)
             .arg("--torch-site-packages")
             .arg(&settings.torch_site_packages)
-            .env("PYTHONUNBUFFERED", "1")
-            .env("PYTHONIOENCODING", "utf-8")
-            .env("PYTHONUTF8", "1")
-            .env("PYTHONNOUSERSITE", "1")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());

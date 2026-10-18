@@ -21,6 +21,7 @@ mod interrogate;
 mod live2d;
 mod maintenance;
 mod native_images;
+mod native_python;
 pub(crate) mod processes;
 mod reference;
 mod remote_content;

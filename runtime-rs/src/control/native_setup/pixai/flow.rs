@@ -127,25 +127,16 @@ impl ControlService {
         );
         let expected = expected_paths(self, &runtime, &manifest);
         let python = Path::new(expected["python"].as_str().unwrap());
-        let mut command = tokio::process::Command::new(python);
+        let script = self.config.app_root.join("scripts/lib/prepare-pixai-runtime.py");
+        let mut command = crate::native_python::command(python, &script);
         command
-            .args(["-I", "-B", "-u", "-X", "utf8"])
-            .arg(
-                self.config
-                    .app_root
-                    .join("scripts/lib/prepare-pixai-runtime.py"),
-            )
             .arg("--root")
             .arg(&root)
             .arg("--runtime-root")
             .arg(&runtime_root)
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .env_remove("PYTHONPATH")
-            .env_remove("PYTHONHOME")
-            .env("HF_HUB_OFFLINE", "1")
-            .env("TRANSFORMERS_OFFLINE", "1");
+            .stderr(Stdio::piped());
         let value = self.run_setup_helper(&mut command, cancel, 600, permit.clone(), Some(admission.clone())).await?;
         if value["schemaVersion"] != 1
             || value["engine"] != "pixai"

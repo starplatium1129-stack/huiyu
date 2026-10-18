@@ -289,17 +289,11 @@ fn existing(path: &Path, directory: bool) -> Result<()> {
     Ok(())
 }
 fn python_command(python: &Path, script: &Path) -> Command {
-    let mut command = Command::new(python);
+    let mut command = crate::native_python::command(python, script);
     command
-        .args(["-I", "-B", "-u", "-X", "utf8"])
-        .arg(script)
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
-        .stderr(Stdio::piped())
-        .env_remove("PYTHONPATH")
-        .env_remove("PYTHONHOME")
-        .env("HF_HUB_OFFLINE", "1")
-        .env("TRANSFORMERS_OFFLINE", "1");
+        .stderr(Stdio::piped());
     command
 }
 async fn bounded_output<R: AsyncRead + Unpin>(stream: Option<R>, limit: u64) -> Result<Vec<u8>> {
