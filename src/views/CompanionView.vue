@@ -234,13 +234,12 @@
                   type="button"
                   :data-state="speechState"
                   :disabled="speechButtonDisabled"
-                  @pointerdown.prevent="onSpeechPress"
-                  @pointerup="onSpeechRelease"
-                  @pointercancel="onSpeechCancel"
-                  @pointerleave="onSpeechLeave"
-                  @keydown.space.prevent="!$event.repeat && onSpeechPress()" @keyup.space.prevent="onSpeechRelease"
-                  @keydown.enter.prevent="!$event.repeat && onSpeechPress()" @keyup.enter.prevent="onSpeechRelease"
-                  @blur="onSpeechCancel"
+                  @pointerdown.prevent="speechHold.pointerDown"
+                  @pointerup="speechHold.pointerUp"
+                  @pointercancel="speechHold.pointerCancel"
+                  @lostpointercapture="speechHold.pointerCancel"
+                  @keydown.space.prevent="speechHold.keyDown" @keydown.enter.prevent="speechHold.keyDown" @keyup="speechHold.keyUp"
+                  @blur="speechHold.cancelHeld"
                 >{{ speechButtonText }}</button>
               </StudioTooltip>
               <span v-if="speechState !== 'error'" class="companion-speech-state" role="status" aria-live="polite">
@@ -411,10 +410,7 @@ speechState,
 speechLevel,
 speechButtonDisabled,
 speechError,
-onSpeechPress,
-onSpeechRelease,
-onSpeechCancel,
-onSpeechLeave,
+speechHold,
 speechButtonText,
 speechStateText,
 speechAutoListening,

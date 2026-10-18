@@ -1,6 +1,7 @@
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
+import { useManualSpeechHold } from '@/composables/useManualSpeechHold'
 import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
@@ -25,7 +26,7 @@ export interface CompanionSpeechInputDeps {
 /**
  * 陪伴页「语音输入」簇（2026-08-22 自 CompanionView 下沉）。
  *
- * 按住说话（指针 + Space 键两条保持路径）、唤醒词连续对话会话、
+ * 按住说话（共享指针/按键 owner）、唤醒词连续对话会话、
  * auto-listen gating（就绪/勿扰/安静时段/页面可见/会话意愿联合判定）、
  * busy→取消采集、页面不可见→取消采集。useVoiceInput 采集层与
  * speechSession 会话层在此合流；visibilitychange 监听与卸载释放
@@ -42,6 +43,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   const speechSessionState = ref(speechSession.state())
   const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
 
+  const speechInput = useVoiceInput({ config: () => speechConfig.value, onText: onSpeechText })
   const {
     state: speechState,
     level: speechLevel,
@@ -50,12 +52,8 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     autoListening: speechAutoListening,
     start: speechStart,
     stop: speechStop,
-    cancel: speechCancel,
     release: speechRelease,
-  } = useVoiceInput({
-    config: () => speechConfig.value,
-    onText: onSpeechText,
-  })
+  } = speechInput
 
   const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
   const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
@@ -66,6 +64,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
   const speechButtonDisabled = computed(() => !speechReady.value || busy.value || !pageVisible.value || speechSettingsOpen.value
     || speechState.value === 'recognizing')
+  const speechHold = useManualSpeechHold(speechInput, () => !speechButtonDisabled.value)
   const speechButtonText = computed(() => {
     if (speechState.value === 'acquiring') return '启动中…'
     if (speechState.value === 'capturing') return '松开结束'
@@ -79,9 +78,6 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     if (speechState.value === 'error') return speechError.value
     return speechNotice.value
   })
-
-  let speechHeldByKeyboard = false
-  let speechHeldByPointer = false
 
   function applySpeechSession() {
     speechSession.applyConfig(speechConfig.value, deps.currentCharacterName())
@@ -133,55 +129,18 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
 
   /** 非语音路径强制取消（窗口隐藏/busy 翻转等外部事件）。 */
   function cancelSpeechActivity() {
-    speechHeldByKeyboard = false
-    speechHeldByPointer = false
-    speechCancel()
+    speechHold.cancel()
   }
 
   /** Space 按下（非桌面双窗口路径）：修饰键/可编辑目标/按钮禁用时忽略。 */
   function handleSpaceKeyDown(event: KeyboardEvent) {
-    if (event.key !== ' ' || event.repeat || event.ctrlKey || event.altKey || event.metaKey || event.shiftKey) return
+    if (event.key !== ' ') return
     if (deps.isEditableTarget(event.target)) return
-    if (speechButtonDisabled.value || speechHeldByKeyboard) return
-    if (speechAutoListening.value) speechCancel()
-    if (speechBusy.value) return
-    speechHeldByKeyboard = true
-    event.preventDefault()
-    void speechStart('manual')
+    speechHold.keyDown(event)
   }
 
   function handleSpaceKeyUp(event: KeyboardEvent) {
-    if (event.key !== ' ' || !speechHeldByKeyboard) return
-    speechHeldByKeyboard = false
-    event.preventDefault()
-    if (speechState.value === 'acquiring') speechCancel()
-    else speechStop()
-  }
-
-  function onSpeechPress(event?: PointerEvent) {
-    if (speechButtonDisabled.value) return
-    if (speechAutoListening.value) speechCancel()
-    if (speechBusy.value) return
-    if (event?.currentTarget instanceof Element) event.currentTarget.setPointerCapture(event.pointerId)
-    speechHeldByPointer = true
-    void speechStart('manual')
-  }
-
-  function onSpeechRelease() {
-    if (!speechHeldByPointer) return
-    speechHeldByPointer = false
-    if (speechState.value === 'acquiring') speechCancel()
-    else speechStop()
-  }
-
-  function onSpeechCancel() {
-    if (!speechHeldByPointer) return
-    speechHeldByPointer = false
-    speechCancel()
-  }
-
-  function onSpeechLeave(event: PointerEvent) {
-    if (speechHeldByPointer && event.buttons > 0 && !(event.target instanceof Element && event.target.hasPointerCapture(event.pointerId))) onSpeechCancel()
+    speechHold.keyUp(event)
   }
 
   function onSpeechSettingsSaved(config: SpeechInputConfig) {
@@ -199,7 +158,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
 
   function onDocumentVisibilityChange() {
     documentHidden.value = document.hidden
-    if (!pageVisible.value) speechCancel()
+    if (!pageVisible.value) cancelSpeechActivity()
     reconcileAutoListen()
   }
 
@@ -207,9 +166,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
 
   watch(busy, value => {
     if (value) {
-      speechHeldByKeyboard = false
-      speechHeldByPointer = false
-      speechCancel()
+      cancelSpeechActivity()
     } else {
       speechSession.markReplyIdle()
     }
@@ -233,9 +190,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
 
   onUnmounted(() => {
     stopSpeechSessionWatch()
-    speechHeldByKeyboard = false
-    speechHeldByPointer = false
-    speechCancel()
+    cancelSpeechActivity()
     speechRelease()
     speechSession.endSession()
     document.removeEventListener('visibilitychange', onDocumentVisibilityChange)
@@ -253,10 +208,7 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     speechStateText,
     speechSettingsOpen,
     pageVisible,
-    onSpeechPress,
-    onSpeechRelease,
-    onSpeechCancel,
-    onSpeechLeave,
+    speechHold,
     onSpeechSessionEnd,
     onSpeechSettingsSaved,
     handleSpaceKeyDown,

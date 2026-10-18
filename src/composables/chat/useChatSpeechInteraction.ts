@@ -1,5 +1,6 @@
 import { ref, computed, watch, onBeforeUnmount, type Ref } from 'vue'
 import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
+import { useManualSpeechHold } from '@/composables/useManualSpeechHold'
 import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
@@ -28,8 +29,7 @@ export function useChatSpeechInteraction({
     speechSessionState.value = speechSession.state()
   })
   const speechNotice = ref('')
-  let manualSpeechHeld = false
-
+  const speechInput = useVoiceInput({ config: () => speechConfig.value, onText: onSpeechText })
   const {
     state: speechState,
     errorMessage: speechError,
@@ -37,12 +37,8 @@ export function useChatSpeechInteraction({
     autoListening: speechAutoListening,
     start: speechStart,
     stop: speechStop,
-    cancel: speechCancel,
     release: speechRelease,
-  } = useVoiceInput({
-    config: () => speechConfig.value,
-    onText: onSpeechText,
-  })
+  } = speechInput
 
   function applySpeechSession(): void {
     speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
@@ -51,14 +47,9 @@ export function useChatSpeechInteraction({
   applySpeechSession()
 
   const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
-  const speechBusy = computed(
-    () =>
-      speechState.value === 'capturing' ||
-      speechState.value === 'acquiring' ||
-      speechState.value === 'recognizing',
-  )
   // 已按住录音时保留松开/取消入口；回复期间不允许开始下一次录音。
   const speechButtonDisabled = computed(() => speechState.value === 'recognizing' || busy.value || speechSettingsOpen.value)
+  const speechHold = useManualSpeechHold(speechInput, () => speechReady.value && !speechButtonDisabled.value)
 
   const speechButtonText = computed(() => {
     switch (speechState.value) {
@@ -129,56 +120,25 @@ export function useChatSpeechInteraction({
   watch(
     busy,
     value => {
-      if (value) { manualSpeechHeld = false; speechCancel() }
+      if (value) speechHold.cancel()
       else speechSession.markReplyIdle()
       reconcileAutoListen()
     },
     { immediate: true },
   )
 
-  watch(speechConfig, () => { manualSpeechHeld = false; speechCancel(); applySpeechSession(); reconcileAutoListen() })
+  watch(speechConfig, () => { speechHold.cancel(); applySpeechSession(); reconcileAutoListen() })
   watch([speechState, chatReady, inputText], () => {
     reconcileAutoListen()
   })
-  watch(speechSettingsOpen, open => { if (open) { manualSpeechHeld = false; speechCancel() }; reconcileAutoListen() })
+  watch(speechSettingsOpen, open => { if (open) speechHold.cancel(); reconcileAutoListen() })
 
   watch(currentCharacter, () => {
-    manualSpeechHeld = false
-    speechCancel()
+    speechHold.cancel()
     speechNotice.value = ''
     applySpeechSession()
     reconcileAutoListen()
   })
-
-  function onSpeechPress(event?: PointerEvent): void {
-    if (!speechReady.value || busy.value || speechSettingsOpen.value) return
-    if (speechAutoListening.value) speechCancel()
-    if (speechBusy.value) return
-    if (event?.currentTarget instanceof Element) event.currentTarget.setPointerCapture(event.pointerId)
-    manualSpeechHeld = true
-    void speechStart('manual')
-  }
-
-  function onSpeechKeyPress(event: KeyboardEvent): void {
-    if (!event.repeat) onSpeechPress()
-  }
-
-  function onSpeechRelease(): void {
-    if (!manualSpeechHeld) return
-    manualSpeechHeld = false
-    if (speechState.value === 'acquiring') speechCancel()
-    else speechStop()
-  }
-
-  function onSpeechCancel(): void {
-    if (!manualSpeechHeld) return
-    manualSpeechHeld = false
-    speechCancel()
-  }
-
-  function onSpeechLeave(event: PointerEvent): void {
-    if (event.buttons > 0 && !(event.target instanceof Element && event.target.hasPointerCapture(event.pointerId))) onSpeechCancel()
-  }
 
   function onSpeechSettingsSaved(config: SpeechInputConfig): void {
     speechConfig.value = normalizeSpeechInputConfig(config)
@@ -195,9 +155,8 @@ export function useChatSpeechInteraction({
 
   function onPagePresenceChange(): void {
     if (document.hidden || !document.hasFocus()) {
-      manualSpeechHeld = false
       // Losing the page cancels pending permissions/ASR as well as capture.
-      speechCancel()
+      speechHold.cancel()
     } else reconcileAutoListen()
   }
 
@@ -206,6 +165,7 @@ export function useChatSpeechInteraction({
     window.removeEventListener('blur', onPagePresenceChange)
     document.removeEventListener('visibilitychange', onPagePresenceChange)
     stopSpeechSessionWatch()
+    speechHold.cancel()
     speechRelease()
   })
   window.addEventListener('focus', onPagePresenceChange)
@@ -223,11 +183,7 @@ export function useChatSpeechInteraction({
     speechButtonDisabled,
     speechButtonText,
     speechSessionActive,
-    onSpeechPress,
-    onSpeechKeyPress,
-    onSpeechRelease,
-    onSpeechCancel,
-    onSpeechLeave,
+    speechHold,
     onSpeechSettingsSaved,
     onSpeechSessionEnd,
   }

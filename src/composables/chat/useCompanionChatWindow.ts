@@ -12,6 +12,7 @@ import {
 } from '../../utils/companionRegistry.ts'
 import { useChatStorage } from './useChatStorage.ts'
 import { useVoiceInput } from '../useVoiceInput.ts'
+import { useManualSpeechHold } from '../useManualSpeechHold'
 import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '../../utils/speechInputConfig.ts'
 import { useSpeechInputConfig } from '../useSpeechInputConfig.ts'
 import { createSpeechSession } from '../../utils/speechSession.ts'
@@ -96,19 +97,15 @@ const attachments = useCompanionChatAttachments({
 })
 const canSend = computed(() => Boolean(bridge && inputText.value.trim()) && !sending.value && !liveState.busy && liveState.chatReady && !storage.writeBlocked.value && !attachments.sendingImage.value)
 
+const speechInput = useVoiceInput({ config: () => speechConfig.value, onText: onSpeechText })
 const {
   state: speechState,
   errorMessage: speechError,
   supported: speechSupported,
   autoListening: speechAutoListening,
   start: speechStart,
-  stop: speechStop,
-  cancel: speechCancel,
   release: speechRelease,
-} = useVoiceInput({
-  config: () => speechConfig.value,
-  onText: onSpeechText,
-})
+} = speechInput
 
 const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
 const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
@@ -116,6 +113,7 @@ const replyActive = computed(() => sending.value || liveState.busy || liveState.
 const canCapture = computed(() => speechReady.value && !replyActive.value && !speechSettingsOpen.value && !attachments.sendingImage.value
   && windowVisible.value && !pageHidden.value && windowFocused.value)
 const speechButtonDisabled = computed(() => !canCapture.value || speechState.value === 'recognizing')
+const speechHold = useManualSpeechHold(speechInput, () => canCapture.value)
 const speechSessionActive = computed(() => {
   void speechSessionState.value
   return speechSession.isSessionActive()
@@ -214,7 +212,7 @@ function openFullRoom() {
   attachments.cancelAttachments()
   draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
-  speechCancel(); speechSession.endSession()
+  speechHold.cancel(); speechSession.endSession()
   if (bridge) { bridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar.value)}`); return }
   // 2026-08-30 UX 审计：无桥（浏览器形态）时这里原来是空操作，页面无任何
   // 路由出口，用户既关不掉也回不去。降级为路由跳转。
@@ -226,7 +224,7 @@ function closeWindow() {
   attachments.cancelAttachments()
   draft.clear()
   storage.setDraft(activeChar.value, inputText.value)
-  speechCancel(); speechSession.endSession()
+  speechHold.cancel(); speechSession.endSession()
   // 直接 hide 聊天窗（不触发 window.close → CloseRequested 链路），避免
   // WebView2 内容被卸载、再次打开显示空白白板。
   if (bridge?.hideChatWindow) {
@@ -250,9 +248,6 @@ function listenerError(message: string) {
 }
 
 /* —— 语音输入（与 CompanionView 语义一致：manual 长按 + auto 唤醒） —— */
-let speechHeldByPointer = false
-let speechHeldByKeyboard = false
-
 function onSpeechText(text: string, source: string) {
   if (!alive || !canCapture.value) return
   if (source === 'manual') {
@@ -311,14 +306,13 @@ function reconcileAutoListen() {
   if (shouldListen && !speechAutoListening.value && !speechBusy.value) {
     void speechStart('auto')
   } else if (!shouldListen && speechAutoListening.value) {
-    speechCancel()
+    speechHold.cancel()
   }
 }
 
 function cancelSpeechActivity() {
-  speechHeldByPointer = false
-  speechHeldByKeyboard = false
-  if (speechBusy.value || speechAutoListening.value) speechCancel()
+  speechHold.cancelHeld()
+  if (speechBusy.value || speechAutoListening.value) speechHold.cancel()
 }
 
 watch(replyActive, active => {
@@ -327,34 +321,12 @@ watch(replyActive, active => {
   reconcileAutoListen()
 })
 watch(speechConfig, () => {
-  speechCancel()
+  speechHold.cancel()
   speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
   reconcileAutoListen()
 })
 watch([speechState, canCapture, speechSessionState, inputText], reconcileAutoListen)
 
-function onSpeechPress(event?: PointerEvent) {
-  if (!canCapture.value) return
-  if (speechAutoListening.value) speechCancel()
-  if (speechBusy.value) return
-  if (event?.currentTarget instanceof Element) event.currentTarget.setPointerCapture(event.pointerId)
-  speechHeldByPointer = true
-  void speechStart('manual')
-}
-function onSpeechRelease() {
-  if (!speechHeldByPointer) return
-  speechHeldByPointer = false
-  if (speechState.value === 'acquiring') speechCancel()
-  else speechStop()
-}
-function onSpeechCancel() {
-  if (!speechHeldByPointer) return
-  speechHeldByPointer = false
-  speechCancel()
-}
-function onSpeechLeave(event: PointerEvent) {
-  if (speechHeldByPointer && event.buttons > 0 && !(event.target instanceof Element && event.target.hasPointerCapture(event.pointerId))) onSpeechCancel()
-}
 function onSpeechSessionEnd() {
   speechSession.endSession()
   listenerNotice('已结束连续对话')
@@ -373,19 +345,10 @@ function onWindowKeydown(event: KeyboardEvent) {
   if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement
     || target instanceof HTMLSelectElement || (target instanceof HTMLElement && target.isContentEditable)
     || (target instanceof HTMLElement && Boolean(target.closest('button, a, [role="button"]')))) return
-  if (!canCapture.value) return
-  if (speechAutoListening.value) speechCancel()
-  if (speechBusy.value) return
-  speechHeldByKeyboard = true
-  event.preventDefault()
-  void speechStart('manual')
+  speechHold.keyDown(event)
 }
 function onWindowKeyup(event: KeyboardEvent) {
-  if (event.key !== ' ' || !speechHeldByKeyboard) return
-  speechHeldByKeyboard = false
-  event.preventDefault()
-  if (speechState.value === 'acquiring') speechCancel()
-  else speechStop()
+  speechHold.keyUp(event)
 }
 
 /* —— 草稿回填与保存（与角色窗同键位，跨窗可接力） —— */
@@ -510,23 +473,19 @@ onUnmounted(() => {
   window.removeEventListener('pointerdown', onDocFocus)
   document.removeEventListener('visibilitychange', onVisibilityChange)
   if (bridge?.offVisibilityChanged && visibilitySub) bridge.offVisibilityChanged(visibilitySub)
-  speechHeldByKeyboard = false
-  speechHeldByPointer = false
-  speechCancel()
+  speechHold.cancel()
   speechRelease()
   speechSession.endSession()
   document.documentElement.classList.remove('companion-mode')
 })
 
 watch(activeChar, () => {
-  speechHeldByPointer = false
-  speechHeldByKeyboard = false
-  speechCancel()
+  speechHold.cancel()
   noticeText.value = ''
   speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
   inputText.value = storage.draft(activeChar.value)
   reconcileAutoListen()
 })
 
-return { attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
+return { attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, speechHold, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
 }

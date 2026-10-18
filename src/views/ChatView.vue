@@ -120,8 +120,8 @@
           <div class="composer-row">
             <StudioTooltip v-if="speechReady" anchor :content="speechError || (busy || voiceActive ? '请等待当前回复或语音结束' : speechButtonText)">
               <button class="hold-talk-btn" type="button" :aria-label="speechButtonText" :data-state="speechState" :disabled="speechButtonDisabled"
-                @keydown.space.prevent="onSpeechKeyPress" @keydown.enter.prevent="onSpeechKeyPress" @keyup.space.prevent="onSpeechRelease" @keyup.enter.prevent="onSpeechRelease"
-                @blur="onSpeechCancel" @pointerdown.prevent="onSpeechPress" @pointerup="onSpeechRelease" @pointercancel="onSpeechCancel" @pointerleave="onSpeechLeave"><ArchiveIcon name="sound" /></button>
+                @keydown.space.prevent="speechHold.keyDown" @keydown.enter.prevent="speechHold.keyDown" @keyup="speechHold.keyUp"
+                @blur="speechHold.cancelHeld" @pointerdown.prevent="speechHold.pointerDown" @pointerup="speechHold.pointerUp" @pointercancel="speechHold.pointerCancel" @lostpointercapture="speechHold.pointerCancel"><ArchiveIcon name="sound" /></button>
             </StudioTooltip>
             <textarea ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" placeholder="发消息…" aria-label="聊天输入"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onComposerInput"></textarea>
@@ -338,11 +338,7 @@ const {
   speechButtonDisabled,
   speechButtonText,
   speechSessionActive,
-  onSpeechPress,
-  onSpeechKeyPress,
-  onSpeechRelease,
-  onSpeechCancel,
-  onSpeechLeave,
+  speechHold,
   onSpeechSettingsSaved,
   onSpeechSessionEnd,
 } = useChatSpeechInteraction({

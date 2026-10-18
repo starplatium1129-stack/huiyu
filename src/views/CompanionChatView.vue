@@ -92,9 +92,9 @@
       <StudioTooltip v-if="speechReady" anchor :content="speechError || (replyPending ? '请等待当前回复完成' : speechSettingsOpen ? '关闭对白设置后可按住说话' : speechButtonText)">
         <button class="companion-dialogue-microphone" type="button" :data-state="speechState"
           :aria-label="speechButtonText" :disabled="speechButtonDisabled"
-          @pointerdown.prevent="onSpeechPress" @pointerup="onSpeechRelease" @pointercancel="onSpeechCancel" @pointerleave="onSpeechLeave"
-          @keydown.space.prevent="!$event.repeat && onSpeechPress()" @keyup.space.prevent="onSpeechRelease"
-          @keydown.enter.prevent="!$event.repeat && onSpeechPress()" @keyup.enter.prevent="onSpeechRelease" @blur="onSpeechCancel"><ArchiveIcon name="sound" /></button>
+          @pointerdown.prevent="speechHold.pointerDown" @pointerup="speechHold.pointerUp" @pointercancel="speechHold.pointerCancel" @lostpointercapture="speechHold.pointerCancel"
+          @keydown.space.prevent="speechHold.keyDown" @keydown.enter.prevent="speechHold.keyDown" @keyup="speechHold.keyUp"
+          @blur="speechHold.cancelHeld"><ArchiveIcon name="sound" /></button>
       </StudioTooltip>
       <textarea ref="inputRef" v-model="inputText" rows="1" maxlength="1200" class="companion-dialogue-input"
         :placeholder="`对${currentCharacter.name}说…`" aria-label="桌宠聊天输入"
@@ -140,7 +140,7 @@ const {
   attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag,
   noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText,
   onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled,
-  onSpeechPress, onSpeechRelease, onSpeechCancel, onSpeechLeave, speechButtonText, speechSettingsOpen,
+  speechHold, speechButtonText, speechSettingsOpen,
   onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved,
   hasNew, latest, copyMessage, docked, docking, toggleDock,
 } = useCompanionChatWindow()
