@@ -155,7 +155,7 @@ pub(super) async fn plan(
         ));
     }
     normalize(&input, input.clone())?;
-    settings.validate_files().await?;
+    settings.validate_anima_files().await?;
     let settings = settings.clone();
     let originals = originals.to_vec();
     // All local recognition shares status/discovery rules, off the async executor.
@@ -331,7 +331,7 @@ pub(super) async fn status(
 ) -> Result<Value> {
     status_check(&cancel)?;
     let runtime = backend.native_settings()?;
-    let runtime_error = runtime.validate_files().await.err().map(|error| error.code);
+    let runtime_error = runtime.validate_anima_files().await.err().map(|error| error.code);
     let family = family.to_owned();
     // One bounded filesystem job per poll, with no completed-result cache.
     let mut value = tokio::task::spawn_blocking(move || {

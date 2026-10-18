@@ -132,7 +132,7 @@ impl ControlService {
         result["imageProvider"] = json!(inference.as_ref().map(|settings| &settings.engine));
         result["nativeRuntimeFilesReady"] = json!(match inference {
             Some(settings) if settings.engine == "native" =>
-                settings.validate_files().await.is_ok(),
+                settings.validate_anima_files().await.is_ok(),
             _ => false,
         });
         let comfy_owned = self.comfy_owned().await;

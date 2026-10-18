@@ -153,7 +153,7 @@ async fn diagnose(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<V
         .try_lock()
         .map_err(|_| ApiError::new(409, "INFERENCE_DIAGNOSTICS_BUSY", "已有依赖检查正在执行"))?;
     let settings = s.active_inference()?;
-    settings.validate_files().await?;
+    settings.validate_anima_files().await?;
     let mut command = settings.worker_command();
     command
         .arg("--diagnose")

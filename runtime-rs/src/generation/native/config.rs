@@ -108,6 +108,18 @@ impl Settings {
         tokio::task::spawn_blocking(move || settings.validate_files_sync()).await
             .map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "独立推理运行文件读取未完成"))?
     }
+    /// Anima's shipped helpers, without importing Python or checking weights/devices.
+    /// Adapter and manga runtimes keep their own explicit bundle declarations.
+    pub(crate) async fn validate_anima_files(&self) -> Result<()> {
+        let settings = self.clone();
+        tokio::task::spawn_blocking(move || {
+            settings.validate_files_sync()?;
+            if let Some(issue) = resources::worker_bundle_issue(&settings.worker, resources::ANIMA_WORKER_FILES) {
+                return Err(ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", issue));
+            }
+            Ok(())
+        }).await.map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "独立推理运行文件读取未完成"))?
+    }
     pub(crate) fn validate_files_sync(&self) -> Result<()> {
         self.validate()?;
         for path in [&self.python, &self.worker] {

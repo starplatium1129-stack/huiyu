@@ -313,7 +313,7 @@ impl ControlService {
                     "ollama-unload" => service.unload().await,
                     "mode-draw" => {
                         if native_drawing {
-                            service.active_inference()?.validate_files().await?;
+                            service.active_inference()?.validate_anima_files().await?;
                         }
                         service.service_action(2, false, &op).await?;
                         service.stage(&op, 1);
