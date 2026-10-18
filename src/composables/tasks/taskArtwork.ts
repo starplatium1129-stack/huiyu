@@ -1,22 +1,26 @@
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import { saveTaskResult } from '@/application/artwork/saveTaskResult'
 import { getRuntimeTask, markRuntimeTask } from '@/api/runtimeTasks'
-import { getDesktopRuntime } from '@/platform/desktop/runtime'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 
 export async function archiveTaskResult(taskId: string, index = 0, repository: ArtworkRepository = artworkRepository) {
-  const session = () => {
-    const runtime = getDesktopRuntime().bootstrap?.runtime, workspace = runtime?.workspace
-    return JSON.stringify([runtime?.origin, runtime?.runtimeEpoch, workspace?.workspaceId, workspace?.principalId,
-      workspace?.runtimeEpoch, workspace?.generation])
+  const expected = imageMediaSession(), controller = new AbortController()
+  const checkOwner = () => {
+    if (repository !== artworkRepository || imageMediaSession() !== expected)
+      controller.abort(new Error('作品库或任务会话已变化，请回到原工作区核对入册'))
   }
-  const expected = session()
+  const stopRuntime = onDesktopRuntime(checkOwner)
   const check = () => {
-    if (repository !== artworkRepository || session() !== expected) throw new Error('作品库或任务会话已变化，请回到原工作区核对入册')
+    checkOwner()
+    controller.signal.throwIfAborted()
   }
-  check()
-  const task = await getRuntimeTask(taskId)
-  check()
-  const saved = await saveTaskResult(task, index, { repository, assertCurrent: check, markSaved: id => markRuntimeTask(id, 'saved') })
-  check()
-  return saved
+  try {
+    check()
+    const task = await getRuntimeTask(taskId, controller.signal)
+    check()
+    const saved = await saveTaskResult(task, index, { repository, assertCurrent: check, markSaved: id => markRuntimeTask(id, 'saved') })
+    check()
+    return saved
+  } finally { stopRuntime() }
 }
