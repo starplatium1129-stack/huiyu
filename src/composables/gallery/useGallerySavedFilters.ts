@@ -16,7 +16,11 @@ export function useGallerySavedFilters(options: {
   reload()
   onActivated(reload)
   if (typeof window !== 'undefined') useEventListener(window, 'storage', event => { if (event.key === GALLERY_FILTER_PRESETS_KEY || event.key === null) reload() })
-  const matchedPresetId = computed(() => presets.value.find(preset => JSON.stringify(preset.filters) === JSON.stringify(options.snapshot()))?.id || '')
+  const matchedPresetId = computed(() => {
+    if (!presets.value.length) return ''
+    const signature = JSON.stringify(options.snapshot())
+    return presets.value.find(preset => JSON.stringify(preset.filters) === signature)?.id || ''
+  })
   function applyPreset(id: string) {
     const preset = presets.value.find(value => value.id === id)
     if (preset) { options.apply(preset.filters); message.value = `已沿用组合：${preset.name}` }

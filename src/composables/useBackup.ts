@@ -3,8 +3,8 @@ import { readChatArchive, withChatArchiveMutation } from '@/storage/chatArchiveR
 import { CHAT_ARCHIVE_KEY, serializeChatArchive } from '@/utils/chatArchive'
 import { withArtworkMutation } from '@/storage/artworkMutation'
 import { withArtworkCleanup, assertArtworkCleanupCurrent, readArtworkCleanupImageReferences } from '@/storage/artworkSession'
-import { buildBackupBlob, MAX_BACKUP_BYTES, BACKUP_SIZE_MESSAGE, type BackupExportProgress } from '@/utils/backupExport'
-import { restoreBackupData } from '@/storage/backupRestore'
+import type { BackupExportProgress } from '@/utils/backupExport'
+import { MAX_BACKUP_BYTES, BACKUP_SIZE_MESSAGE } from '@/utils/backupLimits'
 import { downloadBlob } from '@/utils/downloadBlob'
 import { version as appVersion } from '../../package.json'
 import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
@@ -15,13 +15,7 @@ import { createWorkspaceBackup, parseWorkspaceBackupReceipt, createWorkspaceRest
 import { getDesktopWindowRole, onDesktopRuntime } from '../platform/desktop/runtime'
 import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 import { artworkRepository } from '../storage/artworkRepository'
-import {
-  normalizeBackup,
-  summarizeBackup,
-  type BackupFile,
-  type BackupSummary,
-} from '@/utils/backupCore'
-import { inspectStorageHealth, summarizeStorageHealth } from '@/utils/storageHealth'
+import type { BackupFile, BackupSummary } from '@/utils/backupCore'
 import {
   BACKUP_AT_KEY,
   cleanDeadLocalKeys,
@@ -126,6 +120,8 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         return
       }
       exportProgress.value = { completed: 0, total: 0 }
+      const { buildBackupBlob } = await import('@/utils/backupExport')
+      controller.signal.throwIfAborted()
       const snapshot = await withArtworkMutation(async () => {
         const [library, images] = await Promise.all([readWebBackupLibrary(), readWebBackupImages()])
         return { ...library, images, settings: await collectSettings() }
@@ -259,15 +255,17 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       return null
     }
     try {
-      const raw: unknown = JSON.parse(await file.text())
+      const text = await file.text()
+      if (request !== fileRequest) return null
+      const raw: unknown = JSON.parse(text)
       if (desktopActive.value) {
         const receipt = parseWorkspaceBackupReceipt(raw)
-        if (request !== fileRequest) return null
         pendingWorkspace.value = receipt; pendingName.value = file.name
         return { history: 0, projects: 0, images: receipt.mediaCount, settings: 0 }
       }
-      const normalized = normalizeBackup(raw)
+      const { normalizeBackup, summarizeBackup } = await import('@/utils/backupCore')
       if (request !== fileRequest) return null
+      const normalized = normalizeBackup(raw)
       pending.value = normalized
       pendingName.value = file.name
       return summarizeBackup(pending.value)
@@ -325,6 +323,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
     try {
       // Once accepted, this exact snapshot completes even if its preview closes.
+      const { restoreBackupData } = await import('@/storage/backupRestore')
       await restoreBackupData(selected, replace)
       restored = true
       if (current()) {
@@ -346,6 +345,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   async function healthCheck(): Promise<string> {
     try {
       if (desktopActive.value) { const message = await workspaceStorageHealth(); onFlash(message); return message }
+      const { inspectStorageHealth, summarizeStorageHealth } = await import('@/utils/storageHealth')
       const [{ history }, images] = await Promise.all([readWebBackupLibrary(), readWebBackupImages()])
       const bytes = (images || []).reduce((sum, r) => sum + (Number(r.size) || 0), 0)
       const mb = (bytes / 1024 / 1024).toFixed(1)

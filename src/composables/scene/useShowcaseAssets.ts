@@ -1,5 +1,6 @@
 import { onActivated, onScopeDispose, ref, shallowRef, watch } from 'vue'
-import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { apiClient } from '@/api/client'
 import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
 
 // Keep catalogue identity across page visits, without retaining images or page instances.
@@ -23,7 +24,7 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
   let activated = false
   onScopeDispose(() => { alive = false; request?.abort() })
 
-  async function reload() {
+  async function reload(fresh = false) {
     syncIdentity()
     const source = identity, revision = ++nextRequest
     request?.abort()
@@ -33,9 +34,11 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
     let timedOut = false
     const timeout = setTimeout(() => { timedOut = true; controller.abort() }, 10_000)
     try {
-      const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
-      if (!response.ok) throw new Error('无法读取当前样张清单')
-      const raw = await response.json() as { entries?: Array<{ id?: unknown } | null> }
+      // Share automatic reads without retaining a TTL cache. Uploads force a new
+      // transport so they cannot join a manifest read that predates the write.
+      const raw = await apiClient.request<{ entries?: Array<{ id?: unknown } | null> }>('/scene-showcase/manifest.json', {
+        signal: controller.signal, cache: 'no-cache', cachePolicy: fresh ? 'refresh' : 'default', timeoutMs: 0,
+      })
       const counts = new Map<unknown, number>()
       for (const item of raw.entries ?? []) counts.set(item?.id, (counts.get(item?.id) ?? 0) + 1)
       const accepted = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)

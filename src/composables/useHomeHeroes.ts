@@ -20,7 +20,7 @@ function currentCache() {
 }
 
 /** 首页和维护预览共用来源；旧样张清单不代表用户主动替换了当前内置图。 */
-export function useHomeHeroes() {
+export function useHomeHeroes(active: () => boolean = () => true) {
   const overrides = ref<HeroOverrides>({}), ready = ref(false)
   let request: AbortController | undefined
   let disposed = false
@@ -69,11 +69,12 @@ export function useHomeHeroes() {
     }
   }
 
-  watch(runtimeResourceIdentity, () => {
+  watch([runtimeResourceIdentity, active], ([, enabled]) => {
+    request?.abort()
     const snapshot = currentCache()
     overrides.value = structuredClone(snapshot.entries ?? {})
     ready.value = snapshot.entries !== undefined
-    void reload().catch(() => {})
+    if (enabled) void reload().catch(() => {})
   }, { immediate: true, flush: 'sync' })
   onScopeDispose(() => { disposed = true; request?.abort() })
   return { heroes, ready: readonly(ready), reload }

@@ -1,4 +1,4 @@
-import { ref, computed, type Ref } from 'vue'
+import { ref, computed, watch, type Ref } from 'vue'
 import type { Scene } from '@/types/scene'
 import type { CharKey } from '@/types/promptHistory'
 
@@ -10,7 +10,7 @@ export function usePromptSceneFilters(scenes: Readonly<Ref<Scene[]>>, char: Read
   const sceneSearch   = ref('')
   const sceneTheme    = ref('all')
 
-  const filteredScenes = computed(() => {
+  const scopedScenes = computed(() => {
     let list = scenes.value
     if (char.value !== 'triad') {
       list = list.filter(s => !s.char || s.char === char.value || s.char === 'both')
@@ -18,17 +18,23 @@ export function usePromptSceneFilters(scenes: Readonly<Ref<Scene[]>>, char: Read
     if (sceneTheme.value && sceneTheme.value !== 'all') {
       list = list.filter(s => s.category === sceneTheme.value || (s.series && s.series.includes(sceneTheme.value)))
     }
-    if (sceneSearch.value.trim()) {
-      const kw = sceneSearch.value.trim().toLowerCase()
-      list = list.filter(s =>
-        s.title?.toLowerCase().includes(kw) ||
-        s.story?.toLowerCase().includes(kw) ||
-        s.tags?.some(t => t.toLowerCase().includes(kw))
-      )
-    }
     return list
   })
 
+  const searching = computed(() => !!sceneSearch.value.trim())
+  // Normalize catalogue text once per data change, rather than on every keystroke.
+  // Keep fields separate so a match cannot span a title, story or tag boundary.
+  const searchDocuments = computed(() => searching.value ? new Map(scenes.value.map(scene => [scene,
+    [scene.title || '', scene.story || '', ...(scene.tags || [])].map(text => text.toLowerCase()),
+  ])) : null)
+  watch(searching, active => { if (!active) void searchDocuments.value }, { flush: 'sync' })
+
+  const filteredScenes = computed(() => {
+    const list = scopedScenes.value, keyword = sceneSearch.value.trim().toLowerCase()
+    if (!keyword) return list
+    const documents = searchDocuments.value
+    return list.filter(scene => documents?.get(scene)?.some(text => text.includes(keyword)))
+  })
 
   return { focusMode, directorMode, sceneSearch, sceneTheme, filteredScenes }
 }

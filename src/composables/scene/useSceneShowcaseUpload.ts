@@ -31,11 +31,13 @@ function jpegAtWidth(image: HTMLImageElement, maxWidth: number, quality: number)
   const canvas = document.createElement('canvas')
   canvas.width = Math.max(1, Math.round(image.naturalWidth * scale))
   canvas.height = Math.max(1, Math.round(image.naturalHeight * scale))
-  const ctx = canvas.getContext('2d', { alpha: false })!
-  ctx.imageSmoothingEnabled = true
-  ctx.imageSmoothingQuality = 'high'
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
-  return canvas.toDataURL('image/jpeg', quality)
+  try {
+    const ctx = canvas.getContext('2d', { alpha: false })!
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    ctx.drawImage(image, 0, 0, canvas.width, canvas.height)
+    return canvas.toDataURL('image/jpeg', quality)
+  } finally { canvas.width = canvas.height = 0 }
 }
 
 function readFileAsImage(file: File): Promise<HTMLImageElement> {
@@ -64,7 +66,7 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
   const heroFileEl = ref<HTMLInputElement | null>(null)
   const selectedHeroId = ref<HomeHeroCharacter | ''>('')
   const selectedHeroTitle = ref('')
-  const { heroes, reload: loadHomeHeroes } = useHomeHeroes()
+  const { heroes, reload: loadHomeHeroes } = useHomeHeroes(() => mode() === 'covers')
   const homeHeroes = computed(() => Object.values(heroes.value))
   let alive = true, feedbackRevision = 0
   watch(() => [mode(), mode() === 'samples' ? selectedImageId.value : selectedHeroId.value], () => {
@@ -161,12 +163,15 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     showcaseFeedback.value = '正在保存样张…'
     try {
       const image = await readFileAsImage(file)
-      if (!alive) return
-      if (image.naturalWidth * image.naturalHeight > 60_000_000) {
-        throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
-      }
-      const normalized = jpegAtWidth(image, 4096, 0.94)
-      const thumbnail = jpegAtWidth(image, 560, 0.86)
+      let normalized: string, thumbnail: string
+      try {
+        if (!alive) return
+        if (image.naturalWidth * image.naturalHeight > 60_000_000) {
+          throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
+        }
+        normalized = jpegAtWidth(image, 4096, 0.94)
+        thumbnail = jpegAtWidth(image, 560, 0.86)
+      } finally { image.removeAttribute('src') }
       const data = await maintenanceApi.saveShowcase({
         id,
         image: normalized,
@@ -176,7 +181,7 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
       const message = data.message || '样张已保存'
       if (current()) showcaseFeedback.value = message
       invalidateAsset(id)
-      try { await loadShowcaseManifest() } catch (error) {
+      try { await loadShowcaseManifest(true) } catch (error) {
         if (!current()) return
         showcaseError.value = true
         showcaseFeedback.value = `${message}，但预览未能刷新：${uploadErrorMessage(error, '请重新打开页面')}`
@@ -204,9 +209,12 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     try {
       if (file.size > 15 * 1024 * 1024) throw new Error('图片超过 15MB，请先压缩')
       const image = await readFileAsImage(file)
-      if (!alive) return
-      if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
-      const normalized = jpegAtWidth(image, 4096, 0.94)
+      let normalized: string
+      try {
+        if (!alive) return
+        if (image.naturalWidth * image.naturalHeight > 60_000_000) throw new Error('图片像素过大，请使用不超过 6000 万像素的版本')
+        normalized = jpegAtWidth(image, 4096, 0.94)
+      } finally { image.removeAttribute('src') }
       const data = await maintenanceApi.saveHomeHero(character, normalized, { signal: heroRequest.signal })
       await refreshSavedHero(data.message || '首页主视觉已保存', current)
     } catch (err) {

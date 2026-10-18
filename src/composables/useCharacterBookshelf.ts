@@ -20,7 +20,7 @@ export function useCharacterBookshelf(items: MaybeRefOrGetter<readonly Directory
   const indexed = computed(() => toValue(items).map(item => {
     const key = franchiseKey(item.source)
     return {
-      item, key,
+      item, key, name: item.name.toLocaleLowerCase(),
       text: [item.id, item.name, item.source, franchiseLabel(key), ...(item.aliases || [])].join(' ').toLocaleLowerCase(),
     }
   }))
@@ -39,10 +39,17 @@ export function useCharacterBookshelf(items: MaybeRefOrGetter<readonly Directory
   })
   const activeGroup = computed(() => groups.value.find(group => group.key === series.value))
   const showingShelf = computed(() => mode.value === 'shelf' && !term.value && series.value === null)
-  const results = computed(() => indexed.value.filter(row => term.value
-    ? row.text.includes(term.value)
-    : series.value === null || row.key === series.value).map(row => row.item)
-    .sort((a, b) => Number(b.name.toLocaleLowerCase() === term.value) - Number(a.name.toLocaleLowerCase() === term.value)))
+  const results = computed(() => {
+    const keyword = term.value, selectedSeries = series.value
+    const exact: DirectoryCharacter[] = [], remaining: DirectoryCharacter[] = []
+    // Exact names come first; both groups retain the original catalogue order.
+    for (const row of indexed.value) {
+      if (keyword ? !row.text.includes(keyword) : selectedSeries !== null && row.key !== selectedSeries) continue
+      if (row.name === keyword) exact.push(row.item)
+      else remaining.push(row.item)
+    }
+    return exact.length ? exact.concat(remaining) : remaining
+  })
   const pageCount = computed(() => Math.max(1, Math.ceil(results.value.length / PAGE_SIZE)))
   const visibleResults = computed(() => results.value.slice((page.value - 1) * PAGE_SIZE, page.value * PAGE_SIZE))
   watch([query, mode, series], () => { page.value = 1 })
