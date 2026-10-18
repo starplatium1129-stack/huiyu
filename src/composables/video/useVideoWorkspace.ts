@@ -149,6 +149,9 @@ const submitting = ref(false)
 const cancelling = ref(false)
 
 const job = ref<VideoJob | null>(null)
+const ownsTrackedTask = ref(false)
+const unboundTaskStatus = ref<'interrupted' | 'failed' | 'cancelled'>('interrupted')
+let detachTrackedBinding: (() => void) | undefined
 const videoStore = useVideoStore(), submission = useVideoRequest('video', VIDEO_REQUEST_DRAFT_KEY)
 const pageOwner = tempResultOwner()
 const requestPending = submission.pending, requestUnconfirmed = submission.unconfirmed
@@ -409,6 +412,7 @@ const observation = useVideoJobObservation({
     return value
   },
   update: value => submission.update(value),
+  displayed: () => { ownsTrackedTask.value = true },
   selected: () => { statusError.value = '' },
 })
 const { reconnectState, recoveryError, pollError, jobReading, jobActive, jobSelectionPending, selectedJobReading, selectedJobError } = observation
@@ -420,12 +424,16 @@ async function reconnectVideo() {
 
 async function submitVideo() {
   if (disposed || !pageActive || !canGenerate.value) return
+  const previousJob = job.value
+  ownsTrackedTask.value = false
   statusError.value = ''
   submitting.value = true
+  job.value = null; unboundTaskStatus.value = 'interrupted'
   observation.stop()
   const selection = ++selectionVersion
   selectedTaskId.value = ''
   if (typeof route.query.job === 'string') void router.replace({ query: { ...route.query, job: undefined }, hash: route.hash })
+  ownsTrackedTask.value = true
   try {
     // 帧图解析（受控名优先、IndexedDB 凭据重上传兜底）已下沉 useVideoFrames。
     const mode = selectedMode.value
@@ -445,7 +453,7 @@ async function submitVideo() {
     if (disposed || !pageActive || selection !== selectionVersion) return
     checkOwner()
     if (videoStore.videoTask) {
-      if (!videoRequestSettled(job.value) || job.value?.id !== videoStore.videoTask.jobId) throw new Error('请先读取并核对旧视频任务')
+      if (!videoRequestSettled(previousJob) || previousJob?.id !== videoStore.videoTask.jobId) throw new Error('请先读取并核对旧视频任务')
       videoStore.clearVideoTask(); await flushProfileWrites()
     }
     if (disposed || !pageActive || selection !== selectionVersion) return
@@ -462,6 +470,7 @@ async function submitVideo() {
       ? (error instanceof Error ? error.message : '视频任务提交失败')
       : `${report.title}：${report.message}`
     if (requestPending.value) reconnectState.value = 'failed'
+    else unboundTaskStatus.value = 'failed'
     await loadStatus()
     if (!disposed && pageActive && selection === selectionVersion) statusError.value = requestPending.value ? '原视频接收状态待核对，已阻止重复提交。' + submissionError : submissionError
   } finally {
@@ -477,6 +486,9 @@ async function cancelJob(original = false) {
   if (disposed || cancelling.value || !original && (jobSelectionPending.value || selectedJobReading.value) || !job.value && !submission.request.value) return
   const id = job.value?.id || ''
   const selection = selectionVersion
+  // An explicit command can claim this visit; cancelling a different original
+  // request cannot make the cached selected clip authoritative.
+  if (!original || !job.value || submission.request.value?.taskId === id) ownsTrackedTask.value = true
   cancelling.value = true
   // Cancellation owns the next status; an earlier read cannot turn it back
   // into a running job, and no fresh reads should race the pending command.
@@ -490,6 +502,7 @@ async function cancelJob(original = false) {
       if (value && !('shots' in value) && (!job.value || value.id === job.value.id)) job.value = value
       reconnectState.value = 'idle'; pollError.value = ''; recoveryError.value = ''
       statusError.value = value ? '' : '取消意图已保存，原请求不会再执行'
+      if (!value && !job.value) unboundTaskStatus.value = 'cancelled'
     }
   } catch (error) {
     if (!disposed && pageActive && selection === selectionVersion) statusError.value = error instanceof Error ? error.message : '视频任务取消失败'
@@ -518,6 +531,8 @@ let activatedOnce = false, initialRestorePending = true
 function retrySelectedJob() { return observation.select(true) }
 watch(() => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '', id => {
   if (id === selectedTaskId.value) return
+  if (id && id !== job.value?.id && id !== submission.request.value?.taskId) detachTrackedBinding?.()
+  ownsTrackedTask.value = false
   selectionVersion++; selectedTaskId.value = id; reconnectState.value = 'idle'; selectedJobError.value = ''
   observation.stop()
   if (id) void observation.select()
@@ -529,7 +544,7 @@ function stopPageReads() {
   statusRequest?.abort(); statusRequest = null; statusLoading.value = false
   observation.stop()
 }
-onDeactivated(() => { pageActive = false; selectionVersion++; stopPageReads() })
+onDeactivated(() => { pageActive = false; ownsTrackedTask.value = false; selectionVersion++; stopPageReads() })
 onActivated(() => {
   pageActive = true
   if (!activatedOnce) { activatedOnce = true; return }
@@ -562,11 +577,25 @@ onMounted(() => {
   })()
 })
 
-useTrackedTask(() => ({ kind: 'video', title: '视频创作', backend: !submitting.value && job.value ? { kind: 'video', id: job.value.id } : undefined, route: job.value ? '/video-studio?job=' + encodeURIComponent(job.value.id) : '/video-studio', resultRoute: job.value?.resultAvailable ? '/video-studio?job=' + encodeURIComponent(job.value.id) : undefined, status: requestUnconfirmed.value || job.value?.needsReview ? 'interrupted' : generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').taskStatus, stage: requestUnconfirmed.value || job.value?.needsReview ? 'unknown' : generationTask(submitting.value ? 'submitting' : job.value?.status || 'idle').stage, progress: requestUnconfirmed.value || job.value?.needsReview ? null : progressPercent.value, message: job.value?.error || statusFeedback.value || '' }), { cancel: cancelJob })
+const trackedTask = useTrackedTask(() => {
+  const current = submitting.value ? null : job.value
+  const unconfirmed = requestUnconfirmed.value && (!current || submission.request.value?.taskId === current.id)
+  const unknown = unconfirmed || current?.needsReview
+  const state = generationTask(submitting.value ? 'submitting' : current?.status || 'idle')
+  return { kind: 'video', title: '视频创作', backend: current ? { kind: 'video', id: current.id } : undefined,
+    route: current ? '/video-studio?job=' + encodeURIComponent(current.id) : '/video-studio',
+    resultRoute: current?.resultAvailable ? '/video-studio?job=' + encodeURIComponent(current.id) : undefined,
+    status: submitting.value ? 'running' : !current ? unboundTaskStatus.value : unknown ? 'interrupted' : state.taskStatus,
+    stage: submitting.value ? 'submitting' : !current || unknown ? 'unknown' : state.stage,
+    progress: submitting.value || !current || unknown ? null : progressPercent.value,
+    message: current ? current.error || '' : statusFeedback.value }
+}, { cancel: cancelJob }, () => ownsTrackedTask.value)
+detachTrackedBinding = trackedTask?.detachBinding
 
 onBeforeUnmount(() => {
   disposed = true
   pageActive = false
+  ownsTrackedTask.value = false
   stopPageReads()
   disposeFrames()
   stopDraftWatch()

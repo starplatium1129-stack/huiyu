@@ -4,9 +4,9 @@
     <AsyncPanel v-if="runtimeTasksEnabled && inspected" class="task-runtime-panel" :loader="loadRuntimeTaskList" label="任务与进度" v-slot="{ component }"><component :is="component" :active="opened" @navigate="opened = false" /></AsyncPanel>
     <details :open="!runtimeTasksEnabled"><StudioDisclosureSummary>{{ runtimeTasksEnabled ? '旧版本任务摘要 · 仅供查看' : '任务与进度' }}</StudioDisclosureSummary>
     <div data-disclosure-content class="task-disclosure tw:flex tw:flex-col tw:gap-s-3">
-    <div v-if="!runtimeTasksEnabled" class="task-center-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" type="button" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" type="button" @click="clearCompleted">清理完成记录</button><button class="btn btn-ghost" type="button" :disabled="refreshing" @click="refresh">{{ refreshing ? '查询中…' : '更新任务状态' }}</button></div>
+    <div v-if="!runtimeTasksEnabled" class="task-center-controls tw:flex tw:flex-wrap tw:items-center tw:gap-s-2"><div class="studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="任务筛选"><AnimatedSelection /><button v-for="filter in filters" :key="filter.id" type="button" :aria-pressed="selected === filter.id" @click="selected = filter.id">{{ filter.label }}</button></div><button class="btn btn-ghost" type="button" @click="clearCompleted">清理完成记录</button><button class="btn btn-ghost" type="button" :disabled="refreshing" @click="refresh()">{{ refreshing ? '查询中…' : '更新任务状态' }}</button></div>
     <p v-if="storageError" role="status">{{ storageError }}</p><p v-if="recoveryError" role="status">{{ recoveryError }}</p><p v-if="feedback" role="status">{{ feedback }}</p>
-    <div v-content-motion="selected" class="task-list tw:grid tw:gap-s-3"><article v-for="task in visible" :key="task.id" class="task-card tw:p-s-4 tw:rounded-lg" :data-state="task.status"><div class="task-card-title"><strong>{{ task.title }}</strong><span>{{ (task.status === 'running' && task.stage ? GENERATION_STAGE_LABELS[task.stage] : labels[task.status]) || '待检查' }}</span></div><p>{{ task.message }}</p><progress v-if="task.status === 'running' && task.progress != null" :value="task.progress" max="100" :aria-label="task.title + '进度'" /><div class="task-actions tw:mt-s-3"><RouterLink class="btn btn-ghost" :to="task.route" @click="opened = false">返回工作台</RouterLink><RouterLink v-if="task.resultRoute && task.status !== 'running'" class="btn btn-primary" :to="task.resultRoute" @click="opened = false">查看结果</RouterLink><button v-if="task.status === 'running' && (controls(task.id)?.cancel || (!controls(task.id) && task.backend))" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'cancel')">停止</button><button v-if="task.status === 'failed' && controls(task.id)?.retry" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'retry')">重试失败项</button></div></article><p v-if="!visible.length" class="task-empty tw:text-center">{{ selected === 'all' ? '还没有任务。开始创作后，这里会显示进度。' : '这个分类暂时没有任务。' }}</p></div>
+    <div v-content-motion="selected" class="task-list tw:grid tw:gap-s-3"><article v-for="task in visible" :key="task.id" class="task-card tw:p-s-4 tw:rounded-lg" :data-state="task.status"><div class="task-card-title"><strong>{{ task.title }}</strong><span>{{ (task.status === 'running' && task.stage ? GENERATION_STAGE_LABELS[task.stage] : labels[task.status]) || '待检查' }}</span></div><p>{{ task.message }}</p><progress v-if="task.status === 'running' && task.progress != null" :value="task.progress" max="100" :aria-label="task.title + '进度'" /><div class="task-actions tw:mt-s-3"><RouterLink class="btn btn-ghost" :to="task.route" @click="opened = false">返回工作台</RouterLink><RouterLink v-if="task.resultRoute && task.status !== 'running'" class="btn btn-primary" :to="task.resultRoute" @click="opened = false">查看结果</RouterLink><button v-if="task.status === 'running' && taskAction(task.id, 'cancel')" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'cancel')">停止</button><button v-if="task.status === 'failed' && taskAction(task.id, 'retry')" class="btn btn-ghost" type="button" :disabled="!!busy" @click="act(task.id, 'retry')">重试失败项</button></div></article><p v-if="!visible.length" class="task-empty tw:text-center">{{ selected === 'all' ? '还没有任务。开始创作后，这里会显示进度。' : '这个分类暂时没有任务。' }}</p></div>
     </div></details>
     <footer>{{ runtimeTasksEnabled ? '关闭任务面板只停止查看。退出应用后的恢复能力取决于生成引擎；未知状态会保留，结果不会自动入册。' : '刷新或关闭窗口会中断页面内调度；视频可回工作台重新查询，已入册图片保留在作品册。' }}</footer>
   </dialog></Teleport>
@@ -21,6 +21,7 @@ import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { useTaskCenter, hydrateTasks, consumeTaskReloadApproval, type TaskStatus } from '@/composables/useTaskCenter'
 import { startRuntimeTaskPolling } from '@/api/runtimeTasks'
 import { runtimeTasksEnabled } from '@/stores/runtimeTaskState'
+import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 const loadRuntimeTaskList = () => import('./RuntimeTaskList.vue')
 import { useTaskRecovery } from '@/composables/tasks/useTaskRecovery'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
@@ -51,7 +52,14 @@ const beforeUnload = (event: BeforeUnloadEvent) => { if (pageActiveCount.value &
 let stopRuntime = () => {}
 onMounted(() => { stopRuntime = startRuntimeTaskPolling(); if (runtimeTasksEnabled.value) void hydrateTasks().catch(() => {}); else void refresh(); window.addEventListener('beforeunload', beforeUnload) })
 onUnmounted(() => { stopRuntime(); window.removeEventListener('beforeunload', beforeUnload) })
-async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) return; busy.value = id; feedback.value = ''; try { const handler = controls(id)?.[action]; await (handler ? handler() : action === 'cancel' ? recovery.cancel(id) : undefined) } catch { feedback.value = '操作未完成，请回工作台检查后重试。' } finally { busy.value = '' } }
+function taskAction(id: string, action: 'cancel' | 'retry') {
+  const task = tasks.value.find(task => task.id === id)
+  if (!task || (runtimeTasksEnabled.value || hasRuntimeTasks()) && task.kind !== 'interrogate') return
+  const owner = controls(id)
+  if (owner) return owner[action]
+  if (action === 'cancel' && task.backend) return () => recovery.cancel(id)
+}
+async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) return; busy.value = id; feedback.value = ''; try { await taskAction(id, action)?.() } catch { feedback.value = '操作未完成，请回工作台检查后重试。' } finally { busy.value = '' } }
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";

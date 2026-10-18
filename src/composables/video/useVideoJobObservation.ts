@@ -14,6 +14,7 @@ export function useVideoJobObservation(options: {
   check(): void
   recover(signal: AbortSignal): Promise<VideoJob | null>
   update(job: VideoJob): void
+  displayed(): void
   selected(): void
 }) {
   const mode = ref<ReadMode | null>(null), selectedJobError = ref(''), pollError = ref(''), recoveryError = ref('')
@@ -54,7 +55,7 @@ export function useVideoJobObservation(options: {
         if (value) {
           options.update(value)
           // Recovering the original request must not replace another deep-linked clip.
-          if (!selectedId || selectedId === value.id) options.job.value = value
+          if (!selectedId || selectedId === value.id) { options.job.value = value; options.displayed() }
         }
         if (selectedMode === 'selected') { selectedJobError.value = ''; options.selected() }
         if (selectedMode === 'recovery') reconnectState.value = 'idle'

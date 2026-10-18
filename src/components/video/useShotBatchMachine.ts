@@ -32,6 +32,8 @@ export interface ShotBatchMachineDeps {
 export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   const { shots, identityCard, aspectRatio, quality, steps, linkLastFrame, shotReferences, h3Ready, online, batchError } = deps
   const batch = ref<VideoBatch | null>(null), submitting = ref(false), cancelling = ref(false), concating = ref(false), retrying = ref(false)
+  const ownsTrackedTask = ref(false)
+  const unboundTaskStatus = ref<'interrupted' | 'failed' | 'cancelled'>('interrupted')
   const batchReadError = ref(''), batchReading = ref(false), batchReadRetryable = ref(false)
   const submission = useVideoRequest('batch', VIDEO_BATCH_REQUEST_DRAFT_KEY, async draft => {
     const tokens = Array.isArray(draft.details?.tokens) ? draft.details.tokens.filter((token): token is string => typeof token === 'string') : []
@@ -89,10 +91,13 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     return value
   }
   async function submitBatch() {
-    if (!canSubmit.value) return
+    if (disposed || !pageActive || !canSubmit.value) return
+    ownsTrackedTask.value = false
     submitting.value = true
+    batch.value = null; unboundTaskStatus.value = 'interrupted'
     const serial = beginOperation(), targets = shots.value.slice()
     batchError.value = ''
+    ownsTrackedTask.value = true
     try {
       check()
       const input = { modelId: 'minimax-h3', aspectRatio: aspectRatio.value, quality: quality.value, steps: steps.value, linkLastFrame: linkLastFrame.value,
@@ -101,16 +106,18 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
           seed: shot.seedText.trim() ? Number(shot.seedText) : undefined, image: shot.imageName || undefined, references: shotReferences(shot) })) }
       const tokens = await deps.onSubmitting(targets)
       check()
+      if (disposed || !pageActive || serial !== operationSerial) return
       if (videoStore.shotsBatch) { videoStore.clearShotsBatch(); await flushProfileWrites() }
+      if (disposed || !pageActive || serial !== operationSerial) return
       const value = await submission.submit(input, new AbortController().signal, undefined, { tokens })
       if (!('shots' in value)) throw new Error('原分镜请求类型不符')
       // Adoption must finish even after a deep link changes the displayed batch.
       await adopt(value)
       targets.forEach((shot, shotIndex) => shotSubmissions.set(shot, { batchId: value.id, shotIndex }))
-      if (!disposed && serial === operationSerial) batch.value = value
+      if (!disposed && pageActive && serial === operationSerial) { batch.value = value; ownsTrackedTask.value = true }
     } catch (error) {
-      if (!submission.pending.value) await deps.onSubmissionRejected(targets)
-      if (!disposed) { batchError.value = error instanceof Error ? error.message : '分镜接收状态待核对'; batchReadRetryable.value = true; batchReadError.value = batchError.value }
+      if (!submission.pending.value) { await deps.onSubmissionRejected(targets); unboundTaskStatus.value = 'failed' }
+      if (!disposed && pageActive && serial === operationSerial) { batchError.value = error instanceof Error ? error.message : '分镜接收状态待核对'; batchReadRetryable.value = true; batchReadError.value = batchError.value }
     } finally { submitting.value = false; schedulePoll() }
   }
   function schedulePoll() {
@@ -141,6 +148,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
       if (disposed || controller.signal.aborted || serial !== operationSerial) return
       legacyVerified.value = !videoStore.shotsBatch || value.id === videoStore.shotsBatch.batchId && videoRequestSettled(value)
       batch.value = value; reconnectTarget.value = ''; batchReadError.value = ''; batchReadRetryable.value = false
+      ownsTrackedTask.value = true
     } catch (error) {
       if (disposed || controller.signal.aborted || serial !== operationSerial) return
       batchReadError.value = error instanceof Error ? error.message : '原批次暂时无法读取；身份已保留，不会重新提交'
@@ -150,37 +158,45 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   async function cancelBatch(original = false) {
     if (cancelling.value || !original && batchSelectionPending.value || !batch.value && !submission.request.value) return
     const serial = beginOperation(); cancelling.value = true
+    if (!original || !batch.value || submission.request.value?.taskId === batch.value.id) ownsTrackedTask.value = true
     try {
       check()
       const owned = submission.request.value
       const value = owned && (original || !batch.value || owned.taskId === batch.value?.id) ? await submission.cancel()
         : batch.value ? (await cancelVideoBatch(batch.value.id)).batch : null
       check()
-      if (!disposed && serial === operationSerial) {
+      if (!disposed && pageActive && serial === operationSerial) {
         if (value && 'shots' in value && (!batch.value || value.id === batch.value.id)) batch.value = value
-        if (!value) { reconnectTarget.value = ''; batchReadError.value = ''; batchError.value = '取消意图已写稳，原请求不会再执行' }
+        if (!value) {
+          reconnectTarget.value = ''; batchReadError.value = ''; batchError.value = '取消意图已写稳，原请求不会再执行'
+          if (!batch.value) unboundTaskStatus.value = 'cancelled'
+        }
       }
-    } catch (error) { batchError.value = error instanceof Error ? error.message : '整批取消状态待确认' }
+    } catch (error) { if (!disposed && pageActive && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '整批取消状态待确认' }
     finally { cancelling.value = false; schedulePoll() }
   }
   async function retryIndices(indices: number[]) {
     if (!batch.value || batchActive.value || retrying.value || cancelling.value || concating.value || batchRecoveryPending.value || !indices.length) return
     const id = batch.value.id, serial = beginOperation()
     retrying.value = true; batchError.value = ''
+    ownsTrackedTask.value = true
     try {
       check()
       if (isRuntimeTaskId(id) !== hasRuntimeTasks()) throw new Error('请回到原任务所属连接重抽')
       const prepared = isRuntimeTaskId(id) ? await prepareRuntimeVideoRetry(id, indices) : { input: { indices }, context: undefined }
       check()
+      if (disposed || !pageActive || serial !== operationSerial) return
       const value = await submission.submit(prepared.input, new AbortController().signal, prepared.context, { retrySource: { batchId: id, indices } })
       if (!('shots' in value)) throw new Error('重抽任务类型不符')
-      if (!disposed && serial === operationSerial) {
+      if (!disposed && pageActive && serial === operationSerial) {
         if (value.id === id) batch.value = value
         else batchError.value = '重抽任务独立保留在任务中心，未替换原镜头或自动续拼接。'
       }
     } catch (error) {
-      batchError.value = error instanceof Error ? error.message : '重抽接收状态待核对'
-      batchReadError.value = batchError.value; batchReadRetryable.value = true
+      if (!disposed && pageActive && serial === operationSerial) {
+        batchError.value = error instanceof Error ? error.message : '重抽接收状态待核对'
+        batchReadError.value = batchError.value; batchReadRetryable.value = true
+      }
     } finally { retrying.value = false; schedulePoll() }
   }
   async function retryShotAt(index: number) {
@@ -193,30 +209,38 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   async function concatBatch() {
     if (!batch.value || !canConcat.value || concating.value || retrying.value || cancelling.value) return
     const id = batch.value.id, serial = beginOperation(); concating.value = true
+    ownsTrackedTask.value = true
     try {
       check()
       const value = (await concatVideoBatch(id)).batch
       check(); submission.update(value)
       if (!disposed && serial === operationSerial && batch.value?.id === id) batch.value = value
-    } catch (error) { batchError.value = error instanceof Error ? error.message : '拼接未确认，请重新读取原批次后核对' }
-    finally { concating.value = false }
+    } catch (error) { if (!disposed && serial === operationSerial) batchError.value = error instanceof Error ? error.message : '拼接未确认，请重新读取原批次后核对' }
+    finally { concating.value = false; if (pageActive) void readBatch() }
   }
   async function reconnectBatch(id = '') {
+    if (id && id !== batch.value?.id && id !== submission.request.value?.taskId) trackedTask?.detachBinding()
+    ownsTrackedTask.value = false
     stopReads(); operationSerial++
     reconnectTarget.value = id
     batchReadError.value = ''; batchReadRetryable.value = false
     await readBatch()
   }
-  onDeactivated(() => { pageActive = false; stopReads() })
+  onDeactivated(() => { pageActive = false; ownsTrackedTask.value = false; if (!concating.value) operationSerial++; stopReads() })
   onActivated(() => { pageActive = true; void readBatch() })
-  onBeforeUnmount(() => { disposed = true; pageActive = false; stopReads() })
-  useTrackedTask(() => ({ kind: 'video', title: '分镜批量视频', backend: batch.value ? { kind: 'video-batch', id: batch.value.id } : undefined,
-    route: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : '/video-studio?mode=shots',
-    resultRoute: batch.value ? '/video-studio?mode=shots&batch=' + encodeURIComponent(batch.value.id) : undefined,
-    status: submitting.value || concating.value || batchActive.value ? 'running' : batchRecoveryPending.value ? 'interrupted' : !batch.value ? 'idle'
-      : batchError.value || batch.value.status === 'paused' || batch.value.progress.failed ? 'failed' : batch.value.status === 'cancelled' ? 'cancelled' : 'succeeded',
-    progress: batchRecoveryPending.value ? null : progressPercent.value, message: batchReadError.value || batchError.value }),
-  { get cancel() { return concating.value ? undefined : cancelBatch }, get retry() { return !batchRecoveryPending.value && batch.value?.progress.failed ? retryAllFailed : undefined } })
+  onBeforeUnmount(() => { disposed = true; pageActive = false; ownsTrackedTask.value = false; stopReads() })
+  const trackedTask = useTrackedTask(() => {
+    const current = submitting.value ? null : batch.value
+    const unconfirmed = !current ? batchRecoveryPending.value : current.needsReview
+      || submission.pending.value && submission.request.value?.taskId === current.id
+    return { kind: 'video', title: '分镜批量视频', backend: current ? { kind: 'video-batch', id: current.id } : undefined,
+      route: current ? '/video-studio?mode=shots&batch=' + encodeURIComponent(current.id) : '/video-studio?mode=shots',
+      resultRoute: current ? '/video-studio?mode=shots&batch=' + encodeURIComponent(current.id) : undefined,
+      status: submitting.value || retrying.value || concating.value || current?.status === 'running' ? 'running' : !current ? unboundTaskStatus.value : unconfirmed ? 'interrupted'
+        : batchError.value || current.status === 'paused' || current.progress.failed ? 'failed' : current.status === 'cancelled' ? 'cancelled' : 'succeeded',
+      progress: unconfirmed ? null : progressPercent.value, message: batchReadError.value || batchError.value }
+  }, { get cancel() { return concating.value ? undefined : cancelBatch }, get retry() { return !batchRecoveryPending.value && batch.value?.progress.failed ? retryAllFailed : undefined } },
+  () => ownsTrackedTask.value || concating.value)
   return { batch, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, requestPending,
     submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, getShotSubmission, restoreShotSubmission,
     submitBatch, cancelBatch: () => cancelBatch(), cancelOriginalRequest: () => cancelBatch(true), retryShotAt, retryAllFailed, concatBatch, reconnectBatch }

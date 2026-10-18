@@ -3,7 +3,7 @@ import { readTaskHistory, updateTaskHistory } from '@/platform/web/taskHistory'
 import { recordDiagnosticTask } from '../utils/localDiagnostics.ts'
 import type { GenerationStage } from '@/utils/generationTask'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
-import { runtimeTaskActiveCount } from '@/stores/runtimeTaskState'
+import { runtimeTaskActiveCount, runtimeTasksEnabled } from '@/stores/runtimeTaskState'
 
 export type TaskStatus = 'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled' | 'interrupted'
 export interface TaskSummary {
@@ -139,7 +139,7 @@ export function updateTask(id: string, patch: Partial<TaskSummary>) {
   Object.assign(task, patch, { updatedAt: Math.max(Date.now(), task.updatedAt + 1) })
   persist()
 }
-function forgetTaskControls(id: string) { actions.delete(id) }
+function forgetTaskControls(id: string, owner: TaskControls) { if (actions.get(id) === owner) actions.delete(id) }
 export function hydrateTasks(): Promise<void> {
   const read = () => hasRuntimeTasks() ? import('@/api/runtimeTasks').then(api => api.readRuntimeTaskHistory()) : readTaskHistory()
   return loading ??= read().then(value => {
@@ -165,10 +165,11 @@ function findBackendTask(summary: TaskSummary) {
 }
 export function useTaskCenter() {
   // Runtime tasks survive page disposal; image interrogation is still page-owned.
-  const pageActiveCount = computed(() => tasks.value.filter(task => task.status === 'running' && actions.has(task.id)).length)
+  const pageActiveCount = computed(() => tasks.value.filter(task => task.status === 'running' && !task.backend && actions.has(task.id)).length)
   return { tasks, opened, storageError, pageActiveCount,
     openRuntimeTasks() { runtimeTaskOpenRequest.value++; opened.value = true },
-    activeCount: computed(() => (hasRuntimeTasks() ? runtimeTaskActiveCount.value : 0) + pageActiveCount.value),
+    activeCount: computed(() => (runtimeTasksEnabled.value || hasRuntimeTasks() ? runtimeTaskActiveCount.value
+      : tasks.value.filter(task => task.status === 'running' && task.backend).length) + pageActiveCount.value),
     controls: (id: string) => actions.get(id),
     clearCompleted() {
       const keep = tasks.value.filter(task => task.status === 'running' || task.status === 'failed' || task.status === 'interrupted')
@@ -182,31 +183,44 @@ export function useTaskCenter() {
   }
 }
 
-/** Attach work to its owner; deactivation keeps it alive, destruction is explicit. */
-export function useTrackedTask(source: () => TaskSummary, controls: TaskControls = {}) {
+/** Work owners persist; backend views explicitly yield both summaries and controls. */
+export function useTrackedTask(source: () => TaskSummary, controls: TaskControls = {}, ownsTask?: () => boolean) {
   if (!getCurrentInstance()) return
   let id = ''
   let previous: TaskStatus = 'idle'
-  watch(source, summary => {
-    if (hasRuntimeTasks() && summary.kind !== 'interrogate') return
+  function release() {
+    const task = tasks.value.find(task => task.id === id)
+    if (actions.get(id) === controls && task?.status === 'running' && !task.backend)
+      updateTask(id, { status: 'interrupted', message: '工作台已关闭，请检查已接收任务或返回重试。' })
+    forgetTaskControls(id, controls)
+  }
+  watch(() => {
+    const summary = ownsTask && !ownsTask() ? null : source()
+    return summary && (runtimeTasksEnabled.value || hasRuntimeTasks()) && summary.kind !== 'interrogate' ? null : summary
+  }, summary => {
+    if (!summary) { release(); return }
     const prior = tasks.value.find(task => task.id === id)
-    if (summary.backend && prior?.backend && (summary.backend.id !== prior.backend.id || summary.backend.kind !== prior.backend.kind)) {
-      forgetTaskControls(id); id = ''; previous = 'idle'
+    if (prior?.backend && (!summary.backend || summary.backend.id !== prior.backend.id || summary.backend.kind !== prior.backend.kind)) {
+      forgetTaskControls(id, controls); id = ''; previous = 'idle'
     }
-    if (summary.status === 'idle') { if (id && previous === 'running') updateTask(id, { status: 'interrupted', message: summary.message || '任务未返回完成状态，请回工作台检查。' }); if (id) forgetTaskControls(id); id = ''; previous = 'idle'; return }
-    if (!id) {
-      const restored = findBackendTask(summary)
-      if (restored) { id = restored.id; actions.set(id, controls) }
+    if (summary.status === 'idle') { if (id && previous === 'running' && !prior?.backend) updateTask(id, { status: 'interrupted', message: summary.message || '任务未返回完成状态，请回工作台检查。' }); if (id) forgetTaskControls(id, controls); id = ''; previous = 'idle'; return }
+    const restored = findBackendTask(summary)
+    if (restored && restored.id !== id) {
+      // Admission can have a temporary page summary before its backend ID is
+      // known. A retry of the same backend rejoins its one existing record.
+      if (id && !prior?.backend) {
+        deletedTasks.set(id, Date.now()); tasks.value = tasks.value.filter(task => task.id !== id)
+      }
+      forgetTaskControls(id, controls); id = restored.id; previous = restored.status
     }
     if (!id && summary.status !== 'running') { previous = summary.status; return }
-    if (!id || !tasks.value.some(task => task.id === id) || (summary.status === 'running' && previous !== 'running' && previous !== 'idle')) {
-      if (id) { const old = tasks.value.find(task => task.id === id); if (old?.resultRoute && !old.resultRoute.startsWith('/gallery')) updateTask(id, { resultRoute: undefined }); forgetTaskControls(id) }
+    if (!id || !tasks.value.some(task => task.id === id) || (!summary.backend && summary.status === 'running' && previous !== 'running' && previous !== 'idle')) {
+      if (id) { const old = tasks.value.find(task => task.id === id); if (old?.resultRoute && !old.resultRoute.startsWith('/gallery')) updateTask(id, { resultRoute: undefined }); forgetTaskControls(id, controls) }
       id = createTask(summary, controls)
     } else updateTask(id, summary)
+    actions.set(id, controls)
     previous = summary.status
-  }, { immediate: true })
-  onUnmounted(() => {
-    if (id && previous === 'running') updateTask(id, { status: 'interrupted', message: '工作台已关闭，请检查已接收任务或返回重试。' })
-    forgetTaskControls(id)
-  })
+  }, { immediate: true, flush: ownsTask ? 'sync' : 'pre' })
+  onUnmounted(release)
+  return { detachBinding() { release(); id = ''; previous = 'idle' } }
 }
