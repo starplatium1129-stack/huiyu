@@ -7,6 +7,8 @@ import { useVideoRequest, videoRequestSettled } from '@/composables/video/useVid
 import { VIDEO_BATCH_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
 import type { ShotDraft } from './shotListTypes'
 import type { ShotCastRef } from './useReferenceCards'
@@ -54,7 +56,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   const batchRecoveryPending = computed(() => Boolean(reconnectTarget.value || submission.pending.value || videoStore.shotsBatchIssue
     || videoStore.shotsBatch && !legacyVerified.value || batch.value?.needsReview))
   const batchSelectionPending = computed(() => Boolean(reconnectTarget.value && reconnectTarget.value !== batch.value?.id))
-  const canSubmit = computed(() => shots.value.length > 0 && shots.value.every(shot => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000)
+  const canSubmit = computed(() => shots.value.length > 0 && shots.value.every(shot => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000 && (!shot.imageId || shot.imageName))
     && !submitting.value && !batchRecoveryPending.value && !deps.inputsBusy?.value && !retrying.value && !cancelling.value && !concating.value
     && h3Ready.value && online.value && !batchActive.value
     && shots.value.every(shot => !shot.seedText.trim() || Number.isSafeInteger(Number(shot.seedText)) && Number(shot.seedText) >= 0 && Number(shot.seedText) <= 0x7fffffff))
@@ -96,6 +98,8 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     submitting.value = true
     batch.value = null; unboundTaskStatus.value = 'interrupted'
     const serial = beginOperation(), targets = shots.value.slice()
+    const controller = new AbortController(), mediaSession = imageMediaSession()
+    const stopRuntime = onDesktopRuntime(() => { if (mediaSession !== imageMediaSession()) controller.abort(new Error('首帧连接已变化，请重新挂载后提交')) })
     batchError.value = ''
     ownsTrackedTask.value = true
     try {
@@ -105,11 +109,12 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
           shotSize: shot.shotSize || undefined, camera: shot.camera, motion: shot.motion, duration: shot.duration,
           seed: shot.seedText.trim() ? Number(shot.seedText) : undefined, image: shot.imageName || undefined, references: shotReferences(shot) })) }
       const tokens = await deps.onSubmitting(targets)
+      controller.signal.throwIfAborted()
       check()
       if (disposed || !pageActive || serial !== operationSerial) return
       if (videoStore.shotsBatch) { videoStore.clearShotsBatch(); await flushProfileWrites() }
       if (disposed || !pageActive || serial !== operationSerial) return
-      const value = await submission.submit(input, new AbortController().signal, undefined, { tokens })
+      const value = await submission.submit(input, controller.signal, undefined, { tokens })
       if (!('shots' in value)) throw new Error('原分镜请求类型不符')
       // Adoption must finish even after a deep link changes the displayed batch.
       await adopt(value)
@@ -118,7 +123,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
     } catch (error) {
       if (!submission.pending.value) { await deps.onSubmissionRejected(targets); unboundTaskStatus.value = 'failed' }
       if (!disposed && pageActive && serial === operationSerial) { batchError.value = error instanceof Error ? error.message : '分镜接收状态待核对'; batchReadRetryable.value = true; batchReadError.value = batchError.value }
-    } finally { submitting.value = false; schedulePoll() }
+    } finally { stopRuntime(); submitting.value = false; schedulePoll() }
   }
   function schedulePoll() {
     window.clearTimeout(pollTimer)

@@ -353,7 +353,7 @@
                 重试首帧挂载
               </button>
               <span v-if="!shot.imageUrl && shot.imageId" class="shot-chain-note">首帧待处理（原图在暂存库）</span>
-              <button v-if="shot.imageUrl" class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="clearFrame(index)">
+              <button v-if="shot.imageUrl || shot.imageId" class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="clearFrame(index)">
                 移除首帧
               </button>
               <span v-if="index > 0 && linkLastFrame" class="shot-chain-note">自动衔接镜头 {{ index }} 尾帧</span>

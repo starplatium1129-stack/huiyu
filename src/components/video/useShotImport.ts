@@ -3,6 +3,7 @@ import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
 import { useVideoStore, type VideoCtxPayload } from '@/stores/videoStore'
 import { artworkRepository } from '@/storage/artworkRepository'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { importWorkspaceVideoImage, uploadVideoImage } from '@/api/videoApi'
 
 /**
@@ -21,6 +22,7 @@ import { importWorkspaceVideoImage, uploadVideoImage } from '@/api/videoApi'
 export interface ShotImportDeps {
   shots: Ref<ShotDraft[]>
   frameRequests: Map<ShotDraft, AbortController>
+  mediaRevision: Readonly<Ref<number>>
   referenceCards: Ref<ReferenceCard[]>
   /** 选择指定卡槽的角色与服装（返回文字资料是否就绪）。 */
   selectCardCharacter: (charId: string, cardIndex?: number, outfitId?: string) => Promise<boolean>
@@ -78,11 +80,11 @@ export function useShotImport(deps: ShotImportDeps) {
     frameRequests.set(shot, controller)
     const version = viewVersion
     const previous = [shot.imageId, shot.imageName, shot.imageUrl]
-    const repository = artworkRepository
+    const repository = artworkRepository, mediaSession = imageMediaSession()
     let authority: string | undefined
     const current = () => {
       if (disposed || !active || version !== viewVersion || controller.signal.aborted || frameRequests.get(shot) !== controller
-        || repository !== artworkRepository || (!unpublished && !shots.value.includes(shot))
+        || repository !== artworkRepository || mediaSession !== imageMediaSession() || (!unpublished && !shots.value.includes(shot))
         || ![shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])) return false
       try { return authority === undefined || repository.getWorkspaceMediaReference?.(imageId).authority === authority }
       catch { return false }
@@ -118,8 +120,10 @@ export function useShotImport(deps: ShotImportDeps) {
    * 后的精确补救入口，不重跑整轮导入。
    */
   async function retryPendingFrames(): Promise<{ fixed: number; remaining: number } | null> {
-    const version = viewVersion
-    const current = () => !disposed && active && version === viewVersion
+    const version = viewVersion, mediaRevision = deps.mediaRevision.value
+    const repository = artworkRepository, mediaSession = imageMediaSession()
+    const current = () => !disposed && active && version === viewVersion && mediaRevision === deps.mediaRevision.value
+      && repository === artworkRepository && mediaSession === imageMediaSession()
     if (!current()) return null
     let fixed = 0
     let remaining = 0
@@ -149,8 +153,10 @@ export function useShotImport(deps: ShotImportDeps) {
 
   async function importShotsFromDrawing(): Promise<ShotImportOutcome | null> {
     if (disposed || !active) return null
-    const version = viewVersion
-    const current = () => !disposed && active && version === viewVersion
+    const version = viewVersion, mediaRevision = deps.mediaRevision.value
+    const repository = artworkRepository, mediaSession = imageMediaSession()
+    const current = () => !disposed && active && version === viewVersion && mediaRevision === deps.mediaRevision.value
+      && repository === artworkRepository && mediaSession === imageMediaSession()
     // A saved marker survives a lost pending-consumption write and frame edits.
     const list: VideoCtxPayload[] = []
     for (const ctx of [...videoStore.pendingShotCtxs]) {

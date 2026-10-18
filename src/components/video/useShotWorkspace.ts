@@ -2,6 +2,8 @@ import { withArtworkStaging } from '@/storage/artworkSession'
 import { createVideoStoryboard,uploadVideoImage,type VideoBatch,type VideoDefaults,type VideoQuality,type VideoStatusResponse,} from '@/api/videoApi';
 import { confirmAction } from '@/composables/useConfirm';
 import { artworkRepository } from '@/storage/artworkRepository'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { useSceneStore } from '@/stores/sceneStore';
 import { computed,onActivated,onBeforeUnmount,onDeactivated,onMounted,ref,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
@@ -60,6 +62,19 @@ export function useShotWorkspace(props: {
     const frameRequests = new Map<ShotDraft, AbortController>();
     const frameUploads = ref(0);
     function cancelFrameRequests() { for (const request of frameRequests.values()) request.abort(); }
+    let framesSession = imageMediaSession();
+    const frameRevision = ref(0);
+    function refreshFramesSession() {
+        const next = imageMediaSession();
+        if (framesSession === next) return;
+        framesSession = next; frameRevision.value++; cancelFrameRequests();
+        shots.value.forEach(shot => {
+            if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl);
+            shot.imageUrl = ''; shot.imageName = '';
+        });
+    }
+    const stopFramesRuntime = onDesktopRuntime(refreshFramesSession);
+    watch(imageMediaSession, refreshFramesSession, { flush: 'sync' });
     onDeactivated(cancelFrameRequests);
     watch(() => [...shots.value], next => {
         for (const [shot, request] of frameRequests) if (!next.includes(shot)) request.abort();
@@ -149,7 +164,7 @@ export function useShotWorkspace(props: {
     });
     // ── 绘图页「加入分镜」导入（逐镜确认 + 失败可重试，已下沉 useShotImport）──
     const { importShotsFromDrawing, retryPendingFrames, mountShotFrame } = useShotImport({
-        shots, frameRequests,
+        shots, frameRequests, mediaRevision: frameRevision,
         referenceCards,
         selectCardCharacter: (id, index, outfit) => selectCardCharacter(id, index, outfit, workspaceAbort.signal),
         onError: (message) => { batchError.value = message; },
@@ -179,6 +194,7 @@ export function useShotWorkspace(props: {
         if (concating.value) return '正在拼接成片';
         if (storyboardBusy.value) return '正在生成剧本';
         if (loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0) return '正在准备参考图与首帧';
+        if (shots.value.some(shot => shot.imageId && !shot.imageName)) return '请重试挂载或移除待处理首帧';
         if (shots.value.some(shot => shot.seedText.trim() && (!Number.isSafeInteger(Number(shot.seedText)) || Number(shot.seedText) < 0 || Number(shot.seedText) > 0x7fffffff))) return '请检查镜头 Seed：需为 0–2147483647 的整数';
         if (!canSubmit.value)
             return `${shots.value.filter(shot => shot.prompt.trim().length < 8 || shot.prompt.trim().length > 4000).length} 个镜头描述需调整（8–4000 字）`;
@@ -342,13 +358,15 @@ export function useShotWorkspace(props: {
         const input = event.target as HTMLInputElement;
         const file = input.files?.[0], shot = shots.value[index];
         input.value = '';
-        if (!file || !shot) return;
+        if (!file || !shot || !workspaceCurrent(workspaceVisit)) return;
         if (file.size > 20 * 1024 * 1024) { batchError.value = '首帧图片需 ≤20MB'; return; }
         frameRequests.get(shot)?.abort();
         const controller = new AbortController();
         frameRequests.set(shot, controller);
+        const repository = artworkRepository, mediaSession = imageMediaSession(), revision = frameRevision.value, visit = workspaceVisit;
+        const sameSource = () => revision === frameRevision.value && repository === artworkRepository && mediaSession === imageMediaSession();
         const previous = [shot.imageId, shot.imageName, shot.imageUrl];
-        const current = () => !controller.signal.aborted && frameRequests.get(shot) === controller
+        const current = () => workspaceCurrent(visit) && !controller.signal.aborted && sameSource() && frameRequests.get(shot) === controller
             && shots.value.includes(shot) && [shot.imageId, shot.imageName, shot.imageUrl].every((value, i) => value === previous[i]);
         frameUploads.value++;
         try {
@@ -356,7 +374,6 @@ export function useShotWorkspace(props: {
                 if (!current()) return;
                 const upload = await uploadVideoImage(file, undefined, controller.signal);
                 if (!current()) return;
-                const repository = artworkRepository;
                 const imageId = await repository.putImage(file);
                 let attached = false;
                 try {
@@ -368,13 +385,17 @@ export function useShotWorkspace(props: {
                     shot.imageId = imageId;
                     if (shot.firstFrameRequest?.state !== 'pending') shot.firstFrameRequest = undefined;
                     attached = true;
-                    batchError.value = '';
+                    if (!persistShotsDraft()) throw new Error('首帧已挂载，草稿尚未保存；请保留当前页面并重试保存。');
+                    await flushProfileWrites();
+                    if (sameSource() && workspaceCurrent(visit) && frameRequests.get(shot) === controller) batchError.value = '';
                 } finally {
-                    if (!attached) await repository.deleteImage(imageId).catch(error => console.warn('[shots] unattached frame cleanup failed', imageId, error));
+                    // Page changes may release our unpublished image; a changed media session may not.
+                    if (!attached && sameSource()) await repository.deleteImage(imageId).catch(error => console.warn('[shots] unattached frame cleanup failed', imageId, error));
                 }
             });
         } catch (error) {
-            if (current()) batchError.value = error instanceof Error ? error.message : '首帧上传失败';
+            if (sameSource() && workspaceCurrent(visit) && frameRequests.get(shot) === controller && !controller.signal.aborted)
+                batchError.value = error instanceof Error ? error.message : '首帧上传或草稿保存失败，请保留当前页面重试';
         } finally {
             if (frameRequests.get(shot) === controller) frameRequests.delete(shot);
             frameUploads.value--;
@@ -449,7 +470,7 @@ export function useShotWorkspace(props: {
         void restoreShotsDraft().then(() => { if (!workspaceDisposed) { restoreReady = true; resumeWorkspace(); } });
     });
     onBeforeUnmount(() => {
-        workspaceDisposed = true; workspaceVisit++; workspaceAbort.abort();
+        workspaceDisposed = true; workspaceVisit++; workspaceAbort.abort(); stopFramesRuntime();
         cancelFrameRequests(); stopStoryboard();
         routeLoad?.abort(); routeActive.value = false;
         // 批量轮询与 disposed 标记归 useShotBatchMachine；这里只释镜头首帧 blob URL。

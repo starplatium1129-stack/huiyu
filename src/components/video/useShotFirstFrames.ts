@@ -3,7 +3,8 @@ import { acceptDirectImageRequest, cancelDirectImageRequest } from '@/api/direct
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
-import { getDesktopRuntime } from '@/platform/desktop/runtime'
+import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { withArtworkStaging } from '@/storage/artworkSession'
 import { ref, onScopeDispose, type Ref } from 'vue'
 import { useTrackedTask } from '@/composables/useTaskCenter'
@@ -65,17 +66,21 @@ export function useShotFirstFrames(options: {
     controller = new AbortController()
     const signal = controller.signal
     const repository = artworkRepository, runtime = runtimeResourceIdentity()
+    const mediaSession = imageMediaSession()
+    let mediaCurrent = true
+    const sameSource = () => mediaCurrent && repository === artworkRepository && mediaSession === imageMediaSession()
+    const stopRuntime = onDesktopRuntime(() => { if (!sameSource()) mediaCurrent = false })
     let failed = 0, completed = 0
     try {
       await withArtworkStaging(async () => {
         signal.throwIfAborted()
         for (let i = 0; i < pending.length; i++) {
           signal.throwIfAborted()
-          if (runtime !== runtimeResourceIdentity() || repository !== artworkRepository)
+          if (runtime !== runtimeResourceIdentity() || !sameSource())
             throw new Error('首帧连接已更换，已停止后续镜头；请在原连接核对原请求。')
           const { shot, owner, previous } = pending[i]
           const current = () => !disposed && !signal.aborted && !owner.signal.aborted
-            && repository === artworkRepository && runtime === runtimeResourceIdentity()
+            && sameSource() && runtime === runtimeResourceIdentity()
             && (!active || active.authority === authority(active.transport))
             && options.frameRequests.get(shot) === owner && options.shots.value.includes(shot)
             && [shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])
@@ -149,7 +154,7 @@ export function useShotFirstFrames(options: {
             throw error
           } finally {
             // A changed workspace cannot authorize cleanup of the old workspace.
-            if (ownedImageId && repository === artworkRepository && runtime === runtimeResourceIdentity()
+            if (ownedImageId && sameSource() && runtime === runtimeResourceIdentity()
               && (!active || active.authority === authority(active.transport)))
               await repository.deleteImage(ownedImageId).catch(error => console.warn('[shots] unattached first frame cleanup failed', ownedImageId, error))
             if (options.frameRequests.get(shot) === owner) options.frameRequests.delete(shot)
@@ -164,6 +169,7 @@ export function useShotFirstFrames(options: {
     } catch (error) {
       if (!disposed && !signal.aborted) { taskStatus.value = 'failed'; options.onError(error instanceof Error ? error.message : '首帧生成失败') }
     } finally {
+      stopRuntime()
       for (const { shot, owner } of pending) if (options.frameRequests.get(shot) === owner) options.frameRequests.delete(shot)
       controller = null; active = null; firstFrameBusy.value = false; firstFrameProgress.value = ''
     }
