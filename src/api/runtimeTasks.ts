@@ -5,7 +5,7 @@ import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, runtimeMangaR
 import { hasRuntimeTasks, assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
-import { rememberWorkspaceMedia, workspaceMediaAuthority } from '../platform/desktop/workspaceMediaSource'
+import { rememberWorkspaceMedia, workspaceMediaAuthority, assertWorkspaceMediaAuthority } from '../platform/desktop/workspaceMediaSource'
 export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
 export type { TaskRecord, TaskSummary } from '../../types/tasks'
 
@@ -18,7 +18,11 @@ function ensureAuthority() {
   if (getDesktopRuntime().connection !== 'ready') throw new Error('本地运行时已断开，任务记录已保留，请恢复连接后重试。')
 }
 export const runtimeResultPath = (task: Pick<TaskRecord, 'taskId'>, index = 0) => `${base}/${encodeURIComponent(task.taskId)}/results/${index}`
-export const isRuntimeResultPath = (url: string) => /^\/api\/tasks\/v1\/[\w-]+\/results\/\d+$/.test(url)
+function parseRuntimeResultPath(url: string) {
+  const match = /^\/api\/tasks\/v1\/([\w-]+)\/results\/(0|[1-9]\d*)$/.exec(url)
+  return match && Number.isSafeInteger(Number(match[2])) ? { taskId: match[1], index: Number(match[2]) } : null
+}
+export const isRuntimeResultPath = (url: string) => parseRuntimeResultPath(url) !== null
 
 function remember(task: TaskRecord): TaskRecord { return rememberTask(task, epoch()) }
 async function request<T>(path: string, method = 'GET', body?: unknown, signal?: AbortSignal, onSubmitting?: () => void): Promise<T> {
@@ -220,39 +224,47 @@ export async function waitForRuntimeTask(id: string, signal: AbortSignal, update
     })
   }
 }
-export async function fetchRuntimeResult(url: string, signal?: AbortSignal, task?: TaskRecord): Promise<Blob> {
-  ensureAuthority()
-  if (!isRuntimeResultPath(url)) throw new Error('结果地址无效')
-  const authority = task ? workspaceMediaAuthority() : undefined
-  const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
-  const reference = task?.resultRefs.find(value => url === runtimeResultPath(task, value.index))
-  if (task && (!reference || task.workspaceId !== workspace?.workspaceId || task.principalId !== workspace.principalId
-    || task.runtimeEpoch !== workspace.runtimeEpoch)) throw new Error('任务结果来源已变化，请重新读取')
-  const source = reference ? { ...reference } : undefined
-  const response = await desktopRuntimeFetch(url, { cache: 'no-store', signal: AbortSignal.any([AbortSignal.timeout(120_000), ...(signal ? [signal] : [])]) })
+/** Known records avoid another GET, never the output and session checks. */
+export async function resolveRuntimeResult(url: string, signal?: AbortSignal, knownTask?: TaskRecord) {
+  ensureAuthority(); signal?.throwIfAborted()
+  const result = parseRuntimeResultPath(url)
+  if (!result) throw new Error('结果地址无效')
+  const authority = workspaceMediaAuthority()
+  const task = knownTask ?? await getRuntimeTask(result.taskId, signal)
+  signal?.throwIfAborted(); assertWorkspaceMediaAuthority(authority); assertRuntimeTaskSession(task)
+  if (task.taskId !== result.taskId) throw new Error('任务结果来源与原地址不符')
+  const media = task.resultRefs.find(value => value.index === result.index)
+  if (!media || typeof media.alias !== 'string' || !media.alias || typeof media.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(media.sha256)
+    || !Number.isSafeInteger(media.bytes) || media.bytes <= 0 || typeof media.mime !== 'string' || !/^(image|video)\//.test(media.mime))
+    throw new Error('任务结果来源信息不完整，请重新读取')
+  return Object.freeze({ path: url, authority, media: Object.freeze({ ...media }) })
+}
+async function readRuntimeResult(source: Awaited<ReturnType<typeof resolveRuntimeResult>>, signal?: AbortSignal): Promise<Blob> {
+  assertWorkspaceMediaAuthority(source.authority)
+  const requestSignal = AbortSignal.any([AbortSignal.timeout(120_000), ...(signal ? [signal] : [])])
+  const response = await desktopRuntimeFetch(source.path, { cache: 'no-store', signal: requestSignal })
   try {
     if (!response.ok) throw new Error('任务结果暂时无法读取')
-    if (source && (response.headers.get('X-Workspace-Media-Sha256') !== source.sha256
-      || Number(response.headers.get('X-Workspace-Media-Total-Bytes')) !== source.bytes
-      || response.headers.get('X-Workspace-Media-Mime') !== source.mime
-      || response.headers.get('X-Workspace-Media-Offset') !== '0')) throw new Error('任务结果来源信息不一致，请重新读取')
+    const media = source.media
+    if (response.headers.get('X-Workspace-Media-Sha256') !== media.sha256
+      || Number(response.headers.get('X-Workspace-Media-Total-Bytes')) !== media.bytes
+      || response.headers.get('X-Workspace-Media-Mime') !== media.mime
+      || response.headers.get('X-Workspace-Media-Offset') !== '0') throw new Error('任务结果来源信息不一致，请重新读取')
     const blob = await response.blob()
-    signal?.throwIfAborted()
-    if (!blob.size || !/^(image|video)\//.test(blob.type)) throw new Error('任务结果格式无效')
-    if (source && authority) rememberWorkspaceMedia(blob, source, authority)
+    requestSignal.throwIfAborted(); assertWorkspaceMediaAuthority(source.authority)
+    rememberWorkspaceMedia(blob, media, source.authority)
     return blob
   } finally {
     if (!response.bodyUsed) await response.body?.cancel().catch(() => {})
   }
 }
+export async function fetchRuntimeResult(url: string, signal?: AbortSignal, knownTask?: TaskRecord): Promise<Blob> {
+  return readRuntimeResult(await resolveRuntimeResult(url, signal, knownTask), signal)
+}
 export async function downloadTaskMedia(url: string, filename = '绘遇结果', signal?: AbortSignal) {
-  if (!isRuntimeResultPath(url)) throw new Error('结果地址无效')
-  const task = await getRuntimeTask(url.split('/')[4], signal)
-  signal?.throwIfAborted()
-  assertRuntimeTaskSession(task)
-  const blob = await fetchRuntimeResult(url, signal, task)
-  signal?.throwIfAborted()
-  assertRuntimeTaskSession(task)
+  const source = await resolveRuntimeResult(url, signal)
+  const blob = await readRuntimeResult(source, signal)
+  signal?.throwIfAborted(); assertWorkspaceMediaAuthority(source.authority)
   const objectUrl = URL.createObjectURL(blob)
   try {
     const anchor = document.createElement('a'); anchor.href = objectUrl; anchor.download = filename; anchor.click()

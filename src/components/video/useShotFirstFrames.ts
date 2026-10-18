@@ -110,7 +110,7 @@ export function useShotFirstFrames(options: {
               if (!current()) continue
               shot.firstFrameRequest = { ...request, state: 'succeeded' }; await options.persist()
               if (!current()) continue
-              blob = await fetchRuntimeResult(runtimeResultPath(task), frameSignal)
+              blob = await fetchRuntimeResult(runtimeResultPath(task), frameSignal, task)
               resultAlias = task.resultRefs.find(value => value.index === 0)?.alias || ''
               if (!resultAlias) throw new Error('首帧任务缺少图片凭据')
               if (!current()) continue

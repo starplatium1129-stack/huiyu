@@ -1,8 +1,8 @@
 import { onActivated, onDeactivated, onUnmounted, ref, watch } from 'vue'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
 import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
-import { getRuntimeTask, isRuntimeResultPath } from '@/api/runtimeTasks'
-import { assertRuntimeTaskSession } from '@/api/runtimeTaskAuthority'
+import { resolveRuntimeResult, isRuntimeResultPath } from '@/api/runtimeTasks'
+import { assertWorkspaceMediaAuthority } from '@/platform/desktop/workspaceMediaSource'
 
 /** Native media elements receive a short-lived, one-object capability, never the session token. */
 export function useTaskMediaSource(source: () => string) {
@@ -34,19 +34,17 @@ export function useTaskMediaSource(source: () => string) {
     const deadline = AbortSignal.timeout(30_000)
     const signal = AbortSignal.any([request.signal, deadline])
     try {
-      const parts = path.split('/'); const task = await getRuntimeTask(parts[4], signal)
+      const result = await resolveRuntimeResult(path, signal), media = result.media
       if (disposed || current !== revision || request.signal.aborted) return
       if (!checkOwner()) return
-      assertRuntimeTaskSession(task)
-      const media = task.resultRefs.find(ref => ref.index === Number(parts[6]))
-      if (!media) throw new Error('任务结果尚未就绪')
+      assertWorkspaceMediaAuthority(result.authority)
       const response = await desktopRuntimeFetch('/api/workspace/media-capabilities', { method: 'POST', signal,
         headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ alias: media.alias }) })
       if (!response.ok) throw new Error('播放授权暂时无法续期')
       const capability: unknown = await response.json()
       if (disposed || current !== revision || request.signal.aborted) return
       if (!checkOwner()) return
-      assertRuntimeTaskSession(task)
+      assertWorkspaceMediaAuthority(result.authority)
       if (!capability || typeof capability !== 'object' || !('url' in capability)
         || typeof capability.url !== 'string' || !('expiresAt' in capability)
         || typeof capability.expiresAt !== 'number' || !Number.isSafeInteger(capability.expiresAt)

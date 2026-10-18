@@ -36,7 +36,7 @@ export async function observeRuntimeSd(key: string, signal: AbortSignal,
     fields.statusText.value = taskMessage(value); fields.progress.value = null
     fields.provider.value = value.provider === 'webui' ? 'webui' : 'comfy'
   })
-  const blob = await fetchRuntimeResult(runtimeResultPath(task), signal)
+  const blob = await fetchRuntimeResult(runtimeResultPath(task), signal, task)
   const { runtimeTaskRecipe, runtimeTaskResultContext } = await import('@/utils/runtimeTaskResult')
   signal.throwIfAborted()
   const recipe = runtimeTaskRecipe(task), resultContext = runtimeTaskResultContext(task)
