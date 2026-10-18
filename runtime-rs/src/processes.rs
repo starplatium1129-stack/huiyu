@@ -23,26 +23,32 @@ pub(crate) struct Processes {
 pub(crate) struct OwnedProcess {
     pool: Arc<Processes>,
     id: u64,
+    reaped: Arc<AtomicBool>,
 }
 struct ChildEntry {
     child: Child,
     permit: Option<Arc<OwnedSemaphorePermit>>,
+    _keep_alive: Option<Arc<dyn Send + Sync>>,
+    quarantined: bool,
+    reaped: Arc<AtomicBool>,
 }
 impl Processes {
     pub fn spawn(self: &Arc<Self>, command: &mut Command) -> Result<OwnedProcess> {
-        self.spawn_inner(command, None)
+        self.spawn_inner(command, None, None)
     }
     pub fn spawn_with_permit(
         self: &Arc<Self>,
         command: &mut Command,
         permit: Arc<OwnedSemaphorePermit>,
+        keep_alive: Option<Arc<dyn Send + Sync>>,
     ) -> Result<OwnedProcess> {
-        self.spawn_inner(command, Some(permit))
+        self.spawn_inner(command, Some(permit), keep_alive)
     }
     fn spawn_inner(
         self: &Arc<Self>,
         command: &mut Command,
         permit: Option<Arc<OwnedSemaphorePermit>>,
+        keep_alive: Option<Arc<dyn Send + Sync>>,
     ) -> Result<OwnedProcess> {
         let mut children = self.children.lock().unwrap();
         if self.closed.load(Ordering::Acquire) {
@@ -62,17 +68,26 @@ impl Processes {
         // The OS can reuse a PID after try_wait reaps a child. A handle still
         // held by a caller must never refer to a newer process with that PID.
         let id = self.next.fetch_add(1, Ordering::Relaxed);
-        children.insert(id, ChildEntry { child, permit });
+        let reaped = Arc::new(AtomicBool::new(false));
+        children.insert(id, ChildEntry { child, permit, _keep_alive: keep_alive, quarantined: false, reaped: reaped.clone() });
         Ok(OwnedProcess {
             pool: self.clone(),
             id,
+            reaped,
         })
     }
-    pub async fn close(&self) {
+    pub async fn close(self: &Arc<Self>) {
         self.closed.store(true, Ordering::Release);
-        let children = std::mem::take(&mut *self.children.lock().unwrap());
-        for (_, child) in children {
-            self.cleanup.spawn(terminate(child));
+        {
+            let mut children = self.children.lock().unwrap();
+            // A failed wait retains the owned handle and guards in this same map.
+            // Closure may confirm its exit, but must not repeat an unknown kill.
+            children.retain(|_, entry| !entry.quarantined || !reaped(entry));
+            let live: Vec<_> = children.iter().filter_map(|(id, entry)| (!entry.quarantined).then_some(*id)).collect();
+            for id in live {
+                let entry = children.remove(&id).unwrap();
+                self.cleanup.spawn(terminate(self.clone(), id, entry));
+            }
         }
         self.cleanup.close();
         let _ = tokio::time::timeout(Duration::from_secs(8), self.cleanup.wait()).await;
@@ -87,16 +102,30 @@ impl OwnedProcess {
         let Some(child) = children.get_mut(&self.id) else {
             return Err(ApiError::new(499, "ABORT_ERR", "进程操作已取消"));
         };
-        Ok(child.child.try_wait()?)
+        let status = child.child.try_wait();
+        if matches!(&status, Ok(Some(_))) {
+            child.reaped.store(true, Ordering::Release);
+        }
+        if child.quarantined {
+            return match status {
+                Ok(Some(status)) => { children.remove(&self.id); Ok(Some(status)) }
+                _ => Err(termination_unconfirmed()),
+            };
+        }
+        Ok(status?)
     }
     pub async fn stop(&self) -> Result<()> {
         let cleanup = {
             let mut children = self.pool.children.lock().unwrap();
+            if let Some(entry) = children.get_mut(&self.id).filter(|entry| entry.quarantined) {
+                if reaped(entry) { children.remove(&self.id); return Ok(()); }
+                return Err(termination_unconfirmed());
+            }
             // Transfer under the same lock used by close. Dropping this caller
             // must not detach Windows tree termination from tracked cleanup.
             children
                 .remove(&self.id)
-                .map(|child| self.pool.cleanup.spawn(terminate(child)))
+                .map(|child| self.pool.cleanup.spawn(terminate(self.pool.clone(), self.id, child)))
         };
         if let Some(cleanup) = cleanup {
             cleanup.await.map_err(|_| {
@@ -107,12 +136,14 @@ impl OwnedProcess {
                 )
             })?
         } else {
-            Ok(())
+            // close() or another stop may already own cleanup. An absent map
+            // entry alone does not prove that the same child has been reaped.
+            if self.reaped.load(Ordering::Acquire) { Ok(()) } else { Err(termination_unconfirmed()) }
         }
     }
     pub fn take_output(&self) -> (Option<ChildStdout>, Option<ChildStderr>) {
         let mut children = self.pool.children.lock().unwrap();
-        let Some(child) = children.get_mut(&self.id) else {
+        let Some(child) = children.get_mut(&self.id).filter(|entry| !entry.quarantined) else {
             return (None, None);
         };
         (child.child.stdout.take(), child.child.stderr.take())
@@ -123,26 +154,58 @@ impl OwnedProcess {
             .lock()
             .unwrap()
             .get_mut(&self.id)
+            .filter(|entry| !entry.quarantined)
             .and_then(|entry| entry.child.stdin.take())
     }
 }
 impl Drop for OwnedProcess {
     fn drop(&mut self) {
-        if let Some(child) = self.pool.children.lock().unwrap().remove(&self.id) {
-            self.pool.cleanup.spawn(terminate(child));
+        let mut children = self.pool.children.lock().unwrap();
+        if let Some(entry) = children.get_mut(&self.id).filter(|entry| entry.quarantined) {
+            if reaped(entry) { children.remove(&self.id); }
+            return;
+        }
+        if let Some(child) = children.remove(&self.id) {
+            self.pool.cleanup.spawn(terminate(self.pool.clone(), self.id, child));
         }
     }
 }
-async fn terminate(mut entry: ChildEntry) -> Result<()> {
+fn reaped(entry: &mut ChildEntry) -> bool {
+    let reaped = entry.child.try_wait().ok().flatten().is_some();
+    if reaped { entry.reaped.store(true, Ordering::Release); }
+    reaped
+}
+fn termination_unconfirmed() -> ApiError {
+    ApiError::new(503, "TERMINATION_UNCONFIRMED", "进程退出尚未确认；相关资源仍被保留，请检查后完全退出应用。")
+}
+async fn terminate(pool: Arc<Processes>, id: u64, mut entry: ChildEntry) -> Result<()> {
     // Keep admission attached to the process through stop, disconnect and
     // service close. An unconfirmed exit cannot release capacity for more work.
     let result = terminate_child(&mut entry.child).await;
-    if result.is_err() {
+    if let Err(error) = result {
         if let Some(permit) = &entry.permit {
             permit.semaphore().close();
         }
+        // Register the next owner before this cleanup task can finish, including
+        // when close() already closed the tracker. Never kill this handle twice.
+        pool.cleanup.spawn(reap(pool.clone(), id, entry));
+        eprintln!("owned process termination unconfirmed: {}", error.code);
+        return Err(termination_unconfirmed());
     }
-    result
+    entry.reaped.store(true, Ordering::Release);
+    Ok(())
+}
+async fn reap(pool: Arc<Processes>, id: u64, mut entry: ChildEntry) {
+    match entry.child.wait().await {
+        Ok(_) => entry.reaped.store(true, Ordering::Release),
+        Err(error) => {
+            // A wait error is not proof of exit. Preserve the complete entry for a
+            // later handle check; stop, Drop and close must not release these guards.
+            entry.quarantined = true;
+            pool.children.lock().unwrap().insert(id, entry);
+            eprintln!("owned process wait unconfirmed: {error}");
+        }
+    }
 }
 async fn terminate_child(child: &mut Child) -> Result<()> {
     if child.try_wait().ok().flatten().is_some() {

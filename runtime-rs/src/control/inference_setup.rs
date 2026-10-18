@@ -8,6 +8,7 @@ use std::{
 use tokio::{
     io::{AsyncRead, AsyncReadExt},
     process::Command,
+    sync::OwnedSemaphorePermit,
 };
 
 #[derive(Deserialize)]
@@ -49,9 +50,9 @@ async fn inspect(
     Extension(s): Extension<Arc<ControlService>>,
     Json(body): Json<InspectRequest>,
 ) -> Result<Json<Value>> {
-    let _permit = s.setup_permit()?;
+    let permit = s.setup_permit()?;
     let (mut command, target) = s.model_import_command(&body.model_id, &body.source_dir, None)?;
-    let value = s.run_setup_helper(&mut command, &s.shutdown, 120).await?;
+    let value = s.run_setup_helper(&mut command, &s.shutdown, 120, permit.clone(), None).await?;
     validate_import_result(&value, true, &body.source_dir, &target)?;
     Ok(Json(value))
 }
@@ -71,11 +72,17 @@ async fn import(
 }
 
 impl ControlService {
-    pub(super) fn setup_permit(&self) -> Result<tokio::sync::OwnedSemaphorePermit> {
+    pub(super) fn setup_permit(&self) -> Result<Arc<OwnedSemaphorePermit>> {
         self.setup_verify_lock
             .clone()
             .try_acquire_owned()
-            .map_err(|_| ApiError::new(409, "SETUP_BUSY", "已有准备、导入、下载或校验正在进行"))
+            .map(Arc::new)
+            .map_err(|error| match error {
+                tokio::sync::TryAcquireError::Closed => ApiError::new(503,
+                    "TERMINATION_UNCONFIRMED", "准备进程退出尚未确认，不能开始另一操作；请检查后完全退出绘遇。"),
+                tokio::sync::TryAcquireError::NoPermits => ApiError::new(409,
+                    "SETUP_BUSY", "已有准备、导入、下载或校验正在进行"),
+            })
     }
     fn prepare_inference(self: &Arc<Self>, body: PrepareRequest) -> Result<Value> {
         if !body.reviewed || body.workspace_path != self.config.ai_workspace_root {
@@ -175,13 +182,12 @@ impl ControlService {
         let service = self.clone();
         let task_operation = operation.clone();
         self.tasks.spawn(async move {
-            let _permit = permit;
             let result = async {
                 if cancel.is_cancelled() {
                     return Err(cancelled());
                 }
                 let value = service
-                    .run_setup_helper(&mut command, &cancel, 3600)
+                    .run_setup_helper(&mut command, &cancel, 3600, permit.clone(), None)
                     .await?;
                 if task_operation["kind"] == "import-inference-model" {
                     validate_import_result(
@@ -216,11 +222,13 @@ impl ControlService {
         command: &mut Command,
         cancel: &CancellationToken,
         seconds: u64,
+        permit: Arc<OwnedSemaphorePermit>,
+        keep_alive: Option<Arc<dyn Send + Sync>>,
     ) -> Result<Value> {
         if cancel.is_cancelled() {
             return Err(cancelled());
         }
-        let process = self.processes.spawn(command)?;
+        let process = self.processes.spawn_with_permit(command, permit, keep_alive)?;
         let (stdout, stderr) = process.take_output();
         let work = async {
             let (out, err) = tokio::try_join!(

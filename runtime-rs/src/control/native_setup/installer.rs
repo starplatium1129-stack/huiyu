@@ -8,9 +8,11 @@ impl ControlService {
         command: &mut tokio::process::Command,
         cancel: &CancellationToken,
         operation: &Value,
+        permit: Arc<OwnedSemaphorePermit>,
+        keep_alive: Option<Arc<dyn Send + Sync>>,
     ) -> Result<Value> {
         stopped(cancel)?;
-        let process = self.processes.spawn(command)?;
+        let process = self.processes.spawn_with_permit(command, permit, keep_alive)?;
         let mut input = process
             .take_input()
             .ok_or_else(|| ApiError::invalid("安装器输入通道不可用"))?;

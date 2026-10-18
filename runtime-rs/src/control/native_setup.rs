@@ -12,6 +12,7 @@ use axum::{
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
 use std::path::{Path, PathBuf};
+use tokio::sync::OwnedSemaphorePermit;
 
 #[derive(Clone, Deserialize)]
 struct Artifact {
@@ -188,19 +189,20 @@ async fn activate(
     // Admission, file inspection and saving survive a lost HTTP response. A
     // detached client cannot unlock a second concurrent installer/activation.
     s.clone().tasks.spawn(async move {
-        let _permit = permit;
-        let work = s.activate_native_settings(body, &operation, &cancel);
+        let work = s.activate_native_settings(body, &operation, &cancel, &permit);
         tokio::pin!(work);
         let result = match tokio::time::timeout(Duration::from_secs(180), &mut work).await {
             Ok(result) => result,
             Err(_) => {
                 cancel.cancel();
-                let _ = work.await;
-                Err(ApiError::new(
-                    504,
-                    "NATIVE_ACTIVATION_TIMEOUT",
-                    "启用前校验超时，未确认保存；请重新读取配置后再继续",
-                ))
+                match work.await {
+                    Err(error) if error.code == "TERMINATION_UNCONFIRMED" => Err(error),
+                    _ => Err(ApiError::new(
+                        504,
+                        "NATIVE_ACTIVATION_TIMEOUT",
+                        "启用前校验超时，未确认保存；请重新读取配置后再继续",
+                    )),
+                }
             }
         };
         s.environment_cancel.lock().unwrap().take();
@@ -227,6 +229,7 @@ impl ControlService {
         body: Request,
         operation: &Value,
         cancel: &CancellationToken,
+        permit: &Arc<OwnedSemaphorePermit>,
     ) -> Result<Value> {
         let (runtime, models) = bundles()?;
         let reasons = plan::support(&hardware::local_hardware().await, &runtime);
@@ -265,7 +268,7 @@ impl ControlService {
             .stdin(std::process::Stdio::null())
             .stdout(std::process::Stdio::piped())
             .stderr(std::process::Stdio::piped());
-        let diagnostic = self.run_setup_helper(&mut command, cancel, 120).await?;
+        let diagnostic = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None).await?;
         if diagnostic["event"] != "diagnostic" || diagnostic["cudaAvailable"] != true {
             return Err(ApiError::new(
                 409,
@@ -275,7 +278,7 @@ impl ControlService {
         }
         self.native_stage(operation, 1);
         jobs::verify_files(&root, &model.files, cancel).await?;
-        self.validate_native_model(&settings, &root, cancel)
+        self.validate_native_model(&settings, &root, cancel, permit)
             .await?;
         let target = serde_json::to_value(&settings)?;
         let active = self.active_inference()?;

@@ -19,6 +19,7 @@ impl ControlService {
             ));
         }
         let permit = self.setup_permit()?;
+        let admission = Arc::new(admission);
         let plan = self.pixai_setup_plan().await?;
         if plan["supported"] != true {
             return Err(ApiError::new(
@@ -57,8 +58,7 @@ impl ControlService {
         let service = self.clone();
         let returned = operation.clone();
         self.tasks.spawn(async move {
-            let (_permit, _admission) = (permit, admission);
-            let work = service.prepare_pixai(&operation, &cancel, &interrogate);
+            let work = service.prepare_pixai(&operation, &cancel, &interrogate, &permit, &admission);
             tokio::pin!(work);
             let result = match tokio::time::timeout(Duration::from_secs(8 * 3600), &mut work).await
             {
@@ -67,12 +67,14 @@ impl ControlService {
                     cancel.cancel();
                     // Keep both host and installer admission until disk/process
                     // cleanup has drained, including protected Windows installs.
-                    let _ = work.await;
-                    Err(ApiError::new(
-                        504,
-                        "PIXAI_SETUP_TIMEOUT",
-                        "反推准备超过八小时，已停止；已校验文件与续传下载保留",
-                    ))
+                    match work.await {
+                        Err(error) if error.code == "TERMINATION_UNCONFIRMED" => Err(error),
+                        _ => Err(ApiError::new(
+                            504,
+                            "PIXAI_SETUP_TIMEOUT",
+                            "反推准备超过八小时，已停止；已校验文件与续传下载保留",
+                        )),
+                    }
                 }
             };
             service.environment_cancel.lock().unwrap().take();
@@ -85,6 +87,8 @@ impl ControlService {
         operation: &Value,
         cancel: &CancellationToken,
         interrogate: &crate::interrogate::InterrogateService,
+        permit: &Arc<OwnedSemaphorePermit>,
+        admission: &Arc<crate::host::OwnedWriteGuard>,
     ) -> Result<()> {
         stopped(cancel)?;
         let runtime = runtime_bundle()?;
@@ -98,7 +102,7 @@ impl ControlService {
             .join(&runtime.runtime_id);
         let installed = runtime_ready(&runtime_root, &runtime);
         if !installed {
-            self.install_native_runtime(&runtime, operation, cancel)
+            self.install_native_runtime(&runtime, operation, cancel, permit, Some(admission.clone()))
                 .await?;
         } else {
             self.stage(operation, 3);
@@ -142,7 +146,7 @@ impl ControlService {
             .env_remove("PYTHONHOME")
             .env("HF_HUB_OFFLINE", "1")
             .env("TRANSFORMERS_OFFLINE", "1");
-        let value = self.run_setup_helper(&mut command, cancel, 600).await?;
+        let value = self.run_setup_helper(&mut command, cancel, 600, permit.clone(), Some(admission.clone())).await?;
         if value["schemaVersion"] != 1
             || value["engine"] != "pixai"
             || value["environment"]["cudaAvailable"] != true

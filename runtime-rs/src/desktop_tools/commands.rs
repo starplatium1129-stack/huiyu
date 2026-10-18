@@ -255,7 +255,7 @@ async fn execute(
         command.current_dir(cwd);
     }
     let child = match permit {
-        Some(permit) => pool.spawn_with_permit(&mut command, permit),
+        Some(permit) => pool.spawn_with_permit(&mut command, permit, None),
         None => pool.spawn(&mut command),
     }
     .map_err(Error::from)?;

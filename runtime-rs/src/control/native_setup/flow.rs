@@ -56,8 +56,7 @@ impl ControlService {
         let service = self.clone();
         let returned = operation.clone();
         self.tasks.spawn(async move {
-            let _permit = permit;
-            let work = service.prepare_native_chain(body, runtime, model, &operation, &cancel);
+            let work = service.prepare_native_chain(body, runtime, model, &operation, &cancel, &permit);
             tokio::pin!(work);
             let result = match tokio::time::timeout(Duration::from_secs(8 * 3600), &mut work).await
             {
@@ -66,12 +65,14 @@ impl ControlService {
                     cancel.cancel();
                     // Drain owned writes and the system-installer handoff before
                     // releasing admission; closing the page never stops this task.
-                    let _ = work.await;
-                    Err(ApiError::new(
-                        504,
-                        "NATIVE_SETUP_TIMEOUT",
-                        "准备超时，已停止；已完成文件保留，请检查后重试",
-                    ))
+                    match work.await {
+                        Err(error) if error.code == "TERMINATION_UNCONFIRMED" => Err(error),
+                        _ => Err(ApiError::new(
+                            504,
+                            "NATIVE_SETUP_TIMEOUT",
+                            "准备超时，已停止；已完成文件保留，请检查后重试",
+                        )),
+                    }
                 }
             };
             let completed = result.is_ok();
@@ -94,6 +95,7 @@ impl ControlService {
         model: ModelBundle,
         operation: &Value,
         cancel: &CancellationToken,
+        permit: &Arc<OwnedSemaphorePermit>,
     ) -> Result<()> {
         stopped(cancel)?;
         let current = self.native_setup_plan().await?;
@@ -108,7 +110,7 @@ impl ControlService {
                 current["freeBytes"].as_u64(),
                 current["runtime"]["requiredBytes"].as_u64().unwrap(),
             )?;
-            self.install_native_runtime(&runtime, &runtime_operation, cancel)
+            self.install_native_runtime(&runtime, &runtime_operation, cancel, permit, None)
                 .await?;
         }
         self.stage(operation, 3);
@@ -140,7 +142,7 @@ impl ControlService {
             .join("inference/models")
             .join(&model.id);
         if !receipt_matches(&model_root, &model) {
-            self.install_native_model(&model, &model_operation, cancel)
+            self.install_native_model(&model, &model_operation, cancel, permit)
                 .await?;
         }
         self.stage(operation, 6);
@@ -153,7 +155,7 @@ impl ControlService {
         activation["flowStep"] = json!("activate");
         self.native_stage(&activation, 0);
         let saved = self
-            .activate_native_settings(body, &activation, cancel)
+            .activate_native_settings(body, &activation, cancel, permit)
             .await?;
         if saved["configured"]["engine"] != "native" {
             return Err(ApiError::new(

@@ -99,16 +99,15 @@ impl ControlService {
         let service = self.clone();
         let returned = operation.clone();
         self.tasks.spawn(async move {
-            let _permit = permit;
             let result = async {
                 let work = async {
                     if let Some(model) = model {
                         service
-                            .install_native_model(&model, &operation, &cancel)
+                            .install_native_model(&model, &operation, &cancel, &permit)
                             .await
                     } else {
                         service
-                            .install_native_runtime(&runtime, &operation, &cancel)
+                            .install_native_runtime(&runtime, &operation, &cancel, &permit, None)
                             .await
                     }
                 };
@@ -119,12 +118,14 @@ impl ControlService {
                         cancel.cancel();
                         // Drain owned download writes and terminate/reap any installer
                         // before unlocking another preparation operation.
-                        let _ = work.await;
-                        Err(ApiError::new(
-                            504,
-                            "NATIVE_SETUP_TIMEOUT",
-                            "准备超过四小时，已停止；请检查网络或磁盘后继续",
-                        ))
+                        match work.await {
+                            Err(error) if error.code == "TERMINATION_UNCONFIRMED" => Err(error),
+                            _ => Err(ApiError::new(
+                                504,
+                                "NATIVE_SETUP_TIMEOUT",
+                                "准备超过四小时，已停止；请检查网络或磁盘后继续",
+                            )),
+                        }
                     }
                 }
             }
@@ -140,6 +141,8 @@ impl ControlService {
         runtime: &RuntimeBundle,
         operation: &Value,
         cancel: &CancellationToken,
+        permit: &Arc<OwnedSemaphorePermit>,
+        keep_alive: Option<Arc<dyn Send + Sync>>,
     ) -> Result<()> {
         let workspace = &self.config.ai_workspace_root;
         let cache = workspace
@@ -176,7 +179,7 @@ impl ControlService {
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
         let value = self
-            .run_native_installer(&mut command, cancel, operation)
+            .run_native_installer(&mut command, cancel, operation, permit.clone(), keep_alive)
             .await?;
         let paths = runtime_paths(self, runtime);
         if value["engine"] != "native"
@@ -212,6 +215,7 @@ impl ControlService {
         model: &ModelBundle,
         operation: &Value,
         cancel: &CancellationToken,
+        permit: &Arc<OwnedSemaphorePermit>,
     ) -> Result<()> {
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
@@ -236,7 +240,7 @@ impl ControlService {
                 "当前工作区运行库不可用，请重新准备",
             ));
         }
-        self.validate_native_model(&settings, root, cancel)
+        self.validate_native_model(&settings, root, cancel, permit)
             .await?;
         stopped(cancel)?;
         self.native_stage(operation, 3);
@@ -284,6 +288,7 @@ impl ControlService {
         settings: &crate::generation::native::Settings,
         model: &Path,
         cancel: &CancellationToken,
+        permit: &Arc<OwnedSemaphorePermit>,
     ) -> Result<()> {
         let inspect = model.to_owned();
         let issue = tokio::task::spawn_blocking(move || crate::generation::native::model_issue(&inspect)).await
@@ -298,7 +303,7 @@ impl ControlService {
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
-        let value = self.run_setup_helper(&mut command, cancel, 120).await?;
+        let value = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None).await?;
         if value["event"] != "validation" || value["valid"] != true {
             return Err(ApiError::new(
                 502,
