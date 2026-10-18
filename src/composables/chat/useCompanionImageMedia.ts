@@ -3,24 +3,20 @@ import type { CompanionChatImage } from '@/types/companionDrawing'
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import { fetchRuntimeResult, isRuntimeResultPath } from '@/api/runtimeTasks'
 import { blobThumbDataUrl } from '@/utils/imageThumb'
-import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession as mediaSession, useOriginalImage } from '../useOriginalImage'
 
 export const companionImageKey = (image: CompanionChatImage) => JSON.stringify([image.imageId || '', image.path])
 const mediaId = (image: CompanionChatImage) => image.imageId || (/^(?:image-|img_|task-)/.test(image.path) ? image.path : '')
-function mediaSession() {
-  const state = getDesktopRuntime(), runtime = state.bootstrap?.runtime, workspace = runtime?.workspace
-  return JSON.stringify([state.connection, state.bootstrap?.sourceProfileId, runtime?.origin, runtime?.runtimeEpoch,
-    workspace?.workspaceId, workspace?.principalId, workspace?.runtimeEpoch, workspace?.generation])
-}
-
 /** Message cards retain only derived previews; an open dialog owns one original. */
 export function useCompanionImageMedia(isActive: () => boolean, onSessionChange: (ready: boolean) => void) {
   const sources = shallowRef<Record<string, string>>({})
   const failures = shallowRef<Record<string, boolean>>({})
   const thumbnailsLoading = ref(false)
-  const originalUrl = ref(''), originalLoading = ref(false), originalError = ref('')
+  const original = useOriginalImage()
+  const { url: originalUrl, loading: originalLoading, error: originalError, release: releaseOriginal } = original
   const rejectedThumbnails = new Set<string>()
-  let thumbnails: AbortController | null = null, original: AbortController | null = null
+  let thumbnails: AbortController | null = null
   let previewRepository = artworkRepository
   let thumbnailImages: CompanionChatImage[] = [], thumbnailKeys = new Set<string>()
   let disposed = false
@@ -104,26 +100,9 @@ export function useCompanionImageMedia(isActive: () => boolean, onSessionChange:
     failures.value = { ...failures.value, [key]: true }
   }
 
-  function releaseOriginal() {
-    original?.abort(); original = null
-    if (originalUrl.value) URL.revokeObjectURL(originalUrl.value)
-    originalUrl.value = ''; originalLoading.value = false; originalError.value = ''
-  }
-  async function loadOriginal(image: CompanionChatImage) {
-    releaseOriginal()
-    if (disposed || !isActive()) return
-    const request = new AbortController(), repository = artworkRepository, session = mediaSession()
-    original = request; originalLoading.value = true
-    const current = () => !disposed && isActive() && original === request && !request.signal.aborted
-      && repository === artworkRepository && session === mediaSession()
-    try {
-      const blob = await readOriginal({ ...image }, request.signal, repository)
-      if (current()) originalUrl.value = URL.createObjectURL(blob)
-    } catch {
-      if (current()) originalError.value = '原图暂时无法读取，请重试。'
-    } finally {
-      if (original === request) { original = null; originalLoading.value = false }
-    }
+  function loadOriginal(image: CompanionChatImage) {
+    const selection = { ...image }
+    return original.load({ current: () => !disposed && isActive(), read: (signal, repository) => readOriginal(selection, signal, repository) })
   }
   function originalFailed() {
     if (!originalUrl.value) return

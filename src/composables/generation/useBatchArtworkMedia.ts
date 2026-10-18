@@ -1,8 +1,9 @@
-import { computed, onActivated, onDeactivated, onUnmounted, reactive, ref, shallowRef, watch, type Ref } from 'vue'
+import { computed, onActivated, onDeactivated, onUnmounted, reactive, ref, watch, type Ref } from 'vue'
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { blobThumbDataUrl } from '@/utils/imageThumb'
 import { useGalleryThumbnails } from '../gallery/useGalleryThumbnails'
+import { useOriginalImage } from '../useOriginalImage'
 import type { BatchDrawJob } from './useBatchDraw'
 
 export type BatchArtworkJob = Pick<BatchDrawJob, 'id' | 'requestKey' | 'historyId' | 'imageId' | 'pendingImage' | 'status' | 'sceneTitle' | 'subtitle' | 'variant' | 'seed' | 'snapshot'>
@@ -143,53 +144,24 @@ export function useBatchArtworkOriginal(options: {
   active: Ref<boolean>
   pendingImage: PendingImage
 }) {
-  const url = shallowRef(''), error = ref('')
-  let objectUrl = '', controller: AbortController | null = null, timer: ReturnType<typeof setTimeout> | undefined, revision = 0, disposed = false
-  let reading = false, queued = false
-  function stop() { revision++; controller?.abort(); controller = null; clearTimeout(timer); timer = undefined }
-  function release() { if (objectUrl) URL.revokeObjectURL(objectUrl); objectUrl = ''; url.value = '' }
-  function load() {
-    stop()
-    queued = false
-    if (!options.active.value || disposed) return
-    release(); error.value = ''
+  const original = useOriginalImage()
+  async function load(preserve = false) {
+    if (!options.active.value) { original.stop(); return }
     const source = options.current.value
-    if (!source) return
-    // Web IndexedDB cannot abort a read already in progress. Wait for its
-    // actual completion, then read only the latest selection, to bound blobs.
-    if (reading) { queued = true; return }
-    const job = { ...source }, identity = mediaKey(job), version = revision
-    const repository = artworkRepository, runtime = runtimeResourceIdentity(), read = new AbortController()
-    controller = read
-    reading = true
-    const current = () => !disposed && options.active.value && version === revision
-      && runtime === runtimeResourceIdentity() && repository === artworkRepository
-      && options.current.value && mediaKey(options.current.value) === identity
-    const deadline = setTimeout(() => {
-      read.abort(new DOMException('作品原图读取超时', 'TimeoutError'))
-      if (current()) error.value = '作品原图读取超时，请重新打开预览'
-    }, 35_000)
-    timer = deadline
-    void (async () => {
-      try {
+    if (!source) { original.release(); return }
+    const job = { ...source }, identity = mediaKey(job)
+    await original.load({
+      preserve,
+      current: () => options.active.value && !!options.current.value && mediaKey(options.current.value) === identity,
+      async read(signal, repository) {
         const retained = job.pendingImage ? options.pendingImage(job.requestKey) : null
-        const alias = retained ? null : await imageId(job, repository, read.signal)
-        const blob = retained || (alias ? await repository.getImage(alias, read.signal) : null)
-        read.signal.throwIfAborted()
-        if (!current()) return
-        if (!blob) { error.value = '作品原图暂时无法读取'; return }
-        objectUrl = URL.createObjectURL(blob); url.value = objectUrl
-      } catch { if (current() && !read.signal.aborted) error.value = '作品原图暂时无法读取，请重新打开预览' }
-      finally {
-        clearTimeout(deadline); reading = false
-        if (controller === read) { controller = null; timer = undefined }
-        if (queued) load()
-      }
-    })()
+        const alias = retained ? null : await imageId(job, repository, signal)
+        signal.throwIfAborted()
+        return retained || (alias ? await repository.getImage(alias, signal) : null)
+      },
+    })
   }
-  watch(() => [options.current.value && mediaKey(options.current.value), options.active.value, runtimeResourceIdentity()], load, { immediate: true, flush: 'post' })
-  onDeactivated(() => { queued = false; stop(); release() })
-  onUnmounted(() => { disposed = true; queued = false; stop(); release() })
+  watch(() => [options.current.value && mediaKey(options.current.value), options.active.value, original.session.value], () => { void load() }, { immediate: true, flush: 'post' })
   // Closing stops pending work but keeps the painted image until its exit ends.
-  return { url, error }
+  return { url: original.url, error: original.error, retry: () => load(true) }
 }
