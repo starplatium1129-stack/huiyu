@@ -16,7 +16,7 @@ export async function archiveTaskResult(taskId: string, index = 0, repository: A
   check()
   const task = await getRuntimeTask(taskId)
   check()
-  const saved = await saveTaskResult(task, index, { repository, markSaved: id => { check(); return markRuntimeTask(id, 'saved') } })
+  const saved = await saveTaskResult(task, index, { repository, assertCurrent: check, markSaved: id => markRuntimeTask(id, 'saved') })
   check()
   return saved
 }
