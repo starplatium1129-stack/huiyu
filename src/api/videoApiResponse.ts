@@ -28,7 +28,7 @@ function isVideoJob(value: unknown): value is VideoJob {
   if (!isRecord(value)) return false
   return isNonEmptyText(value.id)
     && ['queued', 'running', 'cancelling', 'succeeded', 'failed', 'cancelled'].includes(String(value.status))
-    && value.provider === 'comfy'
+    && ['comfy', 'native'].includes(String(value.provider))
     && (value.progress === null || isFiniteNumber(value.progress) && value.progress >= 0 && value.progress <= 1)
     && (value.needsReview === undefined || typeof value.needsReview === 'boolean')
     && isFiniteNumber(value.estimatedSeconds) && value.estimatedSeconds >= 0

@@ -1,0 +1,5 @@
+# Python 3.11 CPU postprocessing only; no Torch, ComfyUI or model weights.
+# Use HUIYU_NATIVE_ADAPTER_PYTHON, separate from the managed Anima environment.
+numpy==2.2.6
+opencv-python-headless==4.12.0.88
+Pillow==11.3.0

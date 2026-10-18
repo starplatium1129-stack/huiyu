@@ -1,0 +1,67 @@
+{
+  "id": "manga-screen",
+  "schemaVersion": 4,
+  "validation": "待主力机验证",
+  "repository": "https://github.com/ashukae/ComfyUI-MangaScreen",
+  "revision": "d0eb8dcc6c45274e3eee118ff0dabe05b56039b9",
+  "license": "MIT",
+  "licenseFile": "MANGASCREEN_LICENSE.txt",
+  "device": "cpu",
+  "weightsRequired": false,
+  "minInputSide": 128,
+  "maxInputSide": 4096,
+  "maxInputPixels": 2097152,
+  "maxOutputSide": 8192,
+  "maxOutputPixels": 16777216,
+  "operations": {
+    "levels": ["levels"],
+    "finish": ["finish"],
+    "panel": ["panel"],
+    "lite": ["levels", "finish", "panel"],
+    "comic": ["finish", "panel"],
+    "lineart": []
+  },
+  "rewrite": {
+    "models": ["qwen-image-2.1-turbo", "qwen-image-2.1"],
+    "defaultModel": "qwen-image-2.1-turbo",
+    "defaultPrompt": "Redraw this image as a black-and-white manga panel. Preserve the subjects, their identities, clothing, poses, expressions and composition. Use clear ink outlines and simple tonal areas. Keep skin and white fabric mostly paper white, and reserve solid black for genuinely dark objects. Do not add text or speech bubbles.",
+    "minSize": 512, "maxSize": 2816, "alignment": 32,
+    "validation": "待主力机验证"
+  },
+  "lineart": {
+    "id": "manga-line-extraction", "weight": "erika.pth", "device": "cpu",
+    "repository": "https://github.com/ljsabc/MangaLineExtraction_PyTorch",
+    "revision": "6ec136d5332180b65476e62c2558f2873d5d936a",
+    "weightsUrl": "https://github.com/ljsabc/MangaLineExtraction_PyTorch/releases/download/v1/erika.pth",
+    "license": "MIT", "licenseFile": "MANGALINE_LICENSE.txt",
+    "torch": "2.8.0", "validation": "待主力机验证"
+  },
+  "parameters": {
+    "levels": {
+      "black": {"default": 0.2, "min": 0, "max": 0.9},
+      "white": {"default": 0.7, "min": 0.1, "max": 1},
+      "gamma": {"default": 1.3, "min": 0.3, "max": 3}
+    },
+    "finish": {
+      "screen_lines": {"default": 200, "min": 40, "max": 600, "integer": true},
+      "white_point": {"default": 0.8, "min": 0.3, "max": 1},
+      "black_point": {"default": 0.3, "min": 0, "max": 0.7},
+      "light_tone": {"default": 0.18, "min": 0.02, "max": 0.9},
+      "dark_tone": {"default": 0.42, "min": 0.02, "max": 0.95},
+      "gradation": {"default": 1, "min": 0, "max": 1},
+      "pen_threshold": {"default": 0.3, "min": 0.05, "max": 0.95},
+      "white_lines": {"default": 0.4, "min": 0, "max": 1}
+    },
+    "panel": {
+      "frame": {"default": "4:3 wide", "choices": ["original", "4:3 wide", "16:9 wide", "3:4 tall", "1:1"]},
+      "crop_x": {"default": 0.5, "min": 0, "max": 1},
+      "crop_y": {"default": 0.4, "min": 0, "max": 1},
+      "border": {"default": 5, "min": 0, "max": 40, "integer": true},
+      "margin": {"default": 60, "min": 0, "max": 400, "integer": true},
+      "paper": {"default": "white", "choices": ["white", "off-white", "cream"]},
+      "ink": {"default": 0.5, "min": 0, "max": 1}
+    }
+  },
+  "dependencies": {"numpy": "2.2.6", "opencv-python-headless": "4.12.0.88", "Pillow": "11.3.0"},
+  "remaining": ["多格排版与文字气泡", "批处理与持久任务种类", "线稿 GPU/分块推理", "主力机画质、取消和资源验收"]
+}

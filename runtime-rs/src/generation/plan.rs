@@ -40,7 +40,14 @@ impl Execution {
         match self {
             Self::Webui(_) => "/api/generation",
             Self::Comfy(plan) => plan.route_base,
-            Self::Native(_) => "/api/anima",
+            Self::Native(plan) if plan.input["mediaKind"] == "video" => "/api/video",
+            Self::Native(plan) => match plan.input["family"].as_str() {
+                Some("krea2") => "/api/creative",
+                Some("qwen-image") => "/api/qwen",
+                Some("manga-screen") => "/api/manga",
+                Some("wan2.2") => "/api/video",
+                _ => "/api/anima",
+            },
         }
     }
 }
@@ -69,14 +76,15 @@ impl Service {
         transport: LocalUpstream,
         shutdown: CancellationToken,
     ) -> Result<Self> {
-        Self::with_scope(config, transport, shutdown, Scope::Images)
+        Self::with_scope(config, transport, shutdown, Scope::Images, None)
     }
     pub(crate) fn for_video(
         config: Config,
         transport: LocalUpstream,
         shutdown: CancellationToken,
+        native_engine: Arc<native::Engine>,
     ) -> Result<Self> {
-        Self::with_scope(config, transport, shutdown, Scope::Video)
+        Self::with_scope(config, transport, shutdown, Scope::Video, Some(native_engine))
     }
     pub(crate) async fn prepare_comfy(
         &self,
@@ -139,6 +147,9 @@ impl Service {
         probe::comfy_status(&self.inner, &self.inner.cancel).await
     }
     pub(crate) fn pending(&self) -> usize {
+        if self.inner.native_images {
+            return self.inner.native.pending();
+        }
         self.inner.scope.capacity() - self.inner.admission.available_permits()
     }
     pub(crate) async fn family_allowed(&self, id: &str, owner: &str, family: &str) -> Result<()> {

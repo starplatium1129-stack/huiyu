@@ -1,7 +1,7 @@
 import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
-import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
+import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
@@ -27,7 +27,7 @@ async function request<T>(path: string, method = 'GET', body?: unknown, signal?:
   const expected = epoch()
   onSubmitting?.()
   const response = await apiClient.request<{ result: T; runtimeEpoch: string }>(base + path, {
-    method, body, signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: method === 'POST' && path === '' ? 150_000 : method === 'POST' && path.endsWith('/concat') ? 120_000 : 30_000,
+    method, body, signal, cache: 'no-store', cachePolicy: 'bypass', timeoutMs: method === 'POST' && (path === '' || path.endsWith('/retry')) ? 150_000 : method === 'POST' && path.endsWith('/concat') ? 120_000 : 30_000,
   })
   if (expected !== epoch() || response.runtimeEpoch !== expected) throw new ApiClientError('运行时连接已更换', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
   return response.result
@@ -96,6 +96,31 @@ export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<
   }
 }
 export async function getRuntimeTask(id: string, signal?: AbortSignal) { return remember(await request<TaskRecord>('/' + encodeURIComponent(id), 'GET', undefined, signal)) }
+export async function retryRuntimeMangaTask(source: TaskSummary): Promise<TaskRecord> {
+  if (source.runtimeEpoch !== epoch()) throw new Error('运行时已更换，请重新读取原任务')
+  const key = runtimeMangaRetryKey(source)
+  let submitting = false
+  const expected = epoch()
+  const received = (task: TaskRecord) => {
+    if (task.requestKey !== key || task.kind !== source.kind || task.metadata.retryOfTaskId !== source.taskId) throw new Error('重试记录与原任务不符，请重新核对')
+    return remember(task)
+  }
+  try {
+    return received(await request<TaskRecord>(`/${encodeURIComponent(source.taskId)}/retry`, 'POST', {}, undefined, () => {
+      markTaskRequestSubmitting(key); submitting = true
+    }))
+  } catch (error) {
+    if (!submitting) { releaseUnsubmittedTaskRequest(key); throw error }
+    // Never look up a private task in a replacement workspace or replay POST.
+    if (expected !== epoch()) throw error
+    if (error instanceof ApiClientError && error.kind === 'http' && error.status < 500) {
+      forgetTaskRequest(key); throw error
+    }
+    const found = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key)).catch(() => null)
+    if (found) return received(found)
+    throw new ApiClientError('重试接收状态尚未确认，请在任务中心查询；原图、参数和操作编号已保留。', { kind: 'network', code: 'TASK_ACCEPTANCE_UNKNOWN' })
+  }
+}
 export async function getRuntimeTaskSummary(id: string, signal?: AbortSignal): Promise<TaskSummary> {
   const task = await request<TaskSummary>('/' + encodeURIComponent(id) + '?summary=true', 'GET', undefined, signal)
   mergeTasks([task], epoch())
@@ -142,6 +167,16 @@ export async function markRuntimeTask(id: string, state: TaskRecord['deliverySta
 }
 export function taskMessage(task: TaskSummary): string {
   if (task.deliveryState === 'discarded') return '结果已移出收件箱，已入册作品保留。'
+  if (task.errorCode === 'NATIVE_RESTART_INTERRUPTED') return task.kind === 'manga' || task.kind === 'lineart'
+    ? '原生处理因重启中断，未自动重跑。核对结束后可用已保存的原图和参数重试。待主力机验证。'
+    : '原生处理因重启中断，未自动重跑。请返回入口重新发起；适配待主力机验证。'
+  if (task.errorCode === 'MANGA_RESULT_INCOMPLETE') return '重启前仅保存了部分结果；已保存图片仍可查看、导出或入册，其余未恢复。待主力机验证。'
+  if (task.errorCode === 'TASK_RESUME_UNSAFE') return '恢复条件不足，原输入或运行环境不可用。请返回入口重新发起，或取消原任务。'
+  if (task.errorCode === 'RESULT_COLLECTION_PENDING') return '处理已结束，结果保存等待重试；会继续收取同一结果，不会重新运行模型。'
+  if ((task.kind === 'manga' || task.kind === 'lineart') && task.status === 'failed') {
+    if (task.errorCode?.startsWith('MANGA_DEPENDENCY')) return '漫画处理环境缺少依赖或版本不符，请按漫画环境说明准备依赖后重试。待主力机验证。'
+    return `漫画或线稿任务未完成${task.errorCode ? `（${task.errorCode}）` : ''}，请核对原生环境后重试。待主力机验证。`
+  }
   if (task.errorCode === 'WEBUI_STOP_CONFIRMED') return task.resultState === 'available'
     ? '你已确认 WebUI 已停止或重启，任务占用已解除。已保存结果仍可查看和入册。'
     : '你已确认 WebUI 已停止或重启，任务占用已解除。原任务已保留，未取回的结果仍未确认。'

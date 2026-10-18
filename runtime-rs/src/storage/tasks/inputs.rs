@@ -5,6 +5,15 @@ enum InputCommand<'a> {
     Prepare(&'a Value),
 }
 
+pub(super) fn execute_read(c: &Context, principal: &str, id: &str, name: &str) -> Result<Value> {
+    let (_, stored, committed) = lookup(c, principal, id, name)?;
+    Ok(if committed {
+        stored.unwrap_or(Value::Null)
+    } else {
+        Value::Null
+    })
+}
+
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let id = string(command, "taskId")?;
     let name = string(command, "name")?;

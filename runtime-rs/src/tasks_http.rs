@@ -213,6 +213,11 @@ async fn perform(
                     .resume(storage.clone(), session.principal_id.clone(), id.clone())
                     .await?
             }
+            ("POST", [id, action]) if action == "retry" => {
+                runtime
+                    .retry_manga(storage.clone(), session.principal_id.clone(), id.clone())
+                    .await?
+            }
             ("POST", [id, action]) if ["concat", "continue"].contains(&action.as_str()) => {
                 runtime
                     .action(

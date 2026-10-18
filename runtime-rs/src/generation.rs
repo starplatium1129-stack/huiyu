@@ -72,7 +72,7 @@ impl Drop for Life {
 
 struct Inner {
     control: std::sync::RwLock<std::sync::Weak<crate::control::ControlService>>,
-    native: native::Engine,
+    native: Arc<native::Engine>,
     native_images: bool,
     native_settings: native::Settings,
     scope: Scope,
@@ -186,6 +186,9 @@ impl Service {
     pub(crate) fn native_settings(&self) -> Result<native::Settings> {
         Ok(self.inner.native_settings.clone())
     }
+    pub(crate) fn native_engine(&self) -> Arc<native::Engine> {
+        self.inner.native.clone()
+    }
     pub(crate) fn native_enabled(&self) -> bool {
         self.inner.native_settings.engine == "native"
     }
@@ -194,13 +197,14 @@ impl Service {
         transport: LocalUpstream,
         shutdown: CancellationToken,
     ) -> Result<Self> {
-        Self::with_scope(config, transport, shutdown, Scope::Wai)
+        Self::with_scope(config, transport, shutdown, Scope::Wai, None)
     }
     fn with_scope(
         config: Config,
         transport: LocalUpstream,
         shutdown: CancellationToken,
         scope: Scope,
+        native_engine: Option<Arc<native::Engine>>,
     ) -> Result<Self> {
         crate::upstream::local_url(&config.sd_host)?;
         crate::upstream::local_url(&config.comfy_host)?;
@@ -208,8 +212,8 @@ impl Service {
         let native_settings = native::load(&config)?;
         let inner = Arc::new(Inner {
             control: std::sync::RwLock::new(std::sync::Weak::new()),
-            native: native::Engine::default(),
-            native_images: matches!(scope, Scope::Images) && native_settings.engine == "native",
+            native: native_engine.unwrap_or_default(),
+            native_images: matches!(scope, Scope::Images | Scope::Video) && native_settings.engine == "native",
             native_settings,
             scope,
             config,

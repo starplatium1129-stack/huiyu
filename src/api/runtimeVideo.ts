@@ -34,7 +34,7 @@ export function taskVideoJob(task: TaskRecord): VideoJob {
   const terminal = ['succeeded', 'failed', 'cancelled'].includes(task.status)
   const needsReview = task.recoveryState !== 'normal' || task.resultState === 'unavailable'
   const elapsed = Math.max(0, Math.floor(((terminal ? task.updatedAt : Date.now()) - task.createdAt) / 1000))
-  return { id: task.taskId, status: task.status === 'submitting' ? 'queued' : task.status, provider: 'comfy',
+  return { id: task.taskId, status: task.status === 'submitting' ? 'queued' : task.status, provider: task.provider === 'native' ? 'native' : 'comfy',
     progress: task.status === 'succeeded' ? 1 : null, needsReview, estimatedSeconds: number(metadata.estimatedSeconds), elapsedSeconds: terminal ? Math.max(0, number(metadata.elapsedSeconds, elapsed)) : elapsed,
     modelId: text(input.modelId), prompt: text(input.originalPrompt || input.prompt), width: number(input.width), height: number(input.height), duration: number(input.duration), fps: number(input.fps), seed: number(input.seed),
     createdAt: task.createdAt, resultAvailable: task.resultRefs.some(ref => ref.index === 0),

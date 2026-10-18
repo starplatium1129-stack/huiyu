@@ -427,17 +427,15 @@ impl TaskRuntime {
                     .and_then(|value| value["gatewayJobId"].as_str())
             });
             if let Some(id) = gateway {
-                let family = if task.kind == TaskKind::Creative {
-                    "krea2"
-                } else {
-                    "anima"
-                };
-                match self.images.query(id, principal, family).await {
+                match self.query_provider(task.kind, id, principal).await {
                     Ok(observation) => return Ok(observation),
                     Err(error) if matches!(error.code.as_str(), "JOB_NOT_FOUND" | "JOB_LOST") => {}
                     Err(error) => return Err(error),
                 }
             }
+        }
+        if task.kind.is_manga() {
+            return manga::recover(storage, principal, task).await;
         }
         if task.kind != TaskKind::Batch {
             return self

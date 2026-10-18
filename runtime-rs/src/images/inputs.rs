@@ -99,7 +99,7 @@ pub(super) async fn capture(
     let native = input["inferenceEngine"] == "native";
     let mut originals = Vec::new();
     let mut names = std::collections::HashSet::new();
-    for key in ["initImage", "maskImage"] {
+    for key in ["initImage", "maskImage", "penLines"] {
         let Some(name) = input[key].as_str() else {
             continue;
         };

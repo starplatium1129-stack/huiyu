@@ -1,4 +1,179 @@
-# 独立 Anima 图像推理接入
+# 独立图像与视频推理接入
+
+## 原生图像与视频适配入口（待主力机验证）
+
+这些适配复用固定 Diffusers 源码，不使用 ComfyUI 节点、Python 或量化分片。
+它们与受管 Anima 环境分开：在独立 Python 3.11 venv 中安装
+`tools/inference/requirements-adapters.txt`，CUDA PyTorch 使用对应 cu128 发行。
+其中 Diffusers 固定为 `b800f828f3951c4d206e154411bcbfa693cd322e`、Transformers 5.17.0；
+不要向已有 Anima 环境安装这份依赖。安装、下载权重与 GPU 推理均须在具备条件的机器显式执行。
+
+将完整 Diffusers 快照放在所选 `modelsRoot/<modelId>/`，保留模型许可文件；
+官方实现、指定转换仓库、参考 revision 与组件白名单见 `tools/inference/adapter-models.json`。
+目录检查只证明配置和文件存在，不证明本地权重来自参考 revision 或能够推理。
+
+| modelId | 指定权重仓库 | 原生入口与功能 |
+| --- | --- | --- |
+| krea2-raw | krea/Krea-2-Raw | `/api/creative/jobs`；文生图，默认 52 步、Krea guidance 3.5 |
+| krea2-turbo | krea/Krea-2-Turbo | 同上；8 步、Krea guidance 0，固定 distilled 调度 |
+| qwen-image-2.1 | Qwen/Qwen-Image-2.1 | `/api/qwen/jobs`；文生图、单图指令编辑，默认 40 步、CFG 1 |
+| qwen-image-2.1-turbo | Qwen/Qwen-Image-2.1-Turbo | 同上；8 步、CFG 1，使用权重声明的 sample_sigmas |
+| wan2.2-ti2v-5b | Wan-AI/Wan2.2-TI2V-5B-Diffusers | `/api/video/jobs`；3/5 秒文生视频，默认 50 步、CFG 5、24 fps |
+| wan2.2-14b | Wan-AI/Wan2.2-T2V-A14B-Diffusers | 同上；T2V 双模型，40 步，高/低噪声 CFG 4/3，16 fps |
+| hunyuan-video-1.5 | hunyuanvideo-community/HunyuanVideo-1.5-Diffusers-480p_t2v | 同上；480p T2V，50 步、guider CFG 6，24 fps；仅 standard 画布 |
+| minimax-h3 | MiniMaxAI/MiniMax-H3 | 同上；t2va 联合音视频，默认 50 个 sigma 点，24 fps；5/10 秒档位 |
+| ltx-2.3 | diffusers/LTX-2.3-Diffusers | 同上；基础单阶段联合音视频，30 步，24 fps；独立视频/音频 CFG 3/7 |
+
+Hunyuan 使用其官方项目链接的 Diffusers 转换版本；LTX 使用 Diffusers 文档指定的 2.3 转换版本。
+H3 需要根目录 `modular_model_index.json` 和 text_encoder、tokenizer、processor、transformer、vae、audio_vae、
+scheduler、audio_scheduler；t2va 无需 transformer_ref 或原始 FL2VA/Ref2VA 树。加载器只读已校验的本地组件，
+不跟随索引中的远程加载地址。既有 Comfy INT8/NVFP4、Turbo LoRA 和分片不能直接用于这些 BF16 入口。
+
+时长档位映射到可解码的帧数：Wan 5B/Hunyuan/LTX 为 73/121 帧，Wan A14B 为 49/81 帧，
+H3 为 124/243 帧。`encodedDuration` 给出实际帧数除以帧率的时长，不承诺精确整秒。
+H3 的步数包含终点零，实际采样更新数少一次；进度取调度器的实际更新数，不伪造为请求步数。
+Hunyuan 画布为横向 832×480、纵向 480×832、正方形 640×640，其他画质档位明确拒绝。
+
+Krea 仓库需先接受官方许可并获得访问权；选择 transformer、text_encoder、tokenizer、vae、scheduler
+及 model_index 的完整快照，无需额外下载重复的根目录 raw/turbo.safetensors。
+官方文件清单可读，但受限配置及真实加载仍待主力机核验。Krea 权重适用 Krea 2 Community License，
+Qwen 2.1 权重适用 Qwen Research License（非商业研究/评估；商业用途须另获许可），
+Wan 权重及 Diffusers 实现为 Apache-2.0；H3、Hunyuan、LTX 分别遵循其模型许可，LTX 文本编码器另受 Gemma 许可约束。
+实现许可证不替代权重许可证；许可链接随适配声明返回。
+
+启动绘遇前设置 `HUIYU_NATIVE_ADAPTER_PYTHON=<独立venv的python.exe>`，显式选择 native 引擎、
+native 加速；`HUIYU_INFERENCE_MEMORY=offload` 使用上游组件 CPU offload，resident 将整条管线放到 GPU。
+当前新增适配每任务释放权重，无量化、块卸载或跨任务权重复用；大模型仍可能超出主力机显存/内存。
+H3 的 BF16 文本编码器和扩散模型各自仍是大组件，组件卸载不等于能在消费级显卡运行；量化/块卸载尚未接入。
+Hunyuan/LTX 启用上游 VAE tiling。视频需本地带 libx264 的 ffmpeg，H3/LTX 另需 AAC 编码器；
+可用 `HUIYU_NATIVE_FFMPEG` 指定绝对路径。音轨缺失、采样率或时长不匹配会报错，不静默导出无声视频。
+
+最短人工核验：用该 Python 执行 `-I tools/inference/adapter_worker.py --diagnose`，再执行
+`--validate <完整目录> --model-id <ID>`；两者都不加载权重。重启后读取对应 `/status`，
+确认 provider=native，再通过上述 jobs API 提交单张 1024×1024、固定 seed 的文生图；
+图像请求仅需 modelId、prompt、width、height，可加 seed/steps/cfg/negative。
+Qwen 原图先经 `/api/qwen/images/raw` 上传，再将返回名称放入 initImage；编辑不接受 denoisingStrength。
+视频沿用现有 prompt、modelId、aspectRatio、duration、camera、motion 请求字段；省略 steps 使用对应版本默认值。
+H3 从 5 秒开始，其余从 3 秒开始；H3 不接受负向提示词。检查音视频同步时使用实际 `encodedDuration`。
+通过 GET jobs/id 查看实际采样步、DELETE jobs/id 取消，并核对下一任务、原 Anima 链路与显存释放。
+真实结果文件、画面、取消恢复及资源占用须分别人工验收；不得将诊断、构建或目录就绪当成出图证明。
+
+本轮新增模型以网关 API 为接入入口，专用前端和受管安装流程尚未扩展。
+当前未接入：新增模型 LoRA/遮罩/高清、Qwen 多参考图与持久任务种类、全部新视频入口的图生/关键帧/参考媒体与分镜批量，
+H3 对白专用参数、量化和 Turbo LoRA，Hunyuan 720p/I2V/蒸馏，LTX 多阶段超分/蒸馏及自动提示词增强。
+选择未实现能力会明确报错，不回退 ComfyUI；LTX-2.3 不会被自动替换为 2.5。
+原 Anima 受管安装和采样实现保持原入口；下文历史设备证据只适用于原有 Anima 范围。
+
+## MangaScreen 漫画后处理基础（待主力机验证）
+
+原生 `/api/manga` 复用 [ComfyUI-MangaScreen](https://github.com/ashukae/ComfyUI-MangaScreen)
+的 MIT 算法，固定 revision `d0eb8dcc6c45274e3eee118ff0dabe05b56039b9`；版权与完整许可随
+`tools/inference/MANGASCREEN_LICENSE.txt` 打包。核心去除 Comfy/Torch 节点包装，添加阶段取消，
+修正上游 border=0 的整幅涂黑切片问题；不宣称与上游输出逐像素一致。
+
+基础后处理在 CPU 执行，无模型权重。`HUIYU_NATIVE_ADAPTER_PYTHON` 指向单独 Python 3.11 环境，
+按 `requirements-manga.txt` 准备 NumPy、OpenCV headless、Pillow；可与前述 adapters 环境共用兼容依赖，
+不要改动受管 Anima 环境，也不要混装多个 OpenCV wheel。`--catalog` 仅读声明，`--diagnose` 仅检查依赖导入。
+CPU 路径不会申请 CUDA 或为自身停止聊天模型；它仍复用原生串行队列，切换 worker 会释放旧推理 worker。
+
+启用 native 后，先向 `POST /api/manga/images/raw` 上传单帧 PNG/JPEG/WebP（二进制请求体，
+`Content-Type: application/octet-stream`），再向 `POST /api/manga/jobs` 提交：
+
+```json
+{"operation":"lite","initImage":"<上传返回的 name>","panel":{"frame":"original","border":0,"margin":0,"ink":0}}
+```
+
+`levels` 仅灰度/色阶；`finish` 仅线条、平涂和网点；`panel` 仅裁框/纸张；默认 `lite` 依次执行三者，`comic` 执行 finish → panel。
+`lineart` 为仅提取线稿的独立操作，直接从输入原图提取，复用相同任务队列、进度、取消、超时及本地权重检查。
+请求为 `{"operation":"lineart","initImage":"<上传返回的 name>","autoLines":true}`；`autoLines` 可省略并按 true 处理，
+明确传 false、重绘、外部线稿或色阶/网点/纸张参数均拒绝。只加载同一官方 MangaLineExtraction CPU 实现，
+不加载 Qwen 或执行 MangaScreen 网点/纸张步骤；仍需上述独立环境与 `manga-line-extraction/erika.pth`，**待主力机验证**。
+嵌套参数沿用上游名称和默认值，完整范围见 `manga-screen.json` 及 `GET /api/manga/status`；
+不属于所选操作的参数组、未知参数和倒置黑白点会明确拒绝。`penLines` 可传另一次上传返回的线稿名称，
+仅包含 finish 的操作接受，不能与重绘或自动线稿混用。`penLinesPolarity` 为 `white-on-black`（API 默认）
+或 `black-on-white`；`penLinesFit` 为 `stretch`（API 默认，沿用原有缩放行为）或 `exact`（尺寸不同即拒绝）。
+界面导入默认黑线白底、严格同尺寸；尺寸不同时须显式勾选「允许缩放对齐处理图」，不会暗中拉伸。
+
+可选模型步骤仍为**待主力机验证**：
+
+- `rewrite` 接收 `modelId`、`prompt`、`width`、`height`、`seed`，仅与 `comic` / `finish` 配合。
+  模型为 `qwen-image-2.1-turbo`（8 步）或 `qwen-image-2.1`（40 步），固定 CFG=1、无负向；
+  直接复用前述固定 revision 的官方 Diffusers `QwenImage21Pipeline`、目录检查和本地加载器。
+  使用完整 Diffusers 目录 `<modelsRoot>/<modelId>/`，不接受 Comfy 拆件或量化权重。
+  两个 Qwen 权重版本及研究许可见 `adapter-models.json`；该许可不因本项目代码接入而改变。
+  编辑尺寸每边 512–2816、32 对齐，合计不超过 2,097,152 像素；传入原图而非纯文生图。
+  界面初始指令是依据上游漫画流程编写的可编辑草稿，尚未编译 Token 或真实出图验收。
+- `autoLines:true` 在当前处理图（Qwen 重绘后或 lite 色阶后）上提取线稿，随后交给 MangaFinish。
+  直接保留 [论文作者的网络](https://github.com/ljsabc/MangaLineExtraction_PyTorch/tree/6ec136d5332180b65476e62c2558f2873d5d936a)
+  与 state_dict 名称，固定 revision `6ec136d5332180b65476e62c2558f2873d5d936a`；
+  MIT 许可随 `MANGALINE_LICENSE.txt` 打包，仅去掉 CLI、数据集和不可达调试代码。
+  主力机手工准备 [官方 v1 erika.pth](https://github.com/ljsabc/MangaLineExtraction_PyTorch/releases/tag/v1)（约 165 MB）
+  到 `<modelsRoot>/manga-line-extraction/erika.pth`。按作者预处理保留原尺寸、灰度 0–255、补齐 16 倍数，
+  输出反相为 MangaFinish 所需的白线黑底；CPU FP32 执行，不做隐式缩图或算法替代。
+  仅 `weights_only=True` 严格加载；记录实际文件 SHA-256，但不把文件存在/哈希记录称为官方权重或效果验证。
+- 模型步骤需在独立环境准备 `requirements-manga-models.txt`（合并现有 adapters 与 CPU 图像依赖），
+  未开启时不导入 Torch。Qwen 继承控制室的 resident/offload 策略及聊天显存交接，结束后释放模型再提线稿。
+  两步骤属于同一个漫画任务，发布漫画 PNG 和可选的独立线稿 PNG；重绘中间图在任务私有目录内清理。
+  状态接口分别列出 Qwen 和线稿文件缺失原因，依赖在提交后的 worker 初始化检查；无自动下载、跳步或 Comfy 回退。
+
+组合请求示例（仅接口格式，不代表运行通过）：
+
+```json
+{"operation":"comic","initImage":"<上传返回的 name>","rewrite":{"modelId":"qwen-image-2.1-turbo","prompt":"Redraw this image as a black-and-white manga panel, preserving its subjects and composition.","width":1024,"height":1024,"seed":0},"autoLines":true,"panel":{"frame":"original","border":0,"margin":0}}
+```
+
+输入每边 128–4096、最多 2,097,152 像素，按 EXIF 校正并将透明区域合成白纸，不暗中缩放。
+裁框后最多 8192 边长、16,777,216 像素，结果为 PNG，元数据宽高取真实输出。
+通过 GET `/api/manga/jobs/{id}` 查询阶段、DELETE 同路径取消，`/result` 获取成品。
+自动提取或外部线稿任务还可通过 `/api/manga/jobs/{id}/lineart` 获取黑线白底 PNG；
+`metadata.lineartResult` 返回实际宽高、`polarity:black-on-white`、`stage:before-panel` 和「待主力机验证」。
+独立 `lineart` 操作的 stage 为 `extracted`，`/result` 与 `/lineart` 返回同一主结果，不额外发布重复的附属文件。
+线稿是用于 MangaFinish 的线条强度图的 8 位副本，保留阈值化、裁框前尺寸；外部线稿按所选极性、对齐方式处理后保存。
+临时 jobs 的两份结果共用任务所属者、成功状态和结果目录检查，取消、过期及关闭时一同清理。
+桌面漫画入口使用 `/api/tasks/v1`，`kind:manga` / `kind:lineart` 分别提交漫画和独立线稿；`input` 沿用上述参数。
+原图及外部线稿复用任务输入保护；主结果为 `results/0`，漫画的可选线稿为 `results/1`，独立线稿只有 `results/0`。
+结果按现有工作区媒体链路持久化，全部必需输出提交后才标为可用；不依赖临时 jobs URL 或页面存活。
+单独预览、保存、导出或重新读取已完成任务的线稿不会重新运行模型。
+Qwen 在采样步回调取消，线稿在网络层边界取消，单次 OpenCV/卷积调用只能完成后响应；
+沿用宿主 10 秒取消宽限和 10 分钟任务超时，必要时回收子进程。
+漫画网点的 3 倍超采样会消耗 CPU 内存，独立线稿不执行该步骤；两种操作的资源峰值均尚未实测。
+
+主力机最短核验：用指定 Python 运行 `-I tools/inference/manga_worker.py --diagnose`，确认状态为 native，
+上传一张已获授权的小图，提交上述任务，核对网点、零边框、实际尺寸，再检查取消后重提和既有生图链路。
+前端入口为「我的作品 → 大图操作 → 漫画化」，画集顶部可导入本地图片，绘制工作台「成片再创作」可带入当前原图。
+右侧依次提供 Qwen 重绘、线稿来源（不使用／自动提取／导入外部线稿）和后处理参数。
+选择「自动提取线稿」后，可点「仅提取线稿」，仅从原图提取并自动打开线稿预览；保留现有漫画预览和参数。
+独立任务沿用原图的显式缩小设置，Qwen 开关及漫画参数不影响该任务；处理漫画仍使用底部「处理为漫画」。
+画布顶部为「原图／线稿／漫画／对比」；在线稿页区分导入预览、独立提取结果与漫画附带线稿，旁边可导出黑线白底 PNG 或存入我的作品，
+复用缩放查看器、下拉框、勾选框与现有桌面/浏览器保存入口。导入预览保留原尺寸，透明区域按所选底色合成。
+导入线稿保存复用 `artworkRepository` 的 staging、图片上传、作品追加与缩略图缓存。
+任务成片和线稿则复用任务中心 `saveTaskResult`，直接引用已持久化媒体，以 `task-{taskId}-{index}` 去重，不重复上传图片。
+使用独立于漫画的作品编号、`artifactKind:lineart` 和「线稿」标签，记录实际尺寸、源作品关系、原始配方/任务编号及待验证状态。
+导入线稿记录 `provider:local`、原文件名称和极性，标明是本地导入；任务线稿记录 native，不混淆来源。
+保存失败保留当前结果的身份供重试；漫画与线稿分别入册，全部收到的结果入册后才标记整条任务已保存。
+关闭面板只停止读取，不取消已接收任务；入口底部可直接进入任务中心。导入预览保存未确认时仍提示保留或导出。
+线稿读取失败可重试，不阻止漫画另存；无附带线稿的新漫画任务保留上一次线稿并明确显示其为旧结果。
+界面默认完整构图、零边框/留白；超限图片须显式勾选缩小处理副本。处理只在点击按钮后提交，参数调整不自动运行。
+结果保存实际后端配方与源作品关系，不覆盖原图；服务未就绪会显示原因，取消以服务端终态为准，断线后重新连接原任务。
+模型步骤最短核验：主力机准备上述环境和本地权重后，从「漫画化」用一张小图分别启用线稿、Qwen，再组合启用，
+核对角色/构图、线条极性、网点与实际尺寸；运行中取消并确认终态、显存释放和再次提交，最后检查已有生图入口。
+线稿功能最短核验：同尺寸黑线白底 PNG 导入 → 预览并导出 → 处理为漫画 → 分别导出漫画与任务线稿；
+再核对白线黑底/透明线稿、尺寸不符时的显式对齐、自动提取后的线稿、裁框前尺寸和取消后的清理。
+独立任务与作品库最短核验：原图 → 自动提取线稿 → 仅提取线稿 → 存入我的作品 → 关闭面板后重开作品，核对尺寸、来源与「线稿」标签；
+再分别保存导入线稿与漫画附带线稿，核对保存重试不新增同一结果的重复记录、漫画/线稿分开保存、任务过期不影响已入库图片。
+重启恢复沿用任务中心的核对机制：完整落盘的结果保留预览、导出与入册；仅保存部分结果时明确提示缺失，保留已落盘图片。
+从未提交且未取消的排队任务可显式「继续处理」，须能恢复受保护输入且引擎身份、已冻结配方仍有效；缺少输入时拒绝恢复。
+已开始的原生推理没有采样断点，重启后标为中断，不自动重跑；工作区/提供方不匹配时保留待核对状态。
+已确认结束的失败或重启中断漫画/独立线稿任务，可在任务中心点「重试此任务」。`POST /api/tasks/v1/{id}/retry` 从原任务恢复受保护原图、外部线稿和已冻结参数（包括重绘种子），从头处理，不接收浏览器替换配方。
+每条原记录只创建一个重试任务，固定请求编号与双向关联随任务持久化；重复操作或回执丢失只找回同一条记录。重试任务再次失败时，在那条记录上重试；「查看原任务／查看重试任务」可跨历史分页定位。
+接收重试时，在同一存储事务中建立新任务、输入媒体引用和关联，不重复上传素材；原记录、已保存的部分结果与入册身份保留。重试任务仍沿用原有取消、重启核对、预览、导出和入册链路。
+未知状态须先核对；主动取消不自动改为重试。原图/外部线稿未持久化、输入不可读取、引擎配置或冻结配方版本不匹配时拒绝重试，需修复原条件或回漫画入口新建任务。
+任务中心最短核验：分别提交漫画（带线稿）与独立线稿 → 关闭漫画窗口 → 在任务中心查看 → 结果落盘后重启 → 分别预览、导出和入册；
+确认先保存漫画不会隐藏未保存线稿，同一结果重试保存不重复；另核对排队重启、处理中重启、取消及工作区切换。
+一键重试最短核验：在主力机对已确认失败/中断的两类任务分别重试，核对参数、种子与原图/外部线稿不变；连续点击、重启或回执丢失后仍只对应一个重试任务，再核对原结果保留、新任务取消及结果入册。
+此处仅保留以后操作步骤，本轮未下载权重、执行推理或测试。
+本阶段不含线稿 GPU/分块推理、多格排版/气泡、批处理或已开始推理的断点续算。
+任务中心、跨重启恢复与一键重试代码、视觉结果、取消延迟与性能均为**待主力机验证**。
 
 ## 当前使用方式（2026-10-14）
 
@@ -16,7 +191,7 @@
 
 加载阶段显示环境、模型核验、各组件加载与上传、编码、解码及保存进度。取消在安全阶段或采样步边界生效，清理后确认 ready 才保留模型；10 秒内没有确认或发生故障时仍结束进程，避免后续任务与未退出工作重叠。已完成任务的取消竞争不再无条件销毁模型。
 
-未显式配置引擎时仍默认 ComfyUI；上述一键准备会保存原生引擎设置。原生范围是已支持的 Anima 模型与 LoRA、图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS。首次准备使用上述受管下载；已有 Python 与本地 wheelhouse 的离线准备、完整 Diffusers 目录导入保留为高级入口。应用不盲用 ComfyUI Python；Krea/SDXL/视频和任意 Comfy 节点尚不属于原生支持范围。
+未显式配置引擎时仍默认 ComfyUI；上述一键准备会保存原生引擎设置。受管安装范围是已支持的 Anima 模型与 LoRA、图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS。首次准备使用上述受管下载；已有 Python 与本地 wheelhouse 的离线准备、完整 Diffusers 目录导入保留为高级入口。应用不盲用 ComfyUI Python；新增 Krea/Qwen/Wan 入口需按本文首节单独准备，尚待主力机验证。SDXL 和任意 Comfy 节点不属于原生支持范围。
 
 用户授权后完成 36 张产品 API 成片、5 次取消，并完成安装版取消/恢复；2026-10-13 已完整安装到 `C:/Program Files/AI-CG-Studio`，用户确认实际体验良好。本机 RTX 4070 Ti SUPER 的 MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4 三张热任务中位数为原生 5.05 秒、ComfyUI 5.54 秒；Latent 高清速度接近，局部手部细节仍有差异。分阶段模式较慢但显存峰值更低。本轮不推广为全模型、自动换装语义或全部硬件验收。
 
@@ -58,7 +233,7 @@ Native 完成图仍先检查 PNG 格式、32 MiB 上限并完整解码，再将 
 - 已接入本地完整 Diffusers 目录的文生图、图生图、实验性手绘遮罩局部重绘及本地兼容 LoRA，沿用绘遇的任务身份、进度、取消与结果协议。
 - 模型目录默认按现有 catalog 的 modelId 组织在 `AI_WORKSPACE_ROOT/inference/models/<modelId>/`；控制室中可配置模型根目录与独立 LoRA 根目录。目录必须包含该权重对应的配置、tokenizer、文本编码器、conditioner、transformer 与 VAE。
 - 现有裸 MiaoMiao / Anima safetensors 文件不能简单重命名为完整目录；对应结构与配套资源必须先通过转换器的精确核验；实际出图仍需核验。不同 MiaoMiao 架构不能仅靠名字认定兼容。
-- TeaCache 日常使用内置 Anima 策略，默认开启，`teaCache: false` 明确关闭；普通图、LoRA、提示词权重与高清无需逐组合校准，不读取旧校准档。RCAS、Latent / 固定 Remacri 高清与圆括号提示词权重已有指定组合的真实 GPU 证据，其他组合与设备效果仍须实际验收。显式校准档仅供维护研究路径，不构成产品启用条件。任意 RealESRGAN 权重、非 Anima 家族与视频仍不支持，不能静默忽略或改采样器完成请求。Krea 2、SDXL 等属于后续范围。
+- TeaCache 日常使用内置 Anima 策略，默认开启，`teaCache: false` 明确关闭；普通图、LoRA、提示词权重与高清无需逐组合校准，不读取旧校准档。RCAS、Latent / 固定 Remacri 高清与圆括号提示词权重已有指定组合的真实 GPU 证据，其他组合与设备效果仍须实际验收。显式校准档仅供维护研究路径，不构成产品启用条件。任意 RealESRGAN 权重仍不支持；这些 Anima 专用加速和后处理不适用于新增 Krea/Qwen/Wan 入口，不能静默忽略或改采样器完成请求。
 - 已支持的 LoRA 格式为原生 Diffusers/PEFT A/B 及官方识别的 `diffusion_model.*` A/B（含 llm_adapter）；另支持经原始模块名及实际 Linear 形状严格核验的 Anima Kohya `lora_unet_*` down/up/alpha 三元组（含 llm_adapter），按 alpha/rank 缩放 B；通用 Kohya 家族、卷积适配器、DoRA、残缺/非有限权重及未知格式明确拒绝。已测角色与模型组合见本轮报告，未知权重仍须实际加载验收。
 
 ## 高级：离线运行库准备

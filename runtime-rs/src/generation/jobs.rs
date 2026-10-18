@@ -35,7 +35,11 @@ pub(super) fn create(
         Execution::Comfy(plan) => plan.metadata.clone(),
         Execution::Native(plan) => {
             let mut metadata = plan.input.clone();
-            metadata["engine"] = plan.input["family"].clone();
+            metadata["engine"] = if plan.input["mediaKind"] == "video" {
+                json!("video")
+            } else {
+                plan.input["family"].clone()
+            };
             metadata
         }
     };
@@ -167,6 +171,10 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
     let state = job.state.lock().await;
     let mut metadata = state.metadata.clone();
     metadata["gatewayJobId"] = json!(job.id);
+    if job.input["family"] == "manga-screen" {
+        metadata["progress"] = json!(state.progress);
+        metadata["progressText"] = json!(state.progress_text);
+    }
     if let Some(finished) = state.finished {
         // Durable task adapters also need the frozen engine duration. Do not
         // persist a ticking duration and rewrite SQLite on every live poll.
@@ -210,6 +218,7 @@ pub(super) async fn discard_output(job: &Job) {
         state.result.take()
     };
     if let Some(Output::File { path, .. }) = result {
+        native::manga::discard(job, &path).await;
         let _ = tokio::fs::remove_file(path).await;
     }
 }
@@ -261,6 +270,7 @@ pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) 
                 snapshots::remove(inner, &job.id).await;
             }
             if let Output::File { path, .. } = output {
+                native::manga::discard(job, &path).await;
                 let _ = tokio::fs::remove_file(path).await;
             }
             return;
@@ -320,7 +330,7 @@ async fn try_collect(inner: &Inner, job: &Job) -> bool {
         tokio::select! {
             biased;
             _ = inner.cancel.cancelled() => return true,
-            result = hooks.collect(vec![output]) => result,
+            result = native::manga::collect(job, hooks.as_ref(), output) => result,
         }
     } else {
         Ok(())

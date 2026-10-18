@@ -190,7 +190,14 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       '/character-references': { target: 'http://127.0.0.1:3000', changeOrigin: true },
       '/docs':        { target: 'http://127.0.0.1:3000', changeOrigin: true },
       // dev 模式下 tools/ 由 Rust gateway 提供，Vite 需转发
-      '/tools':       { target: 'http://127.0.0.1:3000', changeOrigin: true }
+      '/tools': {
+        target: 'http://127.0.0.1:3000', changeOrigin: true,
+        bypass(req: IncomingMessage) {
+          // Shared public parameter contract is a JS module in the UI; other tools stay behind the gateway.
+          const url = new URL(req.url ?? '', 'http://localhost')
+          if (url.pathname === '/tools/inference/manga-screen.json' && url.searchParams.has('import')) return req.url
+        }
+      }
     }
   },
   build: {

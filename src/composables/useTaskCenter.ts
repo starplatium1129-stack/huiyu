@@ -21,6 +21,7 @@ export interface TaskRecord extends TaskSummary { id: string; createdAt: number;
 export interface TaskControls { cancel?: () => unknown; retry?: () => unknown }
 const tasks = ref<TaskRecord[]>([])
 const opened = ref(false)
+export const runtimeTaskOpenRequest = ref(0)
 const storageError = ref('')
 const actions = shallowReactive(new Map<string, TaskControls>())
 let reloadApproved = false
@@ -166,6 +167,7 @@ export function useTaskCenter() {
   // Runtime tasks survive page disposal; image interrogation is still page-owned.
   const pageActiveCount = computed(() => tasks.value.filter(task => task.status === 'running' && actions.has(task.id)).length)
   return { tasks, opened, storageError, pageActiveCount,
+    openRuntimeTasks() { runtimeTaskOpenRequest.value++; opened.value = true },
     activeCount: computed(() => (hasRuntimeTasks() ? runtimeTaskActiveCount.value : 0) + pageActiveCount.value),
     controls: (id: string) => actions.get(id),
     clearCompleted() {

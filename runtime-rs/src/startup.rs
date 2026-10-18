@@ -113,6 +113,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         model_config,
         transport,
         shutdown.clone(),
+        images.native_engine(),
     )?);
     let tasks = Arc::new(crate::task_runtime::TaskRuntime::new(
         generation.clone(),

@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "validation": "待主力机验证",
+  "implementation": {
+    "repository": "https://github.com/huggingface/diffusers",
+    "revision": "b800f828f3951c4d206e154411bcbfa693cd322e",
+    "license": "Apache-2.0",
+    "transformers": "5.17.0"
+  },
+  "layouts": {
+    "Krea2Pipeline": {
+      "text_encoder": ["transformers", "Qwen3VLModel"],
+      "tokenizer": ["transformers", "Qwen2Tokenizer", "Qwen2TokenizerFast"],
+      "transformer": ["diffusers", "Krea2Transformer2DModel"],
+      "vae": ["diffusers", "AutoencoderKLQwenImage"],
+      "scheduler": ["diffusers", "FlowMatchEulerDiscreteScheduler"]
+    },
+    "QwenImage21Pipeline": {
+      "text_encoder": ["transformers", "Qwen3VLForConditionalGeneration"],
+      "processor": ["transformers", "Qwen3VLProcessor"],
+      "transformer": ["diffusers", "QwenImage21Transformer2DModel"],
+      "vae": ["diffusers", "AutoencoderKLQwenImage21"],
+      "scheduler": ["diffusers", "FlowMatchEulerDiscreteScheduler"]
+    },
+    "WanA14B": {
+      "text_encoder": ["transformers", "UMT5EncoderModel"],
+      "tokenizer": ["transformers", "T5Tokenizer", "T5TokenizerFast"],
+      "transformer": ["diffusers", "WanTransformer3DModel"],
+      "transformer_2": ["diffusers", "WanTransformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLWan"],
+      "scheduler": ["diffusers", "UniPCMultistepScheduler"]
+    },
+    "HunyuanVideo15Pipeline": {
+      "text_encoder": ["transformers", "Qwen2_5_VLTextModel"],
+      "text_encoder_2": ["transformers", "T5EncoderModel"],
+      "tokenizer": ["transformers", "Qwen2Tokenizer", "Qwen2TokenizerFast"],
+      "tokenizer_2": ["transformers", "ByT5Tokenizer"],
+      "transformer": ["diffusers", "HunyuanVideo15Transformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLHunyuanVideo15"],
+      "guider": ["diffusers", "ClassifierFreeGuidance"],
+      "scheduler": ["diffusers", "FlowMatchEulerDiscreteScheduler"]
+    },
+    "LTX2Pipeline": {
+      "text_encoder": ["transformers", "Gemma3ForConditionalGeneration"],
+      "tokenizer": ["transformers", "GemmaTokenizer", "GemmaTokenizerFast"],
+      "transformer": ["diffusers", "LTX2VideoTransformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLLTX2Video"],
+      "audio_vae": ["diffusers", "AutoencoderKLLTX2Audio"],
+      "connectors": ["ltx2", "LTX2TextConnectors"],
+      "vocoder": ["ltx2", "LTX2VocoderWithBWE"],
+      "scheduler": ["diffusers", "FlowMatchEulerDiscreteScheduler"]
+    },
+    "MiniMaxH3ModularPipeline": {
+      "text_encoder": ["transformers", "Qwen3VLForConditionalGeneration"],
+      "tokenizer": ["transformers", "Qwen2Tokenizer", "Qwen2TokenizerFast"],
+      "processor": ["transformers", "Qwen3VLProcessor"],
+      "transformer": ["diffusers", "MiniMaxH3Transformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLMiniMaxH3"],
+      "audio_vae": ["diffusers", "AutoencoderKLMiniMaxH3Audio"],
+      "scheduler": ["diffusers", "MiniMaxH3Scheduler"],
+      "audio_scheduler": ["diffusers", "MiniMaxH3Scheduler"]
+    },
+    "WanPipeline": {
+      "text_encoder": ["transformers", "UMT5EncoderModel"],
+      "tokenizer": ["transformers", "T5Tokenizer", "T5TokenizerFast"],
+      "transformer": ["diffusers", "WanTransformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLWan"],
+      "scheduler": ["diffusers", "UniPCMultistepScheduler"]
+    }
+  },
+  "models": {
+    "krea2-raw": {
+      "label": "Krea 2 RAW · 原生 BF16",
+      "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
+      "repository": "krea/Krea-2-Raw",
+      "revision": "6b0ece7fffb640c5e3bcbe0a7f10f66b8e60a603",
+      "source": "https://github.com/krea-ai/krea-2",
+      "license": "Krea 2 Community License",
+      "licenseUrl": "https://www.krea.ai/krea-2-licensing",
+      "layoutNote": "Official gated repository lists a complete Diffusers layout. Accept its license before obtaining the snapshot; the extra raw.safetensors is not needed. Exact gated configs remain to be checked on the primary machine.",
+      "steps": 52, "cfg": 3.5, "maxSize": 1024, "alignment": 16,
+      "edit": false, "negative": false, "distilled": false
+    },
+    "krea2-turbo": {
+      "label": "Krea 2 Turbo · 原生 BF16",
+      "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
+      "repository": "krea/Krea-2-Turbo",
+      "revision": "98e0fe118d17c9e3547fbb2e25acdbae2cadf7c7",
+      "source": "https://github.com/krea-ai/krea-2",
+      "license": "Krea 2 Community License",
+      "licenseUrl": "https://www.krea.ai/krea-2-licensing",
+      "layoutNote": "Official gated repository lists a complete Diffusers layout; this loader requires is_distilled=true. Accept its license before obtaining the snapshot; the extra turbo.safetensors is not needed. Exact gated configs remain to be checked on the primary machine. Comfy FP8 split files are unsupported.",
+      "steps": 8, "cfg": 0, "maxSize": 2048, "alignment": 16,
+      "edit": false, "negative": false, "distilled": true
+    },
+    "qwen-image-2.1": {
+      "label": "Qwen-Image-2.1 · 原生 BF16",
+      "family": "qwen-image", "media": "image", "pipeline": "QwenImage21Pipeline",
+      "repository": "Qwen/Qwen-Image-2.1",
+      "revision": "d26bb61231c349cf6b7896fa83353113880e1ba3",
+      "source": "https://github.com/QwenLM/Qwen-Image-2.1",
+      "license": "Qwen Research License (non-commercial research/evaluation; commercial license separately)",
+      "licenseUrl": "https://huggingface.co/Qwen/Qwen-Image-2.1/blob/main/LICENSE",
+      "steps": 40, "cfg": 1, "maxSize": 2816, "alignment": 32,
+      "edit": true, "negative": true, "distilled": false
+    },
+    "qwen-image-2.1-turbo": {
+      "label": "Qwen-Image-2.1 Turbo · 原生 BF16",
+      "family": "qwen-image", "media": "image", "pipeline": "QwenImage21Pipeline",
+      "repository": "Qwen/Qwen-Image-2.1-Turbo",
+      "revision": "fc13ba1986fcb905854dc8de2f52eee395f49b5b",
+      "source": "https://github.com/QwenLM/Qwen-Image-2.1",
+      "license": "Qwen Research License (non-commercial research/evaluation; commercial license separately)",
+      "licenseUrl": "https://huggingface.co/Qwen/Qwen-Image-2.1-Turbo/blob/main/LICENSE",
+      "steps": 8, "cfg": 1, "maxSize": 2816, "alignment": 32,
+      "edit": true, "negative": false, "distilled": true,
+      "sampleSigmas": [1.0, 0.978453, 0.95418, 0.926626, 0.89508, 0.845148, 0.704534, 0.414568]
+    },
+    "wan2.2-ti2v-5b": {
+      "label": "Wan 2.2 TI2V 5B · 原生 BF16",
+      "family": "wan2.2", "media": "video", "pipeline": "WanPipeline",
+      "repository": "Wan-AI/Wan2.2-TI2V-5B-Diffusers",
+      "revision": "b8fff7315c768468a5333511427288870b2e9635",
+      "source": "https://github.com/Wan-Video/Wan2.2",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B-Diffusers/blob/main/LICENSE",
+      "steps": 50, "cfg": 5, "maxSize": 1344, "alignment": 32,
+      "edit": false, "negative": true, "distilled": false,
+      "fps": 24, "minFrames": 5, "maxFrames": 121, "frameMultiple": 4, "frameOffset": 1,
+      "durationFrames": {"3": 73, "5": 121}, "sampler": "unipc", "audio": false
+    },
+    "wan2.2-14b": {
+      "label": "Wan 2.2 T2V A14B · 原生 BF16",
+      "family": "wan2.2", "media": "video", "pipeline": "WanPipeline", "layout": "WanA14B",
+      "repository": "Wan-AI/Wan2.2-T2V-A14B-Diffusers",
+      "revision": "5be7df9619b54f4e2667b2755bc6a756675b5cd7",
+      "source": "https://github.com/Wan-Video/Wan2.2",
+      "license": "Apache-2.0", "licenseUrl": "https://github.com/Wan-Video/Wan2.2/blob/main/LICENSE.txt",
+      "steps": 40, "cfg": 4, "cfgLowNoise": 3, "boundaryRatio": 0.875,
+      "maxSize": 1344, "alignment": 32, "edit": false, "negative": true, "distilled": false,
+      "fps": 16, "minFrames": 5, "maxFrames": 81, "frameMultiple": 4, "frameOffset": 1,
+      "durationFrames": {"3": 49, "5": 81}, "sampler": "unipc", "audio": false
+    },
+    "hunyuan-video-1.5": {
+      "label": "HunyuanVideo 1.5 · 480p T2V 原生 BF16",
+      "family": "hunyuan-video-1.5", "media": "video", "pipeline": "HunyuanVideo15Pipeline",
+      "repository": "hunyuanvideo-community/HunyuanVideo-1.5-Diffusers-480p_t2v",
+      "revision": "286be7ce72277246578a3e3cc2487e95ddae5bcf",
+      "source": "https://github.com/Tencent-Hunyuan/HunyuanVideo-1.5",
+      "license": "Tencent Hunyuan Community License", "licenseUrl": "https://github.com/Tencent-Hunyuan/HunyuanVideo-1.5/blob/main/LICENSE",
+      "layoutNote": "Diffusers-documented community conversion of the official 480p T2V weights; no I2V or 720p substitution.",
+      "steps": 50, "cfg": 6, "minSize": 480, "maxSize": 832, "alignment": 32,
+      "canvases": {"landscape": [832, 480], "portrait": [480, 832], "square": [640, 640]},
+      "edit": false, "negative": true, "distilled": false,
+      "fps": 24, "minFrames": 5, "maxFrames": 121, "frameMultiple": 4, "frameOffset": 1,
+      "durationFrames": {"3": 73, "5": 121}, "sampler": "euler", "audio": false
+    },
+    "ltx-2.3": {
+      "label": "LTX-2.3 · 原生音视频 BF16",
+      "family": "ltx-2.3", "media": "video", "pipeline": "LTX2Pipeline",
+      "repository": "diffusers/LTX-2.3-Diffusers",
+      "revision": "8eee8edcf067e838b843f926ec4d4cc9b2be1aaf",
+      "source": "https://github.com/Lightricks/LTX-2",
+      "license": "LTX-2.3 Community License; Gemma license also applies to text encoder",
+      "licenseUrl": "https://huggingface.co/Lightricks/LTX-2.3/blob/main/LICENSE",
+      "steps": 30, "cfg": 3, "maxSize": 1344, "alignment": 32,
+      "edit": false, "negative": true, "distilled": false,
+      "fps": 24, "minFrames": 9, "maxFrames": 121, "frameMultiple": 8, "frameOffset": 1,
+      "durationFrames": {"3": 73, "5": 121}, "sampler": "euler", "audio": true, "sampleRate": 48000
+    },
+    "minimax-h3": {
+      "label": "MiniMax H3 · 原生音视频 BF16",
+      "family": "minimax-h3", "media": "video", "pipeline": "MiniMaxH3ModularPipeline",
+      "indexFile": "modular_model_index.json", "blocks": "MiniMaxH3Blocks", "workflow": "t2va",
+      "repository": "MiniMaxAI/MiniMax-H3",
+      "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
+      "source": "https://github.com/MiniMax-AI/MiniMax-H3",
+      "license": "MiniMax H3 Community License", "licenseUrl": "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE",
+      "layoutNote": "Root modular Diffusers components only; transformer_ref and original FL2VA/Ref2VA trees are not needed for t2va. No Comfy INT8/NVFP4 or Turbo LoRA substitution.",
+      "steps": 50, "minSteps": 2, "cfg": 1, "maxSize": 1344, "alignment": 32,
+      "edit": false, "negative": false, "distilled": false,
+      "fps": 24, "minFrames": 124, "maxFrames": 345, "frameMultiple": 17, "frameOffset": 5,
+      "durationFrames": {"5": 124, "10": 243}, "sampler": "minimax-h3-dual", "audio": true, "sampleRate": 32000
+    }
+  },
+  "pendingVideo": {
+    "minimax-h3": "尚缺关键帧/Ref2VA、对白专用参数、量化/块卸载、Turbo LoRA；BF16 组件卸载仍需大量内存与显存。3 秒与精确 15 秒未开放。",
+    "wan2.2-14b": "尚缺独立 I2V 权重及图生视频、LightX2V/量化；当前仅 T2V A14B 双噪声模型。",
+    "hunyuan-video-1.5": "尚缺 720p、I2V、蒸馏与超分；当前固定 480p T2V 版本和 standard 画质画布。",
+    "ltx-2.3": "尚缺图生视频、多阶段超分与 distilled 配方；当前仅 2.3 基础单阶段联合音视频，不替换为 2.5。"
+  }
+}

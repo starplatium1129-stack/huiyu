@@ -3,6 +3,8 @@ use crate::task_contract::{TaskListQuery, TaskListScope, TaskSummary};
 
 // Project in SQLite: large recipes and checkpoints never cross the worker boundary.
 const SUMMARY_BODY: &str = "json_set(json_remove(record_json,'$.input','$.inputMediaRefs','$.metadata','$.checkpoint','$.requestFingerprint','$.requestFingerprintLocale','$.providerFingerprint'),
+         '$.retryOfTaskId', json_extract(record_json,'$.metadata.retryOfTaskId'),
+         '$.retryTaskId', json_extract(record_json,'$.metadata.retryTaskId'),
          '$.sourceBatchId', CASE WHEN json_type(record_json,'$.metadata.context.retriedTaskId')='text' AND json_type(record_json,'$.metadata.context.stepIndex')='integer' AND json_extract(record_json,'$.metadata.context.stepIndex')>=0 THEN json_extract(record_json,'$.metadata.context.retriedTaskId') ELSE NULL END,
          '$.canConcat', json(CASE WHEN json_extract(record_json,'$.kind')='batch' AND json_extract(record_json,'$.status')='succeeded' AND json_array_length(record_json,'$.resultRefs')>1 AND json_type(record_json,'$.checkpoint.shots')='array' AND NOT EXISTS (SELECT 1 FROM json_each(record_json,'$.resultRefs') WHERE json_extract(value,'$.index')=json_array_length(record_json,'$.checkpoint.shots')) THEN 'true' ELSE 'false' END))";
 

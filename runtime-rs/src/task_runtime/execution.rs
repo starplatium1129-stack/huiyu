@@ -345,6 +345,8 @@ impl TaskRuntime {
             upstream_settled: Some(observation.settled),
             recovery_state: Some(if observation.unknown {
                 TaskRecoveryState::Unknown
+            } else if observation.error_code.as_deref() == Some("TASK_AWAITING_RESUME") {
+                TaskRecoveryState::Interrupted
             } else {
                 TaskRecoveryState::Normal
             }),

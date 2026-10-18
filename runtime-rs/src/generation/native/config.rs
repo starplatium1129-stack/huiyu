@@ -12,6 +12,8 @@ pub(crate) struct Settings {
     #[serde(default = "default_memory_policy")]
     pub memory_policy: String,
     pub python: PathBuf,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub adapter_python: Option<PathBuf>,
     pub worker: PathBuf,
     pub models_root: PathBuf,
     pub loras_root: PathBuf,
@@ -62,6 +64,7 @@ impl Settings {
                 acceleration: default_acceleration(),
                 memory_policy: default_memory_policy(),
                 python,
+                adapter_python: None,
                 worker,
                 models_root,
                 loras_root,
@@ -93,6 +96,9 @@ impl Settings {
             if !path.is_absolute() || path.to_str().is_none_or(|p| p.contains('\0')) {
                 return Err(ApiError::invalid("推理路径必须是有效的绝对路径"));
             }
+        }
+        if self.adapter_python.as_ref().is_some_and(|p| !p.is_absolute() || p.to_str().is_none_or(|s| s.contains('\0'))) {
+            return Err(ApiError::invalid("新增模型 Python 必须是有效的绝对路径"));
         }
         Ok(())
     }
@@ -142,6 +148,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
         ("acceleration", "HUIYU_INFERENCE_ACCELERATION"),
         ("memoryPolicy", "HUIYU_INFERENCE_MEMORY"),
         ("python", "HUIYU_INFERENCE_PYTHON"),
+        ("adapterPython", "HUIYU_NATIVE_ADAPTER_PYTHON"),
         ("worker", "HUIYU_INFERENCE_WORKER"),
         ("modelsRoot", "HUIYU_INFERENCE_MODELS_ROOT"),
         ("lorasRoot", "HUIYU_INFERENCE_LORAS_ROOT"),

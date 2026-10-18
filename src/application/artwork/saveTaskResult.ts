@@ -2,10 +2,13 @@ import type { ArtworkRepository } from './artworkRepository'
 import type { TaskRecord } from '../../../types/tasks'
 import type { ArtworkRecord } from '@/types/artwork'
 import { runtimeTaskResultContext, runtimeTaskRecipe } from '@/utils/runtimeTaskResult'
+import { mangaTaskArtwork } from './mangaTaskResult'
 
 /** Task outputs already live in the workspace; save adds an artwork reference. */
 export async function saveTaskResult(task: TaskRecord, index: number, deps: { repository: ArtworkRepository; markSaved(id: string): Promise<unknown> }): Promise<ArtworkRecord> {
   const artworkRepository = deps.repository
+  const manga = task.kind === 'manga' || task.kind === 'lineart'
+  if (manga && task.resultState !== 'available') throw new Error('漫画结果仍在保存，请稍后入册')
   const output = task.resultRefs.find(value => value.index === index)
   if (!output?.mime.startsWith('image/')) throw new Error('请选择图片结果入册')
   const context = runtimeTaskResultContext(task) as Record<string, unknown>
@@ -17,7 +20,7 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: { re
   if (!existing) {
     const input = task.input
     const recipe = runtimeTaskRecipe(task)
-    const record: ArtworkRecord = {
+    const record: ArtworkRecord = manga ? mangaTaskArtwork(task, index) : {
       sceneTitle: null, emotion: [], shot: null, lighting: null,
       composition: null, colorMood: null, manual_tags: [], lora: typeof input.loraId === 'string' ? input.loraId : null, notes: '',
       parent_id: context.parentId ?? null, project: '', image_url: '',
@@ -41,6 +44,10 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: { re
       saved = confirmed
     }
   }
-  await deps.markSaved(task.taskId)
+  // A page and its line sidecar share delivery state, but have separate artwork
+  // identities. Keep the inbox until every received image has been archived.
+  const complete = !manga || (await Promise.all(task.resultRefs.map(async ref =>
+    (await artworkRepository.readArtwork(`task-${task.taskId}-${ref.index}`))?.image_id === ref.alias))).every(Boolean)
+  if (complete) await deps.markSaved(task.taskId)
   return saved!
 }

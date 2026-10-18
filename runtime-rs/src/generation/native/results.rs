@@ -9,22 +9,33 @@ pub(super) async fn publish(
     bytes: u64,
     cancel: &CancellationToken,
 ) -> Result<Output> {
-    let directory = inner.config.runtime_root.join("outputs/anima");
+    let video = job.input["mediaKind"] == "video";
+    let directory = inner.config.runtime_root.join(if video {
+        "outputs/video"
+    } else {
+        "outputs/anima"
+    });
     tokio::fs::create_dir_all(&directory).await?;
     let root = tokio::fs::canonicalize(&directory).await?;
-    let path = root.join(format!("native-{}.png", job.id));
+    let path = root.join(format!(
+        "native-{}.{}",
+        job.id,
+        if video { "mp4" } else { "png" }
+    ));
     if cancel.is_cancelled() {
         return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
     }
     // No await between publication and handing ownership to settle/succeed.
     // TempPath and the caller's TempDir clean up an unsuccessful publication;
     // the job removes a published file on late cancellation, expiry or close.
+    let lineart = manga::Publication::stage(job, source, &path)?;
     tempfile::TempPath::try_from_path(source)?
         .persist_noclobber(&path)
         .map_err(|error| ApiError::from(error.error))?;
+    lineart.commit();
     Ok(Output::File {
         path,
-        mime: "image/png".into(),
+        mime: if video { "video/mp4" } else { "image/png" }.into(),
         bytes,
     })
 }
@@ -33,10 +44,15 @@ pub(super) async fn publish(
 // for expired native-only files; never sweep Comfy outputs or live job results.
 pub(in crate::generation) async fn prune(inner: &Inner) {
     // Retire prior native results even when the next session selects ComfyUI.
-    if !matches!(inner.scope, Scope::Images) {
+    if !matches!(inner.scope, Scope::Images | Scope::Video) {
         return;
     }
-    let directory = inner.config.runtime_root.join("outputs/anima");
+    let video = matches!(inner.scope, Scope::Video);
+    let directory = inner.config.runtime_root.join(if video {
+        "outputs/video"
+    } else {
+        "outputs/anima"
+    });
     if !snapshots::safe_directory(&directory).await {
         return;
     }
@@ -54,7 +70,14 @@ pub(in crate::generation) async fn prune(inner: &Inner) {
             let Some(id) = name
                 .to_str()
                 .and_then(|name| name.strip_prefix("native-"))
-                .and_then(|name| name.strip_suffix(".png"))
+                .and_then(|name| name.strip_suffix(if video { ".mp4" } else { ".png" }))
+                .map(|id| {
+                    if video {
+                        id
+                    } else {
+                        id.strip_suffix("-lineart").unwrap_or(id)
+                    }
+                })
                 .filter(|id| {
                     id.len() == 32
                         && id

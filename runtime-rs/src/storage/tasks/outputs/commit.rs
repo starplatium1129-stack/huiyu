@@ -254,7 +254,14 @@ impl Output {
                         task.result_refs
                             .push(serde_json::from_value(self.media.clone())?);
                     }
-                    task.result_state = ResultState::Available;
+                    task.result_state = if task.manga_result_count().is_some_and(|count| {
+                        (0..count)
+                            .any(|index| !task.result_refs.iter().any(|item| item.index == index))
+                    }) {
+                        ResultState::Collecting
+                    } else {
+                        ResultState::Available
+                    };
                 }
             }
             c.db.execute("DELETE FROM leases WHERE id=?", [&self.key])?;

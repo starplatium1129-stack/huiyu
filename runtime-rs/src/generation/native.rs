@@ -1,4 +1,8 @@
+pub(crate) mod adapters;
 mod config;
+pub(crate) mod manga;
+mod output;
+use output::stage_text;
 mod model_layout;
 pub(crate) use model_layout::model_issue;
 mod observations;
@@ -18,12 +22,14 @@ pub(crate) struct Plan {
     pub upscale_model_path: Option<PathBuf>,
     pub init_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub mask_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
+    pub pen_lines: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub loras: Vec<Value>,
 }
-pub(super) struct Engine {
+pub(crate) struct Engine {
     processes: Arc<crate::processes::Processes>,
     tokens: Mutex<HashMap<String, CancellationToken>>,
     slot: Semaphore,
+    admission: Arc<Semaphore>,
     worker: Mutex<Option<worker::Worker>>,
     idle_timeout: Duration,
 }
@@ -33,12 +39,16 @@ impl Default for Engine {
             processes: Arc::default(),
             tokens: Mutex::default(),
             slot: Semaphore::new(1),
+            admission: Arc::new(Semaphore::new(4)),
             worker: Mutex::new(None),
             idle_timeout: Duration::from_secs(600),
         }
     }
 }
 impl Engine {
+    pub(super) fn pending(&self) -> usize {
+        4 - self.admission.available_permits()
+    }
     pub async fn close(&self) {
         self.processes.close().await;
         if let Some(mut worker) = self.worker.lock().await.take() {
@@ -47,7 +57,10 @@ impl Engine {
     }
 }
 impl Service {
-    pub(crate) fn reserve_native(&self, cancel: &CancellationToken) -> Result<OwnedSemaphorePermit> {
+    pub(crate) fn reserve_native(
+        &self,
+        cancel: &CancellationToken,
+    ) -> Result<OwnedSemaphorePermit> {
         if self.inner.closed.load(Ordering::Relaxed)
             || self.inner.cancel.is_cancelled()
             || cancel.is_cancelled()
@@ -55,11 +68,12 @@ impl Service {
             return Err(closed());
         }
         self.inner
+            .native
             .admission
             .clone()
             .try_acquire_owned()
             .map_err(|_| {
-                if self.inner.admission.is_closed() {
+                if self.inner.native.admission.is_closed() {
                     worker::release_error()
                 } else {
                     ApiError::new(
@@ -83,7 +97,7 @@ impl Service {
             return Err(closed());
         }
         // Worker cleanup can close admission while inputs are being prepared.
-        if self.inner.admission.is_closed() {
+        if self.inner.native.admission.is_closed() {
             return Err(worker::release_error());
         }
         Ok(Prepared {
@@ -123,6 +137,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
                 // and publication. No next job may run before worker cleanup.
                 if settle(&worker, &job, outcome, token.is_cancelled()).await {
                     worker.native.slot.close();
+                    worker.native.admission.close();
                     worker.admission.close();
                     slot.forget();
                 }
@@ -145,6 +160,7 @@ async fn settle(
     if let Execution::Native(plan) = &job.execution {
         plan.init_image.lock().unwrap().take();
         plan.mask_image.lock().unwrap().take();
+        plan.pen_lines.lock().unwrap().take();
     }
     let error = match outcome {
         Ok(output) => {
@@ -217,7 +233,9 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         unreachable!()
     };
     let control = inner.control.read().unwrap().upgrade();
-    if let Some(control) = control {
+    if let Some(control) = control
+        .filter(|_| plan.input["family"] != "manga-screen" || plan.input["rewrite"].is_object())
+    {
         control.ensure_native_drawing(token).await?;
     }
     if let Some(hooks) = &job.hooks {
@@ -231,7 +249,10 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     let temp = tempfile::Builder::new()
         .prefix("native-")
         .tempdir_in(&output_dir)?;
-    let output = temp.path().join("result.png");
+    let video = plan.input["mediaKind"] == "video";
+    let output = temp
+        .path()
+        .join(if video { "result.mp4" } else { "result.png" });
     let mut input = json!({"negativePrompt":plan.input["negative"]});
     for key in [
         "prompt",
@@ -288,7 +309,23 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     } else {
         None
     };
-    let request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras});
+    let pen_lines = plan.pen_lines.lock().unwrap().take();
+    let pen_lines_path = if let Some(bytes) = pen_lines {
+        let path = temp.path().join("pen-lines");
+        let mut file = tokio::fs::File::create(&path).await?;
+        file.write_all(bytes.as_slice()).await?;
+        file.flush().await?;
+        Some(path)
+    } else {
+        None
+    };
+    let request = if plan.input["family"] == "manga-screen" {
+        output::manga_request(job, plan, &output, input_image_path, pen_lines_path)
+    } else if adapters::model(plan.input["modelId"].as_str().unwrap_or("")).is_some() {
+        output::adapter_request(job, plan, &output, input_image_path)
+    } else {
+        json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras})
+    };
     let mut worker = inner.native.take_worker(&plan.settings).await?;
     // Do not interrupt a partially written JSONL request with another command.
     // The stdin reader operates independently of loading and CUDA execution.
@@ -340,6 +377,9 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                         let text = stage_text(&event)?;
                         let mut state = job.state.lock().await;
                         state.progress_text = text;
+                        if plan.input["family"] == "manga-screen" {
+                            state.progress = None;
+                        }
                     }
                     Some("progress") if !produced => {
                         let step = event["step"].as_u64().ok_or_else(protocol_error)?;
@@ -378,27 +418,31 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         let metadata = tokio::fs::symlink_metadata(&output).await?;
         if !metadata.is_file()
             || metadata.file_type().is_symlink()
-            || metadata.len() > 32 * 1024 * 1024
+            || metadata.len()
+                > if video {
+                    256 * 1024 * 1024
+                } else {
+                    32 * 1024 * 1024
+                }
         {
             return Err(protocol_error());
         }
-        let bytes = tokio::fs::read(&output).await?;
-        if !bytes.starts_with(b"\x89PNG\r\n\x1a\n") {
-            return Err(protocol_error());
-        }
-        // Fully decode bounded PNG output; a signature alone is not an image.
-        let bytes = Arc::new(bytes);
-        if let Err(error) = crate::image_decode::validate(bytes.clone(), token).await {
+        if let Err(error) = output::validate(&output, video, token).await {
             // Host decoder admission says nothing about worker integrity.
             host_failure = error.code == "IMAGE_STORAGE_BUSY";
             return Err(error);
         }
-        let length = bytes.len() as u64;
-        drop(bytes);
+        manga::validate(job, &output, token).await?;
+        let length = metadata.len();
         {
             let mut state = job.state.lock().await;
             if state.status == "running" {
                 state.metadata["nativeRuntime"] = runtime_observation;
+                if plan.input["family"] == "manga-screen" {
+                    let (width, height) = output::png_dimensions(&output).await?;
+                    state.metadata["width"] = json!(width);
+                    state.metadata["height"] = json!(height);
+                }
             }
         }
         let publication = results::publish(inner, job, &output, length, token).await;
@@ -409,7 +453,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
             .is_some_and(|error| error.code == "STORAGE_UNAVAILABLE");
         publication
     };
-    let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(600),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
+    let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(if video {1800} else {600}),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
     let cancelling = value.as_ref().err().is_some_and(|error| {
         token.is_cancelled() && matches!(error.code.as_str(), "ABORT_ERR" | "CANCELLED")
     });
@@ -434,33 +478,6 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     // while its GPU slot and temporary inputs are held by this request.
     worker.stop().await?;
     value
-}
-fn stage_text(event: &Value) -> Result<String> {
-    let label = match event["stage"].as_str() {
-        Some("dependencies") => "准备推理环境",
-        Some("fingerprint") => "确认模型与 LoRA",
-        Some("preparing_image") => "处理输入图像",
-        Some("loading") => "加载模型",
-        Some("uploading") => "传输模型到显卡",
-        Some("adapters") => "应用 LoRA",
-        Some("encoding") => "编码提示词",
-        Some("sampling") => "采样",
-        Some("decoding") => "解码图像",
-        Some("upscaling") => "放大图像",
-        Some("saving") => "保存图像",
-        _ => return Err(protocol_error()),
-    };
-    let component = match event.get("component").and_then(Value::as_str) {
-        None => "",
-        Some("text_encoder") => " · 文本编码器",
-        Some("text_conditioner") => " · 文本条件模型",
-        Some("transformer") => " · 扩散模型",
-        Some("vae") => " · VAE",
-        Some("tokenizer" | "t5_tokenizer") => " · 分词器",
-        Some("scheduler") => " · 调度器",
-        Some(_) => return Err(protocol_error()),
-    };
-    Ok(format!("独立推理{label}{component}"))
 }
 fn protocol_error() -> ApiError {
     ApiError::new(502, "NATIVE_PROTOCOL_ERROR", "独立推理协议或结果无效")

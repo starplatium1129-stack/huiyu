@@ -33,9 +33,16 @@ impl TaskRuntime {
                 "SD_RETIRED",
                 "SD 新生成已退役；原任务可继续查询、收集或取消",
             )),
-            TaskKind::Anima | TaskKind::Creative => {
+            TaskKind::Anima | TaskKind::Creative | TaskKind::Manga | TaskKind::Lineart => {
+                if kind.is_manga()
+                    && (kind == TaskKind::Lineart) != (input["operation"] == "lineart")
+                {
+                    return Err(ApiError::invalid("漫画任务类型与操作不一致"));
+                }
                 let family = if kind == TaskKind::Anima {
                     "anima"
+                } else if kind.is_manga() {
+                    "manga-screen"
                 } else {
                     "krea2"
                 };
@@ -66,6 +73,9 @@ impl TaskRuntime {
             TaskKind::Generation => self.provider.query(job, principal).await,
             TaskKind::Anima => self.images.query(job, principal, "anima").await,
             TaskKind::Creative => self.images.query(job, principal, "krea2").await,
+            TaskKind::Manga | TaskKind::Lineart => {
+                self.images.query(job, principal, "manga-screen").await
+            }
             TaskKind::Video => self.video.query(job, principal).await,
             TaskKind::Batch => self.video.query_batch(job, principal).await,
         }
@@ -80,6 +90,9 @@ impl TaskRuntime {
             TaskKind::Generation => self.provider.cancel(job, principal).await,
             TaskKind::Anima => self.images.cancel(job, principal, "anima").await,
             TaskKind::Creative => self.images.cancel(job, principal, "krea2").await,
+            TaskKind::Manga | TaskKind::Lineart => {
+                self.images.cancel(job, principal, "manga-screen").await
+            }
             TaskKind::Video => self.video.cancel(job, principal).await,
             TaskKind::Batch => self.video.cancel_batch(job, principal).await,
         }

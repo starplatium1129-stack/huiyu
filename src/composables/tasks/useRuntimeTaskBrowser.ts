@@ -1,4 +1,4 @@
-import { computed, onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { computed, nextTick, onScopeDispose, ref, shallowRef, toRaw, watch } from 'vue'
 import { readRuntimeTaskPage } from '@/api/runtimeTasks'
 import { runtimeTasks } from '@/stores/runtimeTaskState'
 import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
@@ -9,18 +9,27 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
   const selected = ref<'all' | 'active' | 'attention' | 'inbox'>('all')
   const page = shallowRef<TaskPage | null>(null), cursors = ref<number[]>([]), activePage = ref(0)
   const loading = ref(false), error = ref('')
+  const located = shallowRef<TaskSummary | null>(null)
   let controller: AbortController | undefined
   const live = computed(() => new Map(runtimeTasks.value.map(task => [task.taskId, task])))
   const matches = (task: TaskSummary) => selected.value === 'all' || (selected.value === 'active' ? !task.upstreamSettled
     : selected.value === 'inbox' ? task.resultRefs.length && !['saved', 'discarded'].includes(task.deliveryState)
       : task.recoveryState !== 'normal' || task.status === 'failed')
   const activeItems = computed(() => runtimeTasks.value.filter(task => !task.upstreamSettled))
-  const visible = computed(() => selected.value === 'active'
+  const pageItems = computed(() => selected.value === 'active'
     ? activeItems.value.slice(activePage.value * PAGE_SIZE, (activePage.value + 1) * PAGE_SIZE)
     : (page.value?.items ?? []).map(task => {
       const current = live.value.get(task.taskId)
       return current && current.revision >= task.revision ? current : task
     }).filter(matches))
+  const visible = computed(() => {
+    if (!located.value) return pageItems.value
+    const current = live.value.get(located.value.taskId)
+    const task = current && current.revision >= located.value.revision ? current : located.value
+    return [task, ...pageItems.value.filter(item => item.taskId !== task.taskId)]
+  })
+  const locatedId = computed(() => located.value?.taskId || '')
+  const pageCount = computed(() => pageItems.value.length)
   const pageNumber = computed(() => (selected.value === 'active' ? activePage.value : cursors.value.length) + 1)
   const hasPrevious = computed(() => pageNumber.value > 1)
   const hasNext = computed(() => selected.value === 'active'
@@ -39,20 +48,31 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
       if (!request.signal.aborted) error.value = reason instanceof Error ? reason.message : '任务历史读取失败，请重试'
     } finally { if (controller === request) loading.value = false }
   }
-  function refresh() { return load([], true) }
+  function refresh() { located.value = null; return load([], true) }
+  async function reveal(task: TaskSummary) {
+    const expected = identity()
+    if (task.runtimeEpoch !== expected) return
+    selected.value = 'all'
+    await nextTick()
+    if (identity() !== expected) return
+    // Related tasks can be older than the current bounded history page.
+    located.value = structuredClone(toRaw(task))
+  }
   function next() {
     if (loading.value || !hasNext.value) return
+    located.value = null
     if (selected.value === 'active') activePage.value++
     else if (page.value?.nextCursor != null) void load([...cursors.value, page.value.nextCursor])
   }
   function previous() {
     if (loading.value || !hasPrevious.value) return
+    located.value = null
     if (selected.value === 'active') activePage.value--
     else void load(cursors.value.slice(0, -1))
   }
   watch([active, selected], ([opened, filter], previous) => {
     controller?.abort(); loading.value = false
-    if (filter !== previous?.[1]) { page.value = null; cursors.value = []; activePage.value = 0; error.value = '' }
+    if (filter !== previous?.[1]) { located.value = null; page.value = null; cursors.value = []; activePage.value = 0; error.value = '' }
     if (opened) void load()
   }, { immediate: true })
   watch(() => activeItems.value.length, count => { activePage.value = Math.min(activePage.value, Math.max(0, Math.ceil(count / PAGE_SIZE) - 1)) })
@@ -61,9 +81,9 @@ export function useRuntimeTaskBrowser(active: () => boolean) {
   const stopRuntime = onDesktopRuntime(() => {
     const nextEpoch = identity()
     if (!nextEpoch || nextEpoch === currentEpoch) return
-    currentEpoch = nextEpoch; controller?.abort(); page.value = null; cursors.value = []; activePage.value = 0
+    currentEpoch = nextEpoch; controller?.abort(); located.value = null; page.value = null; cursors.value = []; activePage.value = 0
     if (active()) void refresh()
   })
   onScopeDispose(() => { controller?.abort(); stopRuntime() })
-  return { selected, visible, loading, error, pageNumber, hasPrevious, hasNext, refresh, next, previous }
+  return { selected, visible, locatedId, pageCount, loading, error, pageNumber, hasPrevious, hasNext, refresh, next, previous, reveal }
 }

@@ -22,6 +22,7 @@ impl ControlService {
             // discovery refresh must not replace paths deliberately selected by a user.
             for key in [
                 "python",
+                "adapterPython",
                 "worker",
                 "modelsRoot",
                 "lorasRoot",

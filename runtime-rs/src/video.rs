@@ -4,6 +4,7 @@ mod batch_input;
 mod catalog;
 mod http;
 mod inputs;
+mod native;
 mod prose;
 mod resources;
 mod resume;

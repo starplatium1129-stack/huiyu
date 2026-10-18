@@ -3,7 +3,7 @@ type TaskRecovery = 'normal' | 'reconciling' | 'unknown' | 'interrupted';
 interface TaskResultRef { alias: string; sha256: string; bytes: number; mime: string; index: number }
 export interface TaskRecord {
   taskId: string; workspaceId: string; principalId: string; requestKey: string; requestFingerprint: string;
-  kind: 'generation' | 'anima' | 'creative' | 'video' | 'batch';
+  kind: 'generation' | 'anima' | 'creative' | 'manga' | 'lineart' | 'video' | 'batch';
   provider: string; providerFingerprint: string; upstreamId: string | null;
   status: TaskStatus; recoveryState: TaskRecovery; revision: number; runtimeEpoch: string;
   createdAt: number; updatedAt: number; submissionIntentAt: number | null;
@@ -18,6 +18,8 @@ export interface TaskSubmission { requestKey: string; kind: TaskRecord['kind']; 
 /** List rows omit recipes and checkpoints; fetch the task before displaying its result. */
 export interface TaskSummary extends Omit<TaskRecord, 'input' | 'inputMediaRefs' | 'metadata' | 'checkpoint' | 'requestFingerprint' | 'providerFingerprint'> {
   sourceBatchId?: string | null;
+  retryOfTaskId?: string | null;
+  retryTaskId?: string | null;
   canConcat?: boolean;
 }
 export type TaskListScope = 'all' | 'overview' | 'open' | 'attention' | 'inbox';

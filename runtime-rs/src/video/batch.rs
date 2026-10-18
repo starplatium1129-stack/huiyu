@@ -112,6 +112,9 @@ impl Service {
         owner: Option<&str>,
         cancel: CancellationToken,
     ) -> Result<BatchPrepared> {
+        if self.backend.native_enabled() {
+            return Err(error(501, "NATIVE_VIDEO_BATCH_UNSUPPORTED", "原生视频本轮仅接入单镜头任务；分镜批量、衔接与合成尚未接入，不会回退 ComfyUI"));
+        }
         let shots = input["shots"]
             .as_array()
             .filter(|a| !a.is_empty() && a.len() <= 30)

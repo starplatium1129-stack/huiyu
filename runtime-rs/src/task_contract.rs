@@ -9,8 +9,15 @@ pub enum TaskKind {
     Generation,
     Anima,
     Creative,
+    Manga,
+    Lineart,
     Video,
     Batch,
+}
+impl TaskKind {
+    pub fn is_manga(self) -> bool {
+        matches!(self, Self::Manga | Self::Lineart)
+    }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -102,6 +109,28 @@ pub struct TaskRecord {
 }
 
 impl TaskRecord {
+    pub fn can_retry_manga(&self) -> bool {
+        self.kind.is_manga()
+            && self.provider == "native"
+            && self.status == TaskStatus::Failed
+            && self.upstream_settled
+            && self.recovery_state == RecoveryState::Normal
+            && self.cancel_requested_at.is_none()
+    }
+    /// Manga pages may also own a line sidecar; an extracted line is output 0.
+    pub fn manga_result_count(&self) -> Option<u64> {
+        self.kind.is_manga().then(|| {
+            if self.kind == TaskKind::Manga
+                && (self.input.get("autoLines") == Some(&Value::Bool(true))
+                    || self.input.get("penLines").is_some_and(Value::is_string))
+            {
+                2
+            } else {
+                1
+            }
+        })
+    }
+
     pub(crate) fn into_value(mut self) -> serde_json::Result<Value> {
         // Serialize the small typed fields, then transfer the owned JSON trees.
         // serde_json::to_value otherwise recursively copies recipes/checkpoints.
@@ -146,6 +175,8 @@ pub struct TaskSummary {
     pub step_index: Option<u64>,
     pub source_batch_id: Option<String>,
     pub can_concat: bool,
+    pub retry_of_task_id: Option<String>,
+    pub retry_task_id: Option<String>,
 }
 
 // An absent patch leaves a nullable field untouched; explicit null clears it.
@@ -293,8 +324,12 @@ pub enum TaskCommand {
         #[serde(flatten)]
         query: TaskListQuery,
     },
-    #[serde(rename = "task.accept")]
-    Accept { record: Box<TaskRecord> },
+    #[serde(rename = "task.accept", rename_all = "camelCase")]
+    Accept {
+        record: Box<TaskRecord>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        retry_of: Option<String>,
+    },
     #[serde(rename = "task.patch", rename_all = "camelCase")]
     Patch {
         task_id: String,

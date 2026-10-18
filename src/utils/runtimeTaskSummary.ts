@@ -6,6 +6,8 @@ export function summarizeTask(task: TaskRecord | TaskSummary): TaskSummary {
   const context = metadata?.context as Record<string, unknown> | undefined
   return {
     ...summary,
+    retryOfTaskId: summary.retryOfTaskId ?? (typeof metadata?.retryOfTaskId === 'string' ? metadata.retryOfTaskId : null),
+    retryTaskId: summary.retryTaskId ?? (typeof metadata?.retryTaskId === 'string' ? metadata.retryTaskId : null),
     sourceBatchId: summary.sourceBatchId ?? (typeof context?.retriedTaskId === 'string' && context.retriedTaskId
       && Number.isSafeInteger(context.stepIndex) && Number(context.stepIndex) >= 0 ? context.retriedTaskId : null),
     canConcat: summary.canConcat ?? (task.kind === 'batch' && task.status === 'succeeded' && task.resultRefs.length > 1

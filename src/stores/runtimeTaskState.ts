@@ -64,6 +64,12 @@ export function markTaskRequestSubmitting(key: string): void {
   for (const request of unresolvedTaskRequests.values()) if (request.key === key) request.submitting = true
   publishPendingRequests()
 }
+/** The runtime assigns exactly one retry identity to each failed source. */
+export function runtimeMangaRetryKey(task: TaskSummary): string {
+  const key = `manga-retry:${task.taskId}`
+  if (!unresolvedTaskRequests.has(key)) unresolvedTaskRequests.set(key, { key, kind: task.kind, submitting: false })
+  return key
+}
 export function releaseUnsubmittedTaskRequest(key: string): void {
   // A retry may reuse an earlier unknown submission. Never erase that identity.
   for (const [input, request] of unresolvedTaskRequests) if (request.key === key && !request.submitting) unresolvedTaskRequests.delete(input)

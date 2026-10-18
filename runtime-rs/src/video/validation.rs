@@ -31,6 +31,13 @@ pub(super) fn integer(value: &Value) -> Option<u64> {
         .map(|n| n as u64)
 }
 pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value> {
+    validate_for(body, original_size, None)
+}
+pub(super) fn validate_for(
+    body: &Value,
+    original_size: Option<(u32, u32)>,
+    native: Option<&Value>,
+) -> Result<Value> {
     let object = body
         .as_object()
         .ok_or_else(|| error(400, "INVALID_BODY", "请求体必须是 JSON 对象"))?;
@@ -69,7 +76,7 @@ pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value
         .as_str()
         .ok_or_else(|| error(400, "UNKNOWN_MODEL", "未知视频模型"))?;
     let model = catalog::model(id).ok_or_else(|| error(400, "UNKNOWN_MODEL", "未知视频模型"))?;
-    if model["executable"] != true {
+    if native.is_none() && model["executable"] != true {
         return Err(error(
             409,
             "MODEL_ADAPTER_UNAVAILABLE",
@@ -154,19 +161,34 @@ pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value
     } else {
         None
     };
-    let steps = if present(&body["steps"]) {
+    let steps = if let Some(spec) = native {
+        integer(body.get("steps").unwrap_or(&spec["steps"]))
+            .filter(|n| (spec["minSteps"].as_u64().unwrap_or(1)..=100).contains(n))
+            .ok_or_else(|| invalid("原生模型步数超出支持范围"))?
+    } else if present(&body["steps"]) {
         integer(&body["steps"]).unwrap_or(0)
     } else {
         8
     };
-    if ![4, 8].contains(&steps) {
+    if native.is_none() && ![4, 8].contains(&steps) {
         return Err(invalid("步数只支持 4（极速）或 8（标准）"));
     }
-    if !h3 && present(&body["steps"]) {
+    if native.is_none() && !h3 && present(&body["steps"]) {
         return Err(error(400, "MODEL_INPUT_MODE", "极速步数仅支持 MiniMax H3"));
     }
     let aspect = body["aspectRatio"].as_str().unwrap_or("");
-    let (width, height) = if aspect == "original" {
+    let (width, height) = if let Some(canvases) = native.and_then(|m| m.get("canvases")) {
+        if quality != "standard" {
+            return Err(invalid("该原生版本仅支持 standard 画质画布"));
+        }
+        let canvas = canvases[aspect]
+            .as_array()
+            .ok_or_else(|| invalid("不支持的原生画面比例"))?;
+        (
+            canvas[0].as_u64().unwrap() as u32,
+            canvas[1].as_u64().unwrap() as u32,
+        )
+    } else if aspect == "original" {
         if !generation::truthy(&body["image"]) {
             return Err(invalid("跟随原图比例需要先上传首帧图"));
         }
@@ -187,10 +209,16 @@ pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value
     let duration = integer(&body["duration"])
         .or_else(|| body["duration"].as_str().and_then(|v| v.parse().ok()))
         .filter(|n| {
-            [3, 5].contains(n) || (h3 && body["duration"].is_number() && [10, 15].contains(n))
+            if let Some(spec) = native {
+                spec["durationFrames"].get(n.to_string()).is_some()
+            } else {
+                [3, 5].contains(n) || (h3 && body["duration"].is_number() && [10, 15].contains(n))
+            }
         })
         .ok_or_else(|| {
-            invalid(if h3 {
+            invalid(if native.is_some() {
+                "所选原生版本不支持此时长；H3 支持 5/10 秒，其他版本支持 3/5 秒"
+            } else if h3 {
                 "时长支持 3/5/10/15 秒"
             } else {
                 "时长只支持 3 秒或 5 秒"
@@ -214,7 +242,9 @@ pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value
     } else {
         (uuid::Uuid::new_v4().as_u128() % 0x7fffffff) as u64
     };
-    let negative = if h3 {
+    let negative = if native.is_some_and(|m| m["family"] != "wan2.2") {
+        body["negative"].as_str().unwrap_or("").trim().to_owned()
+    } else if h3 {
         String::new()
     } else {
         let base = catalog::constants()["WAN_NEGATIVE"].as_str().unwrap();
@@ -225,9 +255,14 @@ pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value
             format!("{base}，{extra}")
         }
     };
-    Ok(
-        json!({"prompt":prose::prompt(body,h3,duration,&references),"originalPrompt":user.trim(),"negative":negative,"modelId":id,"aspectRatio":aspect,"quality":quality,"width":width,"height":height,"duration":duration,"frames":if h3{prose::frame_count(duration)}else{if duration==3{73}else{121}},"fps":24,"camera":body["camera"],"motion":body["motion"],"seed":seed,"image":if generation::truthy(&body["image"]){body["image"].clone()}else{Value::Null},"lastFrame":if generation::truthy(&body["lastFrame"]){body["lastFrame"].clone()}else{Value::Null},"references":if references.is_empty(){Value::Null}else{json!(references)},"dialogue":if generation::truthy(&body["dialogue"]){body["dialogue"].clone()}else{Value::Null},"dialogueLang":if language=="auto"{None}else{Some(language)},"shotSize":shot,"steps":if h3{steps}else{20},"cfg":5}),
-    )
+    let mut input = json!({"prompt":prose::prompt(body,h3 && native.is_none(),duration,&references),"originalPrompt":user.trim(),"negative":negative,"modelId":id,"aspectRatio":aspect,"quality":quality,"width":width,"height":height,"duration":duration,"frames":if h3{prose::frame_count(duration)}else{if duration==3{73}else{121}},"fps":24,"camera":body["camera"],"motion":body["motion"],"seed":seed,"image":if generation::truthy(&body["image"]){body["image"].clone()}else{Value::Null},"lastFrame":if generation::truthy(&body["lastFrame"]){body["lastFrame"].clone()}else{Value::Null},"references":if references.is_empty(){Value::Null}else{json!(references)},"dialogue":if generation::truthy(&body["dialogue"]){body["dialogue"].clone()}else{Value::Null},"dialogueLang":if language=="auto"{None}else{Some(language)},"shotSize":shot,"steps":if h3{steps}else{20},"cfg":5});
+    if let Some(spec) = native {
+        input["steps"] = json!(steps);
+        input["frames"] = spec["durationFrames"][duration.to_string()].clone();
+        input["fps"] = spec["fps"].clone();
+        input["cfg"] = spec["cfg"].clone();
+    }
+    Ok(input)
 }
 pub fn fit_canvas(width: u32, height: u32, quality: &Value) -> (u32, u32) {
     let ratio = (f64::from(width) / f64::from(height)).clamp(0.5, 2.);

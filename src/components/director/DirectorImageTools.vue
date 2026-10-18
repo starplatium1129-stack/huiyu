@@ -43,9 +43,10 @@
       </div>
       <p v-if="interrogateError" class="image-tools-error" role="alert">{{ interrogateError }}</p>
     </section>
-    <details v-if="(displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')) || shotsPending > 0" class="inspector-route image-continuation">
-      <StudioDisclosureSummary><span>高清与短片</span><small v-if="shotsPending">{{ shotsPending }} 个分镜</small></StudioDisclosureSummary>
+    <details v-if="displayResultUrl || shotsPending > 0" class="inspector-route image-continuation">
+      <StudioDisclosureSummary><span>成片再创作</span><small v-if="shotsPending">{{ shotsPending }} 个分镜</small></StudioDisclosureSummary>
       <div data-disclosure-content class="image-tool-buttons image-continuation-body">
+        <MangaScreenLauncher v-if="displayResultUrl" :source-url="displayResultUrl" :disabled="generationBusy" />
         <StudioTooltip v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')" anchor :content="generationBusy ? BUSY_HINT : '使用 2x 高清超分放大'">
           <button class="btn btn-ghost" type="button" :disabled="generationBusy" @click="$emit('upscale')"><ArchiveIcon name="spark" /><span>高清放大 2x</span></button>
         </StudioTooltip>
@@ -68,6 +69,7 @@ import { useInterrogateReadiness } from '@/composables/useInterrogateReadiness'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import MangaScreenLauncher from '@/components/manga/MangaScreenLauncher.vue'
 import '@/assets/css/director/components/DirectorImageTools.css'
 
 defineProps<{

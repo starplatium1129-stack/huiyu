@@ -47,19 +47,24 @@ impl Drop for Service {
     }
 }
 impl Service {
+    pub(crate) fn provider_identity(&self, unbound_epoch: &str) -> Value {
+        self.backend.provider_identity(unbound_epoch)
+    }
     pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
         self.backend.bind_control(control);
     }
-    pub fn new(
+    pub(crate) fn new(
         config: Config,
         transport: LocalUpstream,
         shutdown: CancellationToken,
+        native_engine: Arc<generation::native::Engine>,
     ) -> Result<Self> {
         let shutdown = shutdown.child_token();
         let backend = Arc::new(generation::Service::for_video(
             config.clone(),
             transport.clone(),
             shutdown.clone(),
+            native_engine,
         )?);
         let tasks = TaskTracker::new();
         let batches = Arc::new(Mutex::new(std::collections::HashMap::new()));
@@ -125,7 +130,8 @@ impl Service {
         } else {
             None
         };
-        let input = validation::validate(&raw, size)?;
+        let input = if self.backend.native_enabled() { native::validate(&raw, size)? }
+            else { validation::validate(&raw, size)? };
         self.prepare_input(input, local, owner, false, cancel).await
     }
     pub(super) async fn prepare_input(
@@ -138,6 +144,17 @@ impl Service {
     ) -> Result<Prepared> {
         if self.shutdown.is_cancelled() {
             return Err(error(503, "SERVICE_CLOSED", "生成服务已关闭"));
+        }
+        if self.backend.native_enabled() {
+            let permit = self.backend.reserve_native(&cancel)?;
+            let input = native::normalize(input)?;
+            let originals = inputs::capture(&self.config, &input, local, owner, &cancel).await?;
+            let plan = generation::native::adapters::plan(&self.backend.native_settings()?, input, None).await?;
+            let backend = self.backend.prepare_native(plan, permit, &cancel)?;
+            return Ok(Prepared { input: backend.input.clone(), provider: backend.provider.clone(), backend, originals });
+        }
+        if input["inferenceEngine"] == "native" {
+            return Err(error(409, "TASK_RESUME_UNSAFE", "视频任务引擎已改变，请重新创建任务"));
         }
         let t8 = self.t8(&cancel).await;
         let plan = resources::plan(&self.config, input, t8, batch)?;
@@ -184,6 +201,11 @@ impl Service {
             job[key] = job["metadata"][key].clone();
         }
         job["prompt"] = job["metadata"]["originalPrompt"].clone();
+        if job["provider"] == "native" {
+            // Keep worker step progress; Comfy's elapsed-time estimate is not
+            // evidence of native sampling progress or expected performance.
+            return Ok(job);
+        }
         if job["status"] == "running" {
             job["progress"] = json!(
                 (job["elapsedSeconds"].as_f64().unwrap_or(0.)
@@ -292,6 +314,9 @@ impl Service {
             .map_err(|_| error(503, "IMAGE_WRITE_FAILED", "图片导入结果未知"))?
     }
     pub async fn get_status(&self) -> Result<Value> {
+        if self.backend.native_enabled() {
+            return native::status(&self.backend).await;
+        }
         let mut models = Vec::new();
         for model in catalog::constants()["MODEL_CATALOG"].as_array().unwrap() {
             models.push(resources::available(&self.config, model).await);

@@ -2,10 +2,11 @@
   <section class="runtime-result tw:grid tw:gap-s-3 tw:mt-s-3" aria-label="任务结果">
     <div class="result-toolbar tw:flex tw:flex-wrap tw:items-center tw:gap-s-2" data-fluid-glass>
       <StudioSelect v-if="task.resultRefs.length > 1" label="选择任务结果" size="sm" inline :model-value="index" :options="resultOptions" @update:model-value="index = Number($event)" />
-      <button v-if="selected?.mime.startsWith('image/')" class="btn btn-primary" :disabled="busy || loading || readFailed || task.deliveryState === 'saved'" @click="save">{{ task.deliveryState === 'saved' ? '已入册' : busy ? '保存中…' : '保存到作品册' }}</button>
+      <button v-if="selected?.mime.startsWith('image/')" class="btn btn-primary" :disabled="busy || loading || readFailed || selectedSaved || manga && task.resultState !== 'available'" @click="save">{{ selectedSaved ? '已入册' : busy ? '保存中…' : '保存到作品册' }}</button>
       <TaskMediaDownload v-if="selected?.mime.startsWith('video/')" class="btn btn-ghost" :src="runtimeResultPath(task, index)" :filename="`绘遇-${task.taskId}-${index}.mp4`">下载结果</TaskMediaDownload>
       <button v-else class="btn btn-ghost" :disabled="loading || readFailed || !url" @click="download">下载结果</button>
     </div>
+    <p v-if="manga">{{ task.kind === 'lineart' || index === 1 ? '线稿 · 黑线白底' : '漫画成片' }} · 待主力机验证。{{ task.kind === 'manga' && task.resultRefs.length > 1 ? '漫画与线稿分别入册；全部保存后移出收件箱。' : '' }}</p>
     <p v-if="message" role="status">{{ message }}</p>
     <div ref="preview" class="runtime-result-preview" tabindex="-1" role="region" aria-label="结果预览" :aria-busy="loading">
     <div v-if="selected?.mime.startsWith('image/')" class="runtime-result-image">
@@ -27,19 +28,25 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { abortableTask } from '@/utils/abortableTask'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { artworkRepository } from '@/storage/artworkRepository'
 const props = defineProps<{ task: TaskRecord }>()
 const local = isLocalStudioHost()
 const index = ref(props.task.resultRefs[0]?.index || 0), url = ref(''), message = ref(''), loading = ref(false), busy = ref(false)
 const preview = ref<HTMLElement | null>(null), retry = ref(0), readFailed = ref(false)
+const manga = computed(() => props.task.kind === 'manga' || props.task.kind === 'lineart')
+const savedIndices = ref<number[]>([])
+const selectedSaved = computed(() => props.task.deliveryState === 'saved' || savedIndices.value.includes(index.value))
 function retryRead(event: MouseEvent) { if (document.activeElement === event.currentTarget) preview.value?.focus({ preventScroll: true }); retry.value++ }
 function imageFailed() { if (!loading.value) { readFailed.value = true; message.value = '结果图片暂时无法展开，请重新读取。' } }
 const selected = computed(() => props.task.resultRefs.find(output => output.index === index.value))
-const resultOptions = computed(() => props.task.resultRefs.map(output => ({ value: output.index, label: `${output.index + 1} · ${output.mime.startsWith('video/') ? '视频' : '图片'}` })))
+const resultOptions = computed(() => props.task.resultRefs.map(output => ({ value: output.index,
+  label:manga.value ? output.index === 1 || props.task.kind === 'lineart' ? '线稿 · 黑线白底' : '漫画成片' : `${output.index + 1} · ${output.mime.startsWith('video/') ? '视频' : '图片'}` })))
 let controller: AbortController | undefined
 function release() { if (url.value) URL.revokeObjectURL(url.value); url.value = '' }
 watch(() => [props.task.taskId, index.value, retry.value], async (next, previous) => {
   controller?.abort(); controller = new AbortController(); const signal = controller.signal
   if (next[0] !== previous?.[0] || !selected.value?.mime.startsWith('image/')) release()
+  if (next[0] !== previous?.[0]) savedIndices.value = []
   message.value = ''; readFailed.value = false; loading.value = true
   let candidateUrl = ''
   const image = new Image()
@@ -48,13 +55,19 @@ watch(() => [props.task.taskId, index.value, retry.value], async (next, previous
   try {
     if (!isLocalStudioHost()) throw new Error('私人生成结果只能在本机工作区查看。')
     if (selected.value?.mime.startsWith('video/')) return
-    const blob = await fetchRuntimeResult(runtimeResultPath(props.task, index.value), signal)
+    const task = props.task, outputIndex = index.value
+    const blob = await fetchRuntimeResult(runtimeResultPath(task, outputIndex), signal, task)
     signal.throwIfAborted()
     candidateUrl = URL.createObjectURL(blob); image.src = candidateUrl
     // Publish only paintable pixels; the previous image owns the frame until this request is ready.
     await abortableTask(() => image.decode(), signal)
     signal.throwIfAborted()
     release(); url.value = candidateUrl; candidateUrl = ''
+    if (manga.value) {
+      const saved = await artworkRepository.readArtwork(`task-${task.taskId}-${outputIndex}`)
+      signal.throwIfAborted()
+      if (saved?.image_id === selected.value?.alias && !savedIndices.value.includes(outputIndex)) savedIndices.value.push(outputIndex)
+    }
     if (props.task.deliveryState === 'unseen') void markRuntimeTask(props.task.taskId, 'seen').catch(() => {})
   } catch (error) { if (!signal.aborted) { readFailed.value = true; message.value = error instanceof Error ? error.message : '结果读取失败' } }
   finally { signal.removeEventListener('abort', abortImage); abortImage(); if (candidateUrl) URL.revokeObjectURL(candidateUrl); if (!signal.aborted) loading.value = false }
@@ -65,7 +78,7 @@ async function save() {
   busy.value = true
   try {
     await archiveTaskResult(taskId, outputIndex)
-    if (current()) message.value = '已保存到作品册。'
+    if (current()) { savedIndices.value.push(outputIndex); message.value = '已保存到作品册。' }
   } catch (error) {
     if (current()) message.value = error instanceof Error ? error.message : '保存尚未确认，请重试同一结果。'
   } finally { busy.value = false }

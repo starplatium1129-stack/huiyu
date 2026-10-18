@@ -22,6 +22,12 @@ fn supported_sampling(input: &Value) -> bool {
 }
 
 pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
+    if input["family"] == "manga-screen" {
+        return manga::normalize(&input);
+    }
+    if generation::native::adapters::model(input["modelId"].as_str().unwrap_or("")).is_some() {
+        return native_adapters::normalize(raw, input);
+    }
     if input["family"] != "anima" {
         return Err(ApiError::new(
             501,
@@ -140,6 +146,15 @@ pub(super) async fn plan(
     mut input: Value,
     originals: &[inputs::Original],
 ) -> Result<Plan> {
+    if input["family"] == "manga-screen" {
+        return manga::plan(settings, input, originals).await;
+    }
+    if generation::native::adapters::model(input["modelId"].as_str().unwrap_or("")).is_some() {
+        let input = native_adapters::normalize(&input, input.clone())?;
+        let image = input["initImage"].as_str().map(|name| originals.iter().find(|o| o.name == name)
+            .map(|o| o.bytes.clone()).ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的编辑原图"))).transpose()?;
+        return generation::native::adapters::plan(settings, input, image).await;
+    }
     if input["inferenceEngine"] != "native"
         || input["family"] != "anima"
         || !supported_sampling(&input)
@@ -309,6 +324,7 @@ pub(super) async fn plan(
         settings: settings.clone(),
         init_image: std::sync::Mutex::new(init_image),
         mask_image: std::sync::Mutex::new(mask_image),
+        pen_lines: std::sync::Mutex::new(None),
         loras,
     })
 }
@@ -362,10 +378,10 @@ pub(super) async fn status(
     status_check(&cancel)?;
     let runtime = backend.native_settings()?;
     let runtime_error = runtime.validate_files().await.err().map(|error| error.code);
-    let anima = family == "anima";
+    let family = family.to_owned();
     // One bounded filesystem job per poll, with no completed-result cache.
     let mut value = tokio::task::spawn_blocking(move || {
-        local_status(&runtime, anima, runtime_error, &cancel)
+        local_status(&runtime, &family, runtime_error, &cancel)
     })
     .await
     .map_err(|_| ApiError::new(503, "ANIMA_STATUS_UNAVAILABLE", "生成资源状态暂不可用"))??;
@@ -391,7 +407,7 @@ fn status_file(root: &std::path::Path, name: &str, nonempty: bool) -> bool {
 }
 fn local_status(
     runtime: &Settings,
-    anima: bool,
+    family: &str,
     runtime_error: Option<String>,
     cancel: &CancellationToken,
 ) -> Result<Value> {
@@ -426,12 +442,12 @@ fn local_status(
     let mut models = Vec::new();
     for (id, model) in catalog::CATALOG["MODELS"].as_object().unwrap() {
         status_check(cancel)?;
-        if anima && model["family"] != "anima" {
+        if !family.is_empty() && model["family"] != family {
             continue;
         }
         let model_dir = status_contained(&runtime.models_root, id);
         let issue = if model["family"] != "anima" {
-            Some("原生引擎当前仅支持 Anima".to_owned())
+            Some("该 Comfy FP8 模型不能用于原生推理；请采用下方独立 BF16 模型目录".to_owned())
         } else if runtime_error.is_some() {
             Some("独立推理运行库不可用".to_owned())
         } else if let Some(path) = &model_dir {
@@ -450,6 +466,12 @@ fn local_status(
         }
         models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"readiness":if available {"files-ready"} else {"unavailable"},"unavailableReason":issue,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
     }
+    for (id, model) in generation::native::adapters::manifest()["models"].as_object().unwrap() {
+        status_check(cancel)?;
+        if model["media"] == "image" && (family.is_empty() || model["family"] == family) {
+            models.push(generation::native::adapters::status(runtime, id));
+        }
+    }
     let mut loras = Vec::new();
     {
         for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {
@@ -460,7 +482,15 @@ fn local_status(
         }
     }
     let online = models.iter().any(|model| model["available"] == true);
-    Ok(
-        json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"builtin","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":0,"maxPending":4}),
-    )
+    let mut value = json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"builtin","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":0,"maxPending":4});
+    if matches!(family, "krea2" | "qwen-image") {
+        value["capabilities"] = json!({"txt2img":true,"img2img":family=="qwen-image","mask":false,"manualMask":false,
+            "automaticMask":false,"experimental":true,"lora":false,"teaCache":false,"rcas":false,"hires":false,"weightSyntax":false});
+        value["loras"] = json!([]);
+        value["characters"] = json!([]);
+        value["hires"] = Value::Null;
+        value["validation"] = json!("待主力机验证");
+        value["runtimeError"] = generation::native::adapters::settings(runtime).err().map(|e| json!(e.code)).unwrap_or(Value::Null);
+    }
+    Ok(value)
 }

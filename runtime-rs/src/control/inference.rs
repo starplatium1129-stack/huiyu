@@ -111,9 +111,19 @@ async fn settings(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<V
 }
 async fn save(
     Extension(s): Extension<Arc<ControlService>>,
-    Json(body): Json<Settings>,
+    Json(mut body): Json<Value>,
 ) -> Result<Json<Value>> {
-    Ok(Json(s.save_inference(body).await?))
+    // The current desktop form edits Anima settings. Preserve the separately
+    // configured adapter interpreter unless the caller explicitly supplies it.
+    if let Some(object) = body.as_object_mut() {
+        if !object.contains_key("adapterPython") {
+            if let Some(python) = s.configured_inference()?.adapter_python {
+                object.insert("adapterPython".into(), json!(python));
+            }
+        }
+    }
+    let settings: Settings = serde_json::from_value(body).map_err(|_| ApiError::invalid("推理配置字段无效"))?;
+    Ok(Json(s.save_inference(settings).await?))
 }
 async fn status(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
     let mut value = s.inference_view()?;

@@ -6,6 +6,8 @@ import safe = require('../lib/delivery-paths');
 import { loadNativeLicenseMaterials, readNativeMaterialFromWorktree, verifyNativeLicenseMaterial } from '../lib/native-license-materials';
 
 const SOURCES = [{ kind: 'tree', path: 'runtime-rs/src' }, { kind: 'file', path: 'runtime-rs/Cargo.toml' }, { kind: 'file', path: 'runtime-rs/Cargo.lock' },
+  { kind: 'file', path: 'tools/inference/adapter-models.json' },
+  { kind: 'file', path: 'tools/inference/manga-screen.json' },
   { kind: 'file', path: 'tools/inference/managed-runtime.windows-x64.json' }, { kind: 'file', path: 'tools/inference/managed-models.json' },
   { kind: 'file', path: 'tools/interrogate/pixai-manifest.json' }];
 const NATIVE_MANIFEST = 'runtime-rs/native-dependencies.windows-x64.json';

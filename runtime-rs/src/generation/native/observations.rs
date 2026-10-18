@@ -29,6 +29,45 @@ fn upload_observation(source: &Value) -> Option<Value> {
 // Optional evidence must neither break legacy workers nor forward arbitrary worker data.
 // Missing/malformed evidence stays visibly unverified; image/protocol checks are unchanged.
 pub(super) fn capture(value: &Value) -> Value {
+    if value["processor"] == "manga-screen"
+        && matches!(value["device"].as_str(), Some("cpu" | "cuda+cpu"))
+        && value["sourceRevision"] == "d0eb8dcc6c45274e3eee118ff0dabe05b56039b9"
+    {
+        let mut result = json!({"processor":"manga-screen","sourceRevision":value["sourceRevision"],"device":value["device"],
+            "validation":"待主力机验证","generationVerified":false,"performanceVerified":false});
+        if matches!(
+            value["rewrite"]["adapter"].as_str(),
+            Some("qwen-image-2.1" | "qwen-image-2.1-turbo")
+        ) {
+            result["rewrite"] = capture(&value["rewrite"]);
+        }
+        let line = &value["lineart"];
+        if line["model"] == "manga-line-extraction"
+            && line["device"] == "cpu"
+            && line["sourceRevision"] == "6ec136d5332180b65476e62c2558f2873d5d936a"
+            && line["modelSha256"]
+                .as_str()
+                .is_some_and(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+        {
+            result["lineart"] = json!({"model":"manga-line-extraction","device":"cpu",
+                "sourceRevision":line["sourceRevision"],"modelSha256":line["modelSha256"],"validation":"待主力机验证"});
+        }
+        return result;
+    }
+    if let Some(id) = value["adapter"]
+        .as_str()
+        .filter(|id| super::adapters::model(id).is_some())
+    {
+        if value["modelSha256"]
+            .as_str()
+            .is_some_and(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
+            && matches!(value["memoryPolicy"].as_str(), Some("resident" | "offload"))
+            && value["weightReuse"] == false
+        {
+            return json!({"adapter":id,"modelSha256":value["modelSha256"],"memoryPolicy":value["memoryPolicy"],
+                "weightReuse":false,"validation":"待主力机验证","performanceVerified":false});
+        }
+    }
     fn finite(value: &Value) -> Option<f64> {
         value.as_f64().filter(|n| n.is_finite() && *n >= 0.)
     }

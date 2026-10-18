@@ -302,6 +302,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 | --- | --- |
 | npm run build:runtime | 从 TypeScript 生成维护与独立浏览器工具，不生成测试或 Rust EXE |
 | npm run typecheck | 应用、Node 维护工具与独立浏览器工具类型检查 |
+| npm run wf -- models:native-adapter-catalog | 只读列出原生图像/视频适配声明、来源版本及许可证；不导入 ML，不代表实机可用 |
+| npm run wf -- images:manga-screen-catalog | 只读列出 MangaScreen 后处理操作和参数；不导入图像库、不处理图片，待主力机验证 |
 | npm run build | 前端构建、包体预算与预压缩 |
 | npm run wf -- rust:build | 按锁文件构建 Rust release 及源码/EXE 绑定回执 |
 | npm run wf -- rust:build:dev | 独立缓存构建快速 dev 后端，不生成发行回执 |

@@ -17,7 +17,7 @@ struct Http {
 }
 pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     let mut router = Router::new();
-    for family in ["anima", "creative"] {
+    for family in ["anima", "creative", "qwen", "manga"] {
         router = router
             .route(&format!("/api/{family}/status"), get(status))
             .route(
@@ -35,6 +35,7 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
             .route(&format!("/api/{family}/jobs/{{id}}/result"), get(result));
     }
     router
+        .route("/api/manga/jobs/{id}/lineart", get(result))
         .layer(Extension(Arc::new(Http { service })))
         .layer(axum::middleware::from_fn_with_state(
             Arc::new(generation::RateLimit::new("Anima 出图")),
@@ -44,6 +45,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
 fn family(uri: &axum::http::Uri) -> &'static str {
     if uri.path().starts_with("/api/anima/") {
         "anima"
+    } else if uri.path().starts_with("/api/qwen/") {
+        "qwen-image"
+    } else if uri.path().starts_with("/api/manga/") {
+        "manga-screen"
     } else {
         "krea2"
     }
@@ -89,12 +94,7 @@ async fn upload_raw(
     let owner = generation::request_owner(&headers, peer, &query);
     let result = http
         .service
-        .upload(
-            bytes,
-            owner,
-            http.service.shutdown.child_token(),
-            admission,
-        )
+        .upload(bytes, owner, http.service.shutdown.child_token(), admission)
         .await
         .map(|name| json!({"name":name}));
     response(result, StatusCode::OK)
@@ -248,6 +248,17 @@ async fn result(
                 family(&uri),
             )
             .await?;
+        let output = if uri.path().ends_with("/lineart") {
+            http.service
+                .lineart_result(
+                    &id,
+                    &generation::request_owner(&headers, peer, &query),
+                    output,
+                )
+                .await?
+        } else {
+            output
+        };
         let mime = output.mime().to_string();
         let (body, length) = match output {
             Output::Bytes { bytes, .. } => {

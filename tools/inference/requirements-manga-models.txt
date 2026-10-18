@@ -1,0 +1,4 @@
+# Optional Qwen/line extraction in the SAME separate Python 3.11 environment.
+# Never install this into the managed Anima environment. No weights are bundled.
+-r requirements-manga.txt
+-r requirements-adapters.txt

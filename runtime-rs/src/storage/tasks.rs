@@ -1,7 +1,9 @@
+mod accept;
 mod history;
 pub(super) mod inputs;
 mod listing;
 mod result_reference;
+mod retry;
 mod scopes;
 
 pub(super) use result_reference::ResultReference;
@@ -148,7 +150,8 @@ pub(super) fn execute_command(
                 listing::read_summary(
                     c,
                     principal,
-                    task_id.as_deref()
+                    task_id
+                        .as_deref()
                         .ok_or_else(|| invalid("Task summary requires taskId"))?,
                 )
             } else {
@@ -161,7 +164,9 @@ pub(super) fn execute_command(
             }
         }
         TaskCommand::List { query } => listing::read(c, principal, query),
-        TaskCommand::Accept { record } => accept(c, principal, *record),
+        TaskCommand::Accept { record, retry_of } => {
+            accept::accept(c, principal, *record, retry_of.as_deref())
+        }
         TaskCommand::Patch {
             task_id,
             expected_revision,
@@ -174,65 +179,6 @@ pub(super) fn execute_command(
             upstream_stopped,
         } => resolve_webui(c, principal, &task_id, expected_revision, upstream_stopped),
     }
-}
-fn accept(c: &mut Context, principal: &str, incoming: TaskRecord) -> Result<Value> {
-    if incoming.request_key.is_empty()
-        || incoming.request_key.len() > 200
-        || incoming.principal_id != principal
-        || incoming.workspace_id != c.workspace_id
-        || incoming.task_id.is_empty()
-    {
-        return Err(ApiError::new(
-            400,
-            "TASK_INVALID",
-            "Invalid task identity or media references",
-        ));
-    }
-    c.transaction(|c| {
-        if let Some(previous) = read(c, principal, None, Some(&incoming.request_key))? {
-            if previous.request_fingerprint != incoming.request_fingerprint {
-                return Err(conflict("TASK_KEY_CONFLICT", "Request key was already used with different input"));
-            }
-            let mut result = json!({"task": null, "created": false});
-            result["task"] = previous.into_value()?;
-            return Ok(result);
-        }
-        let cancellation: Option<i64> = c.db.query_row("SELECT requested_at FROM task_cancel_intents WHERE principal_id=? AND request_key=?",
-            params![principal, incoming.request_key], |r| r.get(0)).optional()?;
-        // A cancellation recorded before acceptance settles this request
-        // without using the provider. Unrelated running work cannot block it.
-        if cancellation.is_none() {
-            let blocked: Option<String> = c.db.query_row("SELECT task_id FROM tasks WHERE upstream_settled=0 LIMIT 1", [], |r| r.get(0)).optional()?;
-            if blocked.is_some() { return Err(conflict("TASK_PROVIDER_BUSY", "Provider has unfinished work; reconcile it before submitting")); }
-        }
-        let mut task = incoming;
-        if let Some(at) = cancellation {
-            task.cancel_requested_at = Some(at.try_into().map_err(|_| invalid("Invalid task cancellation time"))?);
-            task.status = TaskStatus::Cancelled;
-            task.upstream_settled = true;
-        }
-        // Publish the final record once. The previous provisional INSERT and
-        // immediate UPDATE both encoded the full input and maintained indexes.
-        task.revision = c.next_revision()?;
-        task.updated_at = now() as u64;
-        task.runtime_epoch = c.epoch.clone();
-        let (id, request_key, provider, settled) = (
-            task.task_id.clone(), task.request_key.clone(), task.provider.clone(), task.upstream_settled,
-        );
-        let value = task.into_value()?;
-        c.db.execute("INSERT INTO tasks VALUES(?,?,?,?,?,?)", params![id, principal, request_key, provider, settled, stringify(&value)])?;
-        // INSERT still precedes alias lookup so identity conflicts keep their
-        // original priority; missing inputs roll back this entire transaction.
-        for alias in value["inputMediaRefs"].as_array().unwrap() {
-            let alias = alias.as_str().unwrap();
-            let hash: Option<String> = c.db.query_row("SELECT hash FROM media_aliases WHERE alias=?", [alias], |r| r.get(0)).optional()?;
-            let hash = hash.ok_or_else(|| conflict("TASK_INPUT_MISSING", "Frozen task input media is missing"))?;
-            c.db.execute("INSERT OR IGNORE INTO media_refs VALUES('task-input',?,?)", params![id, hash])?;
-        }
-        let mut result = json!({"task": null, "created": true});
-        result["task"] = value;
-        Ok(result)
-    })
 }
 fn patch(
     c: &mut Context,

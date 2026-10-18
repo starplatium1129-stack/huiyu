@@ -24,7 +24,7 @@ impl Service {
         } else {
             None
         };
-        for key in ["initImage", "maskImage"] {
+        for key in ["initImage", "maskImage", "penLines"] {
             if let Some(name) = input[key].as_str() {
                 // Restore the accepted bytes before the resource probe. A stale
                 // working copy must not change the resumed input silently.

@@ -5,21 +5,25 @@
     <p v-if="runtimeTaskError || feedback || historyError" role="status">{{ feedback || historyError || runtimeTaskError }}</p>
     <p v-if="historyLoading" role="status">正在读取任务历史…</p>
     <div v-content-motion="selected" class="runtime-task-items tw:grid tw:gap-s-3 tw:min-h-0">
-    <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === 'refresh'" @click="refresh">{{ busy === 'refresh' ? '查询中…' : '查询接收状态' }}</button><button class="btn btn-ghost" :disabled="!!busy" @click="cancelKey(pending.key)">取消这次提交</button></article>
-    <article v-for="task in visible" :key="task.taskId" class="runtime-task tw:p-s-4 tw:rounded-lg" :data-state="task.status" :data-attention="task.recoveryState !== 'normal' || undefined">
-      <header><strong>{{ titles[task.kind] }}</strong><span>{{ task.recoveryState !== 'normal' ? '待核对' : labels[task.status] }}</span></header>
-      <p>{{ taskMessage(task) }}</p><time :datetime="new Date(task.createdAt).toISOString()">{{ new Date(task.createdAt).toLocaleString('zh-CN') }}</time>
+    <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === 'refresh'" @click="refresh">{{ busy === 'refresh' ? '查询中…' : '查询接收状态' }}</button><button class="btn btn-ghost" :disabled="!canCancelKey(pending.key)" :aria-busy="cancellingKey === pending.key" @click="cancelKey(pending.key)">{{ cancellingKey === pending.key ? '正在取消…' : '取消这次提交' }}</button></article>
+    <article v-for="task in visible" :key="task.taskId" :id="cardId(task.taskId)" tabindex="-1" class="runtime-task tw:p-s-4 tw:rounded-lg" :data-state="task.status" :data-attention="task.recoveryState !== 'normal' || undefined">
+      <header><strong>{{ titles[task.kind] }}{{ locatedId === task.taskId ? ' · 已定位' : '' }}</strong><span>{{ task.recoveryState !== 'normal' ? '待核对' : labels[task.status] }}</span></header>
+      <p>{{ taskMessage(task) }}</p><p v-if="task.kind === 'manga' || task.kind === 'lineart'">待主力机验证</p><time :datetime="new Date(task.createdAt).toISOString()">{{ new Date(task.createdAt).toLocaleString('zh-CN') }}</time>
       <div class="runtime-actions tw:mt-s-3">
-        <RouterLink class="btn btn-ghost" :to="routeFor(task)" @click="emit('navigate')">返回工作台</RouterLink>
+        <RouterLink class="btn btn-ghost" :to="routeFor(task)" @click="emit('navigate')">{{ task.kind === 'manga' || task.kind === 'lineart' ? '前往我的作品' : '返回工作台' }}</RouterLink>
         <button v-if="task.resultRefs.length && task.deliveryState !== 'discarded'" class="btn btn-primary" :aria-expanded="active && expanded === task.taskId" :aria-controls="`${resultRegionId}-${task.taskId}`" @click="expanded = expanded === task.taskId ? '' : task.taskId">{{ expanded === task.taskId ? '收起结果' : '查看结果' }}</button>
         <button v-if="!task.upstreamSettled" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'cancel')">取消任务</button>
         <button v-if="task.deliveryState !== 'discarded' && task.errorCode !== 'WEBUI_STOP_CONFIRMED' && (task.recoveryState !== 'normal' || task.resultState === 'unavailable')" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'reconcile')">重新核对</button>
         <button v-if="task.kind === 'generation' && task.provider === 'webui' && task.recoveryState === 'unknown' && task.submissionIntentAt && !task.upstreamSettled" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'resolve-webui')">解除 WebUI 占用</button>
-        <button v-if="task.status === 'queued' && !task.submissionIntentAt" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'resume')">继续生成</button>
+        <button v-if="task.status === 'queued' && !task.submissionIntentAt" class="btn btn-ghost" :disabled="!!busy || !!task.cancelRequestedAt" @click="act(task, 'resume')">{{ task.kind === 'manga' || task.kind === 'lineart' ? '继续处理' : '继续生成' }}</button>
+        <button v-if="task.retryTaskId" class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === `locate:${task.retryTaskId}`" @click="openRelated(task.retryTaskId)">{{ busy === `locate:${task.retryTaskId}` ? '正在定位…' : '查看重试任务' }}</button>
+        <button v-else-if="canRetry(task)" class="btn btn-primary" :disabled="!!busy || pendingRetry(task)" :aria-busy="busy === `retry:${task.taskId}`" @click="retry(task)">{{ busy === `retry:${task.taskId}` ? '正在准备重试…' : pendingRetry(task) ? '重试接收待确认' : '重试此任务' }}</button>
+        <button v-if="task.retryOfTaskId" class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === `locate:${task.retryOfTaskId}`" @click="openRelated(task.retryOfTaskId)">{{ busy === `locate:${task.retryOfTaskId}` ? '正在定位…' : '查看原任务' }}</button>
         <button v-if="task.errorCode === 'BATCH_AWAITING_EXPLICIT_CONTINUE'" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'continue')">继续剩余分镜</button>
         <button v-if="task.canConcat" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'concat')">拼接成片</button>
         <button v-if="task.upstreamSettled && task.resultState === 'available'" class="btn btn-ghost" :disabled="!!busy" @click="discarding = task.taskId">移出收件箱</button>
       </div>
+      <p v-if="canRetry(task) && !task.retryTaskId">重试会沿用已保存的原图和参数，从头处理；原任务与已有结果保留。</p>
       <p v-if="discarding === task.taskId">已入册作品会保留；未入册结果将从收件箱移除。<button class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'discard')">确认移出</button><button class="btn btn-ghost" @click="discarding = ''">保留结果</button></p>
       <div v-if="task.resultRefs.length && task.deliveryState !== 'discarded'" :id="`${resultRegionId}-${task.taskId}`" :hidden="!active || expanded !== task.taskId">
         <RuntimeTaskPreview v-if="active && expanded === task.taskId" :task-id="task.taskId" :revision="task.revision" />
@@ -29,36 +33,62 @@
     </div>
     <nav class="runtime-actions" aria-label="任务分页">
       <button class="btn btn-ghost" type="button" :disabled="historyLoading || !hasPrevious" @click="previous">上一页</button>
-      <span role="status">第 {{ pageNumber }} 页 · 本页 {{ visible.length }} 条</span>
+      <span role="status">第 {{ pageNumber }} 页 · 本页 {{ pageCount }} 条{{ locatedId ? ' · 已定位关联任务' : '' }}</span>
       <button class="btn btn-ghost" type="button" :disabled="historyLoading || !hasNext" @click="next">下一页</button>
     </nav>
   </section>
 </template>
 <script setup lang="ts">
-import { ref, useId } from 'vue'
+import { ref, useId, watch } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import RuntimeTaskPreview from './RuntimeTaskPreview.vue'
-import { refreshRuntimeTasks, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskSummary } from '@/api/runtimeTasks'
+import { refreshRuntimeTasks, getRuntimeTaskByKey, taskMessage, cancelRuntimeTask, cancelRuntimeTaskKey, actOnRuntimeTask, confirmWebuiTaskStopped, markRuntimeTask, type TaskSummary } from '@/api/runtimeTasks'
 import { runtimeTaskError, pendingTaskRequests } from '@/stores/runtimeTaskState'
 import { useRuntimeTaskBrowser } from '@/composables/tasks/useRuntimeTaskBrowser'
+import { useMangaTaskRetry } from '@/composables/tasks/useMangaTaskRetry'
 import { confirmAction } from '@/composables/useConfirm'
+import { runtimeTaskOpenRequest } from '@/composables/useTaskCenter'
 const props = defineProps<{ active: boolean }>()
 const emit = defineEmits<{ navigate: [] }>()
 const resultRegionId = useId()
+const cardId = (id: string) => `${resultRegionId}-${id}-card`
 const expanded = ref(''), busy = ref(''), feedback = ref(''), discarding = ref('')
-const { selected, visible, loading: historyLoading, error: historyError, pageNumber, hasPrevious, hasNext,
-  refresh: refreshHistory, next, previous } = useRuntimeTaskBrowser(() => props.active)
+const cancellingKey = ref('')
+const canCancelKey = (key: string) => !cancellingKey.value && (!busy.value || key.startsWith('manga-retry:') && busy.value === `retry:${key.slice('manga-retry:'.length)}`)
+const { selected, visible, locatedId, pageCount, loading: historyLoading, error: historyError, pageNumber, hasPrevious, hasNext,
+  refresh: refreshHistory, next, previous, reveal } = useRuntimeTaskBrowser(() => props.active)
+const { canRetry, pendingRetry, retry, openRelated } = useMangaTaskRetry({ busy, feedback, active: () => props.active, reveal, cardId })
+let openedRequest = 0
+watch([() => props.active, runtimeTaskOpenRequest], ([active, request]) => {
+  if (!active || request === openedRequest) return
+  openedRequest = request
+  // Entry actions reveal the newest tasks even if the inbox kept an older page.
+  if (selected.value !== 'all') selected.value = 'all'
+  else void refreshHistory()
+}, {immediate:true})
 const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'inbox', label: '结果收件箱' }] as const
-const titles = { generation: 'WAI 绘图', anima: 'Anima 绘图', creative: 'Krea 2 绘图', video: '视频创作', batch: '分镜短片' }
+const titles = { generation: 'WAI 绘图', anima: 'Anima 绘图', creative: 'Krea 2 绘图', manga: '漫画化', lineart: '独立线稿', video: '视频创作', batch: '分镜短片' }
 const labels = { queued: '已接收', submitting: '提交中', running: '生成中', cancelling: '取消中', succeeded: '已完成', failed: '未完成', cancelled: '已取消' }
-const routeFor = (task: TaskSummary) => task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${encodeURIComponent(task.sourceBatchId || task.taskId)}` : '/prompt-builder'
-async function refresh() { if (busy.value) return; busy.value = 'refresh'; feedback.value = ''; try { await Promise.all([refreshRuntimeTasks(), refreshHistory()]) } catch {} finally { busy.value = '' } }
-async function cancelKey(key: string) {
+const routeFor = (task: TaskSummary) => task.kind === 'manga' || task.kind === 'lineart' ? '/gallery' : task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${encodeURIComponent(task.sourceBatchId || task.taskId)}` : '/prompt-builder'
+async function refresh() {
   if (busy.value) return
-  busy.value = key; feedback.value = ''
+  busy.value = 'refresh'; feedback.value = ''
+  try {
+    // Explicit queries also find accepted retries outside the overview window.
+    await Promise.all(pendingTaskRequests.value.map(request => getRuntimeTaskByKey(request.key)))
+    await Promise.all([refreshRuntimeTasks(), refreshHistory()])
+  } catch (error) { feedback.value = error instanceof Error ? error.message : '任务状态暂时无法读取。' }
+  finally { busy.value = '' }
+}
+async function cancelKey(key: string) {
+  if (!canCancelKey(key)) return
+  // Cancel intent can be recorded while retry input restoration is still busy.
+  const ownsBusy = !busy.value
+  if (ownsBusy) busy.value = key
+  cancellingKey.value = key; feedback.value = ''
   try { await cancelRuntimeTaskKey(key); feedback.value = '取消意图已记录。' }
   catch { feedback.value = '取消尚未确认，请保持原操作并重试查询。' }
-  finally { busy.value = '' }
+  finally { cancellingKey.value = ''; if (ownsBusy) busy.value = '' }
 }
 async function act(task: TaskSummary, action: 'cancel' | 'reconcile' | 'resume' | 'continue' | 'concat' | 'discard' | 'resolve-webui') {
   if (busy.value) return

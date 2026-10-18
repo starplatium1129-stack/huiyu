@@ -10,6 +10,7 @@ pub(super) struct Worker {
     event_line: Vec<u8>,
     stderr: JoinHandle<()>,
     pub idle: CancellationToken,
+    settings: Settings,
 }
 impl Worker {
     fn spawn(engine: &Engine, settings: &Settings) -> Result<Self> {
@@ -44,6 +45,7 @@ impl Worker {
             event_line: Vec::new(),
             stderr,
             idle: CancellationToken::new(),
+            settings: settings.clone(),
         })
     }
     pub async fn event(&mut self, id: &str) -> Result<Value> {
@@ -141,7 +143,7 @@ impl Engine {
                     return Err(error);
                 }
             };
-            if exited.is_none() {
+            if exited.is_none() && worker.settings == *settings {
                 return Ok(worker);
             }
             worker.stop().await?;
@@ -180,6 +182,7 @@ impl Engine {
             {
                 slot.forget();
                 owner.native.slot.close();
+                owner.native.admission.close();
                 owner.admission.close();
                 eprintln!("native idle release: {}", error.code);
             }
@@ -199,11 +202,11 @@ impl Service {
         // until chat startup completes so a new generation cannot enter the GPU.
         let admission = self
             .inner
-            .admission
+            .native.admission
             .clone()
-            .try_acquire_many_owned(self.inner.scope.capacity() as u32)
+            .try_acquire_many_owned(4)
             .map_err(|_| {
-                if self.inner.admission.is_closed() {
+                if self.inner.native.admission.is_closed() {
                     release_error()
                 } else {
                     ApiError::new(
@@ -233,6 +236,7 @@ impl Service {
                 // new worker or local chat; restarting the runtime is required.
                 slot.forget();
                 self.inner.native.slot.close();
+                self.inner.native.admission.close();
                 self.inner.admission.close();
                 return Err(error);
             }

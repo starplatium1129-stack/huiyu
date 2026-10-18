@@ -2,8 +2,10 @@ mod admission;
 mod catalog;
 mod http;
 mod inputs;
+mod manga;
 pub(crate) mod media_import;
 mod native;
+mod native_adapters;
 mod resources;
 mod resume;
 pub(crate) mod upload_body;
@@ -52,6 +54,9 @@ impl Drop for Service {
     }
 }
 impl Service {
+    pub(crate) fn native_engine(&self) -> Arc<generation::native::Engine> {
+        self.backend.native_engine()
+    }
     pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
         self.backend.bind_control(control);
     }
@@ -106,7 +111,29 @@ impl Service {
         if self.shutdown.is_cancelled() {
             return Err(closed());
         }
-        let input = validate(&raw, family)?;
+        let input = if family == "manga-screen" {
+            if !self.native {
+                return Err(ApiError::new(
+                    409,
+                    "NATIVE_ENGINE_REQUIRED",
+                    "漫画处理仅接入原生后端，请显式切换后重启",
+                ));
+            }
+            manga::validate(&raw)?
+        } else if generation::native::adapters::model(raw["modelId"].as_str().unwrap_or(""))
+            .is_some()
+        {
+            if !self.native {
+                return Err(ApiError::new(
+                    409,
+                    "NATIVE_ENGINE_REQUIRED",
+                    "该模型仅接入原生引擎，请显式切换后重启；不会回退 ComfyUI",
+                ));
+            }
+            native_adapters::validate(&raw, family)?
+        } else {
+            validate(&raw, family)?
+        };
         if family == "krea2"
             && ["initImage", "maskImage", "maskPrompt"]
                 .iter()
@@ -165,6 +192,16 @@ impl Service {
             .await
     }
     pub async fn get_status(&self, family: &str) -> Result<Value> {
+        if matches!(family, "qwen-image" | "manga-screen") && !self.native {
+            return Err(ApiError::new(
+                409,
+                "NATIVE_ENGINE_REQUIRED",
+                "该入口仅接入原生引擎，请显式切换后重启",
+            ));
+        }
+        if family == "manga-screen" {
+            return manga::status(&self.backend).await;
+        }
         if self.native {
             let cancel = self.shutdown.child_token();
             let _guard = cancel.clone().drop_guard();
@@ -196,6 +233,31 @@ impl Service {
     pub async fn cancel(&self, id: &str, owner: &str, family: &str) -> Result<Value> {
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.cancel(id, owner).await
+    }
+    async fn lineart_result(&self, id: &str, owner: &str, output: Output) -> Result<Output> {
+        let job = self.get_job(id, owner, "manga-screen").await?;
+        if job["status"] != "succeeded" || !job["metadata"]["lineartResult"].is_object() {
+            return Err(ApiError::new(
+                404,
+                "LINEART_NOT_FOUND",
+                "本次任务没有可读取的独立线稿",
+            ));
+        }
+        let Output::File { path, .. } = output else {
+            return Err(ApiError::new(404, "LINEART_NOT_FOUND", "线稿不存在"));
+        };
+        let path = generation::native::manga::lineart_path(&path, &job["metadata"]);
+        let stat = tokio::fs::symlink_metadata(&path)
+            .await
+            .map_err(|_| ApiError::new(404, "LINEART_NOT_FOUND", "线稿已过期或不存在"))?;
+        if !stat.is_file() || stat.file_type().is_symlink() {
+            return Err(ApiError::new(404, "LINEART_NOT_FOUND", "线稿不存在"));
+        }
+        Ok(Output::File {
+            path,
+            mime: "image/png".into(),
+            bytes: stat.len(),
+        })
     }
     pub(crate) async fn upload(
         &self,

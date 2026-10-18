@@ -50,15 +50,17 @@ impl TaskRuntime {
                     )
                     .await
                     .map(Preparation::Generation),
-                TaskKind::Anima | TaskKind::Creative => runtime
-                    .images
-                    .resume_prepared(
-                        Value::Object(task.input.clone()),
-                        &hooks,
-                        runtime.shutdown.child_token(),
-                    )
-                    .await
-                    .map(Preparation::Image),
+                TaskKind::Anima | TaskKind::Creative | TaskKind::Manga | TaskKind::Lineart => {
+                    runtime
+                        .images
+                        .resume_prepared(
+                            Value::Object(task.input.clone()),
+                            &hooks,
+                            runtime.shutdown.child_token(),
+                        )
+                        .await
+                        .map(Preparation::Image)
+                }
                 TaskKind::Video => runtime
                     .video
                     .resume_prepared(
