@@ -11,7 +11,7 @@ interface DirectOwner {
   client: ApiClient; family: 'anima' | 'krea2'; signal: AbortSignal
   current(): boolean; state: Readonly<Ref<AnimaGenerationState>>; context: AnimaResultContext | null
   patch(patch: Partial<AnimaGenerationState>): void
-  discardStashed(): void; onResult(result: AnimaResult): void
+  discardStashed(): void; onResult(result: AnimaResult): Promise<void>
 }
 
 export async function runDirectAnima(options: DirectOwner & { request: AnimaRequest; requestKey: string; resume: boolean }): Promise<void> {
@@ -41,5 +41,5 @@ export async function runDirectAnima(options: DirectOwner & { request: AnimaRequ
   if (options.state.value.result) URL.revokeObjectURL(options.state.value.result.url)
   options.discardStashed()
   patch({ result, job: facts, resultContext: options.context, phase: 'succeeded', progress: 1, progressText: '生成完成', currentNode: null, statusText: '生成完成', errorMsg: '', errorReport: null })
-  options.onResult(result)
+  await options.onResult(result)
 }

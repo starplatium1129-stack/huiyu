@@ -73,6 +73,8 @@ export function usePromptWorkspace() {
         getRequest: () => buildAnimaRequest(),
         getSubmitContext: captureResultContext,
         onResult: result => onAnimaResult(result),
+        restoreResult: async () => { await tempResultTools.restoreTempResult(); },
+        activateResult: family => engine.setDrawEngine(family, { restoreExistingResult: true, silent: true }),
         flash: message => pb.flash(message),
         preferredSize: () => pb.lastRecommendedSize,
     });
@@ -85,10 +87,10 @@ export function usePromptWorkspace() {
         return engine.buildAnimaRequest();
     }
     // Anima/Krea 结果编排（自动入册 vs 临时缓冲）已下沉 useTempResult.handleAnimaResult。
-    function onAnimaResult(result: AnimaResult) {
+    async function onAnimaResult(result: AnimaResult) {
         resultRevealUrl.value = result.url;
         engine.onAnimaResult(result);
-        void tempResultTools.handleAnimaResult(result);
+        await tempResultTools.handleAnimaResult(result);
     }
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
     const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
@@ -128,7 +130,8 @@ export function usePromptWorkspace() {
     const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy: engineGenerationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration: cancelEngineGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
     const generationBusy = computed(() => engineGenerationBusy.value || inpaintPreparing.value || hiresPreparing.value);
     const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备高清重绘…' : '',
-        () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value));
+        () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value),
+        () => { void animaSession.recover(); });
     // ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
     // 先收敛到当前底模白名单（closestSupportedSize）再同步双引擎，防服务端 400。
     const genBarSize = computed({
@@ -218,6 +221,7 @@ export function usePromptWorkspace() {
     });
     // ── 未入册成片临时缓冲（F2）+ 舞台↔作品册锚点 + 手动入册（已下沉 useTempResult）──
     const tempResultTools = useTempResult({
+        onResultRetained: animaSession.acknowledgeResult,
         pb,
         sd,
         drawEngine,
@@ -378,15 +382,9 @@ export function usePromptWorkspace() {
             return '这些任务来自上次离开时的队列，确认参数后点「继续」';
         return '';
     });
-    /**
-     * Anima / Krea 2 失败后重试（2026-08-30 UX 审计）。
-     *
-     * 面板里的「重试」按当前面板配置原样重发一次——Comfy 侧最常命中 OOM 与模型
-     * 未就绪，重发是确定有效的动作；SD 那套「切回 WebUI 当前模型」之类的恢复在
-     * 这里并不适用，所以不复用 SDRecoveryPanel 的动作集。
-     */
+    /** Unknown requests always recover the frozen attempt, including tool callers. */
     function retryAnima() {
-        if (generationBusy.value || generationPresentation.value.needsReview)
+        if (generationBusy.value)
             return;
         void generateAnima();
     }
@@ -449,6 +447,7 @@ export function usePromptWorkspace() {
     });
     const generationContext = (engine: ActiveDrawEngine) => ({ pb, applyManagedRoute, engine, livePrompt, currentCapabilities, generationBusy, generateAnima })
     async function callGenerate(): Promise<void> {
+        if (animaSession.hasPending.value) { await animaSession.recover(); return; }
         const engine = drawEngine.value
         if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 配方仅供查看；请选择 Anima 或 Krea 2 开始新创作'); return }
         const { callGenerateAction } = await import('./promptGenerationActions')

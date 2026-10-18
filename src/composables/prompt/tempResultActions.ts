@@ -14,7 +14,7 @@ import { clearTempResult, readTempResult, sameTempResultOwner, writeTempResultDu
 export async function captureTempResult(input: {
   partial: Omit<TempResultRecord, 'imageId' | 'savedAt'>; blob: Blob; repository: ArtworkRepository; owner: TempResultOwner
 }, observer: {
-  current(): boolean; pending(): ArtworkCommitIdentity | undefined; durable(): void; publish(record: TempResultRecord): void; flash(message: string): void
+  current(): boolean; pending(): ArtworkCommitIdentity | undefined; durable(): Promise<void>; publish(record: TempResultRecord): void; flash(message: string): void
 }) {
   const { repository, owner } = input
   return withArtworkStaging(async () => {
@@ -30,7 +30,7 @@ export async function captureTempResult(input: {
       await writeTempResultDurable(record)
       const retained = readTempResult()
       if (retained?.imageId === imageId && retained.pendingCommit?.operationId === record.pendingCommit?.operationId
-        && repository === artworkRepository && sameTempResultOwner(owner)) observer.durable()
+        && repository === artworkRepository && sameTempResultOwner(owner)) await observer.durable()
       if (!observer.current()) return
       observer.publish(record)
       if (previous && previous.imageId !== imageId) void repository.deleteImage(previous.imageId).catch(() => {})
@@ -73,7 +73,7 @@ export async function admitTempResultSave(pending: ArtworkCommitIdentity, input:
   record: TempResultRecord | null; capturedMutation: number
 }, state: {
   current(): boolean; mutation(): number; claim(): number; storedUrl(): string; retainedSource(): boolean;
-  markerStable(): void; durable(): void; publish(record: TempResultRecord | null): void
+  markerStable(): void; durable(): Promise<void>; publish(record: TempResultRecord | null): void
 }) {
   const { repository, owner, record, url, partial, capturedMutation } = input
   const latest = readTempResult()
@@ -88,7 +88,7 @@ export async function admitTempResultSave(pending: ArtworkCommitIdentity, input:
   state.markerStable()
   const published = readTempResult()
   const stillReferenced = published?.pendingCommit?.operationId === pending.operationId && published.pendingCommit.entry.image_id === pending.entry.image_id
-  if (stillReferenced && repository === artworkRepository && sameTempResultOwner(owner)) state.durable()
+  if (stillReferenced && repository === artworkRepository && sameTempResultOwner(owner)) await state.durable()
   if (!state.current() || mutation !== state.mutation() || repository !== artworkRepository || !sameTempResultOwner(owner) || !stillReferenced)
     throw new ArtworkSaveSupersededError(!stillReferenced && !state.retainedSource())
   state.publish(published)

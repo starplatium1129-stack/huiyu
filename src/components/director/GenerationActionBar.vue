@@ -6,7 +6,7 @@
       <div class="gen-bar-status">
         <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online || presentation.needsReview ? 'warning' : 'success'" />{{ statusSummary }}</span>
         <button v-if="presentation.phase === 'cancelling'" class="btn btn-quiet gen-bar-recovery" type="button" @click="openGenerationTasks">查看任务</button>
-        <button v-if="presentation.needsReview" class="btn btn-quiet gen-bar-recovery" type="button" :disabled="!online || !!blockedReason" @click="$emit('generate')">另画一张</button>
+        <button v-if="presentation.needsReview" class="btn btn-quiet gen-bar-recovery" type="button" @click="$emit('cancel')">取消原请求</button>
         <RouterLink v-if="!online && !busy" class="gen-bar-recovery" :to="{ path: '/control', query: { engine } }" aria-label="打开控制面板，启动并检查绘图服务">打开控制面板</RouterLink>
       </div>
       <small v-if="!showSize">{{ size.replace('x', ' × ') }}</small>
@@ -86,7 +86,7 @@ const status = computed(() => props.busy ? 'loading' : props.presentation.needsR
 const pressRipple = usePressRipple(() => !props.busy && !props.presentation.needsReview)
 const cancellationPending = computed(() => props.presentation.phase === 'cancelling' && !props.presentation.canRetryCancellation)
 const actionText = computed(() => props.busy && props.presentation.phase === 'cancelling' ? props.presentation.canRetryCancellation ? '重试停止' : '正在停止…'
-  : props.busy && props.presentation.phase === 'preparing' ? '取消准备' : ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成', review: '核对任务与结果' })[status.value])
+  : props.busy && props.presentation.phase === 'preparing' ? '取消准备' : ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成', review: '重新查询原请求' })[status.value])
 const actionLabel = computed(() => status.value === 'success' ? '生成完成，再生成图片' : actionText.value)
 const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh', review: 'info' } as const)[status.value])
 const statusSummary = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : !props.online ? '服务未连接'
@@ -97,7 +97,7 @@ const unavailableReason = computed(() => !props.online ? '绘图服务未连接�
 const progressValue = computed(() => props.presentation.progress === null ? null : Math.round(props.presentation.progress * 100))
 function activate() {
   if (cancellationPending.value) return
-  if (props.presentation.needsReview) openGenerationTasks()
+  if (props.presentation.needsReview) props.presentation.review()
   else if (props.busy) emit('cancel')
   else emit('generate')
 }

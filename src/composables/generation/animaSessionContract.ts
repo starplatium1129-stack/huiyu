@@ -51,7 +51,9 @@ export interface AnimaSessionOptions {
   getFamily: () => 'anima' | 'krea2'
   getRequest: () => AnimaRequest | null
   getSubmitContext?: () => AnimaResultContext | null
-  onResult: (result: AnimaResult) => void
+  onResult: (result: AnimaResult) => Promise<void>
+  restoreResult: () => Promise<void>
+  activateResult: (family: 'anima' | 'krea2') => void
   flash: (message: string) => void
   preferredSize: () => string
   client?: ApiClient

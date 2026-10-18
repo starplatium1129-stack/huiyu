@@ -3,7 +3,7 @@
     <section v-if="drawEngine !== 'sd' && (animaState.errorReport || animaState.errorMsg)" class="inspector-generation-error" role="alert" aria-label="绘制恢复">
       <strong>{{ generationPresentation.needsReview ? '任务与结果待核对' : generationPresentation.phase === 'cancelling' ? '取消尚未确认' : animaState.errorReport?.title || '绘制未完成' }}</strong>
       <p>{{ generationPresentation.needsReview || generationPresentation.phase === 'cancelling' ? generationPresentation.message : animaState.errorReport?.message || animaState.errorMsg }}</p>
-      <button v-if="generationPresentation.needsReview" class="btn btn-ghost btn-sm" type="button" @click="openGenerationTasks">核对任务与结果</button>
+      <button v-if="generationPresentation.needsReview" class="btn btn-ghost btn-sm" type="button" @click="generationPresentation.review">重新查询原请求</button>
       <button v-else-if="generationPresentation.phase !== 'cancelling'" class="btn btn-ghost btn-sm anima-retry" type="button" :disabled="generationBusy" @click="retryAnima">按当前设置重试</button>
       <details v-if="animaState.errorReport?.details"><StudioDisclosureSummary>技术细节</StudioDisclosureSummary><code>{{ animaState.errorReport.details }}</code></details>
     </section>
@@ -66,7 +66,6 @@ import CasualCreativeSliders from '@/components/director/CasualCreativeSliders.v
 import AnimaQuickPanel from '@/components/AnimaQuickPanel.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
-import { openGenerationTasks } from '@/composables/prompt/useGenerationPresentation'
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const props = defineProps<{ bindings: PromptRenderBindings }>()
 const { pb, generationBusy, generationPresentation, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,

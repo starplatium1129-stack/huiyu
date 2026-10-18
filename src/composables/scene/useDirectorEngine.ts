@@ -100,6 +100,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   }
 
   function setDrawEngine(v: DrawEngine, options: { silent?: boolean; restoreExistingResult?: boolean } = {}) {
+    if (options.restoreExistingResult && v !== 'sd') { drawEngine.value = v; return }
     if (v === 'sd') {
       // Restore an already loaded result without selecting SD for new work.
       if (options.restoreExistingResult && sd.resultUrl.value) { drawEngine.value = 'sd'; return }

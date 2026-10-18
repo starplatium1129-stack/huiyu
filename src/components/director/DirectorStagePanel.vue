@@ -37,7 +37,7 @@
           <div class="stage-placeholder-title">任务与结果待核对</div>
           <div class="stage-placeholder-copy">{{ generation.message }}</div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="openGenerationTasks">核对任务与结果</button>
+            <button class="btn btn-primary" type="button" @click="generation.review">重新查询原请求</button>
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">找回上一张未入册成片</button>
           </div>
         </div>
@@ -153,7 +153,7 @@ import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasGenerationMotion } from '@/composables/useCanvasGenerationMotion'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
-import { openGenerationTasks, type GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
+import type { GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
 import { sampleGenerationPalette } from '@/utils/generationPalette'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'

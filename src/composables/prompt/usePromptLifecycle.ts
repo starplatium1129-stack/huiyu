@@ -27,7 +27,7 @@ export interface PromptLifecycleDeps extends
     router: Router;
     DIRECTOR_MODE_KEY: string;
     syncAnimaCharacter: ReturnType<typeof useAnimaSession>['syncCharacter'];
-    animaSession: Pick<ReturnType<typeof useAnimaSession>, 'startStatusPolling' | 'stopStatusPolling' | 'pauseStatusPolling'>;
+    animaSession: Pick<ReturnType<typeof useAnimaSession>, 'startStatusPolling' | 'stopStatusPolling' | 'pauseStatusPolling' | 'restorePending' | 'recover'>;
     livePrompt: ReturnType<typeof useUnifiedPromptAssembly>['positivePrompt'];
     effectiveNegative: ReturnType<typeof useUnifiedPromptAssembly>['negativePrompt'];
     callGenerate: () => Promise<void>;
@@ -126,6 +126,14 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         // 历史载入（IndexedDB）
         await pb.loadHistory();
         if (!current()) return;
+        const pendingImage = animaSession.restorePending();
+        if (pendingImage) {
+            await draftRecovery.restoreDraft(() => current() && !generationBusy.value);
+            if (!current()) return;
+            draftRecovery.initialized = true;
+            void animaSession.recover();
+            return;
+        }
         // 深链参数恢复（?scene / ?char / ?mood / ?scenario / ?regen / ?resume / ?quick / ?variant / ?generate）
         const restoreCurrent = () => current() && !generationBusy.value;
         if (typeof query.remix === 'string' || typeof query.variant === 'string') {
@@ -209,7 +217,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         }
     }
     onMounted(initializeWorkspace);
-    // 离开导演台时的 Anima 会话清理（轮询停止、在途任务取消、结果 URL 释放）
+    // 离开导演台仅解除页面观察，已提交请求保留原键与冻结参数。
     // 由 useAnimaSession 的自动 onUnmounted(dispose) 承担。
     // Autosave draft
     watch(() => [pb.story, pb.visualDescription, pb.char, pb.sceneId, pb.selections, pb.manualTags,

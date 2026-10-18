@@ -53,6 +53,7 @@ export interface TempResultDeps {
   /** F3 冻结上下文（SD 路径由 usePromptSdQueue 写入；Anima 读会话 state）。 */
   resultContext: Ref<AnimaResultContext | null>
   autoSaveToGallery: Ref<boolean>
+  onResultRetained(result: AnimaResult): Promise<void>
   setDrawEngine: (engine: DrawEngine, options?: { restoreExistingResult?: boolean }) => void
 }
 
@@ -83,6 +84,10 @@ export function useTempResult(deps: TempResultDeps) {
   let generationRepository = artworkRepository, generationOwner: TempResultOwner | undefined
   let releaseGenerationSource: (() => void) | undefined
   const sourceFor = (url: string) => [...pendingAnimaSources.values()].find(source => source.result.url === url)
+  async function handoffSource(source?: PendingAnimaSource) {
+    if (source) await deps.onResultRetained(source.result)
+    settleAnimaSource(source)
+  }
   function retainAnimaSource(result: AnimaResult, context: AnimaResultContext | null) {
     let source = [...pendingAnimaSources.values()].find(item => item.result.blob === result.blob)
     if (!source) {
@@ -164,7 +169,7 @@ export function useTempResult(deps: TempResultDeps) {
       const { captureTempResult } = await import('./tempResultActions')
       await captureTempResult({ partial: snapshot, blob, repository, owner }, {
         current: () => mutation === tempMutation && current() && repository === artworkRepository && sameTempResultOwner(owner),
-        pending: () => source?.intent?.prepared, durable: () => settleAnimaSource(source), flash: message => pb.flash(message),
+        pending: () => source?.intent?.prepared, durable: () => handoffSource(source), flash: message => pb.flash(message),
         publish: record => { storedResultUrl.value = url; legacyResultUrl = url; legacyRecord = record },
       })
     } catch (error) {
@@ -226,7 +231,7 @@ export function useTempResult(deps: TempResultDeps) {
       await admitTempResultSave(pending, { repository, owner, url, partial, record, capturedMutation }, {
         current, mutation: () => tempMutation, claim: () => ++tempMutation, storedUrl: () => storedResultUrl.value,
         retainedSource: () => Boolean(intent.source && pendingAnimaSources.get(intent.source.key) === intent.source),
-        markerStable: () => { intent.markerStable = true }, durable: () => settleAnimaSource(intent.source),
+        markerStable: () => { intent.markerStable = true }, durable: () => handoffSource(intent.source),
         publish: published => { storedResultUrl.value = url; legacyResultUrl = url; legacyRecord = published },
       })
     } }

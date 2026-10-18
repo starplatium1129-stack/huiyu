@@ -101,6 +101,8 @@ export const VIDEO_SHOTS_DRAFT_KEY = 'aics_video_shots_draft_v1'
 export const VIDEO_SHOTS_BATCH_KEY = 'aics_video_shots_batch_v1'
 /** 绘图页未入册临时成片指针（sessionStorage，2026-09-06 体验报告 F2；blob 在 IndexedDB）。 */
 export const TEMP_RESULT_KEY = 'aics_pb_temp_result_v1'
+/** Frozen single image acceptance identity, retained until a durable result takes over. */
+export const IMAGE_REQUEST_DRAFT_KEY = 'aics_image_request_v1'
 
 /**
  * SD 出图队列快照（2026-08-30 UX 审计 P0-5）。队列任务在离开绘图页 / 刷新后

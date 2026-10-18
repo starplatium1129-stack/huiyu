@@ -1,22 +1,14 @@
-import { computed, getCurrentInstance, onUnmounted, ref, toRaw, watch } from 'vue'
+import { computed, getCurrentInstance, onUnmounted, ref, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
-import { assertDirectImageRuntime } from '@/api/directImageJobs'
-import { cancelDirectImageRequest, DirectImageRequestRejected } from '@/api/directImageRequests'
-import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { AnimaGenerationState, AnimaOption, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
-import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
-import { runtimeRequestKey } from '@/stores/runtimeTaskState'
+import { useAnimaTask } from './useAnimaTask'
 import { usePolling } from '@/composables/usePolling'
-import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import { readDrawingSettings, saveDrawingSettings } from '@/storage/drawingSettings'
-import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
-import { automaticMaskBlocker, backendReadiness } from './animaBackendReadiness'
+import { backendReadiness } from './animaBackendReadiness'
 import {
   ANIMA_LORA_BY_CHARACTER,
-  animaRequestPayload,
   closestSupportedSize,
   type AnimaRequest,
   type AnimaSessionOptions,
@@ -74,23 +66,12 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   }, { flush: 'sync' })
   const getSettingsRevision = () => settingsRevision
 
-  let requestSerial = 0
-  let activeRuntimeIdentity = ''
   let statusRequest: AbortController | null = null
   let statusRefresh: Promise<boolean> | null = null
   let statusEpoch = 0, refreshSettingsRevision = 0
-  let jobRequest: AbortController | null = null
-  let durableAttempt = false, durableKey = ''
-  let directPending: { key: string; submission: AnimaSubmission; owner: string } | null = null
   let disposed = false
   const statusPolling = usePolling({ intervalMs: 15_000, immediate: false, paused: () => document.hidden,
     tick: async () => { await refreshBackend() } })
-  let directTransport: typeof import('./animaJobPolling') | null = null
-  async function loadDirectTransport() {
-    // Cache only success: a missing deployment chunk must be retryable.
-    return directTransport ??= await import('./animaJobPolling')
-  }
-  const completedSubmissions = new WeakMap<Blob, AnimaSubmission>()
 
   /**
    * 上一次成功成片的临时缓冲（2026-09-06 体验报告 F2）。
@@ -102,8 +83,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
    * 两条独立生命线，互不 revoke。
    */
   const stashedResult = ref<{ result: AnimaResult; context: AnimaResultContext | null } | null>(null)
-  /** 本轮提交的冻结上下文（generate 采样 → 成功时落到 state.resultContext）。 */
-  let pendingContext: AnimaResultContext | null = null
 
   const modelId = computed({
     get: () => state.value.modelId,
@@ -369,160 +348,23 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     return request ? JSON.parse(JSON.stringify({ family: state.value.family, request: { ...request, ...overrides }, context: options.getSubmitContext?.() ?? null })) as AnimaSubmission : null
   }
 
-  function resultSubmission(): AnimaSubmission | null {
-    const result = state.value.result
-    const submission = result && completedSubmissions.get(toRaw(result.blob))
-    if (!result || !submission || !Number.isSafeInteger(result.metadata.seed) || result.metadata.seed < 0) return null
-    return JSON.parse(JSON.stringify({ ...submission, request: { ...submission.request, seed: result.metadata.seed } })) as AnimaSubmission
-  }
-
-  async function generate(overrides: Partial<AnimaRequest> = {}, frozen?: AnimaSubmission): Promise<void> {
-    if (disposed || BUSY_PHASES.includes(state.value.phase)) return
-    if (directPending && hasRuntimeTasks()) { options.flash('上次浏览器请求仍需在原连接核对，不能切换工作区重新提交。'); return }
-    if (directPending) options.flash('正在核对上次请求；本次继续使用原参数，不会重复生成。')
-    const submission = directPending?.submission ?? (frozen ? JSON.parse(JSON.stringify({ ...frozen, request: { ...frozen.request, ...overrides } })) as AnimaSubmission : captureSubmission(overrides))
-    if (!submission) return
-    if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
-    const { request, family } = submission
-    const provider = state.value.provider === 'native' ? 'native' : 'comfy'
-    if (!directPending && !state.value.online && !state.value.managedStartAvailable) { options.flash(`${family === 'krea2' ? 'Krea 2' : 'Anima'} 当前未连接或尚未就绪。${state.value.checkMsg}`); return }
-    const nativeBlocker = state.value.provider === 'native' && nativeAnimaRequestBlocker(state.value.models, request)
-    if (!directPending && nativeBlocker) { options.flash(nativeBlocker); return }
-    const maskBlocker = request.maskPrompt && automaticMaskBlocker(state.value)
-    if (!directPending && maskBlocker) { options.flash(maskBlocker); return }
-    const serial = ++requestSerial
-    activeRuntimeIdentity = runtimeResourceIdentity()
-    jobRequest?.abort()
-    const controller = new AbortController()
-    jobRequest = controller
-    durableAttempt = hasRuntimeTasks(); durableKey = ''
-    pendingContext = JSON.parse(JSON.stringify(submission.context)) as AnimaResultContext | null
-    const onResult = (result: AnimaResult) => { directPending = null; completedSubmissions.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission); options.onResult(result) }
-    // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
-    stashCurrentResult()
-    patchState({ phase: 'submitting', backendStatus: undefined, job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : state.value.online ? '正在连接 ComfyUI…' : '正在启动受管绘图服务…', statusText: '提交任务…', errorMsg: '', errorReport: null })
-    let accepted = false, submitting = false
-    const releaseLocalChat = async () => {
-      if(isLocalStudioHost()) {
-        await client.request('/api/local-setup/llama',{method:'DELETE',signal:controller.signal,timeoutMs:15_000,validate:value=>value.ok===true})
-        controller.signal.throwIfAborted()
-      }
-    }
-    try {
-      if (durableAttempt) {
-        const kind = family === 'krea2' ? 'creative' : 'anima'
-        const input = animaRequestPayload(request)
-        const { runRuntimeAnima } = await import('./runtimeImageSession')
-        await releaseLocalChat()
-        controller.signal.throwIfAborted()
-        durableKey = runtimeRequestKey(kind, input)
-        await runRuntimeAnima({ input, key: durableKey, signal: controller.signal, family, context: pendingContext, state,
-          isCurrent: () => !controller.signal.aborted && serial === requestSerial,
-          onSubmitting: () => { submitting = true }, onAccepted: () => { accepted = true }, discardStashed: discardStashedResult, onResult })
-        return
-      }
-      // Load the complete direct transport before creating an upstream job.
-      const transport = await loadDirectTransport()
-      const current = () => !controller.signal.aborted && serial === requestSerial
-      if (!current()) return
-      assertDirectImageRuntime(activeRuntimeIdentity)
-      if (directPending) assertDirectImageRuntime(directPending.owner)
-      if (!directPending) await releaseLocalChat()
-      assertDirectImageRuntime(activeRuntimeIdentity)
-      const resume = Boolean(directPending)
-      directPending ??= { key: crypto.randomUUID(), submission, owner: activeRuntimeIdentity }
-      await transport.runDirectAnima({ client, request, family, signal: controller.signal, current,
-        requestKey: directPending.key, resume,
-        state, context: pendingContext, patch: patchState, discardStashed: discardStashedResult, onResult })
-    } catch (error) {
-      if (serial !== requestSerial) return
-      if (error instanceof DirectImageRequestRejected || error instanceof AcceptedTaskTerminalError) directPending = null
-      if (!durableAttempt && error instanceof AcceptedTaskTerminalError && error.status === 'cancelled') {
-        patchState({ phase: 'cancelled', statusText: '任务已取消', errorMsg: '', errorReport: null }); return
-      }
-      if (durableAttempt) {
-        if (!submitting) { patchState({ phase: 'failed', statusText: '准备未完成，尚未提交生成', errorMsg: error instanceof Error ? error.message : String(error), errorReport: null }); return }
-        const { runtimeAnimaFailure } = await import('./runtimeImageSession')
-        if (serial === requestSerial) patchState(runtimeAnimaFailure(error, controller.signal.aborted, accepted, provider))
-        return
-      }
-      if (controller.signal.aborted) {
-        patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
-        return
-      }
-      if (error instanceof ApiClientError && error.code === 'RUNTIME_EPOCH_CHANGED') {
-        patchState({ phase: 'failed', backendStatus: 'unknown', statusText: '运行时连接已更换，请核对原任务', errorMsg: error.message, errorReport: null }); return
-      }
-      if (error instanceof ApiClientError && error.kind === 'aborted') return
-      const { imageFailurePatch } = await import('./runtimeImageSession')
-      if (serial === requestSerial) patchState(imageFailurePatch(error, '生成失败', provider))
-    } finally {
-      if (jobRequest === controller) jobRequest = null
-    }
-  }
-
-  let cancellation: { serial: number; request: Promise<void> } | null = null
-  function cancel(): Promise<void> {
-    if (cancellation?.serial === requestSerial) return cancellation.request
-    const serial = requestSerial, request: Promise<void> = cancelOnce().finally(() => { if (cancellation?.request === request) cancellation = null })
-    cancellation = { serial, request }
-    return request
-  }
-  async function cancelOnce(): Promise<void> {
-    if (!durableAttempt && BUSY_PHASES.includes(state.value.phase) && activeRuntimeIdentity !== runtimeResourceIdentity()) {
-      requestSerial++; jobRequest?.abort()
-      patchState({ phase: 'failed', statusText: '运行时连接已更换，请核对原任务', errorMsg: '', errorReport: null })
-      return
-    }
-    if (durableAttempt && durableKey && BUSY_PHASES.includes(state.value.phase)) {
-      const serial = requestSerial, key = durableKey
-      const isCurrent = () => serial === requestSerial && key === durableKey && BUSY_PHASES.includes(state.value.phase)
-      patchState({ phase: 'cancelling', statusText: '正在记录取消请求…', errorMsg: '' })
-      try {
-        const { cancelRuntimeTaskKey, taskMessage } = await import('@/api/runtimeTasks')
-        const task = await cancelRuntimeTaskKey(key)
-        if (!isCurrent()) return
-        patchState({ phase: task?.status === 'cancelled' ? 'cancelled' : 'cancelling', statusText: task ? taskMessage(task) : '取消意图已记录，等待提交核对。' })
-      } catch (error) { if (isCurrent()) patchState({ statusText: '取消尚未确认，可以重试停止或到任务中心核对。', errorMsg: error instanceof Error ? error.message : '取消请求未完成' }) }
-      return
-    }
-    if (!durableAttempt && directPending) {
-      const pending = directPending, serial = requestSerial
-      patchState({ phase: 'cancelling', statusText: '正在记录取消请求…', errorMsg: '' })
-      try {
-        await cancelDirectImageRequest(pending.submission.family, pending.key, pending.owner, client)
-        if (serial !== requestSerial || directPending !== pending) return
-        requestSerial++; jobRequest?.abort()
-        patchState({ phase: 'cancelled', statusText: '取消意图已记录；再次生成前会核对原请求。' })
-      } catch (error) { if (serial === requestSerial) patchState({ statusText: '取消尚未确认，请重试停止。', errorMsg: error instanceof Error ? error.message : '取消请求未完成' }) }
-      return
-    }
-    if (state.value.phase === 'submitting') {
-      // Invalidate first: a late POST must not overwrite a restored result.
-      // No request key exists yet, so this only stops preparation.
-      requestSerial += 1
-      jobRequest?.abort()
-      patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
-      return
-    }
-  }
+  const task = useAnimaTask(options, client, state, { capture: captureSubmission, patch: patchState,
+    stash: stashCurrentResult, discardStashed: discardStashedResult })
 
   /** Leaving releases page observations and URLs; accepted execution belongs to the service. */
   function dispose() {
     disposed = true
     stopSettingsWatch()
     stopTeaCacheWatch()
-    requestSerial += 1
     pauseStatusPolling()
-    jobRequest?.abort()
-    jobRequest = null
+    task.dispose()
     const result = state.value.result
     if (result) URL.revokeObjectURL(result.url)
     // stash 一并释放（blob 本体已在成功时写入临时成片记录，可跨页找回）。
     discardStashedResult()
   }
 
-  // 在组件上下文里自动挂载清理；被普通函数调用时（如测试）跳过
+  // 在组件上下文里自动挂载清理；被普通函数调用时（非组件消费者）跳过
   if (getCurrentInstance()) onUnmounted(dispose)
 
   return {
@@ -537,10 +379,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     startStatusPolling,
     stopStatusPolling,
     pauseStatusPolling,
-    generate,
+    ...task,
     captureSubmission,
-    resultSubmission,
-    cancel,
     clearResult,
     dispose,
     stashedResult,
