@@ -222,6 +222,7 @@ export function usePromptWorkspace() {
     // ── 未入册成片临时缓冲（F2）+ 舞台↔作品册锚点 + 手动入册（已下沉 useTempResult）──
     const tempResultTools = useTempResult({
         onResultRetained: animaSession.acknowledgeResult,
+        onResultDiscarded: animaSession.discardResult,
         pb,
         sd,
         drawEngine,

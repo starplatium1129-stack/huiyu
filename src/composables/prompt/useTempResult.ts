@@ -54,6 +54,7 @@ export interface TempResultDeps {
   resultContext: Ref<AnimaResultContext | null>
   autoSaveToGallery: Ref<boolean>
   onResultRetained(result: AnimaResult): Promise<void>
+  onResultDiscarded(result: AnimaResult): Promise<void>
   setDrawEngine: (engine: DrawEngine, options?: { restoreExistingResult?: boolean }) => void
 }
 
@@ -413,6 +414,8 @@ export function useTempResult(deps: TempResultDeps) {
     catch { legacy = true }
     const taskId = !legacy && hasRuntimeTasks() ? deps.drawEngine.value === 'sd' ? sd.resultTaskId?.value : animaResult?.metadata.id : undefined
     resultRevision += 1
+    if (animaResult) void deps.onResultDiscarded(animaResult)
+      .catch(() => pb.flash('原图片请求清除尚未确认，恢复身份已保留，请恢复连接后核对'))
     ownedSources.forEach(key => settleAnimaSource(pendingAnimaSources.get(key)))
     ownedSources.clear()
     releaseSaveIntent(); legacyRecord = null; legacyResultUrl = ''

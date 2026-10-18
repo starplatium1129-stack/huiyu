@@ -24,6 +24,7 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
   const pending = ref<ImageRequestDraft | null>(null), storageError = ref('')
   let serial = 0, disposed = false, flight = false, controller: AbortController | null = null
   let activeRuntime = '', cancellation: Promise<void> | null = null
+  let resultIdentityWrite: Promise<void> | null = null
   const completed = new WeakMap<Blob, AnimaSubmission>()
   const hasPending = computed(() => Boolean(pending.value || storageError.value))
   function restorePending() {
@@ -38,6 +39,10 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     if (pending.value?.key === draft.key) pending.value = null
   }
   async function acknowledgeResult(result: AnimaResult) {
+    const draft = pending.value
+    if (draft?.resultId === result.metadata.id) { await resultIdentityWrite; await acknowledge(draft) }
+  }
+  async function discardResult(result: AnimaResult) {
     const draft = pending.value
     if (draft?.resultId === result.metadata.id) await acknowledge(draft)
   }
@@ -102,11 +107,20 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
       const owned = draft
       const onResult = async (result: AnimaResult) => {
         assertImageRequestOwner(owned, hasRuntimeTasks())
+        view.patch({ phase: 'running', statusText: '成片已生成，正在保存恢复信息…', progressText: '正在保存成片…' })
         owned.resultId = result.metadata.id
-        await writeImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY, owned)
+        const stable = writeImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY, owned)
+        resultIdentityWrite = stable
+        void stable.catch(() => {})
         completed.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission)
-        if (runtime) await acknowledge(owned) // The private inbox already owns the result.
+        if (runtime) { await stable; await acknowledge(owned) } // The private inbox already owns the result.
+        // Register direct bytes synchronously, before awaiting the draft flush.
+        // Its durable handoff awaits this same identity write before clearing it.
         if (current()) await options.onResult(result)
+        await stable
+        if (current() && state.value.result?.url === result.url) view.patch(pending.value?.key === owned.key
+          ? { phase: 'failed', backendStatus: 'unknown', statusText: '原图尚未落稳，可继续保存或明确清除', errorMsg: '', errorReport: null }
+          : { phase: 'succeeded', backendStatus: undefined, statusText: runtime ? '生成完成 · 已保存在收件箱' : '生成完成', progressText: '生成完成' })
       }
       assertImageRequestOwner(draft, hasRuntimeTasks())
       if ('runRuntimeAnima' in transport) await transport.runRuntimeAnima({ input: animaRequestPayload(request), key: draft.key, resume: resuming,
@@ -154,5 +168,5 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
   }
   function cancel() { return cancellation ??= cancelOnce().finally(() => { cancellation = null }) }
   function dispose() { disposed = true; serial++; controller?.abort(); controller = null }
-  return { generate, recover: () => generate({}, undefined, true), restorePending, hasPending, acknowledgeResult, resultSubmission, cancel, dispose }
+  return { generate, recover: () => generate({}, undefined, true), restorePending, hasPending, acknowledgeResult, discardResult, resultSubmission, cancel, dispose }
 }
