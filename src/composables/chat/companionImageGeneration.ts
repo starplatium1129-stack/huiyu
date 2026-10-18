@@ -1,3 +1,4 @@
+import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 import { ref } from 'vue'
 import { apiClient, ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
@@ -5,7 +6,7 @@ import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, getRuntimeTaskB
 import { refreshProfileStorage } from '@/platform/web/profileStorage'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
-import { assertImageRequestOwner, clearImageRequestDraft, newImageRequestDraft, readImageRequestDraft, writeImageRequestDraft, type ImageRequestDraft } from '@/storage/imageRequestDraft'
+import { newImageRequestDraft, readImageRequestDraft, type ImageRequestDraft } from '@/storage/imageRequestDraft'
 import { COMPANION_IMAGE_REQUEST_KEY } from '@/utils/storageKeys'
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING, settingsRepository } from '@/storage/settingsRepository'
@@ -91,8 +92,8 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
 export async function acknowledgeCompanionImage(taskId: string) {
   const draft = readImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY)
   if (draft?.resultId !== taskId) return
-  assertImageRequestOwner(draft, hasRuntimeTasks())
-  await clearImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+  assertRequestOwner(draft, hasRuntimeTasks())
+  await clearRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
 }
 
 /** Both chat surfaces resume the frozen request before accepting a new drawing intent. */
@@ -110,10 +111,10 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
   let preparingOwner: TempResultOwner | undefined, resumed = false
   let labels = [options.character, args.character, args.description]
   const checkOwner = () => {
-    if (draft) assertImageRequestOwner(draft, hasRuntimeTasks())
+    if (draft) assertRequestOwner(draft, hasRuntimeTasks())
     else if (!preparingOwner || !sameTempResultOwner(preparingOwner) || !hasRuntimeTasks()) throw new Error('绘图准备所属工作区已变化，请回到原连接')
   }
-  const forget = async () => { if (draft) await clearImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft) }
+  const forget = async () => { if (draft) await clearRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft) }
   const requestCancel = () => {
     // Leaving, switching characters and observation timeouts do not cancel execution.
     if (options.signal.reason !== 'user-cancel' || !draft?.submitted || cancellation) return
@@ -146,7 +147,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
       signal.throwIfAborted(); checkOwner()
       draft = newImageRequestDraft(submission, true)
       draft.signature = JSON.stringify(labels)
-      await writeImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+      await writeRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
     }
     signal.throwIfAborted(); checkOwner()
     let task: TaskRecord
@@ -156,7 +157,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
       task = existing
     } else {
       draft.submitted = true
-      await writeImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+      await writeRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
       signal.throwIfAborted(); checkOwner()
       options.report?.('正在提交绘图任务…')
       try {
@@ -170,7 +171,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
     const done = await waitForRuntimeTask(task.taskId, signal, current => options.report?.(taskMessage(current)))
     signal.throwIfAborted(); checkOwner()
     draft.resultId = done.taskId
-    await writeImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+    await writeRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
     options.report?.('图片已生成，正在保存到作品册…')
     let imageId = done.resultRefs.find(output => output.index === 0)?.alias
     let artworkId: string | undefined

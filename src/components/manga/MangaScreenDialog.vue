@@ -11,7 +11,7 @@
           <div class="manga-preview-bar">
             <div class="studio-segments" role="group" aria-label="预览方式"><AnimatedSelection />
               <button v-for="view in views" :key="view.value" type="button" :class="{active:preview === view.value}" :aria-pressed="preview === view.value"
-                :disabled="view.value === 'original' ? !source : view.value === 'lineart' ? !linePreviewAvailable : !result" @click="preview = view.value">{{ view.label }}</button>
+                :disabled="view.value === 'original' ? !source : view.value === 'lineart' ? !linePreviewAvailable : view.value === 'compare' ? !source || !result : !result" @click="preview = view.value">{{ view.label }}</button>
             </div>
             <button class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '换一张' : '导入图片' }}</button>
             <input ref="picker" type="file" class="manga-file" accept="image/png,image/jpeg,image/webp" @change="pickImage" />
@@ -33,7 +33,7 @@
                 <button class="btn btn-ghost" type="button" :disabled="locked" @click="lineSelected === 'output' ? lines.readOutput() : retryImportedLine()">重新读取线稿</button>
               </div>
             </template>
-            <ZoomableImageViewer v-else-if="sourcePreviewUrl" :src="preview === 'original' ? sourcePreviewUrl : resultUrl" :alt="preview === 'original' ? '漫画处理原图' : '漫画处理结果'" />
+            <ZoomableImageViewer v-else-if="preview === 'result' ? resultUrl : sourcePreviewUrl" :src="preview === 'original' ? sourcePreviewUrl : resultUrl" :alt="preview === 'original' ? '漫画处理原图' : '漫画处理结果'" />
             <div v-else class="manga-empty"><ArchiveIcon name="book" /><h3>{{ loading ? '正在读取原图…' : '从一张画开始' }}</h3>
               <p>导入 PNG、JPEG 或 WebP 图片<br />调整明暗、网点与纸张，留下漫画质感。</p>
               <button class="btn btn-primary" type="button" :disabled="locked" @click="picker?.click()">选择图片</button>
@@ -81,7 +81,8 @@
         </div>
         <div class="manga-actions">
           <button class="btn btn-ghost" type="button" :disabled="exporting" @click="openTasks">任务中心</button>
-          <button v-if="!observing && !submitting && (acceptanceUnknown || job && (pending || awaitingResult))" class="btn btn-ghost" type="button" @click="observe">{{ acceptanceUnknown ? '查询接收状态' : awaitingResult ? '重新读取结果' : '重新连接原任务' }}</button>
+          <button v-if="canStartNew" class="btn btn-ghost" type="button" @click="startNew">开始新的处理</button>
+          <button v-if="!observing && !submitting && (acceptanceUnknown || job)" class="btn btn-ghost" type="button" @click="observe">{{ acceptanceUnknown ? '查询接收状态' : job?.status === 'succeeded' ? '重新读取结果' : '重新连接原任务' }}</button>
           <button v-if="pending || submitting || acceptanceUnknown" class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancel">{{ cancelling ? '请求取消…' : '取消处理' }}</button>
           <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked" @click="exportResult('download')"><ArchiveIcon name="download" />导出漫画 PNG</button>
           <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '另存到我的作品' }}</button>
@@ -118,7 +119,7 @@ const fluid = useFluidDialog(dialog)
 const taskCenter = useTaskCenter()
 const { parameters, operation, redraw, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultUrl, status, statusError, checking,
   error, notice, loading, submitting, observing, cancelling, exporting, saved, acceptanceUnknown, job, preview, taskIssue,
-  pending, awaitingResult, locked, dirty, progress, refreshStatus, loadSource, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
+  pending, awaitingResult, locked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
 const {mode:lineMode, polarity:linePolarity, stretch:lineStretch, imported:lineImported, inputReady:lineInputReady,
   selected:lineSelected, previewUrl:linePreviewUrl, previewAvailable:linePreviewAvailable, caption:lineCaption,
   choices:lineChoices, error:lineError, notice:lineNotice, saved:lineSaved, expected:lineExpected} = lines
@@ -153,6 +154,7 @@ async function pickImage(event: Event) {
 onMounted(() => {
   fluid.open(props.opener)
   void refreshStatus()
+  if (restoreRequest()) { void observe(); return }
   if (props.sourceUrl || props.artwork?.image_id) void loadInitialSource()
 })
 function loadInitialSource() { return loadSource({url:props.sourceUrl || '', artwork:props.artwork}) }

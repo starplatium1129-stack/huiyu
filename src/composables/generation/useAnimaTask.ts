@@ -1,3 +1,4 @@
+import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 import { computed, ref, toRaw, type Ref } from 'vue'
 import { ApiClientError, type ApiClient } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
@@ -8,7 +9,7 @@ import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { readTempResult, resolveTempResultOwner, sameTempResultOwner } from '@/utils/tempResult'
 import { IMAGE_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
-import { assertImageRequestOwner, clearImageRequestDraft, newImageRequestDraft, readImageRequestDraft, writeImageRequestDraft, type ImageRequestDraft } from '@/storage/imageRequestDraft'
+import { newImageRequestDraft, readImageRequestDraft, type ImageRequestDraft } from '@/storage/imageRequestDraft'
 import type { AnimaGenerationState, AnimaResult } from '@/types/anima'
 import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
 import { automaticMaskBlocker } from './animaBackendReadiness'
@@ -35,7 +36,7 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     return hasPending.value
   }
   async function acknowledge(draft: ImageRequestDraft) {
-    await clearImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft)
+    await clearRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft)
     if (pending.value?.key === draft.key) pending.value = null
   }
   async function acknowledgeResult(result: AnimaResult) {
@@ -76,7 +77,7 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     let posted = false, accepted = resuming
     try {
       if (draft) {
-        assertImageRequestOwner(draft, runtime)
+        assertRequestOwner(draft, runtime)
         const retained = readTempResult()
         if (draft.resultId && retained?.animaMetadata?.id === draft.resultId) {
           resolveTempResultOwner(retained)
@@ -95,10 +96,10 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
       if (!draft) {
         draft = newImageRequestDraft(submission, runtime)
         pending.value = draft
-        await writeImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft)
+        await writeRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft)
       }
-      assertImageRequestOwner(draft, runtime)
-      if (!draft.submitted) { draft.submitted = true; await writeImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft) }
+      assertRequestOwner(draft, runtime)
+      if (!draft.submitted) { draft.submitted = true; await writeRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft) }
       if (!current()) return
       assertDirectImageRuntime(activeRuntime)
       view.stash()
@@ -106,10 +107,10 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
         progressText: resuming ? '正在查询原请求…' : '正在提交绘图…', statusText: resuming ? '恢复原图片任务…' : '提交任务…', errorMsg: '', errorReport: null })
       const owned = draft
       const onResult = async (result: AnimaResult) => {
-        assertImageRequestOwner(owned, hasRuntimeTasks())
+        assertRequestOwner(owned, hasRuntimeTasks())
         view.patch({ phase: 'running', statusText: '成片已生成，正在保存恢复信息…', progressText: '正在保存成片…' })
         owned.resultId = result.metadata.id
-        const stable = writeImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY, owned)
+        const stable = writeRequestDraft(IMAGE_REQUEST_DRAFT_KEY, owned)
         resultIdentityWrite = stable
         void stable.catch(() => {})
         completed.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission)
@@ -122,10 +123,10 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
           ? { phase: 'failed', backendStatus: 'unknown', statusText: '原图尚未落稳，可继续保存或明确清除', errorMsg: '', errorReport: null }
           : { phase: 'succeeded', backendStatus: undefined, statusText: runtime ? '生成完成 · 已保存在收件箱' : '生成完成', progressText: '生成完成' })
       }
-      assertImageRequestOwner(draft, hasRuntimeTasks())
+      assertRequestOwner(draft, hasRuntimeTasks())
       if ('runRuntimeAnima' in transport) await transport.runRuntimeAnima({ input: animaRequestPayload(request), key: draft.key, resume: resuming,
         signal: abort.signal, family, context: submission.context, state, isCurrent: () => current() && sameTempResultOwner(owned.owner),
-        onSubmitting: () => { assertImageRequestOwner(owned, hasRuntimeTasks()); posted = true }, onAccepted: () => { accepted = true }, discardStashed: view.discardStashed, onResult })
+        onSubmitting: () => { assertRequestOwner(owned, hasRuntimeTasks()); posted = true }, onAccepted: () => { accepted = true }, discardStashed: view.discardStashed, onResult })
       else await transport.runDirectAnima({ client, request, family, signal: abort.signal, current, requestKey: draft.key, resume: resuming,
         state, context: submission.context, patch: view.patch, discardStashed: view.discardStashed, onResult })
     } catch (error) {
@@ -148,10 +149,10 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     const currentSerial = serial
     view.patch({ phase: 'cancelling', statusText: '正在记录取消请求…', errorMsg: '' })
     try {
-      assertImageRequestOwner(draft, hasRuntimeTasks())
+      assertRequestOwner(draft, hasRuntimeTasks())
       if (draft.transport === 'runtime') {
         const { cancelRuntimeTaskKey } = await import('@/api/runtimeTasks')
-        assertImageRequestOwner(draft, hasRuntimeTasks())
+        assertRequestOwner(draft, hasRuntimeTasks())
         const task = await cancelRuntimeTaskKey(draft.key)
         if (serial !== currentSerial) return
         if (!task || task.status === 'cancelled' && task.upstreamSettled && task.recoveryState === 'normal') {
