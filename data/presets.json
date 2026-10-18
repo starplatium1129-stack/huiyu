@@ -231,8 +231,9 @@
       "tag_style": "space",
       "lora_in_prompt": false,
       "exact_tokens": [],
-      "quality_prefix": "best quality, score_7, score_9, very aesthetic, ultra detailed",
-      "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration",
+      "quality_prefix": "best quality, score_7, score_9, sensitive, very aesthetic, ultra detailed, fair skin, high contrast",
+      "negative_prefix": "worst quality, low quality, score_1, score_2, score_3, artist name, shiny skin",
+      "rating_mode": "prompt",
       "negative_mode": "merge",
       "negative_replace_scope": "boilerplate",
       "capabilities": {
@@ -247,9 +248,6 @@
         "promptFormat": "anima-tags",
         "experimental": false
       },
-      "rating_all": "safe",
-      "rating_r15": "sensitive",
-      "rating_r18": "nsfw",
       "sampler": "euler",
       "scheduler": "normal",
       "steps": 30,

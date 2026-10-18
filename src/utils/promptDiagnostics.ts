@@ -1,16 +1,17 @@
 import { WIDE_TOKENS, CLOSE_TOKENS, MID_TOKENS } from './promptFramingTokens.ts'
 import { normalizeKey, tokenize, splitBreaks } from './promptPrimitives.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
-import type { PromptPart, PromptEngine } from './promptPolicyTypes.ts'
+import type { PromptPart, PromptEngine, ModelProfile } from './promptPolicyTypes.ts'
 export const BANNED_TAGS = [
   'neon', 'glowing', 'oversaturated', 'vivid colors', 'vivid', 'rainbow',
   'high contrast', 'harsh lighting', 'extremely detailed', 'ultra detailed',
 ]
 
-export function checkArtDirection(text: string): string[] {
+export function checkArtDirection(text: string, profile?: ModelProfile | null): string[] {
   const lower = String(text || '').toLowerCase()
-  return BANNED_TAGS.filter(t =>
-    lower.includes(t.toLowerCase()) || lower.includes(t.toLowerCase().replace(/\s/g, '_')),
+  const modelDefaults = new Set(tokenize(profile?.quality_prefix || '').map(normalizeKey))
+  return BANNED_TAGS.filter(t => !modelDefaults.has(normalizeKey(t)) && (
+    lower.includes(t.toLowerCase()) || lower.includes(t.toLowerCase().replace(/\s/g, '_'))),
   )
 }
 
@@ -199,7 +200,7 @@ export interface PromptReport {
 /** 逗号标签数统计（不冒充具体模型 tokenizer）。
  *  engine 可选：传入非 SD 家族时启用引擎契约违规检测（Krea 权重语法/下划线/
  *  score 质量词/负面恒空、Anima 与 Krea 的非 ASCII 混入、负面 token 重复）。 */
-export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): PromptReport {
+export function analyzeParts(parts: PromptPart[], engine?: PromptEngine, profile?: ModelProfile | null): PromptReport {
   const capabilities = resolveDrawCapabilities(engine || 'sd')
   const isNaturalLanguage = capabilities.promptFormat === 'natural-language'
   const positive: string[] = []
@@ -296,7 +297,7 @@ export function analyzeParts(parts: PromptPart[], engine?: PromptEngine): Prompt
     else if (positive.length > 72) { level = 'warn'; label = '偏长'; warnings.push('正向标签超过 72 个，建议精简。') }
     else if (positive.length < 8) { level = 'warn'; label = '信息偏少'; warnings.push('正向标签过少，画面可能缺少细节。') }
   }
-  const violations = checkArtDirection(parts.map(p => p.text).join(', '))
+  const violations = checkArtDirection(parts.map(p => p.text).join(', '), profile)
   if (violations.length) warnings.push('违反美术规范：' + violations.join(', '))
   if (warnings.length && level === 'ok') { level = 'warn'; label = warnings[0] }
   if (warnings.length > 2) level = 'over'

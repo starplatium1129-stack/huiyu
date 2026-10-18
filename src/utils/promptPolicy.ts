@@ -266,7 +266,7 @@ export function isManualR18Tags(tags: Iterable<string>, matureTokens?: ReadonlyS
 export { characterControlTokens, TRAINED_OUTFIT_BUNDLES } from './characterControlTokens.ts'
 
 export function profileRatingTag(profile: ModelProfile | null, scene: unknown): string {
-  if (!profile) return ''
+  if (!profile || profile.rating_mode === 'prompt') return ''
   const rating = sceneRating(scene)
   if (rating === 'R18') return String(profile.rating_r18 || '')
   if (rating === 'R15') return String(profile.rating_r15 || '')
@@ -298,18 +298,18 @@ function modelNegativePrompt(profile: ModelProfile | null, baseNegative: string,
 function adaptNegative(
   text: string,
   scene?: unknown,
-  context: { shot?: string | null; character?: string | null } = {},
+  context: { shot?: string | null; character?: string | null; ratingMode?: ModelProfile['rating_mode'] } = {},
 ): string {
-  const rating = sceneRating(scene)
+  const rating = context.ratingMode === 'prompt' ? null : sceneRating(scene)
   const remove = new Set<string>()
   // 2026-08-15 用户裁定：裸体压制负面只在 All 评级加；R15 及以上（含 R18）都不堵露点，
   // 避免同一场景因评级变化导致出图画面明显不同（词条差异会真实改变画面）。
-  if (rating !== 'ALL') ['nsfw', 'nude', 'naked', 'explicit'].forEach(tag => remove.add(tag))
+  if (rating && rating !== 'ALL') ['nsfw', 'nude', 'naked', 'explicit'].forEach(tag => remove.add(tag))
   if (context.shot === 'close' || context.shot === 'detail') remove.add('cropped')
   if (context.character === 'triad') remove.add('duplicate')
 
   const tokens = tokenize(text).filter(token => !remove.has(normalizeKey(token)))
-  const required = rating === 'ALL'
+  const required = !rating ? [] : rating === 'ALL'
     ? ['nsfw', 'nude', 'explicit']
     : ['child', 'loli', 'underage']
   required.forEach(tag => tokens.push(tag))
@@ -338,7 +338,7 @@ export function assembleNegative(
   const merged = engine === 'sd'
     ? mergeTokenText(custom, NEGATIVE_PROTECTION, profileNegative)
     : profileNegative
-  const adapted = adaptNegative(merged, scene, { shot: context.shot, character: context.character })
+  const adapted = adaptNegative(merged, scene, { shot: context.shot, character: context.character, ratingMode: profile?.rating_mode })
   const formatted = engine === 'anima' ? formatPromptForProfile(adapted, profile, engine) : adapted
   if (profile?.strip_quality_tokens === true) {
     return tokenize(formatted).filter(token => !/^score_\d+$/i.test(normalizeKey(token))).join(', ')

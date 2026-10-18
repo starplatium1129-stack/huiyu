@@ -153,13 +153,13 @@ export function usePopularPromptAssembly(
     if (positivePrompt.value) parts.push({ cls: 'q', text: positivePrompt.value })
     if (negativePrompt.value) parts.push({ cls: 'n', text: negativePrompt.value })
     // engine 传入后 analyzeParts 启用 Krea/Anima 契约违规检测（真实渲染文本）。
-    const report = analyzeParts(parts, engine.value)
+    const report = analyzeParts(parts, engine.value, profile.value)
     if (pb.visualDescription && !plainEnglish(pb.visualDescription)) {
       report.warnings.push('视觉描述含非 ASCII 字符，已按英文模型门控丢弃（请在画面描述里使用英文）')
     }
     return report
   })
-  const artViolations = computed(() => checkArtDirection(positivePrompt.value))
+  const artViolations = computed(() => checkArtDirection(positivePrompt.value, profile.value))
 
   return {
     profile,

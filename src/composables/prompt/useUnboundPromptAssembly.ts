@@ -9,7 +9,7 @@ import { createPromptPlan, renderPromptPlan } from '@/utils/promptCompiler'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import type { ModelProfile } from '@/utils/promptPolicy'
 
-/** Free subjects use model quality defaults without adding character, rating or scene defaults. */
+/** Free subjects use model prompt defaults without inferring character or scene metadata. */
 export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularPromptAssemblyState, 'popularCharacters'>, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>) {
   const positivePrompt = computed(() => {
     const family = engine.value
@@ -30,7 +30,7 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
       // Model defaults alone must not turn an empty draft into a drawable scene.
       if (!tags && !description && !styleTags.length) return ''
       // User tokens come first so explicit weights survive deduplication.
-      tags = mergeTokenText(tags, ...styleTags, profile.value?.quality_prefix || '')
+      tags = mergeTokenText(tags, ...styleTags)
       if (family === 'anima') {
         const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
         const tagKeys = new Set(tokenize(tags).map(tag => normalizeKey(tag.replace(/\\([()])/g, '$1'))))
@@ -42,10 +42,11 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
             .filter(tag => tagKeys.has(normalizeKey(tag.replace(/\\([()])/g, '$1')))),
         })
         const qualityKeys = new Set(plan.quality.map(normalizeKey))
-        plan.quality = tokenize(tags).filter(tag => qualityKeys.has(normalizeKey(tag)))
+        plan.quality = tokenize(mergeTokenText(tags, plan.quality.join(', '))).filter(tag => qualityKeys.has(normalizeKey(tag)))
         const [tagLine, ...caption] = renderPromptPlan(plan, 'anima', profile.value).prompt.split('\n')
         return [escapeKnownLiteralTags(tagLine, [...pb.manualTags]), ...caption].join('\n')
       }
+      tags = mergeTokenText(tags, profile.value?.quality_prefix || '')
     }
     return [tags, description, family === 'krea2' ? artistStyleProse(artists, family) : ''].filter(Boolean).join('\n')
   })
@@ -54,7 +55,7 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
   const previewPrompt = computed(() => negativePrompt.value ? `${positivePrompt.value}\n[NEG]\n${negativePrompt.value}` : positivePrompt.value)
   const promptReport = computed(() => analyzeParts([
     { text: positivePrompt.value }, { cls: 'n', text: negativePrompt.value },
-  ], engine.value))
-  const artViolations = computed(() => checkArtDirection(positivePrompt.value))
+  ], engine.value, profile.value))
+  const artViolations = computed(() => checkArtDirection(positivePrompt.value, profile.value))
   return { positivePrompt, negativePrompt, previewPrompt, promptReport, artViolations }
 }

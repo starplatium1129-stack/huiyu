@@ -5,6 +5,7 @@ import {
   formatPromptForEngine,
   QUALITY_OR_SCORE_RE,
   QUALITY_WORDS,
+  normalizeKey,
   tokenize,
   type ModelProfile,
 } from './promptPolicy.ts'
@@ -33,6 +34,14 @@ const clean = (value: string): string => value.replace(/<lora:[^>]+>/gi, '').rep
 const capFirst = (value: string): string => value ? `${value.charAt(0).toUpperCase()}${value.slice(1)}` : ''
 const sentence = (value: string): string => { const text = clean(value); return text ? `${capFirst(text.replace(/[.!?]+$/, ''))}.` : '' }
 const proseList = (values: string[]): string => [...new Set(values.map(proseToken).filter(Boolean))].join(', ').replace(/(?:,\s*){2,}/g, ', ')
+
+function conflictsWithFairSkin(value: string): boolean {
+  const text = normalizeKey(value).replace(/_/g, ' ')
+  if (/^(?:tan|tanned|dark skinned (?:female|male))$/.test(text)) return true
+  // Ignore negated skin descriptions; unrelated hair, eye and clothing colors do not match.
+  const positive = text.replace(/\b(?:no|not|without|avoid|don't|doesn't|isn't|aren't)\s+(?:\w+\s+){0,3}skin(?:ned)?\b/g, '')
+  return /\b(?:dark|tan|tanned|brown|black|olive|bronze|colored|blue|green|purple|red|gray|grey|orange|yellow|pink)\s+skin(?:ned)?\b/.test(positive)
+}
 
 const KREA_META_KEYS = new Set([
   '1girl', 'solo', '2girls', 'official_cg', 'visual_audited', 'landscape', 'portrait',
@@ -420,8 +429,13 @@ function buildAnimaVisualDirection(plan: PromptPlan): string {
 }
 
 export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
-  return {
-    quality: split(input.profile?.quality_prefix), rating: input.rating ? [input.rating] : [],
+  const isRating = (tag: string) => /^(?:safe|general|sensitive|questionable|explicit|nsfw)$/.test(normalizeKey(tag))
+  const promptRating = input.profile?.rating_mode === 'prompt'
+  const authoredRating = promptRating && [...split(input.scenePrompt), ...(input.manual || []), ...(input.controls || [])].some(isRating)
+  const quality = split(input.profile?.quality_prefix)
+  const plan: PromptPlan = {
+    quality: authoredRating ? quality.filter(tag => !isRating(tag)) : quality,
+    rating: !promptRating && input.rating ? [input.rating] : [],
     identity: split(input.identity), exactControls: [...new Set(input.controls || [])],
     characterTokens: [...new Set(input.characterTokens || [])], copyrightTokens: [...new Set(input.copyrightTokens || [])],
     artists: [...new Set(input.artists || [])],
@@ -439,6 +453,14 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
     scene: input.scene ?? null,
     artistProse: String(input.artistProse || '').trim(),
   }
+  if (input.profile?.model_id === 'anima-miaomiao-v1.6') {
+    const authored = [...plan.identity, ...plan.exactControls, ...plan.sceneVisualFragments, ...plan.manual]
+    // Inspect only authored positive content, including the caption actually sent to Anima.
+    if ([...authored, buildAnimaVisualDirection(plan)].some(conflictsWithFairSkin)) {
+      plan.quality = plan.quality.filter(tag => normalizeKey(tag) !== 'fair_skin')
+    }
+  }
+  return plan
 }
 
 function allTags(plan: PromptPlan, includeStyle = true): string[] {

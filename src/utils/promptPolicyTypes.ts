@@ -56,6 +56,8 @@ export interface ModelProfile {
   negative_prefix?: string
   negative_mode?: 'merge' | 'replace'
   negative_replace_scope?: 'boilerplate' | 'all'
+  /** prompt: use authored rating tokens; do not derive positive or negative tags from scene metadata. */
+  rating_mode?: 'scene' | 'prompt'
   rating_all?: string
   rating_r15?: string
   rating_r18?: string

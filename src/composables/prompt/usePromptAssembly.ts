@@ -363,19 +363,19 @@ export function usePromptAssembly(
     if (capabilities.value.promptFormat === 'danbooru') {
       const parts = [...promptParts.value]
       if (negativePrompt.value) parts.push({ cls: 'n', text: negativePrompt.value })
-      return analyzeParts(parts, 'sd')
+      return analyzeParts(parts, 'sd', modelProfile.value)
     }
     const parts: Array<{ cls: 'q' | 'n'; text: string }> = []
     if (positivePrompt.value) parts.push({ cls: 'q', text: positivePrompt.value })
     if (negativePrompt.value) parts.push({ cls: 'n', text: negativePrompt.value })
-    const report = analyzeParts(parts, engine.value)
+    const report = analyzeParts(parts, engine.value, modelProfile.value)
     if (pb.visualDescription && !plainEnglish(pb.visualDescription)) {
       report.warnings.push('视觉描述含非 ASCII 字符，已按英文模型门控丢弃（请在画面描述里使用英文）')
     }
     return report
   })
 
-  const artViolations = computed(() => checkArtDirection(positivePrompt.value))
+  const artViolations = computed(() => checkArtDirection(positivePrompt.value, modelProfile.value))
   const previewPrompt = computed(() => {
     if (!positivePrompt.value) return ''
     return negativePrompt.value ? `${positivePrompt.value}\n[NEG]\n${negativePrompt.value}` : positivePrompt.value

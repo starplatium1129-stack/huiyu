@@ -22,16 +22,16 @@
 
 - 质量词以目标 checkpoint 的依据及实际 profile 为准。MiaoMiao 1.6 作者推荐包含评分词，不能被通用“不加评分词”误删；其他模型不能反向套用。`strip_quality_tokens` 启用时不能靠反复手填补回，应先核对其是否属于所选模型的契约。不要套用 Pony 的 `_up` 系列。
 - 权重是节点/解析器与 checkpoint 的联合行为，不把 `1.5` 写成模型极限。默认保持已有已验证值；要调整就单变量实测，检查括号与精确词保护。
-- 负向从最终调用链核对：`renderPromptPlan` 的 Anima 返回空负向，上层 `assembleNegative` 仍组装 profile 基础、场景明确排除项及分级词。Anima 不继承 SD 的通用手部/边框模板，热门路径不再默认叠加分屏/克隆长串；新增针对实际问题的负面应能保留。
+- 负向从最终调用链核对：`renderPromptPlan` 的 Anima 返回空负向，上层 `assembleNegative` 组装 profile 基础与场景明确排除项；是否按评级追加词取决于 profile，MiaoMiao 1.6 不追加。Anima 不继承 SD 的通用手部/边框模板，热门路径不再默认叠加分屏/克隆长串；新增针对实际问题的负面应能保留。
 - 针对实际失败补负向，先排查正向矛盾。要求全身时避免裁切，要求头像时不要机械加入 `cropped`；负向不保证修好手部。
 - 自由输入 `visualDescription` 当前经 `plainEnglish` 的 ASCII 门控；这属于项目实现限制，不能写成官方模型不理解中文的结论。工作室明确的 `animaCaption` 优先于自动 caption，自动路径只保留部分动作/环境；热门路径读取 `sceneProse`。关系写进真实生效的字段，并在最终请求中确认，尤其核对旧 caption 与新镜头/服装的冲突。
 
 ## 精简负面基础
 
-当前项目按用户选择采用官方 Anima 基础词表：
+除 MiaoMiao 1.6 使用作者专属配方外，当前项目采用以下 Anima 基础词表：
 
 ```text
 worst quality, low quality, score_1, score_2, score_3, artist name, blurry, jpeg artifacts, chromatic aberration
 ```
 
-Aesthetic 不加评分词；MiaoMiao 1.6 作者原配方与当前项目选择的差异见[版本参考](miaomiao-v16.md)。场景不重复粘贴基础词，按需要补 `text, watermark, signature` 或实际缺陷词；没有问题不预先堆叠几十项。标准 CFG=1 路径没有通常 CFG 的负面引导作用，Turbo 应先把正向写清楚，不将其他节点的 NegPiP 能力当作项目已支持功能。
+Aesthetic 不加评分词；MiaoMiao 1.6 的作者默认词及显式分级优先规则见[版本参考](miaomiao-v16.md)。场景不重复粘贴基础词，按需要补 `text, watermark, signature` 或实际缺陷词；没有问题不预先堆叠几十项。标准 CFG=1 路径没有通常 CFG 的负面引导作用，Turbo 应先把正向写清楚，不将其他节点的 NegPiP 能力当作项目已支持功能。
