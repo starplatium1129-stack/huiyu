@@ -211,13 +211,32 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
                 if entries.len() > 10000 {
                     return Err(format!("组件文件过多：{name}"));
                 }
-                if !entries.iter().any(|entry| {
-                    entry
-                        .path()
-                        .extension()
-                        .is_some_and(|value| value == "safetensors")
-                        && file(&root, &entry.path())
-                }) {
+                let has_weights = if model.is_some() {
+                    let mut found = false;
+                    // Match the adapter worker's glob, including Windows case
+                    // handling. Every matching entry must be a safe weight file.
+                    for entry in &entries {
+                        let filename = entry.file_name();
+                        let filename = filename.to_string_lossy();
+                        if filename.ends_with(".safetensors")
+                            || cfg!(windows) && filename.to_ascii_lowercase().ends_with(".safetensors")
+                        {
+                            if !file(&root, &entry.path()) {
+                                return Err(format!("空或不安全的模型权重：{name}/{filename}"));
+                            }
+                            found = true;
+                        }
+                    }
+                    found
+                } else {
+                    // Anima retains its existing component contract: at least
+                    // one safe nonempty weight, plus the shard-index checks.
+                    entries.iter().any(|entry| {
+                        entry.path().extension().is_some_and(|value| value == "safetensors")
+                            && file(&root, &entry.path())
+                    })
+                };
+                if !has_weights {
                     return Err(format!("缺少非空 safetensors 权重：{name}"));
                 }
                 for entry in entries {
