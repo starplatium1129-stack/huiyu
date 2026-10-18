@@ -3,6 +3,7 @@ import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
+import type { ResultRestoreOwner } from '@/composables/generation/animaSessionContract';
 import { readDrawingSettings } from '@/storage/drawingSettings';
 import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
@@ -31,6 +32,9 @@ import { useRoute,useRouter } from 'vue-router';
 import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type ActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
 import { copyText } from '@/utils/clipboard';
+import { imageMediaSession } from '@/composables/useOriginalImage';
+import { onDesktopRuntime } from '@/platform/desktop/runtime';
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function usePromptWorkspace() {
     const router = useRouter();
@@ -51,9 +55,23 @@ export function usePromptWorkspace() {
     const hiresPreparing = ref(false);
     let hiresVersion = 0, disposed = false;
     let interrogateVersion = 0, interrogateActive = true;
-    onActivated(() => { interrogateActive = true; });
-    onDeactivated(() => { interrogateActive = false; interrogateVersion++; });
-    onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; }, true);
+    let restoreVisit = new AbortController();
+    let restoreMediaSession = imageMediaSession();
+    function renewRestoreVisit() { restoreVisit.abort(); restoreVisit = new AbortController(); }
+    function refreshRestoreMedia() {
+        const next = imageMediaSession();
+        if (next !== restoreMediaSession) { restoreMediaSession = next; renewRestoreVisit(); }
+    }
+    const stopRestoreRuntime = onDesktopRuntime(refreshRestoreMedia);
+    watch(runtimeResourceIdentity, refreshRestoreMedia, { flush: 'sync' });
+    watch(() => JSON.stringify([route.path, route.query]), renewRestoreVisit, { flush: 'sync' });
+    onActivated(() => { interrogateActive = true; if (restoreVisit.signal.aborted) restoreVisit = new AbortController(); });
+    onDeactivated(() => { interrogateActive = false; interrogateVersion++; restoreVisit.abort(); });
+    onScopeDispose(() => { disposed = true; hiresVersion++; hiresPreparing.value = false; restoreVisit.abort(); stopRestoreRuntime(); }, true);
+    function getRestoreOwner(): ResultRestoreOwner {
+        const visit = restoreVisit, session = imageMediaSession();
+        return { signal: visit.signal, current: () => !disposed && interrogateActive && route.path === '/prompt-builder' && restoreVisit === visit && session === imageMediaSession() };
+    }
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
     const drawEngine = ref<DrawEngine>(storedDrawEngine === 'krea2' ? 'krea2' : 'anima');
@@ -73,7 +91,8 @@ export function usePromptWorkspace() {
         getRequest: () => buildAnimaRequest(),
         getSubmitContext: captureResultContext,
         onResult: result => onAnimaResult(result),
-        restoreResult: async () => { await tempResultTools.restoreTempResult(); },
+        getRestoreOwner,
+        restoreResult: owner => tempResultTools.restoreTempResult(owner),
         activateResult: family => engine.setDrawEngine(family, { restoreExistingResult: true, silent: true }),
         flash: message => pb.flash(message),
         preferredSize: () => pb.lastRecommendedSize,
@@ -515,7 +534,7 @@ export function usePromptWorkspace() {
         lastResult, closeCompare, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
     usePromptLifecycle({
-        draftRecovery,
+        draftRecovery, getRestoreOwner,
         router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
         pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
         applyManagedRoute, refreshManagedRoute, restorePopularDraft,

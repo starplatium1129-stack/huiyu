@@ -1,5 +1,5 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
-import { computed, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
+import { computed, onActivated, onDeactivated, onScopeDispose, ref, watch, type ComputedRef, type Ref } from 'vue'
 import type { usePromptBuilderStore, HistoryEntry } from '../../stores/promptBuilderStore.ts'
 import type { DrawEngine } from '../../storage/settingsRepository.ts'
 import type { AnimaResult, AnimaResultContext } from '../../types/anima.ts'
@@ -9,6 +9,9 @@ import { hasRuntimeTasks, isRuntimeTaskId } from '../../api/runtimeTaskAuthority
 import { artworkRepository, type ArtworkRepository } from '../../storage/artworkRepository.ts'
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity, type GeneratedArtworkInput } from '@/application/artwork/artworkSaveInput'
 import { registerMigrationArtworkSource } from '@/platform/web/migrationBarrier'
+import { imageMediaSession } from '../useOriginalImage'
+import { createImageReadSlot } from '@/utils/imageReadSlot'
+import type { ResultRestoreOwner } from '../generation/animaSessionContract'
 import {
   readTempResult,
   tempResultOwner, resolveTempResultOwner, sameTempResultOwner,
@@ -37,6 +40,7 @@ function settleAnimaSource(source?: PendingAnimaSource) {
   updateAnimaSource()
 }
 let tempMutation = 0
+const restoreReads = createImageReadSlot()
 
 export interface TempResultDeps {
   pb: PromptBuilderStore
@@ -78,6 +82,9 @@ export function useTempResult(deps: TempResultDeps) {
   let resultRevision = 0
   let generationRevision = 0
   let disposed = false
+  let attached = true, publishingRestore = false
+  let restoreController: AbortController | null = null
+  function stopRestore() { restoreController?.abort(); restoreController = null }
   let saveIntent: SaveIntent | null = null
   let legacyResultUrl = '', legacyRecord: TempResultRecord | null = null
   const ownedSources = new Set<string>()
@@ -108,6 +115,7 @@ export function useTempResult(deps: TempResultDeps) {
       size: `${metadata.width}x${metadata.height}`, animaMetadata: metadata, context: source.context }
   }
   watch(deps.displayResultUrl, () => {
+    if (!publishingRestore) stopRestore()
     resultRevision += 1
     displayedResultHistoryId.value = null
     releaseSaveIntent()
@@ -117,6 +125,7 @@ export function useTempResult(deps: TempResultDeps) {
   // or cancellation. A late startup restore must not replace that attempt.
   watch(deps.generationBusy, busy => {
     if (busy) {
+      stopRestore()
       generationRevision += 1; generationRuntimeOwned = hasRuntimeTasks()
       generationRepository = artworkRepository; generationOwner = undefined
       try { generationOwner = tempResultOwner() } catch { /* Hold until the original source can be identified. */ }
@@ -130,8 +139,10 @@ export function useTempResult(deps: TempResultDeps) {
       if (!deps.generationBusy.value) { generationPending = false; releaseGenerationSource?.(); releaseGenerationSource = undefined }
     })
   }, { flush: 'sync', immediate: true })
+  onDeactivated(() => { attached = false; stopRestore() })
+  onActivated(() => { attached = true })
   onScopeDispose(() => {
-    disposed = true; resultRevision += 1; releaseSaveIntent(); legacyRecord = null
+    disposed = true; stopRestore(); resultRevision += 1; releaseSaveIntent(); legacyRecord = null
     generationPending = false; releaseGenerationSource?.(); releaseGenerationSource = undefined
   }, true)
   function releaseSaveIntent() {
@@ -370,44 +381,60 @@ export function useTempResult(deps: TempResultDeps) {
    * 回页找回上次未入册的成片（F1/F2 交汇）。只在画布为空时调用；
    * 返回是否发生了恢复（调用方据此提示）。
    */
-  async function restoreTempResult(): Promise<boolean> {
-    if (deps.displayResultUrl.value || deps.generationBusy.value) return false
-    const current = ownsResult('')
-    const revision = generationRevision
-    const candidates = [...pendingAnimaSources.values()].filter(source => source.repository === artworkRepository
-      && (!source.owner || sameTempResultOwner(source.owner)))
-    const source = candidates.at(-1)
-    try { if (source) source.owner ??= tempResultOwner() }
-    catch (error) { pb.flash(error instanceof Error ? error.message : '原图来源暂时无法核对，图片仍保留'); return false }
-    let restoreActions: typeof import('./tempResultRestore')
-    try { restoreActions = await import('./tempResultRestore') }
-    catch { if (current()) pb.flash('成片恢复模块暂时无法读取，原图与恢复身份已保留'); return false }
-    const { restorePendingAnimaSource, restoreUnarchivedResult } = restoreActions
-    if (source) {
-      const restored = await restorePendingAnimaSource(source, deps, {
-        current: () => current() && revision === generationRevision && !deps.generationBusy.value
-          && source.repository === artworkRepository && Boolean(source.owner && sameTempResultOwner(source.owner)),
-        retained: () => pendingAnimaSources.get(source.key) === source,
-        adopt: () => { candidates.forEach(candidate => ownedSources.add(candidate.key)) },
-        bind: cached => {
-          legacyResultUrl = cached.result.url
-          if (cached.intent) {
-            saveIntent = cached.intent
-            bindSaveIntent(saveIntent, cached.result.url, ownsResult(cached.result.url), sourcePartial(cached),
-              matchingLegacy(cached.result.url, cached.result.metadata.id, cached.result.metadata.prompt))
-          }
-        },
-        capture: cached => captureTemp(sourcePartial(cached), cached.result.blob, cached.result.url, ownsResult(cached.result.url)),
-      })
-      if (restored !== null) return restored
-    }
-    return restoreUnarchivedResult(deps, storedResultUrl,
-      () => current() && revision === generationRevision && !deps.generationBusy.value,
-      (record, url) => { legacyResultUrl = url; legacyRecord = record })
+  async function restoreTempResult(owner: ResultRestoreOwner): Promise<boolean> {
+    stopRestore()
+    if (!attached || owner.signal.aborted || !owner.current() || deps.displayResultUrl.value || deps.generationBusy.value) return false
+    const emptyCurrent = ownsResult(''), revision = generationRevision, repository = artworkRepository, session = imageMediaSession()
+    const controller = new AbortController()
+    restoreController = controller
+    const signal = AbortSignal.any([owner.signal, controller.signal, AbortSignal.timeout(120_000)])
+    let publishedCurrent: (() => boolean) | undefined
+    const current = () => attached && !signal.aborted && owner.current() && (publishedCurrent ?? emptyCurrent)()
+      && revision === generationRevision && !deps.generationBusy.value && repository === artworkRepository && session === imageMediaSession()
+    try {
+      return await restoreReads.read(async signal => {
+        const active = () => !signal.aborted && current()
+        const publish = (url: string, adopt: () => void) => {
+          if (!active()) return false
+          publishingRestore = true
+          try { adopt(); publishedCurrent = ownsResult(url); return true }
+          finally { publishingRestore = false }
+        }
+        let restoreActions: typeof import('./tempResultRestore')
+        try { restoreActions = await import('./tempResultRestore') }
+        catch { if (active()) pb.flash('成片恢复模块暂时无法读取，原图与恢复身份已保留'); return false }
+        if (!active()) return false
+        const candidates = [...pendingAnimaSources.values()].filter(source => source.repository === repository
+          && (!source.owner || sameTempResultOwner(source.owner)))
+        const source = candidates.at(-1)
+        if (source) {
+          source.owner ??= tempResultOwner()
+          const restored = await restoreActions.restorePendingAnimaSource(source, deps, {
+            signal, publish, current: () => active() && source.repository === artworkRepository && Boolean(source.owner && sameTempResultOwner(source.owner)),
+            retained: () => pendingAnimaSources.get(source.key) === source,
+            adopt: () => { candidates.forEach(candidate => ownedSources.add(candidate.key)) },
+            bind: cached => {
+              legacyResultUrl = cached.result.url
+              if (cached.intent) {
+                saveIntent = cached.intent
+                bindSaveIntent(saveIntent, cached.result.url, ownsResult(cached.result.url), sourcePartial(cached),
+                  matchingLegacy(cached.result.url, cached.result.metadata.id, cached.result.metadata.prompt))
+              }
+            },
+            capture: cached => captureTemp(sourcePartial(cached), cached.result.blob, cached.result.url, ownsResult(cached.result.url)),
+          })
+          if (restored !== null) return restored
+        }
+        return restoreActions.restoreUnarchivedResult(deps, storedResultUrl, { signal, current: active, publish },
+          (record, url) => { legacyResultUrl = url; legacyRecord = record })
+      }, { signal, current }) ?? false
+    } catch (error) { if (current()) pb.flash(error instanceof Error ? error.message : '原图来源暂时无法核对，图片仍保留'); return false }
+    finally { if (restoreController === controller) restoreController = null }
   }
 
   /** 用户显式「清除」舞台结果：临时缓冲一并丢弃（显式丢弃优于一切恢复）。 */
   function discardTemp() {
+    stopRestore()
     const animaResult = deps.drawEngine.value !== 'sd' ? deps.animaState.value.result : null
     let legacy = legacyResultUrl === deps.displayResultUrl.value
     try { legacy ||= Boolean(matchingLegacy(deps.displayResultUrl.value, animaResult?.metadata.id, animaResult?.metadata.prompt)) }

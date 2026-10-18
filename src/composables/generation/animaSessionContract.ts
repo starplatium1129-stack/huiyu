@@ -52,11 +52,18 @@ export interface AnimaSessionOptions {
   getRequest: () => AnimaRequest | null
   getSubmitContext?: () => AnimaResultContext | null
   onResult: (result: AnimaResult) => Promise<void>
-  restoreResult: () => Promise<void>
+  getRestoreOwner: () => ResultRestoreOwner
+  restoreResult: (owner: ResultRestoreOwner) => Promise<boolean>
   activateResult: (family: 'anima' | 'krea2') => void
   flash: (message: string) => void
   preferredSize: () => string
   client?: ApiClient
+}
+
+/** A restore belongs to the visit captured before any acknowledgement or read. */
+export interface ResultRestoreOwner {
+  signal: AbortSignal
+  current(): boolean
 }
 
 /** A detached submission recipe; preparing tools and hires never reread the form. */

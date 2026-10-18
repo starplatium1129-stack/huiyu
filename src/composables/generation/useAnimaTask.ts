@@ -75,14 +75,20 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     controller = abort; activeRuntime = runtimeResourceIdentity()
     const current = () => !disposed && !abort.signal.aborted && requestSerial === serial
     const resuming = Boolean(draft?.submitted)
+    let restoreCurrent: (() => boolean) | undefined
     try {
       if (draft) {
         assertRequestOwner(draft, runtime)
         const retained = readTempResult()
         if (draft.resultId && retained?.animaMetadata?.id === draft.resultId) {
+          const owner = options.getRestoreOwner(), signal = AbortSignal.any([abort.signal, owner.signal])
+          restoreCurrent = () => current() && !signal.aborted && owner.current()
+          if (!restoreCurrent()) return
           resolveTempResultOwner(retained)
           await acknowledge(draft)
-          await options.restoreResult()
+          if (!restoreCurrent()) return
+          const restored = await options.restoreResult({ signal, current: restoreCurrent })
+          if (!restoreCurrent() || !restored) return
           view.patch({ phase: state.value.result ? 'succeeded' : 'idle', backendStatus: undefined, statusText: '原成片已交给临时缓冲恢复', errorMsg: '', errorReport: null })
           return
         }
@@ -130,13 +136,13 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
       else await transport.runDirectAnima({ client, request, family, signal: abort.signal, current, requestKey: draft.key, resume: resuming,
         state, context: submission.context, patch: view.patch, discardStashed: view.discardStashed, onResult })
     } catch (error) {
-      if (!current()) return
+      if (!current() || restoreCurrent && !restoreCurrent()) return
       const definitive = error instanceof DirectRequestRejected || error instanceof AcceptedTaskTerminalError
       if (definitive && draft) {
-        try { await acknowledge(draft) } catch (failure) { options.flash(failure instanceof Error ? failure.message : String(failure)) }
+        try { await acknowledge(draft) } catch (failure) { if (current() && (!restoreCurrent || restoreCurrent())) options.flash(failure instanceof Error ? failure.message : String(failure)) }
       }
       const { imageFailurePatch } = await import('./runtimeImageSession')
-      if (!current()) return
+      if (!current() || restoreCurrent && !restoreCurrent()) return
       view.patch(error instanceof AcceptedTaskTerminalError && error.status === 'cancelled'
         ? { phase: 'cancelled', statusText: '任务已取消', errorMsg: '', errorReport: null }
         : { ...imageFailurePatch(error, hasPending.value ? '原请求已保留，请重新查询' : '生成失败', provider), ...(hasPending.value ? { backendStatus: 'unknown' } : {}) })

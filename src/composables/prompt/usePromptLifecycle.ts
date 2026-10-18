@@ -7,6 +7,7 @@ import type { RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import type { UseDirectorPopularInput, useDirectorPopular } from '@/composables/scene/useDirectorPopular';
 import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession';
+import type { ResultRestoreOwner } from '@/composables/generation/animaSessionContract';
 import type { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
 import type { usePromptMaterials } from './usePromptMaterials';
 import type { usePromptDeepLink } from './usePromptDeepLink';
@@ -31,10 +32,11 @@ export interface PromptLifecycleDeps extends
     livePrompt: ReturnType<typeof useUnifiedPromptAssembly>['positivePrompt'];
     effectiveNegative: ReturnType<typeof useUnifiedPromptAssembly>['negativePrompt'];
     callGenerate: () => Promise<void>;
+    getRestoreOwner: () => ResultRestoreOwner;
 }
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
-export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession }: PromptLifecycleDeps): void {
+export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession, getRestoreOwner }: PromptLifecycleDeps): void {
     // A newer visit owns setup; KeepAlive deactivation only retains jobs already started.
     let disposed = false;
     let viewActive = true;
@@ -102,6 +104,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
     async function initializeWorkspace() {
         if (disposed || !viewActive || route.path !== '/prompt-builder') return;
         const request = ++initializationRequest;
+        const restoreOwner = getRestoreOwner();
         const query = Object.fromEntries(Object.entries(route.query).map(([key, value]) => [key, Array.isArray(value) ? [...value] : value]));
         const current = () => !disposed && viewActive && request === initializationRequest && route.path === '/prompt-builder';
         void refreshShotsPending();
@@ -153,8 +156,8 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         if (!current()) return;
         // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。
         if ((!handledDeepLink || query.resume === '1') && !displayResultUrl.value) {
-            await restoreTempResult();
-            if (!current()) return;
+            await restoreTempResult({ signal: restoreOwner.signal, current: () => current() && restoreOwner.current() });
+            if (!current() || restoreOwner.signal.aborted || !restoreOwner.current()) return;
         }
         const restoredRecipe = handledDeepLink && ['remix', 'regen', 'variant'].some(key => typeof query[key] === 'string');
         // Explicit history/scene links own their size; resumed drafts keep a user-picked SD size.
