@@ -44,6 +44,7 @@ struct Snapshot {
 
 struct Worker {
     process: OwnedProcess,
+    current_input: Arc<SyncMutex<Option<Arc<tempfile::TempPath>>>>,
     input: ChildStdin,
     output: BufReader<ChildStdout>,
     stderr: JoinHandle<Vec<u8>>,
@@ -123,6 +124,7 @@ impl Client {
                     tokio::fs::create_dir_all(&settings.temp_root).await?;
                     let (file, input) =
                         tempfile::NamedTempFile::new_in(&settings.temp_root)?.into_parts();
+                    let input = Arc::new(input);
                     let mut file = tokio::fs::File::from_std(file);
                     file.write_all(&image).await?;
                     file.flush().await?;
@@ -166,8 +168,9 @@ impl Client {
                         idle = Some(timer);
                         result
                     };
-                    // The private image stays alive until completion or process exit.
-                    input.close()?;
+                    // An unconfirmed retirement still owns the private input.
+                    // A completed reply or reaped child releases its last copy.
+                    if let Ok(input) = Arc::try_unwrap(input) { input.close()?; }
                     result
                 }
                 .await;
@@ -292,7 +295,7 @@ async fn infer(
     processes: &Arc<Processes>,
     snapshot: &SyncMutex<Snapshot>,
     worker: &mut Option<Worker>,
-    image: &Path,
+    image: &Arc<tempfile::TempPath>,
     threshold: f64,
     image_rejected: &mut bool,
 ) -> Result<Value> {
@@ -318,10 +321,12 @@ async fn infer(
     let worker = worker.as_mut().unwrap();
     worker.idle.cancel();
     let id = uuid::Uuid::new_v4().simple().to_string();
+    let image_path: &Path = image;
     let mut request = serde_json::to_vec(&json!({
-        "requestId":id, "imagePath":image, "threshold":threshold
+        "requestId":id, "imagePath":image_path, "threshold":threshold
     }))?;
     request.push(b'\n');
+    *worker.current_input.lock().unwrap() = Some(image.clone());
     worker
         .input
         .write_all(&request)
@@ -339,6 +344,7 @@ async fn infer(
     *image_rejected = result.as_ref().is_err_and(|error| {
         matches!(error.code.as_str(), "INVALID_IMAGE" | "IMAGE_TOO_LARGE")
     });
+    if result.is_ok() || *image_rejected { worker.current_input.lock().unwrap().take(); }
     result
 }
 
@@ -364,7 +370,8 @@ impl Worker {
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
-        let process = processes.spawn(&mut command)?;
+        let current_input = Arc::new(SyncMutex::new(None));
+        let process = processes.spawn_with_keep_alive(&mut command, current_input.clone())?;
         let input = process
             .take_input()
             .ok_or_else(|| unavailable("PixAI 输入未建立"))?;
@@ -385,6 +392,7 @@ impl Worker {
         });
         Ok(Self {
             process,
+            current_input,
             input,
             output: BufReader::new(output),
             stderr,
