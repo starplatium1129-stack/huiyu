@@ -70,8 +70,8 @@ export interface StagedScenarioAct {
 }
 
 // ── 创作草稿与任务记录（2026-09-06 体验报告 F1）────────────────────────────
-// 图片本体一律不入草稿：首帧/尾帧只记 IndexedDB 图片 id，恢复时重建预览并
-// 重新上传换取受控文件名（服务端 aics_video_input_ 前缀会随任务结束清理）。
+// 图片本体不入草稿：首帧/尾帧只记耐久图片 ID，恢复时重读预览；
+// 每次明确生成再从原图/工作区引用确认受控输入，受控名不作恢复凭据。
 
 /** 单任务模式（文字/图生/首尾帧）的编辑草稿。 */
 export interface VideoDraftPayload {
@@ -254,9 +254,9 @@ export const useVideoStore = defineStore('videoStudio', () => {
   }
 
   /** 视频页一次性消费：取走并清除。 */
-  function consumeImageCtx(): VideoCtxPayload | null {
+  function consumeImageCtx(expected: VideoCtxPayload): VideoCtxPayload | null {
     const ctx = pendingImageCtx.value
-    if (!ctx) return null
+    if (!ctx || ctx !== expected) return null
     try { sessionStorage.removeItem(IMAGE_CTX_KEY) } catch { return null }
     pendingImageCtx.value = null
     return ctx

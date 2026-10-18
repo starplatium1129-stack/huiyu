@@ -407,7 +407,7 @@ export function useShotWorkspace(props: {
     }
     // ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
     // 切模式保留缓存实例；真正卸载后恢复镜头文本、身份锚点和参考卡元信息。
-    // 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
+    // 首帧图只存耐久图片 ID，恢复时从原图重挂载，不以受控上传名作为恢复凭据。
     const { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission, recoverShotSubmission } = useShotDraft({
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
         batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,

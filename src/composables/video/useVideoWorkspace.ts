@@ -22,6 +22,9 @@ import { useVideoRequest, videoRequestSettled } from './useVideoRequest'
 import { VIDEO_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession } from '@/composables/useOriginalImage'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 import { useVideoFrames } from '@/components/video/useVideoFrames'
 
@@ -165,6 +168,16 @@ let selectionVersion = 0
 let disposed = false
 let pageActive = true
 let statusRequest: AbortController | null = null
+let submitRequest: AbortController | null = null
+let submitSession = imageMediaSession()
+function invalidateSubmission() {
+  const next = imageMediaSession()
+  if (submitSession !== next) { submitSession = next; submitRequest?.abort() }
+}
+// Keep the command signal current through the journal flush and first POST,
+// including the gap after frame preparation has already completed.
+const stopSubmitRuntime = onDesktopRuntime(invalidateSubmission)
+const stopSubmitSessionWatch = watch(runtimeResourceIdentity, invalidateSubmission, { flush: 'sync' })
 
 
 /**
@@ -183,19 +196,8 @@ const jobErrorReport = computed(() => {
 // ── 图片动起来（I2VA）状态：首帧来自绘图页「出视频」的跨页上下文 ────────────
 const videoImageId = ref('')
 
-const videoImageUrl = ref('')
-
-const uploadingImage = ref(false)
-
-
 // ── 首尾帧过渡（FL2VA）状态：首帧可来自绘图页或本地上传，尾帧仅本地上传 ────
-const firstFrameName = ref('')
-
-const lastFrameName = ref('')
-
 const lastFrameImageId = ref('')
-
-const lastFrameUrl = ref('')
 
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
@@ -280,7 +282,7 @@ const canGenerate = computed(() => {
   const mode = selectedMode.value
   // 分镜模式走 ShotListEditor 自己的提交链路，不进单任务生成。
   if (mode === 'shots') return false
-  if (mode === 'image' && !videoImageId.value && !firstFrameName.value) return false
+  if (mode === 'image' && !hasFirstFrame.value) return false
   if (mode === 'first-last-frame' && !firstFrameReady.value) return false
   return prompt.value.trim().length >= 8
     && prompt.value.length <= 4000
@@ -297,7 +299,7 @@ const canGenerate = computed(() => {
 
 // 首尾帧模式素材就绪：首帧（绘图页带入 或 本地上传）与尾帧（本地上传）齐备。
 const firstFrameReady = computed(() =>
-  Boolean(videoImageId.value || firstFrameName.value) && Boolean(lastFrameImageId.value || lastFrameName.value))
+  hasFirstFrame.value && hasLastFrame.value)
 
 
 const submitTitle = computed(() => {
@@ -310,9 +312,9 @@ const submitTitle = computed(() => {
   if (!status.value?.online) return '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
   if (selectedMode.value === 'first-last-frame' && !firstFrameReady.value) {
-    return videoImageId.value || firstFrameName.value ? '先上传一张尾帧图' : '先准备首帧与尾帧图'
+    return hasFirstFrame.value ? '先上传一张尾帧图' : '先准备首帧与尾帧图'
   }
-  if (selectedMode.value === 'image' && !videoImageId.value && !firstFrameName.value) return '先带入一张首帧图'
+  if (selectedMode.value === 'image' && !hasFirstFrame.value) return '先带入一张首帧图'
   if (uploadingImage.value) return '正在准备帧图'
   if (activeModel.value && selectedMode.value !== 'shots'
     && !activeModel.value.modes?.includes(selectedMode.value as VideoMode)) {
@@ -376,25 +378,25 @@ async function loadStatus() {
 // ── 绘图页「出视频」跨页上下文与首帧/尾帧素材（已下沉 useVideoFrames）──────
 // 编辑草稿归 useVideoStudioDraft；接收身份与恢复归 useVideoRequest。
 const {
+  videoImageUrl, lastFrameUrl, uploadingImage, hasFirstFrame, hasLastFrame,
   consumeVideoCtx,
+  restorePreviews,
   clearFirstFrame,
   clearLastFrame,
   handleFrameFile,
   resolveSubmitFrames,
-  disposeFrames,
 } = useVideoFrames({
   selectedMode, aspectRatio, selectedModelId, prompt,
-  videoImageId, videoImageUrl, firstFrameName,
-  lastFrameImageId, lastFrameUrl, lastFrameName,
-  uploadingImage, status, statusError,
-  persistImportedCtx: imageId => videoDraftTools.persistDraft(imageId),
+  videoImageId, lastFrameImageId, status, statusError,
+  available: () => !disposed && pageActive,
+  persistImportedCtx: imageId => videoDraftTools.persistImportedCtx(imageId),
 })
 
 
 const videoDraftTools = useVideoStudioDraft({
   selectedMode, prompt, negative, selectedModelId, aspectRatio, quality,
   steps, duration, camera, motion, seedText,
-  videoImageId, lastFrameImageId, videoImageUrl, lastFrameUrl,
+  videoImageId, lastFrameImageId,
   onPersistError: (message) => { statusError.value = message },
 })
 
@@ -434,8 +436,10 @@ async function submitVideo() {
   selectedTaskId.value = ''
   if (typeof route.query.job === 'string') void router.replace({ query: { ...route.query, job: undefined }, hash: route.hash })
   ownsTrackedTask.value = true
+  const controller = new AbortController()
+  submitRequest?.abort(); submitRequest = controller
   try {
-    // 帧图解析（受控名优先、IndexedDB 凭据重上传兜底）已下沉 useVideoFrames。
+    // Only a new explicit generation prepares its input; recovery reads the journal.
     const mode = selectedMode.value
     const request = {
       prompt: prompt.value.trim(),
@@ -449,7 +453,7 @@ async function submitVideo() {
       quality: quality.value,
       steps: steps.value,
     }
-    const frames = await resolveSubmitFrames(mode)
+    const frames = await resolveSubmitFrames(mode, controller.signal)
     if (disposed || !pageActive || selection !== selectionVersion) return
     checkOwner()
     if (videoStore.videoTask) {
@@ -457,7 +461,9 @@ async function submitVideo() {
       videoStore.clearVideoTask(); await flushProfileWrites()
     }
     if (disposed || !pageActive || selection !== selectionVersion) return
-    const accepted = await submission.submit({ ...request, ...frames }, new AbortController().signal, undefined, { mode })
+    controller.signal.throwIfAborted()
+    checkOwner()
+    const accepted = await submission.submit({ ...request, ...frames }, controller.signal, undefined, { mode })
     if ('shots' in accepted) throw new Error('视频请求返回了错误的任务类型')
     if (disposed || !pageActive || selection !== selectionVersion) return
     job.value = accepted; pollError.value = ''; recoveryError.value = ''; reconnectState.value = 'idle'
@@ -474,6 +480,7 @@ async function submitVideo() {
     await loadStatus()
     if (!disposed && pageActive && selection === selectionVersion) statusError.value = requestPending.value ? '原视频接收状态待核对，已阻止重复提交。' + submissionError : submissionError
   } finally {
+    if (submitRequest === controller) submitRequest = null
     submitting.value = false
     if (jobSelectionPending.value) void retrySelectedJob()
     else if (pageActive && selection !== selectionVersion && requestUnconfirmed.value) void reconnectVideo()
@@ -483,7 +490,17 @@ async function submitVideo() {
 
 
 async function cancelJob(original = false) {
-  if (disposed || cancelling.value || !original && (jobSelectionPending.value || selectedJobReading.value) || !job.value && !submission.request.value) return
+  if (disposed || cancelling.value || !original && (jobSelectionPending.value || selectedJobReading.value)) return
+  const preparing = submitRequest
+  preparing?.abort()
+  if (!job.value && !submission.request.value) {
+    if (preparing) {
+      selectionVersion++
+      unboundTaskStatus.value = 'cancelled'
+      statusError.value = '视频准备已停止，尚未提交任务'
+    }
+    return
+  }
   const id = job.value?.id || ''
   const selection = selectionVersion
   // An explicit command can claim this visit; cancelling a different original
@@ -531,6 +548,7 @@ let activatedOnce = false, initialRestorePending = true
 function retrySelectedJob() { return observation.select(true) }
 watch(() => route.path === '/video-studio' && typeof route.query.job === 'string' ? route.query.job : '', id => {
   if (id === selectedTaskId.value) return
+  submitRequest?.abort()
   if (id && id !== job.value?.id && id !== submission.request.value?.taskId) detachTrackedBinding?.()
   ownsTrackedTask.value = false
   selectionVersion++; selectedTaskId.value = id; reconnectState.value = 'idle'; selectedJobError.value = ''
@@ -541,6 +559,7 @@ watch(() => route.path === '/video-studio' && typeof route.query.job === 'string
 watch(() => route.query.mode, mode => { if (route.path === '/video-studio' && mode === 'shots') selectedMode.value = 'shots' })
 
 function stopPageReads() {
+  submitRequest?.abort(); submitRequest = null
   statusRequest?.abort(); statusRequest = null; statusLoading.value = false
   observation.stop()
 }
@@ -548,7 +567,8 @@ onDeactivated(() => { pageActive = false; ownsTrackedTask.value = false; selecti
 onActivated(() => {
   pageActive = true
   if (!activatedOnce) { activatedOnce = true; return }
-  if (route.query.mode === 'shots') selectedMode.value = 'shots'; else consumeVideoCtx()
+  if (route.query.mode === 'shots') selectedMode.value = 'shots'
+  void (async () => { if (route.query.mode !== 'shots') await consumeVideoCtx(); await restorePreviews() })()
   void loadStatus()
   if (!initialRestorePending && !selectedTaskId.value) void reconnectVideo()
 })
@@ -561,16 +581,14 @@ onMounted(() => {
   }
   void loadStatus()
   void (async () => {
-    const selection = selectionVersion, shotsEntry = selectedMode.value === 'shots'
-    // restoreDraft hydrates fields synchronously; consume this entry before awaiting its guarded media reads.
-    const restoring = videoDraftTools.restoreDraft()
+    const shotsEntry = selectedMode.value === 'shots'
+    videoDraftTools.restoreDraft()
     // The shared watcher also saves in shots mode; hydrate single-video fields before it can persist them.
     if (shotsEntry) selectedMode.value = 'shots'
-    else consumeVideoCtx()
-    const restored = await restoring
+    else await consumeVideoCtx()
+    await restorePreviews()
     initialRestorePending = false
     if (disposed || !pageActive) return
-    if (selection === selectionVersion && (restored?.firstFrameLost || restored?.lastFrameLost)) statusError.value = '草稿已恢复，但部分帧图原文件已失效，请重新选择对应图片'
     // 新任务按原请求键恢复；旧 ID 仅沿原任务读取。
     if (typeof route.query.job === 'string') return
     await reconnectVideo()
@@ -596,15 +614,13 @@ onBeforeUnmount(() => {
   disposed = true
   pageActive = false
   ownsTrackedTask.value = false
+  stopSubmitRuntime(); stopSubmitSessionWatch()
   stopPageReads()
-  disposeFrames()
   stopDraftWatch()
-  if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-  if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
 })
 return {
  archiveStatus, archiveState, statusLoading, loadStatus, modes, selectedMode,
-modeReady, modeBadge, t8State, status, videoImageUrl, clearFirstFrame,
+modeReady, modeBadge, t8State, status, videoImageUrl, clearFirstFrame, hasFirstFrame, hasLastFrame,
 uploadingImage, handleFrameFile, lastFrameUrl, clearLastFrame, prompt, aspectOptions,
 aspectRatio, aspectSize, camera, cameraOptions, motion, motionOptions,
 quality, durationOptions, duration, activeModel, steps, negative,

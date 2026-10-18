@@ -1,257 +1,240 @@
+import { computed, onActivated, onDeactivated, onScopeDispose, ref, shallowRef, watch, type Ref } from 'vue'
 import { withArtworkStaging } from '@/storage/artworkSession'
-import type { Ref } from 'vue'
-import {
-  uploadVideoImage,
-  importWorkspaceVideoImage,
-  type VideoDefaults,
-  type VideoMode,
-  type VideoStatusResponse,
-} from '@/api/videoApi'
 import { artworkRepository } from '@/storage/artworkRepository'
+import { imageMediaSession, useOriginalImage } from '@/composables/useOriginalImage'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { registerMigrationArtworkSource } from '@/platform/web/migrationBarrier'
+import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
+import {
+  uploadVideoImage, importWorkspaceVideoImage,
+  type VideoDefaults, type VideoMode, type VideoStatusResponse,
+} from '@/api/videoApi'
 import { useVideoStore, type VideoCtxPayload } from '@/stores/videoStore'
 import { useSceneStore } from '@/stores/sceneStore'
 
-/**
- * 视频页首帧/尾帧素材与绘图页跨页上下文（2026-09-06 自 VideoStudioView 下沉，
- * 体验报告 F1 草稿化的前置拆分）。
- *
- * 职责：帧图上传/移除/预览 URL 生命周期、绘图页「出视频」ctx 的一次性消费应用、
- * 提交时的帧图解析（工作区引用或 IndexedDB 原图重上传，无耐久副本时受控名仅用一次——服务端
- * aics_video_input_ 前缀会随任务结束清理，刷新后旧名可能已失效）。
- */
-
+/** Single-video sources live here; useOriginalImage owns both preview lifecycles.
+ * Durable IDs can be reread. Only undurable inputs retain original Blobs between visits. */
 export interface VideoFramesDeps {
   selectedMode: Ref<VideoMode | 'shots'>
   aspectRatio: Ref<VideoDefaults['aspectRatio']>
   selectedModelId: Ref<string>
   prompt: Ref<string>
   videoImageId: Ref<string>
-  videoImageUrl: Ref<string>
-  firstFrameName: Ref<string>
   lastFrameImageId: Ref<string>
-  lastFrameUrl: Ref<string>
-  lastFrameName: Ref<string>
-  uploadingImage: Ref<boolean>
   status: Ref<VideoStatusResponse | null>
   statusError: Ref<string>
-  persistImportedCtx: (sourceImageId: string) => boolean
+  available: () => boolean
+  /** Save and flush the full imported intent before removing its inbox entry. */
+  persistImportedCtx: (sourceImageId: string) => Promise<void>
 }
 
 export function useVideoFrames(deps: VideoFramesDeps) {
-  const {
-    selectedMode, aspectRatio, selectedModelId, prompt,
-    videoImageId, videoImageUrl, firstFrameName,
-    lastFrameImageId, lastFrameUrl, lastFrameName,
-    uploadingImage, status, statusError,
-  } = deps
-  const videoStore = useVideoStore()
-  const sceneStore = useSceneStore()
-  let firstVersion = 0
-  let lastVersion = 0
-  let pendingUploads = 0
-  let disposed = false
-  let firstUpload: AbortController | null = null
-  let lastUpload: AbortController | null = null
+  const videoStore = useVideoStore(), sceneStore = useSceneStore()
+  const owner = tempResultOwner()
+  function createSlot(id: Ref<string>, label: string) {
+    return { id, label, preview: useOriginalImage(), blob: shallowRef<Blob | null>(null),
+      pending: shallowRef<Blob | null>(null), version: 0, upload: null as AbortController | null }
+  }
+  const first = createSlot(deps.videoImageId, '首帧'), last = createSlot(deps.lastFrameImageId, '尾帧')
+  type Slot = typeof first
+  let active = true, disposed = false, contextVersion = 0, session = imageMediaSession()
+  let preparation: AbortController | null = null
+  const uploads = new Set<AbortController>(), uploadingImage = ref(false)
+  const hasFirstFrame = computed(() => Boolean(first.id.value || first.blob.value || first.pending.value))
+  const hasLastFrame = computed(() => Boolean(last.id.value || last.blob.value || last.pending.value))
+  const releaseMigration = registerMigrationArtworkSource(() => [first, last].some(slot =>
+    Boolean(slot.pending.value || slot.blob.value && !slot.id.value)))
 
-  /**
-   * 跨页上下文 → 视频提示词（确定性组装，不做 tag 翻译）：
-   * 1. 实际出图提示词（ctx.prompt）直接作为视频主描述；
-   * 2. prompt 为空时回退用户写的 story；
-   * 3. story 为空时，用场景预设的结构化字段——优先英文 promptProse，
-   *    缺失时才回退中文 description + action + lighting；
-   * 4. I2VA 首帧图已在后端按官方规范锁定角色/服装/场景（<Picture 1> 指令），
-   *    身份描述如与画面冲突可在文本框手动删减，这里只做搬运不做裁剪。
-   */
-  function composeVideoPrompt(ctx: VideoCtxPayload): string {
-    const ctxPrompt = (ctx.prompt || '').trim()
-    if (ctxPrompt) return ctxPrompt
-    const story = (ctx.story || '').trim()
-    if (story) return story
-    if (ctx.blueprintId) {
-      const bp = sceneStore.sceneBlueprints.find(item => item.id === ctx.blueprintId)
-      if (bp) {
-        const prose = (bp.promptProse || '').trim()
-        if (prose) return prose
-        return [bp.description, bp.action, bp.lighting].filter(Boolean).join('，')
-      }
-    }
-    return ''
+  function owned() { return sameTempResultOwner(owner) }
+  function available() { return !disposed && active && deps.available() && owned() }
+  function track(controller: AbortController) { uploads.add(controller); uploadingImage.value = true }
+  function finish(controller: AbortController) { uploads.delete(controller); uploadingImage.value = uploads.size > 0 }
+  function stopSlot(slot: Slot) { slot.version++; slot.upload?.abort(); slot.upload = null }
+  function stopOperations() {
+    contextVersion++; preparation?.abort(); preparation = null
+    stopSlot(first); stopSlot(last); uploads.clear(); uploadingImage.value = false
+  }
+  function clearFrame(slot: Slot) {
+    contextVersion++; preparation?.abort(); stopSlot(slot)
+    slot.preview.release(); slot.id.value = ''; slot.blob.value = null; slot.pending.value = null
   }
 
-  async function applyVideoCtx(ctx: VideoCtxPayload) {
-    clearFirstFrame()
-    clearLastFrame()
-    // Publish the complete new intent before preview reads can yield to submission or draft saving.
-    selectedMode.value = 'image'
-    // 首帧比例跟随原图，避免固定画幅拉伸（如 832x1216 出图 → 480x832 画布会变形）。
-    aspectRatio.value = 'original'
-    // 图生视频只有支持 image 的模型可用（本机目录里即 MiniMax H3）；Wan 5B 会静默丢掉首帧，
-    // 这里直接选到 H3，避免用户带着首帧落到「文字成片」模型上。
-    if (status.value?.models.some(model => model.id === 'minimax-h3')) {
-      selectedModelId.value = 'minimax-h3'
-    }
-    prompt.value = composeVideoPrompt(ctx)
-    videoImageId.value = ctx.imageId
-    const version = firstVersion
+  /** A failed read keeps its ID. Only a current, empty original proves it is lost. */
+  async function restorePreview(slot: Slot, original?: Blob) {
+    if (!available()) return
+    const id = slot.id.value, blob = slot.blob.value, version = slot.version
+    if (!id && !blob && !original) { slot.preview.release(); return }
+    const repository = artworkRepository, mediaSession = imageMediaSession()
+    const current = () => available() && version === slot.version && id === slot.id.value && blob === slot.blob.value
+      && repository === artworkRepository && mediaSession === imageMediaSession()
+    await slot.preview.load({ current, preserve: true, async read(signal, selectedRepository) {
+      signal.throwIfAborted()
+      if (!current()) return null
+      const image = original || blob || await selectedRepository.getImage(id, signal)
+      signal.throwIfAborted()
+      if (!current()) return null
+      if (!image?.size) {
+        slot.preview.release()
+        slot.id.value = ''
+        deps.statusError.value = `${slot.label}原图已失效，请重新选择图片`
+      }
+      return image
+    } })
+  }
+  watch([first.preview.error, last.preview.error], ([firstError, lastError]) => {
+    if (available() && (firstError || lastError)) deps.statusError.value = '帧图暂时无法读取，原输入已保留；请重新进入页面重试'
+  })
+
+  /** Validate a new selection before replacing the previous source. An interrupted
+   * selection stays in pending; returning to the same owner can finish preparing it. */
+  async function prepareFile(slot: Slot, file: Blob) {
+    if (!available() || slot.pending.value !== file || slot.upload) return
+    stopSlot(slot)
+    const version = slot.version, controller = new AbortController(), repository = artworkRepository
+    const mediaSession = imageMediaSession()
+    slot.upload = controller; track(controller)
+    const sameSource = () => repository === artworkRepository && mediaSession === imageMediaSession() && owned()
+    const current = () => available() && !controller.signal.aborted && sameSource()
+      && slot.version === version && slot.pending.value === file
+    let imageId = '', published = false
     try {
-      const blob = await artworkRepository.getImage(ctx.imageId)
-      if (version !== firstVersion) return
-      if (blob) {
-        const preview = URL.createObjectURL(blob)
-        if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-        videoImageUrl.value = preview
-      } else {
-        videoImageId.value = ''
-        statusError.value = '带入的首帧原图已失效，请重新选择图片'
-      }
-    } catch { if (version === firstVersion) statusError.value = '首帧图片暂时无法读取，图片引用已保留；请稍后刷新页面重试' }
-  }
-
-  /** 绘图页「出视频」跨页上下文（一次性消费，videoStore 承载）。 */
-  function consumeVideoCtx() {
-    const ctx = videoStore.pendingImageCtx
-    if (!ctx || !ctx.imageId) return
-    if (videoStore.videoDraft?.importSourceImageId !== ctx.imageId) {
-      void applyVideoCtx(ctx)
-      if (!deps.persistImportedCtx(ctx.imageId)) {
-        statusError.value = '视频草稿保存失败，绘图导入待办已保留；请保持页面打开并恢复存储后重试'
-        return
-      }
-    }
-    if (!videoStore.consumeImageCtx()) statusError.value = '视频草稿已保存，导入待办更新失败；请重新进入页面重试'
-  }
-
-  function clearFirstFrame() {
-    firstVersion++
-    firstUpload?.abort(); firstUpload = null
-    if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-    videoImageUrl.value = ''
-    videoImageId.value = ''
-    firstFrameName.value = ''
-  }
-
-  function clearLastFrame() {
-    lastVersion++
-    lastUpload?.abort(); lastUpload = null
-    if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
-    lastFrameUrl.value = ''
-    lastFrameName.value = ''
-    lastFrameImageId.value = ''
-  }
-
-  /**
-   * 本地上传首帧/尾帧：原始 Blob → 网关 → 受控文件名 + 本地预览。
-   * 同时写 IndexedDB 留耐久凭据（F1）：受控名随任务清理，草稿恢复靠 imageId 重上传。
-   */
-  async function handleFrameFile(event: Event, slot: 'first' | 'last') {
-    return withArtworkStaging(async () => {
-      const input = event.target as HTMLInputElement
-      const file = input.files?.[0]
-      input.value = ''
-      if (!file || disposed) return
-      if (!file.type.startsWith('image/')) {
-        statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'
-        return
-      }
-      const version = slot === 'first' ? ++firstVersion : ++lastVersion
-      const controller = new AbortController()
-      const repository = artworkRepository
-      let imageId = '', published = false
-      if (slot === 'first') { firstUpload?.abort(); firstUpload = controller }
-      else { lastUpload?.abort(); lastUpload = controller }
-      const isCurrent = () => !disposed && !controller.signal.aborted && artworkRepository === repository
-        && version === (slot === 'first' ? firstVersion : lastVersion)
-      pendingUploads++
-      uploadingImage.value = true
-      statusError.value = ''
-      try {
-        if (!isCurrent()) return
-        const upload = await uploadVideoImage(file, undefined, controller.signal)
-        if (!isCurrent()) return
+      await withArtworkStaging(async () => {
+        if (!current()) return
+        await uploadVideoImage(file, undefined, controller.signal)
+        if (!current()) return
         imageId = await repository.putImage(file).catch(() => '')
-        if (!isCurrent()) return
-        const preview = URL.createObjectURL(file)
-        if (!imageId) statusError.value = '图片可用于本次生成，但本地保存失败，刷新或再次生成前需重新选择图片'
-        if (slot === 'first') {
-          if (videoImageUrl.value) URL.revokeObjectURL(videoImageUrl.value)
-          videoImageUrl.value = preview
-          firstFrameName.value = upload.name
-          videoImageId.value = imageId
-        } else {
-          if (lastFrameUrl.value) URL.revokeObjectURL(lastFrameUrl.value)
-          lastFrameUrl.value = preview
-          lastFrameName.value = upload.name
-          lastFrameImageId.value = imageId
-        }
+        if (!current()) return
+        slot.id.value = imageId; slot.blob.value = imageId ? null : file; slot.pending.value = null
         published = true
-      } catch (error) {
-        if (isCurrent()) statusError.value = error instanceof Error ? error.message : '图片上传失败'
-      } finally {
-        if (imageId && !published) await repository.deleteImage(imageId).catch(() => {})
-        if (firstUpload === controller) firstUpload = null
-        if (lastUpload === controller) lastUpload = null
-        pendingUploads--
-        uploadingImage.value = pendingUploads > 0
+        if (!imageId) deps.statusError.value = '原图本地保存失败，当前窗口会保留图片；刷新前请重新选择图片或明确移除'
+        await restorePreview(slot, file)
+      })
+    } catch (error) {
+      if (current()) {
+        const message = error instanceof Error ? error.message : '图片上传失败'
+        deps.statusError.value = `${message}；所选图片已保留，重新进入页面可重试，也可明确移除`
       }
-    })
-  }
-
-  /**
-   * 提交时用工作区引用或本地原图换取新受控名；服务端会在任务结束时清理旧文件。
-   * 没有耐久副本时仅使用一次本会话受控名，再次生成要求重新选择图片。
-   */
-  async function resolveSubmitFrames(mode: VideoMode | 'shots'): Promise<{ image?: string; lastFrame?: string }> {
-    if (mode !== 'image' && mode !== 'first-last-frame') return {}
-    const first = { id: videoImageId.value, name: firstFrameName.value, version: firstVersion }
-    const last = { id: lastFrameImageId.value, name: lastFrameName.value, version: lastVersion }
-    const repository = artworkRepository
-    // 已提交的输入文件会被清理；耐久副本每次换新受控名，临时旧名只使用一次。
-    firstFrameName.value = ''
-    if (mode === 'first-last-frame') lastFrameName.value = ''
-    const sourceId = first.id || (mode === 'first-last-frame' ? last.id : '')
-    const source = sourceId ? repository.getWorkspaceMediaReference?.(sourceId) : undefined
-    const check = () => {
-      if (repository !== artworkRepository || (source && repository.getWorkspaceMediaReference?.(sourceId).authority !== source.authority)) {
-        throw new Error('图片存储连接已更新，请确认后重新生成')
-      }
-      if (disposed || first.version !== firstVersion || (mode === 'first-last-frame' && last.version !== lastVersion)) {
-        throw new Error('准备期间帧图已更换，请确认后重新生成')
-      }
-    }
-    async function resolve(frame: { id: string; name: string }, label: string) {
-      check()
-      if (frame.id) {
-        if (source) return (await importWorkspaceVideoImage(repository.getWorkspaceMediaReference!(frame.id).alias)).name
-        const blob = await repository.getImage(frame.id)
-        if (!blob) throw new Error(`${label}图片读取失败，请重新选择`)
-        check()
-        return (await uploadVideoImage(blob)).name
-      }
-      if (frame.name) return frame.name
-      throw new Error(`${label}图片读取失败，请重新选择`)
-    }
-    pendingUploads++
-    uploadingImage.value = true
-    try {
-      const image = await resolve(first, '首帧')
-      check()
-      const lastFrame = mode === 'first-last-frame' ? await resolve(last, '尾帧') : undefined
-      check()
-      return { image, lastFrame }
     } finally {
-      pendingUploads--
-      uploadingImage.value = pendingUploads > 0
+      // The desktop adapter is reused across workspaces. Never release an old
+      // alias through a new authority; the original workspace's orphan GC owns it.
+      if (imageId && !published && sameSource()) await repository.deleteImage(imageId).catch(() => {})
+      if (slot.upload === controller) slot.upload = null
+      finish(controller)
     }
   }
 
-  function disposeFrames() { disposed = true; firstVersion++; lastVersion++; firstUpload?.abort(); lastUpload?.abort() }
+  async function handleFrameFile(event: Event, target: 'first' | 'last') {
+    const input = event.target as HTMLInputElement, file = input.files?.[0]
+    input.value = ''
+    if (!file || !available()) return
+    if (!file.type.startsWith('image/')) { deps.statusError.value = '仅支持图片文件（PNG / JPEG / WebP）'; return }
+    const slot = target === 'first' ? first : last
+    preparation?.abort(); stopSlot(slot); slot.preview.stop()
+    // Retain/register the actual File before the first lock or network await.
+    slot.pending.value = file; deps.statusError.value = ''
+    await prepareFile(slot, file)
+    if (!slot.pending.value && !slot.preview.url.value) await restorePreview(slot)
+  }
 
+  async function restorePreviews() {
+    if (!available()) return
+    await Promise.all([first, last].map(async slot => {
+      if (slot.pending.value) await prepareFile(slot, slot.pending.value)
+      if (!slot.upload && !slot.preview.url.value) await restorePreview(slot)
+    }))
+  }
+
+  /** Transfer the existing prompt/story/blueprint intent without rewriting it. */
+  function composeVideoPrompt(ctx: VideoCtxPayload): string {
+    const prompt = (ctx.prompt || '').trim(), story = (ctx.story || '').trim()
+    if (prompt || story) return prompt || story
+    const blueprint = ctx.blueprintId && sceneStore.sceneBlueprints.find(item => item.id === ctx.blueprintId)
+    return blueprint ? (blueprint.promptProse || '').trim()
+      || [blueprint.description, blueprint.action, blueprint.lighting].filter(Boolean).join('，') : ''
+  }
+  async function consumeVideoCtx() {
+    if (!available()) return
+    const ctx = videoStore.pendingImageCtx
+    if (!ctx?.imageId) return
+    if (videoStore.videoDraft?.importSourceImageId !== ctx.imageId) {
+      clearFrame(first); clearFrame(last)
+      deps.selectedMode.value = 'image'; deps.aspectRatio.value = 'original'
+      if (deps.status.value?.models.some(model => model.id === 'minimax-h3')) deps.selectedModelId.value = 'minimax-h3'
+      deps.prompt.value = composeVideoPrompt(ctx); first.id.value = ctx.imageId
+    }
+    const version = ++contextVersion
+    const current = () => available() && version === contextVersion && videoStore.pendingImageCtx === ctx
+    try {
+      // A matching optimistic draft is not proof of persistence. Flush it again.
+      await deps.persistImportedCtx(ctx.imageId)
+      if (!current()) return
+      if (!videoStore.consumeImageCtx(ctx)) deps.statusError.value = '视频草稿已保存，导入待办更新失败；请重新进入页面重试'
+    } catch {
+      if (current()) deps.statusError.value = '视频草稿尚未写稳，绘图导入待办已保留；请保持原工作区连接并重试'
+    }
+  }
+
+  /** Every explicit generation confirms a controlled input from its durable alias
+   * or original bytes. Request recovery never calls this preparation again. */
+  async function resolveSubmitFrames(mode: VideoMode | 'shots', signal: AbortSignal): Promise<{ image?: string; lastFrame?: string }> {
+    signal.throwIfAborted()
+    if (mode !== 'image' && mode !== 'first-last-frame') return {}
+    preparation?.abort()
+    const controller = new AbortController(); preparation = controller
+    const combined = AbortSignal.any([signal, controller.signal]), repository = artworkRepository, mediaSession = imageMediaSession()
+    const slots = mode === 'first-last-frame' ? [first, last] : [first]
+    const sources = slots.map(slot => ({ slot, id: slot.id.value, blob: slot.blob.value, version: slot.version }))
+    const check = () => {
+      combined.throwIfAborted()
+      if (!available() || repository !== artworkRepository || mediaSession !== imageMediaSession()) throw new Error('图片连接已变化，请确认后重新生成')
+      if (sources.some(source => source.slot.pending.value)) throw new Error('所选帧图尚未准备完成，请重新进入页面重试或移除后重新选择')
+      if (sources.some(source => source.slot.version !== source.version || source.slot.id.value !== source.id
+        || source.slot.blob.value !== source.blob)) throw new Error('准备期间帧图已更换，请确认后重新生成')
+    }
+    async function resolve(source: typeof sources[number]) {
+      check()
+      if (source.id && repository.getWorkspaceMediaReference) {
+        const reference = repository.getWorkspaceMediaReference(source.id)
+        check()
+        const uploaded = await importWorkspaceVideoImage(reference.alias, combined)
+        check(); return uploaded.name
+      }
+      const blob = source.blob || (source.id ? await repository.getImage(source.id, combined) : null)
+      check()
+      if (!blob?.size) throw new Error(`${source.slot.label}图片读取失败，请重新选择`)
+      const uploaded = await uploadVideoImage(blob, undefined, combined)
+      check(); return uploaded.name
+    }
+    track(controller)
+    try {
+      const image = await resolve(sources[0]!)
+      const lastFrame = sources[1] ? await resolve(sources[1]) : undefined
+      check(); return { image, lastFrame }
+    } finally {
+      if (preparation === controller) preparation = null
+      finish(controller)
+    }
+  }
+
+  function refreshSession() {
+    const next = imageMediaSession()
+    if (session === next) return
+    session = next; stopOperations()
+    if (available()) void restorePreviews()
+  }
+  const stopRuntime = onDesktopRuntime(refreshSession)
+  const stopResourceWatch = watch(runtimeResourceIdentity, refreshSession, { flush: 'sync' })
+  onActivated(() => { active = true })
+  onDeactivated(() => { active = false; stopOperations() })
+  onScopeDispose(() => {
+    disposed = true; active = false; stopRuntime(); stopResourceWatch(); stopOperations()
+    first.blob.value = null; first.pending.value = null; last.blob.value = null; last.pending.value = null
+    releaseMigration()
+  })
   return {
-    consumeVideoCtx,
-    clearFirstFrame,
-    clearLastFrame,
-    handleFrameFile,
-    resolveSubmitFrames,
-    disposeFrames,
+    videoImageUrl: first.preview.url, lastFrameUrl: last.preview.url, uploadingImage, hasFirstFrame, hasLastFrame,
+    consumeVideoCtx, restorePreviews, handleFrameFile, resolveSubmitFrames,
+    clearFirstFrame: () => clearFrame(first), clearLastFrame: () => clearFrame(last),
   }
 }

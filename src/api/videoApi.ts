@@ -129,9 +129,8 @@ export function fetchVideoStatus(signal?: AbortSignal): Promise<VideoStatusRespo
   })
 }
 
-/** 首帧图/尾帧图/参考图上传：原始 Blob → 网关校验后写入 ComfyUI/input，返回受控文件名。
- *  kind:'reference' 用独立前缀（跨任务资产，网关重启不清理）；首帧/尾帧走缺省前缀（任务级清理）。
- *  同一端点即覆盖 FL2VA 尾帧通道（后端按 IMAGE_INPUT_PATTERN 白名单校验）。 */
+/** 首帧/尾帧/参考图经 runtime 校验写入受控输入目录；kind:'reference' 使用独立前缀。
+ * 同一 owner 的相同内容可复用受控名。草稿恢复依据耐久原图，而非此上传回执。 */
 export function uploadVideoImage(data: Blob, kind?: 'reference', signal?: AbortSignal): Promise<VideoImageUploadResponse> {
   return apiClient.request<VideoImageUploadResponse>(`/api/video/images/raw${kind ? '?kind=reference' : ''}`, {
     method: 'POST',

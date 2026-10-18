@@ -52,7 +52,7 @@
               <span class="video-step">00 · 首帧</span>
               <h2>故事从这里展开</h2>
             </div>
-            <button v-if="videoImageUrl" class="btn btn-ghost" type="button" @click="removeFrame($event, 'first')">移除</button>
+            <button v-if="hasFirstFrame" class="btn btn-ghost" type="button" @click="removeFrame($event, 'first')">移除</button>
           </div>
           <RuntimeImage v-if="videoImageUrl" :src="videoImageUrl" v-slot="{ image, loaded, failed }"><div class="video-frame-preview"><img v-if="image.src && !failed" v-bind="image" class="video-first-frame" :class="{ 'is-ready': loaded }" alt="视频首帧" /><span v-if="!loaded" role="status">{{ failed ? '首帧暂时无法展开，请移除后重新选择' : '正在展开首帧…' }}</span></div></RuntimeImage>
           <label v-else class="video-upload-drop video-upload-drop--single" tabindex="-1" :data-busy="uploadingImage || undefined">
@@ -80,7 +80,7 @@
                 <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>
                 <span>上传首帧</span>
               </label>
-              <button v-if="videoImageUrl" class="btn btn-ghost btn-block" type="button" @click="removeFrame($event, 'first')">移除首帧</button>
+              <button v-if="hasFirstFrame" class="btn btn-ghost btn-block" type="button" @click="removeFrame($event, 'first')">移除首帧</button>
             </div>
             <div class="video-frame-slot tw:grid tw:gap-s-2 tw:content-start">
               <span class="field-label">B · 故事落点 / 输入尾帧</span>
@@ -90,7 +90,7 @@
                 <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>
                 <span>上传尾帧</span>
               </label>
-              <button v-if="lastFrameUrl" class="btn btn-ghost btn-block" type="button" @click="removeFrame($event, 'last')">移除尾帧</button>
+              <button v-if="hasLastFrame" class="btn btn-ghost btn-block" type="button" @click="removeFrame($event, 'last')">移除尾帧</button>
             </div>
           </div>
         </section>
@@ -390,6 +390,8 @@ modeBadge,
 t8State,
 status,
 videoImageUrl,
+hasFirstFrame,
+hasLastFrame,
 clearFirstFrame,
 uploadingImage,
 handleFrameFile,

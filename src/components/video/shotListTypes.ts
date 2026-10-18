@@ -16,9 +16,8 @@ export interface ShotDraft {
   imageName: string
   imageUrl: string
   /**
-   * 首帧在 IndexedDB 的图片 id（2026-09-06 体验报告 F1/F4）：草稿持久化与
-   * 导入失败重试的耐久凭据——服务端受控文件名（imageName）会随任务清理，
-   * blob URL（imageUrl）随页面卸载失效，只有它能跨页/刷新找回原图。
+   * 首帧的耐久图片 ID：草稿持久化与导入重试据此找回原图。
+   * 受控上传名（imageName）不作为恢复凭据；预览 URL（imageUrl）只属于当前页面。
    */
   imageId?: string
   /** Durable import receipt; remains unchanged when the first frame is edited. */

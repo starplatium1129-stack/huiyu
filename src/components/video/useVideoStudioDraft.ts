@@ -1,8 +1,10 @@
 import { onScopeDispose, watch, type Ref } from 'vue'
-import { artworkRepository } from '@/storage/artworkRepository'
 import { useVideoStore, type VideoDraftPayload } from '@/stores/videoStore'
 import { type VideoDefaults, type VideoMode } from '@/api/videoApi'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
+import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
+import { getDesktopRuntime } from '@/platform/desktop/runtime'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 
 /** Editable frame references and parameters; admission belongs to useVideoRequest. */
 export interface VideoStudioDraftDeps {
@@ -19,24 +21,37 @@ export interface VideoStudioDraftDeps {
   seedText: Ref<string>
   videoImageId: Ref<string>
   lastFrameImageId: Ref<string>
-  videoImageUrl: Ref<string>
-  lastFrameUrl: Ref<string>
   /** 草稿写入/恢复失败的用户可见通道（view 的 statusError）。 */
   onPersistError: (message: string) => void
 }
 
 export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   const videoStore = useVideoStore()
+  const owner = tempResultOwner()
   let restoring = false
   let draftTimer = 0
   let saveFailed = false
   let disposed = false
-  let restoreRequest: AbortController | null = null
   let importSourceImageId = ''
-  onScopeDispose(() => { disposed = true; restoreRequest?.abort() }, true)
+  onScopeDispose(() => { disposed = true }, true)
+
+  function checkOwner() {
+    if (sameTempResultOwner(owner)) return
+    const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
+    // A disconnect keeps the logical draft owner. The existing profile outbox
+    // decides whether it can save now; no old IDs are moved to a new workspace.
+    if (owner.kind === 'workspace' && workspace?.workspaceId === owner.workspaceId
+      && workspace.principalId === owner.principalId) return
+    throw new Error('视频所属资料已变化，请回到原工作区保存')
+  }
 
   function persistDraft(sourceImageId?: string): boolean {
-    if (restoring) return false
+    if (disposed || restoring) return false
+    try { checkOwner() } catch {
+      saveFailed = true
+      deps.onPersistError('视频草稿所属资料已变化，原内容仍在页面中；请恢复原工作区后保存')
+      return false
+    }
     if (sourceImageId) importSourceImageId = sourceImageId
     window.clearTimeout(draftTimer); draftTimer = 0
     const draft: VideoDraftPayload = {
@@ -63,6 +78,13 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     return !saveFailed
   }
 
+  async function persistImportedCtx(sourceImageId: string) {
+    checkOwner()
+    if (!persistDraft(sourceImageId)) throw new Error('视频草稿保存失败')
+    await flushProfileWrites()
+    checkOwner()
+  }
+
   /** 监听草稿字段（防抖 350ms）；返回停止函数由调用方挂到卸载钩子。 */
   function startDraftWatch(): () => void {
     const releaseMaintenance = registerMaintenanceParticipant(() => {
@@ -82,36 +104,18 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     return () => { releaseMaintenance(); stop(); window.clearTimeout(draftTimer); persistDraft() }
   }
 
-  /** 单张帧图恢复：仅确认原图为空时返回 false；暂时读取失败保留引用供重试。 */
-  async function restoreFrame(idRef: Ref<string>, urlRef: Ref<string>, signal: AbortSignal): Promise<boolean> {
-    const imageId = idRef.value, previousUrl = urlRef.value
-    if (!imageId) return true
-    const current = () => !disposed && !signal.aborted && idRef.value === imageId && urlRef.value === previousUrl
-    try {
-      const blob = await artworkRepository.getImage(imageId, signal)
-      if (!current()) return true
-      if (!blob || !blob.size) { idRef.value = ''; return false }
-      const preview = URL.createObjectURL(blob)
-      if (previousUrl) URL.revokeObjectURL(previousUrl)
-      urlRef.value = preview
-      return true
-    } catch {
-      if (!current()) return true
-      deps.onPersistError('草稿帧图暂时无法读取，图片引用已保留；请稍后刷新页面重试')
-      return true
-    }
-  }
-
   /**
-   * 水合草稿。返回首帧/尾帧原图失效标记（true=失效，调用方提示重新选择）。
+   * 只同步水合编辑参数和耐久图片 ID；预览由 useVideoFrames 统一恢复。
    * 不恢复 mode 为 shots 的草稿（分镜草稿由 ShotListEditor 自己的草稿承担）。
    */
-  async function restoreDraft(): Promise<{ firstFrameLost: boolean; lastFrameLost: boolean }> {
-    if (disposed) return { firstFrameLost: false, lastFrameLost: false }
+  function restoreDraft(): void {
+    if (disposed) return
+    try { checkOwner() } catch {
+      deps.onPersistError('视频草稿所属资料尚未确认，请恢复原工作区连接后重新进入页面')
+      return
+    }
     const draft = videoStore.videoDraft
-    if (!draft) return { firstFrameLost: false, lastFrameLost: false }
-    restoreRequest?.abort()
-    const controller = new AbortController(); restoreRequest = controller
+    if (!draft) return
     restoring = true
     try {
       importSourceImageId = typeof draft.importSourceImageId === 'string' ? draft.importSourceImageId : ''
@@ -143,13 +147,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     } finally {
       restoring = false
     }
-    const [firstOk, lastOk] = await Promise.all([
-      restoreFrame(deps.videoImageId, deps.videoImageUrl, controller.signal),
-      restoreFrame(deps.lastFrameImageId, deps.lastFrameUrl, controller.signal),
-    ])
-    if (restoreRequest === controller) restoreRequest = null
-    return { firstFrameLost: !firstOk, lastFrameLost: !lastOk }
   }
 
-  return { startDraftWatch, persistDraft, restoreDraft }
+  return { startDraftWatch, persistImportedCtx, restoreDraft }
 }
