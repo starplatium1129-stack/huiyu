@@ -96,12 +96,15 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean, owne
       check()
     }
     check()
+    const archive = archiveTouched ? serializeChatArchive(await readChatArchive(undefined, owner.signal)) : null
+    check()
+    // No await between this baseline and the settings publication: ordinary
+    // preferences can change while the archive read is pending in another page.
     const latestSettings = collectLiveLocalSettings(localStorage)
     // Compensation restores the values we actually replaced, including writes
     // made by another page during asynchronous image staging.
     rollbackBaseline = latestSettings
-    const archiveSettings = archiveTouched ? { ...latestSettings, [CHAT_ARCHIVE_KEY]: serializeChatArchive(await readChatArchive(undefined, owner.signal)) } : latestSettings
-    check()
+    const archiveSettings = archive === null ? latestSettings : { ...latestSettings, [CHAT_ARCHIVE_KEY]: archive }
     let nextSettings = prepareBackupSettings(archiveSettings, imported.data.settings, replace)
     if (!replace) {
       // A merge never overwrites a key changed by another writer while images were staged.
