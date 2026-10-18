@@ -15,8 +15,10 @@ export async function withChatArchiveMutation<T>(work: () => Promise<T>): Promis
 /** IndexedDB is authoritative once committed. The legacy record is only a migration
  * source; never merge it back after a clear. Backups still use the portable v1 JSON.
  */
-export async function readChatArchive(characterIds = listCompanionCharacterIds()): Promise<ChatArchive> {
+export async function readChatArchive(characterIds = listCompanionCharacterIds(), signal?: AbortSignal): Promise<ChatArchive> {
+  signal?.throwIfAborted()
   const stored = profileRuntimeActive() ? await readProfileChatArchive() : await kvGet(CHAT_ARCHIVE_KV_KEY)
+  signal?.throwIfAborted()
   if (stored !== null && (typeof stored !== 'object' || Array.isArray(stored))) throw new Error('聊天归档格式异常，原件已保留。')
   if (stored !== null && !Object.hasOwn(stored, 'archived')) throw new Error('聊天归档结构不完整，原件已保留。')
   if (stored !== null) return normalizeChatArchive(stored, characterIds)

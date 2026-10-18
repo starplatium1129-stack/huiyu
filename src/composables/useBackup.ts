@@ -41,14 +41,28 @@ function readLastBackupAt(): number {
 }
 
 
-async function collectSettings(): Promise<Record<string, string>> {
+async function collectSettings(check: () => void, signal: AbortSignal): Promise<Record<string, string>> {
   // 活键统一登记在 src/utils/storageKeys.ts：精确键 + 训练动态前缀。
-  return { ...collectLiveLocalSettings(localStorage), [CHAT_ARCHIVE_KEY]: serializeChatArchive(await withChatArchiveMutation(() => readChatArchive())) }
+  check()
+  const settings = collectLiveLocalSettings(localStorage)
+  const archive = await withChatArchiveMutation(() => { check(); return readChatArchive(undefined, signal) })
+  check()
+  return { ...settings, [CHAT_ARCHIVE_KEY]: serializeChatArchive(archive) }
 }
 
 function errorMessage(error: unknown, fallback: string) {
   if (error instanceof Error && error.message) return error.message
   return String(error ?? '').trim() || fallback
+}
+
+function captureExportSource(controller: AbortController, desktop: boolean) {
+  const repository = artworkRepository, session = imageMediaSession()
+  const checkOwner = () => {
+    if (repository !== artworkRepository || session !== imageMediaSession() || desktop !== workspaceBackupActive())
+      controller.abort(new Error('导出来源连接已变化，已停止后续导出；请回到原资料后重试'))
+  }
+  const release = onDesktopRuntime(checkOwner)
+  return { repository, release, check: () => { checkOwner(); controller.signal.throwIfAborted() } }
 }
 
 export function useBackup(onFlash: (msg: string) => void = () => {}) {
@@ -103,6 +117,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     if (busy.value || disposed) return
     busy.value = true
     onFlash('正在整理备份…')
+    let source: ReturnType<typeof captureExportSource> | undefined
     try {
       const controller = new AbortController()
       exportController = controller
@@ -120,24 +135,33 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
           + (resumed ? '提醒沿用原操作发起时间，不能据此确认快照时刻；如需包含最新修改，请再次新建备份。' : ''))
         return
       }
+      source = captureExportSource(controller, false)
+      const { check } = source
+      check()
       exportProgress.value = { completed: 0, total: 0 }
       const { buildBackupBlob } = await import('@/utils/backupExport')
-      controller.signal.throwIfAborted()
+      check()
       const snapshot = await withArtworkMutation(async () => {
+        check()
         const [library, images] = await Promise.all([readWebBackupLibrary(), readWebBackupImages()])
-        return { ...library, images, settings: await collectSettings() }
+        check()
+        const settings = await collectSettings(check, controller.signal)
+        check()
+        return { ...library, images, settings }
       })
+      check()
       const { blob, summary: info } = await buildBackupBlob({
         appVersion, createdAt: new Date().toISOString(), history: snapshot.history,
         projects: snapshot.projects, settings: snapshot.settings,
       }, snapshot.images, {
         signal: controller.signal,
-        onProgress: progress => { exportProgress.value = progress },
+        onProgress: progress => { if (!controller.signal.aborted) exportProgress.value = progress },
       })
       // Only a complete, importable backup may cause timestamp/dead-key updates.
-      if (controller.signal.aborted) throw new DOMException('已取消备份', 'AbortError')
+      check()
       const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
       downloadBlob(blob, `aics-backup-${stamp}.json`)
+      check()
       const removedDead = cleanDeadLocalKeys(localStorage)
       lastBackupAt.value = Date.now()
       try { localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value)) } catch {}
@@ -145,12 +169,16 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         + (removedDead ? ` · 已清理 ${removedDead} 个废弃存储键` : ''))
     } catch (e) {
       if (disposed) return
-      if (exportController?.signal.aborted) onFlash('已取消备份，未生成文件，原有作品未改动')
+      if (exportController?.signal.aborted) {
+        const reason: unknown = exportController.signal.reason
+        onFlash(reason instanceof Error && reason.name !== 'AbortError' ? reason.message : '已取消备份，未生成文件，原有作品未改动')
+      }
       else {
         console.error('backup export failed', e)
         onFlash('备份失败：' + errorMessage(e, '请检查浏览器存储'))
       }
     } finally {
+      source?.release()
       exportController = null
       exportProgress.value = null
       busy.value = false
@@ -168,13 +196,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     imageExportController = controller
     imageExportProgress.value = { completed: 0, total: 0 }
     const desktop = desktopActive.value
-    const repository = artworkRepository, session = imageMediaSession()
-    const checkOwner = () => {
-      if (repository !== artworkRepository || session !== imageMediaSession() || desktop !== workspaceBackupActive())
-        controller.abort(new Error('作品库连接已变化，已停止后续导出'))
-    }
-    const stopRuntime = onDesktopRuntime(checkOwner)
-    const check = () => { checkOwner(); controller.signal.throwIfAborted() }
+    const source = captureExportSource(controller, desktop), { repository, check } = source
     let saved = 0
     let failed = 0
     let completed = 0
@@ -247,7 +269,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         }
       }
     } finally {
-      stopRuntime()
+      source.release()
       imageExportController = null
       imageExportProgress.value = null
       busy.value = false
