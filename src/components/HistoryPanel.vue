@@ -3,7 +3,7 @@
     <div class="history-head">
       <h3 class="panel-title">最近作品</h3>
       <span v-if="selectedEntries.length" class="history-batch" role="group" aria-label="已选作品操作">
-        <button class="btn btn-primary btn-sm" type="button" @click="$emit('to-shots-batch', selectedEntries)">
+        <button class="btn btn-primary btn-sm" type="button" :disabled="transferBusy" :aria-busy="transferBusy" @click="$emit('to-shots-batch', selectedEntries)">
           <ArchiveIcon name="gallery" />加入分镜 ({{ selectedEntries.length }})
         </button>
         <button class="btn btn-quiet btn-sm" type="button" @click="selectedSet.clear()">取消选择</button>
@@ -39,7 +39,7 @@
             <div class="history-actions" role="group" aria-label="历史操作">
               <button class="btn btn-ghost btn-sm" type="button" @click="$emit('resume', item)">继续</button>
               <StudioTooltip content="把这张图加入分镜短片待带入列表">
-              <button class="btn btn-quiet btn-icon btn-sm" type="button" aria-label="加入分镜" @click="$emit('to-shots', item)"><ArchiveIcon name="gallery" /></button>
+              <button class="btn btn-quiet btn-icon btn-sm" type="button" aria-label="加入分镜" :disabled="transferBusy" :aria-busy="transferBusy" @click="$emit('to-shots', item)"><ArchiveIcon name="gallery" /></button>
               </StudioTooltip>
               <StudioTooltip content="复制配方"><button class="btn btn-quiet btn-icon btn-sm" type="button" aria-label="复制配方" @click="$emit('duplicate', item)"><ArchiveIcon name="copy" /></button></StudioTooltip>
               <StudioTooltip content="删除历史"><button class="btn btn-danger btn-icon btn-sm" type="button" aria-label="删除历史" @click="$emit('delete', item)"><ArchiveIcon name="close" /></button></StudioTooltip>
@@ -65,7 +65,7 @@ import { useSceneStore } from '@/stores/sceneStore'
 
 const sceneStore = useSceneStore()
 
-const props = defineProps<{ history: ArtworkRecord[]; active: boolean }>()
+const props = defineProps<{ history: ArtworkRecord[]; active: boolean; transferBusy: boolean }>()
 defineEmits<{
   resume: [entry: ArtworkRecord]
   duplicate: [entry: ArtworkRecord]

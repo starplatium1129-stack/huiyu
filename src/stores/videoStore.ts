@@ -2,7 +2,6 @@ import { profileDraftStorage as sessionStorage } from '../platform/web/profileSt
 import { ref } from 'vue'
 import type { FirstFrameRequest } from '@/types/firstFrameRequest'
 import { defineStore } from 'pinia'
-import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import {
   VIDEO_CONTEXT_KEY,
   VIDEO_DRAFT_KEY,
@@ -37,22 +36,6 @@ export interface VideoCtxPayload {
    */
   outfitId?: string | null
   sceneId: string | null
-}
-
-export interface VideoBridgeTarget {
-  /** 当前显示结果 url（sd 引擎用于 fetch 原图 blob）。 */
-  displayUrl: string
-  /** anima/krea 结果 blob（非 sd 引擎直用；null 时走 fetch displayUrl）。 */
-  animaBlob: Blob | null
-  prompt: string
-  story: string
-  blueprintId: string | null
-  characterId: string
-  /** 出图时冻结的服装形态 id（F3 快照随行）。 */
-  outfitId?: string | null
-  sceneId: string | null
-  flash: (message: string) => void
-  push: (path: string) => Promise<unknown> | void
 }
 
 /** 剧本模式一幕 → 分镜镜头（无图纯文本；首帧走分镜的「一键首帧」或手动上传）。 */
@@ -344,42 +327,3 @@ export const useVideoStore = defineStore('videoStudio', () => {
     clearShotsBatch,
   }
 })
-
-// ── IndexedDB 相关桥接（blob 处理不属于 store，保留在组合层） ──────────────
-
-/** 图片入 IndexedDB + 组装跨页上下文（不导航；单图/多图共用）。 */
-export async function prepareVideoCtx(target: VideoBridgeTarget, repository: ArtworkRepository = artworkRepository): Promise<VideoCtxPayload | null> {
-  try {
-    let blob: Blob
-    if (target.animaBlob) {
-      blob = target.animaBlob
-    } else {
-      const response = await fetch(target.displayUrl, { cache: 'no-store' })
-      const contentType = response.headers.get('content-type') || ''
-      if (!response.ok || !contentType.startsWith('image/')) {
-        target.flash('成片响应无效，请重新生成')
-        return null
-      }
-      blob = await response.blob()
-    }
-    if (!blob.size) {
-      target.flash('成片数据已失效，请重新生成')
-      return null
-    }
-    const imageId = await repository.putImage(blob)
-    return {
-      imageId,
-      prompt: target.prompt,
-      story: target.story,
-      blueprintId: target.blueprintId,
-      characterId: target.characterId,
-      outfitId: target.outfitId ?? null,
-      sceneId: target.sceneId,
-    }
-  } catch (error) {
-    target.flash('成片处理失败')
-    console.warn(error)
-    return null
-  }
-}
-import { runtimeFetch as fetch } from '@/platform/runtimeUrl'

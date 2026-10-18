@@ -154,7 +154,7 @@
         </template>
         <template #history="{ active }">
         <AsyncPanel :loader="loadHistoryPanel" label="作品历史" v-slot="{ component }"><component :is="component" class="advanced-decision"
-          :history="pb.history" :active="active"
+          :history="pb.history" :active="active" :transfer-busy="transferBusy"
           @resume="resumeHistory"
           @duplicate="duplicateHistory"
           @delete="deleteHistory"
@@ -185,6 +185,7 @@
                 :inpaint-original-url="inpaintOriginalUrl"
                 :inpaint-compare-active="inpaintCompareActive"
                 :shots-pending="shotsPending"
+                :transfer-busy="transferBusy"
                 @interrogateCurrent="stagePanel.interrogateCurrentImage()"
                 @interrogateUpload="stagePanel.triggerInterrogatePick()"
                 @interrogateClipboard="stagePanel.interrogateClipboardImage()"
@@ -304,7 +305,7 @@ inpaintOpen,
 inspector,
 materialDrawer,
 upscaleCurrentResult,
-goToVideo,
+goToVideo, transferBusy,
 addToShots,
 goToShots,
 saveResult,

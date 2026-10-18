@@ -340,7 +340,8 @@ export function usePromptWorkspace() {
     }
     /** 手动「保存快照」：实现已下沉 useTempResult.saveCurrentResult（含入册后释放临时缓冲）。 */
     // ── 出视频 / 分镜短片（编排已下沉 usePromptVideoBridge）──────────────────
-    const { goToVideo: goVideoBridge, shotsPending, refreshShotsPending, addToShots, goToShots: goShotsNav, handleHistoryToShots, handleHistoryToShotsBatch } = usePromptVideoBridge({
+    const { goToVideo: goVideoBridge, shotsPending, transferBusy, refreshShotsPending, addToShots, goToShots: goShotsNav, handleHistoryToShots, handleHistoryToShotsBatch } = usePromptVideoBridge({
+        getRestoreOwner,
         displayResultUrl,
         drawEngine,
         livePrompt,
@@ -550,7 +551,7 @@ export function usePromptWorkspace() {
         selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,
         handleHistoryToShots, handleHistoryToShotsBatch, generationBusy, generationError, generationStopped, generationStatusText,
         generationProgress, generationPresentation, animaState, drawEngine, inpaintOriginalUrl, inpaintCompareActive,
-        shotsPending, prevResult, resultArchived, savingResult, resultTemporary, hasStashedResult,
+        shotsPending, transferBusy, prevResult, resultArchived, savingResult, resultTemporary, hasStashedResult,
         callGenerate, inpaintOpen, inspector, materialDrawer, upscaleCurrentResult, goToVideo,
         addToShots, goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed,
         handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,

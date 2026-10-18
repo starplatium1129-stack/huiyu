@@ -51,13 +51,13 @@
           <button class="btn btn-ghost" type="button" :disabled="generationBusy" @click="$emit('upscale')"><ArchiveIcon name="spark" /><span>高清放大 2x</span></button>
         </StudioTooltip>
         <StudioTooltip v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')" anchor :content="generationBusy ? BUSY_HINT : '将当前成片作为首帧，前往故事短片生成动画'">
-          <button class="btn btn-ghost" type="button" :disabled="generationBusy" @click="$emit('goVideo')"><ArchiveIcon name="play" /><span>生成短片</span></button>
+          <button class="btn btn-ghost" type="button" :disabled="generationBusy || transferBusy" :aria-busy="transferBusy" @click="$emit('goVideo')"><ArchiveIcon name="play" /><span>生成短片</span></button>
         </StudioTooltip>
         <StudioTooltip v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')" anchor :content="generationBusy ? BUSY_HINT : '把当前成片作为分镜首帧，攒齐后整批生成短片'">
-          <button class="btn btn-ghost" type="button" :disabled="generationBusy" @click="$emit('addToShots')"><ArchiveIcon name="gallery" /><span>加入分镜</span></button>
+          <button class="btn btn-ghost" type="button" :disabled="generationBusy || transferBusy" :aria-busy="transferBusy" @click="$emit('addToShots')"><ArchiveIcon name="gallery" /><span>加入分镜</span></button>
         </StudioTooltip>
         <StudioTooltip v-if="shotsPending > 0" content="到视频页「分镜短片」，生成已加入的镜头">
-          <button class="btn btn-ghost" type="button" @click="$emit('goShots')"><ArchiveIcon name="play" /><span>去分镜短片（{{ shotsPending }}）</span></button>
+          <button class="btn btn-ghost" type="button" :disabled="transferBusy" @click="$emit('goShots')"><ArchiveIcon name="play" /><span>去分镜短片（{{ shotsPending }}）</span></button>
         </StudioTooltip>
       </div>
     </details>
@@ -82,6 +82,7 @@ defineProps<{
   inpaintOriginalUrl: string | null
   inpaintCompareActive: boolean
   shotsPending: number
+  transferBusy: boolean
 }>()
 const readiness = useInterrogateReadiness()
 function onReferenceToggle(event: Event) {
