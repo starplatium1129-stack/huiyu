@@ -314,7 +314,7 @@ export function useCharacterRoomSession() {
   function switchCharacter(char: string) {
     const nextCharacter = getCompanionCharacterConfig(char)
     if (!nextCharacter || char === activeChar.value) return
-    if (busy.value) abortCurrentRequest(true)
+    if (busy.value) abortCurrentRequest(true, false)
     storage.setDraft(activeChar.value, inputText.value)
     voice.stop({ preserveMessageAudio: true, silent: true })
     storage.setActive(char)

@@ -2,15 +2,16 @@ import { ref } from 'vue'
 import { apiClient, ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, getRuntimeTaskByKey, cancelRuntimeTaskKey, runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
-import { getDesktopRuntime } from '@/platform/desktop/runtime'
 import { refreshProfileStorage } from '@/platform/web/profileStorage'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
-import { runtimeRequestKey } from '@/stores/runtimeTaskState'
+import { assertImageRequestOwner, clearImageRequestDraft, newImageRequestDraft, readImageRequestDraft, writeImageRequestDraft, type ImageRequestDraft } from '@/storage/imageRequestDraft'
+import { COMPANION_IMAGE_REQUEST_KEY } from '@/utils/storageKeys'
+import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING, settingsRepository } from '@/storage/settingsRepository'
 import { readDrawingSettings } from '@/storage/drawingSettings'
 import { initialAnimaState } from '@/composables/generation/useAnimaSession'
-import { animaRequestPayload, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, type AnimaStatusResponse } from '@/composables/generation/animaSessionContract'
+import { animaRequestPayload, closestSupportedSize, ANIMA_LORA_BY_CHARACTER, type AnimaStatusResponse, type AnimaSubmission } from '@/composables/generation/animaSessionContract'
 import { buildAnimaRequest } from '@/composables/generation/buildAnimaRequest'
 import { nativeAnimaRequestBlocker } from '@/composables/generation/nativeAnimaCapabilities'
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly'
@@ -27,15 +28,9 @@ export interface CompanionImageResult {
   taskId: string; resultPath: string; output: string; character: string; description: string
   imageId?: string; artworkId?: string
 }
-interface Attempt {
-  key: string; kind: 'anima' | 'creative'; input: Record<string, unknown>; context: Record<string, unknown>
-  submitted: boolean
-}
 let busy = false
-// Unknown admission retains the original prepared recipe and identity, even when settings change later.
-const pending = new Map<string, Attempt>()
 
-async function prepare(args: CompanionImageArgs, options: { referenceImage?: string | Readonly<MediaSource>; signal: AbortSignal; report?: (message: string) => void }): Promise<Attempt> {
+async function prepare(args: CompanionImageArgs, options: { referenceImage?: string | Readonly<MediaSource>; signal: AbortSignal; report?: (message: string) => void }): Promise<AnimaSubmission> {
   const { signal, report } = options
   const pb = usePromptBuilderStore()
   report?.('正在读取工作台的绘图设置…')
@@ -88,96 +83,120 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
     const blocked = nativeAnimaRequestBlocker(state.models, request)
     if (blocked) throw new Error(blocked)
   }
-  const kind = family === 'krea2' ? 'creative' : 'anima'
-  const input = animaRequestPayload(request) as Record<string, unknown>
-  return { kind, input, key: runtimeRequestKey(kind, input), context: { ...captureResultContext(draft), source: 'companion-chat' }, submitted: false }
+  const context = { ...captureResultContext(draft), source: 'companion-chat' }
+  return { family, request, context }
 }
 
-/** Direct image creation and reference recreation share the same compiler and durable task/archive path. */
+/** Chat retains the request until its image message has been durably saved. */
+export async function acknowledgeCompanionImage(taskId: string) {
+  const draft = readImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY)
+  if (draft?.resultId !== taskId) return
+  assertImageRequestOwner(draft, hasRuntimeTasks())
+  await clearImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+}
+
+/** Both chat surfaces resume the frozen request before accepting a new drawing intent. */
 export async function generateCompanionImage(args: CompanionImageArgs, options: {
-  referenceImage?: string | Readonly<MediaSource>; signal: AbortSignal; report?: (message: string) => void
+  character: string; referenceImage?: () => Promise<string | Readonly<MediaSource> | undefined>
+  signal: AbortSignal; report?: (message: string) => void
 }): Promise<CompanionImageResult> {
-  validateCompanionImageArgs(args, Boolean(options.referenceImage))
   if (!isLocalStudioHost()) throw new Error('桌宠绘图工具仅限本机直连使用')
   if (!hasRuntimeTasks()) throw new Error('请在桌面客户端启用私人任务工作区后使用桌宠绘图')
-  if (typeof options.referenceImage === 'string' && options.referenceImage && !/^data:image\/(png|jpeg|webp);base64,/.test(options.referenceImage)) throw new Error('参考图片引用无效，请重新发送图片')
   if (busy) throw new Error('桌宠正在处理上一张图片，请等待完成或先停止')
   options.signal.throwIfAborted()
   busy = true
   const signal = AbortSignal.any([options.signal, AbortSignal.timeout(10 * 60 * 1000)])
-  const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId || ''
-  const checkWorkspace = () => {
-    if (getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId !== workspace) throw new Error('工作区已改变，请重新发起绘图；原任务仍保留在原工作区')
-    if (options.referenceImage && typeof options.referenceImage !== 'string') assertWorkspaceMediaAuthority(options.referenceImage.authority)
+  let draft: ImageRequestDraft | null = null, cancellation: Promise<unknown> | null = null
+  let preparingOwner: TempResultOwner | undefined, resumed = false
+  let labels = [options.character, args.character, args.description]
+  const checkOwner = () => {
+    if (draft) assertImageRequestOwner(draft, hasRuntimeTasks())
+    else if (!preparingOwner || !sameTempResultOwner(preparingOwner) || !hasRuntimeTasks()) throw new Error('绘图准备所属工作区已变化，请回到原连接')
   }
-  let signature = '', attempt: Attempt | undefined, cancel: Promise<unknown> | null = null
+  const forget = async () => { if (draft) await clearImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft) }
   const requestCancel = () => {
-    if (attempt?.submitted && !cancel) {
-      cancel = Promise.resolve().then(() => { checkWorkspace(); return cancelRuntimeTaskKey(attempt!.key) })
-      void cancel.catch(() => {}) // The owning catch below reports an unknown cancellation; the event listener cannot await it.
-    }
+    // Leaving, switching characters and observation timeouts do not cancel execution.
+    if (options.signal.reason !== 'user-cancel' || !draft?.submitted || cancellation) return
+    cancellation = Promise.resolve().then(async () => {
+      checkOwner()
+      const task = await cancelRuntimeTaskKey(draft!.key)
+      if (!task || task.status === 'cancelled' && task.upstreamSettled && task.recoveryState === 'normal') await forget()
+    })
+    void cancellation.catch(() => {})
   }
   signal.addEventListener('abort', requestCancel, { once: true })
   try {
-    const source = options.referenceImage || ''
-    checkWorkspace()
-    const digest = typeof source === 'string' && source ? await crypto.subtle.digest('SHA-256', new TextEncoder().encode(source)) : null
-    const referenceKey = typeof source !== 'string' ? JSON.stringify(['workspace-media-v1', source.sha256, source.mime, source.bytes])
-      : digest ? Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('') : ''
-    signature = JSON.stringify([workspace, args.character.trim(), args.description.trim(), args.visualDescription?.trim() || '',
-      args.outfit?.trim() || 'default', args.mature === true, referenceKey])
-    attempt = pending.get(signature)
-    if (!attempt) { attempt = await prepare(args, { ...options, signal }); pending.set(signature, attempt) }
-    signal.throwIfAborted()
-    checkWorkspace()
+    preparingOwner = tempResultOwner()
+    draft = readImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY)
+    if (draft) {
+      resumed = true
+      checkOwner()
+      const saved: unknown = JSON.parse(draft.signature || 'null')
+      if (!Array.isArray(saved) || saved.length !== 3 || !saved.every(value => typeof value === 'string')) throw new Error('原聊天图片身份无法读取，已保留记录')
+      labels = saved
+      if (labels[0] !== options.character) throw new Error('上一张图片仍待核对，请回到原角色对话继续绘图；不会另起任务')
+      options.report?.('正在恢复上一张图片；本次新要求尚未提交…')
+    } else {
+      validateCompanionImageArgs(args, Boolean(options.referenceImage))
+      const referenceImage = await options.referenceImage?.()
+      signal.throwIfAborted()
+      if (typeof referenceImage === 'string' && !/^data:image\/(png|jpeg|webp);base64,/.test(referenceImage)) throw new Error('参考图片引用无效，请重新发送图片')
+      if (referenceImage && typeof referenceImage !== 'string') assertWorkspaceMediaAuthority(referenceImage.authority)
+      const submission = await prepare(args, { ...options, signal, referenceImage })
+      signal.throwIfAborted(); checkOwner()
+      draft = newImageRequestDraft(submission, true)
+      draft.signature = JSON.stringify(labels)
+      await writeImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+    }
+    signal.throwIfAborted(); checkOwner()
     let task: TaskRecord
-    if (attempt.submitted) {
-      options.report?.('正在核对上一轮的同一绘图任务…')
-      const existing = await getRuntimeTaskByKey(attempt.key, signal)
-      if (!existing) throw new Error('上一轮接收状态尚未确认，请先在任务中心核对；不会重复生成')
+    if (draft.submitted) {
+      const existing = await getRuntimeTaskByKey(draft.key, signal)
+      if (!existing) throw new Error('原请求接收状态尚未确认，请先在任务中心核对；不会重复生成')
       task = existing
     } else {
+      draft.submitted = true
+      await writeImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
+      signal.throwIfAborted(); checkOwner()
       options.report?.('正在提交绘图任务…')
-      try { task = await submitRuntimeTask(attempt.kind, attempt.input, attempt.key, attempt.context, { signal, onSubmitting: () => { attempt!.submitted = true } }) }
-      catch (error) {
-        // Only a definitive admission rejection permits replacing this attempt, never a failed status/archive read.
-        if (!signal.aborted && error instanceof ApiClientError && error.kind === 'http' && error.status < 500) pending.delete(signature)
+      try {
+        task = await submitRuntimeTask(draft.submission.family === 'krea2' ? 'creative' : 'anima',
+          animaRequestPayload(draft.submission.request), draft.key, draft.submission.context as Record<string, unknown>, { signal, onSubmitting: checkOwner })
+      } catch (error) {
+        if (!signal.aborted && error instanceof ApiClientError && error.kind === 'http' && error.status < 500) await forget()
         throw error
       }
     }
-    signal.throwIfAborted()
     const done = await waitForRuntimeTask(task.taskId, signal, current => options.report?.(taskMessage(current)))
-    signal.throwIfAborted()
+    signal.throwIfAborted(); checkOwner()
+    draft.resultId = done.taskId
+    await writeImageRequestDraft(COMPANION_IMAGE_REQUEST_KEY, draft)
     options.report?.('图片已生成，正在保存到作品册…')
-    checkWorkspace()
     let imageId = done.resultRefs.find(output => output.index === 0)?.alias
     let artworkId: string | undefined
     try {
       const artwork = await archiveTaskResult(done.taskId, 0)
       imageId = artwork.image_id; artworkId = String(artwork.id)
     } catch {
-      signal.throwIfAborted(); checkWorkspace()
-      options.report?.('图片已生成，作品册保存尚未确认；先将原任务结果送回对话…')
+      signal.throwIfAborted(); checkOwner()
+      options.report?.('作品册保存尚未确认；先将原任务结果送回对话…')
     }
-    pending.delete(signature)
-    signal.throwIfAborted()
-    checkWorkspace()
+    signal.throwIfAborted(); checkOwner()
     return { taskId: done.taskId, resultPath: runtimeResultPath(done), imageId, artworkId,
-      character: args.character, description: args.description,
-      output: artworkId ? options.referenceImage ? '已按参考图的服装、姿势与背景生成新图，并保存到作品册。' : '图片已生成，并保存到作品册。'
-        : '图片已生成，原图已送回对话；作品册保存尚未确认，可在任务中心重试入册。' }
+      character: labels[1], description: labels[2],
+      output: (resumed ? '已找回上次图片，本次新要求尚未提交。' : '')
+        + (artworkId ? '图片已生成，并保存到作品册。' : '图片已生成，原图已送回对话；作品册保存尚未确认，可在任务中心重试入册。') }
   } catch (error) {
     if (signal.aborted) {
       requestCancel()
-      if (cancel) {
-        try { await cancel }
-        catch { throw new Error('已停止等待，但生成任务的取消状态尚未确认，请到任务中心核对原任务') }
+      if (draft && !draft.submitted) await forget()
+      if (cancellation) {
+        try { await cancellation }
+        catch { throw new Error('已停止等待，但取消状态尚未确认，请到任务中心核对原任务') }
       }
-      if (!attempt?.submitted) pending.delete(signature)
-      if (!options.signal.aborted) throw new Error('桌宠绘图等待超时，已请求取消原任务，请到任务中心核对')
-      throw new DOMException('桌宠绘图已取消', 'AbortError')
+      throw new DOMException('已停止查看，原图片请求身份仍会在下次绘图时核对', 'AbortError')
     }
-    if (!attempt?.submitted || error instanceof AcceptedTaskTerminalError) pending.delete(signature)
+    if (error instanceof AcceptedTaskTerminalError) await forget()
     throw error
   } finally {
     signal.removeEventListener('abort', requestCancel)

@@ -2,6 +2,17 @@ import { executeCompanionTool, type CompanionToolResult } from '@/api/companionT
 import type { CompanionChatImage } from '@/types/companionDrawing'
 import { companionImageSource } from './companionChatImages'
 import type { ChatSearchConnection } from '@/config/chatSearch'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
+
+/** Both image consumers hand off only after their chat message is durable. */
+export async function retainCompanionImageMessage(storage: { save(): boolean | undefined }, taskId?: string) {
+  if (!storage.save()) throw new Error('图片对话尚未保存，原请求身份已保留')
+  await flushProfileWrites()
+  if (taskId) {
+    const { acknowledgeCompanionImage } = await import('./companionImageGeneration')
+    await acknowledgeCompanionImage(taskId)
+  }
+}
 
 export interface CompanionToolContext {
   character: string
@@ -37,14 +48,16 @@ export async function executeCompanionChatTool(name: string, args: Record<string
   const key = `${name}:${JSON.stringify(input)}`
   const completed = completedDrawings?.get(key)
   if (completed) return completed
-  if (reference && !context.image && !context.imageUrl) throw new Error('请先发送一张图片，再让我反推并生成。')
-  if (reference) context.report('正在读取参考图…')
   const referenceImage = reference
-    ? context.image ? await companionImageSource(context.image, context.signal) : context.imageUrl
+    ? async () => {
+      if (!context.image && !context.imageUrl) throw new Error('请先发送一张图片，再让我反推并生成。')
+      context.report('正在读取参考图…')
+      return context.image ? await companionImageSource(context.image, context.signal) : context.imageUrl
+    }
     : undefined
   const { generateCompanionImage } = await import('./companionImageGeneration')
   context.signal.throwIfAborted()
-  const result = await generateCompanionImage(input, { signal: context.signal, report: context.report, referenceImage })
+  const result = await generateCompanionImage(input, { character: context.character, signal: context.signal, report: context.report, referenceImage })
   context.signal.throwIfAborted()
   const receipt: CompanionToolResult = { ok: true, output: result.output, image: {
     path: result.resultPath, name: result.description.slice(0, 240) || '生成图片', taskId: result.taskId,

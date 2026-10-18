@@ -96,9 +96,9 @@ export function useChatConversation(options: ChatConversationOptions) {
   const draft = createChatDraftPersistence((character, value) => options.storage.setDraft(character, value))
   const releaseMaintenance = registerMaintenanceParticipant(() => { if (options.busy.value) throw new Error('CHAT_BUSY') })
 
-  function abortCurrentRequest(silent = false) {
+  function abortCurrentRequest(silent = false, cancelImage = true) {
     if (!activeRequest) return false
-    activeRequest.abort()
+    activeRequest.abort(cancelImage ? 'user-cancel' : undefined)
     activeRequest = null
     options.voice.stop({ preserveMessageAudio: true, silent: true })
     if (!silent) options.onError('已停止本次回复。', 'info', 2500)
@@ -346,12 +346,13 @@ export function useChatConversation(options: ChatConversationOptions) {
 
     try {
       if (sendOptions.action === 'generate-from-image') {
-        const { executeCompanionChatTool } = await import('./companionChatTools')
+        const { executeCompanionChatTool, retainCompanionImageMessage } = await import('./companionChatTools')
         controller.signal.throwIfAborted()
         const result = await executeCompanionChatTool('generate_image_from_reference', { character: turn.characterId, description: text }, toolContext)
         controller.signal.throwIfAborted()
         turn.assistant.content = result.output
         if (result.image) turn.assistant.images = [{ ...result.image }]
+        if (result.image) await retainCompanionImageMessage(options.storage, result.image.taskId)
         replyAnnouncement.value = result.output
         options.voice.append(result.output)
         options.voice.finishTurn()
@@ -446,7 +447,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             ...(call.thoughtSignature ? { extra_content: { google: { thought_signature: call.thoughtSignature } } } : {}),
           })),
         })
-        const { executeSerializedCompanionChatTool } = await import('./companionChatTools')
+        const { executeSerializedCompanionChatTool, retainCompanionImageMessage } = await import('./companionChatTools')
         for (const call of toolCalls) {
           controller.signal.throwIfAborted()
           report(call.name === 'search_web' ? '正在联网检索…' : call.name.startsWith('generate_') ? '正在准备图片…' : '正在处理你的请求…')
@@ -464,7 +465,7 @@ export function useChatConversation(options: ChatConversationOptions) {
               turn.assistant.images = [...(turn.assistant.images || []), image].slice(-4)
               if (!turn.assistant.content.trim()) turn.assistant.content = result.output
             }
-            options.storage.save()
+            if (image) await retainCompanionImageMessage(options.storage, image.taskId)
           }
           roundMessages.push({ role: 'tool', tool_call_id: call.id, content: result.output.slice(0, 60000) })
           // 图片结果继续使用本次选定的 API 进行视觉理解。
@@ -547,7 +548,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   function destroy() {
     draft.dispose(); releaseMaintenance()
     options.storage.setDraft(options.activeChar.value, inputText.value)
-    abortCurrentRequest(true)
+    abortCurrentRequest(true, false)
   }
 
   return {
