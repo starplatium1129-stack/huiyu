@@ -48,11 +48,7 @@ impl ControlService {
         {
             files.remove(0);
         }
-        let permit = self
-            .setup_verify_lock
-            .clone()
-            .try_acquire_owned()
-            .map_err(|_| ApiError::new(409, "SETUP_BUSY", "已有准备、下载或校验正在进行"))?;
+        let permit = self.setup_permit()?;
         let operation = self.begin(
             "prepare-environment",
             &["正在校验运行包", "正在解压与准备依赖", "正在确认环境"],
@@ -62,9 +58,8 @@ impl ControlService {
         *self.environment_cancel.lock().unwrap() = Some(cancel.clone());
         let service = self.clone();
         self.tasks.spawn(async move {
-            let _permit = permit;
             let work = service
-                .install_environment(&environment, &files, &operation, &cancel)
+                .install_environment(&environment, &files, &operation, &cancel, &permit)
                 .await;
             service.environment_cancel.lock().unwrap().take();
             service.finish(&operation, work);
@@ -161,10 +156,11 @@ impl ControlService {
         ids: &[&str],
         operation: &Value,
         cancel: &CancellationToken,
+        permit: &Arc<tokio::sync::OwnedSemaphorePermit>,
     ) -> Result<()> {
         #[cfg(not(windows))]
         {
-            let _ = (environment, ids, operation, cancel);
+            let _ = (environment, ids, operation, cancel, permit);
             Err(ApiError::new(
                 400,
                 "WINDOWS_REQUIRED",
@@ -240,7 +236,9 @@ impl ControlService {
                     .arg("-ArchiveSha256")
                     .arg(model_file(&format!("runtime-{environment}"))?.sha256);
             }
-            let process = self.processes.spawn(&mut command)?;
+            // The installer may still write its shared staging directory after
+            // cancellation. Retirement keeps admission until the child is reaped.
+            let process = self.processes.spawn_with_permit(&mut command, permit.clone(), None)?;
             let (stdout, stderr) = process.take_output();
             let output_token = cancel.child_token();
             let (out, err) = match tokio::time::timeout(Duration::from_secs(3600), async {
