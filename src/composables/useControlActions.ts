@@ -59,6 +59,16 @@ export function useControlActions(
     }
   }
 
+  async function saveConfigDraft() {
+    const payload = buildConfigPayload()
+    const snapshot = status.captureConfigEdits()
+    const result = await controlApi.saveConfig(payload)
+    const hasNewerEdits = status.acknowledgeConfigEdits(snapshot)
+    // Invalidate pre-acknowledgement reads before yielding to newer edits or polls.
+    status.pollStatus(true)
+    return { result, hasNewerEdits }
+  }
+
   const savingConfig = ref(false)
   const configSaved = ref(false)
   async function saveConfig(event?: Event) {
@@ -68,10 +78,10 @@ export function useControlActions(
     configSaved.value = false
     status.feedbackText.value = '正在保存并重新检测…'
     try {
-      const result = await controlApi.saveConfig(buildConfigPayload())
-      configSaved.value = true
-      showToast(result?.restartRequired ? (result.message || '配置已保存，重新启动应用后生效') : '生成服务配置已保存')
-      status.pollStatus(true)
+      const { result, hasNewerEdits } = await saveConfigDraft()
+      configSaved.value = !hasNewerEdits
+      const message = result?.restartRequired ? (result.message || '配置已保存，重新启动应用后生效') : '生成服务配置已保存'
+      showToast(hasNewerEdits ? message + '；后续修改尚未保存' : message)
     } catch (e) { showToast(errorMessage(e, '保存失败'), true); status.pollStatus() }
     finally { savingConfig.value = false }
   }
@@ -133,9 +143,10 @@ export function useControlActions(
     status.mainBtnLabel.value = '正在启用公网分享…'
     status.feedbackText.value = '正在保存并重新检测…'
     try {
-      const result = await controlApi.saveConfig(buildConfigPayload())
-      if (result?.restartRequired) { showToast(result.message || '配置已保存，请重新启动应用后再启用公网分享'); return }
-      showToast('生成服务配置已保存')
+      const { result, hasNewerEdits } = await saveConfigDraft()
+      const draftNote = hasNewerEdits ? '；后续修改尚未保存' : ''
+      if (result?.restartRequired) { showToast((result.message || '配置已保存，请重新启动应用后再启用公网分享') + draftNote); return }
+      showToast('生成服务配置已保存' + draftNote)
       await controlApi.start(tunnelEnabled.value)
       showToast('已请求启动公网分享，连接成功后会显示链接')
       status.startPolling()

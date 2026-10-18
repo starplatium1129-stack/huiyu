@@ -1,6 +1,5 @@
 @reference "./tailwind.css";
 .character-hero { @apply tw:relative tw:overflow-hidden tw:grid; grid-template-columns:320px 1fr; @apply tw:gap-s-6 tw:p-s-6; }
-.character-hero::before { content:""; @apply tw:absolute tw:top-[-1px] tw:left-s-6 tw:w-[42px] tw:h-[1px]; background:var(--archive-blue); opacity:.86; }
 /* 立绘按"画框里的展品"处理：底光 + 顶部渐隐，入场交由档案转场，
    与作品册的画框语言保持一致。
    2026-08-15 用户反馈：框高度改为自适应图片（图片铺满宽度，高度按比例，
@@ -23,12 +22,6 @@
   background:
     radial-gradient(circle at 50% 22%, color-mix(in srgb,var(--natsume-amber) 20%,transparent), transparent 58%),
     var(--stage-amber);
-}
-/* 脚下地台光：让人物"站"在画面里而不是漂着 */
-.portrait::before {
-  content:''; @apply tw:absolute; z-index:var(--z-below); inset:auto 14% 0; @apply tw:h-[34%];
-  border-radius:50% 50% 0 0; filter:blur(18px);
-  background:radial-gradient(ellipse at center bottom, color-mix(in srgb,var(--accent) 26%,transparent), transparent 68%);
 }
 .portrait-image {
   @apply tw:relative tw:w-full tw:h-auto;
@@ -96,7 +89,6 @@
 }
 .detail-grid { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-3; }
 .detail-section { @apply tw:p-s-3 tw:rounded-md; background:var(--bg-deep); }
-.detail-section.wide { grid-column:1/-1; }
 .lab { @apply tw:mb-s-2 tw:text-muted tw:text-mono-sm tw:font-bold; letter-spacing:.07em; @apply tw:uppercase; }
 .chips { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .chips .chip { padding:var(--s-1) var(--s-3); @apply tw:text-label-sm tw:cursor-default; }
@@ -104,9 +96,7 @@
 .char-lora { @apply tw:text-secondary tw:text-body-sm; }
 .char-lora code { @apply tw:text-accent tw:font-mono; }
 .recommend-section { @apply tw:relative tw:mt-s-7 tw:pt-s-5; border-top:1px solid var(--border-soft); }
-.recommend-section::before { content:"02 / PERSONA CORE"; @apply tw:absolute tw:top-[-.55em] tw:left-0 tw:pr-s-2; background:var(--bg-base); color:var(--archive-blue); font:650 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
 .recommend-head { @apply tw:flex tw:items-end tw:justify-between tw:gap-s-4 tw:mb-s-3; }
-.recommend-head p { @apply tw:max-w-[680px]; margin:var(--s-1) 0 0; @apply tw:text-muted tw:text-body-sm; }
 .recommend-title { margin:0 0 var(--s-3); @apply tw:text-title-sm; }
 .recommend-head .recommend-title { @apply tw:mb-0; }
 .official-link { flex:0 0 auto; @apply tw:text-accent tw:text-label-sm; text-decoration:none; }

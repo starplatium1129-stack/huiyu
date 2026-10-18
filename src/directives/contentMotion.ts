@@ -11,6 +11,9 @@ function cancel(el: HTMLElement) {
   const frame = pending.get(el)
   if (frame !== undefined) cancelAnimationFrame(frame)
   pending.delete(el)
+  release(el)
+}
+function release(el: HTMLElement) {
   const animation = active.get(el)
   active.delete(el)
   if (animation) {
@@ -21,7 +24,8 @@ function cancel(el: HTMLElement) {
 function settle() { for (const el of new Set([...active.keys(), ...pending.keys()])) cancel(el) }
 function scheduleReveal(el: HTMLElement, direction?: string, deferred = false) {
   if (!deferred) { reveal(el, direction); return }
-  cancel(el)
+  const frame = pending.get(el)
+  if (frame !== undefined) cancelAnimationFrame(frame)
   // Album navigation finishes its DOM, focus and scroll work before starting
   // the timeline; cold option/media setup must not consume the visible fade.
   pending.set(el, requestAnimationFrame(() => { pending.delete(el); reveal(el, direction, true) }))
@@ -42,16 +46,20 @@ function reveal(el: HTMLElement, direction = 'up', holdFirstFrame = false) {
     if (surface !== el && el.contains(surface)) cancel(surface)
   }
   // A rapid reversal continues from the visible value rather than flashing back.
+  const presentation = active.has(el) ? getComputedStyle(el) : null
+  // Snapshot before cancelling: computed styles are live, and the underlying
+  // transform may also position the surface (for example the immersive chat).
+  const previous = presentation ? { opacity: presentation.opacity, transform: presentation.transform } : null
+  cancel(el)
   const style = getComputedStyle(el)
-  const previous = active.has(el) ? style : null
   const start: Keyframe = { opacity: previous?.opacity ?? '.35' }
   const end: Keyframe = { opacity: 1 }
   const offsets: Record<string, string> = { left: 'translateX(-12px)', right: 'translateX(12px)', up: 'translateY(12px)', down: 'translateY(-12px)' }
   if (direction && offsets[direction]) {
-    start.transform = previous?.transform ?? offsets[direction]
-    end.transform = 'none'
+    const base = style.transform
+    start.transform = previous?.transform ?? `${offsets[direction]}${base === 'none' ? '' : ` ${base}`}`
+    end.transform = base
   }
-  cancel(el)
   const animation = el.animate([start, end], {
     duration:cssTimeToMilliseconds(style.getPropertyValue('--motion-surface')),
     easing:style.getPropertyValue('--ease-out').trim(),
@@ -66,7 +74,8 @@ function reveal(el: HTMLElement, direction = 'up', holdFirstFrame = false) {
     }))
   }
   animation.onfinish = animation.oncancel = () => {
-    if (active.get(el) === animation) cancel(el)
+    // Finishing the old timeline must not cancel an already queued new reveal.
+    if (active.get(el) === animation) release(el)
   }
 }
 

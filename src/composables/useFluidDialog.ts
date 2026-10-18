@@ -61,7 +61,7 @@ function unlockPageScroll() {
 
 /** Native close releases focus and business state immediately; entry motion stays on the surface. */
 export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotion?: Pick<ReturnType<typeof useFluidSurface>, 'enter' | 'dispose'>) {
-  const surface = imageMotion ?? useFluidSurface(':scope > .viewer-layout, :scope > .ref-modal-layout')
+  const surface = imageMotion ?? useFluidSurface()
   let locked = false
   let listenerTarget: HTMLDialogElement | null = null
   let returnFocus: HTMLElement | null = null

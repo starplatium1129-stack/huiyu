@@ -62,7 +62,7 @@ html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-bac
   background: var(--bg-surface) !important;
 }
 @media (forced-colors: active) {
-  html :is(.gs-panel, .confirm-panel, .task-center, .modal-card, .batch-panel, .story-card,
+  html :is(.gs-panel, .confirm-panel, .task-center, .modal-card, .batch-panel,
     .pb-backup-card, .pb-compare, .shot-script-panel, .appearance-dialog,
     .candidate-compare, .character-browser-dialog, .companion-settings-popover,
     .companion-workspace-settings, .guest-guide-card, .random-popover, .chat-more-menu) {

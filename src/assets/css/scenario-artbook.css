@@ -2,7 +2,7 @@
 .scenario-page { @apply tw:pt-s-5; --scenario-art-duration:var(--motion-art-hover); --scenario-art-zoom:1.04; --scenario-art-press:.98; }
 .scenario-library-heading { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-4; margin:var(--s-5) 0 var(--s-4); }
 .scenario-library-heading h2 { margin:0 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
-.scenario-library-heading p { @apply tw:text-secondary tw:text-body-sm; }
+.scenario-library-heading p { @apply tw:text-secondary tw:text-body tw:leading-loose; }
 .char-btn { @apply tw:flex tw:items-center tw:gap-s-2; font:inherit; }
 .scenario-list { @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-4; }
 .scenario-book { position:relative; isolation:isolate; display:flex; min-width:0; }
@@ -26,7 +26,7 @@
 .viewer-header-row { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-5 tw:mb-s-5; }
 .scenario-kicker { @apply tw:text-accent tw:text-body-sm; letter-spacing:.06em; }
 .viewer-h2 { @apply tw:flex tw:items-center tw:gap-s-2; margin:var(--s-2) 0; font:500 var(--fs-title)/var(--lh-label) var(--font-serif); }
-.viewer-desc { @apply tw:m-0 tw:text-body-sm tw:text-secondary; }
+.viewer-desc { @apply tw:m-0 tw:text-body tw:leading-loose tw:text-secondary; }
 .scenario-to-video { @apply tw:shrink-0; }
 /* At least 17rem per act; four-act stories keep balanced 2/4-column rows.
    Thresholds follow this reader's width, including the 1rem gaps. */
@@ -42,7 +42,7 @@
 .act-framing { aspect-ratio:var(--act-ratio); @apply tw:w-[64px] tw:max-h-[108px] tw:grid; place-items:center; @apply tw:shrink-0; border:1px solid var(--border-strong); border-radius:var(--r-sm); background:var(--bg-base); }
 .act-framing .archive-icon { @apply tw:w-[70%] tw:h-[70%] tw:text-accent; }
 .act-emotion { @apply tw:text-accent tw:text-body-sm; }
-.act-desc { @apply tw:mt-s-2 tw:text-body-sm tw:leading-body tw:text-primary; }
+.act-desc { @apply tw:mt-s-2 tw:text-body tw:leading-loose tw:text-primary; }
 .act-format { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:justify-between tw:text-secondary tw:text-body-sm tw:pb-s-3; border-bottom:1px solid var(--border-soft); }
 .act-details > summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:cursor-pointer tw:rounded-sm tw:min-h-[44px]; padding:var(--s-3) var(--s-2); margin-inline:calc(-1 * var(--s-2)); @apply tw:text-secondary tw:text-body-sm; }
 .act-details-body { @apply tw:pb-s-3; }

@@ -103,7 +103,7 @@ defineExpose({ focusTag })
       </button>
       <button class="btn btn-quiet btn-sm gallery-filter-reset" type="button" @click="reset">清除全部</button>
     </div>
-    <section v-show="expanded" v-content-motion:down.defer="expanded" :id="panelId" class="gallery-refine-panel" aria-label="作品筛选条件" :aria-busy="loading" @keydown.esc="close">
+    <section v-show="expanded" v-content-motion:down.defer="expanded && (panels ? 'ready' : 'loading')" :id="panelId" class="gallery-refine-panel" aria-label="作品筛选条件" :aria-busy="loading" @keydown.esc="close">
       <template v-if="panels">
       <div class="gallery-library-fields">
         <label class="gallery-project-field"><span>画册</span><StudioSelect :model-value="filters.projectFilter" label="按画册筛选" :options="projects" @update:model-value="update('projectFilter', String($event))" /></label>

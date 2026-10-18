@@ -530,6 +530,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   function useStarter(text: string) {
+    draft.clear()
     inputText.value = text
     options.storage.setDraft(options.activeChar.value, text)
   }

@@ -8,7 +8,7 @@
         <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" /><span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span></button>
       </div>
     </header>
-    <p v-if="referenceError" class="library-reference-feedback" role="status"><span>{{ referenceError }}</span><button type="button" class="btn btn-ghost btn-sm" :disabled="loadingReferences" @click="retryReferences"><ArchiveIcon name="refresh" />重新读取封面</button></p>
+    <p v-if="referenceError || referenceRetryStarted" class="library-reference-feedback"><span role="status">{{ loadingReferences ? '正在重新读取样张清单…' : referenceError || '样张清单已更新' }}</span><button type="button" class="btn btn-ghost btn-sm scenario-reference-retry" :aria-disabled="loadingReferences" @click="retryReferences"><ArchiveIcon name="refresh" />{{ loadingReferences ? '正在读取…' : '重新读取封面' }}</button></p>
     <div class="scenario-workspace" data-route-arrive>
       <div class="scenario-list" v-content-motion:fade="currentChar" role="group" aria-label="故事手帖">
         <RuntimeImage v-for="s in SCENARIOS" :key="s.id" :src="referenceUrl(coverId(s.id))" v-slot="{ image, loaded, failed }">
@@ -156,16 +156,17 @@ const COVER_IDS: Record<string, Record<ScenarioCharacter, string>> = {
   sakura: { nene: 'sc002', natsume: 'sc013' },
 }
 const { loading: loadingReferences, error: referenceError, reload: reloadReferences, referenceUrl, retryReference } = useMoodReferences()
+const referenceRetryStarted = ref(false)
 function retryCover(id: string, event: MouseEvent) {
   const origin = event.currentTarget
   if (origin instanceof HTMLElement && document.activeElement === origin)
     origin.closest('.scenario-book')?.querySelector<HTMLElement>('.scenario-card')?.focus({ preventScroll: true })
   retryReference(id)
 }
-function retryReferences(event: MouseEvent) {
-  const origin = event.currentTarget
-  const page = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest('.scenario-page') : null
-  page?.querySelector<HTMLElement>('.scenario-card.active')?.focus({ preventScroll: true })
+function retryReferences() {
+  if (loadingReferences.value) return
+  // Keep the recovery control mounted and focusable through the request and its result.
+  referenceRetryStarted.value = true
   void reloadReferences().catch(() => {})
 }
 function coverId(id: string) { return COVER_IDS[id]?.[currentChar.value] || '' }
@@ -254,3 +255,7 @@ const { show: showToast } = useToast()
 </script>
 
 <style scoped src="@/assets/css/scenario-artbook.css"></style>
+<style scoped>
+.scenario-reference-retry[aria-disabled='true'] { color:var(--text-disabled); cursor:wait; pointer-events:auto; }
+.scenario-reference-retry:focus-visible { outline:2px solid var(--focus-color); outline-offset:2px; }
+</style>

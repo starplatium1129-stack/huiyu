@@ -4,7 +4,7 @@
       <img class="control-intro-art" :src="modelArt" width="512" height="512" alt="" />
       <div>
         <p class="control-eyebrow tw:m-0 tw:mb-s-2 tw:text-accent tw:text-label-sm tw:tracking-[.08em]">绘遇 / 本机控制室</p>
-        <h1 class="control-title tw:m-0 tw:text-primary tw:tracking-[-.02em]">设置与资源</h1>
+        <h1 class="control-title tw:m-0 tw:text-primary tw:tracking-[0]">设置与资源</h1>
       </div>
     </div>
     <div class="control-intro-actions tw:flex tw:flex-col tw:items-end tw:gap-s-3 tw:shrink-0"><span class="control-count tw:text-muted tw:text-label" role="status">{{ readyLabel }}</span><div class="control-intro-buttons tw:flex tw:gap-s-2 tw:flex-wrap"><slot name="actions" /></div></div>

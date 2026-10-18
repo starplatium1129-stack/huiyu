@@ -91,7 +91,7 @@ export async function applyPromptDeepLink(q: Record<string, unknown>, deps: Prom
     const sc = pb.scenes.find(s => s.id === q.scene)
     if (sc) { deps.selectScene(sc); handled = true }
   } else if (q.resume === '1') {
-    handled = await pb.restoreDraft(() => isCurrent() && !deps.generationBusy.value)
+    handled = await deps.draftRecovery.restoreDraft(() => isCurrent() && !deps.generationBusy.value)
     if (!isCurrent()) return { handled: false, historyApplied: false }
   } else if (q.quick === '1' && !pb.story) {
     pb.setStory('用一张画面来讲今天想画的故事')

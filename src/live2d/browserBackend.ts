@@ -21,10 +21,18 @@ interface Live2DCoreModel {
   getParamFloat?(id: string): number
 }
 
+interface WlCachedTexture {
+  constructor: { removeFromCache?(texture: WlCachedTexture): unknown }
+  baseTexture?: WlCachedTexture
+  resource?: { url?: string }
+}
+
 interface WlLive2DModel {
   autoInteract?: boolean
   autoUpdate?: boolean
   update?(deltaMs: number): void
+  destroy(): void
+  textures?: WlCachedTexture[]
   visible: boolean
   width: number
   height: number
@@ -48,6 +56,8 @@ interface WlLive2DModel {
 interface WlLive2DApp {
   app?: {
     render?(): void
+    cancelResize?(): void
+    resizeTo?: HTMLElement | Window | null
     screen?: { width: number; height: number }
     renderer?: {
       resize(width: number, height: number): void
@@ -64,7 +74,8 @@ interface WlLive2DApp {
       remove?(callback: () => void): void
       start(): void
       stop(): void
-    }
+      destroy(): void
+    } | null
   }
   onModelLoaded(callback: (model: WlLive2DModel) => void): void
   onModelError(callback: (error: Error) => void): void
@@ -87,6 +98,21 @@ function readLibrary(value: unknown): WlLive2DLibrary | null {
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error)
+}
+
+/** Drop imported preview cache roots without invalidating another session's textures. */
+function releasePreviewTextureCache(model: WlLive2DModel, options: Live2DConnectOptions) {
+  if (options.character !== 'preview' || !options.modelUrl.startsWith('blob:')) return
+  // wl-live2d 1.0.8 embeds its own Pixi: use the actual instance constructors.
+  // Their instance overloads only remove cache keys and empty cacheIds, making
+  // repeated cleanup safe; they do not destroy textures, images or GPU objects.
+  // A failed load that never exposes a model's textures cannot be cleaned here.
+  for (const texture of model.textures ?? []) {
+    const base = texture.baseTexture
+    if (!base?.resource?.url?.startsWith('data:image/')) continue
+    texture.constructor.removeFromCache?.(texture)
+    base.constructor.removeFromCache?.(base)
+  }
 }
 
 /** 包装 wl-live2d model 为统一句柄（原 useLive2D 中对 model 的全部操作都在这里） */
@@ -218,27 +244,44 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
         }],
       })
 
+      // wl-live2d 1.0.8 constructs Pixi 6.5's Application without sharedTicker,
+      // so this is its private ticker, not the model's shared update ticker.
+      const application = app.app
+      const privateTicker = application?.ticker
+      // Install ownership before returning the session, even if its caller has
+      // already cancelled and will never subscribe to onModelLoaded.
+      app.onModelLoaded((model) => {
+        if (!model) return // wl-live2d also emits null after a load error.
+        if (destroyed) {
+          // 1.0.8's loadModel can finish after destroy, with autoUpdate already
+          // registered on Pixi's shared ticker. Hiding alone leaves it alive.
+          model.visible = false
+          model.autoUpdate = false
+          model.autoInteract = false
+          releasePreviewTextureCache(model, options)
+          model.destroy()
+          return
+        }
+        rawModel = model
+        // Our interaction controller owns taps, and the app owns the model clock.
+        model.autoInteract = false
+        if (typeof model.update === 'function' && privateTicker?.add) {
+          model.autoUpdate = false
+          privateTicker.add(advanceModel, undefined, 50)
+        }
+        modelHandle = wrapModel(model, enumerateModelParameters)
+        screenSize = {
+          width: Number(application?.screen?.width) || options.canvasWidth,
+          height: Number(application?.screen?.height) || options.canvasHeight,
+        }
+      })
+
       const session: Live2DStageSession = {
         kind: 'browser',
         capability: BROWSER_CAPABILITY,
         onModelLoaded(callback) {
           app.onModelLoaded((model) => {
-            if (!model) return // wl-live2d also emits null after a load error.
-            if (destroyed) { model.visible = false; return }
-            rawModel = model
-            // The interaction controller owns taps; wl-live2d's automatic hit
-            // handler otherwise applies expressions before our pixel filter.
-            model.autoInteract = false
-            if (typeof model.update === 'function' && app.app?.ticker?.add) {
-              model.autoUpdate = false
-              app.app.ticker.add(advanceModel, undefined, 50)
-            }
-            modelHandle = wrapModel(model, enumerateModelParameters)
-            screenSize = {
-              width: Number(app.app?.screen?.width) || options.canvasWidth,
-              height: Number(app.app?.screen?.height) || options.canvasHeight,
-            }
-            callback(modelHandle)
+            if (!destroyed && model && model === rawModel && modelHandle) callback(modelHandle)
           })
         },
         onModelError(callback) {
@@ -325,14 +368,26 @@ export function createBrowserLive2DBackend(): Live2DStageBackend {
         destroy() {
           if (destroyed) return
           destroyed = true
-          const ticker = app.app?.ticker
-          if (ticker?.started) ticker.stop()
-          ticker?.remove?.(advanceModel)
-          if (rawModel) rawModel.autoUpdate = false
+          if (privateTicker?.started) privateTicker.stop()
+          privateTicker?.remove?.(advanceModel)
+          // wl-live2d 1.0.8 destroys only app.renderer, skipping Application's
+          // ResizePlugin cleanup. Use its setter to detach the global listener.
+          application?.cancelResize?.()
+          if (application) application.resizeTo = null
+          if (rawModel) {
+            rawModel.autoUpdate = false
+            releasePreviewTextureCache(rawModel, options)
+          }
           rawModel = null
           if (modelHandle) modelHandle.visible = false
           modelHandle = null
-          if (typeof app.destroy === 'function') { try { app.destroy() } catch { /* 与原 destroyRuntime 一致 */ } }
+          try { app.destroy() } catch { /* 与原 destroyRuntime 一致 */ }
+          finally {
+            // Keep the ticker available to wl plugins during their teardown.
+            // Do not call Application.destroy: that would destroy renderer twice.
+            if (application && application.ticker === privateTicker) application.ticker = null
+            privateTicker?.destroy()
+          }
         },
       }
       return session

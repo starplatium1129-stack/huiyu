@@ -187,7 +187,7 @@
             </div>
             <span v-if="t8State" class="video-t8-badge" :data-state="t8State.available ? 'fast' : 'slow'">
               <ArchiveIcon :name="t8State.available ? 'lightning' : 'warning'" />
-              <span>{{ t8State.available ? 'T8 双时钟加速' : '原生采样（慢）' }}</span>
+              <span>{{ !status?.online ? '加速状态待检测' : t8State.available ? 'T8 双时钟加速' : '原生采样' }}</span>
             </span>
           </div>
           <div v-if="jobSelectionPending || selectedJobReading || selectedJobError" class="video-inline-message" :class="{ error: selectedJobError }" role="status">
