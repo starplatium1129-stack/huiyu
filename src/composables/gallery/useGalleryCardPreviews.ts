@@ -60,14 +60,6 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
   function retainCardReads(ids: ReadonlySet<string | number>) {
     for (const id of new Set([...queue.keys(), ...reads.keys()])) if (!ids.has(id)) cancelCardHydration(id)
   }
-  function abortable<T>(task: Promise<T>, signal: AbortSignal): Promise<T> {
-    signal.throwIfAborted()
-    return new Promise((resolve, reject) => {
-      const abort = () => reject(signal.reason)
-      signal.addEventListener('abort', abort, { once: true })
-      task.then(resolve, reject).finally(() => signal.removeEventListener('abort', abort))
-    })
-  }
   async function dimensions(src: string, signal: AbortSignal) {
     signal.throwIfAborted()
     const image = new Image()
@@ -75,7 +67,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
     signal.addEventListener('abort', release, { once: true })
     try {
       image.src = src
-      await abortable(image.decode(), signal)
+      await image.decode()
       signal.throwIfAborted()
       return { width: image.naturalWidth, height: image.naturalHeight }
     } finally {
@@ -86,11 +78,12 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
   async function hydrate(item: ArtworkRecord, signal: AbortSignal) {
     const epoch = options.epoch(), width = wantedWidth(item.id)
     const current = () => !signal.aborted && options.active() && epoch === options.epoch() && options.current(item)
+    if (!current()) return
     const fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
     let thumbnail = options.thumbnails[item.id]
     try {
       if (!thumbnail && item.image_id) {
-        try { thumbnail = await abortable(artworkRepository.getThumbnail(item.image_id), signal) || '' }
+        try { thumbnail = await artworkRepository.getThumbnail(item.image_id) || '' }
         catch { /* A failed optional thumbnail must not prevent original recovery. */ }
       }
       if (!current()) return
@@ -111,7 +104,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       if (blob) {
         // Persist only the standard small thumbnail; larger previews stay local.
         if (!thumbnail && item.image_id) {
-          thumbnail = await abortable(blobThumbDataUrl(blob), signal)
+          thumbnail = await blobThumbDataUrl(blob)
           if (!current()) return
           if (thumbnail) {
             options.rememberThumbnail(item.id, thumbnail)
@@ -121,7 +114,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
             if (size.width >= width) { satisfied.set(item.id, size.width); return }
           }
         }
-        const preview = await abortable(cardPreviewImage(blob, width, signal), signal)
+        const preview = await cardPreviewImage(blob, width, signal)
         if (!current()) return
         if (preview) {
           // Only accepted previews get URLs; late/cancelled encodes own no URL.
@@ -152,6 +145,8 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       const controller = new AbortController(); reads.set(id, controller); workers++
       void hydrate(item, AbortSignal.any([options.signal(), controller.signal])).finally(() => {
         if (reads.get(id) === controller) reads.delete(id)
+        // Storage and native image work may outlive cancellation. Return this
+        // worker only after their real promises settle; stale results stay hidden.
         workers--
         if (!controller.signal.aborted && wantedWidth(id) > width && returnThumbIds.has(String(id))) request(item)
         pump()
