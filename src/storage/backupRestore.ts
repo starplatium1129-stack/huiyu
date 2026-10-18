@@ -17,19 +17,21 @@ function remap(value: unknown, aliases: Map<string, string>, field = ''): unknow
   if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, remap(item, aliases, key)]))
   return value
 }
-function writeSettings(settings: Record<string, string>, replace: boolean) {
+function writeSettings(settings: Record<string, string>, replace: boolean, check: () => void) {
+  check()
   if (replace) {
     const keys = Array.from({ length: localStorage.length }, (_, index) => localStorage.key(index)).filter((key): key is string => Boolean(key && isLiveLocalKey(key)))
-    for (const key of keys) if (!(key in settings)) localStorage.removeItem(key)
+    for (const key of keys) if (!(key in settings)) { check(); localStorage.removeItem(key) }
   }
-  for (const [key, value] of Object.entries(settings)) localStorage.setItem(key, value)
+  for (const [key, value] of Object.entries(settings)) { check(); localStorage.setItem(key, value) }
 }
 
-function rollbackSettings(previous: Record<string, string>, published: Record<string, string>, replace: boolean) {
+function rollbackSettings(previous: Record<string, string>, published: Record<string, string>, replace: boolean, check: () => void) {
   const keys = replace
     ? new Set([...Object.keys(previous), ...Object.keys(published)])
     : new Set(Object.keys(published))
   for (const key of keys) {
+    check()
     const expected = key in published ? published[key] : null
     if (localStorage.getItem(key) !== expected) continue
     if (key in previous) localStorage.setItem(key, previous[key])
@@ -38,13 +40,18 @@ function rollbackSettings(previous: Record<string, string>, published: Record<st
 }
 
 /** Stage new images under fresh IDs, then atomically publish history/projects. Never erase originals. */
-export async function restoreBackupData(imported: BackupFile, replace: boolean): Promise<void> {
-  return withArtworkMutation(() => replace || CHAT_ARCHIVE_KEY in imported.data.settings
-    ? withChatArchiveMutation(() => restoreBackupDataNow(imported, replace))
-    : restoreBackupDataNow(imported, replace))
+export async function restoreBackupData(imported: BackupFile, replace: boolean, owner: { check(): void; signal: AbortSignal }): Promise<void> {
+  owner.check()
+  return withArtworkMutation(() => {
+    owner.check()
+    const restore = () => { owner.check(); return restoreBackupDataNow(imported, replace, owner) }
+    return replace || CHAT_ARCHIVE_KEY in imported.data.settings ? withChatArchiveMutation(restore) : restore()
+  })
 }
 
-async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Promise<void> {
+async function restoreBackupDataNow(imported: BackupFile, replace: boolean, owner: { check(): void; signal: AbortSignal }): Promise<void> {
+  const check = owner.check
+  check()
   const stagedIds: string[] = []
   const previousSettings = collectLiveLocalSettings(localStorage)
   const aliases = new Map<string, string>()
@@ -60,6 +67,7 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
     return { id, blob: new Blob([bytes], { type: match[1] }), name: image.name, type: match[1], created_at: image.created_at }
   })
   const [history, projects] = await Promise.all([kvGet<BackupRecord[]>(ARTWORK_HISTORY_KV_KEY), kvGet<BackupRecord[]>(ARTWORK_PROJECTS_KV_KEY)])
+  check()
   const importedHistory = (remap(imported.data.history, aliases) as BackupRecord[]).map(record =>
     !record.image_id && aliases.has(String(record.id)) ? { ...record, image_id: aliases.get(String(record.id)) } : record)
   const importedProjects = remap(imported.data.projects, aliases) as BackupRecord[]
@@ -69,17 +77,31 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
   let pendingEntries: Array<{ key: string; value: unknown }> | null = null
   const archiveTouched = replace || CHAT_ARCHIVE_KEY in imported.data.settings
   const previousArchive = archiveTouched ? await kvGet(CHAT_ARCHIVE_KV_KEY) : null
+  check()
   const operationId = crypto.randomUUID()
+  let commitStarted = false
+  function checkRecovery() {
+    try { check() }
+    catch (cause) {
+      if (!stagedIds.length && !settingsTouched && !commitStarted) throw cause
+      console.warn('[backup-restore] source changed; compensation stopped', { operationId, imageIds: stagedIds, commitStarted, cause })
+      throw new Error(`恢复来源已变化，已停止后续恢复与补偿；请回到原资料核对本次写入（${operationId}）`)
+    }
+  }
   try {
     for (const image of images) {
+      check()
       stagedIds.push(image.id)
       await imgPutRecord(image)
+      check()
     }
+    check()
     const latestSettings = collectLiveLocalSettings(localStorage)
     // Compensation restores the values we actually replaced, including writes
     // made by another page during asynchronous image staging.
     rollbackBaseline = latestSettings
-    const archiveSettings = archiveTouched ? { ...latestSettings, [CHAT_ARCHIVE_KEY]: serializeChatArchive(await readChatArchive()) } : latestSettings
+    const archiveSettings = archiveTouched ? { ...latestSettings, [CHAT_ARCHIVE_KEY]: serializeChatArchive(await readChatArchive(undefined, owner.signal)) } : latestSettings
+    check()
     let nextSettings = prepareBackupSettings(archiveSettings, imported.data.settings, replace)
     if (!replace) {
       // A merge never overwrites a key changed by another writer while images were staged.
@@ -93,7 +115,7 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
     }
     publishedSettings = { ...nextSettings }
     settingsTouched = true
-    writeSettings(nextSettings, replace)
+    writeSettings(nextSettings, replace, check)
     pendingEntries = [
       { key: ARTWORK_HISTORY_KV_KEY, value: replace ? importedHistory : mergeBackupRecords(history || [], importedHistory) },
       { key: ARTWORK_PROJECTS_KV_KEY, value: replace ? importedProjects : mergeBackupRecords(projects || [], importedProjects) },
@@ -105,16 +127,23 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
       if (replace) archive.revisions = Object.fromEntries(Object.keys(archive.archived).map(id => [id, crypto.randomUUID()]))
       pendingEntries.push({ key: CHAT_ARCHIVE_KV_KEY, value: archive })
     }
+    check(); commitStarted = true
     await kvSetMany(pendingEntries)
-    if (archiveTouched) try { localStorage.setItem(CHAT_ARCHIVE_CHANGED_KEY, crypto.randomUUID()) } catch { /* Invalidation is best effort. */ }
+    // A confirmed commit must never become a rollback because its notification
+    // belongs to an expired source. The caller owns the post-commit refresh.
+    if (archiveTouched) try { check(); localStorage.setItem(CHAT_ARCHIVE_CHANGED_KEY, crypto.randomUUID()) } catch { /* Invalidation is best effort. */ }
   } catch (error) {
-    if (pendingEntries) {
+    checkRecovery()
+    if (commitStarted && pendingEntries) {
       let unchanged = false
       try {
+        check()
         const actual = await Promise.all(pendingEntries.map(entry => kvGet(entry.key)))
+        check()
         if (actual.every((value, index) => JSON.stringify(value) === JSON.stringify(pendingEntries![index].value))) return
         unchanged = actual.every((value, index) => JSON.stringify(value) === JSON.stringify([history, projects, previousArchive][index]))
       } catch { /* Read failure cannot prove rollback. */ }
+      checkRecovery()
       if (!unchanged) {
         console.warn('[backup-restore] commit unknown; images retained', { operationId, imageIds: stagedIds, error })
         throw new Error(`恢复结果暂时无法确认；原有作品与原图未删除，导入图片已保留。请先核对作品册再重试（${operationId}）`)
@@ -122,9 +151,11 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean): Pro
     }
     const cleanupErrors: string[] = []
     if (settingsTouched) {
-      try { rollbackSettings(rollbackBaseline, publishedSettings, replace) } catch { cleanupErrors.push('设置回滚失败') }
+      try { rollbackSettings(rollbackBaseline, publishedSettings, replace, check) } catch { cleanupErrors.push('设置回滚失败') }
     }
-    try { await imgDeleteMany(stagedIds) } catch { cleanupErrors.push('临时图片清理失败') }
+    checkRecovery()
+    try { check(); await imgDeleteMany(stagedIds) } catch { cleanupErrors.push('临时图片清理失败') }
+    checkRecovery()
     if (cleanupErrors.length) console.warn('[backup-restore] cleanup failed', { operationId, imageIds: stagedIds, cleanupErrors, error })
     const message = error instanceof Error ? error.message : String(error)
     throw new Error(`${message}；原有作品与原图未删除${cleanupErrors.length ? `；${cleanupErrors.join('、')}` : ''}`)

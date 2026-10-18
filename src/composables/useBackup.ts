@@ -55,14 +55,14 @@ function errorMessage(error: unknown, fallback: string) {
   return String(error ?? '').trim() || fallback
 }
 
-function captureExportSource(controller: AbortController, desktop: boolean) {
+function captureBackupSource(controller: AbortController, desktop: boolean) {
   const repository = artworkRepository, session = imageMediaSession()
   const checkOwner = () => {
     if (repository !== artworkRepository || session !== imageMediaSession() || desktop !== workspaceBackupActive())
-      controller.abort(new Error('导出来源连接已变化，已停止后续导出；请回到原资料后重试'))
+      controller.abort(new Error('备份来源连接已变化，请回到原资料后重新操作'))
   }
   const release = onDesktopRuntime(checkOwner)
-  return { repository, release, check: () => { checkOwner(); controller.signal.throwIfAborted() } }
+  return { repository, release, signal: controller.signal, check: () => { checkOwner(); controller.signal.throwIfAborted() } }
 }
 
 export function useBackup(onFlash: (msg: string) => void = () => {}) {
@@ -87,10 +87,14 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   let disposed = false
   let viewActive = true
   let restoreConfirmation: AbortController | null = null
+  let selectionController: AbortController | null = null
+  let selectionSource: ReturnType<typeof captureBackupSource> | null = null
   function invalidateSelection() {
     fileRequest++
     restoreConfirmation?.abort()
     restoreConfirmation = null
+    selectionController?.abort(); selectionController = null
+    selectionSource?.release(); selectionSource = null
     pending.value = null; pendingWorkspace.value = null; pendingName.value = ''
   }
   if (getCurrentInstance()) {
@@ -117,7 +121,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     if (busy.value || disposed) return
     busy.value = true
     onFlash('正在整理备份…')
-    let source: ReturnType<typeof captureExportSource> | undefined
+    let source: ReturnType<typeof captureBackupSource> | undefined
     try {
       const controller = new AbortController()
       exportController = controller
@@ -135,7 +139,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
           + (resumed ? '提醒沿用原操作发起时间，不能据此确认快照时刻；如需包含最新修改，请再次新建备份。' : ''))
         return
       }
-      source = captureExportSource(controller, false)
+      source = captureBackupSource(controller, false)
       const { check } = source
       check()
       exportProgress.value = { completed: 0, total: 0 }
@@ -196,7 +200,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     imageExportController = controller
     imageExportProgress.value = { completed: 0, total: 0 }
     const desktop = desktopActive.value
-    const source = captureExportSource(controller, desktop), { repository, check } = source
+    const source = captureBackupSource(controller, desktop), { repository, check } = source
     let saved = 0
     let failed = 0
     let completed = 0
@@ -280,32 +284,34 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     if (!file || busy.value || disposed || !viewActive) return null
     invalidateSelection()
     const request = fileRequest
-    pending.value = null
-    pendingWorkspace.value = null
-    pendingName.value = ''
     if (file.size > MAX_BACKUP_BYTES) {
       onFlash(BACKUP_SIZE_MESSAGE)
       return null
     }
+    const desktop = desktopActive.value
+    const controller = new AbortController(), source = captureBackupSource(controller, desktop)
+    selectionController = controller; selectionSource = source
     try {
+      source.check()
       const text = await file.text()
       if (request !== fileRequest) return null
+      source.check()
       const raw: unknown = JSON.parse(text)
-      if (desktopActive.value) {
+      if (desktop) {
         const receipt = parseWorkspaceBackupReceipt(raw)
         pendingWorkspace.value = receipt; pendingName.value = file.name
         return { history: 0, projects: 0, images: receipt.mediaCount, settings: 0 }
       }
       const { normalizeBackup, summarizeBackup } = await import('@/utils/backupCore')
       if (request !== fileRequest) return null
+      source.check()
       const normalized = normalizeBackup(raw)
       pending.value = normalized
       pendingName.value = file.name
       return summarizeBackup(pending.value)
     } catch (e) {
       if (request !== fileRequest) return null
-      pending.value = null
-      pendingName.value = ''
+      invalidateSelection()
       onFlash('无法读取备份：' + errorMessage(e, '文件已损坏'))
       return null
     }
@@ -320,58 +326,75 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     const request = fileRequest
     const current = () => !disposed && viewActive && request === fileRequest
       && pending.value === selected && pendingWorkspace.value === workspace
-    if (desktopActive.value) {
-      if (!workspace) return false
-      busy.value = true
-      try {
+    let source: ReturnType<typeof captureBackupSource> | undefined
+    let started = false, restored = false, reloadScheduled = false
+    const refreshFailed = (changed = false) => {
+      busy.value = false
+      if (!disposed) onFlash(changed ? '恢复已提交到原资料，连接已变化；请回到原资料核对，当前页面未自动刷新' : '恢复已完成，但自动刷新失败，请手动刷新页面')
+    }
+    try {
+      if (!selectionSource || !selected && !workspace) return false
+      selectionSource.check()
+      const desktop = desktopActive.value
+      // This operation owns its source after acceptance, independently of the preview.
+      source = captureBackupSource(new AbortController(), desktop)
+      const { check, signal } = source
+      check()
+      if (desktop) {
+        if (!workspace) return false
+        busy.value = true; started = true
         const candidate = await createWorkspaceRestoreCandidate(workspace)
+        check()
         if (current()) {
           invalidateSelection()
           onFlash(`恢复副本已验证：${candidate.candidateId}。当前工作区保持不变，可在维护切换时选择该副本。`)
         }
         return true
-      } catch (error) { if (current()) onFlash('恢复校验失败：' + errorMessage(error, '备份不完整')); return false }
-      finally { busy.value = false }
-    }
-    if (!selected) return false
-    const replace = mode === 'replace'
-    if (replace) {
-      const confirmation = new AbortController()
-      restoreConfirmation = confirmation
-      try {
-        const approved = await confirmAction({
-          title: '覆盖本地数据？',
-          message: `将使用「${pendingName.value}」替换当前历史和项目。原图会保留；建议先导出备份，或改用合并恢复。`,
-          confirmLabel: '覆盖', danger: true, signal: confirmation.signal,
-        })
-        if (!approved || confirmation.signal.aborted || !current() || busy.value) return false
-      } finally { if (restoreConfirmation === confirmation) restoreConfirmation = null }
-    }
-    busy.value = true
-    onFlash(replace ? '正在覆盖恢复…' : '正在合并恢复…')
-    let restored = false, reloadScheduled = false
-    const refreshFailed = () => {
-      busy.value = false
-      if (!disposed) onFlash('恢复已完成，但自动刷新失败，请手动刷新页面')
-    }
-    try {
-      // Once accepted, this exact snapshot completes even if its preview closes.
+      }
+      if (!selected) return false
+      const replace = mode === 'replace'
+      if (replace) {
+        const confirmation = new AbortController()
+        restoreConfirmation = confirmation
+        try {
+          const approved = await confirmAction({
+            title: '覆盖本地数据？',
+            message: `将使用「${pendingName.value}」替换当前历史和项目。原图会保留；建议先导出备份，或改用合并恢复。`,
+            confirmLabel: '覆盖', danger: true, signal: AbortSignal.any([confirmation.signal, signal]),
+          })
+          check()
+          if (!approved || confirmation.signal.aborted || !current() || busy.value) return false
+        } finally { if (restoreConfirmation === confirmation) restoreConfirmation = null }
+      }
+      busy.value = true; started = true
+      onFlash(replace ? '正在覆盖恢复…' : '正在合并恢复…')
       const { restoreBackupData } = await import('@/storage/backupRestore')
-      await restoreBackupData(selected, replace)
+      check()
+      await restoreBackupData(selected, replace, { check, signal })
       restored = true
+      check()
       if (current()) {
         invalidateSelection()
         onFlash((replace ? '覆盖' : '合并') + '恢复完成，即将刷新页面…')
       }
-      setTimeout(() => { try { window.location.reload() } catch { refreshFailed() } }, 700)
+      const acceptedSource = source
+      setTimeout(() => {
+        try { acceptedSource.check() }
+        catch { refreshFailed(true); acceptedSource.release(); return }
+        try { window.location.reload() } catch { refreshFailed() }
+        finally { acceptedSource.release() }
+      }, 700)
       reloadScheduled = true
       return true
     } catch (e) {
       console.error(restored ? 'backup restored but refresh failed' : 'backup restore failed', e)
-      if (restored) refreshFailed()
-      else if (current()) onFlash('恢复失败：' + errorMessage(e, '备份数据无效'))
+      if (restored) refreshFailed(Boolean(source?.signal.aborted))
+      else if (current()) onFlash((workspace ? '恢复校验失败：' : '恢复失败：') + errorMessage(e, '备份数据无效'))
       return restored
-    } finally { if (!reloadScheduled || disposed) busy.value = false }
+    } finally {
+      if (!reloadScheduled) source?.release()
+      if (started && (!reloadScheduled || disposed)) busy.value = false
+    }
   }
 
   /** 存储体检：历史条数、图片体积、配额占用 */
