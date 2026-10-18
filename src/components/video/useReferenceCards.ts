@@ -1,4 +1,4 @@
-import { ref, shallowRef, onScopeDispose, getCurrentScope, type Ref } from 'vue'
+import { ref, shallowRef, onScopeDispose, getCurrentScope, watch, type Ref } from 'vue'
 import { catalogApi } from '../../api/catalogApi'
 import { parsePopularCharacter } from '../../utils/popularContent'
 import { parseCharacterProfiles } from '../../utils/characterProfiles'
@@ -140,6 +140,9 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       updateMultiCharacterIdentity()
     }
     const identityAtRead = deps.identityCard.value
+    let labelEdited = false
+    const stopLabelWatch = options.preserveIdentity ? undefined
+      : watch(() => card.label, () => { labelEdited = true }, { flush: 'sync' })
     try {
       if (!profiles.value[charId]) {
         const result = await catalogApi.character(charId, controller.signal)
@@ -172,7 +175,9 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       const outfit = outfitId ? profile.outfits.find(item => item.id === outfitId)
         : profile.outfits.find(item => item.default) || profile.outfits[0]
       card.outfitId = outfit?.id || ''
-      card.label = profile.displayName + (outfit && !outfit.default ? ` · ${outfit.name}` : '')
+      if (!options.preserveIdentity && !labelEdited) {
+        card.label = profile.displayName + (outfit && !outfit.default ? ` · ${outfit.name}` : '')
+      }
       // Profile reads may finish after typing, or another card's automatic merge.
       if (!options.preserveIdentity && (deps.identityCard.value === identityAtRead || deps.identityCard.value === lastAutoIdentity)) updateMultiCharacterIdentity()
       if (outfitId && !outfit) { deps.batchError.value = '该服装不存在，请重新选择'; return false }
@@ -182,6 +187,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       if (current(card, controller)) deps.batchError.value = '角色资料读取失败，请重新选择重试'
       return false
     } finally {
+      stopLabelWatch?.()
       signal?.removeEventListener('abort', abort)
       finish(card, controller)
     }
