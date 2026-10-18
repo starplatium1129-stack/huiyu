@@ -59,6 +59,8 @@ const DRAFT: &[&str] = &[
     "aics_image_request_v1",
     "aics_companion_image_request_v1",
     "aics_manga_request_v1",
+    "aics_video_request_v1",
+    "aics_video_batch_request_v1",
     "aics_sd_pending_queue_v1",
 ];
 pub(super) fn domain(key: &str) -> Option<&'static str> {

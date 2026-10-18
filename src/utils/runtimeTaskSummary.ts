@@ -9,7 +9,8 @@ export function summarizeTask(task: TaskRecord | TaskSummary): TaskSummary {
     retryOfTaskId: summary.retryOfTaskId ?? (typeof metadata?.retryOfTaskId === 'string' ? metadata.retryOfTaskId : null),
     retryTaskId: summary.retryTaskId ?? (typeof metadata?.retryTaskId === 'string' ? metadata.retryTaskId : null),
     sourceBatchId: summary.sourceBatchId ?? (typeof context?.retriedTaskId === 'string' && context.retriedTaskId
-      && Number.isSafeInteger(context.stepIndex) && Number(context.stepIndex) >= 0 ? context.retriedTaskId : null),
+      && (Number.isSafeInteger(context.stepIndex) && Number(context.stepIndex) >= 0
+        || Array.isArray(context.stepIndices) && context.stepIndices.length > 0 && context.stepIndices.every(index => Number.isSafeInteger(index) && Number(index) >= 0)) ? context.retriedTaskId : null),
     canConcat: summary.canConcat ?? (task.kind === 'batch' && task.status === 'succeeded' && task.resultRefs.length > 1
       && Array.isArray(checkpoint?.shots) && !task.resultRefs.some(result => result.index === (checkpoint.shots as unknown[]).length)),
   }

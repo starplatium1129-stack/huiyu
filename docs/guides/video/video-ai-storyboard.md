@@ -20,7 +20,7 @@
 | Rust 视频 | runtime-rs/src/video/http.rs、service.rs、batch.rs、storyboard.rs、ai.rs |
 | 绘图批次 | src/composables/generation/useBatchDraw.ts |
 
-视频接口包括 /api/video/status、images、jobs、batches、storyboard；已有网关批次支持 shots/{index}/retry、retry（一次提交所选镜头）和 concat。重抽前整批上游须已确认结束；运行中的批次先完成或取消，失败和已取消的镜头均可重抽。持久任务的重抽使用新的稳定任务键，独立结果保留在任务中心。/api/video-ai/status 查询可用源，rewrite/polish/dialogue/review/script 复用现行聊天模型配置，写调用要求本机直连。模型和文件名以运行时目录为准，不使用旧 Node routes 或 SD 新生成方案。
+视频接口包括 /api/video/status、images、jobs、batches、storyboard；视频创建和 retry（一次提交所选镜头）均要求 requestKey，按 requests/{key} 或 batch-requests/{key} 查询/取消原请求；concat 仍作用于原批次。重抽前整批上游须已确认结束；运行中的批次先完成或取消，失败和已取消的镜头均可重抽。私人任务重抽所选镜头时，先写稳新的请求键及原镜头位置，独立结果保留在任务中心；刷新恢复只 GET 原键，不重复创建。旧 ID 保留读取与结果入口，404/410 不清身份。/api/video-ai/status 查询可用源，rewrite/polish/dialogue/review/script 复用现行聊天模型配置，写调用要求本机直连。模型和文件名以运行时目录为准，不使用旧 Node routes 或 SD 新生成方案。
 
 ## 验证边界
 

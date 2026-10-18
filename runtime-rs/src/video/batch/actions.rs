@@ -7,7 +7,7 @@ impl Service {
             s.cancel_generation = s.cancel_generation.wrapping_add(1);
             s.cancel.cancel();
             if s.status == "done" {
-                return Ok(batch_public_after_unlock(s, &batch).await);
+                return Ok(batch_public_after_unlock(s, &batch, self).await);
             }
             s.status = "cancelling".into();
             let mut ids = Vec::new();
@@ -29,16 +29,16 @@ impl Service {
         {
             let mut s = batch.state.lock().await;
             if s.cancel_generation != generation {
-                return Ok(batch_public_after_unlock(s, &batch).await);
+                return Ok(batch_public_after_unlock(s, &batch, self).await);
             }
             s.status = if settled { "cancelled" } else { "paused" }.into();
             s.unknown = !settled;
             s.error_code = (!settled).then(|| "BATCH_UPSTREAM_UNKNOWN".into());
         }
         batch.save().await?;
-        Ok(batch.public().await)
+        Ok(batch.public(self).await)
     }
-    async fn reconcile_live(&self, batch: &Batch) -> Result<bool> {
+    pub(super) async fn reconcile_live(&self, batch: &Batch) -> Result<bool> {
         let shots = batch.state.lock().await.shots.clone();
         let mut settled = true;
         for (index, shot) in shots.iter().enumerate() {
@@ -196,16 +196,11 @@ impl Service {
             }
             _ => return Err(error(400, "TASK_ACTION_INVALID", "不支持的分镜操作")),
         }
-        Ok(batch.public().await)
+        Ok(batch.public(&self).await)
     }
-    pub async fn retry_shot(self: Arc<Self>, id: &str, owner: &str, index: usize) -> Result<Value> {
-        self.retry_shots(id, owner, vec![index]).await
-    }
-    pub async fn retry_shots(
-        self: Arc<Self>,
-        id: &str,
-        owner: &str,
-        indices: Vec<usize>,
+    pub(in crate::video) async fn retry_shots_accepting(
+        self: Arc<Self>, id: &str, owner: &str, indices: Vec<usize>,
+        acceptance: &dyn ExecutionHooks,
     ) -> Result<Value> {
         let batch = self.batch(id, owner).await?;
         if batch.hooks.is_some() {
@@ -280,6 +275,7 @@ impl Service {
                     "只有失败或取消的分镜可以重抽",
                 ));
             }
+            acceptance.checkpoint(json!({"gatewayJobId":batch.id})).await?;
             for index in indices {
                 let shot = &mut s.shots[index];
                 shot.status = "pending".into();
@@ -309,7 +305,7 @@ impl Service {
                 let _ = tokio::fs::remove_file(path).await;
             });
         }
-        Ok(batch.public().await)
+        Ok(batch.public(&self).await)
     }
     async fn concat_batch(&self, batch: Arc<Batch>, cancel: CancellationToken) -> Result<()> {
         let _gate = tokio::select! {g=batch.concat_serial.lock()=>g,_=cancel.cancelled()=>return Err(error(499,"VIDEO_BATCH_CANCELLED","拼接已取消"))};
@@ -377,7 +373,7 @@ impl Service {
         }
     }
 }
-async fn batch_public_after_unlock(s: tokio::sync::MutexGuard<'_, State>, batch: &Batch) -> Value {
+async fn batch_public_after_unlock(s: tokio::sync::MutexGuard<'_, State>, batch: &Batch, service: &Service) -> Value {
     drop(s);
-    batch.public().await
+    batch.public(service).await
 }

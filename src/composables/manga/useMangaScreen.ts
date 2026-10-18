@@ -223,7 +223,6 @@ export function useMangaScreen(onSaved: () => void) {
   async function run(kind: 'manga' | 'lineart' = 'manga') {
     if (locked.value || !source.value || !status.value?.available) return
     error.value = ''; notice.value = ''; lines.notice.value = ''; submitting.value = true; cancelRequested = false
-    let posted = false
     try {
       check()
       const sourceOwner = tempResultOwner()
@@ -256,7 +255,7 @@ export function useMangaScreen(onSaved: () => void) {
       await writeRequestDraft(MANGA_REQUEST_DRAFT_KEY, request.value); check()
       if (cancelRequested) { await cancel(); return }
       const value = await submitRuntimeTask(kind, input, requestKey.value, mangaTaskContext(parent),
-        {signal:lifetime.signal, onSubmitting:() => { check(); posted = true }})
+        {signal:lifetime.signal, onSubmitting:check})
       check(); assertRequestOwner(owned, hasRuntimeTasks())
       if (request.value?.key !== owned.key) return
       job.value = mangaTaskView(value); acceptanceUnknown.value = false
@@ -266,10 +265,6 @@ export function useMangaScreen(onSaved: () => void) {
       void observe()
     } catch (e) {
       if (!lifetime.signal.aborted) {
-        const rejected = posted && e instanceof ApiClientError && e.kind === 'http' && e.status < 500
-        if (rejected && request.value) {
-          try { await clearRequestDraft(MANGA_REQUEST_DRAFT_KEY, request.value); request.value = null } catch { /* Keep the original identity when its removal is unconfirmed. */ }
-        }
         acceptanceUnknown.value = Boolean(request.value && !terminal(job.value))
         error.value = acceptanceUnknown.value ? `任务接收状态未知，已阻止重复提交。可查询原操作或到任务中心核对。详情：${message(e)}` : message(e)
       }

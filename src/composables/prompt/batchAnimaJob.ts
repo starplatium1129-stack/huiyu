@@ -1,6 +1,7 @@
 import { ApiClientError } from '@/api/client'
 import { fetchResultImage, waitForDirectImageJob } from '@/api/directImageJobs'
-import { acceptDirectImageRequest, DirectImageRequestRejected } from '@/api/directImageRequests'
+import { acceptDirectImageRequest } from '@/api/directImageRequests'
+import { DirectRequestRejected } from '@/api/directGenerationRequests'
 import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
 import { animaRequestPayload, type AnimaRequest } from '@/composables/generation/animaSessionContract'
 import { metadataFromJob } from '../generation/animaJobMetadata'
@@ -56,7 +57,7 @@ export function createBatchAnimaTransport() {
           onSubmitting: () => { options.onSubmitting?.(); submitted = true },
         })).id }
         catch (error) {
-          if (!(error instanceof DirectImageRequestRejected) || error.status !== 429) throw error
+          if (!(error instanceof DirectRequestRejected) || error.status !== 429) throw error
           submitted = false
           report?.('队列暂满，等待空位…可点停止结束等待')
           await pause(5000, signal)

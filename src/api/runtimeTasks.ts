@@ -245,11 +245,18 @@ export async function fetchRuntimeResult(url: string, signal?: AbortSignal, task
     if (!response.bodyUsed) await response.body?.cancel().catch(() => {})
   }
 }
-export async function downloadTaskMedia(url: string, filename = '绘遇结果') {
-  const blob = await fetchRuntimeResult(url)
+export async function downloadTaskMedia(url: string, filename = '绘遇结果', signal?: AbortSignal) {
+  if (!isRuntimeResultPath(url)) throw new Error('结果地址无效')
+  const task = await getRuntimeTask(url.split('/')[4], signal)
+  signal?.throwIfAborted()
+  assertRuntimeTaskSession(task)
+  const blob = await fetchRuntimeResult(url, signal, task)
+  signal?.throwIfAborted()
+  assertRuntimeTaskSession(task)
   const objectUrl = URL.createObjectURL(blob)
-  const anchor = document.createElement('a'); anchor.href = objectUrl; anchor.download = filename; anchor.click()
-  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000)
+  try {
+    const anchor = document.createElement('a'); anchor.href = objectUrl; anchor.download = filename; anchor.click()
+  } finally { setTimeout(() => URL.revokeObjectURL(objectUrl), 1000) }
 }
 /** One application subscription; page controllers own only their cancellable reads. */
 export function startRuntimeTaskPolling(): () => void {

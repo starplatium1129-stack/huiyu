@@ -1,21 +1,10 @@
 import { onScopeDispose, watch, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useVideoStore, type VideoDraftPayload } from '@/stores/videoStore'
-import { fetchVideoJob, type VideoDefaults, type VideoJob, type VideoMode } from '@/api/videoApi'
-import { ApiClientError } from '@/api/client'
+import { type VideoDefaults, type VideoMode } from '@/api/videoApi'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
-/**
- * 视频页创作草稿与任务重连（2026-09-06 体验报告 F1，自 VideoStudioView 下沉）。
- *
- * 旧行为：模式/描述/参数/在途任务全是页面局部 ref——切到作品册再回来，
- * 66 字描述直接归零，运行中的任务句柄随轮询停止而失联。
- *
- * 现在：草稿（模式/参数/描述/首帧尾帧的 IndexedDB 引用）防抖落 sessionStorage，
- * 回页水合；任务提交后记 jobId，回页按 id 拉取真实状态并恢复轮询。
- * 图片本体只在 IndexedDB（服务端受控文件名会随任务清理，恢复时重新上传换新名）。
- */
-
+/** Editable frame references and parameters; admission belongs to useVideoRequest. */
 export interface VideoStudioDraftDeps {
   selectedMode: Ref<VideoMode | 'shots'>
   prompt: Ref<string>
@@ -36,13 +25,6 @@ export interface VideoStudioDraftDeps {
   onPersistError: (message: string) => void
 }
 
-export type ReconnectResult =
-  | { kind: 'job'; job: VideoJob }
-  | { kind: 'lost' }      // 410：网关重启，任务中断
-  | { kind: 'missing' }   // 404：记录失效，静默清除
-  | { kind: 'unreachable' } // 网络/网关暂不可达：保留记录，下次再试
-  | { kind: 'none' }
-
 export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   const videoStore = useVideoStore()
   let restoring = false
@@ -50,9 +32,8 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   let saveFailed = false
   let disposed = false
   let restoreRequest: AbortController | null = null
-  let reconnectRequest: AbortController | null = null
   let importSourceImageId = ''
-  onScopeDispose(() => { disposed = true; restoreRequest?.abort(); reconnectRequest?.abort() }, true)
+  onScopeDispose(() => { disposed = true; restoreRequest?.abort() }, true)
 
   function persistDraft(sourceImageId?: string): boolean {
     if (restoring) return false
@@ -170,34 +151,5 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     return { firstFrameLost: !firstOk, lastFrameLost: !lastOk }
   }
 
-  /** 任务重连：按记录的 jobId 拉真实状态；语义化结果由调用方决定提示文案。 */
-  async function reconnectTask(): Promise<ReconnectResult> {
-    const record = videoStore.videoTask
-    if (disposed || !record) return { kind: 'none' }
-    reconnectRequest?.abort()
-    const controller = new AbortController(); reconnectRequest = controller
-    const current = () => !disposed && !controller.signal.aborted && videoStore.videoTask?.jobId === record.jobId
-    try {
-      const response = await fetchVideoJob(record.jobId, controller.signal)
-      if (!current()) return { kind: 'none' }
-      return { kind: 'job', job: response.job }
-    } catch (error) {
-      if (!current()) return { kind: 'none' }
-      if (error instanceof ApiClientError && error.kind === 'http') {
-        if (error.status === 410) {
-          videoStore.clearVideoTask()
-          return { kind: 'lost' }
-        }
-        if (error.status === 404) {
-          videoStore.clearVideoTask()
-          return { kind: 'missing' }
-        }
-      }
-      return { kind: 'unreachable' }
-    } finally {
-      if (reconnectRequest === controller) reconnectRequest = null
-    }
-  }
-
-  return { startDraftWatch, persistDraft, restoreDraft, reconnectTask }
+  return { startDraftWatch, persistDraft, restoreDraft }
 }

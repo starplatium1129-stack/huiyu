@@ -1,6 +1,5 @@
-import { ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
-import { DirectImageRequestRejected } from '@/api/directImageRequests'
+import { DirectRequestRejected } from '@/api/directGenerationRequests'
 import { getRuntimeTaskByKey, waitForRuntimeTask, taskMessage } from '@/api/runtimeTasks'
 import type { AnimaRequest } from '../generation/useAnimaSession'
 import type { SDQueueJob } from '../generation/useSDQueue'
@@ -61,9 +60,7 @@ export async function recoverBatchTask(input: BatchDrawRunnerInput): Promise<{ t
 /** Only a definite rejection or runtime-settled failure permits a later new attempt. */
 export async function batchFailure(input: BatchDrawRunnerInput, error: unknown, runtimeOwned: boolean): Promise<BatchDrawRunnerResult> {
   const message = error instanceof Error ? error.message : '生成状态暂时无法核对'
-  if (error instanceof DirectImageRequestRejected) return { ok: false, cancelled: error.code === 'IMAGE_REQUEST_CANCELLED', error: message }
-  if (runtimeOwned && !input.reconnect && !input.taskId && error instanceof ApiClientError && error.kind === 'http'
-    && error.status >= 400 && error.status < 500) return { ok: false, error: message }
+  if (error instanceof DirectRequestRejected) return { ok: false, cancelled: error.code === 'IMAGE_REQUEST_CANCELLED', error: message }
   if (!runtimeOwned) {
     if (error instanceof AcceptedTaskTerminalError && error.taskId === input.taskId) {
       return { ok: false, cancelled: error.status === 'cancelled', error: error.status === 'failed' ? message : undefined }

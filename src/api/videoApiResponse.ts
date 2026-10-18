@@ -7,6 +7,7 @@ import type {
   VideoQualityOption,
   VideoStoryboard,
 } from './videoApi'
+import { ApiClientError } from './client'
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -31,6 +32,8 @@ function isVideoJob(value: unknown): value is VideoJob {
     && ['comfy', 'native'].includes(String(value.provider))
     && (value.progress === null || isFiniteNumber(value.progress) && value.progress >= 0 && value.progress <= 1)
     && (value.needsReview === undefined || typeof value.needsReview === 'boolean')
+    && (value.upstreamSettled === undefined || typeof value.upstreamSettled === 'boolean')
+    && (value.unknown === undefined || typeof value.unknown === 'boolean')
     && isFiniteNumber(value.estimatedSeconds) && value.estimatedSeconds >= 0
     && isFiniteNumber(value.elapsedSeconds) && value.elapsedSeconds >= 0
     && isNonEmptyText(value.modelId)
@@ -85,8 +88,17 @@ export function isVideoStatusResponse(value: unknown): boolean {
     && isRecord(value.t8) && typeof value.t8.available === 'boolean' && isText(value.t8.reason)
 }
 
-export function isVideoJobResponse(value: unknown): boolean {
+function isVideoJobResponse(value: unknown): boolean {
   return isRecord(value) && value.ok === true && isVideoJob(value.job)
+}
+export function videoJobResponse(value: unknown, expectedId?: string): { ok: true; job: VideoJob } {
+  if (!isRecord(value) || !isVideoJobResponse(value)) throw new ApiClientError('视频任务响应无效，请重新核对原请求。', { kind: 'invalid-response' })
+  const job = value.job as VideoJob
+  if (expectedId && job.id !== expectedId) throw new ApiClientError('视频任务编号与原请求不符。', { kind: 'invalid-response' })
+  const upstreamSettled = job.upstreamSettled === true, unknown = job.unknown !== false
+  const terminal = ['succeeded', 'failed', 'cancelled'].includes(job.status)
+  return { ok: true, job: { ...job, upstreamSettled, unknown,
+    needsReview: job.needsReview === true || unknown || terminal && !upstreamSettled || job.status === 'succeeded' && !job.resultAvailable } }
 }
 
 export function isVideoStoryboard(value: unknown): value is VideoStoryboard {
@@ -122,6 +134,12 @@ function isVideoBatch(value: unknown): value is VideoBatch {
   if (!isRecord(value)) return false
   return isNonEmptyText(value.id)
     && ['running', 'paused', 'done', 'cancelled'].includes(String(value.status))
+    && (value.upstreamSettled === undefined || typeof value.upstreamSettled === 'boolean')
+    && (value.unknown === undefined || typeof value.unknown === 'boolean')
+    && (value.needsReview === undefined || typeof value.needsReview === 'boolean')
+    && (value.retrySource === undefined || isRecord(value.retrySource) && isNonEmptyText(value.retrySource.batchId)
+      && Array.isArray(value.retrySource.stepIndices) && value.retrySource.stepIndices.length > 0
+      && value.retrySource.stepIndices.every(index => Number.isSafeInteger(index) && Number(index) >= 0))
     && isNonEmptyText(value.modelId)
     && ['landscape', 'portrait', 'square'].includes(String(value.aspectRatio))
     && ['fast', 'standard', 'fine'].includes(String(value.quality))
@@ -138,6 +156,15 @@ function isVideoBatch(value: unknown): value is VideoBatch {
     && isNullableText(value.concatUrl)
 }
 
-export function isVideoBatchResponse(value: unknown): boolean {
+function isVideoBatchResponse(value: unknown): boolean {
   return isRecord(value) && value.ok === true && isVideoBatch(value.batch)
+}
+export function videoBatchResponse(value: unknown, expectedId?: string): { ok: true; batch: VideoBatch } {
+  if (!isRecord(value) || !isVideoBatchResponse(value)) throw new ApiClientError('分镜任务响应无效，请重新核对原请求。', { kind: 'invalid-response' })
+  const batch = value.batch as VideoBatch
+  if (expectedId && batch.id !== expectedId) throw new ApiClientError('分镜任务编号与原请求不符。', { kind: 'invalid-response' })
+  const upstreamSettled = batch.upstreamSettled === true, unknown = batch.unknown !== false
+  return { ok: true, batch: { ...batch, shots: batch.shots.map(shot => ({ ...shot })), progress: { ...batch.progress },
+    ...(batch.retrySource ? { retrySource: { batchId: batch.retrySource.batchId, stepIndices: [...batch.retrySource.stepIndices] } } : {}), upstreamSettled, unknown,
+    needsReview: batch.needsReview === true || unknown || batch.status !== 'running' && !upstreamSettled } }
 }

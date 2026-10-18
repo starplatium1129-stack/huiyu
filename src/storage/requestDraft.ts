@@ -31,6 +31,8 @@ export function assertRequestOwner(draft: RequestDraft, runtime: boolean) {
 }
 export async function writeRequestDraft(slot: string, draft: RequestDraft) {
   if (!sameTempResultOwner(draft.owner)) throw new Error('请求所属资料来源已变化')
+  const current = readRequestDraft(slot)
+  if (current && current.key !== draft.key) throw new Error('原请求身份已由新的操作接管，已停止旧回执写入')
   profileDraftStorage.setItem(slot, JSON.stringify(draft))
   await flushProfileWrites()
   if (!sameTempResultOwner(draft.owner) || readRequestDraft(slot)?.key !== draft.key) throw new Error('原请求保存尚未确认')

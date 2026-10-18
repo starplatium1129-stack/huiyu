@@ -37,6 +37,7 @@ pub struct Service {
     pub(super) transport: LocalUpstream,
     pub(super) shutdown: CancellationToken,
     pub(super) tasks: TaskTracker,
+    pub(super) requests: generation::receipts::Requests,
     pub(super) batches: batch::Registry,
     pub(super) transcode: transcode::Queue,
     t8: Mutex<(bool, Option<tokio::time::Instant>)>,
@@ -69,12 +70,14 @@ impl Service {
         let tasks = TaskTracker::new();
         let batches = Arc::new(Mutex::new(std::collections::HashMap::new()));
         batch::reap(batches.clone(), config.clone(), shutdown.clone(), &tasks);
+        let requests = generation::receipts::Requests::new(config.runtime_root.join("jobs/video-requests"), "VIDEO", "视频");
         Ok(Self {
             backend,
             config,
             transport,
             shutdown,
             tasks,
+            requests,
             batches,
             transcode: transcode::Queue::new(),
             t8: Mutex::new((false, None)),
@@ -354,6 +357,7 @@ impl Service {
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
+        self.requests.wait_for_acceptance().await;
         self.transcode.close().await;
         self.tasks.close();
         self.tasks.wait().await;

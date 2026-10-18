@@ -5,13 +5,12 @@ use crate::images::{
 use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
-    extract::{ConnectInfo, DefaultBodyLimit, Path, Query, State},
+    extract::{ConnectInfo, DefaultBodyLimit, OriginalUri, Path, Query, State},
     http::{HeaderMap, Method, StatusCode},
     response::{IntoResponse, Response},
     routing::{get, post},
 };
-use futures_util::future::BoxFuture;
-use std::{collections::HashMap, net::SocketAddr, sync::Mutex};
+use std::{collections::HashMap, net::SocketAddr};
 struct Http {
     service: Arc<Service>,
 }
@@ -27,22 +26,23 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
             post(create).layer(DefaultBodyLimit::max(32 * 1024)),
         )
         .route("/api/video/jobs/{id}", get(get_job).delete(cancel))
+        .route("/api/video/requests/{key}", get(request_status).delete(cancel_request))
         .route("/api/video/jobs/{id}/result", get(result))
         .route(
             "/api/video/batches",
-            post(create_batch).layer(DefaultBodyLimit::max(1024 * 1024)),
+            post(create).layer(DefaultBodyLimit::max(1024 * 1024)),
         )
         .route(
             "/api/video/batches/{id}",
             get(get_batch).delete(cancel_batch),
         )
         .route("/api/video/batches/{id}/result", get(batch_result))
+        .route("/api/video/batch-requests/{key}", get(request_status).delete(cancel_request))
         .route("/api/video/batches/{id}/concat", post(concat))
         .route(
             "/api/video/batches/{id}/retry",
             post(retry_many).layer(DefaultBodyLimit::max(4096)),
         )
-        .route("/api/video/batches/{id}/shots/{index}/retry", post(retry))
         .layer(Extension(Arc::new(Http { service })))
         .layer(axum::middleware::from_fn_with_state(
             Arc::new(generation::RateLimit::with("视频生成", 3, 60000)),
@@ -112,142 +112,51 @@ async fn store_image(
         .len();
     Ok(json!({"name":name,"bytes":bytes}))
 }
-struct Guard {
-    service: Arc<Service>,
-    owner: String,
-    id: Arc<Mutex<Option<String>>>,
-    cancel: CancellationToken,
-    armed: bool,
-}
-impl Drop for Guard {
-    fn drop(&mut self) {
-        if self.armed {
-            self.cancel.cancel();
-            if let Some(id) = self.id.lock().unwrap().clone() {
-                let service = self.service.clone();
-                let owner = self.owner.clone();
-                tokio::spawn(async move {
-                    let _ = service.cancel(&id, &owner).await;
-                });
-            }
-        }
-    }
-}
-struct Legacy {
-    identity: Arc<Mutex<Option<String>>>,
-    cancel: CancellationToken,
-}
-impl ExecutionHooks for Legacy {
-    fn checkpoint(&self, value: Value) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async move {
-            *self.identity.lock().unwrap() = value["gatewayJobId"].as_str().map(str::to_owned);
-            if self.cancel.is_cancelled() {
-                Err(error(499, "VIDEO_CANCELLED", "视频请求已取消"))
-            } else {
-                Ok(())
-            }
-        })
-    }
-    fn submitting(&self, _: String) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async {
-            if self.cancel.is_cancelled() {
-                Err(error(499, "VIDEO_CANCELLED", "视频请求已取消"))
-            } else {
-                Ok(())
-            }
-        })
-    }
-    fn observed(&self, _: String, _: Value) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async { Ok(()) })
-    }
-    fn collect(&self, _: Vec<Output>) -> BoxFuture<'_, Result<()>> {
-        Box::pin(async { Ok(()) })
-    }
-}
 async fn create(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    OriginalUri(uri): OriginalUri,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
-    Json(body): Json<Value>,
+    Json(mut body): Json<Value>,
 ) -> Response {
-    if let Err(e) = state.host.check_running() {
-        return e.into_response();
-    }
-    let local = security::is_direct_local(&headers, peer.ip());
-    let owner = generation::request_owner(&headers, peer, &query);
-    let cancellation = http.service.shutdown.child_token();
-    let id = Arc::new(Mutex::new(None));
-    let mut guard = Guard {
-        service: http.service.clone(),
-        owner: owner.clone(),
-        id: id.clone(),
-        cancel: cancellation.clone(),
-        armed: true,
-    };
     let result = async {
-        let prepared = http
-            .service
-            .prepare_owned(body, local, Some(&owner), cancellation.clone())
-            .await?;
-        inputs::protect_restore(
-            &http.service.config,
-            &prepared.originals,
-            None,
-            &cancellation,
-        )
-        .await?;
-        let hooks = Arc::new(Legacy {
-            identity: id,
-            cancel: cancellation,
-        });
-        let job = http
-            .service
-            .backend
-            .clone()
-            .submit(prepared.backend, owner.clone(), Some(hooks))
-            .await?;
-        Ok(json!({"job":http.service.get_job(job["id"].as_str().unwrap(),&owner).await?}))
-    }
-    .await;
-    if result.is_ok() {
-        guard.armed = false;
-    }
+        state.host.check_running()?;
+        let key = body.get("requestKey").and_then(Value::as_str)
+            .ok_or_else(|| ApiError::invalid("视频请求必须携带请求编号"))?.to_owned();
+        body.as_object_mut().unwrap().remove("requestKey");
+        let input = if uri.path() == "/api/video/batches" { requests::RequestInput::Batch(body) }
+            else { requests::RequestInput::Job(body) };
+        http.service.accept_request(input, key, generation::request_owner(&headers, peer, &query),
+            security::is_direct_local(&headers, peer.ip())).await
+    }.await;
     response(result, StatusCode::ACCEPTED)
-}
-async fn create_batch(
-    State(state): State<AppState>,
-    Extension(http): Extension<Arc<Http>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    Query(query): Query<HashMap<String, String>>,
-    headers: HeaderMap,
-    Json(body): Json<Value>,
-) -> Response {
-    if let Err(e) = state.host.check_running() {
-        return e.into_response();
-    }
-    let local = security::is_direct_local(&headers, peer.ip());
-    let owner = generation::request_owner(&headers, peer, &query);
-    let cancellation = http.service.shutdown.child_token();
-    let _guard = cancellation.clone().drop_guard();
-    response(
-        async {
-            let prepared = http
-                .service
-                .prepare_batch_owned(body, local, Some(&owner), cancellation)
-                .await?;
-            Ok(json!({"batch":http.service.clone().submit_batch(prepared,owner,None).await?}))
-        }
-        .await,
-        StatusCode::ACCEPTED,
-    )
 }
 macro_rules! lookup{($name:ident,$method:ident,$key:literal)=>{async fn $name(State(state):State<AppState>,Extension(http):Extension<Arc<Http>>,ConnectInfo(peer):ConnectInfo<SocketAddr>,Path(id):Path<String>,Query(query):Query<HashMap<String,String>>,headers:HeaderMap)->Response{response(async{state.host.check_running()?;Ok(json!({$key:http.service.$method(&id,&generation::request_owner(&headers,peer,&query)).await?}))}.await,StatusCode::OK)}}}
 lookup!(get_job, get_job, "job");
 lookup!(cancel, cancel, "job");
 lookup!(get_batch, get_batch, "batch");
 lookup!(cancel_batch, cancel_batch, "batch");
+fn request_family(uri: &axum::http::Uri) -> &'static str {
+    if uri.path().starts_with("/api/video/batch-requests/") { requests::BATCH } else { requests::JOB }
+}
+async fn request_status(
+    State(state): State<AppState>, Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>, OriginalUri(uri): OriginalUri,
+    Path(key): Path<String>, Query(query): Query<HashMap<String, String>>, headers: HeaderMap,
+) -> Response {
+    response(async { state.host.check_running()?; http.service.request_status(&key,
+        &generation::request_owner(&headers, peer, &query), request_family(&uri)).await }.await, StatusCode::OK)
+}
+async fn cancel_request(
+    State(state): State<AppState>, Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>, OriginalUri(uri): OriginalUri,
+    Path(key): Path<String>, Query(query): Query<HashMap<String, String>>, headers: HeaderMap,
+) -> Response {
+    response(async { state.host.check_running()?; http.service.cancel_request(&key,
+        &generation::request_owner(&headers, peer, &query), request_family(&uri)).await }.await, StatusCode::ACCEPTED)
+}
 async fn concat(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
@@ -260,20 +169,11 @@ async fn concat(
     let _guard = cancel.clone().drop_guard();
     response(async{state.host.check_running()?;Ok(json!({"batch":http.service.clone().batch_action(&id,&generation::request_owner(&headers,peer,&query),"concat",cancel).await?}))}.await,StatusCode::OK)
 }
-async fn retry(
-    State(state): State<AppState>,
-    Extension(http): Extension<Arc<Http>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    Path((id, index)): Path<(String, usize)>,
-    Query(query): Query<HashMap<String, String>>,
-    headers: HeaderMap,
-) -> Response {
-    response(async{state.host.check_running()?;let index=index.checked_sub(1).ok_or_else(||error(400,"SHOT_INDEX_INVALID","分镜序号无效"))?;Ok(json!({"batch":http.service.clone().retry_shot(&id,&generation::request_owner(&headers,peer,&query),index).await?}))}.await,StatusCode::ACCEPTED)
-}
 #[derive(serde::Deserialize)]
-#[serde(deny_unknown_fields)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct RetrySelection {
     indices: Vec<usize>,
+    request_key: String,
 }
 async fn retry_many(
     State(state): State<AppState>,
@@ -288,7 +188,8 @@ async fn retry_many(
         state.host.check_running()?;
         let indices = selection.indices.into_iter().map(|index| index.checked_sub(1)
             .ok_or_else(||error(400,"SHOT_INDEX_INVALID","分镜序号无效"))).collect::<Result<Vec<_>>>()?;
-        Ok(json!({"batch":http.service.clone().retry_shots(&id,&generation::request_owner(&headers,peer,&query),indices).await?}))
+        let owner = generation::request_owner(&headers, peer, &query);
+        http.service.accept_request(requests::RequestInput::Retry { batch_id: id, indices }, selection.request_key, owner, false).await
     }.await,StatusCode::ACCEPTED)
 }
 async fn stream(

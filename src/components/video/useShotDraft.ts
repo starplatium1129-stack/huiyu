@@ -3,6 +3,7 @@ import type { VideoBatch, VideoQuality } from '@/api/videoApi'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard, useReferenceCards } from './useReferenceCards'
 import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 
 interface ShotDraftDeps {
@@ -75,24 +76,30 @@ function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
   return ok
 }
 // Tokens belong to submitted row objects, not editable fields; clones never inherit them.
-function beginShotSubmission(targets: ShotDraft[]) {
+async function beginShotSubmission(targets: ShotDraft[]): Promise<string[]> {
   targets.forEach(shot => submissionTokens.set(shot, crypto.randomUUID()))
-  persistShotsDraft()
+  if (!persistShotsDraft()) throw new Error('镜头来源尚未保存，未提交生成')
+  await flushProfileWrites()
+  return targets.map(shot => submissionTokens.get(shot)!)
 }
-function finishShotSubmission(targets: ShotDraft[], batchId?: string) {
-  const tokens = new Map(targets.map((shot, shotIndex) => [submissionTokens.get(shot), shotIndex]))
-  tokens.delete(undefined)
-  if (!batchId) targets.forEach(shot => submissionTokens.delete(shot))
+async function recoverShotSubmission(tokens: string[], batchId?: string) {
+  const positions = new Map(tokens.map((token, index) => [token, index]))
   const saved = videoStore.shotsDraft
-  if (saved?.shots.some(shot => shot.submissionToken && tokens.has(shot.submissionToken))) {
+  if (saved?.shots.some(shot => shot.submissionToken && positions.has(shot.submissionToken))) {
     const ok = videoStore.saveShotsDraft({ ...saved, updatedAt: Date.now(), shots: saved.shots.map(shot => {
-      const shotIndex = shot.submissionToken ? tokens.get(shot.submissionToken) : undefined
+      const shotIndex = shot.submissionToken ? positions.get(shot.submissionToken) : undefined
       if (shotIndex === undefined) return shot
       return batchId ? { ...shot, submission: { batchId, shotIndex } } : { ...shot, submissionToken: undefined }
     }) })
-    if (!ok) batchError.value = '分镜来源保存失败，请在任务中心保留并核对批次。'
+    if (!ok) throw new Error('分镜来源保存失败，原接收凭据已保留，请重新读取')
+    await flushProfileWrites()
   }
-  if (!disposed) persistShotsDraft()
+}
+async function finishShotSubmission(targets: ShotDraft[]) {
+  const tokens = targets.map(shot => submissionTokens.get(shot) || '')
+  await recoverShotSubmission(tokens)
+  targets.forEach(shot => submissionTokens.delete(shot))
+  if (!disposed && !persistShotsDraft()) throw new Error('分镜来源尚未保存')
 }
 // A reopened owner must adopt acceptance before its next autosave, even after edits/reorder.
 watch(() => videoStore.shotsDraft, (saved, previous) => {
@@ -205,5 +212,5 @@ function resumeDraftFrames(): Promise<void> | undefined {
     persistShotsDraft()
     disposed = true
   })
-  return { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission }
+  return { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission, recoverShotSubmission }
 }

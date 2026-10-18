@@ -3,7 +3,6 @@ import { createVideoStoryboard,uploadVideoImage,type VideoBatch,type VideoDefaul
 import { confirmAction } from '@/composables/useConfirm';
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useSceneStore } from '@/stores/sceneStore';
-import { useVideoStore } from '@/stores/videoStore';
 import { computed,onActivated,onBeforeUnmount,onDeactivated,onMounted,ref,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import type { ShotDraft } from './shotListTypes';
@@ -20,7 +19,6 @@ export function useShotWorkspace(props: {
     status: VideoStatusResponse | null;
 }) {
     const route = useRoute(), router = useRouter();
-    const videoStore = useVideoStore();
     const sceneStore = useSceneStore();
     const sceneBlueprints = computed(() => sceneStore.sceneBlueprints);
     const popularCharacters = computed(() => sceneStore.popularCharacters);
@@ -126,7 +124,7 @@ export function useShotWorkspace(props: {
         onCardRemoved: index => { shots.value.forEach(shot => { shot.cast = removeCastSlot(shot.cast, index); }); },
     });
     // ── 批量提交状态机（提交/3s 轮询/取消/重抽/拼接）已下沉 useShotBatchMachine ──
-    const { batch, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, getShotSubmission, restoreShotSubmission, submitBatch, cancelBatch, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
+    const { batch, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, requestPending, submitting, cancelling, concating, retrying, batchActive, canSubmit, canConcat, progressPercent, serverShot, getShotSubmission, restoreShotSubmission, submitBatch, cancelBatch, cancelOriginalRequest, retryShotAt, retryAllFailed, concatBatch, reconnectBatch } = useShotBatchMachine({
         shots,
         identityCard,
         aspectRatio,
@@ -140,11 +138,7 @@ export function useShotWorkspace(props: {
         batchError,
         onSubmitting: (targets) => beginShotSubmission(targets),
         onSubmissionRejected: (targets) => finishShotSubmission(targets),
-        onSubmitted: (targets, batchId) => finishShotSubmission(targets, batchId),
-        onAccepted: (value) => {
-            if (!videoStore.recordShotsBatch({ batchId: value.id, submittedAt: Date.now() }))
-                batchError.value = '分镜批次已提交，但批次记录保存失败；请在任务中心保留并核对任务。';
-        },
+        onSubmitted: (tokens, batchId) => recoverShotSubmission(tokens, batchId),
     });
     // ── AI 整理链路（逐镜整理/整批编排/脚本/台词/质检）已下沉 useShotAiTools ──
     const { aiBusy, aiNote, aiSnapshot, polishSnapshot, aiFlowStep, flowHint, scriptOpen, scriptStory, scriptCount, scriptTotal, scriptBusy, scriptNote, runAiRewrite, restoreAiSnapshot, runAiPolish, restorePolishSnapshot, runAiScript, dialogueIndex, dialogueOptions, dialogueBusy, runAiDialogue, applyDialogueOption, reviewIssues, reviewBusy, runAiReview, applyReviewSuggestion, shotIssueCount } = useShotAiTools({
@@ -198,7 +192,7 @@ export function useShotWorkspace(props: {
             return '控制面板启动 ComfyUI 后，回到这里重新检测即可。';
         return '';
     });
-    const batchStatusLabel = computed(() => ({
+    const batchStatusLabel = computed(() => batch.value?.needsReview ? '状态待核对' : ({
         running: '正在逐镜生成…',
         paused: '有镜头失败，可单独重抽',
         done: '全部完成',
@@ -414,7 +408,7 @@ export function useShotWorkspace(props: {
     // ── 分镜草稿持久化（2026-09-06 体验报告 F1）────────────────────────────────
     // 切模式保留缓存实例；真正卸载后恢复镜头文本、身份锚点和参考卡元信息。
     // 首帧图只存 IndexedDB 图片 id，恢复时重挂载（服务端受控文件名会被清理）。
-    const { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission } = useShotDraft({
+    const { restoreShotsDraft, persistShotsDraft, beginShotSubmission, finishShotSubmission, recoverShotSubmission } = useShotDraft({
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
         batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,
     });
@@ -423,32 +417,16 @@ export function useShotWorkspace(props: {
     async function reconnectShotsBatch() {
         const visit = workspaceVisit;
         const requestedBatch = typeof route.query.batch === 'string' ? route.query.batch : '';
-        const record = requestedBatch ? { batchId: requestedBatch } : videoStore.shotsBatch ?? (batch.value ? { batchId: batch.value.id } : null);
-        if (!record)
-            return;
-        const ok = await reconnectBatch(record.batchId);
+        await reconnectBatch(requestedBatch);
         if (!workspaceCurrent(visit)) return;
-        if (!ok) {
-            if ((typeof route.query.batch === 'string' ? route.query.batch : '') !== requestedBatch) return;
-            if (videoStore.shotsBatch?.batchId === record.batchId) videoStore.clearShotsBatch();
-            batchReadError.value ||= '上一批分镜任务已不存在（网关重启或已过期），镜头草稿仍在，可重新提交';
-        }
     }
+
     async function retryBatchRead() {
         if (!batchReadRetryable.value || batchReading.value || submitting.value || cancelling.value || retrying.value || concating.value) return;
         await reconnectShotsBatch();
     }
-    const canReturnToBatch = computed(() => Boolean(batch.value && batchReadError.value && !batchReadRetryable.value && route.query.batch !== batch.value.id));
-    function returnToCurrentBatch() {
-        if (!canReturnToBatch.value || batchReading.value || submitting.value || cancelling.value || retrying.value || concating.value) return;
-        return router.replace({ path: '/video-studio', query: { ...route.query, mode: 'shots', batch: batch.value!.id }, hash: route.hash });
-    }
     watch(() => route.query.batch, () => {
         if (route.path === '/video-studio') void reconnectShotsBatch();
-    });
-    watch(() => videoStore.shotsBatch?.batchId, id => {
-        if (!route.query.batch && !submitting.value && route.path === '/video-studio'
-            && shots.value.some(shot => getShotSubmission(shot)?.batchId === id)) void reconnectShotsBatch();
     });
     function resumeWorkspace() {
         if (!restoreReady || !workspaceCurrent(workspaceVisit) || workspaceRead) return;
@@ -494,7 +472,7 @@ frameInputs,
         dialogueIndex, dialogueOptions, applyDialogueOption, cameraOptions, motionOptions, pickFrame,
         retryShotFrame, clearFrame, onFramePicked, retryShotAt, scriptStory, scriptCount,
         scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
-        cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
-        submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, retryBatchRead, canReturnToBatch, returnToCurrentBatch, batchStatusLabel, progressPercent,
+        cancelBatch, cancelOriginalRequest, batch, retryAllFailed, canConcat, concating, concatBatch,
+        submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, requestPending, retryBatchRead, batchStatusLabel, progressPercent,
     };
 }

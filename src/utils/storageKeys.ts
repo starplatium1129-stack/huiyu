@@ -104,6 +104,8 @@ export const TEMP_RESULT_KEY = 'aics_pb_temp_result_v1'
 /** Frozen single image acceptance identity, retained until a durable result takes over. */
 export const IMAGE_REQUEST_DRAFT_KEY = 'aics_image_request_v1'
 export const COMPANION_IMAGE_REQUEST_KEY = 'aics_companion_image_request_v1'
+export const VIDEO_REQUEST_DRAFT_KEY = 'aics_video_request_v1'
+export const VIDEO_BATCH_REQUEST_DRAFT_KEY = 'aics_video_batch_request_v1'
 export const MANGA_REQUEST_DRAFT_KEY = 'aics_manga_request_v1'
 
 /**

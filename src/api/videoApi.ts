@@ -1,9 +1,9 @@
 import { apiClient } from './client'
-import { hasRuntimeTasks, isRuntimeTaskId, submitRuntimeTask, getRuntimeTask, cancelRuntimeTask, actOnRuntimeTask } from './runtimeTasks'
-import { taskVideoJob, taskVideoBatch, readRuntimeVideoBatch, retryRuntimeVideoShot } from './runtimeVideo'
+import { isRuntimeTaskId, getRuntimeTask, cancelRuntimeTask, actOnRuntimeTask } from './runtimeTasks'
+import { taskVideoJob, taskVideoBatch, readRuntimeVideoBatch } from './runtimeVideo'
 import {
-  isVideoBatchResponse,
-  isVideoJobResponse,
+  videoBatchResponse,
+  videoJobResponse,
   isVideoStatusResponse,
   isVideoStoryboard,
 } from './videoApiResponse'
@@ -67,7 +67,9 @@ export interface VideoJob {
   status: VideoJobStatus
   provider: 'comfy' | 'native'
   progress: number | null
-  /** Runtime recovery needs a task-center check rather than a fresh generation. */
+  upstreamSettled: boolean
+  unknown: boolean
+  /** Recovery requires checking the original task rather than fresh generation. */
   needsReview?: boolean
   /** 预估总时长（秒）；0 表示尚无实测估算。 */
   estimatedSeconds: number
@@ -127,17 +129,6 @@ export function fetchVideoStatus(signal?: AbortSignal): Promise<VideoStatusRespo
   })
 }
 
-export function createVideoJob(input: CreateVideoJobInput, signal?: AbortSignal): Promise<VideoJobResponse> {
-  if (hasRuntimeTasks()) return submitRuntimeTask('video', input as unknown as Record<string, unknown>, undefined, undefined, { signal }).then(task => ({ ok: true, job: taskVideoJob(task) }))
-  return apiClient.request<VideoJobResponse>('/api/video/jobs', {
-    method: 'POST',
-    body: input,
-    signal,
-    timeoutMs: 30_000,
-    validate: isVideoJobResponse,
-  })
-}
-
 /** 首帧图/尾帧图/参考图上传：原始 Blob → 网关校验后写入 ComfyUI/input，返回受控文件名。
  *  kind:'reference' 用独立前缀（跨任务资产，网关重启不清理）；首帧/尾帧走缺省前缀（任务级清理）。
  *  同一端点即覆盖 FL2VA 尾帧通道（后端按 IMAGE_INPUT_PATTERN 白名单校验）。 */
@@ -180,8 +171,7 @@ export function fetchVideoJob(id: string, signal?: AbortSignal): Promise<VideoJo
     cache: 'no-store',
     signal,
     timeoutMs: 12_000,
-    validate: isVideoJobResponse,
-  })
+  }).then(value => videoJobResponse(value, id))
 }
 
 export function cancelVideoJob(id: string, signal?: AbortSignal): Promise<VideoJobResponse> {
@@ -190,8 +180,7 @@ export function cancelVideoJob(id: string, signal?: AbortSignal): Promise<VideoJ
     method: 'DELETE',
     signal,
     timeoutMs: 15_000,
-    validate: isVideoJobResponse,
-  })
+  }).then(value => videoJobResponse(value, id))
 }
 
 // ── 分镜批量（P5 批量生成 / P6 尾帧衔接 / P8 拼接成片）──────────────────────
@@ -217,8 +206,11 @@ export interface VideoBatchShot {
 }
 
 export interface VideoBatch {
-  /** A one-shot retry remains independent of its source batch and concatenation. */
-  retrySource?: { batchId: string; stepIndex: number }
+  /** A selected-shot retry stays independent of source results and concatenation. */
+  retrySource?: { batchId: string; stepIndices: number[] }
+  upstreamSettled: boolean
+  unknown: boolean
+  needsReview?: boolean
   id: string
   status: VideoBatchStatus
   modelId: string
@@ -300,25 +292,13 @@ export interface VideoBatchResponse {
 }
 
 
-export function createVideoBatch(input: CreateVideoBatchInput, signal?: AbortSignal): Promise<VideoBatchResponse> {
-  if (hasRuntimeTasks()) return submitRuntimeTask('batch', input as unknown as Record<string, unknown>, undefined, undefined, { signal }).then(task => ({ ok: true, batch: taskVideoBatch(task) }))
-  return apiClient.request<VideoBatchResponse>('/api/video/batches', {
-    method: 'POST',
-    body: input,
-    signal,
-    timeoutMs: 30_000,
-    validate: isVideoBatchResponse,
-  })
-}
-
 export function fetchVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatchResponse> {
   if (isRuntimeTaskId(id)) return readRuntimeVideoBatch(id, signal).then(batch => ({ ok: true, batch }))
   return apiClient.request<VideoBatchResponse>(`/api/video/batches/${encodeURIComponent(id)}`, {
     cache: 'no-store',
     signal,
     timeoutMs: 12_000,
-    validate: isVideoBatchResponse,
-  })
+  }).then(value => videoBatchResponse(value, id))
 }
 
 export function cancelVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatchResponse> {
@@ -327,29 +307,7 @@ export function cancelVideoBatch(id: string, signal?: AbortSignal): Promise<Vide
     method: 'DELETE',
     signal,
     timeoutMs: 15_000,
-    validate: isVideoBatchResponse,
-  })
-}
-
-export function retryVideoShot(id: string, index: number, signal?: AbortSignal): Promise<VideoBatchResponse> {
-  if (isRuntimeTaskId(id)) return retryRuntimeVideoShot(id, index, signal).then(batch => ({ ok: true, batch }))
-  return apiClient.request<VideoBatchResponse>(
-    `/api/video/batches/${encodeURIComponent(id)}/shots/${index}/retry`,
-    {
-      method: 'POST',
-      signal,
-      timeoutMs: 15_000,
-      validate: isVideoBatchResponse,
-    },
-  )
-}
-
-/** Existing gateway batches retry a selection in one accepted operation. */
-export function retryGatewayVideoShots(id: string, indices: number[], signal?: AbortSignal): Promise<VideoBatchResponse> {
-  return apiClient.request<VideoBatchResponse>(`/api/video/batches/${encodeURIComponent(id)}/retry`, {
-    method: 'POST', body: { indices }, signal, timeoutMs: 15_000,
-    validate: isVideoBatchResponse,
-  })
+  }).then(value => videoBatchResponse(value, id))
 }
 
 export function concatVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatchResponse> {
@@ -360,9 +318,8 @@ export function concatVideoBatch(id: string, signal?: AbortSignal): Promise<Vide
       method: 'POST',
       signal,
       timeoutMs: 60_000,
-      validate: isVideoBatchResponse,
     },
-  )
+  ).then(value => videoBatchResponse(value, id))
 }
 
 // ── 分镜「AI 整理」（POST /api/video-ai/rewrite，复用聊天 LLM 配置）────────

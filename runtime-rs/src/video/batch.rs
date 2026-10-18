@@ -72,9 +72,20 @@ impl Batch {
         }
         Ok(())
     }
-    async fn public(&self) -> Value {
+    async fn public(&self, service: &Service) -> Value {
+        // A paused legacy runner can have a failed display row while its job
+        // outcome is still unknown. Observe those original identities, never
+        // infer settlement from the row label or from unsubmitted pending rows.
+        let gate = self.serial.try_lock().ok();
+        let stopped = !matches!(self.state.lock().await.status.as_str(), "running" | "cancelling");
+        let observed = if stopped && gate.is_some() {
+            Some(service.reconcile_live(self).await.unwrap_or(false))
+        } else { None };
         let s = self.state.lock().await;
-        json!({"id":self.id,"status":s.status,"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"steps":self.input["steps"],"linkLastFrame":self.input["linkLastFrame"],"progress":{"total":s.shots.len(),"succeeded":s.shots.iter().filter(|s|s.status=="succeeded").count(),"failed":s.shots.iter().filter(|s|s.status=="failed").count()},"createdAt":self.created,"shots":s.shots.iter().enumerate().map(|(i,s)|json!({"index":i+1,"status":s.status,"prompt":s.input["originalPrompt"],"dialogue":s.input["dialogue"],"shotSize":s.input["shotSize"],"camera":s.input["camera"],"motion":s.input["motion"],"duration":s.input["duration"],"seed":s.input["seed"],"attempts":s.attempts,"error":s.error,"code":s.code,"resultAvailable":s.result.is_some(),"resultUrl":s.result.as_ref().and(s.gateway.as_ref()).map(|id|format!("/api/video/jobs/{id}/result"))})).collect::<Vec<_>>(),"concatAvailable":s.concat.is_some(),"concatUrl":s.concat.as_ref().map(|_|format!("/api/video/batches/{}/result",self.id))})
+        let stopped = !matches!(s.status.as_str(), "running" | "cancelling");
+        let settled = stopped && observed == Some(true);
+        let unknown = if stopped { !settled } else { s.unknown };
+        json!({"id":self.id,"status":s.status,"upstreamSettled":settled,"unknown":unknown,"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"steps":self.input["steps"],"linkLastFrame":self.input["linkLastFrame"],"progress":{"total":s.shots.len(),"succeeded":s.shots.iter().filter(|s|s.status=="succeeded").count(),"failed":s.shots.iter().filter(|s|s.status=="failed").count()},"createdAt":self.created,"shots":s.shots.iter().enumerate().map(|(i,s)|json!({"index":i+1,"status":s.status,"prompt":s.input["originalPrompt"],"dialogue":s.input["dialogue"],"shotSize":s.input["shotSize"],"camera":s.input["camera"],"motion":s.input["motion"],"duration":s.input["duration"],"seed":s.input["seed"],"attempts":s.attempts,"error":s.error,"code":s.code,"resultAvailable":s.result.is_some(),"resultUrl":s.result.as_ref().and(s.gateway.as_ref()).map(|id|format!("/api/video/jobs/{id}/result"))})).collect::<Vec<_>>(),"concatAvailable":s.concat.is_some(),"concatUrl":s.concat.as_ref().map(|_|format!("/api/video/batches/{}/result",self.id))})
     }
 }
 impl Service {
@@ -166,6 +177,12 @@ impl Service {
         owner: String,
         hooks: Option<Arc<dyn ExecutionHooks>>,
     ) -> Result<Value> {
+        self.submit_batch_accepting(prepared, owner, hooks, None).await
+    }
+    pub(super) async fn submit_batch_accepting(
+        self: Arc<Self>, prepared: BatchPrepared, owner: String,
+        hooks: Option<Arc<dyn ExecutionHooks>>, acceptance: Option<&dyn ExecutionHooks>,
+    ) -> Result<Value> {
         inputs::protect_restore(
             &self.config,
             &prepared.originals,
@@ -217,8 +234,14 @@ impl Service {
             .lock()
             .await
             .insert(batch.id.clone(), batch.clone());
+        if let Some(acceptance) = acceptance
+            && let Err(error) = acceptance.checkpoint(json!({"gatewayJobId":batch.id})).await
+        {
+            self.batches.lock().await.remove(&batch.id);
+            return Err(error);
+        }
         self.kick(batch.clone(), Some(prepared.first));
-        Ok(batch.public().await)
+        Ok(batch.public(&self).await)
     }
     fn kick(self: &Arc<Self>, batch: Arc<Batch>, first: Option<Prepared>) {
         let service = self.clone();
@@ -269,7 +292,7 @@ impl Service {
         Err(error(404, "BATCH_NOT_FOUND", "分镜任务不存在"))
     }
     pub async fn get_batch(&self, id: &str, owner: &str) -> Result<Value> {
-        Ok(self.batch(id, owner).await?.public().await)
+        Ok(self.batch(id, owner).await?.public(self).await)
     }
     pub async fn query_batch(&self, id: &str, owner: &str) -> Result<Observation> {
         let batch = self.batch(id, owner).await?;

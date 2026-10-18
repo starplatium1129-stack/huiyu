@@ -8,6 +8,7 @@ mod output;
 mod plan;
 mod probe;
 mod recovery;
+pub(crate) mod receipts;
 mod resources;
 mod service;
 mod snapshots;

@@ -1,77 +1,16 @@
 //! Browser acceptance receipts. Execution and result retention stay in generation.
 use super::*;
 use futures_util::future::BoxFuture;
-use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use tokio::sync::{Mutex, Semaphore};
+use crate::generation::receipts::{Receipt, Rejection};
+pub(super) use crate::generation::receipts::Requests;
 
-pub(super) struct Requests {
-    epoch: String,
-    active: Mutex<HashMap<String, CancellationToken>>,
-    admission: Arc<Semaphore>,
-}
-impl Requests {
-    pub fn new() -> Self {
-        Self { epoch: uuid::Uuid::new_v4().to_string(), active: Mutex::new(HashMap::new()), admission: Arc::new(Semaphore::new(16)) }
-    }
-    pub async fn wait_for_acceptance(&self) { let _active = self.active.lock().await; }
-}
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-struct Receipt {
-    request_key: String,
-    owner: String,
-    family: String,
-    fingerprint: String,
-    epoch: String,
-    job_id: Option<String>,
-    cancel_requested: bool,
-    error: Option<Rejection>,
-}
-#[derive(Serialize, Deserialize)]
-struct Rejection { status: u16, code: String, message: String }
-
-fn token(owner: &str, family: &str, key: &str) -> Result<String> {
-    if key.is_empty() || key.len() > 160 || !key.bytes().all(|c| c.is_ascii_alphanumeric() || b"_-".contains(&c)) {
-        return Err(ApiError::invalid("图片请求编号无效"));
-    }
-    Ok(crate::storage::json_fingerprint(&json!([owner, family, key])))
-}
 impl Service {
-    fn receipt_path(&self, token: &str) -> PathBuf {
-        self.config.runtime_root.join("jobs/image-requests").join(format!("{token}.json"))
-    }
-    async fn read_receipt(&self, identity: &str) -> Result<Option<Receipt>> {
-        let path = self.receipt_path(identity);
-        match tokio::fs::symlink_metadata(&path).await {
-            Err(error) if error.kind() == std::io::ErrorKind::NotFound => return Ok(None),
-            Ok(meta) if meta.is_file() && !meta.file_type().is_symlink() && meta.len() <= 16 * 1024 => {},
-            _ => return Err(ApiError::new(503, "IMAGE_RECEIPT_UNAVAILABLE", "图片接收凭据不可读取，不能重新提交")),
-        }
-        let receipt: Receipt = serde_json::from_slice(&tokio::fs::read(path).await?)
-            .map_err(|_| ApiError::new(503, "IMAGE_RECEIPT_UNAVAILABLE", "图片接收凭据已损坏，不能重新提交"))?;
-        if token(&receipt.owner, &receipt.family, &receipt.request_key)? != identity {
-            return Err(ApiError::new(503, "IMAGE_RECEIPT_UNAVAILABLE", "图片接收凭据身份不符，不能重新提交"));
-        }
-        Ok(Some(receipt))
-    }
-    async fn save_receipt(&self, token: &str, receipt: &Receipt) -> Result<()> {
-        let path = self.receipt_path(token);
-        let directory = path.parent().unwrap();
-        tokio::fs::create_dir_all(directory).await?;
-        for part in [directory.parent().unwrap(), directory] {
-            if !tokio::fs::symlink_metadata(part).await.is_ok_and(|m| m.is_dir() && !m.file_type().is_symlink()) {
-                return Err(ApiError::new(503, "IMAGE_RECEIPT_UNAVAILABLE", "图片接收凭据目录不可用"));
-            }
-        }
-        generation::write_job_record(&path, &serde_json::to_value(receipt)?).await
-    }
     async fn receipt_value(&self, mut receipt: Receipt) -> Result<Value> {
         let waiting = if receipt.job_id.is_none() && receipt.error.is_none() && !receipt.cancel_requested {
-            let token = token(&receipt.owner, &receipt.family, &receipt.request_key)?;
+            let token = self.requests.token(&receipt.owner, &receipt.family, &receipt.request_key)?;
             let active = self.requests.active.lock().await;
             // Acceptance may have finished after the caller read its snapshot.
-            if let Some(latest) = self.read_receipt(&token).await? { receipt = latest; }
+            if let Some(latest) = self.requests.read(&token).await? { receipt = latest; }
             active.contains_key(&token)
         } else { false };
         if let Some(error) = receipt.error {
@@ -91,22 +30,33 @@ impl Service {
         Ok(json!({"requestKey":receipt.request_key,"job":job}))
     }
     pub(super) async fn request_status(&self, key: &str, owner: &str, family: &str) -> Result<Value> {
-        let token = token(owner, family, key)?;
+        let token = self.requests.token(owner, family, key)?;
         let active = self.requests.active.lock().await;
-        let receipt = self.read_receipt(&token).await?;
+        let receipt = self.requests.read(&token).await?;
         drop(active);
         match receipt {
             Some(receipt) => self.receipt_value(receipt).await,
             None => Ok(json!({"requestKey":key,"job":null})),
         }
     }
-    pub(super) async fn accept_request(self: &Arc<Self>, mut body: Value, key: String, owner: String, family: &'static str, local: bool) -> Result<Value> {
-        let token = token(&owner, family, &key)?;
+    pub(super) async fn accept_request(self: &Arc<Self>, body: Value, key: String, owner: String, family: &'static str, local: bool) -> Result<Value> {
+        let (reply, result) = tokio::sync::oneshot::channel();
+        let service = self.clone();
+        // The owner includes the first durable write. Dropping HTTP observation
+        // cannot leave a saved intent without transferring its preparation.
+        self.uploads.spawn(async move {
+            let value = service.accept_request_owned(body, key, owner, family, local).await;
+            let _ = reply.send(value);
+        });
+        result.await.map_err(|_| ApiError::new(503, "IMAGE_ACCEPTANCE_UNKNOWN", "图片接收结果未知，请查询原请求"))?
+    }
+    async fn accept_request_owned(self: &Arc<Self>, mut body: Value, key: String, owner: String, family: &'static str, local: bool) -> Result<Value> {
+        let token = self.requests.token(&owner, family, &key)?;
         body.as_object_mut().ok_or_else(|| ApiError::invalid("图片输入必须为对象"))?.remove("requestKey");
         let fingerprint = crate::storage::json_fingerprint(&body);
         let mut active = self.requests.active.lock().await;
         if self.shutdown.is_cancelled() { return Err(closed()); }
-        if let Some(receipt) = self.read_receipt(&token).await? {
+        if let Some(receipt) = self.requests.read(&token).await? {
             if receipt.cancel_requested && receipt.fingerprint.is_empty() {
                 drop(active);
                 return self.receipt_value(receipt).await;
@@ -126,7 +76,7 @@ impl Service {
         let cancel = self.shutdown.child_token();
         let receipt = Receipt { request_key: key, owner: owner.clone(), family: family.into(), fingerprint,
             epoch: self.requests.epoch.clone(), job_id: None, cancel_requested: false, error: None };
-        self.save_receipt(&token, &receipt).await?;
+        self.requests.save(&token, &receipt).await?;
         active.insert(token.clone(), cancel.clone());
         let service = self.clone();
         let operation = token.clone();
@@ -140,12 +90,12 @@ impl Service {
             }.await;
             let mut active = service.requests.active.lock().await;
             if let Err(error) = outcome {
-                if let Ok(Some(mut receipt)) = service.read_receipt(&operation).await {
+                if let Ok(Some(mut receipt)) = service.requests.read(&operation).await {
                     // A checkpointed job remains authoritative even if the submit
                     // response failed after upstream transfer.
                     if receipt.job_id.is_none() {
                         receipt.error = Some(Rejection { status: error.status.as_u16(), code: error.code, message: error.message.chars().take(1000).collect() });
-                        if let Err(error) = service.save_receipt(&operation, &receipt).await { eprintln!("image receipt: {}", error.code); }
+                        if let Err(error) = service.requests.save(&operation, &receipt).await { eprintln!("image receipt: {}", error.code); }
                     }
                 }
             }
@@ -154,15 +104,25 @@ impl Service {
         drop(active);
         self.receipt_value(receipt).await
     }
-    pub(super) async fn cancel_request(&self, key: &str, owner: &str, family: &str) -> Result<Value> {
-        let token = token(owner, family, key)?;
+    pub(super) async fn cancel_request(self: &Arc<Self>, key: &str, owner: &str, family: &str) -> Result<Value> {
+        let (reply, result) = tokio::sync::oneshot::channel();
+        let service = self.clone();
+        let (key, owner, family) = (key.to_owned(), owner.to_owned(), family.to_owned());
+        self.uploads.spawn(async move {
+            let value = service.cancel_request_owned(&key, &owner, &family).await;
+            let _ = reply.send(value);
+        });
+        result.await.map_err(|_| ApiError::new(503, "IMAGE_CANCEL_UNKNOWN", "图片取消结果未知，请查询原请求"))?
+    }
+    async fn cancel_request_owned(&self, key: &str, owner: &str, family: &str) -> Result<Value> {
+        let token = self.requests.token(owner, family, key)?;
         let active = self.requests.active.lock().await;
-        let mut receipt = self.read_receipt(&token).await?.unwrap_or(Receipt {
+        let mut receipt = self.requests.read(&token).await?.unwrap_or(Receipt {
             request_key: key.into(), owner: owner.into(), family: family.into(), fingerprint: String::new(),
             epoch: self.requests.epoch.clone(), job_id: None, cancel_requested: true, error: None,
         });
         receipt.cancel_requested = true;
-        self.save_receipt(&token, &receipt).await?;
+        self.requests.save(&token, &receipt).await?;
         if let Some(cancel) = active.get(&token) { cancel.cancel(); }
         drop(active);
         let job = match &receipt.job_id { Some(id) => Some(self.cancel(id, owner, family).await?), None => None };
@@ -179,10 +139,10 @@ impl ExecutionHooks for ReceiptObservation {
             let service = self.service.upgrade().ok_or_else(closed)?;
             let _active = service.requests.active.lock().await;
             self.check()?;
-            let mut receipt = service.read_receipt(&self.token).await?.ok_or_else(|| ApiError::new(503, "IMAGE_RECEIPT_UNAVAILABLE", "图片接收凭据丢失"))?;
+            let mut receipt = service.requests.read(&self.token).await?.ok_or_else(|| ApiError::new(503, "IMAGE_RECEIPT_UNAVAILABLE", "图片接收凭据丢失"))?;
             if receipt.cancel_requested { return Err(inputs::cancelled()); }
             receipt.job_id = Some(value["gatewayJobId"].as_str().ok_or_else(|| ApiError::invalid("缺少图片任务编号"))?.into());
-            service.save_receipt(&self.token, &receipt).await
+            service.requests.save(&self.token, &receipt).await
         })
     }
     fn submitting(&self, _: String) -> BoxFuture<'_, Result<()>> { Box::pin(async move { self.check() }) }

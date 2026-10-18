@@ -83,6 +83,7 @@ impl Service {
             shutdown.clone(),
         )?);
         let native = backend.native_enabled();
+        let requests = requests::Requests::new(config.runtime_root.join("jobs/image-requests"), "IMAGE", "图片");
         Ok(Self {
             backend,
             native,
@@ -90,7 +91,7 @@ impl Service {
             shutdown,
             uploads: TaskTracker::new(),
             limits,
-            requests: requests::Requests::new(),
+            requests,
         })
     }
     pub async fn prepare(

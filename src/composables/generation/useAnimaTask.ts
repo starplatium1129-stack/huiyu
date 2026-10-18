@@ -1,9 +1,10 @@
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 import { computed, ref, toRaw, type Ref } from 'vue'
-import { ApiClientError, type ApiClient } from '@/api/client'
+import { type ApiClient } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 import { assertDirectImageRuntime } from '@/api/directImageJobs'
-import { cancelDirectImageRequest, DirectImageRequestRejected } from '@/api/directImageRequests'
+import { cancelDirectImageRequest } from '@/api/directImageRequests'
+import { DirectRequestRejected } from '@/api/directGenerationRequests'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -74,7 +75,6 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     controller = abort; activeRuntime = runtimeResourceIdentity()
     const current = () => !disposed && !abort.signal.aborted && requestSerial === serial
     const resuming = Boolean(draft?.submitted)
-    let posted = false, accepted = resuming
     try {
       if (draft) {
         assertRequestOwner(draft, runtime)
@@ -126,13 +126,12 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
       assertRequestOwner(draft, hasRuntimeTasks())
       if ('runRuntimeAnima' in transport) await transport.runRuntimeAnima({ input: animaRequestPayload(request), key: draft.key, resume: resuming,
         signal: abort.signal, family, context: submission.context, state, isCurrent: () => current() && sameTempResultOwner(owned.owner),
-        onSubmitting: () => { assertRequestOwner(owned, hasRuntimeTasks()); posted = true }, onAccepted: () => { accepted = true }, discardStashed: view.discardStashed, onResult })
+        onSubmitting: () => { assertRequestOwner(owned, hasRuntimeTasks()) }, discardStashed: view.discardStashed, onResult })
       else await transport.runDirectAnima({ client, request, family, signal: abort.signal, current, requestKey: draft.key, resume: resuming,
         state, context: submission.context, patch: view.patch, discardStashed: view.discardStashed, onResult })
     } catch (error) {
       if (!current()) return
-      const definitive = error instanceof DirectImageRequestRejected || error instanceof AcceptedTaskTerminalError
-        || runtime && posted && !accepted && error instanceof ApiClientError && error.kind === 'http' && error.status < 500
+      const definitive = error instanceof DirectRequestRejected || error instanceof AcceptedTaskTerminalError
       if (definitive && draft) {
         try { await acknowledge(draft) } catch (failure) { options.flash(failure instanceof Error ? failure.message : String(failure)) }
       }

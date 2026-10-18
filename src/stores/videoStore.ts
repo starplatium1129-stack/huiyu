@@ -95,7 +95,7 @@ export interface VideoDraftPayload {
   updatedAt: number
 }
 
-/** 在途/最近一次单任务视频记录：离页后按 jobId 重连真实状态。 */
+/** 旧版只含 ID 的视频记录：仅作读取兼容，新提交走持久请求 journal。 */
 export interface VideoTaskRecord {
   jobId: string
   mode: string
@@ -150,7 +150,7 @@ export interface ShotsDraftPayload {
   updatedAt: number
 }
 
-/** 分镜整批任务记录：离页后按 batchId 重连真实进度。 */
+/** 旧版分镜 ID 读取兼容；不能由 404/410 推导出可以重复提交。 */
 export interface ShotsBatchRecord {
   batchId: string
   submittedAt: number
@@ -205,6 +205,16 @@ function readJson<T>(key: string, validate: (value: unknown) => value is T): T |
   } catch {
     return null
   }
+}
+
+function readTaskHistory<T>(key: string, validate: (value: unknown) => value is T): { record: T | null; issue: string } {
+  try {
+    const raw = sessionStorage.getItem(key)
+    if (!raw) return { record: null, issue: '' }
+    const parsed: unknown = JSON.parse(raw)
+    if (!validate(parsed)) throw new Error('invalid')
+    return { record: parsed, issue: '' }
+  } catch { return { record: null, issue: '旧任务身份无法读取，记录已保留；请核对原任务，不能重复提交' } }
 }
 
 function writeJson(key: string, value: unknown): boolean {
@@ -284,20 +294,18 @@ export const useVideoStore = defineStore('videoStudio', () => {
 
   // ── 创作草稿与任务记录（F1：切页/刷新不丢创作上下文）─────────────────────
   const videoDraft = ref<VideoDraftPayload | null>(readJson(VIDEO_DRAFT_KEY, isVideoDraft))
-  const videoTask = ref<VideoTaskRecord | null>(readJson(VIDEO_TASK_KEY, isVideoTaskRecord))
+  const legacyVideo = readTaskHistory(VIDEO_TASK_KEY, isVideoTaskRecord)
+  const videoTask = ref<VideoTaskRecord | null>(legacyVideo.record)
+  const videoTaskIssue = ref(legacyVideo.issue)
   const shotsDraft = ref<ShotsDraftPayload | null>(readJson(VIDEO_SHOTS_DRAFT_KEY, isShotsDraft))
-  const shotsBatch = ref<ShotsBatchRecord | null>(readJson(VIDEO_SHOTS_BATCH_KEY, isShotsBatchRecord))
+  const legacyBatch = readTaskHistory(VIDEO_SHOTS_BATCH_KEY, isShotsBatchRecord)
+  const shotsBatch = ref<ShotsBatchRecord | null>(legacyBatch.record)
+  const shotsBatchIssue = ref(legacyBatch.issue)
 
   /** 草稿写入失败必须可感知（F1 验收）：返回 false 由调用方提示。 */
   function saveVideoDraft(draft: VideoDraftPayload): boolean {
     if (!writeJson(VIDEO_DRAFT_KEY, draft)) return false
     videoDraft.value = draft
-    return true
-  }
-
-  function recordVideoTask(record: VideoTaskRecord): boolean {
-    if (!writeJson(VIDEO_TASK_KEY, record)) return false
-    videoTask.value = record
     return true
   }
 
@@ -309,12 +317,6 @@ export const useVideoStore = defineStore('videoStudio', () => {
   function saveShotsDraft(draft: ShotsDraftPayload): boolean {
     if (!writeJson(VIDEO_SHOTS_DRAFT_KEY, draft)) return false
     shotsDraft.value = draft
-    return true
-  }
-
-  function recordShotsBatch(record: ShotsBatchRecord): boolean {
-    if (!writeJson(VIDEO_SHOTS_BATCH_KEY, record)) return false
-    shotsBatch.value = record
     return true
   }
 
@@ -333,14 +335,12 @@ export const useVideoStore = defineStore('videoStudio', () => {
     pendingScenarioActs,
     stageScenarioActs,
     videoDraft,
-    videoTask,
+    videoTask, videoTaskIssue,
     shotsDraft,
-    shotsBatch,
+    shotsBatch, shotsBatchIssue,
     saveVideoDraft,
-    recordVideoTask,
     clearVideoTask,
     saveShotsDraft,
-    recordShotsBatch,
     clearShotsBatch,
   }
 })

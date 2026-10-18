@@ -195,6 +195,11 @@
             <p>{{ selectedJobError || (job ? '上一段预览已保留，任务读取完成后更新。' : '读取完成后会显示任务与成片。') }}</p>
             <button v-if="selectedJobError" class="btn btn-ghost" type="button" :disabled="selectedJobReading" @click="retrySelectedTask">重新读取所选任务</button>
           </div>
+          <div v-if="requestPending" class="video-inline-message warning" role="status">
+            <p>原视频请求尚未确认结束，已保留身份；查询不会重新生成。</p>
+            <button class="btn btn-ghost" type="button" :disabled="submitting || reconnectState === 'reading'" @click="reconnectVideo">查询原请求</button>
+            <button class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancelOriginalRequest">{{ cancelling ? '请求取消…' : '取消原请求' }}</button>
+          </div>
           <div v-if="!job && !jobSelectionPending" class="video-queue-empty">
             <span class="video-empty-reel" aria-hidden="true"><ArchiveIcon name="play" /></span>
             <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '暂无成片' }}</strong>
@@ -422,8 +427,8 @@ formatSeconds,
 progressWarning,
 jobErrorReport,
 cancelling,
-cancelJob,
-reconnectState, reconnectVideo,
+cancelJob, cancelOriginalRequest,
+reconnectState, reconnectVideo, requestPending,
 jobReading, refreshJob,
 jobSelectionPending, selectedJobReading, selectedJobError, retrySelectedJob,
 } = useVideoWorkspace()

@@ -2,11 +2,11 @@
   <section ref="editorRoot" class="shot-editor">
     <p v-if="batchError" class="video-panel" role="status">{{ batchError }}</p>
     <p v-if="batchReadError || batchRecoveryPending" class="video-panel" role="status">
-      {{ batchReading ? '正在读取分镜批次…' : batchReadError }}
+      {{ batchReading ? '正在读取分镜批次…' : batchReadError || '原分镜请求尚未结束，不能重复提交。' }}
       <template v-if="batchReadRetryable">仅查询已有任务，不会重新生成。
         <button class="btn btn-ghost btn-sm" type="button" :disabled="batchReading || submitting || cancelling || retrying || concating" :aria-busy="batchReading" @click="retryBatchRead">重新读取批次</button>
       </template>
-      <button v-if="canReturnToBatch" class="btn btn-ghost btn-sm" type="button" :disabled="batchReading || submitting || cancelling || retrying || concating" @click="returnToCurrentBatch">返回当前批次</button>
+      <button v-if="requestPending" class="btn btn-ghost btn-sm" type="button" :disabled="cancelling || submitting || retrying" @click="cancelOriginalRequest">{{ cancelling ? '请求取消…' : '取消原请求' }}</button>
     </p>
     <div v-if="!h3Ready" class="video-panel shot-blocked">
       <p>可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。</p>
@@ -461,8 +461,8 @@ serverShot, shotStatusLabel, moveShot, removeShot, dialogueBusy, runAiDialogue,
 dialogueIndex, dialogueOptions, applyDialogueOption, cameraOptions, motionOptions, pickFrame,
 retryShotFrame, clearFrame, onFramePicked, retryShotAt, scriptStory, scriptCount,
 scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
-cancelBatch, batch, retryAllFailed, canConcat, concating, concatBatch,
-submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, retryBatchRead, canReturnToBatch, returnToCurrentBatch, batchStatusLabel, progressPercent,
+cancelBatch, cancelOriginalRequest, batch, retryAllFailed, canConcat, concating, concatBatch,
+submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, requestPending, retryBatchRead, batchStatusLabel, progressPercent,
 } = useShotWorkspace(props)
 
 async function moveShotWithFocus(index: number, delta: number) {
