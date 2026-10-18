@@ -52,6 +52,8 @@
 :root[data-theme-style='terraria'] .nav .nav-links > a:not(.active) { background:transparent; border-color:var(--terraria-soil); }
 :root[data-theme-style='terraria'] .nav .nav-more-trigger { background:transparent; }
 :root[data-theme-style='terraria'] .nav .sound-toggle { background:transparent; }
+:root[data-theme-style='terraria'] .nav .nav-utilities .nav-search { color:var(--terraria-on-wood); background:transparent; border-color:var(--terraria-soil); }
+:root[data-theme-style='terraria'] .nav .nav-utilities .nav-search:hover { background:var(--terraria-action); }
 :root[data-theme-style='terraria'] .nav .nav-more[data-active='true'] .nav-more-trigger { background:var(--terraria-action); }
 :root[data-theme-style='terraria'] .nav :is(.nav-links>a.active,.task-center-button,.app-theme-toggle:hover,.sound-toggle.active) { color:var(--terraria-on-wood); background:var(--terraria-action); }
 :root[data-theme-style='terraria'] body :is(.companion-chat-titlebar,.companion-desktop-float,.control-rail) button,
@@ -126,6 +128,8 @@
   :root[data-theme-style='terraria'] .page-root > .nav .nav-more-trigger { width:100%; min-height:40px; justify-content:center; }
   :root[data-theme-style='terraria'] .page-root > .nav .nav-utilities { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); justify-items:center; gap:4px; padding:12px 0 0; margin:auto 0 0; border-left:0; border-top:2px solid var(--terraria-soil); }
   :root[data-theme-style='terraria'] .page-root > .nav .nav-utility-divider { display:none; }
+  :root[data-theme-style='terraria'] .page-root > .nav .nav-utilities .nav-search { grid-column:1/-1; width:100%; min-width:0; }
+  :root[data-theme-style='terraria'] .page-root > .nav .nav-search kbd { display:none; }
   :root[data-theme-style='terraria'] .page-root > .nav .nav-utilities .task-center-button { min-width:0; padding:0 6px; white-space:nowrap; }
   :root[data-theme-style='terraria'] .page-root > .nav .nav-utilities > :is(.task-center-button,:has(.task-center-button)) { grid-column:1/-1; width:100%; }
   :root[data-theme-style='terraria'] .page-root > .nav .nav-menu-toggle { display:none; }

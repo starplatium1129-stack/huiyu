@@ -50,6 +50,7 @@ const origin = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const surface = useFluidSurface('.art-viewer')
 const preview = ref(origin.capture(props.source))
 const motion = useFluidDialog(dialog, {
+  ...surface,
   enter(el, done) {
     surface.enter(el, done)
     const image = el.querySelector<HTMLImageElement>('.zoomable-img')

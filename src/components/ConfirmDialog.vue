@@ -1,6 +1,6 @@
 <template>
   <Teleport :to="teleportTarget">
-    <!-- Decision feedback and keyboard focus do not wait for decorative motion. -->
+    <FluidTransition panel=".confirm-panel">
       <div
         v-show="state.visible"
         :inert="!state.visible"
@@ -41,6 +41,7 @@
           </div>
         </div>
       </div>
+    </FluidTransition>
   </Teleport>
 </template>
 
@@ -50,6 +51,7 @@ import { useRoute } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { resolveConfirm, useConfirmState } from '@/composables/useConfirm'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 const state = useConfirmState()
 const route = useRoute()

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onActivated, onDeactivated, ref, useAttrs, watch } from 'vue'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
+import { usePageScrollLock } from '@/composables/usePageScrollLock'
 import {
   SelectRoot,
   SelectTrigger,
@@ -16,6 +17,7 @@ import {
 } from 'reka-ui'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 /**
  * 选项值允许字符串或数字：调用方既有角色/场景 id，也有 1.5× 这类倍率与页码。
@@ -89,6 +91,7 @@ function applyKey(key: string) {
 
 const attrs = useAttrs()
 const open = ref(false)
+usePageScrollLock(() => open.value)
 const pointerOpened = ref(false)
 let viewActive = true
 onActivated(() => { viewActive = true })
@@ -98,7 +101,7 @@ onDeactivated(() => {
 })
 // Closing a cached page must release the portal without focusing its hidden trigger.
 function onCloseAutoFocus(event: Event) {
-  if (!viewActive) event.preventDefault()
+  if (!viewActive || open.value) event.preventDefault()
 }
 function onEscape(event: KeyboardEvent) {
   if (!open.value || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
@@ -139,7 +142,6 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
           :aria-label="accessibleName"
           :data-empty="selectedLabel ? undefined : ''"
           :data-value="String(modelValue ?? '')"
-          :data-pointer-open="pointerOpened"
           @pointerdown="pointerOpened = true"
           @keydown="pointerOpened = false"
           @keydown.esc="onEscape"
@@ -149,8 +151,9 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
         </SelectTrigger>
       </StudioTooltip>
 
-      <SelectPortal v-if="open" :to="portalTarget">
-        <SelectContent data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @escape-key-down="onDismissEscape" @close-auto-focus="onCloseAutoFocus">
+      <SelectPortal :to="portalTarget">
+        <FluidTransition small panel=".studio-select-content">
+        <SelectContent v-if="open" force-mount :body-lock="false" data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @escape-key-down="onDismissEscape" @close-auto-focus="onCloseAutoFocus">
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">
               <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">
@@ -188,6 +191,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
             </template>
           </SelectViewport>
         </SelectContent>
+        </FluidTransition>
       </SelectPortal>
     </SelectRoot>
   </div>

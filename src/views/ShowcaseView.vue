@@ -217,6 +217,7 @@ function sourceImage(id = currentId.value) {
   return document.querySelector<HTMLImageElement>(`.sample[data-sample-id="${CSS.escape(id)}"] .sample-image`)
 }
 const viewerMotion = useFluidDialog(dialogEl, {
+  ...viewerSurface,
   enter(el, done) {
     const image = el.querySelector<HTMLImageElement>('.zoomable-img')
     viewerSurface.enter(el, done)

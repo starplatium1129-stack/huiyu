@@ -1,0 +1,6 @@
+/** Interaction tuning adapted from Caho1/open-claude-ui, MIT © 2026 Caho1.
+ * Source: 638800b8a4cee4513c8763c3df0ecf8a77b32379/code-examples/ClaudeMotionPresets.ts
+ * License: assets/licenses/open-claude-ui.txt. */
+export const BUTTON_SPRING = { type: 'spring', stiffness: 600, damping: 30, mass: 1 } as const
+/** Faster first arrival with a visible single rebound; input never waits for settling. */
+export const SURFACE_SPRING = { stiffness: 720, damping: 32, mass: 1 } as const

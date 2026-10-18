@@ -2,6 +2,7 @@
 import { computed, defineComponent, onActivated, onDeactivated, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
 import { TooltipArrow, TooltipContent, TooltipPortal, TooltipRoot, TooltipTrigger, injectTooltipRootContext } from "reka-ui"
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 /**
  * 原生 title 属性的替身。
@@ -33,6 +34,7 @@ const props = withDefaults(defineProps<{
 }>(), { content: null, side: "top", delay: 400, anchor: false })
 
 const descriptionId = ref<string>()
+const open = ref(false)
 // Close Reka itself so pending hover timers are cancelled without replacing the slot DOM.
 const TooltipLifecycle = defineComponent({
   setup() {
@@ -165,11 +167,13 @@ watch(() => props.anchor, () => {
     @focus="onAnchorFocus"
     @blur="onAnchorBlur"
   >
-    <TooltipRoot :disabled="!content" :delay-duration="delay">
+    <TooltipRoot v-model:open="open" :disabled="!content" :delay-duration="delay">
       <TooltipLifecycle />
       <TooltipTrigger as-child><slot /></TooltipTrigger>
       <TooltipPortal v-if="content" :to="portalTarget">
+        <FluidTransition small panel=".studio-tooltip">
         <TooltipContent
+          v-if="open" force-mount
           :data-fluid-glass="inDialog ? undefined : ''"
           :side="side"
           :side-offset="6"
@@ -180,6 +184,7 @@ watch(() => props.anchor, () => {
           {{ content }}
           <TooltipArrow class="studio-tooltip-arrow" :width="10" :height="5" />
         </TooltipContent>
+        </FluidTransition>
       </TooltipPortal>
     </TooltipRoot>
   </span>
@@ -203,13 +208,12 @@ watch(() => props.anchor, () => {
 .studio-tooltip-anchor[data-anchor] > :disabled { pointer-events: none; }
 
 .studio-tooltip {
+  --surface-enter-y:3px;
+  --surface-enter-scale:.98;
   transform-origin: var(--reka-tooltip-content-transform-origin, center);
 }
-/* Pointer hints gently settle; keyboard focus (instant-open) stays immediate.
-   Reka owns dismissal, so a decorative exit never delays focus or a click. */
-.studio-tooltip[data-state='delayed-open'] { transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out); }
-@starting-style { .studio-tooltip[data-state='delayed-open'] { opacity: 0; transform: translateY(3px); } }
-:root:is([data-motion='reduce'], [data-motion='reduced']) .studio-tooltip[data-state] { transition: none; }
+/* Enter and leave share an interruptible surface; Reka releases semantics immediately. */
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .studio-tooltip[data-state] { animation:none; transition: none; }
 /* 渲染进 dialog 时要盖过弹窗内部最高层（--z-overlay 是弹窗层） */
 .studio-tooltip[data-in-dialog] { z-index: calc(var(--z-overlay) + 1); }
 @media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .studio-tooltip[data-state] { animation: none; transition: none; } }

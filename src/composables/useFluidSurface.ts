@@ -1,10 +1,8 @@
-import { getCurrentInstance, onDeactivated, onUnmounted } from 'vue'
+import { onDeactivated, onUnmounted } from 'vue'
 import { createFluidMotion, FluidSpring } from '@/utils/fluidSpring'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { cssTimeToMilliseconds } from '@/utils/motionTiming'
-
-/** Default transition consumers expose their panel as a dialog; custom cards pass an explicit selector. */
-export const DEFAULT_FLUID_PANEL_SELECTOR = '[role="dialog"]'
+import { SURFACE_SPRING } from '@/utils/controlSprings'
 
 /** 全屏与超大图查看器类名清单 */
 const FLUID_FULLSCREEN_SELECTORS = [
@@ -18,42 +16,59 @@ const FLUID_FULLSCREEN_SELECTOR = FLUID_FULLSCREEN_SELECTORS.join(', ')
 
 /** Sample the existing spring once; native timelines keep fading while a newly
  * opened form lays out. Retarget from presentation and retain spring velocity. */
-function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: number, frequency: number,
-  transform: ((progress: number) => string) | undefined, write: (progress: number, backdrop?: boolean) => void,
-): ReturnType<typeof createFluidMotion> {
-  const spring = new FluidSpring(initial, frequency)
-  let effects: Animation[] = [], origin = { value: initial, velocity: 0 }
+type Presentation = { value: number; velocity: number; opacity?: number; opacityVelocity?: number; backdrop?: number }
+type SurfaceOptions = { animatePanel?: boolean; small?: boolean }
+
+function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: Presentation, frequency: number, damping: number,
+  transform: ((progress: number) => string) | undefined, write: (progress: number, backdrop?: boolean, opacity?: number) => void,
+) {
+  const spring = new FluidSpring(initial.value, frequency, damping)
+  spring.velocity = initial.velocity
+  // Alpha never oscillates: a closing spring can cross zero and rebound without
+  // briefly revealing the departing text again. Both channels survive reversal.
+  const alpha = new FluidSpring(initial.opacity ?? Math.max(0, Math.min(1, initial.value)), damping < 1 ? 8 : frequency)
+  alpha.velocity = initial.opacityVelocity ?? (damping < 1 ? 0 : initial.velocity)
+  let effects: Animation[] = [], origin = { ...initial, opacity: alpha.value, opacityVelocity: alpha.velocity }
   let done: (() => void) | undefined, version = 0, active = false, disposed = false
   let fallback: ReturnType<typeof createFluidMotion> | null = null
   const cancel = () => { for (const effect of effects.splice(0)) effect.cancel() }
   const finish = () => {
     if (!active || disposed) return
-    active = false; spring.snap(); write(spring.value, true)
+    active = false; spring.snap(); alpha.snap(); write(spring.value, true, alpha.value)
     const callback = done; done = undefined; cancel(); callback?.()
   }
   const stopPreference = listenMotionChanges(() => { if (document.hidden || prefersReducedMotion()) finish() })
+  const capture = () => {
+    if (active && effects[0]) {
+      spring.value = origin.value; spring.velocity = origin.velocity
+      alpha.value = origin.opacity; alpha.velocity = origin.opacityVelocity
+      const elapsed = Math.max(0, Number(effects[0].currentTime) || 0) / 1000
+      spring.step(elapsed); alpha.step(elapsed)
+    }
+    return { value: spring.value, velocity: spring.velocity, opacity: alpha.value, opacityVelocity: alpha.velocity }
+  }
   return {
-    to(targets, instant = false, callback) {
+    capture,
+    to(targets: number[], instant = false, callback?: () => void) {
       if (disposed) return
-      if (fallback) { fallback.to(targets, instant, callback); return }
-      const backdropOpacity = active && el instanceof HTMLDialogElement ? getComputedStyle(el, '::backdrop').opacity : String(spring.value)
-      if (active && effects[0]) {
-        spring.value = origin.value; spring.velocity = origin.velocity
-        spring.step(Math.max(0, Number(effects[0].currentTime) || 0) / 1000)
-        const presentation = Number.parseFloat(getComputedStyle(el).opacity)
-        if (Number.isFinite(presentation)) spring.value = presentation
-      }
+      if (fallback) { fallback.to([targets[0], targets[0]], instant, callback); return }
+      const backdropOpacity = active && el instanceof HTMLDialogElement ? getComputedStyle(el, '::backdrop').opacity : String(initial.backdrop ?? spring.value)
+      capture()
       version++; const token = version
       if (instant) done?.()
-      cancel(); done = callback; active = true; spring.to(targets[0])
-      write(spring.value, false)
+      cancel(); done = callback; active = true; spring.to(targets[0]); alpha.to(targets[0])
+      write(spring.value, false, alpha.value)
       if (instant || document.hidden || prefersReducedMotion()) { finish(); return }
-      origin = { value: spring.value, velocity: spring.velocity }
-      const sample = new FluidSpring(spring.value, frequency)
+      origin = { value: spring.value, velocity: spring.velocity, opacity: alpha.value, opacityVelocity: alpha.velocity }
+      const sample = new FluidSpring(spring.value, frequency, damping)
       sample.velocity = spring.velocity; sample.to(spring.target)
+      const fade = new FluidSpring(alpha.value, alpha.frequency)
+      fade.velocity = alpha.velocity; fade.to(alpha.target)
       const progress = [sample.value]
-      for (let frame = 0; frame < 120 && !sample.settled; frame++) progress.push(sample.step(1 / 60))
-      const opacity = progress.map(value => ({ opacity: value }))
+      const opacity = [{ opacity: fade.value }]
+      for (let frame = 0; frame < 120 && (!sample.settled || !fade.settled); frame++) {
+        progress.push(sample.step(1 / 60)); opacity.push({ opacity: fade.step(1 / 60) })
+      }
       const transforms = transform ? progress.map(value => ({ transform: transform(value) })) : null
       const timing = { duration: Math.max(1, (progress.length - 1) * 1000 / 60), fill: 'both' as const, easing: 'linear' }
       try {
@@ -73,8 +88,11 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: number, 
         void root.finished.then(() => { if (token === version) finish() }, () => { if (token === version) finish() })
       } catch {
         version++; active = false; done = undefined; cancel()
-        fallback = createFluidMotion([spring.value], ([value]) => write(value, true), frequency)
-        fallback.to(targets, instant, callback)
+        fallback = createFluidMotion([spring.value, alpha.value], ([value, opacity]) => {
+          spring.value = value; alpha.value = opacity; spring.velocity = alpha.velocity = 0
+          write(value, true, opacity)
+        }, frequency)
+        fallback.to([targets[0], targets[0]], instant, callback)
       }
     },
     settle() { if (fallback) fallback.settle(); else finish() },
@@ -83,17 +101,16 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: number, 
 }
 
 /** Vue Transition hooks: v-show keeps the same physical surface during reversal. */
-export function useFluidSurface(panelSelector?: string) {
-  type Surface = { motion: ReturnType<typeof createFluidMotion>; restore: () => void }
+export function createFluidSurface(panelSelector?: string, options: SurfaceOptions = {}) {
+  type Surface = { motion: ReturnType<typeof compositedMotion>; restore: () => void }
   const motions = new Map<HTMLElement, Surface>()
-  function surface(el: HTMLElement, initial: number): Surface {
+  function surface(el: HTMLElement, initial: Presentation): Surface {
     const existing = motions.get(el)
     if (existing) return existing
-    const panel = (panelSelector ? (el.matches?.(panelSelector) ? el : el.querySelector<HTMLElement>(panelSelector)) : null) ?? el
+    const panel = (panelSelector ? (el.matches(panelSelector) ? el : el.querySelector<HTMLElement>(panelSelector)) : null) ?? el
     const original = {
       opacity: el.style.opacity,
       transform: panel.style.transform,
-      origin: panel.style.transformOrigin,
       backdrop: el.style.getPropertyValue('--fluid-backdrop-opacity'),
       willChange: el.style.willChange,
       panelWillChange: panel.style.willChange,
@@ -101,77 +118,74 @@ export function useFluidSurface(panelSelector?: string) {
     const restore = () => {
       el.style.opacity = original.opacity
       panel.style.transform = original.transform
-      panel.style.transformOrigin = original.origin
       el.style.willChange = original.willChange
       if (panel !== el) panel.style.willChange = original.panelWillChange
       if (original.backdrop) el.style.setProperty('--fluid-backdrop-opacity', original.backdrop)
       else el.style.removeProperty('--fluid-backdrop-opacity')
     }
-    const source = document.activeElement instanceof HTMLElement ? document.activeElement : null
-    let hasVisibleSource = false
-    if (source && source !== document.body && source.isConnected && !el.contains(source)) {
-      const from = source.getBoundingClientRect(), to = panel.getBoundingClientRect()
-      hasVisibleSource = from.width > 0 && from.height > 0 && to.width > 0 && to.height > 0
-        && from.right > 0 && from.bottom > 0 && from.left < innerWidth && from.top < innerHeight
-      if (hasVisibleSource) {
-        const x = Math.max(0, Math.min(100, (from.x + from.width / 2 - to.x) / to.width * 100))
-        const y = Math.max(0, Math.min(100, (from.y + from.height / 2 - to.y) / to.height * 100))
-        panel.style.transformOrigin = `${x}% ${y}%`
-      }
-    }
+    // Dialogs use their own CSS origin; anchored Reka surfaces own collision
+    // geometry. A distant trigger must not pull a centered modal sideways.
     const rect = panel.getBoundingClientRect()
-    const isFullscreenViewer = (panel.matches && panel.matches(FLUID_FULLSCREEN_SELECTOR)) || rect.width > innerWidth * 0.85 || rect.height > innerHeight * 0.85
-    const isPopover = rect.width > 0 && rect.width < 340 && rect.height < 380
-    const isReduced = prefersReducedMotion()
+    const isFullscreenViewer = panel.matches(FLUID_FULLSCREEN_SELECTOR) || rect.width > innerWidth * 0.85 || rect.height > innerHeight * 0.85
 
     // Image previews animate their own source-to-image proxy; moving the
     // containing surface too would shift both ends of that path.
     const imageTransition = el.hasAttribute('data-image-transition')
     // Large image/form surfaces keep their geometry while fading. Scaling them
     // invalidates intrinsic layout and image layers during the opening frames.
-    const stationary = isReduced || imageTransition || isFullscreenViewer || rect.width >= 640 && rect.height >= 400
-    const scale = stationary ? 1 : isPopover ? 0.975 : 0.96
-    const travel = stationary ? 0 : isPopover ? 4 : 8
-    const spring = isFullscreenViewer ? 5.2 : 4.8
-    if (isFullscreenViewer && !hasVisibleSource) panel.style.transformOrigin = 'center center'
+    // Reduced motion settles per operation; don't permanently freeze a surface
+    // created while that preference is enabled when the user turns it off later.
+    const stationary = imageTransition || isFullscreenViewer || !options.animatePanel && rect.width >= 640 && rect.height >= 400
+    const spring = options.small ? Math.sqrt(SURFACE_SPRING.stiffness / SURFACE_SPRING.mass) / (2 * Math.PI) : isFullscreenViewer ? 5.2 : 4.8
+    const damping = options.small ? SURFACE_SPRING.damping / (2 * Math.sqrt(SURFACE_SPRING.stiffness * SURFACE_SPRING.mass)) : 1
 
     // Even an identity transform changes the containing block for fixed children.
-    const transform = stationary ? undefined : (progress: number) => `translateY(${(1 - progress) * travel}px) scale(${scale + (1 - scale) * progress})`
+    const style = getComputedStyle(panel)
+    const x = options.small ? parseFloat(style.getPropertyValue('--surface-enter-x')) || 0 : 0
+    const y = options.small ? parseFloat(style.getPropertyValue('--surface-enter-y')) || 0 : 8
+    const scale = options.small ? parseFloat(style.getPropertyValue('--surface-enter-scale')) || .93 : .96
+    const transform = stationary ? undefined : (progress: number) => `translate(${(1 - progress) * x}px,${(1 - progress) * y}px) scale(${scale + (1 - scale) * progress})`
     const promote = () => {
       // Promote only while moving. rAF style writes otherwise keep large,
       // newly opened forms on the main-thread paint path.
       el.style.willChange = panel === el && !stationary ? 'opacity, transform' : 'opacity'
       if (panel !== el && !stationary) panel.style.willChange = 'transform'
     }
-    const write = (progress: number, backdrop = true) => {
+    const write = (progress: number, backdrop = true, opacity = progress) => {
       promote()
-      el.style.opacity = String(progress)
+      el.style.opacity = String(opacity)
       // Native ::backdrop is a separate top-layer surface, not a child: fading
       // the dialog alone leaves a solid scrim that vanishes abruptly on close.
-      if (backdrop && el instanceof HTMLDialogElement) el.style.setProperty('--fluid-backdrop-opacity', String(progress))
+      if (backdrop && el instanceof HTMLDialogElement) el.style.setProperty('--fluid-backdrop-opacity', String(opacity))
       if (transform) panel.style.transform = transform(progress)
     }
-    const motion = typeof el.animate === 'function' && (!transform || typeof panel.animate === 'function')
-      ? compositedMotion(el, panel, initial, spring, transform, write)
-      : createFluidMotion([initial], ([progress]) => write(progress), spring)
+    // The composited path catches unavailable/failed WAAPI and owns its fallback.
+    const motion = compositedMotion(el, panel, initial, spring, damping, transform, write)
     const current = { motion, restore }
     motions.set(el, current)
     return current
   }
   function enter(el: Element, done: () => void) {
-    const current = surface(el as HTMLElement, 0)
+    const current = surface(el as HTMLElement, { value: 0, velocity: 0 })
     current.motion.to([1], false, () => { current.restore(); done() })
   }
-  function leave(el: Element, done: () => void) { surface(el as HTMLElement, 1).motion.to([0], false, done) }
+  function leave(el: Element, done: () => void) { surface(el as HTMLElement, { value: 1, velocity: 0 }).motion.to([0], false, done) }
+  function capture(el: Element) { return motions.get(el as HTMLElement)?.motion.capture() }
+  function adopt(el: Element, state: Presentation) { dispose(el); surface(el as HTMLElement, state) }
   function dispose(el: Element) {
     const current = motions.get(el as HTMLElement)
     if (!current) return
     motions.delete(el as HTMLElement)
     current.motion.dispose(); current.restore()
   }
-  if (getCurrentInstance()) {
-    onDeactivated(() => { for (const el of [...motions.keys()]) { motions.get(el)?.motion.settle(); dispose(el) } })
-    onUnmounted(() => { for (const el of [...motions.keys()]) dispose(el) })
-  }
-  return { enter, leave, dispose }
+  function clear() { for (const el of [...motions.keys()]) dispose(el) }
+  function finish() { for (const current of [...motions.values()]) current.motion.settle(); clear() }
+  return { enter, leave, dispose, capture, adopt, clear, finish }
+}
+
+export function useFluidSurface(panelSelector?: string, options: SurfaceOptions = {}) {
+  const surface = createFluidSurface(panelSelector, options)
+  onDeactivated(surface.finish)
+  onUnmounted(surface.finish)
+  return surface
 }

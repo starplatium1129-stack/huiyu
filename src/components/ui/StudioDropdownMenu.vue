@@ -2,6 +2,7 @@
 import { onActivated, onBeforeUnmount, onDeactivated, ref, shallowRef, watch } from 'vue'
 import { DropdownMenuContent, DropdownMenuPortal, DropdownMenuRoot, DropdownMenuTrigger } from 'reka-ui'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 withDefaults(defineProps<{ label: string; sideOffset?: number }>(), { sideOffset: 8 })
 const open = ref(false), pointerOpened = ref(false)
@@ -50,12 +51,14 @@ function onDismissEscape(event: KeyboardEvent) {
       <slot name="trigger" />
     </DropdownMenuTrigger>
     <DropdownMenuPortal :to="portalTarget">
-      <DropdownMenuContent class="chat-more-menu" data-fluid-glass align="end" :side-offset="sideOffset" :collision-padding="12" :collision-boundary="collisionBoundary"
+      <FluidTransition small panel=".chat-more-menu">
+      <DropdownMenuContent v-if="open" force-mount class="chat-more-menu" data-fluid-glass align="end" :side-offset="sideOffset" :collision-padding="12" :collision-boundary="collisionBoundary"
         :data-pointer-open="pointerOpened" hide-when-detached loop :aria-label="label" :aria-labelledby="undefined"
         @close-auto-focus="closeAutoFocus" @interact-outside="onInteractOutside" @keydown.capture="pointerOpened = false"
         @keydown.esc.capture="onEscape" @escape-key-down="onDismissEscape">
         <slot :run="run" />
       </DropdownMenuContent>
+      </FluidTransition>
     </DropdownMenuPortal>
   </DropdownMenuRoot>
 </template>
@@ -71,7 +74,6 @@ function onDismissEscape(event: KeyboardEvent) {
   overflow-y:auto;
   overscroll-behavior:contain;
   transform-origin:var(--reka-dropdown-menu-content-transform-origin,top right);
-  transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out);
 }
 .chat-more-label { @apply tw:px-s-3 tw:py-s-2 tw:text-muted tw:text-label-xs; font-weight:600; }
 .chat-more-item { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:py-s-2 tw:px-s-3 tw:rounded-md tw:text-secondary tw:text-label tw:cursor-pointer; outline:none; flex-shrink:0; }
@@ -83,9 +85,7 @@ function onDismissEscape(event: KeyboardEvent) {
 .chat-more-item.is-danger[data-highlighted] { background:color-mix(in srgb,var(--danger) 12%,var(--bg-surface)); }
 .chat-more-item[data-disabled] { color:var(--text-disabled); cursor:default; }
 .chat-more-separator { height:1px; margin:var(--s-2) var(--s-1); background:var(--border-soft); flex-shrink:0; }
-@starting-style { .chat-more-menu[data-state='open'][data-pointer-open='true'] { opacity:0; transform:scale(.97); } }
-.chat-more-menu[data-pointer-open='false'] { transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .chat-more-menu { transition:none; }
-@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .chat-more-menu { transition:none; } }
+.chat-more-menu { --surface-enter-x:0px; --surface-enter-y:4px; }
+.chat-more-menu[data-side='top'] { --surface-enter-y:-4px; }
 @media(forced-colors:active) { .chat-more-item[data-highlighted] { outline:2px solid Highlight; outline-offset:-2px; } }
 </style>

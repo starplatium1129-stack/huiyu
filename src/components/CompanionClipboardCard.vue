@@ -1,5 +1,5 @@
 <template>
-  <Transition name="layer-fade">
+  <FluidTransition panel=".companion-clipboard-card">
     <div v-if="card" class="companion-clipboard-card" role="status" aria-live="polite">
       <img v-if="card.kind === 'image'" :src="card.previewUrl" alt="剪贴板图片预览" />
       <div>
@@ -13,9 +13,10 @@
         <button type="button" class="btn btn-ghost btn-sm" @click="emit('dismiss')">忽略</button>
       </div>
     </div>
-  </Transition>
+  </FluidTransition>
 </template>
 <script setup lang="ts">
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 defineProps<{ card: { kind: 'image' | 'text'; previewUrl?: string; text?: string; saving?: boolean; error?: string } | null; characterName: string }>()
 const emit = defineEmits<{ inspect: []; accept: []; dismiss: [] }>()
 </script>

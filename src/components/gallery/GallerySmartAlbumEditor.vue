@@ -1,8 +1,10 @@
 <template>
   <DialogRoot :open="open" @update:open="!busy && emit('update:open', $event)">
     <DialogPortal>
-      <DialogOverlay class="smart-album-overlay" />
-      <DialogContent class="smart-album-editor" aria-modal="true" :aria-busy="busy" @escape-key-down="busy && $event.preventDefault()" @pointer-down-outside="busy && $event.preventDefault()">
+      <FluidTransition panel=".smart-album-editor">
+      <div v-if="open">
+      <div class="smart-album-overlay" aria-hidden="true" />
+      <DialogContent force-mount class="smart-album-editor" aria-modal="true" :aria-busy="busy" @open-auto-focus="rememberTrigger" @close-auto-focus="restoreTrigger" @escape-key-down="busy && $event.preventDefault()" @pointer-down-outside="busy && $event.preventDefault()">
         <header class="smart-album-heading">
           <div><DialogTitle>{{ editing ? '编辑智能画册' : '新建智能画册' }}</DialogTitle><DialogDescription>按角色和标签持续收集作品，符合条件的新作品会自动出现。</DialogDescription></div>
           <DialogClose class="btn btn-quiet btn-icon" :disabled="busy" aria-label="关闭智能画册窗口"><ArchiveIcon name="close" /></DialogClose>
@@ -34,13 +36,17 @@
           <footer class="smart-album-actions"><DialogClose class="btn btn-ghost" :disabled="busy">取消</DialogClose><button class="btn btn-primary" type="submit" :disabled="busy || !title.trim()">{{ busy ? '正在保存…' : editing ? '更新智能画册' : '保存智能画册' }}</button></footer>
         </form>
       </DialogContent>
+      </div>
+      </FluidTransition>
     </DialogPortal>
   </DialogRoot>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { DialogRoot, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogDescription, DialogClose } from 'reka-ui'
+import { DialogRoot, DialogPortal, DialogContent, DialogTitle, DialogDescription, DialogClose } from 'reka-ui'
+import { usePageScrollLock } from '@/composables/usePageScrollLock'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
@@ -53,6 +59,16 @@ const props = defineProps<{ open: boolean; editing: boolean; busy: boolean; erro
   characters: { value: string; label: string }[]; tags: { value: string; label: string }[]; projects: GalleryProject[];
   covers: { id: string | number; src: string }[] }>()
 const emit = defineEmits<{ 'update:open': [value: boolean]; save: [] }>()
+usePageScrollLock(() => props.open)
+let trigger: HTMLElement | null = null
+function rememberTrigger() { trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null }
+function restoreTrigger(event: Event) {
+  event.preventDefault()
+  const active = document.activeElement
+  if (!props.open && (active === document.body || event.target instanceof HTMLElement && event.target.contains(active))
+    && trigger?.isConnected && !trigger.closest('[inert], [hidden]') && trigger.getClientRects().length
+    && !document.querySelector('dialog:modal')) trigger.focus({ preventScroll: true })
+}
 const title = defineModel<string>('title', { required: true })
 const rule = defineModel<SmartAlbumRule>('rule', { required: true })
 const roleOptions = computed(() => [{ value: '', label: '全部角色' }, ...props.characters,
@@ -69,10 +85,6 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 @reference "../../assets/css/tailwind.css";
 .smart-album-overlay { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; z-index:var(--z-overlay); background:var(--art-scrim); transition:opacity var(--motion-control) var(--ease-out); }
 .smart-album-editor { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; z-index:var(--z-overlay); width:min(680px,calc(100vw - 2 * var(--s-4))); height:fit-content; max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4)); margin:auto; padding:0; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; container-type:inline-size; border:1px solid var(--border-soft); border-radius:var(--r-xl); color:var(--text-primary); background:var(--bg-surface); box-shadow:var(--shadow-lg); transition:opacity var(--motion-control) var(--ease-out),transform var(--motion-surface) var(--spring-soft); }
-@starting-style {
-  .smart-album-overlay[data-state='open'] { opacity:0; }
-  .smart-album-editor[data-state='open'] { opacity:0; transform:translateY(var(--s-3)) scale(.96); }
-}
 .smart-album-heading { display:flex; justify-content:space-between; align-items:start; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
 .smart-album-heading > div { min-width:0; }
 .smart-album-heading h2 { margin:0; color:var(--text-primary); font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-sans); }
@@ -99,7 +111,7 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 .smart-album-editor button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .smart-album-editor button:disabled,.smart-album-editor input:disabled { color:var(--text-disabled); }
 @container (max-width:480px) { .smart-album-fields,.smart-album-tag-picker { grid-template-columns:minmax(0,1fr); } }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) :is(.smart-album-editor,.smart-album-overlay) { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.smart-album-editor,.smart-album-overlay) { transition:none; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) :is(.smart-album-editor,.smart-album-overlay) { animation:none; transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.smart-album-editor,.smart-album-overlay) { animation:none; transition:none; }
 @media (forced-colors:active) { .smart-album-editor,.smart-album-preview { border-color:CanvasText; background:Canvas; color:CanvasText; box-shadow:none; } }
 </style>

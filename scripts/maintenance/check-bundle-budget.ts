@@ -48,7 +48,9 @@ const DEFAULT_BUDGETS = Object.freeze({
   // 现以实测最大的 ChatView 649.0 KiB 为基线，预算 580 → 680 KiB（余量约 4.7%）。
   // 若后续要收回字节：StudioSelect 目前依赖 Reka Popper，改为项目自有的轻量
   // listbox（参照 CompanionCharacterPicker 的写法）可回收大部分增量。
-  routeClosureJavaScript: 680 * 1024,
+  // 2026-10-18 共享弹层加入可逆退场及原生 dialog 的非交互画面交接；
+  // 实测最大 ChatView 684.4 KiB，定向增加 8 KiB，不改变入口或单路由预算。
+  routeClosureJavaScript: 688 * 1024,
 });
 
 function routeEntries(manifest: Manifest) {

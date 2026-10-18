@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 import { listCompanionUiCharacters } from '@/utils/companionRegistry'
 
 const props = withDefaults(defineProps<{ modelValue: string; label?: string }>(), { label: '切换角色' })
@@ -95,7 +96,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
       <ArchiveIcon name="chevron-down" class="companion-picker-chevron" aria-hidden="true" />
     </button>
 
-    <Transition name="companion-picker-menu" @before-leave="($event as HTMLElement).inert = true" @before-enter="($event as HTMLElement).inert = false" @leave-cancelled="($event as HTMLElement).inert = false">
+    <FluidTransition small panel=".companion-picker-content">
       <div
         v-if="open"
         :id="listboxId"
@@ -134,7 +135,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
           </button>
         </div>
       </div>
-    </Transition>
+    </FluidTransition>
   </div>
 </template>
 
@@ -232,10 +233,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
   box-shadow: var(--shadow-glass-elevated);
 }
 html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-0; -webkit-app-region: no-drag; }
-.companion-picker-menu-enter-active,
-.companion-picker-menu-leave-active { transition: opacity var(--motion-hover), transform var(--motion-hover) var(--ease-out); }
-.companion-picker-menu-enter-from,
-.companion-picker-menu-leave-to { opacity: 0; transform: translateY(-4px) scale(.98); }
+.companion-picker-content { --surface-enter-y:-4px; transform-origin:top right; }
 
 .companion-picker-heading {
   @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-1;
@@ -286,8 +284,9 @@ html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-
   .companion-picker-mark { @apply tw:w-[25px] tw:h-[25px]; }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .companion-picker-chevron, :root:not([data-motion='full']) .companion-picker-menu-enter-active, :root:not([data-motion='full']) .companion-picker-menu-leave-active { transition: none; }
+  :root:not([data-motion='full']) .companion-picker-chevron { transition: none; }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .companion-picker-chevron { transition:none; }
 @media (forced-colors: active) {
   .companion-picker-trigger,
   .companion-picker-content { border-color: CanvasText; background: Canvas; color: CanvasText; box-shadow: none; }

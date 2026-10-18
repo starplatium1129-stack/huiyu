@@ -1,6 +1,8 @@
-import { onDeactivated, onUnmounted, type Ref } from 'vue'
+import { onBeforeUnmount, onDeactivated, type Ref } from 'vue'
 import { useFluidSurface } from './useFluidSurface'
 import { prepareNativeModal } from './useFocusTrap'
+import { acquirePageScrollLock } from '@/utils/pageScrollLock'
+import { createDialogExit } from '@/utils/dialogExit'
 import '@/assets/css/fluid-dialog.css'
 
 /**
@@ -12,8 +14,7 @@ import '@/assets/css/fluid-dialog.css'
  * 锁定时补偿滚动条宽度，避免页面在弹窗开合瞬间横向跳动。
  */
 let modalLocks = 0
-let previousOverflow = ''
-let previousPaddingRight = ''
+let releasePageScroll: (() => void) | undefined
 let previousScrollX = 0
 let previousScrollY = 0
 let previousScrollPath = ''
@@ -23,25 +24,18 @@ const scrollLocation = () => `${window.location.pathname}${window.location.searc
 function lockPageScroll() {
   scrollRevision++
   if (modalLocks++ > 0) return
-  const root = document.documentElement
-  const gutter = window.innerWidth - root.clientWidth
   previousScrollX = window.scrollX
   previousScrollY = window.scrollY
   previousScrollPath = scrollLocation()
-  previousOverflow = root.style.overflow
-  previousPaddingRight = root.style.paddingRight
-  root.style.overflow = 'hidden'
-  if (gutter > 0) root.style.paddingRight = `${gutter}px`
+  releasePageScroll = acquirePageScrollLock()
 }
 
 function unlockPageScroll() {
   if (modalLocks === 0) return null
   modalLocks--
   scrollRevision++
-  const root = document.documentElement
   if (!modalLocks) {
-    root.style.overflow = previousOverflow
-    root.style.paddingRight = previousPaddingRight
+    releasePageScroll?.(); releasePageScroll = undefined
   }
   const x = previousScrollX, y = previousScrollY, path = previousScrollPath, revision = scrollRevision
   const restore = () => {
@@ -59,14 +53,15 @@ function unlockPageScroll() {
   return restore
 }
 
-/** Native close releases focus and business state immediately; entry motion stays on the surface. */
-export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotion?: Pick<ReturnType<typeof useFluidSurface>, 'enter' | 'dispose'>) {
-  const surface = imageMotion ?? useFluidSurface()
+/** Native semantics close now; a leased picture carries the reversible exit. */
+export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotion?: ReturnType<typeof useFluidSurface>) {
+  const surface = imageMotion ?? useFluidSurface(undefined, { animatePanel: true })
   let locked = false
   let listenerTarget: HTMLDialogElement | null = null
   let returnFocus: HTMLElement | null = null
   let returnLocation = ''
   let restoreAfterClose: (() => void) | null = null
+  let exit: ReturnType<typeof createDialogExit>
   /**
    * 原生 close 事件在本轮任务队列末尾派发。`close(() => open())` 这类同轮重开会在
    * 事件到达前重新 showModal，此时弹窗仍然是打开状态，旧事件不能把重开所需持有的
@@ -102,11 +97,15 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
     if (!el.open) {
       returnFocus = source && source !== document.body ? source : null
       returnLocation = scrollLocation()
-      surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
+      const state = exit?.capture()
+      exit?.cancel(); exit = undefined
+      surface.dispose(el)
       // Native showModal can move focus and scroll; capture the reading position first.
       if (!locked) { locked = true; lockPageScroll() }
       prepareNativeModal(el)
       try { el.showModal() } catch (error) { releaseScrollLock(); throw error }
+      // Measure after showModal: a closed native dialog has zero geometry.
+      if (state) surface.adopt(el, state)
       // Native autofocus can queue smooth scrolling without changing the current
       // coordinates yet. Always cancel that trip before the first fade frame.
       window.scrollTo({ left: previousScrollX, top: previousScrollY, behavior: 'instant' })
@@ -121,8 +120,8 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
   function close(after?: () => void) {
     const el = dialog.value
     if (!el?.open) { releaseScrollLock(); after?.(); return }
-    // Stop surface and image proxies before native close. A decorative exit
-    // must not keep the modal active or postpone the caller's next action.
+    exit?.cancel()
+    exit = createDialogExit(el, surface.capture(el) ?? { value: 1, velocity: 0 })
     surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
     el.close(); onNativeClose(); after?.()
   }
@@ -133,11 +132,17 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
     // 否则会留下一个仍处于 open 状态的游离 dialog 和它的 close 监听。
     const el = dialog.value ?? listenerTarget
     if (listenerTarget) { listenerTarget.removeEventListener('close', onNativeClose); listenerTarget = null }
-    if (el) { surface.dispose(el); el.close() }
+    if (el?.open) {
+      exit?.cancel()
+      exit = createDialogExit(el, surface.capture(el) ?? { value: 1, velocity: 0 })
+      el.close()
+    }
+    if (el) surface.dispose(el)
     releaseScrollLock()
     restoreAfterClose = null
   }
-  onDeactivated(dispose); onUnmounted(dispose)
+  onDeactivated(() => { dispose(); exit?.cancel(); exit = undefined })
+  onBeforeUnmount(dispose)
   return { open, close, dispose }
 }
 

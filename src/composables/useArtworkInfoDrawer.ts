@@ -16,12 +16,12 @@ export function useArtworkInfoDrawer(options: {
   const hidden = computed(() => compact.value && !options.open.value)
 
   function close(event?: MouseEvent | KeyboardEvent) {
-    options.viewer.value?.toggleAttribute('data-info-instant', !event || event.detail === 0)
+    options.viewer.value?.toggleAttribute('data-info-instant', !event)
     options.open.value = false
   }
   function toggle(event?: MouseEvent | KeyboardEvent) {
     if (!options.active() || !compact.value) return
-    options.viewer.value?.toggleAttribute('data-info-instant', !event || event.detail === 0)
+    options.viewer.value?.toggleAttribute('data-info-instant', !event)
     // Both mouse and keyboard opening return to the same visible launcher.
     if (!options.open.value) options.trigger.value?.focus({ preventScroll: true })
     options.open.value = !options.open.value

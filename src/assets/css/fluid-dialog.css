@@ -1,2 +1,8 @@
 /* Native top-layer scrims fade separately from the surface spring. Blur stays static. */
 dialog[data-fluid-dialog]::backdrop { opacity: var(--fluid-backdrop-opacity, 1); }
+/* A self-disposing, noninteractive exit picture may outlive the Vue owner briefly. */
+.fluid-dialog-exit { position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none; margin:0; padding:0; border:0; overflow:visible; background:transparent; color:inherit; z-index:var(--z-overlay); pointer-events:none; }
+.fluid-dialog-exit::backdrop { background:transparent; pointer-events:none; }
+.fluid-dialog-exit-scrim { position:fixed; inset:0; }
+.fluid-dialog-exit, .fluid-dialog-exit * { pointer-events:none !important; }
+[data-fluid-leaving] { pointer-events:none !important; }

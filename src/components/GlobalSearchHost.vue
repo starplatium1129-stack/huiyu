@@ -1,12 +1,14 @@
 <template>
   <component :is="panel" v-if="panel" :initial-source="source" :initial-trigger="trigger" :initial-path="initialPath" :initial-close-request="initialCloseRequest" />
   <Teleport to="body">
+    <FluidTransition panel=".search-entry-status">
     <section v-if="pending" ref="feedback" class="search-entry-status" role="region" aria-label="搜索准备">
       <ArchiveIcon :name="failed ? 'warning' : 'search'" />
       <div><strong>画室搜索</strong><p :role="failed ? 'alert' : 'status'">{{ failed ? (retried ? '搜索仍未加载，请检查连接后重新载入应用。' : '搜索暂时无法加载，请重新读取。') : '正在准备搜索…' }}</p></div>
       <button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">{{ retried ? '重新载入应用' : '重新读取' }}</button>
       <button ref="cancelButton" class="btn btn-quiet btn-icon" type="button" aria-label="取消打开搜索" @click="cancelPending(true)"><ArchiveIcon name="close" /></button>
     </section>
+    </FluidTransition>
   </Teleport>
 </template>
 
@@ -16,6 +18,7 @@ import type { Component, ShallowRef } from 'vue'
 import { useRoute } from 'vue-router'
 import { openGlobalSearch, useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 // Keep shortcuts available without loading the search UI, index and styles on every page.
 const panel: ShallowRef<Component | null> = shallowRef(null)

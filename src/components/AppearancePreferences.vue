@@ -26,7 +26,6 @@ import { useRoute } from 'vue-router'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import { appearanceFocusOrigin, desktopShortcutAllowed } from '@/composables/useDesktopInteraction'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
-import { useFluidSurface } from '@/composables/useFluidSurface'
 import '@/assets/css/appearance-preferences.css'
 type AppearanceSection = 'appearance' | 'keyboard'
 type AppearanceRequest = { section: AppearanceSection; trigger: HTMLElement | null }
@@ -40,17 +39,9 @@ const section = computed(() => request.value?.section ?? 'appearance')
 const failed = ref(false), retried = ref(false)
 const dialog = ref<HTMLDialogElement | null>(null), content = ref<HTMLElement | null>(null)
 const route = useRoute()
-let keyboardInput = false
 let opening = 0
 let focusReturn: FocusReturn | null = null
-const surface = useFluidSurface()
-const fluidDialog = useFluidDialog(dialog, {
-  enter(element, done) {
-    if (keyboardInput) { surface.dispose(element); done() }
-    else surface.enter(element, done)
-  },
-  dispose: surface.dispose,
-})
+const fluidDialog = useFluidDialog(dialog)
 function launch(section: AppearanceSection) {
   window.dispatchEvent(new CustomEvent('atelier:appearance-open', { detail: { section } }))
   emit('open')
@@ -121,28 +112,25 @@ function onClosed() {
 function backdropClose(event: MouseEvent) {
   if (isBackdropClick(event, dialog.value)) close()
 }
-function keyboardHelp() { keyboardInput = true; void open('keyboard') }
+function keyboardHelp() { void open('keyboard') }
 function appearanceOpen(event: Event) { void open((event as CustomEvent).detail?.section === 'keyboard' ? 'keyboard' : 'appearance') }
 function keyboard(event: KeyboardEvent) {
-  keyboardInput = true
   const current = dialog.value
   if (current?.open) {
     if (event.key === 'F1' && !event.ctrlKey && !event.shiftKey && desktopShortcutAllowed(event)
       && event.target instanceof Node && current.contains(event.target)) {
       event.preventDefault(); void open('keyboard')
-    } else surface.dispose(current)
+    }
   } else if (event.key === 'Escape' && desktopShortcutAllowed(event) && request.value) {
     event.preventDefault(); close()
   }
 }
-function pointer() { keyboardInput = false }
 watch(() => route.fullPath, () => { if (request.value) close(false) }, { flush: 'sync' })
 onMounted(() => {
   if (props.launcherOnly) return
   window.addEventListener('atelier:keyboard-help', keyboardHelp)
   window.addEventListener('atelier:appearance-open', appearanceOpen)
   window.addEventListener('keydown', keyboard, true)
-  window.addEventListener('pointerdown', pointer, true)
 })
 onUnmounted(() => {
   disposed = true
@@ -152,7 +140,6 @@ onUnmounted(() => {
   window.removeEventListener('atelier:keyboard-help', keyboardHelp)
   window.removeEventListener('atelier:appearance-open', appearanceOpen)
   window.removeEventListener('keydown', keyboard, true)
-  window.removeEventListener('pointerdown', pointer, true)
 })
 </script>
 

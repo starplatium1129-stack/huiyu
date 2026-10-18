@@ -1,15 +1,24 @@
 import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
 
-/** Analytic, critically damped motion. Retargeting preserves position and velocity. */
+/** Analytic damped spring. Retargeting preserves position and velocity. */
 export class FluidSpring {
   velocity = 0
   target: number
-  constructor(public value: number, readonly frequency = 5) { this.target = value }
+  constructor(public value: number, readonly frequency = 5, readonly damping = 1) { this.target = value }
   to(target: number) { this.target = target }
   snap(target = this.target) { this.value = this.target = target; this.velocity = 0 }
   step(seconds: number) {
     const w = 2 * Math.PI * this.frequency
     const displacement = this.value - this.target
+    if (this.damping < 1) {
+      const decayRate = w * this.damping, oscillation = w * Math.sqrt(1 - this.damping ** 2)
+      const c = (this.velocity + decayRate * displacement) / oscillation
+      const decay = Math.exp(-decayRate * seconds), cos = Math.cos(oscillation * seconds), sin = Math.sin(oscillation * seconds)
+      this.value = this.target + decay * (displacement * cos + c * sin)
+      this.velocity = decay * ((c * oscillation - decayRate * displacement) * cos - (displacement * oscillation + decayRate * c) * sin)
+      if (Math.abs(this.value - this.target) < .001 && Math.abs(this.velocity) < .01) this.snap()
+      return this.value
+    }
     const c = this.velocity + w * displacement
     const decay = Math.exp(-w * seconds)
     this.value = this.target + (displacement + c * seconds) * decay

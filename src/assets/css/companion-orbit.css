@@ -49,8 +49,3 @@
 .companion-orbit.is-compact .orbit-action { @apply tw:w-[44px] tw:h-[44px] tw:gap-[2px] tw:text-label-xs; }
 .companion-orbit.is-compact .orbit-action .archive-icon { @apply tw:w-[18px] tw:h-[18px]; }
 .orbit-selection-compact { max-height: calc(100dvh - 24px); }
-.pet-orbit-enter-active, .pet-orbit-leave-active { transition: opacity 160ms ease, transform 220ms var(--ease-out); }
-.pet-orbit-enter-from, .pet-orbit-leave-to { opacity: 0; transform: scale(.96); }
-@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .pet-orbit-enter-active, :root:not([data-motion='full']) .pet-orbit-leave-active { transition: none; } :root:not([data-motion='full']) .pet-orbit-enter-from, :root:not([data-motion='full']) .pet-orbit-leave-to { transform: none; } }
-:root[data-motion="reduce"] .pet-orbit-enter-active, :root[data-motion="reduce"] .pet-orbit-leave-active { transition: none; }
-:root[data-motion="reduce"] .pet-orbit-enter-from, :root[data-motion="reduce"] .pet-orbit-leave-to { transform: none; }

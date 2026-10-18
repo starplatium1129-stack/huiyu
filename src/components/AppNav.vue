@@ -49,10 +49,11 @@
         <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
           <button
             type="button"
-            class="nav-search tw:cursor-pointer"
+            class="nav-search tw:cursor-pointer" data-spring-button
             aria-label="搜索页面、场景与作品"
+            aria-haspopup="dialog" aria-keyshortcuts="Control+k Meta+k"
             @click="openSearch"
-          ><ArchiveIcon name="search" /></button>
+          ><span class="nav-search-content" data-press-content><ArchiveIcon name="search" /><span class="nav-search-label">搜索</span><kbd aria-hidden="true">{{ searchShortcut }}</kbd></span></button>
         </StudioTooltip>
         <TaskCenterButton />
         <span class="nav-utility-divider" aria-hidden="true"></span>
@@ -92,6 +93,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useScrollHeader } from '@/composables/useScrollHeader'
 
 const route = useRoute()
+const searchShortcut = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K'
 const { show: showToast } = useToast()
 const AppMoreMenu = shallowRef<Component | null>(null)
 const { activeCount } = useTaskCenter()
@@ -372,7 +374,7 @@ onUnmounted(deactivateNavigation)
   .nav-more :deep(.nav-more-trigger:where(:hover:not(:focus-visible):not([aria-expanded='true'])) .nav-more-chevron) { transform:translateY(2px); }
 }
 .nav-brand:where(:active:not(:focus-visible)) .nav-logo { transform:scale(.97); }
-.nav-links > a:where(:active:not(:focus-visible)) > :is(.archive-icon,.nav-item-label),.nav-more :deep(.nav-more-trigger:where(:active:not(:focus-visible)) > .nav-more-label),.nav-utilities :deep(button:where(:active:not(:focus-visible):not(.app-theme-toggle)) > :is(.archive-icon,span)),.nav-menu-toggle:where(:active:not(:focus-visible)) > .archive-icon { transform:scale(.94); transition-duration:var(--motion-press); }
+.nav-links > a:where(:active:not(:focus-visible)) > :is(.archive-icon,.nav-item-label),.nav-more :deep(.nav-more-trigger:where(:active:not(:focus-visible)) > .nav-more-label),.nav-utilities :deep(button:where(:active:not(:focus-visible):not(.app-theme-toggle):not([data-spring-button])) > :is(.archive-icon,span)),.nav-menu-toggle:where(:active:not(:focus-visible)) > .archive-icon { transform:scale(.94); transition-duration:var(--motion-press); }
 .u212[data-reduced-motion='true'] :is(.nav-logo,.nav-item-label),.u212[data-reduced-motion='true'] .nav-links > a > .archive-icon,.u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-label),.u212[data-reduced-motion='true'] .nav-utilities :deep(button > :is(.archive-icon,span)),.u212[data-reduced-motion='true'] .nav-menu-toggle > .archive-icon { transform:none; transition:none; }
 .u212[data-reduced-motion='true'] .nav-links > a::before { transform:none; transition:none; }
 .u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-chevron) { transition:none; }
@@ -401,8 +403,12 @@ onUnmounted(deactivateNavigation)
   background: transparent;
   transition: transform var(--motion-press) var(--ease-out);
 }
-.nav-utilities :deep(.nav-search),
 .nav-utilities :deep(.sound-toggle) { width: 40px; @apply tw:p-0; }
+.nav-utilities .nav-search { padding:0 var(--s-3); border-color:var(--border-soft); background:var(--bg-surface); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); }
+.nav-search-content { display:inline-flex; align-items:center; gap:var(--s-2); min-width:0; }
+.nav-search kbd { display:none; padding:2px var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-xs); background:var(--bg-elevated); color:var(--text-secondary); font:400 var(--fs-label-xs)/1.2 var(--font-mono); white-space:nowrap; }
+/* Share the wide-header threshold with the brand note; compact headers keep the search label. */
+@media (min-width:1600px) { .nav-search kbd { display:inline-block; } }
 .nav-utilities :deep(.app-theme-toggle) { width:56px; padding:0; }
 .nav-utilities :deep(.archive-icon) { width: 1.15rem; height: 1.15rem; }
 .nav-utilities :deep(.task-center-button) {
@@ -448,5 +454,7 @@ onUnmounted(deactivateNavigation)
   .nav-inner { gap:var(--s-1); padding-inline:var(--s-3); }
   .nav-utilities { gap:0; }
   .nav-utility-divider { display:none; }
+  .nav-utilities .nav-search { width:40px; padding:0; }
+  .nav-search-label { display:none; }
 }
 </style>

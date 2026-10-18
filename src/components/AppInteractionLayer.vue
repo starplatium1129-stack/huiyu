@@ -7,8 +7,10 @@ import { onMounted, onUnmounted } from 'vue'
 import { prefetchRoute, prefetchRouteResources } from '@/router'
 import { announceNavigationIntent, useNavigationFeedback } from '@/composables/useNavigationFeedback'
 import { playInterfaceTone } from '@/composables/useInterfaceFeedback'
+import { useButtonFeedback } from '@/composables/useButtonFeedback'
 
 const { loading } = useNavigationFeedback()
+useButtonFeedback()
 let hoverTimer = 0
 type Connection = { saveData?: boolean; effectiveType?: string }
 

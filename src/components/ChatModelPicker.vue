@@ -5,6 +5,7 @@ import { ComboboxAnchor, ComboboxContent, ComboboxEmpty, ComboboxInput, Combobox
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/components/ui/StudioSelect-0.css'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
+import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 const props = withDefaults(defineProps<{
   options: readonly { value: string; label: string }[]
@@ -51,7 +52,8 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
         </ComboboxTrigger>
       </ComboboxAnchor>
       <ComboboxPortal :to="portalTarget">
-        <ComboboxContent class="studio-select-content chat-model-picker-content" position="popper" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" data-fluid-glass
+        <FluidTransition small panel=".studio-select-content">
+        <ComboboxContent v-if="open" force-mount class="studio-select-content chat-model-picker-content" position="popper" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" data-fluid-glass
           :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc.capture="onEscape" @escape-key-down="onDismissEscape">
           <ComboboxViewport class="studio-select-viewport">
             <ComboboxEmpty class="chat-model-picker-empty">{{ allowCustom ? '可直接输入模型名' : '没有匹配的模型' }}</ComboboxEmpty>
@@ -65,6 +67,7 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
             </ComboboxItem>
           </ComboboxViewport>
         </ComboboxContent>
+        </FluidTransition>
       </ComboboxPortal>
     </ComboboxRoot>
   </div>

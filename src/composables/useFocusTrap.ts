@@ -1,4 +1,5 @@
 import { ref, watch, onActivated, onDeactivated, onUnmounted, nextTick, type Ref } from 'vue'
+import { acquirePageScrollLock } from '@/utils/pageScrollLock'
 
 /**
  * 弹层焦点管理。
@@ -30,8 +31,6 @@ interface ActiveTrap {
 }
 
 const trapStack: ActiveTrap[] = []
-const scrollLocks = new Set<symbol>()
-let previouslyLocked = false
 const inertBackground = new Set<HTMLElement>()
 let backgroundObserver: MutationObserver | null = null
 
@@ -78,7 +77,7 @@ export function prepareNativeModal(dialog: HTMLDialogElement) {
 export interface FocusTrapOptions {
   /** Escape 键回调；不传则不处理 Escape */
   onEscape?: () => void
-  /** 打开时锁 body 滚动（加 .overlay-open） */
+  /** 打开时锁定文档滚动，保留页面与固定控件的几何位置 */
   lockScroll?: boolean
   /** 打开后要聚焦的元素；默认第一个可聚焦元素 */
   initialFocus?: Ref<HTMLElement | null>
@@ -96,6 +95,7 @@ export function useFocusTrap(
   const owner = Symbol('focus-trap')
   let fallbackRoot: HTMLElement | null = null
   let activeRoot: HTMLElement | null = null
+  let unlockScroll: (() => void) | undefined
   const trap: ActiveTrap = { owner, root: () => root.value ?? activeRoot, returnFocus, focus: focusInitial }
 
   function isActive() {
@@ -184,10 +184,7 @@ export function useFocusTrap(
       trapStack.splice(index, 1)
     }
     syncModalBackground()
-    if (scrollLocks.delete(owner) && !scrollLocks.size && !previouslyLocked) {
-      document.body.classList.remove('overlay-open')
-      document.body.style.removeProperty('--overlay-scrollbar-gap')
-    }
+    unlockScroll?.(); unlockScroll = undefined
     if (restoreFocus && top) {
       if (returnFocus.value && isAvailable(returnFocus.value)) returnFocus.value.focus({ preventScroll: true })
       else trapStack.at(-1)?.focus()
@@ -204,19 +201,7 @@ export function useFocusTrap(
       returnFocus.value = document.activeElement as HTMLElement | null
       trapStack.push(trap)
       syncModalBackground()
-      if (lockScroll) {
-        if (!scrollLocks.size) {
-          previouslyLocked = document.body.classList.contains('overlay-open')
-          if (!previouslyLocked) {
-            // Keep document geometry when the scrollbar disappears. A CSS
-            // property survives nested Reka locks clearing their inline padding.
-            const gap = Math.max(0, window.innerWidth - document.documentElement.clientWidth)
-            document.body.style.setProperty('--overlay-scrollbar-gap', `${gap}px`)
-          }
-        }
-        scrollLocks.add(owner)
-        document.body.classList.add('overlay-open')
-      }
+      if (lockScroll) unlockScroll = acquirePageScrollLock()
       nextTick(() => { syncModalBackground(); focusInitial() })
     } else {
       release(attached.value)

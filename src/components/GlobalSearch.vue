@@ -1,6 +1,6 @@
 <template>
   <Teleport to="body">
-    <!-- Frequent lookup and keyboard commands keep the focus handoff immediate. -->
+    <Transition :css="false" @enter="searchMotion.enter" @leave="searchMotion.leave" @after-leave="searchMotion.dispose">
     <div v-show="open" class="global-search" :inert="!open" @pointerdown.self="close()">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
         <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>页面、场景与作品</span></div>
@@ -108,6 +108,7 @@
         <div class="gs-footer tw:flex tw:justify-between tw:gap-s-3 tw:text-muted tw:text-label-sm" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
       </div>
     </div>
+    </Transition>
   </Teleport>
 </template>
 
@@ -117,6 +118,7 @@ import { isNavigationFailure, NavigationFailureType, useRoute, useRouter } from 
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
+import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'
 import { artworkRepository } from '@/storage/artworkRepository'
@@ -157,6 +159,7 @@ const query = ref('')
 const activeIndex = ref(0)
 const inputEl = ref<HTMLInputElement | null>(null)
 const panelEl = ref<HTMLElement | null>(null)
+const searchMotion = useFluidSurface('.gs-panel', { animatePanel: true, small: true })
 const resultsEl = ref<HTMLElement | null>(null)
 const scenes = shallowRef<SceneItem[]>([])
 const scenesLoading = ref(false), scenesError = ref('')
@@ -468,6 +471,7 @@ onUnmounted(() => {
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
 .gs-panel {
+  --surface-enter-y:14px; --surface-enter-scale:.94; transform-origin:center top;
   width: min(640px, 96vw);
   max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--search-inset));
   display: flex;
