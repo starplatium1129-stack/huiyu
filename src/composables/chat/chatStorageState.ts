@@ -1,5 +1,5 @@
 import { STORAGE_VERSION, MAX_LOCAL_MESSAGES, createMessageId } from '@/config/characters'
-import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '@/config/chatApi'
+import { DEFAULT_CHAT_API_BASE_URL, DEFAULT_CHAT_API_MODEL } from '@/config/chatApi'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionDefaultOutfit,
@@ -19,8 +19,8 @@ export function createChatStorageState(characterIds: string[]): ChatState {
     settings: {
       model: '',
       provider: 'api',
-      apiBaseUrl: DEEPSEEK_BASE_URL,
-      apiModel: DEEPSEEK_DEFAULT_MODEL,
+      apiBaseUrl: DEFAULT_CHAT_API_BASE_URL,
+      apiModel: DEFAULT_CHAT_API_MODEL,
       apiKey: '',
       webSearchEnabled: false,
       live2dEnabled: false,

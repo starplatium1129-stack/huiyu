@@ -22,6 +22,8 @@
       </div>
     </div>
 
+    <p class="api-provider-description">{{ preset.help }}</p>
+
     <label v-if="needsKey" class="api-field">
       <span>API 密钥</span>
       <div class="api-key-field">
@@ -31,11 +33,13 @@
       </div>
     </label>
 
+    <StudioCheckbox v-if="vendor === 'openrouter'" v-model:checked="freeModelsOnly" label="只选免费模型" :disabled="locked">只选免费模型</StudioCheckbox>
+
     <div class="api-model-row">
       <div class="api-field">
         <span>聊天模型</span>
         <ChatModelPicker v-model="modelProxy" :options="modelOptions" label="聊天模型"
-          placeholder="搜索或输入模型名" allow-custom :disabled="locked" />
+          :placeholder="filteringFreeModels ? '搜索免费模型' : '搜索或输入模型名'" :allow-custom="!filteringFreeModels" :disabled="locked" />
       </div>
       <StudioTooltip :content="fetchingModels ? undefined : connectionHint || undefined" :anchor="!canFetchModels && !fetchingModels">
         <button class="btn btn-ghost api-fetch-models" type="button" :disabled="!fetchingModels && !canFetchModels"
@@ -71,7 +75,7 @@
     <div class="api-settings-actions">
       <p v-if="statusText" class="api-test-status" :data-state="state" role="status">{{ statusText }}</p>
       <div class="api-settings-buttons">
-        <p v-if="!preset.local" class="api-model-note">{{ vendor === 'openai' ? 'API 单独计费。' : '按服务商规则计费。' }}</p>
+        <p v-if="!preset.local" class="api-model-note">{{ usageNote }}</p>
         <StudioTooltip :content="saveHint || undefined" :anchor="!canSave">
           <button class="btn btn-primary" type="submit" :disabled="!canSave">保存并使用</button>
         </StudioTooltip>
@@ -102,6 +106,7 @@ import ChatModelPicker from '@/components/ChatModelPicker.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 
 const props = defineProps<ChatApiEditorProps & { isLocalHost?: boolean; hostConfigured?: boolean; hostModel?: string }>()
 const emit = defineEmits<{
@@ -120,7 +125,7 @@ const desktopCredentials = Boolean(getDesktopCapabilities())
 onUnmounted(registerMaintenanceParticipant(() => { throw new Error('OPEN_API_SETTINGS') }))
 watch(() => props.vendor, () => { showApiKey.value = false })
 const { preset, needsKey, providerGroups, addressError, baseUrlProxy, modelProxy, apiKeyProxy, locked, connectionOpen,
-  fetchingModels, clearingKey, state, statusText, modelOptions, connectionHint, saveHint, canFetchModels, canSave,
+  fetchingModels, clearingKey, state, statusText, modelOptions, freeModelsOnly, filteringFreeModels, usageNote, connectionHint, saveHint, canFetchModels, canSave,
   selectVendor, fetchModels, cancelFetch, clearPersonalKey } = useChatApiEditor(props, emit)
 function onConnectionToggle(event: Event) { connectionOpen.value = (event.currentTarget as HTMLDetailsElement).open }
 </script>
@@ -128,6 +133,7 @@ function onConnectionToggle(event: Event) { connectionOpen.value = (event.curren
 <style scoped>
 .api-provider-row { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:var(--s-3); align-items:end; }
 .api-provider-help { min-height:var(--control-height); align-items:center; }
+.api-provider-description { margin:0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.6; }
 .api-provider-help, .api-host-advanced { color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.6; }
 .api-help-links { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); }
 .api-help-links a { color:var(--character-ink, var(--accent)); text-decoration:underline; text-underline-offset:3px; }

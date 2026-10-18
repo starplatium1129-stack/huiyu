@@ -291,17 +291,22 @@ npm run wf -- models:check --json --verify-hashes
 
 以下为 **2026-10-11 核对的官方来源**。模型目录变化不自动覆盖用户已保存的地址、模型或分服务商草稿；旧 ID 可保留并手动修改。参考列表不是账号授权列表，聚合商和本机代理不硬编码未经证实的模型。
 
+免费入口于 **2026-10-18** 重新核对。新用户的 API 草稿默认使用 OpenRouter 的 `openrouter/free`，需自行注册领取密钥，无需充值；已有连接与分服务商草稿保持原值。服务商选择器优先列出「免费模型与额度」，其后为本机与其他云端服务。免费不等于匿名或无限使用，也不保证所在地可用。
+
 | 服务 | 自动填入的 Base URL | 当前参考 / 获取入口 |
 | --- | --- | --- |
 | DeepSeek | `https://api.deepseek.com` | `deepseek-flash`、`deepseek-v4-pro`；[官方接入与旧 Flash 名称迁移](https://api-docs.deepseek.com/)、[模型版本及价格](https://api-docs.deepseek.com/quick_start/pricing/)、[获取密钥](https://platform.deepseek.com/api_keys)。`deepseek-v4-flash` 已指向 V4.1 Flash，新配置用 `deepseek-flash`，不强改旧配置。 |
 | OpenAI | `https://api.openai.com/v1` | 默认 `gpt-6-luna`；[Luna 模型卡](https://developers.openai.com/api/docs/models/gpt-6-luna)、[GPT-6 协议迁移](https://developers.openai.com/api/docs/guides/latest-model)、[获取密钥](https://platform.openai.com/api-keys)。API 单独计费，ChatGPT 订阅不是 API 额度。 |
-| Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai` | `gemini-3.8-flash`；[官方 OpenAI 兼容接口与模型列表](https://ai.google.dev/gemini-api/docs/openai)、[AI Studio 密钥](https://aistudio.google.com/apikey)。 |
-| OpenRouter | `https://openrouter.ai/api/v1` | 不猜聚合模型 ID，使用返回列表或官方目录；[接入说明](https://openrouter.ai/docs/quickstart)、[密钥](https://openrouter.ai/settings/keys)。Claude 等模型通过其兼容层使用；价格与工具能力按模型页面核对。 |
+| Google Gemini | `https://generativelanguage.googleapis.com/v1beta/openai` | `gemini-3.8-flash`、`gemini-3.5-flash-lite`、`gemini-3.1-flash-lite`；未开通计费的项目可使用对应[免费额度](https://ai.google.dev/gemini-api/docs/pricing)，已开通计费的项目按其方案收费。[官方 OpenAI 兼容接口与模型列表](https://ai.google.dev/gemini-api/docs/openai)、[AI Studio 密钥](https://aistudio.google.com/apikey)。 |
+| OpenRouter | `https://openrouter.ai/api/v1` | 默认 `openrouter/free`；[免费模型路由](https://openrouter.ai/docs/guides/routing/routers/free-router)、[密钥](https://openrouter.ai/settings/keys)、[额度说明](https://openrouter.ai/docs/api/reference/limits)。新配置默认「只选免费模型」，获取目录后仅列自动选择与真实返回的 `:free` ID；已有付费模型保持可编辑。自动选择可能每轮换模型，固定同一免费模型更利于保持角色风格。 |
+| Groq | `https://api.groq.com/openai/v1` | `openai/gpt-oss-20b`、`openai/gpt-oss-120b`；[Free 方案限额](https://console.groq.com/docs/rate-limits)、[官方兼容接口](https://console.groq.com/docs/openai)、[密钥](https://console.groq.com/keys)、[模型与能力](https://console.groq.com/docs/models)。Free 账户无需购买额度；已升级账户按其方案收费。上述 GPT-OSS 支持文字与工具，不支持图片，使用模型默认推理设置。 |
 | 硅基流动 | `https://api.siliconflow.cn/v1` | 先取模型列表；[官方快速开始](https://docs.siliconflow.cn/docs/userguide/quickstart)、[密钥](https://cloud.siliconflow.cn/account/ak)。模型 ID 需包含组织前缀。 |
 | 通义千问 / 百炼 | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `qwen3.8-flash`、`qwen3.7-plus`；[Chat Completions 与模型参数](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions)、[获取地域对应的密钥](https://help.aliyun.com/zh/model-studio/get-api-key)。预设为北京地域，工作空间专属域名和其他地域按官方说明修改；不用 Coding / Token Plan 专用密钥替代按量密钥。 |
 | Kimi | `https://api.moonshot.cn/v1` | 默认可非思考的 `kimi-k2.6`；[官方快速开始与模型说明](https://platform.kimi.com/docs/get-api-key)、[密钥](https://platform.kimi.com/console/api-keys)。[K3 官方限制](https://platform.kimi.com/docs/guide/kimi-k3-quickstart)要求跨轮完整 assistant 思考上下文，当前房间不推荐或冒充接入 K3。 |
 | OpenCode Zen | `https://opencode.ai/zen/v1` | `deepseek-v4.1-flash`、`kimi-k2.6`、`minimax-m3`；[官方模型与各自协议](https://opencode.ai/docs/zen/)、[控制台入口](https://opencode.ai/auth)。只推荐标明 `/chat/completions` 的模型；不把原生 Messages、Gemini、Responses 模型直接套用。免费模型可能限时退出。 |
 | OpenCode Go | `https://opencode.ai/zen/go/v1` | 仅保留旧配置入口，不提供新聊天推荐。[官方使用要求](https://opencode.ai/docs/go/)面向编码代理流量，不能称为角色聊天“高速通道”。 |
+
+OpenRouter 的「只选免费模型」同时限制候选与保存；关闭后可自行选择其他模型。免费方案限流或不可用时沿现有聊天错误返回，不自动切换到付费模型。Gemini 与 Groq 的免费资格取决于服务商账户方案，绘遇不能通过模型名替账户判断是否收费；使用免费账户并查看官方额度。模型目录可读取仍不等于已完成真实对话。Cerebras 当前为需验证支付方式、30 天到期的试用积分（[官方说明](https://inference-docs.cerebras.ai/support/rate-limits)），不列为长期免费方案。
 
 ### 本机到底连接什么
 

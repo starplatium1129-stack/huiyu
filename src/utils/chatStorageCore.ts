@@ -1,5 +1,5 @@
 import { assertChatVersion } from './chatVersion.ts'
-import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL } from '../config/chatApi.ts'
+import { DEFAULT_CHAT_API_BASE_URL, DEFAULT_CHAT_API_MODEL } from '../config/chatApi.ts'
 import { parseCompanionChatImages, parseCompanionDrawingDraft, type CompanionChatImage, type CompanionDrawingDraft } from '@/types/companionDrawing'
 
 interface ChatStorageOptions {
@@ -158,8 +158,8 @@ export function normalizeChatStorage(
   const neverConfigured = legacyFallbackKey || (typeof settings.apiConfiguredByUser === 'boolean'
     ? !settings.apiConfiguredByUser
     : (!apiBaseUrl && !apiModel && !apiKey))
-  const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? DEEPSEEK_BASE_URL : '')
-  const finalApiModel = apiModel || (neverConfigured ? DEEPSEEK_DEFAULT_MODEL : '')
+  const finalApiBaseUrl = apiBaseUrl || (neverConfigured ? DEFAULT_CHAT_API_BASE_URL : '')
+  const finalApiModel = apiModel || (neverConfigured ? DEFAULT_CHAT_API_MODEL : '')
   const finalApiKey = legacyFallbackKey ? '' : apiKey
 
   const rawHistoriesRevision = Number(raw.historiesRevision)

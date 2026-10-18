@@ -117,6 +117,7 @@ const reasoningHint = computed(() => {
   const vendor = chatApiVendorFor((props.useHostConfig ? props.hostApiBaseUrl : props.apiBaseUrl) || '')
   const model = props.useHostConfig ? props.hostApiModel : props.apiModel
   const tools = props.companionTools || props.webSearchEnabled
+  if (vendor === 'groq') return 'Groq 当前使用模型默认推理设置。'
   if (vendor === 'deepseek' && tools) return '使用房间工具或联网检索时请关闭推理。'
   if (vendor === 'gemini' && (model.startsWith('gemini-3') || model.startsWith('gemini-2.5-pro'))) return '此模型不能关闭思考；“关闭”使用最低档。'
   if ((vendor === 'kimi' && model.startsWith('kimi-k2.6')) || (vendor === 'qwen' && model.startsWith('qwen'))) return '轻量、适中、深入均为开启思考。'

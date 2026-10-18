@@ -1,15 +1,17 @@
-/** Chat Completions presets verified against official docs on 2026-10-11.
+/** Chat Completions presets; free options verified on 2026-10-18, others on 2026-10-11.
  * Sources and protocol limits: docs/guides/setup-and-models.md#房间-api-连接
  * Presets are suggestions, never proof of account access. Saved model IDs stay unchanged.
  */
 export const DEEPSEEK_BASE_URL = 'https://api.deepseek.com'
 export const DEEPSEEK_DEFAULT_MODEL = 'deepseek-flash'
+export const DEFAULT_CHAT_API_BASE_URL = 'https://openrouter.ai/api/v1'
+export const DEFAULT_CHAT_API_MODEL = 'openrouter/free'
 const CLIPROXY_BASE_URL = 'http://127.0.0.1:8317/v1'
 const OPENCODE_BASE_URL = 'https://opencode.ai/zen/v1'
 const OPENCODE_DEFAULT_MODEL = 'deepseek-v4.1-flash'
 const OPENCODE_GO_BASE_URL = 'https://opencode.ai/zen/go/v1'
 
-export type ApiVendor = 'deepseek' | 'openai' | 'gemini' | 'openrouter' | 'siliconflow'
+export type ApiVendor = 'deepseek' | 'openai' | 'gemini' | 'openrouter' | 'groq' | 'siliconflow'
   | 'qwen' | 'kimi' | 'cliproxy' | 'lmstudio' | 'ollama' | 'opencode' | 'opencode-go' | 'custom'
 export interface ChatApiPreset {
   value: ApiVendor
@@ -22,6 +24,7 @@ export interface ChatApiPreset {
   docsUrl?: string
   help: string
   local?: boolean
+  freeTier?: boolean
 }
 const models = (...values: string[]) => values.map(value => ({ value, label: value }))
 
@@ -34,14 +37,19 @@ export const CHAT_API_PRESETS: ChatApiPreset[] = [
     models: models('gpt-6-luna'), keyRequired: true,
     keyUrl: 'https://platform.openai.com/api-keys', docsUrl: 'https://developers.openai.com/api/docs/models/gpt-6-luna',
     help: 'API 单独计费，不使用 ChatGPT 订阅额度。Luna 支持当前聊天协议；启用房间工具时固定使用不思考模式。GPT-6.1 Sol / Astra 的工具调用需要 Responses 协议，暂不推荐在此使用。' },
-  { value: 'gemini', label: 'Google Gemini', note: 'AI Studio API', baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai',
-    models: models('gemini-3.8-flash'), keyRequired: true,
+  { value: 'gemini', label: 'Google Gemini', note: '有免费额度', baseUrl: 'https://generativelanguage.googleapis.com/v1beta/openai',
+    models: models('gemini-3.8-flash', 'gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'), keyRequired: true, freeTier: true,
     keyUrl: 'https://aistudio.google.com/apikey', docsUrl: 'https://ai.google.dev/gemini-api/docs/openai',
-    help: '使用 Google AI Studio 的 Gemini API Key。这里连接官方 OpenAI 兼容接口；可用地区、额度和计费以你的项目为准。' },
-  { value: 'openrouter', label: 'OpenRouter', note: '多模型聚合', baseUrl: 'https://openrouter.ai/api/v1',
-    models: [], keyRequired: true, keyUrl: 'https://openrouter.ai/settings/keys',
-    docsUrl: 'https://openrouter.ai/docs/quickstart',
-    help: '可选 Claude、Gemini 等聊天模型。先获取模型列表，再选择服务商/模型 ID；价格、可用性和工具能力以该模型页面为准。' },
+    help: '在 AI Studio 领取密钥，使用未开通计费的项目可在免费额度内聊天。可用地区与额度以项目为准；已开通计费的项目按其方案收费。' },
+  { value: 'openrouter', label: 'OpenRouter', note: '免费模型 / 按量', baseUrl: DEFAULT_CHAT_API_BASE_URL,
+    models: [{ value: DEFAULT_CHAT_API_MODEL, label: '免费自动选择 · openrouter/free' }],
+    keyRequired: true, freeTier: true, keyUrl: 'https://openrouter.ai/settings/keys',
+    docsUrl: 'https://openrouter.ai/docs/guides/routing/routers/free-router',
+    help: '注册领取密钥，无需充值即可使用免费模型。自动选择可能每轮换模型；想保持角色风格，可获取列表并固定一个 :free 模型。有频率与每日额度限制。' },
+  { value: 'groq', label: 'Groq', note: 'Free 免费额度', baseUrl: 'https://api.groq.com/openai/v1',
+    models: models('openai/gpt-oss-20b', 'openai/gpt-oss-120b'), keyRequired: true, freeTier: true,
+    keyUrl: 'https://console.groq.com/keys', docsUrl: 'https://console.groq.com/docs/rate-limits',
+    help: '注册 GroqCloud Free 账户并领取密钥，无需购买额度。GPT-OSS 支持文字聊天和房间工具，不支持图片。免费账户有请求与 Token 限额；已升级的账户按其方案收费。' },
   { value: 'siliconflow', label: '硅基流动', note: '国内多模型', baseUrl: 'https://api.siliconflow.cn/v1',
     models: [], keyRequired: true, keyUrl: 'https://cloud.siliconflow.cn/account/ak',
     docsUrl: 'https://docs.siliconflow.cn/docs/userguide/quickstart',
@@ -77,6 +85,9 @@ export const CHAT_API_PRESETS: ChatApiPreset[] = [
 
 export function chatApiPreset(vendor: ApiVendor): ChatApiPreset {
   return CHAT_API_PRESETS.find(preset => preset.value === vendor) ?? CHAT_API_PRESETS[CHAT_API_PRESETS.length - 1]!
+}
+export function isOpenRouterFreeModel(model: string): boolean {
+  return model === DEFAULT_CHAT_API_MODEL || model.endsWith(':free')
 }
 export function chatApiEndpoint(baseUrl: string): string {
   try {

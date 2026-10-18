@@ -2,7 +2,7 @@ import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
 import { computed, getCurrentScope, onScopeDispose, ref, watch, type Ref } from 'vue'
 import { useChatStorage, type ChatState } from './useChatStorage.ts'
 import { parseChatStatus, type ChatModel } from '../../utils/chatStatus.ts'
-import { DEEPSEEK_BASE_URL, DEEPSEEK_DEFAULT_MODEL, chatApiPreset, chatApiVendorFor, chatApiAddressError, type ApiVendor } from '../../config/chatApi.ts'
+import { DEFAULT_CHAT_API_BASE_URL, DEFAULT_CHAT_API_MODEL, chatApiPreset, chatApiVendorFor, chatApiAddressError, type ApiVendor } from '../../config/chatApi.ts'
 import { STORAGE_KEY } from '../../config/characters.ts'
 import { chatApi } from '../../api/chatApi.ts'
 import { ApiClientError } from '../../api/client.ts'
@@ -23,8 +23,8 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const models = ref<ChatModel[]>([])
   const currentModel = ref('')
   const chatProvider = ref<'local' | 'api'>('local')
-  const apiBaseUrl = ref(DEEPSEEK_BASE_URL)
-  const apiModel = ref(DEEPSEEK_DEFAULT_MODEL)
+  const apiBaseUrl = ref(DEFAULT_CHAT_API_BASE_URL)
+  const apiModel = ref(DEFAULT_CHAT_API_MODEL)
   const apiKey = ref('')
   const apiVendor = ref<ApiVendor>('custom')
   const apiSettingsOpen = ref(false)

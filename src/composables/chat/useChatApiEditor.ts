@@ -1,7 +1,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import { chatApi } from '@/api/chatApi'
 import { ApiClientError } from '@/api/client'
-import { CHAT_API_PRESETS, chatApiAddressError, chatApiEndpoint, chatApiPreset, type ApiVendor } from '@/config/chatApi'
+import { CHAT_API_PRESETS, chatApiAddressError, chatApiEndpoint, chatApiPreset, isOpenRouterFreeModel, type ApiVendor } from '@/config/chatApi'
 import { createChatApiDrafts } from '@/utils/chatApiDrafts'
 
 export interface ChatApiEditorProps {
@@ -31,6 +31,8 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
   const authenticationRequired = ref(false)
   const credentialRejected = ref(false)
   const discoveredModels = ref<string[]>([])
+  const freeModelsOnly = ref(true)
+  const filteringFreeModels = computed(() => props.vendor === 'openrouter' && freeModelsOnly.value)
   const connectionOpen = ref(false)
   let draftRevision = 0
   let vendorSelection = 0
@@ -48,9 +50,10 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
   watch(() => [props.vendor, props.baseUrl, props.apiKey], () => invalidate(), { flush: 'sync' })
   watch(() => [props.vendor, props.baseUrl], () => { authenticationRequired.value = false; credentialRejected.value = false }, { flush: 'sync' })
   watch(() => props.apiKey, () => { credentialRejected.value = false }, { flush: 'sync' })
-  watch(() => props.model, () => invalidate(false), { flush: 'sync' })
+  watch(() => [props.model, freeModelsOnly.value], () => invalidate(false), { flush: 'sync' })
   onBeforeUnmount(invalidate)
   watch(() => props.vendor, () => {
+    freeModelsOnly.value = !props.model.trim() || isOpenRouterFreeModel(props.model.trim())
     connectionOpen.value = props.vendor === 'custom' || Boolean(addressError.value)
       || chatApiEndpoint(props.baseUrl) !== chatApiEndpoint(preset.value.baseUrl)
   }, { immediate: true, flush: 'post' })
@@ -70,15 +73,25 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
       : clearingKey.value ? '正在清除密钥…'
         : addressError.value || (credentialRejected.value ? '请重新填写有效密钥。' : needsKey.value && !props.apiKey.trim() ? '先填写 API 密钥。' : ''))
   const canFetchModels = computed(() => !locked.value && !connectionHint.value)
-  const saveHint = computed(() => connectionHint.value || (!props.model.trim() ? '选择或填写一个模型。' : ''))
+  const saveHint = computed(() => connectionHint.value || (!props.model.trim() ? '选择或填写一个模型。'
+    : filteringFreeModels.value && !isOpenRouterFreeModel(props.model.trim()) ? '请选择免费模型，或关闭“只选免费模型”。' : ''))
   const canSave = computed(() => !locked.value && !saveHint.value)
-  const modelOptions = computed(() => discoveredModels.value.length
-    ? discoveredModels.value.map(value => ({ value, label: value }))
-    : preset.value.models)
+  const modelOptions = computed(() => {
+    const options = discoveredModels.value.length
+      ? discoveredModels.value.map(value => ({ value, label: value })) : preset.value.models
+    if (props.vendor !== 'openrouter') return options
+    const choices = [...preset.value.models, ...options.filter(option => !preset.value.models.some(item => item.value === option.value))]
+    return filteringFreeModels.value ? choices.filter(option => isOpenRouterFreeModel(option.value)) : choices
+  })
+  const usageNote = computed(() => props.vendor === 'openrouter'
+    ? isOpenRouterFreeModel(props.model.trim()) ? '免费模型，有使用额度限制。' : '当前模型按 OpenRouter 价格计费。'
+    : preset.value.freeTier ? '免费账户可用；已开通付费的账户按其方案计费。'
+      : props.vendor === 'openai' ? 'API 单独计费。' : '按服务商规则计费。')
   const statusText = computed(() => props.credentialsLoading ? '正在读取密钥…' : message.value || props.hint || '')
   const providerGroups = [
-    { label: '云端服务', options: CHAT_API_PRESETS.filter(item => !item.local && item.value !== 'custom' && item.value !== 'opencode-go') },
+    { label: '免费模型与额度', options: CHAT_API_PRESETS.filter(item => item.freeTier) },
     { label: '本机服务', options: CHAT_API_PRESETS.filter(item => item.local) },
+    { label: '云端服务', options: CHAT_API_PRESETS.filter(item => !item.freeTier && !item.local && item.value !== 'custom' && item.value !== 'opencode-go') },
     { label: '其他', options: CHAT_API_PRESETS.filter(item => item.value === 'custom' || item.value === 'opencode-go') },
   ]
 
@@ -148,11 +161,12 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
       const data = await chatApi.testProvider({ baseUrl: props.baseUrl, model: props.model, apiKey: props.apiKey }, { signal: request.signal })
       if (controller !== request || request.signal.aborted) return
       discoveredModels.value = [...new Set(data.models.map(model => model.trim()).filter(Boolean))]
-      const missing = props.model.trim() && !discoveredModels.value.includes(props.model.trim())
+      const missing = props.model.trim() && !modelOptions.value.some(option => option.value === props.model.trim())
       state.value = discoveredModels.value.length && !missing ? 'success' : 'warning'
-      message.value = !discoveredModels.value.length ? '没有可选模型，可直接填写模型名。'
+      message.value = !discoveredModels.value.length ? (filteringFreeModels.value
+        ? '目录未列出模型，仍可选择免费自动选择；实际可用性以聊天结果为准。' : '没有可选模型，可直接填写模型名。')
         : missing ? `发现 ${discoveredModels.value.length} 个模型，当前填写的模型未列出。`
-          : `已获取 ${discoveredModels.value.length} 个模型。`
+          : filteringFreeModels.value ? `可选 ${modelOptions.value.length} 个免费模型（含自动选择）。` : `已获取 ${discoveredModels.value.length} 个模型。`
     } catch (error) {
       if (controller !== request || request.signal.aborted) return
       state.value = 'error'
@@ -169,6 +183,6 @@ export function useChatApiEditor(props: ChatApiEditorProps, emit: EditorEmit) {
   }
 
   return { preset, needsKey, providerGroups, addressError, baseUrlProxy, modelProxy, apiKeyProxy, locked, connectionOpen,
-    fetchingModels, clearingKey, state, statusText, modelOptions, connectionHint, saveHint, canFetchModels, canSave,
+    fetchingModels, clearingKey, state, statusText, modelOptions, freeModelsOnly, filteringFreeModels, usageNote, connectionHint, saveHint, canFetchModels, canSave,
     selectVendor, fetchModels, cancelFetch, clearPersonalKey }
 }
