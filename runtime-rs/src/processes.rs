@@ -36,6 +36,13 @@ impl Processes {
     pub fn spawn(self: &Arc<Self>, command: &mut Command) -> Result<OwnedProcess> {
         self.spawn_inner(command, None, None)
     }
+    pub fn spawn_with_keep_alive(
+        self: &Arc<Self>,
+        command: &mut Command,
+        keep_alive: Arc<dyn Send + Sync>,
+    ) -> Result<OwnedProcess> {
+        self.spawn_inner(command, None, Some(keep_alive))
+    }
     pub fn spawn_with_permit(
         self: &Arc<Self>,
         command: &mut Command,

@@ -7,6 +7,7 @@ pub(super) struct Worker {
     pub process: OwnedProcess,
     pub input: ChildStdin,
     pub output: BufReader<ChildStdout>,
+    pub(super) current_temp: Arc<std::sync::Mutex<Option<Arc<tempfile::TempDir>>>>,
     event_line: Vec<u8>,
     stderr: JoinHandle<()>,
     pub idle: CancellationToken,
@@ -20,7 +21,12 @@ impl Worker {
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
-        let process = engine.processes.spawn(&mut command)?;
+        // The child owns the same single-job slot before it can receive input.
+        // Retirement keeps it through reap, even after this Worker is dropped.
+        let current_temp = Arc::new(std::sync::Mutex::new(None));
+        let process = engine
+            .processes
+            .spawn_with_keep_alive(&mut command, current_temp.clone())?;
         let input = process.take_input().ok_or_else(protocol_error)?;
         let (stdout, stderr) = process.take_output();
         let output = BufReader::new(stdout.ok_or_else(protocol_error)?);
@@ -32,6 +38,7 @@ impl Worker {
             process,
             input,
             output,
+            current_temp,
             event_line: Vec::new(),
             stderr,
             idle: CancellationToken::new(),

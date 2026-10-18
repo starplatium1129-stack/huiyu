@@ -247,9 +247,11 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     }
     let output_dir = inner.config.runtime_root.join("outputs/native");
     tokio::fs::create_dir_all(&output_dir).await?;
-    let temp = tempfile::Builder::new()
-        .prefix("native-")
-        .tempdir_in(&output_dir)?;
+    let temp = Arc::new(
+        tempfile::Builder::new()
+            .prefix("native-")
+            .tempdir_in(&output_dir)?,
+    );
     let video = plan.input["mediaKind"] == "video";
     let output = temp
         .path()
@@ -281,8 +283,8 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     if let Some(threshold) = plan.input.get("teaCacheThresh") {
         input["teaCacheThresh"] = threshold.clone();
     }
-    // Pass only accepted original bytes, never a mutable upload path. Each job
-    // owns this temporary copy until its child process has been reaped.
+    // Pass only accepted original bytes, never a mutable upload path. The request
+    // and owned process retain this directory until ready or confirmed retirement.
     let init_image = plan.init_image.lock().unwrap().take();
     let input_image_path = if let Some(bytes) = init_image {
         input["denoisingStrength"] = plan.input["denoisingStrength"].clone();
@@ -328,6 +330,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras})
     };
     let mut worker = inner.native.take_worker(&plan.settings).await?;
+    *worker.current_temp.lock().unwrap() = Some(temp.clone());
     // Do not interrupt a partially written JSONL request with another command.
     // The stdin reader operates independently of loading and CUDA execution.
     let sent = tokio::time::timeout(Duration::from_secs(10), async {
@@ -472,11 +475,13 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         false
     };
     if retain {
+        // Ready confirms worker-side cleanup; the request keeps its directory Arc.
+        worker.current_temp.lock().unwrap().take();
         Engine::retain_worker(inner.clone(), worker).await;
         return value;
     }
     // Unacknowledged cancellation, faults and timeouts still retire the process
-    // while its GPU slot and temporary inputs are held by this request.
+    // while its process entry retains the temporary inputs through reap.
     worker.stop().await?;
     value
 }
