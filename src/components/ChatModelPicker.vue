@@ -4,6 +4,7 @@ import { ComboboxAnchor, ComboboxContent, ComboboxEmpty, ComboboxInput, Combobox
   ComboboxPortal, ComboboxRoot, ComboboxTrigger, ComboboxViewport } from 'reka-ui'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/components/ui/StudioSelect-0.css'
+import { useModalPortalHost } from '@/composables/useModalPortalHost'
 
 const props = withDefaults(defineProps<{
   options: readonly { value: string; label: string }[]
@@ -16,7 +17,7 @@ const value = defineModel<string>({ required: true })
 const open = ref(false)
 const pointerOpened = ref(false)
 const root = ref<HTMLElement>()
-const portalTarget = computed(() => root.value?.closest('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') as HTMLElement || undefined)
+const { portalTarget, collisionBoundary } = useModalPortalHost(() => root.value, open)
 const customValue = computed(() => props.allowCustom && value.value.trim()
   && !props.options.some(option => option.value === value.value.trim()) ? value.value.trim() : '')
 function displayValue(selected: unknown) {
@@ -50,7 +51,7 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
         </ComboboxTrigger>
       </ComboboxAnchor>
       <ComboboxPortal :to="portalTarget">
-        <ComboboxContent class="studio-select-content chat-model-picker-content" position="popper" align="start" :side-offset="6" :collision-padding="12" data-fluid-glass
+        <ComboboxContent class="studio-select-content chat-model-picker-content" position="popper" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" data-fluid-glass
           :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc.capture="onEscape" @escape-key-down="onDismissEscape">
           <ComboboxViewport class="studio-select-viewport">
             <ComboboxEmpty class="chat-model-picker-empty">{{ allowCustom ? '可直接输入模型名' : '没有匹配的模型' }}</ComboboxEmpty>

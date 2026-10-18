@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { defineComponent, onActivated, onDeactivated, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
+import { computed, defineComponent, onActivated, onDeactivated, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
 import { TooltipArrow, TooltipContent, TooltipPortal, TooltipRoot, TooltipTrigger, injectTooltipRootContext } from "reka-ui"
+import { useModalPortalHost } from '@/composables/useModalPortalHost'
 
 /**
  * 原生 title 属性的替身。
@@ -113,13 +114,8 @@ function onAnchorBlur(e: FocusEvent) {
   dispatchToChild("blur", e)
 }
 
-/**
- * 原生 <dialog> 用 showModal 打开后在顶层渲染，body 其余部分对它都是下方内容：
- * portal 到 body 的提示会被整个 dialog 盖住（StudioSelect 的弹层同理，那里是
- * 被 inert 拦住点击）。所以存在祖先 dialog 时把提示渲染进 dialog 里。
- */
-const portalTarget = ref<HTMLElement | undefined>(undefined)
-const inDialog = ref(false)
+const { portalTarget, syncPortalHost } = useModalPortalHost(() => anchorEl.value)
+const inDialog = computed(() => !!portalTarget.value)
 let observer: MutationObserver | null = null
 
 function setupObserver() {
@@ -136,19 +132,13 @@ function setupObserver() {
   }
 }
 
-function syncPortalHost() {
-  portalTarget.value = anchorEl.value?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined
-  inDialog.value = !!portalTarget.value
-}
-onActivated(() => { syncPortalHost(); syncDisabled(); setupObserver() })
+onActivated(() => { syncDisabled(); setupObserver() })
 onDeactivated(() => { observer?.disconnect(); observer = null })
 onMounted(() => {
   syncDisabled()
-  syncPortalHost()
   setupObserver()
 })
 onUpdated(() => {
-  syncPortalHost()
   syncDisabled()
 })
 onBeforeUnmount(() => {

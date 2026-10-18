@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onActivated, onDeactivated, onMounted, onUpdated, ref, useAttrs, watch } from 'vue'
+import { computed, onActivated, onDeactivated, ref, useAttrs, watch } from 'vue'
+import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import {
   SelectRoot,
   SelectTrigger,
@@ -90,7 +91,7 @@ const attrs = useAttrs()
 const open = ref(false)
 const pointerOpened = ref(false)
 let viewActive = true
-onActivated(() => { viewActive = true; syncPortalHost() })
+onActivated(() => { viewActive = true })
 onDeactivated(() => {
   viewActive = false
   open.value = false
@@ -109,8 +110,7 @@ function onDismissEscape(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) event.preventDefault()
 }
 // class 落在外层包裹上，便于页面按上下文控制宽度与布局；其余属性（data-*、
-// aria-*）连同 id 一起加到可见 trigger。样式一律走 class —— 仓库禁止内联 style
-// （test-style-debt 的内联样式预算只允许承载自定义属性），所以 style 不透传。
+// aria-*）连同 id 一起加到可见 trigger。布局与外观由共享 class 负责，style 不透传。
 // title 转为 hint 由 StudioTooltip 接管，不再透传给原生 trigger 产生原生提示。
 const wrapperClass = computed(() => [attrs.class, props.inline ? 'studio-select-inline' : undefined])
 const accessibleName = computed(() => props.label || (attrs['aria-label'] as string | undefined) || undefined)
@@ -120,26 +120,10 @@ const triggerAttrs = computed(() => {
   return rest
 })
 
-/**
- * 原生 <dialog> 用 showModal() 打开后进入顶层模态，body 的其余部分对指针与读屏都是
- * inert：默认 portal 到 body 的弹层会落在 dialog 之外，看着在屏幕上却点不动
- * （ModelStudio 这类把下拉放在 <dialog> 里的宿主就是这么坏的）。
- * 自定义模态的 useFocusTrap 同样只接受容器内的焦点。弹层留在所属模态内；
- * 自定义面板可能在入场时带 transform/overflow，碰撞边界也应使用该面板。
- * DESIGN.md 的「portalled content inside legacy trapped dialogs needs an explicit
- * integration check」说的就是这件事。
- */
 const wrapperEl = ref<HTMLElement | null>(null)
 // Tooltip provides a separate Popper context; select positioning uses its own trigger.
 const selectTrigger = ref<{ $el: HTMLElement } | null>(null)
-const portalTarget = ref<HTMLElement | undefined>(undefined)
-const collisionBoundary = computed(() => portalTarget.value?.tagName === 'DIALOG' ? undefined : portalTarget.value)
-function syncPortalHost() {
-  portalTarget.value = wrapperEl.value?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? undefined
-}
-onMounted(syncPortalHost)
-onUpdated(syncPortalHost)
-watch(open, value => { if (value) syncPortalHost() }, { flush: 'sync' })
+const { portalTarget, collisionBoundary } = useModalPortalHost(() => wrapperEl.value, open)
 watch(() => props.disabled, value => { if (value) open.value = false }, { flush: 'sync' })
 </script>
 

@@ -12,7 +12,7 @@
       <button v-if="failures[identity(item)]" class="companion-chat-image-retry" type="button" :disabled="thumbnailsLoading" @click="loadImages(true)">重读缩略图</button>
     </figure>
     <Teleport to="body">
-      <dialog ref="dialog" class="companion-chat-image-dialog" aria-label="对话图片预览" @close="onDialogClose" @click="onBackdropClick" @keydown.esc="onEscape">
+      <dialog ref="dialog" class="companion-chat-image-dialog" aria-label="对话图片预览" @close="onDialogClose" @cancel.prevent="closePreview" @click="onBackdropClick" @keydown.esc="onEscape">
         <template v-if="opened">
           <header><span>{{ opened.name }}</span><button type="button" aria-label="关闭图片预览" @click="closePreview"><ArchiveIcon name="close" /></button></header>
           <div ref="originalRegion" class="companion-chat-image-body" tabindex="-1" role="region" aria-label="图片阅读区">
@@ -36,10 +36,11 @@ import { companionImageKey as identity, useCompanionImageMedia } from '@/composa
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
-import { prepareNativeModal } from '@/composables/useFocusTrap'
+import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 
 const props = defineProps<{ images?: CompanionChatImage[] }>()
-const root = ref<HTMLElement>(), dialog = ref<HTMLDialogElement>()
+const root = ref<HTMLElement>(), dialog = ref<HTMLDialogElement | null>(null)
+const modal = useFluidDialog(dialog)
 const originalRegion = ref<HTMLElement>()
 const opened = shallowRef<CompanionChatImage | null>(null)
 const displayedImages = computed(() => [...new Map((props.images || []).map(item => [identity(item), item])).values()])
@@ -49,7 +50,7 @@ const { sources, failures, thumbnailsLoading, originalUrl, originalLoading, orig
 
 function closePreview() {
   previewRevision++; opened.value = null; releaseOriginal()
-  if (dialog.value?.open) dialog.value.close()
+  modal.close()
 }
 function onDialogClose() {
   // Native close events are queued; an earlier close must not cancel a reopened image.
@@ -77,19 +78,15 @@ async function openImage(image: CompanionChatImage) {
   if (!activeView || (opened.value && identity(opened.value) === identity(image) && (originalLoading.value || originalUrl.value))) return
   releaseOriginal()
   const revision = ++previewRevision
+  const source = document.activeElement as HTMLElement | null
   const selection = { ...image }; opened.value = selection
   await nextTick()
   if (!activeView || revision !== previewRevision || !opened.value || identity(opened.value) !== identity(selection) || !dialog.value) return
-  if (!dialog.value.open) {
-    prepareNativeModal(dialog.value)
-    dialog.value.showModal()
-  }
+  if (!dialog.value.open) modal.open(source)
   void loadOriginal(selection)
 }
 function onBackdropClick(event: MouseEvent) {
-  if (event.target !== dialog.value) return
-  const bounds = dialog.value.getBoundingClientRect()
-  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closePreview()
+  if (isBackdropClick(event, dialog.value)) closePreview()
 }
 watch(() => props.images, () => {
   if (opened.value) {

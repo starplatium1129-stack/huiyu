@@ -1,25 +1,17 @@
 <script setup lang="ts">
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
-import { computed, onActivated, onDeactivated, onMounted, onUpdated, ref, watch } from 'vue'
+import { onActivated, onDeactivated, ref } from 'vue'
+import { useModalPortalHost } from '@/composables/useModalPortalHost'
 
 const props = withDefaults(defineProps<{ label: string; contentClass?: string; align?: 'start' | 'center' | 'end'; side?: 'top' | 'right' | 'bottom' | 'left'; prioritizePosition?: boolean; portalTo?: HTMLElement | null }>(), { align:'end', side:'bottom', prioritizePosition:false, contentClass:'' })
 const open = defineModel<boolean>('open', { default:false })
 const pointerOpened = ref(false)
 const trigger = ref<{ $el: HTMLElement } | null>(null)
 const content = ref<HTMLElement | null>(null)
-// Native top layers and custom focus traps both require content inside their modal.
-const portalTarget = ref<HTMLElement>()
-function syncPortalHost() {
-  portalTarget.value = trigger.value?.$el?.closest<HTMLElement>('dialog, [role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"]') ?? props.portalTo ?? undefined
-}
-onMounted(syncPortalHost)
-onUpdated(syncPortalHost)
-watch(open, value => { if (value) syncPortalHost() }, { flush: 'sync' })
-watch(() => props.portalTo, syncPortalHost, { flush: 'post' })
-const collisionBoundary = computed(() => portalTarget.value?.tagName !== 'DIALOG' && portalTarget.value?.matches('[aria-modal="true"]') ? portalTarget.value : undefined)
+const { portalTarget, collisionBoundary } = useModalPortalHost(() => trigger.value?.$el, open, () => props.portalTo)
 const emit = defineEmits<{ openAutoFocus: [event: Event]; closeAutoFocus: [event: Event] }>()
 let viewActive = true
-onActivated(() => { viewActive = true; syncPortalHost() })
+onActivated(() => { viewActive = true })
 onDeactivated(() => {
   viewActive = false
   open.value = false

@@ -677,9 +677,13 @@ neighboring covers retain wheel navigation. Reaching a zoom limit must not turn
 that same image gesture into a page change. Scale 3D perspective and depth with
 the stage width so neighboring covers retain their hierarchy on large desktops.
 `useArtworkInfoDrawer` owns the shared sidebar-to-drawer breakpoint, nested
-focus scope and focus handoff for scene, showcase and gallery viewers. Keyboard
+focus scope and focus handoff for scene, showcase, gallery and batch viewers. Keyboard
 opening/closing is immediate; resizing must never leave focus in a hidden panel
 or launcher. Viewers keep their own image data and enclosing modal lifecycle.
+Native modals, including chat image previews, open through `useFluidDialog` for
+scroll locking, entry motion and focus return. Select, popover, tooltip and model
+picker portals use `useModalPortalHost` to stay inside their owning modal; each
+Reka primitive keeps its own keyboard and dismissal semantics.
 Thumbnail-to-viewer
 transitions are optional enhancements: a missing origin, unavailable API or
 interrupted transition must leave viewing, closing and focus restoration usable.
