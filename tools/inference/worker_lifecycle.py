@@ -4,11 +4,43 @@ Only the generation thread emits protocol events or touches model state. The
 reader sets a per-request event; CUDA operations finish at explicit safe points.
 """
 import gc
+import importlib.util
 import json
+from pathlib import Path
 import queue
 import sys
 import threading
 import time
+
+
+class WorkerError(Exception):
+    """Known failures shared by native adapters and optional manga stages."""
+    def __init__(self, code, message):
+        super().__init__(message)
+        self.code = code
+
+
+def load_sibling(name):
+    """Reuse one bundled module instance without adding an import search path."""
+    if not isinstance(name, str) or not name.isidentifier():
+        raise WorkerError("RUNTIME_INCOMPLETE", "Invalid bundled module name")
+    path = Path(__file__).with_name(f"{name}.py").resolve()
+    module_name = f"huiyu_{name}"
+    module = sys.modules.get(module_name)
+    if module is not None:
+        if Path(getattr(module, "__file__", "")).resolve() != path:
+            raise WorkerError("RUNTIME_INCOMPLETE", f"Bundled module belongs to another runtime: {name}")
+        return module
+    spec = importlib.util.spec_from_file_location(module_name, path)
+    module = importlib.util.module_from_spec(spec)
+    # Register before execution so contracts and nested stages share real types.
+    sys.modules[module_name] = module
+    try:
+        spec.loader.exec_module(module)
+    except BaseException:
+        sys.modules.pop(module_name, None)
+        raise
+    return module
 
 
 class GenerationCancelled(Exception):
@@ -158,6 +190,6 @@ def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cle
                 emit(stream, job_id, "cancelled")
             emit(stream, job_id, "ready")
     except Exception as exc:
-        code = exc.code if isinstance(exc, error) else "GENERATION_FAILED"
+        code = exc.code if isinstance(exc, (error, WorkerError)) else "GENERATION_FAILED"
         emit(stream, job_id, "error", code=code, message=str(exc))
         return 1

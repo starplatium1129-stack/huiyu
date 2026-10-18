@@ -4,12 +4,11 @@ from __future__ import annotations
 import json
 import math
 from pathlib import Path
+from huiyu_worker_lifecycle import WorkerError
 
 
-class AdapterError(Exception):
-    def __init__(self, code, message):
-        super().__init__(message)
-        self.code = code
+class AdapterError(WorkerError):
+    pass
 
 
 def document(path):

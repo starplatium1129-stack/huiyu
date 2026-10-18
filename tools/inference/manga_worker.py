@@ -8,15 +8,24 @@ from pathlib import Path
 import sys
 
 
-def sibling(name):
-    spec = importlib.util.spec_from_file_location(f"huiyu_{name}", Path(__file__).with_name(f"{name}.py"))
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+# Direct -I entry and nested adapter imports must share this fixed owner.
+_lifecycle_path = Path(__file__).with_name("worker_lifecycle.py").resolve()
+lifecycle = sys.modules.get("huiyu_worker_lifecycle")
+if lifecycle is None:
+    _spec = importlib.util.spec_from_file_location("huiyu_worker_lifecycle", _lifecycle_path)
+    lifecycle = importlib.util.module_from_spec(_spec)
+    sys.modules[_spec.name] = lifecycle
+    try:
+        _spec.loader.exec_module(lifecycle)
+    except BaseException:
+        sys.modules.pop(_spec.name, None)
+        raise
+elif Path(getattr(lifecycle, "__file__", "")).resolve() != _lifecycle_path:
+    raise ImportError("Bundled worker lifecycle belongs to another runtime")
+sibling = lifecycle.load_sibling
 
 
 contract = sibling("manga_contract")
-lifecycle = sibling("worker_lifecycle")
 Error = contract.MangaError
 
 
@@ -176,7 +185,8 @@ def main():
                 return lifecycle.serve(generate, input_stream=sys.stdin, stream=stream, emit=emit, error=Error, initialize=initialize)
         return 0
     except Exception as exc:
-        emit(stream, None, "error", code=getattr(exc, "code", "MANGA_PROCESSING_FAILED"), message=str(exc))
+        code = exc.code if isinstance(exc, lifecycle.WorkerError) else "MANGA_PROCESSING_FAILED"
+        emit(stream, None, "error", code=code, message=str(exc))
         return 1
 
 

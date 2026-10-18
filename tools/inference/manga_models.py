@@ -6,16 +6,9 @@ The plain MangaScreen path never imports this module. All adaptations remain
 import gc
 import hashlib
 import importlib.metadata
-import importlib.util
 import pickle
 from pathlib import Path
-
-
-def sibling(name):
-    spec = importlib.util.spec_from_file_location(f"huiyu_{name}", Path(__file__).with_name(f"{name}.py"))
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
+from huiyu_worker_lifecycle import load_sibling as sibling
 
 
 contract = sibling("manga_contract")

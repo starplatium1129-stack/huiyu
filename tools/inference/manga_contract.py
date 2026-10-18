@@ -2,14 +2,13 @@
 import json
 import math
 from pathlib import Path
+from huiyu_worker_lifecycle import WorkerError
 
 MANIFEST = json.loads(Path(__file__).with_name("manga-screen.json").read_text(encoding="utf-8"))
 
 
-class MangaError(Exception):
-    def __init__(self, code, message):
-        super().__init__(message)
-        self.code = code
+class MangaError(WorkerError):
+    pass
 
 
 def invalid(message):
