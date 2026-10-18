@@ -132,7 +132,8 @@ export function useShotWorkspace(props: {
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
-    const { referenceCards, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, shotReferences } = useReferenceCards({
+    const { referenceCards, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, retryReferences, referencesReady, shotReferences } = useReferenceCards({
+        mediaRevision: frameRevision,
         identityCard,
         batchError,
         uploadVideoImage,
@@ -146,7 +147,7 @@ export function useShotWorkspace(props: {
         quality,
         steps,
         linkLastFrame,
-        shotReferences,
+        shotReferences, referencesReady,
         inputsBusy: computed(() => storyboardBusy.value || loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0),
         h3Ready,
         online: computed(() => props.status?.online === true),
@@ -194,6 +195,7 @@ export function useShotWorkspace(props: {
         if (concating.value) return '正在拼接成片';
         if (storyboardBusy.value) return '正在生成剧本';
         if (loadingRefAssets.value || firstFrameBusy.value || frameUploads.value > 0) return '正在准备参考图与首帧';
+        if (shots.value.some(shot => !referencesReady(shot))) return '请重试上传或移除所选角色的待处理参考图';
         if (shots.value.some(shot => shot.imageId && !shot.imageName)) return '请重试挂载或移除待处理首帧';
         if (shots.value.some(shot => shot.seedText.trim() && (!Number.isSafeInteger(Number(shot.seedText)) || Number(shot.seedText) < 0 || Number(shot.seedText) > 0x7fffffff))) return '请检查镜头 Seed：需为 0–2147483647 的整数';
         if (!canSubmit.value)
@@ -482,9 +484,9 @@ export function useShotWorkspace(props: {
     return {
 frameInputs,
         h3Ready, aspectOptions, aspectRatio, quality, linkLastFrame, steps,
-        identityCard, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard, onCardCharacterSelected,
+        identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard, onCardCharacterSelected,
         popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
-        setReferenceInput, onReferencePicked, shots, sceneFillId, sceneBlueprints, addShot,
+        setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, sceneBlueprints, addShot,
         storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,
         firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptNote, scriptOpen,
         reviewBusy, runAiReview, aiSnapshot, restoreAiSnapshot, polishSnapshot, restorePolishSnapshot,

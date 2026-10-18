@@ -1,4 +1,7 @@
-import { ref, shallowRef, onScopeDispose, getCurrentScope, watch, type Ref } from 'vue'
+import { ref, shallowRef, onActivated, onDeactivated, onScopeDispose, watch, type Ref } from 'vue'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
+import { registerMigrationArtworkSource } from '@/platform/web/migrationBarrier'
 import { catalogApi } from '../../api/catalogApi'
 import { parsePopularCharacter } from '../../utils/popularContent'
 import { parseCharacterProfiles } from '../../utils/characterProfiles'
@@ -15,6 +18,8 @@ import type { VideoImageUploadResponse } from '../../api/videoApi.ts'
  */
 
 export interface ReferenceImage {
+  id: string
+  blob: Blob
   name: string
   url: string
 }
@@ -36,6 +41,7 @@ export interface ReferenceCardsDeps {
   identityCard: Ref<string>
   /** 本簇的用户可见错误回写（尺寸/上传失败等）。 */
   batchError: Ref<string>
+  mediaRevision: Readonly<Ref<number>>
   uploadVideoImage: (data: Blob, kind?: 'reference', signal?: AbortSignal) => Promise<VideoImageUploadResponse>
   onCardRemoved?: (index: number) => void
 }
@@ -59,7 +65,12 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   const loadingRefCardIndex = ref<number | null>(null)
   const profiles = shallowRef<Record<string, CardProfile>>({})
   const operations = new Map<ReferenceCard, Set<AbortController>>()
-  let disposed = false
+  const imageRequests = new Map<ReferenceImage, AbortController>()
+  const owner = tempResultOwner()
+  let disposed = false, imageVisit = 0
+  const active = ref(true)
+  const available = () => !disposed && active.value && sameTempResultOwner(owner)
+  const releaseMigration = registerMigrationArtworkSource(() => referenceCards.value.some(card => card.images.length > 0))
   let lastAutoIdentity = ''
   function syncLoading() {
     loadingRefAssets.value = operations.size > 0
@@ -85,11 +96,35 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     syncLoading()
   }
   function clearImages(card: ReferenceCard) {
-    card.images.forEach(image => { if (image.url) URL.revokeObjectURL(image.url) })
+    card.images.forEach(image => { stopImage(card, image); releasePreview(image) })
     card.images = []
   }
-  if (getCurrentScope()) onScopeDispose(() => {
+  function stopImage(card: ReferenceCard, image: ReferenceImage) {
+    const controller = imageRequests.get(image)
+    if (controller) { controller.abort(); imageRequests.delete(image); finish(card, controller) }
+  }
+  function releasePreview(image: ReferenceImage) {
+    if (image.url) URL.revokeObjectURL(image.url)
+    image.url = ''
+  }
+  function restorePreviews() {
+    if (available()) referenceCards.value.forEach(card => card.images.forEach(image => {
+      if (!image.url) image.url = URL.createObjectURL(image.blob)
+    }))
+  }
+  function stopImages() {
+    referenceCards.value.forEach(card => card.images.forEach(image => { stopImage(card, image); releasePreview(image) }))
+  }
+  watch(deps.mediaRevision, () => {
+    stopImages()
+    referenceCards.value.forEach(card => card.images.forEach(image => { image.name = '' }))
+    restorePreviews()
+  }, { flush: 'sync' })
+  onDeactivated(() => { active.value = false; imageVisit++; stopImages() })
+  onActivated(() => { active.value = true; restorePreviews() })
+  onScopeDispose(() => {
     disposed = true
+    releaseMigration()
     for (const card of operations.keys()) cancelCard(card)
     referenceCards.value.forEach(clearImages)
   })
@@ -248,8 +283,8 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     input.value = ''
     if (!file) return
     const card = referenceCards.value[cardIndex]
-    if (!card || disposed) return
-    if (card.images.length + (operations.get(card)?.size || 0) >= MAX_IMAGES_PER_CARD) {
+    if (!card || !available()) return
+    if (card.images.length >= MAX_IMAGES_PER_CARD) {
       deps.batchError.value = '每个角色最多上传 4 张参考图'
       return
     }
@@ -258,16 +293,36 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       return
     }
     if (!file.type.startsWith('image/')) { deps.batchError.value = '请选择图片文件'; return }
-    const controller = start(card)
+    // The card owns the original before the first request, including failed uploads.
+    card.images.push({ id: crypto.randomUUID(), blob: file, name: '', url: URL.createObjectURL(file) })
+    await prepareReference(card, card.images[card.images.length - 1]!)
+  }
+
+  async function prepareReference(card: ReferenceCard, image: ReferenceImage) {
+    if (!available() || !referenceCards.value.includes(card) || !card.images.includes(image) || image.name || imageRequests.has(image)) return
+    const controller = start(card), revision = deps.mediaRevision.value, mediaSession = imageMediaSession()
+    imageRequests.set(image, controller)
+    const currentImage = () => available() && current(card, controller) && card.images.includes(image)
+      && imageRequests.get(image) === controller && revision === deps.mediaRevision.value && mediaSession === imageMediaSession()
     try {
-      const upload = await deps.uploadVideoImage(file, 'reference', controller.signal)
-      if (!current(card, controller) || card.images.length >= MAX_IMAGES_PER_CARD) return
-      card.images.push({ name: upload.name, url: URL.createObjectURL(file) })
-      deps.batchError.value = ''
+      const upload = await deps.uploadVideoImage(image.blob, 'reference', controller.signal)
+      if (!currentImage()) return
+      image.name = upload.name
+      if (referenceCards.value.every(card => card.images.every(image => image.name))) deps.batchError.value = ''
     } catch (error) {
-      if (current(card, controller)) deps.batchError.value = error instanceof Error ? error.message : '参考图上传失败'
+      if (currentImage()) deps.batchError.value = (error instanceof Error ? error.message : '参考图上传失败') + '；原图已保留，可重试上传或移除'
     } finally {
+      if (imageRequests.get(image) === controller) imageRequests.delete(image)
       finish(card, controller)
+    }
+  }
+
+  async function retryReferences(cardIndex: number) {
+    const card = referenceCards.value[cardIndex], revision = deps.mediaRevision.value, visit = imageVisit
+    if (!card || !available()) return
+    for (const image of [...card.images]) {
+      if (!available() || revision !== deps.mediaRevision.value || visit !== imageVisit) return
+      await prepareReference(card, image)
     }
   }
 
@@ -284,16 +339,15 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     const card = referenceCards.value[cardIndex]
     if (!card?.images[imageIndex]) return
     const image = card.images[imageIndex]
-    if (image?.url) URL.revokeObjectURL(image.url)
+    stopImage(card, image); releasePreview(image)
     referenceCards.value[cardIndex].images.splice(imageIndex, 1)
   }
 
-  /** 镜头 → 参考图文件名数组（按出场角色合并参考卡，最多 9 张 Ref2VA）。 */
-  function shotReferences(shot: ShotCastRef): string[] | undefined {
-    if (!shot.cast) return undefined
-    const collect = (cardIndex: number) => (referenceCards.value[cardIndex]?.images ?? []).map(image => image.name)
+  function selectedImages(shot: ShotCastRef): ReferenceImage[] {
+    if (!shot.cast) return []
+    const collect = (cardIndex: number) => referenceCards.value[cardIndex]?.images ?? []
 
-    let list: string[] = []
+    const list: ReferenceImage[] = []
     if (shot.cast === 'all') {
       referenceCards.value.forEach((_, idx) => {
         list.push(...collect(idx))
@@ -307,8 +361,16 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       })
     }
 
-    // 数组去重并限制在 Ref2VA 允许的 9 张以内
-    const unique = Array.from(new Set(list)).slice(0, 9)
+    return list
+  }
+  function referencesReady(shot: ShotCastRef) {
+    const images = selectedImages(shot)
+    return !images.length || available() && images.every(image => Boolean(image.name))
+  }
+  /** Readiness and submission use exactly the same selected cards. */
+  function shotReferences(shot: ShotCastRef): string[] | undefined {
+    if (!referencesReady(shot)) throw new Error('所选角色参考图尚未就绪，请重试上传或移除后再提交')
+    const unique = Array.from(new Set(selectedImages(shot).map(image => image.name))).slice(0, 9)
     return unique.length ? unique : undefined
   }
 
@@ -326,6 +388,6 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     pickReference,
     setReferenceInput,
     removeReference,
-    shotReferences,
+    retryReferences, referencesReady, shotReferences,
   }
 }

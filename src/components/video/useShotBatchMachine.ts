@@ -21,6 +21,7 @@ export interface ShotBatchMachineDeps {
   steps: Ref<4 | 8>
   linkLastFrame: Ref<boolean>
   shotReferences: (shot: ShotCastRef) => string[] | undefined
+  referencesReady: (shot: ShotCastRef) => boolean
   h3Ready: ComputedRef<boolean>
   online: ComputedRef<boolean>
   inputsBusy?: ComputedRef<boolean>
@@ -56,7 +57,7 @@ export function useShotBatchMachine(deps: ShotBatchMachineDeps) {
   const batchRecoveryPending = computed(() => Boolean(reconnectTarget.value || submission.pending.value || videoStore.shotsBatchIssue
     || videoStore.shotsBatch && !legacyVerified.value || batch.value?.needsReview))
   const batchSelectionPending = computed(() => Boolean(reconnectTarget.value && reconnectTarget.value !== batch.value?.id))
-  const canSubmit = computed(() => shots.value.length > 0 && shots.value.every(shot => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000 && (!shot.imageId || shot.imageName))
+  const canSubmit = computed(() => shots.value.length > 0 && shots.value.every(shot => shot.prompt.trim().length >= 8 && shot.prompt.trim().length <= 4000 && (!shot.imageId || shot.imageName) && deps.referencesReady(shot))
     && !submitting.value && !batchRecoveryPending.value && !deps.inputsBusy?.value && !retrying.value && !cancelling.value && !concating.value
     && h3Ready.value && online.value && !batchActive.value
     && shots.value.every(shot => !shot.seedText.trim() || Number.isSafeInteger(Number(shot.seedText)) && Number(shot.seedText) >= 0 && Number(shot.seedText) <= 0x7fffffff))

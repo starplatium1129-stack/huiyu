@@ -155,7 +155,7 @@
               <div class="shot-reference-images">
                 <StudioTooltip
                   v-for="(image, imageIndex) in card.images"
-                  :key="image.name"
+                  :key="image.id"
                   anchor
                   content="移除参考图"
                 >
@@ -163,7 +163,7 @@
                     type="button" class="shot-reference-remove" :disabled="batchActive || submitting"
                     :aria-label="`移除角色 ${cardIndex + 1} 的第 ${imageIndex + 1} 张参考图`"
                     @click="removeReferenceWithFocus(cardIndex, imageIndex, $event)">
-                    <img class="shot-reference-thumb" :src="image.url" :alt="image.name" loading="lazy" />
+                    <img v-if="image.url" class="shot-reference-thumb" :src="image.url" :alt="`角色 ${cardIndex + 1} 参考图 ${imageIndex + 1}`" loading="lazy" />
                   </button>
                 </StudioTooltip>
                 <button
@@ -173,8 +173,13 @@
                   :disabled="batchActive || submitting"
                   @click="pickReference(cardIndex)"
                 ><ArchiveIcon name="upload" />本地上传</button>
+                <button v-if="card.images.some(image => !image.name)" class="btn btn-ghost btn-sm" type="button"
+                  :disabled="batchActive || submitting || loadingRefAssets" @click="retryReferences(cardIndex)">
+                  重试参考图上传
+                </button>
               </div>
-              <p class="shot-reference-hint">参考图 {{ card.images.length }} / 4</p>
+              <p class="shot-reference-hint">参考图 {{ card.images.length }} / 4<span v-if="card.images.some(image => !image.name)"> · 有图片待上传</span></p>
+              <p v-if="card.images.length" class="shot-reference-hint">参考图片保留在当前窗口；刷新后需重新选择。</p>
               <input
                 :ref="(el) => setReferenceInput(el, cardIndex)"
                 type="file"
@@ -450,9 +455,9 @@ function locateShot(index: number) {
 }
 const {
  frameInputs,h3Ready, aspectOptions, aspectRatio, quality, linkLastFrame, steps,
-identityCard, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard, onCardCharacterSelected,
+identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard, onCardCharacterSelected,
 popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
-setReferenceInput, onReferencePicked, shots, sceneFillId, sceneBlueprints, addShot,
+        setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, sceneBlueprints, addShot,
 storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,
 firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptNote, scriptOpen,
 reviewBusy, runAiReview, aiSnapshot, restoreAiSnapshot, polishSnapshot, restorePolishSnapshot,
