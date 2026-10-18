@@ -27,6 +27,7 @@ import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { abortableTask } from '@/utils/abortableTask'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
+import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { artworkRepository } from '@/storage/artworkRepository'
 const props = defineProps<{ task: TaskRecord }>()
@@ -64,7 +65,7 @@ watch(() => [props.task.taskId, index.value, retry.value], async (next, previous
     signal.throwIfAborted()
     release(); url.value = candidateUrl; candidateUrl = ''
     if (manga.value) {
-      const saved = await artworkRepository.readArtwork(`task-${task.taskId}-${outputIndex}`)
+      const saved = await artworkRepository.readArtwork(taskArtworkId(task.taskId, outputIndex))
       signal.throwIfAborted()
       if (saved?.image_id === selected.value?.alias && !savedIndices.value.includes(outputIndex)) savedIndices.value.push(outputIndex)
     }

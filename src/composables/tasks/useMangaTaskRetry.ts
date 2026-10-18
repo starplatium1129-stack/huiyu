@@ -58,7 +58,7 @@ export function useMangaTaskRetry(options: {
     const expected = epoch()
     busy.value = `retry:${task.taskId}`; feedback.value = ''
     try {
-      const child = await retryRuntimeMangaTask(task)
+      const child = await retryRuntimeMangaTask(task, reads.signal)
       if (disposed || epoch() !== expected) return
       feedback.value = '已找到这条记录对应的重试任务，沿用已保存的原图和参数。原记录及结果保留。待主力机验证。'
       await locate(summarizeTask(child))

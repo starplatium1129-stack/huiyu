@@ -2,7 +2,7 @@ import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
 import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
-import { hasRuntimeTasks } from './runtimeTaskAuthority'
+import { hasRuntimeTasks, assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
 import { rememberWorkspaceMedia, workspaceMediaAuthority } from '../platform/desktop/workspaceMediaSource'
@@ -75,51 +75,47 @@ export async function readRuntimeTaskPage(scope: TaskListScope, options: { befor
   if (page.items.some(task => task.runtimeEpoch !== epoch())) throw new Error('运行时已更换，请重新读取任务')
   return { ...page, items: page.items.map(summarizeTask) }
 }
-export async function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>,
-  observation: { signal?: AbortSignal; onSubmitting?: () => void } = {}): Promise<TaskRecord> {
+interface TaskObservation { signal?: AbortSignal; onSubmitting?: () => void }
+/** Acceptance is one POST followed only by lookups in the same runtime session. */
+async function acceptedTaskRequest(path: string, body: unknown, key: string, observation: TaskObservation,
+  validate: (task: TaskRecord) => void = () => {}): Promise<TaskRecord> {
   let submitting = false
-  try { return remember(await request<TaskRecord>('', 'POST', { kind, input, requestKey: key, context } satisfies TaskSubmission, observation.signal, () => {
+  const expected = epoch()
+  const received = (task: TaskRecord) => {
+    if (task.requestKey !== key) throw new Error('接收记录与原操作编号不符，请到任务中心核对')
+    validate(task)
+    return remember(task)
+  }
+  try { return received(await request<TaskRecord>(path, 'POST', body, observation.signal, () => {
     observation.onSubmitting?.()
     markTaskRequestSubmitting(key); submitting = true
   })) }
   catch (error) {
     if (!submitting) { releaseUnsubmittedTaskRequest(key); throw error }
-    if (observation.signal?.aborted) throw error
+    if (observation.signal?.aborted || expected !== epoch()) throw error
     // Losing the acceptance response only permits lookup by the original key.
     // It never causes a second POST or a replacement key.
     if (error instanceof ApiClientError && error.kind === 'http' && error.status < 500) {
       forgetTaskRequest(key); throw error
     }
-    const found = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key)).catch(() => null)
-    if (found) return remember(found)
+    const found = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'GET', undefined, observation.signal).catch(() => null)
+    if (observation.signal?.aborted || expected !== epoch()) throw error
+    if (found) return received(found)
     throw new ApiClientError('接收结果尚未确认。请在任务中心查询，避免重复生成。', { kind: 'network', code: 'TASK_ACCEPTANCE_UNKNOWN' })
   }
 }
+export function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>,
+  observation: TaskObservation = {}): Promise<TaskRecord> {
+  return acceptedTaskRequest('', { kind, input, requestKey: key, context } satisfies TaskSubmission, key, observation,
+    task => { if (task.kind !== kind) throw new Error('接收记录与任务类型不符，请到任务中心核对') })
+}
 export async function getRuntimeTask(id: string, signal?: AbortSignal) { return remember(await request<TaskRecord>('/' + encodeURIComponent(id), 'GET', undefined, signal)) }
-export async function retryRuntimeMangaTask(source: TaskSummary): Promise<TaskRecord> {
-  if (source.runtimeEpoch !== epoch()) throw new Error('运行时已更换，请重新读取原任务')
+export async function retryRuntimeMangaTask(source: TaskSummary, signal?: AbortSignal): Promise<TaskRecord> {
+  assertRuntimeTaskSession(source)
   const key = runtimeMangaRetryKey(source)
-  let submitting = false
-  const expected = epoch()
-  const received = (task: TaskRecord) => {
-    if (task.requestKey !== key || task.kind !== source.kind || task.metadata.retryOfTaskId !== source.taskId) throw new Error('重试记录与原任务不符，请重新核对')
-    return remember(task)
-  }
-  try {
-    return received(await request<TaskRecord>(`/${encodeURIComponent(source.taskId)}/retry`, 'POST', {}, undefined, () => {
-      markTaskRequestSubmitting(key); submitting = true
-    }))
-  } catch (error) {
-    if (!submitting) { releaseUnsubmittedTaskRequest(key); throw error }
-    // Never look up a private task in a replacement workspace or replay POST.
-    if (expected !== epoch()) throw error
-    if (error instanceof ApiClientError && error.kind === 'http' && error.status < 500) {
-      forgetTaskRequest(key); throw error
-    }
-    const found = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key)).catch(() => null)
-    if (found) return received(found)
-    throw new ApiClientError('重试接收状态尚未确认，请在任务中心查询；原图、参数和操作编号已保留。', { kind: 'network', code: 'TASK_ACCEPTANCE_UNKNOWN' })
-  }
+  return acceptedTaskRequest(`/${encodeURIComponent(source.taskId)}/retry`, {}, key, { signal }, task => {
+    if (task.kind !== source.kind || task.metadata.retryOfTaskId !== source.taskId) throw new Error('重试记录与原任务不符，请重新核对')
+  })
 }
 export async function getRuntimeTaskSummary(id: string, signal?: AbortSignal): Promise<TaskSummary> {
   const task = await request<TaskSummary>('/' + encodeURIComponent(id) + '?summary=true', 'GET', undefined, signal)
@@ -143,14 +139,18 @@ export async function readRuntimeTaskHistory(): Promise<unknown> {
   }
   return { version: 1, records, deleted }
 }
-export async function cancelRuntimeTaskKey(key: string) {
-  const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'DELETE')
+export async function cancelRuntimeTaskKey(key: string, signal?: AbortSignal) {
+  const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'DELETE', undefined, signal)
   if (task) remember(task)
   return task
 }
-export async function cancelRuntimeTask(id: string) { return cancelRuntimeTaskKey((await getRuntimeTask(id)).requestKey) }
-export async function actOnRuntimeTask(id: string, action: 'reconcile' | 'resume' | 'continue' | 'concat') {
-  return remember(await request<TaskRecord>(`/${encodeURIComponent(id)}/${action}`, 'POST', {}))
+export async function cancelRuntimeTask(id: string, signal?: AbortSignal) {
+  const task = await getRuntimeTask(id, signal)
+  assertRuntimeTaskSession(task)
+  return cancelRuntimeTaskKey(task.requestKey, signal)
+}
+export async function actOnRuntimeTask(id: string, action: 'reconcile' | 'resume' | 'continue' | 'concat', signal?: AbortSignal) {
+  return remember(await request<TaskRecord>(`/${encodeURIComponent(id)}/${action}`, 'POST', {}, signal))
 }
 export async function confirmWebuiTaskStopped(id: string, expectedRevision: number) {
   try { return remember(await request<TaskRecord>(`/${encodeURIComponent(id)}/confirm-webui-stopped`, 'POST', { expectedRevision, upstreamStopped: true })) }
@@ -188,12 +188,14 @@ export function taskMessage(task: TaskSummary): string {
   if (task.status === 'failed') return '任务未完成，请检查生成环境后重新发起。'
   return ({ queued: '任务已接收。', submitting: '正在提交生成。', running: '正在生成，可切换页面。', succeeded: '正在收取结果。', cancelled: '任务已取消。' } as Record<string, string>)[task.status] || ''
 }
-export async function waitForRuntimeTask(id: string, signal: AbortSignal, update: (task: TaskSummary) => void): Promise<TaskRecord> {
+export async function waitForRuntimeTask(id: string, signal: AbortSignal, update: (task: TaskSummary) => void,
+  options: { timeoutMs?: number; onDetail?: (task: TaskRecord) => void } = {}): Promise<TaskRecord> {
+  const deadline = options.timeoutMs === undefined ? Infinity : Date.now() + options.timeoutMs
   for (;;) {
     signal.throwIfAborted()
-    let task = await getRuntimeTaskSummary(id, signal)
-    let detail: TaskRecord | undefined
-    if (task.upstreamSettled && task.status === 'succeeded' && task.resultState === 'available'
+    let detail = options.onDetail ? await getRuntimeTask(id, signal) : undefined
+    let task: TaskSummary = detail ?? await getRuntimeTaskSummary(id, signal)
+    if (!detail && task.upstreamSettled && task.status === 'succeeded' && task.resultState === 'available'
       && task.recoveryState !== 'unknown' && task.recoveryState !== 'interrupted') {
       // Only successful delivery needs the full recipe/checkpoint. Recheck the
       // newer detail below so a concurrent discard cannot return stale success.
@@ -201,13 +203,16 @@ export async function waitForRuntimeTask(id: string, signal: AbortSignal, update
       if (detail.runtimeEpoch !== task.runtimeEpoch) throw new ApiClientError('运行时连接已更换', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
       task = detail
     }
-    signal.throwIfAborted(); update(task)
+    signal.throwIfAborted()
+    if (detail) options.onDetail?.(detail)
+    update(task)
     if (task.upstreamSettled && (task.status === 'failed' || task.status === 'cancelled')) throw new AcceptedTaskTerminalError(task.taskId, task.status, taskMessage(task))
     if (task.recoveryState === 'unknown' || task.recoveryState === 'interrupted') throw new Error(taskMessage(task))
     if (task.upstreamSettled) {
       if (task.status === 'succeeded' && task.resultState === 'available' && detail) return detail
       throw new Error(taskMessage(task))
     }
+    if (Date.now() >= deadline) throw new Error('本次查看已超时，任务仍保留在任务中心，可重新连接')
     await new Promise<void>((resolve, reject) => {
       const stop = () => { clearTimeout(timer); signal.removeEventListener('abort', stop); reject(new DOMException('停止查看', 'AbortError')) }
       const timer = setTimeout(() => { signal.removeEventListener('abort', stop); resolve() }, 1000)

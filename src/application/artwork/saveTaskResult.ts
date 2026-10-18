@@ -3,6 +3,7 @@ import type { TaskRecord } from '../../../types/tasks'
 import type { ArtworkRecord } from '@/types/artwork'
 import { runtimeTaskResultContext, runtimeTaskRecipe } from '@/utils/runtimeTaskResult'
 import { mangaTaskArtwork } from './mangaTaskResult'
+import { taskArtworkId } from './taskResultIdentity'
 
 /** Task outputs already live in the workspace; save adds an artwork reference. */
 export async function saveTaskResult(task: TaskRecord, index: number, deps: { repository: ArtworkRepository; markSaved(id: string): Promise<unknown> }): Promise<ArtworkRecord> {
@@ -13,7 +14,7 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: { re
   if (!output?.mime.startsWith('image/')) throw new Error('请选择图片结果入册')
   const context = runtimeTaskResultContext(task) as Record<string, unknown>
   const history = context.history as Record<string, unknown>
-  const id = `task-${task.taskId}-${index}`
+  const id = taskArtworkId(task.taskId, index)
   const existing = await artworkRepository.readArtwork(id)
   if (existing && existing.image_id !== output.alias) throw new Error('作品编号已对应另一张图片，请核对作品册')
   let saved = existing
@@ -47,7 +48,7 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: { re
   // A page and its line sidecar share delivery state, but have separate artwork
   // identities. Keep the inbox until every received image has been archived.
   const complete = !manga || (await Promise.all(task.resultRefs.map(async ref =>
-    (await artworkRepository.readArtwork(`task-${task.taskId}-${ref.index}`))?.image_id === ref.alias))).every(Boolean)
+    (await artworkRepository.readArtwork(taskArtworkId(task.taskId, ref.index)))?.image_id === ref.alias))).every(Boolean)
   if (complete) await deps.markSaved(task.taskId)
   return saved!
 }

@@ -2,6 +2,7 @@ import type { TaskRecord, TaskSummary } from '../../types/tasks'
 import type { VideoJob, VideoBatch, VideoBatchShot, CreateVideoBatchInput, VideoDefaults, VideoQuality } from './videoApi'
 import { runtimeRequestKey } from '../stores/runtimeTaskState'
 import { getRuntimeTask, getRuntimeTaskSummary, runtimeResultPath, submitRuntimeTask, taskMessage } from './runtimeTasks'
+import { assertRuntimeTaskSession } from './runtimeTaskAuthority'
 
 let lastBatch: { id: string; stamp: string; batch: VideoBatch } | undefined
 function batchStamp(task: TaskSummary): string {
@@ -68,8 +69,9 @@ export function taskVideoBatch(task: TaskRecord): VideoBatch {
     createdAt: task.createdAt, shots, concatAvailable, concatUrl: concatAvailable ? runtimeResultPath(task, shots.length) : null }
 }
 /** A user retry is a new one-shot batch; the original batch and its results stay in the inbox. */
-export async function retryRuntimeVideoShot(id: string, index: number) {
-  const task = await getRuntimeTask(id)
+export async function retryRuntimeVideoShot(id: string, index: number, signal?: AbortSignal) {
+  const task = await getRuntimeTask(id, signal)
+  assertRuntimeTaskSession(task)
   if (!task.upstreamSettled) throw new Error('原分镜尚未确认结束，请先在任务中心核对。')
   const entries = task.checkpoint?.shots as Array<{ input: Record<string, unknown>; status: string }> | undefined
   const source = entries?.[index - 1]
@@ -83,5 +85,5 @@ export async function retryRuntimeVideoShot(id: string, index: number) {
     steps: task.input.steps, linkLastFrame: false, shots: [shot] } as CreateVideoBatchInput
   const context = { retriedTaskId: id, stepIndex: index - 1 }
   const key = runtimeRequestKey('batch', { input: next, ...context })
-  return taskVideoBatch(await submitRuntimeTask('batch', next as unknown as Record<string, unknown>, key, context))
+  return taskVideoBatch(await submitRuntimeTask('batch', next as unknown as Record<string, unknown>, key, context, { signal }))
 }

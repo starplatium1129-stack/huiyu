@@ -22,7 +22,7 @@
 
 ## 资源所有权
 
-生成作品保存由 `src/application/artwork/saveGeneratedArtwork.ts` 承担编排，`usePromptArtworkHistory` 注入图片、缩略图、测量、ID、暂存和 Repository 能力，成功后更新显示。用例及其可达依赖不直接绑定具体存储/API 或 Node 平台实现。保存输入在异步工作开始前复制；runtime 任务另在接收时保存输入与结果上下文，两者是各自独立的快照边界。写入应答丢失时按作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)。
+桌面任务图片由 `archiveTaskResult → saveTaskResult` 复用已持久化媒体和冻结配方；绘图、批量、漫画/线稿、桌宠与任务中心共享此路径及 `taskArtworkId`，不再上传同一成片。视频结果仍按受控媒体导出。`saveGeneratedArtwork.ts` 的 `saveArtworkSnapshot` 保留给浏览器直连成片和外部图片，由调用方注入图片、缩略图、测量、暂存和 Repository 能力；它不是桌面任务的第二条保存路径。用例及其可达依赖不直接绑定具体存储/API 或 Node 平台实现。保存输入在异步工作开始前复制；runtime 在接收时保存任务输入与结果上下文。写入应答丢失时按原作品身份读回，无法确认提交则保留媒体并报告未知，不能误当回滚成功。当前任务与持久化边界见[工程契约](../../engineering-contracts.md#重构期间的任务与持久化边界)。
 
 WAI HTTP、参数校验和任务执行位于 `runtime-rs/src/generation/`；图片引擎、公共执行契约与存储保持单向依赖。旧 Node HTTP 路由与服务已退役，离线样张工具仅保留 `scripts/lib/generation/` 中实际使用的参数、目录与窄用途节点图。工作台不得直接导入持久化/传输实现，草稿与筛选适配不得反向加载 Store 或作品服务；按源码审查，保留现行 ESLint 约束。
 

@@ -7,7 +7,7 @@ import { inspectMangaImage, mangaInputSize, prepareMangaImage, readMangaSource, 
 import { mangaResult } from './mangaResult'
 import { useMangaLines } from './useMangaLines'
 import type { ArtworkRecord } from '@/types/artwork'
-import { cancelRuntimeTaskKey, getRuntimeTask, getRuntimeTaskByKey, hasRuntimeTasks, submitRuntimeTask, taskMessage } from '@/api/runtimeTasks'
+import { cancelRuntimeTaskKey, getRuntimeTaskByKey, hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask } from '@/api/runtimeTasks'
 import { fetchMangaTaskResult, mangaTaskView } from '@/api/mangaTasks'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
 import { mangaTaskContext } from '@/application/artwork/mangaTaskResult'
@@ -147,17 +147,9 @@ export function useMangaScreen(onSaved: () => void) {
       if (Number(parameters.finish.dark_tone) < Number(parameters.finish.light_tone)) throw new Error('暗部网点浓度不能小于亮部')
     }
   }
-  async function pause() {
-    await new Promise<void>((resolve, reject) => {
-      const abort = () => { clearTimeout(timer); reject(lifetime.signal.reason) }
-      const timer = setTimeout(() => { lifetime.signal.removeEventListener('abort', abort); resolve() }, 1000)
-      lifetime.signal.addEventListener('abort', abort, { once: true })
-    })
-  }
   async function observe() {
     if (observing.value || !job.value && !requestKey.value) return
     observing.value = true; error.value = ''
-    const started = Date.now()
     try {
       if (!job.value) {
         const accepted = await getRuntimeTaskByKey(requestKey.value, lifetime.signal); check()
@@ -165,35 +157,33 @@ export function useMangaScreen(onSaved: () => void) {
         job.value = mangaTaskView(accepted); acceptanceUnknown.value = false
       }
       const id = job.value.id
-      while (true) {
+      await waitForRuntimeTask(id, lifetime.signal, check, { timeoutMs: 11 * 60_000, onDetail: task => {
         check()
-        const received = mangaTaskView(await getRuntimeTask(id, lifetime.signal)); check()
-        // An earlier GET must not overwrite a terminal cancellation receipt.
-        const current: MangaJob = job.value?.id === id && job.value.status === 'cancelled' ? job.value : received
-        job.value = current
-        if (current.task.recoveryState !== 'normal') throw new Error(taskMessage(current.task))
-        if (current.status === 'succeeded' && current.task.upstreamSettled && current.resultAvailable) {
-          if (current.operation === 'lineart') {
-            await lines.accept(current); check()
-            preview.value = 'lineart'
-            notice.value = '独立提取任务已结束，可在线稿预览旁保存。待主力机验证。'; break
-          }
-          const blob = await fetchMangaTaskResult(current, lifetime.signal); check()
-          const width = current.metadata.width, height = current.metadata.height
-          if (typeof width !== 'number' || typeof height !== 'number' || width <= 0 || height <= 0) throw new Error('结果尺寸缺失，请更新原生后端')
-          result.value = mangaResult(blob, current); setUrl(resultUrl, blob)
-          resultRecipe = submittedRecipe; preview.value = 'result'; saved.value = false; downloaded.value = false
-          if (current.lineart) lineRecipe = submittedRecipe
-          await lines.accept(current); check()
-          notice.value = '漫画结果已返回，可对比或保存副本。适配仍待主力机验证。'; break
-        }
-        if (current.status === 'cancelled') { notice.value = '后端已确认取消'; break }
-        if (current.status === 'failed') throw new Error(current.error || '漫画处理失败，请检查原生运行环境后重试')
-        if (!['queued', 'submitting', 'running', 'cancelling', 'succeeded'].includes(current.status)) throw new Error('任务状态尚未确认，请重新连接原任务')
-        if (Date.now() - started > 11 * 60_000) throw new Error('本次查看已超时，任务仍保留在任务中心，可重新连接')
-        await pause()
+        // The cancellation command can publish a newer receipt during a GET.
+        if (job.value?.id !== id || task.revision >= job.value.task.revision) job.value = mangaTaskView(task)
+      } })
+      check()
+      const current = job.value
+      if (current.status === 'cancelled') { notice.value = '后端已确认取消'; return }
+      if (current.operation === 'lineart') {
+        await lines.accept(current); check()
+        preview.value = 'lineart'
+        notice.value = '独立提取任务已结束，可在线稿预览旁保存。待主力机验证。'; return
       }
-    } catch (e) { if (!lifetime.signal.aborted && job.value?.status !== 'cancelled') error.value = message(e) }
+      const blob = await fetchMangaTaskResult(current, lifetime.signal); check()
+      const width = current.metadata.width, height = current.metadata.height
+      if (typeof width !== 'number' || typeof height !== 'number' || width <= 0 || height <= 0) throw new Error('结果尺寸缺失，请更新原生后端')
+      result.value = mangaResult(blob, current); setUrl(resultUrl, blob)
+      resultRecipe = submittedRecipe; preview.value = 'result'; saved.value = false; downloaded.value = false
+      if (current.lineart) lineRecipe = submittedRecipe
+      await lines.accept(current); check()
+      notice.value = '漫画结果已返回，可对比或保存副本。适配仍待主力机验证。'
+    } catch (e) {
+      if (!lifetime.signal.aborted) {
+        if (job.value?.status === 'cancelled') notice.value = '后端已确认取消'
+        else error.value = message(e)
+      }
+    }
     finally { observing.value = false }
   }
   async function cancel() {

@@ -128,7 +128,7 @@ export function fetchVideoStatus(signal?: AbortSignal): Promise<VideoStatusRespo
 }
 
 export function createVideoJob(input: CreateVideoJobInput, signal?: AbortSignal): Promise<VideoJobResponse> {
-  if (hasRuntimeTasks()) return submitRuntimeTask('video', input as unknown as Record<string, unknown>).then(task => ({ ok: true, job: taskVideoJob(task) }))
+  if (hasRuntimeTasks()) return submitRuntimeTask('video', input as unknown as Record<string, unknown>, undefined, undefined, { signal }).then(task => ({ ok: true, job: taskVideoJob(task) }))
   return apiClient.request<VideoJobResponse>('/api/video/jobs', {
     method: 'POST',
     body: input,
@@ -185,7 +185,7 @@ export function fetchVideoJob(id: string, signal?: AbortSignal): Promise<VideoJo
 }
 
 export function cancelVideoJob(id: string, signal?: AbortSignal): Promise<VideoJobResponse> {
-  if (isRuntimeTaskId(id)) return cancelRuntimeTask(id).then(task => { if (!task) throw new Error('任务尚未找到'); return { ok: true, job: taskVideoJob(task) } })
+  if (isRuntimeTaskId(id)) return cancelRuntimeTask(id, signal).then(task => { if (!task) throw new Error('任务尚未找到'); return { ok: true, job: taskVideoJob(task) } })
   return apiClient.request<VideoJobResponse>(`/api/video/jobs/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     signal,
@@ -301,7 +301,7 @@ export interface VideoBatchResponse {
 
 
 export function createVideoBatch(input: CreateVideoBatchInput, signal?: AbortSignal): Promise<VideoBatchResponse> {
-  if (hasRuntimeTasks()) return submitRuntimeTask('batch', input as unknown as Record<string, unknown>).then(task => ({ ok: true, batch: taskVideoBatch(task) }))
+  if (hasRuntimeTasks()) return submitRuntimeTask('batch', input as unknown as Record<string, unknown>, undefined, undefined, { signal }).then(task => ({ ok: true, batch: taskVideoBatch(task) }))
   return apiClient.request<VideoBatchResponse>('/api/video/batches', {
     method: 'POST',
     body: input,
@@ -322,7 +322,7 @@ export function fetchVideoBatch(id: string, signal?: AbortSignal): Promise<Video
 }
 
 export function cancelVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatchResponse> {
-  if (isRuntimeTaskId(id)) return cancelRuntimeTask(id).then(task => { if (!task) throw new Error('任务尚未找到'); return { ok: true, batch: taskVideoBatch(task) } })
+  if (isRuntimeTaskId(id)) return cancelRuntimeTask(id, signal).then(task => { if (!task) throw new Error('任务尚未找到'); return { ok: true, batch: taskVideoBatch(task) } })
   return apiClient.request<VideoBatchResponse>(`/api/video/batches/${encodeURIComponent(id)}`, {
     method: 'DELETE',
     signal,
@@ -332,7 +332,7 @@ export function cancelVideoBatch(id: string, signal?: AbortSignal): Promise<Vide
 }
 
 export function retryVideoShot(id: string, index: number, signal?: AbortSignal): Promise<VideoBatchResponse> {
-  if (isRuntimeTaskId(id)) return retryRuntimeVideoShot(id, index).then(batch => ({ ok: true, batch }))
+  if (isRuntimeTaskId(id)) return retryRuntimeVideoShot(id, index, signal).then(batch => ({ ok: true, batch }))
   return apiClient.request<VideoBatchResponse>(
     `/api/video/batches/${encodeURIComponent(id)}/shots/${index}/retry`,
     {
@@ -353,7 +353,7 @@ export function retryGatewayVideoShots(id: string, indices: number[], signal?: A
 }
 
 export function concatVideoBatch(id: string, signal?: AbortSignal): Promise<VideoBatchResponse> {
-  if (isRuntimeTaskId(id)) return actOnRuntimeTask(id, 'concat').then(task => ({ ok: true, batch: taskVideoBatch(task) }))
+  if (isRuntimeTaskId(id)) return actOnRuntimeTask(id, 'concat', signal).then(task => ({ ok: true, batch: taskVideoBatch(task) }))
   return apiClient.request<VideoBatchResponse>(
     `/api/video/batches/${encodeURIComponent(id)}/concat`,
     {
