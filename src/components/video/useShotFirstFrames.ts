@@ -1,4 +1,5 @@
-import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { fetchResultImage, jobPath, waitForDirectImageJob, assertDirectImageRuntime } from '@/api/directImageJobs'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { withArtworkStaging } from '../../storage/artworkSession.ts'
 import { ref, onScopeDispose, type Ref } from 'vue'
 import { useTrackedTask } from '../../composables/useTaskCenter.ts'
@@ -37,28 +38,6 @@ function isCreativeJobBody(value: Record<string, unknown>): value is Record<stri
   return value.ok === true && !!job && typeof job.id === 'string' && typeof job.status === 'string'
 }
 
-async function pollCreativeJob(id: string, timeoutMs: number, signal: AbortSignal): Promise<string> {
-  const deadline = Date.now() + timeoutMs
-  for (;;) {
-    signal.throwIfAborted()
-    if (Date.now() > deadline) throw new Error('首帧出图超时')
-    const res = await apiClient.request<CreativeJobBody>(`/api/creative/jobs/${encodeURIComponent(id)}`, {
-      cache: 'no-store',
-      timeoutMs: 12_000,
-      signal,
-      validate: isCreativeJobBody,
-    })
-    if (res.job.status === 'failed' || res.job.status === 'cancelled') throw new Error('首帧出图失败或已取消')
-    if (res.job.status === 'succeeded' && res.job.resultUrl) return res.job.resultUrl
-    await new Promise<void>((resolve, reject) => {
-      const abort = () => { clearTimeout(timer); reject(signal.reason) }
-      const timer = setTimeout(() => { signal.removeEventListener('abort', abort); resolve() }, 2500)
-      signal.addEventListener('abort', abort, { once: true })
-      if (signal.aborted) abort()
-    })
-  }
-}
-
 export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequests: Map<ShotDraft, AbortController>; onError: (message: string) => void }) {
   const firstFrameBusy = ref(false)
   const firstFrameProgress = ref('')
@@ -66,6 +45,7 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
   let controller: AbortController | null = null
   let disposed = false
   let activeJob = ''
+  let directOwner = ''
   let durableAttempt = false, activeRuntimeKey = ''
   const acceptedFrames = new WeakMap<ShotDraft, TaskSummary>()
   async function cancelFirstFrames() {
@@ -78,9 +58,10 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
       return
     }
     if (activeJob) {
+      if (directOwner !== runtimeResourceIdentity()) { activeJob = ''; options.onError('运行时已更换，请核对原首帧任务；未向新连接发送取消。'); return }
       const id = activeJob
       activeJob = ''
-      try { await apiClient.request(`/api/creative/jobs/${encodeURIComponent(id)}`, { method: 'DELETE', timeoutMs: 12_000 }) }
+      try { await apiClient.request(jobPath('krea2', id), { method: 'DELETE', timeoutMs: 12_000 }) }
       catch { options.onError('已停止后续首帧，当前后端任务取消未确认，请查看任务状态') }
     }
   }
@@ -106,6 +87,7 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
     taskStatus.value = 'running'
     controller = new AbortController()
     durableAttempt = hasRuntimeTasks()
+    directOwner = runtimeResourceIdentity()
     const signal = controller.signal
     let failed = 0, completed = 0
     try {
@@ -116,6 +98,7 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
           signal.throwIfAborted()
           const { shot, owner, previous } = pending[i]
           const current = () => !disposed && !signal.aborted && !owner.signal.aborted
+            && directOwner === runtimeResourceIdentity()
             && options.frameRequests.get(shot) === owner && options.shots.value.includes(shot)
             && [shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])
           if (!current()) continue
@@ -143,18 +126,18 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
               upload = await importVideoImage(task.taskId, resultAlias, 0, frameSignal)
               activeRuntimeKey = ''
             } else {
-              const submit = await apiClient.request<CreativeJobBody>('/api/creative/jobs', {
+              assertDirectImageRuntime(directOwner)
+              const submit = await apiClient.request<CreativeJobBody>(jobPath('krea2'), {
                 method: 'POST', body: payload, timeoutMs: 30_000, signal: frameSignal, validate: isCreativeJobBody,
               })
+              assertDirectImageRuntime(directOwner)
               activeJob = submit.job.id
               frameSignal.throwIfAborted()
               if (!current()) throw new Error('首帧已由更新的编辑接管')
-              const resultUrl = await pollCreativeJob(submit.job.id, 240_000, frameSignal)
+              const job = await waitForDirectImageJob('krea2', submit.job.id, frameSignal, { timeoutMs: 240_000, intervalMs: 2500, immediate: true })
               activeJob = ''
               if (!current()) continue
-              const response = await runtimeFetch(resultUrl, { signal: frameSignal })
-              if (!response.ok) throw new Error('首帧图片读取失败')
-              blob = await response.blob()
+              blob = await fetchResultImage(job.resultUrl, frameSignal)
               if (!current()) continue
               upload = await uploadVideoImage(blob, undefined, frameSignal)
             }
@@ -179,10 +162,14 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
               if (accepted?.status !== 'succeeded') acceptedFrames.delete(shot)
               failed += 1; continue
             }
+            if (directOwner !== runtimeResourceIdentity()) {
+              activeJob = ''
+              throw new Error('运行时已更换，已停止后续首帧，请核对原任务。')
+            }
             if (activeJob) {
               const id = activeJob
               activeJob = ''
-              try { await apiClient.request(`/api/creative/jobs/${encodeURIComponent(id)}`, { method: 'DELETE', timeoutMs: 12_000 }) }
+              try { await apiClient.request(jobPath('krea2', id), { method: 'DELETE', timeoutMs: 12_000 }) }
               catch { throw new Error('当前首帧任务终止未确认，已停止后续生成，请检查任务状态') }
             }
             if (signal.aborted) throw signal.reason

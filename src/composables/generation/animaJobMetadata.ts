@@ -1,5 +1,5 @@
-import type { AnimaJobMetadata } from '@/types/anima'
-import type { AnimaPublicJob, AnimaRequest } from './animaSessionContract'
+import type { AnimaJobMetadata, AnimaPublicJob } from '@/types/anima'
+import type { AnimaRequest } from './animaSessionContract'
 
 export function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, family: 'anima' | 'krea2'): AnimaJobMetadata {
   const supplied = job.metadata

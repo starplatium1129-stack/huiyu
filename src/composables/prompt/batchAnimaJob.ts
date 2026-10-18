@@ -1,11 +1,11 @@
 import { apiClient, ApiClientError } from '@/api/client'
 import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
-import { runtimeFetch } from '@/platform/runtimeUrl'
+import { fetchResultImage, jobPath, waitForDirectImageJob } from '@/api/directImageJobs'
 import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
 import { runtimeRequestKey } from '@/stores/runtimeTaskState'
-import { animaRequestPayload, type AnimaPublicJob, type AnimaRequest } from '@/composables/generation/useAnimaSession'
+import { animaRequestPayload, type AnimaRequest } from '@/composables/generation/animaSessionContract'
 import { metadataFromJob } from '../generation/animaJobMetadata'
-import type { AnimaJobMetadata } from '@/types/anima'
+import type { AnimaJobMetadata, AnimaPublicJob } from '@/types/anima'
 
 interface BatchAnimaOptions {
   requestKey?: string
@@ -54,7 +54,8 @@ export function createBatchAnimaTransport(family: () => string) {
         accepted.delete(signature)
         return { taskId: done.taskId }
       }
-      const route = selected === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
+      const family = selected === 'krea2' ? 'krea2' : 'anima'
+      const route = jobPath(family)
       let data: { ok?: boolean; job?: AnimaPublicJob; error?: string } | undefined
       const knownId = options.resumeId || accepted.get(signature)
       if (options.reconnect && !knownId) throw new Error('原请求接收状态尚未确认，请先核对原任务，不能重新提交。')
@@ -70,31 +71,17 @@ export function createBatchAnimaTransport(family: () => string) {
       }
       if (!knownId && !data) throw new ApiClientError('队列持续繁忙，请稍后重试本项', { kind: 'http', status: 429 })
       if (!knownId && (data?.ok !== true || !data.job?.id)) throw new ApiClientError(data?.error || 'Anima 接收响应无效', { kind: 'invalid-response' })
-      const jobId = knownId || data!.job!.id, deadline = Date.now() + 10 * 60 * 1000
+      const jobId = knownId || data!.job!.id
       accepted.set(signature, jobId)
       await options.onAccepted?.(jobId)
-      let job = data?.job
-      while (Date.now() < deadline) {
-        await pause(1000, signal)
-        const state = await apiClient.request<{ ok?: boolean; job?: AnimaPublicJob; error?: string }>(`${route}/${encodeURIComponent(jobId)}`,
-          { cache: 'no-store', timeoutMs: 15_000, signal }).catch(error => {
-          if (error instanceof ApiClientError && ['network', 'timeout'].includes(error.kind)) return null
-          throw error
-        })
-        if (!state) { report?.('连接暂时中断，正在重连同一任务…'); continue }
-        if (state.ok !== true || !state.job) throw new Error(state.error || 'Anima 状态无效')
-        if (state.job.id !== jobId) throw new Error('原任务编号与响应不一致，请核对原任务。')
-        job = state.job; report?.(job.status === 'queued' ? '已接收，等待生成…' : '正在生成…')
-        if (job.status === 'failed') { accepted.delete(signature); throw new AcceptedTaskTerminalError(jobId, 'failed', job.error || 'Anima 生成失败') }
-        if (job.status === 'cancelled') { accepted.delete(signature); throw new AcceptedTaskTerminalError(jobId, 'cancelled', '任务已取消') }
-        if (job.status === 'succeeded' && job.resultAvailable && job.resultUrl) break
-      }
-      if (job?.status !== 'succeeded' || !job.resultUrl) throw new Error('等待结果超时，原任务仍保留；请核对后继续。')
-      const response = await runtimeFetch(job.resultUrl, { cache: 'no-store', signal })
-      if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error('网关返回的结果不是图片')
-      const blob = await response.blob()
-      signal.throwIfAborted()
-      if (!blob.size) throw new Error('生成结果为空')
+      const job = await waitForDirectImageJob(family, jobId, signal, { timeoutMs: 10 * 60 * 1000,
+        update: job => report?.(job.status === 'queued' ? '已接收，等待生成…' : '正在生成…'),
+        reconnecting: () => report?.('连接暂时中断，正在重连同一任务…'),
+      }).catch(error => {
+        if (error instanceof AcceptedTaskTerminalError && error.taskId === jobId) accepted.delete(signature)
+        throw error
+      })
+      const blob = await fetchResultImage(job.resultUrl, signal)
       const metadata = metadataFromJob(job, request, selected === 'krea2' ? 'krea2' : 'anima')
       accepted.delete(signature)
       return { blob, seed: metadata.seed, metadata }

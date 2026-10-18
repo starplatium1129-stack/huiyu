@@ -1,5 +1,7 @@
 import { computed, getCurrentInstance, onUnmounted, ref, toRaw, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
+import { jobPath, assertDirectImageRuntime } from '@/api/directImageJobs'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { AnimaGenerationState, AnimaOption, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
@@ -14,14 +16,13 @@ import {
   ANIMA_LORA_BY_CHARACTER,
   animaRequestPayload,
   closestSupportedSize,
-  jobPath,
   type AnimaRequest,
   type AnimaSessionOptions,
   type AnimaStatusResponse,
   type AnimaSubmission,
 } from './animaSessionContract'
 export { ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, animaRequestPayload, closestSupportedSize, resolveInpaintRequestBinding } from './animaSessionContract'
-export type { AnimaPublicJob, AnimaRequest } from './animaSessionContract'
+export type { AnimaRequest } from './animaSessionContract'
 
 /**
  * Anima / Krea 2 生成会话 —— 生成、进度、取消和错误的会话内聚实现。
@@ -73,6 +74,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   let requestSerial = 0
   let activeFamily: 'anima' | 'krea2' = 'anima'
+  let activeRuntimeIdentity = ''
   let statusRequest: AbortController | null = null
   let statusRefresh: Promise<boolean> | null = null
   let statusEpoch = 0, refreshSettingsRevision = 0
@@ -386,6 +388,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     if (maskBlocker) { options.flash(maskBlocker); return }
     const serial = ++requestSerial
     activeFamily = family
+    activeRuntimeIdentity = runtimeResourceIdentity()
     jobRequest?.abort()
     const controller = new AbortController()
     jobRequest = controller
@@ -419,7 +422,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const transport = await loadDirectTransport()
       const current = () => !controller.signal.aborted && serial === requestSerial
       if (!current()) return
+      assertDirectImageRuntime(activeRuntimeIdentity)
       await releaseLocalChat()
+      assertDirectImageRuntime(activeRuntimeIdentity)
       await transport.runDirectAnima({ client, request, family, signal: controller.signal, current,
         state, context: pendingContext, patch: patchState, discardStashed: discardStashedResult, onResult })
     } catch (error) {
@@ -433,6 +438,9 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       if (controller.signal.aborted) {
         patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
         return
+      }
+      if (error instanceof ApiClientError && error.code === 'RUNTIME_EPOCH_CHANGED') {
+        patchState({ phase: 'failed', backendStatus: 'unknown', statusText: '运行时连接已更换，请核对原任务', errorMsg: error.message, errorReport: null }); return
       }
       if (error instanceof ApiClientError && error.kind === 'aborted') return
       const { imageFailurePatch } = await import('./runtimeImageSession')
@@ -450,6 +458,11 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     return request
   }
   async function cancelOnce(): Promise<void> {
+    if (!durableAttempt && BUSY_PHASES.includes(state.value.phase) && activeRuntimeIdentity !== runtimeResourceIdentity()) {
+      requestSerial++; jobRequest?.abort()
+      patchState({ phase: 'failed', statusText: '运行时连接已更换，请核对原任务', errorMsg: '', errorReport: null })
+      return
+    }
     if (durableAttempt && durableKey && BUSY_PHASES.includes(state.value.phase)) {
       const serial = requestSerial, key = durableKey
       const isCurrent = () => serial === requestSerial && key === durableKey && BUSY_PHASES.includes(state.value.phase)
@@ -475,6 +488,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const serial = requestSerial
     const family = activeFamily
     const isCurrent = () => serial === requestSerial && state.value.job?.id === job.id
+      && activeRuntimeIdentity === runtimeResourceIdentity()
       && ['running', 'cancelling'].includes(state.value.phase)
     patchState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '', errorReport: null })
     try {
@@ -497,7 +511,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     jobRequest?.abort()
     jobRequest = null
     const activeJob = state.value.job
-    if (!durableAttempt && activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
+    if (!durableAttempt && activeRuntimeIdentity === runtimeResourceIdentity() && activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
       void client.request<{ ok?: boolean }>(jobPath(activeFamily, activeJob.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
     }
     const result = state.value.result

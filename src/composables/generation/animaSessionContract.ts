@@ -1,22 +1,6 @@
 import type { ApiClient } from '@/api/client'
-import type { AnimaGenerationState, AnimaJobMetadata, AnimaOption, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
+import type { AnimaGenerationState, AnimaOption, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
-
-export interface AnimaPublicJob {
-  provider?: 'comfy' | 'native'
-  id: string
-  status: 'queued' | AnimaGenerationState['phase']
-  progress?: number | null
-  elapsedSeconds?: number
-  progressText?: string
-  currentNode?: string | null
-  seed: number
-  resultAvailable: boolean
-  resultUrl: string | null
-  metadata?: AnimaJobMetadata
-  error: string | null
-  code: string | null
-}
 
 export interface AnimaStatusResponse {
   capabilities?: { automaticMask?: boolean; automaticMaskStatus?: ComfyNodeReadiness }
@@ -98,11 +82,6 @@ export interface InpaintRequestBinding {
   modelId: string
   width: number
   height: number
-}
-
-export function jobPath(family: 'anima' | 'krea2', id?: string): string {
-  const base = family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
-  return id ? `${base}/${encodeURIComponent(id)}` : base
 }
 
 export function resolveInpaintRequestBinding(

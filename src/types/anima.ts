@@ -4,6 +4,22 @@ export type { AnimaPhase, AnimaJobMetadata } from './generation'
 
 import type { SDErrorReport } from '@/utils/sdError'
 
+export interface AnimaPublicJob {
+  provider?: 'comfy' | 'native'
+  id: string
+  status: 'queued' | AnimaPhase
+  progress?: number | null
+  elapsedSeconds?: number
+  progressText?: string
+  currentNode?: string | null
+  seed: number
+  resultAvailable: boolean
+  resultUrl: string | null
+  metadata?: AnimaJobMetadata
+  error: string | null
+  code: string | null
+}
+
 export interface ComfyNodeReadiness {
   state: 'ready' | 'missing' | 'unknown'
   required: string[]
