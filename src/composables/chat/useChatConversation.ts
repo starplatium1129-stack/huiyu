@@ -18,6 +18,7 @@ import { createChatDraftPersistence } from './chatDraftPersistence'
 import type { ChatMessage } from './chatStorageTypes'
 import { parseCompanionChatImage, type CompanionChatSendOptions } from '@/types/companionDrawing'
 import type { CompanionToolContext } from './companionChatTools'
+import { captureCompanionImageSource } from './companionChatImages'
 
 // 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
 // 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
@@ -339,8 +340,8 @@ export function useChatConversation(options: ChatConversationOptions) {
     })
     const tracker = createTurnEmotionTracker(turn.characterId)
     const report = (message: string) => { watchdog.touch(); options.onToolActivity?.(message) }
-    const sourceImage = parseCompanionChatImage(sendOptions.image) || [...turn.messages].reverse().flatMap(message => message.images || [])[0]
-    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, image: sourceImage, imageUrl,
+    const sourceImage = captureCompanionImageSource(sendOptions.image || [...turn.messages].reverse().flatMap(message => message.images || [])[0], sendOptions.imageAuthority, controller)
+    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl,
       search: connection.hostConfig ? { hostConfig: true } : { chatApi: { baseUrl: connection.baseUrl, apiKey: connection.apiKey } } }
     const drawingResults = new Map<string, ToolCallResult>()
 
@@ -517,6 +518,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         ))
       }
     } finally {
+      sourceImage?.release()
       watchdog.stop()
       tracker.reset()
       options.onToolActivity?.(null)

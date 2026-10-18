@@ -2,7 +2,7 @@ import { computed, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { ApiClientError } from '@/api/client'
 import { defaultMangaParameters, mangaManifest, mangaStatus, uploadMangaImage,
   type MangaJob, type MangaOperation, type MangaRequest, type MangaStatus, type MangaRewrite } from '@/api/mangaApi'
-import { imageMediaSession } from '@/composables/useOriginalImage'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { inspectMangaImage, mangaInputSize, prepareMangaImage, readMangaSource, type MangaImage } from './mangaImage'
 import { mangaResult } from './mangaResult'

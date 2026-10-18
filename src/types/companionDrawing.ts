@@ -15,7 +15,17 @@ export interface CompanionChatImage {
 
 export interface CompanionChatSendOptions {
   image?: CompanionChatImage
+  /** Current relay admission only; never persisted with message references. */
+  imageAuthority?: string
   action?: 'generate-from-image'
+}
+
+export interface CompanionChatCommand extends CompanionChatSendOptions {
+  command: 'send' | 'stop' | 'switch-character'
+  text?: string
+  imageUrl?: string
+  character?: string
+  requestId?: string
 }
 
 const mediaAlias = /^(?:image-|img_|task-)[\w-]{1,160}$/

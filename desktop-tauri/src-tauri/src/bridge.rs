@@ -227,6 +227,7 @@ pub struct ChatRelay {
     text: Option<String>,
     image_url: Option<String>,
     image: Option<ChatImageRef>,
+    image_authority: Option<String>,
     action: Option<String>,
     character: Option<String>,
     request_id: Option<String>,
@@ -242,6 +243,7 @@ pub fn chat_relay(window: tauri::WebviewWindow, app: AppHandle, payload: ChatRel
         || payload.request_id.as_ref().is_some_and(|value| value.len() > 128) { return false; }
     if payload.action.as_ref().is_some_and(|value| value != "generate-from-image")
         || payload.action.is_some() && payload.image.is_none()
+        || payload.image.as_ref().is_some_and(|_| payload.image_authority.as_ref().is_none_or(|value| value.is_empty() || value.len() > 4096))
         || payload.image.as_ref().is_some_and(|image| {
             image.path.len() > 512 || image.name.len() > 960 || image.name.trim().is_empty()
                 || [&image.image_id, &image.task_id, &image.artwork_id]

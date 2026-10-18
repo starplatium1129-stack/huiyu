@@ -9,7 +9,7 @@ import { hasRuntimeTasks, isRuntimeTaskId } from '../../api/runtimeTaskAuthority
 import { artworkRepository, type ArtworkRepository } from '../../storage/artworkRepository.ts'
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity, type GeneratedArtworkInput } from '@/application/artwork/artworkSaveInput'
 import { registerMigrationArtworkSource } from '@/platform/web/migrationBarrier'
-import { imageMediaSession } from '../useOriginalImage'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { createImageReadSlot } from '@/utils/imageReadSlot'
 import type { ResultRestoreOwner } from '../generation/animaSessionContract'
 import {

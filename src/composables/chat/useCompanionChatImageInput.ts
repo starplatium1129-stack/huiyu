@@ -1,13 +1,17 @@
 import { computed, onMounted, onUnmounted, ref, shallowRef, watch, type Ref } from 'vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
 import type { CompanionChatImage } from '@/types/companionDrawing'
-import { artworkRepository } from '@/storage/artworkRepository'
+import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { workspaceMediaAuthority } from '@/platform/desktop/workspaceMediaSource'
 import { imageFormat, withImageMime } from '@/utils/imageFormat'
 import { imageForInspection } from '@/utils/companionVision'
 import { relayChatTurn } from '@/utils/chatRelayReceipt'
 
 interface SelectedImage {
-  blob: Blob; name: string; previewUrl: string; image?: CompanionChatImage
+  blob: Blob; name: string; previewUrl: string
+  stored?: { image: CompanionChatImage; authority: string; repository: ArtworkRepository; revision: number }
 }
 interface Options {
   bridge?: CompanionDesktopBridge; activeChar: Ref<string>; visible: Ref<boolean>
@@ -33,9 +37,12 @@ export function useCompanionChatImageInput(options: Options) {
     selectedImage.value = null
     if (image) URL.revokeObjectURL(image.previewUrl)
   }
-  function cancelImageInput() {
+  function stopSending() {
     revision++
     activeController?.abort(); activeController = null; preparingImage.value = false
+  }
+  function cancelImageInput() {
+    stopSending()
     removeSelectedImage()
   }
   function selectImage(blob: Blob, name = '聊天图片.png') {
@@ -66,30 +73,43 @@ export function useCompanionChatImageInput(options: Options) {
     if (files.length > 1) options.notice('已选择第一张图片，每次可发送一张。')
   }
 
-  async function persistImage(selected: SelectedImage): Promise<CompanionChatImage> {
-    if (selected.image) return selected.image
+  async function persistImage(selected: SelectedImage, repository: ArtworkRepository, authority: string, ownerRevision: number, check: () => void): Promise<CompanionChatImage> {
+    check()
+    if (selected.stored) {
+      if (selected.stored.repository !== repository || selected.stored.authority !== authority || selected.stored.revision !== ownerRevision)
+        throw new Error('附件所属连接已变化，原图仍保留；请重新选择图片后发送。')
+      return selected.stored.image
+    }
     const format = imageFormat(await selected.blob.slice(0, 12).arrayBuffer())
+    check()
     if (!['image/png', 'image/jpeg', 'image/webp'].includes(format.mime)) throw new Error('请选择真实的 PNG、JPG 或 WebP 图片。')
     const blob = await withImageMime(selected.blob, format.mime)
+    check()
     // Chat owns the original for previews and reverse prompting; sending creates no gallery record.
-    const imageId = await artworkRepository.putImage(blob)
-    selected.image = { path: imageId, imageId, name: selected.name }
-    return selected.image
+    const imageId = await repository.putImage(blob)
+    check()
+    const image = { path: imageId, imageId, name: selected.name }
+    selected.stored = { image, authority, repository, revision: ownerRevision }
+    return image
   }
   async function sendPendingImage(action?: 'generate-from-image') {
     const selected = selectedImage.value, bridge = options.bridge
-    if (!selected || !bridge || options.busy.value || options.writeBlocked?.value || preparingImage.value) return
+    if (!alive || !options.visible.value || !selected || !bridge || options.busy.value || options.writeBlocked?.value || preparingImage.value) return
     if (!action && !options.chatReady.value) { options.error('请先连接支持图片的聊天模型。'); return }
-    const ownerRevision = revision, character = options.activeChar.value
+    const ownerRevision = revision, character = options.activeChar.value, repository = artworkRepository, session = imageMediaSession()
     const input = options.inputText.value, text = input.trim() || (action ? '请反推这张图片并生成一张新图' : '请看看这张图片。')
     const controller = new AbortController(); activeController = controller; preparingImage.value = true
-    const current = () => alive && !controller.signal.aborted && revision === ownerRevision && options.activeChar.value === character
+    const current = () => alive && !controller.signal.aborted && activeController === controller && revision === ownerRevision
+      && options.visible.value && selectedImage.value === selected && options.activeChar.value === character
+      && repository === artworkRepository && session === imageMediaSession()
+    const check = () => { if (!current()) throw new DOMException('附件准备已停止', 'AbortError') }
     try {
-      const image = await persistImage(selected)
+      const authority = workspaceMediaAuthority()
+      const image = await persistImage(selected, repository, authority, ownerRevision, check)
       if (!current()) return
       const imageUrl = action ? undefined : await imageForInspection(selected.blob, controller.signal)
       if (!current()) return
-      await relayChatTurn(bridge, text, character, imageUrl, controller.signal, { image, ...(action ? { action } : {}) })
+      await relayChatTurn(bridge, text, character, imageUrl, controller.signal, { image, imageAuthority: authority, ...(action ? { action } : {}) })
       if (!current()) return
       if (selectedImage.value === selected) removeSelectedImage()
       if (options.inputText.value === input) { options.inputText.value = ''; options.persistDraft('') }
@@ -102,7 +122,17 @@ export function useCompanionChatImageInput(options: Options) {
     }
   }
   watch(options.activeChar, cancelImageInput, { flush: 'sync' })
-  watch(options.visible, visible => { if (!visible) cancelImageInput() })
+  watch(options.visible, visible => { if (!visible) cancelImageInput() }, { flush: 'sync' })
+  let mediaSession = imageMediaSession()
+  function refreshSession() {
+    const next = imageMediaSession()
+    if (next === mediaSession) return
+    mediaSession = next
+    // Keep the selected Blob, but never revive its upload or cached alias on reconnect.
+    stopSending()
+  }
+  const stopRuntime = onDesktopRuntime(refreshSession)
+  watch(imageMediaSession, refreshSession, { flush: 'sync' })
   onMounted(() => {
     if (options.bridge) clipboardSubscription = options.bridge.onClipboardImage(png => {
       if (!png.length || png.length > MAX_BYTES) return
@@ -111,7 +141,7 @@ export function useCompanionChatImageInput(options: Options) {
     })
   })
   onUnmounted(() => {
-    alive = false; cancelImageInput()
+    alive = false; stopRuntime(); cancelImageInput()
     if (clipboardSubscription !== undefined) options.bridge?.offClipboardImage(clipboardSubscription)
   })
   return { selectedImage, imageInputRef, preparingImage, canSendImage, canGenerateImage,

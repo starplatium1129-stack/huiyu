@@ -1,8 +1,43 @@
 import { executeCompanionTool, type CompanionToolResult } from '@/api/companionToolsApi'
+import type { captureCompanionImageSource } from './companionChatImages'
+import type { ArtworkRepository } from '@/storage/artworkRepository'
 import type { CompanionChatImage } from '@/types/companionDrawing'
-import { companionImageSource } from './companionChatImages'
+import type { MediaSource } from '@/platform/desktop/workspaceMediaSource'
+import { readWorkspaceMediaSource } from '@/platform/desktop/workspaceMediaRead'
 import type { ChatSearchConnection } from '@/config/chatSearch'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
+
+/** Loaded only when a tool reads the reference already selected by its turn. */
+export async function readCompanionImage(image: CompanionChatImage, repository: ArtworkRepository, authority: string | undefined,
+  signal: AbortSignal, check: (signal: AbortSignal) => void): Promise<string | Readonly<MediaSource>> {
+  check(signal)
+  if (image.imageId && repository.getWorkspaceMediaReference) {
+    const reference = repository.getWorkspaceMediaReference(image.imageId)
+    const source = await readWorkspaceMediaSource(reference.alias, authority ?? reference.authority, signal)
+    check(signal)
+    return source
+  }
+  let blob: Blob | null
+  if (image.imageId || !image.path.startsWith('/')) blob = await repository.getImage(image.imageId || image.path, signal)
+  else {
+    const { fetchRuntimeResult } = await import('@/api/runtimeTasks')
+    check(signal)
+    blob = await fetchRuntimeResult(image.path, signal)
+  }
+  check(signal)
+  if (!blob || !blob.size || !/^image\/(png|jpeg|webp|gif)$/.test(blob.type)) throw new Error('原图暂时无法读取，请重新选择图片。')
+  if (blob.size > 20 * 1024 * 1024) throw new Error('图片超过 20 MB，请缩小后重试。')
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    const cleanup = () => signal.removeEventListener('abort', abort)
+    const abort = () => { cleanup(); reader.abort(); reject(signal.reason || new DOMException('已取消', 'AbortError')) }
+    reader.onload = () => { cleanup(); try { check(signal); resolve(String(reader.result || '')) } catch (error) { reject(error) } }
+    reader.onerror = () => { cleanup(); reject(new Error('读取图片失败。')) }
+    signal.addEventListener('abort', abort, { once: true })
+    if (signal.aborted) { abort(); return }
+    reader.readAsDataURL(blob)
+  })
+}
 
 /** Both image consumers hand off only after their chat message is durable. */
 export async function retainCompanionImageMessage(storage: { save(): boolean | undefined }, taskId?: string) {
@@ -18,7 +53,7 @@ export interface CompanionToolContext {
   character: string
   signal: AbortSignal
   report: (message: string) => void
-  image?: CompanionChatImage
+  readImage?: NonNullable<ReturnType<typeof captureCompanionImageSource>>['read']
   imageUrl?: string
   search?: Pick<ChatSearchConnection, 'hostConfig' | 'chatApi'>
 }
@@ -50,9 +85,9 @@ export async function executeCompanionChatTool(name: string, args: Record<string
   if (completed) return completed
   const referenceImage = reference
     ? async () => {
-      if (!context.image && !context.imageUrl) throw new Error('请先发送一张图片，再让我反推并生成。')
+      if (!context.readImage && !context.imageUrl) throw new Error('请先发送一张图片，再让我反推并生成。')
       context.report('正在读取参考图…')
-      return context.image ? await companionImageSource(context.image, context.signal) : context.imageUrl
+      return context.readImage ? await context.readImage() : context.imageUrl
     }
     : undefined
   const { generateCompanionImage } = await import('./companionImageGeneration')

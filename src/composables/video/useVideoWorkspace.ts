@@ -23,7 +23,7 @@ import { VIDEO_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
-import { imageMediaSession } from '@/composables/useOriginalImage'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 import { useVideoFrames } from '@/components/video/useVideoFrames'

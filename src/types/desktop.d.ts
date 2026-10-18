@@ -15,8 +15,8 @@ export interface CompanionDesktopBridge {
   hideChatWindow(): Promise<unknown>
   setChatDocked?(docked: boolean): Promise<boolean>
   getChatDocked?(): Promise<boolean>
-  chatRelay(payload: Record<string, unknown>): Promise<unknown>
-  onChatCommand(listener: (payload: { command: string; text?: string; imageUrl?: string; character?: string; image?: import('./companionDrawing').CompanionChatImage; action?: 'generate-from-image' }) => void): number
+  chatRelay(payload: import('./companionDrawing').CompanionChatCommand): Promise<unknown>
+  onChatCommand(listener: (payload: import('./companionDrawing').CompanionChatCommand) => void): number
   offChatCommand(subscriptionId: number): void
   setIgnoreMouseEvents(ignore: boolean): void
   setLive2dEnabled(enabled: boolean): void

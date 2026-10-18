@@ -4,7 +4,8 @@ import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepo
 import { fetchRuntimeResult, isRuntimeResultPath } from '@/api/runtimeTasks'
 import { blobThumbDataUrl } from '@/utils/imageThumb'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
-import { imageMediaSession as mediaSession, useOriginalImage } from '../useOriginalImage'
+import { useOriginalImage } from '../useOriginalImage'
+import { imageMediaSession as mediaSession } from '@/platform/imageMediaSession'
 
 export const companionImageKey = (image: CompanionChatImage) => JSON.stringify([image.imageId || '', image.path])
 const mediaId = (image: CompanionChatImage) => image.imageId || (/^(?:image-|img_|task-)/.test(image.path) ? image.path : '')

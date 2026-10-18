@@ -1,5 +1,5 @@
 import { artworkRepository } from '@/storage/artworkRepository'
-import { imageMediaSession } from '@/composables/useOriginalImage'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { downloadBlob } from '@/utils/downloadBlob'
 import type { ArtworkRecord } from '@/types/artwork'

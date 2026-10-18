@@ -1,15 +1,9 @@
 import { onActivated, onDeactivated, onScopeDispose, ref, shallowRef, watch } from 'vue'
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
-import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { createImageReadSlot } from '@/utils/imageReadSlot'
-
-/** Includes workspace changes within the same runtime; Web reads remain valid. */
-export function imageMediaSession() {
-  const state = getDesktopRuntime(), runtime = state.bootstrap?.runtime, workspace = runtime?.workspace
-  return JSON.stringify([runtimeResourceIdentity(), state.connection, state.bootstrap?.sourceProfileId, runtime?.origin, runtime?.runtimeEpoch,
-    workspace?.workspaceId, workspace?.principalId, workspace?.runtimeEpoch, workspace?.generation])
-}
 
 interface OriginalRead {
   read: (signal: AbortSignal, repository: ArtworkRepository) => Promise<Blob | string | null>

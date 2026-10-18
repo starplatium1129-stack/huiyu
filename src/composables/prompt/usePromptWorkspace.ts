@@ -32,7 +32,7 @@ import { useRoute,useRouter } from 'vue-router';
 import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type ActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
 import { copyText } from '@/utils/clipboard';
-import { imageMediaSession } from '@/composables/useOriginalImage';
+import { imageMediaSession } from '@/platform/imageMediaSession';
 import { onDesktopRuntime } from '@/platform/desktop/runtime';
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 /** Owns workspace state and lifecycle; the view only binds presentation. */

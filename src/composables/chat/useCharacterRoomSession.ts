@@ -301,7 +301,7 @@ export function useCharacterRoomSession() {
     const character = activeChar.value
     void withChatTurn(async () => {
       if (disposed || activeChar.value !== character || busy.value || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { accepted?.(false); return }
-      if (accepted?.(true) === false) { setError('跨窗口状态暂不可用，请在完整房间继续聊天。'); return }
+      if (accepted?.(true) === false) { setError('未能接收，请检查连接。'); return }
       try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
       await sendMessage(text, imageUrl, sendOptions)
     }, () => { accepted?.(false); if (!disposed) setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
