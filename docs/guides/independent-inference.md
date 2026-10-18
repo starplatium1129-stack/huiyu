@@ -1,5 +1,7 @@
 # 独立图像与视频推理接入
 
+维护入口：共享文件识别在 `runtime-rs/src/generation/native/resources.rs`，Anima 与 adapter 目录结构在 `model_layout.rs`；状态与提交使用同一规则。运行配置经 `Settings.worker_command` 构造解释器命令，准备环境仍沿现有控制室和离线准备器。模型扩展、调度与释放的审查要求见[工程契约](../engineering-contracts.md#模块边界)，不复制环境准备、队列或取消循环。
+
 ## 原生图像与视频适配入口（待主力机验证）
 
 这些适配复用固定 Diffusers 源码，不使用 ComfyUI 节点、Python 或量化分片。

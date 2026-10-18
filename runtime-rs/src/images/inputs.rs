@@ -6,6 +6,7 @@ const MAX_BYTES: usize = 16 * 1024 * 1024;
 static NAME: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^aics_anima_input_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$").unwrap()
 });
+#[derive(Clone)]
 pub(super) struct Original {
     pub name: String,
     native: bool,

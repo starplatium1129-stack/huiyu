@@ -1,17 +1,6 @@
 use super::*;
 use generation::native::{Plan, Settings};
-
-const CLIPSEG_FOLDER: &str = "clipseg-rd64-refined";
-const CLIPSEG_FILES: [&str; 7] = [
-    "config.json",
-    "preprocessor_config.json",
-    "tokenizer_config.json",
-    "special_tokens_map.json",
-    "vocab.json",
-    "merges.txt",
-    "model.safetensors",
-];
-const REMACRI_FILE: &str = "4x_foolhardy_Remacri.safetensors";
+use generation::native::resources::{self, REMACRI_FILE};
 
 fn supported_sampling(input: &Value) -> bool {
     matches!(input["sampler"].as_str(), Some("euler" | "res_multistep"))
@@ -143,7 +132,7 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
 }
 pub(super) async fn plan(
     settings: &Settings,
-    mut input: Value,
+    input: Value,
     originals: &[inputs::Original],
 ) -> Result<Plan> {
     if input["family"] == "manga-screen" {
@@ -167,19 +156,26 @@ pub(super) async fn plan(
     }
     normalize(&input, input.clone())?;
     settings.validate_files().await?;
+    let settings = settings.clone();
+    let originals = originals.to_vec();
+    // All local recognition shares status/discovery rules, off the async executor.
+    tokio::task::spawn_blocking(move || anima_plan(&settings, input, &originals))
+        .await.map_err(|_| ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", "模型组件读取未完成，请重试"))?
+}
+fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Original]) -> Result<Plan> {
     let id = input["modelId"]
         .as_str()
         .ok_or_else(|| error("UNKNOWN_MODEL", "未知生成模型"))?
         .to_owned();
     catalog::model(&id)?;
-    let model_dir = contained(&settings.models_root, &id).await.ok_or_else(|| {
+    let model_dir = resources::within(&settings.models_root, &settings.models_root.join(&id)).ok_or_else(|| {
         ApiError::new(
             503,
             "NATIVE_MODEL_UNAVAILABLE",
             "独立推理需要完整本地 Diffusers 模型目录",
         )
     })?;
-    if let Some(reason) = model_problem(&model_dir).await {
+    if let Some(reason) = generation::native::model_issue(&model_dir) {
         return Err(ApiError::new(
             503,
             "NATIVE_MODEL_UNAVAILABLE",
@@ -191,7 +187,7 @@ pub(super) async fn plan(
             .get("requestedHiresUpscaler")
             .cloned()
             .unwrap_or_else(|| input["hiresUpscaler"].clone());
-        let resource = remacri_path(settings).await;
+        let resource = resources::remacri(&settings.models_root);
         let requested = input["hiresUpscaler"].as_str().unwrap_or("Auto");
         if requested == "Remacri" && resource.is_none() {
             return Err(ApiError::new(
@@ -259,7 +255,7 @@ pub(super) async fn plan(
         .as_str()
         .is_some_and(|prompt| !prompt.is_empty())
     {
-        Some(clipseg_model_dir(settings).await.ok_or_else(|| ApiError::new(503,
+        Some(resources::clipseg(&settings.models_root).ok_or_else(|| ApiError::new(503,
             "NATIVE_MASK_MODEL_UNAVAILABLE", "自动识别需要 models_root/clipseg-rd64-refined 内完整的本地 CLIPSeg safetensors 模型；不会自动下载"))?)
     } else {
         None
@@ -280,7 +276,7 @@ pub(super) async fn plan(
             lora["maxStrength"].as_f64().unwrap(),
             false,
         )?;
-        let path = lora_path(settings, lora).await.ok_or_else(|| {
+        let path = lora["file"].as_str().and_then(|name| resources::file(&settings.loras_root, name, false)).ok_or_else(|| {
             ApiError::new(
                 503,
                 "NATIVE_LORA_UNAVAILABLE",
@@ -328,48 +324,6 @@ pub(super) async fn plan(
         loras,
     })
 }
-async fn contained(root: &std::path::Path, name: &str) -> Option<PathBuf> {
-    let root = tokio::fs::canonicalize(root).await.ok()?;
-    let path = tokio::fs::canonicalize(root.join(name)).await.ok()?;
-    (path.starts_with(&root) && path != root).then_some(path)
-}
-async fn lora_path(settings: &Settings, lora: &Value) -> Option<PathBuf> {
-    let path = contained(&settings.loras_root, lora["file"].as_str()?).await?;
-    tokio::fs::metadata(&path)
-        .await
-        .ok()?
-        .is_file()
-        .then_some(path)
-}
-async fn model_problem(path: &std::path::Path) -> Option<String> {
-    let path = path.to_owned();
-    tokio::task::spawn_blocking(move || generation::native::model_issue(&path))
-        .await
-        .unwrap_or_else(|_| Some("模型组件读取未完成，请重试".into()))
-}
-async fn remacri_path(settings: &Settings) -> Option<PathBuf> {
-    let path = contained(
-        &settings.models_root,
-        &format!("upscale_models/{REMACRI_FILE}"),
-    )
-    .await?;
-    tokio::fs::metadata(&path)
-        .await
-        .ok()
-        .filter(|value| value.is_file() && value.len() > 0)
-        .map(|_| path)
-}
-async fn clipseg_model_dir(settings: &Settings) -> Option<PathBuf> {
-    let path = contained(&settings.models_root, CLIPSEG_FOLDER).await?;
-    for name in CLIPSEG_FILES {
-        let file = contained(&path, name).await?;
-        let metadata = tokio::fs::metadata(file).await.ok()?;
-        if !metadata.is_file() || metadata.len() == 0 {
-            return None;
-        }
-    }
-    Some(path)
-}
 pub(super) async fn status(
     backend: &generation::Service,
     family: &str,
@@ -395,16 +349,6 @@ fn status_check(cancel: &CancellationToken) -> Result<()> {
         Ok(())
     }
 }
-fn status_contained(root: &std::path::Path, name: &str) -> Option<PathBuf> {
-    let root = root.canonicalize().ok()?;
-    let path = root.join(name).canonicalize().ok()?;
-    (path.starts_with(&root) && path != root).then_some(path)
-}
-fn status_file(root: &std::path::Path, name: &str, nonempty: bool) -> bool {
-    status_contained(root, name).is_some_and(|path| {
-        std::fs::metadata(path).is_ok_and(|m| m.is_file() && (!nonempty || m.len() > 0))
-    })
-}
 fn local_status(
     runtime: &Settings,
     family: &str,
@@ -412,28 +356,9 @@ fn local_status(
     cancel: &CancellationToken,
 ) -> Result<Value> {
     status_check(cancel)?;
-    let automatic_mask = if runtime_error.is_some() {
-        false
-    } else if let Some(path) = status_contained(&runtime.models_root, CLIPSEG_FOLDER) {
-        let mut available = true;
-        for name in CLIPSEG_FILES {
-            status_check(cancel)?;
-            if !status_file(&path, name, true) {
-                available = false;
-                break;
-            }
-        }
-        available
-    } else {
-        false
-    };
+    let automatic_mask = runtime_error.is_none() && resources::clipseg(&runtime.models_root).is_some();
     status_check(cancel)?;
-    let remacri = runtime_error.is_none()
-        && status_file(
-            &runtime.models_root,
-            &format!("upscale_models/{REMACRI_FILE}"),
-            true,
-        );
+    let remacri = runtime_error.is_none() && resources::remacri(&runtime.models_root).is_some();
     let hires_upscalers = if remacri {
         vec!["Auto", "Latent", "Remacri"]
     } else {
@@ -445,13 +370,13 @@ fn local_status(
         if !family.is_empty() && model["family"] != family {
             continue;
         }
-        let model_dir = status_contained(&runtime.models_root, id);
+        let model_dir = resources::within(&runtime.models_root, &runtime.models_root.join(id));
         let issue = if model["family"] != "anima" {
             Some("该 Comfy FP8 模型不能用于原生推理；请采用下方独立 BF16 模型目录".to_owned())
         } else if runtime_error.is_some() {
             Some("独立推理运行库不可用".to_owned())
         } else if let Some(path) = &model_dir {
-            // Preserve model_problem's per-model worker-failure fallback.
+            // One unreadable model must not hide other status entries.
             std::panic::catch_unwind(|| generation::native::model_issue(path))
                 .unwrap_or_else(|_| Some("模型组件读取未完成，请重试".into()))
         } else {
@@ -477,7 +402,7 @@ fn local_status(
         for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {
             status_check(cancel)?;
             let available = lora["file"].as_str()
-                .is_some_and(|name| status_file(&runtime.loras_root, name, false));
+                .is_some_and(|name| resources::file(&runtime.loras_root, name, false).is_some());
             loras.push(json!({"id":id,"name":lora["name"],"character":lora["character"],"characters":lora["characters"],"compatibleModels":lora["compatibleModels"],"preview":lora["preview"]==true,"validation":lora["validation"].as_str().unwrap_or("production"),"available":available,"formatValidation":"on-load"}));
         }
     }

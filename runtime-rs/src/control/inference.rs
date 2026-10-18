@@ -154,22 +154,12 @@ async fn diagnose(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<V
         .map_err(|_| ApiError::new(409, "INFERENCE_DIAGNOSTICS_BUSY", "已有依赖检查正在执行"))?;
     let settings = s.active_inference()?;
     settings.validate_files().await?;
-    let mut command = tokio::process::Command::new(&settings.python);
+    let mut command = settings.worker_command();
     command
-        .arg("-I")
-        .arg("-u")
-        .args(["-X", "utf8"])
-        .arg(&settings.worker)
         .arg("--diagnose")
         .stdin(Stdio::null())
         .stdout(Stdio::piped())
-        .stderr(Stdio::null())
-        .env_remove("PYTHONPATH")
-        .env_remove("PYTHONHOME")
-        .env("HUIYU_INFERENCE_ACCELERATION", &settings.acceleration)
-        .env("HUIYU_INFERENCE_MEMORY", &settings.memory_policy)
-        .env("HF_HUB_OFFLINE", "1")
-        .env("TRANSFORMERS_OFFLINE", "1");
+        .stderr(Stdio::null());
     let process = s.processes.spawn(&mut command)?;
     let operation = async {
         let (stdout, _) = process.take_output();

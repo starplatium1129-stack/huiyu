@@ -2,6 +2,7 @@ use super::*;
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use std::{io::Read, path::Path};
+use super::resources::{self, within};
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -115,6 +116,17 @@ impl Settings {
         }
         Ok(())
     }
+    /// Keep diagnostics and all model workers on the same isolated offline policy.
+    /// The caller owns arguments, I/O, process registration and execution limits.
+    pub(crate) fn worker_command(&self) -> tokio::process::Command {
+        let mut command = tokio::process::Command::new(&self.python);
+        command.arg("-I").arg("-u").args(["-X", "utf8"]).arg(&self.worker)
+            .env_remove("PYTHONPATH").env_remove("PYTHONHOME")
+            .env("HUIYU_INFERENCE_ACCELERATION", &self.acceleration)
+            .env("HUIYU_INFERENCE_MEMORY", &self.memory_policy)
+            .env("HF_HUB_OFFLINE", "1").env("TRANSFORMERS_OFFLINE", "1");
+        command
+    }
 }
 /// Snapshot configuration once at service construction. Request paths must use
 /// that snapshot, never reread a configuration saved pending application restart.
@@ -191,11 +203,6 @@ fn python_relative() -> &'static str {
         "venv/bin/python"
     }
 }
-fn within(root: &Path, path: &Path) -> Option<PathBuf> {
-    let root = root.canonicalize().ok()?;
-    let path = path.canonicalize().ok()?;
-    (path.starts_with(&root) && path != root).then_some(path)
-}
 impl Settings {
     pub(crate) fn model_count(&self) -> usize {
         model_count(&self.models_root)
@@ -222,7 +229,7 @@ fn lora_count(root: &Path) -> usize {
         .unwrap()
         .values()
         .filter_map(|lora| lora["file"].as_str())
-        .filter(|name| within(root, &root.join(name)).is_some_and(|path| path.is_file()))
+        .filter(|name| resources::file(root, name, false).is_some())
         .count()
 }
 fn installed_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {

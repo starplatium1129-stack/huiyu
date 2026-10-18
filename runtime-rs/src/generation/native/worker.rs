@@ -14,22 +14,12 @@ pub(super) struct Worker {
 }
 impl Worker {
     fn spawn(engine: &Engine, settings: &Settings) -> Result<Self> {
-        let mut command = tokio::process::Command::new(&settings.python);
+        let mut command = settings.worker_command();
         command
-            .arg("-I")
-            .arg("-u")
-            .args(["-X", "utf8"])
-            .arg(&settings.worker)
             .arg("--serve")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())
-            .stderr(Stdio::piped())
-            .env_remove("PYTHONPATH")
-            .env_remove("PYTHONHOME")
-            .env("HUIYU_INFERENCE_ACCELERATION", &settings.acceleration)
-            .env("HUIYU_INFERENCE_MEMORY", &settings.memory_policy)
-            .env("HF_HUB_OFFLINE", "1")
-            .env("TRANSFORMERS_OFFLINE", "1");
+            .stderr(Stdio::piped());
         let process = engine.processes.spawn(&mut command)?;
         let input = process.take_input().ok_or_else(protocol_error)?;
         let (stdout, stderr) = process.take_output();

@@ -5,6 +5,7 @@ mod output;
 use output::stage_text;
 mod model_layout;
 pub(crate) use model_layout::model_issue;
+pub(crate) mod resources;
 mod observations;
 mod results;
 mod worker;
