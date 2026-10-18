@@ -2,6 +2,7 @@ mod artwork_index;
 mod artwork_search;
 mod backup;
 mod canonical;
+pub(crate) use canonical::fingerprint as json_fingerprint;
 mod garbage;
 mod handle;
 mod media;

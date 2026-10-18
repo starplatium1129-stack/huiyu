@@ -189,7 +189,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     const list = jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled')
     list.forEach(job => {
       if (job.pendingImage) { job.status = 'unknown'; job.error = undefined; return }
-      if (job.taskId) { job.requestKey = crypto.randomUUID(); job.taskId = undefined }
+      job.requestKey = crypto.randomUUID(); job.taskId = undefined
       job.status = 'pending'; job.error = undefined
     })
     await execute(list, `重跑 ${list.length} 张失败 / 未执行任务`)

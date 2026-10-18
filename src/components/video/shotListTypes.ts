@@ -1,4 +1,5 @@
 import type { VideoDefaults, VideoShotSize } from '@/api/videoApi'
+import type { FirstFrameRequest } from '@/types/firstFrameRequest'
 
 /**
  * 分镜编辑器的镜头草稿（编辑态）。提交时由 useShotBatchMachine 组装为
@@ -28,4 +29,5 @@ export interface ShotDraft {
   cast: '' | '1' | '2' | '3' | '4' | '12' | 'all' | string
   /** 剧本引擎派生的首帧出图提示词（蓝图散文+景别构图句）；「一键首帧」消费。 */
   firstFramePrompt?: string
+  firstFrameRequest?: FirstFrameRequest
 }

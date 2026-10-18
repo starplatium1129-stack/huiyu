@@ -9,10 +9,9 @@
       <button v-if="canReturnToBatch" class="btn btn-ghost btn-sm" type="button" :disabled="batchReading || submitting || cancelling || retrying || concating" @click="returnToCurrentBatch">返回当前批次</button>
     </p>
     <div v-if="!h3Ready" class="video-panel shot-blocked">
-      <p>分镜短片模式需要 MiniMax H3 权重就绪（支持首尾帧衔接与原生对白）。安装完成后点击「重新检测」即可使用。</p>
+      <p>可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。</p>
     </div>
 
-    <template v-else>
       <ShotStoryboardStrip v-if="shots.length" :shots="shots" @locate="locateShot" />
       <section class="video-panel">
         <div class="video-panel-heading">
@@ -56,30 +55,30 @@
           </div>
         </div>
 
-        <ToggleSwitch
-          class="shot-toggle"
-          :model-value="linkLastFrame"
-          :disabled="batchActive || submitting"
-          label="自动衔接上一镜尾帧"
-          @update:model-value="linkLastFrame = $event"
-        >
-          <span>
-            <strong>自动衔接上一镜尾帧</strong>
-          </span>
-        </ToggleSwitch>
+        <div class="shot-options">
+          <ToggleSwitch
+            :model-value="linkLastFrame"
+            :disabled="batchActive || submitting"
+            label="自动衔接上一镜尾帧"
+            @update:model-value="linkLastFrame = $event"
+          >
+            <span>
+              <strong>自动衔接上一镜尾帧</strong>
+            </span>
+          </ToggleSwitch>
 
-        <ToggleSwitch
-          class="shot-toggle"
-          :model-value="steps === 4"
-          :disabled="batchActive || submitting"
-          label="极速 4 步（整批）"
-          @update:model-value="steps = $event ? 4 : 8"
-        >
-          <span>
-            <strong>极速 4 步（整批）</strong>
-            <small>更快生成预览，画面细节会略有减少。</small>
-          </span>
-        </ToggleSwitch>
+          <ToggleSwitch
+            :model-value="steps === 4"
+            :disabled="batchActive || submitting"
+            label="极速 4 步（整批）"
+            @update:model-value="steps = $event ? 4 : 8"
+          >
+            <span>
+              <strong>极速 4 步（整批）</strong>
+              <small>更快生成预览，画面细节会略有减少。</small>
+            </span>
+          </ToggleSwitch>
+        </div>
 
         <label class="field shot-identity-field">
           <span class="field-label">各镜头共用的角色描述</span>
@@ -423,7 +422,6 @@
       </section>
 
       <ShotBatchProgress v-if="batch" :status-label="batchStatusLabel" :succeeded="batch.progress.succeeded" :total="batch.progress.total" :failed="batch.progress.failed" :progress-percent="progressPercent" :link-last-frame="batch.linkLastFrame" :concat-url="batch.concatUrl || ''" :transcript="concatTranscript" />
-    </template>
   </section>
 </template>
 

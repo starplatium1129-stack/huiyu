@@ -14,6 +14,7 @@ import { useShotDraft } from './useShotDraft';
 import { useShotFirstFrames } from './useShotFirstFrames';
 import { inferShotParams,useShotImport } from './useShotImport';
 import { useScenarioShotImport } from './useScenarioShotImport';
+import { flushProfileWrites } from '@/platform/web/profileStorage';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useShotWorkspace(props: {
     status: VideoStatusResponse | null;
@@ -114,6 +115,7 @@ export function useShotWorkspace(props: {
     // ── 一键首帧（2026-08-23）：逐镜 Krea2 增强链路出图 → 上传受控文件 → 回填 ──
     const { firstFrameBusy, firstFrameProgress, generateFirstFrames } = useShotFirstFrames({
         shots, frameRequests,
+        persist: async () => { if (!persistShotsDraft()) throw new Error('首帧请求尚未保存，未提交生成。'); await flushProfileWrites(); },
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
@@ -370,6 +372,7 @@ export function useShotWorkspace(props: {
                     shot.imageName = upload.name;
                     shot.imageUrl = imageUrl;
                     shot.imageId = imageId;
+                    if (shot.firstFrameRequest?.state !== 'pending') shot.firstFrameRequest = undefined;
                     attached = true;
                     batchError.value = '';
                 } finally {
@@ -392,6 +395,7 @@ export function useShotWorkspace(props: {
             shot.imageUrl = '';
             shot.imageName = '';
             shot.imageId = '';
+            if (shot.firstFrameRequest?.state !== 'pending') shot.firstFrameRequest = undefined;
         }
     }
     // ── 绘图页「加入分镜」批量带入（F4：逐镜确认 + 如实汇报；实现已下沉 useShotImport）──

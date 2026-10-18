@@ -1,5 +1,6 @@
 import { profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
 import { ref } from 'vue'
+import type { FirstFrameRequest } from '@/types/firstFrameRequest'
 import { defineStore } from 'pinia'
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import {
@@ -127,6 +128,7 @@ export interface ShotsDraftShot {
   seedText: string
   cast: string
   firstFramePrompt?: string
+  firstFrameRequest?: FirstFrameRequest
   /** 首帧 IndexedDB 图片 id（空串=无首帧；恢复时重上传换新受控名）。 */
   imageId: string
   /** Stable source of an acknowledged drawing-to-shot import. */

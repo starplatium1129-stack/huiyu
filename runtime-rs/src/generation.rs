@@ -28,6 +28,7 @@ pub(crate) use http::{RateLimit, limit_request, owner as request_owner};
 use plan::Execution;
 pub(crate) use plan::{ComfyPlan, MediaKind};
 pub(crate) use resources::{super_res, super_res_name};
+pub(crate) use snapshots::write as write_job_record;
 use serde_json::{Value, json};
 use std::{
     collections::{HashMap, VecDeque},

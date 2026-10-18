@@ -37,7 +37,7 @@ pub(super) async fn safe_directory(directory: &Path) -> bool {
     }
     true
 }
-pub(super) async fn write(path: &Path, value: &Value) -> Result<()> {
+pub(crate) async fn write(path: &Path, value: &Value) -> Result<()> {
     let (file, pending) =
         tempfile::NamedTempFile::new_in(path.parent().unwrap_or_else(|| Path::new(".")))?
             .into_parts();

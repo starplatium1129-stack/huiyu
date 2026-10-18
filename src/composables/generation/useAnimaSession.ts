@@ -1,6 +1,8 @@
 import { computed, getCurrentInstance, onUnmounted, ref, toRaw, watch } from 'vue'
 import { ApiClientError, apiClient } from '@/api/client'
-import { jobPath, assertDirectImageRuntime } from '@/api/directImageJobs'
+import { assertDirectImageRuntime } from '@/api/directImageJobs'
+import { cancelDirectImageRequest, DirectImageRequestRejected } from '@/api/directImageRequests'
+import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { AnimaGenerationState, AnimaOption, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
@@ -73,13 +75,13 @@ export function useAnimaSession(options: AnimaSessionOptions) {
   const getSettingsRevision = () => settingsRevision
 
   let requestSerial = 0
-  let activeFamily: 'anima' | 'krea2' = 'anima'
   let activeRuntimeIdentity = ''
   let statusRequest: AbortController | null = null
   let statusRefresh: Promise<boolean> | null = null
   let statusEpoch = 0, refreshSettingsRevision = 0
   let jobRequest: AbortController | null = null
   let durableAttempt = false, durableKey = ''
+  let directPending: { key: string; submission: AnimaSubmission; owner: string } | null = null
   let disposed = false
   const statusPolling = usePolling({ intervalMs: 15_000, immediate: false, paused: () => document.hidden,
     tick: async () => { await refreshBackend() } })
@@ -376,25 +378,26 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   async function generate(overrides: Partial<AnimaRequest> = {}, frozen?: AnimaSubmission): Promise<void> {
     if (disposed || BUSY_PHASES.includes(state.value.phase)) return
-    const submission = frozen ? JSON.parse(JSON.stringify({ ...frozen, request: { ...frozen.request, ...overrides } })) as AnimaSubmission : captureSubmission(overrides)
+    if (directPending && hasRuntimeTasks()) { options.flash('上次浏览器请求仍需在原连接核对，不能切换工作区重新提交。'); return }
+    if (directPending) options.flash('正在核对上次请求；本次继续使用原参数，不会重复生成。')
+    const submission = directPending?.submission ?? (frozen ? JSON.parse(JSON.stringify({ ...frozen, request: { ...frozen.request, ...overrides } })) as AnimaSubmission : captureSubmission(overrides))
     if (!submission) return
     if (frozen && submission.family !== options.getFamily()) { options.flash('创作引擎已更换，请重新确认后提交'); return }
     const { request, family } = submission
     const provider = state.value.provider === 'native' ? 'native' : 'comfy'
-    if (!state.value.online && !state.value.managedStartAvailable) { options.flash(`${family === 'krea2' ? 'Krea 2' : 'Anima'} 当前未连接或尚未就绪。${state.value.checkMsg}`); return }
+    if (!directPending && !state.value.online && !state.value.managedStartAvailable) { options.flash(`${family === 'krea2' ? 'Krea 2' : 'Anima'} 当前未连接或尚未就绪。${state.value.checkMsg}`); return }
     const nativeBlocker = state.value.provider === 'native' && nativeAnimaRequestBlocker(state.value.models, request)
-    if (nativeBlocker) { options.flash(nativeBlocker); return }
+    if (!directPending && nativeBlocker) { options.flash(nativeBlocker); return }
     const maskBlocker = request.maskPrompt && automaticMaskBlocker(state.value)
-    if (maskBlocker) { options.flash(maskBlocker); return }
+    if (!directPending && maskBlocker) { options.flash(maskBlocker); return }
     const serial = ++requestSerial
-    activeFamily = family
     activeRuntimeIdentity = runtimeResourceIdentity()
     jobRequest?.abort()
     const controller = new AbortController()
     jobRequest = controller
     durableAttempt = hasRuntimeTasks(); durableKey = ''
     pendingContext = JSON.parse(JSON.stringify(submission.context)) as AnimaResultContext | null
-    const onResult = (result: AnimaResult) => { completedSubmissions.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission); options.onResult(result) }
+    const onResult = (result: AnimaResult) => { directPending = null; completedSubmissions.set(toRaw(result.blob), JSON.parse(JSON.stringify(submission)) as AnimaSubmission); options.onResult(result) }
     // F2：提交不再销毁上一张成片——移入 stash，失败/取消可找回（见 stashedResult）。
     stashCurrentResult()
     patchState({ phase: 'submitting', backendStatus: undefined, job: null, currentNode: null, resultContext: null, progress: null, elapsedSeconds: 0, progressText: state.value.provider === 'native' ? '正在连接原生推理…' : state.value.online ? '正在连接 ComfyUI…' : '正在启动受管绘图服务…', statusText: '提交任务…', errorMsg: '', errorReport: null })
@@ -423,12 +426,20 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const current = () => !controller.signal.aborted && serial === requestSerial
       if (!current()) return
       assertDirectImageRuntime(activeRuntimeIdentity)
-      await releaseLocalChat()
+      if (directPending) assertDirectImageRuntime(directPending.owner)
+      if (!directPending) await releaseLocalChat()
       assertDirectImageRuntime(activeRuntimeIdentity)
+      const resume = Boolean(directPending)
+      directPending ??= { key: crypto.randomUUID(), submission, owner: activeRuntimeIdentity }
       await transport.runDirectAnima({ client, request, family, signal: controller.signal, current,
+        requestKey: directPending.key, resume,
         state, context: pendingContext, patch: patchState, discardStashed: discardStashedResult, onResult })
     } catch (error) {
       if (serial !== requestSerial) return
+      if (error instanceof DirectImageRequestRejected || error instanceof AcceptedTaskTerminalError) directPending = null
+      if (!durableAttempt && error instanceof AcceptedTaskTerminalError && error.status === 'cancelled') {
+        patchState({ phase: 'cancelled', statusText: '任务已取消', errorMsg: '', errorReport: null }); return
+      }
       if (durableAttempt) {
         if (!submitting) { patchState({ phase: 'failed', statusText: '准备未完成，尚未提交生成', errorMsg: error instanceof Error ? error.message : String(error), errorReport: null }); return }
         const { runtimeAnimaFailure } = await import('./runtimeImageSession')
@@ -475,33 +486,28 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       } catch (error) { if (isCurrent()) patchState({ statusText: '取消尚未确认，可以重试停止或到任务中心核对。', errorMsg: error instanceof Error ? error.message : '取消请求未完成' }) }
       return
     }
-    const job = state.value.job
+    if (!durableAttempt && directPending) {
+      const pending = directPending, serial = requestSerial
+      patchState({ phase: 'cancelling', statusText: '正在记录取消请求…', errorMsg: '' })
+      try {
+        await cancelDirectImageRequest(pending.submission.family, pending.key, pending.owner, client)
+        if (serial !== requestSerial || directPending !== pending) return
+        requestSerial++; jobRequest?.abort()
+        patchState({ phase: 'cancelled', statusText: '取消意图已记录；再次生成前会核对原请求。' })
+      } catch (error) { if (serial === requestSerial) patchState({ statusText: '取消尚未确认，请重试停止。', errorMsg: error instanceof Error ? error.message : '取消请求未完成' }) }
+      return
+    }
     if (state.value.phase === 'submitting') {
       // Invalidate first: a late POST must not overwrite a restored result.
-      // If an accepted ID still arrives, generate() cleans it up by family.
+      // No request key exists yet, so this only stops preparation.
       requestSerial += 1
       jobRequest?.abort()
       patchState({ phase: 'cancelled', statusText: '已停止提交', errorMsg: '', errorReport: null })
       return
     }
-    if (!job || !['running', 'cancelling'].includes(state.value.phase)) return
-    const serial = requestSerial
-    const family = activeFamily
-    const isCurrent = () => serial === requestSerial && state.value.job?.id === job.id
-      && activeRuntimeIdentity === runtimeResourceIdentity()
-      && ['running', 'cancelling'].includes(state.value.phase)
-    patchState({ phase: 'cancelling', statusText: '取消中…', errorMsg: '', errorReport: null })
-    try {
-      const transport = directTransport ?? await loadDirectTransport()
-      if (!isCurrent()) return
-      await transport.cancelDirectAnima({ client, id: job.id, family, current: isCurrent, patch: patchState,
-        cancelled: () => { requestSerial += 1; jobRequest?.abort() } })
-    } catch (error) {
-      if (isCurrent()) patchState({ statusText: '取消工具加载失败，请重试取消', errorMsg: error instanceof Error ? error.message : String(error) })
-    }
   }
 
-  /** 离开导演台：停止轮询、取消在途任务、释放结果 URL（防止 GPU 任务悬挂与 blob 泄漏） */
+  /** Leaving releases page observations and URLs; accepted execution belongs to the service. */
   function dispose() {
     disposed = true
     stopSettingsWatch()
@@ -510,10 +516,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     pauseStatusPolling()
     jobRequest?.abort()
     jobRequest = null
-    const activeJob = state.value.job
-    if (!durableAttempt && activeRuntimeIdentity === runtimeResourceIdentity() && activeJob && ['running', 'cancelling'].includes(state.value.phase)) {
-      void client.request<{ ok?: boolean }>(jobPath(activeFamily, activeJob.id), { method: 'DELETE', timeoutMs: 10_000 }).catch(() => {})
-    }
     const result = state.value.result
     if (result) URL.revokeObjectURL(result.url)
     // stash 一并释放（blob 本体已在成功时写入临时成片记录，可跨页找回）。

@@ -40,7 +40,7 @@ const modes: Array<{ id: StudioMode; label: string; ready: boolean; icon: Archiv
 ]
 
 
-// 分镜模式门槛：MiniMax H3 权重就绪（支持 FL2VA 衔接与原生对白）。
+// H3 readiness controls generation, never access to draft editing or recovery.
 const shotsModeReady = computed(() =>
   status.value?.models.some((model) => model.id === 'minimax-h3' && model.available) === true)
 
@@ -52,7 +52,7 @@ const firstLastFrameReady = computed(() =>
 
 
 function modeReady(mode: StudioMode): boolean {
-  if (mode === 'shots') return shotsModeReady.value
+  if (mode === 'shots') return true
   if (mode === 'first-last-frame') return firstLastFrameReady.value
   return true
 }

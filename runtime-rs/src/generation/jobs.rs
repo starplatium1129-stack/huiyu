@@ -136,6 +136,8 @@ pub(super) async fn public(job: &Job) -> Result<Value> {
         .filter(|s| *s <= 9_007_199_254_740_991)
         .unwrap_or(job.input["seed"].as_u64().unwrap_or(0));
     let mut public = json!({"id":job.id,"status":state.status,"provider":job.provider,"seed":seed,"resultAvailable":available,"resultUrl":result_url,"metadata":state.metadata,"error":state.error,"code":state.code});
+    public["upstreamSettled"] = json!(state.settled && !state.collection_pending);
+    public["unknown"] = json!(state.unknown);
     public["metadata"]["provider"] = json!(job.provider);
     if matches!(job.provider, "comfy" | "native") {
         public["progress"] = if state.status == "succeeded" {

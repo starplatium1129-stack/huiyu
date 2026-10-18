@@ -62,6 +62,7 @@ function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
       seedText: shot.seedText,
       cast: shot.cast,
       firstFramePrompt: shot.firstFramePrompt,
+      firstFrameRequest: shot.firstFrameRequest ? JSON.parse(JSON.stringify(shot.firstFrameRequest)) : undefined,
       imageId: shot.imageId || '',
       importSourceImageId: shot.importSourceImageId,
       importSourceActId: shot.importSourceActId,
@@ -153,6 +154,7 @@ async function restoreShotsDraft() {
       imageUrl: '',
       cast: (shot.cast || '') as ShotDraft['cast'],
       firstFramePrompt: shot.firstFramePrompt,
+      firstFrameRequest: shot.firstFrameRequest ? JSON.parse(JSON.stringify(shot.firstFrameRequest)) : undefined,
       imageId: shot.imageId || '',
       importSourceImageId: typeof shot.importSourceImageId === 'string' && shot.importSourceImageId
         ? shot.importSourceImageId : undefined,

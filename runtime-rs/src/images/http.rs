@@ -32,6 +32,7 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
                 &format!("/api/{family}/jobs/{{id}}"),
                 get(get_job).delete(cancel),
             )
+            .route(&format!("/api/{family}/requests/{{key}}"), get(request_status).delete(cancel_request))
             .route(&format!("/api/{family}/jobs/{{id}}/result"), get(result));
     }
     router
@@ -169,6 +170,13 @@ async fn create(
     let local = security::is_direct_local(&headers, peer.ip());
     let family = family(&uri);
     let owner = generation::request_owner(&headers, peer, &query);
+    if let Some(key) = body.get("requestKey") {
+        let result = match key.as_str() {
+            Some(key) => http.service.accept_request(body.clone(), key.into(), owner, family, local).await,
+            None => Err(ApiError::invalid("图片请求编号无效")),
+        };
+        return response(result, StatusCode::ACCEPTED);
+    }
     let cancellation = http.service.shutdown.child_token();
     let job = Arc::new(Mutex::new(None));
     let mut guard = SubmissionGuard {
@@ -202,6 +210,20 @@ async fn get_job(
     headers: HeaderMap,
 ) -> Response {
     response(async{state.host.check_running()?;Ok(json!({"job":http.service.get_job(&id,&generation::request_owner(&headers,peer,&query),family(&uri)).await?}))}.await,StatusCode::OK)
+}
+async fn request_status(
+    State(state): State<AppState>, Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>, OriginalUri(uri): OriginalUri,
+    Path(key): Path<String>, Query(query): Query<HashMap<String, String>>, headers: HeaderMap,
+) -> Response {
+    response(async { state.host.check_running()?; http.service.request_status(&key, &generation::request_owner(&headers, peer, &query), family(&uri)).await }.await, StatusCode::OK)
+}
+async fn cancel_request(
+    State(state): State<AppState>, Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>, OriginalUri(uri): OriginalUri,
+    Path(key): Path<String>, Query(query): Query<HashMap<String, String>>, headers: HeaderMap,
+) -> Response {
+    response(async { state.host.check_running()?; http.service.cancel_request(&key, &generation::request_owner(&headers, peer, &query), family(&uri)).await }.await, StatusCode::ACCEPTED)
 }
 async fn cancel(
     State(state): State<AppState>,

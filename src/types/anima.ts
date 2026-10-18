@@ -5,6 +5,8 @@ export type { AnimaPhase, AnimaJobMetadata } from './generation'
 import type { SDErrorReport } from '@/utils/sdError'
 
 export interface AnimaPublicJob {
+  upstreamSettled?: boolean
+  unknown?: boolean
   provider?: 'comfy' | 'native'
   id: string
   status: 'queued' | AnimaPhase

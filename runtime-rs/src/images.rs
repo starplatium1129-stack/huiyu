@@ -7,6 +7,7 @@ pub(crate) mod media_import;
 mod native;
 mod native_adapters;
 mod resources;
+mod requests;
 mod resume;
 pub(crate) mod upload_body;
 mod validation;
@@ -46,6 +47,7 @@ pub struct Service {
     shutdown: CancellationToken,
     uploads: TaskTracker,
     limits: Limits,
+    requests: requests::Requests,
 }
 pub type ImageService = Service;
 impl Drop for Service {
@@ -88,6 +90,7 @@ impl Service {
             shutdown,
             uploads: TaskTracker::new(),
             limits,
+            requests: requests::Requests::new(),
         })
     }
     pub async fn prepare(
@@ -284,6 +287,8 @@ impl Service {
     }
     pub async fn close(&self) {
         self.shutdown.cancel();
+        // An intent write may still be transferring work to the tracker.
+        self.requests.wait_for_acceptance().await;
         self.uploads.close();
         self.uploads.wait().await;
         self.backend.close().await;

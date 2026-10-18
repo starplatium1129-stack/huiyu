@@ -1,78 +1,55 @@
-import { fetchResultImage, jobPath, waitForDirectImageJob, assertDirectImageRuntime } from '@/api/directImageJobs'
+import { fetchResultImage, waitForDirectImageJob } from '@/api/directImageJobs'
+import { acceptDirectImageRequest, cancelDirectImageRequest, DirectImageRequestRejected } from '@/api/directImageRequests'
+import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
-import { withArtworkStaging } from '../../storage/artworkSession.ts'
+import { getDesktopRuntime } from '@/platform/desktop/runtime'
+import { withArtworkStaging } from '@/storage/artworkSession'
 import { ref, onScopeDispose, type Ref } from 'vue'
-import { useTrackedTask } from '../../composables/useTaskCenter.ts'
-import { apiClient } from '../../api/client.ts'
-import { importVideoImage, uploadVideoImage, type VideoImageUploadResponse } from '../../api/videoApi.ts'
-import { artworkRepository } from '../../storage/artworkRepository.ts'
-import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey, type TaskSummary } from '../../api/runtimeTasks.ts'
-import { runtimeRequestKey } from '@/stores/runtimeTaskState'
-import type { ShotDraft } from './shotListTypes.ts'
+import { useTrackedTask } from '@/composables/useTaskCenter'
+import { importVideoImage, uploadVideoImage, type VideoImageUploadResponse } from '@/api/videoApi'
+import { artworkRepository } from '@/storage/artworkRepository'
+import { hasRuntimeTasks, submitRuntimeTask, getRuntimeTaskByKey, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey } from '@/api/runtimeTasks'
+import { readFirstFrameRequest, type FirstFrameRequest } from '@/types/firstFrameRequest'
+import type { ShotDraft } from './shotListTypes'
 
-/**
- * useShotFirstFrames —— 分镜「一键首帧」：逐镜走 Krea2 增强链路出图（2026-08-23）。
- *
- * 剧本引擎在每镜带 firstFramePrompt（蓝图英文散文 + 景别构图句）；本组合式逐镜
- * 提交生成 → 轮询 → 取结果图预览；耐久结果直接导入视频首帧受控文件 →
- * 回填 imageName/imageUrl。身份一致性不靠首帧（同蓝图四镜本就同场景），由分镜
- * Ref2VA 参考卡锁定。单镜失败不打断整批（与批量出片一致），重按只补缺。
- */
-
-// Krea2 尺寸白名单按画幅映射：视频首帧构图与成片画幅一致。
 const KREA2_SIZE_BY_ASPECT = {
-  landscape: { width: 1536, height: 1024 },
-  portrait: { width: 1024, height: 1536 },
-  square: { width: 1024, height: 1024 },
+  landscape: { width: 1536, height: 1024 }, portrait: { width: 1024, height: 1536 }, square: { width: 1024, height: 1024 },
 } as const
-
 type VideoAspect = keyof typeof KREA2_SIZE_BY_ASPECT
-
-interface CreativeJobBody {
-  ok: true
-  job: { id: string; status: string; resultAvailable?: boolean; resultUrl?: string | null }
+function authority(transport: FirstFrameRequest['transport']) {
+  if (transport === 'direct') return JSON.stringify([location.origin, runtimeResourceIdentity()])
+  const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
+  return JSON.stringify([workspace?.workspaceId, workspace?.principalId])
 }
 
-function isCreativeJobBody(value: Record<string, unknown>): value is Record<string, unknown> & CreativeJobBody {
-  const job = value.job as Record<string, unknown> | undefined
-  return value.ok === true && !!job && typeof job.id === 'string' && typeof job.status === 'string'
-}
-
-export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequests: Map<ShotDraft, AbortController>; onError: (message: string) => void }) {
-  const firstFrameBusy = ref(false)
-  const firstFrameProgress = ref('')
+/** Each shot owns a saved acceptance key; generation, observation and mounting are separate. */
+export function useShotFirstFrames(options: {
+  shots: Ref<ShotDraft[]>; frameRequests: Map<ShotDraft, AbortController>
+  persist: () => Promise<void>; onError: (message: string) => void
+}) {
+  const firstFrameBusy = ref(false), firstFrameProgress = ref('')
   const taskStatus = ref<'idle' | 'running' | 'succeeded' | 'failed' | 'cancelled'>('idle')
-  let controller: AbortController | null = null
-  let disposed = false
-  let activeJob = ''
-  let directOwner = ''
-  let durableAttempt = false, activeRuntimeKey = ''
-  const acceptedFrames = new WeakMap<ShotDraft, TaskSummary>()
+  let controller: AbortController | null = null, disposed = false
+  let active: FirstFrameRequest | null = null
   async function cancelFirstFrames() {
-    if (!controller) return
-    controller.abort()
+    controller?.abort()
     taskStatus.value = 'cancelled'
-    if (durableAttempt && activeRuntimeKey) {
-      try { await cancelRuntimeTaskKey(activeRuntimeKey) }
-      catch { options.onError('取消意图暂未确认，请在任务中心核对；不会重发首帧任务。') }
-      return
-    }
-    if (activeJob) {
-      if (directOwner !== runtimeResourceIdentity()) { activeJob = ''; options.onError('运行时已更换，请核对原首帧任务；未向新连接发送取消。'); return }
-      const id = activeJob
-      activeJob = ''
-      try { await apiClient.request(jobPath('krea2', id), { method: 'DELETE', timeoutMs: 12_000 }) }
-      catch { options.onError('已停止后续首帧，当前后端任务取消未确认，请查看任务状态') }
-    }
+    const request = active
+    if (!request) return
+    try {
+      if (request.authority !== authority(request.transport)) throw new Error('首帧连接已更换，未向新连接发送取消，请核对原请求。')
+      if (request.transport === 'runtime') await cancelRuntimeTaskKey(request.key)
+      else await cancelDirectImageRequest('krea2', request.key, runtimeResourceIdentity())
+    } catch (error) { options.onError(error instanceof Error ? error.message : '取消意图尚未确认，请重新查询原请求；不会重新生成。') }
   }
-  onScopeDispose(() => { disposed = true; if (durableAttempt) controller?.abort(); else void cancelFirstFrames() })
+  // Leaving only releases observations. The saved request remains recoverable.
+  onScopeDispose(() => { disposed = true; controller?.abort() })
   useTrackedTask(() => ({ kind: 'image', title: '分镜首帧生成', route: '/video-studio?mode=shots', status: taskStatus.value, message: firstFrameProgress.value }), { cancel: cancelFirstFrames })
 
   async function generateFirstFrames(shots: ShotDraft[], aspect: VideoAspect) {
     if (disposed || firstFrameBusy.value) return
-    const pending = shots
-      .map((shot, index) => ({ shot, index }))
-      .filter(({ shot }) => shot.firstFramePrompt && !shot.imageName
+    const pending = shots.map((shot, index) => ({ shot, index }))
+      .filter(({ shot }) => (shot.firstFramePrompt || shot.firstFrameRequest) && !shot.imageName && !shot.imageId
         && options.shots.value.includes(shot) && !options.frameRequests.has(shot))
       .map(item => {
         const owner = new AbortController()
@@ -80,125 +57,115 @@ export function useShotFirstFrames(options: { shots: Ref<ShotDraft[]>; frameRequ
         return { ...item, owner, previous: [item.shot.imageId, item.shot.imageName, item.shot.imageUrl] }
       })
     if (!pending.length) {
-      options.onError('没有待生成首帧的镜头：先用「生成剧本」带出首帧提示词，已有首帧或正在准备的镜头自动跳过')
+      options.onError('没有待生成首帧的镜头；已有图片但尚未挂载时，请在镜头上重试读取，不会重新生成。')
       return
     }
-    firstFrameBusy.value = true
-    taskStatus.value = 'running'
+    firstFrameBusy.value = true; taskStatus.value = 'running'
     controller = new AbortController()
-    durableAttempt = hasRuntimeTasks()
-    directOwner = runtimeResourceIdentity()
     const signal = controller.signal
+    const repository = artworkRepository, runtime = runtimeResourceIdentity()
     let failed = 0, completed = 0
     try {
       await withArtworkStaging(async () => {
-        // A queued staging lease may be granted only after this page is gone.
-        if (disposed || signal.aborted) return
-        for (let i = 0; i < pending.length; i += 1) {
+        signal.throwIfAborted()
+        for (let i = 0; i < pending.length; i++) {
           signal.throwIfAborted()
+          if (runtime !== runtimeResourceIdentity() || repository !== artworkRepository)
+            throw new Error('首帧连接已更换，已停止后续镜头；请在原连接核对原请求。')
           const { shot, owner, previous } = pending[i]
           const current = () => !disposed && !signal.aborted && !owner.signal.aborted
-            && directOwner === runtimeResourceIdentity()
+            && repository === artworkRepository && runtime === runtimeResourceIdentity()
+            && (!active || active.authority === authority(active.transport))
             && options.frameRequests.get(shot) === owner && options.shots.value.includes(shot)
             && [shot.imageId, shot.imageName, shot.imageUrl].every((value, index) => value === previous[index])
           if (!current()) continue
           const frameSignal = AbortSignal.any([signal, owner.signal])
           firstFrameProgress.value = `${i + 1}/${pending.length}`
-          const repository = artworkRepository
-          let runtimeSettled = false, ownedImageId = ''
+          let ownedImageId = '', fresh = false, submitting = false, attached = false
           try {
-            const size = KREA2_SIZE_BY_ASPECT[aspect]
-            const payload = { prompt: shot.firstFramePrompt, modelId: 'krea2-turbo-fp8', ...size }
+            let request = shot.firstFrameRequest && readFirstFrameRequest(shot.firstFrameRequest)
+            if (!request || request.state === 'failed' || request.state === 'cancelled') {
+              const transport = hasRuntimeTasks() ? 'runtime' : 'direct'
+              request = { key: crypto.randomUUID(), transport, authority: authority(transport), state: 'pending',
+                input: { prompt: shot.firstFramePrompt || '', modelId: 'krea2-turbo-fp8', ...KREA2_SIZE_BY_ASPECT[aspect] } }
+              request = readFirstFrameRequest(request)
+              shot.firstFrameRequest = request; fresh = true
+              // Fail closed before POST if this row cannot retain its identity.
+              await options.persist()
+            }
+            active = request
+            if (request.authority !== authority(request.transport) || (request.transport === 'runtime') !== hasRuntimeTasks())
+              throw new Error('首帧请求属于原工作区或连接，请返回原连接核对；不会创建替代任务。')
+            frameSignal.throwIfAborted()
+            if (!current()) continue
             let blob: Blob, upload: VideoImageUploadResponse, resultAlias = ''
-            if (durableAttempt) {
-              const previous = acceptedFrames.get(shot)
-              activeRuntimeKey = previous?.requestKey || runtimeRequestKey('creative', payload)
-              const accepted = previous || await submitRuntimeTask('creative', payload, activeRuntimeKey, { role: 'storyboard-first-frame', shotIndex: pending[i].index })
-              acceptedFrames.set(shot, accepted)
-              frameSignal.throwIfAborted()
+            const markSubmitting = () => { frameSignal.throwIfAborted(); submitting = true }
+            if (request.transport === 'runtime') {
+              const accepted = fresh
+                ? await submitRuntimeTask('creative', request.input, request.key, { role: 'storyboard-first-frame', shotIndex: pending[i].index }, { signal: frameSignal, onSubmitting: markSubmitting })
+                : await getRuntimeTaskByKey(request.key, frameSignal)
+              if (!accepted) throw new Error('首帧接收状态尚未确认，请再次查询原请求；不会重新生成。')
+              const task = await waitForRuntimeTask(accepted.taskId, frameSignal, () => {})
               if (!current()) continue
-              const task = await waitForRuntimeTask(accepted.taskId, frameSignal, value => { runtimeSettled = value.upstreamSettled; acceptedFrames.set(shot, value) })
+              shot.firstFrameRequest = { ...request, state: 'succeeded' }; await options.persist()
               if (!current()) continue
               blob = await fetchRuntimeResult(runtimeResultPath(task), frameSignal)
               resultAlias = task.resultRefs.find(value => value.index === 0)?.alias || ''
               if (!resultAlias) throw new Error('首帧任务缺少图片凭据')
               if (!current()) continue
               upload = await importVideoImage(task.taskId, resultAlias, 0, frameSignal)
-              activeRuntimeKey = ''
             } else {
-              assertDirectImageRuntime(directOwner)
-              const submit = await apiClient.request<CreativeJobBody>(jobPath('krea2'), {
-                method: 'POST', body: payload, timeoutMs: 30_000, signal: frameSignal, validate: isCreativeJobBody,
-              })
-              assertDirectImageRuntime(directOwner)
-              activeJob = submit.job.id
-              frameSignal.throwIfAborted()
-              if (!current()) throw new Error('首帧已由更新的编辑接管')
-              const job = await waitForDirectImageJob('krea2', submit.job.id, frameSignal, { timeoutMs: 240_000, intervalMs: 2500, immediate: true })
-              activeJob = ''
+              const accepted = await acceptDirectImageRequest('krea2', request.input, request.key, { signal: frameSignal, resume: !fresh, onSubmitting: markSubmitting })
+              const job = await waitForDirectImageJob('krea2', accepted.id, frameSignal, { timeoutMs: 240_000, intervalMs: 2500, immediate: true })
+              if (!current()) continue
+              shot.firstFrameRequest = { ...request, state: 'succeeded' }; await options.persist()
               if (!current()) continue
               blob = await fetchResultImage(job.resultUrl, frameSignal)
               if (!current()) continue
               upload = await uploadVideoImage(blob, undefined, frameSignal)
             }
-            if (!current()) continue
-            // Runtime aliases belong to the task; only a new fallback upload is ours.
-            const imageId = resultAlias || (ownedImageId = await repository.putImage(blob).catch(() => ''))
+            if (!current() || repository !== artworkRepository || request.authority !== authority(request.transport)) continue
+            const imageId = resultAlias || (ownedImageId = await repository.putImage(blob))
             if (!current()) continue
             const imageUrl = URL.createObjectURL(blob)
             if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl)
-            shot.imageName = upload.name
-            shot.imageUrl = imageUrl
-            // IndexedDB 耐久凭据：草稿恢复与失败重试用（F1/F4）；失败不阻断主链路。
-            shot.imageId = imageId
+            shot.imageName = upload.name; shot.imageUrl = imageUrl; shot.imageId = imageId
             ownedImageId = ''
-            completed += 1
+            attached = true
+            await options.persist()
+            completed++
           } catch (error) {
-            if (durableAttempt) {
-              if (signal.aborted) throw signal.reason
-              if (!current()) continue
-              if (!runtimeSettled) throw error
-              const accepted = acceptedFrames.get(shot)
-              if (accepted?.status !== 'succeeded') acceptedFrames.delete(shot)
-              failed += 1; continue
-            }
-            if (directOwner !== runtimeResourceIdentity()) {
-              activeJob = ''
-              throw new Error('运行时已更换，已停止后续首帧，请核对原任务。')
-            }
-            if (activeJob) {
-              const id = activeJob
-              activeJob = ''
-              try { await apiClient.request(jobPath('krea2', id), { method: 'DELETE', timeoutMs: 12_000 }) }
-              catch { throw new Error('当前首帧任务终止未确认，已停止后续生成，请检查任务状态') }
-            }
+            if (fresh && !submitting) { shot.firstFrameRequest = undefined; await options.persist() }
             if (signal.aborted) throw signal.reason
-            if (current()) failed += 1
+            if (attached) throw error
+            if (!current()) continue
+            if (error instanceof AcceptedTaskTerminalError || error instanceof DirectImageRequestRejected) {
+              if (shot.firstFrameRequest) shot.firstFrameRequest.state = error instanceof AcceptedTaskTerminalError ? error.status : error.code === 'IMAGE_REQUEST_CANCELLED' ? 'cancelled' : 'failed'
+              await options.persist(); failed++; continue
+            }
+            // Unknown acceptance, observation or result delivery retains the key
+            // and stops this batch. The next click only queries this same request.
+            throw error
           } finally {
-            if (ownedImageId) await repository.deleteImage(ownedImageId).catch(error => console.warn('[shots] unattached first frame cleanup failed', ownedImageId, error))
+            // A changed workspace cannot authorize cleanup of the old workspace.
+            if (ownedImageId && repository === artworkRepository && runtime === runtimeResourceIdentity()
+              && (!active || active.authority === authority(active.transport)))
+              await repository.deleteImage(ownedImageId).catch(error => console.warn('[shots] unattached first frame cleanup failed', ownedImageId, error))
             if (options.frameRequests.get(shot) === owner) options.frameRequests.delete(shot)
-            activeJob = ''; activeRuntimeKey = ''
+            active = null
           }
         }
         if (!disposed && !signal.aborted) {
-          if (failed || completed) options.onError(failed ? `${failed} 个镜头首帧生成失败，重按「一键首帧」只补缺` : '')
+          if (failed || completed) options.onError(failed ? `${failed} 个镜头首帧失败；重按只重试确证失败项，其余先查询原任务。` : '')
           taskStatus.value = failed ? 'failed' : completed ? 'succeeded' : 'cancelled'
         }
       })
     } catch (error) {
-      if (!disposed && !signal.aborted) {
-        taskStatus.value = 'failed'
-        options.onError(error instanceof Error ? error.message : '首帧生成失败')
-      }
+      if (!disposed && !signal.aborted) { taskStatus.value = 'failed'; options.onError(error instanceof Error ? error.message : '首帧生成失败') }
     } finally {
       for (const { shot, owner } of pending) if (options.frameRequests.get(shot) === owner) options.frameRequests.delete(shot)
-      controller = null
-      activeJob = ''
-      activeRuntimeKey = ''
-      firstFrameBusy.value = false
-      firstFrameProgress.value = ''
+      controller = null; active = null; firstFrameBusy.value = false; firstFrameProgress.value = ''
     }
   }
-
   return { firstFrameBusy, firstFrameProgress, generateFirstFrames }
 }

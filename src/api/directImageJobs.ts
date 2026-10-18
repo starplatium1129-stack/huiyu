@@ -11,11 +11,13 @@ export function assertDirectImageRuntime(owner: string): void {
   if (owner !== runtimeResourceIdentity()) throw new ApiClientError('运行时连接已更换，请核对原任务', { kind: 'aborted', code: 'RUNTIME_EPOCH_CHANGED' })
 }
 
-function imageJob(value: Record<string, unknown>, id: string): AnimaPublicJob {
+export function imageJob(value: Record<string, unknown>, id: string): AnimaPublicJob {
   const job = value.job as AnimaPublicJob | undefined
   if (value.ok !== true || !job || job.id !== id
     || !['queued', 'submitting', 'running', 'cancelling', 'succeeded', 'failed', 'cancelled'].includes(job.status)
-    || typeof job.resultAvailable !== 'boolean' || !(job.resultUrl === null || typeof job.resultUrl === 'string')) {
+    || typeof job.resultAvailable !== 'boolean' || !(job.resultUrl === null || typeof job.resultUrl === 'string')
+    || job.upstreamSettled !== undefined && typeof job.upstreamSettled !== 'boolean'
+    || job.unknown !== undefined && typeof job.unknown !== 'boolean') {
     throw new ApiClientError('图片任务响应与原编号或状态不符，请核对原任务', { kind: 'invalid-response' })
   }
   return job
@@ -55,7 +57,11 @@ export async function waitForDirectImageJob(family: 'anima' | 'krea2', id: strin
     assertDirectImageRuntime(owner)
     const job = imageJob(data, id)
     options.update?.(job)
-    if (job.status === 'failed' || job.status === 'cancelled') throw new AcceptedTaskTerminalError(id, job.status, job.error || (job.status === 'failed' ? '图片生成失败' : '任务已取消'))
+    if (job.status === 'failed' || job.status === 'cancelled') {
+      if (job.upstreamSettled !== true || job.unknown !== false)
+        throw new ApiClientError('上游接收或终止状态尚未确认，请核对原请求；不会重复生成。', { kind: 'network', code: 'IMAGE_JOB_OUTCOME_UNKNOWN' })
+      throw new AcceptedTaskTerminalError(id, job.status, job.error || (job.status === 'failed' ? '图片生成失败' : '任务已取消'))
+    }
     if (job.status === 'succeeded' && job.resultAvailable && job.resultUrl) return { ...job, resultUrl: job.resultUrl }
   }
 }
