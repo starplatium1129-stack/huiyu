@@ -2,7 +2,7 @@
   <section class="runtime-result tw:grid tw:gap-s-3 tw:mt-s-3" aria-label="任务结果">
     <div class="result-toolbar tw:flex tw:flex-wrap tw:items-center tw:gap-s-2" data-fluid-glass>
       <StudioSelect v-if="task.resultRefs.length > 1" label="选择任务结果" size="sm" inline :model-value="index" :options="resultOptions" @update:model-value="index = Number($event)" />
-      <button v-if="selected?.mime.startsWith('image/')" class="btn btn-primary" :disabled="busy || loading || readFailed || selectedSaved || manga && task.resultState !== 'available'" @click="save">{{ selectedSaved ? '已入册' : busy ? '保存中…' : '保存到作品册' }}</button>
+      <button v-if="selected?.mime.startsWith('image/')" class="btn btn-primary" :disabled="busy || selectedSaved || manga && task.resultState !== 'available'" @click="save">{{ selectedSaved ? '已入册' : busy ? '保存中…' : '保存到作品册' }}</button>
       <TaskMediaDownload v-if="selected?.mime.startsWith('video/')" class="btn btn-ghost" :src="runtimeResultPath(task, index)" :filename="`绘遇-${task.taskId}-${index}.mp4`">下载结果</TaskMediaDownload>
       <button v-else class="btn btn-ghost" :disabled="loading || readFailed || !url" @click="download">下载结果</button>
     </div>

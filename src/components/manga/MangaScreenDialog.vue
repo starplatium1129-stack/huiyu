@@ -11,7 +11,7 @@
           <div class="manga-preview-bar">
             <div class="studio-segments" role="group" aria-label="预览方式"><AnimatedSelection />
               <button v-for="view in views" :key="view.value" type="button" :class="{active:preview === view.value}" :aria-pressed="preview === view.value"
-                :disabled="view.value === 'original' ? !source : view.value === 'lineart' ? !linePreviewAvailable : view.value === 'compare' ? !source || !result : !result" @click="preview = view.value">{{ view.label }}</button>
+                :disabled="view.value === 'original' ? !source : view.value === 'lineart' ? !linePreviewAvailable : view.value === 'compare' ? !source || !resultUrl : !result" @click="preview = view.value">{{ view.label }}</button>
             </div>
             <button class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '换一张' : '导入图片' }}</button>
             <input ref="picker" type="file" class="manga-file" accept="image/png,image/jpeg,image/webp" @change="pickImage" />
@@ -20,7 +20,7 @@
               <span v-else>{{ lineChoices[0]?.label }}</span>
               <div class="manga-line-actions">
                 <button class="btn btn-ghost btn-sm" type="button" :disabled="locked || !linePreviewUrl" @click="lines.download"><ArchiveIcon name="download" />导出线稿 PNG</button>
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="locked || !linePreviewUrl || lineSaved" @click="lines.save"><ArchiveIcon name="gallery" />{{ lineSaved ? '已存入我的作品' : '存入我的作品' }}</button>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="lineSaveDisabled" @click="lines.save"><ArchiveIcon name="gallery" />{{ lineSaved ? '已存入我的作品' : '存入我的作品' }}</button>
               </div>
             </div>
           </div>
@@ -34,8 +34,9 @@
               </div>
             </template>
             <ZoomableImageViewer v-else-if="preview === 'result' ? resultUrl : sourcePreviewUrl" :src="preview === 'original' ? sourcePreviewUrl : resultUrl" :alt="preview === 'original' ? '漫画处理原图' : '漫画处理结果'" />
-            <div v-else class="manga-empty"><ArchiveIcon name="book" /><h3>{{ loading ? '正在读取原图…' : '从一张画开始' }}</h3>
-              <p>导入 PNG、JPEG 或 WebP 图片<br />调整明暗、网点与纸张，留下漫画质感。</p>
+            <div v-else class="manga-empty"><ArchiveIcon name="book" /><h3>{{ preview === 'result' && result ? '漫画预览尚未读取' : loading ? '正在读取原图…' : '从一张画开始' }}</h3>
+              <p v-if="preview === 'result' && result">结果已保存在任务中，可直接入册，或重新读取预览后导出 PNG。</p>
+              <p v-else>导入 PNG、JPEG 或 WebP 图片<br />调整明暗、网点与纸张，留下漫画质感。</p>
               <button class="btn btn-primary" type="button" :disabled="locked" @click="picker?.click()">选择图片</button>
               <button v-if="error && (props.sourceUrl || props.artwork?.image_id)" class="btn btn-ghost" type="button" :disabled="locked" @click="loadInitialSource">重新读取原图</button>
             </div>
@@ -84,8 +85,8 @@
           <button v-if="canStartNew" class="btn btn-ghost" type="button" @click="startNew">开始新的处理</button>
           <button v-if="!observing && !submitting && (acceptanceUnknown || job)" class="btn btn-ghost" type="button" @click="observe">{{ acceptanceUnknown ? '查询接收状态' : job?.status === 'succeeded' ? '重新读取结果' : '重新连接原任务' }}</button>
           <button v-if="pending || submitting || acceptanceUnknown" class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancel">{{ cancelling ? '请求取消…' : '取消处理' }}</button>
-          <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked" @click="exportResult('download')"><ArchiveIcon name="download" />导出漫画 PNG</button>
-          <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '另存到我的作品' }}</button>
+          <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked || !resultBlob" @click="exportResult('download')"><ArchiveIcon name="download" />导出漫画 PNG</button>
+          <button v-if="result" class="btn btn-ghost" type="button" :disabled="saveLocked || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '另存到我的作品' }}</button>
           <button class="btn btn-primary" type="button" :disabled="locked || !source || !status?.available || !!taskIssue || !!modelIssue || !!lineIssue || !!inputSize?.resized && !resize" @click="run('manga')"><ArchiveIcon name="spark" />{{ submitting || pending ? '处理中…' : result ? '重新处理漫画' : '处理为漫画' }}</button>
         </div>
       </footer>
@@ -117,12 +118,12 @@ const emit = defineEmits<{ closed: []; saved: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), picker = ref<HTMLInputElement | null>(null)
 const fluid = useFluidDialog(dialog)
 const taskCenter = useTaskCenter()
-const { parameters, operation, redraw, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultUrl, status, statusError, checking,
+const { parameters, operation, redraw, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
   error, notice, loading, submitting, observing, cancelling, exporting, saved, acceptanceUnknown, job, preview, taskIssue,
-  pending, awaitingResult, locked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
+  pending, awaitingResult, locked, saveLocked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
 const {mode:lineMode, polarity:linePolarity, stretch:lineStretch, imported:lineImported, inputReady:lineInputReady,
   selected:lineSelected, previewUrl:linePreviewUrl, previewAvailable:linePreviewAvailable, caption:lineCaption,
-  choices:lineChoices, error:lineError, notice:lineNotice, saved:lineSaved, expected:lineExpected} = lines
+  choices:lineChoices, error:lineError, notice:lineNotice, saved:lineSaved, saveDisabled:lineSaveDisabled, expected:lineExpected} = lines
 const views = [{value:'original',label:'原图'},{value:'lineart',label:'线稿'},{value:'result',label:'漫画'},{value:'compare',label:'对比'}] as const
 function showImportedLine() { lineSelected.value = 'input'; preview.value = 'lineart' }
 async function retryImportedLine() { if (await lines.prepare()) showImportedLine() }

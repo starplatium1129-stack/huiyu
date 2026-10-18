@@ -8,13 +8,13 @@ import type { ArtworkRecord } from '@/types/artwork'
 
 export type MangaLineMode = 'none' | 'auto' | 'external'
 const message = (e: unknown) => e instanceof Error ? e.message : '线稿操作失败'
-export function useMangaLines(options: { signal: AbortSignal; check: () => void; checkInput: () => void; locked: () => boolean; loading: Ref<boolean>; exporting: Ref<boolean>;
+export function useMangaLines(options: { signal: AbortSignal; check: () => void; checkInput: () => void; locked: () => boolean; outputSaveLocked: () => boolean; loading: Ref<boolean>; exporting: Ref<boolean>;
   source: () => ArtworkRecord | undefined; onSaved: () => void }) {
   const mode = ref<MangaLineMode>('none'), polarity = ref<MangaLinePolarity>('black-on-white'), stretch = ref(false)
   const imported = shallowRef<MangaImage | null>(null), inputUrl = ref(''), inputBlob = shallowRef<Blob | null>(null)
   const outputUrl = ref(''), outputBlob = shallowRef<Blob | null>(null), expected = shallowRef<MangaJob | null>(null)
   const selected = ref<'input' | 'output'>('input'), error = ref(''), notice = ref(''), downloaded = ref(false)
-  const inputResult = shallowRef<ReturnType<typeof mangaLineResult> | null>(null), outputResult = shallowRef<ReturnType<typeof mangaLineResult> | null>(null)
+  const inputResult = shallowRef<ReturnType<typeof mangaLineResult> | null>(null)
   const inputSaved = ref(false), outputSaved = ref(false), inputSaveAttempted = ref(false)
   const revision = ref(0), preparedPolarity = ref<MangaLinePolarity | null>(null)
   let sequence = 0
@@ -23,6 +23,9 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
   const previewUrl = computed(() => selected.value === 'input' ? inputReady.value ? inputUrl.value : '' : outputUrl.value)
   const previewAvailable = computed(() => !!imported.value || !!expected.value)
   const saved = computed(() => selected.value === 'input' ? inputSaved.value : outputSaved.value)
+  const saveReady = computed(() => selected.value === 'input' ? inputReady.value && !!inputResult.value
+    : !!expected.value?.resultAvailable && expected.value.task.resultRefs.some(output => output.index === mangaLineIndex(expected.value!) && output.mime === 'image/png'))
+  const saveDisabled = computed(() => !saveReady.value || saved.value || (selected.value === 'output' ? options.outputSaveLocked() : options.locked()))
   const unsaved = computed(() => inputSaveAttempted.value && !inputSaved.value)
   const caption = computed(() => selected.value === 'input' ? imported.value
     ? `导入预览 · ${imported.value.name} · ${imported.value.width} × ${imported.value.height}` : '尚未导入线稿'
@@ -79,31 +82,30 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
       options.check()
       if (expected.value?.id !== current.id) return
       if (image.width !== current.lineart!.width || image.height !== current.lineart!.height) throw new Error('线稿实际尺寸与任务元数据不符')
-      // Keep the same writer on retries, including an ambiguous artwork append.
-      if (!outputResult.value) outputResult.value = {blob, save:() => archiveTaskResult(current.id, mangaLineIndex(current))}
       outputBlob.value = blob; setUrl(outputUrl, blob)
     } catch (e) { if (!options.signal.aborted) error.value = `${message(e)}；可重新读取线稿，无需重新处理漫画` }
     finally { options.loading.value = false }
   }
-  async function accept(job: MangaJob) {
-    if (!job.lineart) return
+  function accept(job: MangaJob) {
+    if (!job.resultAvailable || !job.lineart || !job.task.resultRefs.some(output => output.index === mangaLineIndex(job) && output.mime === 'image/png')) return false
     if (expected.value?.id !== job.id) {
-      outputBlob.value = null; outputResult.value = null; outputSaved.value = false
-      setUrl(outputUrl, null); downloaded.value = false; expected.value = job
+      outputBlob.value = null; outputSaved.value = false
+      setUrl(outputUrl, null); downloaded.value = false
     }
-    selected.value = 'output'
-    if (!outputBlob.value) await readOutput()
+    expected.value = job; selected.value = 'output'
+    return true
   }
   async function save() {
-    if (options.locked() || saved.value) return
+    if (saveDisabled.value) return
     const output = selected.value === 'output'
-    const result = output ? outputResult.value : inputReady.value ? inputResult.value : null
-    if (!result) return
+    const current = expected.value, input = inputResult.value
     options.exporting.value = true; error.value = ''; notice.value = ''
     try {
       options.check()
       if (!output) inputSaveAttempted.value = true
-      await result.save(); options.check()
+      if (output) await archiveTaskResult(current!.id, mangaLineIndex(current!))
+      else await input!.save()
+      options.check()
       if (output) outputSaved.value = true; else inputSaved.value = true
       notice.value = '线稿已存入我的作品，带有「线稿」标签与来源信息'
       options.onSaved()
@@ -128,12 +130,12 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
   }
   function reset() {
     sequence++; imported.value = null; inputBlob.value = null; outputBlob.value = null; expected.value = null
-    inputResult.value = null; outputResult.value = null; inputSaved.value = false; outputSaved.value = false; inputSaveAttempted.value = false
+    inputResult.value = null; inputSaved.value = false; outputSaved.value = false; inputSaveAttempted.value = false
     setUrl(inputUrl, null); setUrl(outputUrl, null); preparedPolarity.value = null; downloaded.value = false
     if (mode.value === 'external') mode.value = 'none'
     selected.value = 'input'; stretch.value = false; error.value = ''; notice.value = ''
   }
   onScopeDispose(() => { sequence++; setUrl(inputUrl, null); setUrl(outputUrl, null) })
-  return {mode, polarity, stretch, imported, signature, selected, error, notice, expected, outputBlob, unsaved, saved,
+  return {mode, polarity, stretch, imported, signature, selected, error, notice, expected, outputBlob, unsaved, saved, saveDisabled,
     previewUrl, previewAvailable, caption, choices, inputReady, prepare, remove, accept, readOutput, save, download, reset}
 }

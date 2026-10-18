@@ -3,13 +3,6 @@ import { imageMediaSession } from '@/platform/imageMediaSession'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { downloadBlob } from '@/utils/downloadBlob'
 import type { ArtworkRecord } from '@/types/artwork'
-import type { MangaJob } from '@/api/mangaApi'
-import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
-
-export function mangaResult(blob: Blob, job: MangaJob) {
-  return {job, blob, save:() => archiveTaskResult(job.id, 0),
-    download:() => downloadMangaPng(blob, `绘遇-漫画-${job.id.slice(0, 8)}.png`)}
-}
 /** Imported previews have no task; retain their upload identity on save retries. */
 export function mangaLineResult(blob: Blob, details: {id:string; width:number; height:number; metadata:Record<string, unknown>; name?:string}, checkInput: () => void, source?: ArtworkRecord) {
   const repository = artworkRepository, authority = imageMediaSession()
