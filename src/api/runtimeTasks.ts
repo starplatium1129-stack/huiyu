@@ -1,7 +1,7 @@
 import { apiClient, ApiClientError } from './client'
 import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../platform/desktop/runtime.ts'
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
-import { runtimeTasksEnabled, runtimeTaskError, runtimeRequestKey, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
+import { runtimeTasksEnabled, runtimeTaskError, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks, assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
@@ -108,7 +108,7 @@ async function acceptedTaskRequest(path: string, body: unknown, key: string, obs
     throw new ApiClientError('接收结果尚未确认。请在任务中心查询，避免重复生成。', { kind: 'network', code: 'TASK_ACCEPTANCE_UNKNOWN' })
   }
 }
-export function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key = runtimeRequestKey(kind, input), context?: Record<string, unknown>,
+export function submitRuntimeTask(kind: TaskRecord['kind'], input: Record<string, unknown>, key: string, context?: Record<string, unknown>,
   observation: TaskObservation = {}): Promise<TaskRecord> {
   return acceptedTaskRequest('', { kind, input, requestKey: key, context } satisfies TaskSubmission, key, observation,
     task => { if (task.kind !== kind) throw new Error('接收记录与任务类型不符，请到任务中心核对') })

@@ -51,15 +51,6 @@ export function rememberTask(task: TaskRecord, expected: string): TaskRecord {
   return copyTask(task)
 }
 
-export function runtimeRequestKey(kind: TaskRecord['kind'], input: Record<string, unknown>): string {
-  const fingerprint = JSON.stringify({ kind, input }), previous = unresolvedTaskRequests.get(fingerprint)
-  if (previous) return previous.key
-  const key = crypto.randomUUID()
-  // Reserve a stable identity without claiming that any request has been sent.
-  unresolvedTaskRequests.set(fingerprint, { key, kind, submitting: false })
-  return key
-}
-
 export function markTaskRequestSubmitting(key: string): void {
   for (const request of unresolvedTaskRequests.values()) if (request.key === key) request.submitting = true
   publishPendingRequests()
