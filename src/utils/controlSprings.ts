@@ -4,3 +4,5 @@
 export const BUTTON_SPRING = { type: 'spring', stiffness: 600, damping: 30, mass: 1 } as const
 /** Faster first arrival with a visible single rebound; input never waits for settling. */
 export const SURFACE_SPRING = { stiffness: 720, damping: 32, mass: 1 } as const
+export const SURFACE_FREQUENCY = Math.sqrt(SURFACE_SPRING.stiffness / SURFACE_SPRING.mass) / (2 * Math.PI)
+export const SURFACE_DAMPING = SURFACE_SPRING.damping / (2 * Math.sqrt(SURFACE_SPRING.stiffness * SURFACE_SPRING.mass))

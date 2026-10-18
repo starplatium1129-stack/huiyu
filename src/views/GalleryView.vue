@@ -41,7 +41,7 @@
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen && albumSection" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
       <GalleryAlbumOverview v-if="visitedPanels.albums" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
-    <div v-show="!albumsOpen" v-content-motion:fade.defer="!albumsOpen && JSON.stringify([filterSnapshot, trashMode])" class="gallery-image-browse">
+    <div v-show="!albumsOpen" v-content-motion:fade.defer="!albumsOpen && (trashMode ? 'trash' : 'works')" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
       <span class="gallery-count"><strong>{{ trashMode ? '回收站' : collectionTitle }}</strong>{{ trashMode ? (trashLoading ? '读取中…' : trashError ? '数量待确认' : `${trashItems.length} 幅作品`) : countLabel }}</span>
       <div class="gallery-manage-controls" role="group" aria-label="管理作品">

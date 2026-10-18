@@ -3,42 +3,35 @@
 // MIT Copyright (c) 2024-2026 rahulv.dev; notice: assets/licenses/inspira-ui.txt.
 import { onActivated, onDeactivated, onMounted, onScopeDispose, watch, type Ref } from 'vue'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
-import { cssTimeToMilliseconds } from '@/utils/motionTiming'
+import { createContentSpring, type ContentSpring, type SpringPresentation } from '@/utils/contentSpring'
 
 const MAX_MEASURED = 64
 const MAX_ANIMATED = 20
 const MAX_ENTERING = 8
-type Position = { element: HTMLElement; rect: DOMRect; opacity?: string }
+type Position = { element: HTMLElement; rect: DOMRect; state?: SpringPresentation }
 type Snapshot = { root: HTMLElement; ids: Set<string>; positions: Map<string, Position> }
 
 /** Retained cards move; only newly visible records enter. Initial routes own their reveal. */
 export function useListTransition(root: Ref<HTMLElement | null>, ids: () => readonly string[]) {
-  const animations = new Map<HTMLElement, Animation>()
+  const animations = new Map<HTMLElement, ContentSpring>()
   let snapshot: Snapshot | null = null
-  let active = false, keyboard = false
+  let active = false
   let release: (() => void) | undefined
   function cancelAnimations() {
     for (const animation of animations.values()) {
-      animation.onfinish = animation.oncancel = null
       animation.cancel()
     }
     animations.clear()
   }
   function clear() { snapshot = null; cancelAnimations() }
-  function keyboardInput() { keyboard = true; clear() }
-  function pointerInput() { keyboard = false }
   function preference() { if (document.hidden || prefersReducedMotion()) clear() }
   function start() {
     if (active) return
-    active = true; keyboard = false
-    document.addEventListener('keydown', keyboardInput, true)
-    document.addEventListener('pointerdown', pointerInput, true)
+    active = true
     release = listenMotionChanges(preference)
   }
   function stop() {
     active = false; clear(); release?.(); release = undefined
-    document.removeEventListener('keydown', keyboardInput, true)
-    document.removeEventListener('pointerdown', pointerInput, true)
   }
   onMounted(start)
   onActivated(start)
@@ -46,7 +39,7 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
   onScopeDispose(stop)
 
   function canAnimate() {
-    return active && !keyboard && !document.hidden && !prefersReducedMotion()
+    return active && !document.hidden && !prefersReducedMotion()
       && root.value?.isConnected && !root.value.closest('[inert], [hidden], [data-route-entering="true"]')
   }
   function visibleCards(element: HTMLElement) {
@@ -62,6 +55,15 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
     }
     return cards
   }
+  function move(element: HTMLElement, values: number[], transform = '', velocities?: number[]) {
+    const animation = createContentSpring(element, values,
+      ([x, y, opacity]) => ({ transform: `translate(${x}px, ${y}px)${transform}`, opacity }), { velocities, opacity: 2 })
+    animations.set(element, animation)
+    animation.to([0, 0, 1], () => {
+      if (animations.get(element) !== animation) return
+      animations.delete(element); animation.cancel()
+    })
+  }
 
   watch(ids, (next, previous) => {
     snapshot = null
@@ -72,7 +74,7 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
     // Read all presentation positions before cancelling or changing any effect.
     for (const card of visibleCards(element)) positions.set(card.id, {
       element: card.element, rect: card.rect,
-      opacity: animations.has(card.element) ? getComputedStyle(card.element).opacity : undefined,
+      state: animations.get(card.element)?.capture(),
     })
     cancelAnimations()
     snapshot = { root: element, ids: new Set(previous), positions }
@@ -81,39 +83,34 @@ export function useListTransition(root: Ref<HTMLElement | null>, ids: () => read
   watch(ids, () => {
     const before = snapshot; snapshot = null
     if (!before || before.root !== root.value || !canAnimate()) return
-    const style = getComputedStyle(before.root)
-    const moveDuration = cssTimeToMilliseconds(style.getPropertyValue('--motion-control'))
-    const enterDuration = cssTimeToMilliseconds(style.getPropertyValue('--motion-route'))
     let entering = 0
     // Batch geometry/style reads before starting native compositor timelines.
     const changes = visibleCards(before.root).flatMap(card => {
       const old = before.positions.get(card.id)
       const fresh = !before.ids.has(card.id)
-      if (!old && (!fresh || entering >= MAX_ENTERING)) return []
+      if (!old && entering >= MAX_ENTERING) return []
       const x = old?.element === card.element ? old.rect.left - card.rect.left : 0
       const y = old?.element === card.element ? old.rect.top - card.rect.top : 12
-      const opacity = old?.opacity ?? (fresh ? '.35' : '1')
-      if (Math.abs(x) < .5 && Math.abs(y) < .5 && Number(opacity) >= 1) return []
+      const opacity = old?.state?.values[2] ?? (fresh ? .8 : 1)
+      const velocities = old?.state?.velocities ?? [0, 0, 0]
+      if (Math.abs(x) < .5 && Math.abs(y) < .5 && opacity >= 1 && velocities.every(value => Math.abs(value) < .01)) return []
       const computed = getComputedStyle(card.element)
       const transform = computed.transform === 'none' ? '' : ` ${computed.transform}`
-      const duration = fresh ? enterDuration : moveDuration
-      const delay = fresh ? Math.min(entering++ * enterDuration / 12, enterDuration / 4) : 0
-      return [{ element: card.element, x, y, opacity, transform, delay, duration }]
+      if (!old) entering++
+      return [{ element: card.element, x, y, opacity, transform, velocities }]
     })
     for (const change of changes) {
-      if (typeof change.element.animate !== 'function') continue
-      const animation = change.element.animate([
-        { transform: `translate(${change.x}px, ${change.y}px)${change.transform}`, opacity: change.opacity },
-        { transform: `translate(0px, 0px)${change.transform}`, opacity: 1 },
-      ], { duration: change.duration, delay: change.delay, easing: style.getPropertyValue('--ease-out').trim(), fill: 'both' })
-      animations.set(change.element, animation)
-      animation.onfinish = animation.oncancel = () => {
-        if (animations.get(change.element) !== animation) return
-        animations.delete(change.element)
-        animation.onfinish = animation.oncancel = null
-        animation.cancel()
-      }
+      move(change.element, [change.x, change.y, change.opacity], change.transform, change.velocities)
     }
   }, { flush: 'post' })
-  watch(root, clear, { flush: 'sync' })
+  watch(root, element => {
+    clear()
+    // Returning from an empty result mounts a new grid, with no old DOM to FLIP.
+    if (!element || !canAnimate()) return
+    const cards = visibleCards(element).slice(0, MAX_ENTERING).map(card => {
+      const transform = getComputedStyle(card.element).transform
+      return { element: card.element, transform: transform === 'none' ? '' : ` ${transform}` }
+    })
+    for (const card of cards) move(card.element, [0, 12, .8], card.transform)
+  }, { flush: 'post' })
 }

@@ -1,4 +1,7 @@
 @reference "./tailwind.css";
+/* Keyed filtering owns card continuity; browser scroll anchoring must not add
+   a second displacement when headings or retained rows change. */
+:is(.scene-grid, .showcase-grid, .pop-grid, .lora-grid, .gallery-albums-track, .gallery-wall) { overflow-anchor: none; }
 /* Shared desktop browse-and-detail layout. */
 .library-page { --page-max: 1500px; }
 .library-header { @apply tw:flex tw:justify-between; align-items: end; @apply tw:gap-s-5 tw:mb-s-4; }

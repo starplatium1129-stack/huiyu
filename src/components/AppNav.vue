@@ -46,15 +46,13 @@
 
       <!-- 高频工具在紧凑窗口中也保持可达。 -->
       <div class="nav-utilities" role="group" aria-label="工作台工具">
-        <StudioTooltip content="搜索页面、场景与作品（Ctrl/⌘ + K）">
-          <button
-            type="button"
-            class="nav-search tw:cursor-pointer" data-spring-button
-            aria-label="搜索页面、场景与作品"
-            aria-haspopup="dialog" aria-keyshortcuts="Control+k Meta+k"
-            @click="openSearch"
-          ><span class="nav-search-content" data-press-content><ArchiveIcon name="search" /><span class="nav-search-label">搜索</span><kbd aria-hidden="true">{{ searchShortcut }}</kbd></span></button>
-        </StudioTooltip>
+        <button
+          type="button"
+          class="nav-search tw:cursor-pointer" data-spring-button
+          aria-label="搜索页面、场景与作品"
+          aria-haspopup="dialog" aria-keyshortcuts="Control+k Meta+k"
+          @click="openSearch"
+        ><span class="nav-search-content" data-press-content><ArchiveIcon name="search" /><span class="nav-search-label">搜索</span><kbd aria-hidden="true">{{ searchShortcut }}</kbd></span></button>
         <TaskCenterButton />
         <span class="nav-utility-divider" aria-hidden="true"></span>
         <AppThemeToggle />

@@ -1,5 +1,6 @@
 <template>
   <section
+    v-content-motion:fade="kind === 'filtered'"
     class="empty-state archive-state-panel"
     :class="{ compact, illustrated: !!$slots.illustration }"
     :data-kind="kind"

@@ -1,87 +1,51 @@
 import type { ObjectDirective } from 'vue'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
-import { cssTimeToMilliseconds } from '@/utils/motionTiming'
+import { createContentSpring, type ContentSpring } from '@/utils/contentSpring'
 
-// One animation per changed surface, never one per list item. No cloned DOM,
-// delayed state update, persistent layer, or height animation during a switch.
-const active = new Map<HTMLElement, Animation>()
+// One owner per reading surface; state changes never wait for motion.
+const active = new Map<HTMLElement, { motion: ContentSpring; base: string }>()
 const pending = new Map<HTMLElement, number>()
-let keyboardInput = false
 function cancel(el: HTMLElement) {
   const frame = pending.get(el)
   if (frame !== undefined) cancelAnimationFrame(frame)
   pending.delete(el)
-  release(el)
-}
-function release(el: HTMLElement) {
-  const animation = active.get(el)
-  active.delete(el)
-  if (animation) {
-    animation.onfinish = animation.oncancel = null
-    animation.cancel()
-  }
+  active.get(el)?.motion.cancel(); active.delete(el)
 }
 function settle() { for (const el of new Set([...active.keys(), ...pending.keys()])) cancel(el) }
 function scheduleReveal(el: HTMLElement, direction?: string, deferred = false) {
-  if (!deferred) { reveal(el, direction); return }
   const frame = pending.get(el)
   if (frame !== undefined) cancelAnimationFrame(frame)
-  // Album navigation finishes its DOM, focus and scroll work before starting
-  // the timeline; cold option/media setup must not consume the visible fade.
-  pending.set(el, requestAnimationFrame(() => { pending.delete(el); reveal(el, direction, true) }))
+  pending.delete(el)
+  // An active surface retargets in this patch; deferring would expose a stale pose.
+  if (!deferred || active.has(el)) { reveal(el, direction); return }
+  pending.set(el, requestAnimationFrame(() => { pending.delete(el); reveal(el, direction) }))
 }
-
-function reveal(el: HTMLElement, direction = 'up', holdFirstFrame = false) {
-  if (keyboardInput || document.hidden || prefersReducedMotion() || !el.isConnected || typeof el.animate !== 'function'
-    || direction && el.matches('input, textarea') && document.activeElement === el) {
-    cancel(el)
-    return
-  }
-  // v-show and route state can be read without forcing layout during Vue's patch.
+function reveal(el: HTMLElement, direction = 'up') {
+  if (document.hidden || prefersReducedMotion() || !el.isConnected
+    || el.matches('input, textarea') && document.activeElement === el) { cancel(el); return }
   for (let parent: HTMLElement | null = el; parent; parent = parent.parentElement) {
     if (parent.hidden || parent.inert || parent.style.display === 'none' || parent.dataset.routeEntering === 'true') { cancel(el); return }
   }
+  // A parent arrival already moves its content. Do not stack a second reveal.
   for (const surface of active.keys()) {
     if (surface !== el && surface.contains(el)) return
     if (surface !== el && el.contains(surface)) cancel(surface)
   }
-  // A rapid reversal continues from the visible value rather than flashing back.
-  const presentation = active.has(el) ? getComputedStyle(el) : null
-  // Snapshot before cancelling: computed styles are live, and the underlying
-  // transform may also position the surface (for example the immersive chat).
-  const previous = presentation ? { opacity: presentation.opacity, transform: presentation.transform } : null
+  const previous = active.get(el)
+  const state = previous?.motion.capture()
+  const transform = previous ? previous.base : getComputedStyle(el).transform
+  const base = transform === 'none' ? '' : transform
   cancel(el)
-  const style = getComputedStyle(el)
-  const start: Keyframe = { opacity: previous?.opacity ?? '.35' }
-  const end: Keyframe = { opacity: 1 }
-  const offsets: Record<string, string> = { left: 'translateX(-12px)', right: 'translateX(12px)', up: 'translateY(12px)', down: 'translateY(-12px)' }
-  if (direction && offsets[direction]) {
-    const base = style.transform
-    start.transform = previous?.transform ?? `${offsets[direction]}${base === 'none' ? '' : ` ${base}`}`
-    end.transform = base
-  }
-  const animation = el.animate([start, end], {
-    duration:cssTimeToMilliseconds(style.getPropertyValue('--motion-surface')),
-    easing:style.getPropertyValue('--ease-out').trim(),
-    ...(holdFirstFrame ? { fill:'both' as const } : {}),
-  })
-  active.set(el, animation)
-  if (holdFirstFrame) {
-    animation.pause(); animation.currentTime = 0
-    pending.set(el, requestAnimationFrame(() => {
-      pending.delete(el)
-      if (active.get(el) === animation) animation.play()
-    }))
-  }
-  animation.onfinish = animation.oncancel = () => {
-    // Finishing the old timeline must not cancel an already queued new reveal.
-    if (active.get(el) === animation) release(el)
-  }
+  const offsets: Record<string, number[]> = { left: [-12, 0], right: [12, 0], up: [0, 12], down: [0, -12] }
+  const offset = offsets[direction]
+  const motion = createContentSpring(el, state?.values ?? [...(offset ?? [0, 0]), .8], ([x, y, opacity]) => ({
+    opacity, ...(offset ? { transform: `translate(${x}px, ${y}px) ${base}` } : {}),
+  }), { velocities: state?.velocities, opacity: 2 })
+  active.set(el, { motion, base })
+  motion.to([0, 0, 1], () => { if (active.get(el)?.motion === motion) cancel(el) })
 }
-
 export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
   mounted(el, { value, arg, modifiers }) {
-    // Initial route entry already has motion. Later v-if panels may enter alone.
     if (value !== false && (!el.closest('.route-view') || el.closest<HTMLElement>('.route-view')?.dataset.routeEntered === 'true')) scheduleReveal(el, arg, modifiers?.defer)
   },
   updated(el, { value, oldValue, arg, modifiers }) {
@@ -91,18 +55,9 @@ export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
   },
   beforeUnmount: cancel,
 }
-
-/** Native details and both motion preferences share the same bounded lifecycle. */
+/** Native disclosures share the same spring and reduced-motion lifecycle. */
 export function installContentMotion() {
   function preference() { if (document.hidden || prefersReducedMotion()) settle() }
-  function keyboard() { keyboardInput = true; settle() }
-  function pointer(event: Event) {
-    keyboardInput = false
-    if (!(event.target instanceof Node)) return
-    // A chosen child panel owns the next frame. Otherwise the active ancestor
-    // below suppresses its reveal, making a quick second selection look inert.
-    for (const el of new Set([...active.keys(), ...pending.keys()])) if (el.contains(event.target)) cancel(el)
-  }
   function toggle(event: Event) {
     if (!(event.target instanceof HTMLDetailsElement)) return
     const details = event.target
@@ -113,15 +68,6 @@ export function installContentMotion() {
     else cancel(body)
   }
   document.addEventListener('toggle', toggle, true)
-  document.addEventListener('keydown', keyboard, true)
-  document.addEventListener('pointerdown', pointer, true)
   const stopListening = listenMotionChanges(preference)
-  return () => {
-    settle()
-    keyboardInput = false
-    document.removeEventListener('toggle', toggle, true)
-    document.removeEventListener('keydown', keyboard, true)
-    document.removeEventListener('pointerdown', pointer, true)
-    stopListening()
-  }
+  return () => { settle(); document.removeEventListener('toggle', toggle, true); stopListening() }
 }

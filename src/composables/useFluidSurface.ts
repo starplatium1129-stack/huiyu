@@ -2,7 +2,7 @@ import { onDeactivated, onUnmounted } from 'vue'
 import { createFluidMotion, FluidSpring } from '@/utils/fluidSpring'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { cssTimeToMilliseconds } from '@/utils/motionTiming'
-import { SURFACE_SPRING } from '@/utils/controlSprings'
+import { SURFACE_DAMPING, SURFACE_FREQUENCY } from '@/utils/controlSprings'
 
 /** 全屏与超大图查看器类名清单 */
 const FLUID_FULLSCREEN_SELECTORS = [
@@ -136,8 +136,8 @@ export function createFluidSurface(panelSelector?: string, options: SurfaceOptio
     // Reduced motion settles per operation; don't permanently freeze a surface
     // created while that preference is enabled when the user turns it off later.
     const stationary = imageTransition || isFullscreenViewer || !options.animatePanel && rect.width >= 640 && rect.height >= 400
-    const spring = options.small ? Math.sqrt(SURFACE_SPRING.stiffness / SURFACE_SPRING.mass) / (2 * Math.PI) : isFullscreenViewer ? 5.2 : 4.8
-    const damping = options.small ? SURFACE_SPRING.damping / (2 * Math.sqrt(SURFACE_SPRING.stiffness * SURFACE_SPRING.mass)) : 1
+    const spring = options.small ? SURFACE_FREQUENCY : isFullscreenViewer ? 5.2 : 4.8
+    const damping = options.small ? SURFACE_DAMPING : 1
 
     // Even an identity transform changes the containing block for fixed children.
     const style = getComputedStyle(panel)
