@@ -1,5 +1,7 @@
 import { computed, readonly, ref } from 'vue'
 import type { BatchDrawPlan, BatchDrawPlanStorage } from './batchDrawPlan'
+import { ArtworkSaveSupersededError, type ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
+import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 
 export interface BatchTargetItem {
   id: string
@@ -29,6 +31,8 @@ export interface BatchDrawJob {
   imageId?: string
   pendingImage?: boolean
   snapshot?: Record<string, unknown>
+  submitted?: boolean
+  pendingCommit?: ArtworkCommitIdentity
 }
 export interface BatchDrawRunnerInput {
   scene: BatchTargetItem
@@ -42,6 +46,9 @@ export interface BatchDrawRunnerInput {
   report?: (message: string) => void
   submitting: () => void
   accepted: (taskId: string) => Promise<void>
+  admit: () => Promise<void>
+  pendingCommit?: ArtworkCommitIdentity
+  commitPrepared: (pending: ArtworkCommitIdentity) => Promise<void>
 }
 export interface BatchDrawRunnerResult {
   ok: boolean
@@ -65,9 +72,11 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   const restored = ref(false), storageError = ref(''), engine = ref<BatchEngine>('anima')
   const resetting = ref(false)
   let targets = new Map<string, BatchTargetItem>(), createdAt = 0, runtimeOwned = false
+  let owner: TempResultOwner | undefined, unreadable = false
   let disposed = false, observer: AbortController | null = null
   let activeJobId = '', submissionStarted = false
   let persistenceTail = Promise.resolve()
+  const checkOwner = () => { if (owner && !sameTempResultOwner(owner)) throw new Error('原批次所属资料来源已变化，请恢复原连接') }
   const progress = computed(() => {
     const count = (status: BatchDrawJob['status']) => jobs.value.filter(job => job.status === status).length
     const succeeded = count('succeeded'), failed = count('failed'), cancelled = count('cancelled')
@@ -77,7 +86,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   })
 
   function snapshot(): BatchDrawPlan {
-    return JSON.parse(JSON.stringify({ version: 1, createdAt, engine: engine.value, runtimeOwned, targets: [...targets.values()], jobs: jobs.value })) as BatchDrawPlan
+    return JSON.parse(JSON.stringify({ version: 1, createdAt, engine: engine.value, runtimeOwned, owner, targets: [...targets.values()], jobs: jobs.value })) as BatchDrawPlan
   }
   async function persist(): Promise<boolean> {
     if (!storage) return true
@@ -86,20 +95,41 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     try { await write; storageError.value = ''; return true }
     catch (error) { storageError.value = error instanceof Error ? error.message : '批次计划尚未保存'; onFlash(storageError.value); return false }
   }
-  try {
-    const plan = storage?.read()
-    if (plan) {
-      jobs.value = plan.jobs; targets = new Map(plan.targets.map(target => [target.id, target]))
-      engine.value = plan.engine; createdAt = plan.createdAt; runtimeOwned = plan.runtimeOwned; restored.value = true
-    }
-  } catch (error) { storageError.value = error instanceof Error ? error.message : '上次批次计划暂时无法读取' }
+  function restorePlan() {
+    try {
+      const plan = storage?.read()
+      if (plan) {
+        jobs.value = plan.jobs; targets = new Map(plan.targets.map(target => [target.id, target]))
+        engine.value = plan.engine; createdAt = plan.createdAt; runtimeOwned = plan.runtimeOwned; owner = plan.owner; restored.value = true
+      }
+      unreadable = false; storageError.value = ''
+    } catch (error) { unreadable = true; storageError.value = error instanceof Error ? error.message : '上次批次计划暂时无法读取' }
+  }
+  restorePlan()
 
   function runnerInput(job: BatchDrawJob, reconnect: boolean): BatchDrawRunnerInput {
     const input: BatchDrawRunnerInput = {
       scene: { ...targets.get(job.sceneId)! }, seed: job.seed, variant: job.variant,
       requestKey: job.requestKey, taskId: job.taskId, snapshot: job.snapshot, reconnect,
       signal: observer!.signal,
-      submitting: () => { input.signal.throwIfAborted(); submissionStarted = true },
+      submitting: () => { input.signal.throwIfAborted(); checkOwner(); submissionStarted = true },
+      admit: async () => {
+        input.signal.throwIfAborted()
+        job.submitted = true
+        if (!await persist()) throw new Error('请求身份尚未写稳，尚未提交；请恢复连接后查询原请求')
+        input.signal.throwIfAborted()
+        checkOwner()
+      },
+      pendingCommit: job.pendingCommit,
+      commitPrepared: async pending => {
+        if (disposed) throw new ArtworkSaveSupersededError(false)
+        checkOwner()
+        job.pendingCommit = JSON.parse(JSON.stringify(pending)) as ArtworkCommitIdentity
+        input.pendingCommit = job.pendingCommit
+        if (!await persist()) throw new Error('原入册身份尚未写稳，图片和请求已保留')
+        if (disposed) throw new ArtworkSaveSupersededError(false)
+        checkOwner()
+      },
       report: message => { if (!disposed) job.message = message },
       accepted: async taskId => {
         if (disposed) return
@@ -120,7 +150,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       for (const job of list) {
         if (disposed || cancelRequested.value) break
         activeJobId = job.id; submissionStarted = false
-        const reconnect = job.status === 'unknown' || job.status === 'accepted'
+        const reconnect = job.submitted !== false && (job.status === 'unknown' || job.status === 'accepted')
         if (engine.value === 'sd' && !reconnect) {
           job.status = 'failed'; job.error = 'SD 新生成已退役；未提交项已保留，不能创建替代任务。'
           if (!await persist()) break
@@ -157,15 +187,17 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   async function start(items: BatchTargetItem[], count: number, baseSeed: number, unitLabel = '个项目',
     planOptions: { engine?: Exclude<BatchEngine, 'sd'>; runtimeOwned?: boolean } = {}): Promise<void> {
     if (running.value || resetting.value || disposed || !items.length) return
+    if (unreadable) { restorePlan(); if (unreadable) { onFlash(storageError.value); return } }
     if (planOptions.engine && planOptions.engine !== 'anima') { onFlash('SD 新生成已退役，请使用当前 Anima/Krea 2 配方'); return }
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再开启新计划。'); return }
     targets = new Map(items.map(item => [item.id, { ...item }]))
+    try { owner = tempResultOwner() } catch (error) { onFlash(error instanceof Error ? error.message : String(error)); return }
     createdAt = Date.now(); engine.value = planOptions.engine || 'anima'; runtimeOwned = planOptions.runtimeOwned === true; restored.value = false
     const amount = Number.isFinite(count) ? Math.max(1, Math.min(3, Math.floor(count))) : 1
     jobs.value = [...targets.values()].flatMap(item => Array.from({ length: amount }, (_, variant) => ({
       id: crypto.randomUUID(), requestKey: crypto.randomUUID(), sceneId: item.id, sceneTitle: item.title,
       subtitle: item.subtitle, avatarUrl: item.avatarUrl, kind: item.kind, variant,
-      seed: Number.isFinite(baseSeed) && baseSeed >= 0 ? baseSeed + variant * 1000 : -1, status: 'pending' as const,
+      seed: Number.isFinite(baseSeed) && baseSeed >= 0 ? baseSeed + variant * 1000 : -1, status: 'pending' as const, submitted: false,
     })))
     observer = new AbortController()
     for (const job of jobs.value) {
@@ -178,6 +210,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   }
   async function resume(): Promise<void> {
     if (running.value || resetting.value || disposed) return
+    if (unreadable) { restorePlan(); if (unreadable) { onFlash(storageError.value); return } }
     const unresolved = jobs.value.filter(job => job.status === 'unknown' || job.status === 'accepted')
     const remaining = jobs.value.filter(job => job.status === 'pending' || job.status === 'cancelled' && !job.taskId)
     await execute([...unresolved, ...remaining], '正在核对原任务，继续本批剩余项…')
@@ -188,9 +221,9 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再重试失败项。'); return }
     const list = jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled')
     list.forEach(job => {
-      if (job.pendingImage) { job.status = 'unknown'; job.error = undefined; return }
+      if (job.pendingImage || job.pendingCommit) { job.status = 'unknown'; job.error = undefined; return }
       job.requestKey = crypto.randomUUID(); job.taskId = undefined
-      job.status = 'pending'; job.error = undefined
+      job.status = 'pending'; job.error = undefined; job.submitted = false
     })
     await execute(list, `重跑 ${list.length} 张失败 / 未执行任务`)
   }
@@ -200,7 +233,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     onFlash('正在停止批量…（当前张完成后停止）')
   }
   async function reset() {
-    if (running.value || resetting.value || disposed || progress.value.unresolved) return
+    if (running.value || resetting.value || disposed || progress.value.unresolved || unreadable) return
     resetting.value = true
     try {
       if (storage) { await persistenceTail; await storage.clear() }
@@ -214,7 +247,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   function dispose() {
     if (disposed) return
     jobs.value.filter(job => job.status === 'running' || job.status === 'accepted').forEach(job => {
-      job.status = job.status === 'running' && job.id === activeJobId && !submissionStarted ? 'pending' : 'unknown'
+      job.status = job.status === 'running' && job.id === activeJobId && !submissionStarted && job.submitted === false ? 'pending' : 'unknown'
     })
     disposed = true; observer?.abort()
     if (jobs.value.length && !resetting.value) void persist()

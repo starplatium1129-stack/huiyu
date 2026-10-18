@@ -2,7 +2,7 @@ import { profileDraftStorage as sessionStorage, profileRuntimeActive, flushProfi
 import { TEMP_RESULT_KEY } from '@/utils/storageKeys'
 import type { AnimaJobMetadata, AnimaResultContext } from '@/types/anima'
 import type { DrawEngine } from '@/storage/settingsRepository'
-import type { ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
+import { isArtworkCommitIdentity, type ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
 
 /**
@@ -71,15 +71,6 @@ export function resolveTempResultOwner(record: TempResultRecord): TempResultOwne
   throw new Error('临时成片属于另一资料来源，请回到原工作区恢复')
 }
 
-function validPending(value: unknown): value is ArtworkCommitIdentity {
-  if (!value || typeof value !== 'object') return false
-  const pending = value as Partial<ArtworkCommitIdentity>, entry = pending.entry as (ArtworkCommitIdentity['entry'] & Record<string, unknown>) | undefined
-  return Boolean(entry && typeof entry === 'object' && (typeof entry.id === 'string' || typeof entry.id === 'number' && Number.isFinite(entry.id))
-    && typeof entry.image_id === 'string' && entry.image_id && typeof entry.prompt === 'string'
-    && pending.operationId === `artwork:${String(entry.id)}` && !('blob' in entry) && !entry.image_data
-    && (!entry.image_url || !/^(blob:|data:)/.test(entry.image_url)))
-}
-
 /** Missing is empty; unreadable identities stop restoration and keep the pointer. */
 export function readTempResult(): TempResultRecord | null {
   try {
@@ -90,7 +81,7 @@ export function readTempResult(): TempResultRecord | null {
     if (parsed.owner && !(parsed.owner.kind === 'web' && typeof parsed.owner.origin === 'string'
       || parsed.owner.kind === 'workspace' && typeof parsed.owner.workspaceId === 'string' && typeof parsed.owner.principalId === 'string'))
       throw new Error('临时成片来源身份无效，原记录已保留')
-    if (parsed.pendingCommit !== undefined && !validPending(parsed.pendingCommit)) throw new Error('原入册身份无法核对，原记录已保留')
+    if (parsed.pendingCommit !== undefined && !isArtworkCommitIdentity(parsed.pendingCommit)) throw new Error('原入册身份无法核对，原记录已保留')
     return parsed
   } catch (error) { throw error instanceof Error ? error : new Error('临时成片记录暂时无法读取') }
 }

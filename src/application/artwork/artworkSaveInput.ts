@@ -49,6 +49,15 @@ export type SaveGeneratedArtworkResult =
 
 export interface ArtworkSaveSnapshot { entry: GeneratedArtworkInput; defaults: LegacyArtworkDefaults }
 export interface ArtworkCommitIdentity { operationId: string; entry: HistoryEntry }
+/** Draft boundaries retain only the existing structured append identity. */
+export function isArtworkCommitIdentity(value: unknown): value is ArtworkCommitIdentity {
+  if (!value || typeof value !== 'object') return false
+  const pending = value as Partial<ArtworkCommitIdentity>, entry = pending.entry as (HistoryEntry & Record<string, unknown>) | undefined
+  return Boolean(entry && typeof entry === 'object' && (typeof entry.id === 'string' || typeof entry.id === 'number' && Number.isFinite(entry.id))
+    && typeof entry.image_id === 'string' && entry.image_id && typeof entry.prompt === 'string'
+    && pending.operationId === `artwork:${String(entry.id)}` && !('blob' in entry) && !entry.image_data
+    && (!entry.image_url || !/^(blob:|data:)/.test(entry.image_url)))
+}
 export class ArtworkSaveSupersededError extends Error {
   constructor(readonly releaseImage: boolean) { super('当前画面已变化，已停止尚未提交的入册'); this.name = 'AbortError' }
 }

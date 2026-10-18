@@ -34,6 +34,7 @@ import type { usePromptAssembly } from './usePromptAssembly.ts'
 import { useBatchDraw, type BatchDrawRunnerInput, type BatchEngine, type BatchTargetItem } from '../generation/useBatchDraw.ts'
 import type { SDQueueJob } from '../generation/useSDQueue.ts'
 import { artworkRepository } from '@/storage/artworkRepository'
+import { tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -68,7 +69,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   const negativePrompt = shallowRef(deps.negativePrompt.value)
   const modelProfile = shallowRef(deps.modelProfile.value)
   const animaState = shallowRef(deps.animaState.value)
-  const animaTransport = createBatchAnimaTransport(() => animaState.value.family)
+  const animaTransport = createBatchAnimaTransport()
   let characters: PopularCharacter[] | null = null
   let blueprints: SceneBlueprint[] | null = null
   let runEngine: Exclude<BatchEngine, 'sd'> = 'anima'
@@ -344,28 +345,40 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   }
 
   const pendingSaves = pendingBatchSaves
-  let planOwner = { repository: artworkRepository, authority: batchSaveAuthority() }
-  const checkPlanOwner = () => { if (!ownsPendingSave(planOwner)) throw new Error('批次所属作品库已变化，请回到原工作区继续；原计划未写入其他资料库') }
+  let planOwner: { repository: typeof artworkRepository; authority: string; owner?: TempResultOwner } = { repository: artworkRepository, authority: batchSaveAuthority() }
+  const checkPlanOwner = () => {
+    planOwner.owner ??= tempResultOwner()
+    if (!ownsPendingSave(planOwner)) throw new Error('批次所属作品库已变化，请回到原工作区继续；原计划未写入其他资料库')
+  }
   const batchStorage = createBatchDrawPlanStorage()
   const batchDraw = useBatchDraw({
     storage: { async write(plan) { checkPlanOwner(); await batchStorage.write(plan) },
       async clear() { checkPlanOwner(); await batchStorage.clear() }, read() {
-      checkPlanOwner()
+      if (planOwner.repository !== artworkRepository || planOwner.authority !== batchSaveAuthority()) throw new Error('批次资料来源已更换，请回到原工作区读取计划')
       const plan = batchStorage.read()
+      planOwner.owner = plan?.owner
       plan?.jobs.forEach(job => { if (pendingSaves.has(job.requestKey)) { job.pendingImage = true; job.status = 'unknown' } })
       return plan
     } },
     prepare: input => clone(prepareBatchAnima(input)) as unknown as Record<string, unknown>,
     onFlash: (message) => pb.flash(message),
     run: async (input) => {
+      try { checkPlanOwner() }
+      catch (error) { return { ok: false, unresolved: true, error: error instanceof Error ? error.message : String(error) } }
       const plan = readPreparedBatch(input.snapshot)
       if (!plan) return { ok: false, unresolved: input.reconnect, error: '原批次参数快照不可用；请核对任务中心中的原任务。' }
       if (hasRuntimeTasks() !== batchDraw.runtimeOwned()) return { ok: false, unresolved: true, error: '原批次生成环境已改变，请恢复原工作区后核对任务。' }
       const saved = pendingSaves.get(input.requestKey)
       if (saved) return persistBatchArtwork(input, saved, pb.commitHistoryEntry)
-      const owner = { repository: artworkRepository, authority: batchSaveAuthority(), runtimeOwned: batchDraw.runtimeOwned() }
+      const owner = { ...planOwner, runtimeOwned: batchDraw.runtimeOwned() }
       const save = (source: BatchArtworkSource) => persistBatchArtwork(input, { ...owner, source }, pb.commitHistoryEntry)
       try {
+        if (input.pendingCommit) {
+          const blob = await owner.repository.getImage(input.pendingCommit.entry.image_id!, input.signal)
+          checkPlanOwner()
+          if (!blob?.size) return { ok: false, unresolved: true, error: '原入册图片暂不可读，原记录与媒体身份已保留；不会重新生成' }
+          return save({ kind: 'image', entry: { ...input.pendingCommit.entry, blob, pendingCommit: input.pendingCommit } })
+        }
         if (input.reconnect && batchDraw.runtimeOwned()) {
           const result = await recoverBatchTask(input)
           return save({ kind: 'task', taskId: result.taskId })
@@ -388,6 +401,8 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
         }
         const nativeBlocker = !input.reconnect && deps.animaState.value.provider === 'native' && nativeAnimaRequestBlocker(deps.animaState.value.models, plan.request)
         if (nativeBlocker) return { ok: false, error: nativeBlocker }
+        if (!input.reconnect) await input.admit()
+        checkPlanOwner()
         const result = await animaTransport.run(plan.request, plan.context, () => batchDraw.cancelRequested.value, input.report,
           { requestKey: input.requestKey, onAccepted: input.accepted, signal: input.signal, resumeId: input.reconnect ? input.taskId : undefined,
             onSubmitting: input.submitting,
@@ -433,7 +448,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     }).filter(item => item.prose)
     if (!scenes.length) { pb.flash('所选场景没有可用的描述'); return }
     const baseSeed = selectedSeed()
-    planOwner = { repository: artworkRepository, authority: batchSaveAuthority() }
+    planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
     await batchDraw.start(scenes, payload.count, baseSeed, '个场景', { engine: runEngine, runtimeOwned: hasRuntimeTasks() })
   }
 
@@ -478,7 +493,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
 
     if (!targets.length) { pb.flash('所选角色无效'); return }
     const baseSeed = selectedSeed()
-    planOwner = { repository: artworkRepository, authority: batchSaveAuthority() }
+    planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
     await batchDraw.start(targets, payload.count, baseSeed, '位角色', { engine: runEngine, runtimeOwned: hasRuntimeTasks() })
   }
 

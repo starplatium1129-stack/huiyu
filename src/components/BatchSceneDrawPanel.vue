@@ -236,7 +236,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
-import { computed, reactive, ref, watch, onDeactivated, onUnmounted } from 'vue'
+import { computed, reactive, ref, shallowRef, watch, onDeactivated, onUnmounted, type DeepReadonly } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -269,7 +269,7 @@ const contentMotionKey = ref<string | false>(false)
 const batchDescription = computed(() => phase.value === 'config'
   ? batchMode.value === 'scene' ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。' : '使用当前词条，一次性勾选多位角色批量出图，成片自动归入各角色画廊。'
   : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。')
-const previewJob = ref<BatchDrawJob | null>(null)
+const previewJob = shallowRef<DeepReadonly<BatchDrawJob> | null>(null)
 const previewSource = ref<HTMLImageElement | null>(null)
 useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close') })
 
@@ -430,7 +430,7 @@ const franchiseOptions = computed<StudioSelectOption[]>(() => [
   ...franchises.value.map(name => ({ value: name, label: name })),
 ])
 
-function placeholderText(job: BatchDrawJob): string {
+function placeholderText(job: DeepReadonly<BatchDrawJob>): string {
   if (job.status === 'failed') return job.error || '生成失败'
   if (job.status === 'running') return job.message || '生成中…'
   if (job.status === 'accepted') return job.message || '已接收，等待结果…'
