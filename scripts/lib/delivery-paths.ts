@@ -1,4 +1,5 @@
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
+import type { FileIdentity, FileFailure, JsonRecord } from './delivery-types';
 'use strict';
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
@@ -6,15 +7,15 @@ const { createHash }: typeof import('node:crypto') = require('node:crypto');
 
 // All generated records live here. It is excluded from BOTH content identities.
 const EVIDENCE_DIR = 'runtime/delivery-evidence';
-const object = (v: any) => v !== null && typeof v === 'object' && !Array.isArray(v);
-const sha256 = (value: any) => createHash('sha256').update(value).digest('hex');
-const canonical = (value: any) => JSON.stringify(sortValue(value));
-function sortValue(value: any): any {
+const object = (v: unknown): v is JsonRecord => v !== null && typeof v === 'object' && !Array.isArray(v);
+const sha256 = (value: string | NodeJS.ArrayBufferView) => createHash('sha256').update(value).digest('hex');
+const canonical = (value: unknown) => JSON.stringify(sortValue(value));
+function sortValue(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(sortValue);
   if (!object(value)) return value;
   return Object.fromEntries(Object.keys(value).sort().map(key => [key, sortValue(value[key])]));
 }
-function relative(value: any, allowRoot: any = false) {
+function relative(value: unknown, allowRoot = false) {
   if (typeof value !== 'string' || !value || /[\x00-\x1f:]/.test(value)
     || path.posix.isAbsolute(value) || path.win32.isAbsolute(value)) throw Error('路径必须为 root 内相对路径');
   const result = value.replaceAll('\\', '/');
@@ -22,24 +23,24 @@ function relative(value: any, allowRoot: any = false) {
   if (result.split('/').some(v => !v || v === '.' || v === '..' || /[. ]$/.test(v))) throw Error('路径含不安全或不规范的分段');
   return result;
 }
-const within = (parent: any, child: any) => child === parent || child.startsWith(`${parent}/`);
-function excluded(name: any) {
+const within = (parent: string, child: string) => child === parent || child.startsWith(`${parent}/`);
+function excluded(name: string) {
   const lower = name.toLowerCase();
   return within(EVIDENCE_DIR, lower) || lower.split('/').includes('.git');
 }
-function evidencePath(value: any) {
+function evidencePath(value: unknown) {
   const name = relative(value);
   if (!within(EVIDENCE_DIR, name.toLowerCase()) || name.toLowerCase() === EVIDENCE_DIR) throw Error(`证据必须位于 ${EVIDENCE_DIR}/`);
   return name;
 }
-function rootPath(value: any) {
+function rootPath(value: string) {
   const root = fs.realpathSync.native(value);
   if (!fs.statSync(root).isDirectory()) throw Error('root 不是目录');
   return root;
 }
 // Reject links even when they point inside root: aliases could bypass exclusions,
 // introduce cycles, or make a saved evidence file part of its own source identity.
-function resolveSafe(root: any, value: any, allowMissing: any = false) {
+function resolveSafe(root: string, value: unknown, allowMissing = false) {
   const name = relative(value, true);
   let current = root, existing = root;
   for (const part of name === '.' ? [] : name.split('/')) {
@@ -58,7 +59,7 @@ function resolveSafe(root: any, value: any, allowMissing: any = false) {
   if (rel === '..' || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) throw Error(`真实路径越过 root: ${name}`);
   return current;
 }
-function fileEntry(root: any, name: any) {
+function fileEntry(root: string, name: string): FileIdentity | FileFailure {
   let fd;
   try {
     const file = resolveSafe(root, name);
@@ -77,17 +78,17 @@ function fileEntry(root: any, name: any) {
     return { path: name, status: runtimeErrorCode(error) === 'ENOENT' ? 'missing' : 'unsafe-or-unreadable', message: runtimeErrorMessage(error) };
   } finally { if (fd !== undefined) fs.closeSync(fd); }
 }
-function readJson(root: any, name: any, dedicated: any = false) {
+function readJson(root: string, name: string, dedicated = false) {
   name = dedicated ? evidencePath(name) : relative(name);
   const entry = fileEntry(root, name);
   if (entry.status !== 'file') throw Error(`${name}: ${entry.message}`);
   const raw = fs.readFileSync(resolveSafe(root, name), 'utf8');
   if (sha256(Buffer.from(raw)) !== entry.sha256) throw Error(`读取期间记录发生变化: ${name}`);
-  const value = JSON.parse(raw.replace(/^\uFEFF/, ''));
+  const value: unknown = JSON.parse(raw.replace(/^\uFEFF/, ''));
   if (!object(value)) throw Error(`记录必须为 JSON 对象: ${name}`);
   return { value, entry };
 }
-function saveJson(root: any, name: any, value: any) {
+function saveJson(root: string, name: string, value: unknown) {
   name = evidencePath(name);
   if (!name.endsWith('.json')) throw Error('--save 必须为 .json 文件');
   resolveSafe(root, name, true);

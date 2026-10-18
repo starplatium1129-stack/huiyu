@@ -5,15 +5,15 @@ import { createHash, randomUUID } from 'node:crypto';
 import identity = require('./delivery-identity');
 import deliveryPaths = require('./delivery-paths');
 import installerBinding = require('./desktop-installer-binding');
+import type { Selection } from './delivery-types';
 
 const receiptPath = 'runtime/delivery-evidence/desktop-build-binding.json';
 const exe = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe';
 const bundle = 'desktop-tauri/src-tauri/target/release/bundle/nsis';
-type Selection = { kind: 'file' | 'tree'; path: string };
 function problemDetails(snapshot: ReturnType<typeof identity.snapshot>) {
-  const problems = snapshot.entries.filter((entry: { status: string }) => !['file', 'directory'].includes(entry.status));
-  return problems.slice(0, 5).map((entry: { path: string; status: string; message?: string }) =>
-    `${entry.path} (${entry.message || entry.status})`).join('; ') + (problems.length > 5 ? `; 另有 ${problems.length - 5} 项` : '');
+  const problems = snapshot.entries.filter(entry => entry.status !== 'file' && entry.status !== 'directory');
+  return problems.slice(0, 5).map(entry =>
+    `${entry.path} (${('message' in entry && entry.message) || entry.status})`).join('; ') + (problems.length > 5 ? `; 另有 ${problems.length - 5} 项` : '');
 }
 function completeSnapshot(root: string, selected: Selection[], failure: string) {
   let snapshot;
@@ -156,24 +156,25 @@ function extendBuild(root: string, receipt: ReturnType<typeof verifyBuild>) {
   if (original.sha256 !== receipt.build.sha256) throw Error('打包修改了原构建产物，拒绝绑定');
   recordBuild(root, receipt.source, true, { ...sdkIdentity(root), inputs:receipt.sdk.inputs });
 }
-function addBoundFiles(root: string, previous: any, outputs: string[]) {
+function addBoundFiles(root: string, previous: unknown, outputs: string[]) {
   const names = outputs.map(output => path.relative(root, output).replaceAll('\\', '/'));
   if (!names.length || new Set(names).size !== names.length) throw Error('绑定产物集合为空或重复');
   names.forEach(name => deliveryPaths.relative(name));
-  const others: Selection[] = previous?.selectors?.filter((item: Selection) => !names.includes(item.path)) || [];
-  if (previous) {
-    identity.validateSnapshot(previous);
-    for (const item of others) verifyBoundFile(root, previous, path.join(root, item.path), '已绑定的另一份产物已变化');
+  const validated = previous ? identity.validateSnapshot(previous) : undefined;
+  const others = validated?.selectors.filter(item => !names.includes(item.path)) || [];
+  if (validated) {
+    for (const item of others) verifyBoundFile(root, validated, path.join(root, item.path), '已绑定的另一份产物已变化');
   }
   return completeSnapshot(root, [...others, ...names.map(name => ({ kind:'file' as const, path:name }))], '发行封装产物身份不完整');
 }
-function verifyBoundFile(root: string, snapshot: any, output: string, message: string) {
-  try { identity.validateSnapshot(snapshot); } catch { throw Error(message); }
+function verifyBoundFile(root: string, input: unknown, output: string, message: string) {
+  let snapshot;
+  try { snapshot = identity.validateSnapshot(input); } catch { throw Error(message); }
   const relative = path.relative(root, output).replaceAll('\\', '/');
-  const expected = snapshot.entries.find((item: { path:string; status:string }) => item.path === relative && item.status === 'file');
-  if (!expected) throw Error(message);
+  const expected = snapshot.entries.find(item => item.path === relative);
+  if (!expected || expected.status !== 'file') throw Error(message);
   const actual = completeSnapshot(root, [{ kind:'file', path:relative }], message).entries[0];
-  if (actual.sha256 !== expected.sha256 || actual.bytes !== expected.bytes) throw Error(message);
+  if (actual.status !== 'file' || actual.sha256 !== expected.sha256 || actual.bytes !== expected.bytes) throw Error(message);
 }
 function bindDerivedPayloads(root: string, outputs: string[]) {
   const receipt = verifyBuild(root);

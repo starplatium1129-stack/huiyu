@@ -3,10 +3,9 @@ import path = require('node:path');
 import { createHash, randomUUID } from 'node:crypto';
 import identity = require('./delivery-identity');
 import safe = require('./delivery-paths');
+import type { FileIdentity as SnapshotFile } from './delivery-types';
 
-type FileIdentity = { path: string; bytes: number; sha256: string };
-type RecordedFile = FileIdentity & { status: string };
-type BuildReceipt = { schemaVersion: number; kind: string; source: { sha256: string; entries: RecordedFile[] }; build: { entries: RecordedFile[] }; distribution: { entries: RecordedFile[] } };
+type FileIdentity = Pick<SnapshotFile, 'path' | 'bytes' | 'sha256'>;
 type DeploymentManifest = { schemaVersion: 1; kind: 'desktop-installer-deployment'; sourceSha256: string; installer: FileIdentity; files: FileIdentity[] };
 const RESOURCE_PREFIX = 'desktop-tauri/src-tauri/resources/';
 const HOST = 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe';
@@ -32,23 +31,23 @@ function installedHost(root: string, expected: FileIdentity): FileIdentity {
   return { path: 'ai-cg-studio-desktop.exe', bytes: bytes.length, sha256: digest(bytes) };
 }
 
-export function writeInstallerManifest(root: string, receipt: BuildReceipt, installer: string) {
-  if (receipt.schemaVersion !== 1 || receipt.kind !== 'desktop-build-binding') throw Error('安装包构建回执无效');
-  identity.validateSnapshot(receipt.source);
-  identity.validateSnapshot(receipt.build);
-  identity.validateSnapshot(receipt.distribution);
+export function writeInstallerManifest(root: string, receipt: unknown, installer: string) {
+  if (!safe.object(receipt) || receipt.schemaVersion !== 1 || receipt.kind !== 'desktop-build-binding') throw Error('安装包构建回执无效');
+  const source = identity.validateSnapshot(receipt.source);
+  const build = identity.validateSnapshot(receipt.build);
+  const distribution = identity.validateSnapshot(receipt.distribution);
   const relative = safe.relative(path.relative(root, installer).replaceAll('\\', '/'));
-  const packaged = receipt.distribution.entries.find(entry => entry.path === relative && entry.status === 'file');
-  if (!packaged) throw Error('指定安装包未登记在构建回执中');
+  const packaged = distribution.entries.find(entry => entry.path === relative);
+  if (!packaged || packaged.status !== 'file') throw Error('指定安装包未登记在构建回执中');
   checkedFile(root, packaged);
-  const host = receipt.build.entries.find(entry => entry.path === HOST && entry.status === 'file');
-  if (!host) throw Error('原构建回执缺少宿主身份，无法准备旧包的安装校验清单');
-  const files: FileIdentity[] = receipt.build.entries.filter(entry => entry.status === 'file' && entry.path.startsWith(RESOURCE_PREFIX))
-    .map((entry: FileIdentity) => ({ path: entry.path.slice(RESOURCE_PREFIX.length), bytes: entry.bytes, sha256: entry.sha256 }));
+  const host = build.entries.find(entry => entry.path === HOST);
+  if (!host || host.status !== 'file') throw Error('原构建回执缺少宿主身份，无法准备旧包的安装校验清单');
+  const files: FileIdentity[] = build.entries.filter((entry): entry is SnapshotFile => entry.status === 'file' && entry.path.startsWith(RESOURCE_PREFIX))
+    .map(entry => ({ path: entry.path.slice(RESOURCE_PREFIX.length), bytes: entry.bytes, sha256: entry.sha256 }));
   files.push(installedHost(root, host));
-  const icon = receipt.source.entries.find(entry => entry.path === 'desktop-tauri/src-tauri/icons/icon.ico' && entry.status === 'file');
-  if (icon) files.push({ path: 'huiyu-icon.ico', bytes: icon.bytes, sha256: icon.sha256 });
-  const manifest: DeploymentManifest = { schemaVersion: 1, kind: 'desktop-installer-deployment', sourceSha256: receipt.source.sha256,
+  const icon = source.entries.find(entry => entry.path === 'desktop-tauri/src-tauri/icons/icon.ico');
+  if (icon?.status === 'file') files.push({ path: 'huiyu-icon.ico', bytes: icon.bytes, sha256: icon.sha256 });
+  const manifest: DeploymentManifest = { schemaVersion: 1, kind: 'desktop-installer-deployment', sourceSha256: source.sha256,
     installer: { path: path.basename(installer), bytes: packaged.bytes, sha256: packaged.sha256 }, files: files.sort((a, b) => a.path.localeCompare(b.path, 'en')) };
   validateManifest(manifest, installer);
   const target = manifestPath(installer), temporary = `${target}.${randomUUID()}.tmp`;

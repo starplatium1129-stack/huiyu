@@ -1,9 +1,10 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
+import type { CaptureOptions } from '../lib/delivery-types';
 'use strict';
 const path: typeof import('node:path') = require('node:path');
 const { rootPath, evidencePath, saveJson }: typeof import('../lib/delivery-paths') = require('../lib/delivery-paths');
 const { selectors }: typeof import('../lib/delivery-identity') = require('../lib/delivery-identity');
-const { gatePath }: typeof import('../lib/delivery-state') = require('../lib/delivery-state');
+const { gatePath, identityGroup }: typeof import('../lib/delivery-state') = require('../lib/delivery-state');
 const { capture }: typeof import('../lib/delivery-handoff') = require('../lib/delivery-handoff');
 const ROOT = path.resolve(__dirname, '../..');
 const HELP = `capture-delivery --scope <说明> --source-file <路径>|--source-tree <目录> --build-file <路径>|--build-tree <目录>
@@ -22,22 +23,23 @@ capture-delivery --baseline runtime/delivery-evidence/<快照>.json [--record ru
 仅 SHA-256 字节身份；.git 与 runtime/delivery-evidence 排除。禁止 symlink/junction/硬链接。
 退出 0=记录操作成功（不等于验收通过），1=内容/路径错误，2=参数错误。
 校验: node scripts/maintenance/audit-delivery.js --evidence <交接JSON> --json`;
-function parse(args: any) {
-  const result: any = { root: ROOT, machine: 'office', source: [], build: [], gates: {} };
-  const values: any = { '--root': 'root', '--scope': 'scope', '--save': 'save', '--baseline': 'baseline', '--record': 'record', '--machine': 'machine', '--finalize-commit': 'finalizeCommit' };
+type Options = CaptureOptions & { root: string; machine: string; save?: string; help?: boolean; plan?: boolean; json?: boolean };
+function parse(args: string[]) {
+  const result: Options = { root: ROOT, machine: 'office', source: [], build: [], gates: {} };
+  const values: Record<string, 'root' | 'scope' | 'save' | 'baseline' | 'record' | 'machine' | 'finalizeCommit'> = { '--root': 'root', '--scope': 'scope', '--save': 'save', '--baseline': 'baseline', '--record': 'record', '--machine': 'machine', '--finalize-commit': 'finalizeCommit' };
   const seen = new Set();
   for (let i = 0; i < args.length; i++) {
     const flag = args[i];
-    if (['--help', '--plan', '--json'].includes(flag)) { result[flag.slice(2)] = true; continue; }
+    if (flag === '--help' || flag === '--plan' || flag === '--json') { result[flag.slice(2) as 'help' | 'plan' | 'json'] = true; continue; }
     const choice = /^--(source|build)-(file|tree)$/.exec(flag);
     if ((!values[flag] && !choice && flag !== '--gate') || !args[i + 1] || args[i + 1].startsWith('--')) throw Error(`参数无效或缺值: ${flag}`);
     const value = args[++i];
-    if (choice) result[choice[1]].push({ path: value, kind: choice[2] });
+    if (choice) result[choice[1] === 'source' ? 'source' : 'build'].push({ path: value, kind: choice[2] === 'file' ? 'file' : 'tree' });
     else if (flag === '--gate') {
       const [field, dependencies, extra] = value.split('=');
       const dependsOn = dependencies?.split(',');
       if (!gatePath(field) || extra !== undefined || !dependsOn?.length || new Set(dependsOn).size !== dependsOn.length
-        || dependsOn.some((k: any) => !['source', 'build'].includes(k)) || Object.hasOwn(result.gates, field)) throw Error('--gate 需要唯一 field=source,build');
+        || !dependsOn.every(identityGroup) || Object.hasOwn(result.gates, field)) throw Error('--gate 需要唯一 field=source,build');
       result.gates[field] = dependsOn;
     } else {
       if (seen.has(flag)) throw Error(`重复参数: ${flag}`);
@@ -45,7 +47,7 @@ function parse(args: any) {
     }
   }
   if (!['office', 'main'].includes(result.machine)) throw Error('--machine 需要 office/main');
-  for (const key of ['baseline', 'record', 'save']) if (result[key]) evidencePath(result[key]);
+  for (const key of ['baseline', 'record', 'save'] as const) if (result[key]) evidencePath(result[key]);
   if (result.help) return result;
   if (result.finalizeCommit) {
     if (!/^[a-f\d]{40}$/i.test(result.finalizeCommit) || !result.baseline || result.machine !== 'office') throw Error('--finalize-commit 需要完整 SHA、--baseline 与 office 机器');
@@ -60,7 +62,7 @@ function parse(args: any) {
   }
   return result;
 }
-function main(args: any) {
+function main(args: string[]) {
   let options;
   try { options = parse(args); } catch (error) { console.error(runtimeErrorMessage(error)); return 2; }
   if (options.help) { console.log(HELP); return 0; }
@@ -69,7 +71,7 @@ function main(args: any) {
     const root = rootPath(options.root), document = capture(root, options);
     if (options.save) saveJson(root, options.save, document);
     console.log(JSON.stringify(document, null, 2));
-    return [document.tracking.source, document.tracking.build].every((v: any) => v.status === 'complete') ? 0 : 1;
+    return [document.tracking.source, document.tracking.build].every(v => v.status === 'complete') ? 0 : 1;
   } catch (error) { console.error(runtimeErrorMessage(error)); return 1; }
 }
 if (require.main === module) process.exitCode = main(process.argv.slice(2));
