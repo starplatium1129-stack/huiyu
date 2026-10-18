@@ -34,7 +34,7 @@ export const DESKTOP_START_PAGE_KEY = 'aics_desktop_start_page'
 export const DESKTOP_LAST_PAGE_KEY = 'aics_desktop_last_page'
 export const INTERFACE_SOUND_KEY = 'aics_interface_sound_v1'
 /** 历史备份键，仅保留旧设置，不再参与内容访问控制。 */
-export const MATURE_SETTING_KEY = 'aics_show_mature'
+const MATURE_SETTING_KEY = 'aics_show_mature'
 export const TUNNEL_OFF_KEY = 'aics_tunnel_off'
 export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
 /** Search selection and credential revision only; secrets stay in the credential store. */
@@ -113,7 +113,7 @@ export const BATCH_DRAW_PLAN_KEY = 'aics_pb_batch_plan_v1'
 /** Window-owned pending SD inputs; runtime drafts are authoritative on desktop. */
 export const SD_PENDING_QUEUE_KEY = 'aics_sd_pending_queue_v1'
 
-export const LIVE_LOCAL_KEYS = [
+const LIVE_LOCAL_KEYS = [
   DESKTOP_START_PAGE_KEY,
   DESKTOP_LAST_PAGE_KEY,
   THEME_KEY,
@@ -156,13 +156,13 @@ export const LIVE_LOCAL_KEYS = [
 ] as const
 
 /** 动态前缀活键：聊天草稿按角色独立保存。 */
-export const LIVE_LOCAL_PREFIXES = [
+const LIVE_LOCAL_PREFIXES = [
   CHAT_DRAFT_PREFIX,
   'aics-model-draft-',
 ] as const
 
 /** 死键：已无写入者、内容已迁移或废弃，备份导出时清理。 */
-export const DEAD_LOCAL_KEYS = [
+const DEAD_LOCAL_KEYS = [
   'aics_sd_settings_v1',
   'aics_projects',
   'aics_pending_scene',

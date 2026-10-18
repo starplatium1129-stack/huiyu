@@ -88,7 +88,7 @@ impl ControlService {
     }
 
     async fn prepare_native_chain(
-        &self,
+        self: &Arc<Self>,
         body: Request,
         runtime: RuntimeBundle,
         model: ModelBundle,

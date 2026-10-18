@@ -40,13 +40,6 @@
   --shadow-sm: 0 3px 12px rgba(55, 32, 65, .06);
   --shadow-md: 0 10px 28px rgba(55, 32, 65, .09);
   --shadow-lg: 0 18px 48px rgba(55, 32, 65, .13);
-  --rella-night: #eef3f5;
-  --rella-night-soft: #e6edf1;
-  --rella-night-glass: rgba(242, 246, 248, .88);
-  --rella-glow-pink: rgba(146, 54, 95, .08);
-  --rella-glow-violet: rgba(109, 59, 180, .07);
-  --rella-glow-cyan: rgba(0, 107, 102, .05);
-  --stage-rella: linear-gradient(145deg, #e7f0f4, #fcfaf7);
   --stage-violet: linear-gradient(145deg, #ebe0f4, #faf6fd);
   --stage-amber: linear-gradient(145deg, #f4e7d1, #fffaf1);
   --success: #126239;
@@ -96,8 +89,6 @@
 :root[data-theme="light"] .semantic-particle-field { --particle-accent: color-mix(in srgb, var(--archive-blue) 48%, var(--ink-base)); }
 
 :root[data-theme="light"] .desktop-titlebar {
-  --desktop-titlebar-bg-top: #fcf9fd;
-  --desktop-titlebar-bg-bottom: #f3ebe8;
   --desktop-titlebar-text: var(--text-secondary);
   --desktop-titlebar-name: var(--text-primary);
   --desktop-titlebar-page: var(--text-muted);

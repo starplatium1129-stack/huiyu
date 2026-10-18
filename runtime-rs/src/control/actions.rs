@@ -27,7 +27,7 @@ pub(super) async fn output<R: AsyncRead + Unpin>(
     data
 }
 impl ControlService {
-    pub(super) fn script(&self, index: usize, _start: bool) -> PathBuf {
+    pub(super) fn script(&self, index: usize) -> PathBuf {
         match index {
             0 => self.config.app_root.join("scripts/lib/managed-webui.ps1"),
             1 => self.config.app_root.join("scripts/lib/managed-comfyui.ps1"),
@@ -179,7 +179,7 @@ impl ControlService {
             self.run_comfy(start).await
         } else {
             self.run_script(
-                self.script(index, start),
+                self.script(index),
                 self.voice_args(start, &settings),
                 seconds,
             )

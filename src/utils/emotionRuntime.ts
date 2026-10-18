@@ -117,7 +117,6 @@ export interface EmotionRuntime {
   setAudioLevel(level: number, peak?: number): void
   update(deltaSeconds: number): void
   targets(): Record<string, number>
-  performanceTargets(): Record<string, number>
   performanceFrame(): {
     live2dParams: Record<string, number>
     nativeAnimation: NativeAnimationDirective | null
@@ -432,9 +431,6 @@ export function createEmotionRuntime(config: EmotionRuntimeConfig): EmotionRunti
         }
       }
       return params
-    },
-    performanceTargets() {
-      return { ...soullinkTargets }
     },
     performanceFrame() {
       return {

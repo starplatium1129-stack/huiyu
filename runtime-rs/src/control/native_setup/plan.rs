@@ -136,7 +136,7 @@ pub(super) fn runtime_support(
     reasons
 }
 impl ControlService {
-    pub(super) async fn native_setup_plan(&self) -> Result<Value> {
+    pub(super) async fn native_setup_plan(self: &Arc<Self>) -> Result<Value> {
         let (runtime, models) = bundles()?;
         let network = match reqwest::Client::builder()
             .https_only(true)
@@ -162,67 +162,70 @@ impl ControlService {
             }
         };
         let hardware = hardware::local_hardware().await;
-        let mut reasons = support(&hardware, &runtime);
-        let workspace = self.config.ai_workspace_root.clone();
-        let app = self.config.app_root.clone();
-        let space = tokio::task::spawn_blocking(move || safe_workspace(&workspace, &app))
-            .await
-            .map_err(|_| ApiError::new(503, "WORKSPACE_CHECK_FAILED", "工作区检查未完成"))?;
-        let free = match space {
-            Ok(bytes) => Some(bytes),
-            Err(e) => {
-                reasons.push(e.message);
-                None
-            }
-        };
-        let root = self.config.ai_workspace_root.join("inference");
-        let (discovered, receipt) =
-            crate::generation::native::Settings::discovered(&self.config.ai_workspace_root);
-        let configured = self.configured_inference()?;
-        let active = self.active_inference()?;
-        let workspace_matches = [configured.python.clone(), configured.models_root.clone()]
-            .iter()
-            .all(|path| path.starts_with(&root))
-            && self.saved.read().unwrap()["inferenceWorkspacePath"]
-                .as_str()
-                .is_none_or(|path| Path::new(path) == self.config.ai_workspace_root);
-        let runtime_ready = receipt.is_some();
-        let recoverable = recoverable_runtime(&root, &runtime);
-        let recovery_ready = recoverable > 0 && candidate_ready(&root, &runtime);
-        let required = if recovery_ready {
-            64 * 1024 * 1024
-        } else {
-            runtime
-                .required_free_bytes
-                .saturating_sub(retained(
-                    &root.join(".downloads").join(&runtime.runtime_id),
-                    &runtime.files,
-                ))
-                .saturating_sub(recoverable)
-        };
-        let model_views: Vec<_> = models.iter().map(|model| {
-            let model_root = root.join("models").join(&model.id);
-            json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
-                "licenseUrl":model.license_url,"sourceUrl":model.source_url,
-                "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
-                "installed":receipt_matches(&model_root, model),"path":model_root})
-        }).collect();
-        let model_ready = model_views.iter().any(|value| value["installed"] == true);
-        Ok(
-            json!({"ok":true,"planId":plan_id(&self.config.ai_workspace_root),"workspacePath":self.config.ai_workspace_root,
-            "paths":{"runtimeRoot":receipt.as_ref().and_then(|path|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
-                "lorasRoot":discovered.loras_root,"cacheRoot":root.join(".downloads"),"tempRoot":root.join(".staging")},
-            "hardware":hardware,"network":network,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
-            "runtime":{"id":runtime.runtime_id,"label":"CPython 3.11.9 · PyTorch 2.8.0 CUDA 12.8",
-                "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoverableBytes":recoverable,"recoveryReady":recovery_ready,"sources":runtime.sources,
-                "installed":runtime_ready,"python":discovered.python},"models":model_views,
-            "activeEngine":active.engine,"configuredEngine":configured.engine,"restartRequired":active != configured,
-            "workspaceMatches":workspace_matches,
-            "steps":{"runtime":if runtime_ready{"installed"}else{"not-downloaded"},
-                "model":if model_ready{"verified"}else{"not-downloaded-or-incomplete"},
-                "engine":if reasons.is_empty() && active == configured && active.engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
-            "validation":"组件和安装记录检查；启用前会重新核对完整 SHA-256 与依赖，真实生成仍需验收"}),
-        )
+        let service = self.clone();
+        // Keep discovery and recursive recovery scans off the async request worker.
+        // Tracking also keeps shutdown waiting if the requesting page disconnects.
+        self.tasks.spawn_blocking(move || {
+            let mut reasons = support(&hardware, &runtime);
+            let space = safe_workspace(&service.config.ai_workspace_root, &service.config.app_root);
+            let free = match space {
+                Ok(bytes) => Some(bytes),
+                Err(e) => {
+                    reasons.push(e.message);
+                    None
+                }
+            };
+            let root = service.config.ai_workspace_root.join("inference");
+            let (discovered, receipt) =
+                crate::generation::native::Settings::discovered(&service.config.ai_workspace_root);
+            let configured = service.configured_inference()?;
+            let active = service.active_inference()?;
+            let workspace_matches = [configured.python.clone(), configured.models_root.clone()]
+                .iter()
+                .all(|path| path.starts_with(&root))
+                && service.saved.read().unwrap()["inferenceWorkspacePath"]
+                    .as_str()
+                    .is_none_or(|path| Path::new(path) == service.config.ai_workspace_root);
+            let runtime_ready = receipt.is_some();
+            let recoverable = recoverable_runtime(&root, &runtime);
+            let recovery_ready = recoverable > 0 && candidate_ready(&root, &runtime);
+            let required = if recovery_ready {
+                64 * 1024 * 1024
+            } else {
+                runtime
+                    .required_free_bytes
+                    .saturating_sub(retained(
+                        &root.join(".downloads").join(&runtime.runtime_id),
+                        &runtime.files,
+                    ))
+                    .saturating_sub(recoverable)
+            };
+            let model_views: Vec<_> = models.iter().map(|model| {
+                let model_root = root.join("models").join(&model.id);
+                json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
+                    "licenseUrl":model.license_url,"sourceUrl":model.source_url,
+                    "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
+                    "installed":receipt_matches(&model_root, model),"path":model_root})
+            }).collect();
+            let model_ready = model_views.iter().any(|value| value["installed"] == true);
+            Ok(
+                json!({"ok":true,"planId":plan_id(&service.config.ai_workspace_root),"workspacePath":service.config.ai_workspace_root,
+                "paths":{"runtimeRoot":receipt.as_ref().and_then(|path|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
+                    "lorasRoot":discovered.loras_root,"cacheRoot":root.join(".downloads"),"tempRoot":root.join(".staging")},
+                "hardware":hardware,"network":network,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
+                "runtime":{"id":runtime.runtime_id,"label":"CPython 3.11.9 · PyTorch 2.8.0 CUDA 12.8",
+                    "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoverableBytes":recoverable,"recoveryReady":recovery_ready,"sources":runtime.sources,
+                    "installed":runtime_ready,"python":discovered.python},"models":model_views,
+                "activeEngine":active.engine,"configuredEngine":configured.engine,"restartRequired":active != configured,
+                "workspaceMatches":workspace_matches,
+                "steps":{"runtime":if runtime_ready{"installed"}else{"not-downloaded"},
+                    "model":if model_ready{"verified"}else{"not-downloaded-or-incomplete"},
+                    "engine":if reasons.is_empty() && active == configured && active.engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
+                "validation":"组件和安装记录检查；启用前会重新核对完整 SHA-256 与依赖，真实生成仍需验收"}),
+            )
+        })
+        .await
+        .map_err(|_| ApiError::new(503, "WORKSPACE_CHECK_FAILED", "工作区检查未完成"))?
     }
 }
 pub(super) fn recoverable_runtime(root: &Path, runtime: &RuntimeBundle) -> u64 {

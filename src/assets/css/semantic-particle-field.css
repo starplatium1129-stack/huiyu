@@ -1,7 +1,6 @@
 @reference "./tailwind.css";
 .semantic-particle-field {
   --particle-primary: var(--text-primary);
-  --particle-secondary: var(--text-muted);
   --particle-accent: var(--archive-blue);
   @apply tw:relative tw:min-w-0 tw:min-h-[260px] tw:overflow-hidden tw:isolate tw:m-0;
   background:

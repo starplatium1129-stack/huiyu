@@ -13,19 +13,7 @@
  * 值与写法对齐源工程 Live2DViewerEX 的 EyeBlink 控制器语义。
  */
 
-export interface BlinkSchedulerOptions {
-  minIntervalMs?: number
-  maxIntervalMs?: number
-  closingSeconds?: number
-  closedSeconds?: number
-  openingSeconds?: number
-  /** 注入随机源（测试用），默认 Math.random */
-  random?: () => number
-}
-
 export interface BlinkScheduler {
-  /** 当前眼睁开值（1=全睁，0=全闭），只读 */
-  value(): number
   /** 推进调度器并返回新值；deltaSeconds 为帧时长 */
   update(deltaSeconds: number): number
   /** 回到全睁状态并重新计时（角色切换/销毁时调用） */
@@ -34,20 +22,19 @@ export interface BlinkScheduler {
 
 type BlinkPhase = 'open' | 'closing' | 'closed' | 'opening'
 
-export function createBlinkScheduler(options: BlinkSchedulerOptions = {}): BlinkScheduler {
-  const minIntervalMs = Math.max(500, options.minIntervalMs ?? 2500)
-  const maxIntervalMs = Math.max(minIntervalMs, options.maxIntervalMs ?? 5000)
-  const closingSeconds = Math.max(0.02, options.closingSeconds ?? 0.09)
-  const closedSeconds = Math.max(0.02, options.closedSeconds ?? 0.06)
-  const openingSeconds = Math.max(0.02, options.openingSeconds ?? 0.16)
-  const random = options.random ?? Math.random
+export function createBlinkScheduler(): BlinkScheduler {
+  const minIntervalMs = 2500
+  const maxIntervalMs = 5000
+  const closingSeconds = 0.09
+  const closedSeconds = 0.06
+  const openingSeconds = 0.16
 
   let phase: BlinkPhase = 'open'
   let phaseElapsed = 0
   let timerMs = nextDelay()
 
   function nextDelay(): number {
-    return minIntervalMs + random() * (maxIntervalMs - minIntervalMs)
+    return minIntervalMs + Math.random() * (maxIntervalMs - minIntervalMs)
   }
 
   function valueFor(): number {
@@ -99,5 +86,5 @@ export function createBlinkScheduler(options: BlinkSchedulerOptions = {}): Blink
     timerMs = nextDelay()
   }
 
-  return { value: valueFor, update, reset }
+  return { update, reset }
 }

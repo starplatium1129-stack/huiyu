@@ -12,7 +12,6 @@
 .pb .director-inspector .result-frame { @apply tw:m-0; }
 .pb .director-inspector #stepResult { @apply tw:min-h-0; }
 .pb .material-content { scroll-padding-block:var(--s-2); }
-.pb[data-director-mode="basic"] .inspector-section[data-panel="style"] { @apply tw:hidden; }
 .pb[data-director-mode="basic"] .inspector-scroll { @apply tw:flex tw:flex-col tw:gap-s-4; }
 .pb[data-director-mode="basic"] .inspector-section { @apply tw:shrink-0; }
 .pb[data-director-mode] .director-inspector { border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:overflow-hidden; }

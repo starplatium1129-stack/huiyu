@@ -262,38 +262,6 @@ html.companion-mode body {
   background: color-mix(in srgb, var(--character-accent) 14%, var(--bg-surface));
 }
 
-.companion-page .companion-setup {
-  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3;
-  padding: 8px 10px;
-  border: 1px solid color-mix(in srgb, var(--warning) 34%, var(--border-soft));
-  @apply tw:rounded-md;
-  background: color-mix(in srgb, var(--warning) 8%, transparent);
-}
-
-.companion-page .companion-setup > div {
-  @apply tw:min-w-0;
-}
-
-.companion-page .companion-setup strong,
-.companion-page .companion-setup span {
-  @apply tw:block;
-}
-
-.companion-page .companion-setup strong {
-  @apply tw:text-label;
-}
-
-.companion-page .companion-setup span {
-  @apply tw:overflow-hidden tw:text-muted tw:text-label-xs tw:text-ellipsis tw:whitespace-nowrap;
-}
-
-.companion-page .companion-setup .btn {
-  @apply tw:min-h-[30px];
-  padding: 4px 9px;
-  @apply tw:whitespace-nowrap;
-}
-
-
 /* 输入区：布局与基础材质在此定义，后续主题层只处理外观。 */
 .companion-page .companion-composer {
   @apply tw:relative tw:grid;
@@ -467,7 +435,6 @@ html.companion-mode body {
     @apply tw:max-h-[116px];
   }
 
-  .companion-page .companion-setup span,
   .companion-page .companion-voice-status,
   .companion-page .companion-speech-state {
     @apply tw:hidden;
@@ -507,7 +474,6 @@ html.companion-mode body {
 
   .companion-page .companion-bubbles { @apply tw:max-h-[84px]; }
 
-  .companion-page .companion-setup span,
   .companion-page .companion-voice-status,
   .companion-page .companion-speech-state { @apply tw:hidden; }
 }
@@ -549,9 +515,7 @@ html.companion-desktop .companion-picker-content * {
 html.companion-mode {
   --companion-ink: var(--on-art-primary);
   --companion-ink-soft: var(--on-art-secondary);
-  --companion-scrim: var(--art-scrim-soft);
   --companion-edge: var(--on-art-line);
-  --companion-fill: var(--on-art-fill);
   --companion-wash: var(--on-art-wash);
   --companion-highlight: var(--glass-specular);
   --companion-text-shadow: 0 1px 12px color-mix(in srgb, var(--art-scrim) 76%, transparent);
@@ -588,34 +552,6 @@ html.companion-mode:not(.companion-desktop) body {
   background: radial-gradient(ellipse at center, transparent 48%, color-mix(in srgb, var(--art-scrim) 54%, transparent) 100%);
   mix-blend-mode: multiply;
 }
-
-.companion-ambience {
-  @apply tw:absolute;
-  z-index: var(--z-below);
-  inset: 0;
-  @apply tw:overflow-hidden tw:pointer-events-none;
-}
-
-.companion-ambience::before {
-  @apply tw:absolute tw:right-[-18%] tw:bottom-[5%] tw:left-[-18%] tw:h-[34%];
-  border-radius: 50%;
-  background: radial-gradient(ellipse, color-mix(in srgb, var(--character-accent) 25%, transparent), transparent 68%);
-  filter: blur(28px);
-  opacity: .64;
-  content: "";
-}
-
-.companion-ambience i {
-  @apply tw:absolute tw:block tw:w-[2px] tw:h-[2px];
-  border-radius: 50%;
-  background: var(--companion-ink-soft);
-  box-shadow: 0 0 12px var(--companion-highlight);
-  opacity: .28;
-}
-
-.companion-ambience i:nth-child(1) { @apply tw:top-[22%] tw:left-[18%]; }
-.companion-ambience i:nth-child(2) { @apply tw:top-[36%] tw:right-[20%] tw:w-[3px] tw:h-[3px]; opacity: .38; }
-.companion-ambience i:nth-child(3) { @apply tw:top-[17%] tw:right-[38%]; }
 
 .companion-page .companion-toolbar {
   @apply tw:absolute;
@@ -858,33 +794,6 @@ html.companion-mode:not(.companion-desktop) body {
   background: color-mix(in srgb, var(--character-accent) 28%, var(--art-scrim));
 }
 
-.companion-page .companion-setup {
-  justify-self: center;
-  width: min(100%, 560px);
-  @apply tw:min-h-[40px];
-  padding: 6px 9px 6px 12px;
-  border-color: color-mix(in srgb, var(--warning) 46%, var(--companion-edge));
-  @apply tw:rounded-md;
-  background: color-mix(in srgb, var(--art-scrim) 68%, transparent);
-  color: var(--companion-ink);
-  box-shadow: var(--shadow-md);
-  backdrop-filter: blur(14px);
-}
-
-.companion-page .companion-setup strong {
-  color: var(--companion-ink);
-}
-
-.companion-page .companion-setup span {
-  color: var(--companion-ink-soft);
-}
-
-.companion-page .companion-setup .btn {
-  border-color: color-mix(in srgb, var(--character-accent) 68%, var(--companion-ink));
-  background: color-mix(in srgb, var(--character-accent) 56%, var(--art-scrim));
-  color: var(--companion-ink);
-}
-
 @media (max-width: 600px) {
   .companion-page .companion-toolbar {
     @apply tw:top-[8px] tw:right-[8px] tw:left-[8px] tw:pl-[11px] tw:rounded-xl;
@@ -924,34 +833,14 @@ html.companion-mode:not(.companion-desktop) body {
     @apply tw:max-h-[96px];
   }
 
-  .companion-page .companion-setup span,
   .companion-page .companion-voice-status {
     @apply tw:hidden;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .companion-ambience i {
-    animation: none !important;
-  }
-
   :root:not([data-motion='full']) .companion-page .portrait-stage::before, :root:not([data-motion='full']) .companion-page .live2d-host, :root:not([data-motion='full']) .companion-page .portrait-main, :root:not([data-motion='full']) .companion-page .companion-presence-cue {
     transition: opacity var(--motion-hover) ease, border-color var(--motion-hover) ease;
-  }
-}
-
-.companion-page[data-power-mode="efficiency"] .companion-ambience i {
-  animation: none !important;
-  opacity: .2;
-}
-
-@media (min-width: 600px) and (prefers-reduced-motion: no-preference) {
-  .companion-desktop .companion-ambience i:nth-child(1) { animation: companionDust 7s ease-in-out infinite alternate; }
-  .companion-desktop .companion-ambience i:nth-child(2) { animation: companionDust 9s ease-in-out 1.4s infinite alternate; }
-  .companion-desktop .companion-ambience i:nth-child(3) { animation: companionDust 8s ease-in-out 2.2s infinite alternate; }
-  @keyframes companionDust {
-    from { opacity: .18; transform: translate3d(0, 4px, 0) scale(.9); }
-    to { opacity: .52; transform: translate3d(8px, -12px, 0) scale(1.2); }
   }
 }
 
@@ -1067,37 +956,6 @@ html.companion-mode:not(.companion-desktop) body {
 
 /* Companion local image import button */
 
-/* Companion AI workspace indicator + settings popover */
-
-.companion-page .companion-workspace-settings {
-  @apply tw:grid tw:gap-[8px] tw:p-[10px];
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-surface);
-}
-
-.companion-page .companion-workspace-settings strong {
-  @apply tw:block tw:text-primary tw:text-body-sm;
-}
-
-.companion-page .companion-workspace-settings span {
-  @apply tw:block tw:text-muted tw:text-label-xs tw:leading-body;
-}
-
-.companion-page .companion-workspace-settings input {
-  @apply tw:w-full;
-  padding: 6px 8px;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-sm;
-  background: var(--bg-elevated);
-  @apply tw:text-primary;
-  font: var(--fs-label-sm) var(--font-mono);
-}
-
-.companion-page .companion-workspace-actions {
-  @apply tw:flex tw:gap-[8px] tw:justify-end;
-}
-
 /* Companion clipboard capture card */
 .companion-page .companion-clipboard-card {
   @apply tw:grid;
@@ -1211,7 +1069,6 @@ html.companion-immersive .companion-toolbar,
 html.companion-immersive .companion-workspace-settings,
 html.companion-immersive .companion-clipboard-card,
 html.companion-immersive .companion-reminders,
-html.companion-immersive .companion-setup,
 html.companion-immersive .companion-setup-inline,
 html.companion-immersive .companion-tool-indicator,
 html.companion-immersive .companion-errors {
@@ -1230,8 +1087,7 @@ html.companion-immersive body {
 }
 
 html.companion-immersive .companion-page::before,
-html.companion-immersive .companion-page::after,
-html.companion-immersive .companion-ambience {
+html.companion-immersive .companion-page::after {
   @apply tw:hidden;
 }
 
@@ -1512,8 +1368,7 @@ html.companion-desktop .companion-page .avatar-status {
    只在角色身后放一轮冷白柔光把角色"托"出来——不加色相（无黄色）、
    不形成贴片、角色轮廓清晰。 */
 html.companion-desktop .companion-page::before,
-html.companion-desktop .companion-page::after,
-html.companion-desktop .companion-ambience {
+html.companion-desktop .companion-page::after {
   @apply tw:hidden;
 }
 

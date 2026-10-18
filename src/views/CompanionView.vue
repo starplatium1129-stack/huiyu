@@ -12,9 +12,6 @@
     @click.capture="petGestures.click"
     @dblclick="petGestures.doubleClick"
   >
-    <div class="companion-ambience" aria-hidden="true">
-      <i></i><i></i><i></i>
-    </div>
     <header class="companion-toolbar" :class="{ 'companion-orbit-preferences-host': desktopBridge }" :data-hidden="immersive ? 'true' : undefined">
       <div class="companion-identity" aria-live="polite">
         <span>陪伴模式</span>

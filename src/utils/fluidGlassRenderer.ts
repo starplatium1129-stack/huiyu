@@ -1,6 +1,6 @@
 import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
 
-export const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .companion-toolbar, .toolbar-shell, .pop-toolbar, [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *))'
+const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .companion-toolbar, .toolbar-shell, .pop-toolbar, [data-fluid-glass]:where(:not(.gallery-toolbar *, .scene-toolbar *))'
 
 /** Native backdrop filters paint the material. JS moves one compositor light. */
 export function mountFluidGlass(): () => void {

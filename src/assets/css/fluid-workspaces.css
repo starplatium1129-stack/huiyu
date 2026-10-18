@@ -3,7 +3,6 @@
    above opaque reading surfaces. html makes these rules independent of lazy CSS
    load order without overriding page-specific state selectors. */
 :root {
-  --workspace-chrome: color-mix(in srgb, var(--bg-surface) 80%, transparent);
   --workspace-edge: color-mix(in srgb, var(--border-soft) 76%, var(--glass-highlight));
   --workspace-inset: inset 0 1px 0 var(--glass-highlight);
   --workspace-lift: var(--workspace-inset), 0 10px 28px -10px color-mix(in srgb, var(--ink-base) 28%, transparent);
@@ -36,13 +35,6 @@ html :is(.gallery-toolbar, .scene-toolbar, .pop-toolbar) .studio-search[data-siz
   min-height:calc(var(--control-height) - 2px);
 }
 html .scene-discovery .scene-toolbar::before { @apply tw:hidden; }
-html .gallery-page .gallery-search,
-html .showcase-page .scene-search,
-html .scene-discovery .scene-search {
-  @apply tw:min-h-[40px] tw:rounded-md tw:border-soft;
-  background: var(--bg-surface);
-  @apply tw:text-primary;
-}
 /* 2026-09-22 去原生化：作品集/样张类型筛选已换成 StudioSelect，
    原生的下拉外观（内边距、appearance、双线性渐变伪箭头）整块删除；
    边框、底色与悬停强调色由组件触发器统一提供。 */
