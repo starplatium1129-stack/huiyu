@@ -15,6 +15,7 @@ import { createWorkspaceBackup, parseWorkspaceBackupReceipt, createWorkspaceRest
 import { getDesktopWindowRole, onDesktopRuntime } from '../platform/desktop/runtime'
 import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
 import { artworkRepository } from '../storage/artworkRepository'
+import { imageMediaSession } from '../platform/imageMediaSession'
 import type { BackupFile, BackupSummary } from '@/utils/backupCore'
 import {
   BACKUP_AT_KEY,
@@ -167,22 +168,31 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     imageExportController = controller
     imageExportProgress.value = { completed: 0, total: 0 }
     const desktop = desktopActive.value
+    const repository = artworkRepository, session = imageMediaSession()
+    const checkOwner = () => {
+      if (repository !== artworkRepository || session !== imageMediaSession() || desktop !== workspaceBackupActive())
+        controller.abort(new Error('作品库连接已变化，已停止后续导出'))
+    }
+    const stopRuntime = onDesktopRuntime(checkOwner)
+    const check = () => { checkOwner(); controller.signal.throwIfAborted() }
     let saved = 0
     let failed = 0
     let completed = 0
     onFlash('正在整理作品图片…')
     try {
+      check()
       const records = desktop
-        ? (await artworkRepository.readHistory()).filter(item => item.image_id).map(item => ({ id: item.image_id!, blob: null,
+        ? (await repository.readHistory()).filter(item => item.image_id).map(item => ({ id: item.image_id!, blob: null,
           name: String(item.title || ''), created_at: Number(item.timestamp) || Date.now() }))
         : await readWebBackupImages()
-      if (!controller.signal.aborted) imageExportProgress.value = { completed: 0, total: records.length }
+      check()
+      imageExportProgress.value = { completed: 0, total: records.length }
       for (const record of records) {
-        if (controller.signal.aborted) break
+        check()
         try {
-          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktop ? artworkRepository.getImage(record.id, controller.signal) : readWebBackupImage(record.id)) : null)
+          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktop ? repository.getImage(record.id, controller.signal) : readWebBackupImage(record.id)) : null)
           // Storage reads may not be abortable. Never download their late result after cancellation.
-          if (controller.signal.aborted) break
+          check()
           if (!blob) failed++
           else {
             const url = URL.createObjectURL(blob)
@@ -207,7 +217,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
               }
             }
           }
-        } catch { failed++ }
+        } catch { if (!controller.signal.aborted) failed++ }
         if (controller.signal.aborted) break
         imageExportProgress.value = { completed: ++completed, total: records.length }
         // Inline blobs and cached reads must yield to the Cancel button between downloads.
@@ -237,6 +247,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
         }
       }
     } finally {
+      stopRuntime()
       imageExportController = null
       imageExportProgress.value = null
       busy.value = false
