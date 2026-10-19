@@ -7,7 +7,8 @@
     <div v-content-motion="selected" class="runtime-task-items tw:grid tw:gap-s-3 tw:min-h-0">
     <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === 'refresh'" @click="refresh">{{ busy === 'refresh' ? '查询中…' : '查询接收状态' }}</button><button class="btn btn-ghost" :disabled="!canCancelKey(pending.key)" :aria-busy="cancellingKey === pending.key" @click="cancelKey(pending.key)">{{ cancellingKey === pending.key ? '正在取消…' : '取消这次提交' }}</button></article>
     <article v-for="task in visible" :key="task.taskId" :id="cardId(task.taskId)" tabindex="-1" class="runtime-task tw:p-s-4 tw:rounded-lg" :data-state="task.status" :data-attention="task.recoveryState !== 'normal' || undefined">
-      <header><strong>{{ titles[task.kind] }}{{ locatedId === task.taskId ? ' · 已定位' : '' }}</strong><span>{{ task.recoveryState !== 'normal' ? '待核对' : labels[task.status] }}</span></header>
+      <header><strong>{{ titles[task.kind] }}{{ locatedId === task.taskId ? ' · 已定位' : '' }}</strong><span>{{ operationLabel(task) || (task.recoveryState !== 'normal' ? '待核对' : labels[task.status]) }}</span></header>
+      <p v-if="operationLabel(task)" role="status">{{ operationLabel(task) }}，完成后将更新这条任务。</p>
       <p>{{ taskMessage(task) }}</p><p v-if="task.kind === 'manga' || task.kind === 'lineart'">待主力机验证</p><time :datetime="new Date(task.createdAt).toISOString()">{{ taskDateFormatter.format(task.createdAt) }}</time>
       <div class="runtime-actions tw:mt-s-3">
         <RouterLink class="btn btn-ghost" :to="routeFor(task)" @click="emit('navigate')">{{ task.kind === 'manga' || task.kind === 'lineart' ? '前往我的作品' : '返回工作台' }}</RouterLink>
@@ -16,11 +17,11 @@
         <button v-if="task.deliveryState !== 'discarded' && task.errorCode !== 'WEBUI_STOP_CONFIRMED' && (task.recoveryState !== 'normal' || task.resultState === 'unavailable')" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'reconcile')">重新核对</button>
         <button v-if="task.kind === 'generation' && task.provider === 'webui' && task.recoveryState === 'unknown' && task.submissionIntentAt && !task.upstreamSettled" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'resolve-webui')">解除 WebUI 占用</button>
         <button v-if="task.status === 'queued' && !task.submissionIntentAt" class="btn btn-ghost" :disabled="!!busy || !!task.cancelRequestedAt" @click="act(task, 'resume')">{{ task.kind === 'manga' || task.kind === 'lineart' ? '继续处理' : '继续生成' }}</button>
-        <button v-if="task.retryTaskId" class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === `locate:${task.retryTaskId}`" @click="openRelated(task.retryTaskId)">{{ busy === `locate:${task.retryTaskId}` ? '正在定位…' : '查看重试任务' }}</button>
+        <button v-if="task.retryTaskId" class="btn btn-ghost" :disabled="!!locating" :aria-busy="locating === task.retryTaskId" @click="openRelated(task.retryTaskId)">{{ locating === task.retryTaskId ? '正在定位…' : '查看重试任务' }}</button>
         <button v-else-if="canRetry(task)" class="btn btn-primary" :disabled="!!busy || pendingRetry(task)" :aria-busy="busy === `retry:${task.taskId}`" @click="retry(task)">{{ busy === `retry:${task.taskId}` ? '正在准备重试…' : pendingRetry(task) ? '重试接收待确认' : '重试此任务' }}</button>
-        <button v-if="task.retryOfTaskId" class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === `locate:${task.retryOfTaskId}`" @click="openRelated(task.retryOfTaskId)">{{ busy === `locate:${task.retryOfTaskId}` ? '正在定位…' : '查看原任务' }}</button>
+        <button v-if="task.retryOfTaskId" class="btn btn-ghost" :disabled="!!locating" :aria-busy="locating === task.retryOfTaskId" @click="openRelated(task.retryOfTaskId)">{{ locating === task.retryOfTaskId ? '正在定位…' : '查看原任务' }}</button>
         <button v-if="task.errorCode === 'BATCH_AWAITING_EXPLICIT_CONTINUE'" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'continue')">继续剩余分镜</button>
-        <button v-if="task.canConcat" class="btn btn-ghost" :disabled="!!busy" @click="act(task, 'concat')">拼接成片</button>
+        <button v-if="task.canConcat" class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === `concat:${task.taskId}`" @click="act(task, 'concat')">{{ busy === `concat:${task.taskId}` ? '拼接中…' : '拼接成片' }}</button>
         <button v-if="task.upstreamSettled && task.resultState === 'available'" class="btn btn-ghost" :disabled="!!busy" @click="discarding = task.taskId">移出收件箱</button>
       </div>
       <p v-if="canRetry(task) && !task.retryTaskId">重试会沿用已保存的原图和参数，从头处理；原任务与已有结果保留。</p>
@@ -57,7 +58,12 @@ const cancellingKey = ref('')
 const canCancelKey = (key: string) => !cancellingKey.value && (!busy.value || key.startsWith('manga-retry:') && busy.value === `retry:${key.slice('manga-retry:'.length)}`)
 const { selected, visible, locatedId, pageCount, loading: historyLoading, error: historyError, pageNumber, hasPrevious, hasNext,
   refresh: refreshHistory, next, previous, reveal } = useRuntimeTaskBrowser(() => props.active)
-const { canRetry, pendingRetry, retry, openRelated } = useMangaTaskRetry({ busy, feedback, active: () => props.active, reveal, cardId })
+const { canRetry, pendingRetry, retry, openRelated, locating } = useMangaTaskRetry({ busy, feedback, active: () => props.active, reveal, cardId })
+const operationLabels = { cancel: '正在请求取消', reconcile: '正在核对结果', resume: '正在恢复任务', continue: '正在继续剩余分镜', concat: '拼接中', discard: '正在移出收件箱', 'resolve-webui': '正在解除 WebUI 占用', retry: '正在准备重试' }
+function operationLabel(task: TaskSummary) {
+  for (const [action, label] of Object.entries(operationLabels)) if (busy.value === `${action}:${task.taskId}`) return label
+  return ''
+}
 let openedRequest = 0
 watch([() => props.active, runtimeTaskOpenRequest], ([active, request]) => {
   if (!active || request === openedRequest) return
@@ -96,7 +102,7 @@ async function act(task: TaskSummary, action: 'cancel' | 'reconcile' | 'resume' 
   feedback.value = ''
   if (action === 'resolve-webui' && !await confirmAction({ title: '确认 WebUI 已停止', message: '请先在 WebUI 中停止该任务，或完成 WebUI 服务重启。确认后将解除这条未知任务的占用，保留原任务和已保存结果；未取回的结果仍未确认。应用不会代你停止 WebUI。', confirmLabel: '我已停止或重启 WebUI', cancelLabel: '暂不解除' })) return
   if (busy.value) return
-  busy.value = task.taskId
+  busy.value = `${action}:${task.taskId}`
   try {
     if (action === 'resolve-webui') {
       await confirmWebuiTaskStopped(task.taskId, task.revision)

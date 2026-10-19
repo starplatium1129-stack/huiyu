@@ -50,11 +50,11 @@
         <ArchiveStatePanel v-if="recentWorksLoading || recentWorksError" class="recent-empty-state" compact :kind="recentWorksLoading ? 'loading' : 'error'" :title="recentWorksLoading ? '正在更新最近创作…' : '最近创作暂未更新'" :message="recentWorksError">
           <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新读取</button>
         </ArchiveStatePanel>
-        <RouterLink
+        <button
           v-for="h in recentWorks"
           :key="h.id"
           class="recent-card"
-          :to="`/prompt-builder?regen=${encodeURIComponent(h.id)}`"
+          type="button" :aria-label="'查看完整作品：' + (h.sceneTitle || h.scene || '未命名')" @click="openRecentPreview(h, $event)"
         >
           <div class="recent-cover" :data-image-id="h.image_id">
             <RuntimeImage :src="coverUrl(h)" v-slot="{ image, loaded, failed }">
@@ -66,8 +66,10 @@
             <div class="recent-title">{{ h.sceneTitle || h.scene || '未命名' }}</div>
             <div class="recent-meta">{{ charName(h.character) }} · {{ fmtDate(h.timestamp) }}</div>
           </div>
-        </RouterLink>
+        </button>
       </div>
+      <SavedArtworkPreview v-if="recentPreview" :item="recentPreview" :source="recentPreviewSource" :thumbnail="coverUrl(recentPreview)" :request="recentPreviewRequest"
+        @close="recentPreview = null" @resume="resumeRecent" />
     </section>
     <!-- 最近用过的场景 -->
     <section class="container home-section" v-if="recentScenes.length" data-reveal>
@@ -178,7 +180,20 @@ import StudioIllustratedCard from '@/components/ui/StudioIllustratedCard.vue'
 
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { ref, reactive, computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, watch } from 'vue'
+import { ref, reactive, computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, onDeactivated, shallowRef, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import type { ArtworkRecord } from '@/types/artwork'
+const SavedArtworkPreview = defineAsyncComponent(() => import('@/components/gallery/SavedArtworkPreview.vue'))
+const recentPreview = shallowRef<ArtworkRecord | null>(null), recentPreviewSource = shallowRef<HTMLImageElement | null>(null)
+const recentPreviewRequest = ref(0)
+const router = useRouter()
+function openRecentPreview(item: ArtworkRecord, event: MouseEvent) {
+  recentPreviewSource.value = (event.currentTarget as HTMLElement).querySelector('img')
+  recentPreview.value = item
+  recentPreviewRequest.value++
+}
+function resumeRecent(item: ArtworkRecord) { void router.push({ path: '/prompt-builder', query: { regen: item.id } }) }
+onDeactivated(() => { recentPreview.value = null })
 const SceneCard = defineAsyncComponent(() => import('@/components/SceneCard.vue'))
 import { franchiseLabel } from '@/utils/franchiseLabel'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'

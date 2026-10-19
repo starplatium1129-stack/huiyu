@@ -9,6 +9,8 @@
 .history-item { display:flex; flex-direction:column; min-width:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); transition:transform var(--motion-hover) var(--ease-out); }
 .history-item[data-selected='true'] { border-color:var(--accent); box-shadow:var(--selection-shadow); }
 .history-thumb { position:relative; aspect-ratio:16/10; overflow:hidden; background:var(--bg-base); }
+.history-preview { display:block; width:100%; height:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
+.history-preview:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
 .history-thumb img { display:block; width:100%; height:100%; object-fit:cover; object-position:center 20%; transition:transform var(--motion-surface) var(--ease-out); }
 .history-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); width:100%; height:100%; color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .history-placeholder > .archive-icon { width:24px; height:24px; }

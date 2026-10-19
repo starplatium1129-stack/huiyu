@@ -15,6 +15,12 @@ use std::{fs, io::Write, path::Path, sync::OnceLock};
 static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 
 pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
+    let requested = command.get("width").map(|value| value.as_u64()
+        .filter(|width| (1..=8192).contains(width))
+        .ok_or_else(|| ApiError::new(400, "INVALID_WIDTH", "Preview width must be 1–8192")))
+        .transpose()?.unwrap_or(560);
+    let width = [560, 1120, 1680, 2240, 3360, 4480, 8192].into_iter()
+        .find(|width| u64::from(*width) >= requested).unwrap_or(8192);
     let (reader, cancelled) = storage.thumbnails.begin()?;
     let _cancel = cancelled.clone().drop_guard();
     let source = match tokio::select! { biased;
@@ -36,7 +42,8 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     } else {
         "thumbnails-rust-v1"
     };
-    let relative = format!("cache/{version}/{}.jpg", source.sha256);
+    let suffix = if width == 560 { String::new() } else { format!("-{width}") };
+    let relative = format!("cache/{version}/{}{suffix}.jpg", source.sha256);
     let owner = storage.sender.clone();
     let (cache_root, cache_relative, read_cancel) =
         (root.clone(), relative.clone(), cancelled.clone());
@@ -96,10 +103,10 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
             return Ok(Value::Null);
         }
         let encoded = if let Some(library) = native {
-            crate::native_images::thumbnail(&source.path, &library, &cancelled)
+            crate::native_images::thumbnail(&source.path, &library, width, &cancelled)
                 .map_err(|error| ApiError::new(422, "THUMBNAIL_FAILED", error))?
         } else {
-            encode(&source.path)?.map(Bytes::from)
+            encode(&source.path, width)?.map(Bytes::from)
         };
         let Some(bytes) = encoded else {
             return Ok(Value::Null);
@@ -146,7 +153,7 @@ fn worker_failed() -> ApiError {
     ApiError::new(503, "THUMBNAIL_FAILED", "Thumbnail worker failed")
 }
 
-fn encode(path: &Path) -> Result<Option<Vec<u8>>> {
+fn encode(path: &Path, max_width: u32) -> Result<Option<Vec<u8>>> {
     let reader = ImageReader::open(path)?.with_guessed_format()?;
     let mut decoder = match reader.into_decoder() {
         Ok(decoder) => decoder,
@@ -170,7 +177,7 @@ fn encode(path: &Path) -> Result<Option<Vec<u8>>> {
     let orientation = decoder.orientation().map_err(decode_error)?;
     let mut decoded = DynamicImage::from_decoder(decoder).map_err(decode_error)?;
     decoded.apply_orientation(orientation);
-    let width = decoded.width().min(560);
+    let width = decoded.width().min(max_width);
     let height = ((f64::from(decoded.height()) * f64::from(width) / f64::from(decoded.width()))
         .round() as u32)
         .max(1);

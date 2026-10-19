@@ -8,7 +8,8 @@
   :style="{ '--art-ratio': String(ratio) }"
 >
   <StudioCheckbox v-if="selectionMode" ref="artworkCheckbox" class="artwork-check"
-    :checked="selected" :label="`选择作品：${title}`" @update:checked="emit('select')" />
+    :checked="selected" :label="`选择作品：${title}`" @click.capture="selectShift = $event.shiftKey"
+    @keydown.capture="selectShift = $event.shiftKey" @update:checked="emit('select', selectShift)" />
   <!--
     快捷工具条：选择模式下让位给右上角的勾选标记。此时点卡片是勾选而非
     进大图，把收藏/沿用配方/删除留在原位会与勾选标记叠在一起，且容易误触。
@@ -113,6 +114,7 @@ const props = defineProps<{
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
 const artworkButton = ref<HTMLElement | null>(null)
+let selectShift = false
 const artworkCheckbox = ref<InstanceType<typeof StudioCheckbox> | null>(null)
 const thumbImage = ref<HTMLImageElement | null>(null)
 const hdImage = ref<HTMLImageElement | null>(null)
@@ -167,7 +169,7 @@ function retryPreview() {
   void nextTick(() => { if (alive) (props.selectionMode ? artworkCheckbox.value : artworkButton.value)?.focus({ preventScroll: true }) })
 }
 const emit = defineEmits<{
-  select: []; open: [event: MouseEvent]; favorite: []; requestDelete: []; cancelDelete: []; delete: [];
+  select: [extend: boolean]; open: [event: MouseEvent]; favorite: []; requestDelete: []; cancelDelete: []; delete: [];
   measure: [event: Event]; load: [event: Event];
 }>()
 </script>

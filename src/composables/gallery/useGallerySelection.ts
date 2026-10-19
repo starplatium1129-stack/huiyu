@@ -5,18 +5,24 @@ import type { ArtworkRecord } from '@/types/artwork';
 export function useGallerySelection(visible: ComputedRef<ArtworkRecord[]>) {
   const selectMode = ref(false);
   const selectedIds = ref(new Set<string | number>());
+  let anchor: string | number | null = null;
 
   function toggleSelectMode() {
     selectMode.value = !selectMode.value;
-    if (!selectMode.value)
-      selectedIds.value = new Set();
+    if (!selectMode.value) clearSelection();
   }
 
-  function toggleSelect(id: string | number) {
-    if (selectedIds.value.has(id))
-      selectedIds.value.delete(id);
-    else
-      selectedIds.value.add(id);
+  function toggleSelect(id: string | number, extend = false) {
+    const checked = !selectedIds.value.has(id);
+    const start = visible.value.findIndex(item => item.id === anchor);
+    const end = visible.value.findIndex(item => item.id === id);
+    const range = extend && start >= 0 && end >= 0
+      ? visible.value.slice(Math.min(start, end), Math.max(start, end) + 1).map(item => item.id) : [id];
+    for (const key of range) {
+      if (checked) selectedIds.value.add(key);
+      else selectedIds.value.delete(key);
+    }
+    if (!extend || start < 0) anchor = id;
   }
 
   const allVisibleSelected = computed(() =>
@@ -24,6 +30,7 @@ export function useGallerySelection(visible: ComputedRef<ArtworkRecord[]>) {
   );
 
   function selectAllVisible() {
+    anchor = null;
     if (allVisibleSelected.value) {
       selectedIds.value = new Set();
       return;
@@ -32,6 +39,7 @@ export function useGallerySelection(visible: ComputedRef<ArtworkRecord[]>) {
   }
 
   function clearSelection() {
+    anchor = null;
     selectedIds.value = new Set();
   }
 

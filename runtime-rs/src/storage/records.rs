@@ -3,6 +3,9 @@ use canonical::{entity_key, stringify};
 use rusqlite::{OptionalExtension, Row, params};
 use std::collections::{BTreeSet, HashSet};
 pub(super) const RETENTION: i64 = 30 * 24 * 60 * 60 * 1000;
+// Search/filter fields stay in the summary; large embedded media and recipes
+// are fetched by identity only when the viewer needs the complete record.
+const GALLERY_BODY: &str = "json_set(json_remove(body,'$.image_data','$.negative','$.negativePrompt','$.negative_prompt','$.generationSnapshot','$.snapshot'),'$._gallerySummary',json('true'))";
 
 pub(super) fn json_column(row: &Row<'_>, column: usize) -> rusqlite::Result<Value> {
     serde_json::from_str(text_column(row, column)?).map_err(|e| {
@@ -71,6 +74,7 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 Some(Value::String(value)) if value == "revision" => {
                     "json_object('id',body -> '$.id')"
                 }
+                Some(Value::String(value)) if value == "gallery" => GALLERY_BODY,
                 _ => return Err(invalid("Unknown artwork projection")),
             };
             let sql = format!(
@@ -109,6 +113,7 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
                 Some(Value::String(value)) if value == "preference" => {
                     "json_object('id',json_extract(body,'$.id'),'scene',json_extract(body,'$.scene'),'character',json_extract(body,'$.character'),'favorite',body -> '$.favorite','timestamp',json_extract(body,'$.timestamp'))"
                 }
+                Some(Value::String(value)) if value == "gallery" => GALLERY_BODY,
                 _ => return Err(invalid("Unknown artwork projection")),
             };
             let limit = command

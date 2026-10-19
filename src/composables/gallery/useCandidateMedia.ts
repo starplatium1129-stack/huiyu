@@ -8,6 +8,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 export function useCandidateMedia() {
   const urls = reactive<Record<string, string>>({}), reading = reactive<Record<string, boolean>>({})
   const errors = reactive<Record<string, string>>({}), revisions = reactive<Record<string, number>>({})
+  const details = reactive<Record<string, ArtworkRecord>>({})
   const owned = new Set<string>(), records = new Map<string, ArtworkRecord>()
   type Job = { item: ArtworkRecord; version: number; controller: AbortController; retry: boolean }
   const requests = new Map<string, Job>()
@@ -20,7 +21,7 @@ export function useCandidateMedia() {
   }
   function drop(id: string) {
     if (owned.delete(urls[id])) URL.revokeObjectURL(urls[id])
-    delete urls[id]; delete reading[id]; delete errors[id]; delete revisions[id]; records.delete(id)
+    delete urls[id]; delete reading[id]; delete errors[id]; delete revisions[id]; delete details[id]; records.delete(id)
   }
   function release() {
     cancel()
@@ -36,10 +37,14 @@ export function useCandidateMedia() {
       active++
       void (async () => {
         try {
-          // A saved remote/data source remains a valid fallback when the local read fails.
-          const blob = job.item.image_id ? await artworkRepository.getImage(job.item.image_id, job.controller.signal).catch(() => null) : null
+          const item = job.item._gallerySummary ? await artworkRepository.readArtwork(job.item.id, job.controller.signal) : job.item
           if (!current(job)) return
-          const fallback = String(job.item.image_data || job.item.image_url || '')
+          if (!item) throw new Error('作品已不在作品册')
+          details[id] = item
+          // A saved remote/data source remains a valid fallback when the local read fails.
+          const blob = item.image_id ? await artworkRepository.getImage(item.image_id, job.controller.signal).catch(() => null) : null
+          if (!current(job)) return
+          const fallback = String(item.image_data || item.image_url || '')
           const source = blob ? URL.createObjectURL(blob) : /^(data:image\/|blob:)/.test(fallback) ? fallback : safeImageUrl(fallback)
           if (!source) throw new Error('原图暂时没有读出来，作品记录仍保留。')
           const previous = urls[id]
@@ -68,7 +73,7 @@ export function useCandidateMedia() {
     cancel()
     const candidates = items.slice(0, 4).map(item => ({ ...item }))
     for (const [id, record] of records) {
-      if (!candidates.some(item => sameArtworkMedia(record, item))) drop(id)
+      if (!candidates.some(item => sameArtworkMedia(record, item) && item._galleryRevision === record._galleryRevision)) drop(id)
     }
     enabled = true
     for (const item of candidates) {
@@ -82,5 +87,5 @@ export function useCandidateMedia() {
     if (!enabled || !sameArtworkMedia(records.get(String(item.id)), item)) return
     enqueue(item, true); pump()
   }
-  return { urls, reading, errors, revisions, load, retry, cancel, release }
+  return { urls, reading, errors, revisions, details, load, retry, cancel, release }
 }

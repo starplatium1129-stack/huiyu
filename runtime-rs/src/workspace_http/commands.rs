@@ -141,7 +141,11 @@ pub(super) fn command(
         ("GET", ["status"]) => json!({"kind": "status"}),
         ("GET", ["media", "count"]) => json!({"kind": "countMedia"}),
         ("GET", ["media", alias, "thumbnail"]) => {
-            json!({"kind": "readThumbnail", "alias": route_op(alias)?})
+            let mut command = json!({"kind": "readThumbnail", "alias": route_op(alias)?});
+            if query.contains_key("width") {
+                command["width"] = query_int(query, "width", 560, 1)?;
+            }
+            command
         }
         ("POST", ["media-uploads", id]) => {
             json!({"kind": "prepareMedia", "operationId": route_op(id)?, "media": media(&input["media"])?})
@@ -228,7 +232,7 @@ pub(super) fn command(
             let mut command = json!({"kind": "getArtworks", "ids": array(&input["ids"], true)?.iter().map(entity_id).collect::<Result<Vec<_>>>()?});
             match input.get("projection") {
                 None | Some(Value::Null) => {}
-                Some(Value::String(value)) if value == "revision" => {
+                Some(Value::String(value)) if value == "revision" || value == "gallery" => {
                     command["projection"] = json!(value);
                 }
                 _ => return Err(ApiError::invalid("Unknown artwork projection")),

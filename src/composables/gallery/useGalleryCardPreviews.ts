@@ -79,9 +79,14 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
     const epoch = options.epoch(), width = wantedWidth(item.id)
     const current = () => !signal.aborted && options.active() && epoch === options.epoch() && options.current(item)
     if (!current()) return
-    const fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
+    let fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
     let thumbnail = options.thumbnails[item.id]
     try {
+      if (!item.image_id && !fallback && item._gallerySummary) {
+        const complete = await artworkRepository.readArtwork(item.id, signal)
+        if (!current()) return
+        fallback = safeImageUrl(complete?.image_url) || (complete?.image_data?.startsWith('data:image/') ? complete.image_data : '')
+      }
       if (!thumbnail && item.image_id) {
         try { thumbnail = await artworkRepository.getThumbnail(item.image_id) || '' }
         catch { /* A failed optional thumbnail must not prevent original recovery. */ }
@@ -96,6 +101,21 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
         } catch {
           if (!current()) return
           thumbnail = ''; options.forgetThumbnail(item.id)
+        }
+      }
+      if (item.image_id && artworkRepository.getPreview) {
+        // Workspace derivatives survive the card's bounded memory cache. The
+        // authority rounds up the requested size and never upscales originals.
+        const preview = await artworkRepository.getPreview(item.image_id, width, signal).catch(() => null)
+        if (!current()) return
+        if (preview) {
+          const size = await dimensions(preview, signal)
+          if (!current()) return
+          releaseCardImage(item.id)
+          options.urls[item.id] = preview
+          satisfied.set(item.id, size.width < width ? Infinity : size.width)
+          cache.set(item.id, { bytes: preview.length * 2, pixels: size.width * size.height }); trim()
+          return
         }
       }
       const blob = item.image_id ? await artworkRepository.getImage(item.image_id, signal) : null

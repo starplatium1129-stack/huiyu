@@ -13,7 +13,7 @@ import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
 import { computed,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { bulkDeleteAction,confirmDeleteAction,toggleFavoriteAction } from './galleryMutations';
-import { loadGalleryStorageAction,type GalleryProject } from './galleryStorage';
+import { cancelGalleryStorageLoad, loadGalleryStorageAction,type GalleryProject } from './galleryStorage';
 import { useGalleryExports } from './useGalleryExports';
 import { useGalleryTrash } from './useGalleryTrash';
 import { useGalleryFilters } from './useGalleryFilters';
@@ -32,7 +32,7 @@ export function useGalleryWorkspace() {
     const router = useRouter();
 
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
-    const galleryLoading = ref(true), galleryError = ref('');
+    const galleryLoading = ref(true), galleryIndexLoading = ref(false), galleryError = ref('');
     const infoOpen = ref(false);
     const cardUrls = reactive<Record<string, string>>({});
     const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
@@ -100,6 +100,7 @@ export function useGalleryWorkspace() {
         sentinelEl,
     } = useGalleryFilters({
         history,
+        indexLoading: galleryIndexLoading, loadError: galleryError,
         projects,
         ratioOf,
         columnCount,
@@ -303,7 +304,7 @@ export function useGalleryWorkspace() {
         }
     }
     /* ---------- 初始化 ---------- */
-    function loadGalleryStorage(): Promise<void> { return loadGalleryStorageAction({ galleryLoading, galleryError, history, projects }) }
+    function loadGalleryStorage(): Promise<void> { return loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects }) }
     onMounted(async () => {
         unmounted = false;
         document.addEventListener('keydown', onKeydown);
@@ -313,9 +314,8 @@ export function useGalleryWorkspace() {
             .catch(e => console.warn('gallery scene labels load failed', e));
         void sceneStore.loadLoraCatalog().then(() => { loras.value = sceneStore.loras; })
             .catch(e => console.warn('gallery LoRA labels load failed', e));
-        await refreshComparison();
-        // Restore only after the artwork and album snapshot is available.
         restoreFiltersFromQuery();
+        await refreshComparison();
         // 回收站懒清理（2026-08-30 UX 审计 P0-8）：真删超期软删条目的图片与
         // 缩略图。不阻塞首屏，失败静默（下次挂载再试）。
         void artworkRepository.purgeExpiredTrash().catch(e => console.warn('[gallery] trash purge failed', e));
@@ -329,6 +329,7 @@ export function useGalleryWorkspace() {
     let activatedOnce = false;
     onActivated(() => { viewActive = true; document.addEventListener('keydown', onKeydown); void hydrateThumbs(); scheduleWallScan(); if (!activatedOnce) { activatedOnce = true; return; } void refreshComparison(); });
     onDeactivated(() => {
+        cancelGalleryStorageLoad(history);
         viewActive = false; comparisonRevision++; cleanupFilterSync();
         const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
         // A stored URL is not a decoded fallback (failed/pending thumbnails
@@ -341,6 +342,7 @@ export function useGalleryWorkspace() {
         document.removeEventListener('keydown', onKeydown); stopCardObservation();
     });
     onUnmounted(() => {
+        cancelGalleryStorageLoad(history);
         unmounted = true; comparisonRevision++;
         cleanupFilterSync();
         stopCardObservation();
@@ -384,7 +386,7 @@ export function useGalleryWorkspace() {
     const { clearTrash, trashClearing, trashLoading, trashError } = trashActions;
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
-    function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, item); }
+    function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, history.value.find(entry => entry.id === item.id) ?? item); }
     const deleteMotion = useGalleryListMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value,
         () => !trashMode.value && collectionPreviewItems.value === null);
     function confirmDelete(item: ArtworkRecord): Promise<void> {
@@ -399,8 +401,8 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy,
-        restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryError, history, resetGalleryFilters,
-        masonryGroups, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
+        restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryIndexLoading, galleryError, history, resetGalleryFilters,
+        masonryGroups, scheduleWallScan, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,

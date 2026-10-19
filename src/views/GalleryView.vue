@@ -29,7 +29,7 @@
       <button class="gallery-filter" type="button" :class="{ active: (albumsOpen && albumSection === 'characters') || (!albumsOpen && !!characterFilter && !projectFilter) }" :aria-pressed="(albumsOpen && albumSection === 'characters') || (!albumsOpen && !!characterFilter && !projectFilter)" @click="showAlbumOverview('characters')"><ArchiveIcon name="character" />按角色 <span>{{ characterAlbums.length }}</span></button>
       <button class="gallery-filter" type="button" :class="{ active: (albumsOpen && albumSection === 'albums') || (!albumsOpen && !!projectFilter) }" :aria-pressed="(albumsOpen && albumSection === 'albums') || (!albumsOpen && !!projectFilter)" @click="showAlbumOverview('albums')"><ArchiveIcon name="book" />按画册 <span>{{ albums.length }}</span></button>
       <button v-show="!albumsOpen" class="gallery-filter" :class="{ active: favoriteOnly && !trashMode }" type="button" :aria-pressed="favoriteOnly && !trashMode" @click="favoriteOnly = trashMode || !favoriteOnly; trashMode && toggleTrashMode()">
-        <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}
+        <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}{{ galleryIndexLoading ? '+' : '' }}
       </button>
       </div>
       <StudioSearch v-show="!albumsOpen && !trashMode" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜场景、角色或关键词…" />
@@ -53,11 +53,11 @@
 
     <div ref="selectionDock" class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined">
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
-      <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }}</span></span>
+      <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }} · Shift 连选</span></span>
       <span class="gallery-bulk-actions">
         <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
         <StudioCheckbox :checked="allVisibleSelected" :indeterminate="!allVisibleSelected && visible.some(item => selectedIds.has(item.id))"
-          :disabled="!visible.length" label="全选当前作品" @update:checked="selectAllVisible">全选当前</StudioCheckbox>
+          :disabled="!visible.length || galleryIndexLoading || !!galleryError" label="全选当前作品" @update:checked="selectAllVisible">{{ galleryIndexLoading ? '正在读取全部作品…' : '全选当前' }}</StudioCheckbox>
         <!-- Keep the confirmation opener focusable while busy; bulkDelete guards re-entry. -->
         <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size" :aria-disabled="bulkDeleting || undefined"
           @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>
@@ -107,7 +107,7 @@
       <ArchiveStatePanel
         v-else-if="!galleryLoading && history.length && !visible.length"
         kind="filtered"
-        title="当前筛选下没有作品"
+        :title="galleryIndexLoading ? '正在查找其余作品…' : '当前筛选下没有作品'"
       >
         <button class="btn btn-primary" type="button" @click="resetGalleryFilters">重置筛选</button>
       </ArchiveStatePanel>
@@ -115,24 +115,27 @@
         <template v-for="group in masonryGroups" :key="group.key">
           <div class="gallery-section">{{ group.key }}</div>
           <div class="gallery-columns" :style="{ '--wall-cols': columnCount }">
-            <div
+            <GalleryVirtualColumn
               v-for="(col, colIdx) in group.columns"
               :key="`${group.key}-col-${colIdx}`"
               class="gallery-col"
+              :items="col" :ratio-of="ratioOf" :enabled="visible.length >= 200" @rendered="scheduleWallScan"
             >
+              <template #default="{ item }">
               <GalleryArtworkCard
-                v-for="item in col" :key="item.id" :item="item"
+                :key="item.id" :item="item"
                 :title="cardLabels.get(item.id)!.title" :character="cardLabels.get(item.id)!.character"
                 :formatted-date="cardLabels.get(item.id)!.date" :ratio="ratioOf(item)"
                 :thumb-url="resolveRuntimeUrl(thumbUrls[item.id] || '')" :image-url="resolveRuntimeUrl(cardUrls[item.id] || '')"
                 :cors="runtimeResourceCors()" :missing="missingImageIds.has(item.id)"
                 :selection-mode="selectMode" :selected="selectedIds.has(item.id)"
                 :confirming-delete="pendingDeleteId === item.id" :deleting="pendingDeleteId === item.id && deleting"
-                @select="toggleSelect(item.id)" @open="openFromCard(indexOf(item), $event)"
+                @select="toggleSelect(item.id, $event)" @open="openFromCard(indexOf(item), $event)"
                 @favorite="toggleFavorite(item)" @request-delete="pendingDeleteId = item.id" @cancel-delete="pendingDeleteId = null"
                 @delete="confirmDelete(item)" @measure="measure(item, $event)" @load="onHdLoad(item, $event)"
               />
-            </div>
+              </template>
+            </GalleryVirtualColumn>
           </div>
         </template>
         <!-- 分页哨兵：进入视口即追加下一页（作品很多时避免一次性铺满 DOM） -->
@@ -285,6 +288,7 @@ import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
+import GalleryVirtualColumn from '@/components/gallery/GalleryVirtualColumn.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
 import { computed, defineAsyncComponent, nextTick, onActivated, onDeactivated, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
@@ -367,10 +371,12 @@ trashBusy,
 restoreTrashItem,
 clearTrash, trashClearing, trashLoading, trashError, loadTrash,
 galleryLoading,
+galleryIndexLoading,
 galleryError,
 history,
 resetGalleryFilters,
 masonryGroups,
+scheduleWallScan,
 columnCount,
 pendingDeleteId,
 ratioOf,

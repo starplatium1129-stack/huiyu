@@ -3,7 +3,7 @@ import type { useGalleryWorkspace } from './useGalleryWorkspace'
 import { parseSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import { toRaw } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
-import type { ArtworkProjectRecord } from '@/application/artwork/artworkRepository'
+import type { ArtworkLibrarySnapshot, ArtworkProjectRecord } from '@/application/artwork/artworkRepository'
 import { artworkIdKey } from './galleryHelpers'
 
 export interface GalleryProject {
@@ -26,6 +26,10 @@ export function galleryProjects(records: ArtworkProjectRecord[]): GalleryProject
 }
 
 const loadVersions = new WeakMap<object, number>()
+const loadControllers = new WeakMap<object, AbortController>()
+export function cancelGalleryStorageLoad(history: object) {
+  loadControllers.get(history)?.abort(); loadControllers.delete(history)
+}
 
 const pendingMutations = new WeakMap<object, Map<string, Pick<ArtworkRecord, 'favorite'> | null>>()
 
@@ -50,21 +54,20 @@ function unchangedRecords(current: object[], incoming: object[]): boolean {
   })
 }
 
-export async function loadGalleryStorageAction({ galleryLoading, galleryError, history, projects }: Pick<ReturnType<typeof useGalleryWorkspace>, 'galleryLoading' | 'galleryError' | 'history' | 'projects'>): Promise<void> {
+export async function loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects }: Pick<ReturnType<typeof useGalleryWorkspace>, 'galleryLoading' | 'galleryIndexLoading' | 'galleryError' | 'history' | 'projects'>): Promise<void> {
+  cancelGalleryStorageLoad(history)
+  const controller = new AbortController(); loadControllers.set(history, controller)
   const version = (loadVersions.get(history) || 0) + 1
   loadVersions.set(history, version)
   const mutations = new Map<string, Pick<ArtworkRecord, 'favorite'> | null>()
   pendingMutations.set(history, mutations)
-  const isCurrent = () => loadVersions.get(history) === version
+  const isCurrent = () => !controller.signal.aborted && loadVersions.get(history) === version
   // Only an empty workspace needs a blocking placeholder. Refreshes retain the
   // last snapshot (including empty albums) until the latest read succeeds.
   galleryLoading.value = !history.value.length && !projects.value.length
   galleryError.value = ''
-  try {
-    const snapshot = await artworkRepository.readLibrarySnapshot()
-    // Separate first-load decoding/cache copying from card mounting, leaving a
-    // task boundary for navigation. Cached refreshes keep their existing path.
-    if (!history.value.length) await new Promise<void>(resolve => setTimeout(resolve, 0))
+  galleryIndexLoading.value = true
+  function publish(snapshot: ArtworkLibrarySnapshot) {
     if (!isCurrent()) return
     // A refresh still reads the authority, but unchanged metadata must not
     // invalidate every filter, album and keyed image card on a cached return.
@@ -77,9 +80,20 @@ export async function loadGalleryStorageAction({ galleryLoading, galleryError, h
       ...project, history_ids: project.history_ids.filter(id => mutations.get(artworkIdKey(id)) !== null),
     }))
     if (!unchangedRecords(projects.value, nextProjects)) projects.value = nextProjects
+    galleryLoading.value = false
+  }
+  try {
+    const repository = artworkRepository
+    const snapshot = repository.readGallerySnapshot
+      ? await repository.readGallerySnapshot(first => { if (!history.value.length) publish(first) }, controller.signal)
+      : await repository.readLibrarySnapshot()
+    publish(snapshot)
   } catch (error) {
     if (isCurrent()) galleryError.value = error instanceof Error ? error.message : String(error)
   } finally {
-    if (isCurrent()) { pendingMutations.delete(history); galleryLoading.value = false }
+    if (loadVersions.get(history) === version) {
+      pendingMutations.delete(history); galleryLoading.value = false; galleryIndexLoading.value = false
+      if (loadControllers.get(history) === controller) loadControllers.delete(history)
+    }
   }
 }

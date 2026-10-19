@@ -143,9 +143,11 @@ fn remove_metadata(c: &Context, hash: &str) -> Result<()> {
         "thumbnails-rust-v1",
         "thumbnails-rust-vips-v1",
     ] {
-        let thumbnail = schema::safe(&c.root, format!("cache/{version}/{hash}.jpg"))?;
-        if thumbnail.exists() {
-            fs::remove_file(thumbnail)?;
+        for suffix in ["", "-1120", "-1680", "-2240", "-3360", "-4480", "-8192"] {
+            let thumbnail = schema::safe(&c.root, format!("cache/{version}/{hash}{suffix}.jpg"))?;
+            if thumbnail.exists() {
+                fs::remove_file(thumbnail)?;
+            }
         }
     }
     c.db.execute("DELETE FROM media_aliases WHERE hash=?", [hash])?;

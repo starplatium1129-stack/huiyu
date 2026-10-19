@@ -16,9 +16,11 @@
     <div v-else ref="historyList" class="history-list">
       <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
+          <button class="history-preview" type="button" :aria-label="'查看完整作品：' + (item.sceneTitle || item.story || '未命名作品')" @click="openPreview(item, $event)">
           <img :crossorigin="runtimeResourceCors()" v-if="thumbs[item.id]" :src="resolveRuntimeUrl(thumbs[item.id])" alt="历史作品缩略图" loading="lazy">
           <div v-else class="history-placeholder"><ArchiveIcon name="image" /><span>暂未载入预览</span></div>
           <span class="history-thumb-badge">v{{ item.version || 1 }}</span>
+          </button>
           <StudioCheckbox class="history-pick" :checked="selectedSet.has(item.id)"
             :label="'选择作品：' + (item.sceneTitle || item.story || item.id)"
             @update:checked="setSelected(item.id, $event)" />
@@ -48,13 +50,16 @@
         </div>
       </article>
     </div>
+    <SavedArtworkPreview v-if="previewItem && active" :item="previewItem" :source="previewSource" :thumbnail="thumbs[previewItem.id] || ''" :request="previewRequest"
+      @close="previewItem = null" @resume="$emit('resume', $event)" />
   </section>
 </template>
 
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, nextTick, ref } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, shallowRef, watch } from 'vue'
+const SavedArtworkPreview = defineAsyncComponent(() => import('@/components/gallery/SavedArtworkPreview.vue'))
 import { useHistoryThumbnails } from '@/composables/prompt/useHistoryThumbnails'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -76,6 +81,14 @@ defineEmits<{
 
 const selectedSet = ref(new Set<string | number>())
 const historyList = ref<HTMLElement | null>(null)
+const previewItem = shallowRef<ArtworkRecord | null>(null), previewSource = shallowRef<HTMLImageElement | null>(null)
+const previewRequest = ref(0)
+function openPreview(item: ArtworkRecord, event: MouseEvent) {
+  previewSource.value = (event.currentTarget as HTMLElement).querySelector('img')
+  previewItem.value = item
+  previewRequest.value++
+}
+watch(() => props.active, active => { if (!active) previewItem.value = null })
 async function clearSelection(event: MouseEvent) {
   const ownedFocus = document.activeElement === event.currentTarget
   const target = historyList.value?.querySelector<HTMLInputElement>('.history-item[data-selected] input[type="checkbox"]')

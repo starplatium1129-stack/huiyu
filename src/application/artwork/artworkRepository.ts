@@ -48,6 +48,8 @@ export interface ArtworkRepository {
   /** Removes only the saved rule; artwork and media remain in the library. */
   deleteSmartAlbum(id: string): Promise<{ deleted: boolean }>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
+  /** Publish the first browsing page before reading the remaining metadata. */
+  readGallerySnapshot?(publish: (snapshot: ArtworkLibrarySnapshot) => void, signal: AbortSignal): Promise<ArtworkLibrarySnapshot>
   readRecentHistory(signal?: AbortSignal): Promise<ArtworkRecord[]>
   /** Detached id/scene/character/favorite/timestamp only; legacy rows may predate artwork IDs. */
   readPreferenceHistory(): Promise<unknown[]>
@@ -59,6 +61,8 @@ export interface ArtworkRepository {
   deleteImage(id: string): Promise<void>
   countImages(): Promise<number>
   getThumbnail(id: string): Promise<string | null>
+  /** Persistent display-sized derivatives, when supported by the authority. */
+  getPreview?(id: string, width: number, signal?: AbortSignal): Promise<string | null>
   setThumbnail(id: string, dataUrl: string): Promise<void>
   cacheThumbnail(id: string, blob: Blob): Promise<void>
   withStaging<T>(work: () => Promise<T>): Promise<T>

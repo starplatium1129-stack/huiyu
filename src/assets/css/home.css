@@ -94,6 +94,7 @@
 .home-start-card .btn { flex-shrink:0; }
 .recent-grid { @apply tw:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); @apply tw:gap-s-4; }
 .recent-card { border: 1px solid var(--border-soft); @apply tw:rounded-xl tw:overflow-hidden; background: var(--bg-surface); @apply tw:text-primary; text-decoration: none; transition: transform var(--motion-hover) var(--ease-out); }
+.recent-card { padding:0; font:inherit; text-align:left; cursor:zoom-in; }
 .recent-cover { position:relative; aspect-ratio: 4/3; @apply tw:grid; place-items: center; background: var(--bg-deep); @apply tw:overflow-hidden; }
 .recent-cover img { position:absolute; inset:0; @apply tw:w-full tw:h-full tw:object-cover; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); }
 .recent-cover img.ready { opacity:1; }

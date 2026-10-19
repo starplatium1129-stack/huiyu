@@ -1,5 +1,5 @@
 import { sameArtworkMedia } from './artworkMediaIdentity'
-import { computed, onDeactivated, onUnmounted, ref, watch, type Ref } from 'vue'
+import { computed, onDeactivated, onUnmounted, ref, shallowRef, watch, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { useOriginalImage } from '../useOriginalImage'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -18,9 +18,12 @@ export function useGalleryViewer(options: {
   const viewerUrl = original.url
   const viewerLoadFailed = computed(() => Boolean(original.error.value))
   const neighborPreviews = ref<Record<string, string>>({})
+  const details = shallowRef<ArtworkRecord | null>(null)
   const current = computed(() => {
     const index = artworkIndexById(options.history.value, viewerItemId.value)
-    return index >= 0 ? options.history.value[index] : null
+    const item = index >= 0 ? options.history.value[index] : null
+    return item?._gallerySummary && details.value?.id === item.id && details.value._galleryRevision === item._galleryRevision
+      ? { ...details.value, favorite: item.favorite } : item
   })
   let loadedMedia: ArtworkRecord | null = null
   let disposed = false
@@ -53,16 +56,24 @@ export function useGalleryViewer(options: {
   function releaseImage() {
     original.release()
     loadedMedia = null
+    details.value = null
   }
 
   async function hydrate(source: ArtworkRecord, preserve = false) {
-    const item = { ...source }
+    let item = { ...source }
     loadedMedia = item
-    const fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
     await original.load({
       preserve,
       current: () => !disposed && viewerIndex.value >= 0 && sameArtworkMedia(current.value ?? undefined, item),
       async read(signal, repository) {
+        if (item._gallerySummary) {
+          const complete = await repository.readArtwork(item.id, signal)
+          signal.throwIfAborted()
+          if (!complete) throw new Error('这幅作品已不在作品册')
+          item = { ...complete, _galleryRevision: item._galleryRevision }
+          loadedMedia = { ...item }; details.value = item
+        }
+        const fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
         try { return (item.image_id ? await repository.getImage(item.image_id, signal) : null) || fallback }
         catch { signal.throwIfAborted(); return fallback }
       },
@@ -79,6 +90,7 @@ export function useGalleryViewer(options: {
     // before its original finishes. Keep the owned read until close or a switch.
     const reuseImage = sameArtworkMedia(loadedMedia ?? undefined, item) && Boolean(viewerUrl.value || original.loading.value)
     viewerItemId.value = item.id
+    if (details.value?.id !== item.id) details.value = null
     viewerIndex.value = index
     options.resetControls()
     if (!reuseImage) void hydrate(item)
@@ -113,8 +125,10 @@ export function useGalleryViewer(options: {
     else viewerIndex.value = index
     hydratePreviews()
   })
-  watch(() => { const item = current.value; return item && [item.image_id, item.image_url, item.image_data] }, () => {
-    if (viewerIndex.value >= 0 && current.value && !sameArtworkMedia(loadedMedia ?? undefined, current.value)) { void hydrate(current.value); hydratePreviews() }
+  watch(() => { const item = current.value; return item && [item.image_id, item.image_url, item.image_data, item._galleryRevision] }, () => {
+    const item = current.value
+    const changedDetails = item?._gallerySummary && loadedMedia?._galleryRevision !== item._galleryRevision
+    if (viewerIndex.value >= 0 && item && (changedDetails || !sameArtworkMedia(loadedMedia ?? undefined, item))) { void hydrate(item); hydratePreviews() }
   })
   function dispose() { closeViewer(); onViewerClosed() }
   watch(original.session, dispose)

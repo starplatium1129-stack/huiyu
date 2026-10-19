@@ -41,7 +41,7 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'commitMedia': return ['POST', `/media-uploads/${operation}/commit`]
     case 'releaseMedia': return ['DELETE', `/media/${encode(command.alias)}`]
     case 'countMedia': return ['GET', '/media/count']
-    case 'readThumbnail': return ['GET', `/media/${encode(command.alias)}/thumbnail`]
+    case 'readThumbnail': return ['GET', `/media/${encode(command.alias)}/thumbnail` + (command.width === undefined ? '' : `?width=${encode(command.width)}`)]
     case 'backup': return ['POST', '/backups']
     case 'restoreBackup': return ['POST', `/backups/${encode(command.backupId)}/restore`]
     case 'migration.begin': return ['POST', '/migrations']

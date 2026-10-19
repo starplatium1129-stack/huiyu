@@ -8,7 +8,7 @@ import { getDesktopRuntime } from './runtime.ts'
 import { workspaceMediaAuthority } from './workspaceMediaSource.ts'
 import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
-import { compareArtworkKeys, parseArtworkSearchPage, parseArtworkRow, parseArtworkRecentIndex } from './artworkReadModel.ts'
+import { compareArtworkKeys, parseArtworkSearchPage, parseArtworkRow } from './artworkReadModel.ts'
 import { normalizeArtworkOrganization, type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt, type ArtworkOrganizationUndoResult } from '../../application/artwork/organization.ts'
 import { normalizeNewArtworkProject, type ArtworkProjectDraft } from '../../application/artwork/projects.ts'
 import { normalizeSmartAlbumDraft, parseSmartAlbumRule, type SmartAlbumDraft } from '../../application/artwork/smartAlbums.ts'
@@ -29,7 +29,10 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   let loadedHistory: ArtworkRecord[] = [], loadedProjects: ArtworkProjectRecord[] = []
   let historyLoaded = false, projectsLoaded = false
   let historyArtworkRevision: number | undefined
-  let loadedRecent: ArtworkRecord[] = [], recentLoaded = false
+  let galleryRead: Promise<ReturnType<typeof import('./artworkGalleryReads.ts')['createDesktopGalleryReads']>> | undefined
+  const galleryReads = () => galleryRead ??= import('./artworkGalleryReads.ts').then(module => module.createDesktopGalleryReads(
+    workspaceRequest, readProjects, readSession, () => historyLoaded ? loadedHistory : null, () => mutationVersion))
+    .catch(error => { galleryRead = undefined; throw error })
   let loadedPreferences: unknown[] | undefined
   let preferenceArtworkRevision: number | undefined
   let loadedSearchIndex: { items: ArtworkSearchSummary[]; query: string; revision: number; session: string; writerEpoch: string } | undefined
@@ -44,14 +47,14 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   function invalidateSearchIndex() { loadedSearchIndex = undefined; searchSequence++ }
   function invalidateSnapshots() {
     mutationVersion++
-    historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined
+    historyLoaded = false; projectsLoaded = false; loadedPreferences = undefined
     invalidateSearchIndex()
   }
   function readSession() {
     const session = searchSession()
     if (snapshotSession !== session) {
       if (snapshotSession && getDesktopRuntime().connection !== 'ready') throw new Error('工作区连接已变化，请重新连接后读取')
-      historyLoaded = false; projectsLoaded = false; recentLoaded = false; loadedPreferences = undefined
+      historyLoaded = false; projectsLoaded = false; loadedPreferences = undefined
       historySearchSession = undefined; snapshotSession = session
     }
     return session
@@ -97,7 +100,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     // must not revive the invalidated offline cache after a successful write.
     if (version === mutationVersion && (!historyLoaded || artworkRevision >= historyArtworkRevision!)) {
       loadedHistory = history; historyArtworkRevision = artworkRevision; historyLoaded = true; historySearchSession = session
-      recentLoaded = false; invalidateSearchIndex()
+      invalidateSearchIndex()
     }
     return structuredClone(history)
   }
@@ -107,30 +110,6 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     signal?.throwIfAborted()
     const row = parseArtworkRow(raw, id)
     return row?.deletedAt === null ? structuredClone(row.body) : null
-  }
-  async function readRecentHistory(signal?: AbortSignal) {
-    signal?.throwIfAborted()
-    const session = readSession(), version = mutationVersion
-    if (getDesktopRuntime().connection !== 'ready' && (historyLoaded || recentLoaded)) {
-      return structuredClone((recentLoaded ? loadedRecent : loadedHistory).slice(0, 3))
-    }
-    // Bound numeric candidates on the backend; legacy timestamps still use JS
-    // Date/id fallback and stable identity ties. Fetch only three full bodies.
-    const result = await workspaceRequest<unknown>({ kind: 'readArtworkRecentIndex', candidateLimit: 3 }, signal)
-    signal?.throwIfAborted()
-    const selected = parseArtworkRecentIndex(result).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
-    const rows = selected.length
-      ? await workspaceRequest<unknown>({ kind: 'getArtworks', ids: selected.map(row => row.id) }, signal) : []
-    signal?.throwIfAborted()
-    if (!Array.isArray(rows) || rows.length !== selected.length) throw new Error('最近作品响应无效')
-    const parsed = rows.map((row, index) => parseArtworkRow(row, selected[index].id))
-    if (parsed.some((row, index) => !row || row.deletedAt !== null || row.revision !== selected[index].revision)) {
-      throw new Error('作品库在读取期间发生变更，请重新读取')
-    }
-    checkReadSession(session)
-    const recent = structuredClone(parsed.map(row => row!.body))
-    if (version === mutationVersion) { loadedRecent = recent; recentLoaded = true }
-    return structuredClone(recent)
   }
   async function searchArtworks(query: string, signal?: AbortSignal) {
     signal?.throwIfAborted()
@@ -333,9 +312,12 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     return { deleted: receipt.deleted }
   }
   const repository: ArtworkRepository = {
-    readHistory, readArtwork, searchArtworks, readProjects, readRecentHistory, readPreferenceHistory,
+    readHistory, readArtwork, searchArtworks, readProjects, readPreferenceHistory,
+    readRecentHistory: (...args) => galleryReads().then(reader => reader.readRecentHistory(...args)),
     organizeArtworks, undoArtworkOrganization, createProject, saveSmartAlbum, deleteSmartAlbum,
     async readLibrarySnapshot() { const [history, projects] = await Promise.all([readHistory(), readProjects()]); return { history, projects } },
+    readGallerySnapshot: (...args) => galleryReads().then(reader => reader.readGallerySnapshot(...args)),
+    getPreview: (...args) => galleryReads().then(reader => reader.getPreview(...args)),
     ...media,
     getWorkspaceMediaReference(alias) {
       requireAuthority()

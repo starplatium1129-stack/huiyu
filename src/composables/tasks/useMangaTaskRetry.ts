@@ -1,4 +1,4 @@
-import { nextTick, onScopeDispose, type Ref } from 'vue'
+import { nextTick, onScopeDispose, ref, type Ref } from 'vue'
 import { getRuntimeTaskSummary, retryRuntimeMangaTask, type TaskSummary } from '@/api/runtimeTasks'
 import { ApiClientError } from '@/api/client'
 import { pendingTaskRequests } from '@/stores/runtimeTaskState'
@@ -40,6 +40,7 @@ export function useMangaTaskRetry(options: {
   reveal: (task: TaskSummary) => Promise<void>; cardId: (id: string) => string
 }) {
   const { busy, feedback } = options
+  const locating = ref('')
   const epoch = () => getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch || ''
   let disposed = false
   const reads = new AbortController()
@@ -69,16 +70,16 @@ export function useMangaTaskRetry(options: {
     } finally { busy.value = '' }
   }
   async function openRelated(id: string) {
-    if (busy.value) return
+    if (locating.value) return
     const expected = epoch()
-    busy.value = `locate:${id}`; feedback.value = ''
+    locating.value = id; feedback.value = ''
     try {
       const task = await getRuntimeTaskSummary(id, reads.signal)
       if (disposed || epoch() !== expected) return
       await locate(task)
     } catch (error) {
       if (!disposed && epoch() === expected) feedback.value = retryMessage(error)
-    } finally { busy.value = '' }
+    } finally { locating.value = '' }
   }
-  return { canRetry, pendingRetry, retry, openRelated }
+  return { canRetry, pendingRetry, retry, openRelated, locating }
 }

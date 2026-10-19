@@ -76,7 +76,7 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
     deleting.value = true;
     try {
         const wasOpen = viewerIndex.value >= 0;
-        const removedIndex = visible.value.indexOf(item);
+        const removedIndex = ctx.indexOf(item);
         // Repository 先完成跨库删除与补偿回滚，再改界面；失败时界面不动作。
         const result = await artworkRepository.softDeleteArtwork(item.id);
         if (!result.deleted) {

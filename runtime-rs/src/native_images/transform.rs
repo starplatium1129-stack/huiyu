@@ -293,20 +293,22 @@ pub(crate) fn atlas(
     if ![2, 4].contains(&scale) {
         return Err("Invalid texture scale".into());
     }
-    transform(path, library, Some(scale), cancel)?.ok_or_else(|| "Invalid atlas dimensions".into())
+    transform(path, library, Some(scale), 560, cancel)?.ok_or_else(|| "Invalid atlas dimensions".into())
 }
-/// Matches workspace thumbnails: auto-orient, width <=560, black flatten, JPEG82.
+/// Workspace previews: auto-orient, bounded width, black flatten, JPEG82.
 pub(crate) fn thumbnail(
     path: &Path,
     library: &Path,
+    width: u32,
     cancel: &CancellationToken,
 ) -> Result<Option<Bytes>> {
-    transform(path, library, None, cancel)
+    transform(path, library, None, width, cancel)
 }
 fn transform(
     path: &Path,
     library: &Path,
     scale: Option<i32>,
+    max_width: u32,
     cancel: &CancellationToken,
 ) -> Result<Option<Bytes>> {
     if cancel.is_cancelled() {
@@ -342,7 +344,7 @@ fn transform(
     let target = scale.map(|n| ((width / n).max(1), (height / n).max(1)));
     let factor = |w: i32, h: i32| match target {
         Some((tw, th)) => (f64::from(w) / f64::from(tw)).min(f64::from(h) / f64::from(th)),
-        None => (f64::from(if swapped { h } else { w }) / 560.0).max(1.0),
+        None => (f64::from(if swapped { h } else { w }) / f64::from(max_width)).max(1.0),
     };
     image = shrink_load(&api, &file, image, factor(width, height))?;
     image = colour(&api, image)?;

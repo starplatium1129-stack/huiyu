@@ -125,7 +125,9 @@ export function useGalleryComparison(options: UseGalleryComparisonOptions) {
       // A failed original read must not replace a proven preview with an
       // unverified fallback. Records without stored originals still use theirs.
       if (isCurrent() && (!parentPreview.value || !parent.image_id)) {
-        const fallback = safeImageUrl(parent.image_url) || (parent.image_data?.startsWith('data:image/') ? parent.image_data : '');
+        const source = parent._gallerySummary ? await artworkRepository.readArtwork(parent.id, controller.signal) : parent;
+        if (!isCurrent()) return;
+        const fallback = safeImageUrl(source?.image_url) || (source?.image_data?.startsWith('data:image/') ? source.image_data : '');
         if (fallback) await publishOriginal(fallback);
       }
     } finally {

@@ -13,6 +13,8 @@ const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutf
 
 export interface UseGalleryFiltersOptions {
   history: Ref<ArtworkRecord[]>;
+  indexLoading: Ref<boolean>;
+  loadError: Ref<string>;
   projects: Ref<GalleryProject[]>;
   ratioOf: (item: ArtworkRecord) => number;
   columnCount: Ref<number>;
@@ -106,7 +108,8 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   });
 
   const favoriteCount = computed(() => history.value.filter(i => i.favorite).length);
-  const countLabel = computed(() => `${visible.value.length} 幅作品`);
+  const countLabel = computed(() => options.indexLoading.value ? `已载入 ${visible.value.length} 幅 · 正在读取其余作品…`
+    : options.loadError.value ? `已载入 ${visible.value.length} 幅 · 数量待确认` : `${visible.value.length} 幅作品`);
 
   /* ---------- 分页渲染：滚动触底递增，避免数百作品全量铺 DOM ----------
      查看器导航仍走完整 visible；分页只约束「展墙渲染多少张」。 */

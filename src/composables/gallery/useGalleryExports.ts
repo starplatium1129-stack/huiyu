@@ -36,12 +36,16 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
   }
   let downloading = false
   async function downloadCurrent() {
-    const item = current.value
+    let item = current.value
     if (!item || downloading || disposed || !viewActive) return
     downloading = true
     const controller = new AbortController()
     downloadController = controller
     try {
+      if (item._gallerySummary) {
+        item = await artworkRepository.readArtwork(item.id, controller.signal)
+        if (!item) throw new Error('这幅作品已不在作品册')
+      }
       // 捕获作品记录；翻页后也不能拿另一张图的查看器 URL 配上本图文件名。
       let rawBlob: Blob | null = null
       try { rawBlob = await artworkRepository.getImage(String(item.image_id || item.id), controller.signal) }
