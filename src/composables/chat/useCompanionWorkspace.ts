@@ -42,7 +42,7 @@ export function useCompanionWorkspace() {
         ? desktopWindowVisible.value && desktopLive2dOverride.value !== false
         : storage.state.settings.live2dEnabled);
     const immersiveMessages = computed(() => companionMessages.value.slice(-2));
-    const { hasNew: hasNewMessages, latest: latestMessages } = useConversationReading(
+    const { showLatest: hasNewMessages, latest: latestMessages } = useConversationReading(
         chatListRef, () => immersiveMessages.value, computed(() => `${activeChar.value}:${branchId.value}`),
     );
     // ── 角色行为运行时（提醒/问候/事件轮询/勿扰）已下沉 useCompanionBehaviorRuntime ──

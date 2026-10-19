@@ -1,6 +1,6 @@
 import type { ArtworkLibrarySnapshot, ArtworkProjectRecord } from '../../application/artwork/artworkRepository.ts'
 import { artworkTimestamp, type ArtworkRecord } from '../../types/artwork.ts'
-import { parseArtworkRecentIndex, parseArtworkRow } from './artworkReadModel.ts'
+import { compareArtworkKeys, parseArtworkRecentIndex, parseArtworkRow } from './artworkReadModel.ts'
 import { getDesktopRuntime } from './runtime.ts'
 
 type Request = <T>(command: Record<string, unknown>, signal?: AbortSignal) => Promise<T>
@@ -48,7 +48,7 @@ export function createDesktopGalleryReads(request: Request, readProjects: () => 
       current()
       if (!Array.isArray(page.items) || !Number.isSafeInteger(page.artworkRevision) || page.artworkRevision < 0
         || revision !== undefined && revision !== page.artworkRevision
-        || !(page.nextCursor === null || typeof page.nextCursor === 'string' && page.nextCursor > (cursor || ''))) throw new Error('作品库在读取期间发生变更，请重新读取')
+        || !(page.nextCursor === null || typeof page.nextCursor === 'string' && compareArtworkKeys(page.nextCursor, cursor || '') > 0)) throw new Error('作品库在读取期间发生变更，请重新读取')
       revision = page.artworkRevision
       for (const raw of page.items) {
         const id = (raw as { id?: unknown })?.id

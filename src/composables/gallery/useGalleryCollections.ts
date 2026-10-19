@@ -13,10 +13,11 @@ import type { useGalleryWorkspace } from './useGalleryWorkspace'
 
 type Workspace = ReturnType<typeof useGalleryWorkspace>
 type Options = Pick<Workspace, 'history' | 'projects' | 'thumbUrls' | 'cardUrls' | 'characterName' | 'characterFilter' | 'projectFilter'
-  | 'tagFilter' | 'searchQuery' | 'favoriteOnly' | 'resetGalleryFilters' | 'collectionPreviewItems' | 'showToast'>
+  | 'galleryLoading' | 'galleryIndexLoading' | 'galleryError' | 'tagFilter' | 'searchQuery' | 'favoriteOnly' | 'resetGalleryFilters' | 'collectionPreviewItems' | 'showToast'>
 
 export function useGalleryCollections(options: Options) {
-  const { albums, characterAlbums, resolvePreviewItems } = useGalleryProjectAlbums(options)
+  const indexComplete = computed(() => !options.galleryLoading.value && !options.galleryIndexLoading.value && !options.galleryError.value)
+  const { albums, characterAlbums, resolvePreviewItems } = useGalleryProjectAlbums({ ...options, indexComplete })
   const albumSection = ref<'characters' | 'albums'>('albums')
   const visibleAlbumIds = ref<string[]>([])
   const selection = computed({
@@ -31,7 +32,7 @@ export function useGalleryCollections(options: Options) {
   const collectionTitle = computed(() => selectedProject.value?.title || (options.characterFilter.value === UNASSIGNED_CHARACTER_ID
     ? '未标注角色' : options.characterFilter.value ? options.characterName(options.characterFilter.value) : '作品展墙'))
   const manualProjects = computed(() => options.projects.value.filter(project => !project.smartRule))
-  const characterOptions = computed(() => characterAlbums.value.map(album => ({ value: album.characterId!, label: `${album.title} · ${album.count}` })))
+  const characterOptions = computed(() => characterAlbums.value.map(album => ({ value: album.characterId!, label: `${album.title} · ${album.countPending ? '数量待确认' : album.count}` })))
   const currentSmartRule = computed(() => selectedProject.value?.smartRule)
   const editorOpen = ref(false), saving = ref(false), error = ref('')
   const editing = ref<GalleryProject | null>(null)

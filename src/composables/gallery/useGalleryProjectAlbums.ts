@@ -9,13 +9,14 @@ export interface GalleryProjectAlbum {
   id: string
   title: string
   count: number
+  countPending: boolean
   covers: { id: string | number; src: string }[]
   kind: 'manual' | 'smart' | 'character'
   characterId?: string
   ruleSummary?: string
 }
 
-interface AlbumMembership extends Omit<GalleryProjectAlbum, 'count' | 'covers'> {
+interface AlbumMembership extends Omit<GalleryProjectAlbum, 'count' | 'countPending' | 'covers'> {
   items: ArtworkRecord[]
 }
 
@@ -23,6 +24,7 @@ interface AlbumMembership extends Omit<GalleryProjectAlbum, 'count' | 'covers'> 
 export function useGalleryProjectAlbums(options: {
   projects: Readonly<Ref<readonly GalleryProject[]>>
   history: Readonly<Ref<readonly ArtworkRecord[]>>
+  indexComplete: Readonly<Ref<boolean>>
   thumbUrls: Readonly<Record<string, string>>
   cardUrls: Readonly<Record<string, string>>
   characterName?: (id: string) => string
@@ -56,12 +58,12 @@ export function useGalleryProjectAlbums(options: {
           ruleSummary: smartAlbumSummary(rule, options.characterName),
           items: sortedHistory.value.filter(item => matches(item, index?.get(item))) }]
       }
-      // Match the existing project filter's ID semantics, excluding deleted/stale references.
+      // Missing members are only stale once the complete library has arrived.
       const items = [...new Set(project.history_ids.map(artworkIdKey))]
         .map(id => records.value.get(id))
         .filter((item): item is ArtworkRecord => Boolean(item))
         .sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a))
-      if (!items.length) return []
+      if (!items.length && (options.indexComplete.value || !project.history_ids.length)) return []
       return [{ id: project.id, title: project.title, kind: 'manual', items }]
     }).sort((a, b) => (b.items[0] ? artworkTimestamp(b.items[0]) : 0) - (a.items[0] ? artworkTimestamp(a.items[0]) : 0))
   })
@@ -101,7 +103,7 @@ export function useGalleryProjectAlbums(options: {
       }
       return result
     })
-    return { ...metadata, count: items.length, get covers() { return covers.value } }
+    return { ...metadata, count: items.length, countPending: !options.indexComplete.value, get covers() { return covers.value } }
   }
   const albums = computed(() => projectMembers.value.map(decorate))
   const characterAlbums = computed(() => characterMembers.value.map(decorate))

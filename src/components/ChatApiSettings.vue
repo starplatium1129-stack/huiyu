@@ -73,6 +73,7 @@
     </details>
 
     <div class="api-settings-actions">
+      <p v-if="hint" class="api-test-status" role="status">{{ hint }}</p>
       <p v-if="statusText" class="api-test-status" :data-state="state" role="status">{{ statusText }}</p>
       <div class="api-settings-buttons">
         <p v-if="!preset.local" class="api-model-note">{{ usageNote }}</p>

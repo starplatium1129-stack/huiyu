@@ -96,15 +96,17 @@
             <div class="chat-starters" aria-label="对话开场建议"><button v-for="(s, index) in currentCharacter.starters" :key="s" class="room-starter" type="button" @click="chooseStarter(s)"><span class="room-starter-index" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span><span class="room-starter-copy">{{ s }}</span><span class="room-starter-arrow" aria-hidden="true"><ArchiveIcon name="chevron-down" /><ArchiveIcon name="chevron-down" /></span></button></div>
             <p class="room-starter-hint">选择开场建议后，可编辑再发送。</p>
           </div>
-          <ChatMessageRow v-for="msg in currentMessages" :key="msg.replyId || msg.mid" :message="msg" :avatar="avatar"
+          <button v-if="hasEarlier" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadEarlier">查看更早消息</button>
+          <ChatMessageRow v-for="msg in visibleMessages" tabindex="-1" :key="msg.replyId || msg.mid" :message="msg" :avatar="avatar"
             :chibi="Boolean(companionChatAvatars[activeChar])" :streaming="msg.mid === streamingMid" :playing="msg.mid === playingMid"
             :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
             :can-regenerate="chatReady && canRegenerateMessage(msg.mid)" :story-disabled="busy || storyBusy || storage.writeBlocked.value"
             @copy="copyMessage" @remember="rememberMessage" @play="voice.playMessage($event)"
             @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })" @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })"
             @select-variant="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
+          <button v-if="hasLater" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadLater">查看后续消息</button>
         </div>
-        <button v-if="!immersive && hasNew" class="room-latest btn btn-ghost" type="button" @click="latest">回到最新消息</button>
+        <button v-if="!immersive && showLatest" class="room-latest btn btn-ghost" type="button" @click="latest">回到最新消息</button>
         <div v-if="immersive" class="room-current-line" role="log" aria-live="off" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
         <div v-if="activityText" class="room-chat-activity" role="status"><span>{{ activityText }}</span><button v-if="speechSessionActive" class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button></div>
         <div class="chat-composer">
@@ -137,7 +139,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioSendButton from '@/components/ui/StudioSendButton.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
-import { useConversationReading } from '@/composables/chat/useConversationReading'
+import { useChatHistoryWindow } from '@/composables/chat/useChatHistoryWindow'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
@@ -244,7 +246,7 @@ const {
   clearCharacterConversation,
   clearAllMemory,
   onAutoVoiceChange,
-} = useCharacterRoomSession()
+} = useCharacterRoomSession({ latest: () => { void latest() }, nearBottom: () => !showLatest.value })
 const lastUserMessage = computed(() => currentMessages.value.filter(message => message.role === 'user').at(-1))
 const lastAssistantMessage = computed(() => currentMessages.value.filter(message => message.role === 'assistant').at(-1))
 
@@ -294,7 +296,7 @@ function closeRoomPanelFromBackdrop(event: MouseEvent) {
 }
 const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
-const { hasNew, latest } = useConversationReading(chatListRef, () => currentMessages.value, computed(() => `${activeChar.value}:${branchId.value}`))
+const { visibleMessages, hasEarlier, hasLater, paging, showLatest, latest, loadEarlier, loadLater } = useChatHistoryWindow(chatListRef, currentMessages, computed(() => `${activeChar.value}:${branchId.value}`))
 const currentLine = computed(() => lastAssistantMessage.value?.content || personalizedGreeting.value)
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }

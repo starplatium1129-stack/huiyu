@@ -40,7 +40,7 @@
         @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" />
     </div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen && albumSection" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
-      <GalleryAlbumOverview v-if="visitedPanels.albums" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
+      <GalleryAlbumOverview v-if="visitedPanels.albums" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :index-loading="galleryIndexLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
     </div>
     <div v-show="!albumsOpen" v-content-motion:fade.defer="!albumsOpen && (trashMode ? 'trash' : 'works')" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
@@ -147,7 +147,7 @@
     </section>
 
     </div>
-    <GallerySmartAlbumEditor v-if="visitedPanels.editor" v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" />
+    <GallerySmartAlbumEditor v-if="visitedPanels.editor" v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :preview-loading="galleryLoading || galleryIndexLoading" :preview-error="galleryError" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" />
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">

@@ -10,7 +10,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, nextTick, onActivated, onDeactivated, onMounted, onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { computed, nextTick, onActivated, onDeactivated, onMounted, onScopeDispose, ref, shallowRef, triggerRef, watch } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
 
 const props = defineProps<{ items: ArtworkRecord[]; ratioOf: (item: ArtworkRecord) => number; enabled: boolean }>()
@@ -20,6 +20,7 @@ const measured = shallowRef(new Map<string | number, { width: number; height: nu
 const start = ref(0), end = ref(12), focused = ref<string | null>(null)
 let active = false, frame = 0, observer: ResizeObserver | undefined
 const observed = new Set<Element>()
+const itemIndex = computed(() => new Map(props.items.map((item, index) => [String(item.id), { id: item.id, index }])))
 const offsets = computed(() => {
   const result = [0]
   for (const item of props.items) {
@@ -32,16 +33,24 @@ const offsets = computed(() => {
 type Entry = { key: string; item?: ArtworkRecord; index: number; height?: number }
 const entries = computed(() => {
   const result: Entry[] = [], positions = offsets.value
-  let skipped = 0
-  for (let index = 0; index < props.items.length; index++) {
+  const length = props.items.length
+  const first = props.enabled ? Math.min(start.value, length) : 0
+  const last = props.enabled ? Math.max(first, Math.min(end.value, length)) : length
+  const focusIndex = focused.value === null ? undefined : itemIndex.value.get(focused.value)?.index
+  let cursor = 0
+  function append(index: number) {
     const item = props.items[index]
-    if (!props.enabled || index >= start.value && index < end.value || String(item.id) === focused.value) {
-      if (skipped) result.push({ key: `space:${item.id}`, index, height: skipped })
-      skipped = 0
-      result.push({ key: `item:${item.id}`, item, index })
-    } else skipped += positions[index + 1] - positions[index]
+    const skipped = positions[index] - positions[cursor]
+    if (skipped) result.push({ key: `space:${item.id}`, index, height: skipped })
+    result.push({ key: `item:${item.id}`, item, index })
+    cursor = index + 1
   }
-  if (skipped) result.push({ key: 'tail', index: props.items.length, height: skipped })
+  // Only visit the viewport and its focused card; prefix sums account for gaps.
+  if (focusIndex !== undefined && focusIndex < first) append(focusIndex)
+  for (let index = first; index < last; index++) append(index)
+  if (focusIndex !== undefined && focusIndex >= last) append(focusIndex)
+  const tail = positions[length] - positions[cursor]
+  if (tail) result.push({ key: 'tail', index: length, height: tail })
   return result
 })
 function lowerBound(value: number) {
@@ -81,16 +90,16 @@ function activate() {
   if (active) return
   active = true
   observer = new ResizeObserver(records => {
-    const sizes = new Map(measured.value)
+    const sizes = measured.value
     let changed = false
-    const byId = new Map(props.items.map(item => [String(item.id), item.id]))
+    const byId = itemIndex.value
     for (const record of records) {
       if (record.target === root.value) {
         if (record.contentRect.width <= 0) continue
         width.value = record.contentRect.width
         gap.value = parseFloat(getComputedStyle(record.target).rowGap) || 0
       } else {
-        const id = byId.get((record.target as HTMLElement).dataset.virtualId || '')
+        const id = byId.get((record.target as HTMLElement).dataset.virtualId || '')?.id
         if (id === undefined) continue
         const height = record.borderBoxSize[0]?.blockSize ?? record.target.getBoundingClientRect().height
         const previous = sizes.get(id)
@@ -99,7 +108,7 @@ function activate() {
         }
       }
     }
-    if (changed) measured.value = sizes
+    if (changed) triggerRef(measured)
     schedule()
   })
   if (root.value) observer.observe(root.value)
