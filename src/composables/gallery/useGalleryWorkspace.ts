@@ -385,7 +385,8 @@ export function useGalleryWorkspace() {
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
     function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, item); }
-    const deleteMotion = useGalleryListMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value);
+    const deleteMotion = useGalleryListMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value,
+        () => !trashMode.value && collectionPreviewItems.value === null);
     function confirmDelete(item: ArtworkRecord): Promise<void> {
         const epoch = imageEpoch, viewerRevision = getViewerRevision();
         return confirmDeleteAction({ isCurrentView: () => !unmounted && viewActive && epoch === imageEpoch && viewerRevision === getViewerRevision(), showToast, deleting, viewerIndex, visible, indexOf, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer, bulkDeleting, selectedIds, loadGalleryStorage, onDeleted: deleteMotion.forAction() }, item);

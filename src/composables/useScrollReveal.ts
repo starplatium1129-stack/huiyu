@@ -8,7 +8,8 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
   let mutations: MutationObserver | null = null
   let media: MediaQueryList | null = null
   let frame = 0
-  let seen = new WeakSet<Element>()
+  const observed = new Set<Element>()
+  const pending = new Set<Element>()
   let active = false
   let root: Element | null = null
   // Masonry moves and cached returns must not replay an already viewed card.
@@ -20,66 +21,78 @@ export function useScrollReveal(selector = '[data-reveal]', options?: Intersecti
     const key = el.getAttribute('data-reveal-key')
     if (key) revealedKeys.add(key)
     observer?.unobserve(el)
+    observed.delete(el)
+    pending.delete(el)
   }
   function onFocus(event: Event) {
     if (!(event.target instanceof Element)) return
     const el = event.target.closest(selector)
     if (el && root?.contains(el)) reveal(el)
   }
-  function observeAll() {
-    if (!active || !root) return
-    const elements = [...root.querySelectorAll(selector)]
-    if (root.matches(selector)) elements.unshift(root)
-    elements.forEach(el => {
-      if (prefersReducedMotion() || !observer || revealedKeys.has(el.getAttribute('data-reveal-key') || '')) { reveal(el); return }
-      if (seen.has(el) || el.hasAttribute('data-revealed')) return
-      seen.add(el)
-      observer.observe(el)
-    })
+  function targets(node: Element, visit: (el: Element) => void) {
+    if (node.matches(selector)) visit(node)
+    node.querySelectorAll(selector).forEach(visit)
   }
-  function schedule() { if (!active || frame) return; frame = requestAnimationFrame(() => { frame = 0; observeAll() }) }
+  function flush() {
+    frame = 0
+    if (!active || !root) return
+    const reduced = prefersReducedMotion()
+    for (const el of pending) {
+      if (!root.contains(el) || el.hasAttribute('data-revealed')) continue
+      if (reduced || !observer || revealedKeys.has(el.getAttribute('data-reveal-key') || '')) { reveal(el); continue }
+      if (observed.has(el)) continue
+      observed.add(el)
+      observer.observe(el)
+    }
+    pending.clear()
+  }
+  function preference() {
+    if (prefersReducedMotion()) for (const el of observed) reveal(el)
+  }
   function onMutations(records: MutationRecord[]) {
     if (!active || !root) return
     // Filtering can remove unseen cards. Release detached targets even while an
     // addition scan is queued; moves within this root keep their observation.
     for (const record of records) for (const node of record.removedNodes) {
       if (!(node instanceof Element)) continue
-      const elements = [...node.querySelectorAll(selector)]
-      if (node.matches(selector)) elements.unshift(node)
-      for (const el of elements) {
-        if (root.contains(el)) continue
+      targets(node, el => {
+        if (root?.contains(el)) return
         observer?.unobserve(el)
-        seen.delete(el)
-      }
+        observed.delete(el)
+        pending.delete(el)
+      })
     }
-    if (frame) return
     // Counters, status copy and hover decoration do not introduce reveal targets.
-    const changed = records.some(record => [...record.addedNodes].some(node => node instanceof Element && (node.matches(selector) || node.querySelector(selector))))
-    if (changed) schedule()
+    // Queue only new targets, rather than rescanning the page on every batch.
+    for (const record of records) for (const node of record.addedNodes) {
+      if (node instanceof Element && root.contains(node)) targets(node, el => pending.add(el))
+    }
+    if (pending.size && !frame) frame = requestAnimationFrame(flush)
   }
   function start() {
     if (active) return
     active = true
     const element = instance?.proxy?.$el
     root = element instanceof Element ? element : document.querySelector('main') || document.body
-    seen = new WeakSet()
     media = matchMedia('(prefers-reduced-motion: reduce)')
     if ('IntersectionObserver' in window) observer = new IntersectionObserver(entries => {
       entries.forEach(entry => { if (active && root?.contains(entry.target) && entry.isIntersecting) reveal(entry.target) })
     }, { threshold: 0.04, rootMargin: '0px 0px -24px 0px', ...options })
-    media.addEventListener('change', observeAll)
-    window.addEventListener('atelier:motion-preference', observeAll)
+    media.addEventListener('change', preference)
+    window.addEventListener('atelier:motion-preference', preference)
     root.addEventListener('focusin', onFocus)
     mutations = new MutationObserver(onMutations)
     mutations.observe(root, { childList: true, subtree: true })
-    observeAll()
+    targets(root, el => pending.add(el))
+    flush()
   }
   function stop() {
     active = false
-    observer?.disconnect(); mutations?.disconnect(); media?.removeEventListener('change', observeAll); cancelAnimationFrame(frame)
-    window.removeEventListener('atelier:motion-preference', observeAll)
+    observer?.disconnect(); mutations?.disconnect(); media?.removeEventListener('change', preference); cancelAnimationFrame(frame)
+    window.removeEventListener('atelier:motion-preference', preference)
     root?.removeEventListener('focusin', onFocus)
     observer = null; mutations = null; root = null; frame = 0
+    observed.clear(); pending.clear()
   }
   onMounted(start)
   onActivated(start)

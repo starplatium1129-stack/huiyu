@@ -13,6 +13,7 @@ let program: WebGLProgram | null = null
 let buffer: WebGLBuffer | null = null
 let stopFrames: (() => void) | null = null
 let time = 1.5, concentration = props.progress ?? 0
+let width = 0, height = 0
 let uniforms: Record<string, WebGLUniformLocation | null> = {}
 
 const vertex = `#version 300 es
@@ -79,17 +80,20 @@ function draw() {
   gl.useProgram(program)
   gl.uniform1f(uniforms.time, time); gl.uniform1f(uniforms.gather, concentration)
   gl.uniform1f(uniforms.aspect, canvas.value.width / canvas.value.height)
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
+}
+function preparePalette() {
+  if (!gl || !program) return
+  gl.useProgram(program)
+  // Pigments change with the theme/palette, not with every animation frame.
   for (const [index, name] of ['pigmentA', 'pigmentB', 'pigmentC'].entries()) {
     const channels = (props.colors[index]?.match(/[\d.]+/g) ?? ['0', '0', '0']).slice(0, 3).map(Number)
     gl.uniform3f(uniforms[name], channels[0] / 255, channels[1] / 255, channels[2] / 255)
   }
-  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 function resize() {
   const surface = canvas.value
-  if (!props.present || !surface) return
-  const { width, height } = surface.getBoundingClientRect()
-  if (!width || !height) return
+  if (!props.present || !surface || !width || !height) return
   const ratio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(600_000 / (width * height)))
   const pixelWidth = Math.max(1, Math.round(width * ratio)), pixelHeight = Math.max(1, Math.round(height * ratio))
   if (surface.width !== pixelWidth) surface.width = pixelWidth
@@ -109,7 +113,11 @@ function reconcile() {
     draw()
   })
 }
-useResizeObserver(canvas, resize)
+useResizeObserver(canvas, ([entry]) => {
+  if (!entry) return
+  width = entry.contentRect.width; height = entry.contentRect.height
+  resize()
+})
 useEventListener(canvas, 'webglcontextlost', event => { event.preventDefault(); unavailable() })
 watch([() => props.present, () => props.animate], reconcile, { flush: 'post' })
 watch(() => props.progress, progress => {
@@ -117,7 +125,7 @@ watch(() => props.progress, progress => {
   concentration = progress ?? concentration
   draw()
 })
-watch(() => props.colors, draw)
+watch(() => props.colors, () => { preparePalette(); draw() })
 onMounted(() => {
   try {
     gl = canvas.value!.getContext('webgl2', { alpha: true, antialias: false, depth: false, stencil: false, premultipliedAlpha: false })
@@ -141,6 +149,7 @@ onMounted(() => {
     const position = gl.getAttribLocation(program, 'position')
     gl.enableVertexAttribArray(position); gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
     uniforms = Object.fromEntries(['time','gather','aspect','pigmentA','pigmentB','pigmentC'].map(name => [name, gl!.getUniformLocation(program!, name)]))
+    preparePalette()
     reconcile(); emit('ready')
   } catch { unavailable() }
 })

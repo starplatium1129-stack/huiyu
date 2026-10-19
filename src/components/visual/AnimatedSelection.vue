@@ -20,6 +20,7 @@ let removeMediaListener: (() => void) | undefined
 let initialized = false
 let parent: HTMLElement | null = null
 let observedTarget: HTMLElement | null = null
+let observing = false
 let destinationBox = ''
 let parentBox = ''
 let keyboardInput = false
@@ -96,12 +97,27 @@ function cancelScheduled(reset = true) {
 }
 function onVisibilityChange() {
   if (typeof document !== 'undefined' && document.hidden) {
+    stopObserving()
     cancelScheduled()
     fluid?.dispose()
     fluid = undefined
   } else {
+    startObserving()
     schedule()
   }
+}
+function startObserving() {
+  if (observing || suspended || document.hidden || !parent) return
+  observing = true
+  resize?.observe(parent)
+  mutations?.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-current', 'aria-pressed', 'aria-selected', 'aria-checked', 'data-state', 'hidden'] })
+}
+function stopObserving() {
+  observing = false
+  resize?.disconnect()
+  mutations?.disconnect()
+  observedTarget = null
+  parentBox = ''
 }
 function resized(entries: ResizeObserverEntry[]) {
   if (suspended || document.hidden) return
@@ -193,9 +209,8 @@ onMounted(() => {
   parent = indicator.value?.parentElement ?? null
   if (!parent) return
   resize = new ResizeObserver(resized)
-  resize.observe(parent)
   mutations = new MutationObserver(schedule)
-  mutations.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-current', 'aria-pressed', 'aria-selected', 'aria-checked', 'data-state', 'hidden'] })
+  startObserving()
   parent.addEventListener('scroll', schedule, { passive: true })
   parent.addEventListener('keydown', keyboard, true)
   parent.addEventListener('pointerdown', pointer, true)
@@ -204,10 +219,12 @@ onMounted(() => {
 })
 onActivated(() => {
   suspended = false
+  startObserving()
   schedule()
 })
 onDeactivated(() => {
   suspended = true
+  stopObserving()
   cancelScheduled()
   fluid?.dispose()
   fluid = undefined
@@ -220,8 +237,7 @@ onUnmounted(() => {
   if (typeof document !== 'undefined') {
     document.removeEventListener('visibilitychange', onVisibilityChange)
   }
-  resize?.disconnect()
-  mutations?.disconnect()
+  stopObserving()
   fluid?.dispose()
   cancelScheduled()
   parent?.removeEventListener('scroll', schedule)
@@ -242,11 +258,11 @@ onUnmounted(() => {
   inset: 0 -20%;
   border-radius: inherit;
   opacity: 0;
-  background: linear-gradient(105deg, transparent 15%, var(--glass-highlight) 45%, var(--accent-soft) 65%, transparent 85%);
+  background: linear-gradient(105deg, transparent 15%, var(--glass-highlight) 45%, var(--glass-highlight) 65%, transparent 85%);
 }
 /* The same geometry spring can travel beneath labels without painting a panel. */
 .animated-selection.animated-selection--underline { z-index:var(--z-raised); border:0; border-radius:0; box-shadow:none; background:none; }
-.animated-selection--underline::after { content:''; position:absolute; inset:auto 0 0; height:2px; border-radius:var(--r-pill); background:var(--accent); }
+.animated-selection--underline::after { content:''; position:absolute; inset:auto 0 0; height:2px; border-radius:var(--r-pill); background:var(--text-primary); }
 .animated-selection--underline .animated-selection-highlight { display:none; }
 @media (forced-colors: active) {
   .animated-selection-highlight { display:none; }

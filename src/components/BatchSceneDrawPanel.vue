@@ -8,7 +8,7 @@
             <span class="batch-step">BATCH · {{ batchMode === 'scene' ? 'SCENES' : 'CHARACTERS' }}</span>
             <h2>批量出图 · {{ batchMode === 'scene' ? '多场景蓝图' : '多角色漫游' }}</h2>
           </div>
-          <button class="btn btn-ghost btn-icon" type="button" aria-label="关闭批量出图" @click="emit('close')"><ArchiveIcon name="close" /></button>
+          <button ref="closeButton" class="btn btn-ghost btn-icon" type="button" aria-label="关闭批量出图" @click="emit('close')"><ArchiveIcon name="close" /></button>
         </header>
 
         <!-- ── 配置态 ── -->
@@ -65,7 +65,7 @@
                 <span class="batch-scene-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
                 <strong class="batch-scene-title">{{ scene.title }}</strong>
                 <small class="batch-scene-meta">
-                  {{ props.deps.pb.popularCharacters.find(character => character.id === scene.characterId)?.displayName }} · {{ scene.category }}<template v-if="scene.location"> · {{ scene.location }}</template>
+                  {{ sceneOwners.get(scene.characterId ?? '') }} · {{ scene.category }}<template v-if="scene.location"> · {{ scene.location }}</template>
                   <StudioTooltip content="成人场景">
                     <ArchiveIcon v-if="scene.adult" name="lock" class="batch-scene-adult" />
                   </StudioTooltip>
@@ -262,6 +262,7 @@ const emit = defineEmits<{
 }>()
 
 const panel = ref<HTMLElement | null>(null)
+const closeButton = ref<HTMLButtonElement | null>(null)
 const batchMode = ref<'scene' | 'character'>('scene')
 const count = ref<1 | 3>(1)
 const phase = ref<'config' | 'results'>('config')
@@ -271,7 +272,7 @@ const batchDescription = computed(() => phase.value === 'config'
   : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。')
 const previewJob = shallowRef<DeepReadonly<BatchDrawJob> | null>(null)
 const previewSource = ref<HTMLImageElement | null>(null)
-useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close') })
+useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close'), initialFocus: closeButton })
 
 // ── 场景选择态 ──
 const sceneLimit = ref(30), charLimit = ref(30)
@@ -308,15 +309,22 @@ const progressPercent = computed(() => {
 // ── 场景蓝图筛选 ──
 const categories = computed(() =>
   [...new Set(props.scenes.map(scene => scene.category).filter(Boolean))].sort())
+const sceneOwners = computed(() => new Map(props.deps.pb.popularCharacters.map(character => [character.id, character.displayName])))
+const sceneSearchIndex = computed(() => props.scenes.map(scene => ({
+  scene,
+  terms: [scene.title, scene.location, scene.category, sceneOwners.value.get(scene.characterId ?? '')]
+    .map(text => String(text || '').toLowerCase()),
+})))
 const filteredScenes = computed(() => {
   const keyword = filter.value.trim().toLowerCase()
-  return props.scenes.filter(scene => {
-    if (categoryFilter.value && scene.category !== categoryFilter.value) return false
-    if (!keyword) return true
-    const owner = props.deps.pb.popularCharacters.find(character => character.id === scene.characterId)
-    return [scene.title, scene.location, scene.category, owner?.displayName]
-      .some(text => String(text || '').toLowerCase().includes(keyword))
-  })
+  const category = categoryFilter.value
+  if (!keyword) return props.scenes.filter(scene => !category || scene.category === category)
+  const matches: SceneBlueprint[] = []
+  for (const { scene, terms } of sceneSearchIndex.value) {
+    if (category && scene.category !== category) continue
+    if (terms.some(text => text.includes(keyword))) matches.push(scene)
+  }
+  return matches
 })
 const selectedSceneCount = computed(() => selectedSceneSet.size)
 const allFilteredScenesSelected = computed(() =>
@@ -369,14 +377,20 @@ const allCharacters = computed<CharacterOption[]>(() => {
 const franchises = computed(() =>
   [...new Set(allCharacters.value.map(c => c.franchise).filter(Boolean))].sort())
 
+const characterSearchIndex = computed(() => allCharacters.value.map(char => ({
+  char,
+  terms: [char.displayName, char.franchise, char.id].map(text => String(text || '').toLowerCase()),
+})))
 const filteredCharacters = computed(() => {
   const keyword = charFilter.value.trim().toLowerCase()
-  return allCharacters.value.filter(char => {
-    if (franchiseFilter.value && char.franchise !== franchiseFilter.value) return false
-    if (!keyword) return true
-    return [char.displayName, char.franchise, char.id]
-      .some(text => String(text || '').toLowerCase().includes(keyword))
-  })
+  const franchise = franchiseFilter.value
+  if (!keyword) return allCharacters.value.filter(char => !franchise || char.franchise === franchise)
+  const matches: CharacterOption[] = []
+  for (const { char, terms } of characterSearchIndex.value) {
+    if (franchise && char.franchise !== franchise) continue
+    if (terms.some(text => text.includes(keyword))) matches.push(char)
+  }
+  return matches
 })
 const selectedCharCount = computed(() => selectedCharSet.size)
 const allFilteredCharsSelected = computed(() =>

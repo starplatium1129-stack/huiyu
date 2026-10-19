@@ -4,6 +4,9 @@ import { mergeChatMemoryStates, normalizeChatMemoryState } from './chatMemory'
 import { normalizeChatStorage } from './chatStorageCore'
 import { listCompanionCharacterIds, normalizeCompanionOutfit } from './companionRegistry'
 import { assertChatVersion } from './chatVersion'
+import { STORAGE_VERSION } from '@/config/characters'
+import { captureChatConversations, mergeChatConversationStates } from './chatConversationStorage'
+import { cloneChatMessages } from './chatMessageStorage'
 
 /** Validate and merge settings in memory before touching the user's existing storage. */
 export function prepareBackupSettings(current: Record<string, string>, incoming: Record<string, string>, replace: boolean) {
@@ -12,12 +15,12 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
   // companion preferences it must promote). Returning the whole current snapshot
   // would make a later restore write stale values from before an async image stage.
   const result = {} as Record<string, string>
-  if (replace) for (const [key, version] of [['aics_chat_v1', 3], [CHAT_MEMORY_KEY, 1], [CHAT_ARCHIVE_KEY, 1]] as const) {
+  if (replace) for (const [key, version] of [['aics_chat_v1', STORAGE_VERSION], [CHAT_MEMORY_KEY, 1], [CHAT_ARCHIVE_KEY, 1]] as const) {
     assertChatVersion(JSON.parse(current[key] || 'null'), version)
   }
   for (const [key, value] of Object.entries(incoming)) {
     if (!isLiveLocalKey(key)) continue
-    const version = key === 'aics_chat_v1' ? 3 : [CHAT_MEMORY_KEY, CHAT_ARCHIVE_KEY].includes(key) ? 1 : 0
+    const version = key === 'aics_chat_v1' ? STORAGE_VERSION : [CHAT_MEMORY_KEY, CHAT_ARCHIVE_KEY].includes(key) ? 1 : 0
     if (version) {
       assertChatVersion(JSON.parse(current[key] || 'null'), version)
       assertChatVersion(JSON.parse(value), version)
@@ -35,8 +38,8 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
     } else if (!replace && key === 'aics_chat_v1') {
       const options = {
         characterIds,
-        maxMessages: 20,
-        version: 3,
+        maxMessages: Number.MAX_SAFE_INTEGER,
+        version: STORAGE_VERSION,
         createMessageId: () => `restore-${crypto.randomUUID()}`,
         normalizeOutfit: normalizeCompanionOutfit,
       }
@@ -49,17 +52,20 @@ export function prepareBackupSettings(current: Record<string, string>, incoming:
         const draftKey = CHAT_DRAFT_PREFIX + character
         if (!(draftKey in incoming)) result[draftKey] = JSON.stringify(next.settings.drafts[character] || '')
       }
-      const merged = { ...next, histories: { ...old.histories } }
-      for (const character of options.characterIds) {
-        const ids = new Set<string>()
-        merged.histories[character] = [...old.histories[character], ...next.histories[character]].filter(item => {
-          if (ids.has(item.mid)) return false
-          ids.add(item.mid)
-          return true
-        }).slice(-20)
-      }
+      // A portable import adds branches and alternatives; local clear epochs
+      // do not discard a deliberately selected backup's conversation content.
+      const merged = { ...next, histories: cloneChatMessagesByCharacter(old.histories), conversations: captureChatConversations(old),
+        historiesRevision: old.historiesRevision, historiesRevisions: { ...old.historiesRevisions } }
+      for (const character of characterIds) next.historiesRevisions[character] = merged.historiesRevisions[character] || 0
+      next.historiesRevision = merged.historiesRevision
+      mergeChatConversationStates(merged, next)
+      merged.conversations = captureChatConversations(merged)
       result[key] = JSON.stringify(merged)
     } else result[key] = value
   }
   return result
+}
+
+function cloneChatMessagesByCharacter(histories: Record<string, import('./chatStorageCore').PersistedChatMessage[]>) {
+  return Object.fromEntries(Object.entries(histories).map(([char, messages]) => [char, cloneChatMessages(messages)]))
 }

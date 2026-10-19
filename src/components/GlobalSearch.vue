@@ -121,8 +121,7 @@ import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useFluidSurface } from '@/composables/useFluidSurface'
 import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
 import { useSceneStore } from '@/stores/sceneStore'
-import { artworkRepository } from '@/storage/artworkRepository'
-import { indexArtworkSearch } from '@/utils/artworkSearch'
+import { useGlobalSearchWorks } from '@/composables/useGlobalSearchWorks'
 
 const props = defineProps<{
   initialSource?: 'keyboard' | 'pointer'
@@ -164,11 +163,7 @@ const resultsEl = ref<HTMLElement | null>(null)
 const scenes = shallowRef<SceneItem[]>([])
 const scenesLoading = ref(false), scenesError = ref('')
 let scenesReady = false, scenesRequest = 0
-const works = shallowRef<ReturnType<typeof indexArtworkSearch> | null>(null)
-const worksController = shallowRef<AbortController | null>(null)
-let worksTimer: ReturnType<typeof setTimeout> | undefined
-const worksError = ref('')
-const worksLoading = computed(() => worksController.value !== null)
+const { works, worksError, worksLoading, loadWorks, resetWorks } = useGlobalSearchWorks(query)
 const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
 let previousActiveElement: HTMLElement | null = null
 let navigationRequest = 0
@@ -207,11 +202,12 @@ const ACTIONS: SearchItem[] = [
   { id: 'works', label: '打开我的作品', icon: 'gallery', path: '/gallery', keywords: '作品' },
 ]
 
+for (const page of PAGES) page.keywords = (page.label + ' ' + page.keywords).toLowerCase()
+for (const action of ACTIONS) action.keywords = action.keywords.toLowerCase()
 const queryTerms = computed(() => query.value.trim().toLowerCase().split(/\s+/).filter(Boolean))
 
 function match(keywords: string): boolean {
-  const text = keywords.toLowerCase()
-  return queryTerms.value.every(part => text.includes(part))
+  return queryTerms.value.every(part => keywords.includes(part))
 }
 
 function takeMatches<T extends { keywords: string }>(items: readonly T[], limit: number): T[] {
@@ -226,7 +222,7 @@ function takeMatches<T extends { keywords: string }>(items: readonly T[], limit:
   return result
 }
 
-const filteredPages = computed(() => PAGES.filter(p => match(p.label + ' ' + p.keywords)))
+const filteredPages = computed(() => PAGES.filter(p => match(p.keywords)))
 const filteredActions = computed(() => ACTIONS.filter(a => match(a.keywords)))
 const filteredScenes = computed(() => takeMatches(scenes.value, 8))
 const filteredWorks = computed(() => (works.value ?? []).map(item => ({
@@ -236,19 +232,21 @@ const filteredWorks = computed(() => (works.value ?? []).map(item => ({
 
 /** 展平结果行：空查询 = 操作 + 页面；有查询 = 页面 + 场景 + 作品 */
 const flat = computed<FlatSearchResult[]>(() => {
-  const actions: FlatSearchResult[] = filteredActions.value.map(item => ({
-    kind: 'action', id: item.id, path: item.path, label: item.label,
-  }))
   const pages: FlatSearchResult[] = filteredPages.value.map(item => ({
     kind: 'page', id: item.id, path: item.path, label: item.label,
   }))
+  if (!query.value.trim()) {
+    const actions: FlatSearchResult[] = filteredActions.value.map(item => ({
+      kind: 'action', id: item.id, path: item.path, label: item.label,
+    }))
+    return [...actions, ...pages]
+  }
   const scenes: FlatSearchResult[] = filteredScenes.value.map(item => ({
     kind: 'scene', id: item.id, path: item.path, label: item.title,
   }))
   const works: FlatSearchResult[] = filteredWorks.value.map(item => ({
     kind: 'work', id: item.id, path: item.path, label: item.title,
   }))
-  if (!query.value.trim()) return [...actions, ...pages]
   return [...pages, ...scenes, ...works]
 })
 
@@ -323,8 +321,6 @@ function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = docume
   triggerSource.value = source
   open.value = true
   query.value = ''
-  activeIndex.value = 0
-  void loadScenes()
   const path = route.fullPath
   void nextTick(() => { if (open.value && route.fullPath === path) inputEl.value?.focus({ preventScroll: true }) })
 }
@@ -341,7 +337,7 @@ function close(restoreFocus = true) {
     if (active instanceof HTMLElement && panelEl.value?.contains(active)) active.blur()
   }
   open.value = false
-  scenesRequest++; scenesLoading.value = false
+  resetSceneRead()
   resetWorks()
   const previous = previousActiveElement, path = route.fullPath, closing = panelEl.value
   previousActiveElement = null
@@ -370,34 +366,11 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-function resetWorks() {
-  clearTimeout(worksTimer)
-  worksController.value?.abort()
-  worksController.value = null
-  works.value = null
-  worksError.value = ''
-}
-
-function loadWorks() {
-  if (worksError.value) return
-  resetWorks()
-  const controller = new AbortController()
-  worksController.value = controller
-  const text = query.value
-  worksTimer = setTimeout(async () => {
-    try {
-      const raw = await artworkRepository.searchArtworks(text, AbortSignal.any([controller.signal, AbortSignal.timeout(35_000)]))
-      if (controller.signal.aborted) return
-      works.value = indexArtworkSearch(raw)
-    } catch {
-      if (!controller.signal.aborted) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
-    } finally {
-      if (worksController.value === controller) worksController.value = null
-    }
-  }, 150)
+function resetSceneRead() {
+  scenesRequest++; scenesLoading.value = false; scenesError.value = ''
 }
 async function loadScenes() {
-  if (scenesReady || scenesLoading.value || !open.value) return
+  if (scenesReady || scenesLoading.value || scenesError.value || !open.value || !queryTerms.value.length) return
   const request = ++scenesRequest
   scenesLoading.value = true; scenesError.value = ''
   try {
@@ -427,6 +400,7 @@ async function loadScenes() {
 }
 function retryScenes(event: MouseEvent) {
   if (document.activeElement === event.currentTarget) inputEl.value?.focus({ preventScroll: true })
+  scenesError.value = ''
   void loadScenes()
 }
 
@@ -435,10 +409,13 @@ const { returnFocus } = useFocusTrap(panelEl, () => open.value, {
   initialFocus: inputEl,
 })
 
-watch(query, () => {
+watch([query, open], () => {
+  if (!open.value) return
   activeIndex.value = 0
-  if (!queryTerms.value.length) resetWorks()
-  else if (open.value) void loadWorks()
+  if (!queryTerms.value.length) { resetSceneRead(); resetWorks() }
+  else { void loadScenes(); loadWorks() }
+  // Opening and query changes restart selection at the first result.
+  void nextTick(() => { if (open.value) resultsEl.value?.scrollTo({ top: 0, behavior: 'instant' }) })
 })
 
 watch(() => route.fullPath, () => close(false), { flush: 'sync' })
@@ -453,8 +430,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
   navigationRequest++
-  scenesRequest++
-  resetWorks()
+  resetSceneRead()
   document.removeEventListener('keydown', onKeydown)
 })
 </script>
@@ -515,7 +491,7 @@ onUnmounted(() => {
   font: inherit;
 }
 .gs-row > .archive-icon { width:16px; height:16px; flex-shrink:0; }
-.gs-row > span { min-width:0; overflow-wrap:anywhere; }
+.gs-row > span { flex:1; min-width:0; overflow-wrap:anywhere; }
 .gs-row small { @apply tw:min-w-0 tw:ml-auto tw:text-muted tw:text-label-sm tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:max-w-[46%]; }
 .gs-row.active { background: var(--accent-soft); @apply tw:text-primary; }
 .gs-row.active small { @apply tw:text-secondary; }
@@ -523,5 +499,5 @@ onUnmounted(() => {
 .gs-sr-status { clip: rect(0 0 0 0); clip-path: inset(50%); border: 0; }
 @media (max-width:600px) { .global-search { --search-inset:var(--s-5); } .gs-input { @apply tw:text-body; } .gs-results { @apply tw:max-h-[60dvh]; } }
 .gs-empty { padding: var(--s-6) var(--s-4); }
-@media (forced-colors:active) { .gs-input-row:focus-within { outline:2px solid Highlight; outline-offset:-2px; } }
+@media (forced-colors:active) { .gs-input-row:focus-within, .gs-row.active { outline:2px solid Highlight; outline-offset:-2px; } }
 </style>

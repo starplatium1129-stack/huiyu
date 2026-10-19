@@ -1,4 +1,5 @@
 import { onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
+import { cancelFrame, frame } from 'motion'
 
 /** Own the fitted image geometry; pointer moves update only the transformed layer. */
 export function useImageViewport(
@@ -15,18 +16,21 @@ export function useImageViewport(
   const ZOOM_STEP = .25, KEYBOARD_PAN_STEP = 32
 
   function paint() {
+    cancelFrame(paint)
     if (layer.value) layer.value.style.transform = `translate(${x}px, ${y}px) scale(${scale.value})`
   }
-  function constrain() {
+  function constrain(deferPaint = false) {
     const boundX = Math.max(0, (geometry.width * scale.value - geometry.viewportWidth) / 2)
     const boundY = Math.max(0, (geometry.height * scale.value - geometry.viewportHeight) / 2)
     x = Math.max(-boundX, Math.min(boundX, x))
     y = Math.max(-boundY, Math.min(boundY, y))
-    paint()
+    if (deferPaint) frame.render(paint)
+    else paint()
   }
   function releasePan() {
     const previous = pan
     pan = null; isPanning.value = false
+    if (previous) paint()
     if (previous?.target.hasPointerCapture(previous.id)) previous.target.releasePointerCapture(previous.id)
   }
   function refreshBounds() {
@@ -122,7 +126,8 @@ export function useImageViewport(
     if (!pan || event.pointerId !== pan.id) return
     x = pan.x + (event.clientX - pan.startX) * pan.ratioX
     y = pan.y + (event.clientY - pan.startY) * pan.ratioY
-    constrain()
+    // Pointer samples share one painted frame; settled/keyboard operations stay immediate.
+    constrain(true)
   }
   function stopPan(event: PointerEvent) { if (event.pointerId === pan?.id) releasePan() }
   function observe() {
@@ -142,6 +147,7 @@ export function useImageViewport(
   function deactivate() {
     active = false
     releasePan(); observer?.disconnect()
+    cancelFrame(paint)
     window.removeEventListener('blur', releasePan)
   }
   watch([viewport, image, layer], observe, { flush: 'post' })

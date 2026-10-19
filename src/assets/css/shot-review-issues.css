@@ -8,5 +8,5 @@
 /* 审计修复：warn 标签原为 40% 透明 warning 底配 --warning-text（4.05:1 压线不过），
    与同级 error 标签统一为「实心底 + 反色深字」 */
 .shot-review-item[data-severity="warn"] .shot-review-tag { background: var(--warning); @apply tw:text-inverse; }
-.shot-review-copy { flex: 1 1 280px; @apply tw:min-w-0 tw:leading-body; }
+.shot-review-copy { flex: 1 1 280px; @apply tw:min-w-0 tw:leading-body; overflow-wrap:anywhere; }
 .shot-review-copy em { @apply tw:text-secondary tw:not-italic; }

@@ -74,8 +74,9 @@ export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
     else if (busy() && !effect) start(source(),false)
   },{flush:'sync'})
   useResizeObserver(host,() => {
+    if (!effect) return
     const bounds=host.value?.getBoundingClientRect()
-    if (effect && bounds && (Math.abs(bounds.width-size.width)>1 || Math.abs(bounds.height-size.height)>1)) stop()
+    if (bounds && (Math.abs(bounds.width-size.width)>1 || Math.abs(bounds.height-size.height)>1)) stop()
   })
   onMounted(() => { if (busy() && !effect) start() })
   onBeforeUnmount(stop)

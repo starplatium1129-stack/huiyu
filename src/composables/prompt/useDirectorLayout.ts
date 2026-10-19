@@ -1,5 +1,6 @@
 import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
+import { cancelFrame, frame } from 'motion'
 import { profileLocalStorage } from '@/platform/web/profileStorage'
 import { DIRECTOR_LAYOUT_KEY } from '@/utils/storageKeys'
 
@@ -55,6 +56,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     }
   }, { capture: true })
   let activePointer: { element: HTMLElement; id: number; side: Side; x: number; width: number; before: LayoutPreference; materialsOpen: boolean } | null = null
+  let pendingWidth: number | null = null
   let suppressClick = false, suppressDoubleClick = false
   const preferredInspectorWidth = computed(() => preferences.value.inspector ?? (viewport.value <= 1440 ? 320 : 368))
   // Resizing may use spare canvas width, including a compact portrait workspace.
@@ -79,10 +81,20 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     const other = collapsed.value[otherSide] ? 0 : currentWidth(otherSide)
     preferences.value[side] = Math.round(Math.max(side === 'materials' ? 240 : 280, Math.min(value, 560, available.value - other)))
   }
+  /* compositor-exempt: real rail resizing must reflow text and the canvas.
+     Only the active gesture submits widths per frame; existing size limits remain. */
+  function applyResize() {
+    const value = pendingWidth; pendingWidth = null
+    if (activePointer && value !== null) setWidth(activePointer.side, value)
+  }
   function finish(event?: PointerEvent) {
     const active = activePointer
     if (!active || (event && active.id !== event.pointerId)) return
     const commit = event?.type === 'pointerup'
+    if (commit && event) move(event)
+    cancelFrame(applyResize)
+    if (commit) applyResize()
+    else pendingWidth = null
     const resized = dragging.value !== null
     activePointer = null; dragging.value = null
     suppressClick = resized || !commit
@@ -121,7 +133,8 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     const distance = event.clientX - active.x
     if (!dragging.value && Math.abs(distance) < RESIZE_INTENT_PX) return
     dragging.value = active.side
-    setWidth(active.side, active.width + distance * (active.side === 'materials' ? 1 : -1))
+    pendingWidth = active.width + distance * (active.side === 'materials' ? 1 : -1)
+    frame.update(applyResize)
   }
   function key(side: Side, event: KeyboardEvent) {
     if (event.altKey || event.ctrlKey || event.metaKey) return
@@ -168,7 +181,7 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
       viewport.value = window.innerWidth
     })
     if (root.value) observer.observe(root.value)
-    measure()
+    viewport.value = window.innerWidth
   }
   function stopObserving() {
     observing = false
@@ -180,7 +193,6 @@ export function useDirectorLayout(root: Ref<HTMLElement | null>) {
     observer?.disconnect()
     if (!observing) return
     if (root.value) observer?.observe(root.value)
-    measure()
   })
   onMounted(observe)
   onActivated(() => {

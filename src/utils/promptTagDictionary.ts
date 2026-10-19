@@ -72,8 +72,10 @@ export function createPromptTagDictionary(catalog: readonly PromptTagSource[]) {
 }
 
 /** Same search contract for canonical tags, Chinese labels and aliases. */
-export function matchesPromptTag(tag: PromptTagSource, query: string, meaning = ''): boolean {
-  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean)
-  const fields = [tag.en, tag.cn || '', ...(tag.aliases ?? []), tag.desc || '', meaning].map(lookupKey)
-  return words.every(word => fields.some(field => field.includes(lookupKey(word))))
+export function createPromptTagMatcher(query: string) {
+  const words = query.trim().toLowerCase().split(/\s+/).filter(Boolean).map(lookupKey)
+  return (tag: PromptTagSource, meaning = ''): boolean => {
+    const fields = [tag.en, tag.cn || '', ...(tag.aliases ?? []), tag.desc || '', meaning].map(lookupKey)
+    return words.every(word => fields.some(field => field.includes(word)))
+  }
 }

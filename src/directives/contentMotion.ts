@@ -11,7 +11,9 @@ function cancel(el: HTMLElement) {
   pending.delete(el)
   active.get(el)?.motion.cancel(); active.delete(el)
 }
-function settle() { for (const el of new Set([...active.keys(), ...pending.keys()])) cancel(el) }
+function settle(root?: HTMLElement) {
+  for (const el of new Set([...active.keys(), ...pending.keys()])) if (!root || root.contains(el)) cancel(el)
+}
 function scheduleReveal(el: HTMLElement, direction?: string, deferred = false) {
   const frame = pending.get(el)
   if (frame !== undefined) cancelAnimationFrame(frame)
@@ -24,7 +26,8 @@ function reveal(el: HTMLElement, direction = 'up') {
   if (document.hidden || prefersReducedMotion() || !el.isConnected
     || el.matches('input, textarea') && document.activeElement === el) { cancel(el); return }
   for (let parent: HTMLElement | null = el; parent; parent = parent.parentElement) {
-    if (parent.hidden || parent.inert || parent.style.display === 'none' || parent.dataset.routeEntering === 'true') { cancel(el); return }
+    if (parent.hidden || parent.inert || parent.style.display === 'none'
+      || parent instanceof HTMLDialogElement && !parent.open || parent.dataset.routeEntering === 'true') { cancel(el); return }
   }
   // A parent arrival already moves its content. Do not stack a second reveal.
   for (const surface of active.keys()) {
@@ -58,6 +61,9 @@ export const contentMotion: ObjectDirective<HTMLElement, unknown> = {
 /** Native disclosures share the same spring and reduced-motion lifecycle. */
 export function installContentMotion() {
   function preference() { if (document.hidden || prefersReducedMotion()) settle() }
+  function nativeClose(event: Event) {
+    if (event.target instanceof HTMLDialogElement && !event.target.open) settle(event.target)
+  }
   function toggle(event: Event) {
     if (!(event.target instanceof HTMLDetailsElement)) return
     const details = event.target
@@ -68,6 +74,7 @@ export function installContentMotion() {
     else cancel(body)
   }
   document.addEventListener('toggle', toggle, true)
+  document.addEventListener('close', nativeClose, true)
   const stopListening = listenMotionChanges(preference)
-  return () => { settle(); document.removeEventListener('toggle', toggle, true); stopListening() }
+  return () => { settle(); document.removeEventListener('toggle', toggle, true); document.removeEventListener('close', nativeClose, true); stopListening() }
 }

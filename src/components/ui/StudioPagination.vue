@@ -58,7 +58,7 @@ async function keyboard(event: KeyboardEvent) {
 .page-arrow:hover:not([aria-disabled='true']) { color:var(--accent); background:var(--accent-soft); }
 .studio-pagination button[aria-disabled='true'] { color:var(--text-disabled); cursor:default; }
 .page-arrow:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.page-numbers { min-width:0; }
+.page-numbers { min-width:0; flex-wrap:wrap; }
 html body .page-numbers[role] { gap:0; padding:2px; border-radius:var(--r-md); --selection-radius:var(--r-sm); }
 html body .page-numbers[role] > button { flex:0 0 auto; min-width:32px; min-height:32px; padding:var(--s-1); font:inherit; }
 .page-gap { display:grid; place-items:center; min-width:12px; }

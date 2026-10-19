@@ -16,6 +16,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   const travel = shallowRef<CoverFlowTravel | null>(null)
   const stepWidth = computed(() => Math.max(96, Math.min(220, width.value * .18)))
   let frame = 0, lastFrame = 0
+  let dragFrame = 0, pendingDrag: number | undefined
   let wheelPosition: number | null = null, wheelTimer: ReturnType<typeof setTimeout> | undefined
   let requestedIndex = options.index(), suppressClick = false
   let clickTimer: ReturnType<typeof setTimeout> | undefined
@@ -31,6 +32,14 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     options.present(value)
   }
   function stopFrame() { cancelAnimationFrame(frame); frame = 0; lastFrame = 0 }
+  function cancelDragPaint() { cancelAnimationFrame(dragFrame); dragFrame = 0; pendingDrag = undefined }
+  function flushDragPaint() {
+    const value = pendingDrag
+    if (value === undefined) return false
+    cancelDragPaint()
+    present(value)
+    return true
+  }
   function captureTravel() {
     const current = travel.value
     if (!current) return
@@ -89,11 +98,13 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   }
   function clearWheel() { clearTimeout(wheelTimer); wheelPosition = null }
   function releasePointer() {
+    flushDragPaint()
     const id = drag?.id
     drag = null; dragging.value = false
     if (id !== undefined && host.value?.hasPointerCapture(id)) host.value.releasePointerCapture(id)
   }
   function stop() {
+    cancelDragPaint()
     captureTravel()
     stopFrame(); clearWheel(); releasePointer()
     clearTimeout(clickTimer); suppressClick = false
@@ -135,7 +146,9 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     const elapsed = event.timeStamp - drag.time
     if (elapsed > 0) drag.velocity = Math.max(-14, Math.min(14, (value - drag.last) / elapsed * 1000))
     drag.last = value; drag.time = event.timeStamp
-    spring.snap(value); present(value)
+    // Keep release velocity at pointer rate; present only the latest point per frame.
+    spring.snap(value); pendingDrag = value
+    if (!dragFrame) dragFrame = requestAnimationFrame(flushDragPaint)
   }
   function pointerEnd(event: PointerEvent, cancelled = false) {
     if (!drag || drag.id !== event.pointerId) return
@@ -174,8 +187,9 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   useEventListener(window, 'blur', () => { if (drag) { releasePointer(); moveTo(options.index()) } })
   useResizeObserver(host, entries => {
     width.value = entries[0]?.contentRect.width || width.value
+    const painted = flushDragPaint()
     if(travel.value){const target=travel.value.to;captureTravel();moveTo(target)}
-    else options.present(position)
+    else if (!painted) options.present(position)
   })
   watch(options.index, index => {
     if (!options.active()) return

@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
-import { useElementSize, useEventListener } from '@vueuse/core'
+import { useResizeObserver, useEventListener } from '@vueuse/core'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import { usePressRipple } from '@/composables/usePressRipple'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -122,8 +122,9 @@ const emit = defineEmits<{
 // with the retained workspace; scrolling itself never updates reactive layout.
 const generationBar = ref<HTMLElement | null>(null)
 const sizeActive = ref(true)
-const { height: generationBarHeight } = useElementSize(() => sizeActive.value ? generationBar.value : null, { width:0, height:0 }, { box:'border-box' })
-watch(generationBarHeight, height => emit('resize', height), { immediate:true })
+useResizeObserver(() => sizeActive.value ? generationBar.value : null, ([entry]) => {
+  if (entry && sizeActive.value) emit('resize', entry.borderBoxSize[0].blockSize)
+}, { box: 'border-box' })
 onActivated(() => { sizeActive.value = true })
 onDeactivated(() => { sizeActive.value = false })
 </script>

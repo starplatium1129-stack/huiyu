@@ -44,7 +44,7 @@ export function usePromptWorkspace() {
     const draftRecovery = usePromptDraftRecovery(pb);
     const sceneStore = useSceneStore();
     const sd = useLegacySdTasks();
-    const { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery, characterShifting } = usePromptWorkspaceUi(pb, route);
+    const { inspector, materialDrawer, voiceStudioRef, batchOpen, batchRunning, autoSaveToGallery } = usePromptWorkspaceUi(route);
     const currentCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char);
     const currentCharacterThemeStyle = useCharacterAtmosphere(() => currentCharacterId.value, () => sceneStore.characters);
 
@@ -505,7 +505,7 @@ export function usePromptWorkspace() {
         popularBlueprintPool, blueprintCategories, recommendedBlueprints, filteredPopularBlueprints,
         popularCategory, showAllBlueprints, availableScenes, visibleScenes, sceneCollection,
         personaCoreCount, curatedCount, personaCoreIds, sceneLimit, selectBlueprint,
-        rotateBlueprintSet, toggleBlueprintList, setSceneCollection, selectScene,
+        rotateBlueprintSet, toggleBlueprintList, setSceneCollection, selectScene, retryInitialization: () => retryInitialization(),
     };
     const renderBindings: PromptRenderBindings = {
         pb: reactive({
@@ -545,7 +545,7 @@ export function usePromptWorkspace() {
         generationBusy, inpaintPreparing, prevResult, inpaintOpen, compareOpen, displayResultSeed,
         lastResult, closeCompare, negativePrompt, inpaintCharacter, handleInpaintSubmit,
     };
-    usePromptLifecycle({
+    const retryInitialization = usePromptLifecycle({
         draftRecovery, getRestoreOwner,
         router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
         pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
@@ -556,7 +556,7 @@ export function usePromptWorkspace() {
     });
     return {
         capturedScene, capturingScene, captureScene, closeSceneCapture, historyReuse,
-        pb, displayResultUrl, resultRevealUrl, characterShifting, currentCharacterThemeStyle, sd,
+        pb, displayResultUrl, resultRevealUrl, currentCharacterThemeStyle, sd,
         animaSession, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,
         selectPopularSource, selectPopularCharacter, selectPopularOutfit, resumeHistory, duplicateHistory, deleteHistory,

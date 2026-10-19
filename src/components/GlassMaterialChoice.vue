@@ -49,11 +49,11 @@ const choices: Array<{ value: GlassMode; title: string }> = [
 .glass-choice-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .glass-choice-option { border:0; background:transparent; color:inherit; font:inherit; }
 .glass-choice-body { border:1px solid var(--border-soft); background:var(--bg-surface); }
-.glass-choice-option[aria-checked='true'] .glass-choice-body { @apply tw:border-strong; box-shadow:var(--selection-shadow); }
+.glass-choice-option[aria-checked='true'] .glass-choice-body { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
 .glass-choice-option:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .glass-choice-indicator { z-index:var(--z-raised); place-items:center; border:1px solid var(--border-strong); border-radius:50%; background:var(--bg-elevated); color:transparent; }
 .glass-choice-indicator .archive-icon { @apply tw:w-[13px] tw:h-[13px]; }
-.glass-choice-option[aria-checked='true'] .glass-choice-indicator { @apply tw:border-accent; background:var(--accent); @apply tw:text-inverse; }
+.glass-choice-option[aria-checked='true'] .glass-choice-indicator { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary; }
 .glass-choice-body strong { @apply tw:text-primary tw:text-body tw:font-semibold; }
 .glass-choice-preview { place-items:center; background:radial-gradient(ellipse at 15% 80%,var(--accent) 0%,transparent 65%),linear-gradient(135deg,var(--bg-elevated),var(--accent-soft)); }
 .glass-choice-surface { border:1px solid var(--glass-edge); background:var(--bg-surface); box-shadow:inset 0 1px var(--glass-highlight),var(--shadow-sm); }

@@ -1,4 +1,4 @@
-import { computed, nextTick, onDeactivated, onScopeDispose, ref } from 'vue'
+import { computed, nextTick, onDeactivated, onScopeDispose, ref, watch } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { normalizeSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import { confirmAction } from '@/composables/useConfirm'
@@ -8,7 +8,7 @@ import { useAlbumNavigation } from './useAlbumNavigation'
 import { galleryProjects, type GalleryProject } from './galleryStorage'
 import { useGalleryProjectAlbums } from './useGalleryProjectAlbums'
 import { createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
-import { safeImageUrl } from './galleryHelpers'
+import { safeImageUrl, searchHaystack } from './galleryHelpers'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
 
 type Workspace = ReturnType<typeof useGalleryWorkspace>
@@ -61,10 +61,15 @@ export function useGalleryCollections(options: Options) {
     editorTitle.value = project.title; editorRule.value = normalizeSmartAlbumRule(project.smartRule)
     editorOpen.value = true
   }
+  const previewSearching = computed(() => editorOpen.value && !!editorRule.value.search.trim())
+  const previewSearchIndex = computed(() => previewSearching.value
+    ? new Map(options.history.value.map(item => [item, searchHaystack(item)])) : null)
+  watch(previewSearching, searching => { if (!searching) void previewSearchIndex.value }, { flush: 'sync' })
   const previewItems = computed(() => {
     if (!editorOpen.value) return []
     const matches = createSmartAlbumMatcher(editorRule.value, options.projects.value)
-    return options.history.value.filter(item => matches(item))
+    const index = previewSearchIndex.value
+    return options.history.value.filter(item => matches(item, index?.get(item)))
   })
   const previewCovers = computed(() => previewItems.value.slice(0, 3).map(item => {
     const cached = options.thumbUrls[item.id] || options.cardUrls[item.id] || ''

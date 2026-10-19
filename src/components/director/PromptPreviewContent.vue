@@ -27,15 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import { promptPreviewScopes, type PromptPreviewContext } from '@/utils/promptPreview'
+import type { PromptPreviewLayer } from '@/utils/promptPreview'
 
-const props = defineProps<{ prompt: string; positiveCount: number; negativeCount: number; context: PromptPreviewContext }>()
-const splitPrompt = computed(() => {
-  const parts = props.prompt.split(/\n\[NEG\]\n/)
-  return { positive: parts[0] || '', negative: parts[1] || '' }
-})
-const scopes = computed(() => promptPreviewScopes(splitPrompt.value.positive, props.context))
-const negativeText = computed(() => splitPrompt.value.negative.trim())
+defineProps<{ prompt: string; positiveCount: number; negativeCount: number; scopes: PromptPreviewLayer[][]; negativeText: string }>()
 </script>

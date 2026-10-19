@@ -112,7 +112,7 @@ onUnmounted(() => media.removeEventListener('change', resizeDirectory))
 .pocket-copy small { @apply tw:text-secondary tw:text-body-sm; }
 .pocket-copy strong { font:600 var(--fs-body)/var(--lh-label) var(--font-sans); overflow-wrap:anywhere; }
 .pocket-action { font:500 var(--fs-body-sm) var(--font-sans); }
-.directory-sheet { width:min(960px,calc(100vw - 32px)); height:min(780px,calc(100dvh - 32px)); max-width:none; max-height:none; border:1px solid var(--border-strong); background:var(--bg-surface); box-shadow:var(--shadow-lg); }
+.directory-sheet { inset:var(--desktop-chrome-height,0px) 0 0; width:min(960px,calc(100vw - 32px)); height:min(780px,calc(100dvh - var(--desktop-chrome-height,0px) - 32px)); max-width:none; max-height:none; border:1px solid var(--border-strong); background:var(--bg-surface); box-shadow:var(--shadow-lg); }
 .directory-sheet[open] { @apply tw:flex tw:flex-col tw:gap-s-3; }
 .directory-sheet::backdrop { background:var(--art-backdrop); }
 .directory-sheet-heading { align-items:start; }

@@ -257,9 +257,9 @@
                  </StudioTooltip>
                </span>
             </template>
-            <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="speech-settings-popover">
+            <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="companion-speech-settings speech-settings-popover" @open-auto-focus="focusSpeechPopover">
               <template #trigger><button class="btn btn-ghost" type="button" :aria-label="speechReady ? '语音输入设置' : '配置语音输入'">{{ speechReady ? '设置' : '语音设置' }}</button></template>
-              <SpeechInputSettings v-if="speechSettingsOpen" :data-character="activeChar" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" />
+              <AsyncPanel v-if="speechSettingsOpen" :loader="loadSpeechInputSettings" label="语音输入设置" v-slot="{ component }"><component :is="component" :data-character="activeChar" @vue:mounted="focusSpeechSettings" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" /></AsyncPanel>
             </StudioPopover>
            </div>
            <div class="companion-composer-meta" aria-live="polite">
@@ -320,7 +320,7 @@ import CompanionPreferences from '@/components/CompanionPreferences.vue'
 import CompanionOrbitMenu from '@/components/CompanionOrbitMenu.vue'
 import CompanionClipboardCard from '@/components/CompanionClipboardCard.vue'
 import VoiceGlow from "@/components/visual/VoiceGlow.vue"
-import { defineAsyncComponent, ref, watch } from 'vue'
+import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
 const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
 import '@/assets/css/companion.css'
 import '@/assets/css/companion-surface.css'
@@ -336,7 +336,8 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
 const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 import Live2DQualityControl from '@/components/Live2DQualityControl.vue'
-const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
+const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
+const loadSpeechInputSettings = () => import('@/components/SpeechInputSettings.vue')
 import { useCompanionWorkspace } from "@/composables/chat/useCompanionWorkspace"
 const {
 chatListRef,characterStageRef,activeChar,
@@ -459,6 +460,21 @@ function switchPetCharacter(id: string) {
 function setAutoVoice(enabled: boolean) {
   autoVoice.value = enabled
   onAutoVoiceChange()
+}
+
+async function focusSpeechPopover(event: Event) {
+  event.preventDefault()
+  const opener = document.activeElement
+  await nextTick()
+  const panel = document.querySelector<HTMLElement>('.companion-speech-settings')
+  if (!speechSettingsOpen.value || !panel || (document.activeElement !== opener && !panel.contains(document.activeElement))) return
+  ;(panel.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)') || panel).focus({ preventScroll:true })
+}
+
+function focusSpeechSettings() {
+  const panel = document.querySelector<HTMLElement>('.companion-speech-settings')
+  if (speechSettingsOpen.value && (panel === document.activeElement || panel?.querySelector(':scope > .async-panel') === document.activeElement))
+    panel?.querySelector<HTMLElement>('button:not(:disabled), input:not(:disabled)')?.focus({ preventScroll:true })
 }
 
 function reminderActionLabel(reminder: { eventKind?: string }) { return reminder.eventKind === 'sd-done' ? '查看作品册' : '查看服务状态' }

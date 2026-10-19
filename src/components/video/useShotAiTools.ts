@@ -431,9 +431,12 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
     aiNote.value = '已应用建议：' + issue.suggestion
   }
 
-  function shotIssueCount(index: number): number {
-    return reviewIssues.value.filter(issue => issue.index === index).length
-  }
+  const issueCounts = computed(() => {
+    const counts = new Map<number, number>()
+    for (const issue of reviewIssues.value) counts.set(issue.index, (counts.get(issue.index) ?? 0) + 1)
+    return counts
+  })
+  function shotIssueCount(index: number): number { return issueCounts.value.get(index) ?? 0 }
 
   return {
     aiBusy,

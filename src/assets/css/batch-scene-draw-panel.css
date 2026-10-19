@@ -60,8 +60,8 @@
 }
 .batch-scene-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-scene-card.selected {
-  border-color:var(--accent);
-  background: color-mix(in srgb, var(--accent) 9%, var(--bg-surface));
+  border-color:var(--border-strong);
+  background:var(--bg-elevated);
   box-shadow:var(--selection-shadow);
 }
 .batch-scene-check {
@@ -73,7 +73,7 @@
   transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover);
 }
 .batch-scene-card.selected .batch-scene-check {
-  @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse;
+  @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary;
 }
 .batch-scene-check .archive-icon { @apply tw:w-[12px]; }
 .batch-scene-title {
@@ -99,8 +99,8 @@
 }
 .batch-char-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
 .batch-char-card.selected {
-  border-color:var(--accent);
-  background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface));
+  border-color:var(--border-strong);
+  background:var(--bg-elevated);
   box-shadow:var(--selection-shadow);
 }
 .batch-char-avatar-wrap {
@@ -117,7 +117,7 @@
   transition: background var(--motion-hover), color var(--motion-hover), border-color var(--motion-hover);
 }
 .batch-char-card.selected .batch-char-check {
-  @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse;
+  @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary;
 }
 .batch-char-check .archive-icon { @apply tw:w-[11px]; }
 .batch-char-info { @apply tw:grid tw:gap-[2px] tw:w-full; }

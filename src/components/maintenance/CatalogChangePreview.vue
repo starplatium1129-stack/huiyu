@@ -1,14 +1,14 @@
 <template>
   <section v-content-motion:up="preview" class="catalog-change-preview" aria-label="修改预览">
     <header><h2>修改预览</h2></header>
-    <details v-for="diff in preview.diffs" :key="diff.kind + ':' + diff.id" open>
+    <details v-for="diff in diffs" :key="diff.kind + ':' + diff.id" open>
       <StudioDisclosureSummary>{{ diff.after ? recordTitle(diff.after) : diff.before ? recordTitle(diff.before) : '待整理的内容' }} <small>{{ !diff.before ? '新加入' : !diff.after ? '将归档' : '已编辑' }}</small></StudioDisclosureSummary>
       <div data-disclosure-content>
-        <div v-for="field in changedFields(diff.before, diff.after)" :key="field.path" class="catalog-change-row">
+        <div v-for="field in diff.fields" :key="field.path" class="catalog-change-row">
           <strong>{{ field.label }}</strong><div><span>原来</span><p>{{ field.before || '尚未填写' }}</p></div><div><span>现在</span><p>{{ field.after || '尚未填写' }}</p></div>
         </div>
         <p v-if="diff.before && diff.after && diff.before.sortOrder !== diff.after.sortOrder" class="catalog-note">展示位置已调整。</p>
-        <details class="catalog-advanced"><StudioDisclosureSummary>查看完整变化</StudioDisclosureSummary><div data-disclosure-content class="catalog-diff"><pre>{{ JSON.stringify(diff.before?.data ?? null, null, 2) }}</pre><pre>{{ JSON.stringify(diff.after?.data ?? null, null, 2) }}</pre></div></details>
+        <details class="catalog-advanced" @toggle="($event.target as HTMLDetailsElement).open && revealedDiffs.add(diff.kind + ':' + diff.id)"><StudioDisclosureSummary>查看完整变化</StudioDisclosureSummary><div data-disclosure-content class="catalog-diff"><template v-if="revealedDiffs.has(diff.kind + ':' + diff.id)"><pre>{{ JSON.stringify(diff.before?.data ?? null, null, 2) }}</pre><pre>{{ JSON.stringify(diff.after?.data ?? null, null, 2) }}</pre></template></div></details>
       </div>
     </details>
     <details v-for="record in preview.retiredImports ?? []" :key="record.kind + ':' + record.id" open>
@@ -21,11 +21,14 @@
   </section>
 </template>
 <script setup lang="ts">
+import { computed, reactive } from 'vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { CatalogReceipt, CatalogRecord } from '@/api/catalogApi'
 import { CATALOG_FIELDS, fieldValue } from '@/composables/scene/catalogFields'
 import { CATALOG_LABELS, recordTitle } from '@/composables/scene/catalogPresentation'
-defineProps<{ preview: CatalogReceipt }>()
+const props = defineProps<{ preview: CatalogReceipt }>()
+const revealedDiffs = reactive(new Set<string>())
+const diffs = computed(() => props.preview.diffs.map(diff => ({ ...diff, fields: changedFields(diff.before, diff.after) })))
 function changedFields(before: CatalogRecord | null, after: CatalogRecord | null) {
   const kind = (after || before)!.kind
   return CATALOG_FIELDS[kind].map(field => {

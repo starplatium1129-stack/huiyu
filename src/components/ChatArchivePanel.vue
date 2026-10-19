@@ -8,7 +8,7 @@
       <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭对话归档" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p>对话超过 20 条时，早期消息自动转入本地归档；可随时导出备份或并回当前对话。</p>
+      <p>每条剧情超过 20 条对话时，早期消息自动转入本地归档。导出包含全部剧情；并入仅恢复当前剧情。</p>
 
       <div class="archive-counts" role="list" aria-label="各角色归档条数">
         <span v-for="id in characterIds" :key="id" role="listitem">
@@ -21,8 +21,8 @@
         <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportJson">导出 JSON</button>
         <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportMarkdown">导出 Markdown</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="fileEl?.click()">导入归档</button>
-        <button class="btn btn-ghost btn-sm" type="button" :disabled="!counts[activeChar]" :aria-disabled="restoring || undefined" :aria-busy="restoring" @click="restoreCurrent">
-          归档并入当前对话
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="!storage.archiveCount(activeChar)" :aria-disabled="restoring || undefined" :aria-busy="restoring" @click="restoreCurrent">
+          归档并入当前剧情
         </button>
         <button class="btn btn-danger btn-sm" type="button" :disabled="!totalCount" :aria-disabled="clearing || undefined" :aria-busy="clearing" @click="clearArchive">
           清空归档
@@ -65,7 +65,7 @@ function invalidate() {
   exporting.value = false; restoring.value = false; clearing.value = false
 }
 function close() { invalidate(); emit('close') }
-watch(() => [props.storage, props.activeChar], invalidate, { flush: 'sync' })
+watch(() => [props.storage, props.activeChar, props.storage.branchId(props.activeChar)], invalidate, { flush: 'sync' })
 onScopeDispose(() => { disposed = true; invalidate() })
 const characterIds = computed(() => Object.keys(counts.value))
 

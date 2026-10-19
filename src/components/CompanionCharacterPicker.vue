@@ -261,8 +261,8 @@ html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-
   @apply tw:text-primary tw:cursor-pointer tw:text-left tw:select-none;
 }
 .companion-picker-option:is(:hover, .is-active) { background: var(--bg-hover); }
-.companion-picker-option[aria-selected='true'] {
-  background: color-mix(in srgb, var(--companion-option-accent) 12%, var(--bg-surface));
+.companion-picker-option[aria-selected='true']:where(:not(:hover):not(.is-active)) {
+  background:var(--bg-elevated);
   box-shadow: var(--selection-shadow);
 }
 .companion-picker-option.is-active .companion-picker-option-mark {
@@ -274,8 +274,8 @@ html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-
   @apply tw:w-[26px] tw:h-[26px];
   place-items: center;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--companion-option-accent) 15%, transparent);
-  color: var(--companion-option-accent);
+  background:var(--bg-elevated);
+  color:var(--text-primary);
 }
 .companion-picker-check .archive-icon { @apply tw:w-[15px] tw:h-[15px]; }
 

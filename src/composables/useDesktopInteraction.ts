@@ -142,6 +142,8 @@ export function installDesktopInteraction(router: Router) {
     target.focus({ preventScroll: true })
   }
   function keydown(event: KeyboardEvent) {
+    // Ordinary typing and local navigation do not need a document-wide modal scan.
+    if (event.key !== 'F1' && event.key !== 'F6' && event.key !== 'Enter') return
     if (event.ctrlKey || !desktopShortcutAllowed(event) || modalOpen()) return
     if (event.key === 'F1' && !event.shiftKey) {
       if (!nav()) return

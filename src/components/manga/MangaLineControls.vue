@@ -12,7 +12,7 @@
     <template v-else-if="mode === 'external'">
       <div class="manga-line-actions">
         <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled || !targetSize" @click="picker?.click()"><ArchiveIcon name="upload" />{{ imported ? '更换线稿' : '导入线稿' }}</button>
-        <button v-if="imported" class="btn btn-quiet btn-sm" type="button" :disabled="disabled" @click="emit('remove')">移除</button>
+        <button v-if="imported" class="btn btn-quiet btn-sm" type="button" :disabled="disabled" @click="removeImported">移除</button>
       </div>
       <input ref="picker" type="file" class="manga-file" accept="image/png,image/jpeg,image/webp" @change="pick" />
       <p v-if="!targetSize" class="manga-hint">请先导入漫画原图，再选择与其对应的线稿。</p>
@@ -49,6 +49,12 @@ const emit = defineEmits<{import: [file: File]; remove: []; preview: []; retry: 
 const picker = ref<HTMLInputElement | null>(null)
 const sources = computed(() => [{value:'none',label:'不使用线稿'}, {value:'auto',label:'自动提取线稿'}, {value:'external',label:'导入外部线稿',disabled:props.redraw}])
 const polarities = [{value:'black-on-white',label:'黑线白底'}, {value:'white-on-black',label:'白线黑底'}]
+function removeImported(event: MouseEvent) {
+  const origin = event.currentTarget
+  if (origin instanceof HTMLElement && document.activeElement === origin)
+    origin.closest('.manga-line-controls')?.querySelector<HTMLButtonElement>('.studio-select-trigger')?.focus({ preventScroll: true })
+  emit('remove')
+}
 function pick(event: Event) {
   const input = event.target as HTMLInputElement, file = input.files?.[0]; input.value = ''
   if (file && !props.disabled && !props.redraw && props.targetSize) emit('import', file)

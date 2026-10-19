@@ -12,7 +12,7 @@ export function showcaseItem(record: Pick<CatalogSummary, 'kind' | 'id' | 'chara
   }
 }
 
-export function useCatalogMedia() {
+export function useCatalogMedia(active: () => boolean) {
   const kind = ref<'media' | 'scene' | 'blueprint'>('media')
   const search = ref(''), character = ref(''), rating = ref(''), page = ref(1)
   const debouncedSearch = ref(''), result = ref<CatalogPage | null>(null)
@@ -23,10 +23,22 @@ export function useCatalogMedia() {
   const totalPages = computed(() => Math.max(1, Math.ceil((result.value?.total ?? 0) / 24)))
   watch(search, value => {
     clearTimeout(timer)
+    if (!active()) return
     timer = setTimeout(() => { debouncedSearch.value = value }, 250)
   })
   watch([kind, character, rating, debouncedSearch], () => { page.value = 1 }, { flush: 'sync' })
+  function suspend() {
+    clearTimeout(timer); timer = undefined
+    request?.abort(); request = undefined; sequence++
+    loading.value = false
+  }
+  watch(active, enabled => {
+    clearTimeout(timer)
+    if (enabled) debouncedSearch.value = search.value
+    else suspend()
+  }, { flush: 'sync' })
   async function load() {
+    if (!active()) return
     request?.abort()
     const controller = new AbortController(); request = controller
     const current = ++sequence
@@ -42,7 +54,11 @@ export function useCatalogMedia() {
       if (current === sequence && !controller.signal.aborted) error.value = (cause as Error).message
     } finally { if (current === sequence) loading.value = false }
   }
-  watch([kind, character, rating, debouncedSearch, page, runtimeResourceIdentity], () => { void load() }, { immediate: true })
-  onScopeDispose(() => { clearTimeout(timer); request?.abort(); sequence++ })
+  watch([active, kind, character, rating, debouncedSearch, page, runtimeResourceIdentity],
+    ([enabled, , , , , , identity], previous) => {
+      if (identity !== previous?.[6]) { result.value = null; listScope.value = ''; error.value = '' }
+      if (enabled) void load()
+    }, { immediate: true })
+  onScopeDispose(suspend)
   return { kind, search, character, rating, page, result, listScope, loading, error, totalPages, load }
 }

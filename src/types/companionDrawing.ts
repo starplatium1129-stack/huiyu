@@ -20,12 +20,19 @@ export interface CompanionChatSendOptions {
   action?: 'generate-from-image'
 }
 
+export type ChatStoryAction =
+  | { kind: 'regenerate' | 'fork'; messageId: string }
+  | { kind: 'select-variant'; messageId: string; variantId: string }
+  | { kind: 'switch-branch'; branchId: string }
+
 export interface CompanionChatCommand extends CompanionChatSendOptions {
-  command: 'send' | 'stop' | 'switch-character'
+  command: 'send' | 'stop' | 'switch-character' | 'story-action'
   text?: string
   imageUrl?: string
   character?: string
   requestId?: string
+  branchId?: string
+  storyAction?: ChatStoryAction
 }
 
 const mediaAlias = /^(?:image-|img_|task-)[\w-]{1,160}$/

@@ -75,7 +75,7 @@ const props = defineProps<{ record: CatalogRecord | null; characterNames: Record
 const mode = ref<'samples' | 'covers'>('samples'), previewPane = ref<HTMLElement | null>(null), selectedSample = ref<ShowcaseSceneItem | null>(null)
 const mediaLibrary = ref<HTMLElement | null>(null), sampleGrid = ref<HTMLElement | null>(null)
 const showAdultImages = ref(false)
-const { kind, search, character, rating, page, result, listScope, loading, error, totalPages, load } = useCatalogMedia()
+const { kind, search, character, rating, page, result, listScope, loading, error, totalPages, load } = useCatalogMedia(() => mode.value === 'samples')
 watch(listScope, () => { if (sampleGrid.value) sampleGrid.value.scrollTop = 0 }, { flush: 'post' })
 const { showcaseUrl, onShowcaseMissing, uploadBusy, pickShowcase, showcaseFileEl, onShowcasePicked, homeHeroes, selectedHeroId, selectedHeroTitle, previewHero, heroUrl, pickHero, resetHero, heroFileEl, onHeroPicked, showcaseFeedback, showcaseError, previewImage, selectedImageId, selectedImageTitle, thumbUrl, hasShowcase, manifestLoading, manifestError, loadShowcaseManifest } = useSceneShowcaseUpload({ mode: () => mode.value, errorMessage: (e, fallback) => e instanceof Error ? e.message : fallback })
 async function selectSample(item: CatalogSummary) {

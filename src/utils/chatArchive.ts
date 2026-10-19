@@ -8,7 +8,8 @@
  */
 import type { PersistedChatMessage } from './chatStorageCore'
 import { assertChatVersion } from './chatVersion.ts'
-import { parseCompanionChatImages, parseCompanionDrawingDraft, type CompanionDrawingDraft } from '@/types/companionDrawing'
+import { chatMessageKey, cloneChatMessages, normalizeChatMessage } from './chatMessageStorage'
+import { mergeHistories } from '@/composables/chat/chatStorageMerge'
 
 export const CHAT_ARCHIVE_KEY = 'aics_chat_archive_v1'
 const CHAT_ARCHIVE_VERSION = 1
@@ -28,29 +29,10 @@ function text(value: unknown, max: number): string {
   return typeof value === 'string' ? value.trim().slice(0, max) : ''
 }
 
-function normalizeMessage(value: unknown): PersistedChatMessage | null {
-  if (!isRecord(value)) return null
-  const role = value.role === 'user' || value.role === 'assistant' ? value.role : ''
-  if (!role) return null
-  const content = text(value.content, 1200)
-  if (!content) return null
-  const drawingDrafts = Array.isArray(value.drawingDrafts) ? value.drawingDrafts.map(parseCompanionDrawingDraft)
-    .filter((item): item is CompanionDrawingDraft => Boolean(item)).slice(-4) : []
-  const images = parseCompanionChatImages(value.images)
-  return {
-    role,
-    content,
-    mid: text(value.mid, 160) || text(value.id, 160) || '',
-    stopped: value.stopped === true,
-    ...(drawingDrafts.length ? { drawingDrafts } : {}),
-    ...(images.length ? { images } : {}),
-  }
-}
-
 function normalizeMessages(value: unknown): PersistedChatMessage[] {
   if (!Array.isArray(value)) return []
   return value
-    .map(normalizeMessage)
+    .map(value => normalizeChatMessage(value, () => ''))
     .filter((item): item is PersistedChatMessage => Boolean(item))
 }
 
@@ -84,7 +66,7 @@ export function serializeChatArchive(archive: ChatArchive): string {
 }
 
 function messageKey(message: PersistedChatMessage): string | null {
-  return message.mid ? `mid:${message.mid}` : null
+  return chatMessageKey(message) ? `reply:${chatMessageKey(message)}` : null
 }
 
 /** 追加被 trim 掉的消息；有 mid 时去重，无 mid 的旧消息宁可保留重复也不误删。 */
@@ -92,22 +74,19 @@ export function archiveMessages(
   archive: ChatArchive,
   characterId: string,
   removed: PersistedChatMessage[],
+  limit = CHAT_ARCHIVE_MAX_PER_CHAR,
 ): ChatArchive {
   if (!Object.hasOwn(archive.archived, characterId)) Object.defineProperty(archive.archived, characterId, { value: [], writable: true, enumerable: true, configurable: true })
-  const seen = new Set(archive.archived[characterId].map(messageKey).filter((key): key is string => Boolean(key)))
-  const additions: PersistedChatMessage[] = []
-  for (const message of removed) {
-    const key = messageKey(message)
-    if (key && seen.has(key)) continue
-    if (key) seen.add(key)
-    additions.push(message)
+  const messages = cloneChatMessages(archive.archived[characterId])
+  for (const message of cloneChatMessages(removed)) {
+    const key = messageKey(message), index = key ? messages.findIndex(item => messageKey(item) === key) : -1
+    if (index < 0) messages.push(message)
+    else {
+      const current = messages[index]
+      messages[index] = mergeHistories([current], [message], new Map([[chatMessageKey(current), JSON.stringify(current)]]))[0]
+    }
   }
-  if (additions.length) {
-    archive.archived[characterId] = [
-      ...archive.archived[characterId],
-      ...additions,
-    ].slice(-CHAT_ARCHIVE_MAX_PER_CHAR)
-  }
+  archive.archived[characterId] = messages.slice(-limit)
   return archive
 }
 
@@ -120,15 +99,8 @@ export function mergeArchiveIntoHistory(
   history: PersistedChatMessage[],
   archived: PersistedChatMessage[],
 ): PersistedChatMessage[] {
-  const seen = new Set(history.map(messageKey).filter((key): key is string => Boolean(key)))
-  const additions: PersistedChatMessage[] = []
-  for (const message of archived) {
-    const key = messageKey(message)
-    if (key && seen.has(key)) continue
-    if (key) seen.add(key)
-    additions.push(message)
-  }
-  return [...history, ...additions]
+  const merged = archiveMessages({ version: CHAT_ARCHIVE_VERSION, archived: { current: cloneChatMessages(archived) } }, 'current', history, Number.MAX_SAFE_INTEGER)
+  return merged.archived.current
 }
 
 /** 合并两个归档（导入用）：按角色、按 mid/内容去重。 */
@@ -150,7 +122,7 @@ export function chatArchiveToMarkdown(
   archive: ChatArchive,
   characterNames: Record<string, string>,
 ): string {
-  const lines: string[] = ['# 角色聊天归档', '', '> 由 绘遇 导出 · 仅保存对话文本与停止标记', '']
+  const lines: string[] = ['# 角色聊天归档', '', '> 由 绘遇 导出 · 对话文本、回复备选与停止标记', '']
   for (const [characterId, messages] of Object.entries(archive.archived)) {
     const name = characterNames[characterId] || characterId
     lines.push(`## ${name}（${messages.length} 条）`, '')
@@ -162,6 +134,7 @@ export function chatArchiveToMarkdown(
       const speaker = message.role === 'user' ? '你' : name
       const suffix = message.stopped ? ' *(中断)*' : ''
       lines.push(`**${speaker}**${suffix}：${message.content}`, '')
+      for (const variant of message.variants || []) if (variant.mid !== message.mid) lines.push(`> 备选${variant.stopped ? '（中断）' : ''}：${variant.content}`, '')
     }
   }
   return lines.join('\n').trimEnd() + '\n'

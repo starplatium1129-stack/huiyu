@@ -9,7 +9,7 @@
 .studio-select-group-label { @apply tw:py-s-1 tw:px-s-3 tw:text-muted tw:[font:600_var(--fs-label-sm)_var(--font-sans)]; }
 .studio-select-item { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:min-h-[36px] tw:py-s-2 tw:px-s-3 tw:rounded-md tw:[font:500_var(--fs-label)_var(--font-sans)] tw:cursor-pointer tw:[outline:none] tw:select-none; }
 .studio-select-item-text { @apply tw:min-w-0; overflow-wrap: anywhere; }
-.studio-select-check { @apply tw:inline-flex tw:shrink-0 tw:items-center tw:text-accent; }
+.studio-select-check { @apply tw:inline-flex tw:shrink-0 tw:items-center tw:text-primary; }
 
 .studio-select-wrapper.studio-select-inline { width: auto; }
 .studio-select-wrapper > .studio-tooltip-anchor[data-anchor] { width: 100%; }
@@ -65,10 +65,10 @@
 .studio-select-content[data-pointer-open='false'] .studio-select-item[data-highlighted] { box-shadow:var(--focus-shadow); }
 .chat-model-picker-content .studio-select-item[data-highlighted] { box-shadow:var(--focus-shadow); }
 .studio-select-item[data-state='checked'] {
-  background: var(--accent-soft);
-  color: var(--accent);
+  color:var(--text-primary);
   font-weight: 600;
 }
+.studio-select-item[data-state='checked']:where(:not(:hover):not([data-highlighted])) { background:var(--bg-elevated); }
 .studio-select-item[data-disabled] {
   color: var(--text-disabled);
   cursor: not-allowed;

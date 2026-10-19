@@ -653,6 +653,9 @@ visible tags.
 
 Inputs show a persistent label when their meaning is not obvious. Search remains
 recognizable as search. Selected filters are visually distinct and removable.
+Selected options use neutral surfaces, borders and primary text, with checkmarks
+or the existing selection indicator. Do not leave a red or pink fill, border or
+label on selected controls; retain normal hover, press and keyboard feedback.
 Advanced parameters are collapsed by default for first-time users and retain
 their previous state for experienced users.
 

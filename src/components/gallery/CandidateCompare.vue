@@ -74,7 +74,7 @@ onUnmounted(() => { version++; release() })
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.candidate-compare { @apply tw:m-auto; width: min(1680px, calc(100vw - 28px)); max-height: calc(100dvh - 36px); @apply tw:p-s-5; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; }
+.candidate-compare { @apply tw:m-auto; inset:var(--desktop-chrome-height,0px) 0 0; width: min(1680px, calc(100vw - 28px)); max-height: calc(100dvh - var(--desktop-chrome-height,0px) - 36px); @apply tw:p-s-5; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; }
 .candidate-compare[open] { @apply tw:flex tw:flex-col tw:gap-s-4; }
 .candidate-compare::backdrop { background: var(--art-scrim); }
 .candidate-compare header { @apply tw:flex tw:justify-between tw:gap-s-3; }
@@ -87,7 +87,7 @@ onUnmounted(() => { version++; release() })
 .candidate-meta { overflow-wrap: anywhere; }
 .candidate-controls { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2; }
 .candidate-controls > span { @apply tw:text-secondary tw:text-label-sm; }
-.candidate-controls [aria-pressed="true"] { @apply tw:text-accent tw:border-strong; }
+.candidate-controls [aria-pressed="true"] { @apply tw:text-primary tw:border-strong; }
 .candidate-parameters { @apply tw:grid tw:gap-s-1 tw:text-label-sm; margin:var(--s-3) 0; }
 .candidate-parameters > div { display:grid; grid-template-columns:5.5rem minmax(0,1fr); gap:var(--s-2); }
 .candidate-parameters dt { @apply tw:text-secondary; }

@@ -34,22 +34,22 @@ export function useShotWorkspace(props: {
         { id: 'square', label: '方形 1:1' },
     ];
     const cameraOptions: Array<{
-        id: VideoDefaults['camera'];
+        value: VideoDefaults['camera'];
         label: string;
     }> = [
-        { id: 'still', label: '固定镜头 · 最稳' },
-        { id: 'push', label: '缓慢推进' },
-        { id: 'pull', label: '缓慢拉远' },
-        { id: 'pan', label: '平稳横移' },
-        { id: 'orbit', label: '轻微环绕' },
+        { value: 'still', label: '固定镜头 · 最稳' },
+        { value: 'push', label: '缓慢推进' },
+        { value: 'pull', label: '缓慢拉远' },
+        { value: 'pan', label: '平稳横移' },
+        { value: 'orbit', label: '轻微环绕' },
     ];
     const motionOptions: Array<{
-        id: VideoDefaults['motion'];
+        value: VideoDefaults['motion'];
         label: string;
     }> = [
-        { id: 'subtle', label: '细微运动 · 最稳' },
-        { id: 'natural', label: '自然动作' },
-        { id: 'expressive', label: '表现动作' },
+        { value: 'subtle', label: '细微运动 · 最稳' },
+        { value: 'natural', label: '自然动作' },
+        { value: 'expressive', label: '表现动作' },
     ];
     const aspectRatio = ref<VideoBatch['aspectRatio']>('landscape');
     const quality = ref<VideoQuality>('standard');

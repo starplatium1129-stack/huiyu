@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 
@@ -44,13 +44,13 @@ const containerRef = ref<HTMLElement | null>(null)
 const extent = ref(0)
 const { canAnimate, lowEffects } = useVisualActivity(containerRef)
 
-function measure(): void {
-  const rect = containerRef.value?.getBoundingClientRect()
+function measure([entry]: ResizeObserverEntry[]): void {
+  const box = entry?.borderBoxSize[0]
   // A diagonal-sized square covers the host at every angle; no 4x-width/height texture.
-  if (rect) extent.value = Math.ceil(Math.hypot(rect.width + 4, rect.height + 4))
+  // Use delivered layout size so parent entrance transforms cannot inflate it.
+  if (box) extent.value = Math.ceil(Math.hypot(box.inlineSize + 4, box.blockSize + 4))
 }
-useResizeObserver(containerRef, measure)
-onMounted(measure)
+useResizeObserver(containerRef, measure, { box: 'border-box' })
 
 const gradient = computed(() => {
   const accent = 'var(--accent, #F2A8BE)'

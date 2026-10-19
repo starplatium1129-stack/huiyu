@@ -7,6 +7,7 @@ import type { GalleryProject } from './galleryStorage';
 import { artworkTags } from './artworkTags';
 import { artworkGenerationConditions, emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionOptions, generationConditionLabel, matchesGenerationConditions, normalizeGalleryFilterSnapshot, normalizeGenerationConditions, type GalleryFilterSnapshot } from './galleryGenerationConditions';
 import { artworkCharacterIds, createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules';
+import { useBrowseSearch } from '@/composables/useBrowseSearch';
 
 const generationQueryKeys = { engine: 'gEngine', model: 'gModel', outfit: 'gOutfit', seed: 'gSeed', size: 'gSize', reviewState: 'gState' } as const;
 
@@ -37,9 +38,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     ...(projectUnavailable.value ? [{ value: projectFilter.value, label: `画册未找到 · ${projectFilter.value}` }] : []),
   ]);
   const characterFilter = ref('');
-  /** 展墙搜索（2026-08-30 UX 审计 P1）：此前只有「收藏 + 项目」两个控件，
-   *  攒到几百张后找某张旧作只能靠翻。 */
-  const searchQuery = ref('');
+  const { query: searchQuery, settledQuery, restoreQuery } = useBrowseSearch();
   const tagFilter = ref('');
   const generationConditions = ref(emptyGenerationConditions());
   const generationIndex = computed(() => new Map(history.value.map(item => [item, artworkGenerationConditions(item)])));
@@ -73,7 +72,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const selectedProject = computed(() => projects.value.find(item => item.id === projectFilter.value));
   const smartRule = computed(() => selectedProject.value?.smartRule);
   const smartMatcher = computed(() => smartRule.value ? createSmartAlbumMatcher(smartRule.value, projects.value) : null);
-  const searching = computed(() => searchQuery.value.trim().length > 0 || Boolean(smartRule.value?.search));
+  const searching = computed(() => settledQuery.value.trim().length > 0 || Boolean(smartRule.value?.search));
   const searchIndex = computed(() => searching.value
     ? new Map(history.value.map(item => [item, searchHaystack(item)])) : null);
   // A cleared search no longer needs normalized prompts or their reactive
@@ -87,7 +86,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const visible = computed(() => {
     const favorites = favoriteOnly.value, tag = tagFilter.value;
     const ids = projectFilter.value ? projectIds.value : null;
-    const terms = searchQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const terms = settledQuery.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     const index = searching.value ? searchIndex.value : null;
     const generation = generationFilterCount.value ? generationIndex.value : null;
     const matchesSmart = smartMatcher.value;
@@ -145,7 +144,7 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     favoriteOnly.value = snapshot.favoriteOnly;
     projectFilter.value = snapshot.projectFilter;
     characterFilter.value = snapshot.characterFilter;
-    searchQuery.value = snapshot.searchQuery;
+    restoreQuery(snapshot.searchQuery);
     tagFilter.value = snapshot.tagFilter;
     if (GENERATION_FILTER_FIELDS.some(field => generationConditions.value[field] !== snapshot.generation[field]))
       generationConditions.value = snapshot.generation;
@@ -252,12 +251,14 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
     });
   }
 
-  // 筛选变化回到第一页，让用户始终从最新作品看起
+  // Rebuild the wall only when the buffered query or another filter commits.
+  watch([favoriteOnly, projectFilter, characterFilter, settledQuery, tagFilter, generationConditions], () => {
+    renderLimit.value = PAGE_SIZE;
+    onFilterReset?.();
+  }, { deep: true });
   watch([favoriteOnly, projectFilter, characterFilter, searchQuery, tagFilter, generationConditions], () => {
     // A newer local filter selection takes precedence over a deferred URL.
     queryRestorePending = false;
-    renderLimit.value = PAGE_SIZE;
-    onFilterReset?.();
     syncFiltersToQuery();
   }, { deep: true });
   // Back/forward and cleared URL fields replace the complete filter snapshot.

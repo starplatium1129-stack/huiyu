@@ -86,7 +86,7 @@
                       :size="formatBytes(model.preparation.expectedBytes)"
                       :busy="downloadId === model.id"
                       :phase-label="downloadPhaseLabel"
-                      :progress="downloadBytes / (downloadExpected || 1) * 100"
+                      :progress="downloadPercent"
                       :complete="downloadFailed[model.id] === false && !!downloadNotices[model.id]"
                       :disabled="!!activeId || (!!downloadId && downloadId !== model.id)"
                       :retry="!!downloadFailed[model.id]"
@@ -137,6 +137,7 @@ const { activeId: downloadId, bytesRead: downloadBytes, expectedBytes: downloadE
   notices: downloadNotices, failed: downloadFailed, download, cancel: cancelDownload } = useLocalSetupDownload(
   computed(() => props.snapshot.workspace.path), downloadReady, result => emit('download-result', result))
 const downloadPhaseLabel = computed(() => ({ checking: '正在核对已有文件', downloading: '正在下载', verifying: '正在验证并发布' })[downloadPhase.value] ?? '正在处理')
+const downloadPercent = computed(() => Math.max(0, Math.min(100, Math.floor(downloadBytes.value / (downloadExpected.value || 1) * 100))))
 watch(results, values => { for (const result of Object.values(values)) emit('verification-result', result) })
 const matched = computed(() => models.value.filter(model => state(model) === 'bytes-match').length)
 const totalBytes = computed(() => models.value.reduce((sum, model) => sum + (model.preparation?.expectedBytes ?? 0), 0))

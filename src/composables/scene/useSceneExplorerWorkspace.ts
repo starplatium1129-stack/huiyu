@@ -190,6 +190,7 @@ export function useSceneExplorerWorkspace() {
         scenes.value.filter(s => !hiddenIds.value.has(s.id) && matchesTheme(s, id)).length])));
     function themeCount(id: string) { return themeCounts.value[id] || 0; }
     const searching = computed(() => !!debouncedQuery.value.trim());
+    const queryAnalysis = computed(() => uxAnalyze(debouncedQuery.value, curation.value));
     const searchDocuments = computed(() => searching.value
         ? new Map(scenes.value.map(scene => [scene, prepareSceneSearch(scene, [primaryCategory(scene), timeLabel(scene.timeOfDay)])])) : null);
     // Release normalized strings when clearing a search, including a cached page.
@@ -197,7 +198,7 @@ export function useSceneExplorerWorkspace() {
     const filtered = computed(() => {
         // 用 debounce 后的值：直接读 searchQuery 会让下面的过滤+排序在每次击键时重跑
         const q = debouncedQuery.value.trim().toLowerCase();
-        const analysis = q ? uxAnalyze(q, curation.value) : undefined;
+        const analysis = q ? queryAnalysis.value : undefined;
         const documents = searchDocuments.value;
         const collection = fTier.value, hidden = showHidden.value;
         const needsTier = !hidden && ((!q && collection === 'featured') || !['all', 'personal', 'featured', 'core'].includes(collection));
@@ -244,7 +245,7 @@ export function useSceneExplorerWorkspace() {
     const paged = computed(() => filtered.value.slice(0, visible.value));
     const searchIntent = computed(() => {
         const q = debouncedQuery.value.trim();
-        const analysis = uxAnalyze(q, curation.value);
+        const analysis = queryAnalysis.value;
         return {
             expansion: q && ['personal', 'core', 'featured'].includes(fTier.value) ? '已自动扩展至完整场景库。' : '',
             intents: analysis.intents || [],
@@ -252,6 +253,13 @@ export function useSceneExplorerWorkspace() {
             personal: profile.value.entries ? ` 已结合本机${profile.value.entries}条创作记录排序。` : ' 还没有创作记录，先画几张，推荐会更懂你。',
         };
     });
+    // Browser rows belong to an immutable snapshot; derive labels only when shown.
+    const visualLabels = new WeakMap<ExplorerScene, ReturnType<typeof sceneVisualLabels>>();
+    function dv(scene: ExplorerScene) {
+        let labels = visualLabels.get(scene);
+        if (!labels) { labels = sceneVisualLabels(scene); visualLabels.set(scene, labels); }
+        return labels;
+    }
     function toggleFav(id: string) {
         const previousFocus = document.activeElement;
         const next = new Set(favs.value);
@@ -345,7 +353,7 @@ export function useSceneExplorerWorkspace() {
         THEME_DEFS, themeCount, searchIntent, matureCount, loading,
         loadError, init, paged, usageFor, isCore,
         tier, charName, seasonLabel, timeLabel, personalReason, drawerScene, finishSceneClose,
-        dv: sceneVisualLabels, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
+        dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
         PAGE_SIZE,
     };
 }

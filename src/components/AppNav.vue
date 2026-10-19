@@ -353,7 +353,7 @@ onUnmounted(deactivateNavigation)
 .nav-brand { @apply tw:gap-s-3 tw:shrink-0; }
 .nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
 .nav-links { --selection-radius: var(--r-md); --selection-shadow: none; border-color:transparent; background:transparent; box-shadow:none; }
-.nav-links :deep(.animated-selection) { background:var(--accent-soft); border-color:transparent; }
+.nav-links :deep(.animated-selection) { background:var(--bg-elevated); border-color:transparent; }
 .nav-links > a { white-space:nowrap; isolation:isolate; }
 /* Move the label and artwork while navigation hit targets remain fixed. */
 .nav-brand:active,.nav-links > a:active,.nav-more :deep(.nav-more-trigger:active),.nav-utilities :deep(button:active:not(.app-theme-toggle)),.nav-menu-toggle:active { transform:none; }

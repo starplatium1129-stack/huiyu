@@ -61,7 +61,7 @@
       </StudioTooltip>
     </div>
     <!-- 全角色通用·特典衣橱预设（无论工作室角色还是热门角色均可一键套用） -->
-    <details class="outfit-presets" aria-label="全角色通用·特典衣橱">
+    <details class="outfit-presets" aria-label="全角色通用·特典衣橱" @toggle="($event.target as HTMLDetailsElement).open && (universalRevealed = true)">
       <StudioDisclosureSummary class="wardrobe-summary">
         <span class="wardrobe-summary-copy">
           <strong><ArchiveIcon name="wardrobe" /> 通用衣橱</strong>
@@ -72,6 +72,7 @@
         </span>
       </StudioDisclosureSummary>
       <div data-disclosure-content>
+      <template v-if="universalRevealed">
       <p class="wardrobe-description">一键跨角色换装（露背毛衣 / 兔女郎 / 系带水着 / 圣诞装等），带自动防冲突</p>
       <div class="outfit-preset-list universal-preset-list">
         <StudioTooltip v-for="preset in universalWardrobePresets" :key="preset.id" :content="preset.description">
@@ -86,10 +87,11 @@
           </button>
         </StudioTooltip>
       </div>
+      </template>
       </div>
     </details>
 
-    <details v-if="!pb.isPopular && visibleOutfitBundles.length" class="outfit-presets" aria-label="专属角色服装词包">
+    <details v-if="!pb.isPopular && visibleOutfitBundles.length" class="outfit-presets" aria-label="专属角色服装词包" @toggle="($event.target as HTMLDetailsElement).open && (outfitsRevealed = true)">
       <StudioDisclosureSummary class="wardrobe-summary">
         <span class="wardrobe-summary-copy">
           <strong><ArchiveIcon name="wardrobe" /> {{ outfitCharacters }} · 服装词包</strong>
@@ -100,6 +102,7 @@
         </span>
       </StudioDisclosureSummary>
       <div data-disclosure-content>
+      <template v-if="outfitsRevealed">
       <div class="outfit-preset-list">
         <button v-for="bundle in visibleOutfitBundles" :key="bundle.id"
           type="button" class="outfit-preset"
@@ -128,6 +131,7 @@
         </button>
         </div>
       </div>
+      </template>
       </div>
     </details>
     <p v-if="pb.isPopular" class="popular-tags-note">热门角色不加载宁宁/夏目 LoRA 控制词；词库中的词条可用于专家模式微调。</p>
@@ -137,7 +141,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { matchesPromptTag, type PromptTagSource } from '@/utils/promptTagDictionary'
+import { createPromptTagMatcher, type PromptTagEntry, type PromptTagSource } from '@/utils/promptTagDictionary'
 import { formatPromptForEngine, type DrawCapabilities, type ModelProfile } from '@/utils/promptPolicy'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
@@ -179,6 +183,8 @@ function tagDescription(tag: TagEntry): string {
 }
 
 const tagSearch = ref('')
+// Keep native disclosure shells and their live selection summaries from the start.
+const universalRevealed = ref(false), outfitsRevealed = ref(false)
 const tagInputText = ref('')
 const tagInput = ref<HTMLInputElement | null>(null)
 function focusTagInput() {
@@ -198,8 +204,16 @@ function removeTag(tag: string, event: MouseEvent) {
   if (event.currentTarget === document.activeElement) focusTagInput()
   pb.toggleManualTag(tag)
 }
-const inputSuggestions = computed(() => tagInputText.value.trim() && !/[,，、\r\n]/.test(tagInputText.value)
-  ? pb.tagDictionary.entries.filter(tag => matchesPromptTag({ en: tag.canonicalTag, cn: tag.zhLabel, cat: tag.category, aliases: tag.aliases }, tagInputText.value)).slice(0, 12) : [])
+const inputSuggestions = computed(() => {
+  const query = tagInputText.value.trim(), suggestions: PromptTagEntry[] = []
+  if (!query || /[,，、\r\n]/.test(tagInputText.value)) return suggestions
+  const matches = createPromptTagMatcher(query)
+  for (const tag of pb.tagDictionary.entries) {
+    if (matches({ en: tag.canonicalTag, cn: tag.zhLabel, cat: tag.category, aliases: tag.aliases })) suggestions.push(tag)
+    if (suggestions.length === 12) break
+  }
+  return suggestions
+})
 const tagCategory = ref('all')
 
 function onTagEnter(event: KeyboardEvent) {
@@ -244,14 +258,21 @@ const tagCategories = computed(() => {
 const TAG_RENDER_LIMIT = 72
 
 const matchedTags = computed(() => {
-  const q = tagSearch.value.trim().toLowerCase()
-  return tagCatalog.value
-    .filter(tag => tagCategory.value === 'all' || tag.cat === tagCategory.value)
-    .filter(tag => !q || matchesPromptTag(tag, q, tagMeaning(tag.en, tag.cn)))
-    .sort((a, b) => Number(pb.manualTags.has(b.en)) - Number(pb.manualTags.has(a.en)))
+  const q = tagSearch.value.trim(), matches = createPromptTagMatcher(q)
+  return tagCatalog.value.filter(tag => (tagCategory.value === 'all' || tag.cat === tagCategory.value)
+    && (!q || matches(tag, tagMeaning(tag.en, tag.cn))))
 })
 
-const visibleTags = computed(() => matchedTags.value.slice(0, TAG_RENDER_LIMIT))
+const visibleTags = computed(() => {
+  // Selection changes only reorder the visible slice; they never repeat the search.
+  const selected: TagEntry[] = [], others: TagEntry[] = []
+  for (const tag of matchedTags.value) {
+    if (pb.manualTags.has(tag.en)) selected.push(tag)
+    else if (others.length < TAG_RENDER_LIMIT) others.push(tag)
+    if (selected.length === TAG_RENDER_LIMIT) break
+  }
+  return [...selected, ...others].slice(0, TAG_RENDER_LIMIT)
+})
 
 /**
  * 被截断的条数（2026-08-30 UX 审计）。

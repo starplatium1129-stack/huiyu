@@ -109,7 +109,7 @@
 .cg-story { -webkit-line-clamp:3; @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-loose; }
 .cg-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:pt-s-4 tw:mt-auto; }
 .cg-actions .btn { @apply tw:justify-center; flex:1 1 auto; }
-.recommendation-story-dialog { width:min(720px,calc(100vw - 2 * var(--s-4))); max-height:calc(100dvh - 2 * var(--s-4)); @apply tw:box-border tw:m-auto tw:p-0 tw:overflow-hidden tw:text-primary; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--shadow-lg); }
+.recommendation-story-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(720px,calc(100vw - 2 * var(--s-4))); max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-4)); @apply tw:box-border tw:m-auto tw:p-0 tw:overflow-hidden tw:text-primary; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--shadow-lg); }
 .recommendation-story-dialog[open] { @apply tw:flex tw:flex-col; }
 .recommendation-story-dialog::backdrop { background:var(--art-backdrop); }
 .recommendation-story-head { @apply tw:flex tw:items-start tw:justify-between tw:gap-s-3 tw:p-s-4 tw:shrink-0; border-bottom:1px solid var(--border-soft); }

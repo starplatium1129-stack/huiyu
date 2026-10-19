@@ -113,7 +113,7 @@ export function useControlActions(
       const data = await controlApi.serviceAction(service, action)
       if (data.operation) status.operation.value = data.operation
       showToast(data.message || '已提交')
-      status.pollStatus(true); status.pollLogs()
+      status.pollStatus(true); status.pollLogs(true)
     } catch (e) { showToast(errorMessage(e, '操作失败'), true); status.pollStatus(true) }
     finally { status.operationSubmitting.value = false }
   }
@@ -127,7 +127,7 @@ export function useControlActions(
       if (data.operation) status.operation.value = data.operation
       status.modeBusy.value = true
       showToast(data.message || '模式切换已开始')
-      status.pollStatus(true); status.pollLogs()
+      status.pollStatus(true); status.pollLogs(true)
     } catch (e) { showToast(errorMessage(e, '模式切换失败'), true); status.pollStatus(true) }
     finally { status.operationSubmitting.value = false }
   }

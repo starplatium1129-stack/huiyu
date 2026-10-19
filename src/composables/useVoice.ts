@@ -1,5 +1,5 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '../platform/runtimeUrl.ts'
-import { ref } from 'vue'
+import { reactive, ref, shallowReactive } from 'vue'
 import {
   SentenceBuffer, extractSpokenDialogue, inferEmotion, isAbortError,
 } from '../utils/stream.ts'
@@ -33,9 +33,12 @@ interface PreparedSentence {
   consistency: 'locked' | 'adaptive'
 }
 
-interface SynthesizedClip {
+interface ReplayClip {
   url: string
   emotion: string
+}
+
+interface SynthesizedClip extends ReplayClip {
   stream?: VoicePcmStream
 }
 
@@ -44,7 +47,7 @@ interface QueuedClip extends SynthesizedClip {
   session: number
   /** 整句播放失败时的剩余重试次数；已经开播的句子不重复生成。 */
   retryLeft?: number
-  recorded?: SynthesizedClip
+  recorded?: ReplayClip
   observed?: boolean
 }
 
@@ -125,7 +128,8 @@ export function useVoice(options: {
   let pending = 0, queue: QueuedClip[] = [], playing = false
   let currentAudio: AudioWithSource | null = null, replayAudio: AudioWithSource | null = null
   let currentPcm: VoicePcmStream | null = null
-  const messageAudio = new Map<string, SynthesizedClip[]>()
+  // Track replay records per message without proxying audio or stream resources.
+  const messageAudio = shallowReactive(new Map<string, ReplayClip[]>())
   const replayCache = new VoiceReplayCache()
   let audioContext: AudioContext | null = null, analyser: AnalyserNode | null = null
   let gainNode: GainNode | null = null, lipFrame = 0, lipSmooth = 0
@@ -241,8 +245,8 @@ export function useVoice(options: {
     }).then(item => {
       if (!item) return
       if (sess !== session) { item.stream?.cancel(); return }
-      const clips = messageAudio.get(meta.mid) || []
-      const stored = { url: item.stream ? '' : item.url, emotion: item.emotion || 'neutral' }
+      const clips = messageAudio.get(meta.mid) || reactive<ReplayClip[]>([])
+      const stored = reactive({ url: item.stream ? '' : item.url, emotion: item.emotion || 'neutral' })
       clips.push(stored); messageAudio.set(meta.mid, clips)
       queue.push({ ...item, mid: meta.mid, session: sess, recorded: stored })
       pump(sess); prefetch()

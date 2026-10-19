@@ -11,6 +11,6 @@ defineEmits<{ toggle: [side: 'materials' | 'inspector'] }>()
 </script>
 <style scoped>
 .director-layout-controls { display:none; gap:8px; }
-button[aria-pressed=true] { color:var(--accent); border-color:var(--border-strong); }
+button[aria-pressed=true] { color:var(--text-primary); border-color:var(--border-strong); }
 @media (min-width:1024px) { .director-layout-controls { display:flex; } }
 </style>

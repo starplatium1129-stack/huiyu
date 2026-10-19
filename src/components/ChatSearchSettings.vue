@@ -1,7 +1,7 @@
 <template>
-  <details class="chat-search-settings">
+  <details class="chat-search-settings" @toggle="onToggle">
     <StudioDisclosureSummary>搜索设置 · {{ settings.source.value }}</StudioDisclosureSummary>
-    <form class="chat-search-body" @submit.prevent="settings.save()">
+    <form v-if="revealed" class="chat-search-body" @submit.prevent="settings.save()">
       <label class="api-field">
         <span>搜索服务</span>
         <StudioSelect v-model="settings.draftProvider.value" label="搜索服务" :options="providers" :disabled="settings.locked.value" />
@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { useId, toRefs } from 'vue'
+import { ref, useId, toRefs } from 'vue'
 import { useChatSearchSettings } from '@/composables/chat/useChatSearchSettings'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
@@ -34,7 +34,11 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 const props = defineProps<{ apiBaseUrl: string; apiKey: string; useHostConfig: boolean; hostApiBaseUrl: string; busy: boolean }>()
 const settings = useChatSearchSettings(toRefs(props))
 const id = useId()
+const revealed = ref(false)
 const providers = [{ value: 'auto', label: '自动选择' }, { value: 'duckduckgo', label: 'DuckDuckGo' }]
+function onToggle(event: Event) {
+  if ((event.currentTarget as HTMLDetailsElement).open) revealed.value = true
+}
 </script>
 
 <style scoped>

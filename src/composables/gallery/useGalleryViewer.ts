@@ -41,9 +41,10 @@ export function useGalleryViewer(options: {
           const thumbnail = item.image_id ? await repository.getThumbnail(item.image_id) : null
           if (thumbnail?.startsWith('data:image/')) url = thumbnail
         } catch { /* Missing previews stay empty; neighboring originals are never fetched here. */ }
+        if (disposed || viewerIndex.value < 0 || revision !== previewRevision || repository !== artworkRepository
+          || session !== original.session.value || !url) return
         const live = options.visible.value.find(candidate => String(candidate.id) === String(item.id))
-        if (!disposed && viewerIndex.value >= 0 && revision === previewRevision && repository === artworkRepository
-          && session === original.session.value && sameArtworkMedia(live, item) && url)
+        if (sameArtworkMedia(live, item))
           neighborPreviews.value = { ...neighborPreviews.value, [item.id]: url }
       })()
     }

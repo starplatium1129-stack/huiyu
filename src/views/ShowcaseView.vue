@@ -250,10 +250,13 @@ const characterLabels = computed(() => {
 })
 function charLabel(value: string) { return LABELS[value] || characterLabels.value.get(value) || value || '角色' }
 const filterSummary = computed(() => [typeFilter.value === 'all' ? '' : typeLabel(typeFilter.value), charFilter.value === 'all' ? '' : charLabel(charFilter.value), ratingFilter.value === 'all' ? '' : ratingLabel(ratingFilter.value)].filter(Boolean).join(' · ') || '类型、角色与分级')
-const searchIndex = computed(() => new Map(entries.value.map(entry => [entry.id, {
+const searchTerm = computed(() => norm(settledQuery.value))
+const searching = computed(() => !!searchTerm.value)
+const searchIndex = computed(() => searching.value ? new Map(entries.value.map(entry => [entry.id, {
   title: norm(entry.title), id: norm(entry.id),
   text: norm([entry.id, entry.title, entry.story, entry.category, entry.displayName || '', charLabel(entry.char), ratingLabel(entry.rating), typeLabel(entry.type)].join(' ')),
-}])))
+}])) : null)
+watch(searching, active => { if (!active) void searchIndex.value }, { flush: 'sync' })
 const hasFilters = computed(() => Boolean(selectedAlbum.value || searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
 function thumbSrc(entry: ShowcaseEntry) {
   const path = entry.thumb ? `/scene-showcase/${entry.thumb}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg`
@@ -296,18 +299,19 @@ const typeOptions = TYPE_OPTS.map(option => ({ value: option.v, label: option.l 
 const characterOptions = computed(() => allCharOptions.value.map(option => ({ value: option.v, label: option.l })))
 
 const filtered = computed(() => {
-  const term = norm(settledQuery.value)
+  const term = searchTerm.value
+  const index = term ? searchIndex.value : null
   const matches = entries.value.filter(e => {
     if (albumEntryIds.value && !albumEntryIds.value.has(e.id)) return false
     if (scope.value === 'featured' && !featured.value.has(e.id)) return false
     if (typeFilter.value !== 'all' && e.type !== typeFilter.value) return false
     if (charFilter.value !== 'all' && e.char !== charFilter.value) return false
     if (ratingFilter.value !== 'all' && e.rating !== ratingFilter.value) return false
-    return !term || searchIndex.value.get(e.id)?.text.includes(term)
+    return !term || index?.get(e.id)?.text.includes(term)
   })
   if (!term) return matches
   return matches.map(entry => {
-    const indexed = searchIndex.value.get(entry.id)!
+    const indexed = index!.get(entry.id)!
     const score = indexed.title === term ? 3 : indexed.title.includes(term) ? 2 : indexed.id.includes(term) ? 1 : 0
     return { entry, score }
   }).sort((a, b) => b.score - a.score).map(({ entry }) => entry)

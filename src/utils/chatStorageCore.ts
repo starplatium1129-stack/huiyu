@@ -1,6 +1,9 @@
 import { assertChatVersion } from './chatVersion.ts'
 import { DEFAULT_CHAT_API_BASE_URL, DEFAULT_CHAT_API_MODEL } from '../config/chatApi.ts'
-import { parseCompanionChatImages, parseCompanionDrawingDraft, type CompanionChatImage, type CompanionDrawingDraft } from '@/types/companionDrawing'
+import type { ChatMessage, ChatConversation } from '@/composables/chat/chatStorageTypes'
+import { normalizeChatMessages } from './chatMessageStorage'
+import { normalizeChatConversations } from './chatConversationStorage'
+export type { ChatMessage as PersistedChatMessage } from '@/composables/chat/chatStorageTypes'
 
 interface ChatStorageOptions {
   characterIds: string[]
@@ -10,16 +13,6 @@ interface ChatStorageOptions {
   normalizeOutfit: (characterId: string, value: unknown) => string
 }
 
-export interface PersistedChatMessage {
-  role: 'user' | 'assistant'
-  content: string
-  mid: string
-  stopped: boolean
-  recalledMemories?: string[]
-  drawingDrafts?: CompanionDrawingDraft[]
-  images?: CompanionChatImage[]
-}
-
 export interface PersistedChatState {
   version: number
   /** Legacy global revision retained for older persisted records. */
@@ -27,7 +20,8 @@ export interface PersistedChatState {
   /** Per-character tombstone revisions for explicit history clears. */
   historiesRevisions: Record<string, number>
   active: string
-  histories: Record<string, PersistedChatMessage[]>
+  histories: Record<string, ChatMessage[]>
+  conversations: Record<string, ChatConversation>
   settings: {
     model: string
     provider: 'local' | 'api'
@@ -62,36 +56,6 @@ function text(value: unknown, max: number): string {
   return typeof value === 'string' ? value.trim().slice(0, max) : ''
 }
 
-function normalizeMessages(
-  value: unknown,
-  maxMessages: number,
-  createMessageId: () => string,
-): PersistedChatMessage[] {
-  if (!Array.isArray(value)) return []
-  return value
-    .filter((message): message is Record<string, unknown> =>
-      isRecord(message) && (message.role === 'user' || message.role === 'assistant'))
-    .map(message => {
-      const recalled = Array.isArray(message.recalledMemories)
-        ? message.recalledMemories.map(m => text(m, 240)).filter(Boolean).slice(0, 6)
-        : undefined
-      const drawingDrafts = Array.isArray(message.drawingDrafts)
-        ? message.drawingDrafts.map(parseCompanionDrawingDraft).filter((item): item is CompanionDrawingDraft => Boolean(item)).slice(-4) : []
-      const images = parseCompanionChatImages(message.images)
-      return {
-        role: message.role as 'user' | 'assistant',
-        content: text(message.content, 1200),
-        mid: text(message.mid, 160) || text(message.id, 160) || createMessageId(),
-        stopped: message.stopped === true,
-        ...(recalled && recalled.length > 0 ? { recalledMemories: recalled } : {}),
-        ...(drawingDrafts.length ? { drawingDrafts } : {}),
-        ...(images.length ? { images } : {}),
-      }
-    })
-    .filter(message => message.content)
-    .slice(-maxMessages)
-}
-
 export function normalizeChatStorage(
   value: unknown,
   legacyModel: unknown,
@@ -107,10 +71,10 @@ export function normalizeChatStorage(
   const activeCandidate = text(raw.active, 80) || text(raw.activeCharacter, 80)
   const active = ids.includes(activeCandidate) ? activeCandidate : ids[0]
 
-  const normalizedHistories: Record<string, PersistedChatMessage[]> = {}
+  const normalizedHistories: Record<string, ChatMessage[]> = {}
   const normalizedDrafts: Record<string, string> = {}
   for (const id of ids) {
-    normalizedHistories[id] = normalizeMessages(
+    normalizedHistories[id] = normalizeChatMessages(
       histories[id], options.maxMessages, options.createMessageId,
     )
     normalizedDrafts[id] = text(drafts[id], 1200)
@@ -183,6 +147,7 @@ export function normalizeChatStorage(
       historiesRevisions,
       active,
       histories: normalizedHistories,
+      conversations: normalizeChatConversations(raw.conversations, normalizedHistories, ids, options.createMessageId),
       settings: {
         model: text(settings.model, 200) || text(raw.model, 200) || text(legacyModel, 200),
         provider: providerCandidate === 'local' ? 'local' : 'api',
@@ -208,6 +173,7 @@ export function serializeChatStorage(state: PersistedChatState): string {
     historiesRevisions: state.historiesRevisions,
     active: state.active,
     histories: state.histories,
+    conversations: state.conversations,
     settings: state.settings,
   })
 }
@@ -215,7 +181,7 @@ export function serializeChatStorage(state: PersistedChatState): string {
 /** Connection-only hydration never traverses or replaces live conversation history. */
 export function normalizeChatConnection(value: unknown, legacyModel: unknown, options: ChatStorageOptions) {
   const raw = isRecord(value) ? value : {}
-  const normalized = normalizeChatStorage({ ...raw, histories: {} }, legacyModel, options)
+  const normalized = normalizeChatStorage({ ...raw, histories: {}, conversations: {} }, legacyModel, options)
   const { model, provider, apiBaseUrl, apiModel } = normalized.state.settings
   const settings = isRecord(raw.settings) ? raw.settings : {}
   return { model, provider, apiBaseUrl, apiModel, neverConfigured: normalized.neverConfigured,

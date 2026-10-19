@@ -1,7 +1,7 @@
 @reference "../tailwind.css";
-.character-controls > summary { @apply tw:flex tw:items-center tw:justify-end tw:gap-[6px] tw:min-h-[32px] tw:text-primary tw:cursor-pointer tw:text-label-sm; list-style: none; }
+.character-controls > summary { @apply tw:flex tw:items-center tw:justify-end tw:gap-s-2 tw:text-primary tw:cursor-pointer tw:text-label-sm; min-height:var(--control-height-sm); list-style: none; }
 .character-controls > summary svg { @apply tw:w-[16px] tw:h-[16px]; }
-.character-controls-panel { @apply tw:absolute; z-index: var(--z-popover); @apply tw:left-[10px] tw:right-[10px]; bottom: calc(100% + 8px); max-height: min(450px, 65dvh); @apply tw:overflow-y-auto tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-elevated); box-shadow: var(--shadow-lg); }
+.character-controls-panel { @apply tw:absolute tw:left-s-3 tw:right-s-3; z-index: var(--z-popover); bottom:calc(100% + var(--s-2)); max-height:min(520px,65dvh); @apply tw:overflow-auto tw:p-s-4; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:var(--bg-elevated); box-shadow:var(--shadow-lg); }
 .character-settings-dialog { @apply tw:box-border; width: min(440px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); @apply tw:m-auto tw:p-0 tw:overflow-hidden tw:text-primary; background: var(--bg-elevated); border: 1px solid var(--border-soft); @apply tw:rounded-lg; box-shadow: var(--shadow-lg); }
 .character-settings-dialog[open] { @apply tw:flex tw:flex-col; }
 .character-settings-dialog::backdrop { background: var(--art-backdrop); }

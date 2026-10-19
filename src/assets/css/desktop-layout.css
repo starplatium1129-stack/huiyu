@@ -5,7 +5,7 @@
   --desktop-workspace-max: 1840px;
   --app-navigation-height: 80px;
   --workspace-gutter: clamp(16px, 2.25vw, 40px);
-  --workspace-pad-top: 24px; --workspace-panel-gap: 20px;
+  --workspace-pad-top: var(--s-5); --workspace-panel-gap: var(--s-5);
 }
 @media (min-width: 2200px) {
   html { font-size: 106.25%; }

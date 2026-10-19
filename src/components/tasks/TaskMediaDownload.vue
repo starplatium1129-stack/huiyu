@@ -1,4 +1,4 @@
-<template><component :is="privateResult ? 'button' : 'a'" :href="privateResult ? undefined : resolveRuntimeUrl(src)" :download="privateResult ? undefined : filename" :type="privateResult ? 'button' : undefined" :disabled="busy" :aria-busy="busy" @click="download"><slot />{{ busy ? ' · 下载中…' : '' }}<span v-if="error" role="status"> · {{ error }}</span></component></template>
+<template><component :is="privateResult ? 'button' : 'a'" :href="privateResult ? undefined : resolveRuntimeUrl(src)" :download="privateResult ? undefined : filename" :type="privateResult ? 'button' : undefined" :aria-disabled="busy || undefined" :aria-busy="busy" @click="download"><slot />{{ busy ? ' · 下载中…' : '' }}<span v-if="error" role="status"> · {{ error }}</span></component></template>
 <script setup lang="ts">
 import { computed, onDeactivated, onScopeDispose, ref, watch } from 'vue'
 import { isRuntimeResultPath, downloadTaskMedia } from '@/api/runtimeTasks'

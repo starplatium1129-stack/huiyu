@@ -8,6 +8,7 @@
       'is-low-effects': lowEffects,
       [`variant-${colorVariant}`]: true,
     }"
+    :style="{ height: `${height}px` }"
     aria-hidden="true"
   >
     <canvas ref="canvasRef" class="voice-glow-canvas tw:block tw:w-full tw:pointer-events-none" />
@@ -40,7 +41,7 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const strokeRef = ref<HTMLCanvasElement | null>(null)
 const { canPresent, canAnimate, reducedMotion, lowEffects, appearanceRevision } = useVisualActivity(containerRef)
 let stopFrames: (() => void) | null = null
-let logicalWidth = 1
+let logicalWidth = 0
 let smoothedLevel = 0
 let animationTime = 0
 let colors = { primary: '#F2A8BE', secondary: '#B784F6' }
@@ -59,15 +60,13 @@ function readColors(): void {
     : props.colorVariant === 'violet' ? { primary: violet, secondary: violet } : { primary: accent, secondary: violet }
 }
 
-function updateCanvasSize(): void {
-  const container = containerRef.value
-  if (!canvasRef.value || !strokeRef.value || !container) return
-  const width = Math.max(1, Math.round(container.getBoundingClientRect().width))
+function updateCanvasSize(measuredWidth: number): void {
+  if (!canvasRef.value || !strokeRef.value) return
+  const width = Math.max(1, Math.round(measuredWidth))
   logicalWidth = width
   const dpr = Math.min(window.devicePixelRatio || 1, 2, 2048 / (width*2))
   const pixelWidth = Math.max(1, Math.round(width*2*dpr))
   const pixelHeight = Math.max(1, Math.round(height.value * dpr))
-  container.style.height = `${height.value}px`
   for (const canvas of [canvasRef.value,strokeRef.value]) {
     if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) {
       canvas.width = pixelWidth
@@ -86,7 +85,7 @@ function stopAnimation(): void {
 /** Cache the normalized bell once. Its changing height, spread and center are
  * affine transforms; audio frames only update compositor properties. */
 function prepareCurve(): void {
-  if (!canvasRef.value || !strokeRef.value) return
+  if (!canvasRef.value || !strokeRef.value || !logicalWidth) return
   const points: [number,number][] = [],w=logicalWidth*2,h=height.value
   for(let i=0;i<=120;i++) {
     const x=i/120*w,bell=Math.exp(-Math.pow(Math.abs(x-logicalWidth)/(logicalWidth*.3),1.8))
@@ -134,7 +133,7 @@ function frame(_now: number, elapsed: number): void {
 }
 
 function refresh(): void {
-  if (!props.active || !canPresent.value) {
+  if (!props.active || !canPresent.value || !logicalWidth) {
     stopAnimation()
     smoothedLevel = 0
     return
@@ -153,10 +152,13 @@ watch([() => props.colorVariant, appearanceRevision], () => {
   prepareCurve()
   refresh()
 }, { flush: 'post' })
-watch(height, () => { updateCanvasSize(); refresh() }, { flush: 'post' })
-useResizeObserver(containerRef, () => { updateCanvasSize(); refresh() })
+useResizeObserver(containerRef, ([entry]) => {
+  if (!entry?.contentRect.width) return
+  updateCanvasSize(entry.contentRect.width)
+  refresh()
+})
 watch(lowEffects, () => { stopAnimation(); refresh() }, { flush:'post' })
-onMounted(() => { readColors(); updateCanvasSize(); refresh() })
+onMounted(() => { readColors(); refresh() })
 onBeforeUnmount(stopAnimation)
 </script>
 

@@ -7,25 +7,26 @@
 .gallery-kicker .archive-icon { width:16px; height:16px; color:var(--accent); }
 .gallery-invitation { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .gallery-breadcrumb { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:mt-s-3 tw:text-primary tw:text-label-sm; }
+.gallery-breadcrumb > span { min-width:0; overflow-wrap:anywhere; }
 .gallery-breadcrumb button { border:0; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; padding:var(--s-1) 0; @apply tw:min-h-[32px]; }
 .gallery-breadcrumb button:hover { @apply tw:text-accent; }
 .gallery-breadcrumb button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .gallery-breadcrumb :deep(.archive-icon) { transform:rotate(-90deg); @apply tw:text-secondary; }
 .gallery-title { margin:0; color:var(--text-primary); font:600 var(--fs-title)/var(--lh-tight) var(--font-sans); letter-spacing:0; }
 .gallery-create { @apply tw:shrink-0 tw:gap-s-2; }
-.gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
-.gallery-count strong { @apply tw:text-primary; font:600 var(--fs-body) var(--font-display); }
+.gallery-count { @apply tw:flex tw:items-baseline tw:gap-s-3 tw:text-secondary; min-width:0; max-width:100%; font:500 var(--fs-label-xs) var(--font-sans); @apply tw:whitespace-nowrap; }
+.gallery-count strong { @apply tw:text-primary; min-width:0; white-space:normal; overflow-wrap:anywhere; font:600 var(--fs-body) var(--font-display); }
 .gallery-empty-art { display:block; width:100%; height:auto; margin:auto; pointer-events:none; }
 
 /* Layout belongs to the artbook; fluid-workspaces owns the opaque toolbar surface. */
 /* Filters stay in document flow so the returning navigation is the only floating bar. */
-.gallery-toolbar { margin:0 auto; display:flex; align-items:center; gap:var(--s-3); flex-wrap:wrap; }
+.gallery-toolbar { margin:0 auto; display:flex; align-items:center; flex-wrap:wrap; }
 .gallery-browse-controls,.gallery-manage-controls { @apply tw:flex tw:items-center tw:gap-s-1 tw:flex-wrap; }
 .gallery-browse-controls { @apply tw:relative tw:isolate; --selection-radius:var(--r-sm); @apply tw:mr-auto tw:p-s-1; border:0; background:transparent; }
 .gallery-browse-controls .gallery-filter > span { color:var(--text-secondary); font:500 var(--fs-mono-xs) var(--font-mono); margin-left:var(--s-1); }
 .gallery-manage-controls { margin-left:auto; }
 .gallery-manage-controls .gallery-filter { min-height:var(--control-height-sm); }
-.gallery-select-toggle.active { color:var(--accent); background:var(--accent-soft); border-color:var(--border-strong); }
+.gallery-select-toggle.active { color:var(--text-primary); background:var(--bg-elevated); border-color:var(--border-strong); }
 .gallery-summary { @apply tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3; min-height:var(--control-height-sm); margin:var(--s-2) 0; }
 .gallery-album-overview { margin-top:var(--s-5); }
 .gallery-album-overview,.gallery-summary { scroll-margin-top:calc(var(--app-navigation-height,80px) + 100px); }
@@ -87,7 +88,6 @@
 @media (max-width:600px) {
   .gallery-shell { padding:var(--s-5) var(--s-3) var(--s-8); }
   .gallery-intro { @apply tw:items-start tw:flex-wrap tw:gap-s-4; }
-  .gallery-toolbar { @apply tw:p-s-3 tw:gap-s-2; }
   .gallery-browse-controls { @apply tw:w-full; }
   .gallery-search-field { flex-basis:100%; }
   .gallery-manage-controls { @apply tw:ml-auto tw:pl-0; border-left:0; }
@@ -98,4 +98,4 @@
   .gallery-columns { @apply tw:gap-s-3; }
   .gallery-col { @apply tw:gap-s-3; }
 }
-.gallery-browse-controls .gallery-filter.active { color:var(--accent); font-weight:600; background:transparent; border-color:transparent; }
+.gallery-browse-controls .gallery-filter.active { color:var(--text-primary); font-weight:600; background:transparent; border-color:transparent; }

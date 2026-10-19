@@ -1,7 +1,9 @@
 <template>
+  <DeferredDialogHost v-if="compareOpen && prevResult && lastResult && !comparePanel"
+    :loader="loadComparePanel" title="出图对比" icon="compare" @ready="comparePanel = $event" @close="closeCompare" />
   <Teleport to="body">
     <FluidTransition>
-      <PromptComparePanel v-if="prevResult && lastResult" v-show="compareOpen"
+      <component :is="comparePanel" v-if="comparePanel && compareOpen && prevResult && lastResult"
         :open="compareOpen" :previous="prevResult" :current="lastResult" @close="closeCompare" />
     </FluidTransition>
   </Teleport>
@@ -32,17 +34,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, shallowRef, watch } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, shallowRef, watch, type Component } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import type { PromptDialogBindings } from '@/composables/prompt/promptPanelBindings'
-import PromptComparePanel from './PromptComparePanel.vue'
+import DeferredDialogHost from './DeferredDialogHost.vue'
 const props = defineProps<{ bindings: PromptDialogBindings }>()
 const { inpaintManagedStartAvailable, inpaintProvider, inpaintAutomaticMaskAvailable, inpaintAutomaticMaskStatus, generationBusy, inpaintPreparing, inpaintImageSource, prevResult, inpaintOpen, compareOpen, displayResultSeed, lastResult, closeCompare, negativePrompt, inpaintCharacter, handleInpaintSubmit } = props.bindings
 const inpaintDialog = ref<HTMLElement | null>(null), closeButton = ref<HTMLButtonElement | null>(null)
 const inpaintPanel = shallowRef<typeof import('@/components/AnimaInpaintModal.vue').default | null>(null)
+const comparePanel = shallowRef<Component | null>(null)
+const loadComparePanel = () => import('./PromptComparePanel.vue')
 const panelLoading = ref(false), panelFailed = ref(false), wholeImage = ref(false)
 const inpaintTitle = computed(() => wholeImage.value ? '整图重绘' : inpaintProvider.value === 'native' ? '局部重绘（实验性）' : '智能局部换装')
 let attached = true, panelRequest = 0

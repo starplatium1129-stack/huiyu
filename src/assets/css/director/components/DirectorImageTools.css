@@ -16,4 +16,4 @@
 .pb .reference-interrogate-status { @apply tw:m-0 tw:text-secondary tw:text-label; }
 .pb .reference-interrogate-refresh { justify-self:start; }
 .pb .reference-outfit-actions:empty { display:none; }
-.pb .btn-compare-inpaint[aria-pressed='true'] { color:var(--accent); border-color:var(--border-strong); }
+.pb .btn-compare-inpaint[aria-pressed='true'] { color:var(--text-primary); border-color:var(--border-strong); }

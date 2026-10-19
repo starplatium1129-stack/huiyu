@@ -40,17 +40,30 @@ function jpegAtWidth(image: HTMLImageElement, maxWidth: number, quality: number)
   } finally { canvas.width = canvas.height = 0 }
 }
 
-function readFileAsImage(file: File): Promise<HTMLImageElement> {
+function readFileAsImage(file: File, signal: AbortSignal): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onload = () => {
-      const img = new Image()
-      img.onload = () => resolve(img)
-      img.onerror = () => reject(new Error('无法解析这张图片'))
-      img.src = String(reader.result || '')
+    if (signal.aborted) { reject(signal.reason); return }
+    const reader = new FileReader(), image = new Image()
+    function cleanup() {
+      signal.removeEventListener('abort', abort)
+      reader.onload = reader.onerror = null
+      image.onload = image.onerror = null
     }
-    reader.onerror = () => reject(new Error('无法读取这张图片'))
-    reader.readAsDataURL(file)
+    function fail(error: unknown) {
+      cleanup()
+      if (reader.readyState === FileReader.LOADING) reader.abort()
+      image.removeAttribute('src')
+      reject(error)
+    }
+    function abort() { fail(signal.reason) }
+    signal.addEventListener('abort', abort, { once: true })
+    reader.onload = () => {
+      image.onload = () => { cleanup(); resolve(image) }
+      image.onerror = () => fail(new Error('无法解析这张图片'))
+      image.src = String(reader.result || '')
+    }
+    reader.onerror = () => fail(new Error('无法读取这张图片'))
+    try { reader.readAsDataURL(file) } catch (error) { fail(error) }
   })
 }
 
@@ -162,7 +175,7 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     uploadRequest = new AbortController()
     showcaseFeedback.value = '正在保存样张…'
     try {
-      const image = await readFileAsImage(file)
+      const image = await readFileAsImage(file, uploadRequest.signal)
       let normalized: string, thumbnail: string
       try {
         if (!alive) return
@@ -208,7 +221,7 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     showcaseFeedback.value = '正在保存首页主视觉…'
     try {
       if (file.size > 15 * 1024 * 1024) throw new Error('图片超过 15MB，请先压缩')
-      const image = await readFileAsImage(file)
+      const image = await readFileAsImage(file, heroRequest.signal)
       let normalized: string
       try {
         if (!alive) return

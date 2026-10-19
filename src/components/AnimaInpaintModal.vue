@@ -84,8 +84,11 @@ const {
   undoMask,
   handleCanvasWheel,
   syncMaskCanvas,
+  enterMaskCanvas,
+  leaveMaskCanvas,
   startMaskPaint,
   continueMaskPaint,
+  finishMaskPaint,
   stopMaskPaint,
   maskBlob,
 } = useInpaintMaskCanvas({
@@ -244,12 +247,13 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                   aria-label="换装区域遮罩画布"
                   tabindex="0"
                   @contextmenu.prevent
-                  @pointerenter="cursorVisible = true"
-                  @pointerleave="cursorVisible = false; stopMaskPaint()"
+                  @pointerenter="enterMaskCanvas"
+                  @pointerleave="leaveMaskCanvas"
                   @pointerdown="startMaskPaint"
                   @pointermove="continueMaskPaint"
-                  @pointerup="stopMaskPaint"
+                  @pointerup="finishMaskPaint"
                   @pointercancel="stopMaskPaint"
+                  @lostpointercapture="stopMaskPaint"
                   @wheel="handleCanvasWheel"
                 ></canvas>
                 <!-- 笔刷尺寸跟随光标圈 -->

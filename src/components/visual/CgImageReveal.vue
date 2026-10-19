@@ -151,8 +151,9 @@ watch([canAnimate, lowEffects], () => {
   if (isRevealing.value && (!canAnimate.value || lowEffects.value)) finishReveal()
 }, { flush: 'sync' })
 useResizeObserver(containerRef, () => {
+  if (!isRevealing.value) return
   const bounds = containerRef.value?.getBoundingClientRect()
-  if (isRevealing.value && bounds && (Math.abs(bounds.width - revealSize.width) > 1 || Math.abs(bounds.height - revealSize.height) > 1)) finishReveal()
+  if (bounds && (Math.abs(bounds.width - revealSize.width) > 1 || Math.abs(bounds.height - revealSize.height) > 1)) finishReveal()
 })
 onMounted(handleReadyImage)
 onBeforeUnmount(() => { sourceRevision += 1; stopAnimation() })

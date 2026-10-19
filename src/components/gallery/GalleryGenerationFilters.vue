@@ -16,6 +16,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ apply: [filters: GalleryFilterSnapshot]; clear: [] }>()
 const presetName = ref('')
+const conditionsRevealed = ref(false), presetsRevealed = ref(false)
 const fields: { key: Exclude<GenerationFilterField, 'seed'>; label: string; all: string }[] = [
   { key: 'engine', label: '引擎', all: '全部引擎' }, { key: 'model', label: '模型 / Checkpoint', all: '全部模型' },
   { key: 'outfit', label: '角色 · 服装', all: '全部服装' }, { key: 'size', label: '生成尺寸', all: '全部尺寸' },
@@ -38,9 +39,10 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
 
 <template>
   <section class="gallery-generation-filters" aria-label="生成条件与常用组合">
-    <details class="generation-conditions">
+    <details class="generation-conditions" @toggle="($event.target as HTMLDetailsElement).open && (conditionsRevealed = true)">
       <StudioDisclosureSummary><span>按生成条件细选</span><span class="generation-summary">{{ filterCount ? `已选 ${filterCount} 项` : '引擎、服装、尺寸与 Seed' }}</span></StudioDisclosureSummary>
       <div data-disclosure-content>
+      <template v-if="conditionsRevealed">
       <div class="generation-heading"><button class="btn btn-quiet btn-sm" type="button" :disabled="!filterCount" @click="emit('clear')">清除生成条件</button></div>
       <div class="generation-fields">
         <label v-for="field in fields" :key="field.key" class="generation-field"><span>{{ field.label }}</span>
@@ -53,11 +55,13 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
           </div>
         </div>
       </div>
+      </template>
       </div>
     </details>
-    <details class="generation-presets">
+    <details class="generation-presets" @toggle="($event.target as HTMLDetailsElement).open && (presetsRevealed = true)">
       <StudioDisclosureSummary><ArchiveIcon name="book" /><span>常用筛选组合</span><span v-if="presets.length" class="generation-summary">{{ presets.length }} 组</span></StudioDisclosureSummary>
       <div data-disclosure-content>
+      <template v-if="presetsRevealed">
       <div class="generation-actions">
         <StudioSelect v-if="presets.length" :model-value="matchedPresetId" label="沿用常用筛选组合" :options="presetOptions" :disabled="busy" @update:model-value="applyPreset(String($event))" />
         <button v-if="matchedPresetId" class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="removePreset(matchedPresetId)">移除此组合</button>
@@ -69,6 +73,7 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
       </form>
       <p v-if="message" class="generation-note" role="status">{{ message }}</p>
       <p v-if="error" class="generation-error" role="alert">{{ error }}</p>
+      </template>
       </div>
     </details>
   </section>

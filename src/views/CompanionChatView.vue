@@ -24,6 +24,8 @@
           </StudioTooltip>
         </div>
       </header>
+      <ChatStoryPicker :branch-id="branchId" :branches="storyBranches" :disabled="!bridge || replyPending || storyBusy || attachments.sendingImage.value"
+        @select="handleStoryAction({ kind: 'switch-branch', branchId: $event })" />
 
       <section v-if="speechSettingsOpen" ref="speechSettingsPanel" tabindex="-1" id="companion-dialogue-preferences" class="companion-dialogue-preferences" aria-label="对白设置">
         <div class="companion-dialogue-preference-actions">
@@ -42,12 +44,16 @@
             <div class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble"><p class="companion-dialogue-line">{{ currentCharacter.greeting }}</p></div>
           </div>
-          <div v-for="msg in displayedMessages" :key="msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid">
+          <div v-for="msg in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid">
             <div v-if="msg.role === 'assistant'" class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
-            <div class="companion-dialogue-bubble">
+            <div class="companion-dialogue-bubble" v-content-motion:fade="msg.mid">
               <div class="companion-dialogue-speaker">
                 <span>{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
-                <button v-if="msg.content" type="button" aria-label="复制这条消息" @click="copyMessage(msg.content)"><ArchiveIcon name="copy" /></button>
+                <ChatMessageActions :can-copy="Boolean(msg.content)" :can-remember="false" :remembered="false" :can-play="false" :playing="false"
+                  :can-regenerate="Boolean(bridge && liveState.chatReady && canRegenerateMessage(msg.mid))" :reply-missing="msg.role === 'user'"
+                  :can-fork="Boolean(bridge && msg.content)" :story-disabled="replyPending || storyBusy || attachments.sendingImage.value"
+                  @copy="copyMessage(msg.content)" @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })"
+                  @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })" />
               </div>
               <p v-if="msg.content" class="companion-dialogue-line" :class="{ 'is-streaming': liveState.busy && msg.mid === latestReply?.mid }"><ChatMessageText :text="msg.content" /></p>
               <CompanionChatImages v-if="msg.images?.length" :images="msg.images" />
@@ -57,6 +63,8 @@
                 <span>{{ liveState.toolActivity || (liveState.thinking ? '想一想…' : '正在回应你…') }}</span>
               </div>
               <small v-if="msg.stopped">回复已停止</small>
+              <ChatReplyVariants :message="msg" :disabled="!bridge || replyPending || storyBusy || attachments.sendingImage.value"
+                @select="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
             </div>
           </div>
         </div>
@@ -122,6 +130,8 @@ import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ChatMessageText from '@/components/ChatMessageText.vue'
+import ChatMessageActions from '@/components/ChatMessageActions.vue'
+import ChatReplyVariants from '@/components/ChatReplyVariants.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
@@ -134,11 +144,13 @@ import { companionChatAvatars as chibiAvatars } from '@/config/companionChatAvat
 import '@/assets/css/companion-dialogue.css'
 
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
+const ChatStoryPicker = defineAsyncComponent(() => import('@/components/ChatStoryPicker.vue'))
 const CompanionChatImages = defineAsyncComponent(() => import('@/components/CompanionChatImages.vue'))
 const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 const {
   attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag,
   noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText,
+  branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
   onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled,
   speechHold, speechButtonText, speechSettingsOpen,
   onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved,

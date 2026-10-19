@@ -12,7 +12,7 @@
           :aria-selected="pane === tab.value" :aria-controls="`${id}-panel`" :tabindex="pane === tab.value ? 0 : -1"
           @click="pane = tab.value"><ArchiveIcon :name="tab.icon" />{{ tab.label }}</button>
       </nav>
-      <div :id="`${id}-panel`" v-content-motion:up="pane" class="companion-preferences-body tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto" :data-pane="pane" role="tabpanel" :aria-labelledby="`${id}-${pane}`"><slot /></div>
+      <div :id="`${id}-panel`" v-content-motion:up="pane" class="companion-preferences-body tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto" :data-pane="pane" role="tabpanel" :aria-labelledby="`${id}-${pane}`"><slot v-if="revealed" /></div>
     </dialog>
   </Teleport>
   <div v-else ref="popoverHost" class="companion-preferences-anchor">
@@ -34,6 +34,7 @@ const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 const popoverHost = ref<HTMLElement | null>(null)
 const popoverOpen = computed({ get: () => props.open, set: value => emit('update:open', value) })
 const dialog = ref<HTMLDialogElement | null>(null)
+const revealed = ref(props.open)
 const fluid = useFluidDialog(dialog)
 const id = useId()
 const tabs = [
@@ -44,7 +45,7 @@ const tabs = [
 const pane = ref<(typeof tabs)[number]['value']>('character')
 watch(() => props.open, value => {
   if (!props.desktop) return
-  if (value) { pane.value = 'character'; fluid.open() }
+  if (value) { revealed.value = true; pane.value = 'character'; fluid.open() }
   else fluid.close()
 }, { flush: 'post' })
 watch(pane, () => { dialog.value?.querySelector('.companion-preferences-body')?.scrollTo({ top: 0 }) })

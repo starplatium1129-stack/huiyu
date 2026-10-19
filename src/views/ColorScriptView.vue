@@ -60,7 +60,8 @@
     <details class="color-reading" :open="notebookOpen" @toggle="onNotebookToggle">
       <StudioDisclosureSummary><ArchiveIcon name="book" /><span><strong>光色手帖</strong><small>色彩搭配与光影参考</small></span></StudioDisclosureSummary>
       <div class="color-reading-body" data-disclosure-content>
-    <ColorLightNotebook @choose="chooseMood" />
+      <template v-if="notebookRevealed">
+    <AsyncPanel :loader="loadNotebook" label="光色手帖" v-slot="{ component }"><component :is="component" @choose="chooseMood" /></AsyncPanel>
     <h2 class="section-title">美术指导 · 色彩语言</h2>
     <div class="art-ref">
       <div class="art-ref-card good">
@@ -85,6 +86,7 @@
         <div class="lighting-reason">{{ l.reason }}</div>
       </div>
     </div>
+      </template>
       </div>
     </details>
   </article>
@@ -94,15 +96,16 @@
 import '@/assets/css/mood.css'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
-import ColorLightNotebook from '@/components/library/ColorLightNotebook.vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { ref, computed, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import { BANNED_TAGS } from '@/utils/promptPolicy'
+import { BANNED_TAGS } from '@/utils/promptDiagnostics'
 import { scrollBehavior } from '@/utils/motionPreference'
+const loadNotebook = () => import('@/components/library/ColorLightNotebook.vue')
 
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
 const LIGHTINGS = [
@@ -138,6 +141,8 @@ const route = useRoute(), router = useRouter()
 function routeMood() { return MOODS.find(mood => mood.id === route.query.mood) ?? null }
 const selected = ref<ColorMood | null>(routeMood())
 const notebookOpen = ref(route.query.notebook === '1')
+const notebookRevealed = ref(notebookOpen.value)
+watch(notebookOpen, open => { if (open) notebookRevealed.value = true }, { flush: 'sync' })
 let restoringReading = false
 watch(() => [route.path, route.query.mood, route.query.notebook], () => {
   if (route.path !== '/color-script') return
@@ -224,23 +229,23 @@ function exportTxt() {
 .color-section-heading, .palette-result-heading { @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-4; }
 .color-section-heading h2, .palette-result-heading h2 { @apply tw:m-0; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .color-section-heading p { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
-.color-current { display:inline-flex; align-items:center; gap:var(--s-2); color:var(--accent); font-size:var(--fs-label-sm); }
+.color-current { display:inline-flex; align-items:center; gap:var(--s-2); color:var(--text-primary); font-size:var(--fs-label-sm); }
 .color-current .archive-icon { width:16px; height:16px; }
 .color-script-page { --palette-duration:var(--motion-route); --palette-shift:-6px; --palette-press:.97; }
 .color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); }
 .color-mood-grid .mood-card { position:relative; isolation:isolate; border-radius:var(--r-lg); box-shadow:inset 0 1px 0 var(--glass-highlight); }
-.color-mood-grid .mood-card.active { border-color:var(--accent); box-shadow:var(--selection-shadow); }
+.color-mood-grid .mood-card.active { border-color:var(--border-strong); box-shadow:var(--shadow-sm); }
 .color-mood-grid .mood-strip { height:72px; gap:var(--s-1); padding:var(--s-3) var(--s-3) 0; overflow:hidden; background:var(--bg-base); }
 .color-mood-grid .mood-swatch { height:100%; border-radius:var(--r-sm) var(--r-sm) 0 0; transition:transform var(--palette-duration) var(--spring-soft); }
 .color-mood-grid .mood-swatch:nth-child(even) { transform:translateY(8px); }
 .color-mood-grid .mood-body { position:relative; padding:var(--s-4); padding-right:40px; transform:none; transition:none; }
-.color-mood-grid .mood-card.active .mood-body { background:var(--accent-soft); box-shadow:none; }
+.color-mood-grid .mood-card.active .mood-body { background:var(--bg-elevated); box-shadow:none; }
 .color-mood-grid .mood-name { display:flex; align-items:center; gap:var(--s-2); }
 .color-mood-grid .mood-name .archive-icon { width:18px; height:18px; color:var(--text-secondary); }
 .color-mood-grid .mood-en { margin-top:var(--s-1); }
 .mood-choice-mark { position:absolute; right:var(--s-3); top:50%; display:grid; place-items:center; width:24px; height:24px; border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-secondary); background:var(--bg-surface); transform:translateY(-50%); }
 .mood-choice-mark .archive-icon { width:14px; height:14px; transform:rotate(-90deg); }
-.active .mood-choice-mark { color:var(--accent); border-color:var(--accent); }
+.active .mood-choice-mark { color:var(--text-primary); border-color:var(--border-strong); }
 .active .mood-choice-mark .archive-icon { transform:none; }
 .color-mood-grid .mood-card:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .color-mood-grid .mood-card:focus-visible .mood-body { box-shadow:none; }

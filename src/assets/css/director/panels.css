@@ -2,7 +2,7 @@
   /* 窄栏里禁止竖排:字号与内距收紧,强制单行 */
   .pb .char-btn { flex: 1; @apply tw:min-w-0 tw:inline-flex tw:items-center tw:justify-center tw:gap-s-1; padding: var(--s-2) var(--s-1); @apply tw:rounded-md; border: 1px solid var(--border-soft); background: var(--bg-surface); @apply tw:text-secondary tw:cursor-pointer tw:text-label-sm; font-weight: 650; @apply tw:whitespace-nowrap; transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover); }
   .pb .char-btn:hover { @apply tw:border-accent tw:text-accent; }
-  .pb .char-btn.active { @apply tw:border-strong; background: var(--accent-soft); @apply tw:text-primary; box-shadow: var(--shadow-sm); }
+  .pb .char-btn.active { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary; box-shadow:var(--shadow-sm); }
 
   /* 热门角色说明 */
   .pb .popular-tags-note {

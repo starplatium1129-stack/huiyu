@@ -34,7 +34,7 @@ async function copy() {
 </script>
 
 <template>
-  <button class="u008" :class="{ 'btn-copied-success': state === 'copied' }" type="button" :data-state="state" :data-reduced-motion="reduced" :disabled="disabled || state === 'pending'" :aria-label="state === 'idle' ? label : `${feedback}：${label}`" :aria-busy="state === 'pending'" @click="copy">
+  <button class="u008" :class="{ 'btn-copied-success': state === 'copied' }" type="button" :data-state="state" :data-reduced-motion="reduced" :disabled="disabled" :aria-disabled="state === 'pending' || undefined" :aria-label="state === 'idle' ? label : `${feedback}：${label}`" :aria-busy="state === 'pending'" @click="copy">
     <span class="u008-icons" aria-hidden="true">
       <ArchiveIcon class="u008-cp" name="copy" /><ArchiveIcon class="u008-ok" name="success" />
       <ArchiveIcon class="u008-wait" name="refresh" /><ArchiveIcon class="u008-error" name="warning" />
@@ -63,7 +63,7 @@ async function copy() {
 .u008-measure { visibility:hidden; }
 .u008-feedback { animation:u008-label-in var(--motion-control) var(--ease-out); }
 .u008-live { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
-.u008:disabled { color:var(--text-disabled); background:var(--bg-elevated); opacity:1; }
+.u008:is(:disabled,[aria-disabled='true']) { color:var(--text-disabled); background:var(--bg-elevated); opacity:1; }
 .u008:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .u008[data-state='pending'] .u008-wait { animation:u008-spin 1s linear infinite; }
 @keyframes u008-label-in { from { opacity:0; transform:translateY(6px); } }

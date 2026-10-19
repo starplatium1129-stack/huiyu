@@ -3,8 +3,9 @@ import { DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from 'reka
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDropdownMenu from '@/components/ui/StudioDropdownMenu.vue'
 
-defineProps<{ canCopy: boolean; canRemember: boolean; remembered: boolean; canPlay: boolean; playing: boolean; memories?: string[] }>()
-const emit = defineEmits<{ copy: []; remember: []; play: [] }>()
+defineProps<{ canCopy: boolean; canRemember: boolean; remembered: boolean; canPlay: boolean; playing: boolean; memories?: string[];
+  canRegenerate?: boolean; canFork?: boolean; storyDisabled?: boolean; replyMissing?: boolean }>()
+const emit = defineEmits<{ copy: []; remember: []; play: []; regenerate: []; fork: [] }>()
 </script>
 
 <template>
@@ -18,6 +19,15 @@ const emit = defineEmits<{ copy: []; remember: []; play: [] }>()
         <ArchiveIcon :name="remembered ? 'success' : 'pin'" /><span>{{ remembered ? '已记住' : '记住这句话' }}</span>
       </DropdownMenuItem>
       <DropdownMenuItem v-if="canPlay" class="chat-more-item" @select="run(() => emit('play'))"><ArchiveIcon name="sound" /><span>{{ playing ? '重新播放' : '播放语音' }}</span></DropdownMenuItem>
+      <template v-if="canRegenerate || canFork">
+        <DropdownMenuSeparator class="chat-more-separator" />
+        <DropdownMenuItem v-if="canRegenerate" class="chat-more-item" :disabled="storyDisabled" @select="run(() => emit('regenerate'))">
+          <ArchiveIcon name="refresh" /><span>{{ replyMissing ? '生成回复' : '重新生成回复' }}</span>
+        </DropdownMenuItem>
+        <DropdownMenuItem v-if="canFork" class="chat-more-item" :disabled="storyDisabled" @select="run(() => emit('fork'))">
+          <ArchiveIcon name="chat" /><span>从这里另开剧情</span>
+        </DropdownMenuItem>
+      </template>
       <template v-if="memories?.length">
         <DropdownMenuSeparator class="chat-more-separator" />
         <DropdownMenuLabel class="chat-more-label">相关记忆</DropdownMenuLabel>
@@ -28,9 +38,9 @@ const emit = defineEmits<{ copy: []; remember: []; play: [] }>()
 </template>
 
 <style>
-.message-actions-trigger { display:grid; place-items:center; flex:none; width:28px; height:28px; padding:0; border:0; border-radius:8px; background:transparent; color:var(--text-secondary); cursor:pointer; }
-.message-actions-trigger .archive-icon { width:14px; height:14px; }
+.message-actions-trigger { display:grid; place-items:center; flex:none; width:var(--control-height-sm); height:var(--control-height-sm); padding:0; border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); cursor:pointer; }
+.message-actions-trigger .archive-icon { width:16px; height:16px; }
 .message-actions-trigger:is(:hover,[data-state='open']) { background:var(--bg-hover); color:var(--text-primary); }
 .message-actions-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.message-action-memory { margin:4px 12px; color:var(--text-secondary); font:400 13px/1.6 var(--font-sans); overflow-wrap:anywhere; }
+.message-action-memory { margin:var(--s-1) var(--s-3); color:var(--text-secondary); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
 </style>

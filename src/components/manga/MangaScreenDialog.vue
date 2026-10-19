@@ -13,7 +13,7 @@
               <button v-for="view in views" :key="view.value" type="button" :class="{active:preview === view.value}" :aria-pressed="preview === view.value"
                 :disabled="view.value === 'original' ? !source : view.value === 'lineart' ? !linePreviewAvailable : view.value === 'compare' ? !source || !resultUrl : !result" @click="preview = view.value">{{ view.label }}</button>
             </div>
-            <button class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '换一张' : '导入图片' }}</button>
+            <button ref="importButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '换一张' : '导入图片' }}</button>
             <input ref="picker" type="file" class="manga-file" accept="image/png,image/jpeg,image/webp" @change="pickImage" />
             <div v-if="preview === 'lineart'" class="manga-line-preview-bar">
               <StudioSelect v-if="lineChoices.length > 1" v-model="lineSelected" label="查看哪张线稿" :options="lineChoices" size="sm" inline />
@@ -82,7 +82,7 @@
         </div>
         <div class="manga-actions">
           <button class="btn btn-ghost" type="button" :disabled="exporting" @click="openTasks">任务中心</button>
-          <button v-if="canStartNew" class="btn btn-ghost" type="button" @click="startNew">开始新的处理</button>
+          <button v-if="canStartNew" class="btn btn-ghost" type="button" @click="beginNew">开始新的处理</button>
           <button v-if="!observing && !submitting && (acceptanceUnknown || job)" class="btn btn-ghost" type="button" @click="observe">{{ acceptanceUnknown ? '查询接收状态' : job?.status === 'succeeded' ? '重新读取结果' : '重新连接原任务' }}</button>
           <button v-if="pending || submitting || acceptanceUnknown" class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancel">{{ cancelling ? '请求取消…' : '取消处理' }}</button>
           <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked || !resultBlob" @click="exportResult('download')"><ArchiveIcon name="download" />导出漫画 PNG</button>
@@ -94,7 +94,7 @@
   </Teleport>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -116,6 +116,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 const props = defineProps<{ sourceUrl?: string; artwork?: ArtworkRecord; opener: HTMLElement | null }>()
 const emit = defineEmits<{ closed: []; saved: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), picker = ref<HTMLInputElement | null>(null)
+const importButton = ref<HTMLButtonElement | null>(null)
 const fluid = useFluidDialog(dialog)
 const taskCenter = useTaskCenter()
 const { parameters, operation, redraw, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
@@ -125,6 +126,15 @@ const {mode:lineMode, polarity:linePolarity, stretch:lineStretch, imported:lineI
   selected:lineSelected, previewUrl:linePreviewUrl, previewAvailable:linePreviewAvailable, caption:lineCaption,
   choices:lineChoices, error:lineError, notice:lineNotice, saved:lineSaved, saveDisabled:lineSaveDisabled, expected:lineExpected} = lines
 const views = [{value:'original',label:'原图'},{value:'lineart',label:'线稿'},{value:'result',label:'漫画'},{value:'compare',label:'对比'}] as const
+async function beginNew(event: MouseEvent) {
+  const origin = event.currentTarget as HTMLButtonElement
+  const ownedFocus = document.activeElement === origin
+  await startNew()
+  await nextTick()
+  if (ownedFocus && !origin.isConnected && dialog.value?.open
+    && (document.activeElement === document.body || document.activeElement === dialog.value))
+    importButton.value?.focus({ preventScroll: true })
+}
 function showImportedLine() { lineSelected.value = 'input'; preview.value = 'lineart' }
 async function retryImportedLine() { if (await lines.prepare()) showImportedLine() }
 let closing = false

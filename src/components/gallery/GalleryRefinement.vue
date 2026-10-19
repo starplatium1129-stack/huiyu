@@ -124,15 +124,15 @@ defineExpose({ focusTag })
 <style scoped>
 .gallery-refinement { display:contents; }
 .gallery-refine-toggle { display:flex; align-items:center; gap:var(--s-2); flex-shrink:0; min-height:var(--control-height); padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); background:var(--bg-surface); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; }
-.gallery-refine-toggle[aria-expanded='true'] { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+.gallery-refine-toggle[aria-expanded='true'] { border-color:var(--border-strong); color:var(--text-primary); background:var(--bg-elevated); }
 .gallery-refine-toggle > .archive-icon { width:16px; height:16px; }
 .gallery-refine-toggle > .archive-icon:last-child { transition:transform var(--spring-gentle-duration) var(--spring-gentle-ease); }
 .gallery-refine-toggle[aria-expanded='true'] > .archive-icon:last-child { transform:rotate(180deg); }
 .gallery-refine-toggle:focus-visible > .archive-icon:last-child { transition:none; }
-.gallery-refine-count { min-width:var(--s-5); color:var(--accent); font-variant-numeric:tabular-nums; text-align:center; }
+.gallery-refine-count { min-width:var(--s-5); color:var(--text-primary); font-variant-numeric:tabular-nums; text-align:center; }
 .gallery-active-filters { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); flex:1 0 100%; min-width:0; }
 .gallery-active-label { color:var(--text-secondary); font-size:var(--fs-label-sm); }
-.gallery-filter-chip { display:flex; align-items:center; gap:var(--s-2); min-width:0; max-width:100%; min-height:var(--control-height-sm); padding:var(--s-1) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--accent-soft); color:var(--text-primary); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; text-align:left; }
+.gallery-filter-chip { display:flex; align-items:center; gap:var(--s-2); min-width:0; max-width:100%; min-height:var(--control-height-sm); padding:var(--s-1) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-elevated); color:var(--text-primary); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; text-align:left; }
 .gallery-filter-chip > span { overflow-wrap:anywhere; }
 .gallery-filter-chip > .archive-icon { flex-shrink:0; width:14px; height:14px; color:var(--text-secondary); }
 .gallery-filter-reset { margin-left:auto; }

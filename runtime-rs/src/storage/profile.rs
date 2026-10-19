@@ -294,7 +294,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                 let decoded=current?;
                 let mut record=if let Value::String(s)=decoded {serde_json::from_str::<Value>(&s)?} else {decoded};
                 if !record.is_object() {return Err(invalid("Invalid chat profile"))}
-                record["histories"]=json!({});record["historiesRevision"]=json!(revision);record["historiesRevisions"]=json!({});
+                record["histories"]=json!({});record["conversations"]=json!({});record["historiesRevision"]=json!(revision);record["historiesRevisions"]=json!({});
                 if !record["settings"].is_object() {record["settings"]=json!({});}record["settings"]["drafts"]=json!({});
                 Some((stringify(&Value::String(stringify(&record))),record))
             } else {None};

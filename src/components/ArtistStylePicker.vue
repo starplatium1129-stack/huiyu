@@ -13,7 +13,7 @@
     <Teleport to="body">
     <dialog ref="panel" class="artist-style-panel" :aria-labelledby="titleId" @close="dialogOpen = Boolean(panel?.open)" @cancel.prevent="closePicker" @click="onBackdrop" @keydown="onPickerKeydown">
     <header class="artist-dialog-heading"><h2 :id="titleId">画师风格</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭画师选择" @click="closePicker"><ArchiveIcon name="close" /></button></header>
-    <div class="artist-style-body">
+    <div v-if="revealed" class="artist-style-body">
       <!--
         达上限提示（2026-08-30 UX 审计）：超上限时点选原本是静默丢弃，用户会
         以为按钮坏了。role=status 让读屏也能听到原因。
@@ -126,14 +126,14 @@
         <code>{{ modelTokens }}</code>
       </div>
     </div>
-    <footer class="artist-dialog-selected"><div><span>已选 {{ selected.length }}/2</span><div class="artist-selected-chips"><button v-for="option in selectedOptions" :key="option.id" type="button" class="btn btn-ghost btn-sm" :aria-label="`移除${option.cnName || option.name}`" @click="toggle(option.id)">{{ option.cnName || option.name }}<ArchiveIcon name="close" /></button><span v-if="!selected.length" class="artist-selection-empty">自然画风</span></div></div><button class="btn btn-primary" type="button" @click="closePicker">完成</button></footer>
+    <footer v-if="revealed" class="artist-dialog-selected"><div><span>已选 {{ selected.length }}/2</span><div class="artist-selected-chips"><button v-for="option in selectedOptions" :key="option.id" type="button" class="btn btn-ghost btn-sm" :aria-label="`移除${option.cnName || option.name}`" @click="removeSelected(option.id, $event)">{{ option.cnName || option.name }}<ArchiveIcon name="close" /></button><span v-if="!selected.length" class="artist-selection-empty">自然画风</span></div></div><button ref="doneButton" class="btn btn-primary" type="button" @click="closePicker">完成</button></footer>
     </dialog>
     </Teleport>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useId } from 'vue'
+import { computed, nextTick, ref, useId } from 'vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -171,10 +171,19 @@ const currentCategory = ref<string>('all')
 const currentScope = ref('all')
 const scopes = [{ id: 'all', label: '全部' }, { id: 'frequent', label: '常用' }, { id: 'recent', label: '最近' }]
 const panel = ref<HTMLDialogElement | null>(null)
+const doneButton = ref<HTMLButtonElement | null>(null)
 const dialogOpen = ref(false)
+const revealed = ref(false)
 const dialogMotion = useFluidDialog(panel)
 const titleId = useId()
-function openPicker() { dialogMotion.open(); dialogOpen.value = Boolean(panel.value?.open) }
+async function openPicker(event: MouseEvent) {
+  const source = event.currentTarget as HTMLElement
+  revealed.value = true
+  await nextTick()
+  if (!source.isConnected) return
+  dialogMotion.open(source)
+  dialogOpen.value = Boolean(panel.value?.open)
+}
 function closePicker() { dialogMotion.close(() => { dialogOpen.value = false }) }
 function onBackdrop(event: MouseEvent) { if (isBackdropClick(event, panel.value)) closePicker() }
 function onPickerKeydown(event: KeyboardEvent) {
@@ -189,6 +198,9 @@ const limitHint = ref('')
 const { recordUsage, frequentTop3Ids, recentIds } = useArtistStyleFunnel(ARTIST_STYLE_OPTIONS)
 
 const selectedOptions = computed(() => ARTIST_STYLE_OPTIONS.filter(option => props.selected.includes(option.id)))
+const searchDocuments = computed(() => new Map(ARTIST_STYLE_OPTIONS.map(option => [option.id, [
+  option.name, option.id, option.cnName || '', option.description, option.masterpiece || '', ...(option.keywords || []),
+].join(' ').toLocaleLowerCase()])))
 
 const filteredOptions = computed(() => {
   const needle = query.value.trim().toLocaleLowerCase()
@@ -202,17 +214,8 @@ const filteredOptions = computed(() => {
   }
   let matched = list
   if (needle) {
-    matched = list.filter(option => {
-      const haystack = [
-        option.name,
-        option.id,
-        option.cnName || '',
-        option.description,
-        option.masterpiece || '',
-        ...(option.keywords || []),
-      ].join(' ').toLocaleLowerCase()
-      return haystack.includes(needle)
-    })
+    const documents = searchDocuments.value
+    matched = list.filter(option => documents.get(option.id)?.includes(needle))
   }
 
   return sortByStyleFunnel(matched, frequentTop3Ids.value, props.curatedArtistStyles || [])
@@ -238,6 +241,11 @@ function verificationLabel(verification: ArtistStyleVerification): string {
   return '官方收录'
 }
 
+function removeSelected(id: string, event: MouseEvent) {
+  if (document.activeElement === event.currentTarget) doneButton.value?.focus({ preventScroll: true })
+  toggle(id)
+}
+
 /**
  * 点选一位画师（2026-08-30 UX 审计）。
  *
@@ -248,6 +256,7 @@ function toggle(id: string) {
   const validIds = new Set(ARTIST_STYLE_OPTIONS.map(option => option.id))
   const current = [...new Set(props.selected.filter(value => validIds.has(value)))].slice(0, ARTIST_STYLE_LIMIT)
   if (current.includes(id)) {
+    limitHint.value = ''
     emit('update:selected', current.filter(value => value !== id))
     return
   }
@@ -262,6 +271,7 @@ function toggle(id: string) {
 }
 
 function clearSelected() {
+  limitHint.value = ''
   emit('update:selected', [])
 }
 
@@ -275,6 +285,7 @@ function applyCombo(artistIds: readonly string[]) {
     clearSelected()
   } else {
     recordUsage([...artistIds])
+    limitHint.value = ''
     emit('update:selected', [...artistIds])
   }
 }

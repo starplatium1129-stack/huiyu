@@ -24,7 +24,7 @@
         <div class="setup-step-title"><div><span class="setup-label">第 1 步</span><h3 ref="locationTitle" tabindex="-1">模型存到哪里？</h3></div></div>
         <div class="setup-location-card">
           <span class="setup-folder"><ArchiveIcon name="folder" /></span>
-          <div><strong>AI 工作区</strong><code>{{ snapshot?.workspace.path || '正在读取位置…' }}</code><span>模型与运行环境统一存放</span></div>
+          <div><strong>AI 工作区</strong><code>{{ snapshot?.workspace.path || (loading ? '正在读取位置…' : '位置尚未确认') }}</code><span>模型与运行环境统一存放</span></div>
           <button v-if="desktop" ref="workspaceButton" class="btn btn-ghost" type="button" :disabled="loading || workspaceLoading || workspaceSaving || setupBusy" @click="chooseWorkspace"><ArchiveIcon name="folder" />{{ workspaceLoading ? '选择中…' : '选择文件夹' }}</button>
         </div>
         <div class="setup-location-actions">
@@ -97,7 +97,6 @@ function onPhase(phase: 'selection' | 'preparing' | 'ready') {
 .local-setup { color:var(--text-primary); overflow-wrap:anywhere; }
 .setup-heading, .setup-step-title, .setup-location-actions { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-3); }
 .local-setup h2, .local-setup h3 { margin:0; }
-.local-setup h2 { font-size:var(--fs-title-sm); }
 .local-setup h3 { font-size:var(--fs-title-xs); }
 .setup-platform { display:flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .setup-steps { position:relative; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:var(--s-5) 0; padding:0; list-style:none; border-block:1px solid var(--border-soft); }

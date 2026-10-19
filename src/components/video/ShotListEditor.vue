@@ -332,11 +332,11 @@
               </label>
               <label class="field">
                 <span class="field-label">镜头运动</span>
-                <StudioSelect size="sm" label="镜头运动" v-model="shot.camera" :options="cameraOptions.map(item => ({ value: item.id, label: item.label }))" :disabled="batchActive || submitting" />
+                <StudioSelect size="sm" label="镜头运动" v-model="shot.camera" :options="cameraOptions" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">主体运动</span>
-              <StudioSelect size="sm" label="主体运动" v-model="shot.motion" :options="motionOptions.map(item => ({ value: item.id, label: item.label }))" :disabled="batchActive || submitting" />
+              <StudioSelect size="sm" label="主体运动" v-model="shot.motion" :options="motionOptions" :disabled="batchActive || submitting" />
               </label>
               <label class="field">
                 <span class="field-label">时长</span>

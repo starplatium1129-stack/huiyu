@@ -20,7 +20,9 @@ import { createCompanionBehavior, normalizeCompanionConfig } from '../../utils/c
 import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '../../utils/storageKeys.ts'
 
 import { useConversationReading } from './useConversationReading.ts'
-import { relayChatTurn } from '../../utils/chatRelayReceipt.ts'
+import { relayChatCommand, relayChatTurn } from '../../utils/chatRelayReceipt.ts'
+import type { ChatStoryAction } from '@/types/companionDrawing'
+import { canRegenerateChatMessage } from '@/utils/chatMessageStorage'
 import { useCompanionChatAttachments } from './useCompanionChatAttachments'
 
 export function useCompanionChatWindow() {
@@ -73,6 +75,7 @@ const windowFocused = ref(document.hasFocus())
 let alive = true
 let liveInitialized = false
 let textRelay: AbortController | null = null
+let storyRelay: AbortController | null = null
 const listRef = ref<HTMLDivElement>()
 const inputRef = ref<HTMLTextAreaElement>()
 const { config: speechConfig, loadError } = useSpeechInputConfig()
@@ -88,14 +91,29 @@ const quietClock = usePolling({ intervalMs: 30_000, immediate: false, tick: () =
 } })
 
 const visibleMessages = computed(() => storage.messages(activeChar.value).slice(-40))
+const branchId = computed(() => storage.branchId(activeChar.value))
+const storyBranches = computed(() => storage.branches(activeChar.value))
+const canRegenerateMessage = (mid: string) => canRegenerateChatMessage(storage.messages(activeChar.value), mid)
+const storyBusy = ref(false)
+async function handleStoryAction(action: ChatStoryAction) {
+  if (!alive || !bridge || storyBusy.value || liveState.busy || sending.value || attachments.sendingImage.value || !storage.canWrite()) return
+  storyBusy.value = true
+  const controller = new AbortController()
+  storyRelay = controller
+  cancelSpeechActivity()
+  try {
+    await relayChatCommand(bridge, { command: 'story-action', character: activeChar.value, branchId: branchId.value, storyAction: action }, controller.signal)
+  } catch { if (alive && !controller.signal.aborted) listenerError('剧情操作未被接收，请检查角色窗后重试。') }
+  finally { if (storyRelay === controller) { storyRelay = null; storyBusy.value = false } }
+}
 const attachments = useCompanionChatAttachments({
-  bridge, activeChar, inputText, busy: computed(() => sending.value || liveState.busy),
+  bridge, activeChar, inputText, busy: computed(() => sending.value || storyBusy.value || liveState.busy),
   chatReady: computed(() => liveState.chatReady), visible: computed(() => bridge ? windowVisible.value : !pageHidden.value),
   writeBlocked: storage.writeBlocked,
   characterName: () => currentCharacter.value.name, persistDraft: text => storage.setDraft(activeChar.value, text),
   notice: listenerNotice, error: listenerError,
 })
-const canSend = computed(() => Boolean(bridge && inputText.value.trim()) && !sending.value && !liveState.busy && liveState.chatReady && !storage.writeBlocked.value && !attachments.sendingImage.value)
+const canSend = computed(() => Boolean(bridge && inputText.value.trim()) && !sending.value && !storyBusy.value && !liveState.busy && liveState.chatReady && !storage.writeBlocked.value && !attachments.sendingImage.value)
 
 const speechInput = useVoiceInput({ config: () => speechConfig.value, onText: onSpeechText })
 const {
@@ -109,7 +127,7 @@ const {
 
 const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
 const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
-const replyActive = computed(() => sending.value || liveState.busy || liveState.thinking || liveState.speaking || liveState.voiceActive)
+const replyActive = computed(() => sending.value || storyBusy.value || liveState.busy || liveState.thinking || liveState.speaking || liveState.voiceActive)
 const canCapture = computed(() => speechReady.value && !replyActive.value && !speechSettingsOpen.value && !attachments.sendingImage.value
   && windowVisible.value && !pageHidden.value && windowFocused.value)
 const speechButtonDisabled = computed(() => !canCapture.value || speechState.value === 'recognizing')
@@ -185,7 +203,7 @@ async function onSend() {
     listenerError('桌宠桥未连接，无法发送（请在角色窗中打开聊天）。')
   }
 }
-function cancelTextRelay() { textRelay?.abort(); textRelay = null; sending.value = false }
+function cancelTextRelay() { textRelay?.abort(); textRelay = null; sending.value = false; storyRelay?.abort(); storyRelay = null; storyBusy.value = false }
 watch(activeChar, cancelTextRelay, { flush: 'sync' })
 
 function onStop() {
@@ -365,7 +383,7 @@ function resizeComposer() {
 }
 watch(inputText, () => { void nextTick(resizeComposer) })
 
-const { hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, activeChar)
+const { hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, computed(() => `${activeChar.value}:${branchId.value}`))
 const docked = ref(true), docking = ref(false)
 let dockRevision = 0
 async function startWindowDrag(event: MouseEvent) {
@@ -487,5 +505,5 @@ watch(activeChar, () => {
   reconcileAutoListen()
 })
 
-return { attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, speechHold, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock }
+return { attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag, noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText, onInput, onSend, speechReady, speechState, speechError, speechButtonDisabled, speechHold, speechButtonText, speechSettingsOpen, onStop, canSend, sending, errorText, speechSessionActive, onSpeechSessionEnd, onSpeechSettingsSaved, hasNew, latest, copyMessage, docked, docking, toggleDock, branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage }
 }

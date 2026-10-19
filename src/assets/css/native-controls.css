@@ -92,7 +92,7 @@ html { -webkit-tap-highlight-color: transparent; }
   transform: rotate(45deg) scale(0);
 }
 :where(input[type="radio"])::before { @apply tw:w-[8px] tw:h-[8px]; border-radius: 50%; background: currentColor; }
-:where(input[type="checkbox"], input[type="radio"]):checked { @apply tw:border-accent; background: var(--accent); }
+:where(input[type="checkbox"], input[type="radio"]):checked { @apply tw:border-strong; background:var(--text-primary); }
 :where(input[type="checkbox"]):checked::before { transform: rotate(45deg) scale(1); }
 :where(input[type="radio"]):checked::before { transform: scale(1); }
 :where(input[type="checkbox"], input[type="radio"]):focus-visible { outline: none; box-shadow: var(--focus-shadow); }

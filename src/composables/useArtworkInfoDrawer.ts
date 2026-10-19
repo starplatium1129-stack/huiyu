@@ -27,7 +27,7 @@ export function useArtworkInfoDrawer(options: {
     options.open.value = !options.open.value
   }
 
-  useFocusTrap(options.panel, () => options.active() && compact.value && options.open.value, {
+  const { returnFocus } = useFocusTrap(options.panel, () => options.active() && compact.value && options.open.value, {
     initialFocus: options.closeButton, onEscape: close, lockScroll: false,
   })
   watch(compact, value => {
@@ -37,13 +37,21 @@ export function useArtworkInfoDrawer(options: {
     if (value && !options.open.value && options.panel.value?.contains(focused)) {
       target = options.trigger
     } else if (!value && (options.open.value || focused === options.trigger.value)) {
+      if (options.open.value) {
+        // The information body survives as a sidebar. Let the old trap retain
+        // its visible control instead of returning to a now-hidden launcher.
+        const retain = focused instanceof HTMLElement && options.viewer.value?.contains(focused)
+          && focused !== options.trigger.value && focused !== options.closeButton.value
+          && focused.closest('dialog:modal, [aria-modal="true"]') === options.viewer.value
+        returnFocus.value = retain ? focused : options.viewerCloseButton.value
+      } else target = options.viewerCloseButton
       close()
-      target = options.viewerCloseButton
     }
     // Wait for the old trap and inert state to release, then recheck the current
     // viewer/breakpoint so rapid resize or closing cannot steal focus later.
     if (target) void nextTick(() => {
-      if (options.active() && compact.value === value) target.value?.focus({ preventScroll: true })
+      if (options.active() && compact.value === value
+        && (document.activeElement === focused || document.activeElement === document.body)) target.value?.focus({ preventScroll: true })
     })
   }, { flush: 'sync' })
 

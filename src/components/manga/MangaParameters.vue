@@ -5,10 +5,10 @@
     <details v-for="group in groups" :key="group" :open="group === 'finish'" class="manga-parameter-group">
       <StudioDisclosureSummary>{{ groupNames[group] }}</StudioDisclosureSummary>
       <div class="manga-fields" data-disclosure-content>
-        <template v-for="field in fields(group)" :key="field.key">
+        <template v-for="field in fieldGroups[group]" :key="field.key">
           <div v-if="field.choices" class="manga-field"><span>{{ labels[field.key] }}</span>
             <StudioSelect v-model="parameters[group][field.key]" :label="`${groupNames[group]} · ${labels[field.key]}`" :disabled="disabled"
-              :options="field.choices.map(value => ({value, label: choiceLabels[value] || value}))" />
+              :options="field.options" />
           </div>
           <label v-else class="manga-field manga-number">
             <span>{{ labels[field.key] }}<output>{{ parameters[group][field.key] }}</output></span>
@@ -38,8 +38,10 @@ const groupNames = { levels:'黑白色阶', finish:'网点与线条', panel:'画
 const groups = computed(() => mangaManifest.operations[operation.value] as (keyof MangaParameters)[])
 const labels: Record<string,string> = { black:'黑场',white:'白场',gamma:'中间调',screen_lines:'网点线数',white_point:'网点白场',black_point:'网点黑场',light_tone:'亮部网点浓度',dark_tone:'暗部网点浓度',gradation:'网点渐变',pen_threshold:'边缘线条阈值',white_lines:'白线强度',frame:'画幅',crop_x:'横向裁切位置',crop_y:'纵向裁切位置',border:'边框',margin:'留白',paper:'纸色',ink:'墨色强度' }
 const choiceLabels: Record<string,string> = { original:'保留完整构图', '4:3 wide':'横幅 4:3', '16:9 wide':'横幅 16:9', '3:4 tall':'竖幅 3:4', '1:1':'方形 1:1', white:'纯白', 'off-white':'米白', cream:'奶油色' }
+const fieldGroups = { levels: fields('levels'), finish: fields('finish'), panel: fields('panel') }
 function fields(group: keyof MangaParameters) {
-  return Object.entries(mangaManifest.parameters[group]).map(([key, rule]) => ({ key, ...rule })) as
+  const definitions = Object.entries(mangaManifest.parameters[group]).map(([key, rule]) => ({ key, ...rule })) as
     { key: string; choices?: string[]; min?: number; max?: number; integer?: boolean }[]
+  return definitions.map(field => ({ ...field, options: field.choices?.map(value => ({ value, label: choiceLabels[value] || value })) ?? [] }))
 }
 </script>

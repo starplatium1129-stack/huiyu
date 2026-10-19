@@ -17,6 +17,7 @@ import { withChatTurn } from '@/utils/chatTurnOwnership'
 import { CHAT_TURN_KEY } from '@/utils/storageKeys'
 import { useRoomMemory } from '@/composables/chat/useRoomMemory'
 import { useRoomSetup } from '@/composables/chat/useRoomSetup'
+import { useChatStoryActions } from '@/composables/chat/useChatStoryActions'
 import type { CharacterPetControls } from '@/composables/chat/useCharacterPetControls'
 import type { CompanionChatSendOptions } from '@/types/companionDrawing'
 
@@ -255,6 +256,7 @@ export function useCharacterRoomSession() {
     replyAnnouncement,
     abortCurrentRequest,
     sendMessage,
+    regenerateMessage,
     useStarter,
     onInputChange,
     clearDraftInput,
@@ -294,8 +296,13 @@ export function useCharacterRoomSession() {
     scrollBottom,
   })
 
+  const { branchId, storyBranches, storyBusy, handleStoryAction, cancelStoryAction, canRegenerateMessage } = useChatStoryActions({
+    storage, activeChar, busy, chatReady, regenerateMessage,
+    stopVoice: () => voice.stop({ preserveMessageAudio: true, silent: true }), notice: setError, scrollBottom,
+  })
+
   function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void, sendOptions: CompanionChatSendOptions = {}) {
-    if (disposed || !storage.canWrite()) { accepted?.(false); return }
+    if (disposed || storyBusy.value || !storage.canWrite()) { accepted?.(false); return }
     characterStageRef.value?.setUserMessage()
     const text = typeof customText === 'string' ? customText : undefined
     const character = activeChar.value
@@ -308,12 +315,14 @@ export function useCharacterRoomSession() {
   }
 
   function stopEverything() {
+    cancelStoryAction()
     if (stopConversation()) voiceStatusText.value = ''
   }
 
   function switchCharacter(char: string) {
     const nextCharacter = getCompanionCharacterConfig(char)
     if (!nextCharacter || char === activeChar.value) return
+    cancelStoryAction()
     if (busy.value) abortCurrentRequest(true, false)
     storage.setDraft(activeChar.value, inputText.value)
     voice.stop({ preserveMessageAudio: true, silent: true })
@@ -327,24 +336,27 @@ export function useCharacterRoomSession() {
 
   async function clearCharacterConversation() {
     const targetCharacter = activeChar.value
+    const targetBranch = branchId.value
     const messages = storage.messages(targetCharacter)
     if (!messages.length) return
     const confirmed = await confirmAction({
       title: '清空当前对话？',
-      message: '将清空当前角色的本地对话记录并开始新对话，此操作无法撤销。',
+      message: '将清空当前剧情的对话记录并重新开始。其他剧情和历史归档会保留，此操作无法撤销。',
       confirmLabel: '清空对话',
       danger: true,
       signal: confirmationController.signal,
     })
     if (!confirmed) return
-    if (disposed || activeChar.value !== targetCharacter) return
-    if (busy.value) abortCurrentRequest(true)
-    if (!storage.clear(targetCharacter)) return setError('清空未完成，原对话已保留；请检查浏览器存储后重试。', 'warning', 0)
-    clearDraftInput()
-    storage.setDraft(targetCharacter, '')
-    voice.stop({ preserveMessageAudio: true, silent: true })
-    voice.clearMessages(messages.map(message => message.mid).filter(Boolean))
-    setError('已开始新的本地对话。', 'info', 2500)
+    if (disposed || activeChar.value !== targetCharacter || branchId.value !== targetBranch) return
+    await withChatTurn(async () => {
+      if (disposed || busy.value || !storage.refresh() || activeChar.value !== targetCharacter || branchId.value !== targetBranch) return
+      if (!storage.clear(targetCharacter)) return setError('清空未完成，原对话已保留；请检查浏览器存储后重试。', 'warning', 0)
+      clearDraftInput()
+      storage.setDraft(targetCharacter, '')
+      voice.stop({ preserveMessageAudio: true, silent: true })
+      voice.clearMessages(messages.map(message => message.mid).filter(Boolean))
+      setError('已开始新的本地对话。', 'info', 2500)
+    }, () => setError('另一个聊天窗口正在回复，请等回复结束后再清空当前剧情。', 'info'))
   }
 
   async function clearAllMemory() {
@@ -451,6 +463,7 @@ export function useCharacterRoomSession() {
     volume,
     preparingRoom,
     storage,
+    branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
     ollamaOnline, localStatusText, checkingChatStatus,
     models,
     currentModel,

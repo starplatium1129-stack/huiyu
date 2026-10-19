@@ -36,7 +36,9 @@
             <CharacterPortrait v-if="c.id !== 'nene'" :src="characterArtEntry('natsume')?.thumbnailUrl || '/assets/characters/natsume-home-cg-512.webp'" name="夏目" />
           </span>
           <span class="studio-character-copy"><strong>{{ c.label }}</strong><small>{{ c.id === 'nene' ? '绫地宁宁' : c.id === 'natsume' ? '四季夏目' : '宁宁与夏目' }}</small></span>
-          <ArchiveIcon v-if="pb.char === c.id" name="success" class="studio-character-check" />
+          <Transition name="studio-character-check">
+            <ArchiveIcon v-if="pb.char === c.id" name="success" class="studio-character-check" />
+          </Transition>
         </button>
       </div>
       <p class="studio-traits-label">角色特征</p>

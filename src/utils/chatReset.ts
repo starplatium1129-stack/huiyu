@@ -2,6 +2,7 @@ import { profileLocalStorage as localStorage } from '../platform/web/profileStor
 import { CHAT_DRAFT_PREFIX, CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, RETIRED_COMPANION_CHAT_KEY, CHAT_RESET_KEY } from './storageKeys.ts'
 import { assertStoredChatVersion } from '../storage/chatVersionStorage.ts'
 import { profileRuntimeActive, resetProfileChat } from '../platform/web/profileStorage.ts'
+import { STORAGE_VERSION } from '../config/characters'
 
 export function chatResetRevision(): string { return localStorage.getItem(CHAT_RESET_KEY) || '' }
 
@@ -10,7 +11,7 @@ export async function clearStoredChatContent(): Promise<{ failed: string[] }> {
   if (profileRuntimeActive()) { await resetProfileChat(); return { failed: [] } }
   const { readChatArchive, withChatArchiveMutation, writeChatArchive } = await import('../storage/chatArchiveRepository')
   return withChatArchiveMutation(async () => {
-    assertStoredChatVersion('aics_chat_v1', 3)
+    assertStoredChatVersion('aics_chat_v1', STORAGE_VERSION)
     assertStoredChatVersion('aics_chat_archive_v1', 1)
     assertStoredChatVersion(CHAT_MEMORY_KEY, 1)
     const archive = await readChatArchive()
@@ -32,6 +33,7 @@ export async function clearStoredChatContent(): Promise<{ failed: string[] }> {
       const raw = JSON.parse(localStorage.getItem('aics_chat_v1') || '{}')
       raw.historiesRevision = Math.max(Number(raw.historiesRevision) + 1 || 1, Date.now())
       raw.histories = {}
+      raw.conversations = {}
       raw.historiesRevisions = {}
       if (raw.settings) raw.settings.drafts = {}
       localStorage.setItem('aics_chat_v1', JSON.stringify(raw))

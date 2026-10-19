@@ -97,6 +97,7 @@ interface DragSession {
 }
 
 let activeDrag: DragSession | null = null
+let dragFrame = 0
 const motions = new Map<HTMLElement, { controls: ReturnType<typeof animateMini>; opacity: number; done: () => void; cancel: () => void }>()
 const EASE_OUT = [0.23, 1, 0.32, 1] as const
 function stopMotion(el: HTMLElement, finish = false) {
@@ -117,6 +118,7 @@ function track(el: HTMLElement, controls: ReturnType<typeof animateMini>, opacit
   controls.then(() => { if (motions.get(el) === motion) stopMotion(el, true) })
 }
 function releaseDrag() {
+  cancelAnimationFrame(dragFrame); dragFrame = 0
   if (!activeDrag) return
   const drag = activeDrag
   activeDrag = null
@@ -163,7 +165,12 @@ function onPointerMove(e: PointerEvent) {
   activeDrag.velocity = (e.clientX - activeDrag.lastX) / Math.max(1, now - activeDrag.lastTime)
   activeDrag.lastX = e.clientX
   activeDrag.lastTime = now
-  const deltaX = e.clientX - activeDrag.startX
+  if (!dragFrame) dragFrame = requestAnimationFrame(() => { dragFrame = 0; paintDrag() })
+}
+
+function paintDrag(clientX = activeDrag?.lastX) {
+  if (!activeDrag || clientX === undefined) return
+  const deltaX = clientX - activeDrag.startX
   activeDrag.el.style.transform = prefersReducedMotion() ? '' : `translateX(${deltaX}px) ${activeDrag.transform}`
   activeDrag.el.style.opacity = String(activeDrag.opacity * Math.max(0.2, 1 - Math.abs(deltaX) / 180))
 }
@@ -175,6 +182,7 @@ function onPointerUp(e: PointerEvent, id: number) {
   const velocity = now - activeDrag.lastTime > 80 ? 0 : e.clientX === activeDrag.lastX
     ? activeDrag.velocity : (e.clientX - activeDrag.lastX) / Math.max(1, now - activeDrag.lastTime)
   const el = activeDrag.el
+  paintDrag(e.clientX)
   releaseDrag()
   stopMotion(el)
 

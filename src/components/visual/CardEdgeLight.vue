@@ -7,19 +7,20 @@
 // https://github.com/unovue/inspira-ui/blob/04c57ab62b9713872ebbf68988dff1836ed3d764/app/components/inspira/ui/card-spotlight/CardSpotlight.vue
 // MIT Copyright (c) 2024-2026 rahulv.dev; notice: assets/licenses/inspira-ui.txt.
 import { onActivated, onDeactivated, onMounted, onScopeDispose, shallowRef } from 'vue'
+import { cancelFrame, frame as motionFrame } from 'motion'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 
 const frame = shallowRef<HTMLElement | null>(null)
 const light = shallowRef<HTMLElement | null>(null)
 let host: HTMLElement | null = null
-let pending = 0, x = 0, y = 0, tracking = false
+let x = 0, y = 0, tracking = false, transform = ''
 let release: (() => void) | undefined
 
 function stop(event?: Event) {
   const next = (event as PointerEvent | undefined)?.relatedTarget
   if (event?.type === 'pointerleave' && next instanceof Node && host?.contains(next)) return
   tracking = false
-  cancelAnimationFrame(pending); pending = 0
+  cancelFrame(measure); cancelFrame(paint)
   if (frame.value) frame.value.style.opacity = '0'
   release?.(); release = undefined
   document.removeEventListener('keydown', stop, true)
@@ -29,14 +30,19 @@ function stop(event?: Event) {
 function move(event: PointerEvent) {
   if (!tracking || event.pointerType === 'touch') return
   x = event.clientX; y = event.clientY
-  if (pending) return
-  pending = requestAnimationFrame(() => {
-    pending = 0
-    if (!host?.isConnected || host.closest('[inert], [hidden]')) { stop(); return }
-    const rect = host.getBoundingClientRect()
-    if (light.value) light.value.style.transform = `translate(${x - rect.left}px, ${y - rect.top}px) translate(-50%, -50%)`
-    if (frame.value) frame.value.style.opacity = '1'
-  })
+  motionFrame.read(measure)
+}
+function measure() {
+  if (!tracking || !host?.isConnected || host.closest('[inert], [hidden]')) { stop(); return }
+  const rect = host.getBoundingClientRect()
+  if (!rect.width || !rect.height) { stop(); return }
+  transform = `translate(${x - rect.left}px, ${y - rect.top}px) translate(-50%, -50%)`
+  motionFrame.render(paint)
+}
+function paint() {
+  if (!tracking) return
+  if (light.value) light.value.style.transform = transform
+  if (frame.value) frame.value.style.opacity = '1'
 }
 function enter(event: PointerEvent) {
   if (event.pointerType === 'touch' || document.hidden || prefersReducedMotion()

@@ -1,4 +1,7 @@
 @reference "../tailwind.css";
+/* Live column widths belong to this grid, not every descendant's inherited style. */
+@property --director-material-width { syntax:"<length>"; inherits:false; initial-value:336px; }
+@property --director-inspector-width { syntax:"<length>"; inherits:false; initial-value:368px; }
   /* ============================================================
      Director — 宽屏工作台 (Scene-first, Prompt-last)
      左侧=剧本与素材，右侧=导演决策、监看与大画幅成品
@@ -11,7 +14,7 @@
   .pb .focus-mode-btn { @apply tw:min-h-[36px] tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2; padding:0 var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-md; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:650 var(--fs-label-sm) var(--font-sans); transition:background var(--motion-hover),border-color var(--motion-hover),color var(--motion-hover),transform var(--motion-hover); }
   .pb .focus-mode-icon { @apply tw:inline-grid; place-items:center; @apply tw:text-body-lg tw:leading-flush; }
   .pb .focus-mode-btn:hover:not([aria-pressed="true"]) { border-color:var(--border-strong); background:var(--bg-hover); @apply tw:text-primary; }
-  .pb .focus-mode-btn[aria-pressed="true"] { @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent tw:font-bold; }
+  .pb .focus-mode-btn[aria-pressed="true"] { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary tw:font-bold; }
   .pb .focus-mode-btn:focus-visible, .pb .utility-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
   .pb .utility-menu { @apply tw:relative; }
   .pb .utility-trigger { @apply tw:w-[36px] tw:h-[36px] tw:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--motion-hover),border-color var(--motion-hover),transform var(--motion-hover); }
@@ -28,7 +31,7 @@
 .pb.journal-workspace {
   --drawing-navigation-height: var(--app-navigation-height, 80px);
   --drawing-viewport-height: calc(100dvh - var(--desktop-chrome-height, 0px));
-  --drawing-sticky-top: calc(var(--drawing-navigation-height) + var(--s-3));
+  --drawing-sticky-top: calc(var(--desktop-chrome-height, 0px) + var(--drawing-navigation-height) + var(--s-3));
   --drawing-sticky-bottom-gap: 30px;
   --drawing-anchor-offset: var(--s-5);
   max-width:none;
@@ -114,25 +117,25 @@
   .pb.journal-workspace[data-director-mode] .gen-bar { @apply tw:static tw:shrink-0; }
   .pb.journal-workspace[data-director-mode] .outfit-override-note { @apply tw:shrink-0; }
 }
+.pb.journal-workspace.focus-mode { --drawing-navigation-height:0px; }
 .pb.journal-workspace.focus-mode .director-inspector { @apply tw:hidden; }
-.pb.journal-workspace.focus-mode .gen-bar { @apply tw:top-s-3; }
 
 /* Keep the canvas frame in the route while its image tools load on demand. */
 .pb .stage-slot { position:relative; }
 .pb.atelier-workspace .stage-slot { overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); }
 .pb.atelier-workspace .stage-viewport { position:relative; min-width:0; min-height:0; overflow:hidden; height:clamp(360px,60vh,720px); container-type:size; background:var(--bg-base); }
-.pb.atelier-workspace .canvas-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; min-height:64px; padding:12px 24px; }
-.pb.atelier-workspace .canvas-heading>div { display:flex; align-items:center; gap:10px; min-width:0; }
-.pb.atelier-workspace .canvas-heading strong { font-size:14px; font-weight:600; overflow-wrap:anywhere; }
-.pb.atelier-workspace .canvas-heading span { font-size:11px; color:var(--text-muted); border-left:1px solid var(--border-soft); padding-left:10px; }
-.pb.atelier-workspace .canvas-heading .archive-icon { width:16px; height:16px; }
-.pb.atelier-workspace .canvas-heading button { white-space:nowrap; font-size:12px; }
+.pb.atelier-workspace .canvas-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--s-3); }
+.pb.atelier-workspace .canvas-heading>div { display:flex; align-items:center; gap:var(--s-2); min-width:0; }
+.pb.atelier-workspace .canvas-heading strong { font-size:inherit; font-weight:600; overflow-wrap:anywhere; }
+.pb.atelier-workspace .canvas-heading>div>span { font-size:var(--fs-label-xs); color:var(--text-muted); border-left:1px solid var(--border-soft); padding-left:var(--s-2); }
+.pb.atelier-workspace .canvas-heading .archive-icon { width:var(--fs-title-sm); height:var(--fs-title-sm); }
+.pb.atelier-workspace .canvas-heading button { white-space:nowrap; font-size:var(--fs-label); }
 .pb .director-canvas-loading { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:var(--s-4); padding:var(--s-5); color:var(--text-secondary); }
 .director-canvas-loading p { margin:0; font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .director-canvas-loading-actions { visibility:hidden; }
 @media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }
 @media (max-width:1023px) { .pb.atelier-workspace .stage-slot { display:grid; grid-template-rows:auto minmax(0,1fr) auto; } }
-@container canvas-column (max-width:740px) { .pb.atelier-workspace .canvas-heading span { display:none; } }
+@container canvas-column (max-width:740px) { .pb.atelier-workspace .canvas-heading>div>span { display:none; } }
 
 @media (min-width:1024px) {
   .pb.journal-workspace.atelier-workspace { max-width:none; margin:0; }

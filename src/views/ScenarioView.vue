@@ -28,7 +28,7 @@
       <section v-if="activeScenario" ref="reader" class="viewer" aria-label="分幕手帖" tabindex="-1">
         <header class="viewer-header-row"><div><span class="scenario-kicker">分幕手帖 / {{ activeScenario.acts.length }} 幕</span><h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2><p class="viewer-desc">{{ activeScenario.desc }}</p></div><button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />制作分镜短片</button></header>
         <div class="acts" :data-act-count="activeScenario.acts.length" data-route-arrive v-content-motion:up="`${activeScenario.id}:${currentChar}`">
-          <article v-for="a in activeScenario.acts" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
+          <article v-for="{ act: a, warnings, modules } in renderedActs" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
             <div class="act-heading tw:flex tw:items-center tw:gap-s-3"><span class="act-num">{{ a.n }}</span><div><h3 class="act-title">{{ a.title }}</h3><span class="act-en">{{ a.en }}</span></div></div>
             <div class="act-intent"><span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true"><ArchiveIcon :name="frameIcon(a.res)" /></span><div><span class="act-emotion">{{ a.emotion }}</span><p class="act-desc">{{ a.desc }}</p></div></div>
             <div class="act-format"><span>{{ currentChar === 'nene' ? '宁宁' : '夏目' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
@@ -38,8 +38,8 @@
               <div class="act-details-body" data-disclosure-content>
                 <p class="act-settings">LoRA {{ a.lora }} · {{ LOCK_PARAMS }}</p>
                 <p class="res-rec">{{ resInfo(a.res).reason }} · {{ resInfo(a.res).vram }}</p>
-                <div v-if="violations(a).length" class="art-warn show"><ArchiveIcon name="warning" />本幕有 {{ violations(a).length }} 个违反美术规范的标签: {{ violations(a).join(', ') }}</div>
-                <div class="prompt-label">Positive (10 模块)</div><div class="prompt-code" v-html="renderModules(a)"></div>
+                <div v-if="warnings.length" class="art-warn show"><ArchiveIcon name="warning" />本幕有 {{ warnings.length }} 个违反美术规范的标签: {{ warnings.join(', ') }}</div>
+                <div class="prompt-label">Positive (10 模块)</div><div class="prompt-code" v-html="modules"></div>
                 <div class="neg-section"><div class="prompt-label prompt-label-neg">Negative</div><div class="neg-layer"><div class="neg-layer-label">基础层（始终生效）</div><div class="neg-output">{{ BASE_NEG }}</div></div><div class="neg-layer"><div class="neg-layer-label">场景特定层</div><div class="neg-output">{{ a.neg }}</div></div></div>
               </div>
             </details>
@@ -56,7 +56,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
-import { nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useVideoStore, type StagedScenarioAct } from '@/stores/videoStore'
 import { useToast } from '@/composables/useToast'
@@ -67,7 +67,7 @@ import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useMoodReferences } from '@/composables/useMoodReferences'
 import { scrollBehavior } from '@/utils/motionPreference'
-import { BANNED_TAGS } from '@/utils/promptPolicy'
+import { BANNED_TAGS } from '@/utils/promptDiagnostics'
 import {
   SCENARIOS,
   SCENARIO_RES_MAP,
@@ -204,6 +204,10 @@ function renderModules(a: ScenarioAct) {
     return `<span class="mod ${cls}">${parts}</span>`
   }).join('\n')
 }
+
+const renderedActs = computed(() => (activeScenario.value?.acts ?? []).map(act => ({
+  act, warnings: violations(act), modules: renderModules(act),
+})))
 
 function copyPrompt(a: ScenarioAct) {
   const text = buildFullPrompt(a, currentChar.value)

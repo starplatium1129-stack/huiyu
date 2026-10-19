@@ -49,9 +49,9 @@
         </button>
         </StudioTooltip>
       </div>
-      <details class="model-more-settings">
+      <details class="model-more-settings" @toggle="onMoreToggle">
         <StudioDisclosureSummary>更多选项</StudioDisclosureSummary>
-        <div class="model-more-body" data-disclosure-content>
+        <div v-if="moreRevealed" class="model-more-body" data-disclosure-content>
           <template v-if="chatProvider === 'api'">
             <StudioTooltip anchor :content="busy ? '回复结束后可修改房间工具' : '允许模型直接绘图、反推已发送图片和使用本地文件工具，仅本机可用'">
               <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="companionTools" :disabled="busy" @click="emit('update:companion-tools', !companionTools)">房间工具：{{ companionTools ? '开' : '关' }}</button>
@@ -78,13 +78,16 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { chatApiVendorFor } from '@/config/chatApi'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 const loadChatModelPicker = () => import('@/components/ChatModelPicker.vue')
-
+const moreRevealed = ref(false)
+function onMoreToggle(event: Event) {
+  if ((event.currentTarget as HTMLDetailsElement).open) moreRevealed.value = true
+}
 
 const reasoningOptions = [
   { value: 'off', label: '关闭' },

@@ -27,10 +27,10 @@
         <AnimatedSelection />
         <button type="button"
           :aria-pressed="sceneCollection === 'core'"
-          @click="$emit('update:sceneCollection', 'core')">人设核心 {{ personaCoreCount }}</button>
+          @click="$emit('update:sceneCollection', 'core')">人设核心 {{ pb.dataReady ? personaCoreCount : '—' }}</button>
         <button type="button"
           :aria-pressed="sceneCollection === 'curated'"
-          @click="$emit('update:sceneCollection', 'curated')">精选 {{ curatedCount }}</button>
+          @click="$emit('update:sceneCollection', 'curated')">精选 {{ pb.dataReady ? curatedCount : '—' }}</button>
         <button type="button"
           :aria-pressed="sceneCollection === 'all'"
           @click="$emit('update:sceneCollection', 'all')">完整库</button>
@@ -38,7 +38,7 @@
       <StudioSearch v-model="pb.sceneSearch" class="scene-search-wrap" label="搜索场景" placeholder="试试：安静的夏目雨夜" />
       <div class="scene-filter-summary">
         <span class="scene-result-count" role="status" aria-live="polite">
-          {{ availableScenes.length }} 个场景
+          {{ pb.dataLoading ? '正在读取…' : pb.dataError ? '读取失败' : pb.dataReady ? `${availableScenes.length} 个场景` : '尚未读取' }}
         </span>
         <button class="btn btn-quiet btn-sm" type="button" @click="pb.sceneSearch = ''; pb.sceneTheme = 'all'">重置筛选</button>
       </div>
@@ -54,8 +54,11 @@
           </div>
         </div>
       </details>
-      <div v-content-motion:right="pb.dataReady ? `${sceneCollection}:${pb.sceneTheme}` : false" class="scene-list">
-        <div v-if="!pb.dataReady" class="scene-loading" role="status">正在加载场景库…</div>
+      <div ref="results" v-content-motion:right="pb.dataReady ? `${sceneCollection}:${pb.sceneTheme}` : false" class="scene-list" role="region" aria-label="工作室场景" tabindex="-1" :aria-busy="pb.dataLoading">
+        <ArchiveStatePanel v-if="pb.dataError" compact kind="error" title="创作资料读取失败" :message="pb.dataError">
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="pb.dataLoading" :aria-busy="pb.dataLoading" @click="retryData">{{ pb.dataLoading ? '正在重新读取…' : '重新读取资料' }}</button>
+        </ArchiveStatePanel>
+        <div v-else-if="!pb.dataReady" class="scene-loading" role="status">{{ pb.dataLoading ? '正在加载场景库…' : '场景库尚未读取' }}</div>
         <div v-else-if="!availableScenes.length" class="scene-empty" role="status">未找到匹配场景</div>
         <button v-for="scene in visibleScenes" :key="scene.id"
           class="scene-card"
@@ -84,22 +87,29 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { SCENE_THEMES } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import PopularBlueprintPicker from '@/components/popular/PopularBlueprintPicker.vue'
 import type { Scene } from '@/stores/promptBuilderStore'
 import type { SceneBlueprint } from '@/utils/popularContent'
 import '@/assets/css/director/components/DirectorScenesPanel.css'
 
 const pb = usePromptBuilderStore()
+const results = ref<HTMLElement | null>(null)
 const currentThemeLabel = computed(() => SCENE_THEMES.find(theme => theme.id === pb.sceneTheme)?.label ?? '全部')
 function retryBlueprints() {
   if (pb.subject.kind === 'popular') void pb.loadPopularCharacter(pb.subject.characterId).catch(() => {})
+}
+function retryData() {
+  if (pb.dataLoading) return
+  results.value?.focus({ preventScroll: true })
+  emit('retry')
 }
 
 defineProps<{
@@ -118,7 +128,8 @@ defineProps<{
   sceneLimit: number
 }>()
 
-defineEmits<{
+const emit = defineEmits<{
+  retry: []
   'update:popularCategory': [value: string]
   'update:showAllBlueprints': [value: boolean]
   selectBlueprint: [blueprint: SceneBlueprint]

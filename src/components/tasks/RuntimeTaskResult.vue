@@ -44,10 +44,14 @@ const resultOptions = computed(() => props.task.resultRefs.map(output => ({ valu
   label:manga.value ? output.index === 1 || props.task.kind === 'lineart' ? '线稿 · 黑线白底' : '漫画成片' : `${output.index + 1} · ${output.mime.startsWith('video/') ? '视频' : '图片'}` })))
 let controller: AbortController | undefined
 function release() { if (url.value) URL.revokeObjectURL(url.value); url.value = '' }
-watch(() => [props.task.taskId, index.value, retry.value], async (next, previous) => {
+// Metadata revisions keep the decoded preview; changed media credentials still reread it.
+watch([() => props.task.taskId, () => props.task.workspaceId, () => props.task.principalId, () => props.task.runtimeEpoch,
+  index, retry, () => props.task.resultState,
+  () => selected.value?.alias, () => selected.value?.sha256, () => selected.value?.bytes, () => selected.value?.mime], async (next, previous) => {
   controller?.abort(); controller = new AbortController(); const signal = controller.signal
-  if (next[0] !== previous?.[0] || !selected.value?.mime.startsWith('image/')) release()
-  if (next[0] !== previous?.[0]) savedIndices.value = []
+  const sessionChanged = next[0] !== previous?.[0] || next[1] !== previous?.[1] || next[2] !== previous?.[2] || next[3] !== previous?.[3]
+  if (sessionChanged || !selected.value?.mime.startsWith('image/')) release()
+  if (sessionChanged) savedIndices.value = []
   message.value = ''; readFailed.value = false; loading.value = true
   let candidateUrl = ''
   const image = new Image()
@@ -98,8 +102,8 @@ onUnmounted(() => { controller?.abort(); release() })
 .runtime-result-image { display:grid; grid-template:minmax(0,1fr)/minmax(0,1fr); place-items:center; height:clamp(180px,36vh,460px); overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--art-stage); }
 .runtime-result-image>* { grid-area:1/1; }
 .runtime-result-image img { width:100%; height:100%; min-height:0; object-fit:contain; }
-.runtime-result-image>span { padding:var(--s-4); color:var(--text-secondary); font-size:var(--fs-label); text-align:center; }
-.runtime-result-image>.runtime-result-loading { align-self:end; width:100%; background:var(--bg-surface); }
+.runtime-result-image>span { padding:var(--s-4); color:var(--on-art-primary); font-size:var(--fs-label); text-align:center; }
+.runtime-result-image>.runtime-result-loading { align-self:end; width:100%; background:var(--bg-surface); color:var(--text-secondary); }
 .runtime-result p, .runtime-result label { @apply tw:text-secondary tw:text-label; }
 .runtime-result :disabled { @apply tw:text-disabled; }
 .runtime-result { padding-top:var(--s-3); border-top:1px solid var(--border-soft); }

@@ -50,10 +50,12 @@
               :api-base-url="apiBaseUrl" :api-key="apiKey" :use-host-config="useHostConfig" :host-api-base-url="hostApiBaseUrl" :busy="busy" /></AsyncPanel>
             <div class="room-settings-voice">
               <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
-              <StudioPopover v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="chat-speech-settings speech-settings-popover" @open-auto-focus="focusSpeechPopover" @close-auto-focus="returnSpeechFocus">
+              <AsyncPanel class="room-speech-popover-loader" :loader="loadSpeechPopover" label="语音输入设置" v-slot="{ component: popoverComponent }">
+              <component :is="popoverComponent" v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="chat-speech-settings speech-settings-popover" @open-auto-focus="focusSpeechPopover" @close-auto-focus="returnSpeechFocus">
                 <template #trigger><button class="btn btn-ghost" type="button">语音输入设置</button></template>
                 <AsyncPanel v-if="speechSettingsOpen" :loader="loadSpeechInputSettings" label="语音输入设置" v-slot="{ component }"><component :is="component" :data-character="activeChar" @vue:mounted="focusSpeechSettings" @save="onSpeechSettingsSaved" @close="speechSettingsOpen = false" /></AsyncPanel>
-              </StudioPopover>
+              </component>
+              </AsyncPanel>
             </div>
           </div>
         </section>
@@ -74,11 +76,13 @@
           </div>
           <div class="room-chat-actions">
             <StudioTooltip :content="immersive ? '展开对话' : '专注陪伴'"><button class="btn btn-ghost" type="button" :aria-label="immersive ? '展开对话' : '专注陪伴'" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" /></button></StudioTooltip>
-            <StudioTooltip content="新对话"><button class="btn btn-ghost" type="button" aria-label="新对话" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
+            <StudioTooltip content="新对话"><button class="btn btn-ghost" type="button" aria-label="新对话" :disabled="busy || storyBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
             <StudioTooltip content="聊天设置"><button class="btn btn-ghost chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
             <ChatActionsMenu @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
           </div>
         </header>
+        <ChatStoryPicker :branch-id="branchId" :branches="storyBranches" :disabled="busy || storyBusy || storage.writeBlocked.value"
+          @select="handleStoryAction({ kind: 'switch-branch', branchId: $event })" />
         <div v-if="!chatReady || preparingRoom" class="room-setup">
           <strong><span class="room-setup-icon" aria-hidden="true"><ArchiveIcon name="model" /></span>{{ setupTitle }}</strong>
           <button v-if="chatProvider === 'local'" class="btn btn-primary btn-sm" type="button" :disabled="preparingRoom" @click="prepareRoom">{{ preparingRoom ? '准备中…' : '连接模型' }}</button>
@@ -92,25 +96,13 @@
             <div class="chat-starters" aria-label="对话开场建议"><button v-for="(s, index) in currentCharacter.starters" :key="s" class="room-starter" type="button" @click="chooseStarter(s)"><span class="room-starter-index" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span><span class="room-starter-copy">{{ s }}</span><span class="room-starter-arrow" aria-hidden="true"><ArchiveIcon name="chevron-down" /><ArchiveIcon name="chevron-down" /></span></button></div>
             <p class="room-starter-hint">选择开场建议后，可编辑再发送。</p>
           </div>
-          <div v-for="msg in currentMessages" :key="msg.mid" class="message"
-            :class="[msg.role, { streaming: msg.mid === streamingMid, speaking: msg.mid === playingMid }]" :data-mid="msg.mid">
-            <div v-if="msg.role === 'assistant'" class="message-avatar" :data-chibi="Boolean(companionChatAvatars[activeChar]) || undefined" aria-hidden="true">
-              <RuntimeImage :src="avatar" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
-            </div>
-            <div class="message-body">
-              <div class="message-bubble">
-                <ChatMessageText v-if="msg.content" :text="msg.content" />
-                <CompanionChatImages v-if="msg.images?.length" :images="msg.images" />
-                <CompanionDrawingDraftCard v-for="drawing in msg.drawingDrafts || []" :key="drawing.path" :draft="drawing" />
-                <span v-if="!msg.content && msg.mid === streamingMid" class="room-message-waiting">正在回复…</span>
-              </div>
-              <span v-if="msg.stopped || msg.mid === playingMid" class="message-note">{{ msg.stopped ? '已停止' : '播放中' }}</span>
-            </div>
-            <ChatMessageActions :can-copy="Boolean(msg.content)" :can-remember="msg.role === 'user' && Boolean(msg.mid)"
-              :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :can-play="msg.role === 'assistant' && Boolean(msg.mid && voice.hasAudio(msg.mid))"
-              :playing="msg.mid === playingMid" :memories="msg.recalledMemories"
-              @copy="copyMessage(msg.content)" @remember="rememberMessage(msg)" @play="msg.mid && voice.playMessage(msg.mid)" />
-          </div>
+          <ChatMessageRow v-for="msg in currentMessages" :key="msg.replyId || msg.mid" :message="msg" :avatar="avatar"
+            :chibi="Boolean(companionChatAvatars[activeChar])" :streaming="msg.mid === streamingMid" :playing="msg.mid === playingMid"
+            :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
+            :can-regenerate="chatReady && canRegenerateMessage(msg.mid)" :story-disabled="busy || storyBusy || storage.writeBlocked.value"
+            @copy="copyMessage" @remember="rememberMessage" @play="voice.playMessage($event)"
+            @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })" @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })"
+            @select-variant="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
         </div>
         <button v-if="!immersive && hasNew" class="room-latest btn btn-ghost" type="button" @click="latest">回到最新消息</button>
         <div v-if="immersive" class="room-current-line" role="log" aria-live="off" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
@@ -124,9 +116,9 @@
                 @blur="speechHold.cancelHeld" @pointerdown.prevent="speechHold.pointerDown" @pointerup="speechHold.pointerUp" @pointercancel="speechHold.pointerCancel" @lostpointercapture="speechHold.pointerCancel"><ArchiveIcon name="sound" /></button>
             </StudioTooltip>
             <textarea ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" placeholder="发消息…" aria-label="聊天输入"
-              @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onComposerInput"></textarea>
+              @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onInputChange"></textarea>
             <StudioTooltip anchor :content="busy || voiceActive ? '停止回复或语音' : chatReady ? '发送 · Enter（Shift+Enter 换行）' : '请先连接聊天模型'">
-              <StudioSendButton :busy="busy || voiceActive" :disabled="!chatReady || !inputText.trim() || storage.writeBlocked.value"
+              <StudioSendButton :busy="busy || voiceActive" :disabled="storyBusy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
                 :turn-id="lastUserMessage?.mid || ''" :completed="Boolean(replyAnnouncement) && !chatError && !lastAssistantMessage?.stopped"
                 :context="activeChar" :message-host="chatListRef" @send="handleSend" @stop="stopEverything" />
             </StudioTooltip>
@@ -142,7 +134,6 @@
 <script setup lang="ts">
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioSendButton from '@/components/ui/StudioSendButton.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
@@ -150,10 +141,8 @@ import { useConversationReading } from '@/composables/chat/useConversationReadin
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
-import { useResizeObserver } from '@vueuse/core'
+import { useResizeObserver, useTextareaAutosize } from '@vueuse/core'
 import { useCharacterRoomSession } from '@/composables/chat/useCharacterRoomSession'
-import ChatMessageText from '@/components/ChatMessageText.vue'
-import ChatMessageActions from '@/components/ChatMessageActions.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import { companionChatAvatars } from '@/config/companionChatAvatars'
 import { characterArtEntry } from '@/platform/characterArtState'
@@ -166,6 +155,8 @@ import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
+const ChatStoryPicker = defineAsyncComponent(() => import('@/components/ChatStoryPicker.vue'))
+const ChatMessageRow = defineAsyncComponent(() => import('@/components/ChatMessageRow.vue'))
 // App's TaskCenter already loads this boundary before tools can open; keep its
 // low-frequency use outside the room's static dependency closure.
 const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
@@ -174,8 +165,7 @@ const loadChatModelControls = () => import('@/components/ChatModelControls.vue')
 const loadChatApiSettings = () => import('@/components/ChatApiSettings.vue')
 const loadChatSearchSettings = () => import('@/components/ChatSearchSettings.vue')
 const loadSpeechInputSettings = () => import('@/components/SpeechInputSettings.vue')
-const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
-const CompanionChatImages = defineAsyncComponent(() => import('@/components/CompanionChatImages.vue'))
+const loadSpeechPopover = () => import('@/components/ui/StudioPopover.vue')
 // These panels mount only after a menu action; load their component CSS then too.
 const roomToolLoaders = {
   archive: () => import('@/components/ChatArchivePanel.vue'),
@@ -199,6 +189,7 @@ const {
   volume,
   preparingRoom,
   storage,
+  branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
   ollamaOnline, localStatusText, checkingChatStatus, refreshChatStatus,
   models,
   currentModel,
@@ -303,7 +294,7 @@ function closeRoomPanelFromBackdrop(event: MouseEvent) {
 }
 const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
-const { hasNew, latest } = useConversationReading(chatListRef, () => currentMessages.value, activeChar)
+const { hasNew, latest } = useConversationReading(chatListRef, () => currentMessages.value, computed(() => `${activeChar.value}:${branchId.value}`))
 const currentLine = computed(() => lastAssistantMessage.value?.content || personalizedGreeting.value)
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
@@ -344,7 +335,7 @@ const {
 } = useChatSpeechInteraction({
   currentCharacter,
   chatReady,
-  busy: computed(() => busy.value || voiceActive.value || roomPanel.value === 'settings'),
+  busy: computed(() => busy.value || storyBusy.value || voiceActive.value || roomPanel.value === 'settings'),
   inputText,
   handleSend,
 })
@@ -358,13 +349,8 @@ const activityText = computed(() => toolActivity.value || (thinkingActivity.valu
   || (['acquiring', 'capturing', 'recognizing'].includes(speechState.value) ? speechButtonText.value : '')
   || speechNotice.value || (speechSessionActive.value ? '连续对话中' : speechAutoListening.value ? '听候唤醒' : ''))
 const inputRef = ref<HTMLTextAreaElement>()
-function resizeInput() {
-  if (!inputRef.value) return
-  inputRef.value.style.height = 'auto'
-  inputRef.value.style.height = `${Math.min(inputRef.value.scrollHeight, 120)}px`
-}
-function onComposerInput() { onInputChange(); resizeInput() }
-watch(inputText, () => { void nextTick(resizeInput) })
+watch(branchId, () => { void nextTick(() => inputRef.value?.focus({ preventScroll: true })) })
+useTextareaAutosize({ element:inputRef, input:inputText, maxHeight:120 })
 async function focusSpeechPopover(event: Event) {
   event.preventDefault()
   const opener = document.activeElement

@@ -43,8 +43,8 @@
       </div>
       <div class="utility-divider tw:h-[1px]"></div>
       <p class="backup-scope">只需要原图可选「导出作品图片」。角色、服装和场景等内容资料请在<RouterLink to="/scene-manager">内容维护</RouterLink>中单独导出。</p>
-      <div v-if="blueprintData" class="utility-label tw:text-muted">创作蓝图</div>
-      <div v-if="blueprintData" class="utility-actions tw:grid tw:gap-s-1">
+      <div v-if="getBlueprint" class="utility-label tw:text-muted">创作蓝图</div>
+      <div v-if="getBlueprint" class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
           <button class="btn btn-ghost wide" type="button" @click="exportBlueprint">
             <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
@@ -134,7 +134,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/director/components/PromptDataTools.css'
 
 const props = defineProps<{
-  blueprintData?: Record<string, unknown>
+  getBlueprint?: () => Record<string, unknown>
   launcherLabel?: string
 }>()
 
@@ -205,11 +205,12 @@ function cleanOrphanImages() {
 }
 
 function exportBlueprint() {
-  if (!props.blueprintData) {
+  const blueprint = props.getBlueprint?.()
+  if (!blueprint) {
     emit('flash', '当前没有可导出的蓝图数据')
     return
   }
-  exportDirectorBlueprint(props.blueprintData)
+  exportDirectorBlueprint(blueprint)
   emit('flash', '蓝图 JSON 已导出')
   utilityOpen.value = false
 }
@@ -220,7 +221,7 @@ async function onBlueprintFilePicked(event: Event) {
   if (!file || !blueprintViewActive) return
   blueprintRead?.abort()
   const request = new AbortController()
-  const fingerprint = () => JSON.stringify({ ...props.blueprintData, updatedAt: undefined })
+  const fingerprint = () => JSON.stringify({ ...props.getBlueprint?.(), updatedAt: undefined })
   const draftAtPick = fingerprint()
   blueprintRead = request
   input.value = ''

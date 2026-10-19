@@ -38,16 +38,21 @@
     </div>
     <section class="inspector-size-section"><slot name="size" /></section>
     <section class="inspector-style-section"><slot name="style" /></section>
-    <details class="inspector-route inspector-advanced">
+    <details class="inspector-route inspector-advanced" @toggle="onAdvancedToggle">
       <StudioDisclosureSummary><span class="inspector-detail-label"><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><small>{{ generationPresetSummary || `${animaState.steps} 步 · CFG ${animaState.cfg}` }}</small></span></StudioDisclosureSummary>
       <div data-disclosure-content class="inspector-advanced-body">
-        <CasualCreativeSliders v-if="pb.directorMode !== 'pro'" :draw-engine="drawEngine" :disabled="generationBusy"
-          v-model:sd-params="pb.sdParams" :anima-state="animaState" @touch-sd="pb.markParamTouched" @patch-anima="patchAnimaState" />
-        <AnimaQuickPanel v-if="pb.directorMode === 'pro'"
-          :state="animaState" :no-lora="animaNoLoraMode" @update:state="patchAnimaState" />
-        <div v-if="generationPresetSummary" class="generation-auto-summary tw:flex tw:items-baseline tw:justify-between tw:gap-[12px] tw:mb-[10px] tw:rounded-md tw:text-muted tw:text-body tw:leading-body tw:flex-wrap">
-          <span>自动参数</span><strong>{{ generationPresetSummary }}</strong>
-        </div>
+        <template v-if="advancedLoaded">
+          <AsyncPanel v-if="pb.directorMode !== 'pro'" :loader="loadCreativeSliders" label="画面采样微调" v-slot="{ component }">
+            <component :is="component" :draw-engine="drawEngine" :disabled="generationBusy"
+              v-model:sd-params="pb.sdParams" :anima-state="animaState" @touch-sd="pb.markParamTouched" @patch-anima="patchAnimaState" />
+          </AsyncPanel>
+          <AsyncPanel v-else :loader="loadAnimaQuickPanel" label="引擎采样参数" v-slot="{ component }">
+            <component :is="component" :state="animaState" :no-lora="animaNoLoraMode" @update:state="patchAnimaState" />
+          </AsyncPanel>
+          <div v-if="generationPresetSummary" class="generation-auto-summary tw:flex tw:items-baseline tw:justify-between tw:gap-s-3 tw:mb-s-2 tw:rounded-md tw:text-muted tw:text-body tw:leading-body tw:flex-wrap">
+            <span>自动参数</span><strong>{{ generationPresetSummary }}</strong>
+          </div>
+        </template>
       </div>
     </details>
     <ManagedDrawingRouteCard v-if="managedRoute" :route="managedRoute" :history="pb.history" :subject="pb.subject"
@@ -56,18 +61,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, ref } from 'vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import CasualCreativeSliders from '@/components/director/CasualCreativeSliders.vue'
-import AnimaQuickPanel from '@/components/AnimaQuickPanel.vue'
+const loadCreativeSliders = () => import('@/components/director/CasualCreativeSliders.vue')
+const loadAnimaQuickPanel = () => import('@/components/AnimaQuickPanel.vue')
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import type { PromptRenderBindings } from '@/composables/prompt/promptPanelBindings'
 const ManagedDrawingRouteCard = defineAsyncComponent(() => import('@/components/ManagedDrawingRouteCard.vue'))
 const props = defineProps<{ bindings: PromptRenderBindings }>()
+const advancedLoaded = ref(false)
+function onAdvancedToggle(event: Event) {
+  if ((event.currentTarget as HTMLDetailsElement).open) advancedLoaded.value = true
+}
 const { pb, generationBusy, generationPresentation, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
   reuseSuccessfulRecipe, engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
   animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings

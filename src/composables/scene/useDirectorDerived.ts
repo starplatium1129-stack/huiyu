@@ -1,5 +1,6 @@
 import { computed, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
+import type { Scene } from '@/types/scene'
 
 export interface DirectorDerivedInput {
   pb: ReturnType<typeof usePromptBuilderStore>
@@ -26,20 +27,24 @@ export function useDirectorDerived(input: DirectorDerivedInput) {
   const curatedIds = computed(() => new Set(
     Array.isArray(pb.curation.curatedSceneIds) ? pb.curation.curatedSceneIds as string[] : [],
   ))
+  const scenePools = computed(() => {
+    const all: Scene[] = [], core: Scene[] = [], curated: Scene[] = []
+    const hidden = hiddenSceneIds.value, coreIds = personaCoreIds.value, curatedSceneIds = curatedIds.value
+    for (const scene of pb.filteredScenes) {
+      if (hidden.has(scene.id)) continue
+      all.push(scene)
+      if (coreIds.has(scene.id)) core.push(scene)
+      if (curatedSceneIds.has(scene.id)) curated.push(scene)
+    }
+    return { all, core, curated }
+  })
   const availableScenes = computed(() => {
-    const base = pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id))
     // 搜索永远扫完整可用库，避免用户必须先猜场景属于哪一层。
-    if (pb.sceneSearch.trim() || sceneCollection.value === 'all') return base
-    const ids = sceneCollection.value === 'core' ? personaCoreIds.value : curatedIds.value
-    return base.filter(scene => ids.has(scene.id))
+    return scenePools.value[pb.sceneSearch.trim() ? 'all' : sceneCollection.value]
   })
   const visibleScenes = computed(() => availableScenes.value.slice(0, sceneLimit.value))
-  const personaCoreCount = computed(() =>
-    pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && personaCoreIds.value.has(scene.id)).length,
-  )
-  const curatedCount = computed(() =>
-    pb.filteredScenes.filter(scene => !hiddenSceneIds.value.has(scene.id) && curatedIds.value.has(scene.id)).length,
-  )
+  const personaCoreCount = computed(() => scenePools.value.core.length)
+  const curatedCount = computed(() => scenePools.value.curated.length)
 
   // ── 显存预算提示 ─────────────────────────────────────────────────────────
   const vramBudget = computed(() => {

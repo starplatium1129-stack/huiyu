@@ -222,6 +222,15 @@ pub struct ChatImageRef {
 
 #[derive(serde::Deserialize, Serialize, Clone)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ChatStoryAction {
+    kind: String,
+    message_id: Option<String>,
+    variant_id: Option<String>,
+    branch_id: Option<String>,
+}
+
+#[derive(serde::Deserialize, Serialize, Clone)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct ChatRelay {
     command: String,
     text: Option<String>,
@@ -231,16 +240,19 @@ pub struct ChatRelay {
     action: Option<String>,
     character: Option<String>,
     request_id: Option<String>,
+    branch_id: Option<String>,
+    story_action: Option<ChatStoryAction>,
 }
 
 #[tauri::command]
 pub fn chat_relay(window: tauri::WebviewWindow, app: AppHandle, payload: ChatRelay) -> bool {
     if window.label() != "companion-chat"
-        || !matches!(payload.command.as_str(), "send" | "stop" | "switch-character")
+        || !matches!(payload.command.as_str(), "send" | "stop" | "switch-character" | "story-action")
         || payload.text.as_ref().is_some_and(|value| value.len() > 65_536)
         || payload.image_url.as_ref().is_some_and(|value| value.len() > 16 * 1024 * 1024)
         || payload.character.as_ref().is_some_and(|value| value.len() > 256)
-        || payload.request_id.as_ref().is_some_and(|value| value.len() > 128) { return false; }
+        || payload.request_id.as_ref().is_some_and(|value| value.len() > 128)
+        || payload.branch_id.as_ref().is_some_and(|value| value.len() > 160) { return false; }
     if payload.action.as_ref().is_some_and(|value| value != "generate-from-image")
         || payload.action.is_some() && payload.image.is_none()
         || payload.image.as_ref().is_some_and(|_| payload.image_authority.as_ref().is_none_or(|value| value.is_empty() || value.len() > 4096))
@@ -251,6 +263,17 @@ pub fn chat_relay(window: tauri::WebviewWindow, app: AppHandle, payload: ChatRel
         }) { return false; }
     if payload.command == "send" && (payload.request_id.as_ref().is_none_or(|value| value.is_empty())
         || payload.text.as_ref().is_none_or(|value| value.trim().is_empty())) { return false; }
+    if payload.command == "story-action" {
+        let Some(action) = payload.story_action.as_ref() else { return false; };
+        let valid_id = |value: &Option<String>| value.as_ref().is_some_and(|id| !id.is_empty() && id.len() <= 160);
+        if !valid_id(&payload.branch_id) || !valid_id(&payload.request_id) || !valid_id(&payload.character)
+            || match action.kind.as_str() {
+                "regenerate" | "fork" => !valid_id(&action.message_id),
+                "select-variant" => !valid_id(&action.message_id) || !valid_id(&action.variant_id),
+                "switch-branch" => !valid_id(&action.branch_id),
+                _ => true,
+            } { return false; }
+    }
     let Some(w) = app.get_webview_window("companion") else { return false };
     let _ = w.emit("aics:chat-command", payload);
     true

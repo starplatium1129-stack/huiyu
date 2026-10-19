@@ -1,7 +1,9 @@
-import { mergeHistories } from '../../composables/chat/chatStorageMerge.ts'
+import { mergeChatConversationStates, rememberChatConversations } from '../../utils/chatConversationStorage'
+import { normalizeChatStorage } from '../../utils/chatStorageCore'
+import { createChatNormalizeOptions } from '../../composables/chat/chatStorageState'
+import { STORAGE_VERSION } from '../../config/characters'
 import { mergeChatArchives, normalizeChatArchive } from '../../utils/chatArchive.ts'
 import { assertChatVersion } from '../../utils/chatVersion.ts'
-import type { ChatMessage } from '../../composables/chat/chatStorageTypes'
 
 type RecordBody = Record<string, unknown>
 const object = (value: unknown): RecordBody => value && typeof value === 'object' && !Array.isArray(value) ? value as RecordBody : {}
@@ -45,27 +47,17 @@ export async function mergeProfileChatConflict(key: string, baseValue: unknown, 
   const base = decode(baseValue), local = decode(localValue), remote = decode(remoteValue)
   let merged = changedFields(base, local, remote)
   if (key === 'aics_chat_v1') {
-    for (const value of [base, local, remote]) assertChatVersion(value, 3)
-    const histories: RecordBody = {}, revisions: RecordBody = {}
-    const localHistory = object(local.histories), remoteHistory = object(remote.histories), baseHistory = object(base.histories)
-    const chars = new Set([...Object.keys(localHistory), ...Object.keys(remoteHistory)])
-    for (const char of chars) {
-      const before = Number(object(base.historiesRevisions)[char] ?? base.historiesRevision) || 0
-      const own = Number(object(local.historiesRevisions)[char] ?? local.historiesRevision) || 0
-      const other = Number(object(remote.historiesRevisions)[char] ?? remote.historiesRevision) || 0
-      const ownMessages = Array.isArray(localHistory[char]) ? localHistory[char] as ChatMessage[] : []
-      const otherMessages = Array.isArray(remoteHistory[char]) ? remoteHistory[char] as ChatMessage[] : []
-      revisions[char] = Math.max(own, other)
-      if (other > own && other > before) histories[char] = otherMessages
-      else if (own > other && own > before) histories[char] = ownMessages
-      else {
-        const baseline = Array.isArray(baseHistory[char]) ? baseHistory[char] as ChatMessage[] : []
-        histories[char] = mergeHistories(ownMessages, otherMessages, new Map(baseline.map(message => [message.mid, JSON.stringify(message)])))
-      }
-    }
+    for (const value of [base, local, remote]) assertChatVersion(value, STORAGE_VERSION)
+    const chars = [...new Set([...Object.keys(object(local.histories)), ...Object.keys(object(remote.histories)),
+      ...Object.keys(object(local.conversations)), ...Object.keys(object(remote.conversations))])]
+    const options = { ...createChatNormalizeOptions(chars), maxMessages: Number.MAX_SAFE_INTEGER }
+    const own = normalizeChatStorage(local, '', options).state, other = normalizeChatStorage(remote, '', options).state
+    const before = normalizeChatStorage(base, '', options).state, snapshots = new Map<string, string>()
+    rememberChatConversations(before, snapshots)
+    mergeChatConversationStates(own, other, snapshots)
     const settings = changedFields(object(base.settings), object(local.settings), object(remote.settings))
     for (const field of ['drafts', 'live2dOutfits']) settings[field] = changedFields(object(object(base.settings)[field]), object(object(local.settings)[field]), object(object(remote.settings)[field]))
-    merged = { ...merged, histories, historiesRevisions: revisions, historiesRevision: Math.max(Number(local.historiesRevision) || 0, Number(remote.historiesRevision) || 0), settings }
+    merged = { ...merged, version: STORAGE_VERSION, histories: own.histories, conversations: own.conversations, historiesRevisions: own.historiesRevisions, historiesRevision: own.historiesRevision, settings }
   } else if (key === 'aics_chat_archive_v1') {
     const ids = [...new Set([...Object.keys(object(local.archived)), ...Object.keys(object(remote.archived))])]
     const own = normalizeChatArchive(local, ids), other = normalizeChatArchive(remote, ids)

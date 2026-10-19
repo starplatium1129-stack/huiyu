@@ -23,12 +23,12 @@
   border:1px solid transparent; @apply tw:rounded-md;
   background:var(--bg-base); @apply tw:text-secondary tw:text-left tw:cursor-pointer;
 }
-.video-quality-grid button.active { @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent; }
+.video-quality-grid button.active { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary; }
 .video-quality-grid strong { @apply tw:text-body-sm; }
 .video-quality-grid em { @apply tw:text-accent; font: 600 var(--fs-mono-xs) var(--font-mono); @apply tw:not-italic; }
 .video-segmented { @apply tw:inline-flex tw:flex-wrap tw:p-s-1; border:0; @apply tw:rounded-md; background:var(--bg-base); }
 .video-segmented button { @apply tw:min-h-[32px]; padding: 0 var(--s-3); border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:text-muted tw:cursor-pointer; }
-.video-segmented button.active { background: var(--accent); @apply tw:text-inverse; }
+.video-segmented button.active { background:var(--bg-elevated); @apply tw:text-primary; }
 .video-install-note { margin: 0 0 var(--s-3); @apply tw:text-muted tw:text-label-xs tw:leading-body; }
 
 .shot-toolbar { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center tw:mb-s-3; }
@@ -62,7 +62,7 @@
   @apply tw:text-label-xs tw:text-secondary tw:cursor-pointer;
 }
 .shot-card-outfit-pill:hover:not(:disabled) { @apply tw:border-accent tw:text-primary; }
-.shot-card-outfit-pill.active { @apply tw:border-accent; background: var(--accent); @apply tw:text-inverse tw:font-semibold; }
+.shot-card-outfit-pill.active { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary tw:font-semibold; }
 .video-quality-grid button:disabled,.video-segmented button:disabled,.shot-card-outfit-pill:disabled { color:var(--text-disabled); background:var(--bg-elevated); border-color:var(--border-soft); cursor:not-allowed; }
 .video-quality-grid button:disabled em,.shot-options :deep([data-disabled] small) { color:var(--text-disabled); }
 .shot-reference-images { @apply tw:flex tw:flex-wrap tw:gap-s-2 tw:items-center; }

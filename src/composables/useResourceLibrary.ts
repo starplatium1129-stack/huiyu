@@ -74,7 +74,7 @@ export function useResourceLibrary() {
     const ticket = generation
     request = new AbortController()
     // Background polling keeps the last state readable; only explicit checks show busy feedback.
-    loading.value = fresh || !status.value
+    loading.value = fresh || (!status.value && !error.value)
     try {
       const result = await resourceApi.status(fresh, request.signal)
       if (ticket !== generation || stopped) return

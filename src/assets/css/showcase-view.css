@@ -13,7 +13,7 @@
 .hero-actions .showcase-refresh { min-width:var(--control-height); padding-inline:var(--s-3); }
 .empty-block { padding:var(--s-8) 0; @apply tw:text-center; }
 
-.showcase-page .showcase-toolbar { position:relative; display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); margin-bottom:var(--s-4); }
+.showcase-page .showcase-toolbar { position:relative; display:flex; flex-wrap:wrap; align-items:center; margin-bottom:var(--s-4); }
 .search-field { flex:1 1 300px; @apply tw:min-w-0; }
 .showcase-page .search-row { flex:1; min-width:0; }
 .showcase-filters { margin:0; min-width:160px; }

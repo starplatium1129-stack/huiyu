@@ -131,6 +131,7 @@ let palette: Palette = { primary: '#d9d5df', secondary: '#77717f', accent: '#ff8
 let visible = true
 let pointerX = -10000
 let pointerY = -10000
+let pointerClientX = 0, pointerClientY = 0, pointerDirty = false
 let pointerActive = false
 let lastFrame = 0
 let lastPhysicsFrame = 0
@@ -364,11 +365,7 @@ function draw(freeze = false) {
   if (!context || !canvas.value || (!freeze && !performance.active.value)) return
   const ctx = context
   ctx.clearRect(0, 0, width, height)
-  // 剪影模式按人物调色板分批填充 + 统一点径；抽象形状沿用三档 tone
-  // 颜色与三档点径（页面识别色 + 层次感）。动效全站统一：静止成像、
-  // 无漂移、无指针高光、慢回流物理。
-  // 绘制调色板：深色主题用提亮版（暗部 screen 下不可见，提亮保证可读）；
-  // 浅色主题保持原图色相，适度补偿浅色留白带来的视觉稀释。
+  // Batch portrait colors, retaining distinct points in both themes.
   const paints = portraitCloud && portraitPaints.length
     ? (darkTheme ? portraitPaints : (portraitLight.length ? portraitLight : portraitPaints))
     : null
@@ -421,6 +418,11 @@ function renderFrame(now: number) {
     }
   }
   lastFrame = now
+  if (pointerDirty && host.value) {
+    const rect = host.value.getBoundingClientRect()
+    pointerX = pointerClientX - rect.left; pointerY = pointerClientY - rect.top
+    pointerDirty = false
+  }
   const simulate = particlesMoving || pointerActive
   const moving = simulate ? simulateParticles(now) : false
   if (!simulate) lastPhysicsFrame = now
@@ -434,12 +436,10 @@ function renderFrame(now: number) {
 }
 
 function startLoop() {
-  if (stopScheduledFrame || !performance.active.value || !visible || document.hidden || reduceMotion.value) return
+  if (stopScheduledFrame || !width || !height || !performance.active.value || !visible || document.hidden || reduceMotion.value) return
   lastFrame = 0
   lastPhysicsFrame = 0
-  // 2026-08-15（用户决策：性能充裕，放开帧率）：不再按密度节流（60/45/30fps），
-  // 走 registerParticleFrame 的 fps<=0 原生模式——每个 rAF 都渲染，跑满显示器刷新率。
-  // 物理模拟按 elapsed 时间步进（上限 32ms），高刷下不会变速；slowFrames 自愈仍保护低端机。
+  // Keep native refresh; time-based physics and adaptive quality protect slower devices.
   stopScheduledFrame = registerParticleFrame(renderFrame, lowEffects.value ? 20 : 0)
 }
 
@@ -451,25 +451,25 @@ function stopLoop(freeze = false) {
   if (freeze && gpuAvailable.value) draw(true)
 }
 
-function resize() {
-  if (!host.value || !canvas.value) return
-  const rect = host.value.getBoundingClientRect()
-  width = Math.max(1, Math.round(rect.width))
-  height = Math.max(1, Math.round(rect.height))
-  // 剪影模式按 HiDPI 全分辨率渲染：小网点在高分屏上边缘锐利（模糊感来源之一
-  // 就是 dpr 上限偏低把网点糊掉）；抽象形状维持原上限。
+function resize(entries?: ResizeObserverEntry[]) {
+  if (!host.value || !canvas.value || !performance.active.value) return
+  const rect = entries?.find(entry => entry.target === host.value)?.contentRect ?? host.value.getBoundingClientRect()
+  if (rect.width <= 0 || rect.height <= 0) return
+  const nextWidth = Math.max(1, Math.round(rect.width)), nextHeight = Math.max(1, Math.round(rect.height))
+  // Portraits retain HiDPI detail; abstract fields keep their existing density caps.
   const dprLimit = portraitCloud
     ? 2
     : props.density === 'hero' ? 1.5 : props.density === 'ambient' ? 1.35 : 1.2
-  dpr = Math.min(window.devicePixelRatio || 1, dprLimit)
+  const nextDpr = Math.min(window.devicePixelRatio || 1, dprLimit)
+  // The first observer delivery can follow KeepAlive activation's explicit resize.
+  if (entries && context && width === nextWidth && height === nextHeight && dpr === nextDpr) return
+  width = nextWidth; height = nextHeight; dpr = nextDpr
   canvas.value.width = Math.round(width * dpr)
   canvas.value.height = Math.round(height * dpr)
   canvas.value.style.width = `${width}px`
   canvas.value.style.height = `${height}px`
   try {
-    // 2026-08-16 回退 desynchronized 实验：部分 GPU/WebView2 的 overlay 路径
-    // 会让 desynchronized 画布整块渲染成纯黑（灵感场景/效果样张页实锤）；
-    // 参考实现（Arknights-FlowingPoints）也用普通 2d 上下文。
+    // Keep the normal 2D context: desynchronized previously rendered black on WebView2.
     context = canvas.value.getContext('2d')
   } catch {
     context = null
@@ -479,20 +479,20 @@ function resize() {
     stopLoop()
     return
   }
-  context?.setTransform(dpr, 0, 0, dpr, 0, 0)
+  context.setTransform(dpr, 0, 0, dpr, 0, 0)
   setShape(false)
+  startLoop()
 }
 
 function onPointerMove(event: PointerEvent) {
   if (!host.value || event.pointerType === 'touch') return
-  const rect = host.value.getBoundingClientRect()
-  pointerX = event.clientX - rect.left
-  pointerY = event.clientY - rect.top
+  pointerClientX = event.clientX; pointerClientY = event.clientY
+  pointerDirty = true
   pointerActive = true
   startLoop()
 }
 
-function onPointerLeave() { pointerActive = false; startLoop() }
+function onPointerLeave() { pointerActive = pointerDirty = false; startLoop() }
 
 watch(() => props.shape, () => { if (!portraitCloud) setShape(true) })
 watch(() => portraitCloudIdentity(props.portraitId), () => { void applyPortrait(props.portraitId) })
@@ -545,8 +545,6 @@ onMounted(() => {
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-fluid-effects', 'data-reduced-glass', 'data-motion'] })
   document.addEventListener('visibilitychange', performance.onVisibilityChange)
   readPalette()
-  resize()
-  startLoop()
   if (props.portraitId) void applyPortrait(props.portraitId)
 })
 

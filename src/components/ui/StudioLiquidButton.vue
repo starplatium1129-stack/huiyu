@@ -9,27 +9,48 @@ const reduced = useMotionPreference()
 const shownComplete = ref(false), glint = ref<HTMLElement | null>(null)
 let timer: ReturnType<typeof setTimeout> | undefined
 let bounds: DOMRect | undefined
+let transform = '', paintFrame = 0
 function clear() { clearTimeout(timer); shownComplete.value = false; leave() }
-function leave() { bounds = undefined; if (glint.value) glint.value.style.transform = 'translate(-50%, -50%)' }
-function enter(event: PointerEvent) { if (event.pointerType === 'mouse' && !reduced.value) bounds = (event.currentTarget as HTMLElement).getBoundingClientRect() }
+function paint() { paintFrame = 0; if (bounds && glint.value) glint.value.style.transform = transform }
+function leave() {
+  bounds = undefined; cancelAnimationFrame(paintFrame); paintFrame = 0
+  if (glint.value) glint.value.style.transform = 'translate(-50%, -50%)'
+  document.removeEventListener('scroll', leave, true)
+  document.removeEventListener('keydown', leave, true)
+  document.removeEventListener('visibilitychange', leave)
+  window.removeEventListener('resize', leave)
+  window.removeEventListener('blur', leave)
+}
+function enter(event: PointerEvent) {
+  leave()
+  if (event.pointerType !== 'mouse' || document.hidden || reduced.value || props.busy || props.disabled
+    || !matchMedia('(hover: hover) and (pointer: fine)').matches) return
+  bounds = (event.currentTarget as HTMLElement).getBoundingClientRect()
+  document.addEventListener('scroll', leave, { capture: true, passive: true })
+  document.addEventListener('keydown', leave, true)
+  document.addEventListener('visibilitychange', leave)
+  window.addEventListener('resize', leave)
+  window.addEventListener('blur', leave)
+}
 function move(event: PointerEvent) {
-  if (!bounds || !glint.value || reduced.value) return
-  glint.value.style.transform = `translate(${event.clientX - bounds.left - 65}px, ${event.clientY - bounds.top - 35}px)`
+  if (!bounds || event.pointerType !== 'mouse' || reduced.value || props.busy || props.disabled) return
+  transform = `translate(${event.clientX - bounds.left - 65}px, ${event.clientY - bounds.top - 35}px)`
+  if (!paintFrame) paintFrame = requestAnimationFrame(paint)
 }
 watch([() => props.busy, () => props.complete], ([busy, complete]) => {
   clear()
   if (!busy && complete) { shownComplete.value = true; timer = setTimeout(() => { shownComplete.value = false }, 3600) }
 })
 watch(reduced, leave)
+watch(() => props.disabled, leave)
 onDeactivated(clear)
 onScopeDispose(clear)
 </script>
 
 <template>
-  <button class="u001" type="button" :data-loading="busy" :data-complete="shownComplete" :data-reduced-motion="reduced" :disabled="disabled || busy" :aria-busy="busy" :aria-label="busy ? '正在保存配置' : label" @pointerenter="enter" @pointermove="move" @pointerleave="leave">
+  <button class="u001" type="button" :data-loading="busy" :data-complete="shownComplete" :data-reduced-motion="reduced" :disabled="disabled || busy" :aria-busy="busy" :aria-label="busy ? '正在保存配置' : label" @pointerenter="enter" @pointermove="move" @pointerleave="leave" @pointercancel="leave" @focus="leave">
     <span class="u001-surface" aria-hidden="true"><span class="u001-middle" /><span class="u001-cap u001-left" /><span class="u001-cap u001-right" /></span>
-    <span class="u001-highlight" aria-hidden="true"><i ref="glint" /></span>
-    <span class="u001-sheen" aria-hidden="true" />
+    <span class="u001-highlight" aria-hidden="true"><i ref="glint" /><span class="u001-sheen" /></span>
     <span class="u001-text">{{ label }}</span>
     <span class="u001-spinner" aria-hidden="true"><ArchiveIcon name="refresh" /></span>
     <span class="u001-done" aria-hidden="true"><ArchiveIcon name="success" />配置已保存</span>
@@ -51,7 +72,7 @@ onScopeDispose(clear)
 .u001-highlight { overflow:hidden; border-radius:inherit; opacity:0; transition:opacity var(--motion-hover) var(--ux-ease); }
 .u001-highlight i { position:absolute; width:130px; height:70px; left:0; top:0; background:radial-gradient(ellipse,var(--glass-highlight),transparent 70%); transform:translate(-50%,-50%); }
 .u001-sheen { position:absolute; top:4px; bottom:4px; left:0; width:38%; border-radius:inherit; pointer-events:none; background:linear-gradient(100deg,transparent,var(--glass-highlight) 50%,transparent); transform:translateX(-150%) skewX(-12deg); }
-.u001-text,.u001-done { display:flex; align-items:center; justify-content:center; gap:10px; white-space:nowrap; transition:opacity var(--motion-hover) var(--ux-ease),transform var(--motion-surface) var(--ux-ease); }
+.u001-text,.u001-done { display:flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; transition:opacity var(--motion-hover) var(--ux-ease),transform var(--motion-surface) var(--ux-ease); }
 /* The ink remains on an opaque surface above the moving light. */
 .u001-text { z-index:1; }
 .u001-done { z-index:1; opacity:0; transform:translateY(14px); color:var(--success-text); }

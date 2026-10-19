@@ -13,6 +13,13 @@ export interface InpaintMaskCanvasDeps {
   resolution: () => { width: number; height: number } | null
 }
 
+type MaskPointerSample = {
+  canvas: HTMLCanvasElement
+  position: { x: number; y: number }
+  cursor: { x: number; y: number }
+  radius: number
+}
+
 /**
  * 局部换装弹窗「手绘遮罩引擎」（2026-08-22 自 AnimaInpaintModal 下沉）。
  *
@@ -33,9 +40,9 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   const cursorX = ref(0)
   const cursorY = ref(0)
   let attached = true
-  let drawing = false
-  let erase = false
+  let activePointer: { id: number; canvas: HTMLCanvasElement; erase: boolean } | null = null
   let lastMaskPoint: { x: number; y: number } | null = null
+  let pendingCursor: { x: number; y: number } | null = null, cursorFrame = 0
 
   // 自定义属性载体：笔刷光标样式规则留在 scoped CSS，内联只承载数据（style-debt 门禁约定）
   const brushCursorStyle = computed(() => ({
@@ -98,25 +105,25 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
     return true
   }
 
-  function pointerPosition(event: PointerEvent): { x: number; y: number } | null {
+  function samplePointer(event: PointerEvent): MaskPointerSample | null {
+    if (!attached || !deps.active() || maskMode.value !== 'paint' || !event.isPrimary
+      || activePointer && activePointer.id !== event.pointerId) return null
     const canvas = maskCanvasEl.value
-    if (!canvas) return null
+    if (!canvas || activePointer && activePointer.canvas !== canvas) return null
     const rect = canvas.getBoundingClientRect()
     if (!rect.width || !rect.height) return null
+    const cursor = { x: event.clientX - rect.left, y: event.clientY - rect.top }
     return {
-      x: (event.clientX - rect.left) * (canvas.width / rect.width),
-      y: (event.clientY - rect.top) * (canvas.height / rect.height),
+      canvas, cursor,
+      position: { x: cursor.x * (canvas.width / rect.width), y: cursor.y * (canvas.height / rect.height) },
+      radius: brushSize.value * (canvas.width / rect.width),
     }
   }
 
-  function drawMaskStroke(event: PointerEvent) {
-    const canvas = maskCanvasEl.value
-    const position = pointerPosition(event)
-    if (!canvas || !position) return
+  function drawMaskStroke({ canvas, position, radius }: MaskPointerSample) {
+    if (!activePointer || canvas !== activePointer.canvas) return
     const context = maskContext()
     if (!context) return
-    const rect = canvas.getBoundingClientRect()
-    const radius = brushSize.value * (canvas.width / rect.width)
     // Include antialiasing fringe around the round cap and segment before drawing.
     const previous = lastMaskPoint ?? position
     history.capture(context,
@@ -125,7 +132,7 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
       Math.max(previous.x, position.x) + radius + 2,
       Math.max(previous.y, position.y) + radius + 2)
     maskUndoCount.value = history.strokes.length
-    context.globalCompositeOperation = erase ? 'destination-out' : 'source-over'
+    context.globalCompositeOperation = activePointer.erase ? 'destination-out' : 'source-over'
     context.fillStyle = deps.opaquePaint?.() ? 'white' : 'rgba(255, 255, 255, 0.72)'
     context.strokeStyle = context.fillStyle
     context.lineWidth = radius * 2
@@ -144,38 +151,76 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   }
 
   function startMaskPaint(event: PointerEvent) {
-    if (maskMode.value !== 'paint' || drawing || !maskContext()) return
-    maskCanvasEl.value?.focus({ preventScroll: true })
+    if (activePointer || event.button !== 0 && event.button !== 2) return
+    const sample = samplePointer(event)
+    if (!sample || !maskContext()) return
+    sample.canvas.focus({ preventScroll: true })
+    sample.canvas.setPointerCapture(event.pointerId)
     history.begin()
-    drawing = true
-    erase = event.button === 2 || event.shiftKey
+    activePointer = { id: event.pointerId, canvas: sample.canvas, erase: event.button === 2 || event.shiftKey }
     lastMaskPoint = null
-    event.currentTarget instanceof HTMLElement && event.currentTarget.setPointerCapture(event.pointerId)
-    drawMaskStroke(event)
+    cursorVisible.value = true
+    updateCursor(sample, true)
+    drawMaskStroke(sample)
   }
 
-  function updateCursor(event: PointerEvent) {
-    const canvas = maskCanvasEl.value
-    if (!canvas) return
-    const rect = canvas.getBoundingClientRect()
-    cursorX.value = event.clientX - rect.left
-    cursorY.value = event.clientY - rect.top
+  function flushCursor() {
+    cancelAnimationFrame(cursorFrame); cursorFrame = 0
+    if (!pendingCursor) return
+    cursorX.value = pendingCursor.x; cursorY.value = pendingCursor.y
+    pendingCursor = null
+  }
+
+  function updateCursor(sample: MaskPointerSample, immediate = false) {
+    pendingCursor = sample.cursor
+    if (immediate) flushCursor()
+    else if (!cursorFrame) cursorFrame = requestAnimationFrame(flushCursor)
+  }
+
+  function enterMaskCanvas(event: PointerEvent) {
+    const sample = samplePointer(event)
+    if (!sample) return
+    cursorVisible.value = true
+    updateCursor(sample, true)
+  }
+
+  function leaveMaskCanvas(event: PointerEvent) {
+    if (!event.isPrimary || activePointer && activePointer.id !== event.pointerId) return
+    cursorVisible.value = false
+    stopMaskPaint()
   }
 
   function continueMaskPaint(event: PointerEvent) {
-    updateCursor(event)
-    if (drawing) drawMaskStroke(event)
+    const sample = samplePointer(event)
+    if (!sample) return
+    updateCursor(sample)
+    if (activePointer) drawMaskStroke(sample)
   }
 
-  function stopMaskPaint() {
+  function finishMaskPaint(event: PointerEvent) {
+    if (activePointer?.id !== event.pointerId) return
+    const sample = samplePointer(event)
+    if (sample) {
+      updateCursor(sample, true)
+      // A stationary release must not apply another translucent coat.
+      if (sample.position.x !== lastMaskPoint?.x || sample.position.y !== lastMaskPoint?.y) drawMaskStroke(sample)
+    }
+    stopMaskPaint()
+  }
+
+  function stopMaskPaint(event?: PointerEvent) {
+    if (event && activePointer?.id !== event.pointerId) return
+    const previous = activePointer
+    activePointer = null
+    cancelAnimationFrame(cursorFrame); cursorFrame = 0; pendingCursor = null
+    if (event) cursorVisible.value = false
     history.end()
-    drawing = false
-    erase = false
     lastMaskPoint = null
+    if (previous?.canvas.hasPointerCapture(previous.id)) previous.canvas.releasePointerCapture(previous.id)
   }
 
-  watch(deps.active, active => {
-    if (!active) { stopMaskPaint(); cursorVisible.value = false }
+  watch([deps.active, maskMode, maskCanvasEl], ([active, mode, canvas], previous) => {
+    if (!active || mode !== 'paint' || canvas !== previous?.[2]) { stopMaskPaint(); cursorVisible.value = false }
   }, { flush: 'sync' })
 
   /** 导出遮罩 PNG；空遮罩（全 0 alpha）返回 null，交由宿主提示先涂抹。 */
@@ -192,7 +237,7 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
   })
 
   onActivated(() => { attached = true; window.addEventListener('keydown', handleKeyDown) })
-  onDeactivated(() => { attached = false; window.removeEventListener('keydown', handleKeyDown); stopMaskPaint() })
+  onDeactivated(() => { attached = false; window.removeEventListener('keydown', handleKeyDown); stopMaskPaint(); cursorVisible.value = false })
 
   onBeforeUnmount(() => {
     attached = false
@@ -214,8 +259,11 @@ export function useInpaintMaskCanvas(deps: InpaintMaskCanvasDeps) {
     undoMask,
     handleCanvasWheel,
     syncMaskCanvas,
+    enterMaskCanvas,
+    leaveMaskCanvas,
     startMaskPaint,
     continueMaskPaint,
+    finishMaskPaint,
     stopMaskPaint,
     maskBlob,
   }

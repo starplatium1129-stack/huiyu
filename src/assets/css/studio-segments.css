@@ -42,7 +42,7 @@ html body .studio-segments[role] :is(button, a) {
   transition:none;
 }
 html body .studio-segments--compact[role] :is(button, a) { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-2); }
-html body .studio-segments[role] :is(button, a):is([aria-pressed='true'], [aria-selected='true'], [aria-checked='true'], [aria-current='page']) { color: var(--accent); background: transparent; border-color: transparent; box-shadow: none; }
+html body .studio-segments[role] :is(button, a):is([aria-pressed='true'], [aria-selected='true'], [aria-checked='true'], [aria-current='page']) { color: var(--text-primary); background: transparent; border-color: transparent; box-shadow: none; }
 html body .studio-segments[role] :is(button, a):hover:not(:disabled):not([aria-disabled='true']) { color: var(--text-primary); background: transparent; }
 html body .studio-segments[role] :is(button, a):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 html body .studio-segments[role] :is(button, a):active { transform: none; }

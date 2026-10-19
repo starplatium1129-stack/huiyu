@@ -14,7 +14,7 @@
       <div class="directory-tools">
         <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
         <StudioSearch :id="inputId" v-model="query" class="directory-search" label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" :clear-on-escape="false" @keydown="onSearchKeydown" />
-        <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="[{ value: '', label: '全部系列' }, ...groups.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))]" />
+        <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="seriesOptions" />
         <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="clearFilters">清除筛选</button></div>
       </div>
       <div ref="list" v-content-motion:up="`${series}:${page}`" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown="onListKeys">
@@ -25,14 +25,14 @@
             <strong>{{ item.name }}</strong>
               <small>{{ franchiseLabel(franchiseKey(item.source)) }}</small>
           </span>
-          <span v-if="selectedId === item.id" class="directory-selected tw:ml-auto tw:text-accent" aria-hidden="true"><ArchiveIcon name="success" /></span>
+          <span v-if="selectedId === item.id" class="directory-selected tw:ml-auto tw:text-primary" aria-hidden="true"><ArchiveIcon name="success" /></span>
         </button>
         </StudioTooltip>
         <div v-if="!results.length" class="directory-empty tw:text-muted tw:text-label">没有匹配的角色。<br />试试其他名字，或清除筛选。</div>
       </div>
       <nav v-if="pageCount > 1" class="directory-pagination tw:text-secondary tw:text-label tw:shrink-0" aria-label="角色分页">
         <button class="directory-page-turn directory-page-prev" type="button" aria-label="上一页" :disabled="page === 1" @click="page--"><ArchiveIcon name="chevron-down" /></button>
-        <label class="directory-page-jump"><StudioSelect v-model.number="page" label="跳转角色页" inline size="sm" :options="pageItems.map(n => ({ value: n, label: String(n) }))" /><span>/ {{ pageCount }}</span></label>
+        <label class="directory-page-jump"><StudioSelect v-model.number="page" label="跳转角色页" inline size="sm" :options="pageOptions" /><span>/ {{ pageCount }}</span></label>
         <button class="directory-page-turn directory-page-next" type="button" aria-label="下一页" :disabled="page === pageCount" @click="page++"><ArchiveIcon name="chevron-down" /></button>
       </nav>
       <div class="directory-current tw:text-label-xs tw:text-secondary tw:shrink-0"><span>当前：{{ selected?.name || '未选择' }}</span><button v-if="selected" type="button" @click="locateSelected">定位</button></div>
@@ -88,18 +88,35 @@ watch([() => props.selectedId, () => props.pageSize], async () => {
 const groups = computed(() => {
   const counts = new Map<string, number>()
   for (const item of props.items) { const key = franchiseKey(item.source); counts.set(key, (counts.get(key) || 0) + 1) }
-  return [...counts].map(([key, count]) => ({ key, count, label: franchiseLabel(key) })).sort((a, b) => (props.catalog ? b.count - a.count : 0) || a.label.localeCompare(b.label, 'zh-CN'))
+  return [...counts].map(([key, count]) => {
+    const label = franchiseLabel(key)
+    return { key, count, label, text: [key, label].join(' ').toLocaleLowerCase() }
+  }).sort((a, b) => (props.catalog ? b.count - a.count : 0) || a.label.localeCompare(b.label, 'zh-CN'))
 })
-const indexed = computed(() => props.items.map(item => ({ item, key: franchiseKey(item.source), text: [item.id, item.name, item.source, franchiseLabel(franchiseKey(item.source)), ...(item.aliases || [])].join(' ').toLocaleLowerCase() })))
-const filteredGroups = computed(() => groups.value.filter(group => [group.key, group.label].join(' ').toLocaleLowerCase().includes(seriesQuery.value.trim().toLocaleLowerCase())))
+const indexed = computed(() => props.items.map(item => {
+  const key = franchiseKey(item.source)
+  return { item, key, name: item.name.toLocaleLowerCase(), text: [item.id, item.name, item.source, franchiseLabel(key), ...(item.aliases || [])].join(' ').toLocaleLowerCase() }
+}))
+const seriesOptions = computed(() => [{ value: '', label: '全部系列' },
+  ...groups.value.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))])
+const filteredGroups = computed(() => {
+  const term = seriesQuery.value.trim().toLocaleLowerCase()
+  return groups.value.filter(group => group.text.includes(term))
+})
 const results = computed(() => {
   const term = query.value.trim().toLocaleLowerCase()
-  return indexed.value.filter(row => (!series.value || row.key === series.value) && (!term || row.text.includes(term))).map(row => row.item)
-    .sort((a, b) => Number(b.name.toLocaleLowerCase() === term) - Number(a.name.toLocaleLowerCase() === term))
+  const selectedSeries = series.value
+  const exact: DirectoryCharacter[] = [], remaining: DirectoryCharacter[] = []
+  for (const row of indexed.value) {
+    if (selectedSeries && row.key !== selectedSeries || term && !row.text.includes(term)) continue
+    if (row.name === term) exact.push(row.item)
+    else remaining.push(row.item)
+  }
+  return exact.length ? exact.concat(remaining) : remaining
 })
 const pageCount = computed(() => props.pageSize ? Math.max(1, Math.ceil(results.value.length / props.pageSize)) : 1)
 /** 页码跳转选项：1 … pageCount，供 StudioSelect 渲染（原生分页 <select> 已迁移）。 */
-const pageItems = computed(() => Array.from({ length: pageCount.value }, (_, i) => i + 1))
+const pageOptions = computed(() => Array.from({ length: pageCount.value }, (_, i) => ({ value: i + 1, label: String(i + 1) })))
 const visibleResults = computed(() => props.pageSize ? results.value.slice((page.value - 1) * props.pageSize, page.value * props.pageSize) : results.value)
 const tabStopId = computed(() => visibleResults.value.find(item => item.id === focusedId.value)?.id
   || visibleResults.value.find(item => item.id === props.selectedId)?.id || visibleResults.value[0]?.id || '')
@@ -194,7 +211,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-list { flex: 1 1 auto; overscroll-behavior: contain; padding: 0 var(--s-2) var(--s-2); scrollbar-width: thin; scroll-padding-block: var(--s-2); }
 .directory-item { @apply tw:w-full tw:flex tw:items-center tw:gap-s-3 tw:p-s-2 tw:mb-s-1 tw:text-left; background: transparent; border: 1px solid transparent; @apply tw:rounded-md tw:text-primary tw:cursor-pointer; }
 .directory-item:hover { background: var(--bg-hover); }
-.directory-item[aria-pressed="true"] { background: var(--accent-soft); }
+.directory-item[aria-pressed="true"] { background:var(--bg-elevated); }
 .directory-label { @apply tw:min-w-0 tw:grid tw:gap-s-1; }
 .directory-label strong { @apply tw:text-body-sm tw:font-semibold; }
 .directory-label small { @apply tw:text-label-xs tw:text-secondary tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
@@ -212,7 +229,7 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-pagination .studio-select-wrapper { @apply tw:min-h-[36px]; }
 .directory-series button { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:w-full tw:min-w-0 tw:shrink-0 tw:text-left tw:leading-body; overflow-wrap: anywhere; }
 .directory-series button[aria-pressed="false"]:not(:disabled):hover { background:var(--bg-hover); color:var(--text-primary); }
-.directory-series button[aria-pressed="true"] { background: var(--accent-soft); @apply tw:text-accent tw:border-strong; }
+.directory-series button[aria-pressed="true"] { background:var(--bg-elevated); @apply tw:text-primary tw:border-strong; }
 .directory-series button span { @apply tw:text-muted tw:shrink-0; }
 /* 分页行给结果滚动区一个明确的下边界，让「未滚到底」与「被裁切」可区分。 */
 .directory-pagination { display:grid; grid-template-columns:32px minmax(0,1fr) 32px; align-items:center; gap:var(--s-2); padding:var(--s-2) var(--s-3); border-top:1px solid var(--border-soft); }
@@ -233,9 +250,9 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
 .directory-catalog .directory-item :deep(.character-portrait img) { transform: none; object-position: center 20%; }
 .directory-catalog .directory-label { padding: 0 var(--s-1) var(--s-2); }
 .directory-catalog .directory-label small { @apply tw:whitespace-normal tw:leading-body; }
-.directory-catalog .directory-selected { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items: center; @apply tw:w-[28px] tw:h-[28px]; border: 1px solid var(--accent); @apply tw:rounded-pill; background: var(--bg-surface); }
+.directory-catalog .directory-selected { @apply tw:absolute tw:top-s-3 tw:right-s-3 tw:grid; place-items: center; @apply tw:w-[28px] tw:h-[28px]; border:1px solid var(--border-strong); @apply tw:rounded-pill; background:var(--bg-surface); }
 .directory-catalog .directory-item:hover { @apply tw:border-accent; }
-.directory-catalog .directory-item[aria-pressed="true"] { background:var(--accent-soft); border-color:var(--accent); box-shadow:var(--selection-shadow); }
+.directory-catalog .directory-item[aria-pressed="true"] { background:var(--bg-elevated); border-color:var(--border-strong); box-shadow:var(--shadow-sm); }
 .directory-catalog .directory-label strong { overflow-wrap: anywhere; @apply tw:leading-body; }
 .directory-catalog .directory-empty { grid-column: 1 / -1; }
 .directory-catalog .directory-current { padding-inline: 0; }

@@ -3,7 +3,7 @@ import { profileLocalStorage as localStorage } from '../../platform/web/profileS
 
 import { useCharacterRoomSession } from './useCharacterRoomSession.ts';
 import { useConversationReading } from './useConversationReading.ts';
-import { publishChatReceipt } from '../../utils/chatRelayReceipt.ts';
+import { isChatRelayCancelled, publishChatReceipt } from '../../utils/chatRelayReceipt.ts';
 import { parseCompanionChatImage, type CompanionChatCommand } from '@/types/companionDrawing';
 import { assertWorkspaceMediaAuthority } from '@/platform/desktop/workspaceMediaSource';
 import { useRoomPresentation } from './useRoomPresentation.ts';
@@ -20,7 +20,7 @@ import { COMPANION_CHAT_LIVE_KEY,COMPANION_LIVE2D_KEY } from '../../utils/storag
 import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
-    const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState } = useCharacterRoomSession();
+    const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState, branchId, storyBusy, handleStoryAction } = useCharacterRoomSession();
     const desktopBridge = getDesktopCapabilities();
     const presentationSuspended = useRoomPresentation('companion');
     const { getScore, getLevelInfo } = useCompanionAffection();
@@ -43,7 +43,7 @@ export function useCompanionWorkspace() {
         : storage.state.settings.live2dEnabled);
     const immersiveMessages = computed(() => companionMessages.value.slice(-2));
     const { hasNew: hasNewMessages, latest: latestMessages } = useConversationReading(
-        chatListRef, () => immersiveMessages.value, activeChar,
+        chatListRef, () => immersiveMessages.value, computed(() => `${activeChar.value}:${branchId.value}`),
     );
     // ── 角色行为运行时（提醒/问候/事件轮询/勿扰）已下沉 useCompanionBehaviorRuntime ──
     // 两只 30s 心跳与轮询 AbortController 生命周期由 composable 自持；
@@ -142,7 +142,7 @@ export function useCompanionWorkspace() {
             return;
         try {
             localStorage.setItem(COMPANION_CHAT_LIVE_KEY, JSON.stringify({
-                busy: busy.value,
+                busy: busy.value || storyBusy.value,
                 thinking: Boolean(thinkingActivity.value || toolActivity.value),
                 toolActivity: toolActivity.value,
                 speaking: isSpeaking.value,
@@ -155,7 +155,7 @@ export function useCompanionWorkspace() {
         }
         catch { /* 隐私模式忽略 */ }
     }
-    watch([busy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady, chatError], publishLiveState, { flush: 'sync' });
+    watch([busy, storyBusy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady, chatError], publishLiveState, { flush: 'sync' });
     function openChatWindow() {
         desktopBridge?.openChat?.();
     }
@@ -175,6 +175,10 @@ export function useCompanionWorkspace() {
                 return publishChatReceipt(payload.requestId, accepted);
             };
             handleSend(payload.text, payload.imageUrl, accept, { ...(image ? { image, imageAuthority: payload.imageAuthority } : {}), ...(payload.action ? { action: payload.action } : {}) });
+        }
+        else if (payload.command === 'story-action' && payload.storyAction && payload.requestId) {
+            if (payload.character !== activeChar.value || payload.branchId !== branchId.value) { publishChatReceipt(payload.requestId, false); return; }
+            handleStoryAction(payload.storyAction, accepted => publishChatReceipt(payload.requestId, accepted), payload.branchId, () => isChatRelayCancelled(payload.requestId));
         }
         else if (payload.command === 'switch-character' && payload.character) {
             switchCharacter(payload.character);

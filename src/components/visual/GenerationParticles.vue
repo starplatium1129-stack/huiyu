@@ -64,10 +64,10 @@ function preparePalette() {
   })
 }
 
-function resize() {
+function resize([entry]: ResizeObserverEntry[]) {
   if (!host.value || !canvas.value) return
-  const bounds = host.value.getBoundingClientRect()
-  if (!bounds.width || !bounds.height) return
+  const bounds = entry?.contentRect
+  if (!bounds?.width || !bounds.height) return
   width = bounds.width; height = bounds.height
   // Spend resolution on the local effect, never stretch a stage-sized low-res bitmap.
   ratio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(600_000 / (width * height)))
@@ -77,7 +77,6 @@ function resize() {
     canvas.value.height = pixelHeight
   }
   context = canvas.value.getContext('2d')
-  if (canPresent.value) draw()
   reconcile()
 }
 
@@ -175,7 +174,7 @@ watch(() => props.progress, progress => {
     draw()
   }
 }, { flush: 'post' })
-onMounted(() => { preparePalette(); resize() })
+onMounted(preparePalette)
 onBeforeUnmount(() => {
   stop()
   for (const sprite of sprites) sprite.width = sprite.height = 0

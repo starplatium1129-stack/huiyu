@@ -20,8 +20,8 @@
     color: currentColor;
   }
   .pb .trait-chip.active {
-    background:var(--accent-soft); @apply tw:text-accent;
-    box-shadow:var(--selection-shadow);
+    background:var(--bg-elevated); @apply tw:text-primary;
+    box-shadow:var(--shadow-sm);
   }
   /* Narrow expert rails keep complete labels instead of a column of characters. */
   @container (max-width: 360px) {
@@ -42,17 +42,24 @@
 .pb .studio-character-copy { @apply tw:flex tw:flex-col tw:gap-s-1; padding:var(--s-2) var(--s-3); }
 .pb .studio-character-copy strong { @apply tw:text-primary tw:text-body tw:leading-label; }
 .pb .studio-character-copy small { @apply tw:text-secondary tw:text-body-sm tw:leading-label tw:font-normal; }
-.pb .studio-character-check { @apply tw:absolute tw:top-s-2 tw:right-s-2 tw:w-[24px] tw:h-[24px] tw:p-[4px] tw:text-accent; background:var(--bg-surface); border:1px solid var(--accent); @apply tw:rounded-pill; }
+.pb .studio-character-check { @apply tw:absolute tw:top-s-2 tw:right-s-2 tw:w-[24px] tw:h-[24px] tw:p-[4px] tw:text-primary; background:var(--bg-surface); border:1px solid var(--border-strong); @apply tw:rounded-pill; }
+.pb .studio-character-check-enter-active { transition:transform var(--motion-surface) var(--spring-soft),opacity var(--motion-control) var(--ease-out); }
+.pb .studio-character-check-leave-active { transition:transform var(--motion-control) var(--ease-out),opacity var(--motion-control) var(--ease-out); }
+.pb .studio-character-check-enter-from,.pb .studio-character-check-leave-to { opacity:0; transform:translateY(3px) scale(.72); }
+.pb .studio-character-gallery:has(:focus-visible) .studio-character-check { transition:none; }
 .pb .studio-character-choice:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .char-btn.studio-character-choice { @apply tw:rounded-lg tw:border-soft; background:var(--bg-surface); transition:transform var(--motion-hover) var(--ease-out); }
-.pb .char-btn.studio-character-choice.active { @apply tw:border-strong; box-shadow:var(--selection-shadow); }
+.pb .char-btn.studio-character-choice.active { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
 .pb .studio-character-copy { padding-block:var(--s-3); }
 @media (hover:hover) and (pointer:fine) {
   .pb .char-btn.studio-character-choice:hover:not(:focus-visible) { transform:translateY(-2px); box-shadow:var(--shadow-sm); }
 }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .pb .char-btn.studio-character-choice { transition:none; transform:none; }
+  :root:not([data-motion='full']) .pb .studio-character-check { transition:none; }
 }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .pb .studio-character-check { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .pb .char-btn.studio-character-choice { transition:none; transform:none; }
 .pb .studio-traits-label { margin:var(--s-4) 0 0; @apply tw:text-secondary tw:text-body-sm; }
 .pb .studio-traits-label + .traits-row { @apply tw:mt-s-2; }
 .pb .trait-chip { @apply tw:min-h-[32px] tw:text-body-sm; }

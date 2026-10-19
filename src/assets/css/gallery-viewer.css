@@ -48,7 +48,7 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
   @apply tw:text-primary tw:cursor-pointer; font:600 var(--fs-label-xs) var(--font-mono);
 }
 .art-viewer .viewer-compare-toggle.active {
-  @apply tw:border-strong; background:var(--accent-soft); @apply tw:text-accent;
+  @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary;
 }
 .art-viewer .viewer-stage { @apply tw:relative tw:min-w-0 tw:min-h-0 tw:grid; place-items:center; padding:64px clamp(48px,4vw,72px) var(--s-4); @apply tw:overflow-hidden; }
 .art-viewer .viewer-mode-switch { position:absolute; top:18px; left:74px; z-index:var(--z-raised); display:inline-flex; align-items:center; gap:var(--s-2); min-height:40px; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); cursor:pointer; }

@@ -60,7 +60,12 @@ function syncModalBackground() {
     if (!element.inert) { element.inert = true; inertBackground.add(element) }
   }
   if (trapStack.length && !backgroundObserver) {
-    backgroundObserver = new MutationObserver(syncModalBackground)
+    backgroundObserver = new MutationObserver(records => {
+      const root = trapStack.at(-1)?.root()
+      // Content patches inside the trap do not change its ancestor/sibling path.
+      if (records.some(record => record.type === 'attributes'
+        ? record.target instanceof HTMLDialogElement : !root?.contains(record.target))) syncModalBackground()
+    })
     backgroundObserver.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['open'] })
   } else if (!trapStack.length) {
     backgroundObserver?.disconnect(); backgroundObserver = null
@@ -143,7 +148,8 @@ export function useFocusTrap(
   }
 
   function onKeydown(event: KeyboardEvent) {
-    if (!isActive() || event.defaultPrevented || event.isComposing || event.keyCode === 229) return
+    if (event.key !== 'Tab' && (event.key !== 'Escape' || !onEscape)) return
+    if (event.defaultPrevented || event.isComposing || event.keyCode === 229 || !isActive()) return
 
     if (event.key === 'Escape' && onEscape) {
       event.preventDefault()
@@ -169,10 +175,9 @@ export function useFocusTrap(
     }
   }
 
-  document.addEventListener('keydown', onKeydown)
-  document.addEventListener('focusin', onFocusin)
-
   function release(restoreFocus: boolean) {
+    document.removeEventListener('keydown', onKeydown)
+    document.removeEventListener('focusin', onFocusin)
     const top = trapStack.at(-1) === trap
     const index = trapStack.indexOf(trap)
     if (index >= 0) {
@@ -200,6 +205,8 @@ export function useFocusTrap(
     if (open) {
       returnFocus.value = document.activeElement as HTMLElement | null
       trapStack.push(trap)
+      document.addEventListener('keydown', onKeydown)
+      document.addEventListener('focusin', onFocusin)
       syncModalBackground()
       if (lockScroll) unlockScroll = acquirePageScrollLock()
       nextTick(() => { syncModalBackground(); focusInitial() })
@@ -210,11 +217,7 @@ export function useFocusTrap(
   onActivated(() => { attached.value = true })
   onDeactivated(() => { attached.value = false })
 
-  onUnmounted(() => {
-    document.removeEventListener('keydown', onKeydown)
-    document.removeEventListener('focusin', onFocusin)
-    release(attached.value)
-  })
+  onUnmounted(() => release(attached.value))
 
   return { returnFocus }
 }

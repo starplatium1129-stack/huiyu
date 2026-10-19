@@ -7,7 +7,7 @@
 .scenario-list { @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-4; }
 .scenario-book { position:relative; isolation:isolate; display:flex; min-width:0; }
 .scenario-card { position:relative; isolation:isolate; @apply tw:min-w-0 tw:w-full tw:overflow-hidden tw:p-0; border:1px solid var(--border-soft); border-radius:var(--r-lg); @apply tw:text-left; background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight); @apply tw:text-primary; font:inherit; @apply tw:cursor-pointer; }
-.scenario-card.active { border-color:var(--accent); box-shadow:var(--selection-shadow); }
+.scenario-card.active { border-color:var(--border-strong); box-shadow:var(--shadow-sm); }
 .scenario-cover { position:relative; @apply tw:block; aspect-ratio:16 / 9; @apply tw:overflow-hidden; background:var(--bg-elevated); }
 .scenario-cover img { @apply tw:block tw:w-full tw:h-full tw:object-cover; object-position:center 30%; opacity:0; transition:opacity var(--scenario-cover-duration,var(--motion-surface)) var(--ease-out),transform var(--scenario-art-duration) var(--spring-soft); }
 .scenario-cover img.ready { opacity:1; }
@@ -17,7 +17,7 @@
 .scenario-book.cover-failed .scenario-cover-missing { padding:calc(var(--control-height) + var(--s-3)) var(--s-2) var(--s-2); gap:var(--s-2); }
 .scenario-book.cover-failed .scenario-cover-missing .archive-icon { width:24px; height:24px; }
 .scenario-cover-retry { position:absolute; z-index:var(--z-raised); inset:var(--s-2) var(--s-2) auto; justify-content:center; min-height:var(--control-height); background:var(--bg-surface); }
-.scenario-book-title .archive-icon { @apply tw:text-accent tw:shrink-0; }
+.scenario-book-title .archive-icon { @apply tw:text-primary tw:shrink-0; }
 .scenario-name { font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .scenario-desc { @apply tw:min-h-[3em] tw:text-body-sm tw:leading-body tw:text-secondary; }
 .scenario-count { @apply tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2 tw:text-accent tw:text-body-sm; }

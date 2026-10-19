@@ -10,16 +10,16 @@ export function useScrollHeader(host: Ref<HTMLElement | null>, path: () => strin
   function reveal() { hidden.value = false }
   function update() {
     frame = 0
-    const y = Math.max(0, window.scrollY)
     const sidebar = document.documentElement.dataset.themeStyle === 'terraria' && window.innerWidth >= 1440
     const pinned = sidebar || ['/prompt-builder', '/chat', '/video-studio'].includes(path())
-    const keyboardFocus = host.value?.contains(document.activeElement) && document.activeElement?.matches(':focus-visible')
+    const y = pinned ? 0 : Math.max(0, window.scrollY)
+    const keyboardFocus = !pinned && host.value?.contains(document.activeElement) && document.activeElement?.matches(':focus-visible')
     scrolled.value = !pinned && y > 20
     // Reveal throughout the opening range, including a restored near-top
     // position; do not strand a previously hidden header a few pixels from zero.
     if (pinned || expanded() || keyboardFocus || y <= 20) hidden.value = false
     else if (y > 60) hidden.value = true
-    const range = document.documentElement.scrollHeight - innerHeight
+    const range = pinned ? 0 : document.documentElement.scrollHeight - innerHeight
     if (progress.value) progress.value.style.transform = `scaleX(${pinned ? 0 : Math.min(1, y / Math.max(1, range))})`
   }
   function schedule() { if (attached && !frame) frame = requestAnimationFrame(update) }
@@ -32,7 +32,8 @@ export function useScrollHeader(host: Ref<HTMLElement | null>, path: () => strin
     document.addEventListener('keydown', onKey, true)
     observer = new MutationObserver(schedule)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme-style'] })
-    update()
+    // Let the page finish mounting before reading its scrolling geometry.
+    schedule()
   }
   function stop() {
     attached = false

@@ -8,7 +8,7 @@
     <article v-for="pending in pendingTaskRequests" :key="pending.key" class="runtime-task tw:p-s-4 tw:rounded-lg"><strong>提交结果待确认</strong><p>保留了这次操作的编号；查询不会重新生成。</p><button class="btn btn-ghost" :disabled="!!busy" :aria-busy="busy === 'refresh'" @click="refresh">{{ busy === 'refresh' ? '查询中…' : '查询接收状态' }}</button><button class="btn btn-ghost" :disabled="!canCancelKey(pending.key)" :aria-busy="cancellingKey === pending.key" @click="cancelKey(pending.key)">{{ cancellingKey === pending.key ? '正在取消…' : '取消这次提交' }}</button></article>
     <article v-for="task in visible" :key="task.taskId" :id="cardId(task.taskId)" tabindex="-1" class="runtime-task tw:p-s-4 tw:rounded-lg" :data-state="task.status" :data-attention="task.recoveryState !== 'normal' || undefined">
       <header><strong>{{ titles[task.kind] }}{{ locatedId === task.taskId ? ' · 已定位' : '' }}</strong><span>{{ task.recoveryState !== 'normal' ? '待核对' : labels[task.status] }}</span></header>
-      <p>{{ taskMessage(task) }}</p><p v-if="task.kind === 'manga' || task.kind === 'lineart'">待主力机验证</p><time :datetime="new Date(task.createdAt).toISOString()">{{ new Date(task.createdAt).toLocaleString('zh-CN') }}</time>
+      <p>{{ taskMessage(task) }}</p><p v-if="task.kind === 'manga' || task.kind === 'lineart'">待主力机验证</p><time :datetime="new Date(task.createdAt).toISOString()">{{ taskDateFormatter.format(task.createdAt) }}</time>
       <div class="runtime-actions tw:mt-s-3">
         <RouterLink class="btn btn-ghost" :to="routeFor(task)" @click="emit('navigate')">{{ task.kind === 'manga' || task.kind === 'lineart' ? '前往我的作品' : '返回工作台' }}</RouterLink>
         <button v-if="task.resultRefs.length && task.deliveryState !== 'discarded'" class="btn btn-primary" :aria-expanded="active && expanded === task.taskId" :aria-controls="`${resultRegionId}-${task.taskId}`" @click="expanded = expanded === task.taskId ? '' : task.taskId">{{ expanded === task.taskId ? '收起结果' : '查看结果' }}</button>
@@ -69,6 +69,7 @@ watch([() => props.active, runtimeTaskOpenRequest], ([active, request]) => {
 const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'inbox', label: '结果收件箱' }] as const
 const titles = { generation: 'WAI 绘图', anima: 'Anima 绘图', creative: 'Krea 2 绘图', manga: '漫画化', lineart: '独立线稿', video: '视频创作', batch: '分镜短片' }
 const labels = { queued: '已接收', submitting: '提交中', running: '生成中', cancelling: '取消中', succeeded: '已完成', failed: '未完成', cancelled: '已取消' }
+const taskDateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
 const routeFor = (task: TaskSummary) => task.kind === 'manga' || task.kind === 'lineart' ? '/gallery' : task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${encodeURIComponent(task.sourceBatchId || task.taskId)}` : '/prompt-builder'
 async function refresh() {
   if (busy.value) return

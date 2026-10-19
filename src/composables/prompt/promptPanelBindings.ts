@@ -30,7 +30,9 @@ type Compare = ReturnType<typeof useCompareSnapshots<ResultSnapshot>>
 export interface PromptMaterialBindings extends
   Pick<Derived, 'availableScenes' | 'visibleScenes' | 'personaCoreCount' | 'curatedCount' | 'personaCoreIds'>,
   Pick<Popular, 'popularBlueprintPool' | 'blueprintCategories' | 'recommendedBlueprints' | 'filteredPopularBlueprints' | 'popularCategory' | 'showAllBlueprints' | 'selectBlueprint' | 'rotateBlueprintSet' | 'toggleBlueprintList'>,
-  Pick<Materials, 'sceneCollection' | 'sceneLimit' | 'setSceneCollection' | 'selectScene'> {}
+  Pick<Materials, 'sceneCollection' | 'sceneLimit' | 'setSceneCollection' | 'selectScene'> {
+  retryInitialization: () => Promise<void>
+}
 
 export interface PromptRenderBindings extends
   Pick<Engine, 'displayResultUrl' | 'generationBusy' | 'generationPresetSummary' | 'setDrawEngine' | 'supportsDualCharacter' | 'selectAnimaModel' | 'displayResultSeed' | 'animaNoLoraMode'>,

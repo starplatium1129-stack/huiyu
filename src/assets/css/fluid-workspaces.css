@@ -11,6 +11,8 @@
 /* Browse: shared rounded surfaces; page styles own layout, not the material. */
 html .gallery-page .gallery-toolbar,
 html .browse-toolbar {
+  min-width: 0;
+  gap: var(--s-3) var(--s-4);
   @apply tw:p-s-3;
   border: 1px solid var(--border-soft);
   @apply tw:rounded-xl;
@@ -88,10 +90,13 @@ html .notfound-page .notfound-actions {
   html .control-mobile-nav .nav-local-actions { @apply tw:w-full tw:justify-end; }
   html .control-mobile-nav .nav-local-actions > * { @apply tw:shrink-0; }
   html .control-mobile-nav .nav-local-home { @apply tw:whitespace-nowrap tw:mr-auto; }
-  html .gallery-page .gallery-toolbar { @apply tw:gap-s-2 tw:p-s-2; }
   html .gallery-page .gallery-search-field { max-width: none; flex-basis: 100%; }
   html .video-studio .video-mode-strip { @apply tw:p-s-1; }
   html .notfound-page .notfound-actions { @apply tw:w-full; }
+}
+@media (max-width: 768px) {
+  html .gallery-page .gallery-toolbar,
+  html .browse-toolbar { gap: var(--s-2) var(--s-3); }
 }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more), (forced-colors: active) {
   html .gallery-page .gallery-toolbar,

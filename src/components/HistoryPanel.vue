@@ -6,14 +6,14 @@
         <button class="btn btn-primary btn-sm" type="button" :disabled="transferBusy" :aria-busy="transferBusy" @click="$emit('to-shots-batch', selectedEntries)">
           <ArchiveIcon name="gallery" />加入分镜 ({{ selectedEntries.length }})
         </button>
-        <button class="btn btn-quiet btn-sm" type="button" @click="selectedSet.clear()">取消选择</button>
+        <button class="btn btn-quiet btn-sm" type="button" @click="clearSelection">取消选择</button>
       </span>
     </div>
     <div v-if="!items.length" class="history-empty" role="status">
       <ArchiveIcon name="image" class="history-empty-icon" />
       <span>还没有保存的作品。生成后点“存入作品册”，把喜欢的这一刻留在这里。</span>
     </div>
-    <div v-else class="history-list">
+    <div v-else ref="historyList" class="history-list">
       <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
           <img :crossorigin="runtimeResourceCors()" v-if="thumbs[item.id]" :src="resolveRuntimeUrl(thumbs[item.id])" alt="历史作品缩略图" loading="lazy">
@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useHistoryThumbnails } from '@/composables/prompt/useHistoryThumbnails'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -75,6 +75,15 @@ defineEmits<{
 }>()
 
 const selectedSet = ref(new Set<string | number>())
+const historyList = ref<HTMLElement | null>(null)
+async function clearSelection(event: MouseEvent) {
+  const ownedFocus = document.activeElement === event.currentTarget
+  const target = historyList.value?.querySelector<HTMLInputElement>('.history-item[data-selected] input[type="checkbox"]')
+    ?? historyList.value?.querySelector<HTMLInputElement>('input[type="checkbox"]')
+  selectedSet.value.clear()
+  await nextTick()
+  if (ownedFocus && props.active && target?.isConnected && document.activeElement === document.body) target.focus()
+}
 function setSelected(id: ArtworkRecord['id'], checked: boolean) {
   if (checked) selectedSet.value.add(id)
   else selectedSet.value.delete(id)

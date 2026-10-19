@@ -129,8 +129,8 @@ const categoryChips = computed(() => {
 .blueprint-cat-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .blueprint-cat-btn.active {
   border-color: var(--border-strong);
-  background: color-mix(in srgb, var(--mood-love) 18%, var(--bg-elevated));
-  @apply tw:text-accent;
+  background:var(--bg-elevated);
+  @apply tw:text-primary;
 }
 .blueprint-cat-btn.adult { border-color: color-mix(in srgb, var(--danger-text) 40%, var(--border-soft)); }
 .blueprint-cat-btn.adult em { @apply tw:text-danger-text; opacity: .9; }
@@ -159,14 +159,14 @@ const categoryChips = computed(() => {
 @media (hover:hover) and (pointer:fine) { .blueprint-card:hover:not(:focus-visible) { transform:translateY(-2px); @apply tw:border-accent; box-shadow:var(--shadow-sm); } }
 .blueprint-card.active {
   border-color: var(--border-strong);
-  border-left-color: var(--pb-active, var(--accent));
-  background: var(--accent-soft);
+  border-left-color:var(--border-strong);
+  background:var(--bg-elevated);
   box-shadow: var(--selection-shadow);
 }
 .blueprint-card[data-adult="true"] { border-left-color: color-mix(in srgb, var(--danger-text) 55%, transparent); }
 .blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }
 .blueprint-card:active { transform: translateY(0) scale(.99); }
-.blueprint-check { @apply tw:text-accent; }
+.blueprint-check { @apply tw:text-primary; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) :is(.blueprint-card,.blueprint-cat-btn,.blueprint-reco-btn) { transition:none; transform:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) :is(.blueprint-card,.blueprint-cat-btn,.blueprint-reco-btn) { transition:none; transform:none; }
 @media (forced-colors:active) { .blueprint-results:focus-visible { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }

@@ -16,6 +16,17 @@ export function useControlNavigation(ids: string[]) {
       if (!arrived) { activeSection.value = requested; return }
       requested = ''
     }
+    // Short trailing sections cannot reach the reading line before scrolling ends.
+    if (window.scrollY > 0 && Math.ceil(window.scrollY + innerHeight) >= document.documentElement.scrollHeight) {
+      for (let index = ids.length - 1; index >= 0; index--) {
+        const id = ids[index]!
+        const bounds = document.getElementById(id)?.getBoundingClientRect()
+        if (bounds && bounds.height > 0 && bounds.top < innerHeight && bounds.bottom > 0) {
+          activeSection.value = id
+          return
+        }
+      }
+    }
     let current = ids[0] || ''
     let closestTop = -Infinity
     for (const id of ids) {

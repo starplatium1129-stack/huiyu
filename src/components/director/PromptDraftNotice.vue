@@ -3,7 +3,7 @@ import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { exportDirectorBlueprint } from '@/utils/directorBlueprintFile'
 
-defineProps<{ blueprint: Record<string, unknown> }>()
+defineProps<{ getBlueprint: () => Record<string, unknown> }>()
 const pb = usePromptBuilderStore()
 const desktop = Boolean(getDesktopCapabilities())
 </script>
@@ -13,7 +13,7 @@ const desktop = Boolean(getDesktopCapabilities())
     <p role="status" aria-live="polite">{{ pb.draftSaveState === 'failed' ? pb.draftSaveError : pb.draftSaveState === 'pending' ? '正在保存草稿…' : '草稿已保存到此浏览器' }}</p>
     <template v-if="pb.draftSaveState === 'failed'">
       <button class="btn btn-ghost btn-sm" type="button" @click="pb.retryDraftSave()">重试保存</button>
-      <button class="btn btn-ghost btn-sm" type="button" @click="exportDirectorBlueprint(blueprint)">导出当前草稿</button>
+      <button class="btn btn-ghost btn-sm" type="button" @click="exportDirectorBlueprint(getBlueprint())">导出当前草稿</button>
       <span>导出的文件可通过「数据工具 → 导入蓝图配置」恢复。</span>
     </template>
   </section>

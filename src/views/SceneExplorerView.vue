@@ -84,6 +84,7 @@
 
       <!-- 精细筛选默认收起 -->
       <div v-show="filtersOpen" v-content-motion="filtersOpen" id="sceneFacetPanel" class="scene-facet-panel">
+        <template v-if="filtersRevealed">
         <div class="scene-facet-grid">
           <label class="scene-filter-field">角色<StudioSelect v-model="fChar" label="角色" :options="SCENE_FILTER_OPTIONS.character" /></label>
           <label class="scene-filter-field">季节<StudioSelect v-model="fSeason" label="季节" :options="SCENE_FILTER_OPTIONS.season" /></label>
@@ -98,6 +99,7 @@
           <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
           <button class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
         </div>
+        </template>
       </div>
     </div>
 
@@ -220,6 +222,8 @@ const {
   loading, loadError, init, paged, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
   personalReason, drawerScene, finishSceneClose, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
 } = useSceneExplorerWorkspace()
+const filtersRevealed = ref(false)
+watch(filtersOpen, open => { if (open) filtersRevealed.value = true }, { flush: 'sync' })
 const listRoot = ref<HTMLElement | null>(null)
 const { thumbUrl, thumbDimensions, initialLoading: samplesPending } = useShowcaseAssets()
 useListTransition(listRoot, () => paged.value.map(scene => scene.id))

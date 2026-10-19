@@ -18,7 +18,7 @@
           <button class="btn btn-ghost" type="button" @click="showParticles = !showParticles">{{ showParticles ? '收起粒子预览' : '查看当前粒子形象' }}</button>
         </section>
         <section class="character-art-card">
-          <h3>替换预览 <span v-if="file">尚未应用</span></h3>
+          <h3 ref="replacementHeading" tabindex="-1">替换预览 <span v-if="file">尚未应用</span></h3>
           <RuntimeImage v-if="previewUrl" class="character-art-image" :src="previewUrl" alt="准备替换的新立绘" />
           <ArchiveStatePanel v-else compact kind="empty" title="尚未选择图片" />
           <p class="character-art-note">PNG / JPEG / WebP · ≤15 MB · 边长 ≤8192 px · ≤3200 万像素</p>
@@ -26,7 +26,7 @@
           <input ref="fileInput" hidden type="file" accept="image/png,image/jpeg,image/webp" @change="onFile" />
           <div class="character-art-actions">
             <button class="btn btn-ghost" type="button" :disabled="!ready || saving || reading || !local" @click="fileInput?.click()"><ArchiveIcon name="image" />{{ reading ? '正在检查图片…' : '选择图片' }}</button>
-            <button v-if="file" class="btn btn-ghost" type="button" :disabled="saving" @click="discard">取消替换</button>
+            <button v-if="file" class="btn btn-ghost" type="button" :disabled="saving" @click="cancelReplacement">取消替换</button>
           </div>
         </section>
       </div>
@@ -56,7 +56,12 @@ const { selectedId, previewUrl, feedback, error, loading, saving, reading, ready
 defineExpose({ canLeave })
 const loadParticleField = () => import('@/components/visual/SemanticParticleField.vue')
 const fileInput = ref<HTMLInputElement | null>(null), showParticles = ref(false)
+const replacementHeading = ref<HTMLElement | null>(null)
 const particleTheme = computed(() => characterParticleTheme(selectedId.value))
+function cancelReplacement(event: MouseEvent) {
+  if (document.activeElement === event.currentTarget) replacementHeading.value?.focus({ preventScroll: true })
+  discard()
+}
 async function onFile(event: Event) {
   const input = event.target as HTMLInputElement
   const candidate = input.files?.[0]; input.value = ''
@@ -68,6 +73,7 @@ async function onFile(event: Event) {
 .character-art-manager { display: grid; gap: var(--s-4); min-width: 0; }
 .character-art-heading { display: flex; justify-content: space-between; gap: var(--s-3); flex-wrap: wrap; align-items: center; }
 .character-art-heading h2, .character-art-card h3 { margin: 0; color: var(--text-primary); }
+.character-art-card h3:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-sm); }
 .character-art-note { color: var(--text-secondary); line-height: 1.7; margin: 0; }
 .character-art-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
 .character-art-card { display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; padding: var(--s-4); background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); }

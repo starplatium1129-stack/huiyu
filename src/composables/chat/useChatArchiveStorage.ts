@@ -2,9 +2,10 @@ import { ref } from 'vue'
 import { readChatArchive, writeChatArchive, withChatArchiveMutation } from '@/storage/chatArchiveRepository'
 import { archiveMessages, emptyChatArchive, type ChatArchive } from '@/utils/chatArchive'
 import type { PersistedChatMessage } from '@/utils/chatStorageCore'
+import { cloneChatMessages } from '@/utils/chatMessageStorage'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 
-type Mutation = { character: string; revision: string; all?: boolean; messages?: PersistedChatMessage[] }
+type Mutation = { character: string; revision: string; characterRevision?: string; all?: boolean; characterAll?: boolean; messages?: PersistedChatMessage[] }
 
 /** All archive writers serialize the read/modify/write under one origin-wide lock.
  * A per-character clear epoch rejects additions queued against a deleted snapshot.
@@ -24,10 +25,15 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
           base.archived[id] = []
           Object.defineProperty(base.revisions, id, { value: mutation.revision, writable: true, enumerable: true, configurable: true })
         }
+      } else if (mutation.characterAll) {
+        for (const id of new Set([...Object.keys(base.archived), mutation.character])) if (id === mutation.character || id.startsWith(`${mutation.character}::`)) {
+          base.archived[id] = []; base.revisions[id] = mutation.revision
+        }
       } else if (!mutation.messages) {
         base.archived[mutation.character] = []
         Object.defineProperty(base.revisions, mutation.character, { value: mutation.revision, writable: true, enumerable: true, configurable: true })
-      } else if ((typeof base.revisions[mutation.character] === 'string' ? base.revisions[mutation.character] : '') === mutation.revision) {
+      } else if ((typeof base.revisions[mutation.character] === 'string' ? base.revisions[mutation.character] : '') === mutation.revision
+        && (base.revisions[mutation.character.split('::')[0]] || '') === mutation.characterRevision) {
         archiveMessages(base, mutation.character, mutation.messages)
       }
     }
@@ -51,15 +57,21 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     archive.value = emptyChatArchive(characterIds)
   }
   function add(character: string, messages: PersistedChatMessage[], imported = false) {
-    if ((!imported && !characterIds.includes(character)) || !messages.length) return
+    if ((!imported && !characterIds.some(id => character === id || character.startsWith(`${id}::`))) || !messages.length) return
     const revision = typeof archive.value.revisions?.[character] === 'string' ? archive.value.revisions[character] : ''
-    const mutation = { character, revision, messages: messages.map(message => ({ ...message })) }
+    const characterRevision = archive.value.revisions?.[character.split('::')[0]] || ''
+    const mutation = { character, revision, characterRevision, messages: cloneChatMessages(messages) }
     pending.push(mutation)
     archive.value = apply(archive.value, [mutation])
   }
   function clear(character?: string) {
     if (character && !Object.hasOwn(archive.value.archived, character)) return
     const mutation = { character: character || '', all: !character, revision: crypto.randomUUID() }
+    pending.push(mutation)
+    archive.value = apply(archive.value, [mutation])
+  }
+  function clearCharacter(character: string) {
+    const mutation = { character, characterAll: true, revision: crypto.randomUUID() }
     pending.push(mutation)
     archive.value = apply(archive.value, [mutation])
   }
@@ -89,5 +101,5 @@ export function useChatArchiveStorage(characterIds: string[], canWrite: () => bo
     }).finally(() => { running = undefined })
     return running
   }
-  return { archive, get ready() { return ready }, refresh, reset, add, clear, save }
+  return { archive, get ready() { return ready }, refresh, reset, add, clear, clearCharacter, save }
 }

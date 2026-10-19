@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import type { VideoDefaults } from '@/api/videoApi'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect, { type StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 
-defineProps<{
+const props = defineProps<{
   aspectOptions: readonly StudioSelectOption[]
   durationOptions: readonly StudioSelectOption[]
   qualityOptions: readonly StudioSelectOption[]
@@ -15,11 +16,17 @@ defineProps<{
 const aspectRatio = defineModel<VideoDefaults['aspectRatio']>('aspectRatio', { required: true })
 const duration = defineModel<VideoDefaults['duration']>('duration', { required: true })
 const quality = defineModel<VideoDefaults['quality']>('quality', { required: true })
-defineEmits<{ generate: [] }>()
+const emit = defineEmits<{ generate: [] }>()
+const region = ref<HTMLElement | null>(null)
+function generate(event: MouseEvent) {
+  if (!props.canGenerate) return
+  if (document.activeElement === event.currentTarget) region.value?.focus({ preventScroll: true })
+  emit('generate')
+}
 </script>
 
 <template>
-  <section class="video-generation-bar" data-fluid-glass aria-label="视频生成设置" :data-ready="canGenerate || undefined">
+  <section ref="region" class="video-generation-bar" data-fluid-glass aria-label="视频生成设置" tabindex="-1" :data-ready="canGenerate || undefined">
     <div class="video-generation-fields">
       <label class="video-generation-field video-generation-aspect"><span>画幅</span>
         <StudioSelect :model-value="aspectRatio" :options="aspectOptions" label="选择视频画幅" :disabled="submitting"
@@ -35,7 +42,7 @@ defineEmits<{ generate: [] }>()
       </label>
     </div>
     <div id="video-generation-summary" class="video-generation-summary"><strong>{{ submitTitle }}</strong><p v-if="submitDescription">{{ submitDescription }}</p></div>
-    <button class="btn btn-primary btn-lg" type="button" aria-describedby="video-generation-summary" :disabled="!canGenerate" @click="$emit('generate')">
+    <button class="btn btn-primary btn-lg" type="button" aria-describedby="video-generation-summary" :disabled="!canGenerate" @click="generate">
       <ArchiveIcon name="play" />{{ submitting ? '正在提交…' : '生成视频' }}
     </button>
   </section>
@@ -50,6 +57,7 @@ defineEmits<{ generate: [] }>()
   box-shadow:none;
 }
 .video-generation-bar[data-ready="true"] { border-color: color-mix(in srgb, var(--accent) 40%, var(--border-soft)); }
+.video-generation-bar:focus-visible { outline:2px solid var(--focus-color); outline-offset:2px; }
 .video-generation-fields { display: grid; grid-template-columns: minmax(0, 1.7fr) repeat(2, minmax(0, 1fr)); gap: var(--s-3); min-width: 0; }
 .video-generation-field { display: grid; gap: var(--s-1); min-width: 0; }
 .video-generation-field > span { color: var(--text-secondary); font-size: var(--fs-label-sm); font-weight: 600; }
@@ -58,11 +66,12 @@ defineEmits<{ generate: [] }>()
 .video-generation-summary p { margin: var(--s-1) 0 0; color: var(--text-muted); font-size: var(--fs-label-sm); line-height: var(--lh-body); }
 .video-generation-bar > .btn { white-space: nowrap; }
 @media (min-width: 1001px) {
-  .video-generation-bar { position: sticky; top: calc(var(--app-navigation-height, 80px) + var(--s-2)); z-index: var(--z-sticky); }
+  .video-generation-bar { position: sticky; top: calc(var(--desktop-chrome-height, 0px) + var(--app-navigation-height, 80px) + var(--s-2)); z-index: var(--z-sticky); }
 }
 @media (max-width:1150px) {
   .video-generation-bar { grid-template-columns:minmax(0,1fr) auto; align-items:start; position:static; top:auto; }
   .video-generation-fields { grid-column:1 / -1; }
   .video-generation-summary { align-self:center; }
 }
+@media (forced-colors:active) { .video-generation-bar:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

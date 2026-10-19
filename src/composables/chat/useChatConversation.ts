@@ -5,13 +5,11 @@ import { createMessageId, type CharacterConfig } from '../../config/characters.t
 import { useChatStorage } from './useChatStorage.ts'
 import { useVoice } from '../useVoice.ts'
 import {
-  inferEmotion,
   isAbortError,
   parseNdjsonResponse,
   streamErrorMessage,
 } from '../../utils/stream.ts'
-import { createMoodTagStream } from '../../utils/moodTag.ts'
-import { hasChatUserProfile, type ChatUserProfile } from '../../utils/chatUserProfile.ts'
+import type { ChatUserProfile } from '../../utils/chatUserProfile.ts'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { createChatDraftPersistence } from './chatDraftPersistence'
@@ -19,17 +17,12 @@ import type { ChatMessage } from './chatStorageTypes'
 import { parseCompanionChatImage, type CompanionChatSendOptions } from '@/types/companionDrawing'
 import type { CompanionToolContext } from './companionChatTools'
 import { captureCompanionImageSource } from './companionChatImages'
-
-// 2026-08-16 审计：流式对话的两级超时兜底（此前无任何超时，上游挂起=无限 spinner）。
-// 首事件超时覆盖排队/连接期；事件间静默覆盖出流后的断流。两者都远大于正常节奏，
-// 仅兜底真实挂起。本地 run_command 最长 120s，工具执行期间有 touch 续命。
-const CHAT_FIRST_EVENT_TIMEOUT_MS = 180_000
-const CHAT_STREAM_IDLE_MS = 180_000
-const WATCHDOG_INTERVAL_MS = 4_000
+import { startTurnWatchdog } from './chatTurnWatchdog'
+import { abortableTask } from '@/utils/abortableTask'
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
-/** 单回合捕获的持久化消息数组（storage.messages 的活引用）。 */
+/** A normal turn holds live history; regeneration captures only its question's prefix. */
 type TurnMessages = ReturnType<ChatStorage['messages']>
 
 interface ChatConversationOptions {
@@ -74,33 +67,19 @@ interface PendingToolCall {
 
 const MAX_TOOL_ROUNDS = 4
 
-/** 单回合流式情绪状态：[mood=xxx] 协议标签主导 + 文本启发式回退的双通道。 */
-interface TurnEmotionTracker {
-  /** 处理一个 token 增量：更新干净展示文本、情绪通道与配音流。 */
-  applyTokenDelta(assistant: { content: string }, delta: string): void
-  /** 回合结束（含异常路径）复位情绪通道与原始流。 */
-  reset(): void
-}
-
-/** 判断一条临时消息是否为多模态图片消息（视觉轮专用）。 */
-function isVisionMessage(message: Record<string, unknown>): boolean {
-  return Array.isArray(message.content)
-    && (message.content as Array<{ type?: string }>).some(part => part.type === 'image_url')
-}
-
 export function useChatConversation(options: ChatConversationOptions) {
   const inputText = ref('')
   const streamingMid = ref('')
   const replyAnnouncement = ref('')
   let activeRequest: AbortController | null = null
-  const sessions = new Map<string, { revision: number; id: string }>()
+  let disposed = false
+  const sessions = new Map<string, { revision: number; branch: string; mids: string[]; id: string }>()
   const draft = createChatDraftPersistence((character, value) => options.storage.setDraft(character, value))
   const releaseMaintenance = registerMaintenanceParticipant(() => { if (options.busy.value) throw new Error('CHAT_BUSY') })
 
   function abortCurrentRequest(silent = false, cancelImage = true) {
     if (!activeRequest) return false
     activeRequest.abort(cancelImage ? 'user-cancel' : undefined)
-    activeRequest = null
     options.voice.stop({ preserveMessageAudio: true, silent: true })
     if (!silent) options.onError('已停止本次回复。', 'info', 2500)
     return true
@@ -116,36 +95,45 @@ export function useChatConversation(options: ChatConversationOptions) {
     return true
   }
 
-  // ── Pipeline 步骤①：持久化本回合 ─────────────────────────────────────
-  // 用户消息入库 + 记忆召回 + 助手占位，随后进入流式就绪状态。
-  // 返回的 messages 是存储层的活引用：catch 分支据此移除失败占位。
-  function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string, sendOptions: CompanionChatSendOptions = {}) {
-    const characterId = options.activeChar.value
-    // Reuse the window's character session across turns and tool rounds; clearing starts a new one.
+  function sessionId(characterId: string, messages: TurnMessages) {
     const revision = options.storage.state.historiesRevisions[characterId] ?? 0
+    const branch = options.storage.branchId(characterId), mids = messages.map(message => message.mid)
     let session = sessions.get(characterId)
-    if (!session || session.revision !== revision) {
-      session = { revision, id: createMessageId() }
+    // Appending continues the same session; branch/variant changes select a new tool owner.
+    if (!session || session.revision !== revision || session.branch !== branch
+      || session.mids.some((mid, index) => mids[index] !== mid)) {
+      session = { revision, branch, mids, id: createMessageId() }
       sessions.set(characterId, session)
-    }
+    } else session.mids = mids
+    return session.id
+  }
+
+  function createAssistant(characterId: string, text: string) {
+    const recalledMemories = options.recallMemories(characterId, text), mid = createMessageId()
+    return reactive<ChatMessage>({ role: 'assistant', content: '', mid, replyId: mid, stopped: false,
+      ...(recalledMemories.length ? { recalledMemories } : {}) })
+  }
+
+  function captureTurn(characterId: string, user: ChatMessage, assistant: ChatMessage, restricted = false,
+    regeneration?: { replyId: string; previousMid: string }) {
     const messages = options.storage.messages(characterId)
     replyAnnouncement.value = ''
-    messages.push({
-      role: 'user',
-      content: imageUrl || sendOptions.image ? `${text || '（发送了图片）'} [图片]` : text,
-      mid: createMessageId(),
-      stopped: false,
-      ...(sendOptions.image ? { images: [{ ...sendOptions.image }] } : {}),
-    })
+    streamingMid.value = assistant.mid
+    options.scrollBottom()
+    options.setBusy(true)
+    return { characterId, branch: options.storage.branchId(characterId), sessionId: sessionId(characterId, messages),
+      character: options.currentCharacter.value, user, assistant, messages, restricted, regeneration,
+      text: restricted ? user.content.replace(/\s*\[图片\]\s*$/, '').trim() : user.content }
+  }
+  type ChatTurn = ReturnType<typeof captureTurn>
+
+  function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string, sendOptions: CompanionChatSendOptions = {}) {
+    const characterId = options.activeChar.value, messages = options.storage.messages(characterId)
+    const user: ChatMessage = { role: 'user', content: imageUrl || sendOptions.image ? `${text || '（发送了图片）'} [图片]` : text,
+      mid: createMessageId(), stopped: false, ...(sendOptions.image ? { images: [{ ...sendOptions.image }] } : {}) }
+    messages.push(user)
     options.storage.trim(characterId)
-    const recalledList = options.recallMemories(characterId, text)
-    const assistant = reactive<ChatMessage>({
-      role: 'assistant' as const,
-      content: '',
-      mid: createMessageId(),
-      stopped: false,
-      ...(recalledList && recalledList.length > 0 ? { recalledMemories: recalledList } : {}),
-    })
+    const assistant = createAssistant(characterId, text)
     messages.push(assistant)
     options.storage.save()
     if (customText === undefined) {
@@ -153,96 +141,9 @@ export function useChatConversation(options: ChatConversationOptions) {
       inputText.value = ''
       options.storage.setDraft(characterId, '')
     }
-    streamingMid.value = assistant.mid
-    options.scrollBottom()
-    options.setBusy(true)
-    return { characterId, sessionId: session.id, text, imageUrl, messages, assistant }
-  }
-
-  // ── Pipeline 步骤②：单回合流式情绪跟踪器 ────────────────────────────
-  function createTurnEmotionTracker(characterId: string): TurnEmotionTracker {
-    // 情绪双通道：本回合出现过协议标签（[mood=xxx]）后协议主导情绪，
-    // 文本启发式整回合让位，避免两条通道互相覆盖。
-    const emotionState = { value: 'neutral', moodTagged: false }
-    let moodStream = createMoodTagStream()
-    const hintPriority = ['shy', 'happy', 'sad', 'serious', 'gentle', 'neutral']
-    let hintRank = hintPriority.length - 1
-    let fallbackEmotion = 'neutral'
-
-    function maybeStreamEmotion(replyText: string, committedLength: number) {
-      if (!options.onStreamEmotion || replyText.length < 4) return
-      // inferEmotion 最长关键词为 4 字，保留 3 字即可衔接跨片段命中。
-      // 标签确认时回退的尾部只含 [mood 与空白，不会撤销已命中的关键词。
-      const tail = replyText.slice(Math.max(0, committedLength - 3))
-      const hint = inferEmotion(tail)
-      hintRank = Math.min(hintRank, hintPriority.indexOf(hint))
-      if (hintRank === hintPriority.length - 1 && fallbackEmotion === 'neutral') fallbackEmotion = inferEmotion(tail, characterId)
-      const emotion = hintRank < hintPriority.length - 1 ? hintPriority[hintRank]! : fallbackEmotion
-      if (emotion !== emotionState.value) {
-        emotionState.value = emotion
-        options.onStreamEmotion(emotion)
-      }
-    }
-
-    return {
-      applyTokenDelta(assistant, delta) {
-        const prevCleanLen = assistant.content.length
-        const committedLength = moodStream.committedLength
-        const extracted = moodStream.push(delta)
-        assistant.content = extracted.cleanText
-        if (extracted.emotion) {
-          emotionState.moodTagged = true
-          if (extracted.emotion !== emotionState.value) {
-            emotionState.value = extracted.emotion
-            options.onStreamEmotion?.(extracted.emotion)
-          }
-        } else if (!emotionState.moodTagged) {
-          maybeStreamEmotion(assistant.content, committedLength)
-        }
-        options.voice.append(extracted.cleanText.slice(prevCleanLen))
-      },
-      reset() {
-        if (options.onStreamEmotion && emotionState.value !== 'neutral') {
-          emotionState.value = 'neutral'
-          options.onStreamEmotion('neutral')
-        }
-        emotionState.moodTagged = false
-        moodStream = createMoodTagStream()
-        hintRank = hintPriority.length - 1
-        fallbackEmotion = 'neutral'
-      },
-    }
-  }
-
-  // ── Pipeline 步骤③：挂起看门狗 ───────────────────────────────────────
-  function startTurnWatchdog(controller: AbortController) {
-    // 2026-08-16 审计：挂起兜底看门狗——无首事件 / 事件间长时间静默即中断，
-    // 避免上游挂起时无限 spinner（idleTimedOut 区分用户主动停止与超时中断）。
-    const state = { firstEventAt: 0, idleTimedOut: false, lastEventAt: Date.now() }
-    const handle = window.setInterval(() => {
-      const silentFor = Date.now() - state.lastEventAt
-      if ((!state.firstEventAt && silentFor > CHAT_FIRST_EVENT_TIMEOUT_MS)
-        || (state.firstEventAt && silentFor > CHAT_STREAM_IDLE_MS)) {
-        state.idleTimedOut = true
-        controller.abort()
-      }
-    }, WATCHDOG_INTERVAL_MS)
-    return {
-      touch() {
-        const now = Date.now()
-        if (!state.firstEventAt) state.firstEventAt = now
-        state.lastEventAt = now
-      },
-      stop() {
-        window.clearInterval(handle)
-      },
-      get sawFirstEvent() {
-        return Boolean(state.firstEventAt)
-      },
-      get idleTimedOut() {
-        return state.idleTimedOut
-      },
-    }
+    const turn = captureTurn(characterId, user, assistant)
+    turn.text = text
+    return turn
   }
 
   function captureConnection() {
@@ -276,81 +177,91 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
   }
 
-  // ── Pipeline 步骤⑥：一轮回合的 /api/chat 请求体组装 ──────────────────
-  function buildChatRequestBody(args: {
-    characterId: string
-    sessionId: string
-    text: string
-    imageUrl: string | undefined
-    hostMode: boolean
-    useVision: boolean
-    toolsEnabled: boolean
-    roundMessages: Array<Record<string, unknown>>
-    messages: TurnMessages
-    connection: TurnConnection
-  }): string {
-    const { characterId, sessionId, text, imageUrl, hostMode, useVision, toolsEnabled, roundMessages, messages, connection } = args
-    const userApi = {
-      baseUrl: connection.baseUrl,
-      model: connection.apiModel,
-      apiKey: connection.apiKey,
-    }
-    // Images use the selected service too; never silently route to an unconfigured local proxy.
-    const historyList = (useVision && imageUrl)
-      ? messages.slice(0, -2).map(message => ({ role: message.role, content: message.content }))
-      : messages.slice(0, -1).map(message => ({ role: message.role, content: message.content }))
-    return JSON.stringify({
-      character: characterId,
-      sessionId,
-      provider: connection.provider,
-      model: hostMode ? '' : connection.currentModel,
-      api: !hostMode && connection.provider === 'api' ? userApi : undefined,
-      hostConfig: hostMode || undefined,
-      webSearch: connection.provider === 'api' && connection.webSearch && isLocalStudioHost(),
-      companionTools: toolsEnabled || undefined,
-      reasoning: connection.reasoning,
-      userProfile: hasChatUserProfile(options.userProfile.value) ? options.userProfile.value : undefined,
-      memories: options.recallMemories(characterId, text),
-      messages: [
-        ...historyList,
-        // 文本轮（回到 DeepSeek 等）不带图片消息：纯文本模型收到
-        // image_url 会直接报错；图片已由视觉轮（Gemini）看过，
-        // tool 结果里的摘要文本足够衔接上下文
-        ...(useVision ? roundMessages : roundMessages.filter(message => !isVisionMessage(message))),
-      ],
-    })
-  }
-
   async function sendMessage(customText?: string, imageUrl?: string, sendOptions: CompanionChatSendOptions = {}) {
     const text = (customText !== undefined ? customText : inputText.value).trim()
-    if ((!text && !imageUrl && !sendOptions.image) || options.busy.value || (!options.chatReady.value && sendOptions.action !== 'generate-from-image')) return
+    if (disposed || (!text && !imageUrl && !sendOptions.image) || options.busy.value
+      || (!options.chatReady.value && sendOptions.action !== 'generate-from-image')) return
+    await runTurn(beginUserTurn(text, imageUrl, customText, sendOptions), imageUrl, sendOptions)
+  }
+
+  async function regenerateMessage(mid: string) {
+    if (disposed || options.busy.value || !options.chatReady.value || !options.storage.canWrite()) return
+    const characterId = options.activeChar.value, branch = options.storage.branchId(characterId)
+    try { await options.storage.refresh() }
+    catch { options.onError('对话未能同步，请重试；原回复已保留。'); return }
+    if (disposed || options.busy.value || options.activeChar.value !== characterId
+      || options.storage.branchId(characterId) !== branch || !options.storage.canWrite()) return
+    const history = options.storage.messages(characterId), target = history.at(-1)
+    if (!target || target.mid !== mid) { options.onError('请先切换到这条消息所在的剧情末尾。', 'info'); return }
+    const userIndex = target.role === 'user' ? history.length - 1
+      : history.map(message => message.role).lastIndexOf('user', history.length - 2)
+    const user = history[userIndex]
+    if (!user) { options.onError('找不到这条回复对应的问题，请重新发送消息。'); return }
+    const regeneration = target.role === 'assistant' ? { replyId: target.replyId || target.mid, previousMid: target.mid } : undefined
+    const assistant = regeneration ? options.storage.prepareRegeneration(characterId, mid) : createAssistant(characterId, user.content)
+    if (!assistant) return
+    if (!regeneration) {
+      history.push(assistant)
+      if (!options.storage.save()) { history.pop(); options.onError('对话未能保存，请重试。'); return }
+    }
+    const turn = captureTurn(characterId, user, assistant, true, regeneration)
+    turn.messages = [...history.slice(0, userIndex + 1), assistant]
+    await runTurn(turn)
+  }
+
+  async function runTurn(turn: ChatTurn, imageUrl?: string, sendOptions: CompanionChatSendOptions = {}) {
     options.onError('')
     options.voice.ensureAudioContext()
-
-    const connection = captureConnection()
-    const turn = beginUserTurn(text, imageUrl, customText, sendOptions)
-
+    const connection = captureConnection(), text = turn.text, turnMid = turn.assistant.mid
     const controller = new AbortController()
     activeRequest = controller
     const watchdog = startTurnWatchdog(controller)
+    let resetEmotion = () => {}
     options.voice.startTurn({
       mid: turn.assistant.mid,
-      voice: options.currentCharacter.value.voice,
+      voice: turn.character.voice,
       character: turn.characterId,
     })
-    const tracker = createTurnEmotionTracker(turn.characterId)
-    const report = (message: string) => { watchdog.touch(); options.onToolActivity?.(message) }
-    const sourceImage = captureCompanionImageSource(sendOptions.image || [...turn.messages].reverse().flatMap(message => message.images || [])[0], sendOptions.imageAuthority, controller)
+    const ownsRequest = () => activeRequest === controller
+    const ownsHistory = () => options.storage.branchId(turn.characterId) === turn.branch
+      && options.storage.messages(turn.characterId).includes(turn.assistant) && turn.assistant.mid === turnMid
+    const canPresent = () => !disposed && ownsRequest() && options.activeChar.value === turn.characterId
+    const checkCurrent = () => {
+      if (!ownsRequest() || !ownsHistory()) controller.abort()
+      controller.signal.throwIfAborted()
+    }
+    const report = (message: string) => { watchdog.touch(); if (canPresent()) options.onToolActivity?.(message) }
+    const sourceImage = turn.restricted ? undefined : captureCompanionImageSource(
+      sendOptions.image || [...turn.messages].reverse().flatMap(message => message.images || [])[0], sendOptions.imageAuthority, controller)
+    let originalImages: ReturnType<typeof import('./chatRegenerationImages')['captureRegenerationImages']> | undefined
+    let imageUrls = imageUrl ? [imageUrl] : []
     const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl,
       search: connection.hostConfig ? { hostConfig: true } : { chatApi: { baseUrl: connection.baseUrl, apiKey: connection.apiKey } } }
     const drawingResults = new Map<string, ToolCallResult>()
 
     try {
+      const { buildChatRequestBody, createTurnEmotionTracker } = await abortableTask(() => import('./chatTurnRuntime'), controller.signal)
+      checkCurrent()
+      const tracker = createTurnEmotionTracker(turn.characterId, options.voice.append,
+        emotion => { if (canPresent()) options.onStreamEmotion?.(emotion) })
+      resetEmotion = tracker.reset
+      if (turn.restricted) {
+        const { captureRegenerationImages } = await abortableTask(() => import('./chatRegenerationImages'), controller.signal)
+        checkCurrent()
+        originalImages = captureRegenerationImages(turn.user.images || [], controller)
+      }
+      if (originalImages) {
+        if (/\[图片\]\s*$/.test(turn.user.content) && !turn.user.images?.length) {
+          throw new Error('原消息没有保存图片，无法重新生成；请重新发送原图。')
+        }
+        imageUrls = await originalImages.read()
+        checkCurrent()
+      }
       if (sendOptions.action === 'generate-from-image') {
-        const { executeCompanionChatTool, retainCompanionImageMessage } = await import('./companionChatTools')
-        controller.signal.throwIfAborted()
+        const { executeCompanionChatTool, retainCompanionImageMessage } = await abortableTask(() => import('./companionChatTools'), controller.signal)
+        checkCurrent()
         const result = await executeCompanionChatTool('generate_image_from_reference', { character: turn.characterId, description: text }, toolContext)
-        controller.signal.throwIfAborted()
+        checkCurrent()
         turn.assistant.content = result.output
         if (result.image) turn.assistant.images = [{ ...result.image }]
         if (result.image) await retainCompanionImageMessage(options.storage, result.image.taskId)
@@ -360,33 +271,33 @@ export function useChatConversation(options: ChatConversationOptions) {
         return
       }
       if(connection.provider==='api'&&connection.apiModel==='huiyu-local'&&!connection.hostConfig&&isLocalStudioHost()){
-        if(imageUrl)throw new Error('这套起步本地模型尚未准备视觉投影，请先用文字聊天，或选择支持图片的 API')
-        const {localSetupApi}=await import('@/api/localSetupApi')
+        if(imageUrls.length)throw new Error('这套起步本地模型尚未准备视觉投影，请先用文字聊天，或选择支持图片的 API')
+        const {localSetupApi}=await abortableTask(()=>import('@/api/localSetupApi'),controller.signal)
         const result=await localSetupApi.ensureLlama(connection.baseUrl,controller.signal)
         if(!result.ready){
-          const {waitLocalSetupOperation}=await import('@/api/localSetupOperation')
-          await waitLocalSetupOperation(result,{signal:controller.signal,onMessage:message=>{watchdog.touch();options.onToolActivity?.(message)}})
+          const {waitLocalSetupOperation}=await abortableTask(()=>import('@/api/localSetupOperation'),controller.signal)
+          await waitLocalSetupOperation(result,{signal:controller.signal,onMessage:report})
         }
       }
-      const toolsEnabled = connection.tools && connection.provider === 'api' && isLocalStudioHost()
-      const searchEnabled = connection.webSearch && connection.provider === 'api' && isLocalStudioHost()
+      const toolsEnabled = !turn.restricted && connection.tools && connection.provider === 'api' && isLocalStudioHost()
+      const searchEnabled = !turn.restricted && connection.webSearch && connection.provider === 'api' && isLocalStudioHost()
       // 工具循环的临时消息（assistant tool_calls / role:tool）只存内存，
       // 不进持久化历史：它们是同一轮对话的中间过程，不应污染聊天记录。
       const roundMessages: Array<Record<string, unknown>> = []
       let toolRounds = 0
       // 视觉轮沿用本次选定的 API；模型是否支持图片由服务商确认。
-      let visionRound = Boolean(imageUrl)
-      if (imageUrl) {
+      let visionRound = Boolean(imageUrls.length)
+      if (imageUrls.length) {
         roundMessages.push({
           role: 'user',
           content: [
             { type: 'text', text: text || '（这是发送给你的图片，请结合你的性格给出锐评）' },
-            { type: 'image_url', image_url: { url: imageUrl } },
+            ...imageUrls.map(url => ({ type: 'image_url', image_url: { url } })),
           ],
         })
       }
       while (true) {
-        controller.signal.throwIfAborted()
+        checkCurrent()
         const hostMode = connection.provider === 'api' && connection.hostConfig
         const useVision = visionRound
         visionRound = false
@@ -398,20 +309,20 @@ export function useChatConversation(options: ChatConversationOptions) {
           body: buildChatRequestBody({
             characterId: turn.characterId,
             sessionId: turn.sessionId,
-            text,
-            imageUrl,
+            imageUrls,
             hostMode,
             useVision,
             toolsEnabled,
             roundMessages,
-            messages: turn.messages, connection,
+            messages: turn.messages, connection, restricted: turn.restricted,
+            userProfile: options.userProfile.value, memories: options.recallMemories(turn.characterId, text),
           }),
           signal: controller.signal,
         })
 
         const toolCalls: PendingToolCall[] = []
         await parseNdjsonResponse(response, async event => {
-          controller.signal.throwIfAborted()
+          checkCurrent()
           watchdog.touch()
           if (event.type === 'meta' && event.model) {
             applyModelWriteback(event.model, hostMode, useVision, connection)
@@ -424,11 +335,11 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
           if (event.type === 'reasoning') {
             roundReasoning += event.content || ''
-            options.onThinking?.(event.content || '')
+            if (canPresent()) options.onThinking?.(event.content || '')
             return
           }
           if (event.type !== 'token') return
-          options.onThinking?.(null)
+          if (canPresent()) options.onThinking?.(null)
           tracker.applyTokenDelta(turn.assistant, event.content || '')
           if (options.nearBottom()) options.scrollBottom()
         })
@@ -448,9 +359,9 @@ export function useChatConversation(options: ChatConversationOptions) {
             ...(call.thoughtSignature ? { extra_content: { google: { thought_signature: call.thoughtSignature } } } : {}),
           })),
         })
-        const { executeSerializedCompanionChatTool, retainCompanionImageMessage } = await import('./companionChatTools')
+        const { executeSerializedCompanionChatTool, retainCompanionImageMessage } = await abortableTask(() => import('./companionChatTools'), controller.signal)
         for (const call of toolCalls) {
-          controller.signal.throwIfAborted()
+          checkCurrent()
           report(call.name === 'search_web' ? '正在联网检索…' : call.name.startsWith('generate_') ? '正在准备图片…' : '正在处理你的请求…')
           let result: ToolCallResult
           try {
@@ -459,7 +370,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             if (controller.signal.aborted) throw error
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }
           }
-          controller.signal.throwIfAborted()
+          checkCurrent()
           if (result.image) {
             const image = parseCompanionChatImage(result.image)
             if (image && !turn.assistant.images?.some(existing => existing.taskId === image.taskId && existing.path === image.path)) {
@@ -481,36 +392,41 @@ export function useChatConversation(options: ChatConversationOptions) {
             visionRound = true
           }
         }
-        options.onToolActivity?.(null)
+        if (canPresent()) options.onToolActivity?.(null)
         if (options.nearBottom()) options.scrollBottom()
       }
 
       // 收尾：空回复兜底、屏幕阅读器播报、配音收轨。
-      turn.assistant.content = turn.assistant.content.trim() || '……'
-      replyAnnouncement.value = `${options.currentCharacter.value.name}说：${turn.assistant.content}`
+      checkCurrent()
+      turn.assistant.content = turn.assistant.content.trim()
+      if (turn.restricted && !turn.assistant.content) throw new Error('模型没有返回回复，请重试；已有回复已保留。')
+      turn.assistant.content ||= '……'
+      if (canPresent()) replyAnnouncement.value = `${turn.character.name}说：${turn.assistant.content}`
       options.voice.finishTurn()
     } catch (error) {
-      if (sendOptions.action === 'generate-from-image' && !isAbortError(error) && !turn.assistant.content) {
+      if (!ownsRequest() || !ownsHistory()) return
+      const aborted = controller.signal.aborted || isAbortError(error)
+      if (sendOptions.action === 'generate-from-image' && !aborted && !turn.assistant.content) {
         turn.assistant.content = `这次未能生成图片：${error instanceof Error ? error.message : '请检查绘图和反推服务后重试。'}`
       }
       // 中断时保留已收到的内容，避免读到一半的回复突然消失。
       turn.assistant.content = turn.assistant.content.trim()
       turn.assistant.stopped = Boolean(turn.assistant.content)
-      if (!turn.assistant.content) {
-        const index = turn.messages.indexOf(turn.assistant)
-        if (index >= 0) turn.messages.splice(index, 1)
+      if (!turn.assistant.content && !turn.regeneration) {
+        const history = options.storage.messages(turn.characterId), index = history.indexOf(turn.assistant)
+        if (index >= 0) history.splice(index, 1)
       }
-      if (isAbortError(error)) {
+      if (aborted) {
         if (watchdog.idleTimedOut) {
           // 超时中断：与用户主动停止不同，按失败处理并给出可理解的提示。
           options.voice.stop({ preserveMessageAudio: true, silent: true })
-          options.onError(watchdog.sawFirstEvent
+          if (canPresent()) options.onError(watchdog.sawFirstEvent
             ? '对话长时间无响应，已中断，请重试。'
             : '对话等待超时（长时间未开始），请重试。')
         }
       } else {
         options.voice.stop({ preserveMessageAudio: true, silent: true })
-        options.onError(streamErrorMessage(
+        if (canPresent()) options.onError(streamErrorMessage(
           error,
           connection.provider === 'api'
             ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
@@ -519,16 +435,23 @@ export function useChatConversation(options: ChatConversationOptions) {
       }
     } finally {
       sourceImage?.release()
+      originalImages?.release()
       watchdog.stop()
-      tracker.reset()
-      options.onToolActivity?.(null)
-      options.onThinking?.(null)
-      options.storage.trim(turn.characterId)
-      options.storage.save()
-      streamingMid.value = ''
-      if (activeRequest === controller) activeRequest = null
-      options.setBusy(false)
-      if (options.nearBottom()) options.scrollBottom()
+      if (ownsRequest()) {
+        try {
+          if (!ownsHistory()) options.voice.stop({ preserveMessageAudio: true, silent: true })
+          if (turn.regeneration) options.storage.finishRegeneration(turn.characterId, turn.regeneration.replyId, turn.regeneration.previousMid)
+          options.storage.trim(turn.characterId)
+          options.storage.save()
+        } finally {
+          resetEmotion()
+          if (!disposed) { options.onToolActivity?.(null); options.onThinking?.(null) }
+          streamingMid.value = ''
+          activeRequest = null
+          options.setBusy(false)
+          if (!disposed && options.nearBottom()) options.scrollBottom()
+        }
+      }
     }
   }
 
@@ -548,6 +471,7 @@ export function useChatConversation(options: ChatConversationOptions) {
   }
 
   function destroy() {
+    disposed = true
     draft.dispose(); releaseMaintenance()
     options.storage.setDraft(options.activeChar.value, inputText.value)
     abortCurrentRequest(true, false)
@@ -560,6 +484,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     abortCurrentRequest,
     stopEverything,
     sendMessage,
+    regenerateMessage,
     useStarter,
     onInputChange,
     clearDraftInput,

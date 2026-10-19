@@ -11,7 +11,7 @@ const MAX_MEASURED_CARDS = 80
 
 /** One owner for filtered masonry and confirmed deletion; records stay repository-owned. */
 export function useGalleryListMotion(
-  root: Ref<HTMLElement | null>, items: () => ArtworkRecord[], loading: () => boolean,
+  root: Ref<HTMLElement | null>, items: () => ArtworkRecord[], loading: () => boolean, active: () => boolean,
 ) {
   const { canAnimate, lowEffects } = useVisualActivity(root)
   let dissolve: Dissolve | null = null
@@ -70,7 +70,7 @@ export function useGalleryListMotion(
     positions.clear(); clearTimeout(positionTimer)
     listChanged = false
     const host = root.value
-    if (!host || !canAnimate.value || lowEffects.value) return
+    if (!host || !active() || !canAnimate.value || lowEffects.value) return
     listChanged = true
     const deleted = new Set(ids.map(String))
     // The wall uses greedy masonry columns, not a TransitionGroup. Capture only
@@ -97,7 +97,7 @@ export function useGalleryListMotion(
     void nextTick(() => { if (token === revision) settle() })
   }
   function settle() {
-    if (loading() || !root.value || !canAnimate.value || lowEffects.value || !positions.size && !listChanged) return
+    if (!active() || loading() || !root.value || !canAnimate.value || lowEffects.value || !positions.size && !listChanged) return
     const previous = positions; positions = new Map(); clearTimeout(positionTimer)
     beginHandoff()
     // Read every visible destination and live transform before cancelling or writing.
@@ -147,18 +147,19 @@ export function useGalleryListMotion(
     // Appending a page retains placement; decoding thumbnails never changes IDs.
     if (next.length === previous.length && previous.every((id, index) => next[index] === id)) return
     if (previous.length && next.length > previous.length && previous.every((id, index) => next[index] === id)) return
-    if (loading() || !canAnimate.value || lowEffects.value || root.value?.closest('[inert], [hidden]')) return
+    if (!active() || loading() || !canAnimate.value || lowEffects.value || root.value?.closest('[inert], [hidden]')) return
     if (!previous.length && root.value?.dataset.routeEntering === 'true') return
     previousIds = new Set(previous); listChanged = true
     if (!positions.size) capture()
     beginHandoff()
   }, { flush: 'pre' })
   watch([ids, loading], () => {
+    if (!active()) return
     // Restoring/reintroducing an ID ends its stale deletion visual immediately.
     for (const item of items()) stopDust(String(item.id))
     settle()
   }, { flush: 'post' })
-  watch([canAnimate, lowEffects], () => { if (!canAnimate.value || lowEffects.value) stop() }, { flush: 'sync' })
+  watch([canAnimate, lowEffects, active], () => { if (!active() || !canAnimate.value || lowEffects.value) stop() }, { flush: 'sync' })
   // A new action invalidates delayed deletion feedback, while retained cards keep
   // their current position/velocity for the next filter's layout.
   function interact() { revision++; for (const id of dust.keys()) stopDust(id) }

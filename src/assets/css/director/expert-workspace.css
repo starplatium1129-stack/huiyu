@@ -6,9 +6,6 @@
 .pb .inspector-heading strong { @apply tw:text-body; letter-spacing: .04em; }
 .pb .inspector-heading span { @apply tw:text-label tw:text-muted; }
 .pb .inspector-section > * { @apply tw:shrink-0; }
-.pb .anima-prompt-details { @apply tw:text-label-xs tw:text-muted; }
-.pb .anima-prompt-details summary { @apply tw:cursor-pointer; padding-block: 8px; }
-.pb .anima-prompt-details textarea { margin-block: 6px; }
 .pb .director-inspector .result-frame { @apply tw:m-0; }
 .pb .director-inspector #stepResult { @apply tw:min-h-0; }
 .pb .material-content { scroll-padding-block:var(--s-2); }
@@ -18,7 +15,6 @@
 .pb[data-director-mode] .inspector-scroll { @apply tw:p-s-4 tw:overflow-y-auto; scrollbar-width: thin; overscroll-behavior: contain; @apply tw:min-h-0; }
 .pb[data-director-mode="pro"] .director-inspector .panel,
 .pb[data-director-mode="pro"] .director-inspector .result-frame { border: 0; box-shadow: none; background: transparent; @apply tw:p-0; }
-.pb[data-director-mode="pro"] .director-inspector .panel-title { @apply tw:mb-[10px]; }
 @media (min-width: 1024px) {
   .pb[data-director-mode] .director-inspector { @apply tw:flex tw:flex-col; }
   .pb.journal-workspace[data-director-mode] .inspector-heading,

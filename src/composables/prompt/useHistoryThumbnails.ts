@@ -1,4 +1,4 @@
-import { onActivated, onDeactivated, reactive, ref, watch } from 'vue'
+import { onActivated, onDeactivated, onScopeDispose, reactive, ref, watch } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -7,26 +7,38 @@ import { blobThumbDataUrl } from '@/utils/imageThumb'
 /** Only the visible history tab owns reads. Keep small previews, never original Blob URLs. */
 export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () => boolean) {
   const thumbs = reactive<Record<string | number, string>>({})
+  let imageIds = new Map<string, string | undefined>()
+  let repositoryOwner = artworkRepository
+  function clear() {
+    imageIds.clear()
+    for (const id of Object.keys(thumbs)) delete thumbs[id]
+  }
+  onScopeDispose(clear)
   const pageActive = ref(true)
   onActivated(() => { pageActive.value = true })
   onDeactivated(() => { pageActive.value = false })
   // History metadata can refresh without changing any displayed image.
   watch([active, pageActive, runtimeResourceIdentity, () => JSON.stringify(items().map(item => [item.id, item.image_id]))],
-    ([visible, activated, identity], _previous, onCleanup) => {
+    ([visible, activated, identity], previous, onCleanup) => {
       const controller = new AbortController()
-      onCleanup(() => {
-        controller.abort()
-        for (const id of Object.keys(thumbs)) delete thumbs[id]
-      })
-      if (!visible || !activated) return
+      onCleanup(() => controller.abort())
       const repository = artworkRepository
+      if (!visible || !activated || repository !== repositoryOwner || identity !== previous?.[2]) clear()
+      repositoryOwner = repository
+      if (!visible || !activated) return
       const entries = items().map(item => [item.id, item.image_id] as const)
+      // Reuse completed previews only while their record and image remain in this window.
+      const nextImages = new Map(entries.map(([id, imageId]) => [String(id), imageId] as const))
+      for (const id of Object.keys(thumbs)) {
+        if (!nextImages.has(id) || nextImages.get(id) !== imageIds.get(id)) delete thumbs[id]
+      }
+      imageIds = nextImages
       const current = () => !controller.signal.aborted && repository === artworkRepository && identity === runtimeResourceIdentity()
       let next = 0
       async function worker() {
         while (current() && next < entries.length) {
           const [id, imageId] = entries[next++]
-          if (!imageId) continue
+          if (!imageId || thumbs[id]) continue
           try {
             let thumbnail = await repository.getThumbnail(imageId).catch(() => null)
             if (!current()) return

@@ -1,4 +1,4 @@
-import { computed, onActivated, onMounted, onUpdated, shallowRef, watch, type Ref } from 'vue'
+import { computed, onActivated, onMounted, shallowRef, watch, type Ref } from 'vue'
 
 /** Reka content stays inside its owning native/custom modal and focus scope. */
 export function useModalPortalHost(source: () => HTMLElement | null | undefined,
@@ -9,8 +9,9 @@ export function useModalPortalHost(source: () => HTMLElement | null | undefined,
       ?? fallback?.() ?? undefined
   }
   onMounted(syncPortalHost)
-  onUpdated(syncPortalHost)
   onActivated(syncPortalHost)
+  // Text, progress and selection patches do not change a trigger's modal owner.
+  watch(source, syncPortalHost, { flush: 'post' })
   if (open) watch(open, value => { if (value) syncPortalHost() }, { flush: 'sync' })
   if (fallback) watch(fallback, syncPortalHost, { flush: 'post' })
   const collisionBoundary = computed(() => portalTarget.value?.tagName !== 'DIALOG'

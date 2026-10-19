@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends Pick<ArtworkRecord, 'id' | 'width' | 'height' | 'image_width' | 'image_height' | 'actual'>">
-import { computed, nextTick, onBeforeUnmount, onUpdated, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
@@ -48,6 +48,13 @@ const props = defineProps<{
 const emit = defineEmits<{ select: [index: number]; load: []; error: [] }>()
 const host = ref<HTMLElement | null>(null), failed = ref(new Set<string>())
 const imageRatios = ref<Record<string, number>>({})
+let cardNodes: { card: HTMLElement; index: number; shade: HTMLElement | null }[] = []
+function refreshCards() {
+  cardNodes = Array.from(host.value?.querySelectorAll<HTMLElement>('.gallery-orbit-card') ?? [], card => ({
+    card, index: Number(card.dataset.orbitIndex), shade: card.querySelector<HTMLElement>('.gallery-orbit-shade'),
+  }))
+}
+onMounted(refreshCards)
 const { getPosition, windowCenter, width, reduced, dragging, travel, select, reset, startTravel, finishTravel, resumeTravel } = useGalleryCoverFlow(host, {
   index: () => props.index, count: () => props.items.length, active: () => props.active, select: index => emit('select', index),
   present: paint,
@@ -89,12 +96,11 @@ function cardStyle(index: number, at: number) {
 }
 function paint(at: number) {
   if (!host.value?.isConnected) return
-  for (const card of host.value.querySelectorAll<HTMLElement>('.gallery-orbit-card')) {
-    const style = cardStyle(Number(card.dataset.orbitIndex), at)
+  for (const { card, index, shade } of cardNodes) {
+    const style = cardStyle(index, at)
     card.style.transform = style.transform
     card.style.opacity = style.visibility === 'hidden' ? '0' : '1'
     card.style.visibility = style.visibility
-    const shade = card.querySelector<HTMLElement>('.gallery-orbit-shade')
     if (shade) shade.style.opacity = String(style.shade)
   }
 }
@@ -120,14 +126,13 @@ watch(travel, async motion => {
   if (travel.value !== motion || !host.value) return
   paint(motion.to)
   try {
-    for (const card of host.value.querySelectorAll<HTMLElement>('.gallery-orbit-card')) {
-      const styles = motion.samples.map(at => cardStyle(Number(card.dataset.orbitIndex), at))
+    for (const { card, index, shade } of cardNodes) {
+      const styles = motion.samples.map(at => cardStyle(index, at))
       // Discrete visibility follows the same samples as opacity, so transparent
       // edge covers cannot remain pointer targets during a native flight.
       const animation = card.animate(styles.map(style => ({ transform:style.transform, opacity:style.visibility === 'hidden' ? 0 : 1, visibility:style.visibility })), { duration:motion.duration, fill:'both', easing:'linear' })
       animation.id = 'gallery-cover-flow'; animations.push(animation)
       void animation.finished.catch(() => {})
-      const shade = card.querySelector<HTMLElement>('.gallery-orbit-shade')
       if (shade) {
         const effect = shade.animate(styles.map(style => ({ opacity:style.shade })), { duration:motion.duration, fill:'both', easing:'linear' })
         animations.push(effect); void effect.finished.catch(() => {})
@@ -141,7 +146,7 @@ watch(travel, async motion => {
     resumeTravel(motion)
   }
 }, { flush:'sync' })
-onUpdated(() => paint(travel.value?.to ?? getPosition()))
-onBeforeUnmount(() => { focusRevision++; cancelTravel() })
+onUpdated(() => { refreshCards(); paint(travel.value?.to ?? getPosition()) })
+onBeforeUnmount(() => { focusRevision++; cancelTravel(); cardNodes = [] })
 watch(() => props.items.map(item => item.id).join('\u0000'), () => { failed.value.clear(); imageRatios.value = {}; reset() })
 </script>

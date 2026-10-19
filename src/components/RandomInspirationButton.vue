@@ -51,7 +51,7 @@ import { useRandomInspiration } from '@/composables/useRandomInspiration'
 
 const pb = usePromptBuilderStore()
 const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration()
-const menuOpen = ref(false)
+const menuOpen = defineModel<boolean>('open', { default:false })
 const body = ref<HTMLElement | null>(null)
 useResizeObserver(body, () => {
   const active = document.activeElement

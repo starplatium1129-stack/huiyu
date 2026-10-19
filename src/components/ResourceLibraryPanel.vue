@@ -1,8 +1,8 @@
 <template>
-  <section id="control-library" class="resource-library tw:p-s-5 tw:rounded-xl tw:text-primary tw:min-w-0" aria-labelledby="resource-library-title">
+  <section id="control-library" ref="libraryRegion" class="resource-library tw:p-s-5 tw:rounded-xl tw:text-primary tw:min-w-0" aria-labelledby="resource-library-title" tabindex="-1" :aria-busy="loading">
     <header class="resource-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3">
       <div><span class="resource-eyebrow">资源管理</span><h2 id="resource-library-title">离线资源库</h2></div>
-      <button v-if="isLocal" class="btn btn-ghost btn-sm" type="button" :disabled="loading || submitting" @click="refresh(true)"><ArchiveIcon name="refresh" />{{ loading ? '检查中…' : '重新检查' }}</button>
+      <button v-if="isLocal" class="btn btn-ghost btn-sm" type="button" :disabled="loading || submitting" :aria-busy="loading" @click="recheck"><ArchiveIcon name="refresh" />{{ loading ? '检查中…' : '重新检查' }}</button>
     </header>
     <p v-if="!isLocal" role="status">资源管理仅在本机控制室开放。</p>
     <template v-else>
@@ -11,7 +11,7 @@
           <code>{{ status.current.releaseId }} · {{ status.current.identity.slice(0, 12) }}</code>
         </StudioTooltip>
       </div>
-      <p v-if="!status && loading" role="status">正在读取资源库…</p>
+      <p v-if="!status && loading && !error" role="status">正在读取资源库…</p>
       <p v-if="error" class="resource-notice" role="alert">{{ error }}</p>
       <p v-if="status?.issue" class="resource-notice" role="alert">{{ status.issue.message }}</p>
       <p v-if="status && !status.configured" class="resource-description">尚未配置已批准的资源库；基础展示不受影响。</p>
@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -52,6 +52,12 @@ import { useResourceLibrary } from '../composables/useResourceLibrary'
 const library = useResourceLibrary()
 const { isLocal, status, error, loading, submitting, selectedId, selected, busy, enabled, canImport, canDownload,
   taskMessage, taskDetail, refresh, run, cancel } = library
+const libraryRegion = ref<HTMLElement | null>(null)
+function recheck() {
+  if (loading.value || submitting.value) return
+  libraryRegion.value?.focus({ preventScroll:true })
+  void refresh(true)
+}
 onMounted(library.start)
 onUnmounted(library.stop)
 </script>
@@ -59,10 +65,11 @@ onUnmounted(library.stop)
 <style scoped>
 @reference "../assets/css/tailwind.css";
 .resource-library { border: 1px solid var(--border-soft); background: var(--bg-surface); }
-.resource-heading h2 { margin: var(--s-2) 0 0; @apply tw:text-title-sm tw:leading-label; }
-.resource-eyebrow, .resource-description, .resource-footnote { @apply tw:text-secondary tw:text-label tw:leading-loose; }
+.resource-library:focus-visible { outline:2px solid var(--text-secondary); outline-offset:var(--s-1); box-shadow:none; }
+.resource-heading h2 { margin:0; }
+.resource-description, .resource-footnote { @apply tw:text-secondary tw:text-label tw:leading-loose; }
 .resource-description { margin: var(--s-2) 0 0; }
-.resource-eyebrow, .resource-label { color:var(--text-muted); font-size:var(--fs-label-xs); }
+.resource-label { color:var(--text-muted); font-size:var(--fs-label-xs); }
 .resource-version { display:grid; gap:var(--s-2); padding:var(--s-3); margin-block:var(--s-4); border-radius:var(--r-md); background:var(--bg-deep); }
 .resource-version strong { font-size:var(--fs-label); }
 .resource-version code { overflow-wrap: anywhere; @apply tw:max-w-full tw:text-secondary tw:text-label-xs; }

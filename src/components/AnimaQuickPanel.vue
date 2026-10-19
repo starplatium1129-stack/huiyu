@@ -212,7 +212,9 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 .anima-hires-toggle > span:last-child { flex:1; min-width:0; overflow-wrap:anywhere; }
 .anima-label { display:block; margin:var(--s-2) 0; }
 .anima-textarea { font-family:var(--font-mono); }
-.anima-prompt-details summary { color:var(--text-secondary); font-size:var(--fs-label); cursor:pointer; }
+.anima-prompt-details { color:var(--text-muted); font-size:var(--fs-label-xs); }
+.anima-prompt-details summary { padding-block:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label); cursor:pointer; }
+.anima-prompt-details textarea { margin-block:var(--s-2); }
 .anima-quick-panel :is(.anima-num,.anima-textarea):disabled { color:var(--text-disabled); -webkit-text-fill-color:var(--text-disabled); cursor:not-allowed; }
 .anima-quick-panel :is(.anima-num,.anima-textarea,summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 </style>

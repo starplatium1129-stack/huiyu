@@ -36,9 +36,9 @@
     </div>
     <VideoGenerationBar v-if="selectedMode !== 'shots'" id="video-settings"
       v-model:aspect-ratio="aspectRatio" v-model:duration="duration" v-model:quality="quality"
-      :aspect-options="aspectOptions.map(item => ({ value: item.id, label: `${item.label}${aspectSize(item.id) ? ' · ' + aspectSize(item.id) : ''}` }))"
-      :duration-options="durationOptions.map(seconds => ({ value: seconds, label: `${seconds} 秒` }))"
-      :quality-options="(status?.qualities || []).map(item => ({ value: item.id, label: item.label }))"
+      :aspect-options="aspectSelectOptions"
+      :duration-options="durationSelectOptions"
+      :quality-options="qualitySelectOptions"
       :can-generate="canGenerate" :submitting="submitting" :submit-title="submitTitle" :submit-description="submitDescription"
       @generate="submitVideo" />
     <div class="video-workspace" data-route-arrive :class="{ 'video-workspace--shots': selectedMode === 'shots' }" v-content-motion:up="selectedMode">
@@ -129,7 +129,7 @@
               <StudioSelect
                 v-model="camera"
                 label="镜头运动"
-                :options="cameraOptions.map(item => ({ value: item.id, label: item.label }))"
+                :options="cameraSelectOptions"
               />
             </label>
             <label class="field">
@@ -137,7 +137,7 @@
               <StudioSelect
                 v-model="motion"
                 label="主体运动"
-                :options="motionOptions.map(item => ({ value: item.id, label: item.label }))"
+                :options="motionSelectOptions"
               />
             </label>
           </div>
@@ -351,7 +351,7 @@
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -434,6 +434,14 @@ reconnectState, reconnectVideo, requestPending,
 jobReading, refreshJob,
 jobSelectionPending, selectedJobReading, selectedJobError, retrySelectedJob,
 } = useVideoWorkspace()
+const aspectSelectOptions = computed(() => aspectOptions.value.map(item => {
+  const size = aspectSize.value(item.id)
+  return { value: item.id, label: `${item.label}${size ? ` · ${size}` : ''}` }
+}))
+const durationSelectOptions = computed(() => durationOptions.value.map(seconds => ({ value: seconds, label: `${seconds} 秒` })))
+const qualitySelectOptions = computed(() => (status.value?.qualities || []).map(item => ({ value: item.id, label: item.label })))
+const cameraSelectOptions = cameraOptions.map(item => ({ value: item.id, label: item.label }))
+const motionSelectOptions = motionOptions.map(item => ({ value: item.id, label: item.label }))
 </script>
 
 <style scoped src="@/assets/css/video-studio-view.css"></style>

@@ -112,6 +112,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sceneBlueprints = computed(() => sceneStore.sceneBlueprints)
   const modelProfiles = ref<ModelProfile[]>([])
   const dataReady = ref(false)
+  const dataLoading = ref(false), dataError = ref('')
+  let dataRequest: Promise<void> | null = null
   const historyRestoreReport = ref<RecipeRestoreReport | null>(null)
   const popularBlueprintCharacter = computed(() => subject.value.kind === 'popular' ? subject.value.characterId : '')
   const popularBlueprintReady = computed(() => !popularBlueprintCharacter.value || sceneStore.hasBlueprintCharacter(popularBlueprintCharacter.value))
@@ -358,18 +360,28 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   // ── Data loading (single source via sceneStore) ───────────────────────
-  async function loadData() {
-    dataReady.value = false
-    await sceneStore.load()
-    // Browsing only waits for required scene data; do not snapshot a pending catalog.
-    await sceneStore.loadPresetCatalog()
-    const { parsePresetCatalog, fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
-    const catalog = parsePresetCatalog(sceneStore.presets)
-    // Upgrades preserve personal content. Fill only missing software model
-    // profiles in memory; never replace a user's existing model or preset.
-    modelProfiles.value = await fillMissingModelProfiles(catalog.modelProfiles)
-    applyModelProfile()
-    dataReady.value = true
+  function loadData(): Promise<void> {
+    if (dataRequest) return dataRequest
+    // Retain an earlier error during retry so its action and focus owner stay mounted.
+    dataReady.value = false; dataLoading.value = true
+    dataRequest = (async () => {
+      try {
+        await sceneStore.load()
+        if (!sceneStore.loaded) throw new Error(sceneStore.error || '场景库暂时无法读取')
+        // Required profiles and scenes must both settle before applying defaults.
+        await sceneStore.loadPresetCatalog()
+        const { parsePresetCatalog, fillMissingModelProfiles } = await import('@/utils/modelProfileDefaults')
+        const catalog = parsePresetCatalog(sceneStore.presets)
+        // Fill missing software profiles without replacing personal content.
+        modelProfiles.value = await fillMissingModelProfiles(catalog.modelProfiles)
+        applyModelProfile()
+        dataError.value = ''; dataReady.value = true
+      } catch (cause) {
+        dataError.value = '创作资料暂时无法读取，请检查连接后重试。'
+        throw cause
+      } finally { dataLoading.value = false; dataRequest = null }
+    })()
+    return dataRequest
   }
 
   function applyModelProfile(modelName?: string, options: { applySize?: boolean } = {}): ModelProfile | null {
@@ -422,7 +434,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     selections, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, modelProfiles, tags, characters,
-    popularCharacters, sceneBlueprints, dataReady, loadPopularCharacter,
+    popularCharacters, sceneBlueprints, dataReady, dataLoading, dataError, loadPopularCharacter,
     popularBlueprintReady, popularBlueprintLoading, popularBlueprintError,
     history,
     sdModelName, lastSeed, sdParams,

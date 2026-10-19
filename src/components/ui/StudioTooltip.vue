@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineComponent, onActivated, onDeactivated, onMounted, onUpdated, onBeforeUnmount, ref, watch } from "vue"
+import { computed, defineComponent, onActivated, onDeactivated, onMounted, onBeforeUnmount, ref, watch } from "vue"
 import { TooltipArrow, TooltipContent, TooltipPortal, TooltipRoot, TooltipTrigger, injectTooltipRootContext } from "reka-ui"
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
@@ -56,8 +56,7 @@ function syncDisabled() {
   const child = anchorEl.value.firstElementChild as (HTMLElement & { disabled?: boolean }) | null
   hasDisabledChild.value = Boolean(
     child?.disabled ||
-    child?.matches(":disabled, [aria-disabled='true']") ||
-    child?.getAttribute("aria-disabled") === "true"
+    child?.matches(":disabled, [aria-disabled='true']")
   )
 }
 
@@ -88,7 +87,6 @@ function dispatchToChild(type: string, e?: PointerEvent | FocusEvent) {
 
 function onAnchorPointerMove(e: PointerEvent) {
   if (!props.anchor) return
-  syncDisabled()
   if (e.target === anchorEl.value || hasDisabledChild.value) {
     dispatchToChild("pointermove", e)
   }
@@ -119,38 +117,29 @@ function onAnchorBlur(e: FocusEvent) {
 const { portalTarget, syncPortalHost } = useModalPortalHost(() => anchorEl.value)
 const inDialog = computed(() => !!portalTarget.value)
 let observer: MutationObserver | null = null
+let active = true
 
-function setupObserver() {
+function stopObserver() {
   observer?.disconnect()
   observer = null
-  if (props.anchor && anchorEl.value && typeof MutationObserver !== "undefined") {
-    observer = new MutationObserver(() => syncDisabled())
-    observer.observe(anchorEl.value, {
-      attributes: true,
-      attributeFilter: ["disabled", "aria-disabled"],
-      subtree: true,
-      childList: true,
-    })
-  }
 }
-
-onActivated(() => { syncDisabled(); setupObserver() })
-onDeactivated(() => { observer?.disconnect(); observer = null })
-onMounted(() => {
+function startObserver() {
+  if (!active || observer) return
   syncDisabled()
-  setupObserver()
-})
-onUpdated(() => {
-  syncDisabled()
-})
-onBeforeUnmount(() => {
-  observer?.disconnect()
-  observer = null
-})
-watch(() => props.anchor, () => {
-  syncDisabled()
-  setupObserver()
-})
+  const host = anchorEl.value
+  if (!props.anchor || !props.content || !host || typeof MutationObserver === "undefined") return
+  observer = new MutationObserver(records => {
+    // Only the trigger's state or replacement affects its keyboard wrapper.
+    // Ignore caption/icon updates and our own aria-disabled reflection.
+    if (records.some(record => record.type === 'childList' ? record.target === host : record.target === host.firstElementChild)) syncDisabled()
+  })
+  observer.observe(host, { attributes: true, attributeFilter: ["disabled", "aria-disabled"], subtree: true, childList: true })
+}
+onMounted(startObserver)
+onActivated(() => { active = true; startObserver() })
+onDeactivated(() => { active = false; stopObserver() })
+onBeforeUnmount(() => { active = false; stopObserver() })
+watch([() => props.anchor, () => Boolean(props.content)], () => { stopObserver(); startObserver() }, { flush: 'post' })
 </script>
 
 <template>
@@ -161,6 +150,7 @@ watch(() => props.anchor, () => {
     :tabindex="anchor && hasDisabledChild ? 0 : undefined"
     :aria-disabled="anchor && hasDisabledChild ? 'true' : undefined"
     :aria-describedby="anchor && hasDisabledChild ? descriptionId : undefined"
+    @pointerenter="syncDisabled"
     @pointermove="onAnchorPointerMove"
     @pointerleave="onAnchorPointerLeave"
     @pointerdown="onAnchorPointerDown"

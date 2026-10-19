@@ -100,7 +100,7 @@ export type NatsumeOutfitId = typeof NATSUME_OUTFITS[number]['id']
 export const DEFAULT_NATSUME_OUTFIT: NatsumeOutfitId = 'natsume-cafe'
 
 export const STORAGE_KEY = 'aics_chat_v1'
-export const STORAGE_VERSION = 3
+export const STORAGE_VERSION = 4
 export const MAX_LOCAL_MESSAGES = 20
 
 export function createMessageId(): string {

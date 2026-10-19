@@ -35,15 +35,9 @@
   --accent-hover:var(--character-accent-hover);
   --accent-soft:var(--character-soft);
   --accent-glow:var(--character-glow);
-  /* 角色切换时继承型颜色在低频交互内渐变，保留原有换装交接质感。 */
-  transition:
-    --character-accent var(--motion-atmosphere) var(--ease-out),
-    --character-accent-hover var(--motion-atmosphere) var(--ease-out),
-    --character-soft var(--motion-atmosphere) var(--ease-out),
-    --character-glow var(--motion-atmosphere) var(--ease-out),
-    --character-aura var(--motion-atmosphere) var(--ease-out),
-    --character-aura-secondary var(--motion-atmosphere) var(--ease-out),
-    background-color var(--motion-route-cut) var(--ease-out);
+  /* Commit inherited colors once. The character card owns selection motion;
+     interpolating these tokens restyles every workspace descendant per frame. */
+  transition: background-color var(--motion-route-cut) var(--ease-out);
 }
 
 /* Inline tokens are the canonical active-character values. This generic rule
@@ -54,10 +48,6 @@
   --character-glow:color-mix(in srgb, var(--character-accent) 32%, transparent);
   --character-aura:color-mix(in srgb, var(--character-accent) 22%, transparent);
   --character-aura-secondary:color-mix(in srgb, var(--character-accent) 14%, transparent);
-}
-
-.pb.character-shifting .col-left {
-  transition: border-color var(--motion-route-cut) ease;
 }
 
 /* The active workspace supplies document-level colors to RouteAtmosphere;

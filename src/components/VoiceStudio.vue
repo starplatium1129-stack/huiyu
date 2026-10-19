@@ -17,6 +17,7 @@
       <p class="voice-sub">中文字幕可单独保留；日文配音稿用于角色声线合成。</p>
     </div>
     <div :id="bodyId" v-show="!collapsed" v-content-motion="!collapsed" class="voice-body">
+      <DeferredPanel :active="!collapsed">
         <div class="voice-controls">
           <label class="voice-field">角色
             <StudioSelect v-model="voiceChar" label="角色" :options="[{ value: 'nene', label: '宁宁' }, { value: 'natsume', label: '夏目' }]" />
@@ -56,6 +57,7 @@
         <RouterLink v-if="!voiceOnline" class="btn btn-quiet btn-sm voice-recovery" to="/control"><ArchiveIcon name="gear" />启动语音服务</RouterLink>
         <StudioMediaPlayer v-if="voiceAudioUrl" ref="voicePlayer" @play="stopOwnedSpeech" class="voice-audio" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
+      </DeferredPanel>
     </div>
   </section>
 </template>
@@ -70,6 +72,7 @@ import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import DeferredPanel from '@/components/director/DeferredPanel.vue'
 import { useToast } from '@/composables/useToast'
 import { voiceApi, type VoiceSynthesisPayload } from '@/api/voiceApi'
 import '@/assets/css/director/components/VoiceStudio.css'

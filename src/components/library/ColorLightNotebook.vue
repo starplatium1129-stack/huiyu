@@ -94,7 +94,7 @@ function retryReferences(event: MouseEvent) {
 .notebook-heading > p { @apply tw:max-w-[280px] tw:text-secondary tw:text-body-sm tw:leading-body; }
 .comparison-choices button { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[44px]; padding:var(--s-2) var(--s-4); border:1px solid var(--border-soft); @apply tw:rounded-pill tw:text-secondary; background:var(--bg-surface); @apply tw:text-body-sm tw:cursor-pointer; }
 .comparison-choices button span { @apply tw:text-muted tw:font-mono; }
-.comparison-choices button[aria-pressed="true"] { @apply tw:text-accent tw:border-strong; background:var(--accent-soft); @apply tw:font-semibold; }
+.comparison-choices button[aria-pressed="true"] { @apply tw:text-primary tw:border-strong; background:var(--bg-elevated); @apply tw:font-semibold; }
 .comparison-question { margin:var(--s-4) 0; }
 .comparison-spread { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .light-study { border:1px solid var(--border-soft); background:var(--bg-surface); }

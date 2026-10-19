@@ -1,9 +1,9 @@
 <template>
   <Teleport to="body">
-    <dialog ref="dialog" class="generated-scene-loading-dialog" aria-labelledby="generated-scene-loading-title" @cancel.prevent="cancel()" @close="onClosed" @click="backdropClose">
-      <header><h2 id="generated-scene-loading-title"><ArchiveIcon name="image" />保存为场景</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="取消保存为场景" autofocus @click="cancel()"><ArchiveIcon name="close" /></button></header>
-      <AsyncPanel class="generated-scene-loading-body" :loader="loadDialog" label="保存场景窗口" v-slot="{ component }">
-        <component v-if="handedOff && !closed && route.path === initialPath" :is="component" :source="source" @close="emit('close')" />
+    <dialog ref="dialog" class="deferred-dialog" :aria-labelledby="headingId" @cancel.prevent="cancel()" @close="onClosed" @click="backdropClose">
+      <header><h2 :id="headingId"><ArchiveIcon :name="icon" />{{ title }}</h2><button class="btn btn-ghost btn-icon" type="button" :aria-label="'取消' + title" autofocus @click="cancel()"><ArchiveIcon name="close" /></button></header>
+      <AsyncPanel class="deferred-dialog-body" :loader="loadDialog" :label="title" v-slot="{ component }">
+        <slot v-if="handedOff && !closed && route.path === initialPath" :component="component" />
       </AsyncPanel>
       <footer><button class="btn btn-ghost" type="button" @click="cancel()">取消</button></footer>
     </dialog>
@@ -11,27 +11,28 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onDeactivated, onMounted, ref, useId, watch, type Component } from 'vue'
 import { useRoute } from 'vue-router'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
-import type { GeneratedSceneCapture } from '@/composables/prompt/useGeneratedSceneCapture'
 
-defineProps<{ source: GeneratedSceneCapture }>()
-const emit = defineEmits<{ close: [] }>()
+const props = defineProps<{ loader: () => Promise<{ default: Component }>; title: string; icon: ArchiveIconName }>()
+const emit = defineEmits<{ close: []; ready: [component: Component] }>()
+const headingId = useId()
 const dialog = ref<HTMLDialogElement | null>(null), closed = ref(false)
 const motion = useFluidDialog(dialog), route = useRoute()
 const initialPath = route.path
 const origin = document.activeElement instanceof HTMLElement ? document.activeElement : null
 let handedOff = false, disposed = false
 async function loadDialog() {
-  const module = await import('@/components/maintenance/GeneratedSceneDialog.vue')
+  const module = await props.loader()
   if (!disposed && !closed.value && route.path === initialPath) {
     // The loaded form teleports its own modal. Release native focus and scroll
     // ownership before AsyncPanel mounts that form and its focus trap.
     handedOff = true
     motion.close()
+    emit('ready', module.default)
   }
   return module
 }
@@ -51,13 +52,13 @@ onBeforeUnmount(() => { disposed = true })
 </script>
 
 <style scoped>
-.generated-scene-loading-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(620px,calc(100vw - 32px)); max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 32px); margin:auto; padding:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg); }
-.generated-scene-loading-dialog[open] { display:flex; flex-direction:column; }
-.generated-scene-loading-dialog::backdrop { background:var(--art-scrim); }
+.deferred-dialog { position:fixed; inset:var(--desktop-chrome-height,0px) 0 0; width:min(620px,calc(100vw - 32px)); max-height:calc(100dvh - var(--desktop-chrome-height,0px) - 32px); margin:auto; padding:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); color:var(--text-primary); box-shadow:var(--shadow-lg); }
+.deferred-dialog[open] { display:flex; flex-direction:column; }
+.deferred-dialog::backdrop { background:var(--art-scrim); }
 header, footer { display:flex; align-items:center; gap:var(--s-3); flex-shrink:0; padding:var(--s-4); }
 header { justify-content:space-between; border-bottom:1px solid var(--border-soft); }
 h2 { display:flex; align-items:center; gap:var(--s-2); margin:0; font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-display); }
 h2 .archive-icon { color:var(--accent); }
-.generated-scene-loading-body { min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; }
+.deferred-dialog-body { min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; }
 footer { justify-content:flex-end; border-top:1px solid var(--border-soft); }
 </style>

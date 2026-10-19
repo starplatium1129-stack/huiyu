@@ -2,17 +2,19 @@
   <section class="catalog-editor" aria-label="编写内容">
     <header class="catalog-editor-head"><span class="catalog-editor-kind"><ArchiveIcon :name="icon" /></span><div><p>{{ CATALOG_LABELS[record.kind] }}</p><h2>{{ title }}</h2></div><small v-if="!record.revision" class="catalog-new-badge">新内容</small></header>
     <template v-if="record.kind !== 'document'">
-      <details v-for="section in sections" :key="section" class="catalog-writing-section" :open="defaultOpen(section)">
+      <details v-for="section in sections" :key="section" class="catalog-writing-section" :open="defaultOpen(section)" @toggle="($event.target as HTMLDetailsElement).open && revealedSections.add(section)">
         <StudioDisclosureSummary>{{ sectionLabel(section) }}</StudioDisclosureSummary>
         <div data-disclosure-content class="form-grid">
+          <template v-if="defaultOpen(section) || revealedSections.has(section)">
           <label v-for="field in fields.filter(f => f.section === section && !technicalPaths.has(f.path))" :key="field.path" class="form-group" :class="{ 'form-group-full': field.type === 'long' || field.type === 'list' }">
             <span class="field-label">{{ field.label }}</span>
             <ToggleSwitch v-if="field.type === 'boolean'" :model-value="Boolean(fieldValue(record.data, field.path))" :label="field.label" :disabled="disabled || locked(field.path)" @update:model-value="update(field, $event)" />
-            <StudioSelect v-else-if="selectionOptions(field).length" :model-value="String(fieldValue(record.data, field.path) ?? '')" :label="field.label" :disabled="disabled || locked(field.path)" :options="selectionOptions(field)" @update:model-value="update(field, String($event))" />
+            <StudioSelect v-else-if="fieldOptions.get(field.path)?.length" :model-value="String(fieldValue(record.data, field.path) ?? '')" :label="field.label" :disabled="disabled || locked(field.path)" :options="fieldOptions.get(field.path)" @update:model-value="update(field, String($event))" />
             <textarea v-else-if="field.type === 'long' || field.type === 'list'" class="input" :value="text(field)" :rows="field.path === 'story' || field.path === 'profile.bg_story' ? 7 : 4" :disabled="disabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea>
             <input v-else class="input" :value="text(field)" :disabled="disabled || locked(field.path)" :placeholder="placeholder(field)" @input="update(field, ($event.target as HTMLInputElement).value)" />
             <span v-if="field.type === 'list'" class="catalog-field-note">每行一项</span>
           </label>
+          </template>
         </div>
       </details>
     </template>
@@ -25,10 +27,10 @@
         <label v-for="field in fields.filter(f => technicalPaths.has(f.path))" :key="field.path" class="form-group"><span class="field-label">{{ field.label }}</span><textarea v-if="field.type === 'list'" class="input" rows="2" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea><input v-else class="input" :value="text(field)" :disabled="disabled || locked(field.path)" @input="update(field, ($event.target as HTMLInputElement).value)" /></label>
       </div>
     </details>
-    <details v-if="!systemDocument" class="catalog-advanced">
+    <details v-if="!systemDocument" class="catalog-advanced" @toggle="($event.target as HTMLDetailsElement).open && (advancedRevealed = true)">
       <StudioDisclosureSummary>完整数据与扩展设置</StudioDisclosureSummary><div data-disclosure-content>
-      <textarea v-model="advanced" class="input" rows="12" aria-label="完整内容数据" :disabled="disabled"></textarea>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled" @click="applyAdvanced">应用这些设置</button></div>
+      <textarea v-if="advancedRevealed" v-model="advanced" class="input" rows="12" aria-label="完整内容数据" :disabled="disabled"></textarea>
+      <button v-if="advancedRevealed" class="btn btn-ghost btn-sm" type="button" :disabled="disabled" @click="applyAdvanced">应用这些设置</button></div>
     </details>
     <p v-if="error" role="alert" class="catalog-error">{{ error }}</p>
     <p v-if="generated" class="catalog-note">这份内容来自已有画面。名称和说明可以修改，原来的生成描述会保留。</p>
@@ -59,7 +61,8 @@ const fields = computed(() => CATALOG_FIELDS[record.value.kind]), sections = com
 const title = computed(() => recordTitle(record.value) === '未命名内容' ? '从这里开始写' : recordTitle(record.value))
 const icon = computed<ArchiveIconName>(() => ({ character: 'character', outfit: 'image', scene: 'scene', blueprint: 'spark', document: 'manager' } as const)[record.value.kind])
 const technicalPaths = new Set(['outfit.id', 'popular.exactTokens', 'popular.exactPrefixes', 'popular.supportedEngines', 'profile.portrait', 'compositionIntent', 'coverageTags'])
-const advanced = ref(''), error = ref('')
+const advanced = ref(''), error = ref(''), advancedRevealed = ref(false)
+const revealedSections = ref(new Set<string>())
 const generated = computed(() => !!fieldValue(record.value.data, 'generatedRecipe'))
 const systemDocument = computed(() => record.value.kind === 'document' && !['curation', 'tags', 'tag-dictionary-policy'].includes(record.value.id))
 const locked = (path: string) => (record.value.kind === 'outfit' && record.value.revision > 0 && ['characterId', 'outfit.id'].includes(path))
@@ -67,7 +70,6 @@ const locked = (path: string) => (record.value.kind === 'outfit' && record.value
 const sectionLabel = (section: string) => ({ 人物档案: '人物的故事', 视觉设定: '外观与识别细节', 提示词身份: '绘制时使用的人物描述', 服装绑定: '这套服装', 服装内容: '绘制时使用的服装描述', 基础信息: '故事与说明', 场景事实: '画面中的细节', 引擎提示词: '绘制时使用的画面描述' } as Record<string, string>)[section] || section
 const defaultOpen = (section: string) => ['人物档案', '视觉设定', '服装绑定', '基础信息'].includes(section)
 function selectionOptions(field: CatalogField) {
-  const value = String(fieldValue(record.value.data, field.path) ?? '')
   let options: Array<{ value: string; label: string }> = []
   if (['characterId', 'char'].includes(field.path)) options = field.path === 'char'
     ? [{ value: 'nene', label: '绫地宁宁' }, { value: 'natsume', label: '四季夏目' }, { value: 'triad', label: '宁宁与夏目' }]
@@ -75,9 +77,12 @@ function selectionOptions(field: CatalogField) {
   else if (['rating', 'sampleRating'].includes(field.path)) options = [{ value: 'All', label: '全年龄' }, { value: 'R15', label: '十五岁以上' }, { value: 'R18', label: '成人内容' }]
   else if (field.path === 'popular.adultEligibility') options = [{ value: 'adult', label: '已成年' }, { value: 'unknown', label: '尚未确认' }, { value: 'underage', label: '未成年' }]
   else if (field.path === 'popular.recommendedEngine') options = [{ value: 'anima-miaomiao-v1.6', label: '动漫插画引擎' }, { value: 'krea2-turbo-fp8', label: '通用图像引擎' }]
-  if (options.length && value && !options.some(o => o.value === value)) options.unshift({ value, label: '当前使用的设置' })
+  if (!options.length) return options
+  const value = String(fieldValue(record.value.data, field.path) ?? '')
+  if (value && !options.some(o => o.value === value)) options.unshift({ value, label: '当前使用的设置' })
   return options
 }
+const fieldOptions = computed(() => new Map(fields.value.map(field => [field.path, selectionOptions(field)])))
 function text(field: CatalogField) {
   const value = fieldValue(record.value.data, field.path)
   return field.type === 'list' && Array.isArray(value) ? value.join('\n') : value && typeof value === 'object' ? JSON.stringify(value, null, 2) : String(value ?? '')
@@ -105,5 +110,7 @@ function applyAdvanced() {
 }
 // Copy/new/reset replaces the record; a parser error belongs to the previous editor session.
 watch(record, () => { error.value = '' })
-watch(() => record.value.data, value => { advanced.value = JSON.stringify(value, null, 2) }, { immediate: true, deep: true })
+watch(() => advancedRevealed.value && !systemDocument.value ? record.value.data : undefined, value => {
+  if (value !== undefined) advanced.value = JSON.stringify(value, null, 2)
+}, { immediate: true, deep: true })
 </script>

@@ -4,7 +4,7 @@
 .toggle-switch-icon-only { min-width:44px; min-height:44px; justify-content:center; }
 :root .toggle-switch:active { transform:none; }
 .toggle-slider { position:relative; display:inline-block; flex-shrink:0; width:40px; height:24px; border-radius:var(--r-pill); background:var(--bg-elevated); box-shadow:inset 0 0 0 1px var(--border-strong); }
-.toggle-slider::before { content:''; position:absolute; inset:0; border-radius:inherit; background:var(--accent); opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
+.toggle-slider::before { content:''; position:absolute; inset:0; border-radius:inherit; background:var(--text-primary); opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .toggle-knob { position:absolute; display:grid; place-items:center; width:18px; height:18px; left:3px; top:3px; transform:translateX(0); transition:transform var(--spring-gentle-duration) var(--spring-gentle-ease); }
 .toggle-knob-surface { position:absolute; inset:0; border-radius:var(--r-pill); background:var(--text-secondary); transform-origin:left center; transition:transform var(--motion-control) var(--ease-out); }
 .toggle-knob .archive-icon { position:absolute; width:12px; height:12px; color:var(--bg-surface); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-control) var(--ease-out); }
@@ -12,7 +12,7 @@
 .toggle-switch[data-state='checked'] .toggle-slider::before { opacity:1; }
 .toggle-knob[data-state='checked'] { transform:translateX(16px); }
 .toggle-knob[data-state='checked'] .toggle-knob-surface { background:var(--text-inverse); transform-origin:right center; }
-.toggle-knob[data-state='checked'] .archive-icon { color:var(--accent); }
+.toggle-knob[data-state='checked'] .archive-icon { color:var(--text-primary); }
 .toggle-knob[data-state='checked'] .toggle-off { opacity:0; transform:scale(.8); }
 .toggle-knob[data-state='checked'] .toggle-on { opacity:1; transform:none; }
 .toggle-switch:active:not([data-disabled]):not(:focus-visible) .toggle-knob-surface { transform:scaleX(var(--toggle-press-scale)); transition-duration:var(--motion-press); }

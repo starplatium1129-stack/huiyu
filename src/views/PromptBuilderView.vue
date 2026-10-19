@@ -2,7 +2,7 @@
   <article
     class="pb journal-workspace atelier-workspace"
     :data-character="pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char"
-    :style="[currentCharacterThemeStyle, directorLayout.style.value, { '--drawing-action-height': actionBarHeight + 'px' }]"
+    :style="[currentCharacterThemeStyle, { '--drawing-action-height': actionBarHeight + 'px' }]"
     :data-materials-collapsed="directorLayout.collapsed.value.materials || undefined"
     :data-inspector-collapsed="directorLayout.collapsed.value.inspector || undefined"
     :data-resizing="directorLayout.dragging.value || undefined"
@@ -12,7 +12,6 @@
     :class="{
       'focus-mode': pb.focusMode,
       'has-result': Boolean(displayResultUrl),
-      'character-shifting': characterShifting,
     }"
   >
 
@@ -31,7 +30,7 @@
             <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: drawEngine } }">控制面板</RouterLink>
           </div>
         </div>
-        <div class="pb-header-meta"><PromptDraftNotice :blueprint="currentBlueprintData" /></div>
+        <div class="pb-header-meta"><PromptDraftNotice :get-blueprint="getBlueprint" /></div>
       </div>
       <div class="pb-top-actions">
         <div class="pb-mode-actions">
@@ -51,13 +50,13 @@
         </div>
         <div class="pb-utility-actions">
           <HistoryRestoreNotice v-if="pb.historyRestoreReport" :context="workspace.recipePreviewContext" :mode="pb.directorMode" @expert="setDirectorMode('pro')" />
-          <RandomInspirationButton />
-          <PromptDataTools
-            launcher-label="数据工具"
-            :blueprint-data="currentBlueprintData"
-            @flash="pb.flash"
-            @load-blueprint="handleLoadBlueprint"
-          />
+          <DeferredToolLauncher label="灵感工具" icon="gear" :loader="loadInspirationTool" :disabled="!pb.dataReady" @error="pb.flash" v-slot="{ component, open, update }">
+            <component :is="component" :open="open" @update:open="update" />
+          </DeferredToolLauncher>
+          <DeferredToolLauncher label="数据工具" icon="download" :loader="loadDataTools" migration-control @error="pb.flash" v-slot="{ component, open, update }">
+            <component :is="component" :open="open" @update:open="update" launcher-label="数据工具" :get-blueprint="getBlueprint"
+              @flash="pb.flash" @load-blueprint="handleLoadBlueprint" />
+          </DeferredToolLauncher>
         </div>
       </div>
     </div>
@@ -65,7 +64,7 @@
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
       <RouterLink :to="{ query: route.query, hash: '#drawing-materials' }">创作素材</RouterLink><RouterLink :to="{ query: route.query, hash: '#drawing-canvas' }">画布预览</RouterLink><RouterLink :to="{ query: route.query, hash: '#stepResult' }" @click="inspector?.selectSection('render')">输出设置</RouterLink>
     </nav>
-    <div ref="layoutRoot" class="director-workspace">
+    <div ref="layoutRoot" class="director-workspace" :style="directorLayout.style.value">
       <!-- One action bar: inspector on wide screens, workspace-wide sticky row on narrow screens. -->
       <Teleport :to="inspectorActions" :disabled="!actionBarDocked">
         <GenerationActionBar
@@ -126,7 +125,7 @@
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
             <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : currentSceneTitle || '画布预览' }}</strong><span>{{ displayResultUrl ? '生成结果' : currentSceneTitle ? '场景参考 · 非本次生成' : '等待创作' }}</span></div><button class="btn btn-quiet btn-sm" type="button" disabled><ArchiveIcon name="scene" />挑选场景</button></div>
             <div class="stage-viewport director-canvas-loading"><AtelierEmptyArt /><p role="status">正在准备画布…</p></div>
-            <DirectorResultTools class="director-canvas-loading-actions" :has-result="Boolean(displayResultUrl)" :generation-busy="generationBusy" :has-prev-result="!!prevResult"
+            <DirectorResultTools placeholder class="director-canvas-loading-actions" :has-result="Boolean(displayResultUrl)" :generation-busy="generationBusy" :has-prev-result="!!prevResult"
               :result-archived="resultArchived" :saving-result="savingResult" :result-temporary="resultTemporary" :capturing-scene="capturingScene" aria-hidden="true" inert />
           </section>
         </template></Suspense>
@@ -214,8 +213,12 @@
 
     <!-- Toast 已于 2026-08-29 UX 收编退役，统一走全局 useToast（AppToast）；空壳 Transition 一并清除 -->
 
-    <HistoryReuseDialog v-if="reuseRequest" :key="String(reuseRequest.record.id)" :record="reuseRequest.record" :busy="reuseBusy" :loading="reuseLoading" :error="reuseError" @apply="applyReuse" @cancel="cancelReuse" @retry="retryReuse" />
-    <GeneratedSceneDialogHost v-if="capturedScene" :source="capturedScene" @close="closeSceneCapture" />
+    <DeferredDialogHost v-if="reuseRequest" :key="String(reuseRequest.record.id)" :loader="loadHistoryReuseDialog" title="沿用作品配方" icon="gallery" @close="cancelReuse" v-slot="{ component }">
+      <component v-if="reuseRequest" :is="component" :record="reuseRequest.record" :busy="reuseBusy" :loading="reuseLoading" :error="reuseError" @apply="applyReuse" @cancel="cancelReuse" @retry="retryReuse" />
+    </DeferredDialogHost>
+    <DeferredDialogHost v-if="capturedScene" :loader="loadGeneratedSceneDialog" title="保存为场景" icon="image" @close="closeSceneCapture" v-slot="{ component }">
+      <component :is="component" :source="capturedScene" @close="closeSceneCapture" />
+    </DeferredDialogHost>
     <DeferredPanel :active="compareOpen || inpaintOpen">
       <PromptResultDialogs :bindings="dialogBindings" />
     </DeferredPanel>
@@ -231,7 +234,8 @@ import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
 const DirectorResizeHandle = defineAsyncComponent(() => import('@/components/director/DirectorResizeHandle.vue'))
 const DirectorLayoutControls = defineAsyncComponent(() => import('@/components/director/DirectorLayoutControls.vue'))
-import GeneratedSceneDialogHost from '@/components/director/GeneratedSceneDialogHost.vue'
+import DeferredDialogHost from '@/components/director/DeferredDialogHost.vue'
+const loadGeneratedSceneDialog = () => import('@/components/maintenance/GeneratedSceneDialog.vue')
 const DirectorModeSwitch = defineAsyncComponent(() => import('@/components/director/DirectorModeSwitch.vue'))
 const OutfitOverrideNotice = defineAsyncComponent(() => import('@/components/director/OutfitOverrideNotice.vue'))
 import PromptResultDialogs from '@/components/director/PromptResultDialogs.vue'
@@ -242,11 +246,12 @@ const loadInspectorDelivery = () => import('@/components/director/PromptInspecto
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
 import DirectorMaterialDrawer from '@/components/director/DirectorMaterialDrawer.vue'
 import DirectorInspector from '@/components/director/DirectorInspector.vue'
-const PromptDataTools = defineAsyncComponent(() => import('@/components/PromptDataTools.vue'))
+import DeferredToolLauncher from '@/components/director/DeferredToolLauncher.vue'
+const loadDataTools = () => import('@/components/PromptDataTools.vue')
 const PromptDraftNotice = defineAsyncComponent(() => import('@/components/director/PromptDraftNotice.vue'))
-const RandomInspirationButton = defineAsyncComponent(() => import('@/components/RandomInspirationButton.vue'))
+const loadInspirationTool = () => import('@/components/RandomInspirationButton.vue')
 const HistoryRestoreNotice = defineAsyncComponent(() => import('@/components/director/HistoryRestoreNotice.vue'))
-import HistoryReuseDialog from '@/components/director/HistoryReuseDialog.vue'
+const loadHistoryReuseDialog = () => import('@/components/director/HistoryReuseDialog.vue')
 const loadHistoryPanel = () => import('@/components/HistoryPanel.vue')
 const loadStoryPanel = () => import('@/components/director/DirectorStoryPanel.vue')
 const loadCharacterPanel = () => import('@/components/director/DirectorCharacterPanel.vue')
@@ -271,7 +276,6 @@ capturedScene, capturingScene, captureScene, closeSceneCapture,
 pb,
 displayResultUrl,
 resultRevealUrl,
-characterShifting,
 currentCharacterThemeStyle,
 setDirectorMode,
 engineOnline,
@@ -331,6 +335,7 @@ healthBindings,
 deliveryBindings,
 dialogBindings
 } = workspace
+const getBlueprint = () => currentBlueprintData.value
 const resizeSides = computed(() => pb.focusMode || directorLayout.compact.value ? []
   : (['materials', 'inspector'] as const).filter(side => !directorLayout.collapsed.value[side]))
 const actionBarDocked = computed(() => !!inspectorActions.value && directorLayout.desktop.value && !pb.focusMode && !directorLayout.collapsed.value.inspector)

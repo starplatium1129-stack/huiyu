@@ -6,12 +6,12 @@
         <h2>角色取景与外观</h2>
         <button type="button" class="character-settings-close" aria-label="关闭角色设置" autofocus @click="close"><ArchiveIcon name="close" /></button>
       </header>
-      <div class="character-controls-panel"><slot /></div>
+      <div class="character-controls-panel"><slot v-if="revealed" /></div>
     </dialog>
   </Teleport>
-  <details v-else ref="details" class="character-controls" @keydown.esc.stop="close">
+  <details v-else ref="details" class="character-controls" @toggle="onToggle" @keydown.esc.stop="close">
     <StudioDisclosureSummary><ArchiveIcon name="gear" /><span>角色设置</span></StudioDisclosureSummary>
-    <div data-disclosure-content class="character-controls-panel"><slot /></div>
+    <div data-disclosure-content class="character-controls-panel"><slot v-if="revealed" /></div>
   </details>
 </template>
 
@@ -24,8 +24,11 @@ import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 defineProps<{ companion: boolean; characterId: string }>()
 const dialog = ref<HTMLDialogElement | null>(null)
 const details = ref<HTMLDetailsElement | null>(null)
+// Mount settings on their first visit, then retain controls and nested disclosures.
+const revealed = ref(false)
 const fluid = useFluidDialog(dialog)
 function open() {
+  revealed.value = true
   if (dialog.value) {
     const source = document.activeElement instanceof HTMLElement ? document.activeElement : null
     // The menu item disappears when it opens this dialog; return to its persistent launcher.
@@ -37,6 +40,7 @@ function open() {
     details.value.querySelector('summary')?.focus()
   }
 }
+function onToggle() { if (details.value?.open) revealed.value = true }
 function close() {
   if (dialog.value) fluid.close()
   else if (details.value) {

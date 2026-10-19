@@ -20,7 +20,8 @@
 .model-studio input[type=range]::-moz-range-thumb { @apply tw:w-[10px] tw:h-[10px]; }
 .model-studio input[type=file] { @apply tw:w-full tw:min-h-[44px] tw:p-s-1 tw:text-secondary; font: inherit; @apply tw:cursor-pointer; }
 .model-studio input[type=file]::file-selector-button { @apply tw:min-h-[36px]; margin-inline-end: var(--s-3); padding: var(--s-2) var(--s-3); border: 1px solid var(--border-soft); @apply tw:rounded-md; background: var(--bg-surface); @apply tw:text-primary; font: 600 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; transition: border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out); }
-.model-studio input[type=file]::file-selector-button:hover { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-accent; }
+.model-studio input[type=file]:not(:disabled)::file-selector-button:hover { @apply tw:border-accent; background: var(--accent-soft); @apply tw:text-accent; }
+.model-studio input[type=file]:disabled::file-selector-button { color:var(--text-disabled); border-color:var(--border-soft); background:var(--bg-surface); cursor:not-allowed; }
 .model-studio :disabled { @apply tw:text-disabled; opacity: 1; @apply tw:cursor-not-allowed; }
 .model-studio fieldset { @apply tw:min-w-0; margin: 0 0 var(--s-3); @apply tw:p-s-3; border: 1px solid var(--border-soft); @apply tw:rounded-md; }
 .model-studio legend { padding: 0 var(--s-2); @apply tw:text-body; }

@@ -2,8 +2,8 @@
 .video-jump-nav { display:flex; flex-wrap:wrap; gap:var(--s-1); }
 .video-jump-nav a { display:inline-flex; align-items:center; min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); @apply tw:text-label-sm tw:text-secondary; text-decoration:none; }
 .video-jump-nav a:hover { @apply tw:text-accent; }
-#video-frames, #video-brief, #video-queue { scroll-margin-top:calc(var(--app-navigation-height,80px) + 9rem); }
-#video-settings { scroll-margin-top:calc(var(--app-navigation-height,80px) + var(--s-2)); }
+#video-frames, #video-brief, #video-queue { scroll-margin-top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-height,80px) + 9rem); }
+#video-settings { scroll-margin-top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-height,80px) + var(--s-2)); }
 
 .video-studio {
   --page-max: 1480px;
@@ -55,7 +55,7 @@
   @apply tw:text-secondary tw:text-left tw:cursor-pointer;
 }
 html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shadow); }
-.video-mode-card.active { background:transparent; @apply tw:text-accent; }
+.video-mode-card.active { background:transparent; @apply tw:text-primary; }
 /* 审计修复: 不用 opacity 压字 */
 .video-mode-card:disabled { @apply tw:text-disabled tw:border-soft tw:cursor-not-allowed; }
 .video-mode-card strong { font-size:var(--fs-body-sm); font-weight:600; }
@@ -152,11 +152,11 @@ html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shado
   @apply tw:grid; grid-template-columns:minmax(0,1fr) auto; @apply tw:items-center tw:gap-s-3 tw:w-full tw:p-s-3; border:1px solid var(--border-soft); @apply tw:rounded-md;
   background:var(--bg-deep); @apply tw:text-secondary tw:text-left tw:cursor-pointer;
 }
-.video-model-row.active { border-color:var(--accent); background:var(--accent-soft); box-shadow:var(--selection-shadow); }
+.video-model-row.active { border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
 .video-model-row:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .video-model-row strong,.video-model-row small { @apply tw:block; overflow-wrap:anywhere; }
 .video-model-row strong { display:flex; align-items:center; gap:var(--s-2); color:var(--text-primary); }
-.video-model-row strong .archive-icon { width:16px; height:16px; flex:none; color:var(--accent); }
+.video-model-row strong .archive-icon { width:16px; height:16px; flex:none; color:var(--text-primary); }
 .video-model-row small { @apply tw:mt-[3px] tw:text-muted tw:text-body-sm tw:leading-label; }
 .video-model-row em { font:700 var(--fs-label) var(--font-mono); @apply tw:not-italic; }
 .video-model-row em[data-state="ready"] { @apply tw:text-success-text; }
@@ -182,7 +182,7 @@ html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shado
 .video-progress { @apply tw:h-[4px]; margin:var(--s-3) 0; @apply tw:overflow-hidden tw:rounded-pill; background:var(--bg-deep); }
 .video-progress i { @apply tw:block tw:h-full tw:w-full; transform-origin:left center; transform:scaleX(var(--progress,0%)); background:var(--accent); transition:transform var(--motion-hover) var(--ease-out); }
 .video-progress[data-indeterminate] i { transform:scaleX(.28); transform-origin:center; transition:none; }
-.video-inline-message { padding:var(--s-2) var(--s-3); @apply tw:rounded-md tw:text-body-sm tw:leading-body; }
+.video-inline-message { padding:var(--s-2) var(--s-3); @apply tw:rounded-md tw:text-body-sm tw:leading-body; overflow-wrap:anywhere; }
 .video-inline-message.error { background:color-mix(in srgb,var(--danger) 10%,transparent); @apply tw:text-danger-text; }
 .video-inline-message.warning { background:color-mix(in srgb,var(--warning) 12%,transparent); @apply tw:text-warning-text; }
 .video-inline-message p { @apply tw:m-0 }
@@ -207,7 +207,7 @@ html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shado
 }
 .video-upload-drop:not([data-busy='true']):active:not(:focus-within) .video-upload-icon { transform:scale(var(--video-press)); transition-duration:var(--motion-press); }
 @media (max-width:1150px) {
-  #video-frames,#video-brief,#video-queue { scroll-margin-top:calc(var(--app-navigation-height,80px) + var(--s-4)); }
+  #video-frames,#video-brief,#video-queue { scroll-margin-top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-height,80px) + var(--s-4)); }
 }
 @media (max-width: 1000px) {
   .video-studio .video-mode-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }

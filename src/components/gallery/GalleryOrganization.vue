@@ -54,7 +54,7 @@ async function submit() {
     input.projectId = project.recordId ?? project.id
   }
   if (add.length || remove.length) input.collectionTags = { add, remove }
-  await apply(input, albumChoice.value === 'new' ? albumTitle.value : undefined)
+  await fromRegion(() => apply(input, albumChoice.value === 'new' ? albumTitle.value : undefined))
 }
 </script>
 <style scoped>

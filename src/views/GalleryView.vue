@@ -121,8 +121,8 @@
             >
               <GalleryArtworkCard
                 v-for="item in col" :key="item.id" :item="item"
-                :title="sceneTitle(item.scene, item)" :character="characterName(item.character, item)"
-                :formatted-date="formatDate(stamp(item))" :ratio="ratioOf(item)"
+                :title="cardLabels.get(item.id)!.title" :character="cardLabels.get(item.id)!.character"
+                :formatted-date="cardLabels.get(item.id)!.date" :ratio="ratioOf(item)"
                 :thumb-url="resolveRuntimeUrl(thumbUrls[item.id] || '')" :image-url="resolveRuntimeUrl(cardUrls[item.id] || '')"
                 :cors="runtimeResourceCors()" :missing="missingImageIds.has(item.id)"
                 :selection-mode="selectMode" :selected="selectedIds.has(item.id)"
@@ -283,8 +283,8 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import GalleryArtworkCard from '@/components/gallery/GalleryArtworkCard.vue'
 import ArtworkViewerStage from '@/components/gallery/ArtworkViewerStage.vue'
-import { defineAsyncComponent, nextTick, onActivated, onDeactivated, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
-import { useElementSize } from '@vueuse/core'
+import { computed, defineAsyncComponent, nextTick, onActivated, onDeactivated, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
+import { useResizeObserver } from '@vueuse/core'
 import { artworkTags } from '@/composables/gallery/artworkTags'
 const PhotoSwipeStage = shallowRef<typeof import('@/components/gallery/PhotoSwipeStage.vue')['default'] | null>(null)
 const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
@@ -332,7 +332,10 @@ import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
 const selectionDock = ref<HTMLElement | null>(null), dockActive = ref(true)
-const { height: selectionDockHeight } = useElementSize(() => dockActive.value ? selectionDock.value : null, { width: 0, height: 140 }, { box: 'border-box' })
+const selectionDockHeight = ref(140)
+useResizeObserver(() => dockActive.value ? selectionDock.value : null, ([entry]) => {
+  if (entry && dockActive.value) selectionDockHeight.value = entry.borderBoxSize[0].blockSize
+}, { box: 'border-box' })
 onActivated(() => { dockActive.value = true })
 onDeactivated(() => { dockActive.value = false; cancelGesture() })
 const workspace = useGalleryWorkspace()
@@ -402,6 +405,9 @@ facts,
 downloadCurrent,
 copyPrompt
 } = workspace
+const cardLabels = computed(() => new Map(pagedVisible.value.map(item => [item.id, {
+  title: sceneTitle(item.scene, item), character: characterName(item.character, item), date: formatDate(stamp(item)),
+}])))
 function toggleOriginalViewer() {
   originalViewer.value = !originalViewer.value; cancelGesture(); compareMode.value = false
   void nextTick(() => viewerEl.value?.querySelector<HTMLElement>('.zoomable-image-viewer')?.focus({ preventScroll:true }))

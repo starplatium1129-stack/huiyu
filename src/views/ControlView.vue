@@ -46,7 +46,7 @@
     <main id="control-main" class="control-shell" tabindex="-1">
       <ControlIntro :ready-label="readyLabel">
         <template #actions>
-          <button class="btn btn-ghost" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">
+          <button class="btn btn-ghost" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus">
             <ArchiveIcon name="refresh" /> {{ serviceChecking ? '检测中…' : '检测所有服务' }}
           </button>
           <RouterLink class="btn btn-primary" to="/prompt-builder" data-route-focus><ArchiveIcon name="spark" /> 回到创作</RouterLink>
@@ -55,9 +55,9 @@
 
       <section id="control-setup" class="panel-card"><LocalSetupPanel /></section>
 
-      <section id="control-overview" class="control-overview tw:mb-s-5" aria-label="连接状态">
-        <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ feedbackText }}</h2><p>{{ actionNote || '正在读取本机服务状态。' }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
-        <div v-if="statusError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ statusError }}，服务状态待确认，请重新检测。</span><button class="btn btn-ghost btn-sm" @click="pollStatus(true)">重试检测</button></div>
+      <section ref="overviewRegion" id="control-overview" class="control-overview tw:mb-s-5" aria-label="连接状态" tabindex="-1" :aria-busy="serviceChecking || (!statusLoaded && !statusError)">
+        <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ overviewFeedback.title }}</h2><p>{{ overviewFeedback.note }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
+        <div v-if="statusError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ serviceChecking ? '正在重新检测本机控制服务…' : `${statusError}，服务状态待确认，请重新检测。` }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus">{{ serviceChecking ? '检测中…' : '重试检测' }}</button></div>
         <p v-if="requestedService" class="service-context">{{ requestedEngineLabel }}需要 {{ requestedService === 'webui' ? 'SD WebUI' : 'ComfyUI' }}，先检查高亮的服务。</p>
         <div class="status-wall service-rows">
           <article v-for="service in serviceCards" :key="service.key" :id="`control-service-${service.key}`" class="status-tile service-row"
@@ -262,20 +262,22 @@
       </div>
 
       <!-- 日志 -->
-      <details id="control-logs" class="log-panel">
+      <details id="control-logs" class="log-panel" @toggle="logsOpen = ($event.target as HTMLDetailsElement).open">
         <StudioDisclosureSummary>
           <span class="log-summary-title"><ArchiveIcon name="book" /> 运行日志</span>
-          <span class="summary-state">{{ logs.length }} 条</span>
+          <span class="summary-state">{{ logsSummary }}</span>
         </StudioDisclosureSummary>
-        <div data-disclosure-content class="log-wrap">
+        <div data-disclosure-content class="log-wrap" :aria-busy="logsLoading">
           <div class="log-toolbar" role="group" aria-label="日志操作">
             <StudioTooltip anchor content="仅保存版本与运行状态，不包含密钥、聊天正文或图片">
               <button class="btn btn-ghost btn-sm" type="button" :disabled="exportingDiag" @click="exportDiag">{{ exportingDiag ? '正在整理…' : '导出诊断包' }}</button>
             </StudioTooltip>
-            <button class="btn btn-ghost btn-sm" type="button" @click="clearLogs">清空显示</button>
+            <button class="btn btn-ghost btn-sm" type="button" :disabled="logsLoading" :aria-busy="logsLoading" @click="retryLogs">{{ logsLoading ? '读取中…' : '重新读取' }}</button>
+            <button class="btn btn-ghost btn-sm" type="button" :disabled="!logs.length" @click="clearLogs">清空显示</button>
           </div>
-          <div class="log-box" ref="logBoxEl">
-            <div v-if="!logs.length" class="log-empty">暂无日志。</div>
+          <div v-if="logsError" class="control-alert" role="alert"><ArchiveIcon name="warning" /><span>{{ logsError }}</span></div>
+          <div v-memo="[logs, logs.length, logsLoading, logsLoaded, logsError]" class="log-box" ref="logBoxEl" role="region" aria-label="运行日志输出" tabindex="-1">
+            <div v-if="!logs.length && !logsError" class="log-empty" role="status">{{ logsLoading ? '正在读取日志…' : logsLoaded ? '暂无日志。' : '尚未读取日志。' }}</div>
             <div v-for="(line, i) in logs" :key="i" :class="lineClass(line)">
               <span class="time">{{ line.slice(0, 10) }}</span> {{ line.slice(11) }}
             </div>
@@ -294,7 +296,7 @@ import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import AppearanceButton from '@/components/AppearanceButton.vue'
 import BrandLogo from '@/components/BrandLogo.vue'
 import TaskCenterButton from '@/components/tasks/TaskCenterButton.vue'
-import { computed, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
@@ -345,11 +347,26 @@ const {
   modeBusy, operation, selfHealing, serviceChecking, statusLoaded, statusError, scripts,
   comfyHost, ttsHost, ttsEngine, activeVoiceEngine, llamaOnline,llamaManaged,llamaLabel,voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
   tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-  feedbackText, actionNote, imageProvider, logs, logBoxEl,
+  overviewFeedback, imageProvider, logs, logBoxEl,
+  logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
   opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
   readyLabel,
-  pollStatus, clearLogs,
+  pollStatus, pollLogs, clearLogs,
 } = status
+const overviewRegion = ref<HTMLElement | null>(null)
+function recheckStatus() {
+  if (serviceChecking.value || opBusy.value) return
+  const region = overviewRegion.value
+  const bounds = region?.querySelector('h2')?.getBoundingClientRect()
+  region?.focus({ preventScroll: true })
+  if (bounds && (bounds.top < 0 || bounds.bottom > innerHeight)) region?.scrollIntoView({ block: 'start', behavior: 'instant' })
+  void pollStatus(true)
+}
+function retryLogs() {
+  if (logsLoading.value) return
+  logBoxEl.value?.focus()
+  void pollLogs()
+}
 
 // 模板引用解构：操作域
 const {

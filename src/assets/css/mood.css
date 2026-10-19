@@ -20,7 +20,7 @@
 }
 .mood-card:hover { @apply tw:border-strong; }
 .mood-card:is(.active,.selected) { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
-.mood-card:is(.active,.selected) .mood-body { background:var(--accent-soft); box-shadow:var(--selection-shadow); }
+.mood-card:is(.active,.selected) .mood-body { background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
 .mood-card:focus-visible .mood-body { box-shadow:var(--focus-shadow); }
 .mood-strip { @apply tw:flex; height: var(--mood-strip-h, 36px); }
 .mood-swatch { flex: 1; background: var(--swatch, transparent); }

@@ -34,6 +34,15 @@ export function useModelStudio(hostId: string) {
   const needsReload = ref(false)
   const identity = reactive({ id: '', name: '', persona: '', author: '', terms: '' })
   const mouth = reactive(emptyBinding()), leftEye = reactive(emptyBinding()), rightEye = reactive(emptyBinding())
+  // Parameter ranges and endpoints change independently of the frame's level.
+  const previewMouth = computed(() => {
+    if (mouth.id) calibratedBinding(mouth, parameters.value)
+    return { ...mouth }
+  })
+  const previewEyes = computed(() => [leftEye, rightEye].filter(eye => eye.id).map(eye => {
+    calibratedBinding(eye, parameters.value)
+    return { ...eye }
+  }))
   const level = ref(0), blinkLevel = ref(1)
   const previewChannel = ref<'none' | 'mouth' | 'blink' | 'focus'>('none')
   const focusX = ref(0), focusY = ref(0)
@@ -94,15 +103,11 @@ export function useModelStudio(hostId: string) {
         else if (playback.started && group !== undefined) stopTest()
       }
       if (previewChannel.value === 'mouth' && mouth.id) {
-        calibratedBinding(mouth, parameters.value)
-        model.setParameterValueById(mouth.id, calibrationValue(mouth, level.value), 1)
+        const binding = previewMouth.value
+        model.setParameterValueById(binding.id, calibrationValue(binding, level.value), 1)
       }
-      if (previewChannel.value === 'blink') for (const eye of [leftEye, rightEye]) {
-        if (eye.id) {
-          calibratedBinding(eye, parameters.value)
-          model.setParameterValueById(eye.id, calibrationValue(eye, blinkLevel.value), 1)
-        }
-      }
+      if (previewChannel.value === 'blink') for (const eye of previewEyes.value)
+        model.setParameterValueById(eye.id, calibrationValue(eye, blinkLevel.value), 1)
     } catch (error) {
       stopTest(); message.value = errorText(error)
     }

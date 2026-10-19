@@ -36,14 +36,15 @@ export interface PromptLifecycleDeps extends
 }
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
-export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession, getRestoreOwner }: PromptLifecycleDeps): void {
+export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession, getRestoreOwner }: PromptLifecycleDeps): () => Promise<void> {
     // A newer visit owns setup; KeepAlive deactivation only retains jobs already started.
     let disposed = false;
     let viewActive = true;
     let consumedPreparedQuery: unknown;
     let initializationRequest = 0;
     let preparedTarget: { entry: string } | null = null;
-    const entryKey = () => JSON.stringify([route.path, route.query]);
+    // Task-center navigation only reveals UI; consuming it must not restart setup.
+    const entryKey = () => JSON.stringify([route.path, { ...route.query, taskCenter: undefined }]);
     async function applyPreparedLink() {
         const q = route.query, request = initializationRequest;
         if (route.path !== '/prompt-builder' || typeof q.preparedModel !== 'string' || q === consumedPreparedQuery) return;
@@ -51,7 +52,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         const modelId = q.preparedModel, wasBusy = generationBusy.value;
         const query = { ...q }; delete query.preparedModel;
         const target = router.resolve({ path: route.path, query, hash: route.hash });
-        const targetEntry = JSON.stringify([target.path, target.query]);
+        const targetEntry = JSON.stringify([target.path, { ...target.query, taskCenter: undefined }]);
         const prepared = { entry: targetEntry };
         preparedTarget = prepared;
         try { await router.replace(target.fullPath); }
@@ -81,16 +82,15 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
     }
     onBeforeUnmount(() => { disposed = true; viewActive = false; initializationRequest++; });
     onDeactivated(() => { viewActive = false; initializationRequest++; consumedPreparedQuery = undefined; animaSession.pauseStatusPolling(); });
-    onActivated(async () => {
-        if (viewActive || disposed)
-            return;
-        viewActive = true;
-        // An interrupted cold visit still needs normal draft setup on its next activation.
-        if (!draftRecovery.initialized) { await initializeWorkspace(); return; }
+    async function loadWorkspaceData() {
+        try { await pb.loadData(); return true; }
+        catch (error) { console.warn('读取创作资料失败', error); return false; }
+    }
+    async function resumeWorkspace() {
         const request = initializationRequest;
         const current = () => !disposed && viewActive && request === initializationRequest;
-        if (!useSceneStore().loaded) {
-            await pb.loadData();
+        if (!pb.dataReady || !useSceneStore().loaded) {
+            if (!await loadWorkspaceData()) return;
             if (!current()) return;
             if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
             if (!current()) return;
@@ -99,9 +99,21 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         if (!current()) return;
         if (drawEngine.value !== 'sd')
             animaSession.startStatusPolling();
+    }
+    async function retryInitialization() {
+        if (disposed || !viewActive || route.path !== '/prompt-builder') return;
+        // A recovered workspace retains its current inputs; a cold failure still
+        // needs the ordinary draft/deep-link restoration after data becomes ready.
+        if (draftRecovery.initialized) await resumeWorkspace();
+        else await initializeWorkspace(false);
+    }
+    onActivated(async () => {
+        if (viewActive || disposed) return;
+        viewActive = true;
+        await retryInitialization();
     });
     // ── Lifecycle ─────────────────────────────────────────────────────────────
-    async function initializeWorkspace() {
+    async function initializeWorkspace(restoreMode = true) {
         if (disposed || !viewActive || route.path !== '/prompt-builder') return;
         const request = ++initializationRequest;
         const restoreOwner = getRestoreOwner();
@@ -114,11 +126,11 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         if (drawEngine.value !== 'sd')
             animaSession.startStatusPolling();
         const savedMode = localStorage.getItem(DIRECTOR_MODE_KEY);
-        if (savedMode === 'pro' || savedMode === 'basic') {
+        if (restoreMode && (savedMode === 'pro' || savedMode === 'basic')) {
             pb.directorMode = savedMode;
             sceneCollection.value = savedMode === 'pro' ? 'all' : 'core';
         }
-        await pb.loadData();
+        if (!await loadWorkspaceData()) return;
         if (!current()) return;
         await refreshAnimaBackend();
         if (!current()) return;
@@ -283,4 +295,5 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         else
             animaSession.startStatusPolling();
     });
+    return retryInitialization;
 }

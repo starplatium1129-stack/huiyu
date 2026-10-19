@@ -3,7 +3,7 @@
     <legend>{{ title }}</legend>
     <label>{{ title }}参数
       <StudioSelect :model-value="binding.id" :disabled="disabled || !parameters.length" :label="`${title}参数`"
-        :options="[{ value: '', label: '不覆写，保留作者动画' }, ...parameters.map(parameter => ({ value: parameter.id, label: parameter.id }))]"
+        :options="parameterOptions"
         @update:model-value="(value) => $emit('update', { ...binding, id: String(value) }, true)" />
     </label>
     <template v-if="binding.id">
@@ -21,6 +21,8 @@ import type { CalibrationBinding, ModelParameter } from '@/live2d/modelCalibrati
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 const props = defineProps<{ title: string; binding: CalibrationBinding; parameters: ModelParameter[]; disabled?: boolean }>()
 defineEmits<{ update: [value: CalibrationBinding, select: boolean] }>()
+const parameterOptions = computed(() => [{ value: '', label: '不覆写，保留作者动画' },
+  ...props.parameters.map(parameter => ({ value: parameter.id, label: parameter.id }))])
 const range = computed(() => props.parameters.find(item => item.id === props.binding.id))
 </script>
 

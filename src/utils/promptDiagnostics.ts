@@ -111,8 +111,8 @@ export const GAZE_AND_EYE_DETAIL_TOKENS: ReadonlySet<string> = new Set([
   'glowing_eyes', 'wide_eyes', 'dilated_pupils', 'sparkling_pupils', 'staring',
 ])
 
-function conflictGroups(groups: Array<{ name: string; tokens: string[] }>, tags: string[]): string[] {
-  const hit = groups.filter(group => group.tokens.some(token => tags.includes(token)))
+function conflictGroups(groups: Array<{ name: string; tokens: string[] }>, tags: ReadonlySet<string>): string[] {
+  const hit = groups.filter(group => group.tokens.some(token => tags.has(token)))
   return hit.length > 1 ? hit.map(group => group.name) : []
 }
 
@@ -253,15 +253,15 @@ export function analyzeParts(parts: PromptPart[], engine?: PromptEngine, profile
   if (qualityCount > 5) {
     warnings.push(`质量词过多（${qualityCount} 个）：模型作者建议不要堆叠质量标签，多了反而降质变糊`)
   }
-  const outfitConflict = conflictGroups(OUTFIT_FAMILIES, positive)
+  const outfitConflict = conflictGroups(OUTFIT_FAMILIES, positiveSet)
   if (outfitConflict.length > 1) {
     warnings.push('服装相互冲突：' + outfitConflict.join('、') + ' 同时出现，模型会随机挑一套')
   }
-  const timeConflict = conflictGroups(TIME_GROUPS, positive)
+  const timeConflict = conflictGroups(TIME_GROUPS, positiveSet)
   if (timeConflict.length > 1) {
     warnings.push('时段相互冲突：' + timeConflict.join('、') + ' 同时出现')
   }
-  const weatherConflict = conflictGroups(WEATHER_GROUPS, positive)
+  const weatherConflict = conflictGroups(WEATHER_GROUPS, positiveSet)
   if (weatherConflict.length > 1) {
     warnings.push('天气相互冲突：' + weatherConflict.join('、') + ' 同时出现')
   }

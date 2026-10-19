@@ -99,7 +99,8 @@ function focusResults() {
   const heading = resultsHeading.value
   if (!heading) return
   heading.focus({ preventScroll: true })
-  if (heading.getBoundingClientRect().top < 70) heading.scrollIntoView({ block: 'start', behavior: 'instant' })
+  const offset = Number.parseFloat(getComputedStyle(heading).scrollMarginTop)
+  if (heading.getBoundingClientRect().top < offset) heading.scrollIntoView({ block: 'start', behavior: 'instant' })
 }
 async function enterGroup(key: string) {
   const version = interruptNavigation(); shelfAnchor = captureScrollAnchor()
@@ -185,7 +186,7 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-text-button { @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[40px] tw:p-s-2; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:text-accent; font: inherit; @apply tw:text-label tw:cursor-pointer tw:shrink-0; }
 .bookshelf-text-button:hover { background: var(--accent-soft); }
 .bookshelf-results-heading { margin: var(--s-5) 0 var(--s-4); }
-.bookshelf-results-heading h2 { @apply tw:m-0 tw:text-body-lg tw:leading-body tw:font-semibold; }
+.bookshelf-results-heading h2 { @apply tw:m-0 tw:text-body-lg tw:leading-body tw:font-semibold; scroll-margin-top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-height,80px) + var(--s-4)); }
 .bookshelf-results-heading > span { @apply tw:ml-auto tw:text-muted tw:text-label; }
 .bookshelf-back .archive-icon { transform: rotate(90deg); }
 .bookshelf-characters { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--s-5) var(--s-4); }

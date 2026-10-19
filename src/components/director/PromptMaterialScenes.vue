@@ -21,6 +21,7 @@
           @update:sceneCollection="setSceneCollection($event)"
           @selectScene="selectScene"
           @update:sceneLimit="sceneLimit = $event"
+          @retry="bindings.retryInitialization"
         />
 </template>
 

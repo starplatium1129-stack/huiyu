@@ -9,20 +9,35 @@ defineProps<{ to: RouteLocationRaw; label: string; icon: ArchiveIconName }>()
 const reduced = useMotionPreference()
 const arrow = ref<HTMLElement | null>(null)
 let bounds: DOMRect | undefined
+let transform = '', paintFrame = 0
+function paint() { paintFrame = 0; if (bounds && arrow.value) arrow.value.style.transform = transform }
 function reset() {
   bounds = undefined
+  cancelAnimationFrame(paintFrame); paintFrame = 0
   if (arrow.value) arrow.value.style.transform = ''
+  document.removeEventListener('scroll', reset, true)
+  document.removeEventListener('keydown', reset, true)
+  document.removeEventListener('visibilitychange', reset)
+  window.removeEventListener('resize', reset)
+  window.removeEventListener('blur', reset)
 }
 function enter(event: PointerEvent) {
-  if (event.pointerType === 'mouse' && !reduced.value && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  reset()
+  if (event.pointerType === 'mouse' && !document.hidden && !reduced.value && matchMedia('(hover: hover) and (pointer: fine)').matches) {
     bounds = (event.currentTarget as HTMLElement).getBoundingClientRect()
+    document.addEventListener('scroll', reset, { capture: true, passive: true })
+    document.addEventListener('keydown', reset, true)
+    document.addEventListener('visibilitychange', reset)
+    window.addEventListener('resize', reset)
+    window.addEventListener('blur', reset)
   }
 }
 function move(event: PointerEvent) {
-  if (!bounds || !arrow.value || reduced.value) return
+  if (!bounds || event.pointerType !== 'mouse' || reduced.value) return
   const x = Math.max(-3, Math.min(3, (event.clientX - bounds.left - bounds.width / 2) * .05))
   const y = Math.max(-2, Math.min(2, (event.clientY - bounds.top - bounds.height / 2) * .08))
-  arrow.value.style.transform = `translate(${x}px, ${y}px)`
+  transform = `translate(${x}px, ${y}px)`
+  if (!paintFrame) paintFrame = requestAnimationFrame(paint)
 }
 watch(reduced, reset)
 onDeactivated(reset)

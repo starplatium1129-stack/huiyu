@@ -61,8 +61,8 @@ watch(() => props.expert, value => {
 
 <style scoped>
 .material-drawer { min-width:0; container:materials / inline-size; overflow:clip; scroll-margin-top:inherit; }
-.material-heading { display:flex; justify-content:space-between; align-items:center; gap:8px; }
-.material-content { padding:20px; }
-.material-footer { flex:none; padding:8px 16px; border-top:1px solid var(--border-soft); }
-.material-footer :deep(button) { font-size:12px; }
+.material-heading { display:flex; justify-content:space-between; align-items:center; gap:var(--s-2); }
+.material-content { padding:var(--s-4); }
+.material-footer { flex:none; padding:var(--s-2) var(--s-4); border-top:1px solid var(--border-soft); }
+.material-footer :deep(button) { font-size:var(--fs-label-xs); }
 </style>

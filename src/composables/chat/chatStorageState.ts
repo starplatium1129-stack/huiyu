@@ -5,6 +5,7 @@ import {
   getCompanionDefaultOutfit,
   normalizeCompanionOutfit,
 } from '@/utils/companionRegistry'
+import { emptyChatConversation } from '@/utils/chatConversationStorage'
 import type { ChatState } from './chatStorageTypes'
 
 export function createChatStorageState(characterIds: string[]): ChatState {
@@ -16,6 +17,7 @@ export function createChatStorageState(characterIds: string[]): ChatState {
     historiesRevisions: Object.fromEntries(characterIds.map(id => [id, 0])),
     active: defaultCharacterId,
     histories: Object.fromEntries(characterIds.map(id => [id, []])),
+    conversations: Object.fromEntries(characterIds.map(id => [id, emptyChatConversation()])),
     settings: {
       model: '',
       provider: 'api',

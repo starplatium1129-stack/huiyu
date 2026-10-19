@@ -23,6 +23,7 @@ let pose = initialCandidatePose(), fit: CandidateFit = { width: 0, height: 0 }
 let width = 0, height = 0, naturalWidth = 0, naturalHeight = 0, viewActive = true
 let observer: ResizeObserver | null = null, unbind: (() => void) | null = null
 let drag: { pointer: number; x: number; y: number; width: number; height: number; pose: CandidatePose } | null = null
+let pendingPose: CandidatePose | null = null, panFrame = 0
 function paint(value: CandidatePose) {
   pose = clampCandidatePose(value, fit)
   if (image.value) image.value.style.transform = `translate(${pose.x * 100}%,${pose.y * 100}%) scale(${pose.scale})`
@@ -103,12 +104,21 @@ function startPan(event: PointerEvent) {
 }
 function pan(event: PointerEvent) {
   if (!drag || event.pointerId !== drag.pointer) return
-  commit({ ...drag.pose, x: drag.pose.x + (event.clientX - drag.x) / drag.width, y: drag.pose.y + (event.clientY - drag.y) / drag.height })
+  pendingPose = { ...drag.pose, x: drag.pose.x + (event.clientX - drag.x) / drag.width, y: drag.pose.y + (event.clientY - drag.y) / drag.height }
+  // One pointer can move all four previews; share its latest sample per painted frame.
+  if (!panFrame) panFrame = requestAnimationFrame(flushPan)
+}
+function flushPan() {
+  cancelAnimationFrame(panFrame); panFrame = 0
+  const pending = pendingPose; pendingPose = null
+  if (pending) commit(pending)
 }
 function stopPan(event?: PointerEvent) {
   if (event && drag && event.pointerId !== drag.pointer) return
+  if (event?.type === 'pointerup') pan(event)
   const pointer = drag?.pointer
   drag = null
+  flushPan()
   if (pointer !== undefined && stage.value?.hasPointerCapture(pointer)) stage.value.releasePointerCapture(pointer)
 }
 function hidden() { if (document.hidden) stopPan() }

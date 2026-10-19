@@ -96,6 +96,7 @@ onMounted(() => { void initialize() })
 .interrogate-setup { display:grid; gap:var(--s-4); margin-bottom:var(--s-5); color:var(--text-primary); min-width:0; }
 .interrogate-heading, .interrogate-actions { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); }
 .interrogate-heading { justify-content:space-between; }
+.interrogate-heading .panel-heading { margin:0 0 var(--s-2); }
 .interrogate-actions { min-height:var(--control-height); }
 .interrogate-heading p, .interrogate-setup p { margin:0; color:var(--text-secondary); line-height:var(--lh-loose); overflow-wrap:anywhere; }
 .interrogate-status { display:flex; align-items:flex-start; gap:var(--s-2); color:var(--text-secondary); }

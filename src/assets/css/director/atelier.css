@@ -1,13 +1,20 @@
 @reference "../tailwind.css";
 /* Director surfaces only. layout.css owns all viewport and rail geometry. */
-.pb.journal-workspace.atelier-workspace { background:var(--bg-base); --fs-label:13px; --fs-label-sm:13px; --fs-label-xs:12px; --fs-body-sm:13px; --fs-body:15px; --fs-title:24px; --fs-title-sm:18px; }
+.pb.journal-workspace.atelier-workspace {
+  background:var(--bg-base);
+  /* Preserve the compact scale at the default 15px root, while following
+     desktop typography scaling and the browser's chosen base text size. */
+  --fs-label:calc(13rem / 15); --fs-label-sm:calc(13rem / 15);
+  --fs-label-xs:calc(12rem / 15); --fs-body-sm:calc(13rem / 15);
+  --fs-body:1rem; --fs-title:calc(24rem / 15); --fs-title-sm:calc(18rem / 15);
+}
 .pb.atelier-workspace .material-drawer,.pb.atelier-workspace .director-inspector { border:1px solid var(--border-soft); border-radius:var(--r-xl); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm); }
-.pb.atelier-workspace .material-heading,.pb.atelier-workspace .inspector-heading { min-height:68px; padding:20px 20px 16px; color:var(--text-primary); background:var(--bg-surface); border:0; font-size:16px; font-weight:600; }
-.pb.atelier-workspace :is(.material-heading>span,.inspector-heading>strong) { display:inline-flex; align-items:center; gap:10px; }
-.pb.atelier-workspace .workbench-heading-icon { display:grid; place-items:center; flex:none; width:30px; height:30px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--accent-soft); color:var(--accent); }
-.pb.atelier-workspace .workbench-heading-icon .archive-icon { width:17px; height:17px; }
-.pb.atelier-workspace .inspector-heading strong { font-size:16px; font-weight:600; letter-spacing:0; }
-.pb.atelier-workspace .inspector-heading span { font-size:11px; color:var(--text-muted); }
+.pb.atelier-workspace :is(.material-heading,.inspector-heading,.canvas-heading) { min-height:var(--s-8); padding:var(--s-4) var(--s-4) var(--s-3); color:var(--text-primary); background:var(--bg-surface); border:0; font-size:var(--fs-title-xs); font-weight:600; }
+.pb.atelier-workspace :is(.material-heading>span,.inspector-heading>strong) { display:inline-flex; align-items:center; gap:var(--s-2); }
+.pb.atelier-workspace .workbench-heading-icon { display:grid; place-items:center; flex:none; width:var(--control-height-sm); height:var(--control-height-sm); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--accent-soft); color:var(--accent); }
+.pb.atelier-workspace .workbench-heading-icon .archive-icon { width:var(--fs-title-sm); height:var(--fs-title-sm); }
+.pb.atelier-workspace .inspector-heading strong { font-size:inherit; font-weight:600; letter-spacing:0; }
+.pb.atelier-workspace .inspector-heading span { font-size:var(--fs-label-xs); color:var(--text-muted); }
 .pb.atelier-workspace .panel,.pb.atelier-workspace .result-frame { border-radius:var(--r-lg); box-shadow:none; }
 .pb.journal-workspace.atelier-workspace .stage-placeholder { border:0; border-radius:0; background:var(--bg-surface); box-shadow:none; }
 .pb.atelier-workspace .stage-placeholder::before { display:none; }
@@ -27,15 +34,19 @@
 .pb.atelier-workspace .stage-archive-badge[data-saving] { color:var(--text-secondary); }
 .pb.atelier-workspace :is(.material-switch button,.inspector-tabs button,.char-btn,.outfit-chip,.engine-btn):active { transform:none; }
 .pb.atelier-workspace .inspector-section > :is(.panel,.result-frame) + :is(.panel,.result-frame) { padding-top:16px; border-top:1px solid var(--border-soft); border-radius:0; }
-.pb.atelier-workspace .material-current-scene { margin-top:24px; padding-top:20px; border-top:1px solid var(--border-soft); }
+.pb.atelier-workspace .material-current-scene { min-width:0; margin-top:24px; padding-top:20px; border-top:1px solid var(--border-soft); }
 .pb.atelier-workspace .material-current-scene>div { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:12px; }
-.pb.atelier-workspace .material-current-scene h3 { margin:0; font-size:14px; }
-.pb.atelier-workspace .material-current-scene>strong { display:block; font-size:14px; line-height:1.6; }
-.pb.atelier-workspace .material-current-scene p { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; margin:12px 0 16px; color:var(--text-secondary); font-size:13px; line-height:1.9; }
+.pb.atelier-workspace .material-current-scene h3 { margin:0; font-size:var(--fs-body); }
+.pb.atelier-workspace .material-current-scene>strong { display:block; font-size:var(--fs-body); line-height:1.6; overflow-wrap:anywhere; }
+.pb.atelier-workspace .material-current-scene p { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; margin:12px 0 16px; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:1.9; overflow-wrap:anywhere; }
 .pb.atelier-workspace .material-current-scene>button { width:100%; }
 /* A compact workspace can lend its full canvas column to materials. Use that
    width for the scene context; character controls still query their own column. */
 .pb.atelier-workspace .material-content #stepChar { min-width:0; container-type:inline-size; }
+/* Keep all four expert tabs readable at the rail's minimum width. */
+@container materials (max-width:20rem) {
+  .pb.atelier-workspace .material-switch .archive-icon { display:none; }
+}
 @container materials (min-width:640px) {
   .pb.atelier-workspace #material-character { display:grid; grid-template-columns:minmax(0,1fr) minmax(240px,.85fr); align-content:start; gap:var(--s-5); }
   .pb.atelier-workspace #material-character > .async-panel { min-width:0; }
@@ -46,6 +57,6 @@
   .pb.journal-workspace.atelier-workspace[data-director-mode] .material-content { flex:1; }
 }
 @media (min-width:1024px) and (max-width:1440px) {
-  .pb.atelier-workspace .material-heading,.pb.atelier-workspace .inspector-heading { min-height:56px; padding:16px 20px 12px; }
+  .pb.atelier-workspace :is(.material-heading,.inspector-heading,.canvas-heading) { min-height:calc(var(--control-height-sm) + var(--s-5)); padding:var(--s-3) var(--s-4) var(--s-2); }
 }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .pb.atelier-workspace .studio-character-choice { transition:none; } }

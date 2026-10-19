@@ -26,7 +26,8 @@ import {
   normalizeChatArchive,
   serializeChatArchive,
 } from '@/utils/chatArchive'
-import { mergeHistories, storedHistoryRevision } from './chatStorageMerge'
+import { captureChatConversations, chatBranchArchiveKey, emptyChatConversation, mergeChatConversationStates, rememberChatConversations, registerArchivedChatBranches } from '@/utils/chatConversationStorage'
+import { useChatBranches } from './useChatBranches'
 import { createChatNormalizeOptions, createChatStorageState } from './chatStorageState'
 import type { ChatMessage, ChatState } from './chatStorageTypes'
 export type { ChatMessage, ChatState } from './chatStorageTypes'
@@ -62,7 +63,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
         resetRevision = chatResetRevision()
         pendingPreferences.clear()
         archiveStorage.reset()
-        for (const char of characterIds) { state.histories[char] = []; state.settings.drafts[char] = '' }
+        for (const char of characterIds) { state.histories[char] = []; state.conversations[char] = emptyChatConversation(); state.settings.drafts[char] = '' }
         onError('另一窗口已清空聊天内容；旧操作已停止，请重新输入。')
         return false
       }
@@ -87,12 +88,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     if (pendingPreferences.size || saveFailed && !save(true, false, false) || !await saveArchive()) throw new Error('CHAT_SAVE_FAILED')
   }))
   const messageSnapshots = new Map<string, string>()
-  function rememberMessages() {
-    messageSnapshots.clear()
-    for (const history of Object.values(state.histories)) {
-      for (const message of history) messageSnapshots.set(message.mid, JSON.stringify(message))
-    }
-  }
+  function rememberMessages() { rememberChatConversations(state, messageSnapshots) }
 
   /** 把 localStorage 中其他窗口更新的历史合并进内存（按 mid 去重，零丢失）。 */
   function mergeRemoteIntoState(): boolean {
@@ -102,25 +98,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       assertChatVersion(raw, STORAGE_VERSION)
       if (!raw || typeof raw !== 'object') return true
       preserveRetiredCompanionChat(raw)
-      const record = raw as Record<string, unknown>
-      const remote = record.histories
-      if (!remote || typeof remote !== 'object') return true
-      for (const char of characterIds) {
-        const remoteRevision = storedHistoryRevision(record, char)
-        const localRevision = state.historiesRevisions[char] ?? state.historiesRevision
-        const list = (remote as Record<string, unknown>)[char]
-        if (!Array.isArray(list)) continue
-        if (remoteRevision > localRevision) {
-          state.historiesRevisions[char] = remoteRevision
-          state.histories[char] = list as ChatMessage[]
-          for (const message of state.histories[char]) messageSnapshots.set(message.mid, JSON.stringify(message))
-        } else if (remoteRevision === localRevision) {
-          const history = state.histories[char] ||= []
-          const merged = mergeHistories(history, list as ChatMessage[], messageSnapshots)
-          history.splice(0, history.length, ...merged)
-        }
-        state.historiesRevision = Math.max(state.historiesRevision, remoteRevision)
-      }
+      const remote = normalizeChatStorage(raw, '', { ...normalizeOptions, maxMessages: Number.MAX_SAFE_INTEGER }).state
+      mergeChatConversationStates(state, remote, messageSnapshots)
       return true
     } catch {
       /* 解析失败保持现状，下次保存仍会重试. */
@@ -173,7 +152,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function archiveOverflow(char: string, messages: ChatMessage[], limit: number) {
     if (messages.length <= limit) return
     const removed = messages.slice(0, messages.length - limit)
-    archiveStorage.add(char, removed)
+    archiveStorage.add(currentArchiveKey(char), removed)
     const pending = pendingTrims.get(char)
     pendingTrims.set(char, { history: messages, ids: new Set([...(pending?.ids || []), ...removed.map(message => message.mid)]) })
     void saveArchive()
@@ -182,6 +161,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function applyPersisted(persisted: PersistedChatState) {
     state.historiesRevision = persisted.historiesRevision
     state.historiesRevisions = { ...persisted.historiesRevisions }
+    state.conversations = persisted.conversations
     state.active = persisted.active
     for (const char of characterIds) {
       state.histories[char] = persisted.histories[char] || []
@@ -213,6 +193,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       historiesRevisions: state.historiesRevisions,
       active: state.active,
       histories: state.histories,
+      conversations: captureChatConversations(state),
       settings: {
         model: state.settings.model,
         provider: state.settings.provider,
@@ -284,7 +265,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
           const list = (rawHistories as Record<string, unknown>)[char]
           if (Array.isArray(list) && list.length > MAX_LOCAL_MESSAGES) {
             const overflow = list.slice(0, list.length - MAX_LOCAL_MESSAGES)
-            archiveStorage.add(char, overflow as ChatMessage[])
+            archiveStorage.add(currentArchiveKey(char), overflow as ChatMessage[])
           }
         }
       }
@@ -362,7 +343,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     try {
       // 2026-08-16 审计：写盘前先合并其他窗口的更新，避免单键 last-writer-wins
       // 覆盖掉另一窗口的新消息。clear() 传 false 跳过（清除意图优先）。
-      if (mergeRemote && !mergeRemoteIntoState()) return
+      if (mergeRemote && !mergeRemoteIntoState()) return false
       localStorage.setItem(STORAGE_KEY, serializeChatStorage(persistedState(scrubCredential)))
       rememberMessages()
       localStorage.setItem('aics_chat_model', state.settings.model || '')
@@ -374,6 +355,12 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       return false
     }
   }
+
+  const branchStorage = useChatBranches(state, canWrite, mergeRemoteIntoState, save, (source, target) => {
+    archiveStorage.add(target, archive.value.archived[source] || [])
+    void saveArchive()
+  })
+  const currentArchiveKey = (char: string) => chatBranchArchiveKey(char, branchStorage.branchId(char))
 
   function messages(char = state.active): ChatMessage[] {
     return state.histories[char] || []
@@ -462,7 +449,10 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   function archiveCount(char: string): number
   function archiveCount(char?: string) {
     const counts = archiveCounts(archive.value, characterIds)
-    return char ? counts[char] || 0 : counts
+    if (char) return counts[currentArchiveKey(char)] || 0
+    const totals = new Map(characterIds.map(id => [id, 0]))
+    for (const [key, count] of Object.entries(counts)) { const id = key.split('::')[0]; totals.set(id, (totals.get(id) || 0) + count) }
+    return Object.fromEntries(totals)
   }
   async function exportArchiveJson(): Promise<string> {
     await archiveStorage.refresh(true)
@@ -471,6 +461,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   async function exportArchiveMarkdown(): Promise<string> {
     await archiveStorage.refresh(true)
     const names = Object.fromEntries(characterIds.map(id => [id, getCompanionCharacter(id)?.name || id]))
+    for (const char of characterIds) for (const branch of branchStorage.branches(char)) names[chatBranchArchiveKey(char, branch.id)] = `${getCompanionCharacter(char)?.name || char} · ${branch.name}`
     return chatArchiveToMarkdown(archive.value, names)
   }
   /** 导入归档 JSON：合并去重后落盘，返回导入条数。 */
@@ -483,6 +474,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     const before = archiveCounts(archive.value, characterIds)
     for (const [char, messages] of Object.entries(incoming.archived)) archiveStorage.add(char, messages, true)
     if (!await saveArchive() || !current()) throw new Error('归档尚未保存，请重新选择文件后重试。')
+    if (registerArchivedChatBranches(state, Object.keys(incoming.archived)) && !save()) throw new Error('归档已保存，但剧情目录尚未保存，请重试导入。')
+    await flushProfileWrites()
     const after = archiveCounts(archive.value, characterIds)
     return Object.keys(after).reduce((sum, id) => sum + Math.max(0, after[id] - (before[id] || 0)), 0)
   }
@@ -490,14 +483,15 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   async function restoreFromArchive(char = state.active, isCurrent: () => boolean = () => true): Promise<number> {
     if (!canWrite()) throw new Error('聊天归档受版本保护，无法安全恢复。')
     if (!characterIds.includes(char)) return 0
+    const selectedBranch = branchStorage.branchId(char)
     await archiveStorage.refresh(true)
-    if (!isCurrent() || !canWrite()) return 0
-    const archived = archive.value.archived[char] || []
+    if (!isCurrent() || !canWrite() || selectedBranch !== branchStorage.branchId(char)) return 0
+    const archived = archive.value.archived[currentArchiveKey(char)] || []
     if (!archived.length) return 0
     const history = messages(char)
     const merged = mergeArchiveIntoHistory(history, archived)
     const added = merged.length - history.length
-    if (added > 0) {
+    if (JSON.stringify(merged) !== JSON.stringify(history)) {
       // 完整并回（不截断）：超过 20 条的部分在下次 trim 时会再次归档，
       // 归档按 mid 去重，不会产生副本，也不会丢失。
       state.histories[char] = merged
@@ -513,22 +507,27 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
   async function clearArchive(char?: string, isCurrent: () => boolean = () => true) {
     if (!isCurrent() || !canWrite() || !await saveArchive() || !isCurrent() || !canWrite()) return false
-    archiveStorage.clear(char)
+    if (char) archiveStorage.clearCharacter(char); else archiveStorage.clear()
     return saveArchive()
   }
   function clear(char?: string) {
-    if (!canWrite()) return false
+    if (!canWrite() || char && !characterIds.includes(char)) return false
     // Preserve a clear made by another tab for a different character before
     // applying this character's clear. localStorage access is synchronous, so
     // the read and the following write are one uninterrupted mutation.
     if (char && !mergeRemoteIntoState()) return false
     const previous = {
       histories: { ...state.histories },
+      conversations: state.conversations,
       historiesRevision: state.historiesRevision,
       historiesRevisions: { ...state.historiesRevisions },
     }
-    if (char) { state.histories[char] = [] }
-    else { for (const k of characterIds) state.histories[k] = [] }
+    state.conversations = { ...state.conversations }
+    for (const id of char ? [char] : characterIds) {
+      const conversation = captureChatConversations(state)[id]
+      conversation.branches.find(branch => branch.id === conversation.activeId)!.messages = []
+      state.histories[id] = []; state.conversations[id] = conversation
+    }
     // Advance the tombstone before persisting. A delayed save from a tab that
     // still has the previous revision will then be rejected.
     const nextRevision = Math.max(state.historiesRevision + 1, Date.now())
@@ -537,6 +536,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     else for (const key of characterIds) state.historiesRevisions[key] = nextRevision
     if (save(false)) return true
     // A failed localStorage write must not make the current tab look cleared.
+    state.conversations = previous.conversations
     state.histories = previous.histories
     state.historiesRevision = previous.historiesRevision
     state.historiesRevisions = previous.historiesRevisions
@@ -544,7 +544,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }
 
   return {
-    state, load, save, messages, neverConfigured, canWrite, writeBlocked, credentialsLoading, flushArchive: saveArchive,
+    ...branchStorage, refresh: mergeRemoteIntoState, state, load, save, messages, neverConfigured, canWrite, writeBlocked, credentialsLoading, flushArchive: saveArchive,
     setActive, setModel, setProvider, setApiSettings, reloadConnectionSettings, setWebSearchEnabled,
     setLive2dEnabled, live2dOutfit, setLive2dOutfit, setAutoVoice, setVolume, draft, setDraft, trim, clear,
     archiveCount, exportArchiveJson, exportArchiveMarkdown, importArchiveJson,

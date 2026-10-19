@@ -89,7 +89,18 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const mainBtnLabel = ref('启动并生成分享链接')
   const feedbackText = ref('正在检测本地服务…')
   const actionNote = ref('')
+  const overviewFeedback = computed(() => {
+    if (serviceChecking.value) return {
+      title: statusLoaded.value ? '正在刷新本机服务状态…' : '正在检测本地服务…',
+      note: '请稍候，正在确认本机连接状态。',
+    }
+    if (statusError.value) return { title: '本机服务状态待确认', note: '本次检测未能完成，请检查控制服务后重试。' }
+    return { title: feedbackText.value, note: actionNote.value || '正在读取本机服务状态。' }
+  })
   const logs = ref<string[]>([])
+  const logsOpen = ref(false), logsLoading = ref(false)
+  const logsLoaded = ref(false), logsError = ref('')
+  const logsSummary = computed(() => logsLoading.value && !logsLoaded.value ? '读取中…' : logsError.value ? '读取失败' : logsLoaded.value ? `${logs.value.length} 条` : '未读取')
   // File tails repeat on every poll, independently of the server cursor.
   const seenLogLines = new Set<string>()
   const logBoxEl = ref<HTMLElement | null>(null)
@@ -319,11 +330,13 @@ export function useControlStatus({ showToast }: StatusHooks) {
     }
   }
 
-  async function pollLogs() {
-    if (disposed) return
+  async function pollLogs(force = false) {
+    // Operations retain their log fallback even when the optional console is closed.
+    if (disposed || (!force && !logsOpen.value && !opBusy.value) || (logsRequest && !force)) return
     logsRequest?.abort()
     const controller = new AbortController()
     logsRequest = controller
+    logsLoading.value = true
     const revision = statusRevision
     try {
       const data: ControlLogs = await controlApi.getLogs(logIndex.value, { signal: controller.signal })
@@ -332,6 +345,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
         operation.value = data.operation
         syncNowTicker()
       }
+      let followingTail = false
       if (data.logs.length) {
         const fresh: string[] = []
         for (const line of data.logs) {
@@ -342,31 +356,45 @@ export function useControlStatus({ showToast }: StatusHooks) {
         while (seenLogLines.size > 600) seenLogLines.delete(seenLogLines.values().next().value!)
         if (fresh.length) {
           const box = logBoxEl.value
-          const followingTail = !box || box.scrollHeight - box.scrollTop - box.clientHeight < 24
+          followingTail = logsOpen.value && (!box || box.scrollHeight - box.scrollTop - box.clientHeight < 24)
           logs.value.push(...fresh)
           if (logs.value.length > 300) logs.value = logs.value.slice(-200)
-          await nextTick()
-          if (followingTail && logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
         }
       }
       // 2026-08-16 审计：游标改为服务端权威 controlLogs 总长（total），而不是按本批
       // logs.length 自增——本批混入每文件 ≤30 行文件尾行，旧实现把游标逐轮推过头，
       // 新 controlLogs 从此永不上屏（逐条吞日志）。服务端保证 total 不含尾行。
       logIndex.value = data.total
-    } catch (error) {
-      if (logsRequest === controller && error instanceof ApiClientError && (error.status === 403 || error.status === 421)) {
-        clearLogs()
+      logsLoaded.value = true; logsError.value = ''
+      if (followingTail) {
+        await nextTick()
+        if (logsRequest === controller && logsOpen.value && logBoxEl.value) logBoxEl.value.scrollTop = logBoxEl.value.scrollHeight
       }
+    } catch (error) {
+      if (logsRequest !== controller || controller.signal.aborted) return
+      if (error instanceof ApiClientError && (error.status === 403 || error.status === 421)) {
+        clearLogs()
+        logsLoaded.value = false
+      }
+      logsError.value = '运行日志暂时无法读取，请检查连接后重试。'
     } finally {
-      if (logsRequest === controller) logsRequest = null
+      if (logsRequest === controller) { logsRequest = null; logsLoading.value = false }
     }
   }
 
-  function clearLogs() {
+  function cancelLogRead() {
     logsRequest?.abort()
     logsRequest = null
+    logsLoading.value = false
+  }
+  function clearLogs() {
+    cancelLogRead()
     logs.value = []
   }
+  watch(logsOpen, open => {
+    if (open) void pollLogs()
+    else if (!opBusy.value) cancelLogRead()
+  }, { flush: 'sync' })
   // 轮询底座（2026-08-28 审计 P1-9）：3s 状态/日志轮询收敛到 usePolling，
   // in-flight 去重、页面隐藏暂停（paused=document.hidden）、回前台 sync 续跑。
   let visibilityBound = false
@@ -402,10 +430,9 @@ export function useControlStatus({ showToast }: StatusHooks) {
     polling.stop()
     clearNowTicker()
     statusRequest?.abort()
-    logsRequest?.abort()
+    cancelLogRead()
     shareRequest?.abort()
     statusRequest = null
-    logsRequest = null
     shareRequest = null
     serviceChecking.value = false
   }
@@ -415,7 +442,8 @@ export function useControlStatus({ showToast }: StatusHooks) {
     modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
     sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
     tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-    feedbackText, actionNote, imageProvider, logs, logBoxEl,
+    feedbackText, actionNote, overviewFeedback, imageProvider, logs, logBoxEl,
+    logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
     opBusy, opStatusLabel, opProgress, ollamaMeta, voiceConfiguredCount,
     readyLabel,
     lastStatus: () => lastStatus,

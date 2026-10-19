@@ -11,11 +11,11 @@
 .pb .scene-cat-btn .archive-icon { flex:none; width:16px; height:16px; }
 .pb .scene-list { display:flex; flex-direction:column; gap:var(--s-2); padding:var(--s-1); }
 .pb button.scene-card { position:relative; display:flex; flex-direction:column; flex-shrink:0; gap:var(--s-2); width:100%; min-width:0; min-height:0; padding:var(--s-3); overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); text-align:left; font:400 var(--fs-label)/var(--lh-body) var(--font-sans); cursor:pointer; transition:transform var(--motion-hover) var(--ease-out); }
-.pb button.scene-card[aria-pressed='true'] { border-color:var(--accent); background:var(--accent-soft); box-shadow:var(--selection-shadow); }
+.pb button.scene-card[aria-pressed='true'] { border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
 .pb button.scene-card:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .scene-card-title { min-width:0; padding-inline-end:var(--s-5); color:var(--text-primary); font:600 var(--fs-body)/var(--lh-label) var(--font-sans); }
 .pb .scene-card-name { overflow-wrap:anywhere; }
-.pb .scene-selection-check { position:absolute; inset-block-start:var(--s-3); inset-inline-end:var(--s-3); width:16px; height:16px; color:var(--accent); pointer-events:none; }
+.pb .scene-selection-check { position:absolute; inset-block-start:var(--s-3); inset-inline-end:var(--s-3); width:16px; height:16px; color:var(--text-primary); pointer-events:none; }
 .pb .scene-card-story { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
 .pb .scene-card-meta { display:flex; flex-wrap:wrap; gap:var(--s-1); }
 .pb .scene-card-meta > span { padding:2px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); font-size:var(--fs-label-xs); line-height:var(--lh-label); }

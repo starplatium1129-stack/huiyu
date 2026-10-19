@@ -4,12 +4,12 @@
       <FluidTransition panel=".smart-album-editor">
       <div v-if="open">
       <div class="smart-album-overlay" aria-hidden="true" />
-      <DialogContent force-mount class="smart-album-editor" aria-modal="true" :aria-busy="busy" @open-auto-focus="rememberTrigger" @close-auto-focus="restoreTrigger" @escape-key-down="busy && $event.preventDefault()" @pointer-down-outside="busy && $event.preventDefault()">
+      <DialogContent force-mount class="smart-album-editor" tabindex="-1" aria-modal="true" :aria-busy="busy" @open-auto-focus="rememberTrigger" @close-auto-focus="restoreTrigger" @escape-key-down="busy && $event.preventDefault()" @pointer-down-outside="busy && $event.preventDefault()">
         <header class="smart-album-heading">
           <div><DialogTitle>{{ editing ? '编辑智能画册' : '新建智能画册' }}</DialogTitle><DialogDescription>按角色和标签持续收集作品，符合条件的新作品会自动出现。</DialogDescription></div>
           <DialogClose class="btn btn-quiet btn-icon" :disabled="busy" aria-label="关闭智能画册窗口"><ArchiveIcon name="close" /></DialogClose>
         </header>
-        <form class="smart-album-form" @submit.prevent="emit('save')">
+        <form class="smart-album-form" @submit.prevent="save">
           <div class="smart-album-body">
             <label class="smart-album-name"><span>画册名称</span><input v-model="title" class="input" :maxlength="ARTWORK_PROJECT_TITLE_LIMIT" :disabled="busy" required autocomplete="off" placeholder="例如：夏目的春日精选" /></label>
             <div class="smart-album-fields">
@@ -62,6 +62,11 @@ const emit = defineEmits<{ 'update:open': [value: boolean]; save: [] }>()
 usePageScrollLock(() => props.open)
 let trigger: HTMLElement | null = null
 function rememberTrigger() { trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null }
+function save(event: SubmitEvent) {
+  const form = event.currentTarget as HTMLFormElement
+  if (form.contains(document.activeElement)) form.closest<HTMLElement>('.smart-album-editor')?.focus({ preventScroll: true })
+  emit('save')
+}
 function restoreTrigger(event: Event) {
   event.preventDefault()
   const active = document.activeElement
@@ -109,9 +114,11 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 .smart-album-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:var(--s-2); padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); }
 .smart-album-error { @apply tw:m-0 tw:text-warning-text tw:text-label-sm; }
 .smart-album-editor button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.smart-album-editor:focus-visible { outline:none; box-shadow:var(--shadow-lg),var(--focus-shadow); }
 .smart-album-editor button:disabled,.smart-album-editor input:disabled { color:var(--text-disabled); }
 @container (max-width:480px) { .smart-album-fields,.smart-album-tag-picker { grid-template-columns:minmax(0,1fr); } }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) :is(.smart-album-editor,.smart-album-overlay) { animation:none; transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.smart-album-editor,.smart-album-overlay) { animation:none; transition:none; }
 @media (forced-colors:active) { .smart-album-editor,.smart-album-preview { border-color:CanvasText; background:Canvas; color:CanvasText; box-shadow:none; } }
+@media (forced-colors:active) { .smart-album-editor:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

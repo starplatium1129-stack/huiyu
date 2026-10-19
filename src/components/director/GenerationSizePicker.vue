@@ -57,7 +57,7 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
 .size-picker-heading>span { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); color:var(--text-secondary); }
 .size-picker-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,104px),1fr)); gap:var(--s-2); }
 .size-picker-grid button { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-1); min-width:0; min-height:calc(2 * var(--control-height)); padding:var(--s-2) var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-secondary); background:var(--bg-base); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
-.size-picker-grid button[aria-pressed=true] { color:var(--accent); border-color:var(--accent); background:var(--accent-soft); box-shadow:var(--selection-shadow); }
+.size-picker-grid button[aria-pressed=true] { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
 .size-picker-grid button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .size-picker-grid button:disabled { color:var(--text-disabled); cursor:not-allowed; }
 .size-picker-grid i { height:21px; max-width:28px; border:1.4px solid currentColor; border-radius:2px; }

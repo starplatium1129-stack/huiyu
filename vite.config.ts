@@ -9,6 +9,8 @@ import { fileURLToPath, URL } from 'node:url'
 import { readFile } from 'node:fs/promises'
 
 const runtimeRequire = createRequire(import.meta.url)
+const startupAssets = ['favicon.svg', 'logo.svg', 'logo-light.svg', 'theme-bootstrap.js']
+const startupAssetPaths = new Set(startupAssets.map(name => `/assets/${name}`))
 
 /** All supported browsers implement color-mix (Chrome 111 / Safari 16.4 /
  * Firefox 128). Tailwind's Vite plugin currently cannot configure its polyfills:
@@ -142,7 +144,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     name: 'desktop-startup-assets',
     generateBundle() {
       const fs = runtimeRequire('node:fs') as typeof import('node:fs')
-      for (const name of ['favicon.svg', 'logo.svg', 'logo-light.svg', 'theme-bootstrap.js']) {
+      for (const name of startupAssets) {
         this.emitFile({ type: 'asset', fileName: `assets/${name}`, source: fs.readFileSync(fileURLToPath(new URL(`./assets/${name}`, import.meta.url))) })
       }
     },
@@ -175,13 +177,14 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
       ignored: ['**/desktop-tauri/**', '**/runtime-rs/target/**', '**/native-live2d/target/**', '**/src-tauri/**', '**/runtime/**']
     },
     proxy: {
-      // SFC 的 SVG 和 JSON 模块导入（?import）须由 Vite 转换成 JS；
-      // 其余运行时资源交给 Rust gateway，保留其访问控制和静态服务语义。
+      // 模块导入和前端启动资源由 Vite 提供；其余运行时资源交给
+      // Rust gateway，保留其访问控制和静态服务语义。
       '^/(assets|data)/': {
         target: 'http://127.0.0.1:3000',
         changeOrigin: true,
         bypass(req: IncomingMessage) {
-          if (new URL(req.url ?? '', 'http://localhost').searchParams.has('import')) return req.url
+          const url = new URL(req.url ?? '', 'http://localhost')
+          if (url.searchParams.has('import') || startupAssetPaths.has(url.pathname)) return req.url
         }
       },
       '/api':         { target: 'http://127.0.0.1:3000', changeOrigin: true },

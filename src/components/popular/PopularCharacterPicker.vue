@@ -3,7 +3,7 @@ import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
-import { computed, ref, useId } from 'vue'
+import { computed, nextTick, ref, useId } from 'vue'
 import type { PopularCharacter, PopularOutfit } from '@/utils/popularContent'
 import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
@@ -25,10 +25,17 @@ const emit = defineEmits<{
 }>()
 
 const browserDialog = ref<HTMLDialogElement | null>(null)
+const directoryLoaded = ref(false)
 const browserMotion = useFluidDialog(browserDialog)
 const dialogTitle = useId()
 const searchProxy = computed({ get: () => props.search, set: value => emit('update:search', value) })
 const directoryItems = computed(() => props.characters.map(character => ({ id: character.id, name: character.displayName, source: character.franchise, aliases: character.aliases, image: popularPortraitSrc(character.id) })))
+async function openBrowser(event: MouseEvent) {
+  const source = event.currentTarget as HTMLElement
+  directoryLoaded.value = true
+  await nextTick()
+  if (source.isConnected && source.getClientRects().length) browserMotion.open(source)
+}
 function selectFromDirectory(id: string) { const character = props.characters.find(item => item.id === id); if (character) { emit('select', character); browserMotion.close() } }
 
 const selectedCharacter = computed<PopularCharacter | null>(() =>
@@ -51,7 +58,7 @@ const sourceLabel = computed(() => {
   <div class="popular-picker tw:grid tw:gap-s-4">
     <!-- 当前角色：状态与「浏览全部」同处一个按钮，只保留一层稳定底色 + 一个强调动作，
          不再让卡片和浏览按钮各自成框、各自打开同一个弹窗。 -->
-    <button type="button" class="character-browse-button tw:grid tw:gap-0 tw:w-full tw:min-w-0 tw:p-0 tw:rounded-lg tw:overflow-hidden tw:text-left tw:cursor-pointer" aria-haspopup="dialog" @click="browserMotion.open()">
+    <button type="button" class="character-browse-button tw:grid tw:gap-0 tw:w-full tw:min-w-0 tw:p-0 tw:rounded-lg tw:overflow-hidden tw:text-left tw:cursor-pointer" aria-haspopup="dialog" @click="openBrowser">
       <span class="character-browse-trigger tw:flex tw:items-center tw:gap-s-3 tw:min-w-0 tw:p-s-3">
         <CharacterPortrait :src="resolveRuntimeUrl(selectedCharacter ? popularPortraitSrc(selectedCharacter.id) : undefined)" :name="selectedCharacter?.displayName || '角色'" />
         <span v-content-motion:fade="selectedCharacterId" class="character-current-text tw:min-w-0 tw:grid tw:gap-s-2">
@@ -67,7 +74,7 @@ const sourceLabel = computed(() => {
     <Teleport to="body">
       <dialog ref="browserDialog" class="character-browser-dialog" :aria-labelledby="dialogTitle" @cancel.prevent="browserMotion.close()">
         <header class="character-browser-heading"><div><h2 :id="dialogTitle">挑选这一幕的主角</h2><p>先按作品缩小范围，再点击肖像即可带回工作台。</p></div><button type="button" aria-label="关闭角色选择" @click="browserMotion.close()"><ArchiveIcon name="close" /></button></header>
-        <CharacterDirectory :items="directoryItems" :selected-id="selectedCharacterId" v-model:search="searchProxy" catalog :page-size="18" @select="selectFromDirectory" @dismiss="browserMotion.close()" />
+        <CharacterDirectory v-if="directoryLoaded" :items="directoryItems" :selected-id="selectedCharacterId" v-model:search="searchProxy" catalog :page-size="18" @select="selectFromDirectory" @dismiss="browserMotion.close()" />
       </dialog>
     </Teleport>
     <div v-if="selectedCharacter" v-content-motion:fade="selectedCharacterId" class="popular-outfits tw:grid tw:gap-s-2">
@@ -118,7 +125,7 @@ const sourceLabel = computed(() => {
 .character-browse-button:hover .character-browse-all { background: var(--bg-hover); }
 .character-browse-button:active .character-browse-all { transform: scale(.98); }
 
-.character-browser-dialog { @apply tw:m-auto; width: min(1040px, calc(100vw - 32px)); height: min(800px, calc(100dvh - 48px)); max-height: calc(100dvh - 32px); @apply tw:p-s-5; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; box-shadow: var(--shadow-lg); }
+.character-browser-dialog { @apply tw:m-auto; inset:var(--desktop-chrome-height,0px) 0 0; width: min(1040px, calc(100vw - 32px)); height: min(800px, calc(100dvh - var(--desktop-chrome-height,0px) - 48px)); max-height: calc(100dvh - var(--desktop-chrome-height,0px) - 32px); @apply tw:p-s-5; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; box-shadow: var(--shadow-lg); }
 /* 滚动职责下放到筛选栏与结果区，弹窗本体不再套一层滚动。 */
 .character-browser-dialog[open] { @apply tw:flex tw:flex-col tw:gap-s-3 tw:overflow-hidden; }
 .character-browser-dialog::backdrop { background: var(--art-scrim); }
