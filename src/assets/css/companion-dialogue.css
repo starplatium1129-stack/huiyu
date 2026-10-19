@@ -36,10 +36,14 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
   background:transparent;
   box-shadow:none;
 }
-.companion-dialogue-heading { display:flex; flex-shrink:0; align-items:flex-start; gap:var(--s-2); margin-bottom:var(--s-2); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); box-shadow:var(--shadow-sm); cursor:grab; user-select:none; opacity:0; pointer-events:none; transition:opacity var(--motion-hover); }
-/* Opacity keeps the toolbar reachable by Tab; focus reveals it before interaction. */
-.companion-dialogue-window:is(:hover,:focus-within) .companion-dialogue-heading,
-.companion-dialogue-heading:has([aria-expanded='true']) { opacity:1; pointer-events:auto; }
+.companion-dialogue-heading { display:flex; flex-shrink:0; align-items:flex-start; gap:var(--s-2); margin-bottom:var(--s-2); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); box-shadow:var(--shadow-sm); cursor:grab; user-select:none; transition:opacity var(--motion-hover); }
+/* Fine-pointer windows reveal their toolbar on hover or keyboard focus.
+   Devices without hover keep the controls visible and reachable. */
+@media (hover:hover) and (pointer:fine) {
+  .companion-dialogue-heading { opacity:0; pointer-events:none; }
+  .companion-dialogue-window:is(:hover,:focus-within) .companion-dialogue-heading,
+  .companion-dialogue-heading:has([aria-expanded='true']) { opacity:1; pointer-events:auto; }
+}
 .companion-dialogue-heading .companion-picker { flex:1; max-width:none; min-width:0; }
 .companion-dialogue-heading .companion-picker-trigger { min-height:var(--control-height-sm); padding:var(--s-1); gap:var(--s-2); border:0; background:transparent; box-shadow:none; border-radius:var(--r-sm); }
 .companion-dialogue-heading .companion-picker-trigger:is(:hover,[data-state='open']) { background:var(--bg-hover); }
@@ -70,28 +74,31 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-history-list { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; gap:12px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:var(--border-strong) transparent; padding:4px 5px 8px 0; }
 .companion-dialogue-message { display:flex; flex-shrink:0; align-items:flex-end; gap:8px; min-width:0; }
 .companion-dialogue-message[data-role='user'] { justify-content:flex-end; padding-left:40px; }
-.companion-dialogue-avatar { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; overflow:hidden; border:1px solid var(--border-soft); border-radius:50%; background:var(--dialogue-control-surface); color:var(--text-primary); font-size:12px; }
+.companion-dialogue-avatar { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; overflow:hidden; border:1px solid var(--border-soft); border-radius:50%; background:var(--dialogue-control-surface); color:var(--text-primary); font-size:var(--fs-label-xs); }
 .companion-dialogue-avatar img { display:block; width:100%; height:100%; object-fit:cover; }
 .companion-dialogue-avatar[data-chibi='true']:has(img) { border:0; border-radius:0; background:transparent; }
 .companion-dialogue-avatar[data-chibi='true'] img { object-fit:contain; }
 .companion-dialogue-bubble { position:relative; box-sizing:border-box; min-width:0; max-width:calc(100% - 40px); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg) var(--r-lg) var(--r-lg) var(--r-sm); background:var(--dialogue-surface); box-shadow:var(--shadow-sm); }
 .companion-dialogue-message[data-role='user'] .companion-dialogue-bubble { max-width:100%; border-radius:var(--r-lg) var(--r-lg) var(--r-sm) var(--r-lg); background:color-mix(in srgb,var(--character-accent) 9%,var(--dialogue-control-surface)); }
-.companion-dialogue-speaker { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:3px; color:var(--text-primary); font-size:11px; font-weight:600; }
-.companion-dialogue-speaker button { opacity:0; transition:opacity var(--motion-hover); }
-.companion-dialogue-bubble:is(:hover,:focus-within) .companion-dialogue-speaker button { opacity:1; }
+.companion-dialogue-speaker { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:3px; color:var(--text-primary); font-size:var(--fs-label-xs); font-weight:600; }
+.companion-dialogue-speaker button { transition:opacity var(--motion-hover); }
+@media (hover:hover) and (pointer:fine) {
+  .companion-dialogue-speaker button { opacity:0; }
+  .companion-dialogue-bubble:is(:hover,:focus-within) .companion-dialogue-speaker button { opacity:1; }
+}
 @media (hover:none), (pointer:coarse), (pointer:none) {
   .companion-dialogue-heading,.companion-dialogue-speaker button { transition:none; }
 }
-.companion-dialogue-bubble > small { display:block; margin-top:5px; color:var(--text-secondary); font-size:11px; }
+.companion-dialogue-bubble > small { display:block; margin-top:5px; color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .companion-dialogue-line { margin:0; color:var(--text-primary); font:400 var(--fs-body)/var(--lh-body) var(--font-sans); white-space:pre-wrap; overflow-wrap:anywhere; }
-.companion-dialogue-line.is-streaming::after { content:''; display:inline-block; width:3px; height:14px; margin-left:4px; border-radius:2px; vertical-align:baseline; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
-.companion-dialogue-waiting { display:flex; align-items:center; gap:10px; min-height:28px; color:var(--text-secondary); font-size:13px; }
+.companion-dialogue-line.is-streaming::after { content:''; display:inline-block; width:3px; height:14px; margin-left:4px; border-radius:var(--r-pill); vertical-align:baseline; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
+.companion-dialogue-waiting { display:flex; align-items:center; gap:10px; min-height:28px; color:var(--text-secondary); font-size:var(--fs-label); }
 .companion-dialogue-dots { display:flex; gap:4px; }
 .companion-dialogue-dots i { width:4px; height:4px; border-radius:50%; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
 .companion-dialogue-dots i:nth-child(2) { animation-delay:.15s; }
 .companion-dialogue-dots i:nth-child(3) { animation-delay:.3s; }
 @keyframes companion-dialogue-pulse { 0%,100% { opacity:.35; } 50% { opacity:1; } }
-.companion-dialogue-presence { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:8px; padding:7px 10px; border-radius:var(--r-md); background:var(--dialogue-control-surface); color:var(--text-secondary); font-size:11px; }
+.companion-dialogue-presence { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:8px; padding:7px 10px; border-radius:var(--r-md); background:var(--dialogue-control-surface); color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .companion-dialogue-presence > span,
 .companion-dialogue-presence > button { display:inline-flex; align-items:center; gap:4px; }
 .companion-dialogue-presence .archive-icon { width:12px; height:12px; }
@@ -101,7 +108,7 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-attachment { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); margin-top:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--dialogue-control-surface); }
 .companion-dialogue-attachment > img { width:56px; height:56px; object-fit:contain; border-radius:var(--r-sm); background:var(--bg-elevated); }
 .companion-dialogue-attachment > div { flex:1; min-width:0; }
-.companion-dialogue-attachment strong { display:block; overflow:hidden; color:var(--text-primary); font-size:12px; line-height:1.6; text-overflow:ellipsis; white-space:nowrap; }
+.companion-dialogue-attachment strong { display:block; overflow:hidden; color:var(--text-primary); font-size:var(--fs-label-xs); line-height:1.6; text-overflow:ellipsis; white-space:nowrap; }
 .companion-dialogue-attachment button { display:inline-flex; align-items:center; justify-content:center; gap:var(--s-2); min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-elevated); color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .companion-dialogue-attachment > button:not(.companion-dialogue-image-generate) { width:var(--control-height-sm); padding:0; }
 .companion-dialogue-image-generate { flex-shrink:0; }
@@ -127,7 +134,7 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-microphone:hover,
 .companion-dialogue-microphone[data-state='capturing'] { background:var(--bg-hover); color:var(--text-primary); }
 .companion-dialogue-feedback,
-.companion-dialogue-connection { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0 0; padding:7px 10px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); color:var(--text-secondary); font-size:12px; line-height:1.6; overflow-wrap:anywhere; }
+.companion-dialogue-connection { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:8px 0 0; padding:7px 10px; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:1.6; overflow-wrap:anywhere; }
 .companion-dialogue-feedback[data-error='true'] { color:var(--danger-text); }
 .companion-dialogue-connection button { display:inline-flex; align-items:center; gap:var(--s-1); flex-shrink:0; min-height:var(--control-height-sm); padding:0 var(--s-1); border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .companion-dialogue-latest { display:flex; align-items:center; gap:var(--s-2); min-height:var(--control-height-sm); margin:var(--s-2) auto 0; padding:var(--s-1) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); }
@@ -154,3 +161,6 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
   :root:not([data-motion='full']) .companion-dialogue-dots i, :root:not([data-motion='full']) .companion-dialogue-line.is-streaming::after { animation:none; }
   :root:not([data-motion='full']) .companion-dialogue-speaker button, :root:not([data-motion='full']) .companion-dialogue-heading { transition:none; }
 }
+
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.companion-dialogue-dots i,.companion-dialogue-line.is-streaming::after) { animation:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.companion-dialogue-speaker button,.companion-dialogue-heading) { transition:none; }

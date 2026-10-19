@@ -75,21 +75,23 @@ onScopeDispose(stopMotion)
       :aria-busy="busy"
       @click="busy ? emit('cancel') : emit('download')"
     >
-      <span class="u004-shape" aria-hidden="true">
-        <span class="u004-middle" />
-        <span class="u004-cap u004-cap-left" />
-        <span class="u004-cap u004-cap-right" />
-      </span>
-      <span class="u004-track" aria-hidden="true"><span class="u004-bar" :style="{ transform: `scaleX(${percent / 100})` }" /></span>
-      <span class="u004-idle" aria-hidden="true">
-        <span class="u004-arw"><ArchiveIcon name="download" /></span>
-        <b>{{ retry ? '重试下载' : '下载' }}</b><small>{{ size }}</small>
-      </span>
-      <span class="u004-run" aria-hidden="true">
-        <b>{{ percent }}%</b><small><span>{{ phaseLabel }}</span><span>点击取消</span></small>
-      </span>
-      <span class="u004-ok" aria-hidden="true">
-        <i><ArchiveIcon name="success" /></i><span>已保存并校验</span>
+      <span class="u004-presentation" aria-hidden="true">
+        <span class="u004-shape">
+          <span class="u004-middle" />
+          <span class="u004-cap u004-cap-left" />
+          <span class="u004-cap u004-cap-right" />
+        </span>
+        <span class="u004-track"><span class="u004-bar" :style="{ transform: `scaleX(${percent / 100})` }" /></span>
+        <span class="u004-idle">
+          <span class="u004-arw"><ArchiveIcon name="download" /></span>
+          <b>{{ retry ? '重试下载' : '下载' }}</b><small>{{ size }}</small>
+        </span>
+        <span class="u004-run">
+          <b>{{ percent }}%</b><small><span>{{ phaseLabel }}</span><span>点击取消</span></small>
+        </span>
+        <span class="u004-ok">
+          <i><ArchiveIcon name="success" /></i><span>已保存并校验</span>
+        </span>
       </span>
     </button>
     <span v-if="busy" class="u004-live" role="progressbar" :aria-label="`${label}：${phaseLabel}`" :aria-valuenow="percent" :aria-valuemin="0" :aria-valuemax="100" />
@@ -106,10 +108,10 @@ onScopeDispose(stopMotion)
   --ux-ease: var(--ease-out);
   --ux-spring: var(--ease-out);
   --bar: var(--accent);
-  width: 240px;
+  width: 16rem;
   max-width: 100%;
   min-width: 0;
-  height: 48px;
+  height: 3.2rem;
   flex-shrink: 0;
 }
 .u004-btn {
@@ -125,10 +127,12 @@ onScopeDispose(stopMotion)
   font: inherit;
   cursor: pointer;
   isolation: isolate;
-  transition: transform var(--motion-press) var(--ux-spring);
+  --control-press-transform:none;
 }
-.u004-btn:focus-visible { outline: 2px solid var(--ux-accent); outline-offset: 4px; }
-.u004-btn:active:not(:disabled) { transform: scale(.97); }
+.u004-btn:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+/* Only the presentation moves; cancelling keeps the same pointer hit area. */
+.u004-presentation { position:absolute; inset:0; border-radius:inherit; pointer-events:none; transition:transform var(--motion-press) var(--ux-spring); }
+.u004-btn:active:not(:disabled):not(:focus-visible) .u004-presentation { transform:scale(.97); }
 .u004-shape, .u004-track, .u004-idle, .u004-run, .u004-ok { position: absolute; inset: 0; pointer-events: none; }
 /* Translate the round ends and scale only the bridge, keeping text and the hit area stable. */
 .u004-middle, .u004-cap::before { position: absolute; top: 0; bottom: 0; background: var(--ux-ink); transition: background-color var(--motion-hover) var(--ux-ease); }
@@ -143,20 +147,20 @@ onScopeDispose(stopMotion)
 .u004-arw .archive-icon { width: 22px; height: 22px; }
 .u004-arw :deep(path:first-child) { transition: transform var(--motion-press) var(--ux-ease); }
 .u004-idle b { font-size: var(--fs-label); font-weight: 700; white-space: nowrap; }
-.u004-idle small { margin-left: auto; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.u004-idle small { margin-left: auto; font-size:var(--fs-label-xs); font-weight: 600; white-space: nowrap; }
 .u004-track { border-radius: inherit; overflow: hidden; opacity: 0; background: color-mix(in srgb,var(--accent) 75%,var(--bg-deep)); transition: opacity var(--motion-hover) var(--ux-ease); }
 .u004-bar { position: absolute; inset: 0; background: var(--bar); transform-origin: 0 50%; }
 .u004-bar::after { content: ''; position: absolute; inset: auto 0 0; height: 8px; background: linear-gradient(100deg, transparent 30%, var(--on-art-sheen) 50%, transparent 70%); transform: translateX(-100%); }
 .u004-run { justify-content: space-between; gap: var(--s-2); padding: 0 var(--s-3); opacity: 0; transform: translateY(12px); color: var(--ux-accent-ink); }
 .u004-run b { font-size: var(--fs-label); font-weight: 760; font-variant-numeric: tabular-nums; }
-.u004-run small { display: grid; gap: 2px; font-size: 13px; font-weight: 600; text-align: right; }
+.u004-run small { display: grid; gap: 2px; font-size:var(--fs-label-xs); font-weight: 600; text-align: right; }
 .u004-run :is(b,small) { padding:2px 6px; border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); }
 .u004-ok { justify-content: center; gap: 10px; opacity: 0; transform: scale(.6); color: var(--ux-accent-ink); }
 .u004-ok i { position: absolute; left: calc(50% - 15px); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, currentColor 18%, transparent); transition: transform var(--motion-surface) var(--ux-ease); }
 .u004-ok .archive-icon { width: 20px; height: 20px; }
 /* compositor-exempt: One short success stroke in a 20px icon; reduced motion disables the transition. */
 .u004-ok :deep(path) { stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .45s var(--ux-ease) .25s; }
-.u004-ok > span { position: absolute; left: calc(50% - 28px); font-size: 16px; font-weight: 700; white-space: nowrap; opacity: 0; transform: translateX(-8px); transition: transform var(--motion-surface) var(--ux-ease), opacity var(--motion-hover) var(--ux-ease); }
+.u004-ok > span { position: absolute; left: calc(50% - 28px); font-size:var(--fs-body); font-weight: 700; white-space: nowrap; opacity: 0; transform: translateX(-8px); transition: transform var(--motion-surface) var(--ux-ease), opacity var(--motion-hover) var(--ux-ease); }
 .u004[data-state='run'] .u004-idle { opacity: 0; transform: translateY(-12px); }
 .u004[data-state='run'] .u004-arw :deep(path:first-child) { transform: translateY(26px); }
 .u004[data-state='run'] .u004-track { opacity: 1; }
@@ -179,7 +183,7 @@ onScopeDispose(stopMotion)
 .u004-btn:disabled .u004-ok { color: var(--text-disabled); }
 .u004-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 @media (hover: hover) and (pointer: fine) {
-  .u004-btn:hover:not(:disabled) { transform: translateY(-2px); }
+  .u004-btn:hover:not(:disabled):not(:focus-visible):not(:active) .u004-presentation { transform:translateY(-2px); }
   .u004[data-state='idle'] .u004-btn:hover:not(:disabled) .u004-arw :deep(path:first-child) { animation: u004-bob 1s var(--ux-ease) infinite; }
 }
 @keyframes u004-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
@@ -188,4 +192,6 @@ onScopeDispose(stopMotion)
 .u004[data-reduced-motion='true'] :deep(path),
 .u004[data-reduced-motion='true'] *::before,
 .u004[data-reduced-motion='true'] *::after { animation: none !important; transition: none !important; }
+.u004[data-reduced-motion='true'] .u004-presentation { transform:none; }
+.u004-btn:focus-visible .u004-arw :deep(path:first-child) { animation:none; }
 </style>

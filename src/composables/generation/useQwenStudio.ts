@@ -1,5 +1,5 @@
 import { computed, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
-import { qwenModels, qwenStatus, uploadQwenImage, type QwenModelStatus } from '@/api/qwenApi'
+import { qwenModels, qwenStatus, uploadQwenImage, readQwenTaskInput, type QwenModelStatus } from '@/api/qwenApi'
 import { cancelRuntimeTaskKey, fetchRuntimeResult, getRuntimeTask, getRuntimeTaskByKey, hasRuntimeTasks,
   runtimeResultPath, submitRuntimeTask, taskMessage, waitForRuntimeTask, type TaskRecord } from '@/api/runtimeTasks'
 import { newTaskRequestDraft, readTaskRequestDraft, type TaskRequestDraft } from '@/storage/taskRequestDraft'
@@ -9,6 +9,8 @@ import { imageMediaSession } from '@/platform/imageMediaSession'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { inspectMangaImage, mangaInputSize, prepareMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
 import { downloadMangaPng } from '@/composables/manga/mangaResult'
+import { createQwenDraftStorage, qwenParentId, type QwenDraftState } from '@/storage/qwenStudioDraft'
+import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 const message = (cause: unknown) => cause instanceof Error ? cause.message : '操作未完成，请重试'
@@ -18,8 +20,25 @@ export function useQwenStudio() {
   const form = reactive({ modelId: 'qwen-image-2.1-turbo', prompt: '', negative: '', width: 1024, height: 1024, steps: 40, cfg: 4, seed: 0 })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
-  const restoredInputMissing = ref(false)
-  const models = shallowRef<QwenModelStatus[]>([]), checking = ref(false), ready = ref(false), statusError = ref('')
+  const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
+  const draftStatus = ref(''), draftFailed = ref(false), draftRecoveryNeeded = ref(false), draftRecoveryError = ref('')
+  const draftStorage = createQwenDraftStorage()
+  let draftTimer: ReturnType<typeof setTimeout> | undefined, draftActive = false, draftVersion = 0
+  const persistDraft = async () => {
+    if (!draftActive || sourceChanged.value) return false
+    const version = ++draftVersion
+    draftStatus.value = '正在保存草稿…'
+    try {
+      await draftStorage.save({ form: { ...form }, randomSeed: randomSeed.value, resize: resize.value, parentId: parentId.value,
+        resultTaskId: result.value?.taskId || task.value?.taskId || null, source: source.value, references: references.value.map(value => ({ id: value.id, image: value.image })) })
+      if (version === draftVersion) { draftFailed.value = false; draftStatus.value = '草稿已保存，重新打开可继续' }
+      return version === draftVersion && !lifetime.signal.aborted
+    } catch (cause) {
+      if (version === draftVersion) { draftFailed.value = true; draftStatus.value = '草稿尚未保存：' + message(cause) }
+      return false
+    }
+  }
+  const models = shallowRef<QwenModelStatus[]>([]), checking = ref(false), ready = ref(false), initializing = ref(false), statusError = ref('')
   const task = shallowRef<TaskRecord | null>(null), request = shallowRef<TaskRequestDraft | null>(null)
   const result = shallowRef<TaskRecord | null>(null), resultBlob = shallowRef<Blob | null>(null), resultUrl = ref('')
   const busy = ref(false), importing = ref(false), observing = ref(false), cancelling = ref(false), saving = ref(false), saved = ref(false)
@@ -32,6 +51,11 @@ export function useQwenStudio() {
     if (sourceChanged.value || imageMediaSession() !== owner) throw new Error('工作区或运行时连接已变化，请重新打开页面；原任务仍保留在任务中心')
     if (request.value) assertRequestOwner(request.value, hasRuntimeTasks())
   }
+  watch([form, randomSeed, resize, source, references, parentId, result], () => {
+    if (!draftActive) return
+    clearTimeout(draftTimer); draftVersion++; draftStatus.value = '草稿待保存…'
+    draftTimer = setTimeout(() => { void persistDraft() }, 400)
+  }, { deep: true, flush: 'sync' })
   const selected = computed(() => models.value.find(model => model.id === form.modelId))
   const turbo = computed(() => form.modelId === 'qwen-image-2.1-turbo')
   const unresolved = computed(() => !!request.value && !terminal(task.value) || !!task.value && !terminal(task.value))
@@ -40,7 +64,7 @@ export function useQwenStudio() {
   const needsResize = computed(() => inputSize.value?.resized || references.value.some(value => mangaInputSize(value.image).resized))
   const issue = computed(() => sourceChanged.value ? '请重新打开页面以连接当前工作区' : !hasRuntimeTasks() ? '请先启用本机私人工作区'
     : !selected.value?.available ? selected.value?.unavailableReason || statusError.value || '请先准备所选 Qwen 模型'
-      : restoredInputMissing.value ? '再次编辑前请重新导入原图和参考图，或明确切换到文生图'
+      : restoredInputMissing.value ? '原任务输入未恢复，请重新读取输入，或移除输入改为文生图'
         : !form.prompt.trim() ? '填写画面描述或编辑指令' : needsResize.value && !resize.value ? '请勾选缩小输入图片副本' : '')
   const canRun = computed(() => !locked.value && !issue.value)
   const progress = computed(() => typeof task.value?.metadata.progress === 'number' ? Math.round(Math.max(0, Math.min(1, task.value.metadata.progress)) * 100) : null)
@@ -51,6 +75,10 @@ export function useQwenStudio() {
   }
   function accept(value: TaskRecord) {
     if (value.kind !== 'qwen' || value.provider !== 'native' || value.input.family !== 'qwen-image') throw new Error('任务类型与 Qwen 创作不符')
+    const context = value.metadata.context
+    if (context !== undefined && context !== null && (typeof context !== 'object' || Array.isArray(context))) throw new Error('Qwen 任务来源信息无效')
+    const parent = (context as Record<string, unknown> | null | undefined)?.parentId
+    if (parent !== undefined && parent !== null && !qwenParentId(parent)) throw new Error('Qwen 来源作品身份无效')
     if (!task.value || value.taskId !== task.value.taskId || value.revision >= task.value.revision) task.value = structuredClone(value)
   }
   async function refresh() {
@@ -63,9 +91,9 @@ export function useQwenStudio() {
   async function loadSource(file: File) {
     if (locked.value) return
     importing.value = true; error.value = ''
-    try { check(); const image = await inspectMangaImage(file, file.name); check(); source.value = image; restoredInputMissing.value = false; resize.value = false; setUrl(sourceUrl, image.blob) }
+    try { check(); const image = await inspectMangaImage(file, file.name); check(); source.value = image; parentId.value = null; draftActive = !draftRecoveryNeeded.value; restoredInputMissing.value = false; resize.value = false; setUrl(sourceUrl, image.blob) }
     catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
-    finally { importing.value = false }
+    finally { importing.value = false; if (draftActive) void persistDraft() }
   }
   function removeReference(id: string) {
     if (locked.value) return
@@ -76,7 +104,54 @@ export function useQwenStudio() {
   function removeSource() {
     if (locked.value) return
     for (const value of references.value) URL.revokeObjectURL(value.url)
-    references.value = []; source.value = null; restoredInputMissing.value = false; resize.value = false; setUrl(sourceUrl, null)
+    references.value = []; source.value = null; parentId.value = null; draftActive = !draftRecoveryNeeded.value; restoredInputMissing.value = false; resize.value = false; setUrl(sourceUrl, null); void persistDraft()
+  }
+  function moveReference(id: string, offset: -1 | 1) {
+    if (locked.value) return
+    const index = references.value.findIndex(value => value.id === id), destination = index + offset
+    if (index < 0 || destination < 0 || destination >= references.value.length) return
+    const next = [...references.value], [value] = next.splice(index, 1)
+    next.splice(destination, 0, value!); references.value = next
+    notice.value = `参考图已移至图 ${destination + 2}`
+  }
+  async function restoreTaskInputs(value: TaskRecord) {
+    if (!value.input.initImage) {
+      for (const item of references.value) URL.revokeObjectURL(item.url)
+      references.value = []; source.value = null; setUrl(sourceUrl, null); restoredInputMissing.value = false
+      return
+    }
+    restoredInputMissing.value = true
+    const images: MangaImage[] = []
+    const count = 1 + (Array.isArray(value.input.referenceImages) ? value.input.referenceImages.length : 0)
+    if (count > 4) throw new Error('原任务输入数量无效')
+    for (let index = 0; index < count; index++) {
+      const blob = await readQwenTaskInput(value, index, lifetime.signal); check()
+      images.push(await inspectMangaImage(blob, index === 0 ? '原任务原图' : `原任务参考图 ${index}`)); check()
+    }
+    for (const item of references.value) URL.revokeObjectURL(item.url)
+    source.value = images[0]!; setUrl(sourceUrl, source.value.blob)
+    references.value = images.slice(1).map(image => ({ id: crypto.randomUUID(), image, url: URL.createObjectURL(image.blob) }))
+    restoredInputMissing.value = false
+  }
+  async function retryInputs() {
+    if (!task.value || importing.value || busy.value) return
+    importing.value = true; error.value = ''
+    try { check(); await restoreTaskInputs(task.value); draftActive = !draftRecoveryNeeded.value; void persistDraft(); notice.value = '已恢复原任务的原图及参考图' }
+    catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
+    finally { importing.value = false }
+  }
+  async function continueResult() {
+    if (locked.value || !result.value || !resultBlob.value) return
+    importing.value = true; error.value = ''
+    try {
+      check(); const output = result.value, image = await inspectMangaImage(resultBlob.value, '上一轮编辑结果'); check()
+      await releaseRequest(); check()
+      for (const value of references.value) URL.revokeObjectURL(value.url)
+      references.value = []; source.value = image; setUrl(sourceUrl, image.blob); restoredInputMissing.value = false
+      draftActive = !draftRecoveryNeeded.value; parentId.value = taskArtworkId(output.taskId, 0); form.prompt = ''; task.value = null; resize.value = false
+      notice.value = '已将当前结果作为新原图，请填写下一步指令；上一轮结果仍可导出或入册'
+    } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
+    finally { importing.value = false }
   }
   async function addReferences(files: File[]) {
     if (locked.value || !source.value || !files.length) return
@@ -162,11 +237,11 @@ export function useQwenStudio() {
         if (names.length) input.referenceImages = names
       }
       if (cancelled) { notice.value = '已取消，尚未提交任务'; return }
-      request.value = newTaskRequestDraft('qwen', input, true)
+      request.value = newTaskRequestDraft('qwen', input, true, { parentId: parentId.value })
       request.value.submitted = true
       await writeRequestDraft(slot, request.value); check()
       if (cancelled) { await cancel(); return }
-      const value = await submitRuntimeTask('qwen', input, request.value.key, undefined, { signal: lifetime.signal, onSubmitting: check })
+      const value = await submitRuntimeTask('qwen', input, request.value.key, request.value.context, { signal: lifetime.signal, onSubmitting: check })
       check(); accept(value); request.value.taskId = value.taskId
       await writeRequestDraft(slot, request.value); check()
       if (cancelled) await cancel()
@@ -185,9 +260,53 @@ export function useQwenStudio() {
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
     finally { saving.value = false }
   }
-  async function initialize(modelId?: string, taskId?: string, artworkId?: string) {
+  function applyDraft(draft: QwenDraftState) {
+    Object.assign(form, draft.form); randomSeed.value = draft.randomSeed; resize.value = draft.resize; parentId.value = draft.parentId
+    source.value = draft.source; setUrl(sourceUrl, draft.source?.blob ?? null)
+    for (const value of references.value) URL.revokeObjectURL(value.url)
+    references.value = draft.references.map(value => ({ ...value, url: URL.createObjectURL(value.image.blob) }))
+    restoredInputMissing.value = false; draftStatus.value = '已恢复上次创作草稿'
+  }
+  async function recoverDraft() {
+    if (locked.value) return
+    importing.value = true; draftActive = false
+    try {
+      check(); const draft = await draftStorage.restore(lifetime.signal); check()
+      if (!draft) throw new Error('旧草稿记录不存在，可保留恢复槽后保存当前创作')
+      await releaseRequest(); task.value = null; result.value = null; resultBlob.value = null; setUrl(resultUrl, null)
+      applyDraft(draft); draftRecoveryNeeded.value = false; draftRecoveryError.value = ''; draftActive = true
+      if (draft.resultTaskId) {
+        try { const found = await getRuntimeTask(draft.resultTaskId, lifetime.signal); check(); accept(found); void observe() }
+        catch (cause) { check(); notice.value = '草稿已恢复，上次结果可到任务中心核对：' + message(cause) }
+      }
+    } catch (cause) { if (!lifetime.signal.aborted) draftRecoveryError.value = message(cause) }
+    finally { importing.value = false }
+  }
+  async function preserveAndSaveDraft() {
+    if (locked.value || !draftRecoveryNeeded.value || restoredInputMissing.value) return
+    importing.value = true
     try {
       check()
+      await draftStorage.save({ form: { ...form }, randomSeed: randomSeed.value, resize: resize.value, parentId: parentId.value,
+        resultTaskId: result.value?.taskId || task.value?.taskId || null, source: source.value,
+        references: references.value.map(value => ({ id: value.id, image: value.image })) }, true)
+      check(); draftRecoveryNeeded.value = false; draftRecoveryError.value = ''; draftFailed.value = false; draftActive = true
+      draftStatus.value = '当前创作已保存，旧草稿保留在恢复槽'
+    } catch (cause) { if (!lifetime.signal.aborted) draftRecoveryError.value = message(cause) }
+    finally { importing.value = false }
+  }
+  async function initialize(modelId?: string, taskId?: string, artworkId?: string) {
+    if (initializing.value || ready.value) return
+    initializing.value = true; error.value = ''
+    try {
+      check()
+      let draft: QwenDraftState | null = null
+      try { draft = await draftStorage.restore(lifetime.signal); check() }
+      catch (cause) {
+        check(); draftRecoveryNeeded.value = true; draftRecoveryError.value = message(cause)
+        draftStatus.value = '旧草稿仍保留，当前创作尚未自动保存'
+      }
+      if (draft) applyDraft(draft)
       if (qwenModels.some(model => model.value === modelId)) form.modelId = modelId!
       request.value = readTaskRequestDraft(slot)
       if (request.value) {
@@ -197,22 +316,29 @@ export function useQwenStudio() {
         if (found) accept(found)
         if (terminal(task.value)) await releaseRequest()
       }
+      if (!taskId && !artworkId && !task.value && !request.value && draft?.resultTaskId) {
+        try { const found = await getRuntimeTask(draft.resultTaskId, lifetime.signal); check(); accept(found) }
+        catch (cause) { check(); notice.value = '上次结果未能读取，可到任务中心核对：' + message(cause) }
+      }
       if (taskId && !request.value) {
         const found = await getRuntimeTask(taskId, lifetime.signal); check(); accept(found)
       } else if (taskId && taskId !== task.value?.taskId) {
         notice.value = '上次操作尚未确认，已恢复原请求；其他结果可在任务中心查看'
       }
-      const input = request.value?.input || task.value?.input
+      const input = request.value?.input || (taskId || !draft ? task.value?.input : undefined)
       if (input) {
         for (const key of Object.keys(form) as (keyof typeof form)[]) {
           const value = input[key]
           if (typeof value === typeof form[key]) Object.assign(form, { [key]: value })
         }
         randomSeed.value = typeof input.seed !== 'number'
-        if (input.initImage) {
-          restoredInputMissing.value = true
-          notice.value += `${notice.value ? '。' : ''}原编辑任务使用已保护的输入；再次编辑前请重新导入原图和参考图`
-        }
+        const context = request.value?.context || task.value?.metadata.context
+        parentId.value = context && typeof context === 'object' && qwenParentId((context as Record<string, unknown>).parentId)
+          ? (context as Record<string, unknown>).parentId as string | number : null
+        if (task.value) {
+          try { await restoreTaskInputs(task.value) }
+          catch (cause) { check(); restoredInputMissing.value = !!input.initImage; error.value = message(cause) }
+        } else if (input.initImage && !source.value) restoredInputMissing.value = true
       }
       if (artworkId) {
         if (unresolved.value) notice.value = '上次操作尚未确认，已恢复原请求；结束后可从作品册再次打开编辑'
@@ -220,22 +346,27 @@ export function useQwenStudio() {
           try {
             const artwork = await artworkRepository.readArtwork(artworkId); check()
             if (!artwork?.image_id) throw new Error('作品原图不可用，请重新导入本地图片')
+            if (!qwenParentId(artwork.id)) throw new Error('来源作品身份无效，请在作品册核对')
             const blob = await artworkRepository.getImage(artwork.image_id, lifetime.signal); check()
             if (!blob) throw new Error('作品原图无法读取，请重新导入本地图片')
             source.value = await inspectMangaImage(blob, artwork.sceneTitle || '作品原图'); check()
+            for (const value of references.value) URL.revokeObjectURL(value.url)
+            references.value = []; parentId.value = artwork.id
             setUrl(sourceUrl, source.value.blob); restoredInputMissing.value = false; form.prompt = ''; task.value = null
             if (qwenModels.some(model => model.value === artwork.checkpoint)) form.modelId = artwork.checkpoint!
             notice.value = '已导入作品副本，请填写编辑指令；原作品保持不变'
           } catch (cause) { check(); error.value = message(cause) }
         }
       }
-      ready.value = true
+      draftActive = !restoredInputMissing.value && !draftRecoveryNeeded.value; ready.value = true
+      if (draftActive) void persistDraft()
       void refresh()
       if (request.value || task.value) void observe()
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
+    finally { initializing.value = false }
   }
-  onScopeDispose(() => { lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
+  onScopeDispose(() => { clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
   return { form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
     busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, inputSize, progress, taskText,
-    refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize }
+    ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize }
 }

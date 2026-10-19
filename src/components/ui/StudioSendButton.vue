@@ -22,7 +22,7 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 </template>
 
 <style scoped>
-.u005 { position:relative; display:grid; place-items:center; flex:none; width:42px; height:42px; border:0; padding:0; border-radius:var(--r-md); background:linear-gradient(140deg,var(--accent-violet),var(--accent)); color:var(--text-inverse); cursor:pointer; isolation:isolate; }
+.u005 { --control-press-transform:none; position:relative; display:grid; place-items:center; flex:none; width:42px; height:42px; border:0; padding:0; border-radius:var(--r-md); background:linear-gradient(140deg,var(--accent-violet),var(--accent)); color:var(--text-inverse); cursor:pointer; isolation:isolate; }
 .u005 .archive-icon { width:22px; height:22px; }
 .u005-idle { display:grid; place-items:center; transform:translate(-1px,1px) rotate(-18deg); transition:transform .45s cubic-bezier(.34,1.45,.64,1),opacity .2s; }
 .u005[data-busy='true'] { background:var(--bg-elevated); color:var(--text-primary); }

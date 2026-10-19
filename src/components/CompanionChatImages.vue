@@ -9,7 +9,7 @@
         <span v-else class="companion-chat-image-placeholder"><ArchiveIcon name="image" />{{ failures[identity(item)] ? '暂无缩略图 · 查看原图' : thumbnailsLoading ? '正在读取预览…' : '查看原图' }}</span>
       </button>
       <figcaption>{{ item.name }}</figcaption>
-      <button v-if="failures[identity(item)]" class="companion-chat-image-retry" type="button" :disabled="thumbnailsLoading" @click="loadImages(true)">重读缩略图</button>
+      <button v-if="failures[identity(item)]" class="companion-chat-image-retry btn btn-ghost btn-sm" type="button" :disabled="thumbnailsLoading" @click="loadImages(true)">重读缩略图</button>
     </figure>
     <Teleport to="body">
       <dialog ref="dialog" class="companion-chat-image-dialog" aria-label="对话图片预览" @close="onDialogClose" @cancel.prevent="closePreview" @click="onBackdropClick" @keydown.esc="onEscape">
@@ -110,30 +110,29 @@ onBeforeUnmount(() => { activeView = false; observer?.disconnect(); visible = fa
 </script>
 
 <style scoped>
-.companion-chat-images { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
-.companion-chat-images figure { flex:1; min-width:140px; max-width:300px; margin:0; padding:8px; border:1px solid var(--border-soft); border-radius:12px; background:var(--bg-elevated); }
-.companion-chat-image-open { position:relative; display:block; width:100%; aspect-ratio:4/3; padding:0; overflow:hidden; border:0; border-radius:8px; background:var(--bg-deep); cursor:zoom-in; }
+.companion-chat-images { display:flex; flex-wrap:wrap; gap:var(--s-3); margin-top:var(--s-3); }
+.companion-chat-images figure { flex:1; min-width:min(140px,100%); max-width:300px; margin:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-elevated); }
+.companion-chat-image-open { position:relative; display:block; width:100%; aspect-ratio:4/3; padding:0; overflow:hidden; border:0; border-radius:var(--r-sm); background:var(--bg-deep); cursor:zoom-in; }
 .companion-chat-image-open img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .companion-chat-image-open img.is-ready { opacity:1; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .companion-chat-image-open img { transition:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .companion-chat-image-open img { transition:none; }
 .companion-chat-image-placeholder { position:absolute; inset:0; box-sizing:border-box; display:flex; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-4) var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .companion-chat-image-placeholder .archive-icon { flex-shrink:0; width:20px; height:20px; }
-.companion-chat-images p { margin:0; padding:24px 8px; color:var(--text-secondary); font-size:12px; }
-.companion-chat-images figcaption { overflow:hidden; margin-top:6px; color:var(--text-secondary); font-size:11px; line-height:1.5; text-overflow:ellipsis; white-space:nowrap; }
-.companion-chat-image-retry { min-height:28px; margin-top:5px; padding:3px 6px; border:1px solid var(--border-soft); border-radius:6px; background:var(--bg-surface); color:var(--text-primary); }
-.companion-chat-image-retry:disabled { color:var(--text-disabled); cursor:default; }
+.companion-chat-images p { margin:0; padding:var(--s-5) var(--s-2); color:var(--text-secondary); font-size:var(--fs-body-sm); }
+.companion-chat-images figcaption { overflow:hidden; margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); text-overflow:ellipsis; white-space:nowrap; }
+.companion-chat-image-retry { margin-top:var(--s-2); max-width:100%; white-space:normal; }
 .companion-chat-images:focus-visible,.companion-chat-image-open:focus-visible,.companion-chat-image-retry:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.companion-chat-image-dialog { box-sizing:border-box; width:min(860px,calc(100vw - 24px)); height:min(760px,calc(100dvh - 24px)); overflow:hidden; padding:12px; border:1px solid var(--border-soft); border-radius:16px; background:var(--bg-surface); color:var(--text-primary); }
+.companion-chat-image-dialog { box-sizing:border-box; width:min(860px,calc(100vw - 2 * var(--s-3))); height:min(760px,calc(100dvh - var(--desktop-chrome-height,0px) - 2 * var(--s-3))); overflow:hidden; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); }
 .companion-chat-image-dialog[open] { display:grid; grid-template-rows:auto minmax(0,1fr); }
 .companion-chat-image-dialog::backdrop { background:var(--art-scrim); }
-.companion-chat-image-dialog header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; font-size:13px; }
+.companion-chat-image-dialog header { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); margin-bottom:var(--s-3); font-size:var(--fs-label); }
 .companion-chat-image-dialog header span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.companion-chat-image-dialog header button { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; padding:0; border:1px solid var(--border-soft); border-radius:8px; background:var(--bg-elevated); color:var(--text-primary); cursor:pointer; }
+.companion-chat-image-dialog header button { display:grid; place-items:center; flex-shrink:0; width:var(--control-height-sm); height:var(--control-height-sm); padding:0; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-elevated); color:var(--text-primary); cursor:pointer; }
 .companion-chat-image-dialog header button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.companion-chat-image-body { min-height:0; display:grid; grid-template-rows:72px minmax(0,1fr); overflow:hidden; }
+.companion-chat-image-body { min-height:0; display:grid; grid-template-rows:minmax(0,auto) minmax(0,1fr); overflow:hidden; }
 .companion-chat-image-body:focus-visible { outline:none; box-shadow:inset 0 0 0 2px var(--focus-color); }
-.companion-chat-image-feedback { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-height:0; overflow:auto; }
+.companion-chat-image-feedback { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-height:0; max-height:min(8rem,25dvh); overflow:auto; }
 .companion-chat-image-feedback p { margin:0; padding:var(--s-2) 0; }
 .companion-chat-image-dialog :deep(.zoomable-image-viewer) { min-width:0; min-height:0; height:100%; }
 .companion-chat-image-dialog :deep(.zoomable-img) { max-height:100%; }

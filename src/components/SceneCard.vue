@@ -4,10 +4,7 @@
     :class="[`sc-${mode}`, { 'sc-static': !clickable, 'sc-complete-preview': completePreview }]"
     :style="previewStyle"
     :data-rating="contentRating"
-    :role="clickable ? 'button' : undefined"
-    :tabindex="clickable ? 0 : undefined"
-    @click="clickable && emit('pick', scene)"
-    @keydown="onCardKeydown"
+    @click="onCardClick"
   >
     <div class="sc-band">
       <div v-if="thumbId && thumbSrc" class="sc-thumb-skeleton" :class="{ visible: !thumbLoaded && !thumbFailed }" aria-hidden="true"></div>
@@ -29,6 +26,9 @@
       <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
       <span v-if="mode === 'grid'" class="sc-cat">{{ scene.category || '场景' }}</span>
       <slot name="band" :scene="scene" />
+      <button v-if="clickable" class="sc-pick" type="button"
+        :aria-label="ariaLabel || '查看场景：' + (scene.title || '未命名')" :aria-expanded="ariaExpanded"
+        @click.stop="emit('pick', scene)" />
     </div>
 
     <div class="sc-body">
@@ -81,11 +81,14 @@ const props = withDefaults(defineProps<{
   imgVersion?: string | number
   thumbUrl?: string
   previewDimensions?: { width: number; height: number }
+  ariaLabel?: string
+  ariaExpanded?: boolean
 }>(), {
   mode: 'grid',
   clickable: undefined,
   suppressTags: false,
   completePreview: false,
+  ariaExpanded: undefined,
 })
 
 const emit = defineEmits<{ pick: [scene: SceneCardScene] }>()
@@ -95,9 +98,9 @@ const TAG_BLOCKLIST = ['official_cg', 'visual_audited']
 const clickable = computed(() =>
   props.clickable === true || (props.clickable !== false && props.mode !== 'strip')
 )
-function onCardKeydown(event: KeyboardEvent) {
-  if (!clickable.value || event.target !== event.currentTarget || event.defaultPrevented || event.isComposing || (event.key !== 'Enter' && event.key !== ' ')) return
-  event.preventDefault()
+function onCardClick(event: MouseEvent) {
+  if (!clickable.value || event.defaultPrevented || !(event.target instanceof Element)
+    || event.target.closest('button,a,input,textarea,select,summary,details,[role="button"]')) return
   emit('pick', props.scene)
 }
 const contentRating = computed(() => props.scene.rating || (props.scene.mature ? 'R18' : 'All'))

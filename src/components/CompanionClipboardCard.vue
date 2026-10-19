@@ -22,11 +22,11 @@ const emit = defineEmits<{ inspect: []; accept: []; dismiss: [] }>()
 </script>
 
 <style scoped>
-.companion-clipboard-card { display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:10px 14px 0; padding:12px; border:1px solid var(--border-soft); border-radius:12px; background:var(--bg-surface); color:var(--text-primary); }
-.companion-clipboard-card img { width:64px; height:64px; flex-shrink:0; object-fit:contain; border-radius:8px; background:var(--bg-elevated); }
+.companion-clipboard-card { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); margin:var(--s-3) var(--s-4) 0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); }
+.companion-clipboard-card img { width:64px; height:64px; flex-shrink:0; object-fit:contain; border-radius:var(--r-sm); background:var(--bg-elevated); }
 .companion-clipboard-card > div:not(.companion-clipboard-actions) { flex:1; min-width:0; }
-.companion-clipboard-card strong { font-size:13px; }
-.companion-clipboard-preview { max-height:72px; overflow:auto; margin:6px 0 0; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--text-secondary); font-size:12px; line-height:1.7; }
-.companion-clipboard-actions { display:flex; flex-wrap:wrap; gap:6px; width:100%; }
+.companion-clipboard-card strong { font-size:var(--fs-label); }
+.companion-clipboard-preview { max-height:6em; overflow:auto; margin:var(--s-2) 0 0; white-space:pre-wrap; overflow-wrap:anywhere; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
+.companion-clipboard-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); width:100%; }
 .companion-clipboard-actions button:disabled { opacity:1; color:var(--text-disabled); }
 </style>

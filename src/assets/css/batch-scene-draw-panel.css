@@ -170,10 +170,9 @@
   position:relative;
   @apply tw:p-0; border: 1px solid var(--border-soft); @apply tw:rounded-md;
   background: var(--bg-deep); cursor: zoom-in; @apply tw:overflow-hidden;
-  transition: border-color var(--motion-hover), transform var(--motion-press) var(--ease-out);
+  transition: border-color var(--motion-hover);
 }
 .batch-thumb-btn:hover { @apply tw:border-strong; }
-.batch-thumb-btn:active { transform: scale(.98); }
 .batch-thumb { @apply tw:block tw:w-full tw:h-auto tw:object-contain; }
 .batch-thumb-placeholder {
   @apply tw:grid; place-content: center; justify-items: center; @apply tw:gap-s-2;
@@ -186,7 +185,12 @@
 .batch-thumb-placeholder[data-state="running"] .archive-icon { animation: batchPulse 1.4s ease-in-out infinite; }
 .batch-thumb-placeholder[data-state="failed"] { border-color: color-mix(in srgb, var(--danger) 40%, var(--border-soft)); @apply tw:text-danger-text; }
 @keyframes batchPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .4; transform: scale(.88); } }
-@media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; } }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; }
+  :root:not([data-motion='full']) .batch-progress i { transition:none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) .batch-thumb-placeholder[data-state="running"] .archive-icon { animation:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .batch-progress i { transition:none; }
 
 .batch-card-caption { @apply tw:grid tw:gap-[1px] tw:min-w-0; }
 .batch-card-header-line { @apply tw:flex tw:items-center tw:gap-[6px] tw:min-w-0; }

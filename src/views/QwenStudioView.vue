@@ -6,7 +6,7 @@
     </header>
     <div class="qwen-layout">
       <section class="qwen-canvas" aria-label="图像预览">
-        <div class="qwen-toolbar"><div class="studio-segments" role="group" aria-label="预览图片">
+        <div class="qwen-toolbar"><div class="studio-segments" role="group" aria-label="预览图片"><AnimatedSelection />
           <button type="button" :class="{ active: preview === 'result' }" :aria-pressed="preview === 'result'" @click="preview = 'result'">生成结果</button>
           <button type="button" :class="{ active: preview === 'source' }" :aria-pressed="preview === 'source'" :disabled="!sourceUrl" @click="referencePreview = ''; preview = 'source'">输入图片</button>
         </div><span v-if="result && preview === 'result'">{{ result.input.width }} × {{ result.input.height }}</span></div>
@@ -15,7 +15,7 @@
           <div v-else class="qwen-empty"><ArchiveIcon name="image" /><h2>{{ result ? '结果已保存在任务中' : '从一句描述开始' }}</h2><p>{{ result ? '可直接入册，或重新读取预览。' : '填写画面描述，再点击生成。编辑已有图片时，先导入原图。' }}</p></div>
         </div>
         <p v-if="result && task?.taskId !== result.taskId">这里保留的是上一次结果，新任务不会覆盖已保存的图片。</p>
-        <div class="qwen-toolbar"><button class="btn btn-ghost" type="button" :disabled="!result || saving || busy || importing || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '存入我的作品' }}</button><button class="btn btn-ghost" type="button" :disabled="!resultBlob || saving || busy || importing" @click="exportResult('download')"><ArchiveIcon name="download" />导出 PNG</button></div>
+        <div class="qwen-toolbar"><button class="btn btn-primary" type="button" :disabled="!resultBlob || locked" @click="editResult"><ArchiveIcon name="inpaint" />用当前结果继续编辑</button><button class="btn btn-ghost" type="button" :disabled="!result || saving || busy || importing || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '存入我的作品' }}</button><button class="btn btn-ghost" type="button" :disabled="!resultBlob || saving || busy || importing" @click="exportResult('download')"><ArchiveIcon name="download" />导出 PNG</button></div>
       </section>
       <form class="qwen-controls" @submit.prevent="run">
         <section class="qwen-readiness" aria-label="模型准备状态">
@@ -24,7 +24,7 @@
           <RouterLink v-if="!selected?.available" class="btn btn-ghost btn-sm" :to="{ path: '/control', query: { engine: 'native', model: form.modelId } }">前往控制室准备</RouterLink>
         </section>
         <div class="qwen-field"><label for="qwen-model">模型</label><StudioSelect id="qwen-model" v-model="form.modelId" label="Qwen 模型" :options="qwenModels" :disabled="locked" /></div>
-        <div class="qwen-field"><label for="qwen-prompt">{{ source ? '编辑指令' : '画面描述' }}</label><textarea id="qwen-prompt" v-model="form.prompt" rows="5" maxlength="12000" :disabled="locked" :placeholder="source ? '描述要改变的部分，以及需要保留的内容' : '描述主体、构图、环境与光线'" /></div>
+        <div class="qwen-field"><label for="qwen-prompt">{{ source ? '编辑指令' : '画面描述' }}</label><textarea class="textarea" id="qwen-prompt" v-model="form.prompt" rows="5" maxlength="12000" :disabled="locked" :placeholder="source ? '描述要改变的部分，以及需要保留的内容' : '描述主体、构图、环境与光线'" /></div>
         <section class="qwen-source" aria-label="可选编辑原图">
           <div class="qwen-toolbar"><button ref="sourceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '更换原图' : '导入编辑原图' }}</button><button v-if="source || restoredInputMissing" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="clearSources">移除输入，改为文生图</button></div>
           <input ref="picker" type="file" hidden accept="image/png,image/jpeg,image/webp" @change="pick" />
@@ -32,24 +32,24 @@
           <template v-if="source">
             <button ref="referenceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked || references.length >= 3" @click="referencePicker?.click()"><ArchiveIcon name="upload" />添加参考图（{{ references.length }} / 3）</button>
             <input ref="referencePicker" type="file" hidden multiple accept="image/png,image/jpeg,image/webp" @change="pickReferences" />
-            <ol v-if="references.length" class="qwen-references" aria-label="参考图顺序" start="2">
-              <li v-for="(value, index) in references" :key="value.id"><button class="btn btn-quiet btn-sm" type="button" :aria-label="`预览图 ${index + 2}：${value.image.name}`" @click="referencePreview = value.id; preview = 'source'">图 {{ index + 2 }} · {{ value.image.name }}</button><button class="btn btn-quiet btn-sm" type="button" :disabled="locked" :aria-label="`移除图 ${index + 2}：${value.image.name}`" @click="dropReference(value.id)">移除</button></li>
-            </ol>
+            <TransitionGroup v-if="references.length" tag="ol" name="qwen-reference" class="qwen-references" aria-label="参考图顺序" start="2" @before-leave="retireReference">
+              <li v-for="(value, index) in references" :key="value.id"><button class="btn btn-quiet btn-sm" type="button" :aria-label="`预览图 ${index + 2}：${value.image.name}`" @click="referencePreview = value.id; preview = 'source'">图 {{ index + 2 }} · {{ value.image.name }}</button><span class="qwen-reference-actions"><button class="btn btn-quiet btn-sm" type="button" :disabled="locked || index === 0" :aria-label="`前移图 ${index + 2}`" @click="reorderReference(value.id, -1, $event)">前移</button><button class="btn btn-quiet btn-sm" type="button" :disabled="locked || index === references.length - 1" :aria-label="`后移图 ${index + 2}`" @click="reorderReference(value.id, 1, $event)">后移</button><button class="btn btn-quiet btn-sm" type="button" :disabled="locked" :aria-label="`移除图 ${index + 2}：${value.image.name}`" @click="dropReference(value.id)">移除</button></span></li>
+            </TransitionGroup>
             <p>按显示顺序提供图片；可在指令中用「图 1」「图 2」指定用途。</p>
           </template>
           <StudioCheckbox v-if="needsResize" v-model:checked="resize" :disabled="locked" label="缩小超限输入图片副本">按处理上限缩小超限图片的副本，保留本地原文件</StudioCheckbox>
         </section>
-        <div class="qwen-pair"><div class="qwen-field"><label for="qwen-width">宽度</label><input id="qwen-width" v-model.number="form.width" type="number" min="512" max="2816" step="32" :disabled="locked" /></div><div class="qwen-field"><label for="qwen-height">高度</label><input id="qwen-height" v-model.number="form.height" type="number" min="512" max="2816" step="32" :disabled="locked" /></div></div>
+        <div class="qwen-pair"><div class="qwen-field"><label for="qwen-width">宽度</label><input class="input" id="qwen-width" v-model.number="form.width" type="number" min="512" max="2816" step="32" :disabled="locked" /></div><div class="qwen-field"><label for="qwen-height">高度</label><input class="input" id="qwen-height" v-model.number="form.height" type="number" min="512" max="2816" step="32" :disabled="locked" /></div></div>
         <p class="qwen-hint">宽高为 32 的倍数。大画幅会增加显存与内存占用。</p>
-        <template v-if="!turbo">
-          <div class="qwen-field"><label for="qwen-negative">负向描述（可选）</label><textarea id="qwen-negative" v-model="form.negative" rows="2" maxlength="8000" :disabled="locked" /></div>
-          <div class="qwen-pair"><div class="qwen-field"><label for="qwen-steps">步数</label><input id="qwen-steps" v-model.number="form.steps" type="number" min="1" max="100" :disabled="locked" /></div><div v-if="form.negative.trim()" class="qwen-field"><label for="qwen-cfg">CFG</label><input id="qwen-cfg" v-model.number="form.cfg" type="number" min="1.1" max="20" step="0.1" :disabled="locked" /></div></div>
+        <details class="qwen-advanced"><StudioDisclosureSummary>高级参数 · {{ turbo ? '8 步 · CFG 1' : `${form.steps} 步` }} · {{ randomSeed ? '随机种子' : '固定种子' }}</StudioDisclosureSummary><div class="qwen-advanced-body"><template v-if="!turbo">
+          <div class="qwen-field"><label for="qwen-negative">负向描述（可选）</label><textarea class="textarea" id="qwen-negative" v-model="form.negative" rows="2" maxlength="8000" :disabled="locked" /></div>
+          <div class="qwen-pair"><div class="qwen-field"><label for="qwen-steps">步数</label><input class="input" id="qwen-steps" v-model.number="form.steps" type="number" min="1" max="100" :disabled="locked" /></div><div v-if="form.negative.trim()" class="qwen-field"><label for="qwen-cfg">CFG</label><input class="input" id="qwen-cfg" v-model.number="form.cfg" type="number" min="1.1" max="20" step="0.1" :disabled="locked" /></div></div>
         </template>
         <p v-else class="qwen-hint">Turbo 使用固定 8 步、CFG 1，无负向描述。</p>
         <StudioCheckbox v-model:checked="randomSeed" :disabled="locked" label="每次随机种子">每次随机种子</StudioCheckbox>
-        <div v-if="!randomSeed" class="qwen-field"><label for="qwen-seed">种子</label><input id="qwen-seed" v-model.number="form.seed" type="number" min="0" max="2147483647" step="1" :disabled="locked" /></div>
-        <p v-if="selected" class="qwen-hint">Qwen 权重使用研究许可，商用须另获授权。<a :href="selected.licenseUrl" target="_blank" rel="noopener noreferrer">查看许可</a></p>
-        <div class="qwen-feedback" aria-live="polite"><p v-if="importing">正在读取输入图片…</p><p v-if="taskText">{{ taskText }}{{ progress === null || !unresolved ? '' : ` · ${progress}%` }}</p><p v-if="notice">{{ notice }}</p><p v-if="error" class="qwen-error" role="alert">{{ error }}</p><p v-if="!locked && issue">{{ issue }}</p></div>
+        <div v-if="!randomSeed" class="qwen-field"><label for="qwen-seed">种子</label><input class="input" id="qwen-seed" v-model.number="form.seed" type="number" min="0" max="2147483647" step="1" :disabled="locked" /></div>
+        </div></details><p v-if="selected" class="qwen-hint">Qwen 权重使用研究许可，商用须另获授权。<a :href="selected.licenseUrl" target="_blank" rel="noopener noreferrer">查看许可</a></p>
+        <p v-if="parentId !== null" class="qwen-hint">此编辑保留来源作品关联；将来源与结果入册后，可在作品册查看修改历史与对比。</p><div class="qwen-feedback" aria-live="polite"><p v-if="!ready">{{ initializing ? '正在恢复创作草稿…' : '创作草稿尚未恢复' }}</p><button v-if="!ready && !initializing" class="btn btn-ghost btn-sm" type="button" @click="restore">重试恢复草稿</button><div v-if="draftRecoveryNeeded" class="qwen-draft-recovery"><p role="alert">旧草稿未能恢复：{{ draftRecoveryError }}</p><p>旧草稿仍保留；当前可继续创作。恢复槽只保留一份旧草稿，保存当前创作会替换更早的恢复副本。</p><div class="qwen-toolbar"><button class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="recoverDraft">重试恢复旧草稿</button><button class="btn btn-ghost btn-sm" type="button" :disabled="locked || restoredInputMissing" @click="saveRecoveredDraft">保留本次旧草稿，保存当前创作</button></div></div><p>{{ draftStatus }}</p><button v-if="draftFailed" class="btn btn-ghost btn-sm" type="button" @click="persistDraft">重试保存草稿</button><button v-if="restoredInputMissing && task" class="btn btn-ghost btn-sm" type="button" :disabled="importing || busy" @click="retrySourceInputs">重新读取原任务输入</button><p v-if="importing">正在读取输入图片…</p><p v-if="taskText">{{ taskText }}{{ progress === null || !unresolved ? '' : ` · ${progress}%` }}</p><p v-if="notice">{{ notice }}</p><p v-if="error" class="qwen-error" role="alert">{{ error }}</p><p v-if="!locked && issue">{{ issue }}</p></div>
         <div class="qwen-actions"><button v-if="task || request" class="btn btn-ghost" type="button" :disabled="observing || busy || importing || cancelling" @click="observe">查询原任务</button><button v-if="busy || unresolved" class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancel">{{ cancelling ? '请求取消…' : '取消' }}</button><button class="btn btn-primary" type="submit" :disabled="!canRun"><ArchiveIcon name="spark" />{{ busy || unresolved ? '生成中…' : source ? '按指令编辑' : '生成图片' }}</button></div>
         <p class="qwen-hint">任务接收后可以离开页面；结果和取消状态以任务中心为准。</p>
       </form>
@@ -58,7 +58,9 @@
 </template>
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
+import { useRoute, useRouter, RouterLink } from 'vue-router'
+import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
@@ -68,19 +70,43 @@ import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { useTaskCenter } from '@/composables/useTaskCenter'
 const { form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
   busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, progress, taskText,
-  refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize } = useQwenStudio()
-const route = useRoute(), picker = ref<HTMLInputElement | null>(null), preview = ref<'result' | 'source'>('result')
+  ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize } = useQwenStudio()
+const route = useRoute(), router = useRouter(), picker = ref<HTMLInputElement | null>(null), preview = ref<'result' | 'source'>('result')
 const referencePicker = ref<HTMLInputElement | null>(null), referenceButton = ref<HTMLButtonElement | null>(null), sourceButton = ref<HTMLButtonElement | null>(null), referencePreview = ref('')
 const previewInputUrl = computed(() => references.value.find(value => value.id === referencePreview.value)?.url || sourceUrl.value)
 const openTasks = () => useTaskCenter().openRuntimeTasks()
-async function pick(event: Event) { const input = event.target as HTMLInputElement, file = input.files?.[0]; input.value = ''; if (file) { await loadSource(file); if (sourceUrl.value) { referencePreview.value = ''; preview.value = 'source' } } }
+function retireReference(element: Element) { if (element instanceof HTMLElement) { element.inert = true; element.setAttribute('aria-hidden', 'true') } }
+async function reorderReference(id: string, offset: -1 | 1, event: Event) {
+  const button = event.currentTarget as HTMLButtonElement, focused = document.activeElement === button
+  moveReference(id, offset); await nextTick()
+  if (focused && button.disabled) button.closest('li')?.querySelector<HTMLButtonElement>('button')?.focus()
+}
+async function saveRecoveredDraft() { await preserveAndSaveDraft(); await consumeEntry() }
+async function retrySourceInputs() { await retryInputs(); await consumeEntry() }
+async function editResult() { await continueResult(); await consumeEntry(); await nextTick(); document.getElementById('qwen-prompt')?.focus() }
+async function pick(event: Event) { const input = event.target as HTMLInputElement, file = input.files?.[0]; input.value = ''; if (file) { await loadSource(file); if (sourceUrl.value) { referencePreview.value = ''; preview.value = 'source'; await consumeEntry() } } }
 async function pickReferences(event: Event) { const input = event.target as HTMLInputElement, files = Array.from(input.files ?? []); input.value = ''; await addReferences(files) }
 async function dropReference(id: string) { removeReference(id); await nextTick(); referenceButton.value?.focus() }
-async function clearSources() { removeSource(); preview.value = 'result'; referencePreview.value = ''; await nextTick(); sourceButton.value?.focus() }
+async function clearSources() { removeSource(); await consumeEntry(); preview.value = 'result'; referencePreview.value = ''; await nextTick(); sourceButton.value?.focus() }
 watch(resultUrl, value => { if (value) preview.value = 'result' })
 watch(sourceUrl, value => { if (value) preview.value = 'source' })
-onMounted(() => initialize(typeof route.query.preparedModel === 'string' ? route.query.preparedModel : undefined,
-  typeof route.query.job === 'string' ? route.query.job : undefined, typeof route.query.artwork === 'string' ? route.query.artwork : undefined))
+watch(draftStatus, value => { if (value.startsWith('草稿已保存')) void consumeEntry() })
+async function restore() {
+  await initialize(typeof route.query.preparedModel === 'string' ? route.query.preparedModel : undefined,
+    typeof route.query.job === 'string' ? route.query.job : undefined, typeof route.query.artwork === 'string' ? route.query.artwork : undefined)
+  await consumeEntry()
+}
+let consumingEntry = false
+async function consumeEntry() {
+  if (consumingEntry || draftRecoveryNeeded.value || !ready.value || restoredInputMissing.value || !(route.query.job || route.query.artwork || route.query.preparedModel)) return
+  consumingEntry = true
+  try {
+    if (!await persistDraft()) return
+    const query = { ...route.query }; delete query.job; delete query.artwork; delete query.preparedModel
+    await router.replace({ query })
+  } finally { consumingEntry = false }
+}
+onMounted(restore)
 </script>
 <style scoped>
 .qwen-studio { display:grid; align-content:start; gap:var(--s-6); width:100%; padding:var(--s-6); max-width:2200px; margin-inline:auto; }
@@ -93,7 +119,7 @@ onMounted(() => initialize(typeof route.query.preparedModel === 'string' ? route
 .qwen-canvas { display:grid; gap:var(--s-3); min-width:0; position:sticky; top:calc(var(--app-navigation-visible-height,80px) + var(--s-4)); }
 .qwen-stage { display:grid; grid-template:minmax(0,1fr)/minmax(0,1fr); height:clamp(360px,68vh,1100px); overflow:hidden; background:var(--art-stage); border:1px solid var(--border-soft); border-radius:var(--r-lg); }
 .qwen-stage > * { grid-area:1/1; min-width:0; min-height:0; }
-.qwen-empty { display:grid; place-content:center; justify-items:center; gap:var(--s-3); padding:var(--s-6); text-align:center; background:var(--bg-elevated); }
+.qwen-empty { display:grid; place-content:center; justify-items:center; gap:var(--s-3); padding:var(--s-6); text-align:center; background:var(--bg-surface); }
 .qwen-empty > .archive-icon { width:48px; height:48px; color:var(--text-secondary); }
 .qwen-empty h2 { margin:0; font-size:var(--fs-title-sm); color:var(--text-primary); }
 .qwen-controls { display:grid; gap:var(--s-4); padding:var(--s-5); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-lg); }
@@ -105,15 +131,17 @@ onMounted(() => initialize(typeof route.query.preparedModel === 'string' ? route
 .qwen-readiness .qwen-toolbar { justify-content:space-between; }
 .qwen-field { display:grid; gap:var(--s-2); min-width:0; }
 .qwen-field label { color:var(--text-primary); font-size:var(--fs-label); }
-.qwen-field input, .qwen-field textarea { width:100%; min-width:0; padding:var(--s-3); color:var(--text-primary); background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-md); font:inherit; }
-.qwen-field textarea { resize:vertical; }
-.qwen-field input:focus-visible, .qwen-field textarea:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.qwen-field input:disabled, .qwen-field textarea:disabled { color:var(--text-disabled); }
-.qwen-field textarea::placeholder { color:var(--text-secondary); }
 .qwen-pair { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); }
 .qwen-hint, .qwen-readiness p, .qwen-source p { font-size:var(--fs-label-sm); }
 .qwen-studio .qwen-error { color:var(--danger-text); }
 .qwen-actions { justify-content:flex-end; }
+.qwen-advanced-body { display:grid; gap:var(--s-4); padding-top:var(--s-3); }
+.qwen-reference-actions { display:flex; flex-wrap:wrap; gap:var(--s-1); }
+.qwen-reference-move, .qwen-reference-enter-active, .qwen-reference-leave-active { transition:transform var(--spring-gentle-duration) var(--spring-gentle-ease), opacity var(--spring-gentle-duration) var(--spring-gentle-ease); }
+.qwen-reference-enter-from, .qwen-reference-leave-to { opacity:0; transform:translateY(var(--s-2)); }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .qwen-references > li { transition:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .qwen-references > li { transition:none; }
+/* Below 980px the 320px control rail crowds the complete-image canvas. */
 @media (max-width:980px) { .qwen-layout { grid-template-columns:minmax(0,1fr); } .qwen-canvas { position:static; } .qwen-stage { height:clamp(320px,55vh,720px); } }
-@media (forced-colors:active) { .qwen-field input:focus-visible, .qwen-field textarea:focus-visible { outline:2px solid Highlight; } }
+
 </style>

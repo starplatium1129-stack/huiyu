@@ -1,5 +1,5 @@
 @reference "../tailwind.css";
-.live2d-capability-report { @apply tw:mt-[8px] tw:text-secondary; font-size: 12px; }
+.live2d-capability-report { @apply tw:mt-s-2 tw:text-secondary; font-size:var(--fs-label-xs); }
 .live2d-capability-report summary { @apply tw:min-h-[32px] tw:cursor-pointer tw:text-primary; }
 .live2d-capability-report ul { @apply tw:grid tw:gap-[6px]; margin: 6px 0 0; @apply tw:p-0; list-style: none; }
 .live2d-capability-report li { @apply tw:grid; grid-template-columns: minmax(4em, auto) auto; gap: 2px 8px; }

@@ -59,11 +59,11 @@ onScopeDispose(clear)
 </template>
 
 <style scoped>
-.u001 { --ux-ease:var(--ease-out); --ux-spring:var(--ease-out); position:relative; display:block; width:200px; max-width:100%; height:48px; padding:0; border:0; border-radius:var(--r-md); background:transparent; color:var(--text-primary); font:600 var(--fs-label) var(--font-sans); cursor:pointer; isolation:isolate; -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%); }
+.u001 { --ux-ease:var(--ease-out); --ux-spring:var(--ease-out); --control-press-transform:none; position:relative; display:block; width:13.333rem; max-width:100%; height:3.2rem; padding:0; border:0; border-radius:var(--r-md); background:transparent; color:var(--text-primary); font:600 var(--fs-label) var(--font-sans); cursor:pointer; isolation:isolate; -webkit-backdrop-filter:blur(18px) saturate(180%); backdrop-filter:blur(18px) saturate(180%); }
 .u001-surface,.u001-highlight,.u001-text,.u001-done { position:absolute; inset:0; pointer-events:none; }
 .u001-middle,.u001-cap::before { position:absolute; top:0; bottom:0; background:linear-gradient(180deg,var(--glass-highlight),transparent 55%,var(--glass-highlight)),var(--glass-fill); box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 0 0 1px var(--border-strong); }
 .u001-surface { transition:transform var(--motion-press) var(--ux-ease); }
-.u001:active:not(:disabled) .u001-surface { transform:scale(.97); }
+.u001:active:not(:disabled):not(:focus-visible):not([data-reduced-motion='true']) .u001-surface { transform:scale(.97); }
 .u001-middle { left:24px; right:24px; z-index:1; box-shadow:inset 0 1px 0 var(--border-strong),inset 0 -1px 0 var(--border-strong); transition:transform var(--motion-surface) var(--ux-ease); }
 .u001-cap { position:absolute; inset:0; transition:transform var(--motion-surface) var(--ux-ease); }
 .u001-cap::before { content:''; width:48px; border-radius:var(--r-md); }
@@ -91,8 +91,8 @@ onScopeDispose(clear)
 .u001:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .u001-live { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 @media (hover:hover) and (pointer:fine) {
-  .u001:hover:not(:disabled) .u001-highlight { opacity:1; }
-  .u001:hover:not(:disabled) .u001-sheen { animation:u001-sweep 1.1s var(--ux-ease); }
+  .u001:hover:not(:disabled):not(:focus-visible) .u001-highlight { opacity:1; }
+  .u001:hover:not(:disabled):not(:focus-visible) .u001-sheen { animation:u001-sweep 1.1s var(--ux-ease); }
 }
 @keyframes u001-rotate { to { transform:rotate(360deg); } }
 @keyframes u001-sweep { to { transform:translateX(300%) skewX(-12deg); } }

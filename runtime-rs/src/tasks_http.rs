@@ -1,4 +1,5 @@
 mod results;
+mod qwen_inputs;
 
 use crate::{
     AppState,
@@ -265,6 +266,11 @@ async fn perform(
                     "结果读取未完成",
                 )
             }));
+    }
+    if let [id, inputs, index] = path.as_slice()
+        && inputs == "inputs"
+    {
+        return qwen_inputs::read(state, &storage, &session, method, id, index).await;
     }
     let mut result = match path.as_slice() {
         [] => {

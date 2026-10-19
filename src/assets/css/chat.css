@@ -637,7 +637,7 @@
   vertical-align: -2px;
 }
 
-.chat-page .message-note { color:var(--text-secondary); font-size:12px; }
+.chat-page .message-note { color:var(--text-secondary); font-size:var(--fs-label-xs); }
 
 /*   ============================================================
    输入区：撰写器 / 发送与停止 / 模型思考档位

@@ -121,9 +121,10 @@ const sourceLabel = computed(() => {
   font: 600 var(--fs-label) var(--font-sans);
   transition: background var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
 }
-@media (hover:hover) and (pointer:fine) { .character-browse-button:hover .character-portrait { transform:rotate(0deg) translateY(-2px); } }
+@media (hover:hover) and (pointer:fine) { .character-browse-button:hover:not(:focus-visible) .character-portrait { transform:rotate(0deg) translateY(-2px); } }
 .character-browse-button:hover .character-browse-all { background: var(--bg-hover); }
-.character-browse-button:active .character-browse-all { transform: scale(.98); }
+.character-browse-button:active:not(:focus-visible) .character-browse-all { transform: scale(.98); }
+.character-browse-button:focus-visible .character-browse-all { transition:none; }
 
 .character-browser-dialog { @apply tw:m-auto; inset:var(--desktop-chrome-height,0px) 0 0; width: min(1040px, calc(100vw - 32px)); height: min(800px, calc(100dvh - var(--desktop-chrome-height,0px) - 48px)); max-height: calc(100dvh - var(--desktop-chrome-height,0px) - 32px); @apply tw:p-s-5; border: 1px solid var(--border-soft); @apply tw:rounded-xl; background: var(--bg-surface); @apply tw:text-primary; box-shadow: var(--shadow-lg); }
 /* 滚动职责下放到筛选栏与结果区，弹窗本体不再套一层滚动。 */
@@ -154,8 +155,8 @@ const sourceLabel = computed(() => {
 .outfit-chip.active {
   @apply tw:border-strong;
   background: var(--bg-surface);
-  @apply tw:text-accent;
-  box-shadow: inset 3px 0 var(--accent);
+  @apply tw:text-primary;
+  box-shadow: var(--selection-shadow);
 }
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) .character-browse-button:active .character-browse-all { transform: none; }
@@ -167,4 +168,8 @@ const sourceLabel = computed(() => {
 .outfit-chip .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
 .outfit-chip span { overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) { :root:not([data-motion='full']) .character-browse-trigger :deep(.character-portrait) { transition: none; } :root:not([data-motion='full']) .character-browse-button:hover .character-portrait { transform: none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .character-browse-all,
+:root:is([data-motion='reduce'],[data-motion='reduced']) .character-browse-button .character-portrait,
+.character-browse-button:focus-visible .character-portrait { transform:none; transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .character-browser-dialog[open] { animation:none; }
 </style>

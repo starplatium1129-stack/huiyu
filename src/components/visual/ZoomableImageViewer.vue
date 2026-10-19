@@ -67,7 +67,7 @@
         <ArchiveIcon name="refresh" />
       </button>
     </div>
-    <div v-if="scale <= 1.01" class="zoom-hint tw:absolute tw:bottom-s-2 tw:right-s-3 tw:text-mono-sm tw:text-secondary tw:pointer-events-none">
+    <div v-if="scale <= 1.01" class="zoom-hint tw:absolute tw:bottom-s-2 tw:right-s-3 tw:text-mono-sm tw:pointer-events-none">
       双击或滚轮放大查看细节
     </div>
     </div>
@@ -121,6 +121,8 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
 </script>
 
 <style scoped>
+.zoomable-image-viewer { container-type:inline-size; }
+
 .zoomable-image-viewer:focus-visible {
   outline: none;
   box-shadow: var(--focus-shadow);
@@ -165,6 +167,7 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
 
 /* Hosts can dock the existing toolbar outside the clipped art viewport. */
 .zoom-toolbar { display: contents; }
+.zoom-hint { padding:var(--s-1) var(--s-2); border-radius:var(--r-sm); background:var(--art-scrim); color:var(--on-art-primary); }
 .zoom-recovery { --text-disabled:var(--on-art-secondary); position:absolute; inset:var(--s-3) var(--s-3) auto; z-index:var(--z-raised); display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-2); border-radius:var(--r-sm); background:var(--art-scrim); color:var(--on-art-primary); font-size:var(--fs-label-sm); }
 .zoom-recovery button { min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-sm); background:transparent; color:inherit; font:inherit; cursor:pointer; }
 .zoom-recovery button:disabled { color:var(--text-disabled); cursor:wait; }
@@ -192,7 +195,8 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
   .zoom-hint { display: none; }
 }
 
-@media (max-width: 600px) {
+/* Embedded canvases below 600px leave no room beside the zoom controls. */
+@container (max-width: 600px) {
   .zoom-hint { display: none; }
 }
 

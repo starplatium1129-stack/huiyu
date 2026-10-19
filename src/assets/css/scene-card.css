@@ -22,12 +22,9 @@
   text-decoration: none;
   box-shadow: var(--shadow-sm);
 }
-.sc[role="button"]:active {
-  transform: translateY(0) scale(.975);
-  transition-duration: var(--motion-press);
-}
-.sc[role="button"]:focus-visible:active { transform:none; transition:none; }
-.sc:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+/* Keep card metadata and secondary actions outside the native preview button. */
+.sc-pick { position:absolute; inset:0; z-index:var(--z-float); width:100%; height:100%; padding:0; border:0; border-radius:inherit; background:transparent; cursor:pointer; --control-press-transform:none; }
+.sc-pick:focus-visible { outline:none; box-shadow:inset 0 0 0 2px var(--on-art-primary),inset 0 0 0 4px var(--art-scrim); }
 .sc-static { @apply tw:cursor-default; }
 /* Prepaint the rim; hovering changes only opacity rather than shadow blur. */
 .sc::after {
@@ -42,10 +39,9 @@
   .sc:hover::after { opacity:1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion="full"]) .sc:hover, :root:not([data-motion="full"]) .sc[role="button"]:active { transform: none; }
+  :root:not([data-motion="full"]) .sc:hover { transform:none; }
 }
-:root:is([data-motion="reduce"], [data-motion="reduced"]) .sc:hover,
-:root:is([data-motion="reduce"], [data-motion="reduced"]) .sc[role="button"]:active { transform: none; }
+:root:is([data-motion="reduce"], [data-motion="reduced"]) .sc:hover { transform:none; }
 
 /* ---- 视觉预览图区(审核样张优先,渐变兜底) ---- */
 .sc-band {

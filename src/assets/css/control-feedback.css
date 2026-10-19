@@ -17,7 +17,7 @@
   .control-rail-link,.control-section-jump a,.nav-local-home,.mode-card,.nav-links > a,.nav-more-trigger,.nav-search,.sound-toggle,.nav-menu-toggle,
   .dropzone-empty,.artist-picker-trigger,.artist-combo-btn,.artist-style-grid > button,.outfit-preset,.tag-results button,.blueprint-reco-btn,.blueprint-cat-btn,
   .catalog-nav-group button,.catalog-more-menu button,.catalog-add,.catalog-filter-button,.catalog-record-row,.catalog-tool-options button,.catalog-text-button,
-  .catalog-sample-card,.catalog-hero-card,a.study-image,.mood-card,.video-jump-nav a,.video-model-row,.shot-row-actions button,.comparison-choices button,
+  .catalog-sample-card,.catalog-hero-card,a.study-image,.batch-thumb-btn,.mood-card,.video-jump-nav a,.video-model-row,.shot-row-actions button,.comparison-choices button,
   .appearance-entry,.appearance-button,.appearance-close,.confirm-close,.appearance-style-choices button,.live2d-quality-option,button.setup-step-number,
   .companion-dialogue-controls button,.companion-dialogue-speaker button,.companion-dialogue-presence > button,.companion-dialogue-connection button,
   .companion-dialogue-attachment button,.companion-dialogue-latest,.companion-dialogue-preference-actions > button,.companion-dialogue-send,.companion-dialogue-microphone,
@@ -71,7 +71,7 @@
 :where(.artwork-tool,.artwork-retry) { --control-feedback-fill:color-mix(in srgb,var(--on-art-primary) 8%,transparent); --control-feedback-edge:color-mix(in srgb,var(--on-art-primary) 24%,transparent); }
 :where(.studio-select-item,.chat-more-item):where([data-highlighted]:not([data-disabled]))::before { opacity:1; transform:none; }
 /* Media keeps its frame and hit area stationary while the inner picture responds. */
-:where(.catalog-sample-card,.catalog-hero-card,a.study-image,.companion-chat-image-open) {
+:where(.catalog-sample-card,.catalog-hero-card,a.study-image,.companion-chat-image-open,.batch-thumb-btn) {
   --control-feedback-zoom:1.06; --control-feedback-press:.98;
   & img { transition:transform var(--control-feedback-duration,var(--motion-art-hover)) var(--spring-soft); }
   @media (hover:hover) and (pointer:fine) { &:where(:hover:not(:focus-visible):not(:disabled)) img { transform:scale(var(--control-feedback-zoom)); } }

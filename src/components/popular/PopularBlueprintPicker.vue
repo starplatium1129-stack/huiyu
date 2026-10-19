@@ -66,7 +66,7 @@ const categoryChips = computed(() => {
         :aria-pressed="props.category === chip.id"
         :disabled="!props.dataReady || props.loading"
         @click="emit('update:category', chip.id === 'all' ? 'all' : chip.id)">
-        {{ chip.label }}<em v-if="chip.count">{{ chip.count }}</em>
+        <span class="studio-control-label">{{ chip.label }}</span><em v-if="chip.count">{{ chip.count }}</em>
       </button>
     </div>
     <div class="blueprint-reco-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:mb-s-2 tw:p-s-1 tw:rounded-pill" data-fluid-glass>
@@ -87,7 +87,7 @@ const categoryChips = computed(() => {
       <div v-else-if="!props.filtered.length" class="scene-empty" role="status">没有符合条件的场景建议</div>
       <div v-else v-content-motion:right="`${props.category}:${props.showAll}:${props.recommended[0]?.id}`" class="blueprint-list tw:flex tw:flex-col tw:gap-s-2 tw:p-s-1">
         <button v-for="blueprint in (props.showAll ? props.filtered : props.recommended)"
-          :key="blueprint.id" type="button" class="blueprint-card tw:flex tw:flex-col tw:gap-s-2 tw:text-left tw:p-s-3 tw:rounded-lg tw:cursor-pointer"
+          :key="blueprint.id" type="button" data-control-motion class="blueprint-card tw:flex tw:flex-col tw:gap-s-2 tw:text-left tw:p-s-3 tw:rounded-lg tw:cursor-pointer"
           :class="{ active: props.selectedBlueprintId === blueprint.id }"
           :data-adult="blueprint.adult ? 'true' : 'false'"
           :aria-pressed="props.selectedBlueprintId === blueprint.id"
@@ -117,13 +117,13 @@ const categoryChips = computed(() => {
 .blueprint-feedback strong { font-size:var(--fs-label); }
 .blueprint-feedback p { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
 .blueprint-cat-btn {
-  padding: 3px var(--s-3);
+  min-height:var(--control-height-sm);
+  padding: var(--s-1) var(--s-3);
   border: 1px solid var(--border-soft);
   background: var(--glass-fill);
   font: 650 var(--fs-label-sm) var(--font-sans);
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
-.blueprint-cat-btn:active:not(:disabled) { transform: translateY(1px) scale(.96); }
 .blueprint-cat-btn em { @apply tw:not-italic; font: 700 var(--fs-mono-xs) var(--font-mono); @apply tw:text-muted; }
 .blueprint-cat-btn:hover:not(:disabled) { border-color: var(--border-strong); @apply tw:text-primary; }
 .blueprint-cat-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
@@ -133,7 +133,7 @@ const categoryChips = computed(() => {
   @apply tw:text-primary;
 }
 .blueprint-cat-btn.adult { border-color: color-mix(in srgb, var(--danger-text) 40%, var(--border-soft)); }
-.blueprint-cat-btn.adult em { @apply tw:text-danger-text; opacity: .9; }
+.blueprint-cat-btn.adult em { @apply tw:text-danger-text; }
 .blueprint-cat-btn.adult:hover:not(:disabled),
 .blueprint-cat-btn.adult.active {
   @apply tw:border-danger-text;
@@ -147,7 +147,6 @@ const categoryChips = computed(() => {
 }
 .blueprint-reco-btn:hover:not(:disabled) { @apply tw:border-strong tw:text-primary; }
 .blueprint-reco-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-.blueprint-reco-btn:active:not(:disabled) { transform: translateY(1px) scale(.96); }
 .blueprint-picker :is(.blueprint-cat-btn,.blueprint-reco-btn):disabled, .blueprint-cat-btn:disabled em { color:var(--text-disabled); cursor:not-allowed; opacity:1; transform:none; }
 .blueprint-card {
   border: 1px solid var(--border-soft);
@@ -165,7 +164,6 @@ const categoryChips = computed(() => {
 }
 .blueprint-card[data-adult="true"] { border-left-color: color-mix(in srgb, var(--danger-text) 55%, transparent); }
 .blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }
-.blueprint-card:active { transform: translateY(0) scale(.99); }
 .blueprint-check { @apply tw:text-primary; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) :is(.blueprint-card,.blueprint-cat-btn,.blueprint-reco-btn) { transition:none; transform:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) :is(.blueprint-card,.blueprint-cat-btn,.blueprint-reco-btn) { transition:none; transform:none; }

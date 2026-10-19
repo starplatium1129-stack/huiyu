@@ -26,14 +26,12 @@ const { soundEnabled, toggleSound } = useInterfaceFeedback()
 .sound-toggle {
   border:1px solid var(--border-soft);
   background:var(--bg-surface);
-  transition:color var(--motion-hover),border-color var(--motion-hover),background var(--motion-hover),transform var(--motion-hover);
+  transition:color var(--motion-hover),border-color var(--motion-hover),background var(--motion-hover);
 }
-.sound-toggle.active { color:var(--archive-blue); border-color:color-mix(in srgb,var(--archive-blue) 48%,var(--border-soft)); background:var(--archive-blue-soft); }
-/* plans/003：触控设备没有 hover 语义，粘滞 hover 会让高亮状态「卡住」；
-   hover 动效只在精确指针设备启用，按压反馈（:active）保留给触屏。 */
+.sound-toggle.active { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-elevated); }
+/* Shared control feedback animates the icon while the hit target stays fixed. */
 @media (hover: hover) and (pointer: fine) {
-  .sound-toggle:hover { color:var(--archive-blue); border-color:color-mix(in srgb,var(--archive-blue) 48%,var(--border-soft)); background:var(--archive-blue-soft); }
+  .sound-toggle:hover { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-hover); }
 }
-.sound-toggle:active { transform:scale(.97); }
-.sound-toggle:focus-visible { outline:none; box-shadow:var(--ring); }
+.sound-toggle:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 </style>

@@ -25,7 +25,7 @@
 .pb.atelier-workspace .stage-placeholder-copy { margin-inline:auto; color:var(--text-secondary); line-height:1.8; }
 .pb.atelier-workspace .stage-quick-actions { flex-wrap:wrap; }
 .pb.atelier-workspace .result-image { opacity:1; transform:none; }
-.pb.atelier-workspace .stage-archive-badge { display:inline-flex; align-items:center; gap:8px; border:0; color:var(--text-secondary); font:12px/1.5 var(--font-sans); }
+.pb.atelier-workspace .stage-archive-badge { display:inline-flex; align-items:center; gap:var(--s-2); border:0; color:var(--text-secondary); font:var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .pb.atelier-workspace .stage-archive-badge[data-archived='true'] { color:var(--success-text); }
 .pb.atelier-workspace .stage-archive-badge[data-archived='false'] { color:var(--text-muted); }
 .pb.atelier-workspace .col-center { container-type:inline-size; container-name:canvas-column; }

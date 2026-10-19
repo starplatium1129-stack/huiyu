@@ -36,6 +36,19 @@ impl TaskRuntime {
         if let Some(context) = request.get_mut("context") {
             frozen["context"] = context.take();
         }
+        if kind == TaskKind::Qwen {
+            let context = &frozen["context"];
+            if !context.is_null() && !context.is_object() {
+                return Err(ApiError::invalid("Qwen context must be an object"));
+            }
+            let parent = &context["parentId"];
+            if !parent.is_null()
+                && !parent.as_str().is_some_and(|id| !id.is_empty() && id.encode_utf16().count() <= 240)
+                && !parent.as_u64().is_some_and(|id| id <= 9_007_199_254_740_991)
+            {
+                return Err(ApiError::invalid("Invalid Qwen parent artwork identity"));
+            }
+        }
         let existing = storage.task_record_by_request(&key, &principal).await?;
         let codec = existing
             .as_ref()
