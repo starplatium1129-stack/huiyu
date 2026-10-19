@@ -452,8 +452,8 @@ export function usePromptWorkspace() {
     const { applyHistory, resumeHistory, duplicateHistory, deleteHistory, reuseSuccessfulRecipe } = historyReuse;
     watch(() => route.fullPath, () => historyReuse.cancelReuse());
     // ── 深链参数应用（已下沉 usePromptDeepLink）───────────────────────────────
-    const { applyDeepLink, deepLinkNeeded } = usePromptDeepLink({
-        pb,
+    const { applyDeepLink, deepLinkNeeded, deepLinkError, retryingDeepLink, retryDeepLink, hasFailedDeepLink } = usePromptDeepLink({
+        pb, route, getSettingsRevision: animaSession.getSettingsRevision,
         draftRecovery,
         generationBusy,
         sdSize: computed({ get: () => sdSize.value, set: applyRecommendedSize }),
@@ -548,14 +548,14 @@ export function usePromptWorkspace() {
     const retryInitialization = usePromptLifecycle({
         draftRecovery, getRestoreOwner,
         router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY,
-        pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
+        pb, sceneCollection, applyDeepLink, hasFailedDeepLink, route, displayResultUrl, restoreTempResult, sdSize,
         applyManagedRoute, refreshManagedRoute, restorePopularDraft,
         animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative,
         updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories,
         popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession,
     });
     return {
-        capturedScene, capturingScene, captureScene, closeSceneCapture, historyReuse,
+        capturedScene, capturingScene, captureScene, closeSceneCapture, historyReuse, deepLinkError, retryingDeepLink, retryDeepLink,
         pb, displayResultUrl, resultRevealUrl, currentCharacterThemeStyle, sd,
         animaSession, setDirectorMode, engineOnline, engineStatusText,
         recheckEngineConnection, drawEngineLabel, currentBlueprintData, handleLoadBlueprint, route, currentTraits,

@@ -1,5 +1,7 @@
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import { confirmAction } from '@/composables/useConfirm'
 import type { ArtworkRecord } from '@/types/artwork'
-import { getCurrentInstance, getCurrentScope, onDeactivated, onScopeDispose, type Ref } from 'vue'
+import { getCurrentInstance, getCurrentScope, onDeactivated, onScopeDispose, ref, watch, type Ref } from 'vue'
 import type { usePromptBuilderStore, Scene } from '@/stores/promptBuilderStore'
 import { isCharKey } from '@/composables/scene/directorOptions'
 import { COLOR_MOODS } from '@/config/promptConstants'
@@ -12,6 +14,8 @@ type AnimaSession = ReturnType<typeof useAnimaSession>
 
 export interface PromptDeepLinkDeps {
   pb: PromptBuilderStore
+  route: RouteLocationNormalizedLoaded
+  getSettingsRevision: () => number
   draftRecovery: ReturnType<typeof usePromptDraftRecovery>
   generationBusy: Readonly<Ref<boolean>>
   /** Host setter synchronizes engine dimensions through the existing supported-size policy. */
@@ -40,6 +44,13 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
   let lastHistoryLink = ''
   let lastContextLink = ''
   let historyRequest = 0, disposed = false
+  const deepLinkError = ref(''), retryingDeepLink = ref(false)
+  let failedQuery: Record<string, unknown> | null = null
+  const entryKey = () => JSON.stringify([deps.route.path, deps.route.query])
+  const clearFailure = () => { deepLinkError.value = ''; failedQuery = null }
+  watch(entryKey, () => { historyRequest++; clearFailure() }, { flush: 'sync' })
+  const hasFailedDeepLink = (query: Record<string, unknown>) => failedQuery !== null
+    && JSON.stringify(query) === JSON.stringify(failedQuery)
   if (getCurrentScope()) onScopeDispose(() => { disposed = true; historyRequest += 1 })
   if (getCurrentInstance()) onDeactivated(() => { historyRequest += 1; lastHistoryLink = ''; lastContextLink = '' })
   function historyKey(q: Record<string, unknown>) {
@@ -52,20 +63,59 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     return fields.length ? JSON.stringify(fields) : ''
   }
 
-  async function applyDeepLink(q: Record<string, unknown>, stillCurrent: () => boolean = () => true): Promise<boolean> {
+  async function applyDeepLink(q: Record<string, unknown>, stillCurrent: () => boolean = () => true, inputsCurrent = () => true): Promise<boolean> {
     const request = ++historyRequest
     if (disposed || !stillCurrent() || (!historyKey(q) && !contextKey(q))) return false
-    const query = { ...q }
-    const isCurrent = () => !disposed && request === historyRequest && stillCurrent()
-    if (typeof query.popular === 'string') await pb.loadPopularCharacter(query.popular)
+    const query = { ...q }, entry = entryKey()
+    const isCurrent = () => !disposed && request === historyRequest && entry === entryKey() && stillCurrent()
+    if (typeof query.popular === 'string') {
+      try { await pb.loadPopularCharacter(query.popular) }
+      catch (error) {
+        if (isCurrent()) {
+          failedQuery = query
+          deepLinkError.value = `链接中的角色场景未载入，未启动自动生成。${error instanceof Error ? error.message : '场景资料读取失败。'}`
+        }
+        return false
+      }
+    }
     if (!isCurrent()) return false
     const { applyPromptDeepLink } = await import('./promptDeepLinkActions')
     if (!isCurrent()) return false
+    // A retry may wait on disk/network while the current draft remains editable.
+    // Check before committing; its own synchronous scene writes are then allowed.
+    if (!inputsCurrent()) {
+      failedQuery = query
+      deepLinkError.value = '读取期间当前输入已改变，链接场景尚未载入。请确认当前草稿后重试。'
+      return false
+    }
     const result = await applyPromptDeepLink(query, deps, isCurrent)
     if (!isCurrent()) return false
+    clearFailure()
     if (result.historyApplied) lastHistoryLink = historyKey(query)
     if (result.handled && !historyKey(query)) lastContextLink = contextKey(query)
     return result.handled
+  }
+
+  async function retryDeepLink() {
+    if (!failedQuery || retryingDeepLink.value || deps.generationBusy.value) return
+    if (!deps.draftRecovery.initialized) { pb.flash('画室仍在恢复草稿，请稍后重试载入场景'); return }
+    const query = failedQuery, entry = entryKey(), request = historyRequest
+    const current = () => !disposed && entry === entryKey() && request === historyRequest && !deps.generationBusy.value
+    let edited = false
+    const revision = deps.getSettingsRevision()
+    const stop = watch(() => JSON.stringify({ ...pb.snapshotDraft(), updatedAt: undefined, size: deps.sdSize.value }),
+      () => { edited = true }, { flush: 'sync' })
+    retryingDeepLink.value = true
+    try {
+      const confirmed = await confirmAction({ title: '重新载入链接中的场景？',
+        message: '载入成功会替换当前角色、场景及相关创作设置。当前草稿中的修改可能被覆盖；不会自动生成图片。',
+        confirmLabel: '重新载入场景', cancelLabel: '保留当前草稿' })
+      if (!confirmed || !current()) return
+      const inputsCurrent = () => !edited && revision === deps.getSettingsRevision()
+      if (!inputsCurrent()) { deepLinkError.value = '当前输入已改变，链接场景尚未载入。请确认当前草稿后重试。'; return }
+      // applyDeepLink takes ownership of the request; keep only entry/busy checks here.
+      await applyDeepLink(query, () => entry === entryKey() && !deps.generationBusy.value, inputsCurrent)
+    } finally { stop(); retryingDeepLink.value = false }
   }
 
   /** URL 场景参数与当前选中不一致时才需要重放深链（避免覆盖用户手动编辑的状态）。 */
@@ -90,5 +140,5 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     return context !== lastContextLink
   }
 
-  return { applyDeepLink, deepLinkNeeded }
+  return { applyDeepLink, deepLinkNeeded, deepLinkError, retryingDeepLink, retryDeepLink, hasFailedDeepLink }
 }

@@ -20,7 +20,7 @@ export interface PromptLifecycleDeps extends
     Pick<ReturnType<typeof useDirectorPopular>, 'applyPreparedModel' | 'applyManagedRoute' | 'refreshManagedRoute' | 'restorePopularDraft' | 'syncManagedRoute' | 'popularBlueprintPool' | 'blueprintCategories' | 'popularCategory'>,
     Pick<ReturnType<typeof useDirectorEngine>, 'displayResultUrl' | 'engineOnline' | 'updateAnimaPromptState'>,
     Pick<ReturnType<typeof usePromptMaterials>, 'sceneCollection' | 'sceneLimit'>,
-    Pick<ReturnType<typeof usePromptDeepLink>, 'applyDeepLink'>,
+    Pick<ReturnType<typeof usePromptDeepLink>, 'applyDeepLink' | 'hasFailedDeepLink'>,
     Pick<ReturnType<typeof useTempResult>, 'restoreTempResult'>,
     Pick<ReturnType<typeof usePromptVideoBridge>, 'refreshShotsPending'> {
     route: RouteLocationNormalizedLoaded;
@@ -36,7 +36,7 @@ export interface PromptLifecycleDeps extends
 }
 
 /** Installed once by the workspace owner, independent of how its view exposes panels. */
-export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession, getRestoreOwner }: PromptLifecycleDeps): () => Promise<void> {
+export function usePromptLifecycle({ draftRecovery, router, generationBusy, applyPreparedModel, refreshShotsPending, refreshAnimaBackend, drawEngine, sd, DIRECTOR_MODE_KEY, pb, sceneCollection, applyDeepLink, hasFailedDeepLink, route, displayResultUrl, restoreTempResult, sdSize, applyManagedRoute, refreshManagedRoute, restorePopularDraft, animaState, patchAnimaState, engineOnline, livePrompt, callGenerate, effectiveNegative, updateAnimaPromptState, setDrawEngine, syncManagedRoute, popularBlueprintPool, blueprintCategories, popularCategory, syncAnimaCharacter, sceneLimit, applyRecommendedSize, animaSession, getRestoreOwner }: PromptLifecycleDeps): () => Promise<void> {
     // A newer visit owns setup; KeepAlive deactivation only retains jobs already started.
     let disposed = false;
     let viewActive = true;
@@ -164,6 +164,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
             if (generationBusy.value) { draftRecovery.initialized = true; saveWorkspaceDraft(); return; }
         }
         const handledDeepLink = await applyDeepLink(query, current);
+        const failedDeepLink = hasFailedDeepLink(query);
         if (!current()) return;
         if (!handledDeepLink) {
             await draftRecovery.restoreDraft(restoreCurrent);
@@ -193,10 +194,12 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
         if (!restoredRecipe && popularCatalogReady && typeof query.companionDraft !== 'string'
             && recoveryRevision !== null && recoveryRevision === draftRecovery.textRevision) restorePopularDraft();
-        await applyPreparedLink();
+        if (!failedDeepLink) await applyPreparedLink();
         if (!current()) return;
         draftRecovery.initialized = true;
         saveWorkspaceDraft();
+        // Failed navigation must never generate the fallback draft or apply quick settings.
+        if (failedDeepLink || typeof query.popular === 'string' && !handledDeepLink) return;
         if (query.quick === '1' && typeof query.companionDraft !== 'string') {
             const [{ quickCreateSummary, readQuickCreate }, { useQuickCreateApply }] = await Promise.all([import('@/utils/quickCreate'), import('./useQuickCreateApply')]);
             if (!current()) return;
