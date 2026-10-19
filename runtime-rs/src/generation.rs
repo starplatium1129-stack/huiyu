@@ -212,7 +212,10 @@ impl Service {
         crate::upstream::local_url(&config.sd_host)?;
         crate::upstream::local_url(&config.comfy_host)?;
         let cancel = shutdown.child_token();
-        let native_settings = native::load(&config)?;
+        let mut native_settings = native::load(&config)?;
+        if matches!(scope, Scope::Video) {
+            native_settings.engine = native_settings.video_engine().to_owned();
+        }
         let inner = Arc::new(Inner {
             control: std::sync::RwLock::new(std::sync::Weak::new()),
             native: native_engine.unwrap_or_default(),

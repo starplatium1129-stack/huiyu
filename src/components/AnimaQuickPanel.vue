@@ -32,6 +32,7 @@ const uid = useId()
 function idOf(field: string) { return `${uid}-${field}` }
 
 const loraId = computed({ get: () => props.state.loraId, set: value => patch({ loraId: value }) })
+const styleLoraId = computed({ get: () => props.state.styleLoraId, set: value => patch({ styleLoraId: value }) })
 const loraStrength = computed({ get: () => props.state.loraStrength, set: value => patch({ loraStrength: value }) })
 const seed = computed({ get: () => props.state.seed ?? '', set: value => patch({ seed: value === '' ? null : Number(value) }) })
 const steps = computed({ get: () => props.state.steps, set: value => patch({ steps: value }) })
@@ -61,6 +62,8 @@ const selectedModel = computed(() => props.state.models.find(model => model.id =
 const selectedLora = computed(() => props.state.loras.find(lora => lora.id === props.state.loraId) ?? null)
 /** 当前底模能力表：引擎默认值 + 后端模型能力合并（UI 不再按 family 散落判断）。 */
 const capabilities = computed(() => resolveDrawCapabilities(props.state.family, null, selectedModel.value?.capabilities ?? null))
+const nativeAnima = computed(() => native.value && props.state.family === 'anima')
+const fixedSampling = computed(() => selectedModel.value?.capabilities?.fixedSampling ?? (!native.value && props.state.family === 'krea2'))
 /** 热门角色无 LoRA：只在 popular subject + noLora capability 时隐藏 LoRA 选择。 */
 const noLoraMode = computed(() => props.noLora === true && selectedModel.value?.capabilities?.noLora === true)
 function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) }) }
@@ -69,7 +72,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 <template>
   <section class="panel step-panel anima-quick-panel" aria-label="引擎采样参数">
     <div class="panel-title anima-heading">
-       <span>{{ state.family === 'krea2' ? 'Krea 2 · Comfy 创作引擎' : 'Anima · 生成参数' }}</span>
+       <span>{{ state.family === 'krea2' ? 'Krea 2 · 生成参数' : 'Anima · 生成参数' }}</span>
       <span class="anima-status" :class="state.online ? 'is-on' : 'is-off'">{{ state.online ? '在线' : '离线' }}</span>
     </div>
     <div class="anima-body">
@@ -90,6 +93,11 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <input :id="idOf('strength')" v-model.number="loraStrength" type="number" min="0.65" max="1" step="0.05" class="anima-num" :disabled="busy" />
         </div>
        </div>
+       <div v-if="state.family === 'krea2' && state.styleLoras.length" class="anima-field">
+         <label :for="idOf('style')">官方风格 LoRA</label>
+         <StudioSelect :id="idOf('style')" v-model="styleLoraId" label="官方风格 LoRA" :disabled="busy"
+           :options="[{ value: '', label: '不使用风格 LoRA' }, ...state.styleLoras.map(style => ({ value: style.id, label: `${style.id}${style.available ? '' : ' · 未安装'}`, disabled: !style.available }))]" />
+       </div>
       <div class="anima-parameter-grid">
         <div class="anima-field anima-seed-field">
           <label :for="idOf('seed')">随机种子</label>
@@ -101,27 +109,27 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <div class="anima-field anima-field--slider">
           <div class="anima-field-heading">
             <label :for="idOf('steps')">采样步数</label>
-            <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
+            <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="anima-num" :disabled="busy || fixedSampling" />
           </div>
           <input type="range" min="1" max="60" step="1" :value="steps"
-            class="anima-slider" aria-label="采样步数滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
+            class="anima-slider" aria-label="采样步数滑块" :disabled="busy || fixedSampling"
             @input="steps = Number(($event.target as HTMLInputElement).value)" />
         </div>
         <div class="anima-field anima-field--slider">
           <div class="anima-field-heading">
             <label :for="idOf('cfg')">引导强度 · CFG</label>
-            <input :id="idOf('cfg')" v-model.number="cfg" type="number" min="0.5" max="10" step="0.5" class="anima-num" :disabled="busy || capabilities.promptFormat === 'natural-language'" />
+            <input :id="idOf('cfg')" v-model.number="cfg" type="number" :min="state.family === 'krea2' ? 0 : 0.5" max="10" step="0.5" class="anima-num" :disabled="busy || fixedSampling" />
           </div>
-          <input type="range" min="0.5" max="10" step="0.5" :value="cfg"
-            class="anima-slider" aria-label="引导强度滑块" :disabled="busy || capabilities.promptFormat === 'natural-language'"
+          <input type="range" :min="state.family === 'krea2' ? 0 : 0.5" max="10" step="0.5" :value="cfg"
+            class="anima-slider" aria-label="引导强度滑块" :disabled="busy || fixedSampling"
             @input="cfg = Number(($event.target as HTMLInputElement).value)" />
         </div>
       </div>
       <p class="anima-output-note"><ArchiveIcon name="spark" />预计成片 {{ outputSize }}<span>放大倍率越高，显存与等待时间通常越多</span></p>
 
       <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
-      <div v-if="native || capabilities.hires || capabilities.teaCache" class="anima-hires-options">
-        <ToggleSwitch v-model="teaCache" :disabled="busy || (!native && !capabilities.teaCache && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
+      <div v-if="nativeAnima || capabilities.hires || capabilities.teaCache || hiresFix || teaCache" class="anima-hires-options">
+        <ToggleSwitch v-model="teaCache" :disabled="busy || (!capabilities.teaCache && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>特征缓存加速 · TeaCache</span>
         </ToggleSwitch>
@@ -154,10 +162,11 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         局部蒙版高清另有二次采样与合成，仍使用保存的幅度；切换放大方式不会清除该值。
       </p>
       <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">高清采样沿用特征缓存设置，无需额外配置。Auto 优先使用本地 Remacri，否则使用 Latent；局部重绘保留遮罩合成。</p>
-      <p v-if="native" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
+      <RouterLink v-if="native && hiresFix && !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri')" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'remacri-4x' }, hash: '#control-setup' }">准备 Remacri 高清放大</RouterLink>
+      <p v-if="nativeAnima" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
         已内置 Anima TeaCache，换角色、尺寸或高清倍率无需校准。缓存会改变部分采样结果，可关闭以使用完整计算。
       </p>
-      <div v-if="native && teaCache" class="anima-field">
+      <div v-if="nativeAnima && teaCache" class="anima-field">
         <label :for="idOf('cache-threshold')">缓存阈值</label>
         <input :id="idOf('cache-threshold')" type="number" min="0" max="1" step="0.01" :value="state.teaCacheThresh ?? 0.10" class="anima-num" :disabled="busy" @change="patch({ teaCacheThresh: Number(($event.target as HTMLInputElement).value) })" />
         <span class="tw:text-label-xs tw:text-secondary">默认 0.10 · 数值越低越保守，0 为完整计算</span>

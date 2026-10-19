@@ -25,7 +25,9 @@ export function buildAnimaRequest(input: BuildAnimaRequestInput): AnimaRequest {
     ...(state.seed == null ? {} : { seed: state.seed }),
     ...(state.family === 'krea2' && state.styleLoraId ? { styleLoraId: state.styleLoraId } : {}),
     hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise, hiresUpscaler: state.hiresUpscaler,
-    teaCache: state.provider === 'native' ? state.teaCache : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh,
+    ...(capabilities.teaCache ? {
+      teaCache: state.provider === 'native' ? state.teaCache : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh,
+    } : {}),
   }
   if (!popular && char === 'none') {
     if (!capabilities.noLora) throw new Error('当前底模不支持无角色创作，请选择支持无 LoRA 的底模')

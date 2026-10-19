@@ -9,7 +9,7 @@ impl ControlService {
         model_download: bool,
     ) -> Result<Value> {
         check_request(self, &body)?;
-        let plan = self.native_setup_plan().await?;
+        let plan = self.native_setup_plan(body.model_id.as_deref()).await?;
         if plan["supported"] != true {
             return Err(ApiError::new(
                 409,
@@ -23,7 +23,8 @@ impl ControlService {
                     .join("；"),
             ));
         }
-        let (runtime, models) = bundles()?;
+        let (_, models) = bundles()?;
+        let runtime = image_models::runtime_for(body.model_id.as_deref())?;
         let model = if model_download {
             Some(
                 models
@@ -90,7 +91,7 @@ impl ControlService {
                 .map(|m| m.files.iter().map(|file| file.bytes).sum::<u64>())
                 .unwrap_or(runtime.download_bytes)
         );
-        if !model_download {
+        if !model_download && !image_models::is_adapter_runtime(&runtime) {
             operation["preparedPaths"] = runtime_paths(self, &runtime);
         }
         self.state.lock().unwrap().operation = Some(operation.clone());
@@ -103,7 +104,7 @@ impl ControlService {
                 let work = async {
                     if let Some(model) = model {
                         service
-                            .install_native_model(&model, &operation, &cancel, &permit)
+                            .install_native_model(&model, &operation, &cancel, &permit, body.hf_token.as_deref())
                             .await
                     } else {
                         service
@@ -206,7 +207,9 @@ impl ControlService {
         }
         stopped(cancel)?;
         self.native_stage(operation, 3);
-        self.native_progress(operation, json!({"result":value,"preparedPaths":paths}));
+        let mut progress = json!({"result":value});
+        if !image_models::is_adapter_runtime(runtime) { progress["preparedPaths"] = paths; }
+        self.native_progress(operation, progress);
         Ok(())
     }
 
@@ -216,6 +219,7 @@ impl ControlService {
         operation: &Value,
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
+        hf_token: Option<&str>,
     ) -> Result<()> {
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
@@ -228,20 +232,13 @@ impl ControlService {
         self.native_stage(operation, 1);
         // Reuses matching files and downloads only missing components; a corrupt
         // user-owned file is a conflict, never silently replaced.
-        self.download_native_files(root, &model.files, operation, cancel)
-            .await?;
+        let files = image_models::resolve_files(self, model, root, hf_token, cancel).await?;
+        self.download_native_files_authorized(root, &files, operation, cancel, hf_token).await?;
         self.native_stage(operation, 2);
-        verify_files(root, &model.files, cancel).await?;
-        let (settings, receipt) = crate::generation::native::Settings::discovered(workspace);
-        if receipt.is_none() {
-            return Err(ApiError::new(
-                409,
-                "NATIVE_RUNTIME_UNAVAILABLE",
-                "当前工作区运行库不可用，请重新准备",
-            ));
-        }
-        self.validate_native_model(&settings, root, cancel, permit)
-            .await?;
+        verify_files(root, &files, cancel).await?;
+        let runtime = image_models::runtime_for(Some(&model.id))?;
+        let settings = image_models::settings(self, &runtime)?;
+        self.validate_native_model(&settings, root, &model.id, cancel, permit).await?;
         stopped(cancel)?;
         self.native_stage(operation, 3);
         let document = json!({"schemaVersion":1,"modelId":model.id,"revision":model.revision,
@@ -287,11 +284,13 @@ impl ControlService {
         &self,
         settings: &crate::generation::native::Settings,
         model: &Path,
+        model_id: &str,
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
     ) -> Result<()> {
         let inspect = model.to_owned();
-        let issue = tokio::task::spawn_blocking(move || crate::generation::native::model_issue(&inspect)).await
+        let id = model_id.to_owned();
+        let issue = tokio::task::spawn_blocking(move || image_models::model_issue(&inspect, &id)).await
             .map_err(|_| ApiError::new(503, "NATIVE_MODEL_INCOMPLETE", "模型目录读取未完成"))?;
         if let Some(issue) = issue {
             return Err(ApiError::new(409, "NATIVE_MODEL_INCOMPLETE", issue));
@@ -303,6 +302,7 @@ impl ControlService {
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
+        if crate::generation::native::adapters::model(model_id).is_some() { command.arg("--model-id").arg(model_id); }
         let value = self.run_setup_helper(&mut command, cancel, 120, permit.clone(), None).await?;
         if value["event"] != "validation" || value["valid"] != true {
             return Err(ApiError::new(
@@ -374,11 +374,18 @@ impl ControlService {
         operation: &Value,
         cancel: &CancellationToken,
     ) -> Result<()> {
+        self.download_native_files_authorized(root, files, operation, cancel, None).await
+    }
+    async fn download_native_files_authorized(&self, root: &Path, files: &[Artifact], operation: &Value,
+        cancel: &CancellationToken, token: Option<&str>) -> Result<()> {
         let mut completed = 0;
         let mut client = None;
         for file in files {
             stopped(cancel)?;
             plan::safe_directory(root)?;
+            if token.is_some() && !file.url.starts_with("https://huggingface.co/") {
+                return Err(ApiError::invalid("凭据只能用于固定 Hugging Face 模型来源"));
+            }
             // Keep one pool for this batch, after cancellation and directory checks.
             let client = match client {
                 Some(ref client) => client,
@@ -386,6 +393,7 @@ impl ControlService {
                     reqwest::Client::builder()
                         .https_only(true)
                         .connect_timeout(Duration::from_secs(30))
+                        .default_headers(image_models::token_header(token)?)
                         .build()
                         .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "无法连接下载源，请检查网络后重试"))?,
                 ),

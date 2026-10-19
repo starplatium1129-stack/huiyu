@@ -14,6 +14,7 @@
       <div class="tw:flex tw:items-center tw:flex-wrap tw:gap-s-2">
         <GalleryBackupTools />
         <MangaScreenLauncher @saved="loadGalleryStorage" />
+        <RouterLink class="btn btn-ghost" to="/qwen-studio"><ArchiveIcon name="image" />Qwen 生图与编辑</RouterLink>
         <RouterLink class="btn btn-primary gallery-create" to="/prompt-builder">
           <ArchiveIcon name="spark" />新建创作
         </RouterLink>
@@ -215,7 +216,8 @@
           </StudioFavoriteButton>
           <button class="btn btn-ghost" type="button" @click="downloadCurrent"><ArchiveIcon name="download" />下载原图</button>
           <MangaScreenLauncher :source-url="viewerUrl" :artwork="displayedCurrent" :disabled="!viewerUrl || viewerLoadFailed" @saved="loadGalleryStorage" />
-          <RouterLink v-if="displayedCurrent.engine !== 'manga-screen'" class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
+          <RouterLink v-if="displayedCurrent.engine !== 'manga-screen' && displayedCurrent.engine !== 'qwen-image'" class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
+          <RouterLink v-if="displayedCurrent.image_id" class="btn btn-ghost" :to="{ path: '/qwen-studio', query: { artwork: displayedCurrent.id } }"><ArchiveIcon name="image" />用 Qwen 编辑</RouterLink>
         </div>
         <section class="viewer-section" aria-label="作品信息">
           <h3>作品信息</h3>
@@ -243,7 +245,8 @@
         <details class="viewer-details viewer-more" :key="`tools-${displayedCurrent.id}`">
           <StudioDisclosureSummary><span class="viewer-disclosure-copy">更多操作<small>重跑、复制与管理</small></span></StudioDisclosureSummary>
           <div class="viewer-actions" data-disclosure-content>
-          <RouterLink v-if="displayedCurrent.engine !== 'manga-screen'" class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
+          <RouterLink v-if="displayedCurrent.engine !== 'manga-screen' && displayedCurrent.engine !== 'qwen-image'" class="btn btn-ghost" :to="`/prompt-builder?regen=${encodeURIComponent(displayedCurrent.id || '')}`">原参重跑</RouterLink>
+          <RouterLink v-if="displayedCurrent.engine === 'qwen-image' && typeof displayedCurrent.taskId === 'string'" class="btn btn-ghost" :to="{ path: '/qwen-studio', query: { job: displayedCurrent.taskId } }">查看 Qwen 原任务</RouterLink>
           <button data-gesture-toggle class="btn btn-ghost" type="button" :aria-pressed="gestureViewer" :aria-busy="gestureLoading" @click="toggleGesture">{{ gestureLoading ? '取消手势加载' : gestureViewer ? '返回原查看器' : '尝试手势观画' }}</button>
           <p v-if="gestureLoading" class="gallery-gesture-feedback" role="status">正在准备手势观画…</p>
           <div v-if="gestureError" class="gallery-gesture-feedback"><span role="alert">手势观画暂未加载。</span><button class="btn btn-ghost btn-sm" type="button" @click="toggleGesture">重新读取</button></div>

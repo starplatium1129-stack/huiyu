@@ -31,6 +31,7 @@ impl ControlService {
             let (mut suggested, receipt) = Settings::discovered(&config.ai_workspace_root);
             suggested.engine = "native".into();
             let mut target = serde_json::to_value(&suggested)?;
+            target["videoEngine"] = json!(configured.video_engine());
             let saved = serde_json::to_value(&configured)?;
             // Existing settings and environment overrides have precedence. A
             // discovery refresh must not replace paths deliberately selected by a user.
@@ -59,14 +60,16 @@ impl ControlService {
                     .environment_overrides
                     .iter()
                     .any(|key| key == "python");
-            if !selected.python.is_file() || (receipt.is_none() && !explicit_python) {
+            let adapter_ready = crate::generation::native::adapters::manifest()["models"].as_object().unwrap().iter()
+                .any(|(id, model)| model["media"] == "image" && crate::generation::native::adapters::status(&selected, id)["available"] == true);
+            if !adapter_ready && (!selected.python.is_file() || (receipt.is_none() && !explicit_python)) {
                 missing.push("兼容的本机 Python 运行库");
             }
             if !selected.worker.is_file() {
                 missing.push("随绘遇安装的推理 Worker");
             }
             if model_count == 0 {
-                missing.push("已转换的 Anima 模型目录");
+                missing.push("完整的原生图像模型目录");
             }
             if selected.engine != "native" {
                 missing.push("启动环境固定了其他绘图引擎");

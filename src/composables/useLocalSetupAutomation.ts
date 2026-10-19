@@ -15,7 +15,7 @@ import { settingsRepository, DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING } from '
 export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, blocked: Ref<boolean>, onResult:(result:LocalSetupDownloadResult)=>void, refresh:()=>void, statusConfirmed:Ref<boolean>) {
   const draft=readSetupDraft(snapshot.value.workspace.path)
   const savedModel=draft&&snapshot.value.models.some(model=>model.id===draft.modelId&&model.id.startsWith('anima-')&&model.preparation)?draft.modelId:undefined
-  const modelId=ref(savedModel??snapshot.value.recommendedModel??snapshot.value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'),chatId=ref(draft&&snapshot.value.models.some(model=>model.id===draft.chatId&&model.kind==='chat')?draft.chatId:''), drawing=ref(draft?.drawing??true), loras=ref(draft?.loras??true), reviewed=ref(false)
+  const modelId=ref(savedModel??snapshot.value.recommendedModel??snapshot.value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'),chatId=ref(draft&&snapshot.value.models.some(model=>model.id===draft.chatId&&model.kind==='chat')?draft.chatId:''), drawing=ref(draft?.drawing??false), loras=ref(draft?.loras??true), reviewed=ref(false)
   const installed=snapshot.value.comfy.managedEnvironment
   // Initialize from verified installation evidence once; later refreshes must preserve the user's choice.
   const environment=ref(installed?.state==='verified'?installed.environment:draft?.environment??(snapshot.value.comfy.installation==='missing'?'comfy-nvidia':'')),llamaEnvironment=ref(draft?.llamaEnvironment??'llama-cuda')
@@ -53,7 +53,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     const saved=readSetupDraft(workspace.value),value=snapshot.value,receipt=value.comfy.managedEnvironment
     modelId.value=saved&&value.models.some(model=>model.id===saved.modelId&&model.id.startsWith('anima-')&&model.preparation)?saved.modelId:value.recommendedModel??value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'
     chatId.value=saved&&value.models.some(model=>model.id===saved.chatId&&model.kind==='chat')?saved.chatId:''
-    drawing.value=saved?.drawing??true;loras.value=saved?.loras??true
+    drawing.value=saved?.drawing??false;loras.value=saved?.loras??true
     environment.value=receipt?.state==='verified'?receipt.environment:saved?.environment??(value.comfy.installation==='missing'?'comfy-nvidia':'')
     llamaEnvironment.value=saved?.llamaEnvironment??'llama-cuda';restoringDraft=false
   },{flush:'sync'})
@@ -141,7 +141,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     if(!readiness.complete)throw new Error('绘图准备尚未完成：'+readiness.nextStep)
     const engine=await inferenceSettingsApi.getStatus()
     checkpoint()
-    if(engine.environmentOverrides.includes('engine')&&engine.active.engine!=='comfy')throw new Error('启动配置锁定了原生引擎，请在「其他绘图引擎」中核对启动配置，再启用 ComfyUI。模型文件已保留。')
+    if(engine.environmentOverrides.includes('engine')&&engine.active.engine!=='comfy')throw new Error('启动配置锁定了原生引擎，请在「原生绘图」的高级设置中核对启动配置，再启用 ComfyUI。模型文件已保留。')
     const activated=engine.configured.engine==='comfy'?engine:await inferenceSettingsApi.save({...engine.configured,engine:'comfy'})
     checkpoint()
     engineRestartRequired.value=activated.active.engine!=='comfy'||activated.restartRequired

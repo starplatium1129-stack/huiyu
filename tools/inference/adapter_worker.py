@@ -119,6 +119,9 @@ def fingerprint(root, control):
 def generate(job, control, _prepared, *, result_callback=None, resident=None):
     data, spec = contract.validate(job)
     root = contract.layout(job["modelDir"], spec)
+    style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
+    if style_path is not None:
+        sibling("krea_style").require_dependency()
     import torch
     import diffusers
     if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
@@ -133,16 +136,18 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
     owned = resident is None
     cache = sibling("resident_adapters").PipelineCache() if owned else resident
     pipeline = None
-    image = None
+    images = []
     success = False
     try:
         kwargs = {"local_files_only": True, "use_safetensors": True, "torch_dtype": torch.bfloat16}
         pipeline, identity, reused = cache.acquire(root, spec, data, policy, control, fingerprint,
             lambda: (video.load(root, spec, data, control, contract) if spec["media"] == "video"
-                     else getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)), Error)
+                     else getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)), Error, style_path=style_path)
         observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity,
                        "memoryPolicy": policy, "weightReuse": reused,
                        "memoryScheduling": cache.memory.observation()}
+        if style_path is not None:
+            observation["styleLoraSha256"] = cache.style_identity
         video.prepare(pipeline, spec, data)
         if spec["media"] == "video":
             with torch.inference_mode():
@@ -170,8 +175,10 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
                 args["negative_prompt"] = data["negativePrompt"]
             if job.get("inputImagePath"):
                 control.stage("preparing_image")
-                image = media.input_image(job["inputImagePath"], Error)
-                args["image"] = image
+                for path in [job["inputImagePath"], *job.get("referenceImagePaths", [])]:
+                    control.check()
+                    images.append(media.input_image(path, Error))
+                args["image"] = images
         else:
             args["guidance_scale"] = data["cfg"]
             if spec["negative"]:
@@ -186,7 +193,7 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
     except torch.cuda.OutOfMemoryError as exc:
         raise Error("NATIVE_OUT_OF_MEMORY", "CUDA 显存不足；尝试 offload 或缩小尺寸。分层卸载不保证任意模型/画幅可用，不会回退 ComfyUI") from exc
     finally:
-        if image is not None:
+        for image in images:
             image.close()
         # Retire the task-local shell/solver before acknowledging cleanup. Manga
         # calls without a cache still release Qwen before CPU line extraction.
@@ -219,10 +226,15 @@ def main():
                 emit(stream, None, "catalog", **contract.MANIFEST)
             elif args.diagnose:
                 versions = dependencies()
-                emit(stream, None, "diagnostic", dependencies=versions, scope="imports-only; no weights or inference", validation="待主力机验证")
+                sibling("krea_style").require_dependency()
+                import torch
+                cuda = torch.cuda.is_available()
+                emit(stream, None, "diagnostic", valid=True, dependencies=versions, cudaAvailable=cuda,
+                     deviceName=torch.cuda.get_device_name() if cuda else None,
+                     scope="imports and device visibility; no weights or inference", validation="待主力机验证")
             elif args.validate:
                 root = contract.layout(args.validate, contract.model(args.model_id))
-                emit(stream, None, "validation", modelDir=str(root), dependencies=dependencies(),
+                emit(stream, None, "validation", valid=True, modelDir=str(root), dependencies=dependencies(),
                      scope="layout-and-imports-only; no weight correctness or GPU inference proof", validation="待主力机验证")
             else:
                 resident = sibling("resident_adapters").PipelineCache()

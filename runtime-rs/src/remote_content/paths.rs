@@ -20,6 +20,7 @@ const PAGES: &[&str] = &[
     "/scene-explorer",
     "/popular-scenes",
     "/prompt-builder",
+    "/qwen-studio",
     "/video-studio",
     "/chat",
     "/showcase",

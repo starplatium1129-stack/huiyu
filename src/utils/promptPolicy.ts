@@ -227,6 +227,8 @@ export function resolveModelProfile(
   if (!list.length) return null
   const target = normalizeModelName(modelName || '')
   if (target) {
+    const exact = list.find(profile => normalizeModelName(profile.model_id || '') === target)
+    if (exact) return exact
     const hit = list.find(p =>
       [p.model_id, ...(p.match || [])].some(m => {
         const key = normalizeModelName(String(m))

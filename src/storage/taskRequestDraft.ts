@@ -1,7 +1,7 @@
 import { newRequestDraft, readRequestDraft, type RequestDraft } from './requestDraft'
 
 export interface TaskRequestDraft extends RequestDraft {
-  kind: 'manga' | 'lineart' | 'video' | 'batch'
+  kind: 'qwen' | 'manga' | 'lineart' | 'video' | 'batch'
   input: Record<string, unknown>
   context?: Record<string, unknown>
   taskId?: string
@@ -11,7 +11,7 @@ const record = (value: unknown): value is Record<string, unknown> => Boolean(val
 export function readTaskRequestDraft(slot: string): TaskRequestDraft | null {
   const value = readRequestDraft(slot)
   if (!value) return null
-  if (!['manga', 'lineart', 'video', 'batch'].includes(String(value.kind)) || !record(value.input)
+  if (!['qwen', 'manga', 'lineart', 'video', 'batch'].includes(String(value.kind)) || !record(value.input)
     || value.context !== undefined && !record(value.context) || value.details !== undefined && !record(value.details)
     || value.taskId !== undefined && (typeof value.taskId !== 'string' || !value.taskId))
     throw new Error('原任务配方或身份无效，已保留记录；不会重新提交')

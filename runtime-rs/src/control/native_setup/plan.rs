@@ -136,8 +136,12 @@ pub(super) fn runtime_support(
     reasons
 }
 impl ControlService {
-    pub(super) async fn native_setup_plan(self: &Arc<Self>) -> Result<Value> {
-        let (runtime, models) = bundles()?;
+    pub(super) async fn native_setup_plan(self: &Arc<Self>, selected: Option<&str>) -> Result<Value> {
+        let (_, models) = bundles()?;
+        let selected = selected.unwrap_or(&models[0].id).to_owned();
+        let selected_model = models.iter().find(|model| model.id == selected)
+            .ok_or_else(|| ApiError::invalid("请选择已登记的原生图像模型"))?;
+        let runtime = image_models::runtime_for(Some(&selected))?;
         let network = match reqwest::Client::builder()
             .https_only(true)
             .timeout(Duration::from_secs(4))
@@ -146,7 +150,7 @@ impl ControlService {
             Ok(client) => {
                 let (python, model) = tokio::join!(
                     client.head(&runtime.files[0].url).send(),
-                    client.head(&models[0].files[0].url).send()
+                    client.head(&selected_model.files[0].url).send()
                 );
                 let accessible =
                     |result: std::result::Result<reqwest::Response, reqwest::Error>| {
@@ -176,13 +180,14 @@ impl ControlService {
                 }
             };
             let root = service.config.ai_workspace_root.join("inference");
-            let (discovered, receipt) =
-                crate::generation::native::Settings::discovered(&service.config.ai_workspace_root);
+            let (discovered, _) = crate::generation::native::Settings::discovered(&service.config.ai_workspace_root);
+            let receipt = image_models::runtime_receipt(&service, &runtime);
+            let runtime_python = receipt.as_ref().and_then(|(_, value)| value["python"].as_str()).map(PathBuf::from)
+                .unwrap_or_else(|| root.join(&runtime.runtime_id).join("venv/Scripts/python.exe"));
             let configured = service.configured_inference()?;
             let active = service.active_inference()?;
-            let workspace_matches = [configured.python.clone(), configured.models_root.clone()]
-                .iter()
-                .all(|path| path.starts_with(&root))
+            let selected_python = if image_models::is_adapter_runtime(&runtime) { configured.adapter_python.clone() } else { Some(configured.python.clone()) };
+            let workspace_matches = selected_python.as_ref() == Some(&runtime_python) && configured.models_root == root.join("models")
                 && service.saved.read().unwrap()["inferenceWorkspacePath"]
                     .as_str()
                     .is_none_or(|path| Path::new(path) == service.config.ai_workspace_root);
@@ -204,18 +209,20 @@ impl ControlService {
                 let model_root = root.join("models").join(&model.id);
                 json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
+                    "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else{"anima"},
                     "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
                     "installed":receipt_matches(&model_root, model),"path":model_root})
             }).collect();
-            let model_ready = model_views.iter().any(|value| value["installed"] == true);
+            let model_ready = model_views.iter().any(|value| value["id"] == selected && value["installed"] == true);
             Ok(
-                json!({"ok":true,"planId":plan_id(&service.config.ai_workspace_root),"workspacePath":service.config.ai_workspace_root,
-                "paths":{"runtimeRoot":receipt.as_ref().and_then(|path|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
+                json!({"ok":true,"selectedModelId":selected,"planId":plan_id(&service.config.ai_workspace_root),"workspacePath":service.config.ai_workspace_root,
+                "paths":{"runtimeRoot":receipt.as_ref().and_then(|(path, _)|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
                     "lorasRoot":discovered.loras_root,"cacheRoot":root.join(".downloads"),"tempRoot":root.join(".staging")},
                 "hardware":hardware,"network":network,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
-                "runtime":{"id":runtime.runtime_id,"label":"CPython 3.11.9 · PyTorch 2.8.0 CUDA 12.8",
+                "runtime":{"id":runtime.runtime_id,"label":if image_models::is_adapter_runtime(&runtime){"Krea/Qwen · 独立 Python 3.11 · CUDA 12.8"}else{"Anima · Python 3.11 · CUDA 12.8"},
                     "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoverableBytes":recoverable,"recoveryReady":recovery_ready,"sources":runtime.sources,
-                    "installed":runtime_ready,"python":discovered.python},"models":model_views,
+                    "installed":runtime_ready,"python":runtime_python},"models":model_views,
+                "resources":image_resources::views(&root, &configured, &service.config.app_root)?,
                 "activeEngine":active.engine,"configuredEngine":configured.engine,"restartRequired":active != &configured,
                 "workspaceMatches":workspace_matches,
                 "steps":{"runtime":if runtime_ready{"installed"}else{"not-downloaded"},
@@ -245,7 +252,7 @@ pub(super) fn recoverable_runtime(root: &Path, runtime: &RuntimeBundle) -> u64 {
     };
     if owner["schemaVersion"] != 1
         || owner["runtimeId"] != runtime.runtime_id
-        || owner["manifestSha256"] != runtime_manifest_sha256()
+        || owner["manifestSha256"] != image_models::manifest_hash(runtime)
         || !owner["targetRoot"]
             .as_str()
             .is_some_and(|path| Path::new(path) == root.join(&runtime.runtime_id))
@@ -304,7 +311,7 @@ pub(super) fn candidate_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
         value["schemaVersion"] == 1
             && value["engine"] == "native"
             && value["managedRuntimeId"] == runtime.runtime_id
-            && value["manifestSha256"] == runtime_manifest_sha256()
+            && value["manifestSha256"] == image_models::manifest_hash(runtime)
             && value["environment"]["cudaAvailable"] == true
             && value["root"]
                 .as_str()
@@ -344,7 +351,7 @@ pub(super) fn model_needed(root: &Path, model: &ModelBundle) -> u64 {
         .required_bytes
         .saturating_sub(retained(
             if target.exists() { &target } else { &stage },
-            &model.files,
+            &image_models::cached_artifacts(root, model),
         ))
         .saturating_add(64 * 1024 * 1024)
 }

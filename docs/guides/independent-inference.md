@@ -7,8 +7,12 @@
 ## 原生图像与视频适配入口（待主力机验证）
 
 这些适配复用固定 Diffusers 源码，不使用 ComfyUI 节点、Python 或量化分片。
-它们与受管 Anima 环境分开：在独立 Python 3.11 venv 中安装
-`tools/inference/requirements-adapters.txt`，CUDA PyTorch 使用对应 cu128 发行。
+Krea/Qwen 可在控制室「原生绘图」选择模型，一键下载独立 Python 3.11、CUDA 12.8 运行库和完整模型，校验后保存原生配置。四种图像模型可逐个添加，共用 adapters 运行库；保留 Anima 的独立环境。下载清单为 `managed-adapter-runtime.windows-x64.json` 与 `managed-adapter-models.json`，固定版本、文件大小与 SHA-256；Diffusers 从固定源码归档复制纯 Python 包，不执行源码安装钩子。取消保留已下载文件，重试沿用续传和校验，已有冲突文件不会被覆盖。
+Krea 先在官方仓库接受许可，再在准备界面填写只读 Hugging Face 令牌。令牌只用于本次下载，不存入设置或操作记录；下载运行库前先核对访问权。受限仓库的原始配置和 LFS 指针通过固定 Git blob ID 核对，再取得完整权重 SHA-256。完成文件可离线复核与启用。
+「辅助模型与 LoRA」可单独准备 CLIPSeg 自动蒙版、FP32 Remacri 放大、Anima Sketch LLLite v2、MangaLine 线稿，以及已登记的 Anima 角色 LoRA 与九种 Krea 风格，沿用下载、完整 SHA-256 校验、取消和续传流程。辅助模型写入当前已配置的 `modelsRoot`，不切换底模目录；LoRA 存入 AI 工作区的 `inference/loras`，可填入设置草稿后保存并重启。已有不同文件不会覆盖；需要来源账户登录的文件可自行下载到所示目录再校验。此入口不接收账户令牌，不在生成过程中隐式下载。
+辅助清单为 `managed-auxiliary-models.json`。CLIPSeg 固定 CIDAS 的完整配置、分词器与 safetensors；Remacri 固定 LyliaEngine 的 FP32 转换文件，不能用同名 FP16 文件代替；Sketch 固定现有加载器支持的 28 层 Anima 版本。MangaLine 使用 `lllyasviel/Annotators` 的固定 erika.pth 镜像，来源和原项目许可分别展示。准备包含许可或模型卡文件，界面明确显示用途与来源；文件齐备只按大小判定，准备完成才表示逐项完整摘要通过，均不代表实际生成已验收。原生设置保存后如尚未重启，辅助资源写入已保存目录，当前运行仍使用原配置。
+新配置默认使用原生 LoRA 目录，不再自动借用 `ComfyUI/models/loras`；用户显式保存的旧路径仍可复用文件。仅准备 Krea/Qwen 也可进入绘图模式，模型发现按图像适配器汇总；各模型在提交时分别核对环境与权重。PixAI 准备工具默认寻找已准备的原生 Python，也可用 `--python` 指定独立环境。
+手动配置时，在独立环境中安装 `tools/inference/requirements-adapters.txt`，CUDA PyTorch 使用对应 cu128 发行。
 其中 Diffusers 固定为 `b800f828f3951c4d206e154411bcbfa693cd322e`、Transformers 5.17.0；
 不要向已有 Anima 环境安装这份依赖。安装、下载权重与 GPU 推理均须在具备条件的机器显式执行。
 
@@ -20,7 +24,7 @@
 | --- | --- | --- |
 | krea2-raw | krea/Krea-2-Raw | `/api/creative/jobs`；文生图，默认 52 步、Krea guidance 3.5 |
 | krea2-turbo | krea/Krea-2-Turbo | 同上；8 步、Krea guidance 0，固定 distilled 调度 |
-| qwen-image-2.1 | Qwen/Qwen-Image-2.1 | `/api/qwen/jobs`；文生图、单图指令编辑，默认 40 步、CFG 1 |
+| qwen-image-2.1 | Qwen/Qwen-Image-2.1 | `/api/qwen/jobs`；文生图、单图及最多四图指令编辑，默认 40 步、CFG 1 |
 | qwen-image-2.1-turbo | Qwen/Qwen-Image-2.1-Turbo | 同上；8 步、CFG 1，使用权重声明的 sample_sigmas |
 | wan2.2-ti2v-5b | Wan-AI/Wan2.2-TI2V-5B-Diffusers | `/api/video/jobs`；3/5 秒文生视频，默认 50 步、CFG 5、24 fps |
 | wan2.2-14b | Wan-AI/Wan2.2-T2V-A14B-Diffusers | 同上；T2V 双模型，40 步，高/低噪声 CFG 4/3，16 fps |
@@ -45,7 +49,7 @@ Qwen 2.1 权重适用 Qwen Research License（非商业研究/评估；商业用
 Wan 权重及 Diffusers 实现为 Apache-2.0；H3、Hunyuan、LTX 分别遵循其模型许可，LTX 文本编码器另受 Gemma 许可约束。
 实现许可证不替代权重许可证；许可链接随适配声明返回。
 
-启动绘遇前设置 `HUIYU_NATIVE_ADAPTER_PYTHON=<独立venv的python.exe>`，显式选择 native 引擎、
+在控制室「原生绘图 → 已有资源与高级设置 → 高级路径设置」填写 Krea / Qwen 独立 Python，保存并重启；也可在启动前设置 `HUIYU_NATIVE_ADAPTER_PYTHON=<独立venv的python.exe>`。选择 native 绘图引擎、
 native 加速；`HUIYU_INFERENCE_MEMORY=offload` 使用共享 `native_memory`，按设备可用显存扣除 `max(1 GiB, 显存总量/4)` 的激活预留，对超预算文本编码器和去噪器选择 block/leaf 分层卸载，每任务重估预算；resident 保留原整管线 GPU 模式。VAE 和 vocoder 保留组件卸载及已有 tiling，避免绕过根 forward 的 encode/decode 与直接权重访问破坏 hooks。分层搬运不启用预取流、不改变精度；预算不保证任意画幅、模型或并行 GPU 占用下不会 OOM。
 新增适配由同一 worker 保留一组受 Windows 文件保护租约约束的权重；同目录、modelId、显存策略及同一持续有效的保护 token 才复用，每任务重建管线、scheduler、guider 和请求状态。租约内部重新获取保护后，即使摘要相同也重新加载旧权重；推理前再次核对保护期。切换、文件保护失效、取消或失败释放驻留；不支持持续保护时保留逐任务完整字节校验和释放，不以文件名、大小或 mtime 替代身份。漫画内嵌 Qwen 不驻留。分层 hooks 安装/移除时清除子注册表缓存，再允许 LoRA 拓扑变更。
 `nativeRuntime.weightReuse` 与 `memoryScheduling` 返回实际复用、组件模式及预算；缺少或无效观察不视为通过。分层路径、保护复用、取消恢复和新视频模型均待主力机验证。H3 的 BF16 组件仍可能超出主力机显存/内存，量化尚未接入。
@@ -62,8 +66,10 @@ H3 从 5 秒开始，其余从 3 秒开始；H3 不接受负向提示词。检�
 通过 GET jobs/id 查看实际采样步、DELETE jobs/id 取消，并核对下一任务、原 Anima 链路与显存释放。
 真实结果文件、画面、取消恢复及资源占用须分别人工验收；不得将诊断、构建或目录就绪当成出图证明。
 
-本轮新增模型以网关 API 为接入入口，专用前端和受管安装流程尚未扩展。
-当前未接入：新增模型 LoRA/遮罩/高清、Qwen 多参考图与持久任务种类、全部新视频入口的图生/关键帧/参考媒体与分镜批量，
+Krea RAW/Turbo 已接入画室与桌宠共用的模型发现和提交链路；RAW 可调步数/CFG，Turbo 固定 8 步/CFG 0。新配置默认原生绘图，视频保留 ComfyUI；已有配置切换绘图时会保留此前的视频引擎，分别持久化为 `engine` 与 `videoEngine`。
+Krea 可选现有九种官方风格 LoRA，文件名沿用 `runtime-rs/src/images/catalog.json`，放在所选 `lorasRoot`。独立环境的 `peft==0.19.0` 用于风格加载；只接入强度 1 的完整 A/B safetensors。执行时追加对应触发描述，校验转换目标、矩阵尺寸与实际加载键；相同风格在连续有效的文件保护期内驻留，切换风格或移除风格重新加载模型，失败/取消释放。目录就绪不证明 LoRA 兼容或实际效果，仍需设备验收。
+Qwen 在「我的作品 → Qwen 生图与编辑」或准备完成后的「打开 Qwen 创作」进入独立创作页，支持文生图、单图及最多四图指令编辑、PNG 导出与入册。原图为图 1，最多三张参考图按显示顺序接入；API 使用 `initImage` 加 `referenceImages` 上传名数组，每张最多 16 MiB，总量最多 64 MiB。桌面使用 `kind:qwen` 持久任务，全部输入均受保护，排队恢复使用原始字节与顺序；取消、结果收集沿用现有任务运行时。页面离开不重发任务，接收状态未知时只按原请求键查询或取消。作品预览内可直接「用 Qwen 编辑」副本；Qwen 作品不再跳入 Anima 配方重跑入口。恢复的编辑任务不会静默变成文生图，再次编辑须重新导入输入或明确切换模式。已开始的推理无法断点续算，实际运行仍待主力机验收。
+当前未接入：Krea 角色 LoRA/遮罩/高清、Qwen 通用 LoRA、全部新视频入口的图生/关键帧/参考媒体与分镜批量，
 H3 对白专用参数、量化和 Turbo LoRA，Hunyuan 720p/I2V/蒸馏，LTX 多阶段超分/蒸馏及自动提示词增强。
 选择未实现能力会明确报错，不回退 ComfyUI；LTX-2.3 不会被自动替换为 2.5。
 原 Anima 受管安装和采样实现保持原入口；下文历史设备证据只适用于原有 Anima 范围。
@@ -76,7 +82,7 @@ H3 对白专用参数、量化和 Turbo LoRA，Hunyuan 720p/I2V/蒸馏，LTX 多
 修正上游 border=0 的整幅涂黑切片问题；不宣称与上游输出逐像素一致。
 
 基础后处理在 CPU 执行，无模型权重。`HUIYU_NATIVE_ADAPTER_PYTHON` 指向单独 Python 3.11 环境，
-按 `requirements-manga.txt` 准备 NumPy、OpenCV headless、Pillow；可与前述 adapters 环境共用兼容依赖，
+Krea/Qwen 受管环境已包含 `requirements-manga.txt` 对应的 NumPy、OpenCV headless、Pillow；手动配置时也可与前述 adapters 环境共用兼容依赖，
 不要改动受管 Anima 环境，也不要混装多个 OpenCV wheel。`--catalog` 仅读声明，`--diagnose` 仅检查依赖导入。
 CPU 路径不会申请 CUDA 或为自身停止聊天模型；它仍复用原生串行队列，切换 worker 会释放旧推理 worker。
 
@@ -111,7 +117,7 @@ CPU 路径不会申请 CUDA 或为自身停止聊天模型；它仍复用原生�
   直接保留 [论文作者的网络](https://github.com/ljsabc/MangaLineExtraction_PyTorch/tree/6ec136d5332180b65476e62c2558f2873d5d936a)
   与 state_dict 名称，固定 revision `6ec136d5332180b65476e62c2558f2873d5d936a`；
   MIT 许可随 `MANGALINE_LICENSE.txt` 打包，仅去掉 CLI、数据集和不可达调试代码。
-  主力机手工准备 [官方 v1 erika.pth](https://github.com/ljsabc/MangaLineExtraction_PyTorch/releases/tag/v1)（约 165 MB）
+  可在「辅助模型与 LoRA」准备固定镜像，或自行放入 [官方 v1 erika.pth](https://github.com/ljsabc/MangaLineExtraction_PyTorch/releases/tag/v1)（约 165 MB）
   到 `<modelsRoot>/manga-line-extraction/erika.pth`。按作者预处理保留原尺寸、灰度 0–255、补齐 16 倍数，
   输出反相为 MangaFinish 所需的白线黑底；CPU FP32 执行，不做隐式缩图或算法替代。
   仅 `weights_only=True` 严格加载；记录实际文件 SHA-256，但不把文件存在/哈希记录称为官方权重或效果验证。
@@ -189,13 +195,13 @@ Qwen 在采样步回调取消，线稿在网络层边界取消，单次 OpenCV/�
 
 一键流程明确保存原生引擎，按页面提示重启绘遇；只有当前引擎确认为原生、设备与资源就绪才显示“开始创作”。工作区变更会撤销旧目录的就绪显示，保存新目录后须重启；应用不静默回退 ComfyUI。源码、构建和组件检查不等于干净 Windows 安装或真实出图验收；断网续传、磁盘不足、不可写目录、缺组件、重启发现及最终原生成图仍须在对应设备人工验收。
 
-在控制室展开“已有资源与高级设置”，选择“采用并启用”，保存后重启运行时。程序从当前 AI 工作区的 inference 根及一层子目录发现兼容运行库安装记录，复用 inference/models 内完整原生模型；独立 LoRA 目录没有已登记文件时可直接使用 ComfyUI/models/loras。无需重复复制权重或填写四条路径。显式保存的配置与环境覆盖仍优先，手动路径集中在高级设置。发现只检查本地文件，不代表依赖或设备出图验收。
+在控制室展开“已有资源与高级设置”，选择“采用并启用”，保存后重启运行时。程序从当前 AI 工作区的 inference 根及一层子目录发现兼容运行库安装记录，复用 inference/models 内完整原生模型；LoRA 默认使用 inference/loras，不自动借用 ComfyUI 目录。显式保存的旧模型路径仍可复用，无需重复复制权重。显式保存的配置与环境覆盖仍优先，手动路径集中在高级设置。发现只检查本地文件，不代表依赖或设备出图验收。
 
 日常 TeaCache 已内置 CocyNoric 的 Apache-2.0 Anima 策略，默认阈值 0.10，允许沿用保存的数值阈值；关闭或阈值 0 使用完整计算。切换模型、LoRA、尺寸和高清倍率不再要求校准，也不读取旧 teacache-profile.json。主采样与高清二次采样使用独立残差，首末步完整计算。内置缓存会改变部分采样结果，不承诺跨后端像素一致。显式本地校准仅保留为维护研究路径。
 
 加载阶段显示环境、模型核验、各组件加载与上传、编码、解码及保存进度。取消在安全阶段或采样步边界生效，清理后确认 ready 才保留模型；10 秒内没有确认或发生故障时仍结束进程，避免后续任务与未退出工作重叠。已完成任务的取消竞争不再无条件销毁模型。
 
-未显式配置引擎时仍默认 ComfyUI；上述一键准备会保存原生引擎设置。受管安装范围是已支持的 Anima 模型与 LoRA、图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS。首次准备使用上述受管下载；已有 Python 与本地 wheelhouse 的离线准备、完整 Diffusers 目录导入保留为高级入口。应用不盲用 ComfyUI Python；新增 Krea/Qwen/Wan 入口需按本文首节单独准备，尚待主力机验证。SDXL 和任意 Comfy 节点不属于原生支持范围。
+未显式配置绘图引擎时默认原生；已有显式配置保持用户选择，视频配置独立。Anima 支持图生图、手绘/CLIPSeg 局部重绘、Latent/固定 Remacri 高清和 RCAS；辅助权重可在同一准备页按需添加。首次准备使用受管下载，已有 Python 与本地 wheelhouse 的离线准备、完整 Diffusers 目录导入保留为高级入口。应用不盲用 ComfyUI Python；Krea/Qwen 的独立运行库与模型一键准备见本文首节，真实生成仍待主力机验收。SDXL 和任意 Comfy 节点不属于原生支持范围。
 
 用户授权后完成 36 张产品 API 成片、5 次取消，并完成安装版取消/恢复；2026-10-13 已完整安装到 `C:/Program Files/AI-CG-Studio`，用户确认实际体验良好。本机 RTX 4070 Ti SUPER 的 MiaoMiao 1.6、宁宁 LoRA 0.8、832×1216、24 步、CFG 4 三张热任务中位数为原生 5.05 秒、ComfyUI 5.54 秒；Latent 高清速度接近，局部手部细节仍有差异。分阶段模式较慢但显存峰值更低。本轮不推广为全模型、自动换装语义或全部硬件验收。
 

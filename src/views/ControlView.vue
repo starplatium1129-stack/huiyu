@@ -53,7 +53,7 @@
         </template>
       </ControlIntro>
 
-      <section id="control-setup" class="panel-card"><LocalSetupPanel /></section>
+      <section id="control-setup" aria-label="原生绘图配置"><InferenceSettingsPanel /></section>
 
       <section ref="overviewRegion" id="control-overview" class="control-overview tw:mb-s-5" aria-label="连接状态" tabindex="-1" :aria-busy="serviceChecking || (!statusLoaded && !statusError)">
         <div class="overview-heading"><div><span class="panel-kicker">运行概览</span><h2>{{ overviewFeedback.title }}</h2><p>{{ overviewFeedback.note }}</p></div><span class="overview-local"><ArchiveIcon name="eye" /> 本机工作台</span></div>
@@ -67,7 +67,7 @@
             <p class="status-tile-detail">{{ !statusUsable ? (statusError ? '重新检测后确认连接状态' : '正在确认本机连接') : serviceChecking ? '正在刷新连接状态' : service.detail }}</p>
             <div class="service-row-actions">
               <template v-if="service.key === 'llama'">
-                <RouterLink :to="{ query: route.query, hash: '#control-setup' }" class="btn btn-ghost btn-sm" @click="openSection('control-setup', $event)">准备模型</RouterLink>
+                <RouterLink :to="{ query: route.query, hash: '#control-comfy' }" class="btn btn-ghost btn-sm" @click="openSection('control-comfy', $event)">准备模型</RouterLink>
                 <button class="btn btn-danger btn-sm" type="button" :disabled="!llamaManaged || opBusy" @click="serviceAction('llama','stop')">释放显存</button>
               </template>
               <template v-else-if="service.key !== 'ollama'">
@@ -87,7 +87,10 @@
         </div>
       </section>
 
-      <InferenceSettingsPanel />
+      <details id="control-comfy" class="panel-card">
+        <StudioDisclosureSummary>本地聊天与 ComfyUI 兼容配置</StudioDisclosureSummary>
+        <div data-disclosure-content><LocalSetupPanel /></div>
+      </details>
       <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><AsyncPanel :loader="loadInterrogateSetup" label="图片反推配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
 
       <!-- 操作进度 -->
@@ -116,7 +119,7 @@
         <h2 class="panel-heading">显存与运行偏好</h2>
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
-            <span class="mode-title"><ArchiveIcon name="spark" /> Anima 绘图优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
+            <span class="mode-title"><ArchiveIcon name="spark" /> 绘图优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
             <span class="mode-desc">{{ imageProvider === 'native' ? '释放本地聊天与语音显存，独立模型在生成时按需加载。' : '释放本地聊天与语音显存，启动 ComfyUI。' }}</span>
           </button>
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
@@ -154,7 +157,7 @@
             <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" aria-describedby="comfy-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p id="comfy-host-help" class="field-help">Anima、Krea 与视频生成共用此地址。</p>
+        <p id="comfy-host-help" class="field-help">供 ComfyUI 兼容绘图与视频使用；原生绘图无需连接此地址。</p>
 
         <label class="field-label" for="tts-engine">角色语音引擎</label>
         <StudioSelect id="tts-engine" v-model="ttsEngine" label="角色语音引擎" aria-describedby="tts-engine-help"
@@ -414,9 +417,9 @@ async function confirmServiceAction(service: ControlService, action: ControlServ
 }
 
 const sections: Array<{ id: string; label: string; icon: ArchiveIconName }> = [
-  { id: 'control-setup', label: '首次配置', icon: 'download' },
+  { id: 'control-setup', label: '原生绘图', icon: 'download' },
   { id: 'control-overview', label: '运行概览', icon: 'eye' },
-  { id: 'control-inference', label: '其他绘图引擎', icon: 'model' },
+  { id: 'control-comfy', label: '聊天与兼容配置', icon: 'model' },
   { id: 'control-interrogate', label: '图片反推', icon: 'search' },
   { id: 'control-resources', label: '服务与显存', icon: 'model' },
   { id: 'control-library', label: '离线资源库', icon: 'image' },
@@ -429,11 +432,11 @@ const statusUsable = computed(() => statusLoaded.value && !statusError.value)
 const route = useRoute()
 function focusMain() { document.getElementById('control-main')?.focus({ preventScroll: true }) }
 const requestedService = computed(() => route.query.engine === 'sd' ? 'webui'
-  : ['anima', 'krea2', 'video'].includes(String(route.query.engine)) ? 'comfy' : '')
+  : route.query.engine === 'video' || imageProvider.value === 'comfy' && ['anima', 'krea2'].includes(String(route.query.engine)) ? 'comfy' : '')
 const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima 绘图', krea2: 'Krea 2 绘图', video: '故事短片' } as Record<string, string>)[String(route.query.engine)] || '当前创作')
 const serviceCards = computed<Array<{ key: ControlService; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
   { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载；显存较少可使用 API' },
-  { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `Anima · Krea 2 · 视频${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
+  { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `${imageProvider.value === 'native' ? '兼容引擎 · 视频' : 'Anima · Krea 2 · 视频'}${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
   { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
   { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载聊天模型' },
 ])

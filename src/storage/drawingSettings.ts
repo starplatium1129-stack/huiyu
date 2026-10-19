@@ -19,7 +19,8 @@ export function readDrawingSettings(family: 'anima' | 'krea2'): DrawingSettings 
   const value = readAll()[family]
   if (!value || typeof value.modelId !== 'string' || !value.modelId || typeof value.loraStrength !== 'number'
     || typeof value.styleLoraId !== 'string' || typeof value.sampler !== 'string' || typeof value.scheduler !== 'string'
-    || ![value.width, value.height, value.steps, value.cfg].every(item => Number.isFinite(item) && item > 0)
+    || ![value.width, value.height, value.steps].every(item => Number.isFinite(item) && item > 0)
+    || !Number.isFinite(value.cfg) || value.cfg < (family === 'krea2' ? 0 : 0.5)
     || !Number.isFinite(value.loraStrength) || value.loraStrength < 0
     || (value.loraId !== undefined && typeof value.loraId !== 'string')
     || ![value.width, value.height, value.steps].every(Number.isInteger)

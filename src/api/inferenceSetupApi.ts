@@ -8,10 +8,16 @@ export type PreparedInferencePaths = Pick<InferenceSettings, 'python' | 'worker'
 export interface RuntimePreparationInput { basePython: string; wheelhouse: string; workspacePath: string; reviewed: true }
 export interface ModelInspectionInput { modelId: string; sourceDir: string }
 export interface ModelImportInput extends ModelInspectionInput { modelsRoot: string; reviewed: true }
-export interface ManagedInferenceInput { workspacePath: string; planId: string; reviewed: true; modelId?: string }
+export interface ManagedInferenceInput { workspacePath: string; planId: string; reviewed: true; modelId?: string; hfToken?: string; resourceRoot?: string }
+export interface NativeImageResource {
+  id: string; label: string; family: string; description: string; directory: 'models' | 'loras'; root: string
+  licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; present: boolean; path: string
+  fileCount: number; freeBytes: number | null; prepareError: string
+}
 export interface NativeSetupPlan {
   ok: true
   planId: string
+  selectedModelId: string
   workspacePath: string
   paths: { runtimeRoot: string; modelsRoot: string; lorasRoot: string; cacheRoot: string; tempRoot: string }
   hardware: { devices: { name: string; type?: string; vramBytes?: number | null; driverVersion?: string }[]; otherDevices?: { name: string; driverVersion: string | null }[]; ramBytes: number | null }
@@ -20,7 +26,8 @@ export interface NativeSetupPlan {
   reasons: string[]
   freeBytes: number | null
   runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoverableBytes?: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
-  models: { id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
+  models: { requiresAccess: boolean; family: string; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
+  resources: NativeImageResource[]
   activeEngine: string
   configuredEngine: string
   restartRequired: boolean
@@ -29,13 +36,14 @@ export interface NativeSetupPlan {
 }
 export interface NativeActivationResult { ok: true; restartRequired: boolean; active: { engine: 'native' | 'comfy' }; configured: { engine: 'native' } }
 export interface InferenceSetupOperation extends ControlOperationView {
-  kind: 'prepare-inference-runtime' | 'import-inference-model' | 'install-native-runtime' | 'download-native-model' | 'prepare-native-engine'
+  kind: 'prepare-inference-runtime' | 'import-inference-model' | 'install-native-runtime' | 'download-native-model' | 'download-native-resource' | 'prepare-native-engine'
   flowStep?: 'runtime' | 'model' | 'activate'
   preparedPaths?: PreparedInferencePaths
   basePython?: string
   wheelhouse?: string
   workspacePath?: string
   modelId?: string
+  resourceRoot?: string
   sourceDir?: string
   modelsRoot?: string
   targetDir?: string
@@ -57,10 +65,11 @@ export interface InferenceModelInspection {
   totalBytes: number
 }
 export interface InferenceSetupApi {
-  getPlan(signal?: AbortSignal): Promise<NativeSetupPlan>
+  getPlan(signal?: AbortSignal, modelId?: string): Promise<NativeSetupPlan>
   prepareEngine(input: ManagedInferenceInput): Promise<InferenceSetupResult>
   installRuntime(input: ManagedInferenceInput): Promise<InferenceSetupResult>
   downloadModel(input: ManagedInferenceInput): Promise<InferenceSetupResult>
+  downloadResource(input: ManagedInferenceInput): Promise<InferenceSetupResult>
   activate(input: ManagedInferenceInput, signal?: AbortSignal): Promise<NativeActivationResult>
   prepareRuntime(input: RuntimePreparationInput): Promise<InferenceSetupResult>
   inspectModel(input: ModelInspectionInput, signal?: AbortSignal): Promise<InferenceModelInspection>
@@ -80,7 +89,12 @@ const secureUrl = (value: unknown) => {
 }
 function validPlan(value: ApiResponseObject): boolean {
   const { paths, hardware, runtime, models, steps } = value
-  return value.ok === true && nonempty(value.planId) && nonempty(value.workspacePath)
+  return value.ok === true && nonempty(value.planId) && nonempty(value.selectedModelId) && nonempty(value.workspacePath)
+    && Array.isArray(value.resources) && value.resources.every(entry => object(entry) && nonempty(entry.id) && nonempty(entry.label)
+      && ['anima', 'krea2', 'manga'].includes(String(entry.family)) && secureUrl(entry.licenseUrl) && secureUrl(entry.sourceUrl)
+      && ['models', 'loras'].includes(String(entry.directory)) && nonempty(entry.root) && nonempty(entry.description)
+      && bytes(entry.fileCount) && entry.fileCount > 0 && (entry.freeBytes === null || bytes(entry.freeBytes)) && typeof entry.prepareError === 'string' && bytes(entry.downloadBytes)
+      && bytes(entry.requiredBytes) && typeof entry.present === 'boolean' && nonempty(entry.path))
     && object(paths) && ['runtimeRoot', 'modelsRoot', 'lorasRoot', 'cacheRoot', 'tempRoot'].every(key => nonempty(paths[key]))
     && object(hardware) && (hardware.ramBytes === null || bytes(hardware.ramBytes))
     && (value.network === undefined || object(value.network) && typeof value.network.runtimeSource === 'boolean' && typeof value.network.modelSource === 'boolean' && typeof value.network.message === 'string')
@@ -97,6 +111,7 @@ function validPlan(value: ApiResponseObject): boolean {
     && typeof runtime.installed === 'boolean' && Array.isArray(runtime.sources) && runtime.sources.every(source => object(source)
       && nonempty(source.label) && secureUrl(source.url) && secureUrl(source.licenseUrl))
     && Array.isArray(models) && models.length > 0 && models.every(model => object(model) && nonempty(model.id) && nonempty(model.label)
+      && typeof model.requiresAccess === 'boolean' && ['anima', 'krea2', 'qwen-image'].includes(String(model.family))
       && nonempty(model.revision) && nonempty(model.license) && secureUrl(model.licenseUrl) && secureUrl(model.sourceUrl)
       && bytes(model.downloadBytes) && bytes(model.requiredBytes) && typeof model.installed === 'boolean')
     && new Set(models.map(model => model.id)).size === models.length
@@ -109,7 +124,7 @@ export function isPreparedInferencePaths(value: unknown): value is PreparedInfer
 }
 export function isInferenceSetupOperation(value: unknown): value is InferenceSetupOperation {
   return object(value) && nonempty(value.id)
-    && ['prepare-inference-runtime', 'import-inference-model', 'install-native-runtime', 'download-native-model', 'prepare-native-engine'].includes(String(value.kind))
+    && ['prepare-inference-runtime', 'import-inference-model', 'install-native-runtime', 'download-native-model', 'download-native-resource', 'prepare-native-engine'].includes(String(value.kind))
     && (value.flowStep === undefined || ['runtime', 'model', 'activate'].includes(String(value.flowStep)))
     && ['running', 'completed', 'failed'].includes(String(value.status))
     && typeof value.message === 'string' && typeof value.error === 'string'
@@ -117,6 +132,7 @@ export function isInferenceSetupOperation(value: unknown): value is InferenceSet
     && (value.preparedPaths === undefined || isPreparedInferencePaths(value.preparedPaths))
     && (value.workspacePath === undefined || nonempty(value.workspacePath))
     && (value.planId === undefined || nonempty(value.planId))
+    && (value.resourceRoot === undefined || nonempty(value.resourceRoot))
     && (value.stage === undefined || typeof value.stage === 'string')
     && (value.stageIndex === undefined || bytes(value.stageIndex))
     && (value.downloadedBytes === undefined || bytes(value.downloadedBytes))
@@ -135,19 +151,21 @@ async function managedOperation(path: string, body: ManagedInferenceInput, kind:
     method: 'POST', body, timeoutMs: 15_000,
     validate: value => value.ok === true && isInferenceSetupOperation(value.operation)
       && value.operation.kind === kind && value.operation.workspacePath === body.workspacePath
-      && value.operation.planId === body.planId && (body.modelId === undefined || value.operation.modelId === body.modelId),
+      && value.operation.planId === body.planId && (body.modelId === undefined || value.operation.modelId === body.modelId)
+      && (body.resourceRoot === undefined || value.operation.resourceRoot === body.resourceRoot),
   })
 }
 export const inferenceSetupApi: InferenceSetupApi = {
-  async getPlan(signal) {
+  async getPlan(signal, modelId) {
     localOnly()
-    return apiClient.request<NativeSetupPlan>('/api/inference/setup/plan', {
+    return apiClient.request<NativeSetupPlan>(`/api/inference/setup/plan${modelId ? `?modelId=${encodeURIComponent(modelId)}` : ''}`, {
       signal, timeoutMs: 20_000, cache: 'no-store', cachePolicy: 'bypass', validate: validPlan,
     })
   },
   prepareEngine: body => managedOperation('/api/inference/setup/prepare', body, 'prepare-native-engine'),
   installRuntime: body => managedOperation('/api/inference/runtime/install', body, 'install-native-runtime'),
   downloadModel: body => managedOperation('/api/inference/models/download', body, 'download-native-model'),
+  downloadResource: body => managedOperation('/api/inference/resources/download', body, 'download-native-resource'),
   async activate(body, signal) {
     reviewedPlan(body)
     if (!nonempty(body.modelId)) throw new Error('请选择已完整校验的原生模型')

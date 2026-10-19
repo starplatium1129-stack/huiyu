@@ -5,6 +5,7 @@
     <template v-if="mode === 'auto'">
       <p class="manga-hint">处理漫画时，{{ redraw ? '从 Qwen 重绘图' : '从当前处理图' }}提取结构线。使用官方 MangaLineExtraction，CPU 执行。</p>
       <p class="manga-hint">{{ status?.lineart.available ? 'erika.pth 文件已就位，依赖与效果仍待主力机验证。' : status?.lineart.unavailableReason || '尚未读取线稿模型状态' }}</p>
+      <RouterLink v-if="status && !status.lineart.available && !disabled" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'manga-line-extraction' }, hash: '#control-setup' }">准备漫画线稿模型</RouterLink>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled || !!extractionIssue" @click="emit('extract')"><ArchiveIcon name="spark" />仅提取线稿</button>
       <p class="manga-hint">独立提取只处理原图，按上方缩小设置执行，不运行 Qwen、色阶或网点。完成后自动打开线稿预览。</p>
       <p v-if="extractionIssue && status?.lineart.available" class="manga-hint" role="status">{{ extractionIssue }}</p>
@@ -34,6 +35,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

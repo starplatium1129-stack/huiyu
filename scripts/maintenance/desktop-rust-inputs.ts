@@ -9,6 +9,9 @@ const SOURCES = [{ kind: 'tree', path: 'runtime-rs/src' }, { kind: 'file', path:
   { kind: 'file', path: 'tools/inference/adapter-models.json' },
   { kind: 'file', path: 'tools/inference/manga-screen.json' },
   { kind: 'file', path: 'tools/inference/managed-runtime.windows-x64.json' }, { kind: 'file', path: 'tools/inference/managed-models.json' },
+  { kind: 'file', path: 'tools/inference/managed-adapter-runtime.windows-x64.json' }, { kind: 'file', path: 'tools/inference/managed-adapter-models.json' },
+  { kind: 'file', path: 'tools/inference/managed-image-resources.json' },
+  { kind: 'file', path: 'tools/inference/managed-auxiliary-models.json' },
   { kind: 'file', path: 'tools/interrogate/pixai-manifest.json' }];
 const NATIVE_MANIFEST = 'runtime-rs/native-dependencies.windows-x64.json';
 const EXECUTABLE = 'runtime-rs/target/release/huiyu-runtime.exe';

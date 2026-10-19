@@ -70,6 +70,7 @@ const router = createRouter({
         { path: 'scene-explorer', name: 'scene',         meta: { title: '灵感场景' }, component: () => import('@/views/SceneExplorerView.vue') },
         { path: 'popular-scenes', name: 'popular-scenes', meta: { title: '角色场景' }, component: () => import('@/views/PopularSceneExplorerView.vue') },
         { path: 'prompt-builder', name: 'director',      meta: { title: '绘制工作台' }, component: () => import('@/views/PromptBuilderView.vue') },
+        { path: 'qwen-studio', name: 'qwen', meta: { title: 'Qwen 图像创作' }, component: () => import('@/views/QwenStudioView.vue') },
         { path: 'video-studio',  name: 'video',         meta: { title: '故事短片' }, component: () => import('@/views/VideoStudioView.vue') },
         { path: 'chat',           name: 'chat',          meta: { title: '角色房间' }, component: () => import('@/views/ChatView.vue') },
         { path: 'showcase',       name: 'showcase',      meta: { title: '参考画册' }, component: () => import('@/views/ShowcaseView.vue') },

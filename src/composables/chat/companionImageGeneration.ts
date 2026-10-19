@@ -52,7 +52,8 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
   state.modelId = model.id; state.provider = status.provider === 'native' ? 'native' : 'comfy'
   if (!saved) {
     const defaults = model.defaults
-    state.steps = Number(defaults?.steps) || state.steps; state.cfg = Number(defaults?.cfg) || state.cfg
+    state.steps = Number(defaults?.steps) || state.steps
+    state.cfg = typeof defaults?.cfg === 'number' && Number.isFinite(defaults.cfg) ? defaults.cfg : state.cfg
     state.sampler = String(defaults?.sampler || state.sampler); state.scheduler = String(defaults?.scheduler || state.scheduler)
     if (typeof defaults?.loraStrength === 'number') state.loraStrength = defaults.loraStrength
     if (typeof defaults?.teaCache === 'boolean') state.teaCache = defaults.teaCache

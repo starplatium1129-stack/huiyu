@@ -98,6 +98,42 @@ def install_wheel(file: dict, cache: Path, root: Path, remaining: int) -> int:
     return remaining
 
 
+def install_diffusers_source(file: dict, cache: Path, root: Path, remaining: int) -> int:
+    """Copy the reviewed pure-Python package; never execute archive setup hooks."""
+    archive_path = cache / file["filename"]
+    if (file["package"] != "diffusers" or archive_path.stat().st_size != file["bytes"]
+            or digest(archive_path) != file["sha256"]):
+        raise ValueError("Fixed Diffusers source archive differs")
+    site = root / "venv/Lib/site-packages"
+    prefix = f"diffusers-{file['revision']}/src/"
+    info = site / f"diffusers-{file['version']}.dist-info"
+    info.mkdir()
+    count = 0
+    with zipfile.ZipFile(archive_path) as archive:
+        for entry in archive.infolist():
+            if entry.is_dir() or not entry.filename.startswith(prefix + "diffusers/"):
+                continue
+            if stat.S_ISLNK(entry.external_attr >> 16):
+                raise ValueError("Source archive contains a link")
+            remaining -= entry.file_size
+            if remaining < 0:
+                raise ValueError("Source archive exceeds extraction budget")
+            target = safe_file(site, entry.filename.removeprefix(prefix))
+            target.parent.mkdir(parents=True, exist_ok=True)
+            with archive.open(entry) as source, target.open("xb") as output:
+                while chunk := source.read(1024 * 1024): output.write(chunk)
+            count += 1
+        (info / "LICENSE").write_bytes(archive.read(f"diffusers-{file['revision']}/LICENSE"))
+    if count == 0: raise ValueError("Source archive has no Diffusers package")
+    metadata = f"Metadata-Version: 2.3\nName: diffusers\nVersion: {file['version']}\nLicense-Expression: Apache-2.0\nRequires-Python: >=3.11\n"
+    metadata += "".join(f"Requires-Dist: {dependency}\n" for dependency in file["requiresDist"])
+    (info / "METADATA").write_text(metadata + "\n", encoding="utf-8")
+    (info / "direct_url.json").write_text(json.dumps({"url": file["repository"],
+        "vcs_info": {"vcs": "git", "commit_id": file["revision"]}}), encoding="utf-8")
+    (info / "INSTALLER").write_text("huiyu-fixed-source\n", encoding="utf-8")
+    return remaining
+
+
 def diagnose(root: Path, worker: Path, manifest: dict) -> dict:
     expected_python = root / "venv/Scripts/python.exe"
     if Path(sys.executable).resolve() != expected_python.resolve():
@@ -106,7 +142,7 @@ def diagnose(root: Path, worker: Path, manifest: dict) -> dict:
         raise ValueError("Managed Python version differs from the fixed runtime")
     packages = {}
     for file in manifest["files"]:
-        if file["kind"] == "wheel":
+        if file["kind"] in ("wheel", "python-source"):
             actual = importlib.metadata.version(file["package"])
             if actual != file["version"]:
                 raise ValueError(f"Installed dependency differs: {file['package']} expected {file['version']}, found {actual}")
@@ -157,8 +193,9 @@ def main() -> None:
     if manifest["schemaVersion"] != 1 or manifest["platform"] != "win32-x64" or os.name != "nt":
         raise ValueError("This fixed runtime supports Windows x64 only")
     app = manifest_path.parents[2]
-    worker = app / "tools/inference/worker.py"
-    requirements = app / "tools/inference/requirements.txt"
+    adapter = manifest.get("worker") == "adapter_worker.py"
+    worker = app / "tools/inference" / ("adapter_worker.py" if adapter else "worker.py")
+    requirements = app / "tools/inference" / ("requirements-adapters.txt" if adapter else "requirements.txt")
     manifest_hash, requirements_hash = digest(manifest_path), digest(requirements)
     if args.check:
         saved = json.loads((root / "runtime-config.json").read_text(encoding="utf-8"))
@@ -172,8 +209,15 @@ def main() -> None:
         for index, file in enumerate(wheels, 1):
             progress(f"安装依赖 {index}/{len(wheels)}：{file['package']} {file['version']}")
             remaining = install_wheel(file, cache, root, remaining)
+        for file in manifest["files"]:
+            if file["kind"] == "python-source":
+                remaining = install_diffusers_source(file, cache, root, remaining)
     progress("校验全部固定依赖、NVIDIA CUDA、显卡架构与 BF16 支持；不加载模型")
     environment = diagnose(root, worker, manifest)
+    if adapter:
+        # The Qwen preparation also serves the existing MangaScreen editor.
+        import cv2
+        import numpy
     document = {"schemaVersion": 1, "engine": "native", "root": str(target),
                 "python": str(target / "venv/Scripts/python.exe"), "worker": str(worker),
                 "modelRoot": str(target.parent / "models"), "lorasRoot": str(target.parent / "loras"),

@@ -71,6 +71,8 @@
   "models": {
     "krea2-raw": {
       "label": "Krea 2 RAW · 原生 BF16",
+      "profileId": "krea2_raw",
+      "sizes": ["1024x1024", "768x1024", "1024x768"],
       "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
       "repository": "krea/Krea-2-Raw",
       "revision": "6b0ece7fffb640c5e3bcbe0a7f10f66b8e60a603",
@@ -83,6 +85,8 @@
     },
     "krea2-turbo": {
       "label": "Krea 2 Turbo · 原生 BF16",
+      "profileId": "krea2_turbo",
+      "sizes": ["1024x1024", "1024x1536", "1536x1024"],
       "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
       "repository": "krea/Krea-2-Turbo",
       "revision": "98e0fe118d17c9e3547fbb2e25acdbae2cadf7c7",

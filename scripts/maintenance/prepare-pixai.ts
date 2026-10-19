@@ -1,10 +1,28 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { randomUUID } from 'node:crypto'
+import { createHash, randomUUID } from 'node:crypto'
 import { officialUrl } from '../lib/model-download-manifest'
 import { downloadPlan, matchesModel, runModelDownloads } from '../lib/model-download'
 import { adoptCandidate, checkPython, installTimm, PIXAI_FILES, PIXAI_MANIFEST, resolvePython, TIMM_FILE } from '../lib/pixai-prepare'
 import { errorMessage } from '../lib/runtime-errors'
+
+function nativePython(appRoot: string, aiRoot: string): string | undefined {
+  for (const [manifest, requirements] of [['managed-runtime.windows-x64.json', 'requirements.txt'],
+    ['managed-adapter-runtime.windows-x64.json', 'requirements-adapters.txt']]) {
+    const bundle = JSON.parse(fs.readFileSync(path.join(appRoot, 'tools/inference', manifest!), 'utf8'))
+    const root = path.resolve(aiRoot, 'inference', bundle.runtimeId)
+    const receipt = path.join(root, 'runtime-config.json')
+    if (!fs.existsSync(receipt) || fs.statSync(receipt).size > 65536) continue
+    let value
+    try { value = JSON.parse(fs.readFileSync(receipt, 'utf8')) }
+    catch { continue }
+    const python = path.join(root, process.platform === 'win32' ? 'venv/Scripts/python.exe' : 'venv/bin/python')
+    const requirementsHash = createHash('sha256').update(fs.readFileSync(path.join(appRoot, 'tools/inference', requirements!))).digest('hex')
+    if (value?.schemaVersion === 1 && value.engine === 'native' && value.environment?.cudaAvailable === true
+      && value.requirementsSha256 === requirementsHash && value.managedRuntimeId === bundle.runtimeId
+      && value.root === root && value.python === python && fs.existsSync(python)) return python
+  }
+}
 
 async function main(): Promise<void> {
   const args = process.argv.slice(2)
@@ -28,12 +46,12 @@ async function main(): Promise<void> {
   const root = path.resolve(values.get('--target-dir') || path.join(process.env.AICS_RUNTIME_ROOT || path.join(appRoot, 'runtime'), 'pixai'))
   const modelDir = path.join(root, 'model'), depsDir = path.join(root, 'deps')
   const aiRoot = process.env.AI_WORKSPACE_ROOT || path.resolve(appRoot, '../AI')
-  const defaultPython = path.join(aiRoot, 'ComfyUI/venv', process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python')
+  const defaultPython = () => process.env.HUIYU_INFERENCE_PYTHON || process.env.HUIYU_NATIVE_ADAPTER_PYTHON || nativePython(appRoot, aiRoot)
   let requestedPython = values.get('--python') || process.env.AICS_PIXAI_PYTHON
   let requestedSite = values.get('--torch-site-packages') || process.env.AICS_PIXAI_TORCH_SITE_PACKAGES
   if (flags.has('--plan')) {
     console.log(JSON.stringify({ ...downloadPlan(modelDir, PIXAI_FILES, officialUrl), checkedAt: PIXAI_MANIFEST.checkedAt,
-      dependency: TIMM_FILE, depsDir, requestedPython: requestedPython || defaultPython, reuseFrom: values.get('--reuse-from') || null, requestedSite: requestedSite || 'discovered from existing Python',
+      dependency: TIMM_FILE, depsDir, requestedPython: requestedPython || defaultPython() || 'Prepare a native runtime or pass --python', reuseFrom: values.get('--reuse-from') || null, requestedSite: requestedSite || 'discovered from existing Python',
       scope: 'fixed files and isolated timm target; no production environment install',
       receipt: path.join(root, 'runtime-config.json'), inference: 'unverified by preparation; offline CUDA BF16, 3 GiB torch allocator' }, null, 2))
     return
@@ -52,7 +70,9 @@ async function main(): Promise<void> {
       requestedSite ||= saved.torchSitePackages
     }
   }
-  const python = await resolvePython(requestedPython || defaultPython, requestedSite)
+  const selectedPython = requestedPython || defaultPython()
+  if (!selectedPython) throw Error('Prepare the native Anima/Krea/Qwen runtime first, or pass --python for an existing independent Python. ComfyUI is not required.')
+  const python = await resolvePython(selectedPython, requestedSite)
   if (flags.has('--check')) {
     for (const file of PIXAI_FILES) {
       if (!await matchesModel(path.join(modelDir, file.path), file)) throw Error(`PixAI file missing or differs from fixed metadata: ${file.path}`)

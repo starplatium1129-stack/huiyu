@@ -41,6 +41,8 @@ export function useControlNavigation(ids: string[]) {
     if (event && (event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey)) return
     const section = document.getElementById(id)
     if (section instanceof HTMLDetailsElement) section.open = true
+    const content = section?.querySelector(':scope > details')
+    if (content instanceof HTMLDetailsElement) content.open = true
     requested = id
     arrived = false
     activeSection.value = id
@@ -59,9 +61,14 @@ export function useControlNavigation(ids: string[]) {
     window.addEventListener('resize', schedule, { passive: true })
     const initial = route.hash.slice(1)
     if (ids.includes(initial)) openSection(initial)
+    else if (initial === 'control-inference' && ids.includes('control-setup')) openSection('control-setup')
     schedule()
   })
-  watch(() => route.hash, hash => { if (ids.includes(hash.slice(1))) openSection(hash.slice(1)) }, { flush: 'post' })
+  watch(() => route.hash, hash => {
+    const id = hash.slice(1)
+    if (ids.includes(id)) openSection(id)
+    else if (id === 'control-inference' && ids.includes('control-setup')) openSection('control-setup')
+  }, { flush: 'post' })
   onUnmounted(() => {
     window.removeEventListener('scroll', schedule)
     window.removeEventListener('resize', schedule)

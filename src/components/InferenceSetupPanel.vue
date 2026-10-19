@@ -17,6 +17,11 @@
     <p v-if="workspaceError" class="setup-error" role="alert">{{ workspaceError }}</p>
     <div v-if="workspacePending" class="setup-status" role="status"><ArchiveIcon name="info" /><div><strong>存放位置已更改</strong><p>重启绘遇后，在新目录继续准备。已有文件会保留。</p></div></div>
     <template v-else-if="plan">
+      <div class="setup-field">
+        <label for="native-model-download">准备哪个绘图模型</label>
+        <StudioSelect id="native-model-download" :model-value="modelId" label="绘图模型" :options="modelOptions" :disabled="locked" @update:model-value="selectModel(String($event))" />
+        <small>Krea / Qwen 使用独立运行库；可以逐个添加模型，已完成的资源会保留。</small>
+      </div>
       <div class="setup-status" :data-state="nativeEnabled ? 'ready' : plan.supported ? 'available' : 'unavailable'" role="status">
         <ArchiveIcon :name="plan.supported ? 'success' : 'info'" />
         <div><strong>{{ nativeEnabled ? '原生引擎已就绪' : plan.supported ? '这台电脑可以准备原生生图' : unavailableTitle }}</strong><p>{{ deviceName }}<span v-if="plan.supported && !nativeEnabled"> · 设备检查通过</span></p><p v-if="!plan.supported">{{ unavailableHint }}</p></div>
@@ -25,12 +30,16 @@
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
         <div class="setup-model">
           <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>官方完整模型 · 无需转换</small></div></div>
-          <StudioSelect v-if="modelOptions.length > 1" id="native-model-download" v-model="modelId" label="绘图模型" :options="modelOptions" :disabled="locked" />
           <div class="setup-budget"><span>最多下载<strong>{{ formatSetupBytes(downloadBytes) }}</strong></span><span>所需空间<strong>{{ formatSetupBytes(setupRequiredBytes) }}</strong></span></div>
         </div>
         <p v-if="!setupSpaceEnough" class="setup-error" role="status">空间不足，请更换存放位置或释放空间后重新检查。</p>
-        <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>同意下载、安装并启用原生引擎，接受 <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="Anima 非商业许可，在新窗口打开">Anima 非商业许可</a>。</span></label>
-        <small v-if="!running" class="setup-hint">仅限非商业使用。安装时可能需要 Windows 授权；已有模型和环境会保留。</small>
+        <div v-if="selectedModel.requiresAccess && !selectedModel.installed && !running" class="setup-field">
+          <label for="native-hf-token">Hugging Face 只读访问令牌</label>
+          <input id="native-hf-token" v-model="hfToken" type="password" :disabled="locked" autocomplete="off" spellcheck="false" maxlength="512" aria-describedby="native-hf-token-hint" />
+          <small id="native-hf-token-hint">先在 <a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">模型页面</a>接受许可并取得访问权，再填写该模型的只读令牌。仅用于本次 Hugging Face 下载，不保存到配置；完整缓存可离线继续。</small>
+        </div>
+        <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>同意下载、安装并启用原生绘图，已阅读并接受 <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="所选模型许可，在新窗口打开">所选模型许可</a>。</span></label>
+        <small v-if="!running" class="setup-hint">{{ selectedModel.license }}。安装时可能需要 Windows 授权；已有模型和环境会保留。</small>
       </template>
       <p v-if="pendingRestart" role="status">准备完成。重启后即可使用原生引擎。</p>
     </template>
@@ -44,21 +53,44 @@
     <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
     <p v-else-if="message && !running && !pendingRestart && !nativeEnabled" role="status">{{ message }}</p>
     <div ref="actions" class="setup-primary" tabindex="-1" role="group" aria-label="原生引擎操作">
-      <RouterLink v-if="nativeEnabled" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { preparedModel: modelId } }"><ArchiveIcon name="spark" />开始创作</RouterLink>
-      <button v-else-if="desktop?.restartForSetup && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
+      <RouterLink v-if="nativeEnabled && !operationUncertain" class="btn btn-primary" :to="selectedModel?.family === 'qwen-image' ? { path: '/qwen-studio', query: { preparedModel: modelId } } : { path: '/prompt-builder', query: { preparedModel: modelId } }"><ArchiveIcon name="spark" />{{ selectedModel?.family === 'qwen-image' ? '打开 Qwen 创作' : '开始创作' }}</RouterLink>
+      <button v-else-if="desktop?.restartForSetup && !operationUncertain && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
       <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续准备' : '一键准备' }}</button>
       <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="refreshPlan">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
-      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ query: $route.query, hash: '#control-setup' }" @click="openOtherSetup">查看其他配置</RouterLink>
+      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ query: $route.query, hash: '#control-comfy' }" @click="openOtherSetup">查看其他配置</RouterLink>
       <small v-if="running">可以离开此页，后台会继续准备。</small>
     </div>
+    <details v-if="plan && !workspacePending" id="control-image-resources" class="setup-details" :open="typeof route.query.resource === 'string'">
+      <StudioDisclosureSummary>辅助模型与 LoRA</StudioDisclosureSummary>
+      <div class="setup-detail-content">
+        <section>
+          <p>按需准备自动蒙版、高清放大、草图、漫画线稿与 LoRA。无需安装或启动 ComfyUI。</p>
+          <div class="setup-field"><label for="native-resource">选择资源</label><StudioSelect id="native-resource" v-model="resourceId" label="辅助模型与 LoRA" :options="resourceOptions" :disabled="locked" /></div>
+          <template v-if="selectedResource">
+            <p>{{ selectedResource.description }}</p>
+            <p>{{ selectedResource.present ? '已发现全部文件；再次准备会核对完整摘要。' : `最多下载 ${formatSetupBytes(selectedResource.downloadBytes)} · ${selectedResource.fileCount} 个文件` }}</p>
+            <p v-if="selectedResource.freeBytes !== null">所需空间 {{ formatSetupBytes(selectedResource.requiredBytes) }} · 目标磁盘可用 {{ formatSetupBytes(selectedResource.freeBytes) }}</p>
+            <p>保存到：<code>{{ selectedResource.path }}</code></p>
+            <p v-if="selectedResource.directory === 'models'">辅助模型使用已配置的模型目录，不会更改底模位置。</p>
+            <label class="setup-consent"><input v-model="resourceReviewed" type="checkbox" :disabled="locked" /><span>已核对<a :href="selectedResource.sourceUrl" target="_blank" rel="noopener noreferrer">下载来源</a>并接受<a :href="selectedResource.licenseUrl" target="_blank" rel="noopener noreferrer">资源许可</a>，同意下载所选资源。</span></label>
+            <p v-if="selectedResource.prepareError" class="setup-error" role="status">{{ selectedResource.prepareError }}</p>
+            <p v-else-if="selectedResource.freeBytes !== null && selectedResource.freeBytes < selectedResource.requiredBytes" role="status">下载和校验所需空间不足。</p>
+            <div class="setup-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="!canDownloadResource" @click="downloadResource">{{ selectedResource.present ? '校验并补齐资源' : '准备所选资源' }}</button><button v-if="selectedResource.directory === 'loras' && configured.lorasRoot !== plan.paths.lorasRoot" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="fillResourcePaths">采用原生 LoRA 目录</button></div>
+            <p v-if="selectedResource.directory === 'loras' && configured.lorasRoot !== plan.paths.lorasRoot">当前仍使用其他 LoRA 目录。采用后需保存设置并重启；原目录文件会保留。</p>
+            <p v-if="operation?.kind === 'download-native-resource' && !running && message" role="status">{{ message }}</p>
+            <small>需要账号授权的来源请自行下载到所示目录后校验。已有不同文件不会被覆盖；取消保留进度。文件校验不代表实际生成已验收。</small>
+          </template>
+        </section>
+      </div>
+    </details>
     <details v-if="plan && !workspacePending" class="setup-details">
       <StudioDisclosureSummary>设备与下载详情</StudioDisclosureSummary>
       <div class="setup-detail-content">
         <section><h4>设备要求</h4><p>Windows x64 · NVIDIA Ampere 至 Blackwell · 12 GB 显存 · 驱动 572.61 以上 · 24 GiB 内存。</p><p>本机内存：{{ plan.hardware.ramBytes === null ? '未知' : formatSetupBytes(plan.hardware.ramBytes) }}。显卡驱动请通过厂商更新。</p><ul v-if="plan.reasons.length"><li v-for="reason in plan.reasons" :key="reason">{{ reason }}</li></ul><p v-if="plan.network">{{ plan.network.message }}</p></section>
         <section><h4>下载内容</h4><div class="setup-package"><strong>原生运行库</strong><span>{{ plan.runtime.installed ? '已就绪' : formatSetupBytes(plan.runtime.downloadBytes) }}</span><small>{{ plan.runtime.label }}</small></div><div v-if="selectedModel" class="setup-package"><strong>{{ modelName }}</strong><span>{{ selectedModel.installed ? '已就绪' : formatSetupBytes(selectedModel.downloadBytes) }}</span><small>transformer、编码器、VAE、tokenizer 与配置</small></div><p v-if="!plan.supported">首次下载最多 {{ formatSetupBytes(downloadBytes) }}，本次准备需 {{ formatSetupBytes(setupRequiredBytes) }} 可用空间。</p></section>
-        <section><h4>来源与许可</h4><ul class="setup-sources"><li v-for="source in plan.runtime.sources" :key="source.url"><a :href="source.url" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}来源，在新窗口打开`">{{ sourceName(source.label) }}</a><a :href="source.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="运行库许可，在新窗口打开">许可</a></li></ul><p v-if="selectedModel"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer" aria-label="模型来源，在新窗口打开">模型来源</a> · <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="模型许可，在新窗口打开">非商业许可</a></p><p v-if="selectedModel">固定版本：<code>{{ selectedModel.revision }}</code></p><p>官方文件逐项核对大小与 SHA-256。缺少 VC++ 运行库时，由你确认 Windows 授权。</p></section>
+        <section><h4>来源与许可</h4><ul class="setup-sources"><li v-for="source in plan.runtime.sources" :key="source.url"><a :href="source.url" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}来源，在新窗口打开`">{{ sourceName(source.label) }}</a><a :href="source.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="运行库许可，在新窗口打开">许可</a></li></ul><p v-if="selectedModel"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer" aria-label="模型来源，在新窗口打开">模型来源</a> · <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="模型许可，在新窗口打开">模型许可</a></p><p v-if="selectedModel">固定版本：<code>{{ selectedModel.revision }}</code></p><p>官方文件逐项核对固定版本与 SHA-256。Krea 需先授权取得文件清单。缺少 VC++ 运行库时，由你确认 Windows 授权。</p></section>
         <section><h4>存放位置</h4><dl class="setup-paths"><template v-for="item in resourcePaths" :key="item.label"><dt>{{ item.label }}</dt><dd><code>{{ item.value }}</code></dd></template></dl></section>
         <p v-if="plan.runtime.recoveryReady">已发现完整候选，继续准备会重新校验并启用，无需重新解包。</p><p v-else-if="plan.runtime.recoverableBytes">继续准备时可回收 {{ formatSetupBytes(plan.runtime.recoverableBytes) }} 未完成暂存，已计入空间预算。</p>
         <p>取消或中断后保留下载进度，重新准备可续传。仅支持完整原生模型；单文件权重暂不支持直接导入。</p>
@@ -89,13 +121,18 @@ import type { InferenceSettings } from '@/api/inferenceSettingsApi'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
 const props = defineProps<{ configured: InferenceSettings; blocked: boolean }>()
 const emit = defineEmits<{ prepared: [paths: PreparedInferencePaths]; busy: [value: boolean]; activated: [] }>()
-const { desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
+const { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
   basePython, wheelhouse, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
   operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
   workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
   initialize, refreshPlan, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
   openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'))
 const modelOptions = computed(() => plan.value?.models.map(model => ({ value: model.id, label: model.label })) ?? [])
+const resourceOptions = computed(() => plan.value?.resources.map(value => ({ value: value.id, label: value.label })) ?? [])
+function fillResourcePaths() {
+  if (plan.value && !locked.value) emit('prepared', { python: props.configured.python, worker: props.configured.worker,
+    modelsRoot: props.configured.modelsRoot, lorasRoot: plan.value.paths.lorasRoot })
+}
 const modelName = computed(() => selectedModel.value?.label.split(' · ')[0] ?? 'Anima')
 const running = computed(() => operation.value?.status === 'running')
 const pendingRestart = computed(() => plan.value?.supported && plan.value.workspaceMatches && plan.value.configuredEngine === 'native' && plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
@@ -114,8 +151,14 @@ const resourcePaths = computed(() => plan.value ? [
 ] : [])
 function sourceName(label: string) { return label.startsWith('Python') ? 'Python.org' : label.startsWith('PyTorch') ? 'PyTorch' : label.startsWith('PyPI') ? 'PyPI' : label.startsWith('Microsoft') ? 'Microsoft VC++' : label.startsWith('NVIDIA') ? 'NVIDIA CUDA' : label }
 function fillSettings() { if (preparedPaths.value && !locked.value) emit('prepared', { ...preparedPaths.value }) }
-function openOtherSetup() { const section = document.getElementById('control-setup'); if (section instanceof HTMLDetailsElement) section.open = true }
+function openOtherSetup() { const section = document.getElementById('control-comfy'); if (section instanceof HTMLDetailsElement) section.open = true }
 const route = useRoute()
+let appliedResourceQuery: string | null = null
+watch([() => route.query.resource, locked], ([value, isLocked]) => {
+  if (typeof value !== 'string') { appliedResourceQuery = null; return }
+  if (!isLocked && value !== appliedResourceQuery) { resourceId.value = value; appliedResourceQuery = value }
+}, { immediate: true })
+if (typeof route.query.model === 'string' && ['krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo'].includes(route.query.model)) modelId.value = route.query.model
 const panel = ref<HTMLElement | null>(null), title = ref<HTMLElement | null>(null), actions = ref<HTMLElement | null>(null)
 let focusOrigin: HTMLButtonElement | null = null
 let focusHost: HTMLElement | null = null

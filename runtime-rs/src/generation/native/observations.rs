@@ -103,6 +103,10 @@ pub(super) fn capture(value: &Value) -> Value {
         {
             let mut result = json!({"adapter":id,"modelSha256":value["modelSha256"],"memoryPolicy":value["memoryPolicy"],
                 "weightReuse":value["weightReuse"],"validation":"待主力机验证","performanceVerified":false});
+            if id.starts_with("krea2-") && value["styleLoraSha256"].as_str()
+                .is_some_and(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit())) {
+                result["styleLoraSha256"] = value["styleLoraSha256"].clone();
+            }
             if let Some(memory) = value.get("memoryScheduling") {
                 result["memoryScheduling"] = memory_observation(memory)
                     .unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-memory-scheduling"}));

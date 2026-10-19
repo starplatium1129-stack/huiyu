@@ -107,6 +107,7 @@ export const COMPANION_IMAGE_REQUEST_KEY = 'aics_companion_image_request_v1'
 export const VIDEO_REQUEST_DRAFT_KEY = 'aics_video_request_v1'
 export const VIDEO_BATCH_REQUEST_DRAFT_KEY = 'aics_video_batch_request_v1'
 export const MANGA_REQUEST_DRAFT_KEY = 'aics_manga_request_v1'
+export const QWEN_REQUEST_DRAFT_KEY = 'aics_qwen_request_v1'
 
 /**
  * SD 出图队列快照（2026-08-30 UX 审计 P0-5）。队列任务在离开绘图页 / 刷新后

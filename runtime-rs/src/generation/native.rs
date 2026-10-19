@@ -10,7 +10,7 @@ mod observations;
 mod results;
 mod worker;
 use super::*;
-pub(crate) use config::{Settings, load};
+pub(crate) use config::{Settings, load, installed_runtime_for};
 pub(super) use results::prune;
 use std::{path::PathBuf, process::Stdio};
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
@@ -22,6 +22,7 @@ pub(crate) struct Plan {
     pub mask_model_dir: Option<PathBuf>,
     pub upscale_model_path: Option<PathBuf>,
     pub init_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
+    pub reference_images: std::sync::Mutex<Vec<Arc<Vec<u8>>>>,
     pub mask_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub pen_lines: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub sketch_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
@@ -162,6 +163,7 @@ async fn settle(
     // Historical jobs retain recipes/results, not their admitted image buffers.
     if let Execution::Native(plan) = &job.execution {
         plan.init_image.lock().unwrap().take();
+        plan.reference_images.lock().unwrap().clear();
         plan.mask_image.lock().unwrap().take();
         plan.pen_lines.lock().unwrap().take();
         plan.sketch_image.lock().unwrap().take();
@@ -299,13 +301,24 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         file.flush().await?;
         Some(path)
     } else { None };
-    let request = if plan.input["family"] == "manga-screen" {
+    let references = std::mem::take(&mut *plan.reference_images.lock().unwrap());
+    let mut reference_paths = Vec::new();
+    for (index, bytes) in references.into_iter().enumerate() {
+        if token.is_cancelled() { return Err(ApiError::new(499, "ABORT_ERR", "参考图准备已取消")); }
+        let path = temp.path().join(format!("reference-{index}"));
+        let mut file = tokio::fs::File::create(&path).await?;
+        file.write_all(bytes.as_slice()).await?;
+        file.flush().await?;
+        reference_paths.push(path);
+    }
+    let mut request = if plan.input["family"] == "manga-screen" {
         output::manga_request(job, plan, &output, input_image_path, pen_lines_path)
     } else if adapters::model(plan.input["modelId"].as_str().unwrap_or("")).is_some() {
         output::adapter_request(job, plan, &output, input_image_path)
     } else {
         output::anima_request(job, plan, &output, input_image_path, mask_image_path, sketch_image_path)
     };
+    if !reference_paths.is_empty() { request["referenceImagePaths"] = json!(reference_paths); }
     let mut worker = inner.native.take_worker(&plan.settings).await?;
     *worker.current_temp.lock().unwrap() = Some(temp.clone());
     // Do not interrupt a partially written JSONL request with another command.

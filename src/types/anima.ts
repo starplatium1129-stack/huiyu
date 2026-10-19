@@ -38,6 +38,7 @@ export interface AnimaOption {
   preview?: boolean
   validation?: string
   available?: boolean
+  unavailableReason?: string | null
   nodeReadiness?: ComfyNodeReadiness
   family?: 'anima' | 'krea2'
   profileId?: string
@@ -50,7 +51,7 @@ export interface AnimaOption {
     qualityVerified: boolean
   }
   capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; img2img?: boolean; mask?: boolean; teaCache?: boolean; hires?: boolean; hiresUpscalers?: string[]; rcas?: boolean; weightSyntax?: boolean; characterIdentity: boolean; experimental: boolean;
-    regionalPrompting?: boolean; sketchControl?: boolean; sketchControlStatus?: { available: boolean; reason?: string | null; file?: string; source?: string } }
+    fixedSampling?: boolean; regionalPrompting?: boolean; sketchControl?: boolean; sketchControlStatus?: { available: boolean; reason?: string | null; file?: string; source?: string } }
   sizes?: string[]
 }
 

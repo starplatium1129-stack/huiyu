@@ -120,13 +120,24 @@ def number(data, key, default, low, high, integer=False):
 
 
 def validate(job):
-    allowed = {"id", "op", "modelDir", "outputPath", "input", "inputImagePath"}
+    allowed = {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "referenceImagePaths", "loras"}
     if not isinstance(job, dict) or set(job) - allowed or job.get("op") != "generate" or not isinstance(job.get("id"), str) or not job["id"]:
         raise AdapterError("INVALID_REQUEST", "Expected a native adapter generation request")
     data = job.get("input")
     if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps"}:
         raise AdapterError("UNSUPPORTED_OPTION", "Unsupported adapter input; no silent option fallback")
     spec = model(data.get("modelId"))
+    loras = job.get("loras", [])
+    if not isinstance(loras, list) or len(loras) > 1 or (loras and spec["family"] != "krea2"):
+        raise AdapterError("UNSUPPORTED_OPTION", "Only one Krea style LoRA is supported")
+    for row in loras:
+        if (not isinstance(row, dict) or set(row) != {"path", "strength"}
+                or type(row["strength"]) not in (int, float) or row["strength"] != 1
+                or not isinstance(row["path"], str) or not Path(row["path"]).is_absolute()
+                or Path(row["path"]).suffix != ".safetensors"):
+            raise AdapterError("UNSUPPORTED_OPTION", "Expected a host-selected Krea style safetensors file at strength 1")
+        path = Path(row["path"])
+        safe_file(path.parent.resolve(), path)
     if not isinstance(data.get("prompt"), str) or not data["prompt"].strip() or len(data["prompt"]) > 12000:
         raise AdapterError("INVALID_PARAMETER", "prompt must be nonempty and at most 12000 characters")
     negative = data.get("negativePrompt", "")
@@ -146,7 +157,17 @@ def validate(job):
         raise AdapterError("INVALID_PARAMETER", "Qwen negative prompt requires cfg > 1; empty negative requires cfg <= 1")
     if job.get("inputImagePath") is not None:
         if not spec["edit"] or not isinstance(job["inputImagePath"], str) or not Path(job["inputImagePath"]).is_absolute() or not Path(job["inputImagePath"]).is_file():
-            raise AdapterError("UNSUPPORTED_OPTION", "Only Qwen single-image instruction editing is connected")
+            raise AdapterError("UNSUPPORTED_OPTION", "Only Qwen instruction editing is connected")
+    references = job.get("referenceImagePaths", [])
+    if (not isinstance(references, list) or len(references) > 3
+            or references and (spec["family"] != "qwen-image" or not job.get("inputImagePath"))):
+        raise AdapterError("UNSUPPORTED_OPTION", "Qwen supports one original and at most three reference images")
+    seen = {job.get("inputImagePath")}
+    for path in references:
+        if (not isinstance(path, str) or not Path(path).is_absolute() or not Path(path).is_file() or path in seen):
+            raise AdapterError("INVALID_PARAMETER", "Expected distinct host-owned reference images")
+        safe_file(Path(path).parent.resolve(), Path(path))
+        seen.add(path)
     suffix = ".mp4" if spec["media"] == "video" else ".png"
     if not isinstance(job.get("outputPath"), str) or not Path(job["outputPath"]).is_absolute() or Path(job["outputPath"]).suffix != suffix:
         raise AdapterError("INVALID_OUTPUT", f"Expected a host-selected absolute {suffix} output")

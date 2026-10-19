@@ -8,6 +8,10 @@ use super::resources::{self, within};
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub(crate) struct Settings {
     pub engine: String,
+    // Legacy explicit settings shared one engine. New setups keep video on its
+    // existing provider while image generation adopts the independent engine.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub video_engine: Option<String>,
     #[serde(default = "default_acceleration")]
     pub acceleration: String,
     #[serde(default = "default_memory_policy")]
@@ -44,15 +48,7 @@ impl Settings {
             models_root = path;
         }
         let native_loras = root.join("loras");
-        let shared_loras = workspace.join("ComfyUI/models/loras");
-        let loras_root = if lora_count(&native_loras) == 0
-            && within(workspace, &shared_loras).is_some()
-            && lora_count(&shared_loras) > 0
-        {
-            shared_loras
-        } else {
-            native_loras
-        };
+        let loras_root = native_loras;
         let python = receipt
             .as_ref()
             .and_then(|(_, value)| value["python"].as_str())
@@ -61,11 +57,12 @@ impl Settings {
         let receipt_path = receipt.map(|(path, _)| path);
         (
             Self {
-                engine: "comfy".into(),
+                engine: "native".into(),
+                video_engine: Some("comfy".into()),
                 acceleration: default_acceleration(),
                 memory_policy: default_memory_policy(),
                 python,
-                adapter_python: None,
+                adapter_python: installed_adapter_runtime(&root, &worker).and_then(|(_, value)| value["python"].as_str().map(PathBuf::from)),
                 worker,
                 models_root,
                 loras_root,
@@ -78,6 +75,9 @@ impl Settings {
     pub(crate) fn validate(&self) -> Result<()> {
         if !matches!(self.engine.as_str(), "comfy" | "native") {
             return Err(ApiError::invalid("推理引擎仅支持 comfy 或 native"));
+        }
+        if !matches!(self.video_engine(), "comfy" | "native") {
+            return Err(ApiError::invalid("视频推理引擎仅支持 comfy 或 native"));
         }
         if !matches!(
             self.acceleration.as_str(),
@@ -103,6 +103,9 @@ impl Settings {
         }
         Ok(())
     }
+    pub(crate) fn video_engine(&self) -> &str {
+        self.video_engine.as_deref().unwrap_or(&self.engine)
+    }
     pub(crate) async fn validate_files(&self) -> Result<()> {
         let settings = self.clone();
         tokio::task::spawn_blocking(move || settings.validate_files_sync()).await
@@ -119,6 +122,15 @@ impl Settings {
             }
             Ok(())
         }).await.map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "独立推理运行文件读取未完成"))?
+    }
+    /// Drawing mode accepts either independent image runtime; each submission
+    /// still checks the exact selected family, model and helper bundle.
+    pub(crate) async fn validate_image_files(&self) -> Result<()> {
+        if self.validate_anima_files().await.is_ok() { return Ok(()); }
+        let settings = self.clone();
+        tokio::task::spawn_blocking(move || {
+            super::adapters::settings(&settings).and_then(|adapter| super::adapters::validate_runtime(&adapter))
+        }).await.map_err(|_| ApiError::new(503, "NATIVE_RUNTIME_UNAVAILABLE", "原生图像运行文件读取未完成"))?
     }
     pub(crate) fn validate_files_sync(&self) -> Result<()> {
         self.validate()?;
@@ -162,6 +174,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
         });
         if moved {
             let mut value = serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?;
+            value["videoEngine"] = json!(settings.video_engine());
             value["engine"] = json!(settings.engine);
             value
         } else {
@@ -221,7 +234,8 @@ fn python_relative() -> &'static str {
 }
 impl Settings {
     pub(crate) fn model_count(&self) -> usize {
-        model_count(&self.models_root)
+        model_count(&self.models_root) + super::adapters::manifest()["models"].as_object().unwrap().iter()
+            .filter(|(id, spec)| spec["media"] == "image" && super::adapters::status(self, id)["available"] == true).count()
     }
     pub(crate) fn lora_count(&self) -> usize {
         lora_count(&self.loras_root)
@@ -246,9 +260,16 @@ fn lora_count(root: &Path) -> usize {
         .values()
         .filter_map(|lora| lora["file"].as_str())
         .filter(|name| resources::file(root, name, false).is_some())
-        .count()
+        .count() + crate::images::catalog()["KREA_STYLE_LORAS"].as_object().unwrap().values()
+            .filter_map(|lora| lora["file"].as_str()).filter(|name| resources::file(root, name, true).is_some()).count()
 }
 fn installed_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
+    installed_runtime_for(root, worker, "requirements.txt")
+}
+pub(crate) fn installed_adapter_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
+    installed_runtime_for(root, worker, "requirements-adapters.txt")
+}
+pub(crate) fn installed_runtime_for(root: &Path, worker: &Path, requirements_name: &str) -> Option<(PathBuf, Value)> {
     if std::fs::symlink_metadata(root)
         .ok()?
         .file_type()
@@ -256,7 +277,7 @@ fn installed_runtime(root: &Path, worker: &Path) -> Option<(PathBuf, Value)> {
     {
         return None;
     }
-    let requirements = std::fs::read(worker.parent()?.join("requirements.txt")).ok()?;
+    let requirements = std::fs::read(worker.parent()?.join(requirements_name)).ok()?;
     let expected_hash = format!("{:x}", Sha256::digest(requirements));
     let mut candidates = vec![root.to_owned()];
     // Never recurse into virtual environments, model trees or arbitrary disks.

@@ -1,6 +1,6 @@
 <template>
-  <details id="control-inference" class="panel-card inference-settings">
-    <StudioDisclosureSummary><span id="inference-settings-title">其他绘图引擎 · 原生 Anima</span>
+  <details id="control-inference" class="panel-card inference-settings" open>
+    <StudioDisclosureSummary><span id="inference-settings-title">原生绘图 · 首次配置</span>
       <span v-if="snapshot" class="inference-active">当前引擎 · {{ engineLabel(snapshot.active.engine) }}</span>
     </StudioDisclosureSummary>
     <div data-disclosure-content>
@@ -20,7 +20,7 @@
           <button class="btn btn-quiet btn-sm" type="button" :disabled="loading || saving || setupBusy" @click="refresh">重新检查已有资源</button>
         <div v-if="discovery" class="inference-reuse" aria-labelledby="inference-reuse-title">
           <h3 id="inference-reuse-title">复用本机资源</h3>
-          <p>{{ discovery.modelCount }} 个 Anima 底模 · {{ discovery.loraCount }} 个角色 LoRA</p>
+          <p>{{ discovery.modelCount }} 个原生图像底模 · {{ discovery.loraCount }} 个角色或风格 LoRA</p>
           <p v-if="discovery.missing.length">尚缺：{{ discovery.missing.join('、') }}</p>
           <div class="inference-actions">
             <button class="btn btn-primary btn-sm" type="button" :disabled="loading || saving || setupBusy || dirty || !discovery.canAdopt || !adoptionChanges" @click="adopt">{{ saving ? '保存中…' : !discovery.canAdopt ? '资源待补齐' : adoptionChanges ? '采用并启用' : '已采用' }}</button>
@@ -36,8 +36,8 @@
         </div>
         <form class="inference-form" @submit.prevent="save">
           <div class="inference-field">
-            <label for="inference-engine">Anima 绘图引擎</label>
-            <StudioSelect id="inference-engine" v-model="draft.engine" label="Anima 绘图引擎" :options="engineOptions" :disabled="saving || loading || setupBusy" />
+            <label for="inference-engine">绘图引擎</label>
+            <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
           </div>
           <div class="inference-field">
             <label for="inference-acceleration">独立引擎加速模式</label>
@@ -59,6 +59,11 @@
                 <input :id="`inference-${field.key}`" v-model="draft[field.key]" type="text" :disabled="saving || loading || setupBusy || snapshot.environmentOverrides.includes(field.key)" spellcheck="false" autocomplete="off" :aria-describedby="`inference-${field.key}-hint`" />
                 <small :id="`inference-${field.key}-hint`">{{ field.hint }}</small>
               </div>
+            <div class="inference-field inference-paths">
+              <label for="inference-adapter-python">Krea / Qwen 独立 Python</label>
+              <input id="inference-adapter-python" v-model="draft.adapterPython" type="text" :disabled="saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterPython')" spellcheck="false" autocomplete="off" aria-describedby="inference-adapter-python-hint" />
+              <small id="inference-adapter-python-hint">可选。填写已安装 adapters 依赖的独立 Python 路径，模型放在模型根目录的对应型号目录内。此环境也供原生视频使用；请保留 Anima 自己的运行库。</small>
+            </div>
             </div>
             </div>
           </details>
@@ -76,7 +81,7 @@
             <ul><li v-for="field in pathFields" :key="field.key">{{ field.label }}：{{ diagnostics.files[field.key] ? '已找到' : '未找到' }}</li></ul>
           </template>
           <p v-else>设置已更新，请重新检查。</p>
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="probing" @click="diagnose">{{ probing ? '检查中…' : '检查依赖与设备' }}</button>
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="probing" @click="diagnose">{{ probing ? '检查中…' : '检查 Anima 依赖与设备' }}</button>
           <p v-if="probeError" role="alert">{{ probeError }}</p>
           <div v-if="probe" role="status">
             <p>当前运行环境 · {{ probe.probe.cudaAvailable ? `CUDA 可用：${probe.probe.deviceName || '设备名称未知'}` : 'CUDA 不可用' }}</p>
@@ -88,7 +93,7 @@
           <StudioDisclosureSummary>支持范围</StudioDisclosureSummary>
           <div data-disclosure-content>
             <p>支持 Anima 绘图、图生图、蒙版重绘、高清修复与放大。模型需使用完整 Diffusers 目录。</p>
-            <p>Krea、SDXL 与 DoRA 请使用对应的其他后端。</p>
+            <p>Krea 2 与 Qwen 使用单独的原生运行库和完整模型目录，当前仍需设备与成图验收；SDXL 与 DoRA 尚未接入。</p>
           </div>
         </details>
         </div>
@@ -126,9 +131,10 @@ function retrySettings(event: MouseEvent) {
 function fillPreparedPaths(paths: PreparedInferencePaths) {
   for (const key of ['python', 'worker', 'modelsRoot', 'lorasRoot'] as const) draft[key] = paths[key]
   advancedPathsOpen.value = true
+  advancedOpen.value = true
   notice.value = '已填入路径草稿。请确认引擎选择后保存，再重启运行时；当前运行与已保存配置未改变。'
 }
-const engineOptions = [{ value: 'comfy', label: 'ComfyUI' }, { value: 'native', label: '独立引擎（Native Anima）' }]
+const engineOptions = [{ value: 'native', label: '绘遇原生引擎' }, { value: 'comfy', label: 'ComfyUI（兼容已有环境）' }]
 const accelerationOptions = [{ value: 'native', label: '原生计算' }, { value: 'sage', label: 'SageAttention' }, { value: 'compiled-sage', label: '编译 + SageAttention' }, { value: 'compiled-fused-sage', label: '编译 + SageAttention + LoRA 融合' }]
 const memoryOptions = [{ value: 'resident', label: '模型常驻显卡（连续生成优先）' }, { value: 'offload', label: '分阶段加载（减少显存占用）' }]
 const engineLabel = (engine: string) => engine === 'native' ? '原生' : 'ComfyUI'

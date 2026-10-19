@@ -11,7 +11,7 @@
           <!-- 缓存页面的筛选、滚动与编辑状态；作品册停用时释放有缩略图的原图，
                仅为返回范围内缺少缩略图的作品保留原图预览。 -->
           <KeepAlive :include="['GalleryView', 'ShowcaseView', 'PromptBuilderView', 'VideoStudioView']">
-            <component :is="Component" :key="route.path" class="route-view tw:min-w-0" :data-route-path="route.fullPath" />
+            <component :is="Component" :key="route.name === 'qwen' ? route.fullPath : route.path" class="route-view tw:min-w-0" :data-route-path="route.fullPath" />
           </KeepAlive>
         </Transition>
       </RouterView>

@@ -20,6 +20,7 @@ pub(super) fn input_names(input: &Value) -> Vec<&str> {
     let mut names: Vec<&str> = ["initImage", "maskImage", "penLines"].iter()
         .filter_map(|key| input[*key].as_str()).collect();
     if let Some(name) = input["sketchControl"]["image"].as_str() { names.push(name); }
+    if let Some(references) = input["referenceImages"].as_array() { names.extend(references.iter().filter_map(Value::as_str)); }
     names.sort_unstable();
     names.dedup();
     names

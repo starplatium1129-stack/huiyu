@@ -67,10 +67,10 @@ watch([() => props.active, runtimeTaskOpenRequest], ([active, request]) => {
   else void refreshHistory()
 }, {immediate:true})
 const filters = [{ id: 'all', label: '全部任务' }, { id: 'active', label: '进行中' }, { id: 'attention', label: '待处理' }, { id: 'inbox', label: '结果收件箱' }] as const
-const titles = { generation: 'WAI 绘图', anima: 'Anima 绘图', creative: 'Krea 2 绘图', manga: '漫画化', lineart: '独立线稿', video: '视频创作', batch: '分镜短片' }
+const titles = { generation: 'WAI 绘图', anima: 'Anima 绘图', creative: 'Krea 2 绘图', qwen: 'Qwen 图像创作', manga: '漫画化', lineart: '独立线稿', video: '视频创作', batch: '分镜短片' }
 const labels = { queued: '已接收', submitting: '提交中', running: '生成中', cancelling: '取消中', succeeded: '已完成', failed: '未完成', cancelled: '已取消' }
 const taskDateFormatter = new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric' })
-const routeFor = (task: TaskSummary) => task.kind === 'manga' || task.kind === 'lineart' ? '/gallery' : task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${encodeURIComponent(task.sourceBatchId || task.taskId)}` : '/prompt-builder'
+const routeFor = (task: TaskSummary) => task.kind === 'qwen' ? '/qwen-studio?job=' + encodeURIComponent(task.taskId) : task.kind === 'manga' || task.kind === 'lineart' ? '/gallery' : task.kind === 'video' ? `/video-studio?job=${task.taskId}` : task.kind === 'batch' ? `/video-studio?mode=shots&batch=${encodeURIComponent(task.sourceBatchId || task.taskId)}` : '/prompt-builder'
 async function refresh() {
   if (busy.value) return
   busy.value = 'refresh'; feedback.value = ''

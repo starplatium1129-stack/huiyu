@@ -8,6 +8,7 @@ export interface InferenceSettings {
   modelsRoot: string
   lorasRoot: string
   python: string
+  adapterPython?: string | null
   worker: string
 }
 export interface InferenceSettingsResponse {
@@ -20,7 +21,7 @@ export interface InferenceSettingsResponse {
 export interface InferenceDiagnostics {
   basis: 'configured'
   configuration: 'valid' | 'invalid'
-  files: Record<Exclude<keyof InferenceSettings, 'engine' | 'acceleration' | 'memoryPolicy'>, boolean>
+  files: Record<'modelsRoot' | 'lorasRoot' | 'python' | 'worker', boolean>
   dependencies: 'unchecked'
   runtime: 'unverified'
   message: string
@@ -49,13 +50,14 @@ export interface InferenceSettingsApi {
   getStatus(signal?: AbortSignal): Promise<InferenceStatusResponse>
   save(settings: InferenceSettings, signal?: AbortSignal): Promise<InferenceSettingsResponse>
 }
-export const inferenceSettingKeys = ['engine', 'acceleration', 'memoryPolicy', 'modelsRoot', 'lorasRoot', 'python', 'worker'] as const
+export const inferenceSettingKeys = ['engine', 'acceleration', 'memoryPolicy', 'modelsRoot', 'lorasRoot', 'python', 'adapterPython', 'worker'] as const
 const object = (value: unknown): value is ApiResponseObject => typeof value === 'object' && value !== null && !Array.isArray(value)
 function settings(value: unknown): boolean {
   return object(value) && (value.engine === 'comfy' || value.engine === 'native')
     && typeof value.acceleration === 'string' && ['native', 'sage', 'compiled-sage', 'compiled-fused-sage'].includes(value.acceleration)
     && (value.memoryPolicy === 'resident' || value.memoryPolicy === 'offload')
     && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof value[key] === 'string')
+    && (value.adapterPython == null || typeof value.adapterPython === 'string')
 }
 function response(value: ApiResponseObject): boolean {
   return value.ok === true && settings(value.active) && settings(value.configured)
@@ -101,7 +103,7 @@ export const inferenceSettingsApi: InferenceSettingsApi = {
   async save(body, signal) {
     localOnly()
     return apiClient.request<InferenceSettingsResponse>('/api/inference/settings', {
-      method: 'POST', body, signal, timeoutMs: 10_000, validate: response,
+      method: 'POST', body: { ...body, ...(body.adapterPython === undefined ? {} : { adapterPython: body.adapterPython?.trim() || null }) }, signal, timeoutMs: 10_000, validate: response,
     })
   },
 }

@@ -130,7 +130,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     const defaults = model?.defaults
     return {
       steps: Number(defaults?.steps) || state.value.steps,
-      cfg: Number(defaults?.cfg) || state.value.cfg,
+      cfg: typeof defaults?.cfg === 'number' && Number.isFinite(defaults.cfg) ? defaults.cfg : state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
       ...(!state.value.provider && !loraStrengthTouched && provider === 'native' && !options.isPopular() && ['nene', 'natsume'].includes(options.getCharacter()) && typeof defaults?.loraStrength === 'number'

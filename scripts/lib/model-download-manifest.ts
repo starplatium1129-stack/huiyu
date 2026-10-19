@@ -1,3 +1,4 @@
+import imageResources from '../../tools/inference/managed-image-resources.json'
 import setupModels from '../../runtime-rs/src/control/setup-models.json'
 
 /** Publisher metadata checked on 2026-09-30; no model weights were downloaded.
@@ -84,17 +85,7 @@ const COMMUNITY_ANIMA_FILES: readonly ModelFile[] = [
     .map(entry => ({ ...entry, repo: '', remotePath: entry.path })),
 ]
 
-const KREA_STYLE_FILES: readonly ModelFile[] = [
-  ['darkbrush', 'f47c4316dd93af66e0518c93b582f459571d4925b519133770c73a52cd5db7c6'],
-  ['dotmatrix', '805aa30d863347222485b9d3ce81642dbc70a73cebc95ab57219d98b878fceec'],
-  ['kidsdrawing', '8c1d45d204aeb4e34a7d9e16a7d473917592ba0048b03f4e03e037e3578ca500'],
-  ['neondrip', 'a779c14435949eabae9ce0bface4320cad6672ef3547e8489107e3498d65e871'],
-  ['rainywindow', '7063a6f15ec6112ad3c06d79097b2a30a3ea7d9072821cb36021010d55989fe5'],
-  ['retroanime', 'ca42107783d9e517c5d62cb9a9db9ab2ba4887d90e9dad97a9d1a7fe6ff14c56'],
-  ['softwatercolor', '3805e8655f19fbcac116542685e3f78f3a642e8fbfb857b5352bb32a4b3d445a'],
-  ['sunsetblur', '194abdd531ca190d32799f26ab5bab634aa5ba3f07b7a60ffb282657db8bf3a0'],
-  ['vintagetarot', '8cca96c56658fb3ac5269f9ef2245bd07cbf1b7a189f517c8763470bb1385f9f'],
-].map(([style, sha256]) => file('Comfy-Org/Krea-2', KREA_FILES[0]!.revision, `loras/krea2_${style}.safetensors`, 469291992, sha256!))
+const KREA_STYLE_FILES: readonly ModelFile[] = imageResources.files
 
 const WAI_FILE: ModelFile = { ...file('', '2883731', 'checkpoints/waiIllustriousSDXL_v170.safetensors', 6938040682,
   'f116b0c78ff441467b0cdc8f1936e1ed18ea31e9997c7b132b1b8db533f0bd04'), sourceUrl: 'https://civitai.com/api/download/models/2883731?fileId=2763986' }

@@ -216,7 +216,9 @@ impl Service {
         if self.native {
             let cancel = self.shutdown.child_token();
             let _guard = cancel.clone().drop_guard();
-            native::status(&self.backend, family, cancel).await
+            // /creative/status is the shared Anima/Krea catalog, as on Comfy.
+            // Creation and result routes retain their strict family checks.
+            native::status(&self.backend, if family == "krea2" { "" } else { family }, cancel).await
         } else {
             resources::status(&self.config, &self.backend, family).await
         }

@@ -117,7 +117,11 @@ pub(super) fn adapter_request(
         input["frames"] = plan.input["frames"].clone();
         input["fps"] = plan.input["fps"].clone();
     }
+    if let Some(trigger) = plan.input["styleLoraTrigger"].as_str() {
+        input["prompt"] = json!(format!("{}, {}", plan.input["prompt"].as_str().unwrap_or(""), trigger));
+    }
     let mut request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"outputPath":output,"input":null,"inputImagePath":image});
+    if !plan.loras.is_empty() { request["loras"] = json!(plan.loras); }
     request["input"] = input;
     request
 }

@@ -4,9 +4,10 @@ impl ControlService {
     pub(super) async fn start_native_preparation(self: &Arc<Self>, body: Request) -> Result<Value> {
         check_request(self, &body)?;
         let permit = self.setup_permit()?;
-        let plan = self.native_setup_plan().await?;
+        let plan = self.native_setup_plan(body.model_id.as_deref()).await?;
         require_supported(&plan)?;
-        let (runtime, models) = bundles()?;
+        let (_, models) = bundles()?;
+        let runtime = image_models::runtime_for(body.model_id.as_deref())?;
         let model = models
             .into_iter()
             .find(|model| Some(&model.id) == body.model_id.as_ref())
@@ -98,8 +99,13 @@ impl ControlService {
         permit: &Arc<OwnedSemaphorePermit>,
     ) -> Result<()> {
         stopped(cancel)?;
-        let current = self.native_setup_plan().await?;
+        let current = self.native_setup_plan(body.model_id.as_deref()).await?;
         require_supported(&current)?;
+        if model.requires_access {
+            self.native_progress(operation, json!({"message":"检查模型访问权与固定文件清单"}));
+            let root = self.config.ai_workspace_root.join("inference/models").join(&model.id);
+            image_models::resolve_files(self, &model, &root, body.hf_token.as_deref(), cancel).await?;
+        }
         let runtime_bytes = runtime.download_bytes;
         let model_bytes = model.files.iter().map(|file| file.bytes).sum::<u64>();
         let mut runtime_operation = operation.clone();
@@ -142,7 +148,7 @@ impl ControlService {
             .join("inference/models")
             .join(&model.id);
         if !receipt_matches(&model_root, &model) {
-            self.install_native_model(&model, &model_operation, cancel, permit)
+            self.install_native_model(&model, &model_operation, cancel, permit, body.hf_token.as_deref())
                 .await?;
         }
         self.stage(operation, 6);
@@ -167,10 +173,12 @@ impl ControlService {
         self.stage(operation, 8);
         let paths = json!({"python":saved["configured"]["python"],"worker":saved["configured"]["worker"],
             "modelsRoot":saved["configured"]["modelsRoot"],"lorasRoot":saved["configured"]["lorasRoot"]});
-        self.native_progress(&activation, json!({"stage":"prepared","phase":"prepared", "currentFile":"",
-            "preparedPaths":paths,"result":{"engine":"native","modelId":model.id,
+        let mut progress = json!({"stage":"prepared","phase":"prepared", "currentFile":"",
+            "result":{"engine":"native","modelId":model.id,
                 "restartRequired":saved["restartRequired"],"active":saved["active"],"configured":saved["configured"],
-                "generationVerified":false}}));
+                "generationVerified":false}});
+        if !image_models::is_adapter_runtime(&runtime) { progress["preparedPaths"] = paths; }
+        self.native_progress(&activation, progress);
         Ok(())
     }
 }

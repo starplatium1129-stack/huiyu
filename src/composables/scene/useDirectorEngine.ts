@@ -125,7 +125,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     syncAnimaCharacter(pb.char)
     void refreshAnimaBackend()
     if (!options.silent) flash(v === 'anima'
-      ? (pb.isUnbound ? '已切换到 Anima（无角色 LoRA）' : pb.isPopular ? '已切换到 Anima（按角色配置加载 LoRA）' : '已切换到 Anima 引擎（ComfyUI + 角色 LoRA）')
+      ? (pb.isUnbound ? '已切换到 Anima（无角色 LoRA）' : '已切换到 Anima（按角色配置加载 LoRA）')
       : '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）')
   }
 

@@ -26,7 +26,8 @@ impl ControlService {
         if let Some(images) = images {
             return images.native_chat_handoff().await;
         }
-        if self.active_inference()?.engine == "native" {
+        let settings = self.active_inference()?;
+        if settings.engine == "native" || settings.video_engine() == "native" {
             return Err(ApiError::new(
                 503,
                 "NATIVE_RUNTIME_UNAVAILABLE",
@@ -62,10 +63,12 @@ impl ControlService {
         if saved["inferenceWorkspacePath"].as_str().is_some_and(|path| std::path::Path::new(path) != self.config.ai_workspace_root) {
             // Saved paths belong to the previous workspace. Keep those user files
             // and saved data, but do not advertise them as resources of this one.
-            let engine = value["engine"].as_str().unwrap_or("comfy").to_owned();
+            let engine = value["engine"].as_str().unwrap_or("native").to_owned();
+            let video_engine = value["videoEngine"].as_str().unwrap_or(&engine).to_owned();
             drop(saved);
             let mut current = Settings::discovered(&self.config.ai_workspace_root).0;
             current.engine = engine;
+            current.video_engine = Some(video_engine);
             current.environment_overrides = active.environment_overrides.clone();
             return Ok(current);
         }
@@ -120,11 +123,15 @@ async fn save(
     Extension(s): Extension<Arc<ControlService>>,
     Json(mut body): Json<Value>,
 ) -> Result<Json<Value>> {
-    // The current desktop form edits Anima settings. Preserve the separately
-    // configured adapter interpreter unless the caller explicitly supplies it.
+    // Image settings do not change video selection or discard a separately
+    // configured adapter interpreter when older clients omit these fields.
     if let Some(object) = body.as_object_mut() {
+        let configured = s.configured_inference()?;
+        if !object.contains_key("videoEngine") {
+            object.insert("videoEngine".into(), json!(configured.video_engine()));
+        }
         if !object.contains_key("adapterPython") {
-            if let Some(python) = s.configured_inference()?.adapter_python {
+            if let Some(python) = configured.adapter_python {
                 object.insert("adapterPython".into(), json!(python));
             }
         }

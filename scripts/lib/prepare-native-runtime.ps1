@@ -8,7 +8,8 @@ param(
 $ErrorActionPreference='Stop'
 [Console]::OutputEncoding=[Text.UTF8Encoding]::new($false)
 $appRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-$manifestPath=Join-Path $appRoot 'tools/inference/managed-runtime.windows-x64.json'
+$manifestName=if ($RuntimeId -eq 'cpython3119-torch280-cu128-images-v1') { 'managed-adapter-runtime.windows-x64.json' } else { 'managed-runtime.windows-x64.json' }
+$manifestPath=Join-Path $appRoot ('tools/inference/'+$manifestName)
 $manifest=Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($manifest.schemaVersion -ne 1 -or $manifest.platform -ne 'win32-x64' -or $RuntimeId -ne $manifest.runtimeId -or $RuntimeId -notmatch '^[a-z0-9][a-z0-9-]{0,79}$') { throw '固定运行库清单或版本标识无效' }
 if (-not [Environment]::Is64BitOperatingSystem -or $env:PROCESSOR_ARCHITECTURE -eq 'ARM64' -or $env:PROCESSOR_ARCHITEW6432 -eq 'ARM64') { throw '原生运行库仅支持 Windows x64；ARM64 与 32 位 Windows 尚不支持' }

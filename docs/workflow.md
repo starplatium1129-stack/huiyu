@@ -139,6 +139,8 @@
 3. `reference:audit --force --keys <角色/服装/机位前缀>` 定向重审，`reference:repair` 修复。
 4. `check:ref-urls` 与网关共用素材目录解析（AICS_CHARACTER_REF_ROOT → AI 工作区 → assets/character-references）。显式目录失效不会静默换库；pending 不等于真实资产，也不等于通过视觉审核。CLI 数据根为 `--root <完整项目根>` > AICS_DATA_ROOT > AICS_APP_ROOT > 仓库根，view 与审计 appRoot 对齐，显式外部素材配置保留；直接 `--help` / `--plan` 零目标读取。参数/根错误退出 2，缺失或损坏 view、审计问题退出 1。
 
+`reference:design` 通过 `GATEWAY_URL`（默认 `http://127.0.0.1:3000`）调用原生 MiaoMiao 图像网关，不读取 ComfyUI 输出目录。运行目录的 `reference-design-jobs/` 保存请求与任务编号；重启沿原编号续查，提交接收状态不明时不重发。Ctrl+C 请求取消已知任务；取消未确认或遗留 `active.lock` 时，先核对任务与进程再处理。`--all` 只重做已知终态，`--dry-run` 只列任务。
+
 `reference:audit` / `reference:repair` 仍用于旧活跃参考库的视觉检查/定向修复，不能用于新候选目录，也不能替代下面的人工决定。参考图片不入 Git；尚未交付素材与人工决定见 [未来规划](roadmap.md)。
 
 ### 参考库候选审核与版本发布

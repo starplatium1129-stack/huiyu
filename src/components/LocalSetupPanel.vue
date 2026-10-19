@@ -1,7 +1,7 @@
 <template>
   <section ref="setupRoot" class="local-setup" aria-labelledby="local-setup-title">
     <div class="setup-heading">
-      <div><span class="panel-kicker">开始使用绘遇</span><h2 id="local-setup-title">首次配置</h2></div>
+      <div><span class="panel-kicker">其他本机环境</span><h2 id="local-setup-title">聊天与兼容配置</h2></div>
       <span class="setup-platform"><ArchiveIcon name="model" />Windows · NVIDIA</span>
     </div>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的电脑上完成配置。</p>

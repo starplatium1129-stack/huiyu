@@ -295,8 +295,8 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     cmd: ['node', 'scripts/maintenance/render-design-sheets.js'],
     docs: 'docs/workflow.md#参考库',
     opts: '[--chars=a,b] [--outfits=x,y] [--views=f,s,b] [--all] [--dry-run] [--limit=N]',
-    needs: 'ComfyUI http://127.0.0.1:8188（--disable-smart-memory）',
-    run: { nature: ['external-model', 'writes-product', 'writes-source'], machine: ['comfyui', 'node'], switches: { '--dry-run': ['preview'], '--limit': ['external-model'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/render-design-sheets.js:48,302-306,366', unknown: [], notes: ['出图后回填 view.json url（writes-source）'] },
+    needs: '绘遇网关（GATEWAY_URL）与已准备的原生 MiaoMiao 1.6',
+    run: { nature: ['external-model', 'writes-product', 'writes-source'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'], '--limit': ['external-model'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/render-design-sheets.ts', unknown: [], notes: ['出图后回填 view.json url（writes-source）；接收未知不重发，任务编号保存在运行目录'] },
   },
   ...(require('./lib/workflows-reference-candidates') as typeof import('./lib/workflows-reference-candidates')).referenceCandidateWorkflows,
   'showcase:generate': {

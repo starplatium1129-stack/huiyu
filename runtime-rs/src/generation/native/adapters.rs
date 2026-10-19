@@ -5,7 +5,7 @@ use super::resources::{self, within};
 const FILES: &[&str] = &[
     "adapter_worker.py", "adapter_contract.py", "adapter_media.py", "adapter_video.py",
     "adapter-models.json", "worker_lifecycle.py", "native_memory.py",
-    "resident_adapters.py", "locked_identity.py",
+    "resident_adapters.py", "locked_identity.py", "krea_style.py",
 ];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -31,7 +31,7 @@ pub(crate) fn settings(settings: &Settings) -> Result<Settings> {
         ApiError::new(
             503,
             "NATIVE_ADAPTER_RUNTIME_MISSING",
-            "新增模型需要独立 Python 环境：设置 HUIYU_NATIVE_ADAPTER_PYTHON；不要升级 Anima 运行库",
+            "请在控制室选择 Krea / Qwen 模型并准备原生运行库，或在高级设置中复用已有独立 Python",
         )
     })?;
     adapter.worker = settings.worker.with_file_name("adapter_worker.py");
@@ -44,7 +44,7 @@ pub(crate) fn settings(settings: &Settings) -> Result<Settings> {
     }
     Ok(adapter)
 }
-fn validate_runtime(settings: &Settings) -> Result<()> {
+pub(super) fn validate_runtime(settings: &Settings) -> Result<()> {
     settings.validate_files_sync()?;
     if let Some(issue) = resources::worker_bundle_issue(&settings.worker, FILES) {
         return Err(ApiError::new(503, "NATIVE_ADAPTER_RUNTIME_MISSING", issue));
@@ -66,13 +66,15 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
         model_issue(&path, id)
     };
     json!({"id":id,"label":model["label"],"family":model["family"],"available":issue.is_none(),
+        "profileId":model["profileId"],"sizes":model["sizes"],
         "readiness":if issue.is_none(){"files-ready"}else{"unavailable"},"unavailableReason":issue,
         "validation":"待主力机验证","generationVerified":false,"performanceVerified":false,
         "repository":model["repository"],"sourceRevision":model["revision"],"license":model["license"],"licenseUrl":model["licenseUrl"],
         "defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"].as_str().unwrap_or("euler"),"scheduler":"model-config","teaCache":false},
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
         "capabilities":{"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
-            "lora":false,"noLora":true,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"experimental":true},
+            "lora":false,"noLora":true,"characterIdentity":false,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"fixedSampling":model["distilled"]==true,"experimental":true,
+            "maxReferenceImages":if model["family"]=="qwen-image"{4}else{0}},
         "modes":if model["media"]=="video" {json!(["text"])}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
 }
 pub(crate) async fn plan(
@@ -108,6 +110,7 @@ pub(crate) async fn plan(
         mask_model_dir: None,
         upscale_model_path: None,
         init_image: std::sync::Mutex::new(image),
+        reference_images: std::sync::Mutex::new(vec![]),
         mask_image: std::sync::Mutex::new(None),
         pen_lines: std::sync::Mutex::new(None),
         sketch_image: std::sync::Mutex::new(None),

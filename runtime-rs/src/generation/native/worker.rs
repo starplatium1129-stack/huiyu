@@ -189,7 +189,8 @@ impl Engine {
 
 impl Service {
     pub(crate) async fn native_chat_handoff(&self) -> Result<Option<OwnedSemaphorePermit>> {
-        if !self.native_enabled() {
+        // Images and videos can select different providers but share this worker.
+        if !self.native_enabled() && self.inner.native_settings.video_engine() != "native" {
             return Ok(None);
         }
         if self.inner.closed.load(Ordering::Relaxed) || self.inner.cancel.is_cancelled() {

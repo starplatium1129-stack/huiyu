@@ -33,7 +33,7 @@ impl TaskRuntime {
                 "SD_RETIRED",
                 "SD 新生成已退役；原任务可继续查询、收集或取消",
             )),
-            TaskKind::Anima | TaskKind::Creative | TaskKind::Manga | TaskKind::Lineart => {
+            TaskKind::Anima | TaskKind::Creative | TaskKind::Qwen | TaskKind::Manga | TaskKind::Lineart => {
                 if kind.is_manga()
                     && (kind == TaskKind::Lineart) != (input["operation"] == "lineart")
                 {
@@ -41,6 +41,8 @@ impl TaskRuntime {
                 }
                 let family = if kind == TaskKind::Anima {
                     "anima"
+                } else if kind == TaskKind::Qwen {
+                    "qwen-image"
                 } else if kind.is_manga() {
                     "manga-screen"
                 } else {
@@ -73,6 +75,7 @@ impl TaskRuntime {
             TaskKind::Generation => self.provider.query(job, principal).await,
             TaskKind::Anima => self.images.query(job, principal, "anima").await,
             TaskKind::Creative => self.images.query(job, principal, "krea2").await,
+            TaskKind::Qwen => self.images.query(job, principal, "qwen-image").await,
             TaskKind::Manga | TaskKind::Lineart => {
                 self.images.query(job, principal, "manga-screen").await
             }
@@ -90,6 +93,7 @@ impl TaskRuntime {
             TaskKind::Generation => self.provider.cancel(job, principal).await,
             TaskKind::Anima => self.images.cancel(job, principal, "anima").await,
             TaskKind::Creative => self.images.cancel(job, principal, "krea2").await,
+            TaskKind::Qwen => self.images.cancel(job, principal, "qwen-image").await,
             TaskKind::Manga | TaskKind::Lineart => {
                 self.images.cancel(job, principal, "manga-screen").await
             }

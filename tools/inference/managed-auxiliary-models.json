@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "resources": [
+    {
+      "id": "clipseg-rd64-refined",
+      "label": "CLIPSeg · 文字自动蒙版",
+      "family": "anima",
+      "directory": "models",
+      "path": "clipseg-rd64-refined",
+      "description": "Anima 局部重绘的文字自动识别；完整配置、分词器与 FP32 safetensors，生成时本地运行。",
+      "licenseUrl": "https://huggingface.co/CIDAS/clipseg-rd64-refined/blob/999e0328d9e10b484360c477313983f9afdd7050/README.md",
+      "sourceUrl": "https://huggingface.co/CIDAS/clipseg-rd64-refined/tree/999e0328d9e10b484360c477313983f9afdd7050",
+      "revision": "999e0328d9e10b484360c477313983f9afdd7050",
+      "files": [
+        {
+          "path": "clipseg-rd64-refined/README.md",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/README.md",
+          "bytes": 596,
+          "sha256": "c1e26ac022542015a04d804460bdc1159d753c4349b628e086f127475d2fcf25"
+        },
+        {
+          "path": "clipseg-rd64-refined/config.json",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/config.json",
+          "bytes": 4732,
+          "sha256": "c023375966d31b3b1392764f7bd91df47098ce19f62f11b0263d8eedcf708bcd"
+        },
+        {
+          "path": "clipseg-rd64-refined/merges.txt",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/merges.txt",
+          "bytes": 524619,
+          "sha256": "9fd691f7c8039210e0fced15865466c65820d09b63988b0174bfe25de299051a"
+        },
+        {
+          "path": "clipseg-rd64-refined/preprocessor_config.json",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/preprocessor_config.json",
+          "bytes": 380,
+          "sha256": "4fb09ebcfd7651205ca8299b993c30088e5535ef350a72d46c5c4580eeac0440"
+        },
+        {
+          "path": "clipseg-rd64-refined/special_tokens_map.json",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/special_tokens_map.json",
+          "bytes": 472,
+          "sha256": "c4864a9376a8401918425bed71fc14fc0e81f9b59ec45c1cf96cccb2df508eac"
+        },
+        {
+          "path": "clipseg-rd64-refined/tokenizer_config.json",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/tokenizer_config.json",
+          "bytes": 974,
+          "sha256": "4c75d57fd9bd0be8478ad2d6f8b9cebdd4a45338eb108547329c2b6333476ca6"
+        },
+        {
+          "path": "clipseg-rd64-refined/vocab.json",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/vocab.json",
+          "bytes": 1059962,
+          "sha256": "e089ad92ba36837a0d31433e555c8f45fe601ab5c221d4f607ded32d9f7a4349"
+        },
+        {
+          "path": "clipseg-rd64-refined/model.safetensors",
+          "url": "https://huggingface.co/CIDAS/clipseg-rd64-refined/resolve/999e0328d9e10b484360c477313983f9afdd7050/model.safetensors",
+          "bytes": 603049496,
+          "sha256": "d00ca85d6b859f9d07b7cfb8ef26fe9771cb275b34c9368f2ecf603139307f55"
+        }
+      ]
+    },
+    {
+      "id": "remacri-4x",
+      "label": "Remacri · 高清放大",
+      "family": "anima",
+      "directory": "models",
+      "path": "upscale_models",
+      "description": "Anima 高清放大使用的 4× FP32 Remacri；权重为 CC BY-NC-SA 4.0。选择 Auto 或 Remacri 时按现有流程使用。",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "sourceUrl": "https://huggingface.co/LyliaEngine/4x_foolhardy_Remacri/tree/ed8af36b00301d96b5b7f491d1413a0b9bceb091",
+      "revision": "ed8af36b00301d96b5b7f491d1413a0b9bceb091",
+      "files": [
+        {
+          "path": "upscale_models/4x_foolhardy_Remacri.safetensors",
+          "url": "https://huggingface.co/LyliaEngine/4x_foolhardy_Remacri/resolve/ed8af36b00301d96b5b7f491d1413a0b9bceb091/4x_foolhardy_Remacri.safetensors",
+          "bytes": 66864028,
+          "sha256": "ac3e6cc5b5740c308e7f1f484da7030ae5bd0c1d33433cffcefc42e03704a036"
+        },
+        {
+          "path": "upscale_models/Remacri-README.md",
+          "url": "https://huggingface.co/LyliaEngine/4x_foolhardy_Remacri/raw/ed8af36b00301d96b5b7f491d1413a0b9bceb091/README.md",
+          "bytes": 2069,
+          "sha256": "d363c07e6af99e06d7499bf61b0c6c97451887ce31dfd2c0a3d8bb13fd378b4b"
+        }
+      ]
+    },
+    {
+      "id": "anima-sketch",
+      "label": "Anima Sketch · 草图控制",
+      "family": "anima",
+      "directory": "models",
+      "path": "controlnet",
+      "description": "固定 LLLite v2 草图控制权重，适用于现有 28 层 Anima Base 架构；遵循 CircleStone 非商业许可。",
+      "licenseUrl": "https://huggingface.co/kohya-ss/Anima-LLLite/blob/36ba7f2f498a1ca63cc77fc7a1298652f72d4524/LICENSE",
+      "sourceUrl": "https://huggingface.co/kohya-ss/Anima-LLLite/tree/36ba7f2f498a1ca63cc77fc7a1298652f72d4524",
+      "revision": "36ba7f2f498a1ca63cc77fc7a1298652f72d4524",
+      "files": [
+        {
+          "path": "controlnet/anima-lllite-any-test-like-v2.safetensors",
+          "url": "https://huggingface.co/kohya-ss/Anima-LLLite/resolve/36ba7f2f498a1ca63cc77fc7a1298652f72d4524/anima-lllite-any-test-like-v2.safetensors",
+          "bytes": 16403008,
+          "sha256": "8863424f04a2445815a827b22cbda557a085d2752e05fab54a2b303821a9e3b2"
+        },
+        {
+          "path": "controlnet/anima-lllite-LICENSE.txt",
+          "url": "https://huggingface.co/kohya-ss/Anima-LLLite/raw/36ba7f2f498a1ca63cc77fc7a1298652f72d4524/LICENSE",
+          "bytes": 17688,
+          "sha256": "3ab19eea6d1a4a08d1256851c32e5df533dfd7b760313c56797b78ee2ee24724"
+        }
+      ]
+    },
+    {
+      "id": "manga-line-extraction",
+      "label": "MangaLine · 漫画线稿",
+      "family": "manga",
+      "directory": "models",
+      "path": "manga-line-extraction",
+      "description": "漫画线稿提取使用的 erika.pth，下载自 lllyasviel/Annotators 固定镜像；沿用本地受限权重加载，需要 Krea/Qwen 独立环境。",
+      "licenseUrl": "https://github.com/ljsabc/MangaLineExtraction_PyTorch/blob/6ec136d5332180b65476e62c2558f2873d5d936a/LICENSE",
+      "sourceUrl": "https://huggingface.co/lllyasviel/Annotators/blob/982e7edaec38759d914a963c48c4726685de7d96/erika.pth",
+      "revision": "982e7edaec38759d914a963c48c4726685de7d96",
+      "upstream": "https://github.com/ljsabc/MangaLineExtraction_PyTorch/releases/tag/v1",
+      "files": [
+        {
+          "path": "manga-line-extraction/erika.pth",
+          "url": "https://huggingface.co/lllyasviel/Annotators/resolve/982e7edaec38759d914a963c48c4726685de7d96/erika.pth",
+          "bytes": 172789563,
+          "sha256": "badbd6baf013cefbd98993307b02cc14a26c770d067416e4fdecc8720b88feeb"
+        },
+        {
+          "path": "manga-line-extraction/LICENSE",
+          "url": "https://raw.githubusercontent.com/ljsabc/MangaLineExtraction_PyTorch/6ec136d5332180b65476e62c2558f2873d5d936a/LICENSE",
+          "bytes": 1068,
+          "sha256": "6a038977670f3010892f223fa5eaad0f1d3f071e9e3c66d116f0f8e90fe68635"
+        }
+      ]
+    }
+  ]
+}

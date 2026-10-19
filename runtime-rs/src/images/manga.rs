@@ -230,6 +230,7 @@ pub(super) async fn plan(
         mask_model_dir: None,
         upscale_model_path: None,
         init_image,
+        reference_images: Mutex::new(vec![]),
         pen_lines,
         mask_image: Mutex::new(None),
         sketch_image: Mutex::new(None),

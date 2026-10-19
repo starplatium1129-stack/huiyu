@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
+import { RouterLink } from 'vue-router'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimaCompositionRegions from '@/components/AnimaCompositionRegions.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
@@ -65,6 +66,7 @@ onBeforeUnmount(() => { attached = false; close() })
               <h3 id="composition-sketch-title">草图 / 线稿</h3>
               <p v-if="sketchIssue" class="composition-help" role="status">{{ sketchIssue }}</p>
               <p v-if="sketchIssue && capabilities?.sketchControlStatus?.file" class="composition-help composition-weight-path">模型位置：{{ capabilities.sketchControlStatus.file }}<br /><a v-if="capabilities.sketchControlStatus.source" :href="capabilities.sketchControlStatus.source" target="_blank" rel="noopener noreferrer">查看指定草图权重</a></p>
+              <RouterLink v-if="sketchIssue && capabilities?.sketchControlStatus?.file" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'anima-sketch' }, hash: '#control-setup' }" @click="editorOpen = false">准备草图控制模型</RouterLink>
               <p v-if="sketch" class="composition-sketch-name">{{ sketch.name }} · {{ sketch.width }} × {{ sketch.height }}</p>
               <div class="composition-sketch-actions">
                 <button class="btn btn-ghost btn-sm" type="button" :disabled="locked || !!sketchIssue" @click="fileInput?.click()"><ArchiveIcon name="upload" />{{ reading ? '正在读取…' : sketch ? '替换草图' : '导入草图' }}</button>

@@ -143,7 +143,13 @@ pub(super) async fn plan(
         let input = native_adapters::normalize(&input, input.clone())?;
         let image = input["initImage"].as_str().map(|name| originals.iter().find(|o| o.name == name)
             .map(|o| o.bytes.clone()).ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的编辑原图"))).transpose()?;
-        return generation::native::adapters::plan(settings, input, image).await;
+        let references = input["referenceImages"].as_array().into_iter().flatten().map(|value| {
+            originals.iter().find(|original| Some(original.name.as_str()) == value.as_str()).map(|original| original.bytes.clone())
+                .ok_or_else(|| ApiError::new(409, "TASK_INPUT_MISSING", "缺少受保护的参考图"))
+        }).collect::<Result<Vec<_>>>()?;
+        let plan = native_adapters::plan(settings, input, image).await?;
+        *plan.reference_images.lock().unwrap() = references;
+        return Ok(plan);
     }
     if input["inferenceEngine"] != "native"
         || input["family"] != "anima"
@@ -324,6 +330,7 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
         upscale_model_path,
         settings: settings.clone(),
         init_image: std::sync::Mutex::new(init_image),
+        reference_images: std::sync::Mutex::new(vec![]),
         mask_image: std::sync::Mutex::new(mask_image),
         pen_lines: std::sync::Mutex::new(None),
         sketch_image: std::sync::Mutex::new(sketch_image),
@@ -374,13 +381,11 @@ fn local_status(
     let mut models = Vec::new();
     for (id, model) in catalog::CATALOG["MODELS"].as_object().unwrap() {
         status_check(cancel)?;
-        if !family.is_empty() && model["family"] != family {
+        if model["family"] != "anima" || !family.is_empty() && model["family"] != family {
             continue;
         }
         let model_dir = resources::within(&runtime.models_root, &runtime.models_root.join(id));
-        let issue = if model["family"] != "anima" {
-            Some("该 Comfy FP8 模型不能用于原生推理；请采用下方独立 BF16 模型目录".to_owned())
-        } else if runtime_error.is_some() {
+        let issue = if runtime_error.is_some() {
             Some("独立推理运行库不可用".to_owned())
         } else if let Some(path) = &model_dir {
             // One unreadable model must not hide other status entries.
@@ -419,7 +424,9 @@ fn local_status(
         }
     }
     let online = models.iter().any(|model| model["available"] == true);
+    let styles = if family.is_empty() || family == "krea2" { native_adapters::styles(runtime) } else { vec![] };
     let mut value = json!({"provider":"native","engine":"native","online":online,"readiness":"files-only","runtimeError":runtime_error,"models":models,"loras":loras,"styleLoras":[],"characters":catalog::CATALOG["CHARACTERS"].as_object().unwrap().values().cloned().collect::<Vec<_>>(),"hires":{"superResModel":if remacri {Some(REMACRI_FILE)} else {None}},"capabilities":{"txt2img":true,"img2img":true,"mask":true,"manualMask":true,"automaticMask":automatic_mask,"experimental":true,"lora":true,"teaCache":true,"teaCacheReadiness":"builtin","rcas":true,"hires":true,"hiresTeaCache":true,"upscalers":remacri,"hiresUpscalers":hires_upscalers,"weightSyntax":true},"pending":0,"maxPending":4});
+    value["styleLoras"] = json!(styles);
     if matches!(family, "krea2" | "qwen-image") {
         value["capabilities"] = json!({"txt2img":true,"img2img":family=="qwen-image","mask":false,"manualMask":false,
             "automaticMask":false,"experimental":true,"lora":false,"teaCache":false,"rcas":false,"hires":false,"weightSyntax":false});

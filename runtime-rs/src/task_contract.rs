@@ -9,6 +9,7 @@ pub enum TaskKind {
     Generation,
     Anima,
     Creative,
+    Qwen,
     Manga,
     Lineart,
     Video,

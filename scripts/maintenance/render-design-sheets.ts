@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
-import { buildReferenceDesignWorkflow } from '../lib/generation/reference-design-workflow';
+import gateway = require('../lib/generation-gateway');
+import catalog = require('../lib/generation/anima-model-catalog');
+import type { GatewayRecord } from '../lib/generation-types';
 const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 'use strict';
 
@@ -24,8 +26,7 @@ const { object }: typeof import('../lib/content-history-reader') = require('../l
  * 当前引擎与参数（2026-08-30 首轮 153 张底模为 Anima Aesthetic v1.1）：
  *   MiaoMiao Harem Anima v1.6 + qwen_3_06b CLIP + qwen_image_vae，
  *   960×1536，30 steps Euler/normal，CFG 4.5，ImageSharpenKJ RCAS 0.75。
- *   使用离线参考图构建器 reference-design-workflow；Node 后端退役时只保留
- *   此工具实际使用的节点图，节点结构与 RCAS 保持，采样与缓存遵循当前 1.6 配方。
+ *   通过绘遇原生图像网关提交；保留原有尺寸、采样和 RCAS 配方。
  *   TeaCache 默认 rel_l1_thresh=0.10，
  *   --no-teacache 可关。
  *
@@ -39,8 +40,8 @@ const { object }: typeof import('../lib/content-history-reader') = require('../l
  *   --seed-shift=N              seed 偏移，用于同条目换变体（默认 0）
  *
  * 环境变量：
- *   COMFY_HOST     默认 http://127.0.0.1:8188
- *   COMFY_OUTPUT   默认 <AI 工作区>/ComfyUI/output
+ *   GATEWAY_URL    默认 http://127.0.0.1:3000
+ *   AICS_RUNTIME_ROOT 保存请求与可续查的任务编号
  *   AI_WORKSPACE_ROOT 默认 <项目根>/../AI（参考图根目录所在）
  */
 
@@ -49,13 +50,13 @@ const path: typeof import('path') = require('path');
 const crypto: typeof import('crypto') = require('crypto');
 const { compress }: typeof import('./precompress.js') = require('./precompress.js');
 
-const HOST = process.env.COMFY_HOST || 'http://127.0.0.1:8188';
+const HOST = gateway.gatewayUrl();
 const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
 const VIEW_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const REF_ROOT = process.env.AI_WORKSPACE_ROOT
   ? path.join(process.env.AI_WORKSPACE_ROOT, 'CharacterReferences')
   : path.resolve(ROOT, '..', 'AI', 'CharacterReferences');
-const COMFY_OUTPUT = process.env.COMFY_OUTPUT || path.resolve(REF_ROOT, '..', 'ComfyUI', 'output');
+const JOB_ROOT = path.join(process.env.AICS_RUNTIME_ROOT || path.join(ROOT, 'runtime'), 'reference-design-jobs');
 
 // 负面词：基础词照抄项目前端权威来源 promptBuilderStore.ts NEGATIVE_DEFAULT，
 // 双人参考页保留防双子镜像追加词（identical twins /
@@ -101,8 +102,8 @@ if (args.includes('--help') || args.includes('-h')) {
   --no-teacache    关闭 TeaCache 加速（默认开：rel_l1_thresh=0.10，沿用生产管线默认）
   --tea-thresh=N   自定义 TeaCache rel_l1_thresh（0 = 关闭；生产默认 0.10）
 
-环境变量: COMFY_HOST / COMFY_OUTPUT / AI_WORKSPACE_ROOT
-依赖: ComfyUI http://127.0.0.1:8188（--disable-smart-memory）`);
+环境变量: GATEWAY_URL / AICS_RUNTIME_ROOT / AI_WORKSPACE_ROOT
+依赖: 绘遇网关，已启用原生绘图并准备 MiaoMiao 1.6 完整模型`);
   process.exit(0);
 }
 function pick(flag: string) {
@@ -139,85 +140,62 @@ function buildPrompt(identityProse: string, identity: string, outfitProse: strin
   return `score_7, score_6, masterpiece, best quality, ${identityProse}, ${outfitProse}, ${identity}, ${outfit}, ${viewTags}, ${SHEET}`;
 }
 
-// The offline sheet builder owns the fixed model, 960×1536 canvas and candidate prefix.
-function buildWorkflow(text: string, seed: number) {
-  return buildReferenceDesignWorkflow({ prompt: text, negative: NEGATIVE, seed, teaCacheThresh: teaThresh });
+const lifetime = new AbortController();
+process.once('SIGINT', () => lifetime.abort());
+process.once('SIGTERM', () => lifetime.abort());
+
+async function requireNative() {
+  const response = await fetch(HOST + '/api/anima/status', { redirect: 'error', signal: AbortSignal.timeout(10000) });
+  const data: unknown = await response.json();
+  if (!response.ok || !object(data) || data.provider !== 'native' || !Array.isArray(data.models)
+    || !data.models.some((model: unknown) => object(model) && model.id === 'anima-miaomiao-v1.6' && model.available === true))
+    throw new Error('请在绘遇控制室启用原生绘图，准备 MiaoMiao 1.6 完整模型并重启；不会回退 ComfyUI');
 }
 
-async function comfyAlive() {
+async function submitAndWait(text: string, seed: number, destination: string) {
+  const model = catalog.MODELS['anima-miaomiao-v1.6'];
+  const payload = { modelId: 'anima-miaomiao-v1.6', prompt: text, negative: NEGATIVE, seed,
+    width: 960, height: 1536, steps: model.steps, cfg: model.cfg,
+    teaCache: teaThresh > 0, teaCacheThresh: teaThresh };
+  // Sampler/scheduler and the text-to-image RCAS 0.75 pass belong to the
+  // gateway's fixed MiaoMiao recipe; those are not public request parameters.
+  const identity = crypto.createHash('sha256').update(JSON.stringify({ gateway: HOST, destination, payload })).digest('hex');
+  const receipt = path.join(JOB_ROOT, identity + '.json');
+  let record: GatewayRecord = { gateway: HOST, payload, seed, status: 'new' };
+  if (fs.existsSync(receipt)) {
+    const saved: unknown = JSON.parse(fs.readFileSync(receipt, 'utf8'));
+    if (!object(saved) || saved.gateway !== HOST || JSON.stringify(saved.payload) !== JSON.stringify(payload)
+      || typeof saved.status !== 'string' || saved.jobId !== undefined && typeof saved.jobId !== 'string')
+      throw new Error('原请求记录无效，已保留，请人工核对：' + receipt);
+    record = saved as GatewayRecord;
+    if (!record.jobId && record.status !== 'new') throw new Error('原请求接收状态未知，不会重发；请核对网关和记录：' + receipt);
+    if (all && ['saved', 'failed', 'cancelled'].includes(record.status)) {
+      fs.copyFileSync(receipt, path.join(JOB_ROOT, identity + '.' + crypto.randomUUID() + '.json'), fs.constants.COPYFILE_EXCL);
+      record = { gateway: HOST, payload, seed, status: 'new' };
+    } else if (['failed', 'cancelled'].includes(record.status)) throw new Error('原任务已结束；核对后使用 --all 或新的 --seed-shift 开始新创作：' + receipt);
+  }
+  const save = (value: GatewayRecord) => {
+    fs.mkdirSync(JOB_ROOT, { recursive: true });
+    const pending = receipt + '.tmp';
+    fs.writeFileSync(pending, JSON.stringify(value));
+    fs.renameSync(pending, receipt);
+  };
   try {
-    const resp = await fetch(HOST + '/system_stats', { signal: AbortSignal.timeout(5000) });
-    return resp.ok;
-  } catch {
-    return false;
-  }
-}
-
-/** 提交工作流并等待完成；成功后返回 ComfyUI 保存的输出文件名（精确取自 history，不扫目录）。 */
-async function submitAndWait(text: string, seed: number) {
-  for (let attempt = 0; attempt < 3; attempt++) {
-    let resp;
-    try {
-      resp = await fetch(HOST + '/prompt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prompt: buildWorkflow(text, seed) }),
-      });
-    } catch {
-      log('  submit 网络错误，重试');
-      continue;
-    }
-    const data: unknown = await resp.json().catch(() => ({}));
-    if (!resp.ok || !object(data) || typeof data.prompt_id !== 'string' || !data.prompt_id) {
-      log('  submit fail: ' + JSON.stringify(data).slice(0, 120));
-      continue;
-    }
-    const id = data.prompt_id;
-    for (let i = 0; i < 240; i++) {
-      await new Promise<void>(resolve => setTimeout(resolve, 2000));
-      try {
-        const h: unknown = await (await fetch(HOST + '/history/' + id)).json();
-        if (!object(h)) continue;
-        const entry = h[id];
-        if (!object(entry) || !object(entry.status)) continue;
-        if (entry.status.completed === true) {
-          const output = object(entry.outputs) ? entry.outputs['10'] : undefined;
-          const img: unknown = object(output) && Array.isArray(output.images) ? output.images[0] : undefined;
-          if (object(img) && typeof img.filename === 'string'
-            && (img.subfolder === undefined || typeof img.subfolder === 'string')) {
-            return img.subfolder ? path.join(img.subfolder, img.filename) : img.filename;
-          }
-          return null;
-        }
-        if (entry.status.status_str === 'error') {
-          log('  渲染错误，重试');
-          break;
-        }
-      } catch {
-        /* 轮询瞬时错误忽略 */
-      }
+    const result = await gateway.generate(record, save, { signal: lifetime.signal });
+    if (record.provider !== 'native') throw new Error('返回任务不是原生图像，未写入目标文件');
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    const pending = destination + '.tmp';
+    fs.writeFileSync(pending, result.buffer);
+    fs.renameSync(pending, destination);
+    record.status = 'saved'; save(record);
+  } finally {
+    if (lifetime.signal.aborted && record.jobId) {
+      const response = await fetch(HOST + '/api/anima/jobs/' + encodeURIComponent(record.jobId), {
+        method: 'DELETE', redirect: 'error', signal: AbortSignal.timeout(10000),
+      }).catch(() => null);
+      log(response?.ok ? '已请求取消原任务；任务编号保留，可重开核对' : '取消尚未确认；任务编号保留，请在绘遇核对');
     }
   }
-  return null;
-}
-
-/** 把 ComfyUI 输出移到参考图目录（同盘 rename 原子移动，避开 unlink 钩子）。 */
-function moveOutput(relFile: string, destDir: string, destFile: string) {
-  const src = path.join(COMFY_OUTPUT, relFile);
-  if (!fs.existsSync(src)) return false;
-  fs.mkdirSync(destDir, { recursive: true });
-  const dest = path.join(destDir, destFile);
-  try {
-    fs.renameSync(src, dest);
-  } catch {
-    try {
-      fs.copyFileSync(src, dest); // 兜底：rename 失败则复制（源文件留待手工清理）
-    } catch (e) {
-      log('  moveOutput 失败: ' + runtimeErrorMessage(e));
-      return false;
-    }
-  }
-  return true;
 }
 
 /**
@@ -266,7 +244,6 @@ for (const profile of Object.values(view)) {
       const viewTags = VIEWS[viewName];
       if (!viewTags) throw new Error(`Unsupported design view: ${viewName}`);
       // 非默认服装输出到 <角色>/<服装>/ 子目录：目录不存在则创建，避免落回角色根覆盖默认图。
-      if (o.isDefault !== true) { try { fs.mkdirSync(path.dirname(abs), { recursive: true }); } catch (error) {} }
       tasks.push({ charId, outfitId: o.outfitId, viewName, viewTags, identityProse, identity, outfitProse, outfitTokens, rel, abs });
     }
   }
@@ -280,37 +257,25 @@ if (dryRun) {
 }
 
 async function main() {
-  if (!(await comfyAlive())) {
-    fail(`ComfyUI 不可达（${HOST}）——请先启动 ComfyUI（--disable-smart-memory）再跑`);
-  }
+  await requireNative();
 if (!tasks.length) {
   log('没有待跑任务（全部已完成或已被过滤），继续执行 view.json 回填后退出');
 }
 
 log(`待跑 ${tasks.length} 张（跳过：已存在 ${skipped.existing} / 缺 token ${skipped.missingTokens}）`);
 const slice = limit ? tasks.slice(0, limit) : tasks;
-let ok = 0, failCount = 0;
+let ok = 0;
 
 for (const t of slice) {
   const seed = stableSeed(t.charId, t.outfitId, t.viewName);
   const text = buildPrompt(t.identityProse, t.identity, t.outfitProse, t.outfitTokens, t.viewTags);
   log(`▶ ${t.charId}/${t.outfitId}/${t.viewName} (seed ${seed})`);
-  const outFile = await submitAndWait(text, seed);
-  if (!outFile) {
-    log('  ✗ 生成失败');
-    failCount++;
-    continue;
-  }
-  const destDir = path.dirname(t.abs);
-  if (moveOutput(outFile, destDir, path.basename(t.abs))) {
-    ok++;
-    log(`  ✓ 已存 ${path.relative(REF_ROOT, t.abs)}`);
-  } else {
-    log(`  ✗ 未找到输出文件（${outFile}）`);
-    failCount++;
-  }
+  // No retry after an ambiguous POST; the saved job ID is the only continuation.
+  await submitAndWait(text, seed, t.abs);
+  ok++;
+  log(`  ✓ 已存 ${path.relative(REF_ROOT, t.abs)}`);
 }
-log(`=== 完成: 本次 ${slice.length} 成功 ${ok} 失败 ${failCount} ===`);
+log(`=== 完成: 本次 ${slice.length} 成功 ${ok} ===`);
 
 // ── 后处理：view.json pending→url + 重建预压缩产物 ─────────────────────────
 try {
@@ -349,4 +314,13 @@ try {
 }
 }
 
-main().catch((error: unknown) => fail(error instanceof Error ? error.stack || error.message : String(error)));
+async function runOwned() {
+  fs.mkdirSync(JOB_ROOT, { recursive: true });
+  const lockPath = path.join(JOB_ROOT, 'active.lock');
+  let lock: number;
+  try { lock = fs.openSync(lockPath, 'wx'); }
+  catch { throw new Error('设计图维护已有操作或未清理的中断记录；请核对 ' + lockPath); }
+  try { fs.writeFileSync(lock, String(process.pid)); await main(); }
+  finally { fs.closeSync(lock); fs.unlinkSync(lockPath); }
+}
+runOwned().catch((error: unknown) => fail(error instanceof Error ? error.stack || error.message : String(error)));

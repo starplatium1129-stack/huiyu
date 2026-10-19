@@ -50,7 +50,7 @@ impl TaskRuntime {
                     )
                     .await
                     .map(Preparation::Generation),
-                TaskKind::Anima | TaskKind::Creative | TaskKind::Manga | TaskKind::Lineart => {
+                TaskKind::Anima | TaskKind::Creative | TaskKind::Qwen | TaskKind::Manga | TaskKind::Lineart => {
                     runtime
                         .images
                         .resume_prepared(

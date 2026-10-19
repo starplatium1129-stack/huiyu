@@ -58,6 +58,8 @@ fn artifacts() -> Result<Arc<Vec<Artifact>>> {
                 ),
                 bytes: file.bytes,
                 sha256: file.sha256.clone(),
+                git_blob_id: String::new(),
+                lfs: false,
             })
             .collect();
         let mut wheel = manifest.timm.file.clone();

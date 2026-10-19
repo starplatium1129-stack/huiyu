@@ -314,9 +314,9 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 <span>重绘区域</span>
               </span>
             </label>
-            <p v-if="native && !wholeImage" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 文件已就绪；首次使用时加载并校验模型，不会联网下载。' : '自动识别未就绪：请在配置的模型根目录下准备 clipseg-rd64-refined，包含配置、分词器及 model.safetensors；不会自动下载。手绘遮罩仍可使用。' }}</p>
+            <p v-if="native && !wholeImage" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 文件已就绪；首次使用时加载并校验模型，不会联网下载。' : '自动识别缺少本地 CLIPSeg，可在控制室一键准备。手绘遮罩仍可使用。' }}</p>
             <p v-else-if="!native && !wholeImage" class="field-hint" role="status">{{ maskUnavailable || (automaticMaskAvailable ? '文字自动蒙版节点已注册；不代表其模型文件、加载或识别效果已验证。' : '自动识别节点尚未确认。明确选择自动识别后，提交时会启动受管服务并检查节点；未通过不会提交生成。') }}</p>
-            <RouterLink v-if="!native && !wholeImage && maskUnavailable" class="btn btn-ghost" :to="{ path: '/control', query: { engine: 'anima' } }" @click="emit('close')">查看控制面板与准备范围</RouterLink>
+            <RouterLink v-if="!wholeImage && maskUnavailable" class="btn btn-ghost" :to="native ? { path: '/control', query: { resource: 'clipseg-rd64-refined' }, hash: '#control-setup' } : { path: '/control', query: { engine: 'anima' } }" @click="emit('close')">{{ native ? '准备 CLIPSeg 自动蒙版' : '查看控制面板与准备范围' }}</RouterLink>
             <button v-if="native || wholeImage" type="button" class="btn btn-ghost" :aria-pressed="wholeImage" @click="editMode = 'whole'">选择整图重绘（人物与背景均可能变化）</button>
             <button v-if="wholeImage" type="button" class="btn btn-ghost" @click="returnToMask">返回局部遮罩换装</button>
             <div v-if="!wholeImage" class="mask-mode-switch studio-segments studio-segments--compact" role="group" aria-label="遮罩模式">

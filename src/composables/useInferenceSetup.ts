@@ -10,12 +10,15 @@ import { flushProfileWrites } from '@/platform/web/profileStorage'
 
 type Submission = { kind: 'prepare-inference-runtime'; input: RuntimePreparationInput }
   | { kind: 'import-inference-model'; input: ModelImportInput }
-  | { kind: 'install-native-runtime' | 'download-native-model' | 'prepare-native-engine'; input: ManagedInferenceInput }
+  | { kind: 'install-native-runtime' | 'download-native-model' | 'download-native-resource' | 'prepare-native-engine'; input: ManagedInferenceInput }
 
 export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: Ref<boolean>, onActivated: () => void) {
   const desktop = getDesktopCapabilities()
   const plan = shallowRef<NativeSetupPlan | null>(null)
   const basePython = ref(''), wheelhouse = ref(''), workspacePath = ref(''), runtimeReviewed = ref(false), reviewed = ref(false)
+  const hfToken = ref('')
+  const resourceId = ref(''), resourceReviewed = ref(false)
+  const selectedResource = computed(() => plan.value?.resources.find(value => value.id === resourceId.value))
   const modelId = ref(''), sourceDir = ref(''), importModelId = ref('anima-miaomiao-v1.6'), importReviewed = ref(false)
   const inspection = shallowRef<InferenceModelInspection | null>(null), inspecting = ref(false)
   const preparedPaths = shallowRef<PreparedInferencePaths | null>(null)
@@ -26,7 +29,10 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const message = ref(''), error = ref(''), cancelState = ref<'idle' | 'pending' | 'accepted' | 'failed'>('idle')
   const hasRunningOperation = computed(() => operation.value?.status === 'running')
   const locked = computed(() => blocked.value || busy.value || checking.value || inspecting.value || activating.value || restarting.value || workspaceOpening.value || workspaceSaving.value || operationUncertain.value)
-  const currentPlan = computed(() => !!plan.value && plan.value.freeBytes !== null && !workspacePending.value && plan.value.workspacePath === workspacePath.value)
+  const currentPlan = computed(() => !!plan.value && plan.value.freeBytes !== null && !workspacePending.value && plan.value.workspacePath === workspacePath.value && plan.value.selectedModelId === modelId.value)
+  const canDownloadResource = computed(() => !locked.value && currentPlan.value && resourceReviewed.value && selectedResource.value
+    && !selectedResource.value.prepareError && selectedResource.value.freeBytes !== null
+    && selectedResource.value.freeBytes >= selectedResource.value.requiredBytes)
   const selectedModel = computed(() => plan.value?.models.find(model => model.id === modelId.value))
   const runtimeSpaceEnough = computed(() => !!plan.value && plan.value.freeBytes !== null && plan.value.freeBytes >= plan.value.runtime.requiredBytes)
   const modelSpaceEnough = computed(() => !!plan.value && !!selectedModel.value && plan.value.freeBytes !== null && plan.value.freeBytes >= selectedModel.value.requiredBytes)
@@ -72,6 +78,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   watch([importModelId, sourceDir, () => configured.value.modelsRoot, () => configured.value.python, () => configured.value.worker], invalidateInspection, { flush: 'sync' })
   watch([basePython, wheelhouse, workspacePath], () => { runtimeReviewed.value = false; preparedPaths.value = null }, { flush: 'sync' })
   watch([modelId, () => plan.value?.planId, workspacePending], () => { reviewed.value = false }, { flush: 'sync' })
+  watch([resourceId, () => plan.value?.planId, () => selectedResource.value?.root, workspacePending], () => { resourceReviewed.value = false }, { flush: 'sync' })
 
   async function refreshPlan() {
     if (!local() || checking.value) return
@@ -80,7 +87,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     const revision = ++planVersion
     planController?.abort(); planController = new AbortController()
     try {
-      const [result, binding] = await Promise.all([inferenceSetupApi.getPlan(planController.signal), desktop?.getWorkspace()])
+      const [result, binding] = await Promise.all([inferenceSetupApi.getPlan(planController.signal, modelId.value || undefined), desktop?.getWorkspace()])
       if (disposed || revision !== planVersion) return
       if (binding && binding.activeRoot !== result.workspacePath) throw new Error('当前 AI 工作区与运行时目录不一致，请重启绘遇后重新检查')
       workspacePending.value = binding?.restartRequired ?? false
@@ -91,6 +98,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
         if (operation.value?.status !== 'running') operation.value = null
       }
       plan.value = result
+      if (!result.resources.some(value => value.id === resourceId.value)) resourceId.value = result.resources[0]?.id ?? ''
       if (!result.models.some(model => model.id === modelId.value)) modelId.value = result.models[0]?.id ?? ''
       if (error.value.startsWith('读取原生配置清单失败：')) error.value = ''
     } catch (cause) {
@@ -99,7 +107,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   }
   function matchesPending(value: InferenceSetupOperation): boolean {
     if (!submission || value.id === previousOperationId || value.kind !== submission.kind) return false
-    return Object.entries(submission.input).every(([key, valueSent]) => key === 'reviewed' || value[key as keyof InferenceSetupOperation] === valueSent)
+    return Object.entries(submission.input).every(([key, valueSent]) => key === 'reviewed' || key === 'hfToken' || value[key as keyof InferenceSetupOperation] === valueSent)
   }
   function belongsToWorkspace(value: InferenceSetupOperation): boolean {
     if (!plan.value) return false
@@ -116,6 +124,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       : value.kind === 'import-inference-model' ? '完整目录已复制。此导入仅检查布局，请继续核对组件与兼容性。'
       : value.kind === 'prepare-native-engine' ? '准备完成，原生引擎设置已保存。'
       : value.kind === 'install-native-runtime' ? '运行库已就绪。'
+      : value.kind === 'download-native-resource' ? `所选资源已完成完整文件校验${value.resourceRoot ? `，保存于 ${value.resourceRoot}` : ''}。回到创作页重新检测资源；若刚修改了模型目录，请先重启绘遇。实际生成效果仍待设备验收。`
       : '原生模型已下载并完成组件校验，接下来启用原生引擎。'
     if (cancelState.value === 'accepted') message.value += ' 取消请求前操作已完成，以此终态为准。'
     if (value.kind === 'prepare-native-engine') onActivated()
@@ -179,6 +188,11 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     } catch (cause) { if (!disposed) { operationUncertain.value = true; error.value = causeText(cause) } }
     finally { if (!disposed) checking.value = false }
   }
+  async function selectModel(value: string) {
+    if (locked.value) return
+    modelId.value = value; hfToken.value = ''; reviewed.value = false
+    await refreshPlan()
+  }
   async function initialize() { await refreshPlan(); if (!disposed && plan.value) await reconcile() }
   async function start(next: Submission) {
     busy.value = true; error.value = ''; message.value = ''; cancelState.value = 'idle'; operation.value = null; preparedPaths.value = null
@@ -188,30 +202,42 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       const before = await localSetupApi.getOperation()
       if (disposed) return
       if (before.operation?.status === 'running') throw new Error('控制室另有操作正在运行，请等待结束后重试')
-      previousOperationId = before.operation?.id ?? null; submission = next; posted = true
+      previousOperationId = before.operation?.id ?? null; submission = { ...next, input: { ...next.input } } as Submission; posted = true
+      if ('hfToken' in submission.input) delete submission.input.hfToken
+      hfToken.value = ''
       const result = next.kind === 'prepare-inference-runtime' ? await inferenceSetupApi.prepareRuntime(next.input)
         : next.kind === 'import-inference-model' ? await inferenceSetupApi.importModel(next.input)
         : next.kind === 'prepare-native-engine' ? await inferenceSetupApi.prepareEngine(next.input)
-        : next.kind === 'install-native-runtime' ? await inferenceSetupApi.installRuntime(next.input) : await inferenceSetupApi.downloadModel(next.input)
+        : next.kind === 'install-native-runtime' ? await inferenceSetupApi.installRuntime(next.input)
+        : next.kind === 'download-native-resource' ? await inferenceSetupApi.downloadResource(next.input) : await inferenceSetupApi.downloadModel(next.input)
+      if ('hfToken' in next.input) delete next.input.hfToken
       if (!disposed) await observe(result)
     } catch (cause) {
+      if ('hfToken' in next.input) delete next.input.hfToken
       if (disposed) return
       if (posted && !(cause instanceof ApiClientError && cause.kind === 'http')) {
         operationUncertain.value = true; error.value = '请求结果尚未确认，正在核对后台操作；请勿重复提交。'; await reconcile()
       } else { error.value = causeText(cause); submission = null; await refreshPlan() }
-    } finally { if (!disposed) busy.value = hasRunningOperation.value || operationUncertain.value }
+    } finally { if ('hfToken' in next.input) delete next.input.hfToken; if (!disposed) busy.value = hasRunningOperation.value || operationUncertain.value }
   }
-  function managedInput(): ManagedInferenceInput { return { workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true } }
+  function managedInput(): ManagedInferenceInput { return { workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true, modelId: modelId.value, ...(hfToken.value.trim() ? { hfToken: hfToken.value.trim() } : {}) } }
   async function prepareEngine() { if (local() && canSetup.value) await start({ kind: 'prepare-native-engine', input: { ...managedInput(), modelId: modelId.value } }) }
   async function installRuntime() { if (local() && canInstall.value) await start({ kind: 'install-native-runtime', input: managedInput() }) }
   async function downloadModel() { if (local() && canDownload.value) await start({ kind: 'download-native-model', input: { ...managedInput(), modelId: modelId.value } }) }
+  async function downloadResource() {
+    if (local() && canDownloadResource.value) await start({ kind: 'download-native-resource', input: {
+      workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true, modelId: resourceId.value, resourceRoot: selectedResource.value!.root,
+    } })
+  }
   async function activate() {
     if (!local() || !canActivate.value) return
     activating.value = true; error.value = ''; message.value = ''
     activationController = new AbortController()
     try {
       await ensureCurrentWorkspace()
-      const result = await inferenceSetupApi.activate({ ...managedInput(), modelId: modelId.value }, activationController.signal)
+      const input = managedInput()
+      hfToken.value = ''
+      const result = await inferenceSetupApi.activate(input, activationController.signal).finally(() => { delete input.hfToken })
       if (!disposed) { message.value = result.restartRequired ? '原生引擎设置已保存。请重启绘遇后确认当前运行引擎，再生成第一张图片。' : '原生引擎设置已保存。正在重新检查当前运行引擎。'; onActivated(); await refreshPlan() }
     } catch (cause) {
       if (!disposed) {
@@ -298,10 +324,11 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   // Aborting an activation observer only detaches the client; a submitted save
   // may still complete. The next mount must read the plan and active engine.
   onScopeDispose(() => {
+    hfToken.value = ''
     disposed = true; workspaceOpenVersion++; planVersion++; inspectionVersion++; planController?.abort(); inspectionController?.abort(); activationController?.abort()
     window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged); window.removeEventListener('focus', focused)
   })
-  return { desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
+  return { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
     operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
     workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
