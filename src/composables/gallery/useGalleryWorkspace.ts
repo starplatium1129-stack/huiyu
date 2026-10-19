@@ -331,6 +331,9 @@ export function useGalleryWorkspace() {
     onDeactivated(() => {
         cancelGalleryStorageLoad(history);
         viewActive = false; comparisonRevision++; cleanupFilterSync();
+        // The optional comparison panel may still be loading and have no
+        // child deactivation hook yet. Its owner must close the intent now.
+        closeComparison();
         const keep = collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds;
         // A stored URL is not a decoded fallback (failed/pending thumbnails
         // otherwise leave a black frame when the painted original is revoked).

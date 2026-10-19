@@ -40,7 +40,7 @@
         @apply="applyFilterSnapshot" @reset="resetGalleryFilters" @save="newSmartAlbum" @edit="editSmartAlbum(projectFilter)" />
     </div>
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen && albumSection" ref="albumRoot" class="gallery-album-overview" tabindex="-1">
-      <GalleryAlbumOverview v-if="visitedPanels.albums" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :index-loading="galleryIndexLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" />
+      <AsyncPanel v-if="visitedPanels.albums" :loader="loadAlbumOverview" label="画册概览" v-slot="{ component }"><component :is="component" :albums="albumSection === 'characters' ? characterAlbums : albums" :selected-id="selection" :characters="albumSection === 'characters'" :loading="galleryLoading" :index-loading="galleryIndexLoading" :error="galleryError" :busy="saving" :has-history="!!history.length" @select="openCollection" @edit="editSmartAlbum" @remove="removeSmartAlbum" @smart="newSmartAlbum" @manual="startAlbumSelection" @retry="loadGalleryStorage" @images="showAllWorks" @visible="visibleAlbumIds = $event" /></AsyncPanel>
     </div>
     <div v-show="!albumsOpen" v-content-motion:fade.defer="!albumsOpen && (trashMode ? 'trash' : 'works')" class="gallery-image-browse">
     <div ref="imageHeading" class="gallery-summary" aria-live="polite" tabindex="-1">
@@ -67,7 +67,7 @@
     <GalleryOrganization v-if="visitedPanels.organization" :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
     </div>
 
-    <CandidateCompare :open="compareOpen" :items="compareItems" @close="closeComparison" @changed="loadGalleryStorage" />
+    <AsyncPanel v-if="visitedPanels.comparison" v-show="compareOpen" :loader="loadCandidateCompare" label="作品对比" v-slot="{ component }"><component :is="component" :open="compareOpen" :items="compareItems" @close="closeComparison" @changed="loadGalleryStorage" /></AsyncPanel>
     <section aria-live="polite">
       <!-- 回收站视图（2026-08-31）：列出软删条目，可逐条恢复；30 天超期自动清理 -->
       <GalleryTrashWall
@@ -147,7 +147,7 @@
     </section>
 
     </div>
-    <GallerySmartAlbumEditor v-if="visitedPanels.editor" v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :preview-loading="galleryLoading || galleryIndexLoading" :preview-error="galleryError" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" />
+    <AsyncPanel v-if="visitedPanels.editor" v-show="editorOpen" :loader="loadAlbumEditor" label="智能画册编辑" v-slot="{ component }"><component :is="component" v-model:open="editorOpen" v-model:title="editorTitle" v-model:rule="editorRule" :editing="!!editing" :busy="saving" :error="albumError" :count="previewItems.length" :preview-loading="galleryLoading || galleryIndexLoading" :preview-error="galleryError" :characters="characterOptions" :tags="tagOptions" :projects="manualProjects" :covers="previewCovers" @save="saveSmartAlbum" /></AsyncPanel>
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
@@ -323,11 +323,12 @@ async function toggleGesture() {
 }
 onScopeDispose(cancelGesture)
 const originalViewer = ref(false)
-import CandidateCompare from '@/components/gallery/CandidateCompare.vue'
+import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadCandidateCompare = () => import('@/components/gallery/CandidateCompare.vue')
 const GalleryOrganization = defineAsyncComponent(() => import('@/components/gallery/GalleryOrganization.vue'))
 import GalleryTrashWall from '@/components/gallery/GalleryTrashWall.vue'
-import GalleryAlbumOverview from '@/components/gallery/GalleryAlbumOverview.vue'
-import GallerySmartAlbumEditor from '@/components/gallery/GallerySmartAlbumEditor.vue'
+const loadAlbumOverview = () => import('@/components/gallery/GalleryAlbumOverview.vue')
+const loadAlbumEditor = () => import('@/components/gallery/GallerySmartAlbumEditor.vue')
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import MangaScreenLauncher from '@/components/manga/MangaScreenLauncher.vue'
 import galleryEmptyOriginal from '@/assets/illustrations/atelier-gallery.png'
@@ -436,11 +437,12 @@ const { albums, characterAlbums, albumSection, visibleAlbumIds, selection, chara
   albumsOpen, albumRoot, imageHeading, showImages, showOverview, showAllWorks, openCollection, editorOpen, editorTitle, editorRule,
   editing, saving, error: albumError, previewItems, previewCovers, syncPreviews, newSmartAlbum, editSmartAlbum, removeSmartAlbum, save: saveSmartAlbum } = useGalleryCollections(workspace)
 // Keep visited panels alive so closing selection or a dialog retains undo and exit state.
-const visitedPanels = reactive({ albums: false, organization: false, editor: false })
-watch([albumsOpen, selectMode, editorOpen], ([albums, organization, editor]) => {
+const visitedPanels = reactive({ albums: false, organization: false, editor: false, comparison: false })
+watch([albumsOpen, selectMode, editorOpen, compareOpen], ([albums, organization, editor, comparison]) => {
   if (albums) visitedPanels.albums = true
   if (organization) visitedPanels.organization = true
   if (editor) visitedPanels.editor = true
+  if (comparison) visitedPanels.comparison = true
 }, { immediate: true, flush: 'sync' })
 watch(syncPreviews, items => { collectionPreviewItems.value = items }, { immediate: true })
 function showAlbumOverview(section: 'characters' | 'albums') {

@@ -173,9 +173,9 @@ function onSearchKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape' && props.catalog) {
     event.preventDefault()
     emit('dismiss')
-  } else if (event.key === 'Enter' && results.value[0]) {
+  } else if (event.key === 'Enter' && visibleResults.value[0]) {
     event.preventDefault()
-    emit('select', results.value[0].id)
+    emit('select', visibleResults.value[0].id)
   } else if (event.key === 'ArrowDown') {
     event.preventDefault()
     focusFirst()

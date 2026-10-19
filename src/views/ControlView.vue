@@ -87,9 +87,9 @@
         </div>
       </section>
 
-      <details id="control-comfy" class="panel-card">
+      <details id="control-comfy" class="panel-card" @toggle="onLocalSetupToggle">
         <StudioDisclosureSummary>本地聊天与 ComfyUI 兼容配置</StudioDisclosureSummary>
-        <div data-disclosure-content><LocalSetupPanel /></div>
+        <div data-disclosure-content><AsyncPanel v-if="localSetupRequested" :loader="loadLocalSetup" label="聊天与兼容配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
       </details>
       <div id="control-interrogate" tabindex="-1" aria-label="PixAI 图片反推配置"><AsyncPanel :loader="loadInterrogateSetup" label="图片反推配置" v-slot="{ component }"><component :is="component" /></AsyncPanel></div>
 
@@ -313,11 +313,13 @@ import AppThemeToggle from '@/components/AppThemeToggle.vue'
 import StudioLiquidButton from '@/components/ui/StudioLiquidButton.vue'
 import DesktopPreferences from '@/components/DesktopPreferences.vue'
 import ControlIntro from '@/components/ControlIntro.vue'
-import LocalSetupPanel from '@/components/LocalSetupPanel.vue'
+import { useLocalSetupPanelLoading } from '@/composables/useLocalSetupPanelLoading'
 import InferenceSettingsPanel from '@/components/InferenceSettingsPanel.vue'
 import ResourceLibraryPanel from '@/components/ResourceLibraryPanel.vue'
 import RouteAtmosphere from '@/components/visual/RouteAtmosphere.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+const loadLocalSetup = () => import('@/components/LocalSetupPanel.vue')
+const { localSetupRequested, onLocalSetupToggle } = useLocalSetupPanelLoading()
 const loadInterrogateSetup = () => import('@/components/InterrogateSetupPanel.vue')
 import { useControlNavigation } from '@/composables/useControlNavigation'
 import { useToast } from '@/composables/useToast'
