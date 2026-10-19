@@ -2,6 +2,7 @@
 import { computed, nextTick, onDeactivated, onScopeDispose, ref, shallowRef, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import type { SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import { UNASSIGNED_CHARACTER_ID } from '@/composables/gallery/galleryAlbumRules'
 import { emptyGenerationConditions, GENERATION_FILTER_FIELDS, generationConditionLabel, type GalleryFilterSnapshot, type GenerationFilterField } from '@/composables/gallery/galleryGenerationConditions'
@@ -94,7 +95,7 @@ defineExpose({ focusTag })
   <!-- The controls share the toolbar's layout, without adding a second surface. -->
   <div class="gallery-refinement">
     <button ref="trigger" class="gallery-refine-toggle" type="button" :aria-expanded="expanded" :aria-controls="panelId" @click="toggle">
-      <ArchiveIcon name="pin" /><span class="studio-control-label">筛选作品</span><span v-if="chips.length" class="gallery-refine-count">{{ chips.length }}</span><ArchiveIcon name="chevron-down" />
+      <ArchiveIcon name="pin" /><span class="studio-control-label">筛选作品</span><span v-if="chips.length" class="gallery-refine-count">{{ chips.length }}</span><StudioToggleIcon :active="expanded" />
     </button>
     <div v-if="chips.length" ref="activeFilters" class="gallery-active-filters" role="group" aria-label="已选筛选条件">
       <span class="gallery-active-label">已选</span>
@@ -126,9 +127,6 @@ defineExpose({ focusTag })
 .gallery-refine-toggle { display:flex; align-items:center; gap:var(--s-2); flex-shrink:0; min-height:var(--control-height); padding:0 var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-primary); background:var(--bg-surface); font:500 var(--fs-label-sm)/var(--lh-label) var(--font-sans); cursor:pointer; }
 .gallery-refine-toggle[aria-expanded='true'] { border-color:var(--border-strong); color:var(--text-primary); background:var(--bg-elevated); }
 .gallery-refine-toggle > .archive-icon { width:16px; height:16px; }
-.gallery-refine-toggle > .archive-icon:last-child { transition:transform var(--spring-gentle-duration) var(--spring-gentle-ease); }
-.gallery-refine-toggle[aria-expanded='true'] > .archive-icon:last-child { transform:rotate(180deg); }
-.gallery-refine-toggle:focus-visible > .archive-icon:last-child { transition:none; }
 .gallery-refine-count { min-width:var(--s-5); color:var(--text-primary); font-variant-numeric:tabular-nums; text-align:center; }
 .gallery-active-filters { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); flex:1 0 100%; min-width:0; }
 .gallery-active-label { color:var(--text-secondary); font-size:var(--fs-label-sm); }
@@ -152,6 +150,4 @@ defineExpose({ focusTag })
   .gallery-project-field { flex:1 1 100%; }
   .gallery-filter-chip,.gallery-refine-toggle { min-height:44px; }
 }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .gallery-refine-toggle > .archive-icon:last-child { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .gallery-refine-toggle > .archive-icon:last-child { transition:none; }
 </style>

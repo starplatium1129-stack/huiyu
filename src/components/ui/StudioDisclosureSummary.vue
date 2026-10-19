@@ -1,9 +1,27 @@
 <script setup lang="ts">
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { onActivated, onDeactivated, onMounted, onScopeDispose, ref } from 'vue'
+import StudioToggleIcon from './StudioToggleIcon.vue'
+
+const summary = ref<HTMLElement | null>(null)
+const expanded = ref(false)
+let details: HTMLDetailsElement | undefined
+const syncOpen = () => { expanded.value = details?.open ?? false }
+function start() {
+  const parent = summary.value?.parentElement
+  if (details || !(parent instanceof HTMLDetailsElement)) return
+  details = parent
+  syncOpen()
+  details.addEventListener('toggle', syncOpen)
+}
+function stop() { details?.removeEventListener('toggle', syncOpen); details = undefined }
+onMounted(start)
+onActivated(start)
+onDeactivated(stop)
+onScopeDispose(stop)
 </script>
 
 <template>
-  <summary class="studio-disclosure-summary" data-spring-button><slot /><ArchiveIcon class="studio-disclosure-chevron" name="chevron-down" /></summary>
+  <summary ref="summary" class="studio-disclosure-summary" data-spring-button><slot /><StudioToggleIcon :active="expanded" class="studio-disclosure-chevron" /></summary>
 </template>
 
 <style>
@@ -15,12 +33,4 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 @media (hover:hover) and (pointer:fine) {
   .studio-disclosure-summary:hover:not(:focus-visible) { color:var(--text-primary); }
 }
-/* Rotate the drawing inside its fixed viewport without widening native scroll areas. */
-.studio-disclosure-chevron > path { transform-box:view-box; transform-origin:center; transition:transform var(--spring-gentle-duration) var(--spring-gentle-ease); }
-details[open] > .studio-disclosure-summary > .studio-disclosure-chevron > path { transform:rotate(180deg); }
-.studio-disclosure-summary:focus-visible > .studio-disclosure-chevron,.studio-disclosure-summary:focus-visible > .studio-disclosure-chevron > path { transition:none; }
-@media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) .studio-disclosure-chevron > path { transition:none; }
-}
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-disclosure-chevron > path { transition:none; }
 </style>

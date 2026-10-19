@@ -3,7 +3,7 @@
     <StudioPopover v-model:open="menuOpen" label="夏目的调色笔记" content-class="random-popover" prioritize-position>
       <template #trigger>
         <button class="btn btn-ghost btn-sm random-menu-trigger" type="button" :disabled="disabled" aria-label="灵感工具">
-          <ArchiveIcon name="gear" class="random-menu-icon" aria-hidden="true" />
+          <StudioToggleIcon :active="menuOpen" name="gear" :angle="35" class="random-menu-icon" />
           <span class="studio-control-label">灵感工具</span>
         </button>
       </template>
@@ -42,6 +42,7 @@
 
 <script setup lang="ts">
 import StudioPopover from '@/components/ui/StudioPopover.vue'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import { computed, ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
@@ -75,8 +76,6 @@ function onUndo() {
 
 <style scoped>
 .random-inspiration { display:inline-flex; align-items:center; min-width:0; }
-.random-menu-icon { transition:transform var(--motion-control) var(--ease-out); }
-.random-menu-trigger[aria-expanded='true'] .random-menu-icon { transform:rotate(35deg); }
 .random-popover-heading { display:flex; align-items:start; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
 .random-popover-heading > div { display:grid; gap:var(--s-1); min-width:0; }
 .random-popover-heading > div > span { color:var(--text-secondary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:.08em; }
@@ -98,8 +97,6 @@ function onUndo() {
 .random-candidate p { margin:0; color:var(--text-primary); font:400 var(--fs-body)/var(--lh-body) var(--font-sans); overflow-wrap:anywhere; }
 .random-popover-footer { padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); }
 .random-popover-footer .btn { width:100%; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .random-menu-icon { transition:none; }
-@media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .random-menu-icon { transition:none; } }
 </style>
 
 <style>

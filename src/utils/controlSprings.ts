@@ -8,4 +8,7 @@ export const SURFACE_FREQUENCY = Math.sqrt(SURFACE_SPRING.stiffness / SURFACE_SP
 export const SURFACE_DAMPING = SURFACE_SPRING.damping / (2 * Math.sqrt(SURFACE_SPRING.stiffness * SURFACE_SPRING.mass))
 /** Selection keeps momentum on reversal; covers settle with a slower, shallow rebound. */
 export const SELECTION_SPRING = { frequency: 5.5, damping: .86 } as const
+/** Monotonic switch/icon travel retains the gentle control's visible settling
+ * tail, with a continuous clock instead of CSS reverse-duration shortening. */
+export const TOGGLE_SPRING = { frequency: 3, damping: 1 } as const
 export const GALLERY_SPRING = { frequency: 3.6, damping: .82 } as const

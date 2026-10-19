@@ -80,7 +80,7 @@
           <section v-if="current.bg_story" class="character-story" aria-label="角色故事">
             <h3 class="lab">角色故事</h3>
             <p id="character-background" class="profile-story" :class="{ expanded: bgExpanded }">{{ current.bg_story }}</p>
-            <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}<ArchiveIcon name="chevron-down" /></button>
+            <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}<StudioToggleIcon :active="bgExpanded" /></button>
           </section>
           <div class="detail-grid">
             <section class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="star" />性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div><CardEdgeLight /></section>
@@ -172,6 +172,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import { usePortraitFallback } from '@/composables/usePortraitFallback'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'

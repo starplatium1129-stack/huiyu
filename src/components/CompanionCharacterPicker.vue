@@ -2,6 +2,7 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import { listCompanionUiCharacters } from '@/utils/companionRegistry'
 
 const props = withDefaults(defineProps<{ modelValue: string; label?: string }>(), { label: '切换角色' })
@@ -93,7 +94,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
         <strong>{{ currentCharacter?.name || '选择角色' }}</strong>
         <small>当前陪伴</small>
       </span>
-      <ArchiveIcon name="chevron-down" class="companion-picker-chevron" aria-hidden="true" />
+      <StudioToggleIcon :active="open" class="companion-picker-chevron" />
     </button>
 
     <FluidTransition small panel=".companion-picker-content">
@@ -213,9 +214,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
 .companion-picker-chevron {
   flex: 0 0 auto;
   @apply tw:w-[15px] tw:h-[15px] tw:text-secondary;
-  transition: transform var(--motion-hover) var(--ease-out);
 }
-.companion-picker-trigger[data-state='open'] .companion-picker-chevron { transform: rotate(180deg); }
 
 .companion-picker-content {
   -webkit-app-region: no-drag;
@@ -283,10 +282,6 @@ html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-
   .companion-picker-trigger { @apply tw:min-h-[38px]; }
   .companion-picker-mark { @apply tw:w-[25px] tw:h-[25px]; }
 }
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .companion-picker-chevron { transition: none; }
-}
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .companion-picker-chevron { transition:none; }
 @media (forced-colors: active) {
   .companion-picker-trigger,
   .companion-picker-content { border-color: CanvasText; background: Canvas; color: CanvasText; box-shadow: none; }

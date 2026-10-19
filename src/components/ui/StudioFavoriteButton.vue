@@ -7,7 +7,9 @@ import { useMotionPreference } from '@/composables/useMotionPreference'
 const props = defineProps<{ active: boolean; label: string }>()
 const reduced = useMotionPreference()
 const burst = ref(false)
-watch(() => props.active, (value, previous) => { burst.value = value && !previous && !reduced.value })
+// A burst acknowledges an accepted favorite. Let that one burst finish through
+// rapid on/off presses; removing/recreating its keyframes snaps the heart back.
+watch(() => props.active, (value, previous) => { if (value && !previous && !reduced.value) burst.value = true })
 watch(reduced, value => { if (value) burst.value = false })
 onDeactivated(() => { burst.value = false })
 </script>

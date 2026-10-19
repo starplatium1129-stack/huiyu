@@ -7,7 +7,7 @@
         :preview-src="preview" :load-failed="viewerLoadFailed" :reload="retryViewerImage" :title="title"
         @close="close" @toggle-original="toggleOriginal" @interact="origin.cancel" @close-button="closeButton = $event">
         <template #tools>
-          <button class="btn btn-primary saved-preview-resume" type="button" @click="resume"><ArchiveIcon name="spark" />继续创作</button>
+          <button class="btn btn-primary saved-preview-resume" data-viewer-chrome type="button" @click="resume"><ArchiveIcon name="spark" />继续创作</button>
         </template>
       </ArtworkViewerStage>
     </div>
@@ -22,7 +22,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 import { useGalleryViewer } from '@/composables/gallery/useGalleryViewer'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { useFocusTrap } from '@/composables/useFocusTrap'
-import { useFluidSurface } from '@/composables/useFluidSurface'
+import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArtworkViewerStage from './ArtworkViewerStage.vue'
@@ -37,7 +37,7 @@ const { viewerUrl, viewerLoadFailed, retryViewerImage, openViewer, closeViewer, 
 })
 const origin = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
 const preview = ref(origin.capture(props.source) || props.thumbnail)
-const surface = useFluidSurface()
+const surface = useArtworkViewerSurface()
 useFocusTrap(dialog, () => !closing.value, { onEscape: close, initialFocus: closeButton })
 let entered = false
 function enter() {

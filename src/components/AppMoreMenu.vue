@@ -5,6 +5,7 @@ import StudioPopover from '@/components/ui/StudioPopover.vue'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 
 defineProps<{
   groups: readonly { heading: string; items: readonly { id: string; label: string; to: string; icon: ArchiveIconName }[] }[]
@@ -39,7 +40,7 @@ function focusFirstPage(event: Event) {
 
 <template>
   <StudioPopover v-model:open="open" label="更多页面" content-class="nav-more-menu" @open-auto-focus="focusFirstPage" @close-auto-focus="onCloseAutoFocus">
-    <template #trigger><button type="button" class="nav-more-trigger"><span class="nav-more-label">更多</span><ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button></template>
+    <template #trigger><button type="button" class="nav-more-trigger"><span class="nav-more-label">更多</span><StudioToggleIcon :active="open" class="nav-more-chevron" /></button></template>
     <header class="nav-more-heading"><strong>画室导航</strong><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭更多页面" @click="open = false"><ArchiveIcon name="close" /></button></header>
     <section v-for="group in groups" :key="group.heading" class="nav-more-group" :aria-label="group.heading">
       <h3 class="nav-more-group-label">{{ group.heading }}</h3>

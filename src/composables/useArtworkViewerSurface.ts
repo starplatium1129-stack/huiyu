@@ -4,7 +4,7 @@ import type { useImageOriginTransition } from './useImageOriginTransition'
 /** Viewer-only choreography stays outside ordinary form/popover dependencies.
  * The surface owns every effect, including partial setup and interrupted exits. */
 const animateLayers: SurfaceLayers = (el, opacity, timing, target, add) => {
-  for (const part of el.querySelectorAll<HTMLElement>('.viewer-info,.viewer-close,.viewer-nav,.viewer-mode-switch,.viewer-info-toggle,.viewer-compare-toggle,.viewer-position,.zoom-toolbar,.gallery-orbit-caption')) {
+  for (const part of el.querySelectorAll<HTMLElement>('.viewer-info,.viewer-close,.viewer-nav,.viewer-mode-switch,.viewer-info-toggle,.viewer-compare-toggle,.viewer-position,.zoom-toolbar,.gallery-orbit-caption,[data-viewer-chrome]')) {
     const base = getComputedStyle(part).transform
     const frames = opacity.map(({ opacity: value }) => {
       const progress = Math.max(0, Math.min(1, (value - .24) / .76))

@@ -37,13 +37,9 @@
   box-shadow: var(--focus-shadow);
 }
 .studio-select-trigger[data-empty]:where(:not([data-disabled])) .studio-select-value { color: var(--text-muted); }
-.studio-select-icon {
-  transition: transform var(--spring-gentle-duration) var(--spring-gentle-ease);
-}
 @media (hover:hover) and (pointer:fine) {
   .studio-select-trigger:hover:not(:focus-visible):not(:disabled):not([data-disabled]) .studio-select-icon { color:var(--text-primary); }
 }
-.studio-select-trigger[data-state='open'] .studio-select-icon { transform: rotate(180deg); }
 
 .studio-select-content {
   --surface-enter-y:-6px;

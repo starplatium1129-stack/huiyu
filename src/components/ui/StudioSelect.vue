@@ -2,6 +2,7 @@
 import { computed, onActivated, onDeactivated, ref, useAttrs, watch } from 'vue'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import { usePageScrollLock } from '@/composables/usePageScrollLock'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import {
   SelectRoot,
   SelectTrigger,
@@ -147,7 +148,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
           @keydown.esc="onEscape"
         >
           <SelectValue class="studio-select-value" :placeholder="placeholder">{{ selectedLabel || placeholder }}</SelectValue>
-          <ArchiveIcon name="chevron-down" class="studio-select-icon" aria-hidden="true" />
+          <StudioToggleIcon :active="open" class="studio-select-icon" />
         </SelectTrigger>
       </StudioTooltip>
 

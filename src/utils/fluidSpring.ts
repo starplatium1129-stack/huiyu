@@ -68,9 +68,9 @@ export function createFluidMotion(values: number[], write: (values: number[]) =>
   return {
     to(targets: number[], instant = false, done?: () => void) {
       if (disposed) return
-      const superseded = complete
+      // Superseding a motion is cancellation, not completion. Its callback may
+      // remove this surface or start another motion, even when this one snaps.
       complete = undefined
-      if (instant) superseded?.()
       revision++; active = true; complete = done
       springs.forEach((spring, index) => spring.to(targets[index]))
       if (instant || prefersReducedMotion() || document.hidden || typeof requestAnimationFrame !== 'function') finish()

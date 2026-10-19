@@ -35,7 +35,7 @@
           <StudioTooltip v-if="!moreLoaded" anchor :content="moreError ? '菜单未能载入，请刷新页面后重试' : undefined">
             <button type="button" class="nav-more-trigger"
               :aria-expanded="moreOpen" :aria-busy="moreReady"
-              @click="openMore"><span class="nav-more-label">更多</span><ArchiveIcon name="chevron-down" class="nav-more-chevron" /></button>
+              @click="openMore"><span class="nav-more-label">更多</span><StudioToggleIcon :active="moreOpen" class="nav-more-chevron" /></button>
           </StudioTooltip>
           <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :groups="archiveGroups" :active-id="route.path === '/popular-scenes' ? 'popular-scenes' : activeId"
             :pending-path="pendingPath" :intent-path="intentRoutePath" :open-beside-task="openBesideTask"
@@ -88,6 +88,7 @@ import { openGlobalSearch } from '@/composables/useGlobalSearch'
 import { useToast } from '@/composables/useToast'
 import ArchiveIcon, { type ArchiveIconName } from './visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import { useScrollHeader } from '@/composables/useScrollHeader'
 
 const route = useRoute()
@@ -363,8 +364,6 @@ onUnmounted(deactivateNavigation)
 .nav-links > a:hover { background:transparent; }
 .nav-links > a:focus-visible > :is(.archive-icon,.nav-item-label),.nav-brand:focus-visible .nav-logo,.nav-more :deep(.nav-more-trigger:focus-visible > span),.nav-utilities :deep(button:focus-visible > .archive-icon),.nav-menu-toggle:focus-visible > .archive-icon { transform:none; transition:none; }
 .nav-links > a:focus-visible::before { transition:none; }
-.nav-more :deep(.nav-more-chevron) { transition:transform var(--motion-route) var(--spring-soft); }
-.nav-more :deep(.nav-more-trigger:focus-visible .nav-more-chevron) { transition:none; }
 @media (hover:hover) and (pointer:fine) {
   .nav-brand:where(:hover:not(:focus-visible)) .nav-logo { transform:translateY(-2px) scale(1.025); }
   .nav-links > a:where(:hover:not(:focus-visible))::after { opacity:.65; }
@@ -373,7 +372,6 @@ onUnmounted(deactivateNavigation)
 .nav-links > a:where(:active:not(:focus-visible)) > :is(.archive-icon,.nav-item-label),.nav-more :deep(.nav-more-trigger:where(:active:not(:focus-visible)) > .nav-more-label),.nav-utilities :deep(button:where(:active:not(:focus-visible):not(.app-theme-toggle):not([data-spring-button])) > :is(.archive-icon,span)),.nav-menu-toggle:where(:active:not(:focus-visible)) > .archive-icon { transform:scale(.98); transition-duration:var(--motion-press); }
 .u212[data-reduced-motion='true'] :is(.nav-logo,.nav-item-label),.u212[data-reduced-motion='true'] .nav-links > a > .archive-icon,.u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-label),.u212[data-reduced-motion='true'] .nav-utilities :deep(button > :is(.archive-icon,span)),.u212[data-reduced-motion='true'] .nav-menu-toggle > .archive-icon { transform:none; transition:none; }
 .u212[data-reduced-motion='true'] .nav-links > a::before,.u212[data-reduced-motion='true'] .nav-links > a::after { transform:none; transition:none; }
-.u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-chevron) { transition:none; }
 @media (forced-colors:active) { .nav-links > a::before { display:none; } .nav-links > a:hover { outline:1px solid Highlight; outline-offset:-1px; } }
 @media (min-width:1600px) { .nav-brand-note { display: block; } }
 @media (min-width:1001px) and (max-width:1200px) {

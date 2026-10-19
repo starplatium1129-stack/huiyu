@@ -3,7 +3,7 @@
   <StudioTooltip :content="label">
     <button ref="button" class="app-theme-toggle" type="button" :aria-label="label" :aria-pressed="theme === 'dark'"
       :data-dark="theme === 'dark'" :data-reduced-motion="reduced" @click="toggle">
-      <span class="theme-symbol" aria-hidden="true">
+      <span ref="symbol" class="theme-symbol" aria-hidden="true">
         <ArchiveIcon class="theme-sun" name="sun" /><ArchiveIcon class="theme-moon" name="moon" />
       </span>
     </button>
@@ -13,11 +13,20 @@
 import { computed, onBeforeUnmount, onDeactivated, ref } from 'vue'
 import { useTheme } from '@/composables/useTheme'
 import { useMotionPreference } from '@/composables/useMotionPreference'
+import { useToggleMotion } from '@/composables/useToggleMotion'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const { theme, toggleTheme, cancelThemeReveal } = useTheme()
 const button = ref<HTMLButtonElement | null>(null)
+const symbol = ref<HTMLElement | null>(null)
 const reduced = useMotionPreference()
+useToggleMotion(() => theme.value === 'dark', progress => {
+  const sun = symbol.value?.children[0] as SVGElement | undefined
+  const moon = symbol.value?.children[1] as SVGElement | undefined
+  const opacity = Math.max(0, Math.min(1, progress))
+  if (sun) { sun.style.transform = `rotate(${-90 * progress}deg) scale(${1 - .6 * progress})`; sun.style.opacity = String(1 - opacity) }
+  if (moon) { moon.style.transform = `rotate(${45 * (1 - progress)}deg) scale(${.4 + .6 * progress})`; moon.style.opacity = String(opacity) }
+})
 const label = computed(() => theme.value === 'light' ? '切换为深色模式' : '切换为亮色模式')
 function toggle(event: MouseEvent) { toggleTheme(event.currentTarget as HTMLButtonElement) }
 const releaseReveal = () => cancelThemeReveal(button.value)
@@ -29,7 +38,7 @@ onDeactivated(releaseReveal)
 /* The icon morphs inside a stationary navigation target, in the atelier's line style. */
 :root .app-theme-toggle:is(:hover,:active),:root[data-theme-style='terraria'] body .app-theme-toggle:active { transform:none; }
 .theme-symbol { display:grid; place-items:center; transition:transform var(--motion-press) var(--ease-out); }
-.theme-symbol .archive-icon { grid-area:1/1; width:22px; height:22px; transition:transform var(--motion-theme-reveal) var(--ease-theme-reveal),opacity var(--motion-control) var(--ease-out); }
+.theme-symbol .archive-icon { grid-area:1/1; width:22px; height:22px; }
 .theme-moon { opacity:0; transform:rotate(45deg) scale(.4); }
 .app-theme-toggle[data-dark='true'] .theme-sun { opacity:0; transform:rotate(-90deg) scale(.4); }
 .app-theme-toggle[data-dark='true'] .theme-moon { opacity:1; transform:none; }

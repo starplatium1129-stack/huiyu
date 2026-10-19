@@ -58,7 +58,6 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: Presenta
       const backdropOpacity = active && el instanceof HTMLDialogElement ? getComputedStyle(el, '::backdrop').opacity : String(initial.backdrop ?? spring.value)
       capture()
       version++; const token = version
-      if (instant) done?.()
       cancel(); done = callback; active = true; spring.to(targets[0]); alpha.to(targets[0])
       write(spring.value, false, alpha.value)
       if (instant || document.hidden || prefersReducedMotion()) { finish(); return }

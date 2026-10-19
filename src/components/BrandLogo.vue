@@ -8,6 +8,6 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { useTheme } from '@/composables/useTheme'
 import { useDesktopPreferences } from '@/composables/useDesktopInteraction'
 
-const { theme } = useTheme()
+const { displayTheme: theme } = useTheme()
 const { themeStyle } = useDesktopPreferences()
 </script>

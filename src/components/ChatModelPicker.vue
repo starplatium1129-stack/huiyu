@@ -5,6 +5,7 @@ import { ComboboxAnchor, ComboboxContent, ComboboxEmpty, ComboboxInput, Combobox
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import '@/assets/css/components/ui/StudioSelect-0.css'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
+import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 
 const props = withDefaults(defineProps<{
@@ -48,7 +49,7 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
         <ComboboxInput class="chat-model-picker-input" :display-value="displayValue" :aria-label="label"
           :placeholder="placeholder" :disabled="disabled" maxlength="200" spellcheck="false" @input="onInput" />
         <ComboboxTrigger class="chat-model-picker-trigger" :aria-label="`展开${label}`" :disabled="disabled">
-          <ArchiveIcon name="chevron-down" class="studio-select-icon" />
+          <StudioToggleIcon :active="open" class="studio-select-icon" />
         </ComboboxTrigger>
       </ComboboxAnchor>
       <ComboboxPortal :to="portalTarget">
@@ -83,7 +84,6 @@ watch(() => props.disabled, disabled => { if (disabled) open.value = false })
 .chat-model-picker-input::placeholder { color:var(--text-secondary); }
 .chat-model-picker-trigger { display:grid; place-items:center; flex:0 0 32px; width:32px; min-height:32px; padding:0; border:0; background:transparent; color:var(--text-secondary); cursor:pointer; }
 .chat-model-picker-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-sm); }
-.chat-model-picker-trigger[aria-expanded='true'] .studio-select-icon { transform:rotate(180deg); }
 .chat-model-picker-trigger:disabled { color:var(--text-disabled); cursor:not-allowed; }
 @media (pointer:coarse) {
   /* The input and trigger keep 44px targets inside the 1px control frame. */
