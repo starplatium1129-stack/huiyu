@@ -120,7 +120,7 @@ const fluid = useFluidDialog(dialog)
 const taskCenter = useTaskCenter()
 const { parameters, operation, redraw, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
   error, notice, loading, submitting, observing, cancelling, exporting, saved, acceptanceUnknown, job, preview, taskIssue,
-  pending, awaitingResult, locked, saveLocked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
+  pending, locked, saveLocked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
 const {mode:lineMode, polarity:linePolarity, stretch:lineStretch, imported:lineImported, inputReady:lineInputReady,
   selected:lineSelected, previewUrl:linePreviewUrl, previewAvailable:linePreviewAvailable, caption:lineCaption,
   choices:lineChoices, error:lineError, notice:lineNotice, saved:lineSaved, saveDisabled:lineSaveDisabled, expected:lineExpected} = lines

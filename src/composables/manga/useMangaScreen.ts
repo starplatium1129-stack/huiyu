@@ -341,5 +341,5 @@ export function useMangaScreen(onSaved: () => void) {
   }
   return { parameters, operation, redraw, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
     error, notice, loading, submitting, observing, cancelling, exporting, saved, downloaded, acceptanceUnknown, job, preview, taskIssue,
-    pending, awaitingResult, locked, saveLocked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult }
+    pending, locked, saveLocked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult }
 }

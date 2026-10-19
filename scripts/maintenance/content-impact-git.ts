@@ -40,13 +40,27 @@ function nulRecords(raw: string) {
   return raw ? raw.slice(0, -1).split('\0') : [];
 }
 
+function readOnlyGitSettings() {
+  return ['-c', 'core.fsmonitor=false', '-c', 'gc.auto=0', '-c', 'maintenance.auto=false'];
+}
+
+function disableGitFilters(settings: string[], run: (args: readonly string[], allowed?: readonly number[]) => string) {
+  // --no-textconv does not prevent Git from running clean/process filters.
+  // Inspect names only, so configured commands cannot leak into diagnostics.
+  const filterKeys = run(['config', '--null', '--name-only', '--get-regexp', '^filter\..*\.(clean|smudge|process|required)$'], [0, 1]);
+  for (const key of nulRecords(filterKeys)) {
+    if (!/^filter\.[A-Za-z0-9_.-]+\.(clean|smudge|process|required)$/.test(key)) throw new Error('Unsupported filter configuration; refuse to execute Git diff');
+    settings.push('-c', `${key}=${key.endsWith('.required') ? 'false' : ''}`);
+  }
+}
+
 // All arguments are an argv array. No shell, remote commands, checkout or index refresh.
 function collectGitHistory(root: string, base: string) {
   const result: GitHistory = { status: 'error', base: base || null, baseCommit: null, headCommit: null,
     comparison: 'base-commit-to-working-tree', changes: [], paths: [], raw: [], unknown: [], reason: '' };
   try {
     validateRevision(base);
-    const settings = ['-c', 'core.fsmonitor=false', '-c', 'gc.auto=0', '-c', 'maintenance.auto=false'];
+    const settings = readOnlyGitSettings();
     const env = gitEnvironment();
     function run(args: readonly string[], allowed: readonly number[], record: boolean, binary: true): Buffer;
     function run(args: readonly string[], allowed?: readonly number[], record?: boolean, binary?: false): string;
@@ -69,13 +83,7 @@ function collectGitHistory(root: string, base: string) {
     };
     result.baseCommit = resolve(base);
     result.headCommit = resolve('HEAD');
-    // Git diff can run clean filters even with --no-textconv. Disable configured
-    // filter commands before examining working files; don't log their values.
-    const filterKeys = run(['config', '--null', '--name-only', '--get-regexp', '^filter\..*\.(clean|smudge|process|required)$'], [0, 1]);
-    for (const key of nulRecords(filterKeys)) {
-      if (!/^filter\.[A-Za-z0-9_.-]+\.(clean|smudge|process|required)$/.test(key)) throw new Error('Unsupported filter configuration; refuse to execute Git diff');
-      settings.push('-c', `${key}=${key.endsWith('.required') ? 'false' : ''}`);
-    }
+    disableGitFilters(settings, run);
     const tracked = nulRecords(run(['ls-files', '-v', '-z', '--']));
     const trackedPaths = tracked.map(line => {
       if (!/^[A-Za-z?] /.test(line)) throw new Error('Unrecognized tracked-file state');
@@ -136,16 +144,18 @@ function collectGitHistory(root: string, base: string) {
 function collectGitChanges(root: string) {
   const result: { status: 'error' | 'collected'; raw: (GitCommandRecord & { stdout: string })[]; paths: string[]; reason: string } = { status: 'error', raw: [], paths: [], reason: '' };
   try {
+    const settings = readOnlyGitSettings();
     const env = gitEnvironment();
-    const run = (args: readonly string[]) => {
-      const output = childProcess.spawnSync('git', args, { cwd: root, env, timeout: 15000, maxBuffer: 16 * 1024 * 1024, windowsHide: true });
+    const run = (args: readonly string[], allowed: readonly number[] = [0]) => {
+      const output = childProcess.spawnSync('git', [...settings, ...args], { cwd: root, env, timeout: 15000, maxBuffer: 16 * 1024 * 1024, windowsHide: true, shell: false });
       const record = { args, status: output.status, stdout: output.stdout?.toString('utf8') || '', stderr: output.stderr?.toString('utf8') || '' };
       result.raw.push(record);
-      if (output.error || output.status !== 0) throw new Error(output.error?.message || `Git 命令失败：${record.stderr}`);
+      if (output.error || output.status === null || !allowed.includes(output.status)) throw new Error(output.error?.message || `Git 命令失败：${record.stderr}`);
       return new TextDecoder('utf-8', { fatal: true }).decode(output.stdout);
     };
     const top = run(['rev-parse', '--show-toplevel']).replace(/\r?\n$/, '');
     if (worktreeRootKey(top) !== worktreeRootKey(root)) throw new Error('--root 必须为 Git 工作树根目录，不能把父仓库路径映射到子目录');
+    disableGitFilters(settings, run);
     const paths: string[] = [];
     for (const args of [
       ['diff', '--name-only', '-z', '--no-renames', '--no-ext-diff', '--no-textconv', 'HEAD', '--'],

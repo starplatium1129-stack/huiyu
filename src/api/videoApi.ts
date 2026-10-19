@@ -94,25 +94,6 @@ export interface VideoJobResponse {
   job: VideoJob
 }
 
-export interface CreateVideoJobInput {
-  prompt: string
-  negative?: string
-  modelId: string
-  aspectRatio: VideoDefaults['aspectRatio']
-  duration: VideoDefaults['duration']
-  camera: VideoDefaults['camera']
-  motion: VideoDefaults['motion']
-  seed?: number
-  /** 首帧图：POST /api/video/images/raw 返回的受控文件名（I2VA/FL2VA 模式）。 */
-  image?: string
-  /** 尾帧图：POST /api/video/images/raw 返回的受控文件名（FL2VA/L2VA 模式，H3 专属）。 */
-  lastFrame?: string
-  /** 画质档位：fast 0.2MP / standard 0.4MP（默认）/ fine 0.5MP。 */
-  quality?: VideoQuality
-  /** 采样步数（H3 专属）：8 标准（默认）/ 4 极速（约快一倍，质量略降）。 */
-  steps?: 4 | 8
-}
-
 export interface VideoImageUploadResponse {
   ok: true
   name: string

@@ -421,7 +421,7 @@ function report(opts: ImpactOptions) {
   for (const file of opts.paths) {
     if (isScenePath(file)) continue;
     if (file === 'src/assets/css/director/tokens.css') add('revalidate', 'theme', file, '主题文件路径变化，需复验双主题及对比度；无法由路径确定受影响角色或样式语义');
-    if (file === 'scripts/workflow.js' || file === 'docs/workflow.md') add('revalidate', 'workflow', file, '工作流路径变化，需复核入口与文档；无法由路径推断行为差异');
+    if (/^scripts\/workflow\.(ts|js)$/.test(file) || file === 'docs/workflow.md') add('revalidate', 'workflow', file, '工作流路径变化，需复核入口与文档；无法由路径推断行为差异');
     const matches = [...(popular || []), ...(blueprints || [])].filter(r => r.file === file);
     for (const row of matches) {
       const id = row.value.characterId || row.value.id;
@@ -430,7 +430,7 @@ function report(opts: ImpactOptions) {
     }
     if (matches.length) add('revalidate', 'source', file, '仅有路径，保守纳入该分片全部角色；无法判断字段、删除或重命名');
     else result.unknown.push(`${file}: 未解析的路径或已删除/空分片；不能证明影响边界`);
-    if (/^scripts\/lib\/|^scripts\/maintenance\/build-|^scripts\/workflow\.js$/.test(file)) recommend('data:validate');
+    if (/^scripts\/lib\/|^scripts\/maintenance\/build-|^scripts\/workflow\.(ts|js)$/.test(file)) recommend('data:validate');
   }
   const byId = new Map((popular || []).map(r => [r.value.id, r]));
   result.outfitDefaults = [...selected].map(id => outfitDefault((popular || []).filter(r => r.value.id === id), id));
