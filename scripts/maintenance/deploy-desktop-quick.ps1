@@ -128,8 +128,17 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
   if ($StartupRepair) { $argList += '-StartupRepair' }
   if ($SyncLocalModels) { $argList += '-SyncLocalModels' }
   $argList += @('-InstallDir', "`"$installDir`"")
-  $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -Wait -PassThru
-  exit $elevatedProcess.ExitCode
+  # Start-Process -Wait includes descendants, so the restarted client would
+  # keep this wrapper alive. Wait only for the elevated deployment process.
+  $elevatedProcess = Start-Process powershell -Verb RunAs -WindowStyle Hidden -ArgumentList ($argList -join ' ') -PassThru
+  try {
+    # Retain the handle before exit so Windows PowerShell 5.1 can read ExitCode.
+    $null = $elevatedProcess.Handle
+    $elevatedProcess.WaitForExit()
+    $deploymentExitCode = $elevatedProcess.ExitCode
+    if ($null -eq $deploymentExitCode) { throw 'DESKTOP_DEPLOY_EXITCODE: 无法读取提权部署进程的退出码。' }
+  } finally { $elevatedProcess.Dispose() }
+  exit $deploymentExitCode
 }
 
 Start-Transcript -Path (Join-Path $root 'runtime\desktop-deploy-last.log') -Append | Out-Null
