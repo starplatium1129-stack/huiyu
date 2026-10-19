@@ -20,6 +20,7 @@ pub(super) struct Input {
     pub model: String,
     pub session_id: String,
     pub api: Option<ApiSource>,
+    pub tool_result_origin: Option<String>,
     pub tools: bool,
     pub web_search: bool,
     pub reasoning: String,
@@ -305,6 +306,12 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
     } else {
         None
     };
+    let tool_result_origin = match body.get("toolResultOrigin") {
+        None | Some(Value::Null) => None,
+        Some(Value::String(origin)) if origin.len() <= 500 && Url::parse(origin).is_ok_and(|url|
+            matches!(url.scheme(), "http" | "https") && url.origin().ascii_serialization() == *origin) => Some(origin.clone()),
+        _ => return Err(Error::invalid("工具结果的 API 接收地址无效")),
+    };
     let reasoning = string(&body["reasoning"]);
     if !reasoning.is_empty() && !["low", "medium", "high", "off"].contains(&reasoning.as_str()) {
         return Err(Error::invalid("推理强度必须是 off / low / medium / high"));
@@ -313,6 +320,7 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
         model: string(&body["model"]),
         session_id,
         api,
+        tool_result_origin,
         tools: body["companionTools"] == true,
         web_search: body["webSearch"] == true,
         reasoning,

@@ -80,6 +80,27 @@ function Install-Node([string]$source,[string]$name,[string]$comfy,[string]$pyth
   Assert-InWorkspace $target
   if (-not $existing) { Move-Item -LiteralPath $nodeRoot -Destination $target }
 }
+function Write-CodeBaseline([string]$portable) {
+  $files=[ordered]@{}
+  function Add-CodeFiles([string]$relative) {
+    $directory=Join-Path $portable $relative
+    Assert-InWorkspace $directory
+    foreach ($entry in Get-ChildItem -LiteralPath $directory -Force) {
+      if ($relative -eq 'ComfyUI' -and $entry.Name -in @('models','input','output','temp','user')) { continue }
+      if ($entry.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw '受管代码中不能包含目录或文件链接' }
+      $name=$relative+'/'+$entry.Name
+      if ($entry.PSIsContainer) { Add-CodeFiles $name }
+      else { $files[$name]=(Get-FileHash -LiteralPath $entry.FullName -Algorithm SHA256).Hash.ToLowerInvariant() }
+    }
+  }
+  Add-CodeFiles 'ComfyUI'
+  Add-CodeFiles 'python_embeded'
+  $baseline=[ordered]@{ schemaVersion=1; archiveSha256=$ArchiveSha256; files=$files }
+  $target=Join-Path $portable 'huiyu-code-integrity.json'
+  $pending=$target+'.pending'
+  [IO.File]::WriteAllText($pending,($baseline | ConvertTo-Json -Depth 5 -Compress),[Text.UTF8Encoding]::new($false))
+  Move-Item -LiteralPath $pending -Destination $target -Force
+}
 try {
   if ($Environment.StartsWith('llama-')) {
     $target=Join-Path $workspacePath 'Chat\runtime'
@@ -151,10 +172,15 @@ huiyu_models:
       # atomic publish so retries can distinguish CUDA variants and revisions.
       $receipt=[ordered]@{ schemaVersion=1; environment=$Environment; archiveSha256=$ArchiveSha256 }
       [IO.File]::WriteAllText((Join-Path $portableRoot 'huiyu-environment.json'),($receipt | ConvertTo-Json -Compress),[Text.UTF8Encoding]::new($false))
+      Write-CodeBaseline $portableRoot
       # Publish the complete Python + ComfyUI environment together on the same disk.
       Assert-InWorkspace $portableRoot
       Assert-InWorkspace $managedRoot
       Move-Item -LiteralPath $portableRoot -Destination $managedRoot
+    } else {
+      # The host verified the previous baseline before invoking Python. Advance
+      # it only after this explicitly authorized dependency/node preparation.
+      Write-CodeBaseline (Split-Path -Parent $comfy)
     }
   }
   Write-Output '{"ok":true,"message":"运行环境已准备；加载与真实任务仍需验证"}'

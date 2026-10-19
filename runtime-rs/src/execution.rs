@@ -68,6 +68,10 @@ pub trait ExecutionHooks: Send + Sync {
         let _ = (name, path);
         Box::pin(async { Ok(false) })
     }
+    fn restore_result(&self, index: usize, path: PathBuf) -> BoxFuture<'_, Result<bool>> {
+        let _ = (index, path);
+        Box::pin(async { Ok(false) })
+    }
 }
 
 #[derive(Clone, Debug, Serialize)]

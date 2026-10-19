@@ -25,14 +25,22 @@ pub(super) async fn publish(
     if cancel.is_cancelled() {
         return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
     }
+    recovery::stage(job, &path, bytes).await?;
     // No await between publication and handing ownership to settle/succeed.
     // TempPath and the caller's TempDir clean up an unsuccessful publication;
-    // the job removes a published file on late cancellation, expiry or close.
-    let lineart = manga::Publication::stage(job, source, &path)?;
-    tempfile::TempPath::try_from_path(source)?
-        .persist_noclobber(&path)
-        .map_err(|error| ApiError::from(error.error))?;
-    lineart.commit();
+    // the job removes a collected/discarded file on cancellation, expiry or close.
+    let published = (|| -> Result<()> {
+        let lineart = manga::Publication::stage(job, source, &path)?;
+        tempfile::TempPath::try_from_path(source)?
+            .persist_noclobber(&path)
+            .map_err(|error| ApiError::from(error.error))?;
+        lineart.commit();
+        Ok(())
+    })();
+    if published.is_err() {
+        recovery::forget(&path).await;
+    }
+    published?;
     Ok(Output::File {
         path,
         mime: if video { "video/mp4" } else { "image/png" }.into(),
@@ -88,6 +96,12 @@ pub(in crate::generation) async fn prune(inner: &Inner) {
                 continue;
             };
             if live.contains(id) {
+                continue;
+            }
+            // An unreadable/present recovery owner also blocks age-based
+            // deletion, including a manga sidecar and pre-restart results.
+            let owner = entry.path().with_file_name(format!("native-{id}.json"));
+            if !matches!(std::fs::symlink_metadata(owner), Err(error) if error.kind() == std::io::ErrorKind::NotFound) {
                 continue;
             }
             let Ok(metadata) = std::fs::symlink_metadata(entry.path()) else {

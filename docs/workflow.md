@@ -315,6 +315,8 @@ entries 的 role 保留 source/product 职责；status 为 source/product/missin
 
 记录式内容管理使用 npm run wf -- content:catalog --help。stats/query 读取工作库；record/history 读取记录与历史。patch/import 默认预览，--apply 写入；export --out 显式导出项目快照，保留范围外内容。check 检查工作库结构与关联，colors 检查配色，均为真实内容维护。权威边界见[维护手册](maintenance.md)与[内容库设计](architecture/CONTENT-CATALOG-DESIGN.md)。
 
+首次迁移个人内容时，`--root` 指向个人内容目录，`--seed-root` 指向随包默认内容目录；前者提供工作记录，后者只提供升级比较基线。未知的旧分片基线保持为空，不把个人修改登记为默认值。已有内容库继续读取数据库，不重新初始化。
+
 ### 角色语音引擎
 
 npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目录> -TtsHost http://127.0.0.1:9880 -Engine voxcpm2 默认只探测状态。显式 -Action Start 加载已有基座和角色 LoRA；-Action Stop 只停止本应用启动的服务。GPT-SoVITS 使用 -Engine gpt-sovits。入口不下载模型；真实调用按用户授权。

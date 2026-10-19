@@ -152,6 +152,25 @@ impl ExecutionHooks for Hooks {
             media::restore(&self.storage, &self.principal, &self.id, &name, &path).await
         })
     }
+    fn restore_result(&self, index: usize, path: std::path::PathBuf) -> BoxFuture<'_, Result<bool>> {
+        Box::pin(async move {
+            let runtime = self.runtime.upgrade().ok_or_else(|| {
+                ApiError::new(503, "TASK_RUNTIME_CLOSED", "Task runtime unavailable")
+            })?;
+            runtime.check_running()?;
+            let cancel = runtime.shutdown.child_token();
+            let _guard = cancel.clone().drop_guard();
+            let (storage, principal, id) = (self.storage.clone(), self.principal.clone(), self.id.clone());
+            let (reply, result) = tokio::sync::oneshot::channel();
+            // The worker owns the lease until the actual copy has finished,
+            // even when the reconciliation waiter is cancelled or times out.
+            runtime.tracker.spawn(async move {
+                let restored = media::restore_result(&storage, &principal, &id, index, &path, cancel).await;
+                let _ = reply.send(restored);
+            });
+            result.await.map_err(|_| ApiError::new(503, "TASK_RESULT_UNAVAILABLE", "Task result restoration was interrupted"))?
+        })
+    }
 }
 
 pub(super) async fn collect(

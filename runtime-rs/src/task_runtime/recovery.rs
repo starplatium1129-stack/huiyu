@@ -423,6 +423,11 @@ impl TaskRuntime {
                     Err(error) => return Err(error),
                 }
             }
+            let observation = self.provider
+                .recover_task(crate::generation::RecoveryTask::from(task), &mut cancellation.single).await?;
+            if !task.kind.is_manga() || observation.error_code.as_deref() != Some("NATIVE_RESTART_INTERRUPTED") {
+                return Ok(observation);
+            }
         }
         if task.kind.is_manga() {
             return manga::recover(storage, principal, task).await;

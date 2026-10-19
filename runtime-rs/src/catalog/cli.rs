@@ -5,7 +5,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     }
     if args.iter().any(|v| v == "--help") {
         println!(
-            "huiyu-runtime catalog <stats|query|record|history|character|export|patch|import|check|colors> [--root <project>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; selected exports merge into existing snapshots\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Default import rejects conflicts. Dependent changes to preserved records still reject the import."
+            "huiyu-runtime catalog <stats|query|record|history|character|export|patch|import|check|colors> [--root <content source>] [--seed-root <bundled defaults>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; selected exports merge into existing snapshots\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Default import rejects conflicts. Dependent changes to preserved records still reject the import."
         );
         return Ok(Some(json!({"ok":true})));
     }
@@ -33,6 +33,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
         }
         if ![
             "--root",
+            "--seed-root",
             "--runtime-root",
             "--out",
             "--file",
@@ -79,6 +80,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     };
     let mut catalog = Catalog::open(Options {
         source: absolute("--root")?,
+        seed_source: flags.contains_key("--seed-root").then(|| absolute("--seed-root")).transpose()?,
         database: absolute("--runtime-root")?.join("content/catalog.sqlite"),
     })?;
     let required = |flag: &str| -> Result<&str> {

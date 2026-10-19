@@ -1,4 +1,5 @@
 import { computed, readonly, ref } from 'vue'
+import { TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import type { BatchDrawPlan, BatchDrawPlanStorage } from './batchDrawPlan'
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
@@ -163,7 +164,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
         if (cancelRequested.value && !reconnect) { job.status = 'cancelled'; break }
         let result: BatchDrawRunnerResult
         try { result = await run(runnerInput(job, reconnect)) }
-        catch (error) { result = { ok: false, unresolved: runtimeOwned, error: error instanceof Error ? error.message : String(error) } }
+        catch (error) { result = { ok: false, unresolved: runtimeOwned && !(error instanceof TaskSubmissionRejected && !reconnect && error.requestKey === job.requestKey), error: error instanceof Error ? error.message : String(error) } }
         if (disposed && result.historyId == null) break
         if (result.historyId != null) job.historyId = result.historyId
         if (result.imageId) job.imageId = result.imageId

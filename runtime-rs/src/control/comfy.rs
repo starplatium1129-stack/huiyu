@@ -1,4 +1,5 @@
 mod model_paths;
+pub(super) mod integrity;
 use super::*;
 use std::process::Stdio;
 use tokio::process::Command;
@@ -193,6 +194,7 @@ impl ControlService {
                 "请先一键准备 Portable 环境；外部环境可从原入口启动后连接",
             ));
         }
+        integrity::verify(&root, &cancel).await?;
         let settings = self.runtime_settings();
         let host = settings["comfyHost"]
             .as_str()
@@ -208,7 +210,7 @@ impl ControlService {
         let mut command = Command::new(python);
         command
             .current_dir(&root)
-            .args(["-s", "-u"])
+            .args(["-s", "-u", "-B"])
             .arg(root.join("main.py"))
             .args([
                 "--listen",

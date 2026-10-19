@@ -288,62 +288,70 @@ impl GatewaySupervisor {
         command.creation_flags(0x0800_0000) // CREATE_NO_WINDOW
             .arg("--desktop-owned").stdin(Stdio::piped());
 
-        let mut process = command.spawn().map_err(|e| format!("spawn gateway: {e}"))?;
-        #[cfg(windows)]
-        let job = match job::ProcessJob::attach(&process) {
-            Ok(job) => job,
-            Err(error) => {
-                let _ = process.kill();
-                let _ = process.wait();
-                return Err(format!("attach gateway job: {error}"));
-            }
-        };
-        let mut child = GatewayChild { process, #[cfg(windows)] _job: job };
-        // The runtime cannot initialize or spawn model services until Windows
-        // owns its descendants. EOF before this acknowledgement exits startup.
-        #[cfg(windows)]
-        if let Err(error) = child.process.stdin.take()
-            .ok_or_else(|| std::io::Error::other("gateway startup pipe unavailable"))
-            .and_then(|mut input| input.write_all(b"owned\n"))
+        // Register ownership before authorizing runtime initialization. Exit
+        // takes this same slot, so no startup child can escape reap_child.
         {
-            terminate_child(&mut child);
-            return Err(format!("authorize gateway startup: {error}"));
-        }
-        self.owned.store(true, Ordering::Relaxed);
+            let mut slot = self.child.lock().unwrap();
+            if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
+                return Err("Gateway start cancelled".into());
+            }
+            let mut process = command.spawn().map_err(|e| format!("spawn gateway: {e}"))?;
+            #[cfg(windows)]
+            let job = match job::ProcessJob::attach(&process) {
+                Ok(job) => job,
+                Err(error) => {
+                    let _ = process.kill();
+                    let _ = process.wait();
+                    return Err(format!("attach gateway job: {error}"));
+                }
+            };
+            *slot = Some(GatewayChild { process, #[cfg(windows)] _job: job });
+            self.owned.store(true, Ordering::Relaxed);
+            let child = slot.as_mut().unwrap();
+            // The runtime cannot initialize or spawn model services until Windows
+            // owns its descendants. EOF before this acknowledgement exits startup.
+            #[cfg(windows)]
+            if let Err(error) = child.process.stdin.take()
+                .ok_or_else(|| std::io::Error::other("gateway startup pipe unavailable"))
+                .and_then(|mut input| input.write_all(b"owned\n"))
+            {
+                drop(slot);
+                self.reap_child();
+                return Err(format!("authorize gateway startup: {error}"));
+            }
 
-        if let Some(stdout) = child.process.stdout.take() {
-            pipe_output(stdout, "stdout", self.on_output.clone());
-        }
-        if let Some(stderr) = child.process.stderr.take() {
-            pipe_output(stderr, "stderr", self.on_output.clone());
+            if let Some(stdout) = child.process.stdout.take() {
+                pipe_output(stdout, "stdout", self.on_output.clone());
+            }
+            if let Some(stderr) = child.process.stderr.take() {
+                pipe_output(stderr, "stderr", self.on_output.clone());
+            }
         }
 
         let started_at = Instant::now();
         loop {
             if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
-                terminate_child(&mut child);
                 self.reap_child();
                 return Err("Gateway start cancelled".into());
             }
-            if let Ok(Some(_status)) = child.process.try_wait() {
+            let exited = self.child.lock().unwrap().as_mut()
+                .is_none_or(|child| matches!(child.process.try_wait(), Ok(Some(_))));
+            if exited {
                 // 网关提前退出
                 let _ = self.stop().await;
                 return Err("Gateway exited during startup".into());
             }
             if self.is_healthy_async().await {
-                let mut slot = self.child.lock().unwrap();
+                let slot = self.child.lock().unwrap();
                 if self.stopping.load(Ordering::SeqCst) || self.stop_generation.load(Ordering::SeqCst) != generation {
-                    terminate_child(&mut child);
-                    self.owned.store(false, Ordering::Relaxed);
-                    self.authenticated.store(false, Ordering::SeqCst);
+                    drop(slot);
+                    self.reap_child();
                     return Err("Gateway start cancelled".into());
                 }
-                *slot = Some(child);
                 *self.authenticated_port.lock().unwrap() = Some(port);
                 return Ok(self.base_url());
             }
             if started_at.elapsed() > STARTUP_TIMEOUT {
-                terminate_child(&mut child);
                 let _ = self.stop().await;
                 return Err(format!("Gateway did not become healthy at {}", self.base_url()));
             }
@@ -365,6 +373,9 @@ impl GatewaySupervisor {
                 }));
             }
             terminate_child(&mut child);
+            // Startup may create the owner after the pre-shutdown snapshot.
+            // Keep the exact Child handle until this final identity read/release.
+            let snapshot = snapshot.or_else(|| config.as_ref().and_then(|root| host::owner_snapshot(root, child.process.id())));
             host::release_exited_owner(snapshot, &mut child.process);
         }
     }
@@ -420,11 +431,7 @@ fn authenticated_health(base: &str, token: &str) -> bool {
 /// attach 模式（owned=false）不触碰外部网关。kill 后 wait 回收句柄。
 impl Drop for GatewaySupervisor {
     fn drop(&mut self) {
-        if self.owned.load(Ordering::Relaxed) {
-            if let Some(mut child) = self.child.lock().unwrap().take() {
-                terminate_child(&mut child);
-            }
-        }
+        self.stop_sync();
     }
 }
 

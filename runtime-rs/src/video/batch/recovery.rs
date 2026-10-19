@@ -24,16 +24,18 @@ impl Service {
                         .all(|b| b.is_ascii_alphanumeric() || b"_-".contains(&b))
             })
             .ok_or_else(|| error(409, "BATCH_CHECKPOINT_PENDING", "持久分镜缺少网关身份"))?;
-        let existing = self
-            .batches
-            .lock()
-            .await
-            .get(id)
-            .filter(|b| b.owner == owner)
-            .cloned();
-        if let Some(batch) = &existing
-            && batch.serial.try_lock().is_err()
-        {
+        let existing = {
+            let batches = self.batches.lock().await;
+            let batch = batches.get(id).filter(|b| b.owner == owner).cloned();
+            if let Some(batch) = &batch { batch.touch(); }
+            batch
+        };
+        let gates = existing.as_ref().and_then(|batch| {
+            Some((batch.serial.try_lock().ok()?, batch.concat_serial.try_lock().ok()?))
+        });
+        if existing.is_some() && gates.is_none() {
+            let batch = existing.as_ref().unwrap();
+            batch.touch();
             let _gate = batch.checkpoint_serial.lock().await;
             hooks.checkpoint(batch.checkpoint().await).await?;
             return Ok(Observation {
@@ -92,7 +94,7 @@ impl Service {
                 continue;
             }
             if let Some(output) =
-                saved_output(self, &row["result"], reference(index), &proofs, index).await?
+                saved_output(self, &row["result"], reference(index), &proofs, index, hooks.as_ref()).await?
             {
                 shot.result = Some(output);
                 shot.status = "succeeded".into();
@@ -147,6 +149,7 @@ impl Service {
             reference(shots.len()),
             &proofs,
             shots.len(),
+            hooks.as_ref(),
         )
         .await?;
         let all_success = shots.iter().all(|s| s.status == "succeeded");
@@ -165,24 +168,17 @@ impl Service {
         } else {
             "paused"
         };
-        let batch = if let Some(batch) = existing {
-            let _gate = batch
-                .serial
-                .try_lock()
-                .map_err(|_| error(409, "BATCH_RECOVERY_REVIEW", "分镜仍在执行，不能替换检查点"))?;
+        let batch = if let Some(batch) = &existing {
             {
                 let mut s = batch.state.lock().await;
                 s.shots = shots;
                 s.status = status.into();
                 s.unknown = unknown || active;
                 s.error_code = code.clone();
-                if concat.is_some() {
-                    s.concat = concat;
-                    s.concat_stage = "available";
-                }
+                s.concat_stage = if concat.is_some() { "available" } else { "none" };
+                s.concat = concat;
             }
-            drop(_gate);
-            batch
+            batch.clone()
         } else {
             // Recipes were restored into shots; the batch only consumes settings.
             let mut input = json!({"steps":task.input.get("steps")});
@@ -198,6 +194,7 @@ impl Service {
                 owner: owner.into(),
                 input,
                 created: i64::try_from(task.created_at).unwrap_or_else(|_| now()),
+                idle_since: std::sync::Mutex::new(Instant::now()),
                 hooks: Some(hooks.clone()),
                 state: Mutex::new(State {
                     cancel_generation: 0,
@@ -227,6 +224,7 @@ impl Service {
             let _gate = batch.checkpoint_serial.lock().await;
             hooks.checkpoint(batch.checkpoint().await).await?;
         }
+        batch.touch();
         self.batches.lock().await.insert(batch.id.clone(), batch);
         Ok(Observation {
             status: if all_success {

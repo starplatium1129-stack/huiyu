@@ -19,6 +19,7 @@ import type { CompanionToolContext } from './companionChatTools'
 import { captureCompanionImageSource } from './companionChatImages'
 import { startTurnWatchdog } from './chatTurnWatchdog'
 import { abortableTask } from '@/utils/abortableTask'
+import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
@@ -35,6 +36,7 @@ interface ChatConversationOptions {
   chatProvider: Ref<'local' | 'api'>
   currentModel: Ref<string>
   apiBaseUrl: Ref<string>
+  hostApiBaseUrl?: Ref<string>
   apiModel: Ref<string>
   apiKey: Ref<string>
   webSearchEnabled: Ref<boolean>
@@ -150,7 +152,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     return { provider: options.chatProvider.value, currentModel: options.currentModel.value,
       baseUrl: options.apiBaseUrl.value, apiModel: options.apiModel.value, apiKey: options.apiKey.value,
       hostConfig: options.useHostConfig.value, webSearch: options.webSearchEnabled.value,
-      tools: options.companionTools.value, reasoning: options.reasoning.value }
+      tools: options.companionTools.value, reasoning: options.reasoning.value, hostBaseUrl: options.hostApiBaseUrl?.value || '' }
   }
   type TurnConnection = ReturnType<typeof captureConnection>
   const connectionMatches = (connection: TurnConnection) => {
@@ -237,6 +239,9 @@ export function useChatConversation(options: ChatConversationOptions) {
     let imageUrls = imageUrl ? [imageUrl] : []
     const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl,
       search: connection.hostConfig ? { hostConfig: true } : { chatApi: { baseUrl: connection.baseUrl, apiKey: connection.apiKey } } }
+    let toolOrigin: string | undefined
+    try { toolOrigin = toolContext.screenDestination = new URL(connection.hostConfig ? connection.hostBaseUrl : connection.baseUrl).origin } catch { /* Unknown recipients cannot receive screenshots. */ }
+    const usedTools = new Set<string>()
     const drawingResults = new Map<string, ToolCallResult>()
 
     try {
@@ -298,6 +303,11 @@ export function useChatConversation(options: ChatConversationOptions) {
       }
       while (true) {
         checkCurrent()
+        if (usedTools.size) {
+          const policy = await loadCompanionToolPermissions(controller.signal)
+          if (!connectionMatches(connection) || [...usedTools].some(name => !companionToolAllowed(name, policy))) throw new Error('工具权限或 API 配置已改变，已停止发送工具结果。')
+          checkCurrent()
+        }
         const hostMode = connection.provider === 'api' && connection.hostConfig
         const useVision = visionRound
         visionRound = false
@@ -313,6 +323,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             hostMode,
             useVision,
             toolsEnabled,
+            toolResultOrigin: usedTools.size ? toolOrigin : undefined,
             roundMessages,
             messages: turn.messages, connection, restricted: turn.restricted,
             userProfile: options.userProfile.value, memories: options.recallMemories(turn.characterId, text),
@@ -362,6 +373,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         const { executeSerializedCompanionChatTool, retainCompanionImageMessage } = await abortableTask(() => import('./companionChatTools'), controller.signal)
         for (const call of toolCalls) {
           checkCurrent()
+          if (call.name !== 'search_web' && !options.companionTools.value) throw new Error('房间工具已关闭，已停止后续调用。')
           report(call.name === 'search_web' ? '正在联网检索…' : call.name.startsWith('generate_') ? '正在准备图片…' : '正在处理你的请求…')
           let result: ToolCallResult
           try {
@@ -371,6 +383,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             result = { ok: false, output: error instanceof Error ? error.message : String(error) }
           }
           checkCurrent()
+          if (call.name !== 'search_web') usedTools.add(call.name)
           if (result.image) {
             const image = parseCompanionChatImage(result.image)
             if (image && !turn.assistant.images?.some(existing => existing.taskId === image.taskId && existing.path === image.path)) {

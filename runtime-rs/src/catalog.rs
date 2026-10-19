@@ -31,12 +31,14 @@ pub const KINDS: &[&str] = &["character", "outfit", "scene", "blueprint", "docum
 #[derive(Clone)]
 pub struct Options {
     pub source: PathBuf,
+    pub seed_source: Option<PathBuf>,
     pub database: PathBuf,
 }
 impl Options {
     pub fn from_config(config: &crate::config::Config) -> Self {
         Self {
             source: config.content_root(),
+            seed_source: config.is_packaged().then(|| config.app_root.clone()),
             database: config.runtime_root.join("content/catalog.sqlite"),
         }
     }

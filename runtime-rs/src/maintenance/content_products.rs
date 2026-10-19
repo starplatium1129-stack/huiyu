@@ -68,6 +68,7 @@ fn source_string(value: Option<&Value>) -> String {
 fn entry(options: &Options, id: &str) -> Result<Value> {
     let catalog = crate::catalog::Catalog::open_existing(crate::catalog::Options {
         source: options.root.clone(),
+        seed_source: None,
         database: options.runtime.join("content/catalog.sqlite"),
     })
     .map_err(|e| Error::new(e.status.as_u16(), &e.code, e.message))?;

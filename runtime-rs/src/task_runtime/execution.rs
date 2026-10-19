@@ -205,6 +205,7 @@ impl TaskRuntime {
                 || current.delivery_state == DeliveryState::Discarded)
         {
             // Explicit discard is terminal, not an invitation to fetch the output again.
+            self.provider.release_native_result(&current).await;
             self.jobs.lock().unwrap().remove(&identity(storage, id));
             let known = current.recovery_state == TaskRecoveryState::Normal;
             return clear_collection_diagnostic(storage, principal, id, current, known).await;
@@ -317,6 +318,7 @@ impl TaskRuntime {
             for path in recovered_files {
                 let _ = tokio::fs::remove_file(path).await;
             }
+            self.provider.release_native_result(&latest).await;
         }
         if latest.upstream_settled
             && (latest.status != TaskStatus::Succeeded

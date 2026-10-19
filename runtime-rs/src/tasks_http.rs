@@ -53,9 +53,12 @@ async fn handle(
 }
 
 fn failure(error: ApiError, message: &str) -> Response {
+    let message = if error.submission_not_accepted && error.code == "TASK_PROVIDER_BUSY" {
+        "另一项任务尚未结束，本次未接收；请完成或核对原任务后重试。"
+    } else { message };
     (
         error.status,
-        Json(json!({"ok":false,"error":message,"msg":message,"code":error.code})),
+        Json(json!({"ok":false,"error":message,"msg":message,"code":error.code,"submissionNotAccepted":error.submission_not_accepted})),
     )
         .into_response()
 }

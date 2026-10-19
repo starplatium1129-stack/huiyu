@@ -12,6 +12,7 @@ pub(super) struct Proofs {
     // A batch has at most 30 shots and one concat. Proofs own no file handles
     // and live with the task recovery/batch; they never cross principals or restarts.
     entries: std::sync::Mutex<[Option<Proof>; 31]>,
+    restored: std::sync::Mutex<Option<tempfile::TempDir>>,
 }
 #[derive(Clone)]
 struct Proof {
@@ -38,15 +39,54 @@ pub(super) async fn saved_output(
     reference: Option<&ResultRef>,
     proofs: &Arc<Proofs>,
     index: usize,
+    hooks: &dyn ExecutionHooks,
 ) -> Result<Option<Output>> {
-    let (Some(reference), Some(raw)) = (reference, value["path"].as_str()) else {
+    let Some(reference) = reference else {
         proofs.entries.lock().unwrap()[index] = None;
         return Ok(None);
     };
+    if let Some(raw) = value["path"].as_str()
+        && let Some(output) = checked_output(service, PathBuf::from(raw), reference, proofs, index).await?
+    {
+        return Ok(Some(output));
+    }
+    // A checkpoint path is only a cache hint. The durable task reference is the
+    // fallback for both shots and a completed concat when upstream history is gone.
+    let extension = match reference.mime.as_str() {
+        "video/mp4" => "mp4",
+        "video/webm" => "webm",
+        "video/quicktime" => "mov",
+        _ => return Err(error(409, "BATCH_RESULT_INVALID", "分镜结果类型无效")),
+    };
+    let root = service.config.runtime_root.join("outputs/video");
+    tokio::fs::create_dir_all(&root).await?;
+    let path = {
+        let mut directory = proofs.restored.lock().unwrap();
+        if directory.is_none() {
+            *directory = Some(tempfile::Builder::new().prefix(".batch-recovery-").tempdir_in(&root)?);
+        }
+        directory.as_ref().unwrap().path().join(format!("{index}.{extension}"))
+    };
+    if let Some(output) = checked_output(service, path.clone(), reference, proofs, index).await? {
+        return Ok(Some(output));
+    }
+    if !hooks.restore_result(index, path.clone()).await? {
+        return Ok(None);
+    }
+    checked_output(service, path, reference, proofs, index).await?
+        .map(Some).ok_or_else(|| error(409, "BATCH_RESULT_INVALID", "工作区分镜文件与持久结果记录不一致"))
+}
+async fn checked_output(
+    service: &Service,
+    path: PathBuf,
+    reference: &ResultRef,
+    proofs: &Arc<Proofs>,
+    index: usize,
+) -> Result<Option<Output>> {
     let previous = proofs.entries.lock().unwrap()[index].clone();
     let proofs = proofs.clone();
     let (path, root, reference) = (
-        PathBuf::from(raw),
+        path,
         service.config.runtime_root.join("outputs/video"),
         reference.clone(),
     );

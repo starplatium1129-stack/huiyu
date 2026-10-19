@@ -29,6 +29,13 @@ pub(super) async fn prepare(
         })?,
         ApiSource::Personal(api) => api,
     };
+    // Host settings may change in another window while screenshot consent is
+    // open. Compare the actual frozen recipient before sending any tool data.
+    if let Some(origin) = &input.tool_result_origin
+        && target(&api, &api.pathname)?.origin().ascii_serialization() != *origin
+    {
+        return Err(Error::new(409, "TOOL_DESTINATION_CHANGED", "API 接收地址已改变，工具结果未发送；请重新发起并授权"));
+    }
     if let Some((origin, key)) = managed_auth
         && api.model == "huiyu-local"
         && api.base_url == *origin

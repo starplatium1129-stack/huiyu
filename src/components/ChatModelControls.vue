@@ -53,9 +53,10 @@
         <StudioDisclosureSummary>更多选项</StudioDisclosureSummary>
         <div v-if="moreRevealed" class="model-more-body" data-disclosure-content>
           <template v-if="chatProvider === 'api'">
-            <StudioTooltip anchor :content="busy ? '回复结束后可修改房间工具' : '允许模型直接绘图、反推已发送图片和使用本地文件工具，仅本机可用'">
-              <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="companionTools" :disabled="busy" @click="emit('update:companion-tools', !companionTools)">房间工具：{{ companionTools ? '开' : '关' }}</button>
+            <StudioTooltip anchor content="默认关闭，全窗口共享；可随时关闭以停止后续工具调用">
+              <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="companionTools" :disabled="toolsSaving" :aria-busy="toolsSaving" :data-loading="toolsSaving || undefined" @click="emit('update:companion-tools', !companionTools)">房间工具：{{ companionTools ? '开' : '关' }}</button>
             </StudioTooltip>
+            <ChatToolPermissions />
             <StudioTooltip :content="reasoningHint">
               <div class="thinking-group" :tabindex="reasoningHint ? 0 : undefined" :aria-label="reasoningHint ? '思考档位说明' : undefined">
                 <span class="thinking-title">思考</span>
@@ -78,6 +79,9 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import ChatToolPermissions from '@/components/ChatToolPermissions.vue'
+import { useCompanionToolPermissions } from '@/composables/chat/useCompanionToolPermissions'
+const { saving: toolsSaving } = useCompanionToolPermissions()
 import { computed, ref } from 'vue'
 import { chatApiVendorFor } from '@/config/chatApi'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'

@@ -6,6 +6,7 @@ import type { MediaSource } from '@/platform/desktop/workspaceMediaSource'
 import { readWorkspaceMediaSource } from '@/platform/desktop/workspaceMediaRead'
 import type { ChatSearchConnection } from '@/config/chatSearch'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
 
 /** Loaded only when a tool reads the reference already selected by its turn. */
 export async function readCompanionImage(image: CompanionChatImage, repository: ArtworkRepository, authority: string | undefined,
@@ -56,6 +57,7 @@ export interface CompanionToolContext {
   readImage?: NonNullable<ReturnType<typeof captureCompanionImageSource>>['read']
   imageUrl?: string
   search?: Pick<ChatSearchConnection, 'hostConfig' | 'chatApi'>
+  screenDestination?: string
 }
 
 export async function executeSerializedCompanionChatTool(call: { name: string; arguments: string }, context: CompanionToolContext, completedDrawings?: Map<string, CompanionToolResult>): Promise<CompanionToolResult> {
@@ -69,8 +71,9 @@ export async function executeSerializedCompanionChatTool(call: { name: string; a
 
 export async function executeCompanionChatTool(name: string, args: Record<string, unknown>, context: CompanionToolContext, completedDrawings?: Map<string, CompanionToolResult>): Promise<CompanionToolResult> {
   context.signal.throwIfAborted()
+  if (name !== 'search_web' && !companionToolAllowed(name, await loadCompanionToolPermissions(context.signal))) throw new Error('房间工具权限已关闭。')
   if (!['generate_character_image', 'generate_image_from_reference'].includes(name)) {
-    return executeCompanionTool(name, args, context.signal, name === 'search_web' ? context.search : undefined)
+    return executeCompanionTool(name, args, context.signal, name === 'search_web' ? context.search : undefined, context.screenDestination)
   }
   const reference = name === 'generate_image_from_reference'
   const input = {

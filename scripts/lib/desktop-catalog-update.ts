@@ -18,7 +18,7 @@ function updateCatalog(app: string, runtime: string) {
   fs.writeFileSync(incoming, JSON.stringify({ version: 1, records, retired: manifest.retired || [] }));
   const run = (command: string, args: string[] = []) => {
     const result = JSON.parse(execFileSync(path.join(app, 'huiyu-runtime.exe'),
-      ['catalog', command, '--root', app, '--runtime-root', runtime, ...args],
+      ['catalog', command, '--root', path.join(runtime, 'content'), '--seed-root', app, '--runtime-root', runtime, ...args],
       { encoding: 'utf8', windowsHide: true, timeout: 120_000, maxBuffer: 64 * 1024 * 1024 }));
     if (result.ok !== true) throw Error(`内容库${command}失败：${JSON.stringify(result)}`);
     return result;

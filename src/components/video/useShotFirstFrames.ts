@@ -1,7 +1,7 @@
 import { fetchResultImage, waitForDirectImageJob } from '@/api/directImageJobs'
 import { acceptDirectImageRequest, cancelDirectImageRequest } from '@/api/directImageRequests'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
-import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
+import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
 import { imageMediaSession } from '@/platform/imageMediaSession'
@@ -145,8 +145,9 @@ export function useShotFirstFrames(options: {
             if (signal.aborted) throw signal.reason
             if (attached) throw error
             if (!current()) continue
-            if (error instanceof AcceptedTaskTerminalError || error instanceof DirectRequestRejected) {
-              if (shot.firstFrameRequest) shot.firstFrameRequest.state = error instanceof AcceptedTaskTerminalError ? error.status : error.code === 'IMAGE_REQUEST_CANCELLED' ? 'cancelled' : 'failed'
+            const rejected = fresh && error instanceof TaskSubmissionRejected && error.requestKey === shot.firstFrameRequest?.key
+            if (rejected || error instanceof AcceptedTaskTerminalError || error instanceof DirectRequestRejected) {
+              if (shot.firstFrameRequest) shot.firstFrameRequest.state = error instanceof AcceptedTaskTerminalError ? error.status : error instanceof DirectRequestRejected && error.code === 'IMAGE_REQUEST_CANCELLED' ? 'cancelled' : 'failed'
               await options.persist(); failed++; continue
             }
             // Unknown acceptance, observation or result delivery retains the key

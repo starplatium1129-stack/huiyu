@@ -66,7 +66,7 @@ function isVisionMessage(message: Record<string, unknown>): boolean {
 
 export function buildChatRequestBody(args: {
   characterId: string; sessionId: string; imageUrls: string[]; hostMode: boolean; useVision: boolean
-  toolsEnabled: boolean; restricted: boolean; roundMessages: Array<Record<string, unknown>>
+  toolsEnabled: boolean; toolResultOrigin?: string; restricted: boolean; roundMessages: Array<Record<string, unknown>>
   messages: ChatMessage[]; connection: TurnConnection; userProfile: ChatUserProfile; memories: string[]
 }): string {
   const { characterId, sessionId, imageUrls, hostMode, useVision, toolsEnabled, restricted,
@@ -82,6 +82,7 @@ export function buildChatRequestBody(args: {
     hostConfig: hostMode || undefined,
     webSearch: !restricted && connection.provider === 'api' && connection.webSearch && isLocalStudioHost(),
     companionTools: toolsEnabled || undefined,
+    toolResultOrigin: args.toolResultOrigin,
     reasoning: connection.reasoning,
     userProfile: hasChatUserProfile(userProfile) ? userProfile : undefined,
     memories,

@@ -6,6 +6,7 @@ mod saved_output;
 pub(crate) use recovery::BatchRecovery;
 use super::*;
 use std::collections::HashMap;
+use std::time::Instant;
 use tokio::sync::Mutex;
 pub struct BatchPrepared {
     pub input: Value,
@@ -18,6 +19,7 @@ pub(super) struct Batch {
     pub owner: String,
     pub input: Value,
     pub created: i64,
+    idle_since: std::sync::Mutex<Instant>,
     pub hooks: Option<Arc<dyn ExecutionHooks>>,
     state: Mutex<State>,
     serial: Mutex<()>,
@@ -60,6 +62,9 @@ fn output(value: &Option<Output>) -> Value {
     }
 }
 impl Batch {
+    fn touch(&self) {
+        *self.idle_since.lock().unwrap() = Instant::now();
+    }
     async fn checkpoint(&self) -> Value {
         let s = self.state.lock().await;
         let shots = s.shots.iter().enumerate().map(|(i, s)| {
@@ -73,6 +78,7 @@ impl Batch {
         value
     }
     async fn save(&self) -> Result<()> {
+        self.touch();
         let _gate = self.checkpoint_serial.lock().await;
         if let Some(h) = &self.hooks {
             h.checkpoint(self.checkpoint().await).await?;
@@ -228,6 +234,7 @@ impl Service {
             owner,
             input: prepared.input,
             created: now(),
+            idle_since: std::sync::Mutex::new(Instant::now()),
             hooks,
             state: Mutex::new(State {
                 status: "running".into(),
@@ -274,15 +281,12 @@ impl Service {
         Ok(())
     }
     async fn batch(&self, id: &str, owner: &str) -> Result<Arc<Batch>> {
-        if let Some(batch) = self
-            .batches
-            .lock()
-            .await
-            .get(id)
-            .filter(|b| b.owner == owner)
-            .cloned()
         {
-            return Ok(batch);
+            let batches = self.batches.lock().await;
+            if let Some(batch) = batches.get(id).filter(|b| b.owner == owner) {
+                batch.touch();
+                return Ok(batch.clone());
+            }
         }
         if id.len() <= 80
             && id
@@ -350,7 +354,25 @@ pub(super) fn reap(
     tasks: &tokio_util::task::TaskTracker,
 ) {
     tasks.spawn(async move{loop{tokio::select!{_=shutdown.cancelled()=>return,_=tokio::time::sleep(Duration::from_secs(60))=>{}}
-        let expired={let mut batches=registry.lock().await;let ids=batches.iter().filter(|(_,b)|now()-b.created>=86400*1000).map(|(id,_)|id.clone()).collect::<Vec<_>>();ids.into_iter().filter_map(|id|batches.remove(&id)).collect::<Vec<_>>()};
+        // Keep eviction and file cleanup under the same registry gate so a new
+        // recovery cannot reuse an old checkpoint path midway through deletion.
+        let mut batches = registry.lock().await;
+        let expired = {
+            let ids = batches.iter().filter_map(|(id, batch)| {
+                // Holding the registry excludes new lookups. The operation
+                // locks cover runners, recovery, queued/active concat and saves.
+                let _runner = batch.serial.try_lock().ok()?;
+                let _concat = batch.concat_serial.try_lock().ok()?;
+                let _checkpoint = batch.checkpoint_serial.try_lock().ok()?;
+                let state = batch.state.try_lock().ok()?;
+                if matches!(state.status.as_str(), "running" | "cancelling")
+                    || state.concat_stage == "processing" || state.unknown
+                    || batch.idle_since.lock().unwrap().elapsed() < Duration::from_secs(24 * 60 * 60)
+                { return None; }
+                Some(id.clone())
+            }).collect::<Vec<_>>();
+            ids.into_iter().filter_map(|id| batches.remove(&id)).collect::<Vec<_>>()
+        };
         for batch in expired{let s=batch.state.lock().await;s.cancel.cancel();let concat=s.concat.clone();let tails=s.shots.iter().filter_map(|s|s.tail.clone()).collect::<Vec<_>>();drop(s);if let Some(Output::File{path,..})=concat{let _=tokio::fs::remove_file(path).await;}for tail in tails{if let Ok(path)=inputs::path(&config,&tail){let _=tokio::fs::remove_file(path).await;}}let _=tokio::fs::remove_file(config.runtime_root.join("jobs/video-batch").join(format!("{}.json",batch.id))).await;}
     }});
 }

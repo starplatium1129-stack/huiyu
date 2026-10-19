@@ -171,6 +171,10 @@ impl ControlService {
         {
             if environment.starts_with("comfy-") {
                 self.require_stopped_comfy_for_preparation().await?;
+                let root = self.comfy_root();
+                if root.join("main.py").is_file() {
+                    super::comfy::integrity::verify(&root, cancel).await?;
+                }
             }
             let path_for = |id: &str| -> Result<std::path::PathBuf> {
                 Ok(model_root(&self.config.ai_workspace_root, id)?.join(model_file(id)?.path))

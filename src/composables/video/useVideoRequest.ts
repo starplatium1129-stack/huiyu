@@ -1,6 +1,7 @@
 import { computed, shallowRef, ref, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { acceptVideoRequest, cancelVideoRequest } from '@/api/videoRequests'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
+import { TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { hasRuntimeTasks } from '@/api/runtimeTasks'
 import type { VideoJob, VideoBatch } from '@/api/videoApi'
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
@@ -112,7 +113,7 @@ export function useVideoRequest(kind: 'video' | 'batch', slot: string, onRetired
     catch (error) {
       current()
       // Only a durable rejection proves that no execution was accepted.
-      if (error instanceof DirectRequestRejected) await retire(owned, current)
+      if (error instanceof DirectRequestRejected || error instanceof TaskSubmissionRejected && error.requestKey === owned.key) await retire(owned, current)
       throw error
     }
   }

@@ -2,6 +2,7 @@ mod commands;
 mod files;
 mod paths;
 mod workers;
+mod permissions;
 
 use crate::{AppState, config::Config, processes::Processes, security};
 use axum::{
@@ -10,7 +11,7 @@ use axum::{
     extract::{ConnectInfo, DefaultBodyLimit, State},
     http::{HeaderMap, StatusCode},
     response::{IntoResponse, Response},
-    routing::post,
+    routing::{get, post},
 };
 use serde_json::{Value, json};
 use std::{net::SocketAddr, path::PathBuf, sync::Arc};
@@ -63,6 +64,7 @@ pub struct DesktopToolsService {
     trusted: bool,
     processes: Arc<Processes>,
     workers: workers::Workers,
+    permissions: permissions::Store,
     shutdown: CancellationToken,
 }
 impl DesktopToolsService {
@@ -72,6 +74,7 @@ impl DesktopToolsService {
             trusted: std::env::var("AICS_DESKTOP_COMMANDS").as_deref() == Ok("trusted"),
             processes: Arc::new(Processes::default()),
             workers: workers::Workers::new(),
+            permissions: permissions::Store::new(config),
             shutdown,
         }
     }
@@ -79,10 +82,11 @@ impl DesktopToolsService {
         self.shutdown.cancel();
         tokio::join!(self.processes.close(), self.workers.close());
     }
-    async fn run(&self, name: &str, args: &Value) -> Result<Response> {
+    async fn run(&self, name: &str, args: &Value, screen_authorized: bool) -> Result<Response> {
         if self.shutdown.is_cancelled() {
             return Err(Error::cancelled());
         }
+        self.permissions.check(name, screen_authorized).await?;
         if matches!(name, "read_image" | "capture_screen") {
             let cancel = self.shutdown.child_token();
             let _cancel = cancel.clone().drop_guard();
@@ -127,6 +131,7 @@ impl DesktopToolsService {
 pub fn router(service: Arc<DesktopToolsService>) -> Router<AppState> {
     Router::new()
         .route("/api/desktop-tools", post(execute))
+        .route("/api/desktop-tools/permissions", get(permissions::handle).patch(permissions::handle))
         .layer(DefaultBodyLimit::max(768 * 1024))
         .layer(Extension(service))
 }
@@ -190,7 +195,7 @@ async fn execute(
     };
     // File I/O and commands stay owned by the request future. A disconnected
     // caller drops that future, invoking temporary-file/process cleanup guards.
-    let result = service.run(name, args).await;
+    let result = service.run(name, args, payload["screenAuthorized"] == true).await;
     result.unwrap_or_else(|error| Json(error.value()).into_response())
 }
 fn text(value: &Value) -> String {

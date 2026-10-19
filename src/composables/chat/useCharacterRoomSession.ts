@@ -5,6 +5,7 @@ import {
   getCompanionCharacterConfig,
 } from '@/utils/companionRegistry'
 import { useChatConversation } from '@/composables/chat/useChatConversation'
+import { useCompanionToolPermissions } from '@/composables/chat/useCompanionToolPermissions'
 import { useChatStorage } from '@/composables/chat/useChatStorage'
 import { useChatProvider } from '@/composables/chat/useChatProvider'
 import { useVoice } from '@/composables/useVoice'
@@ -221,7 +222,7 @@ export function useCharacterRoomSession() {
   /** 模型思考过程指示（thinking 模式下收到 reasoning 增量时显示） */
   const thinkingActivity = ref(false)
   /** 本地环境启用本地工具（网关有 security.isDirectLocalRequest 本机安全守卫） */
-  const companionTools = ref(true)
+  const { companionTools } = useCompanionToolPermissions()
   /** 模型推理强度（opencode 风格多档：off/low/medium/high；默认关闭，以兼容房间工具） */
   const reasoning = ref<ReasoningLevel>(settingsRepository.get(CHAT_THINKING_SETTING) ?? 'off')
 
@@ -275,6 +276,7 @@ export function useCharacterRoomSession() {
     apiModel,
     apiKey,
     webSearchEnabled,
+    hostApiBaseUrl,
     useHostConfig,
     companionTools,
     reasoning,

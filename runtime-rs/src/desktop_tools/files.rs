@@ -102,7 +102,7 @@ pub(super) async fn read(root: &Path, input: &Value) -> Result<Value> {
 }
 pub(super) async fn write(root: &Path, input: &Value, cancel: &CancellationToken) -> Result<Value> {
     let relative = text(&input["path"]);
-    let target = paths::resolve(root, &relative).await?;
+    let target = paths::writable(root, &relative).await?;
     let content = text(&input["content"]);
     let length = content.encode_utf16().count();
     if length > 512 * 1024 {
@@ -127,7 +127,7 @@ pub(super) async fn atomic(
     if cancel.is_cancelled() {
         return Err(Error::cancelled());
     }
-    if paths::resolve(root, relative).await? != target {
+    if paths::writable(root, relative).await? != target {
         return Err(Error::plain("路径在写入期间发生变化"));
     }
     // Own the actual file before any cancellable I/O. An abandoned Tokio open
@@ -149,7 +149,7 @@ pub(super) async fn atomic(
     if cancel.is_cancelled() {
         return Err(Error::cancelled());
     }
-    if paths::resolve(root, relative).await? != target {
+    if paths::writable(root, relative).await? != target {
         return Err(Error::plain("路径在写入期间发生变化"));
     }
     pending

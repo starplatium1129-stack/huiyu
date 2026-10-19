@@ -16,7 +16,8 @@ pub(super) fn prepare(options: &Options, release: &Release) -> Result<Option<Cat
     // content directory and correctly refuses to silently reseed it.
     options.gateway().prepare_content_for(true).map_err(error)?;
     let mut catalog = Catalog::open(CatalogOptions {
-        source: options.app.clone(),
+        source: options.runtime.join("content"),
+        seed_source: Some(options.app.clone()),
         database: options.runtime.join("content/catalog.sqlite"),
     })
     .map_err(error)?;

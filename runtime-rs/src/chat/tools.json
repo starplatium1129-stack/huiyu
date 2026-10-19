@@ -53,13 +53,13 @@
     "type": "function",
     "function": {
       "name": "write_file",
-      "description": "在 AI 工作区内写入或覆盖一个文本文件（UTF-8，最大 512KB）。目录不存在会自动创建。用于保存脚本、笔记或修改配置。",
+      "description": "在 AI 工作区的 creations/ 创作目录内写入或覆盖文本（UTF-8，最大 512KB）。仅在写入权限开启时可用；不能修改运行库、程序入口或依赖。",
       "parameters": {
         "type": "object",
         "properties": {
           "path": {
             "type": "string",
-            "description": "工作区内的相对文件路径，如 \"companion-notes/idea.md\"。禁止 .. 与绝对路径。"
+            "description": "以 creations/ 开头的工作区相对路径，如 \"creations/companion-notes/idea.md\"。禁止 .. 与绝对路径。"
           },
           "content": {
             "type": "string",
@@ -134,7 +134,7 @@
     "type": "function",
     "function": {
       "name": "capture_screen",
-      "description": "截取用户当前 Windows 桌面主屏幕画面并返回 JPEG DataURL。用于看屏锐评、视觉感知与桌面辅助。",
+      "description": "在截图权限开启且用户逐次确认截取并发送给当前聊天 API 后，截取 Windows 桌面主屏幕并返回 JPEG。用户拒绝时不得重复请求或改用其他工具绕过授权。",
       "parameters": {
         "type": "object",
         "properties": {}

@@ -146,6 +146,9 @@ impl Service {
         }
         let mut result = initial();
         if task.provider == "native" {
+            if let Some(recovered) = native::recovery::recover(&self.inner, &task).await? {
+                return Ok(recovered);
+            }
             result.status = "failed".into();
             result.settled = true;
             result.error_code = Some("NATIVE_RESTART_INTERRUPTED".into());

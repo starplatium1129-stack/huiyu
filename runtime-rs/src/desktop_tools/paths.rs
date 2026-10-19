@@ -78,6 +78,19 @@ pub(super) async fn resolve(root: &Path, relative: &str) -> Result<PathBuf> {
     }
     Ok(physical)
 }
+pub(super) async fn writable(root: &Path, relative: &str) -> Result<PathBuf> {
+    if cfg!(windows) && relative.replace('\\', "/").split('/').any(|part| part.ends_with(['.', ' '])) {
+        return Err(Error::coded("TOOL_WRITE_SCOPE", "写入路径不能使用以点或空格结尾的目录或文件名"));
+    }
+    let target = resolve(root, relative).await?;
+    // Compare against the physical workspace plus a fixed creation directory,
+    // not a canonicalized creations link that could point into a runtime.
+    let creations = physical(root).await?.join("creations");
+    if target == creations || !inside(&creations, &target) {
+        return Err(Error::coded("TOOL_WRITE_SCOPE", "文件写入仅限 AI 工作区的 creations/ 创作目录；运行库、启动脚本和依赖目录不可写"));
+    }
+    Ok(target)
+}
 pub(super) fn display(path: &Path) -> String {
     #[cfg(windows)]
     {

@@ -224,6 +224,7 @@ impl RemoteContent {
         let name = json_name.map(str::to_owned);
         let options = crate::catalog::Options {
             source: self.app.clone(),
+            seed_source: None,
             database: self.runtime.join("content/catalog.sqlite"),
         };
         let (output, permit) = tokio::task::spawn_blocking(move || -> Result<_> {

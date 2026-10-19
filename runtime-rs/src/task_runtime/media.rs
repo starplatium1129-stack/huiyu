@@ -164,3 +164,82 @@ pub(super) async fn restore(
         .map_err(|error| ApiError::from(error.error))?;
     Ok(true)
 }
+
+pub(super) async fn restore_result(
+    storage: &Storage,
+    principal: &str,
+    id: &str,
+    index: usize,
+    path: &Path,
+    cancel: CancellationToken,
+) -> Result<bool> {
+    let lease = uuid::Uuid::new_v4().to_string();
+    let restored = async {
+        let current = storage.task_result_reference(id, index as u64, principal).await?;
+        let Some(reference) = current.reference else { return Ok(false); };
+        let leased = storage.begin_task_result_import(id, index as u64, &reference.alias, &lease, principal).await?;
+        if leased.reference.as_ref() != Some(&reference) {
+            return Err(ApiError::new(409, "TASK_RESULT_INVALID", "Task result changed during restoration"));
+        }
+        let source = storage.open_media(&reference.alias).await?;
+        if source.media.sha256 != reference.sha256 || source.media.total_bytes != reference.bytes
+            || source.media.mime != reference.mime
+        {
+            return Err(ApiError::new(409, "TASK_RESULT_INVALID", "Task result metadata is inconsistent"));
+        }
+        let file = source.file.try_clone().await?.into_std().await;
+        let parent = path.parent().ok_or_else(|| ApiError::invalid("Result destination has no parent"))?.to_owned();
+        tokio::fs::create_dir_all(&parent).await?;
+        let permit = tokio::select! { biased;
+            _ = cancel.cancelled() => return Err(ApiError::new(499, "CANCELLED", "Task result restoration was cancelled")),
+            permit = HASHERS.clone().acquire_owned() => permit.map_err(|_| ApiError::new(503, "TASK_MEDIA_UNAVAILABLE", "Media worker unavailable"))?,
+        };
+        let scope = cancel.clone();
+        let bytes = reference.bytes;
+        let closed = source.closed.clone();
+        let pending = tokio::task::spawn_blocking(move || -> Result<tempfile::TempPath> {
+            // Keep admission and the source lease until this worker settles.
+            // TempPath owns partial bytes on cancellation and copy failures.
+            use std::io::Write;
+            let _permit = permit;
+            let (mut output, pending) = tempfile::NamedTempFile::new_in(parent)?.into_parts();
+            let mut input = file;
+            input.rewind()?;
+            let mut copied = 0u64;
+            let mut buffer = vec![0; 1024 * 1024];
+            loop {
+                if scope.is_cancelled() || closed.is_cancelled() {
+                    return Err(ApiError::new(499, "CANCELLED", "Task result restoration was cancelled"));
+                }
+                let count = input.read(&mut buffer)?;
+                if count == 0 { break; }
+                copied += count as u64;
+                if copied > bytes {
+                    return Err(ApiError::new(409, "TASK_RESULT_INVALID", "Task result grew during restoration"));
+                }
+                output.write_all(&buffer[..count])?;
+            }
+            if copied != bytes {
+                return Err(ApiError::new(409, "TASK_RESULT_INVALID", "Task result copy was incomplete"));
+            }
+            output.sync_all()?;
+            Ok(pending)
+        }).await.map_err(|_| ApiError::new(503, "TASK_MEDIA_UNAVAILABLE", "Media worker stopped"))??;
+        storage.finish_media(&reference.alias, source).await?;
+        if cancel.is_cancelled() {
+            return Err(ApiError::new(499, "CANCELLED", "Task result restoration was cancelled"));
+        }
+        pending.persist(path).map_err(|error| ApiError::from(error.error))?;
+        Ok(true)
+    }.await;
+    // Release even if the begin response was lost after its transaction committed.
+    let released = storage.end_task_result_import(&lease, principal).await;
+    match (restored, released) {
+        (Ok(value), Ok(())) => Ok(value),
+        (Ok(_), Err(error)) => Err(error),
+        (Err(error), released) => {
+            if let Err(released) = released { eprintln!("task result restore lease cleanup: {released}"); }
+            Err(error)
+        }
+    }
+}

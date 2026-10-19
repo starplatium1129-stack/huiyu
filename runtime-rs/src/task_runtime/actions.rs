@@ -98,21 +98,11 @@ impl TaskRuntime {
                         "Task was cancelled",
                     ));
                 }
-                let job = task
-                    .checkpoint
-                    .as_ref()
-                    .and_then(|checkpoint| checkpoint["gatewayJobId"].as_str())
-                    .or_else(|| task.metadata.get("gatewayJobId").and_then(Value::as_str));
-                let exists = if let Some(job) = job {
-                    runtime.video.get_batch(job, &principal).await.is_ok()
-                } else {
-                    false
-                };
-                if !exists || action == "continue" {
-                    runtime
-                        .recover_provider(&storage, &principal, &task, &mut guard)
-                        .await?;
-                }
+                // Cached batches can outlive their provider's temporary files.
+                // Both actions must restore verified durable shot inputs first.
+                runtime
+                    .recover_provider(&storage, &principal, &task, &mut guard)
+                    .await?;
                 drop(task);
                 let task = Self::get(&storage, &principal, &id).await?;
                 let job = task

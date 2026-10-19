@@ -1,7 +1,7 @@
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 import { computed, ref, toRaw, type Ref } from 'vue'
 import { type ApiClient } from '@/api/client'
-import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
+import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { assertDirectImageRuntime } from '@/api/directImageJobs'
 import { cancelDirectImageRequest } from '@/api/directImageRequests'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
@@ -138,6 +138,7 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     } catch (error) {
       if (!current() || restoreCurrent && !restoreCurrent()) return
       const definitive = error instanceof DirectRequestRejected || error instanceof AcceptedTaskTerminalError
+        || !resuming && error instanceof TaskSubmissionRejected && error.requestKey === draft?.key
       if (definitive && draft) {
         try { await acknowledge(draft) } catch (failure) { if (current() && (!restoreCurrent || restoreCurrent())) options.flash(failure instanceof Error ? failure.message : String(failure)) }
       }

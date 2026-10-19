@@ -8,6 +8,7 @@ pub(crate) use model_layout::model_issue;
 pub(crate) mod resources;
 mod observations;
 mod results;
+pub(in crate::generation) mod recovery;
 mod worker;
 pub(crate) use worker::ComfyLease;
 use super::*;
@@ -234,7 +235,16 @@ async fn cancelled(job: &Job) {
     jobs::notify_settled(job);
 }
 pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
+    let _collection = job.collection.lock().await;
     let mut state = job.state.lock().await;
+    if state.status == "succeeded" && state.collection_pending {
+        state.status = "cancelled".into();
+        drop(state);
+        jobs::discard_output(&job).await;
+        snapshots::remove(&inner, &job.id).await;
+        jobs::notify_settled(&job);
+        return Ok(());
+    }
     if !terminal(&state.status) {
         state.status = "cancelling".into();
         if let Some(token) = inner.native.tokens.lock().await.get(&job.id) {

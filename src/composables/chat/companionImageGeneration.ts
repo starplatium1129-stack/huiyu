@@ -1,7 +1,7 @@
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 import { ref } from 'vue'
-import { apiClient, ApiClientError } from '@/api/client'
-import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
+import { apiClient } from '@/api/client'
+import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { hasRuntimeTasks, submitRuntimeTask, waitForRuntimeTask, getRuntimeTaskByKey, cancelRuntimeTaskKey, runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
 import { refreshProfileStorage } from '@/platform/web/profileStorage'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
@@ -165,7 +165,7 @@ export async function generateCompanionImage(args: CompanionImageArgs, options: 
         task = await submitRuntimeTask(draft.submission.family === 'krea2' ? 'creative' : 'anima',
           animaRequestPayload(draft.submission.request), draft.key, draft.submission.context as Record<string, unknown>, { signal, onSubmitting: checkOwner })
       } catch (error) {
-        if (!signal.aborted && error instanceof ApiClientError && error.kind === 'http' && error.status < 500) await forget()
+        if (!signal.aborted && error instanceof TaskSubmissionRejected && error.requestKey === draft.key) await forget()
         throw error
       }
     }

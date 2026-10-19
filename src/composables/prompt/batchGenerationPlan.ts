@@ -1,4 +1,4 @@
-import { AcceptedTaskTerminalError } from '@/api/acceptedTaskOutcome'
+import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
 import { getRuntimeTaskByKey, waitForRuntimeTask, taskMessage } from '@/api/runtimeTasks'
 import type { AnimaRequest } from '../generation/useAnimaSession'
@@ -60,6 +60,7 @@ export async function recoverBatchTask(input: BatchDrawRunnerInput): Promise<{ t
 /** Only a definite rejection or runtime-settled failure permits a later new attempt. */
 export async function batchFailure(input: BatchDrawRunnerInput, error: unknown, runtimeOwned: boolean): Promise<BatchDrawRunnerResult> {
   const message = error instanceof Error ? error.message : '生成状态暂时无法核对'
+  if (!input.reconnect && error instanceof TaskSubmissionRejected && error.requestKey === input.requestKey) return { ok: false, error: message }
   if (error instanceof DirectRequestRejected) return { ok: false, cancelled: error.code === 'IMAGE_REQUEST_CANCELLED', error: message }
   if (!runtimeOwned) {
     if (error instanceof AcceptedTaskTerminalError && error.taskId === input.taskId) {

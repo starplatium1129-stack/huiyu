@@ -3,7 +3,7 @@ import { desktopRuntimeFetch, getDesktopRuntime, onDesktopRuntime } from '../pla
 import type { TaskRecord, TaskSubmission, TaskSummary, TaskListScope, TaskPage } from '../../types/tasks'
 import { runtimeTasksEnabled, runtimeTaskError, runtimeMangaRetryKey, markTaskRequestSubmitting, releaseUnsubmittedTaskRequest, mergeTasks, rememberTask, forgetTaskRequest, clearRuntimeTasks, resetRuntimeTaskWorkspace } from '../stores/runtimeTaskState'
 import { hasRuntimeTasks, assertRuntimeTaskSession } from './runtimeTaskAuthority'
-import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
+import { AcceptedTaskTerminalError, TaskSubmissionRejected } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
 import { rememberWorkspaceMedia, workspaceMediaAuthority, assertWorkspaceMediaAuthority } from '../platform/desktop/workspaceMediaSource'
 export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
@@ -95,13 +95,14 @@ async function acceptedTaskRequest(path: string, body: unknown, key: string, obs
     markTaskRequestSubmitting(key); submitting = true
   })) }
   catch (error) {
-    if (!submitting) { releaseUnsubmittedTaskRequest(key); throw error }
+    if (!submitting) { releaseUnsubmittedTaskRequest(key); throw new TaskSubmissionRejected(key, error instanceof Error ? error.message : String(error)) }
+    if (expected === epoch() && error instanceof ApiClientError && error.kind === 'http' && error.responseBody?.submissionNotAccepted === true) {
+      forgetTaskRequest(key)
+      throw new TaskSubmissionRejected(key, error.message, error.code)
+    }
     if (observation.signal?.aborted || expected !== epoch()) throw error
     // Losing the acceptance response only permits lookup by the original key.
     // It never causes a second POST or a replacement key.
-    if (error instanceof ApiClientError && error.kind === 'http' && error.status < 500) {
-      forgetTaskRequest(key); throw error
-    }
     const found = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'GET', undefined, observation.signal).catch(() => null)
     if (observation.signal?.aborted || expected !== epoch()) throw error
     if (found) return received(found)

@@ -1,5 +1,5 @@
 use super::*;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, HashSet};
 fn read(root: &Path, file: &str) -> Result<Value> {
     Ok(serde_json::from_slice(&std::fs::read(
         root.join("data").join(file),
@@ -165,6 +165,21 @@ impl Catalog {
         } else {
             (legacy(&self.options.source)?, Vec::new())
         };
+        // Personal legacy data is the working authority, never proof of the
+        // original defaults. Unknown baselines stay absent so imports preserve
+        // those records instead of treating personal edits as untouched seeds.
+        let (seeds, retired_seeds) = if let Some(source) = &self.options.seed_source {
+            let snapshot = source.join("data/catalog");
+            if snapshot.join("manifest.json").exists() {
+                snapshots::read(&snapshot)?
+            } else {
+                (legacy(source)?, Vec::new())
+            }
+        } else if snapshot.join("manifest.json").exists() {
+            snapshots::read(&snapshot)?
+        } else {
+            (Vec::new(), Vec::new())
+        };
         let transaction = self
             .connection
             .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
@@ -185,13 +200,21 @@ impl Catalog {
         {
             validation::key(&record.kind, &record.id)?;
             write::put(&transaction, record, removed)?;
-            let encoded = write::history(&transaction, record, removed, batch, &at)?;
+            write::history(&transaction, record, removed, batch, &at)?;
+        }
+        let existing: HashSet<_> = records.iter().chain(retired.iter())
+            .map(|r| (&r.kind, &r.id)).collect();
+        for (record, removed) in seeds.iter().map(|r| (r, false))
+            .chain(retired_seeds.iter().map(|r| (r, true)))
+            .filter(|(r, _)| existing.contains(&(&r.kind, &r.id)))
+        {
+            validation::key(&record.kind, &record.id)?;
             transaction.execute(
                 "INSERT INTO content_seed(kind,id,record,deleted) VALUES(?1,?2,?3,?4)",
                 params![
                     record.kind,
                     record.id,
-                    encoded,
+                    serde_json::to_string(record)?,
                     removed
                 ],
             )?;

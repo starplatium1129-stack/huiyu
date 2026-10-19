@@ -34,7 +34,7 @@ pub(super) fn accept(
         // without using the provider. Unrelated running work cannot block it.
         if cancellation.is_none() {
             let blocked: Option<String> = c.db.query_row("SELECT task_id FROM tasks WHERE upstream_settled=0 LIMIT 1", [], |r| r.get(0)).optional()?;
-            if blocked.is_some() { return Err(conflict("TASK_PROVIDER_BUSY", "Provider has unfinished work; reconcile it before submitting")); }
+            if blocked.is_some() { return Err(conflict("TASK_PROVIDER_BUSY", "Provider has unfinished work; reconcile it before submitting").not_accepted()); }
         }
         let mut task = incoming;
         if let Some(at) = cancellation {

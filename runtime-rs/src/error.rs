@@ -13,6 +13,7 @@ pub struct ApiError {
     pub status: StatusCode,
     pub code: String,
     pub message: String,
+    pub submission_not_accepted: bool,
 }
 
 impl ApiError {
@@ -21,10 +22,15 @@ impl ApiError {
             status: StatusCode::from_u16(status).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR),
             code: code.into(),
             message: message.into(),
+            submission_not_accepted: false,
         }
     }
     pub fn invalid(message: impl Into<String>) -> Self {
         Self::new(400, "INVALID_REQUEST", message)
+    }
+    pub(crate) fn not_accepted(mut self) -> Self {
+        self.submission_not_accepted = true;
+        self
     }
 }
 
