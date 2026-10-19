@@ -18,7 +18,12 @@
       <template v-if="!scenes.length">
         <div v-for="index in 3" :key="'placeholder-' + index" class="journal-entry journal-placeholder" :class="{ lead: index === 1 }" aria-hidden="true">
           <div class="journal-art"><ArchiveIcon name="image" /></div>
-          <div class="journal-placeholder-copy"><span></span><span></span><span></span></div>
+          <div class="journal-caption journal-placeholder-copy tw:min-w-0">
+            <span class="journal-category journal-placeholder-line tw:text-label-xs">&nbsp;</span>
+            <h3 class="journal-placeholder-line">&nbsp;</h3>
+            <p><span v-for="line in index === 1 ? 2 : 3" :key="line" class="journal-placeholder-line">&nbsp;</span></p>
+            <span class="journal-read journal-placeholder-line tw:inline-flex tw:text-label-sm">&nbsp;</span>
+          </div>
         </div>
       </template>
     </div>
@@ -87,10 +92,15 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
 .journal-art > img.ready { opacity:1; }
 .journal-placeholder .journal-art { display:grid; place-items:center; border:1px solid var(--border-soft); border-radius:var(--r-xl); }
 .journal-placeholder .journal-art > .archive-icon { width:40px; height:40px; color:var(--text-muted); }
-.journal-placeholder-copy { display:grid; gap:var(--s-3); padding-block:var(--s-2); }
-.journal-placeholder-copy > span { width:78%; height:12px; border-radius:var(--r-sm); background:var(--border-soft); }
-.journal-placeholder-copy > span:first-child { width:38%; height:8px; }
-.journal-placeholder-copy > span:last-child { width:62%; }
+/* Reuse caption line boxes so the loading spread follows desktop text scaling. */
+.journal-placeholder-line { position:relative; }
+.journal-placeholder-line::after { content:''; position:absolute; left:0; top:50%; width:78%; height:.55em; transform:translateY(-50%); border-radius:var(--r-sm); background:var(--border-soft); }
+.journal-placeholder-copy .journal-category { display:inline-block; width:38%; }
+.journal-placeholder .journal-placeholder-copy p { display:block; -webkit-line-clamp:unset; }
+.journal-placeholder-copy p > span { display:block; }
+.journal-placeholder-copy p > span::after { width:100%; }
+.journal-placeholder-copy p > span:last-child::after { width:62%; }
+.journal-placeholder-copy .journal-read { width:7.65em; }
 .journal-entry:not([data-sensitive='true']) .journal-art::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .journal-entry:focus-visible .journal-art,.journal-entry:focus-visible .journal-art > img { transform:none; transition:none; }
 .journal-entry:hover :deep(.sensitive-preview-veil), .journal-entry:focus-within :deep(.sensitive-preview-veil) { opacity:0; }
@@ -111,6 +121,6 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .journal-entry { --card-focus-lift:0px; --card-focus-scale:1; }
 :root:is([data-motion='reduce'],[data-motion='reduced']) :is(.journal-art,.journal-art > img,.journal-art::after) { transition:none; }
-@media (max-width: 900px) { .journal-spread { @apply tw:gap-s-5; } .journal-entry { grid-template-columns: minmax(0, 1fr); @apply tw:gap-s-3; } .journal-caption p { -webkit-line-clamp: 2; } }
+@media (max-width: 900px) { .journal-spread { @apply tw:gap-s-5; } .journal-entry { grid-template-columns: minmax(0, 1fr); @apply tw:gap-s-3; } .journal-caption p { -webkit-line-clamp: 2; } .journal-placeholder-copy p { max-height:2lh; } }
 @media (max-width: 600px) { .art-journal { margin-block: var(--s-7); } .journal-heading { align-items: start; @apply tw:flex-col tw:gap-s-3; } .journal-spread { grid-template-columns: minmax(0, 1fr); } .journal-entry:not(.lead) { grid-template-columns: 112px minmax(0, 1fr); @apply tw:pt-s-5; border-top: 1px solid var(--border-soft); } }
 </style>

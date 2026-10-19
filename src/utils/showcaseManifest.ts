@@ -55,6 +55,9 @@ export interface ShowcaseEntry {
   /** Optional source dimensions used to reserve card space before the image decodes. */
   width?: number
   height?: number
+  /** Thumbnail pixels can differ slightly from the original after resizing. */
+  thumbWidth?: number
+  thumbHeight?: number
   /** 生成版本元数据；缺省时 UI 不渲染元数据行 */
   meta?: ShowcaseGenMeta
   /** 完整 prompt / negative；新发布条目保留用于审计，UI 不强制展示 */
@@ -183,6 +186,10 @@ function parseEntry(value: unknown): ShowcaseEntry | null {
   const height = optionalDimension(value.height)
   if (width !== undefined) entry.width = width
   if (height !== undefined) entry.height = height
+  const thumbWidth = optionalDimension(value.thumbWidth)
+  const thumbHeight = optionalDimension(value.thumbHeight)
+  if (thumbWidth !== undefined) entry.thumbWidth = thumbWidth
+  if (thumbHeight !== undefined) entry.thumbHeight = thumbHeight
   const meta = parseMeta(value.meta)
   if (meta) entry.meta = meta
   const prompt = optionalString(value.prompt)

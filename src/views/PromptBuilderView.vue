@@ -124,9 +124,10 @@
           @interrogateError="handleInterrogateError"
         /><template #fallback>
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
-            <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>画布预览</strong></div></div>
+            <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : currentSceneTitle || '画布预览' }}</strong><span>{{ displayResultUrl ? '生成结果' : currentSceneTitle ? '场景参考 · 非本次生成' : '等待创作' }}</span></div><button class="btn btn-quiet btn-sm" type="button" disabled><ArchiveIcon name="scene" />挑选场景</button></div>
             <div class="stage-viewport director-canvas-loading"><AtelierEmptyArt /><p role="status">正在准备画布…</p></div>
-            <div class="director-canvas-loading-foot" aria-hidden="true"></div>
+            <DirectorResultTools class="director-canvas-loading-actions" :has-result="Boolean(displayResultUrl)" :generation-busy="generationBusy" :has-prev-result="!!prevResult"
+              :result-archived="resultArchived" :saving-result="savingResult" :result-temporary="resultTemporary" :capturing-scene="capturingScene" aria-hidden="true" inert />
           </section>
         </template></Suspense>
 
@@ -222,6 +223,8 @@
 
 <script setup lang="ts">
 import '@/assets/css/director.css'
+import '@/assets/css/director/components/DirectorStagePanel.css'
+import DirectorResultTools from '@/components/director/DirectorResultTools.vue'
 import { computed, defineAsyncComponent, nextTick, ref } from 'vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'

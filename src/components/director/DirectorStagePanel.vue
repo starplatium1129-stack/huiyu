@@ -157,7 +157,6 @@ import type { GenerationPresentation } from '@/composables/prompt/useGenerationP
 import { sampleGenerationPalette } from '@/utils/generationPalette'
 import { useInterrogate } from '@/composables/useInterrogate'
 import type { InterrogateResult } from '@/composables/useInterrogate'
-import '@/assets/css/director/components/DirectorStagePanel.css'
 
 const props = defineProps<{
   sceneTitle?: string

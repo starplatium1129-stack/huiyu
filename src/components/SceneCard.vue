@@ -79,6 +79,8 @@ const props = withDefaults(defineProps<{
   completePreview?: boolean
   meta?: string
   imgVersion?: string | number
+  thumbUrl?: string
+  previewDimensions?: { width: number; height: number }
 }>(), {
   mode: 'grid',
   clickable: undefined,
@@ -102,6 +104,7 @@ const contentRating = computed(() => props.scene.rating || (props.scene.mature ?
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
 const archiveCode = computed(() => thumbId.value.replace(/^sc(?=\d)/, 'sc-').toUpperCase())
 const { image: thumbImage, src: thumbSrc, loaded: thumbLoaded, failed: thumbFailed } = useRuntimeImage(() => {
+  if (props.thumbUrl) return props.thumbUrl
   const v = props.imgVersion ?? ''
   return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
 })
@@ -112,7 +115,7 @@ watch([thumbSrc, runtimeResourceIdentity], ([src]) => {
 const previewStyle = computed(() => {
   if (!props.completePreview) return undefined
   const [width, height] = sceneRecommendedSize(props.scene).split('x').map(Number)
-  const size = naturalDimensions.value
+  const size = naturalDimensions.value || props.previewDimensions
   return { '--scene-preview-ratio': size ? size.width / size.height : width / height }
 })
 function measurePreview(event: Event) {

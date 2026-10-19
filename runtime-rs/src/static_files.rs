@@ -9,6 +9,7 @@ use futures_util::StreamExt;
 use std::path::Path;
 use tower_http::services::ServeFile;
 mod extra;
+mod showcase;
 
 use crate::remote_content::PUBLIC_DATA_FILES;
 pub(crate) const PAGES: &[&str] = &[
@@ -171,6 +172,10 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     let Some(metadata) = inside(&base, &file).await else {
         return StatusCode::NOT_FOUND.into_response();
     };
+    if path == "/scene-showcase/manifest.json" {
+        return showcase::serve(base, request.method() == Method::HEAD,
+            request.headers().get("if-none-match").cloned()).await;
+    }
     let modified = metadata
         .modified()
         .ok()

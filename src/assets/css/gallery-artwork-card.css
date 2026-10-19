@@ -11,7 +11,7 @@
 :root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) { border-color:var(--border-strong); box-shadow:var(--shadow-md); }
 .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) .artwork-media::after { opacity:1; }
 .artwork:has(:focus-visible) .artwork-name { color:var(--accent); }
-.artwork-button { @apply tw:block tw:w-full; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
+.artwork-button { @apply tw:block tw:w-full; padding:0; border:0; background:transparent; color:inherit; font:inherit; cursor:zoom-in; }
 .artwork-selectable .artwork-button { cursor:pointer; }
 .artwork-selectable { scroll-margin-bottom:calc(50vh + var(--s-4)); }
 .artwork-button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }

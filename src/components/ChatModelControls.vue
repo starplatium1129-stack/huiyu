@@ -138,6 +138,11 @@ const emit = defineEmits<{
 <style scoped>
 .provider-model-controls { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); min-width:0; }
 .provider-model-controls .model-select { flex:1; min-width:min(180px,100%); max-width:none; }
+/* This deferred panel becomes one model field; keep its loading frame at that field's size. */
+.model-select[aria-busy='true'] :deep(.async-panel-feedback) { min-height:var(--control-height); padding:var(--s-2) var(--s-3); border-radius:var(--r-md); font:500 var(--fs-body-sm)/var(--lh-label) var(--font-sans); }
+.model-select[aria-busy='true'] :deep(.async-panel-loading) { width:100%; min-width:0; overflow:hidden; line-height:inherit; white-space:nowrap; }
+.model-select[aria-busy='true'] :deep(.studio-orbit-spinner) { flex:none; width:22px; height:22px; }
+@media (pointer:coarse) { .model-select[aria-busy='true'] :deep(.async-panel-feedback) { min-height:46px; } }
 .api-model-controls > :deep(.studio-tooltip-anchor) { width:100%; min-width:0; }
 .api-settings-toggle { width:100%; min-width:0; max-width:100%; justify-content:space-between; text-align:left; }
 .api-settings-toggle > span { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }

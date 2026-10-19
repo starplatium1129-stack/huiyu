@@ -1,4 +1,4 @@
-import { onActivated, onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { computed, onActivated, onScopeDispose, ref, shallowRef, watch } from 'vue'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { apiClient } from '@/api/client'
 import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
@@ -81,11 +81,17 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
   }
   return {
     loading, error, reload,
+    initialLoading: computed(() => loading.value && !catalogue.value.size),
     thumbUrl: (id: string) => assetUrl(id, 'thumb'),
     imageUrl: (id: string) => assetUrl(id, 'image'),
     hasShowcase: (id: string) => catalogue.value.has(id),
     hasPublicScene: (id: string) => { const entry = catalogue.value.get(id); return entry?.type === 'scene' && entry.rating === 'All' },
     dimensions: (id: string) => { const entry = catalogue.value.get(id); return entry?.width && entry.height ? { width: entry.width, height: entry.height } : undefined },
+    thumbDimensions: (id: string) => {
+      const entry = catalogue.value.get(id)
+      const width = entry?.thumbWidth || entry?.width, height = entry?.thumbHeight || entry?.height
+      return width && height ? { width, height } : undefined
+    },
     invalidateAsset: (id: string) => { versions.value = new Map(versions.value).set(id, Math.max(Date.now(), (versions.value.get(id) ?? sessionVersion.value) + 1)) },
   }
 }

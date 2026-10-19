@@ -129,7 +129,7 @@
 .pb.atelier-workspace .canvas-heading button { white-space:nowrap; font-size:12px; }
 .pb .director-canvas-loading { display:flex; flex-direction:column; justify-content:center; align-items:center; gap:var(--s-4); padding:var(--s-5); color:var(--text-secondary); }
 .director-canvas-loading p { margin:0; font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
-.director-canvas-loading-foot { height:64px; border-top:1px solid var(--border-soft); }
+.director-canvas-loading-actions { visibility:hidden; }
 @media (min-width:1024px) { .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-viewport { height:auto; } }
 @media (max-width:1023px) { .pb.atelier-workspace .stage-slot { display:grid; grid-template-rows:auto minmax(0,1fr) auto; } }
 @container canvas-column (max-width:740px) { .pb.atelier-workspace .canvas-heading span { display:none; } }

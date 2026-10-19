@@ -1,8 +1,7 @@
 @reference "../../tailwind.css";
    /* ============================================================
-   DirectorStagePanel 面板样式 —— 随 defineAsyncComponent 组件懒加载
-   （2026-08-27 P0 审计分产：自 director/panels.css 规则级切出，
-    保留选择器层叠；基础声明由 Tailwind 工具类编译。此文件按需加载）
+   DirectorStagePanel 面板样式 —— 由工作台入口加载，供真实画布及加载占位共享。
+   保留选择器层叠；基础声明由 Tailwind 工具类编译。
    ============================================================ */
    .pb .result-image-wrap { @apply tw:relative tw:overflow-hidden; background:var(--bg-deep); }
     .pb .result-image-reveal {

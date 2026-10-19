@@ -20,7 +20,7 @@
       class="zoom-transform-layer tw:relative tw:w-full tw:h-full tw:flex tw:items-center tw:justify-center tw:min-w-0 tw:min-h-0"
     >
       <!-- 骨架屏占位 -->
-      <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder tw:absolute tw:inset-0 tw:min-w-[240px] tw:min-h-[320px] tw:[border-radius:var(--r-lg,_12px)] tw:[background:var(--bg-elevated)]" aria-hidden="true"></div>
+      <div v-if="!imageReady && !imageFailed && !previewSrc" class="skeleton-placeholder tw:absolute tw:inset-0 tw:[border-radius:var(--r-lg,_12px)] tw:[background:var(--bg-elevated)]" aria-hidden="true"></div>
 
       <!-- 真实图片 -->
       <img v-if="displayedSrc" :key="`image:${imageRevision}`" :crossorigin="runtimeResourceCors()"

@@ -19,7 +19,7 @@
       <p class="pop-hero-stat" aria-label="场景统计"><strong v-if="!loading && !loadError">{{ totalScenes }}</strong><span>{{ loading ? '正在整理场景' : loadError ? '场景暂不可用' : '幕可选场景' }}</span></p>
     </section>
 
-    <ArchiveStatePanel v-if="loading" kind="loading" title="正在读取角色场景" />
+    <ArchiveStatePanel v-if="loading || samplesPending" kind="loading" title="正在读取角色场景" />
     <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景读取失败" :message="loadError">
       <button class="btn btn-primary" type="button" @click="retryScenes">重新读取</button>
     </ArchiveStatePanel>
@@ -168,7 +168,7 @@ import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 const route = useRoute()
 const router = useRouter()
 const sceneStore = useSceneStore()
-const { thumbUrl, imageUrl, dimensions, loading: assetsLoading, error: assetsError, reload: reloadAssets } = useShowcaseAssets()
+const { thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending, loading: assetsLoading, error: assetsError, reload: reloadAssets } = useShowcaseAssets()
 
 const loadError = ref('')
 const sceneContent = ref<HTMLElement | null>(null)
@@ -262,15 +262,17 @@ const visibleCount = ref(24)
 const paged = computed(() => filtered.value.slice(0, visibleCount.value))
 const listRoot = ref<HTMLElement | null>(null)
 useListTransition(listRoot, () => paged.value.map(blueprint => blueprint.id))
-const imageRatios = ref<Record<string, number>>({})
+const imageRatios = ref<Record<string, { src: string; ratio: number }>>({})
 function previewRatio(blueprint: SceneBlueprint) {
-  const size = dimensions(showcaseId(blueprint))
+  const size = thumbDimensions(showcaseId(blueprint))
   const [width, height] = blueprint.recommendedSize.split('x').map(Number)
-  return imageRatios.value[blueprint.id] || (size ? size.width / size.height : width / height)
+  const measured = imageRatios.value[blueprint.id]
+  return measured?.src === thumbSrc(blueprint) ? measured.ratio : size ? size.width / size.height : width / height
 }
 function measurePreview(blueprint: SceneBlueprint, event: Event) {
   const image = event.target as HTMLImageElement
-  if (image.naturalWidth && image.naturalHeight) imageRatios.value[blueprint.id] = image.naturalWidth / image.naturalHeight
+  if (image.naturalWidth && image.naturalHeight)
+    imageRatios.value[blueprint.id] = { src: thumbSrc(blueprint), ratio: image.naturalWidth / image.naturalHeight }
 }
 const previewViewer = ref<InstanceType<typeof SceneArtworkViewer> | null>(null)
 const previewId = ref<string | null>(null)

@@ -6,7 +6,7 @@
       :aria-label="'查看 ' + entry.title + ' 大图'" @click="emit('open', entry.id)">
       <span v-if="!loaded && !broken" class="sample-loading" aria-hidden="true"><ArchiveIcon name="image" /></span>
       <img v-if="image.src && !broken" v-bind="{ ...image, onLoad: measureImage }" class="sample-image tw:w-full tw:h-auto tw:block" :class="{ 'sample-image-ready': loaded }"
-        :alt="entry.title" :width="entry.width" :height="entry.height" loading="lazy" decoding="async" />
+        :alt="entry.title" :width="dimensions.width" :height="dimensions.height" loading="lazy" decoding="async" />
       <span v-else class="sample-image-fallback tw:grid tw:min-h-[260px] tw:text-glyph" aria-hidden="true"><ArchiveIcon name="image" /></span>
       <SensitivePreviewVeil v-if="entry.rating === 'R18' && image.src && !broken" :src="image.src" :crossorigin="image.crossorigin" />
       <span v-if="entry.rating === 'R18'" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
@@ -44,11 +44,13 @@ const displayTitle = computed(() => {
 })
 const { image, loaded, failed: broken } = useRuntimeImage(() => props.src)
 const naturalSize = shallowRef(cachedImageDimensions(image.value.src))
-watch([() => props.entry.id, () => image.value.src, runtimeResourceIdentity], ([id, src, identity], [previousId, , previousIdentity]) => {
-  const cached = cachedImageDimensions(src)
-  if (cached || id !== previousId || identity !== previousIdentity) naturalSize.value = cached
+watch([() => props.entry.id, () => image.value.src, runtimeResourceIdentity], ([, src]) => {
+  naturalSize.value = cachedImageDimensions(src)
 })
-const dimensions = computed(() => naturalSize.value || (props.entry.width && props.entry.height ? { width: props.entry.width, height: props.entry.height } : { width: 3, height: 4 }))
+const dimensions = computed(() => {
+  const width = props.entry.thumbWidth || props.entry.width, height = props.entry.thumbHeight || props.entry.height
+  return naturalSize.value || (width && height ? { width, height } : { width: 3, height: 4 })
+})
 const imageStyle = computed(() => ({ '--sample-ratio': `${dimensions.value.width} / ${dimensions.value.height}` }))
 const cardStyle = computed(() => ({ '--sample-grow': dimensions.value.width / dimensions.value.height }))
 function measureImage(event: Event) {
