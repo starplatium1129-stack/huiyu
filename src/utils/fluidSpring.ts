@@ -30,8 +30,8 @@ export class FluidSpring {
 }
 
 /** One frame loop per surface; hidden/reduced motion settles, disposal is terminal. */
-export function createFluidMotion(values: number[], write: (values: number[]) => void, frequency = 5) {
-  const springs = values.map(value => new FluidSpring(value, frequency))
+export function createFluidMotion(values: number[], write: (values: number[]) => void, frequency = 5, damping = 1) {
+  const springs = values.map(value => new FluidSpring(value, frequency, damping))
   let frame: number | null = null, last: number | null = null
   let active = false, disposed = false, revision = 0
   let complete: (() => void) | undefined

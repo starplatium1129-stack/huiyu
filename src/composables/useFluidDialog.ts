@@ -121,7 +121,7 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
     const el = dialog.value
     if (!el?.open) { releaseScrollLock(); after?.(); return }
     exit?.cancel()
-    exit = createDialogExit(el, surface.capture(el) ?? { value: 1, velocity: 0 })
+    exit = createDialogExit(el, surface.capture(el) ?? { value: 1, velocity: 0 }, surface)
     surface.dispose(el); el.style.transform = ''; el.style.opacity = ''
     el.close(); onNativeClose(); after?.()
   }
@@ -134,7 +134,7 @@ export function useFluidDialog(dialog: Ref<HTMLDialogElement | null>, imageMotio
     if (listenerTarget) { listenerTarget.removeEventListener('close', onNativeClose); listenerTarget = null }
     if (el?.open) {
       exit?.cancel()
-      exit = createDialogExit(el, surface.capture(el) ?? { value: 1, velocity: 0 })
+      exit = createDialogExit(el, surface.capture(el) ?? { value: 1, velocity: 0 }, surface)
       el.close()
     }
     if (el) surface.dispose(el)

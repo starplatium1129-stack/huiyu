@@ -1,5 +1,7 @@
 import { getCurrentInstance, onDeactivated, onUnmounted } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
+import { FluidSpring } from '@/utils/fluidSpring'
+import { cssTimeToMilliseconds } from '@/utils/motionTiming'
 
 type ImageRect = { left: number; top: number; width: number; height: number }
 type Origin = { rect: ImageRect; src: string; clipPath?: string }
@@ -12,6 +14,7 @@ type Flight = {
   animation: Animation | null
   clipped: boolean
   settle: (() => void) | null
+  trajectory: { from: number[]; to: number[]; velocity: number[]; frequency: number } | null
 }
 
 function imageRect(image: HTMLImageElement): ImageRect {
@@ -110,11 +113,35 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
     // A zoomed/cropped image must not reveal pixels outside its current viewport,
     // and unrelated thumbnail crops must not stretch into a different aspect ratio.
     if (!visibleTarget(destination, target, host) || Math.abs((source.rect.width / source.rect.height) / (destination.width / destination.height) - 1) > .02) { clearFlight(); return }
+    const copiedProxy = host.querySelector<HTMLCanvasElement>('[data-image-origin-proxy]')
+    if (direction === 'leave' && flight && flight.host !== host && copiedProxy
+      && (target.currentSrc || target.src) === (flight.target.currentSrc || flight.target.src)) {
+      // Native close leases a visual clone. Move the live flight into that lease
+      // so an early reversal retains its pixels, position and velocity exactly.
+      copiedProxy.remove(); copiedProxy.width = copiedProxy.height = 0
+      flight.restore()
+      const opacity = target.style.opacity, transition = target.style.transition
+      target.style.transition = 'none'; target.style.opacity = '0'
+      host.append(flight.proxy)
+      flight.target = target; flight.host = host
+      flight.restore = () => { target.style.opacity = opacity; target.style.transition = transition }
+    }
     let from = direction === 'enter' ? source.rect : destination
+    let velocity = [0, 0, 0, 0]
     let clipped = Boolean(source.clipPath)
     let fromClip = direction === 'enter' ? source.clipPath || UNCLIPPED : UNCLIPPED
     if (flight?.target === target && flight.host === host) {
       from = flight.proxy.getBoundingClientRect()
+      if (flight.trajectory) {
+        const path = flight.trajectory, elapsed = Math.max(0, Number(flight.animation?.currentTime) || 0) / 1000
+        const axes = path.from.map((value, index) => {
+          const axis = new FluidSpring(value, path.frequency)
+          axis.velocity = path.velocity[index]; axis.to(path.to[index]); axis.step(elapsed)
+          return axis
+        })
+        from = { left: axes[0].value, top: axes[1].value, width: axes[2].value, height: axes[3].value }
+        velocity = axes.map(axis => axis.velocity)
+      }
       clipped ||= flight.clipped
       if (clipped) {
         const currentClip = getComputedStyle(flight.proxy).clipPath
@@ -149,7 +176,7 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
       const opacity = target.style.opacity, transition = target.style.transition
       target.style.transition = 'none'; target.style.opacity = '0'
       host.append(proxy)
-      flight = { proxy, target, host, animation: null, clipped: false, settle: null, restore: () => {
+      flight = { proxy, target, host, animation: null, clipped: false, settle: null, trajectory: null, restore: () => {
         target.style.opacity = opacity
         // Commit restoration before reenabling an image's loading fade.
         void getComputedStyle(target).opacity
@@ -162,18 +189,33 @@ export function useImageOriginTransition(options: { proxyPixelBudget: number }) 
     const transform = (rect: ImageRect) => `translate(${rect.left}px, ${rect.top}px) scale(${rect.width / width}, ${rect.height / height})`
     active.proxy.dataset.imageOriginDirection = direction
     active.clipped = clipped
+    const style = getComputedStyle(host)
+    const duration = Math.max(1, cssTimeToMilliseconds(style.getPropertyValue(direction === 'enter' ? '--motion-route-cut' : '--motion-route'))
+      - (direction === 'leave' ? performance.now() - startedAt : 0))
+    const frequency = direction === 'enter' ? 4.6 : 5.2
+    const values = (rect: ImageRect) => [rect.left, rect.top, rect.width, rect.height]
+    active.trajectory = { from: values(from), to: values(to), velocity, frequency }
     await new Promise<void>(resolve => {
       active.settle = resolve
       try {
-        const frames: Keyframe[] = [{ transform: transform(from) }, { transform: transform(to) }]
+        const axes = values(from).map((value, index) => {
+          const axis = new FluidSpring(value, frequency)
+          axis.velocity = velocity[index]; axis.to(values(to)[index]); return axis
+        })
+        const steps = Math.max(1, Math.ceil(duration / (1000 / 60)))
+        const frames: Keyframe[] = [{ transform: transform(from) }]
+        for (let step = 1; step <= steps; step++) {
+          axes.forEach(axis => axis.step(duration / steps / 1000))
+          const rect = { left: axes[0].value, top: axes[1].value, width: axes[2].value, height: axes[3].value }
+          frames.push({ transform: transform(step === steps ? to : rect) })
+        }
         if (clipped) {
-          /* compositor-exempt: bounded 280ms rectangular image-flight aperture preserves hover crop; no persistent layer or loop. */
+          /* compositor-exempt: one bounded image-flight aperture preserves the actual thumbnail crop; no persistent layer or loop. */
           frames[0].clipPath = fromClip
-          frames[1].clipPath = direction === 'enter' ? UNCLIPPED : source.clipPath || UNCLIPPED
+          frames[frames.length - 1].clipPath = direction === 'enter' ? UNCLIPPED : source.clipPath || UNCLIPPED
         }
         const animation = active.proxy.animate(frames, {
-          duration: direction === 'leave' ? Math.max(0, 280 - (performance.now() - startedAt)) : 280,
-          easing: 'cubic-bezier(.2,.8,.2,1)', fill: 'both',
+          duration, easing: 'linear', fill: 'both',
         })
         active.animation = animation
         void animation.finished.then(() => {

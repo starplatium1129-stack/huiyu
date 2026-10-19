@@ -1,9 +1,24 @@
 import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, watch, type Ref } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { FluidSpring } from '@/utils/fluidSpring'
+import { GALLERY_SPRING } from '@/utils/controlSprings'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 
-export interface CoverFlowTravel { readonly from:number; readonly to:number; readonly velocity:number; readonly duration:number; readonly samples:readonly number[] }
+export interface CoverFlowTravel { readonly from:number; readonly to:number; readonly velocity:number; readonly coast:number; readonly duration:number; readonly samples:readonly number[] }
+const COAST_DECAY = 7
+const COAST_SECONDS = .16
+const coverSpring = (value: number) => new FluidSpring(value, GALLERY_SPRING.frequency, GALLERY_SPRING.damping)
+
+function drift(spring: FluidSpring, seconds: number) {
+  const decay = Math.exp(-COAST_DECAY * seconds)
+  spring.value += spring.velocity * (1 - decay) / COAST_DECAY
+  spring.velocity *= decay
+}
+function advance(spring: FluidSpring, seconds: number, coast: number) {
+  const free = Math.min(seconds, coast)
+  if (free > 0) drift(spring, free)
+  if (seconds > free) spring.step(seconds - free)
+}
 
 /** One bounded axis for this viewer; image reads remain owned by useGalleryViewer. */
 export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
@@ -12,16 +27,16 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
 }) {
   let position = options.index(), travelStartedAt = 0
   const windowCenter = ref(Math.floor(position)), width = ref(800), reduced = ref(prefersReducedMotion()), dragging = ref(false)
-  const spring = new FluidSpring(position, 4.4)
+  const spring = coverSpring(position)
   const travel = shallowRef<CoverFlowTravel | null>(null)
   const stepWidth = computed(() => Math.max(96, Math.min(220, width.value * .18)))
-  let frame = 0, lastFrame = 0
+  let frame = 0, lastFrame = 0, coasting = 0
   let dragFrame = 0, pendingDrag: number | undefined
   let wheelPosition: number | null = null, wheelTimer: ReturnType<typeof setTimeout> | undefined
   let requestedIndex = options.index(), suppressClick = false
   let clickTimer: ReturnType<typeof setTimeout> | undefined
   let stopPreference: (() => void) | undefined
-  let drag: { id: number; x: number; position: number; last: number; time: number; velocity: number } | null = null
+  let drag: { id: number; capture: Element | null; x: number; position: number; last: number; time: number; velocity: number } | null = null
   const clamp = (value: number) => Math.max(0, Math.min(Math.max(0, options.count() - 1), value))
   function present(value: number) {
     position = value
@@ -46,32 +61,36 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     const animation = host.value?.getAnimations?.({ subtree:true }).find(item => item.id === 'gallery-cover-flow')
     const elapsed = typeof animation?.currentTime === 'number' ? animation.currentTime / 1000
       : travelStartedAt ? Math.max(0, (performance.now() - travelStartedAt) / 1000) : 0
-    const live = new FluidSpring(current.from, 4.4)
-    live.velocity = current.velocity; live.to(current.to); live.step(elapsed)
+    const live = coverSpring(current.from)
+    live.velocity = current.velocity; live.to(current.to); advance(live, elapsed, current.coast)
     spring.value = live.value; spring.velocity = live.velocity
     // Paint the captured value before cancelling native effects so a reversal
     // cannot expose their underlying destination frame.
     present(live.value)
-    travel.value = null; travelStartedAt = 0
+    travel.value = null; travelStartedAt = 0; coasting = Math.max(0, current.coast - elapsed)
   }
   function tick(time: number) {
     frame = 0
     const elapsed = lastFrame ? (time - lastFrame) / 1000 : 1 / 60
     lastFrame = time
-    present(spring.step(elapsed))
+    advance(spring, elapsed, coasting); coasting = Math.max(0, coasting - elapsed)
+    present(spring.value)
     if (!spring.settled && options.active()) frame = requestAnimationFrame(tick)
     else lastFrame = 0
   }
-  function moveTo(value: number, compose = true) {
+  function moveTo(value: number, compose = true, coast = 0) {
     if (travel.value?.to===clamp(value)) return
     captureTravel()
     spring.to(clamp(value))
+    coasting = coast
     if (reduced.value || document.hidden) { stopFrame(); spring.snap(); present(spring.value) }
     else if (compose && typeof host.value?.animate==='function' && Math.abs(spring.target-spring.value)<=3) {
       stopFrame()
-      const curve=new FluidSpring(spring.value,4.4);curve.velocity=spring.velocity;curve.to(spring.target)
+      const curve=coverSpring(spring.value);curve.velocity=spring.velocity;curve.to(spring.target)
       const samples=[curve.value]
-      for(let index=0;index<90&&!curve.settled;index++) samples.push(curve.step(1/60))
+      for(let index=0;index<90&&(!curve.settled||index/60<coast);index++) {
+        advance(curve, 1/60, Math.max(0, coast-index/60)); samples.push(curve.value)
+      }
       if(samples.length===1){spring.snap();present(spring.value);return}
       samples[samples.length-1]=spring.target
       // A fast reversal during a long jump can retain substantial velocity.
@@ -80,7 +99,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
         frame = requestAnimationFrame(tick)
         return
       }
-      travel.value = { from:spring.value, to:spring.target, velocity:spring.velocity, duration:(samples.length-1)/60*1000, samples }
+      travel.value = { from:spring.value, to:spring.target, velocity:spring.velocity, coast, duration:(samples.length-1)/60*1000, samples }
     }
     // Long jumps cross the virtualized cover window and keep its live path.
     else if (!frame) frame = requestAnimationFrame(tick)
@@ -89,7 +108,7 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   function finishTravel(motion: CoverFlowTravel) {
     if (travel.value !== motion) return
     spring.snap(motion.to); present(spring.value)
-    travel.value = null; travelStartedAt = 0
+    travel.value = null; travelStartedAt = 0; coasting = 0
   }
   function resumeTravel(motion: CoverFlowTravel) {
     if (travel.value !== motion) return
@@ -99,14 +118,17 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   function clearWheel() { clearTimeout(wheelTimer); wheelPosition = null }
   function releasePointer() {
     flushDragPaint()
-    const id = drag?.id
+    const previous = drag, id = previous?.id
     drag = null; dragging.value = false
-    if (id !== undefined && host.value?.hasPointerCapture(id)) host.value.releasePointerCapture(id)
+    if (id !== undefined) {
+      const capture = host.value?.hasPointerCapture(id) ? host.value : previous?.capture
+      if (capture?.hasPointerCapture(id)) capture.releasePointerCapture(id)
+    }
   }
   function stop() {
     cancelDragPaint()
     captureTravel()
-    stopFrame(); clearWheel(); releasePointer()
+    stopFrame(); clearWheel(); releasePointer(); coasting = 0
     clearTimeout(clickTimer); suppressClick = false
   }
   function reset() {
@@ -128,8 +150,12 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     if (!options.active() || options.count() < 2 || !event.isPrimary || drag || event.button !== 0 || blocked(event.target)) return
     clearWheel()
     captureTravel()
-    stopFrame()
-    drag = { id: event.pointerId, x: event.clientX, position, last: position, time: event.timeStamp, velocity: 0 }
+    stopFrame(); coasting = 0
+    // Capture the pressed image/button first: fast input may leave the stage
+    // before the first move. Its original click still belongs to that control.
+    const capture = event.target instanceof Element ? event.target : host.value
+    drag = { id: event.pointerId, capture, x: event.clientX, position, last: position, time: event.timeStamp, velocity: 0 }
+    capture?.setPointerCapture(event.pointerId)
   }
   function pointerMove(event: PointerEvent) {
     if (!drag || drag.id !== event.pointerId) return
@@ -144,7 +170,10 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     const raw = drag.position + distance / stepWidth.value, bounded = clamp(raw), extra = raw - bounded
     const value = bounded + extra * .18 / (1 + Math.abs(extra))
     const elapsed = event.timeStamp - drag.time
-    if (elapsed > 0) drag.velocity = Math.max(-14, Math.min(14, (value - drag.last) / elapsed * 1000))
+    if (elapsed > 0) {
+      const sample = Math.max(-12, Math.min(12, (value - drag.last) / elapsed * 1000))
+      drag.velocity += (sample - drag.velocity) * (1 - Math.exp(-elapsed / 45))
+    }
     drag.last = value; drag.time = event.timeStamp
     // Keep release velocity at pointer rate; present only the latest point per frame.
     spring.snap(value); pendingDrag = value
@@ -156,10 +185,16 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
     const velocity = event.timeStamp - drag.time > 80 ? 0 : drag.velocity
     releasePointer()
     if (!wasDragging) { moveTo(options.index()); return }
-    if (cancelled) { moveTo(options.index()); return }
-    // Project at most one extra cover, then keep the release velocity in the spring.
-    const target = clamp(Math.round(position + Math.max(-1, Math.min(1, velocity * .12))))
-    spring.velocity = velocity; moveTo(target); commit(target)
+    if (cancelled) { spring.velocity = 0; moveTo(options.index()); return }
+    // Free travel decelerates first, then the cover docks with the same velocity.
+    // At either end, skip free travel and let the bounded spring rebound directly.
+    const target = clamp(Math.round(position + Math.max(-2, Math.min(2, velocity / COAST_DECAY))))
+    let coast = reduced.value || position !== clamp(position) || Math.abs(velocity) < .3 ? 0 : COAST_SECONDS
+    const distance = velocity > 0 ? options.count() - 1 - position : position
+    if (coast && distance < Math.abs(velocity) / COAST_DECAY) {
+      coast = Math.min(coast, -Math.log(1 - distance * COAST_DECAY / Math.abs(velocity)) / COAST_DECAY)
+    }
+    spring.velocity = velocity; moveTo(target, true, coast); commit(target)
     suppressClick = true
     clickTimer = setTimeout(() => { suppressClick = false }, 0)
   }
@@ -179,7 +214,9 @@ export function useGalleryCoverFlow(host: Ref<HTMLElement | null>, options: {
   useEventListener(host, 'pointermove', pointerMove)
   useEventListener(host, 'pointerup', event => pointerEnd(event))
   useEventListener(host, 'pointercancel', event => pointerEnd(event, true))
-  useEventListener(host, 'lostpointercapture', event => pointerEnd(event, true))
+  // Promoting a real drag from its pressed image to the stage releases the
+  // image's capture too; only losing the stage capture cancels that gesture.
+  useEventListener(host, 'lostpointercapture', event => { if (event.target === host.value || !dragging.value) pointerEnd(event, true) })
   useEventListener(host, 'click', event => { if (suppressClick) { event.preventDefault(); event.stopPropagation(); suppressClick = false } }, { capture: true })
   // The current picture consumes wheel zoom first; its letterboxing and the
   // surrounding covers keep the gallery's existing navigation gesture.

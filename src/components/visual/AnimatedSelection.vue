@@ -3,6 +3,7 @@
 import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { frame, cancelFrame } from 'motion'
 import { createFluidMotion } from '@/utils/fluidSpring'
+import { SELECTION_SPRING } from '@/utils/controlSprings'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import '@/assets/css/studio-segments.css'
 const props = withDefaults(defineProps<{ target?: string; stretch?: boolean; variant?: 'surface' | 'underline' }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]', stretch: false, variant: 'surface' })
@@ -24,11 +25,12 @@ let observing = false
 let destinationBox = ''
 let parentBox = ''
 let keyboardInput = false
-let measureFrame = 0
 function keyboard(event: KeyboardEvent) {
   // Keep keyboard selection and its painted state together in every group;
   // managed tablists still retain ownership of their own roving focus.
-  keyboardInput = true; cancelScheduled(false); fluid?.settle(); indicator.value?.style.setProperty('transition','none'); schedule()
+  // Focus and content commit immediately; the decorative spring keeps its
+  // current position/velocity through repeated arrow keys and pointer presses.
+  keyboardInput = true; schedule()
   if (parent?.classList.contains('studio-segments') && event.target instanceof HTMLButtonElement) {
     // Reka owns tab/radio roving focus. Plain pressed-button groups use the same keys.
     if (parent.getAttribute('role') === 'tablist' || parent.dataset.segmentKeyboard === 'managed' || event.altKey || event.ctrlKey || event.metaKey) return
@@ -75,25 +77,15 @@ function focusSegment(button: HTMLButtonElement) {
   const y = box.top < top ? box.top - top : Math.max(0, box.bottom - innerHeight + margin)
   if (x || y) window.scrollBy({ left:x, top:y, behavior:'instant' })
 }
-function pointer() { keyboardInput = false; indicator.value?.style.removeProperty('transition') }
+function pointer() { keyboardInput = false }
 // Motion batches all indicator reads before any indicator writes in this frame.
 function schedule() {
-  if (suspended || document.hidden || measureFrame) return
-  if (keyboardInput || prefersReducedMotion()) { frame.read(update); return }
-  // Navigation first commits and paints its content. Decorative geometry reads
-  // then use that layout, rather than forcing a large new image page to lay out.
-  measureFrame = requestAnimationFrame(() => {
-    measureFrame = requestAnimationFrame(() => {
-      measureFrame = 0
-      if (!suspended && !document.hidden) frame.read(update)
-    })
-  })
+  if (!suspended && !document.hidden) frame.read(update)
 }
-function cancelScheduled(reset = true) {
-  cancelAnimationFrame(measureFrame); measureFrame = 0
+function cancelScheduled() {
   cancelFrame(update); cancelFrame(render); measurement = null
   // Reactivation must snap to the selected target, not retain a paused spring.
-  if (reset) { initialized = false; destinationBox = '' }
+  initialized = false; destinationBox = ''
 }
 function onVisibilityChange() {
   if (typeof document !== 'undefined' && document.hidden) {
@@ -187,8 +179,8 @@ function render() {
       light.style.opacity = String(energy * .42)
       light.style.transform = `translateX(${Math.sign(targetX - left) * energy * 14}%)`
     }
-  }, 5.5)
-  fluid.to([x, y, width, height], !initialized || keyboardInput)
+  }, SELECTION_SPRING.frequency, SELECTION_SPRING.damping)
+  fluid.to([x, y, width, height], !initialized)
   initialized = true
 }
 onMounted(() => {

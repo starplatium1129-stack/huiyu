@@ -38,6 +38,9 @@
 /* The closed drawer lives beyond the viewport; it must not scroll the dialog.
    Artwork and the information column keep their own overflow behavior. */
 .art-viewer { overflow:hidden; }
+/* The image flies at full opacity; its reading backdrop has a separate timeline. */
+.art-viewer[data-image-transition] { isolation:isolate; background:transparent; }
+.art-viewer[data-image-transition]::before { content:''; position:absolute; inset:0; z-index:-1; background:var(--bg-deep); opacity:var(--viewer-backdrop-opacity,1); pointer-events:none; }
 dialog.art-viewer:not([open]) { display:none; }
 dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-backdrop-opacity,1); }
 .art-viewer .viewer-compare-host { @apply tw:w-full; height:calc(100vh - 120px); max-width:min(90vw, 1200px); @apply tw:flex tw:items-center tw:justify-center; }

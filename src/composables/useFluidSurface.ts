@@ -17,10 +17,13 @@ const FLUID_FULLSCREEN_SELECTOR = FLUID_FULLSCREEN_SELECTORS.join(', ')
 /** Sample the existing spring once; native timelines keep fading while a newly
  * opened form lays out. Retarget from presentation and retain spring velocity. */
 type Presentation = { value: number; velocity: number; opacity?: number; opacityVelocity?: number; backdrop?: number }
-type SurfaceOptions = { animatePanel?: boolean; small?: boolean }
+export type SurfaceLayers = (el: HTMLElement, opacity: { opacity: number }[], timing: KeyframeAnimationOptions,
+  target: number, add: (animation: Animation) => void) => void
+type SurfaceOptions = { animatePanel?: boolean; small?: boolean; layers?: SurfaceLayers }
 
 function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: Presentation, frequency: number, damping: number,
   transform: ((progress: number) => string) | undefined, write: (progress: number, backdrop?: boolean, opacity?: number) => void,
+  layered?: SurfaceLayers,
 ) {
   const spring = new FluidSpring(initial.value, frequency, damping)
   spring.velocity = initial.velocity
@@ -72,8 +75,10 @@ function compositedMotion(el: HTMLElement, panel: HTMLElement, initial: Presenta
       const transforms = transform ? progress.map(value => ({ transform: transform(value) })) : null
       const timing = { duration: Math.max(1, (progress.length - 1) * 1000 / 60), fill: 'both' as const, easing: 'linear' }
       try {
-        const root = el.animate(panel === el && transforms ? opacity.map((value, index) => ({ ...value, ...transforms[index] })) : opacity, timing)
+        const root = el.animate(panel === el && transforms ? opacity.map((value, index) => ({ ...value, ...transforms[index] })) : opacity,
+          layered ? { ...timing, pseudoElement: '::before' } : timing)
         effects.push(root)
+        layered?.(el, opacity, timing, targets[0], animation => { effects.push(animation) })
         if (panel !== el && transforms) effects.push(panel.animate(transforms, timing))
         if (el instanceof HTMLDialogElement) {
           // Inspira UI AnimatedModal separates scrim fading from panel motion.
@@ -114,6 +119,7 @@ export function createFluidSurface(panelSelector?: string, options: SurfaceOptio
       backdrop: el.style.getPropertyValue('--fluid-backdrop-opacity'),
       willChange: el.style.willChange,
       panelWillChange: panel.style.willChange,
+      viewerBackdrop: el.style.getPropertyValue('--viewer-backdrop-opacity'),
     }
     const restore = () => {
       el.style.opacity = original.opacity
@@ -122,6 +128,8 @@ export function createFluidSurface(panelSelector?: string, options: SurfaceOptio
       if (panel !== el) panel.style.willChange = original.panelWillChange
       if (original.backdrop) el.style.setProperty('--fluid-backdrop-opacity', original.backdrop)
       else el.style.removeProperty('--fluid-backdrop-opacity')
+      if (original.viewerBackdrop) el.style.setProperty('--viewer-backdrop-opacity', original.viewerBackdrop)
+      else el.style.removeProperty('--viewer-backdrop-opacity')
     }
     // Dialogs use their own CSS origin; anchored Reka surfaces own collision
     // geometry. A distant trigger must not pull a centered modal sideways.
@@ -131,6 +139,7 @@ export function createFluidSurface(panelSelector?: string, options: SurfaceOptio
     // Image previews animate their own source-to-image proxy; moving the
     // containing surface too would shift both ends of that path.
     const imageTransition = el.hasAttribute('data-image-transition')
+    const layered = imageTransition ? options.layers : undefined
     // Large image/form surfaces keep their geometry while fading. Scaling them
     // invalidates intrinsic layout and image layers during the opening frames.
     // Reduced motion settles per operation; don't permanently freeze a surface
@@ -148,19 +157,22 @@ export function createFluidSurface(panelSelector?: string, options: SurfaceOptio
     const promote = () => {
       // Promote only while moving. rAF style writes otherwise keep large,
       // newly opened forms on the main-thread paint path.
-      el.style.willChange = panel === el && !stationary ? 'opacity, transform' : 'opacity'
+      if (!layered) el.style.willChange = panel === el && !stationary ? 'opacity, transform' : 'opacity'
       if (panel !== el && !stationary) panel.style.willChange = 'transform'
     }
     const write = (progress: number, backdrop = true, opacity = progress) => {
       promote()
-      el.style.opacity = String(opacity)
+      // The proxy stays opaque while the backdrop and controls arrive separately.
+      // This variable changes only at timeline handoff/settle in the native path.
+      if (layered) el.style.setProperty('--viewer-backdrop-opacity', String(opacity))
+      else el.style.opacity = String(opacity)
       // Native ::backdrop is a separate top-layer surface, not a child: fading
       // the dialog alone leaves a solid scrim that vanishes abruptly on close.
       if (backdrop && el instanceof HTMLDialogElement) el.style.setProperty('--fluid-backdrop-opacity', String(opacity))
       if (transform) panel.style.transform = transform(progress)
     }
     // The composited path catches unavailable/failed WAAPI and owns its fallback.
-    const motion = compositedMotion(el, panel, initial, spring, damping, transform, write)
+    const motion = compositedMotion(el, panel, initial, spring, damping, transform, write, layered)
     const current = { motion, restore }
     motions.set(el, current)
     return current

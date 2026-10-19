@@ -5,7 +5,6 @@ import { hasPendingArtworkSource, initializeMigrationParticipant, retireWebArtwo
 import { activateProfileStorage, flushProfileWrites, hasPendingProfileWrites, hasProfileRecoveryData, profileRuntimeActive, refreshProfileStorage, setProfileConnectionBlocked } from './web/profileStorage'
 import { createProfilePort } from './web/profilePort'
 import { workspaceRequest } from '@/api/workspace'
-import { createDesktopArtworkRepository } from './desktop/artworkRepository'
 import { getDesktopRuntime, initializeDesktopRuntime, onDesktopRuntime, refreshDesktopRuntime } from './desktop/runtime'
 import { hostApi } from './desktop/hostApi'
 import { consumeTaskReloadApproval } from '@/composables/useTaskCenter'
@@ -18,8 +17,13 @@ export function isDesktopHost(): boolean {
 export async function initializePlatform(isBusy: () => boolean): Promise<() => void> {
   let alive = true
   let stopRuntime = () => {}, stopConnection = () => {}, stopMaintenance = () => {}, stopArtworkCleanup = () => {}
-  if (isDesktopHost()) {
-    setProfileConnectionBlocked(true)
+  // Browser startup needs only its own adapter; resolve the native adapter before
+  // selecting it so a desktop handshake failure still cannot enable IDB writes.
+  const desktopHost = isDesktopHost()
+  if (desktopHost) setProfileConnectionBlocked(true)
+  const createDesktopArtworkRepository = desktopHost
+    ? (await import('./desktop/artworkRepository')).createDesktopArtworkRepository : null
+  if (createDesktopArtworkRepository) {
     // While identity is unknown, every artwork call goes to a disconnected
     // desktop adapter. A failed handshake never authorizes writes to old IDB.
     configureArtworkRepository(createDesktopArtworkRepository())
@@ -28,7 +32,7 @@ export async function initializePlatform(isBusy: () => boolean): Promise<() => v
   const bootstrap = getDesktopRuntime().bootstrap
   try { initializeMigrationParticipant({ windowId: bootstrap?.windowId, isBusy: () => isBusy() || hasPendingProfileWrites() }) }
   catch (error) { console.warn('跨窗口迁移当前不可用', error) }
-  if (isDesktopHost()) {
+  if (createDesktopArtworkRepository) {
     // Register the window lease before the final startup authority read, so a
     // concurrent migration either awaits this window or precedes its handshake.
     await refreshDesktopRuntime()

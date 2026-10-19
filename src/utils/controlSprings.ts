@@ -6,3 +6,6 @@ export const BUTTON_SPRING = { type: 'spring', stiffness: 600, damping: 30, mass
 export const SURFACE_SPRING = { stiffness: 720, damping: 32, mass: 1 } as const
 export const SURFACE_FREQUENCY = Math.sqrt(SURFACE_SPRING.stiffness / SURFACE_SPRING.mass) / (2 * Math.PI)
 export const SURFACE_DAMPING = SURFACE_SPRING.damping / (2 * Math.sqrt(SURFACE_SPRING.stiffness * SURFACE_SPRING.mass))
+/** Selection keeps momentum on reversal; covers settle with a slower, shallow rebound. */
+export const SELECTION_SPRING = { frequency: 5.5, damping: .86 } as const
+export const GALLERY_SPRING = { frequency: 3.6, damping: .82 } as const

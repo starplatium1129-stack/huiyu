@@ -7,11 +7,11 @@
 import { onDeactivated, onUnmounted } from 'vue'
 import { createFluidSurface } from '@/composables/useFluidSurface'
 
-const props = withDefaults(defineProps<{ panel?: string; appear?: boolean; small?: boolean }>(), {
+const props = withDefaults(defineProps<{ panel?: string; appear?: boolean; small?: boolean; surface?: ReturnType<typeof createFluidSurface> }>(), {
   panel: '[role="dialog"]',
   appear: true,
 })
-const surface = createFluidSurface(props.panel, { small: props.small })
+const surface = props.surface ?? createFluidSurface(props.panel, { small: props.small })
 const leaving = new Set<Element>()
 // An explicitly closing component may unmount before its picture finishes.
 // Its leave callback retains ownership until Vue removes that one surface.

@@ -4,7 +4,8 @@ import { cssTimeToMilliseconds } from './motionTiming'
 
 /** Native close removes the top layer immediately. Lease only its inert picture
  * to the exit motion, so callers can release focus, media and business state now. */
-export function createDialogExit(source: HTMLDialogElement, state: { value: number; velocity: number }) {
+export function createDialogExit(source: HTMLDialogElement, state: { value: number; velocity: number },
+  motion = createFluidSurface(undefined, { animatePanel: true })) {
   if (prefersReducedMotion() || document.hidden) return
   const rect = source.getBoundingClientRect(), style = getComputedStyle(source)
   const matrix = new DOMMatrixReadOnly(style.transform === 'none' ? undefined : style.transform)
@@ -50,8 +51,7 @@ export function createDialogExit(source: HTMLDialogElement, state: { value: numb
     easing: style.getPropertyValue('--ease-out').trim(), fill: 'both',
   })
   void fade.finished.catch(() => {})
-  const motion = createFluidSurface(undefined, { animatePanel: true })
-  const cancel = () => { motion.clear(); fade.cancel(); layer.remove() }
+  const cancel = () => { motion.dispose(panel); fade.cancel(); layer.remove() }
   motion.adopt(panel, state)
   motion.leave(panel, cancel)
   return { capture: () => {

@@ -151,7 +151,7 @@
     <!-- 沉浸查看器（Teleport 渲染到 body；放在根元素内保持单根，
          否则多根组件不会继承 AppLayout 注入的 route-view class） -->
     <Teleport to="body">
-      <FluidTransition @before-leave="imageOrigin.leave" @after-leave="finishViewerClose">
+      <FluidTransition :surface="viewerSurface" @before-leave="imageOrigin.leave" @after-leave="finishViewerClose">
         <div
           v-show="viewerIndex >= 0"
           class="art-viewer"
@@ -338,6 +338,7 @@ import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
 import { useGalleryImageOrigin } from '@/composables/gallery/useGalleryImageOrigin'
+import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 const selectionDock = ref<HTMLElement | null>(null), dockActive = ref(true)
 const selectionDockHeight = ref(140)
 useResizeObserver(() => dockActive.value ? selectionDock.value : null, ([entry]) => {
@@ -425,6 +426,7 @@ watch(viewerIndex, (index, previous) => { if (index < 0 || previous < 0) cancelG
 watch(() => current.value?.id, () => { if (gestureLoading.value || gestureError.value) cancelGesture() }, { flush:'sync' })
 watch(compareMode, value => { if (value) cancelGesture() }, { flush:'sync' })
 const imageOrigin = useGalleryImageOrigin({ viewerEl, shellEl, viewerIndex, viewerUrl, current })
+const viewerSurface = useArtworkViewerSurface()
 function openFromCard(index: number, event: MouseEvent) {
   imageOrigin.capture(event)
   openViewer(index)

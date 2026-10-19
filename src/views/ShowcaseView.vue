@@ -134,7 +134,7 @@ import { runtimeFetch } from '@/platform/runtimeUrl'
 
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
-import { useFluidSurface } from '@/composables/useFluidSurface'
+import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { ref, shallowRef, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
@@ -212,19 +212,11 @@ const { compact: narrowViewer, toggle: openViewerInfo, close: closeViewerInfo } 
   viewerCloseButton: viewerClose, open: viewerInfoOpen, active: () => viewerMounted.value && !viewerClosing.value,
 })
 const viewerHero = useImageOriginTransition({ proxyPixelBudget: 1920 * 1080 })
-const viewerSurface = useFluidSurface('.art-viewer')
+const viewerSurface = useArtworkViewerSurface(viewerHero, sourceImage)
 function sourceImage(id = currentId.value) {
   return document.querySelector<HTMLImageElement>(`.sample[data-sample-id="${CSS.escape(id)}"] .sample-image`)
 }
-const viewerMotion = useFluidDialog(dialogEl, {
-  ...viewerSurface,
-  enter(el, done) {
-    const image = el.querySelector<HTMLImageElement>('.zoomable-img')
-    viewerSurface.enter(el, done)
-    if (image) void viewerHero.enter(image, el as HTMLElement)
-  },
-  dispose(el) { viewerHero.cancel(); viewerSurface.dispose(el) },
-})
+const viewerMotion = useFluidDialog(dialogEl, viewerSurface)
 const viewerImageFailed = ref(false)
 
 const viewerVersion = ref(0)
