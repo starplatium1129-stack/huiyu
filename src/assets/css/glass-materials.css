@@ -22,6 +22,32 @@
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)):is(.studio-select-content,.studio-popover,.chat-more-menu) {
   box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 0 0 1px var(--glass-edge),var(--shadow-md);
 }
+/* A curved optical rim on chrome only; the central tint protects original ink.
+   The SVG filter displaces the backdrop, never the control or its descendants. */
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] {
+  --liquid-rim:color-mix(in srgb,var(--on-art-primary) 48%,transparent);
+  --liquid-rim-soft:color-mix(in srgb,var(--on-art-primary) 15%,transparent);
+  --liquid-depth:color-mix(in srgb,var(--ink-base) 38%,transparent);
+}
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'][data-theme='light'] {
+  --liquid-rim:color-mix(in srgb,var(--on-art-primary) 88%,transparent);
+  --liquid-rim-soft:color-mix(in srgb,var(--on-art-primary) 48%,transparent);
+  --liquid-depth:color-mix(in srgb,var(--ink-base) 15%,transparent);
+}
+:root[data-glass-material='liquid'] body .fluid-glass-chrome:is(.nav,.companion-toolbar,[data-fluid-glass]) {
+  background:linear-gradient(118deg,var(--liquid-rim-soft),transparent 34% 72%,var(--glass-specular)),var(--material-fill);
+  box-shadow:inset 0 1px 0 var(--liquid-rim),inset 1px 0 0 var(--liquid-rim-soft),inset -1px 0 0 var(--glass-edge),inset 0 -1px 0 var(--liquid-depth),inset 0 -2px 2px -1px var(--liquid-rim-soft),inset 0 0 14px -9px var(--liquid-rim),var(--glass-shadow);
+  -webkit-backdrop-filter:blur(4px) saturate(145%);
+  backdrop-filter:blur(4px) saturate(145%);
+}
+:root[data-glass-material='liquid'] body .fluid-glass-chrome:is(.studio-popover,.studio-select-content,.chat-more-menu,.wardrobe-menu,.companion-picker-content) {
+  --material-fill:color-mix(in srgb,var(--bg-surface) calc(78% + var(--glass-tint,.35) * 12%),transparent);
+}
+:root[data-glass-material='liquid'] body .fluid-glass-chrome.fluid-glass-refractive {
+  -webkit-backdrop-filter:var(--fluid-glass-filter) saturate(145%);
+  backdrop-filter:var(--fluid-glass-filter) saturate(145%);
+}
+:root[data-glass-material='liquid'] body .nav.fluid-glass-chrome { box-shadow:inset 0 1px 0 var(--liquid-rim-soft),inset 0 -1px 0 var(--liquid-rim),0 6px 22px -12px var(--liquid-depth); }
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .studio-select-content[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)) .studio-select-item[data-state='checked']:not([data-disabled]) {
   color:var(--text-primary);
 }

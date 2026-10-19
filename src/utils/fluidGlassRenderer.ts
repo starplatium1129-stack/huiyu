@@ -1,4 +1,5 @@
 import { listenMotionChanges, prefersReducedMotion } from './motionPreference'
+import { mountFluidGlassOptics } from './fluidGlassOptics'
 
 // Match the material opt-ins: painted browse controls and segments never own optics.
 const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .companion-toolbar, [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))'
@@ -6,6 +7,7 @@ const FLUID_GLASS_SELECTOR = '.nav, .nav-more-menu, .companion-toolbar, [data-fl
 /** Native backdrop filters paint the material. JS moves one compositor light. */
 export function mountFluidGlass(): () => void {
   if (!window.CSS?.supports('backdrop-filter', 'blur(1px)')) return () => {}
+  const stopOptics = mountFluidGlassOptics()
   let active: { element: HTMLElement; layer: HTMLElement; light: HTMLElement; box: DOMRect; positioned: boolean } | undefined
   let frame = 0, x = 0, y = 0, pressed = false
   function clear() {
@@ -74,7 +76,7 @@ export function mountFluidGlass(): () => void {
   window.addEventListener('resize', clear)
   window.addEventListener('blur', clear)
   return () => {
-    clear(); stopMotion()
+    clear(); stopMotion(); stopOptics()
     document.removeEventListener('pointermove', move); document.removeEventListener('pointerdown', press)
     document.removeEventListener('pointerout', leave); document.removeEventListener('keydown', key)
     window.removeEventListener('pointerup', release); window.removeEventListener('pointercancel', clear)

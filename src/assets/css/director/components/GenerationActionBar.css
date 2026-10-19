@@ -49,6 +49,24 @@
 .pb .generation-action:disabled .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
 .pb .generation-action[aria-disabled="true"] { color:var(--text-disabled); cursor:wait; }
 .pb .generation-action[aria-disabled="true"] .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
+/* Keep the existing morph target, click ripple, content handoff and progress.
+   Optical paint rides on the same surface, beneath the unchanged text layer. */
+html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action-surface {
+  box-shadow:inset 0 1px 0 var(--liquid-rim),inset 0 -1px 0 var(--liquid-depth),inset 1px 0 0 var(--liquid-rim-soft),0 4px 12px -8px var(--liquid-depth);
+}
+html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action-surface::after {
+  content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(180deg,var(--liquid-rim-soft),transparent 38% 68%,var(--glass-highlight));
+}
+html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action-surface.fluid-glass-refractive {
+  -webkit-backdrop-filter:var(--fluid-glass-filter) saturate(145%);
+  backdrop-filter:var(--fluid-glass-filter) saturate(145%);
+}
+html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action[data-state='idle']:not(:disabled) .generation-action-surface {
+  background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 86%,transparent),var(--accent) 32% 72%,color-mix(in srgb,var(--accent) 88%,transparent));
+}
+html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action:is(:disabled,[aria-disabled='true']) .generation-action-surface { box-shadow:inset 0 1px 0 var(--glass-highlight); }
+html[data-glass-material='liquid']:not([data-reduced-glass='true']) .pb .generation-action:is(:disabled,[aria-disabled='true']) .generation-action-surface::after { display:none; }
 .pb :is(.gen-bar-recovery,.generation-action):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .generation-action[data-state="idle"]:focus-visible { --focus-shadow:inset 0 -2px 0 currentColor; }
 .pb .gen-bar[data-docked] { flex-direction:column; align-items:stretch; border:0; border-radius:0; }

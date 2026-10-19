@@ -1,4 +1,5 @@
 @reference "./tailwind.css";
+.fluid-glass-definitions { position:absolute; width:0; height:0; overflow:hidden; pointer-events:none; }
 .fluid-glass-positioned { position:relative; }
 .fluid-glass-lit { isolation:isolate; }
 .fluid-glass-optics { position:absolute; inset:0; z-index:-1; overflow:hidden; border-radius:inherit; pointer-events:none; }

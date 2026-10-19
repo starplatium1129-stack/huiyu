@@ -70,10 +70,8 @@ function focusFirstPage(event: Event) {
 @reference "../assets/css/tailwind.css";
 /* This surface is portalled, so its links cannot inherit .nav-links rules. */
 .studio-popover.nav-more-menu { @apply tw:grid tw:gap-s-3 tw:p-s-3; grid-template-columns:repeat(3,minmax(0,1fr)); width:min(580px,calc(100vw - 32px)); scroll-padding-block:var(--s-2); }
-/* Dense navigation needs an opaque reading surface even when material styles load later.
-   Keep their rim and shadow; accessibility material overrides retain priority. */
-.studio-popover.nav-more-menu,
-:root[data-glass-material] body .studio-popover.nav-more-menu[data-state] { background:var(--bg-surface); }
+/* The optional liquid material owns its tint and rim; painted mode stays opaque. */
+.studio-popover.nav-more-menu { background:var(--bg-surface); }
 .nav-more-group { @apply tw:grid tw:content-start tw:gap-s-1 tw:min-w-0; }
 .nav-more-menu .nav-more-group-label { @apply tw:m-0 tw:py-s-2 tw:px-s-2 tw:text-muted; font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .nav-more-menu a { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:min-h-[44px] tw:rounded-md tw:text-secondary; padding:var(--s-2) var(--s-3); font:500 var(--fs-label)/var(--lh-body) var(--font-sans); text-decoration:none; white-space:normal; }
