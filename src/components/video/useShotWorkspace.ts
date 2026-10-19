@@ -132,7 +132,7 @@ export function useShotWorkspace(props: {
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
-    const { referenceCards, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, retryReferences, referencesReady, shotReferences } = useReferenceCards({
+    const { referenceCards, profileFailed, retryCardProfile, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, retryReferences, referencesReady, shotReferences } = useReferenceCards({
         mediaRevision: frameRevision,
         identityCard,
         batchError,
@@ -424,7 +424,7 @@ export function useShotWorkspace(props: {
         if (outcome.framesPending)
             parts.push(`${outcome.framesPending} 张待处理（可在镜头上单独重试）`);
         if (outcome.charactersFailed)
-            parts.push(`${outcome.charactersFailed} 位角色资料读取失败，请重新选择`);
+            parts.push(`${outcome.charactersFailed} 位角色资料读取失败，请在对应角色卡重试`);
         batchError.value = parts.join('，') + '。';
         aiFlowStep.value = 0;
     }
@@ -435,7 +435,11 @@ export function useShotWorkspace(props: {
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
         batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,
     });
-    const { importScenarioActs } = useScenarioShotImport({ shots, active: routeActive, batchError, persistShotsDraft });
+    const { importScenarioActs, pendingScenarioCount, scenarioImportBlocked } = useScenarioShotImport({ shots, active: routeActive, batchError, persistShotsDraft });
+    function retryScenarioImport() {
+        if (!restoreReady || workspaceRead || !workspaceCurrent(workspaceVisit) || batchActive.value || submitting.value || scenarioImportBlocked.value) return;
+        importScenarioActs();
+    }
     /** 整批任务重连（F1）：离页不中断服务端批次，回来按 batchId 接回真实进度。 */
     async function reconnectShotsBatch() {
         const visit = workspaceVisit;
@@ -484,7 +488,7 @@ export function useShotWorkspace(props: {
     return {
 frameInputs,
         h3Ready, aspectOptions, aspectRatio, quality, linkLastFrame, steps,
-        identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard, onCardCharacterSelected,
+        identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
         popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
         setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, sceneBlueprints, addShot,
         storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,

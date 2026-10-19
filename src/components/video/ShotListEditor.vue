@@ -1,5 +1,9 @@
 <template>
   <section ref="editorRoot" class="shot-editor">
+    <p v-if="pendingScenarioCount" class="video-panel" role="status">
+      剧本导入待办 {{ pendingScenarioCount }} 幕。{{ scenarioImportBlocked ? '当前镜头已保留；如需导入，请先确认并清空当前镜头。' : '可继续导入或确认已保留的剧本。' }}
+      <button class="btn btn-ghost btn-sm" type="button" :disabled="scenarioImportBlocked || batchActive || submitting" @click="retryScenarioImport">导入待办剧本</button>
+    </p>
     <p v-if="batchError" class="video-panel" role="status">{{ batchError }}</p>
     <p v-if="batchReadError || batchRecoveryPending" class="video-panel" role="status">
       {{ batchReading ? '正在读取分镜批次…' : batchReadError || '原分镜请求尚未结束，不能重复提交。' }}
@@ -123,7 +127,7 @@
                   maxlength="20"
                   placeholder="角色名（如 宁宁 / 夏目）"
                 />
-                <StudioSelect class="shot-card-quick-select" size="sm" label="选择角色资料" :groups="cardCharacterGroups" :model-value="card.characterId || ''" :disabled="batchActive || submitting" @update:model-value="(value) => selectCardCharacter(cardIndex, String(value))" />
+                <StudioSelect class="shot-card-quick-select" size="sm" label="选择角色资料" :groups="cardCharacterGroups" :model-value="card.characterId || ''" :disabled="batchActive || submitting" @update:model-value="(value) => onCardCharacterSelected(cardIndex, String(value))" />
                 <StudioTooltip v-if="referenceCards.length > 1" anchor content="移除此角色卡">
                   <button
                     class="btn btn-ghost btn-xs shot-card-remove-btn"
@@ -135,6 +139,10 @@
                 </StudioTooltip>
               </div>
 
+              <p v-if="profileFailed(card)" class="shot-reference-hint" role="status">
+                角色资料尚未读取。
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="batchActive || submitting || loadingRefAssets" @click="retryCardProfile(cardIndex)">重试角色资料</button>
+              </p>
               <!-- 服装形态药丸选择器 (Outfit Pills) -->
               <div v-if="getCharOutfits(card.characterId).length > 1" class="shot-card-outfit-pills">
                 <button
@@ -435,7 +443,7 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import type { StudioSelectOption, StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
+import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import { computed, nextTick, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -443,7 +451,7 @@ import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
 import ShotReviewIssues from './ShotReviewIssues.vue'
 import ShotScriptDialog from './ShotScriptDialog.vue'
 import ShotBatchProgress from './ShotBatchProgress.vue'
-import { durationOptions, scriptCountOptions, scriptTotalOptions, shotSizeOptions } from './shotListEditorOptions'
+import { characterSelectGroups, durationOptions, scriptCountOptions, scriptTotalOptions, shotSizeOptions } from './shotListEditorOptions'
 import { useShotWorkspace } from "@/components/video/useShotWorkspace"
 import type { VideoStatusResponse } from '@/api/videoApi'
 const props = defineProps<{ status: VideoStatusResponse | null }>()
@@ -455,7 +463,7 @@ function locateShot(index: number) {
 }
 const {
  frameInputs,h3Ready, aspectOptions, aspectRatio, quality, linkLastFrame, steps,
-identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, batchActive, addReferenceCard, onCardCharacterSelected,
+identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
 popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
         setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, sceneBlueprints, addShot,
 storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,
@@ -485,14 +493,7 @@ const concatTranscript = computed(() => (batch.value?.shots ?? [])
   .join('\n'))
 
 // —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
-const cardCharacterGroups = computed<StudioSelectGroup[]>(() => [
-  { label: '角色预设', options: [{ value: '', label: '选择角色预设...' }] },
-  { label: '专属角色', options: [
-    { value: 'nene', label: '绫地宁宁' },
-    { value: 'natsume', label: '四季夏目' },
-  ] },
-  { label: '热门角色', options: popularCharacters.value.map(c => ({ value: c.id, label: c.displayName })) },
-])
+const cardCharacterGroups = computed(() => characterSelectGroups(popularCharacters.value))
 
 const sceneFillOptions = computed<StudioSelectOption[]>(() => [
   { value: '', label: '场景蓝图 → 填入空镜头' },
@@ -514,11 +515,6 @@ const castOptions = computed<StudioSelectOption[]>(() => {
   options.push({ value: 'all', label: '全员出场' })
   return options
 })
-
-// onCardCharacterSelected 已按新签名收 string（见 useReferenceCards），直接透传。
-function selectCardCharacter(cardIndex: number, value: string | number) {
-  onCardCharacterSelected(cardIndex, String(value))
-}
 
 async function removeReferenceWithFocus(cardIndex: number, imageIndex: number, event: MouseEvent) {
   const group = (event.currentTarget as HTMLElement).closest('.shot-reference-images')
