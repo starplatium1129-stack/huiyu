@@ -302,7 +302,7 @@ function onToastLeave(el: Element, done: () => void) {
   @apply tw:rounded-md tw:cursor-pointer tw:leading-flush;
 }
 @media (hover: hover) and (pointer: fine) {
-  .toast-action:hover { background:color-mix(in srgb, var(--accent) 18%, var(--bg-surface)); }
+  .toast-action:hover { background:var(--bg-elevated); }
   .toast-close:hover { color:var(--text-primary); background:var(--bg-elevated); }
 }
 .toast-action:focus-visible { outline: none; box-shadow: var(--focus-shadow); }

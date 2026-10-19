@@ -33,6 +33,6 @@ const { outfitOverrideLabel } = usePromptTagTools(pb)
   @apply tw:text-primary tw:text-label-xs tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
-.outfit-override-restore:hover { @apply tw:border-accent; background: var(--bg-hover); }
+.outfit-override-restore:hover { @apply tw:border-strong; background: var(--bg-hover); }
 .outfit-override-restore:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

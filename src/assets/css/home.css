@@ -22,7 +22,7 @@
 .hero-links { @apply tw:flex tw:flex-wrap tw:gap-x-s-5 tw:gap-y-s-1 tw:mt-s-1; }
 .hero-particle-link { @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:min-h-[44px] tw:text-accent; font:500 var(--fs-body-sm)/var(--lh-label) var(--font-sans); text-decoration:none; }
 .hero-reference-link { @apply tw:text-secondary; }
-.hero-particle-link:hover { @apply tw:text-accent; text-decoration:underline; text-underline-offset:4px; }
+.hero-particle-link:hover { @apply tw:text-primary; text-decoration:underline; text-underline-offset:4px; }
 .hero-particle-link:focus-visible { outline:none; box-shadow:var(--focus-shadow); @apply tw:rounded-sm; }
 .hero-particle-link .archive-icon { @apply tw:w-[16px] tw:h-[16px]; }
 .hero-particle-link .particle-link-arrow { transform:rotate(-90deg); }

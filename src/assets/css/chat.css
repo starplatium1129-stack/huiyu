@@ -562,7 +562,7 @@
 }
 
 .chat-page .chat-starters button:hover {
-  border-color: var(--character-ink, var(--character-accent));
+  border-color: var(--border-strong);
   @apply tw:text-primary;
 }
 @media (hover:hover) and (pointer:fine) { .chat-page .chat-starters button:hover { transform:translateX(2px); } }
@@ -699,7 +699,7 @@
 }
 
 .chat-page .hold-talk-btn:hover {
-  border-color: var(--character-accent, var(--accent));
+  border-color: var(--border-strong);
 }
 
 .chat-page .hold-talk-btn[data-state="capturing"] {

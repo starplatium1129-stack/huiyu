@@ -17,7 +17,7 @@
 .toggle-knob[data-state='checked'] .toggle-on { opacity:1; transform:none; }
 .toggle-switch:active:not([data-disabled]):not(:focus-visible) .toggle-knob-surface { transform:scaleX(var(--toggle-press-scale)); transition-duration:var(--motion-press); }
 @media (hover:hover) and (pointer:fine) {
-  .toggle-switch:hover:not([data-disabled]) .toggle-slider { outline:1px solid var(--accent); outline-offset:2px; }
+  .toggle-switch:hover:not([data-disabled]) .toggle-slider { outline:1px solid var(--text-secondary); outline-offset:2px; }
 }
 .toggle-switch:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .toggle-switch:focus-visible .toggle-knob,

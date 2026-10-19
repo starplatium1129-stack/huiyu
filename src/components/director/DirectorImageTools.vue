@@ -3,7 +3,7 @@
     <section class="image-tools-group" aria-label="参考图">
       <h4><ArchiveIcon name="image" />参考图</h4>
       <details class="reference-interrogate inspector-route" @toggle="onReferenceToggle">
-        <StudioDisclosureSummary><span><ArchiveIcon name="search" />图片反推</span><small>{{ interrogateMode === 'caption' ? '画面描述' : '图片词条' }}</small></StudioDisclosureSummary>
+        <StudioDisclosureSummary data-spring-button><span data-press-content><ArchiveIcon name="search" />图片反推</span><small>{{ interrogateMode === 'caption' ? '画面描述' : '图片词条' }}</small></StudioDisclosureSummary>
         <div data-disclosure-content class="reference-interrogate-body">
           <p v-if="interrogateBusy || !readiness.available.value" class="reference-interrogate-status" role="status">{{ interrogateBusy ? '正在反推…' : readiness.status.value.message }}</p>
           <div class="image-tool-buttons">
@@ -49,7 +49,7 @@
       </DeferredToolLauncher>
     </section>
     <details v-if="displayResultUrl || shotsPending > 0" class="inspector-route image-continuation">
-      <StudioDisclosureSummary><span>成片再创作</span><small v-if="shotsPending">{{ shotsPending }} 个分镜</small></StudioDisclosureSummary>
+      <StudioDisclosureSummary data-spring-button><span data-press-content>成片再创作</span><small v-if="shotsPending">{{ shotsPending }} 个分镜</small></StudioDisclosureSummary>
       <div data-disclosure-content class="image-tool-buttons image-continuation-body">
         <MangaScreenLauncher v-if="displayResultUrl" :source-url="displayResultUrl" :disabled="generationBusy" />
         <StudioTooltip v-if="displayResultUrl && (drawEngine === 'anima' || drawEngine === 'sd')" anchor :content="generationBusy ? BUSY_HINT : '使用 2x 高清超分放大'">

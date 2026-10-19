@@ -149,7 +149,7 @@ const sourceLabel = computed(() => {
   background: var(--bg-surface);
   @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer;
 }
-.outfit-chip:hover { @apply tw:border-accent tw:text-accent; }
+.outfit-chip:hover { @apply tw:border-strong tw:text-primary; }
 .outfit-chip:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .outfit-chip.active {
   @apply tw:border-strong;

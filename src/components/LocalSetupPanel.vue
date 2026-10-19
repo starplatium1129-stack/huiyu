@@ -105,7 +105,7 @@ function onPhase(phase: 'selection' | 'preparing' | 'ready') {
 .setup-steps li { display:flex; align-items:center; gap:var(--s-3); min-height:72px; padding:var(--s-3); color:var(--text-secondary); }
 .setup-step-number { display:grid; place-items:center; flex-shrink:0; width:32px; height:32px; padding:0; border:1px solid var(--border-strong); border-radius:var(--r-pill); background:var(--bg-surface); color:inherit; font:inherit; }
 button.setup-step-number { cursor:pointer; }
-button.setup-step-number:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+button.setup-step-number:hover { border-color:var(--border-strong); color:var(--text-primary); background:transparent; }
 .setup-steps strong { font-size:var(--fs-label); }
 .setup-steps li[data-current="true"] { color:var(--accent); background:var(--accent-soft); }
 .setup-steps li[data-current="true"] .setup-step-number { border-color:var(--accent); }

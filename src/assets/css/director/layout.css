@@ -18,7 +18,7 @@
   .pb .focus-mode-btn:focus-visible, .pb .utility-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
   .pb .utility-menu { @apply tw:relative; }
   .pb .utility-trigger { @apply tw:w-[36px] tw:h-[36px] tw:grid; place-items:center; border:1px solid var(--border-soft); border-radius:50%; background:transparent; @apply tw:text-secondary tw:cursor-pointer; font:800 var(--fs-label-sm) var(--font-mono); letter-spacing:.08em; transition:background var(--motion-hover),border-color var(--motion-hover),transform var(--motion-hover); }
-  .pb .utility-trigger:hover, .pb .utility-trigger[data-state="open"] { border-color:color-mix(in srgb,var(--accent) 50%,var(--border-soft)); background:var(--bg-elevated); }
+  .pb .utility-trigger:hover, .pb .utility-trigger[data-state="open"] { border-color:var(--border-strong); background:var(--bg-elevated); }
   /* .panel-title 唯一定义 */
   .pb .panel-title { @apply tw:flex tw:items-center tw:gap-s-2; }
   .pb .panel-title {

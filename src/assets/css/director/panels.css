@@ -1,7 +1,7 @@
 @reference "../tailwind.css";
   /* 窄栏里禁止竖排:字号与内距收紧,强制单行 */
   .pb .char-btn { flex: 1; @apply tw:min-w-0 tw:inline-flex tw:items-center tw:justify-center tw:gap-s-1; padding: var(--s-2) var(--s-1); @apply tw:rounded-md; border: 1px solid var(--border-soft); background: var(--bg-surface); @apply tw:text-secondary tw:cursor-pointer tw:text-label-sm; font-weight: 650; @apply tw:whitespace-nowrap; transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover); }
-  .pb .char-btn:hover { @apply tw:border-accent tw:text-accent; }
+  .pb .char-btn:hover { @apply tw:border-strong tw:text-primary; }
   .pb .char-btn.active { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary; box-shadow:var(--shadow-sm); }
 
   /* 热门角色说明 */
@@ -50,7 +50,7 @@
   .pb .api-status { @apply tw:flex tw:items-center tw:gap-s-2 tw:justify-end tw:mb-0 tw:ml-s-1 tw:pl-s-3; border-left:1px solid var(--border-soft); @apply tw:text-label tw:text-muted; }
   /* 表面由下方 liquid glass 组声明 */
   .pb .api-status .badge { @apply tw:cursor-pointer tw:mr-0; padding:var(--s-2) var(--s-3); @apply tw:rounded-pill; border:1px solid var(--border-soft); @apply tw:text-label-xs tw:whitespace-nowrap; transition:border-color var(--motion-hover),background var(--motion-hover),opacity var(--motion-hover); }
-  .pb .api-status .badge:hover { @apply tw:border-accent; }
+  .pb .api-status .badge:hover { @apply tw:border-strong; }
   .pb .api-status .badge:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
   /* SD 已连接时淡化状态徽章：连接中保持醒目，就绪后不抢操作区 */
   .pb .api-status .badge.badge-online { opacity:1; }

@@ -75,6 +75,6 @@ const currentYear = new Date().getFullYear()
 /* 指南在应用内阅读，详细文档保留独立入口。 */
 .site-footer-sep { margin: 0 var(--s-2); }
 .site-footer-link { text-decoration: underline; }
-.site-footer-link:hover { @apply tw:text-accent; }
+.site-footer-link:hover { @apply tw:text-primary; }
 .site-footer-link:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-sm; }
 </style>

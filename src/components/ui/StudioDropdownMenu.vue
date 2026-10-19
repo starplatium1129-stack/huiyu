@@ -79,7 +79,7 @@ function onDismissEscape(event: KeyboardEvent) {
 .chat-more-item { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:py-s-2 tw:px-s-3 tw:rounded-md tw:text-secondary tw:text-label tw:cursor-pointer; outline:none; flex-shrink:0; }
 .chat-more-item > span { min-width:0; overflow-wrap:anywhere; }
 .chat-more-item .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
-.chat-more-item[data-highlighted] { background:var(--accent-soft); color:var(--text-primary); }
+.chat-more-item[data-highlighted] { color:var(--text-primary); }
 .chat-more-menu[data-pointer-open='false'] .chat-more-item[data-highlighted] { outline:none; box-shadow:var(--focus-shadow); }
 .chat-more-item.is-danger { color:var(--danger-text); }
 .chat-more-item.is-danger[data-highlighted] { background:color-mix(in srgb,var(--danger) 12%,var(--bg-surface)); }

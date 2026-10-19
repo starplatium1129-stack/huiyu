@@ -35,10 +35,10 @@ export function useButtonFeedback() {
   }
   function paint(state: Feedback, value: number) {
     state.value = value
-    state.surface.style.opacity = String(Math.max(0, Math.min(1, value)))
-    state.surface.style.transform = `scale(${1 - value * .05})`
+    state.surface.style.opacity = String(Math.max(0, Math.min(.3, value * .3)))
+    state.surface.style.transform = `scale(${1 - value * .02})`
     // Individual scale composes with authored transforms; the button never moves.
-    for (const { element } of state.contents) element.style.scale = String(1 - value * .04)
+    for (const { element } of state.contents) element.style.scale = String(1 - value * .02)
   }
   function retarget(state: Feedback, pressed: boolean) {
     state.pressed = pressed
@@ -74,7 +74,7 @@ export function useButtonFeedback() {
     surface.setAttribute('aria-hidden', 'true')
     button.append(surface)
     // Explicit content wrappers can compress together; plain-text buttons use the rim.
-    const contents = [...button.querySelectorAll<HTMLElement | SVGElement>(':scope > [data-press-content], :scope > .archive-icon')]
+    const contents = [...button.querySelectorAll<HTMLElement | SVGElement>(':scope > [data-press-content], :scope > .studio-control-label, :scope > .archive-icon:not(.spin), :scope.btn > span:not(.studio-button-feedback):not([aria-hidden]):not([role="status"]), :scope.studio-disclosure-summary > span:not(.studio-button-feedback), :scope.studio-disclosure-summary > small')]
       .map(element => ({ element, scale: element.style.scale }))
     const state: Feedback = { button, surface, value: 0, contents, pointer: event.pointerId, pressed: true, started: null, elapsed: 0, moving: false }
     active.set(button, state)

@@ -61,7 +61,7 @@
   @apply tw:rounded-pill; background: var(--bg-surface);
   @apply tw:text-label-xs tw:text-secondary tw:cursor-pointer;
 }
-.shot-card-outfit-pill:hover:not(:disabled) { @apply tw:border-accent tw:text-primary; }
+.shot-card-outfit-pill:hover:not(:disabled) { @apply tw:border-strong tw:text-primary; }
 .shot-card-outfit-pill.active { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary tw:font-semibold; }
 .video-quality-grid button:disabled,.video-segmented button:disabled,.shot-card-outfit-pill:disabled { color:var(--text-disabled); background:var(--bg-elevated); border-color:var(--border-soft); cursor:not-allowed; }
 .video-quality-grid button:disabled em,.shot-options :deep([data-disabled] small) { color:var(--text-disabled); }

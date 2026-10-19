@@ -42,7 +42,7 @@
 .catalog-list-controls .studio-select-wrapper { width:100%; }
 .catalog-filter-button { display:flex; align-items:center; gap:var(--s-1); padding:var(--s-2); min-height:var(--control-height); border:0; border-radius:var(--r-md); font:inherit; font-size:var(--fs-body-sm); color:var(--text-secondary); background:transparent; cursor:pointer; }
 .catalog-filter-button.active { background:var(--bg-elevated); color:var(--text-primary); }
-.catalog-filter-button:where(:enabled):hover { background:var(--accent-soft); color:var(--accent); }
+.catalog-filter-button:where(:enabled):hover { color:var(--text-primary); }
 .catalog-filter-dot,.catalog-pending-dot { width:6px; height:6px; background:var(--accent); border-radius:50%; flex:none; }
 .catalog-filter-dot { background:var(--text-primary); }
 .catalog-filter-fields { display:grid; gap:var(--s-4); }

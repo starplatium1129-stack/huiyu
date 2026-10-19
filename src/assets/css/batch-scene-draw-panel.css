@@ -58,7 +58,7 @@
   background: var(--bg-surface); color: inherit; @apply tw:text-left tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover);
 }
-.batch-scene-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
+.batch-scene-card:hover { border-color: var(--border-strong); }
 .batch-scene-card.selected {
   border-color:var(--border-strong);
   background:var(--bg-elevated);
@@ -97,7 +97,7 @@
   background: var(--bg-surface); color: inherit; @apply tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover), transform var(--motion-press);
 }
-.batch-char-card:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); }
+.batch-char-card:hover { border-color: var(--border-strong); }
 .batch-char-card.selected {
   border-color:var(--border-strong);
   background:var(--bg-elevated);
@@ -172,7 +172,7 @@
   background: var(--bg-deep); cursor: zoom-in; @apply tw:overflow-hidden;
   transition: border-color var(--motion-hover), transform var(--motion-press) var(--ease-out);
 }
-.batch-thumb-btn:hover { @apply tw:border-accent; }
+.batch-thumb-btn:hover { @apply tw:border-strong; }
 .batch-thumb-btn:active { transform: scale(.98); }
 .batch-thumb { @apply tw:block tw:w-full tw:h-auto tw:object-contain; }
 .batch-thumb-placeholder {

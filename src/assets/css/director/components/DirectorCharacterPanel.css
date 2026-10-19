@@ -8,7 +8,7 @@
   .pb .char-row { @apply tw:flex tw:gap-s-3; }
   .pb .traits-row { @apply tw:flex tw:gap-s-2 tw:flex-wrap tw:mt-s-3; }
   .pb .trait-chip { padding: 3px var(--s-3); background: color-mix(in srgb, var(--bg-elevated) 88%, var(--accent-soft)); border: 1px solid color-mix(in srgb, var(--border-soft) 80%, var(--accent-soft)); @apply tw:rounded-pill; font:inherit; @apply tw:text-label-sm tw:text-primary tw:cursor-pointer; transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-press) var(--ease-out); }
-  .pb .trait-chip:hover:not(:focus-visible) { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); box-shadow: 0 0 10px var(--accent-glow); }
+  .pb .trait-chip:hover:not(:focus-visible) { @apply tw:border-strong tw:text-primary; background: transparent; box-shadow: none; }
   .pb .traits-row:empty { @apply tw:mt-0; }
   .pb .char-source { width:fit-content; max-width:100%; margin-bottom:var(--s-3); }
   .pb .char-source-btn { min-width:0; text-align:center; }

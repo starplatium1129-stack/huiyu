@@ -107,7 +107,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .inspiration-deck-card:has(:focus-visible) :deep(.inspiration-artwork.ready::after) { opacity:1; }
 .inspiration-deck-card :deep(.inspiration-artwork.ready > img) { transform:scale(var(--card-focus-scale)); }
 @media (hover:hover) and (pointer:fine) {
-  .inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:hover { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--accent); box-shadow:var(--shadow-md); }
+  .inspiration-deck-stage:not(.dragging):not(.still) .inspiration-deck-card:hover { --card-focus-lift:-6px; --card-focus-scale:1.06; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
   .inspiration-deck-card:hover :deep(.inspiration-artwork.ready::after) { opacity:1; }
 }
 .inspiration-deck-stage.dragging .front, .inspiration-deck-stage.still .front { transition:none; }

@@ -22,7 +22,7 @@
 .artwork-album[aria-pressed='true'] .artwork-album-mark { color:var(--accent); background:var(--accent-soft); }
 .artwork-album[aria-pressed='true'] .artwork-album-mark .archive-icon:first-child { transform:scale(.5); opacity:0; }
 .artwork-album[aria-pressed='true'] .artwork-album-mark .archive-icon + .archive-icon { transform:none; opacity:1; }
-.artwork-album:is(:focus-visible,[aria-pressed='true']) .artwork-album-caption strong { color:var(--accent); }
+.artwork-album:is(:focus-visible,[aria-pressed='true']) .artwork-album-caption strong { color:var(--text-primary); }
 .artwork-album:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .artwork-album:focus-visible :is(.artwork-album-picture,.artwork-album-mark .archive-icon) { transition:none; }
 .artwork-album:focus-visible .artwork-album-cover::after { opacity:1; }
@@ -33,7 +33,7 @@
   .artwork-album:where(:hover:not(:focus-visible)) .artwork-album-cover[data-covers='1'] .artwork-album-picture { transform:translateY(-6px) rotate(-2deg); }
   .artwork-album:where(:hover:not(:focus-visible):not([aria-pressed='true'])) .artwork-album-mark .archive-icon:first-child { transform:translateX(3px) rotate(-90deg); }
   .artwork-album:hover .artwork-album-cover::after { opacity:1; }
-  .artwork-album:hover .artwork-album-caption strong { color:var(--accent); }
+  .artwork-album:hover .artwork-album-caption strong { color:var(--text-primary); }
 }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .artwork-album :is(.artwork-album-picture,.artwork-album-mark .archive-icon),:root:not([data-motion='full']) .artwork-album-cover::after { transition:none; }

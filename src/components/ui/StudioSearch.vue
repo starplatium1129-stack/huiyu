@@ -22,7 +22,7 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 </template>
 <style scoped>
 .studio-search { position:relative; isolation:isolate; display:flex; align-items:center; gap:var(--s-2); padding-block:0; color:var(--text-secondary); box-shadow:inset 0 1px 0 var(--glass-highlight); }
-.studio-search::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--border-strong); border-radius:inherit; background:var(--accent-soft); opacity:0; transition:opacity var(--motion-control) var(--ease-out); pointer-events:none; }
+.studio-search::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--control-hover-edge); border-radius:inherit; background:var(--control-hover-surface); opacity:0; transition:opacity var(--motion-hover) var(--ease-out); pointer-events:none; }
 .studio-search:focus-within::before { opacity:1; }
 .studio-search-input { width:100%; min-width:0; min-height:calc(var(--control-height) - 2px); padding:var(--s-2) 0; border:0; outline:0; background:transparent; color:var(--text-primary); font:400 var(--fs-body-sm)/var(--lh-label) var(--font-sans); appearance:none; }
 .studio-search[data-size='sm'] { gap:var(--s-1); padding-inline:var(--s-2); }
@@ -30,13 +30,13 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 .studio-search[data-size='sm'] .studio-search-clear { flex-basis:28px; width:28px; height:28px; }
 .studio-search[data-size='sm'] { min-height:var(--control-height-sm); }
 .studio-search:has(.studio-search-input:focus-visible)::before { border-color:var(--focus-color); transition:none; }
-.studio-search > .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
-.studio-search:focus-within > .archive-icon { transform:scale(1.08); }
+.studio-search > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
+.studio-search:focus-within > .archive-icon { color:var(--text-primary); }
 .studio-search:has(.studio-search-input:focus-visible) > .archive-icon { transition:none; }
 @media (hover:hover) and (pointer:fine) {
   .studio-search:where(:hover:not(:focus-within))::before { opacity:.75; }
-  .studio-search:where(:hover:not(:focus-within)) > .archive-icon { transform:translateY(-1px) rotate(-12deg) scale(1.16); }
-  .studio-search-clear:hover { background:var(--accent-soft); color:var(--accent); }
+  .studio-search:where(:hover:not(:focus-within)) > .archive-icon { color:var(--text-primary); }
+  .studio-search-clear:hover { background:transparent; color:var(--text-primary); }
 }
 .studio-search-clear { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; padding:0; border:0; border-radius:var(--r-sm); background:transparent; color:var(--text-secondary); cursor:pointer; animation:search-clear-in var(--motion-surface) var(--spring-bounce); }
 @keyframes search-clear-in { from { opacity:0; transform:scale(.6) rotate(-45deg); } }

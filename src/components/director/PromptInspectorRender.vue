@@ -8,7 +8,7 @@
       <details v-if="animaState.errorReport?.details"><StudioDisclosureSummary>技术细节</StudioDisclosureSummary><code>{{ animaState.errorReport.details }}</code></details>
     </section>
     <details v-if="drawEngine !== 'sd' && generationBusy" class="inspector-route inspector-runtime">
-      <StudioDisclosureSummary>绘制详情</StudioDisclosureSummary>
+      <StudioDisclosureSummary data-spring-button><span data-press-content>绘制详情</span></StudioDisclosureSummary>
       <div data-disclosure-content>
         <p role="status">{{ generationPresentation.message }}</p>
         <p v-if="generationPresentation.phase === 'running' && animaState.currentNode">当前节点：{{ animaState.currentNode }}</p>
@@ -39,7 +39,7 @@
     <section class="inspector-size-section"><slot name="size" /></section>
     <section class="inspector-style-section"><slot name="style" /></section>
     <details class="inspector-route inspector-advanced" @toggle="onAdvancedToggle">
-      <StudioDisclosureSummary><span class="inspector-detail-label"><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><small>{{ generationPresetSummary || `${animaState.steps} 步 · CFG ${animaState.cfg}` }}</small></span></StudioDisclosureSummary>
+      <StudioDisclosureSummary data-spring-button><span data-press-content class="inspector-detail-label"><span><ArchiveIcon name="gear" />{{ pb.directorMode === 'pro' ? '采样与细节' : '高级调整' }}</span><small>{{ generationPresetSummary || `${animaState.steps} 步 · CFG ${animaState.cfg}` }}</small></span></StudioDisclosureSummary>
       <div data-disclosure-content class="inspector-advanced-body">
         <template v-if="advancedLoaded">
           <AsyncPanel v-if="pb.directorMode !== 'pro'" :loader="loadCreativeSliders" label="画面采样微调" v-slot="{ component }">

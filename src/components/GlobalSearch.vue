@@ -493,7 +493,7 @@ onUnmounted(() => {
 .gs-row > .archive-icon { width:16px; height:16px; flex-shrink:0; }
 .gs-row > span { flex:1; min-width:0; overflow-wrap:anywhere; }
 .gs-row small { @apply tw:min-w-0 tw:ml-auto tw:text-muted tw:text-label-sm tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:max-w-[46%]; }
-.gs-row.active { background: var(--accent-soft); @apply tw:text-primary; }
+.gs-row.active { background: var(--bg-hover); @apply tw:text-primary; }
 .gs-row.active small { @apply tw:text-secondary; }
 .gs-footer { padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border-soft); background: var(--bg-surface); }
 .gs-sr-status { clip: rect(0 0 0 0); clip-path: inset(50%); border: 0; }

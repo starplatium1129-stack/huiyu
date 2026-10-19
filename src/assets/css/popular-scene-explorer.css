@@ -89,12 +89,12 @@
 .pop-thumb:not(.is-r18)::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .popular-scene-library .pop-card:has(:focus-visible) { transform:none; transition:none; box-shadow:none; }
 .pop-card:has(:focus-visible) .pop-thumb img:not(.pop-thumb-r18) { transform:none; transition:none; }
-.pop-card:has(:focus-visible) .pop-card-head h3 { color:var(--accent); }
+.pop-card:has(:focus-visible) .pop-card-head h3 { color:var(--text-primary); }
 @media (hover:hover) and (pointer:fine) {
   .popular-scene-library .pop-card:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); box-shadow:none; }
   .pop-card:hover:not(:has(:focus-visible)) .pop-thumb img:not(.pop-thumb-r18) { transform:scale(var(--card-focus-scale)); }
   .pop-card:hover .pop-thumb::after { opacity:1; }
-  .pop-card:hover .pop-card-head h3 { color:var(--accent); }
+  .pop-card:hover .pop-card-head h3 { color:var(--text-primary); }
 }
 @media (prefers-reduced-motion:reduce) {
   :global(:root:not([data-motion='full']) .popular-scene-library .pop-card) { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }

@@ -60,7 +60,7 @@
 .pb .prompt-reader-content .prompt-preview-content { max-width:80ch; margin-inline:auto; }
 .pb .prompt-reader-actions { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-4) var(--s-6); border-top:1px solid var(--border-soft); }
 .pb .prompt-workbench-entry { display:flex; align-items:center; gap:var(--s-3); width:100%; min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); color:var(--text-primary); text-align:left; cursor:pointer; }
-@media (hover:hover) and (pointer:fine) { .pb .prompt-workbench-entry:hover { border-color:var(--accent); } }
+@media (hover:hover) and (pointer:fine) { .pb .prompt-workbench-entry:hover { border-color:var(--border-strong); } }
 .pb .prompt-workbench-entry:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .prompt-workbench-mark { display:grid; place-items:center; flex:none; width:32px; height:32px; border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--accent); background:var(--bg-surface); }
 .pb .prompt-workbench-mark > .archive-icon { width:20px; height:20px; }

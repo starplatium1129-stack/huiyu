@@ -146,6 +146,6 @@ onUnmounted(() => {
 <style>
 @reference "../assets/css/tailwind.css";
 .appearance-entry { @apply tw:flex tw:items-center tw:gap-s-2; grid-column: 1 / -1; @apply tw:p-s-3; border: 0; @apply tw:rounded-md; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-left tw:cursor-pointer; }
-.appearance-entry:hover { background: var(--accent-soft); @apply tw:text-accent; }
+.appearance-entry:hover { background: transparent; @apply tw:text-primary; }
 .appearance-entry kbd { margin-inline-start: auto; }
 </style>

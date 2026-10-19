@@ -20,5 +20,5 @@
 .successful-recipes .studio-tooltip-anchor,.successful-recipes .btn { width:100%; min-width:0; }
 .successful-recipes .btn,.managed-route-reopen-btn { justify-content:flex-start; max-width:100%; text-align:left; white-space:normal; overflow-wrap:anywhere; }
 .managed-route-reopen-btn .studio-control-label { min-width:0; }
-@media (hover:hover) and (pointer:fine) { .managed-route-summary:hover { color:var(--accent); } }
+@media (hover:hover) and (pointer:fine) { .managed-route-summary:hover { color:var(--text-primary); } }
 @media (forced-colors:active) { .managed-route-summary:focus-visible { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }

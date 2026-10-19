@@ -69,7 +69,7 @@ const emit = defineEmits<{ open: [id: string] }>()
 :root body .showcase-page .sample { --card-focus-lift:-8px; --card-focus-scale:1.06; }
 :root body .showcase-page .sample:has(:focus-visible) { transform:none; transition:none; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
 .sample:not(.sample-r18):has(:focus-visible) .sample-image { transform:none; transition:none; }
-.sample:has(:focus-visible) .sample-title { color:var(--accent); }
+.sample:has(:focus-visible) .sample-title { color:var(--text-primary); }
 /* 自然尺寸校正缺失或过时的目录尺寸；按原始比例分配行宽，完整展示原画。 */
 .sample-visual { aspect-ratio:var(--sample-ratio, 3 / 4); border:0; background:var(--art-mat); color:var(--on-art-primary); cursor:zoom-in; }
 .sample-visual:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
@@ -93,10 +93,10 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-featured { display:inline-flex; margin-left:auto; color:var(--accent); }
 .sample-featured .archive-icon { width:14px; height:14px; }
 @media (hover: hover) and (pointer: fine) {
-  :root body .showcase-page .sample:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); border-color:var(--accent); box-shadow:var(--shadow-md); }
+  :root body .showcase-page .sample:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:var(--shadow-md); }
   .sample:not(.sample-r18):hover:not(:has(:focus-visible)) .sample-image { transform:scale(var(--card-focus-scale)); }
   .sample:not(.sample-r18):hover .sample-visual::after { opacity:1; }
-  .sample:hover .sample-title { color:var(--accent); }
+  .sample:hover .sample-title { color:var(--text-primary); }
   .sample-r18:hover .sample-sensitive { opacity:0; }
 }
 .sample-r18:focus-within .sample-sensitive { opacity:0; }

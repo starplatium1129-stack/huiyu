@@ -199,6 +199,13 @@ depth and authored motion into one HUIYU component family. Visual upgrades may
 reshape existing components and shared surfaces while preserving task state,
 readable Chinese typography and immediate actions in both themes.
 
+Everyday controls additionally reference [AIRI's light interaction details](https://airi.moeru.ai/docs/ja/blog/DevLog-2025.03.10/)
+and [WebGAL's visual-novel menus](https://docs.openwebgal.com/webgal-script/custom-ui.html).
+Adapt their small decorative rhythms, translucent menu highlights and character-first
+composition to HUIYU's warm paper, hand-drawn icons and existing night palette.
+Use a faint dot motif only on navigation and chapter furniture; keep text and artwork
+clear. These are visual references, not imported components or a replacement palette.
+
 [Lucian UX/UI Prompt](https://lucianlabs.dev/uxui-prompt/) is an ongoing reference
 for component styling and motion across controls, navigation, filtering, details,
 save feedback and artwork handoffs. Study the working example and its source
@@ -249,11 +256,12 @@ Light-mode elevation uses boundaries and shadow, not ever-brighter surfaces.
 新增颜色须适配两个主题。源码与令牌审查不能代替动态组件、纹理背景、
 角色强调色和图片叠字的实际画面验收；遵守 AGENTS.md 的验证范围与测试禁令。
 
-- Use `primary` only for the current selection, the main call to action, focus,
-  or a small piece of emphasis. A page must not look uniformly pink.
+- Use `primary` for the main call to action or a small piece of emphasis.
+  Ordinary hover, selection and keyboard focus use neutral feedback. A page must
+  not look uniformly pink.
 - Use Nene violet and Natsume amber to clarify character context. Within a
   character cover or director workspace, the primary action may inherit that
-  character accent; navigation and neutral pages retain sakura pink.
+  character accent; neutral pages retain sakura pink for their main action.
 - Keep body text neutral. Long paragraphs, parameters, and metadata must not use
   decorative gradients.
 - Success, warning, danger, and information colors communicate state only.
@@ -406,6 +414,14 @@ Depth makes grouping, focus and interactive layers visible:
 - Interactive controls: buttons, tabs, segments and menus share authored hover
   and press feedback through surfaces, icons and labels, with stable hit targets.
   Selection keeps its own indicator, and keyboard focus stays visible and immediate.
+- Ordinary controls fade in a light neutral paper wash and a fine edge beneath
+  stable text and hand-drawn icons. Keep the hit area fixed; only the inner press
+  feedback compresses to about 0.98 and springs back. Hover must not add pink/red
+  fills, rims or labels. Disclosure arrows rotate on opening or closing, without
+  hovering displacement. Navigation can use a small dot marker; short underlines
+  are reserved for text links and input state. Keyboard focus uses a clear neutral
+  ring, and reduced motion retains static feedback. Primary actions, destructive
+  actions and artwork keep their semantic colors and purpose-specific motion.
 - Floating surfaces: popovers, dialogs and viewers use existing elevation tokens;
   primary actions gain emphasis from their action color, not an extra shadow tier.
 

@@ -1,15 +1,21 @@
-/* Inspira UI Interactive Hover Button: a moving surface below readable content.
-   Existing component gestures retain priority over these zero-specificity defaults. */
+/* AIRI's light feedback and WebGAL's layered menu treatment, adapted to HUIYU.
+   A prepainted paper wash fades beneath steady ink; hit areas never move. */
+:root {
+  --control-hover-fill:color-mix(in srgb,var(--text-primary) 6%,transparent);
+  --control-hover-edge:color-mix(in srgb,var(--text-secondary) 20%,transparent);
+  --control-hover-surface:linear-gradient(135deg,var(--glass-highlight),transparent 65%),var(--control-hover-fill);
+}
 :where(
   .btn,.u008,.u022,.studio-segments[role] :is(button,a),[role='tab'],[data-control-motion],
   button:is(.filter-pill,.gallery-filter,.scene-cat-btn,.trait-chip,.outfit-chip,.artist-cat-btn,.pop-cat,.pop-rating-pill),
-  .studio-pagination .page-arrow,.studio-select-trigger,.studio-media-btn,.studio-search-clear,.zoom-control,.zoom-recovery button,summary,
+  .studio-pagination .page-arrow,.studio-select-trigger,.studio-select-item,.chat-more-item,.studio-media-btn,.studio-search-clear,.zoom-control,.zoom-recovery button,summary,
   .scene-active-filters button,.scene-reset,.gallery-refine-toggle,.gallery-filter-chip,.inspiration-deck-controls button,
   .gallery-album-actions button,.gallery-breadcrumb button,.filter-reset,.showcase-album-back,.pop-filter-reset,
-  .journal-more,.guide-direct,.hero-particle-link,.home-section-head .link,.strip-label .link,.nav-back,.guide-page a,
+  .journal-more,.guide-direct,.hero-particle-link,.nav-back,
   .directory-count button,.directory-current button,.directory-page-turn,.directory-item,.bookshelf-flip-row button,
   .viewer-close,.viewer-info-toggle,.viewer-info-close,.viewer-mode-switch,.viewer-compare-toggle,.viewer-nav,.viewer-tags button,.artwork-tool,.artwork-retry,
-  .control-rail-link,.control-section-jump a,.nav-local-home,.mode-card,
+  .control-rail-link,.control-section-jump a,.nav-local-home,.mode-card,.nav-links > a,.nav-more-trigger,.nav-search,.sound-toggle,.nav-menu-toggle,
+  .dropzone-empty,.artist-picker-trigger,.artist-combo-btn,.artist-style-grid > button,.outfit-preset,.tag-results button,.blueprint-reco-btn,.blueprint-cat-btn,
   .catalog-nav-group button,.catalog-more-menu button,.catalog-add,.catalog-filter-button,.catalog-record-row,.catalog-tool-options button,.catalog-text-button,
   .catalog-sample-card,.catalog-hero-card,a.study-image,.mood-card,.video-jump-nav a,.video-model-row,.shot-row-actions button,.comparison-choices button,
   .appearance-entry,.appearance-button,.appearance-close,.confirm-close,.appearance-style-choices button,.live2d-quality-option,button.setup-step-number,
@@ -20,46 +26,50 @@
   .companion-picker-trigger,.companion-picker-option,.preferences-heading button,.reply-actions button,.companion-chat-image-open,.companion-chat-image-retry,
   .orbit-option,.orbit-option-list button,.orbit-manage,.orbit-selection > header button
 ) {
-  position:relative; isolation:isolate; border-radius:var(--r-md); --control-press-transform:none;
+  position:relative; isolation:isolate; border-radius:var(--r-md); --control-press-transform:none; --control-feedback-press:.98; --control-feedback-enter:.985;
   &::before {
-    content:''; display:block; position:absolute; z-index:-1; inset:0; border:1px solid var(--control-feedback-edge,var(--border-strong)); border-radius:inherit;
-    background:var(--control-feedback-fill,var(--accent-soft)); pointer-events:none; opacity:0; transform:scaleX(var(--control-feedback-press,.94));
-    transition:opacity var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--control-feedback-duration,var(--motion-route)) var(--spring-soft);
+    content:''; display:block; position:absolute; z-index:-1; inset:0; border:1px solid var(--control-feedback-edge,var(--control-hover-edge)); border-radius:inherit;
+    background:var(--control-feedback-fill,var(--control-hover-surface)); box-shadow:inset 0 1px 0 var(--glass-highlight); pointer-events:none; opacity:0; transform:scale(var(--control-feedback-enter));
+    transition:opacity var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--control-feedback-duration,var(--motion-hover)) var(--ease-out);
   }
   & > :where(.studio-control-label,.studio-control-icon,.archive-icon:not([data-icon='chevron-down']):not(.spin),.u008-icons,.u008-label,.directory-label,.mode-title) {
-    transition:transform var(--control-feedback-duration,var(--motion-route)) var(--spring-soft);
+    transition:transform var(--control-feedback-duration,var(--motion-hover)) var(--ease-out);
   }
   @media (hover:hover) and (pointer:fine) {
     &:where(:hover:not(:focus-visible):not(:has(:focus-visible,button:hover,a:hover)):not(:disabled):not([aria-disabled='true']):not([data-disabled])) {
       &::before { opacity:1; transform:none; }
-      & > :where(.studio-control-label,.u008-label,.directory-label,.mode-title) { transform:translateY(var(--control-feedback-shift,-2px)); }
-      & > :where(.archive-icon:not([data-icon='chevron-down']):not(.spin),.studio-control-icon,.u008-icons) { transform:translateY(var(--control-feedback-shift,-2px)) rotate(var(--control-feedback-tilt,-10deg)) scale(var(--control-feedback-zoom,1.14)); }
     }
   }
   &:where(:active:not(:focus-visible):not(:has(:focus-visible,button:active,a:active)):not(:disabled):not([aria-disabled='true']):not([data-disabled])) {
-    &::before { opacity:1; transform:scale(var(--control-feedback-press,.94)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
-    & > :where(.studio-control-label,.studio-control-icon,.archive-icon:not([data-icon='chevron-down']):not(.spin),.u008-icons,.u008-label,.directory-label,.mode-title) { transform:scale(var(--control-feedback-press,.94)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
+    &::before { opacity:1; transform:scale(var(--control-feedback-press)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
+    & > :where(.studio-control-label,.studio-control-icon,.archive-icon:not([data-icon='chevron-down']):not(.spin),.u008-icons,.u008-label,.directory-label,.mode-title) { transform:scale(var(--control-feedback-press)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
   }
   &:focus-visible {
     outline:none; box-shadow:var(--focus-shadow);
-    &::before { opacity:1; transform:none; transition:none; border-color:var(--control-feedback-edge,var(--focus-color)); }
+    &::before { opacity:0; transition:none; }
     & > :where(.studio-control-label,.studio-control-icon,.archive-icon:not([data-icon='chevron-down']):not(.spin),.u008-icons,.u008-label,.directory-label,.mode-title) { transform:none; transition:none; }
   }
   &:where(:disabled,[aria-disabled='true'],[data-disabled])::before { display:none; }
   @media (prefers-reduced-motion:reduce) {
-    :root:not([data-motion='full']) & { --control-feedback-duration:0s; --control-feedback-shift:0px; --control-feedback-tilt:0deg; --control-feedback-zoom:1; --control-feedback-press:1; }
+    :root:not([data-motion='full']) & { --control-feedback-duration:0s; --control-feedback-enter:1; --control-feedback-shift:0px; --control-feedback-zoom:1; --control-feedback-press:1; }
   }
-  :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) & { --control-feedback-duration:0s; --control-feedback-shift:0px; --control-feedback-tilt:0deg; --control-feedback-zoom:1; --control-feedback-press:1; }
+  :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) & { --control-feedback-duration:0s; --control-feedback-enter:1; --control-feedback-shift:0px; --control-feedback-zoom:1; --control-feedback-press:1; }
   @media (forced-colors:active) {
     &::before { display:none; }
     &:where(:hover:not(:disabled):not([aria-disabled='true']):not([data-disabled])) { outline:1px solid Highlight; outline-offset:-2px; }
     &:focus-visible { outline:2px solid Highlight; outline-offset:2px; }
   }
 }
-:where(.btn-primary,.companion-send,.companion-dialogue-send,.companion-dialogue-microphone) { --control-feedback-fill:transparent; --control-feedback-edge:currentColor; }
-:where(.btn-danger) { --control-feedback-fill:transparent; --control-feedback-edge:var(--danger-text); }
-:where(.artwork-tool) { --control-feedback-fill:var(--art-scrim); --control-feedback-edge:var(--on-art-line); }
 .studio-control-label { display:inline-block; }
+/* Dot texture belongs to chapter furniture, never behind a label or artwork. */
+:root:not([data-theme-style='terraria']) :is(.pb .panel-title,.image-tools-group > h4,.nav-more-group-label)::after {
+  content:''; display:inline-block; flex:0 0 22px; width:22px; height:6px; margin-inline-start:var(--s-2); vertical-align:middle;
+  background:radial-gradient(circle,var(--text-secondary) .8px,transparent 1.2px) center / 7px 6px; opacity:.35; pointer-events:none;
+}
+:where(.home-section-head .link,.strip-label .link,.guide-page a:not(.btn)):hover { text-decoration:underline; text-underline-offset:.2em; }
+:where(.btn-primary,.btn-danger,.companion-send,.companion-dialogue-send,.companion-dialogue-microphone) { --control-feedback-fill:transparent; --control-feedback-edge:color-mix(in srgb,currentColor 22%,transparent); }
+:where(.artwork-tool,.artwork-retry) { --control-feedback-fill:color-mix(in srgb,var(--on-art-primary) 8%,transparent); --control-feedback-edge:color-mix(in srgb,var(--on-art-primary) 24%,transparent); }
+:where(.studio-select-item,.chat-more-item):where([data-highlighted]:not([data-disabled]))::before { opacity:1; transform:none; }
 /* Media keeps its frame and hit area stationary while the inner picture responds. */
 :where(.catalog-sample-card,.catalog-hero-card,a.study-image,.companion-chat-image-open) {
   --control-feedback-zoom:1.06; --control-feedback-press:.98;

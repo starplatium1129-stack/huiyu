@@ -64,7 +64,7 @@
 .artist-dialog-selected > .btn { flex:none; }
 :is(.artist-picker-trigger,.artist-combo-btn,.artist-style-grid > button,.artist-presets-section summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (hover:hover) and (pointer:fine) {
-  :is(.artist-picker-trigger,.artist-combo-btn,.artist-style-grid > button):hover:not(:disabled) { border-color:var(--accent); background:var(--accent-soft); }
+  :is(.artist-picker-trigger,.artist-combo-btn,.artist-style-grid > button):hover:not(:disabled) { border-color:var(--border-strong); background:transparent; }
 }
 @media (max-width:768px) { .artist-style-panel { padding:var(--s-4); } }
 @media (max-width:640px) {

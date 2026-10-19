@@ -172,9 +172,9 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
 
 @media (hover: hover) and (pointer: fine) {
   .zoom-control:hover {
-    border-color: color-mix(in srgb, var(--accent) 48%, var(--border-soft));
-    background: var(--accent-soft);
-    color: var(--accent);
+    border-color: var(--border-strong);
+    background: transparent;
+    color: var(--text-primary);
   }
 }
 

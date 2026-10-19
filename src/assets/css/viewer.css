@@ -11,7 +11,7 @@
   @apply tw:text-secondary tw:cursor-pointer tw:text-title-xs;
   transition: background var(--motion-hover), border-color var(--motion-hover), color var(--motion-hover);
 }
-.viewer-close:hover { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); }
+.viewer-close:hover { @apply tw:border-strong tw:text-primary; background: transparent; }
 .viewer-kicker {
   @apply tw:text-accent;
   font: 700 var(--fs-mono-xs) var(--font-mono);

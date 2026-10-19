@@ -146,7 +146,7 @@ defineExpose({ focusTag })
 .gallery-library-fields > :deep(.collection-filters) { flex:1 1 28rem; }
 .gallery-filter-warning { margin:0; color:var(--warning-text); font-size:var(--fs-label-sm); line-height:var(--lh-body); }
 @media (hover:hover) and (pointer:fine) {
-  .gallery-refine-toggle:hover,.gallery-filter-chip:hover { border-color:var(--accent); color:var(--accent); }
+  .gallery-refine-toggle:hover,.gallery-filter-chip:hover { border-color:var(--border-strong); color:var(--text-primary); }
 }
 @media (max-width:768px) {
   .gallery-project-field { flex:1 1 100%; }

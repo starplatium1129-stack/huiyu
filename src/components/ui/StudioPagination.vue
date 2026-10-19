@@ -55,7 +55,7 @@ async function keyboard(event: KeyboardEvent) {
 .page-arrow { display:grid; place-items:center; flex-shrink:0; width:36px; height:36px; padding:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; }
 .page-arrow .archive-icon { width:16px; height:16px; transform:rotate(90deg); }
 .page-next .archive-icon { transform:rotate(-90deg); }
-.page-arrow:hover:not([aria-disabled='true']) { color:var(--accent); background:var(--accent-soft); }
+.page-arrow:hover:not([aria-disabled='true']) { color:var(--text-primary); background:transparent; }
 .studio-pagination button[aria-disabled='true'] { color:var(--text-disabled); cursor:default; }
 .page-arrow:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .page-numbers { min-width:0; flex-wrap:wrap; }

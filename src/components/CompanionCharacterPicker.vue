@@ -163,8 +163,8 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
 }
 .companion-picker-trigger:hover,
 .companion-picker-trigger[data-state='open'] {
-  border-color: color-mix(in srgb, var(--companion-option-accent) 58%, var(--border-soft));
-  background: color-mix(in srgb, var(--bg-elevated) 88%, var(--companion-option-accent) 12%);
+  border-color: var(--border-strong);
+  background: var(--bg-elevated);
 }
 .companion-picker-trigger:focus-visible {
   outline: none;

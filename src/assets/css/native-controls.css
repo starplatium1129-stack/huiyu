@@ -2,7 +2,7 @@
 
 :root {
   --focus-color:var(--text-secondary);
-  --focus-shadow:inset 0 -2px 0 var(--focus-color);
+  --focus-shadow:0 0 0 2px var(--focus-color);
 }
 /* Text links keep the reading layout; filled actions use their contrasting ink. */
 :root body :where(a:not(:has(img,svg,canvas))):focus-visible:focus-visible {
@@ -158,7 +158,7 @@ html { -webkit-tap-highlight-color: transparent; }
   font: 600 var(--fs-label-sm) var(--font-sans);
   @apply tw:cursor-pointer;
 }
-:where(input[type="file"])::file-selector-button:hover { @apply tw:border-accent; background: var(--accent-soft); }
+:where(input[type="file"])::file-selector-button:hover { @apply tw:border-strong; background: transparent; }
 
 /* 媒体元素被拖拽时浏览器会画一张半透明快照；交互控件里的图片只作为画面内容。 */
 :where(button, a, label, summary) img { -webkit-user-drag: none; }

@@ -11,6 +11,6 @@ const { opened, activeCount } = useTaskCenter()
 .task-center-content > .archive-icon { width:16px; height:16px; }
 .task-center-button strong { @apply tw:text-accent; font-variant-numeric: tabular-nums; }
 @media (hover:hover) and (pointer:fine) {
-  .task-center-button:hover { background:var(--accent-soft); border-color:var(--accent); color:var(--accent); }
+  .task-center-button:hover { background:transparent; border-color:var(--border-strong); color:var(--text-primary); }
 }
 </style>

@@ -29,7 +29,7 @@
   font-size: var(--fs-label-sm);
 }
 @media (hover:hover) and (pointer:fine) {
-  .studio-select-trigger:hover:not(:disabled):not([data-disabled]):where(:not([aria-invalid='true'])) { border-color:var(--accent); }
+  .studio-select-trigger:hover:not(:disabled):not([data-disabled]):where(:not([aria-invalid='true'])) { border-color:var(--border-strong); }
 }
 .studio-select-trigger:focus-visible:where(:not([aria-invalid='true'])) {
   border-color: var(--border-strong);
@@ -39,6 +39,9 @@
 .studio-select-trigger[data-empty]:where(:not([data-disabled])) .studio-select-value { color: var(--text-muted); }
 .studio-select-icon {
   transition: transform var(--spring-gentle-duration) var(--spring-gentle-ease);
+}
+@media (hover:hover) and (pointer:fine) {
+  .studio-select-trigger:hover:not(:focus-visible):not(:disabled):not([data-disabled]) .studio-select-icon { color:var(--text-primary); }
 }
 .studio-select-trigger[data-state='open'] .studio-select-icon { transform: rotate(180deg); }
 
@@ -54,14 +57,10 @@
   padding-top: var(--s-1);
   border-top: 1px solid var(--border-soft);
 }
-.studio-select-item:where(:not([data-disabled])):is(:hover, [data-highlighted]) {
-  background:var(--accent-soft);
-}
 .studio-select-item { position:relative; isolation:isolate; }
 .studio-select-item-text { transition:transform var(--motion-control) var(--spring-soft); }
-@media (hover:hover) and (pointer:fine) { .studio-select-content[data-pointer-open='true'] .studio-select-item:not([data-disabled]):hover .studio-select-item-text { transform:translateX(3px); } }
 .studio-select-content[data-pointer-open='false'] .studio-select-item-text { transition:none; }
-.studio-select-content[data-pointer-open='true'] .studio-select-item:not([data-disabled]):active .studio-select-item-text { transform:scale(var(--control-feedback-press,.94)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
+.studio-select-content[data-pointer-open='true'] .studio-select-item:not([data-disabled]):active .studio-select-item-text { transform:scale(var(--control-feedback-press,.98)); transition-duration:var(--control-feedback-duration,var(--motion-press)); }
 .studio-select-content[data-pointer-open='false'] .studio-select-item[data-highlighted] { box-shadow:var(--focus-shadow); }
 .chat-model-picker-content .studio-select-item[data-highlighted] { box-shadow:var(--focus-shadow); }
 .studio-select-item[data-state='checked'] {

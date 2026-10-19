@@ -5,7 +5,7 @@
 .pb .scene-result-count { color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .pb .scene-theme-filter { min-width:0; margin-bottom:var(--s-2); }
 .pb .scene-theme-filter > summary { min-height:var(--control-height-sm); padding:var(--s-1) 0; color:var(--text-secondary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer; }
-.pb .scene-theme-filter > summary:hover { color:var(--accent); }
+.pb .scene-theme-filter > summary:hover { color:var(--text-primary); }
 .pb .scene-theme-filter > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb #stepScene .scene-cats { flex-wrap:wrap; min-width:0; }
 .pb .scene-cat-btn .archive-icon { flex:none; width:16px; height:16px; }

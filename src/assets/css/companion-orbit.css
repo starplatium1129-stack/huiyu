@@ -6,7 +6,7 @@
 .orbit-segment > svg { @apply tw:absolute; inset: 0; @apply tw:w-full tw:h-full tw:overflow-visible tw:pointer-events-none; }
 .orbit-segment > svg > path { fill: var(--bg-elevated); stroke: var(--border-strong); stroke-width: .75; @apply tw:pointer-events-auto tw:cursor-pointer; }
 .orbit-segment[data-active] > svg > path { fill:var(--bg-hover); stroke:var(--border-strong); }
-.orbit-segment:has(button:hover) > svg > path, .orbit-segment:has(> svg > path:hover) > svg > path { fill: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); stroke: var(--accent); }
+.orbit-segment:has(button:hover) > svg > path, .orbit-segment:has(> svg > path:hover) > svg > path { fill: var(--bg-hover); stroke: var(--border-strong); }
 .orbit-segment:has(button:focus-visible) > svg > path { fill:var(--bg-hover); stroke:var(--border-strong); stroke-width:.75; }
 .companion-orbit .orbit-action { @apply tw:absolute; left: var(--orbit-x); top: var(--orbit-y); @apply tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-[4px] tw:w-[54px] tw:h-[50px] tw:p-0; transform: translate(-50%, -50%); border: 0; border-radius: 0; background: transparent; @apply tw:text-primary; box-shadow: none; @apply tw:cursor-pointer tw:pointer-events-auto tw:text-label-sm; line-height: 1.2; }
 .orbit-action .archive-icon { @apply tw:w-[22px] tw:h-[22px] tw:text-accent; }
@@ -22,7 +22,7 @@
 .orbit-option > .archive-icon { @apply tw:w-[22px] tw:h-[22px]; }
 .orbit-option span { @apply tw:block; flex: 0 0 auto; @apply tw:max-w-full tw:min-h-[1.5em] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap tw:text-label-xs; line-height: 1.5; }
 .orbit-option[aria-pressed="true"] { @apply tw:border-strong; background:var(--bg-hover); }
-.orbit-option:hover { @apply tw:border-strong; background: color-mix(in srgb, var(--accent) 15%, var(--bg-elevated)); }
+.orbit-option:hover { @apply tw:border-strong; background: var(--bg-hover); }
 .orbit-selection { max-width: calc(100% - 24px); @apply tw:w-[320px]; flex: 0 1 auto; @apply tw:min-h-0; padding: 10px 12px; @apply tw:rounded-lg; border: 1px solid var(--border-soft); background: var(--bg-elevated); @apply tw:pointer-events-auto tw:overflow-auto; overscroll-behavior: contain; }
 .orbit-selection > header { @apply tw:flex tw:items-center tw:gap-[8px]; }
 .orbit-selection > header strong { flex: 1; @apply tw:text-label; }

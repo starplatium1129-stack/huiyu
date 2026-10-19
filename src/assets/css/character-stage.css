@@ -60,7 +60,7 @@
 
 .open-character-stage .wardrobe-trigger:hover,
 .open-character-stage .live2d-wardrobe.open .wardrobe-trigger {
-  border-color: color-mix(in srgb, var(--character-accent) 62%, var(--border-soft));
+  border-color: var(--border-strong);
   background: var(--bg-surface);
 }
 
@@ -141,7 +141,7 @@
 }
 
 .open-character-stage .wardrobe-option:hover {
-  background: color-mix(in srgb, var(--character-accent) 9%, transparent);
+  background: var(--bg-hover);
   @apply tw:text-primary;
 }
 

@@ -19,7 +19,12 @@
 .pb .inspector-workbench .inspector-route { padding:var(--s-4) 0; border-top:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-label); }
 .pb .inspector-workbench .inspector-route > summary { justify-content:space-between; min-height:var(--control-height); padding:0; border:0; border-radius:var(--r-sm); background:transparent; list-style:none; cursor:pointer; }
 .pb .inspector-workbench .inspector-route > summary::-webkit-details-marker { display:none; }
+.pb .inspector-workbench .inspector-route > summary .studio-button-feedback { border:0; background:transparent; }
+.pb .inspector-workbench .inspector-route[open] > summary { color:var(--text-primary); }
 .pb .inspector-workbench .inspector-route > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-@media (hover:hover) and (pointer:fine) { .pb .inspector-workbench .inspector-route > summary:hover { background:var(--bg-hover); color:var(--accent); } }
+@media (hover:hover) and (pointer:fine) { .pb .inspector-workbench .inspector-route > summary:hover { color:var(--text-primary); } }
 
-@media (forced-colors:active) { .pb .inspector-workbench .inspector-tabs button[data-state="active"] { border-color:Highlight; color:Highlight; } }
+@media (forced-colors:active) {
+  .pb .inspector-workbench .inspector-tabs button[data-state="active"] { border-color:Highlight; color:Highlight; }
+  .pb .inspector-workbench .inspector-route > summary:focus-visible { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; }
+}

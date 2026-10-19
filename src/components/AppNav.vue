@@ -355,10 +355,11 @@ onUnmounted(deactivateNavigation)
 .nav-links { --selection-radius: var(--r-md); --selection-shadow: none; border-color:transparent; background:transparent; box-shadow:none; }
 .nav-links :deep(.animated-selection) { background:var(--bg-elevated); border-color:transparent; }
 .nav-links > a { white-space:nowrap; isolation:isolate; }
-/* Move the label and artwork while navigation hit targets remain fixed. */
+/* Shared paper feedback keeps navigation still; a small dot motif marks the chapter. */
 .nav-brand:active,.nav-links > a:active,.nav-more :deep(.nav-more-trigger:active),.nav-utilities :deep(button:active:not(.app-theme-toggle)),.nav-menu-toggle:active { transform:none; }
-.nav-logo,.nav-item-label,.nav-more :deep(.nav-more-label),.nav-links > a > .archive-icon,.nav-utilities :deep(button > .archive-icon),.nav-utilities :deep(.task-center-button > span),.nav-menu-toggle > .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
-.nav-links > a::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--border-soft); border-radius:inherit; background:var(--accent-soft); box-shadow:inset 0 1px 0 var(--glass-highlight); opacity:0; transform:scale(.92); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-route) var(--spring-soft); pointer-events:none; }
+.nav-logo,.nav-item-label,.nav-more :deep(.nav-more-label),.nav-links > a > .archive-icon,.nav-utilities :deep(button > .archive-icon),.nav-utilities :deep(.task-center-button > span),.nav-menu-toggle > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
+.nav-links > a::after { content:''; position:absolute; inset:auto 0 3px; width:22px; height:4px; margin-inline:auto; background:radial-gradient(circle,var(--text-secondary) 1px,transparent 1.5px) left center / 7px 4px repeat-x; opacity:0; pointer-events:none; transition:opacity var(--motion-hover) var(--ease-out); }
+.nav-links > a.active::after { opacity:.8; }
 .nav-links > a:hover { background:transparent; }
 .nav-links > a:focus-visible > :is(.archive-icon,.nav-item-label),.nav-brand:focus-visible .nav-logo,.nav-more :deep(.nav-more-trigger:focus-visible > span),.nav-utilities :deep(button:focus-visible > .archive-icon),.nav-menu-toggle:focus-visible > .archive-icon { transform:none; transition:none; }
 .nav-links > a:focus-visible::before { transition:none; }
@@ -366,15 +367,12 @@ onUnmounted(deactivateNavigation)
 .nav-more :deep(.nav-more-trigger:focus-visible .nav-more-chevron) { transition:none; }
 @media (hover:hover) and (pointer:fine) {
   .nav-brand:where(:hover:not(:focus-visible)) .nav-logo { transform:translateY(-2px) scale(1.025); }
-  .nav-links > a:where(:hover:not(:focus-visible))::before { opacity:1; transform:none; }
-  .nav-links > a:where(:hover:not(:focus-visible)) > .nav-item-label,.nav-more :deep(.nav-more-trigger:where(:hover:not(:focus-visible)) .nav-more-label) { transform:translateY(-2px); }
-  .nav-links > a:where(:hover:not(:focus-visible)) > .archive-icon,.nav-utilities :deep(button:where(:hover:not(:focus-visible)) > .archive-icon),.nav-menu-toggle:where(:hover:not(:focus-visible)) > .archive-icon { transform:translateY(-2px) rotate(-10deg) scale(1.16); }
-  .nav-more :deep(.nav-more-trigger:where(:hover:not(:focus-visible):not([aria-expanded='true'])) .nav-more-chevron) { transform:translateY(2px); }
+  .nav-links > a:where(:hover:not(:focus-visible))::after { opacity:.65; }
 }
 .nav-brand:where(:active:not(:focus-visible)) .nav-logo { transform:scale(.97); }
-.nav-links > a:where(:active:not(:focus-visible)) > :is(.archive-icon,.nav-item-label),.nav-more :deep(.nav-more-trigger:where(:active:not(:focus-visible)) > .nav-more-label),.nav-utilities :deep(button:where(:active:not(:focus-visible):not(.app-theme-toggle):not([data-spring-button])) > :is(.archive-icon,span)),.nav-menu-toggle:where(:active:not(:focus-visible)) > .archive-icon { transform:scale(.94); transition-duration:var(--motion-press); }
+.nav-links > a:where(:active:not(:focus-visible)) > :is(.archive-icon,.nav-item-label),.nav-more :deep(.nav-more-trigger:where(:active:not(:focus-visible)) > .nav-more-label),.nav-utilities :deep(button:where(:active:not(:focus-visible):not(.app-theme-toggle):not([data-spring-button])) > :is(.archive-icon,span)),.nav-menu-toggle:where(:active:not(:focus-visible)) > .archive-icon { transform:scale(.98); transition-duration:var(--motion-press); }
 .u212[data-reduced-motion='true'] :is(.nav-logo,.nav-item-label),.u212[data-reduced-motion='true'] .nav-links > a > .archive-icon,.u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-label),.u212[data-reduced-motion='true'] .nav-utilities :deep(button > :is(.archive-icon,span)),.u212[data-reduced-motion='true'] .nav-menu-toggle > .archive-icon { transform:none; transition:none; }
-.u212[data-reduced-motion='true'] .nav-links > a::before { transform:none; transition:none; }
+.u212[data-reduced-motion='true'] .nav-links > a::before,.u212[data-reduced-motion='true'] .nav-links > a::after { transform:none; transition:none; }
 .u212[data-reduced-motion='true'] .nav-more :deep(.nav-more-chevron) { transition:none; }
 @media (forced-colors:active) { .nav-links > a::before { display:none; } .nav-links > a:hover { outline:1px solid Highlight; outline-offset:-1px; } }
 @media (min-width:1600px) { .nav-brand-note { display: block; } }
@@ -416,9 +414,9 @@ onUnmounted(deactivateNavigation)
 }
 .nav-utilities :deep(button:hover:where(:not(.app-theme-toggle))),
 .nav-utilities :deep(.sound-toggle.active) {
-  background: var(--accent-soft);
+  background: transparent;
   border-color: var(--border-soft);
-  @apply tw:text-accent;
+  @apply tw:text-primary;
 }
 .nav-utilities :deep(button:focus-visible) { outline: none; box-shadow: var(--focus-shadow); transition: none; }
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
@@ -446,7 +444,7 @@ onUnmounted(deactivateNavigation)
     border: 0;
   }
   .nav-menu-toggle { width: 40px; height: 40px; flex: none; background: var(--album-surface); }
-  .nav-menu-toggle:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .nav-menu-toggle:hover { background: transparent; color: var(--text-primary); border-color: var(--border-strong); }
 }
 @media (max-width:600px) {
   .nav-inner { gap:var(--s-1); padding-inline:var(--s-3); }

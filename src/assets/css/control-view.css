@@ -40,7 +40,7 @@
 .panel-heading { margin: 0 0 var(--s-2); @apply tw:text-title-sm tw:font-semibold tw:leading-label; }
 .mode-grid { @apply tw:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-3 tw:mb-s-4; }
 .mode-card { @apply tw:grid tw:gap-s-2 tw:text-left tw:p-s-4; border: 1px solid transparent; @apply tw:rounded-lg; background: var(--bg-base); @apply tw:text-primary tw:cursor-pointer; }
-.mode-card:hover:not(:disabled) { @apply tw:border-accent; }
+.mode-card:hover:not(:disabled) { @apply tw:border-strong; }
 .mode-card:disabled { @apply tw:text-disabled tw:cursor-not-allowed; }
 .mode-card:disabled :is(.mode-title, .mode-desc, .mode-arrow, .archive-icon) { @apply tw:text-disabled; }
 .mode-title { @apply tw:flex tw:items-center tw:gap-s-2 tw:text-body tw:font-semibold; }

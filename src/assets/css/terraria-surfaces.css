@@ -63,9 +63,9 @@
   --focus-color:var(--text-secondary); --focus-shadow:inset 0 -2px 0 var(--focus-color);
 }
 :root[data-theme-style='terraria'] body .control-rail .task-center-button { --accent:var(--terraria-on-wood); background:var(--terraria-action); }
-/* Pair timber controls with a dark feedback fill; current navigation keeps its accent/paper pair. */
+/* Neutral feedback stays readable on timber; current navigation keeps its paper pair. */
 :root[data-theme-style='terraria'] body .control-rail :is(button,.control-rail-link:not([aria-current]),.nav-local-home) {
-  --control-feedback-fill:var(--terraria-action);
+  --control-feedback-fill:color-mix(in srgb,var(--terraria-on-wood) 8%,transparent); --control-feedback-edge:var(--terraria-edge);
 }
 /* Component hover backgrounds sit below the feedback pseudo-element and need the same pairing. */
 :root[data-theme-style='terraria'] body .control-rail :is(.appearance-entry,.control-rail-link:not([aria-current]),.nav-local-home):hover { background:var(--terraria-action); }
@@ -88,7 +88,7 @@
 }
 :root[data-theme-style='terraria'] body .studio-segments[role] { --selection-radius:0px; --selection-shadow:inset 0 0 0 1px var(--terraria-edge); }
 :root[data-theme-style='terraria'] body .studio-segments[role] .animated-selection { background:var(--bg-elevated); border-color:var(--border-strong); }
-:root[data-theme-style='terraria'] body :is(.inspiration-deck-card,.guide-steps a):hover { border-color:var(--accent); }
+:root[data-theme-style='terraria'] body :is(.inspiration-deck-card,.guide-steps a):hover { border-color:var(--border-strong); }
 :root[data-theme-style='terraria'] body .appearance-style-choices button[aria-checked='true'] { border-color:var(--border-strong); box-shadow:var(--selection-shadow); }
 :root[data-theme-style='terraria'] body :is(button,a,input,textarea,summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 :root[data-theme-style='terraria'] body :is(button,.btn):disabled { color:var(--text-disabled); }

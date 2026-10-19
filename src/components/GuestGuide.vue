@@ -118,7 +118,7 @@ async function dismiss() {
 .guest-guide-body p { margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
 .guest-guide-destinations { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); }
 .guest-guide-destinations a { display:grid; justify-items:center; gap:var(--s-2); min-width:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--accent); background:var(--bg-base); text-decoration:none; overflow-wrap:anywhere; }
-@media (hover:hover) and (pointer:fine) { .guest-guide-destinations a:hover { border-color:var(--accent); } }
+@media (hover:hover) and (pointer:fine) { .guest-guide-destinations a:hover { border-color:var(--border-strong); } }
 .guest-guide-destinations a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .guest-guide-destinations .archive-icon { width:20px; height:20px; }
 .guest-guide-destinations strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }

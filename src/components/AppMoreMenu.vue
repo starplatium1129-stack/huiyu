@@ -79,14 +79,14 @@ function focusFirstPage(event: Event) {
 .nav-more-menu a { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-w-0 tw:min-h-[44px] tw:rounded-md tw:text-secondary; padding:var(--s-2) var(--s-3); font:500 var(--fs-label)/var(--lh-body) var(--font-sans); text-decoration:none; white-space:normal; }
 .nav-more-menu a > span { min-width:0; overflow-wrap:anywhere; }
 .nav-more-menu a { position:relative; isolation:isolate; transform:none; transition:none; }
-.nav-more-menu :is(a,.nav-more-utilities > button)::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--border-soft); border-radius:inherit; background:var(--accent-soft); opacity:0; transform:scaleX(.94); transform-origin:left; transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-route) var(--spring-soft); pointer-events:none; }
-.nav-more-menu a > :is(span,.archive-icon),.nav-more-menu .appearance-entry > .archive-icon { transition:transform var(--motion-route) var(--spring-soft); }
-.nav-more-menu a:hover,.nav-more-menu a.active { @apply tw:text-accent; background:transparent; }
+.nav-more-menu :is(a,.nav-more-utilities > button)::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--control-hover-edge); border-radius:inherit; background:var(--control-hover-surface); opacity:0; transform:scale(.985); transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-hover) var(--ease-out); pointer-events:none; }
+.nav-more-menu a > :is(span,.archive-icon),.nav-more-menu .appearance-entry > .archive-icon { transition:transform var(--motion-hover) var(--ease-out); }
+.nav-more-menu a:hover,.nav-more-menu a.active { @apply tw:text-primary; background:transparent; }
 .nav-more-menu a.active::before { opacity:1; transform:none; }
-.nav-more-menu a[data-pending='true'],.nav-more-menu a[data-intent='true'] { outline:none; box-shadow:var(--focus-shadow); background:var(--accent-soft); @apply tw:text-primary; }
+.nav-more-menu a[data-pending='true'],.nav-more-menu a[data-intent='true'] { outline:none; box-shadow:var(--focus-shadow); background:var(--bg-hover); @apply tw:text-primary; }
 .nav-more-menu .archive-icon { @apply tw:shrink-0 tw:w-[16px] tw:h-[16px]; }
 .nav-more-heading { grid-column:1 / -1; @apply tw:flex tw:justify-between tw:items-center tw:gap-s-3 tw:text-primary tw:text-body-sm tw:pb-s-2; border-bottom:1px solid var(--border-soft); }
-.nav-more-menu .nav-current-label { @apply tw:ml-auto tw:shrink-0 tw:text-accent tw:text-label-xs; }
+.nav-more-menu .nav-current-label { @apply tw:ml-auto tw:shrink-0 tw:text-primary tw:text-label-xs; }
 .nav-more-menu :is(a,button):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .nav-more-utilities { grid-column:1 / -1; @apply tw:grid tw:gap-s-1 tw:pt-s-2; border-top:1px solid var(--border-soft); }
 .nav-more-menu .nav-help { @apply tw:min-h-[44px] tw:p-s-3; border:0; @apply tw:rounded-md; background:transparent; @apply tw:text-secondary tw:text-left; font:500 var(--fs-label)/var(--lh-body) var(--font-sans); @apply tw:cursor-pointer; }
@@ -95,11 +95,9 @@ function focusFirstPage(event: Event) {
 .nav-more-menu .nav-more-utilities > button:hover { background:transparent; }
 @media (hover:hover) and (pointer:fine) {
   .nav-more-menu :is(a,.nav-more-utilities > button):where(:hover:not(:focus-visible))::before { opacity:1; transform:none; }
-  .nav-more-menu a:where(:hover:not(:focus-visible)) > span { transform:translateX(4px); }
-  .nav-more-menu a:where(:hover:not(:focus-visible)) > .archive-icon,.nav-more-menu .appearance-entry:where(:hover:not(:focus-visible)) > .archive-icon { transform:rotate(-10deg) scale(1.16); }
 }
 .nav-more-menu a:active { transform:none; }
-.nav-more-menu a:where(:active:not(:focus-visible)) > :is(span,.archive-icon) { transform:scale(.94); transition-duration:var(--motion-press); }
+.nav-more-menu a:where(:active:not(:focus-visible)) > :is(span,.archive-icon) { transform:scale(.98); transition-duration:var(--motion-press); }
 .nav-more-menu a:focus-visible > :is(span,.archive-icon),.nav-more-menu button:focus-visible > .archive-icon { transform:none; transition:none; }
 .nav-more-menu :is(a,button):focus-visible::before { transition:none; }
 @media (prefers-reduced-motion:reduce) {

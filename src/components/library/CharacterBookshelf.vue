@@ -162,10 +162,10 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-search { flex:1; @apply tw:max-w-[620px]; }
 .bookshelf-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 48px); @apply tw:gap-y-s-6; padding: var(--s-5) 0 var(--s-3); }
 .bookshelf-open { position:relative; isolation:isolate; padding:var(--s-2); border:1px solid var(--border-soft); background:var(--bg-base); color:inherit; font:inherit; box-shadow:inset 0 1px 0 var(--glass-highlight); }
-.bookshelf-open::before { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; background:linear-gradient(160deg,var(--accent-soft),transparent 65%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
+.bookshelf-open::before { content:''; position:absolute; inset:0; z-index:-1; border-radius:inherit; background:var(--bg-hover); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .bookshelf-flip-row > span { @apply tw:min-w-0 tw:max-w-[60%] tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .bookshelf-flip-row button { @apply tw:flex tw:items-center tw:gap-s-1 tw:shrink-0 tw:min-h-[36px]; padding:var(--s-1) var(--s-2); border:1px solid transparent; @apply tw:rounded-md; background:transparent; @apply tw:text-secondary; font:inherit; @apply tw:cursor-pointer; }
-.bookshelf-flip-row button:hover { background:var(--bg-base); @apply tw:text-accent; }
+.bookshelf-flip-row button:hover { background:var(--bg-base); @apply tw:text-primary; }
 .bookshelf-work { padding: var(--s-2) 0 var(--s-4); border: 0; background: transparent; color: inherit; font: inherit; }
 .bookshelf-cover-stage { aspect-ratio: 1.15; }
 .bookshelf-cover { border:3px solid var(--bg-surface); box-shadow:var(--shadow-md); transform-origin:center 85%; transition:transform var(--motion-art-hover) var(--spring-soft); }
@@ -184,7 +184,7 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-cover-placeholder { inset: 5% 21% 9%; border: 1px dashed var(--border-soft); background: var(--bg-base); }
 .bookshelf-cover-placeholder > .archive-icon { @apply tw:text-glyph; }
 .bookshelf-text-button { @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:min-h-[40px] tw:p-s-2; border: 0; @apply tw:rounded-sm; background: transparent; @apply tw:text-accent; font: inherit; @apply tw:text-label tw:cursor-pointer tw:shrink-0; }
-.bookshelf-text-button:hover { background: var(--accent-soft); }
+.bookshelf-text-button:hover { background: transparent; }
 .bookshelf-results-heading { margin: var(--s-5) 0 var(--s-4); }
 .bookshelf-results-heading h2 { @apply tw:m-0 tw:text-body-lg tw:leading-body tw:font-semibold; scroll-margin-top:calc(var(--desktop-chrome-height,0px) + var(--app-navigation-height,80px) + var(--s-4)); }
 .bookshelf-results-heading > span { @apply tw:ml-auto tw:text-muted tw:text-label; }

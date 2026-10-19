@@ -10,7 +10,9 @@
 :where(.btn, [data-spring-button]) { position:relative; isolation:isolate; }
 /* Standalone companion windows retain their existing feedback without this installer. */
 :where(:root[data-button-feedback='spring'] .btn, :root[data-button-feedback='spring'] [data-spring-button]) { --control-press-transform:none; }
-.studio-button-feedback { position:absolute; inset:1px; z-index:-1; border:1px solid color-mix(in srgb,currentColor 24%,transparent); border-radius:inherit; background:color-mix(in srgb,currentColor 8%,transparent); opacity:0; pointer-events:none; }
+.studio-button-feedback { position:absolute; inset:1px; z-index:-1; border:1px solid currentColor; border-radius:inherit; background:var(--control-feedback-fill,var(--control-hover-fill)); opacity:0; pointer-events:none; }
+/* The spring owns inner scale; CSS hover displacement remains independent. */
+:root[data-button-feedback='spring'] :is(.btn:not(.generation-action):not(.studio-action-link),[data-spring-button]):active > :is(.studio-control-label,.studio-control-icon,.archive-icon:not(.spin),.u008-icons,.u008-label) { transform:none; }
 :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']) {
   transition: transform var(--motion-press) var(--ease-out);
 }

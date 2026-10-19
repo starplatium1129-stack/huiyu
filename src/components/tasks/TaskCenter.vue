@@ -74,7 +74,7 @@ async function act(id: string, action: 'cancel' | 'retry') { if (busy.value) ret
 .task-center .task-empty { margin:0; padding:var(--s-4); }
 .task-center summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:shrink-0 tw:cursor-pointer tw:text-secondary tw:text-label tw:rounded-md; min-height:var(--control-height-sm); padding:var(--s-2) var(--s-3); margin-block:var(--s-2); }
 @media (hover:hover) and (pointer:fine) {
-  .task-center summary:hover { background:var(--accent-soft); color:var(--accent); }
+  .task-center summary:hover { background:transparent; color:var(--text-primary); }
 }
 .task-center::backdrop { background: var(--art-scrim); }
 .task-center header, .task-card-title { @apply tw:flex; align-items: start; @apply tw:justify-between tw:gap-s-3; }

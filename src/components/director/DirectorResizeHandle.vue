@@ -17,7 +17,7 @@ onBeforeUnmount(() => emit('finish'))
 @media (min-width: 1024px) {
   .director-resize-handle { display: block; position: absolute; z-index: var(--z-raised); top: 0; bottom: 0; width: 16px; cursor: col-resize; touch-action: none; }
   .director-resize-handle::after { content: ''; position: absolute; inset: 20% 6px; border-radius: var(--r-pill); background: transparent; transition: background var(--motion-hover); }
-  .director-resize-handle:hover::after, .director-resize-handle:focus-visible::after { background: var(--accent); }
+  .director-resize-handle:hover::after, .director-resize-handle:focus-visible::after { background: var(--text-secondary); }
   .director-resize-handle:focus-visible { outline: none; box-shadow: var(--focus-shadow); border-radius: var(--r-sm); }
 }
 </style>

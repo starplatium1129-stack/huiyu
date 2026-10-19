@@ -380,7 +380,7 @@ html.companion-mode body {
 }
 
 .companion-page .companion-vision-btn:hover:not(:disabled) {
-  @apply tw:border-accent tw:text-primary;
+  @apply tw:border-strong tw:text-primary;
 }
 
 .companion-page .companion-vision-btn:disabled {
@@ -925,7 +925,7 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-reminder-action:hover,
 .companion-reminder-action:focus-visible {
   border-color: var(--border-strong);
-  background: color-mix(in srgb, var(--character-accent) 20%, var(--bg-elevated));
+  background: var(--bg-elevated);
 }
 
 .companion-page .companion-quiet-hours-hint {
@@ -1122,7 +1122,7 @@ html.companion-immersive .companion-page {
 .companion-page .companion-settings-btn:hover,
 .companion-page .companion-settings-btn:focus-visible,
 .companion-page .companion-settings-btn[aria-expanded="true"] {
-  @apply tw:border-strong tw:text-accent;
+  @apply tw:border-strong tw:text-primary;
 }
 
 /* —— 设置弹层（毛玻璃，悬于顶栏下方右侧） —— */
@@ -1173,8 +1173,8 @@ html.companion-immersive .companion-page {
 }
 .companion-page .companion-pop-item:hover,
 .companion-page .companion-pop-item:focus-visible {
-  background: var(--accent-soft);
-  @apply tw:text-accent;
+  background: var(--bg-hover);
+  @apply tw:text-primary;
 }
 .companion-page .companion-pop-switch { @apply tw:min-h-[40px]; }
 .companion-page .companion-pop-switch > span:last-child { flex:1; }
@@ -1238,7 +1238,7 @@ html.companion-immersive .companion-page {
 .companion-page .companion-setup-action:hover,
 .companion-page .companion-setup-action:focus-visible {
   border-color: var(--border-strong);
-  color: var(--character-accent);
+  color: var(--text-primary);
 }
 
 /* —— 工具/思考指示：轻量单行 —— */
@@ -1467,7 +1467,7 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
 .companion-chat-chip:hover,
 .companion-chat-chip:focus-visible {
   border-color: var(--border-strong);
-  background: color-mix(in srgb, var(--character-accent) 26%, var(--art-scrim));
+  background: var(--art-scrim);
   transform: translateY(-2px);
 }
 

@@ -136,10 +136,10 @@
 /* Inspira UI / Magic UI Interactive Hover Button: layered surface and arrow exchange.
    Adapted from unovue/inspira-ui@04c57ab62b9713872ebbf68988dff1836ed3d764; MIT: assets/licenses/inspira-ui.txt. */
 .room-surface .chat-starters button.room-starter { position:relative; isolation:isolate; display:grid; grid-template-columns:28px minmax(0,1fr) 24px; align-items:center; gap:var(--s-3); min-height:52px; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); overflow:hidden; background:var(--bg-base); color:var(--text-primary); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); transform:none; transition:none; box-shadow:inset 0 1px 0 var(--glass-highlight); }
-.room-starter::before { content:''; position:absolute; z-index:-1; inset:0; background:var(--accent-soft); transform:translateX(-100%); opacity:0; transition:transform var(--motion-route-cut) var(--spring-soft),opacity var(--motion-control) var(--ease-out); }
+.room-starter::before { content:''; position:absolute; z-index:-1; inset:0; background:var(--bg-hover); transform:translateX(-100%); opacity:0; transition:transform var(--motion-route-cut) var(--spring-soft),opacity var(--motion-control) var(--ease-out); }
 .room-starter-index { display:grid; place-items:center; width:28px; height:28px; border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-secondary); font:500 var(--fs-mono-xs)/1 var(--font-mono); }
 .room-starter-copy { transition:transform var(--motion-route) var(--spring-soft); }
-.room-starter-arrow { position:relative; display:grid; place-items:center; width:24px; height:24px; overflow:hidden; color:var(--accent); }
+.room-starter-arrow { position:relative; display:grid; place-items:center; width:24px; height:24px; overflow:hidden; color:var(--text-secondary); }
 .room-starter-arrow .archive-icon { position:absolute; width:16px; height:16px; transform:rotate(-90deg); transition:transform var(--motion-route) var(--spring-soft),opacity var(--motion-control) var(--ease-out); }
 .room-starter-arrow .archive-icon + .archive-icon { opacity:0; transform:translateX(-20px) rotate(-90deg); }
 .room-surface .room-starter:focus-visible { outline:none; box-shadow:var(--focus-shadow); }

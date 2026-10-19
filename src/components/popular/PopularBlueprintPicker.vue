@@ -125,7 +125,7 @@ const categoryChips = computed(() => {
 }
 .blueprint-cat-btn:active:not(:disabled) { transform: translateY(1px) scale(.96); }
 .blueprint-cat-btn em { @apply tw:not-italic; font: 700 var(--fs-mono-xs) var(--font-mono); @apply tw:text-muted; }
-.blueprint-cat-btn:hover:not(:disabled) { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-soft)); @apply tw:text-primary; }
+.blueprint-cat-btn:hover:not(:disabled) { border-color: var(--border-strong); @apply tw:text-primary; }
 .blueprint-cat-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .blueprint-cat-btn.active {
   border-color: var(--border-strong);
@@ -145,7 +145,7 @@ const categoryChips = computed(() => {
   background:transparent;
   transition: border-color var(--motion-hover), color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
-.blueprint-reco-btn:hover:not(:disabled) { @apply tw:border-accent tw:text-accent; }
+.blueprint-reco-btn:hover:not(:disabled) { @apply tw:border-strong tw:text-primary; }
 .blueprint-reco-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .blueprint-reco-btn:active:not(:disabled) { transform: translateY(1px) scale(.96); }
 .blueprint-picker :is(.blueprint-cat-btn,.blueprint-reco-btn):disabled, .blueprint-cat-btn:disabled em { color:var(--text-disabled); cursor:not-allowed; opacity:1; transform:none; }
@@ -156,7 +156,7 @@ const categoryChips = computed(() => {
   transition: transform var(--motion-hover) var(--ease-out);
 }
 .blueprint-card:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-@media (hover:hover) and (pointer:fine) { .blueprint-card:hover:not(:focus-visible) { transform:translateY(-2px); @apply tw:border-accent; box-shadow:var(--shadow-sm); } }
+@media (hover:hover) and (pointer:fine) { .blueprint-card:hover:not(:focus-visible) { transform:translateY(-2px); @apply tw:border-strong; box-shadow:var(--shadow-sm); } }
 .blueprint-card.active {
   border-color: var(--border-strong);
   border-left-color:var(--border-strong);

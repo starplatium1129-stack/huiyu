@@ -286,7 +286,7 @@ body {
 
 
 a { @apply tw:text-accent; text-decoration: none; transition: color var(--motion-hover); }
-a:hover { @apply tw:text-accent-hover; }
+a:hover { @apply tw:text-primary; }
 
 /* 原生与 role 控件共用底线；重复伪类保留兜底特异性，组件可在边界定制。 */
 :where(a, button, input, select, textarea, summary, [tabindex],
@@ -365,7 +365,7 @@ body > *:has(+ .footer),
   padding: 10px 12px; @apply tw:rounded-md;
 }
 .nav-links a:focus-visible { transition: none; }
-.nav-links a:hover, .nav-links a.active { @apply tw:text-primary; background: var(--accent-soft); }
+.nav-links a:hover, .nav-links a.active { @apply tw:text-primary; background: transparent; }
 .nav-links a.active { @apply tw:text-primary; background: transparent; }
 .nav-links :is(> a, .studio-tooltip-anchor > a, a)::after {
   content:""; @apply tw:absolute tw:left-[50%] tw:bottom-[2px] tw:w-[12px] tw:h-[2px] tw:rounded-pill; background:var(--accent);
@@ -380,7 +380,7 @@ body > *:has(+ .footer),
 }
 .nav-more-trigger:disabled { @apply tw:text-disabled; cursor:wait; }
 .nav-more-trigger:hover, .nav-more-trigger[aria-expanded="true"], .nav-more[data-active="true"] .nav-more-trigger {
-  @apply tw:text-primary; background:var(--accent-soft);
+  @apply tw:text-primary; background:transparent;
 }
 .nav-more-chevron { @apply tw:text-label-xs; transition:transform var(--motion-hover); }
 .nav-more-trigger[aria-expanded="true"] .nav-more-chevron { transform:rotate(180deg); }
@@ -394,7 +394,7 @@ body > *:has(+ .footer),
   @apply tw:text-secondary tw:cursor-pointer; font: 650 var(--fs-label-xs) var(--font-sans);
   transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover);
 }
-.local-status-trigger:hover, .local-status-trigger[aria-expanded="true"] { @apply tw:border-accent tw:text-primary; background:var(--accent-soft); }
+.local-status-trigger:hover, .local-status-trigger[aria-expanded="true"] { @apply tw:border-strong tw:text-primary; background:var(--bg-elevated); }
 .local-status-led { @apply tw:w-[7px] tw:h-[7px]; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
 .local-status-trigger[data-state="online"] .local-status-led { background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 14%,transparent),0 0 10px color-mix(in srgb,var(--success) 45%,transparent); }
 .local-status-trigger[data-state="idle"] .local-status-led { background:var(--warning); box-shadow:0 0 0 3px color-mix(in srgb,var(--warning) 14%,transparent); }
@@ -408,7 +408,7 @@ body > *:has(+ .footer),
 .local-status-panel[hidden] { @apply tw:hidden; }
 .local-status-head { @apply tw:flex tw:items-center tw:justify-between tw:text-accent; font: 800 var(--fs-mono-xs) var(--font-mono); letter-spacing:.14em; }
 .local-status-refresh { @apply tw:w-[28px] tw:h-[28px]; border:0; border-radius:50%; background:transparent; @apply tw:text-muted tw:cursor-pointer tw:text-body-lg; }
-.local-status-refresh:hover { background:var(--accent-soft); @apply tw:text-accent; }
+.local-status-refresh:hover { background:transparent; @apply tw:text-primary; }
 .local-status-summary { margin:5px 0 12px; @apply tw:text-muted tw:text-mono-sm tw:leading-body; }
 .local-status-services { @apply tw:grid tw:gap-[6px]; }
 .local-service { @apply tw:grid; grid-template-columns:28px 1fr auto; @apply tw:items-center tw:gap-[8px] tw:p-[9px]; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:color-mix(in srgb,var(--bg-deep) 72%,transparent); }
@@ -420,7 +420,7 @@ body > *:has(+ .footer),
 .local-service[data-state="online"] .local-service-icon, .local-service[data-state="online"] em { @apply tw:text-success-text; }
 .local-status-actions { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-[7px] tw:mt-[10px]; }
 .local-status-actions a { @apply tw:flex tw:justify-center; padding:8px 9px; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-secondary tw:text-mono-sm; }
-.local-status-actions a:hover { @apply tw:border-accent tw:text-accent; }
+.local-status-actions a:hover { @apply tw:border-strong tw:text-primary; }
 @keyframes statusSoftPulse { 50% { opacity:.35; transform:scale(.82); } }
 
 /* ---- Theme toggle ---- */
@@ -435,7 +435,7 @@ body > *:has(+ .footer),
   @apply tw:text-body-lg tw:leading-flush;
 }
 .theme-toggle:hover {
-  @apply tw:border-accent tw:text-accent;
+  @apply tw:border-strong tw:text-primary;
   transform: rotate(-15deg);
 }
 .nav-menu-toggle .archive-icon { @apply tw:w-[1em] tw:h-[1em]; }
@@ -466,7 +466,7 @@ body > *:has(+ .footer),
   text-decoration: none;
   transition: color var(--motion-hover);
 }
-.nav-back:hover { @apply tw:text-accent; }
+.nav-back:hover { @apply tw:text-primary; }
 
 .page-kicker {
   @apply tw:flex tw:items-center tw:gap-[8px] tw:mb-[6px] tw:text-muted;
@@ -505,7 +505,7 @@ body > *:has(+ .footer),
   @apply tw:cursor-pointer;
   transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-press) var(--ease-out);
 }
-.filter-pill:hover { border-color:var(--border-strong); background:var(--accent-soft); @apply tw:text-accent; }
+.filter-pill:hover { border-color:var(--border-strong); background:var(--bg-elevated); @apply tw:text-primary; }
 .filter-pill.active:where(:not(:hover)) { border-color:var(--border-strong); background:var(--bg-elevated); color:var(--text-primary); }
 
 /* 空态是首次使用最常看到的画面：给它画框感与一点氛围，
@@ -630,7 +630,7 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
   background:linear-gradient(90deg,transparent,var(--glass-specular),transparent);
   @apply tw:pointer-events-none;
 }
-.card-create:hover { @apply tw:border-accent; }
+.card-create:hover { @apply tw:border-strong; }
 .card-direct {
   @apply tw:relative;
   background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
@@ -685,12 +685,10 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
 .btn-ghost {
   background: transparent; @apply tw:text-secondary tw:border-soft;
 }
-.btn-ghost:hover { @apply tw:border-accent tw:text-accent; background: var(--accent-soft); }
+.btn-ghost:hover { @apply tw:border-strong tw:text-primary; background: transparent; }
 .btn-danger { background: transparent; @apply tw:text-danger-text; border-color: color-mix(in srgb, var(--danger) 42%, transparent); }
 .btn-danger:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); @apply tw:border-danger-text; }
-/* 2026-08-22 修复「锚点按钮触碰时文字隐形」：全局 a:hover 链接色特异性 (0,1,1)
-   压过 .btn-* 变体的 (0,1,0)，hover/触摸时文字被刷成与背景同色的 accent-hover。
-   填充型变体在此钉回各自的墨色；ghost 的 accent 悬停字是有意设计，不在其列。 */
+/* Anchor buttons retain contrasting primary/danger ink over the global link hover. */
 a.btn-primary, a.btn-primary:hover, a.btn-primary:active { @apply tw:text-inverse; }
 a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-text; }
 /* 按压位移由 interaction-motion 的控件层负责；按钮保留阴影反馈。 */
@@ -714,7 +712,7 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
 .btn[aria-disabled="true"]::before { @apply tw:hidden; }
 /* Low-frequency actions retain the shared hit area and focus treatment. */
 .btn-quiet { background:transparent; border-color:transparent; @apply tw:text-secondary; font-weight:500; box-shadow:none; }
-.btn-quiet:hover { background:var(--accent-soft); @apply tw:text-accent; }
+.btn-quiet:hover { background:transparent; @apply tw:text-primary; }
 .btn-quiet:disabled,
 .btn-quiet[aria-disabled="true"] { background:transparent; border-color:transparent; }
 .btn-sm { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-3); @apply tw:text-label-sm tw:rounded-sm; }
@@ -857,12 +855,11 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20), inset 0 1px 0 var(--hl-inset-08);
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
-/* 2026-08-22 动效审计 #14：.chip:active scale(.97) 被 :where 触觉层覆盖（死代码）已删；
-   按压反馈统一收敛到 --motion-press + :where 层的 scale(.96)。 */
+/* Press feedback shares the control layer; hover keeps the neutral chip surface. */
 .chip:hover {
-  @apply tw:border-accent tw:text-primary;
-  background: color-mix(in srgb, var(--accent) 14%, var(--bg-elevated));
-  box-shadow: 0 3px 10px var(--accent-glow), inset 0 1px 0 var(--hl-inset-16);
+  @apply tw:border-strong tw:text-primary;
+  background: var(--bg-elevated);
+  box-shadow: none;
 }
 @media (hover:hover) and (pointer:fine) { .chip:hover { transform:translateY(-1px); } }
 .chip.active:where(:not(:hover)) {

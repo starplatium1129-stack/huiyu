@@ -84,7 +84,7 @@ function markCoverError(id: string | number, event: Event) {
 .gallery-album-rule { @apply tw:text-secondary tw:text-label-xs tw:leading-body; margin:0 0 var(--s-2); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; overflow-wrap:anywhere; }
 .gallery-album-actions { @apply tw:flex tw:gap-s-2; }
 .gallery-album-actions button { @apply tw:text-secondary tw:text-label-sm tw:cursor-pointer; min-height:32px; padding:var(--s-1) var(--s-2); background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); }
-.gallery-album-actions button:hover { color:var(--accent); border-color:var(--accent); }
+.gallery-album-actions button:hover { color:var(--text-primary); border-color:var(--border-strong); }
 .gallery-album-actions button:disabled { color:var(--text-disabled); }
 .gallery-albums button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>
