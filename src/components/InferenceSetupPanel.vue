@@ -25,7 +25,7 @@
       <div class="setup-status" :data-state="nativeEnabled ? 'ready' : plan.supported ? 'available' : 'unavailable'" role="status">
         <ArchiveIcon :name="plan.supported ? 'success' : 'info'" />
         <div><strong>{{ nativeEnabled ? '原生引擎已就绪' : plan.supported ? '这台电脑可以准备原生生图' : unavailableTitle }}</strong><p>{{ deviceName }}<span v-if="plan.supported && !nativeEnabled"> · 设备检查通过</span></p><p v-if="!plan.supported">{{ unavailableHint }}</p></div>
-        <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="refreshPlan">重新检查</button>
+        <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="recheck">重新检查</button>
       </div>
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
         <div class="setup-model">
@@ -57,7 +57,7 @@
       <button v-else-if="desktop?.restartForSetup && !operationUncertain && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
       <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续准备' : '一键准备' }}</button>
-      <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="refreshPlan">{{ checking ? '检查中…' : '重新检查' }}</button>
+      <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="recheck">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
       <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ query: $route.query, hash: '#control-comfy' }" @click="openOtherSetup">查看其他配置</RouterLink>
       <small v-if="running">可以离开此页，后台会继续准备。</small>
@@ -125,7 +125,7 @@ const { resourceId, resourceReviewed, selectedResource, canDownloadResource, dow
   basePython, wheelhouse, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
   operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
   workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
-  initialize, refreshPlan, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
+  recheck, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
   openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'))
 const modelOptions = computed(() => plan.value?.models.map(model => ({ value: model.id, label: model.label })) ?? [])
 const resourceOptions = computed(() => plan.value?.resources.map(value => ({ value: value.id, label: value.label })) ?? [])
@@ -182,7 +182,7 @@ onUpdated(() => {
   ;[host, actions.value, title.value].find(visible)?.focus({ preventScroll: true })
 })
 watch([busy, checking, inspecting, activating, restarting, workspaceSaving, operationUncertain], () => emit('busy', busy.value || checking.value || inspecting.value || activating.value || restarting.value || workspaceSaving.value || operationUncertain.value), { immediate: true })
-onMounted(initialize)
+onMounted(recheck)
 </script>
 
 <style scoped>

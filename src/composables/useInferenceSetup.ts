@@ -101,6 +101,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       if (!result.resources.some(value => value.id === resourceId.value)) resourceId.value = result.resources[0]?.id ?? ''
       if (!result.models.some(model => model.id === modelId.value)) modelId.value = result.models[0]?.id ?? ''
       if (error.value.startsWith('读取原生配置清单失败：')) error.value = ''
+      return true
     } catch (cause) {
       if (!disposed && revision === planVersion) { plan.value = null; error.value = '读取原生配置清单失败：' + causeText(cause) }
     } finally { if (!disposed && revision === planVersion) checking.value = false }
@@ -193,7 +194,12 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     modelId.value = value; hfToken.value = ''; reviewed.value = false
     await refreshPlan()
   }
-  async function initialize() { await refreshPlan(); if (!disposed && plan.value) await reconcile() }
+  async function recheck() {
+    if (!local() || checking.value || busy.value || observing) return
+    // Explicit checks also recover background work after a failed initial read.
+    // Internal plan refreshes must not start another operation observer.
+    if (await refreshPlan()) await reconcile()
+  }
   async function start(next: Submission) {
     busy.value = true; error.value = ''; message.value = ''; cancelState.value = 'idle'; operation.value = null; preparedPaths.value = null
     let posted = false
@@ -332,6 +338,6 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
     operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, progress, message, error, cancelState, operationUncertain,
     workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
-    initialize, refreshPlan, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
+    recheck, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
     openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart }
 }
