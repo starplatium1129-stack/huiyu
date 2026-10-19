@@ -92,6 +92,9 @@ async function startDevelopment(){
   }
   function schedule(relative:string){
     relative=relative.replaceAll('\\','/');if(closed)return;
+    // Precompression rewrites data sidecars throughout a web build. They are
+    // served on demand; only their source data can require a runtime rebuild.
+    if(relative.startsWith('data/')&&/\.(?:br|gz)$/i.test(relative))return;
     if(!ROOT_INPUTS.has(relative)&&!SOURCE_DIRECTORIES.some(dir=>relative.startsWith(dir+'/')))return;
     clearTimeout(timer);timer=setTimeout(()=>{void rebuild();},180);
   }
