@@ -96,6 +96,7 @@ impl Service {
             execution: Execution::Webui(Box::new(input)),
             selected: "webui",
             permit,
+            gpu: None,
         })
     }
     /// This is the same installation identity used by the Node task provider.

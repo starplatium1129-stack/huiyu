@@ -44,6 +44,7 @@ impl ControlService {
             return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
         }
         self.stop_llama().await?;
+        self.stop_comfy_for_native().await?;
         if cancel.is_cancelled() || self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
         }

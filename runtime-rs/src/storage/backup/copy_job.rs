@@ -12,7 +12,9 @@ pub(super) fn run(c: &Files, kind: &mut CopyKind) -> Result<Value> {
             ..
         } => {
             if !*existing {
-                for item in manifest["media"].as_array().unwrap() {
+                let items = manifest["media"].as_array().unwrap();
+                for (index,item) in items.iter().enumerate() {
+                    c.progress("copying-media",index as u64,items.len() as u64);
                     let hash = string(item, "hash")?;
                     copy(
                         c,
@@ -22,12 +24,13 @@ pub(super) fn run(c: &Files, kind: &mut CopyKind) -> Result<Value> {
                         &json!({"bytes":item["bytes"],"sha256":hash}),
                     )?;
                 }
-                schema::write_new(
-                    &directory.join("workspace.json"),
-                    &json!({"workspaceId":c.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":3}),
+                marker(
+                    directory,"workspace.json",
+                    &json!({"workspaceId":c.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":manifest["schemaVersion"]}),
                 )?;
                 manifest["database"] = digest_file(c, &directory.join("huiyu.sqlite3"))?;
             }
+            c.progress("verifying-backup",0,1);
             verify_snapshot(c, directory, manifest)?;
             c.check_cancel()?;
             if !*existing {
@@ -45,6 +48,7 @@ pub(super) fn restore_backup(c: &Files, backup_id: &str, id: &str) -> Result<Val
     c.check_cancel()?;
     let source = schema::safe(&c.root, format!("backups/{backup_id}"))?;
     let manifest = manifest(c, &source, backup_id)?;
+    c.progress("verifying-source",0,1);
     verify_snapshot(c, &source, &manifest)?;
     let existing = schema::safe(&c.root, format!("restore-candidates/{id}"))?;
     if schema::safe(&existing, "candidate.json")?.exists() {
@@ -81,8 +85,8 @@ pub(super) fn restore_backup(c: &Files, backup_id: &str, id: &str) -> Result<Val
                 &json!({"bytes":item["bytes"],"sha256":hash}),
             )?;
         }
-        schema::write_new(
-            &destination.join("workspace.json"),
+        marker(
+            &destination,"workspace.json",
             &json!({"workspaceId":c.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":manifest["schemaVersion"]}),
         )?;
         verify_snapshot(c, &destination, &manifest)?;

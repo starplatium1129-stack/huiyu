@@ -174,8 +174,9 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
                 cancellation::confirm_timeout_absent(&inner, &job, &id, &history).await;
                 continue;
             }
-            // Result transport/storage retries must not retain GPU admission.
-            jobs::release(&job).await;
+            // Queue capacity may return now, but keep engine ownership through
+            // result transport: switching to native stops the managed Comfy server.
+            job.state.lock().await.permit.take();
             let node = &entry["outputs"][plan.output_node];
             let image = if plan.media_kind == MediaKind::Video {
                 node.get("videos")

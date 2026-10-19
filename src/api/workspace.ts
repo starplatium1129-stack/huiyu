@@ -1,4 +1,6 @@
 import { desktopRuntimeFetch, getDesktopRuntime } from '@/platform/desktop/runtime'
+import type { WorkspaceJobProgress } from './workspaceJobs'
+export type { WorkspaceJobProgress } from './workspaceJobs'
 
 const encode = (value: unknown) => encodeURIComponent(String(value))
 function resource(command: Record<string, unknown>): [string, string] {
@@ -14,6 +16,8 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'getArtworks': return ['POST', '/artworks/lookup']
     case 'listProjects': return ['GET', '/projects']
     case 'getOperation': return ['GET', `/operations/${operation}`]
+    case 'jobStatus': return ['GET', `/operations/${operation}/progress`]
+    case 'jobCancel': return ['POST', `/operations/${operation}/cancel`]
     case 'prepareSave': return ['POST', `/artwork-saves/${operation}`]
     case 'uploadChunk': return ['PUT', `/artwork-saves/${operation}/chunks`]
     case 'commitSave': return ['POST', `/artwork-saves/${operation}/commit`]
@@ -56,6 +60,8 @@ function resource(command: Record<string, unknown>): [string, string] {
     }
     case 'profile.readChatArchive': return ['GET', '/profile/chat/archive' + (command.ifVersion === undefined ? '' : `?ifVersion=${encode(command.ifVersion)}`)]
     case 'profile.saveChatRecord': return ['PUT', '/profile/chat']
+    case 'profile.archiveMissing': return ['POST', '/profile/chat/archive/chunks']
+    case 'profile.archiveChunk': return ['PUT', `/profile/chat/archive/chunks/${encode(command.hash)}`]
     case 'profile.resetChat': return ['POST', '/profile/chat/reset']
     case 'profile.readDrafts': return ['GET', `/profile/drafts?windowId=${encode(command.windowId)}` + (command.ifVersion === undefined ? '' : `&ifVersion=${encode(command.ifVersion)}`)]
     case 'profile.saveDraft': return ['PUT', '/profile/drafts']
@@ -67,11 +73,11 @@ function base64(data: Uint8Array): string {
   for (let offset = 0; offset < data.length; offset += 32768) value += String.fromCharCode(...data.subarray(offset, offset + 32768))
   return btoa(value)
 }
-export async function workspaceRequest<T>(command: Record<string, unknown>, signal?: AbortSignal): Promise<T> {
+async function requestOnce<T>(command: Record<string, unknown>, signal?: AbortSignal): Promise<T> {
   const session = getDesktopRuntime().bootstrap?.runtime?.workspace
   if (!session) throw new Error('私人工作区尚未连接')
   const [method, path] = resource(command)
-  const deadline = AbortSignal.timeout(command.kind === 'restoreArtworks' ? 125_000 : command.kind === 'backup' || command.kind === 'restoreBackup' ? 120_000 : 35_000)
+  const deadline = AbortSignal.timeout(command.kind === 'restoreArtworks' ? 125_000 : 35_000)
   const response = await desktopRuntimeFetch('/api/workspace' + path, { method, signal: signal ? AbortSignal.any([signal, deadline]) : deadline,
     headers: { 'Content-Type': 'application/json' }, ...(method === 'GET' ? {} : { body: JSON.stringify({ ...command,
       ...(command.data instanceof Uint8Array ? { data: base64(command.data) } : {}), protocolVersion: 1, workspaceId: session.workspaceId }) }) })
@@ -79,4 +85,9 @@ export async function workspaceRequest<T>(command: Record<string, unknown>, sign
   if (!response.ok) throw Object.assign(new Error(payload.error || payload.message || '工作区操作未完成'), { code: payload.code, operationId: command.operationId })
   if (payload.workspaceId !== session.workspaceId || payload.runtimeEpoch !== session.runtimeEpoch) throw new Error('工作区连接已变化，请重新读取')
   return payload.result as T
+}
+
+export async function workspaceRequest<T>(command: Record<string, unknown>, signal?: AbortSignal, onProgress?: (value: WorkspaceJobProgress) => void): Promise<T> {
+  if (!['backup', 'restoreBackup', 'migration.verify'].includes(String(command.kind))) return requestOnce<T>(command, signal)
+  return (await import('./workspaceJobs')).runWorkspaceJob<T>(requestOnce,command,signal,onProgress)
 }

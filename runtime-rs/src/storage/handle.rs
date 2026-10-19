@@ -32,6 +32,7 @@ impl Storage {
             thumbnails: Arc::new(thumbnail::Readers::new()),
             result_writes: Arc::new(tokio::sync::Semaphore::new(1)),
             search_warming: Arc::new(AtomicBool::new(false)),
+            jobs: Arc::default(),
         })
     }
     pub fn workspace_id(&self) -> &str {
@@ -45,6 +46,9 @@ impl Storage {
         &self.runtime_epoch
     }
     pub async fn request(&self, command: Value, principal: &str) -> Result<Value> {
+        self.request_job(command, principal, None).await
+    }
+    pub(crate) async fn request_job(&self, command: Value, principal: &str, job: Option<Arc<crate::workspace_jobs::Job>>) -> Result<Value> {
         if principal.is_empty() {
             return Err(ApiError::new(
                 401,
@@ -62,14 +66,15 @@ impl Storage {
             return artwork_index::request(self, command, principal).await;
         }
         let mutation = !is_read(command["kind"].as_str().unwrap_or(""));
-        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let cancellation = job.as_ref().map(|job| job.cancel.clone()).unwrap_or_else(|| Arc::new(AtomicBool::new(false)));
+        let _cancel_on_drop = job.is_none().then(|| CancelOnDrop(cancellation.clone()));
         let (reply, result) = oneshot::channel();
         let permit = if result_commit::is_write(&command) {
             Some(self.result_permit().await?)
         } else {
             None
         };
-        let work = Work::Request(command, principal.into(), cancel.0.clone(), reply, permit);
+        let work = Work::Request(command, principal.into(), cancellation, reply, permit, job);
         self.sender.send(work).await.map_err(|_| unavailable())?;
         result.await.map_err(|_| {
             if mutation {
@@ -286,8 +291,10 @@ impl Storage {
         result.await.map_err(|_| unavailable())?
     }
     pub async fn close(&self) -> Result<()> {
+        self.jobs.cancel_all();
         // Wake input/result writers outside the actor before draining admitted work.
         self.result_writes.close();
+        self.jobs.close().await;
         self.verification.close().await;
         self.thumbnails.close().await;
         let (reply, result) = oneshot::channel();

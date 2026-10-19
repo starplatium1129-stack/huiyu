@@ -2,6 +2,7 @@ use super::*;
 use canonical::stringify;
 use rusqlite::{OptionalExtension, params};
 pub(super) mod media_refs;
+pub(in crate::storage) mod archive;
 const CHAT_ARCHIVE: &str = "aics_chat_archive_v1";
 const CHAT: &[&str] = &[
     "aics_chat_v1",
@@ -138,7 +139,7 @@ fn archive_snapshot(c: &Context, known: Option<&str>) -> Result<Value> {
         let mut rows = statement.query([CHAT_ARCHIVE])?;
         let row = rows.next()?.ok_or_else(|| invalid("Chat archive disappeared during read"))?;
         let mut record = json!({"key":CHAT_ARCHIVE,"value":null,"revision":revision,"version":version});
-        record["value"] = serde_json::from_str(text_column(row, 0)?)?;
+        record["value"] = archive::decode(&c.db, serde_json::from_str(text_column(row, 0)?)?)?;
         snapshot["records"] = Value::Array(vec![record]);
     }
     Ok(snapshot)
@@ -170,6 +171,7 @@ fn clear_chat(c: &Context) -> Result<()> {
     }
     media_refs::clear_domain(c, "chat")?;
     c.db.execute("DELETE FROM profile_records WHERE domain='chat'", [])?;
+    c.db.execute("DELETE FROM profile_archive_chunks", [])?;
     Ok(())
 }
 fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>, known_archive: Option<&str>) -> Result<Value> {
@@ -242,6 +244,7 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
         let mut record = json!({"key":key,"value":null,"revision":revision});
         record["value"] = serde_json::from_str(body)?;
         if domain == "chat" && key == CHAT_ARCHIVE {
+            record["value"] = archive::decode(&c.db, record["value"].take())?;
             record["version"] = json!(archive_version(c, Some(revision), &reset_revision)?);
         }
         records.push(record);
@@ -253,6 +256,7 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
 }
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
+    if matches!(kind, "profile.archiveMissing" | "profile.archiveChunk") { return archive::execute(c, command); }
     if kind == "profile.readChatArchive" {
         let known = command.get("ifVersion").map(|_| string(command, "ifVersion")).transpose()?;
         return archive_snapshot(c, known);
@@ -315,7 +319,8 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             // Decode it once for both scans; persist and fingerprint the original.
             let value=&command["value"];
             let parsed=value.as_str().and_then(|text|serde_json::from_str::<Value>(text).ok());
-            let decoded=parsed.as_ref().unwrap_or(value);
+            let expanded = if key==CHAT_ARCHIVE { Some(archive::decode(&c.db,parsed.as_ref().unwrap_or(value).clone())?) } else { None };
+            let decoded=expanded.as_ref().or(parsed.as_ref()).unwrap_or(value);
             if credential(decoded) {return Err(invalid_field())}
             let record_key=if kind=="profile.saveDraft" {command["windowId"].as_str().filter(|w|!w.is_empty()).map(|w|format!("{w}:{key}")).unwrap_or_else(||key.into())} else {key.into()};
             let existing:Option<i64>=c.db.query_row("SELECT revision FROM profile_records WHERE domain=? AND record_key=?",params![selected,record_key],|r|r.get(0)).optional()?;
@@ -325,6 +330,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             // before encoding the original value and constructing its receipt.
             drop(parsed);
             c.db.execute("INSERT INTO profile_records VALUES(?,?,?,?) ON CONFLICT(domain,record_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",params![selected,record_key,stringify(&command["value"]),revision])?;
+            if key==CHAT_ARCHIVE { archive::collect(c,value)?; }
             // Callers already retain the exact submitted value. Opt-in writes
             // persist/replay only the acknowledgement, not another full archive.
             if ack_only {

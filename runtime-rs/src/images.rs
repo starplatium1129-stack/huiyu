@@ -66,6 +66,9 @@ impl Service {
     pub(crate) fn native_engine(&self) -> Arc<generation::native::Engine> {
         self.backend.native_engine()
     }
+    pub(crate) fn native_gpu_owned(&self) -> bool {
+        self.backend.native_engine().gpu_owned.load(std::sync::atomic::Ordering::SeqCst)
+    }
     pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
         self.backend.bind_control(control);
     }

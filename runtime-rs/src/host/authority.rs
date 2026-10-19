@@ -58,6 +58,7 @@ pub struct HostAuthority {
     drained: Notify,
     closing: tokio_util::task::TaskTracker,
     pub(crate) operation: tokio::sync::Mutex<()>,
+    pub(crate) jobs: crate::workspace_jobs::Jobs,
 }
 
 pub(crate) fn now_ms() -> u64 {

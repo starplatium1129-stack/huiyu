@@ -137,7 +137,8 @@ pub(in crate::storage) fn refresh_all(c: &Context) -> Result<()> {
         c.check_cancel()?;
         let domain = row.get::<_, String>(0)?;
         let key = row.get::<_, String>(1)?;
-        let value: Value = serde_json::from_str(text_column(row, 2)?)?;
+        let mut value: Value = serde_json::from_str(text_column(row, 2)?)?;
+        if domain == "chat" && key == CHAT_ARCHIVE { value = super::archive::decode(&c.db, value)?; }
         replace(c, &domain, &key, &value)?;
     }
     Ok(())

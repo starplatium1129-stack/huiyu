@@ -40,8 +40,8 @@ export function mergeProfileSettingConflict(key: string, baseValue: unknown, loc
   } catch { return localValue }
 }
 
-/** Rebase only a definitively rejected revision, preserving the existing message
- * merge and clear revisions. Network-unknown writes never enter this function. */
+/** Rebase a rejected revision or a queued successor's original delta onto its
+ * confirmed predecessor. Network-unknown attempts retain their submitted pair. */
 export async function mergeProfileChatConflict(key: string, baseValue: unknown, localValue: unknown, remoteValue: unknown): Promise<unknown> {
   if (localValue === null) return null
   const base = decode(baseValue), local = decode(localValue), remote = decode(remoteValue)

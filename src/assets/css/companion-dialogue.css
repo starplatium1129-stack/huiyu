@@ -36,13 +36,13 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
   background:transparent;
   box-shadow:none;
 }
-.companion-dialogue-heading { display:flex; flex-shrink:0; align-items:flex-start; gap:var(--s-2); margin-bottom:var(--s-2); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); box-shadow:var(--shadow-sm); cursor:grab; user-select:none; transition:opacity var(--motion-hover); }
+.companion-dialogue-heading { position:relative; z-index:1; display:flex; flex-shrink:0; align-items:flex-start; gap:var(--s-2); margin-bottom:var(--s-2); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--dialogue-control-surface); box-shadow:var(--shadow-sm); cursor:grab; user-select:none; transition:opacity var(--motion-hover); }
 /* Fine-pointer windows reveal their toolbar on hover or keyboard focus.
    Devices without hover keep the controls visible and reachable. */
 @media (hover:hover) and (pointer:fine) {
   .companion-dialogue-heading { opacity:0; pointer-events:none; }
   .companion-dialogue-window:is(:hover,:focus-within) .companion-dialogue-heading,
-  .companion-dialogue-heading:has([aria-expanded='true']) { opacity:1; pointer-events:auto; }
+  .companion-dialogue-heading:has([aria-expanded='true'], [data-fluid-leaving]) { opacity:1; pointer-events:auto; }
 }
 .companion-dialogue-heading .companion-picker { flex:1; max-width:none; min-width:0; }
 .companion-dialogue-heading .companion-picker-trigger { min-height:var(--control-height-sm); padding:var(--s-1); gap:var(--s-2); border:0; background:transparent; box-shadow:none; border-radius:var(--r-sm); }
@@ -52,7 +52,8 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-heading .companion-picker-copy strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .companion-dialogue-heading .companion-picker-copy small { display:none; }
 .companion-dialogue-heading .companion-picker-chevron { width:12px; height:12px; }
-.companion-dialogue-heading .companion-picker-content { position:static; width:100%; max-height:260px; margin-top:8px; box-shadow:none; }
+/* Overlay the dialogue so opening/closing never jumps the native window size. */
+.companion-dialogue-heading .companion-picker-content { left:0; right:auto; width:100%; max-height:260px; transform-origin:top left; }
 .companion-dialogue-heading .companion-picker-viewport { max-height:200px; }
 .companion-dialogue-controls { display:flex; gap:2px; flex-shrink:0; }
 .companion-dialogue-window button { cursor:pointer; }

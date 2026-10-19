@@ -291,6 +291,8 @@ pub(super) fn command(
         ("GET", ["operations", id]) => {
             json!({"kind": "getOperation", "operationId": route_op(id)?})
         }
+        ("GET", ["operations", id, "progress"]) => json!({"kind":"jobStatus","operationId":route_op(id)?}),
+        ("POST", ["operations", id, "cancel"]) => json!({"kind":"jobCancel","operationId":route_op(id)?}),
         ("POST", ["trash", "purge"]) => {
             json!({"kind": "purgeExpiredTrash", "operationId": operation()?})
         }
@@ -343,6 +345,14 @@ pub(super) fn command(
         }
         ("POST", ["profile", "chat", "reset"]) => {
             json!({"kind": "profile.resetChat", "operationId": operation()?, "expectedReset": input["expectedReset"].as_str().unwrap_or("")})
+        }
+        ("POST", ["profile", "chat", "archive", "chunks"]) => {
+            let hashes = array(&input["hashes"], false)?;
+            if hashes.len() > 1000 { return Err(ApiError::invalid("Too many archive chunks")); }
+            json!({"kind":"profile.archiveMissing","operationId":operation()?,"hashes":hashes,"expectedReset":input["expectedReset"]})
+        }
+        ("PUT", ["profile", "chat", "archive", "chunks", hash]) => {
+            json!({"kind":"profile.archiveChunk","operationId":route_op(hash)?,"hash":hash,"data":input["data"].take(),"expectedReset":input["expectedReset"]})
         }
         ("POST", ["migrations"]) => {
             let mut command = json!({"kind": "migration.begin", "operationId": operation()?, "envelope": record(&input["envelope"]).map(|_| Value::Null)?});

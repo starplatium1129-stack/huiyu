@@ -7,7 +7,9 @@ export function createProfilePort(request: <T>(command: Record<string, unknown>)
     // The outbox owns a detached JSON value and keeps it unchanged until this
     // attempt settles. Rebuild from that input, never the newer optimistic cache.
     const { key, value } = input
-    const saved = await request<Pick<ProfileRecord, 'key' | 'revision' | 'version'>>({ kind, ...input, ackOnly: true })
+    const stored = key === 'aics_chat_archive_v1' && value !== null
+      ? await (await import('./chatArchiveChunks')).prepareChatArchiveChunks(value, String(input.expectedReset ?? ''), request) : value
+    const saved = await request<Pick<ProfileRecord, 'key' | 'revision' | 'version'>>({ kind, ...input, value: stored, ackOnly: true })
     if (saved.key !== key || !Number.isSafeInteger(saved.revision) || saved.revision < 1) throw new Error('资料保存回执无效，请重新连接。')
     return { key, value: structuredClone(value), revision: saved.revision, version: saved.version }
   }

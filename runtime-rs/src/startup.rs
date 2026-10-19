@@ -99,15 +99,13 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         runtime_root: config.runtime_root.clone(),
     };
     let transport = crate::upstream::LocalUpstream::new();
-    let generation = Arc::new(crate::generation::GenerationService::new(
-        model_config.clone(),
-        transport.clone(),
-        shutdown.clone(),
-    )?);
     let images = Arc::new(crate::images::ImageService::new(
         model_config.clone(),
         transport.clone(),
         shutdown.clone(),
+    )?);
+    let generation = Arc::new(crate::generation::GenerationService::new(
+        model_config.clone(), transport.clone(), shutdown.clone(), images.native_engine(),
     )?);
     let video = Arc::new(crate::video::VideoService::new(
         model_config,
@@ -174,6 +172,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     )
     .with_graceful_shutdown(async move {
         signal.cancelled().await;
+        host.jobs.close().await;
         host.drain().await;
     })
     .await;

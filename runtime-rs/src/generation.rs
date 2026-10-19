@@ -53,6 +53,7 @@ pub struct Prepared {
     execution: Execution,
     selected: &'static str,
     permit: OwnedSemaphorePermit,
+    gpu: Option<native::ComfyLease>,
 }
 
 #[derive(Clone)]
@@ -172,6 +173,10 @@ struct JobState {
     cancel_deadline: Option<Instant>,
     cancel_checks: u8,
     permit: Option<OwnedSemaphorePermit>,
+    gpu: Option<native::ComfyLease>,
+}
+impl JobState {
+    fn release_capacity(&mut self) { self.permit.take(); self.gpu.take(); }
 }
 
 impl Service {
@@ -195,12 +200,13 @@ impl Service {
     pub(crate) fn native_enabled(&self) -> bool {
         self.inner.native_settings.engine == "native"
     }
-    pub fn new(
+    pub(crate) fn new(
         config: Config,
         transport: LocalUpstream,
         shutdown: CancellationToken,
+        native_engine: Arc<native::Engine>,
     ) -> Result<Self> {
-        Self::with_scope(config, transport, shutdown, Scope::Wai, None)
+        Self::with_scope(config, transport, shutdown, Scope::Wai, Some(native_engine))
     }
     fn with_scope(
         config: Config,

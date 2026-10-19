@@ -25,9 +25,9 @@
           </button>
         </StudioTooltip>
         <div v-if="backup.exportProgress.value" class="utility-note wide" role="status" aria-live="polite">
-          正在备份图片：{{ backup.exportProgress.value.completed }} / {{ backup.exportProgress.value.total }}
+          {{ backup.workspaceProgress.value || `正在备份图片：${backup.exportProgress.value.completed} / ${backup.exportProgress.value.total}` }}
         </div>
-        <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消备份</button>
+        <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消当前备份操作</button>
         <StudioTooltip anchor content="把作品册的每张原图下载成独立的图片文件">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()">
             <ArchiveIcon name="image" /> 导出作品图片
@@ -107,8 +107,10 @@
             缺少的原图不会被伪造关联；对应记录仍会保留并以无图状态恢复。
           </small>
         </div>
+        <p v-if="backup.pendingWorkspace.value && backup.workspaceProgress.value" class="utility-note" role="status" aria-live="polite">{{ backup.workspaceProgress.value }}</p>
         </div>
         <div class="pb-backup-actions">
+          <button v-if="backup.pendingWorkspace.value && backup.busy.value" class="btn btn-ghost" type="button" @click="backup.cancelExport()">取消副本校验</button>
           <button ref="backupCancelEl" class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="discard">取消</button>
           <button v-if="backup.pendingWorkspace.value" class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">验证恢复副本</button>
           <template v-else><button class="btn btn-ghost" type="button" :disabled="backup.busy.value" @click="backup.restore('merge')">合并恢复</button>

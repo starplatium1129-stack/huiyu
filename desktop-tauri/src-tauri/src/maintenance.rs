@@ -95,13 +95,35 @@ fn complete(app: &AppHandle, id: &str, state: &'static str, reason: &str) {
     host.respond(id, state, Some(reason));
 }
 async fn shutdown(app: AppHandle, id: String) {
+    if prepare_shutdown(&app, &id).await.is_err() { return; }
+    app.state::<MaintenanceHost>().respond(&id, "drained", None);
+    app.state::<crate::state::AppState>().quitting.store(true, Ordering::SeqCst);
+    app.exit(0);
+}
+
+/// The updater plugin exits Windows directly. Finish the same authenticated
+/// save/drain handoff before giving it any installer bytes.
+pub async fn prepare_update(app: &AppHandle) -> Result<String, String> {
+    let mut nonce = [0u8; 16];
+    SystemRandom::new().fill(&mut nonce).map_err(|_| "MAINTENANCE_RANDOM")?;
+    let id = nonce.iter().map(|byte| format!("{byte:02x}")).collect::<String>();
+    prepare_shutdown(app, &id).await?;
+    crate::window_persistence::shutdown(app);
+    Ok(id)
+}
+
+pub fn update_failed(app: &AppHandle, id: &str) {
+    complete(app, id, "blocked", "UPDATE_INSTALL_FAILED");
+}
+
+async fn prepare_shutdown(app: &AppHandle, id: &str) -> Result<(), String> {
     let labels: Vec<String> = app.webview_windows().keys().filter(|label| matches!(label.as_str(), "atelier" | "companion" | "companion-chat")).cloned().collect();
     {
         let host = app.state::<MaintenanceHost>();
         let mut state = host.handoff.lock().unwrap();
-        if state.is_some() { host.respond(&id, "refused", Some("MAINTENANCE_BUSY")); return; }
-        if labels.is_empty() { host.respond(&id, "refused", Some("MAINTENANCE_UI_NOT_READY")); return; }
-        *state = Some(Handoff { id:id.clone(), phase:"preparing", acknowledgements:labels.iter().map(|label| (label.clone(), None)).collect() });
+        if state.is_some() { host.respond(id, "refused", Some("MAINTENANCE_BUSY")); return Err("MAINTENANCE_BUSY".into()); }
+        if labels.is_empty() { host.respond(id, "refused", Some("MAINTENANCE_UI_NOT_READY")); return Err("MAINTENANCE_UI_NOT_READY".into()); }
+        *state = Some(Handoff { id:id.into(), phase:"preparing", acknowledgements:labels.iter().map(|label| (label.clone(), None)).collect() });
     }
     let deadline = milliseconds() + 20_000;
     for label in &labels {
@@ -117,21 +139,19 @@ async fn shutdown(app: AppHandle, id: String) {
             else if state.acknowledgements.values().all(Option::is_some) { Some(Ok(())) } else { None }
         };
         match result {
-            Some(Err(error)) => { complete(&app, &id, "cancelled", &error); return; }
+            Some(Err(error)) => { complete(app, id, "cancelled", &error); return Err(error); }
             Some(Ok(())) => break,
-            None if milliseconds() >= deadline => { complete(&app, &id, "cancelled", "MAINTENANCE_FLUSH_TIMEOUT"); return; }
+            None if milliseconds() >= deadline => { complete(app, id, "cancelled", "MAINTENANCE_FLUSH_TIMEOUT"); return Err("MAINTENANCE_FLUSH_TIMEOUT".into()); }
             None => tokio::time::sleep(Duration::from_millis(40)).await,
         }
     }
     app.state::<MaintenanceHost>().handoff.lock().unwrap().as_mut().unwrap().phase = "draining";
-    let Some(gateway) = app.try_state::<crate::gateway::GatewaySupervisor>() else { complete(&app, &id, "blocked", "MAINTENANCE_GATEWAY_MISSING"); return; };
-    if let Err(error) = gateway.maintenance_stop().await { complete(&app, &id, "blocked", &error); return; }
+    let Some(gateway) = app.try_state::<crate::gateway::GatewaySupervisor>() else { complete(app, id, "blocked", "MAINTENANCE_GATEWAY_MISSING"); return Err("MAINTENANCE_GATEWAY_MISSING".into()); };
+    if let Err(error) = gateway.maintenance_stop().await { complete(app, id, "blocked", &error); return Err(error); }
     // Stop admission stays closed until exit. A late stopped-event retry cannot
     // resurrect Live2D while the runtime drains or the OS tears down windows.
     crate::live2d_process::shutdown();
-    app.state::<MaintenanceHost>().respond(&id, "drained", None);
-    app.state::<crate::state::AppState>().quitting.store(true, Ordering::SeqCst);
-    app.exit(0);
+    Ok(())
 }
 
 #[tauri::command]

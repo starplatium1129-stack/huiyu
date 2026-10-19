@@ -57,6 +57,7 @@ pub struct Storage {
     thumbnails: Arc<thumbnail::Readers>,
     result_writes: Arc<tokio::sync::Semaphore>,
     search_warming: Arc<AtomicBool>,
+    pub(crate) jobs: Arc<crate::workspace_jobs::Jobs>,
 }
 enum Work {
     ResultVerified(String, Result<result_commit::Verified>),
@@ -108,6 +109,7 @@ enum Work {
         Arc<AtomicBool>,
         oneshot::Sender<Result<Value>>,
         Option<OwnedSemaphorePermit>,
+        Option<Arc<crate::workspace_jobs::Job>>,
     ),
     ArtworkRead(
         Arc<Value>,
@@ -153,6 +155,7 @@ pub(super) struct Context {
     upload: Option<upload::Pending>,
     migration_verification: Option<migration::verification::Pending>,
     media_verified: Option<result_commit::Verified>,
+    job: Option<Arc<crate::workspace_jobs::Job>>,
 }
 impl Context {
     fn execute(&mut self, command: &Value, principal: &str) -> Result<Value> {
@@ -226,6 +229,8 @@ impl Context {
                 | "profile.readDrafts"
                 | "profile.saveSetting"
                 | "profile.saveChatRecord"
+                | "profile.archiveMissing"
+                | "profile.archiveChunk"
                 | "profile.saveDraft"
                 | "profile.resetChat"
         ) {
@@ -247,7 +252,7 @@ impl Context {
         }
         match kind {
             "status" => Ok(
-                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":3,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
+                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":4,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
             ),
             "listArtworks"
             | "readArtworkRecentIndex"

@@ -113,7 +113,8 @@ async fn perform(
         .await;
     }
     let capability = path == ["media-capabilities"] && method == Method::POST;
-    let scope = if path.first().map(String::as_str) == Some("backups") {
+    let scope = if path.first().map(String::as_str) == Some("backups")
+        || (path.len()==3 && path[0]=="operations" && matches!(path[2].as_str(),"progress"|"cancel")) {
         "workspace:backup"
     } else if capability || matches!(*method, Method::GET | Method::HEAD) {
         "workspace:read"
@@ -211,26 +212,32 @@ async fn perform(
     };
     let long_request = matches!(
         command["kind"].as_str(),
-        Some("backup" | "restoreBackup" | "restoreArtworks")
+        Some("backup" | "restoreBackup" | "migration.verify")
     );
     let operation_id = command.get("operationId").cloned();
+    let job_status = matches!(command["kind"].as_str(), Some("jobStatus" | "jobCancel"));
+    let result = if job_status {
+        storage.jobs.status(&session.principal_id, command["operationId"].as_str().unwrap_or(""), command["kind"] == "jobCancel")
+    } else if long_request {
+        let admission = state.host.admit_owned()?;
+        let owned = storage.clone();
+        let principal = session.principal_id.clone();
+        let input = command.clone();
+        storage.jobs.start(&session.principal_id, command, state.shutdown.clone(), move |job| async move {
+            let _admission = admission;
+            owned.request_job(input, &principal, Some(job)).await
+        })
+    } else {
     let result = tokio::time::timeout(
-        Duration::from_secs(if long_request { 120 } else { 30 }),
+        Duration::from_secs(if command["kind"] == "restoreArtworks" { 120 } else { 30 }),
         storage.request(command, &session.principal_id),
     )
     .await;
+    result.unwrap_or_else(|_| Err(ApiError::new(504, if operation_id.is_some() { "COMMIT_UNKNOWN" } else { "WORKSPACE_TIMEOUT" }, "Workspace request timed out")))
+    };
     let result = match result {
-        Ok(Ok(result)) => result,
-        error => {
-            let error = match error {
-                Ok(Err(error)) => error,
-                _ if operation_id.is_some() => ApiError::new(
-                    504,
-                    "COMMIT_UNKNOWN",
-                    "Commit is unconfirmed; query the original operation ID before retrying",
-                ),
-                _ => ApiError::new(504, "WORKSPACE_TIMEOUT", "Workspace request timed out"),
-            };
+        Ok(result) => result,
+        Err(error) => {
             return Ok((error.status, Json(json!({"ok": false, "error": error.message, "code": error.code, "operationId": operation_id}))).into_response());
         }
     };

@@ -9,6 +9,7 @@ pub(crate) mod resources;
 mod observations;
 mod results;
 mod worker;
+pub(crate) use worker::ComfyLease;
 use super::*;
 pub(crate) use config::{Settings, load, installed_runtime_for};
 pub(super) use results::prune;
@@ -32,7 +33,9 @@ pub(crate) struct Plan {
 pub(crate) struct Engine {
     processes: Arc<crate::processes::Processes>,
     tokens: Mutex<HashMap<String, CancellationToken>>,
-    slot: Semaphore,
+    slot: Arc<Semaphore>,
+    pub(crate) gpu_owned: AtomicBool,
+    comfy_leased: AtomicBool,
     admission: Arc<Semaphore>,
     worker: Mutex<Option<worker::Worker>>,
     idle_timeout: Duration,
@@ -42,7 +45,9 @@ impl Default for Engine {
         Self {
             processes: Arc::default(),
             tokens: Mutex::default(),
-            slot: Semaphore::new(1),
+            slot: Arc::new(Semaphore::new(1)),
+            gpu_owned: AtomicBool::new(false),
+            comfy_leased: AtomicBool::new(false),
             admission: Arc::new(Semaphore::new(4)),
             worker: Mutex::new(None),
             idle_timeout: Duration::from_secs(600),
@@ -51,7 +56,7 @@ impl Default for Engine {
 }
 impl Engine {
     pub(super) fn pending(&self) -> usize {
-        4 - self.admission.available_permits()
+        if self.comfy_leased.load(Ordering::SeqCst) { 0 } else { 4 - self.admission.available_permits() }
     }
     pub async fn close(&self) {
         self.processes.close().await;
@@ -110,6 +115,7 @@ impl Service {
             execution: Execution::Native(Box::new(plan)),
             selected: "native",
             permit,
+            gpu: None,
         })
     }
 }
@@ -136,6 +142,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
         };
         match slot {
             Ok(slot) => {
+                worker.native.gpu_owned.store(true,Ordering::SeqCst);
                 let outcome = run(&worker, &job, &token).await;
                 // Hold the GPU slot through the cancellation acknowledgement
                 // and publication. No next job may run before worker cleanup.
@@ -144,6 +151,8 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
                     worker.native.admission.close();
                     worker.admission.close();
                     slot.forget();
+                } else if worker.native.worker.lock().await.is_none() {
+                    worker.native.gpu_owned.store(false,Ordering::SeqCst);
                 }
             }
             Err(error) => {

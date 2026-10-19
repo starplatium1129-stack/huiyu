@@ -415,12 +415,16 @@ pub async fn desktop_update_install(app: AppHandle) -> Result<bool, String> {
             return Ok(false);
         }
         let _ = app.emit("desktop-update-state", SESSION.snapshot());
+        let handoff = crate::maintenance::prepare_update(&app)
+            .await
+            .map_err(|error| format!("更新前保存或释放工作区失败，安装器未启动：{error}"))?;
         // Tauri exits this process on successful Windows hand-off, so retire only our
         // slot now. An installer launch failure may require downloading again.
-        cache.reset("")?;
-        update
-            .install(bytes)
-            .map_err(|error| format!("启动更新安装器失败：{error}"))?;
+        if let Err(error) = cache.reset("").and_then(|_| update.install(bytes).map_err(|error| error.to_string())) {
+            crate::maintenance::update_failed(&app, &handoff);
+            return Err(format!("启动更新安装器失败，资料已保存，请退出并重启应用：{error}"));
+        }
+        app.state::<crate::state::AppState>().quitting.store(true, std::sync::atomic::Ordering::SeqCst);
         app.restart()
     }
     .await;

@@ -119,6 +119,7 @@ impl Service {
                     ));
                 }
             }
+            let gpu = self.inner.native.comfy_handoff().await?;
             let control = self.inner.control.read().unwrap().upgrade();
             if let Some(control) = control {
                 control.ensure_comfy(&cancel).await?;
@@ -136,6 +137,7 @@ impl Service {
                 execution: Execution::Comfy(Box::new(plan)),
                 selected: "comfy",
                 permit,
+                gpu: Some(gpu),
             })
         };
         tokio::select! {result=work=>result,_=cancel.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","生成请求已取消")),_=self.inner.cancel.cancelled()=>Err(closed())}

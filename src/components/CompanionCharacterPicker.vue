@@ -89,7 +89,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
       @keydown="onTriggerKeydown"
     >
       <span class="companion-picker-mark" aria-hidden="true"><i></i></span>
-      <span class="companion-picker-copy">
+      <span v-content-motion:up="modelValue" class="companion-picker-copy">
         <strong>{{ currentCharacter?.name || '选择角色' }}</strong>
         <small>当前陪伴</small>
       </span>
@@ -98,7 +98,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
 
     <FluidTransition small panel=".companion-picker-content">
       <div
-        v-if="open"
+        v-show="open"
         :id="listboxId"
         role="listbox"
         class="companion-picker-content" data-fluid-glass
@@ -232,7 +232,7 @@ onUnmounted(() => document.removeEventListener('pointerdown', onDocumentPointerD
   @apply tw:text-primary;
   box-shadow: var(--shadow-glass-elevated);
 }
-html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-0; -webkit-app-region: no-drag; }
+html.companion-desktop .companion-picker-content { @apply tw:right-auto tw:left-0; -webkit-app-region: no-drag; transform-origin:top left; }
 .companion-picker-content { --surface-enter-y:-4px; transform-origin:top right; }
 
 .companion-picker-heading {

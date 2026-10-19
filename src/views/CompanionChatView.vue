@@ -39,7 +39,7 @@
       </section>
 
       <section v-show="!speechSettingsOpen" :inert="speechSettingsOpen || undefined" :aria-hidden="speechSettingsOpen || undefined" id="companion-dialogue-history" class="companion-dialogue-history" aria-label="最近对话">
-        <div ref="listRef" class="companion-dialogue-history-list" :aria-busy="replyPending" role="log" tabindex="0" aria-label="对话记录" aria-live="off" @scroll.capture="speechSettingsOpen && $event.stopImmediatePropagation()">
+        <div ref="listRef" v-content-motion:up="activeChar" class="companion-dialogue-history-list" :aria-busy="replyPending" role="log" tabindex="0" aria-label="对话记录" aria-live="off" @scroll.capture="speechSettingsOpen && $event.stopImmediatePropagation()">
           <div v-if="!displayedMessages.length" class="companion-dialogue-message" data-role="assistant">
             <div class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble"><p class="companion-dialogue-line">{{ currentCharacter.greeting }}</p></div>

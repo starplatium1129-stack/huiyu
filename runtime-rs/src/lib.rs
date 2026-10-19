@@ -38,6 +38,7 @@ mod upstream;
 mod video;
 mod voice;
 mod workspace_http;
+mod workspace_jobs;
 
 use axum::{
     Json, Router,

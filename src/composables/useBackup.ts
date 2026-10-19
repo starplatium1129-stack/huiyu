@@ -81,6 +81,13 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const lastBackupAt = ref(readLastBackupAt())
   let fileRequest = 0
   const exportProgress = ref<BackupExportProgress | null>(null)
+  const workspaceProgress = ref('')
+  function updateWorkspaceProgress(value: import('../api/workspace').WorkspaceJobProgress) {
+    exportProgress.value = { completed:value.completed,total:value.total }
+    const bytes = value.phase === 'copying-file' || value.phase === 'resuming-file'
+    const label = ({ snapshot:'正在保存记录快照', 'copying-media':'正在复制原图', 'copying-file':'正在复制文件', 'resuming-file':'正在核对断点', 'verifying-source':'正在核对备份原件', 'verifying-backup':'正在核对备份副本', 'verifying-media':'正在核对原图', cancelling:'正在取消，等待文件操作安全结束' } as Record<string,string>)[value.phase] || '正在处理工作区'
+    workspaceProgress.value = label + (value.total ? bytes ? `：${(value.completed/1048576).toFixed(1)} / ${(value.total/1048576).toFixed(1)} MiB` : `：${value.completed} / ${value.total}` : '…')
+  }
   let exportController: AbortController | null = null
   const imageExportProgress = ref<BackupExportProgress | null>(null)
   let imageExportController: AbortController | null = null
@@ -131,7 +138,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
           controller.signal.throwIfAborted()
           downloadBlob(new Blob([JSON.stringify(value, null, 2)], { type: 'application/json' }), `huiyu-backup-${value.backupId}.json`)
           resumed = retrying
-        })
+        }, updateWorkspaceProgress)
         controller.signal.throwIfAborted()
         lastBackupAt.value = Date.parse(receipt.createdAt)
         localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value))
@@ -175,7 +182,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       if (disposed) return
       if (exportController?.signal.aborted) {
         const reason: unknown = exportController.signal.reason
-        onFlash(reason instanceof Error && reason.name !== 'AbortError' ? reason.message : '已取消备份，未生成文件，原有作品未改动')
+        onFlash(reason instanceof Error && reason.name !== 'AbortError' ? reason.message : desktopActive.value ? '已取消备份，已复制进度保留，可继续原操作。' : '已取消备份，未生成文件，原有作品未改动')
       }
       else {
         console.error('backup export failed', e)
@@ -185,6 +192,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       source?.release()
       exportController = null
       exportProgress.value = null
+      workspaceProgress.value = ''
       busy.value = false
     }
   }
@@ -337,13 +345,16 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       selectionSource.check()
       const desktop = desktopActive.value
       // This operation owns its source after acceptance, independently of the preview.
-      source = captureBackupSource(new AbortController(), desktop)
+      const restoreController = new AbortController()
+      source = captureBackupSource(restoreController, desktop)
       const { check, signal } = source
       check()
       if (desktop) {
         if (!workspace) return false
         busy.value = true; started = true
-        const candidate = await createWorkspaceRestoreCandidate(workspace)
+        exportController = restoreController
+        exportProgress.value = { completed: 0, total: 0 }
+        const candidate = await createWorkspaceRestoreCandidate(workspace,signal,updateWorkspaceProgress)
         check()
         if (current()) {
           invalidateSelection()
@@ -389,10 +400,11 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     } catch (e) {
       console.error(restored ? 'backup restored but refresh failed' : 'backup restore failed', e)
       if (restored) refreshFailed(Boolean(source?.signal.aborted))
-      else if (current()) onFlash((workspace ? '恢复校验失败：' : '恢复失败：') + errorMessage(e, '备份数据无效'))
+      else if (current()) onFlash(workspace && source?.signal.aborted ? '已取消恢复副本校验；原工作区和已复制进度保留，可继续校验。' : (workspace ? '恢复校验失败：' : '恢复失败：') + errorMessage(e, '备份数据无效'))
       return restored
     } finally {
       if (!reloadScheduled) source?.release()
+      if (workspace) { exportController = null; exportProgress.value = null; workspaceProgress.value = '' }
       if (started && (!reloadScheduled || disposed)) busy.value = false
     }
   }
@@ -473,5 +485,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { busy, desktopActive, exportProgress, imageExportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { busy, desktopActive, exportProgress, workspaceProgress, imageExportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

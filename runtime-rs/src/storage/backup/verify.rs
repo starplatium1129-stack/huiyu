@@ -2,13 +2,16 @@ use super::*;
 use rusqlite::OpenFlags;
 pub(super) fn manifest(c: &Files, directory: &Path, id: &str) -> Result<Value> {
     let value = read_json(directory, "manifest.json")?;
+    validate_manifest(c,value,id)
+}
+pub(super) fn validate_manifest(c: &Files,value: Value,id: &str) -> Result<Value> {
     if value["kind"] != "huiyu-workspace-backup"
         || value["formatVersion"] != 1
         || value["backupId"] != id
         || value["workspaceId"] != c.workspace_id
         || value["schemaVersion"]
             .as_i64()
-            .is_none_or(|v| !(1..=3).contains(&v))
+            .is_none_or(|v| !(1..=4).contains(&v))
         || value["revision"].as_u64().is_none()
         || value["database"]["bytes"].as_u64().is_none()
         || !value["database"]["sha256"]
@@ -109,7 +112,9 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
     // otherwise preserve the original SQLite or snapshot verification error.
     c.check_cancel()?;
     let inventory = verified?;
-    for entry in inventory {
+    let total = inventory.len() as u64;
+    for (index,entry) in inventory.into_iter().enumerate() {
+        c.progress("verifying-media",index as u64,total);
         c.check_cancel()?;
         let hash = string(entry, "hash")?;
         media::verify_checked(

@@ -159,6 +159,10 @@ impl ControlService {
             return Ok(json!({"managed":false}));
         }
         let _action = self.comfy_action.lock().await;
+        let images = self.images.read().unwrap().upgrade();
+        let _gpu = if self.native_gpu_owned() {
+            Some(images.ok_or_else(|| ApiError::new(503,"NATIVE_RUNTIME_UNAVAILABLE","独立推理服务未接入，无法确认显存释放"))?.native_engine().comfy_handoff().await?)
+        } else { None };
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(503, "SHUTTING_DOWN", "运行时正在退出"));
         }
@@ -292,6 +296,34 @@ impl ControlService {
                 "COMFY_RELEASE_FAILED",
                 "绘图显存释放未确认，请查看控制室",
             ));
+        }
+        Ok(())
+    }
+    pub(super) fn native_gpu_owned(&self) -> bool {
+        self.images.read().unwrap().upgrade().is_some_and(|images| images.native_gpu_owned())
+    }
+    pub(super) async fn stop_comfy_for_native(&self) -> Result<()> {
+        // /free acknowledges a queued request; it is not proof of CUDA release.
+        // The retained managed process handle can positively confirm termination.
+        if let Some(cancel) = self.comfy_cancel.lock().unwrap().as_ref() { cancel.cancel(); }
+        let _action = self.comfy_action.lock().await;
+        self.comfy_cancel.lock().unwrap().take();
+        let managed = {
+            let owner = self.comfy_process.lock().await;
+            owner.as_ref().map(|process| process.exited()).transpose()?
+        };
+        if matches!(managed,Some(None)) {
+            let settings = self.runtime_settings();
+            let (status,queue) = self.request(settings["comfyHost"].as_str().unwrap_or(""),"/queue",None,3).await?;
+            if !(200..300).contains(&status) || queue.as_ref().is_none_or(|queue| ["queue_running","queue_pending"].iter().any(|key| queue[*key].as_array().is_none_or(|items| !items.is_empty()))) {
+                return Err(ApiError::new(409,"DRAWING_BUSY","ComfyUI 仍有任务，暂不能切换独立推理"));
+            }
+        }
+        if managed.is_some() {
+            if let Some(process) = self.comfy_process.lock().await.take() { process.stop().await?; }
+        }
+        if self.online(1,&self.runtime_settings()).await {
+            return Err(ApiError::new(409,"COMFY_RELEASE_UNCONFIRMED","外部 ComfyUI 仍在运行，无法确认显存释放；请先停止它再切换独立推理"));
         }
         Ok(())
     }

@@ -1,4 +1,4 @@
-import { workspaceRequest } from '../../api/workspace.ts'
+import { workspaceRequest, type WorkspaceJobProgress } from '../../api/workspace.ts'
 import { getDesktopRuntime } from './runtime.ts'
 import { flushProfileWrites } from '../web/profileStorage.ts'
 import { WORKSPACE_BACKUP_PENDING_PREFIX } from '../../utils/storageKeys.ts'
@@ -7,7 +7,7 @@ export interface WorkspaceBackupReceipt { format: 'huiyu-workspace-backup-receip
 export function workspaceBackupActive(): boolean { return getDesktopRuntime().bootstrap?.runtime?.workspace?.domains.includes('artwork') === true }
 /** createdAt is the original operation start, not an exact snapshot timestamp:
  * a prepared retry may reuse an existing manifest or finish a later snapshot. */
-export async function createWorkspaceBackup(signal?: AbortSignal, deliver?: (receipt: WorkspaceBackupReceipt, resumed: boolean) => void): Promise<WorkspaceBackupReceipt> {
+export async function createWorkspaceBackup(signal?: AbortSignal, deliver?: (receipt: WorkspaceBackupReceipt, resumed: boolean) => void, onProgress?: (value: WorkspaceJobProgress) => void): Promise<WorkspaceBackupReceipt> {
   const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
   if (!workspace?.workspaceId || !workspace.principalId) throw new Error('本机工作区尚未连接。')
   const identity = JSON.stringify([workspace.workspaceId, workspace.principalId])
@@ -39,7 +39,7 @@ export async function createWorkspaceBackup(signal?: AbortSignal, deliver?: (rec
     if (operation?.state === 'committed') {
       if (operation.receipt?.operationId !== pending.operationId || operation.receipt.kind !== 'backup') throw new Error('备份回执身份不匹配，恢复标记已保留。')
       result = operation.receipt
-    } else result = await workspaceRequest<Result>({ kind: 'backup', operationId: pending.operationId }, signal)
+    } else result = await workspaceRequest<Result>({ kind: 'backup', operationId: pending.operationId }, signal, onProgress)
     assertCurrent()
     const receipt = parseWorkspaceBackupReceipt({ format: 'huiyu-workspace-backup-receipt', version: 1,
       workspaceId: workspace.workspaceId, createdAt: pending.createdAt,
@@ -62,8 +62,22 @@ export function parseWorkspaceBackupReceipt(value: unknown): WorkspaceBackupRece
     || !Number.isSafeInteger(record.mediaCount) || typeof record.createdAt !== 'string') throw new Error('请选择属于当前本机工作区的备份凭证；旧网页备份需通过独立迁移导入。')
   return record as WorkspaceBackupReceipt
 }
-export async function createWorkspaceRestoreCandidate(receipt: WorkspaceBackupReceipt): Promise<{ candidateId: string; revision: number; mediaCount: number }> {
-  return workspaceRequest({ kind: 'restoreBackup', operationId: crypto.randomUUID(), backupId: receipt.backupId })
+export async function createWorkspaceRestoreCandidate(receipt: WorkspaceBackupReceipt, signal?: AbortSignal, onProgress?: (value: WorkspaceJobProgress) => void): Promise<{ candidateId: string; revision: number; mediaCount: number }> {
+  const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
+  if (!workspace) throw new Error('本机工作区尚未连接。')
+  const key = WORKSPACE_BACKUP_PENDING_PREFIX + JSON.stringify([workspace.workspaceId,workspace.principalId,'restore',receipt.backupId])
+  if (!navigator.locks?.request) throw new Error('当前环境不支持跨窗口安全恢复，请使用新版桌面应用。')
+  return navigator.locks.request(key,{signal},async () => {
+    signal?.throwIfAborted()
+    const current = getDesktopRuntime().bootstrap?.runtime?.workspace
+    if (current?.workspaceId !== workspace.workspaceId || current.runtimeEpoch !== workspace.runtimeEpoch || current.principalId !== workspace.principalId) throw new Error('工作区连接已变化，请回到原工作区继续校验。')
+    const operationId = globalThis.localStorage.getItem(key) || crypto.randomUUID()
+    globalThis.localStorage.setItem(key,operationId)
+    const result = await workspaceRequest<{ candidateId: string; revision: number; mediaCount: number }>({ kind: 'restoreBackup', operationId, backupId: receipt.backupId },signal,onProgress)
+    if (typeof result.candidateId !== 'string' || !/^[0-9a-f-]{36}$/.test(result.candidateId) || !Number.isSafeInteger(result.revision) || result.revision < 0 || !Number.isSafeInteger(result.mediaCount) || result.mediaCount < 0) throw new Error('恢复副本回执无效，续做标记已保留。')
+    if (globalThis.localStorage.getItem(key) === operationId) globalThis.localStorage.removeItem(key)
+    return result
+  })
 }
 export async function workspaceStorageHealth(): Promise<string> {
   const status = await workspaceRequest<{ revision: number; schemaVersion: number }>({ kind: 'status' })

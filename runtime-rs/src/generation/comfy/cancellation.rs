@@ -93,7 +93,7 @@ pub(super) async fn confirm_timeout_absent(
     // the ordinary success/error path before this absence-only reconciliation.
     state.settled = true;
     state.unknown = false;
-    state.permit.take();
+    state.release_capacity();
     drop(state);
     job.notify.notify_waiters();
     jobs::notify_settled(job);
@@ -200,7 +200,7 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
         state.finished = Some(now());
         state.code = Some(code(&job, "CANCELLED"));
         state.error = Some("任务已取消".into());
-        state.permit.take();
+        state.release_capacity();
         drop(state);
         jobs::notify_settled(&job);
         return Ok(());
@@ -332,7 +332,7 @@ pub(super) async fn confirm(inner: &Inner, job: &Job, id: &str) -> bool {
     state.error = Some("任务已取消".into());
     state.code = Some(code(job, "CANCELLED"));
     state.finished = Some(now());
-    state.permit.take();
+    state.release_capacity();
     drop(state);
     jobs::discard_output(job).await;
     job.notify.notify_waiters();

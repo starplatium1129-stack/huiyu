@@ -99,6 +99,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   const identity = cacheKey(key, session), selected = port!, epoch = generation
   let operationId = crypto.randomUUID()
   const previous = values.get(identity)
+  const queuedPredecessor = previous && optimisticRecords.has(previous)
   const sceneIdSet = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes')
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
   optimisticRecords.add(optimistic)
@@ -118,7 +119,11 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
     if (expectedRevision === undefined) {
       // A queued predecessor may have merged another window's IDs. Carry only
       // this write's original delta forward, once, before its first submission.
-      if (sceneIdSet && previous) {
+      if (domain === 'chat' && queuedPredecessor && previous) {
+        const { mergeProfileChatConflict } = await import('./profileConflict.ts')
+        sendValue = await mergeProfileChatConflict(key, baseValue, sendValue, previous.value)
+        baseValue = structuredClone(previous.value)
+      } else if (sceneIdSet && previous) {
         const { mergeProfileSettingConflict } = await import('./profileConflict.ts')
         sendValue = mergeProfileSettingConflict(key, baseValue, sendValue, previous.value)
         baseValue = structuredClone(previous.value)
@@ -132,8 +137,10 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
           : domain === 'chat' ? await selected.saveChatRecord({ ...input, expectedReset })
             : await selected.saveDraft({ ...input, ...(session ? { windowId } : {}), expectedReset })
         revisions.set(identity, saved.revision)
-        // Successors already retain this record; no second authority/cache is needed.
-        if (sceneIdSet) Object.assign(optimistic, structuredClone(saved))
+        // Successors retain this exact node. Publish the merged body along with
+        // its revision before the queue advances, so their original delta is
+        // rebased onto the committed predecessor rather than an old snapshot.
+        if (sceneIdSet || domain === 'chat') Object.assign(optimistic, structuredClone(saved))
         if (values.get(identity) === optimistic) values.set(identity, structuredClone(saved))
         return
       } catch (error) {

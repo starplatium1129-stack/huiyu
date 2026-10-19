@@ -64,6 +64,27 @@ pub fn epoch(secret: &str) -> String {
 }
 
 pub fn request(base: &str, secret: &str, mut payload: serde_json::Value) -> Result<serde_json::Value, String> {
+    if !matches!(payload["action"].as_str(),Some("activate"|"enable-bundled")) { return request_once(base,secret,payload); }
+    let mut response = request_once(base,secret,payload.clone())?;
+    let Some(id) = response["job"]["operationId"].as_str().map(str::to_owned) else { return Ok(response); };
+    // Each authenticated exchange is bounded; large copy/verification work is
+    // owned by the server and survives a disconnected desktop request.
+    loop {
+        match response["job"]["state"].as_str() {
+            Some("succeeded") => { payload["action"] = serde_json::json!("session"); return request_once(base,secret,payload); }
+            Some("failed"|"cancelled") => return Err(format!("{}: {}",response["job"]["code"].as_str().unwrap_or("HOST_OPERATION"),response["job"]["error"].as_str().unwrap_or("工作区操作未完成，可继续原操作"))),
+            Some("running"|"cancelling") => {}
+            _ => return Err("HOST_OPERATION_RESPONSE".into()),
+        }
+        std::thread::sleep(Duration::from_millis(250));
+        payload["action"] = serde_json::json!("operation-status");
+        payload["operationId"] = serde_json::json!(id);
+        response = request_once(base,secret,payload.clone())?;
+        if response["job"]["operationId"] != id { return Err("HOST_OPERATION_IDENTITY".into()); }
+    }
+}
+
+fn request_once(base: &str, secret: &str, mut payload: serde_json::Value) -> Result<serde_json::Value, String> {
     payload["timestamp"] = serde_json::json!(SystemTime::now().duration_since(UNIX_EPOCH).map_err(|_| "HOST_CLOCK")?.as_millis() as u64);
     payload["nonce"] = serde_json::json!(super::identity::random_secret()?);
     let body = serde_json::to_string(&payload).map_err(|_| "HOST_REQUEST")?;
@@ -74,7 +95,6 @@ pub fn request(base: &str, secret: &str, mut payload: serde_json::Value) -> Resu
     let address = format!("127.0.0.1:{host}").to_socket_addrs().map_err(|_| "HOST_ADDRESS")?.next().ok_or("HOST_ADDRESS")?;
     let timeout = match payload["action"].as_str() {
         Some("prepare-candidate") => Duration::from_secs(225),
-        Some("activate" | "enable-bundled") => Duration::from_secs(420),
         Some("shutdown") => Duration::from_secs(30),
         _ => Duration::from_secs(3),
     };

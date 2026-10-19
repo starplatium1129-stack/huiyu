@@ -189,7 +189,7 @@ impl Drop for Owner {
 }
 
 fn supported(version: i64) -> bool {
-    (1..=3).contains(&version)
+    (1..=4).contains(&version)
 }
 pub(super) fn open(
     root: PathBuf,
@@ -315,21 +315,20 @@ pub(super) fn open(
             "Workspace identity and database versions differ",
         ));
     }
-    if version < 3 {
+    if version < 4 {
         atomic_json(
             &root,
             "schema-upgrade.json",
-            &json!({"workspaceId":workspace_id,"from":version,"to":3}),
+            &json!({"workspaceId":workspace_id,"from":version,"to":4}),
         )?;
-        upgrade(&db, version, 3)?;
-        identity["schemaVersion"] = json!(3);
+        upgrade(&db, version, 4)?;
+        identity["schemaVersion"] = json!(4);
         atomic_json(&root, "workspace.json", &identity)?;
         fs::remove_file(intent_file)?;
         sync_dir(&root)?;
     }
-    verify_identity(&db, &workspace_id, 3)?;
-    // Additive access-path optimization: keep the v3 data/backup protocol intact.
-    // Reapply on open so existing v3 workspaces and restored older snapshots
+    verify_identity(&db, &workspace_id, 4)?;
+    // Reapply access paths on open so upgraded workspaces and restored older snapshots
     // receive live/deleted artwork, reverse deletion/FK and unsettled task access paths.
     db.execute_batch(
         "CREATE INDEX IF NOT EXISTS artworks_live_id ON artworks(id_key) WHERE deleted_at IS NULL;
@@ -356,6 +355,7 @@ pub(super) fn open(
         migration_verification: None,
         restore_commit: None,
         media_verified: None,
+        job: None,
     };
     migration::repair_activated(&mut context)?;
     Ok(context)
@@ -416,6 +416,7 @@ fn upgrade(db: &Connection, from: i64, to: i64) -> Result<()> {
         db.execute_batch(match version {
             2 => include_str!("migration-schema.sql"),
             3 => include_str!("task-schema.sql"),
+            4 => include_str!("archive-schema.sql"),
             _ => unreachable!(),
         })?;
         db.execute(

@@ -2,7 +2,7 @@ use super::*;
 use sha2::{Digest, Sha256};
 use std::{
     fs::{File, OpenOptions},
-    io::{Read, Write},
+    io::{Read, Write, Seek, SeekFrom},
 };
 pub(super) fn read_json(directory: &Path, name: &str) -> Result<Value> {
     let path = schema::safe(directory, name)?;
@@ -12,12 +12,14 @@ pub(super) fn read_json(directory: &Path, name: &str) -> Result<Value> {
     Ok(serde_json::from_slice(&fs::read(path)?)?)
 }
 pub(super) fn marker(directory: &Path, name: &str, value: &Value) -> Result<()> {
-    schema::write_new(&schema::safe(directory, format!("{name}.pending"))?, value)?;
     let target = schema::safe(directory, name)?;
     if target.exists() {
-        return Err(invalid_backup("Workspace completion marker already exists"));
+        if read_json(directory,name)? == *value { return Ok(()); }
+        return Err(invalid_backup("Workspace completion marker already exists with different content"));
     }
-    fs::rename(schema::safe(directory, format!("{name}.pending"))?, target)?;
+    let pending = schema::safe(directory, format!("{name}.{}.pending",uuid::Uuid::new_v4()))?;
+    schema::write_new(&pending, value)?;
+    fs::rename(pending, target)?;
     schema::sync_dir(directory)
 }
 pub(super) fn prepare_directory(c: &Files, relative: &str, identity: &str) -> Result<PathBuf> {
@@ -37,24 +39,26 @@ pub(super) fn prepare_directory(c: &Files, relative: &str, identity: &str) -> Re
                 "Incomplete backup directory ownership could not be verified",
             ));
         }
-        // Both directory names are generated from a persisted operation digest. Validate
-        // the full subtree before recursive removal so a junction cannot escape root.
-        check_tree(&directory)?;
-        fs::remove_dir_all(&directory)?;
+        // A matching incomplete marker owns resumable files. Validate the subtree
+        // but retain completed objects and partial bytes across cancellation/restart.
+        check_tree(c,&directory)?;
+        if recorded["identity"] == identity && recorded["workspaceId"] == c.workspace_id { return Ok(directory); }
+    } else {
+        fs::create_dir(&directory)?;
     }
-    fs::create_dir(&directory)?;
     schema::write_new(
         &directory.join("incomplete.json"),
         &json!({"identity":identity,"workspaceId":c.workspace_id}),
     )?;
     Ok(directory)
 }
-fn check_tree(directory: &Path) -> Result<()> {
+fn check_tree(c: &Files, directory: &Path) -> Result<()> {
     for entry in fs::read_dir(directory)? {
+        c.check_cancel()?;
         let entry = entry?;
         let file = schema::safe(directory, entry.file_name())?;
         if entry.file_type()?.is_dir() {
-            check_tree(&file)?;
+            check_tree(c,&file)?;
         }
     }
     Ok(())
@@ -76,11 +80,28 @@ pub(super) fn copy(
         return Err(invalid_backup("Backup source is not a regular file"));
     }
     fs::create_dir_all(to.parent().unwrap())?;
+    if to.exists() {
+        if digest_file(c,&to)? == *expected { return Ok(()); }
+        return Err(invalid_backup("Existing completed backup file differs from the snapshot"));
+    }
+    let pending = schema::safe(target,format!("{relative}.copying"))?;
     let mut input = File::open(from)?;
-    let mut output = OpenOptions::new().create_new(true).write(true).open(&to)?;
+    let mut output = OpenOptions::new().create(true).truncate(false).read(true).write(true).open(&pending)?;
     let mut buffer = vec![0; media::CHUNK];
     let mut hash = Sha256::new();
     let mut bytes = 0u64;
+    let retained = output.metadata()?.len();
+    let mut previous = vec![0; media::CHUNK];
+    while bytes < retained {
+        c.check_cancel()?;
+        let count = ((retained-bytes) as usize).min(buffer.len());
+        if input.read_exact(&mut buffer[..count]).is_err() || output.read_exact(&mut previous[..count]).is_err() || buffer[..count] != previous[..count] {
+            output.set_len(0)?; output.seek(SeekFrom::Start(0))?; input.seek(SeekFrom::Start(0))?;
+            bytes=0; hash=Sha256::new(); break;
+        }
+        hash.update(&buffer[..count]); bytes += count as u64;
+        c.progress("resuming-file",bytes,expected["bytes"].as_u64().unwrap_or(0));
+    }
     loop {
         c.check_cancel()?;
         let count = input.read(&mut buffer)?;
@@ -90,6 +111,7 @@ pub(super) fn copy(
         output.write_all(&buffer[..count])?;
         hash.update(&buffer[..count]);
         bytes += count as u64;
+        c.progress("copying-file",bytes,expected["bytes"].as_u64().unwrap_or(0));
     }
     output.sync_all()?;
     drop(output);
@@ -99,5 +121,6 @@ pub(super) fn copy(
     if json!({"bytes":bytes,"sha256":hex::encode(hash.finalize())}) != *expected {
         return Err(invalid_backup("Backup file hash or size mismatch"));
     }
+    fs::rename(pending,&to)?;
     schema::sync_dir(to.parent().unwrap())
 }

@@ -18,6 +18,7 @@ pub(in crate::storage) struct Pending {
     identity: Identity,
     reply: oneshot::Sender<Result<Value>>,
     _permit: OwnedSemaphorePermit,
+    job: Option<Arc<crate::workspace_jobs::Job>>,
 }
 impl Pending {
     pub(in crate::storage) fn protects(&self, hash: &str) -> bool {
@@ -180,6 +181,7 @@ pub(in crate::storage) fn start(
         identity,
         reply,
         _permit: permit,
+        job: c.job.clone(),
     };
     match spawn(&pending, sender) {
         Ok(()) => c.migration_verification = Some(pending),
@@ -195,11 +197,12 @@ fn spawn(pending: &Pending, sender: &mpsc::WeakSender<Work>) -> Result<()> {
     let migration_id = pending.migration_id.clone();
     let identity = pending.identity.clone();
     let envelope = pending.envelope.clone();
+    let job = pending.job.clone();
     std::thread::Builder::new()
         .name("workspace-migration-verify".into())
         .spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                file::run(&identity, &migration_id, envelope["media"].as_array().unwrap())
+                file::run(&identity, &migration_id, envelope["media"].as_array().unwrap(),job.as_deref())
             }))
             .unwrap_or_else(|_| Err(unavailable()));
             // The sender retains the actor and owner until the actual filesystem

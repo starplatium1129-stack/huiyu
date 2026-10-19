@@ -14,6 +14,7 @@ struct Files {
     root: PathBuf,
     workspace_id: String,
     cancel: Arc<AtomicBool>,
+    job: Option<Arc<crate::workspace_jobs::Job>>,
 }
 impl Files {
     fn from_context(c: &Context) -> Self {
@@ -21,6 +22,7 @@ impl Files {
             root: c.root.clone(),
             workspace_id: c.workspace_id.clone(),
             cancel: c.cancel.clone(),
+            job: c.job.clone(),
         }
     }
     fn check_cancel(&self) -> Result<()> {
@@ -33,6 +35,9 @@ impl Files {
         } else {
             Ok(())
         }
+    }
+    fn progress(&self, phase: &str, completed: u64, total: u64) {
+        if let Some(job) = &self.job { job.progress(phase, completed, total); }
     }
 }
 
@@ -91,6 +96,8 @@ impl CopyJob {
                 directory,
                 string(manifest, "backupId")?,
             )?;
+            manifest["database"] = digest_file(&self.files, &directory.join("huiyu.sqlite3"))?;
+            marker(directory, "snapshot.json", manifest)?;
         }
         copy_job::run(&self.files, &mut self.kind)
     }
@@ -196,6 +203,14 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
         });
     }
     let directory = prepare_directory(files, &format!("backups/{id}"), id)?;
+    if schema::safe(&directory, "snapshot.json")?.exists() {
+        let manifest = validate_manifest(files,read_json(&directory,"snapshot.json")?,id)?;
+        if manifest["backupId"] != id || manifest["workspaceId"] != c.workspace_id
+            || digest_file(files,&directory.join("huiyu.sqlite3"))? != manifest["database"] {
+            return Err(invalid_backup("Incomplete backup snapshot identity or digest mismatch"));
+        }
+        return Ok(CopyKind::Backup { directory, manifest, existing:false, source:None });
+    }
     let revision = c.transaction(|c| {
         c.db.execute(
             "INSERT OR IGNORE INTO leases
@@ -225,7 +240,7 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
             "Backup source no longer matches the workspace",
         ));
     }
-    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":3,"revision":revision});
+    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":4,"revision":revision});
     Ok(CopyKind::Backup {
         directory,
         manifest,
@@ -241,6 +256,8 @@ fn copy_database(files: &Files, source: Connection, directory: &Path, id: &str) 
         let backup = rusqlite::backup::Backup::new(&source, &mut snapshot)?;
         loop {
             files.check_cancel()?;
+            let progress = backup.progress();
+            files.progress("snapshot", (progress.pagecount - progress.remaining) as u64, progress.pagecount as u64);
             match backup.step(256)? {
                 rusqlite::backup::StepResult::Done => break,
                 rusqlite::backup::StepResult::Busy | rusqlite::backup::StepResult::Locked => {

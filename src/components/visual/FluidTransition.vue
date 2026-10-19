@@ -27,6 +27,7 @@ function enter(el: Element, done: () => void) {
 }
 function afterLeave(el: Element) {
   leaving.delete(el)
+  el.removeAttribute('data-fluid-leaving')
   const state = surface.capture(el)
   // Vue finishes the old v-if leave before inserting its replacement. Carry the
   // physical state across that DOM handoff, including velocity during reversal.

@@ -171,6 +171,7 @@ impl ControlService {
                 .collect::<Vec<_>>()
         };
         for index in selected {
+            if index == 1 && self.native_gpu_owned() { continue; }
             if self.shutdown.is_cancelled() {
                 return;
             }

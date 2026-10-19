@@ -169,7 +169,7 @@ async fn retire(state: &AppState, storage: Storage) -> Result<()> {
         .map_err(|_| ApiError::new(503, "WORKSPACE_CLOSE", "Candidate close worker failed"))?
 }
 
-pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool) -> Result<()> {
+pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool, job: std::sync::Arc<crate::workspace_jobs::Job>) -> Result<()> {
     let root = config_root(state)?;
     let active = state.host.active();
     if active.as_ref().is_some_and(|pointer| {
@@ -228,13 +228,16 @@ pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool
             "Candidate changed after source verification",
         ));
     }
-    let backup = execute(
-        &storage,
-        &principal,
-        json!({"kind": "backup", "operationId": Uuid::new_v4().to_string()}),
-    )
-    .await?;
-    let restored = execute(&storage, &principal, json!({"kind": "restoreBackup", "operationId": Uuid::new_v4().to_string(), "backupId": backup["backupId"]})).await?;
+    let snapshot_revision = execute(&storage,&principal,json!({"kind":"status"})).await?["revision"].clone();
+    job.check()?;
+    job.progress("activation-backup",0,1);
+    let backup = storage.request_job(
+        json!({"kind": "backup", "operationId": format!("activate-backup:{migration_id}:{bundled}:{snapshot_revision}")}),
+        &principal,Some(job.clone()),
+    ).await?;
+    job.check()?;
+    job.progress("activation-restore",0,1);
+    let restored = storage.request_job(json!({"kind": "restoreBackup", "operationId": format!("activate-restore:{migration_id}:{bundled}:{snapshot_revision}"), "backupId": backup["backupId"]}),&principal,Some(job.clone())).await?;
     let status = execute(&storage, &principal, json!({"kind": "status"})).await?;
     if restored["revision"] != backup["revision"]
         || restored["mediaCount"] != backup["mediaCount"]
@@ -263,6 +266,8 @@ pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool
         "backupId": backup["backupId"], "restoreCandidateId": restored["candidateId"], "bundledUi": bundled});
     // This tiny durable rename is deliberately synchronous: cancellation must
     // not release maintenance while a detached worker still publishes authority.
+    job.check()?;
+    job.progress("activating",0,1);
     write_pointer(root, &next, false)?;
     state.host.install(storage.clone(), next, false);
     execute(
@@ -276,13 +281,8 @@ pub(super) async fn activate(state: &AppState, migration_id: &str, bundled: bool
 }
 
 async fn execute(storage: &Storage, principal: &str, command: Value) -> Result<Value> {
-    let seconds = if matches!(command["kind"].as_str(), Some("backup" | "restoreBackup")) {
-        120
-    } else {
-        30
-    };
     tokio::time::timeout(
-        Duration::from_secs(seconds),
+        Duration::from_secs(30),
         storage.request(command, principal),
     )
     .await

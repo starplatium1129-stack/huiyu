@@ -210,12 +210,13 @@ pub(super) fn run(
                 }
                 let _ = reply.send(result);
             }
-            Work::Request(command, principal, cancel, reply, permit) => {
+            Work::Request(command, principal, cancel, reply, permit, job) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
                 }
                 context.cancel = cancel;
+                context.job = job;
                 if reply.is_closed() {
                     continue;
                 }

@@ -85,6 +85,7 @@ pub(super) fn create(
             cancel_deadline: None,
             cancel_checks: 0,
             permit: Some(prepared.permit),
+            gpu: prepared.gpu,
         }),
         collection: Mutex::new(()),
         notify: Notify::new(),
@@ -226,7 +227,7 @@ pub(super) async fn result(inner: &Arc<Inner>, id: &str, owner: &str) -> Result<
         .ok_or_else(|| ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"))
 }
 pub(super) async fn release(job: &Job) {
-    job.state.lock().await.permit.take();
+    job.state.lock().await.release_capacity();
 }
 pub(super) async fn discard_output(job: &Job) {
     let result = {
@@ -260,7 +261,7 @@ pub(super) async fn fail(job: &Job, error: ApiError, unknown: bool) {
     state.unknown = unknown;
     state.settled = !unknown;
     if !unknown {
-        state.permit.take();
+        state.release_capacity();
     }
     drop(state);
     job.notify.notify_waiters();
@@ -303,7 +304,7 @@ pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) 
         state.progress_text = "生成完成".into();
         state.collection_pending = job.hooks.is_some();
         // The GPU has completed; storage retries must not retain GPU capacity.
-        state.permit.take();
+        state.release_capacity();
     }
     job.notify.notify_waiters();
     if job.hooks.is_none() {
