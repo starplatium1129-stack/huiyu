@@ -83,7 +83,7 @@
         <div class="manga-actions">
           <button class="btn btn-ghost" type="button" :disabled="exporting" @click="openTasks">任务中心</button>
           <button v-if="canStartNew" class="btn btn-ghost" type="button" @click="beginNew">开始新的处理</button>
-          <button v-if="!observing && !submitting && (acceptanceUnknown || job)" class="btn btn-ghost" type="button" @click="observe">{{ acceptanceUnknown ? '查询接收状态' : job?.status === 'succeeded' ? '重新读取结果' : '重新连接原任务' }}</button>
+          <button v-if="!observing && !submitting && (acceptanceUnknown || job)" class="btn btn-ghost" type="button" :disabled="loading" @click="observe">{{ acceptanceUnknown ? '查询接收状态' : job?.status === 'succeeded' ? '重新读取结果' : '重新连接原任务' }}</button>
           <button v-if="pending || submitting || acceptanceUnknown" class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancel">{{ cancelling ? '请求取消…' : '取消处理' }}</button>
           <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked || !resultBlob" @click="exportResult('download')"><ArchiveIcon name="download" />导出漫画 PNG</button>
           <button v-if="result" class="btn btn-ghost" type="button" :disabled="saveLocked || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '另存到我的作品' }}</button>

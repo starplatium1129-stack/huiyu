@@ -167,7 +167,7 @@ export function useMangaScreen(onSaved: () => void) {
     }
   }
   async function observe() {
-    if (observing.value || !job.value && !requestKey.value) return
+    if (loading.value || observing.value || !job.value && !requestKey.value) return
     observing.value = true; error.value = ''
     let terminalIssue = ''
     try {
@@ -301,10 +301,17 @@ export function useMangaScreen(onSaved: () => void) {
     exporting.value = true; error.value = ''
     try {
       check()
-      if (kind === 'save') { await archiveTaskResult(current.id, 0); check(); saved.value = true; notice.value = '已另存漫画副本，可在我的作品中查看'; onSaved() }
-      else if (await downloadMangaPng(blob!, `绘遇-漫画-${current.id.slice(0, 8)}.png`)) { check(); downloaded.value = true; notice.value = '已发起 PNG 保存' }
+      if (kind === 'save') {
+        await archiveTaskResult(current.id, 0); check()
+        if (result.value?.id === current.id) { saved.value = true; notice.value = '已另存漫画副本，可在我的作品中查看' }
+        onSaved()
+      }
+      else if (await downloadMangaPng(blob!, `绘遇-漫画-${current.id.slice(0, 8)}.png`)) {
+        check()
+        if (result.value?.id === current.id) { downloaded.value = true; notice.value = '已发起 PNG 保存' }
+      }
       check()
-    } catch (e) { if (!lifetime.signal.aborted) error.value = message(e) }
+    } catch (e) { if (!lifetime.signal.aborted && result.value?.id === current.id) error.value = message(e) }
     finally { exporting.value = false }
   }
   function beforeUnload(event: BeforeUnloadEvent) {
