@@ -86,13 +86,20 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         try { await pb.loadData(); return true; }
         catch (error) { console.warn('读取创作资料失败', error); return false; }
     }
+    async function loadOptionalBlueprints() {
+        if (pb.subject.kind !== 'popular') return true;
+        // The scene panel owns the error and retry. Suggestions must not leave
+        // an adopted draft permanently outside the autosave lifecycle.
+        try { await pb.loadPopularCharacter(pb.subject.characterId); return pb.popularBlueprintReady; }
+        catch { return false; }
+    }
     async function resumeWorkspace() {
         const request = initializationRequest;
         const current = () => !disposed && viewActive && request === initializationRequest;
         if (!pb.dataReady || !useSceneStore().loaded) {
             if (!await loadWorkspaceData()) return;
             if (!current()) return;
-            if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
+            await loadOptionalBlueprints();
             if (!current()) return;
         }
         if (draftRecovery.initialized) await applyPreparedLink();
@@ -164,7 +171,7 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
             if (generationBusy.value) { draftRecovery.initialized = true; saveWorkspaceDraft(); return; }
         }
         const recoveryRevision = handledDeepLink ? draftRecovery.textRevision : draftRecovery.restoredRevision;
-        if (pb.subject.kind === 'popular') await pb.loadPopularCharacter(pb.subject.characterId);
+        const popularCatalogReady = await loadOptionalBlueprints();
         if (!current()) return;
         // F2：画布为空时找回上次未入册的临时成片（深链出图优先，不抢新任务）。
         if ((!handledDeepLink || query.resume === '1') && !displayResultUrl.value) {
@@ -176,15 +183,15 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         if (!restoredRecipe && drawEngine.value === 'sd' && (!handledDeepLink || query.resume === '1')
             && pb.sdParamsTouched.has('size') && /^\d+x\d+$/.test(pb.sdParams.size))
             sdSize.value = pb.sdParams.size;
-        else if (!restoredRecipe && pb.lastRecommendedSize)
+        else if (!restoredRecipe && popularCatalogReady && pb.lastRecommendedSize)
             sdSize.value = pb.lastRecommendedSize;
-        if (!restoredRecipe && pb.directorMode === 'basic')
+        if (!restoredRecipe && popularCatalogReady && pb.directorMode === 'basic')
             await applyManagedRoute({ silent: true });
         else
             await refreshManagedRoute();
         if (!current()) return;
         // 热门角色草稿恢复（底模/蓝图尺寸/导演决策/后端白名单收敛）已下沉 useDirectorPopular
-        if (!restoredRecipe && typeof query.companionDraft !== 'string'
+        if (!restoredRecipe && popularCatalogReady && typeof query.companionDraft !== 'string'
             && recoveryRevision !== null && recoveryRevision === draftRecovery.textRevision) restorePopularDraft();
         await applyPreparedLink();
         if (!current()) return;

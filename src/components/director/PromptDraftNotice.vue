@@ -9,7 +9,7 @@ const desktop = Boolean(getDesktopCapabilities())
 </script>
 
 <template>
-  <section v-if="!desktop && pb.draftSaveState !== 'idle'" class="draft-save-notice" :data-state="pb.draftSaveState" aria-label="草稿保存状态">
+  <section v-if="pb.draftSaveState === 'failed' || !desktop && pb.draftSaveState !== 'idle'" class="draft-save-notice" :data-state="pb.draftSaveState" aria-label="草稿保存状态">
     <p role="status" aria-live="polite">{{ pb.draftSaveState === 'failed' ? pb.draftSaveError : pb.draftSaveState === 'pending' ? '正在保存草稿…' : '草稿已保存到此浏览器' }}</p>
     <template v-if="pb.draftSaveState === 'failed'">
       <button class="btn btn-ghost btn-sm" type="button" @click="pb.retryDraftSave()">重试保存</button>
