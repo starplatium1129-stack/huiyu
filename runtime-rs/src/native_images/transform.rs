@@ -293,22 +293,26 @@ pub(crate) fn atlas(
     if ![2, 4].contains(&scale) {
         return Err("Invalid texture scale".into());
     }
-    transform(path, library, Some(scale), 560, cancel)?.ok_or_else(|| "Invalid atlas dimensions".into())
+    transform(path, library, Some(scale), 560, true, cancel)?
+        .ok_or_else(|| "Invalid atlas dimensions".into())
 }
-/// Workspace previews: auto-orient, bounded width, black flatten, JPEG82.
+/// Workspace derivatives: auto-orient and bounded width; HD keeps alpha in WebP,
+/// while ordinary thumbnails retain their black-flattened JPEG82 encoding.
 pub(crate) fn thumbnail(
     path: &Path,
     library: &Path,
     width: u32,
+    preserve_alpha: bool,
     cancel: &CancellationToken,
 ) -> Result<Option<Bytes>> {
-    transform(path, library, None, width, cancel)
+    transform(path, library, None, width, preserve_alpha, cancel)
 }
 fn transform(
     path: &Path,
     library: &Path,
     scale: Option<i32>,
     max_width: u32,
+    webp: bool,
     cancel: &CancellationToken,
 ) -> Result<Option<Bytes>> {
     if cancel.is_cancelled() {
@@ -349,7 +353,7 @@ fn transform(
     image = shrink_load(&api, &file, image, factor(width, height))?;
     image = colour(&api, image)?;
     // Sharp performs flatten before resize (calling order in JS does not move it).
-    if scale.is_none() && unsafe { (api.has_alpha)(image.pointer) } != 0 {
+    if !webp && unsafe { (api.has_alpha)(image.pointer) } != 0 {
         image =
             api.image(|out| unsafe { (api.flatten)(image.pointer, out, ptr::null::<c_void>()) })?;
     }
@@ -454,5 +458,5 @@ fn transform(
             )
         })?;
     }
-    encode(&api, &image, scale.is_some(), cancel).map(Some)
+    encode(&api, &image, webp, cancel).map(Some)
 }

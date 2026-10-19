@@ -6,7 +6,8 @@ use crate::error::{ApiError, Result};
 use axum::body::Bytes;
 use base64::{Engine, engine::general_purpose::STANDARD};
 use image::{
-    DynamicImage, ImageDecoder, ImageReader, Rgb, RgbImage, codecs::jpeg::JpegEncoder,
+    DynamicImage, ImageDecoder, ImageReader, Rgb, RgbImage,
+    codecs::{jpeg::JpegEncoder, webp::WebPEncoder},
     imageops::FilterType,
 };
 use serde_json::Value;
@@ -15,6 +16,7 @@ use std::{fs, io::Write, path::Path, sync::OnceLock};
 static DECODERS: OnceLock<queue::Queue> = OnceLock::new();
 
 pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
+    let preview = command.get("width").is_some();
     let requested = command.get("width").map(|value| value.as_u64()
         .filter(|width| (1..=8192).contains(width))
         .ok_or_else(|| ApiError::new(400, "INVALID_WIDTH", "Preview width must be 1–8192")))
@@ -34,16 +36,22 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
     if !source.mime.starts_with("image/") {
         return Ok(Value::Null);
     }
+    // Unsupported preview codecs must leave the browser's original fallback in
+    // charge instead of publishing a derivative with different image semantics.
+    if preview && !matches!(source.mime.as_str(), "image/png" | "image/jpeg" | "image/webp") {
+        return Ok(Value::Null);
+    }
     let root = storage.root.clone();
     // Different encoders/resampling must never share sharp's thumbnails-v1 cache.
     let native = storage.native_images.clone();
-    let version = if native.is_some() {
-        "thumbnails-rust-vips-v1"
-    } else {
-        "thumbnails-rust-v1"
+    let (version, extension, mime) = match (native.is_some(), preview) {
+        (true, true) => ("previews-rust-vips-v1", "webp", "image/webp"),
+        (false, true) => ("previews-rust-v1", "webp", "image/webp"),
+        (true, false) => ("thumbnails-rust-vips-v1", "jpg", "image/jpeg"),
+        (false, false) => ("thumbnails-rust-v1", "jpg", "image/jpeg"),
     };
     let suffix = if width == 560 { String::new() } else { format!("-{width}") };
-    let relative = format!("cache/{version}/{}{suffix}.jpg", source.sha256);
+    let relative = format!("cache/{version}/{}{suffix}.{extension}", source.sha256);
     let owner = storage.sender.clone();
     let (cache_root, cache_relative, read_cancel) =
         (root.clone(), relative.clone(), cancelled.clone());
@@ -54,7 +62,7 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
             return Err(super::unavailable());
         }
         let cache = schema::safe(&cache_root, Path::new(&cache_relative))?;
-        let cached = read_cached(&cache)?;
+        let cached = read_cached(&cache, mime)?;
         if read_cancel.is_cancelled() {
             return Err(super::unavailable());
         }
@@ -77,7 +85,7 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         if read_cancel.is_cancelled() {
             return Err(super::unavailable());
         }
-        let cached = read_cached(&cache_path)?;
+        let cached = read_cached(&cache_path, mime)?;
         if read_cancel.is_cancelled() {
             return Err(super::unavailable());
         }
@@ -103,10 +111,10 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
             return Ok(Value::Null);
         }
         let encoded = if let Some(library) = native {
-            crate::native_images::thumbnail(&source.path, &library, width, &cancelled)
+            crate::native_images::thumbnail(&source.path, &library, width, preview, &cancelled)
                 .map_err(|error| ApiError::new(422, "THUMBNAIL_FAILED", error))?
         } else {
-            encode(&source.path, width)?.map(Bytes::from)
+            encode(&source.path, width, preview)?.map(Bytes::from)
         };
         let Some(bytes) = encoded else {
             return Ok(Value::Null);
@@ -125,26 +133,26 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         {
             return Err(error.error.into());
         }
-        Ok(thumbnail_value(&bytes))
+        Ok(thumbnail_value(&bytes, mime))
     })
     .await
     .map_err(|_| worker_failed())?
 }
 
-fn read_cached(cache: &Path) -> Result<Option<Value>> {
+fn read_cached(cache: &Path, mime: &str) -> Result<Option<Value>> {
     match fs::read(cache) {
-        Ok(bytes) => Ok(Some(thumbnail_value(&bytes))),
+        Ok(bytes) => Ok(Some(thumbnail_value(&bytes, mime))),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(error) => Err(error.into()),
     }
 }
 
-fn thumbnail_value(bytes: &[u8]) -> Value {
-    const PREFIX: &str = "data:image/jpeg;base64,";
+fn thumbnail_value(bytes: &[u8], mime: &str) -> Value {
+    let prefix = format!("data:{mime};base64,");
     let mut uri = String::with_capacity(
-        PREFIX.len() + base64::encoded_len(bytes.len(), true).expect("thumbnail is too large"),
+        prefix.len() + base64::encoded_len(bytes.len(), true).expect("thumbnail is too large"),
     );
-    uri.push_str(PREFIX);
+    uri.push_str(&prefix);
     STANDARD.encode_string(bytes, &mut uri);
     Value::String(uri)
 }
@@ -153,7 +161,7 @@ fn worker_failed() -> ApiError {
     ApiError::new(503, "THUMBNAIL_FAILED", "Thumbnail worker failed")
 }
 
-fn encode(path: &Path, max_width: u32) -> Result<Option<Vec<u8>>> {
+fn encode(path: &Path, max_width: u32, preserve_alpha: bool) -> Result<Option<Vec<u8>>> {
     let reader = ImageReader::open(path)?.with_guessed_format()?;
     let mut decoder = match reader.into_decoder() {
         Ok(decoder) => decoder,
@@ -184,6 +192,13 @@ fn encode(path: &Path, max_width: u32) -> Result<Option<Vec<u8>>> {
     let resized = decoded
         .resize_exact(width, height, FilterType::Lanczos3)
         .to_rgba8();
+    let mut bytes = Vec::new();
+    if preserve_alpha {
+        WebPEncoder::new_lossless(&mut bytes)
+            .encode(&resized, width, height, image::ExtendedColorType::Rgba8)
+            .map_err(decode_error)?;
+        return Ok(Some(bytes));
+    }
     let mut rgb = RgbImage::new(width, height);
     for (input, output) in resized.pixels().zip(rgb.pixels_mut()) {
         let alpha = u16::from(input[3]);
@@ -193,7 +208,6 @@ fn encode(path: &Path, max_width: u32) -> Result<Option<Vec<u8>>> {
             ((u16::from(input[2]) * alpha + 127) / 255) as u8,
         ]);
     }
-    let mut bytes = Vec::new();
     JpegEncoder::new_with_quality(&mut bytes, 82)
         .encode_image(&rgb)
         .map_err(decode_error)?;
