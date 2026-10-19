@@ -217,7 +217,7 @@
             @click="toggleFavorite(displayedCurrent)">
             <span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
           </StudioFavoriteButton>
-          <button class="btn btn-ghost" type="button" @click="downloadCurrent"><ArchiveIcon name="download" />下载原图</button>
+          <button class="btn btn-ghost" type="button" :disabled="downloading" :aria-busy="downloading" @click="downloadCurrent"><ArchiveIcon name="download" />{{ downloading ? '正在准备下载…' : '下载原图' }}</button>
           <MangaScreenLauncher :source-url="viewerUrl" :artwork="displayedCurrent" :disabled="!viewerUrl || viewerLoadFailed" @saved="loadGalleryStorage" />
           <RouterLink v-if="displayedCurrent.engine !== 'manga-screen' && displayedCurrent.engine !== 'qwen-image'" class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
           <RouterLink v-if="displayedCurrent.image_id" class="btn btn-ghost" :to="{ path: '/qwen-studio', query: { artwork: displayedCurrent.id } }"><ArchiveIcon name="image" />用 Qwen 编辑</RouterLink>
@@ -413,7 +413,7 @@ parentImageUrl,
 current,
 characterName,
 facts,
-downloadCurrent,
+downloadCurrent, downloading,
 copyPrompt
 } = workspace
 const cardLabels = computed(() => new Map(pagedVisible.value.map(item => [item.id, {

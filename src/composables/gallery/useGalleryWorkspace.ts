@@ -410,6 +410,6 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         measure, cardUrls, onHdLoad, missingImageIds, formatDate, stamp,
         hasMoreToRender, pagedVisible, viewerIndex, infoOpen, infoDrawerHidden, toggleInfoDrawer, closeInfoDrawer, closeViewer, onViewerClosed,
         compareMode, hasComparableImage, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, parentImageUrl, current, characterName,
-        facts, downloadCurrent, copyPrompt, showToast, releaseCardResources,
+        facts, downloadCurrent, downloading: actions.downloading, copyPrompt, showToast, releaseCardResources,
     };
 }

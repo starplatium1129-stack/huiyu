@@ -6,12 +6,12 @@ import { formatA1111Parameters, injectPngMetadata } from '../../utils/pngMetadat
 import { imageFormat } from '../../utils/imageFormat.ts'
 import { safeImageUrl } from './galleryHelpers.ts'
 import type { useGalleryWorkspace } from './useGalleryWorkspace.ts'
-import { getCurrentInstance, getCurrentScope, onActivated, onDeactivated, onScopeDispose } from 'vue'
+import { getCurrentInstance, getCurrentScope, onActivated, onDeactivated, onScopeDispose, readonly, ref, type Ref } from 'vue'
 import { copyWithFeedback } from '../useCopyFeedback.ts'
 
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, 'current' | 'stamp' | 'sceneTitle' | 'characterName' | 'showToast'>
 
-export function useGalleryExports({ current, stamp, sceneTitle, characterName, showToast }: Context): { downloadCurrent: () => Promise<void>; copyPrompt: () => Promise<boolean> } {
+export function useGalleryExports({ current, stamp, sceneTitle, characterName, showToast }: Context): { downloading: Readonly<Ref<boolean>>; downloadCurrent: () => Promise<void>; copyPrompt: () => Promise<boolean> } {
   let disposed = false, viewActive = true
   let downloadController: AbortController | null = null
   const downloadUrls = new Map<string, number>()
@@ -34,11 +34,11 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
     if (!item?.prompt) return false
     return await copyWithFeedback(item.prompt, 'Prompt 已复制') && !disposed && viewActive && current.value?.id === item.id
   }
-  let downloading = false
+  const downloading = ref(false)
   async function downloadCurrent() {
     let item = current.value
-    if (!item || downloading || disposed || !viewActive) return
-    downloading = true
+    if (!item || downloading.value || disposed || !viewActive) return
+    downloading.value = true
     const controller = new AbortController()
     downloadController = controller
     try {
@@ -115,8 +115,8 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
       if (!controller.signal.aborted) showToast(error instanceof Error ? error.message : '原图下载失败，请重试', 'warning')
     } finally {
       downloadController = null
-      downloading = false
+      downloading.value = false
     }
   }
-  return { downloadCurrent, copyPrompt }
+  return { downloading: readonly(downloading), downloadCurrent, copyPrompt }
 }
