@@ -1,3 +1,4 @@
+import type { AnimaSketchControl, AnimaPromptRegion } from './animaComposition'
 export type AnimaPhase = 'idle' | 'submitting' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
 
 export interface AnimaJobMetadata {
@@ -34,6 +35,9 @@ export interface AnimaJobMetadata {
   maskPrompt?: string | null
   denoisingStrength?: number
   growMaskBy?: number
+  sketchControl?: AnimaSketchControl
+  regions?: AnimaPromptRegion[]
+  sketchControlModel?: { file: string; sha256: string; source: string }
   createdAt: number
   resultUrl: string | null
 }

@@ -24,8 +24,7 @@ impl Service {
         } else {
             None
         };
-        for key in ["initImage", "maskImage", "penLines"] {
-            if let Some(name) = input[key].as_str() {
+        for name in inputs::input_names(&input) {
                 // Restore the accepted bytes before the resource probe. A stale
                 // working copy must not change the resumed input silently.
                 let restored = hooks
@@ -41,7 +40,6 @@ impl Service {
                         "独立推理缺少受保护的原始输入图像",
                     ));
                 }
-            }
         }
         let originals = inputs::capture(&self.config, &input, true, None, &cancel).await?;
         let prepared = if let Some(permit) = permit {

@@ -73,6 +73,9 @@ export function prepareGeneratedArtwork(input: GeneratedArtworkInput, resolveDef
     manual_tags: merged.manual_tags ? [...merged.manual_tags] : merged.manual_tags,
     artistStyleIds: merged.artistStyleIds ? [...merged.artistStyleIds] : merged.artistStyleIds,
     loras: merged.loras?.map(lora => ({ ...lora })),
+    sketchControl: merged.sketchControl ? { ...merged.sketchControl } : undefined,
+    sketchControlModel: merged.sketchControlModel ? { ...merged.sketchControlModel } : undefined,
+    regions: merged.regions?.map(region => ({ ...region })),
     pendingCommit: merged.pendingCommit ? JSON.parse(JSON.stringify(merged.pendingCommit)) as ArtworkCommitIdentity : undefined,
   }
   const resolved = resolveDefaults(entry)

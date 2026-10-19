@@ -43,6 +43,11 @@
       </div>
       <p v-if="interrogateError" class="image-tools-error" role="alert">{{ interrogateError }}</p>
     </section>
+    <section v-if="drawEngine === 'anima'" class="image-tools-group" aria-label="构图控制">
+      <DeferredToolLauncher label="构图控制" icon="rule3" :loader="loadComposition" :disabled="generationBusy">
+        <template #default="{ component, open, update }"><component :is="component" :bindings="composition" :open="open" @update:open="update" /></template>
+      </DeferredToolLauncher>
+    </section>
     <details v-if="displayResultUrl || shotsPending > 0" class="inspector-route image-continuation">
       <StudioDisclosureSummary><span>成片再创作</span><small v-if="shotsPending">{{ shotsPending }} 个分镜</small></StudioDisclosureSummary>
       <div data-disclosure-content class="image-tool-buttons image-continuation-body">
@@ -70,9 +75,12 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import MangaScreenLauncher from '@/components/manga/MangaScreenLauncher.vue'
+import DeferredToolLauncher from '@/components/director/DeferredToolLauncher.vue'
+import type { AnimaCompositionBindings } from '@/composables/generation/useAnimaComposition'
 import '@/assets/css/director/components/DirectorImageTools.css'
 
 defineProps<{
+  composition: AnimaCompositionBindings
   generationBusy: boolean
   interrogateBusy: boolean
   interrogateMode: 'caption' | 'tag'
@@ -85,6 +93,7 @@ defineProps<{
   transferBusy: boolean
 }>()
 const readiness = useInterrogateReadiness()
+const loadComposition = () => import('@/components/AnimaCompositionLauncher.vue')
 function onReferenceToggle(event: Event) {
   if ((event.currentTarget as HTMLDetailsElement).open) void readiness.refresh()
 }

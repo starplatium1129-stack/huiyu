@@ -35,8 +35,8 @@ export async function upscaleCurrentResultAction(ctx: Context, source: HiresSour
             pb.flash('原成片的完整提交配方或 Seed 未知，无法按原配方高清重绘；请先重新生成');
             return;
         }
-        if (request.initImage || request.maskImage || request.maskPrompt) {
-            pb.flash('这幅成片含局部重绘输入，原输入无法确认仍可复用；暂不能按完整原配方高清重绘');
+        if (request.initImage || request.maskImage || request.maskPrompt || request.sketchControl || request.regions?.length) {
+            pb.flash('这幅成片含编辑或构图控制输入，暂不能按完整原配方高清重绘');
             return;
         }
         pb.flash('正在按原成片的配方和 Seed 执行 2x 高清重绘…');

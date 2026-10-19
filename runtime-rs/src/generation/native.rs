@@ -24,6 +24,8 @@ pub(crate) struct Plan {
     pub init_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub mask_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
     pub pen_lines: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
+    pub sketch_image: std::sync::Mutex<Option<Arc<Vec<u8>>>>,
+    pub sketch_model_path: Option<PathBuf>,
     pub loras: Vec<Value>,
 }
 pub(crate) struct Engine {
@@ -162,6 +164,7 @@ async fn settle(
         plan.init_image.lock().unwrap().take();
         plan.mask_image.lock().unwrap().take();
         plan.pen_lines.lock().unwrap().take();
+        plan.sketch_image.lock().unwrap().take();
     }
     let error = match outcome {
         Ok(output) => {
@@ -256,38 +259,10 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     let output = temp
         .path()
         .join(if video { "result.mp4" } else { "result.png" });
-    let mut input = json!({"negativePrompt":plan.input["negative"]});
-    for key in [
-        "prompt",
-        "width",
-        "height",
-        "steps",
-        "cfg",
-        "seed",
-        "family",
-        "sampler",
-        "scheduler",
-        "teaCache",
-        "hiresFix",
-        "hiresScale",
-        "hiresDenoise",
-        "hiresUpscaler",
-        "superResModel",
-        "hiresSampler",
-        "hiresScheduler",
-        "rcasStrength",
-    ] {
-        input[key] = plan.input[key].clone();
-    }
-    input["teaCacheAuto"] = json!(plan.input["teaCacheAuto"] == true);
-    if let Some(threshold) = plan.input.get("teaCacheThresh") {
-        input["teaCacheThresh"] = threshold.clone();
-    }
     // Pass only accepted original bytes, never a mutable upload path. The request
     // and owned process retain this directory until ready or confirmed retirement.
     let init_image = plan.init_image.lock().unwrap().take();
     let input_image_path = if let Some(bytes) = init_image {
-        input["denoisingStrength"] = plan.input["denoisingStrength"].clone();
         let path = temp.path().join("input-image");
         let mut file = tokio::fs::File::create(&path).await?;
         file.write_all(bytes.as_slice()).await?;
@@ -296,14 +271,8 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     } else {
         None
     };
-    if plan.mask_model_dir.is_some() {
-        for key in ["maskPrompt", "maskThreshold", "growMaskBy"] {
-            input[key] = plan.input[key].clone();
-        }
-    }
     let mask_image = plan.mask_image.lock().unwrap().take();
     let mask_image_path = if let Some(bytes) = mask_image {
-        input["growMaskBy"] = plan.input["growMaskBy"].clone();
         let path = temp.path().join("mask-image");
         let mut file = tokio::fs::File::create(&path).await?;
         file.write_all(bytes.as_slice()).await?;
@@ -322,12 +291,20 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     } else {
         None
     };
+    let sketch_image = plan.sketch_image.lock().unwrap().take();
+    let sketch_image_path = if let Some(bytes) = sketch_image {
+        let path = temp.path().join("sketch-image");
+        let mut file = tokio::fs::File::create(&path).await?;
+        file.write_all(bytes.as_slice()).await?;
+        file.flush().await?;
+        Some(path)
+    } else { None };
     let request = if plan.input["family"] == "manga-screen" {
         output::manga_request(job, plan, &output, input_image_path, pen_lines_path)
     } else if adapters::model(plan.input["modelId"].as_str().unwrap_or("")).is_some() {
         output::adapter_request(job, plan, &output, input_image_path)
     } else {
-        json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":input,"inputImagePath":input_image_path,"maskImagePath":mask_image_path,"loras":plan.loras})
+        output::anima_request(job, plan, &output, input_image_path, mask_image_path, sketch_image_path)
     };
     let mut worker = inner.native.take_worker(&plan.settings).await?;
     *worker.current_temp.lock().unwrap() = Some(temp.clone());

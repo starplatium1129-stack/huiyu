@@ -183,6 +183,7 @@ class _ProtectedFiles:
     """One explicitly owned set of file handles and latched directory events."""
     def __init__(self, windows, inventory, roots):
         self.windows = windows
+        self.token = object()  # Identifies this interval, never an equivalent later acquisition.
         self.handles, self.watches, self.entries, self.file_ids = [], [], [], {}
         self._alive = False
         self.drive_mappings = {}
@@ -250,6 +251,10 @@ class AssetIdentityLease:
                     and self._protected is not None and self._protected.valid())
         except OSError:
             return False
+
+    def protection_token(self):
+        """Opaque identity of the still-live interval; reacquisition creates another."""
+        return self._protected.token if self.valid() else None
 
     def acquire(self, path, compute_identity):
         self._require_owner()

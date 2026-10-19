@@ -68,12 +68,29 @@ image acceptance apply only to their recorded source, not these changes.
 
 Select `inference.memoryPolicy=offload` in local engine settings, or explicitly
 override with `HUIYU_INFERENCE_MEMORY=offload`. The default `resident` keeps warm
-throughput. Offload uses pinned Diffusers ComponentsManager hooks on all four
-weight components: Qwen, conditioner, denoiser and VAE switch at actual forwards,
-and the denoiser stays on CUDA for its loop. Remacri first retires Anima weights.
-Fused LoRAs merge one component at a time on CUDA before returning to CPU.
-This is whole-component offload: denoiser weights plus active tensors must still
-fit GPU. It adds host RAM and transfers; arbitrary 4/8 GB devices are not proven.
+throughput. The shared `native_memory.py` keeps ComponentsManager stage ownership
+and budgets weights from free CUDA memory minus max(1 GiB, total/4). Encoders and
+denoisers exceeding that budget use synchronous block/leaf group offload; those
+that fit keep whole-component placement. Each task re-evaluates the budget. VAE
+encode/decode and vocoders retain component placement and existing tiling because
+they can bypass root forward. Tea wrappers run inside group onload/post-offload;
+no asynchronous prefetch or dtype changes are used. Remacri first retires Anima.
+Fused LoRAs still need a whole component on CUDA while merging. These placement
+changes require current GPU acceptance; historical component-only measurements
+do not cover them. Host RAM, activation sizes and external GPU use remain limits.
+
+Native adapters keep one exact weight set through `resident_adapters.py`, using
+the existing continuous Windows `AssetIdentityLease`. An opaque protection token
+must match the loaded set before reuse and inference; identical hashes after a
+lease re-acquisition never authorize the old mapped weights. Root/model/policy changes,
+lost protection, cancellation and failure discard the set. Unsupported filesystems
+retain full-byte checks and per-task release. Every task reconstructs its pipeline,
+schedulers and guider from the original configuration, including H3's two schedulers;
+only weights/tokenizer assets are shared. Manga's nested Qwen call remains nonresident.
+`nativeRuntime.weightReuse` and `memoryScheduling` expose actual reuse and placement,
+without claiming current device quality, memory savings or speed acceptance.
+Group-hook installation/removal invalidates descendant-registry caches before
+LoRA topology can change, so placement replans do not keep obsolete registry references.
 
 Resident packed storage is now per component/dtype. A base switch retains only
 byte-identical unadapted Qwen, VAE and tokenizers, after exact class/dtype checks.

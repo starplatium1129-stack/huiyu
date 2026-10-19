@@ -1,6 +1,7 @@
 import type { ApiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaOption, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
+import type { AnimaSketchControl, AnimaPromptRegion } from '@/types/animaComposition'
 
 export interface AnimaStatusResponse {
   capabilities?: { automaticMask?: boolean; automaticMaskStatus?: ComfyNodeReadiness }
@@ -42,6 +43,8 @@ export interface AnimaRequest {
   maskThreshold?: number
   denoisingStrength?: number
   growMaskBy?: number
+  sketchControl?: AnimaSketchControl
+  regions?: AnimaPromptRegion[]
 }
 
 export interface AnimaSessionOptions {
@@ -149,6 +152,8 @@ export function animaRequestPayload(
     ...(request.maskPrompt && request.maskThreshold !== undefined ? { maskThreshold: request.maskThreshold } : {}),
     ...(request.denoisingStrength !== undefined ? { denoisingStrength: request.denoisingStrength } : {}),
     ...(request.growMaskBy !== undefined ? { growMaskBy: request.growMaskBy } : {}),
+    ...(request.sketchControl ? { sketchControl: structuredClone(request.sketchControl) } : {}),
+    ...(request.regions?.length ? { regions: structuredClone(request.regions) } : {}),
   }
 }
 

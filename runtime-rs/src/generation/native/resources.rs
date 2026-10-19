@@ -12,7 +12,8 @@ pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
     "anima_sampling.py", "anima_res_scheduler.py", "anima_refinement.py", "anima_vae.py",
     "anima_tiling.py", "anima_postprocess.py", "anima_prompt_weights.py", "anima_upscale.py",
     "native_hash.py", "native_upload.py", "anima_loader.py", "anima_memory.py",
-    "locked_identity.py", "anima_acceleration.py",
+    "locked_identity.py", "anima_acceleration.py", "native_memory.py",
+    "anima_composition.py", "anima_lllite.py", "anima_regions.py",
 ];
 const CLIPSEG_FILES: [&str; 7] = [
     "config.json", "preprocessor_config.json", "tokenizer_config.json",

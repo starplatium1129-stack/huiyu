@@ -1,3 +1,5 @@
+import type { AnimaPromptRegion, AnimaSketchControl } from './animaComposition'
+
 export type CharKey = 'nene' | 'natsume' | 'triad' | 'none'
 export type DrawEngine = 'sd' | 'anima' | 'krea2'
 
@@ -44,6 +46,9 @@ export type HistoryEntry = {
   hiresSteps?: number
   hiresDenoise?: number
   faceDetailer?: boolean
+  sketchControl?: AnimaSketchControl
+  sketchControlModel?: { file: string; sha256: string; source: string }
+  regions?: AnimaPromptRegion[]
 }
 
 export interface Selections {

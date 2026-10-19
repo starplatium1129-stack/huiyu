@@ -1,5 +1,6 @@
 mod admission;
 mod catalog;
+mod composition;
 mod http;
 mod inputs;
 mod manga;

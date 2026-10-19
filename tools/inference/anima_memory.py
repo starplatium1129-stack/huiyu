@@ -1,10 +1,6 @@
-"""Anima component residency using pinned Diffusers Modular offload hooks.
-
-Follow Comfy's stage-based ownership: encoding, denoising and VAE execution do
-not require all weights on CUDA together. No Comfy implementation is copied.
-The existing resident mode retains the complete GPU model for warm throughput.
-"""
+"""Anima placement through the shared budgeted native memory owner."""
 import os
+from functools import lru_cache
 
 POLICY = os.environ.get("HUIYU_INFERENCE_MEMORY", "resident")
 WEIGHTS = ("text_encoder", "text_conditioner", "transformer", "vae")
@@ -13,7 +9,18 @@ WEIGHTS = ("text_encoder", "text_conditioner", "transformer", "vae")
 def validate():
     if POLICY not in ("resident", "offload"):
         raise ValueError("HUIYU_INFERENCE_MEMORY must be resident or offload")
+    _memory_class()
     return POLICY
+
+
+@lru_cache(maxsize=1)
+def _memory_class():
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location("huiyu_native_memory", Path(__file__).with_name("native_memory.py"))
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.Residency
 
 
 def upload_component(component, tools):
@@ -29,36 +36,20 @@ def upload_component(component, tools):
 
 class Residency:
     def __init__(self, components):
-        self.policy, self.manager = validate(), None
-        if self.policy == "offload":
-            import torch
-            from diffusers import ComponentsManager
-            manager = ComponentsManager()
-            try:
-                for name in WEIGHTS:
-                    manager.add(name, components[name])
-                # Whole components switch at actual forwards, not each denoising
-                # step. VAE encode/decode are both covered by upstream hooks.
-                manager.enable_auto_cpu_offload(device=torch.device("cuda:0"),
-                    offload_strategy=lambda hooks, model_id, model, execution_device: hooks)
-            except BaseException:
-                manager.disable_auto_cpu_offload()
-                raise
-            self.manager = manager
+        self.policy = validate()
+        self.scheduler = _memory_class()({name: components[name] for name in WEIGHTS}, self.policy)
 
     def bind(self, pipeline):
+        self.scheduler.bind(pipeline)
         pipeline._huiyu_memory = self
 
+    def observation(self):
+        return self.scheduler.observation()
+
     def offload_all(self):
-        if self.manager is not None:
-            import torch
-            for hook in self.manager.model_hooks:
-                hook.offload()
-            # Returned tensors belong to the caller; only model weights retire.
-            torch.cuda.empty_cache()
+        import torch
+        self.scheduler.offload_all()
+        torch.cuda.empty_cache()
 
     def close(self):
-        if self.manager is not None:
-            self.manager.disable_auto_cpu_offload()
-            self.manager.components.clear()
-            self.manager = None
+        self.scheduler.close()

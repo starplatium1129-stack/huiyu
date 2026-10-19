@@ -34,6 +34,9 @@ fn sample(
     )
 }
 pub fn build(input: &Value) -> Result<Value> {
+    if composition::requested(input) {
+        return Err(ApiError::new(501, "NATIVE_COMPOSITION_REQUIRED", "草图控制和区域提示词需要原生 Anima 引擎，不会在 ComfyUI 路径忽略这些参数"));
+    }
     let model = catalog::model(
         input["modelId"]
             .as_str()

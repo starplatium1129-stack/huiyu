@@ -232,6 +232,8 @@ pub(super) async fn plan(
         init_image,
         pen_lines,
         mask_image: Mutex::new(None),
+        sketch_image: Mutex::new(None),
+        sketch_model_path: None,
         loras: vec![],
     })
 }

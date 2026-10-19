@@ -28,6 +28,8 @@ export function metadataFromJob(job: AnimaPublicJob, request: AnimaRequest, fami
         hiresFix: Boolean(request.hiresFix),
         hiresScale: request.hiresScale,
         hiresDenoise: request.hiresDenoise,
+        sketchControl: request.sketchControl,
+        regions: request.regions,
         createdAt: Date.now(),
         resultUrl: job.resultUrl,
       }

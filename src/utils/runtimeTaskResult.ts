@@ -7,9 +7,11 @@ const metadataKeys = [
   'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'character', 'preview',
   'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'hiresSteps', 'faceDetailer',
   'teaCache', 'teaCacheThresh', 'initImage', 'maskImage', 'maskPrompt', 'denoisingStrength', 'growMaskBy',
+  'sketchControl', 'sketchControlModel', 'regions',
 ] as const
 const recipeKeys = ['engine', 'provider', 'profile', 'model', 'checkpoint', 'prompt', 'negative', 'seed', 'cfg', 'steps', 'sampler', 'scheduler', 'size',
-  'lora', 'loraId', 'loraStrength', 'loras', 'styleLoraId', 'preview', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresDenoise', 'faceDetailer']
+  'lora', 'loraId', 'loraStrength', 'loras', 'styleLoraId', 'preview', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresDenoise', 'faceDetailer',
+  'sketchControl', 'sketchControlModel', 'regions']
 
 /** Runtime effective input and provider observations are facts; form values are not. */
 export function runtimeImageMetadata(task: TaskRecord): AnimaJobMetadata {
@@ -47,6 +49,7 @@ export function runtimeTaskRecipe(task: TaskRecord): Partial<HistoryEntry> {
     recipe.lora = loras.map(lora => `${lora.id}:${lora.strength}`).join(', ') || null
     recipe.loraId = loras[0]?.id ?? null; recipe.loraStrength = loras[0]?.strength ?? null
   } else if ('loraId' in recipe) recipe.lora = recipe.loraId
+  for (const key of ['sketchControl', 'sketchControlModel', 'regions']) if (source[key] !== undefined) recipe[key] = structuredClone(source[key])
   return recipe as Partial<HistoryEntry>
 }
 

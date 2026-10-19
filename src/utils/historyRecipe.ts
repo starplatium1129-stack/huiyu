@@ -3,6 +3,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 /** Read-only projection for recipe restoration. Never fills or rewrites the stored record. */
 export function parseHistoryRecipe(record: ArtworkRecord) {
   const notes: string[] = []
+  if (record.sketchControl || Array.isArray(record.regions) && record.regions.length) notes.push('原作使用了构图控制；已恢复基础配方，请在图像工具中重新导入草图、设置区域后生成')
   const text = (key: string) => {
     const value = record[key]
     if (value === undefined || value === null) return undefined

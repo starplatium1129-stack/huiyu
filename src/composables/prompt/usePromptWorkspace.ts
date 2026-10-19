@@ -4,6 +4,7 @@ import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 import { useAnimaInpaint } from '@/composables/generation/useAnimaInpaint';
 import { useAnimaSession } from '@/composables/generation/useAnimaSession';
 import type { ResultRestoreOwner } from '@/composables/generation/animaSessionContract';
+import type { AnimaCompositionBindings } from '@/composables/generation/useAnimaComposition';
 import { readDrawingSettings } from '@/storage/drawingSettings';
 import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
@@ -53,6 +54,7 @@ export function usePromptWorkspace() {
     const resultRevealUrl = ref('');
     const inpaintPreparing = ref(false);
     const hiresPreparing = ref(false);
+    const compositionPreparing = ref(false), cancelCompositionPreparation = ref<(() => void) | null>(null);
     let hiresVersion = 0, disposed = false;
     let interrogateVersion = 0, interrogateActive = true;
     let restoreVisit = new AbortController();
@@ -147,8 +149,8 @@ export function usePromptWorkspace() {
         flash: message => pb.flash(message),
     });
     const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy: engineGenerationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration: cancelEngineGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
-    const generationBusy = computed(() => engineGenerationBusy.value || inpaintPreparing.value || hiresPreparing.value);
-    const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备高清重绘…' : '',
+    const generationBusy = computed(() => engineGenerationBusy.value || inpaintPreparing.value || hiresPreparing.value || compositionPreparing.value);
+    const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备高清重绘…' : compositionPreparing.value ? '正在准备构图…' : '',
         () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value),
         () => { void animaSession.recover(); });
     // ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
@@ -379,7 +381,16 @@ export function usePromptWorkspace() {
         isPopular: computed(() => pb.isPopular),
         popularIdentityTokens: inpaintPopularTokens,
     });
-    function cancelGeneration() { hiresVersion++; hiresPreparing.value = false; if (!cancelInpaintPreparation()) cancelEngineGeneration(); }
+    const compositionBindings: AnimaCompositionBindings = {
+        state: animaState, busy: generationBusy, preparing: compositionPreparing, cancelPreparation: cancelCompositionPreparation,
+        contextKey: computed(() => JSON.stringify([drawEngine.value, currentCharacterId.value, pb.projectId, animaState.value.modelId, animaState.value.width, animaState.value.height])),
+        capture: animaSession.captureSubmission, generate: generateAnima, flash: message => pb.flash(message),
+    };
+    function cancelGeneration() {
+        hiresVersion++; hiresPreparing.value = false;
+        if (compositionPreparing.value) cancelCompositionPreparation.value?.();
+        else if (!cancelInpaintPreparation()) cancelEngineGeneration();
+    }
     /**
      * 画师选满后再点（2026-08-30 UX 审计 P1）：面板内已有就地提示，这里补一条
      * toast——画师网格在折叠面板里，提示有可能被滚出视野。
@@ -556,7 +567,7 @@ export function usePromptWorkspace() {
         addToShots, goToShots, saveResult, compareOpen, onClearResult, onRestoreStashed,
         handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,
         cancelGeneration, outfitOverridden, sdQueue,
-        materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings,
+        materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings, compositionBindings,
         recipePreviewContext: { engine: drawEngine, animaRequest: () => engine.buildAnimaRequest(true) },
     };
 }

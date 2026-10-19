@@ -31,40 +31,17 @@ def load(root, spec, data, control, contract):
         control.stage("loading", component="vae")
         kwargs["vae"] = diffusers.AutoencoderKLWan.from_pretrained(str(root / "vae"),
             local_files_only=True, use_safetensors=True, torch_dtype=torch.float32)
-    pipeline = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
+    return getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
+
+
+def prepare(pipeline, spec, data):
     if spec["pipeline"] == "HunyuanVideo15Pipeline":
-        # The upstream guider owns CFG; this pipeline has no guidance_scale call argument.
-        pipeline.guider = diffusers.ClassifierFreeGuidance.from_config(pipeline.guider.config, guidance_scale=data["cfg"])
-        # Include the second text encoder, absent from the pinned default sequence.
-        pipeline.model_cpu_offload_seq = "text_encoder->text_encoder_2->transformer->vae"
-    return pipeline
-
-
-def place(pipeline, spec, policy):
-    if spec["pipeline"] == "MiniMaxH3ModularPipeline" and policy == "offload":
-        from diffusers import ComponentsManager
-        manager = ComponentsManager()
-        pipeline._huiyu_video_manager = manager
-        for name in ("text_encoder", "transformer", "vae", "audio_vae"):
-            manager.add(name, getattr(pipeline, name))
-        manager.enable_auto_cpu_offload(device="cuda")
-    elif policy == "offload":
-        pipeline.enable_model_cpu_offload()
-    else:
-        pipeline.to("cuda")
+        from diffusers import ClassifierFreeGuidance
+        # The fresh task's guider owns CFG, never the cached model components.
+        pipeline.guider = ClassifierFreeGuidance.from_config(pipeline.guider.config, guidance_scale=data["cfg"])
     if spec["pipeline"] in ("HunyuanVideo15Pipeline", "LTX2Pipeline"):
         pipeline.vae.enable_tiling()
     pipeline.set_progress_bar_config(disable=True)
-
-
-def release(pipeline):
-    manager = getattr(pipeline, "_huiyu_video_manager", None)
-    if manager is not None:
-        manager.disable_auto_cpu_offload()
-        manager.components.clear()
-        pipeline._huiyu_video_manager = None
-    if hasattr(pipeline, "remove_all_hooks"):
-        pipeline.remove_all_hooks()
 
 
 @contextmanager

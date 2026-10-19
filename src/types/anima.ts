@@ -49,7 +49,8 @@ export interface AnimaOption {
     performanceVerified: boolean
     qualityVerified: boolean
   }
-  capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; img2img?: boolean; mask?: boolean; teaCache?: boolean; hires?: boolean; hiresUpscalers?: string[]; rcas?: boolean; weightSyntax?: boolean; characterIdentity: boolean; experimental: boolean }
+  capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; img2img?: boolean; mask?: boolean; teaCache?: boolean; hires?: boolean; hiresUpscalers?: string[]; rcas?: boolean; weightSyntax?: boolean; characterIdentity: boolean; experimental: boolean;
+    regionalPrompting?: boolean; sketchControl?: boolean; sketchControlStatus?: { available: boolean; reason?: string | null; file?: string; source?: string } }
   sizes?: string[]
 }
 

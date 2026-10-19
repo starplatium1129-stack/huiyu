@@ -210,5 +210,6 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
             normalized[key] = value.clone();
         }
     }
+    composition::copy_input(body, &mut normalized)?;
     Ok(normalized)
 }

@@ -4,6 +4,11 @@ import time
 
 def select(job, data, root, identity, tools, error, *, collect=False, profile=None,
            measure=False, strategy="phase-envelope"):
+    # Calibration can enable a controller even when the recipe disables TeaCache.
+    # Composition owns the denoiser and has no compatible calibration scope.
+    if (data.get("sketchControl") is not None or data.get("regions")) and (
+            data["teaCache"] or collect or measure or profile is not None or job.get("teaCacheProfilePath")):
+        raise error("UNSUPPORTED_OPTION", "Anima composition does not support TeaCache execution or calibration")
     if not (data["teaCache"] or collect or measure):
         return None, None
     profile_tools = tools("teacache_profile")

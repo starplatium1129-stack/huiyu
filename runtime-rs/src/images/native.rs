@@ -128,6 +128,7 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         input["teaCacheThresh"] = json!(0.10);
     }
     input["inferenceEngine"] = json!("native");
+    composition::normalize_native(raw, &mut input)?;
     Ok(input)
 }
 pub(super) async fn plan(
@@ -312,6 +313,10 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
     } else {
         None
     };
+    let sketch_model_path = composition::prepare(settings, &mut input, &model_dir)?;
+    let sketch_image = input["sketchControl"]["image"].as_str().map(|name| originals.iter()
+        .find(|original| original.name == name).map(|original| original.bytes.clone())
+        .ok_or_else(|| error("TASK_INPUT_INVALID", "草图输入尚未保护"))).transpose()?;
     Ok(Plan {
         input,
         model_dir,
@@ -321,6 +326,8 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
         init_image: std::sync::Mutex::new(init_image),
         mask_image: std::sync::Mutex::new(mask_image),
         pen_lines: std::sync::Mutex::new(None),
+        sketch_image: std::sync::Mutex::new(sketch_image),
+        sketch_model_path,
         loras,
     })
 }
@@ -389,7 +396,12 @@ fn local_status(
             defaults["cfg"] = json!(4.);
             defaults["loraStrength"] = json!(0.8);
         }
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"readiness":if available {"files-ready"} else {"unavailable"},"unavailableReason":issue,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}}));
+        let mut entry = json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"readiness":if available {"files-ready"} else {"unavailable"},"unavailableReason":issue,"sizes":model["sizes"],"defaults":defaults,"teaCacheProfile":{"support":"builtin-anima","readiness":"builtin","policy":"builtin-anima","validation":"on-load","performanceVerified":false,"qualityVerified":false},"capabilities":{"negative":model["family"]=="anima","lora":model["family"]=="anima","noLora":model["noLora"]==true,"characterIdentity":model["family"]=="anima","experimental":true,"teaCache":available,"hires":model["family"]=="anima","rcas":model["family"]=="anima","weightSyntax":model["family"]=="anima","hiresUpscalers":if model["family"]=="anima" {hires_upscalers.clone()} else {vec![]}}});
+        let sketch = composition::status(runtime, model_dir.as_deref(), available && model["family"] == "anima");
+        entry["capabilities"]["sketchControl"] = sketch["available"].clone();
+        entry["capabilities"]["sketchControlStatus"] = sketch;
+        entry["capabilities"]["regionalPrompting"] = json!(available && model["family"] == "anima" && runtime.acceleration == "native");
+        models.push(entry);
     }
     for (id, model) in generation::native::adapters::manifest()["models"].as_object().unwrap() {
         status_check(cancel)?;

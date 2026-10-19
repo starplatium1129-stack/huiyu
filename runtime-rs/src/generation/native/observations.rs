@@ -1,5 +1,42 @@
 use super::*;
 
+fn memory_observation(source: &Value) -> Option<Value> {
+    if source["strategy"] != "budgeted-offload-v1" {
+        return None;
+    }
+    let components = source["components"].as_array()?;
+    if components.len() > 16 {
+        return None;
+    }
+    let mut result = json!({"strategy":"budgeted-offload-v1","components":[]});
+    for key in ["freeBytes", "activationReserveBytes", "weightBudgetBytes"] {
+        if let Some(value) = source.get(key) {
+            result[key] = json!(value.as_u64().filter(|n| *n <= 1_u64 << 40)?);
+        }
+    }
+    let mut names = std::collections::HashSet::new();
+    let mut rows = Vec::new();
+    for component in components {
+        let name = component["name"].as_str()?;
+        let mode = component["mode"].as_str()?;
+        if !matches!(name, "text_encoder" | "text_encoder_2" | "text_conditioner" | "transformer"
+            | "transformer_2" | "vae" | "audio_vae" | "connectors" | "vocoder")
+            || !names.insert(name)
+            || !matches!(mode, "resident" | "component" | "block_level" | "leaf_level")
+        {
+            return None;
+        }
+        let bytes = component["weightBytes"].as_u64().filter(|n| *n <= 1_u64 << 40)?;
+        let mut row = json!({"name":name,"mode":mode,"weightBytes":bytes});
+        if mode == "block_level" {
+            row["blocksPerGroup"] = json!(component["blocksPerGroup"].as_u64().filter(|n| (1..=8).contains(n))?);
+        }
+        rows.push(row);
+    }
+    result["components"] = json!(rows);
+    Some(result)
+}
+
 fn upload_observation(source: &Value) -> Option<Value> {
     let strategy = source["strategy"].as_str()?;
     if !matches!(
@@ -62,10 +99,15 @@ pub(super) fn capture(value: &Value) -> Value {
             .as_str()
             .is_some_and(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
             && matches!(value["memoryPolicy"].as_str(), Some("resident" | "offload"))
-            && value["weightReuse"] == false
+            && value["weightReuse"].is_boolean()
         {
-            return json!({"adapter":id,"modelSha256":value["modelSha256"],"memoryPolicy":value["memoryPolicy"],
-                "weightReuse":false,"validation":"待主力机验证","performanceVerified":false});
+            let mut result = json!({"adapter":id,"modelSha256":value["modelSha256"],"memoryPolicy":value["memoryPolicy"],
+                "weightReuse":value["weightReuse"],"validation":"待主力机验证","performanceVerified":false});
+            if let Some(memory) = value.get("memoryScheduling") {
+                result["memoryScheduling"] = memory_observation(memory)
+                    .unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-memory-scheduling"}));
+            }
+            return result;
         }
     }
     fn finite(value: &Value) -> Option<f64> {
@@ -88,6 +130,9 @@ pub(super) fn capture(value: &Value) -> Value {
                 return None;
             }
             result["memoryPolicy"] = json!(policy);
+        }
+        if let Some(memory) = value.get("memoryScheduling") {
+            result["memoryScheduling"] = memory_observation(memory)?;
         }
         if let Some(revision) = value.get("samplingRevision") {
             if !matches!(

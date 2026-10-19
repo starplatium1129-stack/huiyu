@@ -1,6 +1,62 @@
 use super::*;
 use std::path::Path;
 
+pub(super) fn anima_request(
+    job: &Job,
+    plan: &Plan,
+    output: &Path,
+    image: Option<PathBuf>,
+    mask: Option<PathBuf>,
+    sketch: Option<PathBuf>,
+) -> Value {
+    let mut input = json!({"negativePrompt":plan.input["negative"]});
+    for key in [
+        "prompt",
+        "width",
+        "height",
+        "steps",
+        "cfg",
+        "seed",
+        "family",
+        "sampler",
+        "scheduler",
+        "teaCache",
+        "hiresFix",
+        "hiresScale",
+        "hiresDenoise",
+        "hiresUpscaler",
+        "superResModel",
+        "hiresSampler",
+        "hiresScheduler",
+        "rcasStrength",
+    ] {
+        input[key] = plan.input[key].clone();
+    }
+    for key in ["sketchControl", "regions"] {
+        if let Some(value) = plan.input.get(key) { input[key] = value.clone(); }
+    }
+    input["teaCacheAuto"] = json!(plan.input["teaCacheAuto"] == true);
+    if let Some(threshold) = plan.input.get("teaCacheThresh") {
+        input["teaCacheThresh"] = threshold.clone();
+    }
+    if image.is_some() {
+        input["denoisingStrength"] = plan.input["denoisingStrength"].clone();
+    }
+    if plan.mask_model_dir.is_some() {
+        for key in ["maskPrompt", "maskThreshold", "growMaskBy"] {
+            input[key] = plan.input[key].clone();
+        }
+    }
+    if mask.is_some() {
+        input["growMaskBy"] = plan.input["growMaskBy"].clone();
+    }
+    let mut request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"maskModelDir":plan.mask_model_dir,"upscaleModelPath":plan.upscale_model_path,"outputPath":output,"input":null,"inputImagePath":image,"maskImagePath":mask,"loras":plan.loras});
+    request["input"] = input;
+    if let Some(path) = sketch { request["sketchImagePath"] = json!(path); }
+    if let Some(path) = &plan.sketch_model_path { request["sketchModelPath"] = json!(path); }
+    request
+}
+
 pub(super) fn manga_request(
     job: &Job,
     plan: &Plan,

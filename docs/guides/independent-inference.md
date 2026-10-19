@@ -46,9 +46,9 @@ Wan 权重及 Diffusers 实现为 Apache-2.0；H3、Hunyuan、LTX 分别遵循�
 实现许可证不替代权重许可证；许可链接随适配声明返回。
 
 启动绘遇前设置 `HUIYU_NATIVE_ADAPTER_PYTHON=<独立venv的python.exe>`，显式选择 native 引擎、
-native 加速；`HUIYU_INFERENCE_MEMORY=offload` 使用上游组件 CPU offload，resident 将整条管线放到 GPU。
-当前新增适配每任务释放权重，无量化、块卸载或跨任务权重复用；大模型仍可能超出主力机显存/内存。
-H3 的 BF16 文本编码器和扩散模型各自仍是大组件，组件卸载不等于能在消费级显卡运行；量化/块卸载尚未接入。
+native 加速；`HUIYU_INFERENCE_MEMORY=offload` 使用共享 `native_memory`，按设备可用显存扣除 `max(1 GiB, 显存总量/4)` 的激活预留，对超预算文本编码器和去噪器选择 block/leaf 分层卸载，每任务重估预算；resident 保留原整管线 GPU 模式。VAE 和 vocoder 保留组件卸载及已有 tiling，避免绕过根 forward 的 encode/decode 与直接权重访问破坏 hooks。分层搬运不启用预取流、不改变精度；预算不保证任意画幅、模型或并行 GPU 占用下不会 OOM。
+新增适配由同一 worker 保留一组受 Windows 文件保护租约约束的权重；同目录、modelId、显存策略及同一持续有效的保护 token 才复用，每任务重建管线、scheduler、guider 和请求状态。租约内部重新获取保护后，即使摘要相同也重新加载旧权重；推理前再次核对保护期。切换、文件保护失效、取消或失败释放驻留；不支持持续保护时保留逐任务完整字节校验和释放，不以文件名、大小或 mtime 替代身份。漫画内嵌 Qwen 不驻留。分层 hooks 安装/移除时清除子注册表缓存，再允许 LoRA 拓扑变更。
+`nativeRuntime.weightReuse` 与 `memoryScheduling` 返回实际复用、组件模式及预算；缺少或无效观察不视为通过。分层路径、保护复用、取消恢复和新视频模型均待主力机验证。H3 的 BF16 组件仍可能超出主力机显存/内存，量化尚未接入。
 Hunyuan/LTX 启用上游 VAE tiling。视频需本地带 libx264 的 ffmpeg，H3/LTX 另需 AAC 编码器；
 可用 `HUIYU_NATIVE_FFMPEG` 指定绝对路径。音轨缺失、采样率或时长不匹配会报错，不静默导出无声视频。
 
@@ -211,7 +211,7 @@ Qwen 在采样步回调取消，线稿在网络层边界取消，单次 OpenCV/�
 
 当前采样身份为 `anima-workflow-effects-v3`，并绑定 `memoryPolicy`。延续 Euler/simple、尾部 N 步、CPU 噪声及 CFG 0.5 对齐，本轮补齐蒙版、KJ RCAS 功能参数、Remacri 羽化/量化及单帧 VAE 路径；该版本曾因旧 Tea 档失配而回退完整计算；本页开头的内置策略已取代日常档案匹配。10 月 11 日的样张/耗时/档案只属于原版本。
 
-本机控制室可选“模型常驻显卡”或“分阶段加载”，持久字段为 `inference.memoryPolicy`，环境覆盖为 `HUIYU_INFERENCE_MEMORY=resident|offload`，保存后重启。默认 resident 保留热吞吐；offload 使用 Diffusers 0.41 的 ComponentsManager，在 Qwen、conditioner、transformer、VAE 实际 forward 之间切换，去噪循环内不来回卸载 transformer，Remacri 前卸载 Anima。LoRA 融合逐组件在 CUDA 完成后回 CPU，不偷换 CPU 融合数值。尚无 transformer 块级流式卸载；去噪器和激活仍须能放入显存，不保证任意 4/8 GB 设备。
+本机控制室可选“模型常驻显卡”或“分阶段加载”，持久字段为 `inference.memoryPolicy`，环境覆盖为 `HUIYU_INFERENCE_MEMORY=resident|offload`，保存后重启。默认 resident 保留热吞吐；offload 沿用 Diffusers ComponentsManager 阶段交接，超过权重预算的文本编码/去噪组件经固定 group offload 按 block/leaf 搬运，VAE 保留组件卸载和既有分块。能放入预算的 transformer 仍在去噪循环内驻留，Remacri 前卸载 Anima。TeaCache 的首层 norm 在分层 onload 后读取，无异步预取；临时包装退出时恢复。LoRA 融合仍逐组件在 CUDA 完成后回 CPU，不改变算术路径，融合阶段仍须容纳该组件。分层调度是当前新增源码范围，不能套用本节历史显存/成图记录，不保证任意 4/8 GB 设备。
 
 GPU packed storage 按组件与 dtype 分开；切底模仅复用字节摘要、精确类型及 dtype 都一致的 Qwen、VAE 和两个 tokenizer。Qwen＋两个 tokenizer 真正复用才保留原始文本缓存；已适配 transformer/conditioner 不跨底模复用。身份摘要使用已有全字节读取，不靠文件名/mtime。完全冷首张仍有哈希和加载成本，当前没有测得冷加载提速。
 

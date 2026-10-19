@@ -167,6 +167,9 @@ export async function handleAnimaResultAction(input: AnimaAutomaticInput, owner:
       hiresFix: result.metadata.hiresFix === true,
       hiresScale: typeof result.metadata.hiresScale === 'number' ? result.metadata.hiresScale : undefined,
       hiresDenoise: typeof result.metadata.hiresDenoise === 'number' ? result.metadata.hiresDenoise : undefined,
+      sketchControl: result.metadata.sketchControl,
+      sketchControlModel: result.metadata.sketchControlModel,
+      regions: result.metadata.regions,
       parentId: isInpaint ? frozen?.parentId : undefined,
     })
     if (!saved) throw new Error('作品册写入失败')

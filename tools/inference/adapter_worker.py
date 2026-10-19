@@ -51,6 +51,9 @@ def emit(stream, job_id, event, **values):
 
 
 def dependencies():
+    sibling("resident_adapters")
+    sibling("native_memory")
+    sibling("locked_identity")
     versions = {}
     for name, expected in {"torch": "2.8.0", "torchvision": "0.23.0", "transformers": "5.17.0",
                            "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0", "ftfy": "6.3.1"}.items():
@@ -113,7 +116,7 @@ def fingerprint(root, control):
     return digest.hexdigest()
 
 
-def generate(job, control, _prepared, *, result_callback=None):
+def generate(job, control, _prepared, *, result_callback=None, resident=None):
     data, spec = contract.validate(job)
     root = contract.layout(job["modelDir"], spec)
     import torch
@@ -127,22 +130,21 @@ def generate(job, control, _prepared, *, result_callback=None):
         raise Error("UNSUPPORTED_ACCELERATION", "Anima acceleration modes are not supported by these adapters")
     if spec["media"] == "video":
         media.encoder(Error)  # Fail before allocating/loading weights if encoder is absent.
-    control.stage("fingerprint")
-    identity = fingerprint(root, control)
+    owned = resident is None
+    cache = sibling("resident_adapters").PipelineCache() if owned else resident
     pipeline = None
     image = None
+    success = False
     try:
-        control.stage("loading")
         kwargs = {"local_files_only": True, "use_safetensors": True, "torch_dtype": torch.bfloat16}
-        pipeline = (video.load(root, spec, data, control, contract) if spec["media"] == "video"
-                    else getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs))
-        kwargs.clear()
-        control.stage("fingerprint")
-        if fingerprint(root, control) != identity:
-            raise Error("MODEL_CHANGED", "Model assets changed during loading; generation rejected")
-        control.stage("uploading")
+        pipeline, identity, reused = cache.acquire(root, spec, data, policy, control, fingerprint,
+            lambda: (video.load(root, spec, data, control, contract) if spec["media"] == "video"
+                     else getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)), Error)
+        observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity,
+                       "memoryPolicy": policy, "weightReuse": reused,
+                       "memoryScheduling": cache.memory.observation()}
+        video.prepare(pipeline, spec, data)
         if spec["media"] == "video":
-            video.place(pipeline, spec, policy)
             with torch.inference_mode():
                 frames, soundtrack, sample_rate = video.generate(pipeline, spec, data, control)
             control.stage("saving")
@@ -150,15 +152,8 @@ def generate(job, control, _prepared, *, result_callback=None):
                 raise Error("INVALID_MODEL_OUTPUT", "Joint audio output or its sample rate is missing/invalid")
             media.video(frames, job["outputPath"], data, control, Error, soundtrack, sample_rate)
             control.check()
-            emit(control.stream, job["id"], "result", outputPath=job["outputPath"],
-                 nativeRuntime={"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity,
-                                "memoryPolicy": policy, "weightReuse": False})
+            success = True
             return
-        if policy == "offload":
-            pipeline.enable_model_cpu_offload()
-        else:
-            pipeline.to("cuda")
-        pipeline.set_progress_bar_config(disable=True)
 
         def on_step(pipe, step, timestep, callback_kwargs):
             control.progress(step + 1, data["steps"])
@@ -187,24 +182,23 @@ def generate(job, control, _prepared, *, result_callback=None):
         control.stage("saving")
         media.png(output.images[0], job["outputPath"], data, Error)
         control.check()
-        observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity,
-                       "memoryPolicy": policy, "weightReuse": False}
-        if result_callback is None:
-            emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
-        else:
-            # A MangaScreen task consumes this image privately and publishes only its final page.
-            result_callback(observation)
+        success = True
     except torch.cuda.OutOfMemoryError as exc:
-        raise Error("NATIVE_OUT_OF_MEMORY", "CUDA 显存不足；尝试 offload 或缩小尺寸。尚未接入量化/块卸载，不会回退 ComfyUI") from exc
+        raise Error("NATIVE_OUT_OF_MEMORY", "CUDA 显存不足；尝试 offload 或缩小尺寸。分层卸载不保证任意模型/画幅可用，不会回退 ComfyUI") from exc
     finally:
         if image is not None:
             image.close()
-        # Placement policy is per task. Do not retain potentially mutated model
-        # state across adapters/cancellation until primary-machine verification.
-        if pipeline is not None:
-            video.release(pipeline)
+        # Retire the task-local shell/solver before acknowledging cleanup. Manga
+        # calls without a cache still release Qwen before CPU line extraction.
         pipeline = None
+        cache.finish(success and not owned)
         gc.collect()
+        if success:
+            control.check()
+            if result_callback is None:
+                emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
+            else:
+                result_callback(observation)
 
 
 def main():
@@ -231,12 +225,17 @@ def main():
                 emit(stream, None, "validation", modelDir=str(root), dependencies=dependencies(),
                      scope="layout-and-imports-only; no weight correctness or GPU inference proof", validation="待主力机验证")
             else:
+                resident = sibling("resident_adapters").PipelineCache()
                 def initialize(job, ready):
                     contract.validate(job)
                     dependencies()
                     ready()
-                return lifecycle.serve(generate, input_stream=sys.stdin, stream=stream, emit=emit,
-                                       error=Error, initialize=initialize)
+                try:
+                    return lifecycle.serve(lambda job, control, prepared: generate(job, control, prepared, resident=resident),
+                        input_stream=sys.stdin, stream=stream, emit=emit, error=Error,
+                        initialize=initialize, cancel_cleanup=resident.clear)
+                finally:
+                    resident.clear()
         return 0
     except Exception as exc:
         code = exc.code if isinstance(exc, lifecycle.WorkerError) else "NATIVE_ADAPTER_FAILED"

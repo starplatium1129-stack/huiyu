@@ -146,7 +146,15 @@ class TeaCacheController:
             raise ValueError("TeaCache calibration does not support ControlNet/condition-mask transformer inputs")
         lane = self._lane(model, branch, step, total, float(timestep_value), kwargs["hidden_states"],
                           kwargs["encoder_hidden_states"], kwargs["padding_mask"])
-        originals = [(block, block.forward, "forward" in block.__dict__) for block in blocks]
+        originals = []
+        for block in blocks:
+            registry = getattr(block, "_diffusers_hook", None)
+            hook = registry.get_hook("group_offloading") if registry is not None else None
+            # Pinned Diffusers hook slots keep onload outside our temporary
+            # wrapper: Tea's first norm must already have its CUDA weights.
+            # No prefetch is used, so skipped blocks cannot strand another group.
+            owner = hook.fn_ref if hook is not None else block
+            originals.append((owner, owner.forward, "forward" in owner.__dict__))
         execution = dict(skip=False, input=None, proxy=None, change=None, local_change=None, visited=0)
 
         def wrap(index, original):
@@ -240,8 +248,8 @@ class TeaCacheController:
             return forward
 
         try:
-            for index, (block, original, _) in enumerate(originals):
-                block.forward = wrap(index, original)
+            for index, (owner, original, _) in enumerate(originals):
+                owner.forward = wrap(index, original)
             result = model(**kwargs)
             if execution["visited"] != len(blocks):
                 raise ValueError("Pinned Cosmos transformer block traversal changed")
@@ -250,11 +258,11 @@ class TeaCacheController:
             self.clear()
             raise
         finally:
-            for block, original, owned in originals:
+            for owner, original, owned in originals:
                 if owned:
-                    block.forward = original
+                    owner.forward = original
                 else:
-                    del block.forward
+                    del owner.forward
 
 
 def apply_blocks(blocks, controller):

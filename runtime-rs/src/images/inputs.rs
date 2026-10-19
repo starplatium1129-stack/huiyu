@@ -16,6 +16,14 @@ pub(super) struct Original {
 pub(super) fn cancelled() -> ApiError {
     ApiError::new(499, "CANCELLED", "图像操作已取消")
 }
+pub(super) fn input_names(input: &Value) -> Vec<&str> {
+    let mut names: Vec<&str> = ["initImage", "maskImage", "penLines"].iter()
+        .filter_map(|key| input[*key].as_str()).collect();
+    if let Some(name) = input["sketchControl"]["image"].as_str() { names.push(name); }
+    names.sort_unstable();
+    names.dedup();
+    names
+}
 pub(super) fn root(config: &Config, native: bool) -> PathBuf {
     config.ai_workspace_root.join(if native {
         "inference/input"
@@ -99,20 +107,16 @@ pub(super) async fn capture(
 ) -> Result<Vec<Original>> {
     let native = input["inferenceEngine"] == "native";
     let mut originals = Vec::new();
-    let mut names = std::collections::HashSet::new();
-    for key in ["initImage", "maskImage", "penLines"] {
-        let Some(name) = input[key].as_str() else {
-            continue;
-        };
-        if !names.insert(name) {
-            continue;
-        }
+    let mut total_bytes = 0;
+    for name in input_names(input) {
         if cancel.is_cancelled() {
             return Err(cancelled());
         }
         let bytes = Arc::new(
             tokio::select! {bytes=read(config,name,native)=>bytes?,_=cancel.cancelled()=>return Err(cancelled())},
         );
+        total_bytes += bytes.len();
+        if total_bytes > 64 * 1024 * 1024 { return Err(error("TASK_INPUT_INVALID", "任务输入图像合计超过 64 MiB")); }
         let (mime, _) = decode::sniff(&bytes)
             .ok_or_else(|| error("TASK_INPUT_INVALID", "任务输入不是受支持的图像"))?;
         if !local {

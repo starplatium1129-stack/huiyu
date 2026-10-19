@@ -177,6 +177,7 @@
         </template>
         <template #image>
               <AsyncPanel v-if="stagePanel" :loader="loadImageTools" label="图像工具" v-slot="{ component }"><component :is="component"
+                :composition="workspace.compositionBindings"
                 :generation-busy="generationBusy"
                 :interrogate-busy="stagePanel.interrogateBusy"
                 :interrogate-mode="drawEngine === 'krea2' ? 'caption' : 'tag'"

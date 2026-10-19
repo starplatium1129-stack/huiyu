@@ -45,10 +45,10 @@
       "resident",
       "offload"
     ],
-    "implementation": "anima_memory.py uses pinned Diffusers ComponentsManager hooks on Qwen, conditioner, transformer and VAE; whole components switch per forward, denoiser remains resident for its loop; all Anima weights retire before Remacri in offload mode",
+    "implementation": "native_memory.py shares pinned Diffusers ComponentsManager stage ownership with Anima/adapters; offload replans per task from free CUDA bytes minus max(1 GiB, total/4), using synchronous block/leaf groups for over-budget text encoders/denoisers. VAE/vocoder keep component placement and existing tiling because encode/decode can bypass root forward. No prefetch/dtype changes. Tea temporary forwards run inside group onload/post-offload; all Anima weights retire before Remacri",
     "fusion": "merge transformer and conditioner on CUDA one component at a time, then retire to CPU; do not replace CUDA fusion with CPU arithmetic",
-    "limits": "no CPU inference fallback or transformer block streaming; denoiser weights plus active tensors must still fit GPU; offload also consumes host RAM and transfer time",
-    "validation": "2026-10-13 real RTX 4070 Ti SUPER resident/offload comparison; four matched output PNGs identical, sampled VRAM and per-job allocator peaks recorded. No general 4/8GB compatibility claim."
+    "limits": "No CPU inference fallback or quantization; activation budgets are conservative estimates, not shape-specific OOM guarantees. A single leaf and activations must still fit GPU. Offload uses host RAM and transfers; explicit LoRA fusion still needs a whole component on CUDA",
+    "validation": "Budgeted grouping and protected adapter residency require current CUDA acceptance. The 2026-10-13 RTX 4070 Ti SUPER comparison covers the historical component-only implementation, not these changes. No general 4/8GB compatibility claim."
   },
   "optionalAcceleration": {
     "environmentVariable": "HUIYU_INFERENCE_ACCELERATION",

@@ -20,6 +20,7 @@ class RuntimeMetrics:
         self.timings, self.mask_cache = {}, None
         self.mask_execution_revision = None
         self.loading = None
+        self.memory_scheduling = None
         self.lora_loading = self.fusion_restore = None
         self.tracking = False
         self.memory = dict(status="unverified", reason="not-started", deviceIndex=0,
@@ -68,6 +69,7 @@ class RuntimeMetrics:
 
     def model_acquired(self, started, report, reused, fingerprint, post_load_fingerprint, pipeline):
         self.loading = getattr(pipeline, "_huiyu_loading", None)
+        self.memory_scheduling = pipeline._huiyu_memory.observation()
         self.lora_loading = getattr(pipeline, "_huiyu_lora_loading", None)
         self.fusion_restore = getattr(pipeline, "_huiyu_fusion_restore", None)
         if report is not None:
@@ -116,4 +118,4 @@ class RuntimeMetrics:
             **({"maskExecutionRevision": self.mask_execution_revision} if self.mask_execution_revision is not None else {}),
             **({"loraLoading": self.lora_loading} if self.lora_loading is not None else {}),
             **({"fusionRestore": self.fusion_restore} if self.fusion_restore is not None else {}),
-            refinement=self.refinement, loading=self.loading)
+            refinement=self.refinement, loading=self.loading, memoryScheduling=self.memory_scheduling)

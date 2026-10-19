@@ -305,6 +305,8 @@
       "maskThreshold",
       "denoisingStrength",
       "growMaskBy",
+      "sketchControl",
+      "regions",
       "adultEnabled"
     ],
     "CHARACTER_LORA_BINDINGS": {

@@ -142,6 +142,11 @@ class PipelineCache:
             self.upscale_cache.clear()
             self.upscale_cache = None
 
+    def cancel_cleanup(self):
+        self.clear_upscaler()
+        if self.memory is not None:
+            self.memory.offload_all()
+
     def acquire(self, identity, root, cfg, blocks, loras, load, load_loras, try_hotswap=None, *, memory_tools):
         from diffusers import AnimaModularPipeline, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
         base_key = {key: value for key, value in identity.items() if key != "loras"}

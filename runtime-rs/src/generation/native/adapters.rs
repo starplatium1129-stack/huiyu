@@ -4,7 +4,8 @@ use std::{path::Path, sync::LazyLock};
 use super::resources::{self, within};
 const FILES: &[&str] = &[
     "adapter_worker.py", "adapter_contract.py", "adapter_media.py", "adapter_video.py",
-    "adapter-models.json", "worker_lifecycle.py",
+    "adapter-models.json", "worker_lifecycle.py", "native_memory.py",
+    "resident_adapters.py", "locked_identity.py",
 ];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -109,6 +110,8 @@ pub(crate) async fn plan(
         init_image: std::sync::Mutex::new(image),
         mask_image: std::sync::Mutex::new(None),
         pen_lines: std::sync::Mutex::new(None),
+        sketch_image: std::sync::Mutex::new(None),
+        sketch_model_path: None,
         loras: vec![],
     })
 }

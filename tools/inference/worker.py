@@ -10,7 +10,6 @@ import contextlib
 import importlib.metadata
 from functools import lru_cache
 import json
-import math
 import os
 from pathlib import Path
 import sys
@@ -155,10 +154,7 @@ def dependencies():
 
 
 def number(data, key, default, low, high, integer=False):
-    value = data.get(key, default)
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not low <= value <= high or (integer and not isinstance(value, int)):
-        raise WorkerError("INVALID_INPUT", f"{key} must be {'an integer' if integer else 'a number'} in [{low}, {high}]")
-    return value
+    return load_mask_tools("anima_composition").number(data, key, default, low, high, integer, error=WorkerError)
 
 
 def validate_job(job):
@@ -166,13 +162,13 @@ def validate_job(job):
         raise WorkerError("INVALID_REQUEST", "Expected one object with op=generate")
     if not isinstance(job.get("id"), str) or not job["id"]:
         raise WorkerError("INVALID_REQUEST", "id must be a nonempty string")
-    if set(job) - {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "maskImagePath", "maskModelDir", "loras", "teaCacheProfilePath", "upscaleModelPath"}:
+    if set(job) - {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "maskImagePath", "maskModelDir", "loras", "teaCacheProfilePath", "upscaleModelPath", "sketchImagePath", "sketchModelPath"}:
         raise WorkerError("UNSUPPORTED_OPTION", "Unknown top-level worker option")
     data = job.get("input")
     if not isinstance(data, dict):
         raise WorkerError("INVALID_INPUT", "input must be an object")
     # Accept modelId from older hosts; modelDir alone selects the loaded model.
-    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength"}
+    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength", "sketchControl", "regions"}
     # Empty/disabled UI options are harmless; active options never silently degrade.
     disabled = {"teacache", "mask", "maskPath", "loras", "lora", "hires", "rcas", "upscaler", "inputImage", "inputImagePath", "image", "initImage"}
     for key, value in data.items():
@@ -269,7 +265,7 @@ def validate_job(job):
     output = job.get("outputPath")
     if not isinstance(output, str) or not output or Path(output).suffix.lower() != ".png":
         raise WorkerError("INVALID_OUTPUT", "outputPath must be a local .png file")
-    return result
+    return load_mask_tools("anima_composition").validate(job, result, WorkerError)
 
 
 def local_file(value, label, extensions):
@@ -350,6 +346,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         job, data, root, identity, load_mask_tools, WorkerError,
         collect=collect_teacache, profile=teacache_profile, measure=measure_teacache,
         strategy=collect_cache_strategy)
+    composition = load_mask_tools("anima_composition").Composition(job, data, load_mask_tools, control.check if control is not None else None)
     blocks = None
     metrics.begin_memory(tea_report is not None)
     stage("preparing_image")
@@ -390,6 +387,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         blocks = text_tools.apply_text_cache(blocks, resident.text_cache)
     blocks = load_mask_tools("anima_prompt_weights").apply_prompt_weights(blocks,
         cache=resident.text_cache if resident is not None and cache_text else None)
+    blocks = composition.apply_blocks(blocks)
     blocks = load_mask_tools("anima_vae").apply_blocks(blocks, load_mask_tools("anima_tiling"), check=control.check if control is not None else None)
     started = time.perf_counter()
     post_load_fingerprint, reused = 0, False
@@ -454,7 +452,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     started = time.perf_counter()
     try:
         stage("encoding")
-        result, step, refinement = load_mask_tools("anima_refinement").run(pipeline, data,
+        result, step, refinement = composition.run(pipeline, data,
             image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
             sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
             upscale=upscale if job.get("upscaleModelPath") else None,
@@ -521,7 +519,7 @@ def main(argv=None):
                         return load_mask_tools("worker_lifecycle").serve(
                             lambda job, control, prepared: generate(job, stream, resident=resident, control=control, prepared=prepared),
                             input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
-                            cancel_cleanup=resident.clear_upscaler,
+                            cancel_cleanup=resident.cancel_cleanup,
                             initialize=lambda job, ready: resident.prepare_job(job, validate_job, validate_model, dependencies, load_mask_tools, ready))
                     line = sys.stdin.readline(2 * 1024 * 1024 + 1)
                     if len(line) > 2 * 1024 * 1024:
