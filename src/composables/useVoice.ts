@@ -234,7 +234,7 @@ export function useVoice(options: {
   function enqueue(sentence: string, meta: VoiceTurn) {
     const sess = meta.session
     if (sess !== session || !controller) return
-    const signal = controller.signal; pending++; onStatus('语音合成中…'); notifyActivity()
+    const signal = controller.signal; pending++; if (!playing) onStatus('语音合成中…'); notifyActivity()
     const prepared = (translateChain = translateChain
       .then(() => sess !== session || signal.aborted ? null : prepareSentence(sentence, meta, signal))
       .catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)); return null }))
@@ -253,7 +253,7 @@ export function useVoice(options: {
     }).catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)) })
     .finally(() => {
       if (sess !== session) return; pending = Math.max(0, pending - 1)
-      if (pending === 0) onStatus(playing || queue.length ? '播放中…' : '')
+      if (pending === 0 && !playing && !queue.length) onStatus('')
       notifyActivity()
     })
   }
@@ -387,6 +387,7 @@ export function useVoice(options: {
     const item = queue.shift()
     if (!item) return
     playing = true
+    onSpeaking(false); onExpression('neutral'); stopLipSync()
     if (item.stream && audioContext && analyser) {
       const stream = item.stream
       currentPcm = stream; observeStream(item)
@@ -419,10 +420,10 @@ export function useVoice(options: {
     audio.crossOrigin = runtimeResourceCors() ?? null
     audio.src = resolveRuntimeUrl(item.url)
     currentAudio = audio; attachAnalyser(audio)
-    onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); notifyActivity()
+    onStatus('语音合成中…'); notifyActivity()
     const playback = playVoiceAudio(audio, {
-      onStarted: () => { if (sess === session && currentAudio === audio) { onStatus('播放中…'); startLipSync() } },
-      onSlow: extension => onStatus(extension === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…'),
+      onStarted: () => { if (sess === session && currentAudio === audio) { onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('播放中…'); startLipSync() } },
+      onSlow: extension => { if (sess === session && currentAudio === audio) onStatus(extension === 1 ? '语音生成较慢，继续等待…' : '语音生成很慢，还在排队…') },
     })
     cancelPlayback = playback.cancel
     void playback.result.then(reason => {
@@ -450,17 +451,17 @@ export function useVoice(options: {
     if (!clips.length) return false
     stop({ preserveMessageAudio: true, silent: true }); ensureAudioContext()
     const rs = session; let succeeded = true
-    onSpeaking(true, mid); onStatus('重播中…'); notifyActivity()
     for (const clip of clips) {
       if (rs !== session) return false
       const audio = new Audio() as AudioWithSource
       audio.crossOrigin = runtimeResourceCors() ?? null
       audio.src = resolveRuntimeUrl(clip.url)
       const release = replayCache.pin(clip)
-      replayAudio = audio; attachAnalyser(audio); onExpression(clip.emotion || 'neutral')
-      notifyActivity()
+      replayAudio = audio; attachAnalyser(audio)
+      onSpeaking(false); onExpression('neutral'); stopLipSync(); onStatus('正在加载重播语音…'); notifyActivity()
       const playback = playVoiceAudio(audio, {
-        onStarted: () => { if (rs === session && replayAudio === audio) startLipSync() },
+        onStarted: () => { if (rs === session && replayAudio === audio) { onExpression(clip.emotion || 'neutral'); onSpeaking(true, mid); onStatus('重播中…'); startLipSync() } },
+        onSlow: () => { if (rs === session && replayAudio === audio) onStatus('重播语音加载较慢，继续等待…') },
         onCleanup: release,
       })
       cancelReplay = playback.cancel

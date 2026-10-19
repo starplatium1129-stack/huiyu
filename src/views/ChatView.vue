@@ -181,6 +181,7 @@ const {
   activeChar,
   busy,
   voiceActive,
+  voiceStatusText,
   chatError,
   chatErrorKind,
   voiceCapabilityText,
@@ -347,7 +348,7 @@ watch([apiSettingsOpen, speechSettingsOpen], ([api, speech]) => {
 const avatar = computed(() => companionChatAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
 const activityText = computed(() => toolActivity.value || (thinkingActivity.value ? '思考中…' : '')
   || (speechState.value === 'error' ? speechError.value : '')
-  || (isSpeaking.value ? '正在说话' : '') || (busy.value ? '正在回复…' : '')
+  || (voiceActive.value ? voiceStatusText.value : '') || (isSpeaking.value ? '正在说话' : '') || (busy.value ? '正在回复…' : '')
   || (['acquiring', 'capturing', 'recognizing'].includes(speechState.value) ? speechButtonText.value : '')
   || speechNotice.value || (speechSessionActive.value ? '连续对话中' : speechAutoListening.value ? '听候唤醒' : ''))
 const inputRef = ref<HTMLTextAreaElement>()
