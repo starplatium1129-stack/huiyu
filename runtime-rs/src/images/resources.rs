@@ -179,7 +179,7 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
     metadata["preview"] = json!(false);
     Ok(ComfyPlan {
         workflow: workflow::build(&input)?,
-        input,
+        input: input.into(),
         metadata,
         resources,
         family,

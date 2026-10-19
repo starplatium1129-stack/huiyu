@@ -171,8 +171,8 @@ async fn create(
     let family = family(&uri);
     let owner = generation::request_owner(&headers, peer, &query);
     if let Some(key) = body.get("requestKey") {
-        let result = match key.as_str() {
-            Some(key) => http.service.accept_request(body.clone(), key.into(), owner, family, local).await,
+        let result = match key.as_str().map(str::to_owned) {
+            Some(key) => http.service.accept_request(body, key, owner, family, local).await,
             None => Err(ApiError::invalid("图片请求编号无效")),
         };
         return response(result, StatusCode::ACCEPTED);
@@ -193,7 +193,9 @@ async fn create(
         // TaskRuntime uses Service::submit and the real task.input hooks instead.
         inputs::protect_and_restore(&http.service.config,&prepared.originals,None,&cancellation).await?;
         let observation=Arc::new(LegacyObservation {job,cancel:cancellation});
-        Ok(json!({"job":http.service.backend.clone().submit(prepared.backend,owner,Some(observation)).await?}))
+        let mut value = json!({"job":null});
+        value["job"] = http.service.backend.clone().submit(prepared.backend,owner,Some(observation)).await?;
+        Ok(value)
     }.await;
     if result.is_ok() {
         guard.armed = false;
@@ -209,7 +211,12 @@ async fn get_job(
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
 ) -> Response {
-    response(async{state.host.check_running()?;Ok(json!({"job":http.service.get_job(&id,&generation::request_owner(&headers,peer,&query),family(&uri)).await?}))}.await,StatusCode::OK)
+    response(async {
+        state.host.check_running()?;
+        let mut value = json!({"job":null});
+        value["job"] = http.service.get_job(&id,&generation::request_owner(&headers,peer,&query),family(&uri)).await?;
+        Ok(value)
+    }.await, StatusCode::OK)
 }
 async fn request_status(
     State(state): State<AppState>, Extension(http): Extension<Arc<Http>>,
@@ -234,7 +241,12 @@ async fn cancel(
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
 ) -> Response {
-    let result=async{state.host.check_running()?;Ok(json!({"job":http.service.cancel(&id,&generation::request_owner(&headers,peer,&query),family(&uri)).await?}))}.await;
+    let result = async {
+        state.host.check_running()?;
+        let mut value = json!({"job":null});
+        value["job"] = http.service.cancel(&id,&generation::request_owner(&headers,peer,&query),family(&uri)).await?;
+        Ok(value)
+    }.await;
     let status = if result
         .as_ref()
         .is_ok_and(|value| value["job"]["status"] == "cancelling")

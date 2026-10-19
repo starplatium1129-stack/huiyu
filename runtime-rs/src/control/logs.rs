@@ -9,7 +9,7 @@ use std::{
 type Stamp = (Identity, Version);
 struct Tail {
     stamp: Stamp,
-    lines: Vec<String>,
+    lines: Vec<Arc<String>>,
 }
 #[derive(Default)]
 pub(super) struct Cache {
@@ -31,28 +31,30 @@ fn read_tail(
     service: &ControlService,
     path: &Path,
     previous: Option<Tail>,
-) -> std::io::Result<(Vec<String>, Option<Tail>)> {
+) -> std::io::Result<(Vec<Arc<String>>, Option<Tail>)> {
     // Reopen on every poll, including hits: deletion, replacement and denied
     // read access must never be hidden by a remembered tail.
     let mut file = File::open(path)?;
     let before = stamp(&file).ok();
-    let length = file.metadata()?.len();
     if let Some(previous) = previous
         && before.as_ref() == Some(&previous.stamp)
         && current(&file, path, &previous.stamp)
     {
         return Ok((previous.lines.clone(), Some(previous)));
     }
+    let length = file.metadata()?.len();
     file.seek(SeekFrom::Start(length.saturating_sub(64 * 1024)))?;
     let mut bytes = Vec::new();
     (&mut file).take(64 * 1024).read_to_end(&mut bytes)?;
     let text = String::from_utf8_lossy(&bytes);
-    let lines: Vec<_> = text.lines().filter(|line| !line.is_empty()).collect();
-    let lines: Vec<_> = lines
-        .iter()
-        .skip(lines.len().saturating_sub(30))
-        .map(|line| service.redact(line))
+    let mut lines: Vec<_> = text
+        .lines()
+        .rev()
+        .filter(|line| !line.is_empty())
+        .take(30)
+        .map(|line| Arc::new(service.redact(line)))
         .collect();
+    lines.reverse();
     // Reuse the existing identity/version authority, including change time.
     // Unstable reads or unsupported identity APIs keep the ordinary fresh-read path.
     let next = before
@@ -64,7 +66,7 @@ fn read_tail(
     Ok((lines, next))
 }
 impl ControlService {
-    pub(super) async fn file_logs(self: &Arc<Self>) -> Vec<String> {
+    pub(super) async fn file_logs(self: &Arc<Self>) -> Vec<Arc<String>> {
         let cancel = self.shutdown.child_token();
         let _guard = cancel.clone().drop_guard();
         let service = self.clone();

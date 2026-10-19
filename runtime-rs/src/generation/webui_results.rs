@@ -23,10 +23,24 @@ pub(super) async fn stage(inner: &Inner, job: &Job, bytes: &[u8]) -> Result<()> 
     pending
         .persist(directory.join(format!("{}.png", job.id)))
         .map_err(|error| ApiError::from(error.error))?;
+    let snapshot = {
+        let state = job.state.lock().await;
+        if state.status != "running" {
+            return Ok(());
+        }
+        json!({"id":job.id,"owner":job.owner,"status":"running","createdAt":job.created,
+            "webuiResult":{"expiresAt":now()+RETENTION,"bytes":bytes.len(),"seed":state.metadata["seed"]}})
+    };
+    let path = directory.join(format!("{}.json", job.id));
+    let pending = snapshots::prepare(&path, &snapshot).await?;
+    // Only publication shares the cancellation lock; disk writes and sync do not.
     let state = job.state.lock().await;
-    snapshots::write(&directory.join(format!("{}.json", job.id)),
-        &json!({"id":job.id,"owner":job.owner,"status":"running","createdAt":job.created,
-            "webuiResult":{"expiresAt":now()+RETENTION,"bytes":bytes.len(),"seed":state.metadata["seed"]}})).await
+    if state.status == "running" {
+        pending
+            .persist(path)
+            .map_err(|error| ApiError::from(error.error))?;
+    }
+    Ok(())
 }
 
 async fn record(inner: &Inner, id: &str) -> Option<Value> {
@@ -46,14 +60,14 @@ async fn record(inner: &Inner, id: &str) -> Option<Value> {
     (value["id"] == id).then_some(value)
 }
 
-pub(super) async fn recover(inner: &Inner, task: &Value) -> Result<Option<Observation>> {
-    let Some(id) = task["checkpoint"]["gatewayJobId"].as_str() else {
+pub(super) async fn recover(inner: &Inner, task: &RecoveryTask<'_>) -> Result<Option<Observation>> {
+    let Some(id) = task.checkpoint.and_then(|checkpoint| checkpoint["gatewayJobId"].as_str()) else {
         return Ok(None);
     };
     let Some(value) = record(inner, id).await else {
         return Ok(None);
     };
-    if value["owner"].as_str().filter(|s| !s.is_empty()) != task["principalId"].as_str()
+    if value["owner"].as_str().filter(|s| !s.is_empty()) != Some(task.principal_id)
         || !value["webuiResult"].is_object()
     {
         return Ok(None);
@@ -65,17 +79,18 @@ pub(super) async fn recover(inner: &Inner, task: &Value) -> Result<Option<Observ
         snapshots::remove(inner, id).await;
         return Ok(None);
     }
-    let mut result = Observation {
+    let initial = || Observation {
         status: "succeeded".into(),
         settled: true,
         unknown: false,
         error_code: None,
-        metadata: task["metadata"].clone(),
+        metadata: Value::Object(task.metadata.clone()),
         outputs: vec![],
     };
-    if task["cancelRequestedAt"].is_number() || task["resultState"] == "available" {
+    if task.cancel_requested || task.result_available {
+        let mut result = initial();
         snapshots::remove(inner, id).await;
-        if task["cancelRequestedAt"].is_number() {
+        if task.cancel_requested {
             result.status = "cancelled".into();
         }
         return Ok(Some(result));
@@ -92,6 +107,7 @@ pub(super) async fn recover(inner: &Inner, task: &Value) -> Result<Option<Observ
         }
         _ => return Ok(None),
     };
+    let mut result = initial();
     result.metadata["seed"] = value["webuiResult"]["seed"].clone();
     result.outputs.push(Output::File {
         path,

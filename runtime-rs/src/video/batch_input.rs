@@ -116,11 +116,13 @@ pub fn validate_batch(body: &Value) -> Result<Value> {
         if model["family"] == "minimax-h3" {
             raw["steps"] = json!(steps);
         }
-        normalized.push(json!({"input":validation::validate(&raw,None)?}));
+        let mut shot = json!({"input":null});
+        shot["input"] = validation::validate(&raw, None)?;
+        normalized.push(shot);
     }
-    Ok(
-        json!({"modelId":model["id"],"aspectRatio":aspect,"quality":quality,"linkLastFrame":linked,"steps":steps,"shots":normalized}),
-    )
+    let mut result = json!({"modelId":model["id"],"aspectRatio":aspect,"quality":quality,"linkLastFrame":linked,"steps":steps,"shots":null});
+    result["shots"] = Value::Array(normalized);
+    Ok(result)
 }
 pub(super) fn recompose(input: &Value, batch: &Value) -> Result<Value> {
     let mut raw = json!({"prompt":input["originalPrompt"],"modelId":batch["modelId"],"aspectRatio":batch["aspectRatio"],"quality":input["quality"],"duration":input["duration"],"camera":input["camera"],"motion":input["motion"],"seed":input["seed"]});

@@ -77,23 +77,28 @@ pub(super) fn manga_request(
     .iter()
     .filter_map(|key| plan.input.get(*key).map(|v| ((*key).to_owned(), v.clone())))
     .collect::<serde_json::Map<_, _>>();
-    json!({"id":job.id,"op":"generate","outputPath":output,"input":input,"inputImagePath":image,"penLinesPath":pen,
+    let mut request = json!({"id":job.id,"op":"generate","outputPath":output,"input":null,"inputImagePath":image,"penLinesPath":pen,
         "lineartOutputPath":if manga::has_lines(&plan.input){json!(manga::lineart_path(output, &plan.input))}else{Value::Null},
         "modelDir":if plan.input["rewrite"].is_object(){json!(plan.model_dir)}else{Value::Null},
-        "lineartPath":if plan.input["autoLines"]==true{json!(plan.settings.models_root.join("manga-line-extraction/erika.pth"))}else{Value::Null}})
+        "lineartPath":if plan.input["autoLines"]==true{json!(plan.settings.models_root.join("manga-line-extraction/erika.pth"))}else{Value::Null}});
+    request["input"] = Value::Object(input);
+    request
 }
 // Called only after full PNG decoder admission. Dimensions describe the actual
 // cropped/framed result, not the upload or an assumed diffusion canvas.
 pub(super) async fn png_dimensions(path: &Path) -> Result<(u32, u32)> {
-    let mut header = [0; 24];
-    tokio::fs::File::open(path)
-        .await?
-        .read_exact(&mut header)
-        .await?;
-    Ok((
-        u32::from_be_bytes(header[16..20].try_into().unwrap()),
-        u32::from_be_bytes(header[20..24].try_into().unwrap()),
-    ))
+    let path = path.to_owned();
+    tokio::task::spawn_blocking(move || -> Result<_> {
+        use std::io::Read;
+        let mut header = [0; 24];
+        std::fs::File::open(path)?.read_exact(&mut header)?;
+        Ok((
+            u32::from_be_bytes(header[16..20].try_into().unwrap()),
+            u32::from_be_bytes(header[20..24].try_into().unwrap()),
+        ))
+    })
+    .await
+    .map_err(|error| ApiError::from(std::io::Error::other(error)))?
 }
 
 pub(super) fn adapter_request(
@@ -112,7 +117,9 @@ pub(super) fn adapter_request(
         input["frames"] = plan.input["frames"].clone();
         input["fps"] = plan.input["fps"].clone();
     }
-    json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"outputPath":output,"input":input,"inputImagePath":image})
+    let mut request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"outputPath":output,"input":null,"inputImagePath":image});
+    request["input"] = input;
+    request
 }
 pub(super) async fn validate(path: &Path, video: bool, cancel: &CancellationToken) -> Result<()> {
     if video {

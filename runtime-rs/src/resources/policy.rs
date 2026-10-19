@@ -8,6 +8,13 @@ use crate::file_paths;
 use std::path::PathBuf;
 use tokio_util::sync::CancellationToken;
 pub(super) fn release(ctx: &Context, id: &str) -> Result<Value> {
+    let (release, source) = approved(ctx, id)?;
+    let mut release = release.clone();
+    release["releaseId"] = id.into();
+    release["source"] = source.clone();
+    Ok(release)
+}
+pub(super) fn approved<'a>(ctx: &'a Context, id: &str) -> Result<(&'a Value, &'a Value)> {
     ctx.access()?;
     if !identifier(id) {
         return Err(Error::new(
@@ -15,7 +22,7 @@ pub(super) fn release(ctx: &Context, id: &str) -> Result<Value> {
             "Configured release ID required",
         ));
     }
-    let mut release = ctx.policy["releases"][id].clone();
+    let release = &ctx.policy["releases"][id];
     if release["approved"] != true
         || !hash(release["packageIdentity"].as_str().unwrap_or(""))
         || !hash(release["targetIdentity"].as_str().unwrap_or(""))
@@ -49,12 +56,10 @@ pub(super) fn release(ctx: &Context, id: &str) -> Result<Value> {
             "Absolute offline root required",
         ));
     }
-    release["releaseId"] = id.into();
-    release["source"] = source.clone();
-    Ok(release)
+    Ok((release, source))
 }
-pub(super) fn reference(release: &Value) -> Value {
-    json!({"identity":release["targetIdentity"],"packageIdentity":release["packageIdentity"],"releaseId":release["releaseId"],"sourceId":release["sourceId"]})
+pub(super) fn reference(release: &Value, id: &str) -> Value {
+    json!({"identity":release["targetIdentity"],"packageIdentity":release["packageIdentity"],"releaseId":id,"sourceId":release["sourceId"]})
 }
 pub(super) fn validate_reference(ctx: &Context, value: &Value) -> Result<()> {
     if !hash(value["identity"].as_str().unwrap_or(""))
@@ -62,7 +67,9 @@ pub(super) fn validate_reference(ctx: &Context, value: &Value) -> Result<()> {
     {
         return Err(Error::new("STATE_INVALID", "Invalid installed reference"));
     }
-    let expected = reference(&release(ctx, value["releaseId"].as_str().unwrap_or(""))?);
+    let id = value["releaseId"].as_str().unwrap_or("");
+    let (release, _) = approved(ctx, id)?;
+    let expected = reference(release, id);
     if !super::equal(&expected, value) {
         return Err(Error::new(
             "APPROVAL_REQUIRED",
@@ -71,8 +78,7 @@ pub(super) fn validate_reference(ctx: &Context, value: &Value) -> Result<()> {
     }
     Ok(())
 }
-pub(super) fn source_url(release: &Value, relative: &str) -> Result<url::Url> {
-    let source = &release["source"];
+pub(super) fn source_url(release: &Value, source: &Value, relative: &str) -> Result<url::Url> {
     let base = url::Url::parse(source["baseUrl"].as_str().unwrap_or(""))
         .map_err(|_| Error::new("SOURCE_REQUIRED", "Valid source base URL required"))?;
     let fixture = base.scheme() == "http"
@@ -120,11 +126,13 @@ pub(super) fn source_url(release: &Value, relative: &str) -> Result<url::Url> {
         .remove(b'\'')
         .remove(b'(')
         .remove(b')');
-    let joined = format!("{path}/{relative}")
-        .split('/')
-        .map(|part| percent_encoding::utf8_percent_encode(part, URI).to_string())
-        .collect::<Vec<_>>()
-        .join("/");
+    let mut joined = String::with_capacity(path.len() + relative.len() + 1);
+    for (index, part) in path.split('/').chain(relative.split('/')).enumerate() {
+        if index > 0 {
+            joined.push('/');
+        }
+        joined.extend(percent_encoding::utf8_percent_encode(part, URI));
+    }
     let url = base
         .join(&joined)
         .map_err(|_| Error::new("UNSAFE_SOURCE", "Invalid resource URL"))?;
@@ -139,6 +147,8 @@ pub(super) struct Pack {
     pub delta: Option<Value>,
     pub raw: Vec<u8>,
     pub delta_raw: Option<Vec<u8>>,
+    // Full manifests stay unchanged between decode and target.
+    full_identity: Option<String>,
 }
 pub(super) fn package_identity(raw: &[u8], delta: Option<&[u8]>) -> String {
     digest(crate::storage::stringify(&json!([digest(raw), delta.map(digest)])).as_bytes())
@@ -162,12 +172,12 @@ pub(super) fn decode(raw: Vec<u8>, delta_raw: Option<Vec<u8>>, release: &Value) 
     };
     let manifest = Manifest::parse(&parse(&raw)?)?;
     let delta = delta_raw.as_ref().map(|bytes| parse(bytes)).transpose()?;
-    if delta
-        .as_ref()
-        .map(|value| value["newManifest"]["contentIdentity"].clone())
-        .unwrap_or_else(|| manifest.identity().into())
-        != release["targetIdentity"]
-    {
+    let full_identity = delta.is_none().then(|| manifest.identity());
+    let target_matches = match &delta {
+        Some(delta) => delta["newManifest"]["contentIdentity"] == release["targetIdentity"],
+        None => full_identity.as_deref() == release["targetIdentity"].as_str(),
+    };
+    if !target_matches {
         return Err(Error::new(
             "TARGET_MISMATCH",
             "Target differs from independent approval",
@@ -179,6 +189,7 @@ pub(super) fn decode(raw: Vec<u8>, delta_raw: Option<Vec<u8>>, release: &Value) 
         delta,
         raw,
         delta_raw,
+        full_identity,
     })
 }
 pub(super) fn pack_root(ctx: &Context, release: &Value) -> Result<PathBuf> {
@@ -212,6 +223,8 @@ pub(super) fn read_pack(
         None
     };
     let mut pack = decode(raw, delta, release)?;
+    // Installed-pack readers only need the decoded metadata.
+    drop((std::mem::take(&mut pack.raw), pack.delta_raw.take()));
     manifest::verify(
         &root,
         &pack.manifest,
@@ -225,9 +238,10 @@ pub(super) fn read_pack(
     pack.root = root;
     Ok(pack)
 }
-pub(super) fn target(pack: &Pack, base: Option<&Manifest>, release: &Value) -> Result<Manifest> {
-    let target = if let Some(delta) = &pack.delta {
-        super::delta::reconstruct(
+// Full packages reuse their manifest; deltas return a replacement.
+pub(super) fn target(pack: &Pack, base: Option<&Manifest>, release: &Value) -> Result<Option<Manifest>> {
+    let (target, identity) = if let Some(delta) = &pack.delta {
+        let (target, identity) = super::delta::reconstruct(
             base.ok_or_else(|| {
                 Error::new(
                     "BASELINE_REQUIRED",
@@ -236,11 +250,12 @@ pub(super) fn target(pack: &Pack, base: Option<&Manifest>, release: &Value) -> R
             })?,
             &pack.manifest,
             delta,
-        )?
+        )?;
+        (Some(target), identity)
     } else {
-        pack.manifest.clone()
+        (None, pack.full_identity.as_ref().unwrap().clone())
     };
-    if target.identity() != release["targetIdentity"] {
+    if identity != release["targetIdentity"] {
         return Err(Error::new(
             "TARGET_MISMATCH",
             "Reconstructed target differs from approval",

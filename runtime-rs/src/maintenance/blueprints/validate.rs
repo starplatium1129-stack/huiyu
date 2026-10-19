@@ -1,9 +1,8 @@
 use super::*;
-pub fn collection(items: &Value) -> Result<&Vec<Value>> {
-    let items = items
-        .as_array()
-        .filter(|items| items.len() <= 2000)
-        .ok_or_else(|| Error::invalid("蓝图 数据格式或数量超出限制"))?;
+pub(crate) fn validate_items(items: &[Value]) -> Result<()> {
+    if items.len() > 2000 {
+        return Err(Error::invalid("蓝图 数据格式或数量超出限制"));
+    }
     let mut ids = HashSet::new();
     for item in items {
         crate::maintenance::generated::validate(item, true)?;
@@ -28,5 +27,5 @@ pub fn collection(items: &Value) -> Result<&Vec<Value>> {
             return Err(Error::invalid(format!("蓝图缺少 promptProse：{id}")));
         }
     }
-    Ok(items)
+    Ok(())
 }

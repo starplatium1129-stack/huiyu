@@ -178,14 +178,16 @@ async fn perform(
             }
             ("DELETE", [id]) => {
                 let task = get(state, &storage, &session, id, false).await?;
+                let key = task["requestKey"]
+                    .as_str()
+                    .ok_or_else(invalid_record)?
+                    .to_owned();
+                drop(task);
                 runtime
                     .cancel(
                         storage.clone(),
                         session.principal_id.clone(),
-                        task["requestKey"]
-                            .as_str()
-                            .ok_or_else(invalid_record)?
-                            .into(),
+                        key,
                     )
                     .await?
             }

@@ -15,7 +15,7 @@ fn choice(value: &Value, allowed: &[&str], fallback: Value, trimmed: bool) -> Va
         fallback
     }
 }
-pub(super) fn clean(action: &str, parsed: &Value, input: &Value) -> Value {
+pub(super) fn clean(action: &str, parsed: &Value, input: &Value, shot_count: usize) -> Value {
     match action {
         "rewrite"=>{
             let mut result=json!({"prompt":input["prompt"],"shotSize":null,"camera":input["camera"],"motion":input["motion"],"dialogue":""});
@@ -29,7 +29,7 @@ pub(super) fn clean(action: &str, parsed: &Value, input: &Value) -> Value {
             if !dialogue.is_empty()&&length(dialogue)<=300{result["dialogue"]=json!(dialogue);}result
         }
         "polish"=>{
-            let mut result=vec![json!({"shotSize":null,"camera":null,"motion":null,"dialogue":null});list(&input["shots"]).len()];
+            let mut result=vec![json!({"shotSize":null,"camera":null,"motion":null,"dialogue":null});shot_count];
             for item in list(&parsed["shots"]) {
                 let index=number(item.get("index"));
                 if !item.is_object()||!index.is_finite()||index.fract()!=0.||index<0.||index>=result.len() as f64{continue;}
@@ -41,20 +41,20 @@ pub(super) fn clean(action: &str, parsed: &Value, input: &Value) -> Value {
                     let dialogue=text(dialogue);let dialogue=trim(&dialogue);entry["dialogue"]=if length(dialogue)<=300{json!(dialogue)}else{Value::Null};
                 }
             }
-            json!(result)
+            Value::Array(result)
         }
-        "dialogue"=>json!(list(&parsed["options"]).iter().filter(|item|item.is_object()).filter_map(|item|{
+        "dialogue"=>Value::Array(list(&parsed["options"]).iter().filter(|item|item.is_object()).filter_map(|item|{
             let text=string(&item["text"],"");let text=trim(&text);
             (!text.is_empty()&&length(text)<=60).then(||json!({"text":text,"label":clean_string(&item["label"],12)}))
         }).take(3).collect::<Vec<_>>()),
-        "review"=>json!(list(&parsed["issues"]).iter().filter(|item|item.is_object()).filter_map(|item|{
+        "review"=>Value::Array(list(&parsed["issues"]).iter().filter(|item|item.is_object()).filter_map(|item|{
             let index=number(item.get("index"));
-            if !index.is_finite()||index.fract()!=0.||index<0.||index>=list(&input["shots"]).len() as f64{return None;}
+            if !index.is_finite()||index.fract()!=0.||index<0.||index>=shot_count as f64{return None;}
             let severity=clean_string(&item["severity"],usize::MAX);let field=clean_string(&item["field"],usize::MAX);let message=clean_string(&item["message"],120);
             if !["error","warn"].contains(&severity.as_str())||!["prompt","shotSize","camera","motion","dialogue","continuity"].contains(&field.as_str())||message.is_empty(){return None;}
             Some(json!({"index":index as usize,"severity":severity,"field":field,"message":message,"suggestion":clean_string(&item["suggestion"],120)}))
         }).collect::<Vec<_>>()),
-        "script"=>json!(list(&parsed["shots"]).iter().filter(|item|item.is_object()).filter_map(|item|{
+        "script"=>Value::Array(list(&parsed["shots"]).iter().filter(|item|item.is_object()).filter_map(|item|{
             let prompt=string(&item["prompt"],"");let prompt=trim(&prompt);if prompt.is_empty()||length(prompt)>4000{return None;}
             let duration=number(item.get("duration"));let duration=if [3.,5.,10.,15.].contains(&duration){duration as u8}else{5};
             Some(json!({"prompt":prompt,"shotSize":choice(&item["shotSize"],SIZES,Value::Null,false),"camera":choice(&item["camera"],CAMERAS,json!("still"),false),"motion":choice(&item["motion"],MOTIONS,json!("subtle"),false),"dialogue":clean_string(&item["dialogue"],300),"duration":duration}))

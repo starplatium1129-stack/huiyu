@@ -1,6 +1,44 @@
 use super::*;
+use crate::task_contract::{ResultState, TaskKind, TaskRecord, TaskStatus};
 use reqwest::Method;
 use sha2::{Digest, Sha256};
+
+pub(crate) struct RecoveryTask<'a> {
+    pub task_id: &'a str,
+    pub principal_id: &'a str,
+    pub kind: TaskKind,
+    pub provider: &'a str,
+    pub upstream_id: Option<&'a str>,
+    pub status: &'static str,
+    pub cancel_requested: bool,
+    pub result_available: bool,
+    pub metadata: &'a serde_json::Map<String, Value>,
+    pub checkpoint: Option<&'a Value>,
+}
+impl<'a> From<&'a TaskRecord> for RecoveryTask<'a> {
+    fn from(task: &'a TaskRecord) -> Self {
+        Self {
+            task_id: &task.task_id,
+            principal_id: &task.principal_id,
+            kind: task.kind,
+            provider: &task.provider,
+            upstream_id: task.upstream_id.as_deref(),
+            status: match task.status {
+                TaskStatus::Queued => "queued",
+                TaskStatus::Submitting => "submitting",
+                TaskStatus::Running => "running",
+                TaskStatus::Cancelling => "cancelling",
+                TaskStatus::Succeeded => "succeeded",
+                TaskStatus::Failed => "failed",
+                TaskStatus::Cancelled => "cancelled",
+            },
+            cancel_requested: task.cancel_requested_at.is_some(),
+            result_available: task.result_state == ResultState::Available,
+            metadata: &task.metadata,
+            checkpoint: task.checkpoint.as_ref(),
+        }
+    }
+}
 
 impl Service {
     pub(crate) async fn resume_prepared(
@@ -84,38 +122,40 @@ impl Service {
 
     pub(crate) async fn recover_task(
         &self,
-        task: &Value,
+        task: RecoveryTask<'_>,
         cancellation: &mut Option<u8>,
     ) -> Result<Observation> {
-        let mut result = Observation {
-            status: task["status"].as_str().unwrap_or("running").into(),
+        let initial = || Observation {
+            status: task.status.into(),
             settled: false,
             unknown: false,
             error_code: None,
-            metadata: task["metadata"].clone(),
+            metadata: Value::Object(task.metadata.clone()),
             outputs: vec![],
         };
-        if task["provider"] == "native" {
+        if task.provider == "webui" {
+            snapshots::initialize(self.inner.clone()).await?;
+            if let Some(recovered) = webui_results::recover(&self.inner, &task).await? {
+                return Ok(recovered);
+            }
+            let mut result = initial();
+            result.unknown = true;
+            result.error_code = Some("WEBUI_RESTART_INTERRUPTED".into());
+            return Ok(result);
+        }
+        let mut result = initial();
+        if task.provider == "native" {
             result.status = "failed".into();
             result.settled = true;
             result.error_code = Some("NATIVE_RESTART_INTERRUPTED".into());
             return Ok(result);
         }
-        if task["provider"] == "webui" {
-            snapshots::initialize(self.inner.clone()).await?;
-            if let Some(recovered) = webui_results::recover(&self.inner, task).await? {
-                return Ok(recovered);
-            }
-            result.unknown = true;
-            result.error_code = Some("WEBUI_RESTART_INTERRUPTED".into());
-            return Ok(result);
-        }
-        let Some(id) = task["upstreamId"].as_str().filter(|s| !s.is_empty()) else {
+        let Some(id) = task.upstream_id.filter(|s| !s.is_empty()) else {
             result.unknown = true;
             result.error_code = Some("UPSTREAM_ID_UNKNOWN".into());
             return Ok(result);
         };
-        if task["cancelRequestedAt"].is_number()
+        if task.cancel_requested
             && cancellation.is_none()
             && self.cancel_recovered(id).await?
         {
@@ -144,13 +184,13 @@ impl Service {
             Some("success") => {
                 result.status = "succeeded".into();
                 result.settled = true;
-                if task["resultState"] != "available" && !task["cancelRequestedAt"].is_number() {
-                    let kind = task["kind"].as_str().unwrap_or("");
+                if !task.result_available && !task.cancel_requested {
+                    let kind = task.kind;
                     let (node, prefix, namespace) = match kind {
-                        "generation" => ("10", "wai_app", "wai"),
-                        "anima" => ("10", "anima_app", "anima"),
-                        "creative" => ("10", "creative_app", "anima"),
-                        "video" => ("11", "video_app", "video"),
+                        TaskKind::Generation => ("10", "wai_app", "wai"),
+                        TaskKind::Anima => ("10", "anima_app", "anima"),
+                        TaskKind::Creative => ("10", "creative_app", "anima"),
+                        TaskKind::Video => ("11", "video_app", "video"),
                         _ => {
                             return Err(ApiError::new(
                                 501,
@@ -160,7 +200,7 @@ impl Service {
                         }
                     };
                     let output = &entry["outputs"][node];
-                    let outputs = if kind == "video" {
+                    let outputs = if kind == TaskKind::Video {
                         output
                             .get("videos")
                             .or_else(|| output.get("gifs"))
@@ -174,10 +214,10 @@ impl Service {
                         let target = format!(
                             "recovered-{}",
                             hex::encode(Sha256::digest(
-                                task["taskId"].as_str().unwrap_or("").as_bytes()
+                                task.task_id.as_bytes()
                             ))
                         );
-                        let result_output = if kind == "video" {
+                        let result_output = if kind == TaskKind::Video {
                             video_output::materialize(
                                 &self.inner.transport,
                                 &self.inner.config.comfy_host,
@@ -221,7 +261,7 @@ impl Service {
                     if let Some(count) = cancellation {
                         *count = 0;
                     }
-                    result.status = if task["cancelRequestedAt"].is_number() {
+                    result.status = if task.cancel_requested {
                         "cancelling"
                     } else {
                         "running"

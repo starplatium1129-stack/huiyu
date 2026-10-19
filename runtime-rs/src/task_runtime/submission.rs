@@ -36,17 +36,7 @@ impl TaskRuntime {
         if let Some(context) = request.get_mut("context") {
             frozen["context"] = context.take();
         }
-        let existing = storage
-            .task(
-                TaskCommand::Get {
-                    task_id: None,
-                    request_key: Some(key.clone()),
-                    summary: false,
-                },
-                &principal,
-            )
-            .await?;
-        let existing: Option<TaskRecord> = serde_json::from_value(existing)?;
+        let existing = storage.task_record_by_request(&key, &principal).await?;
         let codec = existing
             .as_ref()
             .and_then(|task| task.request_fingerprint_locale.as_deref())

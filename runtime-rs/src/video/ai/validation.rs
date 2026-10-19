@@ -30,7 +30,8 @@ pub(super) fn validate(action: &str, body: &Value) -> Result<Value> {
                 .enumerate()
                 .map(|(i, value)| shot(value, Some(i + 1), action == "polish"))
                 .collect::<Result<Vec<_>>>()?;
-            let mut result = json!({"shots":values});
+            let mut result = json!({"shots":null});
+            result["shots"] = Value::Array(values);
             if action == "polish" {
                 result["identity"] = json!(clean_string(&body["identity"], 600));
             }

@@ -1,6 +1,6 @@
 use super::super::config::Engine;
 use super::super::queue::speech_timeout;
-use super::{AUDIO_LIMIT, AudioCache, Speech, Validated, wave};
+use super::{AUDIO_LIMIT, AudioCache, CachedAudio, Speech, Validated, wave};
 use crate::error::{ApiError, Result};
 use axum::{
     body::{Body, Bytes},
@@ -16,14 +16,15 @@ use tokio::time::Instant as Deadline;
 use tokio_util::sync::CancellationToken;
 
 impl Speech {
+    // Both callers finish/validate the WAV before freezing it into immutable Bytes.
     pub(super) fn remember_into(
         store: &Mutex<AudioCache>,
         key: String,
-        bytes: Bytes,
+        audio: CachedAudio,
         cancel: &CancellationToken,
         deadline: Deadline,
     ) {
-        if bytes.len() > AUDIO_LIMIT || wave::inspect(&bytes).is_none() {
+        if audio.bytes.len() > AUDIO_LIMIT {
             return;
         }
         let mut cache = store.lock().unwrap();
@@ -33,13 +34,13 @@ impl Speech {
             return;
         }
         if let Some(index) = cache.entries.iter().position(|(id, _)| id == &key) {
-            cache.bytes -= cache.entries.remove(index).unwrap().1.len();
+            cache.bytes -= cache.entries.remove(index).unwrap().1.bytes.len();
         }
-        cache.bytes += bytes.len();
-        cache.entries.push_back((key, bytes));
+        cache.bytes += audio.bytes.len();
+        cache.entries.push_back((key, audio));
         while cache.entries.len() > 60 || cache.bytes > AUDIO_LIMIT {
             if let Some((_, old)) = cache.entries.pop_front() {
-                cache.bytes -= old.len();
+                cache.bytes -= old.bytes.len();
             }
         }
     }
@@ -164,20 +165,25 @@ impl Speech {
                     chunk = upstream.next() => chunk,
                 };
                 let Some(chunk) = chunk else {
-                    let valid = captured.as_mut().is_some_and(|bytes| wave::finish(bytes));
+                    let finished = captured.as_mut().and_then(|bytes| wave::finish(bytes));
                     if Deadline::now() >= deadline {
                         break;
                     }
-                    if raw_pcm && !valid {
+                    if raw_pcm && finished.is_none() {
                         break;
                     }
-                    if valid && !send.is_closed() {
+                    if let Some((data, pcm)) = finished
+                        && !send.is_closed()
+                    {
                         // A body drop cancels this child token. The cache lock also
                         // checks it so shutdown cannot be followed by a late refill.
                         Self::remember_into(
                             &cache,
                             cache_key,
-                            Bytes::from(captured.take().unwrap().into_boxed_slice()),
+                            CachedAudio {
+                                bytes: Bytes::from(captured.take().unwrap().into_boxed_slice()),
+                                pcm: pcm.then_some(data),
+                            },
                             &cancel,
                             deadline,
                         );
@@ -256,12 +262,9 @@ impl Speech {
         Ok(response)
     }
     pub(super) fn cached_response(&self, key: &str, raw_pcm: bool) -> Option<Response> {
-        let wave = self.cached_wave(key)?;
+        let audio = self.cached_audio(key)?;
         let mut response = if raw_pcm {
-            let (data, pcm) = wave::inspect(&wave)?;
-            if !pcm {
-                return None;
-            }
+            let data = audio.pcm?;
             (
                 [
                     ("content-type", "audio/pcm"),
@@ -270,13 +273,13 @@ impl Speech {
                     ("x-audio-format", "pcm_s16le"),
                     ("x-tts-cache", "hit"),
                 ],
-                wave.slice(data),
+                audio.bytes.slice(data),
             )
                 .into_response()
         } else {
             (
                 [("content-type", "audio/wav"), ("x-tts-cache", "hit")],
-                wave,
+                audio.bytes,
             )
                 .into_response()
         };

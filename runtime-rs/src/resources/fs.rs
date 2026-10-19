@@ -5,19 +5,22 @@ use crate::file_paths::{absolute, key};
 pub(super) use platform::{available_space, hostname, space};
 use serde_json::Value;
 use std::{
+    borrow::Cow,
     fs::{self, File, Metadata, OpenOptions},
     io::{Read, Write},
     path::{Component, Path, PathBuf},
 };
 pub(super) const MAX_JSON: u64 = 16 * 1024 * 1024;
+fn within_keys(root: &str, path: &str) -> bool {
+    path == root
+        || path
+            .strip_prefix(root.trim_end_matches(std::path::MAIN_SEPARATOR))
+            .is_some_and(|tail| tail.starts_with(std::path::MAIN_SEPARATOR))
+}
 pub(super) fn within(root: &Path, path: &Path) -> Result<bool> {
     let root = key(root)?;
     let path = key(path)?;
-    Ok(path == root
-        || path.starts_with(
-            &(root.trim_end_matches(std::path::MAIN_SEPARATOR).to_owned()
-                + std::path::MAIN_SEPARATOR_STR),
-        ))
+    Ok(within_keys(&root, &path))
 }
 pub(super) fn relative(value: &str) -> Result<()> {
     if value.is_empty()
@@ -39,13 +42,13 @@ pub(super) fn relative(value: &str) -> Result<()> {
         {
             return Err(Error::new("UNSAFE_PATH", "Windows alias or reserved path"));
         }
-        let decoded = percent_encoding::percent_decode_str(part).collect::<Vec<_>>();
-        if decoded != part.as_bytes()
+        let decoded: Cow<'_, [u8]> = percent_encoding::percent_decode_str(part).into();
+        if decoded.as_ref() != part.as_bytes()
             && (decoded
                 .iter()
                 .any(|byte| *byte <= 31 || *byte == 127 || b"\\/:".contains(byte))
-                || decoded == b"."
-                || decoded == b"..")
+                || decoded.as_ref() == b"."
+                || decoded.as_ref() == b"..")
         {
             return Err(Error::new("UNSAFE_PATH", "Encoded separator or traversal"));
         }
@@ -55,7 +58,9 @@ pub(super) fn relative(value: &str) -> Result<()> {
 pub(super) fn child(root: &Path, relative_path: &str) -> Result<PathBuf> {
     relative(relative_path)?;
     let path = root.join(relative_path);
-    if !within(root, &path)? || key(root)? == key(&path)? {
+    let root_key = key(root)?;
+    let path_key = key(&path)?;
+    if root_key == path_key || !within_keys(&root_key, &path_key) {
         return Err(Error::new("UNSAFE_PATH", "Path escapes owned root"));
     }
     Ok(path)
@@ -69,8 +74,8 @@ pub(super) fn safe(path: &Path, missing: bool, hardlinks: bool) -> Result<Option
         ));
     }
     let mut cursor = PathBuf::new();
-    let parts = path.components().collect::<Vec<_>>();
-    for (index, part) in parts.iter().enumerate() {
+    let mut parts = path.components().peekable();
+    while let Some(part) = parts.next() {
         cursor.push(part.as_os_str());
         if !matches!(part, Component::Normal(_)) {
             continue;
@@ -102,7 +107,8 @@ pub(super) fn safe(path: &Path, missing: bool, hardlinks: bool) -> Result<Option
         if key(&real)? != key(&cursor)? {
             return Err(Error::new("UNSAFE_LINK", "Physical path differs"));
         }
-        if index + 1 < parts.len() && !metadata.is_dir() {
+        let last = parts.peek().is_none();
+        if !last && !metadata.is_dir() {
             return Err(Error::new("UNSAFE_PATH", "Non-directory ancestor"));
         }
         if !metadata.is_file() && !metadata.is_dir() {
@@ -114,7 +120,7 @@ pub(super) fn safe(path: &Path, missing: bool, hardlinks: bool) -> Result<Option
         if metadata.is_file() && !hardlinks && file_identity::path(&cursor, false)?.links != 1 {
             return Err(Error::new("UNSAFE_LINK", "Hardlink rejected"));
         }
-        if index + 1 == parts.len() {
+        if last {
             return Ok(Some(metadata));
         }
     }
@@ -132,7 +138,7 @@ pub(super) fn open(path: &Path, max: u64, hardlinks: bool) -> Result<File> {
     let before = safe(path, false, hardlinks)?.unwrap();
     open_checked(path, max, hardlinks, &before)
 }
-fn open_checked(path: &Path, max: u64, hardlinks: bool, before: &Metadata) -> Result<File> {
+pub(super) fn open_checked(path: &Path, max: u64, hardlinks: bool, before: &Metadata) -> Result<File> {
     if !before.is_file() || before.len() > max {
         return Err(Error::new(
             "METADATA_INVALID",
@@ -209,10 +215,9 @@ pub(super) fn atomic(path: &Path, bytes: &[u8]) -> Result<()> {
     result
 }
 pub(super) fn write_json(path: &Path, value: &Value) -> Result<()> {
-    atomic(
-        path,
-        format!("{}\n", crate::storage::stringify(value)).as_bytes(),
-    )
+    let mut body = crate::storage::stringify(value);
+    body.push('\n');
+    atomic(path, body.as_bytes())
 }
 pub(super) fn remove(path: &Path) -> Result<()> {
     if safe(path, true, false)?.is_some() {

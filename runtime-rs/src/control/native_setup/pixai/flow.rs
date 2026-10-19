@@ -93,7 +93,7 @@ impl ControlService {
         stopped(cancel)?;
         let runtime = runtime_bundle()?;
         let manifest = load_manifest()?;
-        let files = artifacts(&manifest)?;
+        let files = artifacts()?;
         let root = self.config.ai_workspace_root.join("PixAI");
         let runtime_root = self
             .config

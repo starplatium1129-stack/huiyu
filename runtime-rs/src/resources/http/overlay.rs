@@ -34,29 +34,27 @@ fn resource_path(raw: &str) -> Option<String> {
     )
 }
 fn mime(path: &str) -> &'static str {
-    match path
-        .rsplit('.')
-        .next()
-        .unwrap_or("")
-        .to_ascii_lowercase()
-        .as_str()
-    {
-        "png" => "image/png",
-        "jpg" | "jpeg" => "image/jpeg",
-        "webp" => "image/webp",
-        "avif" => "image/avif",
-        "gif" => "image/gif",
-        "ico" => "image/x-icon",
-        "mp3" => "audio/mpeg",
-        "ogg" => "audio/ogg",
-        "wav" => "audio/wav",
-        "flac" => "audio/flac",
-        "m4a" => "audio/mp4",
-        "mp4" => "video/mp4",
-        "webm" => "video/webm",
-        "json" => "application/json; charset=utf-8",
-        _ => "application/octet-stream",
-    }
+    let extension = path.rsplit('.').next().unwrap_or("");
+    [
+        ("png", "image/png"),
+        ("jpg", "image/jpeg"),
+        ("jpeg", "image/jpeg"),
+        ("webp", "image/webp"),
+        ("avif", "image/avif"),
+        ("gif", "image/gif"),
+        ("ico", "image/x-icon"),
+        ("mp3", "audio/mpeg"),
+        ("ogg", "audio/ogg"),
+        ("wav", "audio/wav"),
+        ("flac", "audio/flac"),
+        ("m4a", "audio/mp4"),
+        ("mp4", "video/mp4"),
+        ("webm", "video/webm"),
+        ("json", "application/json; charset=utf-8"),
+    ]
+    .into_iter()
+    .find_map(|(candidate, mime)| extension.eq_ignore_ascii_case(candidate).then_some(mime))
+    .unwrap_or("application/octet-stream")
 }
 pub async fn overlay(
     State(service): State<Arc<Service>>,
@@ -105,22 +103,7 @@ pub async fn overlay(
                     part == "*" || part == etag
                 })
             });
-    let group = relative
-        .starts_with("assets/live2d/")
-        .then(|| {
-            snapshot
-                .groups
-                .iter()
-                .enumerate()
-                .find_map(|(group, value)| {
-                    value
-                        .paths
-                        .iter()
-                        .position(|name| name == &relative)
-                        .map(|file| (group, file))
-                })
-        })
-        .flatten();
+    let group = snapshot.group_files.get(&relative).copied();
     if relative.starts_with("assets/live2d/") && group.is_none() {
         return next.run(request).await;
     }

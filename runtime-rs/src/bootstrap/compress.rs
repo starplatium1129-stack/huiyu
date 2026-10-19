@@ -1,23 +1,32 @@
 use super::*;
 use std::io::{Read, Write};
 pub(super) fn companions_current(file: &Path, bytes: &[u8]) -> Result<bool> {
+    let mut buffer = [0_u8; 64 * 1024];
     for suffix in ["gz", "br"] {
         let companion = PathBuf::from(format!("{}.{}", file.display(), suffix));
         let Some(old) = fs::read(&companion, true)? else {
             continue;
         };
-        let mut decoded = Vec::with_capacity(bytes.len());
         let reader: Box<dyn Read> = if suffix == "gz" {
             Box::new(flate2::read::GzDecoder::new(old.as_slice()))
         } else {
             Box::new(brotli::Decompressor::new(old.as_slice(), 8192))
         };
-        if reader
-            .take(bytes.len() as u64 + 1)
-            .read_to_end(&mut decoded)
-            .is_err()
-            || decoded != bytes
-        {
+        let mut reader = reader.take(bytes.len() as u64 + 1);
+        let mut remaining = bytes;
+        loop {
+            let read = match reader.read(&mut buffer) {
+                Ok(0) => break,
+                Ok(read) => read,
+                Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+                Err(_) => return Ok(false),
+            };
+            if !remaining.starts_with(&buffer[..read]) {
+                return Ok(false);
+            }
+            remaining = &remaining[read..];
+        }
+        if !remaining.is_empty() {
             return Ok(false);
         }
     }

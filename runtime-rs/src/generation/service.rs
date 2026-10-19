@@ -26,7 +26,7 @@ pub(super) async fn submit(
     if let Some(hooks) = &job.hooks
         && let Err(error) = hooks
             .checkpoint(
-                json!({"gatewayJobId":job.id,"provider":job.provider,"effectiveInput":job.input}),
+                json!({"gatewayJobId":job.id,"provider":job.provider,"effectiveInput":job.input.as_ref()}),
             )
             .await
     {
@@ -57,10 +57,13 @@ pub(super) async fn status(inner: Arc<Inner>) -> Result<Value> {
         probe::webui_status(&inner, false, &inner.cancel),
         probe::comfy_status(&inner, &inner.cancel)
     );
-    let comfy = comfy_online
-        && resources::available(&inner.config, "checkpoints", constants::CHECKPOINT).await;
+    let root = inner.config.ai_workspace_root.join("ComfyUI/models");
+    let local = tokio::task::spawn_blocking(move || resources::local_status(root, comfy_online))
+        .await
+        .map_err(|_| ApiError::new(503, "SD_STATUS_UNAVAILABLE", "生成资源状态暂不可用"))?;
+    let comfy = local.comfy;
     let web = webui.online && webui.wai_available;
-    let super_res = resources::super_res(&inner.config, None).await;
+    let super_res = local.super_res;
     let mut hires = Vec::new();
     if comfy
         || (web
@@ -70,14 +73,7 @@ pub(super) async fn status(inner: Arc<Inner>) -> Result<Value> {
         hires.push("Auto".to_string());
     }
     if comfy {
-        for name in constants::SUPER_RES {
-            if resources::super_res(&inner.config, Some(name))
-                .await
-                .is_some()
-            {
-                hires.push((*name).into());
-            }
-        }
+        hires.extend(local.upscalers.into_iter().map(str::to_owned));
     }
     if comfy || webui.upscalers.iter().any(|s| s == "Latent") {
         hires.extend(["Latent".into(), "Latent (nearest-exact)".into()]);
@@ -88,10 +84,6 @@ pub(super) async fn status(inner: Arc<Inner>) -> Result<Value> {
                 hires.push(name.clone());
             }
         }
-    }
-    let mut loras = Vec::new();
-    for (id, file, character) in constants::LORAS {
-        loras.push(json!({"id":id,"character":character,"available":resources::available(&inner.config,"loras",file).await}));
     }
     let jobs = inner
         .state
@@ -111,9 +103,13 @@ pub(super) async fn status(inner: Arc<Inner>) -> Result<Value> {
             }
         }
     }
-    Ok(
-        json!({"online":web||comfy,"provider":if comfy{Some("comfy")}else if web{Some("webui")}else{None},"webuiOnline":web,"comfyFallbackOnline":comfy,"checkpoint":if !webui.checkpoint.is_empty(){webui.checkpoint}else if comfy{constants::CHECKPOINT.into()}else{String::new()},"samplers":webui.samplers,"schedulers":webui.schedulers,"models":webui.models,"loras":loras,"capabilities":{"basic":web||comfy,"hires":web||comfy,"hiresUpscalers":hires,"faceDetailer":web,"superResModel":if comfy{super_res}else{None}},"pending":constants::MAX_PENDING-inner.admission.available_permits(),"maxPending":constants::MAX_PENDING,"webuiPending":web_pending,"comfyPending":comfy_pending}),
-    )
+    let mut result = json!({"online":web||comfy,"provider":if comfy{Some("comfy")}else if web{Some("webui")}else{None},"webuiOnline":web,"comfyFallbackOnline":comfy,"checkpoint":if !webui.checkpoint.is_empty(){webui.checkpoint}else if comfy{constants::CHECKPOINT.into()}else{String::new()},"samplers":null,"schedulers":null,"models":null,"loras":null,"capabilities":{"basic":web||comfy,"hires":web||comfy,"hiresUpscalers":null,"faceDetailer":web,"superResModel":super_res},"pending":constants::MAX_PENDING-inner.admission.available_permits(),"maxPending":constants::MAX_PENDING,"webuiPending":web_pending,"comfyPending":comfy_pending});
+    result["samplers"] = webui.samplers.into();
+    result["schedulers"] = webui.schedulers.into();
+    result["models"] = webui.models.into();
+    result["loras"] = Value::Array(local.loras);
+    result["capabilities"]["hiresUpscalers"] = hires.into();
+    Ok(result)
 }
 
 pub(super) async fn close(inner: Arc<Inner>) {

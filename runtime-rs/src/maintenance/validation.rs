@@ -1,12 +1,11 @@
 use super::{Error, Result, state};
-use serde_json::{Value, json};
+use serde_json::Value;
 use std::collections::HashSet;
 
-pub(crate) fn collection(items: &Value) -> Result<&Vec<Value>> {
-    let items = items
-        .as_array()
-        .filter(|items| items.len() <= 10000)
-        .ok_or_else(|| Error::invalid("场景 数据格式或数量超出限制"))?;
+pub(crate) fn validate_items(items: &[Value]) -> Result<()> {
+    if items.len() > 10000 {
+        return Err(Error::invalid("场景 数据格式或数量超出限制"));
+    }
     let mut seen = HashSet::new();
     for scene in items {
         super::generated::validate(scene, false)?;
@@ -23,7 +22,7 @@ pub(crate) fn collection(items: &Value) -> Result<&Vec<Value>> {
             )));
         }
     }
-    Ok(items)
+    Ok(())
 }
 fn text(value: &Value) -> String {
     match value {
@@ -74,68 +73,35 @@ pub(crate) fn tags(value: &Value) -> Result<()> {
     }
     Ok(())
 }
-pub(crate) fn curation(value: &Value, active: &HashSet<&str>, previous: &Value) -> Result<Value> {
-    let mut value = if value.is_object() {
-        value.clone()
-    } else {
-        json!({})
-    };
-    let clean = |value: &Value| {
-        let mut seen = HashSet::new();
-        value
-            .as_array()
-            .map(|items| {
-                items
-                    .iter()
-                    .filter_map(Value::as_str)
-                    .filter(|id| active.contains(id) && seen.insert((*id).to_owned()))
-                    .map(|id| Value::String(id.into()))
-                    .collect::<Vec<_>>()
-            })
-            .unwrap_or_default()
-    };
-    let mut curated = clean(&value["curatedSceneIds"]);
-    let signature = clean(&value["signatureSceneIds"]);
-    for id in &signature {
-        if !curated.contains(id) {
-            curated.push(id.clone());
-        }
-    }
-    let review = clean(&value["reviewSceneIds"])
+pub(crate) fn curation<'a>(value: &'a Value, active: &HashSet<&str>) -> Result<Vec<&'a str>> {
+    let mut seen = HashSet::new();
+    let signature = value["signatureSceneIds"]
+        .as_array()
         .into_iter()
-        .filter(|id| !curated.contains(id))
+        .flatten()
+        .filter_map(Value::as_str)
+        .filter(|id| active.contains(id) && seen.insert(*id))
         .collect::<Vec<_>>();
-    value["curatedSceneIds"] = curated.into();
-    value["signatureSceneIds"] = signature.clone().into();
-    value["reviewSceneIds"] = review.into();
-    if value.get("personaCoreSceneIds").is_none()
-        && let Some(previous) = previous.get("personaCoreSceneIds")
-    {
-        value["personaCoreSceneIds"] = previous.clone();
-    }
     if let Some(core) = value.get("personaCoreSceneIds") {
         if !core.is_array() {
             return Err(Error::invalid("personaCoreSceneIds 必须是场景 ID 数组"));
         }
-        value["personaCoreSceneIds"] = clean(core).into();
     }
-    let mut reasons = serde_json::Map::new();
+    let mut reasons = HashSet::new();
     if let Some(source) = value["recommendationReasons"].as_object() {
         for (id, reason) in source {
-            let reason = text(reason).trim().to_owned();
-            if active.contains(id.as_str()) && !reason.is_empty() {
-                reasons.insert(id.clone(), reason.into());
+            let nonempty = !text(reason).trim().is_empty();
+            if active.contains(id.as_str()) && nonempty {
+                reasons.insert(id.as_str());
             }
         }
     }
-    for id in signature {
-        let id = id.as_str().unwrap();
-        if !reasons.contains_key(id) {
+    for id in &signature {
+        if !reasons.contains(id) {
             return Err(Error::invalid(format!(
                 "{id} 标记为招牌场景时必须填写推荐理由"
             )));
         }
     }
-    value["recommendationReasons"] = Value::Object(reasons);
-    Ok(value)
+    Ok(signature)
 }

@@ -6,9 +6,34 @@ use axum::{
 use futures_util::StreamExt;
 mod lines;
 use lines::Lines;
+use serde::Serialize;
 use serde_json::{Value, json};
 use std::{collections::VecDeque, convert::Infallible};
 use tokio_util::sync::CancellationToken;
+
+#[derive(Serialize)]
+#[serde(tag = "type", rename_all = "kebab-case")]
+pub(super) enum Event {
+    Meta {
+        model: String,
+        #[serde(rename = "queueWaitMs")]
+        queue_wait_ms: u64,
+    },
+    Reasoning { content: String },
+    Token { content: String },
+    ToolCall(Box<ToolCall>),
+    Done,
+}
+#[derive(Serialize)]
+pub(super) struct ToolCall {
+    pub(super) index: usize,
+    pub(super) id: String,
+    pub(super) name: String,
+    pub(super) arguments: String,
+    pub(super) reasoning: String,
+    #[serde(rename = "thoughtSignature", skip_serializing_if = "Option::is_none")]
+    pub(super) thought_signature: Option<String>,
+}
 
 #[derive(Clone, Copy)]
 pub(super) enum Protocol {
@@ -27,14 +52,14 @@ struct Events {
     lines: Lines,
     protocol: Protocol,
     decoder: Decoder,
-    pending: VecDeque<Value>,
+    pending: VecDeque<Event>,
     json: String,
     finished: bool,
     shutdown: CancellationToken,
     _permit: Option<Permit>,
 }
 impl Events {
-    async fn next(&mut self) -> Result<Option<Value>> {
+    async fn next(&mut self) -> Result<Option<Event>> {
         loop {
             if let Some(event) = self.pending.pop_front() {
                 return Ok(Some(event));
@@ -47,7 +72,7 @@ impl Events {
                 Protocol::Ollama => match line {
                     Some(line) if line.trim().is_empty() => {}
                     Some(line) => {
-                        let item: Value = serde_json::from_str(&line).map_err(|_| {
+                        let mut item: Value = serde_json::from_str(&line).map_err(|_| {
                             Error::stream(
                                 "INVALID_NDJSON",
                                 "Ollama returned an invalid stream event",
@@ -64,15 +89,17 @@ impl Events {
                         {
                             return Err(Error::stream("INVALID_NDJSON", "Invalid stream fields"));
                         }
-                        if let Some(content) = item["message"]["content"]
-                            .as_str()
-                            .filter(|v| !v.is_empty())
+                        if let Some(Value::String(content)) = item
+                            .get_mut("message")
+                            .and_then(|message| message.get_mut("content"))
+                            && !content.is_empty()
                         {
-                            self.pending
-                                .push_back(json!({"type":"token","content":content}));
+                            self.pending.push_back(Event::Token {
+                                content: std::mem::take(content),
+                            });
                         }
                         if item["done"] == true {
-                            self.pending.push_back(json!({"type":"done"}));
+                            self.pending.push_back(Event::Done);
                             self.finished = true;
                         }
                     }
@@ -97,7 +124,7 @@ impl Events {
                             continue;
                         }
                         match serde_json::from_str::<Value>(payload) {
-                            Ok(event) => self.pending.extend(self.decoder.decode(&event)?),
+                            Ok(event) => self.pending.extend(self.decoder.decode(event)?.into_iter().flatten()),
                             Err(_) => self.decoder.malformed = true,
                         }
                     } else {
@@ -119,16 +146,16 @@ impl Events {
                         let value: Value = serde_json::from_str(&source).map_err(|_| {
                             Error::stream("INVALID_JSON", "自定义 API 返回了无法识别的响应")
                         })?;
-                        let decoded = self.decoder.decode(&value)?;
-                        if value["choices"]
+                        let missing_message = value["choices"]
                             .as_array()
                             .and_then(|v| v.first())
                             .and_then(|v| v.get("message"))
-                            .is_none_or(|v| v.is_null())
-                        {
+                            .is_none_or(|v| v.is_null());
+                        let decoded = self.decoder.decode(value)?;
+                        if missing_message {
                             return Err(Error::stream("INVALID_JSON", "非流式响应缺少消息"));
                         }
-                        self.pending.extend(decoded);
+                        self.pending.extend(decoded.into_iter().flatten());
                         self.finish()?;
                     }
                 }
@@ -159,7 +186,7 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
         ),
         protocol: prepared.protocol,
         decoder: Decoder::new(vendor),
-        pending: VecDeque::from([json!({"type":"meta","model":prepared.model,"queueWaitMs":wait})]),
+        pending: VecDeque::from([Event::Meta { model: prepared.model, queue_wait_ms: wait }]),
         json: String::new(),
         finished: false,
         shutdown,
@@ -171,20 +198,21 @@ pub(super) async fn collect_text(prepared: Prepared, cancel: CancellationToken) 
     let mut events = events(prepared, cancel);
     let mut text = String::new();
     while let Some(event) = events.next().await? {
-        if event["type"] == "done" {
-            return if text.trim().is_empty() {
-                Err(Error::stream("EMPTY_RESPONSE", "AI 返回空内容"))
-            } else {
-                Ok(text)
-            };
-        }
-        if event["type"] == "token"
-            && let Some(token) = event["content"].as_str()
-        {
-            if text.len().saturating_add(token.len()) > 1024 * 1024 {
-                return Err(Error::stream("RESPONSE_TOO_LARGE", "AI 响应超过字节预算"));
+        match event {
+            Event::Done => {
+                return if text.trim().is_empty() {
+                    Err(Error::stream("EMPTY_RESPONSE", "AI 返回空内容"))
+                } else {
+                    Ok(text)
+                };
             }
-            text.push_str(token);
+            Event::Token { content: token } => {
+                if text.len().saturating_add(token.len()) > 1024 * 1024 {
+                    return Err(Error::stream("RESPONSE_TOO_LARGE", "AI 响应超过字节预算"));
+                }
+                text.push_str(&token);
+            }
+            _ => {}
         }
     }
     Err(Error::stream("INCOMPLETE_STREAM", "AI 响应中断"))
@@ -205,6 +233,7 @@ pub(super) fn response(prepared: Prepared, shutdown: CancellationToken) -> Respo
             while let Some(value) = events.next().await.map_err(|error| error.message)? {
                 let mut bytes = serde_json::to_vec(&value).unwrap();
                 bytes.push(b'\n');
+                drop(value);
                 send.send(Bytes::from(bytes))
                     .await
                     .map_err(|_| "聊天连接已关闭".to_owned())?;

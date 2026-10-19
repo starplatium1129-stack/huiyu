@@ -112,18 +112,22 @@ fn object_relative(hash: &str) -> Result<String> {
     Ok(format!("media/objects/{}/{}", &hash[..2], hash))
 }
 fn media_rows(files: &Files, db: &Connection) -> Result<Vec<Value>> {
+    let mut media = Vec::new();
+    visit_media_rows(files, db, |row| media.push(row))?;
+    Ok(media)
+}
+fn visit_media_rows(files: &Files, db: &Connection, mut consume: impl FnMut(Value)) -> Result<()> {
     let mut statement = db.prepare("SELECT hash,bytes,mime FROM media_objects ORDER BY hash")?;
     let mut rows = statement.query([])?;
-    let mut media = Vec::new();
     while let Some(row) = rows.next()? {
         files.check_cancel()?;
-        media.push(json!({
-            "hash": row.get::<_, String>(0)?,
+        consume(json!({
+            "hash": text_column(row, 0)?,
             "bytes": row.get::<_, i64>(1)?,
-            "mime": row.get::<_, String>(2)?,
+            "mime": text_column(row, 2)?,
         }));
     }
-    Ok(media)
+    Ok(())
 }
 
 pub(super) fn prepare(c: &mut Context, principal: &str, command: &Value) -> Result<Prepared> {

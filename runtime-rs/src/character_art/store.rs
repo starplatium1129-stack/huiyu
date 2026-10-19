@@ -1,7 +1,10 @@
 use super::*;
 use crate::{config::Config, maintenance::fs};
 use serde_json::json;
-use std::{io::Write, path::Path};
+use std::{
+    io::{Read, Write},
+    path::Path,
+};
 fn disk<T>(value: crate::maintenance::Result<T>) -> Result<T> {
     value.map_err(|_| corrupt())
 }
@@ -103,18 +106,15 @@ pub(super) fn lock(root: &Path) -> Result<std::fs::File> {
     }
     Ok(file)
 }
-pub(super) fn save(config: &Config, body: &Value, cancel: &CancellationToken) -> Result<Value> {
+pub(super) fn save(config: &Config, mut body: Value, cancel: &CancellationToken) -> Result<Value> {
     let started = Instant::now();
     let id = body["id"]
         .as_str()
         .filter(|id| id_ok(id))
-        .ok_or_else(|| invalid("角色 ID 无效"))?;
-    let characters = crate::catalog::Catalog::open(crate::catalog::Options::from_config(config))?
-        .projection("characters.json")?
-        .ok_or_else(corrupt)?;
-    if !characters
-        .as_array()
-        .is_some_and(|rows| rows.iter().any(|row| row["id"] == id))
+        .ok_or_else(|| invalid("角色 ID 无效"))?
+        .to_owned();
+    if !crate::catalog::Catalog::open(crate::catalog::Options::from_config(config))?
+        .character_profile_exists(&id)?
     {
         return Err(invalid("未知角色"));
     }
@@ -133,11 +133,15 @@ pub(super) fn save(config: &Config, body: &Value, cancel: &CancellationToken) ->
         if !body["image"].is_null() {
             return Err(invalid("重置不能同时上传图片"));
         }
-        manifest["entries"].as_object_mut().unwrap().remove(id);
+        drop(body);
+        manifest["entries"].as_object_mut().unwrap().remove(id.as_str());
     } else {
-        let image = body["image"].as_str().ok_or_else(|| invalid("缺少图片"))?;
-        let art = derive::build(id, image, cancel, started)?;
-        let character = root.join(id);
+        let Some(Value::String(image)) = body.get_mut("image").map(Value::take) else {
+            return Err(invalid("缺少图片"));
+        };
+        drop(body);
+        let art = derive::build(&id, image, cancel, started)?;
+        let character = root.join(&id);
         disk(fs::ensure(&character))?;
         let directory = character.join(&art.revision);
         let existing = disk(fs::safe(&directory, true, true))?.is_some();
@@ -152,23 +156,38 @@ pub(super) fn save(config: &Config, body: &Value, cancel: &CancellationToken) ->
         };
         let mut hashes = json!({});
         for (name, bytes) in [
-            ("portrait.png", &art.portrait),
-            ("thumbnail.png", &art.thumbnail),
-            ("particles.json", &art.particles),
+            ("portrait.png", art.portrait),
+            ("thumbnail.png", art.thumbnail),
+            ("particles.json", art.particles),
         ] {
             if let Some(staged) = &staged {
                 let mut out = std::fs::OpenOptions::new()
                     .write(true)
                     .create_new(true)
                     .open(staged.path().join(name))?;
-                out.write_all(bytes)?;
+                out.write_all(&bytes)?;
                 out.sync_all()?;
-            } else if disk(fs::read(&directory.join(name), false))?.as_deref()
-                != Some(bytes.as_slice())
+            } else if !disk(fs::with_file(&directory.join(name), false, |file, _| {
+                let mut remaining = bytes.as_ref();
+                let mut matches = true;
+                let mut buffer = [0_u8; 64 * 1024];
+                // Finish reading so I/O and identity errors precede mismatch.
+                loop {
+                    let count = match file.read(&mut buffer) {
+                        Ok(0) => break,
+                        Ok(count) => count,
+                        Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+                        Err(error) => return Err(error.into()),
+                    };
+                    matches &= remaining.starts_with(&buffer[..count]);
+                    remaining = remaining.get(count..).unwrap_or(&[]);
+                }
+                Ok(matches && remaining.is_empty())
+            }))?.unwrap_or(false)
             {
                 return Err(corrupt());
             }
-            hashes[name] = derive::hash(bytes).into();
+            hashes[name] = derive::hash(&bytes).into();
             check(cancel, started)?;
         }
         if let Some(staged) = staged {
@@ -177,7 +196,7 @@ pub(super) fn save(config: &Config, body: &Value, cancel: &CancellationToken) ->
             disk(fs::sync(&character))?;
         }
         let prefix = format!("/api/character-art/{id}/{}", art.revision);
-        manifest["entries"][id] = json!({"revision":art.revision,"sourceSha256":art.revision,"portraitUrl":format!("{prefix}/portrait.png"),"thumbnailUrl":format!("{prefix}/thumbnail.png"),"particleUrl":format!("{prefix}/particles.json"),"width":art.width,"height":art.height,"hasTransparency":art.transparent,"hashes":hashes});
+        manifest["entries"][id.as_str()] = json!({"revision":art.revision,"sourceSha256":art.revision,"portraitUrl":format!("{prefix}/portrait.png"),"thumbnailUrl":format!("{prefix}/thumbnail.png"),"particleUrl":format!("{prefix}/particles.json"),"width":art.width,"height":art.height,"hasTransparency":art.transparent,"hashes":hashes});
     }
     check(cancel, started)?;
     // A fresh revision token prevents ABA after reset/re-upload of the same image.

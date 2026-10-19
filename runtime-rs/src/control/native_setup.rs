@@ -11,7 +11,7 @@ use axum::{
 };
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
-use std::path::{Path, PathBuf};
+use std::{path::{Path, PathBuf}, sync::LazyLock};
 use tokio::sync::OwnedSemaphorePermit;
 
 #[derive(Clone, Deserialize)]
@@ -22,7 +22,7 @@ struct Artifact {
     bytes: u64,
     sha256: String,
 }
-#[derive(Clone, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct RuntimeBundle {
     runtime_id: String,
@@ -33,7 +33,7 @@ struct RuntimeBundle {
     sources: Value,
     files: Vec<Artifact>,
 }
-#[derive(Clone, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct ModelBundle {
     id: String,
@@ -62,22 +62,39 @@ pub(super) fn routes() -> Router<crate::AppState> {
         .route("/api/inference/setup/activate", post(activate))
         .merge(pixai::routes())
 }
-fn bundles() -> Result<(RuntimeBundle, Vec<ModelBundle>)> {
+fn bundles() -> Result<(Arc<RuntimeBundle>, Vec<Arc<ModelBundle>>)> {
     let runtime = runtime_bundle()?;
-    let models: Value =
-        serde_json::from_str(include_str!("../../../tools/inference/managed-models.json"))?;
-    let models: Vec<ModelBundle> = serde_json::from_value(models["models"].clone())?;
-    for model in &models {
-        validate_artifacts(&model.files)?;
-    }
+    static MODELS: LazyLock<Result<Vec<Arc<ModelBundle>>>> = LazyLock::new(|| {
+        let models: Value =
+            serde_json::from_str(include_str!("../../../tools/inference/managed-models.json"))?;
+        let models = Vec::<ModelBundle>::deserialize(&models["models"])?;
+        for model in &models {
+            validate_artifacts(&model.files)?;
+        }
+        Ok(models.into_iter().map(Arc::new).collect())
+    });
+    let models = MODELS.as_ref().cloned()
+        .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))?;
     Ok((runtime, models))
 }
-fn runtime_bundle() -> Result<RuntimeBundle> {
-    let runtime: RuntimeBundle = serde_json::from_str(include_str!(
-        "../../../tools/inference/managed-runtime.windows-x64.json"
-    ))?;
-    validate_artifacts(&runtime.files)?;
-    Ok(runtime)
+fn runtime_bundle() -> Result<Arc<RuntimeBundle>> {
+    static RUNTIME: LazyLock<Result<Arc<RuntimeBundle>>> = LazyLock::new(|| {
+        let runtime: RuntimeBundle = serde_json::from_str(include_str!(
+            "../../../tools/inference/managed-runtime.windows-x64.json"
+        ))?;
+        validate_artifacts(&runtime.files)?;
+        Ok(Arc::new(runtime))
+    });
+    RUNTIME.as_ref().cloned()
+        .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))
+}
+fn runtime_manifest_sha256() -> &'static str {
+    static HASH: std::sync::LazyLock<String> = std::sync::LazyLock::new(|| {
+        hex::encode(Sha256::digest(include_bytes!(
+            "../../../tools/inference/managed-runtime.windows-x64.json"
+        )))
+    });
+    HASH.as_str()
 }
 fn validate_artifacts(files: &[Artifact]) -> Result<()> {
     for file in files {

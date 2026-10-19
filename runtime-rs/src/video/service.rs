@@ -2,10 +2,16 @@ use super::*;
 use tokio::sync::Mutex;
 use tokio_util::task::TaskTracker;
 pub struct Prepared {
-    pub input: Value,
-    pub provider: String,
     pub(super) backend: generation::Prepared,
     pub(super) originals: inputs::Captured,
+}
+impl Prepared {
+    pub(crate) fn input(&self) -> &Value {
+        &self.backend.input
+    }
+    pub(crate) fn provider(&self) -> &str {
+        &self.backend.provider
+    }
 }
 #[derive(serde::Deserialize)]
 #[serde(untagged)]
@@ -135,6 +141,7 @@ impl Service {
         };
         let input = if self.backend.native_enabled() { native::validate(&raw, size)? }
             else { validation::validate(&raw, size)? };
+        drop(raw);
         self.prepare_input(input, local, owner, false, cancel).await
     }
     pub(super) async fn prepare_input(
@@ -154,7 +161,7 @@ impl Service {
             let originals = inputs::capture(&self.config, &input, local, owner, &cancel).await?;
             let plan = generation::native::adapters::plan(&self.backend.native_settings()?, input, None).await?;
             let backend = self.backend.prepare_native(plan, permit, &cancel)?;
-            return Ok(Prepared { input: backend.input.clone(), provider: backend.provider.clone(), backend, originals });
+            return Ok(Prepared { backend, originals });
         }
         if input["inferenceEngine"] == "native" {
             return Err(error(409, "TASK_RESUME_UNSAFE", "视频任务引擎已改变，请重新创建任务"));
@@ -165,8 +172,6 @@ impl Service {
         let originals =
             inputs::capture(&self.config, &backend.input, local, owner, &cancel).await?;
         Ok(Prepared {
-            input: backend.input.clone(),
-            provider: backend.provider.clone(),
             backend,
             originals,
         })
@@ -189,7 +194,9 @@ impl Service {
             .clone()
             .submit(prepared.backend, owner.clone(), hooks)
             .await?;
-        self.get_job(job["id"].as_str().unwrap(), &owner).await
+        let id = job["id"].as_str().unwrap().to_owned();
+        drop(job);
+        self.get_job(&id, &owner).await
     }
     pub async fn get_job(&self, id: &str, owner: &str) -> Result<Value> {
         let mut job = self.backend.get_job(id, owner).await?;
@@ -320,11 +327,16 @@ impl Service {
         if self.backend.native_enabled() {
             return native::status(&self.backend).await;
         }
-        let mut models = Vec::new();
-        for model in catalog::constants()["MODEL_CATALOG"].as_array().unwrap() {
-            models.push(resources::available(&self.config, model).await);
-        }
-        let (t8, online) = tokio::join!(self.t8(&self.shutdown), self.backend.comfy_online());
+        // One filesystem job per poll, alongside the existing network probes.
+        // Every request still inspects the current model files.
+        let root = self.config.ai_workspace_root.join("ComfyUI/models");
+        let (models, t8, online) = tokio::join!(
+            tokio::task::spawn_blocking(move || resources::local_models(root)),
+            self.t8(&self.shutdown),
+            self.backend.comfy_online(),
+        );
+        let models = models
+            .map_err(|_| error(503, "VIDEO_STATUS_UNAVAILABLE", "视频资源状态暂不可用"))?;
         let qualities = catalog::constants()["QUALITIES"]
             .as_object()
             .unwrap()
@@ -351,9 +363,10 @@ impl Service {
         } else {
             "当前未检测到 T8 双时钟节点，使用原生采样器；实际速度取决于模型和设备"
         };
-        Ok(
-            json!({"online":online,"pending":self.backend.pending(),"maxPending":2,"models":models,"qualities":qualities,"defaults":{"modelId":"wan2.2-ti2v-5b","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","quality":"standard"},"t8":{"available":online && t8,"reason":acceleration_reason}}),
-        )
+        let mut value = json!({"online":online,"pending":self.backend.pending(),"maxPending":2,"models":null,"qualities":null,"defaults":{"modelId":"wan2.2-ti2v-5b","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","quality":"standard"},"t8":{"available":online && t8,"reason":acceleration_reason}});
+        value["models"] = Value::Array(models);
+        value["qualities"] = Value::Array(qualities);
+        Ok(value)
     }
     pub async fn close(&self) {
         self.shutdown.cancel();

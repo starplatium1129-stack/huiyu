@@ -133,7 +133,25 @@ async fn create(
     }.await;
     response(result, StatusCode::ACCEPTED)
 }
-macro_rules! lookup{($name:ident,$method:ident,$key:literal)=>{async fn $name(State(state):State<AppState>,Extension(http):Extension<Arc<Http>>,ConnectInfo(peer):ConnectInfo<SocketAddr>,Path(id):Path<String>,Query(query):Query<HashMap<String,String>>,headers:HeaderMap)->Response{response(async{state.host.check_running()?;Ok(json!({$key:http.service.$method(&id,&generation::request_owner(&headers,peer,&query)).await?}))}.await,StatusCode::OK)}}}
+macro_rules! lookup {
+    ($name:ident,$method:ident,$key:literal) => {
+        async fn $name(
+            State(state): State<AppState>,
+            Extension(http): Extension<Arc<Http>>,
+            ConnectInfo(peer): ConnectInfo<SocketAddr>,
+            Path(id): Path<String>,
+            Query(query): Query<HashMap<String, String>>,
+            headers: HeaderMap,
+        ) -> Response {
+            response(async {
+                state.host.check_running()?;
+                let mut value = json!({$key:null});
+                value[$key] = http.service.$method(&id,&generation::request_owner(&headers,peer,&query)).await?;
+                Ok(value)
+            }.await, StatusCode::OK)
+        }
+    };
+}
 lookup!(get_job, get_job, "job");
 lookup!(cancel, cancel, "job");
 lookup!(get_batch, get_batch, "batch");
@@ -167,7 +185,12 @@ async fn concat(
 ) -> Response {
     let cancel = http.service.shutdown.child_token();
     let _guard = cancel.clone().drop_guard();
-    response(async{state.host.check_running()?;Ok(json!({"batch":http.service.clone().batch_action(&id,&generation::request_owner(&headers,peer,&query),"concat",cancel).await?}))}.await,StatusCode::OK)
+    response(async {
+        state.host.check_running()?;
+        let mut value = json!({"batch":null});
+        value["batch"] = http.service.clone().batch_action(&id,&generation::request_owner(&headers,peer,&query),"concat",cancel).await?;
+        Ok(value)
+    }.await, StatusCode::OK)
 }
 #[derive(serde::Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

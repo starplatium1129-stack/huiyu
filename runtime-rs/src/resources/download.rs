@@ -28,7 +28,6 @@ fn publish(op: &Operation, partial: &Path, target: &Path, entry: &manifest::Entr
     cancelled(&op.cancel)?;
     fs::ensure(target.parent().unwrap())?;
     fs::safe(partial, false, false)?;
-    fs::safe(target, true, false)?;
     fs::remove(target)?;
     std::fs::rename(partial, target)?;
     fs::sync(target.parent().unwrap())?;
@@ -84,7 +83,7 @@ async fn entry(
     }
     let mut response = http::response(
         client,
-        policy::source_url(release, &entry.path)?,
+        policy::source_url(release, &release["source"], &entry.path)?,
         headers,
         &op.cancel,
     )
@@ -112,7 +111,7 @@ async fn entry(
         op.check()?;
         response = http::response(
             client,
-            policy::source_url(release, &entry.path)?,
+            policy::source_url(release, &release["source"], &entry.path)?,
             reqwest::header::HeaderMap::new(),
             &op.cancel,
         )
@@ -219,7 +218,7 @@ pub(super) async fn run(op: Operation, client: reqwest::Client, id: String) -> R
             "Download requires configured HTTP source",
         ));
     }
-    let manifest_url = policy::source_url(&release, "manifest.json")?;
+    let manifest_url = policy::source_url(&release, &release["source"], "manifest.json")?;
     cancelled(&op.cancel)?;
     op.ctx.initialize()?;
     let _lock = lease::acquire(&op.ctx, "writer", 0)?;
@@ -263,7 +262,7 @@ pub(super) async fn run(op: Operation, client: reqwest::Client, id: String) -> R
         Some(
             http::metadata(
                 &client,
-                policy::source_url(&release, "delta.json")?,
+                policy::source_url(&release, &release["source"], "delta.json")?,
                 &op.cancel,
             )
             .await?,
@@ -290,12 +289,14 @@ pub(super) async fn run(op: Operation, client: reqwest::Client, id: String) -> R
     if let Some(delta) = &decoded.delta_raw {
         fs::atomic(&pack.join("delta.json"), delta)?;
     }
-    for resource in &decoded.manifest.entries {
+    let manifest = decoded.manifest;
+    let files = manifest.entries.len();
+    let delta = decoded.delta.is_some();
+    drop((decoded.raw, decoded.delta_raw, decoded.delta));
+    for resource in &manifest.entries {
         entry(&op, &client, &release, &pack, &parts, resource).await?;
     }
-    let root = pack.clone();
-    let manifest = decoded.manifest.clone();
-    let delta = decoded.delta.is_some();
+    let root = pack;
     let cancel = op.cancel.clone();
     super::blocking(move || {
         manifest::verify(
@@ -316,6 +317,6 @@ pub(super) async fn run(op: Operation, client: reqwest::Client, id: String) -> R
         &json!({"schemaVersion":1,"packageIdentity":release["packageIdentity"]}),
     )?;
     Ok(
-        json!({"ok":true,"kind":"resource-download-result","action":"downloaded","releaseId":id,"installed":false,"files":decoded.manifest.entries.len()}),
+        json!({"ok":true,"kind":"resource-download-result","action":"downloaded","releaseId":id,"installed":false,"files":files}),
     )
 }

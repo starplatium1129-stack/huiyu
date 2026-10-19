@@ -12,24 +12,28 @@ pub(super) async fn execute(service: Arc<Service>, batch: Arc<Batch>, mut first:
                 finish(&batch).await;
                 return;
             };
+            // The reserved first preparation already owns this shot's recipe.
             (
                 index,
-                state.shots[index].input.clone(),
+                (index != 0 || first.is_none()).then(|| state.shots[index].input.clone()),
                 state.cancel.clone(),
             )
         };
         let result = async {
-            let prepared = if index == 0 && first.is_some() {
-                first.take().unwrap()
-            } else {
-                let input = batch_input::recompose(&input, &batch.input)?;
-                if let Some(hooks) = &batch.hooks {
-                    resume::restore(&service.config, &input, hooks.as_ref(), &cancel).await?;
+            let prepared = match input {
+                None => first.take().unwrap(),
+                Some(input) => {
+                    let recomposed = batch_input::recompose(&input, &batch.input)?;
+                    drop(input);
+                    let input = recomposed;
+                    if let Some(hooks) = &batch.hooks {
+                        resume::restore(&service.config, &input, hooks.as_ref(), &cancel).await?;
+                    }
+                    batch.state.lock().await.shots[index].input = input.clone();
+                    service
+                        .prepare_input(input, true, None, true, cancel.clone())
+                        .await?
                 }
-                batch.state.lock().await.shots[index].input = input.clone();
-                service
-                    .prepare_input(input, true, None, true, cancel.clone())
-                    .await?
             };
             {
                 let mut state = batch.state.lock().await;
@@ -50,6 +54,7 @@ pub(super) async fn execute(service: Arc<Service>, batch: Arc<Batch>, mut first:
                 .submit(prepared, batch.owner.clone(), Some(hooks))
                 .await?;
             let id = job["id"].as_str().unwrap().to_string();
+            drop(job);
             loop {
                 let observation = service.query(&id, &batch.owner).await?;
                 if observation.settled || observation.unknown {

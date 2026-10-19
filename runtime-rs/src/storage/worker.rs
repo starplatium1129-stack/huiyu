@@ -88,7 +88,7 @@ pub(super) fn run(
                 if !reply.is_closed() {
                     result_commit::start_copy(
                         &mut context,
-                        &command,
+                        command,
                         source,
                         &principal,
                         reply,
@@ -108,14 +108,25 @@ pub(super) fn run(
                     let _ = reply.send(result);
                 }
             }
-            Work::TaskRecord(id, principal, cancel, reply) => {
+            Work::TaskRecord(key, principal, cancel, reply) => {
                 if !closing.is_empty() {
                     let _ = reply.send(Err(unavailable()));
                     continue;
                 }
                 context.cancel = cancel;
                 if !reply.is_closed() {
-                    let result = tasks::read_record(&context, &principal, &id);
+                    let result = tasks::read_record(&context, &principal, &key);
+                    let _ = reply.send(result);
+                }
+            }
+            Work::TaskRecoveryPage(query, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    let result = tasks::read_recovery_page(&context, &principal, query);
                     let _ = reply.send(result);
                 }
             }
@@ -127,6 +138,17 @@ pub(super) fn run(
                 context.cancel = cancel;
                 if !reply.is_closed() {
                     let result = tasks::read_revision(&context, &principal, &id);
+                    let _ = reply.send(result);
+                }
+            }
+            Work::TaskResultReference(id, index, principal, cancel, reply) => {
+                if !closing.is_empty() {
+                    let _ = reply.send(Err(unavailable()));
+                    continue;
+                }
+                context.cancel = cancel;
+                if !reply.is_closed() {
+                    let result = tasks::read_result_reference(&context, &principal, &id, index);
                     let _ = reply.send(result);
                 }
             }
@@ -234,7 +256,7 @@ pub(super) fn run(
                 if result_commit::is_commit(&command) {
                     result_commit::start(
                         &mut context,
-                        &command,
+                        command,
                         &principal,
                         reply,
                         permit,

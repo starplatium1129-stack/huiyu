@@ -72,11 +72,7 @@ impl Default for GroupReads {
 }
 pub(super) fn size(snapshot: &Snapshot, group: usize) -> Option<u32> {
     snapshot.groups[group]
-        .paths
-        .iter()
-        .try_fold(0_u64, |total, name| {
-            total.checked_add(snapshot.entries[name].bytes)
-        })
+        .total_bytes
         .filter(|total| *total <= u64::from(BUDGET))
         .map(|total| total as u32)
 }

@@ -31,11 +31,7 @@ fn validate(c: &Context, principal: &str, command: &Value) -> Result<()> {
 }
 pub(super) fn receipt(c: &Context, principal: &str, command: &Value) -> Result<Option<Value>> {
     validate(c, principal, command)?;
-    if let Some(operation) = c.operation(principal, string(command, "operationId")?)? {
-        operation.check("collectGarbage", command)?;
-        return Ok(operation.receipt);
-    }
-    Ok(None)
+    Ok(c.operation_receipt(principal, command)?.and_then(|(_, receipt)| receipt))
 }
 pub(super) fn prepare(c: &mut Context, principal: &str, command: &Value) -> Result<Prepared> {
     validate(c, principal, command)?;

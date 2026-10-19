@@ -116,10 +116,7 @@ fn current(
     let hashes = files
         .iter()
         .map(|path| {
-            Ok(json!([
-                path,
-                hash_file(&model_file(&directory, path)?, cancel)?
-            ]))
+            Ok((path.as_str(), hash_file(&model_file(&directory, path)?, cancel)?))
         })
         .collect::<Result<Vec<_>>>()?;
     for file in receipt["files"].as_array().unwrap() {
@@ -133,18 +130,21 @@ fn current(
     }
     let manifest = receipt["manifest"].as_str().unwrap();
     model_file(&directory, relative(manifest)?)?;
-    let fingerprint = hex::encode(Sha256::digest(serde_json::to_vec(&json!([
+    let fingerprint = hex::encode(Sha256::digest(serde_json::to_vec(&(
         receipt.get("entryPath").unwrap_or(&receipt["manifest"]),
         manifest,
-        hashes
-    ]))?));
+        &hashes,
+    ))?));
     Ok((directory, receipt, revision, fingerprint))
 }
 pub(super) fn get(root: &Path, id: &str, cancel: &CancellationToken) -> Result<Value> {
     let (_, receipt, revision, fingerprint) = current(root, id, cancel)?;
-    Ok(
-        json!({"id":id,"profile":receipt["profile"],"revision":revision,"fingerprint":fingerprint,"disabled":receipt["disabled"]==true,"canRollback":!receipt["previousProfile"].is_null()}),
-    )
+    Ok(profile_view(id, receipt, &revision, &fingerprint))
+}
+fn profile_view(id: &str, mut receipt: Value, revision: &str, fingerprint: &str) -> Value {
+    let mut value = json!({"id":id,"profile":null,"revision":revision,"fingerprint":fingerprint,"disabled":receipt["disabled"]==true,"canRollback":!receipt["previousProfile"].is_null()});
+    value["profile"] = receipt["profile"].take();
+    value
 }
 pub(super) fn save_receipt(directory: &Path, receipt: &Value) -> Result<String> {
     let temporary = directory.join(format!(".receipt-{}.tmp", uuid::Uuid::new_v4()));
@@ -200,14 +200,13 @@ pub(super) fn edit(
         {
             return Err(invalid("Profile identity cannot change"));
         }
-        receipt["previousProfile"] = receipt["profile"].clone();
+        let previous = receipt["profile"].take();
+        receipt["previousProfile"] = previous;
         receipt["profile"] = next;
     }
     check_cancel(cancel)?;
     let revision = save_receipt(&directory, &receipt)?;
     // The editor changed only companion.json, which is excluded from the asset
     // fingerprint. Reuse that snapshot instead of hashing every atlas twice.
-    Ok(
-        json!({"id":id,"profile":receipt["profile"],"revision":revision,"fingerprint":fingerprint,"disabled":receipt["disabled"]==true,"canRollback":!receipt["previousProfile"].is_null()}),
-    )
+    Ok(profile_view(id, receipt, &revision, &fingerprint))
 }

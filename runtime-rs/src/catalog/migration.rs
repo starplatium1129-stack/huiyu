@@ -18,13 +18,11 @@ fn legacy_rows(root: &Path, folder: &str, field: &str) -> Result<Vec<Value>> {
         if name.contains(['/', '\\']) || name.starts_with('.') {
             return Err(ApiError::invalid("旧分片路径无效"));
         }
-        let value = read(root, &format!("{folder}/{name}"))?;
-        result.extend(
-            value[field]
-                .as_array()
-                .ok_or_else(|| ApiError::invalid("旧分片内容无效"))?
-                .iter()
-                .cloned(),
+        let mut value = read(root, &format!("{folder}/{name}"))?;
+        result.append(
+            value.get_mut(field)
+                .and_then(Value::as_array_mut)
+                .ok_or_else(|| ApiError::invalid("旧分片内容无效"))?,
         );
     }
     Ok(result)
@@ -41,10 +39,9 @@ fn record(kind: &str, id: String, data: Value, order: usize) -> Record {
     }
 }
 pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
-    let profiles = read(root, "characters.json")?;
-    let profiles = profiles
-        .as_array()
-        .ok_or_else(|| ApiError::invalid("人物档案无效"))?;
+    let Value::Array(profiles) = read(root, "characters.json")? else {
+        return Err(ApiError::invalid("人物档案无效"));
+    };
     let mut characters = BTreeMap::<String, Value>::new();
     let mut order = Vec::new();
     for profile in profiles {
@@ -52,8 +49,10 @@ pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
             .as_str()
             .ok_or_else(|| ApiError::invalid("人物 ID 无效"))?
             .to_owned();
+        let mut data = json!({"id":id,"profile":null});
+        data["profile"] = profile;
         if characters
-            .insert(id.clone(), json!({"id":id,"profile":profile}))
+            .insert(id.clone(), data)
             .is_some()
         {
             return Err(ApiError::invalid("人物 ID 重复"));
@@ -71,17 +70,20 @@ pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
             .unwrap()
             .remove("outfits")
             .ok_or_else(|| ApiError::invalid("角色服装缺失"))?;
-        for outfit in values
-            .as_array()
-            .ok_or_else(|| ApiError::invalid("服装数组无效"))?
-        {
+        let Value::Array(values) = values else {
+            return Err(ApiError::invalid("服装数组无效"));
+        };
+        for outfit in values {
             let outfit_id = outfit["id"]
                 .as_str()
                 .ok_or_else(|| ApiError::invalid("服装 ID 无效"))?;
+            let key = format!("{id}/{outfit_id}");
+            let mut data = json!({"characterId":id,"outfit":null});
+            data["outfit"] = outfit;
             outfits.push(record(
                 "outfit",
-                format!("{id}/{outfit_id}"),
-                json!({"characterId":id,"outfit":outfit}),
+                key,
+                data,
                 outfits.len(),
             ));
         }
@@ -147,8 +149,8 @@ pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
             "document",
             "tag-dictionary-policy".into(),
             read(root, "tags/manifest.json")?
-                .get("dictionary")
-                .cloned()
+                .get_mut("dictionary")
+                .map(Value::take)
                 .unwrap_or(json!({})),
             0,
         ));
@@ -183,13 +185,13 @@ impl Catalog {
         {
             validation::key(&record.kind, &record.id)?;
             write::put(&transaction, record, removed)?;
-            write::history(&transaction, record, removed, batch, &at)?;
+            let encoded = write::history(&transaction, record, removed, batch, &at)?;
             transaction.execute(
                 "INSERT INTO content_seed(kind,id,record,deleted) VALUES(?1,?2,?3,?4)",
                 params![
                     record.kind,
                     record.id,
-                    serde_json::to_string(record)?,
+                    encoded,
                     removed
                 ],
             )?;

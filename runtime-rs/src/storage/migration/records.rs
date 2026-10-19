@@ -3,12 +3,13 @@ use canonical::entity_key;
 use std::{borrow::Cow, collections::HashMap};
 
 pub(super) fn read(c: &Context, id: &str) -> Result<Vec<Value>> {
+    // Decode borrowed row text, but retain JSON errors until SQLite reading succeeds.
     c.db.prepare("SELECT body FROM migration_items WHERE migration_id=? ORDER BY item_id")?
-        .query_map([id], |r| r.get::<_, String>(0))?
+        .query_map([id], |row| Ok(serde_json::from_str::<Value>(text_column(row, 0)?)))?
         .collect::<rusqlite::Result<Vec<_>>>()?
         .into_iter()
-        .map(|body| serde_json::from_str(&body).map_err(Into::into))
-        .collect()
+        .collect::<serde_json::Result<Vec<_>>>()
+        .map_err(Into::into)
 }
 fn collection<'a>(records: &'a [Value], key: &str) -> Result<Vec<Cow<'a, Value>>> {
     let mut entries = records
@@ -162,14 +163,15 @@ fn check_refs(value: &Value, media: &HashSet<&str>, blockers: &mut Vec<String>) 
         _ => {}
     }
 }
-fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64) -> Result<()> {
+fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64) -> Result<String> {
     body(item)?;
     let key = entity_key(&item["id"])?;
+    let snapshot = stringify(item);
     c.db.prepare_cached("INSERT INTO artworks VALUES(?,?,?,?,?)")?
         .execute(params![
             key,
             stringify(&item["id"]),
-            stringify(item),
+            snapshot,
             revision,
             deleted
         ])?;
@@ -186,7 +188,7 @@ fn insert_artwork(c: &Context, item: &Value, deleted: Option<i64>, revision: i64
             key,
             hash
         ])?;
-    Ok(())
+    Ok(snapshot)
 }
 pub(super) fn publish(
     c: &Context,
@@ -229,6 +231,7 @@ pub(super) fn publish(
         }
     }
     for entry in trash {
+        let mut refs_json = None;
         for item in entry["historyEntries"]
             .as_array()
             .ok_or_else(|| format_error("Invalid trash entry"))?
@@ -238,26 +241,29 @@ pub(super) fn publish(
                 .as_f64()
                 .ok_or_else(|| format_error("Invalid deletion timestamp"))?
                 as i64;
-            insert_artwork(c, item, Some(deleted), revision)?;
-            let mut refs = Vec::new();
-            for reference in entry["projectRefs"]
-                .as_array()
-                .ok_or_else(|| format_error("Invalid trash references"))?
-            {
-                if reference["hadReference"] != true {
-                    continue;
+            let snapshot = insert_artwork(c, item, Some(deleted), revision)?;
+            if refs_json.is_none() {
+                let mut refs = Vec::new();
+                for reference in entry["projectRefs"]
+                    .as_array()
+                    .ok_or_else(|| format_error("Invalid trash references"))?
+                {
+                    if reference["hadReference"] != true {
+                        continue;
+                    }
+                    let project_key = entity_key(&reference["projectId"])?;
+                    if let Some(position) = project_positions.get(&project_key) {
+                        refs.push(json!({"project_key":project_key,"position":position}));
+                    }
                 }
-                let project_key = entity_key(&reference["projectId"])?;
-                if let Some(position) = project_positions.get(&project_key) {
-                    refs.push(json!({"project_key":project_key,"position":position}));
-                }
+                refs_json = Some(stringify(&Value::Array(refs)));
             }
             c.db.prepare_cached("INSERT INTO trash VALUES(?,?,?,?)")?
                 .execute(params![
                     entity_key(&item["id"])?,
                     deleted,
-                    stringify(item),
-                    stringify(&json!(refs))
+                    snapshot,
+                    refs_json.as_deref().unwrap()
                 ])?;
         }
     }

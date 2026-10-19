@@ -155,12 +155,12 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         "sampler":"euler","scheduler":"model-config","teaCache":false,"hiresFix":false,"rcasStrength":0}),
     )
 }
-pub(super) fn normalize(raw: &Value, input: Value) -> Result<Value> {
+pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
     supported_options(raw)?;
     let mut request = serde_json::Map::new();
     for key in KEYS {
-        if let Some(value) = input.get(*key) {
-            request.insert((*key).into(), value.clone());
+        if let Some(value) = input.get_mut(*key) {
+            request.insert((*key).into(), value.take());
         }
     }
     validate(

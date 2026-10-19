@@ -177,7 +177,8 @@ pub(super) fn publish(
         {
             return Err(invalid("Unsupported model file type"));
         }
-        if !names.insert(lower.clone()) || lower.rsplit('/').next() == Some("companion.json") {
+        let reserved = lower.rsplit('/').next() == Some("companion.json");
+        if !names.insert(lower) || reserved {
             return Err(invalid("Duplicate or reserved model file"));
         }
     }
@@ -191,6 +192,7 @@ pub(super) fn publish(
     {
         return Err(invalid("Choose a Cubism3 model manifest"));
     }
+    drop(names);
     let profile = profile::validate(&meta["profile"], false)?;
     if ["avatar-nene-default", "avatar-natsume-default"]
         .iter()
@@ -223,13 +225,10 @@ pub(super) fn publish(
             destination,
         )?;
     }
-    let json_files = upload_checks::inspect(&upload.directory, &upload.paths, cancel)?;
-    let mut model = json_files
-        .get(entry)
+    let mut model = upload_checks::inspect(&upload.directory, &upload.paths, entry, cancel)?
         .filter(|value| value["Version"] == 3)
-        .cloned()
         .ok_or_else(|| invalid("Only Cubism3 Version 3 is supported"))?;
-    upload_checks::references(&model, entry, &upload.paths.iter().cloned().collect())?;
+    upload_checks::references(&model, entry, &upload.paths.iter().map(String::as_str).collect())?;
     model.as_object_mut().unwrap().remove("Controllers");
     model.as_object_mut().unwrap().remove("Options");
     let prefix = entry
@@ -247,6 +246,7 @@ pub(super) fn publish(
         }
         Ok(path)
     })?;
+    drop(seen);
     let manifest = format!("imported-{}.model3.json", uuid::Uuid::new_v4());
     let mut manifest_file = fs::OpenOptions::new()
         .create_new(true)
@@ -259,11 +259,15 @@ pub(super) fn publish(
     let expressions: Vec<Value> = model["FileReferences"]["Expressions"].as_array().into_iter().flatten().map(|expression| {
         let data = manifest::read_json(&model_file(&upload.directory, expression["File"].as_str().ok_or_else(|| invalid("Invalid expression file"))?)?)?;
         let parameters: Vec<Value> = data["Parameters"].as_array().into_iter().flatten().filter_map(|parameter| parameter["Id"].as_str().filter(|id| !id.is_empty()).map(Value::from)).collect();
-        Ok(json!({"id":expression["Name"],"label":expression["Name"],"parameterIds":parameters}))
+        let mut value = json!({"id":expression["Name"],"label":expression["Name"],"parameterIds":null});
+        value["parameterIds"] = Value::Array(parameters);
+        Ok(value)
     }).collect::<Result<_>>()?;
+    drop(model);
     let character = json!({"id":id,"name":meta["name"],"shortName":meta["name"],"defaultAvatarId":profile["avatarId"],"personaPrompt":meta["persona"],"tags":["local-import"],
         "presentation":{"id":id,"name":meta["name"],"image":"","caption":format!("{} · {}",meta["author"].as_str().unwrap(),meta["terms"].as_str().unwrap()),"description":"本机导入模型","icon":"character","greeting":"你好，今天想聊些什么？","roomCode":"LOCAL · LIVE2D","roomMood":"一起聊聊今天的生活与灵感","starters":["聊聊今天吧"],"voice":"","accent":"var(--accent)","live2dLayout":{"scale":1,"anchorX":0.5,"bottomOffset":0}}});
-    let avatar = json!({"id":profile["avatarId"],"characterId":id,"name":"本机模型","modelPath":format!("/api/live2d-local/{id}/{manifest}"),"version":"1.0.0","profileId":profile["profileId"],"defaultOutfitId":"default","outfits":[{"id":"default","label":"原版服装"}],"expressions":expressions,"license":{"author":meta["author"],"terms":meta["terms"]}});
+    let mut avatar = json!({"id":profile["avatarId"],"characterId":id,"name":"本机模型","modelPath":format!("/api/live2d-local/{id}/{manifest}"),"version":"1.0.0","profileId":profile["profileId"],"defaultOutfitId":"default","outfits":[{"id":"default","label":"原版服装"}],"expressions":null,"license":{"author":meta["author"],"terms":meta["terms"]}});
+    avatar["expressions"] = Value::Array(expressions);
     let mut hashes = serde_json::Map::new();
     for file in &files {
         hashes.insert(
@@ -274,8 +278,14 @@ pub(super) fn publish(
             )?),
         );
     }
-    let receipt = json!({"character":character,"avatar":avatar,"profile":profile,"manifest":manifest,"entryPath":entry,"files":files,"format":"cubism3","hashes":hashes});
+    let mut receipt = json!({"character":null,"avatar":null,"profile":null,"manifest":manifest,"entryPath":entry,"files":null,"format":"cubism3","hashes":null});
+    receipt["character"] = character;
+    receipt["avatar"] = avatar;
+    receipt["profile"] = profile;
+    receipt["files"] = Value::Array(files.into_iter().map(Value::String).collect());
+    receipt["hashes"] = Value::Object(hashes);
     editor::save_receipt(&upload.directory, &receipt)?;
+    drop(receipt);
     editor::check_cancel(cancel)?;
     fs::rename(&upload.directory, &target)?;
     upload.cleanup.published();

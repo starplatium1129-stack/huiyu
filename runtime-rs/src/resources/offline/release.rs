@@ -5,6 +5,7 @@ use crate::resources::{
     number, policy, resolve,
 };
 use std::{
+    borrow::Cow,
     collections::{HashMap, HashSet},
     path::PathBuf,
 };
@@ -18,9 +19,19 @@ pub(super) struct Release {
     pub assets: Manifest,
     pub showcase_root: PathBuf,
     pub showcase: Manifest,
-    pub showcase_payload: Manifest,
+    // Readers share the immutable inventory validated by load.
+    showcase_identity: String,
+    showcase_payload: Option<Manifest>,
     pub baseline: Option<Value>,
     pub display: Value,
+}
+impl Release {
+    pub(super) fn showcase_payload(&self) -> &Manifest {
+        self.showcase_payload.as_ref().unwrap_or(&self.showcase)
+    }
+    pub(super) fn showcase_identity(&self) -> &str {
+        &self.showcase_identity
+    }
 }
 fn entries(value: &Value) -> Result<Vec<Entry>> {
     let items = value
@@ -62,7 +73,7 @@ pub(super) fn media(path: &str) -> bool {
     });
     ALLOWED.is_match(path)
 }
-pub(super) fn display(value: &Value) -> Result<HashMap<String, Value>> {
+pub(super) fn display(value: &Value) -> Result<HashMap<String, Cow<'_, Value>>> {
     let items = value["entries"]
         .as_array()
         .filter(|items| items.len() <= 100_000)
@@ -82,12 +93,13 @@ pub(super) fn display(value: &Value) -> Result<HashMap<String, Value>> {
                 "Invalid or duplicate showcase entry",
             ));
         }
-        let mut normalized = item.clone();
+        let mut normalized = Cow::Borrowed(item);
         for (field, folder) in [("image", "images"), ("thumb", "thumbs")] {
-            let path = match item.get(field) {
-                None | Some(Value::Null) => format!("{folder}/{id}.jpg"),
-                Some(Value::String(value)) if value.is_empty() => format!("{folder}/{id}.jpg"),
-                Some(Value::String(value)) => value.clone(),
+            let path: Cow<'_, str> = match item.get(field) {
+                None | Some(Value::Null) => Cow::Owned(format!("{folder}/{id}.jpg")),
+                Some(Value::String(value)) if value.is_empty() =>
+                    Cow::Owned(format!("{folder}/{id}.jpg")),
+                Some(Value::String(value)) => Cow::Borrowed(value),
                 _ => {
                     return Err(Error::new(
                         "MANIFEST_INVALID",
@@ -101,7 +113,9 @@ pub(super) fn display(value: &Value) -> Result<HashMap<String, Value>> {
                     "Invalid showcase media path",
                 ));
             }
-            normalized[field] = path.into();
+            if let Cow::Owned(path) = path {
+                normalized.to_mut()[field] = path.into();
+            }
         }
         if result.insert(id.to_lowercase(), normalized).is_some() {
             return Err(Error::new("MANIFEST_INVALID", "Duplicate showcase entry"));
@@ -118,8 +132,9 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
             "release.json differs from the SHA256 chosen from the trusted release page",
         ));
     }
-    let value: Value = serde_json::from_slice(&raw)
+    let mut value: Value = serde_json::from_slice(&raw)
         .map_err(|_| Error::new("MANIFEST_INVALID", "Invalid release JSON"))?;
+    drop(raw);
     let id = value["releaseId"]
         .as_str()
         .filter(|id| identifier(id))
@@ -186,7 +201,7 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     } else {
         None
     };
-    let pack = policy::decode(pack_raw.clone(), delta_raw.clone(), &approved)?;
+    let pack = policy::decode(pack_raw, delta_raw, &approved)?;
     if let Some(base) = &baseline
         && pack.delta.as_ref().unwrap()["baseManifest"]["contentIdentity"]
             != base["resourceIdentity"]
@@ -216,8 +231,14 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
             .entries
             .iter()
             .any(|entry| entry.path != "manifest.json" && !media(&entry.path))
-        || showcase.identity() != value["showcase"]["contentIdentity"]
     {
+        return Err(Error::new(
+            "MANIFEST_INVALID",
+            "Invalid showcase paths or identity",
+        ));
+    }
+    let showcase_identity = showcase.identity();
+    if showcase_identity != value["showcase"]["contentIdentity"] {
         return Err(Error::new(
             "MANIFEST_INVALID",
             "Invalid showcase paths or identity",
@@ -225,22 +246,23 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     }
     let showcase_root = options.package.join("showcase");
     let showcase_payload = if incremental {
-        Manifest {
+        Some(Manifest {
             entries: entries(&value["showcase"]["payloadEntries"])?,
-        }
+        })
     } else {
-        showcase.clone()
+        None
     };
+    let payload = showcase_payload.as_ref().unwrap_or(&showcase);
     let showcase_entries = showcase
         .entries
         .iter()
         .map(|entry| (entry.path.as_str(), entry))
         .collect::<HashMap<_, _>>();
-    if !showcase_payload
+    if !payload
         .entries
         .iter()
         .any(|entry| entry.path == "manifest.json")
-        || showcase_payload
+        || payload
             .entries
             .iter()
             .any(|entry| showcase_entries.get(entry.path.as_str()).copied() != Some(entry))
@@ -250,49 +272,55 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
             "Invalid incremental showcase payload",
         ));
     }
+    drop(showcase_entries);
     let display_raw = fs::bytes(&showcase_root.join("manifest.json"), fs::MAX_JSON, false)?;
     let display_value: Value = serde_json::from_slice(&display_raw)
         .map_err(|_| Error::new("MANIFEST_INVALID", "Invalid display manifest"))?;
+    drop(display_raw);
     let mut referenced = HashSet::from(["manifest.json".to_string()]);
     for item in display(&display_value)?.values() {
         for field in ["image", "thumb"] {
             referenced.insert(item[field].as_str().unwrap().into());
         }
     }
-    if referenced
-        != showcase
+    // entries() already rejects duplicate paths.
+    if referenced.len() != showcase.entries.len()
+        || showcase
             .entries
             .iter()
-            .map(|entry| entry.path.clone())
-            .collect()
+            .any(|entry| !referenced.contains(&entry.path))
     {
         return Err(Error::new(
             "MANIFEST_INVALID",
             "Showcase inventory must equal the actual referenced originals and thumbnails",
         ));
     }
+    drop(referenced);
     let inventory = Manifest {
         entries: entries(&value["files"])?,
     };
     let mut expected = vec![Entry {
         path: "pack/manifest.json".into(),
-        bytes: pack_raw.len() as u64,
-        sha256: digest(&pack_raw),
+        bytes: pack.raw.len() as u64,
+        sha256: digest(&pack.raw),
     }];
-    if let Some(raw) = &delta_raw {
+    if let Some(raw) = &pack.delta_raw {
         expected.push(Entry {
             path: "pack/delta.json".into(),
             bytes: raw.len() as u64,
             sha256: digest(raw),
         });
     }
+    drop((pack.raw, pack.delta_raw, pack.delta));
     expected.extend(pack.manifest.entries.iter().map(|entry| Entry {
         path: format!("pack/{}", entry.path),
-        ..entry.clone()
+        bytes: entry.bytes,
+        sha256: entry.sha256.clone(),
     }));
-    expected.extend(showcase_payload.entries.iter().map(|entry| Entry {
+    expected.extend(payload.entries.iter().map(|entry| Entry {
         path: format!("showcase/{}", entry.path),
-        ..entry.clone()
+        bytes: entry.bytes,
+        sha256: entry.sha256.clone(),
     }));
     if !value["catalog"].is_null() {
         let catalog = entries(&json!([value["catalog"]]))?;
@@ -313,16 +341,22 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
             "Release files differ from asset/showcase inventories",
         ));
     }
+    drop(expected);
+    let id = id.to_owned();
+    let app_version = app_version.to_owned();
+    let catalog_entry = value.get_mut("catalog").map(Value::take).unwrap_or(Value::Null);
+    drop(value);
     // The exact union above covers both payloads and their metadata. This
     // traversal checks every path, size and hash; verifying each subtree again
     // would immediately read and hash all payload bytes a second time.
     manifest::verify(&options.package, &inventory, &["release.json"], cancel)?;
-    let catalog = if value["catalog"].is_null() {
+    drop(inventory);
+    let catalog = if catalog_entry.is_null() {
         None
     } else {
         let raw = fs::bytes(&options.package.join("catalog.json"), fs::MAX_JSON, false)?;
-        if digest(&raw) != value["catalog"]["sha256"]
-            || Some(raw.len() as u64) != number(&value["catalog"]["bytes"])
+        if digest(&raw) != catalog_entry["sha256"]
+            || Some(raw.len() as u64) != number(&catalog_entry["bytes"])
         {
             return Err(Error::new(
                 "CONTENT_INVALID",
@@ -341,12 +375,13 @@ pub(super) fn load(options: &Options, cancel: &CancellationToken) -> Result<Rele
     };
     Ok(Release {
         catalog,
-        id: id.into(),
-        app_version: app_version.into(),
+        id,
+        app_version,
         approved,
         assets: pack.manifest,
         showcase_root,
         showcase,
+        showcase_identity,
         showcase_payload,
         baseline,
         display: display_value,

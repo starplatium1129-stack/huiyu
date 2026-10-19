@@ -1,5 +1,5 @@
 use super::*;
-use rusqlite::{OptionalExtension, params};
+use rusqlite::params;
 
 pub(super) struct Operation {
     pub key: String,
@@ -15,10 +15,10 @@ impl Operation {
     pub fn check(&self, kind: &str, input: &Value) -> Result<()> {
         check_input(&self.kind, &self.fingerprint, &self.state, kind, input)
     }
-    pub fn state(&self) -> Value {
+    pub fn into_state(self) -> Value {
         let mut value = json!({"operationId":self.id,"kind":self.kind,"state":self.state,"revision":self.revision});
-        if let Some(receipt) = &self.receipt {
-            value["receipt"] = receipt.clone();
+        if let Some(receipt) = self.receipt {
+            value["receipt"] = receipt;
         }
         value
     }
@@ -46,23 +46,37 @@ fn check_input(
 }
 impl Context {
     pub(super) fn operation(&self, principal: &str, id: &str) -> Result<Option<Operation>> {
-        let row=self.db.prepare_cached("SELECT op_key,kind,operation_id,fingerprint,state,input_json,receipt_json,revision FROM operations WHERE principal_id=? AND operation_id=?")?
-            .query_row(params![principal,id],|r|Ok((r.get::<_,String>(0)?,r.get::<_,String>(1)?,r.get::<_,String>(2)?,r.get::<_,String>(3)?,r.get::<_,String>(4)?,r.get::<_,String>(5)?,r.get::<_,Option<String>>(6)?,r.get::<_,Option<i64>>(7)?))).optional()?;
-        row.map(
-            |(key, kind, id, fingerprint, state, input, receipt, revision)| {
-                Ok(Operation {
-                    key,
-                    kind,
-                    id,
-                    fingerprint,
-                    state,
-                    input: serde_json::from_str(&input)?,
-                    receipt: receipt.map(|s| serde_json::from_str(&s)).transpose()?,
-                    revision,
-                })
-            },
-        )
-        .transpose()
+        let mut statement = self.db.prepare_cached(
+            "SELECT op_key,kind,operation_id,fingerprint,state,input_json,receipt_json,revision FROM operations WHERE principal_id=? AND operation_id=?",
+        )?;
+        let mut rows = statement.query(params![principal, id])?;
+        let Some(row) = rows.next()? else {
+            return Ok(None);
+        };
+        // Decode while SQLite owns both large texts. Recovery still receives
+        // complete input and receipts without allocating encoded String copies.
+        let key = row.get(0)?;
+        let kind = row.get(1)?;
+        let id = row.get(2)?;
+        let fingerprint = row.get(3)?;
+        let state = row.get(4)?;
+        let input = text_column(row, 5)?;
+        let receipt = if matches!(row.get_ref(6)?, rusqlite::types::ValueRef::Null) {
+            None
+        } else {
+            Some(text_column(row, 6)?)
+        };
+        let revision = row.get(7)?;
+        Ok(Some(Operation {
+            key,
+            kind,
+            id,
+            fingerprint,
+            state,
+            input: serde_json::from_str(input)?,
+            receipt: receipt.map(serde_json::from_str).transpose()?,
+            revision,
+        }))
     }
     pub(super) fn insert_operation(
         &self,
@@ -72,16 +86,27 @@ impl Context {
         input: &Value,
     ) -> Result<String> {
         let key = canonical::digest(canonical::stringify(&json!([principal, kind, id])));
-        // Profile writes and their receipts commit in one transaction; recovery
-        // never consumes their prepared input. Keep the fingerprint and exact
-        // historical receipt, without serializing/storing the whole value twice.
-        // Media/artwork operations still need their original input for recovery.
+        // These profile, record and organization writes commit with their
+        // receipts in one transaction. Replay/undo uses fingerprints and receipts,
+        // never their prepared input. Media preparation keeps its complete input
+        // below because verification/recovery still consumes it.
         let stored_input = if matches!(
             kind,
             "profile.saveSetting"
                 | "profile.saveChatRecord"
                 | "profile.saveDraft"
                 | "profile.resetChat"
+                | "appendArtwork"
+                | "saveProject"
+                | "deleteSmartAlbum"
+                | "patchArtwork"
+                | "softDeleteArtwork"
+                | "softDeleteArtworks"
+                | "hardDeleteArtwork"
+                | "purgeExpiredTrash"
+                | "purgeTrash"
+                | "organizeArtworks"
+                | "undoArtworkOrganization"
         ) {
             "null".into()
         } else {

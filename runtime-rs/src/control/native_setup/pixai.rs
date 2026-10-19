@@ -35,30 +35,39 @@ pub(super) fn routes() -> Router<crate::AppState> {
         .route("/api/interrogate/setup/plan", get(get_plan))
         .route("/api/interrogate/setup/prepare", post(prepare))
 }
-fn load_manifest() -> Result<Manifest> {
-    Ok(serde_json::from_str(include_str!(
-        "../../../../tools/interrogate/pixai-manifest.json"
-    ))?)
+fn load_manifest() -> Result<Arc<Manifest>> {
+    static MANIFEST: LazyLock<Result<Arc<Manifest>>> = LazyLock::new(|| {
+        Ok(Arc::new(serde_json::from_str(include_str!(
+            "../../../../tools/interrogate/pixai-manifest.json"
+        ))?))
+    });
+    MANIFEST.as_ref().cloned()
+        .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))
 }
-fn artifacts(manifest: &Manifest) -> Result<Vec<Artifact>> {
-    let mut files: Vec<_> = manifest
-        .files
-        .iter()
-        .map(|file| Artifact {
-            path: format!("model/{}", file.path),
-            url: format!(
-                "https://huggingface.co/{}/resolve/{}/{}",
-                manifest.repo, manifest.revision, file.path
-            ),
-            bytes: file.bytes,
-            sha256: file.sha256.clone(),
-        })
-        .collect();
-    let mut wheel = manifest.timm.file.clone();
-    wheel.path = format!("wheels/{}", wheel.path);
-    files.push(wheel);
-    validate_artifacts(&files)?;
-    Ok(files)
+fn artifacts() -> Result<Arc<Vec<Artifact>>> {
+    static ARTIFACTS: LazyLock<Result<Arc<Vec<Artifact>>>> = LazyLock::new(|| {
+        let manifest = load_manifest()?;
+        let mut files: Vec<_> = manifest
+            .files
+            .iter()
+            .map(|file| Artifact {
+                path: format!("model/{}", file.path),
+                url: format!(
+                    "https://huggingface.co/{}/resolve/{}/{}",
+                    manifest.repo, manifest.revision, file.path
+                ),
+                bytes: file.bytes,
+                sha256: file.sha256.clone(),
+            })
+            .collect();
+        let mut wheel = manifest.timm.file.clone();
+        wheel.path = format!("wheels/{}", wheel.path);
+        files.push(wheel);
+        validate_artifacts(&files)?;
+        Ok(Arc::new(files))
+    });
+    ARTIFACTS.as_ref().cloned()
+        .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))
 }
 fn fingerprint(service: &ControlService) -> String {
     let mut hash = Sha256::new();
@@ -112,14 +121,11 @@ fn same_path(value: &Value, path: &Path) -> bool {
     })
 }
 fn runtime_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
-    let hash = hex::encode(Sha256::digest(include_bytes!(
-        "../../../../tools/inference/managed-runtime.windows-x64.json"
-    )));
     read_receipt(&root.join("runtime-config.json")).is_some_and(|value| {
         value["schemaVersion"] == 1
             && value["engine"] == "native"
             && value["managedRuntimeId"] == runtime.runtime_id
-            && value["manifestSha256"] == hash
+            && value["manifestSha256"] == runtime_manifest_sha256()
             && value["environment"]["cudaAvailable"] == true
             && same_path(&value["root"], root)
             && same_path(&value["python"], &root.join("venv/Scripts/python.exe"))
@@ -150,7 +156,8 @@ impl ControlService {
     async fn pixai_setup_plan(&self) -> Result<Value> {
         let runtime = runtime_bundle()?;
         let manifest = load_manifest()?;
-        let files = artifacts(&manifest)?;
+        let files = artifacts()?;
+        let model_bytes: u64 = files.iter().map(|file| file.bytes).sum();
         let hardware = hardware::local_hardware().await;
         let mut reasons = plan::runtime_support(
             &hardware,
@@ -164,6 +171,7 @@ impl ControlService {
         }
         let config = self.config.clone();
         let runtime_copy = runtime.clone();
+        let manifest_copy = manifest.clone();
         let (free, runtime_installed, required_runtime, retained_model, model_installed, ready) =
             tokio::task::spawn_blocking(move || {
                 let workspace = &config.ai_workspace_root;
@@ -199,7 +207,7 @@ impl ControlService {
                             .is_ok_and(|m| m.is_file() && m.len() == file.bytes)
                     });
                 let document = read_receipt(&config.runtime_root.join("pixai/runtime-config.json"));
-                let expected = expected_paths_from(&config, &runtime_copy, &manifest);
+                let expected = expected_paths_from(&config, &runtime_copy, &manifest_copy);
                 let ready = installed
                     && model_installed
                     && document.is_some_and(|value| {
@@ -224,8 +232,6 @@ impl ControlService {
                 None
             }
         };
-        let manifest = load_manifest()?;
-        let model_bytes: u64 = artifacts(&manifest)?.iter().map(|f| f.bytes).sum();
         let runtime_bytes = if runtime_installed {
             0
         } else {

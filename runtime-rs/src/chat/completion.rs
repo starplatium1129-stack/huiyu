@@ -108,14 +108,19 @@ pub(super) async fn complete_api(
         )
         .await?;
     let response = transport::success(response, 64 * 1024, "AI 上游返回").await?;
-    let value: Value = serde_json::from_slice(&transport::bounded(response, 1024 * 1024).await?)
+    let mut value: Value = serde_json::from_slice(transport::bounded(response, 1024 * 1024).await?.as_ref())
         .map_err(|_| Error::stream("INVALID_UPSTREAM_JSON", "AI 上游返回了无法解析的响应"))?;
     if let Some(error) = compatible::response_error(&value, &api.vendor) {
         return Err(error);
     }
-    value["choices"][0]["message"]["content"]
-        .as_str()
-        .filter(|s| !s.trim().is_empty())
-        .map(str::to_owned)
-        .ok_or_else(|| Error::stream("EMPTY_RESPONSE", "AI 上游返回空内容"))
+    let content = value.get_mut("choices")
+        .and_then(Value::as_array_mut)
+        .and_then(|choices| choices.first_mut())
+        .and_then(|choice| choice.get_mut("message"))
+        .and_then(|message| message.get_mut("content"))
+        .map(Value::take);
+    match content {
+        Some(Value::String(content)) if !content.trim().is_empty() => Ok(content),
+        _ => Err(Error::stream("EMPTY_RESPONSE", "AI 上游返回空内容")),
+    }
 }

@@ -35,11 +35,12 @@ pub(in crate::generation) async fn collect(
     if job.input["family"] == "manga-screen" {
         // Persist observed dimensions/line provenance BEFORE media commits. A
         // restart after the last commit can complete delivery without inference.
-        let metadata = job.state.lock().await.metadata.clone();
-        hooks
-            .checkpoint(json!({"gatewayJobId":job.id, "effectiveInput":job.input,
-            "mangaResultMetadata":metadata}))
-            .await?;
+        let checkpoint = {
+            let metadata = job.state.lock().await.metadata.clone();
+            json!({"gatewayJobId":job.id, "effectiveInput":job.input.as_ref(),
+                "mangaResultMetadata":metadata.as_ref()})
+        };
+        hooks.checkpoint(checkpoint).await?;
     }
     hooks.collect(outputs).await
 }
@@ -77,7 +78,7 @@ pub(super) async fn validate(job: &Job, page: &Path, cancel: &CancellationToken)
     {
         return Err(protocol_error());
     }
-    job.state.lock().await.metadata["lineartResult"] = json!({"width":width,"height":height,
+    Arc::make_mut(&mut job.state.lock().await.metadata)["lineartResult"] = json!({"width":width,"height":height,
         "polarity":"black-on-white","stage":if job.input["operation"]=="lineart"{"extracted"}else{"before-panel"},"validation":"待主力机验证"});
     Ok(())
 }

@@ -1,9 +1,9 @@
 use crate::{config::Config, upstream::local_url};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use serde_json::Value;
-use std::{collections::HashMap, env, path::PathBuf};
+use std::{collections::HashMap, env, path::PathBuf, sync::Arc};
 
-#[derive(Clone, Default, Deserialize, Serialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(super) struct Reference {
     #[serde(default)]
@@ -13,7 +13,7 @@ pub(super) struct Reference {
     #[serde(default)]
     pub prompt_lang: String,
 }
-#[derive(Clone, Default, Deserialize, Serialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub(super) struct Profile {
     #[serde(flatten)]
@@ -37,11 +37,10 @@ impl Profile {
     }
 }
 
-#[derive(Clone)]
 pub(super) struct Settings {
     pub engine: Engine,
     pub tts_host: String,
-    pub profiles: HashMap<String, Profile>,
+    pub profiles: HashMap<String, Arc<Profile>>,
     pub translation_url: String,
     pub translation_port: u16,
     pub python: PathBuf,
@@ -89,9 +88,9 @@ impl Settings {
                 voices
                     .iter()
                     .filter_map(|(id, value)| {
-                        serde_json::from_value(value.clone())
+                        Profile::deserialize(value)
                             .ok()
-                            .map(|profile| (id.clone(), profile))
+                            .map(|profile| (id.clone(), Arc::new(profile)))
                     })
                     .collect()
             })

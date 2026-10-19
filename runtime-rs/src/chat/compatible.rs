@@ -1,7 +1,7 @@
 use super::{
     Duration, Error, Result, persona, request_body,
     settings::Settings,
-    stream::{Prepared, Protocol},
+    stream::{Event, Prepared, Protocol, ToolCall},
     transport::{self, Request, Transport},
     validation::{Api, ApiSource, Input},
 };
@@ -150,7 +150,7 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
     }
     let tools = persona::tools(input.tools, input.web_search);
     if !tools.is_empty() {
-        value["tools"] = json!(tools);
+        value["tools"] = Value::Array(tools);
     }
     value
 }
@@ -175,13 +175,14 @@ pub(super) async fn inspect(client: &Transport, api: &Api) -> Result<Value> {
         )
         .await?;
     let response = transport::success(response, 2 * 1024 * 1024, "API 连接测试返回").await?;
-    let data: Value = serde_json::from_slice(&transport::bounded(response, 2 * 1024 * 1024).await?)
+    let data: Value = serde_json::from_slice(transport::bounded(response, 2 * 1024 * 1024).await?.as_ref())
         .map_err(|_| Error::stream("INVALID_MODEL_LIST", "模型列表不是有效 JSON"))?;
     let items = data["data"]
         .as_array()
         .or_else(|| data["models"].as_array())
         .ok_or_else(|| Error::stream("INVALID_MODEL_LIST", "接口没有返回模型列表"))?;
     let mut models = Vec::new();
+    let mut seen = std::collections::HashSet::new();
     for item in items {
         let id = item
             .as_str()
@@ -193,7 +194,7 @@ pub(super) async fn inspect(client: &Transport, api: &Api) -> Result<Value> {
             || persona::length(id) > 200
             || id.chars().any(char::is_control)
             || (!api.key.is_empty() && id.contains(&api.key))
-            || models.iter().any(|model| model == id)
+            || !seen.insert(id)
         {
             continue;
         }
@@ -202,9 +203,9 @@ pub(super) async fn inspect(client: &Transport, api: &Api) -> Result<Value> {
             break;
         }
     }
-    Ok(
-        json!({"ok":true,"online":true,"vendor":api.vendor,"modelCount":models.len(),"models":models}),
-    )
+    let mut value = json!({"ok":true,"online":true,"vendor":api.vendor,"modelCount":models.len(),"models":null});
+    value["models"] = Value::Array(models.into_iter().map(Value::String).collect());
+    Ok(value)
 }
 fn target(api: &Api, path: &str) -> Result<url::Url> {
     url::Url::parse(&api.base_url)
@@ -231,20 +232,23 @@ impl Decoder {
     pub fn new(vendor: String) -> Self {
         Self { vendor, ..Self::default() }
     }
-    pub fn decode(&mut self, event: &Value) -> Result<Vec<Value>> {
-        if let Some(error) = response_error(event, &self.vendor) {
+    pub fn decode(&mut self, mut event: Value) -> Result<[Option<Event>; 2]> {
+        if let Some(error) = response_error(&event, &self.vendor) {
             return Err(error);
         }
-        let Some(choice) = event["choices"].as_array().and_then(|v| v.first()) else {
-            return Ok(Vec::new());
+        let Some(choice) = event.get_mut("choices").and_then(Value::as_array_mut).and_then(|v| v.first_mut()) else {
+            return Ok([None, None]);
         };
         let source = if choice["delta"]["tool_calls"].is_array() {
-            &choice["delta"]["tool_calls"]
+            "delta"
         } else {
-            &choice["message"]["tool_calls"]
+            "message"
         };
-        if let Some(deltas) = source.as_array() {
-            for (position, delta) in deltas.iter().enumerate() {
+        if let Some(deltas) = choice.get_mut(source)
+            .and_then(|value| value.get_mut("tool_calls"))
+            .and_then(Value::as_array_mut)
+        {
+            for (position, delta) in deltas.iter_mut().enumerate() {
                 let index = match delta.get("index") {
                     None => position,
                     Some(value) => value
@@ -258,19 +262,22 @@ impl Decoder {
                     return Err(Error::stream("STREAM_BUDGET", "工具数量或索引无效"));
                 }
                 let call = self.calls.entry(index).or_default();
-                if let Some(signature) = delta["extra_content"]["google"].get("thought_signature") {
-                    let signature = signature
-                        .as_str()
-                        .filter(|value| !value.is_empty() && value.len() <= 64 * 1024)
-                        .ok_or_else(|| Error::stream("INVALID_SSE", "工具思考签名格式无效"))?;
-                    call.thought_signature = Some(signature.into());
+                if let Some(signature) = delta.get_mut("extra_content")
+                    .and_then(|value| value.get_mut("google"))
+                    .and_then(|value| value.get_mut("thought_signature"))
+                {
+                    let signature = match signature {
+                        Value::String(signature) if !signature.is_empty() && signature.len() <= 64 * 1024 => signature,
+                        _ => return Err(Error::stream("INVALID_SSE", "工具思考签名格式无效")),
+                    };
+                    call.thought_signature = Some(std::mem::take(signature));
                 }
-                if let Some(id) = delta["id"].as_str() {
+                if let Some(Value::String(id)) = delta.get_mut("id") {
                     if persona::length(id) > 128 {
                         return Err(Error::stream("STREAM_BUDGET", "工具 ID 超限"));
                     }
                     if !id.is_empty() {
-                        call.id = id.into();
+                        call.id = std::mem::take(id);
                     }
                 }
                 if let Some(function) = delta.get("function") {
@@ -278,9 +285,12 @@ impl Decoder {
                         return Err(Error::stream("INVALID_SSE", "工具参数格式无效"));
                     }
                     let args = function["arguments"].as_str().unwrap_or("");
-                    let name = persona::string(&function["name"]);
+                    let name_length = match &function["name"] {
+                        Value::String(name) => persona::length(name),
+                        value => persona::length(&persona::string(value)),
+                    };
                     if call.args.len() + args.len() > 4000
-                        || persona::length(&call.name) + persona::length(&name) > 128
+                        || persona::length(&call.name) + name_length > 128
                     {
                         return Err(Error::stream("STREAM_BUDGET", "工具参数超限"));
                     }
@@ -297,31 +307,29 @@ impl Decoder {
         {
             self.terminal = true;
         }
-        let mut events = Vec::new();
-        let reasoning = choice["delta"]["reasoning_content"]
-            .as_str()
-            .or_else(|| choice["delta"]["reasoning"].as_str())
-            .or_else(|| choice["message"]["reasoning_content"].as_str())
-            .or_else(|| choice["message"]["reasoning"].as_str())
-            .unwrap_or("");
+        let mut events = [None, None];
+        let reasoning = take_string(choice.get_mut("delta").and_then(|v| v.get_mut("reasoning_content")))
+            .or_else(|| take_string(choice.get_mut("delta").and_then(|v| v.get_mut("reasoning"))))
+            .or_else(|| take_string(choice.get_mut("message").and_then(|v| v.get_mut("reasoning_content"))))
+            .or_else(|| take_string(choice.get_mut("message").and_then(|v| v.get_mut("reasoning"))))
+            .unwrap_or_default();
         if !reasoning.is_empty() {
             if self.reasoning.len() + reasoning.len() > 20000 {
                 return Err(Error::stream("STREAM_BUDGET", "推理过程超限"));
             }
-            self.reasoning.push_str(reasoning);
-            events.push(json!({"type":"reasoning","content":reasoning}));
+            self.reasoning.push_str(&reasoning);
+            events[0] = Some(Event::Reasoning { content: reasoning });
         }
-        let content = choice["delta"]["content"]
-            .as_str()
-            .or_else(|| choice["message"]["content"].as_str())
-            .or_else(|| choice["text"].as_str())
-            .unwrap_or("");
+        let content = take_string(choice.get_mut("delta").and_then(|v| v.get_mut("content")))
+            .or_else(|| take_string(choice.get_mut("message").and_then(|v| v.get_mut("content"))))
+            .or_else(|| take_string(choice.get_mut("text")))
+            .unwrap_or_default();
         if !content.is_empty() {
-            events.push(json!({"type":"token","content":content}));
+            events[1] = Some(Event::Token { content });
         }
         Ok(events)
     }
-    pub fn finish(&self) -> Result<Vec<Value>> {
+    pub fn finish(&mut self) -> Result<Vec<Event>> {
         // Validate the entire batch before publishing any effectful tool request.
         for call in self.calls.values() {
             if call.id.is_empty() || !persona::known_tool(&call.name) {
@@ -331,13 +339,32 @@ impl Decoder {
                 return Err(Error::stream("INVALID_SSE", "工具参数不完整"));
             }
         }
-        let mut events = self.calls.iter().map(|(index, call)| {
-            let mut event = json!({"type":"tool-call","index":index,"id":call.id,"name":call.name,"arguments":call.args,"reasoning":self.reasoning});
-            if let Some(signature) = &call.thought_signature { event["thoughtSignature"] = json!(signature); }
-            event
-        }).collect::<Vec<_>>();
-        events.push(json!({"type":"done"}));
+        let count = self.calls.len();
+        let mut events = Vec::with_capacity(count + 1);
+        for (position, (index, call)) in std::mem::take(&mut self.calls).into_iter().enumerate() {
+            let reasoning = if position + 1 == count {
+                std::mem::take(&mut self.reasoning)
+            } else {
+                self.reasoning.clone()
+            };
+            events.push(Event::ToolCall(Box::new(ToolCall {
+                index,
+                id: call.id,
+                name: call.name,
+                arguments: call.args,
+                reasoning,
+                thought_signature: call.thought_signature,
+            })));
+        }
+        events.push(Event::Done);
         Ok(events)
+    }
+}
+
+fn take_string(value: Option<&mut Value>) -> Option<String> {
+    match value? {
+        Value::String(value) => Some(std::mem::take(value)),
+        _ => None,
     }
 }
 

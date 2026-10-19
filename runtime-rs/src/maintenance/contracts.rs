@@ -5,7 +5,7 @@ mod references;
 
 use super::{Error, Result, fs};
 use serde_json::{Value, json};
-use std::{collections::HashSet, path::Path};
+use std::{borrow::Cow, collections::HashSet, path::Path};
 
 struct DataRoot<'a> {
     path: &'a Path,
@@ -37,9 +37,7 @@ pub(crate) fn validate_with(
         read(root, "data/loras.json"),
         read(root, "data/scenes.json"),
     ) {
-        (Ok(characters), Ok(loras), Ok(scenes)) => {
-            Some(json!({"characters":characters,"loras":loras,"scenes":scenes}))
-        }
+        (Ok(characters), Ok(loras), Ok(scenes)) => Some((characters, loras, scenes)),
         results => {
             for result in [results.0, results.1, results.2] {
                 if let Err(error) = result {
@@ -49,8 +47,8 @@ pub(crate) fn validate_with(
             None
         }
     };
-    if let Some(data) = &data {
-        core::validate(root, data, &mut issues);
+    if let Some((characters, loras, scenes)) = &data {
+        core::validate(root, characters, loras, scenes, &mut issues);
     }
     popular::validate(root, &mut issues);
     artifacts::validate(root, &mut issues);
@@ -60,19 +58,21 @@ pub(crate) fn validate_with(
         error.extra = json!({"stage":"validate-content-contracts","issues":issues}).into();
         return Err(error);
     }
-    let data = data.unwrap();
+    let (characters, loras, scenes) = data.unwrap();
     Ok(
-        json!({"stage":"validate-content-contracts","characters":list(&data["characters"]).len(),"loras":list(&data["loras"]).len(),"scenes":list(&data["scenes"]).len(),"referenceAudit":reference}),
+        json!({"stage":"validate-content-contracts","characters":list(&characters).len(),"loras":list(&loras).len(),"scenes":list(&scenes).len(),"referenceAudit":reference}),
     )
 }
-fn read(root: &DataRoot, relative: &str) -> std::result::Result<Value, String> {
+fn read<'a>(root: &'a DataRoot<'_>, relative: &str) -> std::result::Result<Cow<'a, Value>, String> {
     if let Some(value) = root.overrides.get(relative) {
-        return Ok(value.clone());
+        return Ok(Cow::Borrowed(value));
     }
     std::fs::read(root.join(relative))
         .map_err(|e| format!("{relative} is missing or unreadable: {e}"))
         .and_then(|bytes| {
-            serde_json::from_slice(&bytes).map_err(|e| format!("{relative} cannot be parsed: {e}"))
+            serde_json::from_slice(&bytes)
+                .map(Cow::Owned)
+                .map_err(|e| format!("{relative} cannot be parsed: {e}"))
         })
 }
 fn list(value: &Value) -> &[Value] {

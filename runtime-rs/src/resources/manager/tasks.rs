@@ -140,7 +140,7 @@ pub(super) fn start(
         }
     }
     if matches!(action, "import" | "download") || resume.is_some() {
-        policy::release(&ctx, release.as_deref().unwrap_or(""))?;
+        policy::approved(&ctx, release.as_deref().unwrap_or(""))?;
     }
     // Admission commits after read-only checks. Close can signal while refresh
     // holds the lock; reject before creating a lease or writing task state.

@@ -1,4 +1,5 @@
 use super::{Duration, Error, Result};
+use crate::byte_buffer::Buffer;
 use axum::body::Bytes;
 use futures_util::StreamExt;
 use std::{
@@ -88,7 +89,7 @@ impl Transport {
     }
 }
 
-pub(super) async fn bounded(response: reqwest::Response, limit: usize) -> Result<Vec<u8>> {
+pub(super) async fn bounded(response: reqwest::Response, limit: usize) -> Result<Buffer> {
     if response.content_length().is_some_and(|n| n > limit as u64) {
         return Err(Error::stream(
             "RESPONSE_TOO_LARGE",
@@ -96,16 +97,16 @@ pub(super) async fn bounded(response: reqwest::Response, limit: usize) -> Result
         ));
     }
     let mut stream = response.bytes_stream();
-    let mut bytes = Vec::new();
+    let mut bytes = Buffer::Chunk(Bytes::new());
     while let Some(chunk) = stream.next().await {
         let chunk = chunk.map_err(network_error)?;
-        if bytes.len().saturating_add(chunk.len()) > limit {
+        if bytes.as_ref().len().saturating_add(chunk.len()) > limit {
             return Err(Error::stream(
                 "RESPONSE_TOO_LARGE",
                 "Upstream response exceeded the size limit",
             ));
         }
-        bytes.extend_from_slice(&chunk);
+        bytes.append(chunk, 0);
     }
     Ok(bytes)
 }
@@ -122,7 +123,7 @@ pub(super) async fn success(
     // Providers may echo authorization headers, keys, or credential-bearing URLs.
     // Only recognize known error types; never publish/log upstream error bodies.
     let bytes = bounded(response, limit).await?;
-    let body = serde_json::from_slice::<serde_json::Value>(&bytes).unwrap_or_default();
+    let body = serde_json::from_slice::<serde_json::Value>(bytes.as_ref()).unwrap_or_default();
     Err(upstream_error(status, &vendor, body.get("error").unwrap_or(&body), message))
 }
 
@@ -283,6 +284,7 @@ fn no_proxy(host: &str, value: &str) -> bool {
     if ["localhost", "127.0.0.1", "::1", "[::1]"].contains(&host) {
         return true;
     }
+    let mut lower_host = None;
     value
         .split(',')
         .map(str::trim)
@@ -298,18 +300,18 @@ fn no_proxy(host: &str, value: &str) -> bool {
                     .and_then(|v| v.host_str().map(str::to_owned))
                     .unwrap_or_default();
             }
-            item = item
+            let item = item
                 .trim_start_matches("*.")
-                .trim_start_matches('.')
-                .to_owned();
-            if !item.contains(']')
-                && let Some((without, _)) = item.rsplit_once(':')
-            {
-                item = without.to_owned();
-            }
+                .trim_start_matches('.');
+            let item = if !item.contains(']') {
+                item.rsplit_once(':').map_or(item, |(without, _)| without)
+            } else {
+                item
+            };
             !item.is_empty()
-                && (host.eq_ignore_ascii_case(&item)
-                    || host.to_lowercase().ends_with(&format!(".{item}")))
+                && (host.eq_ignore_ascii_case(item)
+                    || lower_host.get_or_insert_with(|| host.to_lowercase())
+                        .strip_suffix(item).is_some_and(|prefix| prefix.ends_with('.')))
         })
 }
 fn proxy(target: &Url) -> Option<Url> {

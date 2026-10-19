@@ -164,6 +164,7 @@ fn execute(options: &Options, cancel: &CancellationToken) -> Result<Value> {
     if !options.apply {
         return Ok(preview);
     }
+    drop((release, preview));
     let _guard = session(&options.runtime)?;
     config::cancelled(cancel)?;
     // Re-read approval and every source file after admission, before any install.

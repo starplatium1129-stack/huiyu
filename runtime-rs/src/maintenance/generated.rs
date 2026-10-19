@@ -107,21 +107,26 @@ pub(super) fn validate(scene: &Value, blueprint: bool) -> Result<bool> {
                 Some("single" | "group" | "triptych")
             )
             || (recipe["engine"] == "krea2"
-                && (scene["promptProse"] != recipe["prompt"] || scene["promptTokens"] != json!([])))
+                && (scene["promptProse"] != recipe["prompt"]
+                    || scene["promptTokens"].as_array().map(Vec::as_slice) != Some(&[] as &[Value])))
             || (recipe["engine"] != "krea2"
-                && (scene["promptTokens"] != json!([recipe["prompt"]])
+                && (scene["promptTokens"].as_array().map(Vec::as_slice)
+                    != Some(std::slice::from_ref(&recipe["prompt"]))
                     || scene["promptProse"] != ""))
-            || scene["negativeTokens"]
-                != if recipe["negative"] == "" {
-                    json!([])
+            || scene["negativeTokens"].as_array().map(Vec::as_slice)
+                != Some(if recipe["negative"] == "" {
+                    &[] as &[Value]
                 } else {
-                    json!([recipe["negative"]])
-                }
+                    std::slice::from_ref(&recipe["negative"])
+                })
         {
             return Err(fail());
         }
         let classified = prompt::rating(
-            &json!({"title":scene["title"],"story":format!("{} {}", scene["description"].as_str().unwrap_or(""), recipe["prompt"].as_str().unwrap()),"prompt":recipe["prompt"],"tags":scene["sceneTags"]}),
+            scene["title"].as_str().unwrap(),
+            scene["description"].as_str().unwrap_or(""),
+            recipe["prompt"].as_str().unwrap(),
+            scene["sceneTags"].as_array().unwrap(),
         );
         if !matches!(scene["sampleRating"].as_str(), Some("All" | "R15" | "R18"))
             || scene["adult"] != json!(scene["sampleRating"] == "R18")

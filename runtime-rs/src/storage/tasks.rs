@@ -6,7 +6,8 @@ mod result_reference;
 mod retry;
 mod scopes;
 
-pub(super) use result_reference::ResultReference;
+pub(super) use result_reference::{ResultReference, read as read_result_reference};
+pub(super) use listing::{RecoveryPage, recovery as read_recovery_page};
 pub(super) use scopes::initialize;
 
 pub(super) mod outputs;
@@ -17,6 +18,7 @@ use crate::task_contract::{
 };
 use canonical::stringify;
 use rusqlite::{OptionalExtension, params};
+use serde::Deserialize;
 
 fn read(
     c: &Context,
@@ -49,11 +51,15 @@ fn require(c: &Context, principal: &str, task_id: &str) -> Result<TaskRecord> {
     read(c, principal, Some(task_id), None)?
         .ok_or_else(|| ApiError::new(404, "TASK_NOT_FOUND", "Task does not exist"))
 }
+pub(super) enum RecordKey {
+    Id(String),
+    Request(String),
+}
 // Runtime consumers already use TaskRecord; keep JSON at the external boundary.
 pub(super) fn read_record(
     c: &Context,
     principal: &str,
-    task_id: &str,
+    key: &RecordKey,
 ) -> Result<Option<TaskRecord>> {
     c.check_cancel()?;
     if principal.is_empty() {
@@ -63,7 +69,10 @@ pub(super) fn read_record(
             "Desktop principal is required",
         ));
     }
-    read(c, principal, Some(task_id), None)
+    match key {
+        RecordKey::Id(id) => read(c, principal, Some(id), None),
+        RecordKey::Request(key) => read(c, principal, None, Some(key)),
+    }
 }
 fn write(c: &Context, mut task: TaskRecord) -> Result<Value> {
     task.revision = c.next_revision()?;
@@ -105,9 +114,6 @@ pub(super) fn read_revision(c: &Context, principal: &str, task_id: &str) -> Resu
 
 pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     let kind = string(command, "kind")?;
-    if kind == "task.result.reference" {
-        return result_reference::read(c, principal, command);
-    }
     if kind.starts_with("task.result.import.") {
         return result_reference::import(c, principal, command);
     }
@@ -120,7 +126,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
     if kind == "task.legacy-history" {
         return history::read(c, principal);
     }
-    let command = serde_json::from_value(command.clone())
+    let command = TaskCommand::deserialize(command)
         .map_err(|_| invalid("Invalid task command fields"))?;
     execute_command(c, principal, command)
 }

@@ -25,7 +25,10 @@ pub(super) async fn local_hardware() -> Value {
         } else {
             Vec::new()
         };
-        json!({"ramBytes":system_ram(),"devices":devices,"otherDevices":other_devices,"windowsBuild":windows_build()})
+        let mut value = json!({"ramBytes":system_ram(),"devices":null,"otherDevices":null,"windowsBuild":windows_build()});
+        value["devices"] = Value::Array(devices);
+        value["otherDevices"] = Value::Array(other_devices);
+        value
     }
     #[cfg(not(windows))]
     {
@@ -106,10 +109,13 @@ fn windows_build() -> Option<u32> {
 #[cfg(windows)]
 fn parse_nvidia(text: &str) -> Vec<Value> {
     text.lines().filter_map(|line| {
-        let values: Vec<_> = line.split(',').map(str::trim).collect();
-        if values.len() != 5 { return None; }
+        let mut values = line.split(',').map(str::trim);
+        let (name, total, free, driver, compute) = (
+            values.next()?, values.next()?, values.next()?, values.next()?, values.next()?,
+        );
+        if values.next().is_some() { return None; }
         let mib = |value: &str| value.parse::<u64>().ok().and_then(|n| n.checked_mul(1024 * 1024));
-        Some(json!({"name":values[0],"type":"cuda","vramBytes":mib(values[1]),"freeVramBytes":mib(values[2]),"driverVersion":values[3],"computeCapability":values[4]}))
+        Some(json!({"name":name,"type":"cuda","vramBytes":mib(total),"freeVramBytes":mib(free),"driverVersion":driver,"computeCapability":compute}))
     }).collect()
 }
 

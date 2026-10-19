@@ -109,7 +109,7 @@ async fn save(
         let input: Value =
             serde_json::from_slice(&upload_bytes).map_err(|_| invalid("无效 JSON"))?;
         drop(upload_bytes);
-        store::save(&app.config, &input, &cancel)
+        store::save(&app.config, input, &cancel)
     })
     .await?;
     Ok(([("cache-control", "no-store")], Json(value)).into_response())

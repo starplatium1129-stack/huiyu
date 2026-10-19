@@ -46,7 +46,9 @@ impl Memberships {
                     live: row.get(3)?,
                 });
             }
-            let retained = self
+            // Clean snapshots can be released. Dirty rows must stay until the
+            // final flush; 8 MiB/32 albums is a soft limit, not a dirty-row cap.
+            if self.albums.len() >= 32 || self
                 .albums
                 .iter()
                 .map(|(key, album)| {
@@ -58,10 +60,7 @@ impl Memberships {
                             .map(|row| row.key.capacity())
                             .sum::<usize>()
                 })
-                .sum::<usize>();
-            // Clean snapshots can be released. Dirty rows must stay until the
-            // final flush; 8 MiB/32 albums is a soft limit, not a dirty-row cap.
-            if self.albums.len() >= 32 || retained > 8 * 1024 * 1024 {
+                .sum::<usize>() > 8 * 1024 * 1024 {
                 self.albums.retain(|_, album| album.suffix.is_some());
             }
             self.albums.insert(
@@ -109,10 +108,9 @@ impl Memberships {
         references.sort_unstable_by_key(|(order, _)| *order);
         Ok(references.into_iter().map(|(_, value)| value).collect())
     }
-    fn replace(&mut self, c: &Context, album: &str, key: &str, next: Option<usize>) -> Result<()> {
+    fn replace(&mut self, c: &Context, album: &str, key: &str, previous: Option<usize>, next: Option<usize>) -> Result<()> {
         let write = self.write + 1;
         let current = self.album(c, album)?;
-        let previous = current.rows.iter().position(|row| row.key == key);
         if previous == next || current.id.is_none() {
             return Ok(());
         }
@@ -212,7 +210,7 @@ fn state(
     let mut value = json!({});
     if project {
         value["project"] = field(&art["body"], "project");
-        value["memberships"] = json!(members.references(c, &entity_key(&art["id"])?)?);
+        value["memberships"] = Value::Array(members.references(c, &entity_key(&art["id"])?)?);
     }
     if tags {
         value["collectionTags"] = field(&art["body"], "collectionTags");
@@ -245,11 +243,11 @@ fn tag_list(value: Option<&Value>) -> Result<Vec<String>> {
 fn replace_memberships(
     c: &Context,
     key: &str,
+    before: &[Value],
     references: &[Value],
     members: &mut Memberships,
     affected: &mut BTreeSet<String>,
 ) -> Result<()> {
-    let before = members.references(c, key)?;
     let albums = before
         .iter()
         .chain(references)
@@ -272,7 +270,7 @@ fn replace_memberships(
             None
         };
         if previous != next {
-            members.replace(c, &album, key, next)?;
+            members.replace(c, &album, key, previous, next)?;
             affected.insert(album);
         }
     }
@@ -304,13 +302,13 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
     let project = match command.get("projectId") {
         None | Some(Value::Null) => None,
         Some(id) => Some(
-            records::project(c, &entity_key(id)?)?
+            records::project_header(c, &entity_key(id)?)?
                 .ok_or_else(|| ApiError::new(404, "NOT_FOUND", "Album no longer exists"))?,
         ),
     };
     if project
         .as_ref()
-        .is_some_and(|row| row["body"].get("smartRule").is_some())
+        .is_some_and(|row| row.smart)
     {
         return Err(invalid(
             "Smart albums collect artwork by conditions; edit the album rule",
@@ -345,7 +343,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
         let before = state(c, &art, project_change, tags_change, &members)?;
         if project_change {
             let refs = if let Some(project) = &project {
-                let project_key = entity_key(&project["id"])?;
+                let project_key = entity_key(&project.id)?;
                 let target = members.album(c, &project_key)?;
                 let position = target
                     .rows
@@ -355,7 +353,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                 // The recipe project field is text; album IDs retain their
                 // original JSON type in project rows and membership arrays.
                 art["body"]["project"] = json!(project_key);
-                vec![json!({"projectId":project["id"],"position":position})]
+                vec![json!({"projectId":project.id,"position":position})]
             } else {
                 art["body"]
                     .as_object_mut()
@@ -363,7 +361,7 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                     .remove("project");
                 Vec::new()
             };
-            replace_memberships(c, &key, &refs, &mut members, &mut affected)?;
+            replace_memberships(c, &key, before["memberships"].as_array().unwrap(), &refs, &mut members, &mut affected)?;
         }
         if tags_change {
             let mut tags: Vec<String> = art["body"]["collectionTags"]
@@ -396,7 +394,10 @@ fn organize(c: &Context, command: &Value, revision: i64) -> Result<Vec<Value>> {
                 "UPDATE artworks SET body=?,revision=? WHERE id_key=?",
                 params![stringify(&art["body"]), revision, key],
             )?;
-            changes.push(json!({"id":art["id"],"before":before,"after":after}));
+            let mut change = json!({"id":art["id"],"before":null,"after":null});
+            change["before"] = before;
+            change["after"] = after;
+            changes.push(change);
         }
     }
     members.flush(c)?;
@@ -444,15 +445,17 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
                 .get(name)
                 .is_some_and(|value| field(&art["body"], name) != *value)
         });
+        let current_refs = after.get("memberships").and_then(Value::as_array)
+            .map(|_| members.references(c, &key)).transpose()?;
         let changed_memberships = match after.get("memberships").and_then(Value::as_array) {
-            Some(refs) => !same_albums(&members.references(c, &key)?, refs)?,
+            Some(refs) => !same_albums(current_refs.as_deref().unwrap(), refs)?,
             None => false,
         };
         let old_refs = before.get("memberships").and_then(Value::as_array);
         let missing_album = old_refs.is_some_and(|refs| {
             refs.iter().any(|reference| {
                 entity_key(&reference["projectId"])
-                    .and_then(|key| records::project(c, &key))
+                    .and_then(|key| records::project_header(c, &key))
                     .is_ok_and(|project| project.is_none())
             })
         });
@@ -473,7 +476,11 @@ fn undo(c: &Context, principal: &str, command: &Value, revision: i64) -> Result<
             }
         }
         if let Some(refs) = old_refs {
-            replace_memberships(c, &key, refs, &mut members, &mut affected)?;
+            let current = match current_refs {
+                Some(current) => current,
+                None => members.references(c, &key)?,
+            };
+            replace_memberships(c, &key, &current, refs, &mut members, &mut affected)?;
         }
         c.db.execute(
             "UPDATE artworks SET body=?,revision=? WHERE id_key=?",
@@ -496,9 +503,10 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         }
         let revision = c.next_revision()?;
         let kind = string(command, "kind")?;
-        let mut receipt = match kind {
-            "organizeArtworks" => json!({"changes":organize(c, command, revision)?}),
-            "undoArtworkOrganization" => undo(c, principal, command, revision)?,
+        let mut receipt = json!({});
+        match kind {
+            "organizeArtworks" => receipt["changes"] = Value::Array(organize(c, command, revision)?),
+            "undoArtworkOrganization" => receipt = undo(c, principal, command, revision)?,
             _ => return Err(invalid("Unknown artwork organization command")),
         };
         receipt["operationId"] = command["operationId"].clone();

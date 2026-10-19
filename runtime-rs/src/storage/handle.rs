@@ -109,11 +109,45 @@ impl Storage {
         task_id: &str,
         principal: &str,
     ) -> Result<Option<crate::task_contract::TaskRecord>> {
+        self.task_record_lookup(tasks::RecordKey::Id(task_id.into()), principal)
+            .await
+    }
+    pub(crate) async fn task_record_by_request(
+        &self,
+        request_key: &str,
+        principal: &str,
+    ) -> Result<Option<crate::task_contract::TaskRecord>> {
+        self.task_record_lookup(tasks::RecordKey::Request(request_key.into()), principal)
+            .await
+    }
+    async fn task_record_lookup(
+        &self,
+        key: tasks::RecordKey,
+        principal: &str,
+    ) -> Result<Option<crate::task_contract::TaskRecord>> {
         let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
         let (reply, result) = oneshot::channel();
         self.sender
             .send(Work::TaskRecord(
-                task_id.into(),
+                key,
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| unavailable())?
+    }
+    pub(crate) async fn task_recovery_page(
+        &self,
+        query: crate::task_contract::TaskListQuery,
+        principal: &str,
+    ) -> Result<tasks::RecoveryPage> {
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply, result) = oneshot::channel();
+        self.sender
+            .send(Work::TaskRecoveryPage(
+                query,
                 principal.into(),
                 cancel.0.clone(),
                 reply,
@@ -128,13 +162,19 @@ impl Storage {
         index: u64,
         principal: &str,
     ) -> Result<tasks::ResultReference> {
-        let value = self
-            .request(
-                json!({"kind":"task.result.reference","taskId":task_id,"index":index}),
-                principal,
-            )
-            .await?;
-        serde_json::from_value(value).map_err(Into::into)
+        let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+        let (reply, result) = oneshot::channel();
+        self.sender
+            .send(Work::TaskResultReference(
+                task_id.into(),
+                index,
+                principal.into(),
+                cancel.0.clone(),
+                reply,
+            ))
+            .await
+            .map_err(|_| unavailable())?;
+        result.await.map_err(|_| unavailable())?
     }
     pub(crate) async fn task_revision(
         &self,

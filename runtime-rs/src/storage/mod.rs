@@ -37,7 +37,7 @@ use std::{
 };
 use tokio::sync::{OwnedSemaphorePermit, mpsc, oneshot};
 
-pub(crate) use canonical::stringify;
+pub(crate) use canonical::{digest_object as json_object_digest, stringify, stringify_equal, stringify_object};
 pub use media::Media;
 pub(crate) use verification::OpenedMedia;
 
@@ -78,16 +78,29 @@ enum Work {
         oneshot::Sender<Result<Value>>,
     ),
     TaskRecord(
-        String,
+        tasks::RecordKey,
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Option<crate::task_contract::TaskRecord>>>,
+    ),
+    TaskRecoveryPage(
+        crate::task_contract::TaskListQuery,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<tasks::RecoveryPage>>,
     ),
     TaskRevision(
         String,
         String,
         Arc<AtomicBool>,
         oneshot::Sender<Result<Option<i64>>>,
+    ),
+    TaskResultReference(
+        String,
+        u64,
+        String,
+        Arc<AtomicBool>,
+        oneshot::Sender<Result<tasks::ResultReference>>,
     ),
     Request(
         Value,
@@ -97,7 +110,7 @@ enum Work {
         Option<OwnedSemaphorePermit>,
     ),
     ArtworkRead(
-        Value,
+        Arc<Value>,
         String,
         Arc<AtomicBool>,
         Option<artwork_search::Search>,
@@ -159,7 +172,6 @@ impl Context {
                     | "task.get"
                     | "task.legacy-history"
                     | "task.input.get"
-                    | "task.result.reference"
             ) {
                 self.writer()?;
             }
@@ -244,7 +256,7 @@ impl Context {
             | "listProjects" => records::read(self, command),
             "getOperation" => self
                 .operation(principal, string(command, "operationId")?)?
-                .map(|row| saves::state(self, &row, false))
+                .map(|row| saves::state(self, row, false))
                 .transpose()
                 .map(|value| value.unwrap_or(Value::Null)),
             "patchArtwork" | "softDeleteArtwork" | "softDeleteArtworks" | "hardDeleteArtwork"
@@ -356,7 +368,6 @@ fn is_read(kind: &str) -> bool {
             | "task.get"
             | "task.legacy-history"
             | "task.input.get"
-            | "task.result.reference"
             | "migration.status"
     )
 }

@@ -216,11 +216,11 @@ impl ControlService {
                 "runtime":{"id":runtime.runtime_id,"label":"CPython 3.11.9 · PyTorch 2.8.0 CUDA 12.8",
                     "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoverableBytes":recoverable,"recoveryReady":recovery_ready,"sources":runtime.sources,
                     "installed":runtime_ready,"python":discovered.python},"models":model_views,
-                "activeEngine":active.engine,"configuredEngine":configured.engine,"restartRequired":active != configured,
+                "activeEngine":active.engine,"configuredEngine":configured.engine,"restartRequired":active != &configured,
                 "workspaceMatches":workspace_matches,
                 "steps":{"runtime":if runtime_ready{"installed"}else{"not-downloaded"},
                     "model":if model_ready{"verified"}else{"not-downloaded-or-incomplete"},
-                    "engine":if reasons.is_empty() && active == configured && active.engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
+                    "engine":if reasons.is_empty() && active == &configured && active.engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
                 "validation":"组件和安装记录检查；启用前会重新核对完整 SHA-256 与依赖，真实生成仍需验收"}),
             )
         })
@@ -243,12 +243,9 @@ pub(super) fn recoverable_runtime(root: &Path, runtime: &RuntimeBundle) -> u64 {
     let Some(owner) = owner else {
         return 0;
     };
-    let hash = hex::encode(Sha256::digest(include_bytes!(
-        "../../../../tools/inference/managed-runtime.windows-x64.json"
-    )));
     if owner["schemaVersion"] != 1
         || owner["runtimeId"] != runtime.runtime_id
-        || owner["manifestSha256"] != hash
+        || owner["manifestSha256"] != runtime_manifest_sha256()
         || !owner["targetRoot"]
             .as_str()
             .is_some_and(|path| Path::new(path) == root.join(&runtime.runtime_id))
@@ -303,14 +300,11 @@ pub(super) fn candidate_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
         .ok()
         .filter(|bytes| bytes.len() < 65536)
         .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
-    let hash = hex::encode(Sha256::digest(include_bytes!(
-        "../../../../tools/inference/managed-runtime.windows-x64.json"
-    )));
     value.is_some_and(|value| {
         value["schemaVersion"] == 1
             && value["engine"] == "native"
             && value["managedRuntimeId"] == runtime.runtime_id
-            && value["manifestSha256"] == hash
+            && value["manifestSha256"] == runtime_manifest_sha256()
             && value["environment"]["cudaAvailable"] == true
             && value["root"]
                 .as_str()

@@ -36,10 +36,16 @@ pub use workflow::build as build_workflow;
 // Each image service owns its upload admission budget.
 
 pub struct Prepared {
-    pub input: Value,
-    pub provider: String,
     backend: generation::Prepared,
     originals: Vec<inputs::Original>,
+}
+impl Prepared {
+    pub(crate) fn input(&self) -> &Value {
+        &self.backend.input
+    }
+    pub(crate) fn provider(&self) -> &str {
+        &self.backend.provider
+    }
 }
 pub struct Service {
     backend: Arc<generation::Service>,
@@ -152,6 +158,7 @@ impl Service {
         }
         let (prepared, originals) = if self.native {
             let input = native::normalize(&raw, input)?;
+            drop(raw);
             // Admission covers original-image buffers and model preparation,
             // not only jobs already queued for the resident worker.
             let permit = self.backend.reserve_native(&cancel)?;
@@ -161,6 +168,7 @@ impl Service {
             let prepared = self.backend.prepare_native(plan, permit, &cancel)?;
             (prepared, originals)
         } else {
+            drop(raw);
             let plan = resources::plan(&self.config, input).await?;
             let prepared = self.backend.prepare_comfy(plan, cancel.clone()).await?;
             let originals =
@@ -169,8 +177,6 @@ impl Service {
             (prepared, originals)
         };
         Ok(Prepared {
-            input: prepared.input.clone(),
-            provider: prepared.provider.clone(),
             backend: prepared,
             originals,
         })

@@ -15,9 +15,11 @@ impl Catalog {
         if snapshot["version"] != 1 {
             return Err(ApiError::invalid("快照版本无效"));
         }
-        let records: Vec<Record> = serde_json::from_value(snapshot["records"].clone())?;
-        let retired: Vec<Record> =
-            serde_json::from_value(snapshot.get("retired").cloned().unwrap_or(json!([])))?;
+        let records = Vec::<Record>::deserialize(&snapshot["records"])?;
+        let retired = match snapshot.get("retired") {
+            Some(value) => Vec::<Record>::deserialize(value)?,
+            None => Vec::new(),
+        };
         if records.is_empty() && retired.is_empty() {
             return Err(ApiError::invalid("快照不能为空"));
         }
@@ -48,20 +50,18 @@ impl Catalog {
                 .optional()?;
             let base = seed_query
                 .query_row(params![incoming.kind, incoming.id], |r| {
-                    Ok((r.get::<_, String>(0)?, r.get::<_, bool>(1)?))
+                    Ok((serde_json::from_str::<Record>(text_column(r, 0)?), r.get::<_, bool>(1)?))
                 })
                 .optional()?
-                .map(|(text, removed)| -> Result<_> {
-                    Ok((serde_json::from_str::<Record>(&text)?, removed))
-                })
+                .map(|(record, removed)| record.map(|record| (record, removed)))
                 .transpose()?;
             let equal = current
                 .as_ref()
                 .is_some_and(|(r, old_removed)| same(r, incoming) && *old_removed == removed);
-            let untouched = current.as_ref().zip(base.as_ref()).is_some_and(
+            let untouched = !equal && current.as_ref().zip(base.as_ref()).is_some_and(
                 |((r, old_removed), (b, base_removed))| same(r, b) && old_removed == base_removed,
             );
-            let incoming_unchanged = base
+            let incoming_unchanged = !equal && base
                 .as_ref()
                 .is_some_and(|(b, base_removed)| same(b, incoming) && *base_removed == removed);
             // Preserve the complete local record, including metadata, on repeat
@@ -70,9 +70,9 @@ impl Catalog {
             if preserve_local
                 && !equal
                 && !untouched
-                && let Some(current) = &current
+                && let Some(current) = current
             {
-                preserved.push(current.clone());
+                preserved.push(current);
                 continue;
             }
             let created_at = current
@@ -105,12 +105,12 @@ impl Catalog {
                 });
             } else if created_at.is_some() && current.as_ref().is_some_and(|(_, removed)| !*removed)
             {
-                let record = &current.as_ref().unwrap().0;
+                let record = current.unwrap().0;
                 changes.push(Change {
-                    kind: record.kind.clone(),
-                    id: record.id.clone(),
+                    kind: record.kind,
+                    id: record.id,
                     expected_revision: record.revision,
-                    data: Some(record.data.clone()),
+                    data: Some(record.data),
                     patch: None,
                     sort_order: None,
                     created_at,

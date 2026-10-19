@@ -27,7 +27,7 @@ pub(super) fn initialize(db: &Connection) -> Result<()> {
     Ok(())
 }
 
-fn anchor(terms: &[&str]) -> (&'static str, String) {
+fn anchor(terms: &[String]) -> (&'static str, String) {
     if let Some(term) = terms
         .iter()
         .filter(|term| !term.contains('\0') && term.chars().nth(2).is_some())
@@ -38,17 +38,18 @@ fn anchor(terms: &[&str]) -> (&'static str, String) {
         // and force a full scan even when the complete query is selective.
         // Each token stays exactly three Unicode characters for detail=none;
         // all are necessary conditions, with contains still the final match.
-        let mut trigrams = BTreeSet::from([term.chars().take(3).collect::<String>()]);
+        let prefix_end = term.char_indices().nth(3).map_or(term.len(), |(index, _)| index);
+        let mut trigrams = BTreeSet::from([term[..prefix_end].to_owned()]);
         for term in terms
             .iter()
             .filter(|term| !term.contains('\0') && term.chars().nth(2).is_some())
         {
-            let suffix = term.chars().rev().take(3).collect::<Vec<_>>();
-            for trigram in [
-                term.chars().take(3).collect::<String>(),
-                suffix.into_iter().rev().collect(),
-            ] {
-                trigrams.insert(trigram);
+            let prefix_end = term.char_indices().nth(3).map_or(term.len(), |(index, _)| index);
+            let suffix_start = term.char_indices().rev().nth(2).unwrap().0;
+            for trigram in [&term[..prefix_end], &term[suffix_start..]] {
+                if !trigrams.contains(trigram) {
+                    trigrams.insert(trigram.to_owned());
+                }
                 if trigrams.len() == 16 {
                     break;
                 }
@@ -68,13 +69,17 @@ fn anchor(terms: &[&str]) -> (&'static str, String) {
     }
     // Character presence covers short CJK queries without changing substring
     // order/repetition semantics. Keep a bounded subset of necessary characters.
-    let query = terms
-        .iter()
-        .flat_map(|term| term.chars())
-        .collect::<BTreeSet<_>>()
+    // Retain the same greatest 16 characters without storing the full alphabet.
+    let mut characters = BTreeSet::new();
+    for ch in terms.iter().flat_map(|term| term.chars()) {
+        characters.insert(ch);
+        if characters.len() > 16 {
+            let _ = characters.pop_first();
+        }
+    }
+    let query = characters
         .into_iter()
         .rev()
-        .take(16)
         .map(|ch| format!("\"u{:x}\"", ch as u32))
         .collect::<Vec<_>>()
         .join(" AND ");
@@ -193,16 +198,16 @@ pub(super) fn refresh_chunk(c: &Context) -> Result<bool> {
     )?;
     for id in ids {
         c.check_cancel()?;
-        if let Some(text) = source
-            .query_row([id], |row| row.get::<_, String>(0))
-            .optional()?
-        {
-            characters.execute(params![id, character_tokens(&text)])?;
+        let mut rows = source.query([id])?;
+        if let Some(row) = rows.next()? {
+            let text = text_column(row, 0)?;
+            characters.execute(params![id, character_tokens(text)])?;
             insert.execute(params![id, text])?;
         } else {
             c.db.execute("DELETE FROM artwork_search_fts WHERE rowid=?", [id])?;
             c.db.execute("DELETE FROM artwork_search_chars WHERE rowid=?", [id])?;
         }
+        drop(rows);
         c.db.execute("DELETE FROM artwork_search_dirty WHERE id=?", [id])?;
     }
     drop(insert);

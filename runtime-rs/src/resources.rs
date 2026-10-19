@@ -24,6 +24,7 @@ pub(crate) fn available_space(path: &std::path::Path) -> Result<u64> {
 }
 
 use serde_json::{Value, json};
+use crate::storage::stringify_equal as equal;
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 pub type Result<T> = std::result::Result<T, Error>;
@@ -61,9 +62,6 @@ impl From<std::io::Error> for Error {
 }
 fn digest(bytes: impl AsRef<[u8]>) -> String {
     hex::encode(Sha256::digest(bytes.as_ref()))
-}
-fn equal(left: &Value, right: &Value) -> bool {
-    crate::storage::stringify(left) == crate::storage::stringify(right)
 }
 fn number(value: &Value) -> Option<u64> {
     value

@@ -1,9 +1,13 @@
-use super::{CONSTANTS, has, js_units, strings, text, trim};
+use super::{CONSTANTS, js_units, trim};
 use serde_json::Value;
 use std::{collections::HashSet, sync::LazyLock};
 
-pub(in crate::maintenance) fn token_key(value: &str) -> String {
-    let token = trim(value).to_lowercase();
+fn token_key(value: &str) -> String {
+    let value = trim(value);
+    if value.bytes().all(|byte| byte.is_ascii_lowercase() || byte.is_ascii_digit() || byte == b'_') {
+        return value.to_owned();
+    }
+    let token = value.to_lowercase();
     if token.is_empty() || token.starts_with("<lora:") || token == "break" {
         return token;
     }
@@ -12,32 +16,20 @@ pub(in crate::maintenance) fn token_key(value: &str) -> String {
     let token = re!(r":([0-9]*\.)?[0-9]+$").replace_all(&token, "");
     re!(r"[\s-]+").replace_all(trim(&token), "_").into_owned()
 }
-pub(in crate::maintenance) fn segments(value: &str) -> Vec<Vec<String>> {
+fn token_keys(value: &str) -> impl Iterator<Item = String> + '_ {
     re!(r"(?i)\s*,?\s*(?-u:\b)BREAK(?-u:\b)\s*,?\s*")
         .split(value)
-        .map(|section| {
-            section
-                .split(',')
-                .map(trim)
-                .filter(|s| !s.is_empty())
-                .map(str::to_owned)
-                .collect()
-        })
-        .collect()
-}
-pub(in crate::maintenance) fn token_keys(value: &str) -> Vec<String> {
-    segments(value)
-        .into_iter()
-        .flatten()
-        .map(|token| token_key(&token))
+        .flat_map(|section| section.split(','))
+        .map(trim)
+        .filter(|s| !s.is_empty())
+        .map(token_key)
         .filter(|key| !key.is_empty())
-        .collect()
 }
-pub(in crate::maintenance) fn positive_keys(scene: &Value) -> HashSet<String> {
-    strings(&scene["tags"])
-        .into_iter()
-        .map(|token| token_key(&token))
-        .chain(token_keys(&text(&scene["prompt"])))
+fn positive_keys(prompt: &str, tags: &[Value]) -> HashSet<String> {
+    tags.iter()
+        .filter_map(Value::as_str)
+        .map(token_key)
+        .chain(token_keys(prompt))
         .filter(|key| !key.is_empty())
         .collect()
 }
@@ -57,21 +49,20 @@ fn stories(name: &str) -> Vec<regex::Regex> {
         })
         .collect()
 }
-pub(in crate::maintenance) fn rating(scene: &Value) -> &'static str {
+pub(in crate::maintenance) fn rating(title: &str, description: &str, prompt: &str, tags: &[Value]) -> &'static str {
     static R18: LazyLock<Vec<regex::Regex>> = LazyLock::new(|| stories("R18_STORY"));
     static R15: LazyLock<Vec<regex::Regex>> = LazyLock::new(|| stories("R15_STORY"));
-    let keys = positive_keys(scene);
-    let story =
-        js_units(&format!("{} {}", text(&scene["title"]), text(&scene["story"])).to_lowercase());
-    if keys
-        .iter()
-        .any(|key| has(&CONSTANTS["policy"]["R18_TAGS"], key))
-        || R18.iter().any(|pattern| pattern.is_match(&story))
-    {
+    let keys = positive_keys(prompt, tags);
+    let matches = |name: &str| CONSTANTS["policy"][name].as_array().is_some_and(|tags| {
+        tags.iter().filter_map(Value::as_str).any(|tag| keys.contains(tag))
+    });
+    if matches("R18_TAGS") {
+        return "R18";
+    }
+    let story = js_units(&format!("{title} {description} {prompt}").to_lowercase());
+    if R18.iter().any(|pattern| pattern.is_match(&story)) {
         "R18"
-    } else if keys
-        .iter()
-        .any(|key| has(&CONSTANTS["policy"]["R15_TAGS"], key))
+    } else if matches("R15_TAGS")
         || R15.iter().any(|pattern| pattern.is_match(&story))
     {
         "R15"

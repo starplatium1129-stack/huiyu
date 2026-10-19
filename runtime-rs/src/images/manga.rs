@@ -224,7 +224,7 @@ pub(super) async fn plan(
     let pen_lines = Mutex::new(source("penLines")?);
     let model_dir = models::model_dir(&settings, &input).await?;
     Ok(Plan {
-        input,
+        input: input.into(),
         settings,
         model_dir,
         mask_model_dir: None,

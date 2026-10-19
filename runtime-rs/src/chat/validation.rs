@@ -1,11 +1,10 @@
 use super::{
     Error, Result,
-    persona::{self, length, string},
+    persona::{self, length, string, trimmed_string},
 };
 use serde_json::{Value, json};
 use url::Url;
 
-#[derive(Clone)]
 pub(super) struct Api {
     pub base_url: String,
     pub pathname: String,
@@ -65,9 +64,9 @@ pub(super) fn vendor(target: &Url) -> String {
 }
 
 fn parse_api(input: &Value, require_model: bool) -> Result<Api> {
-    let base = string(&input["baseUrl"]).trim().to_owned();
-    let model = string(&input["model"]).trim().to_owned();
-    let key = string(&input["apiKey"]).trim().to_owned();
+    let base = trimmed_string(&input["baseUrl"]);
+    let model = trimmed_string(&input["model"]);
+    let key = trimmed_string(&input["apiKey"]);
     if base.is_empty() || length(&base) > 500 {
         return Err(Error::invalid("API 地址不能为空或过长"));
     }
@@ -122,7 +121,10 @@ fn tool_message(raw: &Value) -> Result<Value> {
         if length(&content) > 60000 {
             return Err(Error::invalid("工具结果过长"));
         }
-        return Ok(json!({"role":"tool","tool_call_id":id,"content":content}));
+        let mut result = json!({"role":"tool","tool_call_id":null,"content":null});
+        result["tool_call_id"] = Value::String(id);
+        result["content"] = Value::String(content);
+        return Ok(result);
     }
     let calls = raw["tool_calls"]
         .as_array()
@@ -150,7 +152,10 @@ fn tool_message(raw: &Value) -> Result<Value> {
         if length(&args) > 4000 {
             return Err(Error::invalid("工具调用参数过长"));
         }
-        let mut item = json!({"id":id,"type":"function","function":{"name":name,"arguments":args}});
+        let mut item = json!({"id":null,"type":"function","function":{"name":null,"arguments":null}});
+        item["id"] = Value::String(id);
+        item["function"]["name"] = Value::String(name);
+        item["function"]["arguments"] = Value::String(args);
         if let Some(signature) = call["extra_content"]["google"].get("thought_signature") {
             let signature = signature
                 .as_str()
@@ -160,7 +165,9 @@ fn tool_message(raw: &Value) -> Result<Value> {
         }
         output.push(item);
     }
-    let mut result = json!({"role":"assistant","content":content,"tool_calls":output});
+    let mut result = json!({"role":"assistant","content":null,"tool_calls":null});
+    result["content"] = Value::String(content);
+    result["tool_calls"] = Value::Array(output);
     if !reasoning.is_empty() {
         result["reasoning_content"] = reasoning.into();
     }
@@ -176,11 +183,13 @@ fn multimodal(parts: &mut [Value]) -> Result<Value> {
     for part in parts {
         match part["type"].as_str() {
             Some("text") => {
-                let text = string(&part["text"]).trim().to_owned();
+                let text = trimmed_string(&part["text"]);
                 if text.is_empty() || length(&text) > 1200 {
                     return Err(Error::invalid("多模态文本过长"));
                 }
-                output.push(json!({"type":"text","text":text}));
+                let mut item = json!({"type":"text","text":null});
+                item["text"] = Value::String(text);
+                output.push(item);
             }
             Some("image_url") => {
                 let url = if let Some(Value::String(url)) = part
@@ -191,7 +200,8 @@ fn multimodal(parts: &mut [Value]) -> Result<Value> {
                 } else {
                     string(&part["image_url"]["url"])
                 };
-                if length(&url) > 12 * 1024 * 1024
+                // UTF-16 units cannot exceed UTF-8 bytes.
+                if (url.len() > 12 * 1024 * 1024 && length(&url) > 12 * 1024 * 1024)
                     || !["png", "jpeg", "webp", "gif"]
                         .iter()
                         .any(|mime| url.starts_with(&format!("data:image/{mime};base64,")))
@@ -263,7 +273,7 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
             kept.push(message);
             continue;
         }
-        let text = string(&item["content"]).trim().to_owned();
+        let text = trimmed_string(&item["content"]);
         let len = length(&text);
         if !["user", "assistant"].contains(&role.as_str()) || text.is_empty() || len > 1200 {
             return Err(Error::invalid("对话消息格式错误或内容过长"));
@@ -272,13 +282,18 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
             break;
         }
         used += len;
-        kept.push(json!({"role":role,"content":text}));
+        let mut message = json!({"role":null,"content":null});
+        message["role"] = Value::String(role);
+        message["content"] = Value::String(text);
+        kept.push(message);
     }
     if kept.is_empty() && tools.is_empty() {
         return Err(Error::invalid("对话记录必须包含有效的消息"));
     }
     kept.reverse();
-    let mut messages = vec![json!({"role":"system","content":system})];
+    let mut system_message = json!({"role":"system","content":null});
+    system_message["content"] = Value::String(system);
+    let mut messages = vec![system_message];
     messages.extend(kept);
     messages.extend(tools);
     let api = if body["provider"] == "api" {

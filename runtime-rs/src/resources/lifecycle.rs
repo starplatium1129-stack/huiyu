@@ -197,18 +197,21 @@ fn install(op: &Operation, id: &str) -> Result<Value> {
         }
         return Ok(result(before_state, "already-installed"));
     }
-    let target = policy::target(
+    let reconstructed = policy::target(
         &pack,
         installed.as_ref().map(|base| &base.manifest),
         &release,
     )?;
+    drop(pack.delta);
+    let target = reconstructed.as_ref().unwrap_or(&pack.manifest);
+    let installed = installed.map(|base| base.root);
     if journal.is_none() {
         if super::number(&before_state["sequence"]) == Some(9_007_199_254_740_991) {
             return Err(Error::new("JOURNAL_INVALID", "Sequence exhausted"));
         }
         let existing =
             state::existing(ctx, release["targetIdentity"].as_str().unwrap(), &op.cancel)?;
-        let mut value = json!({"schemaVersion":1,"id":uuid::Uuid::new_v4().to_string(),"kind":"install","phase":"copying","releaseId":id,"packageIdentity":release["packageIdentity"],"before":before_state,"target":existing.as_ref().map(|value|value.reference.clone()).unwrap_or_else(||policy::reference(&release))});
+        let mut value = json!({"schemaVersion":1,"id":uuid::Uuid::new_v4().to_string(),"kind":"install","phase":"copying","releaseId":id,"packageIdentity":release["packageIdentity"],"before":before_state,"target":existing.as_ref().map(|value|value.reference.clone()).unwrap_or_else(||policy::reference(&release,id))});
         fs::space(&ctx.store, 65536)?;
         save(ctx, &value)?;
         op.event("journal", json!({"id":value["id"]}))?;
@@ -228,7 +231,7 @@ fn install(op: &Operation, id: &str) -> Result<Value> {
     let parts = transaction.join("parts");
     fs::ensure(&tree)?;
     fs::clean_temps(&tree, &["manifest.json", "receipt.json"])?;
-    let mut remaining = crate::storage::stringify(&target.value()).len() as u64 + 65536;
+    let mut remaining = target.encoded().len() as u64 + 65536;
     for entry in &target.entries {
         if !fs::file_matches(&fs::child(&tree, &entry.path)?, entry, &op.cancel)? {
             remaining = remaining
@@ -249,21 +252,24 @@ fn install(op: &Operation, id: &str) -> Result<Value> {
         let source = if candidates.contains(entry.path.as_str()) {
             &pack.root
         } else {
-            &installed
+            installed
                 .as_ref()
                 .ok_or_else(|| Error::new("BASELINE_REQUIRED", "Missing installed baseline"))?
-                .root
         };
         copy::entry(op, source, &tree, &parts, entry)?;
     }
-    fs::write_json(&tree.join("manifest.json"), &target.value())?;
+    {
+        let mut encoded = target.encoded();
+        encoded.push(b'\n');
+        fs::atomic(&tree.join("manifest.json"), &encoded)?;
+    }
     fs::write_json(
         &tree.join("receipt.json"),
         &json!({"schemaVersion":1,"reference":journal["target"]}),
     )?;
     manifest::verify(
         &tree,
-        &target,
+        target,
         &["manifest.json", "receipt.json"],
         &op.cancel,
     )?;
@@ -292,7 +298,7 @@ fn install(op: &Operation, id: &str) -> Result<Value> {
 pub(super) fn run(op: &Operation, action: &str, release: &str) -> Result<Value> {
     op.check()?;
     if action == "import" {
-        policy::release(&op.ctx, release)?;
+        policy::approved(&op.ctx, release)?;
     }
     op.ctx.initialize()?;
     let _lock = lease::acquire(&op.ctx, "writer", 0)?;

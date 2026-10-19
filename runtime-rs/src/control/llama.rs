@@ -31,7 +31,7 @@ impl ControlService {
         result
     }
     pub(crate) fn llama_auth(&self) -> (String, String) {
-        let host = self.settings()["llamaHost"]
+        let host = self.runtime_setting("llamaHost")
             .as_str()
             .unwrap_or("http://127.0.0.1:8000")
             .to_owned();
@@ -41,7 +41,7 @@ impl ControlService {
         )
     }
     pub(super) async fn ensure_llama(self: &Arc<Self>, base_url: &str) -> Result<Value> {
-        let host = self.settings()["llamaHost"]
+        let host = self.runtime_setting("llamaHost")
             .as_str()
             .unwrap_or("http://127.0.0.1:8000")
             .to_owned();
@@ -62,7 +62,7 @@ impl ControlService {
         {
             return Ok(json!({"ok":true,"ready":true}));
         }
-        let model = self.settings()["llamaModel"]
+        let model = self.runtime_setting("llamaModel")
             .as_str()
             .unwrap_or("")
             .to_owned();
@@ -80,7 +80,7 @@ impl ControlService {
     }
 
     pub(super) async fn llama_status(&self) -> Value {
-        let host = self.settings()["llamaHost"]
+        let host = self.runtime_setting("llamaHost")
             .as_str()
             .unwrap_or("http://127.0.0.1:8000")
             .to_owned();
@@ -94,7 +94,7 @@ impl ControlService {
             .await
             .as_ref()
             .is_some_and(|process| process.exited().ok() == Some(None));
-        let model = self.settings()["llamaModel"].clone();
+        let model = self.runtime_setting("llamaModel");
         let label = model
             .as_str()
             .and_then(|id| setup_verify::model_source(id).ok())
@@ -120,7 +120,7 @@ impl ControlService {
             "llama-start",
             &["正在检查聊天环境", "正在加载聊天模型", "正在确认连接"],
         )?;
-        let response = json!({"ok":true,"operation":operation,"baseUrl":format!("{}/v1",self.settings()["llamaHost"].as_str().unwrap_or("http://127.0.0.1:8000")),"model":"huiyu-local"});
+        let response = json!({"ok":true,"operation":operation,"baseUrl":format!("{}/v1",self.runtime_setting("llamaHost").as_str().unwrap_or("http://127.0.0.1:8000")),"model":"huiyu-local"});
         let cancel = self.shutdown.child_token();
         *self.llama_cancel.lock().unwrap() = Some(cancel.clone());
         let service = self.clone();
@@ -193,7 +193,7 @@ impl ControlService {
             self.retire_llama(&process).await?;
         }
         self.check_llama_release()?;
-        let settings = self.settings();
+        let settings = self.runtime_settings();
         let host = settings["llamaHost"]
             .as_str()
             .unwrap_or("http://127.0.0.1:8000");
@@ -304,7 +304,10 @@ impl ControlService {
         *owner = Some(process);
         drop(owner);
         self.patch(json!({"llamaModel":id})).await?;
-        self.settings.write().unwrap()["llamaModel"] = json!(id);
+        {
+            let mut settings = self.settings.write().unwrap();
+            Arc::make_mut(&mut *settings)["llamaModel"] = json!(id);
+        }
         self.stage(operation, 2);
         Ok(())
     }

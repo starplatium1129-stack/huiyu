@@ -3,12 +3,12 @@ use crate::error::Result;
 use serde_json::{Value, json};
 
 fn id(value: &Value) -> bool {
-    value.as_str().is_some_and(|s| {
-        !s.is_empty()
-            && s.len() <= 160
-            && s.bytes()
-                .all(|b| b.is_ascii_alphanumeric() || b"_-".contains(&b))
-    })
+    value.as_str().is_some_and(id_str)
+}
+fn id_str(value: &str) -> bool {
+    !value.is_empty()
+        && value.len() <= 160
+        && value.bytes().all(|b| b.is_ascii_alphanumeric() || b"_-".contains(&b))
 }
 fn number(value: &Value) -> Option<f64> {
     value.as_f64().filter(|value| value.is_finite())
@@ -42,7 +42,7 @@ pub(super) fn validate(value: &Value, restoring: bool) -> Result<Value> {
         value.is_object() && serde_json::to_string(value)?.encode_utf16().count() <= 60000,
         "Invalid adapter profile",
     )?;
-    let mut profile = value.clone();
+    let profile = value;
     check(
         profile["schemaVersion"] == 1
             && id(&profile["profileId"])
@@ -109,11 +109,11 @@ pub(super) fn validate(value: &Value, restoring: bool) -> Result<Value> {
         check(emotions.is_object(), "Invalid emotion map")?;
         for (key, values) in emotions.as_object().unwrap() {
             check(
-                id(&json!(key))
+                id_str(key)
                     && values.as_object().is_some_and(|values| {
                         values
                             .iter()
-                            .all(|(key, value)| id(&json!(key)) && number(value).is_some())
+                            .all(|(key, value)| id_str(key) && number(value).is_some())
                     }),
                 "Invalid emotion parameters",
             )?;
@@ -123,7 +123,7 @@ pub(super) fn validate(value: &Value, restoring: bool) -> Result<Value> {
         check(interactions.is_object(), "Invalid interactions")?;
         for (key, value) in interactions.as_object().unwrap() {
             check(
-                id(&json!(key))
+                id_str(key)
                     && value.is_object()
                     && value["group"]
                         .as_str()
@@ -173,7 +173,7 @@ pub(super) fn validate(value: &Value, restoring: bool) -> Result<Value> {
             map.as_object().is_some_and(|values| {
                 values
                     .iter()
-                    .all(|(key, value)| id(&json!(key)) && interaction(value))
+                    .all(|(key, value)| id_str(key) && interaction(value))
             }),
             "Invalid hit area map",
         )?;
@@ -191,7 +191,7 @@ pub(super) fn validate(value: &Value, restoring: bool) -> Result<Value> {
                 && settle["resetDefaults"].as_object().is_some_and(|values| {
                     values
                         .iter()
-                        .all(|(key, value)| id(&json!(key)) && number(value).is_some())
+                        .all(|(key, value)| id_str(key) && number(value).is_some())
                 }),
             "Invalid settle parameters",
         )?;
@@ -222,6 +222,7 @@ pub(super) fn validate(value: &Value, restoring: bool) -> Result<Value> {
             ),
         "Invalid verification",
     )?;
+    let mut profile = profile.clone();
     if profile["verification"]["status"] == "verified" {
         profile["verification"] = json!({"status":"needs-confirmation", "reason":"校准已保存；真实模型与设备表现仍待人工确认。"});
     }

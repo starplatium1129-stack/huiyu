@@ -3,11 +3,11 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use image::{ImageDecoder, ImageFormat, ImageReader};
 use serde_json::json;
 use sha2::{Digest, Sha256};
-use std::{collections::HashMap, io::Cursor};
+use std::io::Cursor;
 pub(super) struct Art {
-    pub portrait: Vec<u8>,
-    pub thumbnail: Vec<u8>,
-    pub particles: Vec<u8>,
+    pub portrait: Bytes,
+    pub thumbnail: Bytes,
+    pub particles: Bytes,
     pub revision: String,
     pub width: u32,
     pub height: u32,
@@ -55,7 +55,7 @@ fn webp_chunks(mut bytes: &[u8], frames: bool) -> Result<()> {
 }
 pub(super) fn build(
     id: &str,
-    data: &str,
+    data: String,
     cancel: &CancellationToken,
     started: Instant,
 ) -> Result<Art> {
@@ -75,6 +75,7 @@ pub(super) fn build(
         let bytes = STANDARD
             .decode(encoded)
             .map_err(|_| invalid("图片编码无效"))?;
+        drop(data);
         if bytes.len() > 15 * 1024 * 1024 || image::guess_format(&bytes).ok() != Some(format) {
             return Err(invalid("图片格式或大小无效"));
         }
@@ -134,27 +135,42 @@ pub(super) fn build(
         transparent
     };
     check(cancel, started)?;
-    let portrait = png(&image)?;
+    let portrait: Bytes = png(&image)?.into();
     let revision = hash(&portrait);
     let thumbnail = if width > 560 || height > 560 {
-        png(&image.resize(560, 560, image::imageops::FilterType::Lanczos3))?
+        png(&image.resize(560, 560, image::imageops::FilterType::Lanczos3))?.into()
     } else {
         portrait.clone()
     };
+    drop(image);
     check(cancel, started)?;
     // Fixed 4-bit bins followed by nearest top-32 colors are deterministic,
     // bounded and retain transparent holes without guessing a background.
-    let mut colors: HashMap<[u8; 3], usize> = HashMap::new();
+    let mut colors = vec![0_usize; 4096];
     for p in grid.pixels().filter(|p| p[3] >= 32) {
-        *colors
-            .entry([p[0] & 0xf0, p[1] & 0xf0, p[2] & 0xf0])
-            .or_default() += 1;
+        let index = (usize::from(p[0] >> 4) << 8)
+            | (usize::from(p[1] >> 4) << 4)
+            | usize::from(p[2] >> 4);
+        colors[index] += 1;
     }
-    let mut ranked = colors.into_iter().collect::<Vec<_>>();
-    ranked.sort_by(|a, b| b.1.cmp(&a.1).then(a.0.cmp(&b.0)));
+    let mut ranked = colors.into_iter().enumerate()
+        .filter(|(_, count)| *count != 0)
+        .map(|(index, count)| ([
+            ((index >> 8) as u8) << 4,
+            (((index >> 4) & 0xf) as u8) << 4,
+            ((index & 0xf) as u8) << 4,
+        ], count))
+        .collect::<Vec<_>>();
+    let order = |a: &([u8; 3], usize), b: &([u8; 3], usize)| {
+        b.1.cmp(&a.1).then(a.0.cmp(&b.0))
+    };
+    if ranked.len() > 32 {
+        ranked.select_nth_unstable_by(32, order);
+        ranked.truncate(32);
+    }
+    ranked.sort_by(order);
     let palette = ranked
         .into_iter()
-        .take(32)
         .map(|(rgb, _)| rgb)
         .collect::<Vec<_>>();
     if palette.is_empty() {
@@ -181,7 +197,7 @@ pub(super) fn build(
         .collect::<String>();
     let particles = serde_json::to_vec(
         &json!({"id":id,"sourceSha256":revision,"aspect":width as f64/height as f64,"palette":palette.iter().map(|p|format!("#{:02x}{:02x}{:02x}",p[0],p[1],p[2])).collect::<Vec<_>>(),"grid":{"w":grid.width(),"h":grid.height(),"cells":cells}}),
-    )?;
+    )?.into();
     check(cancel, started)?;
     Ok(Art {
         portrait,

@@ -2,17 +2,16 @@ use super::*;
 use reqwest::Method;
 use types::WebUiStatus;
 
-fn names(value: &Value, keys: &[&str]) -> Vec<String> {
-    value
-        .as_array()
+fn names(value: Value, keys: &[&str]) -> Vec<String> {
+    let Value::Array(items) = value else {
+        return Vec::new();
+    };
+    items
         .into_iter()
-        .flatten()
-        .filter_map(|item| {
-            keys.iter().find_map(|key| {
-                item[*key]
-                    .as_str()
-                    .filter(|v| !v.is_empty())
-                    .map(str::to_owned)
+        .filter_map(|mut item| {
+            keys.iter().find_map(|key| match item.get_mut(*key) {
+                Some(Value::String(name)) if !name.is_empty() => Some(std::mem::take(name)),
+                _ => None,
             })
         })
         .collect()
@@ -66,10 +65,10 @@ async fn webui(inner: &Inner, cancel: &CancellationToken) -> WebUiStatus {
         } else {
             String::new()
         },
-        samplers: names(&samplers.unwrap_or(Value::Null), &["name", "label"]),
-        schedulers: names(&schedulers.unwrap_or(Value::Null), &["name", "label"]),
-        upscalers: names(&upscalers.unwrap_or(Value::Null), &["name", "label"]),
-        models: names(&models, &["title", "filename", "model_name", "name"]),
+        samplers: names(samplers.unwrap_or(Value::Null), &["name", "label"]),
+        schedulers: names(schedulers.unwrap_or(Value::Null), &["name", "label"]),
+        upscalers: names(upscalers.unwrap_or(Value::Null), &["name", "label"]),
+        models: names(models, &["title", "filename", "model_name", "name"]),
     }
 }
 pub(super) async fn webui_status(

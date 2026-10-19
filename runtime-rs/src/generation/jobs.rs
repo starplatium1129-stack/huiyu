@@ -23,18 +23,20 @@ pub(super) fn wai_metadata(input: &Input, provider: &str) -> Value {
     metadata
 }
 pub(super) fn create(
-    prepared: Prepared,
+    mut prepared: Prepared,
     owner: String,
     hooks: Option<Arc<dyn ExecutionHooks>>,
 ) -> Arc<Job> {
     let id = uuid::Uuid::new_v4().simple().to_string();
     let created = now();
+    // Release the caller's ledger copy before rebuilding from private execution.
+    drop(prepared.input);
     let input = prepared.execution.input();
-    let mut metadata = match &prepared.execution {
+    let mut metadata = match &mut prepared.execution {
         Execution::Webui(input) => wai_metadata(input, "webui"),
-        Execution::Comfy(plan) => plan.metadata.clone(),
+        Execution::Comfy(plan) => std::mem::take(&mut plan.metadata),
         Execution::Native(plan) => {
-            let mut metadata = plan.input.clone();
+            let mut metadata = plan.input.as_ref().clone();
             metadata["engine"] = if plan.input["mediaKind"] == "video" {
                 json!("video")
             } else {
@@ -59,7 +61,7 @@ pub(super) fn create(
             result: None,
             error: None,
             code: None,
-            metadata,
+            metadata: metadata.into(),
             upstream_id: String::new(),
             progress: None,
             current_node: None,
@@ -127,19 +129,20 @@ pub(super) async fn find(
 }
 pub(super) async fn public(job: &Job) -> Result<Value> {
     let state = job.state.lock().await;
+    let metadata = state.metadata.clone();
     let available =
         state.status == "succeeded" && state.result.as_ref().is_some_and(|r| !r.is_empty());
     let result_url =
         available.then(|| format!("{}/jobs/{}/result", job.execution.route_base(), job.id));
-    let seed = state.metadata["seed"]
+    let seed = metadata["seed"]
         .as_u64()
         .filter(|s| *s <= 9_007_199_254_740_991)
         .unwrap_or(job.input["seed"].as_u64().unwrap_or(0));
-    let mut public = json!({"id":job.id,"status":state.status,"provider":job.provider,"seed":seed,"resultAvailable":available,"resultUrl":result_url,"metadata":state.metadata,"error":state.error,"code":state.code});
+    let mut public = json!({"id":job.id,"status":state.status,"provider":job.provider,"seed":seed,"resultAvailable":available,"resultUrl":result_url,"metadata":null,"error":state.error,"code":state.code});
     public["upstreamSettled"] = json!(state.settled && !state.collection_pending);
     public["unknown"] = json!(state.unknown);
-    public["metadata"]["provider"] = json!(job.provider);
-    if matches!(job.provider, "comfy" | "native") {
+    let tracked = matches!(job.provider, "comfy" | "native");
+    if tracked {
         public["progress"] = if state.status == "succeeded" {
             json!(1)
         } else if state.status == "queued" {
@@ -151,6 +154,11 @@ pub(super) async fn public(job: &Job) -> Result<Value> {
             json!((state.finished.unwrap_or_else(now) - job.created).max(0) / 1000);
         public["currentNode"] = json!(state.current_node);
         public["progressText"] = json!(state.progress_text);
+    }
+    drop(state);
+    public["metadata"] = Arc::unwrap_or_clone(metadata);
+    public["metadata"]["provider"] = json!(job.provider);
+    if tracked {
         public["modelId"] = job.input["modelId"].clone();
         if let Some(character) = job.input.get("character") {
             public["character"] = character.clone();
@@ -171,18 +179,11 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
         try_collect(inner, &job).await;
     }
     let state = job.state.lock().await;
-    let mut metadata = state.metadata.clone();
-    metadata["gatewayJobId"] = json!(job.id);
-    if job.input["family"] == "manga-screen" {
-        metadata["progress"] = json!(state.progress);
-        metadata["progressText"] = json!(state.progress_text);
-    }
-    if let Some(finished) = state.finished {
-        // Durable task adapters also need the frozen engine duration. Do not
-        // persist a ticking duration and rewrite SQLite on every live poll.
-        metadata["elapsedSeconds"] = json!((finished - job.created).max(0) / 1000);
-    }
-    Ok(Observation {
+    let snapshot = state.metadata.clone();
+    let manga = (job.input["family"] == "manga-screen")
+        .then(|| (state.progress, state.progress_text.clone()));
+    let finished = state.finished;
+    let mut observation = Observation {
         status: if state.collection_pending && state.status == "succeeded" {
             "running".into()
         } else {
@@ -191,13 +192,27 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
         settled: state.settled && !state.collection_pending,
         unknown: state.unknown,
         error_code: state.code.clone(),
-        metadata,
+        metadata: Value::Null,
         outputs: if state.status == "succeeded" {
             state.result.clone().into_iter().collect()
         } else {
             Vec::new()
         },
-    })
+    };
+    drop(state);
+    let mut metadata = Arc::unwrap_or_clone(snapshot);
+    metadata["gatewayJobId"] = json!(job.id);
+    if let Some((progress, text)) = manga {
+        metadata["progress"] = json!(progress);
+        metadata["progressText"] = text.into();
+    }
+    if let Some(finished) = finished {
+        // Durable task adapters also need the frozen engine duration. Do not
+        // persist a ticking duration and rewrite SQLite on every live poll.
+        metadata["elapsedSeconds"] = json!((finished - job.created).max(0) / 1000);
+    }
+    observation.metadata = metadata;
+    Ok(observation)
 }
 pub(super) async fn result(inner: &Arc<Inner>, id: &str, owner: &str) -> Result<Output> {
     let job = find(inner, id, owner, true).await?;
@@ -350,12 +365,12 @@ async fn try_collect(inner: &Inner, job: &Job) -> bool {
             state.collection_pending = false;
             state.code = None;
             state.error = None;
-            state.metadata["resultCollectionError"] = Value::Null;
+            Arc::make_mut(&mut state.metadata)["resultCollectionError"] = Value::Null;
         }
         Err(error) => {
             state.code = Some("RESULT_COLLECTION_PENDING".into());
             state.error = Some("生成已完成，结果保存等待重试".into());
-            state.metadata["resultCollectionError"] = json!(error.code);
+            Arc::make_mut(&mut state.metadata)["resultCollectionError"] = json!(error.code);
         }
     }
     let complete = !state.collection_pending;

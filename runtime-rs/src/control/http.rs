@@ -8,6 +8,42 @@ use axum::{
     routing::{get, post},
 };
 use std::{collections::HashMap, net::SocketAddr};
+use serde::ser::{SerializeMap as _, SerializeSeq as _};
+
+struct StatusResponse {
+    health: Arc<Value>,
+    overlay: Value,
+}
+impl serde::Serialize for StatusResponse {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error> {
+        let health = self.health.as_object().unwrap();
+        let overlay = self.overlay.as_object().unwrap();
+        let mut map = serializer.serialize_map(None)?;
+        for (key, value) in health {
+            map.serialize_entry(key, overlay.get(key).unwrap_or(value))?;
+        }
+        for (key, value) in overlay {
+            if !health.contains_key(key) {
+                map.serialize_entry(key, value)?;
+            }
+        }
+        map.end()
+    }
+}
+#[derive(serde::Serialize)]
+struct LogsResponse {
+    #[serde(serialize_with = "serialize_lines")]
+    logs: Vec<Arc<String>>,
+    total: u64,
+    operation: Option<Value>,
+}
+fn serialize_lines<S: serde::Serializer>(lines: &[Arc<String>], serializer: S) -> std::result::Result<S::Ok, S::Error> {
+    let mut seq = serializer.serialize_seq(Some(lines.len()))?;
+    for line in lines {
+        seq.serialize_element(line.as_ref())?;
+    }
+    seq.end()
+}
 
 pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
     Router::new()
@@ -49,23 +85,31 @@ async fn local(
 async fn status(
     Extension(s): Extension<Arc<ControlService>>,
     Query(query): Query<HashMap<String, String>>,
-) -> Json<Value> {
-    let (mut value, (tunnel_available, scripts), build) = tokio::join!(
+) -> Response {
+    let (health, (tunnel_available, scripts), build) = tokio::join!(
         s.health(query.get("fresh").is_some_and(|v| v == "1")),
         file_status(&s),
         web_build(&s),
     );
-    let settings = s.config_view();
+    let mut value = s.config_view();
     let tunnel = s.remote.tunnel_url();
-    for (key, item) in settings.as_object().unwrap() {
-        value[key] = item.clone();
-    }
     let operation = s.state.lock().unwrap().operation.clone();
     let mode_busy = operation.as_ref().is_some_and(|op| {
         op["status"] == "running" && op["kind"].as_str().is_some_and(|s| s.starts_with("mode-"))
     });
-    for (key,item) in json!({"ok":true,"running":!s.shutdown.is_cancelled(),"modeBusy":mode_busy,"operation":operation,"localLink":format!("http://127.0.0.1:{}/",s.config.bind.port()),"shareLinkAvailable":!tunnel.is_empty(),"tunnelStatus":if !tunnel.is_empty(){"active"}else if s.tunnel_disabled(){"disabled"}else{"waiting"},"tunnelAvailable":tunnel_available,"uptime":s.started.elapsed().as_secs(),"scripts":scripts,"selfHealing":s.watchdog_status(),"webBuild":build}).as_object().unwrap(){value[key]=item.clone();}
-    Json(value)
+    value["ok"] = true.into();
+    value["running"] = (!s.shutdown.is_cancelled()).into();
+    value["modeBusy"] = mode_busy.into();
+    value["operation"] = operation.unwrap_or(Value::Null);
+    value["localLink"] = format!("http://127.0.0.1:{}/",s.config.bind.port()).into();
+    value["shareLinkAvailable"] = (!tunnel.is_empty()).into();
+    value["tunnelStatus"] = if !tunnel.is_empty() {"active"} else if s.tunnel_disabled() {"disabled"} else {"waiting"}.into();
+    value["tunnelAvailable"] = tunnel_available.into();
+    value["uptime"] = s.started.elapsed().as_secs().into();
+    value["scripts"] = scripts;
+    value["selfHealing"] = s.watchdog_status();
+    value["webBuild"] = build;
+    Json(StatusResponse { health, overlay: value }).into_response()
 }
 async fn file_status(s: &ControlService) -> (bool, Value) {
     let tunnel_enabled = !s.tunnel_disabled();
@@ -99,7 +143,7 @@ async fn share(Extension(s): Extension<Arc<ControlService>>) -> Json<Value> {
 async fn logs(
     Extension(s): Extension<Arc<ControlService>>,
     Query(query): Query<HashMap<String, String>>,
-) -> Json<Value> {
+) -> Json<LogsResponse> {
     let since = query
         .get("since")
         .and_then(|v| v.parse::<u64>().ok())
@@ -120,7 +164,7 @@ async fn logs(
         )
     };
     logs.extend(s.file_logs().await);
-    Json(json!({"logs":logs,"total":total,"operation":operation}))
+    Json(LogsResponse { logs, total, operation })
 }
 fn redact_config(s: &ControlService, value: &Value) -> Value {
     match value {
@@ -155,13 +199,13 @@ fn redact_config(s: &ControlService, value: &Value) -> Value {
                 })
                 .collect(),
         ),
-        Value::Array(items) => json!(
+        Value::Array(items) => Value::Array(
             items
                 .iter()
                 .map(|v| redact_config(s, v))
                 .collect::<Vec<_>>()
         ),
-        Value::String(text) => json!(s.redact(text)),
+        Value::String(text) => Value::String(s.redact(text)),
         other => other.clone(),
     }
 }
@@ -199,35 +243,35 @@ async fn diagnostics(Extension(s): Extension<Arc<ControlService>>) -> Json<Value
     Json(value)
 }
 pub(super) fn validated_patch(body: Value) -> Result<Value> {
-    let object = body
-        .as_object()
-        .ok_or_else(|| ApiError::invalid("配置必须为对象"))?;
-    let mut result = json!({});
+    let Value::Object(object) = body else {
+        return Err(ApiError::invalid("配置必须为对象"));
+    };
+    let mut result = serde_json::Map::new();
     for (key, value) in object {
-        match key.as_str() {
+        let value = match key.as_str() {
             "sdHost" | "comfyHost" | "ttsHost" | "ollamaHost" => {
                 let raw = value
                     .as_str()
                     .ok_or_else(|| ApiError::invalid("服务地址必须为字符串"))?;
                 let url = crate::upstream::local_url(raw)
                     .map_err(|_| ApiError::invalid("服务地址只接受本机 HTTP"))?;
-                result[key] = json!(url.origin().ascii_serialization());
+                Value::String(url.origin().ascii_serialization())
             }
-            "voices" if value.is_object() => result[key] = value.clone(),
-            "ttsEngine" if matches!(value.as_str(), Some("voxcpm2" | "gpt-sovits")) => {
-                result[key] = value.clone()
-            }
-            "autoStartVoice" if value.is_boolean() => result[key] = value.clone(),
+            "voices" if value.is_object() => value,
+            "ttsEngine" if matches!(value.as_str(), Some("voxcpm2" | "gpt-sovits")) => value,
+            "autoStartVoice" if value.is_boolean() => value,
             _ => return Err(ApiError::invalid(format!("不支持的配置字段或类型：{key}"))),
-        }
+        };
+        result.insert(key, value);
     }
-    Ok(result)
+    Ok(Value::Object(result))
 }
 async fn config(
     Extension(s): Extension<Arc<ControlService>>,
     Json(body): Json<Value>,
 ) -> Result<Json<Value>> {
-    let mut value = s.patch(validated_patch(body)?).await?;
+    s.patch(validated_patch(body)?).await?;
+    let mut value = s.config_view();
     value["ok"] = json!(true);
     Ok(Json(value))
 }
@@ -353,7 +397,7 @@ async fn build(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Valu
     ))
 }
 async fn sd_status(Extension(s): Extension<Arc<ControlService>>) -> Response {
-    let host = s.settings()["sdHost"].as_str().unwrap_or("").to_string();
+    let host = s.runtime_setting("sdHost").as_str().unwrap_or("").to_string();
     let (models, samplers, schedulers, upscalers, options) = tokio::join!(
         s.request(&host, "/sdapi/v1/sd-models", None, 5),
         s.request(&host, "/sdapi/v1/samplers", None, 5),
@@ -368,22 +412,34 @@ async fn sd_status(Extension(s): Extension<Arc<ControlService>>) -> Response {
         response
             .ok()
             .and_then(|(_, v)| v)
-            .and_then(|v| v.as_array().cloned())
+            .and_then(|v| match v {
+                Value::Array(items) => Some(items),
+                _ => None,
+            })
             .unwrap_or_default()
-            .iter()
-            .filter_map(|value| {
-                keys.iter()
-                    .find_map(|key| {
-                        value
-                            .get(*key)
-                            .filter(|v| v.as_str().is_some_and(|s| !s.is_empty()))
-                            .cloned()
-                    })
-                    .or_else(|| value.as_str().filter(|s| !s.is_empty()).map(|s| json!(s)))
+            .into_iter()
+            .filter_map(|mut value| {
+                let key = keys.iter().copied().find(|key| {
+                    value
+                        .get(*key)
+                        .is_some_and(|v| v.as_str().is_some_and(|s| !s.is_empty()))
+                });
+                if let Some(key) = key {
+                    Some(value[key].take())
+                } else {
+                    match value {
+                        Value::String(text) if !text.is_empty() => Some(Value::String(text)),
+                        _ => None,
+                    }
+                }
             })
             .collect()
     };
-    let value = json!({"online":online,"host":host,"models":if online{names(models,&["title","model_name","name"])}else{vec![]},"samplers":names(samplers,&["name"]),"schedulers":names(schedulers,&["name","label"]),"upscalers":names(upscalers,&["name"]),"checkpoint":options.ok().and_then(|(_,v)|v).and_then(|v|v["sd_model_checkpoint"].as_str().map(str::to_owned)).unwrap_or_default(),"error":if online{String::new()}else{format!("SD WebUI 未响应（{host}）")}});
+    let mut value = json!({"online":online,"host":host,"models":null,"samplers":null,"schedulers":null,"upscalers":null,"checkpoint":options.ok().and_then(|(_,v)|v).and_then(|v|v["sd_model_checkpoint"].as_str().map(str::to_owned)).unwrap_or_default(),"error":if online{String::new()}else{format!("SD WebUI 未响应（{host}）")}});
+    value["models"] = Value::Array(if online { names(models, &["title", "model_name", "name"]) } else { vec![] });
+    value["samplers"] = Value::Array(names(samplers, &["name"]));
+    value["schedulers"] = Value::Array(names(schedulers, &["name", "label"]));
+    value["upscalers"] = Value::Array(names(upscalers, &["name"]));
     let mut response = Json(value).into_response();
     response
         .headers_mut()

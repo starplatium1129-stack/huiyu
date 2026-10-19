@@ -3,7 +3,8 @@ pub mod progress;
 mod proxy;
 
 use crate::AppState;
-use axum::{Extension, Router, routing::any};
+use axum::{Extension, Router, http::HeaderValue, routing::any};
+use base64::{Engine, engine::general_purpose::STANDARD};
 use std::sync::Arc;
 
 pub(crate) use client::diagnostic_message;
@@ -31,14 +32,17 @@ const BLOCKED: &[&str] = &[
 struct Proxy {
     transport: LocalUpstream,
     sd_host: String,
-    sd_auth: Option<String>,
+    sd_auth: Option<HeaderValue>,
 }
 
 pub fn router(config: &crate::config::Config) -> Router<AppState> {
     router_with(Proxy {
         transport: LocalUpstream::new(),
         sd_host: config.sd_host.clone(),
-        sd_auth: config.sd_auth.clone(),
+        sd_auth: config.sd_auth.as_ref().map(|auth| {
+            HeaderValue::try_from(format!("Basic {}", STANDARD.encode(auth)))
+                .expect("Base64 authorization contains only valid header bytes")
+        }),
     })
 }
 

@@ -5,7 +5,7 @@ use super::{
     recovery_claim::Claim,
 };
 use serde_json::{Value, json};
-use std::path::{Path, PathBuf};
+use std::{collections::HashMap, path::{Path, PathBuf}};
 
 pub fn preview(options: &Options, backup_id: Option<&str>) -> Result<Value> {
     let ctx = Context::new(options)?;
@@ -39,11 +39,19 @@ pub fn preview(options: &Options, backup_id: Option<&str>) -> Result<Value> {
     );
     let mut entries = Vec::new();
     if let Some(backup) = &backup {
+        let mut final_entries = HashMap::<&Path, &Value>::new();
+        if terminal {
+            for entry in journal["final"].as_array().into_iter().flatten() {
+                if let Some(source) = entry["source"].as_str() {
+                    final_entries.entry(Path::new(source)).or_insert(entry);
+                }
+            }
+        }
         for item in &backup.entries {
             match fs::state(&item.file) {
                 Ok(current) => {
                     let desired = if terminal {
-                        journal["final"].as_array().and_then(|items|items.iter().find(|entry|entry["source"].as_str().is_some_and(|file|Path::new(file)==item.file))).map(|entry|json!({"exists":entry["exists"],"sha256":entry["sha256"],"size":entry["size"]})).unwrap_or(Value::Null)
+                        final_entries.get(item.file.as_path()).map(|entry|json!({"exists":entry["exists"],"sha256":entry["sha256"],"size":entry["size"]})).unwrap_or(Value::Null)
                     } else {
                         item.expected.clone()
                     };

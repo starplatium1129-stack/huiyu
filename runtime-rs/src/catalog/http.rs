@@ -42,9 +42,9 @@ fn authorize(app: &AppState, headers: &HeaderMap, peer: std::net::SocketAddr) ->
     app.host.check_available()?;
     Ok(())
 }
-async fn work(
+async fn work<T: Serialize + Send + 'static>(
     app: &AppState,
-    action: impl FnOnce(&mut Catalog) -> Result<Value> + Send + 'static,
+    action: impl FnOnce(&mut Catalog) -> Result<T> + Send + 'static,
 ) -> Result<Response> {
     let options = Options::from_config(&app.config);
     // JSON encoding and dropping the large Value tree are CPU work too. Keep
@@ -92,6 +92,7 @@ async fn submission<T: serde::de::DeserializeOwned + Send + 'static>(
             Ok(body) => body,
             Err(error) => return Ok(error.into_response()),
         };
+        drop(bytes);
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "ABORT_ERR", "内容保存已取消"));
         }

@@ -27,7 +27,7 @@ pub(in crate::resources) fn entry(
             "Source size changed before copy",
         ));
     }
-    let mut input = fs::open(&source, entry.bytes, false)?;
+    let mut input = fs::open_checked(&source, entry.bytes, false, &stat)?;
     fs::ensure(target.parent().unwrap())?;
     fs::ensure(parts)?;
     let partial = parts.join(format!("{}.part", crate::resources::digest(&entry.path)));
@@ -42,7 +42,7 @@ pub(in crate::resources) fn entry(
     let mut output = options.open(&partial)?;
     fs::safe(&partial, false, false)?;
     let mut hash = Sha256::new();
-    let mut bytes = vec![0; 512 * 1024];
+    let mut bytes = vec![0; entry.bytes.saturating_add(1).min(512 * 1024) as usize];
     let mut total = 0_u64;
     loop {
         cancelled(&op.cancel)?;
@@ -74,7 +74,6 @@ pub(in crate::resources) fn entry(
     if !fs::file_matches(&partial, entry, &op.cancel)? {
         return Err(Error::new("CONTENT_INVALID", "Copied readback failed"));
     }
-    fs::safe(&target, true, false)?;
     fs::remove(&target)?;
     std::fs::rename(partial, &target)?;
     fs::sync(target.parent().unwrap())?;

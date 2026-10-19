@@ -67,7 +67,7 @@ impl ControlService {
         match self.request(host, "/api/ps", None, 3).await {
             Ok((status, data)) if (200..300).contains(&status) => {
                 let data = data.unwrap_or(Value::Null);
-                let models = data["models"].as_array().cloned().unwrap_or_default();
+                let models = data["models"].as_array().map(Vec::as_slice).unwrap_or(&[]);
                 let names: Vec<&str> = models
                     .iter()
                     .filter_map(|m| m["name"].as_str().or_else(|| m["model"].as_str()))
@@ -96,14 +96,13 @@ impl ControlService {
             }
         }
     }
-    fn cached_health(&self) -> Option<Value> {
+    fn cached_health(&self) -> Option<Arc<Value>> {
         let state = self.state.lock().unwrap();
-        state
-            .health_at
+        state.health_at
             .filter(|at| at.elapsed() < Duration::from_secs(2))
             .map(|_| state.health.clone())
     }
-    pub(super) async fn health(&self, fresh: bool) -> Value {
+    pub(super) async fn health(&self, fresh: bool) -> Arc<Value> {
         // A forced probe may be waiting on offline services. Ordinary polls can
         // still use a valid snapshot without joining that network wait.
         if !fresh && let Some(value) = self.cached_health() {
@@ -114,7 +113,7 @@ impl ControlService {
         if !fresh && let Some(value) = self.cached_health() {
             return value;
         }
-        let settings = self.settings();
+        let settings = self.runtime_settings();
         let (sd, comfy, tts, translation, mut result, llama) = tokio::join!(
             self.online(0, &settings),
             self.online(1, &settings),
@@ -139,12 +138,14 @@ impl ControlService {
         let mut state = self.state.lock().unwrap();
         result["webuiManaged"] = json!(state.managed[0].owned);
         result["comfyManaged"] = json!(comfy_owned);
+        let result = Arc::new(result);
         state.health = result.clone();
         state.health_at = Some(Instant::now());
+        drop(state);
         result
     }
     pub(super) async fn online_ollama(&self) -> bool {
-        self.ollama(&self.settings()).await["ollamaOnline"] == true
+        self.ollama(&self.runtime_settings()).await["ollamaOnline"] == true
     }
     pub(super) async fn watchdog(self: &Arc<Self>) {
         {
@@ -174,7 +175,7 @@ impl ControlService {
                 return;
             }
             let sequence = self.state.lock().unwrap().seq;
-            let healthy = self.online(index, &self.settings()).await;
+            let healthy = self.online(index, &self.runtime_settings()).await;
             let ready = {
                 let mut state = self.state.lock().unwrap();
                 // An explicit operation or another watchdog restart supersedes
@@ -189,10 +190,11 @@ impl ControlService {
                     continue;
                 }
                 if index == 3 {
-                    if !state.health.is_object() {
-                        state.health = json!({});
+                    let health = Arc::make_mut(&mut state.health);
+                    if !health.is_object() {
+                        *health = json!({});
                     }
-                    state.health["translationOnline"] = json!(healthy);
+                    health["translationOnline"] = json!(healthy);
                 }
                 let entry = &mut state.managed[index];
                 if !entry.desired || !entry.owned {

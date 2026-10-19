@@ -1,4 +1,19 @@
 use super::*;
+use std::sync::Arc;
+
+#[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
+pub(super) struct Page {
+    ok: bool,
+    version: i64,
+    items: Vec<Value>,
+    total: i64,
+    page: i64,
+    page_size: i64,
+    #[serde(serialize_with = "Value::serialize")]
+    facets: Arc<Value>,
+}
+
 #[derive(Default, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Query {
@@ -22,9 +37,14 @@ pub struct Query {
 }
 impl Catalog {
     pub fn query(&self, query: &Query) -> Result<Value> {
-        self.query_cached(query, None)
+        let Page { ok, version, items, total, page, page_size, facets } =
+            self.query_cached(query, None)?;
+        let mut value = json!({"ok":ok,"version":version,"items":null,"total":total,"page":page,"pageSize":page_size,"facets":null});
+        value["items"] = Value::Array(items);
+        value["facets"] = Arc::unwrap_or_clone(facets);
+        Ok(value)
     }
-    pub(super) fn query_cached(&self, query: &Query, cache: Option<&FacetCache>) -> Result<Value> {
+    pub(super) fn query_cached(&self, query: &Query, cache: Option<&FacetCache>) -> Result<Page> {
         let transaction = self.connection.unchecked_transaction()?;
         let date = |text: &str| -> Result<Option<chrono::DateTime<chrono::FixedOffset>>> {
             if text.is_empty() {
@@ -128,66 +148,72 @@ impl Catalog {
         let mut statement = self.connection.prepare(&format!("SELECT kind,id,revision,sort_order,created_at,updated_at,title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ? OFFSET ?"))?;
         values.extend([size.into(), ((selected_page - 1) * size).into()]);
         let items = statement.query_map(rusqlite::params_from_iter(&values), |r| {
-            Ok(json!({"kind":r.get::<_,String>(0)?,"id":r.get::<_,String>(1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":r.get::<_,Option<String>>(4)?,"updatedAt":r.get::<_,Option<String>>(5)?,
-                "title":r.get::<_,String>(6)?,"characterId":r.get::<_,String>(7)?,"category":r.get::<_,String>(8)?,"rating":r.get::<_,String>(9)?}))
+            Ok(json!({"kind":text_column(r,0)?,"id":text_column(r,1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":optional_text_column(r,4)?,"updatedAt":optional_text_column(r,5)?,
+                "title":text_column(r,6)?,"characterId":text_column(r,7)?,"category":text_column(r,8)?,"rating":text_column(r,9)?}))
         })?.collect::<rusqlite::Result<Vec<_>>>()?;
-        let mut value = json!({"ok":true,"version":version,"items":null,"total":total,"page":selected_page,"pageSize":size,"facets":null});
-        value["items"] = Value::Array(items);
-        value["facets"] = facets;
+        let value = Page {
+            ok: true,
+            version,
+            items,
+            total,
+            page: selected_page,
+            page_size: size,
+            facets,
+        };
         transaction.commit()?;
         if let (Some(cache), Some(generation)) = (cache, publish_generation) {
-            cache.publish(generation, &query.kind, &value["facets"], unfiltered_total)?;
+            cache.publish(generation, &query.kind, value.facets.clone(), unfiltered_total)?;
         }
         Ok(value)
     }
-    fn facets(&self, first_kind: &str, second_kind: &str) -> Result<(Value, i64)> {
+    fn facets(&self, first_kind: &str, second_kind: &str) -> Result<(Arc<Value>, i64)> {
         let mut facets = self.connection.prepare("SELECT character_id,category,rating,count(*) FROM content_records WHERE kind IN (?1,?2) AND deleted=0 GROUP BY character_id,category,rating")?;
         let mut characters = std::collections::BTreeSet::new();
         let mut categories = std::collections::BTreeSet::new();
         let mut ratings = std::collections::BTreeSet::new();
         let mut total = 0;
-        for result in facets.query_map([first_kind, second_kind], |r| {
-            Ok((
-                r.get::<_, String>(0)?,
-                r.get::<_, String>(1)?,
-                r.get::<_, String>(2)?,
-                r.get::<_, i64>(3)?,
-            ))
-        })? {
-            let (character, category, rating, count) = result?;
+        let mut rows = facets.query([first_kind, second_kind])?;
+        while let Some(row) = rows.next()? {
+            let character = text_column(row, 0)?;
+            let category = text_column(row, 1)?;
+            let rating = text_column(row, 2)?;
+            let count = row.get::<_, i64>(3)?;
             total += count;
-            if !character.is_empty() {
-                characters.insert(character);
+            if !character.is_empty() && !characters.contains(character) {
+                characters.insert(character.to_owned());
             }
-            if !category.is_empty() {
-                categories.insert(category);
+            if !category.is_empty() && !categories.contains(category) {
+                categories.insert(category.to_owned());
             }
-            if !rating.is_empty() {
-                ratings.insert(rating);
+            if !rating.is_empty() && !ratings.contains(rating) {
+                ratings.insert(rating.to_owned());
             }
         }
-        Ok((
-            json!({"characters":characters,"categories":categories,"ratings":ratings}),
-            total,
-        ))
+        let mut value = json!({"characters":null,"categories":null,"ratings":null});
+        value["characters"] = characters.into_iter().map(Value::String).collect();
+        value["categories"] = categories.into_iter().map(Value::String).collect();
+        value["ratings"] = ratings.into_iter().map(Value::String).collect();
+        Ok((Arc::new(value), total))
     }
     pub fn history(&self, kind: &str, id: &str) -> Result<Value> {
         validation::key(kind, id)?;
         let mut statement = self.connection.prepare("SELECT revision,at,batch,deleted FROM content_history WHERE kind=?1 AND id=?2 ORDER BY revision DESC LIMIT 100")?;
-        let items = statement.query_map(params![kind,id], |r| Ok(json!({"revision":r.get::<_,i64>(0)?,"at":r.get::<_,String>(1)?,"batch":r.get::<_,String>(2)?,"removed":r.get::<_,bool>(3)?})))?.collect::<rusqlite::Result<Vec<_>>>()?;
-        Ok(json!({"ok":true,"items":items}))
+        let items = statement.query_map(params![kind,id], |r| Ok(json!({"revision":r.get::<_,i64>(0)?,"at":text_column(r,1)?,"batch":text_column(r,2)?,"removed":r.get::<_,bool>(3)?})))?.collect::<rusqlite::Result<Vec<_>>>()?;
+        let mut value = json!({"ok":true,"items":null});
+        value["items"] = Value::Array(items);
+        Ok(value)
     }
     pub fn historical(&self, kind: &str, id: &str, revision: i64) -> Result<Record> {
         validation::key(kind, id)?;
-        let text: String = self
+        let record = self
             .connection
             .query_row(
                 "SELECT record FROM content_history WHERE kind=?1 AND id=?2 AND revision=?3",
                 params![kind, id, revision],
-                |r| r.get(0),
+                |r| Ok(serde_json::from_str::<Record>(text_column(r, 0)?)),
             )
             .optional()?
             .ok_or_else(|| ApiError::new(404, "CATALOG_HISTORY_NOT_FOUND", "历史修订不存在"))?;
-        Ok(serde_json::from_str(&text)?)
+        Ok(record?)
     }
 }

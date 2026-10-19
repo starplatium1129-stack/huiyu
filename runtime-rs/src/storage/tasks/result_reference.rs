@@ -30,12 +30,16 @@ impl Projection {
     }
 }
 
-pub(super) fn read(c: &Context, principal: &str, command: &Value) -> Result<Value> {
+pub(in crate::storage) fn read(
+    c: &Context,
+    principal: &str,
+    id: &str,
+    index: u64,
+) -> Result<ResultReference> {
     c.check_cancel()?;
-    let id = string(command, "taskId")?;
-    let index = command["index"]
-        .as_u64()
-        .ok_or_else(|| invalid("Invalid task result index"))?;
+    if principal.is_empty() {
+        return Err(ApiError::new(401, "UNAUTHORIZED", "Desktop principal is required"));
+    }
     // Keep complete result-reference validation and u64 index matching, without
     // decoding frozen inputs, metadata or batch checkpoints into Rust objects.
     let projected =
@@ -65,7 +69,7 @@ pub(super) fn read(c: &Context, principal: &str, command: &Value) -> Result<Valu
         }
     };
     c.check_cancel()?;
-    Ok(serde_json::to_value(reference)?)
+    Ok(reference)
 }
 
 pub(super) fn import(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
@@ -117,8 +121,12 @@ pub(super) fn import(c: &mut Context, principal: &str, command: &Value) -> Resul
         return Err(invalid("Unknown task media import command"));
     }
     c.transaction(|c| {
-        let value = read(c, principal, command)?;
-        let result: ResultReference = serde_json::from_value(value.clone())?;
+        c.check_cancel()?;
+        let id = string(command, "taskId")?;
+        let index = command["index"]
+            .as_u64()
+            .ok_or_else(|| invalid("Invalid task result index"))?;
+        let result = read(c, principal, id, index)?;
         let reference = result
             .reference
             .as_ref()
@@ -146,6 +154,6 @@ pub(super) fn import(c: &mut Context, principal: &str, command: &Value) -> Resul
             "INSERT INTO leases(id,kind,hash,created_at) VALUES(?,'video-import',?,?)",
             params![lease, reference.sha256, now()],
         )?;
-        Ok(value)
+        Ok(serde_json::to_value(result)?)
     })
 }

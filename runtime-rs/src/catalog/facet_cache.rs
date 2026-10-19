@@ -1,7 +1,18 @@
 use super::*;
-use std::{collections::HashMap, sync::Mutex};
+use std::{collections::HashMap, io::{self, Write}, sync::{Arc, Mutex}};
 
 const MAX_BYTES: usize = 1024 * 1024;
+
+struct EncodedSize(usize);
+impl Write for EncodedSize {
+    fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {
+        self.0 = self.0.saturating_add(bytes.len());
+        Ok(bytes.len())
+    }
+    fn flush(&mut self) -> io::Result<()> {
+        Ok(())
+    }
+}
 
 #[derive(Clone, PartialEq, Eq)]
 pub(super) struct Generation {
@@ -13,7 +24,7 @@ pub(super) struct Generation {
 #[derive(Default)]
 struct Entries {
     generation: Option<Generation>,
-    kinds: HashMap<String, (Value, i64)>,
+    kinds: HashMap<String, (Arc<Value>, i64)>,
     bytes: usize,
 }
 
@@ -27,7 +38,7 @@ impl FacetCache {
         &self,
         catalog: &Catalog,
         kind: &str,
-    ) -> Result<(Generation, Option<(Value, i64)>)> {
+    ) -> Result<(Generation, Option<(Arc<Value>, i64)>)> {
         let mut entries = self.0.lock().unwrap();
         // The first SELECT of the deferred transaction pins the same revision
         // used by count, page and facets. Serialize generation selection so a
@@ -42,17 +53,21 @@ impl FacetCache {
             entries.bytes = 0;
             entries.generation = Some(generation.clone());
         }
-        Ok((generation, entries.kinds.get(kind).cloned()))
+        let value = entries.kinds.get(kind).cloned();
+        drop(entries);
+        Ok((generation, value))
     }
 
     pub(super) fn publish(
         &self,
         generation: Generation,
         kind: &str,
-        value: &Value,
+        value: Arc<Value>,
         total: i64,
     ) -> Result<()> {
-        let bytes = serde_json::to_vec(&(value, total))?.len();
+        let mut size = EncodedSize(0);
+        serde_json::to_writer(&mut size, &(value.as_ref(), total))?;
+        let bytes = size.0;
         let mut entries = self.0.lock().unwrap();
         // Misses are computed outside the mutex. Never publish a late result
         // into another revision, or keep an unbounded facet set.
@@ -69,7 +84,7 @@ impl FacetCache {
         entries.bytes += bytes;
         entries
             .kinds
-            .insert(kind.to_owned(), (value.clone(), total));
+            .insert(kind.to_owned(), (value, total));
         Ok(())
     }
 }

@@ -5,7 +5,7 @@ mod optional_nodes;
 /// The two real Comfy image providers share execution, while each compiler owns
 /// its complete normalized input, exact graph, resource list and output scope.
 pub(crate) struct ComfyPlan {
-    pub input: Value,
+    pub input: Arc<Value>,
     pub workflow: Value,
     pub metadata: Value,
     pub resources: Vec<PathBuf>,
@@ -29,9 +29,9 @@ pub(super) enum Execution {
     Native(Box<native::Plan>),
 }
 impl Execution {
-    pub fn input(&self) -> Value {
+    pub fn input(&self) -> Arc<Value> {
         match self {
-            Self::Webui(input) => serde_json::to_value(input).expect("validated input is JSON"),
+            Self::Webui(input) => serde_json::to_value(input).expect("validated input is JSON").into(),
             Self::Comfy(plan) => plan.input.clone(),
             Self::Native(plan) => plan.input.clone(),
         }
@@ -58,7 +58,7 @@ pub(super) fn wai(input: Input, config: &Config) -> Result<ComfyPlan> {
     Ok(ComfyPlan {
         workflow: workflow::build(&input)?,
         metadata: jobs::wai_metadata(&input, "comfy"),
-        input: serde_json::to_value(&input)?,
+        input: serde_json::to_value(&input)?.into(),
         resources,
         family: "sd",
         namespace: "wai",
@@ -131,7 +131,7 @@ impl Service {
                 optional_nodes::validate(&plan.workflow, &nodes)?;
             }
             Ok(Prepared {
-                input: plan.input.clone(),
+                input: plan.input.as_ref().clone(),
                 provider: "comfy".into(),
                 execution: Execution::Comfy(Box::new(plan)),
                 selected: "comfy",

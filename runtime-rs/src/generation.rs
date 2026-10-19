@@ -28,6 +28,7 @@ use crate::{
 pub(crate) use http::{RateLimit, limit_request, owner as request_owner};
 use plan::Execution;
 pub(crate) use plan::{ComfyPlan, MediaKind};
+pub(crate) use recovery::RecoveryTask;
 pub(crate) use resources::{super_res, super_res_name};
 pub(crate) use snapshots::write as write_job_record;
 use serde_json::{Value, json};
@@ -134,7 +135,7 @@ struct State {
 struct Job {
     id: String,
     owner: String,
-    input: Value,
+    input: Arc<Value>,
     execution: Execution,
     provider: &'static str,
     created: i64,
@@ -153,7 +154,7 @@ struct JobState {
     result: Option<Output>,
     error: Option<String>,
     code: Option<String>,
-    metadata: Value,
+    metadata: Arc<Value>,
     upstream_id: String,
     progress: Option<f64>,
     current_node: Option<String>,

@@ -90,7 +90,7 @@ impl Requests {
         }
         write_job_record(
             &self.directory.join(format!("{token}.json")),
-            &serde_json::to_value(receipt)?,
+            receipt,
         )
         .await
     }

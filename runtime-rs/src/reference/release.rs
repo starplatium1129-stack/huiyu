@@ -1,5 +1,5 @@
 use super::{Result, check_cancel, invalid_release, io, shards};
-use serde_json::{Map, Value};
+use serde_json::Value;
 use std::{
     collections::{HashMap, HashSet},
     fs,
@@ -10,7 +10,7 @@ use tokio_util::sync::CancellationToken;
 pub(super) struct Release {
     root: PathBuf,
     marker: Vec<u8>,
-    manifest: Value,
+    control_hashes: [String; 3],
     view: Value,
     files: HashMap<String, (u64, String)>,
 }
@@ -29,8 +29,7 @@ fn hash_matches(bytes: &[u8], expected: &Value) -> bool {
 }
 
 pub(super) fn seal(release: &Value) -> String {
-    let mut fields = Map::new();
-    for key in [
+    let fields = [
         "files",
         "viewSha256",
         "sourceStandardsSha256",
@@ -38,15 +37,12 @@ pub(super) fn seal(release: &Value) -> String {
         "candidateManifestSha256",
         "reviewSha256",
         "baseIdentity",
-    ] {
-        if let Some(value) = release.get(key) {
-            fields.insert(key.into(), value.clone());
-        }
-    }
-    if release.get("approvals").is_some_and(truthy) {
-        fields.insert("approvals".into(), release["approvals"].clone());
-    }
-    io::digest(crate::storage::stringify(&Value::Object(fields)))
+        "approvals",
+    ].into_iter().filter_map(|key| {
+        let (field, value) = release.as_object()?.get_key_value(key)?;
+        (key != "approvals" || truthy(value)).then_some((field, value))
+    });
+    crate::storage::json_object_digest(fields)
 }
 
 fn truthy(value: &Value) -> bool {
@@ -205,7 +201,9 @@ impl Release {
             return Err(invalid_release());
         }
         shards::check_products(app_root, &standards, &source_view, cancel)?;
+        drop((standards, source_view));
         let view: Value = serde_json::from_slice(&view_bytes).map_err(|_| invalid_release())?;
+        drop(view_bytes);
         validate_view(&view, &paths, cancel)?;
         check_cancel(cancel)?;
         // Full image verification happens once, using bounded streaming hashes.
@@ -213,7 +211,8 @@ impl Release {
         Ok(Some(Self {
             root: root.to_owned(),
             marker,
-            manifest,
+            control_hashes: ["viewSha256", "sourceStandardsSha256", "sourceViewSha256"]
+                .map(|key| manifest[key].as_str().unwrap().to_owned()),
             view,
             files,
         }))
@@ -224,33 +223,24 @@ impl Release {
         app_root: &Path,
         id: Option<&str>,
         cancel: &CancellationToken,
-    ) -> Result<Option<Value>> {
+    ) -> Result<Option<&Value>> {
         self.controls(app_root, cancel)?;
         Ok(match id {
-            Some(id) => self.view.get(id).cloned().filter(truthy),
-            None => Some(self.view.clone()),
+            Some(id) => self.view.get(id).filter(|value| truthy(value)),
+            None => Some(&self.view),
         })
     }
     fn controls(&self, app_root: &Path, cancel: &CancellationToken) -> Result<()> {
         if io::bytes(&self.root.join("reference-release.json"), cancel)? != self.marker {
             return Err(invalid_release());
         }
-        for (path, key) in [
-            (
-                self.root.join("character-reference-view.json"),
-                "viewSha256",
-            ),
-            (
-                app_root.join("data/character-reference-standards.json"),
-                "sourceStandardsSha256",
-            ),
-            (
-                app_root.join("data/character-reference-view.json"),
-                "sourceViewSha256",
-            ),
-        ] {
+        for (path, expected) in [
+            self.root.join("character-reference-view.json"),
+            app_root.join("data/character-reference-standards.json"),
+            app_root.join("data/character-reference-view.json"),
+        ].into_iter().zip(&self.control_hashes) {
             let (_, hash) = io::file_digest(&path, cancel)?;
-            if self.manifest[key].as_str() != Some(&hash) {
+            if expected != &hash {
                 return Err(invalid_release());
             }
         }

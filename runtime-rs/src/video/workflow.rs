@@ -1,6 +1,8 @@
 use super::*;
 fn node(class: &str, inputs: Value) -> Value {
-    json!({"class_type":class,"inputs":inputs})
+    let mut node = json!({"class_type":class,"inputs":null});
+    node["inputs"] = inputs;
+    node
 }
 pub fn build(input: &Value, t8: bool) -> Value {
     if input["modelId"] == "minimax-h3" {
@@ -106,13 +108,17 @@ fn h3(input: &Value, t8: bool) -> Value {
     graph
 }
 fn wan(input: &Value) -> Value {
-    json!({
-        "1":node("UNETLoader",json!({"unet_name":"wan2.2_ti2v_5B_fp16.safetensors","weight_dtype":"default"})),
-        "2":node("CLIPLoader",json!({"clip_name":"umt5_xxl_fp8_e4m3fn_scaled.safetensors","type":"wan","device":"default"})),
-        "3":node("VAELoader",json!({"vae_name":"wan2.2_vae.safetensors"})),
-        "4":node("CLIPTextEncode",json!({"clip":["2",0],"text":input["prompt"]})),"5":node("CLIPTextEncode",json!({"clip":["2",0],"text":input["negative"]})),
-        "6":node("ModelSamplingSD3",json!({"model":["1",0],"shift":8})),"7":node("Wan22ImageToVideoLatent",json!({"vae":["3",0],"width":input["width"],"height":input["height"],"length":input["frames"],"batch_size":1})),
-        "8":node("KSampler",json!({"model":["6",0],"positive":["4",0],"negative":["5",0],"latent_image":["7",0],"seed":input["seed"],"steps":input["steps"],"cfg":input["cfg"],"sampler_name":"uni_pc","scheduler":"simple","denoise":1})),
-        "9":node("VAEDecode",json!({"samples":["8",0],"vae":["3",0]})),"10":node("CreateVideo",json!({"images":["9",0],"fps":input["fps"],"bit_depth":8})),"11":node("SaveVideo",json!({"video":["10",0],"filename_prefix":"aics_video","format":"auto","codec":"auto"}))
-    })
+    Value::Object(serde_json::Map::from_iter([
+        ("1".into(),node("UNETLoader",json!({"unet_name":"wan2.2_ti2v_5B_fp16.safetensors","weight_dtype":"default"}))),
+        ("2".into(),node("CLIPLoader",json!({"clip_name":"umt5_xxl_fp8_e4m3fn_scaled.safetensors","type":"wan","device":"default"}))),
+        ("3".into(),node("VAELoader",json!({"vae_name":"wan2.2_vae.safetensors"}))),
+        ("4".into(),node("CLIPTextEncode",json!({"clip":["2",0],"text":input["prompt"]}))),
+        ("5".into(),node("CLIPTextEncode",json!({"clip":["2",0],"text":input["negative"]}))),
+        ("6".into(),node("ModelSamplingSD3",json!({"model":["1",0],"shift":8}))),
+        ("7".into(),node("Wan22ImageToVideoLatent",json!({"vae":["3",0],"width":input["width"],"height":input["height"],"length":input["frames"],"batch_size":1}))),
+        ("8".into(),node("KSampler",json!({"model":["6",0],"positive":["4",0],"negative":["5",0],"latent_image":["7",0],"seed":input["seed"],"steps":input["steps"],"cfg":input["cfg"],"sampler_name":"uni_pc","scheduler":"simple","denoise":1}))),
+        ("9".into(),node("VAEDecode",json!({"samples":["8",0],"vae":["3",0]}))),
+        ("10".into(),node("CreateVideo",json!({"images":["9",0],"fps":input["fps"],"bit_depth":8}))),
+        ("11".into(),node("SaveVideo",json!({"video":["10",0],"filename_prefix":"aics_video","format":"auto","codec":"auto"}))),
+    ]))
 }

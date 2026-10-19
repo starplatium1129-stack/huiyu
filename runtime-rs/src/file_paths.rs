@@ -40,10 +40,11 @@ pub(crate) fn absolute(path: &Path) -> Result<PathBuf> {
 }
 
 pub(crate) fn key(path: &Path) -> Result<String> {
-    let value = absolute(path)?.to_string_lossy().into_owned();
+    let path = absolute(path)?;
+    let value = path.to_string_lossy();
     Ok(if cfg!(windows) {
         value.to_lowercase()
     } else {
-        value
+        value.into_owned()
     })
 }

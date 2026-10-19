@@ -104,11 +104,8 @@ fn prepare(c: &Context, principal: &str, command: &Value) -> Result<Prepared> {
     }
     c.writer()?;
     c.owner.check()?;
-    if let Some(operation) = c.operation(principal, operation_id)? {
-        operation.check(kind, command)?;
-        if let Some(receipt) = operation.receipt {
-            return Ok(Prepared::Complete(receipt));
-        }
+    if let Some((_, Some(receipt))) = c.operation_receipt(principal, command)? {
+        return Ok(Prepared::Complete(receipt));
     }
     let items = if kind == "restoreArtworks" {
         batch::prepare(c, command)?

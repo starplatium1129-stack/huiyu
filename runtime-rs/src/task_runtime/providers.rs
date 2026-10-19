@@ -10,16 +10,16 @@ impl Preparation {
     pub(super) fn input(&self) -> &Value {
         match self {
             Self::Generation(p) => &p.input,
-            Self::Image(p) => &p.input,
-            Self::Video(p) => &p.input,
+            Self::Image(p) => p.input(),
+            Self::Video(p) => p.input(),
             Self::Batch(p) => &p.input,
         }
     }
     pub(super) fn provider(&self) -> &str {
         match self {
             Self::Generation(p) => &p.provider,
-            Self::Image(p) => &p.provider,
-            Self::Video(p) => &p.provider,
+            Self::Image(p) => p.provider(),
+            Self::Video(p) => p.provider(),
             Self::Batch(p) => &p.provider,
         }
     }

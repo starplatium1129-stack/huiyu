@@ -1,19 +1,18 @@
 use std::ops::Range;
 
-pub(super) fn finish(bytes: &mut [u8]) -> bool {
-    let Some((data, _)) = inspect(bytes) else {
-        return false;
-    };
-    super::super::payload::fix_wav(bytes);
-    // fix_wav handles streaming placeholders. Preserve a real data chunk's end
-    // when the WAV also carries trailing metadata chunks.
+pub(super) fn finish(bytes: &mut [u8]) -> Option<(Range<usize>, bool)> {
+    let (data, pcm) = inspect(bytes)?;
+    let length = bytes.len();
+    bytes[4..8].copy_from_slice(&((length - 8) as u32).to_le_bytes());
+    // Streaming placeholders use the admitted data range, excluding any trailing
+    // metadata chunks that still belong to the complete RIFF length above.
     bytes[data.start - 4..data.start].copy_from_slice(&(data.len() as u32).to_le_bytes());
-    true
+    Some((data, pcm))
 }
 
 // A completed HTTP body can still contain a truncated WAV. Accept the empty
 // sizes used by streaming WAV headers, but reject partial declared chunks.
-pub(super) fn inspect(bytes: &[u8]) -> Option<(Range<usize>, bool)> {
+fn inspect(bytes: &[u8]) -> Option<(Range<usize>, bool)> {
     if bytes.len() < 44 || &bytes[..4] != b"RIFF" || &bytes[8..12] != b"WAVE" {
         return None;
     }

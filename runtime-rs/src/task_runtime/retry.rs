@@ -62,21 +62,9 @@ impl TaskRuntime {
         id: &str,
     ) -> Result<Value> {
         self.check_running()?;
-        let source = Self::get(storage, principal, id).await?;
+        let mut source = Self::get(storage, principal, id).await?;
         let key = format!("manga-retry:{id}");
-        let existing: Option<TaskRecord> = serde_json::from_value(
-            storage
-                .task(
-                    TaskCommand::Get {
-                        task_id: None,
-                        request_key: Some(key.clone()),
-                        summary: false,
-                    },
-                    principal,
-                )
-                .await?,
-        )?;
-        if let Some(existing) = existing {
+        if let Some(existing) = storage.task_record_by_request(&key, principal).await? {
             if !source.kind.is_manga()
                 || existing.kind != source.kind
                 || existing.provider != "native"
@@ -140,17 +128,21 @@ impl TaskRuntime {
                 error
             }
         })?;
-        if prepared.input != Value::Object(source.input.clone()) {
+        if prepared.input().as_object() != Some(&source.input) {
             return Err(ApiError::new(
                 409,
                 "TASK_RESUME_UNSAFE",
                 "已保存的漫画配方不能原样恢复，请回入口重新创建任务",
             ));
         }
-        let context = source.metadata.get("context").cloned().unwrap_or(json!({}));
-        let fingerprint = self.fingerprint.hash(
-            &json!({"kind":source.kind,"input":source.input,"context":context,"retryOfTaskId":id}),
-        );
+        // Restoration identity is checked above; the consumed source recipe can
+        // now move into the fingerprint envelope instead of being copied again.
+        let mut frozen = json!({"kind":source.kind,"input":null,"context":null,"retryOfTaskId":id});
+        frozen["input"] = Value::Object(source.input);
+        frozen["context"] = source.metadata.remove("context").unwrap_or(json!({}));
+        let fingerprint = self.fingerprint.hash(&frozen);
+        let context = frozen["context"].take();
+        drop(frozen);
         self.accept_prepared(
             storage.clone(),
             principal.into(),

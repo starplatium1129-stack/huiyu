@@ -318,7 +318,7 @@ fn anima_plan(settings: &Settings, mut input: Value, originals: &[inputs::Origin
         .find(|original| original.name == name).map(|original| original.bytes.clone())
         .ok_or_else(|| error("TASK_INPUT_INVALID", "草图输入尚未保护"))).transpose()?;
     Ok(Plan {
-        input,
+        input: input.into(),
         model_dir,
         mask_model_dir,
         upscale_model_path,

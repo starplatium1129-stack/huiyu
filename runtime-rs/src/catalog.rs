@@ -41,7 +41,7 @@ impl Options {
         }
     }
 }
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Record {
     pub kind: String,
@@ -67,20 +67,34 @@ pub struct Catalog {
 fn now() -> String {
     chrono::DateTime::<chrono::Utc>::from(std::time::SystemTime::now()).to_rfc3339()
 }
-fn row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Record> {
-    // Decode the payload while SQLite owns its text, without copying a full
-    // prompt/document first. Preserve the String reader's type and UTF-8 errors.
-    let text = match row.get_ref(6)? {
+fn text_column<'row>(row: &'row rusqlite::Row<'_>, column: usize) -> rusqlite::Result<&'row str> {
+    // Borrow while SQLite owns the text, retaining column type and UTF-8 checks.
+    match row.get_ref(column)? {
         rusqlite::types::ValueRef::Text(bytes) => std::str::from_utf8(bytes)
-            .map_err(|error| rusqlite::Error::Utf8Error(6, error))?,
+            .map_err(|error| rusqlite::Error::Utf8Error(column, error)),
         value => {
-            return Err(rusqlite::Error::InvalidColumnType(
-                6,
-                row.as_ref().column_name(6)?.into(),
+            Err(rusqlite::Error::InvalidColumnType(
+                column,
+                row.as_ref().column_name(column)?.into(),
                 value.data_type(),
-            ));
+            ))
         }
-    };
+    }
+}
+fn optional_text_column<'row>(row: &'row rusqlite::Row<'_>, column: usize) -> rusqlite::Result<Option<&'row str>> {
+    if matches!(row.get_ref(column)?, rusqlite::types::ValueRef::Null) {
+        Ok(None)
+    } else {
+        text_column(row, column).map(Some)
+    }
+}
+fn json_column(row: &rusqlite::Row<'_>, column: usize) -> rusqlite::Result<Value> {
+    serde_json::from_str(text_column(row, column)?).map_err(|e| {
+        rusqlite::Error::FromSqlConversionFailure(column, rusqlite::types::Type::Text, Box::new(e))
+    })
+}
+fn row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Record> {
+    let text = text_column(row, 6)?;
     Ok(Record {
         kind: row.get(0)?,
         id: row.get(1)?,
@@ -237,12 +251,6 @@ impl Catalog {
             )
             .optional()?
             .ok_or_else(|| ApiError::new(404, "CATALOG_NOT_FOUND", "记录不存在或已下架"))
-    }
-    pub fn records(&self, kind: &str) -> Result<Vec<Record>> {
-        let mut statement = self.connection.prepare(&format!("SELECT {COLUMNS} FROM content_records WHERE kind=?1 AND deleted=0 ORDER BY sort_order,id"))?;
-        Ok(statement
-            .query_map([kind], row)?
-            .collect::<rusqlite::Result<Vec<_>>>()?)
     }
     pub fn version(&self) -> Result<i64> {
         self.connection

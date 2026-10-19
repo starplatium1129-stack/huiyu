@@ -1,7 +1,9 @@
 use super::*;
 use crate::generation::truthy;
 fn node(class: &str, inputs: Value) -> Value {
-    json!({"class_type":class,"inputs":inputs})
+    let mut node = json!({"class_type":class,"inputs":null});
+    node["inputs"] = inputs;
+    node
 }
 fn link(id: &str, index: u32) -> Value {
     json!([id, index])
@@ -282,7 +284,16 @@ fn inpaint_hires(graph: &mut Value, input: &Value, model: Value, positive: &str,
     graph["10"]["inputs"]["images"] = link("hires_composite", 0);
 }
 fn krea(input: &Value, model: &Value) -> Result<Value> {
-    let mut graph = json!({"1":node("UNETLoader",json!({"unet_name":model["file"],"weight_dtype":"default"})),"2":node("CLIPLoader",json!({"clip_name":"qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors","type":"krea2"})),"3":node("VAELoader",json!({"vae_name":"qwen_image_vae.safetensors"})),"4":node("CLIPTextEncode",json!({"clip":["2",0],"text":input["prompt"]})),"5":node("ConditioningZeroOut",json!({"conditioning":["4",0]})),"6":node("EmptyLatentImage",json!({"width":input["width"],"height":input["height"],"batch_size":1})),"8":node("VAEDecode",json!({"samples":["7",0],"vae":["3",0]})),"10":node("SaveImage",json!({"images":["8",0],"filename_prefix":"creative_app"}))});
+    let mut graph = Value::Object(serde_json::Map::from_iter([
+        ("1".into(),node("UNETLoader",json!({"unet_name":model["file"],"weight_dtype":"default"}))),
+        ("2".into(),node("CLIPLoader",json!({"clip_name":"qwen3-vl-4b-heretic_fp8_e4m3fn.safetensors","type":"krea2"}))),
+        ("3".into(),node("VAELoader",json!({"vae_name":"qwen_image_vae.safetensors"}))),
+        ("4".into(),node("CLIPTextEncode",json!({"clip":["2",0],"text":input["prompt"]}))),
+        ("5".into(),node("ConditioningZeroOut",json!({"conditioning":["4",0]}))),
+        ("6".into(),node("EmptyLatentImage",json!({"width":input["width"],"height":input["height"],"batch_size":1}))),
+        ("8".into(),node("VAEDecode",json!({"samples":["7",0],"vae":["3",0]}))),
+        ("10".into(),node("SaveImage",json!({"images":["8",0],"filename_prefix":"creative_app"}))),
+    ]));
     let mut positive = link("4", 0);
     if model.get("rebalance").is_some() {
         let rebalance = &model["rebalance"];

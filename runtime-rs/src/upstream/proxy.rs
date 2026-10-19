@@ -7,7 +7,6 @@ use axum::{
     http::{HeaderMap, Method, StatusCode},
     response::{IntoResponse, Response},
 };
-use base64::{Engine, engine::general_purpose::STANDARD};
 use futures_util::StreamExt;
 use serde_json::json;
 use std::sync::Arc;
@@ -28,15 +27,17 @@ pub(super) async fn unavailable(request: Request) -> Response {
     )
 }
 
-fn clean_headers(headers: &HeaderMap) -> HeaderMap {
-    let mut clean = headers.clone();
-    let named: Vec<String> = headers
+fn clean_headers(mut clean: HeaderMap) -> HeaderMap {
+    let connection = clean
         .get_all("connection")
         .iter()
+        .cloned()
+        .collect::<Vec<_>>();
+    for name in connection
+        .iter()
         .filter_map(|value| value.to_str().ok())
-        .flat_map(|value| value.split(',').map(|name| name.trim().to_owned()))
-        .collect();
-    for name in named {
+        .flat_map(|value| value.split(',').map(str::trim))
+    {
         clean.remove(name);
     }
     for name in [
@@ -75,12 +76,9 @@ pub(super) async fn forward(
     target.set_path(path);
     target.set_query(request.uri().query());
     let (parts, body) = request.into_parts();
-    let mut headers = clean_headers(&parts.headers);
+    let mut headers = clean_headers(parts.headers);
     if let Some(auth) = &proxy.sd_auth {
-        let Ok(value) = format!("Basic {}", STANDARD.encode(auth)).parse() else {
-            return gateway_error();
-        };
-        headers.insert("authorization", value);
+        headers.insert("authorization", auth.clone());
     }
     let send = proxy
         .transport
@@ -94,12 +92,12 @@ pub(super) async fn forward(
     };
     let send = send.send();
     let result = tokio::select! { value = send => value, _ = state.shutdown.cancelled() => return gateway_error() };
-    let upstream = match result {
+    let mut upstream = match result {
         Ok(value) => value,
         Err(_) => return gateway_error(),
     };
     let status = upstream.status();
-    let headers = clean_headers(upstream.headers());
+    let headers = clean_headers(std::mem::take(upstream.headers_mut()));
     // Body owns the upstream stream: slow readers apply backpressure and dropping
     // the downstream response cancels further upstream reads without a relay task.
     let stream = upstream

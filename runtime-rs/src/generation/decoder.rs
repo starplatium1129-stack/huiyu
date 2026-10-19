@@ -1,4 +1,5 @@
 use super::*;
+use crate::byte_buffer::Buffer;
 use base64::{Engine, engine::general_purpose::STANDARD};
 
 const BLOCKING_THRESHOLD: usize = 512 * 1024;
@@ -108,11 +109,11 @@ impl Decoder {
         &self,
         provider: &str,
         status: u16,
-        bytes: Vec<u8>,
+        bytes: Buffer,
         request: &CancellationToken,
         shutdown: &CancellationToken,
     ) -> Result<Value> {
-        if bytes.len() > constants::MAX_JSON {
+        if bytes.as_ref().len() > constants::MAX_JSON {
             return Err(ApiError::new(
                 502,
                 "UPSTREAM_RESPONSE_TOO_LARGE",
@@ -120,17 +121,17 @@ impl Decoder {
             ));
         }
         let webui = provider == "webui";
-        self.run(bytes.len(), request, shutdown, move || {
-            if bytes.is_empty() {
+        self.run(bytes.as_ref().len(), request, shutdown, move || {
+            if bytes.as_ref().is_empty() {
                 Ok(Value::Null)
             } else if !(200..300).contains(&status) {
-                Ok(serde_json::from_slice(&bytes).unwrap_or_else(|_| {
-                    Value::String(String::from_utf8(bytes).unwrap_or_else(|error| {
+                Ok(serde_json::from_slice(bytes.as_ref()).unwrap_or_else(|_| {
+                    Value::String(String::from_utf8(bytes.into_vec()).unwrap_or_else(|error| {
                         String::from_utf8_lossy(error.as_bytes()).into_owned()
                     }))
                 }))
             } else {
-                serde_json::from_slice(&bytes).map_err(|_| {
+                serde_json::from_slice(bytes.as_ref()).map_err(|_| {
                     ApiError::new(
                         502,
                         if webui {

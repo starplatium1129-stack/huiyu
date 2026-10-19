@@ -2,7 +2,7 @@ use super::*;
 use futures_util::StreamExt;
 use regex::Regex;
 use reqwest::Method;
-use std::sync::LazyLock;
+use std::{borrow::Cow, sync::LazyLock};
 use tokio::io::{AsyncWriteExt, BufWriter};
 static FILENAME: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^[A-Za-z0-9][A-Za-z0-9._-]{0,180}\.(?:png|jpe?g|webp)$").unwrap()
@@ -11,18 +11,17 @@ static DENIED: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)(?:^|[-_.])(?:input|temp|annotation|annotations|hash)(?:[-_.]|$)").unwrap()
 });
 pub(super) fn decode(value: &str) -> Result<String> {
-    let mut value = value.to_owned();
+    let mut value = Cow::Borrowed(value);
     for _ in 0..3 {
         let next = percent_encoding::percent_decode_str(&value)
             .decode_utf8()
-            .map_err(|_| ApiError::new(400, "INVALID_RESULT", "结果路径编码无效"))?
-            .into_owned();
+            .map_err(|_| ApiError::new(400, "INVALID_RESULT", "结果路径编码无效"))?;
         if next == value {
             break;
         }
-        value = next;
+        value = Cow::Owned(next.into_owned());
     }
-    Ok(value)
+    Ok(value.into_owned())
 }
 pub(super) async fn materialize(inner: &Inner, job: &Job, image: &Value) -> Result<Output> {
     let Execution::Comfy(plan) = &job.execution else {

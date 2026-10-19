@@ -104,7 +104,7 @@ impl Pending {
 
 pub(super) fn start(
     c: &mut Context,
-    command: &Value,
+    command: Value,
     principal: &str,
     reply: oneshot::Sender<Result<Value>>,
     permit: Option<OwnedSemaphorePermit>,
@@ -115,7 +115,7 @@ pub(super) fn start(
 
 pub(super) fn start_copy(
     c: &mut Context,
-    command: &Value,
+    command: Value,
     source: TaskMediaSource,
     principal: &str,
     reply: oneshot::Sender<Result<Value>>,
@@ -142,7 +142,7 @@ pub(super) fn start_copy(
 
 fn start_inner(
     c: &mut Context,
-    command: &Value,
+    command: Value,
     principal: &str,
     reply: oneshot::Sender<Result<Value>>,
     permit: Option<OwnedSemaphorePermit>,
@@ -153,7 +153,7 @@ fn start_inner(
         command["kind"].as_str(),
         Some("task.result.commit" | "task.input.commit")
     ) {
-        commit::prepare(c, principal, command).map(|prepared| match prepared {
+        commit::prepare(c, principal, &command).map(|prepared| match prepared {
             commit::Prepared::Complete(value) => Prepared::Complete(value),
             commit::Prepared::Verify(output) => Prepared::Verify(Publication::Task(output)),
         })

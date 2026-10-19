@@ -192,23 +192,38 @@ async fn status(
     Extension(service): Extension<Arc<Live2dService>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: axum::http::HeaderMap,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     let snapshot = if security::is_direct_local(&headers, peer.ip()) {
         service.snapshot().await?
     } else {
         service.public_snapshot().await?
     };
-    Ok(Json(snapshot.status.clone()))
+    Ok(Json(&snapshot.status).into_response())
 }
 async fn companions(
     Extension(service): Extension<Arc<Live2dService>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     headers: axum::http::HeaderMap,
-) -> Result<Json<Value>> {
-    if !security::is_direct_local(&headers, peer.ip()) {
-        return Ok(Json(json!([])));
+) -> Result<Response> {
+    #[derive(serde::Serialize)]
+    struct Companion<'a> {
+        character: &'a Value,
+        avatar: &'a Value,
+        profile: &'a Value,
     }
-    Ok(Json(Value::Array(service.snapshot().await?.models.iter().filter_map(|model| model.receipt.as_ref()).map(|receipt| json!({"character":receipt["character"],"avatar":receipt["avatar"],"profile":receipt["profile"]})).collect())))
+    if !security::is_direct_local(&headers, peer.ip()) {
+        return Ok(Json(json!([])).into_response());
+    }
+    let snapshot = service.snapshot().await?;
+    let companions = snapshot.models.iter()
+        .filter_map(|model| model.receipt.as_ref())
+        .map(|receipt| Companion {
+            character: &receipt["character"],
+            avatar: &receipt["avatar"],
+            profile: &receipt["profile"],
+        })
+        .collect::<Vec<_>>();
+    Ok(Json(companions).into_response())
 }
 async fn asset(
     Extension(service): Extension<Arc<Live2dService>>,

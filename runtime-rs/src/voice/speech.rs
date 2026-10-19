@@ -7,6 +7,7 @@ use super::{
     queue::{Permit, Queue, Reservation, cancelled, remaining, speech_timeout},
 };
 use crate::{
+    byte_buffer::Buffer,
     error::{ApiError, Result},
     upstream::LocalUpstream,
 };
@@ -16,6 +17,7 @@ use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
 use std::{
     collections::{HashMap, VecDeque},
+    io::{BufWriter, Write},
     sync::{Arc, Mutex},
     time::Duration,
 };
@@ -59,9 +61,14 @@ struct Active {
 }
 #[derive(Default)]
 struct AudioCache {
-    entries: VecDeque<(String, Bytes)>,
+    entries: VecDeque<(String, CachedAudio)>,
     bytes: usize,
     flights: HashMap<String, Flight>,
+}
+#[derive(Clone)]
+struct CachedAudio {
+    bytes: Bytes,
+    pcm: Option<std::ops::Range<usize>>,
 }
 pub(super) struct Speech {
     pub settings: Arc<Settings>,
@@ -280,17 +287,19 @@ impl Speech {
             // Error bodies must obey the same cancellation/deadline as audio,
             // with a small separate cap so a failed provider cannot hold the queue.
             let read = async {
-                let mut bytes = Vec::new();
+                let mut bytes = Buffer::Chunk(Bytes::new());
                 let mut stream = response.bytes_stream();
                 while let Some(chunk) = stream.next().await {
                     let chunk = chunk.ok()?;
-                    if bytes.len().saturating_add(chunk.len()) > 16 * 1024 {
+                    if bytes.as_ref().len().saturating_add(chunk.len()) > 16 * 1024 {
                         return None;
                     }
-                    bytes.extend_from_slice(&chunk);
+                    bytes.append(chunk, 0);
                 }
-                Some(serde_json::from_slice::<Value>(&bytes).unwrap_or_else(|_| {
-                    Value::String(String::from_utf8_lossy(&bytes).into_owned())
+                Some(serde_json::from_slice::<Value>(bytes.as_ref()).unwrap_or_else(|_| {
+                    Value::String(String::from_utf8(bytes.into_vec()).unwrap_or_else(|error| {
+                        String::from_utf8_lossy(error.as_bytes()).into_owned()
+                    }))
                 }))
             };
             let detail = tokio::select! {
@@ -332,8 +341,8 @@ impl Speech {
         let key = self.cache_key(&value);
         let (mut subscriber, hit) = {
             let mut cache = self.cache.lock().unwrap();
-            if let Some((_, bytes)) = cache.entries.iter().find(|(cached, _)| *cached == key) {
-                return Ok((bytes.clone(), true));
+            if let Some((_, audio)) = cache.entries.iter().find(|(cached, _)| *cached == key) {
+                return Ok((audio.bytes.clone(), true));
             }
             let (receiver, flight, hit) = if let Some(flight) = cache.flights.get(&key) {
                 (flight.subscribe(), flight.clone(), true)
@@ -402,25 +411,27 @@ impl Speech {
         }
     }
     fn cache_key(&self, value: &Validated) -> String {
-        hex::encode(Sha256::digest(
-            serde_json::to_vec(&json!([
-                self.settings.tts_host,
-                value.voice,
-                value.profile.gpt_weights_path,
-                value.profile.sovits_weights_path,
-                value.payload
-            ]))
-            .unwrap(),
-        ))
+        let mut hash = BufWriter::with_capacity(8 * 1024, Sha256::new());
+        // A tuple preserves the existing JSON array encoding while borrowing
+        // the validated payload instead of copying its tree and encoded bytes.
+        serde_json::to_writer(&mut hash, &(
+            &self.settings.tts_host,
+            &value.voice,
+            &value.profile.gpt_weights_path,
+            &value.profile.sovits_weights_path,
+            &value.payload,
+        )).unwrap();
+        hash.flush().expect("Hash writer is infallible");
+        hex::encode(hash.into_inner().unwrap().finalize())
     }
-    fn cached_wave(&self, key: &str) -> Option<Bytes> {
+    fn cached_audio(&self, key: &str) -> Option<CachedAudio> {
         self.cache
             .lock()
             .unwrap()
             .entries
             .iter()
             .find(|(id, _)| id == key)
-            .map(|(_, bytes)| bytes.clone())
+            .map(|(_, audio)| audio.clone())
     }
     async fn collect(
         &self,
@@ -433,8 +444,8 @@ impl Speech {
             .queue
             .enter(reservation, &self.cancel, deadline, speech_timeout)
             .await?;
-        if let Some(bytes) = self.cached_wave(key) {
-            return Ok(bytes);
+        if let Some(audio) = self.cached_audio(key) {
+            return Ok(audio.bytes);
         }
         let (response, _permit, deadline) = self.upstream(&value, permit, deadline).await?;
         let mut stream = response.bytes_stream();
@@ -464,19 +475,22 @@ impl Speech {
         }
         // Only repair complete WAVs; an oversized declared data chunk must not
         // turn a truncated provider response into a reusable full sentence.
-        let cacheable = wave::finish(&mut bytes);
+        let finished = wave::finish(&mut bytes);
         // Match the PCM path: retained allocation must fit the cache's byte budget.
         let bytes = Bytes::from(bytes.into_boxed_slice());
         remaining(deadline, Duration::MAX, speech_timeout)?;
-        if cacheable {
+        if let Some((data, pcm)) = finished {
             // Commit before releasing the permit so queued POST callers can replay.
-            self.remember(key.to_owned(), bytes.clone(), deadline);
+            Self::remember_into(
+                &self.cache,
+                key.to_owned(),
+                CachedAudio { bytes: bytes.clone(), pcm: pcm.then_some(data) },
+                &self.cancel,
+                deadline,
+            );
         }
         remaining(deadline, Duration::MAX, speech_timeout)?;
         Ok(bytes)
-    }
-    fn remember(&self, key: String, bytes: Bytes, deadline: Deadline) {
-        Self::remember_into(&self.cache, key, bytes, &self.cancel, deadline);
     }
     pub fn close(&self) {
         let mut cache = self.cache.lock().unwrap();

@@ -3,8 +3,8 @@ use std::io::Write;
 impl ControlService {
     /// A single writer preserves unrelated settings. The lock moves into the
     /// blocking operation, so HTTP cancellation cannot release it mid-commit.
-    pub(super) async fn patch(&self, patch: Value) -> Result<Value> {
-        let effective = self.settings();
+    pub(super) async fn patch(&self, patch: Value) -> Result<()> {
+        let effective = self.runtime_settings();
         for (key, env) in [
             ("sdHost", "SD_HOST"),
             ("comfyHost", "COMFY_HOST"),
@@ -26,7 +26,6 @@ impl ControlService {
             return Err(ApiError::new(503, "SHUTTING_DOWN", "运行时正在退出"));
         }
         let root = self.config.runtime_root.clone();
-        let copy = patch.clone();
         let snapshot = self.saved.clone();
         self.tasks
             .spawn_blocking(move || -> Result<()> {
@@ -41,12 +40,10 @@ impl ControlService {
                 let object = saved.as_object_mut().ok_or_else(|| {
                     ApiError::new(409, "INVALID_SAVED_CONFIG", "现有配置无效，拒绝覆盖")
                 })?;
-                for (key, value) in copy
-                    .as_object()
-                    .ok_or_else(|| ApiError::invalid("配置必须为对象"))?
-                {
-                    object.insert(key.clone(), value.clone());
-                }
+                let Value::Object(patch) = patch else {
+                    return Err(ApiError::invalid("配置必须为对象"));
+                };
+                object.extend(patch);
                 let mut temp = tempfile::NamedTempFile::new_in(&root)?;
                 temp.write_all(&serde_json::to_vec_pretty(&saved)?)?;
                 temp.write_all(b"\n")?;
@@ -58,7 +55,7 @@ impl ControlService {
             })
             .await
             .map_err(|_| ApiError::new(503, "CONFIG_WRITE_FAILED", "配置保存失败"))??;
-        Ok(self.config_view())
+        Ok(())
     }
     pub(super) fn config_view(&self) -> Value {
         let mut result = self.settings();

@@ -2,17 +2,17 @@ use super::manifest::{self, identity, invalid, model_file, no_links, read_json};
 use crate::error::{ApiError, Result};
 use serde_json::{Value, json};
 use std::{
+    collections::HashSet,
     fs,
     path::{Path, PathBuf},
     sync::{Arc, Mutex},
     time::{Duration, Instant},
 };
 
-#[derive(Clone)]
 pub(super) struct Model {
     pub id: String,
     pub directory: PathBuf,
-    pub files: Vec<String>,
+    pub files: HashSet<String>,
     pub receipt: Option<Value>,
 }
 pub(super) struct Snapshot {
@@ -76,7 +76,7 @@ fn inspect_builtin(
     cancel: Option<&tokio_util::sync::CancellationToken>,
 ) -> Result<(Vec<String>, Vec<String>)> {
     let model = read_json(&model_file(directory, manifest)?)?;
-    let mut files = manifest::references(&model)?;
+    let mut files = manifest::references(model)?;
     let mut missing = Vec::new();
     for file in &files {
         if let Some(cancel) = cancel {
@@ -153,7 +153,7 @@ pub(super) fn scan(
                 models.push(Model {
                     id: id.into(),
                     directory: directory.clone(),
-                    files,
+                    files: files.into_iter().collect(),
                     receipt: None,
                 });
                 characters.push(id.to_owned());
@@ -257,15 +257,15 @@ fn local_model_checked(
             model_file(&directory, path)?;
             Ok(path.to_owned())
         })
-        .collect::<Result<Vec<_>>>()?;
-    if !files.contains(&manifest) {
+        .collect::<Result<HashSet<_>>>()?;
+    if !files.contains(manifest.as_str()) {
         return Err(invalid("Receipt does not include its manifest"));
     }
-    for reference in manifest::references(&model)? {
+    for reference in manifest::references(model)? {
         if let Some(cancel) = cancel {
             super::editor::check_cancel(cancel)?;
         }
-        if !files.contains(&reference) {
+        if !files.contains(reference.as_str()) {
             return Err(invalid("Model dependency is outside its receipt"));
         }
         model_file(&directory, &reference)?;

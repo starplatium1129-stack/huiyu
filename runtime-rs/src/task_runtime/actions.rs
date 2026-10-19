@@ -73,6 +73,7 @@ impl TaskRuntime {
                 "Task action unavailable",
             ));
         }
+        drop(task);
         let operation = self
             .jobs
             .lock()
@@ -112,6 +113,7 @@ impl TaskRuntime {
                         .recover_provider(&storage, &principal, &task, &mut guard)
                         .await?;
                 }
+                drop(task);
                 let task = Self::get(&storage, &principal, &id).await?;
                 let job = task
                     .checkpoint
@@ -119,11 +121,13 @@ impl TaskRuntime {
                     .and_then(|checkpoint| checkpoint["gatewayJobId"].as_str())
                     .ok_or_else(|| {
                         ApiError::new(409, "TASK_ACTION_INVALID", "Batch identity unavailable")
-                    })?;
+                    })?
+                    .to_owned();
+                drop(task);
                 runtime
                     .video
                     .clone()
-                    .batch_action(job, &principal, &action, runtime.shutdown.child_token())
+                    .batch_action(&job, &principal, &action, runtime.shutdown.child_token())
                     .await?;
                 if action == "continue" {
                     patch(

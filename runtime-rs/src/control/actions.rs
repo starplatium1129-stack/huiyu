@@ -146,7 +146,7 @@ impl ControlService {
             }
             return Ok(());
         }
-        let settings = self.settings();
+        let settings = self.runtime_settings();
         if !start {
             {
                 let mut state = self.state.lock().unwrap();
@@ -232,7 +232,7 @@ impl ControlService {
         Ok(())
     }
     pub(super) async fn unload(&self) -> Result<()> {
-        let settings = self.settings();
+        let settings = self.runtime_settings();
         let host = settings["ollamaHost"].as_str().unwrap_or("");
         let (status, data) = self.request(host, "/api/ps", None, 4).await?;
         if !(200..300).contains(&status) {
@@ -318,7 +318,7 @@ impl ControlService {
                         service.service_action(2, false, &op).await?;
                         service.stage(&op, 1);
                         service.stop_llama().await?;
-                        if service.settings()["ollamaHost"].is_string()
+                        if service.runtime_setting("ollamaHost").is_string()
                             && service.online_ollama().await
                         {
                             service.unload().await?;

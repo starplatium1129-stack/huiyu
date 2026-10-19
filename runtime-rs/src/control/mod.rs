@@ -28,6 +28,7 @@ use crate::{
 pub use http::router;
 use serde_json::{Value, json};
 use std::{
+    borrow::Cow,
     collections::VecDeque,
     sync::{Arc, Mutex, RwLock},
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
@@ -42,7 +43,7 @@ pub struct ControlService {
     transport: LocalUpstream,
     processes: Arc<Processes>,
     tasks: TaskTracker,
-    settings: RwLock<Value>,
+    settings: RwLock<Arc<Value>>,
     config_write: Arc<tokio::sync::Mutex<()>>,
     inference: Result<crate::generation::native::Settings>,
     inference_probe: tokio::sync::Mutex<()>,
@@ -78,10 +79,10 @@ struct ControlState {
     llama_release_unconfirmed: bool,
     operation: Option<Value>,
     seq: u64,
-    logs: VecDeque<String>,
+    logs: VecDeque<Arc<String>>,
     log_seq: u64,
     managed: [Managed; 4],
-    health: Value,
+    health: Arc<Value>,
     health_at: Option<Instant>,
 }
 pub(super) fn now() -> u64 {
@@ -127,7 +128,7 @@ impl ControlService {
             transport: LocalUpstream::new(),
             processes: Arc::default(),
             tasks: TaskTracker::new(),
-            settings: RwLock::new(settings),
+            settings: RwLock::new(Arc::new(settings)),
             saved: Arc::new(RwLock::new(saved)),
             config_write: Arc::new(tokio::sync::Mutex::new(())),
             state: Mutex::default(),
@@ -168,8 +169,14 @@ impl ControlService {
         self.tasks.close();
         self.tasks.wait().await;
     }
+    fn runtime_settings(&self) -> Arc<Value> {
+        self.settings.read().unwrap().clone()
+    }
+    fn runtime_setting(&self, key: &str) -> Value {
+        self.settings.read().unwrap()[key].clone()
+    }
     fn settings(&self) -> Value {
-        let mut value = self.settings.read().unwrap().clone();
+        let mut value = self.runtime_settings().as_ref().clone();
         let saved = self.saved.read().unwrap();
         if saved["autoStartVoice"].is_boolean() {
             value["autoStartVoice"] = saved["autoStartVoice"].clone();
@@ -180,20 +187,20 @@ impl ControlService {
         let message = self.redact(message);
         let mut state = self.state.lock().unwrap();
         state.log_seq += 1;
-        state.logs.push_back(format!("[{}] {}", now(), message));
+        state.logs.push_back(Arc::new(format!("[{}] {}", now(), message)));
         if state.logs.len() > 200 {
             state.logs.pop_front();
         }
     }
     fn redact(&self, message: &str) -> String {
-        let mut value = message.to_owned();
+        let mut value = Cow::Borrowed(message);
         for secret in [
             &self.config.token,
             &self.llama_secret,
             self.config.desktop_secret.as_deref().unwrap_or(""),
         ] {
-            if !secret.is_empty() {
-                value = value.replace(secret, "[redacted]");
+            if !secret.is_empty() && value.contains(secret) {
+                value = Cow::Owned(value.replace(secret, "[redacted]"));
             }
         }
         static SENSITIVE: std::sync::LazyLock<regex::Regex> = std::sync::LazyLock::new(|| {
@@ -202,7 +209,10 @@ impl ControlService {
             )
             .unwrap()
         });
-        SENSITIVE.replace_all(&value, "[redacted]").into_owned()
+        match SENSITIVE.replace_all(&value, "[redacted]") {
+            Cow::Owned(redacted) => redacted,
+            Cow::Borrowed(_) => value.into_owned(),
+        }
     }
     fn begin(&self, kind: &str, stages: &[&str]) -> Result<Value> {
         if self.shutdown.is_cancelled() {

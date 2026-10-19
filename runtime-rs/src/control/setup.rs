@@ -65,7 +65,7 @@ impl ControlService {
             .filter_map(|node| node["class_type"].as_str().map(str::to_owned))
             .collect();
         // Snapshot active settings, not saved configuration pending a restart.
-        let host = self.settings()["comfyHost"]
+        let host = self.runtime_setting("comfyHost")
             .as_str()
             .unwrap_or("")
             .to_owned();
@@ -99,6 +99,8 @@ impl ControlService {
                     .collect()
             })
             .unwrap_or_default();
+        let nodes_checked = node_info.is_some();
+        drop(node_response);
 
         let workspace = &self.config.ai_workspace_root;
         let comfy = self.comfy_root();
@@ -158,7 +160,7 @@ impl ControlService {
         }
         // One pinned source shared with the maintenance downloader. Never fetch
         // metadata/weights or infer license acceptance while inspecting setup.
-        let manifest: Value = serde_json::from_str(include_str!("setup-models.json"))?;
+        let manifest = setup_verify::model_manifest()?;
         let mut models = Vec::new();
         for (id, label, kind, name, required) in files {
             let path = workspace.join("ComfyUI/models").join(kind).join(name);
@@ -172,7 +174,9 @@ impl ControlService {
                         "upstreamLicenseUrl":entry["upstreamLicenseUrl"],"revision":entry["revision"],"expectedBytes":entry["bytes"],"sha256":entry["sha256"]})
                 });
             let entry = setup_verify::model_source(id).ok();
-            models.push(json!({"id":id,"label":label,"path":path,"state":state,"bytes":size,"required":required,"preparation":source,"kind":"image","purpose":entry.as_ref().and_then(|e| e["purpose"].as_str()).unwrap_or("候选 · 默认画风较统一，便于稳定创作")}));
+            let mut item = json!({"id":id,"label":label,"path":path,"state":state,"bytes":size,"required":required,"preparation":null,"kind":"image","purpose":entry.as_ref().and_then(|e| e["purpose"].as_str()).unwrap_or("候选 · 默认画风较统一，便于稳定创作")});
+            item["preparation"] = source.unwrap_or(Value::Null);
+            models.push(item);
         }
 
         for entry in manifest["files"]
@@ -198,6 +202,7 @@ impl ControlService {
                 Some(json!({"name":self.redact(&name.chars().take(160).collect::<String>()),
                     "type":kind.chars().take(32).collect::<String>(),"vramBytes":bytes(&device["vram_total"])}))
             }).collect();
+        drop(stats);
         if ram.is_none() || devices.is_empty() {
             let local = hardware::local_hardware().await;
             if ram.is_none() {
@@ -207,12 +212,15 @@ impl ControlService {
                 devices = local["devices"].as_array().cloned().unwrap_or_default();
             }
         }
-        Ok(
-            json!({"ok":true,"checkedAt":now(),"recommendedModel":recommended,
+        let mut value = json!({"ok":true,"checkedAt":now(),"recommendedModel":recommended,
             "workspace":{"path":workspace,"state":workspace_state},
             "comfy":{"path":comfy,"installation":installation,"layout":if portable{"portable"}else if venv{"venv"}else if external_venv{"external-venv"}else{"unrecognized"},"host":host,"connection":connection,"managedEnvironment":setup_environment::managed_comfy_environment(&comfy)},
-            "models":models,"chat":{"host":self.settings()["llamaHost"],"runtimePresent":workspace.join("Chat/runtime/llama-server.exe").is_file()},"nodes":{"state":if node_info.is_some(){"checked"}else{"unknown"},"required":required,"missing":missing},
-            "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":devices,"ramBytes":ram}}),
-        )
+            "models":null,"chat":{"host":self.runtime_setting("llamaHost"),"runtimePresent":workspace.join("Chat/runtime/llama-server.exe").is_file()},"nodes":{"state":if nodes_checked{"checked"}else{"unknown"},"required":null,"missing":null},
+            "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":null,"ramBytes":ram}});
+        value["models"] = Value::Array(models);
+        value["nodes"]["required"] = Value::Array(required.into_iter().map(Value::String).collect());
+        value["nodes"]["missing"] = missing.into();
+        value["hardware"]["devices"] = Value::Array(devices);
+        Ok(value)
     }
 }

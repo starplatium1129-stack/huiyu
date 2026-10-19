@@ -2,7 +2,7 @@ use super::*;
 use crate::storage::verified_media::{self, Verified};
 use std::fs;
 
-pub(super) fn run(identity: &Identity, id: &str, media: Vec<Value>) -> Result<Outcome> {
+pub(super) fn run(identity: &Identity, id: &str, media: &[Value]) -> Result<Outcome> {
     identity.check_paths()?;
     let mut outcome = Outcome {
         proofs: Vec::with_capacity(media.len()),
@@ -10,8 +10,8 @@ pub(super) fn run(identity: &Identity, id: &str, media: Vec<Value>) -> Result<Ou
     };
     for media in media {
         identity.cancelled()?;
-        let alias = string(&media, "alias")?;
-        match publish(identity, &key(id, alias), &media) {
+        let alias = string(media, "alias")?;
+        match publish(identity, &key(id, alias), media) {
             Ok(proof) => outcome.proofs.push(Some(proof.into_stamp())),
             Err(error) if error.code == "CANCELLED" => return Err(error),
             Err(_) => {

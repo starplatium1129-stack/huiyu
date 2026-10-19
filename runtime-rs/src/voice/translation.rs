@@ -38,7 +38,7 @@ pub(super) struct Translation {
     transport: LocalUpstream,
     cancel: CancellationToken,
     queue: Queue,
-    cache: Mutex<VecDeque<(String, Value)>>,
+    cache: Mutex<VecDeque<(String, Arc<Value>)>>,
     ready: AtomicBool,
     starting: Mutex<Option<Startup>>,
     managed: Mutex<Option<OwnedProcess>>,
@@ -210,14 +210,14 @@ impl Translation {
         }
         result
     }
-    pub async fn translate(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Value> {
+    pub async fn translate(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Arc<Value>> {
         tokio::select! {
             biased;
             _ = self.cancel.cancelled() => Err(cancelled()),
             result = tokio::time::timeout_at(deadline, self.translate_inner(text, deadline)) => result.map_err(|_| translation_timeout())?,
         }
     }
-    async fn translate_inner(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Value> {
+    async fn translate_inner(self: &Arc<Self>, text: String, deadline: Deadline) -> Result<Arc<Value>> {
         remaining(deadline, Duration::MAX, translation_timeout)?;
         if let Some(value) = self.cached(&text) {
             return Ok(value);
@@ -279,6 +279,7 @@ impl Translation {
                 })?
             }
         };
+        let result = Arc::new(result);
         let mut cache = self.cache.lock().unwrap();
         if self.cancel.is_cancelled() {
             return Err(cancelled());
@@ -288,9 +289,10 @@ impl Translation {
         if cache.len() > 100 {
             cache.pop_front();
         }
+        drop(cache);
         Ok(result)
     }
-    fn cached(&self, text: &str) -> Option<Value> {
+    fn cached(&self, text: &str) -> Option<Arc<Value>> {
         self.cache
             .lock()
             .unwrap()

@@ -235,6 +235,11 @@ pub(super) fn list(ctx: &Context) -> Result<Value> {
     if fs::safe(&ctx.backup, true, true)?.is_none() {
         return Ok(json!({"ok":true,"entries":[]}));
     }
+    let time = |item: &Value| {
+        chrono::DateTime::parse_from_rfc3339(item["createdAt"].as_str().unwrap_or(""))
+            .map(|time| time.timestamp_millis())
+            .unwrap_or(0)
+    };
     let mut entries = Vec::new();
     for entry in std::fs::read_dir(&ctx.backup)? {
         let entry = entry?;
@@ -242,21 +247,18 @@ pub(super) fn list(ctx: &Context) -> Result<Value> {
             continue;
         }
         if let Ok(manifest) = fs::json(&entry.path().join("manifest.json")) {
-            entries.push(json!({"id":entry.file_name().to_string_lossy(),"label":manifest["label"].as_str().unwrap_or(""),"createdAt":manifest["createdAt"].as_str().unwrap_or(""),"fileCount":manifest["files"].as_array().map(Vec::len).unwrap_or(0)}));
+            let item = json!({"id":entry.file_name().to_string_lossy(),"label":manifest["label"].as_str().unwrap_or(""),"createdAt":manifest["createdAt"].as_str().unwrap_or(""),"fileCount":manifest["files"].as_array().map(Vec::len).unwrap_or(0)});
+            entries.push((time(&item), item));
         }
     }
-    let time = |item: &Value| {
-        chrono::DateTime::parse_from_rfc3339(item["createdAt"].as_str().unwrap_or(""))
-            .map(|time| time.timestamp_millis())
-            .unwrap_or(0)
-    };
     entries.sort_by(|a, b| {
-        time(b)
-            .cmp(&time(a))
-            .then_with(|| b["id"].as_str().cmp(&a["id"].as_str()))
+        b.0.cmp(&a.0)
+            .then_with(|| b.1["id"].as_str().cmp(&a.1["id"].as_str()))
     });
     entries.truncate(50);
-    Ok(json!({"ok":true,"entries":entries}))
+    let mut value = json!({"ok":true,"entries":null});
+    value["entries"] = Value::Array(entries.into_iter().map(|(_, item)| item).collect());
+    Ok(value)
 }
 fn names(path: &Path) -> Result<HashSet<String>> {
     Ok(std::fs::read_dir(path)?

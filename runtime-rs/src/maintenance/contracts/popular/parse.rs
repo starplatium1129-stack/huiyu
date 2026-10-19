@@ -1,12 +1,12 @@
 use super::*;
+use std::borrow::Cow;
 pub(super) fn strings(value: &Value) -> Vec<&str> {
     list(value).iter().filter_map(Value::as_str).collect()
 }
-fn required(value: &Value, key: &str) -> std::result::Result<String, String> {
+fn required<'a>(value: &'a Value, key: &str) -> std::result::Result<&'a str, String> {
     value[key]
         .as_str()
         .filter(|s| !s.is_empty())
-        .map(str::to_owned)
         .ok_or_else(|| format!("popular data: {key} must be a non-empty string"))
 }
 fn copy_strings(source: &Value, target: &mut Value, fields: &[&str]) {
@@ -71,7 +71,7 @@ fn one_character(value: &Value) -> std::result::Result<Option<Value>, String> {
         return Err("popular data: adultEligibility must be one of adult/unknown/underage".into());
     }
     output["adultEligibility"] = value["adultEligibility"].clone();
-    output["outfits"] = json!(outfits);
+    output["outfits"] = Value::Array(outfits);
     if value["dnaLock"].is_object() {
         let mut dna = json!({});
         copy_strings(&value["dnaLock"], &mut dna, &["must", "flexible", "avoid"]);
@@ -79,11 +79,11 @@ fn one_character(value: &Value) -> std::result::Result<Option<Value>, String> {
     }
     Ok(Some(output))
 }
-pub(super) fn characters(value: Value) -> std::result::Result<Vec<Value>, String> {
+pub(super) fn characters(value: &Value) -> std::result::Result<Vec<Value>, String> {
     let source = if value["characters"].is_array() {
         &value["characters"]
     } else {
-        &value
+        value
     };
     let parsed: Vec<_> = list(source)
         .iter()
@@ -122,10 +122,10 @@ fn negative(value: &Value) -> Value {
             .collect::<Vec<_>>()
     )
 }
-fn one_blueprint(value: &Value) -> std::result::Result<Option<Value>, String> {
+fn one_blueprint(value: &Value) -> std::result::Result<Option<Cow<'_, Value>>, String> {
     if value.get("generatedRecipe").is_some() {
-        crate::maintenance::generated::validate(value, true).map_err(|e| e.message)?;
-        return Ok(Some(value.clone()));
+        // blueprints() preflights captured recipes before filtering conversion errors.
+        return Ok(Some(Cow::Borrowed(value)));
     }
     if !value.is_object() {
         return Ok(None);
@@ -191,13 +191,13 @@ fn one_blueprint(value: &Value) -> std::result::Result<Option<Value>, String> {
             output[field] = json!(text);
         }
     }
-    Ok(Some(output))
+    Ok(Some(Cow::Owned(output)))
 }
-pub(super) fn blueprints(value: Value) -> std::result::Result<Vec<Value>, String> {
+pub(super) fn blueprints(value: &Value) -> std::result::Result<Vec<Cow<'_, Value>>, String> {
     let source = if value["blueprints"].is_array() {
         &value["blueprints"]
     } else {
-        &value
+        value
     };
     for item in list(source) {
         if item.get("generatedRecipe").is_some() {

@@ -30,11 +30,10 @@ impl ApiError {
 
 impl IntoResponse for ApiError {
     fn into_response(self) -> Response {
-        (
-            self.status,
-            Json(json!({"ok": false, "error": self.message, "code": self.code})),
-        )
-            .into_response()
+        let mut value = json!({"ok": false, "error": null, "code": null});
+        value["error"] = self.message.into();
+        value["code"] = self.code.into();
+        (self.status, Json(value)).into_response()
     }
 }
 

@@ -35,7 +35,6 @@ pub(super) struct State {
     cancel: CancellationToken,
     cancel_generation: u64,
 }
-#[derive(Clone)]
 struct Shot {
     input: Value,
     status: String,
@@ -63,7 +62,15 @@ fn output(value: &Option<Output>) -> Value {
 impl Batch {
     async fn checkpoint(&self) -> Value {
         let s = self.state.lock().await;
-        json!({"gatewayJobId":self.id,"status":s.status,"linkLastFrame":self.input["linkLastFrame"],"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"concatStage":s.concat_stage,"concat":output(&s.concat),"shots":s.shots.iter().enumerate().map(|(i,s)|json!({"index":i+1,"input":s.input,"status":s.status,"attempts":s.attempts,"upstreamId":s.upstream,"submissionIntentAt":s.intent,"gatewayJobId":s.gateway,"tailFrame":s.tail,"result":output(&s.result),"errorCode":s.code})).collect::<Vec<_>>()})
+        let shots = s.shots.iter().enumerate().map(|(i, s)| {
+            let mut value = json!({"index":i+1,"input":s.input,"status":s.status,"attempts":s.attempts,"upstreamId":s.upstream,"submissionIntentAt":s.intent,"gatewayJobId":s.gateway,"tailFrame":s.tail,"result":null,"errorCode":s.code});
+            value["result"] = output(&s.result);
+            value
+        }).collect();
+        let mut value = json!({"gatewayJobId":self.id,"status":s.status,"linkLastFrame":self.input["linkLastFrame"],"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"concatStage":s.concat_stage,"concat":null,"shots":null});
+        value["concat"] = output(&s.concat);
+        value["shots"] = Value::Array(shots);
+        value
     }
     async fn save(&self) -> Result<()> {
         let _gate = self.checkpoint_serial.lock().await;
@@ -85,7 +92,12 @@ impl Batch {
         let stopped = !matches!(s.status.as_str(), "running" | "cancelling");
         let settled = stopped && observed == Some(true);
         let unknown = if stopped { !settled } else { s.unknown };
-        json!({"id":self.id,"status":s.status,"upstreamSettled":settled,"unknown":unknown,"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"steps":self.input["steps"],"linkLastFrame":self.input["linkLastFrame"],"progress":{"total":s.shots.len(),"succeeded":s.shots.iter().filter(|s|s.status=="succeeded").count(),"failed":s.shots.iter().filter(|s|s.status=="failed").count()},"createdAt":self.created,"shots":s.shots.iter().enumerate().map(|(i,s)|json!({"index":i+1,"status":s.status,"prompt":s.input["originalPrompt"],"dialogue":s.input["dialogue"],"shotSize":s.input["shotSize"],"camera":s.input["camera"],"motion":s.input["motion"],"duration":s.input["duration"],"seed":s.input["seed"],"attempts":s.attempts,"error":s.error,"code":s.code,"resultAvailable":s.result.is_some(),"resultUrl":s.result.as_ref().and(s.gateway.as_ref()).map(|id|format!("/api/video/jobs/{id}/result"))})).collect::<Vec<_>>(),"concatAvailable":s.concat.is_some(),"concatUrl":s.concat.as_ref().map(|_|format!("/api/video/batches/{}/result",self.id))})
+        let shots = s.shots.iter().enumerate().map(|(i, s)| {
+            json!({"index":i+1,"status":s.status,"prompt":s.input["originalPrompt"],"dialogue":s.input["dialogue"],"shotSize":s.input["shotSize"],"camera":s.input["camera"],"motion":s.input["motion"],"duration":s.input["duration"],"seed":s.input["seed"],"attempts":s.attempts,"error":s.error,"code":s.code,"resultAvailable":s.result.is_some(),"resultUrl":s.result.as_ref().and(s.gateway.as_ref()).map(|id|format!("/api/video/jobs/{id}/result"))})
+        }).collect();
+        let mut value = json!({"id":self.id,"status":s.status,"upstreamSettled":settled,"unknown":unknown,"modelId":self.input["modelId"],"aspectRatio":self.input["aspectRatio"],"quality":self.input["quality"],"steps":self.input["steps"],"linkLastFrame":self.input["linkLastFrame"],"progress":{"total":s.shots.len(),"succeeded":s.shots.iter().filter(|s|s.status=="succeeded").count(),"failed":s.shots.iter().filter(|s|s.status=="failed").count()},"createdAt":self.created,"shots":null,"concatAvailable":s.concat.is_some(),"concatUrl":s.concat.as_ref().map(|_|format!("/api/video/batches/{}/result",self.id))});
+        value["shots"] = Value::Array(shots);
+        value
     }
 }
 impl Service {
@@ -113,6 +125,7 @@ impl Service {
         cancel: CancellationToken,
     ) -> Result<BatchPrepared> {
         let input = batch_input::validate_batch(&raw)?;
+        drop(raw);
         self.prepare_batch_validated(input, local, owner, cancel)
             .await
     }
@@ -140,7 +153,9 @@ impl Service {
         }
         let t8 = self.t8(&cancel).await;
         for shot in shots {
-            resources::plan(&self.config, shot["input"].clone(), t8, true)?;
+            // Preflight every shot without cloning recipes or compiling graphs
+            // that execution will rebuild with the current linked frame.
+            resources::requirements(&self.config, &shot["input"], t8)?;
         }
         // Reserve the existing video slot before copying any potentially large
         // set of references; the first shot shares these immutable snapshots.
@@ -159,8 +174,6 @@ impl Service {
         combined["references"] = json!(names);
         let originals = inputs::capture(&self.config, &combined, local, owner, &cancel).await?;
         let first = Prepared {
-            input: backend.input.clone(),
-            provider: backend.provider.clone(),
             originals: originals.subset(&backend.input),
             backend,
         };
@@ -180,7 +193,7 @@ impl Service {
         self.submit_batch_accepting(prepared, owner, hooks, None).await
     }
     pub(super) async fn submit_batch_accepting(
-        self: Arc<Self>, prepared: BatchPrepared, owner: String,
+        self: Arc<Self>, mut prepared: BatchPrepared, owner: String,
         hooks: Option<Arc<dyn ExecutionHooks>>, acceptance: Option<&dyn ExecutionHooks>,
     ) -> Result<Value> {
         inputs::protect_restore(
@@ -190,12 +203,14 @@ impl Service {
             &self.shutdown,
         )
         .await?;
-        let shots = prepared.input["shots"]
-            .as_array()
+        // Recipes belong to mutable shot state, not the batch-level settings.
+        let mut rows = prepared.input["shots"].take();
+        let shots = rows
+            .as_array_mut()
             .unwrap()
-            .iter()
-            .map(|s| Shot {
-                input: s["input"].clone(),
+            .drain(..)
+            .map(|mut s| Shot {
+                input: s.get_mut("input").map(Value::take).unwrap_or_default(),
                 status: "pending".into(),
                 attempts: 0,
                 upstream: None,
@@ -207,6 +222,7 @@ impl Service {
                 error: None,
             })
             .collect();
+        drop(rows);
         let batch = Arc::new(Batch {
             id: uuid::Uuid::new_v4().simple().to_string(),
             owner,

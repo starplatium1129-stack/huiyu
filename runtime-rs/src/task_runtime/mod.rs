@@ -43,7 +43,6 @@ pub struct TaskRuntime {
     closed: AtomicBool,
     shutdown: CancellationToken,
 }
-#[derive(Clone)]
 struct JobBinding {
     id: String,
     dispatching: bool,
@@ -148,9 +147,11 @@ impl TaskRuntime {
                     return Ok(task.into_value()?);
                 }
                 let id = task.task_id.clone();
+                let kind = task.kind;
+                drop(task);
                 if let Some(job) = runtime.job(&storage, &id).filter(|job| !job.is_empty()) {
                     // The live registry proves ownership of WebUI's global interrupt.
-                    let _ = runtime.cancel_provider(task.kind, &job, &principal).await;
+                    let _ = runtime.cancel_provider(kind, &job, &principal).await;
                 }
                 runtime.reconcile(&storage, &principal, &id).await
             }

@@ -2,6 +2,7 @@ mod startup;
 pub use startup::run;
 mod admission;
 mod bootstrap;
+mod byte_buffer;
 mod catalog;
 mod character_art;
 mod chat;

@@ -1,9 +1,13 @@
 use super::{Error, Result, Value, config::Context, fs, manifest::Entry, policy, state};
-use std::{collections::HashMap, path::PathBuf};
+use std::{
+    collections::{HashMap, HashSet},
+    path::PathBuf,
+};
 use tokio_util::sync::CancellationToken;
 #[derive(Clone, Debug)]
 pub(super) struct Group {
     pub paths: Vec<String>,
+    pub total_bytes: Option<u64>,
 }
 #[derive(Clone, Debug)]
 pub(super) struct Snapshot {
@@ -15,6 +19,7 @@ pub(super) struct Snapshot {
     pub entries: HashMap<String, Entry>,
     pub verified_files: usize,
     pub groups: Vec<Group>,
+    pub group_files: HashMap<String, (usize, usize)>,
 }
 pub(super) fn idle(ctx: &Context) -> Result<()> {
     if fs::safe(&ctx.store.join("pending.json"), true, false)?.is_some() {
@@ -62,45 +67,44 @@ fn controls(ctx: &Context) -> Result<ControlBytes> {
     Ok((Some(bytes), current))
 }
 pub(super) fn serviceable(path: &str) -> bool {
-    if !path.starts_with("assets/")
-        || path.split('/').any(|part| part.starts_with('.'))
-        || ["assets/character-references", "assets/live2d-candidates"]
-            .iter()
-            .any(|prefix| {
-                path.to_lowercase() == *prefix
-                    || path.to_lowercase().starts_with(&format!("{prefix}/"))
-            })
-    {
+    if !path.starts_with("assets/") || path.split('/').any(|part| part.starts_with('.')) {
         return false;
     }
     let lower = path.to_lowercase();
+    if lower == "assets/character-references"
+        || lower.starts_with("assets/character-references/")
+        || lower == "assets/live2d-candidates"
+        || lower.starts_with("assets/live2d-candidates/")
+    {
+        return false;
+    }
     if [
-        "png", "jpg", "jpeg", "webp", "avif", "gif", "ico", "mp3", "ogg", "wav", "flac", "m4a",
-        "mp4", "webm",
+        ".png", ".jpg", ".jpeg", ".webp", ".avif", ".gif", ".ico", ".mp3", ".ogg", ".wav", ".flac",
+        ".m4a", ".mp4", ".webm",
     ]
     .iter()
-    .any(|ext| lower.ends_with(&format!(".{ext}")))
+    .any(|ext| lower.ends_with(ext))
     {
         return true;
     }
     path.starts_with("assets/live2d/")
         && [
-            "moc",
-            "moc3",
-            "mtn",
-            "model.json",
-            "model3.json",
-            "physics.json",
-            "physics3.json",
-            "pose.json",
-            "pose3.json",
-            "motion3.json",
-            "exp.json",
-            "exp3.json",
-            "cdi3.json",
+            ".moc",
+            ".moc3",
+            ".mtn",
+            ".model.json",
+            ".model3.json",
+            ".physics.json",
+            ".physics3.json",
+            ".pose.json",
+            ".pose3.json",
+            ".motion3.json",
+            ".exp.json",
+            ".exp3.json",
+            ".cdi3.json",
         ]
         .iter()
-        .any(|ext| lower.ends_with(&format!(".{ext}")))
+        .any(|ext| lower.ends_with(ext))
 }
 fn group(root: &std::path::Path, entry: &Entry, entries: &HashMap<String, Entry>) -> Result<Group> {
     let bytes = fs::bytes(&fs::child(root, &entry.path)?, fs::MAX_JSON, false)?;
@@ -109,6 +113,7 @@ fn group(root: &std::path::Path, entry: &Entry, entries: &HashMap<String, Entry>
     }
     let model: Value = serde_json::from_slice(&bytes)
         .map_err(|_| Error::new("CONTENT_INVALID", "Model JSON invalid"))?;
+    drop(bytes);
     let files = &model["FileReferences"];
     let textures = files["Textures"]
         .as_array()
@@ -151,6 +156,7 @@ fn group(root: &std::path::Path, entry: &Entry, entries: &HashMap<String, Entry>
     }
     let directory = entry.path.rsplit_once('/').unwrap().0;
     let mut paths = vec![entry.path.clone()];
+    let mut seen = HashSet::from([entry.path.as_str()]);
     for value in refs {
         let value = value
             .as_str()
@@ -160,17 +166,20 @@ fn group(root: &std::path::Path, entry: &Entry, entries: &HashMap<String, Entry>
             return Err(Error::new("UNSAFE_PATH", "Unsafe model dependency"));
         }
         let path = format!("{directory}/{value}");
-        if !entries.contains_key(&path) {
+        let Some((stored_path, _)) = entries.get_key_value(&path) else {
             return Err(Error::new(
                 "CONTENT_INVALID",
                 "Model dependency missing from serving manifest",
             ));
-        }
-        if !paths.contains(&path) {
+        };
+        if seen.insert(stored_path.as_str()) {
             paths.push(path);
         }
     }
-    Ok(Group { paths })
+    let total_bytes = paths.iter().try_fold(0_u64, |total, name| {
+        total.checked_add(entries[name].bytes)
+    });
+    Ok(Group { paths, total_bytes })
 }
 pub(super) fn snapshot(ctx: &Context, cancel: &CancellationToken) -> Result<Option<Snapshot>> {
     let before = controls(ctx)?;
@@ -201,9 +210,9 @@ pub(super) fn snapshot(ctx: &Context, cancel: &CancellationToken) -> Result<Opti
     state::validate(ctx, &value)?;
     for key in ["current", "previous"] {
         if !value[key].is_null() {
-            let approved = policy::release(ctx, value[key]["releaseId"].as_str().unwrap())?;
-            if approved["source"]["kind"] == "http" {
-                policy::source_url(&approved, "manifest.json")?;
+            let (approved, source) = policy::approved(ctx, value[key]["releaseId"].as_str().unwrap())?;
+            if source["kind"] == "http" {
+                policy::source_url(approved, source, "manifest.json")?;
             }
         }
     }
@@ -238,24 +247,35 @@ pub(super) fn snapshot(ctx: &Context, cancel: &CancellationToken) -> Result<Opti
             "Installed metadata changed during verification",
         ));
     }
+    drop((raw, receipt, before));
     ctx.access()?;
+    let verified_files = verified.manifest.entries.len();
     let entries = verified
         .manifest
         .entries
-        .iter()
-        .filter(|entry| serviceable(&entry.path))
-        .map(|entry| (entry.path.clone(), entry.clone()))
-        .collect::<HashMap<_, _>>();
-    let mut ordered = entries.values().collect::<Vec<_>>();
-    ordered.sort_by(|a, b| a.path.encode_utf16().cmp(b.path.encode_utf16()));
-    let groups = ordered
         .into_iter()
+        .filter(|entry| serviceable(&entry.path))
+        .map(|entry| (entry.path.clone(), entry))
+        .collect::<HashMap<_, _>>();
+    let mut ordered = entries
+        .values()
         .filter(|entry| {
             entry.path.starts_with("assets/live2d/")
                 && entry.path.to_lowercase().ends_with(".model3.json")
         })
+        .collect::<Vec<_>>();
+    ordered.sort_by(|a, b| a.path.encode_utf16().cmp(b.path.encode_utf16()));
+    let groups = ordered
+        .into_iter()
         .filter_map(|entry| group(&root, entry, &entries).ok())
-        .collect();
+        .collect::<Vec<_>>();
+    let mut group_files = HashMap::new();
+    for (group, value) in groups.iter().enumerate() {
+        for (file, path) in value.paths.iter().enumerate() {
+            // Shared dependencies keep the first validated group in model order.
+            group_files.entry(path.clone()).or_insert((group, file));
+        }
+    }
     Ok(Some(Snapshot {
         root,
         identity: value["current"]["identity"].as_str().unwrap().into(),
@@ -263,8 +283,9 @@ pub(super) fn snapshot(ctx: &Context, cancel: &CancellationToken) -> Result<Opti
         release_id: value["current"]["releaseId"].as_str().unwrap().into(),
         previous: !value["previous"].is_null(),
         entries,
-        verified_files: verified.manifest.entries.len(),
+        verified_files,
         groups,
+        group_files,
     }))
 }
 pub(super) fn mount(ctx: &Context, snapshot: &Snapshot) -> Result<()> {

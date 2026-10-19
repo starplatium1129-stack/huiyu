@@ -43,15 +43,15 @@ fn key(value: &str) -> Result<String> {
     }
     Ok(output)
 }
-fn members(actual: Vec<&str>, expected: &Value) -> bool {
+fn members<'a>(actual: impl Iterator<Item = &'a str>, expected: &Value) -> bool {
     let Some(items) = expected.as_array() else {
         return false;
     };
-    let Some(items) = items.iter().map(Value::as_str).collect::<Option<Vec<_>>>() else {
+    if !items.iter().all(Value::is_string) {
         return false;
-    };
-    let expected = items.iter().copied().collect::<HashSet<_>>();
-    expected.len() == items.len() && actual.iter().copied().collect::<HashSet<_>>() == expected
+    }
+    let expected = items.iter().map(|item| item.as_str().unwrap()).collect::<HashSet<_>>();
+    expected.len() == items.len() && actual.collect::<HashSet<_>>() == expected
 }
 fn validate_manifest(value: &Value) -> Result<()> {
     let files = value["files"]
@@ -119,6 +119,12 @@ fn validate_manifest(value: &Value) -> Result<()> {
     Ok(())
 }
 pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
+    dictionary_impl(tags, policy, true)
+}
+pub(crate) fn validate_dictionary(tags: &[Value], policy: &Value) -> Result<()> {
+    dictionary_impl(tags, policy, false).map(|_| ())
+}
+fn dictionary_impl(tags: &[Value], policy: &Value, build: bool) -> Result<Value> {
     record(policy, "Tag dictionary policy")?;
     let mut by_id = HashMap::new();
     let mut groups: HashMap<String, Vec<&Value>> = HashMap::new();
@@ -184,8 +190,7 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
             if !members(
                 group
                     .iter()
-                    .map(|tag| tag["id"].as_str().unwrap())
-                    .collect(),
+                    .map(|tag| tag["id"].as_str().unwrap()),
                 &decision["members"],
             ) {
                 return Err(invalid(format!(
@@ -207,15 +212,17 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
             }
             used_duplicates.insert(key.as_str());
         }
-        canonical.insert(key.clone(), chosen);
-        meanings.insert(
-            key.clone(),
-            policy["duplicates"][key]
-                .get("meaning")
-                .filter(|value| !value.is_null())
-                .cloned()
-                .unwrap_or_else(|| chosen["cn"].clone()),
-        );
+        if build {
+            canonical.insert(key.clone(), chosen);
+            meanings.insert(
+                key.clone(),
+                policy["duplicates"][key]
+                    .get("meaning")
+                    .filter(|value| !value.is_null())
+                    .cloned()
+                    .unwrap_or_else(|| chosen["cn"].clone()),
+            );
+        }
     }
     if let Some(duplicates) = policy["duplicates"].as_object() {
         for key in duplicates.keys() {
@@ -258,8 +265,7 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
                     if !members(
                         shadowed
                             .iter()
-                            .map(|tag| tag["id"].as_str().unwrap())
-                            .collect(),
+                            .map(|tag| tag["id"].as_str().unwrap()),
                         &decision["shadowed"],
                     ) || decision["target"]
                         .as_str()
@@ -273,7 +279,9 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
                     used_overrides.insert(key.clone());
                 }
                 owners.insert(key.clone(), owner.clone());
-                aliases.insert(key, canonical[&owner]["en"].clone());
+                if build {
+                    aliases.insert(key, canonical[&owner]["en"].clone());
+                }
             }
         }
     }
@@ -284,7 +292,13 @@ pub(crate) fn dictionary(tags: &[Value], policy: &Value) -> Result<Value> {
             }
         }
     }
-    Ok(json!({"version":1,"meanings":meanings,"aliases":aliases}))
+    if !build {
+        return Ok(Value::Null);
+    }
+    let mut dictionary = json!({"version":1,"meanings":null,"aliases":null});
+    dictionary["meanings"] = Value::Object(meanings);
+    dictionary["aliases"] = Value::Object(aliases);
+    Ok(dictionary)
 }
 pub(super) fn load(root: &Path) -> Result<(Vec<Value>, Value)> {
     let directory = root.join("data/tags");
@@ -293,7 +307,7 @@ pub(super) fn load(root: &Path) -> Result<(Vec<Value>, Value)> {
     let mut tags = Vec::new();
     for entry in manifest["files"].as_array().unwrap() {
         let file = entry["file"].as_str().unwrap();
-        let shard = fs::json(&directory.join(file))?;
+        let mut shard = fs::json(&directory.join(file))?;
         let values = shard["tags"].as_array().ok_or_else(|| {
             invalid(format!(
                 "{file} version/category/count does not match the manifest"
@@ -308,7 +322,7 @@ pub(super) fn load(root: &Path) -> Result<(Vec<Value>, Value)> {
                 "{file} version/category/count does not match the manifest"
             )));
         }
-        tags.extend(values.iter().cloned());
+        tags.append(shard["tags"].as_array_mut().unwrap());
     }
     let dict = dictionary(&tags, manifest.get("dictionary").unwrap_or(&json!({})))?;
     Ok((tags, dict))

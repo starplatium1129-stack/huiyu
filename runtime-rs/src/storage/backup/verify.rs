@@ -91,7 +91,12 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
         }
         let mut inventory: Vec<&Value> = manifest["media"].as_array().unwrap().iter().collect();
         inventory.sort_by(|a, b| a["hash"].as_str().cmp(&b["hash"].as_str()));
-        if !media_rows(c, &db)?.iter().eq(inventory.iter().copied()) {
+        let (mut matches, mut count) = (true, 0);
+        visit_media_rows(c, &db, |row| {
+            matches &= inventory.get(count).is_some_and(|expected| &row == *expected);
+            count += 1;
+        })?;
+        if !matches || count != inventory.len() {
             return Err(invalid_backup(
                 "Backup media inventory differs from database",
             ));
@@ -131,9 +136,9 @@ fn verify_records(c: &Files, db: &Connection) -> Result<()> {
         let mut rows = stmt.query([])?;
         while let Some(row) = rows.next()? {
             c.check_cancel()?;
-            let key: String = row.get(0)?;
-            let id: Value = serde_json::from_str(&row.get::<_, String>(1)?)?;
-            let body: Value = serde_json::from_str(&row.get::<_, String>(2)?)?;
+            let key = text_column(row, 0)?;
+            let id: Value = serde_json::from_str(text_column(row, 1)?)?;
+            let body: Value = serde_json::from_str(text_column(row, 2)?)?;
             if !body.is_object() || body["id"] != id || canonical::entity_key(&id)? != key {
                 return Err(invalid_backup("Invalid backup domain record"));
             }
@@ -147,11 +152,16 @@ fn verify_records(c: &Files, db: &Connection) -> Result<()> {
                     ));
                 }
             } else {
-                let ids = membership
-                    .query_map([key], |r| r.get::<_, String>(0))?
-                    .map(|row| serde_json::from_str::<Value>(&row?).map_err(Into::into))
-                    .collect::<Result<Vec<_>>>()?;
-                if body["history_ids"] != json!(ids) {
+                let ids = body["history_ids"].as_array();
+                let (mut matches, mut count) = (true, 0);
+                for row in membership
+                    .query_map([key], |row| Ok(serde_json::from_str::<Value>(text_column(row, 0)?)))?
+                {
+                    let id = row??;
+                    matches &= ids.and_then(|ids| ids.get(count)).is_some_and(|expected| expected == &id);
+                    count += 1;
+                }
+                if !matches || ids.is_none_or(|ids| ids.len() != count) {
                     return Err(invalid_backup(
                         "Backup project order differs from its relationships",
                     ));
@@ -163,9 +173,9 @@ fn verify_records(c: &Files, db: &Connection) -> Result<()> {
     let mut rows = stmt.query([])?;
     while let Some(row) = rows.next()? {
         c.check_cancel()?;
-        let snapshot: Value = serde_json::from_str(&row.get::<_, String>(0)?)?;
-        let refs: Value = serde_json::from_str(&row.get::<_, String>(1)?)?;
-        let id: Value = serde_json::from_str(&row.get::<_, String>(3)?)?;
+        let snapshot: Value = serde_json::from_str(text_column(row, 0)?)?;
+        let refs: Value = serde_json::from_str(text_column(row, 1)?)?;
+        let id: Value = serde_json::from_str(text_column(row, 3)?)?;
         if !snapshot.is_object()
             || snapshot["id"] != id
             || Some(row.get::<_, i64>(2)?) != row.get::<_, Option<i64>>(4)?

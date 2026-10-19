@@ -109,24 +109,13 @@ impl TaskRuntime {
                         progress.pending.is_empty().then(|| progress.query.clone())
                     };
                     if let Some(query) = query {
-                        let mut list = storage.task(TaskCommand::List { query }, principal).await?;
-                        let tasks = list
-                            .get_mut("items")
-                            .and_then(Value::as_array_mut)
-                            .map(std::mem::take)
-                            .ok_or_else(|| ApiError::invalid("Invalid task list"))?;
-                        let pending = tasks
-                            .into_iter()
-                            .map(|value| {
-                                serde_json::from_value::<TaskRecord>(value).map(|task| task.task_id)
-                            })
-                            .collect::<serde_json::Result<VecDeque<_>>>()?;
+                        let page = storage.task_recovery_page(query, principal).await?;
                         let mut progress = once.scan.lock().unwrap();
                         // The cursor advances only with ownership of the whole
                         // page. Unstarted and dropped probes survive timeouts.
-                        progress.pending = pending;
-                        progress.query.through_revision = list["throughRevision"].as_i64();
-                        progress.query.before = list["nextCursor"].as_i64();
+                        progress.pending = page.ids.into();
+                        progress.query.through_revision = Some(page.through_revision);
+                        progress.query.before = page.next_cursor;
                         progress.exhausted = progress.query.before.is_none();
                         continue;
                     }
@@ -398,6 +387,7 @@ impl TaskRuntime {
                 FOLLOW_INTERVAL
             };
             last_revision = observed.as_ref().ok().map(|task| task.revision);
+            drop(observed);
             tokio::select! {
                 biased;
                 _=self.shutdown.cancelled()=>{
@@ -440,7 +430,7 @@ impl TaskRuntime {
         if task.kind != TaskKind::Batch {
             return self
                 .provider
-                .recover_task(&serde_json::to_value(task)?, &mut cancellation.single)
+                .recover_task(crate::generation::RecoveryTask::from(task), &mut cancellation.single)
                 .await;
         }
         let id = &task.task_id;
@@ -451,7 +441,7 @@ impl TaskRuntime {
             id: id.into(),
         });
         self.video
-            .recover_batch(&serde_json::to_value(task)?, hooks, &mut cancellation.batch)
+            .recover_batch(task, hooks, &mut cancellation.batch)
             .await
     }
 }

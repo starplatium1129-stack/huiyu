@@ -4,6 +4,7 @@ use axum::{
     Extension, Json, Router,
     routing::{get, post},
 };
+use serde::Deserialize;
 use std::process::Stdio;
 use tokio::io::AsyncReadExt;
 
@@ -47,52 +48,58 @@ impl ControlService {
         }
         Ok(())
     }
-    pub(super) fn active_inference(&self) -> Result<Settings> {
+    pub(super) fn active_inference(&self) -> Result<&Settings> {
         self.inference
             .as_ref()
-            .cloned()
             .map_err(|e| ApiError::new(e.status.as_u16(), &e.code, &e.message))
     }
     pub(super) fn configured_inference(&self) -> Result<Settings> {
         let active = self.active_inference()?;
         let saved = self.saved.read().unwrap();
         let Some(value) = saved.get("inference") else {
-            return Ok(active);
+            return Ok(active.clone());
         };
         if saved["inferenceWorkspacePath"].as_str().is_some_and(|path| std::path::Path::new(path) != self.config.ai_workspace_root) {
             // Saved paths belong to the previous workspace. Keep those user files
             // and saved data, but do not advertise them as resources of this one.
+            let engine = value["engine"].as_str().unwrap_or("comfy").to_owned();
+            drop(saved);
             let mut current = Settings::discovered(&self.config.ai_workspace_root).0;
-            current.engine = value["engine"].as_str().unwrap_or("comfy").into();
+            current.engine = engine;
             current.environment_overrides = active.environment_overrides.clone();
             return Ok(current);
         }
-        let mut configured: Settings = serde_json::from_value(value.clone())
+        let mut configured = Settings::deserialize(value)
             .map_err(|_| ApiError::invalid("已保存的推理配置无效"))?;
-        let active_json = serde_json::to_value(&active)?;
-        let mut target = serde_json::to_value(&configured)?;
-        for key in &active.environment_overrides {
-            target[key] = active_json[key].clone();
+        drop(saved);
+        if !active.environment_overrides.is_empty() {
+            let active_json = serde_json::to_value(active)?;
+            let mut target = serde_json::to_value(&configured)?;
+            for key in &active.environment_overrides {
+                target[key] = active_json[key].clone();
+            }
+            configured = serde_json::from_value(target)?;
         }
-        configured = serde_json::from_value(target)?;
         configured.validate()?;
         Ok(configured)
     }
     pub(super) fn inference_view(&self) -> Result<Value> {
+        self.inference_snapshot().map(|(value, _)| value)
+    }
+    fn inference_snapshot(&self) -> Result<(Value, Settings)> {
         let active = self.active_inference()?;
         let configured = self.configured_inference()?;
-        let current = serde_json::to_value(&active)?;
-        let target = serde_json::to_value(configured)?;
-        Ok(
-            json!({"ok":true,"restartRequired":current != target,"active":current,
-            "configured":target,"environmentOverrides":active.environment_overrides}),
-        )
+        let current = serde_json::to_value(active)?;
+        let target = serde_json::to_value(&configured)?;
+        let value = json!({"ok":true,"restartRequired":current != target,"active":current,
+            "configured":target,"environmentOverrides":active.environment_overrides});
+        Ok((value, configured))
     }
     async fn save_inference(&self, configured: Settings) -> Result<Value> {
         configured.validate()?;
         let active = self.active_inference()?;
         let target = serde_json::to_value(&configured)?;
-        let current = serde_json::to_value(&active)?;
+        let current = serde_json::to_value(active)?;
         for key in &active.environment_overrides {
             if target[key] != current[key] {
                 return Err(ApiError::new(
@@ -126,24 +133,30 @@ async fn save(
     Ok(Json(s.save_inference(settings).await?))
 }
 async fn status(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
-    let mut value = s.inference_view()?;
-    let configured = s.configured_inference()?;
-    let mut files = json!({});
-    for (key, path, directory) in [
-        ("python", &configured.python, false),
-        ("worker", &configured.worker, false),
-        ("modelsRoot", &configured.models_root, true),
-        ("lorasRoot", &configured.loras_root, true),
-    ] {
-        files[key] = json!(tokio::fs::metadata(path).await.is_ok_and(|m| if directory {
-            m.is_dir()
-        } else {
-            m.is_file()
-        }));
-    }
-    value["diagnostics"] = json!({"basis":"configured","configuration":"valid","files":files,
-        "dependencies":"unchecked","runtime":"unverified",
-        "message":"文件检查不代表依赖、CUDA 或模型推理可用；依赖检查需手动执行，真实出图尚未验证"});
+    let service = s.clone();
+    let mut value = tokio::task::spawn_blocking(move || -> Result<Value> {
+        let (mut value, configured) = service.inference_snapshot()?;
+        let mut files = json!({});
+        for (key, path, directory) in [
+            ("python", &configured.python, false),
+            ("worker", &configured.worker, false),
+            ("modelsRoot", &configured.models_root, true),
+            ("lorasRoot", &configured.loras_root, true),
+        ] {
+            files[key] = json!(std::fs::metadata(path).is_ok_and(|m| if directory {
+                m.is_dir()
+            } else {
+                m.is_file()
+            }));
+        }
+        value["diagnostics"] = json!({"basis":"configured","configuration":"valid","files":null,
+            "dependencies":"unchecked","runtime":"unverified",
+            "message":"文件检查不代表依赖、CUDA 或模型推理可用；依赖检查需手动执行，真实出图尚未验证"});
+        value["diagnostics"]["files"] = files;
+        Ok(value)
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "INFERENCE_STATUS_FAILED", "推理文件状态读取未完成"))??;
     value["discovery"] = s.inference_discovery().await?;
     Ok(Json(value))
 }

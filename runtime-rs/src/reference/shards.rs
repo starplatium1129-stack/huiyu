@@ -14,10 +14,15 @@ fn source_id(id: &str) -> bool {
             && matches!(id.as_bytes()[3], b'1'..=b'9'))
 }
 
-fn ids(value: &Value) -> Result<Vec<&str>> {
+struct Ids<'a> {
+    ordered: Vec<&'a str>,
+    members: HashSet<&'a str>,
+}
+
+fn ids(value: &Value) -> Result<Ids<'_>> {
     let array = value.as_array().ok_or_else(unavailable)?;
     let mut seen = HashSet::new();
-    array
+    let ordered = array
         .iter()
         .map(|v| {
             let id = v.as_str().ok_or_else(unavailable)?;
@@ -26,7 +31,8 @@ fn ids(value: &Value) -> Result<Vec<&str>> {
             }
             Ok(id)
         })
-        .collect()
+        .collect::<Result<Vec<_>>>()?;
+    Ok(Ids { ordered, members: seen })
 }
 
 fn manifest(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
@@ -40,7 +46,9 @@ fn manifest(directory: &Path, cancel: &CancellationToken) -> Result<Value> {
     }
     let characters = ids(&value["characterIds"])?;
     let order = ids(&value["viewOrder"])?;
-    if characters.len() != order.len() || order.iter().any(|id| !characters.contains(id)) {
+    if characters.ordered.len() != order.ordered.len()
+        || order.members.iter().any(|id| !characters.members.contains(id))
+    {
         return Err(unavailable());
     }
     Ok(value)
@@ -67,7 +75,7 @@ pub(super) fn profile(root: &Path, id: &str, cancel: &CancellationToken) -> Resu
         .map_err(|_| unavailable())?
     {
         let manifest = manifest(&directory, cancel)?;
-        if !ids(&manifest["characterIds"])?.contains(&id) {
+        if !ids(&manifest["characterIds"])?.members.contains(id) {
             return Ok(None);
         }
         // The authoritative per-character shard is read lazily; no aggregate is
@@ -98,7 +106,7 @@ pub(super) fn view(root: &Path, cancel: &CancellationToken) -> Result<Value> {
     }
     let manifest = manifest(&directory, cancel)?;
     let mut profiles = Map::new();
-    for id in ids(&manifest["viewOrder"])? {
+    for id in ids(&manifest["viewOrder"])?.ordered {
         profiles.insert(id.into(), shard(&directory, id, cancel)?["view"].take());
     }
     Ok(Value::Object(profiles))
@@ -136,7 +144,7 @@ fn source_products_with_cancel(root: &Path, cancel: &CancellationToken) -> Resul
     let character_ids = ids(&manifest["characterIds"])?;
     let mut characters = Vec::new();
     let mut profiles = Map::new();
-    for id in &character_ids {
+    for id in &character_ids.ordered {
         let mut item = shard(&directory, id, cancel)?;
         characters.push(item["standard"].take());
         profiles.insert((*id).into(), item["view"].take());
@@ -148,7 +156,7 @@ fn source_products_with_cancel(root: &Path, cancel: &CancellationToken) -> Resul
         let name = name.to_str().ok_or_else(unavailable)?;
         if let Some(id) = name.strip_suffix(".json")
             && id != "manifest"
-            && !character_ids.contains(&id)
+            && !character_ids.members.contains(id)
         {
             return Err(unavailable());
         }
@@ -156,7 +164,7 @@ fn source_products_with_cancel(root: &Path, cancel: &CancellationToken) -> Resul
     let mut expected = manifest["standards"].take();
     expected["characters"] = characters.into();
     let mut ordered = Map::new();
-    for id in ids(&manifest["viewOrder"])? {
+    for id in ids(&manifest["viewOrder"])?.ordered {
         check_cancel(cancel)?;
         ordered.insert(id.into(), profiles.remove(id).ok_or_else(unavailable)?);
     }

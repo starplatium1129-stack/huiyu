@@ -80,10 +80,23 @@ fn lease(c: &Context, key: &str, hash: &str) -> Result<i64> {
     Ok(created)
 }
 
+fn insert_artwork(c: &Context, key: &str, body: &Value, revision: i64) -> Result<Value> {
+    // Return the persisted encoding (including ECMAScript number normalization)
+    // in the insert itself, without another lookup of the same large body.
+    Ok(c.db
+        .prepare_cached(
+            "INSERT INTO artworks VALUES(?,?,?,?,NULL) RETURNING id_json,body,revision,deleted_at",
+        )?
+        .query_row(
+            params![key, stringify(&body["id"]), stringify(body), revision],
+            records::decode_artwork,
+        )?)
+}
+
 pub(in crate::storage) fn prepare(
     c: &mut Context,
     principal: &str,
-    command: &Value,
+    command: Value,
 ) -> Result<Prepared> {
     c.check_cancel()?;
     if principal.is_empty() {
@@ -95,14 +108,14 @@ pub(in crate::storage) fn prepare(
     }
     c.writer()?;
     c.owner.check()?;
-    let id = string(command, "operationId")?;
+    let id = string(&command, "operationId")?;
     if id.is_empty() || id.len() > 200 {
         return Err(invalid("A stable operation ID is required"));
     }
     if command["kind"] == "appendArtwork" {
-        if let Some((_, receipt)) = c.operation_receipt(principal, command)? {
+        if let Some((_, receipt)) = c.operation_receipt(principal, &command)? {
             if let Some(receipt) = receipt {
-                check_append_replay(c, command)?;
+                check_append_replay(c, &command)?;
                 return Ok(Prepared::Complete(receipt));
             }
         }
@@ -110,15 +123,16 @@ pub(in crate::storage) fn prepare(
         let source = c.lookup_media(alias)?;
         let media = json!({"alias":alias,"sha256":source.sha256,"bytes":source.total_bytes,"mime":source.mime});
         media::validate(&media)?;
+        let key = canonical::digest(stringify(&json!([principal, "appendArtwork", id])));
         return Ok(Prepared::Verify(Publication {
-            key: canonical::digest(stringify(&json!([principal, "appendArtwork", id]))),
+            key,
             media,
             principal: principal.into(),
-            target: Target::Append(command.clone()),
+            target: Target::Append(command),
         }));
     }
     let library = command["kind"] == "commitMedia";
-    let row = super::prepared(
+    let mut row = super::prepared(
         c,
         principal,
         id,
@@ -131,8 +145,8 @@ pub(in crate::storage) fn prepare(
     if row.state == "aborted" {
         return Err(conflict("OPERATION_CONFLICT", "Save operation was aborted"));
     }
-    if let Some(receipt) = &row.receipt {
-        return Ok(Prepared::Complete(receipt.clone()));
+    if let Some(receipt) = row.receipt.take() {
+        return Ok(Prepared::Complete(receipt));
     }
     let media = row.input["media"].clone();
     media::validate(&media)?;
@@ -235,9 +249,9 @@ impl Publication {
                             return Err(conflict("OPERATION_CONFLICT", "Artwork ID already exists"));
                         }
                         body["image_id"] = alias.into();
-                        c.db.execute("INSERT INTO artworks VALUES(?,?,?,?,NULL)", params![key,stringify(&body["id"]),stringify(&body),revision])?;
+                        let artwork = insert_artwork(c, &key, &body, revision)?;
                         c.db.execute("INSERT INTO media_refs VALUES('artwork',?,?)", params![key,hash])?;
-                        receipt["artwork"] = records::artwork(c, &key)?.unwrap();
+                        receipt["artwork"] = artwork;
                     }
                     c.commit_operation(&row.key, &receipt)?;
                     c.db.execute("DELETE FROM leases WHERE operation_key=?", [&row.key])?;
@@ -255,10 +269,11 @@ impl Publication {
                         return Err(conflict("OPERATION_CONFLICT", "Artwork already exists"));
                     }
                     let revision = c.next_revision()?;
-                    c.db.execute("INSERT INTO artworks VALUES(?,?,?,?,NULL)", params![artwork_key,stringify(&art["id"]),stringify(art),revision])?;
+                    let artwork = insert_artwork(c, &artwork_key, art, revision)?;
                     c.db.execute("INSERT INTO media_refs VALUES('artwork',?,?)", params![artwork_key,hash])?;
                     c.db.execute("DELETE FROM media_refs WHERE owner_kind='temporary' AND owner_id=?", [alias])?;
-                    let receipt = json!({"operationId":command["operationId"],"kind":"appendArtwork","revision":revision,"artwork":records::artwork(c,&artwork_key)?.unwrap()});
+                    let mut receipt = json!({"operationId":command["operationId"],"kind":"appendArtwork","revision":revision});
+                    receipt["artwork"] = artwork;
                     c.commit_operation(&key, &receipt)?;
                     receipt
                 }

@@ -17,6 +17,7 @@ fn read_sources(root: &Path, folder: &str, field: &str) -> Result<Vec<Value>> {
     let file = directory.join("manifest.json");
     let bytes = fs::read(&file, false)?.unwrap();
     let manifest = json(&bytes, &format!("{folder}/manifest.json"))?;
+    drop(bytes);
     let entries = manifest["files"]
         .as_array()
         .filter(|items| !items.is_empty())
@@ -38,14 +39,11 @@ fn read_sources(root: &Path, folder: &str, field: &str) -> Result<Vec<Value>> {
         }
         let file = directory.join(name);
         let bytes = fs::read(&file, false)?.unwrap();
-        let data = json(&bytes, name)?;
-        rows.extend(
-            data[field]
-                .as_array()
-                .ok_or_else(|| Error::invalid(format!("{name} 根必须含 {field} 数组")))?
-                .iter()
-                .cloned(),
-        );
+        let mut data = json(&bytes, name)?;
+        drop(bytes);
+        let values = data.get_mut(field).and_then(Value::as_array_mut)
+            .ok_or_else(|| Error::invalid(format!("{name} 根必须含 {field} 数组")))?;
+        rows.append(values);
     }
     Ok(rows)
 }

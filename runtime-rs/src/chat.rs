@@ -30,7 +30,6 @@ struct Error {
     status: StatusCode,
     code: String,
     message: String,
-    detail: String,
 }
 impl Error {
     fn new(status: u16, code: &str, message: impl Into<String>) -> Self {
@@ -38,7 +37,6 @@ impl Error {
             status: StatusCode::from_u16(status).unwrap_or(StatusCode::SERVICE_UNAVAILABLE),
             code: code.into(),
             message: message.into(),
-            detail: String::new(),
         }
     }
     fn invalid(message: impl Into<String>) -> Self {
@@ -50,7 +48,11 @@ impl Error {
 }
 impl IntoResponse for Error {
     fn into_response(self) -> Response {
-        (self.status, Json(json!({"ok":false,"error":self.message,"msg":self.message,"code":self.code,"detail":self.detail}))).into_response()
+        let mut value = json!({"ok":false,"error":null,"msg":null,"code":null,"detail":""});
+        value["error"] = self.message.clone().into();
+        value["msg"] = self.message.into();
+        value["code"] = self.code.into();
+        (self.status, Json(value)).into_response()
     }
 }
 

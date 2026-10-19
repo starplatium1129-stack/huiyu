@@ -7,7 +7,7 @@ use serde_json::Value;
 use std::{collections::HashSet, path::Path};
 pub(crate) use store::load_popular;
 pub use store::load;
-pub use validate::collection;
+pub(crate) use validate::validate_items;
 
 fn reserved(name: &str) -> bool {
     let name = name.to_ascii_lowercase();
@@ -58,20 +58,20 @@ pub fn json_text(value: &Value) -> String {
                 depth += 1;
                 if !matches!(characters.peek(), Some('}' | ']')) {
                     output.push('\n');
-                    output.push_str(&"  ".repeat(depth));
+                    output.extend(std::iter::repeat_n(' ', depth * 2));
                 }
             }
             '}' | ']' => {
                 depth -= 1;
                 if !matches!(previous, '{' | '[') {
                     output.push('\n');
-                    output.push_str(&"  ".repeat(depth));
+                    output.extend(std::iter::repeat_n(' ', depth * 2));
                 }
                 output.push(c);
             }
             ',' => {
                 output.push_str(",\n");
-                output.push_str(&"  ".repeat(depth));
+                output.extend(std::iter::repeat_n(' ', depth * 2));
             }
             ':' => output.push_str(": "),
             _ => output.push(c),

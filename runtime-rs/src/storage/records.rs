@@ -35,6 +35,25 @@ pub(super) fn project(c: &Context, key: &str) -> Result<Option<Value>> {
         .query_row([key], decode_project)
         .optional()?)
 }
+pub(super) struct ProjectHeader {
+    pub id: Value,
+    pub smart: bool,
+}
+pub(super) fn project_header(c: &Context, key: &str) -> Result<Option<ProjectHeader>> {
+    // Membership checks need identity and kind, never a decoded history_ids
+    // array. A present JSON null still marks a smart album, as Map::get does.
+    Ok(c.db
+        .prepare_cached(
+            "SELECT id_json,json_type(body,'$.smartRule') IS NOT NULL FROM projects WHERE id_key=?",
+        )?
+        .query_row([key], |row| {
+            Ok(ProjectHeader {
+                id: json_column(row, 0)?,
+                smart: row.get(1)?,
+            })
+        })
+        .optional()?)
+}
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     match string(command, "kind")? {
         "readArtworkRecentIndex" => super::recent::read(c, command),
@@ -156,7 +175,7 @@ pub(super) fn update_membership(
     key: &str,
     keys: &[String],
     revision: i64,
-) -> Result<()> {
+) -> Result<Option<Value>> {
     set_membership(c, key, keys)?;
     refresh_membership(c, key, revision)
 }
@@ -213,9 +232,14 @@ fn set_membership(c: &Context, key: &str, keys: &[String]) -> Result<()> {
     }
     Ok(())
 }
-pub(super) fn refresh_membership(c: &Context, key: &str, revision: i64) -> Result<()> {
-    let Some(mut record) = project(c, key)? else {
-        return Ok(());
+pub(super) fn refresh_membership(c: &Context, key: &str, revision: i64) -> Result<Option<Value>> {
+    // history_ids is rebuilt below. Keep its object position without decoding
+    // the obsolete member array that this refresh will immediately replace.
+    let Some(mut record) = c.db
+        .prepare_cached("SELECT id_json,json_set(body,'$.history_ids',NULL),revision FROM projects WHERE id_key=?")?
+        .query_row([key], decode_project)
+        .optional()? else {
+        return Ok(None);
     };
     // Read ordered IDs in one query, retaining rejection of broken/deleted
     // memberships instead of silently omitting them through an inner join.
@@ -244,7 +268,8 @@ pub(super) fn refresh_membership(c: &Context, key: &str, revision: i64) -> Resul
         "UPDATE projects SET body=?,revision=? WHERE id_key=?",
         params![stringify(&record["body"]), revision, key],
     )?;
-    Ok(())
+    record["revision"] = revision.into();
+    Ok(Some(record))
 }
 pub(super) fn project_refs(c: &Context, key: &str) -> Result<Vec<Value>> {
     Ok(c.db
@@ -321,12 +346,14 @@ pub(super) fn mutate(c: &mut Context, principal: &str, command: &Value) -> Resul
                         c.db.execute("UPDATE artworks SET body=?,revision=? WHERE id_key=?",params![stringify(&body),revision,key])?;
                     }
                     "softDeleteArtwork" if art["deletedAt"].is_null() => {
-                        let refs=project_refs(c,&key)?; soft_delete(c,&key,&art,revision,now(),&refs)?;
+                        let refs=project_refs(c,&key)?; let deleted=now(); soft_delete(c,&key,&art,revision,deleted,&refs)?;
                         for r in &refs {let p=string(r,"project_key")?; update_membership(c,p,&membership(c,p)?.into_iter().filter(|k|k!=&key).collect::<Vec<_>>(),revision)?;}
+                        art["revision"]=revision.into(); art["deletedAt"]=deleted.into();
                     }
                     _=>{},
                 }
-                if let Some(updated)=artwork(c,&key)? {receipt["changed"]=json!(updated["revision"]==revision); receipt["artwork"]=updated;}
+                if kind=="softDeleteArtwork" {receipt["changed"]=json!(art["revision"]==revision); receipt["artwork"]=art;}
+                else if let Some(updated)=artwork(c,&key)? {receipt["changed"]=json!(updated["revision"]==revision); receipt["artwork"]=updated;}
             }
         }
         c.commit_operation(&op,&receipt)?; Ok(receipt)

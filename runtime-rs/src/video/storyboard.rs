@@ -108,7 +108,9 @@ fn build(blueprint: &Value, intent: &Value) -> Value {
         };
         json!({"prompt":prompt,"dialogue":if i==1||i==2{dialogue.get(i-1)}else{None},"shotSize":size,"camera":camera,"motion":motion,"duration":3,"firstFramePrompt":if prose.is_empty(){None}else{Some(format!("{prose} {framing}"))}})
     }).collect();
-    json!({"title":text(&blueprint["title"],&text(&blueprint["id"],"undefined")),"blueprintId":text(&blueprint["id"],"undefined"),"characterId":text(&blueprint["characterId"],""),"beats":BEATS.iter().map(|b|b.0).collect::<Vec<_>>(),"shots":shots})
+    let mut value = json!({"title":text(&blueprint["title"],&text(&blueprint["id"],"undefined")),"blueprintId":text(&blueprint["id"],"undefined"),"characterId":text(&blueprint["characterId"],""),"beats":BEATS.iter().map(|b|b.0).collect::<Vec<_>>(),"shots":null});
+    value["shots"] = Value::Array(shots);
+    value
 }
 pub(super) fn router() -> Router<AppState> {
     Router::new().route(
@@ -142,8 +144,10 @@ async fn handle(
     })
     .await
     .map_err(|_| ApiError::new(503, "STORYBOARD_UNAVAILABLE", "剧本读取失败"))??;
+    let mut response = json!({"ok":true,"storyboard":null});
+    response["storyboard"] = value;
     Ok((
         [("cache-control".into(), "no-store".into())],
-        Json(json!({"ok":true,"storyboard":value})),
+        Json(response),
     ))
 }

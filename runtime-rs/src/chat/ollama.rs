@@ -52,39 +52,44 @@ impl Ollama {
             .await?;
         let response =
             transport::success(response, 2 * 1024 * 1024, "Ollama status request failed").await?;
-        let data: Value =
-            serde_json::from_slice(&transport::bounded(response, 2 * 1024 * 1024).await?)
+        let mut data: Value =
+            serde_json::from_slice(transport::bounded(response, 2 * 1024 * 1024).await?.as_ref())
                 .map_err(|_| Error::stream("INVALID_JSON", "Ollama 模型列表不是有效 JSON"))?;
-        Ok(data["models"]
-            .as_array()
+        Ok(data.get_mut("models")
+            .and_then(Value::as_array_mut)
             .map(|models| {
                 models
-                    .iter()
-                    .filter(|item| {
-                        !name(item).is_empty()
-                            && item["capabilities"].as_array().is_none_or(|caps| {
-                                caps.is_empty() || caps.iter().any(|v| v == "completion")
-                            })
+                    .drain(..)
+                    .filter_map(|item| {
+                        let name = name(&item);
+                        if name.is_empty() || item["capabilities"].as_array().is_some_and(|caps| {
+                            !caps.is_empty() && !caps.iter().any(|v| v == "completion")
+                        }) { return None; }
+                        let mut model = json!({"name":null,"size":item["size"].as_f64().unwrap_or(0.0),"parameters":item["details"]["parameter_size"].as_str().unwrap_or(""),"quantization":item["details"]["quantization_level"].as_str().unwrap_or("")});
+                        model["name"] = name.into();
+                        Some(model)
                     })
-                    .cloned()
                     .collect()
             })
             .unwrap_or_default())
     }
     fn preferred(&self, models: &[Value], settings: &Settings) -> String {
         if !settings.ollama_model.is_empty()
-            && models.iter().any(|v| name(v) == settings.ollama_model)
+            && models.iter().any(|v| v["name"] == settings.ollama_model)
         {
             settings.ollama_model.clone()
         } else {
-            models.first().map(name).unwrap_or_default()
+            models.first().and_then(|v| v["name"].as_str()).unwrap_or_default().into()
         }
     }
     pub async fn status(&self, client: &Transport, settings: &Settings) -> Value {
         let active = self.model.lock().unwrap().clone();
         match self.models(client, settings).await {
             Ok(models) => {
-                json!({"online":true,"model":self.preferred(&models,settings),"models":models.iter().map(|item|json!({"name":name(item),"size":item["size"].as_f64().unwrap_or(0.0),"parameters":item["details"]["parameter_size"].as_str().unwrap_or(""),"quantization":item["details"]["quantization_level"].as_str().unwrap_or("")})).collect::<Vec<_>>(),"queue":self.queue_status(),"activeModel":active})
+                let mut value = json!({"online":true,"model":self.preferred(&models,settings),"models":null,"queue":null,"activeModel":active});
+                value["models"] = Value::Array(models);
+                value["queue"] = self.queue_status();
+                value
             }
             Err(error) => {
                 json!({"online":false,"model":"","models":[],"queue":self.queue_status(),"activeModel":active,"error":error.message})
@@ -123,11 +128,12 @@ impl Ollama {
         };
         let wait_ms = started.elapsed().as_millis() as u64;
         let models = self.models(client, settings).await?;
-        let selected = if !input.model.is_empty() && models.iter().any(|v| name(v) == input.model) {
-            input.model.clone()
+        let selected = if !input.model.is_empty() && models.iter().any(|v| v["name"] == input.model) {
+            input.model
         } else {
             self.preferred(&models, settings)
         };
+        drop(models);
         if selected.is_empty() {
             return Err(Error::stream(
                 "OLLAMA_MODEL_MISSING",

@@ -2,6 +2,16 @@ use super::*;
 mod parse;
 use parse::{blueprints, characters, strings};
 use std::sync::LazyLock;
+
+static RECIPES: LazyLock<Value> = LazyLock::new(|| {
+    serde_json::from_str(include_str!("recipes.json")).expect("checked recipe snapshot")
+});
+static METADATA: LazyLock<regex::Regex> = LazyLock::new(|| {
+    regex::Regex::new(r"(?i)(?:official_cg|visual_audited)").unwrap()
+});
+static RECIPE_TOKENS: LazyLock<regex::Regex> = LazyLock::new(|| {
+    regex::Regex::new(r"(?i)(?:ayachi_nene|shiki_natsume|nene_|natsume_)").unwrap()
+});
 static STUDIO_NAME: LazyLock<regex::Regex> =
     LazyLock::new(|| regex::Regex::new(r"(?i)(?:ayachi_nene|shiki_natsume)").unwrap());
 static STUDIO_PREFIX: LazyLock<regex::Regex> = LazyLock::new(|| {
@@ -52,8 +62,9 @@ pub(super) fn validate(root: &DataRoot, issues: &mut Vec<String>) {
     }
 }
 fn run(root: &DataRoot, issues: &mut Vec<String>) -> std::result::Result<(), String> {
-    let characters = characters(read(root, "data/popular-characters.json")?)?;
-    let blueprints = blueprints(read(root, "data/scene-blueprints.json")?)?;
+    let characters = characters(read(root, "data/popular-characters.json")?.as_ref())?;
+    let blueprint_source = read(root, "data/scene-blueprints.json")?;
+    let blueprints = blueprints(blueprint_source.as_ref())?;
     if characters.is_empty() {
         issues.push("popular-characters.json must contain at least one character".into());
     }
@@ -110,9 +121,7 @@ fn run(root: &DataRoot, issues: &mut Vec<String>) -> std::result::Result<(), Str
     if !blueprints.iter().any(|b| b["adult"] == true) {
         issues.push("scene-blueprints.json should keep at least one R18 blueprint".into());
     }
-    let recipes: Value =
-        serde_json::from_str(include_str!("recipes.json")).expect("checked recipe snapshot");
-    let metadata = regex::Regex::new(r"(?i)(?:official_cg|visual_audited)").unwrap();
+    let recipes = &*RECIPES;
     for blueprint in &blueprints {
         let id = text(&blueprint["id"]);
         let body = crate::storage::stringify(blueprint);
@@ -121,12 +130,12 @@ fn run(root: &DataRoot, issues: &mut Vec<String>) -> std::result::Result<(), Str
                 "blueprint {id} must not reference nene/natsume tokens"
             ));
         }
-        if metadata.is_match(&body) {
+        if METADATA.is_match(&body) {
             issues.push(format!("blueprint {id} must not leak retrieval metadata"));
         }
         for field in ["kreaStyleHint", "animaStyleHint"] {
             if let Some(hint) = blueprint[field].as_str().filter(|s| !s.trim().is_empty())
-                && let Some(recipe) = list(&recipes).iter().find(|r| r["id"] == hint)
+                && let Some(recipe) = list(recipes).iter().find(|r| r["id"] == hint)
                 && recipe["adult"] == true
                 && blueprint["adult"] != true
             {
@@ -134,22 +143,21 @@ fn run(root: &DataRoot, issues: &mut Vec<String>) -> std::result::Result<(), Str
             }
         }
     }
-    let common = list(&recipes).iter().filter(|r| r["adult"] != true).count();
+    let common = list(recipes).iter().filter(|r| r["adult"] != true).count();
     if common < 8 {
         issues.push(format!(
             "kreaStyleRecipes must ship at least 8 common recipes, got {common}"
         ));
     }
-    if !list(&recipes).iter().any(|r| r["adult"] == true) {
+    if !list(recipes).iter().any(|r| r["adult"] == true) {
         issues.push("kreaStyleRecipes must ship explicit adult-only recipes".into());
     }
-    let tokens = regex::Regex::new(r"(?i)(?:ayachi_nene|shiki_natsume|nene_|natsume_)").unwrap();
-    for recipe in list(&recipes) {
+    for recipe in list(recipes) {
         let id = text(&recipe["id"]);
         if recipe["lead"].as_str().is_none_or(|s| s.trim().is_empty()) {
             issues.push(format!("kreaStyleRecipes.{id} must have a lead phrase"));
         }
-        if tokens.is_match(&format!(
+        if RECIPE_TOKENS.is_match(&format!(
             "{} {}",
             text(&recipe["lead"]),
             recipe["medium"].as_str().unwrap_or("")

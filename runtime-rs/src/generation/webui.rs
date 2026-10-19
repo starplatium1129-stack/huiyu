@@ -111,7 +111,7 @@ async fn complete(inner: &Arc<Inner>, job: &Arc<Job>, value: Value) -> Result<()
         if state.status != "running" {
             return Ok(());
         }
-        state.metadata["seed"] = json!(
+        Arc::make_mut(&mut state.metadata)["seed"] = json!(
             decoded
                 .seed
                 .unwrap_or(job.input["seed"].as_u64().unwrap_or(0))

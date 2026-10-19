@@ -144,7 +144,7 @@ impl Search {
         if self.phase == Phase::Legacy && budget > 0 {
             match self.scan(c, Window::Legacy, &mut budget)? {
                 ScanEnd::Filled => {
-                    let cursor = self.last_match.clone();
+                    let cursor = std::mem::take(&mut self.last_match);
                     return Ok(Step::Complete(self.finish(Some(cursor))));
                 }
                 ScanEnd::Exhausted => return Ok(Step::Complete(self.finish(None))),
@@ -188,16 +188,21 @@ impl Search {
             c.check_cancel()?;
             examined += 1;
             *budget -= 1;
-            let key = row.get::<_, String>(1)?;
+            let key = text_column(row, 1)?;
             // Advance even for misses; the public legacy cursor still names the
             // last returned match, so its 201st match remains on the next page.
             if numeric {
-                self.numeric_after = Some(NumericCursor {
-                    time: row.get(0)?,
-                    key,
+                let time = row.get(0)?;
+                let after = self.numeric_after.get_or_insert_with(|| NumericCursor {
+                    time,
+                    key: String::new(),
                 });
+                after.time = time;
+                after.key.clear();
+                after.key.push_str(key);
             } else {
-                self.legacy_after = key;
+                self.legacy_after.clear();
+                self.legacy_after.push_str(key);
             }
             if self.matches(text_column(row, 2)?) {
                 if numeric {
@@ -212,7 +217,8 @@ impl Search {
                     }
                     self.legacy
                         .push(serde_json::from_str(text_column(row, 3)?)?);
-                    self.last_match = self.legacy_after.clone();
+                    self.last_match.clear();
+                    self.last_match.push_str(&self.legacy_after);
                 }
             }
         }
@@ -228,8 +234,7 @@ impl Search {
     }
 
     fn candidate_ids(&self, c: &Context) -> Result<Option<Vec<i64>>> {
-        let terms = self.terms.iter().map(String::as_str).collect::<Vec<_>>();
-        let (table, pattern) = anchor(&terms);
+        let (table, pattern) = anchor(&self.terms);
         // FTS emits rowids directly: no ORDER BY, IN subquery or total count
         // can materialize its full posting list. A full probe falls back to the
         // bounded ordered scan, even if its final result has exactly BUDGET IDs.
@@ -259,18 +264,18 @@ impl Search {
             let mut rows = source.query([id])?;
             if let Some(row) = rows.next()? {
                 let time = row.get::<_, Option<f64>>(0)?;
-                let key = row.get::<_, String>(1)?;
+                let key = text_column(row, 1)?;
                 if time.is_some() && self.cursor.is_some()
-                    || time.is_none() && key.as_str() <= self.cursor.as_deref().unwrap_or("")
+                    || time.is_none() && key <= self.cursor.as_deref().unwrap_or("")
                     || !self.matches(text_column(row, 2)?)
                 {
                     continue;
                 }
                 let summary: Value = serde_json::from_str(text_column(row, 3)?)?;
                 if let Some(time) = time {
-                    numeric.push((time, key, summary));
+                    numeric.push((time, key.to_owned(), summary));
                 } else {
-                    legacy.push((key, summary));
+                    legacy.push((key.to_owned(), summary));
                 }
             }
         }
@@ -293,8 +298,9 @@ impl Search {
     }
 
     fn response(&self, items: Vec<Value>, cursor: Option<String>) -> Value {
-        let mut result = json!({"items":null,"artworkRevision":self.revision,"nextCursor":cursor});
+        let mut result = json!({"items":null,"artworkRevision":self.revision,"nextCursor":null});
         result["items"] = items.into();
+        result["nextCursor"] = cursor.map(Value::String).unwrap_or(Value::Null);
         result
     }
 }

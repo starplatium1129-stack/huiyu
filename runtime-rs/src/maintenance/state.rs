@@ -89,7 +89,7 @@ pub(crate) fn load_scenes(root: &Path) -> Result<(Value, Vec<Value>)> {
         };
         for file in group {
             accepted.insert(file.clone());
-            let value = fs::json(&directory.join(&file))?;
+            let mut value = fs::json(&directory.join(&file))?;
             let items = value
                 .as_array()
                 .ok_or_else(|| invalid(format!("{file}: 根必须是数组")))?;
@@ -112,7 +112,7 @@ pub(crate) fn load_scenes(root: &Path) -> Result<(Value, Vec<Value>)> {
                     )));
                 }
             }
-            scenes.extend(items.iter().cloned());
+            scenes.append(value.as_array_mut().unwrap());
         }
     }
     if names

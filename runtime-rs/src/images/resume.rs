@@ -50,8 +50,6 @@ impl Service {
             self.backend.prepare_comfy(plan, cancel.clone()).await?
         };
         Ok(Prepared {
-            input: prepared.input.clone(),
-            provider: prepared.provider.clone(),
             backend: prepared,
             originals,
         })

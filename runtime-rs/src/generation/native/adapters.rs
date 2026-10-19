@@ -102,7 +102,7 @@ pub(crate) async fn plan(
         .await
         .map_err(|_| ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", "模型目录核验未完成"))??;
     Ok(Plan {
-        input,
+        input: input.into(),
         settings: adapter,
         model_dir: path,
         mask_model_dir: None,

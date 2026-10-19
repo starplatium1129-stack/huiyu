@@ -143,7 +143,9 @@ async fn get_job(
 ) -> Response {
     let result = async {
         state.host.check_running()?;
-        Ok(json!({"job":http.service.get_job(&id,&owner(&headers,peer,&query)).await?}))
+        let mut value = json!({"job":null});
+        value["job"] = http.service.get_job(&id, &owner(&headers, peer, &query)).await?;
+        Ok(value)
     }
     .await;
     envelope(result)
@@ -158,7 +160,9 @@ async fn cancel(
 ) -> Response {
     let result = async {
         state.host.check_running()?;
-        Ok(json!({"job":http.service.cancel(&id,&owner(&headers,peer,&query)).await?}))
+        let mut value = json!({"job":null});
+        value["job"] = http.service.cancel(&id, &owner(&headers, peer, &query)).await?;
+        Ok(value)
     }
     .await;
     envelope(result)

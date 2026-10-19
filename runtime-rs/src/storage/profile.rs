@@ -289,19 +289,19 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         }
         let revision=c.next_revision()?;
         let result=if kind=="profile.resetChat" {
-            let current:Option<String>=c.db.query_row("SELECT body FROM profile_records WHERE domain='chat' AND record_key='aics_chat_v1'",[],|r|r.get(0)).optional()?;
+            let current:Option<serde_json::Result<Value>>=c.db.query_row("SELECT body FROM profile_records WHERE domain='chat' AND record_key='aics_chat_v1'",[],|r|Ok(serde_json::from_str(text_column(r,0)?))).optional()?;
             let retained=if let Some(current)=current {
-                let decoded:Value=serde_json::from_str(&current)?;
+                let decoded=current?;
                 let mut record=if let Value::String(s)=decoded {serde_json::from_str::<Value>(&s)?} else {decoded};
                 if !record.is_object() {return Err(invalid("Invalid chat profile"))}
                 record["histories"]=json!({});record["historiesRevision"]=json!(revision);record["historiesRevisions"]=json!({});
                 if !record["settings"].is_object() {record["settings"]=json!({});}record["settings"]["drafts"]=json!({});
-                Some(stringify(&json!(stringify(&record))))
+                Some((stringify(&Value::String(stringify(&record))),record))
             } else {None};
             clear_chat(c)?;
-            if let Some(retained)=retained {
+            if let Some((retained,record))=retained {
                 c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_v1',?,?)",params![retained,revision])?;
-                media_refs::replace(c,"chat","aics_chat_v1",&serde_json::from_str(&retained)?)?;
+                media_refs::replace_decoded(c,"chat","aics_chat_v1",&record)?;
             }
             c.db.execute("INSERT INTO profile_records VALUES('chat','aics_chat_reset_v1',?,?)",params![stringify(&command["operationId"]),revision])?;
             snapshot(c,"chat",None,None,None)?

@@ -1,7 +1,7 @@
 use super::*;
 
-pub(crate) fn build(root: &Path, scenes: &[Value]) -> Vec<(&'static str, Value)> {
-    let sorted = sorted(scenes.to_vec());
+pub(crate) fn build(root: &Path, scenes: Vec<Value>) -> Vec<(&'static str, Value)> {
+    let sorted = sorted(scenes);
     let mut groups = [Vec::new(), Vec::new(), Vec::new()];
     let mut seen = HashSet::new();
     for scene in &sorted {
@@ -24,17 +24,18 @@ pub(crate) fn build(root: &Path, scenes: &[Value]) -> Vec<(&'static str, Value)>
         .iter()
         .map(|scene| (scene["id"].as_str().unwrap(), scene))
         .collect::<HashMap<_, _>>();
-    let core = core_ids
+    let core: Vec<Value> = core_ids
         .iter()
         .map(|id| by_id[id.as_str()].clone())
-        .collect::<Vec<_>>();
+        .collect();
     let index = json!({"version":1,"total":sorted.len(),"shards":{"nene":{"file":"scenes-nene.json","count":groups[0].len()},"natsume":{"file":"scenes-natsume.json","count":groups[1].len()},"shared":{"file":"scenes-shared.json","count":groups[2].len()}},"tiers":{"core":core_ids},"orderedIds":sorted.iter().map(|scene|&scene["id"]).collect::<Vec<_>>()});
+    let [nene, natsume, shared] = groups;
     vec![
-        ("scenes.json", json!(sorted)),
-        ("scenes-nene.json", json!(groups[0])),
-        ("scenes-natsume.json", json!(groups[1])),
-        ("scenes-shared.json", json!(groups[2])),
-        ("scenes-core.json", json!(core)),
+        ("scenes.json", Value::Array(sorted)),
+        ("scenes-nene.json", Value::Array(nene)),
+        ("scenes-natsume.json", Value::Array(natsume)),
+        ("scenes-shared.json", Value::Array(shared)),
+        ("scenes-core.json", Value::Array(core)),
         ("scenes-index.json", index),
     ]
 }

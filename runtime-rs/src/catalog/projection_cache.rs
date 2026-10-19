@@ -75,6 +75,12 @@ impl ProjectionCache {
         // A leader can use its first read snapshot. Warm followers still check
         // authority in parallel, and only a cold follower waits/reopens.
         let mut guard = flight.try_lock().ok();
+        let cold_follower = guard.is_none()
+            && !self.encoded.lock().unwrap().entries.contains_key(name);
+        if cold_follower {
+            // Release the cache lock before waiting. Reopen authority afterward.
+            guard = Some(flight.lock().unwrap());
+        }
         loop {
             // Always reopen the authority: a warm cache must never hide a missing or
             // invalid database. File identity also invalidates a restored/replaced DB.

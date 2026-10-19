@@ -39,17 +39,18 @@ impl Service {
         Ok(batch.public(self).await)
     }
     pub(super) async fn reconcile_live(&self, batch: &Batch) -> Result<bool> {
-        let shots = batch.state.lock().await.shots.clone();
+        let shots = batch.state.lock().await.shots.iter().enumerate()
+            .filter_map(|(index, shot)| {
+                let intent = shot.intent?;
+                (shot.status != "succeeded").then(|| (index, intent, shot.gateway.clone()))
+            }).collect::<Vec<_>>();
         let mut settled = true;
-        for (index, shot) in shots.iter().enumerate() {
-            if shot.intent.is_none() || shot.status == "succeeded" {
-                continue;
-            }
-            let Some(id) = &shot.gateway else {
+        for (index, intent, gateway) in shots {
+            let Some(id) = gateway else {
                 settled = false;
                 continue;
             };
-            let observation = match self.query(id, &batch.owner).await {
+            let observation = match self.query(&id, &batch.owner).await {
                 Ok(observation) => observation,
                 Err(e) if matches!(e.status.as_u16(), 404 | 410) => {
                     settled = false;
@@ -60,7 +61,7 @@ impl Service {
             if observation.settled && !observation.unknown {
                 let mut s = batch.state.lock().await;
                 let Some(current) = s.shots.get_mut(index).filter(|current| {
-                    current.gateway == shot.gateway && current.intent == shot.intent
+                    current.gateway.as_deref() == Some(id.as_str()) && current.intent == Some(intent)
                 }) else {
                     // A late observation belongs to its original submission,
                     // never a new retry of the same displayed shot position.
@@ -130,37 +131,48 @@ impl Service {
                         "已提交分镜尚未确认完成",
                     ));
                 }
-                let shots = batch.state.lock().await.shots.clone();
-                if shots
-                    .iter()
-                    .any(|s| s.intent.is_some() && s.status != "succeeded")
-                {
-                    return Err(error(
-                        409,
-                        "BATCH_RECOVERY_REVIEW",
-                        "已提交分镜需要显式替换，不能重放",
-                    ));
-                }
-                if let Some(h) = &batch.hooks {
-                    let mut restored = std::collections::HashSet::new();
-                    for shot in &shots {
-                        for name in inputs::names(&shot.input) {
-                            if restored.insert(name) {
-                                resume::restore_one(&self.config, name, h.as_ref(), &cancel).await?;
+                let (names, link) = {
+                    let s = batch.state.lock().await;
+                    if s.shots.iter().any(|s| s.intent.is_some() && s.status != "succeeded") {
+                        return Err(error(
+                            409,
+                            "BATCH_RECOVERY_REVIEW",
+                            "已提交分镜需要显式替换，不能重放",
+                        ));
+                    }
+                    let mut names = Vec::new();
+                    if batch.hooks.is_some() {
+                        let mut seen = std::collections::HashSet::new();
+                        for shot in &s.shots {
+                            for name in inputs::names(&shot.input) {
+                                if seen.insert(name) {
+                                    names.push(name.to_owned());
+                                }
                             }
                         }
                     }
+                    let link = if batch.input["linkLastFrame"] == true
+                        && let Some(index) = s.shots.iter().position(|s| s.intent.is_none())
+                        && index > 0
+                        && !generation::truthy(&s.shots[index].input["references"])
+                    {
+                        let previous = &s.shots[index - 1];
+                        Some((index, previous.tail.clone(), previous.result.clone()))
+                    } else {
+                        None
+                    };
+                    (names, link)
+                };
+                if let Some(h) = &batch.hooks {
+                    for name in &names {
+                        resume::restore_one(&self.config, name, h.as_ref(), &cancel).await?;
+                    }
                 }
-                if batch.input["linkLastFrame"] == true
-                    && let Some(index) = shots.iter().position(|s| s.intent.is_none())
-                    && index > 0
-                    && !generation::truthy(&shots[index].input["references"])
-                {
-                    let previous = &shots[index - 1];
-                    let name = if let Some(name) = &previous.tail {
-                        Some(name.clone())
-                    } else if let Some(output) = &previous.result {
-                        transcode::tail(&self, output, cancel.clone()).await.ok()
+                if let Some((index, tail, output)) = link {
+                    let name = if let Some(name) = tail {
+                        Some(name)
+                    } else if let Some(output) = output {
+                        transcode::tail(&self, &output, cancel.clone()).await.ok()
                     } else {
                         None
                     };
@@ -338,7 +350,7 @@ impl Service {
             s.concat_stage = "processing";
             (
                 outputs,
-                s.shots[0].input.clone(),
+                json!({"width":s.shots[0].input["width"],"height":s.shots[0].input["height"]}),
                 s.cancel.child_token(),
                 s.shots.len(),
             )

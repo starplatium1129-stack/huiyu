@@ -36,6 +36,9 @@ pub(super) enum ReadOutcome {
 
 pub(super) async fn request(storage: &Storage, command: Value, principal: &str) -> Result<Value> {
     let cancel = CancelOnDrop(Arc::new(AtomicBool::new(false)));
+    // Rejoining FIFO after each chunk must not copy all search terms again.
+    // The request and its queued turn share one immutable command allocation.
+    let command = Arc::new(command);
     let mut search = if command["kind"] == "searchArtworks" {
         Some(artwork_search::Search::new(&command)?)
     } else {

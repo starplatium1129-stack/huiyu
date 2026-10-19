@@ -232,6 +232,7 @@ impl RemoteContent {
             }
             let output = if let Some(name) = name {
                 let approved: Value = serde_json::from_slice(&bytes)?;
+                drop(bytes);
                 let current = if options.database.is_file()
                     || options.database.with_extension("identity.json").exists()
                 {
@@ -249,7 +250,7 @@ impl RemoteContent {
                 }
                 serde_json::to_vec(&projection::project(
                     &name,
-                    current.as_ref().unwrap_or(&approved),
+                    current.unwrap_or(approved),
                 ))?
             } else {
                 bytes
@@ -291,6 +292,15 @@ fn catalog_equal(left: &Value, right: &Value) -> bool {
         (Value::Array(left), Value::Array(right)) => {
             if left.len() != right.len() {
                 return false;
+            }
+            // Matching ID sequences share the same stable permutation, or both
+            // keep input order when any ID is not a string.
+            if left.first().is_some_and(|value| value["id"].is_string())
+                && left.iter().zip(right).all(|(left, right)| {
+                    left["id"].as_str() == right["id"].as_str()
+                })
+            {
+                return left.iter().zip(right).all(|(left, right)| catalog_equal(left, right));
             }
             let left_order = catalog_id_order(left);
             let right_order = catalog_id_order(right);

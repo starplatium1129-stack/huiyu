@@ -66,17 +66,17 @@ pub(super) fn initialize(paths: &Paths) -> Result<()> {
     }
     fs::ensure(&paths.showcase.join("editions"))
 }
-fn seed(root: &Path) -> Result<(Value, HashMap<String, Entry>)> {
+fn seed(root: &Path) -> Result<(Value, Vec<Entry>)> {
     let value = fs::json(&root.join(".offline-seed.json"), false, false)?.unwrap();
-    let files: Vec<Entry> = serde_json::from_value(value["entries"].clone())
-        .map_err(|_| Error::new("STATE_INVALID", "Invalid showcase seed inventory"))?;
     let inventory = Manifest {
-        entries: files.clone(),
+        entries: serde::Deserialize::deserialize(&value["entries"])
+            .map_err(|_| Error::new("STATE_INVALID", "Invalid showcase seed inventory"))?,
     };
     if value["schemaVersion"] != 1
         || value["kind"] != "huiyu-showcase-seed"
         || inventory.identity() != value["contentIdentity"]
-        || files
+        || inventory
+            .entries
             .iter()
             .any(|entry| entry.path != "manifest.json" && !release::media(&entry.path))
     {
@@ -85,7 +85,8 @@ fn seed(root: &Path) -> Result<(Value, HashMap<String, Entry>)> {
     let original = value["manifestRaw"]
         .as_str()
         .ok_or_else(|| Error::new("STATE_INVALID", "Missing original showcase manifest bytes"))?;
-    let declared = files
+    let declared = inventory
+        .entries
         .iter()
         .find(|entry| entry.path == "manifest.json")
         .ok_or_else(|| Error::new("STATE_INVALID", "Showcase baseline omits display manifest"))?;
@@ -101,13 +102,7 @@ fn seed(root: &Path) -> Result<(Value, HashMap<String, Entry>)> {
         ));
     }
     release::display(&value["manifest"])?;
-    Ok((
-        value,
-        files
-            .into_iter()
-            .map(|entry| (entry.path.clone(), entry))
-            .collect(),
-    ))
+    Ok((value, inventory.entries))
 }
 pub(super) fn baseline(paths: &Paths, release: &Release) -> Result<()> {
     let Some(base) = &release.baseline else {
@@ -137,7 +132,7 @@ pub(super) fn baseline(paths: &Paths, release: &Release) -> Result<()> {
             "增量包不能用于首次安装，请先安装完整资源包。",
         )
     })?;
-    let (seed, hashes) = seed(&old)?;
+    let (seed, files) = seed(&old)?;
     if seed["contentIdentity"] != base["showcaseIdentity"]
         || seed["releaseSha256"] != base["releaseSha256"]
     {
@@ -146,14 +141,15 @@ pub(super) fn baseline(paths: &Paths, release: &Release) -> Result<()> {
             "已安装样张基线与增量包不匹配。",
         ));
     }
+    let hashes: HashMap<_, _> = files.iter().map(|entry| (entry.path.as_str(), entry)).collect();
     let payload = release
-        .showcase_payload
+        .showcase_payload()
         .entries
         .iter()
         .map(|entry| entry.path.as_str())
         .collect::<std::collections::HashSet<_>>();
     for entry in &release.showcase.entries {
-        if !payload.contains(entry.path.as_str()) && hashes.get(&entry.path) != Some(entry) {
+        if !payload.contains(entry.path.as_str()) && hashes.get(entry.path.as_str()).copied() != Some(entry) {
             return Err(Error::new(
                 "MANIFEST_INVALID",
                 "增量包缺少新增或变化的样张文件。",
@@ -226,18 +222,28 @@ fn merge(
     release: &Release,
     identity: &Value,
 ) -> Result<usize> {
-    let (seed, hashes) = seed(old)?;
+    let (seed, files) = seed(old)?;
     if seed["contentIdentity"] != *identity {
         return Err(Error::new(
             "STATE_INVALID",
             "Showcase seed differs from the installed edition pointer",
         ));
     }
+    let hashes: HashMap<_, _> = files.iter().map(|entry| (entry.path.as_str(), entry)).collect();
     let original = release::display(&seed["manifest"])?;
     let local_raw = fs::json(&old.join("manifest.json"), false, false)?.unwrap();
-    let local = release::display(&local_raw)?;
-    let mut output = release.display.clone();
-    let mut entries = output["entries"].as_array().unwrap().clone();
+    let mut local = release::display(&local_raw)?;
+    let mut output = None;
+    let initial = || {
+        let mut output = release.display.clone();
+        let entries = std::mem::take(output["entries"].as_array_mut().unwrap());
+        (output, entries)
+    };
+    let by_id = release.display["entries"].as_array().unwrap()
+        .iter()
+        .enumerate()
+        .map(|(index, entry)| (entry["id"].as_str().unwrap().to_ascii_lowercase(), index))
+        .collect::<HashMap<_, _>>();
     let mut names = original
         .keys()
         .chain(local.keys())
@@ -248,9 +254,12 @@ fn merge(
     let mut preserved = 0;
     for id in names {
         op.check()?;
-        let item = local.get(&id);
-        let mut modified = !release::same_entry(item, original.get(&id));
-        if let Some(item) = item {
+        let item = local.remove(&id);
+        let mut modified = !release::same_entry(
+            item.as_deref(),
+            original.get(&id).map(|item| item.as_ref()),
+        );
+        if let Some(item) = &item {
             for field in ["image", "thumb"] {
                 let name = item[field].as_str().unwrap();
                 if let Some(entry) = hashes.get(name) {
@@ -266,12 +275,8 @@ fn merge(
             continue;
         }
         preserved += 1;
-        let index = entries.iter().position(|entry| {
-            entry["id"]
-                .as_str()
-                .is_some_and(|name| name.eq_ignore_ascii_case(&id))
-        });
-        if let Some(item) = item {
+        let index = by_id.get(&id).copied();
+        if let Some(item) = &item {
             for field in ["image", "thumb"] {
                 copy::entry(
                     op,
@@ -281,16 +286,21 @@ fn merge(
                     &bytes_entry(op, old, item[field].as_str().unwrap())?,
                 )?;
             }
+        }
+        let (_, entries) = output.get_or_insert_with(initial);
+        if let Some(item) = item {
+            let item = item.into_owned();
             if let Some(index) = index {
-                entries[index] = item.clone();
+                entries[index] = item;
             } else {
-                entries.push(item.clone());
+                entries.push(item);
             }
         } else if let Some(index) = index {
-            entries.remove(index);
+            // Validated display entries are objects. Keep indices stable until
+            // all unique, sorted IDs have been processed.
+            entries[index] = Value::Null;
         }
     }
-    let mut metadata_changed = false;
     for (key, value) in local_raw.as_object().unwrap() {
         if ["entries", "entryCount", "sceneCount", "counts"].contains(&key.as_str()) {
             continue;
@@ -299,11 +309,11 @@ fn merge(
             .get(key)
             .is_none_or(|seed| !equal(seed, value))
         {
-            output[key] = value.clone();
-            metadata_changed = true;
+            output.get_or_insert_with(initial).0[key] = value.clone();
         }
     }
-    if preserved > 0 || metadata_changed {
+    if let Some((mut output, mut entries)) = output {
+        entries.retain(|entry| !entry.is_null());
         output["entryCount"] = json!(entries.len());
         output["sceneCount"] = json!(entries.len());
         if !output["counts"].is_object() {
@@ -315,7 +325,7 @@ fn merge(
                 .filter(|entry| entry["type"] == "popular")
                 .count()
         );
-        output["entries"] = json!(entries);
+        output["entries"] = Value::Array(entries);
         fs::write_json(&target.join("manifest.json"), &output)?;
     }
     preserved += preserve_home(op, old, target, parts)?;
@@ -357,13 +367,13 @@ fn inventory(op: &Operation, root: &Path) -> Result<Manifest> {
 }
 pub(super) fn verify_ready(op: &Operation, root: &Path, release: &Release) -> Result<Value> {
     let value = fs::json(&root.join(".offline-ready.json"), false, false)?.unwrap();
-    let entries: Vec<Entry> = serde_json::from_value(value["entries"].clone())
+    let entries: Vec<Entry> = serde::Deserialize::deserialize(&value["entries"])
         .map_err(|_| Error::new("STATE_INVALID", "Invalid prepared showcase inventory"))?;
     let expected = Manifest { entries };
     if value["schemaVersion"] != 1
         || value["releaseSha256"] != release.approved["releaseSha256"]
         || expected.identity() != value["identity"]
-        || seed(root)?.0["contentIdentity"] != release.showcase.identity()
+        || seed(root)?.0["contentIdentity"] != release.showcase_identity()
     {
         return Err(Error::new(
             "STATE_INVALID",
@@ -400,7 +410,7 @@ pub(super) fn prepare(
     let result = (|| {
         let old = paths.current_root(before)?;
         let payload = release
-            .showcase_payload
+            .showcase_payload()
             .entries
             .iter()
             .map(|entry| entry.path.as_str())
@@ -444,12 +454,23 @@ pub(super) fn prepare(
             false,
         )?)
         .map_err(|_| Error::new("MANIFEST_INVALID", "Showcase manifest must be UTF8"))?;
-        fs::write_json(
-            &staging.join(".offline-seed.json"),
-            &json!({"schemaVersion":1,"kind":"huiyu-showcase-seed","releaseSha256":release.approved["releaseSha256"],"contentIdentity":release.showcase.identity(),"entries":release.showcase.entries,"manifest":release.display,"manifestRaw":manifest_raw}),
-        )?;
+        {
+            let mut seed = json!({"schemaVersion":1,"kind":"huiyu-showcase-seed","releaseSha256":release.approved["releaseSha256"],"contentIdentity":release.showcase_identity(),"entries":release.showcase.entries,"manifest":null,"manifestRaw":null});
+            seed["manifestRaw"] = manifest_raw.into();
+            let mut body = crate::storage::stringify_object(seed.as_object().unwrap().iter()
+                .map(|(key, value)| (key, if key == "manifest" { &release.display } else { value })));
+            body.push('\n');
+            drop(seed);
+            fs::atomic(&staging.join(".offline-seed.json"), body.as_bytes())?;
+        }
         let installed = inventory(op, &staging)?;
-        let ready = json!({"schemaVersion":1,"releaseSha256":release.approved["releaseSha256"],"identity":installed.identity(),"entries":installed.entries,"preservedLocalEntries":preserved});
+        let mut ready = json!({"schemaVersion":1,"releaseSha256":release.approved["releaseSha256"],"identity":installed.identity(),"entries":null,"preservedLocalEntries":preserved});
+        ready["entries"] = Value::Array(installed.entries.into_iter().map(|entry| {
+            let mut value = json!({"path":null,"bytes":entry.bytes,"sha256":null});
+            value["path"] = entry.path.into();
+            value["sha256"] = entry.sha256.into();
+            value
+        }).collect());
         fs::write_json(&staging.join(".offline-ready.json"), &ready)?;
         verify_ready(op, &staging, release)?;
         op.check()?;

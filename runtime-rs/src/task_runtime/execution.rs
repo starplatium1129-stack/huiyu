@@ -24,6 +24,7 @@ impl TaskRuntime {
             {
                 return Ok(false);
             }
+            drop(current);
             self.check_running()?;
             let hooks = Arc::new(hooks::Hooks {
                 runtime: Arc::downgrade(&self),
@@ -279,6 +280,7 @@ impl TaskRuntime {
         {
             let _ = self.cancel_provider(current.kind, &job, principal).await;
         }
+        drop(current);
         let has_outputs = !observation.outputs.is_empty();
         let mut recovered_files = Vec::new();
         // A provider query can retry a failed collection hook and commit the

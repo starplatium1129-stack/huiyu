@@ -14,8 +14,9 @@ pub(super) static CATALOG: LazyLock<Value> = LazyLock::new(|| {
     }
     catalog
 });
-pub fn catalog() -> Value {
-    CATALOG.clone()
+pub fn catalog() -> &'static Value {
+    // Status counts and setup discovery only read this immutable directory.
+    &CATALOG
 }
 pub(super) fn model(id: &str) -> Result<&'static Value> {
     CATALOG["MODELS"]

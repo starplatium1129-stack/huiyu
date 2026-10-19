@@ -2,6 +2,16 @@ mod cancellation;
 mod poll;
 use super::*;
 use reqwest::Method;
+#[derive(serde::Serialize)]
+struct PromptRequest<'a> {
+    prompt: &'a Value,
+    client_id: &'a str,
+    extra_data: ExtraData<'a>,
+}
+#[derive(serde::Serialize)]
+struct ExtraData<'a> {
+    aics_session_id: &'a str,
+}
 type FamilyGate = Arc<Mutex<Option<String>>>;
 static FAMILIES: std::sync::LazyLock<Mutex<HashMap<String, FamilyGate>>> =
     std::sync::LazyLock::new(|| Mutex::new(HashMap::new()));
@@ -81,7 +91,12 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
         }
         state.status = "submitting".into();
     }
-    let response=inner.json("comfy",Method::POST,"/prompt",Some(&json!({"prompt":plan.workflow,"client_id":initialized.client_id,"extra_data":{"aics_session_id":initialized.session_id}})),Duration::from_secs(20),&inner.cancel).await;
+    let payload = PromptRequest {
+        prompt: &plan.workflow,
+        client_id: &initialized.client_id,
+        extra_data: ExtraData { aics_session_id: &initialized.session_id },
+    };
+    let response = inner.json_payload("comfy", Method::POST, "/prompt", &payload, Duration::from_secs(20), &inner.cancel).await;
     if response.is_ok() {
         *family = Some(plan.family.into());
     } else {
@@ -111,7 +126,7 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     let was_cancelling = {
         let mut state = job.state.lock().await;
         state.upstream_id = upstream.clone();
-        state.metadata["upstreamId"] = json!(upstream);
+        Arc::make_mut(&mut state.metadata)["upstreamId"] = json!(upstream);
         let cancelling = state.status == "cancelling";
         if !cancelling {
             state.status = "running".into();
@@ -121,7 +136,8 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     };
     watch(&inner, &upstream, true);
     let observed = if let Some(hooks) = &job.hooks {
-        let mut metadata = job.state.lock().await.metadata.clone();
+        let snapshot = job.state.lock().await.metadata.clone();
+        let mut metadata = Arc::unwrap_or_clone(snapshot);
         metadata["gatewayJobId"] = json!(job.id);
         hooks.observed(upstream, metadata).await
     } else {

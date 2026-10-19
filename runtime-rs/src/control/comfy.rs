@@ -65,7 +65,7 @@ impl ControlService {
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "ABORT_ERR", "生成请求已取消"));
         }
-        if self.online(1, &self.settings()).await {
+        if self.online(1, &self.runtime_settings()).await {
             // Drawing already releases our local chat from the UI. Keep the
             // same owned-only memory handoff for direct and durable API callers.
             self.stop_llama().await?;
@@ -126,7 +126,7 @@ impl ControlService {
                     ));
                 }
                 if current["status"] != "running" {
-                    if current["status"] == "completed" && self.online(1, &self.settings()).await {
+                    if current["status"] == "completed" && self.online(1, &self.runtime_settings()).await {
                         return Ok(());
                     }
                     return Err(ApiError::new(
@@ -171,7 +171,7 @@ impl ControlService {
         if cancel.is_cancelled() {
             return Err(ApiError::new(499, "CANCELLED", "启动已取消"));
         }
-        let settings = self.settings();
+        let settings = self.runtime_settings();
         if self.online(1, &settings).await {
             return Ok(json!({"managed":self.comfy_owned().await}));
         }
@@ -189,7 +189,7 @@ impl ControlService {
                 "请先一键准备 Portable 环境；外部环境可从原入口启动后连接",
             ));
         }
-        let settings = self.settings();
+        let settings = self.runtime_settings();
         let host = settings["comfyHost"]
             .as_str()
             .unwrap_or("http://127.0.0.1:8188");
@@ -262,7 +262,7 @@ impl ControlService {
         if !self.comfy_owned().await {
             return Ok(());
         }
-        let settings = self.settings();
+        let settings = self.runtime_settings();
         let host = settings["comfyHost"].as_str().unwrap_or("");
         let (status, queue) = self.request(host, "/queue", None, 3).await?;
         if !(200..300).contains(&status)

@@ -1,11 +1,11 @@
 use super::{Error, PathBuf, Result, Value, fs, json, policy};
 use crate::file_paths;
-use std::{path::Path, sync::Arc};
+use std::{io::{ErrorKind, Read}, path::Path, sync::Arc};
 use tokio_util::sync::CancellationToken;
 #[derive(Clone)]
 pub(super) struct Context {
     pub store: PathBuf,
-    pub policy: Value,
+    pub policy: Arc<Value>,
     pub file: PathBuf,
     pub bytes: Arc<Vec<u8>>,
     pub shutdown: CancellationToken,
@@ -27,7 +27,30 @@ pub(super) fn cancelled(cancel: &CancellationToken) -> Result<()> {
 }
 impl Context {
     pub fn unchanged(&self) -> bool {
-        fs::bytes(&self.file, fs::MAX_JSON, false).is_ok_and(|bytes| bytes == *self.bytes)
+        let Ok(file) = fs::open(&self.file, fs::MAX_JSON, false) else {
+            return false;
+        };
+        // Keep the checked open and byte limit without a file-sized allocation.
+        let mut file = file.take(fs::MAX_JSON.saturating_add(1));
+        let mut buffer = [0u8; 8192];
+        let mut offset = 0;
+        loop {
+            let count = match file.read(&mut buffer) {
+                Ok(count) => count,
+                Err(error) if error.kind() == ErrorKind::Interrupted => continue,
+                Err(_) => return false,
+            };
+            if count == 0 {
+                return offset == self.bytes.len();
+            }
+            let end = offset + count;
+            if end as u64 > fs::MAX_JSON
+                || self.bytes.get(offset..end) != Some(&buffer[..count])
+            {
+                return false;
+            }
+            offset = end;
+        }
     }
     pub fn access(&self) -> Result<()> {
         if self.shutdown.is_cancelled() || !self.unchanged() {
@@ -98,7 +121,7 @@ pub(super) fn load(
         ));
     }
     let bytes = fs::bytes(path, fs::MAX_JSON, false)?;
-    let value: Value = serde_json::from_slice(&bytes)
+    let mut value: Value = serde_json::from_slice(&bytes)
         .map_err(|_| Error::new("CONFIG_REQUIRED", "Invalid resource configuration"))?;
     if !value["policy"].is_object()
         || !value["policy"]["sources"].is_object()
@@ -161,16 +184,16 @@ pub(super) fn load(
     }
     let ctx = Context {
         store,
-        policy: value["policy"].clone(),
+        policy: Arc::new(value["policy"].take()),
         file: path.into(),
         bytes: Arc::new(bytes),
         shutdown,
     };
     let mut releases = Vec::new();
     for id in ctx.policy["releases"].as_object().unwrap().keys() {
-        if let Ok(release) = policy::release(&ctx, id) {
-            if release["source"]["kind"] == "http"
-                && policy::source_url(&release, "manifest.json").is_err()
+        if let Ok((release, source)) = policy::approved(&ctx, id) {
+            if source["kind"] == "http"
+                && policy::source_url(release, source, "manifest.json").is_err()
             {
                 continue;
             }
@@ -178,7 +201,7 @@ pub(super) fn load(
                 .as_str()
                 .map(|s| String::from_utf16_lossy(&s.encode_utf16().take(100).collect::<Vec<_>>()))
                 .unwrap_or_else(|| id.clone());
-            releases.push(json!({"id":id,"label":label,"kind":release["kind"],"source":release["source"]["kind"],"identity":release["targetIdentity"]}));
+            releases.push(json!({"id":id,"label":label,"kind":release["kind"],"source":source["kind"],"identity":release["targetIdentity"]}));
         }
     }
     Ok(Configuration { ctx, releases })

@@ -103,17 +103,23 @@ impl ControlService {
 }
 
 pub(super) fn model_file(id: &str) -> Result<ModelFile> {
-    Ok(serde_json::from_value(model_source(id)?)?)
+    Ok(ModelFile::deserialize(model_source(id)?)?)
 }
 
-pub(super) fn model_source(id: &str) -> Result<Value> {
-    let manifest: Value = serde_json::from_str(include_str!("setup-models.json"))?;
-    manifest["files"]
+pub(super) fn model_manifest() -> Result<&'static Value> {
+    static MANIFEST: std::sync::LazyLock<Result<Value>> = std::sync::LazyLock::new(|| {
+        Ok(serde_json::from_str(include_str!("setup-models.json"))?)
+    });
+    MANIFEST.as_ref()
+        .map_err(|error| ApiError::new(error.status.as_u16(), &error.code, &error.message))
+}
+
+pub(super) fn model_source(id: &str) -> Result<&'static Value> {
+    model_manifest()?["files"]
         .as_array()
         .unwrap()
         .iter()
         .find(|entry| entry["id"] == id)
-        .cloned()
         .ok_or_else(|| ApiError::invalid("只可操作绘遇已登记的模型和运行包"))
 }
 

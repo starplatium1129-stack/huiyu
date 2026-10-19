@@ -27,7 +27,9 @@ impl Service {
                 None
             },
         };
-        Ok(json!({"requestKey":receipt.request_key,"job":job}))
+        let mut value = json!({"requestKey":receipt.request_key,"job":null});
+        value["job"] = job.unwrap_or(Value::Null);
+        Ok(value)
     }
     pub(super) async fn request_status(&self, key: &str, owner: &str, family: &str) -> Result<Value> {
         let token = self.requests.token(owner, family, key)?;
@@ -126,7 +128,9 @@ impl Service {
         if let Some(cancel) = active.get(&token) { cancel.cancel(); }
         drop(active);
         let job = match &receipt.job_id { Some(id) => Some(self.cancel(id, owner, family).await?), None => None };
-        Ok(json!({"requestKey":key,"job":job,"cancelRequested":true}))
+        let mut value = json!({"requestKey":key,"job":null,"cancelRequested":true});
+        value["job"] = job.unwrap_or(Value::Null);
+        Ok(value)
     }
 }
 struct ReceiptObservation { service: std::sync::Weak<Service>, token: String, cancel: CancellationToken }

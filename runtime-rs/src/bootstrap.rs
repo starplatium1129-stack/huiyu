@@ -49,7 +49,7 @@ fn plan(root: &Path, face: &str) -> Result<Plan> {
             let (_, scenes) = maintenance::state::load_scenes(root)?;
             let count = scenes.len();
             (
-                maintenance::scenes::scene_products(root, &scenes),
+                maintenance::scenes::scene_products(root, scenes),
                 count,
                 "compressed",
             )
@@ -57,11 +57,10 @@ fn plan(root: &Path, face: &str) -> Result<Plan> {
         "popular" => {
             let characters = blueprints::load_popular(root)?;
             let count = characters.len();
+            let mut value = json!({"version":1,"characters":null});
+            value["characters"] = Value::Array(characters);
             (
-                vec![(
-                    "popular-characters.json",
-                    json!({"version":1,"characters":characters}),
-                )],
+                vec![("popular-characters.json", value)],
                 count,
                 "compressed",
             )
@@ -69,11 +68,10 @@ fn plan(root: &Path, face: &str) -> Result<Plan> {
         "blueprints" => {
             let blueprints = blueprints::load(root)?;
             let count = blueprints.len();
+            let mut value = json!({"version":2,"blueprints":null});
+            value["blueprints"] = Value::Array(blueprints);
             (
-                vec![(
-                    "scene-blueprints.json",
-                    json!({"version":2,"blueprints":blueprints}),
-                )],
+                vec![("scene-blueprints.json", value)],
                 count,
                 "compressed",
             )
@@ -83,7 +81,7 @@ fn plan(root: &Path, face: &str) -> Result<Plan> {
             let count = tags.len();
             (
                 vec![
-                    ("tags.json", json!(tags)),
+                    ("tags.json", Value::Array(tags)),
                     ("tags-dictionary.json", dictionary),
                 ],
                 count,
@@ -147,6 +145,7 @@ fn face(options: &Options, name: &str, cancel: &CancellationToken) -> Result<Val
     if is_current {
         return Ok(json!({"rebuilt":false}));
     }
+    drop(candidate);
     let mut transaction = Transaction::acquire(options)?;
     let result: Result<Value> = (|| {
         // Re-read under the shared maintenance lease: the first read is only an

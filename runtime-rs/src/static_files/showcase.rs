@@ -1,7 +1,7 @@
 use axum::{body::{Body, Bytes}, http::HeaderValue, response::{IntoResponse, Response}};
 use serde_json::Value;
 use sha2::{Digest, Sha256};
-use std::{collections::HashMap, fs, io::{self, Read}, path::{Path, PathBuf}, sync::{LazyLock, Mutex}, time::SystemTime};
+use std::{collections::HashMap, fs, io::{self, Read}, path::{Path, PathBuf}, sync::{LazyLock, RwLock}, time::SystemTime};
 
 #[derive(Clone, PartialEq)]
 struct Stamp { length: u64, modified: Option<SystemTime> }
@@ -13,7 +13,7 @@ struct Catalogue {
     root: PathBuf, stamp: Stamp, value: Value,
     images: HashMap<PathBuf, ImageSize>, bytes: Bytes, tag: String,
 }
-static CACHE: LazyLock<Mutex<Option<Catalogue>>> = LazyLock::new(|| Mutex::new(None));
+static CACHE: LazyLock<RwLock<Option<Catalogue>>> = LazyLock::new(|| RwLock::new(None));
 
 fn header_dimensions(path: PathBuf) -> Option<(u32, u32)> {
     let mut file = fs::File::open(path).ok()?;
@@ -28,13 +28,16 @@ fn header_dimensions(path: PathBuf) -> Option<(u32, u32)> {
 
 // Editions also allow local image replacements. Recheck file metadata on each
 // catalogue read; only changed headers and changed JSON are read/encoded again.
+fn image_state(root: &Path, path: &Path) -> (Option<PathBuf>, Option<Stamp>) {
+    let resolved = fs::canonicalize(path).ok().filter(|path| path.starts_with(root));
+    let metadata = resolved.as_ref().and_then(|path| fs::metadata(path).ok()).filter(|metadata| metadata.is_file());
+    (resolved, metadata.as_ref().map(stamp))
+}
 fn dimensions(root: &Path, relative: &str, images: &mut HashMap<PathBuf, ImageSize>, changed: &mut bool) -> Option<(u32, u32)> {
     if !relative.starts_with("thumbs/") && !relative.starts_with("images/") { return None; }
     if !super::extra::SHOWCASE.is_match(&format!("/{relative}")) { return None; }
     let path = root.join(relative);
-    let resolved = fs::canonicalize(&path).ok().filter(|path| path.starts_with(root));
-    let metadata = resolved.as_ref().and_then(|path| fs::metadata(path).ok()).filter(|metadata| metadata.is_file());
-    let current = metadata.as_ref().map(stamp);
+    let (resolved, current) = image_state(root, &path);
     if let Some(previous) = images.get(&path).filter(|previous| previous.stamp == current) { return previous.dimensions; }
     *changed = true;
     let size = resolved.and_then(header_dimensions).filter(|(width, height)| *width > 0 && *height > 0);
@@ -43,21 +46,36 @@ fn dimensions(root: &Path, relative: &str, images: &mut HashMap<PathBuf, ImageSi
 }
 
 fn read(root: PathBuf) -> io::Result<(Bytes, String)> {
+    {
+        let canonical = fs::canonicalize(&root)?;
+        let file = canonical.join("manifest.json");
+        let current = stamp(&fs::metadata(&file)?);
+        let lock = CACHE.read().map_err(|_| io::Error::other("Showcase cache unavailable"))?;
+        if let Some(cache) = lock.as_ref().filter(|cache| {
+            cache.root == canonical && cache.stamp == current
+                && cache.images.iter().all(|(path, image)| image_state(&canonical, path).1 == image.stamp)
+        }) {
+            if stamp(&fs::metadata(&file)?) != current { return Err(io::Error::other("Showcase changed while reading")); }
+            return Ok((cache.bytes.clone(), cache.tag.clone()));
+        }
+    }
+    // Drop the read guard before waiting for a writer, then recheck the files.
+    let mut lock = CACHE.write().map_err(|_| io::Error::other("Showcase cache unavailable"))?;
     let root = fs::canonicalize(root)?;
     let file = root.join("manifest.json");
     let current = stamp(&fs::metadata(&file)?);
-    let mut lock = CACHE.lock().map_err(|_| io::Error::other("Showcase cache unavailable"))?;
-    let mut changed = lock.as_ref().is_none_or(|cache| cache.root != root || cache.stamp != current);
-    if changed {
+    let previous = lock.take();
+    let mut changed = previous.as_ref().is_none_or(|cache| cache.root != root || cache.stamp != current);
+    let mut cache = if changed {
+        drop(previous);
         let mut bytes = Vec::new();
         fs::File::open(&file)?.take(32 * 1024 * 1024 + 1).read_to_end(&mut bytes)?;
         if bytes.len() > 32 * 1024 * 1024 { return Err(io::Error::other("Showcase manifest too large")); }
         let value: Value = serde_json::from_slice(&bytes).map_err(io::Error::other)?;
         if !value.get("entries").is_some_and(Value::is_array) { return Err(io::Error::other("Invalid showcase manifest")); }
-        *lock = Some(Catalogue { root: root.clone(), stamp: current.clone(), value,
-            images: HashMap::new(), bytes: Bytes::new(), tag: String::new() });
-    }
-    let cache = lock.as_mut().unwrap();
+        Catalogue { root: root.clone(), stamp: current.clone(), value,
+            images: HashMap::new(), bytes: Bytes::new(), tag: String::new() }
+    } else { previous.unwrap() };
     if let Some(entries) = cache.value["entries"].as_array_mut() {
         for entry in entries {
             let Some(id) = entry["id"].as_str() else { continue; };
@@ -78,7 +96,10 @@ fn read(root: PathBuf) -> io::Result<(Bytes, String)> {
         cache.tag = format!("showcase-geometry-1-{}", hex::encode(Sha256::digest(&bytes)));
         cache.bytes = bytes.into();
     }
-    Ok((cache.bytes.clone(), cache.tag.clone()))
+    let result = (cache.bytes.clone(), cache.tag.clone());
+    // Failed reads leave no partly updated catalogue for the shared fast path.
+    *lock = Some(cache);
+    Ok(result)
 }
 
 pub(super) async fn serve(root: PathBuf, head: bool, condition: Option<HeaderValue>) -> Response {

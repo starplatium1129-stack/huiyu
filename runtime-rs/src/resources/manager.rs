@@ -234,7 +234,7 @@ impl Service {
                             if release["source"] != "http" {
                                 return Ok::<_, Error>(false);
                             }
-                            let approved = super::policy::release(
+                            let (approved, _) = super::policy::approved(
                                 &configuration.ctx,
                                 release["id"].as_str().unwrap(),
                             )?;
@@ -257,7 +257,10 @@ impl Service {
             })
             .unwrap_or_default();
         let current=data.snapshot.as_ref().map(|snapshot|json!({"identity":snapshot.identity,"releaseId":snapshot.release_id,"files":snapshot.verified_files})).or_else(||if active{data.last_installed.clone()}else{None});
-        json!({"ok":true,"configured":data.config.is_some(),"managementEnabled":data.config.is_some()&&self.management&&!self.closed.load(Ordering::Acquire),"busy":active,"mounted":data.snapshot.is_some()&&!active,"current":current,"canRollback":data.previous,"recoveryRequired":recovery,"issue":data.issue,"releases":releases,"task":data.task})
+        let mut value = json!({"ok":true,"configured":data.config.is_some(),"managementEnabled":data.config.is_some()&&self.management&&!self.closed.load(Ordering::Acquire),"busy":active,"mounted":data.snapshot.is_some()&&!active,"current":null,"canRollback":data.previous,"recoveryRequired":recovery,"issue":data.issue,"releases":null,"task":data.task});
+        value["current"] = current.unwrap_or_default();
+        value["releases"] = Value::Array(releases);
+        value
     }
     pub(super) fn cancel(&self, id: &str) -> Result<Value> {
         let mut data = self.data.lock().unwrap();

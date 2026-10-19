@@ -1,5 +1,6 @@
 use super::*;
 use crate::file_identity::{self, Identity, Version};
+use crate::task_contract::ResultRef;
 use sha2::{Digest, Sha256};
 use std::{fs::File, io::Read, sync::LazyLock};
 use tokio::sync::Semaphore;
@@ -15,7 +16,7 @@ pub(super) struct Proofs {
 #[derive(Clone)]
 struct Proof {
     path: PathBuf,
-    reference: Value,
+    reference: ResultRef,
     stamp: (Identity, Version),
 }
 fn stamp(file: &File) -> std::io::Result<(Identity, Version)> {
@@ -34,7 +35,7 @@ fn cancelled() -> crate::error::ApiError {
 pub(super) async fn saved_output(
     service: &Service,
     value: &Value,
-    reference: Option<&Value>,
+    reference: Option<&ResultRef>,
     proofs: &Arc<Proofs>,
     index: usize,
 ) -> Result<Option<Output>> {
@@ -71,7 +72,7 @@ pub(super) async fn saved_output(
 fn verify(
     path: PathBuf,
     root: PathBuf,
-    reference: Value,
+    reference: ResultRef,
     previous: Option<Proof>,
     cancel: &CancellationToken,
 ) -> Result<(Option<Output>, Option<Proof>)> {
@@ -91,7 +92,7 @@ fn verify(
     let mut file = File::open(&path)?;
     let metadata = file.metadata()?;
     let bytes = metadata.len();
-    if !metadata.is_file() || bytes == 0 || reference["bytes"].as_u64() != Some(bytes) {
+    if !metadata.is_file() || bytes == 0 || reference.bytes != bytes {
         return Ok((None, None));
     }
     // Unsupported identity APIs retain the full-hash path without publishing
@@ -118,7 +119,7 @@ fn verify(
             }
             hash.update(&buffer[..count]);
         }
-        if total != bytes || reference["sha256"] != hex::encode(hash.finalize()) {
+        if total != bytes || reference.sha256 != hex::encode(hash.finalize()) {
             return Ok((None, None));
         }
     }
@@ -144,7 +145,7 @@ fn verify(
     Ok((
         Some(Output::File {
             path,
-            mime: reference["mime"].as_str().unwrap_or("video/mp4").into(),
+            mime: reference.mime,
             bytes,
         }),
         proof,

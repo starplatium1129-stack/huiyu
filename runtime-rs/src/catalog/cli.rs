@@ -131,9 +131,16 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
             page_size: number("--page-size")?,
             ..Default::default()
         })?,
-        "record" => json!({"ok":true,"record":if let Some(revision)=number("--revision")? {
-            catalog.historical(required("--kind")?,required("--id")?,revision)?
-        } else { catalog.get(required("--kind")?,required("--id")?)? }}),
+        "record" => {
+            let record = if let Some(revision) = number("--revision")? {
+                catalog.historical(required("--kind")?, required("--id")?, revision)?
+            } else {
+                catalog.get(required("--kind")?, required("--id")?)?
+            };
+            let mut value = json!({"ok":true,"record":null});
+            value["record"] = record.into_value()?;
+            value
+        }
         "history" => catalog.history(required("--kind")?, required("--id")?)?,
         "character" => catalog.snapshot_selected(&snapshots::Scope {
             characters: vec![required("--character")?.into()],
@@ -141,8 +148,10 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
         })?,
         "export" => catalog.export_selected(&absolute("--out")?, &scope)?,
         "patch" => {
-            let value: Value = serde_json::from_slice(&std::fs::read(absolute("--file")?)?)?;
-            let changes: Vec<Change> = serde_json::from_value(value["changes"].clone())?;
+            let mut value: Value = serde_json::from_slice(&std::fs::read(absolute("--file")?)?)?;
+            let changes: Vec<Change> = serde_json::from_value(
+                value.get_mut("changes").map(Value::take).unwrap_or_default(),
+            )?;
             catalog.apply(&changes, !apply)?
         }
         "import" => catalog.import_with_policy(

@@ -3,6 +3,7 @@ use icu_collator::{Collator, CollatorBorrowed, options::CollatorOptions};
 use icu_locale::Locale;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
+use std::io::{BufWriter, Write};
 
 /// The existing task ledger uses String.localeCompare, unlike workspace operation
 /// hashes (UTF-16 key order). Keep the two codecs separate so retries never
@@ -37,42 +38,46 @@ impl Fingerprint {
         })
     }
     pub fn hash(&self, value: &Value) -> String {
-        let mut bytes = Vec::new();
-        self.write(value, &mut bytes);
-        hex::encode(Sha256::digest(bytes))
+        // Hash the same locale-ordered byte stream without retaining another
+        // complete encoded recipe, context or batch in memory.
+        let mut out = BufWriter::with_capacity(8 * 1024, Sha256::new());
+        self.write(value, &mut out);
+        out.flush().expect("Hash writer is infallible");
+        hex::encode(out.into_inner().unwrap().finalize())
     }
-    fn write(&self, value: &Value, out: &mut Vec<u8>) {
+    fn write(&self, value: &Value, out: &mut impl Write) {
         match value {
             Value::Object(map) => {
                 let mut pairs: Vec<_> = map.iter().collect();
                 pairs.sort_by(|(a, _), (b, _)| self.collator.compare(a, b));
-                out.push(b'{');
+                out.write_all(b"{").unwrap();
                 for (index, (key, value)) in pairs.into_iter().enumerate() {
                     if index > 0 {
-                        out.push(b',');
+                        out.write_all(b",").unwrap();
                     }
                     serde_json::to_writer(&mut *out, key).unwrap();
-                    out.push(b':');
+                    out.write_all(b":").unwrap();
                     self.write(value, out);
                 }
-                out.push(b'}');
+                out.write_all(b"}").unwrap();
             }
             Value::Array(values) => {
-                out.push(b'[');
+                out.write_all(b"[").unwrap();
                 for (index, value) in values.iter().enumerate() {
                     if index > 0 {
-                        out.push(b',');
+                        out.write_all(b",").unwrap();
                     }
                     self.write(value, out);
                 }
-                out.push(b']');
+                out.write_all(b"]").unwrap();
             }
             Value::Number(number) => {
-                out.extend_from_slice(
+                out.write_all(
                     ryu_js::Buffer::new()
                         .format(number.as_f64().unwrap())
                         .as_bytes(),
-                );
+                )
+                .unwrap();
             }
             _ => serde_json::to_writer(out, value).unwrap(),
         }

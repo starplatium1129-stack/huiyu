@@ -1,10 +1,12 @@
 use super::client::{CONNECT_TIMEOUT, local_url};
 use crate::error::Result;
 use futures_util::StreamExt;
-use serde::Serialize;
 use serde_json::Value;
 use std::{
+    borrow::Cow,
     collections::{HashMap, HashSet},
+    fmt::Write,
+    sync::Arc,
     time::Duration,
 };
 use tokio::{
@@ -14,8 +16,7 @@ use tokio::{
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 use tokio_util::sync::CancellationToken;
 
-#[derive(Clone, Debug, Default, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive(Clone, Debug, Default)]
 pub struct ProgressUpdate {
     pub prompt_id: String,
     pub progress: Option<f64>,
@@ -36,7 +37,7 @@ impl ProgressUpdate {
 /// state; providers must unwatch finished/cancelled jobs and ignore late updates.
 pub struct ProgressMonitor {
     active: watch::Sender<HashSet<String>>,
-    events: broadcast::Sender<ProgressUpdate>,
+    events: broadcast::Sender<Arc<ProgressUpdate>>,
     cancel: CancellationToken,
     task: JoinHandle<()>,
 }
@@ -74,7 +75,7 @@ impl ProgressMonitor {
             set.remove(prompt_id);
         });
     }
-    pub fn subscribe(&self) -> broadcast::Receiver<ProgressUpdate> {
+    pub fn subscribe(&self) -> broadcast::Receiver<Arc<ProgressUpdate>> {
         self.events.subscribe()
     }
     pub async fn close(mut self) {
@@ -92,10 +93,10 @@ impl Drop for ProgressMonitor {
 async fn run(
     url: String,
     mut active: watch::Receiver<HashSet<String>>,
-    events: broadcast::Sender<ProgressUpdate>,
+    events: broadcast::Sender<Arc<ProgressUpdate>>,
     cancel: CancellationToken,
 ) {
-    let mut states: HashMap<String, ProgressUpdate> = HashMap::new();
+    let mut states: HashMap<String, Arc<ProgressUpdate>> = HashMap::new();
     loop {
         if active.borrow().is_empty() {
             states.clear();
@@ -131,10 +132,10 @@ async fn run(
         if active.borrow().is_empty() {
             continue;
         }
-        let _ = events.send(ProgressUpdate {
+        let _ = events.send(Arc::new(ProgressUpdate {
             event: "connection_lost".into(),
             ..Default::default()
-        });
+        }));
         tokio::select! {
             _ = cancel.cancelled() => return,
             changed = active.changed() => if changed.is_err() { return; },
@@ -143,19 +144,19 @@ async fn run(
     }
 }
 
-fn text(value: &Value) -> Option<String> {
+fn text(value: &Value) -> Option<Cow<'_, str>> {
     match value {
         Value::Null => None,
-        Value::String(value) => Some(value.clone()),
-        _ => Some(crate::storage::stringify(value)),
+        Value::String(value) => Some(Cow::Borrowed(value)),
+        _ => Some(Cow::Owned(crate::storage::stringify(value))),
     }
 }
 
 fn apply(
     raw: &str,
     active: &HashSet<String>,
-    states: &mut HashMap<String, ProgressUpdate>,
-) -> Option<ProgressUpdate> {
+    states: &mut HashMap<String, Arc<ProgressUpdate>>,
+) -> Option<Arc<ProgressUpdate>> {
     let message: Value = serde_json::from_str(raw).ok()?;
     let event = message["type"].as_str()?;
     if ![
@@ -173,21 +174,23 @@ fn apply(
     }
     let data = &message["data"];
     let prompt_id = text(data.get("prompt_id").unwrap_or(&message["prompt_id"]))?;
-    if !active.contains(&prompt_id) {
+    if !active.contains(prompt_id.as_ref()) {
         return None;
     }
-    let state = states
-        .entry(prompt_id.clone())
-        .or_insert_with(|| ProgressUpdate {
-            prompt_id,
+    let snapshot = states
+        .entry(prompt_id.as_ref().to_owned())
+        .or_insert_with(|| Arc::new(ProgressUpdate {
+            prompt_id: prompt_id.into_owned(),
             ..Default::default()
-        });
-    state.event = event.into();
+        }));
+    let state = Arc::make_mut(snapshot);
+    event.clone_into(&mut state.event);
+    state.progress_text.clear();
     match event {
         "execution_start" => {
             state.progress = None;
             state.current_node = None;
-            state.progress_text = "ComfyUI 开始执行…".into();
+            state.progress_text.push_str("ComfyUI 开始执行…");
         }
         "progress" => {
             state.progress = data["value"]
@@ -196,39 +199,39 @@ fn apply(
                 .filter(|(_, max)| *max > 0.0)
                 .map(|(value, max)| (value / max).clamp(0.0, 1.0));
             if let Some(node) = text(&data["node"]) {
-                state.current_node = Some(node);
+                state.current_node = Some(node.into_owned());
             }
-            state.progress_text = if state.progress.is_none() {
-                "ComfyUI 正在推理…".into()
+            if state.progress.is_none() {
+                state.progress_text.push_str("ComfyUI 正在推理…");
             } else {
-                format!(
-                    "采样 {} / {}{}",
+                write!(
+                    &mut state.progress_text,
+                    "采样 {} / {}",
                     data["value"],
-                    data["max"],
-                    state
-                        .current_node
-                        .as_ref()
-                        .map(|node| format!(" · 节点 {node}"))
-                        .unwrap_or_default()
+                    data["max"]
                 )
-            };
+                .unwrap();
+                if let Some(node) = &state.current_node {
+                    write!(&mut state.progress_text, " · 节点 {node}").unwrap();
+                }
+            }
         }
         "executing" => {
-            state.current_node = text(&data["node"]);
-            state.progress_text = match &state.current_node {
-                Some(node) => format!("执行节点 {node}"),
+            state.current_node = text(&data["node"]).map(Cow::into_owned);
+            match &state.current_node {
+                Some(node) => write!(&mut state.progress_text, "执行节点 {node}").unwrap(),
                 None => {
                     state.progress = Some(1.0);
-                    "ComfyUI 正在收尾…".into()
+                    state.progress_text.push_str("ComfyUI 正在收尾…");
                 }
-            };
+            }
         }
-        "execution_cached" => state.progress_text = "ComfyUI 使用缓存节点…".into(),
-        "execution_success" => state.progress_text = "ComfyUI 正在确认生成结果…".into(),
+        "execution_cached" => state.progress_text.push_str("ComfyUI 使用缓存节点…"),
+        "execution_success" => state.progress_text.push_str("ComfyUI 正在确认生成结果…"),
         "execution_error" | "execution_interrupted" => {
-            state.progress_text = "ComfyUI 正在核对执行状态…".into();
+            state.progress_text.push_str("ComfyUI 正在核对执行状态…");
         }
         _ => unreachable!(),
     }
-    Some(state.clone())
+    Some(snapshot.clone())
 }

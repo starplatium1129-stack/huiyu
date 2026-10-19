@@ -90,10 +90,11 @@ pub(super) fn projected(
     let (model, mut document) = selected(snapshot, character)?;
     let modern = manifest::format(&document)? == "cubism3";
     let textures = if modern {
-        document["FileReferences"]["Textures"].clone()
+        &document["FileReferences"]["Textures"]
     } else {
-        document["textures"].clone()
+        &document["textures"]
     };
+    let texture_count = textures.as_array().map(Vec::len);
     let base = if model.receipt.is_some() {
         "/api/live2d-local/"
     } else {
@@ -112,12 +113,8 @@ pub(super) fn projected(
         Ok(url.path().into())
     })?;
     let urls = Value::Array(
-        textures
-            .as_array()
-            .ok_or_else(|| manifest::invalid("Invalid textures"))?
-            .iter()
-            .enumerate()
-            .map(|(index, _)| {
+        (0..texture_count.ok_or_else(|| manifest::invalid("Invalid textures"))?)
+            .map(|index| {
                 Value::String(format!(
                     "/api/live2d-texture/{character}/{quality}/{index}.webp"
                 ))

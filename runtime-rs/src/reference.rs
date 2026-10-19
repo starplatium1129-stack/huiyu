@@ -12,7 +12,7 @@ use axum::{
     response::{IntoResponse, Response},
     routing::get,
 };
-use serde_json::{Value, json};
+use serde_json::json;
 use std::{
     env,
     net::SocketAddr,
@@ -96,13 +96,9 @@ async fn respond(
             state.config.content_root(),
             state.config.app_root.clone(),
             &state.shutdown,
-            // Encode and drop the potentially multi-megabyte view in the same
+            // Encode the potentially multi-megabyte view in the same
             // blocking job as its read, not on a Tokio request worker.
-            move |reader, cancel| {
-                reader
-                    .read(id.as_deref(), cancel)
-                    .map(|value| value.map(|profile| Json(profile).into_response()))
-            },
+            move |reader, cancel| reader.read(id.as_deref(), cancel),
         )
         .await
     };
@@ -227,7 +223,7 @@ impl Reader {
         })
     }
 
-    fn read(&mut self, id: Option<&str>, cancel: &CancellationToken) -> Result<Option<Value>> {
+    fn read(&mut self, id: Option<&str>, cancel: &CancellationToken) -> Result<Option<Response>> {
         check_cancel(cancel)?;
         if self.blocked {
             return Err(invalid_release());
@@ -237,7 +233,7 @@ impl Reader {
             // Cancellation is not evidence that the cached release is corrupt.
             check_cancel(cancel)?;
             return match result {
-                Ok(value) => Ok(value),
+                Ok(value) => Ok(value.map(|profile| Json(profile).into_response())),
                 Err(_) => {
                     self.blocked = true;
                     Err(invalid_release())
@@ -248,5 +244,6 @@ impl Reader {
             Some(id) => shards::profile(&self.app_root, id, cancel),
             None => shards::view(&self.app_root, cancel).map(Some),
         }
+        .map(|value| value.map(|profile| Json(profile).into_response()))
     }
 }

@@ -100,7 +100,7 @@ pub(super) fn data(kind: &str, id: &str, value: &Value) -> Result<()> {
             }
         }
         "scene" => {
-            crate::maintenance::validation::collection(&json!([value]))
+            crate::maintenance::validation::validate_items(std::slice::from_ref(value))
                 .map_err(|e| ApiError::invalid(e.message))?;
             if value["id"] != id
                 || !has("title")
@@ -128,7 +128,7 @@ pub(super) fn data(kind: &str, id: &str, value: &Value) -> Result<()> {
             }
         }
         "blueprint" => {
-            crate::maintenance::blueprints::collection(&json!([value]))
+            crate::maintenance::blueprints::validate_items(std::slice::from_ref(value))
                 .map_err(|e| ApiError::invalid(e.message))?;
             if value["id"] != id
                 || !has("title")

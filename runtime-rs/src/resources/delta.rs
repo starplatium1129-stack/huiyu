@@ -1,4 +1,4 @@
-use super::{Error, Result, Value, json, manifest::Manifest, number};
+use super::{Error, Result, Value, manifest::Manifest, number};
 use std::collections::{HashMap, HashSet};
 fn invalid() -> Error {
     Error::new(
@@ -6,18 +6,22 @@ fn invalid() -> Error {
         "Delta is incompatible with installed baseline",
     )
 }
-fn identity(record: &Value, manifest: &Manifest) -> bool {
-    record["path"].as_str().is_some_and(|path| !path.is_empty())
-        && record["contentIdentity"]
-            .as_str()
-            .is_some_and(|value| value.to_lowercase() == manifest.identity())
-        && number(&record["entryCount"]) == Some(manifest.entries.len() as u64)
-        && number(&record["totalBytes"]) == Some(manifest.bytes())
+fn identity(record: &Value, manifest: &Manifest) -> Option<String> {
+    record["path"].as_str().filter(|path| !path.is_empty())?;
+    let expected = record["contentIdentity"].as_str()?;
+    let identity = manifest.identity();
+    if expected.to_lowercase() != identity
+        || number(&record["entryCount"]) != Some(manifest.entries.len() as u64)
+        || number(&record["totalBytes"]) != Some(manifest.bytes())
+    {
+        return None;
+    }
+    Some(identity)
 }
-pub(super) fn reconstruct(base: &Manifest, pack: &Manifest, delta: &Value) -> Result<Manifest> {
+pub(super) fn reconstruct(base: &Manifest, pack: &Manifest, delta: &Value) -> Result<(Manifest, String)> {
     if delta["schemaVersion"] != 1
         || delta["kind"] != "resource-pack-delta"
-        || !identity(&delta["baseManifest"], base)
+        || identity(&delta["baseManifest"], base).is_none()
     {
         return Err(invalid());
     }
@@ -25,19 +29,19 @@ pub(super) fn reconstruct(base: &Manifest, pack: &Manifest, delta: &Value) -> Re
     let by_path = base
         .entries
         .iter()
-        .map(|entry| (&entry.path, entry))
+        .map(|entry| (entry.path.as_str(), entry))
         .collect::<HashMap<_, _>>();
     let candidate = pack
         .entries
         .iter()
-        .map(|entry| (&entry.path, entry))
+        .map(|entry| (entry.path.as_str(), entry))
         .collect::<HashMap<_, _>>();
     let mut removed_paths = HashSet::new();
     for entry in removed {
         let path = entry["path"].as_str().ok_or_else(invalid)?;
-        let previous = by_path.get(&path.to_owned()).ok_or_else(invalid)?;
+        let previous = by_path.get(path).ok_or_else(invalid)?;
         if !removed_paths.insert(path)
-            || candidate.contains_key(&path.to_owned())
+            || candidate.contains_key(path)
             || number(&entry["bytes"]) != Some(previous.bytes)
             || entry["sha256"]
                 .as_str()
@@ -48,33 +52,30 @@ pub(super) fn reconstruct(base: &Manifest, pack: &Manifest, delta: &Value) -> Re
     }
     for entry in &pack.entries {
         if by_path
-            .get(&entry.path)
+            .get(entry.path.as_str())
             .is_some_and(|before| before.bytes == entry.bytes && before.sha256 == entry.sha256)
         {
             return Err(invalid());
         }
     }
-    let mut target = base
+    let target = base
         .entries
         .iter()
         .filter(|entry| !removed_paths.contains(entry.path.as_str()))
-        .map(|entry| candidate.get(&entry.path).copied().unwrap_or(entry).clone())
-        .collect::<Vec<_>>();
-    target.extend(
-        pack.entries
-            .iter()
-            .filter(|entry| !by_path.contains_key(&entry.path))
-            .cloned(),
-    );
-    let target =
-        Manifest::parse(&json!({"schemaVersion":1,"entries":target})).map_err(|_| invalid())?;
-    if !identity(&delta["newManifest"], &target) {
-        return Err(invalid());
-    }
+        .map(|entry| candidate.get(entry.path.as_str()).copied().unwrap_or(entry))
+        .chain(pack.entries.iter()
+            .filter(|entry| !by_path.contains_key(entry.path.as_str())));
+    let target = Manifest::from_fields(target.map(|entry| (
+        Some(entry.path.as_str()),
+        number(&Value::from(entry.bytes)),
+        Some(entry.sha256.as_str()),
+    )))
+    .map_err(|_| invalid())?;
+    let identity = identity(&delta["newManifest"], &target).ok_or_else(invalid)?;
     let added = pack
         .entries
         .iter()
-        .filter(|entry| !by_path.contains_key(&entry.path))
+        .filter(|entry| !by_path.contains_key(entry.path.as_str()))
         .count();
     let changed = pack.entries.len() - added;
     let removed = removed_paths.len();
@@ -95,5 +96,5 @@ pub(super) fn reconstruct(base: &Manifest, pack: &Manifest, delta: &Value) -> Re
     {
         return Err(invalid());
     }
-    Ok(target)
+    Ok((target, identity))
 }

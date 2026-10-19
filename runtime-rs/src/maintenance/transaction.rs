@@ -59,12 +59,12 @@ impl Transaction {
         }
         Ok(current.value)
     }
-    fn update(&self, patch: Value) -> Result<()> {
+    fn update(&self, mut patch: Value) -> Result<()> {
         let mut current = self.owned()?;
         current
             .as_object_mut()
             .unwrap()
-            .extend(patch.as_object().unwrap().clone());
+            .extend(std::mem::take(patch.as_object_mut().unwrap()));
         journal::write(&self.ctx, current)?;
         self.owned()?;
         Ok(())

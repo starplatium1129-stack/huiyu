@@ -1,12 +1,17 @@
 use super::config::{Engine, Profile, Settings};
 use crate::error::{ApiError, Result};
+use regex::Regex;
 use serde_json::{Value, json};
+use std::{borrow::Cow, sync::{Arc, LazyLock}};
 use unicode_normalization::UnicodeNormalization;
 
 const EMOTIONS: &[&str] = &["neutral", "gentle", "happy", "shy", "serious", "sad"];
+static JAPANESE_REPLACEMENTS: LazyLock<Regex> = LazyLock::new(|| {
+    Regex::new(r"绫地宁宁|綾地寧々|綾地寧寧|四季夏目|四季ナツメ|\.\.\.").unwrap()
+});
 pub(super) struct Validated {
     pub voice: String,
-    pub profile: Profile,
+    pub profile: Arc<Profile>,
     pub payload: Value,
 }
 fn field<'a>(input: &'a Value, name: &str, fallback: &'a str) -> &'a str {
@@ -78,7 +83,6 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
             .map(name)
             .filter(|s| !s.is_empty())
             .unwrap_or_else(|| name(&profile.reference))
-            .to_owned()
     };
     let text = normalize(raw, &language);
     if text.is_empty() {
@@ -90,12 +94,14 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
         .or_else(|| input["speed"].as_str().and_then(|s| s.parse().ok()));
     // Installed GPT-SoVITS v2Pro/v2ProPlus rejects ordinary Japanese with cut0;
     // retain cut5 until an engine upgrade is verified with the same dialogue.
-    let mut payload = json!({"text": text, "text_lang": language, "ref_audio_path": choose(|r| &r.ref_audio_path),
-        "prompt_lang": if prompt_lang.is_empty() { "ja" } else { &prompt_lang }, "prompt_text": choose(|r| &r.prompt_text),
+    let mut payload = json!({"text": null, "text_lang": null, "ref_audio_path": choose(|r| &r.ref_audio_path),
+        "prompt_lang": if prompt_lang.is_empty() { "ja" } else { prompt_lang }, "prompt_text": choose(|r| &r.prompt_text),
         "text_split_method": "cut5", "batch_size": 1, "split_bucket": false, "speed_factor": numeric(speed, 1.0, 0.75, 1.35, false),
         "seed": numeric(profile.seed, 1234.0, 0.0, 2147483647.0, true) as i64,
         "top_k": numeric(profile.top_k, 15.0, 1.0, 100.0, true) as i64, "top_p": numeric(profile.top_p, 1.0, 0.1, 1.0, false),
         "temperature": numeric(profile.temperature, 1.0, 0.1, 2.0, false), "parallel_infer": false, "media_type": "wav", "streaming_mode": false});
+    payload["text"] = text.into();
+    payload["text_lang"] = language.into();
     if settings.engine == Engine::VoxCpm2 {
         payload["voice"] = voice.into();
         payload["lora_weights_path"] = profile.lora_weights_path.clone().into();
@@ -138,38 +144,26 @@ pub(super) fn normalize(raw: &str, language: &str) -> String {
             space = false;
         }
     }
-    text = text.trim().to_owned();
+    let leading = text.len() - text.trim_start().len();
+    if leading > 0 {
+        drop(text.drain(..leading));
+    }
+    text.truncate(text.trim_end().len());
     if language == "ja" {
-        for name in ["绫地宁宁", "綾地寧々", "綾地寧寧"] {
-            text = text.replace(name, "あやち ねね");
+        // Patterns neither overlap nor produce another pattern, so one pass
+        // preserves the previous ordered replacements.
+        if let Cow::Owned(replaced) = JAPANESE_REPLACEMENTS.replace_all(
+            &text,
+            |matched: &regex::Captures<'_>| match &matched[0] {
+                "绫地宁宁" | "綾地寧々" | "綾地寧寧" => "あやち ねね",
+                "四季夏目" | "四季ナツメ" => "しき なつめ",
+                _ => "……",
+            },
+        ) {
+            text = replaced;
         }
-        for name in ["四季夏目", "四季ナツメ"] {
-            text = text.replace(name, "しき なつめ");
-        }
-        text = text.replace("...", "……");
     }
     text
-}
-
-pub(super) fn fix_wav(bytes: &mut [u8]) {
-    if bytes.len() < 44 || bytes.get(..4) != Some(b"RIFF") || bytes.get(8..12) != Some(b"WAVE") {
-        return;
-    }
-    let length = bytes.len();
-    bytes[4..8].copy_from_slice(&((length - 8) as u32).to_le_bytes());
-    let mut offset = 12;
-    while offset + 8 <= length {
-        let size = u32::from_le_bytes(bytes[offset + 4..offset + 8].try_into().unwrap()) as usize;
-        if &bytes[offset..offset + 4] == b"data" {
-            bytes[offset + 4..offset + 8]
-                .copy_from_slice(&((length - offset - 8) as u32).to_le_bytes());
-            break;
-        }
-        if size > length || offset + 8 + size > length + 1 {
-            break;
-        }
-        offset += 8 + size + size % 2;
-    }
 }
 
 pub(super) fn pcm_wave_header(rate: u32) -> Vec<u8> {

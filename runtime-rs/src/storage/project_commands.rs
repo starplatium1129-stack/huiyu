@@ -91,20 +91,19 @@ pub(super) fn save(c: &Context, command: &Value, revision: i64, receipt: &mut Va
         }
         let manual = string(&rule, "projectId")?;
         if !manual.is_empty() {
-            let project = records::project(c, manual)?;
-            if manual == key || project.is_none_or(|row| row["body"].get("smartRule").is_some()) {
+            let project = records::project_header(c, manual)?;
+            if manual == key || project.is_none_or(|row| row.smart) {
                 return Err(invalid(
                     "Smart albums can only filter an existing manual album",
                 ));
             }
         }
         // Older clients can edit known fields without erasing newer project metadata.
-        if let Some(current) = &current {
-            let mut previous = current["body"]
-                .as_object()
-                .cloned()
-                .ok_or_else(|| invalid("Stored project body is invalid"))?;
-            previous.extend(body.as_object().unwrap().clone());
+        if let Some(mut current) = current {
+            let Value::Object(mut previous) = current["body"].take() else {
+                return Err(invalid("Stored project body is invalid"));
+            };
+            previous.extend(std::mem::take(body.as_object_mut().unwrap()));
             body = Value::Object(previous);
         }
         body["title"] = title.into();
@@ -113,8 +112,9 @@ pub(super) fn save(c: &Context, command: &Value, revision: i64, receipt: &mut Va
     }
     c.db.execute("INSERT INTO projects VALUES(?,?,?,?) ON CONFLICT(id_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",
         params![key,stringify(&body["id"]),stringify(&body),revision])?;
-    records::update_membership(c, &key, &keys, revision)?;
-    receipt["project"] = records::project(c, &key)?.unwrap();
+    // The membership writer already owns the final record. Move it into the
+    // receipt instead of fetching and decoding the same album once more.
+    receipt["project"] = records::update_membership(c, &key, &keys, revision)?.unwrap();
     Ok(())
 }
 

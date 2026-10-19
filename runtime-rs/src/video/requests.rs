@@ -21,14 +21,23 @@ impl RequestInput {
             BATCH
         }
     }
-    fn fingerprint(&self) -> String {
-        crate::storage::json_fingerprint(&match self {
-            Self::Job(input) => json!({"kind":"video","input":input}),
-            Self::Batch(input) => json!({"kind":"batch","input":input}),
+    fn fingerprint(&mut self) -> String {
+        let (kind, input) = match self {
+            Self::Job(input) => ("video", input),
+            Self::Batch(input) => ("batch", input),
             Self::Retry { batch_id, indices } => {
-                json!({"kind":"retry","batchId":batch_id,"indices":indices})
+                return crate::storage::json_fingerprint(
+                    &json!({"kind":"retry","batchId":batch_id,"indices":indices}),
+                );
             }
-        })
+        };
+        // Hash synchronously, restoring the same owned recipe before acceptance
+        // can yield or transfer it. Large batch inputs need no detached copy.
+        let mut frozen = json!({"kind":kind,"input":null});
+        frozen["input"] = input.take();
+        let fingerprint = crate::storage::json_fingerprint(&frozen);
+        *input = frozen["input"].take();
+        fingerprint
     }
 }
 impl Service {
@@ -82,7 +91,9 @@ impl Service {
                 }
             }
         };
-        Ok(json!({"requestKey":receipt.request_key,field:value}))
+        let mut response = json!({"requestKey":receipt.request_key,field:null});
+        response[field] = value.unwrap_or(Value::Null);
+        Ok(response)
     }
     pub(super) async fn request_status(
         &self,
@@ -127,7 +138,7 @@ impl Service {
     }
     async fn accept_request_owned(
         self: &Arc<Self>,
-        input: RequestInput,
+        mut input: RequestInput,
         key: String,
         owner: String,
         local: bool,
@@ -301,7 +312,9 @@ impl Service {
             None => None,
         };
         let field = if family == JOB { "job" } else { "batch" };
-        Ok(json!({"requestKey":key,field:value,"cancelRequested":true}))
+        let mut response = json!({"requestKey":key,field:null,"cancelRequested":true});
+        response[field] = value.unwrap_or(Value::Null);
+        Ok(response)
     }
 }
 struct ReceiptObservation {

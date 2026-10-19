@@ -145,11 +145,11 @@ fn inspect_context(options: &Options) -> Result<(Context, Value)> {
     let active = owners
         .iter()
         .find(|owner| !owner.finished && owner.process != "dead");
-    Ok((
-        ctx,
-        json!({"status":if !owner_dead(&current.value)||active.is_some(){"active"}else{"stale"},"recoveryRequired":true,"journal":current.value,"journalSha256":current.hash,
-            "recoveryOwner":active.map(|owner|json!({"pid":owner.value["pid"],"nonce":owner.value["nonce"]}))}),
-    ))
+    let mut state = json!({"status":if !owner_dead(&current.value)||active.is_some(){"active"}else{"stale"},"recoveryRequired":true,"journal":null,"journalSha256":null,
+        "recoveryOwner":active.map(|owner|json!({"pid":owner.value["pid"],"nonce":owner.value["nonce"]}))});
+    state["journal"] = current.value;
+    state["journalSha256"] = current.hash.into();
+    Ok((ctx, state))
 }
 fn invalid_state(error: Error) -> Value {
     json!({"status":"invalid","recoveryRequired":true,"code":error.code,"error":error.message})

@@ -1,6 +1,7 @@
 use crate::error::{ApiError, Result};
 use serde_json::Value;
 use std::{
+    borrow::Cow,
     fs,
     path::{Component, Path, PathBuf},
 };
@@ -30,7 +31,7 @@ pub(super) fn relative(path: &str) -> Result<&str> {
                 && matches!(name.as_bytes()[3], b'1'..=b'9'))
     };
     if path.encode_utf16().count() > 512
-        || path.nfc().collect::<String>() != path
+        || !path.nfc().eq(path.chars())
         || path
             .chars()
             .any(|c| c.is_ascii_control() || "\\:%?#<>|\"*".contains(c))
@@ -44,8 +45,12 @@ pub(super) fn model_file(root: &Path, reference: &str) -> Result<PathBuf> {
     if reference.is_empty() || reference.contains([':', '%', '?', '#', '\0']) {
         return Err(invalid("Invalid model reference"));
     }
-    let normalized = reference.replace('\\', "/");
-    let path = Path::new(&normalized);
+    let normalized: Cow<'_, str> = if reference.contains('\\') {
+        Cow::Owned(reference.replace('\\', "/"))
+    } else {
+        Cow::Borrowed(reference)
+    };
+    let path = Path::new(normalized.as_ref());
     if path.is_absolute()
         || path
             .components()
@@ -116,6 +121,15 @@ pub(super) fn map_references(
     model: &mut Value,
     mut map: impl FnMut(&str) -> Result<String>,
 ) -> Result<()> {
+    visit_references(model, |path| {
+        *path = map(path)?;
+        Ok(())
+    })
+}
+fn visit_references(
+    model: &mut Value,
+    mut visit: impl FnMut(&mut String) -> Result<()>,
+) -> Result<()> {
     let modern = format(model)? == "cubism3";
     let refs = if modern {
         &mut model["FileReferences"]
@@ -123,11 +137,10 @@ pub(super) fn map_references(
         model
     };
     let mut rewrite = |value: &mut Value| -> Result<()> {
-        let path = value
-            .as_str()
-            .ok_or_else(|| invalid("Model reference must be a string"))?;
-        *value = Value::String(map(path)?);
-        Ok(())
+        match value {
+            Value::String(path) => visit(path),
+            _ => Err(invalid("Model reference must be a string")),
+        }
     };
     for key in if modern {
         &["Moc", "Physics", "Pose", "DisplayInfo", "UserData"][..]
@@ -182,11 +195,12 @@ pub(super) fn map_references(
     }
     Ok(())
 }
-pub(super) fn references(model: &Value) -> Result<Vec<String>> {
+pub(super) fn references(mut model: Value) -> Result<Vec<String>> {
     let mut result = Vec::new();
-    map_references(&mut model.clone(), |reference| {
-        result.push(reference.into());
-        Ok(reference.into())
+    // The consumed model is never published; move its paths into the result.
+    visit_references(&mut model, |path| {
+        result.push(std::mem::take(path));
+        Ok(())
     })?;
     Ok(result)
 }

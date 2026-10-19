@@ -94,7 +94,7 @@ async fn translate(
     State(state): State<AppState>,
     Extension(service): Extension<Arc<VoiceService>>,
     Json(input): Json<Value>,
-) -> Result<Json<Value>> {
+) -> Result<Response> {
     let deadline = Deadline::now() + Duration::from_secs(200);
     service.running(&state)?;
     let text = input["text"].as_str().unwrap_or("").trim();
@@ -106,9 +106,23 @@ async fn translate(
         ));
     }
     let result = service.translation.translate(text.into(), deadline).await?;
-    Ok(Json(
-        json!({"ok": true, "sourceLanguage": "zh", "targetLanguage": "ja", "translation": result["translation"], "segments": result.get("segments").cloned().unwrap_or(json!([]))}),
-    ))
+    #[derive(serde::Serialize)]
+    #[serde(rename_all = "camelCase")]
+    struct TranslationBody<'a> {
+        ok: bool,
+        source_language: &'static str,
+        target_language: &'static str,
+        translation: &'a Value,
+        segments: &'a Value,
+    }
+    let empty_segments = Value::Array(Vec::new());
+    Ok(Json(TranslationBody {
+        ok: true,
+        source_language: "zh",
+        target_language: "ja",
+        translation: &result["translation"],
+        segments: result.get("segments").unwrap_or(&empty_segments),
+    }).into_response())
 }
 async fn status(
     State(state): State<AppState>,

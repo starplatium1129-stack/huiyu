@@ -18,16 +18,14 @@ pub(crate) fn within(root: &Path, file: &Path) -> bool {
     let Ok(file) = key(file) else {
         return false;
     };
-    file.starts_with(
-        &(root.trim_end_matches(std::path::MAIN_SEPARATOR).to_owned()
-            + std::path::MAIN_SEPARATOR_STR),
-    )
+    file.strip_prefix(root.trim_end_matches(std::path::MAIN_SEPARATOR))
+        .is_some_and(|tail| tail.starts_with(std::path::MAIN_SEPARATOR))
 }
 pub(crate) fn safe(path: &Path, directory: bool, missing: bool) -> Result<Option<fs::Metadata>> {
     let path = absolute(path)?;
     let mut cursor = PathBuf::new();
-    let parts = path.components().collect::<Vec<_>>();
-    for (index, part) in parts.iter().enumerate() {
+    let mut parts = path.components().peekable();
+    while let Some(part) = parts.next() {
         cursor.push(part.as_os_str());
         if !matches!(part, Component::Normal(_)) {
             continue;
@@ -62,7 +60,7 @@ pub(crate) fn safe(path: &Path, directory: bool, missing: bool) -> Result<Option
                 return Err(Error::path("拒绝重解析点"));
             }
         }
-        let last = index + 1 == parts.len();
+        let last = parts.peek().is_none();
         if if !last || directory {
             !metadata.is_dir()
         } else {
@@ -112,7 +110,7 @@ pub(crate) fn read_limited(
         Ok(bytes)
     })
 }
-fn with_file<T>(
+pub(crate) fn with_file<T>(
     path: &Path,
     missing: bool,
     read: impl FnOnce(&mut File, &fs::Metadata) -> Result<T>,

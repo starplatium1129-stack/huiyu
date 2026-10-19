@@ -3,7 +3,7 @@ use std::{
     borrow::Cow,
     collections::{HashMap, HashSet},
 };
-type ChangeIndex = HashMap<String, HashMap<String, usize>>;
+type ChangeIndex<'a> = HashMap<Cow<'a, str>, HashMap<Cow<'a, str>, usize>>;
 pub(super) fn rows(connection: &Connection, kind: &str) -> Result<Vec<Record>> {
     let mut statement = connection.prepare(&format!(
         "SELECT {COLUMNS} FROM content_records WHERE kind=?1 AND deleted=0 ORDER BY sort_order,id"
@@ -13,23 +13,22 @@ pub(super) fn rows(connection: &Connection, kind: &str) -> Result<Vec<Record>> {
         .collect::<rusqlite::Result<Vec<_>>>()?)
 }
 pub(super) fn document(connection: &Connection, id: &str) -> Result<Value> {
-    Ok(serde_json::from_str(
-        &connection.query_row::<String, _, _>(
-            "SELECT payload FROM content_records WHERE kind='document' AND id=?1 AND deleted=0",
-            [id],
-            |r| r.get(0),
-        )?,
-    )?)
+    let value = connection.query_row(
+        "SELECT payload FROM content_records WHERE kind='document' AND id=?1 AND deleted=0",
+        [id],
+        |row| Ok(serde_json::from_str::<Value>(text_column(row, 0)?)),
+    )?;
+    Ok(value?)
 }
 fn update(
-    changes: &mut Vec<Change>,
-    index: &mut ChangeIndex,
+    changes: &mut Vec<Cow<'_, Change>>,
+    index: &mut ChangeIndex<'_>,
     record: Record,
     modify: impl FnOnce(&mut Value) -> bool,
 ) -> Result<()> {
     let existing = index
-        .get(&record.kind)
-        .and_then(|ids| ids.get(&record.id))
+        .get(record.kind.as_str())
+        .and_then(|ids| ids.get(record.id.as_str()))
         .copied();
     if existing.is_some_and(|at| changes[at].remove) {
         return Ok(());
@@ -44,14 +43,31 @@ fn update(
         return Ok(());
     }
     if let Some(at) = existing {
-        changes[at].data = Some(data);
-        changes[at].patch = None;
+        match &mut changes[at] {
+            Cow::Owned(change) => {
+                change.data = Some(data);
+                change.patch = None;
+            }
+            Cow::Borrowed(before) => {
+                let updated = Change {
+                    kind: before.kind.clone(),
+                    id: before.id.clone(),
+                    expected_revision: before.expected_revision,
+                    data: Some(data),
+                    patch: None,
+                    sort_order: before.sort_order,
+                    created_at: before.created_at.clone(),
+                    remove: before.remove,
+                };
+                changes[at] = Cow::Owned(updated);
+            }
+        }
     } else {
         index
-            .entry(record.kind.clone())
+            .entry(Cow::Owned(record.kind.clone()))
             .or_default()
-            .insert(record.id.clone(), changes.len());
-        changes.push(Change {
+            .insert(Cow::Owned(record.id.clone()), changes.len());
+        changes.push(Cow::Owned(Change {
             kind: record.kind,
             id: record.id,
             expected_revision: record.revision,
@@ -60,7 +76,7 @@ fn update(
             sort_order: None,
             created_at: None,
             remove: false,
-        });
+        }));
     }
     Ok(())
 }
@@ -72,24 +88,24 @@ fn retain_ids(ids: &mut Vec<Value>, retired: &HashSet<&str>) -> bool {
 pub(super) fn expand<'a>(
     connection: &Connection,
     input: &'a [Change],
-) -> Result<Cow<'a, [Change]>> {
-    // Ordinary edits cannot expand dependencies. Borrow their payloads instead
-    // of cloning the entire change set before the normal write validation.
+) -> Result<Option<Vec<Cow<'a, Change>>>> {
+    // Ordinary edits use the caller's original slice. Expanded batches borrow
+    // each unchanged input until an actual dependency update needs ownership.
     if !input.iter().any(|change| {
         (change.kind == "document" && change.id == "tags")
             || (change.kind == "scene" && change.remove)
     }) {
-        return Ok(Cow::Borrowed(input));
+        return Ok(None);
     }
-    let mut changes = input.to_vec();
+    let mut changes: Vec<_> = input.iter().map(Cow::Borrowed).collect();
     let mut index = ChangeIndex::new();
-    for (at, change) in changes.iter().enumerate() {
+    for (at, change) in input.iter().enumerate() {
         // The original linear lookup selected the first input occurrence;
         // duplicate records are still rejected later by apply_with_seeds.
         index
-            .entry(change.kind.clone())
+            .entry(Cow::Borrowed(change.kind.as_str()))
             .or_default()
-            .entry(change.id.clone())
+            .entry(Cow::Borrowed(change.id.as_str()))
             .or_insert(at);
     }
     if let Some(change) = input
@@ -212,5 +228,5 @@ pub(super) fn expand<'a>(
             }
         }
     }
-    Ok(Cow::Owned(changes))
+    Ok(Some(changes))
 }

@@ -107,7 +107,8 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
         }
         if !job.state.lock().await.observed {
             if let Some(hooks) = &job.hooks {
-                let mut metadata = job.state.lock().await.metadata.clone();
+                let snapshot = job.state.lock().await.metadata.clone();
+                let mut metadata = Arc::unwrap_or_clone(snapshot);
                 metadata["gatewayJobId"] = json!(job.id);
                 if hooks.observed(id.clone(), metadata).await.is_err() {
                     delay = Duration::from_millis(500);
@@ -120,9 +121,7 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
                 state.unknown = false;
             }
         }
-        let image = if let Some(image) = &completed {
-            image.clone()
-        } else {
+        if completed.is_none() {
             let history = match inner
                 .json(
                     "comfy",
@@ -207,8 +206,7 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
             // Retain only the confirmed output reference, not an unbounded history.
             // Comfy may evict history before a local/transport retry can complete.
             completed = Some(image.clone());
-            image.clone()
-        };
+        }
         {
             let mut state = job.state.lock().await;
             if state.status == "failed" && !state.settled {
@@ -216,7 +214,7 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
                 state.unknown = false;
             }
         }
-        match materialize(&inner, &job, &image).await {
+        match materialize(&inner, &job, completed.as_ref().unwrap()).await {
             Ok(output) => jobs::succeed(&inner, &job, output).await,
             Err(error) => {
                 if error.code == "ABORT_ERR" {

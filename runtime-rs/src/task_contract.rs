@@ -1,7 +1,7 @@
 //! Durable task contract. JSON belongs at HTTP/provider and persistence boundaries;
 //! lifecycle decisions use these types, independently of any engine or database.
 use serde::{Deserialize, Deserializer, Serialize};
-use serde_json::{Map, Value};
+use serde_json::{json, Map, Value};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -69,6 +69,18 @@ pub struct ResultRef {
     pub mime: String,
     pub index: u64,
 }
+impl ResultRef {
+    fn into_value(self) -> Value {
+        let mut value = json!({
+            "alias": null, "sha256": null, "bytes": self.bytes,
+            "mime": null, "index": self.index,
+        });
+        value["alias"] = Value::String(self.alias);
+        value["sha256"] = Value::String(self.sha256);
+        value["mime"] = Value::String(self.mime);
+        value
+    }
+}
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -132,13 +144,16 @@ impl TaskRecord {
     }
 
     pub(crate) fn into_value(mut self) -> serde_json::Result<Value> {
-        // Serialize the small typed fields, then transfer the owned JSON trees.
-        // serde_json::to_value otherwise recursively copies recipes/checkpoints.
+        // Transfer owned trees and references instead of copying their strings.
         let input = std::mem::take(&mut self.input);
+        let input_media_refs = std::mem::take(&mut self.input_media_refs);
+        let result_refs = std::mem::take(&mut self.result_refs);
         let metadata = std::mem::take(&mut self.metadata);
         let checkpoint = self.checkpoint.take();
         let mut value = serde_json::to_value(self)?;
         value["input"] = Value::Object(input);
+        value["inputMediaRefs"] = Value::Array(input_media_refs.into_iter().map(Value::String).collect());
+        value["resultRefs"] = Value::Array(result_refs.into_iter().map(ResultRef::into_value).collect());
         value["metadata"] = Value::Object(metadata);
         value["checkpoint"] = checkpoint.unwrap_or(Value::Null);
         Ok(value)
@@ -177,6 +192,14 @@ pub struct TaskSummary {
     pub can_concat: bool,
     pub retry_of_task_id: Option<String>,
     pub retry_task_id: Option<String>,
+}
+impl TaskSummary {
+    pub(crate) fn into_value(mut self) -> serde_json::Result<Value> {
+        let result_refs = std::mem::take(&mut self.result_refs);
+        let mut value = serde_json::to_value(self)?;
+        value["resultRefs"] = Value::Array(result_refs.into_iter().map(ResultRef::into_value).collect());
+        Ok(value)
+    }
 }
 
 // An absent patch leaves a nullable field untouched; explicit null clears it.

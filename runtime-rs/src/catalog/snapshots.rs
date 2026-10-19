@@ -1,9 +1,29 @@
 use super::*;
 use sha2::{Digest, Sha256};
+use std::io::{BufWriter, Write};
 #[derive(Default)]
 pub(super) struct Scope {
     pub characters: Vec<String>,
     pub records: Vec<(String, String)>,
+}
+#[derive(Serialize)]
+struct ExportManifest<'a> {
+    version: u8,
+    files: &'a [String],
+    retired: &'a [Record],
+}
+fn write_export(path: &Path, value: &impl Serialize) -> Result<()> {
+    let mut file = BufWriter::new(std::fs::File::create(path)?);
+    serde_json::to_writer_pretty(&mut file, value).map_err(|error| {
+        if error.is_io() {
+            ApiError::from(std::io::Error::from(error))
+        } else {
+            ApiError::from(error)
+        }
+    })?;
+    file.write_all(b"\n")?;
+    file.flush()?;
+    Ok(())
 }
 impl Scope {
     fn partial(&self) -> bool {
@@ -11,7 +31,7 @@ impl Scope {
     }
 }
 pub(super) fn read(directory: &Path) -> Result<(Vec<Record>, Vec<Record>)> {
-    let manifest: Value = serde_json::from_slice(&std::fs::read(directory.join("manifest.json"))?)?;
+    let mut manifest: Value = serde_json::from_slice(&std::fs::read(directory.join("manifest.json"))?)?;
     if manifest["version"] != 1 {
         return Err(ApiError::invalid("快照格式版本无效"));
     }
@@ -38,7 +58,7 @@ pub(super) fn read(directory: &Path) -> Result<(Vec<Record>, Vec<Record>)> {
         records.push(record);
     }
     let retired: Vec<Record> =
-        serde_json::from_value(manifest.get("retired").cloned().unwrap_or(json!([])))?;
+        serde_json::from_value(manifest.get_mut("retired").map(Value::take).unwrap_or(json!([])))?;
     for record in &retired {
         validation::key(&record.kind, &record.id)?;
         if record.revision < 1 || !seen.insert((record.kind.clone(), record.id.clone())) {
@@ -52,6 +72,10 @@ impl Catalog {
         self.snapshot_selected(&Scope::default())
     }
     pub(super) fn snapshot_selected(&self, scope: &Scope) -> Result<Value> {
+        let (records, retired) = self.snapshot_records(scope)?;
+        snapshot_value(records, retired)
+    }
+    fn snapshot_records(&self, scope: &Scope) -> Result<(Vec<Record>, Vec<Record>)> {
         let transaction = self.connection.unchecked_transaction()?;
         let mut filters = Vec::new();
         let mut values = Vec::<String>::new();
@@ -105,9 +129,8 @@ impl Catalog {
                 records.push(record);
             }
         }
-        let value = snapshot_value(records, retired)?;
         transaction.commit()?;
-        Ok(value)
+        Ok((records, retired))
     }
     pub(super) fn export_selected(&self, directory: &Path, scope: &Scope) -> Result<Value> {
         if directory.exists() && !directory.join("manifest.json").exists() {
@@ -118,27 +141,26 @@ impl Catalog {
             .ok_or_else(|| ApiError::invalid("导出路径无效"))?;
         std::fs::create_dir_all(parent)?;
         let staging = parent.join(format!(".catalog-export-{}", uuid::Uuid::new_v4()));
-        let mut snapshot = self.snapshot_selected(scope)?;
-        let count = snapshot["records"].as_array().unwrap().len();
+        let (mut records, mut retired) = self.snapshot_records(scope)?;
+        let count = records.len();
         if scope.partial() && directory.exists() {
             // Merge only the selected records into the project's existing export,
             // never copy unrelated personal database records over that snapshot.
-            let (records, retired) = read(directory)?;
+            let (previous, previous_retired) = read(directory)?;
             let mut merged = std::collections::BTreeMap::new();
-            for (record, removed) in records
+            for (record, removed) in previous
                 .into_iter()
                 .map(|r| (r, false))
-                .chain(retired.into_iter().map(|r| (r, true)))
+                .chain(previous_retired.into_iter().map(|r| (r, true)))
             {
                 merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
             }
-            for (field, removed) in [("records", false), ("retired", true)] {
-                for record in serde_json::from_value::<Vec<Record>>(snapshot[field].take())? {
-                    merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
-                }
+            for (record, removed) in records.into_iter().map(|r| (r, false))
+                .chain(retired.into_iter().map(|r| (r, true))) {
+                merged.insert((record.kind.clone(), record.id.clone()), (record, removed));
             }
-            let mut records = Vec::new();
-            let mut retired = Vec::new();
+            records = Vec::new();
+            retired = Vec::new();
             for (record, removed) in merged.into_values() {
                 if removed {
                     retired.push(record);
@@ -146,11 +168,10 @@ impl Catalog {
                     records.push(record);
                 }
             }
-            snapshot = snapshot_value(records, retired)?;
         }
         std::fs::create_dir(&staging)?;
         let mut files = Vec::new();
-        for record in serde_json::from_value::<Vec<Record>>(snapshot["records"].take())? {
+        for record in records {
             let digest = hex::encode(Sha256::digest(record.id.as_bytes()));
             // Readable stable names, including Windows-safe outfit keys. Hash
             // suffix prevents sanitization/case collisions on Windows.
@@ -168,19 +189,12 @@ impl Catalog {
                 .collect::<String>();
             let name = format!("{}/{}-{}.json", record.kind, label, &digest[..12]);
             std::fs::create_dir_all(staging.join(&record.kind))?;
-            std::fs::write(
-                staging.join(&name),
-                format!("{}\n", serde_json::to_string_pretty(&record)?),
-            )?;
+            write_export(&staging.join(&name), &record)?;
             files.push(name);
         }
         files.sort();
-        let mut manifest = json!({"version":1,"files":files,"retired":null});
-        manifest["retired"] = snapshot["retired"].take();
-        std::fs::write(
-            staging.join("manifest.json"),
-            format!("{}\n", serde_json::to_string_pretty(&manifest)?),
-        )?;
+        let manifest = ExportManifest { version: 1, files: &files, retired: &retired };
+        write_export(&staging.join("manifest.json"), &manifest)?;
         let backup = parent.join(format!(".catalog-export-backup-{}", uuid::Uuid::new_v4()));
         if directory.exists() {
             std::fs::rename(directory, &backup)?;

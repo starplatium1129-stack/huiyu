@@ -84,7 +84,9 @@ async fn complete(
             let action = uri.path().rsplit('/').next().unwrap_or("");
             let raw: Value =
                 serde_json::from_slice(&body).map_err(|_| invalid("请求体必须是 JSON 对象"))?;
-            let input = validation::validate(action, &raw)?;
+            let mut input = validation::validate(action, &raw)?;
+            drop(raw);
+            drop(body);
             let cancel = app.shutdown.child_token();
             let _guard = cancel.clone().drop_guard();
             let chat = app.chat.as_ref().ok_or_else(unavailable)?;
@@ -93,10 +95,16 @@ async fn complete(
                 return Err(unavailable());
             }
             let messages = prompts::messages(action, &input);
+            let shot_count = list(&input["shots"]).len();
+            // Only rewrite needs the original fields for output fallbacks.
+            if action != "rewrite" {
+                input = Value::Null;
+            }
             let text = chat
                 .mechanical_complete(&app.config, messages, cancel)
                 .await?;
             let parsed = output::extract(&text);
+            drop(text);
             let field = match action {
                 "rewrite" => "shot",
                 "dialogue" => "options",
@@ -104,7 +112,7 @@ async fn complete(
                 _ => "shots",
             };
             let mut result = json!({"source":source["source"],"model":source["model"]});
-            result[field] = output::clean(action, &parsed, &input);
+            result[field] = output::clean(action, &parsed, &input, shot_count);
             Ok(result)
         }
         .await,

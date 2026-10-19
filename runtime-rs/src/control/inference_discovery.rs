@@ -1,37 +1,43 @@
 use super::*;
 use crate::generation::native::Settings;
+use serde::Deserialize;
+
+const SAVED_FIELDS: [&str; 7] = [
+    "python",
+    "adapterPython",
+    "worker",
+    "modelsRoot",
+    "lorasRoot",
+    "acceleration",
+    "memoryPolicy",
+];
 
 impl ControlService {
-    pub(super) async fn inference_discovery(&self) -> Result<Value> {
-        let config = self.config.clone();
-        let configured = self.configured_inference()?;
-        let active = self.active_inference()?;
-        let explicit = {
-            let saved = self.saved.read().unwrap();
-            let workspace_matches = saved["inferenceWorkspacePath"].as_str()
-                .is_none_or(|path| std::path::Path::new(path) == self.config.ai_workspace_root);
-            saved.get("inference").filter(|_|workspace_matches).cloned()
-        };
-        // Bounded local filesystem discovery stays off the async request thread.
+    pub(super) async fn inference_discovery(self: &Arc<Self>) -> Result<Value> {
+        let service = self.clone();
+        // Configuration recovery can also discover files after a workspace move.
         tokio::task::spawn_blocking(move || {
+            let config = &service.config;
+            let configured = service.configured_inference()?;
+            let active = service.active_inference()?;
+            let explicit = {
+                let saved = service.saved.read().unwrap();
+                let workspace_matches = saved["inferenceWorkspacePath"].as_str()
+                    .is_none_or(|path| std::path::Path::new(path) == config.ai_workspace_root);
+                saved.get("inference").filter(|_| workspace_matches).map(|value| {
+                    SAVED_FIELDS.into_iter().filter(|key| value.get(*key).is_some()).collect::<Vec<_>>()
+                })
+            };
             let (mut suggested, receipt) = Settings::discovered(&config.ai_workspace_root);
             suggested.engine = "native".into();
             let mut target = serde_json::to_value(&suggested)?;
             let saved = serde_json::to_value(&configured)?;
             // Existing settings and environment overrides have precedence. A
             // discovery refresh must not replace paths deliberately selected by a user.
-            for key in [
-                "python",
-                "adapterPython",
-                "worker",
-                "modelsRoot",
-                "lorasRoot",
-                "acceleration",
-                "memoryPolicy",
-            ] {
+            for key in SAVED_FIELDS {
                 if explicit
                     .as_ref()
-                    .is_some_and(|value| value.get(key).is_some())
+                    .is_some_and(|fields| fields.contains(&key))
                 {
                     target[key] = saved[key].clone();
                 }
@@ -40,7 +46,7 @@ impl ControlService {
             for key in &active.environment_overrides {
                 target[key] = current[key].clone();
             }
-            let selected: Settings = serde_json::from_value(target.clone())?;
+            let selected = Settings::deserialize(&target)?;
             selected.validate()?;
             let model_count = selected.model_count();
             let lora_count = selected.lora_count();
@@ -48,7 +54,7 @@ impl ControlService {
             let receipt = receipt.filter(|_| selected.python == suggested.python);
             let explicit_python = explicit
                 .as_ref()
-                .is_some_and(|value| value.get("python").is_some())
+                .is_some_and(|fields| fields.contains(&"python"))
                 || active
                     .environment_overrides
                     .iter()
@@ -65,10 +71,12 @@ impl ControlService {
             if selected.engine != "native" {
                 missing.push("启动环境固定了其他绘图引擎");
             }
-            Ok(json!({"suggested":target,"canAdopt":missing.is_empty(),
+            let mut value = json!({"suggested":null,"canAdopt":missing.is_empty(),
                 "modelCount":model_count,"loraCount":lora_count,"missing":missing,
                 "runtimeReceipt":receipt,"preservesSavedSettings":explicit.is_some(),
-                "scope":"local-files-only"}))
+                "scope":"local-files-only"});
+            value["suggested"] = target;
+            Ok(value)
         })
         .await
         .map_err(|_| ApiError::new(503, "INFERENCE_DISCOVERY_FAILED", "本机推理资源读取未完成"))?

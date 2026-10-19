@@ -1,7 +1,7 @@
 mod records;
 pub(super) mod verification;
 use super::*;
-use canonical::{digest, fingerprint, stringify};
+use canonical::{digest, fingerprint, fingerprint_object, stringify};
 use rusqlite::{OptionalExtension, params};
 use std::collections::HashSet;
 
@@ -12,20 +12,30 @@ struct Session {
     revision: i64,
 }
 fn session(c: &Context, id: &str, principal: &str) -> Result<Session> {
-    let row=c.db.query_row("SELECT envelope,state,report,revision FROM migration_sessions WHERE migration_id=? AND principal_id=?",params![id,principal],|r|Ok((r.get::<_,String>(0)?,r.get::<_,String>(1)?,r.get::<_,String>(2)?,r.get::<_,i64>(3)?))).optional()?.ok_or_else(||ApiError::new(404,"NOT_FOUND","Migration session does not exist"))?;
+    // Keep JSON failures outside rusqlite so column errors retain their priority.
+    let row = c.db.query_row(
+        "SELECT envelope,state,report,revision FROM migration_sessions WHERE migration_id=? AND principal_id=?",
+        params![id, principal],
+        |row| Ok((
+            serde_json::from_str::<Value>(text_column(row, 0)?),
+            row.get::<_, String>(1)?,
+            serde_json::from_str::<Value>(text_column(row, 2)?),
+            row.get::<_, i64>(3)?,
+        )),
+    ).optional()?.ok_or_else(|| ApiError::new(404, "NOT_FOUND", "Migration session does not exist"))?;
     Ok(Session {
-        envelope: serde_json::from_str(&row.0)?,
+        envelope: row.0?,
         state: row.1,
-        report: serde_json::from_str(&row.2)?,
+        report: row.2?,
         revision: row.3,
     })
 }
 fn status(c: &Context, id: &str, principal: &str) -> Result<Value> {
     let session = session(c, id, principal)?;
     let envelope = session.envelope;
-    Ok(
-        json!({"migrationId":id,"workspaceId":c.workspace_id,"fingerprint":envelope["fingerprint"],"source":envelope["source"],"state":session.state,"revision":session.revision,"totalRecords":envelope["records"].as_array().unwrap().len(),"totalMedia":envelope["media"].as_array().unwrap().len(),"importedRecords":c.db.query_row("SELECT COUNT(*) FROM migration_items WHERE migration_id=?",[id],|r|r.get::<_,i64>(0))?,"importedMedia":c.db.query_row("SELECT COUNT(*) FROM migration_media WHERE migration_id=? AND complete=1",[id],|r|r.get::<_,i64>(0))?,"blockers":session.report,"domains":["artwork","settings","chat","draft"]}),
-    )
+    let mut result = json!({"migrationId":id,"workspaceId":c.workspace_id,"fingerprint":envelope["fingerprint"],"source":envelope["source"],"state":session.state,"revision":session.revision,"totalRecords":envelope["records"].as_array().unwrap().len(),"totalMedia":envelope["media"].as_array().unwrap().len(),"importedRecords":c.db.query_row("SELECT COUNT(*) FROM migration_items WHERE migration_id=?",[id],|r|r.get::<_,i64>(0))?,"importedMedia":c.db.query_row("SELECT COUNT(*) FROM migration_media WHERE migration_id=? AND complete=1",[id],|r|r.get::<_,i64>(0))?,"blockers":null,"domains":["artwork","settings","chat","draft"]});
+    result["blockers"] = session.report;
+    Ok(result)
 }
 fn format_error(message: &str) -> ApiError {
     conflict("MIGRATION_FORMAT", message)
@@ -50,9 +60,9 @@ fn validate(envelope: &Value) -> Result<()> {
         ));
     }
     string(envelope, "migrationId")?;
-    let mut unsigned = envelope.clone();
-    unsigned.as_object_mut().unwrap().remove("fingerprint");
-    if fingerprint(&unsigned) != envelope["fingerprint"] {
+    let unsigned = envelope.as_object().unwrap().iter()
+        .filter(|(field, _)| field.as_str() != "fingerprint");
+    if fingerprint_object(unsigned) != envelope["fingerprint"] {
         return Err(format_error(
             "Migration manifest fingerprint does not match",
         ));
@@ -212,10 +222,12 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         return begin(c, principal, &command["envelope"]);
     }
     let id = string(command, "migrationId")?;
+    if kind == "migration.status" {
+        return status(c, id, principal);
+    }
     let session = session(c, id, principal)?;
     let envelope = &session.envelope;
     match kind {
-        "migration.status" => status(c, id, principal),
         "migration.activate" => {
             if !matches!(session.state.as_str(), "verified" | "activated") {
                 return Err(conflict("MIGRATION_BLOCKED", "Candidate is not verified"));
@@ -289,20 +301,14 @@ fn import_record(
             "Record digest does not match the manifest or contains a credential",
         ));
     }
-    let mut expected_fields = expected.clone();
-    for field in ["id", "sha256", "bytes"] {
-        expected_fields.as_object_mut().unwrap().remove(field);
-    }
-    let actual = Value::Object(
-        record
-            .as_object()
-            .ok_or_else(|| format_error("Invalid source record"))?
-            .iter()
-            .filter(|(field, _)| field.as_str() != "value")
-            .map(|(field, value)| (field.clone(), value.clone()))
-            .collect(),
-    );
-    if fingerprint(&expected_fields) != fingerprint(&actual) {
+    let expected_fields = expected.as_object().unwrap().iter()
+        .filter(|(field, _)| !["id", "sha256", "bytes"].contains(&field.as_str()));
+    let actual = record
+        .as_object()
+        .ok_or_else(|| format_error("Invalid source record"))?
+        .iter()
+        .filter(|(field, _)| field.as_str() != "value");
+    if fingerprint_object(expected_fields) != fingerprint_object(actual) {
         return Err(format_error(
             "Record does not match its classified manifest entry",
         ));

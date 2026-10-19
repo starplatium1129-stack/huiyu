@@ -29,25 +29,26 @@ pub(super) fn merge(value: &mut Value, patch: &Value) -> Result<()> {
     }
     Ok(())
 }
-fn fields(record: &Record, payload: &str) -> (String, String, String, String, String) {
+fn fields<'a>(record: &'a Record, payload: &str) -> (&'a str, &'a str, &'a str, &'a str, String) {
     let value = &record.data;
-    let text = |v: &Value| v.as_str().unwrap_or("").to_owned();
+    fn text(value: &Value) -> &str {
+        value.as_str().unwrap_or("")
+    }
     let title = match record.kind.as_str() {
         "character" => text(&value["popular"]["displayName"]),
         "outfit" => text(&value["outfit"]["name"]),
-        "document" => record.id.clone(),
+        "document" => record.id.as_str(),
         _ => text(&value["title"]),
     };
     let title = if title.is_empty() {
         value["profile"]["name"]
             .as_str()
             .unwrap_or(&record.id)
-            .into()
     } else {
         title
     };
     let character = match record.kind.as_str() {
-        "character" => record.id.clone(),
+        "character" => record.id.as_str(),
         "scene" => text(&value["char"]),
         _ => text(&value["characterId"]),
     };
@@ -60,13 +61,12 @@ fn fields(record: &Record, payload: &str) -> (String, String, String, String, St
     };
     let rating =
         if value["adult"] == true || value["mature"] == true || value["outfit"]["adult"] == true {
-            "R18".into()
+            "R18"
         } else {
             value["rating"]
                 .as_str()
                 .or(value["sampleRating"].as_str())
                 .unwrap_or("All")
-                .into()
         };
     let search = format!("{} {} {}", record.id, title, payload).to_lowercase();
     (title, character, category, rating, search)
@@ -83,9 +83,11 @@ pub(super) fn history(
     removed: bool,
     batch: &str,
     at: &str,
-) -> Result<()> {
-    connection.prepare_cached("INSERT INTO content_history(batch,kind,id,revision,at,record,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7)")?.execute(params![batch,record.kind,record.id,record.revision,at,serde_json::to_string(record)?,removed])?;
-    Ok(())
+) -> Result<String> {
+    let mut statement = connection.prepare_cached("INSERT INTO content_history(batch,kind,id,revision,at,record,deleted) VALUES(?1,?2,?3,?4,?5,?6,?7)")?;
+    let encoded = serde_json::to_string(record)?;
+    statement.execute(params![batch,record.kind,record.id,record.revision,at,encoded,removed])?;
+    Ok(encoded)
 }
 impl Catalog {
     pub fn apply(&mut self, changes: &[Change], preview: bool) -> Result<Value> {
@@ -123,13 +125,17 @@ impl Catalog {
                 return Err(ApiError::invalid("此系统记录只能通过专用维护流程更新"));
             }
         }
-        let changes = super::dependencies::expand(&transaction, changes)?;
+        let expanded = super::dependencies::expand(&transaction, changes)?;
+        let original = if expanded.is_none() { changes } else { &[] };
+        let changes = original.iter().chain(
+            expanded.as_deref().unwrap_or(&[]).iter().map(|change| change.as_ref()),
+        );
         let preserved_keys: HashSet<_> = preserved
             .iter()
             .map(|(record, _)| (record.kind.as_str(), record.id.as_str()))
             .collect();
         if let Some(change) = changes
-            .iter()
+            .clone()
             .find(|change| preserved_keys.contains(&(change.kind.as_str(), change.id.as_str())))
         {
             return Err(ApiError::new(
@@ -147,6 +153,7 @@ impl Catalog {
         let mut result = Vec::new();
         let mut diffs = Vec::new();
         let mut retired_imports = Vec::new();
+        let mut retired_ids: Option<HashSet<String>> = None;
         let mut pin_policy = validation::PinPolicy::default();
         let mut current_query = transaction.prepare_cached(&format!(
             "SELECT {COLUMNS},deleted FROM content_records WHERE kind=?1 AND id=?2"
@@ -177,7 +184,7 @@ impl Catalog {
                 ));
             }
         }
-        for change in changes.iter() {
+        for change in changes.clone() {
             validation::key(&change.kind, &change.id)?;
             if !seen.insert((&change.kind, &change.id)) {
                 return Err(ApiError::invalid("变更集中有重复记录"));
@@ -221,7 +228,7 @@ impl Catalog {
             if change.patch.is_some() && change.data.is_some() {
                 return Err(ApiError::invalid("不能同时提交完整内容和字段补丁"));
             }
-            let mut patched = if change.data.is_none() {
+            let mut patched = if change.patch.is_some() {
                 current.as_ref().map(|(r, _)| r.data.clone())
             } else {
                 None
@@ -238,6 +245,7 @@ impl Catalog {
                 .data
                 .as_ref()
                 .or(patched.as_ref())
+                .or_else(|| current.as_ref().map(|(record, _)| &record.data))
                 .ok_or_else(|| ApiError::invalid("新记录缺少内容"))?;
             if let Some((before, _)) = &current
                 && before.data.get("generatedRecipe").is_some()
@@ -271,12 +279,17 @@ impl Catalog {
                 )?;
             }
             if change.kind == "scene" && current.is_none() && !change.remove {
-                let retired: String = transaction.query_row("SELECT payload FROM content_records WHERE kind='document' AND id='retired-scenes'",[],|r|r.get(0))?;
-                let retired: Value = serde_json::from_str(&retired)?;
-                if retired["records"]
-                    .as_array()
-                    .is_some_and(|rows| rows.iter().any(|r| r["id"] == change.id))
-                {
+                if retired_ids.is_none() {
+                    let retired: String = transaction.query_row("SELECT payload FROM content_records WHERE kind='document' AND id='retired-scenes'",[],|r|r.get(0))?;
+                    let mut retired: Value = serde_json::from_str(&retired)?;
+                    retired_ids = Some(retired.get_mut("records")
+                        .and_then(Value::as_array_mut).into_iter().flatten()
+                        .filter_map(|row| match row.get_mut("id") {
+                            Some(Value::String(id)) => Some(std::mem::take(id)),
+                            _ => None,
+                        }).collect());
+                }
+                if retired_ids.as_ref().unwrap().contains(&change.id) {
                     return Err(ApiError::invalid("已退役的场景 ID 不能复用"));
                 }
             }
@@ -319,6 +332,13 @@ impl Catalog {
                     |(r, _)| r.created_at.clone(),
                 )
             };
+            if !change.remove && current.as_ref().is_some_and(|(record, _)| {
+                record.data == *value
+                    && record.sort_order == order
+                    && record.created_at == created_at
+            }) {
+                continue;
+            }
             let record = Record {
                 kind: change.kind.clone(),
                 id: change.id.clone(),
@@ -330,17 +350,15 @@ impl Catalog {
                 } else {
                     Some(at.clone())
                 },
-                data: change.data.clone().or(patched).unwrap(),
+                data: change.data.clone().or(patched)
+                    .or_else(|| current.as_ref().map(|(record, _)| record.data.clone()))
+                    .unwrap(),
             };
-            if current.as_ref().is_some_and(|(r, _)| {
-                r.data == record.data
-                    && r.sort_order == record.sort_order
-                    && r.created_at == record.created_at
-            }) && !change.remove
-            {
-                continue;
-            }
             put(&transaction, &record, change.remove)?;
+            if record.kind == "document" && record.id == "retired-scenes" {
+                // Later changes in this transaction must see the updated retirement list.
+                retired_ids = None;
+            }
             if record.kind == "document" && record.id == "prompt-pinned-scenes" {
                 pin_policy.database_changed();
             }
@@ -365,12 +383,12 @@ impl Catalog {
         }
         drop(current_query);
         validation::relations(&transaction)?;
-        if changes.iter().any(|c| {
+        if changes.clone().any(|c| {
             c.kind == "document" && ["tags", "tag-dictionary-policy"].contains(&c.id.as_str())
         }) {
             let tags = super::dependencies::document(&transaction, "tags")?;
             let policy = super::dependencies::document(&transaction, "tag-dictionary-policy")?;
-            crate::bootstrap::tags::dictionary(
+            crate::bootstrap::tags::validate_dictionary(
                 tags.as_array()
                     .ok_or_else(|| ApiError::invalid("标签库无效"))?,
                 &policy,
@@ -378,7 +396,7 @@ impl Catalog {
             .map_err(|e| ApiError::invalid(e.message))?;
         }
         if changes
-            .iter()
+            .clone()
             .any(|c| c.kind == "document" && c.id == "curation")
         {
             let mut statement = transaction.prepare(
@@ -389,7 +407,7 @@ impl Catalog {
                 .collect::<rusqlite::Result<Vec<_>>>()?;
             let active = ids.iter().map(String::as_str).collect();
             let value = super::dependencies::document(&transaction, "curation")?;
-            let clean = crate::maintenance::validation::curation(&value, &active, &Value::Null)
+            let signature = crate::maintenance::validation::curation(&value, &active)
                 .map_err(|e| ApiError::invalid(e.message))?;
             for field in [
                 "personaCoreSceneIds",
@@ -405,13 +423,9 @@ impl Catalog {
                     return Err(ApiError::invalid("策展引用了不存在的场景"));
                 }
             }
-            if clean["signatureSceneIds"].as_array().is_some_and(|items| {
-                items.iter().any(|id| {
-                    !value["curatedSceneIds"]
-                        .as_array()
-                        .is_some_and(|curated| curated.contains(id))
-                })
-            }) {
+            let curated = value["curatedSceneIds"].as_array().into_iter().flatten()
+                .filter_map(Value::as_str).collect::<HashSet<_>>();
+            if signature.iter().any(|id| !curated.contains(id)) {
                 return Err(ApiError::invalid("招牌场景必须同时属于精选场景"));
             }
         }
@@ -435,9 +449,11 @@ impl Catalog {
                 |(record, _)| json!({"kind":record.kind,"id":record.id,"revision":record.revision}),
             )
             .collect();
-        let mut value = json!({"ok":true,"preview":preview,"batch":batch,"version":version.parse::<i64>().unwrap(),"items":result,"diffs":null,"retiredImports":null,"preservedLocal":preserved_local});
+        let mut value = json!({"ok":true,"preview":preview,"batch":batch,"version":version.parse::<i64>().unwrap(),"items":null,"diffs":null,"retiredImports":null,"preservedLocal":null});
+        value["items"] = Value::Array(result);
         value["diffs"] = Value::Array(diffs);
         value["retiredImports"] = Value::Array(retired_imports);
+        value["preservedLocal"] = Value::Array(preserved_local);
         pin_policy.check(&self.options.source)?;
         if preview {
             transaction.rollback()?;

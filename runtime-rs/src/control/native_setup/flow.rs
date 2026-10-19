@@ -91,8 +91,8 @@ impl ControlService {
     async fn prepare_native_chain(
         self: &Arc<Self>,
         body: Request,
-        runtime: RuntimeBundle,
-        model: ModelBundle,
+        runtime: Arc<RuntimeBundle>,
+        model: Arc<ModelBundle>,
         operation: &Value,
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,

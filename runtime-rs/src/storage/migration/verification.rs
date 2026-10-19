@@ -1,6 +1,6 @@
 use super::*;
 use crate::storage::verified_media::{Identity, Stamp};
-use std::collections::BTreeSet;
+use std::{collections::BTreeSet, sync::Arc};
 mod file;
 
 pub(in crate::storage) struct Outcome {
@@ -12,7 +12,7 @@ pub(in crate::storage) struct Pending {
     id: String,
     migration_id: String,
     principal: String,
-    envelope: Value,
+    envelope: Arc<Value>,
     revision: i64,
     hashes: BTreeSet<String>,
     identity: Identity,
@@ -30,7 +30,7 @@ impl Pending {
         let current = session(c, &self.migration_id, &self.principal)?;
         if current.state != "importing"
             || current.revision != self.revision
-            || current.envelope != self.envelope
+            || &current.envelope != self.envelope.as_ref()
         {
             return Err(conflict(
                 "MIGRATION_CONFLICT",
@@ -174,7 +174,7 @@ pub(in crate::storage) fn start(
         id: uuid::Uuid::new_v4().to_string(),
         migration_id: string(command, "migrationId").unwrap().into(),
         principal: principal.into(),
-        envelope: current.envelope,
+        envelope: Arc::new(current.envelope),
         revision: current.revision,
         hashes,
         identity,
@@ -194,12 +194,12 @@ fn spawn(pending: &Pending, sender: &mpsc::WeakSender<Work>) -> Result<()> {
     let id = pending.id.clone();
     let migration_id = pending.migration_id.clone();
     let identity = pending.identity.clone();
-    let media = pending.envelope["media"].as_array().unwrap().clone();
+    let envelope = pending.envelope.clone();
     std::thread::Builder::new()
         .name("workspace-migration-verify".into())
         .spawn(move || {
             let result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                file::run(&identity, &migration_id, media)
+                file::run(&identity, &migration_id, envelope["media"].as_array().unwrap())
             }))
             .unwrap_or_else(|_| Err(unavailable()));
             // The sender retains the actor and owner until the actual filesystem

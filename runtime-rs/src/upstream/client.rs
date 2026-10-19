@@ -1,4 +1,8 @@
-use crate::error::{ApiError, Result};
+use crate::{
+    byte_buffer::Buffer,
+    error::{ApiError, Result},
+};
+use axum::body::Bytes;
 use futures_util::StreamExt;
 use serde_json::Value;
 use std::{
@@ -135,13 +139,13 @@ impl LocalUpstream {
                 return Err(too_large());
             }
             let mut stream = response.bytes_stream();
-            let mut data = Vec::new();
+            let mut data = Buffer::Chunk(Bytes::new());
             while let Some(chunk) = stream.next().await {
                 let chunk = chunk.map_err(upstream_error)?;
-                if data.len().saturating_add(chunk.len()) > max_bytes {
+                if data.as_ref().len().saturating_add(chunk.len()) > max_bytes {
                     return Err(too_large());
                 }
-                data.extend_from_slice(&chunk);
+                data.append(chunk, 0);
             }
             Ok((status, decode_body(data, cancel).await?))
         };
@@ -173,10 +177,10 @@ fn upstream_error(error: reqwest::Error) -> ApiError {
 // retaining a duplicate UTF-8 body alongside parsed JSON; reuse the byte buffer
 // for plain text. Invalid UTF-8 retains the provider fallback's lossy semantics.
 async fn decode_body(
-    data: Vec<u8>,
+    data: Buffer,
     cancel: &CancellationToken,
 ) -> Result<std::result::Result<Value, String>> {
-    if data.len() < 512 * 1024 {
+    if data.as_ref().len() < 512 * 1024 {
         return Ok(parse_body(data));
     }
     let scope = cancel.child_token();
@@ -205,9 +209,9 @@ async fn decode_body(
 fn cancelled() -> ApiError {
     ApiError::new(499, "ABORTED", "上游请求已取消")
 }
-fn parse_body(data: Vec<u8>) -> std::result::Result<Value, String> {
-    serde_json::from_slice(&data).map_err(|_| {
-        String::from_utf8(data)
+fn parse_body(data: Buffer) -> std::result::Result<Value, String> {
+    serde_json::from_slice(data.as_ref()).map_err(|_| {
+        String::from_utf8(data.into_vec())
             .unwrap_or_else(|error| String::from_utf8_lossy(error.as_bytes()).into_owned())
     })
 }

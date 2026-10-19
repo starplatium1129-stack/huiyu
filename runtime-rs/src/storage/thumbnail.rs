@@ -118,7 +118,7 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
         {
             return Err(error.error.into());
         }
-        Ok(format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into())
+        Ok(thumbnail_value(&bytes))
     })
     .await
     .map_err(|_| worker_failed())?
@@ -126,12 +126,20 @@ pub(super) async fn read(storage: &Storage, command: &Value) -> Result<Value> {
 
 fn read_cached(cache: &Path) -> Result<Option<Value>> {
     match fs::read(cache) {
-        Ok(bytes) => Ok(Some(
-            format!("data:image/jpeg;base64,{}", STANDARD.encode(bytes)).into(),
-        )),
+        Ok(bytes) => Ok(Some(thumbnail_value(&bytes))),
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(error) => Err(error.into()),
     }
+}
+
+fn thumbnail_value(bytes: &[u8]) -> Value {
+    const PREFIX: &str = "data:image/jpeg;base64,";
+    let mut uri = String::with_capacity(
+        PREFIX.len() + base64::encoded_len(bytes.len(), true).expect("thumbnail is too large"),
+    );
+    uri.push_str(PREFIX);
+    STANDARD.encode_string(bytes, &mut uri);
+    Value::String(uri)
 }
 
 fn worker_failed() -> ApiError {

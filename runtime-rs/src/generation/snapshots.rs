@@ -37,7 +37,18 @@ pub(super) async fn safe_directory(directory: &Path) -> bool {
     }
     true
 }
-pub(crate) async fn write(path: &Path, value: &Value) -> Result<()> {
+pub(crate) async fn write<T: serde::Serialize + ?Sized>(path: &Path, value: &T) -> Result<()> {
+    prepare(path, value)
+        .await?
+        .persist(path)
+        .map_err(|error| ApiError::from(error.error))?;
+    Ok(())
+}
+
+pub(super) async fn prepare<T: serde::Serialize + ?Sized>(
+    path: &Path,
+    value: &T,
+) -> Result<tempfile::TempPath> {
     let (file, pending) =
         tempfile::NamedTempFile::new_in(path.parent().unwrap_or_else(|| Path::new(".")))?
             .into_parts();
@@ -49,10 +60,7 @@ pub(crate) async fn write(path: &Path, value: &Value) -> Result<()> {
     file.flush().await?;
     file.sync_all().await?;
     drop(file);
-    pending
-        .persist(path)
-        .map_err(|error| ApiError::from(error.error))?;
-    Ok(())
+    Ok(pending)
 }
 
 pub(super) async fn save(inner: &Inner, job: &Job) -> Result<()> {
@@ -187,7 +195,7 @@ async fn drain(inner: &Inner) -> HashMap<String, Lost> {
 
 pub(super) async fn progress_event(
     inner: &Inner,
-    event: Option<crate::upstream::progress::ProgressUpdate>,
+    event: Option<Arc<crate::upstream::progress::ProgressUpdate>>,
 ) {
     let lost = event
         .as_ref()
@@ -216,8 +224,8 @@ pub(super) async fn progress_event(
             && state.upstream_id == event.prompt_id
         {
             state.progress = event.progress;
-            state.current_node = event.current_node.clone();
-            state.progress_text = event.progress_text.clone();
+            state.current_node.clone_from(&event.current_node);
+            state.progress_text.clone_from(&event.progress_text);
             state.progress_live = true;
             state.execution_started = true;
             if event.terminal_hint() {

@@ -28,11 +28,6 @@ pub(super) fn strings(value: &Value) -> Vec<String> {
         })
         .unwrap_or_default()
 }
-pub(super) fn has(value: &Value, text: &str) -> bool {
-    value
-        .as_array()
-        .is_some_and(|items| items.iter().any(|value| value == text))
-}
 pub(super) fn truthy(value: &Value) -> bool {
     match value {
         Value::Null => false,

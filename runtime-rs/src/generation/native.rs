@@ -16,7 +16,7 @@ use std::{path::PathBuf, process::Stdio};
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
 
 pub(crate) struct Plan {
-    pub input: Value,
+    pub input: Arc<Value>,
     pub settings: Settings,
     pub model_dir: PathBuf,
     pub mask_model_dir: Option<PathBuf>,
@@ -104,7 +104,7 @@ impl Service {
             return Err(worker::release_error());
         }
         Ok(Prepared {
-            input: plan.input.clone(),
+            input: plan.input.as_ref().clone(),
             provider: "native".into(),
             execution: Execution::Native(Box::new(plan)),
             selected: "native",
@@ -415,14 +415,23 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         }
         manga::validate(job, &output, token).await?;
         let length = metadata.len();
+        // Do not block cancellation or observation while reading the PNG header.
+        let read_dimensions = plan.input["family"] == "manga-screen"
+            && job.state.lock().await.status == "running";
+        let dimensions = if read_dimensions {
+            Some(output::png_dimensions(&output).await)
+        } else {
+            None
+        };
         {
             let mut state = job.state.lock().await;
             if state.status == "running" {
-                state.metadata["nativeRuntime"] = runtime_observation;
-                if plan.input["family"] == "manga-screen" {
-                    let (width, height) = output::png_dimensions(&output).await?;
-                    state.metadata["width"] = json!(width);
-                    state.metadata["height"] = json!(height);
+                let metadata = Arc::make_mut(&mut state.metadata);
+                metadata["nativeRuntime"] = runtime_observation;
+                if let Some(dimensions) = dimensions {
+                    let (width, height) = dimensions?;
+                    metadata["width"] = json!(width);
+                    metadata["height"] = json!(height);
                 }
             }
         }

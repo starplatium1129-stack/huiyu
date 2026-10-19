@@ -1,14 +1,11 @@
 use super::*;
+use crate::byte_buffer::Buffer;
+use axum::body::Bytes;
 use base64::{Engine, engine::general_purpose::STANDARD};
 use futures_util::StreamExt;
 use reqwest::Method;
 use std::time::Duration;
 use tokio_util::sync::CancellationToken;
-pub(super) struct Bounds {
-    pub timeout: Duration,
-    pub max_bytes: usize,
-}
-
 impl Inner {
     pub(super) fn request(
         &self,
@@ -49,47 +46,43 @@ impl Inner {
         }
         Ok(request)
     }
-    pub(super) async fn raw(
+    async fn read_json(
         &self,
         provider: &str,
-        method: Method,
-        path: &str,
-        body: Option<&Value>,
-        bounds: Bounds,
+        request: reqwest::RequestBuilder,
+        timeout: Duration,
         cancel: &CancellationToken,
-    ) -> Result<(u16, String, Vec<u8>)> {
-        let Bounds { timeout, max_bytes } = bounds;
-        let request = self.request(provider, method, path, body, timeout)?;
+    ) -> Result<(u16, Value)> {
+        let max_bytes = if provider == "webui" { constants::MAX_JSON } else { 2 * 1024 * 1024 };
         let work = async {
             let response = request
                 .send()
                 .await
                 .map_err(|error| network_error(provider, error))?;
             let status = response.status().as_u16();
-            let mime = response
-                .headers()
-                .get("content-type")
-                .and_then(|h| h.to_str().ok())
-                .unwrap_or("")
-                .to_string();
             if response
                 .content_length()
                 .is_some_and(|n| n > max_bytes as u64)
             {
                 return Err(too_large(provider));
             }
-            let mut bytes = Vec::new();
+            let mut bytes = Buffer::Chunk(Bytes::new());
             let mut stream = response.bytes_stream();
             while let Some(chunk) = stream.next().await {
                 let chunk = chunk.map_err(|error| network_error(provider, error))?;
-                if bytes.len().saturating_add(chunk.len()) > max_bytes {
+                if bytes.as_ref().len().saturating_add(chunk.len()) > max_bytes {
                     return Err(too_large(provider));
                 }
-                bytes.extend_from_slice(&chunk);
+                bytes.append(chunk, 0);
             }
-            Ok((status, mime, bytes))
+            Ok((status, bytes))
         };
-        tokio::select! {result=tokio::time::timeout(timeout,work)=>result.map_err(|_|ApiError::new(504,if provider=="webui"{"UPSTREAM_TIMEOUT"}else{"COMFY_TIMEOUT"},"上游请求超时"))?,_ = cancel.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","上游请求已取消"))}
+        let (status, bytes) = tokio::select! {result=tokio::time::timeout(timeout,work)=>result.map_err(|_|ApiError::new(504,if provider=="webui"{"UPSTREAM_TIMEOUT"}else{"COMFY_TIMEOUT"},"上游请求超时"))?,_ = cancel.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","上游请求已取消"))}?;
+        let value = self
+            .decoder
+            .json(provider, status, bytes, cancel, &self.cancel)
+            .await?;
+        Ok((status, value))
     }
     pub(super) async fn raw_json(
         &self,
@@ -100,28 +93,8 @@ impl Inner {
         timeout: Duration,
         cancel: &CancellationToken,
     ) -> Result<(u16, Value)> {
-        let (status, _, bytes) = self
-            .raw(
-                provider,
-                method,
-                path,
-                body,
-                Bounds {
-                    timeout,
-                    max_bytes: if provider == "webui" {
-                        constants::MAX_JSON
-                    } else {
-                        2 * 1024 * 1024
-                    },
-                },
-                cancel,
-            )
-            .await?;
-        let value = self
-            .decoder
-            .json(provider, status, bytes, cancel, &self.cancel)
-            .await?;
-        Ok((status, value))
+        let request = self.request(provider, method, path, body, timeout)?;
+        self.read_json(provider, request, timeout, cancel).await
     }
     pub(super) async fn json(
         &self,
@@ -135,19 +108,31 @@ impl Inner {
         let (status, value) = self
             .raw_json(provider, method, path, body, timeout, cancel)
             .await?;
-        if !(200..300).contains(&status) {
-            return Err(ApiError::new(
-                502,
-                if provider == "webui" {
-                    "UPSTREAM_ERROR"
-                } else {
-                    "COMFY_UPSTREAM_ERROR"
-                },
-                crate::upstream::diagnostic_message(&value, "上游请求失败"),
-            ));
-        }
-        Ok(value)
+        json_success(provider, status, value)
     }
+    pub(super) async fn json_payload<T: serde::Serialize + ?Sized>(
+        &self,
+        provider: &str,
+        method: Method,
+        path: &str,
+        body: &T,
+        timeout: Duration,
+        cancel: &CancellationToken,
+    ) -> Result<Value> {
+        let request = self.request(provider, method, path, None, timeout)?.json(body);
+        let (status, value) = self.read_json(provider, request, timeout, cancel).await?;
+        json_success(provider, status, value)
+    }
+}
+fn json_success(provider: &str, status: u16, value: Value) -> Result<Value> {
+    if !(200..300).contains(&status) {
+        return Err(ApiError::new(
+            502,
+            if provider == "webui" { "UPSTREAM_ERROR" } else { "COMFY_UPSTREAM_ERROR" },
+            crate::upstream::diagnostic_message(&value, "上游请求失败"),
+        ));
+    }
+    Ok(value)
 }
 pub(super) fn too_large(provider: &str) -> ApiError {
     ApiError::new(

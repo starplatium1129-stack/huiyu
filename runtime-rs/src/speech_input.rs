@@ -1,5 +1,6 @@
 use crate::{
     AppState,
+    byte_buffer::Buffer,
     error::{ApiError, Result},
     security,
 };
@@ -27,7 +28,7 @@ struct Service {
     slots: Arc<Semaphore>,
 }
 
-#[derive(Default, Deserialize)]
+#[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct Settings {
     endpoint: String,
@@ -169,8 +170,17 @@ async fn transcribe(
                 result.unwrap_or_else(|_| Err(timeout())),
         };
         let value = match result {
-            Ok(text) => json!({"ok":true,"text":text}),
-            Err(error) => json!({"ok":false,"error":error.message,"code":error.code}),
+            Ok(text) => {
+                let mut value = json!({"ok":true,"text":null});
+                value["text"] = text.into();
+                value
+            }
+            Err(error) => {
+                let mut value = json!({"ok":false,"error":null,"code":null});
+                value["error"] = error.message.into();
+                value["code"] = error.code.into();
+                value
+            }
         };
         Ok::<_, std::convert::Infallible>(Bytes::from(value.to_string()))
     });
@@ -235,21 +245,26 @@ async fn recognize(
     if !status.is_success() {
         return Err(provider_status(status.as_u16()));
     }
-    let value: Value = serde_json::from_slice(&bytes).map_err(|_| {
+    let mut value: Value = serde_json::from_slice(bytes.as_ref()).map_err(|_| {
         ApiError::new(
             502,
             "SPEECH_PAYLOAD",
             "语音服务返回了无法解析的内容，请检查转写接口",
         )
     })?;
-    let text = value.get("text").and_then(Value::as_str).ok_or_else(|| {
-        ApiError::new(
+    let Some(Value::String(mut text)) = value.get_mut("text").map(Value::take) else {
+        return Err(ApiError::new(
             502,
             "SPEECH_PAYLOAD",
             "语音服务未返回 text 字段，请检查转写接口",
-        )
-    })?;
-    Ok(text.trim().to_owned())
+        ));
+    };
+    let leading = text.len() - text.trim_start().len();
+    if leading > 0 {
+        drop(text.drain(..leading));
+    }
+    text.truncate(text.trim_end().len());
+    Ok(text)
 }
 
 async fn probe(
@@ -277,7 +292,7 @@ async fn probe(
         if !status.is_success() {
             return Err(provider_status(status.as_u16()));
         }
-        let value: Value = serde_json::from_slice(&bytes).map_err(|_| {
+        let value: Value = serde_json::from_slice(bytes.as_ref()).map_err(|_| {
             ApiError::new(
                 502,
                 "SPEECH_PAYLOAD",
@@ -306,19 +321,19 @@ async fn probe(
     }
 }
 
-async fn read_reply(response: reqwest::Response) -> Result<Vec<u8>> {
+async fn read_reply(response: reqwest::Response) -> Result<Buffer> {
     let mut stream = response.bytes_stream();
-    let mut bytes = Vec::new();
+    let mut bytes = Buffer::Chunk(Bytes::new());
     while let Some(chunk) = stream.next().await {
         let chunk = chunk.map_err(network)?;
-        if bytes.len().saturating_add(chunk.len()) > MAX_REPLY_BYTES {
+        if bytes.as_ref().len().saturating_add(chunk.len()) > MAX_REPLY_BYTES {
             return Err(ApiError::new(
                 502,
                 "SPEECH_PAYLOAD",
                 "语音服务响应超过大小限制",
             ));
         }
-        bytes.extend_from_slice(&chunk);
+        bytes.append(chunk, 0);
     }
     Ok(bytes)
 }

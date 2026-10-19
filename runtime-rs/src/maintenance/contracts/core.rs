@@ -1,11 +1,16 @@
 use super::*;
+use std::sync::LazyLock;
+
+static ID_RE: LazyLock<regex::Regex> =
+    LazyLock::new(|| regex::Regex::new(r"^[a-z][a-z0-9_-]*$").unwrap());
 
 pub(super) fn validate(
     root: &DataRoot,
-    data: &Value,
+    characters: &Value,
+    loras: &Value,
+    scenes: &Value,
     issues: &mut Vec<String>,
 ) {
-    let (characters, loras, scenes) = (&data["characters"], &data["loras"], &data["scenes"]);
     let initial = issues.len();
     if !characters.is_array() || list(characters).is_empty() {
         issues.push("characters.json must contain at least one character".into());
@@ -21,7 +26,6 @@ pub(super) fn validate(
     }
     let mut character_ids = HashSet::new();
     let mut character_loras = HashSet::new();
-    let id_re = regex::Regex::new(r"^[a-z][a-z0-9_-]*$").unwrap();
     for (index, character) in list(characters).iter().enumerate() {
         let label = format!("characters[{index}]");
         if !character.is_object() {
@@ -29,7 +33,7 @@ pub(super) fn validate(
             continue;
         }
         let id = property(character, "id");
-        if !id_re.is_match(&id) {
+        if !ID_RE.is_match(&id) {
             issues.push(format!("{label}.id must be a stable lowercase key"));
         }
         if !character_ids.insert(key(character.get("id"))) {

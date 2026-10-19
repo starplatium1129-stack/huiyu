@@ -52,7 +52,7 @@ fn pending(options: &Options, paths: &Paths, release: &Release) -> Result<Option
         || value["releaseSha256"] != options.expected
         || value["releaseId"] != release.id
         || value["target"]["releaseSha256"] != options.expected
-        || value["target"]["contentIdentity"] != release.showcase.identity()
+        || value["target"]["contentIdentity"] != release.showcase_identity()
         || !name
             .strip_prefix("editions/")
             .is_some_and(|tail| tail.len() == 36 && uuid::Uuid::parse_str(tail).is_ok())
@@ -148,7 +148,7 @@ pub(super) fn preview(
     Ok(
         json!({"ok":true,"kind":"huiyu-offline-import-plan","apply":false,"releaseId":release.id,"appVersion":release.app_version,
         "releaseSha256":options.expected,"resourceFiles":release.assets.entries.len(),"resourceBytes":release.assets.bytes(),
-        "showcaseFiles":release.showcase_payload.entries.len(),"showcaseBytes":release.showcase_payload.bytes(),"showcaseEntries":release.display["entries"].as_array().unwrap().len(),"mode":if release.baseline.is_some(){"delta"}else{"full"},"baseRelease":release.baseline,
+        "showcaseFiles":release.showcase_payload().entries.len(),"showcaseBytes":release.showcase_payload().bytes(),"showcaseEntries":release.display["entries"].as_array().unwrap().len(),"mode":if release.baseline.is_some(){"delta"}else{"full"},"baseRelease":release.baseline,
         "userResourceRoot":paths.user,"showcaseLibraryRoot":paths.showcase,"configuration":paths.policy,
         "catalogIncluded":release.catalog.is_some(),"currentResource":installed,"currentShowcase":pointer["current"],"recoveryRequired":transaction.is_some(),"requiresDesktopClosed":true}),
     )
@@ -212,7 +212,7 @@ pub(super) fn apply_with_progress(
         );
     }
     if journal.is_none() {
-        let target = json!({"path":format!("editions/{}", uuid::Uuid::new_v4()),"releaseSha256":options.expected,"contentIdentity":release.showcase.identity()});
+        let target = json!({"path":format!("editions/{}", uuid::Uuid::new_v4()),"releaseSha256":options.expected,"contentIdentity":release.showcase_identity()});
         let mut value = json!({"schemaVersion":1,"kind":"huiyu-offline-import","releaseId":release.id,"releaseSha256":options.expected,
             "beforeShowcase":before_showcase,"beforeResource":before_resource,"target":target,"phase":"preparing"});
         save(paths, &mut value, "preparing")?;
@@ -222,13 +222,18 @@ pub(super) fn apply_with_progress(
     state::validate(&op.ctx, &journal["beforeResource"])?;
     let recovered = journal["phase"] != "preparing";
     let root = fs::child(&paths.showcase, journal["target"]["path"].as_str().unwrap())?;
-    let ready = showcase::prepare(
+    let mut ready = showcase::prepare(
         &op,
         paths,
         &journal["beforeShowcase"],
         &journal["target"],
         release,
     )?;
+    let preserved_local_entries = ready
+        .get_mut("preservedLocalEntries")
+        .map(Value::take)
+        .unwrap_or(Value::Null);
+    drop(ready);
     if journal["phase"] != "committed" {
         save(paths, &mut journal, "showcase-prepared")?;
     }
@@ -249,11 +254,11 @@ pub(super) fn apply_with_progress(
         let catalog = super::catalog::apply(options, release, &mut catalog)?;
         fs::remove(&context_file)?;
         fs::remove(&paths.pending)?;
-        Ok(
-            json!({"ok":true,"kind":"huiyu-offline-import-result","action":if recovered{"recovered"}else{"installed"},"releaseId":release.id,
+        let mut value = json!({"ok":true,"kind":"huiyu-offline-import-result","action":if recovered{"recovered"}else{"installed"},"releaseId":release.id,
             "releaseSha256":options.expected,"resources":{"files":release.assets.entries.len(),"identity":release.assets.identity()},
-            "showcase":{"entries":release.display["entries"].as_array().unwrap().len(),"root":root,"preservedLocalEntries":ready["preservedLocalEntries"]},"catalog":catalog,"restartRequired":true}),
-        )
+            "showcase":{"entries":release.display["entries"].as_array().unwrap().len(),"root":root,"preservedLocalEntries":null},"catalog":catalog,"restartRequired":true});
+        value["showcase"]["preservedLocalEntries"] = preserved_local_entries;
+        Ok(value)
     })();
     if result.is_err()
         && journal["phase"] != "committed"

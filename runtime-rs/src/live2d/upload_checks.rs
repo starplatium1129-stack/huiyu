@@ -2,7 +2,7 @@ use super::manifest::{invalid, relative};
 use crate::error::Result;
 use serde_json::Value;
 use std::{
-    collections::{HashMap, HashSet},
+    collections::HashSet,
     fs,
     io::Read,
     path::Path,
@@ -25,9 +25,10 @@ fn json_depth(value: &Value, depth: usize) -> bool {
 pub(super) fn inspect(
     directory: &Path,
     paths: &[String],
+    entry: &str,
     cancel: &CancellationToken,
-) -> Result<HashMap<String, Value>> {
-    let mut json = HashMap::new();
+) -> Result<Option<Value>> {
+    let mut model = None;
     for name in paths {
         super::editor::check_cancel(cancel)?;
         let path = directory.join(name);
@@ -42,7 +43,9 @@ pub(super) fn inspect(
                 if !value.is_object() || !json_depth(&value, 0) {
                     return Err(invalid("Invalid JSON shape, depth or key"));
                 }
-                json.insert(name.clone(), value);
+                if name.as_str() == entry {
+                    model = Some(value);
+                }
             }
             "png" | "jpg" | "jpeg" | "webp" => {
                 // Header inspection only: do not decode or recolor uploaded atlases.
@@ -81,9 +84,9 @@ pub(super) fn inspect(
             _ => {}
         }
     }
-    Ok(json)
+    Ok(model)
 }
-pub(super) fn references(model: &Value, entry: &str, paths: &HashSet<String>) -> Result<()> {
+pub(super) fn references(model: &Value, entry: &str, paths: &HashSet<&str>) -> Result<()> {
     let refs = model["FileReferences"]
         .as_object()
         .ok_or_else(|| invalid("FileReferences required"))?;
@@ -96,10 +99,11 @@ pub(super) fn references(model: &Value, entry: &str, paths: &HashSet<String>) ->
             .as_str()
             .ok_or_else(|| invalid("Invalid model reference"))?;
         relative(name)?;
+        let lower = name.to_ascii_lowercase();
         if !extensions
             .iter()
-            .any(|extension| name.to_ascii_lowercase().ends_with(extension))
-            || !paths.contains(&format!("{prefix}{name}"))
+            .any(|extension| lower.ends_with(extension))
+            || !paths.contains(format!("{prefix}{name}").as_str())
         {
             return Err(invalid("Missing or unsupported model reference"));
         }

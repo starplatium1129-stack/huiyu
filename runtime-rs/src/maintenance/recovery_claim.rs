@@ -92,12 +92,12 @@ impl Claim {
         }
         Ok(current.value)
     }
-    pub fn update(&self, patch: Value) -> Result<()> {
+    pub fn update(&self, mut patch: Value) -> Result<()> {
         let mut value = self.owned()?;
         value
             .as_object_mut()
             .unwrap()
-            .extend(patch.as_object().unwrap().clone());
+            .extend(std::mem::take(patch.as_object_mut().unwrap()));
         journal::write(&self.ctx, value)
     }
     pub fn finish(&mut self) -> Result<()> {
