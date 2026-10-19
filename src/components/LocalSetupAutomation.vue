@@ -48,11 +48,12 @@
               <small>{{ automation.recommendation.value.label }} · 使用本机聊天</small>
             </div>
           </article>
+          <label v-if="automation.drawing.value && snapshot.comfy.installation === 'present'" class="setup-addon"><input v-model="automation.rebuildComfy.value" type="checkbox" /><span><strong>从校验运行包重建环境</strong><small>用于旧环境升级或修复；模型继续可用，旧环境和用户资源完整保留，不沿用旧代码。</small></span></label>
           <div v-if="automation.drawing.value && automation.externalEnvironment.value" class="setup-existing">
             <ArchiveIcon name="info" /><strong>使用已有 ComfyUI</strong><small>从原入口启动，再回到这里检查。</small>
             <div class="setup-buttons"><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查连接</button><button class="btn btn-quiet btn-sm" type="button" @click="emit('workspace')">换新文件夹自动安装</button></div>
           </div>
-          <div v-else-if="automation.drawing.value && snapshot.comfy.layout !== 'venv'" class="setup-runtime">
+          <div v-else-if="automation.drawing.value && (snapshot.comfy.installation !== 'present' || automation.rebuildComfy.value)" class="setup-runtime">
             <label for="setup-comfy-runtime">绘图运行环境</label>
             <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择适合显卡的运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA 显卡 · CUDA 13.0（默认）' }, { value: 'comfy-cu126', label: '较旧 NVIDIA 显卡 · CUDA 12.6' }]" />
           </div>
@@ -67,7 +68,7 @@
         </div>
       </div>
       <div class="setup-submit">
-        <div v-if="automation.serviceMustStop.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="warning" /><span>补装节点前，请先停止 ComfyUI。</span><RouterLink class="btn btn-ghost btn-sm" :to="{ query: $route.query, hash: '#control-overview' }">去停止服务</RouterLink><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">已停止，重新检查</button></div>
+        <div v-if="automation.serviceMustStop.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="warning" /><span>重建环境前，请先停止 ComfyUI。</span><RouterLink class="btn btn-ghost btn-sm" :to="{ query: $route.query, hash: '#control-overview' }">去停止服务</RouterLink><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">已停止，重新检查</button></div>
         <div v-if="workspaceBlocked || !statusConfirmed || automation.environmentRequired.value || !automation.hasSelection.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="info" /><span>{{ workspaceBlocked ? '请先确认存放位置。' : !statusConfirmed ? '配置检查尚未完成。' : automation.environmentRequired.value ? '请选择上方的绘图运行环境。' : '选择 AI 绘图或本地聊天。' }}</span><button v-if="!statusConfirmed && !workspaceBlocked" class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查</button></div>
         <label class="setup-review"><input v-model="automation.reviewed.value" type="checkbox" :disabled="!automation.hasSelection.value" /><span>同意下载、安装并启用所选功能及其<a v-if="automation.hasSelection.value" :href="automation.drawing.value ? selectedImage?.preparation?.licenseUrl : selectedChat?.preparation?.licenseUrl" target="_blank" rel="noopener noreferrer">使用许可</a></span></label>
         <div class="setup-buttons"><button class="btn btn-primary" type="button" :disabled="!canRun" @click="automation.run"><ArchiveIcon name="download" />{{ automation.error.value ? '继续下载并配置' : '下载并自动配置' }}</button><button v-if="automation.canStartExisting.value" class="btn btn-ghost" type="button" :disabled="!statusConfirmed || workspaceBlocked" @click="automation.startExisting">使用已有环境</button></div>

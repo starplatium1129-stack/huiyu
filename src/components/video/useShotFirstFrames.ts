@@ -10,7 +10,7 @@ import { ref, onScopeDispose, type Ref } from 'vue'
 import { useTrackedTask } from '@/composables/useTaskCenter'
 import { importVideoImage, uploadVideoImage, type VideoImageUploadResponse } from '@/api/videoApi'
 import { artworkRepository } from '@/storage/artworkRepository'
-import { hasRuntimeTasks, submitRuntimeTask, getRuntimeTaskByKey, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey } from '@/api/runtimeTasks'
+import { hasRuntimeTasks, submitRuntimeTask, recoverRuntimeTaskRequest, waitForRuntimeTask, fetchRuntimeResult, runtimeResultPath, cancelRuntimeTaskKey } from '@/api/runtimeTasks'
 import { readFirstFrameRequest, type FirstFrameRequest } from '@/types/firstFrameRequest'
 import type { ShotDraft } from './shotListTypes'
 
@@ -70,7 +70,7 @@ export function useShotFirstFrames(options: {
     let mediaCurrent = true
     const sameSource = () => mediaCurrent && repository === artworkRepository && mediaSession === imageMediaSession()
     const stopRuntime = onDesktopRuntime(() => { if (!sameSource()) mediaCurrent = false })
-    let failed = 0, completed = 0
+    let failed = 0, completed = 0, cancelledCount = 0
     try {
       await withArtworkStaging(async () => {
         signal.throwIfAborted()
@@ -109,8 +109,7 @@ export function useShotFirstFrames(options: {
             if (request.transport === 'runtime') {
               const accepted = fresh
                 ? await submitRuntimeTask('creative', request.input, request.key, { role: 'storyboard-first-frame', shotIndex: pending[i].index }, { signal: frameSignal, onSubmitting: markSubmitting })
-                : await getRuntimeTaskByKey(request.key, frameSignal)
-              if (!accepted) throw new Error('首帧接收状态尚未确认，请再次查询原请求；不会重新生成。')
+                : await recoverRuntimeTaskRequest(request.key, frameSignal)
               const task = await waitForRuntimeTask(accepted.taskId, frameSignal, () => {})
               if (!current()) continue
               shot.firstFrameRequest = { ...request, state: 'succeeded' }; await options.persist()
@@ -145,10 +144,15 @@ export function useShotFirstFrames(options: {
             if (signal.aborted) throw signal.reason
             if (attached) throw error
             if (!current()) continue
-            const rejected = fresh && error instanceof TaskSubmissionRejected && error.requestKey === shot.firstFrameRequest?.key
+            const rejected = error instanceof TaskSubmissionRejected && error.requestKey === shot.firstFrameRequest?.key
             if (rejected || error instanceof AcceptedTaskTerminalError || error instanceof DirectRequestRejected) {
-              if (shot.firstFrameRequest) shot.firstFrameRequest.state = error instanceof AcceptedTaskTerminalError ? error.status : error instanceof DirectRequestRejected && error.code === 'IMAGE_REQUEST_CANCELLED' ? 'cancelled' : 'failed'
-              await options.persist(); failed++; continue
+              const cancelled = rejected && error.code === 'TASK_REQUEST_CANCELLED'
+                || error instanceof DirectRequestRejected && error.code === 'IMAGE_REQUEST_CANCELLED'
+                || error instanceof AcceptedTaskTerminalError && error.status === 'cancelled'
+              if (shot.firstFrameRequest) shot.firstFrameRequest.state = error instanceof AcceptedTaskTerminalError ? error.status : cancelled ? 'cancelled' : 'failed'
+              await options.persist()
+              if (cancelled) cancelledCount++; else failed++
+              continue
             }
             // Unknown acceptance, observation or result delivery retains the key
             // and stops this batch. The next click only queries this same request.
@@ -163,7 +167,8 @@ export function useShotFirstFrames(options: {
           }
         }
         if (!disposed && !signal.aborted) {
-          if (failed || completed) options.onError(failed ? `${failed} 个镜头首帧失败；重按只重试确证失败项，其余先查询原任务。` : '')
+          if (failed || completed || cancelledCount) options.onError(failed || cancelledCount
+            ? `${failed} 个镜头首帧失败，${cancelledCount} 个已安全取消；再次生成只重试这些已结算项，其余先核对原任务。` : '')
           taskStatus.value = failed ? 'failed' : completed ? 'succeeded' : 'cancelled'
         }
       })

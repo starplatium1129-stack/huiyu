@@ -6,13 +6,15 @@ use tokio::process::Command;
 
 impl ControlService {
     pub(super) fn comfy_root(&self) -> std::path::PathBuf {
+        let managed = self.config.ai_workspace_root.join(".runtimes/comfy/ComfyUI");
+        if managed.join("main.py").is_file() {
+            return managed;
+        }
         let existing = self.config.ai_workspace_root.join("ComfyUI");
         if existing.join("main.py").is_file() {
             existing
         } else {
-            self.config
-                .ai_workspace_root
-                .join(".runtimes/comfy/ComfyUI")
+            managed
         }
     }
 

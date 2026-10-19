@@ -159,7 +159,7 @@
             </span>
           </div>
           <div class="batch-progress"><i :style="{ '--progress': progressPercent + '%' }"></i></div>
-          <p v-if="batchDraw.restored.value" class="batch-hint">已恢复上次计划与原参数；本次尚未自动生成。接收状态不明的项只查询原请求编号。</p>
+          <p v-if="batchDraw.restored.value" class="batch-hint">已恢复上次计划与原参数；本次尚未自动生成。核对原请求时，未查到的项会先保存取消意图，确认结算后才允许重试。</p>
 
           <div class="batch-result-grid">
             <figure v-for="job in jobs" :key="job.id" :ref="element => batchMedia.bindCard(job.id, element as Element | null)" class="batch-card" :data-state="job.status" :data-preview-id="job.id">
@@ -206,7 +206,7 @@
                 </button>
                 <RouterLink v-if="comparisonIds.length >= 2" class="btn btn-primary" :to="`/gallery?compare=${comparisonIds.join(',')}`" @click="emit('close')">{{ progress.succeeded > 4 ? '对比前 4 张' : '对比本批候选' }}</RouterLink>
                 <button v-if="batchDraw.engine.value !== 'sd' && retryableCount && !progress.unresolved" class="btn btn-ghost" type="button" :disabled="batchDraw.resetting.value" @click="onRetryFailed">
-                  <ArchiveIcon name="spark" /> 重试失败 {{ retryableCount }} 张
+                  <ArchiveIcon name="spark" /> 重试失败 / 取消 {{ retryableCount }} 张
                 </button>
                 <StudioTooltip anchor :content="progress.unresolved ? '先核对原任务，再开启新计划' : undefined">
                   <button class="btn btn-ghost" type="button" :disabled="Boolean(progress.unresolved) || batchDraw.resetting.value" @click="resetToConfig">{{ batchDraw.resetting.value ? '正在清除计划…' : '再来一批' }}</button>
@@ -300,7 +300,7 @@ const batchMedia = useBatchArtworkThumbnails({ jobs: previewJobs, active: comput
 const comparisonIds = computed(() => jobs.value.filter(job => job.historyId != null).slice(0, 4).map(job => encodeURIComponent(String(job.historyId))))
 const progress = computed(() => batchDraw.progress.value)
 const retryableCount = computed(() =>
-  jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled' && job.taskId).length)
+  jobs.value.filter(job => job.status === 'failed' || job.status === 'cancelled').length)
 const progressPercent = computed(() => {
   if (!progress.value.total) return 0
   return Math.min(100, Math.round((progress.value.done / progress.value.total) * 100))
@@ -450,7 +450,7 @@ function placeholderText(job: DeepReadonly<BatchDrawJob>): string {
   if (job.status === 'accepted') return job.message || '已接收，等待结果…'
   if (job.status === 'unknown') return '待核对原任务'
   if (job.status === 'pending') return '排队中'
-  if (job.status === 'cancelled') return job.taskId ? '原任务已取消' : '未执行（已停止）'
+  if (job.status === 'cancelled') return job.taskId || job.submitted !== false ? '原请求已安全取消' : '未执行（已停止）'
   return '已入册'
 }
 

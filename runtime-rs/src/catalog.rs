@@ -220,7 +220,7 @@ impl Catalog {
                 ));
             }
             None => self.initialize()?,
-            Some("1") => (),
+            Some("1") => self.migrate_seed_provenance()?,
             _ => {
                 return Err(ApiError::new(
                     503,

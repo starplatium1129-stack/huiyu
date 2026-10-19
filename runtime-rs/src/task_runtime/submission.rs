@@ -15,21 +15,21 @@ impl TaskRuntime {
         principal: String,
         mut request: Value,
     ) -> Result<Value> {
-        self.check_running()?;
+        self.check_running().map_err(ApiError::not_accepted)?;
         let key = request["requestKey"]
             .as_str()
             .filter(|s| !s.is_empty() && s.len() <= 200)
-            .ok_or_else(|| ApiError::invalid("Invalid task request key"))?
+            .ok_or_else(|| ApiError::invalid("Invalid task request key").not_accepted())?
             .to_owned();
         let kind: TaskKind = serde_json::from_value(request["kind"].clone()).map_err(|_| {
             ApiError::new(
                 501,
                 "TASK_PROVIDER_NOT_MIGRATED",
                 "This task provider has not been migrated",
-            )
+            ).not_accepted()
         })?;
         if !request["input"].is_object() {
-            return Err(ApiError::invalid("Task input must be an object"));
+            return Err(ApiError::invalid("Task input must be an object").not_accepted());
         }
         let mut frozen = json!({"kind":request["kind"],"input":null});
         frozen["input"] = request["input"].take();
@@ -39,14 +39,14 @@ impl TaskRuntime {
         if kind == TaskKind::Qwen {
             let context = &frozen["context"];
             if !context.is_null() && !context.is_object() {
-                return Err(ApiError::invalid("Qwen context must be an object"));
+                return Err(ApiError::invalid("Qwen context must be an object").not_accepted());
             }
             let parent = &context["parentId"];
             if !parent.is_null()
                 && !parent.as_str().is_some_and(|id| !id.is_empty() && id.encode_utf16().count() <= 240)
                 && !parent.as_u64().is_some_and(|id| id <= 9_007_199_254_740_991)
             {
-                return Err(ApiError::invalid("Invalid Qwen parent artwork identity"));
+                return Err(ApiError::invalid("Invalid Qwen parent artwork identity").not_accepted());
             }
         }
         let existing = storage.task_record_by_request(&key, &principal).await?;
@@ -66,7 +66,10 @@ impl TaskRuntime {
             }
             return Ok(existing.into_value()?);
         }
-        let prepared = self.prepare(kind, frozen["input"].take()).await?;
+        // No acceptance command has been transferred yet. Validation and model
+        // preparation failures are definite rejections, never a lost receipt.
+        let prepared = self.prepare(kind, frozen["input"].take()).await
+            .map_err(ApiError::not_accepted)?;
         self.accept_prepared(
             storage,
             principal,
@@ -92,7 +95,7 @@ impl TaskRuntime {
         prepared: Preparation,
         submission: Submission,
     ) -> Result<Value> {
-        self.check_running()?;
+        self.check_running().map_err(ApiError::not_accepted)?;
         let Submission {
             kind,
             key,
@@ -128,7 +131,7 @@ impl TaskRuntime {
                 .input()
                 .as_object()
                 .cloned()
-                .ok_or_else(|| ApiError::invalid("Invalid prepared task input"))?,
+                .ok_or_else(|| ApiError::invalid("Invalid prepared task input").not_accepted())?,
             input_media_refs: vec![],
             result_state: ResultState::None,
             result_refs: vec![],
@@ -150,7 +153,7 @@ impl TaskRuntime {
         // The runtime owns acceptance and dispatch; callers query the stable key.
         self.tracker.spawn(async move {
             let accepted = async {
-                runtime.check_running()?;
+                runtime.check_running().map_err(ApiError::not_accepted)?;
                 let mut result = storage
                     .task(
                         TaskCommand::Accept {

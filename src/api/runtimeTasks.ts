@@ -147,7 +147,19 @@ export async function readRuntimeTaskHistory(): Promise<unknown> {
 export async function cancelRuntimeTaskKey(key: string, signal?: AbortSignal) {
   const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'DELETE', undefined, signal)
   if (task) remember(task)
+  else if (task === null) forgetTaskRequest(key)
+  else throw new Error('取消回执无效，原请求状态仍待核对')
   return task
+}
+/** Missing reads prove nothing. A committed cancel intent fences late acceptance. */
+export async function recoverRuntimeTaskRequest(key: string, signal?: AbortSignal): Promise<TaskRecord> {
+  const expected = epoch()
+  const existing = await getRuntimeTaskByKey(key, signal)
+  if (existing) return existing
+  if (existing !== null || expected !== epoch()) throw new Error('原请求状态仍待核对，请恢复原连接后重试')
+  const cancelled = await cancelRuntimeTaskKey(key, signal)
+  if (cancelled) return cancelled
+  throw new TaskSubmissionRejected(key, '原请求已保存取消意图并安全结算，可重试或重置。', 'TASK_REQUEST_CANCELLED')
 }
 export async function cancelRuntimeTask(id: string, signal?: AbortSignal) {
   const task = await getRuntimeTask(id, signal)

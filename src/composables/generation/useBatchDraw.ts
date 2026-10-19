@@ -82,7 +82,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     const count = (status: BatchDrawJob['status']) => jobs.value.filter(job => job.status === status).length
     const succeeded = count('succeeded'), failed = count('failed'), cancelled = count('cancelled')
     const unresolved = count('unknown') + count('accepted')
-    const remaining = count('pending') + jobs.value.filter(job => job.status === 'cancelled' && !job.taskId).length
+    const remaining = count('pending') + jobs.value.filter(job => job.status === 'cancelled' && !job.taskId && job.submitted === false).length
     return { total: jobs.value.length, done: succeeded + failed + cancelled, succeeded, failed, cancelled, unresolved, remaining }
   })
 
@@ -164,7 +164,10 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
         if (cancelRequested.value && !reconnect) { job.status = 'cancelled'; break }
         let result: BatchDrawRunnerResult
         try { result = await run(runnerInput(job, reconnect)) }
-        catch (error) { result = { ok: false, unresolved: runtimeOwned && !(error instanceof TaskSubmissionRejected && !reconnect && error.requestKey === job.requestKey), error: error instanceof Error ? error.message : String(error) } }
+        catch (error) {
+          const rejected = error instanceof TaskSubmissionRejected && error.requestKey === job.requestKey
+          result = { ok: false, cancelled: rejected && error.code === 'TASK_REQUEST_CANCELLED', unresolved: runtimeOwned && !rejected, error: error instanceof Error ? error.message : String(error) }
+        }
         if (disposed && result.historyId == null) break
         if (result.historyId != null) job.historyId = result.historyId
         if (result.imageId) job.imageId = result.imageId
@@ -179,10 +182,10 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       }
     } finally { running.value = false; observer = null; activeJobId = ''; submissionStarted = false }
     if (disposed) return
-    const { total, succeeded, failed, remaining, unresolved } = progress.value
+    const { total, succeeded, failed, cancelled, remaining, unresolved } = progress.value
     onFlash(unresolved ? '批次已暂停：先核对已接收任务，再继续剩余项。' : remaining
       ? `批次已暂停：${succeeded} 张成功，${remaining} 张未执行`
-      : failed ? `批量完成：${succeeded}/${total} 张成功，${failed} 张失败` : `批量完成：${succeeded}/${total} 张全部入册`)
+      : failed || cancelled ? `批量结束：${succeeded}/${total} 张成功，${failed} 张失败，${cancelled} 张已取消` : `批量完成：${succeeded}/${total} 张全部入册`)
   }
 
   async function start(items: BatchTargetItem[], count: number, baseSeed: number, unitLabel = '个项目',
@@ -213,7 +216,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     if (running.value || resetting.value || disposed) return
     if (unreadable) { restorePlan(); if (unreadable) { onFlash(storageError.value); return } }
     const unresolved = jobs.value.filter(job => job.status === 'unknown' || job.status === 'accepted')
-    const remaining = jobs.value.filter(job => job.status === 'pending' || job.status === 'cancelled' && !job.taskId)
+    const remaining = jobs.value.filter(job => job.status === 'pending' || job.status === 'cancelled' && !job.taskId && job.submitted === false)
     await execute([...unresolved, ...remaining], '正在核对原任务，继续本批剩余项…')
   }
   async function retryFailed(): Promise<void> {

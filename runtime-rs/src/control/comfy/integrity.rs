@@ -13,7 +13,7 @@ struct Manifest {
     files: BTreeMap<String, String>,
 }
 fn invalid() -> ApiError {
-    ApiError::new(409, "COMFY_CODE_UNVERIFIED", "受管 ComfyUI 代码完整性无法确认或文件已改变，已停止启动；请使用新的 AI 工作区从已校验运行包重新准备，原文件保留")
+    ApiError::new(409, "COMFY_CODE_UNVERIFIED", "受管 ComfyUI 代码完整性无法确认或文件已改变，已停止启动；请在控制室重新准备环境，从已校验运行包重建，原模型与资源保留")
 }
 fn scan(root: &Path, relative: &str, files: &mut BTreeMap<String, PathBuf>, cancel: &CancellationToken) -> Result<()> {
     if cancel.is_cancelled() { return Err(ApiError::new(499, "CANCELLED", "代码校验已取消")); }

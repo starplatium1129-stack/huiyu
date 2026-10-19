@@ -28,7 +28,7 @@ impl ControlService {
                 "请确认当前工作区与准备清单",
             ));
         }
-        let mut files = match environment.as_str() {
+        let files = match environment.as_str() {
             "llama-cuda" => vec!["runtime-llama-cuda", "runtime-llama-cudart"],
             "llama-vulkan" => vec!["runtime-llama-vulkan"],
             "comfy-nvidia" => vec![
@@ -43,11 +43,6 @@ impl ControlService {
             ],
             _ => return Err(ApiError::invalid("未知受管环境")),
         };
-        if environment.starts_with("comfy-")
-            && reuse_comfy_environment(&self.comfy_root(), &environment)?
-        {
-            files.remove(0);
-        }
         let permit = self.setup_permit()?;
         let operation = self.begin(
             "prepare-environment",
@@ -171,10 +166,8 @@ impl ControlService {
         {
             if environment.starts_with("comfy-") {
                 self.require_stopped_comfy_for_preparation().await?;
-                let root = self.comfy_root();
-                if root.join("main.py").is_file() {
-                    super::comfy::integrity::verify(&root, cancel).await?;
-                }
+                // Repair establishes code from verified packages in a new
+                // directory. An absent or damaged old baseline must not block it.
             }
             let path_for = |id: &str| -> Result<std::path::PathBuf> {
                 Ok(model_root(&self.config.ai_workspace_root, id)?.join(model_file(id)?.path))
@@ -296,41 +289,6 @@ impl ControlService {
             Ok(())
         }
     }
-}
-
-// Existing venvs retain their Python/CUDA and only prepare nodes. Portable
-// environments must have a matching publisher receipt before skipping a bundle.
-fn reuse_comfy_environment(root: &std::path::Path, environment: &str) -> Result<bool> {
-    if !root.join("main.py").is_file() {
-        return Ok(false);
-    }
-    let portable = root.parent().unwrap_or(root);
-    if !portable.join("python_embeded/python.exe").is_file() {
-        if root.join("venv/Scripts/python.exe").is_file() {
-            return Ok(true);
-        }
-        return Err(ApiError::new(
-            409,
-            "COMFY_EXTERNAL_ENVIRONMENT",
-            "现有 ComfyUI 的 Python 由外部环境管理；请使用原入口启动并连接，文件未修改",
-        ));
-    }
-    let installed = managed_comfy_environment(root);
-    if installed["state"] == "unknown" {
-        return Err(ApiError::new(
-            409,
-            "COMFY_ENVIRONMENT_UNVERIFIED",
-            "现有 Portable 缺少可确认的绘遇运行包记录，无法确认 CUDA 版本；请使用原入口启动，或选择新的 AI 工作区重新准备。原文件保留",
-        ));
-    }
-    if installed["state"] != "verified" || installed["environment"] != environment {
-        return Err(ApiError::new(
-            409,
-            "COMFY_ENVIRONMENT_MISMATCH",
-            "现有 Portable 与所选 CUDA 变体或固定运行包版本不同，本次未切换；请沿用原版本，或选择新的 AI 工作区准备。原文件保留",
-        ));
-    }
-    Ok(true)
 }
 
 // Receipt identity, not a claim that Python/CUDA or model loading was tested.

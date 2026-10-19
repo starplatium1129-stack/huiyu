@@ -46,39 +46,24 @@ function Find-Directory([string]$root,[string]$file) {
 function Install-Node([string]$source,[string]$name,[string]$comfy,[string]$python) {
   $target=Join-Path (Join-Path $comfy 'custom_nodes') $name
   Assert-InWorkspace $target
-  $existing=Test-Path -LiteralPath $target
+  if (Test-Path -LiteralPath $target) { throw ('全新运行包中存在冲突节点：'+$name) }
   $nodeStage=Join-Path $stagePath $name
   Expand-Package $source $nodeStage
   $folders=@(Get-ChildItem -LiteralPath $nodeStage -Directory)
   if ($folders.Count -ne 1) { throw '节点包目录布局无效' }
   $nodeRoot=$folders[0].FullName
   if (-not (Test-Path -LiteralPath (Join-Path $nodeRoot '__init__.py') -PathType Leaf)) { throw ('固定节点包缺少入口：'+$name) }
-  if ($existing) {
-    if (-not (Test-Path -LiteralPath $target -PathType Container)) { throw ('已有节点路径不是目录：'+$name+'。请自行核对并移走冲突文件后重试；未覆盖。') }
-    # Never replace user nodes. Only repair dependencies when the installed
-    # Python sources and dependency declarations match the verified archive.
-    $sources=@(Get-ChildItem -LiteralPath $nodeRoot -Recurse -File | Where-Object { $_.Extension -eq '.py' -or $_.Name -in @('requirements.txt','pyproject.toml') })
-    foreach ($sourceFile in $sources) {
-      $relative=$sourceFile.FullName.Substring($nodeRoot.Length).TrimStart('\')
-      $installed=Join-Path $target $relative
-      Assert-InWorkspace $installed
-      if (-not (Test-Path -LiteralPath $installed -PathType Leaf) -or
-          (Get-FileHash -LiteralPath $installed -Algorithm SHA256).Hash -ne (Get-FileHash -LiteralPath $sourceFile.FullName -Algorithm SHA256).Hash) {
-        throw ('已有节点不完整或与固定版本不同：'+$name+' / '+$relative+' 缺失或内容不匹配。请使用原环境管理方式修复，或自行备份并移走该节点目录后重试；未覆盖。')
-      }
-    }
-  }
   $requirements=Join-Path $nodeRoot 'requirements.txt'
   if (Test-Path -LiteralPath $requirements) {
     $pipCache=Join-Path $setupRoot 'pip-cache'
     Assert-InWorkspace $pipCache
-    & $python -s -m pip install --disable-pip-version-check --cache-dir $pipCache -r $requirements
+    & $python -I -B -m pip install --disable-pip-version-check --cache-dir $pipCache -r $requirements
     if ($LASTEXITCODE -ne 0) { throw ('节点依赖安装失败：'+$name) }
   }
   New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
   Assert-InWorkspace $nodeRoot
   Assert-InWorkspace $target
-  if (-not $existing) { Move-Item -LiteralPath $nodeRoot -Destination $target }
+  Move-Item -LiteralPath $nodeRoot -Destination $target
 }
 function Write-CodeBaseline([string]$portable) {
   $files=[ordered]@{}
@@ -123,64 +108,65 @@ try {
     Assert-InWorkspace $target
     Move-Item -LiteralPath $payload -Destination $target
   } else {
-    $comfy=Join-Path $workspacePath 'ComfyUI'
-    $python=Join-Path $workspacePath 'python_embeded\python.exe'
     $managedRoot=Join-Path $workspacePath '.runtimes\comfy'
-    $publishPortable=$false
-    if (-not (Test-Path -LiteralPath (Join-Path $comfy 'main.py'))) {
-      $comfy=Join-Path $managedRoot 'ComfyUI'
-      $python=Join-Path $managedRoot 'python_embeded\python.exe'
-    }
+    Assert-InWorkspace $managedRoot
+    if ($ArchiveSha256 -notmatch '^[0-9a-f]{64}$' -or
+        (Get-FileHash -LiteralPath $Archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $ArchiveSha256) { throw '运行包校验身份不匹配，请从绘遇控制室重新校验' }
+    Expand-Package $Archive (Join-Path $stagePath 'comfy')
+    $comfy=Find-Directory (Join-Path $stagePath 'comfy') 'main.py'
+    $portableRoot=Split-Path -Parent $comfy
+    $python=Join-Path $portableRoot 'python_embeded\python.exe'
     Assert-InWorkspace $comfy
-    Assert-InWorkspace (Split-Path -Parent $python)
-    if (-not (Test-Path -LiteralPath (Join-Path $comfy 'main.py'))) {
-      Assert-InWorkspace $managedRoot
-      if (Test-Path -LiteralPath $managedRoot) { throw '受管运行目录已有不完整环境，请先核对；自动准备不会覆盖未知文件' }
-      if ($ArchiveSha256 -notmatch '^[0-9a-f]{64}$') { throw '缺少固定运行包校验身份，请从绘遇控制室重新准备' }
-      Expand-Package $Archive (Join-Path $stagePath 'comfy')
-      $comfyPayload=Find-Directory (Join-Path $stagePath 'comfy') 'main.py'
-      # main.py is at the ComfyUI root; embedded Python is beside it.
-      $portableRoot=Split-Path -Parent $comfyPayload
-      if (-not (Test-Path -LiteralPath (Join-Path $portableRoot 'python_embeded\python.exe'))) { throw 'ComfyUI Portable 目录布局无效' }
-      $comfy=$comfyPayload
-      $python=Join-Path $portableRoot 'python_embeded\python.exe'
-      $publishPortable=$true
-    }
-    if (-not (Test-Path -LiteralPath $python)) { $python=Join-Path $comfy 'venv\Scripts\python.exe' }
-    if (-not (Test-Path -LiteralPath $python)) { throw '现有 ComfyUI 由外部环境管理，请使用原入口启动；文件保留' }
+    Assert-InWorkspace $python
+    if (-not (Test-Path -LiteralPath $python -PathType Leaf)) { throw 'ComfyUI Portable 目录布局无效' }
+    # Only freshly extracted code is ever run or used to establish a baseline.
     Install-Node $KjArchive 'ComfyUI-KJNodes' $comfy $python
     Install-Node $TeaArchive 'ComfyUI-Anima-TeaCache' $comfy $python
-    if ($publishPortable) {
-      $modelsPath=Join-Path $workspacePath 'ComfyUI\models'
-      Assert-InWorkspace $modelsPath
-      New-Item -ItemType Directory -Force -Path $modelsPath | Out-Null
-      $quotedModels=$modelsPath | ConvertTo-Json -Compress
-      $modelConfig=@"
-huiyu_models:
-  base_path: $quotedModels
-  is_default: true
-  diffusion_models: diffusion_models
-  text_encoders: text_encoders
-  vae: vae
-  loras: loras
-  upscale_models: upscale_models
-  checkpoints: checkpoints
-"@
-      [IO.File]::WriteAllText((Join-Path $comfy 'extra_model_paths.yaml'),$modelConfig,[Text.UTF8Encoding]::new($false))
-      New-Item -ItemType Directory -Force -Path (Split-Path -Parent $managedRoot) | Out-Null
-      # The caller verified this fixed archive. Persist its identity before the
-      # atomic publish so retries can distinguish CUDA variants and revisions.
-      $receipt=[ordered]@{ schemaVersion=1; environment=$Environment; archiveSha256=$ArchiveSha256 }
-      [IO.File]::WriteAllText((Join-Path $portableRoot 'huiyu-environment.json'),($receipt | ConvertTo-Json -Compress),[Text.UTF8Encoding]::new($false))
-      Write-CodeBaseline $portableRoot
-      # Publish the complete Python + ComfyUI environment together on the same disk.
-      Assert-InWorkspace $portableRoot
-      Assert-InWorkspace $managedRoot
-      Move-Item -LiteralPath $portableRoot -Destination $managedRoot
-    } else {
-      # The host verified the previous baseline before invoking Python. Advance
-      # it only after this explicitly authorized dependency/node preparation.
-      Write-CodeBaseline (Split-Path -Parent $comfy)
+    $runtimes=Split-Path -Parent $managedRoot
+    New-Item -ItemType Directory -Force -Path $runtimes | Out-Null
+    $preserved=Join-Path $runtimes ('comfy-preserved-'+[Guid]::NewGuid().ToString('N'))
+    Assert-InWorkspace $preserved
+    $modelRoots=@(Join-Path $workspacePath 'ComfyUI\models')
+    # Retain every previous environment wholesale, including user nodes and
+    # resources. Only its model directories are made visible to the new code.
+    foreach ($backup in Get-ChildItem -LiteralPath $runtimes -Directory -Filter 'comfy-preserved-*') {
+      $models=Join-Path $backup.FullName 'ComfyUI\models'
+      Assert-InWorkspace $models
+      if (Test-Path -LiteralPath $models -PathType Container) { $modelRoots+=,$models }
+    }
+    if (Test-Path -LiteralPath (Join-Path $managedRoot 'ComfyUI\models') -PathType Container) {
+      $modelRoots+=,(Join-Path $preserved 'ComfyUI\models')
+    }
+    $modelConfig=[ordered]@{}
+    for ($index=0; $index -lt $modelRoots.Count; $index++) {
+      Assert-InWorkspace $modelRoots[$index]
+      $modelConfig['huiyu_models_'+$index]=[ordered]@{
+        base_path=$modelRoots[$index]; is_default=($index -eq 0)
+        diffusion_models='diffusion_models'; text_encoders='text_encoders'; vae='vae'
+        loras='loras'; upscale_models='upscale_models'; checkpoints='checkpoints'
+      }
+    }
+    [IO.File]::WriteAllText((Join-Path $comfy 'extra_model_paths.yaml'),($modelConfig | ConvertTo-Json -Depth 4),[Text.UTF8Encoding]::new($false))
+    $receipt=[ordered]@{ schemaVersion=1; environment=$Environment; archiveSha256=$ArchiveSha256 }
+    [IO.File]::WriteAllText((Join-Path $portableRoot 'huiyu-environment.json'),($receipt | ConvertTo-Json -Compress),[Text.UTF8Encoding]::new($false))
+    Write-CodeBaseline $portableRoot
+    # No user files enter staging. Cancellation at any publish boundary leaves
+    # them intact in the old location or the preserved directory for the retry.
+    Assert-InWorkspace $portableRoot
+    Assert-InWorkspace $managedRoot
+    Assert-InWorkspace $preserved
+    if (Test-Path -LiteralPath $managedRoot) {
+      Move-Item -LiteralPath $managedRoot -Destination $preserved
+      Write-Output ('原环境与用户资源已保留：'+$preserved)
+    }
+    try { Move-Item -LiteralPath $portableRoot -Destination $managedRoot }
+    catch {
+      if (-not (Test-Path -LiteralPath $managedRoot) -and (Test-Path -LiteralPath $preserved)) {
+        Assert-InWorkspace $preserved
+        Assert-InWorkspace $managedRoot
+        Move-Item -LiteralPath $preserved -Destination $managedRoot
+      }
+      throw
     }
   }
   Write-Output '{"ok":true,"message":"运行环境已准备；加载与真实任务仍需验证"}'

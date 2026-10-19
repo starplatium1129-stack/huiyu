@@ -6,7 +6,7 @@ export class AcceptedTaskTerminalError extends Error {
   }
 }
 
-/** Only the submission entry can certify this particular POST was not accepted. */
+/** Definite pre-acceptance rejection, or a durable cancellation fence for this key. */
 export class TaskSubmissionRejected extends Error {
   constructor(readonly requestKey: string, message: string, readonly code?: string) {
     super(message)

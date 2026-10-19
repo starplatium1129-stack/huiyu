@@ -1,6 +1,6 @@
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
-import { getRuntimeTaskByKey, waitForRuntimeTask, taskMessage } from '@/api/runtimeTasks'
+import { getRuntimeTaskByKey, recoverRuntimeTaskRequest, waitForRuntimeTask, taskMessage } from '@/api/runtimeTasks'
 import type { AnimaRequest } from '../generation/useAnimaSession'
 import type { SDQueueJob } from '../generation/useSDQueue'
 import type { BatchDrawRunnerInput, BatchDrawRunnerResult } from '../generation/useBatchDraw'
@@ -47,10 +47,9 @@ export function readPreparedBatch(value: unknown): PreparedBatchImage | null {
   return JSON.parse(JSON.stringify(value)) as PreparedBatchImage
 }
 
-/** A resumed plan can only look up its original identity and observe the existing task. */
+/** Resume observes the original task, or fences an absent request before settling it. */
 export async function recoverBatchTask(input: BatchDrawRunnerInput): Promise<{ taskId: string }> {
-  const task = await getRuntimeTaskByKey(input.requestKey, input.signal)
-  if (!task) throw new Error('原请求接收状态尚未确认；保留请求编号，稍后再核对，不会重新提交。')
+  const task = await recoverRuntimeTaskRequest(input.requestKey, input.signal)
   await input.accepted(task.taskId)
   const done = await waitForRuntimeTask(task.taskId, input.signal, value => input.report?.(taskMessage(value)))
   input.signal.throwIfAborted()
@@ -60,7 +59,7 @@ export async function recoverBatchTask(input: BatchDrawRunnerInput): Promise<{ t
 /** Only a definite rejection or runtime-settled failure permits a later new attempt. */
 export async function batchFailure(input: BatchDrawRunnerInput, error: unknown, runtimeOwned: boolean): Promise<BatchDrawRunnerResult> {
   const message = error instanceof Error ? error.message : '生成状态暂时无法核对'
-  if (!input.reconnect && error instanceof TaskSubmissionRejected && error.requestKey === input.requestKey) return { ok: false, error: message }
+  if (error instanceof TaskSubmissionRejected && error.requestKey === input.requestKey) return { ok: false, cancelled: error.code === 'TASK_REQUEST_CANCELLED', error: message }
   if (error instanceof DirectRequestRejected) return { ok: false, cancelled: error.code === 'IMAGE_REQUEST_CANCELLED', error: message }
   if (!runtimeOwned) {
     if (error instanceof AcceptedTaskTerminalError && error.taskId === input.taskId) {

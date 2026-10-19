@@ -158,6 +158,32 @@ pub(super) fn legacy(root: &Path) -> Result<Vec<Record>> {
     Ok(records)
 }
 impl Catalog {
+    pub(super) fn migrate_seed_provenance(&mut self) -> Result<()> {
+        let policy: Option<String> = self.connection.query_row(
+            "SELECT value FROM catalog_meta WHERE key='seedPolicy'", [], |r| r.get(0),
+        ).optional()?;
+        if policy.as_deref() == Some("2") { return Ok(()); }
+        let transaction = self.connection
+            .transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let policy: Option<String> = transaction.query_row(
+            "SELECT value FROM catalog_meta WHERE key='seedPolicy'", [], |r| r.get(0),
+        ).optional()?;
+        match policy.as_deref() {
+            Some("2") => (),
+            None => {
+                // Old databases recorded personal migration input as defaults.
+                // Neither current records nor today's bundle can prove those
+                // historical defaults. Discard only that unproven comparison
+                // baseline; keep all working records, tombstones and history.
+                transaction.execute("DELETE FROM content_seed", [])?;
+                transaction.execute("INSERT INTO catalog_meta(key,value) VALUES('seedPolicy','2')", [])?;
+            }
+            _ => return Err(ApiError::new(503, "CATALOG_SEED_POLICY", "内容库基线版本不受支持，请使用匹配版本的程序")),
+        }
+        transaction.commit()?;
+        Ok(())
+    }
+
     pub(super) fn initialize(&mut self) -> Result<()> {
         let snapshot = self.options.source.join("data/catalog");
         let (records, retired) = if snapshot.join("manifest.json").exists() {
@@ -219,7 +245,7 @@ impl Catalog {
                 ],
             )?;
         }
-        transaction.execute("INSERT INTO catalog_meta(key,value) VALUES('schema','1'),('version','1'),('importedAt',?1)",[at])?;
+        transaction.execute("INSERT INTO catalog_meta(key,value) VALUES('schema','1'),('seedPolicy','2'),('version','1'),('importedAt',?1)",[at])?;
         // Initial import preserves legacy content exactly. Editing subsequently
         // validates the affected relationships; no normalizer rewrites the seed.
         transaction.commit()?;

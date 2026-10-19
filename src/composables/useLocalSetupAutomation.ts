@@ -32,6 +32,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const download=useLocalSetupDownload(workspace,ready,onResult)
   const chatStorage=useChatStorage(cause=>{error.value=cause})
   const hasComfy=computed(()=>snapshot.value.comfy.installation==='present')
+  const rebuildComfy=ref(false)
   let disposed=false,cancelled=false
   let activeOperation:ControlActionResult|null=null
   let operationWorkspace=''
@@ -39,7 +40,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   let cancelRequest:Promise<void>|null=null
   // Hardware may be unknown until the service is started; absence of a report is not a negative GPU check.
   const unmanagedPortable=computed(()=>hasComfy.value&&snapshot.value.comfy.layout==='portable'&&snapshot.value.comfy.managedEnvironment?.state!=='verified')
-  const externalEnvironment=computed(()=>hasComfy.value&&(!['portable','venv'].includes(snapshot.value.comfy.layout)||unmanagedPortable.value))
+  const externalEnvironment=computed(()=>!rebuildComfy.value&&hasComfy.value&&(!['portable','venv'].includes(snapshot.value.comfy.layout)||unmanagedPortable.value))
   const stage=ref<'environment'|'models'|'service'|'validation'|null>(null)
   let restoringDraft=false
   function saveDraft(operation=readSetupDraft(workspace.value)?.operation) {
@@ -47,9 +48,9 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       environment:environment.value,llamaEnvironment:llamaEnvironment.value,...(operation?{operation}:{})}
     settingsRepository.set(LOCAL_SETUP_DRAFT_SETTING,disposed?{...(readSetupDraft(workspace.value)??value),...(operation?{operation}:{})}:value)
   }
-  watch([modelId,chatId,drawing,loras,environment,llamaEnvironment],()=>{reviewed.value=false;completed.value=false;if(!restoringDraft)saveDraft()},{flush:'sync'})
+  watch([modelId,chatId,drawing,loras,environment,llamaEnvironment,rebuildComfy],()=>{reviewed.value=false;completed.value=false;if(!restoringDraft)saveDraft()},{flush:'sync'})
   watch(workspace,()=>{
-    reviewed.value=false;completed.value=false;restoringDraft=true
+    reviewed.value=false;completed.value=false;restoringDraft=true;rebuildComfy.value=false
     const saved=readSetupDraft(workspace.value),value=snapshot.value,receipt=value.comfy.managedEnvironment
     modelId.value=saved&&value.models.some(model=>model.id===saved.modelId&&model.id.startsWith('anima-')&&model.preparation)?saved.modelId:value.recommendedModel??value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'
     chatId.value=saved&&value.models.some(model=>model.id===saved.chatId&&model.kind==='chat')?saved.chatId:''
@@ -57,10 +58,10 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     environment.value=receipt?.state==='verified'?receipt.environment:saved?.environment??(value.comfy.installation==='missing'?'comfy-nvidia':'')
     llamaEnvironment.value=saved?.llamaEnvironment??'llama-cuda';restoringDraft=false
   },{flush:'sync'})
-  const needsComfyPreparation=computed(()=>!externalEnvironment.value&&(!hasComfy.value||snapshot.value.nodes.state!=='checked'||snapshot.value.nodes.missing.length>0))
+  const needsComfyPreparation=computed(()=>!externalEnvironment.value&&(rebuildComfy.value||!hasComfy.value))
   const serviceMustStop=computed(()=>drawing.value&&needsComfyPreparation.value&&snapshot.value.comfy.connection==='online')
-  const canStartExisting=computed(()=>drawing.value&&!chatId.value&&hasComfy.value&&!externalEnvironment.value&&!serviceMustStop.value)
-  const environmentRequired=computed(()=>drawing.value&&needsComfyPreparation.value&&snapshot.value.comfy.layout!=='venv'&&!environment.value)
+  const canStartExisting=computed(()=>drawing.value&&!chatId.value&&hasComfy.value&&!rebuildComfy.value&&!externalEnvironment.value&&!serviceMustStop.value)
+  const environmentRequired=computed(()=>drawing.value&&needsComfyPreparation.value&&!environment.value)
   function requireModel(id:string):LocalSetupModel {
     const model=snapshot.value.models.find(model=>model.id===id&&model.preparation)
     if(!model) throw new Error('准备清单缺少 '+id+'，请重新检查')
@@ -69,7 +70,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const runtimeIds=computed(()=>{
     const ids:string[]=[]
     if(drawing.value&&needsComfyPreparation.value){
-      if(!hasComfy.value) ids.push('runtime-'+environment.value)
+      if(environment.value) ids.push('runtime-'+environment.value)
       ids.push('runtime-kjnodes','runtime-anima-teacache')
     }
     if(chatId.value&&!snapshot.value.chat?.runtimePresent){
@@ -169,8 +170,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     const runtime=[...runtimeIds.value],weights=[...weightIds.value],prepareComfy=drawing.value&&needsComfyPreparation.value
     const prepareLlama=!!chatId.value&&!snapshot.value.chat?.runtimePresent,selectedChat=chatId.value,confirmedWorkspace=workspace.value
     const prepareDrawing=drawing.value,selectedModel=modelId.value,externalDrawing=externalEnvironment.value
-    // The existing venv API route prepares only nodes; it does not choose or replace its CUDA runtime.
-    const selectedEnvironment=snapshot.value.comfy.layout==='venv'?'comfy-nvidia':environment.value
+    const selectedEnvironment=environment.value
     try{
       stage.value='environment'
       for(const id of runtime)await fetchFile(id)
@@ -262,5 +262,5 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   function recoverLateOperation(){if(!busy.value)void recoverOperation()}
   onMounted(()=>{window.addEventListener('huiyu:setup-operation',recoverLateOperation);void recoverOperation()})
   onUnmounted(()=>{disposed=true;download.cancel();window.removeEventListener('huiyu:setup-operation',recoverLateOperation)})
-  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,busy,message,error,completed,engineRestartRequired,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,serviceMustStop,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
+  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,rebuildComfy,busy,message,error,completed,engineRestartRequired,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,serviceMustStop,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
 }
