@@ -86,23 +86,24 @@
           <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" tabindex="-1" aria-label="内容编辑" :aria-busy="detailLoading">
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
-              <CatalogRecordEditor v-model:record="selected" :disabled="busy" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
+              <p v-if="editorPendingNotice" class="catalog-feedback" role="status">{{ editorPendingNotice }}</p>
+              <CatalogRecordEditor v-model:record="selected" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
               <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
                 <StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary>
                 <p v-if="historyLoading" role="status">正在读取版本…</p>
                 <div v-else-if="historyError" class="catalog-error" role="alert"><p>历史版本暂时无法读取：{{ historyError }}</p><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="retryHistory">重读版本</button></div>
                 <p v-else-if="!history.length" class="catalog-note">暂无历史版本</p>
-                <div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="restore(entry.revision)">找回这一版</button></div>
+                <div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy || !!editorPendingNotice" @click="restore(entry.revision)">找回这一版</button></div>
                 <button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button>
               </details>
-              <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy" @click="adoptRevision">已核对，继续编辑</button></section>
+              <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy || !!editorPendingNotice" @click="adoptRevision">已核对，继续编辑</button></section>
             </template>
             <div v-else class="catalog-editor-empty"><img class="catalog-empty-illustration" :src="collectionArt" width="512" height="512" alt="" /><h2>翻开一份{{ sectionTitle }}</h2><p>从左侧选取，让角色与故事慢慢成册。</p><button v-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">新建内容</button></div>
           </section>
         </div>
       </template>
       <section v-if="pending.length" ref="pendingArea" class="catalog-review-area">
-        <details :open="pendingOpen" @toggle="pendingOpen = ($event.target as HTMLDetailsElement).open"><StudioDisclosureSummary>{{ pending.length }} 项修改还没有保存</StudioDisclosureSummary><div data-disclosure-content><div v-for="(change, index) in pending" :key="change.kind + ':' + change.id" class="catalog-history-row"><span>{{ CATALOG_LABELS[change.kind] }} · {{ pendingTitle(change) }} <small>{{ change.remove ? '准备归档' : change.expectedRevision ? '已编辑' : '新建' }}</small></span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="withdrawPending(index)">撤回这项</button></div></div></details>
+        <details :open="pendingOpen" @toggle="pendingOpen = ($event.target as HTMLDetailsElement).open"><StudioDisclosureSummary>{{ pending.length }} 项修改还没有保存</StudioDisclosureSummary><div data-disclosure-content><div v-for="(change, index) in pending" :key="change.kind + ':' + change.id" class="catalog-history-row"><span>{{ CATALOG_LABELS[change.kind] }} · {{ pendingTitle(change) }} <small>{{ change.remove ? '准备归档' : change.expectedRevision ? '已编辑' : '新建' }}</small></span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="withdrawPending(change, index)">撤回这项</button></div></div></details>
       </section>
       <CatalogChangePreview v-if="preview" :preview="preview" />
     </div>
@@ -150,7 +151,7 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
   { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
 ]
-const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
 watch(listScope, () => { recordList.value?.scrollTo(0, 0) }, { flush: 'post' })
 watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
@@ -208,11 +209,12 @@ async function archiveContent() {
   if (!selected.value && source && !source.isConnected && document.activeElement === document.body)
     editorPane.value?.focus({ preventScroll: true })
 }
-async function withdrawPending(index: number) {
-  if (busy.value) return
+async function withdrawPending(change: CatalogChange, index: number) {
   const previousFocus = document.activeElement
-  pending.value.splice(index, 1)
+  if (!withdrawChange(change)) return
+  const editor = selected.value, changes = pending.value, currentKind = kind.value, currentSection = section.value
   await nextTick()
+  if (selected.value !== editor || pending.value !== changes || kind.value !== currentKind || section.value !== currentSection || detailLoading.value || busy.value) return
   if (!previousFocus || previousFocus.isConnected || document.activeElement !== document.body) return
   const buttons = pendingArea.value?.querySelectorAll<HTMLButtonElement>('button')
   const target = buttons?.[Math.min(index, buttons.length - 1)] || pageTitle.value

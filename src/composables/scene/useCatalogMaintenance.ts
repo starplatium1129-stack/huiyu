@@ -10,6 +10,12 @@ import { recordTitle } from './catalogPresentation'
 import { downloadBlob } from '@/utils/downloadBlob'
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
 const key = (kind: string, id: string) => `${kind}:${id}`
+const needsBatchReview = (change?: CatalogChange) => !!change && (change.patch !== undefined || !!change.remove)
+// Project whole data and metadata only; patch planning remains owned by the server.
+const editorRecord = (record: CatalogRecord, change?: CatalogChange): CatalogRecord => clone(change
+  ? { ...record, revision: change.expectedRevision, data: change.data ?? record.data,
+    sortOrder: change.sortOrder ?? record.sortOrder, createdAt: change.createdAt ?? record.createdAt }
+  : record)
 // New, unfinished records may not have an ID yet; the server still validates saved records.
 const isDraftRecord = (value: unknown): value is CatalogRecord => !!value && typeof value === 'object'
   && typeof (value as CatalogRecord).id === 'string' && isCatalogRecord({ ...value, id: (value as CatalogRecord).id || 'draft' })
@@ -46,6 +52,13 @@ export function useCatalogMaintenance() {
   let listSeq = 0, detailSeq = 0, historySeq = 0
   const dirtyEditor = computed(() => !!selected.value && JSON.stringify(selected.value) !== baseline.value)
   const dirty = computed(() => !!pending.value.length || dirtyEditor.value)
+  const editorPendingNotice = computed(() => {
+    const record = selected.value
+    if (!record || !needsBatchReview(pending.value.find(change => key(change.kind, change.id) === key(record.kind, record.id)))) return ''
+    return dirtyEditor.value
+      ? '这项还有局部修改或归档待保存，当前编辑已保留。请先备份草稿或撤回这项暂存，核对后继续编辑。'
+      : '这项还有局部修改或归档待保存，请先保存或撤回这项，再打开编辑。'
+  })
   let disposed = false, requestedPage = 1, bulkReadSeq = 0
   let timer: ReturnType<typeof setTimeout> | undefined
   function invalidateDetail() {
@@ -105,11 +118,16 @@ export function useCatalogMaintenance() {
     let opened = false
     detailLoading.value = true; hint.value = ''; currentServer.value = null
     try {
-      const draft = pending.value.find(c => key(c.kind, c.id) === key(item.kind, item.id))
       const record = (await catalogApi.record(item.kind, item.id, undefined, controller.signal)).record
       if (seq !== detailSeq) return false
-      selected.value = clone(draft?.data ? { ...record, revision: draft.expectedRevision, data: draft.data, sortOrder: draft.sortOrder ?? record.sortOrder } : record)
-      if (draft && draft.expectedRevision !== record.revision) currentServer.value = clone(record)
+      // Pending may have been replaced or withdrawn while the detail request was running.
+      const draft = pending.value.find(c => key(c.kind, c.id) === key(item.kind, item.id))
+      if (needsBatchReview(draft)) {
+        hint.value = '这项还有局部修改或归档待保存，请先保存或撤回这项，再打开编辑。'
+        return false
+      }
+      selected.value = editorRecord(record, draft)
+      currentServer.value = draft && draft.expectedRevision !== record.revision ? clone(record) : null
       baseline.value = JSON.stringify(selected.value)
       opened = true
       clearHistory(); void loadHistory()
@@ -118,7 +136,7 @@ export function useCatalogMaintenance() {
     return opened && seq === detailSeq && !disposed
   }
   async function add(copy = false) {
-    if (busy.value || disposed || kind.value === 'document') return
+    if (busy.value || disposed || kind.value === 'document' || copy && editorPendingNotice.value) return
     const seq = invalidateDetail()
     if (!await canSwitch() || seq !== detailSeq || busy.value || disposed) return
     const record = copy && selected.value ? clone(selected.value) : blankRecord(kind.value)
@@ -134,6 +152,7 @@ export function useCatalogMaintenance() {
   function stage() {
     const record = selected.value
     if (!record || busy.value) return
+    if (editorPendingNotice.value) { hint.value = editorPendingNotice.value; return }
     if (!record.id.trim() || record.id.trim() !== record.id) { hint.value = '请在管理信息中填写编号，首尾不要留空白'; return }
     if (!Number.isSafeInteger(record.sortOrder)) { hint.value = '展示顺序需要一个整数'; return }
     const data = clone(record.data) as Record<string, unknown>
@@ -144,22 +163,55 @@ export function useCatalogMaintenance() {
       const outfit = data.outfit as Record<string, unknown>
       if (record.id !== `${data.characterId}/${outfit.id}`) { hint.value = '服装记录 ID 必须为「角色ID/服装ID」'; return }
     } else if (record.kind !== 'document') data.id = record.id
-    const change: CatalogChange = { kind: record.kind, id: record.id, expectedRevision: record.revision, data, sortOrder: record.sortOrder }
+    const previous = pending.value.find(change => key(change.kind, change.id) === key(record.kind, record.id))
+    const before = baseline.value ? JSON.parse(baseline.value) as CatalogRecord : null
+    const createdAt = previous?.createdAt ?? (before?.kind === record.kind && before.id === record.id
+      && before.createdAt === null && typeof record.createdAt === 'string' ? record.createdAt : undefined)
+    const change: CatalogChange = { kind: record.kind, id: record.id, expectedRevision: record.revision, data, sortOrder: record.sortOrder,
+      ...(createdAt !== undefined ? { createdAt } : {}) }
     pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(change.kind, change.id)), change]
     selected.value = { ...record, data: clone(data) }; baseline.value = JSON.stringify(selected.value); preview.value = null; hint.value = '这项修改已暂存，可以继续整理其他内容'
   }
   async function remove() {
     const record = selected.value
-    if (!record || busy.value || !record.revision || record.kind === 'document') return
+    if (!record || busy.value || !record.revision || record.kind === 'document' || editorPendingNotice.value) return
+    const recordKey = key(record.kind, record.id)
+    const staged = pending.value.find(change => key(change.kind, change.id) === recordKey)
     if (!await confirmAction({ title: '归档「' + recordTitle(record) + '」？', message: '保存后会从内容列表移出，历史仍会保留。正在被使用的内容不能直接归档。', confirmLabel: '归档', danger: true })) return
     if (busy.value || disposed) return
+    if (selected.value !== record || key(record.kind, record.id) !== recordKey
+      || pending.value.find(change => key(change.kind, change.id) === recordKey) !== staged) return
     pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(record.kind, record.id)), { kind: record.kind, id: record.id, expectedRevision: record.revision, remove: true }]
     if (selected.value === record) resetEditor()
     preview.value = null
   }
+  function withdrawPending(change: CatalogChange): boolean {
+    if (busy.value || disposed || !pending.value.includes(change)) return false
+    const record = selected.value
+    const current = !!record && key(record.kind, record.id) === key(change.kind, change.id)
+    const keepEditor = current && dirtyEditor.value
+    if (current) {
+      invalidateDetail()
+      // Keep the mounted editor's unapplied JSON too; withdrawal no longer means this editor is saved.
+      if (change.createdAt !== undefined && record.createdAt === change.createdAt) {
+        const before = baseline.value ? JSON.parse(baseline.value) as CatalogRecord : record
+        const sameRecord = before.kind === record.kind && before.id === record.id
+        // Retain explicit date backfill as an editor/baseline difference, including exported drafts.
+        baseline.value = JSON.stringify({ ...(sameRecord ? before : record), createdAt: null })
+      } else if (!keepEditor) baseline.value = ''
+    }
+    pending.value = pending.value.filter(item => item !== change)
+    preview.value = null
+    hint.value = current ? '已撤回这项暂存，当前输入仍保留；再次暂存会把上方内容重新加入待保存修改。' : '已撤回这项暂存'
+    return true
+  }
   async function submit(previewOnly = false) {
     if (busy.value || !pending.value.length || dirtyEditor.value) return
     const submission = clone(pending.value)
+    const record = selected.value
+    const editor = record ? { record, kind: record.kind, id: record.id, seq: detailSeq } : null
+    const ownsEditor = () => !!editor && !disposed && selected.value === editor.record && detailSeq === editor.seq
+      && editor.record.kind === editor.kind && editor.record.id === editor.id
     busy.value = true; hint.value = ''; preview.value = null
     try {
       const receipt = await catalogApi.changes(submission, previewOnly)
@@ -170,8 +222,11 @@ export function useCatalogMaintenance() {
       }
     } catch (e) {
       hint.value = (e as Error).message
-      if (selected.value && (e instanceof ApiClientError && (e.status === 409 || e.kind === 'network' || e.kind === 'timeout'))) {
-        try { currentServer.value = clone((await catalogApi.record(selected.value.kind, selected.value.id)).record) }
+      if (editor && ownsEditor() && (e instanceof ApiClientError && (e.status === 409 || e.kind === 'network' || e.kind === 'timeout'))) {
+        try {
+          const current = (await catalogApi.record(editor.kind, editor.id)).record
+          if (ownsEditor()) currentServer.value = clone(current)
+        }
         catch { /* Keep the original failure and draft when confirmation is unavailable. */ }
       }
     } finally { busy.value = false }
@@ -184,12 +239,13 @@ export function useCatalogMaintenance() {
     finally { busy.value = false }
   }
   function adoptRevision() {
-    if (!selected.value || !currentServer.value) return
+    if (!selected.value || !currentServer.value || editorPendingNotice.value) return
+    if (selected.value.kind !== currentServer.value.kind || selected.value.id !== currentServer.value.id) return
     selected.value.revision = currentServer.value.revision; preview.value = null
     hint.value = '已对齐最新版本，请确认合并后的内容再保存'
   }
   async function restore(revision: number) {
-    if (!selected.value || busy.value || !await canSwitch()) return
+    if (!selected.value || busy.value || editorPendingNotice.value || !await canSwitch()) return
     busy.value = true
     try {
       const old = (await catalogApi.record(selected.value.kind, selected.value.id, revision)).record
@@ -218,13 +274,26 @@ export function useCatalogMaintenance() {
       const changes = file.changes
       if ((!changes.length && !draft) || changes.some(c => !c || !['character', 'outfit', 'scene', 'blueprint', 'document'].includes(c.kind) || typeof c.id !== 'string' || !Number.isSafeInteger(c.expectedRevision))) throw new Error('每条修改需要 kind、id、expectedRevision')
       const keys = changes.map(c => key(c.kind, c.id)); if (new Set(keys).size !== keys.length) throw new Error('批量文件包含重复记录')
+      const replacesEditor = !!selected.value && keys.includes(key(selected.value.kind, selected.value.id))
+      if (!draft && replacesEditor && dirtyEditor.value) throw new Error('这些修改包含当前正在编辑的内容，请先暂存或备份当前编辑，再读取这份文件')
       if (draft) {
         resetEditor(clone(file.editor as CatalogRecord | null))
         baseline.value = file.baseline ? JSON.stringify(file.baseline) : ''
         if (selected.value) kind.value = selected.value.kind
         hint.value = '草稿已恢复，尚未写入内容库。请继续编辑并核对版本后保存。'
+      } else if (replacesEditor) {
+        resetEditor()
+        hint.value = '已读取这些修改，请重新打开对应内容核对；局部修改或归档须先保存或撤回。'
       }
       pending.value = [...pending.value.filter(c => !keys.includes(key(c.kind, c.id))), ...clone(changes)]; preview.value = null
+      if (draft && selected.value && !dirtyEditor.value) {
+        const record = selected.value
+        const change = pending.value.find(item => key(item.kind, item.id) === key(record.kind, record.id))
+        if (!needsBatchReview(change)) {
+          selected.value = editorRecord(record, change)
+          baseline.value = JSON.stringify(selected.value)
+        }
+      }
       importSnapshot.value = null; importPreview.value = false
       return true
     } catch (e) { bulkError.value = (e as Error).message; return false }
@@ -271,5 +340,5 @@ export function useCatalogMaintenance() {
   onMounted(() => { window.addEventListener('beforeunload', beforeUnload); void load() })
   onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); clearHistory(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
   onBeforeRouteLeave(async () => !busy.value && (!dirty.value || await confirmAction({ title: '离开内容维护？', message: '未保存修改将丢失，可先导出草稿。', confirmLabel: '离开', danger: true })))
-  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
+  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
 }
