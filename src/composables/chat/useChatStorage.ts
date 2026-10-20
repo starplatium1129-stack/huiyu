@@ -23,12 +23,12 @@ import {
   archiveCounts,
   chatArchiveToMarkdown,
   forkChatArchiveMessages,
-  mergeArchiveIntoHistory,
   normalizeChatArchive,
   serializeChatArchive,
 } from '@/utils/chatArchive'
 import { captureChatConversations, chatBranchArchiveKey, emptyChatConversation, mergeChatConversationStates, rememberChatConversations, registerArchivedChatBranches } from '@/utils/chatConversationStorage'
 import { useChatBranches } from './useChatBranches'
+import { restoreChatArchive } from './restoreChatArchive'
 import { createChatNormalizeOptions, createChatStorageState } from './chatStorageState'
 import type { ChatMessage, ChatState } from './chatStorageTypes'
 export type { ChatMessage, ChatState } from './chatStorageTypes'
@@ -484,27 +484,17 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   async function restoreFromArchive(char = state.active, isCurrent: () => boolean = () => true): Promise<number> {
     if (!canWrite()) throw new Error('聊天归档受版本保护，无法安全恢复。')
     if (!characterIds.includes(char)) return 0
-    const selectedBranch = branchStorage.branchId(char)
-    await archiveStorage.refresh(true)
-    if (!isCurrent() || !canWrite() || selectedBranch !== branchStorage.branchId(char)) return 0
-    const archived = archive.value.archived[currentArchiveKey(char)] || []
-    if (!archived.length) return 0
-    const history = messages(char)
-    const merged = mergeArchiveIntoHistory(history, archived)
-    const added = merged.length - history.length
-    if (JSON.stringify(merged) !== JSON.stringify(history)) {
-      // 完整并回（不截断）：超过 20 条的部分在下次 trim 时会再次归档，
-      // 归档按 mid 去重，不会产生副本，也不会丢失。
-      state.histories[char] = merged
-      const restoring = state.histories[char]
-      if (!save()) {
-        if (state.histories[char] === restoring) state.histories[char] = history
-        throw new Error('并入的对话尚未保存，原归档已保留，请重试。')
-      }
-    }
-    // Failed desktop confirmation keeps retryable state and the source archive.
-    await flushProfileWrites()
-    return added
+    const branch = branchStorage.branchId(char), selection = state.conversations[char].selectionRevision
+    const revision = state.historiesRevisions[char] ?? state.historiesRevision
+    const key = chatBranchArchiveKey(char, branch)
+    return restoreChatArchive({
+      current: () => !disposed && isCurrent() && branch === branchStorage.branchId(char)
+        && selection === state.conversations[char].selectionRevision
+        && revision === (state.historiesRevisions[char] ?? state.historiesRevision),
+      refresh: mergeRemoteIntoState,
+      readArchive: async () => { await archiveStorage.refresh(true); return archive.value.archived[key] || [] },
+      history: () => messages(char), replaceHistory: history => { state.histories[char] = history }, save,
+    })
   }
   async function clearArchive(char?: string, isCurrent: () => boolean = () => true) {
     if (!isCurrent() || !canWrite() || !await saveArchive() || !isCurrent() || !canWrite()) return false

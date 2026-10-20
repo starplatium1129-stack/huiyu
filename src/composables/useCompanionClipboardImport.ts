@@ -65,6 +65,7 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   let alive = true
   let characterRevision = 0
   let captureController: AbortController | null = null
+  let inspectionController: AbortController | null = null
   let picker: { invalid: boolean; stop(): void } | undefined
   const importRecovery = useLocalImageImportRecovery(() => {
     if (!alive) return
@@ -113,6 +114,7 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   }
 
   function dismissClipboardCard() {
+    inspectionController?.abort(); inspectionController = null
     clearTimeout(clipboardCardTimer)
     if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
     clipboardCard.value = null
@@ -245,17 +247,23 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
     if (!card || card.saving || card.kind !== 'image' || !card.imageBlob) return
     const blob = card.imageBlob
     if (!blob) return
+    const controller = new AbortController(); inspectionController = controller
+    const current = () => active() && inspectionController === controller && !controller.signal.aborted
+      && clipboardCard.value === card && revision === characterRevision
     clearTimeout(clipboardCardTimer); card.saving = true; card.error = ''
     try {
-      const dataUrl = await imageForInspection(blob)
-      if (!active() || revision !== characterRevision || deps.busy.value || !deps.chatReady.value) return
+      const dataUrl = await imageForInspection(blob, controller.signal)
+      if (!current() || deps.busy.value || !deps.chatReady.value) return
       await deps.handleSend('（这是我复制的图片）请结合画面回答。', dataUrl)
-      if (alive && clipboardCard.value === card) dismissClipboardCard()
-    } catch (error) { if (alive && clipboardCard.value === card) card.error = error instanceof Error ? error.message : '图片发送失败，请重试。' }
-    finally { if (clipboardCard.value === card) card.saving = false }
+      if (current()) dismissClipboardCard()
+    } catch (error) { if (current()) card.error = error instanceof Error ? error.message : '图片发送失败，请重试。' }
+    finally {
+      if (inspectionController === controller) inspectionController = null
+      if (clipboardCard.value === card) card.saving = false
+    }
   }
 
-  function cancelCapture() { captureController?.abort(); captureController = null; capturingScreen.value = false }
+  function cancelCapture() { captureController?.abort(); inspectionController?.abort(); captureController = null; capturingScreen.value = false }
   function onPaste(event: ClipboardEvent) {
     if (!active()) return
     const file = Array.from(event.clipboardData?.files || []).find(file => ['image/png', 'image/jpeg', 'image/webp'].includes(file.type))
