@@ -30,14 +30,13 @@ import { useCandidateViewport } from '@/composables/gallery/useCandidateViewport
 import { candidateParameterRows } from '@/composables/gallery/candidateParameters'
 import { artworkContinueTarget } from '@/utils/artworkNavigation'
 
-import { artworkRepository } from '@/storage/artworkRepository'
 import type { ArtworkRecord } from '@/types/artwork'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
 const props = defineProps<{ open: boolean; items: ArtworkRecord[] }>()
 const emit = defineEmits<{ close: []; changed: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), busy = ref(false), error = ref(''), onlyDifferent = ref(true)
 const motion = useFluidDialog(dialog)
-const { urls, reading, errors, revisions, details, load, retry, cancel, release } = useCandidateMedia()
+const { urls, reading, errors, revisions, details, beginVisit, admit, load, retry, cancel, release } = useCandidateMedia()
 const candidates = computed(() => props.items.slice(0, 4).map(item => details.get(String(item.id)) || item))
 const viewport = useCandidateViewport()
 const { synchronized, toggleSync, reset } = viewport
@@ -55,18 +54,21 @@ watch([() => props.open, () => props.items.slice(0, 4).map(({ id, image_id, imag
   if (!open) { cancel(); motion.close(release); return }
   if (!previousOpen || previousItems?.length !== items.length || items.some((item, index) => item.id !== previousItems[index]?.id)) reset()
   error.value = ''
+  const visit = beginVisit()
   await nextTick()
-  if (!props.open || current !== version) return
+  if (!props.open || current !== version || !visit?.current()) return
   if (!dialog.value?.open) motion.open()
-  load(props.items.slice(0, 4))
+  load(props.items.slice(0, 4), visit)
 }, { immediate: true })
 function retryCandidate(item: ArtworkRecord) { const source = props.items.find(entry => entry.id === item.id); if (props.open && source) retry(source) }
 async function save(patches: Array<{ id: string | number; patch: Partial<ArtworkRecord> }>) {
-  if (busy.value) return
+  const visit = admit()
+  if (busy.value || !props.open || !visit) return
   const current = version
+  const isCurrent = () => props.open && current === version && visit.current()
   busy.value = true; error.value = ''
-  try { await artworkRepository.patchArtworks(patches); emit('changed') }
-  catch { if (props.open && current === version) error.value = '标记没有保存成功，请重试；图片没有被删除。' }
+  try { await visit.repository.patchArtworks(patches); if (isCurrent()) emit('changed') }
+  catch { if (isCurrent()) error.value = '标记没有保存成功，请重试；图片没有被删除。' }
   finally { busy.value = false }
 }
 function prefer(item: ArtworkRecord) { return save(candidates.value.map(candidate => ({ id: candidate.id, patch: candidate.id === item.id ? { reviewState: 'preferred', favorite: true } : candidate.reviewState === 'preferred' ? { reviewState: 'candidate' } : {} }))) }

@@ -7,6 +7,9 @@ import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer';
 import { useScrollReveal } from '@/composables/useScrollReveal';
 import { useToast } from '@/composables/useToast';
 import { artworkRepository,type TrashEntry } from '@/storage/artworkRepository';
+import { onDesktopRuntime } from '@/platform/desktop/runtime';
+import { imageMediaSession } from '@/platform/imageMediaSession';
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 import type { LoraMeta,Scene } from '@/stores/sceneStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
@@ -151,10 +154,14 @@ export function useGalleryWorkspace() {
     }
     function closeComparison() {
         if (!compareOpen.value) return;
+        retireComparisonIntent();
+    }
+    function retireComparisonIntent() {
         const owner = comparisonOwner;
         comparisonRevision++; comparisonOwner = ''; compareOpen.value = false;
+        // Retire a route intent even while its refresh or lazy panel is pending.
+        dismissedComparison = requestedComparison.value || owner;
         if (!owner || unmounted || !viewActive || requestedComparison.value !== owner) return;
-        dismissedComparison = owner;
         const query = { ...route.query };
         delete query.compare;
         void router.replace({ query, hash: route.hash });
@@ -167,6 +174,15 @@ export function useGalleryWorkspace() {
         openRouteComparison();
         comparisonOwner = compareOpen.value ? request : '';
     }
+    let comparisonSession = imageMediaSession(), comparisonRepository = artworkRepository;
+    function refreshComparisonSession() {
+        const next = imageMediaSession();
+        if (next === comparisonSession && comparisonRepository === artworkRepository) return;
+        comparisonSession = next; comparisonRepository = artworkRepository;
+        retireComparisonIntent();
+    }
+    const stopComparisonRuntime = onDesktopRuntime(refreshComparisonSession);
+    const stopComparisonResources = watch(runtimeResourceIdentity, refreshComparisonSession, { flush: 'sync' });
 
     const facts = computed(() => artworkFacts(current.value, loras.value));
     /* ---------- 工具函数 ---------- */
@@ -353,6 +369,7 @@ export function useGalleryWorkspace() {
     onUnmounted(() => {
         cancelGalleryStorageLoad(history);
         unmounted = true; comparisonRevision++;
+        stopComparisonRuntime(); stopComparisonResources();
         cleanupFilterSync();
         stopCardObservation();
         document.removeEventListener('keydown', onKeydown);

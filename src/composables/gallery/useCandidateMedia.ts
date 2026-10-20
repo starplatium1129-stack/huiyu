@@ -1,5 +1,8 @@
-import { reactive } from 'vue'
-import { artworkRepository } from '@/storage/artworkRepository'
+import { onScopeDispose, reactive, watch } from 'vue'
+import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { safeImageUrl } from './galleryHelpers'
 import { sameArtworkMedia } from './artworkMediaIdentity'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -10,11 +13,14 @@ export function useCandidateMedia() {
   const errors = reactive(new Map<string, string>()), revisions = reactive(new Map<string, number>())
   const details = reactive(new Map<string, ArtworkRecord>())
   const owned = new Set<string>(), records = new Map<string, ArtworkRecord>()
-  type Job = { item: ArtworkRecord; version: number; controller: AbortController; retry: boolean }
+  type Visit = { repository: ArtworkRepository; current: () => boolean }
+  type Job = { item: ArtworkRecord; visit: Visit; version: number; controller: AbortController; retry: boolean }
   const requests = new Map<string, Job>()
+  let visit: Visit | null = null, disposed = false
+  let repository = artworkRepository, mediaSession = imageMediaSession()
   let version = 0, active = 0, enabled = false, queue: Job[] = []
   function cancel() {
-    enabled = false; version++
+    visit = null; enabled = false; version++
     for (const job of requests.values()) job.controller.abort()
     requests.clear(); queue = []
     for (const id of reading.keys()) reading.set(id, false)
@@ -29,7 +35,24 @@ export function useCandidateMedia() {
     for (const id of records.keys()) drop(id)
     owned.clear()
   }
-  const current = (job: Job) => enabled && job.version === version && !job.controller.signal.aborted
+  function refreshSession() {
+    const next = imageMediaSession()
+    if (next === mediaSession && repository === artworkRepository) return
+    release(); mediaSession = next; repository = artworkRepository
+  }
+  // Admission precedes the dialog's nextTick. A reconnect cannot revive this
+  // visit even when the final session fields match the original connection.
+  function beginVisit() {
+    refreshSession(); cancel()
+    if (disposed) return null
+    const source = artworkRepository, session = imageMediaSession()
+    const owner: Visit = { repository: source, current: () => !disposed && visit === owner
+      && source === artworkRepository && session === imageMediaSession() }
+    visit = owner
+    return owner
+  }
+  function admit() { return enabled && visit?.current() ? visit : null }
+  const current = (job: Job) => enabled && job.visit.current() && job.version === version && !job.controller.signal.aborted
     && requests.get(String(job.item.id)) === job
   function pump() {
     while (active < 2 && queue.length) {
@@ -38,12 +61,12 @@ export function useCandidateMedia() {
       active++
       void (async () => {
         try {
-          const item = job.item._gallerySummary ? await artworkRepository.readArtwork(job.item.id, job.controller.signal) : job.item
+          const item = job.item._gallerySummary ? await job.visit.repository.readArtwork(job.item.id, job.controller.signal) : job.item
           if (!current(job)) return
           if (!item) throw new Error('作品已不在作品册')
           details.set(id, item)
           // A saved remote/data source remains a valid fallback when the local read fails.
-          const blob = item.image_id ? await artworkRepository.getImage(item.image_id, job.controller.signal).catch(() => null) : null
+          const blob = item.image_id ? await job.visit.repository.getImage(item.image_id, job.controller.signal).catch(() => null) : null
           if (!current(job)) return
           const fallback = String(item.image_data || item.image_url || '')
           const source = blob ? URL.createObjectURL(blob) : /^(data:image\/|blob:)/.test(fallback) ? fallback : safeImageUrl(fallback)
@@ -65,13 +88,14 @@ export function useCandidateMedia() {
     }
   }
   function enqueue(item: ArtworkRecord, retry: boolean) {
+    const owner = admit()
     const id = String(item.id)
-    if (reading.get(id)) return
-    const job = { item: { ...item }, version, controller: new AbortController(), retry }
+    if (!owner || reading.get(id)) return
+    const job = { item: { ...item }, visit: owner, version, controller: new AbortController(), retry }
     errors.set(id, ''); reading.set(id, true); requests.set(id, job); queue.push(job)
   }
-  function load(items: readonly ArtworkRecord[]) {
-    cancel()
+  function load(items: readonly ArtworkRecord[], owner: Visit) {
+    if (!owner.current()) return
     const candidates = items.slice(0, 4).map(item => ({ ...item }))
     for (const [id, record] of records) {
       if (!candidates.some(item => sameArtworkMedia(record, item) && item._galleryRevision === record._galleryRevision)) drop(id)
@@ -85,8 +109,12 @@ export function useCandidateMedia() {
     pump()
   }
   function retry(item: ArtworkRecord) {
-    if (!enabled || !sameArtworkMedia(records.get(String(item.id)), item)) return
+    const record = records.get(String(item.id))
+    if (!admit() || !sameArtworkMedia(record, item) || record?._galleryRevision !== item._galleryRevision) return
     enqueue(item, true); pump()
   }
-  return { urls, reading, errors, revisions, details, load, retry, cancel, release }
+  const stopRuntime = onDesktopRuntime(refreshSession)
+  const stopResources = watch(runtimeResourceIdentity, refreshSession, { flush: 'sync' })
+  onScopeDispose(() => { disposed = true; stopRuntime(); stopResources(); release() })
+  return { urls, reading, errors, revisions, details, beginVisit, admit, load, retry, cancel, release }
 }
