@@ -5,6 +5,7 @@ import { cloneReferenceInput } from '@/utils/promptBuilderPersistence'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
 import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
+import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true) {
   if (!current() || !result || typeof result !== 'object') return
@@ -12,7 +13,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.flash('反推暂不可用，请稍后重试')
     return
   }
-  const payload = result as { mode?: string; caption?: string; captionDerived?: string; tags?: unknown; characterTags?: unknown; copyrightTags?: unknown; styleTags?: unknown; rating?: Record<string, unknown>; warning?: string }
+  const payload = result as { mode?: string; caption?: string; captionDerived?: string; tags?: unknown; scores?: Record<string, unknown>; characterTags?: unknown; copyrightTags?: unknown; styleTags?: unknown; rating?: Record<string, unknown>; warning?: string }
   const strings = (value: unknown): string[] => Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && Boolean(tag.trim())).map(tag => tag.trim()) : []
   const rawTags = strings(payload.tags), characterTags = strings(payload.characterTags)
   const copyrightTags = strings(payload.copyrightTags)
@@ -20,6 +21,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   const { isCensorTag, characterConflictNote, collectInterrogateContext, mergeInterrogatedTags } = await import('@/utils/interrogateMerge')
   if (!current()) return
   if (pb.isUnbound) {
+    const resolved = resolveFreeInterrogateTags(rawTags, payload.scores, characterTags)
     // Older runtimes lack copyright predictions. Only use an explicit catalogue mapping as fallback.
     const characterKeys = new Set(characterTags.map(normalizeKey))
     const works = copyrightTags.length ? copyrightTags : [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
@@ -29,7 +31,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
       .map(key => [key, payload.rating?.[key]] as const)
       .filter((item): item is readonly [string, number] => typeof item[1] === 'number' && Number.isFinite(item[1]) && item[1] > 0 && item[1] <= 1)
       .sort((a, b) => b[1] - a[1])[0]?.[0]
-    const source = [...new Set([...rawTags, ...characterTags, ...works, ...artistTags])]
+    const source = [...new Set([...resolved.tags, ...characterTags, ...works, ...artistTags])]
     const tags = source.filter(tag => !isCensorTag(tag))
     const caption = payload.mode === 'caption' && !payload.captionDerived && typeof payload.caption === 'string' ? payload.caption.trim() : ''
     if (!tags.length && !caption) { pb.flash('未找到可采用的反推内容，请调整阈值后重试'); return }
@@ -43,7 +45,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
     pb.visualDescription = caption
     pb.concise = false
     const filtered = source.filter(isCensorTag).length
-    pb.flash(`已采用 ${tags.length} 个原图词条，人物、作品、画师与服装已按提示词分段归位${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}`)
+    pb.flash(`已采用 ${tags.length} 个原图词条，人物、作品、画师与服装已按提示词分段归位${filtered ? `；已去除 ${filtered} 个马赛克、遮挡或噪点词条` : ''}${resolved.removed.length ? `；已略去 ${resolved.removed.length} 个置信度明显较低的冲突词条` : ''}`)
     if (payload.warning) setTimeout(() => { if (current()) pb.flash(payload.warning!) }, 2600)
     return
   }
