@@ -58,7 +58,7 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     return mode ? mode + ':' + q[mode] : ''
   }
   function contextKey(q: Record<string, unknown>) {
-    const fields = ['scenario', 'popular', 'blueprint', 'scene', 'char', 'mood', 'resume', 'quick', 'companionDraft', 'draftOpen']
+    const fields = ['scenario', 'act', 'cast', 'outfit', 'popular', 'blueprint', 'scene', 'char', 'mood', 'resume', 'quick', 'companionDraft', 'draftOpen']
       .flatMap(key => typeof q[key] === 'string' ? [[key, q[key]]] : [])
     return fields.length ? JSON.stringify(fields) : ''
   }
@@ -68,8 +68,9 @@ export function usePromptDeepLink(deps: PromptDeepLinkDeps) {
     if (disposed || !stillCurrent() || (!historyKey(q) && !contextKey(q))) return false
     const query = { ...q }, entry = entryKey()
     const isCurrent = () => !disposed && request === historyRequest && entry === entryKey() && stillCurrent()
-    if (typeof query.popular === 'string') {
-      try { await pb.loadPopularCharacter(query.popular) }
+    const linkedCharacter = typeof query.cast === 'string' && typeof query.scenario === 'string' ? query.cast : query.popular
+    if (typeof linkedCharacter === 'string') {
+      try { await pb.loadPopularCharacter(linkedCharacter) }
       catch (error) {
         if (isCurrent()) {
           failedQuery = query

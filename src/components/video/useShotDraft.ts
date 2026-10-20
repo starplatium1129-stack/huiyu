@@ -5,6 +5,7 @@ import type { ReferenceCard, useReferenceCards } from './useReferenceCards'
 import { useVideoStore, type ShotSubmissionRecord } from '@/stores/videoStore'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
+import { readStoryOrigin } from '@/types/storyOrigin'
 
 interface ShotDraftDeps {
   aspectRatio: Ref<VideoBatch['aspectRatio']>
@@ -47,11 +48,13 @@ function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
     linkLastFrame: linkLastFrame.value,
     identityCard: identityCard.value,
     cards: referenceCards.value.map(card => ({
+      outfitProseOverride: card.outfitProseOverride,
       label: card.label,
       characterId: card.characterId || '',
       outfitId: card.outfitId || '',
     })),
     shots: shots.value.map(shot => ({
+      storyOrigin: readStoryOrigin(shot.storyOrigin),
       submission: deps.getShotSubmission(shot),
       submissionToken: submissionTokens.get(shot),
       prompt: shot.prompt,
@@ -143,6 +146,7 @@ async function restoreShotsDraft() {
     identityCard.value = draft.identityCard
     if (draft.cards.length) {
       referenceCards.value = draft.cards.map(card => ({
+        outfitProseOverride: typeof card.outfitProseOverride === 'string' ? card.outfitProseOverride.slice(0, 2000) : undefined,
         label: card.label,
         characterId: card.characterId || undefined,
         outfitId: card.outfitId || undefined,
@@ -150,6 +154,7 @@ async function restoreShotsDraft() {
       }))
     }
     shots.value = draft.shots.map(shot => ({
+      storyOrigin: readStoryOrigin(shot.storyOrigin),
       prompt: shot.prompt,
       dialogue: shot.dialogue,
       shotSize: (shot.shotSize || '') as ShotDraft['shotSize'],

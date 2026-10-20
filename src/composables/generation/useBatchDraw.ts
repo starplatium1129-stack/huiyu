@@ -3,6 +3,7 @@ import { TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import type { BatchDrawPlan, BatchDrawPlanStorage } from './batchDrawPlan'
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
+import { imageBatchRequest, type RuntimeImageBatch } from '@/api/imageBatches'
 
 export interface BatchTargetItem {
   id: string
@@ -77,6 +78,39 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   let disposed = false, observer: AbortController | null = null
   let activeJobId = '', submissionStarted = false
   let persistenceTail = Promise.resolve()
+  let backendId: string | undefined, remoteTimer: ReturnType<typeof setTimeout> | undefined
+  let remoteRead: AbortController | null = null
+  let remoteRevision = 0
+  function applyRemote(plan: RuntimeImageBatch) {
+    if (disposed || plan.id !== backendId || plan.revision <= remoteRevision) return
+    remoteRevision = plan.revision
+    jobs.value = structuredClone(plan.jobs)
+    running.value = plan.state === 'running' || plan.jobs.some(job => ['running','accepted'].includes(job.status))
+    cancelRequested.value = plan.state === 'paused'
+    storageError.value = plan.error || ''
+    void persist().then(saved => { if (saved && plan.revision === remoteRevision && !disposed) storageError.value = plan.error || '' })
+  }
+  async function observeRemote() {
+    if (!backendId || disposed || remoteRead) return
+    const controller = new AbortController(); remoteRead = controller
+    try {
+      checkOwner()
+      const plan = await imageBatchRequest(backendId, undefined, undefined, controller.signal)
+      if (plan) applyRemote(plan)
+      else { running.value = false; storageError.value = '批次尚未接收，可点“继续剩余”重新交接原计划'; }
+    } catch (error) { if (!disposed && !controller.signal.aborted) storageError.value = error instanceof Error ? error.message : '后台批次暂不可读取，原计划已保留' }
+    finally { remoteRead = null; if (!disposed && backendId) remoteTimer = setTimeout(() => { void observeRemote() }, running.value ? 2000 : 8000) }
+  }
+  async function controlRemote(action: 'pause' | 'resume' | 'retry') {
+    if (!backendId || disposed) return
+    try {
+      checkOwner()
+      const existing = await imageBatchRequest(backendId)
+      if (!existing && action === 'pause') { storageError.value = '批次尚未接收，请先核对原计划'; return }
+      const plan = await imageBatchRequest(backendId, existing ? action : 'create', existing ? undefined : snapshot())
+      if (plan) applyRemote(plan)
+    } catch (error) { storageError.value = error instanceof Error ? error.message : '批次操作尚未确认，请重新读取原批次' }
+  }
   const checkOwner = () => { if (owner && !sameTempResultOwner(owner)) throw new Error('原批次所属资料来源已变化，请恢复原连接') }
   const progress = computed(() => {
     const count = (status: BatchDrawJob['status']) => jobs.value.filter(job => job.status === status).length
@@ -87,7 +121,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   })
 
   function snapshot(): BatchDrawPlan {
-    return JSON.parse(JSON.stringify({ version: 1, createdAt, engine: engine.value, runtimeOwned, owner, targets: [...targets.values()], jobs: jobs.value })) as BatchDrawPlan
+    return JSON.parse(JSON.stringify({ version: 1, createdAt, engine: engine.value, runtimeOwned, backendId, owner, targets: [...targets.values()], jobs: jobs.value })) as BatchDrawPlan
   }
   async function persist(): Promise<boolean> {
     if (!storage) return true
@@ -101,12 +135,13 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       const plan = storage?.read()
       if (plan) {
         jobs.value = plan.jobs; targets = new Map(plan.targets.map(target => [target.id, target]))
-        engine.value = plan.engine; createdAt = plan.createdAt; runtimeOwned = plan.runtimeOwned; owner = plan.owner; restored.value = true
+        engine.value = plan.engine; createdAt = plan.createdAt; runtimeOwned = plan.runtimeOwned; backendId = plan.backendId; owner = plan.owner; restored.value = true
       }
       unreadable = false; storageError.value = ''
     } catch (error) { unreadable = true; storageError.value = error instanceof Error ? error.message : '上次批次计划暂时无法读取' }
   }
   restorePlan()
+  if (backendId) { running.value = true; void observeRemote() }
 
   function runnerInput(job: BatchDrawJob, reconnect: boolean): BatchDrawRunnerInput {
     const input: BatchDrawRunnerInput = {
@@ -194,6 +229,8 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     if (unreadable) { restorePlan(); if (unreadable) { onFlash(storageError.value); return } }
     if (planOptions.engine && planOptions.engine !== 'anima') { onFlash('SD 新生成已退役，请使用当前 Anima/Krea 2 配方'); return }
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再开启新计划。'); return }
+    backendId = undefined; remoteRevision = 0; remoteRead?.abort()
+    if (remoteTimer) clearTimeout(remoteTimer)
     targets = new Map(items.map(item => [item.id, { ...item }]))
     try { owner = tempResultOwner() } catch (error) { onFlash(error instanceof Error ? error.message : String(error)); return }
     createdAt = Date.now(); engine.value = planOptions.engine || 'anima'; runtimeOwned = planOptions.runtimeOwned === true; restored.value = false
@@ -209,10 +246,24 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       catch (error) { job.status = 'failed'; job.error = error instanceof Error ? error.message : String(error) }
     }
     observer = null
+    if (runtimeOwned) {
+      if (jobs.value.some(job => job.status === 'failed')) { await persist(); onFlash('部分配方无法准备，请调整后重新开始，尚未提交生成'); return }
+      backendId = crypto.randomUUID()
+      remoteRevision = 0; running.value = true
+      if (!await persist()) { running.value = false; return }
+      try {
+        const plan = await imageBatchRequest(backendId, 'create', snapshot())
+        if (plan) applyRemote(plan)
+      } catch (error) { storageError.value = error instanceof Error ? error.message : '批次接收尚未确认，请核对原批次' }
+      if (remoteTimer) clearTimeout(remoteTimer)
+      void observeRemote()
+      return
+    }
     await execute(jobs.value.filter(job => job.status === 'pending'), `批量出图开始：${jobs.value.length} 张（${items.length} ${unitLabel}）`)
     if (!jobs.value.some(job => job.status !== 'failed')) await persist()
   }
   async function resume(): Promise<void> {
+    if (backendId) { await controlRemote('resume'); return }
     if (running.value || resetting.value || disposed) return
     if (unreadable) { restorePlan(); if (unreadable) { onFlash(storageError.value); return } }
     const unresolved = jobs.value.filter(job => job.status === 'unknown' || job.status === 'accepted')
@@ -220,6 +271,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     await execute([...unresolved, ...remaining], '正在核对原任务，继续本批剩余项…')
   }
   async function retryFailed(): Promise<void> {
+    if (backendId) { await controlRemote('retry'); return }
     if (running.value || resetting.value || disposed) return
     if (engine.value === 'sd') { onFlash('旧 SD 批次只核对已接收任务，不能重新生成失败项'); return }
     if (progress.value.unresolved) { onFlash('请先核对本批已接收任务，再重试失败项。'); return }
@@ -232,6 +284,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     await execute(list, `重跑 ${list.length} 张失败 / 未执行任务`)
   }
   function cancel() {
+    if (backendId) { void controlRemote('pause'); return }
     if (!running.value) return
     cancelRequested.value = true
     onFlash('正在停止批量…（当前张完成后停止）')
@@ -243,6 +296,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       if (storage) { await persistenceTail; await storage.clear() }
       if (disposed) return
       storageError.value = ''
+      backendId = undefined; remoteRevision = 0; remoteRead?.abort(); if (remoteTimer) clearTimeout(remoteTimer)
       targets.clear(); jobs.value = []; restored.value = false; cancelRequested.value = false
     }
     catch (error) { storageError.value = error instanceof Error ? error.message : '旧批次计划暂时无法清除'; return }
@@ -250,6 +304,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
   }
   function dispose() {
     if (disposed) return
+    if (backendId) { disposed = true; remoteRead?.abort(); if (remoteTimer) clearTimeout(remoteTimer); return }
     jobs.value.filter(job => job.status === 'running' || job.status === 'accepted').forEach(job => {
       job.status = job.status === 'running' && job.id === activeJobId && !submissionStarted && job.submitted === false ? 'pending' : 'unknown'
     })
@@ -257,5 +312,5 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
     if (jobs.value.length && !resetting.value) void persist()
   }
   return { jobs: readonly(jobs), running: readonly(running), progress, engine: readonly(engine), runtimeOwned: () => runtimeOwned,
-    restored: readonly(restored), storageError: readonly(storageError), resetting: readonly(resetting), start, resume, retryFailed, cancel, reset, dispose, cancelRequested: readonly(cancelRequested) }
+    restored: readonly(restored), storageError: readonly(storageError), resetting: readonly(resetting), background: () => Boolean(backendId), start, resume, retryFailed, cancel, reset, dispose, cancelRequested: readonly(cancelRequested) }
 }

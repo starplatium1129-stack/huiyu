@@ -3,6 +3,9 @@ mod artwork_search;
 mod backup;
 mod canonical;
 pub(crate) use canonical::fingerprint as json_fingerprint;
+pub(crate) fn portable_workspace_path(root: &std::path::Path, id: &str) -> Result<PathBuf> {
+    schema::safe(root,format!("workspaces/{id}"))
+}
 mod garbage;
 mod handle;
 mod media;
@@ -10,6 +13,7 @@ mod migration;
 mod operations;
 mod organization;
 mod profile;
+mod image_batches;
 mod project_commands;
 mod recent;
 mod records;
@@ -168,6 +172,7 @@ impl Context {
             ));
         }
         let kind = string(command, "kind")?;
+        if kind.starts_with("imageBatch.") { return image_batches::execute(self, principal, command); }
         if kind.starts_with("task.") {
             if !matches!(
                 kind,
@@ -252,7 +257,7 @@ impl Context {
         }
         match kind {
             "status" => Ok(
-                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":4,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
+                json!({"workspaceId": self.workspace_id,"databaseKind":"huiyu-workspace","schemaVersion":5,"writerEpoch":self.epoch,"revision":self.revision()?,"artworkRevision":artwork_index::revision(self)?,"sqliteVersion":rusqlite::version()}),
             ),
             "listArtworks"
             | "readArtworkRecentIndex"
@@ -356,6 +361,8 @@ fn is_read(kind: &str) -> bool {
     matches!(
         kind,
         "status"
+            | "imageBatch.get"
+            | "imageBatch.list"
             | "listArtworks"
             | "searchArtworks"
             | "readArtworkRecentIndex"

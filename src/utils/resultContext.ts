@@ -3,6 +3,7 @@ import type { AnimaResultContext } from '@/types/anima'
 import { parseOutfitOverride } from './promptBuilderPersistence'
 import type { DirectorControlSources } from '../types/promptDirector'
 import { normalizeDirectorSources } from './promptDirector'
+import { readStoryOrigin, type StoryOrigin } from '@/types/storyOrigin'
 
 /** 页面适配传入当前需要的创作字段；普通对象即可，不要求 Store/Pinia。 */
 export interface ResultContextInput {
@@ -11,6 +12,7 @@ export interface ResultContextInput {
   }>
   readonly sceneId: string | null
   readonly story: string
+  readonly storyOrigin?: StoryOrigin
   readonly char: CharKey
   readonly visualDescription: string
   readonly outfitOverride?: { readonly tokens: readonly string[]; readonly replaced: string | null } | null
@@ -47,6 +49,7 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
     story: String(pb.story || '').trim(),
     char: pb.char,
     history: {
+      storyOrigin: readStoryOrigin(pb.storyOrigin),
       sceneTitle,
       visualDescription: pb.visualDescription,
       emotion: [...pb.selections.emotion], shot: pb.selections.shot,

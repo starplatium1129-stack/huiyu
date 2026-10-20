@@ -3,11 +3,16 @@
     <CreativeLibraryHeader title="剧本模式" description="从相遇到心动，把故事一幕幕留下。" />
     <header class="scenario-library-heading">
       <div><h2>选一本故事手帖</h2><p>{{ SCENARIOS.length }} 本故事 · 封面为氛围参考</p></div>
-      <div class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
+      <div v-if="!casting.castId.value" class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
         <AnimatedSelection />
         <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" /><span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span></button>
       </div>
     </header>
+    <div class="scenario-casting">
+      <label>故事角色<StudioSelect v-model="casting.castId.value" :options="casting.options.value" label="故事角色" placeholder="选择内容目录角色" /></label>
+      <label v-if="casting.castId.value">故事衣装<StudioSelect v-model="casting.outfitId.value" :options="casting.outfitOptions.value" label="故事衣装" /></label>
+      <p v-if="casting.error.value || !casting.ready.value" role="status">{{ casting.error.value || '所选角色或衣装尚未读取，请重新选择或读取目录' }}<button type="button" class="btn btn-ghost btn-sm" :disabled="casting.loading.value" @click="casting.reload">重新读取</button></p>
+    </div>
     <p v-if="referenceError || referenceRetryStarted" class="library-reference-feedback"><span role="status">{{ loadingReferences ? '正在重新读取样张清单…' : referenceError || '样张清单已更新' }}</span><button type="button" class="btn btn-ghost btn-sm scenario-reference-retry" :aria-disabled="loadingReferences" @click="retryReferences"><ArchiveIcon name="refresh" />{{ loadingReferences ? '正在读取…' : '重新读取封面' }}</button></p>
     <div class="scenario-workspace" data-route-arrive>
       <div class="scenario-list" v-content-motion:fade="currentChar" role="group" aria-label="故事手帖">
@@ -31,21 +36,25 @@
           <article v-for="{ act: a, warnings, modules } in renderedActs" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
             <div class="act-heading tw:flex tw:items-center tw:gap-s-3"><span class="act-num">{{ a.n }}</span><div><h3 class="act-title">{{ a.title }}</h3><span class="act-en">{{ a.en }}</span></div></div>
             <div class="act-intent"><span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true"><ArchiveIcon :name="frameIcon(a.res)" /></span><div><span class="act-emotion">{{ a.emotion }}</span><p class="act-desc">{{ a.desc }}</p></div></div>
-            <div class="act-format"><span>{{ currentChar === 'nene' ? '宁宁' : '夏目' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
-            <div class="act-actions"><StudioCopyButton class="btn btn-ghost" label="复制本幕 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" /></div>
+            <div class="act-format"><span>{{ casting.character.value?.displayName || (currentChar === 'nene' ? '宁宁' : '夏目') }}{{ casting.outfit.value ? ` · ${casting.outfit.value.name}` : '' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
+            <div class="act-actions">
+              <RouterLink v-if="casting.ready.value" :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, act: a.n, ...casting.query.value } }" class="btn btn-primary">绘制这一幕</RouterLink>
+              <button type="button" class="btn btn-ghost" @click="sendToVideoStudio(a.n)">这一幕加入分镜</button>
+              <StudioCopyButton class="btn btn-ghost" label="复制本幕 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" />
+            </div>
             <details class="act-details" :open="expandedActs.includes(a.n)" :data-scenario="activeScenario.id" :data-act="a.n" @toggle="syncAct">
               <StudioDisclosureSummary><span>提示词与参数</span></StudioDisclosureSummary>
               <div class="act-details-body" data-disclosure-content>
-                <p class="act-settings">LoRA {{ a.lora }} · {{ LOCK_PARAMS }}</p>
+                <p class="act-settings">{{ LOCK_PARAMS }}</p>
                 <p class="res-rec">{{ resInfo(a.res).reason }} · {{ resInfo(a.res).vram }}</p>
                 <div v-if="warnings.length" class="art-warn show"><ArchiveIcon name="warning" />本幕有 {{ warnings.length }} 个违反美术规范的标签: {{ warnings.join(', ') }}</div>
-                <div class="prompt-label">Positive (10 模块)</div><div class="prompt-code" v-html="modules"></div>
-                <div class="neg-section"><div class="prompt-label prompt-label-neg">Negative</div><div class="neg-layer"><div class="neg-layer-label">基础层（始终生效）</div><div class="neg-output">{{ BASE_NEG }}</div></div><div class="neg-layer"><div class="neg-layer-label">场景特定层</div><div class="neg-output">{{ a.neg }}</div></div></div>
+                <div class="prompt-label">正向草稿 · 工作台按所选模型编译</div><div class="prompt-code" v-html="modules"></div>
+                <div class="neg-section"><div class="prompt-label prompt-label-neg">本幕排除项</div><p class="act-settings">基础负向由工作台所选模型管理</p><div class="neg-output">{{ a.neg }}</div></div>
               </div>
             </details>
           </article>
         </div>
-        <footer class="scenario-handoff"><RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, char: currentChar } }" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
+        <footer v-if="casting.ready.value" class="scenario-handoff"><RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, ...casting.query.value } }" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
       </section>
     </div>
   </article>
@@ -65,6 +74,9 @@ import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioSelect from '@/components/ui/StudioSelect.vue'
+import { useScenarioCasting } from '@/composables/scene/useScenarioCasting'
+import { scenarioCastPrompt } from '@/utils/scenarioCasting'
 import { useMoodReferences } from '@/composables/useMoodReferences'
 import { scrollBehavior } from '@/utils/motionPreference'
 import { BANNED_TAGS } from '@/utils/promptDiagnostics'
@@ -72,7 +84,6 @@ import {
   SCENARIOS,
   SCENARIO_RES_MAP,
   SCENARIO_CHARACTERS,
-  substituteScenarioPrompt,
   type Scenario,
   type ScenarioAct,
   type ScenarioCharacter,
@@ -88,7 +99,6 @@ const route = useRoute()
 // 2026-08-23 剧本模式激活：清掉 SD 时代的硬编码采样参数与内联 <lora:> 展示
 //（出图深链本就不携带 LoRA——LoRA 由网关受控路线管理，v18 内联标签是误导）。
 const LOCK_PARAMS = '底模参数由工作台按引擎自动锁定'
-const BASE_NEG = 'lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry, artist name'
 const RES_MAP = SCENARIO_RES_MAP
 const CHARACTER_OPTIONS = [...SCENARIO_CHARACTERS] as const
 
@@ -107,6 +117,7 @@ const activeScenario = ref<Scenario | null>(initialSelection.scenario)
 const reader = ref<HTMLElement | null>(null)
 let readerRequest = 0
 const currentChar = ref<ScenarioCharacter>(initialSelection.character)
+const casting = useScenarioCasting(currentChar)
 const expandedActs = ref(initialSelection.acts)
 let restoringSelection = false
 watch([() => route.path, () => route.query.scenario, () => route.query.char, () => route.query.acts], () => {
@@ -181,7 +192,7 @@ function violations(a: ScenarioAct) {
   return BANNED_TAGS.filter(b => lower.includes(b.toLowerCase()))
 }
 function substitutePrompt(tpl: string, char: ScenarioCharacter) {
-  return substituteScenarioPrompt(tpl, char)
+  return scenarioCastPrompt(tpl, char, casting.character.value, casting.outfit.value)
 }
 function buildFullPrompt(a: ScenarioAct, char: ScenarioCharacter) {
   return norm(substitutePrompt(a.prompt, char))
@@ -209,7 +220,8 @@ const renderedActs = computed(() => (activeScenario.value?.acts ?? []).map(act =
   act, warnings: violations(act), modules: renderModules(act),
 })))
 
-function copyPrompt(a: ScenarioAct) {
+async function copyPrompt(a: ScenarioAct) {
+  if (!casting.ready.value) { showToast('请先读取所选角色与衣装'); return false }
   const text = buildFullPrompt(a, currentChar.value)
   return copyWithFeedback(text, '已复制本幕提示词')
 }
@@ -233,17 +245,21 @@ function scenarioShotSize(res: ScenarioResolution): StagedScenarioAct['shotSize'
   return 'wide'
 }
 
-function sendToVideoStudio() {
+function sendToVideoStudio(actId?: string | Event) {
   const scenario = activeScenario.value
   if (!scenario) return
-  const acts: StagedScenarioAct[] = scenario.acts.map(act => ({
+  if (!casting.ready.value) { showToast('请先读取或重新选择故事角色与衣装'); return }
+  const characterId = casting.character.value?.id || currentChar.value
+  const outfitId = casting.outfit.value?.id
+  const acts: StagedScenarioAct[] = scenario.acts.filter(act => typeof actId !== 'string' || act.n === actId).map(act => ({
     prompt: `${act.desc}。${act.emotion}的氛围。`,
     dialogue: '',
     shotSize: scenarioShotSize(act.res),
     camera: 'still',
     motion: 'natural',
     duration: 3,
-    characterId: currentChar.value,
+    characterId,
+    storyOrigin: { scenarioId: scenario.id, actId: act.n, title: `${scenario.name} · ${act.title}`, characterId, outfitId, outfitProse: outfitId ? undefined : scenario.outfitProse },
   }))
   if (!videoStore.stageScenarioActs(acts)) {
     showToast('跨页上下文写入失败')
@@ -260,6 +276,9 @@ const { show: showToast } = useToast()
 
 <style scoped src="@/assets/css/scenario-artbook.css"></style>
 <style scoped>
+.scenario-casting { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
+.scenario-casting > label { display:grid; gap:var(--s-2); min-width:0; color:var(--text-secondary); font-size:var(--fs-label); }
+.scenario-casting > p { grid-column:1 / -1; }
 .scenario-reference-retry[aria-disabled='true'] { color:var(--text-disabled); cursor:wait; pointer-events:auto; }
 .scenario-reference-retry:focus-visible { outline:2px solid var(--focus-color); outline-offset:2px; }
 </style>

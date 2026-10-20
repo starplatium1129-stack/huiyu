@@ -1,3 +1,4 @@
+import type { StoryOrigin } from '@/types/storyOrigin'
 import { usePromptDraft } from '@/composables/prompt/usePromptDraft'
 import { usePromptSceneFilters } from '@/composables/prompt/usePromptSceneFilters'
 import { usePromptArtworkHistory } from '@/composables/prompt/usePromptArtworkHistory'
@@ -44,6 +45,7 @@ export const NEGATIVE_DEFAULT = 'worst quality, low quality, normal quality, low
 
 export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── Core director state ─────────────────────────────────────────────────
+  const storyOrigin = ref<StoryOrigin>()
   const story     = ref('')
   const visualDescription = ref('')
   const char      = ref<CharKey>('nene')
@@ -230,6 +232,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (story.value === inherited) story.value = ''
   }
   function setChar(c: CharKey) {
+    if (storyOrigin.value && !isPopular.value) storyOrigin.value = ['nene','natsume'].includes(c) ? { ...storyOrigin.value, characterId: c, outfitId: undefined } : undefined
     const scene = activeScene.value
     if (!isPopular.value && scene && !sceneSupportsCharacter(scene, c)) {
       clearInheritedStory()
@@ -240,12 +243,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
   function setStudioSubject() {
     if (subject.value.kind === 'studio') return
+    storyOrigin.value = undefined
     clearInheritedStory()
     subject.value = { kind: 'studio' }
     clearReferenceInput()
     outfitOverride.value = null
   }
   function setUnboundSubject() {
+    storyOrigin.value = undefined
     clearInheritedStory()
     clearRandomVariation()
     for (const token of outfitOverride.value?.tokens ?? []) manualTags.value.add(token)
@@ -260,12 +265,14 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setPopularSubject(characterId: string, outfitId: string, blueprintId: string | null = null,
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean; outfitExplicit?: boolean } = {}) {
     clearInheritedStory(blueprintId)
+    if (storyOrigin.value) storyOrigin.value = blueprintId ? undefined : { ...storyOrigin.value, characterId, outfitId, outfitProse: undefined }
     clearRandomVariation()
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId, outfitExplicit: options.outfitExplicit }
     if (!options.preserveReference) clearReferenceInput()
     if (!options.preserveOutfitOverride) outfitOverride.value = null
   }
   function setPopularBlueprint(blueprintId: string | null) {
+    if (blueprintId) storyOrigin.value = undefined
     clearRandomVariation()
     if (subject.value.kind !== 'popular') return
     clearInheritedStory(blueprintId)
@@ -307,6 +314,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   function loadScene(scene: Scene) {
+    storyOrigin.value = undefined
     randomVariation.value = null
     // 工作室场景天然属于 studio 组装分支：热门角色(popular)模式下用 ?scene= 深链
     // （灵感场景/全景搜索/历史恢复）切回宁宁或夏目场景时，若不把 subject 兜底回
@@ -339,6 +347,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   function clearScene(opts: { keepStory?: boolean } = {}) {
+    storyOrigin.value = undefined
     randomVariation.value = null
     sceneId.value = null; sceneBaseStory.value = ''; visualDescription.value = ''; manualTags.value = new Set()
     outfitOverride.value = null
@@ -421,7 +430,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     return Boolean(applyModelProfile(sdModelName.value, { applySize: true }))
   }
 
-  const { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
+  const { snapshotDraft, saveDraft, restoreDraft, draftSaveState, draftSaveError, retryDraftSave } = usePromptDraft({ subject, storyOrigin, story, visualDescription, char, sceneId, activeScene, selections, colorMood, directorSources, inheritedDirectorValues, sceneBlueprints, loadPopularCharacter, manualTags, outfitOverride, referenceInput, randomVariation, artistStyleIds, sceneBaseStory, directorMode, sdParams, sdParamsTouched, projectId, scenes, lastRecommendedSize, dataReady, flash })
 
   /** Compatibility adapter for incomplete old inputs; the use case captures it before waiting. */
   function resolveLegacyArtworkDefaults(entry: GeneratedArtworkInput): LegacyArtworkDefaults {
@@ -452,7 +461,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   }
 
   return {
-    story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
+    storyOrigin, story, visualDescription, char, colorMood, concise, sceneId, sceneBaseStory,
     selections, directorSources, inheritedDirectorValues, manualTags, tagDictionary, artistStyleIds, projectId, historyRestoreReport,
     subject, isPopular, isUnbound, outfitOverride, referenceInput, randomVariation,
     scenes, curation, loraMeta, modelProfiles, tags, characters,

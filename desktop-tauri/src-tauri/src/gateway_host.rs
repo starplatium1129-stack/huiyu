@@ -94,7 +94,7 @@ fn request_once(base: &str, secret: &str, mut payload: serde_json::Value) -> Res
     let host = base.strip_prefix("http://127.0.0.1:").ok_or("HOST_ORIGIN")?;
     let address = format!("127.0.0.1:{host}").to_socket_addrs().map_err(|_| "HOST_ADDRESS")?.next().ok_or("HOST_ADDRESS")?;
     let timeout = match payload["action"].as_str() {
-        Some("prepare-candidate") => Duration::from_secs(225),
+        Some("prepare-candidate" | "portable-activate") => Duration::from_secs(225),
         Some("shutdown") => Duration::from_secs(30),
         _ => Duration::from_secs(3),
     };
@@ -117,7 +117,7 @@ fn request_once(base: &str, secret: &str, mut payload: serde_json::Value) -> Res
     let response = String::from_utf8(bytes).map_err(|_| "HOST_RESPONSE")?;
     let (header, body) = response.split_once("\r\n\r\n").ok_or("HOST_RESPONSE")?;
     if !header.starts_with("HTTP/1.1 200 ") {
-        if payload["action"] == "prepare-candidate" {
+        if matches!(payload["action"].as_str(), Some("prepare-candidate" | "portable-activate" | "portable-import" | "portable-export" | "operation-status" | "operation-cancel")) {
             if let Ok(error) = serde_json::from_str::<serde_json::Value>(body) {
                 if let (Some(code), Some(message)) = (error["code"].as_str(), error["error"].as_str()) {
                     return Err(format!("{code}: {message}"));

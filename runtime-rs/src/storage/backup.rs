@@ -1,5 +1,6 @@
 mod copy_job;
 mod files;
+pub(super) mod portable;
 
 mod verify;
 use super::*;
@@ -240,7 +241,7 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
             "Backup source no longer matches the workspace",
         ));
     }
-    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":4,"revision":revision});
+    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":5,"revision":revision});
     Ok(CopyKind::Backup {
         directory,
         manifest,

@@ -23,7 +23,7 @@ pub fn router() -> Router<AppState> {
         .route("/api/tasks/v1", any(handle))
         .route("/api/tasks/v1/", any(handle))
         .route("/api/tasks/v1/{*path}", any(handle))
-        .layer(DefaultBodyLimit::max(256 * 1024))
+        .layer(DefaultBodyLimit::max(4 * 1024 * 1024))
 }
 
 async fn handle(
@@ -142,6 +142,21 @@ async fn perform(
         ));
     }
     let path = path_segments(uri)?;
+    if body.len() > 256 * 1024 && path.first().is_none_or(|part| part != "image-batches") {
+        return Err(ApiError::new(413,"TASK_BODY_TOO_LARGE","Task request is too large"));
+    }
+    if path.first().is_some_and(|part| part == "image-batches") {
+        let runtime = state.tasks.as_ref().ok_or_else(|| ApiError::invalid("Task runtime unavailable"))?;
+        let input: Value = if body.is_empty() { json!({}) } else { serde_json::from_slice(body)? };
+        let command = match (method.as_str(), path.as_slice()) {
+            ("GET", [_, id]) => json!({"kind":"imageBatch.get","id":id}),
+            ("POST", [_, id]) => json!({"kind":"imageBatch.create","id":id,"plan":input}),
+            ("POST", [_, id, action]) if matches!(action.as_str(), "pause" | "resume" | "retry") => json!({"kind":"imageBatch.control","id":id,"action":action}),
+            _ => return Err(ApiError::invalid("Unknown image batch route")),
+        };
+        let result = runtime.image_batch(storage.clone(), session.principal_id.clone(), command).await?;
+        return encode_response(json!({"ok":true,"result":result,"runtimeEpoch":storage.runtime_epoch()})).await;
+    }
     // Scoped reads and actions must remain reachable when another task's
     // recovery fails. In particular, persist cancellation before any probe.
     if path.is_empty()
@@ -150,6 +165,7 @@ async fn perform(
     {
         if reading {
             runtime.start_recovery(storage.clone(), session.principal_id.clone())?;
+            runtime.recover_image_batches(&storage, &session.principal_id).await?;
         } else {
             runtime
                 .ensure_recovered(&storage, &session.principal_id)

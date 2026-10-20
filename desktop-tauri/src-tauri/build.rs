@@ -35,6 +35,7 @@ fn main() {
                 "window_zoom_set",
                 "open_workspace",
                 "save_image",
+                "workspace_portable_backup",
                 "aics_live2d_set_character",
                 "aics_live2d_set_frame",
                 "aics_live2d_play_motion",

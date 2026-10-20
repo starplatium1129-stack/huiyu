@@ -9,6 +9,8 @@ mod recovery;
 mod resume;
 mod retry;
 mod submission;
+mod image_batches;
+mod image_batch_artwork;
 use providers::Preparation;
 
 use crate::{
@@ -36,6 +38,7 @@ pub struct TaskRuntime {
     images: Arc<crate::images::ImageService>,
     video: Arc<crate::video::VideoService>,
     recoveries: Mutex<HashMap<String, Arc<recovery::Initialization>>>,
+    image_batches: Mutex<std::collections::HashSet<String>>,
     fingerprint: Fingerprint,
     unbound_epoch: String,
     jobs: Mutex<HashMap<String, JobBinding>>,
@@ -80,6 +83,7 @@ impl TaskRuntime {
             images,
             video,
             recoveries: Mutex::new(HashMap::new()),
+            image_batches: Mutex::new(std::collections::HashSet::new()),
             fingerprint: Fingerprint::system()?,
             unbound_epoch: uuid::Uuid::new_v4().to_string(),
             jobs: Mutex::new(HashMap::new()),

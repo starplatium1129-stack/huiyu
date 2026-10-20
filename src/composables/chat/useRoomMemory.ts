@@ -74,15 +74,17 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
     }
   }
 
-  function changeMemory(change: (state: ChatMemoryState) => boolean, message: string) {
+  async function changeMemory(change: (state: ChatMemoryState) => boolean, message: string) {
     if (!storage.canWrite()) return
     try {
       const next = changeStoredChatMemory(change)
       if (!next) return
-      chatMemory.value = next
+      await flushProfileWrites()
+      if (!storage.canWrite()) return
+      chatMemory.value = loadChatMemoryState()
       setError(message, 'info', 2500)
-    } catch {
-      setError('长期记忆保存失败，原有记忆已保留，请检查浏览器存储空间后重试。', 'warning')
+    } catch (error) {
+      setError(error instanceof Error ? error.message : '长期记忆保存尚未确认，请保留修改并重试。', 'warning')
     }
   }
 
@@ -91,8 +93,8 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
     changeMemory(state => Boolean(rememberChatFact(state, memoryCharacter(), message.content, message.mid)), '已加入长期记忆')
   }
 
-  function updateMemory(id: string, text: string) {
-    changeMemory(state => editChatFact(state, memoryCharacter(), id, text), '长期记忆已更新')
+  function updateMemory(id: string, text: string, topic = '') {
+    changeMemory(state => editChatFact(state, memoryCharacter(), id, text, topic), '长期记忆已更新')
   }
 
   function deleteMemory(id: string) {

@@ -15,6 +15,8 @@ export interface ChatMemoryItem {
   createdAt: number
   updatedAt: number
   pinned: boolean
+  /** Explicit user topic. Only its latest fact is recalled; older facts remain editable. */
+  topic?: string
 }
 
 export interface ChatMemoryState {
@@ -66,6 +68,7 @@ function normalizeItem(value: unknown, fallbackCharacter: ChatMemoryCharacter): 
     createdAt: Number.isFinite(createdAt) && createdAt > 0 ? createdAt : Date.now(),
     updatedAt: Number.isFinite(updatedAt) && updatedAt > 0 ? updatedAt : Date.now(),
     pinned: record.pinned !== false,
+    ...(typeof record.topic === 'string' && record.topic.trim() ? { topic: cleanText(record.topic).slice(0, 40) } : {}),
   }
 }
 
@@ -82,7 +85,7 @@ export function normalizeChatMemoryState(value: unknown): ChatMemoryState {
     const seenIds = new Set<string>()
     const items = source.map(raw => normalizeItem(raw, character)).filter((item): item is ChatMemoryItem => Boolean(item && item.character === character)).sort((a, b) => b.updatedAt - a.updatedAt)
     for (const item of items) {
-      const key = item.text.toLocaleLowerCase()
+      const key = `${item.topic || ''}\n${item.text}`.toLocaleLowerCase()
       if (seen.has(key) || seenIds.has(item.id)) continue
       seen.add(key)
       seenIds.add(item.id)
@@ -103,7 +106,7 @@ export function mergeChatMemoryStates(current: ChatMemoryState, incoming: ChatMe
     const items = [...current.byCharacter[character], ...incoming.byCharacter[character]]
       .sort((a, b) => b.updatedAt - a.updatedAt)
     for (const item of items) {
-      const key = item.text.toLocaleLowerCase()
+      const key = `${item.topic || ''}\n${item.text}`.toLocaleLowerCase()
       if (seen.has(key) || seenIds.has(item.id)) continue
       seen.add(key)
       seenIds.add(item.id)
@@ -131,22 +134,22 @@ export function rememberChatFact(
     existing.pinned = true
     return existing
   }
+  if (list.length >= MAX_ITEMS) throw new Error('长期记忆已满 200 条，请先整理已有记忆；本次未覆盖旧内容。')
   const now = Date.now()
   const item: ChatMemoryItem = {
     id: memoryId(), character, text, sourceMid: cleanText(sourceMid), createdAt: now, updatedAt: now, pinned: true,
   }
   list.unshift(item)
-  if (list.length > MAX_ITEMS) list.splice(MAX_ITEMS)
   return item
 }
 
-export function editChatFact(state: ChatMemoryState, character: ChatMemoryCharacter, id: string, textValue: string): boolean {
+export function editChatFact(state: ChatMemoryState, character: ChatMemoryCharacter, id: string, textValue: string, topic = ''): boolean {
   const item = state.byCharacter[character]?.find(memory => memory.id === id)
   const text = cleanText(textValue)
   if (!item || !text) return false
   item.text = text
+  item.topic = cleanText(topic).slice(0, 40) || undefined
   item.updatedAt = Date.now()
-  state.byCharacter[character] = state.byCharacter[character].filter(memory => memory === item || memory.text.toLocaleLowerCase() !== text.toLocaleLowerCase())
   return true
 }
 
@@ -159,41 +162,4 @@ export function removeChatFact(state: ChatMemoryState, character: ChatMemoryChar
   return true
 }
 
-function relevanceTerms(value: string): Set<string> {
-  const text = cleanText(value).toLocaleLowerCase()
-  const terms = new Set<string>(text.match(/[a-z0-9][a-z0-9_-]+/g) || [])
-  for (const sequence of text.match(/[\u3400-\u9fff]+/g) || []) {
-    if (sequence.length === 1) terms.add(sequence)
-    for (let index = 0; index < sequence.length - 1; index += 1) terms.add(sequence.slice(index, index + 2))
-  }
-  return terms
-}
-
-export function recallChatFacts(
-  state: ChatMemoryState,
-  character: ChatMemoryCharacter,
-  query: string,
-  limit = 4,
-  budget = 1000,
-): string[] {
-  if (!state.byCharacter[character]) return []
-  const queryTerms = relevanceTerms(query)
-  const ranked = state.byCharacter[character].map(item => {
-    const terms = relevanceTerms(item.text)
-    let overlap = 0
-    for (const term of queryTerms) if (terms.has(term)) overlap += 1
-    const relevance = queryTerms.size ? overlap / queryTerms.size : 0
-    return { item, overlap, score: (item.pinned ? 2 : 0) + relevance * 10 + item.updatedAt / 1e15 }
-  }).filter(candidate => candidate.overlap > 0)
-    .sort((left, right) => right.score - left.score)
-
-  const out: string[] = []
-  let used = 0
-  for (const { item } of ranked) {
-    if (out.length >= Math.max(0, limit)) break
-    if (used + item.text.length > budget) continue
-    out.push(item.text)
-    used += item.text.length
-  }
-  return out
-}
+export { recallChatFacts } from './chatMemoryRecall'

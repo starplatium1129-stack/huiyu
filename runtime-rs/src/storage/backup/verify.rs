@@ -1,5 +1,5 @@
 use super::*;
-use rusqlite::OpenFlags;
+use rusqlite::{OpenFlags, OptionalExtension};
 pub(super) fn manifest(c: &Files, directory: &Path, id: &str) -> Result<Value> {
     let value = read_json(directory, "manifest.json")?;
     validate_manifest(c,value,id)
@@ -11,7 +11,7 @@ pub(super) fn validate_manifest(c: &Files,value: Value,id: &str) -> Result<Value
         || value["workspaceId"] != c.workspace_id
         || value["schemaVersion"]
             .as_i64()
-            .is_none_or(|v| !(1..=4).contains(&v))
+            .is_none_or(|v| !(1..=5).contains(&v))
         || value["revision"].as_u64().is_none()
         || value["database"]["bytes"].as_u64().is_none()
         || !value["database"]["sha256"]
@@ -129,6 +129,11 @@ pub(super) fn verify_snapshot(c: &Files, root: &Path, manifest: &Value) -> Resul
     Ok(())
 }
 fn verify_records(c: &Files, db: &Connection) -> Result<()> {
+    let version: i64 = db.query_row("PRAGMA user_version",[],|row|row.get(0))?;
+    if version >= 5 {
+        let chat: Option<String> = db.query_row("SELECT body FROM profile_records WHERE domain='chat' AND record_key='aics_chat_v1'",[],|row|row.get(0)).optional()?;
+        if let Some(chat) = chat { profile::messages::decode(db,serde_json::from_str(&chat)?)?; }
+    }
     let mut original = db.prepare(
         "SELECT 1 FROM media_aliases a JOIN media_refs r ON r.hash=a.hash WHERE a.alias=? AND r.owner_id=?",
     )?;

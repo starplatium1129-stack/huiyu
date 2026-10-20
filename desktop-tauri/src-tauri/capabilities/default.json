@@ -41,6 +41,7 @@
     "allow-window-zoom-set",
     "allow-open-workspace",
     "allow-save-image",
+    "allow-workspace-portable-backup",
     "allow-desktop-update-check",
     "allow-desktop-update-state",
     "allow-desktop-update-install",

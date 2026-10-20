@@ -17,7 +17,14 @@
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
       <div class="utility-label tw:text-muted">本地数据</div>
-      <p class="backup-scope">{{ backup.desktopActive.value ? '工作区备份包含作品原图与工作区记录，文件保存在本机；下载的是恢复凭证，请与备份文件一并保管。' : '备份 JSON 包含此浏览器的作品记录、图片和设置；下载后可通过下方「从备份恢复」导入。' }}</p>
+      <p class="backup-scope">{{ backup.desktopActive.value ? '完整备份包包含工作区记录和原始媒体，可保存到指定位置并在其他电脑恢复。本机快照另提供恢复凭证。' : '备份 JSON 包含此浏览器的作品记录、图片和设置；下载后可通过下方「从备份恢复」导入。' }}</p>
+      <div v-if="backup.desktopActive.value && backup.portable.available" class="utility-actions tw:grid tw:gap-s-1">
+        <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('export')"><ArchiveIcon name="download" />保存完整备份包…</button>
+        <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('import')"><ArchiveIcon name="upload" />从完整备份包恢复…</button>
+        <p v-if="backup.portable.progress.value" role="status">{{ backup.portable.progress.value }}</p>
+        <button v-if="backup.portable.progress.value" type="button" class="btn btn-ghost wide" @click="backup.portable.cancel">取消完整备份操作</button>
+        <button v-if="backup.portable.candidate.value" type="button" class="btn btn-primary wide" :disabled="backup.busy.value" @click="backup.portable.activate">切换到恢复的工作区</button>
+      </div>
       <div class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip anchor :content="backup.desktopActive.value ? '完整备份保存在本机工作区，并下载恢复凭证' : '导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」'">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">

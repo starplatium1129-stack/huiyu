@@ -39,8 +39,8 @@ export function createPromptVideoActions(flash: PromptVideoBridgeDeps['flash'], 
     const blob = await owner.repository.getImage(entry.image_id || '', owner.signal)
     checkVideoTransfer(owner)
     if (!blob?.size) throw new Error('历史图片暂不可读取，未加入分镜')
-    return { blob, prompt: tagsToVideoProse(entry.prompt || entry.story || ''), story: entry.story || '',
-      blueprintId: entry.blueprintId ?? null, characterId: entry.characterId ?? '',
+    return { blob, prompt: tagsToVideoProse(entry.prompt || entry.story || ''), story: entry.story || '', storyOrigin: entry.storyOrigin,
+      blueprintId: entry.blueprintId ?? null, characterId: entry.characterId || entry.storyOrigin?.characterId || '',
       outfitId: entry.outfitId ?? null, sceneId: entry.scene ?? null }
   }
   async function handleHistoryToShots(entry: HistoryVideoSnapshot, owner: VideoTransferOwner) {

@@ -1,6 +1,7 @@
 import type { ArtworkRecord } from '@/types/artwork'
 import { parseOutfitOverride } from './promptBuilderPersistence'
 import { normalizeDirectorSources } from './promptDirector'
+import { readStoryOrigin } from '@/types/storyOrigin'
 
 /** Read-only projection for recipe restoration. Never fills or rewrites the stored record. */
 export function parseHistoryRecipe(record: ArtworkRecord) {
@@ -43,6 +44,7 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
   if (record.seed === undefined || record.seed === null) notes.push('未记录种子，无法精确复现')
   if (!record.prompt) notes.push('未记录完整提示词，无法精确复现')
   const recipe = {
+    storyOrigin: readStoryOrigin(record.storyOrigin),
     id: record.id, engine,
     subject: text('subject'), character: text('character'), characterId: text('characterId'),
     outfitId: text('outfitId'), blueprintId: nullableText('blueprintId'), noLora: boolean('noLora'),

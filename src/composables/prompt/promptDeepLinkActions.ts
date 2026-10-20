@@ -3,6 +3,7 @@ import { COLOR_MOODS } from '@/config/promptConstants'
 import type { ScenarioCharacter } from '@/config/scenarios'
 import { findBlueprint as findPopularBlueprint, findCharacter as findPopularCharacter } from '@/utils/popularContent'
 import type { PromptDeepLinkDeps } from './usePromptDeepLink'
+import { scenarioCastPrompt } from '@/utils/scenarioCasting'
 
 /** Applies explicit URL actions; the mounted owner retains request and disposal state. */
 export async function applyPromptDeepLink(q: Record<string, unknown>, deps: PromptDeepLinkDeps, isCurrent: () => boolean) {
@@ -16,35 +17,41 @@ export async function applyPromptDeepLink(q: Record<string, unknown>, deps: Prom
   let handled = false, historyApplied = false
   const scenarioId = typeof q.scenario === 'string' ? q.scenario : ''
   if (scenarioId) {
-    const { findScenario, substituteScenarioPrompt, SCENARIO_RES_MAP } = await import('@/config/scenarios')
+    const { findScenario, SCENARIO_RES_MAP } = await import('@/config/scenarios')
     if (!isCurrent()) return { handled: false, historyApplied: false }
-    // 剧本模式分幕 → 导演台：第一幕的语义词条落成手动词条，
+    // 剧本模式分幕 → 导演台：选中幕的语义词条落成手动词条，
     // 质量行不搬（质量前缀由模型 profile 决定，剧本里的六连质量词
     // 正是 WAI 作者建议避免的堆叠写法）。
     const scenario = findScenario(scenarioId)
-    const act = scenario?.acts[0]
-    if (act) {
-      if (pb.isPopular) deps.selectPopularSource('studio')
+    const act = typeof q.act === 'string' ? scenario?.acts.find(act => act.n === q.act) : scenario?.acts[0]
+    if (scenario && act) {
+      const cast = typeof q.cast === 'string' ? pb.popularCharacters.find(character => character.id === q.cast) : undefined
+      const outfit = cast?.outfits.find(outfit => typeof q.outfit === 'string' ? outfit.id === q.outfit : outfit.default) || (typeof q.outfit === 'string' ? undefined : cast?.outfits[0])
+      if (typeof q.cast === 'string' && (!cast || !outfit)) { pb.flash('故事角色或衣装不可用，当前草稿已保留'); return { handled: false, historyApplied: false } }
+      if (pb.isPopular && !cast) deps.selectPopularSource('studio')
       pb.clearScene()
       const char: ScenarioCharacter = q.char === 'nene' || q.char === 'natsume' ? q.char : 'nene'
-      pb.setChar(char)
+      if (cast && outfit) { deps.selectPopularSource('popular'); pb.setPopularSubject(cast.id, outfit.id, null, { outfitExplicit: true }); deps.applyRecommendedEngine(cast) }
+      else pb.setChar(char)
       pb.setStory(`${scenario.name} · ${act.title}：${act.desc}`)
-      const semanticTokens = substituteScenarioPrompt(act.prompt, char)
+      pb.storyOrigin = { scenarioId: scenario.id, actId: act.n, title: `${scenario.name} · ${act.title}`, characterId: cast?.id || char, outfitId: outfit?.id, outfitProse: outfit ? undefined : scenario.outfitProse }
+      const semanticTokens = scenarioCastPrompt(act.prompt, char, cast, outfit)
         .split('\n')
-        .slice(1)
+        .filter((_, index) => index > 0 && (!cast || index !== 1))
         .flatMap(line => line.split(',').map(token => token.trim().replace(/[\s-]+/g, '_')))
         .filter(Boolean)
       pb.manualTags = new Set(semanticTokens)
+      pb.sdParams.negativeCustom = act.neg
       const dim = SCENARIO_RES_MAP[act.res]?.dim
       if (dim) {
         pb.lastRecommendedSize = dim.replace('×', 'x')
         sdSize.value = pb.lastRecommendedSize
       }
-      pb.flash(`已载入剧本《${scenario.name}》第一幕 ${act.title}，可调整后生成`)
+      pb.flash(`已载入剧本《${scenario.name}》第 ${act.n} 幕 ${act.title}，可调整后生成`)
       handled = true
     }
   }
-  if (isCharKey(q.char)) {
+  if (isCharKey(q.char) && !q.scenario) {
     if (pb.isPopular && !q.popular && !historyLink) deps.selectPopularSource('studio')
     pb.setChar(q.char); handled = true
   }

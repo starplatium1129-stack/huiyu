@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-workspace-portable-backup"
+description = "Enables the workspace_portable_backup command without any pre-configured scope."
+commands.allow = ["workspace_portable_backup"]
+
+[[permission]]
+identifier = "deny-workspace-portable-backup"
+description = "Denies the workspace_portable_backup command without any pre-configured scope."
+commands.deny = ["workspace_portable_backup"]

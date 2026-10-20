@@ -316,7 +316,7 @@ fn checked(root: &Path, name: &str) -> Result<PathBuf> {
     Ok(path)
 }
 
-fn write_pointer(root: &Path, pointer: &Value, candidate: bool) -> Result<()> {
+pub(super) fn write_pointer(root: &Path, pointer: &Value, candidate: bool) -> Result<()> {
     let name = if candidate {
         "workspace-candidate.json"
     } else {

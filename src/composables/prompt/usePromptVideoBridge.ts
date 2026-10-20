@@ -1,3 +1,4 @@
+import { readStoryOrigin } from '@/types/storyOrigin'
 import { ref, type ComputedRef, type Ref } from 'vue'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { AnimaResultContext } from '@/types/anima'
@@ -10,7 +11,7 @@ import { runtimeFetch } from '@/platform/runtimeUrl'
 
 export type PromptVideoSnapshot = VideoTransferImage
 export type HistoryVideoSnapshot = Readonly<Pick<ArtworkRecord,
-  'image_id' | 'prompt' | 'story' | 'blueprintId' | 'characterId' | 'outfitId' | 'scene'>>
+  'image_id' | 'prompt' | 'story' | 'storyOrigin' | 'blueprintId' | 'characterId' | 'outfitId' | 'scene'>>
 
 export interface PromptVideoBridgeDeps {
   displayResultUrl: ComputedRef<string> | Ref<string>
@@ -65,9 +66,10 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
     const snapshot = {
       prompt: (engine === 'sd' ? deps.sdResultPrompt.value : result?.metadata?.prompt) || deps.livePrompt.value || '',
       story: context?.story ?? (deps.story() || ''),
+      storyOrigin: readStoryOrigin(context?.history?.storyOrigin),
       blueprintId: context ? (context.blueprintId ?? null)
         : (subject.kind === 'popular' ? (subject.blueprintId ?? null) : deps.sceneId()),
-      characterId: context ? (context.characterId ?? '') : (subject.kind === 'popular' ? subject.characterId ?? '' : ''),
+      characterId: context ? (context.characterId || context.char || '') : (subject.kind === 'popular' ? subject.characterId ?? '' : ''),
       outfitId: context ? (context.outfitId ?? null) : (subject.kind === 'popular' ? (subject.outfitId ?? null) : null),
       sceneId: context ? (context.sceneId ?? null) : deps.sceneId(),
     }
@@ -88,7 +90,7 @@ export function usePromptVideoBridge(deps: PromptVideoBridgeDeps) {
     }
   }
   function captureHistory(entry: ArtworkRecord): HistoryVideoSnapshot {
-    return { image_id: entry.image_id, prompt: entry.prompt, story: entry.story,
+    return { image_id: entry.image_id, prompt: entry.prompt, story: entry.story, storyOrigin: readStoryOrigin(entry.storyOrigin),
       blueprintId: entry.blueprintId, characterId: entry.characterId, outfitId: entry.outfitId, scene: entry.scene }
   }
   function goToVideo(push: (path: string) => Promise<unknown> | void) {

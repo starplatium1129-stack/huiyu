@@ -2,6 +2,7 @@
 
 mod bridge;
 mod save_image;
+mod portable_backup;
 mod bootstrap;
 mod ui_entry;
 mod credentials;
@@ -222,6 +223,7 @@ fn main() {
             window_presentation::window_zoom_set,
             bridge::open_workspace,
             save_image::save_image,
+            portable_backup::workspace_portable_backup,
             updater_cmd::desktop_update_check,
             updater_cmd::desktop_update_state,
             updater_cmd::desktop_update_install,

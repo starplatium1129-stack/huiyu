@@ -1,6 +1,7 @@
 import { PendingMediaUploadError } from './mediaUpload.ts'
 import { ArtworkSaveSupersededError } from './artworkSaveInput'
 import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
+import { readStoryOrigin } from '@/types/storyOrigin'
 import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources } from '@/utils/promptDirector'
 import type { HistoryEntry } from '@/types/promptHistory'
 import type { ArtworkCommitIdentity, ArtworkSaveSnapshot, GeneratedArtworkInput, LegacyArtworkDefaults, SaveGeneratedArtworkDependencies, SaveGeneratedArtworkResult } from './artworkSaveInput'
@@ -24,7 +25,7 @@ function assembleRecord(entry: GeneratedArtworkInput, defaults: LegacyArtworkDef
   const isPopular = currentSubject.kind === 'popular'
   const recordedLora = Boolean(entry.lora || entry.loraId || entry.loras?.length)
   return {
-    id, timestamp: now,
+    id, timestamp: now, storyOrigin: readStoryOrigin(entry.storyOrigin),
     character: entry.character ?? defaults.character,
     scene: isPopular ? (currentSubject.blueprintId ?? null) : (entry.scene !== undefined ? entry.scene : defaults.scene),
     sceneTitle: entry.sceneTitle !== undefined ? entry.sceneTitle : defaults.sceneTitle,

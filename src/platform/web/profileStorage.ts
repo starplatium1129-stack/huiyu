@@ -14,7 +14,7 @@ export interface ProfilePort {
   saveSetting(input: { operationId: string; key: string; value: string | null; expectedRevision: number | null }): Promise<ProfileRecord>
   readChat(ifVersion?: string, ifArchiveVersion?: string): Promise<ProfileSnapshot>
   readChatArchive(ifVersion?: string): Promise<ProfileSnapshot>
-  saveChatRecord(input: { operationId: string; key: string; value: unknown; expectedRevision: number | null; expectedReset: string }): Promise<ProfileRecord>
+  saveChatRecord(input: { operationId: string; key: string; value: unknown; baseValue?: unknown; expectedRevision: number | null; expectedReset: string }): Promise<ProfileRecord>
   resetChat(input: { operationId: string; expectedReset: string }): Promise<ProfileSnapshot>
   readDrafts(windowId: string, ifVersion?: string): Promise<ProfileSnapshot>
   saveDraft(input: { operationId: string; key: string; value: string | null; windowId?: string; expectedRevision: number | null; expectedReset: string }): Promise<ProfileRecord>
@@ -134,7 +134,7 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
       try {
         const input = { operationId, key, value: sendValue as string | null, expectedRevision }
         const saved = domain === 'settings' ? await selected.saveSetting(input)
-          : domain === 'chat' ? await selected.saveChatRecord({ ...input, expectedReset })
+          : domain === 'chat' ? await selected.saveChatRecord({ ...input, baseValue, expectedReset })
             : await selected.saveDraft({ ...input, ...(session ? { windowId } : {}), expectedReset })
         revisions.set(identity, saved.revision)
         // Successors retain this exact node. Publish the merged body along with

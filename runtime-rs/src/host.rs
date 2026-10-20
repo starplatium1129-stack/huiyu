@@ -1,5 +1,6 @@
 mod activation;
 mod authority;
+mod portable;
 
 pub(crate) use authority::OwnedWriteGuard;
 pub use authority::{HostAuthority, Session};
@@ -78,6 +79,9 @@ async fn perform(
         "enable-bundled",
         "operation-status",
         "operation-cancel",
+        "portable-export",
+        "portable-import",
+        "portable-activate",
     ]
     .contains(&action)
         && window != "atelier"
@@ -106,6 +110,9 @@ async fn perform(
     }
     state.host.check_running()?;
     let principal = format!("desktop:{}",state.config.source_profile_id.as_deref().unwrap_or(""));
+    if matches!(action,"portable-export"|"portable-import"|"portable-activate") {
+        return Ok(Json(portable::handle(state,&input,&principal).await?));
+    }
     if matches!(action,"operation-status"|"operation-cancel") {
         let id = input["operationId"].as_str().ok_or_else(|| ApiError::invalid("Missing host operation identity"))?;
         return Ok(Json(json!({"job":state.host.jobs.status(&principal,id,action=="operation-cancel")?})));

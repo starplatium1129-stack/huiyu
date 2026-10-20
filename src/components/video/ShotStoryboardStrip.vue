@@ -11,6 +11,10 @@
         <span class="storyboard-description tw:overflow-hidden tw:text-secondary tw:text-body-sm tw:leading-body">{{ shot.prompt.trim() || '还没有画面描述' }}</span>
       </button>
     </div>
+    <div v-if="origins.length" class="tw:flex tw:flex-wrap tw:gap-s-3 tw:mt-s-3">
+      <RouterLink v-for="origin in origins" :key="`${origin.scenarioId}:${origin.actId}`" class="btn btn-ghost btn-sm"
+        :to="storyOriginRoute(origin)">返回 {{ origin.title }}</RouterLink>
+    </div>
   </nav>
 </template>
 
@@ -19,7 +23,9 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import { computed, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-const props = defineProps<{ shots: readonly { imageUrl?: string; prompt: string; duration: number; shotSize: string }[] }>()
+import { readStoryOrigin, storyOriginRoute, type StoryOrigin } from '@/types/storyOrigin'
+const props = defineProps<{ shots: readonly { imageUrl?: string; prompt: string; duration: number; shotSize: string; storyOrigin?: StoryOrigin }[] }>()
+const origins = computed(() => [...new Map(props.shots.flatMap(shot => { const origin = readStoryOrigin(shot.storyOrigin); return origin ? [[`${origin.scenarioId}:${origin.actId}`, origin] as const] : [] })).values()])
 const emit = defineEmits<{ locate: [index: number] }>()
 const failedSources = ref(new Set<string>())
 const totalDuration = computed(() => props.shots.reduce((sum, shot) => sum + shot.duration, 0))

@@ -2,6 +2,7 @@ import { profileDraftStorage as sessionStorage } from '../platform/web/profileSt
 import { ref } from 'vue'
 import type { FirstFrameRequest } from '@/types/firstFrameRequest'
 import { defineStore } from 'pinia'
+import { readStoryOrigin } from '@/types/storyOrigin'
 import {
   VIDEO_CONTEXT_KEY,
   VIDEO_DRAFT_KEY,
@@ -23,6 +24,7 @@ import {
  */
 
 export interface VideoCtxPayload {
+  storyOrigin?: import('@/types/storyOrigin').StoryOrigin
   imageId: string
   /** 最近一次实际出图的完整提示词（视频提示词首选源）。 */
   prompt: string
@@ -40,6 +42,7 @@ export interface VideoCtxPayload {
 
 /** 剧本模式一幕 → 分镜镜头（无图纯文本；首帧走分镜的「一键首帧」或手动上传）。 */
 export interface StagedScenarioAct {
+  storyOrigin?: import('@/types/storyOrigin').StoryOrigin
   /** Stable receipt for this pending act; legacy lists are upgraded on import. */
   importId?: string
   prompt: string
@@ -87,6 +90,7 @@ export interface VideoTaskRecord {
 
 /** 分镜参考卡元信息（图片本体不入草稿：角色卡按 characterId+outfitId 重装配）。 */
 export interface ShotsDraftCard {
+  outfitProseOverride?: string
   label: string
   characterId: string
   outfitId: string
@@ -98,6 +102,7 @@ export interface ShotSubmissionRecord {
 }
 
 export interface ShotsDraftShot {
+  storyOrigin?: import('@/types/storyOrigin').StoryOrigin
   /** Explicit submission provenance; absent on legacy or unsubmitted rows. */
   submission?: ShotSubmissionRecord
   /** Opaque per-submission row identity; never copied onto editable row objects. */
@@ -268,7 +273,7 @@ export const useVideoStore = defineStore('videoStudio', () => {
 
   // ── 剧本模式分幕交接（2026-08-23 激活：剧本页整本送入分镜短片） ──────────
   function stageScenarioActs(list: StagedScenarioAct[]): boolean {
-    const pending = list.map(act => ({ ...act,
+    const pending = list.map(act => ({ ...act, storyOrigin: readStoryOrigin(act.storyOrigin),
       importId: typeof act.importId === 'string' && act.importId ? act.importId : crypto.randomUUID() }))
     if (!writeJson(SCENARIO_CTX_KEY, pending)) return false
     pendingScenarioActs.value = pending

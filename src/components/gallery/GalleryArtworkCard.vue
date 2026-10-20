@@ -42,6 +42,9 @@
           <ArchiveIcon name="trash" />
         </button>
       </StudioTooltip>
+      <StudioTooltip v-if="storyOrigin" :content="`返回 ${storyOrigin.title}`">
+        <RouterLink class="artwork-tool" :aria-label="`返回 ${storyOrigin.title}`" :to="storyOriginRoute(storyOrigin)"><ArchiveIcon name="book" /></RouterLink>
+      </StudioTooltip>
     </template>
   </div>
   <component
@@ -109,12 +112,14 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import { artworkContinueTarget } from '@/utils/artworkNavigation'
+import { readStoryOrigin, storyOriginRoute } from '@/types/storyOrigin'
 const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
   thumbUrl: string; imageUrl: string; cors?: 'anonymous'; missing: boolean;
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
 const continueTarget = computed(() => artworkContinueTarget(props.item, 'remix'))
+const storyOrigin = computed(() => readStoryOrigin(props.item.storyOrigin))
 const artworkButton = ref<HTMLElement | null>(null)
 let selectShift = false
 const artworkCheckbox = ref<InstanceType<typeof StudioCheckbox> | null>(null)

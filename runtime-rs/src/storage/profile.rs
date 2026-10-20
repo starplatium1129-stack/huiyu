@@ -3,6 +3,7 @@ use canonical::stringify;
 use rusqlite::{OptionalExtension, params};
 pub(super) mod media_refs;
 pub(in crate::storage) mod archive;
+pub(in crate::storage) mod messages;
 const CHAT_ARCHIVE: &str = "aics_chat_archive_v1";
 const CHAT: &[&str] = &[
     "aics_chat_v1",
@@ -172,6 +173,7 @@ fn clear_chat(c: &Context) -> Result<()> {
     media_refs::clear_domain(c, "chat")?;
     c.db.execute("DELETE FROM profile_records WHERE domain='chat'", [])?;
     c.db.execute("DELETE FROM profile_archive_chunks", [])?;
+    c.db.execute("DELETE FROM chat_message_records", [])?;
     Ok(())
 }
 fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>, known_archive: Option<&str>) -> Result<Value> {
@@ -243,6 +245,7 @@ fn snapshot(c: &Context, domain: &str, window: Option<&str>, known: Option<&str>
         };
         let mut record = json!({"key":key,"value":null,"revision":revision});
         record["value"] = serde_json::from_str(body)?;
+        if domain == "chat" && key == "aics_chat_v1" { record["value"] = messages::decode(&c.db, record["value"].take())?; }
         if domain == "chat" && key == CHAT_ARCHIVE {
             record["value"] = archive::decode(&c.db, record["value"].take())?;
             record["version"] = json!(archive_version(c, Some(revision), &reset_revision)?);
@@ -296,7 +299,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         let result=if kind=="profile.resetChat" {
             let current:Option<serde_json::Result<Value>>=c.db.query_row("SELECT body FROM profile_records WHERE domain='chat' AND record_key='aics_chat_v1'",[],|r|Ok(serde_json::from_str(text_column(r,0)?))).optional()?;
             let retained=if let Some(current)=current {
-                let decoded=current?;
+                let decoded=messages::decode(&c.db,current?)?;
                 let mut record=if let Value::String(s)=decoded {serde_json::from_str::<Value>(&s)?} else {decoded};
                 if !record.is_object() {return Err(invalid("Invalid chat profile"))}
                 record["histories"]=json!({});record["conversations"]=json!({});record["historiesRevision"]=json!(revision);record["historiesRevisions"]=json!({});
@@ -317,9 +320,10 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             if domain(key)!=Some(selected)||key=="aics_chat_reset_v1" {return Err(invalid_field())}
             // Chat/draft values often hold a full JSON document as a String.
             // Decode it once for both scans; persist and fingerprint the original.
-            let value=&command["value"];
+            let stored = if key == "aics_chat_v1" { Some(messages::prepare(c, &command["value"])?) } else { None };
+            let value=stored.as_ref().unwrap_or(&command["value"]);
             let parsed=value.as_str().and_then(|text|serde_json::from_str::<Value>(text).ok());
-            let expanded = if key==CHAT_ARCHIVE { Some(archive::decode(&c.db,parsed.as_ref().unwrap_or(value).clone())?) } else { None };
+            let expanded = if key==CHAT_ARCHIVE { Some(archive::decode(&c.db,parsed.as_ref().unwrap_or(value).clone())?) } else if key == "aics_chat_v1" { let decoded = messages::decode(&c.db, value.clone())?; Some(if let Some(text)=decoded.as_str(){serde_json::from_str(text)?}else{decoded}) } else { None };
             let decoded=expanded.as_ref().or(parsed.as_ref()).unwrap_or(value);
             if credential(decoded) {return Err(invalid_field())}
             let record_key=if kind=="profile.saveDraft" {command["windowId"].as_str().filter(|w|!w.is_empty()).map(|w|format!("{w}:{key}")).unwrap_or_else(||key.into())} else {key.into()};
@@ -329,7 +333,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             // Both writes share this transaction. Release the decoded tree
             // before encoding the original value and constructing its receipt.
             drop(parsed);
-            c.db.execute("INSERT INTO profile_records VALUES(?,?,?,?) ON CONFLICT(domain,record_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",params![selected,record_key,stringify(&command["value"]),revision])?;
+            c.db.execute("INSERT INTO profile_records VALUES(?,?,?,?) ON CONFLICT(domain,record_key) DO UPDATE SET body=excluded.body,revision=excluded.revision",params![selected,record_key,stringify(value),revision])?;
             if key==CHAT_ARCHIVE { archive::collect(c,value)?; }
             // Callers already retain the exact submitted value. Opt-in writes
             // persist/replay only the acknowledgement, not another full archive.

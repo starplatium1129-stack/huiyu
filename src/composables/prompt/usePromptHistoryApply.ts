@@ -1,3 +1,4 @@
+import { readStoryOrigin } from '@/types/storyOrigin'
 import { parseHistoryRecipe } from '@/utils/historyRecipe'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { ArtworkRecord } from '@/types/artwork'
@@ -213,6 +214,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       pb.manualTags = new Set((entry.manual_tags || []).filter(tag => !/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(tag)))
     }
     // visualDescription 两分支都恢复（旧版只有热门分支恢复，工作室路径静默丢失）。
+    pb.storyOrigin = readStoryOrigin(entry.storyOrigin)
     pb.visualDescription = entry.visualDescription || ''
     // Saved decisions override today's blueprint defaults for both subject kinds.
     pb.selections.emotion = [...(entry.emotion || [])]

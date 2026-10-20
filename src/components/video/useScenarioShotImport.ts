@@ -1,6 +1,9 @@
 import { computed, type Ref } from 'vue'
 import { useVideoStore } from '@/stores/videoStore'
 import type { ShotDraft } from './shotListTypes'
+import type { ReferenceCard } from './useReferenceCards'
+import { readStoryOrigin } from '@/types/storyOrigin'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 
 /** Persist imported text and receipts before acknowledging the pending script. */
 export function useScenarioShotImport(deps: {
@@ -8,6 +11,9 @@ export function useScenarioShotImport(deps: {
   active: Ref<boolean>
   batchError: Ref<string>
   persistShotsDraft: (sourceActIds?: readonly string[]) => boolean
+  referenceCards: Ref<ReferenceCard[]>
+  selectCharacter: (id: string, index: number, outfit?: string) => Promise<boolean>
+  adoptOutfitProse: (index: number, prose: string) => void
 }) {
   const videoStore = useVideoStore()
   const pendingError = '分镜草稿已保存，剧本导入待办更新失败；可重试导入确认'
@@ -19,7 +25,15 @@ export function useScenarioShotImport(deps: {
   })
   const scenarioImportBlocked = computed(() => deps.shots.value.length > 0 && remainingActs.value.length > 0)
 
-  function importScenarioActs() {
+  let importing = false
+  async function importScenarioActs() {
+    if (importing) return
+    importing = true
+    try { await importPending() }
+    catch (error) { deps.batchError.value = error instanceof Error ? error.message : '剧本导入未完成，待办已保留' }
+    finally { importing = false }
+  }
+  async function importPending() {
     if (!deps.active.value) return
     const pending = videoStore.pendingScenarioActs
     if (!pending.length) return
@@ -31,6 +45,8 @@ export function useScenarioShotImport(deps: {
         deps.batchError.value = '剧本导入确认保存失败，待办已保留；恢复存储后请重试'
         return
       }
+      await flushProfileWrites()
+      if (!deps.active.value || videoStore.pendingScenarioActs !== pending) return
       if (!videoStore.stageScenarioActs(remaining)) {
         deps.batchError.value = pendingError
         return
@@ -46,14 +62,33 @@ export function useScenarioShotImport(deps: {
       }
     }
     const acts = [...videoStore.pendingScenarioActs]
+    const pairs = [...new Map(acts.map(act => [JSON.stringify([act.characterId, act.storyOrigin?.outfitId || '']), act])).values()]
+    const slots = new Map<string, string>()
+    for (const act of pairs) {
+      if (!deps.active.value || deps.shots.value.length) return
+      const outfit = act.storyOrigin?.outfitId
+      const prose = act.storyOrigin?.outfitProse
+      let index = deps.referenceCards.value.findIndex(card => card.characterId === act.characterId && (outfit ? card.outfitId === outfit && !card.outfitProseOverride : card.outfitProseOverride === prose))
+      const reuse = index >= 0 && Boolean(deps.referenceCards.value[index].label)
+      if (index < 0) index = deps.referenceCards.value.findIndex(card => !card.characterId && !card.label && !card.images.length)
+      if (index < 0 && deps.referenceCards.value.length < 4) { index = deps.referenceCards.value.length; deps.referenceCards.value.push({ label: '', images: [] }) }
+      if (index < 0) throw new Error('角色卡已满，请先留出对应角色的卡槽，再重试导入剧本。')
+      if (!reuse) {
+        if (!await deps.selectCharacter(act.characterId, index, outfit)) throw new Error('角色资料尚未读取，剧本待办已保留；请重试导入。')
+        if (prose) deps.adoptOutfitProse(index, prose)
+      }
+      slots.set(JSON.stringify([act.characterId, outfit || '']), String(index + 1))
+    }
+    if (!deps.active.value || deps.shots.value.length || acts.some((act, index) => videoStore.pendingScenarioActs[index]?.importId !== act.importId)) return
     deps.shots.value = acts.map(act => ({
+      storyOrigin: readStoryOrigin(act.storyOrigin),
       prompt: act.prompt,
       dialogue: act.dialogue,
       shotSize: act.shotSize,
       camera: act.camera,
       motion: act.motion,
       duration: act.duration === 5 || act.duration === 10 || act.duration === 15 ? act.duration : 3,
-      seedText: '', imageName: '', imageUrl: '', cast: '',
+      seedText: '', imageName: '', imageUrl: '', cast: slots.get(JSON.stringify([act.characterId, act.storyOrigin?.outfitId || ''])) || '',
       importSourceActId: act.importId,
     }))
     if (!deps.persistShotsDraft(acts.flatMap(act => act.importId ? [act.importId] : []))) {
@@ -61,11 +96,15 @@ export function useScenarioShotImport(deps: {
       deps.batchError.value = '分镜草稿保存失败，剧本导入待办已保留；恢复存储后可重试导入'
       return
     }
+    await flushProfileWrites()
+    if (!deps.active.value || acts.length !== videoStore.pendingScenarioActs.length
+      || acts.some((act, index) => videoStore.pendingScenarioActs[index]?.importId !== act.importId)) return
     if (!videoStore.stageScenarioActs([])) {
       deps.batchError.value = pendingError
       return
     }
-    deps.batchError.value = `已载入剧本 ${acts.length} 幕。可选择角色并按需上传参考图，再点「一键首帧」或批量生成。`
+    await flushProfileWrites()
+    deps.batchError.value = `已载入剧本 ${acts.length} 幕及对应角色。可按需上传参考图或继续编辑镜头。`
   }
 
   const pendingScenarioCount = computed(() => videoStore.pendingScenarioActs.length)

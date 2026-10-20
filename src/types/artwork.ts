@@ -1,4 +1,5 @@
 export interface ArtworkRecord {
+  storyOrigin?: import('./storyOrigin').StoryOrigin
   id: string | number
   engine?: string
   subject?: string

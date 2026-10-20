@@ -189,7 +189,7 @@ impl Drop for Owner {
 }
 
 fn supported(version: i64) -> bool {
-    (1..=4).contains(&version)
+    (1..=5).contains(&version)
 }
 pub(super) fn open(
     root: PathBuf,
@@ -315,19 +315,19 @@ pub(super) fn open(
             "Workspace identity and database versions differ",
         ));
     }
-    if version < 4 {
+    if version < 5 {
         atomic_json(
             &root,
             "schema-upgrade.json",
-            &json!({"workspaceId":workspace_id,"from":version,"to":4}),
+            &json!({"workspaceId":workspace_id,"from":version,"to":5}),
         )?;
-        upgrade(&db, version, 4)?;
-        identity["schemaVersion"] = json!(4);
+        upgrade(&db, version, 5)?;
+        identity["schemaVersion"] = json!(5);
         atomic_json(&root, "workspace.json", &identity)?;
         fs::remove_file(intent_file)?;
         sync_dir(&root)?;
     }
-    verify_identity(&db, &workspace_id, 4)?;
+    verify_identity(&db, &workspace_id, 5)?;
     // Reapply access paths on open so upgraded workspaces and restored older snapshots
     // receive live/deleted artwork, reverse deletion/FK and unsettled task access paths.
     db.execute_batch(
@@ -417,6 +417,7 @@ fn upgrade(db: &Connection, from: i64, to: i64) -> Result<()> {
             2 => include_str!("migration-schema.sql"),
             3 => include_str!("task-schema.sql"),
             4 => include_str!("archive-schema.sql"),
+            5 => include_str!("workflow-schema.sql"),
             _ => unreachable!(),
         })?;
         db.execute(

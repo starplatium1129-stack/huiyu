@@ -1,3 +1,4 @@
+import { readStoryOrigin } from '@/types/storyOrigin'
 import { getCurrentScope, onActivated, onDeactivated, onScopeDispose, type Ref } from 'vue'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
@@ -28,6 +29,8 @@ export interface ShotImportDeps {
   selectCardCharacter: (charId: string, cardIndex?: number, outfitId?: string) => Promise<boolean>
   onError: (message: string) => void
   persistShotsDraft: () => boolean
+  canAttachStoryFrame: (shot: ShotDraft) => boolean
+  adoptOutfitProse: (index: number, prose: string) => void
 }
 
 export interface ShotImportOutcome {
@@ -167,20 +170,20 @@ export function useShotImport(deps: ShotImportDeps) {
 
     // 1. 参考卡按「角色 + 服装」对去重保序（同一角色多服装各占一卡槽，F3）；
     //    已有匹配卡（草稿恢复/此前装配）直接复用，不重复装配。
-    const pairs: Array<{ characterId: string; outfitId: string }> = []
+    const pairs: Array<{ characterId: string; outfitId: string; outfitProse?: string }> = []
     for (const ctx of list) {
       if (!ctx.characterId) continue
       const outfitId = ctx.outfitId ?? ''
       if (!pairs.some(pair => pair.characterId === ctx.characterId && pair.outfitId === outfitId)) {
-        pairs.push({ characterId: ctx.characterId, outfitId })
+        pairs.push({ characterId: ctx.characterId, outfitId, outfitProse: ctx.storyOrigin?.outfitProse })
       }
     }
     const pairCardIndex = new Map<string, number>()
     const pairKey = (characterId: string, outfitId: string) => `${characterId}::${outfitId}`
-    const assembly: Array<{ charId: string; cardIndex: number; outfitId: string }> = []
+    const assembly: Array<{ charId: string; cardIndex: number; outfitId: string; outfitProse?: string }> = []
     for (const pair of pairs.slice(0, 4)) {
       const existing = referenceCards.value.findIndex(
-        card => card.characterId === pair.characterId && (card.outfitId || '') === pair.outfitId && !!card.label,
+        card => card.characterId === pair.characterId && (pair.outfitProse ? card.outfitProseOverride === pair.outfitProse : (card.outfitId || '') === pair.outfitId && !card.outfitProseOverride) && !!card.label,
       )
       if (existing >= 0) { pairCardIndex.set(pairKey(pair.characterId, pair.outfitId), existing); continue }
       let cardIndex = referenceCards.value.findIndex(card => !card.characterId && !card.images.length && !card.label)
@@ -193,13 +196,14 @@ export function useShotImport(deps: ShotImportDeps) {
       referenceCards.value[cardIndex].characterId = pair.characterId
       referenceCards.value[cardIndex].outfitId = pair.outfitId
       pairCardIndex.set(pairKey(pair.characterId, pair.outfitId), cardIndex)
-      assembly.push({ charId: pair.characterId, cardIndex, outfitId: pair.outfitId })
+      assembly.push({ charId: pair.characterId, cardIndex, outfitId: pair.outfitId, outfitProse: pair.outfitProse })
     }
 
     // 2. 并行装配参考卡（携带服装参数），逐卡记成败。
     const assembled = await Promise.all(assembly.map(async item => {
       try {
         const ready = await deps.selectCardCharacter(item.charId, item.cardIndex, item.outfitId || undefined)
+        if (ready && item.outfitProse) deps.adoptOutfitProse(item.cardIndex, item.outfitProse)
         return ready
       } catch { return false }
     }))
@@ -218,7 +222,17 @@ export function useShotImport(deps: ShotImportDeps) {
       const inferred = inferShotParams(ctx.prompt || '')
       const key = ctx.characterId ? pairKey(ctx.characterId, ctx.outfitId ?? '') : ''
       const cardIndex = key ? pairCardIndex.get(key) : undefined
+      const source = readStoryOrigin(ctx.storyOrigin)
+      const target = source && shots.value.find(shot => {
+        const origin = shot.storyOrigin
+        return !shot.imageId && !shot.firstFrameRequest && !frameRequests.has(shot) && deps.canAttachStoryFrame(shot)
+          && origin?.scenarioId === source.scenarioId && origin.actId === source.actId
+          && origin.characterId === source.characterId && (origin.outfitId || '') === (source.outfitId || '')
+      })
+      const previous = target ? { ...target } : undefined
+      const targetSnapshot = target ? JSON.stringify(target) : ''
       const draft: ShotDraft = {
+        storyOrigin: readStoryOrigin(ctx.storyOrigin),
         prompt: ctx.prompt || '',
         dialogue: '',
         shotSize: inferred.shotSize,
@@ -243,9 +257,13 @@ export function useShotImport(deps: ShotImportDeps) {
       }
       // Persist the marker before consuming the pending entry. Both native
       // session writes and the desktop profile outbox preserve this order.
-      shots.value.push(draft)
+      const attach = target && shots.value.includes(target) && JSON.stringify(target) === targetSnapshot && deps.canAttachStoryFrame(target)
+      if (attach) Object.assign(target, { imageId: draft.imageId, imageName: draft.imageName, imageUrl: draft.imageUrl, importSourceImageId: draft.importSourceImageId })
+      else shots.value.push(draft)
       if (!deps.persistShotsDraft()) {
-        shots.value.pop()
+        if (attach) Object.assign(target, { imageId: previous?.imageId, imageName: previous?.imageName,
+          imageUrl: previous?.imageUrl, importSourceImageId: previous?.importSourceImageId })
+        else shots.value.pop()
         if (draft.imageUrl) URL.revokeObjectURL(draft.imageUrl)
         deps.onError('分镜草稿保存失败，当前镜头未导入，待办已保留，请重新进入分镜重试。')
         return null

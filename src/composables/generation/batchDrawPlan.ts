@@ -9,6 +9,7 @@ export interface BatchDrawPlan {
   createdAt: number
   engine: 'sd' | 'anima'
   runtimeOwned: boolean
+  backendId?: string
   owner?: TempResultOwner
   targets: BatchTargetItem[]
   jobs: BatchDrawJob[]
@@ -46,6 +47,7 @@ function parseBatchDrawPlan(value: unknown): BatchDrawPlan | null {
     || new Set(jobs.map(job => job.requestKey)).size !== jobs.length) return null
   return {
     version: 1, createdAt: value.createdAt, engine: value.engine as BatchDrawPlan['engine'], runtimeOwned: value.runtimeOwned,
+    ...(typeof value.backendId === 'string' && /^[0-9a-f-]{36}$/.test(value.backendId) ? { backendId: value.backendId } : {}),
     owner: value.owner as TempResultOwner | undefined,
     targets: JSON.parse(JSON.stringify(targets)) as BatchTargetItem[],
     jobs: jobs.map(job => {

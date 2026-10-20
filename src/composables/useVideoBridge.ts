@@ -1,3 +1,4 @@
+import { readStoryOrigin } from '@/types/storyOrigin'
 import { withArtworkStaging } from '@/storage/artworkSession'
 import { useVideoStore, type VideoCtxPayload } from '@/stores/videoStore'
 import type { ArtworkRepository } from '@/storage/artworkRepository'
@@ -59,7 +60,7 @@ export function createVideoTransfer() {
         if (!image.blob.size) throw new Error('成片数据暂不可读取，请恢复原图片后重试')
         imageId = await owner.repository.putImage(image.blob)
         checkVideoTransfer(owner)
-        const ctx: VideoCtxPayload = { imageId, prompt: image.prompt, story: image.story,
+        const ctx: VideoCtxPayload = { imageId, storyOrigin: readStoryOrigin(image.storyOrigin), prompt: image.prompt, story: image.story,
           blueprintId: image.blueprintId, characterId: image.characterId,
           outfitId: image.outfitId ?? null, sceneId: image.sceneId }
         published = destination === 'video' ? store.stageImageCtx(ctx) : store.appendShotCtx(ctx).ok

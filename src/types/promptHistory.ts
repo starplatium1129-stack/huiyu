@@ -10,6 +10,7 @@ type SnapshotValue<T> = T extends object ? { readonly [K in keyof T]: SnapshotVa
 export type HistorySnapshot = SnapshotValue<Partial<HistoryEntry>>
 
 export type HistoryEntry = {
+  storyOrigin?: import('./storyOrigin').StoryOrigin
   id: string | number; timestamp: number; character: string
   scene: string | null; sceneTitle: string | null
   story: string; visualDescription?: string; prompt: string; negative: string; seed: number

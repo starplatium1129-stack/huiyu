@@ -132,7 +132,7 @@ export function useShotWorkspace(props: {
         onError: (message) => { batchError.value = message; },
     });
     // ── 角色参考卡（Ref2VA）编排已下沉 useReferenceCards ─────────────────────
-    const { referenceCards, profileFailed, retryCardProfile, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, retryReferences, referencesReady, shotReferences } = useReferenceCards({
+    const { adoptOutfitProse, referenceCards, profileFailed, retryCardProfile, loadingRefAssets, loadingRefCardIndex, getCharOutfits, addReferenceCard, removeReferenceCard, switchCardOutfit, selectCardCharacter, onCardCharacterSelected, onReferencePicked, pickReference, setReferenceInput, removeReference, retryReferences, referencesReady, shotReferences } = useReferenceCards({
         mediaRevision: frameRevision,
         identityCard,
         batchError,
@@ -170,6 +170,7 @@ export function useShotWorkspace(props: {
         selectCardCharacter: (id, index, outfit) => selectCardCharacter(id, index, outfit, workspaceAbort.signal),
         onError: (message) => { batchError.value = message; },
         persistShotsDraft: () => persistShotsDraft(),
+        canAttachStoryFrame: shot => !getShotSubmission(shot) && !batchActive.value && !submitting.value, adoptOutfitProse,
     });
     /** 单镜首帧重试（F4）：导入失败/草稿恢复图失效的镜头可单独补救。 */
     async function retryShotFrame(index: number) {
@@ -435,7 +436,8 @@ export function useShotWorkspace(props: {
         aspectRatio, quality, steps, linkLastFrame, identityCard, referenceCards, shots,
         batchError, selectCardCharacter, retryPendingFrames, getShotSubmission, restoreShotSubmission,
     });
-    const { importScenarioActs, pendingScenarioCount, scenarioImportBlocked } = useScenarioShotImport({ shots, active: routeActive, batchError, persistShotsDraft });
+    const { importScenarioActs, pendingScenarioCount, scenarioImportBlocked } = useScenarioShotImport({ shots, active: routeActive, batchError, persistShotsDraft, referenceCards, adoptOutfitProse,
+        selectCharacter: (id, index, outfit) => selectCardCharacter(id, index, outfit, workspaceAbort.signal) });
     function retryScenarioImport() {
         if (!restoreReady || workspaceRead || !workspaceCurrent(workspaceVisit) || batchActive.value || submitting.value || scenarioImportBlocked.value) return;
         importScenarioActs();
@@ -461,7 +463,7 @@ export function useShotWorkspace(props: {
         workspaceRead = (async () => {
             await runImportFromDrawing(visit);
             if (!workspaceCurrent(visit)) return;
-            importScenarioActs();
+            await importScenarioActs();
             routeReady.value = true;
             await reconnectShotsBatch();
         })().catch(error => { if (workspaceCurrent(visit)) batchError.value = error instanceof Error ? error.message : '分镜工作区恢复失败，请重新进入分镜重试'; }).finally(() => {

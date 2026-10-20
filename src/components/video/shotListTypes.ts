@@ -6,6 +6,7 @@ import type { FirstFrameRequest } from '@/types/firstFrameRequest'
  * 服务端载荷（prompt 前置身份锚点、seed 解析、参考图挂载）。
  */
 export interface ShotDraft {
+  storyOrigin?: import('@/types/storyOrigin').StoryOrigin
   prompt: string
   dialogue: string
   shotSize: VideoShotSize | ''

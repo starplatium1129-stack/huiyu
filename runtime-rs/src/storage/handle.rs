@@ -1,6 +1,13 @@
 use super::*;
 
 impl Storage {
+    pub(crate) async fn export_portable_backup(&self, id: String, target: PathBuf, job: Arc<crate::workspace_jobs::Job>) -> Result<Value> {
+        let root = self.root.as_ref().clone(); let workspace_id = self.workspace_id.to_string();
+        tokio::task::spawn_blocking(move || backup::portable::export(root,workspace_id,id,target,job)).await.map_err(|_| unavailable())?
+    }
+    pub(crate) async fn import_portable_backup(source: PathBuf, destination: PathBuf, id: String, principal: String, job: Arc<crate::workspace_jobs::Job>) -> Result<Value> {
+        tokio::task::spawn_blocking(move || backup::portable::import(source,destination,id,principal,job)).await.map_err(|_| unavailable())?
+    }
     pub async fn open(root: PathBuf, workspace_id: String, create: bool) -> Result<Self> {
         let epoch = uuid::Uuid::new_v4().to_string();
         let storage_root = Arc::new(root.clone());

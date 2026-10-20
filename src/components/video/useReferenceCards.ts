@@ -25,6 +25,7 @@ export interface ReferenceImage {
 }
 
 export interface ReferenceCard {
+  outfitProseOverride?: string
   label: string
   characterId?: string
   outfitId?: string
@@ -159,7 +160,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
   async function switchCardOutfit(cardIndex: number, outfitId: string) {
     const card = referenceCards.value[cardIndex]
     if (!card || !card.characterId) return
-    if (card.outfitId === outfitId && profiles.value[card.characterId]?.outfits.some(outfit => outfit.id === outfitId)
+    if (!card.outfitProseOverride && card.outfitId === outfitId && profiles.value[card.characterId]?.outfits.some(outfit => outfit.id === outfitId)
       && !profileFailures.value.has(card)) return
     await selectCardCharacter(card.characterId, cardIndex, outfitId)
   }
@@ -175,6 +176,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     signal?.addEventListener('abort', abort, { once: true })
     card.characterId = charId
     if (!options.preserveIdentity) {
+      card.outfitProseOverride = undefined
       card.outfitId = ''
       card.label = ''
       updateMultiCharacterIdentity()
@@ -265,7 +267,8 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
       const profile = card.characterId ? profiles.value[card.characterId] : undefined
       const baseProse = profile?.identityProse || ''
       const outfitObj = profile?.outfits?.find(o => o.id === card.outfitId)
-      const outfitProse = outfitObj?.prose ? `, ${outfitObj.prose}` : ''
+      const wardrobe = card.outfitProseOverride || outfitObj?.prose
+      const outfitProse = wardrobe ? `, ${wardrobe}` : ''
       const fullProse = (baseProse + outfitProse).trim()
 
       if (fullProse) {
@@ -399,7 +402,15 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
     return unique.length ? unique : undefined
   }
 
+  function adoptOutfitProse(index: number, prose: string) {
+    const card = referenceCards.value[index]
+    if (!card || !card.characterId || !prose.trim()) return
+    card.outfitProseOverride = prose.trim().slice(0, 2000)
+    card.label = `${profiles.value[card.characterId]?.displayName || card.label} · 剧本衣装`
+    updateMultiCharacterIdentity()
+  }
   return {
+    adoptOutfitProse,
     referenceCards, profileFailed, retryCardProfile,
     loadingRefAssets,
     loadingRefCardIndex,

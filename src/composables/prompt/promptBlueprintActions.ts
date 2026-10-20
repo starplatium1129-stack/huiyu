@@ -1,3 +1,4 @@
+import { readStoryOrigin } from '@/types/storyOrigin'
 import type { Ref } from 'vue'
 import type { PromptDraftState } from './usePromptDraft'
 import { hasEditedSceneStyle, sceneStyleBaseline } from '@/utils/randomVariationContext'
@@ -137,6 +138,7 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   }
 
   if (draft.directorMode) ctx.setDirectorMode(draft.directorMode)
+  pb.storyOrigin = readStoryOrigin(draft.storyOrigin)
   if (draft.story !== undefined) pb.story = draft.story
   if (draft.visualDescription !== undefined) pb.visualDescription = draft.visualDescription
   if (draft.selections) {
@@ -312,6 +314,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     : undefined
 
   return {
+    storyOrigin: readStoryOrigin(value.storyOrigin),
     updatedAt,
     randomVariation: parseRandomVariation(value.randomVariation),
     directorSources: normalizeDirectorSources(value.directorSources),
@@ -362,6 +365,7 @@ export function restorePromptDraft(state: PromptDraftState, raw: string): boolea
     // Context watchers must not retire the previous overlay against restored tags.
     // The saved overlay is adopted last, after all subject/outfit changes.
     randomVariation.value = null
+    state.storyOrigin.value = readStoryOrigin(d.storyOrigin)
     if (typeof d.story === 'string') story.value = d.story
     if (typeof d.visualDescription === 'string') visualDescription.value = d.visualDescription
     if (d.char) char.value = d.char

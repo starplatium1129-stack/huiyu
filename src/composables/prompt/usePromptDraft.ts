@@ -1,3 +1,4 @@
+import { readStoryOrigin, type StoryOrigin } from '@/types/storyOrigin'
 import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources } from '@/utils/promptDirector'
 import type { DirectorControlSources, DirectorControlValues } from '@/types/promptDirector'
 import type { SceneBlueprint } from '@/types/sceneBlueprint'
@@ -12,6 +13,7 @@ import type { CharKey, Selections } from '@/types/promptHistory'
 import type { Scene } from '@/types/scene'
 
 export interface PromptDraftState {
+  storyOrigin: Ref<StoryOrigin | undefined>
   subject: Ref<DrawSubject>
   story: Ref<string>
   visualDescription: Ref<string>
@@ -93,6 +95,7 @@ export function usePromptDraft(state: PromptDraftState) {
       sceneStyleBaseline: { ...state.inheritedDirectorValues.value },
       directorSources: normalizeDirectorSources(state.directorSources.value),
       story: story.value,
+      storyOrigin: readStoryOrigin(state.storyOrigin.value),
       visualDescription: visualDescription.value,
       char: char.value,
       sceneId: sceneId.value,
@@ -172,7 +175,7 @@ export function usePromptDraft(state: PromptDraftState) {
   }
 
   // Clearing or editing only the reference outfit does not touch manualTags.
-  watch([outfitOverride, referenceInput, state.directorSources], saveDraft, { deep: true })
+  watch([outfitOverride, referenceInput, state.directorSources, state.storyOrigin], saveDraft, { deep: true })
 
   onScopeDispose(() => {
     disposed = true; restoreRevision++; releaseMaintenance()

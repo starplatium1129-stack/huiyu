@@ -1,3 +1,4 @@
+import { usePortableBackup } from './usePortableBackup'
 import { profileLocalStorage as localStorage, profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
 import { readChatArchive, withChatArchiveMutation } from '@/storage/chatArchiveRepository'
 import { CHAT_ARCHIVE_KEY, serializeChatArchive } from '@/utils/chatArchive'
@@ -56,12 +57,13 @@ function errorMessage(error: unknown, fallback: string) {
 
 export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const busy = ref(false)
+  const portable = usePortableBackup(busy, onFlash)
   const pending = ref<BackupFile | null>(null)
   const pendingWorkspace = ref<WorkspaceBackupReceipt | null>(null)
   let cleanupController: AbortController | null = null
-  onScopeDispose(registerMaintenanceParticipant(() => {
+  onScopeDispose(registerMaintenanceParticipant(reason => {
     // The initiating atelier cleanup itself is not an unrelated backup writer.
-    if ((busy.value && !(cleanupController && getDesktopWindowRole() === 'atelier')) || pending.value || pendingWorkspace.value) throw new Error('BACKUP_BUSY')
+    if ((busy.value && !portable.preparingActivation(reason) && !(cleanupController && getDesktopWindowRole() === 'atelier')) || pending.value || pendingWorkspace.value) throw new Error('BACKUP_BUSY')
   }))
   const desktopActive = ref(workspaceBackupActive())
   const removeRuntimeListener = onDesktopRuntime(() => { desktopActive.value = workspaceBackupActive() })
@@ -374,5 +376,5 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  return { busy, desktopActive, exportProgress, workspaceProgress, imageExportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
+  return { portable, busy, desktopActive, exportProgress, workspaceProgress, imageExportProgress, cancelExport, pending, pendingWorkspace, pendingName, lastBackupAt, exportBackup, exportImages, loadFile, discard, restore, healthCheck, cleanOrphanImages }
 }

@@ -72,6 +72,7 @@ export interface DraftRandomVariation {
 }
 
 export interface PromptBuilderDraft {
+  storyOrigin?: import('@/types/storyOrigin').StoryOrigin
   randomVariation?: DraftRandomVariation | null
   sceneStyleBaseline?: DirectorControlValues
   directorSources?: DirectorControlSources
