@@ -12,8 +12,8 @@
               @vue:mounted="focusRoomPanel" @close="closeRoomPanel" @notice="(message: string, kind?: 'info' | 'warning' | 'error') => setError(message, kind || 'info', 4500)" />
             <component :is="component" v-else-if="roomPanel === 'profile'" :profile="userProfile" :save-profile="onUserProfileSave"
               @vue:mounted="focusRoomPanel" @close="closeRoomPanel" />
-            <component :is="component" v-else-if="roomPanel === 'memory'" :items="currentMemories" :character-name="currentCharacter.name"
-              @vue:mounted="focusRoomPanel" @update="updateMemory" @delete="deleteMemory" @close="closeRoomPanel" />
+            <component :is="component" v-else-if="roomPanel === 'memory'" :key="activeChar" :items="currentMemories" :character-name="currentCharacter.name"
+              @vue:mounted="focusRoomPanel" :save-memory="updateMemory" :delete-memory="deleteMemory" @close="closeRoomPanel" />
           </template>
           <template #feedback="{ failed, retried, retry, reload }">
             <section class="room-tool-panel room-panel-loading" aria-labelledby="roomPanelLoadingTitle">

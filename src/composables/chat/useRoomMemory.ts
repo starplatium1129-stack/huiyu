@@ -75,17 +75,19 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
     }
   }
 
-  async function changeMemory(change: (state: ChatMemoryState) => boolean, message: string) {
-    if (!storage.canWrite()) return
+  async function changeMemory(change: (state: ChatMemoryState) => boolean, message: string): Promise<boolean> {
+    if (!storage.canWrite()) return false
     try {
       const next = changeStoredChatMemory(change)
-      if (!next) return
+      if (!next) return false
       await flushProfileWrites()
-      if (!storage.canWrite()) return
+      if (!storage.canWrite()) return false
       chatMemory.value = loadChatMemoryState()
       setError(message, 'info', 2500)
+      return true
     } catch (error) {
       setError(error instanceof Error ? error.message : '长期记忆保存尚未确认，请保留修改并重试。', 'warning')
+      return false
     }
   }
 
@@ -95,11 +97,11 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
   }
 
   function updateMemory(id: string, text: string, topic = '') {
-    changeMemory(state => editChatFact(state, memoryCharacter(), id, text, topic), '长期记忆已更新')
+    return changeMemory(state => editChatFact(state, memoryCharacter(), id, text, topic), '长期记忆已更新')
   }
 
   function deleteMemory(id: string) {
-    changeMemory(state => removeChatFact(state, memoryCharacter(), id), '已删除长期记忆')
+    return changeMemory(state => removeChatFact(state, memoryCharacter(), id), '已删除长期记忆')
   }
 
   function messageRemembered(mid: string) {
