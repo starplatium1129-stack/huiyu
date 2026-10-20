@@ -12,6 +12,7 @@ import { compareArtworkKeys, parseArtworkSearchPage, parseArtworkRow } from './a
 import { normalizeArtworkOrganization, type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt, type ArtworkOrganizationUndoResult } from '../../application/artwork/organization.ts'
 import { normalizeNewArtworkProject, type ArtworkProjectDraft } from '../../application/artwork/projects.ts'
 import { normalizeSmartAlbumDraft, parseSmartAlbumRule, type SmartAlbumDraft } from '../../application/artwork/smartAlbums.ts'
+import { createArtworkCommandWriter } from './artworkCommands.ts'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
 interface Page { items: Row[]; nextCursor: string | null; revision: number; artworkRevision: number }
@@ -62,6 +63,11 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   function checkReadSession(session: string) {
     if (session !== searchSession()) throw new Error('工作区在读取期间发生变更，请重新读取')
   }
+  function writeSession() {
+    if (getDesktopRuntime().connection !== 'ready') throw new Error('工作区尚未连接，请重新读取')
+    return JSON.stringify([searchSession(), getDesktopRuntime().bootstrap!.runtime!.workspace!.principalId])
+  }
+  const writeArtworkCommand = createArtworkCommandWriter(workspaceRequest, writeSession, invalidateSnapshots)
 
   async function list(selection: 'live' | 'deleted' = 'live', projection?: 'preference', signal?: AbortSignal): Promise<{ rows: Row[]; artworkRevision: number }> {
     const rows: Row[] = []
@@ -183,11 +189,18 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   }
   const row = (id: string | number) => workspaceRequest<Row | null>({ kind: 'getArtwork', id })
   async function mutate(kind: string, id: string | number, extra: Record<string, unknown> = {}): Promise<Receipt | null> {
-    const current = await row(id)
-    if (!current) return null
-    const result = await workspaceRequest<Receipt>({ kind, id, operationId: crypto.randomUUID(), expectedRevision: current.revision, ...extra })
-    invalidateSnapshots()
-    return result
+    const session = writeSession(), snapshot = structuredClone(extra)
+    const current = parseArtworkRow(await row(id), id)
+    if (session !== writeSession()) throw new Error('工作区在操作期间发生变更，请重新读取')
+    if (!current) { invalidateSnapshots(); return null }
+    return writeArtworkCommand({ ...snapshot, kind, id, operationId: crypto.randomUUID(), expectedRevision: current.revision }, value => {
+      if (typeof value.changed !== 'boolean') throw new Error('作品操作回执无效')
+      if (kind !== 'hardDeleteArtwork') {
+        const artwork = parseArtworkRow(value.artwork, id)
+        if (!artwork || (value.changed && artwork.revision !== value.revision)) throw new Error('作品操作回执无效')
+      }
+      return structuredClone(value) as Receipt
+    })
   }
   async function softDeleteArtworks(ids: Array<string | number>): Promise<ArtworkSoftDeleteResult[]> {
     if (!ids.length || ids.length > ARTWORK_DELETE_BATCH_SIZE) throw new Error('作品删除批次大小无效')
@@ -197,16 +210,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     const items = rows.filter((item): item is Row => Boolean(item && item.deletedAt === null))
       .map(item => ({ id: item.id, expectedRevision: item.revision }))
     if (!items.length) return requested.map(id => ({ id, deleted: false }))
-    const operationId = crypto.randomUUID()
-    let receipt: Receipt
-    try { receipt = await workspaceRequest<Receipt>({ kind: 'softDeleteArtworks', operationId, items }) }
-    catch (error) {
-      // A lost response may hide a committed batch. Read its stable receipt before reporting failure.
-      const operation = await workspaceRequest<{ state: string; receipt?: Receipt } | null>({ kind: 'getOperation', operationId }).catch(() => null)
-      if (operation?.state !== 'committed' || !operation.receipt?.softDeleteResults) throw error
-      receipt = operation.receipt
-    }
-    invalidateSnapshots()
+    const receipt = await writeArtworkCommand<Receipt>({ kind: 'softDeleteArtworks', operationId: crypto.randomUUID(), items })
     const deleted = new Set((receipt.softDeleteResults ?? []).filter(item => item.deleted).map(item => String(item.id).trim()))
     return requested.map(id => ({ id, deleted: deleted.has(String(id).trim()) }))
   }
@@ -222,7 +226,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       .filter((row): row is Row => row !== null)
       .map(row => ({ id: row.id, expectedRevision: row.revision }))
     if (!items.length) return requested.map(id => ({ id, restored: false }))
-    const receipt = await organizationWrite<{ restoreResults: unknown }>({ kind: 'restoreArtworks', operationId: crypto.randomUUID(), items })
+    const receipt = await writeArtworkCommand<{ restoreResults: unknown }>({ kind: 'restoreArtworks', operationId: crypto.randomUUID(), items })
     if (!Array.isArray(receipt.restoreResults) || receipt.restoreResults.length !== items.length) throw new Error('作品恢复回执无效')
     const outcomes = new Map<string, ArtworkRestoreResult>()
     receipt.restoreResults.forEach((raw: unknown, index: number) => {
@@ -237,17 +241,6 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     })
     return requested.map(id => structuredClone({ ...(outcomes.get(key(id)) ?? { restored: false }), id }))
   }
-  async function organizationWrite<T>(command: Record<string, unknown>): Promise<T> {
-    let result: T
-    try { result = await workspaceRequest<T>(command) }
-    catch (error) {
-      const operation = await workspaceRequest<{ state: string; receipt?: T } | null>({ kind: 'getOperation', operationId: command.operationId }).catch(() => null)
-      if (operation?.state !== 'committed' || !operation.receipt) throw error
-      result = operation.receipt
-    }
-    invalidateSnapshots()
-    return structuredClone(result)
-  }
   async function organizeArtworks(input: ArtworkOrganizationRequest) {
     const normalized = normalizeArtworkOrganization(structuredClone(input))
     const rows = await workspaceRequest<unknown>({ kind: 'getArtworks', ids: normalized.ids, projection: 'revision' })
@@ -257,14 +250,14 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       if (!parsed || parsed.deletedAt !== null) throw new Error('部分作品已不在作品册，请重新读取后选择')
       return { id: parsed.id, revision: parsed.revision }
     })
-    return organizationWrite<ArtworkOrganizationReceipt>({ kind: 'organizeArtworks', operationId: `organize-${crypto.randomUUID()}`, ...normalized, expectedRevisions })
+    return writeArtworkCommand<ArtworkOrganizationReceipt>({ kind: 'organizeArtworks', operationId: `organize-${crypto.randomUUID()}`, ...normalized, expectedRevisions })
   }
   function undoArtworkOrganization(receipt: ArtworkOrganizationReceipt) {
-    return organizationWrite<ArtworkOrganizationUndoResult>({ kind: 'undoArtworkOrganization', operationId: `undo-${crypto.randomUUID()}`, sourceOperationId: receipt.operationId })
+    return writeArtworkCommand<ArtworkOrganizationUndoResult>({ kind: 'undoArtworkOrganization', operationId: `undo-${crypto.randomUUID()}`, sourceOperationId: receipt.operationId })
   }
   async function createProject(input: ArtworkProjectDraft) {
     const project = normalizeNewArtworkProject(input)
-    const receipt = await organizationWrite<{ project: { body: ArtworkProjectRecord } }>({
+    const receipt = await writeArtworkCommand<{ project: { body: ArtworkProjectRecord } }>({
       kind: 'saveProject', operationId: `create-project:${project.id}`, project, artworkIds: [], expectedRevision: null,
     })
     const saved = receipt?.project?.body
@@ -291,7 +284,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     }
     const project = { ...current?.body, id: current?.id ?? draft.id, title: draft.title, history_ids: [], smartRule: draft.rule }
     if (current && JSON.stringify(current.body) === JSON.stringify(project)) return structuredClone(current.body)
-    const receipt = await organizationWrite<{ project: ProjectRow }>({ kind: 'saveProject',
+    const receipt = await writeArtworkCommand<{ project: ProjectRow }>({ kind: 'saveProject',
       operationId: `smart-album-${crypto.randomUUID()}`, project, artworkIds: [], expectedRevision: current?.revision ?? null })
     const saved = receipt?.project?.body
     if (!saved || String(receipt.project.id).trim() !== draft.id || !Number.isSafeInteger(receipt.project.revision)
@@ -306,7 +299,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
     const current = (await projectRows()).find(row => String(row.id).trim() === target)
     if (!current) return { deleted: false }
     if (!Object.hasOwn(current.body, 'smartRule') || !parseSmartAlbumRule(current.body.smartRule)) throw new Error('只能删除有效的智能画册')
-    const receipt = await organizationWrite<{ deleted: boolean; id: unknown }>({ kind: 'deleteSmartAlbum',
+    const receipt = await writeArtworkCommand<{ deleted: boolean; id: unknown }>({ kind: 'deleteSmartAlbum',
       id: current.id, operationId: `delete-smart-album-${crypto.randomUUID()}`, expectedRevision: current.revision })
     if (typeof receipt?.deleted !== 'boolean' || String(receipt.id).trim() !== target) throw new Error('智能画册删除响应无效，请重新读取')
     return { deleted: receipt.deleted }
@@ -351,7 +344,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       const snapshot = structuredClone(entries)
       let purged = 0
       for (let offset = 0; offset < snapshot.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
-        const result = await organizationWrite<Receipt>({ kind: 'purgeTrash', operationId: `purge-${crypto.randomUUID()}`, entries: snapshot.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE) })
+        const result = await writeArtworkCommand<Receipt>({ kind: 'purgeTrash', operationId: `purge-${crypto.randomUUID()}`, entries: snapshot.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE) })
         purged += result.purged ?? 0
       }
       return { purged }

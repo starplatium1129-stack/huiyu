@@ -390,7 +390,7 @@ export function useGalleryWorkspace() {
     const { clearTrash, trashClearing, trashLoading, trashError } = trashActions;
     function loadTrash(): Promise<void> { return trashActions.loadTrash(); }
     function restoreTrashItem(id: string | number): Promise<void> { return trashActions.restoreTrashItem(id); }
-    function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast }, history.value.find(entry => entry.id === item.id) ?? item); }
+    function toggleFavorite(item: ArtworkRecord): Promise<void> { return toggleFavoriteAction({ history, showToast, loadGalleryStorage }, history.value.find(entry => entry.id === item.id) ?? item); }
     const deleteMotion = useGalleryListMotion(shellEl, () => pagedVisible.value, () => galleryLoading.value,
         () => !trashMode.value && collectionPreviewItems.value === null);
     function confirmDelete(item: ArtworkRecord): Promise<void> {

@@ -69,7 +69,7 @@ export function useCompanionWorkspace() {
         desktopWindowVisible,
         dnd,
         inQuietHours,
-        handleSend,
+        handleSend: accepted => handleSend(undefined, undefined, accepted),
         isEditableTarget,
     });
     useCompanionPerformance({ activeChar, reminders: pendingReminders, stage: characterStageRef, voice, autoVoice, voiceActive,

@@ -341,7 +341,7 @@ const {
   busy: computed(() => busy.value || storyBusy.value || voiceActive.value || roomPanel.value === 'settings'),
   inputText,
   onInputChange,
-  handleSend,
+  handleSend: accepted => handleSend(undefined, undefined, accepted),
 })
 watch([apiSettingsOpen, speechSettingsOpen], ([api, speech]) => {
   if ((api || speech) && !roomPanelClosing && roomPanel.value !== 'settings') void openRoomPanel('settings')

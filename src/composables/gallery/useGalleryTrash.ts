@@ -1,6 +1,7 @@
 import { onActivated, onDeactivated, onUnmounted, ref, watch, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { confirmAction } from '@/composables/useConfirm'
+import { ArtworkMutationUnconfirmedError } from '@/application/artwork/artworkMutationOutcome'
 import type { useGalleryWorkspace } from './useGalleryWorkspace'
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "trashMode" | "trashItems" | "trashBusy" | "showToast" | "loadGalleryStorage">
 export function useGalleryTrash({ trashMode, trashItems, trashBusy, showToast, loadGalleryStorage }: Context): { loadTrash: () => Promise<void>; restoreTrashItem: (id: string | number) => Promise<void>; clearTrash: () => Promise<void>; trashClearing: Ref<boolean>; trashLoading: Ref<boolean>; trashError: Ref<string> } {
@@ -61,7 +62,11 @@ async function restoreTrashItem(id: string | number) {
     }
   } catch (e) {
     console.warn('[gallery] restore trash failed', e)
-    showToast('恢复失败，请重试', 'warning')
+    if (e instanceof ArtworkMutationUnconfirmedError) {
+      showToast('恢复结果尚未确认，正在重新读取；请核对展墙和回收站后再操作', 'warning')
+      restoreVersion++
+      await Promise.all([loadGalleryStorage(), loadTrash()])
+    } else showToast('恢复失败，请重试', 'warning')
   } finally {
     trashBusy.value = null
   }

@@ -3,13 +3,16 @@ import type { VoiceTextSource } from '@/composables/useVoiceInput'
 import type { SpeechInputConfig } from '@/utils/speechInputConfig'
 import { createSpeechSession } from '@/utils/speechSession'
 
+/** Settle admission once, including writer rejection; reply completion remains separate. */
+export type SubmitSpeechText = (accepted: (value: boolean) => void) => void
+
 interface SpeechConversationOptions {
   speechConfig: Readonly<Ref<SpeechInputConfig>>
   currentCharacterName: () => string
   inputText: Ref<string>
   onInputChange: () => void
   canSend: () => boolean
-  handleSend: () => unknown
+  handleSend: SubmitSpeechText
 }
 
 /** Shared transcript/session rules; each surface owns microphone admission and release. */
@@ -17,8 +20,9 @@ export function useSpeechConversation(options: SpeechConversationOptions) {
   const speechSession = createSpeechSession()
   const state = ref(speechSession.state())
   const speechNotice = ref('')
+  let submission = 0
   const stop = speechSession.onChange(() => { state.value = speechSession.state() })
-  onScopeDispose(stop)
+  onScopeDispose(() => { submission++; stop() })
 
   const speechSessionActive = computed(() => {
     void state.value
@@ -26,14 +30,20 @@ export function useSpeechConversation(options: SpeechConversationOptions) {
   })
 
   function applySpeechSession() {
+    submission++
     speechSession.applyConfig(options.speechConfig.value, options.currentCharacterName())
   }
 
   function commitSpeechText(text: string) {
+    const request = ++submission
     const input = options.inputText
     input.value = input.value.trim() ? `${input.value.trimEnd()}\n${text}` : text
     options.onInputChange()
-    if (options.speechConfig.value.autoSend && options.canSend()) void options.handleSend()
+    if (options.speechConfig.value.autoSend && options.canSend()) options.handleSend(accepted => {
+      // A rejected writer never starts a busy→idle cycle. Keep the transcript,
+      // but do not wait for a reply that this surface did not submit.
+      if (!accepted && request === submission) speechSession.markReplyIdle()
+    })
     else speechSession.markReplyIdle()
   }
 

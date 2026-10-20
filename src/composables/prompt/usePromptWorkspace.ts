@@ -10,6 +10,7 @@ import { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks';
 import { usePromptDeepLink } from '@/composables/prompt/usePromptDeepLink';
 import { usePromptDraftRecovery } from './usePromptDraftRecovery';
 import { usePromptSdQueue } from '@/composables/prompt/usePromptSdQueue';
+import { legacySdHistoryFields } from '@/utils/legacySdResult';
 
 import { usePromptVideoBridge } from '@/composables/prompt/usePromptVideoBridge';
 import { useTempResult } from '@/composables/prompt/useTempResult';
@@ -230,13 +231,9 @@ export function usePromptWorkspace() {
      */
     // ── SD 出图任务执行 + 队列（已下沉 usePromptSdQueue）──────────────────────
     // 已接收的 SD 任务由队列与历史批次共用观察路径，不再发起新生成。
-    const { sdErrorReport, historyGenerationFields, runJob, sdQueue, restoredCount } = usePromptSdQueue({
+    const { sdErrorReport, runJob, sdQueue, restoredCount } = usePromptSdQueue({
         pb,
         sd,
-        sdSize,
-        drawEngine,
-        modelProfile,
-        animaState,
         setResultContext: (ctx) => { resultContext.value = ctx; },
         onGenerated: url => { resultRevealUrl.value = url; },
     });
@@ -254,7 +251,10 @@ export function usePromptWorkspace() {
         generationBusy,
         livePrompt,
         negativePrompt: effectiveNegative,
-        historyGenerationFields,
+        legacyResultFields: () => legacySdHistoryFields({
+            params: pb.sdParams, model: pb.sdModelName || sd.checkpoint.value || '', profile: modelProfile.value?.id || '',
+            size: sdSize.value, provider: sd.provider.value || 'webui', loras: sd.lastLoras.value,
+        }),
         resultContext,
         autoSaveToGallery,
         setDrawEngine,

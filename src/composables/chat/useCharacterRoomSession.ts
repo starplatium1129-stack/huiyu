@@ -308,12 +308,15 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     characterStageRef.value?.setUserMessage()
     const text = typeof customText === 'string' ? customText : undefined
     const character = activeChar.value
+    let acknowledged = false
+    const acknowledge = (value: boolean) => { acknowledged = true; return accepted?.(value) }
     void withChatTurn(async () => {
-      if (disposed || activeChar.value !== character || busy.value || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { accepted?.(false); return }
-      if (accepted?.(true) === false) { setError('未能接收，请检查连接。'); return }
+      if (disposed || activeChar.value !== character || busy.value || !storage.canWrite() || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { acknowledge(false); return }
+      if (acknowledge(true) === false) { setError('未能接收，请检查连接。'); return }
       try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
       await sendMessage(text, imageUrl, sendOptions)
-    }, () => { accepted?.(false); if (!disposed) setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
+    }, () => { acknowledge(false); if (!disposed) setError('另一个聊天窗口正在回复，草稿已保留。请等回复结束，或在那个窗口停止。', 'info') })
+      .catch(() => { if (!acknowledged) acknowledge(false); if (!disposed) setError('本次对话未能完成，请保留当前内容并重试。') })
   }
 
   function stopEverything() {

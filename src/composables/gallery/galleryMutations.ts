@@ -4,6 +4,7 @@ import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE } from '@/applica
 import { artworkRepository } from '@/storage/artworkRepository';
 import { type ArtworkRecord } from '@/types/artwork';
 import { storageWriteMessage } from '@/utils/storageWriteError';
+import { ArtworkMutationUnconfirmedError } from '@/application/artwork/artworkMutationOutcome';
 import type { useGalleryWorkspace } from './useGalleryWorkspace';
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "showToast" | "deleting" | "viewerIndex" | "visible" | "indexOf" | "history" | "releaseCardResources" | "pendingDeleteId" | "closeViewer" | "openViewer" | "bulkDeleting" | "selectedIds" | "loadGalleryStorage"> & {
     onDeleted?: (ids: Array<string | number>) => void;
@@ -12,6 +13,7 @@ type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "showToast" | "delet
 interface FavoriteWrite {
     tail: Promise<void>;
     confirmed: boolean;
+    unconfirmed: boolean;
     revision: number;
 }
 const favoriteWrites = new WeakMap<object, Map<string | number, FavoriteWrite>>();
@@ -26,7 +28,7 @@ function presentDeleted(ctx: Context, ids: Array<string | number>): void {
         console.warn('delete artwork presentation failed', error);
     }
 }
-export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showToast'>, item: ArtworkRecord): Promise<void> {
+export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showToast' | 'loadGalleryStorage'>, item: ArtworkRecord): Promise<void> {
     let writes = favoriteWrites.get(ctx.history);
     if (!writes) {
         writes = new Map();
@@ -34,7 +36,7 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
     }
     let state = writes.get(item.id);
     if (!state) {
-        state = { tail: Promise.resolve(), confirmed: Boolean(item.favorite), revision: 0 };
+        state = { tail: Promise.resolve(), confirmed: Boolean(item.favorite), unconfirmed: false, revision: 0 };
         writes.set(item.id, state);
     }
     const currentWrite = state;
@@ -48,6 +50,7 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
             if (!result.updated)
                 throw new Error('没找到这幅作品，收藏没能保存');
             currentWrite.confirmed = desired;
+            currentWrite.unconfirmed = false;
             recordGalleryMutation(ctx.history, item.id, { favorite: desired });
             if (revision === currentWrite.revision) {
                 const live = ctx.history.value.find(record => record.id === item.id);
@@ -55,12 +58,18 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
             }
         }
         catch (error) {
-            if (revision === currentWrite.revision) {
+            if (error instanceof ArtworkMutationUnconfirmedError) currentWrite.unconfirmed = true;
+            if (currentWrite.unconfirmed) {
+                // An older confirmed value is not a rollback target after a lost
+                // commit. Re-read only for the latest click; never replay its write.
+                ctx.showToast('收藏结果尚未确认，请以重新读取的作品册为准，核对后再操作', 'warning');
+                if (revision === currentWrite.revision) await ctx.loadGalleryStorage();
+            } else if (revision === currentWrite.revision) {
                 item.favorite = currentWrite.confirmed;
                 const live = ctx.history.value.find(record => record.id === item.id);
                 if (live) live.favorite = currentWrite.confirmed;
             }
-            ctx.showToast(storageWriteMessage(error, '收藏状态'), 'error');
+            if (!currentWrite.unconfirmed) ctx.showToast(storageWriteMessage(error, '收藏状态'), 'error');
         }
         finally {
             if (revision === currentWrite.revision)
@@ -102,7 +111,10 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
     }
     catch (e) {
         console.warn('delete artwork failed', e);
-        showToast('删除失败，请重试');
+        if (e instanceof ArtworkMutationUnconfirmedError) {
+            showToast('移入回收站的结果尚未确认，请核对重新读取的作品册和回收站，不要重复删除', 'warning');
+            if (ctx.isCurrentView?.() !== false) await ctx.loadGalleryStorage();
+        } else showToast('删除失败，请重试');
     }
     finally {
         deleting.value = false;
@@ -219,6 +231,9 @@ async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void
     }
     catch (e) {
         console.warn('restore artwork failed', e);
-        showToast('恢复失败，请重试');
+        if (e instanceof ArtworkMutationUnconfirmedError) {
+            showToast('恢复结果尚未确认，正在重新读取；请核对作品册和回收站后再操作', 'warning');
+            await loadGalleryStorage();
+        } else showToast('恢复失败，请重试');
     }
 }

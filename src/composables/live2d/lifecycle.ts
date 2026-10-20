@@ -53,7 +53,7 @@ export function createLifecycleController(
   let finishPendingLoad: ((value: boolean) => void) | null = null
   let pendingConnection: AbortController | null = null
   let requestedBackendKind: Live2DBackendKind = 'browser'
-  const catalog = createLifecycleCatalog(ctx, recover, detail => fallback('Live2D 未就绪', detail))
+  const catalog = createLifecycleCatalog(ctx, recover, detail => fallback('Live2D 未就绪', detail), destroyRuntime)
   function useBackend(kind: Live2DBackendKind, fallback?: string) {
     const selection = selectLive2DBackend(kind)
     ctx.backend = selection.backend
@@ -137,7 +137,7 @@ export function createLifecycleController(
     }
   }
 
-  async function setCharacter(char: string) {
+  async function setCharacter(char: string): Promise<void> {
     if (ctx.destroyed.value) return
     if (!resolveCompanionAvatar(char)) {
       destroyRuntime()
@@ -150,6 +150,7 @@ export function createLifecycleController(
     }
     ctx.character.value = char
     if (!ctx.catalog) {
+      setState('checking', '检查 Live2D 资源…')
       if (!await catalog.load()) return
       if (ctx.destroyed.value || !ctx.enabled.value || isStageHidden(ctx) || char !== ctx.character.value) return
     }
@@ -170,7 +171,7 @@ export function createLifecycleController(
       destroyRuntime()
       setVisible(false)
       ctx.interactionHint.value = ''
-      setState('static', '静态立绘', info?.source || '该角色暂无 Live2D 模型')
+      setState('fallback', 'Live2D 资源未就绪', '模型资源缺失或尚未准备好；补齐后可点击重新检查。', true)
       return
     }
     if (!ctx.enabled.value || desktopHidden()) {
@@ -184,13 +185,12 @@ export function createLifecycleController(
       syncPause(); controllers.layoutFit.layout(); return
     }
     // A character switch can happen while the previous model is still loading.
-    // Wait for that request to settle, then retry the character that is still
-    // selected instead of returning the obsolete request's result.
-    if (ctx.loading) await ctx.loading
-    if (ctx.destroyed.value || !ctx.enabled.value || desktopHidden() || char !== ctx.character.value) return
-    if (ctx.ready.value && ctx.loadedCharacter.value === char) {
-      setVisible(true); setState('ready', 'Live2D 已连接')
-      syncPause(); controllers.layoutFit.layout(); return
+    // Retry selection after it settles: a runtime change may also have replaced
+    // or invalidated the catalog, so info captured before this wait is obsolete.
+    if (ctx.loading) {
+      await ctx.loading
+      if (ctx.destroyed.value || !ctx.enabled.value || desktopHidden() || char !== ctx.character.value) return
+      return setCharacter(char)
     }
     await load(char, info)
   }
@@ -198,6 +198,7 @@ export function createLifecycleController(
   async function retry() {
     if (ctx.destroyed.value || isStageHidden(ctx)) return
     if (ctx.loading) return ctx.loading
+    catalog.invalidate()
     if (!ctx.enabled.value) return enable()
     destroyRuntime()
     await setCharacter(ctx.character.value)

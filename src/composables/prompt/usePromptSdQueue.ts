@@ -1,13 +1,10 @@
-import { getCurrentScope, onScopeDispose, nextTick, ref, watch, type Ref } from 'vue'
+import { getCurrentScope, onScopeDispose, nextTick, ref, watch } from 'vue'
 import { usePromptBuilderStore, type HistoryEntry } from '@/stores/promptBuilderStore'
-import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SdResultSnapshot } from './sdResultActions'
 import { SD_QUEUE_SNAPSHOT_KEY } from '@/utils/storageKeys'
 import type { SDErrorReport } from '@/utils/sdError'
-import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
 import type { useLegacySdTasks } from '@/composables/generation/useLegacySdTasks'
 import type { LegacySdObserveOptions } from '@/composables/generation/useLegacySdTasks'
-import type { usePromptAssembly } from '@/composables/prompt/usePromptAssembly'
 import { useSDQueue, type SDQueueJob } from '@/composables/generation/useSDQueue'
 import type { AnimaResultContext } from '@/types/anima'
 import { hasRuntimeTasks } from '@/api/runtimeTaskAuthority'
@@ -16,16 +13,10 @@ import { createPendingSdQueueStorage } from './sdQueuePersistence'
 import type { RuntimeSdAttempt } from '@/composables/generation/legacySdTaskSession'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
-type AnimaSession = ReturnType<typeof useAnimaSession>
-type PromptAssembly = ReturnType<typeof usePromptAssembly>
 
 export interface PromptSdQueueDeps {
   pb: PromptBuilderStore
   sd: ReturnType<typeof useLegacySdTasks>
-  sdSize: Ref<string>
-  drawEngine: Ref<DrawEngine>
-  modelProfile: PromptAssembly['modelProfile']
-  animaState: AnimaSession['state']
   /**
    * 旧任务结果写入冻结上下文；使用保存记录，跨页交接不读当前表单。
    */
@@ -36,7 +27,7 @@ export interface PromptSdQueueDeps {
 
 /** Restores and observes legacy SD identities; archives frozen results without new admission. */
 export function usePromptSdQueue(deps: PromptSdQueueDeps) {
-  const { pb, sd, sdSize, drawEngine, modelProfile, animaState } = deps
+  const { pb, sd } = deps
 
   const sdErrorReport = ref<SDErrorReport | null>(null)
   const durable = hasRuntimeTasks()
@@ -76,63 +67,6 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
       localStorage.setItem(SD_QUEUE_SNAPSHOT_KEY, JSON.stringify(jobs))
     } catch { /* 快照写失败不阻断出图主链路 */ }
   }
-
-
-
-  function historyGenerationFields(): Partial<HistoryEntry> {
-    if (drawEngine.value !== 'sd') {
-      const meta = animaState.value.result?.metadata || animaState.value.job
-      if (!meta) return {}
-      return {
-        engine: meta.engine,
-        provider: meta.provider,
-        profile: meta.profileId,
-        model: meta.modelId,
-        lora: meta.loraId,
-        loraId: meta.loraId,
-        loraStrength: meta.loraStrength,
-        noLora: !meta.loraId,
-        loras: meta.loras,
-        styleLoraId: meta.styleLoraId ?? null,
-        preview: meta.preview === true,
-        cfg: meta.cfg,
-        steps: meta.steps,
-        sampler: meta.sampler,
-        scheduler: meta.scheduler,
-        size: `${meta.width}x${meta.height}`,
-        // 2026-08-29：Anima/Krea 的 hires 实参回显（元数据仅有 fix/scale/denoise；
-        // 无则显式 false，避免兜底到 SD 面板值）。
-        hiresFix: meta.hiresFix === true,
-        hiresScale: typeof meta.hiresScale === 'number' ? meta.hiresScale : undefined,
-        hiresDenoise: typeof meta.hiresDenoise === 'number' ? meta.hiresDenoise : undefined,
-      }
-    }
-    const params = pb.sdParams
-    const model = pb.sdModelName || sd.checkpoint.value || ''
-    const loras = sd.lastLoras.value
-    return {
-      engine: 'sd',
-      provider: sd.provider.value || 'webui',
-      profile: modelProfile.value?.id || '',
-      model,
-      loraId: loras[0]?.id || null,
-      loraStrength: loras[0]?.strength ?? null,
-      loras,
-      cfg: params.cfg,
-      steps: params.steps,
-      sampler: params.sampler,
-      scheduler: params.scheduler,
-      size: sdSize.value,
-      // 2026-08-29：SD 高清修复/脸部修复实参落库（作品册回显 hires 开关）。
-      hiresFix: params.hiresFix,
-      hiresScale: params.hiresScale,
-      hiresUpscaler: params.hiresUpscaler,
-      hiresSteps: params.hiresSteps,
-      hiresDenoise: params.hiresDenoise,
-      faceDetailer: params.faceDetailer,
-    }
-  }
-
   // Preserve result facts independently of the current form and later results.
   const completedJobs = new WeakMap<Omit<SDQueueJob, 'id'>, SdResultSnapshot>()
   function jobResultContext(job: Omit<SDQueueJob, 'id'>): AnimaResultContext {
@@ -292,7 +226,6 @@ export function usePromptSdQueue(deps: PromptSdQueueDeps) {
   return {
     sdErrorReport,
 
-    historyGenerationFields,
     runJob,
     sdQueue,
     restoredCount,

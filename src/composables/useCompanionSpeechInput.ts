@@ -4,7 +4,7 @@ import { useVoiceInput } from '@/composables/useVoiceInput'
 import { useManualSpeechHold } from '@/composables/useManualSpeechHold'
 import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
-import { useSpeechConversation } from '@/composables/useSpeechConversation'
+import { useSpeechConversation, type SubmitSpeechText } from '@/composables/useSpeechConversation'
 
 export interface CompanionSpeechInputDeps {
   busy: Ref<boolean>
@@ -19,8 +19,8 @@ export interface CompanionSpeechInputDeps {
   /** 勿扰/安静时段 gating（useCompanionBehaviorRuntime）。 */
   dnd: Ref<boolean>
   inQuietHours: Ref<boolean>
-  /** 非语音路径的发送（自动发送与会话提交共用）。 */
-  handleSend: () => unknown
+  /** 接收回执只表示已取得聊天 writer，不表示回复完成或持久化确认。 */
+  handleSend: SubmitSpeechText
   isEditableTarget: (target: EventTarget | null) => boolean
 }
 

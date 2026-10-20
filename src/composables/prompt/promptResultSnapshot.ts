@@ -1,5 +1,7 @@
-import type { PromptSdQueueDeps } from './usePromptSdQueue'
 import type { Ref } from 'vue'
+import type { AnimaGenerationState } from '@/types/anima'
+import type { DrawEngine } from '@/storage/settingsRepository'
+import type { SDParams } from '@/utils/promptBuilderPersistence'
 export interface ResultSnapshot {
   url: string
   seed: number | null
@@ -11,7 +13,12 @@ export interface ResultSnapshot {
   hires: string
   at: string
 }
-export function snapshotResult(ctx: Pick<PromptSdQueueDeps, 'animaState' | 'drawEngine' | 'pb' | 'sdSize' | 'sd'> & {
+export function snapshotResult(ctx: {
+  animaState: Readonly<Ref<AnimaGenerationState>>
+  drawEngine: Readonly<Ref<DrawEngine>>
+  pb: { sdParams: SDParams }
+  sdSize: Readonly<Ref<string>>
+  sd: { samplers: Readonly<Ref<readonly string[]>> }
   displayResultSeed: Readonly<Ref<number | null>>
 }, persistentUrl: string): ResultSnapshot {
   const { animaState, drawEngine, displayResultSeed, pb, sdSize, sd } = ctx

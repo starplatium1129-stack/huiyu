@@ -8,6 +8,7 @@ import type { useLegacySdTasks } from '../generation/useLegacySdTasks.ts'
 import { hasRuntimeTasks, isRuntimeTaskId } from '../../api/runtimeTaskAuthority.ts'
 import { artworkRepository, type ArtworkRepository } from '../../storage/artworkRepository.ts'
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity, type GeneratedArtworkInput } from '@/application/artwork/artworkSaveInput'
+import { captureAnimaArtworkInput } from '@/application/artwork/animaArtworkInput'
 import { registerMigrationArtworkSource } from '@/platform/web/migrationBarrier'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { createImageReadSlot } from '@/utils/imageReadSlot'
@@ -53,7 +54,7 @@ export interface TempResultDeps {
   generationBusy: ComputedRef<boolean>
   livePrompt: ComputedRef<string>
   negativePrompt: ComputedRef<string>
-  historyGenerationFields: () => Partial<HistoryEntry>
+  legacyResultFields: () => Partial<HistoryEntry>
   /** F3 冻结上下文（SD 路径由 usePromptSdQueue 写入；Anima 读会话 state）。 */
   resultContext: Ref<AnimaResultContext | null>
   autoSaveToGallery: Ref<boolean>
@@ -261,31 +262,31 @@ export function useTempResult(deps: TempResultDeps) {
   /** Anima/Krea 直出成功：按偏好入册或落临时缓冲（原 onAnimaResult 内联块下沉）。 */
   const freeze = <T,>(value: T): T => JSON.parse(JSON.stringify(value)) as T
   async function handleAnimaResult(result: AnimaResult) {
-    const current = ownsResult(result.url)
+    const url = result.url, current = ownsResult(url)
     try {
-      const source = !generationRuntimeOwned || sourceFor(result.url)
+      const source = !generationRuntimeOwned || sourceFor(url)
         ? retainAnimaSource(result, deps.animaState.value.resultContext ?? null) : undefined
       const autoSave = deps.autoSaveToGallery.value
-      const record = matchingLegacy(result.url, result.metadata.id, result.metadata.prompt)
+      const record = matchingLegacy(url, result.metadata.id, result.metadata.prompt)
       const repository = source?.repository ?? artworkRepository, owner = source?.owner ?? (record ? resolveTempResultOwner(record) : tempResultOwner())
       if (!sameTempResultOwner(owner) || repository !== artworkRepository) throw new Error('原图所属资料来源已变化，请回到原工作区保存')
       const active = () => current() && repository === artworkRepository && sameTempResultOwner(owner)
-      const runtimeTaskId = !source && !record && legacyResultUrl !== result.url && hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id) ? result.metadata.id : undefined
+      const runtimeTaskId = !source && !record && legacyResultUrl !== url && hasRuntimeTasks() && isRuntimeTaskId(result.metadata.id) ? result.metadata.id : undefined
       if (!autoSave) {
         if (current()) displayedResultHistoryId.value = null
-        if (runtimeTaskId) { storedResultUrl.value = result.url; return }
+        if (runtimeTaskId) { storedResultUrl.value = url; return }
       }
-      const input = { result: { ...result, metadata: freeze(result.metadata) }, current: active,
-        context: freeze(deps.animaState.value.resultContext ?? null), autoSave, runtimeTaskId,
-        history: autoSave ? freeze(deps.historyGenerationFields()) : {},
-        story: autoSave ? String(pb.story || '').trim() : '', scene: autoSave ? pb.sceneId : null }
+      const captured = { ...result, metadata: freeze(result.metadata) }
+      const context = freeze(source ? source.context : deps.animaState.value.resultContext ?? null)
+      const input = { result: captured, current: active, context, autoSave,
+        artwork: captureAnimaArtworkInput(captured, context, { story: String(pb.story || '').trim(), scene: pb.sceneId }, runtimeTaskId) }
       const { handleAnimaResultAction } = await import('./tempResultActions')
       await handleAnimaResultAction(input, { pb, displayedResultHistoryId, captureTemp, releaseTemp,
         commitResult: async entry => {
           if (!active()) return null
-          if (!saveIntent || saveIntent.url !== result.url) saveIntent = source?.intent ?? createSaveIntent(entry, result.url, active,
-            { engine: result.metadata.engine, prompt: result.metadata.prompt, negative: result.metadata.negative, seed: result.metadata.seed,
-              size: `${result.metadata.width}x${result.metadata.height}`, animaMetadata: input.result.metadata, context: input.context }, record, repository, owner)
+          if (!saveIntent || saveIntent.url !== url) saveIntent = source?.intent ?? createSaveIntent(entry, url, active,
+            { engine: captured.metadata.engine, prompt: captured.metadata.prompt, negative: captured.metadata.negative, seed: captured.metadata.seed,
+              size: `${captured.metadata.width}x${captured.metadata.height}`, animaMetadata: captured.metadata, context }, record, repository, owner)
           const intent = saveIntent
           const saved = await commitIntent(intent)
           if (saved && saveIntent === intent) saveIntent = null
@@ -312,54 +313,42 @@ export function useTempResult(deps: TempResultDeps) {
       }
       if (!saveIntent || saveIntent.url !== url) {
         const stored = readTempResult()
-        const animaResult = deps.drawEngine.value !== 'sd' ? deps.animaState.value.result : null
+        const engine = deps.drawEngine.value
+        const animaResult = engine !== 'sd' ? cached?.result ?? deps.animaState.value.result : null
         const record = matchingLegacy(url, animaResult?.metadata.id, animaResult?.metadata.prompt)
         if (stored?.pendingCommit && !record) { pb.flash('上次入册回执尚未核对，原恢复指针已保留；请先恢复原成片或显式清除'); return }
         if (record && legacyRecord && record.imageId !== legacyRecord.imageId) throw new Error('临时成片指针已变化，请先恢复原记录')
         const repository = cached?.repository ?? artworkRepository, owner = cached?.owner ?? (record ? resolveTempResultOwner(record) : tempResultOwner())
         if (repository !== artworkRepository || !sameTempResultOwner(owner)) throw new Error('原图所属资料来源已变化，请回到原工作区保存')
         if (cached) cached.owner ??= owner
-        const frozen = cached ? cached.context : currentContext()
-        const snapshot = JSON.parse(JSON.stringify({
-          taskId: !record && legacyResultUrl !== url && hasRuntimeTasks() ? deps.drawEngine.value === 'sd' ? sd.resultTaskId?.value : isRuntimeTaskId(deps.animaState.value.result?.metadata.id || '') ? deps.animaState.value.result?.metadata.id : undefined : undefined,
-          context: frozen, seed: deps.displayResultSeed.value ?? undefined,
-          ...deps.historyGenerationFields(), story: frozen?.story,
-          scene: frozen ? (frozen.sceneId ?? null) : undefined,
-          parentId: frozen?.parentId,
-        })) as Partial<HistoryEntry>
-        const resultPrompt = sd.resultPrompt.value
-        let blob: Blob
-        let prompt = deps.livePrompt.value
-        let negative = deps.negativePrompt.value
-        if (deps.drawEngine.value !== 'sd') {
-          const result = deps.animaState.value.result
-          if (!result) { pb.flash('成片数据已失效，请重新生成'); return }
-          blob = result.blob
-          prompt = result.metadata.prompt
-          negative = result.metadata.negative
+        const frozen = freeze(cached ? cached.context : currentContext())
+        const taskId = !record && legacyResultUrl !== url && hasRuntimeTasks()
+          ? engine === 'sd' ? sd.resultTaskId?.value : isRuntimeTaskId(animaResult?.metadata.id || '') ? animaResult?.metadata.id : undefined : undefined
+        let input: GeneratedArtworkInput
+        if (engine !== 'sd') {
+          if (!animaResult) { pb.flash('成片数据已失效，请重新生成'); return }
+          input = captureAnimaArtworkInput(animaResult, frozen, {}, taskId)
         } else {
+          const snapshot = freeze({
+            taskId, context: frozen, seed: deps.displayResultSeed.value ?? undefined,
+            ...deps.legacyResultFields(), story: frozen?.story,
+            scene: frozen ? (frozen.sceneId ?? null) : undefined, parentId: frozen?.parentId,
+            // Follow the submitted recipe, never edits made while fetching its image.
+            prompt: sd.resultPrompt.value || frozen?.history?.prompt || deps.livePrompt.value,
+            negative: frozen?.history?.negative ?? deps.negativePrompt.value,
+          })
           const response = await runtimeFetch(url, { cache: 'no-store', signal: AbortSignal.timeout(30_000) })
           const contentType = response.headers.get('content-type') || ''
           if (!response.ok || !contentType.startsWith('image/')) {
             pb.flash('成片响应无效，请重新生成')
             return
           }
-          blob = await response.blob()
-          // 按图取词：SD 结果记录的是提交时实际使用的提示词，面板后续修改不漂移。
-          prompt = resultPrompt || frozen?.history?.prompt || prompt
-          negative = frozen?.history?.negative ?? negative
+          input = { ...snapshot, blob: await response.blob() }
         }
-        if (!blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
+        if (!input.blob.size) { pb.flash('成片数据已失效，请重新生成'); return }
         if (!current()) return
-        const input: GeneratedArtworkInput = {
-          ...snapshot,
-          blob,
-          negative,
-          prompt,
-          pendingCommit: record?.pendingCommit,
-        }
-        const partial = freeze({ engine: deps.drawEngine.value, prompt, negative, seed: snapshot.seed ?? null,
-          size: snapshot.size || '', animaMetadata: animaResult?.metadata ?? null, context: frozen })
+        const partial = freeze({ engine, prompt: input.prompt, negative: input.negative ?? '', seed: input.seed ?? null,
+          size: input.size || '', animaMetadata: animaResult?.metadata ?? null, context: frozen })
         saveIntent = createSaveIntent(input, url, current, partial, record, repository, owner)
       }
       const intent = saveIntent
