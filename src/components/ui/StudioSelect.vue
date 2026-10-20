@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onActivated, onDeactivated, ref, useAttrs, watch } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onDeactivated, ref, useAttrs, watch } from 'vue'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import { usePageScrollLock } from '@/composables/usePageScrollLock'
 import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
@@ -100,7 +100,8 @@ onDeactivated(() => {
   viewActive = false
   open.value = false
 })
-// Closing a cached page must release the portal without focusing its hidden trigger.
+onBeforeUnmount(() => { viewActive = false })
+// Cached and unmounted owners must not restore focus from an exiting portal.
 function onCloseAutoFocus(event: Event) {
   if (!viewActive || open.value) event.preventDefault()
 }

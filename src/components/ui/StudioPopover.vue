@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PopoverContent, PopoverPortal, PopoverRoot, PopoverTrigger } from 'reka-ui'
-import { onActivated, onDeactivated, ref } from 'vue'
+import { onActivated, onBeforeUnmount, onDeactivated, ref } from 'vue'
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 
@@ -16,7 +16,8 @@ onDeactivated(() => {
   viewActive = false
   open.value = false
 })
-// Closing a cached page must release the portal without focusing its hidden trigger.
+onBeforeUnmount(() => { viewActive = false })
+// Cached and unmounted owners must not restore focus from an exiting portal.
 function onCloseAutoFocus(event: Event) {
   if (!viewActive || open.value) event.preventDefault()
   emit('closeAutoFocus', event)

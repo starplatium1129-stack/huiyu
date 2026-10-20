@@ -4,23 +4,28 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const props = withDefaults(defineProps<{ label: string; placeholder?: string; id?: string; clearOnEscape?: boolean; autofocus?: boolean; autocomplete?: string; size?: 'sm' | 'md' }>(), { clearOnEscape: true, autofocus: false, size: 'md' })
 const value = defineModel<string>({ required: true })
 const emit = defineEmits<{ keydown: [event: KeyboardEvent] }>()
+const field = ref<HTMLElement | null>(null)
 const input = ref<HTMLInputElement | null>(null)
-async function clear() { value.value = ''; await nextTick(); input.value?.focus() }
+function focus(options?: FocusOptions) { (input.value ?? field.value?.querySelector('input'))?.focus(options) }
+async function clear() { value.value = ''; await nextTick(); focus() }
 function keydown(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) return
   if (event.key === 'Escape' && value.value && props.clearOnEscape) { event.preventDefault(); event.stopPropagation(); void clear() }
   emit('keydown', event)
 }
-defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
+defineExpose({ focus })
 </script>
 <template>
-  <div :data-size="size" class="studio-search">
+  <div ref="field" :data-size="size" class="studio-search" @keydown="keydown">
     <ArchiveIcon name="search" />
-    <input :id="id" ref="input" v-model="value" :autofocus="autofocus" :autocomplete="autocomplete" class="studio-search-input" type="search" :aria-label="label" :placeholder="placeholder" @keydown="keydown" />
+    <slot name="input" :input-props="{ id, autofocus, autocomplete, class: 'studio-search-input', type: 'search', 'aria-label': label, placeholder }">
+      <input :id="id" ref="input" v-model="value" :autofocus="autofocus" :autocomplete="autocomplete" class="studio-search-input" type="search" :aria-label="label" :placeholder="placeholder" />
+    </slot>
     <button v-if="value" type="button" class="studio-search-clear" aria-label="清空搜索" @click="clear"><ArchiveIcon name="close" /></button>
   </div>
 </template>
-<style scoped>
+<!-- Slot-provided inputs share the same field geometry and states. -->
+<style>
 .studio-search { position:relative; isolation:isolate; display:flex; align-items:center; gap:var(--s-2); padding-block:0; color:var(--text-secondary); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .studio-search::before { content:''; position:absolute; z-index:-1; inset:0; border:1px solid var(--control-hover-edge); border-radius:inherit; background:var(--control-hover-surface); opacity:0; transition:opacity var(--motion-hover) var(--ease-out); pointer-events:none; }
 .studio-search:focus-within::before { opacity:1; }

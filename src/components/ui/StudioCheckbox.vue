@@ -31,9 +31,8 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-checkbox { --control-feedback-duration:0s; --control-feedback-zoom:1; --control-feedback-press:1; } }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-checkbox { --control-feedback-duration:0s; --control-feedback-zoom:1; --control-feedback-press:1; }
 .studio-checkbox-input:checked + .studio-checkbox-box,
-.studio-checkbox-input:indeterminate + .studio-checkbox-box { border-color:var(--accent); background:var(--accent); color:var(--text-inverse); }
+.studio-checkbox-input:indeterminate + .studio-checkbox-box { border-color:var(--border-strong); background:var(--bg-elevated); color:var(--text-primary); }
 .studio-checkbox-input:focus-visible + .studio-checkbox-box { outline:none; box-shadow:var(--focus-shadow); }
-.studio-checkbox-input:is(:checked,:indeterminate):focus-visible + .studio-checkbox-box { --focus-shadow:inset 0 -2px 0 var(--text-inverse); }
 .studio-checkbox-box :deep(.archive-icon) { width:20px; height:20px; }
 /* compositor-exempt: A one-shot 160ms stroke redraw in the 20px checkmark only;
    transform/opacity cannot draw its line. No loop or card-scale animation. */
@@ -45,8 +44,8 @@ defineExpose({ focus: (options?: FocusOptions) => input.value?.focus(options) })
 @keyframes checkbox-draw { from { stroke-dashoffset:24; } to { stroke-dashoffset:0; } }
 @keyframes checkbox-mixed { from { transform:scaleX(0); } to { transform:scaleX(1); } }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .studio-checkbox-box :deep(path), :root:not([data-motion='full']) .studio-checkbox-mixed { animation:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .studio-checkbox-box :deep(path),
-:root:is([data-motion='reduce'],[data-motion='reduced']) .studio-checkbox-mixed { animation:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-checkbox-box :deep(path),
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .studio-checkbox-mixed { animation:none; }
 @media (forced-colors:active) {
   .studio-checkbox-box { forced-color-adjust:none; color:CanvasText; background:Canvas; border-color:CanvasText; }
   .studio-checkbox-input:checked + .studio-checkbox-box,.studio-checkbox-input:indeterminate + .studio-checkbox-box { color:HighlightText; background:Highlight; border-color:Highlight; }
