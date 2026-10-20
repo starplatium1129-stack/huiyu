@@ -3,7 +3,7 @@ import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord, type Artwork
 import { artworkSearchTerms, searchArtworkRecords } from '../../application/artwork/searchIndex.ts'
 import { createDesktopArtworkMedia } from './artworkMedia.ts'
 import { putDesktopArtworkImage } from './artworkUpload.ts'
-import { workspaceRequest as request } from '../../api/workspace.ts'
+import { workspaceRequest as request, WorkspaceRequestError } from '../../api/workspace.ts'
 import { getDesktopRuntime, onDesktopRuntime } from './runtime.ts'
 import { workspaceMediaAuthority } from './workspaceMediaSource.ts'
 import { trackMaintenanceWrite } from '../maintenanceParticipants.ts'
@@ -11,7 +11,7 @@ import { preferenceHistoryRows } from '../../application/artwork/preferenceHisto
 import { compareArtworkKeys, parseArtworkSearchPage, parseArtworkRow } from './artworkReadModel.ts'
 import { normalizeArtworkOrganization, type ArtworkOrganizationRequest, type ArtworkOrganizationReceipt, type ArtworkOrganizationUndoResult } from '../../application/artwork/organization.ts'
 import { normalizeNewArtworkProject, type ArtworkProjectDraft } from '../../application/artwork/projects.ts'
-import { normalizeSmartAlbumDraft, normalizeSmartAlbumRemoval, parseSmartAlbumRule, shouldDeleteSmartAlbum, shouldWriteSmartAlbum, type SmartAlbumDraft, type SmartAlbumRemoval } from '../../application/artwork/smartAlbums.ts'
+import { normalizeSmartAlbumDraft, normalizeSmartAlbumRemoval, parseSmartAlbumRule, shouldDeleteSmartAlbum, shouldWriteSmartAlbum, SmartAlbumConflictError, type SmartAlbumDraft, type SmartAlbumRemoval } from '../../application/artwork/smartAlbums.ts'
 import { createArtworkCommandWriter } from './artworkCommands.ts'
 
 interface Row { id: string | number; body: ArtworkRecord; revision: number; deletedAt: number | null }
@@ -303,6 +303,11 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
         || !Array.isArray(saved.history_ids) || saved.history_ids.length
         || JSON.stringify(parseSmartAlbumRule(saved.smartRule)) !== JSON.stringify(draft.rule)) throw new Error('智能画册保存响应无效，请重新读取')
       return structuredClone(saved)
+    } catch (cause) {
+      if (cause instanceof WorkspaceRequestError && cause.status === 409 && cause.code === 'REVISION_CONFLICT') {
+        throw new SmartAlbumConflictError('智能画册已在其他位置修改，当前输入已保留；请核对最新内容后重新打开', { cause })
+      }
+      throw cause
     } finally { source.release() }
   }
   async function deleteSmartAlbum(input: SmartAlbumRemoval) {
@@ -315,6 +320,11 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
         id: current!.id, operationId: `delete-smart-album-${crypto.randomUUID()}`, expectedRevision: current!.revision })
       if (typeof receipt?.deleted !== 'boolean' || String(receipt.id).trim() !== removal.id) throw new Error('智能画册删除响应无效，请重新读取')
       return { deleted: receipt.deleted }
+    } catch (cause) {
+      if (cause instanceof WorkspaceRequestError && cause.status === 409 && cause.code === 'REVISION_CONFLICT') {
+        throw new SmartAlbumConflictError('画册内容已变化，请重新核对后移除', { cause })
+      }
+      throw cause
     } finally { source.release() }
   }
   const repository: ArtworkRepository = {
