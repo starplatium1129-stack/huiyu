@@ -38,7 +38,8 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
       parent_id: context.parentId ?? null, project: '', image_url: '',
       ...history, ...recipe, id, timestamp: task.createdAt, image_id: output.alias,
       prompt: recipe.prompt ?? '', negative: recipe.negative ?? '',
-      character: String(context.char || input.character || history.character || ''),
+      character: typeof context.characterId === 'string' && context.characterId.trim()
+        ? context.characterId : String(context.char || input.character || history.character || ''),
       characterId: typeof context.characterId === 'string' ? context.characterId : undefined,
       outfitId: typeof context.outfitId === 'string' ? context.outfitId : undefined,
       blueprintId: typeof context.blueprintId === 'string' ? context.blueprintId : undefined,
