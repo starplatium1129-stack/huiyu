@@ -9,24 +9,6 @@ function historyIdSeq(now: number): number {
   return lastHistoryId
 }
 
-async function measureBlob(blob: Blob): Promise<{ width: number | null; height: number | null }> {
-  try {
-    if (typeof createImageBitmap === 'function') {
-      const bitmap = await createImageBitmap(blob)
-      const size = { width: bitmap.width, height: bitmap.height }
-      bitmap.close?.()
-      return size
-    }
-  } catch { /* fallback */ }
-  return await new Promise(resolve => {
-    const url = URL.createObjectURL(blob)
-    const img = new Image()
-    img.onload = () => { resolve({ width: img.naturalWidth || null, height: img.naturalHeight || null }); URL.revokeObjectURL(url) }
-    img.onerror = () => { resolve({ width: null, height: null }); URL.revokeObjectURL(url) }
-    img.src = url
-  })
-}
-
 export const usePromptHistoryStore = defineStore('promptHistory', () => {
   const history = ref<ArtworkRecord[]>([])
   let historyLoad = 0
@@ -72,7 +54,6 @@ export const usePromptHistoryStore = defineStore('promptHistory', () => {
   return {
     history,
     historyIdSeq,
-    measureBlob,
     loadHistory,
     rememberArtwork,
     removeHistoryEntry,

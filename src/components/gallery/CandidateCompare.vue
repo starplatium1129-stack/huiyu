@@ -15,7 +15,7 @@
       <p v-if="item._gallerySummary" class="candidate-meta" role="status">{{ reading[String(item.id)] ? '正在读取完整参数…' : '完整参数暂未读取' }}</p>
       <dl v-else class="candidate-parameters" aria-label="候选参数"><div v-for="row in parameterRows" :key="row.key"><dt>{{ row.label }}</dt><dd>{{ row.values[index] }}</dd></div></dl>
       <p v-if="!parameterRows.length" class="candidate-meta">已记录参数没有差异</p>
-      <div class="candidate-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3"><button class="btn btn-primary" type="button" :disabled="busy" @click="prefer(item)">选为首选</button><button class="btn btn-ghost" type="button" :disabled="busy" @click="setAside(item)">{{ item.reviewState === 'rejected' ? '恢复候选' : '暂不采用' }}</button><RouterLink class="btn btn-ghost" :to="`/prompt-builder?remix=${encodeURIComponent(item.id)}`" @click="emit('close')">继续微调</RouterLink></div></div>
+      <div class="candidate-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3"><button class="btn btn-primary" type="button" :disabled="busy" @click="prefer(item)">选为首选</button><button class="btn btn-ghost" type="button" :disabled="busy" @click="setAside(item)">{{ item.reviewState === 'rejected' ? '恢复候选' : '暂不采用' }}</button><RouterLink v-if="!item._gallerySummary && item.engine !== 'manga-screen'" class="btn btn-ghost" :to="artworkContinueTarget(item, 'remix').to" @click="emit('close')">{{ artworkContinueTarget(item, 'remix').label }}</RouterLink></div></div>
     </article></div>
     <footer>共 {{ candidates.length }} 张 · 标记自动保存到作品册 · 窄窗口可横向滚动</footer>
   </dialog></Teleport>
@@ -28,6 +28,7 @@ import { sameArtworkMedia } from '@/composables/gallery/artworkMediaIdentity'
 import { useCandidateMedia } from '@/composables/gallery/useCandidateMedia'
 import { useCandidateViewport } from '@/composables/gallery/useCandidateViewport'
 import { candidateParameterRows } from '@/composables/gallery/candidateParameters'
+import { artworkContinueTarget } from '@/utils/artworkNavigation'
 
 import { artworkRepository } from '@/storage/artworkRepository'
 import type { ArtworkRecord } from '@/types/artwork'

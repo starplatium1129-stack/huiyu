@@ -127,13 +127,28 @@ pub fn toggle_companion_visibility(app: &AppHandle) {
     }
 }
 
+fn webview_builder<'a>(
+    app: &'a AppHandle,
+    label: &str,
+    source: tauri::WebviewUrl,
+) -> WebviewWindowBuilder<'a, tauri::Wry, AppHandle> {
+    let mut builder = WebviewWindowBuilder::new(app, label, source);
+    if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
+    builder
+        // All three pages own their HTML attachment/composition drop handlers.
+        .disable_drag_drop_handler()
+        .decorations(false)
+        .visible(false)
+        .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
+}
+
 pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
     if crate::maintenance::active(app) { return; }
     let pathname = normalize_atelier_path(target);
     if gateway_url.is_empty() && !crate::ui_entry::bundled(app) { return; }
     let base = gateway_url.to_string();
     if let Some(w) = app.get_webview_window("atelier") {
-        if !crate::ui_entry::isolated_hidden() { let _ = w.show(); let _ = w.set_focus(); }
+        if !crate::ui_entry::isolated_hidden() { let _ = w.unminimize(); let _ = w.show(); let _ = w.set_focus(); }
         let _ = w.emit("aics:navigate", pathname);
         return;
     }
@@ -149,18 +164,13 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
         let bounds = &placement.logical;
         let presentation = load_window_presentation(&state.paths.atelier_window_file);
         save_window_bounds(&state.paths.atelier_window_file, bounds, Some(&placement.physical));
-        let mut builder = WebviewWindowBuilder::new(&app, "atelier", source);
-        if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
-        match builder
+        match webview_builder(&app, "atelier", source)
             .title("绘遇 · HUIYU")
             // The controlled bridge clamps and persists Ctrl±/0 and Ctrl+wheel.
             .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
             .min_inner_size(1024.0_f64.min(bounds.width as f64), 720.0_f64.min(bounds.height as f64))
-            .decorations(false)
-            .visible(false)
-            .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
             .build()
         {
             Ok(win) => {
@@ -188,20 +198,15 @@ pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start
     let placement = companion_bounds(app, &state);
     let bounds = &placement.logical;
     let source = crate::ui_entry::source(app, gateway_url, "/companion").map_err(|error| tauri::Error::Io(std::io::Error::other(error)))?;
-    let mut builder = WebviewWindowBuilder::new(app, "companion", source);
-    if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
-    let win = builder
+    let win = webview_builder(app, "companion", source)
         .title("绘遇 Companion")
         .inner_size(bounds.width as f64, bounds.height as f64)
         .position(bounds.x as f64, bounds.y as f64)
         .min_inner_size(360.0_f64.min(bounds.width as f64), 480.0_f64.min(bounds.height as f64))
         .transparent(true)
-        .decorations(false)
         .always_on_top(state.preferences.lock().unwrap().always_on_top)
         .skip_taskbar(true)
         .shadow(false)
-        .visible(false)
-        .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
         .build()?;
     apply_window_placement(&win, &placement)?;
     #[cfg(windows)]
@@ -245,8 +250,7 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         let bounds = &placement.logical;
         let always_on_top = state.preferences.lock().unwrap().always_on_top;
         save_window_bounds(&state.paths.companion_chat_window_file, bounds, Some(&placement.physical));
-        let mut builder = WebviewWindowBuilder::new(&app, "companion-chat", source);
-        if let Some(profile) = crate::ui_entry::isolated_profile() { builder = builder.data_directory(profile); }
+        let mut builder = webview_builder(&app, "companion-chat", source);
         #[cfg(windows)]
         {
             // Keep the dialogue above the pet's transparent WebView even after
@@ -266,21 +270,16 @@ pub fn open_companion_chat(app: &AppHandle, gateway_url: &str) {
         }
         match builder
             .title("绘遇对白")
-            // Let Windows WebView2 deliver file drops to the chat attachment UI.
-            .disable_drag_drop_handler()
             .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
             .min_inner_size(320.0_f64.min(bounds.width as f64), 120.0_f64.min(bounds.height as f64))
             .transparent(true)
-            .decorations(false)
             .resizable(false)
             .maximizable(false)
             .always_on_top(always_on_top)
             .skip_taskbar(true)
             .shadow(false)
-            .visible(false)
-            .on_navigation({ let app = app.clone(); move |url| is_gateway_navigation(&app, url) })
             .build()
         {
             Ok(win) => {

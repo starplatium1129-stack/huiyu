@@ -1,4 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { downloadBlob } from '../utils/downloadBlob'
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
 import { computed, onUnmounted, reactive, ref, shallowRef } from 'vue'
 import { apiClient } from '../api/client.ts'
@@ -265,14 +266,16 @@ export function useModelStudio(hostId: string) {
         for (const item of inspection.value.entries) form.append('files', item.file, item.file.name)
         form.append('paths', JSON.stringify(inspection.value.entries.map(item => item.path)))
         form.append('metadata', JSON.stringify({ ...identity, entryPath: inspection.value.entryPath, profile }))
-        const response = await runtimeFetch('/api/live2d-import', { method: 'POST', body: form, signal: controller.signal })
+        const signal = AbortSignal.any([controller.signal, AbortSignal.timeout(120_000)])
+        const response = await runtimeFetch('/api/live2d-import', { method: 'POST', body: form, signal })
         const result = await response.json()
+        signal.throwIfAborted()
         if (token !== generation || controller.signal.aborted) return
         if (!response.ok) throw new Error(result.error || '导入失败')
         saved.value = { ...result, profile, fingerprint: result.fingerprint || fingerprint.value }
       }
       needsReload.value = true; message.value = '已保存。结束当前对话后重新载入页面，即可在角色列表使用。'
-    } catch (error) { if (token === generation) message.value = `${errorText(error)}。若连接中断，请先重新读取配置确认结果，勿直接重复导入。` }
+    } catch (error) { if (token === generation) message.value = `${error instanceof Error && error.name === 'TimeoutError' ? '模型导入等待超时' : errorText(error)}。请先重新读取配置确认结果，勿直接重复导入。` }
     finally { if (token === generation) busy.value = false; if (request === controller) request = null }
   }
   async function rollback() {
@@ -290,9 +293,7 @@ export function useModelStudio(hostId: string) {
   }
   function exportProfile() {
     try {
-      const url = URL.createObjectURL(new Blob([JSON.stringify({ fingerprint: fingerprint.value, profile: rawProfile() }, null, 2)], { type: 'application/json' }))
-      const link = document.createElement('a'); link.href = url; link.download = `${identity.id || 'model'}-profile.json`; link.click()
-      setTimeout(() => URL.revokeObjectURL(url), 1000)
+      downloadBlob(new Blob([JSON.stringify({ fingerprint: fingerprint.value, profile: rawProfile() }, null, 2)], { type: 'application/json' }), `${identity.id || 'model'}-profile.json`)
     } catch (error) { message.value = errorText(error) }
   }
   async function deactivate() {

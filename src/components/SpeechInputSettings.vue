@@ -103,7 +103,7 @@ import {
   saveSpeechInputConfig,
   type SpeechInputConfig,
 } from '@/utils/speechInputConfig'
-import { probeSpeechService } from '@/utils/voiceApi'
+import { probeSpeechService } from '@/api/speechInputApi'
 
 const emit = defineEmits<{ save: [config: SpeechInputConfig]; close: [] }>()
 const titleId = useId()

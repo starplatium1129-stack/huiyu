@@ -96,7 +96,7 @@ function sourceIdentity(root: string) {
   return completeSnapshot(root, selection, '发行源码身份不完整，请检查源码文件后完整构建');
 }
 function sdkIdentity(root: string, env: NodeJS.ProcessEnv = process.env) {
-  const { resolveSdkRoot, sdkInputSnapshot }: typeof import('../maintenance/desktop-build-environment') = require('../maintenance/desktop-build-environment');
+  const { resolveSdkRoot, sdkInputSnapshot }: typeof import('./desktop-build-environment') = require('./desktop-build-environment');
   const sdkRoot = resolveSdkRoot(root, env);
   if (!sdkRoot) throw Error('缺少实际 Cubism SDK 输入，不能绑定桌面构建');
   return { root:sdkRoot, inputs:sdkInputSnapshot(sdkRoot) };
@@ -121,7 +121,7 @@ function buildSelection(root: string, includeBundle = true): Selection[] {
 }
 function recordBuild(root: string, before: ReturnType<typeof sourceIdentity>, includeBundle = true, sdkBefore = sdkIdentity(root)) {
   if (sourceIdentity(root).sha256 !== before.sha256) throw Error('构建期间源码发生变化，请重新完整构建');
-  const { sdkInputSnapshot }: typeof import('../maintenance/desktop-build-environment') = require('../maintenance/desktop-build-environment');
+  const { sdkInputSnapshot }: typeof import('./desktop-build-environment') = require('./desktop-build-environment');
   const sdk = {root:sdkBefore.root,inputs:sdkInputSnapshot(sdkBefore.root)};
   if (sdk.inputs.sha256 !== sdkBefore.inputs.sha256) throw Error('构建期间 Cubism SDK 输入发生变化，请重新完整构建');
   materializeNativeExecutable(root);

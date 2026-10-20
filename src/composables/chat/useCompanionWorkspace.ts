@@ -17,6 +17,7 @@ import { pickCompanionLine } from '../../config/characters.ts';
 import { resolveCompanionPresence } from '../../utils/companionPresence.ts';
 import { scrollBehavior } from '../../utils/motionPreference.ts';
 import { COMPANION_CHAT_LIVE_KEY,COMPANION_LIVE2D_KEY } from '../../utils/storageKeys.ts';
+import type { CompanionChatLiveState } from '../../utils/companionChatLiveState';
 import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
@@ -61,6 +62,7 @@ export function useCompanionWorkspace() {
         busy: computed(() => busy.value || voiceActive.value),
         chatReady,
         inputText,
+        onInputChange,
         currentCharacter,
         currentCharacterName: () => currentCharacter.value.name,
         desktopBridge,
@@ -151,7 +153,7 @@ export function useCompanionWorkspace() {
                 chatReady: chatReady.value,
                 chatError: chatError.value,
                 ts: Date.now(),
-            }));
+            } satisfies CompanionChatLiveState));
         }
         catch { /* 隐私模式忽略 */ }
     }

@@ -1,4 +1,4 @@
-import { computed, onActivated, onScopeDispose, ref, shallowRef, watch } from 'vue'
+import { computed, onActivated, onScopeDispose, readonly, ref, shallowRef, watch } from 'vue'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { apiClient } from '@/api/client'
 import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
@@ -24,7 +24,7 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
   let activated = false
   onScopeDispose(() => { alive = false; request?.abort() })
 
-  async function reload(fresh = false) {
+  async function reload(fresh = false, refreshImages = false) {
     syncIdentity()
     const source = identity, revision = ++nextRequest
     request?.abort()
@@ -46,7 +46,7 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
         const nextVersions = new Map(versions.value)
         for (const entry of accepted) {
           const previous = catalogue.value.get(entry.id)
-          if (previous && JSON.stringify(previous) !== JSON.stringify(entry))
+          if (refreshImages || (previous && JSON.stringify(previous) !== JSON.stringify(entry)))
             nextVersions.set(entry.id, Math.max(Date.now(), (nextVersions.get(entry.id) ?? sessionVersion.value) + 1))
         }
         const nextEntries = new Map(accepted.map(item => [item.id, item]))
@@ -81,6 +81,8 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
   }
   return {
     loading, error, reload,
+    refresh: () => reload(true, true),
+    entries: computed(() => readonly([...catalogue.value.values()])),
     initialLoading: computed(() => loading.value && !catalogue.value.size),
     thumbUrl: (id: string) => assetUrl(id, 'thumb'),
     imageUrl: (id: string) => assetUrl(id, 'image'),

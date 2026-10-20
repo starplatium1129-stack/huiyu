@@ -4,7 +4,7 @@ import crypto = require('node:crypto');
 import { spawnSync } from 'node:child_process';
 import binding = require('./desktop-build-binding');
 import safe = require('./delivery-paths');
-import lock = require('../maintenance/desktop-build-lock');
+import lock = require('./workspace-lock');
 import { timeDesktopBuild } from './desktop-build-timing';
 
 type Asset = { path: string; bytes: number; sha256: string };
@@ -123,7 +123,7 @@ function localUpgradeTemplate(root: string, receipt: ReturnType<typeof binding.v
 }
 
 export async function buildUpgradeInstaller(root: string, options: { installDir?: string; local?: boolean } = {}) {
-  return lock.withDesktopBuildLock({ workspaceRoot: root }, async () => {
+  return lock.withWorkspaceLock({ workspaceRoot: root }, async () => {
     if (options.local && !options.installDir) throw Error('Local upgrades require an existing installation directory');
     const receipt = await timeDesktopBuild('upgrade source verification', () => binding.verifyBuild(root));
     const renderedPath = 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi';
@@ -159,7 +159,7 @@ export async function buildUpgradeInstaller(root: string, options: { installDir?
       const target = path.join(directory, 'target');
       fs.mkdirSync(path.join(target, 'release'), { recursive: true });
       fs.copyFileSync(path.join(root, 'desktop-tauri/src-tauri/target/release/ai-cg-studio-desktop.exe'), path.join(target, 'release/ai-cg-studio-desktop.exe'));
-      const env: NodeJS.ProcessEnv = { ...(require('../maintenance/desktop-build-environment') as typeof import('../maintenance/desktop-build-environment')).desktopBuildEnvironment(root), CARGO_TARGET_DIR: target };
+      const env: NodeJS.ProcessEnv = { ...(require('./desktop-build-environment') as typeof import('./desktop-build-environment')).desktopBuildEnvironment(root), CARGO_TARGET_DIR: target };
       delete env.TAURI_SIGNING_PRIVATE_KEY; delete env.TAURI_SIGNING_PRIVATE_KEY_PATH; delete env.TAURI_SIGNING_PRIVATE_KEY_PASSWORD;
       await timeDesktopBuild('local upgrade NSIS bundle', () => command(process.execPath, [require.resolve('@tauri-apps/cli/tauri.js'), 'bundle', '--bundles', 'nsis', '--ci', '--no-sign',
         '--config', path.join(root, 'desktop-tauri/tauri.local.json'), '--config', JSON.stringify({ bundle: { windows: { nsis: { template: script } } } })], path.join(root, 'desktop-tauri'), env));

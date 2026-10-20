@@ -37,7 +37,9 @@ fn first_existing(candidates: &[PathBuf]) -> PathBuf {
 /// 外部程序解析 `\\?\C:` 会失败）。
 fn simplify_path(path: PathBuf) -> PathBuf {
     let text = path.to_string_lossy();
-    if let Some(stripped) = text.strip_prefix(r"\\?\") {
+    if let Some(stripped) = text.strip_prefix(r"\\?\UNC\") {
+        PathBuf::from(format!(r"\\{stripped}"))
+    } else if let Some(stripped) = text.strip_prefix(r"\\?\") {
         PathBuf::from(stripped)
     } else {
         path

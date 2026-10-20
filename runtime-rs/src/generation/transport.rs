@@ -1,8 +1,6 @@
 use super::*;
-use crate::byte_buffer::Buffer;
-use axum::body::Bytes;
+use crate::http_body::{self, ReadError};
 use base64::{Engine, engine::general_purpose::STANDARD};
-use futures_util::StreamExt;
 use reqwest::Method;
 use std::time::Duration;
 use tokio_util::sync::CancellationToken;
@@ -66,15 +64,10 @@ impl Inner {
             {
                 return Err(too_large(provider));
             }
-            let mut bytes = Buffer::Chunk(Bytes::new());
-            let mut stream = response.bytes_stream();
-            while let Some(chunk) = stream.next().await {
-                let chunk = chunk.map_err(|error| network_error(provider, error))?;
-                if bytes.as_ref().len().saturating_add(chunk.len()) > max_bytes {
-                    return Err(too_large(provider));
-                }
-                bytes.append(chunk, 0);
-            }
+            let bytes = http_body::collect(response, max_bytes).await.map_err(|error| match error {
+                ReadError::Network(error) => network_error(provider, error),
+                ReadError::TooLarge => too_large(provider),
+            })?;
             Ok((status, bytes))
         };
         let (status, bytes) = tokio::select! {result=tokio::time::timeout(timeout,work)=>result.map_err(|_|ApiError::new(504,if provider=="webui"{"UPSTREAM_TIMEOUT"}else{"COMFY_TIMEOUT"},"上游请求超时"))?,_ = cancel.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","上游请求已取消"))}?;

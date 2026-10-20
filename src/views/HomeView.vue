@@ -183,6 +183,7 @@ import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { ref, reactive, computed, defineAsyncComponent, nextTick, onMounted, onUnmounted, onDeactivated, shallowRef, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import type { ArtworkRecord } from '@/types/artwork'
+import { artworkContinueTarget } from '@/utils/artworkNavigation'
 const SavedArtworkPreview = defineAsyncComponent(() => import('@/components/gallery/SavedArtworkPreview.vue'))
 const recentPreview = shallowRef<ArtworkRecord | null>(null), recentPreviewSource = shallowRef<HTMLImageElement | null>(null)
 const recentPreviewRequest = ref(0)
@@ -192,7 +193,7 @@ function openRecentPreview(item: ArtworkRecord, event: MouseEvent) {
   recentPreview.value = item
   recentPreviewRequest.value++
 }
-function resumeRecent(item: ArtworkRecord) { void router.push({ path: '/prompt-builder', query: { regen: item.id } }) }
+function resumeRecent(item: ArtworkRecord) { void router.push(artworkContinueTarget(item).to) }
 onDeactivated(() => { recentPreview.value = null })
 const SceneCard = defineAsyncComponent(() => import('@/components/SceneCard.vue'))
 import { franchiseLabel } from '@/utils/franchiseLabel'
@@ -386,7 +387,7 @@ function initContinueDraft() {
 watch(recentWorks, works => {
     if (!initContinueDraft() && works[0]) {
       const h = works[0]
-      continueLink.value = { to: `/prompt-builder?regen=${encodeURIComponent(h.id)}`, label: '继续最近作品' }
+      continueLink.value = artworkContinueTarget(h)
       continueHint.value = `最近保存「${h.sceneTitle || h.scene || '未命名'}」`
     }
 })

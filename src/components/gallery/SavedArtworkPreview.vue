@@ -7,7 +7,7 @@
         :preview-src="preview" :load-failed="viewerLoadFailed" :reload="retryViewerImage" :title="title"
         @close="close" @toggle-original="toggleOriginal" @interact="origin.cancel" @close-button="closeButton = $event">
         <template #tools>
-          <button class="btn btn-primary saved-preview-resume" data-viewer-chrome type="button" @click="resume"><ArchiveIcon name="spark" />继续创作</button>
+          <button class="btn btn-primary saved-preview-resume" data-viewer-chrome type="button" @click="resume"><ArchiveIcon name="spark" />{{ artworkContinueTarget(item).label }}</button>
         </template>
       </ArtworkViewerStage>
     </div>
@@ -19,6 +19,7 @@ import '@/assets/css/viewer.css'
 import '@/assets/css/gallery-viewer.css'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ArtworkRecord } from '@/types/artwork'
+import { artworkContinueTarget } from '@/utils/artworkNavigation'
 import { useGalleryViewer } from '@/composables/gallery/useGalleryViewer'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
 import { useFocusTrap } from '@/composables/useFocusTrap'

@@ -84,7 +84,7 @@ pub(super) fn canonical(raw: &str) -> bool {
         && normalized(raw).as_deref() == Some(raw)
 }
 pub(super) fn public_shell(raw: &str) -> bool {
-    if PAGES.contains(&raw) {
+    if raw == "/" || PAGES.contains(&raw.trim_end_matches('/')) {
         return true;
     }
     canonical(raw) && (raw.starts_with("/_app/") || ["/favicon.ico", "/favicon.svg"].contains(&raw))

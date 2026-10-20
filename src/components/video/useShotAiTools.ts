@@ -9,8 +9,8 @@ import {
   type VideoAiIssue,
   type VideoAiScriptShot,
   type VideoAiStatusResponse,
-  type VideoShotSize,
-} from '@/api/videoApi'
+} from '@/api/videoAiApi'
+import { isVideoShotSize, isVideoCamera, isVideoMotion } from '@/api/videoApiResponse'
 import type { ShotDraft } from './shotListTypes'
 import type { ReferenceCard } from './useReferenceCards'
 
@@ -416,12 +416,12 @@ export function useShotAiTools(deps: ShotAiToolsDeps) {
   function applyReviewSuggestion(issue: VideoAiIssue) {
     const shot = shots.value[issue.index]
     if (!shot || shot !== reviewTargets[issue.index] || !issue.suggestion || anyAiBusy()) return
-    if (issue.field === 'shotSize' && ['wide', 'medium', 'closeup'].includes(issue.suggestion)) {
-      shot.shotSize = issue.suggestion as VideoShotSize
-    } else if (issue.field === 'camera' && ['still', 'push', 'pull', 'pan', 'orbit'].includes(issue.suggestion)) {
-      shot.camera = issue.suggestion as ShotDraft['camera']
-    } else if (issue.field === 'motion' && ['subtle', 'natural', 'expressive'].includes(issue.suggestion)) {
-      shot.motion = issue.suggestion as ShotDraft['motion']
+    if (issue.field === 'shotSize' && isVideoShotSize(issue.suggestion)) {
+      shot.shotSize = issue.suggestion
+    } else if (issue.field === 'camera' && isVideoCamera(issue.suggestion)) {
+      shot.camera = issue.suggestion
+    } else if (issue.field === 'motion' && isVideoMotion(issue.suggestion)) {
+      shot.motion = issue.suggestion
     } else if (issue.field === 'dialogue') {
       shot.dialogue = issue.suggestion.slice(0, 300)
     } else if (issue.field === 'prompt') {

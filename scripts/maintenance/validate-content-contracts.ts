@@ -291,7 +291,7 @@ function checkPrecompressArtifacts() {
       if (Buffer.compare(raw, decoded) !== 0) {
         if (process.argv.includes('--fix')) {
           try {
-            const { compress } = require('./precompress');
+            const { compress } = require('../lib/precompressed-artifacts');
             compress(source);
             console.log(`[fix] Recompressed stale artifact: ${source}`);
             return;

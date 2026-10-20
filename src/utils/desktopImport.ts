@@ -8,25 +8,13 @@ import { artworkRepository } from '../storage/artworkRepository'
 import { imageMediaSession } from '../platform/imageMediaSession'
 import { onDesktopRuntime } from '../platform/desktop/runtime'
 import { imageFormat, withImageMime } from './imageFormat'
+import { measureImageBlob } from './measureImageBlob'
 import {
   buildImportedRecord,
   filterImageFiles,
   type ImportResult,
   type ImportSourceFile,
 } from './desktopImportCore'
-
-function measureBlob(blob: Blob): Promise<{ width: number | null; height: number | null }> {
-  return new Promise(resolve => {
-    const url = URL.createObjectURL(blob)
-    const img = new Image()
-    img.onload = () => {
-      resolve({ width: img.naturalWidth || null, height: img.naturalHeight || null })
-      URL.revokeObjectURL(url)
-    }
-    img.onerror = () => { resolve({ width: null, height: null }); URL.revokeObjectURL(url) }
-    img.src = url
-  })
-}
 
 /**
  * 导入本地图片到作品册。返回导入/跳过数量。
@@ -54,7 +42,7 @@ export async function importLocalImages(files: readonly ImportSourceFile[]): Pro
         check()
         imageId = await repository.putImage(blob)
         check()
-        const measured = await measureBlob(blob)
+        const measured = await measureImageBlob(blob)
         check()
         const record = buildImportedRecord(file, imageId, measured)
         pendingRecord = record

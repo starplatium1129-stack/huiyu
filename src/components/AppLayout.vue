@@ -23,7 +23,7 @@
         <span class="site-footer-sep tw:text-disabled" aria-hidden="true">·</span>
         <RouterLink class="site-footer-link tw:text-secondary tw:underline-offset-[3px]" to="/guide">使用指南</RouterLink>
         <span class="site-footer-sep tw:text-disabled" aria-hidden="true">·</span>
-        <a class="site-footer-link tw:text-secondary tw:underline-offset-[3px]" href="/docs/index.html" target="_blank" rel="noopener">文档索引</a>
+        <a class="site-footer-link tw:text-secondary tw:underline-offset-[3px]" :href="documentationUrl || undefined" :aria-disabled="!documentationUrl || undefined" target="_blank" rel="noopener">文档索引</a>
       </p>
     </footer>
   </div>
@@ -37,8 +37,11 @@ import AppNav from './AppNav.vue'
 import RouteAtmosphere from './visual/RouteAtmosphere.vue'
 import GuestGuide from './GuestGuide.vue'
 import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 
 const currentRoute = useRoute()
+const documentationUrl = computed(() => resolveRuntimeUrl('/docs/index.html'))
 function focusMain() { document.getElementById('main')?.focus({ preventScroll: true }) }
 const { onBeforeEnter, onEnter, onLeave, onEnterCancelled, onLeaveCancelled } = useRouteTransition(() => currentRoute.path)
 const { pendingPath } = useNavigationFeedback()
@@ -76,5 +79,6 @@ const currentYear = new Date().getFullYear()
 .site-footer-sep { margin: 0 var(--s-2); }
 .site-footer-link { text-decoration: underline; }
 .site-footer-link:hover { @apply tw:text-primary; }
+.site-footer-link[aria-disabled="true"] { color: var(--text-disabled); text-decoration: none; }
 .site-footer-link:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-sm; }
 </style>

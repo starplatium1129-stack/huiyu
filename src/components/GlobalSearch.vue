@@ -50,17 +50,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef, computed, onMounted, onUnmounted, nextTick, useId, watch } from 'vue'
-import { isNavigationFailure, NavigationFailureType, useRoute, useRouter } from 'vue-router'
+import { ref, computed, nextTick, useId, watch } from 'vue'
 import { ListboxRoot, ListboxFilter, ListboxContent, ListboxGroup, ListboxGroupLabel, ListboxItem } from 'reka-ui'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
-import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import { useFocusTrap } from '@/composables/useFocusTrap'
 import { useFluidSurface } from '@/composables/useFluidSurface'
-import { useGlobalSearchRequest } from '@/composables/useGlobalSearch'
-import { useSceneStore } from '@/stores/sceneStore'
-import { useGlobalSearchWorks } from '@/composables/useGlobalSearchWorks'
+import { useGlobalSearchPanel } from '@/composables/useGlobalSearchPanel'
+import { useGlobalSearchResults } from '@/composables/useGlobalSearchResults'
 
 const props = defineProps<{
   initialSource?: 'keyboard' | 'pointer'
@@ -69,126 +66,17 @@ const props = defineProps<{
   initialCloseRequest: number
 }>()
 
-interface SearchItem {
-  id: string
-  label: string
-  icon: ArchiveIconName
-  path: string
-  hint?: string
-  meta?: string
-  keywords: string
-}
-
-interface PageItem extends SearchItem { path: string }
-interface SceneItem { path: string; id: string; title: string; meta: string; keywords: string }
-interface FlatSearchResult {
-  key: string
-  icon: ArchiveIconName
-  meta?: string
-  path: string
-  label: string
-}
-
-
-const router = useRouter(), route = useRoute()
-const sceneStore = useSceneStore()
-const open = ref(false)
-const query = ref('')
 const activeKey = ref<string>()
 const listbox = ref<{ highlightFirstItem: () => void; highlightedElement: HTMLElement | null } | null>(null)
-const inputEl = ref<HTMLInputElement | null>(null)
-const panelEl = ref<HTMLElement | null>(null)
-const searchMotion = useFluidSurface('.gs-panel', { animatePanel: true, small: true })
+const inputEl = ref<HTMLInputElement | null>(null), panelEl = ref<HTMLElement | null>(null)
 const resultsEl = ref<HTMLElement | null>(null)
-const scenes = shallowRef<SceneItem[]>([])
-const scenesLoading = ref(false), scenesError = ref('')
-let scenesReady = false, scenesRequest = 0
-const { works, worksError, worksLoading, loadWorks, resetWorks } = useGlobalSearchWorks(query)
-const triggerSource = ref<'keyboard' | 'pointer'>('keyboard')
-let previousActiveElement: HTMLElement | null = null
-let navigationRequest = 0
-
+const searchMotion = useFluidSurface('.gs-panel', { animatePanel: true, small: true })
+const { open, query, triggerSource, close, navigate } = useGlobalSearchPanel({ panelEl, inputEl, initial: props })
+const { queryTerms, resultGroups, flat, scenesLoading, scenesError, worksLoading, worksError, retryScenes: reloadScenes } = useGlobalSearchResults(open, query)
 const searchInstanceId = useId()
 const listboxId = `global-search-listbox-${searchInstanceId}`
 const searchAnnouncementId = `global-search-announcement-${searchInstanceId}`
 
-const PAGES: PageItem[] = [
-  { id: 'home', label: '首页', icon: 'spark', path: '/', keywords: '首页 home 绘遇' },
-  { id: 'director', label: '开始绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 导演台 prompt 出图' },
-  { id: 'video', label: '故事短片', icon: 'play', path: '/video-studio', keywords: 'AI 视频创作 视频工作台 视频 动画 本地模型 wan comfyui' },
-  { id: 'scene', label: '灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 灵感 库' },
-  { id: 'popular-scenes', label: '角色场景', icon: 'scene', path: '/popular-scenes', keywords: '热门角色场景 热门 角色 蓝图 雷电将军 芙莉莲' },
-  { id: 'chat', label: '角色房间', icon: 'chat', path: '/chat', keywords: '聊天 角色 宁宁 夏目' },
-  { id: 'showcase', label: '参考画册', icon: 'image', path: '/showcase', keywords: '参考画册 CG 画册 样张 展示 定稿 gallery showcase' },
-  { id: 'gallery', label: '我的作品', icon: 'gallery', path: '/gallery', keywords: '我的作品 作品册 作品 图库 收藏' },
-  { id: 'backup', label: '数据与备份 · 备份、恢复和导出作品', icon: 'download', path: '/gallery?panel=backup', keywords: '备份 恢复 导出 数据 工作区 原图 backup restore export' },
-  { id: 'character', label: '角色档案', icon: 'character', path: '/character', keywords: '角色 档案 人设' },
-  { id: 'style', label: '画风', icon: 'palette', path: '/style', keywords: '画师风格 画风 色彩 色板' },
-  { id: 'lora', label: '模型资料', icon: 'model', path: '/lora', keywords: '角色 LoRA 模型 lora 权重' },
-  { id: 'scenario', label: '剧本模式', icon: 'book', path: '/scenario', keywords: '剧本 分幕 剧情' },
-  // 显示名与页面 h1 统一为「色彩情绪」（2026-08-30 UX 审计 P1）。keywords 里
-  // 保留全部旧叫法：改名之后，按老名字找它的用户不应该什么都搜不到。
-  { id: 'color-script', label: '色彩情绪', icon: 'palette', path: '/color-script', keywords: '色彩 情绪 色调 脚本 剧本 配色 对照' },
-  { id: 'manager', label: '内容维护', icon: 'manager', path: '/scene-manager', keywords: '管理 编辑 维护' },
-  { id: 'control', label: '控制面板', icon: 'gear', path: '/control', keywords: '控制 服务 设置' },
-  { id: 'guide', label: '使用指南', icon: 'book', path: '/guide', keywords: '入门 帮助 使用说明 guide help' },
-]
-
-const ACTIONS: SearchItem[] = [
-  { id: 'draw', label: '开始一幅新的绘制', icon: 'spark', path: '/prompt-builder', keywords: '绘制 开始' },
-  { id: 'video-create', label: '开始一段 AI 视频', icon: 'play', path: '/video-studio', keywords: '视频 动画 开始' },
-  { id: 'browse', label: '逛一逛灵感场景', icon: 'scene', path: '/scene-explorer', keywords: '场景 逛' },
-  { id: 'popular', label: '浏览热门角色蓝图', icon: 'scene', path: '/popular-scenes', keywords: '热门 角色 蓝图' },
-  { id: 'works', label: '打开我的作品', icon: 'gallery', path: '/gallery', keywords: '作品' },
-]
-
-for (const page of PAGES) page.keywords = (page.label + ' ' + page.keywords).toLowerCase()
-for (const action of ACTIONS) action.keywords = action.keywords.toLowerCase()
-const queryTerms = computed(() => query.value.trim().toLowerCase().split(/\s+/).filter(Boolean))
-
-function match(keywords: string): boolean {
-  return queryTerms.value.every(part => keywords.includes(part))
-}
-
-function takeMatches<T extends { keywords: string }>(items: readonly T[], limit: number): T[] {
-  const terms = queryTerms.value
-  if (!open.value || !terms.length) return []
-  const result: T[] = []
-  for (const item of items) {
-    if (!terms.every(part => item.keywords.includes(part))) continue
-    result.push(item)
-    if (result.length === limit) break
-  }
-  return result
-}
-
-const filteredPages = computed(() => PAGES.filter(p => match(p.keywords)))
-const filteredActions = computed(() => ACTIONS.filter(a => match(a.keywords)))
-const filteredScenes = computed(() => takeMatches(scenes.value, 8))
-const filteredWorks = computed(() => (works.value ?? []).map(item => ({
-  ...item,
-  meta: [item.timestamp ? new Date(item.timestamp).toLocaleDateString() : '', item.size].filter(Boolean).join(' · '),
-})))
-
-const resultGroups = computed<{ id: string; label: string; items: FlatSearchResult[] }[]>(() => {
-  const pages = { id: 'pages', label: '页面', items: filteredPages.value.map(item => ({
-    key: `page:${item.id}`, path: item.path, label: item.label, icon: item.icon,
-  })) }
-  if (!query.value.trim()) return [
-    { id: 'actions', label: '快捷操作', items: filteredActions.value.map(item => ({
-      key: `action:${item.id}`, path: item.path, label: item.label, icon: item.icon, meta: item.hint,
-    })) }, pages,
-  ].filter(group => group.items.length)
-  return [pages,
-    { id: 'scenes', label: `灵感场景 · ${filteredScenes.value.length}`, items: filteredScenes.value.map(item => ({
-      key: `scene:${item.id}`, path: item.path, label: item.title, icon: 'scene' as const, meta: item.meta,
-    })) },
-    { id: 'works', label: `作品 · ${filteredWorks.value.length}`, items: filteredWorks.value.map(item => ({
-      key: `work:${item.id}`, path: item.path, label: item.title, icon: 'gallery' as const, meta: item.meta,
-    })) },
-  ].filter(group => group.items.length)
-})
-const flat = computed(() => resultGroups.value.flatMap(group => group.items))
 const activeIndex = computed(() => flat.value.findIndex(item => item.key === activeKey.value))
 const activeResult = computed(() => flat.value[activeIndex.value])
 const resultsAnnouncement = computed(() => {
@@ -202,122 +90,18 @@ const resultsAnnouncement = computed(() => {
   return [message, status].filter(Boolean).join('；')
 })
 
-async function run(key: unknown) {
-  if (!open.value) return
+function run(key: unknown) {
   const item = flat.value.find(result => result.key === key)
-  if (!item) return
-  const origin = previousActiveElement, path = route.fullPath, request = ++navigationRequest
-  close(false)
-  try {
-    const failure = await router.push(item.path)
-    if (!isNavigationFailure(failure, NavigationFailureType.aborted | NavigationFailureType.duplicated)) return
-    // Release the search/confirmation focus trap before returning to this page.
-    await nextTick()
-    if (request !== navigationRequest || open.value || route.fullPath !== path || document.activeElement !== document.body
-      || !origin?.isConnected || origin.matches(':disabled') || origin.closest('[inert], [hidden]')
-      || !origin.getClientRects().length || document.querySelector('dialog:modal')) return
-    const visibility = getComputedStyle(origin).visibility
-    if (visibility !== 'hidden' && visibility !== 'collapse') origin.focus({ preventScroll: true })
-  } catch {
-    // Router onError already exposes the existing route-recovery banner.
-    // A rejected or superseded navigation must not reclaim another surface's focus.
-  }
-}
-
-function openPanel(source: 'keyboard' | 'pointer' = 'keyboard', trigger = document.activeElement as HTMLElement | null) {
-  // Global navigation must not open an inert body portal underneath a modal editor.
-  if (!open.value && (document.querySelector('dialog:modal') || document.activeElement?.closest('[aria-modal="true"]'))) return
-  navigationRequest++
-  previousActiveElement = trigger
-  triggerSource.value = source
-  open.value = true
-  query.value = ''
-  const path = route.fullPath
-  void nextTick(() => { if (open.value && route.fullPath === path) inputEl.value?.focus({ preventScroll: true }) })
-}
-
-function close(restoreFocus = true) {
-  if (!restoreFocus) {
-    returnFocus.value = null
-    const active = document.activeElement
-    if (active instanceof HTMLElement && panelEl.value?.contains(active)) active.blur()
-  }
-  open.value = false
-  resetSceneRead()
-  resetWorks()
-  const previous = previousActiveElement, path = route.fullPath, closing = panelEl.value
-  previousActiveElement = null
-  if (restoreFocus && previous) void nextTick(() => {
-    const active = document.activeElement
-    if (!open.value && route.fullPath === path && previous.isConnected && !document.querySelector('dialog:modal')
-      && (active === document.body || closing?.contains(active))) previous.focus({ preventScroll: true })
-  })
-}
-
-function onKeydown(event: KeyboardEvent) {
-  if (event.isComposing || event.keyCode === 229 || event.defaultPrevented) return
-  const target = event.target as HTMLElement | null
-  const isInput = /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName || '') || target?.isContentEditable === true
-
-  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
-    event.preventDefault()
-    if (event.repeat) return
-    if (open.value) { close() } else { openPanel('keyboard') }
-    return
-  }
-
-  if (event.key === '/' && !isInput && !open.value) {
-    event.preventDefault()
-    openPanel('keyboard')
-  }
-}
-
-function resetSceneRead() {
-  scenesRequest++; scenesLoading.value = false; scenesError.value = ''
-}
-async function loadScenes() {
-  if (scenesReady || scenesLoading.value || scenesError.value || !open.value || !queryTerms.value.length) return
-  const request = ++scenesRequest
-  scenesLoading.value = true; scenesError.value = ''
-  try {
-    // Reuse shard caches without taking ownership of another page's scene list/error.
-    const catalogue = await sceneStore.loadBrowserScenes('all')
-    if (request !== scenesRequest || !open.value) return
-    scenes.value = catalogue.scenes.map((scene) => {
-      const s = scene as Record<string, unknown>
-      return {
-        id: String(s.id || ''),
-        path: `/prompt-builder?scene=${encodeURIComponent(String(s.id || ''))}`,
-        title: String(s.title || s.id || ''),
-        meta: [String(s.category || ''), String(s.emotion || '')].filter(Boolean).join(' · '),
-        keywords: [
-          s.title, s.story, s.category, s.emotion, s.location, s.weather,
-          Array.isArray(s.tags) ? (s.tags as string[]).join(' ') : '',
-          s.char,
-        ].filter(Boolean).join(' ').toLowerCase(),
-      } satisfies SceneItem
-    })
-    scenesReady = true
-  } catch {
-    if (request === scenesRequest && open.value) scenesError.value = '场景目录暂未读取，页面与作品仍可搜索。'
-  } finally { if (request === scenesRequest) scenesLoading.value = false }
+  if (item) return navigate(item)
 }
 function retryScenes(event: MouseEvent) {
   if (document.activeElement === event.currentTarget) inputEl.value?.focus({ preventScroll: true })
-  scenesError.value = ''
-  void loadScenes()
+  reloadScenes()
 }
-
-const { returnFocus } = useFocusTrap(panelEl, () => open.value, {
-  onEscape: close,
-  initialFocus: inputEl,
-})
 
 watch([query, open], () => {
   if (!open.value) return
   activeKey.value = undefined
-  if (!queryTerms.value.length) { resetSceneRead(); resetWorks() }
-  else { void loadScenes(); loadWorks() }
   // Opening and query changes restart selection at the first result.
   void nextTick(() => {
     if (!open.value) return
@@ -333,21 +117,6 @@ watch(flat, () => {
   listbox.value?.highlightFirstItem()
 }, { flush: 'post' })
 
-watch(() => route.fullPath, () => close(false), { flush: 'sync' })
-const { openRequest, openSource, closeRequest } = useGlobalSearchRequest()
-watch(closeRequest, () => close(false), { flush: 'sync' })
-watch(openRequest, () => { if (openRequest.value) openPanel(openSource.value) })
-
-onMounted(() => {
-  document.addEventListener('keydown', onKeydown)
-  if (props.initialSource && props.initialCloseRequest === closeRequest.value
-    && (!props.initialPath || props.initialPath === route.fullPath)) openPanel(props.initialSource, props.initialTrigger)
-})
-onUnmounted(() => {
-  navigationRequest++
-  resetSceneRead()
-  document.removeEventListener('keydown', onKeydown)
-})
 </script>
 
 <style scoped>

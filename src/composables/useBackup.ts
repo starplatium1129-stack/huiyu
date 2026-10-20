@@ -10,19 +10,18 @@ import { version as appVersion } from '../../package.json'
 import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
 import { ref, getCurrentInstance, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
-import { readWebBackupLibrary, readWebBackupCleanup, readWebBackupImages, readWebBackupImage, deleteWebBackupImages } from '../platform/web/profileBackupSource'
+import { readWebBackupLibrary, readWebBackupCleanup, readWebBackupImages, deleteWebBackupImages } from '../platform/web/profileBackupSource'
 import { createWorkspaceBackup, parseWorkspaceBackupReceipt, createWorkspaceRestoreCandidate, workspaceBackupActive, workspaceStorageHealth, collectWorkspaceGarbage, type WorkspaceBackupReceipt } from '../platform/desktop/backupActions'
 import { getDesktopWindowRole, onDesktopRuntime } from '../platform/desktop/runtime'
 import { registerMaintenanceParticipant } from '../platform/maintenanceParticipants'
-import { artworkRepository } from '../storage/artworkRepository'
-import { imageMediaSession } from '../platform/imageMediaSession'
+import { captureBackupSource } from './backupSource'
+import { useBackupImageExport } from './useBackupImageExport'
 import type { BackupFile, BackupSummary } from '@/utils/backupCore'
 import {
   BACKUP_AT_KEY,
   cleanDeadLocalKeys,
   collectLiveLocalSettings,
 } from '@/utils/storageKeys'
-import { buildArtworkFileName } from '@/utils/artworkFileName'
 export type { BackupSummary } from '@/utils/backupCore'
 
 /**
@@ -55,16 +54,6 @@ function errorMessage(error: unknown, fallback: string) {
   return String(error ?? '').trim() || fallback
 }
 
-function captureBackupSource(controller: AbortController, desktop: boolean) {
-  const repository = artworkRepository, session = imageMediaSession()
-  const checkOwner = () => {
-    if (repository !== artworkRepository || session !== imageMediaSession() || desktop !== workspaceBackupActive())
-      controller.abort(new Error('备份来源连接已变化，请回到原资料后重新操作'))
-  }
-  const release = onDesktopRuntime(checkOwner)
-  return { repository, release, signal: controller.signal, check: () => { checkOwner(); controller.signal.throwIfAborted() } }
-}
-
 export function useBackup(onFlash: (msg: string) => void = () => {}) {
   const busy = ref(false)
   const pending = ref<BackupFile | null>(null)
@@ -89,8 +78,6 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     workspaceProgress.value = label + (value.total ? bytes ? `：${(value.completed/1048576).toFixed(1)} / ${(value.total/1048576).toFixed(1)} MiB` : `：${value.completed} / ${value.total}` : '…')
   }
   let exportController: AbortController | null = null
-  const imageExportProgress = ref<BackupExportProgress | null>(null)
-  let imageExportController: AbortController | null = null
   let disposed = false
   let viewActive = true
   let restoreConfirmation: AbortController | null = null
@@ -108,21 +95,14 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     onActivated(() => { viewActive = true })
     onDeactivated(() => { viewActive = false; cleanupController?.abort(); invalidateSelection() })
   }
-  const imageDownloadUrls = new Map<string, number>()
-  function releaseImageUrl(url: string) {
-    window.clearTimeout(imageDownloadUrls.get(url))
-    imageDownloadUrls.delete(url)
-    URL.revokeObjectURL(url)
-  }
-  function cancelExport() { exportController?.abort(); imageExportController?.abort() }
+  function cancelExport() { exportController?.abort(); cancelImageExport() }
   onScopeDispose(() => {
     disposed = true
     invalidateSelection()
     cleanupController?.abort()
     exportController?.abort()
-    imageExportController?.abort()
-    for (const url of imageDownloadUrls.keys()) releaseImageUrl(url)
   })
+  const { imageExportProgress, exportImages, cancelExport: cancelImageExport } = useBackupImageExport({ busy, desktopActive, onFlash })
 
   async function exportBackup(): Promise<void> {
     if (busy.value || disposed) return
@@ -193,97 +173,6 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       exportController = null
       exportProgress.value = null
       workspaceProgress.value = ''
-      busy.value = false
-    }
-  }
-
-  /**
-   * 导出作品图片：把 IndexedDB 里的原图逐个下载成文件。
-   * 与导出备份（JSON 恢复包）不同，这里导出的是可以直接使用的图片。
-   */
-  async function exportImages(): Promise<void> {
-    if (busy.value || disposed) return
-    busy.value = true
-    const controller = new AbortController()
-    imageExportController = controller
-    imageExportProgress.value = { completed: 0, total: 0 }
-    const desktop = desktopActive.value
-    const source = captureBackupSource(controller, desktop), { repository, check } = source
-    let saved = 0
-    let failed = 0
-    let completed = 0
-    onFlash('正在整理作品图片…')
-    try {
-      check()
-      const records = desktop
-        ? (await repository.readHistory()).filter(item => item.image_id).map(item => ({ id: item.image_id!, blob: null,
-          name: String(item.title || ''), created_at: Number(item.timestamp) || Date.now() }))
-        : await readWebBackupImages()
-      check()
-      imageExportProgress.value = { completed: 0, total: records.length }
-      for (const record of records) {
-        check()
-        try {
-          const blob = record.blob instanceof Blob ? record.blob : (record.id ? await (desktop ? repository.getImage(record.id, controller.signal) : readWebBackupImage(record.id)) : null)
-          // Storage reads may not be abortable. Never download their late result after cancellation.
-          check()
-          if (!blob) failed++
-          else {
-            const url = URL.createObjectURL(blob)
-            let anchor: HTMLAnchorElement | undefined
-            let started = false
-            try {
-              anchor = document.createElement('a')
-              anchor.href = url
-              anchor.download = buildArtworkFileName({
-                title: record.name, timestamp: record.created_at, id: record.id,
-                ext: blob.type === 'image/svg+xml' ? 'svg' : (blob.type || 'image/png').split('/')[1] || 'png',
-              })
-              document.body.appendChild(anchor)
-              anchor.click()
-              started = true
-              saved++
-            } finally {
-              try { anchor?.remove() } finally {
-                // Failed setup releases immediately; successful downloads retain their existing grace period.
-                if (started && !disposed) imageDownloadUrls.set(url, window.setTimeout(() => releaseImageUrl(url), 60_000))
-                else URL.revokeObjectURL(url)
-              }
-            }
-          }
-        } catch { if (!controller.signal.aborted) failed++ }
-        if (controller.signal.aborted) break
-        imageExportProgress.value = { completed: ++completed, total: records.length }
-        // Inline blobs and cached reads must yield to the Cancel button between downloads.
-        if (completed < records.length) await new Promise<void>(resolve => {
-          const finish = () => {
-            window.clearTimeout(timer)
-            controller.signal.removeEventListener('abort', finish)
-            resolve()
-          }
-          const timer = window.setTimeout(finish, 0)
-          controller.signal.addEventListener('abort', finish, { once: true })
-        })
-      }
-      if (!disposed) {
-        if (controller.signal.aborted) onFlash(`已停止后续导出；已开始下载 ${saved} 张，浏览器中已开始的下载无法撤销`)
-        else if (failed) onFlash(`已开始下载 ${saved} 张；${failed} 张读取或下载失败，请重试`)
-        else onFlash(saved
-          ? `已开始下载 ${saved} 张作品图片（浏览器可能询问「允许下载多个文件」）`
-          : '没有找到可导出的图片')
-      }
-    } catch (e) {
-      if (!disposed) {
-        if (controller.signal.aborted) onFlash(`已停止后续导出；已开始下载 ${saved} 张，浏览器中已开始的下载无法撤销`)
-        else {
-          console.error('export images failed', e)
-          onFlash('导出图片失败：' + errorMessage(e, '请检查浏览器存储'))
-        }
-      }
-    } finally {
-      source.release()
-      imageExportController = null
-      imageExportProgress.value = null
       busy.value = false
     }
   }

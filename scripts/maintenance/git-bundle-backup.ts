@@ -3,6 +3,7 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 'use strict';
 
 import { PathLike } from 'node:fs';
+import workspaceLock = require('../lib/workspace-lock');
 
 /**
  * git bundle 异地快照（2026-08-29 产品运营审计 P0-2；2026-08-31 改增量链）。
@@ -15,10 +16,10 @@ import { PathLike } from 'node:fs';
  *   - 锚点：aics-full-<stamp>.bundle = git bundle create --all 全量（~205MB）
  *   - 增量：aics-inc-<stamp>.bundle  = --all --not <上一次备份的 rev>
  *     （只含自上次备份以来的新对象，通常 <50MB）
- *   - 每 FULL_EVERY 份增量自动落一个新锚点，最坏只损失 ≤FULL_EVERY-1 份增量
+ *   - 每 FULL_EVERY 份增量自动落一个新锚点，间隔不超过 INC_KEEP，保全最新恢复链
  *   - 清理：锚点保留 ANCHOR_KEEP 份、增量保留 INC_KEEP 份，并回收早于最老
  *     锚点的断链增量；磁盘上界 ≈ ANCHOR_KEEP×全量 + INC_KEEP×增量
- *   - 链状态：.chain-state.json 记录 lastRev / sinceAnchor；状态损坏自动回退全量
+ *   - 链状态记录 HEAD、全部 refs 与 sinceAnchor；引用变化或旧状态升级回退全量
  *
  * 用法：node scripts/maintenance/git-bundle-backup.js [--keep N]（N 仅在传给底层
  *       时兼容旧语义：等价于 INC_KEEP=N；默认增量 10 份 + 锚点 2 份）
@@ -39,10 +40,12 @@ const BACKUP_DIR = path.join(ROOT, 'runtime', 'git-backups');
 const STATE_FILE = path.join(BACKUP_DIR, '.chain-state.json');
 
 const keepIndex = process.argv.indexOf('--keep');
-const keepArg = keepIndex > -1 && Number(process.argv[keepIndex + 1]);
 const ANCHOR_KEEP = 2;   // 全量锚点保留份数
-const INC_KEEP = keepArg || 10; // 增量保留份数（兼容 --keep 旧语义）
-const FULL_EVERY = 8;    // 每 N 份增量强制落一次新锚点
+const INC_KEEP = keepIndex < 0 ? 10 : Number(process.argv[keepIndex + 1]);
+const FULL_EVERY = Math.min(8, INC_KEEP);
+
+type Snapshot = { lastRev: string; headRef: string; refs: string };
+type ChainState = Snapshot & { sinceAnchor: number; kind: string; at: string };
 
 function git(args: readonly string[]) {
   return execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
@@ -52,18 +55,30 @@ function sizeMB(file: PathLike) {
   return (fs.statSync(file).size / 1024 / 1024).toFixed(1);
 }
 
+function snapshot(): Snapshot {
+  let headRef = '';
+  try { headRef = git(['symbolic-ref', '-q', 'HEAD']); } catch { /* detached HEAD */ }
+  return { lastRev: git(['rev-parse', 'HEAD']), headRef,
+    refs: git(['for-each-ref', '--sort=refname', '--format=%(refname)%09%(objectname)']) };
+}
+
+function otherRefs(state: Snapshot) {
+  return state.refs.split('\n').filter(line => !line.startsWith(state.headRef + '\t')).join('\n');
+}
+
 function loadState() {
   try {
     const raw: unknown = JSON.parse(fs.readFileSync(STATE_FILE, 'utf8'));
-    if (raw && typeof raw === 'object' && 'lastRev' in raw && typeof raw.lastRev === 'string' && raw.lastRev.length >= 7
+    if (raw && typeof raw === 'object' && 'lastRev' in raw && typeof raw.lastRev === 'string' && /^[a-f0-9]{40,64}$/.test(raw.lastRev)
+      && 'headRef' in raw && typeof raw.headRef === 'string' && 'refs' in raw && typeof raw.refs === 'string'
       && 'sinceAnchor' in raw && typeof raw.sinceAnchor === 'number' && Number.isSafeInteger(raw.sinceAnchor) && raw.sinceAnchor >= 0) {
-      return { lastRev: raw.lastRev, sinceAnchor: raw.sinceAnchor };
+      return { lastRev: raw.lastRev, headRef: raw.headRef, refs: raw.refs, sinceAnchor: raw.sinceAnchor };
     }
   } catch { /* 状态损坏 → 全量回退 */ }
   return null;
 }
 
-function saveState(state: { lastRev: string; sinceAnchor: number; kind: string; at: string; }) {
+function saveState(state: ChainState) {
   fs.writeFileSync(STATE_FILE, JSON.stringify(state, null, 2) + '\n', 'utf8');
 }
 
@@ -85,7 +100,7 @@ function sweep() {
   const oldestAnchor = anchors.filter(n => !drop.has(n))[0];
   if (oldestAnchor) {
     for (const name of incs) {
-      if (!drop.has(name) && name < oldestAnchor) drop.add(name);
+      if (!drop.has(name) && name.slice('aics-inc-'.length) < oldestAnchor.slice('aics-full-'.length)) drop.add(name);
     }
   }
   for (const name of drop) {
@@ -94,6 +109,11 @@ function sweep() {
 }
 
 function main() {
+  if (!Number.isSafeInteger(INC_KEEP) || INC_KEEP < 1) {
+    console.error('[git-bundle-backup] --keep 必须是正整数');
+    process.exitCode = 1;
+    return;
+  }
   try {
     git(['rev-parse', '--is-inside-work-tree']);
     git(['rev-parse', 'HEAD']); // HEAD 不可解析（如 refs 损坏）时无内容可备，直接退出
@@ -104,21 +124,24 @@ function main() {
   }
 
   fs.mkdirSync(BACKUP_DIR, { recursive: true });
-  const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-  const headRev = git(['rev-parse', 'HEAD']);
+  const stamp = new Date().toISOString().replace(/[:.]/g, '-') + '-' + process.pid;
+  const current = snapshot();
   const state = loadState();
 
-  // 决定锚点 or 增量：无状态 / lastRev 不可解析 / 增量连发达到 FULL_EVERY → 全量
+  // 只有当前分支持续向前且其他引用未变才做增量，避免标签/回退引用被 --not 排除。
   let kind = 'full';
   if (state) {
-    if (state.lastRev === headRev) {
-      console.log('[git-bundle-backup] 自上次备份以来无新提交，跳过');
+    if (state.lastRev === current.lastRev && state.headRef === current.headRef && state.refs === current.refs) {
+      console.log('[git-bundle-backup] 自上次备份以来 HEAD 与引用未变，跳过');
       return;
     }
-    try {
-      git(['cat-file', '-e', state.lastRev + '^{commit}']);
-      if (Number(state.sinceAnchor) < FULL_EVERY) kind = 'inc';
-    } catch { /* lastRev 对象缺失（如锚点被手工删除）→ 全量 */ }
+    if (current.headRef && state.headRef === current.headRef && otherRefs(state) === otherRefs(current)
+      && state.lastRev !== current.lastRev && state.sinceAnchor < FULL_EVERY) {
+      try {
+        git(['merge-base', '--is-ancestor', state.lastRev, current.lastRev]);
+        kind = 'inc';
+      } catch { /* 旧对象缺失或分支回退/改写 → 全量 */ }
+    }
   }
 
   const file = path.join(BACKUP_DIR, `aics-${kind}-${stamp}.bundle`);
@@ -130,6 +153,9 @@ function main() {
     }
     // 自校验：verify 失败说明 bundle 不完整，不留残次副本
     git(['bundle', 'verify', file]);
+    const after = snapshot();
+    if (after.lastRev !== current.lastRev || after.headRef !== current.headRef || after.refs !== current.refs)
+      throw new Error('备份期间 Git 引用发生变化，保留原恢复链，请稍后重试');
   } catch (error) {
     console.error('[git-bundle-backup] bundle 创建/校验失败（' + kind + '）：' + String(runtimeErrorMessage(error)).split('\n')[0]);
     try { fs.unlinkSync(file); } catch { /* 可能根本没生成 */ }
@@ -137,11 +163,21 @@ function main() {
     return;
   }
 
-  saveState({ lastRev: headRev, sinceAnchor: kind === 'full' || !state ? 0 : state.sinceAnchor + 1, kind, at: new Date().toISOString() });
+  saveState({ ...current, sinceAnchor: kind === 'full' || !state ? 0 : state.sinceAnchor + 1, kind, at: new Date().toISOString() });
   sweep();
 
   const kindLabel = kind === 'full' ? '锚点' : '增量';
   console.log(`[git-bundle-backup] ${path.relative(ROOT, file)} (${sizeMB(file)} MB, ${kindLabel})，锚点≤${ANCHOR_KEEP} 增量≤${INC_KEEP}`);
 }
 
-main();
+// Reuse owner/PID recovery with a separate lock root; desktop builds remain independent.
+void workspaceLock.withWorkspaceLock({
+  workspaceRoot: ROOT, lockRoot: path.join(BACKUP_DIR, '.locks'), waitTimeoutMs: 0,
+}, main).catch((error: unknown) => {
+  if (error instanceof workspaceLock.WorkspaceLockTimeoutError) {
+    console.log('[git-bundle-backup] 已有备份正在执行，本次跳过');
+    return;
+  }
+  console.error('[git-bundle-backup] 备份未完成：' + String(runtimeErrorMessage(error)).split('\n')[0]);
+  process.exitCode = 1;
+});

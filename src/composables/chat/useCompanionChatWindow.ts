@@ -24,20 +24,9 @@ import { relayChatCommand, relayChatTurn } from '../../utils/chatRelayReceipt.ts
 import type { ChatStoryAction } from '@/types/companionDrawing'
 import { useChatRegenerationEligibility } from './useChatRegenerationEligibility'
 import { useCompanionChatAttachments } from './useCompanionChatAttachments'
+import { decodeCompanionChatLiveState, type CompanionChatLiveState } from '@/utils/companionChatLiveState'
 
 export function useCompanionChatWindow() {
-
-interface ChatLiveState {
-  busy: boolean
-  thinking: boolean
-  toolActivity: string
-  speaking: boolean
-  voiceActive: boolean
-  activeChar: string
-  chatReady: boolean
-  chatError: string
-  ts: number
-}
 
 /** 无桥降级：允许纯浏览器里用本地 storage 观看/本地切角色（发送需桌宠桥） */
 const storage = useChatStorage(() => { /* 聊天窗静默收集失败即可 */ })
@@ -46,7 +35,7 @@ const bridge = getDesktopCapabilities()
  *  窗口无效，页面里也没有任何路由出口。这里给一个真正走得通的返回。 */
 const router = useRouter()
 
-const liveState = reactive<ChatLiveState>({
+const liveState = reactive<CompanionChatLiveState>({
   busy: false,
   thinking: false,
   toolActivity: '',
@@ -155,19 +144,11 @@ function readBehaviorConfig() {
 function readLive() {
   try {
     const previousCharacter = activeChar.value
-    const raw = JSON.parse(localStorage.getItem(COMPANION_CHAT_LIVE_KEY) || 'null')
-    if (!raw || typeof raw !== 'object') return
-    liveState.busy = Boolean(raw.busy)
-    liveState.thinking = Boolean(raw.thinking)
-    liveState.toolActivity = typeof raw.toolActivity === 'string' ? raw.toolActivity.slice(0, 400) : ''
-    liveState.speaking = Boolean(raw.speaking)
-    liveState.voiceActive = Boolean(raw.voiceActive)
-    if (getCompanionCharacterConfig(raw.activeChar)) {
-      liveState.activeChar = raw.activeChar
-    }
-    if (typeof raw.chatReady === 'boolean') liveState.chatReady = raw.chatReady
-    liveState.chatError = typeof raw.chatError === 'string' ? raw.chatError.slice(0, 1200) : ''
-    liveState.ts = Number(raw.ts) || 0
+    const snapshot = decodeCompanionChatLiveState(
+      JSON.parse(localStorage.getItem(COMPANION_CHAT_LIVE_KEY) || 'null'), liveState,
+    )
+    if (!snapshot) return
+    Object.assign(liveState, snapshot)
     if (liveInitialized && previousCharacter !== activeChar.value) {
       draft.clear()
       storage.setDraft(previousCharacter, inputText.value)

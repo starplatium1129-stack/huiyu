@@ -1,12 +1,9 @@
 import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
+import { hashInstallerFile } from '../lib/installer-integrity';
 'use strict';
-
-import { WithImplicitCoercion } from 'node:buffer';
-import { PathOrFileDescriptor } from 'node:fs';
 
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
-const crypto: typeof import('node:crypto') = require('node:crypto');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const ROOT = path.resolve(__dirname, '../..');
 const BASE = path.join(ROOT, 'desktop-tauri/src-tauri/installer');
@@ -85,32 +82,6 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
 }
 
 
-// Installer payloads are hundreds of MiB. Keep hash buffers bounded while still
-// reading every byte; retain caller ownership when passed an open descriptor.
-function hashInstallerFile(file: PathOrFileDescriptor, algorithm: 'sha256' | 'blake2b512'): Buffer {
-  const descriptor = typeof file === 'number' ? file : fs.openSync(file, 'r');
-  try {
-    const hash = crypto.createHash(algorithm), buffer = Buffer.allocUnsafe(64 * 1024);
-    let bytes;
-    while ((bytes = fs.readSync(descriptor, buffer, 0, buffer.length, null)) > 0) hash.update(buffer.subarray(0, bytes));
-    return hash.digest();
-  } finally { if (typeof file !== 'number') fs.closeSync(descriptor); }
-}
-
-function verifyUpdaterSignature(executable: PathOrFileDescriptor, signature: WithImplicitCoercion<string>, publicKey: WithImplicitCoercion<string>) {
-  const key = Buffer.from(Buffer.from(publicKey, 'base64').toString('utf8').trim().split(/\r?\n/)[1] || '', 'base64');
-  const lines = Buffer.from(signature, 'base64').toString('utf8').trim().split(/\r?\n/);
-  const packet = Buffer.from(lines[1] || '', 'base64');
-  if (key.length !== 42 || packet.length !== 74 || !key.subarray(2, 10).equals(packet.subarray(2, 10))) throw new Error('Updater signing key mismatch');
-  const algorithm = packet.subarray(0, 2).toString();
-  if (!['ED', 'Ed'].includes(algorithm)) throw new Error('Unsupported updater signature algorithm');
-  const verifier = crypto.createPublicKey({ key: Buffer.concat([Buffer.from('302a300506032b6570032100', 'hex'), key.subarray(10)]), format: 'der', type: 'spki' });
-  const message = algorithm === 'ED' ? hashInstallerFile(executable, 'blake2b512') : fs.readFileSync(executable);
-  if (!crypto.verify(null, message, verifier, packet.subarray(10))) throw new Error('Distributed installer signature verification failed');
-  if (!lines[2]?.startsWith('trusted comment: ') || !crypto.verify(null, Buffer.concat([packet.subarray(10), Buffer.from(lines[2].slice(17))]), verifier, Buffer.from(lines[3] || '', 'base64'))) throw new Error('Updater trusted comment verification failed');
-  return true;
-}
-
 if (require.main === module) {
   const args = process.argv.slice(2);
   const value = (key: string|any[], fallback: string|undefined) => args.find((arg: any) => arg.startsWith(`--${key}=`))?.slice(key.length + 3) || fallback;
@@ -118,4 +89,4 @@ if (require.main === module) {
   else try { buildModernInstaller({ preview: args.includes('--preview'), upgrade: args.includes('--upgrade') || Boolean(value('upgrade-verifier', undefined)), upgradeVerifier: value('upgrade-verifier', undefined), capture: args.includes('--capture'), theme: value('theme', 'dark'), state: value('state', 'ready'), dpi: Number(value('dpi', '96')), payload: value('payload', undefined), output: value('output', undefined) }); }
   catch (error) { console.error(runtimeErrorMessage(error)); process.exitCode = 1; }
 }
-export = { buildModernInstaller, hashInstallerFile, verifyUpdaterSignature };
+export = { buildModernInstaller };

@@ -16,6 +16,8 @@ pub(crate) mod file_identity;
 mod file_paths;
 mod generation;
 mod host;
+mod http_body;
+mod http_media;
 mod image_decode;
 mod images;
 mod interrogate;

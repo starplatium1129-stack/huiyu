@@ -4,7 +4,7 @@ import fs = require('node:fs');
 import path = require('node:path');
 import crypto = require('node:crypto');
 import { execFileSync } from 'node:child_process';
-const { withDesktopBuildLock }: typeof import('./desktop-build-lock') = require('./desktop-build-lock');
+const { withWorkspaceLock }: typeof import('../lib/workspace-lock') = require('../lib/workspace-lock');
 const { copyRustPayload, runtimeBuild }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
 import safe = require('../lib/delivery-paths');
 type Logger = (message: string) => void;
@@ -97,5 +97,5 @@ function stageResources(options: StageOptions = {}) {
     return { stage, runtimeExecutable: path.join(stage, 'gateway/huiyu-runtime.exe'), releaseReady: report.releaseReady, pending: report.pending };
   } catch (error) { fs.rmSync(temporary, { recursive: true, force: true }); throw error; }
 }
-if (require.main === module) withDesktopBuildLock({ workspaceRoot: ROOT }, () => stageResources()).catch((error: any) => { console.error(`[stage] FAIL ${error.message}`); process.exitCode = 1; });
+if (require.main === module) withWorkspaceLock({ workspaceRoot: ROOT }, () => stageResources()).catch((error: any) => { console.error(`[stage] FAIL ${error.message}`); process.exitCode = 1; });
 export = { includeData, resolveNpmInvocation, stageResources };

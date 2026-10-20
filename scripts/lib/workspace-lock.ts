@@ -23,6 +23,13 @@ type LockOwner = {
   hostname?: string;
 };
 
+class WorkspaceLockTimeoutError extends Error {
+  constructor(readonly lockPath: string, readonly owner: LockOwner | null) {
+    super(`workspace lock timeout: ${lockPath}; owner=${JSON.stringify(owner)}`);
+    this.name = 'WorkspaceLockTimeoutError';
+  }
+}
+
 const isNodeError = (error: unknown): error is NodeJS.ErrnoException => error instanceof Error && 'code' in error;
 
 function canonicalWorkspace(workspaceRoot: string): string {
@@ -32,7 +39,8 @@ function canonicalWorkspace(workspaceRoot: string): string {
   return process.platform === 'win32' ? resolved.toLowerCase() : resolved;
 }
 
-function desktopBuildLockPath(workspaceRoot: string, lockRoot = path.join(os.tmpdir(), 'aics-desktop-build-locks')): string {
+// Keep the existing default directory so already-running desktop builds share the same lock.
+function workspaceLockPath(workspaceRoot: string, lockRoot = path.join(os.tmpdir(), 'aics-desktop-build-locks')): string {
   const workspace = canonicalWorkspace(workspaceRoot);
   const digest = crypto.createHash('sha256').update(workspace).digest('hex').slice(0, 24);
   return path.join(lockRoot, `${digest}.lock`);
@@ -87,9 +95,9 @@ function delay(ms: number): Promise<void> {
   return new Promise<void>(resolve => setTimeout(resolve, ms));
 }
 
-async function acquireDesktopBuildLock(options: LockOptions): Promise<() => boolean> {
+async function acquireWorkspaceLock(options: LockOptions): Promise<() => boolean> {
   const workspaceRoot = options.workspaceRoot;
-  const lockPath = desktopBuildLockPath(workspaceRoot, options.lockRoot);
+  const lockPath = workspaceLockPath(workspaceRoot, options.lockRoot);
   const waitTimeoutMs = options.waitTimeoutMs ?? DEFAULT_WAIT_TIMEOUT_MS;
   const staleMs = options.staleMs ?? DEFAULT_STALE_MS;
   const pollMs = options.pollMs ?? DEFAULT_POLL_MS;
@@ -113,7 +121,7 @@ async function acquireDesktopBuildLock(options: LockOptions): Promise<() => bool
         throw error;
       }
 
-      return function releaseDesktopBuildLock() {
+      return function releaseWorkspaceLock() {
         const owner = readOwner(lockPath);
         if (!owner || owner.token !== token) return false;
         fs.rmSync(lockPath, { recursive: true, force: true });
@@ -124,15 +132,15 @@ async function acquireDesktopBuildLock(options: LockOptions): Promise<() => bool
       if (clearStaleLock(lockPath, staleMs)) continue;
       if (Date.now() >= deadline) {
         const owner = readOwner(lockPath);
-        throw new Error(`desktop build lock timeout: ${lockPath}; owner=${JSON.stringify(owner)}`);
+        throw new WorkspaceLockTimeoutError(lockPath, owner);
       }
       await delay(pollMs);
     }
   }
 }
 
-async function withDesktopBuildLock<T>(options: LockOptions, callback: () => T | Promise<T>): Promise<T> {
-  const release = await acquireDesktopBuildLock(options);
+async function withWorkspaceLock<T>(options: LockOptions, callback: () => T | Promise<T>): Promise<T> {
+  const release = await acquireWorkspaceLock(options);
   try {
     return await callback();
   } finally {
@@ -141,5 +149,6 @@ async function withDesktopBuildLock<T>(options: LockOptions, callback: () => T |
 }
 
 export = {
-    withDesktopBuildLock
+  withWorkspaceLock,
+  WorkspaceLockTimeoutError,
 };

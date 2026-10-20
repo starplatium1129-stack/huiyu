@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import type { VideoAiIssue } from '@/api/videoApi'
+import type { VideoAiIssue } from '@/api/videoAiApi'
 
 defineProps<{
   issues: VideoAiIssue[]

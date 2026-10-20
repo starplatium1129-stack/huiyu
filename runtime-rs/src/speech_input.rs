@@ -2,6 +2,7 @@ use crate::{
     AppState,
     byte_buffer::Buffer,
     error::{ApiError, Result},
+    http_body::{self, ReadError},
     security,
 };
 use axum::{
@@ -12,7 +13,6 @@ use axum::{
     response::{IntoResponse, Response},
     routing::post,
 };
-use futures_util::StreamExt;
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{collections::HashMap, net::SocketAddr, sync::Arc, time::Duration};
@@ -322,20 +322,14 @@ async fn probe(
 }
 
 async fn read_reply(response: reqwest::Response) -> Result<Buffer> {
-    let mut stream = response.bytes_stream();
-    let mut bytes = Buffer::Chunk(Bytes::new());
-    while let Some(chunk) = stream.next().await {
-        let chunk = chunk.map_err(network)?;
-        if bytes.as_ref().len().saturating_add(chunk.len()) > MAX_REPLY_BYTES {
-            return Err(ApiError::new(
-                502,
-                "SPEECH_PAYLOAD",
-                "语音服务响应超过大小限制",
-            ));
-        }
-        bytes.append(chunk, 0);
-    }
-    Ok(bytes)
+    http_body::collect(response, MAX_REPLY_BYTES).await.map_err(|error| match error {
+        ReadError::Network(error) => network(error),
+        ReadError::TooLarge => ApiError::new(
+            502,
+            "SPEECH_PAYLOAD",
+            "语音服务响应超过大小限制",
+        ),
+    })
 }
 
 fn provider_status(status: u16) -> ApiError {

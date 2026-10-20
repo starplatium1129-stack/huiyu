@@ -2,8 +2,6 @@ mod commands;
 mod json;
 mod media;
 pub(crate) use media::download_opened;
-pub(crate) use media::range as media_range;
-pub(crate) use media::stream as stream_media;
 
 use crate::{
     AppState,

@@ -196,14 +196,18 @@ fn dib_to_png(dib: &[u8]) -> Option<Vec<u8>> {
         0
     };
     let palette_bytes = palette_entries * 4;
-    let header_size = bi_size + palette_bytes;
+    let compression = u32::from_le_bytes(dib[16..20].try_into().ok()?);
+    // BITMAPINFOHEADER stores BI_BITFIELDS masks after its 40 bytes; newer
+    // headers include them. Pixel data must start after those external masks.
+    let mask_bytes = if bi_size == 40 && compression == 3 { 12 } else { 0 };
+    let header_size = bi_size + mask_bytes + palette_bytes;
     if dib.len() < header_size {
         return None;
     }
-    let file_size = 14 + header_size + dib.len().saturating_sub(bi_size).max(palette_bytes);
-    let mut bmp = Vec::with_capacity(file_size);
+    let file_size = u32::try_from(14 + dib.len()).ok()?;
+    let mut bmp = Vec::with_capacity(file_size as usize);
     bmp.extend_from_slice(b"BM");
-    bmp.extend_from_slice(&(file_size as u32).to_le_bytes());
+    bmp.extend_from_slice(&file_size.to_le_bytes());
     bmp.extend_from_slice(&[0u8; 4]);
     bmp.extend_from_slice(&((14 + header_size) as u32).to_le_bytes());
     bmp.extend_from_slice(dib);

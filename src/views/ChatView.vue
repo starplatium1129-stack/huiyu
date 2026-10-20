@@ -340,6 +340,7 @@ const {
   chatReady,
   busy: computed(() => busy.value || storyBusy.value || voiceActive.value || roomPanel.value === 'settings'),
   inputText,
+  onInputChange,
   handleSend,
 })
 watch([apiSettingsOpen, speechSettingsOpen], ([api, speech]) => {

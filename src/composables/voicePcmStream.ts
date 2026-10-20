@@ -1,4 +1,5 @@
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
+import { createPcm16MonoWavHeader } from '@/utils/pcmWav'
 
 /** One PCM request owns its decoder, playback nodes and cancellation. */
 export class VoicePcmStream {
@@ -164,12 +165,6 @@ export class VoicePcmStream {
   }
 
   private wave(bytes: number): Blob {
-    const header = new ArrayBuffer(44), view = new DataView(header)
-    const tag = (offset: number, text: string) => { for (let i = 0; i < text.length; i++) view.setUint8(offset + i, text.charCodeAt(i)) }
-    tag(0, 'RIFF'); view.setUint32(4, bytes + 36, true); tag(8, 'WAVE'); tag(12, 'fmt ')
-    view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true)
-    view.setUint32(24, this.rate, true); view.setUint32(28, this.rate * 2, true)
-    view.setUint16(32, 2, true); view.setUint16(34, 16, true); tag(36, 'data'); view.setUint32(40, bytes, true)
-    return new Blob([header, ...this.parts], { type: 'audio/wav' })
+    return new Blob([createPcm16MonoWavHeader(bytes, this.rate), ...this.parts], { type: 'audio/wav' })
   }
 }

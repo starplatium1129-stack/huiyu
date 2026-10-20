@@ -20,15 +20,10 @@
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const zlib: typeof import('zlib') = require('zlib');
-const { promisify }: typeof import('node:util') = require('node:util');
-const brotliCompress = promisify(zlib.brotliCompress);
-const gzipCompress = promisify(zlib.gzip);
+import { COMPRESSIBLE, MIN_BYTES, compressAsync } from '../lib/precompressed-artifacts';
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const TARGET_DIRS = ['dist', 'data'];
-const COMPRESSIBLE = /\.(?:js|css|html|json|svg|txt|map)$/i;
-/** 小文件压完往往更大，且省不下 RTT */
-const MIN_BYTES = 1024;
 
 function walk(dir: string): string[] {
   if (!fs.existsSync(dir)) return [];
@@ -37,42 +32,6 @@ function walk(dir: string): string[] {
     if (entry.isDirectory()) return walk(full);
     return [full];
   });
-}
-
-function compress(file: string) {
-  const raw = fs.readFileSync(file);
-  if (raw.length < MIN_BYTES) return null;
-
-  const brotli = zlib.brotliCompressSync(raw, {
-    params: {
-      [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-      [zlib.constants.BROTLI_PARAM_SIZE_HINT]: raw.length
-    }
-  });
-  const gzip = zlib.gzipSync(raw, { level: 9 });
-
-  return writeArtifacts(file, raw, brotli, gzip);
-}
-
-function writeArtifacts(file: string, raw: Buffer, brotli: Buffer, gzip: Buffer) {
-  // 压不小就别留，免得服务端发出比原文更大的响应
-  if (brotli.length < raw.length) fs.writeFileSync(file + '.br', brotli);
-  else if (fs.existsSync(file + '.br')) fs.unlinkSync(file + '.br');
-  if (gzip.length < raw.length) fs.writeFileSync(file + '.gz', gzip);
-  else if (fs.existsSync(file + '.gz')) fs.unlinkSync(file + '.gz');
-
-  return { raw: raw.length, brotli: brotli.length, gzip: gzip.length };
-}
-
-/** The async path uses the same quality/options and bytes as the synchronous API. */
-async function compressAsync(file: string) {
-  const raw = fs.readFileSync(file);
-  if (raw.length < MIN_BYTES) return null;
-  const [brotli, gzip] = await Promise.all([
-    brotliCompress(raw, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11, [zlib.constants.BROTLI_PARAM_SIZE_HINT]: raw.length } }),
-    gzipCompress(raw, { level: 9 }),
-  ]);
-  return writeArtifacts(file, raw, brotli, gzip);
 }
 
 /**
@@ -226,7 +185,3 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
 if (require.main === module) {
   main().then(code => { process.exitCode = code; }).catch(error => { console.error(error); process.exitCode = 1; });
 }
-
-/** 供 scripts/lib/ensure-data-build.js 复用：重建数据产物后刷新对应预压文件，
- *  避免 precompressed 中间件按文件名直发陈旧 .br/.gz。 */
-export = { compress };

@@ -7,10 +7,10 @@ import nativeInputs = require('./desktop-rust-inputs');
 
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const path: typeof import('node:path') = require('node:path');
-const { withDesktopBuildLock }: typeof import('./desktop-build-lock') = require('./desktop-build-lock');
+const { withWorkspaceLock }: typeof import('../lib/workspace-lock') = require('../lib/workspace-lock');
 const { resolveNpmInvocation }: typeof import('./desktop-stage-resources') = require('./desktop-stage-resources');
 const { prepareTauri }: typeof import('./prepare-tauri') = require('./prepare-tauri');
-const { desktopBuildEnvironment, assertDesktopBuildEnvironment }: typeof import('./desktop-build-environment') = require('./desktop-build-environment');
+const { desktopBuildEnvironment, assertDesktopBuildEnvironment }: typeof import('../lib/desktop-build-environment') = require('../lib/desktop-build-environment');
 
 const ROOT = path.resolve(__dirname, '../..');
 const binding: typeof import('../lib/desktop-build-binding') = require('../lib/desktop-build-binding');
@@ -59,7 +59,7 @@ async function runTauri(argv: string[]): Promise<number> {
   const fastDevelopment = mode === 'dev' && !cliArgs.includes('--release') && !customProfile;
   const refreshUi = fastDevelopment && cliArgs.includes('--refresh-ui');
   if (refreshUi) args.splice(args.indexOf('--refresh-ui'), 1);
-  return withDesktopBuildLock({ workspaceRoot }, async () => {
+  return withWorkspaceLock({ workspaceRoot }, async () => {
     assertDesktopBuildEnvironment(workspaceRoot);
     if (mode === 'build') {
       // Packaging must refresh stale ignored products before either UI captures DATA_VERSION.

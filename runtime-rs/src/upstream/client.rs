@@ -1,9 +1,8 @@
 use crate::{
     byte_buffer::Buffer,
     error::{ApiError, Result},
+    http_body::{self, ReadError},
 };
-use axum::body::Bytes;
-use futures_util::StreamExt;
 use serde_json::Value;
 use std::{
     net::{IpAddr, Ipv4Addr},
@@ -138,15 +137,10 @@ impl LocalUpstream {
             {
                 return Err(too_large());
             }
-            let mut stream = response.bytes_stream();
-            let mut data = Buffer::Chunk(Bytes::new());
-            while let Some(chunk) = stream.next().await {
-                let chunk = chunk.map_err(upstream_error)?;
-                if data.as_ref().len().saturating_add(chunk.len()) > max_bytes {
-                    return Err(too_large());
-                }
-                data.append(chunk, 0);
-            }
+            let data = http_body::collect(response, max_bytes).await.map_err(|error| match error {
+                ReadError::Network(error) => upstream_error(error),
+                ReadError::TooLarge => too_large(),
+            })?;
             Ok((status, decode_body(data, cancel).await?))
         };
         tokio::select! {

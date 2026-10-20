@@ -1,6 +1,7 @@
 import type { Ref } from 'vue'
 import type { VadSegmenter } from '@/utils/vadSegmenter'
 import { normalizeSpeechInputConfig, isSpeechInputReady, type SpeechInputConfig } from '@/utils/speechInputConfig'
+import { encodeWav16k, resampleTo16k } from '@/utils/pcmWav'
 
 export type VoiceInputState = 'idle' | 'acquiring' | 'capturing' | 'recognizing' | 'error'
 export type VoiceInputMode = 'manual' | 'auto'
@@ -80,9 +81,9 @@ export function createVoiceInputRecorder(options: UseVoiceInputOptions, refs: Pi
     recognitionController = controller; recognizing = true
     setState('recognizing')
     const settings = captureConfig
-    void import('@/utils/voiceApi').then(audio => {
+    void import('@/api/speechInputApi').then(audio => {
       if (!current()) return null
-      return audio.recognizeWithAsr(settings, audio.encodeWav16k(segment, TARGET_RATE), controller.signal)
+      return audio.recognizeWithAsr(settings, encodeWav16k(segment, TARGET_RATE), controller.signal)
     })
       .then(result => {
         if (!current() || !result) return
@@ -131,11 +132,11 @@ export function createVoiceInputRecorder(options: UseVoiceInputOptions, refs: Pi
         if (current()) stream = acquired
         else for (const track of acquired.getTracks()) track.stop()
       }, () => {})
-      const [acquired, audio, detection] = await Promise.all([
+      const [acquired, detection] = await Promise.all([
         Promise.race([acquisition, new Promise<never>((_, reject) => {
           acquisitionTimer = setTimeout(() => reject(new Error('等待麦克风授权超时，请允许麦克风访问后重试。')), 30_000)
         })]),
-        import('@/utils/voiceApi'), import('@/utils/vadSegmenter'),
+        import('@/utils/vadSegmenter'),
       ])
       clearTimeout(acquisitionTimer)
       if (!current()) { for (const track of acquired.getTracks()) track.stop(); return }
@@ -156,7 +157,7 @@ export function createVoiceInputRecorder(options: UseVoiceInputOptions, refs: Pi
         const input = event.inputBuffer.getChannelData(0)
         const rms = detection.rmsOf(input, 0, input.length)
         level.value = Number.isFinite(rms) ? Math.min(1, rms * 3.5) : 0
-        const samples = audio.resampleTo16k(input, audioContext.sampleRate)
+        const samples = resampleTo16k(input, audioContext.sampleRate)
         if (mode === 'manual') {
           const frame = samples.slice(0, Math.max(0, MAX_MANUAL_SAMPLES - manualSamples))
           manualFrames.push(frame); manualSamples += frame.length; manualPeak = Math.max(manualPeak, rms)

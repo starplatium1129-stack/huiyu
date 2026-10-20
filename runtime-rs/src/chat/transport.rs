@@ -1,7 +1,7 @@
 use super::{Duration, Error, Result};
 use crate::byte_buffer::Buffer;
+use crate::http_body::{self, ReadError};
 use axum::body::Bytes;
-use futures_util::StreamExt;
 use std::{
     env,
     net::{IpAddr, Ipv6Addr, SocketAddr},
@@ -96,19 +96,13 @@ pub(super) async fn bounded(response: reqwest::Response, limit: usize) -> Result
             "Upstream response exceeded the size limit",
         ));
     }
-    let mut stream = response.bytes_stream();
-    let mut bytes = Buffer::Chunk(Bytes::new());
-    while let Some(chunk) = stream.next().await {
-        let chunk = chunk.map_err(network_error)?;
-        if bytes.as_ref().len().saturating_add(chunk.len()) > limit {
-            return Err(Error::stream(
-                "RESPONSE_TOO_LARGE",
-                "Upstream response exceeded the size limit",
-            ));
-        }
-        bytes.append(chunk, 0);
-    }
-    Ok(bytes)
+    http_body::collect(response, limit).await.map_err(|error| match error {
+        ReadError::Network(error) => network_error(error),
+        ReadError::TooLarge => Error::stream(
+            "RESPONSE_TOO_LARGE",
+            "Upstream response exceeded the size limit",
+        ),
+    })
 }
 pub(super) async fn success(
     response: reqwest::Response,

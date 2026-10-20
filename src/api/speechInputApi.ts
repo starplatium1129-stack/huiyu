@@ -1,61 +1,11 @@
 /**
- * 16kHz WAV 编码与本机网关识别。网关转发 OpenAI 兼容转写请求，
+ * 本机网关识别。网关转发 OpenAI 兼容转写请求，
  * 页面只连接应用自己的运行时，不直接连接服务商。
  */
 
-import { speechInputEndpointError, type SpeechInputConfig } from './speechInputConfig'
+import { speechInputEndpointError, type SpeechInputConfig } from '@/utils/speechInputConfig'
 import { runtimeFetch } from '@/platform/runtimeUrl'
 import { apiClient } from '@/api/client'
-
-/** 将单声道 Float32 采样编码为标准 WAV（PCM16）。 */
-export function encodeWav16k(samples: Float32Array, sampleRate: number): Uint8Array {
-  const bytesPerSample = 2
-  const dataSize = samples.length * bytesPerSample
-  const buffer = new ArrayBuffer(44 + dataSize)
-  const view = new DataView(buffer)
-
-  const writeAscii = (offset: number, text: string): void => {
-    for (let i = 0; i < text.length; i += 1) view.setUint8(offset + i, text.charCodeAt(i))
-  }
-
-  writeAscii(0, 'RIFF')
-  view.setUint32(4, 36 + dataSize, true)
-  writeAscii(8, 'WAVE')
-  writeAscii(12, 'fmt ')
-  view.setUint32(16, 16, true) // fmt chunk size
-  view.setUint16(20, 1, true) // PCM
-  view.setUint16(22, 1, true) // mono
-  view.setUint32(24, sampleRate, true)
-  view.setUint32(28, sampleRate * bytesPerSample, true) // byte rate
-  view.setUint16(32, bytesPerSample, true) // block align
-  view.setUint16(34, 16, true) // bits per sample
-  writeAscii(36, 'data')
-  view.setUint32(40, dataSize, true)
-
-  let offset = 44
-  for (let i = 0; i < samples.length; i += 1) {
-    const clamped = Math.max(-1, Math.min(1, samples[i]))
-    view.setInt16(offset, clamped < 0 ? clamped * 0x8000 : clamped * 0x7fff, true)
-    offset += bytesPerSample
-  }
-  return new Uint8Array(buffer)
-}
-
-/** 线性插值重采样到 16kHz。 */
-export function resampleTo16k(input: Float32Array, srcRate: number): Float32Array {
-  if (srcRate === 16_000) return input
-  if (srcRate <= 0 || !Number.isFinite(srcRate)) return input
-  const ratio = srcRate / 16_000
-  const out = new Float32Array(Math.max(1, Math.round(input.length / ratio)))
-  for (let i = 0; i < out.length; i += 1) {
-    const pos = i * ratio
-    const i0 = Math.min(input.length - 1, Math.floor(pos))
-    const i1 = Math.min(input.length - 1, i0 + 1)
-    const frac = pos - i0
-    out[i] = input[i0] * (1 - frac) + input[i1] * frac
-  }
-  return out
-}
 
 export async function probeSpeechService(config: SpeechInputConfig, signal?: AbortSignal): Promise<{ state: 'ok' | 'unknown'; message: string }> {
   return apiClient.request('/api/speech-input/probe', {

@@ -51,12 +51,12 @@ const {
   loadTagShards,
 }: typeof import('./tag-store') = require('./tag-store');
 
-/** 复用 precompress.js 的压缩参数（质量 11 brotli / level 9 gzip / MIN_BYTES），
+/** 复用 precompressed-artifacts 的压缩参数（质量 11 brotli / level 9 gzip / MIN_BYTES），
  *  单一事实源防漂移；缺失（如精简安装）时只跳过刷新，不阻塞重建。 */
 function refreshPrecompressed(files: string[]) {
   let compress;
   try {
-    ({ compress } = (require('../maintenance/precompress') as typeof import('../maintenance/precompress')));
+    ({ compress } = (require('./precompressed-artifacts') as typeof import('./precompressed-artifacts')));
   } catch (error) {
     return;
   }

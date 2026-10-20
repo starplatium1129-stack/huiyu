@@ -154,7 +154,7 @@ export function useVoice(options: {
   }
 
   function prepare(voice: string, needsTranslation = true): Promise<boolean> {
-    if (destroyed) return Promise.resolve(false)
+    if (destroyed || !enabled()) return Promise.resolve(false)
     if (!readyFor(voice)) return Promise.resolve(false)
     const translationReady = !needsTranslation || Boolean(availability.value.translation?.ready)
     const key = voice + ':' + needsTranslation
@@ -210,7 +210,7 @@ export function useVoice(options: {
   function startTurn(meta: { mid: string; voice: string; character: string }) {
     if (destroyed) return
     stop({ preserveMessageAudio: true, silent: true })
-    ensureAudioContext(); session++
+    if (enabled()) ensureAudioContext(); session++
     controller = new AbortController()
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve()
     pending = 0; turn = { ...meta, session, referenceEmotion: '' }

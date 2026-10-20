@@ -98,10 +98,10 @@ async function restore() {
 }
 let consumingEntry = false
 async function consumeEntry() {
-  if (consumingEntry || draftRecoveryNeeded.value || !ready.value || restoredInputMissing.value || !(route.query.job || route.query.artwork || route.query.preparedModel)) return
+  if (consumingEntry || error.value || draftRecoveryNeeded.value || !ready.value || restoredInputMissing.value || !(route.query.job || route.query.artwork || route.query.preparedModel)) return
   consumingEntry = true
   try {
-    if (!await persistDraft()) return
+    if (!await persistDraft() || error.value) return
     const query = { ...route.query }; delete query.job; delete query.artwork; delete query.preparedModel
     await router.replace({ query })
   } finally { consumingEntry = false }

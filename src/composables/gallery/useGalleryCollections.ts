@@ -1,4 +1,5 @@
 import { computed, nextTick, onDeactivated, onScopeDispose, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { normalizeSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import { confirmAction } from '@/composables/useConfirm'
@@ -13,7 +14,8 @@ import type { useGalleryWorkspace } from './useGalleryWorkspace'
 
 type Workspace = ReturnType<typeof useGalleryWorkspace>
 type Options = Pick<Workspace, 'history' | 'projects' | 'thumbUrls' | 'cardUrls' | 'characterName' | 'characterFilter' | 'projectFilter'
-  | 'galleryLoading' | 'galleryIndexLoading' | 'galleryError' | 'tagFilter' | 'searchQuery' | 'favoriteOnly' | 'resetGalleryFilters' | 'collectionPreviewItems' | 'showToast'>
+  | 'galleryLoading' | 'galleryIndexLoading' | 'galleryError' | 'tagFilter' | 'searchQuery' | 'favoriteOnly' | 'resetGalleryFilters' | 'collectionPreviewItems' | 'showToast'
+  | 'trashMode' | 'selectMode' | 'toggleSelectMode'>
 
 export function useGalleryCollections(options: Options) {
   const indexComplete = computed(() => !options.galleryLoading.value && !options.galleryIndexLoading.value && !options.galleryError.value)
@@ -28,6 +30,15 @@ export function useGalleryCollections(options: Options) {
     },
   })
   const navigation = useAlbumNavigation(selection, albumSection)
+  const route = useRoute(), router = useRouter()
+  watch(() => route.query.fromArtwork, entry => {
+    if (route.path !== '/gallery' || typeof entry !== 'string') return
+    navigation.albumsOpen.value = false
+    options.trashMode.value = false
+    if (options.selectMode.value) options.toggleSelectMode()
+    const query = { ...route.query }; delete query.fromArtwork
+    void router.replace({ path: route.path, query, hash: route.hash }).catch(() => {})
+  }, { immediate: true })
   const selectedProject = computed(() => options.projects.value.find(project => project.id === options.projectFilter.value))
   const collectionTitle = computed(() => selectedProject.value?.title || (options.characterFilter.value === UNASSIGNED_CHARACTER_ID
     ? '未标注角色' : options.characterFilter.value ? options.characterName(options.characterFilter.value) : '作品展墙'))

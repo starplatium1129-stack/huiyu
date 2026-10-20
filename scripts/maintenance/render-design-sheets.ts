@@ -48,7 +48,7 @@ const { object }: typeof import('../lib/content-history-reader') = require('../l
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const crypto: typeof import('crypto') = require('crypto');
-const { compress }: typeof import('./precompress.js') = require('./precompress.js');
+const { compress }: typeof import('../lib/precompressed-artifacts') = require('../lib/precompressed-artifacts');
 
 const HOST = gateway.gatewayUrl();
 const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));

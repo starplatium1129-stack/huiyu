@@ -1,9 +1,9 @@
 import { ref, computed, watch, onBeforeUnmount, type Ref } from 'vue'
-import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
+import { useVoiceInput } from '@/composables/useVoiceInput'
 import { useManualSpeechHold } from '@/composables/useManualSpeechHold'
 import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
-import { createSpeechSession } from '@/utils/speechSession'
+import { useSpeechConversation } from '@/composables/useSpeechConversation'
 import type { CharacterConfig } from '@/config/characters'
 
 interface UseChatSpeechInteractionOptions {
@@ -11,6 +11,7 @@ interface UseChatSpeechInteractionOptions {
   chatReady: Ref<boolean>
   busy: Ref<boolean>
   inputText: Ref<string>
+  onInputChange: () => void
   handleSend: () => void
 }
 
@@ -19,17 +20,21 @@ export function useChatSpeechInteraction({
   chatReady,
   busy,
   inputText,
+  onInputChange,
   handleSend,
 }: UseChatSpeechInteractionOptions) {
   const { config: speechConfig, loadError } = useSpeechInputConfig()
   const speechSettingsOpen = ref(Boolean(loadError.value))
-  const speechSession = createSpeechSession()
-  const speechSessionState = ref(speechSession.state())
-  const stopSpeechSessionWatch = speechSession.onChange(() => {
-    speechSessionState.value = speechSession.state()
+  const { speechSession, speechSessionActive, speechNotice, applySpeechSession, onSpeechText } = useSpeechConversation({
+    speechConfig, currentCharacterName: () => currentCharacter.value.name,
+    inputText, onInputChange, canSend: () => chatReady.value && !busy.value, handleSend,
   })
-  const speechNotice = ref('')
-  const speechInput = useVoiceInput({ config: () => speechConfig.value, onText: onSpeechText })
+  const speechInput = useVoiceInput({
+    config: () => speechConfig.value,
+    onText: (text, source) => {
+      if (!document.hidden && document.hasFocus()) onSpeechText(text, source)
+    },
+  })
   const {
     state: speechState,
     errorMessage: speechError,
@@ -39,10 +44,6 @@ export function useChatSpeechInteraction({
     stop: speechStop,
     release: speechRelease,
   } = speechInput
-
-  function applySpeechSession(): void {
-    speechSession.applyConfig(speechConfig.value, currentCharacter.value.name)
-  }
 
   applySpeechSession()
 
@@ -65,40 +66,6 @@ export function useChatSpeechInteraction({
         return '按住说话'
     }
   })
-
-  const speechSessionActive = computed(() => {
-    void speechSessionState.value
-    return speechSession.isSessionActive()
-  })
-
-  function commitSpeechText(text: string): void {
-    inputText.value = inputText.value.trim() ? `${inputText.value.trimEnd()}\n${text}` : text
-    if (speechConfig.value.autoSend && chatReady.value && !busy.value) handleSend()
-    else speechSession.markReplyIdle()
-  }
-
-  function onSpeechText(text: string, source: VoiceTextSource): void {
-    if (document.hidden || !document.hasFocus()) return
-    if (source === 'manual') { speechNotice.value = '识别文字已填入输入框。'; commitSpeechText(text); return }
-    // 自动监听：未进会话时先做唤醒词匹配；未命中不打扰。
-    if (source === 'auto' && !speechSession.isSessionActive()) {
-      if (speechSession.onWakeText(text)) {
-        speechNotice.value = `已唤醒${currentCharacter.value.name}，可以直接对话了`
-        return
-      }
-      return
-    }
-    const action = speechSession.onSessionText(text)
-    if (action === 'end') {
-      speechSession.endSession()
-      speechNotice.value = '已退出连续对话'
-      return
-    }
-    if (action === 'submit') {
-      speechNotice.value = ''
-      commitSpeechText(text)
-    }
-  }
 
   /** 会话状态/配置/忙闲变化时对齐自动监听（唤醒词连续对话）。 */
   function reconcileAutoListen(): void {
@@ -164,7 +131,6 @@ export function useChatSpeechInteraction({
     window.removeEventListener('focus', onPagePresenceChange)
     window.removeEventListener('blur', onPagePresenceChange)
     document.removeEventListener('visibilitychange', onPagePresenceChange)
-    stopSpeechSessionWatch()
     speechHold.cancel()
     speechRelease()
   })

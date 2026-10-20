@@ -3,23 +3,20 @@ use crate::{
     AppState,
     error::{ApiError, Result},
     host::Session,
+    http_media::{self, Source},
     security::{host_allowed, is_direct_local},
     storage::{Media, OpenedMedia, Storage},
 };
 use axum::{
     Json,
     body::{Body, Bytes},
-    http::{HeaderMap, HeaderValue, Method, StatusCode},
+    http::{HeaderMap, HeaderValue, Method},
     response::{IntoResponse, Response},
 };
 use futures_util::StreamExt;
 use serde_json::{Value, json};
-use std::{io::SeekFrom, net::IpAddr, time::Duration};
-use tokio::{
-    fs::File,
-    io::{AsyncReadExt, AsyncSeekExt},
-};
-use tokio_util::{io::ReaderStream, sync::CancellationToken};
+use std::{net::IpAddr, time::Duration};
+use tokio::io::AsyncReadExt;
 use url::Url;
 
 pub(super) async fn grant(
@@ -95,23 +92,15 @@ pub(super) async fn serve(
     }
     let source = resolve(storage, alias).await?;
     let media = &source.media;
-    let range = match range(header(headers, "range"), media.total_bytes) {
+    let range = match http_media::range(header(headers, "range"), media.total_bytes) {
         Ok(range) => range,
-        Err(_) => {
-            return Ok((
-                StatusCode::RANGE_NOT_SATISFIABLE,
-                [("content-range", format!("bytes */{}", media.total_bytes))],
-            )
-                .into_response());
-        }
+        Err(response) => return Ok(response),
     };
-    let mut response = stream(
-        state,
+    let mut response = http_media::stream(
         method,
-        media,
-        range.start,
-        range.length,
-        Some((source.file, source.closed)),
+        range,
+        Source::Opened(source.file, source.closed),
+        state.shutdown.clone(),
     )
     .await?;
     let output = response.headers_mut();
@@ -120,7 +109,6 @@ pub(super) async fn serve(
         HeaderValue::from_str(&media.mime)
             .map_err(|_| ApiError::new(503, "MEDIA_INVALID", "Invalid media type"))?,
     );
-    output.insert("accept-ranges", HeaderValue::from_static("bytes"));
     output.insert("referrer-policy", HeaderValue::from_static("no-referrer"));
     output.insert(
         "cross-origin-resource-policy",
@@ -131,20 +119,6 @@ pub(super) async fn serve(
             "access-control-allow-origin",
             HeaderValue::from_str(&origin).map_err(|_| denied())?,
         );
-    }
-    if range.partial {
-        output.insert(
-            "content-range",
-            format!(
-                "bytes {}-{}/{}",
-                range.start,
-                range.start + range.length - 1,
-                media.total_bytes
-            )
-            .parse()
-            .unwrap(),
-        );
-        *response.status_mut() = StatusCode::PARTIAL_CONTENT;
     }
     Ok(response)
 }
@@ -258,90 +232,4 @@ async fn resolve(storage: &Storage, alias: &str) -> Result<OpenedMedia> {
     tokio::time::timeout(Duration::from_secs(30), storage.open_media(alias))
         .await
         .map_err(|_| ApiError::new(504, "WORKSPACE_TIMEOUT", "Media verification timed out"))?
-}
-
-pub(crate) async fn stream(
-    state: &AppState,
-    method: &Method,
-    media: &Media,
-    start: u64,
-    length: u64,
-    opened: Option<(File, CancellationToken)>,
-) -> Result<Response> {
-    let body = if method == Method::HEAD {
-        Body::empty()
-    } else {
-        // Workspace callers transfer their verified handle and lifetime together.
-        // Only provider video outputs use None and still open their result path.
-        let (mut file, closed) = match opened {
-            Some(source) => source,
-            None => (File::open(&media.path).await?, state.shutdown.clone()),
-        };
-        file.seek(SeekFrom::Start(start)).await?;
-        // ReaderStream only reads when the HTTP consumer polls it. Dropping the
-        // body on disconnect closes the file; no background producer or queue.
-        Body::from_stream(
-            ReaderStream::with_capacity(file.take(length), 64 * 1024)
-                .take_until(closed.cancelled_owned())
-                .take_until(state.shutdown.clone().cancelled_owned()),
-        )
-    };
-    let mut response = body.into_response();
-    response
-        .headers_mut()
-        .insert("content-length", length.to_string().parse().unwrap());
-    Ok(response)
-}
-
-#[derive(Debug, PartialEq)]
-pub(crate) struct ByteRange {
-    pub start: u64,
-    pub length: u64,
-    pub partial: bool,
-}
-pub(crate) fn range(header: Option<&str>, total: u64) -> std::result::Result<ByteRange, ()> {
-    let Some(header) = header else {
-        return Ok(ByteRange {
-            start: 0,
-            length: total,
-            partial: false,
-        });
-    };
-    let (first, last) = header
-        .strip_prefix("bytes=")
-        .ok_or(())?
-        .split_once('-')
-        .ok_or(())?;
-    if total == 0
-        || (first.is_empty() && last.is_empty())
-        || !first
-            .bytes()
-            .chain(last.bytes())
-            .all(|b| b.is_ascii_digit())
-    {
-        return Err(());
-    }
-    let (start, end) = if first.is_empty() {
-        let suffix: u64 = last.parse().map_err(|_| ())?;
-        if suffix == 0 {
-            return Err(());
-        }
-        (total.saturating_sub(suffix), total - 1)
-    } else {
-        let start = first.parse::<u64>().map_err(|_| ())?;
-        let end = if last.is_empty() {
-            total - 1
-        } else {
-            last.parse::<u64>().map_err(|_| ())?.min(total - 1)
-        };
-        (start, end)
-    };
-    if start > end || start >= total {
-        return Err(());
-    }
-    Ok(ByteRange {
-        start,
-        length: end - start + 1,
-        partial: true,
-    })
 }

@@ -224,51 +224,23 @@ async fn stream(
     let Output::File { path, mime, bytes } = output else {
         return Err(error(404, "RESULT_NOT_FOUND", "视频结果不存在"));
     };
-    let range = crate::workspace_http::media_range(
+    let range = crate::http_media::range(
         headers.get("range").and_then(|v| v.to_str().ok()),
         bytes,
     );
     let range = match range {
         Ok(r) => r,
-        Err(_) => {
-            let mut response = StatusCode::RANGE_NOT_SATISFIABLE.into_response();
-            response
-                .headers_mut()
-                .insert("content-range", format!("bytes */{bytes}").parse().unwrap());
-            return Ok(response);
-        }
+        Err(response) => return Ok(response),
     };
-    let media = crate::storage::Media {
-        path,
-        mime: mime.clone(),
-        total_bytes: bytes,
-        sha256: String::new(),
-    };
-    let mut response =
-        crate::workspace_http::stream_media(state, method, &media, range.start, range.length, None)
-            .await?;
+    let mut response = crate::http_media::stream(
+        method, range, crate::http_media::Source::Path(path), state.shutdown.clone(),
+    ).await?;
     response
         .headers_mut()
         .insert("content-type", mime.parse().unwrap());
     response
         .headers_mut()
-        .insert("accept-ranges", "bytes".parse().unwrap());
-    response
-        .headers_mut()
         .insert("cache-control", "no-store".parse().unwrap());
-    if range.partial {
-        *response.status_mut() = StatusCode::PARTIAL_CONTENT;
-        response.headers_mut().insert(
-            "content-range",
-            format!(
-                "bytes {}-{}/{bytes}",
-                range.start,
-                range.start + range.length - 1
-            )
-            .parse()
-            .unwrap(),
-        );
-    }
     Ok(response)
 }
 macro_rules! results {

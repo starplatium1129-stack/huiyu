@@ -1,4 +1,3 @@
-import { PathLike } from 'node:fs';
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage, errorStack } from './runtime-errors';
 import type { ManifestEntry, ManifestIssue, ResourceManifest } from './resource-manifest-types';
 'use strict';
@@ -35,7 +34,7 @@ import type { ManifestEntry, ManifestIssue, ResourceManifest } from './resource-
 const nodeFs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
 const { createHash }: typeof import('node:crypto') = require('node:crypto');
-const { SCHEMA_VERSION, UsageError, verifyManifest, verifyManifestEntries, resolveRealpathBoundary, checkManifestPath }: typeof import('./resource-manifest') = require('./resource-manifest');
+const { SCHEMA_VERSION, UsageError, verifyManifest, verifyManifestEntries, resolveRealpathBoundary, checkManifestPath, resolveRoot }: typeof import('./resource-manifest') = require('./resource-manifest');
 
 const PACKS_DIR_SEGMENTS = Object.freeze(['scripts', 'archive', 'resource-packs']);
 const PACK_NAME_RE = /^[A-Za-z0-9_-]{1,64}$/;
@@ -54,24 +53,6 @@ function relFromRoot(rootReal: string, abs: string) {
 
 function sameRealPath(a: string, b: string) {
   return process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b;
-}
-
-function resolveRootReal(root: PathLike, io: typeof import("node:fs")) {
-  if (!root || typeof root !== 'string') throw new UsageError('--root 缺失或不是字符串');
-  let rootReal;
-  try {
-    rootReal = io.realpathSync(root);
-  } catch (err) {
-    throw new UsageError(`root 不可解析: ${runtimeErrorMessage(err)}`);
-  }
-  let st;
-  try {
-    st = io.statSync(rootReal);
-  } catch (err) {
-    throw new UsageError(`root 不可访问: ${runtimeErrorMessage(err)}`);
-  }
-  if (!st.isDirectory()) throw new UsageError('root 不是目录');
-  return rootReal;
 }
 
 /** 包名校验：限字母/数字/下划线/短横线（≤64 字符），拒绝路径片段与特殊字符。 */
@@ -93,7 +74,7 @@ function destinationAbsPath(rootReal: string, name: string) {
  */
 function checkDestination({ root, name, io = nodeFs }: Omit<PackOptions, 'manifestPath'>) {
   validatePackName(name);
-  const rootReal = resolveRootReal(root, io);
+  const rootReal = resolveRoot({ root, io }, '--root');
   const destAbs = destinationAbsPath(rootReal, name);
   const errors = [];
   let cur = rootReal;

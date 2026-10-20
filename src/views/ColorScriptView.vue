@@ -105,6 +105,7 @@ import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { BANNED_TAGS } from '@/utils/promptDiagnostics'
 import { scrollBehavior } from '@/utils/motionPreference'
+import { downloadBlob } from '@/utils/downloadBlob'
 const loadNotebook = () => import('@/components/library/ColorLightNotebook.vue')
 
 const GOOD_TAGS = ['soft colors','pastel tones','warm atmosphere','gentle palette','muted tones','harmonious colors','warm soft lighting','backlit glow']
@@ -214,11 +215,7 @@ async function copyPrompt() {
 function exportTxt() {
   if (!selected.value) return
   const body = selected.value.prompt + '\n\n# mood: ' + selected.value.id + '\n# usage: 复制到 Prompt Builder v5 Step 4 色彩氛围'
-  const a = document.createElement('a')
-  a.href = URL.createObjectURL(new Blob([body], { type: 'text/plain' }))
-  a.download = 'color-' + selected.value.id + '.txt'
-  a.click()
-  URL.revokeObjectURL(a.href)
+  downloadBlob(new Blob([body], { type: 'text/plain' }), 'color-' + selected.value.id + '.txt')
 }
 
 // 走全局 AppToast。原先手搓 DOM 并挂 class="cs-toast" —— 而 .cs-toast

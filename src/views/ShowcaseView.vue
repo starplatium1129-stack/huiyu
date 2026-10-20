@@ -130,13 +130,12 @@
 
 <script setup lang="ts">
 import '@/assets/css/viewer.css'
-import { runtimeFetch } from '@/platform/runtimeUrl'
-
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 import { useImageOriginTransition } from '@/composables/useImageOriginTransition'
-import { ref, shallowRef, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
+import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
 import { showcaseDestination } from '@/utils/showcaseDestination'
@@ -156,7 +155,6 @@ import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useListTransition } from '@/composables/useListTransition'
 import { useBrowseSearch } from '@/composables/useBrowseSearch'
 import {
-  parseShowcaseManifest,
   type ShowcaseEntry,
   type ShowcaseEntryType,
   type ShowcaseRating,
@@ -175,15 +173,14 @@ const RATING_OPTS= [{ v:'all', l:'全部分级' }, { v:'All', l:'全年龄' }, {
 const LABELS: Record<string,string> = { nene:'绫地宁宁', natsume:'四季夏目', triad:'宁宁×夏目', All:'全年龄', R15:'R15', R18:'R18' }
 const TYPE_LABELS: Record<string,string> = { scene:'场景样张', artist:'画师风格', popular:'热门角色', lora:'LoRA 样张' }
 
-const entries   = shallowRef<ShowcaseEntry[]>([])
+const assets = useShowcaseAssets(() => '暂时无法读取样张目录，请确认媒体磁盘已连接后重试。')
+const { entries, loading: manifestLoading, error: reloadError } = assets
 const albums = useShowcaseAlbums(entries, () => sceneStore.popularCharacters)
 const albumSelection = ref('all')
 const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
 const albumEntryIds = computed(() => selectedAlbum.value ? new Set(selectedAlbum.value.entryIds) : null)
-const featured  = ref(new Set<string>())
-const unavailable = ref(false)
-/** manifest 未返回前显示加载面板，避免闪现错误的"没有匹配样张"空状态 */
-const manifestLoading = ref(true)
+const featured = computed(() => new Set([...(sceneStore.curation.signatureSceneIds ?? []), ...(sceneStore.curation.curatedSceneIds ?? [])]))
+const unavailable = computed(() => !!reloadError.value && !entries.value.length)
 const { query: searchQuery, settledQuery, restoreQuery } = useBrowseSearch()
 const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const scope       = ref<'all' | 'featured'>('all')
@@ -220,11 +217,6 @@ const viewerMotion = useFluidDialog(dialogEl, viewerSurface)
 const viewerImageFailed = ref(false)
 
 const viewerVersion = ref(0)
-// Stable URLs reuse browser-decoded thumbnails; explicit refresh alone busts cache.
-const imgVersion = ref(0)
-const reloadError = ref('')
-let manifestRevision = 0
-const manifestController = new AbortController()
 let unmounted = false
 let viewActive = true
 
@@ -251,13 +243,11 @@ const searchIndex = computed(() => searching.value ? new Map(entries.value.map(e
 watch(searching, active => { if (!active) void searchIndex.value }, { flush: 'sync' })
 const hasFilters = computed(() => Boolean(selectedAlbum.value || searchQuery.value.trim() || scope.value !== 'all' || typeFilter.value !== 'all' || charFilter.value !== 'all' || ratingFilter.value !== 'all'))
 function thumbSrc(entry: ShowcaseEntry) {
-  const path = entry.thumb ? `/scene-showcase/${entry.thumb}` : `/scene-showcase/thumbs/${encodeURIComponent(entry.id)}.jpg`
-  return path + (imgVersion.value ? `?cv=${imgVersion.value}` : '')
+  return assets.thumbUrl(entry.id)
 }
 function imgSrc(entry: ShowcaseEntry) {
-  const path = entry.image ? `/scene-showcase/${entry.image}` : `/scene-showcase/images/${encodeURIComponent(entry.id)}.jpg`
-  const query = [imgVersion.value ? `cv=${imgVersion.value}` : '', viewerVersion.value ? `v=${viewerVersion.value}` : ''].filter(Boolean).join('&')
-  return path + (query ? `?${query}` : '')
+  const path = assets.imageUrl(entry.id)
+  return path && viewerVersion.value ? `${path}&retry=${viewerVersion.value}` : path
 }
 
 /** 角色筛选选项：收进统一的下拉筛选器，支持全部角色、工作室角色与热门角色。 */
@@ -361,6 +351,7 @@ function openLinkedScene() {
   openViewer(id)
 }
 watch(() => route.query.scene, openLinkedScene)
+watch([entries, manifestLoading], openLinkedScene)
 function clearLinkedScene() {
   const id = linkedSceneId
   linkedSceneId = ''
@@ -418,31 +409,12 @@ function onKey(e: KeyboardEvent) {
 }
 
 async function loadManifest(refreshImages = false) {
-  const revision = ++manifestRevision
-  reloadError.value = ''
-  unavailable.value = false
-  manifestLoading.value = true
   try {
-    // manifest 是样张目录（非 data/），仍单独取；curation 走共享 store
-    const [manifest] = await Promise.all([
-      runtimeFetch('/scene-showcase/manifest.json', { cache: 'no-cache', signal: manifestController.signal }).then(r => { if (!r.ok) throw new Error('showcase ' + r.status); return r.json() }),
+    await Promise.all([
+      refreshImages ? assets.refresh() : assets.reload(),
       sceneStore.loadBlueprintCatalog().catch(() => {})
     ])
-    if (unmounted || revision !== manifestRevision) return
-    manifestLoading.value = false
-    if (refreshImages) imgVersion.value = Date.now()
-    const parsed = parseShowcaseManifest(manifest)
-    const curation = sceneStore.curation
-    entries.value = parsed.entries
-    openLinkedScene()
-    featured.value = new Set([...(curation.signatureSceneIds ?? []), ...(curation.curatedSceneIds ?? [])])
-  } catch (err) {
-    if (manifestController.signal.aborted || revision !== manifestRevision) return
-    console.warn('Showcase unavailable:', err)
-    manifestLoading.value = false
-    unavailable.value = entries.value.length === 0
-    reloadError.value = '暂时无法读取样张目录，请确认媒体磁盘已连接后重试。'
-  }
+  } catch { /* The shared manifest owner exposes read failures and retains valid entries. */ }
 }
 
 onActivated(() => { viewActive = true; document.addEventListener('keydown', onKey); if (entries.value.length) openLinkedScene(); if (loadSentinel.value) sentinelObserver?.observe(loadSentinel.value) })
@@ -456,11 +428,11 @@ onDeactivated(() => {
   currentId.value = ''
   if (dialogEl.value?.open) dialogEl.value.close()
 })
-onMounted(async () => {
+onMounted(() => {
   unmounted = false
   document.addEventListener('keydown', onKey)
-  await loadManifest()
-  if (unmounted) return
+  void sceneStore.loadBlueprintCatalog().catch(() => {})
+  openLinkedScene()
   // 无限滚动：哨兵进入视口（提前 600px 预载）即自动追加一页，直到全部加载完
   if ('IntersectionObserver' in window) {
     sentinelObserver = new IntersectionObserver(
@@ -478,7 +450,6 @@ onUnmounted(() => {
   viewerMounted.value = false
   sentinelObserver?.disconnect()
   sentinelObserver = null
-  manifestController.abort()
   document.removeEventListener('keydown', onKey)
   if (dialogEl.value?.open) dialogEl.value.close()
 })

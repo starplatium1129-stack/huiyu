@@ -5,6 +5,7 @@ import { runtimeTasksEnabled, runtimeTaskError, runtimeMangaRetryKey, markTaskRe
 import { hasRuntimeTasks, assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from './acceptedTaskOutcome'
 import { summarizeTask } from '../utils/runtimeTaskSummary'
+import { downloadBlob } from '../utils/downloadBlob'
 import { rememberWorkspaceMedia, workspaceMediaAuthority, assertWorkspaceMediaAuthority } from '../platform/desktop/workspaceMediaSource'
 export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
 export type { TaskRecord, TaskSummary } from '../../types/tasks'
@@ -278,10 +279,7 @@ export async function downloadTaskMedia(url: string, filename = '绘遇结果', 
   const source = await resolveRuntimeResult(url, signal)
   const blob = await readRuntimeResult(source, signal)
   signal?.throwIfAborted(); assertWorkspaceMediaAuthority(source.authority)
-  const objectUrl = URL.createObjectURL(blob)
-  try {
-    const anchor = document.createElement('a'); anchor.href = objectUrl; anchor.download = filename; anchor.click()
-  } finally { setTimeout(() => URL.revokeObjectURL(objectUrl), 1000) }
+  downloadBlob(blob, filename)
 }
 /** One application subscription; page controllers own only their cancellable reads. */
 export function startRuntimeTaskPolling(): () => void {

@@ -30,8 +30,8 @@
           @click="emit('favorite')">
         </StudioFavoriteButton>
       </StudioTooltip>
-      <StudioTooltip content="以此作品配方回填创作台">
-        <RouterLink class="artwork-tool" :aria-label="`沿用配方：${title}`" :to="`/prompt-builder?remix=${encodeURIComponent(item.id || '')}`">
+      <StudioTooltip v-if="item.engine !== 'manga-screen'" :content="continueTarget.label">
+        <RouterLink class="artwork-tool" :aria-label="`${continueTarget.label}：${title}`" :to="continueTarget.to">
           <ArchiveIcon name="spark" />
         </RouterLink>
       </StudioTooltip>
@@ -108,11 +108,13 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
+import { artworkContinueTarget } from '@/utils/artworkNavigation'
 const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
   thumbUrl: string; imageUrl: string; cors?: 'anonymous'; missing: boolean;
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()
+const continueTarget = computed(() => artworkContinueTarget(props.item, 'remix'))
 const artworkButton = ref<HTMLElement | null>(null)
 let selectShift = false
 const artworkCheckbox = ref<InstanceType<typeof StudioCheckbox> | null>(null)

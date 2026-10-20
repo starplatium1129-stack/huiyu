@@ -1,37 +1,19 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
 import { createBatchDrawPlanStorage } from '../generation/batchDrawPlan'
-import { readPreparedBatch, recoverBatchTask, batchFailure, batchHistoryFromMetadata, type PreparedBatchImage } from './batchGenerationPlan'
+import { readPreparedBatch, recoverBatchTask, batchFailure, batchHistoryFromMetadata } from './batchGenerationPlan'
 import { pendingBatchSaves, pendingBatchImage, persistBatchArtwork, batchSaveAuthority, ownsPendingSave, updateArtworkSource, type BatchArtworkSource } from './batchArtworkSave'
+import { createPromptBatchRecipe } from './promptBatchRecipe'
 import { useTrackedTask } from '../useTaskCenter.ts'
-import { ref, shallowRef, type Ref } from 'vue'
-import { endfieldAnimaBinding } from '../../utils/loraCatalog.ts'
-import { identityDomainOf } from '../../utils/interrogateMerge.ts'
-import { sceneStyleBaseline } from '../../utils/randomVariationContext.ts'
-import { artistStyleProse, artistTagsForEngine } from '../../config/artistStyles.ts'
-import { popularPortraitSrc } from '../../utils/popularPortraitSource.ts'
-import { usePromptBuilderStore, CHAR_PROMPT, type HistoryEntry } from '../../stores/promptBuilderStore.ts'
+import type { Ref } from 'vue'
+import type { usePromptBuilderStore } from '../../stores/promptBuilderStore.ts'
 import { createBatchAnimaTransport } from './batchAnimaJob.ts'
 import { nativeAnimaRequestBlocker } from '../generation/nativeAnimaCapabilities'
-import { buildPopularPromptPlan } from '../../utils/popularPromptBuilder.ts'
-import { inferBlueprintDecisions } from '../../utils/popularBlueprintDecisions.ts'
-import {
-  findCharacter as findPopularCharacter,
-  defaultOutfit, findOutfit,
-  type SceneBlueprint,
-  type PopularCharacter,
-} from '../../utils/popularContent.ts'
-import { COLOR_MOODS, STUDIO_PROMPT_SUBJECTS } from '../../config/promptConstants.ts'
-import { mutualGroupWithCategory, normalizeKey, tokenize } from '../../utils/promptPolicy.ts'
-import { createPromptPlan, renderPromptPlan } from '../../utils/promptCompiler.ts'
-import {
-  ANIMA_CHARACTER_BY_CHARACTER,
-  type useAnimaSession,
-  type AnimaRequest,
-} from '../generation/useAnimaSession.ts'
+import type { SceneBlueprint, PopularCharacter } from '../../utils/popularContent.ts'
+import type { useAnimaSession } from '../generation/useAnimaSession.ts'
 import type { useLegacySdTasks, LegacySdObserveOptions } from '../generation/useLegacySdTasks.ts'
 import type { usePromptAssembly } from './usePromptAssembly.ts'
-import { useBatchDraw, type BatchDrawRunnerInput, type BatchEngine, type BatchTargetItem } from '../generation/useBatchDraw.ts'
+import { useBatchDraw } from '../generation/useBatchDraw.ts'
 import type { SDQueueJob } from '../generation/useSDQueue.ts'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
@@ -60,288 +42,27 @@ export interface PromptBatchRunnersDeps {
 /**
  * 绘图页批量出图 runner 编排（支持「多场景蓝图」与「同词条多角色漫游」）。
  *
- * 调度与进度归 useBatchDraw，这里承担引擎差异、蓝图/角色 → prompt/任务 的组装，
- * 以及历史记录精准归属入册。
+ * 调度与进度归 useBatchDraw，配方快照归 promptBatchRecipe；
+ * 这里持有任务运输、恢复与历史记录入册。
  */
 export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
-  const { sd, runJob } = deps
-  let pb = deps.pb
-  const negativePrompt = shallowRef(deps.negativePrompt.value)
-  const modelProfile = shallowRef(deps.modelProfile.value)
-  const animaState = shallowRef(deps.animaState.value)
+  const { pb, sd, runJob } = deps
   const animaTransport = createBatchAnimaTransport()
-  let characters: PopularCharacter[] | null = null
-  let blueprints: SceneBlueprint[] | null = null
-  let runEngine: Exclude<BatchEngine, 'sd'> = 'anima'
-  type StyleSnapshot = Pick<HistoryEntry, 'emotion' | 'shot' | 'lighting' | 'composition' | 'colorMood'>
-  const plans = new Map<string, { negative?: string; outfitId?: string; size?: string; style: StyleSnapshot }>()
+  let recipe: ReturnType<typeof createPromptBatchRecipe> | undefined
   const clone = <T,>(value: T): T => value == null ? value : JSON.parse(JSON.stringify(value)) as T
   function captureBatch() {
-    const live = deps.pb
-    pb = { ...live, subject: clone(live.subject), selections: clone(live.selections), sdParams: clone(live.sdParams),
-      manualTags: new Set(live.manualTags), outfitOverride: clone(live.outfitOverride), referenceInput: clone(live.referenceInput) } as PromptBuilderStore
-    characters = clone(deps.popularCharacters?.() || live.popularCharacters)
-    blueprints = clone(deps.sceneBlueprints())
-    negativePrompt.value = deps.negativePrompt.value
-    modelProfile.value = clone(deps.modelProfile.value)
-    animaState.value = clone(deps.animaState.value)
-    runEngine = batchEngine.value; plans.clear()
-  }
-  const blueprintList = () => blueprints || deps.sceneBlueprints()
-
-  const batchEngine = ref<Exclude<BatchEngine, 'sd'>>('anima')
-
-  function getPopularList(): PopularCharacter[] {
-    return characters || deps.popularCharacters?.() || pb.popularCharacters || []
-  }
-
-  /**
-   * 从当前完整提示词中剥离原角色的特征、专属服装与 LoRA 标签，
-   * 提炼出干净的「环境、构图、光影、画面指令」通用基底。
-   */
-  function extractUniversalPrompt(rawPrompt: string): string {
-    let text = String(rawPrompt || '').trim()
-    if (!text) return ''
-
-    // 1. 去除原 studio 角色的锚点
-    Object.values(CHAR_PROMPT).forEach(anchor => {
-      if (anchor) text = text.replace(anchor, '')
+    recipe = createPromptBatchRecipe({
+      source: {
+        subject: pb.subject, char: pb.char, selections: pb.selections, manualTags: [...pb.manualTags],
+        outfitOverride: pb.outfitOverride, activeScene: pb.activeScene, sceneBlueprints: pb.sceneBlueprints,
+        emotionPrompt: pb.emotionPrompt, tags: pb.tags, artistStyleIds: pb.artistStyleIds,
+        colorMood: pb.colorMood, visualDescription: pb.visualDescription, projectId: pb.projectId,
+      },
+      characters: deps.popularCharacters?.() || pb.popularCharacters,
+      blueprints: deps.sceneBlueprints(), state: deps.animaState.value,
+      profile: deps.modelProfile.value, negativePrompt: deps.negativePrompt.value,
     })
-
-    // 2. 去除热门角色的 identityProse 与 identityTokens
-    const popularChars = pb.subject.kind === 'popular' ? getPopularList().filter(item => item.id === (pb.subject.kind === 'popular' ? pb.subject.characterId : '')) : []
-    popularChars.forEach((pop: PopularCharacter) => {
-      if (pop.identityProse) text = text.replace(pop.identityProse, '')
-      if (pop.outfits) {
-        pop.outfits.forEach(o => {
-          if (o.prose) text = text.replace(o.prose, '')
-          if (o.tokens) {
-            o.tokens.forEach(tok => {
-              text = text.split(',').filter(part => normalizeKey(part) !== normalizeKey(tok)).join(',')
-            })
-          }
-        })
-      }
-      if (pop.identityTokens) {
-        [...pop.identityTokens, ...pop.exactTokens, ...(pop.copyrightTokens || []), ...(pop.characterTokens || []), ...pop.aliases].forEach(tok => {
-              text = text.split(',').filter(part => normalizeKey(part.replace(/\\([()])/g, '$1')) !== normalizeKey(tok)).join(',')
-        })
-      }
-    })
-
-    // 3. 去除通用角色前缀、LoRA 标签与衣物类描述
-    text = text.replace(/<lora:[^>]+>/gi, '')
-    text = text.replace(/\b(1girl|2girls|solo)\b/gi, '')
-    text = text.replace(/\b(?:She wears|wearing|dressed in|outfit)\b[^,.;]*/gi, '')
-
-    const newline = animaState.value.family === 'anima' ? text.indexOf('\n') : -1
-    const caption = newline < 0 ? '' : text.slice(newline + 1)
-    if (newline >= 0) text = text.slice(0, newline)
-
-    // 4. 互斥服装族与通用衣物 Tag 清洗（彻底剥离旧服装，避免串入新角色）
-    const studioKeys = new Set([
-      ...Object.values(CHAR_PROMPT).flatMap(tokenize),
-      ...Object.values(STUDIO_PROMPT_SUBJECTS).flatMap(subject => subject.copyrightTokens),
-    ].map(normalizeKey))
-    const parts = text.split(',').map(p => p.trim()).filter(part => part && !studioKeys.has(normalizeKey(part)))
-    const cleanParts = parts.filter(part => {
-      if (identityDomainOf(part) || mutualGroupWithCategory(part)?.category === 'outfit') return false
-      const lower = part.toLowerCase()
-      // 匹配明确的衣物/鞋袜/制服类 tag
-      if (/^(?:[a-z0-9]+_)*(?:clothes|clothing|outfit|costume|coat|overcoat|trench_coat|jacket|dress|sundress|skirt|miniskirt|shirt|blouse|pants|trousers|jeans|shorts|hotpants|crop_top|tank_top|bodysuit|leotard|corset|bra|panties|underwear|boots|shoes|heels|sneakers|sandals|socks|tights|pantyhose|stockings|leggings|thighhighs|thigh_highs|over_knee_socks|knee_socks|uniform|serafuku|suit|robe|cloak|cape|capelet|hoodie|sweater|cardigan|vest|apron|kimono|yukata|qipao|cheongsam|swimsuit|swimwear|bikini|pajamas|sleepwear|nightgown|lingerie|gloves|scarf|necktie|belt|hat|helmet|armor|footwear|headdress)$/.test(lower)) {
-        return false
-      }
-      return true
-    })
-
-    return animaState.value.family === 'anima' ? `${cleanParts.join(', ')}\n${caption}` : cleanParts.join(', ')
-  }
-
-  function resolveTargetCharacter(target: BatchTargetItem) {
-    const charId = target.kind === 'character' ? target.characterId || target.id : blueprintList().find(item => item.id === target.id)?.characterId
-    if (!charId) return null
-    const popularChars = getPopularList()
-    const popChar = findPopularCharacter(popularChars, charId)
-    if (popChar) return { kind: 'popular' as const, char: popChar }
-    if (charId === 'nene' || charId === 'natsume') {
-      return { kind: 'studio' as const, charKey: charId as 'nene' | 'natsume' }
-    }
-    return null
-  }
-
-  /**
-   * 从当前手动词条/提示词中检测是否指定了互斥服装（如泳装、女仆等），
-   * 若有则返回该服装的 tokens，供所有角色全员换装顶替。
-   */
-  function detectOutfitOverrideFromContext(): string[] | null {
-    if (pb.outfitOverride?.tokens?.length) {
-      return [...pb.outfitOverride.tokens]
-    }
-    const tags = [...pb.manualTags]
-    const outfitTokens: string[] = []
-    for (const tag of tags) {
-      const hit = mutualGroupWithCategory(tag)
-      if (hit && hit.category === 'outfit') {
-        outfitTokens.push(tag)
-      }
-    }
-    return outfitTokens.length ? outfitTokens : null
-  }
-
-  /** 组装最终出图 prompt：根据目标是场景还是多角色自适应。 */
-  function buildTargetPrompt(input: BatchDrawRunnerInput): string {
-    const target = input.scene
-    const rawText = String(target.prose || '')
-    // Captured Anima prompts retain even an empty tag/caption line as the section boundary.
-    const baseText = target.kind === 'character' && animaState.value.family === 'anima' ? rawText : rawText.trim()
-
-    const charInfo = resolveTargetCharacter(target)
-    if (charInfo?.kind === 'popular') {
-      const pop = charInfo.char
-      const blueprint = target.kind === 'scene' ? blueprintList().find(item => item.id === target.id) || null : null
-      const outfit = (blueprint?.outfitId ? findOutfit(pop, blueprint.outfitId) : null) || defaultOutfit(pop)
-      if (!outfit) throw new Error('目标角色没有可用服装')
-      const source = pb.subject.kind === 'popular' ? findPopularCharacter(getPopularList(), pb.subject.characterId) : null
-      const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.exactTokens || []), ...(source?.copyrightTokens || []), ...(source?.characterTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(','), ...(STUDIO_PROMPT_SUBJECTS[pb.char]?.copyrightTokens || [])].map(normalizeKey))
-      const engine = animaState.value.family === 'krea2' ? 'krea2' : 'anima'
-      const decisions = blueprint ? inferBlueprintDecisions(blueprint) : null
-      const currentSubject = pb.subject
-      const sourceBlueprint = currentSubject.kind === 'popular' && currentSubject.blueprintId
-        ? pb.sceneBlueprints.find(item => item.id === currentSubject.blueprintId) : null
-      const inherited = !blueprint ? null : sourceBlueprint ? inferBlueprintDecisions(sourceBlueprint)
-        : currentSubject.kind === 'studio' && pb.activeScene ? sceneStyleBaseline(pb.activeScene) : null
-      const shot = pb.selections.shot === inherited?.shot ? null : pb.selections.shot
-      const lighting = pb.selections.lighting === inherited?.lighting ? null : pb.selections.lighting
-      const composition = pb.selections.composition === inherited?.composition ? null : pb.selections.composition
-      const colorMood = pb.colorMood === inherited?.colorMood ? null : pb.colorMood
-      const mood = COLOR_MOODS.find(option => option.id === (colorMood ?? decisions?.colorMood))
-      const inheritedNewline = target.kind === 'character' && engine === 'anima' ? baseText.indexOf('\n') : -1
-      const inheritedTags = inheritedNewline < 0 ? [] : tokenize(baseText.slice(0, inheritedNewline))
-      const planResult = buildPopularPromptPlan({
-        character: pop, outfit, blueprint, engine, profile: modelProfile.value,
-        manual: [...pb.manualTags, ...inheritedTags].filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag))),
-        emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
-        shot: shot ?? decisions?.shot,
-        lighting: lighting ?? decisions?.lighting,
-        composition: composition ?? decisions?.composition,
-        palette: mood ? tokenize(mood.prompt) : [],
-        visualDescription: target.kind === 'character'
-          ? (inheritedNewline < 0 ? baseText : baseText.slice(inheritedNewline + 1).replace(/\s+/g, ' ')) : pb.visualDescription,
-        outfitOverride: detectOutfitOverrideFromContext(),
-        matureTokens: new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
-        artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
-      })
-      plans.set(target.id, { negative: planResult.negative, outfitId: outfit.id, size: blueprint?.recommendedSize,
-        style: { emotion: pb.emotionPrompt ? [...pb.selections.emotion] : [], shot: shot ?? decisions?.shot ?? null,
-          lighting: lighting ?? decisions?.lighting ?? null, composition: composition ?? decisions?.composition ?? null, colorMood: mood?.id ?? null } })
-      return planResult.prompt
-    }
-    if (charInfo?.kind === 'studio') {
-      // 角色漫游继承已捕获的完整词条；独立蓝图只使用自己的描述。
-      plans.set(target.id, { style: target.kind === 'character'
-        ? { ...pb.selections, emotion: [...pb.selections.emotion], colorMood: pb.colorMood }
-        : { emotion: [], shot: null, lighting: null, composition: null, colorMood: null } })
-      const profile = modelProfile.value
-      const controls = detectOutfitOverrideFromContext() || []
-      if (animaState.value.family !== 'anima') return [CHAR_PROMPT[charInfo.charKey], controls.join(', '), baseText].filter(Boolean).join(', ')
-      const newline = baseText.indexOf('\n')
-      const plan = createPromptPlan({
-        profile, identity: CHAR_PROMPT[charInfo.charKey], ...STUDIO_PROMPT_SUBJECTS[charInfo.charKey], controls,
-        artists: artistTagsForEngine(pb.artistStyleIds, 'anima'),
-        scenePrompt: target.kind === 'scene' ? '' : newline < 0 ? baseText : baseText.slice(0, newline),
-        sceneProse: target.kind === 'scene' ? baseText : newline < 0 ? '' : baseText.slice(newline + 1),
-        exactTokens: profile?.exact_tokens,
-      })
-      return renderPromptPlan(plan, 'anima', profile).prompt
-    }
-    if (target.kind === 'character') throw new Error('目标角色已不可用')
-    throw new Error('场景蓝图缺少有效的角色绑定')
-  }
-
-  function batchSceneProse(blueprint: SceneBlueprint | undefined): string {
-    const prose = String(blueprint?.promptProse || '').trim()
-    if (prose) return prose
-    return [blueprint?.description, blueprint?.action, blueprint?.lighting].filter(Boolean).join('，')
-  }
-
-
-
-  function prepareBatchAnima(input: BatchDrawRunnerInput): PreparedBatchImage {
-    const prompt = buildTargetPrompt(input)
-    if (!prompt) throw new Error('出图描述或角色配置为空')
-    const target = input.scene
-    const charInfo = resolveTargetCharacter(target)
-    const isTargetPopular = charInfo?.kind === 'popular'
-
-    const selectedModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
-    const profileId = modelProfile.value?.id || selectedModel?.profileId || ''
-    const endfield = endfieldAnimaBinding(isTargetPopular ? charInfo.char.id : null,
-      animaState.value.family, animaState.value.modelId)
-    if (!endfield && endfieldAnimaBinding(isTargetPopular ? charInfo.char.id : null, animaState.value.family)) {
-      throw new Error('当前底模不兼容终末地角色 LoRA')
-    }
-
-    // Anima 角色绑定：如果是 studio 角色（nene/natsume）走映射，若是热门角色走 no-lora 或 null
-    const animaCharKey = charInfo?.kind === 'studio'
-      ? charInfo.charKey
-      : (charInfo?.kind === 'popular' ? null : pb.char)
-
-    const dimensions = /^(\d+)\s*[x×]\s*(\d+)$/.exec(plans.get(target.id)?.size || '')
-    const request: AnimaRequest = {
-      prompt,
-      negative: plans.get(target.id)?.negative ?? (animaState.value.family === 'krea2' ? '' : negativePrompt.value),
-      profileId,
-      modelId: animaState.value.modelId,
-      loraId: (isTargetPopular || (charInfo?.kind === 'studio' && charInfo.charKey !== pb.char))
-        ? endfield?.loraId ?? null
-        : animaState.value.loraId,
-      loraStrength: endfield?.loraStrength ?? animaState.value.loraStrength,
-      width: dimensions ? Number(dimensions[1]) : animaState.value.width,
-      height: dimensions ? Number(dimensions[2]) : animaState.value.height,
-      steps: animaState.value.steps,
-      cfg: animaState.value.cfg,
-      teaCache: animaState.value.provider === 'native' ? animaState.value.teaCache : animaState.value.teaCache !== false,
-      teaCacheThresh: animaState.value.teaCacheThresh,
-      ...(input.seed >= 0 ? { seed: input.seed } : {}),
-      character: (animaState.value.family === 'krea2' || !animaCharKey || animaCharKey === 'triad')
-        ? endfield?.character ?? null
-        : ANIMA_CHARACTER_BY_CHARACTER[animaCharKey as 'nene' | 'natsume'] || null,
-      hiresFix: Boolean(animaState.value.hiresFix),
-      hiresScale: animaState.value.hiresScale,
-      hiresDenoise: animaState.value.hiresDenoise,
-      hiresUpscaler: animaState.value.hiresUpscaler,
-    }
-    const history: PreparedBatchImage['history'] = {
-        ...plans.get(target.id)!.style,
-        seed: request.seed, negative: request.negative, prompt,
-        size: `${request.width}x${request.height}`, engine: animaState.value.family === 'krea2' ? 'krea2' as const : 'anima' as const,
-        model: request.modelId, profile: request.profileId, loraId: request.loraId, loraStrength: request.loraStrength,
-        lora: request.loraId, noLora: !request.loraId, styleLoraId: request.styleLoraId ?? null,
-        cfg: request.cfg, steps: request.steps, sampler: animaState.value.sampler, scheduler: animaState.value.scheduler,
-        visualDescription: pb.visualDescription, manual_tags: [...pb.manualTags], artistStyleIds: [...pb.artistStyleIds], project: pb.projectId,
-        // 精准覆盖角色元数据
-        ...(isTargetPopular ? {
-          subject: 'popular' as const,
-          characterId: charInfo.char.id,
-          outfitId: plans.get(target.id)?.outfitId || defaultOutfit(charInfo.char)?.id,
-          blueprintId: target.kind === 'scene' ? target.id : null,
-        } : charInfo?.kind === 'studio' ? {
-          character: charInfo.charKey,
-          subject: 'studio' as const,
-          characterId: undefined,
-        } : {}),
-        story: target.prose || '',
-        scene: target.kind === 'scene' ? target.id : null,
-        sceneTitle: target.title || undefined,
-        hiresFix: Boolean(animaState.value.hiresFix),
-        hiresScale: animaState.value.hiresScale,
-        hiresDenoise: animaState.value.hiresDenoise,
-        hiresUpscaler: request.hiresUpscaler,
-    }
-    return { engine: animaState.value.family === 'krea2' ? 'krea2' : 'anima', request, history,
-      adult: blueprintList().find(item => item.id === target.id)?.adult === true,
-      context: { history, char: history.character, characterId: history.characterId, sceneId: history.scene,
-        outfitId: history.outfitId, blueprintId: history.blueprintId, story: history.story } }
+    return recipe
   }
 
   const pendingSaves = pendingBatchSaves
@@ -360,7 +81,10 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       plan?.jobs.forEach(job => { if (pendingSaves.has(job.requestKey)) { job.pendingImage = true; job.status = 'unknown' } })
       return plan
     } },
-    prepare: input => clone(prepareBatchAnima(input)) as unknown as Record<string, unknown>,
+    prepare: input => {
+      if (!recipe) throw new Error('批次参数快照尚未准备')
+      return clone(recipe.prepare(input)) as unknown as Record<string, unknown>
+    },
     onFlash: (message) => pb.flash(message),
     run: async (input) => {
       try { checkPlanOwner() }
@@ -415,7 +139,6 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
       }
     },
   })
-  if (batchDraw.restored.value && batchDraw.engine.value !== 'sd') batchEngine.value = batchDraw.engine.value
 
   const disposeBatch = batchDraw.dispose
   batchDraw.dispose = () => { animaTransport.dispose(); disposeBatch() }
@@ -426,75 +149,32 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
     if (!batchDraw.jobs.value.length) { keys.forEach(key => pendingSaves.delete(key)); updateArtworkSource() }
   }
 
-  function selectedSeed() {
-    const seed = animaState.value.seed
-    return typeof seed === 'number' && Number.isFinite(seed) && seed >= 0 ? seed : Math.floor(Math.random() * 900000000)
-  }
-
   /** 按场景蓝图启动批量出图 */
   async function onBatchStart(payload: { sceneIds: string[]; count: number }) {
     if (batchDraw.running.value || batchDraw.resetting.value) return
     if (batchDraw.progress.value.unresolved) { pb.flash('请先核对本批已接收任务，再开启新计划。'); return }
-    captureBatch()
-    const scenes: BatchTargetItem[] = payload.sceneIds.map(id => {
-      const blueprint = blueprintList().find(item => item.id === id)
-      return {
-        id,
-        title: blueprint?.title || id,
-        prose: batchSceneProse(blueprint),
-        subtitle: blueprint?.location || blueprint?.category,
-        kind: 'scene' as const,
-      }
-    }).filter(item => item.prose)
+    const captured = captureBatch()
+    const scenes = captured.sceneTargets(payload.sceneIds)
     if (!scenes.length) { pb.flash('所选场景没有可用的描述'); return }
-    const baseSeed = selectedSeed()
+    const baseSeed = captured.selectedSeed()
     planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
-    await batchDraw.start(scenes, payload.count, baseSeed, '个场景', { engine: runEngine, runtimeOwned: hasRuntimeTasks() })
+    // The persisted transport lane is Anima; each prepared recipe retains its Anima/Krea family.
+    await batchDraw.start(scenes, payload.count, baseSeed, '个场景', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
   }
 
   /** 按多角色启动批量漫游出图（相同词条，不同角色） */
   async function onBatchStartCharacters(payload: { characterIds: string[]; count: number; basePrompt?: string }) {
     if (batchDraw.running.value || batchDraw.resetting.value) return
     if (batchDraw.progress.value.unresolved) { pb.flash('请先核对本批已接收任务，再开启新计划。'); return }
-    captureBatch()
-    // 优先读取当前绘图台完整编译的实时提示词，若无再回退故事/描述
+    const captured = captureBatch()
+    // Read the compiled prompt before the first asynchronous step.
     const liveRaw = deps.currentLivePrompt?.() || ''
     const fallbackRaw = payload.basePrompt || deps.currentBasePrompt?.() || pb.story || pb.visualDescription || ''
-    const basePrompt = extractUniversalPrompt(liveRaw || fallbackRaw)
-    const popularChars = getPopularList()
-
-    const targets: BatchTargetItem[] = payload.characterIds.map(id => {
-      const pop = findPopularCharacter(popularChars, id)
-      if (pop) {
-        return {
-          id: pop.id,
-          characterId: pop.id,
-          title: pop.displayName,
-          subtitle: pop.franchise,
-          avatarUrl: popularPortraitSrc(pop.id),
-          prose: basePrompt,
-          kind: 'character',
-        }
-      }
-      if (id === 'nene' || id === 'natsume') {
-        const name = id === 'nene' ? '绫地宁宁' : '四季夏目'
-        return {
-          id,
-          characterId: id,
-          title: name,
-          subtitle: '星光咖啡馆与死神之蝶',
-          avatarUrl: popularPortraitSrc(id),
-          prose: basePrompt,
-          kind: 'character',
-        }
-      }
-      return null
-    }).filter(Boolean) as BatchTargetItem[]
-
+    const targets = captured.characterTargets(payload.characterIds, liveRaw || fallbackRaw)
     if (!targets.length) { pb.flash('所选角色无效'); return }
-    const baseSeed = selectedSeed()
+    const baseSeed = captured.selectedSeed()
     planOwner = { repository: artworkRepository, authority: batchSaveAuthority(), owner: tempResultOwner() }
-    await batchDraw.start(targets, payload.count, baseSeed, '位角色', { engine: runEngine, runtimeOwned: hasRuntimeTasks() })
+    await batchDraw.start(targets, payload.count, baseSeed, '位角色', { engine: 'anima', runtimeOwned: hasRuntimeTasks() })
   }
 
   /** 只重跑失败/已取消的张：自适应从场景蓝图或角色表恢复 */

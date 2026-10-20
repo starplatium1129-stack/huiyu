@@ -53,6 +53,6 @@ function buildShowcaseAlbums(entries: readonly ShowcaseEntry[], characters: read
   return [...overview, ...themes, ...franchises]
 }
 
-export function useShowcaseAlbums(entries: Readonly<Ref<ShowcaseEntry[]>>, characters: () => readonly AlbumCharacter[] = () => []) {
+export function useShowcaseAlbums(entries: Readonly<Ref<readonly ShowcaseEntry[]>>, characters: () => readonly AlbumCharacter[] = () => []) {
   return computed(() => buildShowcaseAlbums(entries.value, characters()))
 }

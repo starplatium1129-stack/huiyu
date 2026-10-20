@@ -6,6 +6,7 @@ import type { ArtworkSaveSnapshot } from '@/application/artwork/artworkSaveInput
 import type { usePromptHistoryStore } from '@/stores/promptHistoryStore'
 import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { taskResultHistory } from '@/application/artwork/taskResultHistory'
+import { measureImageBlob } from '@/utils/measureImageBlob'
 
 function artworkOwner(repository: ArtworkRepository, expectedAuthority?: string) {
   const authority = () => {
@@ -45,7 +46,7 @@ export async function persistPromptArtwork(snapshot: ArtworkSaveSnapshot, histor
       return saved
     }),
     putImage: blob => { check(); return repository.putImage(blob) }, deleteImage: id => { check(); return repository.deleteImage(id) },
-    cacheThumbnail: async (id, blob) => { check(); return repository.cacheThumbnail(id, blob) }, measureBlob: historyStore.measureBlob,
+    cacheThumbnail: async (id, blob) => { check(); return repository.cacheThumbnail(id, blob) }, measureBlob: measureImageBlob,
     now: () => Date.now(), nextId: historyStore.historyIdSeq,
     readArtwork: id => { check(); return repository.readArtwork(id) },
     normalizeArtistStyleIds, appendArtwork: entry => { check(); return repository.appendArtwork(entry) },

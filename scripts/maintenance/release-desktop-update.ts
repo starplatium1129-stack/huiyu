@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { errorMessage as runtimeErrorMessage, errorOutput as runtimeErrorOutput } from '../lib/runtime-errors';
 import { timeDesktopBuild } from '../lib/desktop-build-timing';
+import { hashInstallerFile, verifyUpdaterSignature } from '../lib/installer-integrity';
 'use strict';
 
 /**
@@ -21,7 +22,6 @@ import { timeDesktopBuild } from '../lib/desktop-build-timing';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const { execFileSync }: typeof import('child_process') = require('child_process');
-const { hashInstallerFile }: typeof import('./build-modern-installer') = require('./build-modern-installer');
 const { resolveNpmInvocation }: typeof import('./desktop-stage-resources') = require('./desktop-stage-resources');
 
 // 盘符大写归一（2026-08-31 破案）：bash 会话下 __dirname 可能带小写盘符 e:\，
@@ -229,7 +229,7 @@ async function main() {
       if (binaryVersion !== version) fail(`已构建程序版本 ${binaryVersion} 与发行版本 ${version} 不一致，请完整构建`);
       execFileSync(process.execPath, [path.join(ROOT, 'scripts/maintenance/build-game-installer.js')], { cwd: ROOT, stdio: 'inherit' });
     }
-    const buildEnv = (require('./desktop-build-environment') as typeof import('./desktop-build-environment')).desktopBuildEnvironment();
+    const buildEnv = (require('../lib/desktop-build-environment') as typeof import('../lib/desktop-build-environment')).desktopBuildEnvironment();
     if (MANUAL) {
       delete buildEnv.TAURI_SIGNING_PRIVATE_KEY; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PATH; delete buildEnv.TAURI_SIGNING_PRIVATE_KEY_PASSWORD;
     } else {
@@ -289,7 +289,7 @@ async function main() {
         cwd:ROOT, stdio:'inherit', windowsHide:true, env:signerEnv,
       });
       const signature = fs.readFileSync(`${executable}.sig`, 'utf8').trim();
-      modern.verifyUpdaterSignature(executable, signature, updater.pubkey);
+      verifyUpdaterSignature(executable, signature, updater.pubkey);
       files.push(`${executable}.sig`);
       if (variant.kind === 'upgrade') { upgradeSignature = signature; upgradeName = exeName; }
     }

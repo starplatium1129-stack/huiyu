@@ -1,4 +1,3 @@
-import { PathLike } from 'node:fs';
 import { errorCode as runtimeErrorCode, errorMessage as runtimeErrorMessage } from './runtime-errors';
 import type { ManifestEntry, ManifestIssue, ResourceManifest, DeltaMetadata, DeltaTotals, ManifestIdentity } from './resource-manifest-types';
 'use strict';
@@ -39,7 +38,7 @@ import type { ManifestEntry, ManifestIssue, ResourceManifest, DeltaMetadata, Del
 
 const nodeFs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
-const { SCHEMA_VERSION, UsageError, compareManifests, resolveRealpathBoundary, verifyManifestEntries }: typeof import('./resource-manifest') = require('./resource-manifest');
+const { SCHEMA_VERSION, UsageError, compareManifests, resolveRealpathBoundary, verifyManifestEntries, resolveRoot }: typeof import('./resource-manifest') = require('./resource-manifest');
 const { manifestContentIdentity }: typeof import('./resource-pack-delta') = require('./resource-pack-delta');
 
 const DELTA_KIND = 'resource-pack-delta';
@@ -304,25 +303,6 @@ function verifyDeltaPackContent({ baseManifest, packManifest, delta: inputDelta 
   return result;
 }
 
-/** root 解析（与 resource-manifest 同语义：realpath → stat → 必须是目录）。 */
-function resolveRootReal(root: PathLike, io: typeof import("node:fs")) {
-  if (!root || typeof root !== 'string') throw new UsageError('--root 缺失或不是字符串');
-  let rootReal;
-  try {
-    rootReal = io.realpathSync(root);
-  } catch (err) {
-    throw new UsageError(`root 不可解析: ${runtimeErrorMessage(err)}`);
-  }
-  let st;
-  try {
-    st = io.statSync(rootReal);
-  } catch (err) {
-    throw new UsageError(`root 不可访问: ${runtimeErrorMessage(err)}`);
-  }
-  if (!st.isDirectory()) throw new UsageError('root 不是目录');
-  return rootReal;
-}
-
 function isInsideRoot(rootReal: string, abs: string) {
   const relNative = path.relative(rootReal, abs);
   return relNative !== '' && relNative !== '..' && !relNative.startsWith('..' + path.sep) && !path.isAbsolute(relNative);
@@ -383,7 +363,7 @@ function resolvePackDir({ rootReal, packPath, io }: { rootReal: string; packPath
  * 内容问题汇入结果 errors（退出 1）。全程零写入。
  */
 function verifyDeltaPack({ root, baseManifestPath, packPath, io = nodeFs }: { root: string; baseManifestPath: string; packPath: string; io?: typeof nodeFs }) {
-  const rootReal = resolveRootReal(root, io);
+  const rootReal = resolveRoot({ root, io }, '--root');
   const baseAbs = resolveInsideRootPath(rootReal, baseManifestPath, '--base-manifest');
   const { packAbs, packRel } = resolvePackDir({ rootReal, packPath, io });
 

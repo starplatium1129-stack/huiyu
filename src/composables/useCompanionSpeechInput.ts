@@ -1,15 +1,16 @@
 import { computed, onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
-import { useVoiceInput, type VoiceTextSource } from '@/composables/useVoiceInput'
+import { useVoiceInput } from '@/composables/useVoiceInput'
 import { useManualSpeechHold } from '@/composables/useManualSpeechHold'
 import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig } from '@/utils/speechInputConfig'
 import { useSpeechInputConfig } from '@/composables/useSpeechInputConfig'
-import { createSpeechSession } from '@/utils/speechSession'
+import { useSpeechConversation } from '@/composables/useSpeechConversation'
 
 export interface CompanionSpeechInputDeps {
   busy: Ref<boolean>
   chatReady: Ref<boolean>
   inputText: Ref<string>
+  onInputChange: () => void
   /** 当前角色（切角色需重套语音会话配置）。 */
   currentCharacter: Ref<unknown>
   currentCharacterName: () => string
@@ -37,11 +38,11 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
 
   const { config: speechConfig, loadError } = useSpeechInputConfig()
   const speechSettingsOpen = ref(Boolean(loadError.value))
-  const speechNotice = ref('')
   const documentHidden = ref(typeof document !== 'undefined' && document.hidden)
-  const speechSession = createSpeechSession()
-  const speechSessionState = ref(speechSession.state())
-  const stopSpeechSessionWatch = speechSession.onChange(() => { speechSessionState.value = speechSession.state() })
+  const { speechSession, speechSessionActive, speechNotice, applySpeechSession, onSpeechText } = useSpeechConversation({
+    speechConfig, currentCharacterName: deps.currentCharacterName, inputText, onInputChange: deps.onInputChange,
+    canSend: () => chatReady.value && !busy.value, handleSend: deps.handleSend,
+  })
 
   const speechInput = useVoiceInput({ config: () => speechConfig.value, onText: onSpeechText })
   const {
@@ -57,10 +58,6 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
 
   const speechReady = computed(() => isSpeechInputReady(speechConfig.value) && speechSupported)
   const speechBusy = computed(() => ['acquiring', 'capturing', 'recognizing'].includes(speechState.value))
-  const speechSessionActive = computed(() => {
-    void speechSessionState.value
-    return speechSession.isSessionActive()
-  })
   const pageVisible = computed(() => !documentHidden.value && desktopWindowVisible.value)
   const speechButtonDisabled = computed(() => !speechReady.value || busy.value || !pageVisible.value || speechSettingsOpen.value
     || speechState.value === 'recognizing')
@@ -78,34 +75,6 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
     if (speechState.value === 'error') return speechError.value
     return speechNotice.value
   })
-
-  function applySpeechSession() {
-    speechSession.applyConfig(speechConfig.value, deps.currentCharacterName())
-  }
-
-  function commitSpeechText(text: string) {
-    inputText.value = inputText.value.trim() ? `${inputText.value.trimEnd()}\n${text}` : text
-    if (speechConfig.value.autoSend && chatReady.value && !busy.value) void deps.handleSend()
-    else speechSession.markReplyIdle()
-  }
-
-  function onSpeechText(text: string, source: VoiceTextSource) {
-    if (source === 'manual') { speechNotice.value = '识别文字已填入输入框。'; commitSpeechText(text); return }
-    if (source === 'auto' && !speechSession.isSessionActive()) {
-      if (speechSession.onWakeText(text)) speechNotice.value = `已唤醒${deps.currentCharacterName()}，可以直接对话了`
-      return
-    }
-    const action = speechSession.onSessionText(text)
-    if (action === 'end') {
-      speechSession.endSession()
-      speechNotice.value = '已退出连续对话'
-      return
-    }
-    if (action === 'submit') {
-      speechNotice.value = ''
-      commitSpeechText(text)
-    }
-  }
 
   function reconcileAutoListen() {
     // 真双窗口：麦克风采集随聊天走聊天窗，角色窗不再 auto-listen
@@ -189,7 +158,6 @@ export function useCompanionSpeechInput(deps: CompanionSpeechInputDeps) {
   })
 
   onUnmounted(() => {
-    stopSpeechSessionWatch()
     cancelSpeechActivity()
     speechRelease()
     speechSession.endSession()

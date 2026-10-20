@@ -5,6 +5,7 @@ import type {
   VideoJob,
   VideoModelStatus,
   VideoQualityOption,
+  VideoShotSize,
   VideoStoryboard,
 } from './videoApi'
 import { ApiClientError } from './client'
@@ -23,6 +24,19 @@ function isFiniteNumber(value: unknown): value is number {
 }
 function isNonEmptyText(value: unknown): value is string {
   return isText(value) && value.trim().length > 0
+}
+
+export function isVideoShotSize(value: unknown): value is VideoShotSize {
+  return value === 'wide' || value === 'medium' || value === 'closeup'
+}
+export function isVideoCamera(value: unknown): value is VideoDefaults['camera'] {
+  return value === 'still' || value === 'push' || value === 'pull' || value === 'pan' || value === 'orbit'
+}
+export function isVideoMotion(value: unknown): value is VideoDefaults['motion'] {
+  return value === 'subtle' || value === 'natural' || value === 'expressive'
+}
+export function isVideoDuration(value: unknown): value is VideoDefaults['duration'] {
+  return value === 3 || value === 5 || value === 10 || value === 15
 }
 
 function isVideoJob(value: unknown): value is VideoJob {
@@ -70,9 +84,9 @@ function isVideoDefaults(value: unknown): value is VideoDefaults {
   if (!isRecord(value)) return false
   return isNonEmptyText(value.modelId)
     && ['landscape', 'portrait', 'square', 'original'].includes(String(value.aspectRatio))
-    && [3, 5, 10, 15].includes(Number(value.duration))
-    && ['still', 'push', 'pull', 'pan', 'orbit'].includes(String(value.camera))
-    && ['subtle', 'natural', 'expressive'].includes(String(value.motion))
+    && isVideoDuration(value.duration)
+    && isVideoCamera(value.camera)
+    && isVideoMotion(value.motion)
     && ['fast', 'standard', 'fine'].includes(String(value.quality))
 }
 
@@ -107,8 +121,8 @@ export function isVideoStoryboard(value: unknown): value is VideoStoryboard {
     && Array.isArray(value.beats) && value.beats.every(isText)
     && Array.isArray(value.shots) && value.shots.every((shot: unknown) => isRecord(shot)
       && isText(shot.prompt) && isNullableText(shot.dialogue)
-      && (shot.shotSize === null || ['wide', 'medium', 'closeup'].includes(String(shot.shotSize)))
-      && ['still', 'push', 'pull', 'pan', 'orbit'].includes(String(shot.camera))
+      && (shot.shotSize === null || isVideoShotSize(shot.shotSize))
+      && isVideoCamera(shot.camera)
       && isFiniteNumber(shot.duration) && shot.duration > 0
       && (shot.firstFramePrompt === null || isText(shot.firstFramePrompt)))
 }
@@ -119,9 +133,9 @@ function isVideoBatchShot(value: unknown): value is VideoBatchShot {
     && ['pending', 'queued', 'running', 'succeeded', 'failed', 'cancelled'].includes(String(value.status))
     && isText(value.prompt)
     && isNullableText(value.dialogue)
-    && (value.shotSize === null || ['wide', 'medium', 'closeup'].includes(String(value.shotSize)))
-    && ['still', 'push', 'pull', 'pan', 'orbit'].includes(String(value.camera))
-    && ['subtle', 'natural', 'expressive'].includes(String(value.motion))
+    && (value.shotSize === null || isVideoShotSize(value.shotSize))
+    && isVideoCamera(value.camera)
+    && isVideoMotion(value.motion)
     && isFiniteNumber(value.duration) && value.duration > 0
     && isFiniteNumber(value.seed) && Number.isInteger(value.seed) && value.seed >= 0
     && isFiniteNumber(value.attempts) && Number.isInteger(value.attempts) && value.attempts >= 0

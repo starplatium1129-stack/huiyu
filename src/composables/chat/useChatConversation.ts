@@ -213,7 +213,6 @@ export function useChatConversation(options: ChatConversationOptions) {
 
   async function runTurn(turn: ChatTurn, imageUrl?: string, sendOptions: CompanionChatSendOptions = {}) {
     options.onError('')
-    options.voice.ensureAudioContext()
     const connection = captureConnection(), text = turn.text, turnMid = turn.assistant.mid
     const controller = new AbortController()
     activeRequest = controller

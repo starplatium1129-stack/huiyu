@@ -174,8 +174,8 @@ function collectFiles(io: typeof import("node:fs"), absDir: string, relPrefix: s
   }
 }
 
-function resolveRoot({ root, io = nodeFs }: ManifestOptions) {
-  if (!root || typeof root !== 'string') throw new UsageError('root 缺失或不是字符串');
+function resolveRoot({ root, io = nodeFs }: ManifestOptions, label = 'root') {
+  if (!root || typeof root !== 'string') throw new UsageError(`${label} 缺失或不是字符串`);
   let rootReal;
   try {
     rootReal = io.realpathSync(root);
@@ -553,4 +553,4 @@ function compareManifestFiles({ root, manifestPath, compareManifestPath, io = no
   return { ...base, ...compareManifests({ oldManifest, newManifest }) };
 }
 
-export = { SCHEMA_VERSION, UsageError, generateManifest, verifyManifest, verifyManifestEntries, compareManifests, compareManifestFiles, checkManifestPath, resolveRealpathBoundary };
+export = { SCHEMA_VERSION, UsageError, generateManifest, verifyManifest, verifyManifestEntries, compareManifests, compareManifestFiles, checkManifestPath, resolveRealpathBoundary, resolveRoot };
