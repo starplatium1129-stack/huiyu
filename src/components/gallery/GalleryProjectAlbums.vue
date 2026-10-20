@@ -9,7 +9,7 @@
         :data-album-id="album.id" :aria-label="`${album.title}，${countLabel(album)}`" @click="emit('select', album.id)">
         <span class="gallery-album-cover artwork-album-cover" :data-covers="album.covers.length" :class="{ 'is-empty': !album.count && !album.countPending }" aria-hidden="true">
           <span v-for="cover in album.covers" :key="cover.id" class="gallery-album-picture artwork-album-picture tw:text-secondary">
-            <img v-if="resolvedUrls[cover.id] && failedUrls[cover.id] !== resolvedUrls[cover.id]" :key="resolvedUrls[cover.id]" :src="resolvedUrls[cover.id]" :crossorigin="runtimeResourceCors()"
+            <img v-if="resolvedUrls[cover.id] && failedUrls.get(String(cover.id)) !== resolvedUrls[cover.id]" :key="resolvedUrls[cover.id]" :src="resolvedUrls[cover.id]" :crossorigin="runtimeResourceCors()"
               alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" @error="markCoverError(cover.id, $event)" />
             <ArchiveIcon v-else name="image" />
           </span>
@@ -62,15 +62,15 @@ async function observeCovers() {
 onMounted(observeCovers)
 watch(() => JSON.stringify(props.albums.map(album => album.id)), observeCovers)
 onBeforeUnmount(() => { disposed = true; observationVersion++; observer?.disconnect(); observer = null })
-const failedUrls = reactive<Record<string, string>>({})
+const failedUrls = reactive(new Map<string, string>())
 const resolvedUrls = computed<Record<string, string>>(() => Object.fromEntries(props.albums.flatMap(album => album.covers.map(cover => [cover.id, resolveRuntimeUrl(cover.src)]))))
 // Observe the disconnected state synchronously so even a same-address reconnect retries failed covers.
 watch(resolvedUrls, (urls, previous) => {
-  for (const id of Object.keys(failedUrls)) if (urls[id] !== previous[id]) delete failedUrls[id]
+  for (const id of failedUrls.keys()) if (urls[id] !== previous[id]) failedUrls.delete(id)
 }, { flush: 'sync' })
 function markCoverError(id: string | number, event: Event) {
   const src = (event.currentTarget as HTMLImageElement).getAttribute('src')
-  if (src && src === resolvedUrls.value[id]) failedUrls[id] = src
+  if (src && src === resolvedUrls.value[id]) failedUrls.set(String(id), src)
 }
 </script>
 

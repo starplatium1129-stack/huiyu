@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts" generic="T extends Pick<ArtworkRecord, 'id' | 'width' | 'height' | 'image_width' | 'image_height' | 'actual'>">
-import { computed, nextTick, onBeforeUnmount, onMounted, onUpdated, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, onUpdated, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
@@ -47,7 +47,7 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ select: [index: number]; load: []; error: [] }>()
 const host = ref<HTMLElement | null>(null), failed = ref(new Set<string>())
-const imageRatios = ref<Record<string, number>>({})
+const imageRatios = reactive(new Map<string, number>())
 let cardNodes: { card: HTMLElement; index: number; shade: HTMLElement | null }[] = []
 function refreshCards() {
   cardNodes = Array.from(host.value?.querySelectorAll<HTMLElement>('.gallery-orbit-card') ?? [], card => ({
@@ -80,11 +80,11 @@ const cards = computed(() => {
 function preview(item: T) { return props.cardUrls[item.id] || props.neighborUrls[item.id] || props.thumbUrls[item.id] || '' }
 function imageRatio(item: T) {
   const width = Number(item.width || item.image_width || item.actual?.width), height = Number(item.height || item.image_height || item.actual?.height)
-  return imageRatios.value[item.id] || (width > 0 && height > 0 && Number.isFinite(width / height) ? width / height : .75)
+  return imageRatios.get(String(item.id)) || (width > 0 && height > 0 && Number.isFinite(width / height) ? width / height : .75)
 }
 function measurePreview(item: T, event: Event) {
   const image = event.target as HTMLImageElement
-  if (image.complete && image.naturalWidth && image.naturalHeight) imageRatios.value[item.id] = image.naturalWidth / image.naturalHeight
+  if (image.complete && image.naturalWidth && image.naturalHeight) imageRatios.set(String(item.id), image.naturalWidth / image.naturalHeight)
 }
 function cardStyle(index: number, at: number) {
   if (reduced.value) return { transform: 'none', shade: 0, visibility: 'visible' }
@@ -148,5 +148,5 @@ watch(travel, async motion => {
 }, { flush:'sync' })
 onUpdated(() => { refreshCards(); paint(travel.value?.to ?? getPosition()) })
 onBeforeUnmount(() => { focusRevision++; cancelTravel(); cardNodes = [] })
-watch(() => props.items.map(item => item.id).join('\u0000'), () => { failed.value.clear(); imageRatios.value = {}; reset() })
+watch(() => props.items.map(item => item.id).join('\u0000'), () => { failed.value.clear(); imageRatios.clear(); reset() })
 </script>

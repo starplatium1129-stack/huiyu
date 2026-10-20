@@ -10,7 +10,7 @@ import { artworkRepository,type TrashEntry } from '@/storage/artworkRepository';
 import type { LoraMeta,Scene } from '@/stores/sceneStore';
 import { useSceneStore } from '@/stores/sceneStore';
 import { artworkTimestamp,type ArtworkRecord } from '@/types/artwork';
-import { computed,onActivated,onDeactivated,onMounted,onUnmounted,reactive,ref,watch } from 'vue';
+import { computed,onActivated,onDeactivated,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import { bulkDeleteAction,confirmDeleteAction,toggleFavoriteAction } from './galleryMutations';
 import { cancelGalleryStorageLoad, loadGalleryStorageAction,type GalleryProject } from './galleryStorage';
@@ -34,7 +34,8 @@ export function useGalleryWorkspace() {
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]), scenes = ref<Scene[]>([]), loras = ref<LoraMeta[]>([]);
     const galleryLoading = ref(true), galleryIndexLoading = ref(false), galleryError = ref('');
     const infoOpen = ref(false);
-    const cardUrls = reactive<Record<string, string>>({});
+    // Legacy/imported artwork IDs may also be Object prototype property names.
+    const cardUrls = shallowRef<Record<string, string>>(Object.create(null));
     const collectionPreviewItems = ref<ArtworkRecord[] | null>(null);
     const { urls: thumbUrls, remember: rememberThumbnail, forget: forgetThumbnail, trim: trimThumbnails, retain: retainThumbnails, clear: clearThumbnails } = useGalleryThumbnails(() =>
         collectionPreviewItems.value ? new Set(collectionPreviewItems.value.map(item => String(item.id))) : returnThumbIds);
@@ -43,7 +44,7 @@ export function useGalleryWorkspace() {
     const thumbPending = new Set<string>();
     const { ratioOf, measure, forgetRatio } = useArtworkRatios({
         pending: thumbPending,
-        hasThumb: item => Boolean(thumbUrls[item.id]),
+        hasThumb: item => Boolean(thumbUrls.value[item.id]),
         signal: () => imageReads.signal,
         current: item => !unmounted && viewActive && isMediaCurrent(item),
         saveThumb: async (item, dataUrl, imageId) => {
@@ -121,7 +122,7 @@ export function useGalleryWorkspace() {
     } = useGallerySelection(visible);
 
     const { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
-        history, visible, previewSource: item => cardUrls[item.id] || thumbUrls[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
+        history, visible, previewSource: item => cardUrls.value[item.id] || thumbUrls.value[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
 
@@ -216,7 +217,7 @@ export function useGalleryWorkspace() {
                 // its remaining reads without fetching the same missing preview twice.
                 const demanded = trashMode.value ? [] : collectionPreviewItems.value ?? (returnThumbIds.size
                     ? pagedVisible.value.filter(item => returnThumbIds.has(String(item.id))) : pagedVisible.value.slice(0, 12));
-                const pending = demanded.filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls[item.id] && !thumbUrls[item.id]).map(item => ({ ...item }));
+                const pending = demanded.filter(item => item.image_id && !sameArtworkMedia(visited.get(item.id), item) && !cardUrls.value[item.id] && !thumbUrls.value[item.id]).map(item => ({ ...item }));
                 let index = 0;
                 async function worker() {
                     while (index < pending.length) {

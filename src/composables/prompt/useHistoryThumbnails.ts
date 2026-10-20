@@ -1,4 +1,4 @@
-import { onActivated, onDeactivated, onScopeDispose, reactive, ref, watch } from 'vue'
+import { onActivated, onDeactivated, onScopeDispose, ref, shallowRef, watch } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { imageMediaSession } from '@/platform/imageMediaSession'
@@ -9,7 +9,7 @@ import { createImageReadSlot } from '@/utils/imageReadSlot'
 
 /** Only the visible history tab owns reads. Keep small previews, never original Blob URLs. */
 export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () => boolean) {
-  const thumbs = reactive<Record<string | number, string>>({})
+  const thumbs = shallowRef<Record<string | number, string>>(Object.create(null))
   let imageIds = new Map<string, string | undefined>()
   let repositoryOwner = artworkRepository
   const reads = [createImageReadSlot(), createImageReadSlot()]
@@ -25,7 +25,7 @@ export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () =>
   watch(runtimeResourceIdentity, refreshSession, { flush: 'sync' })
   function clear() {
     imageIds.clear()
-    for (const id of Object.keys(thumbs)) delete thumbs[id]
+    thumbs.value = Object.create(null)
   }
   onScopeDispose(() => { stopRuntime(); stopReads(); clear() })
   const pageActive = ref(true)
@@ -44,9 +44,14 @@ export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () =>
       const entries = items().map(item => [item.id, item.image_id] as const)
       // Reuse completed previews only while their record and image remain in this window.
       const nextImages = new Map(entries.map(([id, imageId]) => [String(id), imageId] as const))
-      for (const id of Object.keys(thumbs)) {
-        if (!nextImages.has(id) || nextImages.get(id) !== imageIds.get(id)) delete thumbs[id]
+      let retained: Record<string | number, string> | undefined
+      for (const id of Object.keys(thumbs.value)) {
+        if (!nextImages.has(id) || nextImages.get(id) !== imageIds.get(id)) {
+          retained ??= Object.assign(Object.create(null), thumbs.value) as Record<string | number, string>
+          delete retained[id]
+        }
       }
+      if (retained) thumbs.value = retained
       imageIds = nextImages
       const current = () => !controller.signal.aborted && repository === artworkRepository
         && identity === mediaVisit.value && session === imageMediaSession()
@@ -54,7 +59,7 @@ export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () =>
       async function worker(slot: ReturnType<typeof createImageReadSlot>) {
         while (current() && next < entries.length) {
           const [id, imageId] = entries[next++]
-          if (!imageId || thumbs[id]) continue
+          if (!imageId || thumbs.value[id]) continue
           try {
             const thumbnail = await slot.read(async () => {
               let value = await repository.getThumbnail(imageId).catch(() => null)
@@ -69,7 +74,7 @@ export function useHistoryThumbnails(items: () => ArtworkRecord[], active: () =>
               return value
             }, { signal: controller.signal, current })
             if (!current()) return
-            if (thumbnail?.startsWith('data:image/')) thumbs[id] = thumbnail
+            if (thumbnail?.startsWith('data:image/')) thumbs.value = Object.assign(Object.create(null), thumbs.value, { [id]: thumbnail })
           } catch (error) {
             if (current()) console.warn('history thumbnail unavailable', error)
           }

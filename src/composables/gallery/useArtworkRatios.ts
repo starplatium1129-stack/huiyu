@@ -42,7 +42,7 @@ export interface ArtworkRatioDeps {
  */
 export function useArtworkRatios(deps: ArtworkRatioDeps) {
   /** 图片解码后回填的真实比例，reactive 以便排版 computed 自动重排 */
-  const measuredRatios = reactive<Record<string, number>>({})
+  const measuredRatios = reactive(new Map<string, number>())
 
   /** 只挡脏数据（非有限/非正），合法真实比例原样透传 */
   function sanitizeRatio(r: number): number {
@@ -50,7 +50,7 @@ export function useArtworkRatios(deps: ArtworkRatioDeps) {
   }
 
   function ratioOf(item: ArtworkRecord): number {
-    const measured = measuredRatios[item.id]
+    const measured = measuredRatios.get(String(item.id))
     if (measured) return sanitizeRatio(measured)
     let w = Number(item.width || item.image_width || item.actual?.width)
     let h = Number(item.height || item.image_height || item.actual?.height)
@@ -81,12 +81,12 @@ export function useArtworkRatios(deps: ArtworkRatioDeps) {
     const img = e.target as HTMLImageElement
     if (!img.naturalWidth || !img.naturalHeight) return
     const r = img.naturalWidth / img.naturalHeight
-    if (Math.abs(ratioOf(item) - r) > RATIO_UPDATE_EPSILON) measuredRatios[item.id] = r
+    if (Math.abs(ratioOf(item) - r) > RATIO_UPDATE_EPSILON) measuredRatios.set(String(item.id), r)
     if (img.naturalWidth >= 700) void backfillThumb(item, img)
   }
 
   /** 作品被删除后丢掉它的实测值 */
-  function forgetRatio(id: string | number) { delete measuredRatios[id] }
+  function forgetRatio(id: string | number) { measuredRatios.delete(String(id)) }
 
   return { ratioOf, measure, forgetRatio }
 }

@@ -9,10 +9,10 @@
       <span>滚轮缩放，放大后拖动画面；键盘加减、方向键和 Home 也可操作</span>
     </div>
     <div class="candidate-grid tw:grid tw:gap-s-3 tw:min-h-0 tw:overflow-auto"><article v-for="(item, index) in candidates" :key="item.id" :data-choice="item.reviewState || 'candidate'" class="candidate-card tw:min-w-0 tw:p-s-3 tw:rounded-lg">
-      <CandidateViewport :id="item.id" :src="urls[String(item.id)] || ''" :title="title(item)" :viewport="viewport" :active="open"
-        :loading="!!reading[String(item.id)]" :error="errors[String(item.id)] || ''" :revision="revisions[String(item.id)] || 0" @retry="retryCandidate(item)" />
+      <CandidateViewport :id="item.id" :src="urls.get(String(item.id)) || ''" :title="title(item)" :viewport="viewport" :active="open"
+        :loading="!!reading.get(String(item.id))" :error="errors.get(String(item.id)) || ''" :revision="revisions.get(String(item.id)) || 0" @retry="retryCandidate(item)" />
       <div class="candidate-info"><h3>{{ title(item) }}</h3><p class="candidate-meta">{{ item.model || item.checkpoint || item.engine || '未记录模型' }}<br />{{ item.size || '未记录尺寸' }} · seed {{ item.seed ?? '随机' }}</p><strong class="candidate-verdict tw:text-accent tw:text-label">{{ item.reviewState === 'preferred' ? '本组首选 · 已收藏' : item.reviewState === 'rejected' ? '暂不采用' : '候选' }}</strong>
-      <p v-if="item._gallerySummary" class="candidate-meta" role="status">{{ reading[String(item.id)] ? '正在读取完整参数…' : '完整参数暂未读取' }}</p>
+      <p v-if="item._gallerySummary" class="candidate-meta" role="status">{{ reading.get(String(item.id)) ? '正在读取完整参数…' : '完整参数暂未读取' }}</p>
       <dl v-else class="candidate-parameters" aria-label="候选参数"><div v-for="row in parameterRows" :key="row.key"><dt>{{ row.label }}</dt><dd>{{ row.values[index] }}</dd></div></dl>
       <p v-if="!parameterRows.length" class="candidate-meta">已记录参数没有差异</p>
       <div class="candidate-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3"><button class="btn btn-primary" type="button" :disabled="busy" @click="prefer(item)">选为首选</button><button class="btn btn-ghost" type="button" :disabled="busy" @click="setAside(item)">{{ item.reviewState === 'rejected' ? '恢复候选' : '暂不采用' }}</button><RouterLink v-if="!item._gallerySummary && item.engine !== 'manga-screen'" class="btn btn-ghost" :to="artworkContinueTarget(item, 'remix').to" @click="emit('close')">{{ artworkContinueTarget(item, 'remix').label }}</RouterLink></div></div>
@@ -38,7 +38,7 @@ const emit = defineEmits<{ close: []; changed: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), busy = ref(false), error = ref(''), onlyDifferent = ref(true)
 const motion = useFluidDialog(dialog)
 const { urls, reading, errors, revisions, details, load, retry, cancel, release } = useCandidateMedia()
-const candidates = computed(() => props.items.slice(0, 4).map(item => details[String(item.id)] || item))
+const candidates = computed(() => props.items.slice(0, 4).map(item => details.get(String(item.id)) || item))
 const viewport = useCandidateViewport()
 const { synchronized, toggleSync, reset } = viewport
 const parameterRows = computed(() => candidateParameterRows(candidates.value, onlyDifferent.value))

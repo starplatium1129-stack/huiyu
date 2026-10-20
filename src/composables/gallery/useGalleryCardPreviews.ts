@@ -15,8 +15,8 @@ interface CardPreviewOptions {
   epoch: () => number
   signal: () => AbortSignal
   current: (item: ArtworkRecord) => boolean
-  urls: Record<string, string>
-  thumbnails: Record<string, string>
+  urls: Ref<Record<string, string>>
+  thumbnails: Readonly<Ref<Readonly<Record<string, string>>>>
   rememberThumbnail: (id: string | number, url: string) => void
   forgetThumbnail: (id: string | number) => void
   markMissing: (id: string | number) => void
@@ -43,9 +43,13 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
   const pixelWidth = (width: number) => Math.ceil(width * (window.devicePixelRatio || 1) * 1.06 / 560) * 560
   const wantedWidth = (id: string | number) => widths.get(id) || 560
   function releaseCardImage(id: string | number) {
-    const url = options.urls[id]
+    const url = options.urls.value[id]
     if (url?.startsWith('blob:')) URL.revokeObjectURL(url)
-    delete options.urls[id]; cache.delete(id); satisfied.delete(id)
+    if (Object.hasOwn(options.urls.value, id)) {
+      const next = Object.assign(Object.create(null), options.urls.value)
+      delete next[id]; options.urls.value = next
+    }
+    cache.delete(id); satisfied.delete(id)
   }
   function trim() {
     let bytes = 0, pixels = 0
@@ -85,7 +89,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       && repository === artworkRepository && session === imageMediaSession()
     if (!current()) return
     let fallback = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
-    let thumbnail = options.thumbnails[item.id]
+    let thumbnail = options.thumbnails.value[item.id]
     try {
       if (!item.image_id && !fallback && item._gallerySummary) {
         const complete = await repository.readArtwork(item.id, signal)
@@ -117,7 +121,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
           const size = await dimensions(preview, signal)
           if (!current()) return
           releaseCardImage(item.id)
-          options.urls[item.id] = preview
+          options.urls.value = Object.assign(Object.create(null), options.urls.value, { [item.id]: preview })
           satisfied.set(item.id, size.width < width ? Infinity : size.width)
           cache.set(item.id, { bytes: preview.length * 2, pixels: size.width * size.height }); trim()
           return
@@ -152,14 +156,15 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       }
       if (!url) { if (!thumbnail) options.markMissing(item.id); return }
       releaseCardImage(item.id)
-      options.urls[item.id] = url; satisfied.set(item.id, resolvedWidth)
+      options.urls.value = Object.assign(Object.create(null), options.urls.value, { [item.id]: url }); satisfied.set(item.id, resolvedWidth)
       cache.set(item.id, { bytes, pixels }); trim()
     } catch {
       if (!current()) return
       if (fallback) {
-        releaseCardImage(item.id); options.urls[item.id] = fallback; satisfied.set(item.id, Infinity)
+        releaseCardImage(item.id)
+        options.urls.value = Object.assign(Object.create(null), options.urls.value, { [item.id]: fallback }); satisfied.set(item.id, Infinity)
         cache.set(item.id, { bytes: fallback.length * 2, pixels: 32 * 1024 * 1024 }); trim()
-      } else if (!options.thumbnails[item.id]) options.markMissing(item.id)
+      } else if (!options.thumbnails.value[item.id]) options.markMissing(item.id)
     }
   }
   function pump() {
@@ -174,7 +179,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
           // A source change retires pixels, but leaves an explicit retry rather
           // than an endless skeleton. Never overwrite a replacement read's state.
           if (!controller.signal.aborted && options.active() && options.wallActive() && options.current(item)
-            && !options.urls[id] && !options.thumbnails[id] && !options.missing(id)) options.markMissing(id)
+            && !options.urls.value[id] && !options.thumbnails.value[id] && !options.missing(id)) options.markMissing(id)
         }
         // Storage and native image work may outlive cancellation. Return this
         // worker only after their real promises settle; stale results stay hidden.
@@ -193,7 +198,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
     }
     const queued = queue.get(item.id)
     if (queued && sameArtworkMedia(queued.item, item) && queued.item._galleryRevision === item._galleryRevision) return
-    if ((options.urls[item.id] || options.thumbnails[item.id]) && (satisfied.get(item.id) || 0) >= wantedWidth(item.id)) {
+    if ((options.urls.value[item.id] || options.thumbnails.value[item.id]) && (satisfied.get(item.id) || 0) >= wantedWidth(item.id)) {
       const entry = cache.get(item.id)
       if (entry) { cache.delete(item.id); cache.set(item.id, entry) }
       return
@@ -202,7 +207,7 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
   }
   function retryCardImage(item: ArtworkRecord) {
     if (!options.active() || !options.wallActive() || !options.current(item) || !options.missing(item.id)
-      || options.urls[item.id] || options.thumbnails[item.id]) return
+      || options.urls.value[item.id] || options.thumbnails.value[item.id]) return
     // Only an explicit retry expires this failed read; scrolling never loops it.
     options.clearMissing(item.id)
     request(item)
