@@ -29,7 +29,7 @@
             <div class="catalog-more-menu">
               <button type="button" :disabled="busy" @click="refreshContent"><ArchiveIcon name="refresh" />刷新内容</button>
               <button type="button" @click="exportDraft"><ArchiveIcon name="download" />备份未保存的修改</button>
-              <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" />导出全部内容</button>
+              <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" />导出已保存内容</button>
             </div>
           </StudioPopover>
         </div>
@@ -40,7 +40,7 @@
       <section v-else-if="section === 'tools'" v-content-motion="section" class="catalog-support-surface">
         <h2>文件与备份</h2>
         <div class="catalog-tool-options">
-          <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>导出全部内容</strong></button>
+          <button type="button" :disabled="busy" @click="exportSnapshot"><ArchiveIcon name="download" /><strong>导出已保存内容</strong></button>
           <button type="button" :disabled="checking" @click="listBackups"><ArchiveIcon name="image" /><strong>查看图片备份</strong></button>
           <button type="button" :disabled="checking" @click="checkContent"><ArchiveIcon name="manager" /><strong>检查资料关联</strong></button>
         </div>
@@ -87,7 +87,7 @@
             <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
             <template v-else-if="selected">
               <p v-if="editorPendingNotice" class="catalog-feedback" role="status">{{ editorPendingNotice }}</p>
-              <CatalogRecordEditor v-model:record="selected" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
+              <CatalogRecordEditor :key="editorSession" v-model:record="selected" :advanced="advanced" :advanced-error="advancedError" :editor-session="editorSession" @advanced="updateAdvanced" @apply-advanced="applyAdvanced" @discard-advanced="discardAdvanced" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
               <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
                 <StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary>
                 <p v-if="historyLoading" role="status">正在读取版本…</p>
@@ -151,7 +151,7 @@ const kinds: Array<{ value: CatalogKind; label: string; icon: ArchiveIconName }>
   { value: 'character', label: '角色档案', icon: 'character' }, { value: 'outfit', label: '服装方案', icon: 'image' },
   { value: 'scene', label: '场景故事', icon: 'scene' }, { value: 'blueprint', label: '场景蓝图', icon: 'spark' }, { value: 'document', label: '标签与推荐', icon: 'manager' },
 ]
-const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
+const { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending: withdrawChange, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile: readBulkSource, exportDraft, exportSnapshot, characterNames } = useCatalogMaintenance()
 watch(listScope, () => { recordList.value?.scrollTo(0, 0) }, { flush: 'post' })
 watch(preview, value => { if (value) pendingOpen.value = true })
 const sectionTitle = computed(() => section.value === 'records' ? CATALOG_LABELS[kind.value] : ({ portraits: '角色立绘', media: '样张与封面', bulk: '批量整理', tools: '文件与备份' } as Record<string, string>)[section.value])
@@ -221,8 +221,8 @@ async function withdrawPending(change: CatalogChange, index: number) {
   target?.focus()
   if (target === pageTitle.value) target?.scrollIntoView({ block: 'center', behavior: 'instant' })
 }
-async function saveEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.value) await submit(false) }
-async function reviewEdits() { if (dirtyEditor.value) stage(); if (!dirtyEditor.value) await submit(true) }
+async function saveEdits() { if (dirtyEditor.value && !stage()) return; await submit(false) }
+async function reviewEdits() { if (dirtyEditor.value && !stage()) return; await submit(true) }
 async function checkContent() { checking.value = true; try { await catalogApi.check(); toolHint.value = '检查完成，资料关联完整' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
 async function listBackups() { checking.value = true; try { backups.value = (await maintenanceApi.listBackups()).entries; toolHint.value = '找到 ' + backups.value.length + ' 份图片备份' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
 async function switchSection(value: string) {

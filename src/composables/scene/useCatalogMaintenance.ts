@@ -10,6 +10,7 @@ import { recordTitle } from './catalogPresentation'
 import { downloadBlob } from '@/utils/downloadBlob'
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
 const key = (kind: string, id: string) => `${kind}:${id}`
+const allowsAdvanced = (record: CatalogRecord) => record.kind !== 'document' || ['curation', 'tags', 'tag-dictionary-policy'].includes(record.id)
 const needsBatchReview = (change?: CatalogChange) => !!change && (change.patch !== undefined || !!change.remove)
 // Project whole data and metadata only; patch planning remains owned by the server.
 const editorRecord = (record: CatalogRecord, change?: CatalogChange): CatalogRecord => clone(change
@@ -29,6 +30,7 @@ export function useCatalogMaintenance() {
   const history = ref<Array<{ revision: number; at: string; removed: boolean }>>([])
   const historyLoading = ref(false), historyError = ref('')
   const baseline = ref(''), bulkInput = ref(''), bulkError = ref('')
+  const advanced = ref<string | null>(null), advancedError = ref(''), editorSession = ref(0)
   const nextSceneId = ref('')
   const characterNames = ref<Record<string, string>>({})
   let namesVersion = -1, namesController: AbortController | null = null
@@ -50,7 +52,7 @@ export function useCatalogMaintenance() {
   const importSnapshot = ref<CatalogSnapshot | null>(null), importPreview = ref(false)
   let listController: AbortController | null = null, detailController: AbortController | null = null, historyController: AbortController | null = null
   let listSeq = 0, detailSeq = 0, historySeq = 0
-  const dirtyEditor = computed(() => !!selected.value && JSON.stringify(selected.value) !== baseline.value)
+  const dirtyEditor = computed(() => !!selected.value && (advanced.value !== null || JSON.stringify(selected.value) !== baseline.value))
   const dirty = computed(() => !!pending.value.length || dirtyEditor.value)
   const editorPendingNotice = computed(() => {
     const record = selected.value
@@ -65,8 +67,40 @@ export function useCatalogMaintenance() {
     detailController?.abort(); detailController = null; detailLoading.value = false
     return ++detailSeq
   }
+  function renewEditorSession() {
+    editorSession.value++; advanced.value = null; advancedError.value = ''
+  }
+  function updateAdvanced(text: string, owner: number) {
+    const record = selected.value
+    if (disposed || busy.value || detailLoading.value || owner !== editorSession.value || !record || !allowsAdvanced(record) || editorPendingNotice.value) return
+    advanced.value = text === JSON.stringify(record.data, null, 2) ? null : text
+    advancedError.value = ''
+  }
+  function discardAdvanced(owner: number) {
+    if (disposed || busy.value || owner !== editorSession.value) return
+    advanced.value = null; advancedError.value = ''
+    hint.value = '已放弃未应用的完整数据，其他编辑仍保留。'
+  }
+  function applyAdvanced(owner = editorSession.value): boolean {
+    const record = selected.value
+    if (disposed || busy.value || owner !== editorSession.value || !record || editorPendingNotice.value) return false
+    if (advanced.value === null) return true
+    try {
+      if (!allowsAdvanced(record)) throw new Error('这份系统资料不支持完整数据编辑')
+      const value: unknown = JSON.parse(advanced.value)
+      if (!value || typeof value !== 'object' || (Array.isArray(value) && record.kind !== 'document')) throw new Error('请填写有效的内容数据')
+      record.data = value as Record<string, unknown> | unknown[]
+      advanced.value = null; advancedError.value = ''
+      hint.value = '完整数据已应用，可继续编辑或暂存修改。'
+      return true
+    } catch (e) {
+      advancedError.value = (e as Error).message
+      hint.value = '完整数据尚未应用，原文已保留。请修正格式或放弃这部分修改后再暂存。'
+      return false
+    }
+  }
   function resetEditor(record: CatalogRecord | null = null) {
-    invalidateDetail()
+    invalidateDetail(); renewEditorSession()
     selected.value = record; baseline.value = record ? JSON.stringify(record) : ''
     currentServer.value = null; clearHistory()
   }
@@ -126,6 +160,7 @@ export function useCatalogMaintenance() {
         hint.value = '这项还有局部修改或归档待保存，请先保存或撤回这项，再打开编辑。'
         return false
       }
+      renewEditorSession()
       selected.value = editorRecord(record, draft)
       currentServer.value = draft && draft.expectedRevision !== record.revision ? clone(record) : null
       baseline.value = JSON.stringify(selected.value)
@@ -149,19 +184,20 @@ export function useCatalogMaintenance() {
     } else if (record.kind === 'blueprint') record.id = 'bp_' + crypto.randomUUID().replaceAll('-', '')
     resetEditor(record)
   }
-  function stage() {
+  function stage(): boolean {
     const record = selected.value
-    if (!record || busy.value) return
-    if (editorPendingNotice.value) { hint.value = editorPendingNotice.value; return }
-    if (!record.id.trim() || record.id.trim() !== record.id) { hint.value = '请在管理信息中填写编号，首尾不要留空白'; return }
-    if (!Number.isSafeInteger(record.sortOrder)) { hint.value = '展示顺序需要一个整数'; return }
+    if (!record || busy.value) return false
+    if (editorPendingNotice.value) { hint.value = editorPendingNotice.value; return false }
+    if (!applyAdvanced()) return false
+    if (!record.id.trim() || record.id.trim() !== record.id) { hint.value = '请在管理信息中填写编号，首尾不要留空白'; return false }
+    if (!Number.isSafeInteger(record.sortOrder)) { hint.value = '展示顺序需要一个整数'; return false }
     const data = clone(record.data) as Record<string, unknown>
     if (record.kind === 'character') {
       data.id = record.id
       for (const field of ['profile', 'popular']) if (data[field] && typeof data[field] === 'object') (data[field] as Record<string, unknown>).id = record.id
     } else if (record.kind === 'outfit') {
       const outfit = data.outfit as Record<string, unknown>
-      if (record.id !== `${data.characterId}/${outfit.id}`) { hint.value = '服装记录 ID 必须为「角色ID/服装ID」'; return }
+      if (!outfit || typeof outfit !== 'object' || Array.isArray(outfit) || record.id !== `${data.characterId}/${outfit.id}`) { hint.value = '服装记录 ID 必须为「角色ID/服装ID」'; return false }
     } else if (record.kind !== 'document') data.id = record.id
     const previous = pending.value.find(change => key(change.kind, change.id) === key(record.kind, record.id))
     const before = baseline.value ? JSON.parse(baseline.value) as CatalogRecord : null
@@ -171,15 +207,17 @@ export function useCatalogMaintenance() {
       ...(createdAt !== undefined ? { createdAt } : {}) }
     pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(change.kind, change.id)), change]
     selected.value = { ...record, data: clone(data) }; baseline.value = JSON.stringify(selected.value); preview.value = null; hint.value = '这项修改已暂存，可以继续整理其他内容'
+    return true
   }
   async function remove() {
     const record = selected.value
     if (!record || busy.value || !record.revision || record.kind === 'document' || editorPendingNotice.value) return
+    if (advanced.value !== null) { hint.value = '请先应用或放弃完整数据修改，再归档这项内容'; return }
     const recordKey = key(record.kind, record.id)
     const staged = pending.value.find(change => key(change.kind, change.id) === recordKey)
     if (!await confirmAction({ title: '归档「' + recordTitle(record) + '」？', message: '保存后会从内容列表移出，历史仍会保留。正在被使用的内容不能直接归档。', confirmLabel: '归档', danger: true })) return
     if (busy.value || disposed) return
-    if (selected.value !== record || key(record.kind, record.id) !== recordKey
+    if (advanced.value !== null || selected.value !== record || key(record.kind, record.id) !== recordKey
       || pending.value.find(change => key(change.kind, change.id) === recordKey) !== staged) return
     pending.value = [...pending.value.filter(c => key(c.kind, c.id) !== key(record.kind, record.id)), { kind: record.kind, id: record.id, expectedRevision: record.revision, remove: true }]
     if (selected.value === record) resetEditor()
@@ -189,7 +227,6 @@ export function useCatalogMaintenance() {
     if (busy.value || disposed || !pending.value.includes(change)) return false
     const record = selected.value
     const current = !!record && key(record.kind, record.id) === key(change.kind, change.id)
-    const keepEditor = current && dirtyEditor.value
     if (current) {
       invalidateDetail()
       // Keep the mounted editor's unapplied JSON too; withdrawal no longer means this editor is saved.
@@ -198,7 +235,7 @@ export function useCatalogMaintenance() {
         const sameRecord = before.kind === record.kind && before.id === record.id
         // Retain explicit date backfill as an editor/baseline difference, including exported drafts.
         baseline.value = JSON.stringify({ ...(sameRecord ? before : record), createdAt: null })
-      } else if (!keepEditor) baseline.value = ''
+      } else baseline.value = ''
     }
     pending.value = pending.value.filter(item => item !== change)
     preview.value = null
@@ -249,6 +286,7 @@ export function useCatalogMaintenance() {
     busy.value = true
     try {
       const old = (await catalogApi.record(selected.value.kind, selected.value.id, revision)).record
+      renewEditorSession()
       selected.value.data = clone(old.data); selected.value.sortOrder = old.sortOrder
       hint.value = '已找回这版内容，确认后保存即可'
     } catch (e) { hint.value = (e as Error).message }
@@ -259,17 +297,22 @@ export function useCatalogMaintenance() {
     try {
       const value: unknown = JSON.parse(raw)
       if (value && typeof value === 'object' && Array.isArray((value as CatalogSnapshot).records)) {
+        if ('editor' in value || 'advanced' in value || 'format' in value && value.format === 'huiyu-content-draft') throw new Error('草稿与完整快照不能混用，完整数据原文未导入')
         const snapshot = value as CatalogSnapshot
         if (snapshot.version !== 1 || !snapshot.records.every(isCatalogRecord) || !Array.isArray(snapshot.retired)) throw new Error('快照格式无效')
         importSnapshot.value = clone(snapshot); importPreview.value = false; return true
       }
       if (!value || typeof value !== 'object' || !Array.isArray((value as { changes?: unknown }).changes)) throw new Error('需要包含 changes 数组的变更文件')
-      const file = value as { changes: CatalogChange[]; format?: unknown; version?: unknown; editor?: unknown; baseline?: unknown }
-      const draft = 'editor' in file
-      // Import the unversioned drafts produced before this format was introduced.
-      if (draft && file.format !== undefined && (file.format !== 'huiyu-content-draft' || file.version !== 1)) throw new Error('不支持这份草稿的格式或版本')
+      const file = value as { changes: CatalogChange[]; format?: unknown; version?: unknown; editor?: unknown; baseline?: unknown; advanced?: unknown }
+      const draft = 'editor' in file || 'advanced' in file || file.format === 'huiyu-content-draft'
+      // Legacy exports had no format/version; v2 preserves even invalid JSON text.
+      if (draft && (file.format !== undefined || file.version !== undefined)
+        && (file.format !== 'huiyu-content-draft' || (file.version !== 1 && file.version !== 2))) throw new Error('不支持这份草稿的格式或版本')
+      if (draft && file.version === 2 && file.advanced !== null && typeof file.advanced !== 'string') throw new Error('草稿完整数据缓冲格式无效')
+      if (draft && file.version !== 2 && 'advanced' in file) throw new Error('完整数据缓冲需要第 2 版草稿格式')
       if (draft && (file.editor !== null && !isDraftRecord(file.editor)
         || file.baseline != null && !isDraftRecord(file.baseline))) throw new Error('草稿编辑内容格式无效')
+      if (draft && typeof file.advanced === 'string' && (!isDraftRecord(file.editor) || !allowsAdvanced(file.editor))) throw new Error('完整数据原文缺少可编辑的内容记录')
       if (draft && dirtyEditor.value) throw new Error('请先保存或备份当前编辑，再恢复其他草稿')
       const changes = file.changes
       if ((!changes.length && !draft) || changes.some(c => !c || !['character', 'outfit', 'scene', 'blueprint', 'document'].includes(c.kind) || typeof c.id !== 'string' || !Number.isSafeInteger(c.expectedRevision))) throw new Error('每条修改需要 kind、id、expectedRevision')
@@ -279,6 +322,7 @@ export function useCatalogMaintenance() {
       if (draft) {
         resetEditor(clone(file.editor as CatalogRecord | null))
         baseline.value = file.baseline ? JSON.stringify(file.baseline) : ''
+        advanced.value = file.version === 2 ? file.advanced as string | null : null
         if (selected.value) kind.value = selected.value.kind
         hint.value = '草稿已恢复，尚未写入内容库。请继续编辑并核对版本后保存。'
       } else if (replacesEditor) {
@@ -325,9 +369,9 @@ export function useCatalogMaintenance() {
   function download(value: unknown, name: string) {
     downloadBlob(new Blob([JSON.stringify(value, null, 2) + '\n'], { type: 'application/json' }), name)
   }
-  const exportDraft = () => download({ format: 'huiyu-content-draft', version: 1, changes: pending.value,
-    editor: selected.value, baseline: baseline.value ? JSON.parse(baseline.value) : null }, 'content-draft.json')
-  async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json') } catch (e) { hint.value = (e as Error).message } }
+  const exportDraft = () => download({ format: 'huiyu-content-draft', version: 2, changes: pending.value,
+    editor: selected.value, advanced: advanced.value, baseline: baseline.value ? JSON.parse(baseline.value) : null }, 'content-draft.json')
+  async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json'); hint.value = '已导出保存到内容库的内容；未保存的编辑与完整数据原文请另用“备份未保存的修改”导出。' } catch (e) { hint.value = (e as Error).message } }
   watch(kind, invalidateDetail, { flush: 'sync' })
   watch([kind, character, category, rating, sort], () => { page.value = 1; void load() })
   watch(search, () => { clearTimeout(timer); timer = setTimeout(() => { page.value = 1; void load() }, 180) })
@@ -340,5 +384,5 @@ export function useCatalogMaintenance() {
   onMounted(() => { window.addEventListener('beforeunload', beforeUnload); void load() })
   onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); clearHistory(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
   onBeforeRouteLeave(async () => !busy.value && (!dirty.value || await confirmAction({ title: '离开内容维护？', message: '未保存修改将丢失，可先导出草稿。', confirmLabel: '离开', danger: true })))
-  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
+  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
 }
