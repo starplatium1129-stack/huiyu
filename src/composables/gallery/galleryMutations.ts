@@ -4,7 +4,7 @@ import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE } from '@/applica
 import { artworkRepository } from '@/storage/artworkRepository';
 import { type ArtworkRecord } from '@/types/artwork';
 import { storageWriteMessage } from '@/utils/storageWriteError';
-import { ArtworkMutationUnconfirmedError } from '@/application/artwork/artworkMutationOutcome';
+import { ArtworkMutationUnconfirmedError, ArtworkTrashConflictError } from '@/application/artwork/artworkMutationOutcome';
 import type { useGalleryWorkspace } from './useGalleryWorkspace';
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "showToast" | "deleting" | "viewerIndex" | "visible" | "indexOf" | "history" | "releaseCardResources" | "pendingDeleteId" | "closeViewer" | "openViewer" | "bulkDeleting" | "selectedIds" | "loadGalleryStorage"> & {
     onDeleted?: (ids: Array<string | number>) => void;
@@ -114,7 +114,8 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
         if (e instanceof ArtworkMutationUnconfirmedError) {
             showToast('移入回收站的结果尚未确认，请核对重新读取的作品册和回收站，不要重复删除', 'warning');
             if (ctx.isCurrentView?.() !== false) await ctx.loadGalleryStorage();
-        } else showToast('删除失败，请重试');
+        } else if (e instanceof ArtworkTrashConflictError) showToast(e.message, 'warning');
+        else showToast('删除失败，请重试');
     }
     finally {
         deleting.value = false;
@@ -129,6 +130,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
     bulkDeleting.value = true;
     const failed: (string | number)[] = [];
     const confirmed: (string | number)[] = [];
+    let conflicts = 0;
     try {
         const ok = await confirmAction({
             title: `把 ${ids.length} 幅作品移入回收站？`,
@@ -147,9 +149,12 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
                 confirmed.push(...batch.filter(id => deleted.has(id)));
                 failed.push(...batch.filter(id => !deleted.has(id)));
             }
-            catch {
-                failed.push(...batch);
-                unconfirmed = true;
+            catch (error) {
+                if (error instanceof ArtworkTrashConflictError) conflicts += batch.length;
+                else {
+                    failed.push(...batch);
+                    unconfirmed = true;
+                }
             }
         }
         const done = confirmed.length;
@@ -168,7 +173,18 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
         }
         // Also reconcile an unknown commit; never leave a successfully deleted batch visible after a lost response.
         if (done || unconfirmed) await loadGalleryStorage();
-        if (failed.length) {
+        if (conflicts) {
+            const outcomes: string[] = [];
+            if (done) outcomes.push(`${done} 幅已移入回收站`);
+            if (conflicts) outcomes.push(`${conflicts} 幅所在批次因同编号冲突未删除，请先核对；现有作品与回收站快照均保留`);
+            if (failed.length) outcomes.push(`${failed.length} 幅未确认成功，请重新读取后重试`);
+            const undoIds = Object.freeze(confirmed.slice());
+            showToast(outcomes.join('；'), 'warning', 5000, done ? {
+                label: '撤销',
+                onClick: () => { void undoBulkDeleteAction(ctx, [...undoIds]); },
+            } : undefined);
+        }
+        else if (failed.length) {
             showToast(done
                 ? `${done} 幅已移入回收站，${failed.length} 幅未确认成功，请重新读取后重试`
                 : `尚未确认作品已移入回收站，请重新读取后重试`, 'warning', 5000);
@@ -190,6 +206,7 @@ async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Pro
     let missingImages = 0;
     let missingEntries = 0;
     let unconfirmed = 0;
+    let conflicts = 0;
     const requested = ids.slice();
     for (let offset = 0; offset < requested.length; offset += ARTWORK_RESTORE_BATCH_SIZE) {
         const batch = requested.slice(offset, offset + ARTWORK_RESTORE_BATCH_SIZE);
@@ -200,6 +217,8 @@ async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Pro
                     restored += 1;
                 else if (result.missingImageIds?.length)
                     missingImages += 1;
+                else if (result.code === ArtworkTrashConflictError.code)
+                    conflicts += 1;
                 else if (result.code && result.code !== 'NOT_FOUND')
                     unconfirmed += 1;
                 else
@@ -213,6 +232,7 @@ async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Pro
     if (restored) outcomes.push(`已把 ${restored} 幅放回展墙`);
     if (missingImages) outcomes.push(`${missingImages} 幅原图已缺失，无法完整恢复；回收站快照仍保留`);
     if (missingEntries) outcomes.push(`${missingEntries} 幅已不在回收站`);
+    if (conflicts) outcomes.push(`${conflicts} 幅已有同编号作品，请先核对；现有作品与回收站快照均保留`);
     if (unconfirmed) outcomes.push(`${unconfirmed} 幅恢复尚未确认，请重新查看回收站后重试`);
     showToast(outcomes.join('；'), restored === requested.length ? 'success' : 'warning');
 }
@@ -234,6 +254,7 @@ async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void
         if (e instanceof ArtworkMutationUnconfirmedError) {
             showToast('恢复结果尚未确认，正在重新读取；请核对作品册和回收站后再操作', 'warning');
             await loadGalleryStorage();
-        } else showToast('恢复失败，请重试');
+        } else if (e instanceof ArtworkTrashConflictError) showToast(e.message, 'warning');
+        else showToast('恢复失败，请重试');
     }
 }

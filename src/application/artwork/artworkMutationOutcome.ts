@@ -5,3 +5,12 @@ export class ArtworkMutationUnconfirmedError extends Error {
     this.name = 'ArtworkMutationUnconfirmedError'
   }
 }
+
+/** A live record and a separate trash snapshot are not an idempotent restore. */
+export class ArtworkTrashConflictError extends Error {
+  static readonly code = 'ARTWORK_TRASH_CONFLICT'
+  constructor() {
+    super('作品册与回收站已有同编号作品，请先核对；现有作品与回收站快照均保留')
+    this.name = 'ArtworkTrashConflictError'
+  }
+}

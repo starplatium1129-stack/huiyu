@@ -88,13 +88,13 @@ export function createArtworkReads(kv: ArtworkKvAdapter,
       const raw = await kv.get(ARTWORK_HISTORY_KEY)
       signal?.throwIfAborted()
       if (raw !== null) return structuredClone(parseArtworkRecords(raw))
-      const legacy = parseArtworkRecords(readLocal(ARTWORK_HISTORY_KEY))
-      if (legacy.length) {
+      const legacy = readLocal(ARTWORK_HISTORY_KEY)
+      if (Array.isArray(legacy) && legacy.length) {
         await kv.set(ARTWORK_HISTORY_KEY, legacy)
         globalThis.localStorage.removeItem(ARTWORK_HISTORY_KEY)
       }
       signal?.throwIfAborted()
-      return structuredClone(legacy)
+      return structuredClone(parseArtworkRecords(legacy))
     })
   }
 

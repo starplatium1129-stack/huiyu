@@ -275,11 +275,23 @@ async function readRuntimeResult(source: Awaited<ReturnType<typeof resolveRuntim
 export async function fetchRuntimeResult(url: string, signal?: AbortSignal, knownTask?: TaskRecord): Promise<Blob> {
   return readRuntimeResult(await resolveRuntimeResult(url, signal, knownTask), signal)
 }
+/** Name the proven result format without converting its original bytes. */
+export function runtimeResultFilename(filename: string, mime: string): string {
+  const extensions: Record<string, string> = {
+    'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp',
+    'image/gif': 'gif', 'image/bmp': 'bmp', 'image/avif': 'avif',
+    'video/mp4': 'mp4', 'video/webm': 'webm', 'video/quicktime': 'mov',
+  }
+  const extension = extensions[mime]
+  if (!extension) throw new Error(`暂不支持下载此任务结果格式（${mime || '未知'}）`)
+  return `${filename.replace(/\.(?:png|jpe?g|webp|gif|bmp|avif|mp4|webm|mov)$/i, '')}.${extension}`
+}
 export async function downloadTaskMedia(url: string, filename = '绘遇结果', signal?: AbortSignal) {
   const source = await resolveRuntimeResult(url, signal)
+  const name = runtimeResultFilename(filename, source.media.mime)
   const blob = await readRuntimeResult(source, signal)
   signal?.throwIfAborted(); assertWorkspaceMediaAuthority(source.authority)
-  downloadBlob(blob, filename)
+  downloadBlob(blob, name)
 }
 /** One application subscription; page controllers own only their cancellable reads. */
 export function startRuntimeTaskPolling(): () => void {

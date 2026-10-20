@@ -11,6 +11,7 @@ import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
 import type { createArtworkOrganization } from './artworkOrganization.ts'
 import { createArtworkProjects } from './artworkProjects.ts'
+import { ArtworkTrashConflictError } from '../../application/artwork/artworkMutationOutcome.ts'
 
 
 export function createWebArtworkRepository(): ArtworkRepository {
@@ -73,6 +74,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
     }
     const results = ids.map(id => ({ id, deleted: removed.has(comparableId(id)!) }))
     if (!removed.size) return results
+    if (trash.some(entry => removed.has(comparableId(entry.id)!))) throw new ArtworkTrashConflictError()
     const projectRefs = new Map<string, TrashEntry['projectRefs']>()
     let projectsChanged = false
     const nextProjects = (arrayValue(projectsSnapshot) ?? []).map(project => {
@@ -93,7 +95,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
       return { ...source, history_ids: kept }
     })
     const remainingImageIds = new Set(unique(nextHistory.map(imageId)))
-    const nextTrash = trash.filter(entry => !removed.has(entry.id))
+    const nextTrash = trash.slice()
     const deletedAt = Date.now()
     for (const [id, historyEntries] of removed) nextTrash.push({
       id, deletedAt, historyEntries, projectRefs: projectRefs.get(id) ?? [],
@@ -120,6 +122,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
       kv.get(ARTWORK_PROJECTS_KEY),
     ])
     const history = arrayValue(historySnapshot) ?? []
+    if (history.some(item => recordId(item) === targetId)) throw new ArtworkTrashConflictError()
     const requiredImageIds = unique([
       ...(Array.isArray(entry.imageIds) ? entry.imageIds : []),
       ...(Array.isArray(entry.historyEntries) ? entry.historyEntries.map(imageId) : []),
@@ -129,10 +132,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
       if (!(await images.get(image))) missingImageIds.push(image)
     }
     if (missingImageIds.length) return { restored: false, missingImageIds }
-    // 同 id 已存在（恢复过一次的重复点击）：幂等成功
-    const existing = history.find(item => recordId(item) === targetId)
-    const restoredId = record(existing
-      ?? entry.historyEntries.find(item => recordId(item) === targetId))?.id
+    const restoredId = record(entry.historyEntries.find(item => recordId(item) === targetId))?.id
     if (typeof restoredId !== 'string' && typeof restoredId !== 'number') throw new Error('回收站快照缺少有效作品编号，无法恢复')
 
     // 项目引用增量补回：只把「快照里有引用、现在没有」的 project 加回该 id，
@@ -149,7 +149,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
       return { ...source, history_ids: [...source.history_ids, restoredId] }
     })
     await kv.setMany([
-      ...(!existing ? [{ key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] }] : []),
+      { key: ARTWORK_HISTORY_KEY, value: [...entry.historyEntries, ...history] },
       ...(refsRestored > 0 ? [{ key: ARTWORK_PROJECTS_KEY, value: nextProjects }] : []),
       { key: ARTWORK_TRASH_KEY, value: trash.filter(item => item.id !== targetId) },
     ])
@@ -211,7 +211,7 @@ export function createWebArtworkRepository(): ArtworkRepository {
         let result = outcomes.get(key)
         if (!result) {
           try { result = await restoreArtworkNow(id) }
-          catch { result = { restored: false, code: 'RESTORE_UNCONFIRMED' } }
+          catch (error) { result = { restored: false, code: error instanceof ArtworkTrashConflictError ? ArtworkTrashConflictError.code : 'RESTORE_UNCONFIRMED' } }
           outcomes.set(key, result)
         }
         results.push(structuredClone({ id, ...result }))

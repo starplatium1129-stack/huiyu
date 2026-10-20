@@ -1,12 +1,14 @@
-import { runtimeFetch } from '../../platform/runtimeUrl.ts'
+import { runtimeFetch, runtimeResourceIdentity } from '../../platform/runtimeUrl.ts'
 import { getDesktopCapabilities } from '../../platform/desktop/capabilities.ts'
+import { onDesktopRuntime } from '../../platform/desktop/runtime.ts'
+import { imageMediaSession } from '../../platform/imageMediaSession.ts'
 import { artworkRepository } from '../../storage/artworkRepository.ts'
 import { buildArtworkFileName } from '../../utils/artworkFileName.ts'
 import { formatA1111Parameters, injectPngMetadata } from '../../utils/pngMetadata.ts'
 import { imageFormat } from '../../utils/imageFormat.ts'
 import { safeImageUrl } from './galleryHelpers.ts'
 import type { useGalleryWorkspace } from './useGalleryWorkspace.ts'
-import { getCurrentInstance, getCurrentScope, onActivated, onDeactivated, onScopeDispose, readonly, ref, type Ref } from 'vue'
+import { getCurrentInstance, getCurrentScope, onActivated, onDeactivated, onScopeDispose, readonly, ref, watch, type Ref } from 'vue'
 import { copyWithFeedback } from '../useCopyFeedback.ts'
 
 type Context = Pick<ReturnType<typeof useGalleryWorkspace>, 'current' | 'stamp' | 'sceneTitle' | 'characterName' | 'showToast'>
@@ -22,6 +24,7 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
   }
   function stopDownloads() {
     downloadController?.abort()
+    downloadController = null
     for (const url of downloadUrls.keys()) releaseDownloadUrl(url)
   }
   if (getCurrentInstance()) {
@@ -36,31 +39,52 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
   }
   const downloading = ref(false)
   async function downloadCurrent() {
-    let item = current.value
-    if (!item || downloading.value || disposed || !viewActive) return
+    const selected = current.value
+    if (!selected || downloading.value || disposed || !viewActive) return
+    let item = { ...selected }
     downloading.value = true
     const controller = new AbortController()
     downloadController = controller
+    const repository = artworkRepository, session = imageMediaSession(), desktop = getDesktopCapabilities()
+    let sourceChanged = false
+    function checkSource() {
+      if (!controller.signal.aborted && (repository !== artworkRepository || session !== imageMediaSession())) {
+        sourceChanged = true
+        controller.abort(new Error('图片连接已变化，请重新下载原图'))
+      }
+    }
+    const stopRuntime = onDesktopRuntime(checkSource)
+    const stopResources = watch(runtimeResourceIdentity, checkSource, { flush: 'sync' })
+    const check = () => { checkSource(); controller.signal.throwIfAborted() }
+    const canNotify = () => !disposed && viewActive && downloadController === controller
     try {
+      check()
       if (item._gallerySummary) {
-        item = await artworkRepository.readArtwork(item.id, controller.signal)
-        if (!item) throw new Error('这幅作品已不在作品册')
+        const complete = await repository.readArtwork(item.id, controller.signal)
+        check()
+        if (!complete) throw new Error('这幅作品已不在作品册')
+        item = { ...complete }
       }
       // 捕获作品记录；翻页后也不能拿另一张图的查看器 URL 配上本图文件名。
       let rawBlob: Blob | null = null
-      try { rawBlob = await artworkRepository.getImage(String(item.image_id || item.id), controller.signal) }
-      catch { controller.signal.throwIfAborted() /* 读取失败可尝试记录内原图；取消不能再回退 */ }
-      controller.signal.throwIfAborted()
+      let readError: Error | undefined
+      try { rawBlob = await repository.getImage(String(item.image_id || item.id), controller.signal) }
+      catch (error) {
+        check() // A cancelled source cannot start its fallback against a new runtime.
+        readError = error instanceof Error ? error : new Error('原图暂时无法读取，请重试')
+      }
+      check()
       if (!rawBlob) {
         const source = safeImageUrl(item.image_url) || (item.image_data?.startsWith('data:image/') ? item.image_data : '')
-        if (!source) throw new Error('原图已丢失，无法下载；缩略图不能替代原图')
+        if (!source) throw readError ?? new Error('原图已丢失，无法下载；缩略图不能替代原图')
         const response = await runtimeFetch(source, { signal: AbortSignal.any([controller.signal, AbortSignal.timeout(30_000)]) })
+        check()
         if (!response.ok) throw new Error(`原图读取失败（${response.status}），请稍后重试`)
         rawBlob = await response.blob()
       }
-      controller.signal.throwIfAborted()
+      check()
       const buffer = await rawBlob.arrayBuffer()
-      controller.signal.throwIfAborted()
+      check()
       const format = imageFormat(buffer)
       const ts = stamp(item)
       const fileName = buildArtworkFileName({
@@ -85,15 +109,25 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
         try { data = injectPngMetadata(buffer, metaText); metadataWritten = true } catch { /* 原始字节仍可保存 */ }
       }
       const detail = metadataWritten ? '（已嵌入生成参数）' : '（保留原始格式）'
-      if (getDesktopCapabilities()) {
+      check()
+      if (desktop) {
         try {
-          const result = await getDesktopCapabilities()!.saveImage({ data, name: fileName })
-          if (controller.signal.aborted) return
+          // The native handoff owns these bytes now; source invalidation cannot undo a file save.
+          const result = await desktop.saveImage({ data, name: fileName })
+          if (!canNotify()) return
           if (result.saved) showToast(`已保存到 ${result.filePath || '所选位置'}${detail}`)
           else if (result.error) showToast(`保存失败：${result.error}`, 'warning')
           return
-        } catch { controller.signal.throwIfAborted() /* 原生对话框失败可回退；取消不能再下载 */ }
+        } catch {
+          checkSource()
+          if (controller.signal.aborted) {
+            if (canNotify() && sourceChanged) showToast('本机保存回执尚未确认；图片连接已变化，请先核对所选位置', 'warning')
+            return
+          }
+          // Only the still-current operation may use the existing browser fallback.
+        }
       }
+      check()
       const url = URL.createObjectURL(new Blob([data], { type: format.mime }))
       let anchor: HTMLAnchorElement | undefined
       let started = false
@@ -112,8 +146,10 @@ export function useGalleryExports({ current, stamp, sceneTitle, characterName, s
         }
       }
     } catch (error) {
-      if (!controller.signal.aborted) showToast(error instanceof Error ? error.message : '原图下载失败，请重试', 'warning')
+      if (canNotify() && (!controller.signal.aborted || sourceChanged))
+        showToast(error instanceof Error ? error.message : '原图下载失败，请重试', 'warning')
     } finally {
+      stopRuntime(); stopResources()
       downloadController = null
       downloading.value = false
     }
