@@ -48,7 +48,7 @@ async function saveStartPageValue(value: string | number) {
   saveFailed.value = false
   feedback.value = '正在保存启动页，请稍候…'
   try {
-    settingsRepository.set(DESKTOP_START_PAGE_SETTING, parsed)
+    if (!await settingsRepository.set(DESKTOP_START_PAGE_SETTING, parsed)) throw new Error('启动页尚未保存')
     // Desktop reads are optimistic until the shared write queue confirms them.
     await flushProfileWrites()
     if (generation !== saveGeneration) return

@@ -7,7 +7,7 @@ export async function waitLocalSetupOperation(result:ControlActionResult,options
   const deadline=Date.now()+(options.timeoutMs??210_000)
   try { while(Date.now()<deadline){
     options.signal?.throwIfAborted()
-    const status=await localSetupApi.getOperation(options.signal)
+    const status=await localSetupApi.getOperation(options.signal,id)
     options.onOperation?.(status.operation)
     if(status.operation?.id!==id)throw new Error('操作状态已改变，请查看控制室')
     options.onMessage?.(status.operation.message)

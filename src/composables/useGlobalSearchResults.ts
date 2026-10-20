@@ -2,6 +2,9 @@ import { computed, onScopeDispose, ref, shallowRef, watch, type Ref } from 'vue'
 import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useGlobalSearchWorks } from '@/composables/useGlobalSearchWorks'
+import { useCatalogSearch } from './useCatalogSearch'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 interface SearchItem {
   id: string
@@ -55,6 +58,8 @@ for (const action of ACTIONS) action.keywords = action.keywords.toLowerCase()
 /** Search data and request ownership are independent of listbox focus and navigation. */
 export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Readonly<Ref<string>>) {
   const sceneStore = useSceneStore()
+  const local = isLocalStudioHost()
+  const catalog = useCatalogSearch(computed(() => local && open.value), query, () => sceneStore.version)
   const scenes = shallowRef<SceneItem[]>([])
   const scenesLoading = ref(false), scenesError = ref('')
   let scenesReady = false, scenesRequest = 0
@@ -95,10 +100,10 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
         key: `action:${item.id}`, path: item.path, label: item.label, icon: item.icon, meta: item.hint,
       })) }, pages,
     ].filter(group => group.items.length)
-    return [pages,
+    return [pages, ...(local ? catalog.groups.value : [
       { id: 'scenes', label: `灵感场景 · ${filteredScenes.value.length}`, items: filteredScenes.value.map(item => ({
         key: `scene:${item.id}`, path: item.path, label: item.title, icon: 'scene' as const, meta: item.meta,
-      })) },
+      })) }]),
       { id: 'works', label: `作品 · ${filteredWorks.value.length}`, items: filteredWorks.value.map(item => ({
         key: `work:${item.id}`, artworkId: item.id, label: item.title, icon: 'gallery' as const, meta: item.meta,
       })) },
@@ -110,6 +115,7 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
     scenesRequest++; scenesLoading.value = false; scenesError.value = ''
   }
   async function loadScenes() {
+    if (local) return
     if (scenesReady || scenesLoading.value || scenesError.value || !open.value || !queryTerms.value.length) return
     const request = ++scenesRequest
     scenesLoading.value = true; scenesError.value = ''
@@ -137,8 +143,9 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
     } finally { if (request === scenesRequest) scenesLoading.value = false }
   }
 
-  function retryScenes() { scenesError.value = ''; void loadScenes() }
+  function retryScenes() { if (local) catalog.search(); else { scenesError.value = ''; void loadScenes() } }
   function reset() { resetSceneRead(); resetWorks() }
+  watch([() => sceneStore.version, runtimeResourceIdentity], () => { resetSceneRead(); scenesReady = false; scenes.value = []; void loadScenes() }, { flush: 'sync' })
   watch(open, visible => { if (!visible) reset() }, { flush: 'sync' })
   watch([query, open], () => {
     if (!open.value) return
@@ -146,5 +153,6 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
     else { void loadScenes(); loadWorks() }
   })
   onScopeDispose(resetSceneRead)
-  return { queryTerms, resultGroups, flat, scenesLoading, scenesError, worksLoading, worksError, retryScenes }
+  return { queryTerms, resultGroups, flat, scenesLoading: local ? catalog.loading : scenesLoading,
+    scenesError: local ? catalog.error : scenesError, worksLoading, worksError, retryScenes }
 }

@@ -84,7 +84,7 @@ pub(super) async fn download(Extension(service): Extension<Arc<ControlService>>,
         if free < required { return Err(ApiError::new(409, "INSUFFICIENT_SPACE", "资源下载和校验空间不足，请释放空间后重试")); }
         Ok::<_, ApiError>(())
     }).await.map_err(|_| ApiError::new(503, "WORKSPACE_CHECK_FAILED", "资源目录检查未完成"))??;
-    let mut operation = service.begin("download-native-resource", &["下载并校验资源", "资源已准备"])?;
+    let mut operation = service.begin_with_id("download-native-resource", &["下载并校验资源", "资源已准备"], body.operation_id.as_deref())?;
     operation["workspacePath"] = json!(body.workspace_path);
     operation["planId"] = json!(body.plan_id);
     operation["modelId"] = json!(entry.id);
@@ -92,7 +92,7 @@ pub(super) async fn download(Extension(service): Extension<Arc<ControlService>>,
     operation["downloadedBytes"] = json!(0);
     operation["totalBytes"] = json!(entry.files.iter().map(|file| file.bytes).sum::<u64>());
     operation["cancelAllowed"] = json!(true);
-    service.state.lock().unwrap().operation = Some(operation.clone());
+    service.publish_operation(operation.clone())?;
     let cancel = service.shutdown.child_token();
     *service.environment_cancel.lock().unwrap() = Some(cancel.clone());
     let returned = operation.clone();

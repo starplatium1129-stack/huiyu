@@ -34,6 +34,10 @@ let active = true, framesPending = false
 let frameRestore: Promise<void> | null = null
 const submissionTokens = new WeakMap<ShotDraft, string>()
 let scenarioImportReceipts: string[] = []
+watch(() => videoStore.shotsReloadVersion, () => {
+  window.clearTimeout(shotsDraftTimer); shotsDraftTimer = 0
+  void restoreShotsDraft().catch(cause => { batchError.value = cause instanceof Error ? cause.message : '分镜草稿恢复未完成' })
+}, { flush: 'sync' })
 
 function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
   if (restoringDraft || disposed) return false
@@ -73,7 +77,7 @@ function persistShotsDraft(sourceActIds: readonly string[] = []): boolean {
     })),
     updatedAt: Date.now(),
   })
-  if (!ok) batchError.value = '分镜草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失'
+  if (!ok) batchError.value = videoStore.draftIssue || '分镜草稿尚未保存：内容仍在页面中，请保持窗口打开并重试'
   saveFailed = !ok
   if (ok) scenarioImportReceipts = receipts
   return ok

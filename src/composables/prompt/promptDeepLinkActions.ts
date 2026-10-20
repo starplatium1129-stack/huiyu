@@ -60,11 +60,13 @@ export async function applyPromptDeepLink(q: Record<string, unknown>, deps: Prom
   if (typeof q.popular === 'string') {
     // 进入热门模式并选中指定角色；?blueprint= 可预选场景蓝图
     // （角色场景库页面「开始绘制」直达）。
-    deps.selectPopularSource('popular')
     const target = findPopularCharacter(pb.popularCharacters, q.popular)
     if (target) {
       const blueprintId = typeof q.blueprint === 'string' && q.blueprint ? q.blueprint : null
-      pb.setPopularSubject(target.id, target.outfits.find(o => o.default)?.id ?? target.outfits[0].id, blueprintId)
+      const outfit = typeof q.outfit === 'string' ? target.outfits.find(outfit => outfit.id === q.outfit) : target.outfits.find(o => o.default) || target.outfits[0]
+      if (!outfit) { pb.flash('所选衣装已更新，请重新选择；当前草稿已保留'); return { handled: false, historyApplied: false } }
+      deps.selectPopularSource('popular')
+      pb.setPopularSubject(target.id, outfit.id, blueprintId, { outfitExplicit: typeof q.outfit === 'string' })
       patchAnimaState({ modelId: target.recommendedEngine })
       deps.applyRecommendedEngine(target)
       if (blueprintId) {

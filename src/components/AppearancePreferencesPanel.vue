@@ -38,7 +38,7 @@
     <div><dt><kbd>F6</kbd> / <kbd>Shift F6</kbd></dt><dd>在导航与内容之间切换</dd></div>
     <div><dt><kbd>←</kbd> <kbd>→</kbd> / <kbd>Home</kbd> <kbd>End</kbd></dt><dd>主导航内移动焦点</dd></div>
     <div><dt><kbd>Enter</kbd></dt><dd>打开聚焦的导航页面</dd></div>
-    <div><dt><kbd>Ctrl / ⌘ K</kbd></dt><dd>搜索页面、场景与作品</dd></div>
+    <div><dt><kbd>Ctrl / ⌘ K</kbd></dt><dd>搜索页面、角色、场景与作品</dd></div>
     <div><dt><kbd>Tab</kbd> / <kbd>Shift Tab</kbd></dt><dd>依次访问操作与表单</dd></div>
     <div><dt><kbd>Esc</kbd></dt><dd>关闭当前弹窗</dd></div>
     <div><dt><kbd>Ctrl + / − / 0</kbd></dt><dd>{{ zoomAvailable ? '界面缩放 / 恢复 100%（自动保存）' : '浏览器缩放 / 恢复 100%' }}</dd></div>

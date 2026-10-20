@@ -116,10 +116,12 @@ impl ControlService {
         if source["kind"] != "chat" {
             return Err(ApiError::invalid("请选择已登记的聊天模型"));
         }
-        let operation = self.begin(
+        let mut operation = self.begin(
             "llama-start",
             &["正在检查聊天环境", "正在加载聊天模型", "正在确认连接"],
         )?;
+        operation["modelId"] = json!(body.model_id);
+        self.publish_operation(operation.clone())?;
         let response = json!({"ok":true,"operation":operation,"baseUrl":format!("{}/v1",self.runtime_setting("llamaHost").as_str().unwrap_or("http://127.0.0.1:8000")),"model":"huiyu-local"});
         let cancel = self.shutdown.child_token();
         *self.llama_cancel.lock().unwrap() = Some(cancel.clone());

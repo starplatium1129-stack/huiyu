@@ -44,10 +44,12 @@ impl ControlService {
             _ => return Err(ApiError::invalid("未知受管环境")),
         };
         let permit = self.setup_permit()?;
-        let operation = self.begin(
+        let mut operation = self.begin(
             "prepare-environment",
             &["正在校验运行包", "正在解压与准备依赖", "正在确认环境"],
         )?;
+        operation["environment"] = json!(environment);
+        self.publish_operation(operation.clone())?;
         let response = json!({"ok":true,"operation":operation});
         let cancel = self.shutdown.child_token();
         *self.environment_cancel.lock().unwrap() = Some(cancel.clone());

@@ -52,7 +52,7 @@ impl ControlService {
         operation["downloadedBytes"] = json!(0);
         operation["totalBytes"] = plan["downloadBytes"].clone();
         operation["cancelAllowed"] = json!(true);
-        self.state.lock().unwrap().operation = Some(operation.clone());
+        self.publish_operation(operation.clone())?;
         let cancel = self.shutdown.child_token();
         *self.environment_cancel.lock().unwrap() = Some(cancel.clone());
         let service = self.clone();

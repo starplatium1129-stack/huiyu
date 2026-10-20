@@ -34,6 +34,10 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
   let disposed = false
   let importSourceImageId = ''
   onScopeDispose(() => { disposed = true }, true)
+  watch(() => videoStore.videoReloadVersion, () => {
+    window.clearTimeout(draftTimer); draftTimer = 0
+    restoreDraft()
+  }, { flush: 'sync' })
 
   function checkOwner() {
     if (sameTempResultOwner(owner)) return
@@ -73,7 +77,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     }
     saveFailed = !videoStore.saveVideoDraft(draft)
     if (saveFailed) {
-      deps.onPersistError('视频草稿保存失败（存储空间不足）：内容仍在页面中，但刷新后可能丢失')
+      deps.onPersistError(videoStore.draftIssue || '视频草稿尚未保存：内容仍在页面中，请保持窗口打开并重试')
     }
     return !saveFailed
   }

@@ -5,10 +5,10 @@ import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import catalog from '../../runtime-rs/src/control/setup-models.json'
 
 export type PreparedInferencePaths = Pick<InferenceSettings, 'python' | 'worker' | 'modelsRoot' | 'lorasRoot'>
-export interface RuntimePreparationInput { basePython: string; wheelhouse: string; workspacePath: string; reviewed: true }
+export interface RuntimePreparationInput { operationId?: string; basePython: string; wheelhouse: string; workspacePath: string; reviewed: true }
 export interface ModelInspectionInput { modelId: string; sourceDir: string }
-export interface ModelImportInput extends ModelInspectionInput { modelsRoot: string; reviewed: true }
-export interface ManagedInferenceInput { workspacePath: string; planId: string; reviewed: true; modelId?: string; hfToken?: string; resourceRoot?: string }
+export interface ModelImportInput extends ModelInspectionInput { operationId?: string; modelsRoot: string; reviewed: true }
+export interface ManagedInferenceInput { operationId?: string; workspacePath: string; planId: string; reviewed: true; modelId?: string; hfToken?: string; resourceRoot?: string }
 export interface NativeImageResource {
   id: string; label: string; family: string; description: string; directory: 'models' | 'loras'; root: string
   licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; present: boolean; path: string
@@ -36,6 +36,7 @@ export interface NativeSetupPlan {
 }
 export interface NativeActivationResult { ok: true; restartRequired: boolean; active: { engine: 'native' | 'comfy' }; configured: { engine: 'native' } }
 export interface InferenceSetupOperation extends ControlOperationView {
+  interrupted?: boolean
   kind: 'prepare-inference-runtime' | 'import-inference-model' | 'install-native-runtime' | 'download-native-model' | 'download-native-resource' | 'prepare-native-engine'
   flowStep?: 'runtime' | 'model' | 'activate'
   preparedPaths?: PreparedInferencePaths

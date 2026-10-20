@@ -25,7 +25,7 @@ impl ControlService {
         }
         .saturating_add(model_view["requiredBytes"].as_u64().unwrap());
         require_space(plan["freeBytes"].as_u64(), required)?;
-        let mut operation = self.begin(
+        let mut operation = self.begin_with_id(
             "prepare-native-engine",
             &[
                 "检查设备与工作区",
@@ -38,6 +38,7 @@ impl ControlService {
                 "启用原生引擎",
                 "准备完成",
             ],
+            body.operation_id.as_deref(),
         )?;
         operation["workspacePath"] = json!(body.workspace_path);
         operation["planId"] = json!(body.plan_id);
@@ -51,7 +52,7 @@ impl ControlService {
                 .download_bytes
                 .saturating_add(model.files.iter().map(|file| file.bytes).sum::<u64>())
         );
-        self.state.lock().unwrap().operation = Some(operation.clone());
+        self.publish_operation(operation.clone())?;
         let cancel = self.shutdown.child_token();
         *self.environment_cancel.lock().unwrap() = Some(cancel.clone());
         let service = self.clone();

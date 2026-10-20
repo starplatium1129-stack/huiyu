@@ -14,6 +14,8 @@
       </div>
     </header>
 
+    <VideoDraftNotice />
+
     <section class="video-mode-strip studio-segments" data-fluid-glass role="group" aria-label="视频创作方式"><AnimatedSelection />
       <StudioTooltip v-for="mode in modes" :key="mode.id" :anchor="!modeReady(mode.id)" :content="!modeReady(mode.id) ? modeBadge(mode.id) : undefined">
       <button
@@ -358,6 +360,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 const loadShotListEditor = () => import('@/components/video/ShotListEditor.vue')
+import VideoDraftNotice from '@/components/video/VideoDraftNotice.vue'
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'

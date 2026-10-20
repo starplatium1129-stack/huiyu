@@ -6,6 +6,7 @@ import { localSetupApi } from '@/api/localSetupApi'
 import { waitLocalSetupOperation } from '@/api/localSetupOperation'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
+import { readSetupRecovery, saveSetupRecovery, type SetupRecovery } from '@/storage/inferenceSetupRecovery'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 
 type Submission = { kind: 'prepare-inference-runtime'; input: RuntimePreparationInput }
@@ -49,7 +50,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const canCancel = computed(() => hasRunningOperation.value && operation.value?.cancelAllowed !== false && !['pending', 'accepted'].includes(cancelState.value))
   let disposed = false, observing = false, inspectionVersion = 0, planVersion = 0, workspaceOpenVersion = 0
   let inspectionController: AbortController | null = null, planController: AbortController | null = null, activationController: AbortController | null = null
-  let submission: Submission | null = null, previousOperationId: string | null = null
+  let recovery: SetupRecovery | null = null
   let cancelRequest: Promise<void> | null = null
   const local = () => !disposed && isLocalStudioHost()
   const causeText = (cause: unknown) => cause instanceof Error ? cause.message : '操作未完成，请查看控制室日志'
@@ -105,10 +106,6 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       if (!disposed && revision === planVersion) { plan.value = null; error.value = '读取原生配置清单失败：' + causeText(cause) }
     } finally { if (!disposed && revision === planVersion) checking.value = false }
   }
-  function matchesPending(value: InferenceSetupOperation): boolean {
-    if (!submission || value.id === previousOperationId || value.kind !== submission.kind) return false
-    return Object.entries(submission.input).every(([key, valueSent]) => key === 'reviewed' || key === 'hfToken' || value[key as keyof InferenceSetupOperation] === valueSent)
-  }
   function belongsToWorkspace(value: InferenceSetupOperation): boolean {
     if (!plan.value) return false
     if (value.workspacePath) return value.workspacePath === plan.value.workspacePath
@@ -150,13 +147,15 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     } catch (cause) {
       if (!disposed) {
         if (operation.value?.status === 'failed') {
-          error.value = causeText(cause); message.value = '当前步骤已结束，已完成文件保留。核对错误后可重试此步骤。'; finished = true
+          error.value = causeText(cause)
+          message.value = operation.value.interrupted ? '上次准备因运行时退出而中断，已完成文件保留；确认原安装器退出后，可重新核对清单。' : '当前步骤已结束，已完成文件保留。核对错误后可重试此步骤。'
+          finished = true
         } else { operationUncertain.value = true; error.value = '状态尚未确认，后台操作可能仍在运行。' + causeText(cause) }
       }
     } finally {
       observing = false
       if (!disposed) {
-        if (!hasRunningOperation.value && !operationUncertain.value) { await cancelRequest; submission = null }
+        if (!hasRunningOperation.value && !operationUncertain.value) { await cancelRequest }
         busy.value = hasRunningOperation.value || operationUncertain.value
         if (finished) await refreshPlan()
       }
@@ -166,19 +165,25 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     if (!local() || checking.value || observing || !plan.value) return
     checking.value = true
     try {
-      const result = await localSetupApi.getOperation()
+      recovery = readSetupRecovery(plan.value.workspacePath)
+      if (recovery && recovery.workspace !== plan.value.workspacePath) throw new Error('原操作属于其他 AI 工作区，请切回原目录核对结果')
+      const result = await localSetupApi.getOperation(undefined, recovery?.id ?? operation.value?.id)
       if (disposed) return
+      if (recovery && !result.operation && result.runtimeId !== recovery.runtimeId) {
+        await saveSetupRecovery(recovery.workspace, null); recovery = null; operation.value = null
+        operationUncertain.value = false; busy.value = false; error.value = ''; message.value = '上次请求未被后台接收，可以重新确认清单。'; return
+      }
       const value = result.operation
       // A completed historic receipt is not evidence for the current plan. The
       // plan reads installed resources; recover only an operation still in flight.
-      if (!operation.value && !submission && value?.status !== 'running') {
+      if (!operation.value && !recovery && value?.status !== 'running') {
         operationUncertain.value = false; busy.value = false
         return
       }
       const own = isInferenceSetupOperation(value) && belongsToWorkspace(value)
-        && (operation.value ? value.id === operation.value.id : submission ? matchesPending(value) : true)
+        && (operation.value ? value.id === operation.value.id : recovery ? value.id === recovery.id : true)
       if (!own) {
-        if (submission || (operation.value?.status === 'running' && belongsToWorkspace(operation.value))) throw new Error('尚未找到本次操作的确切状态；请勿重复提交，并查看控制室日志')
+        if (recovery || (operation.value?.status === 'running' && belongsToWorkspace(operation.value))) throw new Error('尚未找到原编号的记录；请勿重复提交。重新检查仍无记录时，完全退出并重启绘遇后再次检查')
         operation.value = null; operationUncertain.value = false; busy.value = false
         if (value?.status === 'running') {
           error.value = ''; message.value = '另一项准备正在进行，可在对应入口查看进度。完成后再检查原生引擎。'
@@ -196,7 +201,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     await refreshPlan()
   }
   async function recheck() {
-    if (!local() || checking.value || busy.value || observing) return
+    if (!local() || checking.value || (busy.value && !operationUncertain.value) || observing) return
     // Explicit checks also recover background work after a failed initial read.
     // Internal plan refreshes must not start another operation observer.
     if (await refreshPlan()) await reconcile()
@@ -209,8 +214,13 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       const before = await localSetupApi.getOperation()
       if (disposed) return
       if (before.operation?.status === 'running') throw new Error('控制室另有操作正在运行，请等待结束后重试')
-      previousOperationId = before.operation?.id ?? null; submission = { ...next, input: { ...next.input } } as Submission; posted = true
-      if ('hfToken' in submission.input) delete submission.input.hfToken
+      if (!before.runtimeId) throw new Error('运行时版本尚不支持操作恢复，请更新并重启绘遇')
+      const id = crypto.randomUUID()
+      recovery = { id, workspace: workspacePath.value, runtimeId: before.runtimeId }
+      await saveSetupRecovery(recovery.workspace, recovery)
+      if (disposed) return
+      await ensureCurrentWorkspace()
+      next.input.operationId = id; posted = true
       hfToken.value = ''
       const result = next.kind === 'prepare-inference-runtime' ? await inferenceSetupApi.prepareRuntime(next.input)
         : next.kind === 'import-inference-model' ? await inferenceSetupApi.importModel(next.input)
@@ -218,13 +228,19 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
         : next.kind === 'install-native-runtime' ? await inferenceSetupApi.installRuntime(next.input)
         : next.kind === 'download-native-resource' ? await inferenceSetupApi.downloadResource(next.input) : await inferenceSetupApi.downloadModel(next.input)
       if ('hfToken' in next.input) delete next.input.hfToken
+      if (result.operation.id !== recovery?.id) throw new Error('返回的操作编号与提交编号不同，请核对原操作')
       if (!disposed) await observe(result)
     } catch (cause) {
       if ('hfToken' in next.input) delete next.input.hfToken
       if (disposed) return
-      if (posted && !(cause instanceof ApiClientError && cause.kind === 'http')) {
+      if (posted && !(cause instanceof ApiClientError && cause.kind === 'http' && cause.status >= 400 && cause.status < 500 && cause.code !== 'OPERATION_EXISTS')) {
         operationUncertain.value = true; error.value = '请求结果尚未确认，正在核对后台操作；请勿重复提交。'; await reconcile()
-      } else { error.value = causeText(cause); submission = null; await refreshPlan() }
+      } else {
+        error.value = causeText(cause)
+        try { if (recovery) await saveSetupRecovery(recovery.workspace, null); recovery = null }
+        catch (saveError) { operationUncertain.value = true; error.value += '；' + causeText(saveError) }
+        await refreshPlan()
+      }
     } finally { if ('hfToken' in next.input) delete next.input.hfToken; if (!disposed) busy.value = hasRunningOperation.value || operationUncertain.value }
   }
   function managedInput(): ManagedInferenceInput { return { workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true, modelId: modelId.value, ...(hfToken.value.trim() ? { hfToken: hfToken.value.trim() } : {}) } }

@@ -49,7 +49,7 @@
         <button
           type="button"
           class="nav-search tw:cursor-pointer" data-spring-button
-          aria-label="搜索页面、场景与作品"
+          aria-label="搜索页面、角色、场景与作品"
           aria-haspopup="dialog" aria-keyshortcuts="Control+k Meta+k"
           @click="openSearch"
         ><span class="nav-search-content" data-press-content><ArchiveIcon name="search" /><span class="nav-search-label">搜索</span><kbd aria-hidden="true">{{ searchShortcut }}</kbd></span></button>

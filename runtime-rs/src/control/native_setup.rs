@@ -60,6 +60,7 @@ struct ModelBundle {
 #[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct Request {
+    operation_id: Option<String>,
     workspace_path: PathBuf,
     plan_id: String,
     reviewed: bool,
@@ -233,7 +234,7 @@ async fn activate(
         &["检查当前设备与依赖", "校验完整模型", "保存原生引擎配置"],
     )?;
     operation["workspacePath"] = json!(body.workspace_path);
-    s.state.lock().unwrap().operation = Some(operation.clone());
+    s.publish_operation(operation.clone())?;
     let cancel = s.shutdown.child_token();
     *s.environment_cancel.lock().unwrap() = Some(cancel.clone());
     let (send, receive) = tokio::sync::oneshot::channel();

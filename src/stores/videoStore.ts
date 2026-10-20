@@ -1,8 +1,9 @@
 import { profileDraftStorage as sessionStorage } from '../platform/web/profileStorage.ts'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { videoDraftCodec as codec } from '@/storage/videoDraftCodec'
+import { createVideoDraftStorage } from '@/storage/videoDraftStorage'
 import type { FirstFrameRequest } from '@/types/firstFrameRequest'
 import { defineStore } from 'pinia'
-import { readStoryOrigin } from '@/types/storyOrigin'
 import {
   VIDEO_CONTEXT_KEY,
   VIDEO_DRAFT_KEY,
@@ -150,21 +151,8 @@ const SHOTS_CTX_KEY = VIDEO_SHOTS_CONTEXT_KEY
 /** 剧本模式分幕 → 分镜短片：无图纯文本载荷，视频页一次性消费。 */
 const SCENARIO_CTX_KEY = VIDEO_SCENARIO_CONTEXT_KEY
 
-function isVideoCtxPayload(value: unknown): value is VideoCtxPayload {
-  return typeof value === 'object' && value !== null && typeof (value as VideoCtxPayload).imageId === 'string'
-}
 
-function isStagedScenarioAct(value: unknown): value is StagedScenarioAct {
-  if (typeof value !== 'object' || value === null) return false
-  const act = value as Partial<StagedScenarioAct>
-  return typeof act.prompt === 'string' && typeof act.characterId === 'string'
-}
 
-function isVideoDraft(value: unknown): value is VideoDraftPayload {
-  if (typeof value !== 'object' || value === null) return false
-  const draft = value as Partial<VideoDraftPayload>
-  return typeof draft.mode === 'string' && typeof draft.prompt === 'string'
-}
 
 function isVideoTaskRecord(value: unknown): value is VideoTaskRecord {
   if (typeof value !== 'object' || value === null) return false
@@ -172,11 +160,6 @@ function isVideoTaskRecord(value: unknown): value is VideoTaskRecord {
   return typeof record.jobId === 'string' && record.jobId.length > 0
 }
 
-function isShotsDraft(value: unknown): value is ShotsDraftPayload {
-  if (typeof value !== 'object' || value === null) return false
-  const draft = value as Partial<ShotsDraftPayload>
-  return Array.isArray(draft.shots) && Array.isArray(draft.cards)
-}
 
 function isShotsBatchRecord(value: unknown): value is ShotsBatchRecord {
   if (typeof value !== 'object' || value === null) return false
@@ -184,16 +167,6 @@ function isShotsBatchRecord(value: unknown): value is ShotsBatchRecord {
   return typeof record.batchId === 'string' && record.batchId.length > 0
 }
 
-function readJson<T>(key: string, validate: (value: unknown) => value is T): T | null {
-  try {
-    const raw = sessionStorage.getItem(key)
-    if (!raw) return null
-    const parsed: unknown = JSON.parse(raw)
-    return validate(parsed) ? parsed : null
-  } catch {
-    return null
-  }
-}
 
 function readTaskHistory<T>(key: string, validate: (value: unknown) => value is T): { record: T | null; issue: string } {
   try {
@@ -205,39 +178,27 @@ function readTaskHistory<T>(key: string, validate: (value: unknown) => value is 
   } catch { return { record: null, issue: '旧任务身份无法读取，记录已保留；请核对原任务，不能重复提交' } }
 }
 
-function writeJson(key: string, value: unknown): boolean {
-  try {
-    sessionStorage.setItem(key, JSON.stringify(value))
-    return true
-  } catch {
-    return false
-  }
-}
 
 function removeKey(key: string): void {
   try { sessionStorage.removeItem(key) } catch { /* 忽略 */ }
 }
 
-function readStoredShots(): VideoCtxPayload[] {
-  const list = readJson<VideoCtxPayload[]>(SHOTS_CTX_KEY, Array.isArray)
-  return Array.isArray(list) ? list.filter(isVideoCtxPayload) : []
-}
 
-function readStoredScenarioActs(): StagedScenarioAct[] {
-  const list = readJson<StagedScenarioAct[]>(SCENARIO_CTX_KEY, Array.isArray)
-  return Array.isArray(list) ? list.filter(isStagedScenarioAct) : []
-}
 
 export const useVideoStore = defineStore('videoStudio', () => {
+  const drafts = createVideoDraftStorage()
+  const videoReloadVersion = ref(0), shotsReloadVersion = ref(0)
+  const draftIssue = computed(() => Object.values(drafts.issues.value).join('；'))
   // ── 状态（初始化时从 sessionStorage 水合，刷新不丢） ──
-  const pendingImageCtx = ref<VideoCtxPayload | null>(readJson(IMAGE_CTX_KEY, isVideoCtxPayload))
-  const pendingShotCtxs = ref<VideoCtxPayload[]>(readStoredShots())
-  const pendingScenarioActs = ref<StagedScenarioAct[]>(readStoredScenarioActs())
+  const pendingImageCtx = ref<VideoCtxPayload | null>(drafts.read(IMAGE_CTX_KEY, codec.context))
+  const pendingShotCtxs = ref<VideoCtxPayload[]>(drafts.read(SHOTS_CTX_KEY, codec.contexts) || [])
+  const pendingScenarioActs = ref<StagedScenarioAct[]>(drafts.read(SCENARIO_CTX_KEY, codec.acts) || [])
 
   // ── 单图出视频交接 ──
   function stageImageCtx(ctx: VideoCtxPayload): boolean {
-    if (!writeJson(IMAGE_CTX_KEY, ctx)) return false
-    pendingImageCtx.value = ctx
+    const saved = drafts.write(IMAGE_CTX_KEY, ctx, codec.context)
+    if (!saved) return false
+    pendingImageCtx.value = saved
     return true
   }
 
@@ -257,43 +218,47 @@ export const useVideoStore = defineStore('videoStudio', () => {
    * 返回值还让调用方误以为成功，刷新后界面与存储不一致。
    */
   function appendShotCtx(ctx: VideoCtxPayload): { ok: boolean; count: number } {
-    const list = [...pendingShotCtxs.value, ctx]
-    if (!writeJson(SHOTS_CTX_KEY, list)) {
+    const saved = drafts.write(SHOTS_CTX_KEY, [...pendingShotCtxs.value, ctx], codec.contexts)
+    if (!saved) {
       return { ok: false, count: pendingShotCtxs.value.length }
     }
+    const list = [...pendingShotCtxs.value, saved[saved.length - 1]]
     pendingShotCtxs.value = list
     return { ok: true, count: list.length }
   }
 
   function stageShotCtxs(list: VideoCtxPayload[]): boolean {
-    if (!writeJson(SHOTS_CTX_KEY, list)) return false
-    pendingShotCtxs.value = list
+    const saved = drafts.write(SHOTS_CTX_KEY, list, codec.contexts)
+    if (!saved) return false
+    pendingShotCtxs.value = list.map((item, index) => pendingShotCtxs.value.includes(item) ? item : saved[index])
     return true
   }
 
   // ── 剧本模式分幕交接（2026-08-23 激活：剧本页整本送入分镜短片） ──────────
   function stageScenarioActs(list: StagedScenarioAct[]): boolean {
-    const pending = list.map(act => ({ ...act, storyOrigin: readStoryOrigin(act.storyOrigin),
+    const pending = list.map(act => ({ ...act,
       importId: typeof act.importId === 'string' && act.importId ? act.importId : crypto.randomUUID() }))
-    if (!writeJson(SCENARIO_CTX_KEY, pending)) return false
-    pendingScenarioActs.value = pending
+    const saved = drafts.write(SCENARIO_CTX_KEY, pending, codec.acts)
+    if (!saved) return false
+    pendingScenarioActs.value = saved
     return true
   }
 
   // ── 创作草稿与任务记录（F1：切页/刷新不丢创作上下文）─────────────────────
-  const videoDraft = ref<VideoDraftPayload | null>(readJson(VIDEO_DRAFT_KEY, isVideoDraft))
+  const videoDraft = ref<VideoDraftPayload | null>(drafts.read(VIDEO_DRAFT_KEY, codec.video))
   const legacyVideo = readTaskHistory(VIDEO_TASK_KEY, isVideoTaskRecord)
   const videoTask = ref<VideoTaskRecord | null>(legacyVideo.record)
   const videoTaskIssue = ref(legacyVideo.issue)
-  const shotsDraft = ref<ShotsDraftPayload | null>(readJson(VIDEO_SHOTS_DRAFT_KEY, isShotsDraft))
+  const shotsDraft = ref<ShotsDraftPayload | null>(drafts.read(VIDEO_SHOTS_DRAFT_KEY, codec.shots))
   const legacyBatch = readTaskHistory(VIDEO_SHOTS_BATCH_KEY, isShotsBatchRecord)
   const shotsBatch = ref<ShotsBatchRecord | null>(legacyBatch.record)
   const shotsBatchIssue = ref(legacyBatch.issue)
 
   /** 草稿写入失败必须可感知（F1 验收）：返回 false 由调用方提示。 */
   function saveVideoDraft(draft: VideoDraftPayload): boolean {
-    if (!writeJson(VIDEO_DRAFT_KEY, draft)) return false
-    videoDraft.value = draft
+    const saved = drafts.write(VIDEO_DRAFT_KEY, draft, codec.video)
+    if (!saved) return false
+    videoDraft.value = saved
     return true
   }
 
@@ -303,8 +268,9 @@ export const useVideoStore = defineStore('videoStudio', () => {
   }
 
   function saveShotsDraft(draft: ShotsDraftPayload): boolean {
-    if (!writeJson(VIDEO_SHOTS_DRAFT_KEY, draft)) return false
-    shotsDraft.value = draft
+    const saved = drafts.write(VIDEO_SHOTS_DRAFT_KEY, draft, codec.shots)
+    if (!saved) return false
+    shotsDraft.value = saved
     return true
   }
 
@@ -313,7 +279,16 @@ export const useVideoStore = defineStore('videoStudio', () => {
     removeKey(VIDEO_SHOTS_BATCH_KEY)
   }
 
+  function reloadDamagedDrafts() {
+    const keys = new Set(Object.keys(drafts.issues.value))
+    if (keys.has(IMAGE_CTX_KEY)) pendingImageCtx.value = drafts.read(IMAGE_CTX_KEY, codec.context)
+    if (keys.has(SHOTS_CTX_KEY)) pendingShotCtxs.value = drafts.read(SHOTS_CTX_KEY, codec.contexts) || []
+    if (keys.has(SCENARIO_CTX_KEY)) pendingScenarioActs.value = drafts.read(SCENARIO_CTX_KEY, codec.acts) || []
+    if (keys.has(VIDEO_DRAFT_KEY)) { videoDraft.value = drafts.read(VIDEO_DRAFT_KEY, codec.video); if (videoDraft.value) videoReloadVersion.value++ }
+    if (keys.has(VIDEO_SHOTS_DRAFT_KEY)) { shotsDraft.value = drafts.read(VIDEO_SHOTS_DRAFT_KEY, codec.shots); if (shotsDraft.value) shotsReloadVersion.value++ }
+  }
   return {
+    draftIssue, videoReloadVersion, shotsReloadVersion, reloadDamagedDrafts, exportDamagedDrafts: drafts.exportOriginals, discardDamagedDrafts: drafts.discard,
     pendingImageCtx,
     pendingShotCtxs,
     stageImageCtx,

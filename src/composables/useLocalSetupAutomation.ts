@@ -46,7 +46,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   function saveDraft(operation=readSetupDraft(workspace.value)?.operation) {
     const value:SetupDraft={workspace:workspace.value,modelId:modelId.value,chatId:chatId.value,drawing:drawing.value,loras:loras.value,
       environment:environment.value,llamaEnvironment:llamaEnvironment.value,...(operation?{operation}:{})}
-    settingsRepository.set(LOCAL_SETUP_DRAFT_SETTING,disposed?{...(readSetupDraft(workspace.value)??value),...(operation?{operation}:{})}:value)
+    return settingsRepository.set(LOCAL_SETUP_DRAFT_SETTING,disposed?{...(readSetupDraft(workspace.value)??value),...(operation?{operation}:{})}:value)
   }
   watch([modelId,chatId,drawing,loras,environment,llamaEnvironment,rebuildComfy],()=>{reviewed.value=false;completed.value=false;if(!restoringDraft)saveDraft()},{flush:'sync'})
   watch(workspace,()=>{
@@ -99,14 +99,15 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     const id=result.operation?.id
     if(!id)throw new Error('准备操作尚未确认，请重新检查控制室')
     const kind=result.operation?.kind
+    operationWorkspace=confirmedWorkspace
+    const lateCancellation=cancelled&&!activeOperation
+    activeOperation=result;operationUncertain.value=true
     if(setupOperationKind(kind)&&confirmedWorkspace===workspace.value){
-      saveDraft({id,kind})
+      if (!await saveDraft({id,kind})) throw new Error('准备操作已开始，恢复编号尚未保存；请先重试保存设置。')
       if(disposed)window.dispatchEvent(new Event('huiyu:setup-operation'))
     }
     if(disposed)checkpoint()
-    operationWorkspace=confirmedWorkspace
-    const lateCancellation=cancelled&&!activeOperation
-    activeOperation=result;operationUncertain.value=false
+    operationUncertain.value=false
     try{
       // Cancellation can precede the server acknowledgement that gives us an operation ID.
       if(lateCancellation)void cancel()
@@ -146,8 +147,8 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     const activated=engine.configured.engine==='comfy'?engine:await inferenceSettingsApi.save({...engine.configured,engine:'comfy'})
     checkpoint()
     engineRestartRequired.value=activated.active.engine!=='comfy'||activated.restartRequired
-    settingsRepository.set(DRAW_ENGINE_SETTING,'anima')
-    settingsRepository.set(STARTER_MODEL_SETTING,selectedModel)
+    const saved = await Promise.all([settingsRepository.set(DRAW_ENGINE_SETTING,'anima'), settingsRepository.set(STARTER_MODEL_SETTING,selectedModel)])
+    if (saved.some(ok => !ok)) throw new Error('模型已准备，绘图偏好尚未保存，请重试保存设置。')
     onConfigured()
   }
   function beginRun(){
@@ -231,7 +232,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     recoveryRequest=true;recoveryPending.value=true;busy.value=true;operationUncertain.value=false;error.value=''
     message.value='正在核对上次准备步骤…'
     try{
-      const result=await localSetupApi.getOperation()
+      const result=await localSetupApi.getOperation(undefined,owned.id)
       if(disposed)return
       if(workspace.value!==confirmedWorkspace){recoveryPending.value=false;return}
       if(result.operation?.id!==owned.id||result.operation.kind!==owned.kind){

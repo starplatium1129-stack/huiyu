@@ -7,6 +7,7 @@ mod inference_discovery;
 mod inference_setup;
 mod llama;
 mod logs;
+mod operation_journal;
 mod native_setup;
 mod probe;
 mod settings;
@@ -50,6 +51,8 @@ pub struct ControlService {
     images: RwLock<std::sync::Weak<crate::images::ImageService>>,
     saved: Arc<RwLock<Value>>,
     state: Mutex<ControlState>,
+    operation_journal: Mutex<Result<operation_journal::Journal>>,
+    instance_id: String,
     probe_lock: tokio::sync::Mutex<()>,
     setup_verify_lock: Arc<tokio::sync::Semaphore>,
     environment_cancel: Mutex<Option<CancellationToken>>,
@@ -78,6 +81,7 @@ struct Managed {
 struct ControlState {
     llama_release_unconfirmed: bool,
     operation: Option<Value>,
+    operation_checkpoint: Option<Instant>,
     seq: u64,
     logs: VecDeque<Arc<String>>,
     log_seq: u64,
@@ -117,6 +121,11 @@ impl ControlService {
             ai_workspace_root: config.ai_workspace_root.clone(),
             runtime_root: config.runtime_root.clone(),
         });
+        let operation_journal = operation_journal::Journal::open(&config).and_then(|journal| {
+            journal.get(None)?;
+            Ok(journal)
+        });
+        let operation = operation_journal.as_ref().ok().and_then(|journal| journal.get(None).ok().flatten());
         let service = Arc::new(Self {
             voice,
             inference,
@@ -131,7 +140,9 @@ impl ControlService {
             settings: RwLock::new(Arc::new(settings)),
             saved: Arc::new(RwLock::new(saved)),
             config_write: Arc::new(tokio::sync::Mutex::new(())),
-            state: Mutex::default(),
+            state: Mutex::new(ControlState { operation, ..Default::default() }),
+            operation_journal: Mutex::new(operation_journal),
+            instance_id: uuid::Uuid::new_v4().to_string(),
             probe_lock: tokio::sync::Mutex::new(()),
             setup_verify_lock: Arc::new(tokio::sync::Semaphore::new(1)),
             environment_cancel: Mutex::new(None),
@@ -215,6 +226,9 @@ impl ControlService {
         }
     }
     fn begin(&self, kind: &str, stages: &[&str]) -> Result<Value> {
+        self.begin_with_id(kind, stages, None)
+    }
+    fn begin_with_id(&self, kind: &str, stages: &[&str], requested_id: Option<&str>) -> Result<Value> {
         if self.shutdown.is_cancelled() {
             return Err(ApiError::new(503, "SHUTTING_DOWN", "运行时正在退出"));
         }
@@ -230,8 +244,14 @@ impl ControlService {
                 "已有操作正在进行，请等待完成",
             ));
         }
+        let id = match requested_id {
+            Some(id) => uuid::Uuid::parse_str(id).map_err(|_| ApiError::invalid("操作编号无效"))?.to_string(),
+            None => uuid::Uuid::new_v4().to_string(),
+        };
+        let op = json!({"id":id,"kind":kind,"label":kind,"workspacePath":self.config.ai_workspace_root,"status":"running","stageIndex":0,"stages":stages,"message":stages.first().copied().unwrap_or(kind),"startedAt":now(),"finishedAt":0,"error":""});
+        self.persist_operation(&op, true)?;
         state.seq += 1;
-        let op = json!({"id":format!("{}-{}",now(),state.seq),"kind":kind,"label":kind,"status":"running","stageIndex":0,"stages":stages,"message":stages.first().copied().unwrap_or(kind),"startedAt":now(),"finishedAt":0,"error":""});
+        state.operation_checkpoint = None;
         state.operation = Some(op.clone());
         Ok(op)
     }
@@ -241,6 +261,7 @@ impl ControlService {
             op["stageIndex"] = json!(index);
             op["message"] = op["stages"][index].clone();
         }
+        self.checkpoint_operation(&mut state, true);
     }
     fn finish(&self, id: &Value, result: Result<()>) {
         let error = result.err().map(|e| self.redact(&e.message));
@@ -258,5 +279,6 @@ impl ControlService {
             op["error"] = json!(error.clone().unwrap_or_default());
             op["message"] = json!(error.unwrap_or("操作完成".into()));
         }
+        self.checkpoint_operation(&mut state, true);
     }
 }

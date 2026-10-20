@@ -72,7 +72,7 @@ impl ControlService {
         } else {
             "install-native-runtime"
         };
-        let mut operation = self.begin(
+        let mut operation = self.begin_with_id(
             kind,
             &[
                 "检查设备和目标目录",
@@ -80,6 +80,7 @@ impl ControlService {
                 "安装或校验组件",
                 "发布可用版本",
             ],
+            body.operation_id.as_deref(),
         )?;
         operation["workspacePath"] = json!(body.workspace_path);
         operation["planId"] = json!(body.plan_id);
@@ -94,7 +95,7 @@ impl ControlService {
         if !model_download && !image_models::is_adapter_runtime(&runtime) {
             operation["preparedPaths"] = runtime_paths(self, &runtime);
         }
-        self.state.lock().unwrap().operation = Some(operation.clone());
+        self.publish_operation(operation.clone())?;
         let cancel = self.shutdown.child_token();
         *self.environment_cancel.lock().unwrap() = Some(cancel.clone());
         let service = self.clone();
@@ -369,6 +370,7 @@ impl ControlService {
                 .unwrap()
                 .extend(update.as_object().unwrap().clone());
         }
+        self.checkpoint_operation(&mut state, update.get("stage").is_some() || update.get("cancelAllowed").is_some());
     }
     pub(super) async fn download_native_files(
         &self,

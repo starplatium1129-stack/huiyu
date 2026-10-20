@@ -48,7 +48,7 @@ function validSetup(value: ApiResponseObject): boolean {
 }
 
 export const localSetupApi = {
-  getOperation: (signal?:AbortSignal) => apiClient.request<ControlActionResult>('/api/local-setup/operation',{signal,cache:'no-store',cachePolicy:'bypass',timeoutMs:10_000,validate:value=>value.ok===true&&(value.operation===null||object(value.operation))}),
+  getOperation: (signal?:AbortSignal, id?:string) => apiClient.request<ControlActionResult & { runtimeId: string }>('/api/local-setup/operation'+(id ? '?id='+encodeURIComponent(id) : ''),{signal,cache:'no-store',cachePolicy:'bypass',timeoutMs:10_000,validate:value=>value.ok===true&&typeof value.runtimeId==='string'&&!!value.runtimeId&&(value.operation===null||object(value.operation))}),
   ensureLlama: (baseUrl:string,signal?:AbortSignal) => apiClient.request<ControlActionResult & {ready?:boolean}>('/api/local-setup/llama-ensure',{method:'POST',body:{baseUrl},signal,timeoutMs:10_000,validate:value=>value.ok===true&&(value.ready===true||object(value.operation))}),
   prepareEnvironment: (environment: string, workspacePath: string, signal?: AbortSignal) => apiClient.request<ControlActionResult>(`/api/local-setup/environment/${encodeURIComponent(environment)}`, {
     method:'POST', body:{workspacePath,reviewed:true}, signal, timeoutMs:15_000, validate:value=>value.ok===true&&object(value.operation),

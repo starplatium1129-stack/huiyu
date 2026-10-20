@@ -14,6 +14,7 @@ use tokio::{
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct PrepareRequest {
+    operation_id: Option<String>,
     base_python: PathBuf,
     wheelhouse: PathBuf,
     workspace_path: PathBuf,
@@ -28,6 +29,7 @@ struct InspectRequest {
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct ImportRequest {
+    operation_id: Option<String>,
     model_id: String,
     source_dir: PathBuf,
     models_root: PathBuf,
@@ -67,7 +69,7 @@ async fn import(
         s.model_import_command(&body.model_id, &body.source_dir, Some(&body.models_root))?;
     command.arg("--apply");
     let operation = s.start_inference_setup("import-inference-model", command,
-        json!({"modelId":body.model_id,"sourceDir":body.source_dir,"modelsRoot":body.models_root,"targetDir":target}))?;
+        json!({"modelId":body.model_id,"sourceDir":body.source_dir,"modelsRoot":body.models_root,"targetDir":target}), body.operation_id.as_deref())?;
     Ok(Json(json!({"ok":true,"operation":operation})))
 }
 
@@ -111,7 +113,7 @@ impl ControlService {
             .arg("--wheelhouse")
             .arg(&body.wheelhouse);
         let operation = self.start_inference_setup("prepare-inference-runtime", command,
-            json!({"basePython":body.base_python,"wheelhouse":body.wheelhouse,"workspacePath":body.workspace_path,"preparedPaths":paths}))?;
+            json!({"basePython":body.base_python,"wheelhouse":body.wheelhouse,"workspacePath":body.workspace_path,"preparedPaths":paths}), body.operation_id.as_deref())?;
         Ok(json!({"ok":true,"operation":operation,"preparedPaths":paths}))
     }
     fn model_import_command(
@@ -169,14 +171,15 @@ impl ControlService {
         kind: &str,
         mut command: Command,
         details: Value,
+        operation_id: Option<&str>,
     ) -> Result<Value> {
         let permit = self.setup_permit()?;
-        let mut operation = self.begin(kind, &["正在执行离线准备或目录导入"])?;
+        let mut operation = self.begin_with_id(kind, &["正在执行离线准备或目录导入"], operation_id)?;
         operation
             .as_object_mut()
             .unwrap()
             .extend(details.as_object().unwrap().clone());
-        self.state.lock().unwrap().operation = Some(operation.clone());
+        self.publish_operation(operation.clone())?;
         let cancel = self.shutdown.child_token();
         *self.environment_cancel.lock().unwrap() = Some(cancel.clone());
         let service = self.clone();

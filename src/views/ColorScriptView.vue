@@ -48,7 +48,7 @@
         <div v-if="violations.length" class="art-warn show">
           <ArchiveIcon name="warning" /> 检测到 {{ violations.length }} 个不建议使用的标签：{{ violations.join('、') }}
         </div>
-        <div class="prompt-label">自动翻译 Prompt</div>
+        <div class="prompt-label">色彩预设词条</div>
         <div class="prompt-code" v-html="colorizedPrompt"></div>
         <div class="result-actions tw:flex tw:flex-wrap tw:gap-s-2">
           <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :content-key="selected.id" :action="copyPrompt" />
@@ -99,10 +99,11 @@ import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vu
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { ref, computed, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import { COLOR_MOODS } from '@/config/promptConstants'
 import { BANNED_TAGS } from '@/utils/promptDiagnostics'
 import { scrollBehavior } from '@/utils/motionPreference'
 import { downloadBlob } from '@/utils/downloadBlob'
@@ -118,29 +119,20 @@ const LIGHTINGS = [
   { iconName:'overcast' as const,    name:'阴天柔光', reason:'平静/文艺/清新/日常' },
 ]
 
-interface ColorMood {
-  id: string
-  iconName: ArchiveIconName
-  name: string
-  en: string
-  color: string
-  palette: string[]
-  mapping: Record<string, string>
-  prompt: string
+// Display guidance is descriptive; every exported color token comes from the compiler preset.
+const GUIDANCE: Record<string, Record<string, string>> = {
+  joy: {'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'},
+  love: {'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'},
+  calm: {'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'},
+  sad: {'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'},
+  tension: {'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'},
+  warmth: {'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'},
 }
-
-const MOODS: ColorMood[] = [
-  { id:'joy',     iconName:'sun',       name:'快乐', en:'Joy',     color:'#FFD54F', palette:['#FFE082','#FFD54F','#FFB300','#FF8F00','#FFF8E1'], mapping:{'色相':'暖黄色 / 浅橙色 / 柔粉','光照':'Golden Hour / 午后阳光 / 明亮','氛围':'活力 / 温暖 / 清爽','天气':'晴天 / 微风'}, prompt:'warm yellow tones, warm color palette, vibrant but soft' },
-  { id:'love',    iconName:'love',      name:'恋爱', en:'Love',    color:'#F06292', palette:['#F8BBD0','#F06292','#EC407A','#AD1457','#FFF0F5'], mapping:{'色相':'夕阳 / 粉色 / 暖光','光照':'Golden Hour / 逆光 / 柔光','氛围':'暧昧 / 心跳 / 羞涩','天气':'黄昏 / 樱花季'}, prompt:'pink tones, warm color palette, gentle colors' },
-  { id:'calm',    iconName:'leaf',      name:'平静', en:'Calm',    color:'#81C784', palette:['#C8E6C9','#81C784','#4CAF50','#2E7D32','#F1F8E9'], mapping:{'色相':'淡绿 / 青绿 / 奶白','光照':'阴天柔光 / 窗光 / 自然光','氛围':'安静 / 治愈 / 文艺','天气':'多云 / 雨后'}, prompt:'soft green tones, muted tones, gentle palette' },
-  { id:'sad',     iconName:'rain',      name:'忧伤', en:'Sad',     color:'#64B5F6', palette:['#BBDEFB','#64B5F6','#1E88E5','#0D47A1','#E3F2FD'], mapping:{'色相':'蓝色 / 灰蓝 / 冷调','光照':'月光 / 阴天 / 冷调窗光','氛围':'孤独 / 回忆 / 思念','天气':'雨天 / 阴天 / 夜晚'}, prompt:'blue tones, cool color palette, muted tones' },
-  { id:'tension', iconName:'moonlight', name:'神秘', en:'Mystery', color:'#BA68C8', palette:['#E1BEE7','#BA68C8','#8E24AA','#4A148C','#F3E5F5'], mapping:{'色相':'紫蓝 / 深紫 / 冷调','光照':'月光 / 逆光 / 暗调','氛围':'神秘 / 距离 / 梦幻','天气':'夜晚 / 雾 / 雨'}, prompt:'purple and blue tones, cool color palette' },
-  { id:'warmth',  iconName:'lantern',   name:'温馨', en:'Warmth',  color:'#FFB74D', palette:['#FFE0B2','#FFB74D','#F57C00','#E65100','#FFF3E0'], mapping:{'色相':'暖橙 / 橘红 / 米黄','光照':'夜灯 / 烛光 / 室内暖光','氛围':'安全感 / 家庭 / 治愈','天气':'夜晚 / 秋雨'}, prompt:'warm orange tones, warm color palette, gentle colors' },
-]
+const MOODS = COLOR_MOODS.map(mood => ({ ...mood, palette: mood.colors, mapping: GUIDANCE[mood.id] }))
 
 const route = useRoute(), router = useRouter()
 function routeMood() { return MOODS.find(mood => mood.id === route.query.mood) ?? null }
-const selected = ref<ColorMood | null>(routeMood())
+const selected = ref<(typeof MOODS)[number] | null>(routeMood())
 const notebookOpen = ref(route.query.notebook === '1')
 const notebookRevealed = ref(notebookOpen.value)
 watch(notebookOpen, open => { if (open) notebookRevealed.value = true }, { flush: 'sync' })
@@ -189,7 +181,6 @@ async function chooseMood(id: string) {
 }
 
 function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
-function norm(t: string) { return t.split(',').map(s => s.trim().replace(/[\s-]+/g,'_')).join(', ') }
 
 const violations = computed(() => {
   if (!selected.value) return []
@@ -199,11 +190,11 @@ const violations = computed(() => {
 
 const colorizedPrompt = computed(() => {
   if (!selected.value) return ''
-  return norm(selected.value.prompt).split(',').map(tk => {
+  return selected.value.prompt.split(',').map(tk => {
     const t = tk.trim()
     const low = t.toLowerCase().replace(/[\s\/]+/g, '_')
     const bad = BANNED_TAGS.some(b => low === b.toLowerCase().replace(/[\s\/]+/g,'_') || low.includes(b.toLowerCase().replace(/[\s\/]+/g,'_')))
-    return bad ? `<span class="violate">${esc(t)}</span>` : esc(t)
+    return bad ? `<span class="violate">${esc(tk)}</span>` : esc(tk)
   }).join(',')
 })
 
@@ -214,7 +205,7 @@ async function copyPrompt() {
 
 function exportTxt() {
   if (!selected.value) return
-  const body = selected.value.prompt + '\n\n# mood: ' + selected.value.id + '\n# usage: 复制到 Prompt Builder v5 Step 4 色彩氛围'
+  const body = selected.value.prompt + '\n\n# mood: ' + selected.value.id + '\n# usage: 色彩词条片段；可通过“带入工作台使用”采用同一预设'
   downloadBlob(new Blob([body], { type: 'text/plain' }), 'color-' + selected.value.id + '.txt')
 }
 

@@ -4,9 +4,9 @@
     <div v-show="open" class="global-search" :inert="!open" @pointerdown.self="close()">
       <ListboxRoot ref="listbox" as-child highlight-on-hover :model-value="''" @highlight="activeKey = typeof $event?.value === 'string' ? $event.value : undefined" @update:model-value="run">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索">
-        <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>页面、场景与作品</span></div>
+        <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>角色、场景与作品</span></div>
         <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3">
-          <StudioSearch v-model="query" class="gs-search" label="搜索场景、作品或页面" placeholder="搜索场景、作品、页面…" :clear-on-escape="false">
+          <StudioSearch v-model="query" class="gs-search" label="搜索角色、服装、场景、蓝图、作品或页面" placeholder="搜索角色、服装、场景、蓝图…" :clear-on-escape="false">
             <template #input="{ inputProps }">
               <ListboxFilter v-model="query" as-child>
                 <input ref="inputEl" v-bind="inputProps" role="combobox" aria-haspopup="listbox" :aria-expanded="open"
@@ -19,8 +19,8 @@
           </StudioTooltip>
         </div>
         <div v-if="scenesLoading || scenesError" class="gs-catalog-state">
-          <p :role="scenesError ? 'alert' : 'status'">{{ scenesError || '正在读取灵感场景…' }}</p>
-          <button v-if="scenesError" type="button" class="btn btn-ghost btn-sm" @click="retryScenes">重新读取场景</button>
+          <p :role="scenesError ? 'alert' : 'status'">{{ scenesError || '正在读取内容目录…' }}</p>
+          <button v-if="scenesError" type="button" class="btn btn-ghost btn-sm" @click="retryScenes">重新读取目录</button>
         </div>
         <ListboxContent as-child>
         <div :id="listboxId" ref="resultsEl" class="gs-results tw:overflow-y-auto tw:p-s-3" aria-label="搜索结果">
@@ -35,7 +35,7 @@
             <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
             <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
             <p v-if="!scenesLoading && !scenesError && !worksError && !worksLoading && !flat.length" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm">
-              没有匹配的结果，试试场景标题、标签或作品名。
+              没有匹配的结果，试试角色、服装、场景标题或作品名。
             </p>
           </template>
         </div>
@@ -82,7 +82,7 @@ const activeResult = computed(() => flat.value[activeIndex.value])
 const resultsAnnouncement = computed(() => {
   const total = flat.value.length
   const result = activeResult.value
-  const status = [scenesLoading.value ? '场景目录读取中' : scenesError.value,
+  const status = [scenesLoading.value ? '内容目录读取中' : scenesError.value,
     queryTerms.value.length ? worksLoading.value ? '作品读取中' : worksError.value : ''].filter(Boolean).join('；')
   const message = !total ? status ? '当前暂无结果' : query.value.trim() ? '没有匹配的结果' : '暂无可用结果' : result
     ? `找到 ${total} 个结果，当前第 ${activeIndex.value + 1} 项：${result.label}`

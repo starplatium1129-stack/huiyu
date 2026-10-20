@@ -1,4 +1,5 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
+import { saveSettingValue } from './settingWrites'
 import {
   AUTO_SAVE_TO_GALLERY_KEY,
   CHAT_THINKING_KEY,
@@ -91,7 +92,7 @@ function browserStorage(): KeyedStorage | null {
 
 interface SettingsRepository {
   get<T>(definition: SettingDefinition<T>): T | null
-  set<T>(definition: SettingDefinition<T>, value: T): void
+  set<T>(definition: SettingDefinition<T>, value: T): Promise<boolean>
 }
 
 function createSettingsRepository(): SettingsRepository {
@@ -105,9 +106,8 @@ function createSettingsRepository(): SettingsRepository {
         return null
       }
     },
-    set<T>(definition: SettingDefinition<T>, value: T): void {
-      if (!store) return
-      try { store.setItem(definition.key, definition.serialize(value)) } catch { /* private mode */ }
+    set<T>(definition: SettingDefinition<T>, value: T): Promise<boolean> {
+      return saveSettingValue(definition.key, definition.serialize(value))
     },
   }
 }
