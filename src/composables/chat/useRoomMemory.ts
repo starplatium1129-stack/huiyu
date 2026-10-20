@@ -15,6 +15,7 @@ import {
   type ChatMemoryState,
 } from '@/utils/chatMemory'
 import { characterSettingCards, loadCharacterSettingCards, recallCharacterSetting } from '@/utils/characterSettingMemory'
+import { packChatMemoryContext } from '@/utils/chatMemoryContext'
 import { loadChatUserProfile, saveChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 import { CHAT_MEMORY_KEY, CHAT_USER_PROFILE_KEY, CHAT_TURN_KEY, CHAT_RESET_KEY } from '@/utils/storageKeys'
 import type { ChatMessage, useChatStorage } from '@/composables/chat/useChatStorage'
@@ -108,11 +109,10 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
   function recallMemories(character: string, query: string) {
     if (!getCompanionCharacterConfig(character)) return []
     if (!characterSettingCards().length) void loadCharacterSettingCards().catch(() => {})
-    // 角色设定记忆（2026-08-28 最小闭环）：从 data/characters.json 既有档案派生
-    // 的角色设定卡，优先于会话事实注入——LLM 先对齐人设，再结合长期记忆。
+    // 人设先于用户事实呈现，但两类召回共用网关预算，不各自占满注入名额。
     const setting = recallCharacterSetting(characterSettingCards(), memoryCharacter(character), query)
     const facts = recallChatFacts(chatMemory.value, memoryCharacter(character), query)
-    return [...setting, ...facts]
+    return packChatMemoryContext(setting, facts)
   }
 
   function resetMemoryState() {

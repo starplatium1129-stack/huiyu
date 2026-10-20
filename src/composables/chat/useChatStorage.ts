@@ -22,6 +22,7 @@ import {
   CHAT_ARCHIVE_KEY,
   archiveCounts,
   chatArchiveToMarkdown,
+  forkChatArchiveMessages,
   mergeArchiveIntoHistory,
   normalizeChatArchive,
   serializeChatArchive,
@@ -356,8 +357,8 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     }
   }
 
-  const branchStorage = useChatBranches(state, canWrite, mergeRemoteIntoState, save, (source, target) => {
-    archiveStorage.add(target, archive.value.archived[source] || [])
+  const branchStorage = useChatBranches(state, canWrite, mergeRemoteIntoState, save, (source, target, forkMessageId, followingMessageIds) => {
+    archiveStorage.add(target, forkChatArchiveMessages(archive.value.archived[source] || [], forkMessageId, followingMessageIds))
     void saveArchive()
   })
   const currentArchiveKey = (char: string) => chatBranchArchiveKey(char, branchStorage.branchId(char))

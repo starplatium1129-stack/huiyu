@@ -4,7 +4,7 @@ import { applyReplyVariant, chatMessageKey, cloneChatMessages, mergeReplyVariant
 import type { ChatMessage, ChatState } from './chatStorageTypes'
 
 export function useChatBranches(state: ChatState, canWrite: () => boolean, refresh: () => boolean, save: (merge?: boolean) => boolean | undefined,
-  copyArchive: (source: string, target: string) => void) {
+  copyArchive: (source: string, target: string, forkMessageId: string, followingMessageIds: string[]) => void) {
   const regenerations = new Map<string, { branch: string; history: ChatMessage[] }>()
   const conversation = (char: string) => state.conversations[char] ||= emptyChatConversation(state.histories[char] || [])
   const branchId = (char = state.active) => conversation(char).activeId
@@ -38,12 +38,12 @@ export function useChatBranches(state: ChatState, canWrite: () => boolean, refre
     state.conversations[char] = JSON.parse(JSON.stringify(before.conversation))
     const current = conversation(char), parentId = current.activeId
     const name = `剧情分支 ${current.branches.filter(branch => branch.id !== 'main').length + 1}`
-    const messages = cloneChatMessages(history.slice(0, index + 1))
-    current.branches.push({ id, name, createdAt: Date.now(), parentId, forkMessageId: chatMessageKey(history[index]), messages: cloneChatMessages(messages) })
+    const messages = cloneChatMessages(history.slice(0, index + 1)), forkMessageId = chatMessageKey(history[index])
+    current.branches.push({ id, name, createdAt: Date.now(), parentId, forkMessageId, messages: cloneChatMessages(messages) })
     current.activeId = id; current.selectionRevision = Math.max(current.selectionRevision + 1, Date.now())
     state.histories[char] = messages
     if (!save(false)) { rollback(char, before); return null }
-    copyArchive(chatBranchArchiveKey(char, parentId), chatBranchArchiveKey(char, id))
+    copyArchive(chatBranchArchiveKey(char, parentId), chatBranchArchiveKey(char, id), forkMessageId, history.slice(index + 1).map(chatMessageKey))
     return id
   }
   function selectVariant(char: string, mid: string, variantMid: string): boolean {

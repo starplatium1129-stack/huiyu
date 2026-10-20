@@ -110,10 +110,9 @@ export function useChatConversation(options: ChatConversationOptions) {
     return session.id
   }
 
-  function createAssistant(characterId: string, text: string) {
-    const recalledMemories = options.recallMemories(characterId, text), mid = createMessageId()
-    return reactive<ChatMessage>({ role: 'assistant', content: '', mid, replyId: mid, stopped: false,
-      ...(recalledMemories.length ? { recalledMemories } : {}) })
+  function createAssistant() {
+    const mid = createMessageId()
+    return reactive<ChatMessage>({ role: 'assistant', content: '', mid, replyId: mid, stopped: false })
   }
 
   function captureTurn(characterId: string, user: ChatMessage, assistant: ChatMessage, restricted = false,
@@ -135,7 +134,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       mid: createMessageId(), stopped: false, ...(sendOptions.image ? { images: [{ ...sendOptions.image }] } : {}) }
     messages.push(user)
     options.storage.trim(characterId)
-    const assistant = createAssistant(characterId, text)
+    const assistant = createAssistant()
     messages.push(assistant)
     options.storage.save()
     if (customText === undefined) {
@@ -200,7 +199,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     const user = history[userIndex]
     if (!user) { options.onError('找不到这条回复对应的问题，请重新发送消息。'); return }
     const regeneration = target.role === 'assistant' ? { replyId: target.replyId || target.mid, previousMid: target.mid } : undefined
-    const assistant = regeneration ? options.storage.prepareRegeneration(characterId, mid) : createAssistant(characterId, user.content)
+    const assistant = regeneration ? options.storage.prepareRegeneration(characterId, mid) : createAssistant()
     if (!assistant) return
     if (!regeneration) {
       history.push(assistant)
@@ -244,6 +243,9 @@ export function useChatConversation(options: ChatConversationOptions) {
     const drawingResults = new Map<string, ToolCallResult>()
 
     try {
+      const memories = options.recallMemories(turn.characterId, text)
+      if (memories.length) turn.assistant.recalledMemories = [...memories]
+      else delete turn.assistant.recalledMemories
       const { buildChatRequestBody, createTurnEmotionTracker } = await abortableTask(() => import('./chatTurnRuntime'), controller.signal)
       checkCurrent()
       const tracker = createTurnEmotionTracker(turn.characterId, options.voice.append,
@@ -325,7 +327,7 @@ export function useChatConversation(options: ChatConversationOptions) {
             toolResultOrigin: usedTools.size ? toolOrigin : undefined,
             roundMessages,
             messages: turn.messages, connection, restricted: turn.restricted,
-            userProfile: options.userProfile.value, memories: options.recallMemories(turn.characterId, text),
+            userProfile: options.userProfile.value, memories,
           }),
           signal: controller.signal,
         })

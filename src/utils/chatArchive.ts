@@ -94,6 +94,21 @@ export function archiveCounts(archive: ChatArchive, characterIds: string[]): Rec
   return Object.fromEntries([...new Set([...characterIds, ...Object.keys(archive.archived)])].map(id => [id, (archive.archived[id] || []).length]))
 }
 
+/** Cut a restored archive at its known fork point and exclude known descendants.
+ * With no matching fork, retain existing inheritance: ordinary trimmed histories
+ * do not overlap the archive. Unmatched imported/capped entries remain ambiguous.
+ */
+export function forkChatArchiveMessages(
+  archived: PersistedChatMessage[],
+  forkMessageId: string,
+  followingMessageIds: readonly string[],
+): PersistedChatMessage[] {
+  const index = forkMessageId ? archived.findIndex(message => chatMessageKey(message) === forkMessageId) : -1
+  const following = new Set(followingMessageIds.filter(Boolean))
+  const prefix = index < 0 ? archived : archived.slice(0, index + 1)
+  return cloneChatMessages(prefix.filter(message => !following.has(chatMessageKey(message))))
+}
+
 /** 把归档消息并回当前对话：有 mid 时去重，保持归档顺序。 */
 export function mergeArchiveIntoHistory(
   history: PersistedChatMessage[],
