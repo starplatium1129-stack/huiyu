@@ -50,8 +50,8 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
         </label>
         <div class="generation-field">
           <label for="gallery-seed-filter">Seed（精确匹配）</label>
-          <div class="generation-seed"><input id="gallery-seed-filter" v-model="seedInput" inputmode="numeric" autocomplete="off" placeholder="输入保存的 Seed" :disabled="conditions.seed === UNRECORDED_CONDITION" />
-            <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="conditions.seed === UNRECORDED_CONDITION" @click="toggleMissingSeed">{{ conditions.seed === UNRECORDED_CONDITION ? '取消未记录' : '未记录' }}</button>
+          <div class="generation-seed"><input id="gallery-seed-filter" v-model="seedInput" class="input input-mono" inputmode="numeric" autocomplete="off" placeholder="输入保存的 Seed" :disabled="conditions.seed === UNRECORDED_CONDITION" />
+            <button class="btn btn-ghost" type="button" :aria-pressed="conditions.seed === UNRECORDED_CONDITION" @click="toggleMissingSeed">{{ conditions.seed === UNRECORDED_CONDITION ? '取消未记录' : '未记录' }}</button>
           </div>
         </div>
       </div>
@@ -68,8 +68,8 @@ async function save() { if (await savePreset(presetName.value)) presetName.value
       </div>
       <form class="generation-save" @submit.prevent="save">
         <label for="gallery-filter-name">组合名称</label>
-        <input id="gallery-filter-name" v-model="presetName" :maxlength="GALLERY_FILTER_NAME_LIMIT" :disabled="busy" autocomplete="off" placeholder="例如：Anima 收藏竖图" required />
-        <button class="btn btn-ghost btn-sm" type="submit" :disabled="busy || !hasActive || !presetName.trim()">{{ busy ? '正在保存…' : '保存当前组合' }}</button>
+        <input id="gallery-filter-name" v-model="presetName" class="input" :maxlength="GALLERY_FILTER_NAME_LIMIT" :disabled="busy" autocomplete="off" placeholder="例如：Anima 收藏竖图" required />
+        <button class="btn btn-ghost" type="submit" :disabled="busy || !hasActive || !presetName.trim()">{{ busy ? '正在保存…' : '保存当前组合' }}</button>
       </form>
       <p v-if="message" class="generation-note" role="status">{{ message }}</p>
       <p v-if="error" class="generation-error" role="alert">{{ error }}</p>
@@ -87,18 +87,17 @@ details { border:0; border-top:1px solid var(--border-soft); background:transpar
 .generation-presets { margin-top:var(--s-2); }
 .generation-summary { margin-left:auto; color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 :deep(summary) { min-height:44px; padding-inline:var(--s-1); }
-:deep(summary:focus-visible),input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+:deep(summary:focus-visible) { outline:none; box-shadow:var(--focus-shadow); }
 .generation-fields { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(14rem,100%),1fr)); gap:var(--s-3); margin-top:var(--s-3); }
 .generation-field { @apply tw:grid tw:min-w-0 tw:gap-s-1; align-content:start; color:var(--text-secondary); }
 .generation-seed,.generation-actions,.generation-save { @apply tw:flex tw:items-center tw:flex-wrap tw:gap-s-2; }
 .generation-seed input { flex:1; min-width:0; width:0; }
+.generation-seed button,.generation-save button { flex-shrink:0; white-space:nowrap; }
 .generation-actions { margin-top:var(--s-3); }
 .generation-actions :deep(.studio-select-wrapper) { flex:1; max-width:24rem; min-width:min(14rem,100%); }
 .generation-save { margin-top:var(--s-3); }
 .generation-save input { flex:1; min-width:min(14rem,100%); }
-input { @apply tw:rounded-md tw:text-primary; min-height:40px; border:1px solid var(--border-soft); background:var(--bg-surface); padding:var(--s-2) var(--s-3); font:inherit; }
-input::placeholder,.generation-note { color:var(--text-secondary); }
-input:disabled { color:var(--text-disabled); }
+.generation-note { color:var(--text-secondary); }
 .generation-note,.generation-error { margin:var(--s-2) 0 0; line-height:var(--lh-body); }
 .generation-error { color:var(--warning-text); }
 </style>

@@ -9,9 +9,9 @@
           <div><DialogTitle>{{ editing ? '编辑智能画册' : '新建智能画册' }}</DialogTitle><DialogDescription>按角色和标签持续收集作品，符合条件的新作品会自动出现。</DialogDescription></div>
           <DialogClose class="btn btn-quiet btn-icon" :disabled="busy" aria-label="关闭智能画册窗口"><ArchiveIcon name="close" /></DialogClose>
         </header>
-        <form class="smart-album-form" @submit.prevent="save">
+        <form class="smart-album-form" novalidate @submit.prevent="save">
           <div class="smart-album-body">
-            <label class="smart-album-name"><span>画册名称</span><input v-model="title" class="input" :maxlength="ARTWORK_PROJECT_TITLE_LIMIT" :disabled="busy" required autocomplete="off" placeholder="例如：夏目的春日精选" /></label>
+            <div class="smart-album-name"><label :for="nameId">画册名称</label><input :id="nameId" ref="nameInput" v-model="title" class="input" :maxlength="ARTWORK_PROJECT_TITLE_LIMIT" :disabled="busy" :aria-invalid="!!nameError || undefined" :aria-describedby="nameError ? nameErrorId : undefined" required autocomplete="off" placeholder="例如：夏目的春日精选" @blur="nameTouched = true" /><p v-if="nameError" :id="nameErrorId" class="smart-album-error" role="alert">{{ nameError }}</p></div>
             <div class="smart-album-fields">
               <div class="smart-album-field"><span>角色</span><StudioSelect v-model="rule.characterId" label="智能画册角色" :disabled="busy" :options="roleOptions" /></div>
               <div class="smart-album-field"><span>作品范围</span><StudioSelect v-model="rule.projectId" label="智能画册作品范围" :disabled="busy" :options="projectOptions" /></div>
@@ -33,7 +33,7 @@
             </section>
             <p v-if="error" class="smart-album-error" role="alert">{{ error }}</p>
           </div>
-          <footer class="smart-album-actions"><DialogClose class="btn btn-ghost" :disabled="busy">取消</DialogClose><button class="btn btn-primary" type="submit" :disabled="busy || !title.trim()">{{ busy ? '正在保存…' : editing ? '更新智能画册' : '保存智能画册' }}</button></footer>
+          <footer class="smart-album-actions"><DialogClose class="btn btn-ghost" :disabled="busy">取消</DialogClose><button class="btn btn-primary" type="submit" :disabled="busy">{{ busy ? '正在保存…' : editing ? '更新智能画册' : '保存智能画册' }}</button></footer>
         </form>
       </DialogContent>
       </div>
@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, nextTick, ref, useId, watch } from 'vue'
 import { DialogRoot, DialogPortal, DialogContent, DialogTitle, DialogDescription, DialogClose } from 'reka-ui'
 import { usePageScrollLock } from '@/composables/usePageScrollLock'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
@@ -62,7 +62,15 @@ const emit = defineEmits<{ 'update:open': [value: boolean]; save: [] }>()
 usePageScrollLock(() => props.open)
 let trigger: HTMLElement | null = null
 function rememberTrigger() { trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null }
-function save(event: SubmitEvent) {
+async function save(event: SubmitEvent) {
+  if (props.busy) return
+  nameTouched.value = true
+  if (nameError.value) {
+    await nextTick()
+    nameInput.value?.scrollIntoView({ block: 'nearest', behavior: 'instant' })
+    nameInput.value?.focus({ preventScroll: true })
+    return
+  }
   const form = event.currentTarget as HTMLFormElement
   if (form.contains(document.activeElement)) form.closest<HTMLElement>('.smart-album-editor')?.focus({ preventScroll: true })
   emit('save')
@@ -76,6 +84,10 @@ function restoreTrigger(event: Event) {
 }
 const title = defineModel<string>('title', { required: true })
 const rule = defineModel<SmartAlbumRule>('rule', { required: true })
+const nameInput = ref<HTMLInputElement | null>(null), nameTouched = ref(false)
+const nameId = `album-name-${useId()}`, nameErrorId = `${nameId}-error`
+const nameError = computed(() => nameTouched.value && !title.value.trim() ? '请填写画册名称。' : '')
+watch(() => props.open, open => { if (open) nameTouched.value = false })
 const roleOptions = computed(() => [{ value: '', label: '全部角色' }, ...props.characters,
   ...(rule.value.characterId && !props.characters.some(item => item.value === rule.value.characterId) ? [{ value: rule.value.characterId, label: rule.value.characterId }] : [])])
 const projectOptions = computed(() => [{ value: '', label: '全部作品' }, ...props.projects.map(project => ({ value: project.id, label: project.title })),
@@ -98,7 +110,7 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 .smart-album-form { min-width:0; min-height:0; display:grid; grid-template-rows:minmax(0,1fr) auto; }
 .smart-album-body { min-width:0; min-height:0; display:grid; gap:var(--s-4); padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); }
 .smart-album-field,.smart-album-name { display:grid; gap:var(--s-2); min-width:0; }
-.smart-album-field > span,.smart-album-name > span { color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.smart-album-field > span,.smart-album-name > label { color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .smart-album-fields,.smart-album-tag-picker { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); align-items:end; }
 .smart-album-tag-list { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .smart-album-tag { min-width:0; max-width:100%; text-align:left; white-space:normal; overflow-wrap:anywhere; border-color:var(--border-soft); }
@@ -107,12 +119,12 @@ const tagChoice = computed({ get: () => '', set: (value: string | number) => {
 .smart-album-favorite { border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); }
 .smart-album-preview { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
 .smart-album-preview-copy { min-width:0; }
-.smart-album-preview strong { @apply tw:block tw:mb-s-1 tw:text-primary tw:text-body-sm; }
+.smart-album-preview strong { @apply tw:block tw:mb-s-1 tw:text-primary tw:text-body-sm; font-variant-numeric:tabular-nums; }
 .smart-album-preview-images { @apply tw:flex tw:gap-s-1 tw:shrink-0; }
 .smart-album-preview-images > span { @apply tw:grid tw:overflow-hidden tw:rounded-sm; place-items:center; width:48px; height:64px; background:var(--bg-elevated); color:var(--text-secondary); }
 .smart-album-preview-images img { @apply tw:w-full tw:h-full tw:object-cover; }
 .smart-album-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; gap:var(--s-2); padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); }
-.smart-album-error { @apply tw:m-0 tw:text-warning-text tw:text-label-sm; }
+.smart-album-error { @apply tw:m-0 tw:text-danger-text tw:text-label-sm; line-height:var(--lh-label); }
 .smart-album-editor button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .smart-album-editor:focus-visible { outline:none; box-shadow:var(--shadow-lg),var(--focus-shadow); }
 .smart-album-editor button:disabled,.smart-album-editor input:disabled { color:var(--text-disabled); }

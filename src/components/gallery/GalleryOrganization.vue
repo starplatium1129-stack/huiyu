@@ -10,9 +10,9 @@
     <p v-if="error" class="organization-error" role="alert">{{ error }}</p>
     <form v-if="active && opened" v-content-motion:up="opened" class="organization-form" :class="{ 'is-creating': albumChoice === 'new' }" @submit.prevent="submit">
       <div class="organization-field"><span>画册归属</span><StudioSelect v-model="albumChoice" label="整理到画册" :disabled="busy || !!pendingProject" :options="albumOptions" /></div>
-      <label v-if="albumChoice === 'new'" class="organization-field"><span>画册名称</span><input v-model="albumTitle" placeholder="例如：秋日手记" :maxlength="ARTWORK_PROJECT_TITLE_LIMIT" :disabled="busy || !!pendingProject" autocomplete="off" required /></label>
-      <label class="organization-field"><span>添加整理标签</span><input v-model="addText" placeholder="例如：壁纸、春日系列" :disabled="busy" autocomplete="off" /></label>
-      <label class="organization-field"><span>移除整理标签</span><input v-model="removeText" placeholder="标签用逗号分隔" :disabled="busy" autocomplete="off" /></label>
+      <label v-if="albumChoice === 'new'" class="organization-field"><span>画册名称</span><input v-model="albumTitle" class="input" placeholder="例如：秋日手记" :maxlength="ARTWORK_PROJECT_TITLE_LIMIT" :disabled="busy || !!pendingProject" autocomplete="off" required /></label>
+      <label class="organization-field"><span>添加整理标签</span><input v-model="addText" class="input" placeholder="例如：壁纸、春日系列" :disabled="busy" autocomplete="off" /></label>
+      <label class="organization-field"><span>移除整理标签</span><input v-model="removeText" class="input" placeholder="标签用逗号分隔" :disabled="busy" autocomplete="off" /></label>
       <button class="btn btn-primary" type="submit" :disabled="busy || !ids.length || !hasChange || overLimit">{{ busy ? '正在保存…' : albumChoice === 'new' ? `创建画册并加入 ${ids.length} 幅作品` : `整理 ${ids.length} 幅作品` }}</button>
       <p v-if="overLimit" class="organization-error organization-note" role="alert">一次最多整理 {{ ARTWORK_ORGANIZATION_SELECTION_LIMIT.toLocaleString('zh-CN') }} 幅作品，请分批选择以保留完整撤销记录。</p>
       <p class="organization-note">加入新手动画册会移出原手动画册。</p>
@@ -67,10 +67,6 @@ async function submit() {
 .organization-form.is-creating { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .organization-form.is-creating > button { grid-column:1 / -1; justify-self:start; max-width:100%; white-space:normal; }
 .organization-field { @apply tw:grid tw:gap-s-1 tw:min-w-0 tw:text-primary tw:text-label-sm; }
-.organization-field input { @apply tw:w-full tw:min-w-0 tw:rounded-md tw:text-primary; min-height:40px; border:1px solid var(--border-soft); background:var(--bg-surface); padding:var(--s-2) var(--s-3); font:inherit; }
-.organization-field input::placeholder { color:var(--text-secondary); }
-.organization-field input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.organization-field input:disabled { color:var(--text-disabled); }
 .organization-note { grid-column:1 / -1; line-height:var(--lh-body); }
 .organization-error { @apply tw:text-warning-text tw:text-label-sm; margin:var(--s-2) 0 0; }
 @media (max-width:1200px) { .organization-form { grid-template-columns:repeat(2,minmax(0,1fr)); } }

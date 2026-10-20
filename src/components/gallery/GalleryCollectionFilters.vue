@@ -22,7 +22,7 @@ const characterOptions = computed(() => [{value:'',label:'全部角色'}, ...pro
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .collection-filters { @apply tw:flex tw:items-end tw:flex-wrap tw:gap-s-3; }
-.collection-field { display:grid; gap:var(--s-1); flex:1 1 180px; min-width:0; color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.collection-field { display:grid; gap:var(--s-1); flex:1 1 180px; min-width:0; max-width:24rem; color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .collection-save { margin-left:auto; min-height:var(--control-height); }
 .collection-rule { @apply tw:flex tw:items-center tw:gap-s-2 tw:m-0 tw:text-secondary tw:text-label-sm tw:leading-body; width:100%; overflow-wrap:anywhere; }
 .collection-rule .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }

@@ -12,7 +12,7 @@ description: 依据绘遇 DESIGN.md 的视觉动效目标与 Emil Kowalski 的�
 - 控件、表单、弹层、拖拽、图片查看或状态反馈：读 [交互落地](references/interaction.md)。
 - 新增或修改动画、页面切换、列表交接：读 [动效决策](references/motion.md)。
 - 卡顿、拖拽变慢、繁忙主线程或合成层问题：读 [动效性能](references/performance.md)；涉及时长与曲线时再读动效决策。
-- 仅调整静态布局、字号或表面层级时，使用 DESIGN.md 的现有品牌、字体、几何与令牌；窄栏按实际容器宽度选择布局，不加载全部参考。
+- 仅调整静态布局、字号或表面层级时，按 DESIGN.md 的 [Typography](../../../DESIGN.md#typography)、[Layout](../../../DESIGN.md#layout) 和 [Shapes](../../../DESIGN.md#shapes) 处理中文阅读、数据对齐、分组与嵌套几何；窄栏按实际容器宽度选择布局。涉及字段语义或文本溢出实现时再读交互落地，不加载全部参考。
 
 ## 落地顺序
 
@@ -38,6 +38,10 @@ description: 依据绘遇 DESIGN.md 的视觉动效目标与 Emil Kowalski 的�
 融合自 [emilkowalski/skills](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202)，采用基线为 `2d228630ba1446365f614a108cb8252f1feda202`（2026-10-14 接入），保留 [MIT 许可证](LICENSE)。
 
 本入口与参考提炼 emil-design-eng、animate、review-animations、animation-performance、apple-design、find-animation-opportunities 和 pick-ui-library 的适用原则；采用后的规范维护在 DESIGN.md，参考只补充 Vue 实施细节。后续上游更新需审查实际差异后融入，不自动改变项目标准。
+
+基础细节另参考 [TypeUI UI Foundations](https://www.typeui.sh/ui-foundations/configurator) 的公开目录与相关示例（2026-10-20 查阅），并核对官方 [fundamentals](https://github.com/bergside/typeui/tree/2a977f1f6616ae8a5ea84a478ca35601c67f4322/skills/fundamentals)（[MIT © 2026 Bergside LLC](https://github.com/bergside/typeui/blob/2a977f1f6616ae8a5ea84a478ca35601c67f4322/LICENSE.md)）；网站与仓库基线分别记录，不假定同版。
+
+阅读、数字对齐、表单、分组、嵌套圆角与图片框架的适用原则已并入 DESIGN.md 原有章节，不另存整套规则或要求日常任务重新浏览。保留绘遇现有双主题、中文字号、控件几何、桌面优先和动效角色；不采用上游移动端优先、统一 16px 字号下限、标题行高 1、固定 32px 标题间距、统一短动效或产品页禁止入场编排等约束。
 
 补充交互参考为 [Caho1/open-claude-ui](https://github.com/Caho1/open-claude-ui/tree/2834bc158a4849f21c97cbb2e0b10525f6e646f1) 的独立逆向分析，参考基线为 `2834bc158a4849f21c97cbb2e0b10525f6e646f1`（2026-10-15，[上游 MIT 许可证](https://github.com/Caho1/open-claude-ui/blob/2834bc158a4849f21c97cbb2e0b10525f6e646f1/LICENSE)）。仅吸收分栏手势、图片查看及容器布局的适用原则。引入具体实现或参数前须核对同一版本的文档与源码，再按绘遇场景验证；文档声明不作为运行或性能证据。日常任务使用本地规范，无需反复加载上游手册。
 

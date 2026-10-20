@@ -22,12 +22,12 @@ const { image, src, loaded, failed } = useRuntimeImage(() => props.artwork?.src 
 <style scoped>
 .inspiration-artwork { --sensitive-preview-fit:contain; --sensitive-preview-position:center; position:relative; display:flex; align-items:center; justify-content:center; height:var(--inspiration-art-height,96px); min-width:0; min-height:0; margin:0; padding:0; border:1px solid var(--art-frame-line); border-radius:var(--r-sm); background:var(--art-stage); overflow:hidden; }
 .inspiration-artwork-full { width:100%; height:100%; border:0; background:transparent; }
-.inspiration-artwork > img { display:block; width:auto; max-width:100%; height:auto; max-height:100%; min-height:0; object-fit:contain; opacity:0; transition:opacity 160ms var(--ease-out),transform var(--motion-route) var(--ease-out); }
+.inspiration-artwork > img { display:block; width:auto; max-width:100%; height:auto; max-height:100%; min-height:0; object-fit:contain; opacity:0; transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-route) var(--ease-out); }
 .inspiration-artwork::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
-.inspiration-artwork-full > img { box-shadow:var(--art-frame-shadow); }
+.inspiration-artwork-full > img { border-radius:inherit; box-shadow:var(--art-frame-shadow); }
 .inspiration-artwork.ready > img { opacity:1; }
 .inspiration-artwork-fallback { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-3); border-radius:inherit; background:var(--bg-elevated); color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-label); text-align:center; overflow-wrap:anywhere; pointer-events:none; }
-.inspiration-artwork-fallback[aria-hidden='true'] { opacity:0; transition:opacity 160ms var(--ease-out); }
+.inspiration-artwork-fallback[aria-hidden='true'] { opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .inspiration-artwork-fallback .archive-icon { width:24px; height:24px; flex:none; color:var(--accent); }
 @media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .inspiration-artwork > img),:global(:root:not([data-motion='full']) .inspiration-artwork::after),:global(:root:not([data-motion='full']) .inspiration-artwork-fallback) { transition:none; } }
 :global(:root:is([data-motion='reduce'],[data-motion='reduced']) .inspiration-artwork > img),

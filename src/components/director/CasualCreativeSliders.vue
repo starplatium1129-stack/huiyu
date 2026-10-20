@@ -23,10 +23,11 @@
         step="0.5"
         :value="currentCfg"
         :disabled="disabled"
+        :aria-describedby="`${cfgSliderId}-hint`"
         class="casual-range-input"
         @input="onCfgInput"
       />
-      <p class="casual-slider-hint">调整对画面描述的遵循强度，先从模型默认值开始。</p>
+      <p :id="`${cfgSliderId}-hint`" class="casual-slider-hint">调整对画面描述的遵循强度，先从模型默认值开始。</p>
     </div>
 
     <div class="casual-slider-group">
@@ -42,10 +43,11 @@
         step="1"
         :value="currentSteps"
         :disabled="disabled"
+        :aria-describedby="`${stepsSliderId}-hint`"
         class="casual-range-input"
         @input="onStepsInput"
       />
-      <p class="casual-slider-hint">增加步数通常需要更长等待，画风由模型与画面描述决定。</p>
+      <p :id="`${stepsSliderId}-hint`" class="casual-slider-hint">增加步数通常需要更长等待，画风由模型与画面描述决定。</p>
     </div>
     </template>
   </div>
@@ -163,6 +165,9 @@ function onStepsInput(event: Event) {
   font-size: var(--fs-label);
   color: var(--accent);
   font-variant-numeric: tabular-nums;
+  min-inline-size:7ch;
+  text-align:end;
+  white-space:nowrap;
 }
 
 .casual-range-input {

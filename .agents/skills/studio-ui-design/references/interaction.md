@@ -10,11 +10,20 @@
 
 ## 控件与文字
 
-- 按下提供清晰可感知的视觉反馈，常规按钮可接近 scale(0.97)，但不改变点击命中区、文本排版或提交时机；输入、画布和拖拽把手不机械套用缩放。
+- 按下提供清晰可感知的视觉反馈，幅度沿用 DESIGN.md 的共享控件规范，但不改变点击命中区、文本排版或提交时机；输入、画布和拖拽把手不机械套用缩放。
 - 功能动作继续由 click、键盘和已有组件事件提交。pointerdown 仅用于必要的视觉或拖拽准备，不能提前执行删除或表单提交。
 - 字号、字重、行高、留白和对比共同形成层级；中文不照搬拉丁标题的负字距。标签长短不改变对齐基线，也不能挤掉关键动作。
 - loading、disabled、empty、error、selected 与 focus 是不同状态。禁用文字沿用 --text-disabled；状态不能仅靠颜色或整体透明度表达。
 - 操作靠近受影响内容，优先明确动作名称；高级设置按现有方式渐进展开。成功、失败与进度描述真实请求状态，保留正在使用的结果与输入。
+
+## 排版与表单实施
+
+设计规则见 DESIGN.md 的 [Typography](../../../../DESIGN.md#typography)、[Shapes](../../../../DESIGN.md#shapes) 和 [Inputs and filters](../../../../DESIGN.md#inputs-and-filters)，本节只补充现有 Vue 组件的落地方式。
+
+- flex/grid 内允许文本子项收缩（如 `min-inline-size: 0`、`minmax(0, 1fr)`），对长 URL 等连续字符串定向使用 `overflow-wrap`。短标题可渐进增强 `text-wrap: balance`，普通换行仍须可用；不全局 `word-break: break-all`，不改变提示词编辑值来修补排版。
+- 更新中的数字使用 `font-variant-numeric: tabular-nums`，保留原字体角色。单位、比较列和占位空间由所属展示组件负责，不改存储精度或给文本值补空格凑对齐。
+- 标签优先使用原生 `for/id` 或 Reka 的关联机制；整行选择沿用 label/primitive，帮助链接、复制和删除仍由各自入口处理。描述与错误通过稳定 id 接入 `aria-describedby`，实际无效时设置 `aria-invalid`，由共享字段组件管理。
+- 提交失败时由表单所属 composable 协调展开与定位，在 Vue DOM 更新后聚焦真实字段；普通输入与异步校验不抢焦点。沿用现有校验和 Studio 组件能力，不为此增加另一套表单框架。
 
 ## 浮层与 tooltip
 

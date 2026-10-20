@@ -148,6 +148,8 @@ Design engineering and motion follow the project adaptation of
 Selected resizing, artwork-viewer and container-layout principles also draw
 from the independent [open-claude-ui analysis](https://github.com/Caho1/open-claude-ui),
 with source revisions and adoption limits recorded in the UI skill.
+Selected reading, data-alignment, form and inset-geometry principles also draw
+from [TypeUI UI Foundations](https://www.typeui.sh/ui-foundations/configurator).
 The adopted rules live here; [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)
 provides conditional Vue implementation guidance and source attribution.
 These principles guide future UI work alongside HUIYU's brand,
@@ -267,6 +269,9 @@ Light-mode elevation uses boundaries and shadow, not ever-brighter surfaces.
 - Success, warning, danger, and information colors communicate state only.
 - Maintain WCAG AA contrast for normal text. If a translucent surface makes
   contrast uncertain, use its opaque fallback.
+- Keep text over artwork readable across the actual light and dark image areas
+  in both themes, using a local backing or scrim where needed. Preserve the
+  original artwork; a sampled theme color alone does not establish overlay contrast.
 - Do not introduce a near-duplicate color when a token already expresses the
   same role.
 
@@ -293,9 +298,25 @@ harder to understand.
 - Use the mono stack only for prompts, seeds, model names, ports, paths, and
   machine-readable state.
 - Headings are compact and confident, not oversized landing-page slogans.
+  Choose heading elements by document structure, then style them by role;
+  a large count or parameter value is not a heading merely because it is large.
 - Buttons use short verbs. Error messages state what happened and what the user
   can do next.
 - Never depend on font weight or color alone to distinguish a critical state.
+
+Keep reading prose start-aligned within its own bounded column, including on
+wide desktops. Judge line length and wrapping with real Chinese copy and mixed
+Latin names, rather than a universal Latin character count. Short headings may
+balance their lines; descriptions wrap naturally. Long URLs, paths and model
+names must not force a panel wider. Truncated summaries provide a keyboard-accessible
+way to inspect or copy the full value; editable prompts and recovery instructions
+retain their full content. Do not insert manual line breaks to fit one window.
+
+Changing counts, durations and progress values use tabular numerals and a stable
+value slot for their expected range, keeping adjacent units and actions still.
+Align comparable numeric columns at the end or decimal boundary, with consistent
+units and display precision within each comparison. Prose remains start-aligned;
+keep typography appropriate to the content role rather than making all data mono.
 
 ## Layout
 
@@ -365,7 +386,12 @@ show every control without scrolling. Empty space must either frame the artwork,
 clarify grouping, or improve touch/click accuracy. Large blank zones with no
 communicative purpose are a layout defect.
 Align labels, fields and actions to shared column edges. Use the existing spacing
-scale to separate groups; keep dense settings compact without reducing hit areas.
+scale to separate groups: a label stays closer to its field and help text than
+to the next field, and a heading stays closer to its content than to the preceding
+section. Add a divider or card boundary only when proximity is insufficient.
+Keep dense settings compact without reducing hit areas. Field widths reflect
+their expected values; short numeric controls and content-sized badges need not
+stretch across a wide rail. Long descriptions may wrap without squeezing actions.
 
 Desktop is the primary creation environment. Responsive order is stage first,
 then story/scene, then detailed decisions. On small screens, controls become a
@@ -510,6 +536,12 @@ to 32px) when it reads as one continuous frame.
 Do not mix sharp system-tool rectangles, soft consumer-app pills, and oversized
 glass bubbles in the same control group. Icon geometry, border weight, radius,
 and padding must make adjacent controls feel like one family.
+
+When an inset image or selection surface follows the same rounded frame, its
+inner radius is approximately `max(0, outer radius - inset)`, measured between
+the visible edges. Reconcile the inset with shared radius tokens in the owning
+component. This geometry applies to concentric frames, not every independent
+input or card nested inside a panel.
 
 Browse toolbars and major drawing panels share `--r-xl` (20px); their inputs
 and compact buttons use `--r-md` (10px). Browse toolbar surfaces are owned by
@@ -701,13 +733,29 @@ visible tags.
 
 ### Inputs and filters
 
-Inputs show a persistent label when their meaning is not obvious. Search remains
-recognizable as search. Selected filters are visually distinct and removable.
+Inputs have a programmatically associated name and show a persistent label when
+their meaning is not obvious; placeholders give examples rather than replace
+labels. Search remains recognizable as search. Selected filters are visually
+distinct and removable.
 Selected options use neutral surfaces, borders and primary text, with checkmarks
 or the existing selection indicator. Do not leave a red or pink fill, border or
 label on selected controls; retain normal hover, press and keyboard feedback.
 Advanced parameters are collapsed by default for first-time users and retain
 their previous state for experienced users.
+
+Checkbox and radio labels activate their control, with the control aligned to
+the first line of a wrapped label. Separate links and secondary actions retain
+their own behavior. Prefer a single readable column for verbose choices; long
+model or resource lists offer search when scanning becomes impractical. Related
+options present names, current values and units in a comparable order, and a
+closed selector retains a recognizable selected value.
+
+Field help states units, ranges or format before a failed attempt. Validate at
+a useful point such as blur or submit; untouched fields do not show errors
+before the user attempts submission.
+Errors stay associated with their field; submission reveals any collapsed
+invalid section and brings the first invalid field into view and focus. Preserve
+the entered value and do not move focus during ordinary typing or background updates.
 
 Maintenance pages use plain language and staged saving. A person who does not
 write code must be able to add, duplicate, edit, retire, and validate a Scene or
@@ -722,6 +770,12 @@ step and a quiet character cue. During generation it shows progress without
 covering the composition. After generation the artwork receives maximum useful
 space; save, regenerate, vary, voice, and review actions sit near it without
 forming a second competing dashboard.
+
+Reserve media space from known dimensions or the intended frame before decoding
+to avoid moving nearby actions. Use an appropriate thumbnail for its displayed
+size; do not stretch a low-resolution preview to stand in for the original.
+Thumbnail crops keep the character and story cue recognizable without changing
+the stored artwork.
 
 Artwork-viewer zoom and pan limits follow the actual image and viewport sizes,
 keeping the work recoverable when the viewer resizes. In the 3D artbook, wheel
