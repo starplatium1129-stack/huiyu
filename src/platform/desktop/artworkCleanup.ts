@@ -1,6 +1,7 @@
 import { nextTick } from 'vue'
 import { installArtworkCleanupCoordinator, startArtworkSession, stopArtworkSession } from '../../storage/artworkSession'
-import { collectImageReferences, readSessionImageReferences } from '../../utils/storageReferences'
+import { collectImageReferences } from '../../utils/storageReferences'
+import { readSessionImageReferences } from '../../utils/localImageReferences'
 import { maintenanceFrozen, maintenanceParticipants, setArtworkCleanupPhase } from '../maintenanceParticipants'
 import { flushProfileWrites, hasPendingProfileWrites, hasProfileRecoveryData, profileDraftStorage } from '../web/profileStorage'
 import { assertMigrationWritable } from '../web/migrationBarrier'

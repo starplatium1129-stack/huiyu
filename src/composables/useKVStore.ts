@@ -50,14 +50,16 @@ export async function kvSet(key: string, value: unknown): Promise<void> {
   return kvSetMany([{ key, value }])
 }
 
-/** Commit related records together; a quota failure must not split history from projects. */
-export async function kvSetMany(entries: Array<{ key: string; value: unknown }>): Promise<void> {
+/** Commit related records together; optional source admission runs after opening
+ * the database and before any write. Existing callers retain their own guards. */
+export async function kvSetMany(entries: Array<{ key: string; value: unknown }>, check?: () => void): Promise<void> {
   if (entries.some(entry => artworkKeys.has(entry.key))) assertWebArtworkWritable()
-  return withMigrationWrite(() => commitEntries(entries))
+  return withMigrationWrite(() => commitEntries(entries, check))
 }
-async function commitEntries(entries: Array<{ key: string; value: unknown }>): Promise<void> {
+async function commitEntries(entries: Array<{ key: string; value: unknown }>, check?: () => void): Promise<void> {
   const snapshot = JSON.parse(JSON.stringify(entries)) as Array<{ key: string; value: unknown }>
   const db = await openDb()
+  check?.()
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite')
     tx.oncomplete = () => resolve()

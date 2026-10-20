@@ -6,6 +6,8 @@ import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
 import type { InpaintSubmissionSnapshot } from './animaInpaintSubmit'
 import { automaticMaskBlocker } from './animaBackendReadiness'
 import { nativeAnimaRequestBlocker } from './nativeAnimaCapabilities'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 type AnimaSession = ReturnType<typeof useAnimaSession>
@@ -39,6 +41,7 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
   const inpaintOriginalUrl = ref<string | null>(null)
   const inpaintCompareActive = ref(false)
   let controller: AbortController | null = null
+  let preparedMediaSession = ''
   let disposed = false, submittingInpaint = false
   function clearInpaintOriginal() {
     if (inpaintOriginalUrl.value) URL.revokeObjectURL(inpaintOriginalUrl.value)
@@ -51,6 +54,13 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
     if (!silent) pb.flash('已取消换装准备')
     return true
   }
+  function invalidatePreparation() {
+    if (!controller || preparedMediaSession === imageMediaSession()) return
+    cancelInpaintPreparation(true)
+    pb.flash('图片连接已变化，请重新确认后换装')
+  }
+  const stopRuntime = onDesktopRuntime(invalidatePreparation)
+  watch(imageMediaSession, invalidatePreparation, { flush: 'sync' })
   watch(inpaintOpen, open => { if (!open) cancelInpaintPreparation() }, { flush: 'sync' })
   watch(drawEngine, () => { cancelInpaintPreparation(true); clearInpaintOriginal() }, { flush: 'sync' })
   watch(() => deps.animaState.value.phase, phase => {
@@ -59,7 +69,7 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
   }, { flush: 'sync' })
   // Accepted generations have already released controller; only preparation belongs to this UI.
   onDeactivated(() => { cancelInpaintPreparation(true); inpaintOpen.value = false })
-  if (getCurrentScope()) onScopeDispose(() => { disposed = true; cancelInpaintPreparation(true); clearInpaintOriginal() })
+  if (getCurrentScope()) onScopeDispose(() => { disposed = true; stopRuntime(); cancelInpaintPreparation(true); clearInpaintOriginal() })
 
   const inpaintCharacter = computed<'nene' | 'natsume' | null>(() => {
     // 热门角色（popular）模式没有 LoRA 绑定，必须返回 null 走无 LoRA 底模；
@@ -89,8 +99,10 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
       model: { models: JSON.parse(JSON.stringify(deps.animaState.value.models)), modelId: deps.animaState.value.modelId,
         width: deps.animaState.value.width, height: deps.animaState.value.height, loraStrength: deps.animaState.value.loraStrength },
     }
-    const active = new AbortController(); controller = active; preparing.value = true
+    const active = new AbortController(), mediaSession = imageMediaSession()
+    controller = active; preparedMediaSession = mediaSession; preparing.value = true
     const current = () => !disposed && controller === active && !active.signal.aborted && drawEngine.value === 'anima'
+      && mediaSession === imageMediaSession()
     try {
       const { submitAnimaInpaint } = await import('./animaInpaintSubmit')
       if (!current()) return

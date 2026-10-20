@@ -317,6 +317,14 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
       return { alias, authority: workspaceMediaAuthority() }
     },
     putImage: blob => putDesktopArtworkImage(blob, workspaceRequest),
+    async resolveArtworkImport(input, command, access) {
+      const snapshot = structuredClone(input), action = { ...command }
+      try {
+        const { importDesktopArtwork } = await import('./artworkImport.ts')
+        access.check()
+        return await importDesktopArtwork(snapshot, action, access, workspaceRequest)
+      } finally { invalidateSnapshots() }
+    },
     async deleteImage(alias) {
       await workspaceRequest({ kind: 'releaseMedia', alias, operationId: crypto.randomUUID() })
       forgetThumbnail(alias)
@@ -359,6 +367,7 @@ export function createDesktopArtworkRepository(): ArtworkRepository {
   return { ...repository,
     withStaging: work => trackMaintenanceWrite(work),
     putImage: blob => trackMaintenanceWrite(() => repository.putImage(blob)),
+    resolveArtworkImport: (...args) => trackMaintenanceWrite(() => repository.resolveArtworkImport(...args)),
     deleteImage: alias => trackMaintenanceWrite(() => repository.deleteImage(alias)),
     appendArtwork: artwork => trackMaintenanceWrite(() => repository.appendArtwork(artwork)),
     createProject: input => trackMaintenanceWrite(() => repository.createProject(input)),

@@ -8,7 +8,7 @@ import type { BackupExportProgress } from '@/utils/backupExport'
 import { MAX_BACKUP_BYTES, BACKUP_SIZE_MESSAGE } from '@/utils/backupLimits'
 import { downloadBlob } from '@/utils/downloadBlob'
 import { version as appVersion } from '../../package.json'
-import { collectImageReferences, readLocalImageReferences, readSessionImageReferences } from '@/utils/storageReferences'
+import { collectImageReferences, readBrowserImageReferences } from '@/utils/storageReferences'
 import { ref, getCurrentInstance, onActivated, onDeactivated, onScopeDispose } from 'vue'
 import { confirmAction } from '@/composables/useConfirm'
 import { readWebBackupLibrary, readWebBackupCleanup, readWebBackupImages, deleteWebBackupImages } from '../platform/web/profileBackupSource'
@@ -325,9 +325,11 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     }
   }
 
-  async function readCleanupState() {
+  async function readCleanupState(check: () => void) {
+    check()
     const { history, projects, trash, quarantine, images } = await readWebBackupCleanup()
-    const referenced = collectImageReferences([history, projects, trash, quarantine, ...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage), ...readArtworkCleanupImageReferences()])
+    const referenced = collectImageReferences([history, projects, trash, quarantine, ...await readBrowserImageReferences(localStorage, sessionStorage, check), ...readArtworkCleanupImageReferences()])
+    check()
     return { referenced, images }
   }
 
@@ -340,13 +342,15 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
     busy.value = true
     const controller = new AbortController()
     cleanupController = controller
+    const source = captureBackupSource(controller, desktopActive.value)
     try {
+      source.check()
       if (desktopActive.value) {
         const removed = await collectWorkspaceGarbage()
         if (!disposed && viewActive && !controller.signal.aborted) onFlash(`本次已清理 ${removed} 个过期且无引用的媒体对象；工作区分批处理，可再次清理。`)
         return removed
       }
-      const snapshot = await readCleanupState()
+      const snapshot = await readCleanupState(source.check)
       controller.signal.throwIfAborted()
       const candidates = new Set(snapshot.images.filter(record => !snapshot.referenced.has(record.id)).map(record => record.id))
       if (!candidates.size) { onFlash('没有需要清理的孤儿图片'); return 0 }
@@ -358,11 +362,11 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       }))) return 0
       controller.signal.throwIfAborted()
       const removed = await withArtworkCleanup(async () => {
-        const current = await readCleanupState()
+        const current = await readCleanupState(source.check)
         controller.signal.throwIfAborted()
         const ids = current.images.filter(record => candidates.has(record.id) && !current.referenced.has(record.id)).map(record => record.id)
-        assertArtworkCleanupCurrent()
-        if (ids.length) await deleteWebBackupImages(ids)
+        assertArtworkCleanupCurrent(); source.check()
+        if (ids.length) await deleteWebBackupImages(ids, source.check)
         return ids.length
       }, controller.signal)
       if (!disposed && viewActive && !controller.signal.aborted) onFlash(removed ? `已清理 ${removed} 张孤儿图片` : '图片引用已变化，无需清理；原图均已保留')
@@ -371,6 +375,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       if (!disposed && viewActive && !controller.signal.aborted) onFlash('清理失败：' + errorMessage(e, '请重试'))
       return 0
     } finally {
+      source.release()
       cleanupController = null
       busy.value = false
     }

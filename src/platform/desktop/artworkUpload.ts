@@ -2,6 +2,8 @@ import { PendingMediaUploadError } from '../../application/artwork/mediaUpload.t
 import { WORKSPACE_MEDIA_PENDING_PREFIX } from '../../utils/storageKeys.ts'
 import { getDesktopRuntime, onDesktopRuntime } from './runtime.ts'
 import { assertWorkspaceMediaAuthority, rememberWorkspaceMedia, workspaceMediaAuthority } from './workspaceMediaSource.ts'
+import { imageBlobDigest } from '../../utils/imageBlobDigest.ts'
+import { uploadArtworkChunks } from './artworkUploadChunks.ts'
 
 type Request = <T>(command: Record<string, unknown>) => Promise<T>
 interface Pending { operationId: string; imageId: string }
@@ -28,10 +30,7 @@ export async function putDesktopArtworkImage(blob: Blob, request: Request): Prom
   const stopRuntime = onDesktopRuntime(() => { try { assertCurrent() } catch { controller.abort() } })
   try {
     const send: Request = async command => { assertCurrent(); return request(command) }
-    const bytes = new Uint8Array(await blob.arrayBuffer())
-    assertCurrent()
-    const sha256 = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(value => value.toString(16).padStart(2, '0')).join('')
-    assertCurrent()
+    const { bytes, sha256 } = await imageBlobDigest(blob, assertCurrent)
     const key = WORKSPACE_MEDIA_PENDING_PREFIX + JSON.stringify([workspaceId, principalId, sha256, bytes.length, blob.type])
     if (!navigator.locks?.request) throw new Error('当前环境不支持跨窗口安全上传，请使用新版桌面应用。')
     return await navigator.locks.request(key, { signal: controller.signal }, async () => {
@@ -72,9 +71,7 @@ export async function putDesktopArtworkImage(blob: Blob, request: Request): Prom
         if (state.state === 'committed') {
           if (!validReceipt(state.receipt)) throw new Error('图片上传回执身份无效。')
         } else {
-          for (let offset = state.media.writtenBytes; offset < bytes.length; offset += 1024 * 1024) {
-            await send({ kind: 'uploadMediaChunk', operationId, offset, data: bytes.subarray(offset, offset + 1024 * 1024) })
-          }
+          await uploadArtworkChunks(bytes, state.media.writtenBytes, operationId, 'uploadMediaChunk', send, assertCurrent)
           const receipt = await send<Receipt>({ kind: 'commitMedia', operationId })
           if (!validReceipt(receipt)) throw new Error('图片上传回执身份无效。')
         }

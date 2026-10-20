@@ -24,6 +24,7 @@
         <ArchiveIcon name="chat" /><span>聊天</span>
       </button>
     </StudioTooltip>
+    <slot name="import-recovery" />
     <span class="companion-live-dot" :data-state="liveDotState" role="status" aria-live="polite">
       <i aria-hidden="true"></i>{{ liveDotText }}
     </span>

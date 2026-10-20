@@ -1,5 +1,7 @@
 import { onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
 import type { InpaintSubmitPayload } from '../AnimaInpaintModal.vue'
+import { imageMediaSession } from '@/platform/imageMediaSession'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
 
 type Draft = Omit<InpaintSubmitPayload, 'imageBlob' | 'maskBlob'> & { painted: boolean }
 
@@ -17,23 +19,33 @@ export function useInpaintPreparation(deps: {
 }) {
   const preparing = ref(false)
   let controller: AbortController | null = null
+  let preparedMediaSession = ''
   function cancel() {
     controller?.abort()
     controller = null
     preparing.value = false
   }
+  function invalidatePreparation() {
+    if (!controller || preparedMediaSession === imageMediaSession()) return
+    cancel()
+    deps.error('图片连接已变化，请重新确认后换装')
+  }
+  const stopRuntime = onDesktopRuntime(invalidatePreparation)
+  watch(imageMediaSession, invalidatePreparation, { flush: 'sync' })
   watch([deps.open, deps.sourceRevision], cancel, { flush: 'sync' })
   onDeactivated(cancel)
-  onBeforeUnmount(cancel)
+  onBeforeUnmount(() => { stopRuntime(); cancel() })
 
   async function start() {
     if (!deps.open() || !deps.ready() || deps.busy() || controller) return
     const draft = deps.capture()
     if (!draft) return
-    const active = new AbortController()
+    const active = new AbortController(), mediaSession = imageMediaSession()
     controller = active
+    preparedMediaSession = mediaSession
     preparing.value = true
     const current = () => controller === active && !active.signal.aborted && deps.open()
+      && mediaSession === imageMediaSession()
     try {
       // Invoke both reads now, before either can yield to a different form/source.
       const [imageBlob, maskBlob] = await Promise.all([deps.getBlob(active.signal), draft.editMode === 'whole' ? Promise.resolve(null) : deps.maskBlob()])

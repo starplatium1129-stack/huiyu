@@ -2,6 +2,7 @@ import type { ArtworkRecord, ArtworkSearchSummary } from '../../types/artwork.ts
 import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrganizationUndoResult } from './organization.ts'
 import type { ArtworkProjectDraft } from './projects.ts'
 import type { SmartAlbumDraft } from './smartAlbums.ts'
+import type { ArtworkImportAccess, ArtworkImportCommand, ArtworkImportInput, ArtworkImportOutcome } from './localImageImport.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
 export interface ArtworkProjectRecord {
@@ -68,6 +69,8 @@ export interface ArtworkRepository {
   withStaging<T>(work: () => Promise<T>): Promise<T>
   /** Commit only. Consumers update their own display without rereading the library. */
   appendArtwork(entry: ArtworkRecord): Promise<void>
+  /** Explicit file-import retry using its persisted record, alias and operation. */
+  resolveArtworkImport(input: ArtworkImportInput, command: ArtworkImportCommand, access: ArtworkImportAccess): Promise<ArtworkImportOutcome>
   organizeArtworks(input: ArtworkOrganizationRequest): Promise<ArtworkOrganizationReceipt>
   undoArtworkOrganization(receipt: ArtworkOrganizationReceipt): Promise<ArtworkOrganizationUndoResult>
   patchArtwork(id: string | number, patch: Record<string, unknown>): Promise<{ updated: boolean }>

@@ -88,11 +88,12 @@ export async function imgPut(file: Blob): Promise<string> {
   return id
 }
 
-export async function imgPutRecord(record: ImageRecordInput): Promise<string> {
+export async function imgPutRecord(record: ImageRecordInput, check?: () => void): Promise<string> {
   if (!record?.id?.trim()) throw new Error('图片记录缺少 ID')
   if (!(record.blob instanceof Blob) || !record.blob.size) throw new Error('图片记录为空')
   const n = { id: record.id.trim(), blob: record.blob, name: record.name ?? '', type: record.type ?? record.blob.type, size: record.blob.size, created_at: record.created_at ?? Date.now() }
-  await tx('readwrite', store => store.put(n))
+  // A source-bound import may invalidate while the database/lock is opening.
+  await tx('readwrite', store => { check?.(); store.put(n) })
   return n.id
 }
 
@@ -112,10 +113,10 @@ export async function imgGet(id: string): Promise<Blob | null> {
   return (await imgGetRecord(id))?.blob ?? null
 }
 
-export async function imgDeleteMany(ids: string[]): Promise<void> {
+export async function imgDeleteMany(ids: string[], check?: () => void): Promise<void> {
   const unique = [...new Set(ids.filter(id => typeof id === 'string' && id.trim()).map(id => id.trim()))]
   if (!unique.length) return
-  await tx('readwrite', store => { unique.forEach(id => store.delete(id)) })
+  await tx('readwrite', store => { check?.(); unique.forEach(id => store.delete(id)) })
 }
 
 export async function imgList(): Promise<StoredImageRecord[]> {

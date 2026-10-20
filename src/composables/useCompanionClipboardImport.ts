@@ -1,6 +1,9 @@
 import { onMounted, onUnmounted, ref, watch, type Ref } from 'vue'
 import type { CompanionDesktopBridge } from '@/types/desktop'
-import { importLocalImages } from '@/utils/desktopImport'
+import { importLocalImages, retryLocalImageImport } from '@/utils/desktopImport'
+import { useLocalImageImportRecovery } from './useLocalImageImportRecovery'
+import { imageMediaSession } from '../platform/imageMediaSession'
+import { onDesktopRuntime } from '../platform/desktop/runtime'
 import type { ImportSourceFile } from '@/utils/desktopImportCore'
 import {
   captureScreenFrame,
@@ -38,6 +41,7 @@ interface ClipboardCard {
   text?: string
   saving?: boolean
   error?: string
+  importId?: string
 }
 
 /**
@@ -61,7 +65,19 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   let alive = true
   let characterRevision = 0
   let captureController: AbortController | null = null
+  let picker: { invalid: boolean; stop(): void } | undefined
+  const importRecovery = useLocalImageImportRecovery(() => {
+    if (!alive) return
+    deps.noteReturnPlain('原图片已经确认放进作品册啦，没有重复导入。')
+    deps.resetEventDetector()
+  })
   const active = () => alive && (deps.isActive?.() ?? true)
+  function importFeedbackAccess() {
+    const session = imageMediaSession()
+    let current = true
+    const stop = onDesktopRuntime(() => { if (imageMediaSession() !== session) current = false })
+    return { current: () => alive && current, stop }
+  }
   watch(activeChar, () => { characterRevision += 1; cancelCapture(); dismissClipboardCard() }, { flush: 'sync' })
 
   function showClipboardCard(card: ClipboardCard) {
@@ -110,19 +126,34 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
       clearTimeout(clipboardCardTimer)
       if (!blob) { card.error = '图片暂时无法读取，请重新复制后重试。'; return }
       card.saving = true; card.error = ''
+      const feedback = importFeedbackAccess()
       try {
         const extension = blob.type === 'image/jpeg' ? 'jpg' : blob.type === 'image/webp' ? 'webp' : 'png'
-        const { imported } = await importLocalImages([{ name: `剪贴板-${Date.now()}.${extension}`, size: blob.size, type: blob.type, blob }])
-        if (!alive) return
+        let imported = 0
+        if (card.importId) {
+          const outcome = await retryLocalImageImport(card.importId, blob)
+          if (outcome !== 'saved') {
+            if (clipboardCard.value === card) dismissClipboardCard()
+            if (feedback.current()) deps.noteReturnPlain('原导入已结束，未重新创建作品。')
+            return
+          }
+          imported = 1
+        }
+        else {
+          const result = await importLocalImages([{ name: `剪贴板-${Date.now()}.${extension}`, size: blob.size, type: blob.type, blob }])
+          imported = result.imported
+          card.importId = result.pending[0]
+        }
+        if (!feedback.current()) return
         if (imported > 0) {
           if (clipboardCard.value === card) dismissClipboardCard()
           deps.noteReturnPlain('收到剪贴板里的图片，已经放进作品册啦。')
           if (desktopBridge) desktopBridge.notify(deps.currentCharacterName(), '图片已存入作品册')
           deps.resetEventDetector()
-        } else if (clipboardCard.value === card) card.error = '图片尚未确认入册，请先查看作品册，再决定是否重试。'
-      } catch {
-        if (alive && clipboardCard.value === card) card.error = '图片尚未确认入册，请先查看作品册，再决定是否重试。'
-      } finally { if (clipboardCard.value === card) card.saving = false }
+        } else if (clipboardCard.value === card) card.error = card.importId ? '原导入编号已保留，可从图片导入恢复入口继续；不会重复创建作品。' : '图片未导入，请检查图片格式与大小后重试。'
+      } catch (error) {
+        if (alive && clipboardCard.value === card) card.error = error instanceof Error ? error.message : '图片尚未确认入册，请使用图片导入恢复入口继续原导入。'
+      } finally { feedback.stop(); if (clipboardCard.value === card) card.saving = false }
     } else if (card.kind === 'text' && card.text) {
       const text = card.text
       const combined = deps.inputText.value.trim() ? `${deps.inputText.value.trimEnd()}\n${text}` : text
@@ -137,30 +168,44 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
   async function handleImportedFiles(files: readonly ImportSourceFile[]) {
     if (importBusy || !files.length) return
     importBusy = true
+    const feedback = importFeedbackAccess()
     try {
-      const { imported, skipped } = await importLocalImages(files)
-      if (!alive) return
+      const { imported, skipped, pending } = await importLocalImages(files)
+      if (!feedback.current()) return
       if (imported > 0) {
-        const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张未导入）` : ''}。`
+        const line = `收到 ${imported} 张图片，已经放进作品册啦${skipped > 0 ? `（${skipped} 张未导入）` : ''}。${pending.length ? `还有 ${pending.length} 张待确认，请从图片导入恢复入口继续。` : ''}`
         deps.noteReturn(() => line)
         if (desktopBridge) desktopBridge.notify(deps.currentCharacterName(), line)
         // 导入也会让图片计数增加；重置检测器基线避免误报 sd-done
         deps.resetEventDetector()
-      } else if (skipped > 0) {
-        deps.noteReturnPlain('图片尚未确认入册，请先查看作品册，再决定是否重试。')
-      }
-    } catch {
-      if (alive) deps.noteReturnPlain('图片尚未确认入册，请先查看作品册，再决定是否重试。')
+      } else if (pending.length) deps.noteReturnPlain(`${pending.length} 张图片待确认，原编号已保留；请从图片导入恢复入口继续。`)
+      else if (skipped > 0) deps.noteReturnPlain('这些文件未导入，请检查图片格式与大小；每批最多 8 张，每张不超过 24 MB。')
+    } catch (error) {
+      if (alive) deps.noteReturnPlain(error instanceof Error ? error.message : '图片尚未确认入册，请使用图片导入恢复入口继续原导入。')
     } finally {
+      feedback.stop()
       importBusy = false
     }
   }
 
   function onImportInputChange() {
+    const selected = picker
+    picker = undefined; selected?.stop()
     const input = importInputRef.value
     const files = input?.files ? Array.from(input.files) : []
     if (input) input.value = ''
+    if (!selected || selected.invalid) {
+      if (files.length) deps.noteReturnPlain('选择文件期间资料连接已变化，请重新选择；尚未开始导入。')
+      return
+    }
     void handleImportedFiles(files.map(file => ({ name: file.name, size: file.size, type: file.type, blob: file })))
+  }
+  function openImportPicker() {
+    picker?.stop()
+    const session = imageMediaSession(), selected = { invalid: false, stop: () => {} }
+    picker = selected
+    selected.stop = onDesktopRuntime(() => { if (imageMediaSession() !== session) selected.invalid = true })
+    importInputRef.value?.click()
   }
 
   function onWindowDrop(event: DragEvent) {
@@ -233,6 +278,7 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
 
   onUnmounted(() => {
     alive = false
+    picker?.stop()
     cancelCapture()
     clearTimeout(clipboardCardTimer)
     if (clipboardCard.value?.previewUrl) URL.revokeObjectURL(clipboardCard.value.previewUrl)
@@ -245,6 +291,8 @@ export function useCompanionClipboardImport(deps: CompanionClipboardImportDeps) 
 
   return {
     importInputRef,
+    importRecovery,
+    openImportPicker,
     clipboardCard,
     capturingScreen,
     onImportInputChange,

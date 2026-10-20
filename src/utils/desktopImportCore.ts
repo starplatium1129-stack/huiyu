@@ -1,7 +1,7 @@
 /**
- * 本地图片导入作品册 — 纯逻辑核心（零依赖，可被 node 直接测试）。
- * IndexedDB 落盘在 desktopImport.ts 集成层。
+ * 本地图片导入作品册：过滤与冻结记录，持久化由作品仓储拥有。
  */
+import type { ArtworkRecord } from '../types/artwork.ts'
 
 const MAX_IMPORT_BATCH = 8
 const MAX_IMPORT_BYTES = 24 * 1024 * 1024
@@ -9,6 +9,7 @@ const MAX_IMPORT_BYTES = 24 * 1024 * 1024
 export interface ImportResult {
   imported: number
   skipped: number
+  pending: string[]
 }
 
 export interface ImportSourceFile {
@@ -28,13 +29,6 @@ export function filterImageFiles(files: readonly ImportSourceFile[]): ImportSour
   return files.filter(isImageFile).slice(0, MAX_IMPORT_BATCH)
 }
 
-let importIdSeq = 0
-
-function nextImportId(): string {
-  importIdSeq += 1
-  return `local-${Date.now().toString(36)}-${importIdSeq}`
-}
-
 /** 构造作品册记录（不落盘；测尺寸后由导入流程写入 KV）。 */
 export function buildImportedRecord(
   file: ImportSourceFile,
@@ -44,7 +38,7 @@ export function buildImportedRecord(
   const now = Date.now()
   const size = measured.width && measured.height ? `${measured.width}×${measured.height}` : '本地导入'
   return {
-    id: nextImportId(),
+    id: `local-${crypto.randomUUID()}`,
     timestamp: now,
     prompt: `本地导入：${file.name.replace(/\.(png|jpe?g|webp|gif|bmp|avif|heic)$/i, '')}`,
     size,
@@ -56,29 +50,4 @@ export function buildImportedRecord(
     image_url: '',
     version: 1,
   }
-}
-
-export interface ArtworkRecord {
-  id: string | number
-  timestamp?: string | number
-  character?: string
-  scene?: string | null
-  sceneTitle?: string | null
-  story?: string
-  prompt?: string
-  size?: string
-  rating?: Record<string, unknown>
-  lora?: string | null
-  checkpoint?: string
-  seed?: string | number
-  sampler?: string
-  favorite?: boolean
-  version?: string | number
-  width?: string | number | null
-  height?: string | number | null
-  image_id?: string
-  image_url?: string
-  image_data?: string
-  project?: string
-  [key: string]: unknown
 }

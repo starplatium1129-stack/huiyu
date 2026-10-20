@@ -1,7 +1,7 @@
 import { kvGet, kvSet, kvSetMany } from '../../composables/useKVStore.ts'
 import { withArtworkMutation } from '../../storage/artworkMutation.ts'
-import { withArtworkCleanup, withArtworkStaging } from '../../storage/artworkSession.ts'
-import { readLocalImageReferences, readSessionImageReferences } from '../../utils/storageReferences.ts'
+import { assertArtworkCleanupCurrent, withArtworkCleanup, withArtworkStaging } from '../../storage/artworkSession.ts'
+import { readBrowserImageReferences } from '../../utils/storageReferences.ts'
 import { imgDeleteMany, imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
 import { parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
 import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE, type ArtworkRepository, type ArtworkDeleteResult, type ArtworkSoftDeleteResult, type ArtworkRestoreResult, type TrashEntry, type ArtworkTrashSelection } from '../../application/artwork/artworkRepository.ts'
@@ -9,9 +9,8 @@ import { type ArtworkKvAdapter, type ArtworkImageAdapter, ARTWORK_HISTORY_KEY, A
 import { createArtworkHardDelete } from './artworkHardDelete.ts'
 import { createArtworkReads } from './artworkReads.ts'
 import { createArtworkMedia } from './artworkMedia.ts'
-import { createArtworkOrganization } from './artworkOrganization.ts'
+import type { createArtworkOrganization } from './artworkOrganization.ts'
 import { createArtworkProjects } from './artworkProjects.ts'
-import { purgeWebTrash } from './artworkTrashPurge.ts'
 
 
 export function createWebArtworkRepository(): ArtworkRepository {
@@ -157,26 +156,30 @@ export function createWebArtworkRepository(): ArtworkRepository {
     return { restored: true }
   }
 
-  function trashDrafts(): unknown[] {
-    return [...readLocalImageReferences(localStorage), ...readSessionImageReferences(sessionStorage)]
+  async function trashDrafts(): Promise<unknown[]> {
+    return readBrowserImageReferences(localStorage, sessionStorage, assertArtworkCleanupCurrent)
   }
   async function purgeExpiredTrashNow(): Promise<{ purged: number }> {
+    const { purgeWebTrash } = await import('./artworkTrashPurge.ts')
+    assertArtworkCleanupCurrent()
     const trash = await readTrash()
     const deadline = Date.now() - ARTWORK_TRASH_RETENTION_DAYS * 24 * 60 * 60 * 1000
     // 刚好到保留期限仍可恢复；非法时间戳保守地保留，避免清理误删快照。
     return purgeWebTrash(kv, images, trash, entry => {
       const deletedAt = Number(entry.deletedAt)
       return Number.isFinite(deletedAt) && deletedAt < deadline
-    }, trashDrafts())
+    }, await trashDrafts())
   }
   function purgeTrash(entries: ArtworkTrashSelection[]): Promise<{ purged: number }> {
     const snapshot = structuredClone(entries)
     return enqueue(async () => {
+      const { purgeWebTrash } = await import('./artworkTrashPurge.ts')
+      assertArtworkCleanupCurrent()
       let purged = 0
       for (let offset = 0; offset < snapshot.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
         const selected = new Map(snapshot.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE).map(entry => [entry.id, entry.deletedAt]))
         const result = await purgeWebTrash(kv, images, await readTrash(), entry =>
-          selected.has(entry.id) && selected.get(entry.id) === entry.deletedAt, trashDrafts())
+          selected.has(entry.id) && selected.get(entry.id) === entry.deletedAt, await trashDrafts())
         purged += result.purged
       }
       return { purged }
@@ -292,7 +295,30 @@ export function createWebArtworkRepository(): ArtworkRepository {
 
   const reads = createArtworkReads(kv, withArtworkMutation)
   const media = createArtworkMedia(kv, images)
-  const organization = createArtworkOrganization({ kv, enqueue })
+  let organization: Promise<ReturnType<typeof createArtworkOrganization>> | undefined
+  function loadOrganization() {
+    // Both public methods already own enqueue below; keep one undo authority,
+    // and do not recursively acquire its library lock after loading.
+    return organization ??= import('./artworkOrganization.ts')
+      .then(({ createArtworkOrganization }) => createArtworkOrganization({ kv, enqueue: work => work() }))
+      .catch(error => { organization = undefined; throw error })
+  }
   const projects = createArtworkProjects(kv, enqueue)
-  return { ...reads, ...media, ...organization, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork, softDeleteArtwork, softDeleteArtworks, restoreArtwork, restoreArtworks, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
+  return { ...reads, ...media, ...projects, withStaging: withArtworkStaging, deleteArtwork, patchArtwork, patchArtworks, appendArtwork,
+    organizeArtworks: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadOrganization()).organizeArtworks(snapshot))
+    },
+    undoArtworkOrganization: async receipt => {
+      const snapshot = structuredClone(receipt)
+      return enqueue(async () => (await loadOrganization()).undoArtworkOrganization(snapshot))
+    },
+    resolveArtworkImport: (input, command, access) => {
+      const snapshot = structuredClone(input), action = { ...command }
+      return import('./artworkImport.ts').then(({ importWebArtwork }) => {
+        access.check()
+        return enqueue(() => importWebArtwork(snapshot, action, access))
+      })
+    },
+    softDeleteArtwork, softDeleteArtworks, restoreArtwork, restoreArtworks, purgeExpiredTrash, purgeTrash, listTrash: listTrashNow }
 }

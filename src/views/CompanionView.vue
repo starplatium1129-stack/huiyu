@@ -74,7 +74,7 @@
             </StudioTooltip>
             <button v-if="desktopBridge" type="button" class="companion-pop-item" @click="desktopBridge.openAtelier(`/chat?character=${encodeURIComponent(activeChar)}`)"><ArchiveIcon name="chat" /><span>完整房间（聊天）</span></button>
             <RouterLink v-else class="companion-pop-item" :to="{ path: '/chat', query: { character: activeChar } }">完整房间（聊天）</RouterLink>
-            <button type="button" class="companion-pop-item" @click="importInputRef?.click()"><ArchiveIcon name="image" /><span>导入图片到作品册</span></button>
+            <button type="button" class="companion-pop-item" @click="openImportPicker"><ArchiveIcon name="image" /><span>导入图片到作品册</span></button>
           </div>
           <div v-if="desktopBridge" class="companion-pop-group" data-preference-pane="more">
             <strong>本机资源</strong>
@@ -162,6 +162,7 @@
         </TransitionGroup>
         <CompanionClipboardCard :card="clipboardCard" :character-name="currentCharacter.name"
           @inspect="inspectClipboardImage" @accept="acceptClipboardCard" @dismiss="dismissClipboardCard" />
+        <CompanionImportRecovery v-if="!desktopBridge" :recovery="importRecovery" />
         <div ref="chatListRef" class="companion-bubbles" role="log" aria-live="off" aria-label="最近对话">
           <div v-if="!companionMessages.length" class="companion-empty">
             <span>{{ currentCharacter.name }}</span>
@@ -306,7 +307,9 @@
         @open-chat="openChatWindow"
         @open-reminder="openReminderRoute"
         @dismiss-reminder="dismissReminder"
-      />
+      >
+        <template #import-recovery><CompanionImportRecoveryDialog :recovery="importRecovery" :character-id="activeChar" /></template>
+      </CompanionDesktopFloat>
       <CompanionOrbitMenu v-if="desktopBridge" :open="petGestures.controlsOpen.value" :character-id="activeChar"
         :pinned="alwaysOnTop" :pass-through="ignoreMouseEvents"
         :controls="characterStageRef?.petControls" :set-expression="characterStageRef?.setPetExpression"
@@ -322,6 +325,8 @@
 import CompanionPreferences from '@/components/CompanionPreferences.vue'
 import CompanionOrbitMenu from '@/components/CompanionOrbitMenu.vue'
 import CompanionClipboardCard from '@/components/CompanionClipboardCard.vue'
+import CompanionImportRecovery from '@/components/CompanionImportRecovery.vue'
+import CompanionImportRecoveryDialog from '@/components/CompanionImportRecoveryDialog.vue'
 import VoiceGlow from "@/components/visual/VoiceGlow.vue"
 import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
 const AppearancePreferences = defineAsyncComponent(() => import('@/components/AppearancePreferences.vue'))
@@ -360,7 +365,7 @@ onAutoVoiceChange,
 behaviorEnabled,
 dnd,
 toggleDnd,
-importInputRef,
+importInputRef, importRecovery, openImportPicker,
 onImportInputChange,
 alwaysOnTop,
 togglePin,

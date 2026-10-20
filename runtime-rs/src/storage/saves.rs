@@ -204,6 +204,16 @@ fn prepare(c: &mut Context, principal: &str, command: &Value) -> Result<Value> {
     }
     let row = c.transaction(|c| {
         if let Some(row) = c.operation(principal, id)? {
+            // A matching aborted artwork save is a terminal recovery read, not
+            // a reopened preparation. Return it without creating a staging lease.
+            // Other kinds/inputs still take the ordinary conflict path below.
+            if !library
+                && row.state == "aborted"
+                && row.kind == op_kind
+                && row.fingerprint == canonical::fingerprint(command)
+            {
+                return Ok(Some(row));
+            }
             row.check(op_kind, command)?;
             return Ok(Some(row));
         }
