@@ -1,7 +1,7 @@
 use super::*;
 use std::{collections::BTreeSet, path::Path};
 
-const RECOMMENDED_MODEL: &str = "anima-miaomiao-v1.6";
+pub(super) const RECOMMENDED_MODEL: &str = "anima-miaomiao-v1.6";
 
 // Compile the real, no-LoRA baseline. This is inspection only: never submit a
 // prompt or silently change the user's selected model, draft, or defaults.

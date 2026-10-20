@@ -223,6 +223,9 @@ impl ControlService {
     ) -> Result<()> {
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
+        if model.conversion_profile.is_some() {
+            return self.install_anima_checkpoint(model, &target, operation, cancel, permit).await;
+        }
         let staged = workspace
             .join("inference/.staging")
             .join(format!("{}-{}", model.id, model.revision));
@@ -433,27 +436,31 @@ pub(super) async fn verify_files(
     files: &[Artifact],
     cancel: &CancellationToken,
 ) -> Result<()> {
+    let files = files.iter().map(|file| ModelFile {
+        path: file.path.clone(), bytes: file.bytes, sha256: file.sha256.clone(),
+    }).collect();
+    verify_model_files(root, files, cancel).await
+}
+pub(super) async fn verify_model_files(
+    root: &Path,
+    files: Vec<ModelFile>,
+    cancel: &CancellationToken,
+) -> Result<()> {
     let root = root.to_owned();
-    let files = files.to_vec();
     let token = cancel.clone();
     tokio::task::spawn_blocking(move || -> Result<()> {
         plan::safe_directory(&root)?;
         let (send, _receive) = tokio::sync::mpsc::unbounded_channel();
         for file in files {
             stopped(&token)?;
-            let spec = ModelFile {
-                path: file.path,
-                bytes: file.bytes,
-                sha256: file.sha256,
-            };
-            let result = inspect(&root, &spec, "native", &send, &token);
+            let result = inspect(&root, &file, "native", &send, &token);
             if result["state"] != "sha256-match" {
                 return Err(ApiError::new(
                     409,
                     "NATIVE_MODEL_INCOMPLETE",
                     format!(
                         "模型组件 {} 缺失或完整性校验失败；请检查已有文件或继续下载",
-                        spec.path
+                        file.path
                     ),
                 ));
             }

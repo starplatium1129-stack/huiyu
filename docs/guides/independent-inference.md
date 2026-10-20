@@ -189,9 +189,11 @@ Qwen 在采样步回调取消，线稿在网络层边界取消，单次 OpenCV/�
 
 首次使用在控制室打开“原生生图”：选择 AI 工作区，检查设备、空间与许可后点击“一键准备”。同一后台操作连续完成运行库、完整模型、校验与原生配置保存；离开页面仍继续，回到页面可查看进度或取消。来源、版本和路径明细收在“设备与下载详情”，分项准备和离线导入保留在折叠入口。受管流程支持 Windows 10 22H2 / Windows 11 x64、单张支持 BF16 的 NVIDIA Ampere 至 Blackwell 显卡、12 GB 或更多显存、驱动至少 572.61、系统内存至少 24 GiB（建议 32 GiB）；具体设备兼容性会在安装后由固定 PyTorch 运行库再次诊断。AMD、Intel 与 CPU 推理尚未接入，设备不满足条件时禁用受管下载，不要求用户下载无法使用的 CUDA 包。
 
+主列表默认推荐 MiaoMiao Harem Anima 1.6，复用起步模型清单中的固定 Civitai 文件与 SHA-256，并准备原始 Qwen 编码器、VAE 及固定版本的分词器和配置。下载完成后，用既有 `anima-cosmos2b-v041` 转换器在 CPU 严格转换，再校验原始文件、转换结果和目录后发布到 `inference/models/anima-miaomiao-v1.6`。空间预算同时包含原始缓存和转换后的模型；取消保留已下载文件，已有目标目录不会覆盖。此一键转换接线仍待主力机完整下载、转换与真实出图验收，既有本地手动转换记录不代替本流程验收。
+
 运行库从 Python.org、PyTorch、PyPI 和 Microsoft 固定源获取，包含独立 Python 3.11.9、PyTorch 2.8.0 CUDA 12.8、固定依赖及所需 VC++ 共享组件；下载约 3.32 GiB，首次准备预算约 14.32 GiB。Python 与依赖在所选工作区的 `inference/<runtimeId>`，不修改系统 Python，不需要完整 CUDA Toolkit 或 ComfyUI。缺少 VC++ 时打开微软安装器，由用户处理 UAC；此系统安装阶段只能在微软窗口取消或等待结束。下载缓存位于 `inference/.downloads`，候选暂存在 `inference/.staging`；续传和重试复用匹配文件，只有完成依赖与设备检查的版本才登记。
 
-首个受管模型为官方 [Anima Base v1.0 Diffusers](https://huggingface.co/circlestone-labs/Anima-Base-v1.0-Diffusers)，固定 revision `073c3a9db359c31ad0e8aa268d15775473c2176c`，完整 17 文件约 5.25 GiB，含 transformer、编码器、VAE、tokenizer、配置、索引和许可；逐项核对大小与 SHA-256 后发布到 `inference/models/anima-base-v1.0`，无需转换。下载前须阅读并接受该版本非商业许可。MiaoMiao 等单文件权重尚未接入应用内自动转换，不将任意 `.safetensors` 标为原生兼容。已有完整模型可以在高级路径设置直接复用，已有 LoRA 继续使用原目录，软件不搬移用户模型。
+同时保留官方 [Anima Base v1.0 Diffusers](https://huggingface.co/circlestone-labs/Anima-Base-v1.0-Diffusers)，固定 revision `073c3a9db359c31ad0e8aa268d15775473c2176c`，完整 17 文件约 5.25 GiB，含 transformer、编码器、VAE、tokenizer、配置、索引和许可；逐项核对大小与 SHA-256 后发布到 `inference/models/anima-base-v1.0`，无需转换。下载前须阅读并接受该版本非商业许可。自动转换仅接入上述固定 MiaoMiao 1.6 配方，不将任意 `.safetensors` 标为原生兼容。已有完整模型可以在高级路径设置直接复用，已有 LoRA 继续使用原目录，软件不搬移用户模型。
 
 一键流程明确保存原生引擎，按页面提示重启绘遇；只有当前引擎确认为原生、设备与资源就绪才显示“开始创作”。工作区变更会撤销旧目录的就绪显示，保存新目录后须重启；应用不静默回退 ComfyUI。源码、构建和组件检查不等于干净 Windows 安装或真实出图验收；断网续传、磁盘不足、不可写目录、缺组件、重启发现及最终原生成图仍须在对应设备人工验收。
 

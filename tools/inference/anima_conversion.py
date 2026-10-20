@@ -281,6 +281,10 @@ def apply(runtime_info, models, loaded_tokenizers, paths, headers, mapping, repo
         completed = {**report, "mode": "converted", "tensorDataRead": True, "outputWritten": True,
                      "weightTensorDataRead": True,
                      "weightsStrictlyLoaded": True, "savedKeyShapeDtypeVerified": True}
+        hashing = sibling("huiyu_conversion_hash", HERE / "native_hash.py")
+        completed["outputs"] = [{"path": path.relative_to(staged).as_posix(), "bytes": path.stat().st_size,
+                                 "sha256": hashing.file_sha256(path)}
+                                for path in sorted(staged.rglob("*")) if path.is_file()]
         write_json(staged / "conversion.json", completed)
         publish(staged, output)
     return completed
@@ -326,8 +330,9 @@ def main(argv=None):
     try:
         with contextlib.redirect_stdout(sys.stderr):
             report = convert(args)
-        print(json.dumps(report, ensure_ascii=False, indent=2))
+        print(json.dumps({"ok": True, **report}, ensure_ascii=False, indent=2))
         return 0
     except Exception as error:
-        print(json.dumps({"schemaVersion": 1, "readyForInference": False, "error": str(error)}, ensure_ascii=False))
+        print(json.dumps({"ok": False, "schemaVersion": 1, "readyForInference": False,
+                          "error": str(error), "message": str(error)}, ensure_ascii=False))
         return 1

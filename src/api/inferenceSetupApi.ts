@@ -26,7 +26,7 @@ export interface NativeSetupPlan {
   reasons: string[]
   freeBytes: number | null
   runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoverableBytes?: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
-  models: { requiresAccess: boolean; family: string; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
+  models: { preparation?: 'checkpoint-conversion' | 'complete-model'; requiresAccess: boolean; family: string; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
   resources: NativeImageResource[]
   activeEngine: string
   configuredEngine: string
@@ -113,6 +113,7 @@ function validPlan(value: ApiResponseObject): boolean {
     && typeof runtime.installed === 'boolean' && Array.isArray(runtime.sources) && runtime.sources.every(source => object(source)
       && nonempty(source.label) && secureUrl(source.url) && secureUrl(source.licenseUrl))
     && Array.isArray(models) && models.length > 0 && models.every(model => object(model) && nonempty(model.id) && nonempty(model.label)
+      && (model.preparation === undefined || ['checkpoint-conversion', 'complete-model'].includes(String(model.preparation)))
       && typeof model.requiresAccess === 'boolean' && ['anima', 'krea2', 'qwen-image'].includes(String(model.family))
       && nonempty(model.revision) && nonempty(model.license) && secureUrl(model.licenseUrl) && secureUrl(model.sourceUrl)
       && bytes(model.downloadBytes) && bytes(model.requiredBytes) && typeof model.installed === 'boolean')

@@ -208,6 +208,7 @@ impl ControlService {
             let model_views: Vec<_> = models.iter().map(|model| {
                 let model_root = root.join("models").join(&model.id);
                 json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
+                    "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
                     "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else{"anima"},
                     "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":model_needed(&root, model),
@@ -344,6 +345,10 @@ pub(super) fn retained(root: &Path, files: &[Artifact]) -> u64 {
 }
 pub(super) fn model_needed(root: &Path, model: &ModelBundle) -> u64 {
     let target = root.join("models").join(&model.id);
+    if model.conversion_profile.is_some() {
+        return model.required_bytes.saturating_sub(retained(&anima_models::input_root(&target, model), &model.files))
+            .saturating_add(64 * 1024 * 1024);
+    }
     let stage = root
         .join(".staging")
         .join(format!("{}-{}", model.id, model.revision));

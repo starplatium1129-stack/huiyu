@@ -29,7 +29,7 @@
       </div>
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
         <div class="setup-model">
-          <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>官方完整模型 · 无需转换</small></div></div>
+          <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>{{ selectedModel.preparation === 'checkpoint-conversion' ? '下载原始权重，自动转换为原生模型' : '完整原生模型 · 无需转换' }}</small></div></div>
           <div class="setup-budget"><span>最多下载<strong>{{ formatSetupBytes(downloadBytes) }}</strong></span><span>所需空间<strong>{{ formatSetupBytes(setupRequiredBytes) }}</strong></span></div>
         </div>
         <p v-if="!setupSpaceEnough" class="setup-error" role="status">空间不足，请更换存放位置或释放空间后重新检查。</p>

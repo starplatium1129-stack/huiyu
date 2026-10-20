@@ -6,6 +6,7 @@ mod plan;
 mod image_models;
 mod activation;
 mod image_resources;
+mod anima_models;
 
 use super::*;
 use axum::{
@@ -40,7 +41,7 @@ struct RuntimeBundle {
     sources: Value,
     files: Vec<Artifact>,
 }
-#[derive(Deserialize)]
+#[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct ModelBundle {
     id: String,
@@ -53,6 +54,8 @@ struct ModelBundle {
     files: Vec<Artifact>,
     #[serde(default)]
     requires_access: bool,
+    #[serde(default)]
+    conversion_profile: Option<String>,
 }
 #[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -81,6 +84,8 @@ fn bundles() -> Result<(Arc<RuntimeBundle>, Vec<Arc<ModelBundle>>)> {
         let models: Value =
             serde_json::from_str(include_str!("../../../tools/inference/managed-models.json"))?;
         let mut models = Vec::<ModelBundle>::deserialize(&models["models"])?;
+        let miaomiao = anima_models::bundle(&models[0])?;
+        models.insert(0, miaomiao);
         let adapters: Value = serde_json::from_str(include_str!("../../../tools/inference/managed-adapter-models.json"))?;
         models.extend(Vec::<ModelBundle>::deserialize(&adapters["models"])?);
         for model in &models {
@@ -175,12 +180,17 @@ fn receipt_matches(root: &Path, model: &ModelBundle) -> bool {
         .ok()
         .filter(|bytes| bytes.len() < 65536)
         .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
+    let inputs = anima_models::input_root(root, model);
     receipt.is_some_and(|value| value["modelId"] == model.id && value["revision"] == model.revision)
         && image_models::model_issue(root, &model.id).is_none()
         && model.files.iter().all(|file| {
-            std::fs::symlink_metadata(root.join(&file.path))
+            std::fs::symlink_metadata(inputs.join(&file.path))
                 .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
         })
+        && (model.conversion_profile.is_none() || anima_models::output_files(root).is_ok_and(|files| {
+            files.iter().all(|file| std::fs::symlink_metadata(root.join(&file.path))
+                .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes))
+        }))
 }
 fn runtime_paths(service: &ControlService, runtime: &RuntimeBundle) -> Value {
     let root = service.config.ai_workspace_root.join("inference");
