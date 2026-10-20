@@ -1,3 +1,5 @@
+import { createImageReadSlot } from '../utils/imageReadSlot'
+
 /** Local, static inspection only. SDK integrity and visual verification happen at runtime. */
 export interface ModelIssue {
   severity: 'error' | 'warning'
@@ -31,6 +33,8 @@ const MODEL_IMPORT_LIMITS = Object.freeze({
   jsonBytes: 4 * 1024 * 1024, depth: 32, textureSide: 8192,
   texturePixels: 32 * 1024 * 1024, readTimeoutMs: 10_000, inspectionTimeoutMs: 30_000,
 })
+// Closing/reopening the studio must not release an unfinished File read or digest.
+const inspectionSlot = createImageReadSlot()
 
 const record = (value: unknown): Record<string, unknown> | null =>
   value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : null
@@ -46,17 +50,22 @@ export function normalizeModelPath(value: string): string | null {
   return value.normalize('NFC') === value ? value : null
 }
 
-async function boundedRead(file: File): Promise<ArrayBuffer> {
-  let timer: ReturnType<typeof setTimeout> | undefined
+async function boundedRead(file: File, signal: AbortSignal, onTimeout: () => void): Promise<ArrayBuffer> {
+  signal.throwIfAborted()
+  const timer = setTimeout(onTimeout, MODEL_IMPORT_LIMITS.readTimeoutMs)
+  const clearTimer = () => clearTimeout(timer)
+  signal.addEventListener('abort', clearTimer, { once: true })
   try {
-    return await Promise.race([
-      file.arrayBuffer(),
-      new Promise<never>((_, reject) => { timer = setTimeout(() => reject(new Error('read-timeout')), MODEL_IMPORT_LIMITS.readTimeoutMs) }),
-    ])
-  } finally { clearTimeout(timer) }
+    const buffer = await file.arrayBuffer()
+    signal.throwIfAborted()
+    return buffer
+  } finally { clearTimer(); signal.removeEventListener('abort', clearTimer) }
 }
-async function sha256(data: ArrayBuffer): Promise<string> {
-  return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', data)), byte => byte.toString(16).padStart(2, '0')).join('')
+async function sha256(data: ArrayBuffer, signal: AbortSignal): Promise<string> {
+  signal.throwIfAborted()
+  const digest = await crypto.subtle.digest('SHA-256', data)
+  signal.throwIfAborted()
+  return Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('')
 }
 function checkJsonDepth(value: unknown, depth = 0): boolean {
   if (depth > MODEL_IMPORT_LIMITS.depth) return false
@@ -96,7 +105,29 @@ function textureDimensions(bytes: Uint8Array): [number, number] | null {
   return null
 }
 
-export async function inspectModelFiles(files: readonly File[], entryPath?: string): Promise<ModelInspection> {
+export async function inspectModelFiles(files: readonly File[], signal: AbortSignal, entryPath?: string): Promise<ModelInspection> {
+  signal.throwIfAborted()
+  const selectedFiles = [...files], controller = new AbortController()
+  const cancel = () => controller.abort(signal.reason)
+  signal.addEventListener('abort', cancel, { once: true })
+  let started = false
+  // Waiting for an earlier real read is part of the same 30-second budget.
+  const timer = setTimeout(() => controller.abort(new Error(started
+    ? '模型检查超时，请减少资源数量后重试。'
+    : '上次文件读取或指纹计算尚未结束，本次等待已超时，请稍后重新选择文件夹。')), MODEL_IMPORT_LIMITS.inspectionTimeoutMs)
+  try {
+    const result = await inspectionSlot.read(async currentSignal => {
+      started = true
+      return inspectFiles(selectedFiles, entryPath, currentSignal, () => controller.abort(new Error('资源读取超时，请稍后重新选择文件夹。')))
+    }, { signal: controller.signal, current: () => !controller.signal.aborted })
+    controller.signal.throwIfAborted()
+    if (!result) throw new DOMException('文件检查已被更新的选择替代。', 'AbortError')
+    return result
+  } finally { clearTimeout(timer); signal.removeEventListener('abort', cancel) }
+}
+
+async function inspectFiles(files: readonly File[], entryPath: string | undefined, signal: AbortSignal, onReadTimeout: () => void): Promise<ModelInspection> {
+  signal.throwIfAborted()
   const report: ModelInspection = {
     valid: false, entryPath: '', entries: [], fingerprint: '', modelJson: null, issues: [],
     candidates: { parameters: [], expressions: [], motions: [], hitAreas: [] }, totalBytes: 0,
@@ -136,14 +167,18 @@ export async function inspectModelFiles(files: readonly File[], entryPath?: stri
   const jsonFiles = new Map<string, Record<string, unknown>>()
   const inspectionStarted = Date.now()
   for (const [path, file] of [...entries.entries()].sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)) {
+    signal.throwIfAborted()
     if (Date.now() - inspectionStarted > MODEL_IMPORT_LIMITS.inspectionTimeoutMs) {
       issue('inspection-timeout', '模型检查超时，请减少资源数量后重试。'); return report
     }
     try {
       if (/\.json$/i.test(path) && file.size > MODEL_IMPORT_LIMITS.jsonBytes) { issue('json-size', 'JSON 超过 4 MiB 限制。', path); continue }
-      const buffer = await boundedRead(file)
+      const buffer = await boundedRead(file, signal, onReadTimeout)
+      signal.throwIfAborted()
       if (buffer.byteLength !== file.size) { issue('read-size', '读取的资源大小与清单不一致。', path); continue }
-      report.entries.push({ path, file, sha256: await sha256(buffer) })
+      const fingerprint = await sha256(buffer, signal)
+      signal.throwIfAborted()
+      report.entries.push({ path, file, sha256: fingerprint })
       if (/\.json$/i.test(path)) {
         const parsed: unknown = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(buffer))
         if (!record(parsed) || !checkJsonDepth(parsed)) issue('json-shape', 'JSON 必须为对象，且不能超过深度限制或包含危险键。', path)
@@ -155,7 +190,11 @@ export async function inspectModelFiles(files: readonly File[], entryPath?: stri
           issue('texture-size', '纹理头无效，或尺寸超过 8192 边长／32M 像素限制。', path)
       }
       if (/\.moc3$/i.test(path) && (buffer.byteLength < 8 || new TextDecoder().decode(buffer.slice(0, 4)) !== 'MOC3')) issue('moc-header', 'moc3 文件头无效。', path)
-    } catch { issue('read-failed', '资源读取、指纹计算或 JSON 解析失败。', path) }
+    } catch (error) {
+      signal.throwIfAborted()
+      if (error instanceof Error && error.name === 'AbortError') throw error
+      issue('read-failed', '资源读取、指纹计算或 JSON 解析失败。', path)
+    }
   }
   report.modelJson = jsonFiles.get(report.entryPath) || null
   const model = report.modelJson
@@ -229,8 +268,13 @@ export async function inspectModelFiles(files: readonly File[], entryPath?: stri
   for (const candidate of parameterMap.values()) if (semantics[candidate.id] && !candidate.semantics.includes(semantics[candidate.id]!)) candidate.semantics.push(semantics[candidate.id]!)
   report.candidates.parameters = [...parameterMap.values()]
   try {
-    report.fingerprint = await sha256(new TextEncoder().encode(`${report.entryPath}\n${report.entries.map(entry => `${entry.path}\0${entry.sha256}`).join('\n')}`).buffer)
-  } catch { issue('fingerprint-failed', '无法生成资源指纹；请在本地安全环境中重新导入。') }
+    report.fingerprint = await sha256(new TextEncoder().encode(`${report.entryPath}\n${report.entries.map(entry => `${entry.path}\0${entry.sha256}`).join('\n')}`).buffer, signal)
+    signal.throwIfAborted()
+  } catch (error) {
+    signal.throwIfAborted()
+    if (error instanceof Error && error.name === 'AbortError') throw error
+    issue('fingerprint-failed', '无法生成资源指纹；请在本地安全环境中重新导入。')
+  }
   issue('runtime-required', '文件检查通过后，请加载预览，确认模型能正确显示，并逐项观察参数与动作的实际效果。', undefined, 'warning')
   report.valid = !report.issues.some(item => item.severity === 'error')
   return report

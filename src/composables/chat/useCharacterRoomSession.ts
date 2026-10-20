@@ -19,6 +19,7 @@ import { CHAT_TURN_KEY } from '@/utils/storageKeys'
 import { useRoomMemory } from '@/composables/chat/useRoomMemory'
 import { useRoomSetup } from '@/composables/chat/useRoomSetup'
 import { useChatStoryActions } from '@/composables/chat/useChatStoryActions'
+import { useChatConversationClear } from '@/composables/chat/useChatConversationClear'
 import type { CharacterPetControls } from '@/composables/chat/useCharacterPetControls'
 import type { CompanionChatSendOptions } from '@/types/companionDrawing'
 
@@ -46,6 +47,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
 
   const activeChar = ref(DEFAULT_COMPANION_CHARACTER_ID)
   const busy = ref(false)
+  const resettingChat = ref(false)
   const voiceActive = ref(false)
   const chatError = ref('')
   const chatErrorKind = ref('')
@@ -298,20 +300,30 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     scrollBottom,
   })
 
+  let inputRevision = 0
+  watch(inputText, () => { inputRevision++ }, { flush: 'sync' })
+
   const { branchId, storyBranches, storyBusy, handleStoryAction, cancelStoryAction, canRegenerateMessage } = useChatStoryActions({
-    storage, activeChar, busy, chatReady, regenerateMessage,
+    storage, activeChar, busy: computed(() => busy.value || clearBusy.value || resettingChat.value), chatReady, regenerateMessage,
     stopVoice: () => voice.stop({ preserveMessageAudio: true, silent: true }), notice: setError, scrollBottom,
   })
 
+  const { clearBusy, clearLabel, clearCharacterConversation, forgetSuperseded } = useChatConversationClear({
+    storage, activeChar, isBusy: () => busy.value || storyBusy.value || resettingChat.value, clearDraftInput, notice: setError,
+    clearAudio: mids => { voice.stop({ preserveMessageAudio: true, silent: true }); voice.clearMessages(mids) },
+  })
+
+  const chatMutationBusy = computed(() => clearBusy.value || resettingChat.value)
+
   function handleSend(customText?: string | Event, imageUrl?: string, accepted?: (value: boolean) => boolean | void, sendOptions: CompanionChatSendOptions = {}) {
-    if (disposed || storyBusy.value || !storage.canWrite()) { accepted?.(false); return }
+    if (disposed || chatMutationBusy.value || storyBusy.value || !storage.canWrite()) { accepted?.(false); return }
     characterStageRef.value?.setUserMessage()
     const text = typeof customText === 'string' ? customText : undefined
     const character = activeChar.value
     let acknowledged = false
     const acknowledge = (value: boolean) => { acknowledged = true; return accepted?.(value) }
     void withChatTurn(async () => {
-      if (disposed || activeChar.value !== character || busy.value || !storage.canWrite() || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { acknowledge(false); return }
+      if (disposed || chatMutationBusy.value || activeChar.value !== character || busy.value || !storage.canWrite() || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { acknowledge(false); return }
       if (acknowledge(true) === false) { setError('未能接收，请检查连接。'); return }
       try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
       await sendMessage(text, imageUrl, sendOptions)
@@ -339,33 +351,8 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     setError('')
   }
 
-  async function clearCharacterConversation() {
-    const targetCharacter = activeChar.value
-    const targetBranch = branchId.value
-    const messages = storage.messages(targetCharacter)
-    if (!messages.length) return
-    const confirmed = await confirmAction({
-      title: '清空当前对话？',
-      message: '将清空当前剧情的对话记录并重新开始。其他剧情和历史归档会保留，此操作无法撤销。',
-      confirmLabel: '清空对话',
-      danger: true,
-      signal: confirmationController.signal,
-    })
-    if (!confirmed) return
-    if (disposed || activeChar.value !== targetCharacter || branchId.value !== targetBranch) return
-    await withChatTurn(async () => {
-      if (disposed || busy.value || !storage.refresh() || activeChar.value !== targetCharacter || branchId.value !== targetBranch) return
-      if (!storage.clear(targetCharacter)) return setError('清空未完成，原对话已保留；请检查浏览器存储后重试。', 'warning', 0)
-      clearDraftInput()
-      storage.setDraft(targetCharacter, '')
-      voice.stop({ preserveMessageAudio: true, silent: true })
-      voice.clearMessages(messages.map(message => message.mid).filter(Boolean))
-      setError('已开始新的本地对话。', 'info', 2500)
-    }, () => setError('另一个聊天窗口正在回复，请等回复结束后再清空当前剧情。', 'info'))
-  }
-
   async function clearAllMemory() {
-    if (!storage.canWrite()) return
+    if (disposed || chatMutationBusy.value || !storage.canWrite()) return
     const confirmed = await confirmAction({
       title: '清空本机聊天内容与个人档案？',
       message: '清除所有当前及退休角色的对话、归档、事实记忆、草稿、个人称呼与备注和本会话语音缓存。保留 API 连接、凭据、外观、音量及行为偏好。已导出的文件和第三方记录不受影响。此操作无法撤销。',
@@ -373,20 +360,26 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
       danger: true,
       signal: confirmationController.signal,
     })
-    if (!confirmed || disposed) return
+    if (!confirmed || disposed || chatMutationBusy.value) return
+    resettingChat.value = true
+    cancelStoryAction()
+    const inputOwner = { character: activeChar.value, revision: inputRevision }
     if (busy.value) abortCurrentRequest(true)
     voice.stop({ preserveMessageAudio: false, silent: true })
     try {
       const result = await clearStoredChatContent()
-      clearDraftInput()
+      if (disposed) return
+      if (activeChar.value === inputOwner.character && inputRevision === inputOwner.revision) clearDraftInput()
       storage.canWrite()
       await storage.load()
+      if (disposed) return
       resetMemoryState()
+      forgetSuperseded()
       if (result.failed.length) setError(`部分聊天内容未清除（${result.failed.length} 项），请重试清空；已删除内容不会恢复。`, 'warning', 0)
       else setError('本机聊天内容与个人档案已清空；连接和偏好已保留。', 'info', 5000)
     } catch {
-      setError('清空未完成，存储不可写或数据版本不兼容；请排除问题后重试。', 'warning', 0)
-    }
+      if (!disposed) setError('清空未完成，存储不可写或数据版本不兼容；请排除问题后重试。', 'warning', 0)
+    } finally { resettingChat.value = false }
   }
 
   function onAutoVoiceChange() {
@@ -512,7 +505,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     prepareRoom,
     stopEverything,
     switchCharacter,
-    clearCharacterConversation,
+    clearCharacterConversation, clearBusy, clearLabel, chatMutationBusy,
     clearAllMemory,
     onAutoVoiceChange,
     refreshRoomState,

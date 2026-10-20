@@ -1,12 +1,11 @@
 import { computed, nextTick, onDeactivated, onScopeDispose, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { artworkRepository } from '@/storage/artworkRepository'
 import { normalizeSmartAlbumRule, type SmartAlbumRule } from '@/application/artwork/smartAlbums'
 import { confirmAction } from '@/composables/useConfirm'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { useAlbumNavigation } from './useAlbumNavigation'
-import { galleryProjects, type GalleryProject } from './galleryStorage'
+import { beginGalleryProjectRead, captureGallerySource, galleryProjects, publishGalleryProjectChange, type GalleryProject } from './galleryStorage'
 import { useGalleryProjectAlbums } from './useGalleryProjectAlbums'
 import { createSmartAlbumMatcher, UNASSIGNED_CHARACTER_ID } from './galleryAlbumRules'
 import { safeImageUrl, searchHaystack } from './galleryHelpers'
@@ -102,51 +101,62 @@ export function useGalleryCollections(options: Options) {
     options.resetGalleryFilters()
     await navigation.showImages()
   }
-  async function refreshProjects() {
-    const records = await artworkRepository.readProjects()
-    if (!disposed) options.projects.value = galleryProjects(records)
+  async function refreshProjects(source: ReturnType<typeof captureGallerySource>) {
+    if (disposed || !source.isCurrent()) return
+    const read = beginGalleryProjectRead(options.projects, source, () => !disposed)
+    try { read.publish(galleryProjects(await source.repository.readProjects())) }
+    finally { read.finish() }
   }
   async function save() {
     if (saving.value) return
     const revision = viewRevision
+    const source = captureGallerySource()
+    const ownsView = () => isCurrentView(revision) && source.isCurrent()
     saving.value = true; error.value = ''
     try {
-      const saved = await artworkRepository.saveSmartAlbum({ id: draftId, title: editorTitle.value, rule: normalizeSmartAlbumRule(editorRule.value) })
+      const saved = await source.repository.saveSmartAlbum({ id: draftId, title: editorTitle.value, rule: normalizeSmartAlbumRule(editorRule.value) })
       // Publish the acknowledged project even if a subsequent refresh fails.
       const project = galleryProjects([saved])[0]
       if (!project) throw new Error('智能画册保存响应无效')
-      if (disposed) return
-      options.projects.value = [...options.projects.value.filter(value => value.id !== project.id), project]
+      if (disposed || !source.isCurrent()) return
+      publishGalleryProjectChange(options.projects, source, project.id, project)
       // Persistence survives KeepAlive deactivation; old UI work must not navigate a newer visit.
-      if (!isCurrentView(revision)) return
+      if (!ownsView()) return
       editorOpen.value = false
       albumSection.value = 'albums'
       await openCollection(project.id)
-      if (!isCurrentView(revision)) return
+      if (!ownsView()) return
       options.showToast(editing.value ? '智能画册已更新' : '智能画册已保存', 'success')
-    } catch (cause) { if (isCurrentView(revision)) error.value = storageWriteMessage(cause, '智能画册') }
-    finally { saving.value = false }
+    } catch (cause) { if (ownsView()) error.value = storageWriteMessage(cause, '智能画册') }
+    finally { source.release(); saving.value = false }
   }
   async function removeSmartAlbum(id: string) {
     const project = options.projects.value.find(value => value.id === id && value.smartRule)
     if (!project || saving.value) return
     const revision = viewRevision
-    const confirmed = await confirmAction({ title: '移除智能画册？', message: `移除「${project.title}」的筛选规则，作品仍保存在全部作品中。`, confirmLabel: '移除画册', danger: false })
-    if (!confirmed || !isCurrentView(revision) || saving.value) return
-    saving.value = true
+    const source = captureGallerySource()
+    const ownsView = () => isCurrentView(revision) && source.isCurrent()
+    let admitted = false
     try {
-      await artworkRepository.deleteSmartAlbum(id)
-      if (disposed) return
-      options.projects.value = options.projects.value.filter(value => value.id !== id)
-      if (!isCurrentView(revision)) return
+      const confirmed = await confirmAction({ title: '移除智能画册？', message: `移除「${project.title}」的筛选规则，作品仍保存在全部作品中。`, confirmLabel: '移除画册', danger: false })
+      if (!confirmed || !ownsView() || saving.value) return
+      if (options.projects.value.find(value => value.id === id) !== project) {
+        options.showToast('画册信息已变化，请重新核对后移除', 'warning')
+        return
+      }
+      admitted = true; saving.value = true
+      await source.repository.deleteSmartAlbum(id)
+      if (disposed || !source.isCurrent()) return
+      publishGalleryProjectChange(options.projects, source, id, null)
+      if (!ownsView()) return
       if (options.projectFilter.value === id) options.resetGalleryFilters()
       options.showToast('智能画册已移除', 'success')
       await nextTick()
-      if (isCurrentView(revision)) navigation.albumRoot.value?.focus({ preventScroll: true })
+      if (ownsView()) navigation.albumRoot.value?.focus({ preventScroll: true })
     } catch (cause) {
-      if (isCurrentView(revision)) options.showToast(storageWriteMessage(cause, '智能画册'), 'error')
-      await refreshProjects().catch(() => {})
-    } finally { saving.value = false }
+      if (ownsView()) options.showToast(storageWriteMessage(cause, '智能画册'), 'error')
+      if (admitted) await refreshProjects(source).catch(() => {})
+    } finally { source.release(); if (admitted) saving.value = false }
   }
   const releaseMaintenance = registerMaintenanceParticipant(() => {
     if (saving.value || editorOpen.value) throw new Error('OPEN_GALLERY_ALBUM_EDITOR')

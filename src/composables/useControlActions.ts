@@ -184,7 +184,7 @@ export function useControlActions(
       const report = buildDiagnosticExport(data, version, DATA_VERSION)
       const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16)
       downloadBlob(new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8' }), 'huiyu-diagnostics-' + stamp + '.json')
-      showToast('脱敏诊断包已保存到本机')
+      showToast('已发起脱敏诊断包下载，请在下载列表确认')
     } catch (e) { showToast(errorMessage(e, '诊断包导出失败'), true) }
     finally { exportingDiag.value = false }
   }

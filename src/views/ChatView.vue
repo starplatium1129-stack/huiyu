@@ -76,12 +76,12 @@
           </div>
           <div class="room-chat-actions">
             <StudioTooltip :content="immersive ? '展开对话' : '专注陪伴'"><button class="btn btn-ghost" type="button" :aria-label="immersive ? '展开对话' : '专注陪伴'" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" /></button></StudioTooltip>
-            <StudioTooltip content="新对话"><button class="btn btn-ghost" type="button" aria-label="新对话" :disabled="busy || storyBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
+            <StudioTooltip :content="clearLabel"><button class="btn btn-ghost" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
             <StudioTooltip content="聊天设置"><button class="btn btn-ghost chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
             <ChatActionsMenu @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
           </div>
         </header>
-        <ChatStoryPicker :branch-id="branchId" :branches="storyBranches" :disabled="busy || storyBusy || storage.writeBlocked.value"
+        <ChatStoryPicker :branch-id="branchId" :branches="storyBranches" :disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
           @select="handleStoryAction({ kind: 'switch-branch', branchId: $event })" />
         <div v-if="!chatReady || preparingRoom" class="room-setup">
           <strong><span class="room-setup-icon" aria-hidden="true"><ArchiveIcon name="model" /></span>{{ setupTitle }}</strong>
@@ -100,7 +100,7 @@
           <ChatMessageRow v-for="msg in visibleMessages" tabindex="-1" :key="msg.replyId || msg.mid" :message="msg" :avatar="avatar"
             :chibi="Boolean(companionChatAvatars[activeChar])" :streaming="msg.mid === streamingMid" :playing="msg.mid === playingMid"
             :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
-            :can-regenerate="chatReady && canRegenerateMessage(msg.mid)" :story-disabled="busy || storyBusy || storage.writeBlocked.value"
+            :can-regenerate="chatReady && canRegenerateMessage(msg.mid)" :story-disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
             @copy="copyMessage" @remember="rememberMessage" @play="voice.playMessage($event)"
             @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })" @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })"
             @select-variant="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
@@ -120,7 +120,7 @@
             <textarea ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" placeholder="发消息…" aria-label="聊天输入"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onInputChange"></textarea>
             <StudioTooltip anchor :content="busy || voiceActive ? '停止回复或语音' : chatReady ? '发送 · Enter（Shift+Enter 换行）' : '请先连接聊天模型'">
-              <StudioSendButton :busy="busy || voiceActive" :disabled="storyBusy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
+              <StudioSendButton :busy="busy || voiceActive" :disabled="chatMutationBusy || storyBusy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
                 :turn-id="lastUserMessage?.mid || ''" :completed="Boolean(replyAnnouncement) && !chatError && !lastAssistantMessage?.stopped"
                 :context="activeChar" :message-host="chatListRef" @send="handleSend" @stop="stopEverything" />
             </StudioTooltip>
@@ -244,7 +244,7 @@ const {
   prepareRoom,
   stopEverything,
   switchCharacter,
-  clearCharacterConversation,
+  clearCharacterConversation, clearBusy, clearLabel, chatMutationBusy,
   clearAllMemory,
   onAutoVoiceChange,
 } = useCharacterRoomSession({ latest: () => { void latest() }, nearBottom: () => !showLatest.value })
@@ -338,7 +338,7 @@ const {
 } = useChatSpeechInteraction({
   currentCharacter,
   chatReady,
-  busy: computed(() => busy.value || storyBusy.value || voiceActive.value || roomPanel.value === 'settings'),
+  busy: computed(() => busy.value || storyBusy.value || chatMutationBusy.value || voiceActive.value || roomPanel.value === 'settings'),
   inputText,
   onInputChange,
   handleSend: accepted => handleSend(undefined, undefined, accepted),

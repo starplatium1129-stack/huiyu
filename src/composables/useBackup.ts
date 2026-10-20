@@ -162,7 +162,7 @@ export function useBackup(onFlash: (msg: string) => void = () => {}) {
       const removedDead = cleanDeadLocalKeys(localStorage)
       lastBackupAt.value = Date.now()
       try { localStorage.setItem(BACKUP_AT_KEY, String(lastBackupAt.value)) } catch {}
-      onFlash(`备份完成：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(blob.size / 1024))} KB`
+      onFlash(`备份文件已生成并开始下载，请确认文件已保存：${info.history} 条记录 · ${info.images} 张图片 · ${Math.max(1, Math.round(blob.size / 1024))} KB`
         + (removedDead ? ` · 已清理 ${removedDead} 个废弃存储键` : ''))
     } catch (e) {
       if (disposed) return
