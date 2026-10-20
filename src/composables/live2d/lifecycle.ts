@@ -152,7 +152,9 @@ export function createLifecycleController(
     if (!ctx.catalog) {
       setState('checking', '检查 Live2D 资源…')
       if (!await catalog.load()) return
-      if (ctx.destroyed.value || !ctx.enabled.value || isStageHidden(ctx) || char !== ctx.character.value) return
+      if (ctx.destroyed.value || char !== ctx.character.value) return
+      // Disabled stages still need the settled idle/fallback state below.
+      if (ctx.enabled.value && isStageHidden(ctx)) return
     }
     if (requestedBackendKind === 'native' && ctx.backendKind.value === 'browser'
       && ctx.loadedCharacter.value !== char && resolveCompanionAvatar(char)?.profile.backendCompatibility.includes('native')) {

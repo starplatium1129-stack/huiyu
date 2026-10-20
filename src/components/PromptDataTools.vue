@@ -35,7 +35,7 @@
           {{ backup.workspaceProgress.value || `正在备份图片：${backup.exportProgress.value.completed} / ${backup.exportProgress.value.total}` }}
         </div>
         <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消当前备份操作</button>
-        <StudioTooltip anchor content="把作品册的每张原图下载成独立的图片文件">
+        <StudioTooltip anchor :content="backup.desktopActive.value ? '将当前作品记录引用的本机原图逐张下载为独立图片文件' : '逐张下载此浏览器保存的全部原图，包含未入册、回收站及旧库图片，不只限于当前作品册'">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()">
             <ArchiveIcon name="image" /> 导出作品图片
           </button>
