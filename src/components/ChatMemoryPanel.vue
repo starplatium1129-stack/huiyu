@@ -14,16 +14,16 @@
       <p v-if="query.trim()" role="status">{{ recalled.length ? `匹配 ${recalled.length} 条，已在下方标明` : '未找到相关记忆，可补充主题或修改措辞' }}</p>
       <div v-if="!items.length" class="memory-empty">在自己的聊天气泡下点击“记住”，事实会出现在这里。</div>
       <div v-else class="memory-list">
-        <article v-for="item in items" :key="item.id" class="memory-item">
-          <input v-model="rows[item.id].topic" @input="markEdited(item.id, 'topicDirty')" class="input" maxlength="40" :aria-label="`记忆主题：${item.topic || '未分类'}`" placeholder="主题（可选，例如：饮食偏好）" />
-          <textarea v-model="rows[item.id].text" @input="markEdited(item.id, 'textDirty')" class="textarea" maxlength="240" rows="2" :aria-label="`编辑记忆：${item.text}`"></textarea>
+        <article v-for="{ item, row } in editableItems" :key="item.id" class="memory-item">
+          <input v-model="row.topic" @input="markEdited(item.id, 'topicDirty')" class="input" maxlength="40" :aria-label="`记忆主题：${item.topic || '未分类'}`" placeholder="主题（可选，例如：饮食偏好）" />
+          <textarea v-model="row.text" @input="markEdited(item.id, 'textDirty')" class="textarea" maxlength="240" rows="2" :aria-label="`编辑记忆：${item.text}`"></textarea>
           <small>{{ new Date(item.updatedAt).toLocaleString() }} · {{ item.sourceMid ? '来源：你固定的聊天消息' : '来源：手动记录' }}{{ recalled.includes(item.id) ? ' · 本次召回' : '' }}</small>
           <div>
-            <span>{{ rows[item.id].text.length }} / 240</span>
-            <button type="button" class="btn btn-ghost btn-sm" :aria-disabled="rows[item.id].saving || rows[item.id].deleting || undefined" :aria-busy="rows[item.id].saving" @click="save(item.id)">{{ rows[item.id].saving ? '保存中…' : '保存' }}</button>
-            <button type="button" class="btn btn-quiet btn-sm" :aria-disabled="rows[item.id].saving || rows[item.id].deleting || undefined" :aria-busy="rows[item.id].deleting" @click="requestDelete(item.id)">删除</button>
+            <span>{{ row.text.length }} / 240</span>
+            <button type="button" class="btn btn-ghost btn-sm" :aria-disabled="row.saving || row.deleting || undefined" :aria-busy="row.saving" @click="save(item.id)">{{ row.saving ? '保存中…' : '保存' }}</button>
+            <button type="button" class="btn btn-quiet btn-sm" :aria-disabled="row.saving || row.deleting || undefined" :aria-busy="row.deleting" @click="requestDelete(item.id)">删除</button>
           </div>
-          <p v-if="rows[item.id].message" role="status">{{ rows[item.id].message }}</p>
+          <p v-if="row.message" role="status">{{ row.message }}</p>
         </article>
       </div>
     </div>
@@ -57,7 +57,9 @@ interface MemoryDraft {
   deleting: boolean
   message: string
 }
-const rows = reactive<Record<string, MemoryDraft>>(Object.create(null))
+const rows = reactive(new Map<string, MemoryDraft>())
+// The synchronous items watcher initializes each owner before rendering.
+const editableItems = computed(() => props.items.map(item => ({ item, row: rows.get(item.id)! })))
 const query = ref('')
 const recalled = computed(() => selectChatFacts({ version: 1, byCharacter: { selected: props.items } }, 'selected', query.value).map(result => result.item.id))
 let disposed = false
@@ -69,11 +71,11 @@ watch(() => props.items, cancelDelete, { deep: true, flush: 'sync' })
 
 watch(() => props.items, items => {
   const ids = new Set(items.map(item => item.id))
-  for (const id of Object.keys(rows)) if (!ids.has(id)) delete rows[id]
+  for (const id of rows.keys()) if (!ids.has(id)) rows.delete(id)
   for (const item of items) {
-    const row = rows[item.id]
+    const row = rows.get(item.id)
     if (!row) {
-      rows[item.id] = { text: item.text, topic: item.topic || '', textDirty: false, topicDirty: false, saving: false, deleting: false, message: '' }
+      rows.set(item.id, { text: item.text, topic: item.topic || '', textDirty: false, topicDirty: false, saving: false, deleting: false, message: '' })
       continue
     }
     // Input ownership survives failed writes and reverting to the old saved value.
@@ -83,13 +85,15 @@ watch(() => props.items, items => {
 }, { deep: true, immediate: true, flush: 'sync' })
 
 function markEdited(id: string, field: 'textDirty' | 'topicDirty') {
-  rows[id][field] = true
-  rows[id].message = ''
+  const row = rows.get(id)
+  if (!row) return
+  row[field] = true
+  row.message = ''
 }
-function ownsRow(id: string, row: MemoryDraft) { return !disposed && rows[id] === row }
+function ownsRow(id: string, row: MemoryDraft) { return !disposed && rows.get(id) === row }
 
 async function save(id: string) {
-  const row = rows[id]
+  const row = rows.get(id)
   if (!row || disposed || row.saving || row.deleting) return
   const text = normalizeChatMemoryText(row.text)
   if (!text) { row.message = '请填写记忆内容后再保存。'; return }
@@ -120,7 +124,7 @@ async function save(id: string) {
 
 async function requestDelete(id: string) {
   const fact = props.items.find(item => item.id === id)
-  const row = rows[id]
+  const row = rows.get(id)
   if (!fact || !row || disposed || row.saving || row.deleting || confirmation) return
   const controller = new AbortController()
   confirmation = controller
