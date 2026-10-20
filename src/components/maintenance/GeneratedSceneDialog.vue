@@ -38,7 +38,7 @@
         </div>
         <footer class="modal-actions">
           <button v-if="!baseline && !loading && !savedId" class="btn btn-ghost" type="button" @click="load">重新读取</button>
-          <button v-if="imageError" class="btn btn-ghost" type="button" :disabled="saving" @click="saveImage">重试保存样张</button>
+          <button v-if="imageError" class="btn btn-ghost" type="button" :disabled="saving" @click="saveImage">重新提交样张</button>
           <button v-if="savedId" class="btn btn-primary" type="button" :disabled="saving" @click="openMaintenance">去内容维护</button>
           <button v-else-if="pendingId" class="btn btn-primary" type="button" :disabled="saving" @click="reconcile">{{ saving ? '正在处理…' : '核对原保存结果' }}</button>
           <button v-else-if="preview" class="btn btn-primary" type="button" :disabled="saving" @click="save">{{ saving ? '正在保存…' : '确认保存场景' }}</button>

@@ -80,6 +80,7 @@ export function useGeneratedSceneSave(source: GeneratedSceneCapture) {
     } catch (cause) { if (alive) error.value = cause instanceof Error ? cause.message : '场景检查失败' }
     finally { previewing.value = false }
   }
+  let imageSubmissionAttempted = false
   async function saveImage() {
     if (!savedId.value || saving.value) return
     saving.value = true; imageError.value = ''
@@ -90,8 +91,14 @@ export function useGeneratedSceneSave(source: GeneratedSceneCapture) {
       requireOriginalSource()
       if (!image || !thumbnail) throw new Error('图片转换失败')
       const id = catalogShowcaseId({ kind: popular ? 'blueprint' : 'scene', id: savedId.value, characterId: source.recipe.characterId || '' })
+      imageSubmissionAttempted = true
       await maintenanceApi.saveShowcase({ id, image, thumbnail }, { signal: abort.signal })
-    } catch (cause) { if (alive) imageError.value = '场景已保存，样张尚未保存：' + (cause instanceof Error ? cause.message : '请重试') }
+    } catch (cause) {
+      if (alive) imageError.value = imageSubmissionAttempted
+        ? '场景已保存，样张提交尚未获得成功确认：' + (cause instanceof Error ? cause.message : '请核对结果')
+          + '。样张可能已生效，请回到原来源核对；重新提交会再次写入同一场景的样张，不会撤销此前提交。'
+        : '场景已保存，本次尚未提交样张：' + (cause instanceof Error ? cause.message : '请重试')
+    }
     finally { saving.value = false }
   }
   async function reconcilePending() {
