@@ -174,11 +174,46 @@ export function useGalleryWorkspace() {
         openRouteComparison();
         comparisonOwner = compareOpen.value ? request : '';
     }
-    let comparisonSession = imageMediaSession(), comparisonRepository = artworkRepository;
+    let comparisonSession = imageMediaSession(), comparisonRepository = artworkRepository, comparisonSourceRevision = 0;
+    let comparisonWriteRevision = 0, galleryReadRevision = 0;
+    const comparisonMarkPending = ref(false), comparisonNeedsRead = ref(false);
+    const comparisonMarkOutcome = ref<'saved' | 'unconfirmed' | ''>('');
+    const comparisonMarksReading = computed(() => galleryLoading.value || galleryIndexLoading.value);
+    function comparisonMetadataReady() {
+        return !unmounted && viewActive && !comparisonMarkPending.value && !comparisonNeedsRead.value
+            && !comparisonMarksReading.value && !galleryError.value;
+    }
+    function canMarkComparison() { return compareOpen.value && comparisonMetadataReady(); }
+    const comparisonMarksMessage = computed(() => {
+        if (comparisonMarkPending.value) return '';
+        if (comparisonMetadataReady()) return comparisonMarkOutcome.value === 'unconfirmed' ? '已重新读取作品册，请核对当前标记；此前操作未全部确认。' : '';
+        if (comparisonMarkOutcome.value === 'saved') return '标记已保存，但作品信息尚未重新读取。请先重新读取，不要重复保存。';
+        if (comparisonMarkOutcome.value === 'unconfirmed') return '标记结果未全部确认，请先重新读取作品册后核对，不要重复提交。';
+        return '作品信息尚未就绪，请重新读取后再标记。';
+    });
+    async function retryComparisonMarks() {
+        if (!unmounted && viewActive && compareOpen.value && !comparisonMarkPending.value && !comparisonMarksReading.value) await loadGalleryStorage();
+    }
+    async function saveComparisonMarks(write: () => Promise<void>) {
+        if (!canMarkComparison()) return;
+        const sourceRevision = comparisonSourceRevision, source = artworkRepository, session = imageMediaSession();
+        const currentSource = () => sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession();
+        comparisonMarkPending.value = true; comparisonNeedsRead.value = true; comparisonMarkOutcome.value = ''; comparisonWriteRevision++;
+        let saved = false;
+        try { await write(); saved = true; }
+        catch { /* Sequential desktop patches may have committed a prefix. Re-read, never replay. */ }
+        finally { comparisonMarkPending.value = false; comparisonWriteRevision++; }
+        // Modal close does not cancel an admitted write or lose its refresh
+        // requirement. Source invalidation, however, cannot refresh a new owner.
+        if (unmounted || !currentSource()) return;
+        comparisonMarkOutcome.value = saved ? 'saved' : 'unconfirmed';
+        if (viewActive) await loadGalleryStorage();
+    }
     function refreshComparisonSession() {
         const next = imageMediaSession();
         if (next === comparisonSession && comparisonRepository === artworkRepository) return;
         comparisonSession = next; comparisonRepository = artworkRepository;
+        comparisonSourceRevision++; comparisonNeedsRead.value = true; comparisonMarkOutcome.value = '';
         retireComparisonIntent();
     }
     const stopComparisonRuntime = onDesktopRuntime(refreshComparisonSession);
@@ -326,7 +361,14 @@ export function useGalleryWorkspace() {
         }
     }
     /* ---------- 初始化 ---------- */
-    function loadGalleryStorage(): Promise<void> { return loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects }) }
+    async function loadGalleryStorage(): Promise<void> {
+        const read = ++galleryReadRevision, write = comparisonWriteRevision, sourceRevision = comparisonSourceRevision;
+        const source = artworkRepository, session = imageMediaSession();
+        await loadGalleryStorageAction({ galleryLoading, galleryIndexLoading, galleryError, history, projects });
+        if (!unmounted && viewActive && read === galleryReadRevision && write === comparisonWriteRevision
+            && sourceRevision === comparisonSourceRevision && source === artworkRepository && session === imageMediaSession()
+            && !comparisonMarkPending.value && !comparisonMarksReading.value && !galleryError.value) comparisonNeedsRead.value = false;
+    }
     onMounted(async () => {
         unmounted = false;
         document.addEventListener('keydown', onKeydown);
@@ -427,6 +469,7 @@ closeBtn, viewerEl, infoEl, infoToggleBtn, infoCloseBtn, sentinelEl, shellEl,
         selectMode, toggleSelectMode, trashMode, toggleTrashMode, trashItems, selectedIds,
         visible, compareSelected, selectAllVisible, allVisibleSelected, bulkDeleting, bulkDelete,
         compareOpen, compareItems, closeComparison, loadGalleryStorage, trashBusy,
+        canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage, comparisonMarksReading,
         restoreTrashItem, clearTrash, trashClearing, trashLoading, trashError, loadTrash, galleryLoading, galleryIndexLoading, galleryError, history, resetGalleryFilters,
         masonryGroups, scheduleWallScan, retryCardImage, columnCount, pendingDeleteId, ratioOf, deleting, confirmDelete,
         sceneTitle, toggleFavorite, toggleSelect, openViewer, indexOf, thumbUrls,

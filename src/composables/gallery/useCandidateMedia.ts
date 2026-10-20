@@ -113,8 +113,17 @@ export function useCandidateMedia() {
     if (!admit() || !sameArtworkMedia(record, item) || record?._galleryRevision !== item._galleryRevision) return
     enqueue(item, true); pump()
   }
+  function detailFor(item: ArtworkRecord): ArtworkRecord {
+    // Web rows already contain the current metadata. Desktop detail bodies do
+    // not carry the summary revision and may add legacy image_data, so compare
+    // the requested summary, not the hydrated body, with the latest prop.
+    if (!item._gallerySummary) return item
+    const id = String(item.id), source = records.get(id), detail = details.get(id)
+    if (!detail || !sameArtworkMedia(source, item) || source?._galleryRevision !== item._galleryRevision) return item
+    return { ...detail, ...item, favorite: item.favorite, reviewState: item.reviewState, _gallerySummary: false }
+  }
   const stopRuntime = onDesktopRuntime(refreshSession)
   const stopResources = watch(runtimeResourceIdentity, refreshSession, { flush: 'sync' })
   onScopeDispose(() => { disposed = true; stopRuntime(); stopResources(); release() })
-  return { urls, reading, errors, revisions, details, beginVisit, admit, load, retry, cancel, release }
+  return { urls, reading, errors, revisions, detailFor, beginVisit, admit, load, retry, cancel, release }
 }

@@ -1,7 +1,8 @@
 <template>
   <Teleport to="body"><dialog ref="dialog" class="candidate-compare" aria-labelledby="candidate-title" @click="onDialogClick" @close="onNativeClose" @cancel.prevent="emit('close')">
     <header><div><h2 id="candidate-title">对比挑选</h2><p>并排看画面与参数，选出最满意的一张。暂不采用的图片仍然保留。</p></div><button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭对比" @click="emit('close')"><ArchiveIcon name="close" /></button></header>
-    <p v-if="error" class="candidate-error" role="alert">{{ error }}</p>
+    <p v-if="error || marksMessage" class="candidate-error" role="alert">{{ error || marksMessage }}</p>
+    <button v-if="marksMessage && !canMark()" class="btn btn-ghost btn-sm" type="button" :disabled="busy || marksReading" @click="retryMarkRead">{{ marksReading ? '正在读取作品信息…' : '重新读取作品信息' }}</button>
     <div class="candidate-controls" role="group" aria-label="候选对比设置">
       <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="onlyDifferent" @click="onlyDifferent = !onlyDifferent">只看差异参数</button>
       <button class="btn btn-ghost btn-sm" type="button" :aria-pressed="synchronized" @click="toggleSync(candidates.map(item => item.id))">同步缩放与移动</button>
@@ -15,7 +16,7 @@
       <p v-if="item._gallerySummary" class="candidate-meta" role="status">{{ reading.get(String(item.id)) ? '正在读取完整参数…' : '完整参数暂未读取' }}</p>
       <dl v-else class="candidate-parameters" aria-label="候选参数"><div v-for="row in parameterRows" :key="row.key"><dt>{{ row.label }}</dt><dd>{{ row.values[index] }}</dd></div></dl>
       <p v-if="!parameterRows.length" class="candidate-meta">已记录参数没有差异</p>
-      <div class="candidate-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3"><button class="btn btn-primary" type="button" :disabled="busy" @click="prefer(item)">选为首选</button><button class="btn btn-ghost" type="button" :disabled="busy" @click="setAside(item)">{{ item.reviewState === 'rejected' ? '恢复候选' : '暂不采用' }}</button><RouterLink v-if="!item._gallerySummary && item.engine !== 'manga-screen'" class="btn btn-ghost" :to="artworkContinueTarget(item, 'remix').to" @click="emit('close')">{{ artworkContinueTarget(item, 'remix').label }}</RouterLink></div></div>
+      <div class="candidate-actions tw:flex tw:flex-wrap tw:gap-s-2 tw:mt-s-3"><button class="btn btn-primary" type="button" :disabled="busy || !canMark()" @click="prefer(item)">选为首选</button><button class="btn btn-ghost" type="button" :disabled="busy || !canMark()" @click="setAside(item)">{{ item.reviewState === 'rejected' ? '恢复候选' : '暂不采用' }}</button><RouterLink v-if="!item._gallerySummary && item.engine !== 'manga-screen'" class="btn btn-ghost" :to="artworkContinueTarget(item, 'remix').to" @click="emit('close')">{{ artworkContinueTarget(item, 'remix').label }}</RouterLink></div></div>
     </article></div>
     <footer>共 {{ candidates.length }} 张 · 标记自动保存到作品册 · 窄窗口可横向滚动</footer>
   </dialog></Teleport>
@@ -32,12 +33,13 @@ import { artworkContinueTarget } from '@/utils/artworkNavigation'
 
 import type { ArtworkRecord } from '@/types/artwork'
 import { useFluidDialog, isBackdropClick } from '@/composables/useFluidDialog'
-const props = defineProps<{ open: boolean; items: ArtworkRecord[] }>()
-const emit = defineEmits<{ close: []; changed: [] }>()
+const props = defineProps<{ open: boolean; items: ArtworkRecord[]; canMark: () => boolean;
+  mark: (write: () => Promise<void>) => Promise<void>; retryMarks: () => Promise<void>; marksMessage: string; marksReading: boolean }>()
+const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLDialogElement | null>(null), busy = ref(false), error = ref(''), onlyDifferent = ref(true)
 const motion = useFluidDialog(dialog)
-const { urls, reading, errors, revisions, details, beginVisit, admit, load, retry, cancel, release } = useCandidateMedia()
-const candidates = computed(() => props.items.slice(0, 4).map(item => details.get(String(item.id)) || item))
+const { urls, reading, errors, revisions, detailFor, beginVisit, admit, load, retry, cancel, release } = useCandidateMedia()
+const candidates = computed(() => props.items.slice(0, 4).map(detailFor))
 const viewport = useCandidateViewport()
 const { synchronized, toggleSync, reset } = viewport
 const parameterRows = computed(() => candidateParameterRows(candidates.value, onlyDifferent.value))
@@ -61,14 +63,20 @@ watch([() => props.open, () => props.items.slice(0, 4).map(({ id, image_id, imag
   load(props.items.slice(0, 4), visit)
 }, { immediate: true })
 function retryCandidate(item: ArtworkRecord) { const source = props.items.find(entry => entry.id === item.id); if (props.open && source) retry(source) }
+function retryMarkRead() { if (props.open && !busy.value && admit()) void props.retryMarks() }
 async function save(patches: Array<{ id: string | number; patch: Partial<ArtworkRecord> }>) {
   const visit = admit()
-  if (busy.value || !props.open || !visit) return
+  if (busy.value || !props.open || !visit || !props.canMark()) return
   const current = version
   const isCurrent = () => props.open && current === version && visit.current()
   busy.value = true; error.value = ''
-  try { await visit.repository.patchArtworks(patches); if (isCurrent()) emit('changed') }
-  catch { if (isCurrent()) error.value = '标记没有保存成功，请重试；图片没有被删除。' }
+  try {
+    await props.mark(() => visit.repository.patchArtworks(patches))
+    // The completion barrier includes the authoritative read; let its props
+    // reach this retained panel before admitting the next choice.
+    await nextTick()
+  }
+  catch { if (isCurrent()) error.value = '标记或读取结果尚未确认，请重新读取作品信息后核对，不要重复提交。' }
   finally { busy.value = false }
 }
 function prefer(item: ArtworkRecord) { return save(candidates.value.map(candidate => ({ id: candidate.id, patch: candidate.id === item.id ? { reviewState: 'preferred', favorite: true } : candidate.reviewState === 'preferred' ? { reviewState: 'candidate' } : {} }))) }

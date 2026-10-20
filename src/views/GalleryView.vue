@@ -67,7 +67,7 @@
     <GalleryOrganization v-if="visitedPanels.organization" :active="selectMode" :ids="[...selectedIds]" :projects="projects" @changed="loadGalleryStorage" />
     </div>
 
-    <AsyncPanel v-if="visitedPanels.comparison" v-show="compareOpen" :loader="loadCandidateCompare" label="作品对比" v-slot="{ component }"><component :is="component" :open="compareOpen" :items="compareItems" @close="closeComparison" @changed="loadGalleryStorage" /></AsyncPanel>
+    <AsyncPanel v-if="visitedPanels.comparison" v-show="compareOpen" :loader="loadCandidateCompare" label="作品对比" v-slot="{ component }"><component :is="component" :open="compareOpen" :items="compareItems" :can-mark="canMarkComparison" :mark="saveComparisonMarks" :retry-marks="retryComparisonMarks" :marks-message="comparisonMarksMessage" :marks-reading="comparisonMarksReading" @close="closeComparison" /></AsyncPanel>
     <section aria-live="polite">
       <!-- Keep the trash read slots through close/reopen; deactivation releases queued reads and previews. -->
       <KeepAlive><GalleryTrashWall
@@ -375,7 +375,7 @@ restoreTrashItem,
 clearTrash, trashClearing, trashLoading, trashError, loadTrash,
 galleryLoading,
 galleryIndexLoading,
-galleryError,
+galleryError, canMarkComparison, saveComparisonMarks, retryComparisonMarks, comparisonMarksMessage, comparisonMarksReading,
 history,
 resetGalleryFilters,
 masonryGroups,
