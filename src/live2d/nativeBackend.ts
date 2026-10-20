@@ -83,6 +83,7 @@ export function createNativeLive2DBackend(): Live2DStageBackend {
         value => bridge.setEmotion(value.name, value.intensity),
         (a, b) => a.name === b.name && a.intensity === b.intensity, 50,
       )
+      let hitTestRevision = 0
       const hitTestListeners = new Set<(areas: string[]) => void>()
       const motionFailedListeners = new Set<(info: { group: string; index?: number; reason: string }) => void>()
       const errorListeners = new Set<(error: Error) => void>()
@@ -159,8 +160,10 @@ export function createNativeLive2DBackend(): Live2DStageBackend {
         },
         hitTest(x, y) {
           if (destroyed) return []
+          const revision = hitTestRevision
           void bridge.hitTest(x, y).then((result) => {
-            if (!destroyed) for (const listener of hitTestListeners) listener(result.areas)
+            if (destroyed || revision !== hitTestRevision) return
+            for (const listener of hitTestListeners) listener(result.areas)
           }).catch(() => { /* 窗口关闭或桥断开时忽略已失效的点击查询 */ })
           return []
         },
@@ -224,6 +227,7 @@ export function createNativeLive2DBackend(): Live2DStageBackend {
           hitTestListeners.add(callback)
           return () => { hitTestListeners.delete(callback) }
         },
+        invalidateNativeHitTests() { hitTestRevision += 1 },
         onMotionFailed(callback) {
           if (destroyed) return () => {}
           motionFailedListeners.add(callback)

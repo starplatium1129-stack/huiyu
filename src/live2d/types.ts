@@ -143,6 +143,8 @@ export interface Live2DStageSession {
 
   /** 原生专属：Rust 回传的 Cubism 原生 HitArea 命中（kind === 'native' 时存在） */
   onNativeHitTest?(callback: (areas: string[]) => void): () => void
+  /** 丢弃已发出的原生命中查询回执；不取消 Rust 执行，也不影响后续查询。 */
+  invalidateNativeHitTests?(): void
   /** 原生专属：动作被拒绝（含同一互动播放中重复点击的 busy 拒绝） */
   onMotionFailed?(callback: (info: { group: string; index?: number; reason: string }) => void): () => void
   /** 原生专属：目光凝视意图（归一化 -1..1，Rust 映射到作者眼/头参数） */

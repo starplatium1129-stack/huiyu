@@ -91,8 +91,9 @@ export function createInteractionController(
   }
 
   function stopAudio() {
-    // Also revoke sounds waiting for motion startup, even before an audio exists.
+    // Also revoke pending hit tests and motion sounds before an audio exists.
     audioRevision += 1
+    ctx.session?.invalidateNativeHitTests?.()
     if (ctx.interactionAudio) {
       try {
         ctx.interactionAudio.pause()

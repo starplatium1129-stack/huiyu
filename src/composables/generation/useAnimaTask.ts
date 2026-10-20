@@ -1,4 +1,5 @@
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { computed, ref, toRaw, type Ref } from 'vue'
 import { type ApiClient } from '@/api/client'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
@@ -23,17 +24,18 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
   patch(patch: Partial<AnimaGenerationState>): void
   stash(): void; discardStashed(): void
 }) {
-  const pending = ref<ImageRequestDraft | null>(null), storageError = ref('')
+  const pending = ref<ImageRequestDraft | null>(null), retiringPreparation = ref<ImageRequestDraft | null>(null), storageError = ref('')
   let serial = 0, disposed = false, flight = false, controller: AbortController | null = null
   let activeRuntime = '', cancellation: Promise<void> | null = null
+  let preparationWrite: Promise<void> | null = null
   let resultIdentityWrite: Promise<void> | null = null
   const completed = new WeakMap<Blob, AnimaSubmission>()
-  const hasPending = computed(() => Boolean(pending.value || storageError.value))
+  const hasPending = computed(() => Boolean(pending.value || retiringPreparation.value || storageError.value))
   function restorePending() {
-    try { pending.value = readImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY); storageError.value = '' }
+    try { pending.value = readImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY) ?? retiringPreparation.value; storageError.value = '' }
     catch (error) { storageError.value = error instanceof Error ? error.message : String(error) }
     if (pending.value && sameTempResultOwner(pending.value.owner)) options.activateResult(pending.value.submission.family)
-    if (hasPending.value && !busy(state.value)) view.patch({ phase: 'failed', backendStatus: 'unknown', statusText: storageError.value || '原图片请求已保留，可重新查询进度与结果', errorMsg: '', errorReport: null })
+    if (hasPending.value && !retiringPreparation.value && !busy(state.value)) view.patch({ phase: 'failed', backendStatus: 'unknown', statusText: storageError.value || '原图片请求已保留，可重新查询进度与结果', errorMsg: '', errorReport: null })
     return hasPending.value
   }
   async function acknowledge(draft: ImageRequestDraft) {
@@ -57,8 +59,11 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     if (disposed || flight || busy(state.value)) return
     restorePending()
     if (storageError.value) { options.flash(storageError.value); return }
+    if (retiringPreparation.value) { await cancel(); return }
     let draft = pending.value
     if (recoverOnly && !draft) { options.flash('当前没有待查询的图片请求'); return }
+    // A read-only recovery must not submit preparation whose cleanup failed.
+    if (recoverOnly && draft && !draft.submitted) { await cancel(); return }
     const submission = draft?.submission ?? (frozen ? JSON.parse(JSON.stringify({ ...frozen, request: { ...frozen.request, ...overrides } })) as AnimaSubmission : view.capture(overrides))
     if (!submission) return
     const { request, family } = submission, runtime = hasRuntimeTasks()
@@ -102,10 +107,17 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
       if (!draft) {
         draft = newImageRequestDraft(submission, runtime)
         pending.value = draft
-        await writeRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft)
+        const stable = writeRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft)
+        preparationWrite = stable
+        try { await stable } finally { if (preparationWrite === stable) preparationWrite = null }
       }
+      if (!current()) return
       assertRequestOwner(draft, runtime)
-      if (!draft.submitted) { draft.submitted = true; await writeRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft) }
+      if (!draft.submitted) {
+        const prepared = readImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY)
+        if (prepared?.key !== draft.key || prepared.submitted) throw new Error('原准备已取消或交由其他操作提交，请重新查询')
+        draft.submitted = true; await writeRequestDraft(IMAGE_REQUEST_DRAFT_KEY, draft)
+      }
       if (!current()) return
       assertDirectImageRuntime(activeRuntime)
       view.stash()
@@ -150,8 +162,46 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     } finally { if (controller === abort) controller = null; flight = false }
   }
   async function cancelOnce() {
-    const draft = pending.value
-    if (!draft?.submitted) { serial++; controller?.abort(); view.patch({ phase: 'cancelled', statusText: '已停止准备', errorMsg: '' }); return }
+    const draft = retiringPreparation.value ?? pending.value
+    if (!draft?.submitted) {
+      const cancelledSerial = ++serial, stable = preparationWrite
+      controller?.abort()
+      retiringPreparation.value = draft
+      const current = () => !disposed && serial === cancelledSerial
+      view.patch({ phase: 'cancelling', statusText: '正在停止准备…', errorMsg: '' })
+      try {
+        if (draft) {
+          // Settle the original writer before retiring only its unsent identity.
+          // A failed write can still have left an optimistic/durable draft.
+          await stable?.catch(() => {})
+          assertRequestOwner(draft, hasRuntimeTasks())
+          // A prior failed removal may look absent in the optimistic cache.
+          // Confirm that same queued write before treating absence as retired.
+          await flushProfileWrites()
+          assertRequestOwner(draft, hasRuntimeTasks())
+          const stored = readImageRequestDraft(IMAGE_REQUEST_DRAFT_KEY)
+          if (stored && stored.key !== draft.key) {
+            retiringPreparation.value = null
+            throw new Error('原请求已由其他操作接管，请重新打开页面核对')
+          }
+          if (stored?.submitted) {
+            pending.value = stored; retiringPreparation.value = null
+            throw new Error('原请求可能已提交，请查询或取消原请求')
+          }
+          if (stored) {
+            assertRequestOwner(stored, hasRuntimeTasks())
+            // No await between the fresh unsent check and the guarded removal.
+            await acknowledge(draft)
+          } else if (pending.value?.key === draft.key) pending.value = null
+        } else if (storageError.value) throw new Error(storageError.value)
+        retiringPreparation.value = null
+        if (current()) view.patch({ phase: 'cancelled', backendStatus: undefined, statusText: '已停止准备，本次未提交绘图任务', errorMsg: '', errorReport: null })
+      } catch (error) {
+        if (current()) view.patch({ phase: 'failed', backendStatus: 'unknown', statusText: '停止准备尚未确认，请查询或取消原请求',
+          errorMsg: error instanceof Error ? error.message : String(error), errorReport: null })
+      }
+      return
+    }
     const currentSerial = serial
     view.patch({ phase: 'cancelling', statusText: '正在记录取消请求…', errorMsg: '' })
     try {
