@@ -313,7 +313,10 @@ export function createWebArtworkRepository(): ArtworkRepository {
       const snapshot = structuredClone(input)
       return enqueue(async () => (await loadProjects()).saveSmartAlbum(snapshot))
     },
-    deleteSmartAlbum: id => enqueue(async () => (await loadProjects()).deleteSmartAlbum(id)),
+    deleteSmartAlbum: async input => {
+      const snapshot = structuredClone(input)
+      return enqueue(async () => (await loadProjects()).deleteSmartAlbum(snapshot))
+    },
     organizeArtworks: async input => {
       const snapshot = structuredClone(input)
       return enqueue(async () => (await loadOrganization()).organizeArtworks(snapshot))

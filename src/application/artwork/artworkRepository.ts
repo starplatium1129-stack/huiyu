@@ -1,7 +1,7 @@
 import type { ArtworkRecord, ArtworkSearchSummary } from '../../types/artwork.ts'
 import type { ArtworkOrganizationRequest, ArtworkOrganizationReceipt, ArtworkOrganizationUndoResult } from './organization.ts'
 import type { ArtworkProjectDraft } from './projects.ts'
-import type { SmartAlbumDraft } from './smartAlbums.ts'
+import type { SmartAlbumDraft, SmartAlbumRemoval } from './smartAlbums.ts'
 import type { ArtworkImportAccess, ArtworkImportCommand, ArtworkImportInput, ArtworkImportOutcome } from './localImageImport.ts'
 
 /** Original project identity and unknown fields survive the storage boundary. */
@@ -39,7 +39,7 @@ export interface ArtworkRepository {
   createProject(input: ArtworkProjectDraft): Promise<ArtworkProjectRecord>
   saveSmartAlbum(input: SmartAlbumDraft): Promise<ArtworkProjectRecord>
   /** Removes only the saved rule; artwork and media remain in the library. */
-  deleteSmartAlbum(id: string): Promise<{ deleted: boolean }>
+  deleteSmartAlbum(input: SmartAlbumRemoval): Promise<{ deleted: boolean }>
   readLibrarySnapshot(): Promise<ArtworkLibrarySnapshot>
   /** Publish the first browsing page before reading the remaining metadata. */
   readGallerySnapshot?(publish: (snapshot: ArtworkLibrarySnapshot) => void, signal: AbortSignal): Promise<ArtworkLibrarySnapshot>
